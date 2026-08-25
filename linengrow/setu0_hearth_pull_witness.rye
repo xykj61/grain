@@ -1,4 +1,4 @@
-//! linengrow/setu0_hearth_pull_witness.rye — proves SETU0 pull-parse helpers.
+//! linengrow/setu0_hearth_pull_witness.rye -- proves SETU0 pull-parse helpers.
 //!
 //!   rye build linengrow/setu0_hearth_pull_witness.rye \
 //!     -femit-bin=linengrow/bin/setu0_hearth_pull_witness

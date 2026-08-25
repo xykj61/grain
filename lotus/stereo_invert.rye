@@ -1,28 +1,28 @@
-//! lotus/stereo_invert.rye — ALES127: stereo_invert — the phase flip of a master carried into stereo, both channels in lockstep. ALES105 named `invert` — flip every sample's sign, y =
-//! saturate(-x), the whole clip mirrored about the zero line — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
+//! lotus/stereo_invert.rye -- ALES127: stereo_invert -- the phase flip of a master carried into stereo, both channels in lockstep. ALES105 named `invert` -- flip every sample's sign, y =
+//! saturate(-x), the whole clip mirrored about the zero line -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
 //! RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries invert into stereo the way ALES126 carried rotate: run ALES105's proven mono `invert` on each channel,
 //! so a phase flip that brings two mics on one source into agreement, cancels a difference signal, or folds a stereo side lands in BOTH speakers at once. It lifts the value-mirror of the stereo
-//! suite's PURE REARRANGEMENT class — where reverse (ALES125) and rotate (ALES126) trade every seat and touch no value, invert flips every value and touches no seat, the exact complement — and
+//! suite's PURE REARRANGEMENT class -- where reverse (ALES125) and rotate (ALES126) trade every seat and touch no value, invert flips every value and touches no seat, the exact complement -- and
 //! leaves only the parity flip (nyquist_flip) to complete the class; like reverse and rotate it is TOTAL and needs no validation.
 //!
 //! The rule, stated once: stereo_invert(sc) flips both channels about zero, reusing ALES105's mono `invert` per channel over its public API. Because mono invert is total (it names no span, so it
-//! raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both flip in place, both hold their length, so they leave
+//! raises no fault) and holds each channel's length, the balance invariant is preserved trivially -- both channels enter equal-length, both flip in place, both hold their length, so they leave
 //! equal-length; there is no fault to forward, no EditError, no `try`. A stereo master's phase is inverted as one thing, both speakers together.
 //!
-//! The crux — four laws. THE STEREO VALUE-MIRROR LAW: the left channel equals mono invert(left) and the right equals mono invert(right), each byte for byte against a hand-inverted vector, sample
-//! i holding saturate(-x) per channel, every value flipped and no seat moved. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length — invert flips
-//! values, never the count, so the stereo image stays aligned. THE INVOLUTION LAW, WITH AN HONEST RAIL: stereo_invert twice returns both channels to the byte EXCEPT the two's-complement floor —
+//! The crux -- four laws. THE STEREO VALUE-MIRROR LAW: the left channel equals mono invert(left) and the right equals mono invert(right), each byte for byte against a hand-inverted vector, sample
+//! i holding saturate(-x) per channel, every value flipped and no seat moved. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length -- invert flips
+//! values, never the count, so the stereo image stays aligned. THE INVOLUTION LAW, WITH AN HONEST RAIL: stereo_invert twice returns both channels to the byte EXCEPT the two's-complement floor --
 //! an sample_min (-32768) seat negates to +32768, saturates to +32767, and round-trips to -32767 per channel, the fixed asymmetry saturated by design, every other seat round-tripping exactly on
 //! both channels. THE MAGNITUDE / FIXPOINT LAW: off the rail |-x| = |x|, so a channel whose peak is not sample_min holds its peak magnitude (re-measured through ALES13); zero is the unique fixed
 //! point of negation, so an all-zero pair and an empty pair are each their own invert.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES127.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES127.
 //! Design read: active-designing/date/20260815/20260815-024705_fill-ales127-lotus-stereo-invert.md
-//! Stands on: lotus/invert.rye (ALES105) — the mono sign flip run once per channel, itself reusing ALES2's one true `saturate`; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips,
-//! left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove a sign flip
+//! Stands on: lotus/invert.rye (ALES105) -- the mono sign flip run once per channel, itself reusing ALES2's one true `saturate`; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips,
+//! left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples; lotus/meter.rye (ALES13) -- the peak/RMS meter, used by the witness to prove a sign flip
 //! off the rail moves no loudness in either channel.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It flips existing samples about zero in each channel and fabricates
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It flips existing samples about zero in each channel and fabricates
 //! none; it changes no length and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_invert.rye selftest
@@ -42,20 +42,20 @@ pub const stereo_invert_version = "20260815.024705";
 /// StereoClip: mono invert raises no fault and holds each length, so the two channels leave equal-length and no refusal can land between them. Reuses ALES105's mono invert per channel, which
 /// itself reuses ALES2's one true saturate so the two's-complement floor is clamped in exactly one place.
 pub fn stereo_invert(sc: *pan.StereoClip) void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
     // Mono invert is total and holds the length, so each channel flips in place and no fault can land between the two edits.
     invert.invert(&sc.left);
     invert.invert(&sc.right);
 
-    // invariant: the channels leave balanced — each held its length under the same flip, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each held its length under the same flip, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO VALUE-MIRROR LAW — each channel equals ALES105's mono invert on that channel byte for byte, sample i holding saturate(-x); THE BALANCE / LENGTH LAW — left.len ==
-//     right.len after, both holding their starting length; THE INVOLUTION LAW WITH AN HONEST RAIL — twice the identity off the floor, sample_min seats pinning to -32767 on both channels; THE
-//     MAGNITUDE / FIXPOINT LAW — each channel's peak unchanged off the rail, an all-zero pair and an empty pair their own invert ----------
+// --- selftest: THE STEREO VALUE-MIRROR LAW -- each channel equals ALES105's mono invert on that channel byte for byte, sample i holding saturate(-x); THE BALANCE / LENGTH LAW -- left.len ==
+//     right.len after, both holding their starting length; THE INVOLUTION LAW WITH AN HONEST RAIL -- twice the identity off the floor, sample_min seats pinning to -32767 on both channels; THE
+//     MAGNITUDE / FIXPOINT LAW -- each channel's peak unchanged off the rail, an all-zero pair and an empty pair their own invert ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -69,14 +69,14 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// A channel's current peak magnitude, re-measured through ALES13 — the reader the magnitude law checks each channel against.
+/// A channel's current peak magnitude, re-measured through ALES13 -- the reader the magnitude law checks each channel against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO VALUE-MIRROR LAW — each channel equals ALES105's mono invert on that channel, proven side by side over one anchor with different per-channel samples; the i16 floor rides
+    // 1. THE STEREO VALUE-MIRROR LAW -- each channel equals ALES105's mono invert on that channel, proven side by side over one anchor with different per-channel samples; the i16 floor rides
     //    along on both so its saturated negation (+32768 clamps to sample_max) is proven in place.
     {
         var sc = pan.StereoClip{};
@@ -97,7 +97,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 11, -21, -32767, 41, -51 })) return error.RightInvertWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at an even and an odd length.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at an even and an odd length.
     {
         var even = pan.StereoClip{};
         try load_stereo(&even, &[_]i16{ 1, -2, 3, -4 }, &[_]i16{ -5, 6, -7, 8 });
@@ -115,7 +115,7 @@ fn run_selftest() !u8 {
         if (!eq(odd.right.samples(), &[_]i16{ 6, -7, 8 })) return error.OddRightWrong;
     }
 
-    // 3a. THE INVOLUTION LAW, off the rail — for a pair free of sample_min, stereo_invert twice returns both channels to the byte: the flip is its own inverse.
+    // 3a. THE INVOLUTION LAW, off the rail -- for a pair free of sample_min, stereo_invert twice returns both channels to the byte: the flip is its own inverse.
     {
         var sc = pan.StereoClip{};
         const l0 = [_]i16{ 10, -20, 30, -40, 32767 };
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.InvolutionRightWrong;
     }
 
-    // 3b. THE INVOLUTION LAW, on the rail — a channel holding sample_min does NOT round-trip to the byte: -32768 → 32767 → -32767, so those seats land -32767, the honest two's-complement
+    // 3b. THE INVOLUTION LAW, on the rail -- a channel holding sample_min does NOT round-trip to the byte: -32768 -> 32767 -> -32767, so those seats land -32767, the honest two's-complement
     //     asymmetry carried into stereo; every other seat on both channels round-trips exactly.
     {
         var sc = pan.StereoClip{};
@@ -138,7 +138,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 7, -32767, 9, -32767 })) return error.RailRightWrong;
     }
 
-    // 4a. THE MAGNITUDE LAW — off the rail |-x| = |x|, so each channel whose peak is not sample_min holds its peak magnitude re-measured through ALES13; the flip moves the sign, never the
+    // 4a. THE MAGNITUDE LAW -- off the rail |-x| = |x|, so each channel whose peak is not sample_min holds its peak magnitude re-measured through ALES13; the flip moves the sign, never the
     //     loudness. Peaks 30000 and 32000, both off the floor.
     {
         var sc = pan.StereoClip{};
@@ -150,7 +150,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&sc.right) != rb) return error.RightPeakMoved;
     }
 
-    // 4b. THE FIXPOINT LAW — zero is the unique fixed point of negation, so an all-zero pair and an empty pair are each their own invert (-0 = 0).
+    // 4b. THE FIXPOINT LAW -- zero is the unique fixed point of negation, so an all-zero pair and an empty pair are each their own invert (-0 = 0).
     {
         var empty = pan.StereoClip{};
         stereo_invert(&empty);

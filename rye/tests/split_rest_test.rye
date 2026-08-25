@@ -1,4 +1,4 @@
-//! Rye test: SplitIterator.rest via splitScalar — pass 9968.
+//! Rye test: SplitIterator.rest via splitScalar -- pass 9968.
 //!
 //! Mantra calls rest() after next() when walking tab fields and lines.
 //! Completes the split iterator family beside next (9993) and peek (9969).

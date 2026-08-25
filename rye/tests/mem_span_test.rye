@@ -1,4 +1,4 @@
-//! Rye test: std.mem.span — pass 9928.
+//! Rye test: std.mem.span -- pass 9928.
 //!
 //! Sentinel-terminated pointer to slice; pairs with len (9942) and sliceTo (9945).
 

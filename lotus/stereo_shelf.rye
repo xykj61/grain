@@ -1,29 +1,29 @@
-//! lotus/stereo_shelf.rye — ALES171: a TWO-BAND TONE SHELF carried into stereo — ALES41's bass-and-treble shelf run on BOTH channels with the SAME coefficient and the SAME band gains, the second rung of the stereo EQ / filter
-//! class. ALES170 opened the class with the one-pole tone control, which only REMOVES a band; the tone control a keeper actually turns is two knobs — bass and treble — each boosting OR cutting its band independently. ALES41
+//! lotus/stereo_shelf.rye -- ALES171: a TWO-BAND TONE SHELF carried into stereo -- ALES41's bass-and-treble shelf run on BOTH channels with the SAME coefficient and the SAME band gains, the second rung of the stereo EQ / filter
+//! class. ALES170 opened the class with the one-pole tone control, which only REMOVES a band; the tone control a keeper actually turns is two knobs -- bass and treble -- each boosting OR cutting its band independently. ALES41
 //! built that for a mono Clip: split the span into a low band (ALES40's low-pass) and its exact high band (input minus low), scale each by its own gain, and write the sum saturated ONCE over the true wide-domain total. This
-//! rung carries it into stereo the way the EQ class asks — run ALES41's proven mono `shelf` on each channel with the SAME coefficient and band gains, so bass and treble turn on BOTH speakers together.
+//! rung carries it into stereo the way the EQ class asks -- run ALES41's proven mono `shelf` on each channel with the SAME coefficient and band gains, so bass and treble turn on BOTH speakers together.
 //!
 //! Like every parametric edit (ALES130's fade, ALES170's tone), a shelf's coefficient and band gains are fractions the caller NAMES, not scalars measured across the field, so the SAME parameters on each channel preserve the
-//! stereo image for free — no linking, no measurement. Each channel shelves its OWN content through those shared knobs, which is exactly right for EQ: an identical-channel (mono-in-stereo) master stays identical because the
-//! same input through the same knobs is the same deterministic output, while a panned master shapes each side by its own spectrum. Unlike ALES170, there is no carried state to lift — ALES41's shelf runs a fresh low-pass over
+//! stereo image for free -- no linking, no measurement. Each channel shelves its OWN content through those shared knobs, which is exactly right for EQ: an identical-channel (mono-in-stereo) master stays identical because the
+//! same input through the same knobs is the same deterministic output, while a panned master shapes each side by its own spectrum. Unlike ALES170, there is no carried state to lift -- ALES41's shelf runs a fresh low-pass over
 //! the whole span each call, so a stereo shelf is a stateless per-channel pass with nothing to thread across a seam.
 //!
 //! The rule, stated once: refuse BadCoeff (a filter coefficient outside (0, 1]), BadGain (a zero bass or treble denominator), and BadRange (a span past the shared length) BEFORE either channel is touched, so a refusal never
 //! shelves one channel and leaves the other torn; then run ALES41's `shelf` on each channel with the SAME coefficient and band gains. Unity on both bands (bass = bass_den, treble = treble_den) reconstructs the input on both;
 //! at direct current the high band is zero, so treble cannot move a constant and only bass scales it, on each channel.
 //!
-//! The crux — four laws. THE STEREO SHELF LAW: each channel equals ALES41's mono `shelf` with the SAME coefficient and band gains over the same span byte for byte, proven side by side with genuinely different per-channel
-//! content — the left shelved by the left's spectrum, the right by the right's, never crossed. THE FLAT-EQ IDENTITY LAW: unity on both bands is the identity on both channels (the bands reconstruct the input byte for byte),
+//! The crux -- four laws. THE STEREO SHELF LAW: each channel equals ALES41's mono `shelf` with the SAME coefficient and band gains over the same span byte for byte, proven side by side with genuinely different per-channel
+//! content -- the left shelved by the left's spectrum, the right by the right's, never crossed. THE FLAT-EQ IDENTITY LAW: unity on both bands is the identity on both channels (the bands reconstruct the input byte for byte),
 //! and bass moves direct current while treble leaves it untouched, per channel. THE IMAGE LAW: an identical-channel master stays identical through the shelf (a mono-in-stereo signal never splits), the shared knobs holding the
 //! image. THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an all-silent master shelves to silence on both; left.len == right.len after; a zero or above-one coefficient, a zero bass or treble denominator, and an
 //! out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES171.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES171.
 //! Design read: active-designing/date/20260815/20260815-075512_fill-ales171-lotus-stereo-shelf.md
-//! Stands on: lotus/shelf.rye (ALES41) — the mono two-band shelf run once per channel, its ShelfError reused whole; lotus/tone.rye (ALES40) — the low-pass/high-pass split the shelf scales, its coefficient law shared; lotus/pan.rye
-//! (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and the one true saturate the shelf's sum reuses.
+//! Stands on: lotus/shelf.rye (ALES41) -- the mono two-band shelf run once per channel, its ShelfError reused whole; lotus/tone.rye (ALES40) -- the low-pass/high-pass split the shelf scales, its coefficient law shared; lotus/pan.rye
+//! (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and the one true saturate the shelf's sum reuses.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each shelved through ALES41's own scratch-low-band pass, siloed to lotus/. It changes sample VALUES only, never a length; every
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each shelved through ALES41's own scratch-low-band pass, siloed to lotus/. It changes sample VALUES only, never a length; every
 //! band scale and sum runs in i64 so nothing overflows before the single clamp per channel. The coefficient sets where the split falls over sample INDICES, not a crossover in hertz (a real time base is a later rung), and the
 //! band gains are plain fractions, NOT decibels. No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -39,14 +39,14 @@ const shelf = @import("shelf.rye");
 
 pub const stereo_shelf_version = "20260815.075512";
 
-/// The stereo shelf's faults are exactly ALES41's own `ShelfError` — `BadCoeff` on an illegal filter coefficient, `BadGain` on a zero band denominator, and `BadRange` on a span outside the samples — reused by name, since
+/// The stereo shelf's faults are exactly ALES41's own `ShelfError` -- `BadCoeff` on an illegal filter coefficient, `BadGain` on a zero band denominator, and `BadRange` on a span outside the samples -- reused by name, since
 /// carrying the shelf into stereo adds no new fault: it validates one shared coefficient, two shared band gains, and one span against the shared length, then runs the same mono shelf on each channel.
 pub const StereoShelfError = shelf.ShelfError;
 
 /// Shelve `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME filter coefficient and band gains: split each channel's span into a low band and its exact high band, scale each by its own gain
-/// (bass_num/bass_den, treble_num/treble_den), and write the sum saturated once — ALES41's proven mono shelf, run per channel. Unity on both bands reconstructs the input on both; treble cannot move direct current, only bass
+/// (bass_num/bass_den, treble_num/treble_den), and write the sum saturated once -- ALES41's proven mono shelf, run per channel. Unity on both bands reconstructs the input on both; treble cannot move direct current, only bass
 /// scales it, per channel. Validates the coefficient, both band gains, and the span ONCE against the shared length before either channel is mutated: refuses BadCoeff, BadGain, and BadRange, both channels untouched. Values only
-/// — never the length; the two channels leave balanced.
+/// -- never the length; the two channels leave balanced.
 pub fn stereo_shelf(
     sc: *pan.StereoClip,
     start: u32,
@@ -58,9 +58,9 @@ pub fn stereo_shelf(
     treble_num: i32,
     treble_den: u32,
 ) StereoShelfError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared knobs preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared knobs preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the filter coefficient is a legal fraction in (0, 1] (ALES40's own law) — checked before any write, so a refusal never shelves one channel and leaves the other torn.
+    // invariant: the filter coefficient is a legal fraction in (0, 1] (ALES40's own law) -- checked before any write, so a refusal never shelves one channel and leaves the other torn.
     if (coeff_den == 0) return error.BadCoeff;
     if (coeff_num < 1) return error.BadCoeff;
     if (@as(i64, coeff_num) > @as(i64, coeff_den)) return error.BadCoeff;
@@ -71,18 +71,18 @@ pub fn stereo_shelf(
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels (same coefficient, same band gains, same span, shared length), so each mono shelf is pre-validated to succeed — no refusal can land between the two channel
+    // Every check passed and holds identically for both channels (same coefficient, same band gains, same span, shared length), so each mono shelf is pre-validated to succeed -- no refusal can land between the two channel
     // edits. The SAME knobs on each channel, each shelving its own content.
     try shelf.shelf(&sc.left, start, count, coeff_num, coeff_den, bass_num, bass_den, treble_num, treble_den);
     try shelf.shelf(&sc.right, start, count, coeff_num, coeff_den, bass_num, bass_den, treble_num, treble_den);
 
-    // invariant: the channels leave balanced — a shelf writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a shelf writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO SHELF LAW — each channel equals ALES41's mono shelf with the SAME knobs byte for byte, different per-channel content; THE FLAT-EQ IDENTITY LAW — unity on both bands the identity on both, bass moving
-//     direct current while treble leaves it; THE IMAGE LAW — an identical-channel master stays identical through the shelf; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal
+// --- selftest: THE STEREO SHELF LAW -- each channel equals ALES41's mono shelf with the SAME knobs byte for byte, different per-channel content; THE FLAT-EQ IDENTITY LAW -- unity on both bands the identity on both, bass moving
+//     direct current while treble leaves it; THE IMAGE LAW -- an identical-channel master stays identical through the shelf; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW -- silence to silence, balanced, each refusal
 //     untouched, count 0 the identity on both
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -98,7 +98,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO SHELF LAW — each channel equals ALES41's mono shelf with the SAME coefficient and band gains, proven side by side over one span with genuinely different per-channel content: the left shelved by the left's
+    // 1. THE STEREO SHELF LAW -- each channel equals ALES41's mono shelf with the SAME coefficient and band gains, proven side by side over one span with genuinely different per-channel content: the left shelved by the left's
     //    spectrum, the right by the right's, never crossed.
     {
         const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000 };
@@ -116,11 +116,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftShelfNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightShelfNotMono;
-        // The two channels genuinely differ — the left is not the right shelved, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right shelved, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2a. THE FLAT-EQ IDENTITY LAW — unity on both bands (bass = bass_den, treble = treble_den) writes L + (x - L) = x byte for byte on both channels, at any coefficient. The sharpest proof the two bands reconstruct the input.
+    // 2a. THE FLAT-EQ IDENTITY LAW -- unity on both bands (bass = bass_den, treble = treble_den) writes L + (x - L) = x byte for byte on both channels, at any coefficient. The sharpest proof the two bands reconstruct the input.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 3000, -4000, 500, 42 }, &[_]i16{ 42, 500, -4000, 3000, -200, 100 });
@@ -129,8 +129,8 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 42, 500, -4000, 3000, -200, 100 })) return error.RightIdentityWrong;
     }
 
-    // 2b. bass moves direct current while treble leaves it untouched, per channel — a settled constant at bass ×2, treble ×1 doubles the tail; the same constant at bass ×1, treble ×5 leaves the tail exactly the input (the high
-    //     band is zero at direct current — the knobs are orthogonal on both channels).
+    // 2b. bass moves direct current while treble leaves it untouched, per channel -- a settled constant at bass ×2, treble ×1 doubles the tail; the same constant at bass ×1, treble ×5 leaves the tail exactly the input (the high
+    //     band is zero at direct current -- the knobs are orthogonal on both channels).
     {
         const run = [_]i16{1000} ** 30;
         var bass = pan.StereoClip{};
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (treble.left.samples()[29] != 1000 or treble.right.samples()[29] != 1000) return error.TrebleMovedDc;
     }
 
-    // 3. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the shelf: the same input through the same knobs is the same deterministic output, so the two channels never split.
+    // 3. THE IMAGE LAW -- an identical-channel (mono-in-stereo) master stays identical through the shelf: the same input through the same knobs is the same deterministic output, so the two channels never split.
     {
         const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
         var sc = pan.StereoClip{};
@@ -153,7 +153,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master shelves to silence on both at any gains; the channels stay equal length and each holds its starting length.
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master shelves to silence on both at any gains; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0 });
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 5) return error.LengthChanged;
     }
 
-    // 4b. THE ATOMICITY LAW — a zero denominator coefficient, an above-one coefficient, a zero bass denominator, a zero treble denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched
+    // 4b. THE ATOMICITY LAW -- a zero denominator coefficient, an above-one coefficient, a zero bass denominator, a zero treble denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched
     //     and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         if (!eq(f.left.samples(), &tl) or !eq(f.right.samples(), &tr) or f.left.len != f.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to shelve.
+    // 4c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to shelve.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

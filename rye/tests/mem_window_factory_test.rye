@@ -1,7 +1,7 @@
-//! Rye test: mem.window factory — pass 9931.
+//! Rye test: mem.window factory -- pass 9931.
 //!
 //! window() begins at index zero when the buffer is non-empty, null when empty
-//! (pairs with WindowIterator 9954 and split/tokenize factories 9932–9934).
+//! (pairs with WindowIterator 9954 and split/tokenize factories 9932-9934).
 
 const std = @import("std");
 const mem = std.mem;

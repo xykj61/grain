@@ -1,4 +1,4 @@
-//! glow/lower_compose2_witness.rye — proves face→face→`%+` compose.
+//! glow/lower_compose2_witness.rye -- proves face->face->`%+` compose.
 //!
 //!   rye build glow/lower_compose2_witness.rye -femit-bin=glow/bin/lower_compose2_witness
 

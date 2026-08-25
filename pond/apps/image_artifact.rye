@@ -1,16 +1,16 @@
-//! pond/apps/image_artifact.rye — HUNK1: an image is a content-addressed Tablecloth artifact.
+//! pond/apps/image_artifact.rye -- HUNK1: an image is a content-addressed Tablecloth artifact.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK1.
-//! Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0–HUNK3 quest).
-//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · mantra/beading.rye (content-addressed store).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - opening journey Open Image - rung HUNK1.
+//! Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0-HUNK3 quest).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - mantra/beading.rye (content-addressed store).
 //!
 //! HUNK0 proved the codec: decode(encode(pm)) recovers a pixmap byte-for-byte. This rung gives that pixmap an
 //! identity. An image is encoded to QOI bytes and BEADED into a Tablecloth artifact under a name; the name pins
 //! a content address (a SHA3 digest of the whole and the recipe that reassembles it). Fetching by name
-//! reassembles the bytes, and reassembly proves EVERY bead against its digest FIRST — so a tampered bead refuses
+//! reassembles the bytes, and reassembly proves EVERY bead against its digest FIRST -- so a tampered bead refuses
 //! (`DigestMismatch`) before `qoi.decode` reads a single pixel. Content-addressed storage becomes the image's
 //! integrity guarantee for free: an image the store hands back either is the image its name pinned, or it is a
-//! named refusal — never garbage painted onto a canvas. The same image stored under two names is stored once
+//! named refusal -- never garbage painted onto a canvas. The same image stored under two names is stored once
 //! (the dedup dividend the sprite-sheet marketplace will lean on). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/image_artifact.rye selftest
@@ -24,7 +24,7 @@ const beading = @import("mantra/beading.rye");
 
 pub const image_artifact_version = "20260813.145706";
 
-/// The largest QOI stream this rung stores — the artifact-content bound the store enforces (a resin's worth,
+/// The largest QOI stream this rung stores -- the artifact-content bound the store enforces (a resin's worth,
 /// 512 bytes). A right-to-repair panel's sprite is beaded in its own later round; this rung proves the seam.
 pub const max_stream_bytes: u32 = tablecloth.max_content_bytes;
 
@@ -60,7 +60,7 @@ pub fn store_image(
 
 /// Fetch an image by name and decode it into a freshly allocated RGBA Pixmap. The fetch reassembles the beads
 /// and proves each against its digest and the whole against its recorded address BEFORE this function decodes
-/// anything — so a tampered bead refuses (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`),
+/// anything -- so a tampered bead refuses (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`),
 /// each before a single pixel is read. Only verified bytes ever reach the codec.
 pub fn fetch_image(
     allocator: std.mem.Allocator,
@@ -86,7 +86,7 @@ fn craft(allocator: std.mem.Allocator) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, n * 4);
     var i: u32 = 0;
     while (i < n) : (i += 1) {
-        // A gentle diagonal ramp with a repeated band — runs, diffs, and index hits all arise naturally.
+        // A gentle diagonal ramp with a repeated band -- runs, diffs, and index hits all arise naturally.
         const band: u8 = @intCast((i / 8) & 0xFF);
         const step: u8 = @intCast((i % 8) & 0xFF);
         const off = @as(usize, i) * 4;

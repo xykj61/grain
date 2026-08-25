@@ -1,28 +1,28 @@
-//! lotus/smooth_trim.rye — ALES102: the smoothed silence trim — smooth the runs through ALES101 BEFORE stripping the silence, so the strip declicks the pause and keeps the gap.
+//! lotus/smooth_trim.rye -- ALES102: the smoothed silence trim -- smooth the runs through ALES101 BEFORE stripping the silence, so the strip declicks the pause and keeps the gap.
 //! ALES101 built the smoothing hysteresis; this rung is where it pays off. ALES96 strips every .silent run from the RAW segmentation, and the raw segmentation flickers:
 //! a single loud tick buried in a pause reads .voiced, so ALES96 KEEPS the click; a single quiet frame between two words reads .silent, so ALES96 CUTS the gap and the
-//! words run together. Run ALES101 first and both vanish — the tick, shorter than min_run, is relabeled to the silence around it and stripped; the short gap, shorter
-//! than min_run, is relabeled to the speech around it and KEPT. One knob turns a literal silence remover into a speech-aware one — the tool a keeper actually wants:
+//! words run together. Run ALES101 first and both vanish -- the tick, shorter than min_run, is relabeled to the silence around it and stripped; the short gap, shorter
+//! than min_run, is relabeled to the speech around it and KEPT. One knob turns a literal silence remover into a speech-aware one -- the tool a keeper actually wants:
 //! remove the dead air, spare the breath, drop the click.
 //!
 //! The rule, stated once: segment [0, clip.len) through ALES95, smooth the runs through ALES101 with min_run, then walk the SMOOTHED runs BACK TO FRONT and cut every
 //! .silent run through ALES2's cut. ALES101's coverage law guarantees the smoothed runs tile the same span exactly (same starts, same total), so every smoothed .silent
 //! run is a valid span in the original clip, cut back to front exactly as ALES96 cuts.
 //!
-//! The crux — four laws. THE MIN-ZERO LAW: smooth_trim(min_run=0) equals ALES96's trim_silence byte for byte — min_run zero is the identity smoothing, so the two share
+//! The crux -- four laws. THE MIN-ZERO LAW: smooth_trim(min_run=0) equals ALES96's trim_silence byte for byte -- min_run zero is the identity smoothing, so the two share
 //! their boundary and ALES102 is a strict generalization. THE CONCAT LAW: the result equals the hand-built concatenation of the non-silent SMOOTHED runs read from the
-//! original — ALES102 is ALES96 reading ALES101's labels instead of the raw ones, so it can never drift. THE DECLICK LAW: a short .voiced tick buried in silence, at a
-//! min_run past the tick, is removed — smooth_trim strictly SHORTER than trim_silence, the click gone. THE KEEP-GAP LAW: a short .silent gap between two words, at a
-//! min_run past the gap, is kept — smooth_trim strictly LONGER than trim_silence, the breath preserved. Honestly: smooth_trim is NOT monotone in min_run — a larger
+//! original -- ALES102 is ALES96 reading ALES101's labels instead of the raw ones, so it can never drift. THE DECLICK LAW: a short .voiced tick buried in silence, at a
+//! min_run past the tick, is removed -- smooth_trim strictly SHORTER than trim_silence, the click gone. THE KEEP-GAP LAW: a short .silent gap between two words, at a
+//! min_run past the gap, is kept -- smooth_trim strictly LONGER than trim_silence, the breath preserved. Honestly: smooth_trim is NOT monotone in min_run -- a larger
 //! min_run removes more clicks yet keeps more gaps, so the length can rise or fall; the declick and keep-gap laws are the two sides of that.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES102.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES102.
 //! Design read: active-designing/date/20260815/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
-//! Stands on: lotus/trim_silence.rye (ALES96) — the silence stripper, the min-zero twin; lotus/smooth_runs.rye (ALES101) — the run-length smoother; lotus/segment.rye
-//! (ALES95) — the segmenter; lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.
+//! Stands on: lotus/trim_silence.rye (ALES96) -- the silence stripper, the min-zero twin; lotus/smooth_runs.rye (ALES101) -- the run-length smoother; lotus/segment.rye
+//! (ALES95) -- the segmenter; lotus/timeline.rye (ALES2) -- the Clip and cut; lotus/voiced.rye (ALES94) -- the .silent verdict.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It edits only by removing whole smoothed-silent
-//! frames through ALES2's own cut, fabricating no sample and reordering nothing. The smoothing is ALES101's CAUSAL hold — it cannot rescue a too-short opening run — and
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It edits only by removing whole smoothed-silent
+//! frames through ALES2's own cut, fabricating no sample and reordering nothing. The smoothing is ALES101's CAUSAL hold -- it cannot rescue a too-short opening run -- and
 //! this rung is no adaptive VAD. NOT a transcript; no real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/smooth_trim.rye selftest
@@ -40,7 +40,7 @@ const trim_silence = @import("trim_silence.rye");
 pub const smooth_trim_version = "20260815.001200";
 
 /// The smoothed trim's faults are ALES96's OWN faults (the segmenter's SegmentError and the editor's EditError) reused by name, plus ALES101's SmoothError (only the
-/// honest-unreachable SegmentsFull). It invents none of its own — `min_run` is a plain count with no illegal value (a huge min_run coalesces every run into one).
+/// honest-unreachable SegmentsFull). It invents none of its own -- `min_run` is a plain count with no illegal value (a huge min_run coalesces every run into one).
 pub const SmoothTrimError = trim_silence.TrimError || smooth_runs.SmoothError;
 
 /// Remove every silent run from `clip` AFTER smoothing the segmentation, so a spurious short voiced tick inside a pause is stripped with the pause and a short silent gap
@@ -58,16 +58,16 @@ pub fn smooth_trim(
 ) SmoothTrimError!void {
     const original_len: u32 = clip.len;
 
-    // Segment the whole clip once — all of ALES95's validation runs here before a single sample is cut.
+    // Segment the whole clip once -- all of ALES95's validation runs here before a single sample is cut.
     var segs = segment.Segments{};
     try segment.segment(clip, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // Smooth the runs before stripping — the ONLY difference from ALES96. The smoothed runs tile the same span (ALES101's coverage law), so their silent spans are valid
+    // Smooth the runs before stripping -- the ONLY difference from ALES96. The smoothed runs tile the same span (ALES101's coverage law), so their silent spans are valid
     // original indices.
     var smoothed = segment.Segments{};
     try smooth_runs.smooth_runs(&segs, &smoothed, min_run);
 
-    // invariant: smoothing a non-empty segmentation yields at least one run that still tiles the clip — the smoother preserves coverage.
+    // invariant: smoothing a non-empty segmentation yields at least one run that still tiles the clip -- the smoother preserves coverage.
     assert(smoothed.len >= 1 and smoothed.len <= segment.max_segments);
 
     // Count the smoothed silent samples up front so the postcondition can be asserted exactly.
@@ -85,19 +85,19 @@ pub fn smooth_trim(
         r -= 1;
         const run = smoothed.items[r];
         if (run.verdict == .silent) {
-            // invariant: the run lies wholly inside the current clip — it did before any cut, and only later runs (already cut) sat after it.
+            // invariant: the run lies wholly inside the current clip -- it did before any cut, and only later runs (already cut) sat after it.
             assert(run.start + run.count <= clip.len);
             try timeline.cut(clip, run.start, run.count);
         }
     }
 
-    // invariant: the trimmed clip holds exactly the non-silent smoothed samples — its length is the original minus every smoothed-silent sample removed.
+    // invariant: the trimmed clip holds exactly the non-silent smoothed samples -- its length is the original minus every smoothed-silent sample removed.
     assert(clip.len == original_len - silent_total);
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE MIN-ZERO LAW — smooth_trim(min=0) equals ALES96's trim_silence byte for byte; THE CONCAT LAW — the result equals the hand-built concatenation of the
-//     non-silent smoothed runs; THE DECLICK LAW — a short voiced tick in silence is removed (strictly shorter than the raw trim); THE KEEP-GAP LAW — a short silent gap
+// --- selftest: THE MIN-ZERO LAW -- smooth_trim(min=0) equals ALES96's trim_silence byte for byte; THE CONCAT LAW -- the result equals the hand-built concatenation of the
+//     non-silent smoothed runs; THE DECLICK LAW -- a short voiced tick in silence is removed (strictly shorter than the raw trim); THE KEEP-GAP LAW -- a short silent gap
 //     in speech is kept (strictly longer than the raw trim); plus an all-silent clip empties, a no-silent clip is unchanged, and the four boundary refusals ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -111,7 +111,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built expectation the smoothed trim is checked against in the concat law — segment the ORIGINAL, smooth the runs, then concatenate every non-silent smoothed
+/// The hand-built expectation the smoothed trim is checked against in the concat law -- segment the ORIGINAL, smooth the runs, then concatenate every non-silent smoothed
 /// run's samples in order into `out`. The trimmed clip must equal this exactly.
 fn by_hand(out: *timeline.Clip, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32, min_run: u32) !void {
     var segs = segment.Segments{};
@@ -141,7 +141,7 @@ fn run_selftest() !u8 {
         50,    -50,   50,    -50, // silent (quiet tail)
     };
 
-    // 1. THE MIN-ZERO LAW — over many frame lengths, floors, and splits, smooth_trim(min=0) equals ALES96's trim_silence byte for byte.
+    // 1. THE MIN-ZERO LAW -- over many frame lengths, floors, and splits, smooth_trim(min=0) equals ALES96's trim_silence byte for byte.
     {
         const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 };
         const floors = [_]u32{ 100, 500, 1000, 5000 };
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE CONCAT LAW — over many min_run values, the result equals the hand-built concatenation of the non-silent smoothed runs.
+    // 2. THE CONCAT LAW -- over many min_run values, the result equals the hand-built concatenation of the non-silent smoothed runs.
     {
         const mins = [_]u32{ 0, 1, 2, 3, 4, 8, 12, 100 };
         var ci: u32 = 0;
@@ -180,7 +180,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. THE DECLICK LAW — a short voiced tick buried in silence is removed at a min_run past the tick, where the raw trim keeps it. silent(8) · voiced tick(4) ·
+    // 3. THE DECLICK LAW -- a short voiced tick buried in silence is removed at a min_run past the tick, where the raw trim keeps it. silent(8) - voiced tick(4) -
     //    silent(8): the raw trim keeps the 4 tick samples; smooth_trim with min_run 8 relabels the tick silent and strips everything.
     {
         const ticked = [_]i16{
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         if (smoothed.len >= raw.len) return error.DeclickNotShorter; // strictly shorter than the raw trim
     }
 
-    // 4. THE KEEP-GAP LAW — a short silent gap between two words is kept at a min_run past the gap, where the raw trim cuts it. voiced(8) · silent gap(4) · voiced(8):
+    // 4. THE KEEP-GAP LAW -- a short silent gap between two words is kept at a min_run past the gap, where the raw trim cuts it. voiced(8) - silent gap(4) - voiced(8):
     //    the raw trim removes the gap (16 samples run together); smooth_trim with min_run 8 relabels the gap voiced and keeps all 20 samples.
     {
         const gapped = [_]i16{
@@ -220,7 +220,7 @@ fn run_selftest() !u8 {
         if (smoothed.len <= raw.len) return error.KeepGapNotLonger; // strictly longer than the raw trim
     }
 
-    // 5. AN ALL-SILENT CLIP empties whatever the min_run — a wholly-silent clip coalesces to one silent run the smoother leaves silent, and the strip removes it.
+    // 5. AN ALL-SILENT CLIP empties whatever the min_run -- a wholly-silent clip coalesces to one silent run the smoother leaves silent, and the strip removes it.
     {
         const quiet = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 };
         const mins = [_]u32{ 0, 4, 100 };
@@ -233,7 +233,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. A NO-SILENT CLIP is unchanged whatever the min_run — no silent run to strip, and the smoother cannot create one.
+    // 6. A NO-SILENT CLIP is unchanged whatever the min_run -- no silent run to strip, and the smoother cannot create one.
     {
         const loud = [_]i16{ 20000, 20000, -20000, -20000, 20000, -20000, 20000, -20000 };
         const mins = [_]u32{ 0, 4, 100 };

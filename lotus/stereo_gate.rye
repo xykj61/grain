@@ -1,32 +1,32 @@
-//! lotus/stereo_gate.rye — ALES156: the noise gate carried into stereo, ONE LINKED DETECTOR, the image the gate refuses to tear. ALES51 named `gate`: a sample at or above a magnitude threshold passes byte for
-//! byte (the gate is open), a sample below it has its magnitude divided by a ratio and rewritten sign(x)·(m·den/num) (the gate is closed) — the compressor's threshold turned upside down, quieting the hiss between
+//! lotus/stereo_gate.rye -- ALES156: the noise gate carried into stereo, ONE LINKED DETECTOR, the image the gate refuses to tear. ALES51 named `gate`: a sample at or above a magnitude threshold passes byte for
+//! byte (the gate is open), a sample below it has its magnitude divided by a ratio and rewritten sign(x)-(m-den/num) (the gate is closed) -- the compressor's threshold turned upside down, quieting the hiss between
 //! words and the room tone in a pause. That is a mono edit, deciding per sample on that sample's own magnitude. Yet a Lotus master is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT
-//! hold the SAME length — and this rung opens the whole stereo DYNAMICS family on the one decision no waveshaper ever faced: LINKED or INDEPENDENT detection.
+//! hold the SAME length -- and this rung opens the whole stereo DYNAMICS family on the one decision no waveshaper ever faced: LINKED or INDEPENDENT detection.
 //!
-//! Run ALES51's mono gate twice — once per channel, each deciding on its OWN magnitude — and a moment loud on the left but quiet on the right would GATE THE RIGHT WHILE THE LEFT PLAYS: the image lurches to one side,
-//! and chatters as the quiet channel opens and closes against its loud partner. This is the dynamics-class twin of the bug ALES129 (stereo_normalize) named for amplitude — independent processing tears the very inter-
+//! Run ALES51's mono gate twice -- once per channel, each deciding on its OWN magnitude -- and a moment loud on the left but quiet on the right would GATE THE RIGHT WHILE THE LEFT PLAYS: the image lurches to one side,
+//! and chatters as the quiet channel opens and closes against its loud partner. This is the dynamics-class twin of the bug ALES129 (stereo_normalize) named for amplitude -- independent processing tears the very inter-
 //! channel difference that IS the stereo image. Every real stereo gate refuses it by LINKING the detector: it decides open-or-closed ONCE, from both channels together, and applies that one decision to both.
 //!
-//! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write — the checks
+//! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write -- the checks
 //! are identical for both channels, so a refusal never gates one channel and leaves the other torn. Otherwise walk the span one sample-PAIR at a time: key = max(|left|, |right|), the louder of the two. key >= threshold
-//! opens the gate — BOTH samples pass byte for byte, the quiet channel included (where independent gating would have quieted it). key < threshold closes it — both channels are then genuinely below the threshold, so
-//! each divides its OWN magnitude by the ratio, sign(x)·(m·den/num), exactly as ALES51 would to each in isolation.
+//! opens the gate -- BOTH samples pass byte for byte, the quiet channel included (where independent gating would have quieted it). key < threshold closes it -- both channels are then genuinely below the threshold, so
+//! each divides its OWN magnitude by the ratio, sign(x)-(m-den/num), exactly as ALES51 would to each in isolation.
 //!
-//! The crux — five laws. THE LINKED-DETECTOR LAW (the stereo crux): a pair is gated iff BOTH channels fall below the threshold (max(|L|,|R|) < threshold), so a pair loud on one channel and quiet on the other leaves
+//! The crux -- five laws. THE LINKED-DETECTOR LAW (the stereo crux): a pair is gated iff BOTH channels fall below the threshold (max(|L|,|R|) < threshold), so a pair loud on one channel and quiet on the other leaves
 //! BOTH untouched where mono-gate-run-twice would quiet the soft one. THE BELOW-BOTH LAW: where the whole pair sits below threshold, each channel equals ALES51's mono gate over the same span byte for byte. THE IMAGE /
-//! SIGN LAW: an even, sign-preserving attenuation — no written magnitude exceeds its input's, no sign flips, an out-of-phase quiet pair returns still out of phase. THE KNOB LAWS: above the threshold is the identity on
+//! SIGN LAW: an even, sign-preserving attenuation -- no written magnitude exceeds its input's, no sign flips, an out-of-phase quiet pair returns still out of phase. THE KNOB LAWS: above the threshold is the identity on
 //! both, unit ratio the identity everywhere on both, a higher ratio gates at least as hard (monotone), a ratio far past the magnitude drives a closed pair exactly to silence. THE BALANCE / ATOMICITY / DEGENERATE LAW:
 //! left.len == right.len after (values only), a refusal leaving both channels untouched and balanced, count = 0 and the empty span the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES156.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES156.
 //! Design read: active-designing/date/20260815/20260815-061957_fill-ales156-lotus-stereo-gate.md
-//! Stands on: lotus/gate.rye (ALES51) — the mono noise gate, its `gate` and `GateError` reused whole (the below-both proof and the fault set); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and
-//! its balance invariant; lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129) — the amplitude-class linked lift this rung answers for the dynamics class; lotus/timeline.rye (ALES2) — the Clip, its
+//! Stands on: lotus/gate.rye (ALES51) -- the mono noise gate, its `gate` and `GateError` reused whole (the below-both proof and the fault set); lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and
+//! its balance invariant; lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129) -- the amplitude-class linked lift this rung answers for the dynamics class; lotus/timeline.rye (ALES2) -- the Clip, its
 //! buf/len/samples, and sample_max / the range-law shape.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only — one comparison of the linked key and at most one divide per
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only -- one comparison of the linked key and at most one divide per
 //! channel per sample, memoryless (no attack, hold, or release; those are the envelope rungs ALES52+ and their later stereo twins), never a length. The threshold is a magnitude in sample units, not decibels; the ratio
-//! a plain fraction. Nothing on the audio path can overflow — the ratio is at least one, so a gated magnitude is at most the input's, which already fits i16 (|sample_min| = 32768 computed in i64). No real sample rate,
+//! a plain fraction. Nothing on the audio path can overflow -- the ratio is at least one, so a gated magnitude is at most the input's, which already fits i16 (|sample_min| = 32768 computed in i64). No real sample rate,
 //! no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_gate.rye selftest
@@ -41,15 +41,15 @@ const gate = @import("gate.rye");
 
 pub const stereo_gate_version = "20260815.061957";
 
-/// Stereo gate's faults are exactly ALES51's own `GateError` — `BadThreshold` (a threshold outside [1, sample_max]), `BadRatio` (a ratio below one or with a zero denominator), `BadRange` (a span past the samples) —
+/// Stereo gate's faults are exactly ALES51's own `GateError` -- `BadThreshold` (a threshold outside [1, sample_max]), `BadRatio` (a ratio below one or with a zero denominator), `BadRange` (a span past the samples) --
 /// reused by name, since the linked lift adds no new fault: it validates one shared threshold, one shared ratio, and one span, then decides per sample-pair from both channels together.
 pub const StereoGateError = gate.GateError;
 
 /// Gate `count` sample-pairs starting at `start` in the stereo master `sc`, below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least one), with ONE LINKED DETECTOR across the two channels. For each
-/// index the detector key is `max(|left|, |right|)`: at or above the threshold the gate is OPEN and both samples pass byte for byte (the quiet channel included — the image held whole); below it the gate is CLOSED and
-/// each channel divides its OWN magnitude by the ratio, `sign(x)·(m·ratio_den/ratio_num)`, exactly as ALES51's mono gate would to each. After the call every written magnitude is at most its input's (attenuation, never
-/// boost) and no sign is changed. Unit ratio is the identity everywhere. Validates threshold, ratio, and span ONCE against the shared length before any write — a refusal leaves both channels untouched and balanced.
-/// Values only — never the length.
+/// index the detector key is `max(|left|, |right|)`: at or above the threshold the gate is OPEN and both samples pass byte for byte (the quiet channel included -- the image held whole); below it the gate is CLOSED and
+/// each channel divides its OWN magnitude by the ratio, `sign(x)-(m-ratio_den/ratio_num)`, exactly as ALES51's mono gate would to each. After the call every written magnitude is at most its input's (attenuation, never
+/// boost) and no sign is changed. Unit ratio is the identity everywhere. Validates threshold, ratio, and span ONCE against the shared length before any write -- a refusal leaves both channels untouched and balanced.
+/// Values only -- never the length.
 pub fn stereo_gate(
     sc: *pan.StereoClip,
     start: u32,
@@ -58,16 +58,16 @@ pub fn stereo_gate(
     ratio_num: u32,
     ratio_den: u32,
 ) StereoGateError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the linked gate preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the linked gate preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Refused before any write, mirroring ALES51 exactly so the closed path below is pre-validated.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Refused before any write, mirroring ALES51 exactly so the closed path below is pre-validated.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) with a nonzero denominator — a ratio below one would BOOST the quiet (a different tool), a zero denominator would divide by zero. A gate only ever reduces.
+    // invariant: the ratio is at least one (num >= den) with a nonzero denominator -- a ratio below one would BOOST the quiet (a different tool), a zero denominator would divide by zero. A gate only ever reduces.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never gates one channel and leaves the other torn.
+    // invariant: the span lies wholly within the SHARED length -- checked once, without underflow, so it holds identically for both channels and a refusal never gates one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
@@ -84,7 +84,7 @@ pub fn stereo_gate(
         // The LINKED detector: the louder of the two channels decides for the pair. Both below the threshold means the pair is genuinely quiet on both sides; either at or above means the pair plays, so it passes whole.
         const key: i64 = if (ml >= mr) ml else mr;
         if (key < thr) {
-            // The gate is CLOSED — and since key is the MAX, both |left| and |right| are below the threshold too, so gating each is exactly what ALES51 would do to each in isolation (the below-both law). Each channel
+            // The gate is CLOSED -- and since key is the MAX, both |left| and |right| are below the threshold too, so gating each is exactly what ALES51 would do to each in isolation (the below-both law). Each channel
             // divides its own magnitude by the ratio: divTrunc of positives is floor, the ratio >= 1 makes the quotient <= m, and a large enough ratio drives it to 0 (silence).
             const nl: i64 = @divTrunc(ml * den, num);
             const nr: i64 = @divTrunc(mr * den, num);
@@ -98,17 +98,17 @@ pub fn stereo_gate(
             assert((xl >= 0 and yl >= 0) or (xl <= 0 and yl <= 0));
             assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
         }
-        // key >= threshold: the gate is OPEN — both samples are left exactly as they were, the quiet channel included. The linked detector never quiets one channel while its partner plays.
+        // key >= threshold: the gate is OPEN -- both samples are left exactly as they were, the quiet channel included. The linked detector never quiets one channel while its partner plays.
     }
 
-    // invariant: a gate changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    // invariant: a gate changes sample values only -- each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE LINKED-DETECTOR LAW — a pair loud on one channel and quiet on the other leaves BOTH untouched where mono gate run twice would quiet the soft one; THE BELOW-BOTH LAW — a pair below on both equals
-//     ALES51's mono gate on each byte for byte; THE IMAGE / SIGN LAW — no magnitude expands, no sign flips, an out-of-phase quiet pair returns still out of phase; THE KNOB LAWS — above the threshold the identity on
-//     both, unit ratio the identity everywhere, a higher ratio gates at least as hard, a ratio far past the magnitude silences a closed pair; THE BALANCE / ATOMICITY / DEGENERATE LAW — length held, each refusal
+// --- selftest: THE LINKED-DETECTOR LAW -- a pair loud on one channel and quiet on the other leaves BOTH untouched where mono gate run twice would quiet the soft one; THE BELOW-BOTH LAW -- a pair below on both equals
+//     ALES51's mono gate on each byte for byte; THE IMAGE / SIGN LAW -- no magnitude expands, no sign flips, an out-of-phase quiet pair returns still out of phase; THE KNOB LAWS -- above the threshold the identity on
+//     both, unit ratio the identity everywhere, a higher ratio gates at least as hard, a ratio far past the magnitude silences a closed pair; THE BALANCE / ATOMICITY / DEGENERATE LAW -- length held, each refusal
 //     leaving both channels untouched and balanced, count = 0 the identity on both -----------------------------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -128,7 +128,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE LINKED-DETECTOR LAW — the stereo crux. A pair loud on the left (2000) and quiet on the right (100) at threshold 1000: the linked key is 2000 >= 1000, so the gate is OPEN and BOTH pass — the quiet right
+    // 1. THE LINKED-DETECTOR LAW -- the stereo crux. A pair loud on the left (2000) and quiet on the right (100) at threshold 1000: the linked key is 2000 >= 1000, so the gate is OPEN and BOTH pass -- the quiet right
     //    UNTOUCHED. Mono gate run twice on the right would have gated its 100 down to 25 (4:1), tearing the image. Prove stereo_gate holds both, and prove the independent lift really would have differed.
     {
         var sc = pan.StereoClip{};
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &[_]i16{ 2000, -2000, 1800 })) return error.LinkedLeftTouched; // loud left passes
         if (!eq(sc.right.samples(), &[_]i16{ 100, -80, 120 })) return error.LinkedRightTorn; // quiet right held whole by the link
 
-        // the independent lift (mono gate on the right alone) WOULD have gated it — proving the two laws genuinely differ.
+        // the independent lift (mono gate on the right alone) WOULD have gated it -- proving the two laws genuinely differ.
         var mr = timeline.Clip{};
         try timeline.splice(&mr, 0, &[_]i16{ 100, -80, 120 });
         try gate.gate(&mr, 0, 3, 1000, 4, 1);
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
         if (!eq(mr.samples(), &[_]i16{ 25, -20, 30 })) return error.IndependentGateWrong; // 4:1 floor: 100/4=25, 80/4=20, 120/4=30
     }
 
-    // 2. THE BELOW-BOTH LAW — where the whole pair sits below the threshold, each channel equals ALES51's mono gate over the same span byte for byte. Both channels quiet (max under 1000 at every index), so the linked
+    // 2. THE BELOW-BOTH LAW -- where the whole pair sits below the threshold, each channel equals ALES51's mono gate over the same span byte for byte. Both channels quiet (max under 1000 at every index), so the linked
     //    gate closes on every pair and reduces to the mono gate on each. Proven against the mono tool directly.
     {
         const ql = [_]i16{ 800, -600, 200, -900 };
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -100, 75, -175, 125 })) return error.BelowBothRightHand;
     }
 
-    // 3. THE IMAGE / SIGN LAW — an even, sign-preserving attenuation. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = −left, both below threshold)
+    // 3. THE IMAGE / SIGN LAW -- an even, sign-preserving attenuation. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = −left, both below threshold)
     //    comes back STILL out of phase, each channel divided by the same ratio.
     {
         const il = [_]i16{ 900, -700, 5000, -300, 600 }; // index 2 is loud (5000) — that pair passes on both
@@ -184,10 +184,10 @@ fn run_selftest() !u8 {
             if ((il[i] > 0 and l[i] < 0) or (il[i] < 0 and l[i] > 0)) return error.LeftSignFlipped;
             if ((ir[i] > 0 and r[i] < 0) or (ir[i] < 0 and r[i] > 0)) return error.RightSignFlipped;
         }
-        // the loud pair (index 2) passed byte for byte on both channels — the link opened for it.
+        // the loud pair (index 2) passed byte for byte on both channels -- the link opened for it.
         if (l[2] != 5000 or r[2] != -4000) return error.LoudPairNotIdentity;
 
-        // out-of-phase quiet pair: right = −left, every |sample| below 1000 → the gate closes on all, each divided by 4, antisymmetry kept.
+        // out-of-phase quiet pair: right = −left, every |sample| below 1000 -> the gate closes on all, each divided by 4, antisymmetry kept.
         var op = pan.StereoClip{};
         try load_stereo(&op, &[_]i16{ 800, -600, 400, -200 }, &[_]i16{ -800, 600, -400, 200 });
         try stereo_gate(&op, 0, 4, 1000, 4, 1);
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         if (!eq(ol, &[_]i16{ 200, -150, 100, -50 })) return error.OutOfPhaseMagnitudeWrong; // 4:1 floor of the left
     }
 
-    // 4a. ABOVE THE THRESHOLD IS THE IDENTITY on both — a master whose every pair reaches the threshold on at least one channel passes byte for byte.
+    // 4a. ABOVE THE THRESHOLD IS THE IDENTITY on both -- a master whose every pair reaches the threshold on at least one channel passes byte for byte.
     {
         const ll = [_]i16{ 5000, -9000, 1000, -1000 };
         const rr = [_]i16{ 3000, -80, 40, -1000 }; // even where the right is quiet (index 1,2) the left is loud, so the link opens
@@ -210,7 +210,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.AboveNotIdentity;
     }
 
-    // 4b. UNIT RATIO IS THE IDENTITY EVERYWHERE on both — num == den writes m·1 = |x| byte for byte even for pairs below the threshold, guaranteed by construction (a 1:1 gate passes the whole master).
+    // 4b. UNIT RATIO IS THE IDENTITY EVERYWHERE on both -- num == den writes m-1 = |x| byte for byte even for pairs below the threshold, guaranteed by construction (a 1:1 gate passes the whole master).
     {
         const ql = [_]i16{ 300, -300, 20, -400 };
         const qr = [_]i16{ -50, 60, -700, 80 };
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
     }
 
     // 5. A HIGHER RATIO GATES AT LEAST AS HARD (monotone) and a ratio far past the magnitude silences a CLOSED pair. One quiet pair (both below 1000): 8:1 yields magnitudes no greater than 2:1, and a huge ratio drives
-    //    both to exactly zero — the hard gate reached on both channels together.
+    //    both to exactly zero -- the hard gate reached on both channels together.
     {
         const one_l = [_]i16{600};
         const one_r = [_]i16{-450};
@@ -239,7 +239,7 @@ fn run_selftest() !u8 {
         if (shut.left.samples()[0] != 0 or shut.right.samples()[0] != 0) return error.HighRatioNotSilent;
     }
 
-    // 6a. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a gate writes values only.
+    // 6a. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a gate writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 800, -600, 200, -900, 100 }, &[_]i16{ -400, 300, -700, 500, -50 });
@@ -248,7 +248,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 6b. THE ATOMICITY LAW — a bad threshold, a sub-unity ratio, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 6b. THE ATOMICITY LAW -- a bad threshold, a sub-unity ratio, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -274,7 +274,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 6c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to gate.
+    // 6c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to gate.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 700, -700, 1400 }, &[_]i16{ -50, 60, -70 });

@@ -1,4 +1,4 @@
-//! caravan/subscribe_poll_service.rye — production scheduling: supervise poll wire work.
+//! caravan/subscribe_poll_service.rye -- production scheduling: supervise poll wire work.
 //!
 //! Ring C supervises Mantra's subscribe-poll delivery with the exit-code convention
 //! from `supervisor_exit.rye`: **cycle_ok** (0) spawns again; **stop_requested** (8)
@@ -11,12 +11,12 @@
 //!   caravan/bin/subscribe-poll-service <delivery-binary> <stop-sentinel-path> [witness-stop-after-N] [interval-ns]
 //!
 //! Set `CARAVAN_WITNESS_MIRROR=1` (with `CARAVAN_WITNESS_MODE=1`) to supervise host mirror
-//! delivery — `source-loop-mirror` + `fetcher-poll-mirror` over two named peer/bolt pairs.
+//! delivery -- `source-loop-mirror` + `fetcher-poll-mirror` over two named peer/bolt pairs.
 //!
 //! The third argument is test-only: set `CARAVAN_WITNESS_MODE=1` from a witness runner.
 //! Counsel: [`counsel/20260707-004712`](../counsel/date/20260707/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md)
-//! · [`counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md)
-//! · [`counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md)
+//! - [`counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md)
+//! - [`counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

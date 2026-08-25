@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_digest_witness.rye — proves Glow digest port over elder log.
+//! linengrow/glow_seva_b0_digest_witness.rye -- proves Glow digest port over elder log.
 //!
 //! Builds the three-event demo log via elder append (same stamps/memos as fold),
 //! digests through glow_seva_b0_digest, pins HAWM1 hex. Append/sign ports held.

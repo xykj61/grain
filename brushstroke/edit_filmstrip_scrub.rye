@@ -1,18 +1,18 @@
-//! brushstroke/edit_filmstrip_scrub.rye — HUNK56: drag the filmstrip, the cursor scrubs the history band by band under the finger.
+//! brushstroke/edit_filmstrip_scrub.rye -- HUNK56: drag the filmstrip, the cursor scrubs the history band by band under the finger.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK56.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK56.
 //! Design read: active-designing/date/20260813/20260813-213001_hunk-filmstrip-scrub-exploration.md
-//! Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses
+//! Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) -- a keeper presses
 //! the edit-history strip and drags, and the picture scrubs continuously through every step under the finger (concept
 //! only, siloed).
 //!
 //! HUNK55 turned a tap on the filmstrip into a jump: touch thumbnail k, land on step k, the marker on the tapped band.
-//! Yet a tap fires once, where the finger lifts. The canonical Photos gesture over a history strip is a DRAG — press and
+//! Yet a tap fires once, where the finger lifts. The canonical Photos gesture over a history strip is a DRAG -- press and
 //! sweep, and the picture scrubs continuously through every step the finger passes over. This rung is that drag.
 //! FilmstripScrub owns one FilmstripJump (its cursor, its geometry, its paint) and adds only the drag arming (HUNK50's
 //! down/move/up law) and a nearest-band clamp: where a tap classified to a band OR NONE, a scrub classifies to the
 //! NEAREST valid band, so it follows the finger and pins at the ends (past the right edge rests on the live edge; off
-//! the left rests on the original). The cursor move is HUNK16's `seek` — a jump that forgets nothing — so a scrub is a
+//! the left rests on the original). The cursor move is HUNK16's `seek` -- a jump that forgets nothing -- so a scrub is a
 //! walk, never a push. A pure composition: no new cursor move, no new render primitive, no new failure mode. No network,
 //! no key, no funds.
 //!
@@ -33,12 +33,12 @@ pub const edit_filmstrip_scrub_version = "20260813.213001";
 
 pub const FilmstripScrubError = edit_filmstrip_jump.FilmstripJumpError;
 
-/// A drag-to-scrub surface over the edit-history filmstrip: it owns one `FilmstripJump` (HUNK55) — the cursor a keeper
-/// builds and navigates, and the thumbnail geometry the strip tiles with — and adds only the drag arming and the
+/// A drag-to-scrub surface over the edit-history filmstrip: it owns one `FilmstripJump` (HUNK55) -- the cursor a keeper
+/// builds and navigates, and the thumbnail geometry the strip tiles with -- and adds only the drag arming and the
 /// nearest-band clamp. It invents no cursor move (HUNK16's `seek`), no pixels (HUNK55's `paint`), and no arithmetic
 /// beyond HUNK55's `x / band_px`, here clamped to `[0, steps)` rather than returning null. The governing law: while a
 /// finger is down, the cursor tracks the band under it at every reported point, so the marked band equals the band the
-/// finger stands over — HUNK55's no-drift discipline made continuous.
+/// finger stands over -- HUNK55's no-drift discipline made continuous.
 pub const FilmstripScrub = struct {
     jump: edit_filmstrip_jump.FilmstripJump,
     scrubbing: bool = false,
@@ -66,21 +66,21 @@ pub const FilmstripScrub = struct {
         assert(self.jump.cursor.position == self.jump.cursor.list.count);
     }
 
-    /// How many steps the filmstrip paints — the untouched source plus one thumbnail per recorded edit. Always at least
+    /// How many steps the filmstrip paints -- the untouched source plus one thumbnail per recorded edit. Always at least
     /// one (the source), so a band always exists to clamp to.
     pub fn steps(self: *const FilmstripScrub) u32 {
         return self.jump.steps();
     }
 
-    /// The pixel width of one thumbnail band — the divisor a scrub is classified against, positive by construction.
+    /// The pixel width of one thumbnail band -- the divisor a scrub is classified against, positive by construction.
     pub fn band_px(self: *const FilmstripScrub) u32 {
         return self.jump.band_px();
     }
 
-    /// Classify a pixel `x` to the NEAREST valid band — the scrub's clamp, where the tap (HUNK55) returned null off the
-    /// strip. A negative `x` clamps to band 0 (off the left edge → the original); `band = x / band_px`; a band past the
-    /// last step clamps to `steps - 1` (off the right edge → the live edge). Always a real band, since `steps >= 1`
-    /// always — a scrub always lands. Pure: it reads the geometry and moves nothing.
+    /// Classify a pixel `x` to the NEAREST valid band -- the scrub's clamp, where the tap (HUNK55) returned null off the
+    /// strip. A negative `x` clamps to band 0 (off the left edge -> the original); `band = x / band_px`; a band past the
+    /// last step clamps to `steps - 1` (off the right edge -> the live edge). Always a real band, since `steps >= 1`
+    /// always -- a scrub always lands. Pure: it reads the geometry and moves nothing.
     pub fn scrub_band(self: *const FilmstripScrub, x: i32) u32 {
         // invariant: at least the source step exists, so a last band is defined.
         assert(self.steps() >= 1);
@@ -106,7 +106,7 @@ pub const FilmstripScrub = struct {
         return band;
     }
 
-    /// The finger sweeps to pixel `x`: while armed, seek the cursor to the nearest band and return it — the continuous
+    /// The finger sweeps to pixel `x`: while armed, seek the cursor to the nearest band and return it -- the continuous
     /// heart of the gesture, tracking the finger band by band. A move with no press before it (not armed) fires nothing
     /// and returns null, moving no cursor (HUNK50's arming law).
     pub fn finger_move(self: *FilmstripScrub, x: i32) ?u32 {
@@ -120,7 +120,7 @@ pub const FilmstripScrub = struct {
         return band;
     }
 
-    /// The finger lifts at pixel `x`: seek the cursor to the nearest band, disarm, and return the band — the lift settles
+    /// The finger lifts at pixel `x`: seek the cursor to the nearest band, disarm, and return the band -- the lift settles
     /// the picture where the finger left it. A lift only follows a press.
     pub fn finger_up(self: *FilmstripScrub, x: i32) u32 {
         // invariant: a lift only follows a landed finger.
@@ -134,9 +134,9 @@ pub const FilmstripScrub = struct {
         return band;
     }
 
-    /// Paint the whole edit history as a filmstrip with the marker on the step the cursor stands on — HUNK55's `paint`
+    /// Paint the whole edit history as a filmstrip with the marker on the step the cursor stands on -- HUNK55's `paint`
     /// unchanged. Because a scrub seeks the cursor and the marker paints at `cursor.position`, the band under the finger
-    /// is the band the marker shows. Pure — the history is read, the source never mutated.
+    /// is the band the marker shows. Pure -- the history is read, the source never mutated.
     pub fn paint(self: *const FilmstripScrub, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
         // invariant: the cursor stands within its history before the replay.
         assert(self.jump.cursor.position <= self.jump.cursor.list.count);
@@ -144,7 +144,7 @@ pub const FilmstripScrub = struct {
     }
 };
 
-// --- selftest: an 8x8 two-tone source, a scrub surface holding three edits — a drag tracks the finger band by band
+// --- selftest: an 8x8 two-tone source, a scrub surface holding three edits -- a drag tracks the finger band by band
 //     (down 0, move 1, 2, up 3), a slow sweep back tracks in reverse, a scrub pins at both edges (unlike a tap), a
 //     scrub forgets nothing, a move with no press fires nothing, the scrubbed strip rasterizes lit, a bad thumb refuses
 //     ---------------------------------------------------------------------------------------------------------------
@@ -168,14 +168,14 @@ fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The x-pixel at the center of band `k` — a real touch a device would report, landing squarely inside the band's span
-/// `[k·band_px, (k+1)·band_px)`.
+/// The x-pixel at the center of band `k` -- a real touch a device would report, landing squarely inside the band's span
+/// `[k-band_px, (k+1)-band_px)`.
 fn band_center_x(surface: *const FilmstripScrub, k: u32) i32 {
     const bpx = surface.band_px();
     return @intCast(k * bpx + bpx / 2);
 }
 
-/// Assert the filmstrip's marker block sits on band `k` and nowhere else — the band under the finger equals the marked
+/// Assert the filmstrip's marker block sits on band `k` and nowhere else -- the band under the finger equals the marked
 /// band (HUNK55's helper, carried to the scrub proof).
 fn marker_on_band(film: *const skate.Grid, tcols: u32, k: u32) void {
     const bands = film.cols / tcols;
@@ -238,7 +238,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A slow sweep back tracks in reverse: press 3, sweep through 2, 1, lift on 0 — the cursor visits each in turn.
+    // A slow sweep back tracks in reverse: press 3, sweep through 2, 1, lift on 0 -- the cursor visits each in turn.
     {
         _ = surface.finger_down(band_center_x(&surface, 3));
         assert(surface.jump.cursor.position == 3);
@@ -251,7 +251,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(surface.jump.cursor.position == 0);
     }
 
-    // A scrub pins at the right edge: a sweep past the last band lands on the last band (the live edge) — where a TAP
+    // A scrub pins at the right edge: a sweep past the last band lands on the last band (the live edge) -- where a TAP
     // (HUNK55) would have fired nothing. This is the behavior that separates a scrub from a tap.
     {
         _ = surface.finger_down(band_center_x(&surface, 0));
@@ -271,7 +271,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(surface.jump.cursor.position == 0);
     }
 
-    // A scrub forgets nothing: from the live edge, scrub back to step 1, then forward to step 3 — the full picture
+    // A scrub forgets nothing: from the live edge, scrub back to step 1, then forward to step 3 -- the full picture
     // returns byte-for-byte, every edit stayed redoable (a scrub is a walk, never a push that discards the tail).
     {
         _ = surface.finger_down(band_center_x(&surface, 3)); // stand at the live edge
@@ -288,7 +288,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(back.same_bytes(&full)); // the whole history rolled forward, unchanged
     }
 
-    // A move with no press before it fires nothing — the arming law (HUNK50): a fresh surface, a move without a down,
+    // A move with no press before it fires nothing -- the arming law (HUNK50): a fresh surface, a move without a down,
     // the cursor unmoved.
     {
         var fresh = try FilmstripScrub.open(tcols, trows);
@@ -300,7 +300,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(fresh.jump.cursor.position == 2); // no press, no scrub
     }
 
-    // Genuinely seen: after a scrub the filmstrip rasterizes to a lit canvas — the whole road reaches the glass with the
+    // Genuinely seen: after a scrub the filmstrip rasterizes to a lit canvas -- the whole road reaches the glass with the
     // marker on the scrubbed step.
     {
         _ = surface.finger_down(band_center_x(&surface, 1));
@@ -318,7 +318,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(lit > 0);
     }
 
-    // A bad thumbnail refuses at open by name — delegated from FilmstripJump.open; a zero-dimension thumbnail would
+    // A bad thumbnail refuses at open by name -- delegated from FilmstripJump.open; a zero-dimension thumbnail would
     // divide a scrub by a zero band.
     if (FilmstripScrub.open(0, trows)) |_| return error.ThumbSlipped else |e| {
         if (e != error.BadThumb) return error.WrongThumb;

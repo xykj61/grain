@@ -1,4 +1,4 @@
-//! Rye test: std.mem.bytesAsSlice — pass 9924.
+//! Rye test: std.mem.bytesAsSlice -- pass 9924.
 //!
 //! Byte slice to typed view; inverse of sliceAsBytes (9926).
 

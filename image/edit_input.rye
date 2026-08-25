@@ -1,16 +1,16 @@
-//! image/edit_input.rye — HUNK48: the edit input seam — a keeper's raw gesture becomes exactly one history move.
+//! image/edit_input.rye -- HUNK48: the edit input seam -- a keeper's raw gesture becomes exactly one history move.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK48.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK48.
 //! Design read: active-designing/date/20260813/20260813-202710_hunk-edit-input-seam-exploration.md
-//! Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) — a tap commits a
-//! gesture, a swipe walks the undo/redo history — reduced to one move over a recorded edit-list (concept only, siloed).
+//! Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) -- a tap commits a
+//! gesture, a swipe walks the undo/redo history -- reduced to one move over a recorded edit-list (concept only, siloed).
 //!
 //! HUNK16 gave a pure `EditCursor` whose undo and redo each clamp at both ends and whose fresh push forgets the redo
 //! tail; HUNK43 gave the scroll arc its own input seam, one raw event to one cursor move. What was missing above the
-//! EditCursor is the same boundary: the translation from a raw editing gesture — commit this verb, undo, redo — into
+//! EditCursor is the same boundary: the translation from a raw editing gesture -- commit this verb, undo, redo -- into
 //! exactly one history move. This rung is that seam: `apply(cursor, gesture)` maps one gesture to one cursor call,
 //! preserving every clamp the cursor already holds, so an undo at the original moves nothing, a redo at the live edge
-//! moves nothing, and a committed verb forgets the road not taken. A pure composition over HUNK16 — no storage, no
+//! moves nothing, and a committed verb forgets the road not taken. A pure composition over HUNK16 -- no storage, no
 //! pixels, no new refusal beyond the list's own `TooManyEdits` ceiling. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/edit_input.rye selftest
@@ -33,20 +33,20 @@ pub const GestureKind = enum {
     redo,
 };
 
-/// One raw editing gesture. `edit` is read only for `commit` — the verb a keeper committed; the walk gestures ignore
+/// One raw editing gesture. `edit` is read only for `commit` -- the verb a keeper committed; the walk gestures ignore
 /// it. A plain record over one value model: an enum tag beside the HUNK11 `Edit` payload.
 pub const Gesture = struct {
     kind: GestureKind,
     edit: edits.Edit = .flip_h,
 
-    /// A gesture that commits one verb at the live position — the constructor mirroring HUNK43's `scroll_by`.
+    /// A gesture that commits one verb at the live position -- the constructor mirroring HUNK43's `scroll_by`.
     pub fn commit(e: edits.Edit) Gesture {
         return .{ .kind = .commit, .edit = e };
     }
 };
 
 /// Apply one raw editing gesture to a cursor, routing it to exactly one HUNK16 move. `commit` pushes the carried verb
-/// (forgetting any redo tail, refusing `TooManyEdits` at the list's own ceiling — the only refusal the seam can
+/// (forgetting any redo tail, refusing `TooManyEdits` at the list's own ceiling -- the only refusal the seam can
 /// surface); `undo` and `redo` step the position, each clamped by the cursor without under/overflow. Pure over the
 /// cursor beyond the single move it performs.
 pub fn apply(cursor: *edit_cursor.EditCursor, gesture: Gesture) edits.EditsError!void {
@@ -125,7 +125,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_image(&seen, &want));
     }
 
-    // Undo walks the depth back; redo walks it forward — the image recovered byte-for-byte both ways, a walk destroys
+    // Undo walks the depth back; redo walks it forward -- the image recovered byte-for-byte both ways, a walk destroys
     // nothing.
     const at_two = try edit_cursor.view(garden, &source, &cur);
     try apply(&cur, .{ .kind = .undo });
@@ -162,7 +162,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(cur.depth() == 2);
     assert(!cur.can_redo()); // the redo tail was forgotten the moment a different road was taken
 
-    // The list's own ceiling still refuses `TooManyEdits` through the seam — the seam invents no new error. Fill a
+    // The list's own ceiling still refuses `TooManyEdits` through the seam -- the seam invents no new error. Fill a
     // fresh cursor to the ceiling by committing, then the next commit refuses.
     {
         var full = edit_cursor.EditCursor.init();

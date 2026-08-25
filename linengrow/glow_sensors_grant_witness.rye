@@ -1,4 +1,4 @@
-//! linengrow/glow_sensors_grant_witness.rye — proves Glow Sensors Grant.
+//! linengrow/glow_sensors_grant_witness.rye -- proves Glow Sensors Grant.
 //!
 //!   rye build linengrow/glow_sensors_grant_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_sensors_grant_witness

@@ -1,31 +1,31 @@
-//! lotus/taps.rye — ALES68: the multi-tap delay — several fixed taps of the DRY signal. ALES66 opened the time-based wing with the
-//! FEEDBACK delay, where each echo feeds the next and the delay line IS the clip buffer itself. Its comment names the road above it —
-//! "the chorus, the flanger, and the reverb — each one a delay line read a different way." The next, most tractable way to read a delay
+//! lotus/taps.rye -- ALES68: the multi-tap delay -- several fixed taps of the DRY signal. ALES66 opened the time-based wing with the
+//! FEEDBACK delay, where each echo feeds the next and the delay line IS the clip buffer itself. Its comment names the road above it --
+//! "the chorus, the flanger, and the reverb -- each one a delay line read a different way." The next, most tractable way to read a delay
 //! line is the one a feedback loop cannot give: several FIXED taps of the DRY signal, each at its own delay and level, summed with the
-//! dry — the discrete early-reflection pattern (a snare hitting three walls at three distances) a single feeding echo cannot voice,
+//! dry -- the discrete early-reflection pattern (a snare hitting three walls at three distances) a single feeding echo cannot voice,
 //! because a feedback tap decays geometrically while independent taps stand at their own chosen levels.
 //!
 //! The crux is the contrast with ALES66: THE TAPS READ THE DRY SNAPSHOT, SO THEY NEVER FEED EACH OTHER. The echo reads buf[i-delay]
-//! AFTER writing left to right, so a tap reads the OUTPUT — true feedback. A multi-tap owes the opposite: every tap reads the ORIGINAL
+//! AFTER writing left to right, so a tap reads the OUTPUT -- true feedback. A multi-tap owes the opposite: every tap reads the ORIGINAL
 //! dry sample, never a written one. The exact idiom the tree proves is the graft/clipboard SNAPSHOT-BEFORE-WRITE (ALES24/25): copy the
-//! dry prefix [0, end) into a bounded scratch first, then for each i in the span write y[i] = saturate(dry[i] + Σ_k g_k·dry[i-d_k]),
-//! dry[j] = 0 for j < 0 (silence before the clip). Because every read is from the frozen dry, the taps are independent — a two-tap delay
+//! dry prefix [0, end) into a bounded scratch first, then for each i in the span write y[i] = saturate(dry[i] + Σ_k g_k-dry[i-d_k]),
+//! dry[j] = 0 for j < 0 (silence before the clip). Because every read is from the frozen dry, the taps are independent -- a two-tap delay
 //! lands two distinct copies of the impulse at their two delays, NEITHER attenuating the other, the sharp contrast with the feedback
 //! train. The sum accumulates in i64 and clamps ONCE through timeline.saturate (ALES3's one true saturation, reused), so a constructive
-//! pile-up pins to the i16 rail rather than wrapping. Unlike the feedback echo — where unity is a runaway refused BadFeedback — a
+//! pile-up pins to the i16 rail rather than wrapping. Unlike the feedback echo -- where unity is a runaway refused BadFeedback -- a
 //! multi-tap has no loop, so a tap AT UNITY is legal (a full-level discrete echo); only num > den (a tap louder than the dry, which a
 //! reflection is not) and den == 0 refuse.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES68.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES68.
 //! Design read: active-designing/date/20260814/20260814-192743_fill-ales68-lotus-multi-tap-delay.md
-//! Stands on: lotus/echo.rye (ALES66) — the feedback delay this contrasts; lotus/graft.rye (ALES24) — the dry-span snapshot-before-write
-//! idiom this reuses; lotus/timeline.rye (ALES2) — the Clip, sample_max, max_clip, and the one true saturate reused for the summed taps.
+//! Stands on: lotus/echo.rye (ALES66) -- the feedback delay this contrasts; lotus/graft.rye (ALES24) -- the dry-span snapshot-before-write
+//! idiom this reuses; lotus/timeline.rye (ALES2) -- the Clip, sample_max, max_clip, and the one true saturate reused for the summed taps.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip and a bounded tap slice, siloed to lotus/. No
-//! socket, no network, no keys, no funds, no real device, no real sample rate — the delay is a count of sample INDICES, not milliseconds
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip and a bounded tap slice, siloed to lotus/. No
+//! socket, no network, no keys, no funds, no real device, no real sample rate -- the delay is a count of sample INDICES, not milliseconds
 //! against a clock (a real-time twin `multitap_ms` through the ALES5 clock is a later rung, exactly as echo_ms followed the index-named
 //! echo); each tap gain is a plain fraction. No lookahead beyond the snapshot read. The dry prefix is snapshotted into one bounded
-//! [max_clip]i16 scratch — the same width and stack cost graft already carries; the sum runs in i64 and saturates once, so nothing on the
+//! [max_clip]i16 scratch -- the same width and stack cost graft already carries; the sum runs in i64 and saturates once, so nothing on the
 //! path can overflow.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/taps.rye selftest
@@ -54,25 +54,25 @@ pub const Tap = struct {
 /// clip, a tap level above unity (a reflection is never louder than the dry) or with a zero denominator, and a span outside the samples.
 /// Each refused before any write.
 pub const TapError = error{
-    /// Zero taps (nothing to sum) or more than max_taps — refused, no write.
+    /// Zero taps (nothing to sum) or more than max_taps -- refused, no write.
     BadTapCount,
-    /// A tap delay of zero (a sample cannot tap itself) or longer than max_clip samples — refused, no write.
+    /// A tap delay of zero (a sample cannot tap itself) or longer than max_clip samples -- refused, no write.
     BadDelay,
-    /// A tap numerator above the denominator (a tap louder than the dry) or a zero denominator — refused, no write.
+    /// A tap numerator above the denominator (a tap louder than the dry) or a zero denominator -- refused, no write.
     BadLevel,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
-/// Validate a whole multi-tap request — the tap slice AND the span — against a clip length WITHOUT touching a sample. The same edges
+/// Validate a whole multi-tap request -- the tap slice AND the span -- against a clip length WITHOUT touching a sample. The same edges
 /// `multitap` enforced inline, factored out so a stereo carry can validate one shared tap set and span against both channels' shared
 /// length before either channel is snapshotted (mirroring ALES66/71/72/73's own precheck refactors). Refuses BadTapCount, BadDelay,
 /// BadLevel (through `check_taps`), and BadRange (a span past the length), each before any write. Takes a plain length rather than a clip,
 /// so it reads no buffer.
 pub fn precheck(clip_len: u32, start: u32, count: u32, taps: []const Tap) TapError!void {
-    // invariant: every tap is legal — count, each delay, each level — before any read.
+    // invariant: every tap is legal -- count, each delay, each level -- before any read.
     try check_taps(taps);
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
@@ -80,7 +80,7 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, taps: []const Tap) TapErr
 /// Validate the tap slice against every edge before a sample is touched: the count, each delay, and each level. Split out so
 /// `multitap` refuses wholly before its snapshot, leaving the clip untouched on any bad tap.
 fn check_taps(taps: []const Tap) TapError!void {
-    // invariant: at least one tap and no more than the bound — the summed reads stay bounded.
+    // invariant: at least one tap and no more than the bound -- the summed reads stay bounded.
     if (taps.len == 0) return error.BadTapCount;
     if (taps.len > max_taps) return error.BadTapCount;
     var k: u32 = 0;
@@ -89,30 +89,30 @@ fn check_taps(taps: []const Tap) TapError!void {
         // invariant: a tap delays by at least one sample and no wider than the widest clip.
         if (t.delay == 0) return error.BadDelay;
         if (t.delay > timeline.max_clip) return error.BadDelay;
-        // invariant: a tap is an attenuated (or unity) copy of the dry — num <= den, a nonzero denominator. No loop, so unity is legal.
+        // invariant: a tap is an attenuated (or unity) copy of the dry -- num <= den, a nonzero denominator. No loop, so unity is legal.
         if (t.den == 0) return error.BadLevel;
         if (t.num > t.den) return error.BadLevel;
     }
 }
 
 /// Multi-tap `count` samples starting at `start` in place in `clip`: each sample becomes the dry input plus the sum of every tap's
-/// attenuated copy of the DRY sample its delay earlier — y[i] = saturate(x[i] + Σ_k (num_k/den_k)·x[i-d_k]). Every tap reads a FROZEN
-/// snapshot of the dry prefix, never a written output, so the taps are independent (neither feeds the other) — the contrast with ALES66's
+/// attenuated copy of the DRY sample its delay earlier -- y[i] = saturate(x[i] + Σ_k (num_k/den_k)-x[i-d_k]). Every tap reads a FROZEN
+/// snapshot of the dry prefix, never a written output, so the taps are independent (neither feeds the other) -- the contrast with ALES66's
 /// feedback echo. `dry[j]` for j-d_k before the clip is silence (0). The summed taps accumulate in i64 and saturate once (ALES3's one
 /// true saturation, reused) rather than wrapping. Refuses BadTapCount, BadDelay, BadLevel, and BadRange before any write; on refusal the
-/// clip is untouched. Values only — never a length.
+/// clip is untouched. Values only -- never a length.
 pub fn multitap(
     clip: *timeline.Clip,
     start: u32,
     count: u32,
     taps: []const Tap,
 ) TapError!void {
-    // invariant: every tap and the span are legal before any read — the whole request validated at the edge (now shared with the stereo
+    // invariant: every tap and the span are legal before any read -- the whole request validated at the edge (now shared with the stereo
     // carry through `precheck`), the clip untouched on refusal.
     try precheck(clip.len, start, count, taps);
 
     const end: u32 = start + count;
-    // Snapshot the dry prefix [0, end) BEFORE any write, so every tap reads the ORIGINAL audio and never a sample this pass just wrote —
+    // Snapshot the dry prefix [0, end) BEFORE any write, so every tap reads the ORIGINAL audio and never a sample this pass just wrote --
     // the graft/clipboard snapshot-before-write idiom (ALES24/25), reused. One bounded scratch, the width graft already carries.
     var dry: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
     {
@@ -124,7 +124,7 @@ pub fn multitap(
 
     var i: u32 = start;
     while (i < end) : (i += 1) {
-        // The sum begins at the dry input (from the frozen snapshot — identical to clip.buf[i], not yet written this pass).
+        // The sum begins at the dry input (from the frozen snapshot -- identical to clip.buf[i], not yet written this pass).
         var acc: i64 = @as(i64, dry[i]);
         var k: u32 = 0;
         while (k < taps.len) : (k += 1) {
@@ -132,15 +132,15 @@ pub fn multitap(
             // The delayed DRY sample: from the snapshot inside the clip, silence before it (i - delay < 0). i - delay signed to test the floor.
             const p: i64 = @as(i64, i) - @as(i64, t.delay);
             const s: i64 = if (p >= 0) @as(i64, dry[@intCast(p)]) else 0;
-            // invariant: the snapshot sample already fits the i16 rail — it is dry audio, never a wide intermediate.
+            // invariant: the snapshot sample already fits the i16 rail -- it is dry audio, never a wide intermediate.
             assert(s >= @as(i64, timeline.sample_min) and s <= @as(i64, timeline.sample_max));
-            // num <= den and |s| <= 32768, so |num·s| < 32768·32768 fits i64; the tap contributes no more than the dry in magnitude.
+            // num <= den and |s| <= 32768, so |num-s| < 32768-32768 fits i64; the tap contributes no more than the dry in magnitude.
             const fed: i64 = @divTrunc(@as(i64, t.num) * s, @as(i64, t.den));
             // invariant: a tap at or below unity contributes no more than the dry sample in magnitude.
             assert((if (fed < 0) -fed else fed) <= (if (s < 0) -s else s));
             acc += fed;
         }
-        // The whole sum (dry plus every tap) saturates ONCE over the true total — never per tap — so a constructive pile-up pins rather
+        // The whole sum (dry plus every tap) saturates ONCE over the true total -- never per tap -- so a constructive pile-up pins rather
         // than wraps.
         clip.buf[i] = timeline.saturate(acc);
     }
@@ -149,7 +149,7 @@ pub fn multitap(
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: two taps are two INDEPENDENT copies (neither feeds the other — the contrast with the feedback train, computed by hand);
+// --- selftest: two taps are two INDEPENDENT copies (neither feeds the other -- the contrast with the feedback train, computed by hand);
 //     a single unity tap lands one full copy of the ORIGINAL dry; silence stays silence and a zero level is the dry identity; a loud sum
 //     SATURATES rather than wraps; the taps sum ORDER-INDEPENDENTLY; and each fault refuses by name, the clip untouched -------------
 
@@ -165,9 +165,9 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. TWO TAPS ARE TWO INDEPENDENT COPIES — an impulse of 8000 at index 0 with taps at (delay 2, 1/2) and (delay 4, 1/4) lands the
+    // 1. TWO TAPS ARE TWO INDEPENDENT COPIES -- an impulse of 8000 at index 0 with taps at (delay 2, 1/2) and (delay 4, 1/4) lands the
     //    dry impulse plus a HALF copy at index 2 and a QUARTER copy at index 4. Crucially the tap-4 copy is 1/4 of the ORIGINAL 8000
-    //    (= 2000), NOT 1/4 of the tap-2 output — the taps read the frozen dry, so neither feeds the other. Compare against ALES66's
+    //    (= 2000), NOT 1/4 of the tap-2 output -- the taps read the frozen dry, so neither feeds the other. Compare against ALES66's
     //    feedback train, where delay 2 fb 1/2 would compound 8000 -> 4000 -> 2000 -> 1000 on the even lane. Here index 4 is 2000, not
     //    the compounded 1000 (plus nothing from tap-2, which only fires at index 2).
     {
@@ -178,13 +178,13 @@ fn run_selftest() !u8 {
             .{ .delay = 4, .num = 1, .den = 4 },
         };
         try multitap(&clip, 0, clip.len, &two);
-        // index 0: 8000 (dry); index 2: 1/2·8000 = 4000 (tap-2 of the dry); index 4: 1/4·8000 = 2000 (tap-4 of the ORIGINAL dry, not
-        // of the tap-2 output — independence); all other indices silent.
+        // index 0: 8000 (dry); index 2: 1/2-8000 = 4000 (tap-2 of the dry); index 4: 1/4-8000 = 2000 (tap-4 of the ORIGINAL dry, not
+        // of the tap-2 output -- independence); all other indices silent.
         const want = [_]i16{ 8000, 0, 4000, 0, 2000, 0, 0, 0 };
         if (!eq(clip.samples(), &want)) return error.TwoTapsWrong;
     }
 
-    // 2. A SINGLE UNITY TAP LANDS ONE FULL COPY OF THE ORIGINAL DRY — unlike the feedback echo (which refuses unity as a runaway), a
+    // 2. A SINGLE UNITY TAP LANDS ONE FULL COPY OF THE ORIGINAL DRY -- unlike the feedback echo (which refuses unity as a runaway), a
     //    multi-tap unity tap is legal: it lands one exact copy of the dry `delay` samples later, never a copy-of-a-copy. A signal
     //    delayed 3 at 1/1 lays each dry sample down again three later, atop the dry itself where they overlap (summed, saturating).
     {
@@ -194,12 +194,12 @@ fn run_selftest() !u8 {
         const one = [_]Tap{.{ .delay = 3, .num = 1, .den = 1 }};
         try multitap(&clip, 0, clip.len, &one);
         // index 0..2: dry (nothing reaches back before the clip); index 3: 400 + dry[0]=100 = 500; index 4: 500 + dry[1]=200 = 700;
-        // index 5: 600 + dry[2]=300 = 900 — each tap of the ORIGINAL dry, not of a written output.
+        // index 5: 600 + dry[2]=300 = 900 -- each tap of the ORIGINAL dry, not of a written output.
         const want = [_]i16{ 100, 200, 300, 500, 700, 900 };
         if (!eq(clip.samples(), &want)) return error.UnityTapWrong;
     }
 
-    // 3a. SILENCE STAYS SILENCE — an all-zero clip multi-taps to all zeros under any legal taps.
+    // 3a. SILENCE STAYS SILENCE -- an all-zero clip multi-taps to all zeros under any legal taps.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -209,7 +209,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 3b. A ZERO LEVEL IS THE DRY IDENTITY — a tap with a zero numerator adds nothing, the dry signal passes byte-for-byte.
+    // 3b. A ZERO LEVEL IS THE DRY IDENTITY -- a tap with a zero numerator adds nothing, the dry signal passes byte-for-byte.
     {
         const sig = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
         var clip = timeline.Clip{};
@@ -219,7 +219,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroLevelNotIdentity;
     }
 
-    // 4. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS — a loud dry sample under a loud in-phase tap would exceed the i16 rail;
+    // 4. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS -- a loud dry sample under a loud in-phase tap would exceed the i16 rail;
     //    the sum pins to sample_max (ALES3's ceiling) instead of wrapping negative. A steady 30000 with a unity tap at delay 1 sums
     //    30000 + 30000 = 60000 from index 1 on, saturated to 32767.
     {
@@ -232,7 +232,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SaturateWrong;
     }
 
-    // 5. THE TAPS SUM ORDER-INDEPENDENTLY — because every tap reads the frozen dry, the same tap set in any order lands the identical
+    // 5. THE TAPS SUM ORDER-INDEPENDENTLY -- because every tap reads the frozen dry, the same tap set in any order lands the identical
     //    audio (no tap sees another's write). Prove two orderings match byte-for-byte.
     {
         const sig = [_]i16{ 5000, -3000, 4000, -2000, 6000, -1000, 3000, -4000 };
@@ -277,7 +277,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedTooManyTapsMutated;
     }
 
-    // 6c. A ZERO DELAY refuses BadDelay; a delay past max_clip refuses BadDelay — each before any write.
+    // 6c. A ZERO DELAY refuses BadDelay; a delay past max_clip refuses BadDelay -- each before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
@@ -290,8 +290,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWideDelayMutated;
     }
 
-    // 6d. A TAP ABOVE UNITY refuses BadLevel; a zero denominator refuses BadLevel — each before any write. (Unity itself is legal, proven
-    //     in case 2 — the multi-tap has no feedback loop to run away.)
+    // 6d. A TAP ABOVE UNITY refuses BadLevel; a zero denominator refuses BadLevel -- each before any write. (Unity itself is legal, proven
+    //     in case 2 -- the multi-tap has no feedback loop to run away.)
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };

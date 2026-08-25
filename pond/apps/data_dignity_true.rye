@@ -1,24 +1,24 @@
-//! pond/apps/data_dignity_true.rye — Season 3 Journey 12 (Data-dignity), Rung 4: the succession reads true (Journey 12 closes).
+//! pond/apps/data_dignity_true.rye -- Season 3 Journey 12 (Data-dignity), Rung 4: the succession reads true (Journey 12 closes).
 //!
 //! Rungs one through three fixed the succession rule, signed each of its two proofs, and let a signed
-//! succession travel as Bron — all over estates seated in code. This closing rung carries the reader onto
+//! succession travel as Bron -- all over estates seated in code. This closing rung carries the reader onto
 //! a **real** succession record a keeper can open and count, and proves the property the whole
 //! data-dignity layer rests on: what the reader *reports* about a succession is true to the bytes.
 //!
 //! The corpus is `surf/fixtures/estate.bron`, a genuine `format data-dignity-v1` record with real Ed25519
 //! directive and acceptance signatures (a keeper wills two holdings to the heir and rests one; both proofs
-//! signed), `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` — no network, the
+//! signed), `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` -- no network, the
 //! bytes read are the tree's own. Two independent readings must agree: the app parses the record through
-//! rung three and reports the **bequeathed count**, the **rested count**, and the **heir-held count** — the
+//! rung three and reports the **bequeathed count**, the **rested count**, and the **heir-held count** -- the
 //! last computed by *actually running* the signed succession (rung three's `rebuild`) and resolving each
-//! item's holder — and the witness cross-checks that triple against `tools/fixtures/data_dignity_truth.awk`'s
-//! reading of the same file (which reads the marks structurally) — two tools, one answer. And the record is
+//! item's holder -- and the witness cross-checks that triple against `tools/fixtures/data_dignity_truth.awk`'s
+//! reading of the same file (which reads the marks structurally) -- two tools, one answer. And the record is
 //! genuinely dignity-honest: `still_dignity_honest` re-verifies both carried proofs against the demo
 //! keyring, and `rebuild` recovers the heir holding exactly the bequeathed set with the rested holding
 //! resting, so the fixture is a real signed succession, not a hollow shape.
 //!
-//! Additive — composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper and heir
-//! seeds only, reads no network (a succession served over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper and heir
+//! seeds only, reads no network (a succession served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/data_dignity_true.rye -femit-bin=pond/bin/data-dignity-true
 //!   pond/bin/data-dignity-true selftest
@@ -36,18 +36,18 @@ const kumara = @import("kumara.rye");
 
 pub const data_dignity_true_version = "20260812.212607";
 
-/// The real succession record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real succession record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_estate = @embedFile("corpora/estate.bron");
 
-/// The three facts a keeper can count by hand: the holdings bequeathed, the holdings rested, and — after
-/// the succession actually runs — the holdings the heir ends up holding.
+/// The three facts a keeper can count by hand: the holdings bequeathed, the holdings rested, and -- after
+/// the succession actually runs -- the holdings the heir ends up holding.
 pub const Reading = struct {
     bequeathed: u32,
     rested: u32,
     heir_held: u32,
 };
 
-/// Count a parsed will's marks by disposition — the bequeathed set and the rested set, straight from the
+/// Count a parsed will's marks by disposition -- the bequeathed set and the rested set, straight from the
 /// record's own `hold` lines.
 fn count_marks(pe: *const bron.PortableEstate, disposition: estate_mod.Disposition) u32 {
     // invariant: the scan stays within the parsed will.
@@ -60,7 +60,7 @@ fn count_marks(pe: *const bron.PortableEstate, disposition: estate_mod.Dispositi
     return count;
 }
 
-/// Read the real succession: parse it, count the two mark sets, and — crucially — run the signed
+/// Read the real succession: parse it, count the two mark sets, and -- crucially -- run the signed
 /// succession through rung three's `rebuild` and count what the heir actually ends up holding. The
 /// heir-held count is not read off the marks; it is the outcome of the machinery, so agreeing with awk's
 /// structural count proves the succession yields exactly the bequeathed set.
@@ -75,7 +75,7 @@ pub fn read_estate(text: []const u8, ring: *const signed.Keyring) (bron.BronErro
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper and heir seeds — the same seeds the fixture was signed with, so the record verifies as real.
+// Demo keeper and heir seeds -- the same seeds the fixture was signed with, so the record verifies as real.
 const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 
@@ -93,7 +93,7 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the same
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the same
 /// bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const ring = try demo_ring();
@@ -106,7 +106,7 @@ fn welcome_reading_true_to_bytes() !void {
     print("data_dignity_true: the reading of the real record — bequeathed, rested, heir-held — matches an independent count of the same bytes.\n", .{});
 }
 
-/// The record is genuinely dignity-honest — both carried proofs verify against the demo keyring, and the
+/// The record is genuinely dignity-honest -- both carried proofs verify against the demo keyring, and the
 /// rebuilt succession leaves the heir holding exactly the bequeathed set with the rested holding resting.
 fn welcome_record_is_really_honest() !void {
     const ring = try demo_ring();
@@ -120,7 +120,7 @@ fn welcome_record_is_really_honest() !void {
     print("data_dignity_true: the real record re-verified both proofs offline and rebuilt the heir holding the bequeathed set, the rested holding resting.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true.
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true.
 fn unwelcome_tampered_record_refuses() !void {
     const ring = try demo_ring();
     // Flip a byte inside the header so the record no longer names its format.
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<bequeathed> <rested> <heir_held>`), so the witness can compare
-/// the app's reading against `data_dignity_truth.awk` byte for byte — two tools, one answer.
+/// the app's reading against `data_dignity_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const ring = try demo_ring();
     const r = try read_estate(real_estate, &ring);

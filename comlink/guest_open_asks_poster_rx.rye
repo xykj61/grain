@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_poster_rx.rye — OA-L2 device wire poster RX guest.
+//! comlink/guest_open_asks_poster_rx.rye -- OA-L2 device wire poster RX guest.
 //!
 //! Receives the sealed application datagram, verifies it against the witness request,
 //! and folds the poster log to applied.

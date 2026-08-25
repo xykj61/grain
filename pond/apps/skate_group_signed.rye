@@ -1,6 +1,6 @@
-//! pond/apps/skate_group_signed.rye — Season 3 Journey 10 (Membership), Rung 2: a vote that cannot be fabricated.
+//! pond/apps/skate_group_signed.rye -- Season 3 Journey 10 (Membership), Rung 2: a vote that cannot be fabricated.
 //!
-//! Rung one fixed the quorum rule as a pure state machine — a candidate is seated only when a quorum of
+//! Rung one fixed the quorum rule as a pure state machine -- a candidate is seated only when a quorum of
 //! distinct members votes. Yet a bare state machine trusts whoever calls it: a steward could cast a vote
 //! in a member's name, and the books would read as that member's consent to admit. This rung binds each
 //! vote to the voting member's **settled Kumara identity**, so a vote a member never cast cannot be
@@ -8,19 +8,19 @@
 //!
 //! Each vote is signed by the very member it speaks for, over the exact facts: a tag (so a vote can
 //! never be replayed as another act), the group id (so a vote cannot cross groups), the voter, and the
-//! candidate. A `Keyring` maps a point to its keeper public key — the caller's statement of whose word
+//! candidate. A `Keyring` maps a point to its keeper public key -- the caller's statement of whose word
 //! to trust (as `skate_circle_signed` and `commerce_trade_signed` pass their keys). `vote_signed`
 //! verifies the voting member's own signature against the keyring **before** touching rung one's group,
 //! refusing `UnknownKeeper` (the voter is not enrolled) or `BadConsent` (the signature does not verify).
 //! The honesty crux mirrors the circle's relabel: change the candidate after signing and reuse the
-//! signature, and it falls — the signature was over the candidate the member actually named. And the
+//! signature, and it falls -- the signature was over the candidate the member actually named. And the
 //! lone-steward guard carries through r1 unchanged: a member's signature lets them vote once, never
 //! twice, so a signed act still cannot fake a quorum from one hand.
 //!
 //! The founders are the group's given bootstrap roster (its genesis, seeded at open); every *admission*
-//! after that takes signed, distinct votes. Additive — composes rung one (`skate_group`) and `kumara`
-//! over public API; rung one stays its own GREEN binary. Demo keeper seeds only — no real key, no
-//! network, no real identity (a group served over the wire reaches the serve gate — Keaton's hand).
+//! after that takes signed, distinct votes. Additive -- composes rung one (`skate_group`) and `kumara`
+//! over public API; rung one stays its own GREEN binary. Demo keeper seeds only -- no real key, no
+//! network, no real identity (a group served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_group_signed.rye -femit-bin=pond/bin/skate-group-signed
 //!   pond/bin/skate-group-signed selftest
@@ -39,10 +39,10 @@ pub const skate_group_signed_version = "20260812.204233";
 pub const pubkey_len: u32 = 32;
 pub const sig_len: u32 = 64;
 
-/// A keyring maps a point to its keeper public key — a caller's statement of whose vote to trust.
+/// A keyring maps a point to its keeper public key -- a caller's statement of whose vote to trust.
 pub const max_keyring: u32 = group_mod.max_members;
 
-/// The act a signature speaks for — a tag so a vote can never be replayed as another act.
+/// The act a signature speaks for -- a tag so a vote can never be replayed as another act.
 const tag_vote: u8 = 1;
 
 /// The exact bytes a vote signs: the tag, the group id (so a vote cannot cross groups), the voter, and
@@ -66,7 +66,7 @@ fn vote_message(out: *[max_msg_len]u8, group_id: u32, voter: u32, candidate: u32
     return 13;
 }
 
-/// The voting member's signature over their own vote — proof this point voted to admit this candidate.
+/// The voting member's signature over their own vote -- proof this point voted to admit this candidate.
 pub fn sign_vote(keeper_seed: *const [kumara.seed_length]u8, group_id: u32, voter: u32, candidate: u32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
     var msg: [max_msg_len]u8 = undefined;
@@ -83,7 +83,7 @@ fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8)
     return true;
 }
 
-/// A bounded map from a point to its keeper public key — whose vote the caller trusts.
+/// A bounded map from a point to its keeper public key -- whose vote the caller trusts.
 // Invariant: count <= max_keyring.
 pub const Keyring = struct {
     points: [max_keyring]u32,
@@ -120,7 +120,7 @@ pub const Keyring = struct {
 };
 
 /// Verify a member's own vote signature against the keyring, refusing an unenrolled voter
-/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no group — the verification
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no group -- the verification
 /// half alone, so a traveled record (r3) can re-check a vote offline with no state to mutate.
 pub fn verify_vote(ring: *const Keyring, group_id: u32, voter: u32, candidate: u32, sig: *const [sig_len]u8) SignedError!void {
     const key = ring.key_of(voter) orelse return error.UnknownKeeper;
@@ -147,7 +147,7 @@ pub fn vote_signed(
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -175,7 +175,7 @@ fn demo_group_of_three() group_mod.GroupError!group_mod.Group {
     return group_mod.Group.open(&.{ ivy, wren, flax }, 2);
 }
 
-/// Two signed votes from distinct members seat a candidate — each vote carrying its member's own word.
+/// Two signed votes from distinct members seat a candidate -- each vote carrying its member's own word.
 fn welcome_signed_quorum_admits() !void {
     var g = try demo_group_of_three();
     const ring = try demo_ring();
@@ -191,7 +191,7 @@ fn welcome_signed_quorum_admits() !void {
     print("skate_group_signed: two signed votes from distinct members seated a candidate — each vote its member's own word.\n", .{});
 }
 
-/// The lone-steward guard carries through signing — a member's valid signature lets them vote once, not
+/// The lone-steward guard carries through signing -- a member's valid signature lets them vote once, not
 /// twice, so a signed act still cannot fake a quorum from one hand.
 fn unwelcome_signed_double_cannot_fake() !void {
     var g = try demo_group_of_three();
@@ -199,7 +199,7 @@ fn unwelcome_signed_double_cannot_fake() !void {
 
     const ivy_votes = sign_vote(&ivy_seed, demo_group, ivy, bram);
     try vote_signed(&g, &ring, demo_group, ivy, bram, &ivy_votes);
-    // The same signed vote presented again — one member, one vote.
+    // The same signed vote presented again -- one member, one vote.
     const doubled = vote_signed(&g, &ring, demo_group, ivy, bram, &ivy_votes);
     assert(doubled == error.AlreadyVoted);
     assert(g.tally(bram) == 1);
@@ -207,7 +207,7 @@ fn unwelcome_signed_double_cannot_fake() !void {
     print("skate_group_signed: a member's signed vote counted once, the repeat refused AlreadyVoted — signing cannot fake a quorum from one hand.\n", .{});
 }
 
-/// The honesty crux — a steward relabels a vote's candidate after signing and reuses the signature; it
+/// The honesty crux -- a steward relabels a vote's candidate after signing and reuses the signature; it
 /// falls, because the signature was over the candidate the member actually named.
 fn unwelcome_relabel_candidate_refuses() !void {
     var g = try demo_group_of_three();
@@ -220,11 +220,11 @@ fn unwelcome_relabel_candidate_refuses() !void {
     print("skate_group_signed: a vote's candidate relabelled after signing refused BadConsent — a steward cannot swap whom a member voted for.\n", .{});
 }
 
-/// One member cannot sign another's vote — the voting point must sign its own vote.
+/// One member cannot sign another's vote -- the voting point must sign its own vote.
 fn unwelcome_forged_vote_refuses() !void {
     var g = try demo_group_of_three();
     const ring = try demo_ring();
-    // Wren signs a vote naming Ivy as the voter — the wrong keeper's word for Ivy's vote.
+    // Wren signs a vote naming Ivy as the voter -- the wrong keeper's word for Ivy's vote.
     const forged = sign_vote(&wren_seed, demo_group, ivy, bram);
     const bad = vote_signed(&g, &ring, demo_group, ivy, bram, &forged);
     assert(bad == error.BadConsent);
@@ -232,11 +232,11 @@ fn unwelcome_forged_vote_refuses() !void {
     print("skate_group_signed: a vote signed by the wrong keeper refused BadConsent — a member signs their own vote.\n", .{});
 }
 
-/// A member the ring does not enroll has no key to check — their word cannot be trusted, so the vote
+/// A member the ring does not enroll has no key to check -- their word cannot be trusted, so the vote
 /// refuses UnknownKeeper before the group is touched, even though the voter is a real member.
 fn unwelcome_unknown_keeper_refuses() !void {
     var g = try demo_group_of_three();
-    // A ring that enrolls only ivy and wren — flax is a member but unenrolled.
+    // A ring that enrolls only ivy and wren -- flax is a member but unenrolled.
     var ring = Keyring.open();
     try ring.enroll(ivy, pubkey_of(&ivy_seed));
     try ring.enroll(wren, pubkey_of(&wren_seed));
@@ -246,7 +246,7 @@ fn unwelcome_unknown_keeper_refuses() !void {
     print("skate_group_signed: a vote by a member the ring does not enroll refused UnknownKeeper — whose word is unknown is not counted.\n", .{});
 }
 
-/// A signature bound to one group does not cross into another — a vote names its group.
+/// A signature bound to one group does not cross into another -- a vote names its group.
 fn unwelcome_cross_group_refuses() !void {
     var g = try demo_group_of_three();
     const ring = try demo_ring();

@@ -1,29 +1,29 @@
-//! lotus/halve.rye — ALES85: the half-wave rectifier — keep the positive half, zero the negative, y = max(x, 0). The full-wave rectifier (ALES84)
+//! lotus/halve.rye -- ALES85: the half-wave rectifier -- keep the positive half, zero the negative, y = max(x, 0). The full-wave rectifier (ALES84)
 //! folds the whole negative half of the wave UP onto the positive side (y = |x|, pure EVEN harmonics). The half-wave rectifier is its plain sibling: it
 //! folds the negative half AWAY to silence instead of up. Where a diode BRIDGE (four diodes) makes full-wave rectification, a SINGLE diode makes
-//! half-wave — it passes current one way and blocks it the other. The half-wave output is the single-diode clipper of a crystal radio and the octave-up
+//! half-wave -- it passes current one way and blocks it the other. The half-wave output is the single-diode clipper of a crystal radio and the octave-up
 //! voice of a one-diode fuzz: the positive half of the wave kept whole, the negative half silenced.
 //!
 //! The crux is the complement of ALES84's: where |x| is exact for every i16 EXCEPT sample_min (whose magnitude 32768 overflows the rail and must
-//! saturate), max(x, 0) is EXACT for EVERY i16 with NO rail edge at all — a non-negative sample passes unchanged (already within [0, sample_max]) and a
+//! saturate), max(x, 0) is EXACT for EVERY i16 with NO rail edge at all -- a non-negative sample passes unchanged (already within [0, sample_max]) and a
 //! negative sample becomes 0; neither branch can overflow. The half-wave rectifier needs NO saturate. That absence is the whole distinction between the
 //! two rectifiers: the bridge has one over-rail sample to pin; the single diode has none.
 //!
 //! Harmonically, stated honestly: the full-wave rectifier is a PURE EVEN generator (|x| is an even function); the half-wave rectifier is the average of
-//! the dry wave and the full-wave rectified wave — max(x, 0) = (x + |x|) / 2 — so its output carries the FUNDAMENTAL (odd) plus the EVEN harmonics plus
-//! a DC term: an EVEN+ODD MIX, not pure even. Half the amplitude of the full-wave move, half the DC. The map is MEMORYLESS — every output depends only
+//! the dry wave and the full-wave rectified wave -- max(x, 0) = (x + |x|) / 2 -- so its output carries the FUNDAMENTAL (odd) plus the EVEN harmonics plus
+//! a DC term: an EVEN+ODD MIX, not pure even. Half the amplitude of the full-wave move, half the DC. The map is MEMORYLESS -- every output depends only
 //! on its own input, so the in-place read-then-write touches nothing another step needs, and halving a span block by block equals halving it whole. It
-//! is IDEMPOTENT — a non-negative sample maps to itself, so halve(halve(x)) = halve(x). And its output is always NON-NEGATIVE — the one-sided signal is
+//! is IDEMPOTENT -- a non-negative sample maps to itself, so halve(halve(x)) = halve(x). And its output is always NON-NEGATIVE -- the one-sided signal is
 //! the rectifier's whole point, exactly as with full-wave.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES85.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES85.
 //! Design read: active-designing/date/20260814/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max. It carries NO gain, NO ceiling, and NO threshold — the threshold is fixed at zero,
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/max. It carries NO gain, NO ceiling, and NO threshold -- the threshold is fixed at zero,
 //! and max(x, 0) has no parameter that could be illegal; a keeper who wants a boosted or negatively-clamped half-wave composes this with ALES78's drive
 //! over the same span, both in-place span maps that compose.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the shape is a half-wave threshold at zero, instantaneous (no attack/release, no anti-aliasing — a
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the shape is a half-wave threshold at zero, instantaneous (no attack/release, no anti-aliasing -- a
 //! rectifier doubles frequency and is a heavy harmonic generator, and its harmonics fold in the i16 domain exactly as any diode rectifier's). One
 //! compare-and-keep per sample; no saturate is needed, since max(x, 0) never leaves the rail.
 //!
@@ -38,20 +38,20 @@ const timeline = @import("timeline.rye");
 pub const halve_version = "20260814.214355";
 
 /// The half-wave rectifier's faults, one consistent name each. BadRange coincides by name with the full-wave rectifier, the sibling drives, and ALES2's
-/// timeline (Zig merges error sets by name), so a composer sees one consistent span fault. The half-wave rectifier names NO other fault — it takes no
+/// timeline (Zig merges error sets by name), so a composer sees one consistent span fault. The half-wave rectifier names NO other fault -- it takes no
 /// gain, no ceiling, no threshold: max(x, 0) has no parameter that could be illegal.
 pub const HalveError = error{
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Half-wave-rectify `count` samples starting at `start` in place in `clip`: each sample becomes `max(x, 0)`, the positive half of the wave kept whole
-/// and the negative half folded away to silence. Exact for EVERY i16 — a non-negative sample passes unchanged, a negative sample becomes 0; there is no
+/// and the negative half folded away to silence. Exact for EVERY i16 -- a non-negative sample passes unchanged, a negative sample becomes 0; there is no
 /// rail edge and no saturate (the very fact that separates the single diode from the full-wave bridge). After the call every output is non-negative, at
-/// most the input, and depends only on its own input (the rectifier is memoryless). Refuses BadRange on a span outside the samples — BEFORE any write,
-/// so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// most the input, and depends only on its own input (the rectifier is memoryless). Refuses BadRange on a span outside the samples -- BEFORE any write,
+/// so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn halve(clip: *timeline.Clip, start: u32, count: u32) HalveError!void {
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the full-wave sibling.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the full-wave sibling.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -59,15 +59,15 @@ pub fn halve(clip: *timeline.Clip, start: u32, count: u32) HalveError!void {
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         const dry: i16 = clip.buf[i];
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= timeline.sample_min and dry <= timeline.sample_max);
-        // The half-wave map: keep the positive half, silence the negative. No wide intermediate and no saturate are needed — a non-negative sample is
+        // The half-wave map: keep the positive half, silence the negative. No wide intermediate and no saturate are needed -- a non-negative sample is
         // already within the rail, and a negative sample becomes 0, so max(x, 0) never leaves [0, sample_max]. This is the whole distinction from the
         // full-wave rectifier, whose lone most-negative sample had to saturate.
         const out: i16 = if (dry > 0) dry else 0;
-        // invariant: the output is non-negative — a rectifier makes a one-sided signal, so the negative half is silenced, never passed.
+        // invariant: the output is non-negative -- a rectifier makes a one-sided signal, so the negative half is silenced, never passed.
         assert(out >= 0);
-        // invariant: the output is exactly the half-wave map — a positive sample passes unchanged, a non-positive one drops to 0 — so the map only holds
+        // invariant: the output is exactly the half-wave map -- a positive sample passes unchanged, a non-positive one drops to 0 -- so the map only holds
         // or lowers, never raises, and touches only the sign of the wave.
         assert(if (dry > 0) out == dry else out == 0);
         clip.buf[i] = out;
@@ -77,9 +77,9 @@ pub fn halve(clip: *timeline.Clip, start: u32, count: u32) HalveError!void {
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: NON-NEGATIVES ARE UNCHANGED (max(x,0) = x for x ≥ 0); NEGATIVES FOLD to SILENCE by hand (−x → 0, not up); NO RAIL EDGE (sample_min → 0,
-//     never a saturate — the very fact that separates half-wave from full-wave); every output is NON-NEGATIVE and the map is IDEMPOTENT; the half-wave
-//     output is the full-wave output MASKED to the positive half (a symmetric pair +a,−a → a,0 where full-wave gave a,a); the SPAN discipline holds; and
+// --- selftest: NON-NEGATIVES ARE UNCHANGED (max(x,0) = x for x ≥ 0); NEGATIVES FOLD to SILENCE by hand (−x -> 0, not up); NO RAIL EDGE (sample_min -> 0,
+//     never a saturate -- the very fact that separates half-wave from full-wave); every output is NON-NEGATIVE and the map is IDEMPOTENT; the half-wave
+//     output is the full-wave output MASKED to the positive half (a symmetric pair +a,−a -> a,0 where full-wave gave a,a); the SPAN discipline holds; and
 //     a span past the end refuses BadRange, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -94,7 +94,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. NON-NEGATIVES ARE UNCHANGED — max(x, 0) = x for every x ≥ 0, so the positive half of the wave passes through whole. A signal already one-sided
+    // 1. NON-NEGATIVES ARE UNCHANGED -- max(x, 0) = x for every x ≥ 0, so the positive half of the wave passes through whole. A signal already one-sided
     //    half-wave-rectifies to itself, the way ALES8's unity fader reproduces the plain render.
     {
         const sig = [_]i16{ 0, 1, 12345, 32767, 200, 5 };
@@ -104,8 +104,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.NonNegChanged;
     }
 
-    // 2. NEGATIVES FOLD TO SILENCE BY HAND — each negative sample drops to 0, the negative half of the wave folded AWAY (not up, as the full-wave
-    //    rectifier does). −1→0, −100→0, −12345→0, −32767→0; the positives among them pass unchanged.
+    // 2. NEGATIVES FOLD TO SILENCE BY HAND -- each negative sample drops to 0, the negative half of the wave folded AWAY (not up, as the full-wave
+    //    rectifier does). −1->0, −100->0, −12345->0, −32767->0; the positives among them pass unchanged.
     {
         const sig = [_]i16{ -1, 100, -100, -12345, 32767, -32767 };
         var clip = timeline.Clip{};
@@ -115,8 +115,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.FoldWrong;
     }
 
-    // 3. NO RAIL EDGE — where the full-wave rectifier had to SATURATE sample_min (magnitude 32768 overflows the rail), the half-wave rectifier maps
-    //    sample_min straight to 0: max(sample_min, 0) = 0. There is no over-rail value to pin, so max(x, 0) is EXACT for every i16 — the very fact that
+    // 3. NO RAIL EDGE -- where the full-wave rectifier had to SATURATE sample_min (magnitude 32768 overflows the rail), the half-wave rectifier maps
+    //    sample_min straight to 0: max(sample_min, 0) = 0. There is no over-rail value to pin, so max(x, 0) is EXACT for every i16 -- the very fact that
     //    separates the single diode from the full-wave bridge.
     {
         const sig = [_]i16{ timeline.sample_min, -32767, 0, 32767 };
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.RailEdgeWrong;
     }
 
-    // 4. EVERY OUTPUT IS NON-NEGATIVE, AND THE MAP IS IDEMPOTENT — a rectifier makes a one-sided signal, so no output is below zero; and half-wave
+    // 4. EVERY OUTPUT IS NON-NEGATIVE, AND THE MAP IS IDEMPOTENT -- a rectifier makes a one-sided signal, so no output is below zero; and half-wave
     //    rectifying the already-rectified clip a second time changes nothing (a non-negative sample maps to itself).
     {
         const sig = [_]i16{ 100, -200, 5000, -5000, timeline.sample_min, 0, -1, 32767 };
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. THE HALF-WAVE OUTPUT IS THE FULL-WAVE OUTPUT MASKED TO THE POSITIVE HALF — for a symmetric pair +a and −a, half-wave keeps +a→a and −a→0,
+    // 5. THE HALF-WAVE OUTPUT IS THE FULL-WAVE OUTPUT MASKED TO THE POSITIVE HALF -- for a symmetric pair +a and −a, half-wave keeps +a->a and −a->0,
     //    where the full-wave rectifier (ALES84) sent BOTH to a. Half-wave keeps the fundamental (the +a survives) and silences the mirror image; that is
     //    the even+odd mix, half the amplitude of the full-wave's pure-even doubling.
     {
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (!eq(out, &want)) return error.NotMasked;
     }
 
-    // 6. THE SPAN DISCIPLINE — half-wave-rectifying a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
+    // 6. THE SPAN DISCIPLINE -- half-wave-rectifying a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
     //    whole suite keeps. Halve the middle two of six; the first and last two are untouched, negatives among them preserved.
     {
         const sig = [_]i16{ -100, -200, -500, 500, -300, -400 };
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 7. A SPAN past the end refuses BadRange — before any write, the clip untouched. The half-wave rectifier names no other fault (max(x, 0) has no
+    // 7. A SPAN past the end refuses BadRange -- before any write, the clip untouched. The half-wave rectifier names no other fault (max(x, 0) has no
     //    parameter that could be illegal).
     {
         const sig = [_]i16{ 9, -10, 11 };

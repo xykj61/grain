@@ -1,4 +1,4 @@
-//! mandi/mandi.rye — Mandi listing selftest (vessel market listing) · 20260728.
+//! mandi/mandi.rye -- Mandi listing selftest (vessel market listing) - 20260728.
 //!
 //!   rye build mandi/mandi.rye -femit-bin=mandi/bin/mandi
 //!   mandi/bin/mandi selftest

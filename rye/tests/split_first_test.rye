@@ -1,4 +1,4 @@
-//! Rye test: SplitIterator.first via splitScalar/Any/Sequence — pass 9963.
+//! Rye test: SplitIterator.first via splitScalar/Any/Sequence -- pass 9963.
 //!
 //! first() must only be called before iteration begins; it delegates to next()
 //! with the same sub-slice contract (9993). Completes the split iterator quartet.

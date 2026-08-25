@@ -1,24 +1,24 @@
-//! crypto/sha512.rye — Season G (Cryptography), the second primitive: SHA-512 authored in pure Rye. SHA-512 is the hash standard
-//! Ed25519 signs with (RFC 8032 / FIPS 180-4) — Monocypher's EdDSA hashes the nonce, the public key, and the message through it — so
+//! crypto/sha512.rye -- Season G (Cryptography), the second primitive: SHA-512 authored in pure Rye. SHA-512 is the hash standard
+//! Ed25519 signs with (RFC 8032 / FIPS 180-4) -- Monocypher's EdDSA hashes the nonce, the public key, and the message through it -- so
 //! this primitive is the direct next stone toward the Rye-native signing that unblocks the Lotus signed carry. Like BLAKE2b it is
 //! pure 64-bit integer arithmetic and carries a published FIPS 180-4 known-answer (SHA-512("abc")), so it is buildable in authored
 //! Rye this round and provable against a neutral public reference.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read — SHA-512 is the second
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read -- SHA-512 is the second
 //! primitive named there as following the hash foundation).
 //! Kin: crypto/blake2b.rye (the first primitive, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET,
-//! never a copied line — our own arithmetic, studied clean-room from the public standard and Monocypher's public API
+//! never a copied line -- our own arithmetic, studied clean-room from the public standard and Monocypher's public API
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — SHA-512 is a bounded loop over 64-bit words, mod 2^64. The message is padded to a whole number of 128-byte blocks (a
+//! THE CRUX -- SHA-512 is a bounded loop over 64-bit words, mod 2^64. The message is padded to a whole number of 128-byte blocks (a
 //! 0x80 byte, zeros, then the 128-bit big-endian bit length), each block expanded to eighty message-schedule words and folded through
 //! eighty rounds of the Ch/Maj/Sigma functions into an eight-word hash state. Every add is mod 2^64 (Zig's wrapping +%); every
-//! rotation and shift is a fixed constant from the standard. Nothing here is a claim about a device — it is arithmetic anyone can
+//! rotation and shift is a fixed constant from the standard. Nothing here is a claim about a device -- it is arithmetic anyone can
 //! replay against FIPS 180-4.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it is
-//! authored from the standard. Parity is proven at selftest against two references runnable now — the FIPS 180-4 known-answer for
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it is
+//! authored from the standard. Parity is proven at selftest against two references runnable now -- the FIPS 180-4 known-answer for
 //! "abc" and the empty message, and Zig's own std.crypto SHA-512 as an independent implementation, byte-for-byte over the empty
 //! message, "abc", a 111-byte input (the padding edge where the length still fits the block), a 112-byte input (the edge that forces a
 //! second all-padding block), and a multi-block input. Monocypher-source parity is now LANDED: tools/cr/crypto_monocypher_sha512_parity_witness.rish
@@ -42,23 +42,23 @@ pub const hex_len: u32 = digest_len * 2;
 const rounds: u32 = 80;
 
 /// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact, yet named so the
-/// bit-length field and the block loop both cite a maximum — the TAME reflex that every loop and every count declares its ceiling.
+/// bit-length field and the block loop both cite a maximum -- the TAME reflex that every loop and every count declares its ceiling.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is mixed.
 pub const Sha512Error = error{
-    /// A message whose length exceeds max_message_bytes — refused at the edge, before padding or the block loop begins.
+    /// A message whose length exceeds max_message_bytes -- refused at the edge, before padding or the block loop begins.
     MessageTooLong,
 };
 
-/// The SHA-512 initial hash value — the eight 64-bit words (FIPS 180-4 §5.3.5), the fractional parts of the square roots of the first
+/// The SHA-512 initial hash value -- the eight 64-bit words (FIPS 180-4 §5.3.5), the fractional parts of the square roots of the first
 /// eight primes. Named as a constant so init reads from one source of truth.
 const h_init = [8]u64{
     0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
     0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179,
 };
 
-/// The eighty SHA-512 round constants (FIPS 180-4 §4.2.3) — the fractional parts of the cube roots of the first eighty primes. A
+/// The eighty SHA-512 round constants (FIPS 180-4 §4.2.3) -- the fractional parts of the cube roots of the first eighty primes. A
 /// single wrong entry breaks parity against the standard at once, which the selftest proves it does not.
 const k = [80]u64{
     0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -111,7 +111,7 @@ fn small_sigma1(x: u64) u64 {
 /// message schedule, which drives eighty rounds of the Ch/Maj/Sigma round function over eight working words, then the working words
 /// fold back into h.
 fn compress(h: *[8]u64, block: *const [block_bytes]u8) void {
-    // invariant: the block carries exactly sixteen 64-bit words — the first sixteen entries of the message schedule.
+    // invariant: the block carries exactly sixteen 64-bit words -- the first sixteen entries of the message schedule.
     comptime assert(block_bytes == 16 * 8);
     // invariant: the schedule runs the eighty rounds the standard defines.
     comptime assert(rounds == 80);
@@ -158,17 +158,17 @@ fn compress(h: *[8]u64, block: *const [block_bytes]u8) void {
     h[7] +%= hh;
 }
 
-/// Hash a message to its 64-byte SHA-512 digest. The message is padded per FIPS 180-4 §5.1.2 — a 0x80 byte, then zeros, then the
-/// message length in bits as a 128-bit big-endian integer — filling a whole number of 128-byte blocks, then every block is compressed
+/// Hash a message to its 64-byte SHA-512 digest. The message is padded per FIPS 180-4 §5.1.2 -- a 0x80 byte, then zeros, then the
+/// message length in bits as a 128-bit big-endian integer -- filling a whole number of 128-byte blocks, then every block is compressed
 /// in order.
 pub fn hash(msg: []const u8) Sha512Error![digest_len]u8 {
-    // invariant: SHA-512's shapes are the standard's own — 64-byte digest, 128-byte block. Proven at compile time.
+    // invariant: SHA-512's shapes are the standard's own -- 64-byte digest, 128-byte block. Proven at compile time.
     comptime assert(digest_len == 64 and block_bytes == 128);
     // invariant: the message fits the named bound, so its length casts to u32 losslessly and the bit length never overflows u64.
     if (msg.len > max_message_bytes) return error.MessageTooLong;
 
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [8]u64 = h_init;
@@ -180,9 +180,9 @@ pub fn hash(msg: []const u8) Sha512Error![digest_len]u8 {
     }
 
     // The tail is 0..127 leftover bytes. Build the padded final block(s): the tail, a 0x80 marker, zeros, then the 128-bit big-endian
-    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted — the 112-byte edge.
+    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted -- the 112-byte edge.
     const rem = total - offset;
-    // invariant: the leftover is strictly less than a whole block — every full block was consumed above.
+    // invariant: the leftover is strictly less than a whole block -- every full block was consumed above.
     assert(rem < block_bytes);
 
     var tail = [_]u8{0} ** (block_bytes * 2);
@@ -224,7 +224,7 @@ pub fn to_hex(digest: [digest_len]u8) [hex_len]u8 {
     return out;
 }
 
-// The FIPS 180-4 known-answer for SHA-512 of the ASCII string "abc" — the neutral public reference our Rye and Monocypher must both
+// The FIPS 180-4 known-answer for SHA-512 of the ASCII string "abc" -- the neutral public reference our Rye and Monocypher must both
 // reproduce.
 const fips_abc_hex = "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f";
 // The published SHA-512 of the empty message.

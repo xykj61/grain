@@ -1,34 +1,34 @@
-//! crypto/kumara_pq_sealed.rye — Season G (Cryptography), the POST-QUANTUM sealed-to-identity door: a message sealed TO a named post-quantum identity
+//! crypto/kumara_pq_sealed.rye -- Season G (Cryptography), the POST-QUANTUM sealed-to-identity door: a message sealed TO a named post-quantum identity
 //! AND signed BY a named post-quantum identity, so one frame carries both confidentiality and provenance, hardened against the quantum day. It is the
-//! post-quantum sibling of crypto/kumara_sealed.rye — where that seals to a Kumara identity's Ed25519 key by converting it to X25519 (one key doing
+//! post-quantum sibling of crypto/kumara_sealed.rye -- where that seals to a Kumara identity's Ed25519 key by converting it to X25519 (one key doing
 //! two jobs through the birational map), this seals to the identity's ML-KEM half and signs with the sender's ML-DSA half, the two lattice keys a
 //! post-quantum identity carries (crypto/kumara_pq_identity.rye). Where the classical sealed box is anonymous by construction, this door adds what the
 //! dual-key shape makes reachable and one lattice key cannot: a message only the named recipient can read, provably from the named sender.
 //!
-//! It authors NO new cryptography. The confidentiality is crypto/mlkem_sealed.rye's own seal/open (ML-KEM · SHA3-256 · BLAKE2b · ChaCha20-Poly1305);
-//! the provenance is crypto/kumara_pq_identity.rye's own sign/verify (ML-DSA); this module contributes only the framing that binds them — a signed
+//! It authors NO new cryptography. The confidentiality is crypto/mlkem_sealed.rye's own seal/open (ML-KEM - SHA3-256 - BLAKE2b - ChaCha20-Poly1305);
+//! the provenance is crypto/kumara_pq_identity.rye's own sign/verify (ML-DSA); this module contributes only the framing that binds them -- a signed
 //! envelope around a sealed frame, opened verify-before-trust: the sender's signature is checked, and refused unless it is the sender the reader named,
 //! BEFORE the ciphertext is ever decapsulated. A valid signature from the wrong keeper is caught, never mistaken for the right one, exactly as
 //! crypto/kumara_carry.rye's binding catches it in the classical world.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye, which
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye, which
 //! stays the correct CLASSICAL sealed-to-identity door; nothing already GREEN moves.
-//! Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — "the coming kumara_pq_sealed seals to the identity's ML-KEM
-//! half, and — where provenance is also wanted — signs the frame with the identity's ML-DSA key. Confidentiality and provenance come from the two
+//! Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md -- "the coming kumara_pq_sealed seals to the identity's ML-KEM
+//! half, and -- where provenance is also wanted -- signs the frame with the identity's ML-DSA key. Confidentiality and provenance come from the two
 //! halves, composed." This rung is that door.
-//! Kin: crypto/kumara_pq_identity.rye (the dual-key identity this seals to and signs with, GREEN) · crypto/mlkem_sealed.rye (the confidentiality,
-//! GREEN) · crypto/kumara_sealed.rye (the classical sibling) · crypto/kumara_carry.rye (the classical provenance-binding this mirrors). Clean-room:
+//! Kin: crypto/kumara_pq_identity.rye (the dual-key identity this seals to and signs with, GREEN) - crypto/mlkem_sealed.rye (the confidentiality,
+//! GREEN) - crypto/kumara_sealed.rye (the classical sibling) - crypto/kumara_carry.rye (the classical provenance-binding this mirrors). Clean-room:
 //! FIPS 203/204 are public NIST standards studied through their specs; the framing is our own Rye wiring over our own GREEN rungs (.claude/rules/gratitude-licenses.md).
 //!
-//! THE ENVELOPE — magic "GQS1" ‖ sender-ML-DSA-public(pk_len) ‖ sender-ML-DSA-signature(sig_len) ‖ inner mlkem_sealed frame(variable, to the end).
+//! THE ENVELOPE -- magic "GQS1" ‖ sender-ML-DSA-public(pk_len) ‖ sender-ML-DSA-signature(sig_len) ‖ inner mlkem_sealed frame(variable, to the end).
 //!   The fixed-width header (magic, sender public key, signature) sits FIRST, so open locates the trailing inner frame without parsing a nested length;
 //!   the inner frame runs to the end and crypto/mlkem_sealed.rye validates it whole. The signature covers a BLAKE2b-512 digest of the inner sealed
-//!   frame — a fixed 64 bytes, well within ML-DSA's message bound at every plaintext length, bound to the exact ciphertext by the hash's collision
-//!   resistance — so a tampered ciphertext breaks the signature (caught at verify) or the AEAD tag (caught at open), and never opens.
+//!   frame -- a fixed 64 bytes, well within ML-DSA's message bound at every plaintext length, bound to the exact ciphertext by the hash's collision
+//!   resistance -- so a tampered ciphertext breaks the signature (caught at verify) or the AEAD tag (caught at open), and never opens.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity in the selftest is a TEST identity from a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Every identity in the selftest is a TEST identity from a
 //! published-vector mnemonic; the module's own functions call no std.crypto (the halves beneath are each doubly-oracle-proven one rung down). The KEM
-//! message m must be fresh randomness in real use — the selftest supplies a deterministic TEST value and names the duty plainly. Constant-time
+//! message m must be fresh randomness in real use -- the selftest supplies a deterministic TEST value and names the duty plainly. Constant-time
 //! timing-safety stays crypto/CONSTANT_TIME.md's named horizon; sealing to or signing as the maintainer's OWN post-quantum identity stays the custody gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_pq_sealed.rye selftest
@@ -50,37 +50,37 @@ pub const magic_len: u32 = 4;
 /// The 32-byte KEM message width, borrowed from the identity so a caller sizes one value.
 pub const seed_bytes: u32 = pq.seed_bytes;
 
-/// header_len — the fixed-width envelope prefix for a parameter set: magic ‖ sender ML-DSA public key ‖ sender ML-DSA signature. Everything after it is
+/// header_len -- the fixed-width envelope prefix for a parameter set: magic ‖ sender ML-DSA public key ‖ sender ML-DSA signature. Everything after it is
 /// the inner sealed frame.
 pub fn header_len(comptime p: pq.PqParams) u32 {
     return magic_len + pq.sign_public_len(p) + pq.sig_len(p);
 }
 
-/// max_frame_bytes — the whole envelope at the largest plaintext, per set: the fixed header plus the inner frame's own maximum. Named so a caller's
+/// max_frame_bytes -- the whole envelope at the largest plaintext, per set: the fixed header plus the inner frame's own maximum. Named so a caller's
 /// scratch cites one ceiling.
 pub fn max_frame_bytes(comptime p: pq.PqParams) u32 {
     return header_len(p) + mlkem.max_frame_bytes(p.kem);
 }
 
-/// The largest plaintext one sealed carry holds — inherited from the inner sealed frame, so this door adds no looser limit.
+/// The largest plaintext one sealed carry holds -- inherited from the inner sealed frame, so this door adds no looser limit.
 pub const max_plain_bytes: u32 = mlkem.max_plain_bytes;
 
 pub const KumaraPqSealedError = error{
-    /// seal's output buffer is too small to hold the whole envelope — refused before any byte is written.
+    /// seal's output buffer is too small to hold the whole envelope -- refused before any byte is written.
     OutTooSmall,
-    /// A plaintext longer than max_plain_bytes — refused before any key agreement or signing.
+    /// A plaintext longer than max_plain_bytes -- refused before any key agreement or signing.
     PayloadTooLong,
     /// open was handed a buffer shorter than the fixed header, so it cannot hold even an empty inner frame.
     FrameTooShort,
-    /// The first four bytes are not the GQS1 magic — this is not a post-quantum sealed-and-signed envelope.
+    /// The first four bytes are not the GQS1 magic -- this is not a post-quantum sealed-and-signed envelope.
     BadMagic,
-    /// The envelope names a sender that is not the one the reader expected — a valid signature from the wrong keeper, refused before any decapsulation.
+    /// The envelope names a sender that is not the one the reader expected -- a valid signature from the wrong keeper, refused before any decapsulation.
     UnexpectedSigner,
-    /// The sender's ML-DSA signature did not verify over the inner sealed frame — the provenance is not genuine. No plaintext is revealed.
+    /// The sender's ML-DSA signature did not verify over the inner sealed frame -- the provenance is not genuine. No plaintext is revealed.
     BadSignature,
     /// The inner sealed frame did not open (a wrong recipient, or a tampered ciphertext/tag). No plaintext is revealed.
     OpenFailed,
-    /// A composed seal, sign, or verify rung surfaced its own error — honored honestly.
+    /// A composed seal, sign, or verify rung surfaced its own error -- honored honestly.
     ComposedFailed,
 };
 
@@ -93,9 +93,9 @@ pub fn OpenedType(comptime p: pq.PqParams) type {
     };
 }
 
-/// seal_signed — seal `plain` TO the recipient's ML-KEM agreement half and SIGN the sealed frame with the sender's ML-DSA half, writing a whole
+/// seal_signed -- seal `plain` TO the recipient's ML-KEM agreement half and SIGN the sealed frame with the sender's ML-DSA half, writing a whole
 /// post-quantum sealed-and-signed envelope into `out` and returning its length. Confidentiality from the recipient's half, provenance from the sender's
-/// — the two halves the dual-key identity carries, composed in one frame. The KEM message m must be fresh randomness in real use (the caller's duty).
+/// -- the two halves the dual-key identity carries, composed in one frame. The KEM message m must be fresh randomness in real use (the caller's duty).
 pub fn seal_signed(
     comptime p: pq.PqParams,
     sender: *const pq.IdentityType(p),
@@ -107,7 +107,7 @@ pub fn seal_signed(
     // invariant (precondition): the plaintext fits the inner frame's bound, so the whole envelope fits and every length below stays a bounded u32.
     if (plain.len > max_plain_bytes) return error.PayloadTooLong;
     const hlen = header_len(p);
-    // invariant (precondition): the caller's buffer holds at least the fixed header plus an empty inner frame — the full check follows once the inner
+    // invariant (precondition): the caller's buffer holds at least the fixed header plus an empty inner frame -- the full check follows once the inner
     // length is known.
     if (out.len < hlen + mlkem.frame_overhead(p.kem)) return error.OutTooSmall;
 
@@ -115,7 +115,7 @@ pub fn seal_signed(
     const inner_len = mlkem.seal(p.kem, recipient_agree_public, m, plain, out[hlen..]) catch return error.ComposedFailed;
     const inner = out[hlen .. hlen + inner_len];
 
-    // Sign a BLAKE2b-512 digest of the inner ciphertext frame with the sender's ML-DSA half — the provenance binding. Signing the digest (a fixed 64
+    // Sign a BLAKE2b-512 digest of the inner ciphertext frame with the sender's ML-DSA half -- the provenance binding. Signing the digest (a fixed 64
     // bytes) rather than the frame itself keeps the signed message within ML-DSA's bound at every plaintext length, and binds the signature to the
     // exact ciphertext by the hash's collision resistance.
     const digest = blake2b.hash512(inner) catch return error.ComposedFailed;
@@ -133,12 +133,12 @@ pub fn seal_signed(
     // invariant (bound): copy exactly sig_len signature bytes.
     while (s < sig_len) : (s += 1) out[magic_len + pk_len + s] = sig[s];
 
-    // invariant (postcondition): the whole envelope was written — the fixed header plus the inner frame — and nothing past it was touched.
+    // invariant (postcondition): the whole envelope was written -- the fixed header plus the inner frame -- and nothing past it was touched.
     assert(hlen + inner_len <= out.len);
     return hlen + inner_len;
 }
 
-/// open_signed — recover the plaintext of a post-quantum sealed-and-signed envelope, verify-before-trust: refuse unless the named sender matches the
+/// open_signed -- recover the plaintext of a post-quantum sealed-and-signed envelope, verify-before-trust: refuse unless the named sender matches the
 /// reader's expectation and its ML-DSA signature over the inner frame verifies, THEN decapsulate the inner frame with the recipient's ML-KEM half. A
 /// wrong expected sender (UnexpectedSigner), a forged signature (BadSignature), a wrong recipient or tampered ciphertext (OpenFailed) each refuse with
 /// no plaintext revealed. Returns the plaintext and the verified sender public key.
@@ -157,7 +157,7 @@ pub fn open_signed(
     const pk_len = pq.sign_public_len(p);
     const sig_len = pq.sig_len(p);
 
-    // Read the named sender's public key and refuse a sender the reader did not expect — before any signature check or decapsulation.
+    // Read the named sender's public key and refuse a sender the reader did not expect -- before any signature check or decapsulation.
     var sender_public: [pq.sign_public_len(p)]u8 = undefined;
     var k: u32 = 0;
     // invariant (bound): read exactly pk_len sender-public-key bytes.
@@ -171,16 +171,16 @@ pub fn open_signed(
     while (s < sig_len) : (s += 1) sig[s] = frame[magic_len + pk_len + s];
     const inner = frame[hlen..];
 
-    // PROVENANCE FIRST — verify the sender's signature over the BLAKE2b-512 digest of the inner frame; refuse a forgery before touching the
+    // PROVENANCE FIRST -- verify the sender's signature over the BLAKE2b-512 digest of the inner frame; refuse a forgery before touching the
     // recipient's secret key. The digest is recomputed here, so a tampered ciphertext yields a different digest and the signature no longer verifies.
     const digest = blake2b.hash512(inner) catch return error.ComposedFailed;
     const genuine = pq.verify(p, &sender_public, digest[0..], &sig) catch return error.ComposedFailed;
     if (!genuine) return error.BadSignature;
 
-    // CONFIDENTIALITY — decapsulate the inner frame with the recipient's ML-KEM half; a wrong recipient or tampered ciphertext fails OpenFailed.
+    // CONFIDENTIALITY -- decapsulate the inner frame with the recipient's ML-KEM half; a wrong recipient or tampered ciphertext fails OpenFailed.
     const opened = mlkem.open(p.kem, &recipient.agree.dk, &recipient.agree.ek, inner, out) catch return error.OpenFailed;
 
-    // invariant (postcondition): both provenance and confidentiality held — the plaintext is authentic, from the expected sender, and sealed to this
+    // invariant (postcondition): both provenance and confidentiality held -- the plaintext is authentic, from the expected sender, and sealed to this
     // recipient.
     assert(genuine);
     return OpenedType(p){ .plain = opened.plain, .sender_public = sender_public };
@@ -198,18 +198,18 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Fill a buffer with a deterministic spread of test bytes — TEST plaintexts and TEST KEM messages only, never real randomness.
+/// Fill a buffer with a deterministic spread of test bytes -- TEST plaintexts and TEST KEM messages only, never real randomness.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
     while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
     if (buf.len > 0) buf[0] |= 1;
 }
 
-// Two TEST identities from BIP-39's published Trezor vector, separated by passphrase — the sender and the recipient. NOT real identities.
+// Two TEST identities from BIP-39's published Trezor vector, separated by passphrase -- the sender and the recipient. NOT real identities.
 const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 
-/// check_param — prove the sealed-and-signed door for one parameter set: a confidential-and-authenticated round-trip across plaintext lengths, the
-/// message not the plaintext, and four refusals — a wrong recipient, a wrong expected sender, a tampered inner frame, and a tampered signature.
+/// check_param -- prove the sealed-and-signed door for one parameter set: a confidential-and-authenticated round-trip across plaintext lengths, the
+/// message not the plaintext, and four refusals -- a wrong recipient, a wrong expected sender, a tampered inner frame, and a tampered signature.
 fn check_param(comptime p: pq.PqParams) !void {
     const sender = try pq.from_mnemonic(p, trezor_mnemonic, "SENDER");
     const recipient = try pq.from_mnemonic(p, trezor_mnemonic, "RECIPIENT");
@@ -245,7 +245,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         if (bytes_eq(frame_buf[body_start .. body_start + 64], plain_buf[0..])) return error.CiphertextIsPlaintext;
     }
 
-    // 3. Wrong recipient — the stranger cannot open a frame sealed to the recipient, even though the provenance is genuine: OpenFailed.
+    // 3. Wrong recipient -- the stranger cannot open a frame sealed to the recipient, even though the provenance is genuine: OpenFailed.
     {
         var plain_buf: [48]u8 = undefined;
         fill_test(plain_buf[0..], 31);
@@ -255,7 +255,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         } else |e| if (e != error.OpenFailed) return error.WrongRecipientWrongError;
     }
 
-    // 4. Wrong expected sender — a reader expecting the stranger refuses a frame the sender signed, before any decapsulation: UnexpectedSigner.
+    // 4. Wrong expected sender -- a reader expecting the stranger refuses a frame the sender signed, before any decapsulation: UnexpectedSigner.
     {
         var plain_buf: [48]u8 = undefined;
         fill_test(plain_buf[0..], 37);
@@ -265,7 +265,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         } else |e| if (e != error.UnexpectedSigner) return error.WrongSenderWrongError;
     }
 
-    // 5. Tampered inner ciphertext — the sender's signature no longer covers it: BadSignature, refused before decapsulation.
+    // 5. Tampered inner ciphertext -- the sender's signature no longer covers it: BadSignature, refused before decapsulation.
     {
         var plain_buf: [48]u8 = undefined;
         fill_test(plain_buf[0..], 41);
@@ -278,7 +278,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         } else |e| if (e != error.BadSignature) return error.TamperInnerWrongError;
     }
 
-    // 6. Tampered signature — the provenance is broken: BadSignature.
+    // 6. Tampered signature -- the provenance is broken: BadSignature.
     {
         var plain_buf: [48]u8 = undefined;
         fill_test(plain_buf[0..], 43);

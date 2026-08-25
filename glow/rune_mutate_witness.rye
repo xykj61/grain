@@ -1,4 +1,4 @@
-//! glow/rune_mutate_witness.rye — proves the `=.` mutate-one-leg rune head.
+//! glow/rune_mutate_witness.rye -- proves the `=.` mutate-one-leg rune head.
 //!
 //!   rye build glow/rune_mutate_witness.rye -femit-bin=glow/bin/rune_mutate_witness
 //!   glow/bin/rune_mutate_witness

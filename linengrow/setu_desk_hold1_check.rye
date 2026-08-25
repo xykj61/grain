@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold1_check.rye — paint Desk hold chrome from cache.
+//! linengrow/setu_desk_hold1_check.rye -- paint Desk hold chrome from cache.
 //!
 //! Reads tools/.cache/setu0/station.bron (+ ping/frame presence) and paints
 //! the HOLD0 line onto a Desk-sized Skate grid; prints the painted line.

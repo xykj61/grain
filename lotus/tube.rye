@@ -1,31 +1,31 @@
-//! lotus/tube.rye — ALES82: the asymmetric tube drive — a different ceiling per sign, the DRIVE family's first CLIP that is not odd. The hard clip
-//! (ALES78), the overdrive (ALES79), and the wavefolder (ALES80) all shape the sample's MAGNITUDE and carry its SIGN — they are ODD functions, so a
+//! lotus/tube.rye -- ALES82: the asymmetric tube drive -- a different ceiling per sign, the DRIVE family's first CLIP that is not odd. The hard clip
+//! (ALES78), the overdrive (ALES79), and the wavefolder (ALES80) all shape the sample's MAGNITUDE and carry its SIGN -- they are ODD functions, so a
 //! symmetric input drives to a symmetric output and only ODD harmonics arise. The tube drive breaks that symmetry on purpose: it pins the positive
 //! half of the wave at one ceiling and the negative half at another. A real vacuum-tube stage clips harder on one polarity than the other, and that
-//! uneven clipping is exactly where a tube's warm EVEN-order harmonics are born — the second harmonic a symmetric transistor clip never makes.
+//! uneven clipping is exactly where a tube's warm EVEN-order harmonics are born -- the second harmonic a symmetric transistor clip never makes.
 //!
 //! The crux is that ONE CEILING PER SIGN IS THE PLAINEST ASYMMETRY THERE IS, and a hard clip is the tube drive whose two ceilings are EQUAL. ALES78
 //! pins every boosted sample to the same magnitude both signs; this rung splits that one ceiling into ceil_pos for the positive half and ceil_neg for
-//! the negative, pinning each half to its own: boosted = divTrunc(x·num, den) (ALES78's pre-gain, verbatim), then y = pin(boosted, +ceil_pos,
+//! the negative, pinning each half to its own: boosted = divTrunc(x-num, den) (ALES78's pre-gain, verbatim), then y = pin(boosted, +ceil_pos,
 //! −ceil_neg). When ceil_pos == ceil_neg the two branches collapse into ALES78's single ceiling and the tube drive reproduces the hard clip
-//! byte-for-byte — the family recognition, and the honest proof that this rung only GENERALIZES, never replaces. When they differ, the map is NOT
-//! odd: tube(1000) = ceil_pos while tube(−1000) = −ceil_neg ≠ −ceil_pos, so a symmetric input drives to an asymmetric output — a DC offset and a full
+//! byte-for-byte -- the family recognition, and the honest proof that this rung only GENERALIZES, never replaces. When they differ, the map is NOT
+//! odd: tube(1000) = ceil_pos while tube(−1000) = −ceil_neg ≠ −ceil_pos, so a symmetric input drives to an asymmetric output -- a DC offset and a full
 //! set of EVEN harmonics. Stated positively: THE UNEVEN RAIL IS THE TUBE'S HONEST EVEN-HARMONIC SIGNATURE, the sibling of ALES81's not-odd map (the
 //! bit-crush floors downward, the tube clips unevenly; neither dresses itself in a symmetry it does not have).
 //!
 //! Each ceiling is checked into [1, sample_max] exactly as ALES78's single ceiling, so the pinned output lands in [−ceil_neg, ceil_pos] ⊆
 //! [sample_min, sample_max] BEFORE the write: the pin does the bounding, and the saturate that follows is a documented no-op. The pre-gain runs in
-//! i64 under ALES78's max_drive_num bound, so x·num never overflows before the pin. The map is MEMORYLESS — every output depends only on its own
+//! i64 under ALES78's max_drive_num bound, so x-num never overflows before the pin. The map is MEMORYLESS -- every output depends only on its own
 //! input, so the in-place read-then-write at one index touches nothing another step needs.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES82.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES82.
 //! Design read: active-designing/date/20260814/20260814-212318_fill-ales82-lotus-tube-drive.md
-//! Stands on: lotus/drive.rye (ALES78) — the pre-gain, the gain faults, and the ceiling law, reused with one ceiling per sign; lotus/fader.rye
-//! (ALES6) — the num/den gain in i64; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//! Stands on: lotus/drive.rye (ALES78) -- the pre-gain, the gain faults, and the ceiling law, reused with one ceiling per sign; lotus/fader.rye
+//! (ALES6) -- the num/den gain in i64; lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, the one true saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the gain is a rational num/den (unity = 1/1), the two ceilings magnitudes in sample units (not
-//! decibels), and the shape a piecewise-constant asymmetric clip, instantaneous (no attack/release, no anti-aliasing — the harmonics fold in the i16
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the gain is a rational num/den (unity = 1/1), the two ceilings magnitudes in sample units (not
+//! decibels), and the shape a piecewise-constant asymmetric clip, instantaneous (no attack/release, no anti-aliasing -- the harmonics fold in the i16
 //! domain exactly as any integer clipper's). One multiply, one divide, one sign-aware pin per sample; the gain runs in i64 so it never overflows
 //! before the pin, and the pinned value fits the i16 rail by construction.
 //!
@@ -41,35 +41,35 @@ const drive = @import("drive.rye");
 pub const tube_version = "20260814.212318";
 
 /// The asymmetric tube drive's faults, one consistent name each. BadGain, BadCeiling, and BadRange coincide by name with ALES78's hard drive (Zig
-/// merges error sets by name) — so a composer sees one consistent fault whichever drive refuses. BadCeiling here guards BOTH ceilings: each side must
+/// merges error sets by name) -- so a composer sees one consistent fault whichever drive refuses. BadCeiling here guards BOTH ceilings: each side must
 /// be a legal magnitude in [1, sample_max], so an asymmetric clip whose either rail is silent or out of reach is refused before any write.
 pub const TubeError = error{
-    /// A zero denominator, a gain below unity (num < den — a drive boosts, never attenuates), or a numerator past drive.max_drive_num — no write.
+    /// A zero denominator, a gain below unity (num < den -- a drive boosts, never attenuates), or a numerator past drive.max_drive_num -- no write.
     BadGain,
-    /// Either ceiling below one sample unit (would silence that half) or above sample_max (nothing boosted could be pinned there) — refused, no write.
+    /// Either ceiling below one sample unit (would silence that half) or above sample_max (nothing boosted could be pinned there) -- refused, no write.
     BadCeiling,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Drive `count` samples starting at `start` in place in `clip`: each sample is boosted by the rational gain `num`/`den` (at least unity) and then
-/// pinned ASYMMETRICALLY — the positive half to `ceil_pos`, the negative half to `−ceil_neg`. A hard clip is this same map with `ceil_pos == ceil_neg`.
+/// pinned ASYMMETRICALLY -- the positive half to `ceil_pos`, the negative half to `−ceil_neg`. A hard clip is this same map with `ceil_pos == ceil_neg`.
 /// After the call every positive output is at most `ceil_pos`, every negative at least `−ceil_neg`, its sign matches the input's, and every output
 /// depends only on its own input (the drive is memoryless). Refuses BadGain (ALES78's three gain faults), BadCeiling (either side outside [1,
-/// sample_max]), and BadRange — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// sample_max]), and BadRange -- each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn tube(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ceil_pos: i32, ceil_neg: i32) TubeError!void {
-    // invariant: the gain is legal exactly as ALES78's hard drive — nonzero denominator, at least unity, numerator within the safe bound. The same
+    // invariant: the gain is legal exactly as ALES78's hard drive -- nonzero denominator, at least unity, numerator within the safe bound. The same
     // three checks, so the same three faults, before any write.
     if (den == 0) return error.BadGain;
     if (num < den) return error.BadGain;
     if (num > drive.max_drive_num) return error.BadGain;
-    // invariant: BOTH ceilings are legal magnitudes — at least one sample unit (a zero ceiling would silence that half) and no greater than the i16
+    // invariant: BOTH ceilings are legal magnitudes -- at least one sample unit (a zero ceiling would silence that half) and no greater than the i16
     // rail (a ceiling nothing could reach is not a ceiling). ALES78's exact bound, applied to each side.
     if (ceil_pos < 1) return error.BadCeiling;
     if (ceil_pos > @as(i32, timeline.sample_max)) return error.BadCeiling;
     if (ceil_neg < 1) return error.BadCeiling;
     if (ceil_neg > @as(i32, timeline.sample_max)) return error.BadCeiling;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the sibling drives.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the sibling drives.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -77,7 +77,7 @@ pub fn tube(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ce
     const cneg: i64 = @as(i64, ceil_neg); // safe: 1 <= ceil_neg <= sample_max, proven above
     const n: i64 = @as(i64, num);
     const d: i64 = @as(i64, den);
-    // invariant: the gain terms are both bounded and positive — num ≥ den ≥ 1 and num ≤ max_drive_num — so the pre-gain below is a positive scale
+    // invariant: the gain terms are both bounded and positive -- num ≥ den ≥ 1 and num ≤ max_drive_num -- so the pre-gain below is a positive scale
     // that never overflows i64, and both ceilings sit inside the rail.
     assert(n >= d and d >= 1 and n <= @as(i64, drive.max_drive_num) and cpos >= 1 and cpos <= @as(i64, timeline.sample_max) and
         cneg >= 1 and cneg <= @as(i64, timeline.sample_max));
@@ -85,18 +85,18 @@ pub fn tube(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ce
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         const dry: i64 = @as(i64, clip.buf[i]);
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
         // The pre-gain, ALES78's verbatim: dry boosted by num/den in i64, @divTrunc toward zero exactly as ALES6's fader. |dry| ≤ 32768 and
         // num ≤ 2^20, so the product fits i64 with vast headroom and the boosted value carries dry's sign.
         const boosted: i64 = @divTrunc(dry * n, d);
         // ALES78's ceiling law, split by sign: a positive boosted value past +ceil_pos pins there; a negative one past −ceil_neg pins there; one
-        // within its half passes at its boosted value. The two ceilings differ, so the clip is ASYMMETRIC — even harmonics, the tube's voice.
+        // within its half passes at its boosted value. The two ceilings differ, so the clip is ASYMMETRIC -- even harmonics, the tube's voice.
         const pinned: i64 = if (boosted > cpos) cpos else if (boosted < -cneg) -cneg else boosted;
         // invariant: the pinned value lands within [−ceil_neg, ceil_pos] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY
-        // CONSTRUCTION — the clip is the asymmetric pin above, and the saturate that follows is a documented no-op over an already-pinned value.
+        // CONSTRUCTION -- the clip is the asymmetric pin above, and the saturate that follows is a documented no-op over an already-pinned value.
         assert(pinned >= -cneg and pinned <= cpos);
-        // invariant: the sign is held — a positive boosted sample stays non-negative and a negative one stays non-positive, so the tube clip never
+        // invariant: the sign is held -- a positive boosted sample stays non-negative and a negative one stays non-positive, so the tube clip never
         // FLIPS a sample even as it clips the two halves unevenly. Asymmetry lives in the magnitude, never the sign.
         assert((boosted >= 0 and pinned >= 0) or (boosted <= 0 and pinned <= 0));
         clip.buf[i] = timeline.saturate(pinned);
@@ -109,8 +109,8 @@ pub fn tube(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ce
 // --- selftest: EQUAL CEILINGS ARE ALES78's HARD CLIP (the family recognition, proven byte-for-byte against the real hard drive); a HAND-COMPUTED
 //     ASYMMETRIC CLIP matches exactly (positive half to ceil_pos, negative to ceil_neg); the map is NOT ODD, the honest even-harmonic signature
 //     (tube(1000) = ceil_pos, tube(−1000) = −ceil_neg, ceil_pos ≠ ceil_neg); EACH HALF STAYS UNDER ITS OWN CEILING and the sign is held under a
-//     heavy drive; a SYMMETRIC-CEILING drive stays ODD (the degenerate recovers tube(−x) = −tube(x)); the span discipline holds; and each fault —
-//     BadGain, BadCeiling (either side zero or over-rail), BadRange — refuses by name, the clip untouched ---
+//     heavy drive; a SYMMETRIC-CEILING drive stays ODD (the degenerate recovers tube(−x) = −tube(x)); the span discipline holds; and each fault --
+//     BadGain, BadCeiling (either side zero or over-rail), BadRange -- refuses by name, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -124,7 +124,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. EQUAL CEILINGS ARE ALES78's HARD CLIP — the crux's degenerate. With ceil_pos == ceil_neg the two branches collapse into one ceiling and the
+    // 1. EQUAL CEILINGS ARE ALES78's HARD CLIP -- the crux's degenerate. With ceil_pos == ceil_neg the two branches collapse into one ceiling and the
     //    tube drive reproduces the hard drive byte-for-byte, at the same gain, over a signal that both passes and clips. Proven against the REAL
     //    ALES78 (both run).
     {
@@ -138,9 +138,9 @@ fn run_selftest() !u8 {
         if (!eq(a.samples(), b.samples())) return error.EqualCeilNotHard;
     }
 
-    // 2. A HAND-COMPUTED ASYMMETRIC CLIP — ceil_pos = 1500, ceil_neg = 800, gain ×2, the two rails read directly. 500→1000 (passes); 1000→1500 (pins
-    //    positive, 2000 > 1500); −300→−600 (passes); −600→−800 (pins negative, −1200 < −800); −100→−200 (passes). The two halves clip at DIFFERENT
-    //    magnitudes — the tube's uneven rail.
+    // 2. A HAND-COMPUTED ASYMMETRIC CLIP -- ceil_pos = 1500, ceil_neg = 800, gain ×2, the two rails read directly. 500->1000 (passes); 1000->1500 (pins
+    //    positive, 2000 > 1500); −300->−600 (passes); −600->−800 (pins negative, −1200 < −800); −100->−200 (passes). The two halves clip at DIFFERENT
+    //    magnitudes -- the tube's uneven rail.
     {
         const sig = [_]i16{ 500, 1000, -300, -600, -100 };
         var clip = timeline.Clip{};
@@ -150,9 +150,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.AsymmetricWrong;
     }
 
-    // 3. THE MAP IS NOT ODD — the honest even-harmonic signature. With ceil_pos = 1500 ≠ ceil_neg = 800, a ± symmetric loud input maps to an
+    // 3. THE MAP IS NOT ODD -- the honest even-harmonic signature. With ceil_pos = 1500 ≠ ceil_neg = 800, a ± symmetric loud input maps to an
     //    ASYMMETRIC output: +1000 boosted ×3 pins to +1500, −1000 boosted ×3 pins to −800, so tube(−x) ≠ −tube(x). The uneven rail no odd clipper
-    //    makes — a DC offset and a full set of even harmonics.
+    //    makes -- a DC offset and a full set of even harmonics.
     {
         const sig = [_]i16{ 1000, -1000 };
         var clip = timeline.Clip{};
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (out[1] == -out[0]) return error.UnexpectedlyOdd; // −800 ≠ −1500: the map is genuinely not odd
     }
 
-    // 4. EACH HALF STAYS UNDER ITS OWN CEILING, SIGN HELD — under a heavy ×8 drive every positive output is at most ceil_pos and every negative at
+    // 4. EACH HALF STAYS UNDER ITS OWN CEILING, SIGN HELD -- under a heavy ×8 drive every positive output is at most ceil_pos and every negative at
     //    least −ceil_neg, and no sample flips sign. The asymmetry lives in the magnitude, never the sign.
     {
         const sig = [_]i16{ 100, -100, 4000, -4000, 20000, -20000, 5, -5 };
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A SYMMETRIC-CEILING DRIVE STAYS ODD — the degenerate ceil_pos == ceil_neg recovers tube(−x) = −tube(x): a ± symmetric input maps to a ±
+    // 5. A SYMMETRIC-CEILING DRIVE STAYS ODD -- the degenerate ceil_pos == ceil_neg recovers tube(−x) = −tube(x): a ± symmetric input maps to a ±
     //    symmetric output, so the family's odd members (the hard clip, the overdrive, the wavefolder) are the special case where the two rails meet.
     {
         const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 };
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.EqualNotOdd;
     }
 
-    // 6. THE SPAN DISCIPLINE — driving a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole suite
+    // 6. THE SPAN DISCIPLINE -- driving a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole suite
     //    keeps. Drive the middle two of six with an asymmetric clip; the first and last two are untouched.
     {
         const sig = [_]i16{ 100, 200, 5000, -5000, 300, 400 };
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 7a. A ZERO DENOMINATOR / BELOW-UNITY GAIN / OVERSIZED NUMERATOR each refuse BadGain — before any write, the clip untouched (ALES78's gain
+    // 7a. A ZERO DENOMINATOR / BELOW-UNITY GAIN / OVERSIZED NUMERATOR each refuse BadGain -- before any write, the clip untouched (ALES78's gain
     //     faults, verbatim).
     {
         const sig = [_]i16{ 1, 2, 3, 4 };
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.RefusedWideNumTouched;
     }
 
-    // 7b. EITHER CEILING zero or over-rail refuses BadCeiling — the positive side and the negative side each guarded — before any write, the clip
+    // 7b. EITHER CEILING zero or over-rail refuses BadCeiling -- the positive side and the negative side each guarded -- before any write, the clip
     //     untouched.
     {
         const sig = [_]i16{ 5, 6, 7, 8 };
@@ -233,7 +233,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.RefusedOverNegTouched;
     }
 
-    // 7c. A SPAN past the end refuses BadRange — before any write, the clip untouched.
+    // 7c. A SPAN past the end refuses BadRange -- before any write, the clip untouched.
     {
         const sig = [_]i16{ 9, 10, 11 };
         var clip = timeline.Clip{};

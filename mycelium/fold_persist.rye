@@ -1,13 +1,13 @@
-//! mycelium/fold_persist.rye — fold state across an cellar-shaped sleep.
+//! mycelium/fold_persist.rye -- fold state across an cellar-shaped sleep.
 //!
-//! Journey 4 · equinox A · h4 Accrete-never-break · door 9.
+//! Journey 4 - equinox A - h4 Accrete-never-break - door 9.
 //! Bound from tools/gen/season/recursion_block.brix:
 //!   myc_fold_snapshot_max_bytes 4096
 //!
 //! Snapshot FoldState (+ prefix length) to bounded bytes, restore, fold the
 //! remainder, assert equality with a fresh fold of the full log. Malformed,
 //! truncated, unknown-version, and over-bound snapshots refuse whole.
-//! Membership · wallet · gas · keys stay parked.
+//! Membership - wallet - gas - keys stay parked.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig \
 //!     rye/bin/rye run mycelium/fold_persist.rye
@@ -18,10 +18,10 @@ const print = std.debug.print;
 const fold = @import("fold.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// One FoldState freeze for a journey-scale log — seated door 9 · power of two.
+/// One FoldState freeze for a journey-scale log -- seated door 9 - power of two.
 pub const myc_fold_snapshot_max_bytes: u32 = 4096;
 
-/// Wire version — unknown versions refuse whole.
+/// Wire version -- unknown versions refuse whole.
 pub const snapshot_version: u8 = 1;
 
 pub const SnapshotError = error{
@@ -40,7 +40,7 @@ pub fn snapshot_state(
     prefix_len: u32,
     out: []u8,
 ) SnapshotError!usize {
-    // version · issued · taxed · prefix_len · star_count · stars…
+    // version - issued - taxed - prefix_len - star_count - stars...
     var need: usize = 1 + 8 + 8 + 4 + 4;
     var i: u32 = 0;
     while (i < state.star_count) : (i += 1) {
@@ -182,7 +182,7 @@ fn read_u32_le(in: []const u8) u32 {
     return v;
 }
 
-/// Selftest — sleep · wake · equal · refuse whole.
+/// Selftest -- sleep - wake - equal - refuse whole.
 pub fn main() !void {
     const kumara = @import("kumara.rye");
     const seed: [kumara.seed_length]u8 = .{0xa1} ** kumara.seed_length;
@@ -210,7 +210,7 @@ pub fn main() !void {
     const n = try snapshot_state(&mid, 2, buf[0..]);
     if (n == 0 or n > myc_fold_snapshot_max_bytes) return error.SnapSize;
 
-    // Purity of encode: same state → same bytes.
+    // Purity of encode: same state -> same bytes.
     var buf2: [myc_fold_snapshot_max_bytes]u8 = undefined;
     const n2 = try snapshot_state(&mid, 2, buf2[0..]);
     if (n2 != n or !std.mem.eql(u8, buf[0..n], buf2[0..n2])) return error.SnapPurity;
@@ -254,12 +254,12 @@ pub fn main() !void {
     if (restore_state(tamper[0..n], &trash, &pl)) |_| {
         // If restore accepted a nonsense pair, fold_remainder / equality must still fail loudly.
         if (trash.taxed <= trash.issued) {
-            // Continue fold — may or may not error; final equality must fail vs fresh.
+            // Continue fold -- may or may not error; final equality must fail vs fresh.
             fold_remainder(&trash, &log, pl) catch {};
             if (states_equal(&trash, &fresh)) return error.TamperEqual;
         }
     } else |_| {
-        // refused whole — good
+        // refused whole -- good
     }
 
     // Over-bound encode: many max-length stars until snapshot refuses.

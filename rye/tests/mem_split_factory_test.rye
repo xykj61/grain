@@ -1,7 +1,7 @@
-//! Rye test: forward split factories — pass 9934.
+//! Rye test: forward split factories -- pass 9934.
 //!
 //! splitScalar, splitAny, and splitSequence must begin at index zero with
-//! rest() spanning the full buffer before iteration (pairs with SplitIterator 9963–9969).
+//! rest() spanning the full buffer before iteration (pairs with SplitIterator 9963-9969).
 
 const std = @import("std");
 const mem = std.mem;

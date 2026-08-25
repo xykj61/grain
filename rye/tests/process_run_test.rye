@@ -1,4 +1,4 @@
-//! Rye test: std.process.run — pass 9981.
+//! Rye test: std.process.run -- pass 9981.
 //!
 //! Rishi's `run` builtin and parity.rish orchestration spawn children through
 //! process.run. This test exercises exit status, captured stdout, and stream

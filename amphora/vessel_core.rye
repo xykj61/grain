@@ -1,7 +1,7 @@
-//! amphora/vessel_core.rye — Amphora vessel: parse, Kumara stamp_sig, verify.
+//! amphora/vessel_core.rye -- Amphora vessel: parse, Kumara stamp_sig, verify.
 //!
-//! Accretion 20260801.043522 (Q11): readable `manifest` lines — each one a
-//! manifest_entry triple (mark · digest · name), validated by the same
+//! Accretion 20260801.043522 (Q11): readable `manifest` lines -- each one a
+//! manifest_entry triple (mark - digest - name), validated by the same
 //! module, carried into canonical bytes so the stamp covers the listing.
 //! Elder vessels carry none and their canonical bytes are unchanged.
 //!
@@ -27,7 +27,7 @@ pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 pub const seal_nonce_hex_len: u32 = 24;
 pub const seal_tag_hex_len: u32 = 32;
 
-/// Witness seed for Amphora vessel stamps — distinct from kumara 0x42 / batch 0x60.
+/// Witness seed for Amphora vessel stamps -- distinct from kumara 0x42 / batch 0x60.
 const vessel_stamp_seed: [kumara.seed_length]u8 = .{0x62} ** kumara.seed_length;
 
 pub const VesselFields = struct {
@@ -186,7 +186,7 @@ fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidV
     parts.sealed = sealed;
 }
 
-/// Build canonical bytes: format · stamp · shoulder · parent · cargo | seal_* .
+/// Build canonical bytes: format - stamp - shoulder - parent - cargo | seal_* .
 /// Skips comments, blanks, and stamp_sig. Seal and clear cargo are mutually exclusive.
 pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflow}!u32 {
     var parts: CanonicalParts = undefined;
@@ -223,7 +223,7 @@ pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflo
     return off;
 }
 
-/// A listed line — `manifest` or `cargo` — is a manifest_entry triple under a
+/// A listed line -- `manifest` or `cargo` -- is a manifest_entry triple under a
 /// bounded count; answers true when the line was of the given kind.
 fn take_listed_line(line: []const u8, kind: []const u8, count: *u32) error{InvalidVessel}!bool {
     // invariant: a manifest line carries both a kind and a body, so an empty either would
@@ -401,7 +401,7 @@ fn run_selftest(io: std.Io) !u8 {
     try parse_vessel(text, &fields);
     assert(std.mem.eql(u8, fields.format, "amphora-v1"));
     assert(std.mem.eql(u8, fields.stamp, "20260710.143500"));
-    // Class W wire shoulder (e149 restored) — not product vocabulary.
+    // Class W wire shoulder (e149 restored) -- not product vocabulary.
     const shoulder_ring1_wire = "amber-ring1-season";
     assert(std.mem.eql(u8, fields.shoulder, shoulder_ring1_wire));
     assert(fields.parent.len == me.digest_hex_len);

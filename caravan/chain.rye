@@ -1,12 +1,12 @@
-//! Caravan chain — startup as a sequence of named stages.
+//! Caravan chain -- startup as a sequence of named stages.
 //!
 //! Twin proved two dependents with separate gardens, supervised independently.
 //! This program proves chain-loading: stages run in a fixed order, each must
 //! exit cleanly before the next begins, and a fall restarts only the current
-//! stage — never rewinding the chain. The s6 discipline on hosted ground.
+//! stage -- never rewinding the chain. The s6 discipline on hosted ground.
 //!
 //! Usage:
-//!   chain                     Run as supervisor (chain wake → prove)
+//!   chain                     Run as supervisor (chain wake -> prove)
 //!   chain dependent wake ok       Wake stage succeeds (readiness signal)
 //!   chain dependent wake fail     Wake stage falls
 //!   chain dependent prove ok      Prove stage succeeds (bounded garden)

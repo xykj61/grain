@@ -1,10 +1,10 @@
-//! mycelium/chorus_true.rye — a quorum reads a real ledger record true (r4, the arc closes).
+//! mycelium/chorus_true.rye -- a quorum reads a real ledger record true (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r4.
 //! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
 //! r1 fixed the crux (a quorum of independent Vouchers is believed only when a threshold of distinct nodes
-//! agree), r2 let the whole quorum travel as bytes, r3 read it across a Knot — all over Dags seated in
+//! agree), r2 let the whole quorum travel as bytes, r3 read it across a Knot -- all over Dags seated in
 //! code. This closing rung carries the quorum onto a REAL on-disk Cord record a keeper can open and hash,
 //! and proves the property the whole Chorus rests on: the agreed position is TRUE TO THE BYTES, the
 //! distinct-node count the threshold reads is the count of members present, and every member's order-head
@@ -13,25 +13,25 @@
 //! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron` (a demo funder credits Alice
 //! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
 //! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
-//! time through the existing `mycelium/corpora/` symlink — no network, the bytes read are the tree's own. A
+//! time through the existing `mycelium/corpora/` symlink -- no network, the bytes read are the tree's own. A
 //! chorus is a quorum of nodes' signatures over exactly the position that ledger projects, so one fixture
 //! proves both.
 //!
 //! Two independent readings must agree, and the quorum must be honest:
-//!   - THE POSITION — the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
+//!   - THE POSITION -- the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
 //!     (re-verifying every signature), gathers a three-node quorum over the genesis-funded account, and
 //!     emits the agreed triple; the r4 witness cross-checks it against `tools/fixtures/statement_dag_truth.awk`'s
-//!     per-account deadline-clock reading of the same bytes — two tools, one answer.
-//!   - THE QUORUM — `verify_chorus` believes the mesh at the full threshold three yet refuses at four
+//!     per-account deadline-clock reading of the same bytes -- two tools, one answer.
+//!   - THE QUORUM -- `verify_chorus` believes the mesh at the full threshold three yet refuses at four
 //!     (`BelowThreshold`), so the distinct count the threshold reads is exactly the count of members
 //!     present; and every member's order-head, recomputed from the rebuilt fixture Dag, equals the head
 //!     the member signed, so no voice binds an order from another world.
 //!
-//! The chosen account is the GENESIS-FUNDED one — the recipient of the issue fact, whom both tools identify
-//! the same way — so no magic constant chooses whose position the quorum vouches.
+//! The chosen account is the GENESIS-FUNDED one -- the recipient of the issue fact, whom both tools identify
+//! the same way -- so no magic constant chooses whose position the quorum vouches.
 //!
-//! Additive — composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `kumara`
-//! public API only (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds — no real key, no
+//! Additive -- composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `kumara`
+//! public API only (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds -- no real key, no
 //! funds, no network, no custody. A SERVED chorus (a holder fetching several nodes' attestations over
 //! Comlink) reaches the Comlink-served gate, the maintainer's hand.
 //!
@@ -51,16 +51,16 @@ const kumara = @import("kumara.rye");
 
 pub const chorus_true_version = "20260813.102533";
 
-/// The real ledger record, bound at compile time — the tree's own bytes, never a drift. Reused from the
+/// The real ledger record, bound at compile time -- the tree's own bytes, never a drift. Reused from the
 /// Lapse's fixture, since a chorus is a quorum of signatures over exactly the position that ledger projects.
 const real_dag = @embedFile("corpora/lapse_dag.bron");
 
-/// The threshold this fixture's mesh must meet — three distinct nodes vouch the funded account.
+/// The threshold this fixture's mesh must meet -- three distinct nodes vouch the funded account.
 const true_threshold: u32 = 3;
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the width the record's account keys carry, so the app's chosen account
+/// Encode bytes to lowercase hex -- the width the record's account keys carry, so the app's chosen account
 /// and awk's chosen account are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -73,7 +73,7 @@ fn to_hex(bytes: []const u8, out: []u8) void {
 }
 
 /// The facts a keeper can read by hand off a quorum's agreed slip: whose position it vouches, the position
-/// — balance · reserved · received — and how many distinct voices agreed it.
+/// -- balance - reserved - received -- and how many distinct voices agreed it.
 pub const Reading = struct {
     account_hex: [statement.pk_len * 2]u8 = undefined,
     balance: u64 = 0,
@@ -82,7 +82,7 @@ pub const Reading = struct {
     voices: u32 = 0,
 };
 
-/// Three distinct demo node keypairs — the mesh that vouches. Dev-only seeds; no real key is ever held.
+/// Three distinct demo node keypairs -- the mesh that vouches. Dev-only seeds; no real key is ever held.
 fn three_nodes() [3]kumara.KeyPair {
     const a: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
     const b: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
@@ -90,7 +90,7 @@ fn three_nodes() [3]kumara.KeyPair {
     return .{ kumara.keypair_from_seed(&a), kumara.keypair_from_seed(&b), kumara.keypair_from_seed(&c) };
 }
 
-/// The genesis-funded account's index — the one seat whose received equals what genesis issued. Both tools
+/// The genesis-funded account's index -- the one seat whose received equals what genesis issued. Both tools
 /// choose the vouched account this way, so neither picks a favorite by a hidden constant.
 fn funded_account(l: *const lapse.Ledger) ?u32 {
     var found: ?u32 = null;
@@ -108,10 +108,10 @@ fn funded_account(l: *const lapse.Ledger) ?u32 {
 /// Read the real record and gather a quorum over the funded account: parse, rebuild the Dag under
 /// `cord.add` (verifying every signature), gather a three-node quorum, and read off the agreed position. The
 /// quorum is believed at the full threshold, and every member's recomputed order-head matches its signed one
-/// — both asserted.
+/// -- both asserted.
 pub fn vouch_real(text: []const u8) !Reading {
     const rec = try cord_bron.parse(text);
-    // invariant: a real ledger record carries blocks — an empty Dag holds no account to vouch.
+    // invariant: a real ledger record carries blocks -- an empty Dag holds no account to vouch.
     if (rec.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
@@ -126,7 +126,7 @@ pub fn vouch_real(text: []const u8) !Reading {
     // invariant: the quorum is believed at the full threshold of distinct nodes.
     try chorus.verify_chorus(&c, true_threshold);
 
-    // invariant: every member signed the fixture's own agreed order — its head matches the recomputed one.
+    // invariant: every member signed the fixture's own agreed order -- its head matches the recomputed one.
     var head: [voucher.order_head_len]u8 = undefined;
     voucher.order_head_of(&dag, &head);
     var m: u32 = 0;
@@ -143,7 +143,7 @@ pub fn vouch_real(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The agreed reading of the real record — the witness cross-checks this tuple against awk's reading of the
+/// The agreed reading of the real record -- the witness cross-checks this tuple against awk's reading of the
 /// same bytes, so the two tools must name one account and one position.
 fn welcome_quorum_true_to_bytes() !void {
     const r = try vouch_real(real_dag);
@@ -170,7 +170,7 @@ fn welcome_distinct_count_is_members_present() !void {
     var c = try chorus.open(&dag, verdict.accounts[ai].pk[0..]);
     for (nodes) |n| try chorus.add(&c, &dag, n);
     try chorus.verify_chorus(&c, true_threshold);
-    // invariant: one voice past the members present is refused — the count is not padded.
+    // invariant: one voice past the members present is refused -- the count is not padded.
     if (chorus.verify_chorus(&c, true_threshold + 1)) |_| return error.ThinBelieved else |err| {
         if (err != error.BelowThreshold) return error.WrongThin;
     }
@@ -192,7 +192,7 @@ fn welcome_check_against_the_real_ledger() !void {
     print("chorus-true: the quorum checks against the real ledger it vouches — the agreed position re-read from the rebuilt Dag agrees with the slip.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not vouch a corrupted record. A flipped
+/// A tampered copy of the real bytes refuses -- the reader will not vouch a corrupted record. A flipped
 /// header byte refuses `BadFormat`.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -215,7 +215,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format tuple (`<account-hex> <balance> <reserved> <received>`), so the witness can
-/// compare the app's agreed reading against `statement_dag_truth.awk` byte for byte — two tools, one answer.
+/// compare the app's agreed reading against `statement_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try vouch_real(real_dag);
     print("{s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });

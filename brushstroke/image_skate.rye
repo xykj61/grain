@@ -1,14 +1,14 @@
-//! brushstroke/image_skate.rye — HUNK2: a decoded image meets Skate; lit pixels reach the canvas.
+//! brushstroke/image_skate.rye -- HUNK2: a decoded image meets Skate; lit pixels reach the canvas.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK2.
-//! Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0–HUNK3 quest).
-//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · font8x8 public domain (via skate_grid.rye).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - opening journey Open Image - rung HUNK2.
+//! Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0-HUNK3 quest).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - font8x8 public domain (via skate_grid.rye).
 //!
 //! HUNK0 decoded an image to an RGBA grid; HUNK1 gave it a content address. This rung makes it *seen*: a
 //! bounded down-map from the decoded pixels to Skate's palette-indexed cell grid. The image is partitioned
 //! into cols×rows blocks; each block's average color is quantized to the nearest of a small fixed anchor
 //! palette (seven vivid corners of the color cube), and the matching cell wears that palette slot over a
-//! full-block glyph — so `skate.Grid.rasterize` paints every cell as a solid color block and the down-mapped
+//! full-block glyph -- so `skate.Grid.rasterize` paints every cell as a solid color block and the down-mapped
 //! image lights the canvas. The map is deterministic (same image, same grid) and spatial (a red region reaches
 //! a red cell, a blue region a blue cell), and it is the seam the single-sprite marketplace and the Photos
 //! surface both stand on. No network, no key, no funds.
@@ -23,7 +23,7 @@ const skate = @import("skate_grid.rye");
 
 pub const image_skate_version = "20260813.150309";
 
-/// The fixed anchor palette a block average quantizes to — seven vivid colors filling Skate's usable slots
+/// The fixed anchor palette a block average quantizes to -- seven vivid colors filling Skate's usable slots
 /// (1..7; slot 0 is the "wear the fg argument" sentinel). Named small on purpose: a down-map reads at a
 /// glance, not a photograph. A richer, image-derived palette is a later rung.
 pub const anchor_count: u32 = 7;
@@ -37,7 +37,7 @@ const anchors = [anchor_count]skate.Color{
     .{ .r = 0, .g = 255, .b = 255 }, // slot 7 — cyan
 };
 
-/// Grid ceilings — a down-map is a thumbnail, not the whole panel; bound both axes at construction.
+/// Grid ceilings -- a down-map is a thumbnail, not the whole panel; bound both axes at construction.
 pub const max_map_cols: u32 = 256;
 pub const max_map_rows: u32 = 256;
 
@@ -45,7 +45,7 @@ pub const max_map_rows: u32 = 256;
 /// surface that tiles down-mapped thumbnails onto one grid (HUNK38's catalog shelf) paints the same solid block.
 pub const block_cell: u8 = 128;
 
-/// A full-block extended-glyph atlas — every slot fully lit — so a palette-colored cell paints a solid block.
+/// A full-block extended-glyph atlas -- every slot fully lit -- so a palette-colored cell paints a solid block.
 /// Skate reads glyphs 128..255 from here when `extended_glyphs` points at it (its ZETA4 emoji-atlas seam).
 var block_atlas: [128][8]u8 = [_][8]u8{[_]u8{0xFF} ** 8} ** 128;
 
@@ -56,9 +56,9 @@ pub const MapError = error{
 
 /// Point Skate at the full-block atlas and set a grid's palette to the fixed anchor colors, so a cell wearing
 /// slot 1..anchor_count paints a solid block in that anchor's color. Shared by `down_map` and any surface that
-/// tiles down-mapped thumbnails onto one grid (HUNK38's catalog shelf) — one source of the anchor palette.
+/// tiles down-mapped thumbnails onto one grid (HUNK38's catalog shelf) -- one source of the anchor palette.
 pub fn set_anchor_palette(grid: *skate.Grid) void {
-    // invariant: the anchor palette fills only usable slots — never the sentinel, never past the ceiling.
+    // invariant: the anchor palette fills only usable slots -- never the sentinel, never past the ceiling.
     assert(anchor_count >= 1);
     assert(anchor_count < skate.max_palette);
     // Point Skate at the full-block atlas so cell value 128 paints a solid block in its palette color.
@@ -67,12 +67,12 @@ pub fn set_anchor_palette(grid: *skate.Grid) void {
     while (slot <= anchor_count) : (slot += 1) {
         grid.set_palette(slot, anchors[slot - 1]);
     }
-    // invariant: every anchor slot was set — the loop reached exactly one past the last anchor.
+    // invariant: every anchor slot was set -- the loop reached exactly one past the last anchor.
     assert(slot == anchor_count + 1);
 }
 
-/// The squared color distance between a sampled color and an anchor — the nearest-anchor cost. Bounded by
-/// 3·255² well inside u32.
+/// The squared color distance between a sampled color and an anchor -- the nearest-anchor cost. Bounded by
+/// 3-255² well inside u32.
 fn color_dist(r: u32, g: u32, b: u32, a: skate.Color) u32 {
     const dr = if (r > a.r) r - a.r else @as(u32, a.r) - r;
     const dg = if (g > a.g) g - a.g else @as(u32, a.g) - g;
@@ -118,7 +118,7 @@ pub fn down_map(
     assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
 
     var grid = try skate.Grid.init(allocator, cols, rows);
-    // Point Skate at the full-block atlas and set the anchor palette — the one seam a down-map and a thumbnail
+    // Point Skate at the full-block atlas and set the anchor palette -- the one seam a down-map and a thumbnail
     // shelf share, so both paint solid blocks in the same fixed colors.
     set_anchor_palette(&grid);
 
@@ -133,7 +133,7 @@ pub fn down_map(
         while (gc < cols) : (gc += 1) {
             const x0 = gc * width / cols;
             const x1 = (gc + 1) * width / cols;
-            // invariant: a block spans at least one pixel — the partition never empties.
+            // invariant: a block spans at least one pixel -- the partition never empties.
             assert(y1 > y0);
             assert(x1 > x0);
 
@@ -169,7 +169,7 @@ pub fn down_map(
 // --- selftest: down-map a two-tone image, prove color reaches the right cells, and prove the rasterized
 //     canvas is fully lit ------------------------------------------------------------------------------------
 
-/// Build an 8×8 image whose left half is red and right half is blue — a spatial pattern a down-map must carry.
+/// Build an 8×8 image whose left half is red and right half is blue -- a spatial pattern a down-map must carry.
 fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
     const h: u32 = 8;
@@ -197,7 +197,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const rows: u32 = 2;
     const grid = try down_map(garden, &pm, cols, rows);
 
-    // Spatial: cell (r,0) → red slot (3), cell (r,1) → blue slot (5), for every row. Color reached the cell.
+    // Spatial: cell (r,0) -> red slot (3), cell (r,1) -> blue slot (5), for every row. Color reached the cell.
     const red_slot: u8 = 3;
     const blue_slot: u8 = 5;
     var gr: u32 = 0;
@@ -225,7 +225,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const fg = skate.Color{ .r = 200, .g = 200, .b = 200 }; // fallback for any sentinel cell (none here)
     grid.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
 
-    // The crux: lit pixels reach the canvas. Each cell paints its full-block glyph — 8×8 cells, scaled — so
+    // The crux: lit pixels reach the canvas. Each cell paints its full-block glyph -- 8×8 cells, scaled -- so
     // the lit count is exactly one glyph square per cell (a Skate cell is 8×16, so the glyph fills its width
     // and its top half; the honest count names that geometry rather than claiming the whole canvas).
     const lit = grid.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);

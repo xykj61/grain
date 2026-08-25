@@ -1,33 +1,33 @@
-//! crypto/ed25519_scalarmul.rye — Season G (Cryptography), the eighth rung: scalar multiplication on edwards25519 authored in pure Rye,
+//! crypto/ed25519_scalarmul.rye -- Season G (Cryptography), the eighth rung: scalar multiplication on edwards25519 authored in pure Rye,
 //! composed entirely over the GREEN group law (crypto/ed25519_group.rye), which itself stands over the GREEN base field
-//! (crypto/fe25519.rye). Ed25519 signing — the Lotus signed carry, Kumara identity, Vault, Comlink — computes the public key A = a·B and the
-//! commitment R = r·B by adding the base point to itself a scalar number of times; this file authors exactly that operation, k·P, as a
+//! (crypto/fe25519.rye). Ed25519 signing -- the Lotus signed carry, Kumara identity, Vault, Comlink -- computes the public key A = a-B and the
+//! commitment R = r-B by adding the base point to itself a scalar number of times; this file authors exactly that operation, k-P, as a
 //! composition over the group's two primitives, point doubling and point addition. It adds no new field math and no new group math; it is the
-//! tractable, highest-Lindy move that turns a proven group into a proven scalar multiplication — the last arithmetic rung before Ed25519's
+//! tractable, highest-Lindy move that turns a proven group into a proven scalar multiplication -- the last arithmetic rung before Ed25519's
 //! sign and verify can be assembled.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
 //! unblock; its scalar multiplication is a composition over the group law) and the group law's own header, crypto/ed25519_group.rye, whose
 //! closing GREEN line names scalar multiplication as its next composition.
-//! Kin: crypto/ed25519_group.rye (the group this composes over, GREEN) · crypto/fe25519.rye (the base field beneath it, GREEN). Monocypher
-//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from the public
+//! Kin: crypto/ed25519_group.rye (the group this composes over, GREEN) - crypto/fe25519.rye (the base field beneath it, GREEN). Monocypher
+//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from the public
 //! mathematics of twisted Edwards curves and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a scalar k times a point P is P added to itself k times, which the double-and-add ladder computes in a number of group
+//! THE CRUX -- a scalar k times a point P is P added to itself k times, which the double-and-add ladder computes in a number of group
 //! operations proportional to the bit length of k rather than to k itself: walk the scalar's 256 bits from most significant to least, and at
 //! each bit double the running accumulator, then add P when that bit is set. The accumulator starts at the group identity (X = 0, Y = 1,
 //! Z = 1, T = 0). Because the base point has prime order L, this agrees with any other correct scalar multiplication on the same integer
-//! multiple, so a 32-byte scalar above L simply lands on (k mod L)·P — the same point a reduced scalar would. The one product with the
+//! multiple, so a 32-byte scalar above L simply lands on (k mod L)-P -- the same point a reduced scalar would. The one product with the
 //! outside world is the scalar's little-endian byte order, exactly the order Ed25519 uses for both secret scalars and the encoded challenge.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar and a curve point are arithmetic,
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar and a curve point are arithmetic,
 //! not a secret and not a signature: this file signs nothing, holds no key, and calls no std.crypto in the primitive. Ed25519's signing with
-//! an identity key stays its own separate, gated round; this rung only proves that k·P is computed correctly. This double-and-add ladder
-//! branches on the scalar's bits and so is deliberately VARIABLE-TIME — correct, not yet timing-safe; a constant-time ladder for secret
+//! an identity key stays its own separate, gated round; this rung only proves that k-P is computed correctly. This double-and-add ladder
+//! branches on the scalar's bits and so is deliberately VARIABLE-TIME -- correct, not yet timing-safe; a constant-time ladder for secret
 //! scalars stays a separate named horizon, the same horizon the whole Season carries. Parity is proven at selftest against two references
-//! runnable now — algebraic known-answers anyone can check (0·B is the identity, 1·B is B, 2·B is the doubling of B, (k+1)·B is k·B plus B),
-//! and Zig's own std.crypto.ecc.Edwards25519.mul as an independent implementation, compared byte-for-byte on the compression of k·P across a
+//! runnable now -- algebraic known-answers anyone can check (0-B is the identity, 1-B is B, 2-B is the doubling of B, (k+1)-B is k-B plus B),
+//! and Zig's own std.crypto.ecc.Edwards25519.mul as an independent implementation, compared byte-for-byte on the compression of k-P across a
 //! spread of scalars and across both the base point and one of its multiples. Monocypher-source parity stays the same held-fetch horizon the
 //! other primitives carry.
 //!
@@ -42,12 +42,12 @@ const pt = @import("ed25519_group.rye");
 
 pub const ed25519_scalarmul_version = "20260815.201500";
 
-/// The maximum number of scalar bits the ladder walks — a full little-endian 256-bit scalar, the width Ed25519 encodes. Named so the loop
+/// The maximum number of scalar bits the ladder walks -- a full little-endian 256-bit scalar, the width Ed25519 encodes. Named so the loop
 /// bound is a stated constant rather than a literal buried in the walk.
 pub const scalar_bits: u32 = 256;
 
 /// The group identity in extended twisted-Edwards coordinates: x = 0, y = 1, so X = 0, Y = 1, Z = 1, T = XY/Z = 0. The neutral element the
-/// double-and-add accumulator starts from — adding it changes nothing, doubling it stays itself.
+/// double-and-add accumulator starts from -- adding it changes nothing, doubling it stays itself.
 pub fn identity() pt.Point {
     const r = pt.Point{
         .x = fe.Field{ .l = .{ 0, 0, 0, 0, 0 } },
@@ -55,18 +55,18 @@ pub fn identity() pt.Point {
         .z = fe.Field{ .l = .{ 1, 0, 0, 0, 0 } },
         .t = fe.Field{ .l = .{ 0, 0, 0, 0, 0 } },
     };
-    // invariant: the identity carries y = 1 and x = 0 exactly — the neutral element, not merely some point.
+    // invariant: the identity carries y = 1 and x = 0 exactly -- the neutral element, not merely some point.
     assert(r.y.l[0] == 1 and r.x.l[0] == 0);
     // invariant: Z is one, so the affine reading y = Y/Z is Y itself with no inversion needed here.
     assert(r.z.l[0] == 1);
     return r;
 }
 
-/// Scalar multiplication k·P by the double-and-add ladder: walk the 32-byte little-endian scalar s from its most significant bit down to its
+/// Scalar multiplication k-P by the double-and-add ladder: walk the 32-byte little-endian scalar s from its most significant bit down to its
 /// least, doubling the accumulator at every bit and adding P wherever the bit is set. Composes only pt.dbl and pt.add over the GREEN group
-/// law — no field inversion, no new curve math. Deliberately variable-time (it branches on scalar bits); constant-time is the named horizon.
+/// law -- no field inversion, no new curve math. Deliberately variable-time (it branches on scalar bits); constant-time is the named horizon.
 pub fn scalarmul(p: pt.Point, s: *const [32]u8) pt.Point {
-    // invariant: the ladder walks exactly scalar_bits bits, high to low — the bound is a named constant, not an open loop.
+    // invariant: the ladder walks exactly scalar_bits bits, high to low -- the bound is a named constant, not an open loop.
     assert(scalar_bits == 256);
     var r = identity();
     var i: u32 = scalar_bits;
@@ -81,7 +81,7 @@ pub fn scalarmul(p: pt.Point, s: *const [32]u8) pt.Point {
             r = pt.add(r, p);
         }
     }
-    // invariant: the result is a well-formed extended-coordinate point — its limbs stay inside the reduced range the group law maintains.
+    // invariant: the result is a well-formed extended-coordinate point -- its limbs stay inside the reduced range the group law maintains.
     assert(r.z.l[0] <= 0x7ffffffffffff and r.y.l[0] <= 0x7ffffffffffff);
     return r;
 }
@@ -97,8 +97,8 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Build a 32-byte little-endian scalar from a small unsigned value — the low eight bytes carry v, the rest are zero. Used to name small
-/// known-answer scalars (1, 2, 5, …) plainly inside the selftest.
+/// Build a 32-byte little-endian scalar from a small unsigned value -- the low eight bytes carry v, the rest are zero. Used to name small
+/// known-answer scalars (1, 2, 5, ...) plainly inside the selftest.
 fn le32(v: u64) [32]u8 {
     var s = [_]u8{0} ** 32;
     var i: u32 = 0;
@@ -115,7 +115,7 @@ fn le32(v: u64) [32]u8 {
 const ZEd = std.crypto.ecc.Edwards25519;
 
 /// Copy a Zig point into our representation through the canonical byte form of each coordinate, so parity compares two genuinely independent
-/// implementations on the same projective representative — the same bridge the group law's selftest uses.
+/// implementations on the same projective representative -- the same bridge the group law's selftest uses.
 fn from_zig(zp: ZEd) pt.Point {
     const xb = zp.x.toBytes();
     const yb = zp.y.toBytes();
@@ -130,28 +130,28 @@ fn run_selftest() !u8 {
 
     // 1. Algebraic known-answers anyone can check.
     {
-        // 0·B is the identity (Y = 1, all-else zero).
+        // 0-B is the identity (Y = 1, all-else zero).
         var id_b = [_]u8{0} ** 32;
         id_b[0] = 1;
         if (!bytes_eq(&pt.to_bytes(scalarmul(pb, &le32(0))), &id_b)) return error.ZeroScalarMismatch;
 
-        // 1·B is B itself.
+        // 1-B is B itself.
         if (!bytes_eq(&pt.to_bytes(scalarmul(pb, &le32(1))), &b.toBytes())) return error.OneScalarMismatch;
 
-        // 2·B is the doubling of B.
+        // 2-B is the doubling of B.
         if (!bytes_eq(&pt.to_bytes(scalarmul(pb, &le32(2))), &pt.to_bytes(pt.dbl(pb)))) return error.TwoScalarMismatch;
 
-        // (k+1)·B equals k·B + B, for a small k — the ladder is consistent with a single extra addition.
+        // (k+1)-B equals k-B + B, for a small k -- the ladder is consistent with a single extra addition.
         const k: u64 = 20;
         const kb = scalarmul(pb, &le32(k));
         if (!bytes_eq(&pt.to_bytes(scalarmul(pb, &le32(k + 1))), &pt.to_bytes(pt.add(kb, pb)))) return error.SuccessorMismatch;
     }
 
-    // 2. Independent-implementation parity: our ladder equals Zig's std.crypto.ecc.Edwards25519.mul byte-for-byte on the compression of k·P
-    //    across a spread of scalars, over both the base point and one of its multiples (b3 = 3·B, still a prime-order-subgroup point).
+    // 2. Independent-implementation parity: our ladder equals Zig's std.crypto.ecc.Edwards25519.mul byte-for-byte on the compression of k-P
+    //    across a spread of scalars, over both the base point and one of its multiples (b3 = 3-B, still a prime-order-subgroup point).
     {
         const small = [_]u64{ 1, 2, 3, 7, 16, 255, 1000, 65537 };
-        // A fixed large scalar with a small top byte — well under 2^252, never zero, never a multiple of L, so Zig's mul rejects nothing.
+        // A fixed large scalar with a small top byte -- well under 2^252, never zero, never a multiple of L, so Zig's mul rejects nothing.
         const big = [32]u8{
             0x9d, 0xb6, 0x1c, 0x0f, 0x27, 0x44, 0x8e, 0x11, 0xa3, 0x5c, 0x02, 0x77, 0xd8, 0x41, 0x63, 0x9a,
             0x0e, 0x5b, 0xc7, 0x30, 0x88, 0x12, 0x6f, 0xa9, 0x44, 0xd1, 0x3e, 0x07, 0x91, 0x2a, 0x60, 0x0e,

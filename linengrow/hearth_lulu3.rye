@@ -1,7 +1,7 @@
-//! linengrow/hearth_lulu3.rye — LULU3: short home_id editor on glass.
+//! linengrow/hearth_lulu3.rye -- LULU3: short home_id editor on glass.
 //!
 //! Affirmed next after LULU2 send. Thin face: with the preset list open,
-//! tap `home · xx` to draft two lowercase letters; ^ or ret commits and
+//! tap `home - xx` to draft two lowercase letters; ^ or ret commits and
 //! persists; del backs up. Pointer file `hearth_home` names the active home.
 
 const std = @import("std");
@@ -24,7 +24,7 @@ pub const Draft = struct {
     }
 
     pub fn begin_from(self: *Draft, home_id: []const u8) void {
-        // Empty draft — type a new id; caller may validate home_id separately.
+        // Empty draft -- type a new id; caller may validate home_id separately.
         _ = home_id;
         self.clear();
     }
@@ -54,7 +54,7 @@ pub const Draft = struct {
     }
 };
 
-/// `home · kd` or `home · a_` while editing.
+/// `home - kd` or `home - a_` while editing.
 pub fn format_home_line(
     home_id: []const u8,
     editing: bool,

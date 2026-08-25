@@ -1,31 +1,31 @@
-//! lotus/decimate.rye — ALES83: the sample-rate decimator — hold each sample across a run, crushing TIME rather than AMPLITUDE. The bit-crusher
+//! lotus/decimate.rye -- ALES83: the sample-rate decimator -- hold each sample across a run, crushing TIME rather than AMPLITUDE. The bit-crusher
 //! (ALES81) drops the low bits, lowering a sample's RESOLUTION while every sample still keeps its own moment in time; the decimator shapes the OTHER
-//! axis — it holds one sample across a whole run, so a stream that entered at the full rate leaves at half, or a quarter, or a sixteenth: the aliased,
+//! axis -- it holds one sample across a whole run, so a stream that entered at the full rate leaves at half, or a quarter, or a sixteenth: the aliased,
 //! stepped, sample-and-hold voice of an early sampler read too slow, a lo-fi converter, a digital signal starved of TIME instead of resolution. The
-//! bit-crush is the decimator's twin — one crushes the value axis, the other the time axis, and together they name the two ways a converter goes coarse.
+//! bit-crush is the decimator's twin -- one crushes the value axis, the other the time axis, and together they name the two ways a converter goes coarse.
 //!
 //! The crux is that a DECIMATION BY `hold` IS A ZERO-ORDER HOLD: partition the span into runs of `hold` samples anchored at `start`, and pin every
-//! sample in a run to the run's FIRST sample — its anchor. hold = 1 is the IDENTITY (each run is one sample, held to itself). hold = 2 keeps every
-//! other sample and repeats it once; hold = 4 keeps one in four. This is the family's FIRST map that is not memoryless PER SAMPLE — an output equals
-//! its run's anchor, a NEIGHBOR, not only its own input — yet it is memoryless PER RUN: each run depends only on its own anchor, so decimating a span
-//! whose run boundaries align equals decimating it whole. And it is IDEMPOTENT — a run already held is held to the same anchor, so decimate(decimate(x))
+//! sample in a run to the run's FIRST sample -- its anchor. hold = 1 is the IDENTITY (each run is one sample, held to itself). hold = 2 keeps every
+//! other sample and repeats it once; hold = 4 keeps one in four. This is the family's FIRST map that is not memoryless PER SAMPLE -- an output equals
+//! its run's anchor, a NEIGHBOR, not only its own input -- yet it is memoryless PER RUN: each run depends only on its own anchor, so decimating a span
+//! whose run boundaries align equals decimating it whole. And it is IDEMPOTENT -- a run already held is held to the same anchor, so decimate(decimate(x))
 //! = decimate(x).
 //!
-//! The decimator writes only sample values that ALREADY LIVE in the clip — it copies an anchor across its run and computes NO new number — so every
+//! The decimator writes only sample values that ALREADY LIVE in the clip -- it copies an anchor across its run and computes NO new number -- so every
 //! written value is a legal i16 by construction and there is no saturate to do: the map narrows time, never magnitude. In place it is safe left to
-//! right — a run's anchor sits at or before every index it fills (anchor ≤ i), and the anchor is written to ITSELF (a no-op) before any later index in
+//! right -- a run's anchor sits at or before every index it fills (anchor ≤ i), and the anchor is written to ITSELF (a no-op) before any later index in
 //! the run reads it, so buf[anchor] always holds the original anchor value while the run is filled. The last run may be PARTIAL (when the span is not a
 //! whole multiple of `hold`); a partial run holds its anchor across however many samples remain, exactly as a full run would.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES83.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES83.
 //! Design read: active-designing/date/20260814/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip. It carries NO pre-gain and NO grid — like the bit-crush it is a pure
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, max_clip. It carries NO pre-gain and NO grid -- like the bit-crush it is a pure
 //! resolution map, here on the TIME axis; a keeper who wants a boosted or clipped decimation runs lotus/drive.rye (ALES78) or lotus/crush.rye (ALES81)
 //! then decimate over the same span, all in-place span maps that compose.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the `hold` is a sample count (unity = 1), the shape a zero-order hold, instantaneous per run (no
-//! interpolation, no anti-aliasing filter — a raw decimation aliases in the i16 domain exactly as any hardware sample-and-hold does). One divide, one
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the `hold` is a sample count (unity = 1), the shape a zero-order hold, instantaneous per run (no
+//! interpolation, no anti-aliasing filter -- a raw decimation aliases in the i16 domain exactly as any hardware sample-and-hold does). One divide, one
 //! copy per sample; the decimator only repeats existing samples, so the output fits the i16 rail by construction.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/decimate.rye selftest
@@ -39,28 +39,28 @@ const timeline = @import("timeline.rye");
 pub const decimate_version = "20260814.213107";
 
 /// The widest hold the i16 timeline holds. A decimation names a run of between one sample (the identity) and the whole timeline's worth. Past
-/// max_clip there is no span that long to hold across; below one there is no run — both refuse BadHold.
+/// max_clip there is no span that long to hold across; below one there is no run -- both refuse BadHold.
 pub const max_hold: u32 = timeline.max_clip;
 
 /// The sample-rate decimator's faults, one consistent name each. BadRange coincides by name with the sibling drives and ALES2's timeline (Zig merges
-/// error sets by name), so a composer sees one consistent span fault. BadHold is the decimator's own — the time axis no other DRIVE member names.
+/// error sets by name), so a composer sees one consistent span fault. BadHold is the decimator's own -- the time axis no other DRIVE member names.
 pub const DecimateError = error{
-    /// A hold of zero (names no run) or past the timeline's width (no span that long to hold across) — refused, no write.
+    /// A hold of zero (names no run) or past the timeline's width (no span that long to hold across) -- refused, no write.
     BadHold,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Decimate `count` samples starting at `start` in place in `clip` by `hold`: partition the span into runs of `hold` samples anchored at `start`, and
-/// pin every sample in a run to the run's first sample (its anchor) — a zero-order hold. After the call every sample equals its run's anchor, its
+/// pin every sample in a run to the run's first sample (its anchor) -- a zero-order hold. After the call every sample equals its run's anchor, its
 /// value is one that already lived in the clip (a copy, never a new number), and each run depends only on its own anchor (the decimator is memoryless
 /// per run). `hold = 1` is the identity (each run is one sample). Refuses BadHold on a hold outside [1, max_clip] and BadRange on a span outside the
-/// samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// samples -- each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn decimate(clip: *timeline.Clip, start: u32, count: u32, hold: u32) DecimateError!void {
-    // invariant: the hold is legal — at least one sample (a run of one is the identity) and no more than the timeline's width. Checked BEFORE any write.
+    // invariant: the hold is legal -- at least one sample (a run of one is the identity) and no more than the timeline's width. Checked BEFORE any write.
     if (hold < 1) return error.BadHold;
     if (hold > max_hold) return error.BadHold;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the sibling drives.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the sibling drives.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -71,13 +71,13 @@ pub fn decimate(clip: *timeline.Clip, start: u32, count: u32, hold: u32) Decimat
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         // The run's anchor: floor k to a whole multiple of `hold` (k and hold both non-negative, so divTrunc is the floor) and step forward from
-        // `start`. anchor ≤ i always, and anchor == i exactly at each run's first sample — the sample the run holds.
+        // `start`. anchor ≤ i always, and anchor == i exactly at each run's first sample -- the sample the run holds.
         const anchor: u32 = start + @divTrunc(k, hold) * hold;
-        // invariant: the anchor lies within the span and at or before this index — so buf[anchor] is a legal, already-original sample (it was written
+        // invariant: the anchor lies within the span and at or before this index -- so buf[anchor] is a legal, already-original sample (it was written
         // to itself before any later index in the run reads it).
         assert(anchor >= start and anchor <= i and anchor < start + count);
         const held: i16 = clip.buf[anchor];
-        // invariant: the held value is a legal i16 — it is an existing audio sample copied across the run, never a wide intermediate, so the write
+        // invariant: the held value is a legal i16 -- it is an existing audio sample copied across the run, never a wide intermediate, so the write
         // fits the rail BY CONSTRUCTION and no saturate is owed (the decimator narrows TIME, never magnitude).
         assert(held >= timeline.sample_min and held <= timeline.sample_max);
         clip.buf[i] = held;
@@ -89,8 +89,8 @@ pub fn decimate(clip: *timeline.Clip, start: u32, count: u32, hold: u32) Decimat
 
 // --- selftest: hold = 1 is the IDENTITY (each run is one sample); ZERO-ORDER HOLD by hand (hold 3 over a ramp, the last run PARTIAL); EVERY sample
 //     equals its RUN ANCHOR and the map is IDEMPOTENT (a held run holds to the same anchor); hold ≥ count holds the WHOLE span at the first sample;
-//     the RAIL is preserved (a decimation only copies existing samples, so every output is a legal i16); the SPAN discipline holds; and each fault —
-//     BadHold, BadRange — refuses by name, the clip untouched ---
+//     the RAIL is preserved (a decimation only copies existing samples, so every output is a legal i16); the SPAN discipline holds; and each fault --
+//     BadHold, BadRange -- refuses by name, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -104,7 +104,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. hold = 1 IS THE IDENTITY — each run is one sample held to itself, so the decimation returns the clip byte-for-byte. The map generalizes the
+    // 1. hold = 1 IS THE IDENTITY -- each run is one sample held to itself, so the decimation returns the clip byte-for-byte. The map generalizes the
     //    untouched clip, the way ALES81's bits = 16 reproduces the whole-resolution signal.
     {
         const sig = [_]i16{ 1, -1, 12345, -12345, 32767, timeline.sample_min, 0, 255 };
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.OneNotIdentity;
     }
 
-    // 2. THE ZERO-ORDER HOLD BY HAND — hold = 3 over a seven-sample ramp, the runs read directly. Runs of three anchored at 0: [10,20,30]→10,
-    //    [40,50,60]→40, and the last run [70] is PARTIAL (one sample), held to its own anchor 70. A hold of three keeps one sample in three and
+    // 2. THE ZERO-ORDER HOLD BY HAND -- hold = 3 over a seven-sample ramp, the runs read directly. Runs of three anchored at 0: [10,20,30]->10,
+    //    [40,50,60]->40, and the last run [70] is PARTIAL (one sample), held to its own anchor 70. A hold of three keeps one sample in three and
     //    repeats it across its run.
     {
         const sig = [_]i16{ 10, 20, 30, 40, 50, 60, 70 };
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.HoldWrong;
     }
 
-    // 3. EVERY SAMPLE EQUALS ITS RUN ANCHOR, AND THE MAP IS IDEMPOTENT — at hold = 4 each sample equals the first of its run of four, and decimating
+    // 3. EVERY SAMPLE EQUALS ITS RUN ANCHOR, AND THE MAP IS IDEMPOTENT -- at hold = 4 each sample equals the first of its run of four, and decimating
     //    the already-decimated clip a second time changes nothing (a held run holds to the same anchor).
     {
         const sig = [_]i16{ 100, 200, 300, 400, 500, 600, 700, 800, 900 };
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 4. A HOLD WIDER THAN THE SPAN holds the WHOLE span at the first sample — one run covers everything, so every sample becomes the anchor. A hold
+    // 4. A HOLD WIDER THAN THE SPAN holds the WHOLE span at the first sample -- one run covers everything, so every sample becomes the anchor. A hold
     //    equal to or past the count is the coarsest decimation the span holds: a single held value.
     {
         const sig = [_]i16{ 7, 11, 13, 17, 19 };
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.WholeSpanWrong;
     }
 
-    // 5. THE RAIL IS PRESERVED — a decimation only COPIES existing samples, so every output is a legal i16 whatever the rail. Decimate a signal that
+    // 5. THE RAIL IS PRESERVED -- a decimation only COPIES existing samples, so every output is a legal i16 whatever the rail. Decimate a signal that
     //    rides both rails; the extremes survive intact wherever a run anchors on them.
     {
         const sig = [_]i16{ timeline.sample_min, 32767, timeline.sample_min, 32767, timeline.sample_min, 32767 };
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
         while (i < out.len) : (i += 1) if (out[i] < timeline.sample_min or out[i] > timeline.sample_max) return error.RailCrossed;
     }
 
-    // 6. THE SPAN DISCIPLINE — decimating a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
+    // 6. THE SPAN DISCIPLINE -- decimating a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
     //    suite keeps. Hold the middle three of seven at hold = 3 (one run); the first and last two are untouched.
     {
         const sig = [_]i16{ 100, 200, 300, 400, 500, 600, 700 };
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 7. A ZERO / OVER-WIDE HOLD refuses BadHold; a SPAN past the end refuses BadRange — each before any write, the clip untouched.
+    // 7. A ZERO / OVER-WIDE HOLD refuses BadHold; a SPAN past the end refuses BadRange -- each before any write, the clip untouched.
     {
         const sig = [_]i16{ 9, 10, 11 };
         var clip = timeline.Clip{};

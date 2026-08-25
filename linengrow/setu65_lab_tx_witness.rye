@@ -1,4 +1,4 @@
-//! linengrow/setu65_lab_tx_witness.rye — proves SETU6.5 lab TX gate.
+//! linengrow/setu65_lab_tx_witness.rye -- proves SETU6.5 lab TX gate.
 //!
 //!   rye build linengrow/setu65_lab_tx_witness.rye -lc \
 //!     -femit-bin=linengrow/bin/setu65_lab_tx_witness

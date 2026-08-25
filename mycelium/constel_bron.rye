@@ -1,23 +1,23 @@
-//! mycelium/constel_bron.rye — a named constellation travels as a record, self-certifying (r3).
+//! mycelium/constel_bron.rye -- a named constellation travels as a record, self-certifying (r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r3 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r3 -- travel.
 //! Design read: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //! r1 booted a named constellation and reached quorum; r2 proved its fault tolerance. Both held the roster
 //! in memory. A dev-net a keeper cannot hand to another is only a local fixture, so r3 lets the whole
-//! constellation cross as `format constel-v1` bytes — one `ship <name> <pk-hex>` line per ship in roster
+//! constellation cross as `format constel-v1` bytes -- one `ship <name> <pk-hex>` line per ship in roster
 //! order. Because a ship's identity is a PURE FUNCTION of its name (r1: seed = SHA-256(name)), the record is
 //! SELF-CERTIFYING: `parse` re-derives each ship's keypair from its name and refuses `PkMismatch` unless the
-//! carried key is exactly the one that name yields — a tampered key cannot ride a real name.
+//! carried key is exactly the one that name yields -- a tampered key cannot ride a real name.
 //!
 //! The crux is THE CONSTELLATION SURVIVES THE WIRE, not merely the bytes: a constellation parsed from a
-//! record reaches the byte-identical quorum head as the one in memory — a keeper boots the identical
+//! record reaches the byte-identical quorum head as the one in memory -- a keeper boots the identical
 //! constellation from the record alone. Render/parse is a fixed point (byte-for-byte).
 //!
 //! A purpose-built bounded reader: a wrong header refuses `BadFormat`, an unknown field `UnknownField`
 //! (never dropped), a malformed line `BadLine`, a bad hex key `BadHex`, a carried key that its name does not
 //! yield `PkMismatch`, and the ship's own laws surface as `NameEmpty`/`NameTooLong`/`TooManyShips` on
-//! rebuild. Composes constel + chorus + muster + voucher public API only. Siloed dev fixtures — no key held,
+//! rebuild. Composes constel + chorus + muster + voucher public API only. Siloed dev fixtures -- no key held,
 //! no funds, no network; a served constellation reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_bron.rye
@@ -33,7 +33,7 @@ const tally_copy = @import("tally_copy.rye");
 pub const pk_len: u32 = constel.pk_len;
 pub const head_len: u32 = constel.head_len;
 
-/// The record buffer bound — a full twelve-ship roster's lines fit with room.
+/// The record buffer bound -- a full twelve-ship roster's lines fit with room.
 pub const max_record: u32 = 2048;
 
 pub const BronError = error{
@@ -76,7 +76,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one constellation to a `format constel-v1` record — one ship line (name · key hex) in roster
+/// Render one constellation to a `format constel-v1` record -- one ship line (name - key hex) in roster
 /// order. Refuses an overflow rather than a partial record.
 pub fn render(c: *const constel.Constel, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -102,7 +102,7 @@ pub fn render(c: *const constel.Constel, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to three tokens; returns the count (or four to signal a token past a ship line's
-/// width — a ship line, at three, is the widest).
+/// width -- a ship line, at three, is the widest).
 fn tokens(line: []const u8, out: *[3][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -115,7 +115,7 @@ fn tokens(line: []const u8, out: *[3][]const u8) u32 {
 }
 
 /// Parse a `format constel-v1` record into `out`, re-seating each ship through r1's own `seat_ship` (so its
-/// key is re-derived from its name) and refusing `PkMismatch` unless the carried key matches — the record
+/// key is re-derived from its name) and refusing `PkMismatch` unless the carried key matches -- the record
 /// self-certifies, a tampered key cannot ride a real name.
 pub fn parse(text: []const u8, out: *constel.Constel) BronError!void {
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -146,7 +146,7 @@ pub fn parse(text: []const u8, out: *constel.Constel) BronError!void {
     assert(out.count <= constel.constel_max_ships);
 }
 
-// The r1 dev-net roster — five named ships (see constel.rye for the naming law).
+// The r1 dev-net roster -- five named ships (see constel.rye for the naming law).
 const roster = [_][]const u8{
     "xnvethqua",
     "kwelmirran",
@@ -164,7 +164,7 @@ pub fn main() !void {
     var recovered: constel.Constel = undefined;
     try parse(buf[0..len], &recovered);
 
-    // The whole roster survives the wire — same names and keys in the same order.
+    // The whole roster survives the wire -- same names and keys in the same order.
     assert(recovered.count == c.count);
     {
         var i: u32 = 0;
@@ -182,7 +182,7 @@ pub fn main() !void {
     assert(len2 == len);
     assert(std.mem.eql(u8, buf[0..len], buf2[0..len2]));
 
-    // THE CRUX: a keeper boots the identical constellation from the record alone — the recovered roster
+    // THE CRUX: a keeper boots the identical constellation from the record alone -- the recovered roster
     // reaches the byte-identical quorum head as the one in memory.
     const issuer = constel.seeded(0xF0);
     const account = constel.seeded(0xA1);
@@ -195,7 +195,7 @@ pub fn main() !void {
     try constel.reach_quorum(&recovered, &dag, account_pk[0..], &head_rec);
     assert(std.mem.eql(u8, head_mem[0..], head_rec[0..]));
 
-    // And that head is the Dag's real order-head — the record boots a constellation that believes the truth.
+    // And that head is the Dag's real order-head -- the record boots a constellation that believes the truth.
     var expected_head: [head_len]u8 = undefined;
     voucher.order_head_of(&dag, &expected_head);
     assert(std.mem.eql(u8, head_rec[0..], expected_head[0..]));
@@ -218,13 +218,13 @@ pub fn main() !void {
         }
     }
 
-    // Refusal: the self-certifying crux — a carried key its name does not yield refuses PkMismatch. Flip one
+    // Refusal: the self-certifying crux -- a carried key its name does not yield refuses PkMismatch. Flip one
     // hex nibble of the first ship's key.
     {
         var tmp: [max_record]u8 = undefined;
         tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
         // Find the first ship line's key: after "format constel-v1\n" the first line is
-        // "ship <name> <64 hex>\n" — flip the last hex char before its newline.
+        // "ship <name> <64 hex>\n" -- flip the last hex char before its newline.
         var k: u32 = 0;
         var nl: u32 = 0;
         while (k < len) : (k += 1) {

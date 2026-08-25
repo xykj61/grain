@@ -1,4 +1,4 @@
-//! comlink/guest_murr_receipt_tx.rye — MUR M2b (was MALA) receipt hop TX (holder → issuer).
+//! comlink/guest_murr_receipt_tx.rye -- MUR M2b (was MALA) receipt hop TX (holder -> issuer).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

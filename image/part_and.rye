@@ -1,19 +1,19 @@
-//! image/part_and.rye — HUNK78: an AND of clauses — narrow the marketplace on several facets at once.
+//! image/part_and.rye -- HUNK78: an AND of clauses -- narrow the marketplace on several facets at once.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK78.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK78.
 //! Design read: active-designing/date/20260814/20260814-000136_hunk-part-and-compound-query-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — a keeper checks several facets and the wall of parts
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- a keeper checks several facets and the wall of parts
 //! becomes the handful that satisfy all of them (concept only, siloed).
 //!
 //! HUNK75 narrowed a catalog by one `Query`; HUNK76 parsed one `key:value` clause from a typed line; HUNK77 drew the
-//! result on glass. Yet a real search is faceted — a keeper wants *the stainless bolts under a dollar*, several clauses
+//! result on glass. Yet a real search is faceted -- a keeper wants *the stainless bolts under a dollar*, several clauses
 //! narrowing together. This rung is that conjunction. `parse_and` reads a whitespace-separated line of clauses into a
 //! bounded `AndQuery`, and `filter_and` builds the sub-catalog of parts that satisfy EVERY clause, over the same shared
-//! sheet — an ordinary `PartCatalog` that paints, pages, and round-trips like any other.
+//! sheet -- an ordinary `PartCatalog` that paints, pages, and round-trips like any other.
 //!
 //! The crux is that a line of clauses MEANS THE INTERSECTION OF THEIR MATCHES, and the clauses commute: `filter_and`
 //! keeps exactly the parts that pass all clauses in held order, and equals the successive fold `filter_catalog(...,c0)`
-//! then `filter_catalog(...,c1)` name-for-name — because HUNK75's filter already composes, a conjunction is just
+//! then `filter_catalog(...,c1)` name-for-name -- because HUNK75's filter already composes, a conjunction is just
 //! `part_filter.matches` asked of every clause. An empty line is the honest identity: a fold over zero clauses is a
 //! match-all, so a keeper who has typed nothing sees the whole marketplace.
 //!
@@ -33,8 +33,8 @@ const part_query = @import("part_query.rye");
 
 pub const part_and_version = "20260814.000136";
 
-/// The most facets a keeper narrows on at once. A handful is honest — a real search names material, a number prefix,
-/// and a price bound or two — and the bound keeps the clause walk and the parse loop finite (TAME bounds).
+/// The most facets a keeper narrows on at once. A handful is honest -- a real search names material, a number prefix,
+/// and a price bound or two -- and the bound keeps the clause walk and the parse loop finite (TAME bounds).
 pub const max_clauses: u32 = 8;
 
 pub const AndError = error{
@@ -42,14 +42,14 @@ pub const AndError = error{
 };
 
 /// A conjunction of narrowing clauses: the parts kept are those that satisfy EVERY clause. The clause slice's text
-/// operands borrow into the caller's own typed line (never copied), exactly as one `part_filter.Query` does — so the
+/// operands borrow into the caller's own typed line (never copied), exactly as one `part_filter.Query` does -- so the
 /// `AndQuery` lives no longer than the line it was parsed from. Zero clauses is a valid match-all query.
 pub const AndQuery = struct {
     clauses: [max_clauses]part_filter.Query = undefined,
     count: u32 = 0,
 };
 
-/// Parse one line a keeper typed — several space-separated `key:value` clauses — into the `AndQuery` it means. Blank
+/// Parse one line a keeper typed -- several space-separated `key:value` clauses -- into the `AndQuery` it means. Blank
 /// runs between clauses are skipped, so extra spacing is tolerated. Each clause is parsed by HUNK76's own
 /// `parse_query`, so every single-clause law (the four keys, the price ceiling, the named refusals) is reused verbatim;
 /// a malformed clause surfaces the parser's own error. Zero clauses (an empty or all-blank line) is a match-all query.
@@ -57,7 +57,7 @@ pub fn parse_and(text: []const u8) !AndQuery {
     var aq = AndQuery{};
     var it = std.mem.tokenizeScalar(u8, text, ' ');
     while (it.next()) |tok| {
-        // invariant: a tokenized clause is never empty — tokenizeScalar skips blank runs.
+        // invariant: a tokenized clause is never empty -- tokenizeScalar skips blank runs.
         assert(tok.len > 0);
         if (aq.count == max_clauses) return error.TooManyClauses;
         // invariant: there is room for one more clause before it is written.
@@ -83,7 +83,7 @@ fn check_clauses(aq: AndQuery) part_filter.FilterError!void {
     }
 }
 
-/// Does the i-th part of `cat` satisfy EVERY clause? An empty clause set is trivially true — a match-all query. Each
+/// Does the i-th part of `cat` satisfy EVERY clause? An empty clause set is trivially true -- a match-all query. Each
 /// clause is checked by HUNK75's own `matches`, so the conjunction reads exactly the stored facts, never a copy.
 pub fn matches_all(cat: *const part_catalog.PartCatalog, i: u32, aq: AndQuery) bool {
     // invariant: the queried index sits inside the catalog.
@@ -97,7 +97,7 @@ pub fn matches_all(cat: *const part_catalog.PartCatalog, i: u32, aq: AndQuery) b
     return true;
 }
 
-/// How many parts pass all clauses — a bounded walk of the whole catalog, so a caller can size a page before it
+/// How many parts pass all clauses -- a bounded walk of the whole catalog, so a caller can size a page before it
 /// filters. The count never exceeds the catalog's own length.
 pub fn count_and(cat: *const part_catalog.PartCatalog, aq: AndQuery) !u32 {
     try check_clauses(aq);
@@ -115,10 +115,10 @@ pub fn count_and(cat: *const part_catalog.PartCatalog, aq: AndQuery) !u32 {
     return kept;
 }
 
-/// Narrow `cat` into `out` — a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that satisfy
+/// Narrow `cat` into `out` -- a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that satisfy
 /// every clause, in held order. Each match is re-added through `add_part` with its own window and facts, validated once
 /// by the source catalog, so the rebuild never half-adds. A zero-clause query reproduces the catalog; a compound that
-/// matches nothing yields a real empty catalog. The result is an ordinary `PartCatalog` — it paints, pages, and
+/// matches nothing yields a real empty catalog. The result is an ordinary `PartCatalog` -- it paints, pages, and
 /// round-trips like any other, so a conjunction composes with a further narrowing.
 pub fn filter_and(
     cat: *const part_catalog.PartCatalog,
@@ -144,7 +144,7 @@ pub fn filter_and(
     assert(out.len() <= cat.len());
 }
 
-// --- selftest: five parts across three materials and a price spread — parse a multi-clause line, prove the conjunction
+// --- selftest: five parts across three materials and a price spread -- parse a multi-clause line, prove the conjunction
 //     keeps exactly the intersection, that it equals the successive single-clause fold name-for-name, that the clauses
 //     commute, that an empty line is a match-all, that a match-none compound yields a real empty catalog, and that a
 //     malformed clause and an over-many-clause line each refuse by name --------------------------------------------
@@ -168,14 +168,14 @@ fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The held-order names a catalog holds — walk it and collect its product names into `names`.
+/// The held-order names a catalog holds -- walk it and collect its product names into `names`.
 fn kept_names(cat: *const part_catalog.PartCatalog, names: [][]const u8) u32 {
     var i: u32 = 0;
     while (i < cat.len()) : (i += 1) names[i] = cat.index.entry(i).name;
     return cat.len();
 }
 
-/// The successive single-clause fold — filter by each clause in turn through HUNK75's own `filter_catalog`, ping-pong
+/// The successive single-clause fold -- filter by each clause in turn through HUNK75's own `filter_catalog`, ping-pong
 /// between two sub-catalogs, and collect the final held-order names. Zero clauses is the catalog itself (match-all).
 /// This is the slow, obviously-correct reference the fast single-pass `filter_and` is proven against.
 fn fold_names(
@@ -239,7 +239,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, typed[0], "hexnut"));
     }
 
-    // The clauses COMMUTE — narrowing by price then material keeps the same one part, in the same held order.
+    // The clauses COMMUTE -- narrowing by price then material keeps the same one part, in the same held order.
     {
         const forward = try parse_and("material:stainless-304 max:60");
         const reverse = try parse_and("max:60 material:stainless-304");
@@ -267,7 +267,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, typed[0], "bolt"));
     }
 
-    // A single clause behaves exactly like HUNK75's own filter — the AND of one is that one.
+    // A single clause behaves exactly like HUNK75's own filter -- the AND of one is that one.
     {
         const aq = try parse_and("material:stainless-304");
         assert(aq.count == 1);
@@ -279,7 +279,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, typed[1], "hexnut"));
     }
 
-    // An empty (all-blank) line is a MATCH-ALL — a fold over zero clauses reproduces the whole catalog, byte-for-byte.
+    // An empty (all-blank) line is a MATCH-ALL -- a fold over zero clauses reproduces the whole catalog, byte-for-byte.
     {
         const aq = try parse_and("   ");
         assert(aq.count == 0);
@@ -295,8 +295,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, x[0..nx], z[0..nz]));
     }
 
-    // A compound that matches nothing yields a REAL empty catalog — stainless AND at most 10 cents keeps no part (the
-    // stainless parts are both dearer than that) — zero parts, not an error.
+    // A compound that matches nothing yields a REAL empty catalog -- stainless AND at most 10 cents keeps no part (the
+    // stainless parts are both dearer than that) -- zero parts, not an error.
     {
         const aq = try parse_and("material:stainless-304 max:10");
         assert((try count_and(&cat, aq)) == 0);
@@ -305,7 +305,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(sub.len() == 0);
     }
 
-    // A malformed clause surfaces the parser's own named refusal — a bad AND draws nothing, never a wrong shelf.
+    // A malformed clause surfaces the parser's own named refusal -- a bad AND draws nothing, never a wrong shelf.
     if (parse_and("material:stainless-304 color:red")) |_| return error.BadClauseSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongClause;
     }
@@ -313,7 +313,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.NoColon) return error.WrongClause;
     }
 
-    // Over-many clauses refuse by name — one past the ceiling, before the catalog is walked.
+    // Over-many clauses refuse by name -- one past the ceiling, before the catalog is walked.
     {
         var line: [max_clauses * 8 + 16]u8 = undefined;
         var n: u32 = 0;

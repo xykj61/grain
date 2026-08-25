@@ -1,31 +1,31 @@
-//! lotus/stereo_sweep.rye — ALES175: a FILTER SWEEP carried into stereo — ALES44's moving-cutoff low-pass run on BOTH channels with the SAME schedule (num_from → num_to over den, in blocks blocks), the sixth rung of the stereo EQ /
+//! lotus/stereo_sweep.rye -- ALES175: a FILTER SWEEP carried into stereo -- ALES44's moving-cutoff low-pass run on BOTH channels with the SAME schedule (num_from -> num_to over den, in blocks blocks), the sixth rung of the stereo EQ /
 //! filter class and the first AUTOMATED stereo parameter. The class holds its tone control (ALES170), shelf (ALES171), band-pass (ALES172, isolate the middle), notch (ALES173, drop the middle), and bell (ALES174, turn the middle);
-//! every one of those holds ONE brightness for a whole span. The gesture a musician reaches for as often as a fixed cut is the SWEEP — a cutoff that MOVES across the span, the filter opening or closing over a phrase (the slow open
+//! every one of those holds ONE brightness for a whole span. The gesture a musician reaches for as often as a fixed cut is the SWEEP -- a cutoff that MOVES across the span, the filter opening or closing over a phrase (the slow open
 //! on a pad, the close into a drop). ALES44 built that for a mono Clip: it partitions the span into blocks, runs ALES43's carried-state low-pass over each with a coefficient interpolated linearly from num_from to num_to, and threads
 //! ONE state across every block, so a boundary never re-transients and a degenerate sweep (num_from == num_to) equals ALES40's fixed low_pass over the whole span byte for byte. This rung carries it into stereo the way the EQ class
-//! asks — run ALES44's proven mono `sweep_low_pass` on each channel with the SAME schedule, so the moving brightness opens on BOTH speakers together.
+//! asks -- run ALES44's proven mono `sweep_low_pass` on each channel with the SAME schedule, so the moving brightness opens on BOTH speakers together.
 //!
 //! Like every parametric edit (ALES171's shelf, ALES174's bell), a sweep's endpoints and block count are values the caller NAMES, not scalars measured across the field, so the SAME schedule on each channel preserves the stereo
-//! image for free — no linking, no measurement. Each channel sweeps its OWN content, which is exactly right for a filter: an identical-channel (mono-in-stereo) master stays identical because the same input through the same schedule
-//! is the same deterministic output, while a panned master shapes each side by its own spectrum. UNLIKE the stateless shelf, notch, and bell, the sweep DOES carry filter state — yet each channel opens its OWN `state = 0` inside its
+//! image for free -- no linking, no measurement. Each channel sweeps its OWN content, which is exactly right for a filter: an identical-channel (mono-in-stereo) master stays identical because the same input through the same schedule
+//! is the same deterministic output, while a panned master shapes each side by its own spectrum. UNLIKE the stateless shelf, notch, and bell, the sweep DOES carry filter state -- yet each channel opens its OWN `state = 0` inside its
 //! own call and threads it across its OWN blocks, so the two channels never share a filter memory (a real stereo filter never leaks one side's history into the other) and there is no cross-channel state to thread across a seam.
 //!
-//! The rule, stated once: refuse BadCoeff (an endpoint outside (0, 1]), BadRange (a span past the shared length), and BadBlocks (a zero, over-max, or empty-block partition) BEFORE either channel is touched — the two endpoints, the
+//! The rule, stated once: refuse BadCoeff (an endpoint outside (0, 1]), BadRange (a span past the shared length), and BadBlocks (a zero, over-max, or empty-block partition) BEFORE either channel is touched -- the two endpoints, the
 //! span, and the block count validated once against the shared length up front (ALES44's own `check_sweep`, exported for this), so a refusal never sweeps one channel and leaves the other torn; then run ALES44's `sweep_low_pass` on
 //! each channel with the SAME schedule. A degenerate schedule (num_from == num_to) is exactly ALES40's fixed low_pass on both; a settled constant sweeps to itself on both (a constant is a fixed point of every legal coefficient).
 //!
-//! The crux — four laws. THE STEREO SWEEP LAW: each channel equals ALES44's mono `sweep_low_pass` with the SAME schedule over the same span byte for byte, proven side by side with genuinely different per-channel content — the left
+//! The crux -- four laws. THE STEREO SWEEP LAW: each channel equals ALES44's mono `sweep_low_pass` with the SAME schedule over the same span byte for byte, proven side by side with genuinely different per-channel content -- the left
 //! swept by the left's spectrum, the right by the right's, never crossed. THE DEGENERATE LAW: a degenerate stereo sweep (num_from == num_to) over any block partition equals ALES40's fixed low_pass on BOTH channels byte for byte (the
 //! carried state makes the partition invisible per channel), and a settled constant sweeps to itself on both. THE IMAGE LAW: an identical-channel master stays identical through the sweep (a mono-in-stereo signal never splits), the
 //! shared schedule holding the image. THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an all-silent master sweeps to silence on both; left.len == right.len after; an illegal endpoint, an out-of-range span, and an illegal block
 //! count each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES175.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES175.
 //! Design read: active-designing/date/20260815/20260815-081412_fill-ales175-lotus-stereo-sweep.md
-//! Stands on: lotus/sweep.rye (ALES44) — the mono filter sweep run once per channel, its SweepError reused whole and its `check_sweep` reused for the up-front atomic validation; lotus/tone.rye (ALES40, ALES43) — the fixed and
-//! carried-state low-pass the sweep interpolates between, the degenerate-law equality target; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip.
+//! Stands on: lotus/sweep.rye (ALES44) -- the mono filter sweep run once per channel, its SweepError reused whole and its `check_sweep` reused for the up-front atomic validation; lotus/tone.rye (ALES40, ALES43) -- the fixed and
+//! carried-state low-pass the sweep interpolates between, the degenerate-law equality target; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each swept through ALES44's own bounded block partition (max_sweep_blocks = 4096), the filter state at full i64 precision per channel,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each swept through ALES44's own bounded block partition (max_sweep_blocks = 4096), the filter state at full i64 precision per channel,
 //! siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The coefficient still smooths over sample INDICES, now under a schedule; a cutoff in hertz is the later time-base rung. No real
 //! sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -42,14 +42,14 @@ const sweep = @import("sweep.rye");
 
 pub const stereo_sweep_version = "20260815.081412";
 
-/// The stereo sweep's faults are exactly ALES44's own `SweepError` — `BadCoeff` on an illegal endpoint, `BadRange` on a span outside the samples, and `BadBlocks` on an illegal partition — reused by name, since carrying the sweep
+/// The stereo sweep's faults are exactly ALES44's own `SweepError` -- `BadCoeff` on an illegal endpoint, `BadRange` on a span outside the samples, and `BadBlocks` on an illegal partition -- reused by name, since carrying the sweep
 /// into stereo adds no new fault: it validates one shared schedule against the shared length, then runs the same mono sweep on each channel.
 pub const StereoSweepError = sweep.SweepError;
 
-/// Sweep a low-pass over `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME schedule — `num_from → num_to` over `den`, partitioned into `blocks` blocks — by running ALES44's proven mono
+/// Sweep a low-pass over `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME schedule -- `num_from -> num_to` over `den`, partitioned into `blocks` blocks -- by running ALES44's proven mono
 /// `sweep_low_pass` on each channel. Each channel opens its OWN i64 filter state and threads it across its OWN blocks, so the two channels never share a filter memory; the shared schedule preserves the stereo image. A degenerate
 /// schedule (num_from == num_to) equals ALES40's fixed low_pass on both; a settled constant sweeps to itself on both. Validates the two endpoints, the span, and the block count ONCE against the shared length before either channel
-/// is mutated (ALES44's `check_sweep`): refuses BadCoeff, BadRange, and BadBlocks, both channels untouched. Values only — never the length; the two channels leave balanced.
+/// is mutated (ALES44's `check_sweep`): refuses BadCoeff, BadRange, and BadBlocks, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_sweep(
     sc: *pan.StereoClip,
     start: u32,
@@ -59,24 +59,24 @@ pub fn stereo_sweep(
     den: u32,
     blocks: u32,
 ) StereoSweepError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared schedule preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared schedule preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: the schedule, span, and partition are legal against the SHARED length — checked before any write, so a refusal never sweeps one channel and leaves the other torn.
+    // invariant: the schedule, span, and partition are legal against the SHARED length -- checked before any write, so a refusal never sweeps one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     try sweep.check_sweep(len, start, count, num_from, num_to, den, blocks);
 
-    // Every check passed and holds identically for both channels (same schedule, same span, shared length), so each mono sweep is pre-validated to succeed — no refusal can land between the two channel edits. The SAME schedule on
+    // Every check passed and holds identically for both channels (same schedule, same span, shared length), so each mono sweep is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME schedule on
     // each channel, each channel carrying its own filter state across its own blocks.
     try sweep.sweep_low_pass(&sc.left, start, count, num_from, num_to, den, blocks);
     try sweep.sweep_low_pass(&sc.right, start, count, num_from, num_to, den, blocks);
 
-    // invariant: the channels leave balanced — a sweep writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a sweep writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO SWEEP LAW — each channel equals ALES44's mono sweep_low_pass with the SAME schedule byte for byte, different per-channel content; THE DEGENERATE LAW — a degenerate sweep equals ALES40's fixed low_pass on
-//     both, a settled constant sweeping to itself; THE IMAGE LAW — an identical-channel master staying identical; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal untouched, count 0
+// --- selftest: THE STEREO SWEEP LAW -- each channel equals ALES44's mono sweep_low_pass with the SAME schedule byte for byte, different per-channel content; THE DEGENERATE LAW -- a degenerate sweep equals ALES40's fixed low_pass on
+//     both, a settled constant sweeping to itself; THE IMAGE LAW -- an identical-channel master staying identical; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW -- silence to silence, balanced, each refusal untouched, count 0
 //     identity
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -92,7 +92,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO SWEEP LAW — each channel equals ALES44's mono sweep_low_pass with the SAME schedule, proven side by side over one span with genuinely different per-channel content: the left swept by the left's spectrum, the
+    // 1. THE STEREO SWEEP LAW -- each channel equals ALES44's mono sweep_low_pass with the SAME schedule, proven side by side over one span with genuinely different per-channel content: the left swept by the left's spectrum, the
     //    right by the right's, never crossed.
     {
         const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000, 1000, 500, -900, 1100 };
@@ -110,11 +110,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftSweepNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightSweepNotMono;
-        // The two channels genuinely differ — the left is not the right swept, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right swept, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2a. THE DEGENERATE LAW — a degenerate stereo sweep (num_from == num_to) over any block partition equals ALES40's fixed low_pass on BOTH channels byte for byte. The carried state makes the block partition invisible per
+    // 2a. THE DEGENERATE LAW -- a degenerate stereo sweep (num_from == num_to) over any block partition equals ALES40's fixed low_pass on BOTH channels byte for byte. The carried state makes the block partition invisible per
     //     channel, so a still schedule adds no arithmetic to either audio path.
     {
         const ll = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         if (!eq(swept.right.samples(), fr.samples())) return error.RightDegenerateNotFixed;
     }
 
-    // 2b. a settled constant sweeps to itself on both channels — a constant is a fixed point of every legal coefficient and the carried state never restarts, so the swept tail equals the input exactly, per channel.
+    // 2b. a settled constant sweeps to itself on both channels -- a constant is a fixed point of every legal coefficient and the carried state never restarts, so the swept tail equals the input exactly, per channel.
     {
         const run = [_]i16{2500} ** 48;
         var sc = pan.StereoClip{};
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (sc.left.samples()[47] != 2500 or sc.right.samples()[47] != 2500) return error.ConstantNotSettled;
     }
 
-    // 3. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the sweep: the same input through the same schedule is the same deterministic output, so the two channels never split.
+    // 3. THE IMAGE LAW -- an identical-channel (mono-in-stereo) master stays identical through the sweep: the same input through the same schedule is the same deterministic output, so the two channels never split.
     {
         const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300, 1200, -1200, 600, -600 };
         var sc = pan.StereoClip{};
@@ -152,7 +152,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master sweeps to silence on both; the channels stay equal length and each holds its starting length.
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master sweeps to silence on both; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 6) return error.LengthChanged;
     }
 
-    // 4b. THE ATOMICITY LAW — an illegal endpoint (num_to above den — unstable), an out-of-range span, and an illegal block count (more blocks than samples — an empty block) each refuse by name with BOTH channels byte for byte
+    // 4b. THE ATOMICITY LAW -- an illegal endpoint (num_to above den -- unstable), an out-of-range span, and an illegal block count (more blocks than samples -- an empty block) each refuse by name with BOTH channels byte for byte
     //     untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
         if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.BlocksRefusalMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to sweep.
+    // 4c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to sweep.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

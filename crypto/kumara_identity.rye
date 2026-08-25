@@ -1,41 +1,41 @@
-//! crypto/kumara_identity.rye — Season G (Cryptography), the identity arc's FRONT DOOR: the one composition that ties the whole arc into a single
-//! answer — from a backup phrase to a keeper's Kumara signing identity, and the signature it makes. Where the rungs beneath authored each piece
+//! crypto/kumara_identity.rye -- Season G (Cryptography), the identity arc's FRONT DOOR: the one composition that ties the whole arc into a single
+//! answer -- from a backup phrase to a keeper's Kumara signing identity, and the signature it makes. Where the rungs beneath authored each piece
 //! (crypto/bip39_seed folds a mnemonic to a 512-bit seed, crypto/slip10_ed25519 grows that seed into an ed25519 HD tree, crypto/kumara_path names
 //! the copyable shape m/44'/coin_type'/account'/index' of a keeper's identity within it, crypto/ed25519_sign makes and derives the signature), this
-//! rung COMPOSES them so a caller reaches identity through one door: phrase → seed → path → keypair → signature. It is the identity-arc sibling of
-//! the wallet arc's crypto/eth_address.rye and crypto/bitcoin_address.rye — where those render a key to its human address, this renders a phrase to
+//! rung COMPOSES them so a caller reaches identity through one door: phrase -> seed -> path -> keypair -> signature. It is the identity-arc sibling of
+//! the wallet arc's crypto/eth_address.rye and crypto/bitcoin_address.rye -- where those render a key to its human address, this renders a phrase to
 //! the identity every Grain module signs and verifies with (Kumara, Vault, Comlink, the Lotus signed carry).
 //!
 //! It authors NO new cryptography. Every HMAC, clamp, scalar, and signature lives in an already-GREEN rung beneath; this module contributes only
-//! the wiring — the four lines that turn a phrase into an identity, and the two thin wrappers (sign / verify) that let a caller sign with the
+//! the wiring -- the four lines that turn a phrase into an identity, and the two thin wrappers (sign / verify) that let a caller sign with the
 //! derived key without reaching past this door. A Kumara identity's public key is the raw 32-byte ed25519 public key (kumara/README.md: "an
 //! Ed25519 keypair, deterministic from a 32-byte seed"), which is exactly crypto/slip10_ed25519.rye's 33-byte public form with its 0x00 SLIP-0010
-//! domain tag stripped — and, independently, exactly crypto/ed25519_sign.rye's derive_public of the node's key. This module asserts those two agree.
+//! domain tag stripped -- and, independently, exactly crypto/ed25519_sign.rye's derive_public of the node's key. This module asserts those two agree.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry." The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a
 //! Kumara-signed, content-addressed chain of custody end to end." This rung stands the identity end of that chain: the key a Kumara signature is
 //! made with, reached the same way from the same phrase on any device.
-//! Kin: crypto/kumara_path.rye (the account path this walks, GREEN) · crypto/bip39_seed.rye (the mnemonic→seed fold, GREEN) ·
-//! crypto/slip10_ed25519.rye (the ed25519 HD tree, GREEN) · crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature, GREEN) ·
+//! Kin: crypto/kumara_path.rye (the account path this walks, GREEN) - crypto/bip39_seed.rye (the mnemonic->seed fold, GREEN) -
+//! crypto/slip10_ed25519.rye (the ed25519 HD tree, GREEN) - crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature, GREEN) -
 //! crypto/signed_carry.rye (the composition that seals a record under such an identity's seed). Clean-room: the path convention, BIP-39, and
 //! SLIP-0010's vectors are public standards studied through their specs (.claude/rules/gratitude-licenses.md); no line is copied.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity derived here is a TEST identity from a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Every identity derived here is a TEST identity from a
 //! published test-vector mnemonic or seed; this module calls no std.crypto. The derived secret seed is a secret the caller keeps in their own jail,
 //! exactly as Kumara's own keypair does; timing-safety of the signing and derivation it composes stays crypto/CONSTANT_TIME.md's named horizon, not
 //! introduced here. Growing a REAL Kumara identity from the maintainer's OWN phrase, and signing a real record with it, stays the custody gate
-//! (#3/#4) — this library derives and verifies a TEST identity; it never holds the maintainer's key.
+//! (#3/#4) -- this library derives and verifies a TEST identity; it never holds the maintainer's key.
 //!
-//! Parity is proven at selftest three replayable ways, no fabricated constant: (1) the bip39 half is anchored to a REAL published answer — the
-//! intermediate seed of BIP-39's own Trezor vector mnemonic "abandon…about" under passphrase "TREZOR" equals the spec's published 512-bit seed
-//! byte-for-byte; (2) the arc has no drift — from_mnemonic equals hand-wiring bip39_seed → kumara_path.derive_identity, and the identity's public
+//! Parity is proven at selftest three replayable ways, no fabricated constant: (1) the bip39 half is anchored to a REAL published answer -- the
+//! intermediate seed of BIP-39's own Trezor vector mnemonic "abandon...about" under passphrase "TREZOR" equals the spec's published 512-bit seed
+//! byte-for-byte; (2) the arc has no drift -- from_mnemonic equals hand-wiring bip39_seed -> kumara_path.derive_identity, and the identity's public
 //! key equals both crypto/slip10_ed25519.rye's public form (0x00 tag stripped) and crypto/ed25519_sign.rye's independent derive_public, all three
 //! agreeing; the ed25519 half itself is proven one rung down, where crypto/kumara_path.rye reproduces SLIP-0010's own ed25519 test vectors; (3) the
-//! derived key is a REAL working signing key — it signs a message that verify accepts, a flipped message byte and a flipped signature byte are each
-//! refused, and a DIFFERENT identity's public key refuses the same signature. Determinism (same phrase → identical identity) and distinctness
-//! (a changed account, index, or coin → a different public key) close the proof.
+//! derived key is a REAL working signing key -- it signs a message that verify accepts, a flipped message byte and a flipped signature byte are each
+//! refused, and a DIFFERENT identity's public key refuses the same signature. Determinism (same phrase -> identical identity) and distinctness
+//! (a changed account, index, or coin -> a different public key) close the proof.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_identity.rye selftest
 
@@ -56,7 +56,7 @@ pub const kumara_identity_version = "20260816.092122";
 /// derivation; the same width Kumara's own keypair_from_seed takes.
 pub const secret_len: u32 = slip10.key_len; // 32
 
-/// The raw 32-byte ed25519 public key that names a Kumara identity — the SLIP-0010 33-byte form with its 0x00 domain tag stripped.
+/// The raw 32-byte ed25519 public key that names a Kumara identity -- the SLIP-0010 33-byte form with its 0x00 domain tag stripped.
 pub const public_len: u32 = slip10.key_len; // 32
 
 /// The chain code carried at the identity node, so a caller can derive further children (a per-record subkey) without re-walking from the seed.
@@ -88,14 +88,14 @@ fn strip_domain_tag(slip_public: *const [slip10.public_len]u8) [public_len]u8 {
     return out;
 }
 
-/// Assemble the Identity from a walked node — shared by from_seed and from_mnemonic so the two paths cannot drift. The public key is derived two
+/// Assemble the Identity from a walked node -- shared by from_seed and from_mnemonic so the two paths cannot drift. The public key is derived two
 /// independent ways and asserted equal: crypto/slip10_ed25519.rye's public form (tag stripped) and crypto/ed25519_sign.rye's derive_public. Both
 /// run the same ed25519 public derivation over the same node key, so an inequality would mean a real inconsistency between the two rungs.
 fn identity_from_node(node: *const slip10.Node, coin_type: u32, account: u32, index: u32) Identity {
     const slip_public = slip10.public_key(node);
     const public_key = strip_domain_tag(&slip_public);
     const direct = signer.derive_public(&node.key);
-    // invariant: the two independent public derivations agree byte-for-byte — the identity's public key is unambiguous.
+    // invariant: the two independent public derivations agree byte-for-byte -- the identity's public key is unambiguous.
     var k: u32 = 0;
     // invariant: the derived key is compared byte for byte against the one computed directly,
     // so the two paths are proven to agree rather than assumed to
@@ -113,7 +113,7 @@ fn identity_from_node(node: *const slip10.Node, coin_type: u32, account: u32, in
 
 /// Derive a Kumara identity directly from a BIP-39 seed (the 512-bit output of crypto/bip39_seed.rye, or any SLIP-0010-admissible byte string),
 /// walking crypto/kumara_path.rye's m/44'/coin_type'/account'/index'. The mathematics is all one rung down; this is the wiring plus the two-way
-/// public-key check. TEST seeds only — a real seed reaches the custody gate.
+/// public-key check. TEST seeds only -- a real seed reaches the custody gate.
 pub fn from_seed(
     seed: []const u8,
     coin_type: u32,
@@ -127,8 +127,8 @@ pub fn from_seed(
 }
 
 /// The whole identity arc in one call: fold a mnemonic (and optional passphrase) to a 512-bit seed with crypto/bip39_seed.rye, then walk the
-/// Kumara path to the identity. Composes bip39_seed and kumara_path entirely — no drift from calling from_seed on bip39_seed's output by hand,
-/// which the selftest asserts. TEST mnemonics only — the maintainer's own phrase reaches the custody gate.
+/// Kumara path to the identity. Composes bip39_seed and kumara_path entirely -- no drift from calling from_seed on bip39_seed's output by hand,
+/// which the selftest asserts. TEST mnemonics only -- the maintainer's own phrase reaches the custody gate.
 pub fn from_mnemonic(
     mnemonic: []const u8,
     passphrase: []const u8,
@@ -149,13 +149,13 @@ pub fn from_mnemonic(
     };
 }
 
-/// Sign a message with a derived identity's secret seed — the thin wrapper that lets a caller make a Kumara signature through this one door rather
+/// Sign a message with a derived identity's secret seed -- the thin wrapper that lets a caller make a Kumara signature through this one door rather
 /// than reaching into crypto/ed25519_sign.rye. Reads the secret seed; the signature it returns is public.
 pub fn sign(identity: *const Identity, msg: []const u8) signer.SignError![64]u8 {
     return signer.sign(&identity.secret_seed, msg);
 }
 
-/// Verify a signature against an identity's public key — the public counterpart of sign, so a verifier need hold only the 32-byte public key.
+/// Verify a signature against an identity's public key -- the public counterpart of sign, so a verifier need hold only the 32-byte public key.
 pub fn verify(public_key: *const [public_len]u8, msg: []const u8, sig: *const [64]u8) verifier.VerifyError!void {
     return verifier.verify(sig, msg, public_key);
 }
@@ -164,12 +164,12 @@ pub fn verify(public_key: *const [public_len]u8, msg: []const u8, sig: *const [6
 
 fn nibble(c: u8) u8 {
     if (c >= '0' and c <= '9') return c - '0';
-    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    // invariant: the vector hex uses only lowercase a-f beyond the digits.
     assert(c >= 'a' and c <= 'f');
     return c - 'a' + 10;
 }
 
-/// Compare a raw byte buffer against its lowercase-hex spelling — the replayable check the anchored seed faces.
+/// Compare a raw byte buffer against its lowercase-hex spelling -- the replayable check the anchored seed faces.
 fn eq_hex(raw: []const u8, hex: []const u8) bool {
     if (raw.len * 2 != hex.len) return false;
     var i: u32 = 0;
@@ -187,7 +187,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-// BIP-39's own published Trezor vector 1 — a REAL published answer anchoring the mnemonic→seed half of the arc.
+// BIP-39's own published Trezor vector 1 -- a REAL published answer anchoring the mnemonic->seed half of the arc.
 const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 const trezor_passphrase = "TREZOR";
 const trezor_seed_hex = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04";
@@ -198,24 +198,24 @@ fn run_selftest() !u8 {
     const test_coin: u32 = 7;
 
     // 1. REAL-ANSWER ANCHOR (the bip39 half). Fold the published Trezor mnemonic to a seed the standard-published way, and assert it equals the
-    //    spec's own 512-bit seed byte-for-byte — so the mnemonic→seed half of from_mnemonic stands on a real answer, not a claim.
+    //    spec's own 512-bit seed byte-for-byte -- so the mnemonic->seed half of from_mnemonic stands on a real answer, not a claim.
     var anchored_seed: [bip39.seed_len]u8 = undefined;
     try bip39.seed(&anchored_seed, trezor_mnemonic, trezor_passphrase);
     if (!eq_hex(anchored_seed[0..], trezor_seed_hex)) return error.Bip39SeedAnchorMismatch;
 
-    // 2. ARC HAS NO DRIFT. from_mnemonic must equal hand-wiring bip39_seed → kumara_path.derive_identity, and the identity's fields must match the
+    // 2. ARC HAS NO DRIFT. from_mnemonic must equal hand-wiring bip39_seed -> kumara_path.derive_identity, and the identity's fields must match the
     //    walked node exactly. Any drift between the front door and the rungs beneath is caught here.
     const id = try from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
     const by_hand_node = try kumara_path.derive_identity(anchored_seed[0..], test_coin, 0, 0);
     if (!bytes_eq(id.secret_seed[0..], by_hand_node.key[0..])) return error.SecretDrift;
     if (!bytes_eq(id.chain_code[0..], by_hand_node.chain_code[0..])) return error.ChainDrift;
-    // from_seed on the same seed reaches the identical identity — the two entry points agree.
+    // from_seed on the same seed reaches the identical identity -- the two entry points agree.
     const id_by_seed = try from_seed(anchored_seed[0..], test_coin, 0, 0);
     if (!bytes_eq(id.secret_seed[0..], id_by_seed.secret_seed[0..])) return error.SeedEntryDrift;
     if (!bytes_eq(id.public_key[0..], id_by_seed.public_key[0..])) return error.SeedEntryPublicDrift;
 
     // 3. THREE-WAY PUBLIC-KEY AGREEMENT. The identity's public key equals crypto/slip10_ed25519.rye's public form (0x00 tag stripped) and
-    //    crypto/ed25519_sign.rye's independent derive_public — the same 32 bytes three ways, with the SLIP form's domain tag proven 0x00.
+    //    crypto/ed25519_sign.rye's independent derive_public -- the same 32 bytes three ways, with the SLIP form's domain tag proven 0x00.
     const slip_public = slip10.public_key(&by_hand_node);
     if (slip_public[0] != 0x00) return error.DomainTagWrong;
     if (!bytes_eq(id.public_key[0..], slip_public[1..])) return error.PublicVsSlipMismatch;
@@ -223,7 +223,7 @@ fn run_selftest() !u8 {
     if (!bytes_eq(id.public_key[0..], direct_public[0..])) return error.PublicVsDirectMismatch;
 
     // 4. THE DERIVED KEY IS A REAL WORKING SIGNING KEY. It signs a message that verify accepts; a flipped message byte, a flipped signature byte,
-    //    and a DIFFERENT identity's public key each refuse — the whole point of an identity, proven, tying ed25519 sign/verify into the arc.
+    //    and a DIFFERENT identity's public key each refuse -- the whole point of an identity, proven, tying ed25519 sign/verify into the arc.
     const message = "Grain — a key becomes a name when someone keeps it, and signs so.";
     const sig = try sign(&id, message);
     try verify(&id.public_key, message, &sig);
@@ -250,7 +250,7 @@ fn run_selftest() !u8 {
     }
 
     // 5. DETERMINISM AND DISTINCTNESS. The same phrase and slots reach an identical identity; a changed account, index, or coin reaches a
-    //    different public key — so an identity is stable per path and separated across paths.
+    //    different public key -- so an identity is stable per path and separated across paths.
     {
         const again = try from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
         if (!bytes_eq(id.public_key[0..], again.public_key[0..])) return error.NotDeterministic;
@@ -264,7 +264,7 @@ fn run_selftest() !u8 {
         if (bytes_eq(id.public_key[0..], other_coin.public_key[0..])) return error.CoinNotSeparated;
     }
 
-    // 6. EDGES. A level at or above the hardened offset (2³¹) collides with the hardening bit and is refused IndexTooLarge — the guard
+    // 6. EDGES. A level at or above the hardened offset (2³¹) collides with the hardening bit and is refused IndexTooLarge -- the guard
     //    crypto/kumara_path.rye's derive_identity raises, reached through this door.
     {
         const at_offset: u32 = 1 << 31; // exactly the hardened offset — one past the largest legal bare value

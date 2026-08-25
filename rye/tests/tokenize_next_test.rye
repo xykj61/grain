@@ -1,4 +1,4 @@
-//! Rye test: TokenIterator.next via tokenizeScalar — pass 9956.
+//! Rye test: TokenIterator.next via tokenizeScalar -- pass 9956.
 //!
 //! next() advances through tokens after peek (9957); reset replays from start.
 

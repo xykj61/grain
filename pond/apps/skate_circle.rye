@@ -1,24 +1,24 @@
-//! pond/apps/skate_circle.rye — Season 3 Journey 9 (Skate), Rung 1: consent is mutual, presence is never default.
+//! pond/apps/skate_circle.rye -- Season 3 Journey 9 (Skate), Rung 1: consent is mutual, presence is never default.
 //!
-//! Season 3, Commons — keepers meet each other with consent. Skate is the social layer over Pond
+//! Season 3, Commons -- keepers meet each other with consent. Skate is the social layer over Pond
 //! identities, and Journey 9 draws its first, load-bearing half: how two keepers come to *see* each
-//! other at all. Pond's own first policy already names the shape at the artifact border — place ·
-//! hold · refuse (`pond/customs.rye`); Skate carries that same trichotomy to the social border, where
+//! other at all. Pond's own first policy already names the shape at the artifact border -- place -
+//! hold - refuse (`pond/customs.rye`); Skate carries that same trichotomy to the social border, where
 //! the resting verdict is the strictest one.
 //!
 //! The crux: **a link between two members exists only when both have requested it.** A `Circle` is a
-//! shared surface a keeper joins only by their own explicit act — no keeper is a member by default. A
+//! shared surface a keeper joins only by their own explicit act -- no keeper is a member by default. A
 //! `link` between two members is mutual-only: one keeper's request is a standing offer that **holds**;
 //! the connection **places** (links) only when the other keeper has also asked. A one-sided request
 //! holds forever without ever becoming a link, so a steward cannot manufacture a connection from one
-//! side. Visibility follows the link exactly — a member sees another only when they are linked, so
+//! side. Visibility follows the link exactly -- a member sees another only when they are linked, so
 //! presence is never default. This is the honest meaning of consent-first: not "opt out is available,"
 //! but "nothing exists until both opted in."
 //!
-//! This is the pure rule as a bounded state machine — consent modeled as explicit acts, no signing yet
+//! This is the pure rule as a bounded state machine -- consent modeled as explicit acts, no signing yet
 //! (r2 signs each act with the keeper's settled Kumara identity, mirroring `commerce_trade_signed`).
 //! Facts only, custody-first: it records the facts of consent and holds nothing, opens no network, and
-//! generates no real identity (a circle shared over the wire reaches the serve gate — Keaton's hand).
+//! generates no real identity (a circle shared over the wire reaches the serve gate -- Keaton's hand).
 //! Demo keeper points only.
 //!
 //!   rye build pond/apps/skate_circle.rye -femit-bin=pond/bin/skate-circle
@@ -32,10 +32,10 @@ const print = std.debug.print;
 
 pub const skate_circle_version = "20260812.201611";
 
-/// A circle seats at most this many keepers — a bounded shared surface, not a whole network.
+/// A circle seats at most this many keepers -- a bounded shared surface, not a whole network.
 pub const max_members: u32 = 32;
 
-/// A circle holds at most this many one-sided link requests — bounded so consent never grows unbounded.
+/// A circle holds at most this many one-sided link requests -- bounded so consent never grows unbounded.
 pub const max_requests: u32 = 128;
 
 /// The social verdict, carried from Pond's own customs trichotomy to the keeper border.
@@ -54,7 +54,7 @@ pub const CircleError = error{
     RequestsFull, // the request book is at its bound — refuse rather than drop consent
 };
 
-/// One keeper's standing offer to link with another — directional by construction, so mutuality is a
+/// One keeper's standing offer to link with another -- directional by construction, so mutuality is a
 /// property of two of these existing, never of one.
 const Request = struct {
     from: u32,
@@ -62,7 +62,7 @@ const Request = struct {
 };
 
 /// A shared surface: the keepers who have joined by their own act, and every one-sided link request
-/// they have made. A link is not stored — it is *derived* as the presence of two opposing requests, so
+/// they have made. A link is not stored -- it is *derived* as the presence of two opposing requests, so
 /// the mutual-only law cannot be bypassed by writing a link directly.
 // Invariant: member_count <= max_members; request_count <= max_requests.
 pub const Circle = struct {
@@ -73,13 +73,13 @@ pub const Circle = struct {
 
     pub fn open() Circle {
         const c = Circle{ .members = undefined, .member_count = 0, .requests = undefined, .request_count = 0 };
-        // invariant: an opened circle seats no one and holds no request — presence is never default.
+        // invariant: an opened circle seats no one and holds no request -- presence is never default.
         assert(c.member_count == 0);
         assert(c.request_count == 0);
         return c;
     }
 
-    /// Is this keeper a member — did they join by their own act?
+    /// Is this keeper a member -- did they join by their own act?
     pub fn is_member(self: *const Circle, point: u32) bool {
         // invariant: the member roll never exceeds its bound.
         assert(self.member_count <= max_members);
@@ -114,9 +114,9 @@ pub const Circle = struct {
         return false;
     }
 
-    /// One keeper asks to link with another — a standing offer. Both must be members (only members
+    /// One keeper asks to link with another -- a standing offer. Both must be members (only members
     /// consent); a keeper cannot ask themselves; the same offer is recorded once; the book is bounded.
-    /// A request alone never makes a link — it takes the opposite request too (see `verdict`).
+    /// A request alone never makes a link -- it takes the opposite request too (see `verdict`).
     pub fn request_link(self: *Circle, from: u32, to: u32) CircleError!void {
         if (from == to) return error.SelfLink;
         if (!self.is_member(from)) return error.NotMember;
@@ -131,10 +131,10 @@ pub const Circle = struct {
         assert(self.request_count <= max_requests);
     }
 
-    /// The verdict for a pair of keepers — the whole consent rule, folded to one answer:
-    ///   refuse — either is not a member, or neither has asked
-    ///   hold   — exactly one has asked (a standing offer, not yet a connection)
-    ///   place  — both have asked (mutual consent — a link)
+    /// The verdict for a pair of keepers -- the whole consent rule, folded to one answer:
+    ///   refuse -- either is not a member, or neither has asked
+    ///   hold   -- exactly one has asked (a standing offer, not yet a connection)
+    ///   place  -- both have asked (mutual consent -- a link)
     pub fn verdict(self: *const Circle, a: u32, b: u32) Verdict {
         if (a == b) return .refuse; // a keeper is not linked with themselves
         if (!self.is_member(a) or !self.is_member(b)) return .refuse;
@@ -145,12 +145,12 @@ pub const Circle = struct {
         return .refuse;
     }
 
-    /// Are these two keepers linked — did *both* consent? A link is mutual-only; this is the crux.
+    /// Are these two keepers linked -- did *both* consent? A link is mutual-only; this is the crux.
     pub fn linked(self: *const Circle, a: u32, b: u32) bool {
         return self.verdict(a, b) == .place;
     }
 
-    /// Does `viewer` see `other`? A member sees another only when linked — presence is never default.
+    /// Does `viewer` see `other`? A member sees another only when linked -- presence is never default.
     /// Visibility follows the link exactly, so the rule has one source of truth.
     pub fn visible(self: *const Circle, viewer: u32, other: u32) bool {
         // invariant: visibility is nothing more, and nothing less, than a mutual link.
@@ -161,13 +161,13 @@ pub const Circle = struct {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper points — plain identifiers for the pure rule; r2 binds each to a settled Kumara identity.
+// Demo keeper points -- plain identifiers for the pure rule; r2 binds each to a settled Kumara identity.
 const ivy: u32 = 101;
 const wren: u32 = 202;
 const flax: u32 = 303;
 
 /// A one-sided request holds and never reads as linked; the mutual pair links; visibility follows the
-/// link exactly — the crux, made checkable.
+/// link exactly -- the crux, made checkable.
 fn welcome_mutual_only_links() !void {
     var c = Circle.open();
     try c.join(ivy);
@@ -177,7 +177,7 @@ fn welcome_mutual_only_links() !void {
     assert(c.verdict(ivy, wren) == .refuse);
     assert(!c.visible(ivy, wren));
 
-    // Ivy asks Wren. One-sided: it holds, and it is not a link — no visibility yet, either way.
+    // Ivy asks Wren. One-sided: it holds, and it is not a link -- no visibility yet, either way.
     try c.request_link(ivy, wren);
     assert(c.verdict(ivy, wren) == .hold);
     assert(!c.linked(ivy, wren));
@@ -194,7 +194,7 @@ fn welcome_mutual_only_links() !void {
     print("skate_circle: a one-sided request held; only when both asked did the link place and each see the other.\n", .{});
 }
 
-/// A member is invisible to everyone they have not mutually linked — presence is never default, even
+/// A member is invisible to everyone they have not mutually linked -- presence is never default, even
 /// among members of the same circle.
 fn welcome_presence_never_default() !void {
     var c = Circle.open();
@@ -214,7 +214,7 @@ fn welcome_presence_never_default() !void {
     print("skate_circle: a joined keeper who linked no one sees no one and is seen by no one — presence is never default.\n", .{});
 }
 
-/// A link touching a keeper who never joined refuses — only members consent.
+/// A link touching a keeper who never joined refuses -- only members consent.
 fn unwelcome_nonmember_refuses() !void {
     var c = Circle.open();
     try c.join(ivy);
@@ -236,7 +236,7 @@ fn unwelcome_self_link_refuses() !void {
     print("skate_circle: a self-link refused SelfLink — a bond crosses between two keepers.\n", .{});
 }
 
-/// A seat is claimed once, and the same offer is recorded once — consent is not doubled.
+/// A seat is claimed once, and the same offer is recorded once -- consent is not doubled.
 fn unwelcome_double_refuses() !void {
     var c = Circle.open();
     try c.join(ivy);
@@ -249,7 +249,7 @@ fn unwelcome_double_refuses() !void {
     print("skate_circle: a taken seat refused AlreadyMember and a repeated offer AlreadyRequested — consent is recorded once.\n", .{});
 }
 
-/// The circle is bounded — a full seat roll refuses rather than drop a keeper.
+/// The circle is bounded -- a full seat roll refuses rather than drop a keeper.
 fn unwelcome_full_circle_refuses() !void {
     var c = Circle.open();
     var n: u32 = 0;

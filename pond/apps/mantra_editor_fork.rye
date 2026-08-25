@@ -1,20 +1,20 @@
-//! pond/apps/mantra_editor_fork.rye — BUHR Journey 4, Rung 3: an edit can fork a
+//! pond/apps/mantra_editor_fork.rye -- BUHR Journey 4, Rung 3: an edit can fork a
 //! new lane, not only continue an old one.
 //!
-//! Rung one gave the editor `commit` — continue an existing lane by appending its
+//! Rung one gave the editor `commit` -- continue an existing lane by appending its
 //! next revision. This rung gives it the other half of a file editor's basic surface:
 //! `open_lane`, forking a new lane by appending the first revision on a fresh path.
 //! Together they are the editor's "new file" and "edit file": a person opens a lane
 //! that did not exist, then commits revisions onto it exactly as onto any other lane.
-//! Both are appends to the same append-only Mantra catalog — a fork adds a lane, never
-//! a store beside the log — so the browser's render shows the new lane because it
+//! Both are appends to the same append-only Mantra catalog -- a fork adds a lane, never
+//! a store beside the log -- so the browser's render shows the new lane because it
 //! shows the log.
 //!
 //! The proof: open a lane on a fresh path, and the rendered graph grows by exactly one
-//! new lane line (`c.txt: r1[…]`), its lane count up by one, every existing lane byte
-//! for byte unchanged. The forked lane is then a lane like any other — a `commit` onto
+//! new lane line (`c.txt: r1[...]`), its lane count up by one, every existing lane byte
+//! for byte unchanged. The forked lane is then a lane like any other -- a `commit` onto
 //! it chains `r1 -> r2`. Opening a path that already carries a leaf refuses `LaneExists`
-//! rather than opening a duplicate — there is a chain to continue, not a new one to fork.
+//! rather than opening a duplicate -- there is a chain to continue, not a new one to fork.
 //!
 //! Additive by construction: it imports mantra_browser and mantra_editor, calling only
 //! their public functions. No file beneath it changes; rung one (editor) stays its own
@@ -32,7 +32,7 @@ const editor = @import("mantra_editor.rye");
 const mantra_editor_fork_version = "20260812.124800";
 
 /// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
-/// length — a witness helper proving a lane marker appears exactly once (or not at all).
+/// length -- a witness helper proving a lane marker appears exactly once (or not at all).
 fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
     // invariant: a real needle has bytes to match.
     assert(needle.len > 0);
@@ -49,7 +49,7 @@ fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
     return count;
 }
 
-/// Return the rendered line that contains `marker`, without its trailing newline —
+/// Return the rendered line that contains `marker`, without its trailing newline --
 /// a witness helper so a lane can be compared before and after a fork.
 fn line_with(text: []const u8, marker: []const u8) []const u8 {
     // invariant: a real marker has bytes to find.
@@ -71,7 +71,7 @@ fn welcome_fork_opens_a_lane() !void {
     // The fresh path carries no lane yet.
     assert(std.mem.indexOf(u8, before, "c.txt:") == null);
 
-    // Open a new lane on a fresh path — the first revision, always one.
+    // Open a new lane on a fresh path -- the first revision, always one.
     const rev = try editor.open_lane(&catalog, "local", "notes", "c.txt", "gamma", "leaf");
     assert(rev == 1);
     assert(mb.lane_count(&catalog) == lanes_before + 1);
@@ -83,7 +83,7 @@ fn welcome_fork_opens_a_lane() !void {
     assert(count_occurrences(c_line, "r1[") == 1);
     assert(count_occurrences(c_line, "->") == 0);
 
-    // Every existing lane paints unchanged — the fork touched only the new path.
+    // Every existing lane paints unchanged -- the fork touched only the new path.
     assert(std.mem.eql(u8, line_with(before, "a.txt:"), line_with(after, "a.txt:")));
     assert(std.mem.eql(u8, line_with(before, "b.txt:"), line_with(after, "b.txt:")));
     assert(std.mem.eql(u8, line_with(before, "index:"), line_with(after, "index:")));
@@ -91,7 +91,7 @@ fn welcome_fork_opens_a_lane() !void {
 }
 
 fn welcome_forked_lane_is_a_lane() !void {
-    // A forked lane is a lane like any other — a commit onto it chains r1 -> r2.
+    // A forked lane is a lane like any other -- a commit onto it chains r1 -> r2.
     var catalog = try mb.demo_catalog();
     _ = try editor.open_lane(&catalog, "local", "notes", "c.txt", "gamma", "leaf");
     const rev2 = try editor.commit(&catalog, "local", "notes", "c.txt", "gamma-two", "leaf");
@@ -107,7 +107,7 @@ fn welcome_forked_lane_is_a_lane() !void {
 }
 
 fn welcome_refuses_existing_lane() !void {
-    // Opening a path that already carries a leaf refuses — there is a chain to
+    // Opening a path that already carries a leaf refuses -- there is a chain to
     // continue with a commit, not a new lane to fork.
     var catalog = try mb.demo_catalog();
     if (editor.open_lane(&catalog, "local", "notes", "b.txt", "dup", "leaf")) |_| {

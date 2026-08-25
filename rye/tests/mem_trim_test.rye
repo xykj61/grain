@@ -1,4 +1,4 @@
-//! Rye test: std.mem.trim — pass 9930.
+//! Rye test: std.mem.trim -- pass 9930.
 //!
 //! Rishi trims both ends on nearly every parsed line. trim completes the
 //! strengthened trim family beside trimStart (9979) and trimEnd (9988).

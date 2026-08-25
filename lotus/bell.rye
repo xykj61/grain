@@ -1,21 +1,21 @@
-//! lotus/bell.rye — ALES48: a parametric bell (peaking EQ) — turn the middle band, hold the edges. The band-pass isolates the
-//! middle (ALES46), the band-reject drops it (ALES47); the bell TURNS it — boosts or cuts the middle by a chosen gain while the
+//! lotus/bell.rye -- ALES48: a parametric bell (peaking EQ) -- turn the middle band, hold the edges. The band-pass isolates the
+//! middle (ALES46), the band-reject drops it (ALES47); the bell TURNS it -- boosts or cuts the middle by a chosen gain while the
 //! edges stay exactly as they were. It is the single most-reached-for tool in a mix: lift a vocal's presence, tame a boxy room
 //! mode, dig out a kick's thump. The bell rests on the tone stack's own lesson (ALES42): the middle is the EXACT residual
 //! M = x − L − H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction.
 //! The bell is the whole fixed-EQ family at three gains: unity gain is the identity, zero gain is ALES47's notch, a larger gain
-//! boosts the middle. The one correctness beyond ALES47 is that the residual makes those three exact — no new arithmetic on the
+//! boosts the middle. The one correctness beyond ALES47 is that the residual makes those three exact -- no new arithmetic on the
 //! audio path, only a scale on the band the notch already rejects.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES48.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES48.
 //! Design read: active-designing/date/20260814/20260814-170143_fill-ales48-lotus-parametric-bell.md
-//! Stands on: lotus/tone.rye (ALES40) — the low-pass/high-pass edges and precheck; lotus/notch.rye (ALES47) — the zero-gain
-//! equality target; lotus/timeline.rye (ALES2) — the Clip and the one true saturation; the residual shape follows lotus/stack.rye
+//! Stands on: lotus/tone.rye (ALES40) -- the low-pass/high-pass edges and precheck; lotus/notch.rye (ALES47) -- the zero-gain
+//! equality target; lotus/timeline.rye (ALES2) -- the Clip and the one true saturation; the residual shape follows lotus/stack.rye
 //! (ALES42).
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
 //! no network, no keys, no funds, no real device, no real sample rate (the coefficients set the two edges over sample INDICES,
-//! not a bell in hertz with a Q — a real time base is a later rung). Every band, the gain, and the sum run in i64 so nothing
+//! not a bell in hertz with a Q -- a real time base is a later rung). Every band, the gain, and the sum run in i64 so nothing
 //! overflows before the single clamp.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/bell.rye selftest
@@ -34,17 +34,17 @@ pub const bell_version = "20260814.170143";
 /// middle-band gain). Zig merges error sets by name, so BadRange coincides with tone's and BadGain is the same fault the shelf
 /// (ALES41) and stack (ALES42) already name.
 pub const BellError = tone.ToneError || error{
-    /// A gain with a zero denominator — refused, no divide by zero.
+    /// A gain with a zero denominator -- refused, no divide by zero.
     BadGain,
 };
 
 /// Peak `count` samples starting at `start` in place: keep the low band (a one-pole low-pass at the low cutoff, ALES40) and the
-/// high band (a one-pole high-pass at the high cutoff, ALES40) at unity, and scale the mid band — the exact residual
-/// M = x − L − H — by gain_num/gain_den, writing the sum saturated ONCE over the true wide-domain total. Unity gain
+/// high band (a one-pole high-pass at the high cutoff, ALES40) at unity, and scale the mid band -- the exact residual
+/// M = x − L − H -- by gain_num/gain_den, writing the sum saturated ONCE over the true wide-domain total. Unity gain
 /// (gain_num = gain_den) reconstructs the input byte-for-byte; zero gain (gain_num = 0) is exactly ALES47's band-reject; at
 /// direct current the mid band is zero, so the bell turns only the middle and never the settled edges. Refuses BadCoeff on an
-/// illegal cutoff (either edge), BadGain on a zero gain denominator, and BadRange on a span outside the samples — each before any
-/// write. Values only — never the length.
+/// illegal cutoff (either edge), BadGain on a zero gain denominator, and BadRange on a span outside the samples -- each before any
+/// write. Values only -- never the length.
 pub fn bell(
     clip: *timeline.Clip,
     start: u32,
@@ -56,7 +56,7 @@ pub fn bell(
     gain_num: i32,
     gain_den: u32,
 ) BellError!void {
-    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies within the samples — checked through ALES40's own
+    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies within the samples -- checked through ALES40's own
     // law BEFORE either scratch is filled, so an illegal call leaves the clip exactly as it was.
     try tone.precheck(clip.len, start, count, low_num, low_den);
     try tone.precheck(clip.len, start, count, high_num, high_den);
@@ -64,10 +64,10 @@ pub fn bell(
     if (gain_den == 0) return error.BadGain;
 
     // The low band and the high band each live in a scratch copy of the span, so the original samples (the residual's minuend)
-    // stay intact until the combine writes them. The span always fits a scratch — all three share timeline.max_clip.
+    // stay intact until the combine writes them. The span always fits a scratch -- all three share timeline.max_clip.
     var low = timeline.Clip{};
     var high = timeline.Clip{};
-    // invariant: the span fits each scratch buffer whole — no partial copy.
+    // invariant: the span fits each scratch buffer whole -- no partial copy.
     assert(count <= low.buf.len and count <= high.buf.len);
     var i: u32 = 0;
     while (i < count) : (i += 1) {
@@ -87,7 +87,7 @@ pub fn bell(
         const lo: i64 = @as(i64, low.buf[i]);
         const hi: i64 = @as(i64, high.buf[i]);
         const mid: i64 = x - lo - hi; // the exact residual middle band (ALES42's lesson): the edges plus this is x by construction
-        // The edges at unity, only the middle scaled — divided in i64, the whole summed in i64, the single clamp over the true
+        // The edges at unity, only the middle scaled -- divided in i64, the whole summed in i64, the single clamp over the true
         // total (ALES8's fader lesson via ALES41/42): scale in the wide domain and saturate once.
         const total: i64 = lo + hi + @divTrunc(@as(i64, gain_num) * mid, gain_d);
         clip.buf[start + i] = timeline.saturate(total);
@@ -98,7 +98,7 @@ pub fn bell(
 }
 
 // --- selftest: silence stays silence; unity gain is the identity (low + high + M = x); zero gain IS ALES47's band-reject
-//     byte-for-byte; the edges never move (a constant settles to itself at any gain — the mid is zero at direct current); a boost
+//     byte-for-byte; the edges never move (a constant settles to itself at any gain -- the mid is zero at direct current); a boost
 //     SATURATES rather than wraps; and an illegal cutoff (either edge), a zero gain denominator, and an out-of-range span each
 //     refuse by name --------------------------------------------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
 
-    // 1. silence stays silence — an all-zero clip bells to all zeros at any gain.
+    // 1. silence stays silence -- an all-zero clip bells to all zeros at any gain.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -125,7 +125,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. UNITY GAIN IS THE IDENTITY — gain_num == gain_den writes low + high + (x − low − high) = x byte-for-byte, at any cutoffs.
+    // 2. UNITY GAIN IS THE IDENTITY -- gain_num == gain_den writes low + high + (x − low − high) = x byte-for-byte, at any cutoffs.
     //    The residual construction guarantees a flat bell passes the input through untouched.
     {
         var clip = timeline.Clip{};
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &src)) return error.UnityNotIdentity;
     }
 
-    // 3. ZERO GAIN IS THE BAND-REJECT — gain_num == 0 writes low + high, exactly ALES47's notch. Proven by equality against
+    // 3. ZERO GAIN IS THE BAND-REJECT -- gain_num == 0 writes low + high, exactly ALES47's notch. Proven by equality against
     //    notch.notch over a copy: the bell at zero gain and the band-reject are byte-for-byte the same primitive.
     {
         var belled = timeline.Clip{};
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (!eq(belled.samples(), rejected.samples())) return error.ZeroGainNotNotch;
     }
 
-    // 4. THE EDGES NEVER MOVE — a constant input settles to itself at any gain, because its middle is zero at direct current
+    // 4. THE EDGES NEVER MOVE -- a constant input settles to itself at any gain, because its middle is zero at direct current
     //    (M = x − x − 0 = 0), so the bell turns only what lies between the cutoffs. Proven at a large boost AND a full cut.
     {
         const run = [_]i16{2500} ** 60;
@@ -157,14 +157,14 @@ fn run_selftest() !u8 {
         try load_clip(&up, &run);
         try bell(&up, 0, up.len, 1, 3, 1, 2, 8, 1); // ×8 boost
         if (up.samples()[up.len - 1] != 2500) return error.BoostMovedDc;
-        // a full cut (zero gain) also leaves the settled tail exactly the input — a constant has no middle to cut.
+        // a full cut (zero gain) also leaves the settled tail exactly the input -- a constant has no middle to cut.
         var down = timeline.Clip{};
         try load_clip(&down, &run);
         try bell(&down, 0, down.len, 1, 3, 1, 2, 0, 1);
         if (down.samples()[down.len - 1] != 2500) return error.CutMovedDc;
     }
 
-    // 5. a boost SATURATES rather than wraps — a strong middle boosted past the i16 range pins to the ceiling, never wraps to a
+    // 5. a boost SATURATES rather than wraps -- a strong middle boosted past the i16 range pins to the ceiling, never wraps to a
     //    negative. A short alternating signal has a large middle band; a heavy boost drives it out of range.
     {
         const loud = [_]i16{ 30000, -30000, 30000, -30000, 30000, -30000, 30000, -30000 };
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (!hit_rail) return error.BoostDidNotSaturate;
     }
 
-    // 6a. an illegal LOW cutoff (above one — unstable) refuses BadCoeff, the clip untouched.
+    // 6a. an illegal LOW cutoff (above one -- unstable) refuses BadCoeff, the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };

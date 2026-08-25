@@ -1,4 +1,4 @@
-//! Rye test: std.mem.Allocator.alloc — pass 9987.
+//! Rye test: std.mem.Allocator.alloc -- pass 9987.
 //!
 //! Skate's Grid.init and many modules allocate through `allocator.alloc`.
 //! This test exercises the postcondition strengthened at `allocAdvancedWithRetAddr`:

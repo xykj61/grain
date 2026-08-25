@@ -1,9 +1,9 @@
-//! linengrow/glow_seva_b0_replay.rye — Glow product replay surface for Seva B0.
+//! linengrow/glow_seva_b0_replay.rye -- Glow product replay surface for Seva B0.
 //!
 //! STOA196: owns demo-log replay while calling elder `seva.replay`.
 //! STOA203: append path carries sign+line errors into ReplayError.
 //! STOA204: claim path also digests via glow_seva_b0_digest (honesty).
-//! STOA211 (C1): `replay` composes product line · sign · digest — no
+//! STOA211 (C1): `replay` composes product line - sign - digest -- no
 //! `seva.replay`.
 //! STOA212 (C2): FactFields / amount parse through glow_seva_b0_fields.
 //! STOA235: `claim_replay_demo_root_from_desk` builds via desk append.
@@ -30,7 +30,7 @@ pub const ReplayError = append.AppendError || digest.DigestError || fields.Field
 
 pub const ReplayResult = seva.ReplayResult;
 
-/// Replay a bounded log via product line · fields · sign · digest (not seva.replay).
+/// Replay a bounded log via product line - fields - sign - digest (not seva.replay).
 pub fn replay(
     log: []const u8,
     actor_hex: *const [mc.pubkey_hex_len]u8,

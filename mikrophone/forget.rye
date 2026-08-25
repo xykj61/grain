@@ -1,20 +1,20 @@
-//! mikrophone/forget.rye — DREY13: the desk forgets one recording on purpose. Where DREY7's `catalog.clear` forgets the
-//! whole content-addressed store, this rung strikes ONE recording by its content address — the struck bytes zeroed, the
-//! packed store closed over the gap, the vacated tail region zeroed — so a forgotten recording leaves no residue a later
+//! mikrophone/forget.rye -- DREY13: the desk forgets one recording on purpose. Where DREY7's `catalog.clear` forgets the
+//! whole content-addressed store, this rung strikes ONE recording by its content address -- the struck bytes zeroed, the
+//! packed store closed over the gap, the vacated tail region zeroed -- so a forgotten recording leaves no residue a later
 //! read could recover, and every OTHER recording still fetches back byte-for-byte under its own address. This is the
 //! device's `redact` (DREY10), one level up: from a working buffer of samples to a packed desk of recordings.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY13.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY13.
 //! Design read: active-designing/date/20260814/20260814-071720_drey13-desk-forgets-one-recording-exploration.md
-//! Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store this forgetting shapes.
+//! Stands on: mikrophone/catalog.rye (DREY7) -- the content-addressed store this forgetting shapes.
 //!
 //! The founding promise "What forgets, protects" already stands on the device in two shapes: `power_down` forgets whole
 //! and `redact` forgets one span. The desk carried only forget-whole (`clear`); a civic microphone whose desk holds a name
-//! that must leave — or a keeper exercising a plain right to be forgotten for one artifact while the rest of the day's
-//! work stands — needs forget-ONE too. `forget` refuses `NotHeld` before a byte moves (a miss is a miss, never a guess),
+//! that must leave -- or a keeper exercising a plain right to be forgotten for one artifact while the rest of the day's
+//! work stands -- needs forget-ONE too. `forget` refuses `NotHeld` before a byte moves (a miss is a miss, never a guess),
 //! then closes the packed store over the removed span with a plain bounded loop (never a bare memcpy) and zeroes the
 //! region the tail vacated, asserting no residue by a full scan. No disk, no network, no key signs, no funds (custody
-//! gate %2 — real hardware, a real desk, a real disk — untouched).
+//! gate %2 -- real hardware, a real desk, a real disk -- untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/forget.rye selftest
 
@@ -28,14 +28,14 @@ const catalog = @import("catalog.rye");
 pub const forget_version = "20260814.071720";
 
 pub const ForgetError = error{
-    /// A forget names an address the catalog does not hold — refused before a byte moves, the catalog left exactly as it
+    /// A forget names an address the catalog does not hold -- refused before a byte moves, the catalog left exactly as it
     /// was. A miss is a miss, never a guess, the same promise `fetch` already keeps.
     NotHeld,
 };
 
 /// Forget one recording from the desk by its content address. Refuses `NotHeld` before a byte moves when the catalog does
-/// not hold the address. Otherwise the recording's span in the packed store is closed over — the tail shifted down over it
-/// with a plain bounded loop, the region the tail vacated zeroed — so no residue of the struck recording, or of the tail
+/// not hold the address. Otherwise the recording's span in the packed store is closed over -- the tail shifted down over it
+/// with a plain bounded loop, the region the tail vacated zeroed -- so no residue of the struck recording, or of the tail
 /// at its old positions, survives a full scan; the index drops the entry, shifts the later entries down one slot, and
 /// decrements each of their offsets by the removed length, so every surviving recording still fetches back exactly under
 /// its own address. Only the catalog's own store and index change.
@@ -57,13 +57,13 @@ pub fn forget(self: *catalog.Catalog, address: catalog.Address) !void {
     const tail_start = gap_off + gap_len;
     const tail_len = self.used - tail_start;
 
-    // Shift the tail down over the removed span — a plain bounded loop, front to back, disjoint by construction.
+    // Shift the tail down over the removed span -- a plain bounded loop, front to back, disjoint by construction.
     var i: u32 = 0;
     while (i < tail_len) : (i += 1) {
         self.store[gap_off + i] = self.store[tail_start + i];
     }
 
-    // Zero the region the tail vacated — every byte from the new used length out to the old, so nothing survives at the
+    // Zero the region the tail vacated -- every byte from the new used length out to the old, so nothing survives at the
     // positions the tail was shifted away from. This is the residue-free proof, the same zeroing `redact` earns.
     const new_used = self.used - gap_len;
     var j: u32 = new_used;
@@ -83,21 +83,21 @@ pub fn forget(self: *catalog.Catalog, address: catalog.Address) !void {
         moved.off -= gap_len;
         self.entries[k] = moved;
     }
-    // Clear the now-unused last slot to a fresh entry — no stale address lingers in the index.
+    // Clear the now-unused last slot to a fresh entry -- no stale address lingers in the index.
     self.entries[self.count - 1] = .{};
     self.count -= 1;
 
-    // invariant: exactly one recording was forgotten — the count dropped by one, the used length by the struck span.
+    // invariant: exactly one recording was forgotten -- the count dropped by one, the used length by the struck span.
     assert(self.count == before_count - 1);
     assert(self.used == before_used - gap_len);
-    // invariant: the forgotten address is no longer held — the forgetting is real, not merely hidden past a length.
+    // invariant: the forgotten address is no longer held -- the forgetting is real, not merely hidden past a length.
     assert(!catalog.holds(self, address));
-    // invariant: no residue — every byte from the new used length to the old used length is zero.
+    // invariant: no residue -- every byte from the new used length to the old used length is zero.
     assert(store_all_zero(self, self.used, before_used));
 }
 
 /// The index of the entry holding `address`. The caller has already proven the catalog holds it, so the scan always
-/// finds one — the private twin of `catalog.index_of`, kept here so `forget` reads the position it is about to remove.
+/// finds one -- the private twin of `catalog.index_of`, kept here so `forget` reads the position it is about to remove.
 fn index_of(self: *const catalog.Catalog, address: catalog.Address) u32 {
     // invariant: the scan is bounded by the count, itself bounded by the entry index.
     assert(self.count <= catalog.max_entries);
@@ -109,7 +109,7 @@ fn index_of(self: *const catalog.Catalog, address: catalog.Address) u32 {
     unreachable;
 }
 
-/// Whether every byte of the catalog's packed store in `[lo, hi)` is zero — the proof a forget left no residue in the
+/// Whether every byte of the catalog's packed store in `[lo, hi)` is zero -- the proof a forget left no residue in the
 /// region the tail vacated. Bounded by the store's own ceiling; `lo` and `hi` are store offsets.
 pub fn store_all_zero(self: *const catalog.Catalog, lo: u32, hi: u32) bool {
     // invariant: the scanned window stays within the store.
@@ -125,7 +125,7 @@ pub fn store_all_zero(self: *const catalog.Catalog, lo: u32, hi: u32) bool {
 // --- selftest: a struck middle recording is removed exactly and leaves no residue, the survivors stand, a miss refuses
 //     NotHeld, forget releases both the entry bound and the byte budget, and the last forget empties the desk ------------
 
-/// Frame the text as a committed session would carry it — capture, commit, frame — so each block starts from a real wire
+/// Frame the text as a committed session would carry it -- capture, commit, frame -- so each block starts from a real wire
 /// frame the catalog can deposit. Returns the frame; the caller reads `bytes()`.
 fn framed(text: []const u8) !wire.Frame {
     var s = session.Session.init();
@@ -138,7 +138,7 @@ fn framed(text: []const u8) !wire.Frame {
 }
 
 fn run_selftest() !u8 {
-    // 1. Forget the middle of three — the count drops to two, the survivors still fetch byte-for-byte under their
+    // 1. Forget the middle of three -- the count drops to two, the survivors still fetch byte-for-byte under their
     //    addresses, the manifest enumerates them in kept order, and no residue remains in the vacated store region.
     {
         var cat = catalog.Catalog.init();
@@ -156,14 +156,14 @@ fn run_selftest() !u8 {
         // The survivors stand, byte-for-byte, under their own addresses.
         assert(std.mem.eql(u8, catalog.fetch(&cat, addr_a).?, "first take"));
         assert(std.mem.eql(u8, catalog.fetch(&cat, addr_c).?, "last take"));
-        // The manifest enumerates the survivors in kept order — a and c, the forgotten b gone from between them.
+        // The manifest enumerates the survivors in kept order -- a and c, the forgotten b gone from between them.
         assert(std.mem.eql(u8, &catalog.address_at(&cat, 0), &addr_a));
         assert(std.mem.eql(u8, &catalog.address_at(&cat, 1), &addr_c));
-        // No residue — every byte from the used length out to the store ceiling is zero.
+        // No residue -- every byte from the used length out to the store ceiling is zero.
         assert(store_all_zero(&cat, cat.used, catalog.max_bytes));
     }
 
-    // 2. A miss is a miss — forgetting an address the catalog never held refuses NotHeld, the catalog unchanged.
+    // 2. A miss is a miss -- forgetting an address the catalog never held refuses NotHeld, the catalog unchanged.
     {
         var cat = catalog.Catalog.init();
         var a = try framed("present");
@@ -174,12 +174,12 @@ fn run_selftest() !u8 {
         } else |err| {
             if (err != error.NotHeld) return error.WrongMiss;
         }
-        // The catalog stands exactly as it was — count unchanged, the kept recording intact.
+        // The catalog stands exactly as it was -- count unchanged, the kept recording intact.
         assert(catalog.count_of(&cat) == 1);
         assert(std.mem.eql(u8, catalog.fetch(&cat, kept).?, "present"));
     }
 
-    // 3. Forget then re-deposit — after forgetting, the address is absent; depositing the same bytes again lands fresh and
+    // 3. Forget then re-deposit -- after forgetting, the address is absent; depositing the same bytes again lands fresh and
     //    the count rises, proving forget released the entry, not merely hid it.
     {
         var cat = catalog.Catalog.init();
@@ -196,7 +196,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, catalog.fetch(&cat, addr2).?, "comes then goes"));
     }
 
-    // 4. Forget the only recording — the desk empties and the whole store is provably zero, forget reaching the same floor
+    // 4. Forget the only recording -- the desk empties and the whole store is provably zero, forget reaching the same floor
     //    as clear, one recording at a time.
     {
         var cat = catalog.Catalog.init();
@@ -209,7 +209,7 @@ fn run_selftest() !u8 {
         while (i < cat.store.len) : (i += 1) assert(cat.store[i] == 0);
     }
 
-    // 5. No residue against distinctive bytes — a recording of a single repeated byte, forgotten, leaves that byte nowhere
+    // 5. No residue against distinctive bytes -- a recording of a single repeated byte, forgotten, leaves that byte nowhere
     //    in the whole store out to max_bytes, even with a neighbor still held.
     {
         var cat = catalog.Catalog.init();
@@ -221,18 +221,18 @@ fn run_selftest() !u8 {
         var m = try framed(&mark);
         const mark_addr = try catalog.deposit(&cat, m.bytes());
         try forget(&cat, mark_addr);
-        // The distinctive 0xAA appears nowhere in the entire store — the forgotten recording is truly gone.
+        // The distinctive 0xAA appears nowhere in the entire store -- the forgotten recording is truly gone.
         var i: u32 = 0;
         while (i < cat.store.len) : (i += 1) assert(cat.store[i] != 0xAA);
         // The neighbor is untouched.
         assert(std.mem.eql(u8, catalog.fetch(&cat, keep_addr).?, "keep this one"));
     }
 
-    // 6. Forget releases the byte budget — a store filled to its bound admits a new recording once one is forgotten, so
+    // 6. Forget releases the byte budget -- a store filled to its bound admits a new recording once one is forgotten, so
     //    forgetting frees real space rather than merely dropping an index row.
     {
         var cat = catalog.Catalog.init();
-        // Fill the store with eight whole-session payloads — exactly max_bytes.
+        // Fill the store with eight whole-session payloads -- exactly max_bytes.
         var addr0: catalog.Address = undefined;
         var n: u32 = 0;
         while (n < 8) : (n += 1) {
@@ -244,7 +244,7 @@ fn run_selftest() !u8 {
             if (n == 0) addr0 = a;
         }
         assert(cat.used == catalog.max_bytes);
-        // A ninth distinct payload overruns the byte budget — refused CatalogFull.
+        // A ninth distinct payload overruns the byte budget -- refused CatalogFull.
         var big9: [session.max_samples]u8 = undefined;
         var q: u32 = 0;
         while (q < session.max_samples) : (q += 1) big9[q] = 0x99;
@@ -254,7 +254,7 @@ fn run_selftest() !u8 {
         } else |err| {
             if (err != error.CatalogFull) return error.WrongBudgetBound;
         }
-        // Forget one full payload — the budget reopens, and the ninth now lands.
+        // Forget one full payload -- the budget reopens, and the ninth now lands.
         try forget(&cat, addr0);
         const landed = try catalog.deposit(&cat, f9.bytes());
         assert(catalog.holds(&cat, landed));

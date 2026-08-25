@@ -1,29 +1,29 @@
-//! lotus/halve_neg.rye — ALES86: the inverted half-wave rectifier — keep the negative half, zero the positive, y = min(x, 0). The half-wave rectifier
-//! (ALES85) keeps the POSITIVE half of the wave and silences the negative (y = max(x, 0)); this rung is its mirror — it keeps the NEGATIVE half and
+//! lotus/halve_neg.rye -- ALES86: the inverted half-wave rectifier -- keep the negative half, zero the positive, y = min(x, 0). The half-wave rectifier
+//! (ALES85) keeps the POSITIVE half of the wave and silences the negative (y = max(x, 0)); this rung is its mirror -- it keeps the NEGATIVE half and
 //! silences the positive. A half-wave rectifier built from a single diode oriented one way passes the positive half; flip the diode and it passes the
 //! negative half. Together the two half-wave rectifiers PARTITION the wave: a sample lands in exactly one of them (its zero shared), and adding their two
-//! outputs reconstructs the original wave sample for sample — max(x, 0) + min(x, 0) = x, the plainest decomposition of a signal into its positive and
+//! outputs reconstructs the original wave sample for sample -- max(x, 0) + min(x, 0) = x, the plainest decomposition of a signal into its positive and
 //! negative parts.
 //!
 //! The crux mirrors ALES85's exactly: where max(x, 0) is exact for every i16 with no rail edge (a negative sample becomes 0, a non-negative passes),
-//! min(x, 0) is likewise EXACT for EVERY i16 with NO rail edge — a non-positive sample passes unchanged (already within [sample_min, 0]) and a positive
+//! min(x, 0) is likewise EXACT for EVERY i16 with NO rail edge -- a non-positive sample passes unchanged (already within [sample_min, 0]) and a positive
 //! sample becomes 0; neither branch can overflow, and sample_min passes THROUGH untouched (it is already a legal i16, unlike the full-wave rectifier
 //! where its magnitude 32768 overflowed the positive rail). The inverted half-wave rectifier needs NO saturate.
 //!
 //! Harmonically it is the same even+odd mix as ALES85, sign-flipped: min(x, 0) = (x − |x|) / 2 carries the fundamental (odd) plus the even harmonics
-//! minus a DC term (the offset points the other way — a one-sided signal below zero rather than above). The map is MEMORYLESS — every output depends
+//! minus a DC term (the offset points the other way -- a one-sided signal below zero rather than above). The map is MEMORYLESS -- every output depends
 //! only on its own input, so the in-place read-then-write touches nothing another step needs, and halving a span block by block equals halving it whole.
-//! It is IDEMPOTENT — a non-positive sample maps to itself, so halve_neg(halve_neg(x)) = halve_neg(x). And its output is always NON-POSITIVE — the
+//! It is IDEMPOTENT -- a non-positive sample maps to itself, so halve_neg(halve_neg(x)) = halve_neg(x). And its output is always NON-POSITIVE -- the
 //! below-zero one-sided signal is the inverted rectifier's whole point.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES86.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES86.
 //! Design read: active-designing/date/20260814/20260814-214941_fill-ales86-lotus-inverted-half-wave-rectifier.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max. It carries NO gain, NO ceiling, and NO threshold — the threshold is fixed at zero,
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/max. It carries NO gain, NO ceiling, and NO threshold -- the threshold is fixed at zero,
 //! and min(x, 0) has no parameter that could be illegal; a keeper who wants the two halves separately runs ALES85's halve and this halve_neg over the
 //! same span, both in-place maps whose outputs sum back to the dry wave.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the shape is an inverted half-wave threshold at zero, instantaneous (no attack/release, no
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the shape is an inverted half-wave threshold at zero, instantaneous (no attack/release, no
 //! anti-aliasing). One compare-and-keep per sample; no saturate is needed, since min(x, 0) never leaves the rail.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/halve_neg.rye selftest
@@ -38,19 +38,19 @@ pub const halve_neg_version = "20260814.214941";
 
 /// The inverted half-wave rectifier's faults, one consistent name each. BadRange coincides by name with the positive half-wave rectifier, the full-wave
 /// rectifier, the sibling drives, and ALES2's timeline (Zig merges error sets by name), so a composer sees one consistent span fault. It names NO other
-/// fault — it takes no gain, no ceiling, no threshold: min(x, 0) has no parameter that could be illegal.
+/// fault -- it takes no gain, no ceiling, no threshold: min(x, 0) has no parameter that could be illegal.
 pub const HalveNegError = error{
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Inverted-half-wave-rectify `count` samples starting at `start` in place in `clip`: each sample becomes `min(x, 0)`, the negative half of the wave
-/// kept whole and the positive half folded away to silence. Exact for EVERY i16 — a non-positive sample passes unchanged, a positive sample becomes 0;
+/// kept whole and the positive half folded away to silence. Exact for EVERY i16 -- a non-positive sample passes unchanged, a positive sample becomes 0;
 /// there is no rail edge and no saturate (sample_min passes through, unlike the full-wave rectifier where its magnitude overflowed the positive rail).
 /// After the call every output is non-positive, at least the input, and depends only on its own input (the rectifier is memoryless). Refuses BadRange on
-/// a span outside the samples — BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// a span outside the samples -- BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn halve_neg(clip: *timeline.Clip, start: u32, count: u32) HalveNegError!void {
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the positive sibling.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the positive sibling.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -58,15 +58,15 @@ pub fn halve_neg(clip: *timeline.Clip, start: u32, count: u32) HalveNegError!voi
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         const dry: i16 = clip.buf[i];
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= timeline.sample_min and dry <= timeline.sample_max);
-        // The inverted half-wave map: keep the negative half, silence the positive. No wide intermediate and no saturate are needed — a non-positive
+        // The inverted half-wave map: keep the negative half, silence the positive. No wide intermediate and no saturate are needed -- a non-positive
         // sample is already within [sample_min, 0], and a positive sample becomes 0, so min(x, 0) never leaves [sample_min, 0]. sample_min passes
         // through untouched, the mirror of ALES85 where sample_max passed through.
         const out: i16 = if (dry < 0) dry else 0;
-        // invariant: the output is non-positive — an inverted rectifier makes a below-zero one-sided signal, so the positive half is silenced.
+        // invariant: the output is non-positive -- an inverted rectifier makes a below-zero one-sided signal, so the positive half is silenced.
         assert(out <= 0);
-        // invariant: the output is exactly the inverted half-wave map — a negative sample passes unchanged, a non-negative one rises to 0 — so the map
+        // invariant: the output is exactly the inverted half-wave map -- a negative sample passes unchanged, a non-negative one rises to 0 -- so the map
         // only holds or raises, never lowers, and touches only the sign of the wave.
         assert(if (dry < 0) out == dry else out == 0);
         clip.buf[i] = out;
@@ -76,8 +76,8 @@ pub fn halve_neg(clip: *timeline.Clip, start: u32, count: u32) HalveNegError!voi
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: NON-POSITIVES ARE UNCHANGED (min(x,0) = x for x ≤ 0); POSITIVES FOLD to SILENCE by hand (+x → 0); NO RAIL EDGE (sample_min PASSES
-//     through, never a saturate — the mirror of ALES85's sample_max); every output is NON-POSITIVE and the map is IDEMPOTENT; the two half-waves
+// --- selftest: NON-POSITIVES ARE UNCHANGED (min(x,0) = x for x ≤ 0); POSITIVES FOLD to SILENCE by hand (+x -> 0); NO RAIL EDGE (sample_min PASSES
+//     through, never a saturate -- the mirror of ALES85's sample_max); every output is NON-POSITIVE and the map is IDEMPOTENT; the two half-waves
 //     PARTITION the wave (halve + halve_neg = the dry wave, sample for sample); the SPAN discipline holds; and a span past the end refuses BadRange, the
 //     clip untouched ---
 
@@ -93,7 +93,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. NON-POSITIVES ARE UNCHANGED — min(x, 0) = x for every x ≤ 0, so the negative half of the wave passes through whole. A signal already one-sided
+    // 1. NON-POSITIVES ARE UNCHANGED -- min(x, 0) = x for every x ≤ 0, so the negative half of the wave passes through whole. A signal already one-sided
     //    below zero inverted-half-wave-rectifies to itself.
     {
         const sig = [_]i16{ 0, -1, -12345, timeline.sample_min, -200, -5 };
@@ -103,7 +103,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.NonPosChanged;
     }
 
-    // 2. POSITIVES FOLD TO SILENCE BY HAND — each positive sample drops to 0, the positive half of the wave folded away. 1→0, 100→0, 12345→0, 32767→0;
+    // 2. POSITIVES FOLD TO SILENCE BY HAND -- each positive sample drops to 0, the positive half of the wave folded away. 1->0, 100->0, 12345->0, 32767->0;
     //    the negatives among them pass unchanged.
     {
         const sig = [_]i16{ 1, -100, 100, 12345, -32767, 32767 };
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.FoldWrong;
     }
 
-    // 3. NO RAIL EDGE — where the full-wave rectifier had to SATURATE sample_min, the inverted half-wave rectifier passes sample_min straight THROUGH:
-    //    min(sample_min, 0) = sample_min, since it is already non-positive and a legal i16. sample_max folds to 0. min(x, 0) is EXACT for every i16 — the
+    // 3. NO RAIL EDGE -- where the full-wave rectifier had to SATURATE sample_min, the inverted half-wave rectifier passes sample_min straight THROUGH:
+    //    min(sample_min, 0) = sample_min, since it is already non-positive and a legal i16. sample_max folds to 0. min(x, 0) is EXACT for every i16 -- the
     //    mirror of ALES85, where sample_max passed and sample_min silenced.
     {
         const sig = [_]i16{ timeline.sample_min, -32767, 0, 32767 };
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.RailEdgeWrong;
     }
 
-    // 4. EVERY OUTPUT IS NON-POSITIVE, AND THE MAP IS IDEMPOTENT — an inverted rectifier makes a below-zero one-sided signal, so no output is above zero;
+    // 4. EVERY OUTPUT IS NON-POSITIVE, AND THE MAP IS IDEMPOTENT -- an inverted rectifier makes a below-zero one-sided signal, so no output is above zero;
     //    and inverted-rectifying the already-rectified clip a second time changes nothing (a non-positive sample maps to itself).
     {
         const sig = [_]i16{ 100, -200, 5000, -5000, timeline.sample_min, 0, 1, 32767 };
@@ -142,9 +142,9 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. THE TWO HALF-WAVES PARTITION THE WAVE — for every sample, ALES85's halve (positive half) plus this halve_neg (negative half) reconstructs the
+    // 5. THE TWO HALF-WAVES PARTITION THE WAVE -- for every sample, ALES85's halve (positive half) plus this halve_neg (negative half) reconstructs the
     //    dry wave exactly: max(x, 0) + min(x, 0) = x. Compute the positive half by hand, the negative half by this map, and prove their sum is the
-    //    original sample for sample — the plainest decomposition of a signal into its positive and negative parts.
+    //    original sample for sample -- the plainest decomposition of a signal into its positive and negative parts.
     {
         const sig = [_]i16{ 6000, -6000, 300, -300, 0, timeline.sample_min, 32767, -1 };
         // the positive half by hand (ALES85's max(x, 0)), the negative half by this map (min(x, 0))
@@ -160,7 +160,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. THE SPAN DISCIPLINE — inverted-rectifying a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
+    // 6. THE SPAN DISCIPLINE -- inverted-rectifying a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
     //    whole suite keeps. Halve the middle two of six; the first and last two are untouched, positives among them preserved.
     {
         const sig = [_]i16{ 100, 200, -500, 500, 300, 400 };
@@ -171,7 +171,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 7. A SPAN past the end refuses BadRange — before any write, the clip untouched. The inverted half-wave rectifier names no other fault (min(x, 0)
+    // 7. A SPAN past the end refuses BadRange -- before any write, the clip untouched. The inverted half-wave rectifier names no other fault (min(x, 0)
     //    has no parameter that could be illegal).
     {
         const sig = [_]i16{ 9, -10, 11 };

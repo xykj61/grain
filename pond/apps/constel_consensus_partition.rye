@@ -1,17 +1,17 @@
-//! pond/apps/constel_consensus_partition.rye — a partition heals (gossip-convergence r2).
+//! pond/apps/constel_consensus_partition.rye -- a partition heals (gossip-convergence r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r2.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - gossip-convergence r2.
 //! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! r1 proved two nodes begun from their own genesis converge once they gossip.
 //! This round proves convergence is **content-dependent, not timing-dependent**:
 //! a node partitioned away while the others advance catches up to the identical
-//! agreed order the moment it rejoins and gossips — no leader replays it a log,
+//! agreed order the moment it rejoins and gossips -- no leader replays it a log,
 //! no round number gates its return. The late joiner arrives at the same history
 //! because it hears the same blocks, whenever it hears them.
 //!
 //! Composes r1's public gossip fixpoint and commit helpers only (constel_consensus
-//! re-runs GREEN at this round's door). Siloed, dev-only, demo seeds — no real key,
+//! re-runs GREEN at this round's door). Siloed, dev-only, demo seeds -- no real key,
 //! no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/constel_consensus_partition.rye
@@ -45,7 +45,7 @@ pub fn main() !void {
     assert(dag_a.len == 1);
     assert(dag_b.len == 1);
 
-    // Before the partition, C heard only the first genesis block — a genuinely
+    // Before the partition, C heard only the first genesis block -- a genuinely
     // stale partial view (one block), not an empty one.
     try cord.add(&dag_c, ba);
     if (dag_c.len != 1) return error.StaleViewWrong;
@@ -74,13 +74,13 @@ pub fn main() !void {
     if (dag_a.len != 4) return error.PartitionMeshA;
     if (dag_b.len != 4) return error.PartitionMeshB;
     if (!cc.commits_equal(&dag_a, &dag_b)) return error.PartitionDiverged;
-    // C is genuinely behind — one block against the network's four.
+    // C is genuinely behind -- one block against the network's four.
     if (dag_c.len >= dag_a.len) return error.PartitionNotBehind;
     if (cc.commits_equal(&dag_c, &dag_a)) return error.PartitionSharedTooEarly;
 
     // --- Heal: C rejoins and gossips both directions. ---
     // A single merge from a converged peer drains the whole mesh into C, in
-    // whatever order the fixpoint reaches it — the late joiner catches up.
+    // whatever order the fixpoint reaches it -- the late joiner catches up.
     const gained = try cc.gossip_merge(&dag_c, &dag_a);
     _ = try cc.gossip_merge(&dag_a, &dag_c); // C carries nothing A lacks.
 

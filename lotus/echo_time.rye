@@ -1,25 +1,25 @@
-//! lotus/echo_time.rye — ALES67: the echo in real time — a delay named in MILLISECONDS. ALES66 opened the time-based wing, yet its
-//! delay is a count of sample INDICES ("echo every 12000 samples"). A musician thinks in TIME — "an echo an eighth of a second later"
-//! — and the one missing fact is the sample rate, which ALES5's validated Clock already holds. Every rung named in samples has earned
+//! lotus/echo_time.rye -- ALES67: the echo in real time -- a delay named in MILLISECONDS. ALES66 opened the time-based wing, yet its
+//! delay is a count of sample INDICES ("echo every 12000 samples"). A musician thinks in TIME -- "an echo an eighth of a second later"
+//! -- and the one missing fact is the sample rate, which ALES5's validated Clock already holds. Every rung named in samples has earned
 //! its real-time twin this way: fade_ms followed the index-named fade, place_at aligned clips in seconds, marker_time gave the markers
-//! track a face in milliseconds. This rung gives the echo the same face — a thin twin over ALES66 exactly as marker_time is over the
+//! track a face in milliseconds. This rung gives the echo the same face -- a thin twin over ALES66 exactly as marker_time is over the
 //! base markers.
 //!
 //! The crux is the family's signature: the CLOCK ADDS ONLY THE UNITS, NEVER THE AUDIO. echo_ms converts start_ms, count_ms, and
 //! delay_ms through ALES5's proven clock.samples_for (bounded, refusing DurationTooLong past the clip) and delegates to ALES66's echo
 //! UNCHANGED, so the millisecond-named echo lands BYTE-FOR-BYTE the same samples as the index-named echo over the converted delay and
-//! span. Because samples_for is divTrunc(rate·ms, 1000), a delay too short to be one whole sample converts to 0, which ALES66 already
-//! refuses BadDelay — so a sub-sample echo refuses honestly rather than silently doing nothing.
+//! span. Because samples_for is divTrunc(rate-ms, 1000), a delay too short to be one whole sample converts to 0, which ALES66 already
+//! refuses BadDelay -- so a sub-sample echo refuses honestly rather than silently doing nothing.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES67.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES67.
 //! Design read: active-designing/date/20260814/20260814-191951_fill-ales67-lotus-echo-in-real-time.md
-//! Stands on: lotus/echo.rye (ALES66) — the feedback delay this speaks in real time, delegated unchanged; lotus/clock.rye (ALES5) —
+//! Stands on: lotus/echo.rye (ALES66) -- the feedback delay this speaks in real time, delegated unchanged; lotus/clock.rye (ALES5) --
 //! the sample clock, its samples_for converting ms to a bounded sample count and its fade_ms/place_at the payoff pattern this follows.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip and a validated clock, siloed to lotus/. No
-//! socket, no network, no keys, no funds, no real device — the clock is a samples-per-second count, not a claim about any hardware
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip and a validated clock, siloed to lotus/. No
+//! socket, no network, no keys, no funds, no real device -- the clock is a samples-per-second count, not a claim about any hardware
 //! clock; the feedback is a plain fraction; there is no lookahead beyond ALES66's in-place delay read. No new arithmetic on the audio
-//! path — the clock's own conversion, then the proven echo.
+//! path -- the clock's own conversion, then the proven echo.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/echo_time.rye selftest
 
@@ -34,12 +34,12 @@ const echo = @import("echo.rye");
 pub const echo_time_version = "20260814.191951";
 
 /// The combined error set of the timed echo face: ALES5's clock edges and ALES66's echo edges, forwarded unchanged. Every fault
-/// refuses by name before any write — DurationTooLong from the clock (a span or delay past the clip), and BadDelay (the converted
+/// refuses by name before any write -- DurationTooLong from the clock (a span or delay past the clip), and BadDelay (the converted
 /// delay being zero among them), BadFeedback, and BadRange from the echo.
 pub const EchoTimeError = clock.ClockError || echo.EchoError;
 
 /// Echo a span named in MILLISECONDS: convert `start_ms`, `count_ms`, and `delay_ms` through ALES5's proven clock.samples_for
-/// (bounded, refusing DurationTooLong past the clip), then delegate to ALES66's echo UNCHANGED — the same feedback delay, now spoken
+/// (bounded, refusing DurationTooLong past the clip), then delegate to ALES66's echo UNCHANGED -- the same feedback delay, now spoken
 /// in real time. The clock adds only the units, so this lands byte-for-byte the same samples as the index-named echo over the
 /// converted delay and span. A delay too short to be one whole sample converts to zero, which the echo refuses BadDelay, so a
 /// sub-sample echo refuses honestly. Forwards ALES5's DurationTooLong and ALES66's BadDelay / BadFeedback / BadRange before any write.
@@ -57,13 +57,13 @@ pub fn echo_ms(
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
     const delay = try clock.samples_for(clk, delay_ms);
-    // The feedback delay is ALES66's, unchanged — the clock added only the units. A zero converted delay is refused BadDelay here.
+    // The feedback delay is ALES66's, unchanged -- the clock added only the units. A zero converted delay is refused BadDelay here.
     try echo.echo(clip, start, count, delay, fb_num, fb_den);
 }
 
 // --- selftest: at a legible clock (1 sample per ms) an echo named in ms lands byte-for-byte the same samples as the index-named echo
 //     over the converted delay and span (the grounding law, both tools run); at a real 48 kHz rate the delay converts by
-//     divTrunc(48000·ms, 1000) and the echo lands over exactly that delay; fb = 0 is the dry identity in real time too; a sub-sample
+//     divTrunc(48000-ms, 1000) and the echo lands over exactly that delay; fb = 0 is the dry identity in real time too; a sub-sample
 //     delay refuses BadDelay; a span or delay past the clip refuses DurationTooLong; and the echo's own faults forward -------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -78,7 +78,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CLOCK ADDS ONLY UNITS — at 1 sample per ms, an echo named in ms lands byte-for-byte the same samples as the index-named
+    // 1. THE CLOCK ADDS ONLY UNITS -- at 1 sample per ms, an echo named in ms lands byte-for-byte the same samples as the index-named
     //    echo over the converted delay and span. Run both tools and demand equality: echo_ms adds no arithmetic on the audio path.
     {
         const c = try clock.make(1000); // 1 sample per ms — a millisecond equals a sample, legible on a bench
@@ -97,7 +97,7 @@ fn run_selftest() !u8 {
         if (!eq(timed.samples(), &want)) return error.TrainWrong;
     }
 
-    // 2. A REAL RATE CONVERTS HONESTLY — at 48 kHz, 1 ms converts to divTrunc(48000·1, 1000) = 48 samples. An echo at delay 1 ms over
+    // 2. A REAL RATE CONVERTS HONESTLY -- at 48 kHz, 1 ms converts to divTrunc(48000-1, 1000) = 48 samples. An echo at delay 1 ms over
     //    a clip long enough to hold two taps lands its first echo exactly 48 samples after the impulse, matching the index-named echo
     //    at delay 48. Proven by equality against the index form and by reading the echo's position.
     {
@@ -116,7 +116,7 @@ fn run_selftest() !u8 {
         if (timed.samples()[48] != 5000) return error.EchoNotAtConvertedDelay;
     }
 
-    // 3. fb = 0 IS THE DRY IDENTITY IN REAL TIME TOO — a zero feedback numerator adds nothing, the dry signal passes byte-for-byte.
+    // 3. fb = 0 IS THE DRY IDENTITY IN REAL TIME TOO -- a zero feedback numerator adds nothing, the dry signal passes byte-for-byte.
     {
         const c = try clock.make(1000);
         const sig = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroFbNotIdentity;
     }
 
-    // 4. A SUB-SAMPLE DELAY REFUSES BadDelay — at 1 sample per ms a delay of 0 ms converts to 0 samples, which the echo refuses; the
+    // 4. A SUB-SAMPLE DELAY REFUSES BadDelay -- at 1 sample per ms a delay of 0 ms converts to 0 samples, which the echo refuses; the
     //    timed face forwards it by name rather than silently doing nothing, the clip untouched.
     {
         const c = try clock.make(1000);
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedSubSampleMutated;
     }
 
-    // 5. A DELAY PAST THE CLIP REFUSES DurationTooLong — a delay_ms whose sample count exceeds max_clip is refused by the clock's own
+    // 5. A DELAY PAST THE CLIP REFUSES DurationTooLong -- a delay_ms whose sample count exceeds max_clip is refused by the clock's own
     //    bound, before any write, the clip untouched.
     {
         const c = try clock.make(1000);
@@ -149,7 +149,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedLongDelayMutated;
     }
 
-    // 6. THE ECHO'S FAULTS FORWARD — a feedback at unity refuses BadFeedback, an out-of-range span refuses BadRange, each by name,
+    // 6. THE ECHO'S FAULTS FORWARD -- a feedback at unity refuses BadFeedback, an out-of-range span refuses BadRange, each by name,
     //    the clip untouched.
     {
         const c = try clock.make(1000);

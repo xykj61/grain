@@ -1,19 +1,19 @@
-//! lotus/band.rye — ALES46: a band-pass — keep the middle, drop the lows below one cutoff and the highs above another.
+//! lotus/band.rye -- ALES46: a band-pass -- keep the middle, drop the lows below one cutoff and the highs above another.
 //! Every filter rung so far keeps or trims ONE edge: the low-pass keeps the lows (ALES40), the high-pass keeps the highs
-//! (ALES45), the shelf and stack tilt bands by gain (ALES41–42). The gesture a musician reaches for to ISOLATE a range — the
-//! telephone voice, the wah's throat, a drum bus carved to its body — is the band-pass: the high-pass at the LOW cutoff followed
+//! (ALES45), the shelf and stack tilt bands by gain (ALES41-42). The gesture a musician reaches for to ISOLATE a range -- the
+//! telephone voice, the wah's throat, a drum bus carved to its body -- is the band-pass: the high-pass at the LOW cutoff followed
 //! by the low-pass at the HIGH cutoff, keeping only the band between. The band-pass wants NO new arithmetic: it is exactly the
-//! two filters already proven byte-for-byte (ALES40 · ALES45) run in cascade, each carrying its own state so a span band-passed
-//! in two pieces (the second continuing both states) equals the whole band-passed once — the composition faithful, the seam
+//! two filters already proven byte-for-byte (ALES40 - ALES45) run in cascade, each carrying its own state so a span band-passed
+//! in two pieces (the second continuing both states) equals the whole band-passed once -- the composition faithful, the seam
 //! seamless. The one correctness is that `Bandpass.run` equals `tone.high_pass` then `tone.low_pass` over a copy, byte-for-byte.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES46.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES46.
 //! Design read: active-designing/date/20260814/20260814-165106_fill-ales46-lotus-band-pass.md
-//! Stands on: lotus/tone.rye (ALES40, ALES45) — high_pass_carry and low_pass_carry, each a pure function of (state, x), threaded
-//! here across the whole span; lotus/timeline.rye (ALES2) — the Clip it filters.
+//! Stands on: lotus/tone.rye (ALES40, ALES45) -- high_pass_carry and low_pass_carry, each a pure function of (state, x), threaded
+//! here across the whole span; lotus/timeline.rye (ALES2) -- the Clip it filters.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the coefficients still smooth over sample INDICES, not a
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the coefficients still smooth over sample INDICES, not a
 //! crossover in hertz (a real time base is a later rung). Both stage states run at full i64 precision, as in ALES40.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/band.rye selftest
@@ -28,13 +28,13 @@ const tone = @import("tone.rye");
 pub const band_version = "20260814.165106";
 
 /// A band-pass that holds both stage states across calls: the high-pass stage's carried low-pass estimate and the low-pass
-/// stage's carried estimate. The struct carries no buffer — only the two full-precision i64 states and the two coefficients —
+/// stage's carried estimate. The struct carries no buffer -- only the two full-precision i64 states and the two coefficients --
 /// so a keeper holds it beside a clip as a tiny value. `low_num/low_den` is the high-pass cutoff (drops content below it);
 /// `high_num/high_den` is the low-pass cutoff (drops content above it). A fresh Bandpass (both states 0) is the from-silence
 /// cascade; `run` continues from both carried states so a span band-passed piece by piece has no re-transient at a seam;
 /// `reset` returns both states to silence so the next run re-opens both transients deliberately.
 pub const Bandpass = struct {
-    /// The high-pass stage's carried low-pass estimate scaled by low_den at full i64 precision — the high-pass output is x − lp.
+    /// The high-pass stage's carried low-pass estimate scaled by low_den at full i64 precision -- the high-pass output is x − lp.
     hp_state: i64 = 0,
     /// The low-pass stage's carried estimate scaled by high_den at full i64 precision.
     lp_state: i64 = 0,
@@ -51,7 +51,7 @@ pub const Bandpass = struct {
     /// and a legal high-pass followed by an illegal low-pass cannot happen here because both coefficients are checked up front).
     pub fn run(self: *Bandpass, clip: *timeline.Clip, start: u32, count: u32) tone.ToneError!void {
         // invariant: both coefficients and the span are checked BEFORE any stage writes, so an illegal call leaves the clip and
-        // both carried states exactly as they were — no half-filtered span, no advanced state.
+        // both carried states exactly as they were -- no half-filtered span, no advanced state.
         try tone.precheck(clip.len, start, count, self.num_low, self.den_low);
         try tone.precheck(clip.len, start, count, self.num_high, self.den_high);
         // Stage one: drop the lows, continuing the high-pass state. Its own check re-runs and passes (already proven above).
@@ -67,7 +67,7 @@ pub const Bandpass = struct {
     pub fn reset(self: *Bandpass) void {
         self.hp_state = 0;
         self.lp_state = 0;
-        // invariant: reset restores exactly the from-silence start for both stages — a run after reset equals a fresh Bandpass.
+        // invariant: reset restores exactly the from-silence start for both stages -- a run after reset equals a fresh Bandpass.
         assert(self.hp_state == 0 and self.lp_state == 0);
     }
 };
@@ -91,7 +91,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
 
-    // 1. THE COMPOSITION CRUX — a Bandpass over the whole span equals tone.high_pass (low cutoff) then tone.low_pass (high cutoff)
+    // 1. THE COMPOSITION CRUX -- a Bandpass over the whole span equals tone.high_pass (low cutoff) then tone.low_pass (high cutoff)
     //    applied in that order to a copy, byte-for-byte. The band-pass adds no arithmetic on the audio path; it IS the two proven
     //    stages in cascade.
     {
@@ -108,7 +108,7 @@ fn run_selftest() !u8 {
         if (!eq(band.samples(), cascade.samples())) return error.BandNotCascade;
     }
 
-    // 2. SPLIT-EQUALS-WHOLE — a span band-passed in two pieces, the second carrying BOTH ending states, equals the whole
+    // 2. SPLIT-EQUALS-WHOLE -- a span band-passed in two pieces, the second carrying BOTH ending states, equals the whole
     //    band-passed once, byte-for-byte. Neither stage re-transients at the seam.
     {
         var whole = timeline.Clip{};
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
         if (!eq(pieces.samples(), whole.samples())) return error.SplitNotWhole;
     }
 
-    // 3. the low-pass stage at identity (high_num == high_den) collapses to the high-pass alone at the low cutoff — the upper edge
+    // 3. the low-pass stage at identity (high_num == high_den) collapses to the high-pass alone at the low cutoff -- the upper edge
     //    opened all the way passes the whole high band unchanged.
     {
         var band = timeline.Clip{};
@@ -141,7 +141,7 @@ fn run_selftest() !u8 {
         if (!eq(band.samples(), hp.samples())) return error.IdentityNotHighpass;
     }
 
-    // 4. the band rejects direct current — a constant input settles to zero: the high-pass stage drives the constant to zero, and
+    // 4. the band rejects direct current -- a constant input settles to zero: the high-pass stage drives the constant to zero, and
     //    the low-pass of a settled zero stays zero. A band-pass keeps no DC.
     {
         const run = [_]i16{2500} ** 60;
@@ -152,7 +152,7 @@ fn run_selftest() !u8 {
         if (clip.samples()[clip.len - 1] != 0) return error.ConstantNotRejected; // direct current removed exactly
     }
 
-    // 5. reset re-opens both transients — after a settled constant run (band-pass of a constant → 0 at the tail), reset returns
+    // 5. reset re-opens both transients -- after a settled constant run (band-pass of a constant -> 0 at the tail), reset returns
     //    both states to silence, so the next run over a constant leaves a NON-zero first sample again (the high-pass transient
     //    before direct current is removed), rather than continuing settled at zero.
     {
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
         if (fresh.samples()[0] == 0) return error.ResetDidNotReopen; // first sample non-zero: DC not yet removed
     }
 
-    // 6a. an illegal coefficient on the HIGH-PASS stage (num_low above den_low — unstable) refuses BadCoeff, the clip and both
+    // 6a. an illegal coefficient on the HIGH-PASS stage (num_low above den_low -- unstable) refuses BadCoeff, the clip and both
     //     states untouched.
     {
         var clip = timeline.Clip{};
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedBandMutated;
     }
 
-    // 6b. an illegal coefficient on the LOW-PASS stage (num_high above den_high) refuses BadCoeff before ANY write — the
+    // 6b. an illegal coefficient on the LOW-PASS stage (num_high above den_high) refuses BadCoeff before ANY write -- the
     //     high-pass stage must not run first and leave a half-filtered span. Both states and the clip stay untouched.
     {
         var clip = timeline.Clip{};

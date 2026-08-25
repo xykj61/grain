@@ -1,13 +1,13 @@
-//! mycelium/purse.rye — the Purse: a per-account double-spend decided by the order.
+//! mycelium/purse.rye -- the Purse: a per-account double-spend decided by the order.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-070923_mycelium-purse-per-account-balances-exploration.md
 //!
-//! A purse is where one holder's own coins sit — one purse per account, distinct
+//! A purse is where one holder's own coins sit -- one purse per account, distinct
 //! from the Till's single shared drawer. The truest double-spend a value ledger
 //! carries is one holder spending the same coins twice: Alice, holding a hundred,
 //! signs one transfer of a hundred to Bob and another hundred to Carol at the same
-//! round — each affordable against her balance alone, together twice what she holds.
+//! round -- each affordable against her balance alone, together twice what she holds.
 //! The Cord already derives one total order from the mesh regardless of arrival, and
 //! the Purse reads that order as each account's verdict: the first of Alice's two
 //! transfers the order places moves her coins, the second finds her purse already
@@ -16,20 +16,20 @@
 //!
 //! The honest distinction is the twin of the Till's, carried from one shared drawer
 //! to many private purses. There the measure was `issued-so-far` (the treasury's
-//! global high-water mark); here it is `received-so-far[holder]` — the cumulative
+//! global high-water mark); here it is `received-so-far[holder]` -- the cumulative
 //! coins that holder ever took in (by genesis credit or incoming transfer) up to the
 //! losing transfer's position. Inflow only adds, so it is monotonic and position-
 //! respecting. A transfer that overdraws the holder's CURRENT balance yet asks for no
-//! more than received-so-far LOST A RACE (the coins were in that purse once) — a
+//! more than received-so-far LOST A RACE (the coins were in that purse once) -- a
 //! lawful no-op spent-out loss, folding continues. A transfer for more than the
-//! holder ever received NEVER COULD PAY — no ordering fixes that — and refuses the
+//! holder ever received NEVER COULD PAY -- no ordering fixes that -- and refuses the
 //! whole resolution. Across every accepted move the ledger CONSERVES: no coin is made
 //! or destroyed by a transfer, so the balances always sum to exactly what genesis
 //! issued.
 //!
 //! A transfer rides the Cord without editing an elder: the SENDER is the fact's own
 //! signer_pk, the AMOUNT its amount, and the RECIPIENT rides in the fact's signed
-//! 256-byte body — bound to the sender's signature, so it cannot be redirected
+//! 256-byte body -- bound to the sender's signature, so it cannot be redirected
 //! without breaking it. A genesis credit is a kind_issue whose body names the account
 //! to fund; a transfer is a kind_tax whose body names the recipient. The Purse reuses
 //! fold's signed-fact machinery for verification (the additive `fold.verify_fact`,
@@ -38,8 +38,8 @@
 //! / fold's resource, not the Purse's, so it refuses the whole resolution here (honest
 //! to its own resource, as the Till refuses a StarTaken).
 //!
-//! Grown beside cord.rye, fold.rye, and till.rye — editing none, composing cord +
-//! fold + kumara public API only. Siloed, dev-only, demo seeds — no real key, no
+//! Grown beside cord.rye, fold.rye, and till.rye -- editing none, composing cord +
+//! fold + kumara public API only. Siloed, dev-only, demo seeds -- no real key, no
 //! funds, no network, no custody.
 //!
 //! Named horizon (not this arc): real mint authority (a genesis credit here is
@@ -63,13 +63,13 @@ pub const pk_len: u32 = kumara.PublicKey.encoded_length;
 /// journey of blocks (256), so twice that bounds the distinct-account table.
 pub const purse_max_accounts: u32 = 2 * cord.cord_max_blocks;
 
-/// At most one winning move per block — the Dag holds a journey of blocks.
+/// At most one winning move per block -- the Dag holds a journey of blocks.
 pub const purse_max_moves: u32 = cord.cord_max_blocks;
 
-/// At most one spent-out loss per block — same ceiling as moves.
+/// At most one spent-out loss per block -- same ceiling as moves.
 pub const purse_max_shorts: u32 = cord.cord_max_blocks;
 
-/// One account's purse — how much it holds, and how much it has ever taken in.
+/// One account's purse -- how much it holds, and how much it has ever taken in.
 /// `received` is the monotonic high-water mark that proves a loss lawful.
 pub const Account = struct {
     pk: [pk_len]u8 = undefined,
@@ -77,7 +77,7 @@ pub const Account = struct {
     received: u64 = 0,
 };
 
-/// One transfer the agreed order granted — coins moved from one purse to another.
+/// One transfer the agreed order granted -- coins moved from one purse to another.
 pub const Move = struct {
     from: [pk_len]u8 = undefined,
     to: [pk_len]u8 = undefined,
@@ -86,7 +86,7 @@ pub const Move = struct {
     round: u32 = 0,
 };
 
-/// One transfer that came up short — the sender's purse was already emptied by an
+/// One transfer that came up short -- the sender's purse was already emptied by an
 /// earlier winning transfer. `received_at` records the sender's cumulative inflow at
 /// its position, the measure that proved the loss lawful (amount <= received_at)
 /// rather than never-could-pay.
@@ -98,7 +98,7 @@ pub const ShortMove = struct {
 };
 
 /// The resolved ledger: every account's balance, which transfers moved coins, which
-/// came up short, and the coins genesis issued — over which conservation always holds.
+/// came up short, and the coins genesis issued -- over which conservation always holds.
 pub const Purse = struct {
     accounts: [purse_max_accounts]Account = undefined,
     account_count: u32 = 0,
@@ -130,7 +130,7 @@ pub const Purse = struct {
         return 0;
     }
 
-    /// The sum of every account's balance — always equal to `total_issued`, since a
+    /// The sum of every account's balance -- always equal to `total_issued`, since a
     /// transfer conserves: no coin is made or destroyed by a move.
     pub fn balances_sum(p: *const Purse) u64 {
         // invariant: accounts stay within the ceiling before we sum them.
@@ -140,7 +140,7 @@ pub const Purse = struct {
         while (i < p.account_count) : (i += 1) {
             sum += p.accounts[i].balance;
         }
-        // invariant: conservation — the balances sum to exactly what genesis issued.
+        // invariant: conservation -- the balances sum to exactly what genesis issued.
         assert(sum == p.total_issued);
         return sum;
     }
@@ -157,7 +157,7 @@ pub const Purse = struct {
         return sum;
     }
 
-    /// The coins asked for by transfers that came up short — refused, never moved.
+    /// The coins asked for by transfers that came up short -- refused, never moved.
     pub fn total_lost(p: *const Purse) u64 {
         // invariant: losses stay within the ceiling before we sum them.
         assert(p.short_count <= purse_max_shorts);
@@ -213,7 +213,7 @@ fn ensure_account(p: *Purse, pk: []const u8) error{TooManyAccounts}!u32 {
     return at;
 }
 
-/// Credit an account — balance and cumulative inflow both rise. A wrap refuses whole.
+/// Credit an account -- balance and cumulative inflow both rise. A wrap refuses whole.
 fn credit(p: *Purse, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
     const k = try ensure_account(p, pk);
     const nb = p.accounts[k].balance +% amount;
@@ -226,7 +226,7 @@ fn credit(p: *Purse, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccoun
     assert(p.accounts[k].balance <= p.accounts[k].received);
 }
 
-/// The recipient named in a fact's signed body — a full, valid holder key, or a
+/// The recipient named in a fact's signed body -- a full, valid holder key, or a
 /// refusal when the body is not exactly one parseable key.
 fn recipient_of(fact: *const fold.Fact) error{Malformed}![]const u8 {
     const body = fact.body_slice();
@@ -237,7 +237,7 @@ fn recipient_of(fact: *const fold.Fact) error{Malformed}![]const u8 {
     return body;
 }
 
-/// Record a winning transfer — coins the agreed order moved, at its position.
+/// Record a winning transfer -- coins the agreed order moved, at its position.
 fn record_move(p: *Purse, from: []const u8, to: []const u8, amount: u64, pos: u32, round: u32) error{TooManyMoves}!void {
     // invariant: both parties to a move are full holder identities.
     assert(from.len == pk_len);
@@ -252,7 +252,7 @@ fn record_move(p: *Purse, from: []const u8, to: []const u8, amount: u64, pos: u3
     p.move_count += 1;
 }
 
-/// Record a spent-out loss — a transfer the sender's purse could not pay because an
+/// Record a spent-out loss -- a transfer the sender's purse could not pay because an
 /// earlier winning transfer already emptied it. The twin of `record_move` on the loss.
 fn record_short(p: *Purse, from: []const u8, amount: u64, pos: u32, received_at: u64) error{TooManyShorts}!void {
     // invariant: the sender is a full holder identity.
@@ -268,7 +268,7 @@ fn record_short(p: *Purse, from: []const u8, amount: u64, pos: u32, received_at:
     p.short_count += 1;
 }
 
-/// Fold one signed fact into a Purse — the per-account law for a single transfer, the
+/// Fold one signed fact into a Purse -- the per-account law for a single transfer, the
 /// step `resolve` walks over the agreed order and `purse_knot.continue_purse` walks
 /// over a live suffix seeded from a sealed checkpoint. `pos` is the fact's position in
 /// its epoch, `round` the block round a winning move records. A fact whose own signature
@@ -290,12 +290,12 @@ pub fn fold_transfer(p: *Purse, fact: *const fold.Fact, pos: u32, round: u32) er
     // invariant: a fact's position is a real index within the fold's log ceiling.
     assert(pos < fold.myc_log_max_facts);
 
-    // Corruption is not a verdict — a fact whose own signature is broken refuses
+    // Corruption is not a verdict -- a fact whose own signature is broken refuses
     // the whole fold before any coin moves.
     if (!fold.verify_fact(fact)) return error.IdentityRefused;
 
     if (fact.kind == fold.kind_issue) {
-        // A genesis credit funds one account (demo funder authority — real mint
+        // A genesis credit funds one account (demo funder authority -- real mint
         // policy is a named horizon).
         const to = try recipient_of(fact);
         try credit(p, to, fact.amount);
@@ -310,13 +310,13 @@ pub fn fold_transfer(p: *Purse, fact: *const fold.Fact, pos: u32, round: u32) er
         const received_here = if (si) |k| p.accounts[k].received else 0;
         const balance_here = if (si) |k| p.accounts[k].balance else 0;
 
-        // Never-could-pay: more than the holder ever received refuses whole —
+        // Never-could-pay: more than the holder ever received refuses whole --
         // that was never a race, only a demand no order could meet.
         if (fact.amount > received_here) return error.NeverPaid;
 
         if (fact.amount > balance_here) {
             // Lost a race: the coins were in this purse once, an earlier winning
-            // transfer took them first — a lawful no-op, folding continues.
+            // transfer took them first -- a lawful no-op, folding continues.
             try record_short(p, from, fact.amount, pos, received_here);
         } else {
             // Accepted: the sender's purse pays; the recipient's rises; conserved.
@@ -328,7 +328,7 @@ pub fn fold_transfer(p: *Purse, fact: *const fold.Fact, pos: u32, round: u32) er
             try record_move(p, from, to, fact.amount, pos, round);
         }
     } else if (fact.kind == fold.kind_star_reserve) {
-        // A name reservation is fold's / the Tenure's resource, not the Purse's —
+        // A name reservation is fold's / the Tenure's resource, not the Purse's --
         // a Purse log carries coins between accounts, so it refuses whole here.
         return error.StarReserve;
     } else {
@@ -336,7 +336,7 @@ pub fn fold_transfer(p: *Purse, fact: *const fold.Fact, pos: u32, round: u32) er
     }
 }
 
-/// Resolve a committed Dag into a Purse — the per-account verdict of the agreed order.
+/// Resolve a committed Dag into a Purse -- the per-account verdict of the agreed order.
 /// A transfer the sender cannot pay yet once could afford (amount <= received-so-far)
 /// is a lawful no-op spent-out loss; a transfer that never could pay, a broken
 /// signature, an unknown kind, a star reserve, and a malformed recipient each refuse
@@ -370,7 +370,7 @@ pub fn resolve(dag: *const cord.Dag) error{
         try fold_transfer(&p, &blk.fact, i, blk.round);
     }
 
-    // invariant: conservation — the balances sum to exactly what genesis issued.
+    // invariant: conservation -- the balances sum to exactly what genesis issued.
     assert(p.balances_sum() == p.total_issued);
     return p;
 }
@@ -395,7 +395,7 @@ fn purses_equal(x: *const Purse, y: *const Purse) bool {
     if (x.account_count != y.account_count) return false;
     if (x.total_moved() != y.total_moved()) return false;
     if (x.total_lost() != y.total_lost()) return false;
-    // The loser is the verdict's fingerprint — one holder came up short.
+    // The loser is the verdict's fingerprint -- one holder came up short.
     var i: u32 = 0;
     while (i < x.short_count) : (i += 1) {
         if (!std.mem.eql(u8, x.shorts[i].from[0..], y.shorts[i].from[0..])) return false;
@@ -420,8 +420,8 @@ pub fn main() !void {
     const bob_pk = kb.public_key.toBytes();
     const carol_pk = kc.public_key.toBytes();
 
-    // Genesis credits 100 to Alice; Alice signs two transfers of 100 — to Bob and to
-    // Carol — at the same round, each affordable alone, together twice what she holds.
+    // Genesis credits 100 to Alice; Alice signs two transfers of 100 -- to Bob and to
+    // Carol -- at the same round, each affordable alone, together twice what she holds.
     const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
     const f_bob = fold.mint_fact(ka, fold.kind_tax, 100, "", bob_pk[0..]) orelse return error.MintBob;
     const f_carol = fold.mint_fact(ka, fold.kind_tax, 100, "", carol_pk[0..]) orelse return error.MintCarol;
@@ -435,7 +435,7 @@ pub fn main() !void {
     const wc = cord.mint_block(ka, 1, roots[0..], f_carol) orelse return error.BlockWc;
 
     // Both transfers share Alice's author key and round, so the commit tie-break falls
-    // to block hash — the earlier-sorting block folds first and moves Alice's coins,
+    // to block hash -- the earlier-sorting block folds first and moves Alice's coins,
     // the later faces an emptied purse and comes up short.
     var hwb: [cord.hash_len]u8 = undefined;
     var hwc: [cord.hash_len]u8 = undefined;
@@ -445,7 +445,7 @@ pub fn main() !void {
     const winner_to = if (bob_wins) bob_pk else carol_pk;
     const loser_to = if (bob_wins) carol_pk else bob_pk;
 
-    // Two arrival permutations of the two transfers (g always first — its children
+    // Two arrival permutations of the two transfers (g always first -- its children
     // reference it, so it must be held before they can be admitted).
     const p1 = try resolve_perm(&[_]cord.Block{ g, wb, wc });
     const p2 = try resolve_perm(&[_]cord.Block{ g, wc, wb });
@@ -455,7 +455,7 @@ pub fn main() !void {
     if (p1.shorts_seen() != 1) return error.ShortCount;
 
     // The winner received the hundred; the loser's recipient received nothing; Alice's
-    // purse is empty — she spent the coins once, not twice.
+    // purse is empty -- she spent the coins once, not twice.
     if (p1.balance_of(winner_to[0..]) != 100) return error.WinnerUnpaid;
     if (p1.balance_of(loser_to[0..]) != 0) return error.LoserPaid;
     if (p1.balance_of(alice_pk[0..]) != 0) return error.AliceNotEmpty;
@@ -472,7 +472,7 @@ pub fn main() !void {
     if (lost.amount != 100) return error.ShortAmount;
     if (lost.amount > lost.received_at) return error.LossNotLawful;
 
-    // Conservation: the balances sum to exactly the hundred genesis issued — no coin
+    // Conservation: the balances sum to exactly the hundred genesis issued -- no coin
     // made or destroyed by the moving. The loser is a lawful no-op.
     if (p1.total_issued != 100) return error.Issued;
     if (p1.balances_sum() != 100) return error.NotConserved;
@@ -483,7 +483,7 @@ pub fn main() !void {
     if (!purses_equal(&p1, &p2)) return error.ArrivalChangedVerdict;
 
     // Never-could-pay still poisons: a transfer for more than Alice ever received
-    // refuses the whole resolution — that was never a race, only a demand unmet.
+    // refuses the whole resolution -- that was never a race, only a demand unmet.
     const f_greedy = fold.mint_fact(ka, fold.kind_tax, 500, "", bob_pk[0..]) orelse return error.MintGreedy;
     const greedy_block = cord.mint_block(ka, 1, roots[0..], f_greedy) orelse return error.BlockGreedy;
     var d_greedy = cord.Dag.empty();
@@ -504,7 +504,7 @@ pub fn main() !void {
         if (err != error.IdentityRefused) return error.WrongPoison;
     }
 
-    // A name reservation is not the Purse's resource — it refuses the whole resolution.
+    // A name reservation is not the Purse's resource -- it refuses the whole resolution.
     const f_star = fold.mint_fact(kf, fold.kind_star_reserve, 10, "vega", "reserve") orelse return error.MintStar;
     const star_block = cord.mint_block(kf, 1, roots[0..], f_star) orelse return error.BlockStar;
     var d_star = cord.Dag.empty();
@@ -514,7 +514,7 @@ pub fn main() !void {
         if (err != error.StarReserve) return error.WrongStar;
     }
 
-    // A transfer whose recipient body is not a valid key is malformed — refuses whole.
+    // A transfer whose recipient body is not a valid key is malformed -- refuses whole.
     const f_mal = fold.mint_fact(ka, fold.kind_tax, 10, "", "not-a-key") orelse return error.MintMal;
     const mal_block = cord.mint_block(ka, 1, roots[0..], f_mal) orelse return error.BlockMal;
     var d_mal = cord.Dag.empty();

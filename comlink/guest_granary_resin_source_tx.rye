@@ -1,4 +1,4 @@
-//! comlink/guest_granary_resin_source_tx.rye — Granary lap 4b device: source TX (resin response).
+//! comlink/guest_granary_resin_source_tx.rye -- Granary lap 4b device: source TX (resin response).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

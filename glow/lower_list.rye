@@ -1,6 +1,6 @@
-//! glow/lower_list.rye — lower a parsed `:~` list cell to runnable `.rye`.
+//! glow/lower_list.rye -- lower a parsed `:~` list cell to runnable `.rye`.
 //!
-//! Thin STOA5 face: 1–4 demo atoms into a Zig array (same demo ladder as
+//! Thin STOA5 face: 1-4 demo atoms into a Zig array (same demo ladder as
 //! pair/triple/quad: 5, 3, 1, 2).
 
 const std = @import("std");

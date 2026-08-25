@@ -1,4 +1,4 @@
-//! Rye test: std.mem.order and lessThan — pass 9953.
+//! Rye test: std.mem.order and lessThan -- pass 9953.
 //!
 //! Lexicographic slice compare backs SemanticVersion pre-release ordering
 //! and general string sorting.

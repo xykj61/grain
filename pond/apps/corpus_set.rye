@@ -1,25 +1,25 @@
-//! pond/apps/corpus_set.rye — GISM Journey 5 (Real corpora), Rung 3.
+//! pond/apps/corpus_set.rye -- GISM Journey 5 (Real corpora), Rung 3.
 //!
 //! Season 2, Yield: every module the tree built stands on real data. Rung one read
-//! one real document; this rung reads a **set** — the tree's own writing as a body,
+//! one real document; this rung reads a **set** -- the tree's own writing as a body,
 //! not one lucky file. Five real front-door / discipline documents stand as the
 //! corpus, each embedded at compile time through a symlink in pond/apps/corpora/
-//! (no network, no runtime filesystem — the @embedFile idiom already lived-with):
-//! context/TAME_CORE.md · context/TWO_ROOMS.md · CODE_OF_CONDUCT.md · SECURITY.md ·
+//! (no network, no runtime filesystem -- the @embedFile idiom already lived-with):
+//! context/TAME_CORE.md - context/TWO_ROOMS.md - CODE_OF_CONDUCT.md - SECURITY.md -
 //! CHANGELOG.md. The reading voice (Scribble, through reading_query's Lantern
-//! contract) reads each member's outline for real — the same code path rung one ran
+//! contract) reads each member's outline for real -- the same code path rung one ran
 //! over a single file, now run over the whole body.
 //!
 //! The crux is **the bounds proven against the largest real member**. Each Scribble
-//! bound (whole-document bytes · block count · block text · heading count) is stressed
+//! bound (whole-document bytes - block count - block text - heading count) is stressed
 //! most by whichever member is extreme on that axis; the set is proven by proving its
-//! extreme. The set's largest single block measures ~1312 B — past the 512-byte bound
+//! extreme. The set's largest single block measures ~1312 B -- past the 512-byte bound
 //! the demo literals were tuned to fit, and inside the 2048-byte bound Yield red %72
-//! raised in rung one — so this set genuinely exercises the raised bound, not a toy.
+//! raised in rung one -- so this set genuinely exercises the raised bound, not a toy.
 //!
 //! No Yield red surfaced this round: every real member fits every raised bound with
 //! headroom (like rung two). Had any member exceeded a bound, parse_markdown would
-//! refuse (BlockOverflow / BlockTooLarge) and the build would red — the honest Yield
+//! refuse (BlockOverflow / BlockTooLarge) and the build would red -- the honest Yield
 //! signal that the bound needs raising, booked before the next durable round.
 //!
 //! Additive by construction: it reuses reading_query's public answer_over over each
@@ -38,7 +38,7 @@ const rq = @import("reading_query.rye");
 
 const corpus_set_version = "20260812.183500";
 
-// The real corpus set — symlinks to living tree documents. Compile-time embedding
+// The real corpus set -- symlinks to living tree documents. Compile-time embedding
 // gives real bytes with a demo's determinism: the same body every build.
 const f_tame = @embedFile("corpora/tame_core.md");
 const f_rooms = @embedFile("corpora/two_rooms.md");
@@ -47,7 +47,7 @@ const f_sec = @embedFile("corpora/security.md");
 const f_log = @embedFile("corpora/changelog.md");
 
 // A set member: the real tree path, the embedded bytes, and the leading text of the
-// document's first heading — the anchor that binds this member's reading to its own
+// document's first heading -- the anchor that binds this member's reading to its own
 // real content (never a shared literal).
 const Doc = struct {
     path: []const u8,
@@ -63,12 +63,12 @@ const set = [_]Doc{
     .{ .path = "CHANGELOG.md", .bytes = f_log, .lead = "Changelog" },
 };
 
-// The corpus set never exceeds this — a bounded body, far inside a reader's budget.
+// The corpus set never exceeds this -- a bounded body, far inside a reader's budget.
 const max_set: u32 = 8;
 
 // The old block-text bound the demo literals were tuned to fit, before Yield red %72
 // raised it in rung one. Named only to prove the set's extreme exceeds it (a real
-// body, not a toy) — never a live limit.
+// body, not a toy) -- never a live limit.
 const old_max_block_text: u32 = 512;
 
 const allow_line = "model_hash sha3-256-rye-forge-lap0";
@@ -117,7 +117,7 @@ fn measure(doc: []const u8) sc.ParseError!Stats {
     };
 }
 
-/// The extreme cost across the whole set — the largest member on each axis. Proving
+/// The extreme cost across the whole set -- the largest member on each axis. Proving
 /// the extreme fits every bound proves every member does.
 const Extremes = struct {
     max_bytes: u32,
@@ -157,7 +157,7 @@ fn set_extremes() sc.ParseError!Extremes {
     return ex;
 }
 
-/// Every member reads its own outline — the whole body read, not one file. Each
+/// Every member reads its own outline -- the whole body read, not one file. Each
 /// member's reading is anchored to its real first heading, so no member borrows
 /// another's answer.
 fn welcome_every_member_reads() !void {
@@ -186,7 +186,7 @@ fn welcome_every_member_reads() !void {
 
 /// The crux: every Scribble bound proven against the largest real member of the set.
 /// The extreme on each axis fits with headroom, and the set's largest single block
-/// exceeds the old 512-byte bound — so the body genuinely exercises the raised bound.
+/// exceeds the old 512-byte bound -- so the body genuinely exercises the raised bound.
 fn welcome_bounds_hold_against_largest() !void {
     const ex = try set_extremes();
 
@@ -199,7 +199,7 @@ fn welcome_bounds_hold_against_largest() !void {
     assert(ex.max_block_text <= sc.max_block_text);
     // invariant: the outline-heaviest member fits Scribble's heading budget
     assert(ex.max_headings <= sc.max_headings);
-    // invariant: the set's extreme block exceeds the old bound — a real body, not a toy
+    // invariant: the set's extreme block exceeds the old bound -- a real body, not a toy
     assert(ex.max_block_text > old_max_block_text);
 
     print("corpus_set: bounds hold — largest by bytes {s} {d}/{d}, blocks {d}/{d}, block_text {d}/{d} (old {d}), headings {d}/{d}\n", .{
@@ -230,7 +230,7 @@ fn unwelcome_model_not_allowed() !void {
     print("corpus_set: model not allowed refused\n", .{});
 }
 
-/// An unrecognized operation refuses over the set — no fake answer.
+/// An unrecognized operation refuses over the set -- no fake answer.
 fn unwelcome_unknown_op() !void {
     var buf: [lc.max_completion_len]u8 = undefined;
     const req = lc.Request{

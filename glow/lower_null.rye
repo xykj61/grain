@@ -1,10 +1,10 @@
-//! glow/lower_null.rye — lower a parsed `?~` null-test to runnable `.rye`.
+//! glow/lower_null.rye -- lower a parsed `?~` null-test to runnable `.rye`.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?~` is the null test. This hop lowers `records.cur` with then/else as
 //! named faces (defaults root/cont), decimal literals, nested
 //! `^-  @uN  <decimal>`, `(lent <face>)`, `(mix <face> <face>)`, or
-//! `(jam <face> <face>)`, or `(cue <face>)` — parsed through `expr.rye`. Arm
+//! `(jam <face> <face>)`, or `(cue <face>)` -- parsed through `expr.rye`. Arm
 //! decimals, lengths, XOR, cell-pack, and cue-unpack results are payloads, not
 //! Hoon loobeans; exits are POSIX (0 success). See glow/truth_semantics.rye.
 //! Other parenthesized arms refuse.

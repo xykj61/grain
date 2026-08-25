@@ -1,28 +1,28 @@
-//! constel/tenure.rye — FORA24: a leader holds tenure only while a majority still answers (Raft §6.2 / §9.6, CheckQuorum). FORA20
-//! proved a linearizable read that refuses to serve from a deposed leader — a REACTIVE guard: a stale leader is caught the moment
+//! constel/tenure.rye -- FORA24: a leader holds tenure only while a majority still answers (Raft §6.2 / §9.6, CheckQuorum). FORA20
+//! proved a linearizable read that refuses to serve from a deposed leader -- a REACTIVE guard: a stale leader is caught the moment
 //! it tries to confirm leadership for a read. This rung adds the PROACTIVE half: a leader that can no longer reach a majority
 //! steps DOWN to follower on its own, without waiting for a read to expose it.
 //!
 //! The gap it closes:
-//!   A leader partitioned into a minority keeps believing it leads. It cannot commit (the majority is elsewhere), yet it lingers —
+//!   A leader partitioned into a minority keeps believing it leads. It cannot commit (the majority is elsewhere), yet it lingers --
 //!   blocking nothing it should not, but holding a title the sky has moved past, and in a lease-based read scheme it could even
 //!   serve a stale value. CheckQuorum is Raft's fix: each election-timeout window the leader counts how many piers ANSWERED its
 //!   heartbeats; the leader always counts itself. If that backing falls below the majority threshold, the leader relinquishes
-//!   leadership — so a minority-partition leader stops leading promptly, and the majority partition's own election is never shadowed
+//!   leadership -- so a minority-partition leader stops leading promptly, and the majority partition's own election is never shadowed
 //!   by a ghost leader that thinks it still rules.
 //!
 //! This is the natural companion to FORA22 (pre-vote) and FORA23 (transfer): pre-vote keeps a rejoining node from disrupting a
 //! healthy leader; CheckQuorum keeps an isolated leader from lingering; transfer hands off on purpose. Together the sky neither
 //! disrupts a good leader nor clings to a stranded one.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA24. Design read: active-designing/date/20260814/20260814-084900_fora24-constel-tenure-checkquorum.md
-//! Stands on: constel/quorum.rye (FORA9) — majority_of, the same strict-majority threshold every Constel decision uses;
-//! constel/roster.rye (FORA1) — max_piers, the bound the heartbeat poll runs within.
+//! Stands on: constel/quorum.rye (FORA9) -- majority_of, the same strict-majority threshold every Constel decision uses;
+//! constel/roster.rye (FORA1) -- max_piers, the bound the heartbeat poll runs within.
 //!
-//! Purely LOCAL — bounded per-peer ack flags and a count on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and gate
-//! #4 — real Kumara — both untouched). A served heartbeat reaches the Comlink-served gate; the socket rung stays the maintainer's
+//! Purely LOCAL -- bounded per-peer ack flags and a count on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and gate
+//! #4 -- real Kumara -- both untouched). A served heartbeat reaches the Comlink-served gate; the socket rung stays the maintainer's
 //! hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/tenure.rye selftest
@@ -37,10 +37,10 @@ const quorum = @import("quorum.rye");
 pub const tenure_version = "20260814.084900";
 
 /// HOW MANY PIERS BACK THE LEADER THIS WINDOW. The leader always counts ITSELF (a node backs its own leadership), plus every peer
-/// that answered a heartbeat within the election-timeout window. `acks` holds one flag per OTHER pier — the roster minus the leader
-/// — so the total can never exceed the whole roster.
+/// that answered a heartbeat within the election-timeout window. `acks` holds one flag per OTHER pier -- the roster minus the leader
+/// -- so the total can never exceed the whole roster.
 pub fn backing(acks: []const bool) u32 {
-    // invariant: the peers polled are the roster minus the leader itself — strictly fewer than the pier cap.
+    // invariant: the peers polled are the roster minus the leader itself -- strictly fewer than the pier cap.
     assert(acks.len < roster.max_piers);
     var count: u32 = 1; // the leader backs itself
     var i: u32 = 0;
@@ -52,15 +52,15 @@ pub fn backing(acks: []const bool) u32 {
     return count;
 }
 
-/// DOES THE LEADER STILL COMMAND A MAJORITY? Its backing this window reaches the strict-majority threshold — the same threshold
+/// DOES THE LEADER STILL COMMAND A MAJORITY? Its backing this window reaches the strict-majority threshold -- the same threshold
 /// that made the leader unique at election (FORA9) now measured against who still answers.
 pub fn still_commands(acks: []const bool, threshold: u32) bool {
-    // invariant: the threshold is a real strict majority — at least one pier, never zero.
+    // invariant: the threshold is a real strict majority -- at least one pier, never zero.
     assert(threshold >= 1 and threshold <= acks.len + 1);
     return backing(acks) >= threshold;
 }
 
-/// CHECKQUORUM (Raft §6.2 / §9.6): a leader that no longer commands a majority within an election timeout STEPS DOWN to follower —
+/// CHECKQUORUM (Raft §6.2 / §9.6): a leader that no longer commands a majority within an election timeout STEPS DOWN to follower --
 /// so a leader isolated in a minority partition stops believing it leads, rather than lingering or serving a stale lease-read. The
 /// exact inverse of still_commands: the leader steps down precisely when its backing has fallen below the majority.
 pub fn should_step_down(acks: []const bool, threshold: u32) bool {
@@ -74,7 +74,7 @@ pub fn should_step_down(acks: []const bool, threshold: u32) bool {
 //     a lone or fully-connected leader behaves; bounded over a full roster. ------------------------------------------------------
 
 fn run_selftest() !u8 {
-    // 1. backing COUNTS SELF PLUS ACKS — the leader always counts itself, plus each peer that answered.
+    // 1. backing COUNTS SELF PLUS ACKS -- the leader always counts itself, plus each peer that answered.
     {
         const none = [_]bool{ false, false, false, false }; // four peers, none answered
         assert(backing(&none) == 1); // only the leader itself
@@ -84,7 +84,7 @@ fn run_selftest() !u8 {
         assert(backing(&all) == 5); // self + all four
     }
 
-    // 2. A LEADER HEARING A MAJORITY STILL COMMANDS; ONE THAT DOES NOT STEPS DOWN — five-pier sky, threshold 3.
+    // 2. A LEADER HEARING A MAJORITY STILL COMMANDS; ONE THAT DOES NOT STEPS DOWN -- five-pier sky, threshold 3.
     {
         const th = quorum.majority_of(5); // 3
         const heard_two = [_]bool{ true, true, false, false }; // backing 3
@@ -95,9 +95,9 @@ fn run_selftest() !u8 {
         assert(should_step_down(&heard_one, th)); // below the majority — step down
     }
 
-    // 3. THE MINORITY-PARTITION LEADER STEPS DOWN WHILE THE MAJORITY PARTITION COMMANDS — the crux. A five-pier sky splits 2|3. The
-    //    old leader sits in the minority side with ONE follower answering (backing 2 of a threshold 3) — it steps down. A new leader
-    //    raised in the three-pier majority hears its two peers (backing 3) — it commands. The ghost leader cannot shadow the sky.
+    // 3. THE MINORITY-PARTITION LEADER STEPS DOWN WHILE THE MAJORITY PARTITION COMMANDS -- the crux. A five-pier sky splits 2|3. The
+    //    old leader sits in the minority side with ONE follower answering (backing 2 of a threshold 3) -- it steps down. A new leader
+    //    raised in the three-pier majority hears its two peers (backing 3) -- it commands. The ghost leader cannot shadow the sky.
     {
         const th = quorum.majority_of(5); // 3
         const minority = [_]bool{ true, false, false, false }; // old leader + 1 answering of 4 peers
@@ -108,7 +108,7 @@ fn run_selftest() !u8 {
         assert(still_commands(&majority, th)); // the majority side's leader holds tenure
     }
 
-    // 4. THE BOUNDARY IS EXACT AT THE THRESHOLD — backing == threshold commands; backing == threshold − 1 steps down.
+    // 4. THE BOUNDARY IS EXACT AT THE THRESHOLD -- backing == threshold commands; backing == threshold − 1 steps down.
     {
         const th = quorum.majority_of(5); // 3
         const at = [_]bool{ true, true, false, false }; // backing 3 == threshold
@@ -117,7 +117,7 @@ fn run_selftest() !u8 {
         assert(!still_commands(&below, th) and should_step_down(&below, th));
     }
 
-    // 5. A LONE OR FULLY-CONNECTED LEADER BEHAVES — a single-node sky (threshold 1, no peers) never steps down; a leader every peer
+    // 5. A LONE OR FULLY-CONNECTED LEADER BEHAVES -- a single-node sky (threshold 1, no peers) never steps down; a leader every peer
     //    answers commands; a leader no peer answers steps down whenever a majority takes more than itself.
     {
         const solo = [_]bool{}; // no peers
@@ -130,7 +130,7 @@ fn run_selftest() !u8 {
         assert(should_step_down(&isolated, th5)); // backing 1 — fully isolated, steps down
     }
 
-    // 6. BOUNDED — the heartbeat poll runs over a full roster of eight (seven peers plus the leader) within the pier cap.
+    // 6. BOUNDED -- the heartbeat poll runs over a full roster of eight (seven peers plus the leader) within the pier cap.
     {
         var acks: [roster.max_piers - 1]bool = [_]bool{true} ** (roster.max_piers - 1); // every peer answers
         const b = backing(&acks);

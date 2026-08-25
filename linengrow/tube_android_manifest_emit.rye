@@ -1,4 +1,4 @@
-//! linengrow/tube_android_manifest_emit.rye — writes one AndroidManifest.xml
+//! linengrow/tube_android_manifest_emit.rye -- writes one AndroidManifest.xml
 //! for the TUBE0.5 packaging path. Builds a small, fixed demo manifest
 //! (seva-broadcaster with network) and emits the NativeActivity envelope
 //! to the path passed as argv[1].

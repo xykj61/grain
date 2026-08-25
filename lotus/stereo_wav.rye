@@ -1,22 +1,22 @@
-//! lotus/stereo_wav.rye — ALES216: the canonical RIFF/WAVE container widened to two channels, interleaved. The mono twin
-//! ALES215 opened the container family; this rung closes the mono→stereo pair the whole suite keeps, so a keeper who
+//! lotus/stereo_wav.rye -- ALES216: the canonical RIFF/WAVE container widened to two channels, interleaved. The mono twin
+//! ALES215 opened the container family; this rung closes the mono->stereo pair the whole suite keeps, so a keeper who
 //! reverberated and placed a wet image in the field (ALES214) can export that STEREO result rather than folding it to mono.
-//! Software only — a byte container, no real file, no DAC, no acoustic or electrical fact asserted.
+//! Software only -- a byte container, no real file, no DAC, no acoustic or electrical fact asserted.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES216.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES216.
 //! Design read: active-designing/date/20260815/20260815-130649_fill-ales216-lotus-stereo-wav.md
-//! Stands on: lotus/wav.rye (ALES215) — the same canonical header and two-gate verify-before-trust decode, differing only
+//! Stands on: lotus/wav.rye (ALES215) -- the same canonical header and two-gate verify-before-trust decode, differing only
 //! where stereo differs (channels 2, block align 4, byte rate rate*4) and adding one widened border: the data chunk must be a
 //! whole number of two-sample FRAMES, so neither channel ever receives a lone unpaired sample.
 //!
-//! HONEST SCOPE — software only. `encode`/`decode` convert between two bounded i16 channel buffers and the interleaved
+//! HONEST SCOPE -- software only. `encode`/`decode` convert between two bounded i16 channel buffers and the interleaved
 //! RIFF/WAVE byte layout; the stored sample rate is a carried FIELD, not a real clock. No file opened, no device driven, no
 //! network, no keys, no funds. RIFF/WAVE (public, unencumbered) studied clean-room; our own bounded, asserted Rye
 //! implementation, siloed to lotus/.
 //!
 //! The canonical stereo/16-bit header, 44 bytes, samples stored interleaved L R L R:
-//!   "RIFF"(4) · riff_size(u32 LE) · "WAVE"(4) · "fmt "(4) · fmt_size(u32=16) · format(u16=1 PCM) · channels(u16=2) ·
-//!   sample_rate(u32) · byte_rate(u32=rate*4) · block_align(u16=4) · bits(u16=16) · "data"(4) · data_size(u32) · payload.
+//!   "RIFF"(4) - riff_size(u32 LE) - "WAVE"(4) - "fmt "(4) - fmt_size(u32=16) - format(u16=1 PCM) - channels(u16=2) -
+//!   sample_rate(u32) - byte_rate(u32=rate*4) - block_align(u16=4) - bits(u16=16) - "data"(4) - data_size(u32) - payload.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_wav.rye selftest
 
@@ -26,20 +26,20 @@ const print = std.debug.print;
 
 pub const stereo_wav_version = "20260815.130649";
 
-/// One PCM sample is a little-endian signed 16-bit integer — two bytes.
+/// One PCM sample is a little-endian signed 16-bit integer -- two bytes.
 pub const sample_bytes: u32 = 2;
 
-/// Two channels — left and right.
+/// Two channels -- left and right.
 pub const channels_stereo: u16 = 2;
 
-/// One stereo FRAME is one left plus one right sample — four bytes. The block align, and the alignment border's unit.
+/// One stereo FRAME is one left plus one right sample -- four bytes. The block align, and the alignment border's unit.
 pub const frame_bytes: u32 = channels_stereo * sample_bytes;
 
-/// The canonical mono/16-bit RIFF/WAVE header length — the stereo container shares the same 44-byte header shape, differing
+/// The canonical mono/16-bit RIFF/WAVE header length -- the stereo container shares the same 44-byte header shape, differing
 /// only in the channels, block-align, and byte-rate field VALUES.
 pub const header_len: u32 = 44;
 
-/// The one PCM format code this container speaks — 1, uncompressed integer PCM.
+/// The one PCM format code this container speaks -- 1, uncompressed integer PCM.
 pub const pcm_format: u16 = 1;
 
 /// Sixteen bits per sample.
@@ -48,13 +48,13 @@ pub const bits_per_sample: u16 = 16;
 /// The fmt chunk body is always 16 bytes for canonical PCM.
 pub const fmt_chunk_size: u32 = 16;
 
-/// The widest per-channel buffer one container carries in this rung — a bounded ceiling so no size arithmetic overflows.
+/// The widest per-channel buffer one container carries in this rung -- a bounded ceiling so no size arithmetic overflows.
 pub const max_frames: u32 = 1 << 20;
 
-/// The widest data chunk — `max_frames` four-byte frames.
+/// The widest data chunk -- `max_frames` four-byte frames.
 pub const max_data: u32 = max_frames * frame_bytes;
 
-/// The widest whole container — header plus the widest data chunk.
+/// The widest whole container -- header plus the widest data chunk.
 pub const max_file: u32 = header_len + max_data;
 
 /// A sane upper bound on the sample-rate FIELD, so `sample_rate * frame_bytes` (the byte rate) can never overflow u32.
@@ -75,7 +75,7 @@ pub const StereoWavError = error{
     BadFmtSize,
     /// The audio format code is not 1 (uncompressed integer PCM).
     NotPcm,
-    /// The channel count is not 2 — this rung carries stereo only, and refuses a mono container.
+    /// The channel count is not 2 -- this rung carries stereo only, and refuses a mono container.
     NotStereo,
     /// The declared byte rate does not equal sample_rate * 4.
     ByteRateMismatch,
@@ -85,9 +85,9 @@ pub const StereoWavError = error{
     NotSixteenBit,
     /// The chunk after fmt is not "data".
     BadData,
-    /// The declared data size is not a whole number of stereo frames — neither channel may receive a lone unpaired sample.
+    /// The declared data size is not a whole number of stereo frames -- neither channel may receive a lone unpaired sample.
     PartialFrame,
-    /// The declared data size is past this rung's ceiling — refused before any sample is read.
+    /// The declared data size is past this rung's ceiling -- refused before any sample is read.
     DataOverflow,
     /// The header plus declared data size does not equal the buffer length.
     DataSizeMismatch,
@@ -111,7 +111,7 @@ pub const StereoPcm = struct {
 fn put_tag(out: []u8, off: u32, tag: *const [4]u8) void {
     // invariant: the four tag bytes land wholly within the buffer.
     assert(off + 4 <= out.len);
-    // invariant: a tag is exactly four bytes — the RIFF chunk-id width.
+    // invariant: a tag is exactly four bytes -- the RIFF chunk-id width.
     assert(tag.len == 4);
     var i: u32 = 0;
     while (i < 4) : (i += 1) out[off + i] = tag[i];
@@ -172,7 +172,7 @@ pub fn encode(sample_rate: u32, left: []const i16, right: []const i16, out: []u8
 
 /// Prove a container whole and canonical stereo, running every check in order BEFORE any sample is read, then de-interleave
 /// its frames into the two channel buffers. The size chain proves the file self-consistent and the frame border proves it
-/// frame-aligned — two independent gates, so neither channel ever receives a lone unpaired sample.
+/// frame-aligned -- two independent gates, so neither channel ever receives a lone unpaired sample.
 pub fn decode(bytes: []const u8, left: []i16, right: []i16) StereoWavError!StereoPcm {
     if (bytes.len < header_len) return error.FileTooShort;
     if (!tag_is(bytes, 0, "RIFF")) return error.BadRiff;
@@ -190,7 +190,7 @@ pub fn decode(bytes: []const u8, left: []i16, right: []i16) StereoWavError!Stere
     if (std.mem.readInt(u16, bytes[34..36], .little) != bits_per_sample) return error.NotSixteenBit;
     if (!tag_is(bytes, 36, "data")) return error.BadData;
     const data_size = std.mem.readInt(u32, bytes[40..44], .little);
-    // THE FRAME BORDER — a data chunk that is not a whole number of stereo frames would leave one channel a lone sample.
+    // THE FRAME BORDER -- a data chunk that is not a whole number of stereo frames would leave one channel a lone sample.
     // Refuse it before a single sample is read.
     if (data_size % frame_bytes != 0) return error.PartialFrame;
     if (data_size > max_data) return error.DataOverflow;
@@ -214,7 +214,7 @@ pub fn decode(bytes: []const u8, left: []i16, right: []i16) StereoWavError!Stere
 
 // --- selftest: two channel buffers round-trip byte-for-byte through the canonical interleaved container; the payload is
 //     exactly L R L R; an empty pair yields a valid 44-byte header; a torn frame refuses PartialFrame; and every header
-//     corruption — including a mono container offered to a stereo decoder — refuses by name before a sample crosses ---------
+//     corruption -- including a mono container offered to a stereo decoder -- refuses by name before a sample crosses ---------
 
 fn run_selftest() !u8 {
     const rate: u32 = 48_000;
@@ -226,7 +226,7 @@ fn run_selftest() !u8 {
     var lb: [64]i16 = undefined;
     var rb: [64]i16 = undefined;
 
-    // 1. THE ROUND-TRIP LAW — both channels encode and decode back byte-for-byte, the rate preserved.
+    // 1. THE ROUND-TRIP LAW -- both channels encode and decode back byte-for-byte, the rate preserved.
     const wrote = try encode(rate, &left, &right, &file);
     assert(wrote == header_len + left.len * frame_bytes);
     {
@@ -240,7 +240,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE INTERLEAVE LAW — the payload is exactly L0 R0 L1 R1 …; left at even frame slots, right at odd.
+    // 2. THE INTERLEAVE LAW -- the payload is exactly L0 R0 L1 R1 ...; left at even frame slots, right at odd.
     {
         var s: u32 = 0;
         while (s < left.len) : (s += 1) {
@@ -250,7 +250,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. THE CANONICAL-STEREO-HEADER LAW — exactly the canonical stereo/16-bit fields.
+    // 3. THE CANONICAL-STEREO-HEADER LAW -- exactly the canonical stereo/16-bit fields.
     {
         assert(tag_is(file[0..wrote], 0, "RIFF"));
         assert(std.mem.readInt(u32, file[4..8], .little) == wrote - 8);
@@ -264,7 +264,7 @@ fn run_selftest() !u8 {
         assert(std.mem.readInt(u32, file[40..44], .little) == left.len * frame_bytes);
     }
 
-    // 4. THE EMPTY LAW — zero frames encode to a valid 44-byte header and decode back to zero frames.
+    // 4. THE EMPTY LAW -- zero frames encode to a valid 44-byte header and decode back to zero frames.
     {
         const el = [_]i16{};
         const er = [_]i16{};
@@ -278,7 +278,7 @@ fn run_selftest() !u8 {
         assert(eg.sample_rate == rate);
     }
 
-    // 5. THE FRAME-BORDER LAW — a data chunk one byte short of a whole frame refuses PartialFrame. Shorten and fix both size
+    // 5. THE FRAME-BORDER LAW -- a data chunk one byte short of a whole frame refuses PartialFrame. Shorten and fix both size
     //    fields so only the border can catch it.
     {
         var f = file;
@@ -289,7 +289,7 @@ fn run_selftest() !u8 {
         if (decode(f[0..short_len], &lb, &rb)) |_| return error.PartialSlipped else |e| if (e != error.PartialFrame) return error.WrongPartial;
     }
 
-    // 6. THE FAULT LAW — every structural corruption refuses by name.
+    // 6. THE FAULT LAW -- every structural corruption refuses by name.
     {
         if (decode(file[0 .. header_len - 1], &lb, &rb)) |_| return error.ShortSlipped else |e| if (e != error.FileTooShort) return error.WrongShort;
 

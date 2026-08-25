@@ -1,27 +1,27 @@
-//! lotus/stereo_crop.rye — ALES118: stereo_crop — Trim to Selection carried into stereo, both channels in lockstep. ALES111 named `crop` — keep the `count` samples starting at `start`
-//! and DROP every sample before and after — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold
+//! lotus/stereo_crop.rye -- ALES118: stereo_crop -- Trim to Selection carried into stereo, both channels in lockstep. ALES111 named `crop` -- keep the `count` samples starting at `start`
+//! and DROP every sample before and after -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold
 //! the SAME length so the two channels stay aligned in time. This rung carries crop into stereo the way ALES117 carried cut: run ALES111's proven mono `crop` on each channel with the
 //! SAME `start` and `count`, so the trim lands identically in both and the stereo image stays balanced. Where ALES117's stereo_cut REMOVES the named span and keeps everything around
-//! it, stereo_crop KEEPS the named span and drops everything else — the exact stereo complement, so the pair teaches the one distinction about a selection on a master: REMOVE it, or
+//! it, stereo_crop KEEPS the named span and drops everything else -- the exact stereo complement, so the pair teaches the one distinction about a selection on a master: REMOVE it, or
 //! KEEP ONLY it.
 //!
 //! The rule, stated once: stereo_crop(sc, start, count) keeps [start, start+count) in both channels and drops the rest, reusing ALES111's mono `crop` per channel over its public API.
-//! BOTH channels are validated BEFORE either is mutated — because crop can fault only with BadRange (a kept span outside the samples) and both channels enter equal-length, the shared
+//! BOTH channels are validated BEFORE either is mutated -- because crop can fault only with BadRange (a kept span outside the samples) and both channels enter equal-length, the shared
 //! span is checked once against the common length up front, so once the check passes each mono crop is pre-validated to succeed and a refusal never desynchronises the channels. It
 //! reuses ALES2's EditError whole and invents none of its own.
 //!
-//! The crux — four laws. THE STEREO CROP LAW: the left channel equals mono crop(left, start, count) and the right equals mono crop(right, start, count), each byte for byte. THE
-//! BALANCE / INVARIANT LAW: left.len == right.len after the edit and both are exactly count — equal starting lengths cropped to the same span leave the channels aligned. THE COMPLEMENT
+//! The crux -- four laws. THE STEREO CROP LAW: the left channel equals mono crop(left, start, count) and the right equals mono crop(right, start, count), each byte for byte. THE
+//! BALANCE / INVARIANT LAW: left.len == right.len after the edit and both are exactly count -- equal starting lengths cropped to the same span leave the channels aligned. THE COMPLEMENT
 //! LAW: stereo_crop keeps exactly what ALES117's stereo_cut removes on each channel, the crop spliced back into the cut reconstructing the source per channel. THE ATOMICITY / DEGENERATE
 //! LAW: any refusal leaves BOTH channels byte for byte untouched and still balanced; crop(0, len) the identity on both, crop(start, 0) the empty pair, a span past the samples BadRange.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES118.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES118.
 //! Design read: active-designing/date/20260815/20260815-015904_fill-ales118-lotus-stereo-crop.md
-//! Stands on: lotus/crop.rye (ALES111) — the mono Trim to Selection run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip, its cut/splice used by the selftest to prove the complement law, and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter.
+//! Stands on: lotus/crop.rye (ALES111) -- the mono Trim to Selection run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip, its cut/splice used by the selftest to prove the complement law, and the EditError reused whole; lotus/meter.rye (ALES13) -- the peak/RMS meter.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats an existing span to the front of each channel and
-//! shortens the length — it invents no sample, changes no value, and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats an existing span to the front of each channel and
+//! shortens the length -- it invents no sample, changes no value, and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no
 //! real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_crop.rye selftest
@@ -37,33 +37,33 @@ const meter = @import("meter.rye");
 
 pub const stereo_crop_version = "20260815.015904";
 
-/// stereo_crop forwards ALES2's OWN fault reused by name — BadRange (a kept span outside the samples) — and invents none of its own.
+/// stereo_crop forwards ALES2's OWN fault reused by name -- BadRange (a kept span outside the samples) -- and invents none of its own.
 pub const StereoCropError = timeline.EditError;
 
-/// Keep [start, start+count) in both channels and drop every sample before and after, in lockstep — the stereo image staying balanced, each channel's length becoming exactly count.
+/// Keep [start, start+count) in both channels and drop every sample before and after, in lockstep -- the stereo image staying balanced, each channel's length becoming exactly count.
 /// Both channels are validated before either is mutated: because mono crop can fault only with BadRange and the channels enter equal-length, the shared span is checked once against the
 /// common length up front, so a refusal never leaves one channel cropped and the other not. Reuses ALES111's mono crop per channel.
 pub fn stereo_crop(sc: *pan.StereoClip, start: u32, count: u32) StereoCropError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the kept span lies wholly within the (shared) current samples, checked without underflow, refused by name before any write — the same guard ALES111's crop keeps, run
+    // invariant: the kept span lies wholly within the (shared) current samples, checked without underflow, refused by name before any write -- the same guard ALES111's crop keeps, run
     //            once against the common length so a refusal lands before either channel mutates a single sample and the channels can never desynchronise.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono crop is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono crop is pre-validated to succeed -- no refusal can land between the two channel edits.
     try crop.crop(&sc.left, start, count);
     try crop.crop(&sc.right, start, count);
 
-    // invariant: the channels leave balanced and are each exactly the kept span — the stereo image stays aligned.
+    // invariant: the channels leave balanced and are each exactly the kept span -- the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len == count);
 }
 
-// --- selftest: THE STEREO CROP LAW — each channel equals ALES111's mono crop on that channel byte for byte; THE BALANCE / INVARIANT LAW — left.len == right.len == count after; THE
-//     COMPLEMENT LAW — stereo_crop keeps what ALES117's stereo_cut removes per channel; THE ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched, the identity and
+// --- selftest: THE STEREO CROP LAW -- each channel equals ALES111's mono crop on that channel byte for byte; THE BALANCE / INVARIANT LAW -- left.len == right.len == count after; THE
+//     COMPLEMENT LAW -- stereo_crop keeps what ALES117's stereo_cut removes per channel; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched, the identity and
 //     empty faces per channel ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -79,7 +79,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO CROP LAW — each channel equals ALES111's mono crop on that channel, proven side by side over one anchor with different per-channel samples.
+    // 1. THE STEREO CROP LAW -- each channel equals ALES111's mono crop on that channel, proven side by side over one anchor with different per-channel samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -99,7 +99,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 21, 31, 41 })) return error.RightSpanWrong;
     }
 
-    // 2. THE BALANCE / INVARIANT LAW — the channels stay equal length and each becomes exactly count across a mid span, the head, and the tail; the stereo image stays aligned.
+    // 2. THE BALANCE / INVARIANT LAW -- the channels stay equal length and each becomes exactly count across a mid span, the head, and the tail; the stereo image stays aligned.
     {
         var mid = pan.StereoClip{};
         try load_stereo(&mid, &[_]i16{ 1, 2, 3, 4, 5 }, &[_]i16{ 6, 7, 8, 9, 10 });
@@ -122,7 +122,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.right.samples(), &[_]i16{ 7, 8 })) return error.TailRightWrong;
     }
 
-    // 3. THE COMPLEMENT LAW — stereo_crop keeps exactly what ALES117's stereo_cut removes, per channel: crop(1, 2) yields the middle span; cut(1, 2) yields the head-plus-tail around
+    // 3. THE COMPLEMENT LAW -- stereo_crop keeps exactly what ALES117's stereo_cut removes, per channel: crop(1, 2) yields the middle span; cut(1, 2) yields the head-plus-tail around
     //    it; splicing the crop back at 1 into the cut reconstructs the source on each channel, so crop and cut partition the span in stereo too.
     {
         const srcl = [_]i16{ 10, 20, 30, 40 };
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         if (!eq(removed.left.samples(), &[_]i16{ 10, 40 })) return error.CutAroundLeftWrong;
         if (!eq(removed.right.samples(), &[_]i16{ 50, 80 })) return error.CutAroundRightWrong;
 
-        // Splice the kept middle back at 1 into the cut's head-plus-tail on each channel — the source returns byte for byte, proving crop and cut partition the span in stereo.
+        // Splice the kept middle back at 1 into the cut's head-plus-tail on each channel -- the source returns byte for byte, proving crop and cut partition the span in stereo.
         var rebuilt = pan.StereoClip{};
         try load_stereo(&rebuilt, removed.left.samples(), removed.right.samples());
         try timeline.splice(&rebuilt.left, 1, kept.left.samples());
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
         if (!eq(rebuilt.right.samples(), &srcr)) return error.PartitionRightBroken;
     }
 
-    // 4a. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a start past the samples and a count past the remainder.
+    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a start past the samples and a count past the remainder.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — crop(0, len) the identity on both channels, crop(start, 0) the empty pair (both length 0, still balanced).
+    // 4b. THE DEGENERATE LAW -- crop(0, len) the identity on both channels, crop(start, 0) the empty pair (both length 0, still balanced).
     {
         var idc = pan.StereoClip{};
         try load_stereo(&idc, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

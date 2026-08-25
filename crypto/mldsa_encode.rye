@@ -1,27 +1,27 @@
-//! crypto/mldsa_encode.rye — Season G (Cryptography): the ML-DSA serialization and rounding rung, the second stone of the post-quantum SIGNATURE
+//! crypto/mldsa_encode.rye -- Season G (Cryptography): the ML-DSA serialization and rounding rung, the second stone of the post-quantum SIGNATURE
 //! ladder. Every ML-DSA key and signature crosses two boundaries FIPS 204 fixes: the BIT-PACKING between ring coefficients and bytes
 //! (SimpleBitPack/BitPack and their inverses, §7.1), and the COEFFICIENT ROUNDING that splits a value into high and low parts and carries a
 //! one-bit hint (Power2Round, Decompose, HighBits/LowBits, MakeHint/UseHint, §7.4). This module authors both layers in pure Rye, standing on the
 //! GREEN base ring (crypto/mldsa_ring.rye). It is the signature-side counterpart to crypto/mlkem_encode.rye: where ML-KEM's second rung bundled
 //! ByteEncode/ByteDecode with the lossy Compress/Decompress, ML-DSA's bundles the bit-packing with the lossy Power2Round/Decompose/hint arithmetic
-//! — the same shape, a different lossy map, because ML-DSA hides a signature's low bits behind a hint rather than truncating a ciphertext.
+//! -- the same shape, a different lossy map, because ML-DSA hides a signature's low bits behind a hint rather than truncating a ciphertext.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 2 of the ML-DSA ladder. Rye-first spine:
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md -- rung 2 of the ML-DSA ladder. Rye-first spine:
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
-//! Kin: crypto/mldsa_ring.rye (the base ring this composes on, GREEN) · crypto/mlkem_encode.rye (the KEM-side serialization sibling) ·
+//! Kin: crypto/mldsa_ring.rye (the base ring this composes on, GREEN) - crypto/mlkem_encode.rye (the KEM-side serialization sibling) -
 //! crypto/shake.rye (the XOF the next sampling rung will drive). The parity TARGET is Zig's std.crypto ml_dsa and the FIPS 204 known-answers,
-//! studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//! studied clean-room -- never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE ORACLE — no external dependency is needed here, exactly as the ring rung stood on self-consistency. Every operation carries its own inverse
+//! THE ORACLE -- no external dependency is needed here, exactly as the ring rung stood on self-consistency. Every operation carries its own inverse
 //! or reconstruction identity: SimpleBitUnpack(SimpleBitPack(w)) = w and BitUnpack(BitPack(w)) = w over every width and range FIPS 204 uses; the
-//! Power2Round split reconstructs its input exactly (r1·2¹³ + r0 = r, r0 centered in (−2¹², 2¹²]); the Decompose split reconstructs mod q
-//! (r1·2γ₂ + r0 ≡ r, r0 centered in (−γ₂, γ₂]); and the decisive one, the HINT round-trip UseHint(MakeHint(z, r), r) = HighBits(r + z) for every
-//! low-weight z FIPS 204 permits (|z| ≤ γ₂) — the fact that lets a verifier recover a signature's high bits from a one-bit hint, at both γ₂ values.
+//! Power2Round split reconstructs its input exactly (r1-2¹³ + r0 = r, r0 centered in (−2¹², 2¹²]); the Decompose split reconstructs mod q
+//! (r1-2γ₂ + r0 ≡ r, r0 centered in (−γ₂, γ₂]); and the decisive one, the HINT round-trip UseHint(MakeHint(z, r), r) = HighBits(r + z) for every
+//! low-weight z FIPS 204 permits (|z| ≤ γ₂) -- the fact that lets a verifier recover a signature's high bits from a one-bit hint, at both γ₂ values.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it packs bits and
-//! rounds coefficients. It calls no std.crypto. The arithmetic is data-independent by construction — every loop bound and branch depends only on the
-//! public width or parameter, never on a secret — so constant-time timing-safety stays the Season's named horizon; this rung proves CORRECTNESS.
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it packs bits and
+//! rounds coefficients. It calls no std.crypto. The arithmetic is data-independent by construction -- every loop bound and branch depends only on the
+//! public width or parameter, never on a secret -- so constant-time timing-safety stays the Season's named horizon; this rung proves CORRECTNESS.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_encode.rye selftest
 
@@ -36,18 +36,18 @@ pub const mldsa_encode_version = "20260816.172505";
 /// ML-DSA's prime modulus, borrowed from the base ring so the two rungs cite one number. q = 8380417.
 pub const q: u32 = ring.q;
 
-/// The ring degree — 256 coefficients per polynomial, borrowed from the base ring so pack and unpack share one ceiling.
+/// The ring degree -- 256 coefficients per polynomial, borrowed from the base ring so pack and unpack share one ceiling.
 pub const n: u32 = ring.n;
 
 /// The dropped-bit width in Power2Round, d = 13 (FIPS 204 Table 1): a public key's t is split at 2¹³, its top bits (t1) published and its low bits
-/// (t0) folded into the private key. (q − 1) = 2¹³·1023 exactly, so t1 spans [0, 1023].
+/// (t0) folded into the private key. (q − 1) = 2¹³-1023 exactly, so t1 spans [0, 1023].
 pub const power2_d: u32 = 13;
 
 /// The widest bit width any ML-DSA field packs to: 20 bits, reached by the signature's z at γ₁ = 2¹⁹ (BitPack over [−(γ₁−1), γ₁] uses
-/// bitlen(2γ₁−1) = 20 bits). Named so the byte buffer cites one maximum; 32·20 = 640 bytes is the longest single-polynomial encoding.
+/// bitlen(2γ₁−1) = 20 bits). Named so the byte buffer cites one maximum; 32-20 = 640 bytes is the longest single-polynomial encoding.
 pub const max_bits: u32 = 20;
 
-/// The largest serialized length any single polynomial reaches: 32·max_bits = 640 bytes. The Packed buffer is sized to this ceiling and carries its
+/// The largest serialized length any single polynomial reaches: 32-max_bits = 640 bytes. The Packed buffer is sized to this ceiling and carries its
 /// true length, so one fixed array serves every width without an allocator.
 pub const max_bytes: u32 = 32 * max_bits;
 
@@ -56,19 +56,19 @@ pub const max_bytes: u32 = 32 * max_bits;
 pub const gamma2_88: u32 = (q - 1) / 88;
 pub const gamma2_32: u32 = (q - 1) / 32;
 
-/// The faults this rung's selftest can raise — every one a proof that failed, never a runtime path (the arithmetic below cannot fail; it packs and rounds).
+/// The faults this rung's selftest can raise -- every one a proof that failed, never a runtime path (the arithmetic below cannot fail; it packs and rounds).
 pub const MldsaEncodeError = error{
-    /// SimpleBitUnpack(SimpleBitPack(w)) or BitUnpack(BitPack(w)) did not return w — the bit-packing and its inverse disagree at some width.
+    /// SimpleBitUnpack(SimpleBitPack(w)) or BitUnpack(BitPack(w)) did not return w -- the bit-packing and its inverse disagree at some width.
     PackRoundTripMismatch,
-    /// A fixed FIPS 204 known-answer (the LSB-first bit order, or a named rounding value) did not match — a wrong bit direction or rounding.
+    /// A fixed FIPS 204 known-answer (the LSB-first bit order, or a named rounding value) did not match -- a wrong bit direction or rounding.
     KnownAnswerMismatch,
-    /// Power2Round did not reconstruct (r1·2¹³ + r0 ≠ r) or its r0 left the centered range (−2¹², 2¹²] — the split is wrong.
+    /// Power2Round did not reconstruct (r1-2¹³ + r0 ≠ r) or its r0 left the centered range (−2¹², 2¹²] -- the split is wrong.
     Power2RoundMismatch,
-    /// Decompose did not reconstruct mod q or its parts left their FIPS 204 ranges — the high/low split is wrong.
+    /// Decompose did not reconstruct mod q or its parts left their FIPS 204 ranges -- the high/low split is wrong.
     DecomposeMismatch,
-    /// UseHint(MakeHint(z, r), r) ≠ HighBits(r + z) for a permitted low-weight z — the hint round-trip the whole scheme's verify rests on failed.
+    /// UseHint(MakeHint(z, r), r) ≠ HighBits(r + z) for a permitted low-weight z -- the hint round-trip the whole scheme's verify rests on failed.
     HintRoundTripMismatch,
-    /// A test input came out identically zero, so a passing check would prove nothing — the selftest refuses a trivial witness.
+    /// A test input came out identically zero, so a passing check would prove nothing -- the selftest refuses a trivial witness.
     TrivialWitness,
 };
 
@@ -86,26 +86,26 @@ pub const Packed = struct {
     len: u32,
 };
 
-/// bitlen — the number of bits in x, so bitlen(0) = 0, bitlen(1) = 1, bitlen(15) = 4. The width SimpleBitPack packs a coefficient bounded by b to
+/// bitlen -- the number of bits in x, so bitlen(0) = 0, bitlen(1) = 1, bitlen(15) = 4. The width SimpleBitPack packs a coefficient bounded by b to
 /// (bitlen(b) bits) and BitPack a coefficient in [−a, b] to (bitlen(a+b) bits). Comptime-callable for the width constants.
 fn bitlen(x: u32) u32 {
     var v: u32 = x;
     var bits: u32 = 0;
-    // invariant (bound): x has at most 32 bits, so the loop runs at most 32 times — never unbounded.
+    // invariant (bound): x has at most 32 bits, so the loop runs at most 32 times -- never unbounded.
     while (v > 0) : (v >>= 1) {
         bits += 1;
     }
     return bits;
 }
 
-/// simple_bit_pack — FIPS 204 Algorithm 16: lay 256 coefficients, each in [0, 2^b_bits), into 32·b_bits bytes, LSB-first. A coefficient's low bit
+/// simple_bit_pack -- FIPS 204 Algorithm 16: lay 256 coefficients, each in [0, 2^b_bits), into 32-b_bits bytes, LSB-first. A coefficient's low bit
 /// lands first; bits stream into an accumulator and flush a byte at a time. The inverse of simple_bit_unpack. Same LSB-first discipline as ML-KEM's
 /// ByteEncode, generalized to any width up to 20.
 pub fn simple_bit_pack(w: *const [n]u32, b_bits: u32) Packed {
-    // invariant (precondition): a width ML-DSA uses, 1..20 — zero would pack nothing, wider than 20 no field needs.
+    // invariant (precondition): a width ML-DSA uses, 1..20 -- zero would pack nothing, wider than 20 no field needs.
     assert(b_bits >= 1 and b_bits <= max_bits);
     var out: Packed = .{ .bytes = [_]u8{0} ** max_bytes, .len = 32 * b_bits };
-    // acc holds the bits gathered but not yet flushed — never more than 7 leftover plus one b_bits-wide coefficient (< 27 bits), inside u32.
+    // acc holds the bits gathered but not yet flushed -- never more than 7 leftover plus one b_bits-wide coefficient (< 27 bits), inside u32.
     var acc: u32 = 0;
     var acc_bits: u32 = 0;
     var byte_i: u32 = 0;
@@ -113,7 +113,7 @@ pub fn simple_bit_pack(w: *const [n]u32, b_bits: u32) Packed {
     // invariant (bound): exactly n = 256 coefficients consumed, one per turn.
     while (i < n) : (i += 1) {
         const c = w[i];
-        // invariant: each coefficient already fits b_bits (the caller reduced it) — a wider value would silently truncate.
+        // invariant: each coefficient already fits b_bits (the caller reduced it) -- a wider value would silently truncate.
         assert(c < (@as(u32, 1) << @as(u5, @intCast(b_bits))));
         acc = acc | (c << @as(u5, @intCast(acc_bits)));
         acc_bits += b_bits;
@@ -125,15 +125,15 @@ pub fn simple_bit_pack(w: *const [n]u32, b_bits: u32) Packed {
             acc_bits -= 8;
         }
     }
-    // invariant (postcondition): 256·b_bits is a whole number of bytes (32·b_bits), so nothing is left un-flushed and every output byte was written.
+    // invariant (postcondition): 256-b_bits is a whole number of bytes (32-b_bits), so nothing is left un-flushed and every output byte was written.
     assert(acc_bits == 0);
     assert(byte_i == 32 * b_bits);
     return out;
 }
 
-/// simple_bit_unpack — FIPS 204 Algorithm 18: read 32·b_bits bytes back into 256 coefficients, LSB-first, the inverse of simple_bit_pack.
+/// simple_bit_unpack -- FIPS 204 Algorithm 18: read 32-b_bits bytes back into 256 coefficients, LSB-first, the inverse of simple_bit_pack.
 pub fn simple_bit_unpack(b: *const Packed, b_bits: u32) [n]u32 {
-    // invariant (precondition): a width ML-DSA uses, and the buffer carries exactly 32·b_bits meaningful bytes.
+    // invariant (precondition): a width ML-DSA uses, and the buffer carries exactly 32-b_bits meaningful bytes.
     assert(b_bits >= 1 and b_bits <= max_bits);
     assert(b.len == 32 * b_bits);
     var out: [n]u32 = [_]u32{0} ** n;
@@ -144,7 +144,7 @@ pub fn simple_bit_unpack(b: *const Packed, b_bits: u32) [n]u32 {
     var i: u32 = 0;
     // invariant (bound): exactly n = 256 coefficients produced, one per turn.
     while (i < n) : (i += 1) {
-        // invariant (bound): pull whole bytes until the accumulator holds at least b_bits — at most three per coefficient, never unbounded.
+        // invariant (bound): pull whole bytes until the accumulator holds at least b_bits -- at most three per coefficient, never unbounded.
         while (acc_bits < b_bits) {
             acc = acc | (@as(u32, b.bytes[byte_i]) << @as(u5, @intCast(acc_bits)));
             byte_i += 1;
@@ -159,8 +159,8 @@ pub fn simple_bit_unpack(b: *const Packed, b_bits: u32) [n]u32 {
     return out;
 }
 
-/// bit_pack — FIPS 204 Algorithm 17: pack 256 SIGNED coefficients, each in [−a, b], into 32·bitlen(a+b) bytes. Each coefficient w is stored as the
-/// non-negative (b − w) ∈ [0, a+b], then bit-packed — the trick that lets a signed field ride the same LSB-first packing as an unsigned one. The
+/// bit_pack -- FIPS 204 Algorithm 17: pack 256 SIGNED coefficients, each in [−a, b], into 32-bitlen(a+b) bytes. Each coefficient w is stored as the
+/// non-negative (b − w) ∈ [0, a+b], then bit-packed -- the trick that lets a signed field ride the same LSB-first packing as an unsigned one. The
 /// inverse of bit_unpack.
 pub fn bit_pack(w: *const [n]i32, a: u32, b: u32) Packed {
     const b_bits = bitlen(a + b);
@@ -177,7 +177,7 @@ pub fn bit_pack(w: *const [n]i32, a: u32, b: u32) Packed {
     return simple_bit_pack(&shifted, b_bits);
 }
 
-/// bit_unpack — FIPS 204 Algorithm 19: read 32·bitlen(a+b) bytes back into 256 signed coefficients, recovering w = b − z from each packed z. The
+/// bit_unpack -- FIPS 204 Algorithm 19: read 32-bitlen(a+b) bytes back into 256 signed coefficients, recovering w = b − z from each packed z. The
 /// inverse of bit_pack.
 pub fn bit_unpack(bytes: *const Packed, a: u32, b: u32) [n]i32 {
     const b_bits = bitlen(a + b);
@@ -194,7 +194,7 @@ pub fn bit_unpack(bytes: *const Packed, a: u32, b: u32) [n]i32 {
     return out;
 }
 
-/// power2round — FIPS 204 Algorithm 35: split r ∈ [0, q) at the 2¹³ boundary into (r1, r0) with r = r1·2¹³ + r0 EXACTLY (integer, no mod), r0 the
+/// power2round -- FIPS 204 Algorithm 35: split r ∈ [0, q) at the 2¹³ boundary into (r1, r0) with r = r1-2¹³ + r0 EXACTLY (integer, no mod), r0 the
 /// centered remainder in (−2¹², 2¹²]. The public key publishes r1 and folds r0 into the secret, halving the key's size. r1 spans [0, 1023].
 pub fn power2round(r: u32) Split {
     // invariant (precondition): the input is a canonical residue.
@@ -213,9 +213,9 @@ pub fn power2round(r: u32) Split {
     return .{ .r1 = r1, .r0 = r0 };
 }
 
-/// decompose — FIPS 204 Algorithm 36: split r ∈ [0, q) at the 2γ₂ boundary into (r1, r0) with r1·2γ₂ + r0 ≡ r (mod q), r0 centered in [−γ₂, γ₂].
+/// decompose -- FIPS 204 Algorithm 36: split r ∈ [0, q) at the 2γ₂ boundary into (r1, r0) with r1-2γ₂ + r0 ≡ r (mod q), r0 centered in [−γ₂, γ₂].
 /// The one wrinkle FIPS fixes: when the high part would wrap to the top step, it is pulled to 0 and r0 borrows 1, so r1 stays in [0, (q−1)/2γ₂). That
-/// borrow is the sole path to r0 = −γ₂ exactly — reached only at r = q − γ₂ — so the centered range is [−γ₂, γ₂], not (−γ₂, γ₂]. A signer meeting
+/// borrow is the sole path to r0 = −γ₂ exactly -- reached only at r = q − γ₂ -- so the centered range is [−γ₂, γ₂], not (−γ₂, γ₂]. A signer meeting
 /// r0 = −γ₂ rejects on the ‖r0‖∞ norm bound and retries, exactly as FIPS intends; the primitive must return it, never panic on it.
 pub fn decompose(r: u32, gamma2: u32) Split {
     // invariant (precondition): a canonical residue and one of the two FIPS 204 low-bit granularities.
@@ -245,17 +245,17 @@ pub fn decompose(r: u32, gamma2: u32) Split {
     return .{ .r1 = r1, .r0 = r0 };
 }
 
-/// high_bits — FIPS 204 Algorithm 37: the high part of Decompose, the value a signature commits to and a verifier recovers through the hint.
+/// high_bits -- FIPS 204 Algorithm 37: the high part of Decompose, the value a signature commits to and a verifier recovers through the hint.
 pub fn high_bits(r: u32, gamma2: u32) u32 {
     return decompose(r, gamma2).r1;
 }
 
-/// low_bits — FIPS 204 Algorithm 38: the centered low part of Decompose, the part a signature must keep small for the hint to stay one bit.
+/// low_bits -- FIPS 204 Algorithm 38: the centered low part of Decompose, the part a signature must keep small for the hint to stay one bit.
 pub fn low_bits(r: u32, gamma2: u32) i32 {
     return decompose(r, gamma2).r0;
 }
 
-/// make_hint — FIPS 204 Algorithm 39: does adding z change r's high bits? Returns 1 when HighBits(r + z) ≠ HighBits(r), the single bit a signer
+/// make_hint -- FIPS 204 Algorithm 39: does adding z change r's high bits? Returns 1 when HighBits(r + z) ≠ HighBits(r), the single bit a signer
 /// ships so a verifier who holds only r can still recover HighBits(r + z). z arrives as a residue in [0, q).
 pub fn make_hint(z: u32, r: u32, gamma2: u32) u32 {
     // invariant (precondition): both inputs are canonical residues and gamma2 is a FIPS granularity.
@@ -267,7 +267,7 @@ pub fn make_hint(z: u32, r: u32, gamma2: u32) u32 {
     return if (r1 != v1) 1 else 0;
 }
 
-/// use_hint — FIPS 204 Algorithm 40: recover HighBits(r + z) from r and the one-bit hint. With m = (q−1)/2γ₂ high steps, a set hint nudges r's high
+/// use_hint -- FIPS 204 Algorithm 40: recover HighBits(r + z) from r and the one-bit hint. With m = (q−1)/2γ₂ high steps, a set hint nudges r's high
 /// part up or down one step (mod m) depending on the sign of its low part; a clear hint leaves it. The verify-side inverse of make_hint.
 pub fn use_hint(h: u32, r: u32, gamma2: u32) u32 {
     // invariant (precondition): the hint is one bit, r a canonical residue, gamma2 a FIPS granularity.
@@ -283,7 +283,7 @@ pub fn use_hint(h: u32, r: u32, gamma2: u32) u32 {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// A deterministic pseudo-random coefficient array from a seed, each coefficient reduced into [0, bound) — the selftest's non-trivial unsigned
+/// A deterministic pseudo-random coefficient array from a seed, each coefficient reduced into [0, bound) -- the selftest's non-trivial unsigned
 /// inputs. A tiny LCG keeps it reproducible without any std.crypto, so a failing run always reruns identically. Same generator the ring rung uses.
 fn poly_from_seed(seed: u32, bound: u32) [n]u32 {
     var p: [n]u32 = [_]u32{0} ** n;
@@ -296,7 +296,7 @@ fn poly_from_seed(seed: u32, bound: u32) [n]u32 {
     return p;
 }
 
-/// signed_poly_from_seed — a deterministic pseudo-random SIGNED coefficient array, each coefficient in [−a, b], for the bit_pack round-trip.
+/// signed_poly_from_seed -- a deterministic pseudo-random SIGNED coefficient array, each coefficient in [−a, b], for the bit_pack round-trip.
 fn signed_poly_from_seed(seed: u32, a: u32, b: u32) [n]i32 {
     var p: [n]i32 = [_]i32{0} ** n;
     var state: u32 = seed *% 2654435761 +% 1013904223;
@@ -309,7 +309,7 @@ fn signed_poly_from_seed(seed: u32, a: u32, b: u32) [n]i32 {
     return p;
 }
 
-/// poly_eq_u — do two unsigned coefficient arrays match element for element?
+/// poly_eq_u -- do two unsigned coefficient arrays match element for element?
 fn poly_eq_u(a: *const [n]u32, b: *const [n]u32) bool {
     var j: u32 = 0;
     while (j < n) : (j += 1) {
@@ -318,7 +318,7 @@ fn poly_eq_u(a: *const [n]u32, b: *const [n]u32) bool {
     return true;
 }
 
-/// poly_eq_i — do two signed coefficient arrays match element for element?
+/// poly_eq_i -- do two signed coefficient arrays match element for element?
 fn poly_eq_i(a: *const [n]i32, b: *const [n]i32) bool {
     var j: u32 = 0;
     while (j < n) : (j += 1) {
@@ -327,7 +327,7 @@ fn poly_eq_i(a: *const [n]i32, b: *const [n]i32) bool {
     return true;
 }
 
-/// poly_is_zero_u — is every unsigned coefficient zero? Refuses a trivial witness.
+/// poly_is_zero_u -- is every unsigned coefficient zero? Refuses a trivial witness.
 fn poly_is_zero_u(a: *const [n]u32) bool {
     var j: u32 = 0;
     while (j < n) : (j += 1) {
@@ -337,8 +337,8 @@ fn poly_is_zero_u(a: *const [n]u32) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. The LSB-first bit order FIPS 204 fixes, as a fixed known-answer at b_bits = 12: pack [0xABC, 0xDEF, 0, …]. The first coefficient's low
-    //    byte is 0xBC; its top nibble 0xA joins the next coefficient's low nibble 0xF as 0xFA; then 0xDE — bytes {0xBC, 0xFA, 0xDE}, the same
+    // 1. The LSB-first bit order FIPS 204 fixes, as a fixed known-answer at b_bits = 12: pack [0xABC, 0xDEF, 0, ...]. The first coefficient's low
+    //    byte is 0xBC; its top nibble 0xA joins the next coefficient's low nibble 0xF as 0xFA; then 0xDE -- bytes {0xBC, 0xFA, 0xDE}, the same
     //    LSB-first order ML-KEM's ByteEncode proves. A wrong bit direction fails here before any round-trip.
     {
         var f: [n]u32 = [_]u32{0} ** n;
@@ -388,7 +388,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. Power2Round reconstructs EXACTLY: r1·2¹³ + r0 = r with r0 centered in (−2¹², 2¹²], over a deterministic spread across [0, q). The named
+    // 4. Power2Round reconstructs EXACTLY: r1-2¹³ + r0 = r with r0 centered in (−2¹², 2¹²], over a deterministic spread across [0, q). The named
     //    fixed points anchor it: power2round(0) = (0, 0), and a value just above the half-step rounds up with a negative r0.
     {
         if (power2round(0).r1 != 0 or power2round(0).r0 != 0) return error.KnownAnswerMismatch;
@@ -405,7 +405,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. Decompose reconstructs mod q: r1·2γ₂ + r0 ≡ r, r0 centered in [−γ₂, γ₂], r1 in [0, (q−1)/2γ₂), over a deterministic spread at BOTH γ₂ PLUS
+    // 5. Decompose reconstructs mod q: r1-2γ₂ + r0 ≡ r, r0 centered in [−γ₂, γ₂], r1 in [0, (q−1)/2γ₂), over a deterministic spread at BOTH γ₂ PLUS
     //    the exact top-step boundary r = q − γ₂, the sole residue that borrows r0 all the way to −γ₂ (a random spread misses one residue in q; the
     //    hybrid signed carry witness's digest found it). The reconstruction check would catch a mishandled borrow.
     {
@@ -435,7 +435,7 @@ fn run_selftest() !u8 {
     }
 
     // 6. THE decisive oracle: the hint round-trip UseHint(MakeHint(z, r), r) = HighBits(r + z), for every low-weight z FIPS 204 permits (|z| ≤ γ₂),
-    //    across a deterministic spread at BOTH γ₂. This is the fact ML-DSA's whole verify rests on — a verifier holding only r and one hint bit
+    //    across a deterministic spread at BOTH γ₂. This is the fact ML-DSA's whole verify rests on -- a verifier holding only r and one hint bit
     //    recovers exactly the high bits the signer committed to. A wrong make/use pairing fails here.
     {
         const gs = [_]u32{ gamma2_88, gamma2_32 };

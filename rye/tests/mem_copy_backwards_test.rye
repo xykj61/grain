@@ -1,4 +1,4 @@
-//! Rye test: std.mem.copyBackwards — pass 9944.
+//! Rye test: std.mem.copyBackwards -- pass 9944.
 //!
 //! Overlapping-safe copy from the end; pairs with copyForwards (9993).
 

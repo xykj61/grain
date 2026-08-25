@@ -1,37 +1,37 @@
-//! mycelium/till_knot.rye — the Till reads across a Knot (rung r3).
+//! mycelium/till_knot.rye -- the Till reads across a Knot (rung r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r3.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the double-spend verdict - rung r3.
 //! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
-//! Rung 1 resolved a whole Cord Dag into a Till — which draws took coins, which came
+//! Rung 1 resolved a whole Cord Dag into a Till -- which draws took coins, which came
 //! up short. Yet a treasury a family runs for years does not carry its whole past
 //! unbroken: the Knot (`cord_knot.rye`) ties off a committed prefix into a sealed
 //! `fold.FoldState` so a bounded Dag runs forever, and new facts continue onto that
-//! seal. This rung makes the Till's corpus a Knot plus its live suffix — the
+//! seal. This rung makes the Till's corpus a Knot plus its live suffix -- the
 //! checkpointed supply read through the same verdict, continued by the draws that
 //! arrived since the cut.
 //!
 //! The crux: a draw that won its coins inside a sealed checkpoint stays a winning
 //! draw when new facts continue the log, and a suffix draw the checkpointed treasury
 //! can no longer pay comes up SHORT across the cut exactly as it would within one
-//! unbroken resolution — a lawful no-op, the ledger whole. The sealed supply is the
+//! unbroken resolution -- a lawful no-op, the ledger whole. The sealed supply is the
 //! real starting supply, so the same issued-so-far measure that tells a lost race
 //! from a never-could-pay draw holds against the checkpointed past: a suffix draw
 //! within the sealed issued is a spent-out loss, one beyond it refuses whole.
 //!
-//! The one honest seam this names: a Knot seals only the supply law — issued, taxed,
-//! and the reserved-star SET — not WHO drew each coin. So a Till-across-a-Knot carries
+//! The one honest seam this names: a Knot seals only the supply law -- issued, taxed,
+//! and the reserved-star SET -- not WHO drew each coin. So a Till-across-a-Knot carries
 //! two things across the cut: the Knot (the integrity-sealed supply, so overdraw holds
 //! against the real starting supply) and the prefix verdict's draws and shorts (the
-//! signer→coins map the FoldState omits). The Knot's digest is integrity-in-travel for
+//! signer->coins map the FoldState omits). The Knot's digest is integrity-in-travel for
 //! the supply; the coin map travels beside it, and every suffix draw re-proves its own
 //! signer through `fold.fold_fact`.
 //!
 //! Additive by construction: it imports `till` (r1's `resolve` / `record_draw` /
 //! `record_short`), `cord_knot`, `cord`, and `fold`, and calls only their public API.
 //! Rung one stays its own green binary; the Knot stays its own green binary. No
-//! storage, no transport, no network, no custody — a node reads across its own sealed
-//! checkpoint. Demo keeper seeds only — no real key, no funds.
+//! storage, no transport, no network, no custody -- a node reads across its own sealed
+//! checkpoint. Demo keeper seeds only -- no real key, no funds.
 //!
 //! Named horizon (not this arc): per-account balances, and a Till served to another
 //! node without re-resolving (the Comlink-served gate, Keaton's hand).
@@ -54,7 +54,7 @@ pub const TillKnot = struct {
     verdict: till.Till = .{},
 };
 
-/// Seal a committed prefix Dag into a TillKnot — resolve it to its verdict, then tie
+/// Seal a committed prefix Dag into a TillKnot -- resolve it to its verdict, then tie
 /// off its supply with a Knot. The prefix's draws and shorts travel in `verdict`; the
 /// sealed `FoldState` in `knot` is the integrity-checked starting supply.
 pub fn seal_till(dag: *const cord.Dag) error{
@@ -75,11 +75,11 @@ pub fn seal_till(dag: *const cord.Dag) error{
     return .{ .knot = k, .verdict = v };
 }
 
-/// Continue the treasury verdict onto a checkpoint — verify the Knot, seed a Till with
+/// Continue the treasury verdict onto a checkpoint -- verify the Knot, seed a Till with
 /// the prefix's coin map and sealed supply, then walk the live suffix one fact at a
 /// time through `fold.fold_fact`. A suffix spend the order grants is a new winning
 /// draw; one the checkpointed treasury cannot pay yet could once afford (amount <=
-/// the sealed issued) comes up short (`Overdraw` → a lawful no-op spent-out loss) — the
+/// the sealed issued) comes up short (`Overdraw` -> a lawful no-op spent-out loss) -- the
 /// same verdict r1 records within one Cord, now across the cut. A corrupt Knot refuses
 /// before a single fact is folded; a never-could-pay draw, a name-contest, and every
 /// other corruption still refuse whole.
@@ -107,7 +107,7 @@ pub fn continue_till(tk: *const TillKnot, suffix: *const fold.Log) error{
         const issued_here = state.issued;
         if (fold.fold_fact(&state, fact)) |_| {
             // A suffix spend the order grants wins a fresh draw. Position is local to
-            // the live epoch — the pruned prefix's global order is gone, which is
+            // the live epoch -- the pruned prefix's global order is gone, which is
             // exactly what a checkpoint means; the signer and coins are what carry.
             if (fact.kind == fold.kind_tax or fact.kind == fold.kind_star_reserve) {
                 try till.record_draw(&t, fact, i, 0);
@@ -138,7 +138,7 @@ pub fn continue_till(tk: *const TillKnot, suffix: *const fold.Log) error{
 
 /// The coin verdict never drifts between a full Cord and a Knot-continued resolution:
 /// the counts, the coins drawn and lost, the supply, and each loser's signer agree.
-/// Position is deliberately not compared — it is local to the live epoch across a cut.
+/// Position is deliberately not compared -- it is local to the live epoch across a cut.
 pub fn verdicts_match(whole: *const till.Till, across: *const till.Till) bool {
     // invariant: both coin sets stay within the named ceiling.
     assert(whole.draw_count <= till.till_max_draws);
@@ -182,7 +182,7 @@ pub fn main() !void {
     const roots = [_][cord.hash_len]u8{hg};
     const b_vega = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockVega;
     const b_bx = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockBx;
-    // The suffix contestant at round 2 (later in the whole order) — so kx wins its coins
+    // The suffix contestant at round 2 (later in the whole order) -- so kx wins its coins
     // unambiguously by round, and the same win survives the checkpoint below.
     var hbx: [cord.hash_len]u8 = undefined;
     cord.address(&b_bx, &hbx);
@@ -198,7 +198,7 @@ pub fn main() !void {
     try cord.add(&whole, b_bx);
     try cord.add(&whole, b_by);
     const whole_verdict = try till.resolve(&whole);
-    // Two draws take coins (kv 100, kx 700), ky comes up short — supply folds to 200.
+    // Two draws take coins (kv 100, kx 700), ky comes up short -- supply folds to 200.
     if (whole_verdict.draws_seen() != 2) return error.WholeDraws;
     if (whole_verdict.shorts_seen() != 1) return error.WholeShorts;
     if (whole_verdict.state.supply() != 200) return error.WholeSupply;
@@ -215,7 +215,7 @@ pub fn main() !void {
     if (tk.verdict.shorts_seen() != 0) return error.PrefixShorts;
     if (tk.knot.state.supply() != 200) return error.PrefixSupply;
 
-    // The live suffix: ky draws 700 — the checkpointed treasury holds only 200, yet the
+    // The live suffix: ky draws 700 -- the checkpointed treasury holds only 200, yet the
     // sealed issued is 1000, so ky once could have been paid: a lawful no-op spent-out loss.
     var suffix = fold.Log.empty();
     suffix.facts[0] = f_by;
@@ -257,7 +257,7 @@ pub fn main() !void {
         if (err != error.IdentityRefused) return error.WrongTamper;
     }
 
-    // 3. A suffix draw for more than the sealed treasury EVER issued never could pay —
+    // 3. A suffix draw for more than the sealed treasury EVER issued never could pay --
     //    it refuses whole across the cut, proof the never-could-pay line holds past a
     //    checkpoint exactly as within one Cord (5000 > the sealed issued 1000).
     const f_greedy = fold.mint_fact(kf, fold.kind_tax, 5000, "", "never-pays") orelse return error.MintGreedy;

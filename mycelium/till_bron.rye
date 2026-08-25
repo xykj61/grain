@@ -1,14 +1,14 @@
-//! mycelium/till_bron.rye — the treasury verdict travels as a readable record.
+//! mycelium/till_bron.rye -- the treasury verdict travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Till rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Till rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
-//! r1 resolved a Cord's agreed order into a Till — which draws took coins, which
+//! r1 resolved a Cord's agreed order into a Till -- which draws took coins, which
 //! came up short. A verdict a node cannot hand to another node is only a local
 //! reading, so r2 lets a resolved Till cross as `format till-v1` bytes: a `supply`
 //! line, one `drew <signer-pk> <amount> <pos> <round>` line per winning draw, one
 //! `short <signer-pk> <amount> <pos> <issued-at>` line per spent-out loss. Render
-//! writes it, parse reads it back, so a round trip is a fixed point — and the
+//! writes it, parse reads it back, so a round trip is a fixed point -- and the
 //! recovered Till reports the identical draw and loss counts, the identical coins
 //! drawn and lost, and the identical supply, so the treasury verdict crosses to a
 //! stranger unchanged.
@@ -17,7 +17,7 @@
 //! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
 //! `BadLine`, a bad integer `BadInt` (or a broken supply law), a bad hex field
 //! `BadHex`, an over-long record `TooManyDraws`/`TooManyShorts`. Composes till.rye +
-//! fold.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no
+//! fold.rye public API only. Siloed, dev-only, demo seeds -- no key, no funds, no
 //! network, no custody. The record carries the COIN verdict (draws keyed by signer);
 //! a name verdict is the Tenure's, travelling in its own `format tenure-v1`.
 //!
@@ -32,14 +32,14 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled record carries at most this many winning draws — a dev-net treasury
+/// A travelled record carries at most this many winning draws -- a dev-net treasury
 /// is small and legible, well under the Till's own 256 ceiling.
 pub const max_draws_in_record: u32 = 32;
 
 /// And at most this many spent-out losses.
 pub const max_shorts_in_record: u32 = 32;
 
-/// The record buffer bound — a small treasury's whole verdict fits with room.
+/// The record buffer bound -- a small treasury's whole verdict fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{

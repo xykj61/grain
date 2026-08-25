@@ -1,24 +1,24 @@
-//! pond/apps/skate_group.rye — Season 3 Journey 10 (Membership), Rung 1: admission is by quorum, never one hand.
+//! pond/apps/skate_group.rye -- Season 3 Journey 10 (Membership), Rung 1: admission is by quorum, never one hand.
 //!
-//! Season 3, Commons — a community shapes its own membership by consent. Journey 9 (Skate) drew consent
+//! Season 3, Commons -- a community shapes its own membership by consent. Journey 9 (Skate) drew consent
 //! at its smallest size: two keepers linked only by mutual request. Journey 10 draws the next size up,
-//! the load-bearing one — a **group**, the one surface `settlement/names.rye` names in its own header as
+//! the load-bearing one -- a **group**, the one surface `settlement/names.rye` names in its own header as
 //! *the surface that genuinely needs consensus*, proven now at **more than two keepers**.
 //!
 //! The crux: **a candidate is seated only when a quorum of distinct members consent.** A `Group` opens
-//! with a founder roster and a fixed quorum `t` (`2 <= t <= roster` — genuine consensus, more than one
+//! with a founder roster and a fixed quorum `t` (`2 <= t <= roster` -- genuine consensus, more than one
 //! hand, yet never full unanimity a lone hold-out could veto). A member votes for a candidate; the
 //! candidate is admitted only when `t` **distinct** members have voted. The honesty is the distinctness
 //! with the threshold: one keeper voting twice is counted once (`AlreadyVoted`), so a lone steward can
 //! never manufacture a quorum. Admission is *derived* from the count of distinct member votes reaching
-//! `t`, never written directly — exactly as Journey 9 derived a link from two opposing requests rather
+//! `t`, never written directly -- exactly as Journey 9 derived a link from two opposing requests rather
 //! than storing it. A seat exists only when the named number of true hands agreed.
 //!
-//! This is the pure rule as a bounded state machine — quorum modeled as distinct explicit votes, no
+//! This is the pure rule as a bounded state machine -- quorum modeled as distinct explicit votes, no
 //! signing yet (r2 signs each vote with the member's settled Kumara identity, mirroring
 //! `skate_circle_signed`). Facts only, custody-first: it records the facts of quorum and holds nothing,
 //! opens no network, and generates no real identity (a group shared over the wire reaches the serve gate
-//! — Keaton's hand). Demo keeper points only.
+//! -- Keaton's hand). Demo keeper points only.
 //!
 //!   rye build pond/apps/skate_group.rye -femit-bin=pond/bin/skate-group
 //!   pond/bin/skate-group selftest
@@ -31,10 +31,10 @@ const print = std.debug.print;
 
 pub const skate_group_version = "20260812.204233";
 
-/// A group seats at most this many keepers — a bounded shared surface, not a whole network.
+/// A group seats at most this many keepers -- a bounded shared surface, not a whole network.
 pub const max_members: u32 = 32;
 
-/// A group holds at most this many distinct votes — bounded so consent never grows unbounded.
+/// A group holds at most this many distinct votes -- bounded so consent never grows unbounded.
 pub const max_votes: u32 = 256;
 
 /// The membership verdict for a candidate, carried from the customs/Skate trichotomy to the group border.
@@ -55,7 +55,7 @@ pub const GroupError = error{
     VotesFull, // the vote book is at its bound — refuse rather than drop consent
 };
 
-/// One member's vote to admit a candidate — attributed to a distinct voter, so a quorum is the count of
+/// One member's vote to admit a candidate -- attributed to a distinct voter, so a quorum is the count of
 /// distinct such votes, never one keeper's vote counted twice.
 const Vote = struct {
     voter: u32,
@@ -63,7 +63,7 @@ const Vote = struct {
 };
 
 /// A shared surface: the keepers who hold a seat, a fixed quorum threshold, and every distinct vote cast
-/// to admit a candidate. Membership is stored (a seated keeper is a member); admission is *derived* — a
+/// to admit a candidate. Membership is stored (a seated keeper is a member); admission is *derived* -- a
 /// candidate is seated only when the count of distinct member votes for them reaches the quorum, so the
 /// quorum law cannot be bypassed by seating a keeper directly.
 // Invariant: member_count <= max_members; vote_count <= max_votes; 2 <= quorum <= member_count at open.
@@ -78,16 +78,16 @@ pub const Group = struct {
     /// consensus) and no larger than the founders (else the group could never admit anyone); founders
     /// must be distinct (a seat is held once) and within the roster bound.
     pub fn open(founders: []const u32, quorum: u32) GroupError!Group {
-        // invariant: a quorum is genuine consensus — more than one hand.
+        // invariant: a quorum is genuine consensus -- more than one hand.
         if (quorum < 2) return error.BadThreshold;
         // invariant: the founder roster fits the bound.
         if (founders.len > max_members) return error.GroupFull;
-        // invariant: a reachable quorum — at least as many founders as the threshold.
+        // invariant: a reachable quorum -- at least as many founders as the threshold.
         if (founders.len < quorum) return error.TooFewFounders;
 
         var g = Group{ .members = undefined, .member_count = 0, .quorum = quorum, .votes = undefined, .vote_count = 0 };
         for (founders) |point| {
-            // invariant: a founder seat is held once — no point seated twice.
+            // invariant: a founder seat is held once -- no point seated twice.
             if (g.is_member(point)) return error.DuplicateFounder;
             g.members[g.member_count] = point;
             g.member_count += 1;
@@ -100,7 +100,7 @@ pub const Group = struct {
         return g;
     }
 
-    /// Does this keeper hold a seat — were they a founder or admitted by quorum?
+    /// Does this keeper hold a seat -- were they a founder or admitted by quorum?
     pub fn is_member(self: *const Group, point: u32) bool {
         // invariant: the roster never exceeds its bound.
         assert(self.member_count <= max_members);
@@ -111,7 +111,7 @@ pub const Group = struct {
         return false;
     }
 
-    /// Does this exact member→candidate vote already stand?
+    /// Does this exact member->candidate vote already stand?
     fn has_vote(self: *const Group, voter: u32, candidate: u32) bool {
         // invariant: the vote book never exceeds its bound.
         assert(self.vote_count <= max_votes);
@@ -137,10 +137,10 @@ pub const Group = struct {
         return count;
     }
 
-    /// The verdict for a candidate — the whole quorum rule, folded to one answer:
-    ///   refuse — no member has voted
-    ///   hold   — some members voted, fewer than the quorum
-    ///   place  — a quorum of distinct members voted (the candidate is, or has just been, seated)
+    /// The verdict for a candidate -- the whole quorum rule, folded to one answer:
+    ///   refuse -- no member has voted
+    ///   hold   -- some members voted, fewer than the quorum
+    ///   place  -- a quorum of distinct members voted (the candidate is, or has just been, seated)
     pub fn verdict(self: *const Group, candidate: u32) Verdict {
         const t = self.tally(candidate);
         if (t == 0) return .refuse;
@@ -151,7 +151,7 @@ pub const Group = struct {
     /// A member votes to admit a candidate. Only a member decides (`NotMember`); a candidate already
     /// seated cannot be re-admitted (`AlreadyMember`); the same member votes for one candidate once, so a
     /// lone hand can never fake a quorum (`AlreadyVoted`). When this vote makes the count of distinct
-    /// member votes reach the quorum, the candidate is seated in the same act — admission is derived from
+    /// member votes reach the quorum, the candidate is seated in the same act -- admission is derived from
     /// the tally, never written directly.
     pub fn vote(self: *Group, voter: u32, candidate: u32) GroupError!void {
         if (!self.is_member(voter)) return error.NotMember;
@@ -179,14 +179,14 @@ pub const Group = struct {
             assert(self.is_member(candidate));
             assert(self.member_count <= max_members);
         }
-        // invariant: membership follows the quorum exactly — seated iff the verdict placed.
+        // invariant: membership follows the quorum exactly -- seated iff the verdict placed.
         assert(self.is_member(candidate) == (self.verdict(candidate) == .place));
     }
 };
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper points — plain identifiers for the pure rule; r2 binds each to a settled Kumara identity.
+// Demo keeper points -- plain identifiers for the pure rule; r2 binds each to a settled Kumara identity.
 const ivy: u32 = 101;
 const wren: u32 = 202;
 const flax: u32 = 303;
@@ -194,7 +194,7 @@ const bram: u32 = 404;
 const cate: u32 = 505;
 
 /// A quorum of two admits: one vote holds, the second distinct vote seats the candidate; the verdict
-/// tracks the tally exactly — the crux, made checkable.
+/// tracks the tally exactly -- the crux, made checkable.
 fn welcome_quorum_of_two_admits() !void {
     var g = try Group.open(&.{ ivy, wren, flax }, 2);
 
@@ -217,7 +217,7 @@ fn welcome_quorum_of_two_admits() !void {
     print("skate_group: one vote held; only when a quorum of two distinct members voted did the candidate take a seat.\n", .{});
 }
 
-/// A quorum of three needs three distinct hands — the honest heart of "more than two keepers." Two
+/// A quorum of three needs three distinct hands -- the honest heart of "more than two keepers." Two
 /// distinct votes hold; the third admits.
 fn welcome_quorum_of_three_needs_three() !void {
     var g = try Group.open(&.{ ivy, wren, flax, bram }, 3);
@@ -234,14 +234,14 @@ fn welcome_quorum_of_three_needs_three() !void {
     print("skate_group: a quorum of three admitted only when three distinct members voted — consent proven past two keepers.\n", .{});
 }
 
-/// One member voting twice can never reach a quorum of two — the crux against a lone steward faking
+/// One member voting twice can never reach a quorum of two -- the crux against a lone steward faking
 /// consent. The double vote refuses, and the tally stays at one.
 fn unwelcome_double_vote_cannot_fake_quorum() !void {
     var g = try Group.open(&.{ ivy, wren }, 2);
     try g.vote(ivy, flax);
     const doubled = g.vote(ivy, flax);
     assert(doubled == error.AlreadyVoted);
-    // The tally did not budge — one hand cannot count for two.
+    // The tally did not budge -- one hand cannot count for two.
     assert(g.tally(flax) == 1);
     assert(g.verdict(flax) == .hold);
     assert(!g.is_member(flax));
@@ -276,7 +276,7 @@ fn unwelcome_bad_openings_refuse() !void {
     print("skate_group: a lone quorum refused BadThreshold, an unreachable quorum TooFewFounders, a doubled founder DuplicateFounder — a group opens honest.\n", .{});
 }
 
-/// The group is bounded — a full roster refuses the vote that would seat one more, rather than overflow.
+/// The group is bounded -- a full roster refuses the vote that would seat one more, rather than overflow.
 fn unwelcome_full_group_refuses() !void {
     // Open at the roster bound with a quorum of two.
     var founders: [max_members]u32 = undefined;
@@ -285,7 +285,7 @@ fn unwelcome_full_group_refuses() !void {
     var g = try Group.open(founders[0..max_members], 2);
     assert(g.member_count == max_members);
 
-    // Two members vote to admit one more — but there is no seat; the second (quorum-reaching) vote refuses.
+    // Two members vote to admit one more -- but there is no seat; the second (quorum-reaching) vote refuses.
     try g.vote(1000, 9999);
     const seat_it = g.vote(1001, 9999);
     assert(seat_it == error.GroupFull);

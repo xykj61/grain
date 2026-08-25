@@ -1,23 +1,23 @@
-//! mycelium/puddle_true.rye — a real fleet record reads true, and berths over the real bytes (r4, the arc
+//! mycelium/puddle_true.rye -- a real fleet record reads true, and berths over the real bytes (r4, the arc
 //! closes).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 — reads true.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r4 -- reads true.
 //! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
-//! r1 derived the berth, r2 healed the fleet, r3 let it travel — all over fleets seated in code. r4 carries
-//! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count —
+//! r1 derived the berth, r2 healed the fleet, r3 let it travel -- all over fleets seated in code. r4 carries
+//! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count --
 //! `tools/fixtures/puddle_fleet.bron`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! The crux is TWO TOOLS, ONE ANSWER: the app parses the record through r3's own reader and reports the
-//! roster shape — hosts · worlds · total capacity — and the r4 witness cross-checks that triple against
+//! roster shape -- hosts - worlds - total capacity -- and the r4 witness cross-checks that triple against
 //! `tools/fixtures/puddle_fleet_truth.awk`'s independent reading of the same bytes, so a fleet's shape can
 //! never drift from a record a keeper adds up by hand. Genuineness beyond the triple: the fleet berths over
 //! the real bytes (every world on a real host within capacity, none orphaned), re-rendering the parsed fleet
-//! reproduces the embedded bytes exactly (a fixed point — the fixture is what the Puddle emits, not a
+//! reproduces the embedded bytes exactly (a fixed point -- the fixture is what the Puddle emits, not a
 //! hand-mock), and a tampered header refuses `BadFormat`.
 //!
-//! Composes puddle.rye + puddle_bron.rye public API only. Siloed, dev-only, demo host and world seeds — no
+//! Composes puddle.rye + puddle_bron.rye public API only. Siloed, dev-only, demo host and world seeds -- no
 //! real key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_true.rye selftest
@@ -33,14 +33,14 @@ pub const puddle_true_version = "20260813.120312";
 
 const real_fleet = @embedFile("corpora/puddle_fleet.bron");
 
-/// The roster shape of a fleet — the triple the app reports and awk independently reads.
+/// The roster shape of a fleet -- the triple the app reports and awk independently reads.
 const Shape = struct {
     hosts: u32 = 0,
     worlds: u32 = 0,
     capacity: u32 = 0,
 };
 
-/// Parse the real record and read its roster shape — hosts, worlds, and total capacity.
+/// Parse the real record and read its roster shape -- hosts, worlds, and total capacity.
 fn read_shape(text: []const u8) !Shape {
     var f: puddle.Fleet = undefined;
     try puddle_bron.parse(text, &f);
@@ -54,7 +54,7 @@ fn read_shape(text: []const u8) !Shape {
 }
 
 /// The reading of the real fleet is true to the bytes: the roster shape matches an independent count, and
-/// the fleet berths genuinely over the real bytes — every world on a real host within capacity, none lost.
+/// the fleet berths genuinely over the real bytes -- every world on a real host within capacity, none lost.
 fn welcome_reading_true_to_bytes() !void {
     const s = try read_shape(real_fleet);
 

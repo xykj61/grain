@@ -1,17 +1,17 @@
-//! mycelium/purse_fixture_gen.rye — reproducibly emit a per-account double-spend Cord dev-net fixture (r4 support).
+//! mycelium/purse_fixture_gen.rye -- reproducibly emit a per-account double-spend Cord dev-net fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the per-account double-spend · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the per-account double-spend - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-073500_mycelium-purse-true-real-fixture-exploration.md
 //!
-//! Seats a real four-block scene carrying a genuine per-account double-spend — one holder
+//! Seats a real four-block scene carrying a genuine per-account double-spend -- one holder
 //! spending the same coins twice. A demo funder issues a genesis credit of 100 to Alice;
 //! Alice transfers that 100 to Bob at round 1 (the winning move); Bob transfers 40 onward
 //! to Dan at round 2 (an uncontested move, so two transfers move coins, not one); and Alice
 //! signs a second transfer of 100 to Carol at round 2, referencing the winner. Alice's purse
-//! emptied at round 1, so her second transfer comes up short — a lawful no-op (she once held
+//! emptied at round 1, so her second transfer comes up short -- a lawful no-op (she once held
 //! the hundred). The losing transfer is unambiguously the round-2 one, and the two moves that
 //! pay touch disjoint accounts, so a keeper (or an awk) can name the spent-out signer by
-//! walking the block lines in file order — the same holder the Purse's full commit tie-break
+//! walking the block lines in file order -- the same holder the Purse's full commit tie-break
 //! names. Committing and rendering to a `format cord-dag-v1` record gives the exact bytes
 //! `mycelium/purse_true.rye` reads back and the r4 witness cross-checks against an independent
 //! awk reading.
@@ -20,7 +20,7 @@
 //! on-disk fixture is what the Cord emits, never a hand-mock. Emitted on stderr (hosted
 //! `print` is `std.debug.print`), so capture with `2>`.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/purse_fixture_gen.rye \
 //!     2> tools/fixtures/purse_dag.bron
@@ -40,8 +40,8 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// Seat the per-account double-spend four-block Dag — genesis credits Alice 100; Alice → Bob 100
-/// wins at round 1; Bob → Dan 40 moves uncontested at round 2; Alice → Carol 100 comes up short at
+/// Seat the per-account double-spend four-block Dag -- genesis credits Alice 100; Alice -> Bob 100
+/// wins at round 1; Bob -> Dan 40 moves uncontested at round 2; Alice -> Carol 100 comes up short at
 /// round 2, her purse already emptied by the winning transfer.
 fn seat_dag() !cord.Dag {
     const kf = seeded(0xF0); // demo funder / genesis credit authority
@@ -89,7 +89,7 @@ pub fn main() !void {
     const pl = try cord_bron.from_dag(&dag);
     var buf: [cord_bron.max_record]u8 = undefined;
     const n = try cord_bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_bron.max_record);
     print("{s}", .{buf[0..n]});

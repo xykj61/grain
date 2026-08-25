@@ -1,19 +1,19 @@
-//! pond/apps/preset_scroll_view.rye — HUNK42: the scrollable surface — the page a keeper sees, painted beside a live
+//! pond/apps/preset_scroll_view.rye -- HUNK42: the scrollable surface -- the page a keeper sees, painted beside a live
 //! scroll bar, on one glass grid.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK42.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK42.
 //! Design read: active-designing/date/20260813/20260813-194607_hunk-scroll-view-exploration.md
-//! Teacher, thanked clean-room: the scrollable list surface of any reader (iCloud Photos / a McMaster-Carr catalog) —
+//! Teacher, thanked clean-room: the scrollable list surface of any reader (iCloud Photos / a McMaster-Carr catalog) --
 //! the visible rows and a scroll thumb beside them, drawn together so a keeper reads their place at a glance (concept
 //! only, siloed).
 //!
-//! HUNK40 gave a keeper a `ScrollCursor` — a live viewport offset that walks a library taller than the screen and
-//! pins at both ends. HUNK41 gave that cursor a `ScrollBar` — a pure thumb geometry that reads where in the library a
+//! HUNK40 gave a keeper a `ScrollCursor` -- a live viewport offset that walks a library taller than the screen and
+//! pins at both ends. HUNK41 gave that cursor a `ScrollBar` -- a pure thumb geometry that reads where in the library a
 //! keeper stands and how much of it fits. Two honest facts about the reader, measured but not yet seen together. This
 //! rung paints them on one Skate grid: `scroll_view` renders the cursor's current page (HUNK40's `window`) into the
 //! left region and paints the scroll bar (HUNK41's `scroll_bar`) down a reserved right-hand column, one bar cell per
 //! viewport row, so a keeper SEES the books they are on and the thumb marking their place at once. A pure composition
-//! — it invents no storage, no new gesture, no new render primitive, and stays inside the single-symlink pond/apps/
+//! -- it invents no storage, no new gesture, no new render primitive, and stays inside the single-symlink pond/apps/
 //! assembly. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_view.rye selftest
@@ -29,15 +29,15 @@ const skate = @import("brushstroke/skate_grid.rye");
 
 pub const preset_scroll_view_version = "20260813.194607";
 
-/// The palette slot the book name wears — held equal to `preset_shelf.name_slot` so the chip color copied from the
+/// The palette slot the book name wears -- held equal to `preset_shelf.name_slot` so the chip color copied from the
 /// rendered page reads the same on the composed surface.
 pub const name_slot: u8 = preset_shelf.name_slot;
-/// The scroll-bar track (the groove behind the thumb) — a dim slot, a real slot, never the sentinel.
+/// The scroll-bar track (the groove behind the thumb) -- a dim slot, a real slot, never the sentinel.
 pub const track_slot: u8 = 2;
-/// The scroll-bar thumb (the keeper's place) — a bright slot that stands out against the groove.
+/// The scroll-bar thumb (the keeper's place) -- a bright slot that stands out against the groove.
 pub const thumb_slot: u8 = 3;
 
-/// The glyph the thumb wears — a dense block so the thumb rasterizes clearly lit. The groove wears a thin bar so the
+/// The glyph the thumb wears -- a dense block so the thumb rasterizes clearly lit. The groove wears a thin bar so the
 /// track reads as a groove, not empty space. Both are ASCII (< 128), so they live in the basic font.
 pub const thumb_glyph: u8 = '#';
 pub const track_glyph: u8 = '|';
@@ -50,7 +50,7 @@ pub const ScrollViewError = error{
 /// Render the page a keeper currently sees, painted beside a live scroll bar, onto one fresh Skate grid `cols` wide
 /// and `cursor.rows` tall. The books fill the left region `[0, cols - bar_w)` through HUNK40's `window`; the scroll
 /// bar owns the right `bar_w` columns, its track exactly as tall as the viewport (`scroll_bar(cursor, cursor.rows)`),
-/// so the thumb maps one bar cell per visible row. Pure over the cursor and the listing — it holds no state and adds
+/// so the thumb maps one bar cell per visible row. Pure over the cursor and the listing -- it holds no state and adds
 /// no way to lie. Refuses `EmptyView` on a zero grid width and `BadBar` when the bar owns no column or leaves no
 /// column for text.
 pub fn scroll_view(
@@ -75,7 +75,7 @@ pub fn scroll_view(
     assert(text_cols + bar_w == cols);
 
     // The page the cursor shows (HUNK40) rendered into the left region's width, and the bar geometry (HUNK41) over a
-    // track exactly as tall as the viewport — one bar cell per visible row.
+    // track exactly as tall as the viewport -- one bar cell per visible row.
     const page = try preset_scroll.window(allocator, listing, cursor, text_cols);
     const bar = try preset_scroll.scroll_bar(cursor, rows);
     // invariant: the bar's track matches the grid height, so the thumb sits wholly inside the drawn column.
@@ -129,7 +129,7 @@ pub fn scroll_view(
 }
 
 // --- selftest: build a real five-book library, scroll a two-row viewport through it, and prove the composed surface
-//     shows the cursor's page beside a live scroll bar — the thumb on the top cell at the top and the bottom cell at
+//     shows the cursor's page beside a live scroll bar -- the thumb on the top cell at the top and the bottom cell at
 //     the bottom, the bar genuinely lit, the view pure, a fitting library filling the whole bar, and the refusals ---
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
@@ -139,7 +139,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const preset_store = @import("preset_store.rye");
     const photo_edits = @import("photo_edits.rye");
 
-    // The same real five-book library the HUNK40/41 scroll selftest builds — stock, a small custom book, and three
+    // The same real five-book library the HUNK40/41 scroll selftest builds -- stock, a small custom book, and three
     // one-preset books a/b/c, so the library holds five in a known held order.
     var store: beading.BeadStore = .empty();
     var cat: tablecloth.Catalog = .empty();
@@ -170,7 +170,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const text_cols: u32 = cols - bar_w;
     const rows: u32 = 2; // a viewport two books tall over a five-book library
 
-    // At the top: the left region shows the first two books; the bar is one thumb cell (2 of 5 books fit → thumb_len 1
+    // At the top: the left region shows the first two books; the bar is one thumb cell (2 of 5 books fit -> thumb_len 1
     // over a two-row track) pinned to the top row, the second row the groove.
     var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
     assert(cur.at_top());
@@ -183,7 +183,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // The bar column carries the thumb on the top row and the groove below it.
     assert(top.row_cells(0)[text_cols] == thumb_glyph);
     assert(top.row_cells(1)[text_cols] == track_glyph);
-    // The thumb cell wears the thumb slot; the groove cell wears the track slot — the bar reads as distinct color.
+    // The thumb cell wears the thumb slot; the groove cell wears the track slot -- the bar reads as distinct color.
     assert(top.fg_index[0 * cols + text_cols] == thumb_slot);
     assert(top.fg_index[1 * cols + text_cols] == track_slot);
     // The book-name chip carried across: the first cell of row 0 wears the name slot, copied from the page.
@@ -200,7 +200,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(bot.row_cells(1)[text_cols] == thumb_glyph);
 
     // Genuinely seen: the composed surface rasterizes to a lit canvas, and the bar column adds lit pixels beyond the
-    // text alone — the scroll bar is really painted, not merely recorded.
+    // text alone -- the scroll bar is really painted, not merely recorded.
     const view_scale: u32 = 1;
     const width: u32 = cols * skate.cell_w * view_scale;
     const height: u32 = rows * skate.cell_h * view_scale;
@@ -226,7 +226,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, view.fg_index, view_again.fg_index));
     assert(std.mem.eql(u8, lib.at(0).name_slice(), "stock.presets"));
 
-    // A library that fits the screen fills the whole bar — nothing to scroll, so every bar cell is the thumb.
+    // A library that fits the screen fills the whole bar -- nothing to scroll, so every bar cell is the thumb.
     {
         var fit = try preset_scroll.ScrollCursor.open(lib.count, 8); // eight rows over five books
         const fv = try scroll_view(garden, &lib, &fit, cols, bar_w);

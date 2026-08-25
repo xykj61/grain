@@ -1,35 +1,35 @@
-//! crypto/bip32.rye — BIP-32 hierarchical-deterministic keys, authored in pure Rye as a COMPOSITION over stones already GREEN in this tree,
+//! crypto/bip32.rye -- BIP-32 hierarchical-deterministic keys, authored in pure Rye as a COMPOSITION over stones already GREEN in this tree,
 //! authoring NO new cryptography. A single seed becomes a whole tree of keys: from one master, a keeper derives a child by an index, that child's
-//! child, and so on down a path — every node reproducible from the seed, and any node exportable as an extended public key that derives the same
+//! child, and so on down a path -- every node reproducible from the seed, and any node exportable as an extended public key that derives the same
 //! public tree without ever touching the private half. This is the rung a wallet's whole account model stands on: one backup phrase, one seed, and
 //! the entire ladder of addresses beneath it.
 //!
-//! Season: crypto (Season G · Cryptography), a composition on the shelf beside eth_address, bitcoin_address, and the EIP transaction digests. It
-//! contributes only the BIP-32 orchestration — the child-key-derivation function, the extended-key serialization envelope, and the parent
-//! fingerprint — over rungs each proven byte-for-byte on metal: HMAC-SHA-512 (crypto/hmac_sha512.rye) is the derivation PRF, secp256k1 public-key
+//! Season: crypto (Season G - Cryptography), a composition on the shelf beside eth_address, bitcoin_address, and the EIP transaction digests. It
+//! contributes only the BIP-32 orchestration -- the child-key-derivation function, the extended-key serialization envelope, and the parent
+//! fingerprint -- over rungs each proven byte-for-byte on metal: HMAC-SHA-512 (crypto/hmac_sha512.rye) is the derivation PRF, secp256k1 public-key
 //! derivation and SEC1 compression (crypto/secp256k1_pubkey.rye) turn a private scalar into serP(point(k)), the scalar field's reduction modulo the
 //! group order n (crypto/secp256k1_scalar.rye) finishes the child key (IL + k_par) mod n, HASH160 (crypto/bitcoin_address.rye) gives the four-byte
-//! parent fingerprint, and Base58Check (encoding/base58check.rye) wraps the 78-byte extended key into its "xprv…" / "xpub…" text.
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
+//! parent fingerprint, and Base58Check (encoding/base58check.rye) wraps the 78-byte extended key into its "xprv..." / "xpub..." text.
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the priority spine: Rye first).
 //! Clean-room: BIP-32 is a public standard (Bitcoin BIP-32); the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a child private key is k_child = (parse256(I_L) + k_par) mod n, where I = HMAC-SHA-512(key = c_par, data = D) splits into a left half
+//! THE CRUX -- a child private key is k_child = (parse256(I_L) + k_par) mod n, where I = HMAC-SHA-512(key = c_par, data = D) splits into a left half
 //! I_L that offsets the parent scalar and a right half I_R that becomes the child chain code. The data D is what distinguishes the two derivation
 //! kinds: for a HARDENED child (index ≥ 2³¹) D = 0x00 ‖ ser256(k_par) ‖ ser32(i), feeding the private key itself so no public-only party can derive
 //! it; for a NORMAL child D = serP(point(k_par)) ‖ ser32(i), feeding the compressed public key so the same offset can be reached from an extended
 //! PUBLIC key alone. The master key is the same HMAC over the fixed key "Bitcoin seed" and the raw seed. This module derives the master, both child
-//! kinds, and serializes any node as xprv or xpub — proving the whole ladder against BIP-32's own published Test Vector 1.
+//! kinds, and serializes any node as xprv or xpub -- proving the whole ladder against BIP-32's own published Test Vector 1.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every scalar handled here is a TEST key derived from BIP-32's
-//! published seed 000102…0f, never the maintainer's own identity key (that stays the custody gate %3/%4). Deriving and serializing keys touches no
-//! network and moves no value. Parity is proven the replayable way the tree favours — against BIP-32's own published Test Vector 1: from the
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Every scalar handled here is a TEST key derived from BIP-32's
+//! published seed 000102...0f, never the maintainer's own identity key (that stays the custody gate %3/%4). Deriving and serializing keys touches no
+//! network and moves no value. Parity is proven the replayable way the tree favours -- against BIP-32's own published Test Vector 1: from the
 //! published seed, every one of the six chain nodes (m, m/0ₕ, m/0ₕ/1, m/0ₕ/1/2ₕ, m/0ₕ/1/2ₕ/2, m/0ₕ/1/2ₕ/2/1000000000) serializes to EXACTLY the
-//! spec's published xprv AND xpub base58 strings, character for character — so a one-bit error anywhere in the HMAC, the modular add, the
+//! spec's published xprv AND xpub base58 strings, character for character -- so a one-bit error anywhere in the HMAC, the modular add, the
 //! compression, the fingerprint, or the envelope would break the match. No fabricated constant: the answers are the spec's own.
 //!
 //! The public tree, too: neuter turns an extended private key into an extended PUBLIC key (its private scalar replaced by serP(point(k))), and
-//! ckd_pub derives a normal child directly from a public parent — K_child = point(parse256(I_L)) + K_par over the complete secp256k1 group law —
+//! ckd_pub derives a normal child directly from a public parent -- K_child = point(parse256(I_L)) + K_par over the complete secp256k1 group law --
 //! so a watch-only wallet carries an xpub and derives the same public addresses without ever holding a private key. A hardened index is refused
 //! from a public parent (hardening needs the private key it does not hold). Proven both ways against Test Vector 1: every node's neuter reproduces
 //! the spec's xpub, and for each normal index CKDpub reaches that node's xpub from the neutered parent alone.
@@ -52,7 +52,7 @@ const b58c = @import("encoding_base58check.rye");
 
 pub const bip32_version = "20260816.140000";
 
-/// A private scalar, a chain code, and a coordinate are each 32 bytes big-endian — the width secp256k1 and SHA-512's right half fix.
+/// A private scalar, a chain code, and a coordinate are each 32 bytes big-endian -- the width secp256k1 and SHA-512's right half fix.
 pub const key_bytes: u32 = 32;
 /// The HMAC-SHA-512 output is 64 bytes: the left 32 (I_L) offset the parent scalar, the right 32 (I_R) become the child chain code.
 pub const i_bytes: u32 = 64;
@@ -61,13 +61,13 @@ pub const i_bytes: u32 = 64;
 pub const key_data_bytes: u32 = 1 + key_bytes; // 33
 /// A child index is a 32-bit big-endian number; indices at or above this offset are HARDENED (they feed the private key into the HMAC).
 pub const hardened_offset: u32 = 0x80000000;
-/// The parent fingerprint is the first four bytes of HASH160(serP(point(k))) — enough to identify a parent, never enough to reconstruct it.
+/// The parent fingerprint is the first four bytes of HASH160(serP(point(k))) -- enough to identify a parent, never enough to reconstruct it.
 pub const fingerprint_bytes: u32 = 4;
 /// The CKD data block is serP(point(k_par)) or 0x00‖ser256(k_par), then ser32(index): 33 + 4 = 37 bytes.
 pub const ckd_data_bytes: u32 = key_data_bytes + 4; // 37
 /// The extended-key serialization is 78 bytes: version(4) ‖ depth(1) ‖ parent_fingerprint(4) ‖ child_number(4) ‖ chain_code(32) ‖ key_data(33).
 pub const ext_serialized_bytes: u32 = 4 + 1 + 4 + 4 + key_bytes + key_data_bytes; // 78
-/// A seed is between 128 and 512 bits (BIP-32 §Master key generation) — 16 to 64 bytes.
+/// A seed is between 128 and 512 bits (BIP-32 §Master key generation) -- 16 to 64 bytes.
 pub const min_seed_bytes: u32 = 16;
 pub const max_seed_bytes: u32 = 64;
 
@@ -75,19 +75,19 @@ pub const max_seed_bytes: u32 = 64;
 pub const version_xprv: [4]u8 = .{ 0x04, 0x88, 0xAD, 0xE4 };
 pub const version_xpub: [4]u8 = .{ 0x04, 0x88, 0xB2, 0x1E };
 
-/// The fixed HMAC key BIP-32 seeds the master from — the ASCII string "Bitcoin seed".
+/// The fixed HMAC key BIP-32 seeds the master from -- the ASCII string "Bitcoin seed".
 const master_hmac_key = "Bitcoin seed";
 
 /// The faults this module raises, each refused at the edge before a partial or dishonest result escapes. Composed with the errors of the stones
 /// underneath so a caller handles one set.
 pub const Bip32Error = error{
-    /// A seed outside the 16–64 byte range BIP-32 permits.
+    /// A seed outside the 16-64 byte range BIP-32 permits.
     BadSeedLength,
-    /// A master derivation whose left half I_L is not a canonical scalar (≥ n) or is zero — BIP-32 declares such a seed invalid.
+    /// A master derivation whose left half I_L is not a canonical scalar (≥ n) or is zero -- BIP-32 declares such a seed invalid.
     InvalidSeed,
-    /// A child derivation whose I_L is ≥ n, or whose resulting scalar is zero — BIP-32 declares such an index invalid (a caller proceeds to i+1).
+    /// A child derivation whose I_L is ≥ n, or whose resulting scalar is zero -- BIP-32 declares such an index invalid (a caller proceeds to i+1).
     InvalidChild,
-    /// A public parent asked to derive a HARDENED child (index ≥ 2³¹) — impossible, because hardening feeds the private key the public parent
+    /// A public parent asked to derive a HARDENED child (index ≥ 2³¹) -- impossible, because hardening feeds the private key the public parent
     /// does not hold (BIP-32 §CKDpub).
     HardenedFromPublic,
     /// A serialization destination buffer too small for the Base58Check text.
@@ -117,7 +117,7 @@ fn reverse32(s: *const [key_bytes]u8) [key_bytes]u8 {
     return r;
 }
 
-/// True when a 32-byte big-endian value is all zero — the "scalar is zero" gate BIP-32 refuses for both master and child.
+/// True when a 32-byte big-endian value is all zero -- the "scalar is zero" gate BIP-32 refuses for both master and child.
 fn is_zero32(s: *const [key_bytes]u8) bool {
     var acc: u8 = 0;
     var i: u32 = 0;
@@ -125,7 +125,7 @@ fn is_zero32(s: *const [key_bytes]u8) bool {
     return acc == 0;
 }
 
-/// Serialize a 32-bit index big-endian — BIP-32's ser32, the four bytes the derivation data and the extended key both carry.
+/// Serialize a 32-bit index big-endian -- BIP-32's ser32, the four bytes the derivation data and the extended key both carry.
 fn ser32(index: u32) [4]u8 {
     return .{
         @truncate(index >> 24),
@@ -135,8 +135,8 @@ fn ser32(index: u32) [4]u8 {
     };
 }
 
-/// Add two 32-byte big-endian scalars modulo n: (a + b) mod n. The 257-bit sum lands in the low bytes of a 64-byte little-endian wide buffer — the
-/// exact shape the GREEN crypto/secp256k1_scalar.rye reduce folds — and reduce returns the canonical residue, which we mirror back to big-endian.
+/// Add two 32-byte big-endian scalars modulo n: (a + b) mod n. The 257-bit sum lands in the low bytes of a 64-byte little-endian wide buffer -- the
+/// exact shape the GREEN crypto/secp256k1_scalar.rye reduce folds -- and reduce returns the canonical residue, which we mirror back to big-endian.
 /// This authors NO new primitive; it lays the sum out for the proven reduction. Both inputs are below n, so the sum is below 2n < 2²⁵⁷.
 fn add_mod_n(a_be: *const [key_bytes]u8, b_be: *const [key_bytes]u8) [key_bytes]u8 {
     var wide = [_]u8{0} ** 64;
@@ -149,21 +149,21 @@ fn add_mod_n(a_be: *const [key_bytes]u8, b_be: *const [key_bytes]u8) [key_bytes]
         wide[i] = @truncate(s);
         carry = s >> 8;
     }
-    // invariant: the final carry is a single bit — a + b < 2n < 2²⁵⁷ occupies at most the 33rd byte.
+    // invariant: the final carry is a single bit -- a + b < 2n < 2²⁵⁷ occupies at most the 33rd byte.
     assert(carry <= 1);
     wide[key_bytes] = @truncate(carry);
     const reduced_le = sc.reduce(&wide);
     return reverse32(&reduced_le);
 }
 
-/// The compressed public key serP(point(k)) of a private scalar — 33 bytes, the GREEN crypto/secp256k1_pubkey.rye derivation. The private scalar
+/// The compressed public key serP(point(k)) of a private scalar -- 33 bytes, the GREEN crypto/secp256k1_pubkey.rye derivation. The private scalar
 /// computes only the PUBLIC point; the result carries no secret.
 fn serialize_public(key: *const [key_bytes]u8) Bip32Error![key_data_bytes]u8 {
     return pk.from_private_compressed(key);
 }
 
 /// The four-byte parent fingerprint of an extended key: the first four bytes of HASH160(serP(point(k))). Composes the GREEN HASH160 over the
-/// compressed public key — enough to identify a parent in a serialized child, never enough to reconstruct it.
+/// compressed public key -- enough to identify a parent in a serialized child, never enough to reconstruct it.
 pub fn fingerprint(ext: *const ExtKey) Bip32Error![fingerprint_bytes]u8 {
     const pub_key = try serialize_public(&ext.key);
     const h = try bc.hash160(&pub_key);
@@ -183,11 +183,11 @@ pub fn fingerprint(ext: *const ExtKey) Bip32Error![fingerprint_bytes]u8 {
 /// Derive the master extended key from a seed: I = HMAC-SHA-512("Bitcoin seed", seed); I_L is the master private scalar, I_R the master chain code.
 /// A seed whose I_L is not a canonical nonzero scalar is refused (BIP-32 §Master key generation).
 pub fn master_from_seed(seed: []const u8) Bip32Error!ExtKey {
-    // invariant: a seed is 16 to 64 bytes — refused before the HMAC runs.
+    // invariant: a seed is 16 to 64 bytes -- refused before the HMAC runs.
     if (seed.len < min_seed_bytes or seed.len > max_seed_bytes) return error.BadSeedLength;
 
     const i = try hmac.mac(seed, master_hmac_key);
-    // invariant: HMAC-SHA-512 gives exactly 64 bytes — the two 32-byte halves this derivation splits.
+    // invariant: HMAC-SHA-512 gives exactly 64 bytes -- the two 32-byte halves this derivation splits.
     comptime assert(hmac.tag_len == i_bytes);
 
     var il: [key_bytes]u8 = undefined;
@@ -201,7 +201,7 @@ pub fn master_from_seed(seed: []const u8) Bip32Error!ExtKey {
         ir[k] = i[key_bytes + k];
     }
 
-    // invariant: the master scalar I_L is canonical (< n) and nonzero — a seed failing this is invalid, not silently reduced.
+    // invariant: the master scalar I_L is canonical (< n) and nonzero -- a seed failing this is invalid, not silently reduced.
     const il_le = reverse32(&il);
     if (!sc.is_canonical(&il_le) or is_zero32(&il)) return error.InvalidSeed;
 
@@ -216,9 +216,9 @@ pub fn master_from_seed(seed: []const u8) Bip32Error!ExtKey {
 
 /// Derive a child extended key (CKDpriv). For a hardened index the HMAC data is 0x00 ‖ ser256(k_par) ‖ ser32(i); for a normal index it is
 /// serP(point(k_par)) ‖ ser32(i). The child scalar is (parse256(I_L) + k_par) mod n and the child chain code is I_R. An I_L ≥ n or a zero child
-/// scalar is refused (BIP-32 §CKDpriv) — a caller then tries the next index.
+/// scalar is refused (BIP-32 §CKDpriv) -- a caller then tries the next index.
 pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
-    // invariant: depth never wraps — BIP-32 bounds a path to 255 levels, far above any real derivation.
+    // invariant: depth never wraps -- BIP-32 bounds a path to 255 levels, far above any real derivation.
     if (parent.depth == 255) return error.InvalidChild;
 
     var data: [ckd_data_bytes]u8 = undefined;
@@ -269,7 +269,7 @@ pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
     if (!sc.is_canonical(&il_le)) return error.InvalidChild;
 
     const child_key = add_mod_n(&il, &parent.key);
-    // invariant: the child scalar is nonzero — a zero child key is refused, not emitted.
+    // invariant: the child scalar is nonzero -- a zero child key is refused, not emitted.
     if (is_zero32(&child_key)) return error.InvalidChild;
 
     const fp = try fingerprint(parent);
@@ -308,13 +308,13 @@ fn frame_bytes(ext: *const ExtKey, version: *const [4]u8, key_data: *const [key_
     i = 0;
     while (i < key_data_bytes) : (i += 1) frame[off + i] = key_data[i];
     off += key_data_bytes;
-    // invariant: the frame is filled to exactly its declared width — version, fields, and key data with nothing left.
+    // invariant: the frame is filled to exactly its declared width -- version, fields, and key data with nothing left.
     assert(off == ext_serialized_bytes);
     return frame;
 }
 
-/// Wrap a filled 78-byte frame in Base58Check into `dest`, returning the "xprv…"/"xpub…" text. The 78-byte frame already carries its 4-byte
-/// version, so the Base58Check envelope takes the first byte as its version and the remaining 77 as payload — the checksum runs over the whole 78,
+/// Wrap a filled 78-byte frame in Base58Check into `dest`, returning the "xprv..."/"xpub..." text. The 78-byte frame already carries its 4-byte
+/// version, so the Base58Check envelope takes the first byte as its version and the remaining 77 as payload -- the checksum runs over the whole 78,
 /// exactly BIP-32's serialization.
 fn base58_frame(dest: []u8, frame: *const [ext_serialized_bytes]u8) Bip32Error![]const u8 {
     // invariant: the frame's leading version byte and its 77-byte tail together are the Base58Check body.
@@ -325,7 +325,7 @@ fn base58_frame(dest: []u8, frame: *const [ext_serialized_bytes]u8) Bip32Error![
     };
 }
 
-/// Serialize an extended key as its "xprv…" text: the private form, key data 0x00 ‖ ser256(k).
+/// Serialize an extended key as its "xprv..." text: the private form, key data 0x00 ‖ ser256(k).
 pub fn serialize_xprv(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
     var key_data: [key_data_bytes]u8 = undefined;
     key_data[0] = 0x00;
@@ -340,7 +340,7 @@ pub fn serialize_xprv(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
     return base58_frame(dest, &frame);
 }
 
-/// Serialize an extended key as its "xpub…" text: the neutered public form, key data serP(point(k)). This is the neutering BIP-32 names — the
+/// Serialize an extended key as its "xpub..." text: the neutered public form, key data serP(point(k)). This is the neutering BIP-32 names -- the
 /// public tree without the private half.
 pub fn serialize_xpub(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
     const key_data = try serialize_public(&ext.key);
@@ -349,7 +349,7 @@ pub fn serialize_xpub(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
 }
 
 /// An extended PUBLIC key node: the neutered form of an ExtKey. It carries the compressed public key serP(K) instead of the private scalar, and
-/// derives the same public tree over NORMAL indices without ever holding a private key — the whole point of an "xpub" a watch-only wallet imports.
+/// derives the same public tree over NORMAL indices without ever holding a private key -- the whole point of an "xpub" a watch-only wallet imports.
 pub const ExtPub = struct {
     depth: u8,
     parent_fp: [fingerprint_bytes]u8,
@@ -358,7 +358,7 @@ pub const ExtPub = struct {
     pubkey: [key_data_bytes]u8, // compressed serP(K), 33 bytes
 };
 
-/// Neuter an extended private key to its extended public key — same tree position, the private scalar replaced by serP(point(k)). This is what
+/// Neuter an extended private key to its extended public key -- same tree position, the private scalar replaced by serP(point(k)). This is what
 /// `serialize_xpub` serializes; `neuter` exposes the node so a public-only party can carry and derive from it.
 pub fn neuter(ext: *const ExtKey) Bip32Error!ExtPub {
     const pub_key = try serialize_public(&ext.key);
@@ -386,7 +386,7 @@ pub fn fingerprint_pub(ext: *const ExtPub) Bip32Error![fingerprint_bytes]u8 {
     return out;
 }
 
-/// The field element 1 — the Z coordinate that lifts an affine point (x, y) into projective (x : y : 1) for the group law.
+/// The field element 1 -- the Z coordinate that lifts an affine point (x, y) into projective (x : y : 1) for the group law.
 fn fe_one() fe.Field {
     var one_be = [_]u8{0} ** key_bytes;
     one_be[key_bytes - 1] = 1;
@@ -398,12 +398,12 @@ fn lift_affine(x_be: *const [key_bytes]u8, y_be: *const [key_bytes]u8) pt.Point 
     return pt.Point{ .x = fe.from_bytes(x_be), .y = fe.from_bytes(y_be), .z = fe_one() };
 }
 
-/// Derive a public child (CKDpub) — the public tree without the private half. For a NORMAL index i, K_child = point(parse256(I_L)) + K_par, where
+/// Derive a public child (CKDpub) -- the public tree without the private half. For a NORMAL index i, K_child = point(parse256(I_L)) + K_par, where
 /// I = HMAC-SHA-512(c_par, serP(K_par) ‖ ser32(i)); the child chain code is I_R. A hardened index is impossible from a public parent, and an
 /// I_L ≥ n or an infinite child point is refused (BIP-32 §CKDpub). Composes only GREEN stones: the HMAC, the public-key derivation and parse,
-/// the complete group-law addition, and the SEC1 compression — authoring no new cryptography.
+/// the complete group-law addition, and the SEC1 compression -- authoring no new cryptography.
 pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
-    // invariant: a public parent cannot derive a hardened child — hardening needs the private key it does not hold.
+    // invariant: a public parent cannot derive a hardened child -- hardening needs the private key it does not hold.
     if (index >= hardened_offset) return error.HardenedFromPublic;
     // invariant: depth never wraps.
     if (parent.depth == 255) return error.InvalidChild;
@@ -441,7 +441,7 @@ pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
     const il_le = reverse32(&il);
     if (!sc.is_canonical(&il_le)) return error.InvalidChild;
 
-    // point(I_L) = I_L·G, obtained by deriving its public key and parsing back to affine coordinates (composing the GREEN rungs, no raw ladder).
+    // point(I_L) = I_L-G, obtained by deriving its public key and parsing back to affine coordinates (composing the GREEN rungs, no raw ladder).
     const il_pub = try pk.from_private_compressed(&il);
     const il_point_aff = try pk.parse(&il_pub);
     const parent_point_aff = try pk.parse(&parent.pubkey);
@@ -449,7 +449,7 @@ pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
     // K_child = point(I_L) + K_par over the complete group law.
     const sum = pt.add(lift_affine(&il_point_aff.x, &il_point_aff.y), lift_affine(&parent_point_aff.x, &parent_point_aff.y));
 
-    // invariant: the child point is not the identity — an infinite child key is refused, not serialized (its Z packs to all zero).
+    // invariant: the child point is not the identity -- an infinite child key is refused, not serialized (its Z packs to all zero).
     const z_bytes = fe.to_bytes(sum.z);
     if (is_zero32(&z_bytes)) return error.InvalidChild;
 
@@ -467,7 +467,7 @@ pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
     };
 }
 
-/// Serialize an extended PUBLIC key as its "xpub…" text — the same envelope `serialize_xpub` writes, over a node that never held a private key.
+/// Serialize an extended PUBLIC key as its "xpub..." text -- the same envelope `serialize_xpub` writes, over a node that never held a private key.
 pub fn serialize_ext_pub(dest: []u8, ext: *const ExtPub) Bip32Error![]const u8 {
     // The ExtKey and ExtPub share every serialized field but the key body; reuse the frame layout by mapping the shared fields.
     const shim = ExtKey{
@@ -491,7 +491,7 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // BIP-32 Test Vector 1 — the spec's own published known-answer. The seed and every node's xprv/xpub are the spec's, quoted character for
+    // BIP-32 Test Vector 1 -- the spec's own published known-answer. The seed and every node's xprv/xpub are the spec's, quoted character for
     // character; nothing here is fabricated, and a one-bit error anywhere in the derivation or the envelope would break a match.
     const seed = [_]u8{ 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
 
@@ -542,7 +542,7 @@ fn run_selftest() !u8 {
             const parent_node = node;
             node = try ckd_priv(&node, index);
 
-            // CKDpub: for a NORMAL index, the neutered parent reaches the SAME child public key with no private key — the watch-only path. Its
+            // CKDpub: for a NORMAL index, the neutered parent reaches the SAME child public key with no private key -- the watch-only path. Its
             // serialized xpub must equal the spec's published xpub for this node, proving point(I_L) + K_par over the group law is correct.
             if (index < hardened_offset) {
                 const parent_pub = try neuter(&parent_node);
@@ -562,11 +562,11 @@ fn run_selftest() !u8 {
         const got_neuter = try serialize_ext_pub(&neuter_buf, &npub);
         if (!slice_eq(got_neuter, paths[step].xpub)) return error.NeuterMismatch;
 
-        // invariant: the neutered public serialization agrees with the private node's own depth and fingerprint — the two forms are one node.
+        // invariant: the neutered public serialization agrees with the private node's own depth and fingerprint -- the two forms are one node.
         assert(node.depth == @as(u8, @intCast(step)));
     }
 
-    // A public parent cannot derive a hardened child — CKDpub refuses HardenedFromPublic before touching the HMAC.
+    // A public parent cannot derive a hardened child -- CKDpub refuses HardenedFromPublic before touching the HMAC.
     {
         const npub = try neuter(&master);
         if (ckd_pub(&npub, hardened_offset + 0)) |_| return error.HardenedSlipped else |err| if (err != error.HardenedFromPublic) return error.WrongHardenedErr;

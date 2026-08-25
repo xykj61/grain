@@ -1,8 +1,8 @@
-//! image/part_query.rye — HUNK76: a typed search box — parse a keeper's query text into a filter Query.
+//! image/part_query.rye -- HUNK76: a typed search box -- parse a keeper's query text into a filter Query.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK76.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK76.
 //! Design read: active-designing/date/20260813/20260813-234932_hunk-part-query-typed-search-box-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's search box — a typed line reaches the narrowing sidebar (concept
+//! Teacher, thanked clean-room: McMaster-Carr's search box -- a typed line reaches the narrowing sidebar (concept
 //! only, siloed).
 //!
 //! HUNK75 built the narrowing (`filter_catalog` turns a catalog and a `Query` into the sub-catalog of matches). Yet a
@@ -11,10 +11,10 @@
 //! quietly match everything or nothing.
 //!
 //! The crux is that a typed line MEANS EXACTLY THE QUERY IT READS AS: `filter_catalog(cat, parse_query(text))`
-//! narrows identically to filtering with the hand-built `Query`. The search box adds no meaning of its own — it is a
+//! narrows identically to filtering with the hand-built `Query`. The search box adds no meaning of its own -- it is a
 //! faithful mouth for the filter that already exists.
 //!
-//! A price token is read as a FACT to compare — parsed to a `u64` count of cents and ceiling-checked exactly as
+//! A price token is read as a FACT to compare -- parsed to a `u64` count of cents and ceiling-checked exactly as
 //! `add_part` checks a stored price; never a balance the tree can move (custody gate %3 untouched). No network, no
 //! key, no funds.
 //!
@@ -38,7 +38,7 @@ pub const QueryParseError = error{
     BadPrice,
 };
 
-/// Parse one line a keeper typed — a single `key:value` pair — into the `Query` it means. The keys read at a glance:
+/// Parse one line a keeper typed -- a single `key:value` pair -- into the `Query` it means. The keys read at a glance:
 /// `material:<token>` (exact material), `prefix:<token>` (part-number prefix), `max:<cents>` (price at most),
 /// `min:<cents>` (price at least). The value slice for a text query points into the caller's own `text` (borrowed,
 /// never copied); a price value is parsed strictly and ceiling-checked exactly as a stored price is. A malformed line
@@ -49,7 +49,7 @@ pub fn parse_query(text: []const u8) !part_filter.Query {
     assert(colon < text.len);
     const key = text[0..colon];
     const value = text[colon + 1 ..];
-    // invariant: key and value together, plus the one colon, account for the whole line — nothing invented.
+    // invariant: key and value together, plus the one colon, account for the whole line -- nothing invented.
     assert(key.len + value.len + 1 == text.len);
     if (key.len == 0) return error.EmptyKey;
     if (value.len == 0) return error.EmptyValue;
@@ -76,12 +76,12 @@ pub fn parse_query(text: []const u8) !part_filter.Query {
 }
 
 // --- selftest: parse each key into the query it means and prove parse-then-filter narrows a real catalog exactly as
-//     the hand-built query would; then the named refusals — no colon, empty key/value, unknown key, a non-numeric
+//     the hand-built query would; then the named refusals -- no colon, empty key/value, unknown key, a non-numeric
 //     price, an over-ceiling price, and an over-long text token ---------------------------------------------------
 
 const qoi = @import("qoi.rye");
 
-/// The HUNK71 fixture sheet — each pixel encodes its coordinates, so a windowed part is unambiguous.
+/// The HUNK71 fixture sheet -- each pixel encodes its coordinates, so a windowed part is unambiguous.
 fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
     const h: u32 = 8;
@@ -100,7 +100,7 @@ fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Filter `cat` by a query and return the sub-catalog's held-order names into `names`, returning the count — a small
+/// Filter `cat` by a query and return the sub-catalog's held-order names into `names`, returning the count -- a small
 /// helper so the selftest can compare parse-then-filter against a hand-built query name-for-name.
 fn filter_names(
     garden: std.mem.Allocator,
@@ -139,7 +139,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var typed: [sprite.max_products][]const u8 = undefined;
     var hand: [sprite.max_products][]const u8 = undefined;
 
-    // A typed line means exactly its query — parse-then-filter narrows the SAME parts as the hand-built query, in the
+    // A typed line means exactly its query -- parse-then-filter narrows the SAME parts as the hand-built query, in the
     // same held order, for each of the four keys.
     {
         const q = try parse_query("material:stainless-304");
@@ -177,7 +177,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(tn == 2); // bolt, gear
     }
 
-    // A price of zero is a real floor — `min:0` matches every part (a match-all typed line).
+    // A price of zero is a real floor -- `min:0` matches every part (a match-all typed line).
     {
         const q = try parse_query("min:0");
         assert(q.price == 0);
@@ -207,7 +207,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         const pre = "max:";
         var j: u32 = 0;
         while (j < pre.len) : (j += 1) line[j] = pre[j];
-        // A price one past the ceiling — 10_000_000_001 has 11 digits.
+        // A price one past the ceiling -- 10_000_000_001 has 11 digits.
         const big = "10000000001";
         var k: u32 = 0;
         while (k < big.len) : (k += 1) line[pre.len + k] = big[k];

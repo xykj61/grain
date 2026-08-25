@@ -1,17 +1,17 @@
-//! pond/apps/preset_touch_scroll.rye — HUNK46: the touch session — finger down · move · up become a live cursor.
+//! pond/apps/preset_touch_scroll.rye -- HUNK46: the touch session -- finger down - move - up become a live cursor.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK46.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK46.
 //! Design read: active-designing/date/20260813/20260813-201244_hunk-touch-session-exploration.md
-//! Teacher, thanked clean-room: the event-loop face of any touch scroll surface — a touchscreen reports finger down, a
+//! Teacher, thanked clean-room: the event-loop face of any touch scroll surface -- a touchscreen reports finger down, a
 //! stream of finger move, then finger up, and ticks between frames; the surface scrolls, drags under the finger, and
 //! coasts when released (concept only, siloed).
 //!
-//! HUNK40–45 grew the touch-scroll journey in six clean pieces, each called separately. A real device event loop wants
+//! HUNK40-45 grew the touch-scroll journey in six clean pieces, each called separately. A real device event loop wants
 //! one object it hands raw finger events to. This rung is that driver: a small three-phase state machine (idle,
-//! dragging, flinging) that routes finger_down/move/up and a per-frame tick through the already-proven pieces —
-//! HUNK44's pixel drag and HUNK45's fling — inventing no arithmetic and no new clamp. The one behaviour it adds is
+//! dragging, flinging) that routes finger_down/move/up and a per-frame tick through the already-proven pieces --
+//! HUNK44's pixel drag and HUNK45's fling -- inventing no arithmetic and no new clamp. The one behaviour it adds is
 //! grab-to-stop: a fresh finger_down during a coast cancels the fling, exactly as a finger on a coasting list stops it
-//! dead. A pure composition and a phase label — no storage, no render. No network, no key, no funds.
+//! dead. A pure composition and a phase label -- no storage, no render. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_touch_scroll.rye selftest
 
@@ -26,8 +26,8 @@ pub const preset_touch_scroll_version = "20260813.201244";
 
 pub const TouchError = preset_scroll_drag.DragError || preset_scroll_fling.FlingError;
 
-/// The three phases of a touch session. `idle` — nothing under the finger, at rest. `dragging` — a finger is down and
-/// moving the cursor directly. `flinging` — the finger has lifted and the surface is coasting to rest.
+/// The three phases of a touch session. `idle` -- nothing under the finger, at rest. `dragging` -- a finger is down and
+/// moving the cursor directly. `flinging` -- the finger has lifted and the surface is coasting to rest.
 pub const TouchPhase = enum {
     idle,
     dragging,
@@ -37,7 +37,7 @@ pub const TouchPhase = enum {
 /// A live touch scroll session over one cursor. It holds the phase, the last finger pixel position, the live velocity
 /// (the last move's delta, the fling seed), HUNK44's pixel quantizer, HUNK45's fling, and the friction to seed a fling
 /// with. The governing law: every motion routes through the proven pieces, so the session adds no arithmetic and no new
-/// clamp — only the phase transitions and grab-to-stop. No cursor lives here; it is passed to each event.
+/// clamp -- only the phase transitions and grab-to-stop. No cursor lives here; it is passed to each event.
 pub const TouchScroll = struct {
     phase: TouchPhase = .idle,
     last_y: i32 = 0,
@@ -73,7 +73,7 @@ pub const TouchScroll = struct {
     }
 
     /// A finger touches down at pixel `y`. Records the landing position and enters dragging; cancels any coast in
-    /// progress (grab-to-stop — a finger on a coasting list stops it dead).
+    /// progress (grab-to-stop -- a finger on a coasting list stops it dead).
     pub fn finger_down(self: *TouchScroll, y: i32) void {
         self.phase = .dragging;
         self.last_y = y;
@@ -164,7 +164,7 @@ pub const TouchScroll = struct {
     }
 };
 
-// --- selftest: build the same real five-book library and drive a two-row viewport by whole touch gestures — a pure
+// --- selftest: build the same real five-book library and drive a two-row viewport by whole touch gestures -- a pure
 //     drag with no fling, a flick that coasts, grab-to-stop, the inherited clamps, and the open-time refusals ---------
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
@@ -203,7 +203,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const cell: u32 = 10;
     const rows: u32 = 2;
 
-    // A pure drag: down, a move that scrolls, then a still finger before release — the cursor moves and returns to idle
+    // A pure drag: down, a move that scrolls, then a still finger before release -- the cursor moves and returns to idle
     // with no fling.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
@@ -220,7 +220,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(cur.offset == 2); // stayed where the drag left it
     }
 
-    // A flick: down, a move while still travelling, release — the session flings and the coast advances the cursor
+    // A flick: down, a move while still travelling, release -- the session flings and the coast advances the cursor
     // further before it settles idle.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
@@ -238,7 +238,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(cur.offset == cur.max_offset()); // this flick carries past the end → bottom-pinned
     }
 
-    // Grab-to-stop: a finger_down during a coast cancels the fling — the cursor freezes where the finger caught it, no
+    // Grab-to-stop: a finger_down during a coast cancels the fling -- the cursor freezes where the finger caught it, no
     // further motion.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);

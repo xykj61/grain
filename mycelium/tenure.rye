@@ -1,34 +1,34 @@
-//! mycelium/tenure.rye — the Tenure: a contested name decided by the agreed order.
+//! mycelium/tenure.rye -- the Tenure: a contested name decided by the agreed order.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 //!
-//! A name's *tenure* is the term on which it is held — who holds it, and by what
+//! A name's *tenure* is the term on which it is held -- who holds it, and by what
 //! right. A supply total forgives every order (issue then tax, or tax then issue,
 //! one number); a name forgives only one holder. So when two keepers each sign a
 //! reservation for the same star at the same round, the ledger must pick one, and
 //! every honest node must pick the SAME one. The Cord already derives one total
 //! order from the mesh regardless of arrival; the Tenure reads that order as the
-//! namespace's verdict — the first reservation of a name in the agreed order holds
+//! namespace's verdict -- the first reservation of a name in the agreed order holds
 //! it, every later one loses.
 //!
 //! The honest distinction is the whole crux. `fold.fold_log` refuses the WHOLE log
 //! on a taken star, which is right for a hand-built log yet wrong for a mesh: it
 //! would let one node break the ledger by front-running a name. So the Tenure walks
 //! the committed facts one at a time through `fold.fold_fact` and treats a
-//! name-contest loss (`StarTaken`) as a lawful no-op — the loser's signed fact was
+//! name-contest loss (`StarTaken`) as a lawful no-op -- the loser's signed fact was
 //! rejected by the order, folding continues, the ledger unbroken. Every other fold
-//! refusal — a forged signature, an unknown kind, an overdraw for a FREE name —
+//! refusal -- a forged signature, an unknown kind, an overdraw for a FREE name --
 //! stays poison, because those are corruption, not a lost race. `fold.fold_fact`
 //! already checks taken-before-affordable, so a contestant loses the name before
 //! the ledger asks whether it could pay.
 //!
-//! Composes cord.rye + fold.rye public API only — inventing no storage, weakening
-//! no bound, editing no elder. Siloed, dev-only, demo seeds — no real key, no funds,
+//! Composes cord.rye + fold.rye public API only -- inventing no storage, weakening
+//! no bound, editing no elder. Siloed, dev-only, demo seeds -- no real key, no funds,
 //! no network, no custody.
 //!
 //! Named horizon (not this arc): a double-spend loser (an `Overdraw` that lost a
-//! race rather than never-could-pay) as a lawful no-op — kept out on purpose so the
+//! race rather than never-could-pay) as a lawful no-op -- kept out on purpose so the
 //! name-contest verdict stays legible.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure.rye
@@ -44,10 +44,10 @@ const tally_copy = @import("tally_copy.rye");
 /// A keeper's public key, in its encoded (holder-identity) width.
 pub const pk_len: u32 = kumara.PublicKey.encoded_length;
 
-/// At most one holding per block — the Dag holds a journey of blocks (256).
+/// At most one holding per block -- the Dag holds a journey of blocks (256).
 pub const tenure_max_holdings: u32 = cord.cord_max_blocks;
 
-/// At most one contested loss per block — same ceiling as holdings.
+/// At most one contested loss per block -- same ceiling as holdings.
 pub const tenure_max_contests: u32 = cord.cord_max_blocks;
 
 /// One name held by one keeper, at its position in the agreed order.
@@ -59,7 +59,7 @@ pub const Holding = struct {
     round: u32 = 0,
 };
 
-/// One reservation the agreed order turned away — the keeper who lost a name.
+/// One reservation the agreed order turned away -- the keeper who lost a name.
 pub const Contest = struct {
     name: [fold.star_name_max_bytes]u8 = undefined,
     name_len: u32 = 0,
@@ -116,7 +116,7 @@ pub const Tenure = struct {
     }
 };
 
-/// Record a winning holding — `name → holder`, at its position in the agreed
+/// Record a winning holding -- `name -> holder`, at its position in the agreed
 /// order. The shared primitive `resolve` and the Knot-continued resolve both use,
 /// so a name won in a full Cord and a name won across a sealed checkpoint are
 /// recorded by identical bytes.
@@ -136,7 +136,7 @@ pub fn record_holding(t: *Tenure, fact: *const fold.Fact, pos: u32, round: u32) 
     t.holding_count += 1;
 }
 
-/// Record a contested loss — the keeper the agreed order turned away from a name.
+/// Record a contested loss -- the keeper the agreed order turned away from a name.
 /// The twin of `record_holding` on the losing side of the verdict.
 pub fn record_contest(t: *Tenure, fact: *const fold.Fact, pos: u32) error{TooManyContests}!void {
     // invariant: only a star reservation can lose a name-contest.
@@ -153,7 +153,7 @@ pub fn record_contest(t: *Tenure, fact: *const fold.Fact, pos: u32) error{TooMan
     t.contest_count += 1;
 }
 
-/// Resolve a committed Dag into a Tenure — the namespace verdict of the agreed
+/// Resolve a committed Dag into a Tenure -- the namespace verdict of the agreed
 /// order. Refuses the WHOLE resolution on any corruption (a broken fact signature,
 /// an unknown kind, an overdraw for a free name); a name-contest loss is a lawful
 /// no-op the verdict records, never a refusal.
@@ -182,15 +182,15 @@ pub fn resolve(dag: *const cord.Dag) error{
         const blk = &dag.blocks[idx];
         const fact = &blk.fact;
         if (fold.fold_fact(&state, fact)) |_| {
-            // Accepted — a star reservation the order granted is a winning holding.
+            // Accepted -- a star reservation the order granted is a winning holding.
             if (fact.kind == fold.kind_star_reserve) {
                 try record_holding(&t, fact, i, blk.round);
             }
         } else |err| switch (err) {
             // The verdict: a reservation the order placed after the winner loses
-            // the name — a lawful no-op, folding continues, the ledger unbroken.
+            // the name -- a lawful no-op, folding continues, the ledger unbroken.
             error.StarTaken => try record_contest(&t, fact, i),
-            // Corruption is not a verdict — it refuses the whole resolution.
+            // Corruption is not a verdict -- it refuses the whole resolution.
             error.IdentityRefused => return error.IdentityRefused,
             error.UnknownKind => return error.UnknownKind,
             error.Overdraw => return error.Overdraw,
@@ -280,7 +280,7 @@ pub fn main() !void {
     try expect_holder(&t1, "bandun", winner_pk[0..]);
     try expect_holder(&t2, "bandun", winner_pk[0..]);
     try expect_holder(&t3, "bandun", winner_pk[0..]);
-    // "vega" is uncontested — held by its keeper.
+    // "vega" is uncontested -- held by its keeper.
     try expect_holder(&t1, "vega", pkv[0..]);
 
     // The loser holds nothing and is recorded as a contested loss.
@@ -314,7 +314,7 @@ pub fn main() !void {
         if (err != error.IdentityRefused) return error.WrongPoison;
     }
 
-    // Corruption: a reservation for a FREE name it cannot pay for refuses whole —
+    // Corruption: a reservation for a FREE name it cannot pay for refuses whole --
     // an overdraw is never-could-pay, not a lost race.
     const f_over = fold.mint_fact(kv, fold.kind_star_reserve, 5000, "sirius", "cannot-pay") orelse return error.MintOver;
     const over_block = cord.mint_block(kv, 1, roots[0..], f_over) orelse return error.MintOverBlock;

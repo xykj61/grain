@@ -1,7 +1,7 @@
-//! mantra/spool.rye — GISM red %73: large artifacts across ordered resins.
+//! mantra/spool.rye -- GISM red %73: large artifacts across ordered resins.
 //!
 //! Season 2, Yield: every module stands on real bytes. Beading (mantra/beading.rye)
-//! carries a whole up to one 512-byte resin — a bead-index must itself be a valid
+//! carries a whole up to one 512-byte resin -- a bead-index must itself be a valid
 //! resin, so `max_resin_bytes` is structurally capped and cannot rise. A real
 //! front-door document (SECURITY.md, 2689 B; context/TWO_ROOMS.md, 6079 B) exceeds it,
 //! and Tablecloth's owner-signed catalog refused it `ContentTooLarge` the moment
@@ -12,7 +12,7 @@
 //! sequence of resins over one shared BeadStore: the content is split into resins each
 //! <= max_resin_bytes, each resin beaded (fixed-size, two predictable beads per full
 //! resin), each resin's bead-index recorded inline in order. The spool's own content
-//! address is a SHA3-256 over the whole content — unchanged by chunking, exactly as a
+//! address is a SHA3-256 over the whole content -- unchanged by chunking, exactly as a
 //! resin's digest is unchanged by beading, so a reader recalls a large artifact by one
 //! name. Reassembly walks the resins in order, reassembles each through beading's own
 //! reassemble (every bead proving itself by digest, every resin against its recorded
@@ -35,7 +35,7 @@ const tally_copy = @import("tally_copy.rye");
 pub const spool_version = "20260812.191206";
 
 // How many resins one spool winds. 64 resins at one 512-byte resin each carry a 32 KB
-// artifact — real front-door documents fit with headroom (SECURITY 2689 B -> 6 resins;
+// artifact -- real front-door documents fit with headroom (SECURITY 2689 B -> 6 resins;
 // TWO_ROOMS 6079 B -> 12 resins), the ceiling named far above any real document.
 pub const max_resins: u32 = 64;
 
@@ -99,7 +99,7 @@ fn digest_raw(content: []const u8, out: *[32]u8) void {
 
 /// Wind content across ordered resins into a spool, beading each resin into the shared
 /// store. The whole digest is the artifact's content address, unchanged by chunking.
-/// Refuses content past max_content_bytes (ContentTooLarge) — the honest ceiling that
+/// Refuses content past max_content_bytes (ContentTooLarge) -- the honest ceiling that
 /// replaces beading's single-resin refusal, far above any real document.
 pub fn spool_content(
     store: *beading.BeadStore,
@@ -218,7 +218,7 @@ fn fill(buf: []u8, byte: u8) void {
     while (i < buf.len) : (i += 1) buf[i] = byte;
 }
 
-/// A real document winds across ordered resins and unwinds byte-for-byte — the very
+/// A real document winds across ordered resins and unwinds byte-for-byte -- the very
 /// refusal red %73 booked now runs GREEN.
 fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label: []const u8) !SpoolReport {
     var sp: Spool = .empty();
@@ -239,10 +239,10 @@ fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label
 fn run_spool_selftest() !u8 {
     var out: [max_content_bytes]u8 = undefined;
 
-    // SECURITY.md and TWO_ROOMS.md — real documents that never fit one resin — wind and
+    // SECURITY.md and TWO_ROOMS.md -- real documents that never fit one resin -- wind and
     // unwind whole. The larger a document, the more resins carry it.
     var store: beading.BeadStore = .empty();
-    // invariant: both real documents genuinely exceed one resin — the red is real
+    // invariant: both real documents genuinely exceed one resin -- the red is real
     assert(doc_security.len > beading.max_resin_bytes);
     assert(doc_two_rooms.len > beading.max_resin_bytes);
     const rep_s = try welcome_real(&store, doc_security, out[0..], "security.md");
@@ -284,7 +284,7 @@ fn run_spool_selftest() !u8 {
 
     // The ceiling is honest, not merely named: a large artifact filling most of the
     // spool actually winds into the shared store and unwinds whole. Build a distinct
-    // pattern per byte so no two beads dedup — the store bound is exercised in full.
+    // pattern per byte so no two beads dedup -- the store bound is exercised in full.
     {
         var store_c: beading.BeadStore = .empty();
         var wide: [max_content_bytes]u8 = undefined;
@@ -327,7 +327,7 @@ fn run_spool_selftest() !u8 {
         }
     }
 
-    // Unwelcome: a truncated spool (a resin dropped from the tail) refuses — the whole
+    // Unwelcome: a truncated spool (a resin dropped from the tail) refuses -- the whole
     // digest no longer matches the shortened concatenation.
     {
         var store_r: beading.BeadStore = .empty();
@@ -343,7 +343,7 @@ fn run_spool_selftest() !u8 {
         }
     }
 
-    // Unwelcome: an artifact past the spool bound refuses ContentTooLarge — the new
+    // Unwelcome: an artifact past the spool bound refuses ContentTooLarge -- the new
     // honest ceiling, far above any real document.
     {
         var store_z: beading.BeadStore = .empty();

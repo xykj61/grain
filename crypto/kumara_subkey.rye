@@ -1,45 +1,45 @@
-//! crypto/kumara_subkey.rye — Season G (Cryptography), the NINETEENTH composition: a per-record subkey, a hardened child of the identity node.
+//! crypto/kumara_subkey.rye -- Season G (Cryptography), the NINETEENTH composition: a per-record subkey, a hardened child of the identity node.
 //! Where crypto/kumara_identity.rye derives the ONE identity a keeper signs with, this rung derives a DISTINCT signing key per record beneath
-//! it — the hardened child m/44'/coin'/account'/index'/record' of the identity node — so a keeper does not reuse a single signing key across
+//! it -- the hardened child m/44'/coin'/account'/index'/record' of the identity node -- so a keeper does not reuse a single signing key across
 //! every record they seal, while every subkey still descends deterministically from the one identity. It is the reason crypto/kumara_identity.rye
 //! carries a chain_code at the identity node ("so a caller can derive further children (a per-record subkey) without re-walking from the seed"):
 //! this rung reads that chain code and steps one level deeper.
 //!
 //! It authors NO new cryptography. The step from a parent node to a hardened child is crypto/slip10_ed25519.rye's own ckd_priv, already GREEN
-//! against SLIP-0010's published ed25519 vectors; this module contributes only the wiring — reconstruct the parent node from an Identity (its
+//! against SLIP-0010's published ed25519 vectors; this module contributes only the wiring -- reconstruct the parent node from an Identity (its
 //! secret seed is the node key, its chain code the node chain code, its depth the Kumara path's fixed four), derive the hardened record child,
 //! and read off the subkey's public key the same two independent ways crypto/kumara_identity.rye does: crypto/slip10_ed25519.rye's public form
-//! (0x00 tag stripped) and crypto/ed25519_sign.rye's derive_public, asserted equal. Sealing a record AS a subkey adds no frame either — seal_as
+//! (0x00 tag stripped) and crypto/ed25519_sign.rye's derive_public, asserted equal. Sealing a record AS a subkey adds no frame either -- seal_as
 //! writes a Grain Signed Carry v1 frame (crypto/signed_carry.rye) under the subkey's secret seed, and open_as reuses crypto/kumara_carry.rye's
 //! binding to refuse any frame whose verified signer is not the subkey the reader named.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry," which names "a per-record subkey carry (a child of the identity node)" as the identity
 //! arc's next rung. The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a Kumara-signed, content-addressed chain
 //! of custody end to end." A per-record subkey is how one identity signs many records without spending the same key on each.
-//! Kin: crypto/kumara_identity.rye (the identity this steps beneath, GREEN) · crypto/slip10_ed25519.rye (the ckd_priv this walks one level, GREEN) ·
-//! crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature, GREEN) · crypto/signed_carry.rye + crypto/kumara_carry.rye (the frame this
+//! Kin: crypto/kumara_identity.rye (the identity this steps beneath, GREEN) - crypto/slip10_ed25519.rye (the ckd_priv this walks one level, GREEN) -
+//! crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature, GREEN) - crypto/signed_carry.rye + crypto/kumara_carry.rye (the frame this
 //! seals and the binding it reuses, GREEN). Clean-room: SLIP-0010 and the path convention are public standards studied through their specs
 //! (.claude/rules/gratitude-licenses.md); no line is copied.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity and subkey here is a TEST key from a published
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Every identity and subkey here is a TEST key from a published
 //! test-vector mnemonic; this module calls no std.crypto. Deriving a REAL keeper's subkeys and signing a real record with one stays the custody
-//! gate (#3/#4) — this library derives and verifies a TEST identity's subkeys; it never holds the maintainer's key. Constant-time timing-safety of
+//! gate (#3/#4) -- this library derives and verifies a TEST identity's subkeys; it never holds the maintainer's key. Constant-time timing-safety of
 //! the derivation and signing it composes stays crypto/CONSTANT_TIME.md's named horizon, unchanged here.
 //!
-//! ONE HONEST BOUNDARY, named as the next rung. ed25519/SLIP-0010 admits only hardened derivation — a subkey's public key CANNOT be derived from
+//! ONE HONEST BOUNDARY, named as the next rung. ed25519/SLIP-0010 admits only hardened derivation -- a subkey's public key CANNOT be derived from
 //! the parent's public key alone, so a verifier who holds only the identity's public key cannot on their own prove a subkey descends from it. The
 //! attestation that binds a subkey to its parent (the identity SIGNING a short "this subkey is mine at record r" statement, which a verifier then
-//! checks against the identity's public key) is the named next rung — a signed delegation over exactly the door crypto/kumara_carry.rye already
+//! checks against the identity's public key) is the named next rung -- a signed delegation over exactly the door crypto/kumara_carry.rye already
 //! opens. This rung proves what stands beneath that: the derivation is deterministic and well-separated per record, each subkey is a real working
 //! signing key, and each subkey seals and opens AS ITSELF with the wrong-key binding refused.
 //!
-//! Parity is proven at selftest three replayable ways, no fabricated constant: (1) anchored to the identity arc — the subkey at record r equals
+//! Parity is proven at selftest three replayable ways, no fabricated constant: (1) anchored to the identity arc -- the subkey at record r equals
 //! walking crypto/slip10_ed25519.rye's ckd_priv from the SAME identity node by hand, and its public key equals both slip10's public form (tag
 //! stripped) and ed25519_sign's independent derive_public, all agreeing (the ckd_priv step itself proven one rung down against SLIP-0010's own
-//! ed25519 vectors); (2) separation — the same identity + record reaches an identical subkey, a different record reaches a different subkey, and
-//! every subkey differs from its parent identity; (3) the subkey is a REAL working signing key — it signs a message verify accepts, a flipped
+//! ed25519 vectors); (2) separation -- the same identity + record reaches an identical subkey, a different record reaches a different subkey, and
+//! every subkey differs from its parent identity; (3) the subkey is a REAL working signing key -- it signs a message verify accepts, a flipped
 //! message byte and a flipped signature byte are refused, and it seals a record that open_as verifies as the subkey while refusing the parent
 //! identity and a sibling subkey with UnexpectedSigner.
 //!
@@ -61,13 +61,13 @@ const kumara_carry = @import("kumara_carry.rye");
 
 pub const kumara_subkey_version = "20260816.100250";
 
-/// The 32-byte ed25519 secret seed a subkey signs with — the same width as the identity's own secret seed (both are ed25519 signing seeds).
+/// The 32-byte ed25519 secret seed a subkey signs with -- the same width as the identity's own secret seed (both are ed25519 signing seeds).
 pub const secret_len: u32 = identity.secret_len; // 32
 
 /// The raw 32-byte ed25519 public key that names a subkey.
 pub const public_len: u32 = identity.public_len; // 32
 
-/// The chain code carried at the subkey node, so a caller could step further (a sub-subkey) without re-walking — the same forward door the
+/// The chain code carried at the subkey node, so a caller could step further (a sub-subkey) without re-walking -- the same forward door the
 /// identity node offers, one level deeper.
 pub const chain_len: u32 = identity.chain_len; // 32
 
@@ -82,7 +82,7 @@ pub const max_frame_bytes: u32 = kumara_carry.max_frame_bytes;
 
 pub const KumaraSubkeyError = kumara_carry.KumaraCarryError;
 
-/// The whole phrase→identity→subkey arc's error union: folding the mnemonic to an identity may raise a BIP-39 / path / SLIP-0010 error, and the
+/// The whole phrase->identity->subkey arc's error union: folding the mnemonic to an identity may raise a BIP-39 / path / SLIP-0010 error, and the
 /// extra hardened step may raise a SLIP-0010 error. Named once so subkey_from_mnemonic states its contract honestly.
 pub const KumaraSubkeyDeriveError =
     bip39.Bip39Error || kumara_path.KumaraPathError || slip10.Slip10Error;
@@ -96,7 +96,7 @@ pub const Subkey = struct {
     record: u32,
 };
 
-/// Strip the SLIP-0010 33-byte public form (0x00 ‖ 32-byte key) to the raw 32-byte ed25519 public key a subkey is named by — the same strip
+/// Strip the SLIP-0010 33-byte public form (0x00 ‖ 32-byte key) to the raw 32-byte ed25519 public key a subkey is named by -- the same strip
 /// crypto/kumara_identity.rye applies to the identity node, asserting the domain tag it removes is the 0x00 SLIP-0010 expects.
 fn strip_domain_tag(slip_public: *const [slip10.public_len]u8) [public_len]u8 {
     // invariant: the SLIP-0010 public form always opens with the 0x00 ed25519 domain tag (crypto/slip10_ed25519.rye public_key).
@@ -112,10 +112,10 @@ fn strip_domain_tag(slip_public: *const [slip10.public_len]u8) [public_len]u8 {
 }
 
 /// Reconstruct the parent identity node from an Identity, so ckd_priv can step one level deeper without re-walking from the seed. The Identity
-/// carries exactly the node's key (its secret seed), chain code, and — by the Kumara path convention — depth four; this rung assembles those into
+/// carries exactly the node's key (its secret seed), chain code, and -- by the Kumara path convention -- depth four; this rung assembles those into
 /// the slip10.Node ckd_priv expects.
 fn parent_node(id: *const identity.Identity) slip10.Node {
-    // invariant: an Identity's three node-bearing fields are exactly the widths a slip10.Node holds — the reconstruction loses nothing.
+    // invariant: an Identity's three node-bearing fields are exactly the widths a slip10.Node holds -- the reconstruction loses nothing.
     assert(identity.secret_len == slip10.key_len and identity.chain_len == slip10.chain_code_len);
     return slip10.Node{
         .key = id.secret_seed,
@@ -125,10 +125,10 @@ fn parent_node(id: *const identity.Identity) slip10.Node {
 }
 
 /// Derive the per-record subkey beneath an identity: the hardened child of the identity node at `record`. Reads the identity's secret seed and
-/// chain code; the subkey it returns holds its own secret seed (a secret the caller keeps) and public key (public). TEST identities only — a real
+/// chain code; the subkey it returns holds its own secret seed (a secret the caller keeps) and public key (public). TEST identities only -- a real
 /// identity's subkey reaches the custody gate.
 pub fn derive_subkey(id: *const identity.Identity, record: u32) slip10.Slip10Error!Subkey {
-    // invariant: the record level stays below 2³¹ before the hardening bit is added — a value at or above it would collide with the offset.
+    // invariant: the record level stays below 2³¹ before the hardening bit is added -- a value at or above it would collide with the offset.
     if (record >= bip32.hardened_offset) return error.NotHardened;
 
     const parent = parent_node(id);
@@ -142,7 +142,7 @@ pub fn derive_subkey(id: *const identity.Identity, record: u32) slip10.Slip10Err
     const slip_public = slip10.public_key(&child);
     const public_key = strip_domain_tag(&slip_public);
     const direct = signer.derive_public(&child.key);
-    // invariant: the two independent public derivations agree byte-for-byte — the subkey's public key is unambiguous, exactly as the identity's is.
+    // invariant: the two independent public derivations agree byte-for-byte -- the subkey's public key is unambiguous, exactly as the identity's is.
     var k: u32 = 0;
     // invariant: the derived key is compared byte for byte against the one computed directly,
     // so the two paths are proven to agree rather than assumed to
@@ -156,7 +156,7 @@ pub fn derive_subkey(id: *const identity.Identity, record: u32) slip10.Slip10Err
     };
 }
 
-/// The whole arc in one call: fold a mnemonic to a Kumara identity, then derive its per-record subkey. TEST mnemonics only — the maintainer's own
+/// The whole arc in one call: fold a mnemonic to a Kumara identity, then derive its per-record subkey. TEST mnemonics only -- the maintainer's own
 /// phrase reaches the custody gate.
 pub fn subkey_from_mnemonic(
     mnemonic: []const u8,
@@ -170,25 +170,25 @@ pub fn subkey_from_mnemonic(
     return derive_subkey(&id, record);
 }
 
-/// Sign a message with a subkey's secret seed — the thin wrapper that lets a caller make a per-record signature through this door. Reads the
+/// Sign a message with a subkey's secret seed -- the thin wrapper that lets a caller make a per-record signature through this door. Reads the
 /// secret seed; the signature it returns is public.
 pub fn sign(subkey: *const Subkey, msg: []const u8) signer.SignError![64]u8 {
     return signer.sign(&subkey.secret_seed, msg);
 }
 
-/// Verify a signature against a subkey's public key — the public counterpart of sign, so a verifier need hold only the 32-byte public key.
+/// Verify a signature against a subkey's public key -- the public counterpart of sign, so a verifier need hold only the 32-byte public key.
 pub fn verify(public_key: *const [public_len]u8, msg: []const u8, sig: *const [64]u8) verifier.VerifyError!void {
     return verifier.verify(sig, msg, public_key);
 }
 
 /// Seal an opaque payload AS a subkey, writing a Grain Signed Carry v1 frame into `out` and returning its length. The frame's signer field is the
-/// subkey's own public key by construction — signed_carry derives the signer from the same secret seed the subkey holds.
+/// subkey's own public key by construction -- signed_carry derives the signer from the same secret seed the subkey holds.
 pub fn seal_as(subkey: *const Subkey, payload: []const u8, out: []u8) carry.SignedCarryError!u32 {
     // invariant: a subkey's secret seed is the exact 32-byte width signed_carry seals under (both are the ed25519 signing seed).
     assert(secret_len == carry.signer_len);
     const frame_len = try carry.seal(&subkey.secret_seed, payload, out);
 
-    // invariant: the frame's embedded signer is exactly this subkey's public key — the carry and subkey rungs agree by construction.
+    // invariant: the frame's embedded signer is exactly this subkey's public key -- the carry and subkey rungs agree by construction.
     const embedded_signer = out[carry.magic_len..][0..carry.signer_len];
     var k: u32 = 0;
     // invariant: the derived key is compared byte for byte against the one computed directly,
@@ -205,7 +205,7 @@ pub fn open_as(frame: []const u8, expected_public: *const [public_len]u8) Kumara
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Fill a buffer with a deterministic spread of test bytes — the sibling compositions' generator shape, seeded so each value differs and the first
+/// Fill a buffer with a deterministic spread of test bytes -- the sibling compositions' generator shape, seeded so each value differs and the first
 /// byte is nonzero. Used for TEST payloads only.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
@@ -220,7 +220,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-// BIP-39's own published Trezor vector 1 — a REAL published phrase, so the identity a subkey descends from stands on a standard's own answer.
+// BIP-39's own published Trezor vector 1 -- a REAL published phrase, so the identity a subkey descends from stands on a standard's own answer.
 const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 const trezor_passphrase = "TREZOR";
 
@@ -229,11 +229,11 @@ fn run_selftest() !u8 {
 
     var frame_buf: [max_frame_bytes]u8 = undefined;
 
-    // The keeper's identity — a TEST identity from the published Trezor mnemonic. NOT a real Kumara identity.
+    // The keeper's identity -- a TEST identity from the published Trezor mnemonic. NOT a real Kumara identity.
     const id = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
 
     // 1. ANCHORED TO THE IDENTITY ARC. The subkey at record 0 equals walking slip10's ckd_priv from the SAME identity node by hand, and its public
-    //    key equals both slip10's public form (0x00 tag stripped) and ed25519_sign's independent derive_public — the same 32 bytes three ways.
+    //    key equals both slip10's public form (0x00 tag stripped) and ed25519_sign's independent derive_public -- the same 32 bytes three ways.
     const sub0 = try derive_subkey(&id, 0);
     {
         const parent = slip10.Node{ .key = id.secret_seed, .chain_code = id.chain_code, .depth = identity_depth };
@@ -249,7 +249,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. SEPARATION. The same identity + record reaches an identical subkey; a different record reaches a different subkey; and every subkey differs
-    //    from its parent identity — one identity, many distinct per-record keys.
+    //    from its parent identity -- one identity, many distinct per-record keys.
     {
         const again = try derive_subkey(&id, 0);
         if (!bytes_eq(sub0.public_key[0..], again.public_key[0..])) return error.SubkeyNotDeterministic;
@@ -261,11 +261,11 @@ fn run_selftest() !u8 {
             if (bytes_eq(sub0.public_key[0..], sr.public_key[0..])) return error.RecordsNotSeparated;
             if (bytes_eq(id.public_key[0..], sr.public_key[0..])) return error.SubkeyEqualsParent;
         }
-        // record 0 itself is not the parent identity — a child node is a distinct key from its parent.
+        // record 0 itself is not the parent identity -- a child node is a distinct key from its parent.
         if (bytes_eq(sub0.public_key[0..], id.public_key[0..])) return error.Sub0EqualsParent;
     }
 
-    // 3. THE ONE-CALL ARC agrees with the two steps by hand — subkey_from_mnemonic folds phrase → identity → subkey without drift.
+    // 3. THE ONE-CALL ARC agrees with the two steps by hand -- subkey_from_mnemonic folds phrase -> identity -> subkey without drift.
     {
         const by_call = try subkey_from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0, 0);
         if (!bytes_eq(by_call.public_key[0..], sub0.public_key[0..])) return error.OneCallPublicDrift;
@@ -273,7 +273,7 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE SUBKEY IS A REAL WORKING SIGNING KEY. It signs a message verify accepts; a flipped message byte and a flipped signature byte each
-    //    refuse — the whole point of a per-record key, proven.
+    //    refuse -- the whole point of a per-record key, proven.
     {
         const message = "Grain — one identity, a fresh key for each record it keeps.";
         const sig = try sign(&sub0, message);
@@ -290,7 +290,7 @@ fn run_selftest() !u8 {
         if (verify(&sub0.public_key, message, &bad_sig)) |_| return error.SubTamperSigAccepted else |_| {}
     }
 
-    // 5. SEAL AND OPEN AS THE SUBKEY across a spread of payload lengths — open_as returns the payload only when bound to the subkey's own public
+    // 5. SEAL AND OPEN AS THE SUBKEY across a spread of payload lengths -- open_as returns the payload only when bound to the subkey's own public
     //    key, and refuses both the PARENT identity and a SIBLING subkey with UnexpectedSigner (a valid signature from the wrong key, caught).
     {
         const sibling = try derive_subkey(&id, 1);
@@ -305,11 +305,11 @@ fn run_selftest() !u8 {
             if (!bytes_eq(opened.signer[0..], sub0.public_key[0..])) return error.OpenedSignerWrong;
             if (!bytes_eq(opened.payload, payload)) return error.OpenedPayloadWrong;
 
-            // The parent identity's public key refuses this subkey-sealed record — the record is the subkey's, not the identity's.
+            // The parent identity's public key refuses this subkey-sealed record -- the record is the subkey's, not the identity's.
             if (open_as(frame_buf[0..flen], &id.public_key)) |_| return error.ParentAccepted else |e| {
                 if (e != error.UnexpectedSigner) return error.ParentWrongError;
             }
-            // A sibling subkey refuses it too — per-record keys do not open each other's records.
+            // A sibling subkey refuses it too -- per-record keys do not open each other's records.
             if (open_as(frame_buf[0..flen], &sibling.public_key)) |_| return error.SiblingAccepted else |e| {
                 if (e != error.UnexpectedSigner) return error.SiblingWrongError;
             }

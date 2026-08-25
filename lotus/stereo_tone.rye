@@ -1,31 +1,31 @@
-//! lotus/stereo_tone.rye — ALES170: a TONE CONTROL carried into stereo — the one-pole low-pass and its high-pass complement (ALES40) run on BOTH channels with the SAME coefficient, the rung that OPENS the stereo
+//! lotus/stereo_tone.rye -- ALES170: a TONE CONTROL carried into stereo -- the one-pole low-pass and its high-pass complement (ALES40) run on BOTH channels with the SAME coefficient, the rung that OPENS the stereo
 //! EQ / FILTER class. Every stereo rung so far carried a level edit (ALES129 normalize, ALES130 fade), an arrangement edit, a shaping edit, or a dynamics edit into stereo; none changed a master's FREQUENCY balance.
-//! This rung opens the first stereo filter — a one-pole low-pass that softens a harsh master (rolls off treble on both speakers together) and its exact high-pass complement that thins a boomy one (cuts bass on both) — the
+//! This rung opens the first stereo filter -- a one-pole low-pass that softens a harsh master (rolls off treble on both speakers together) and its exact high-pass complement that thins a boomy one (cuts bass on both) -- the
 //! stereo mirror of the mono tone control ALES40 opened the mono EQ class with. A tone control is PARAMETRIC: its coefficient num/den is a smoothing fraction the caller names, not a measured scalar, so the SAME coefficient
-//! on each channel preserves the stereo image for free — the way ALES130's shared ramp did, and unlike ALES129's linked scalar or the dynamics family's linked detector, which had to measure across both channels to hold the
+//! on each channel preserves the stereo image for free -- the way ALES130's shared ramp did, and unlike ALES129's linked scalar or the dynamics family's linked detector, which had to measure across both channels to hold the
 //! image. Each channel filters its OWN content through that shared coefficient: the two states are independent, one per channel, because a filter's state is the running estimate of the signal it is filtering, and the left and
-//! right signals genuinely differ. That independence is exactly right for EQ — an identical-channel (mono-in-stereo) master stays identical because the same input through the same coefficient evolves the same state, while a
+//! right signals genuinely differ. That independence is exactly right for EQ -- an identical-channel (mono-in-stereo) master stays identical because the same input through the same coefficient evolves the same state, while a
 //! panned master shapes each side by its own spectrum. Linking the state across channels, as the dynamics detector links its envelope, would be a BUG here: it would bleed one channel's transients into the other's brightness.
 //!
-//! The rule, stated once: refuse BadCoeff (a coefficient num/den outside (0, 1] — a zero denominator, a zero or negative numerator, or a numerator past the denominator) and BadRange (a span past the shared length) BEFORE
+//! The rule, stated once: refuse BadCoeff (a coefficient num/den outside (0, 1] -- a zero denominator, a zero or negative numerator, or a numerator past the denominator) and BadRange (a span past the shared length) BEFORE
 //! either channel is touched, so a refusal never filters one channel and leaves the other torn; then run ALES40's proven mono `low_pass` (or `high_pass`) on each channel with the SAME coefficient, each carrying its OWN i64
-//! state. The carried forms lift BOTH per-channel states to the caller so a master filtered in two pieces (each channel continuing its own ending state) equals the whole filtered once — no fresh transient at the seam, the
-//! click a per-span restart would leave — one implementation shared with the from-silence forms, so the two cannot drift.
+//! state. The carried forms lift BOTH per-channel states to the caller so a master filtered in two pieces (each channel continuing its own ending state) equals the whole filtered once -- no fresh transient at the seam, the
+//! click a per-span restart would leave -- one implementation shared with the from-silence forms, so the two cannot drift.
 //!
-//! The crux — five laws. THE STEREO LOW-PASS LAW: each channel equals ALES40's mono `low_pass` with the SAME coefficient over the same span byte for byte, proven side by side with genuinely different per-channel content — so
+//! The crux -- five laws. THE STEREO LOW-PASS LAW: each channel equals ALES40's mono `low_pass` with the SAME coefficient over the same span byte for byte, proven side by side with genuinely different per-channel content -- so
 //! the left is shaped by the left's spectrum and the right by the right's, never crossed. THE STEREO HIGH-PASS LAW: the same for `high_pass`, each channel its own mono high-pass, and the per-channel reconstruction
 //! low_pass + high_pass = x holding where the difference fits. THE PARAMETRIC / IMAGE LAW: an identical-channel master stays identical through both filters (a mono-in-stereo signal never splits), and a constant input settles
 //! to direct current EXACTLY on each channel (the low-pass crux carried per channel), the shared coefficient holding the image. THE CARRY LAW: a span filtered in two pieces (each channel continuing its own ending state)
-//! equals the whole filtered once, byte for byte on BOTH channels — both states surviving the boundary independently. THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: an all-silent master filters to silence on both;
+//! equals the whole filtered once, byte for byte on BOTH channels -- both states surviving the boundary independently. THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: an all-silent master filters to silence on both;
 //! left.len == right.len after; a zero denominator, a zero numerator, a coefficient above one, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the
 //! identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES170.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES170.
 //! Design read: active-designing/date/20260815/20260815-074743_fill-ales170-lotus-stereo-tone.md
-//! Stands on: lotus/tone.rye (ALES40) — the mono one-pole low-pass and high-pass run once per channel, its ToneError reused whole and its `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) — the
-//! StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and the saturate the high-pass complement reuses.
+//! Stands on: lotus/tone.rye (ALES40) -- the mono one-pole low-pass and high-pass run once per channel, its ToneError reused whole and its `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) -- the
+//! StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples, and the saturate the high-pass complement reuses.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying two independent i64 filter states, siloed to lotus/. It changes sample VALUES only through ALES40's own filter, never a
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying two independent i64 filter states, siloed to lotus/. It changes sample VALUES only through ALES40's own filter, never a
 //! length, never a byte fabricated; the coefficient num/den is a smoothing fraction over sample INDICES, not a cutoff in hertz (a real time base is a later rung), and each state runs at full i64 precision so no fractional
 //! information is lost between samples. No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -41,14 +41,14 @@ const tone = @import("tone.rye");
 
 pub const stereo_tone_version = "20260815.074743";
 
-/// The stereo tone control's faults are exactly ALES40's own `ToneError` — `BadCoeff` on a coefficient outside (0, 1] and `BadRange` on a span outside the samples — reused by name, since carrying the filter into stereo adds
+/// The stereo tone control's faults are exactly ALES40's own `ToneError` -- `BadCoeff` on a coefficient outside (0, 1] and `BadRange` on a span outside the samples -- reused by name, since carrying the filter into stereo adds
 /// no new fault: it validates one shared coefficient and one span against the shared length, then runs the same mono filter on each channel with its own state.
 pub const StereoToneError = tone.ToneError;
 
-/// Low-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc` by the SAME coefficient num/den, each channel CONTINUING from its own `state_left` / `state_right` rather than from silence — the carried-state form
+/// Low-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc` by the SAME coefficient num/den, each channel CONTINUING from its own `state_left` / `state_right` rather than from silence -- the carried-state form
 /// (ALES40's lesson), now carrying ONE state per channel so a master filtered in two pieces continues each side's estimate across the seam with no fresh transient. The two states are independent because each channel filters
 /// its own content; the coefficient is shared, so the same brightness shaping lands on both speakers and the image is held. Validates the coefficient and span ONCE against the shared length before either channel is mutated:
-/// refuses BadCoeff and BadRange, both states and both channels untouched. Values only — never the length; the two channels leave balanced.
+/// refuses BadCoeff and BadRange, both states and both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_low_pass_carry(
     sc: *pan.StereoClip,
     start: u32,
@@ -58,23 +58,23 @@ pub fn stereo_low_pass_carry(
     num: i32,
     den: u32,
 ) StereoToneError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared coefficient preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared coefficient preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: the coefficient is a legal fraction in (0, 1] and the span lies wholly within the SHARED length — checked once, before any write, so a refusal never filters one channel and leaves the other torn.
+    // invariant: the coefficient is a legal fraction in (0, 1] and the span lies wholly within the SHARED length -- checked once, before any write, so a refusal never filters one channel and leaves the other torn.
     try tone.precheck(sc.left.len, start, count, num, den);
 
-    // Every check passed and holds identically for both channels (same coefficient, same span, shared length), so each mono low-pass is pre-validated to succeed — no refusal can land between the two channel edits. The SAME
+    // Every check passed and holds identically for both channels (same coefficient, same span, shared length), so each mono low-pass is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME
     // coefficient on each, each carrying its OWN state.
     try tone.low_pass_carry(&sc.left, start, count, state_left, num, den);
     try tone.low_pass_carry(&sc.right, start, count, state_right, num, den);
 
-    // invariant: the channels leave balanced — a filter writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a filter writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
 /// Low-pass `count` sample-pairs starting at `start` in both channels of `sc` by the same coefficient num/den, each channel from a ZERO initial state (from silence). num = den is the identity (pass-through) on both; a smaller
-/// fraction smooths harder (rolls off more treble) on both together. The from-silence case of `stereo_low_pass_carry` — one implementation, so the carried and from-silence forms cannot drift. Refuses BadCoeff and BadRange
+/// fraction smooths harder (rolls off more treble) on both together. The from-silence case of `stereo_low_pass_carry` -- one implementation, so the carried and from-silence forms cannot drift. Refuses BadCoeff and BadRange
 /// before any write.
 pub fn stereo_low_pass(sc: *pan.StereoClip, start: u32, count: u32, num: i32, den: u32) StereoToneError!void {
     var state_left: i64 = 0;
@@ -82,10 +82,10 @@ pub fn stereo_low_pass(sc: *pan.StereoClip, start: u32, count: u32, num: i32, de
     return stereo_low_pass_carry(sc, start, count, &state_left, &state_right, num, den);
 }
 
-/// High-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc` by the SAME coefficient num/den, each channel CONTINUING from its own low-pass `state_left` / `state_right` — the carried-state complement. The
+/// High-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc` by the SAME coefficient num/den, each channel CONTINUING from its own low-pass `state_left` / `state_right` -- the carried-state complement. The
 /// high-pass output is `x − lp`, and `lp` is a pure function of the carried low-pass state, so lifting both per-channel states to the caller makes the complement continue exactly as `stereo_low_pass_carry` does: a master
 /// high-passed in two pieces equals the whole high-passed once, no re-transient at the seam. Validates the coefficient and span ONCE against the shared length before either channel is mutated: refuses BadCoeff and BadRange,
-/// both states and both channels untouched. Values only — never the length; the two channels leave balanced.
+/// both states and both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_high_pass_carry(
     sc: *pan.StereoClip,
     start: u32,
@@ -95,7 +95,7 @@ pub fn stereo_high_pass_carry(
     num: i32,
     den: u32,
 ) StereoToneError!void {
-    // invariant: the two channels enter balanced — the ground the shared coefficient preserves.
+    // invariant: the two channels enter balanced -- the ground the shared coefficient preserves.
     assert(sc.left.len == sc.right.len);
     // invariant: legal coefficient and in-range span, checked once against the shared length before any write, so a refusal never high-passes one channel and leaves the other torn.
     try tone.precheck(sc.left.len, start, count, num, den);
@@ -104,23 +104,23 @@ pub fn stereo_high_pass_carry(
     try tone.high_pass_carry(&sc.left, start, count, state_left, num, den);
     try tone.high_pass_carry(&sc.right, start, count, state_right, num, den);
 
-    // invariant: the channels leave balanced — a filter writes values only.
+    // invariant: the channels leave balanced -- a filter writes values only.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-/// High-pass `count` sample-pairs starting at `start` in both channels of `sc` by the same coefficient num/den, each channel from a ZERO initial state — the exact complement of the low-pass on each channel: each output is the
-/// input minus that channel's low-pass output, saturated to the i16 range. A constant input drives each channel's output to zero (direct current removed — a bass cut on both); a transient past the i16 range saturates rather
-/// than wraps. The from-silence case of `stereo_high_pass_carry` — one implementation, so the carried and from-silence forms cannot drift. Refuses BadCoeff and BadRange before any write.
+/// High-pass `count` sample-pairs starting at `start` in both channels of `sc` by the same coefficient num/den, each channel from a ZERO initial state -- the exact complement of the low-pass on each channel: each output is the
+/// input minus that channel's low-pass output, saturated to the i16 range. A constant input drives each channel's output to zero (direct current removed -- a bass cut on both); a transient past the i16 range saturates rather
+/// than wraps. The from-silence case of `stereo_high_pass_carry` -- one implementation, so the carried and from-silence forms cannot drift. Refuses BadCoeff and BadRange before any write.
 pub fn stereo_high_pass(sc: *pan.StereoClip, start: u32, count: u32, num: i32, den: u32) StereoToneError!void {
     var state_left: i64 = 0;
     var state_right: i64 = 0;
     return stereo_high_pass_carry(sc, start, count, &state_left, &state_right, num, den);
 }
 
-// --- selftest: THE STEREO LOW-PASS LAW — each channel equals ALES40's mono low_pass with the SAME coefficient byte for byte, different per-channel content; THE STEREO HIGH-PASS LAW — the same for high_pass, with per-channel
-//     reconstruction low_pass + high_pass = x; THE PARAMETRIC / IMAGE LAW — an identical-channel master stays identical through both filters, a constant input settling to direct current EXACTLY per channel; THE CARRY LAW — a
-//     span filtered in two pieces (each channel carrying its own state) equals the whole once on both; THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal untouched, count 0 identity
+// --- selftest: THE STEREO LOW-PASS LAW -- each channel equals ALES40's mono low_pass with the SAME coefficient byte for byte, different per-channel content; THE STEREO HIGH-PASS LAW -- the same for high_pass, with per-channel
+//     reconstruction low_pass + high_pass = x; THE PARAMETRIC / IMAGE LAW -- an identical-channel master stays identical through both filters, a constant input settling to direct current EXACTLY per channel; THE CARRY LAW -- a
+//     span filtered in two pieces (each channel carrying its own state) equals the whole once on both; THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW -- silence to silence, balanced, each refusal untouched, count 0 identity
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -135,7 +135,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO LOW-PASS LAW — each channel equals ALES40's mono low_pass with the SAME coefficient, proven side by side over one span with genuinely different per-channel content: the left shaped by the left's spectrum,
+    // 1. THE STEREO LOW-PASS LAW -- each channel equals ALES40's mono low_pass with the SAME coefficient, proven side by side over one span with genuinely different per-channel content: the left shaped by the left's spectrum,
     //    the right by the right's, never crossed.
     {
         const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000 };
@@ -153,11 +153,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftLowNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightLowNotMono;
-        // The two channels genuinely differ — the left is not the right filtered, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right filtered, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2. THE STEREO HIGH-PASS LAW — each channel equals ALES40's mono high_pass with the same coefficient, and the per-channel reconstruction low_pass + high_pass = x holds where the difference fits.
+    // 2. THE STEREO HIGH-PASS LAW -- each channel equals ALES40's mono high_pass with the same coefficient, and the per-channel reconstruction low_pass + high_pass = x holds where the difference fits.
     {
         const ll = [_]i16{ 200, -100, 300, 50, -200, 0, 150 };
         const rr = [_]i16{ -150, 250, -50, 100, 0, -120, 80 };
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3a. THE PARAMETRIC / IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through both the low-pass and the high-pass: the same input through the same coefficient evolves the same state, so the two
+    // 3a. THE PARAMETRIC / IMAGE LAW -- an identical-channel (mono-in-stereo) master stays identical through both the low-pass and the high-pass: the same input through the same coefficient evolves the same state, so the two
     //     channels never split, the image held.
     {
         const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         if (!eq(hi.left.samples(), hi.right.samples())) return error.HighIdentitySplit;
     }
 
-    // 3b. THE CRUX, carried per channel — a constant input from silence low-passes toward the input and settles to it EXACTLY on each channel (direct current reached, not merely approached). With identical constant channels
+    // 3b. THE CRUX, carried per channel -- a constant input from silence low-passes toward the input and settles to it EXACTLY on each channel (direct current reached, not merely approached). With identical constant channels
     //     both settle to the same value, so the image is held at unity through the filter.
     {
         const run = [_]i16{1000} ** 30;
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (sc.left.samples()[0] >= 1000 or sc.right.samples()[0] >= 1000) return error.NotSmoothing; // the first sample rolled off below the input on both
     }
 
-    // 4. THE CARRY LAW — each channel carries its OWN state, so filtering a span in two pieces (the second continuing each side's ending state) equals filtering the whole span once, byte for byte on BOTH channels. Proven for
+    // 4. THE CARRY LAW -- each channel carries its OWN state, so filtering a span in two pieces (the second continuing each side's ending state) equals filtering the whole span once, byte for byte on BOTH channels. Proven for
     //    the low-pass; the high-pass carries the same low-pass state by construction.
     {
         const ll = [_]i16{ 2000, -14000, 14000, -2000, 9000, -9000, 6000, -6000 };
@@ -231,7 +231,7 @@ fn run_selftest() !u8 {
         if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
     }
 
-    // 5a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master low-passes and high-passes to silence on both; the channels stay equal length and each holds its starting length.
+    // 5a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master low-passes and high-passes to silence on both; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0 });
@@ -248,7 +248,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 5) return error.LengthChanged;
     }
 
-    // 5b. THE ATOMICITY LAW — a zero denominator, a zero numerator, a coefficient above one, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 5b. THE ATOMICITY LAW -- a zero denominator, a zero numerator, a coefficient above one, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -274,7 +274,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 5c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to filter.
+    // 5c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to filter.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

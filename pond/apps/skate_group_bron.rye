@@ -1,24 +1,24 @@
-//! pond/apps/skate_group_bron.rye — Season 3 Journey 10 (Membership), Rung 3: the signed group travels.
+//! pond/apps/skate_group_bron.rye -- Season 3 Journey 10 (Membership), Rung 3: the signed group travels.
 //!
 //! Rungs one and two fixed the quorum rule and bound each vote to a member's signature. A group is only
-//! useful to a commons if it can be *carried* — handed to another keeper, checked with no live group in
+//! useful to a commons if it can be *carried* -- handed to another keeper, checked with no live group in
 //! hand. This rung renders a signed group to a `format skate-group-v1` Bron record and parses it back
 //! byte-for-byte, still quorum-honest **offline**.
 //!
 //! A `SignedGroup` keeps, beside rung one's live group, the founder roster, the quorum, and the
-//! signature that authorized each vote — so the record it renders carries not just *that* a candidate was
+//! signature that authorized each vote -- so the record it renders carries not just *that* a candidate was
 //! admitted but *the votes that admitted them*. The traveled `PortableGroup` owns its own buffers, and
 //! `still_quorum_honest` re-verifies every carried vote signature against the recipient's keyring through
-//! rung two's own `verify_vote` — so a vote signature flipped after the crossing refuses `BadConsent`
+//! rung two's own `verify_vote` -- so a vote signature flipped after the crossing refuses `BadConsent`
 //! with no network, no store, no live group. `rebuild` replays the carried founders and votes through
 //! rung one's `open` and rung two's `vote_signed` into an equal live group, so the traveled admissions
 //! (who is a member) match the original exactly.
 //!
 //! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
 //! general parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`,
-//! a wrong header `BadFormat`, bad hex `BadHex`, a missing group line `MissingGroup`. Additive — composes
+//! a wrong header `BadFormat`, bad hex `BadHex`, a missing group line `MissingGroup`. Additive -- composes
 //! rungs one and two over public API; both re-run GREEN. Demo keeper seeds only, no network (a group
-//! served over the wire reaches the serve gate — Keaton's hand).
+//! served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_group_bron.rye -femit-bin=pond/bin/skate-group-bron
 //!   pond/bin/skate-group-bron selftest
@@ -104,7 +104,7 @@ pub const SignedGroup = struct {
     vote_sigs: [max_votes][sig_len]u8,
     vote_count: u32,
 
-    /// Open a signed group over a founder roster and quorum — the live group opens through rung one.
+    /// Open a signed group over a founder roster and quorum -- the live group opens through rung one.
     pub fn open(group_id: u32, founders: []const u32, quorum: u32) group_mod.GroupError!SignedGroup {
         var sg = SignedGroup{
             .group = try group_mod.Group.open(founders, quorum),
@@ -124,7 +124,7 @@ pub const SignedGroup = struct {
         return sg;
     }
 
-    /// Record a signed vote — verify and count through rung two, then keep the vote and its signature so
+    /// Record a signed vote -- verify and count through rung two, then keep the vote and its signature so
     /// the vote can travel with its member's word.
     pub fn record_vote(self: *SignedGroup, ring: *const signed.Keyring, voter: u32, candidate: u32, sig: *const [sig_len]u8) signed.GroupActError!void {
         try signed.vote_signed(&self.group, ring, self.group_id, voter, candidate, sig);
@@ -263,7 +263,7 @@ pub fn parse(text: []const u8) BronError!PortableGroup {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -325,7 +325,7 @@ fn welcome_round_trip_still_honest() !void {
     print("skate_group_bron: a signed group rendered to Bron, parsed back byte-for-byte, still quorum-honest offline, and rebuilt the identical admission.\n", .{});
 }
 
-/// A vote signature flipped after the crossing refuses offline — a tampered record cannot pass.
+/// A vote signature flipped after the crossing refuses offline -- a tampered record cannot pass.
 fn unwelcome_flipped_vote_refuses() !void {
     const ring = try demo_ring();
     var sg = try build_admitted(&ring);
@@ -339,7 +339,7 @@ fn unwelcome_flipped_vote_refuses() !void {
     print("skate_group_bron: a vote signature flipped after the crossing refused BadConsent offline.\n", .{});
 }
 
-/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+/// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
     const text = "format skate-group-v1\ngroup 7 2\nfounder 101\nghost 5\n";
     const bad = parse(text);
@@ -347,21 +347,21 @@ fn unwelcome_unknown_field_refuses() !void {
     print("skate_group_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
 }
 
-/// A wrong header refuses — the record must name its own format.
+/// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
     const bad = parse("format other-v1\ngroup 7 2\n");
     assert(bad == error.BadFormat);
     print("skate_group_bron: a wrong header refused BadFormat.\n", .{});
 }
 
-/// A record that never names its group line refuses — a group's id and quorum are required.
+/// A record that never names its group line refuses -- a group's id and quorum are required.
 fn unwelcome_missing_group_refuses() !void {
     const bad = parse("format skate-group-v1\nfounder 101\n");
     assert(bad == error.MissingGroup);
     print("skate_group_bron: a record with no group line refused MissingGroup.\n", .{});
 }
 
-/// Malformed hex in a vote signature refuses — the reader will not accept a corrupt signature field.
+/// Malformed hex in a vote signature refuses -- the reader will not accept a corrupt signature field.
 fn unwelcome_bad_hex_refuses() !void {
     const bad = parse("format skate-group-v1\ngroup 7 2\nvote 101 404 zz\n");
     assert(bad == error.BadHex);

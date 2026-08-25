@@ -1,16 +1,16 @@
-//! image/edit_touch_input.rye — HUNK50: the finger surface proper — a tap on a strip, a swipe left or right, becomes one edit gesture.
+//! image/edit_touch_input.rye -- HUNK50: the finger surface proper -- a tap on a strip, a swipe left or right, becomes one edit gesture.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK50.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK50.
 //! Design read: active-designing/date/20260813/20260813-204548_hunk-edit-touch-input-exploration.md
-//! Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) — a tap on a tool
-//! commits it, a swipe walks the undo/redo history — reduced to a classifier over raw touch coordinates (concept only,
+//! Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) -- a tap on a tool
+//! commits it, a swipe walks the undo/redo history -- reduced to a classifier over raw touch coordinates (concept only,
 //! siloed).
 //!
 //! HUNK48 gave the edit arc its input seam: a raw `edit_input.Gesture` (commit a verb, undo, redo) becomes exactly one
 //! EditCursor move. HUNK49 bound that seam and HUNK13's preview to one cursor, so the picture never drifts from the
-//! history. Both speak gestures — yet nothing turned a *finger* into one. A real touchscreen reports pixel coordinates,
+//! history. Both speak gestures -- yet nothing turned a *finger* into one. A real touchscreen reports pixel coordinates,
 //! not verb tags. This rung is that last mile, the exact parallel of HUNK46's touch-scroll session: a small classifier
-//! that reads a landing point and a lift point and decides — a tap on the gesture strip commits that cell's verb, a
+//! that reads a landing point and a lift point and decides -- a tap on the gesture strip commits that cell's verb, a
 //! swipe left is undo, a swipe right is redo. Pure over the finger; it produces a gesture and moves no cursor, leaving
 //! HUNK48 to apply it. No new arithmetic beyond a clamped delta and a cell index, no new refusal beyond the strip's own
 //! bounds. No network, no key, no funds.
@@ -27,7 +27,7 @@ const edit_input = @import("edit_input.rye");
 
 pub const edit_touch_input_version = "20260813.204548";
 
-/// The most verbs one gesture strip holds — a keeper's tool palette is a handful, never thousands. Named at
+/// The most verbs one gesture strip holds -- a keeper's tool palette is a handful, never thousands. Named at
 /// construction so the strip can never grow unbounded (TAME bound).
 pub const max_strip: u32 = 16;
 
@@ -38,7 +38,7 @@ pub const TouchEditError = error{
 };
 
 /// A finger surface over the Photos editor: a bounded gesture strip (the verb palette) plus the pixel geometry that
-/// tells a tap from a swipe, and the transient landing point of the finger in flight. It owns no cursor and no image —
+/// tells a tap from a swipe, and the transient landing point of the finger in flight. It owns no cursor and no image --
 /// it classifies a completed touch into exactly one `edit_input.Gesture` (or none), and the caller hands that to
 /// HUNK48's seam. The governing law: every decision is a clamped delta and a cell index, so the surface adds no
 /// arithmetic the earlier rungs have not already proven.
@@ -67,7 +67,7 @@ pub const EditTouch = struct {
     }
 
     /// Bind one verb to the next strip cell, refusing `StripFull` at the ceiling. The strip is built once, to the left
-    /// of any finger event — a keeper's palette, laid out before they touch it.
+    /// of any finger event -- a keeper's palette, laid out before they touch it.
     pub fn bind(self: *EditTouch, e: edits.Edit) TouchEditError!void {
         // invariant: the strip stands within its bound before the bind.
         assert(self.strip_len <= max_strip);
@@ -79,14 +79,14 @@ pub const EditTouch = struct {
         assert(self.strip_len <= max_strip);
     }
 
-    /// How many verbs the strip carries — for a caller laying out or painting the palette.
+    /// How many verbs the strip carries -- for a caller laying out or painting the palette.
     pub fn cells(self: *const EditTouch) u32 {
         // invariant: the strip count never exceeds its bound.
         assert(self.strip_len <= max_strip);
         return self.strip_len;
     }
 
-    /// The verb bound at strip cell `i` — for a surface painting the palette (HUNK52's chip row). A pure read; the
+    /// The verb bound at strip cell `i` -- for a surface painting the palette (HUNK52's chip row). A pure read; the
     /// caller asks only for cells within the bound the strip has grown.
     pub fn verb(self: *const EditTouch, i: u32) edits.Edit {
         // invariant: the asked cell holds a bound verb, within the strip's grown length.
@@ -107,7 +107,7 @@ pub const EditTouch = struct {
     }
 
     /// The finger lifts at pixel `(x, y)`. Classifies the completed touch into exactly one gesture, or none, and disarms.
-    /// A horizontal travel of at least `swipe_px` is a walk — left is `undo`, right is `redo` — and a swipe wins over
+    /// A horizontal travel of at least `swipe_px` is a walk -- left is `undo`, right is `redo` -- and a swipe wins over
     /// wherever it started (a drag is a walk, not a tap). Otherwise the landing `x` picks strip cell `x / cell_px`; a
     /// cell holding a verb commits it, and a tap off the strip (a negative `x` or past the last cell) fires nothing. The
     /// delta is taken in `i64` and clamped to `i32` so a wild jump never wraps.
@@ -172,7 +172,7 @@ fn same_image(a: *const qoi.Pixmap, b: *const qoi.Pixmap) bool {
 }
 
 /// Classify a whole touch (down at `xd`, up at `xu`) and apply the resulting gesture to a cursor through HUNK48's seam,
-/// returning whether a gesture fired — the exact two-layer path a device walks: the surface reads the finger, HUNK48
+/// returning whether a gesture fired -- the exact two-layer path a device walks: the surface reads the finger, HUNK48
 /// moves the history.
 fn touch(surface: *EditTouch, cursor: *edit_cursor.EditCursor, xd: i32, xu: i32) !bool {
     surface.finger_down(xd, 0);
@@ -198,7 +198,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // invariant: a fresh cursor stands at the original with nothing to walk.
     assert(cur.depth() == 0);
 
-    // A tap on cell 0 (x in [0,10)) commits flip_h — the viewed image is exactly that verb byte-for-byte.
+    // A tap on cell 0 (x in [0,10)) commits flip_h -- the viewed image is exactly that verb byte-for-byte.
     {
         const fired = try touch(&surface, &cur, 4, 5); // down and up within cell 0, no travel
         assert(fired);
@@ -208,7 +208,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_image(&seen, &want)); // the tap's commit is exactly the strip verb
     }
 
-    // A tap on cell 2 (x in [20,30)) stacks rotate one quarter — the two-verb replay tracked byte-for-byte.
+    // A tap on cell 2 (x in [20,30)) stacks rotate one quarter -- the two-verb replay tracked byte-for-byte.
     {
         const fired = try touch(&surface, &cur, 24, 24);
         assert(fired);
@@ -221,7 +221,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_image(&seen, &want));
     }
 
-    // A left swipe (a leftward travel past the 12px threshold) undoes — the picture returns to the one-verb image
+    // A left swipe (a leftward travel past the 12px threshold) undoes -- the picture returns to the one-verb image
     // recovered byte-for-byte, whatever cell the finger started over.
     const at_two = try edit_cursor.view(garden, &source, &cur);
     {
@@ -233,7 +233,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_image(&seen, &want)); // back to just flip_h
     }
 
-    // A right swipe redoes — forward to the two-verb image again, unchanged.
+    // A right swipe redoes -- forward to the two-verb image again, unchanged.
     {
         const fired = try touch(&surface, &cur, 10, 40); // dx +30, a hard right swipe
         assert(fired);
@@ -242,7 +242,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_image(&seen, &at_two));
     }
 
-    // A tap past the last cell fires nothing — a keeper who missed the strip edits nothing, the picture unchanged.
+    // A tap past the last cell fires nothing -- a keeper who missed the strip edits nothing, the picture unchanged.
     {
         const before = cur.depth();
         surface.finger_down(200, 0); // x 200 → cell 20, past strip_len 3
@@ -270,7 +270,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(!cur.can_redo());
     }
 
-    // A zero cell width and a zero swipe threshold each refuse at open by name — no later classification can divide by a
+    // A zero cell width and a zero swipe threshold each refuse at open by name -- no later classification can divide by a
     // zero cell or compare against a zero swipe.
     if (EditTouch.open(0, 12)) |_| return error.CellSlipped else |e| {
         if (e != error.BadCell) return error.WrongCell;
@@ -279,7 +279,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.BadSwipe) return error.WrongSwipe;
     }
 
-    // The strip's own ceiling refuses `StripFull` — bind to the bound, then one more refuses.
+    // The strip's own ceiling refuses `StripFull` -- bind to the bound, then one more refuses.
     {
         var full = try EditTouch.open(cell, 12);
         var k: u32 = 0;

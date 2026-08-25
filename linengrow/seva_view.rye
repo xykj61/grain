@@ -1,15 +1,15 @@
-//! linengrow/seva_view.rye — Seva R1: render what Pool hosts as a bounded frame.
+//! linengrow/seva_view.rye -- Seva R1: render what Pool hosts as a bounded frame.
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung R1: Realidream (Seva) renders one Pool-hosted agent's state as a pure
-//! fold from the state to a frame — the thin-view exception (local facts → a
+//! fold from the state to a frame -- the thin-view exception (local facts -> a
 //! small bounded frame, no Pond/Dexter), sourced from Pool rather than a
 //! local fixture. This is the first rung of the Landscape-parallel viewer:
 //! Pool hosts, Seva shows.
 //!
 //! A frame is a bounded list of short text lines derived purely from the
-//! hosted agent's folded state. Rendering is a deterministic fold — the same
-//! state always yields the same frame — and it shows only what Pool actually
+//! hosted agent's folded state. Rendering is a deterministic fold -- the same
+//! state always yields the same frame -- and it shows only what Pool actually
 //! hosts: an agent Pool refused (no capability) has no state, so there is
 //! nothing to render. Everything is bounded (line count, line width), per
 //! TAME.
@@ -20,7 +20,7 @@ const mc = @import("murr_core.rye");
 const pool = @import("pool_host_seam.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// A frame is small enough to eyeball — the thin-view discipline.
+/// A frame is small enough to eyeball -- the thin-view discipline.
 pub const max_frame_lines: u32 = 8;
 pub const max_line_width: u32 = 64;
 

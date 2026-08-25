@@ -1,19 +1,19 @@
-//! brushstroke/part_row.rye — HUNK73: a part row — the picture beside its honest facts, on glass.
+//! brushstroke/part_row.rye -- HUNK73: a part row -- the picture beside its honest facts, on glass.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK73.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK73.
 //! Design read: active-designing/date/20260813/20260813-232756_hunk-part-row-picture-and-facts-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's catalog row — a part is a picture PLUS its facts (concept only, siloed).
+//! Teacher, thanked clean-room: McMaster-Carr's catalog row -- a part is a picture PLUS its facts (concept only, siloed).
 //!
 //! HUNK71 bound honest facts beside each window (a part number, a material, a price in cents); HUNK72 gave the whole
-//! catalog a content address. Yet no rung had let a keeper SEE a part the way a real catalog shows one — the picture
+//! catalog a content address. Yet no rung had let a keeper SEE a part the way a real catalog shows one -- the picture
 //! beside the facts, in one reading. HUNK38/39 painted a `SpriteIndex` shelf (name beside a thumbnail swatch), but a
 //! `SpriteIndex` carries no facts, so the price and the part number never reached the glass. This rung is that reading.
 //! `part_shelf` paints a whole `PartCatalog`, one row per part: the product's thumbnail swatch at the right (HUNK38/39's
-//! own `paint_swatch`, the product's real colors down-mapped from the ONE shared sheet) and a fact line at the left —
-//! `<name>  <part#>  <material>  $D.CC` — so a keeper reads picture and facts together.
+//! own `paint_swatch`, the product's real colors down-mapped from the ONE shared sheet) and a fact line at the left --
+//! `<name>  <part#>  <material>  $D.CC` -- so a keeper reads picture and facts together.
 //!
 //! The crux is NO DRIFT between the stored facts and the painted row: the cells a keeper reads spell exactly the facts
-//! the catalog holds, and the price renders as exact dollars-and-cents (845 cents → `$8.45`), money a `u64` count of the
+//! the catalog holds, and the price renders as exact dollars-and-cents (845 cents -> `$8.45`), money a `u64` count of the
 //! smallest honest unit, FORMATTED for reading, never a balance the tree can move. No network, no key, no funds;
 //! disbursement stays a custody gate.
 //!
@@ -37,7 +37,7 @@ pub const part_row_version = "20260813.232756";
 pub const max_price_text: u32 = 24;
 
 /// A fact line holds the product name, its part number, its material, and its formatted price, each separated by a
-/// two-space gap. Bounded by the sum of the parts' own ceilings plus the gaps — a scratch buffer this wide can never
+/// two-space gap. Bounded by the sum of the parts' own ceilings plus the gaps -- a scratch buffer this wide can never
 /// overflow while a fact line is assembled.
 pub const max_fact_line: u32 =
     sprite.max_name_len + part_catalog.max_part_number_len + part_catalog.max_material_len + max_price_text + 8;
@@ -47,7 +47,7 @@ pub const PartRowError = error{
 };
 
 /// Write a `u64` as its decimal digits into `out`, returning the count written. Even zero prints one digit. The digit
-/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded — no unbounded work.
+/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded -- no unbounded work.
 fn write_u64(v: u64, out: []u8) u32 {
     // invariant: at least one digit is always written, so the destination needs at least one cell.
     assert(out.len >= 1);
@@ -75,7 +75,7 @@ fn write_u64(v: u64, out: []u8) u32 {
 }
 
 /// Format a `u64` count of cents as `$D.CC` into `out`, returning the length. The cents are always two digits (a
-/// price of `$8.05` never collapses to `$8.5`), the dollars exact and full-width. No float and no division loss —
+/// price of `$8.05` never collapses to `$8.5`), the dollars exact and full-width. No float and no division loss --
 /// money stays an integer count of the smallest honest unit. Refuses `Overflow` rather than write past `out`.
 pub fn format_price(cents: u64, out: []u8) PartRowError!u32 {
     // invariant: a price prints at least `$0.00`, so the destination needs room for five bytes.
@@ -97,7 +97,7 @@ pub fn format_price(cents: u64, out: []u8) PartRowError!u32 {
     n += 1;
     if (n > out.len) return error.Overflow;
     tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
-    // invariant: a price is `$`, at least one dollar digit, `.`, and two cents digits — five bytes or more.
+    // invariant: a price is `$`, at least one dollar digit, `.`, and two cents digits -- five bytes or more.
     assert(n >= 5);
     return n;
 }
@@ -114,13 +114,13 @@ fn append(dst: []u8, src: []const u8) u32 {
     return n;
 }
 
-/// Assemble a part's fact line — `<name>  <part#>  <material>  $D.CC` — into `out`, returning its length. The facts
+/// Assemble a part's fact line -- `<name>  <part#>  <material>  $D.CC` -- into `out`, returning its length. The facts
 /// are read straight from the catalog (`facts_at` / `entry`), so the line can never drift from what the catalog holds.
 /// Refuses `Overflow` when the caller's buffer is too small for the assembled line.
 pub fn format_fact_line(name: []const u8, facts: part_catalog.PartFacts, out: []u8) PartRowError!u32 {
     // invariant: a fact line needs at least a byte of room.
     assert(out.len >= 1);
-    // invariant: the name fits a product-name cell — the catalog guaranteed this when it stored the product.
+    // invariant: the name fits a product-name cell -- the catalog guaranteed this when it stored the product.
     assert(name.len <= sprite.max_name_len);
     var tmp: [max_fact_line]u8 = undefined;
     var n: u32 = 0;
@@ -172,7 +172,7 @@ fn draw_part_row(
 }
 
 /// Render a whole `PartCatalog` onto one Skate grid, one row per part reading its fact line beside its thumbnail
-/// swatch — the marketplace seen the way a real catalog shows it, picture and price together, every product drawn
+/// swatch -- the marketplace seen the way a real catalog shows it, picture and price together, every product drawn
 /// from the ONE shared sheet. Refuses `ShelfTooSmall` when the grid has fewer rows than the catalog has parts (a
 /// rendered shelf shows every part or none), beside the dimension refusals `fresh_grid` names.
 pub fn part_shelf(
@@ -184,7 +184,7 @@ pub fn part_shelf(
     // invariant: the catalog never outgrew its own sheet's product ceiling before it is drawn.
     assert(cat.len() <= sprite.max_products);
     const n = cat.len();
-    // A shelf shows every part or none — never the parts past the last row silently dropped.
+    // A shelf shows every part or none -- never the parts past the last row silently dropped.
     if (rows < n) return error.ShelfTooSmall;
 
     var grid = try fresh_grid(allocator, cols, rows);
@@ -199,7 +199,7 @@ pub fn part_shelf(
     return grid;
 }
 
-/// How many full pages a catalog of this size needs at `rows` parts per page — a ceiling division, so a short last
+/// How many full pages a catalog of this size needs at `rows` parts per page -- a ceiling division, so a short last
 /// page still counts. Reuses the sprite shelf's own paging over the catalog's wrapped index, so the parts shelf and
 /// the sprite shelf page by one law. Zero parts is zero pages.
 pub fn part_page_count(cat: *const part_catalog.PartCatalog, rows: u32) u32 {
@@ -208,7 +208,7 @@ pub fn part_page_count(cat: *const part_catalog.PartCatalog, rows: u32) u32 {
     return sprite_shelf.page_count(&cat.index, rows);
 }
 
-/// How many parts the page starting at `offset` shows — a full `rows` mid-catalog, fewer on the last page, zero
+/// How many parts the page starting at `offset` shows -- a full `rows` mid-catalog, fewer on the last page, zero
 /// when the offset lands at or past the catalog. The sprite shelf's own window length over the wrapped index.
 pub fn part_window_len(cat: *const part_catalog.PartCatalog, rows: u32, offset: u32) u32 {
     // invariant: a window is at least one row tall.
@@ -216,10 +216,10 @@ pub fn part_window_len(cat: *const part_catalog.PartCatalog, rows: u32, offset: 
     return sprite_shelf.window_len(&cat.index, rows, offset);
 }
 
-/// Render one page of the catalog — the parts `[offset, offset + rows)` — onto a fresh grid, so a catalog larger
+/// Render one page of the catalog -- the parts `[offset, offset + rows)` -- onto a fresh grid, so a catalog larger
 /// than the screen is fully reachable one page at a time. A window shows a slice, so it never refuses `ShelfTooSmall`;
 /// it refuses `BadOffset` when the offset lands past the catalog (a page with no part), so every page a keeper reaches
-/// is a real one. Together the pages cover the whole catalog in held order, each part once — paging loses nothing.
+/// is a real one. Together the pages cover the whole catalog in held order, each part once -- paging loses nothing.
 pub fn part_window(
     allocator: std.mem.Allocator,
     cat: *const part_catalog.PartCatalog,
@@ -230,7 +230,7 @@ pub fn part_window(
     // invariant: the catalog never outgrew its own sheet's product ceiling before it is paged.
     assert(cat.len() <= sprite.max_products);
     var grid = try fresh_grid(allocator, cols, rows);
-    // An offset past the catalog shows no part — refuse rather than paint an empty page. Offset 0 on an empty
+    // An offset past the catalog shows no part -- refuse rather than paint an empty page. Offset 0 on an empty
     // catalog is a real (empty) first page and is allowed.
     if (offset >= cat.len() and !(offset == 0 and cat.len() == 0)) return error.BadOffset;
 
@@ -246,7 +246,7 @@ pub fn part_window(
     return grid;
 }
 
-/// A fresh grid with the anchor palette set, after the shelf's dimension refusals — the same shape the sprite shelf
+/// A fresh grid with the anchor palette set, after the shelf's dimension refusals -- the same shape the sprite shelf
 /// builds, so a part row's swatch paints a solid color block. Refuses `EmptyShelf` on a zero dimension,
 /// `ShelfTooLarge` past the down-map ceiling, and `RowTooNarrow` when a row cannot hold a fact line and a swatch.
 fn fresh_grid(allocator: std.mem.Allocator, cols: u32, rows: u32) !skate.Grid {
@@ -261,11 +261,11 @@ fn fresh_grid(allocator: std.mem.Allocator, cols: u32, rows: u32) !skate.Grid {
     return grid;
 }
 
-// --- selftest: three parts indexed into one four-band sheet, each with honest facts — the shelf paints each row's
+// --- selftest: three parts indexed into one four-band sheet, each with honest facts -- the shelf paints each row's
 //     fact line (name, part number, material, exact price) and each row's swatch its product's own color, the painted
 //     facts equal the stored facts (no drift), the price formats exactly, and the shelf's refusals fire -------------
 
-/// A 16x8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window carries one unambiguous
+/// A 16x8 sheet in four solid vertical bands -- red, green, blue, yellow -- so a 4-wide window carries one unambiguous
 /// color a down-map resolves to a known anchor slot (3,4,5,6), exactly as the sprite shelf's own fixture does.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
@@ -286,14 +286,14 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The slot the swatch of `row` wears — its first swatch cell at the right of the row.
+/// The slot the swatch of `row` wears -- its first swatch cell at the right of the row.
 fn row_swatch_slot(grid: *const skate.Grid, row: u32) u8 {
     const swatch_x0 = grid.cols - sprite_shelf.swatch_cols;
     const ci: usize = @intCast(row * grid.cols + swatch_x0);
     return grid.fg_index[ci];
 }
 
-/// Read a row's fact line back as bytes — the label region a keeper reads (the cells left of the gap and swatch),
+/// Read a row's fact line back as bytes -- the label region a keeper reads (the cells left of the gap and swatch),
 /// trimmed of the blank tail (`Grid.init` fills cells with spaces). So the reader sees exactly the painted line.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
@@ -322,7 +322,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(shelf.cols == cols);
     assert(shelf.rows == rows);
 
-    // Each row's fact line equals the facts the catalog holds — no drift between store and view. The line reads the
+    // Each row's fact line equals the facts the catalog holds -- no drift between store and view. The line reads the
     // name, the part number, the material, and the exact formatted price, gap-separated.
     {
         var buf: [max_fact_line]u8 = undefined;
@@ -334,7 +334,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..n2], "gear  GR-24T  steel  $8.45"));
     }
 
-    // Each row's swatch wears its product's own down-mapped color — the picture true to the one sheet.
+    // Each row's swatch wears its product's own down-mapped color -- the picture true to the one sheet.
     assert(row_swatch_slot(&shelf, 0) == 3); // red
     assert(row_swatch_slot(&shelf, 1) == 4); // green
     assert(row_swatch_slot(&shelf, 2) == 5); // blue
@@ -353,7 +353,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // Paging loses nothing: three parts at two rows per page need two pages (window_len 2, then 1). Each page draws
-    // its own slice in held order, and walking every page shows each part exactly once — the second page's first row
+    // its own slice in held order, and walking every page shows each part exactly once -- the second page's first row
     // reads gear, the part the first page could not hold.
     {
         assert(part_page_count(&cat, 2) == 2);
@@ -367,13 +367,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         const p1r0 = row_text(&page1, 0, buf[0..]);
         assert(std.mem.eql(u8, buf[0..p1r0], "gear  GR-24T  steel  $8.45")); // the part page 0 could not hold
         assert(row_swatch_slot(&page1, 0) == 5); // gear's own blue swatch, drawn on its page
-        // An offset past the catalog refuses BadOffset — every page a keeper reaches holds a real part.
+        // An offset past the catalog refuses BadOffset -- every page a keeper reaches holds a real part.
         if (part_window(garden, &cat, cols, 2, 3)) |_| return error.PageSlipped else |e| {
             if (e != error.BadOffset) return error.WrongPage;
         }
     }
 
-    // The shelf is genuinely seen: it rasterizes to a lit canvas — the fact lines and swatches reach the glass.
+    // The shelf is genuinely seen: it rasterizes to a lit canvas -- the fact lines and swatches reach the glass.
     {
         const scale: u32 = 1;
         const width: u32 = shelf.cols * skate.cell_w * scale;

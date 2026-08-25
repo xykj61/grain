@@ -1,8 +1,8 @@
-//! linengrow/hearth_lulu5.rye — LULU5: cellular preference on Settings.
+//! linengrow/hearth_lulu5.rye -- LULU5: cellular preference on Settings.
 //!
 //! Used-Pixel Wired Glass metalsmoke: `cellular off|optional` in Hearth Bron,
 //! painted on Settings row 10. Default off. Tap toggles + persists. Does not
-//! change radio state yet — preference + chrome only. Live Setu USB is later.
+//! change radio state yet -- preference + chrome only. Live Setu USB is later.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -13,7 +13,7 @@ pub const waymark: []const u8 = hearth.waymark;
 pub const cell_row: u32 = 10;
 pub const cell_line_max: u32 = 32;
 
-/// `cell · off` or `cell · optional`.
+/// `cell - off` or `cell - optional`.
 pub fn format_cell_line(c: hearth.Cellular, out: *[cell_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(out, "cell · {s}", .{c.name()}) catch return null;
     // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn

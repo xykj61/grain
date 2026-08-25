@@ -1,18 +1,18 @@
-//! brushstroke/edit_filmstrip_jump.rye — HUNK55: tap a filmstrip thumbnail, the cursor jumps there — the band tapped is the band marked.
+//! brushstroke/edit_filmstrip_jump.rye -- HUNK55: tap a filmstrip thumbnail, the cursor jumps there -- the band tapped is the band marked.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK55.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK55.
 //! Design read: active-designing/date/20260813/20260813-212112_hunk-filmstrip-jump-exploration.md
-//! Teacher, thanked clean-room: the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) — a keeper
+//! Teacher, thanked clean-room: the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) -- a keeper
 //! taps a thumbnail in the history strip and the picture jumps to that step (concept only, siloed).
 //!
-//! HUNK54 paints the whole edit history as a filmstrip — a marker over the step the cursor stands on — yet a keeper
+//! HUNK54 paints the whole edit history as a filmstrip -- a marker over the step the cursor stands on -- yet a keeper
 //! could only *read* it; the finger arc (HUNK50) walked the history one step per swipe. A filmstrip a keeper can read is
 //! one they want to tap: touch thumbnail k, land on step k, in one gesture. This rung is that surface. FilmstripJump
 //! owns one EditCursor and the filmstrip's thumbnail geometry; `tap_at` classifies a pixel tap into a band (HUNK50's own
-//! `x / cell_px` idiom, here `x / band_px`) and seeks the cursor there through HUNK16's new `seek` — a jump that forgets
+//! `x / cell_px` idiom, here `x / band_px`) and seeks the cursor there through HUNK16's new `seek` -- a jump that forgets
 //! nothing, unlike a fresh push. `paint` is HUNK54's `filmstrip` unchanged, so the marker lands on exactly the sought
 //! step: the band a keeper TAPS equals the band the marker SHOWS (HUNK52's no-drift discipline carried to the strip). A
-//! pure composition — no new render primitive, no new arithmetic beyond a clamped division, no new failure mode. No
+//! pure composition -- no new render primitive, no new arithmetic beyond a clamped division, no new failure mode. No
 //! network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_filmstrip_jump.rye selftest
@@ -34,7 +34,7 @@ pub const FilmstripJumpError = error{
 };
 
 /// A tap-to-jump surface over the edit-history filmstrip: it owns one EditCursor (the history a keeper builds and
-/// navigates) and the thumbnail geometry the filmstrip tiles with. It invents no pixels of its own — `paint` is HUNK54's
+/// navigates) and the thumbnail geometry the filmstrip tiles with. It invents no pixels of its own -- `paint` is HUNK54's
 /// `filmstrip`, and a tap seeks the cursor so the marker lands where the finger did. The governing geometry: one
 /// thumbnail band is `tcols` cells, each `skate.cell_w` pixels wide, so a tap at pixel `x` picks band `x / band_px`,
 /// the exact parallel of HUNK50's `x / cell_px`.
@@ -45,7 +45,7 @@ pub const FilmstripJump = struct {
 
     /// Open a jump surface tiling `tcols`×`trows` thumbnails. Validates both dimensions positive once at construction
     /// (refusing `BadThumb`), so no later tap divides by a zero band and no paint down-maps a zero block. The cursor
-    /// opens empty — the history is built by `push` before it is walked.
+    /// opens empty -- the history is built by `push` before it is walked.
     pub fn open(tcols: u32, trows: u32) FilmstripJumpError!FilmstripJump {
         // invariant: a thumbnail has both dimensions, so a band has real pixel width and each step down-maps a real block.
         if (tcols == 0 or trows == 0) return error.BadThumb;
@@ -57,7 +57,7 @@ pub const FilmstripJump = struct {
     }
 
     /// Record a fresh edit at the live position, delegating to HUNK16's `push` (forgetting any redo tail, refusing
-    /// `TooManyEdits` at the list's own ceiling — the only refusal building the history can surface). The strip of
+    /// `TooManyEdits` at the list's own ceiling -- the only refusal building the history can surface). The strip of
     /// thumbnails is built before any finger walks it.
     pub fn push(self: *FilmstripJump, e: edits.Edit) edits.EditsError!void {
         // invariant: the cursor stands within its history before the push.
@@ -67,7 +67,7 @@ pub const FilmstripJump = struct {
         assert(self.cursor.position == self.cursor.list.count);
     }
 
-    /// The pixel width of one thumbnail band — `tcols` cells, each `skate.cell_w` pixels at scale 1. The divisor a tap
+    /// The pixel width of one thumbnail band -- `tcols` cells, each `skate.cell_w` pixels at scale 1. The divisor a tap
     /// is classified against; positive by construction (`tcols >= 1`), so the classification is well-formed.
     pub fn band_px(self: *const FilmstripJump) u32 {
         // invariant: a band spans at least one cell's worth of pixels.
@@ -75,7 +75,7 @@ pub const FilmstripJump = struct {
         return self.tcols * skate.cell_w;
     }
 
-    /// How many steps the filmstrip paints — the untouched source plus one thumbnail per recorded edit.
+    /// How many steps the filmstrip paints -- the untouched source plus one thumbnail per recorded edit.
     pub fn steps(self: *const FilmstripJump) u32 {
         // invariant: the cursor stands within its history.
         assert(self.cursor.position <= self.cursor.list.count);
@@ -84,7 +84,7 @@ pub const FilmstripJump = struct {
 
     /// Classify a pixel tap at `x` into the filmstrip band it lands on, or `null` for a tap off the strip. A negative
     /// `x` (off the left edge) fires nothing; `band = x / band_px`; a band past the last thumbnail (`band >= steps`)
-    /// fires nothing. Pure — it reads the geometry and moves nothing.
+    /// fires nothing. Pure -- it reads the geometry and moves nothing.
     pub fn tap_band(self: *const FilmstripJump, x: i32) ?u32 {
         // invariant: the cursor stands within its history.
         assert(self.cursor.position <= self.cursor.list.count);
@@ -95,7 +95,7 @@ pub const FilmstripJump = struct {
     }
 
     /// Tap the filmstrip at pixel `x`: classify the band and, when the tap lands on a thumbnail, seek the cursor to that
-    /// step through HUNK16's `seek` — a jump that forgets nothing, so every edit stays reachable. Returns the band the
+    /// step through HUNK16's `seek` -- a jump that forgets nothing, so every edit stays reachable. Returns the band the
     /// cursor landed on, or `null` for a tap off the strip (the cursor unmoved). The one call that turns a tap into a
     /// jump.
     pub fn tap_at(self: *FilmstripJump, x: i32) ?u32 {
@@ -112,9 +112,9 @@ pub const FilmstripJump = struct {
         return band;
     }
 
-    /// Paint the whole edit history as a filmstrip with the marker on the step the cursor stands on — HUNK54's
+    /// Paint the whole edit history as a filmstrip with the marker on the step the cursor stands on -- HUNK54's
     /// `filmstrip` unchanged. Because a tap seeks the cursor and the marker paints at `cursor.position`, the band a
-    /// keeper tapped is the band the marker shows. Pure — the history is read, never moved, the source never mutated.
+    /// keeper tapped is the band the marker shows. Pure -- the history is read, never moved, the source never mutated.
     pub fn paint(self: *const FilmstripJump, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
         // invariant: the cursor stands within its history before the replay.
         assert(self.cursor.position <= self.cursor.list.count);
@@ -122,7 +122,7 @@ pub const FilmstripJump = struct {
     }
 };
 
-// --- selftest: an 8x8 two-tone source, a jump surface holding three edits — a tap centered on band k seeks the cursor
+// --- selftest: an 8x8 two-tone source, a jump surface holding three edits -- a tap centered on band k seeks the cursor
 //     to step k, the repainted marker sits on exactly band k (no drift), a jump forgets nothing (back then forward
 //     recovers the full picture), a tap off the strip fires nothing, and a bad thumbnail refuses at open --------------
 
@@ -145,14 +145,14 @@ fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The x-pixel at the center of band `k` — a real tap a device would report, landing squarely inside the band's span
-/// `[k·band_px, (k+1)·band_px)`.
+/// The x-pixel at the center of band `k` -- a real tap a device would report, landing squarely inside the band's span
+/// `[k-band_px, (k+1)-band_px)`.
 fn band_center_x(surface: *const FilmstripJump, k: u32) i32 {
     const bpx = surface.band_px();
     return @intCast(k * bpx + bpx / 2);
 }
 
-/// Assert the filmstrip's marker block sits on band `k` and nowhere else — the tapped band equals the marked band.
+/// Assert the filmstrip's marker block sits on band `k` and nowhere else -- the tapped band equals the marked band.
 fn marker_on_band(film: *const skate.Grid, tcols: u32, k: u32) void {
     const bands = film.cols / tcols;
     var band: u32 = 0;
@@ -182,7 +182,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(surface.steps() == 4);
 
     // Tap-to-jump lands exactly: a tap centered on band 1 seeks the cursor to position 1; band 2 to position 2; band 0
-    // (the source) to position 0. Each time the repainted marker sits on exactly the tapped band — no drift.
+    // (the source) to position 0. Each time the repainted marker sits on exactly the tapped band -- no drift.
     {
         var k: u32 = 0;
         while (k < surface.steps()) : (k += 1) {
@@ -195,7 +195,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A jump forgets nothing: jump back to step 1, then forward to step 3 — the full picture returns byte-for-byte, so
+    // A jump forgets nothing: jump back to step 1, then forward to step 3 -- the full picture returns byte-for-byte, so
     // every edit stayed reachable (a jump is a walk, never a push that discards the redo tail).
     {
         _ = surface.tap_at(band_center_x(&surface, 3)); // stand at the live edge
@@ -209,7 +209,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(back.same_bytes(&full)); // the whole history rolled forward, unchanged
     }
 
-    // A tap off the strip fires nothing — the cursor stays exactly where it stood, and a negative-x tap likewise.
+    // A tap off the strip fires nothing -- the cursor stays exactly where it stood, and a negative-x tap likewise.
     {
         _ = surface.tap_at(band_center_x(&surface, 2)); // stand on band 2
         const before = surface.cursor.position;
@@ -221,7 +221,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(surface.cursor.position == before);
     }
 
-    // Genuinely seen: after a tap the filmstrip rasterizes to a lit canvas — the whole road reaches the glass with the
+    // Genuinely seen: after a tap the filmstrip rasterizes to a lit canvas -- the whole road reaches the glass with the
     // marker on the tapped step.
     {
         _ = surface.tap_at(band_center_x(&surface, 1));
@@ -238,7 +238,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(lit > 0);
     }
 
-    // A bad thumbnail refuses at open by name — a zero-dimension thumbnail would divide a tap by a zero band.
+    // A bad thumbnail refuses at open by name -- a zero-dimension thumbnail would divide a tap by a zero band.
     if (FilmstripJump.open(0, trows)) |_| return error.ThumbSlipped else |e| {
         if (e != error.BadThumb) return error.WrongThumb;
     }

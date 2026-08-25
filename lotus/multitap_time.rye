@@ -1,25 +1,25 @@
-//! lotus/multitap_time.rye — ALES69: the multi-tap delay in real time — taps named in MILLISECONDS. ALES68 opened the multi-tap, yet
+//! lotus/multitap_time.rye -- ALES69: the multi-tap delay in real time -- taps named in MILLISECONDS. ALES68 opened the multi-tap, yet
 //! each tap's delay is a count of sample INDICES ("a tap 4800 samples later"). A musician names an early reflection in TIME ("a tap a
 //! tenth of a second later"), and the one missing fact is the sample rate, which ALES5's validated Clock already holds. Every index-named
-//! rung has earned its real-time twin this way: fade_ms over the fade, place_at in seconds, marker_time over the markers, and — one rung
-//! ago — echo_ms over the feedback echo. This rung gives the multi-tap the same face, mirroring echo_ms exactly.
+//! rung has earned its real-time twin this way: fade_ms over the fade, place_at in seconds, marker_time over the markers, and -- one rung
+//! ago -- echo_ms over the feedback echo. This rung gives the multi-tap the same face, mirroring echo_ms exactly.
 //!
 //! The crux is the family's signature: THE CLOCK ADDS ONLY THE UNITS, NEVER THE AUDIO. multitap_ms converts start_ms, count_ms, and each
 //! tap's delay_ms through ALES5's proven clock.samples_for (bounded, refusing DurationTooLong past the clip) into an index-named Tap set
 //! and delegates to ALES68's multitap UNCHANGED, so the millisecond-named multi-tap lands BYTE-FOR-BYTE the same samples as the
-//! index-named multi-tap over the converted delays and span. Because samples_for is divTrunc(rate·ms, 1000), a tap delay too short to be
-//! one whole sample converts to 0, which ALES68 already refuses BadDelay — so a sub-sample tap refuses honestly rather than silently doing
+//! index-named multi-tap over the converted delays and span. Because samples_for is divTrunc(rate-ms, 1000), a tap delay too short to be
+//! one whole sample converts to 0, which ALES68 already refuses BadDelay -- so a sub-sample tap refuses honestly rather than silently doing
 //! nothing.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES69.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES69.
 //! Design read: active-designing/date/20260814/20260814-193359_fill-ales69-lotus-multi-tap-delay-in-real-time.md
-//! Stands on: lotus/taps.rye (ALES68) — the multi-tap delay this speaks in real time, delegated unchanged; lotus/clock.rye (ALES5) — the
+//! Stands on: lotus/taps.rye (ALES68) -- the multi-tap delay this speaks in real time, delegated unchanged; lotus/clock.rye (ALES5) -- the
 //! sample clock, its samples_for converting ms to a bounded sample count and its echo_ms/fade_ms the payoff pattern this follows.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and a bounded timed-tap slice,
-//! siloed to lotus/. No socket, no network, no keys, no funds, no real device — the clock is a samples-per-second count, not a claim about
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and a bounded timed-tap slice,
+//! siloed to lotus/. No socket, no network, no keys, no funds, no real device -- the clock is a samples-per-second count, not a claim about
 //! any hardware clock; each tap gain is a plain fraction. No lookahead beyond ALES68's snapshot read. No new arithmetic on the audio path
-//! — the clock's own conversion into a bounded stack Tap buffer, then the proven multi-tap.
+//! -- the clock's own conversion into a bounded stack Tap buffer, then the proven multi-tap.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/multitap_time.rye selftest
 
@@ -42,17 +42,17 @@ pub const TapMs = struct {
 };
 
 /// The combined error set of the timed multi-tap face: ALES5's clock edges and ALES68's multi-tap edges, forwarded unchanged. Every
-/// fault refuses by name before any write — DurationTooLong from the clock (a span or tap delay past the clip), and BadTapCount,
+/// fault refuses by name before any write -- DurationTooLong from the clock (a span or tap delay past the clip), and BadTapCount,
 /// BadDelay (the converted delay being zero among them), BadLevel, and BadRange from the multi-tap.
 pub const MultitapTimeError = clock.ClockError || taps.TapError;
 
 /// Multi-tap a span named in MILLISECONDS: convert `start_ms`, `count_ms`, and each tap's `delay_ms` through ALES5's proven
 /// clock.samples_for (bounded, refusing DurationTooLong past the clip) into an index-named Tap set, then delegate to ALES68's multitap
-/// UNCHANGED — the same fixed taps of the frozen dry, now named in real time. The clock adds only the units, so this lands byte-for-byte
+/// UNCHANGED -- the same fixed taps of the frozen dry, now named in real time. The clock adds only the units, so this lands byte-for-byte
 /// the same samples as the index-named multi-tap over the converted delays and span. A tap delay too short to be one whole sample
 /// converts to zero, which the multi-tap refuses BadDelay, so a sub-sample tap refuses honestly. The tap count is checked against
 /// max_taps first (BadTapCount before any conversion). Forwards ALES5's DurationTooLong and ALES68's BadTapCount / BadDelay / BadLevel /
-/// BadRange before any write. Values only — never a length.
+/// BadRange before any write. Values only -- never a length.
 pub fn multitap_ms(
     clip: *timeline.Clip,
     clk: clock.Clock,
@@ -67,7 +67,7 @@ pub fn multitap_ms(
     if (taps_ms.len == 0) return error.BadTapCount;
     if (taps_ms.len > taps.max_taps) return error.BadTapCount;
 
-    // Convert each timed tap into an index-named Tap in a bounded stack buffer — the delay through the clock, the level carried unchanged.
+    // Convert each timed tap into an index-named Tap in a bounded stack buffer -- the delay through the clock, the level carried unchanged.
     var buf: [taps.max_taps]taps.Tap = undefined;
     var k: u32 = 0;
     while (k < taps_ms.len) : (k += 1) {
@@ -80,13 +80,13 @@ pub fn multitap_ms(
     const count = try clock.samples_for(clk, count_ms);
     // invariant: exactly the given taps were converted, within the buffer bound.
     assert(k == taps_ms.len and k <= buf.len);
-    // The multi-tap is ALES68's, unchanged — the clock added only the units. A zero converted delay is refused BadDelay there.
+    // The multi-tap is ALES68's, unchanged -- the clock added only the units. A zero converted delay is refused BadDelay there.
     try taps.multitap(clip, start, count, buf[0..taps_ms.len]);
 }
 
 // --- selftest: at a legible clock (1 sample per ms) a multi-tap named in ms lands byte-for-byte the same samples as the index-named
 //     multi-tap over the converted delays and span (the grounding law, both tools run); at 48 kHz a tap delay converts by
-//     divTrunc(48000·ms, 1000) and lands there; two timed taps are two independent copies; a sub-sample tap refuses BadDelay; a span or
+//     divTrunc(48000-ms, 1000) and lands there; two timed taps are two independent copies; a sub-sample tap refuses BadDelay; a span or
 //     tap past the clip refuses DurationTooLong; and the multi-tap's own faults forward -------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -101,7 +101,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CLOCK ADDS ONLY UNITS — at 1 sample per ms, a multi-tap named in ms lands byte-for-byte the same samples as the index-named
+    // 1. THE CLOCK ADDS ONLY UNITS -- at 1 sample per ms, a multi-tap named in ms lands byte-for-byte the same samples as the index-named
     //    multi-tap over the converted delays and span. Run both tools and demand equality: multitap_ms adds no arithmetic on the audio path.
     {
         const c = try clock.make(1000); // 1 sample per ms — a millisecond equals a sample, legible on a bench
@@ -128,7 +128,7 @@ fn run_selftest() !u8 {
         if (!eq(timed.samples(), &want)) return error.CopiesWrong;
     }
 
-    // 2. A REAL RATE CONVERTS HONESTLY — at 48 kHz, 1 ms converts to divTrunc(48000·1, 1000) = 48 samples. A single tap at delay 1 ms
+    // 2. A REAL RATE CONVERTS HONESTLY -- at 48 kHz, 1 ms converts to divTrunc(48000-1, 1000) = 48 samples. A single tap at delay 1 ms
     //    over a clip long enough to hold it lands the copy exactly 48 samples after the impulse, matching the index-named tap at delay 48.
     {
         const c = try clock.make(48000);
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (timed.samples()[48] != 5000) return error.CopyNotAtConvertedDelay;
     }
 
-    // 3. TWO TIMED TAPS ARE TWO INDEPENDENT COPIES — the ALES68 independence carried into real time: the 4 ms copy is 1/4 of the ORIGINAL
+    // 3. TWO TIMED TAPS ARE TWO INDEPENDENT COPIES -- the ALES68 independence carried into real time: the 4 ms copy is 1/4 of the ORIGINAL
     //    dry (= 2000), not a copy-of-a-copy. Proven directly on the case-1 result: index 4 is 2000, and index 2 (the tap-2 copy) is 4000.
     {
         const c = try clock.make(1000);
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (clip.samples()[4] != 2000) return error.Tap4NotIndependent; // 1/4 of the ORIGINAL 8000, not of the tap-2 output
     }
 
-    // 4. A SUB-SAMPLE TAP REFUSES BadDelay — at 1 sample per ms a delay of 0 ms converts to 0 samples, which the multi-tap refuses; the
+    // 4. A SUB-SAMPLE TAP REFUSES BadDelay -- at 1 sample per ms a delay of 0 ms converts to 0 samples, which the multi-tap refuses; the
     //    timed face forwards it by name rather than silently doing nothing, the clip untouched.
     {
         const c = try clock.make(1000);
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedSubSampleMutated;
     }
 
-    // 5. A DELAY PAST THE CLIP REFUSES DurationTooLong — a delay_ms whose sample count exceeds max_clip is refused by the clock's own
+    // 5. A DELAY PAST THE CLIP REFUSES DurationTooLong -- a delay_ms whose sample count exceeds max_clip is refused by the clock's own
     //    bound, before any write, the clip untouched.
     {
         const c = try clock.make(1000);
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedLongDelayMutated;
     }
 
-    // 6. THE MULTI-TAP'S FAULTS FORWARD — zero taps refuses BadTapCount, a tap above unity refuses BadLevel, an out-of-range span refuses
+    // 6. THE MULTI-TAP'S FAULTS FORWARD -- zero taps refuses BadTapCount, a tap above unity refuses BadLevel, an out-of-range span refuses
     //    BadRange, each by name, the clip untouched.
     {
         const c = try clock.make(1000);

@@ -1,4 +1,4 @@
-//! linengrow/setu2_lane_wire.rye — SETU2: SETU1 lane ping over hosted UDP.
+//! linengrow/setu2_lane_wire.rye -- SETU2: SETU1 lane ping over hosted UDP.
 //!
 //! Approved thin face: the sealed usb_desk ping crosses localhost UDP (Comlink
 //! hosted-wire shape) as the Setu lane stand-in before a real CDC-NCM gadget.

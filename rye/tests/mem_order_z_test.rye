@@ -1,4 +1,4 @@
-//! Rye test: std.mem.orderZ and findSentinel — pass 9952.
+//! Rye test: std.mem.orderZ and findSentinel -- pass 9952.
 //!
 //! NUL-terminated C-string compare pairs with mem.order (9953); findSentinel
 //! backs slice length for sentinel-terminated pointers.

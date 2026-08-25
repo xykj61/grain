@@ -1,20 +1,20 @@
-//! constel/switchboard.rye — FORA6: a switchboard, a whole local constellation routed by name. Every rung before this joined
-//! exactly two piers — one initiator, one responder, one pair of channels. Yet Constel is named for a CONSTELLATION: many
+//! constel/switchboard.rye -- FORA6: a switchboard, a whole local constellation routed by name. Every rung before this joined
+//! exactly two piers -- one initiator, one responder, one pair of channels. Yet Constel is named for a CONSTELLATION: many
 //! piers standing up together. FORA1's roster already holds up to eight distinct fake piers; this rung is the first that lets
 //! three or more of them meet through one shared medium. Its one new concern is the one a real network of many piers forces
-//! and nothing before it did — route a frame to the right pier BY NAME: every pier holds its own mailbox, a delivery reaches
+//! and nothing before it did -- route a frame to the right pier BY NAME: every pier holds its own mailbox, a delivery reaches
 //! exactly one of them, and a stranger's name refuses before a byte moves.
 //!
-//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA6.
+//! Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA6.
 //! Design read: active-designing/date/20260814/20260814-045802_fora6-constel-switchboard-multi-pier.md
-//! Stands on: constel/roster.rye (FORA1) — membership; constel/channel.rye (FORA5) — each pier's mailbox; constel/exchange.rye
-//! (FORA4) — the handshake the switchboard carries.
+//! Stands on: constel/roster.rye (FORA1) -- membership; constel/channel.rye (FORA5) -- each pier's mailbox; constel/exchange.rye
+//! (FORA4) -- the handshake the switchboard carries.
 //!
-//! Purely LOCAL — a bounded set of per-pier byte queues on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and
-//! gate %4 — real Kumara, real network — both untouched). The switchboard only ROUTES; it never re-checks a frame, so the two
+//! Purely LOCAL -- a bounded set of per-pier byte queues on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and
+//! gate %4 -- real Kumara, real network -- both untouched). The switchboard only ROUTES; it never re-checks a frame, so the two
 //! FORA3 trust gates (Sha256 integrity + the naming-law border at wire.deframe_*) stay the only trust boundary. The real
-//! Comlink socket is this same switchboard with each mailbox backed by a kernel file descriptor — a later, GATED round.
+//! Comlink socket is this same switchboard with each mailbox backed by a kernel file descriptor -- a later, GATED round.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/switchboard.rye selftest
 
@@ -32,26 +32,26 @@ const roster = @import("roster.rye");
 pub const switchboard_version = "20260814.045802";
 
 pub const SwitchboardError = error{
-    /// A deliver or receive named a pier the roster does not hold — refused before a byte moves.
+    /// A deliver or receive named a pier the roster does not hold -- refused before a byte moves.
     NoSuchPier,
 } || channel.ChannelError || roster.RosterError;
 
 /// The shared medium of a local constellation: one channel.Channel mailbox per member of a roster. The ONLY thing two piers
-/// share — each still holds only its own exchange.Party view and reads only its own mailbox. A frame carries no destination
+/// share -- each still holds only its own exchange.Party view and reads only its own mailbox. A frame carries no destination
 /// field; the medium routes by the name handed to `deliver`, the honest local model of a network that knows which wire
 /// reaches which pier. No new bound of its own beyond roster.max_piers mailboxes.
 pub const Switchboard = struct {
     roster: roster.Roster = roster.Roster.init(),
     boxes: [roster.max_piers]channel.Channel = [_]channel.Channel{.{}} ** roster.max_piers,
 
-    /// The current member count — how many piers stand in the constellation.
+    /// The current member count -- how many piers stand in the constellation.
     pub fn size(self: *const Switchboard) u32 {
         // invariant: a switchboard never holds more members than the roster bound.
         assert(self.roster.size() <= roster.max_piers);
         return self.roster.size();
     }
 
-    /// Seat n fake piers and their n empty mailboxes in one call — roster.stand_up draws indices 0…n-1 deterministically, and
+    /// Seat n fake piers and their n empty mailboxes in one call -- roster.stand_up draws indices 0...n-1 deterministically, and
     /// every box begins drained. Refuses RosterFull past the bound.
     pub fn stand_up(self: *Switchboard, n: u32) SwitchboardError!void {
         // invariant: cannot stand up more piers than the constellation bound holds.
@@ -65,7 +65,7 @@ pub const Switchboard = struct {
         while (i < n) : (i += 1) assert(self.boxes[i].available() == 0);
     }
 
-    /// The mailbox slot for a pier, or NoSuchPier — a roster.find whose NotFound is surfaced as the switchboard's own fault.
+    /// The mailbox slot for a pier, or NoSuchPier -- a roster.find whose NotFound is surfaced as the switchboard's own fault.
     pub fn member(self: *const Switchboard, who: []const u8) SwitchboardError!u32 {
         const slot = self.roster.find(who) catch return error.NoSuchPier;
         // invariant: a found slot is a real member index, in range of the current count.
@@ -74,29 +74,29 @@ pub const Switchboard = struct {
     }
 
     /// Push a frame's bytes onto `to`'s inbound mailbox, refusing NoSuchPier if no member wears that name. The switchboard
-    /// routes and never re-checks — the frame's trust gates were run at framing and are re-run at the receiver's deframe.
+    /// routes and never re-checks -- the frame's trust gates were run at framing and are re-run at the receiver's deframe.
     pub fn deliver(self: *Switchboard, to: []const u8, frame: *const wire.Frame) SwitchboardError!void {
         const slot = try self.member(to);
         // invariant: delivery only ever reaches a real mailbox in range.
         assert(slot < roster.max_piers);
         try channel.send(&self.boxes[slot], frame);
-        // invariant: a delivered frame lands whole — at least a header now waits in the destination mailbox.
+        // invariant: a delivered frame lands whole -- at least a header now waits in the destination mailbox.
         assert(self.boxes[slot].available() >= wire.header_len);
     }
 
-    /// Read exactly ONE whole frame off `from`'s own mailbox (channel.read_frame — the stream discipline lives there), or
+    /// Read exactly ONE whole frame off `from`'s own mailbox (channel.read_frame -- the stream discipline lives there), or
     /// NoSuchPier if no member wears that name. A pier reads only its own mail.
     pub fn receive(self: *Switchboard, from: []const u8) SwitchboardError![]const u8 {
         const slot = try self.member(from);
         // invariant: a receive only ever reads a real mailbox in range.
         assert(slot < roster.max_piers);
         const frame = try self.boxes[slot].read_frame();
-        // invariant: read_frame yields exactly one whole frame — never a partial, so at least a header came back.
+        // invariant: read_frame yields exactly one whole frame -- never a partial, so at least a header came back.
         assert(frame.len >= wire.header_len);
         return frame;
     }
 
-    /// The bytes waiting unread in a pier's mailbox — used to prove a bystander stays silent and a delivery lands. Refuses
+    /// The bytes waiting unread in a pier's mailbox -- used to prove a bystander stays silent and a delivery lands. Refuses
     /// NoSuchPier for a name no roster holds.
     pub fn pending(self: *Switchboard, who: []const u8) SwitchboardError!u32 {
         const slot = try self.member(who);
@@ -105,7 +105,7 @@ pub const Switchboard = struct {
         return self.boxes[slot].available();
     }
 
-    /// The whole constellation as the hyphen-joined lawful string every party is a member of — rendered from the roster, so
+    /// The whole constellation as the hyphen-joined lawful string every party is a member of -- rendered from the roster, so
     /// it always passes check_constellation. Returns the filled slice of `buf`.
     pub fn sky(self: *const Switchboard, buf: []u8) SwitchboardError![]const u8 {
         return self.roster.render(buf);
@@ -114,39 +114,39 @@ pub const Switchboard = struct {
 
 /// Drive a whole FORA4 handshake between two members of the constellation, the switchboard their ONLY shared medium: each
 /// frame is delivered to the OTHER pier's mailbox and received off the recipient's OWN mailbox. Returns the sealed Session,
-/// read back from the final frame off a mailbox — so even the completed value crossed the medium. Any fault (a stranger, a
+/// read back from the final frame off a mailbox -- so even the completed value crossed the medium. Any fault (a stranger, a
 /// mismatched sky, a self-greet, a smuggled vowel) refuses by name and the handshake never completes.
 pub fn handshake_through(sb: *Switchboard, from: []const u8, to: []const u8) SwitchboardError!handshake.Session {
-    // Both piers agree on the one lawful sky the roster renders — the constellation they are provably members of.
+    // Both piers agree on the one lawful sky the roster renders -- the constellation they are provably members of.
     var sky_buf: [name.max_constellation_bytes]u8 = undefined;
     const whole = try sb.sky(&sky_buf);
 
     const a_party = try exchange.party(from, whole);
     const b_party = try exchange.party(to, whole);
 
-    // Crossing 1 — the initiator frames its greeting and delivers it to the responder's mailbox.
+    // Crossing 1 -- the initiator frames its greeting and delivers it to the responder's mailbox.
     var gf = wire.Frame{};
     try exchange.initiator_greets(&a_party, &gf);
     try sb.deliver(to, &gf);
 
-    // Crossing 2 — the responder reads one whole greeting frame off its OWN mailbox, answers, delivers the ack to the
+    // Crossing 2 -- the responder reads one whole greeting frame off its OWN mailbox, answers, delivers the ack to the
     // initiator's mailbox.
     const greeting_bytes = try sb.receive(to);
     var af = wire.Frame{};
     try exchange.responder_answers(&b_party, greeting_bytes, &af);
     try sb.deliver(from, &af);
 
-    // Crossing 3 — the initiator reads one whole ack frame off its OWN mailbox, seals the session, delivers it to the
+    // Crossing 3 -- the initiator reads one whole ack frame off its OWN mailbox, seals the session, delivers it to the
     // responder's mailbox.
     const ack_bytes = try sb.receive(from);
     var sf = wire.Frame{};
     try exchange.initiator_seals(gf.bytes(), ack_bytes, &sf);
     try sb.deliver(to, &sf);
 
-    // The session crosses the medium — read one whole frame off the responder's mailbox and deframe it.
+    // The session crosses the medium -- read one whole frame off the responder's mailbox and deframe it.
     const session_bytes = try sb.receive(to);
     const s = try wire.deframe_session(session_bytes);
-    // invariant: agreement was reached through mailboxes alone — two distinct lawful piers, complete.
+    // invariant: agreement was reached through mailboxes alone -- two distinct lawful piers, complete.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
     assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
@@ -157,7 +157,7 @@ pub fn handshake_through(sb: *Switchboard, from: []const u8, to: []const u8) Swi
 //     silent; a stranger is refused; a pier reads only its own mail; and the naming-law border still guards the medium ------
 
 fn run_selftest() !u8 {
-    // 1. A constellation of three stands up — three distinct never-a-ship piers, three empty mailboxes, a lawful whole.
+    // 1. A constellation of three stands up -- three distinct never-a-ship piers, three empty mailboxes, a lawful whole.
     {
         var sb = Switchboard{};
         try sb.stand_up(3);
@@ -184,7 +184,7 @@ fn run_selftest() !u8 {
         const p1 = try sb.roster.member(1);
         const p2 = try sb.roster.member(2); // the bystander
 
-        // Copy the names out — the roster's own buffers are stable, yet a handshake mutates mailboxes, so hold plain slices.
+        // Copy the names out -- the roster's own buffers are stable, yet a handshake mutates mailboxes, so hold plain slices.
         var b0: [name.max_ship_len]u8 = undefined;
         var b1: [name.max_ship_len]u8 = undefined;
         var b2: [name.max_ship_len]u8 = undefined;
@@ -198,12 +198,12 @@ fn run_selftest() !u8 {
 
         // The bystander's mailbox never held a byte of the two-party handshake.
         assert((try sb.pending(n2)) == 0);
-        // Both principals' mailboxes are drained once the handshake closes — every delivered frame was read.
+        // Both principals' mailboxes are drained once the handshake closes -- every delivered frame was read.
         assert((try sb.pending(n0)) == 0);
         assert((try sb.pending(n1)) == 0);
     }
 
-    // 3. A stranger is refused — deliver and receive on a name no roster holds each refuse NoSuchPier before any byte moves.
+    // 3. A stranger is refused -- deliver and receive on a name no roster holds each refuse NoSuchPier before any byte moves.
     {
         var sb = Switchboard{};
         try sb.stand_up(3);
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
         if (sb.receive("zzzz9")) |_| return error.StrangerReceived else |e| if (e != error.NoSuchPier) return error.WrongStrangerRx;
     }
 
-    // 4. A pier reads only its own mail — a frame delivered to p1 waits in p1's mailbox and is absent from p0's and p2's.
+    // 4. A pier reads only its own mail -- a frame delivered to p1 waits in p1's mailbox and is absent from p0's and p2's.
     {
         var sb = Switchboard{};
         try sb.stand_up(3);
@@ -243,7 +243,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, got, gf.bytes())); // and reads exactly what was sent
     }
 
-    // 5. The naming-law border still guards the medium — a greeting routed through a mailbox but carrying a smuggled vowel
+    // 5. The naming-law border still guards the medium -- a greeting routed through a mailbox but carrying a smuggled vowel
     //    (digest fixed up) still refuses VowelPresent at the receiver's deframe. The switchboard routes; it never re-checks.
     {
         var sb = Switchboard{};
@@ -298,7 +298,7 @@ fn copy_name(dst: []u8, src: []const u8) []const u8 {
     return dst[0..src.len];
 }
 
-/// The current rendered sky as a slice into a fresh static buffer — a small selftest convenience for building a Party. Each
+/// The current rendered sky as a slice into a fresh static buffer -- a small selftest convenience for building a Party. Each
 /// caller gets its own buffer via the returned copy semantics of the render into a local; used only inside run_selftest.
 fn current_sky(sb: *Switchboard) SwitchboardError![]const u8 {
     // invariant: the rendered whole is always a lawful constellation the roster can present.

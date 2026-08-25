@@ -1,10 +1,10 @@
-//! tools/rye/mantra_a1_line_fields_eq_witness.rye — Ashvini equality: exact 3 (STOA337).
+//! tools/rye/mantra_a1_line_fields_eq_witness.rye -- Ashvini equality: exact 3 (STOA337).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/mantra_a1_line_fields_eq_witness.rye
 //!
 //! gth speaks ceilings. eq speaks exactly. A weave Line carries exactly three
-//! fields (text · gen · pos) — the fifth pedestal that could not decide until
-//! this rune. The tending speaks Rye by Keaton's word: Glow · Tend · Rye.
+//! fields (text - gen - pos) -- the fifth pedestal that could not decide until
+//! this rune. The tending speaks Rye by Keaton's word: Glow - Tend - Rye.
 
 const std = @import("std");
 const assert = std.debug.assert;

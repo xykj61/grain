@@ -1,4 +1,4 @@
-//! Intentional TAME ban violation — fixture only; never import in production code.
+//! Intentional TAME ban violation -- fixture only; never import in production code.
 const std = @import("std");
 
 pub fn demo() void {

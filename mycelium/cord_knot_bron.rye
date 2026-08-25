@@ -1,21 +1,21 @@
-//! mycelium/cord_knot_bron.rye — the Knot travels as a `format cord-knot-v1` record.
+//! mycelium/cord_knot_bron.rye -- the Knot travels as a `format cord-knot-v1` record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r2 — the Knot travels.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r2 -- the Knot travels.
 //! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 sealed a committed Cord to a Knot and proved a continuation folds identical
 //! to the whole history. A checkpoint a node cannot hand to another node is only a
 //! local optimization; this rung lets a Knot cross as readable bytes, so a far node
 //! that never held the pruned prefix can trust the sealed supply and continue from
-//! it. A `format cord-knot-v1` record carries the whole Knot — issued, taxed, one
-//! `star` line per reserved star (in seal order), and the digest as hex — and parses
+//! it. A `format cord-knot-v1` record carries the whole Knot -- issued, taxed, one
+//! `star` line per reserved star (in seal order), and the digest as hex -- and parses
 //! back byte-for-byte; the recovered Knot verifies and continues to the identical
 //! supply. A tampered field breaks the digest, so `continue_verified` refuses
-//! `KnotCorrupt` on rebuild — corruption can never cross as a trusted checkpoint.
+//! `KnotCorrupt` on rebuild -- corruption can never cross as a trusted checkpoint.
 //!
 //! Grown BESIDE the elder: composes cord_knot.rye + fold.rye public API only; the
 //! reader is purpose-built and bounded (never a general parser), refusing an unknown
-//! field rather than dropping it. Siloed, dev-only, demo seeds — no key, funds,
+//! field rather than dropping it. Siloed, dev-only, demo seeds -- no key, funds,
 //! network, or custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_bron.rye
@@ -28,14 +28,14 @@ const kumara = @import("kumara.rye");
 const cord = @import("cord.rye");
 const cord_knot = @import("cord_knot.rye");
 
-/// A Knot's record carries at most this many reserved stars — a named ceiling
+/// A Knot's record carries at most this many reserved stars -- a named ceiling
 /// generous for a family-scale ledger, well under the fold's own 1024 star bound.
 /// A Knot holding more refuses `TooManyStars` rather than travel truncated.
 pub const max_stars_in_record: u32 = 64;
 
 /// The bounded record buffer: header, the two integer lines, up to
 /// max_stars_in_record star lines (each `star ` + 64 hex + newline), and the
-/// digest line — sized with headroom so a legal Knot never overflows.
+/// digest line -- sized with headroom so a legal Knot never overflows.
 pub const max_record: u32 = 8192;
 
 pub const BronError = error{
@@ -131,7 +131,7 @@ fn tokens(line: []const u8, out: *[2][]const u8) u32 {
 }
 
 /// Parse a `format cord-knot-v1` record into `out`, refusing an unknown or
-/// malformed field or a bad header. The parse reconstructs structure only — the
+/// malformed field or a bad header. The parse reconstructs structure only -- the
 /// digest is not recomputed here, so a tampered field survives into a Knot whose
 /// stored digest no longer matches its state; `continue_verified` catches it.
 pub fn parse(text: []const u8, out: *cord_knot.Knot) BronError!void {
@@ -180,7 +180,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 /// Build the four-fact demo history's committed Cord (a, b genesis issues;
-/// c tax, d star reserve as round-1 children) — the same scene r1 checkpoints.
+/// c tax, d star reserve as round-1 children) -- the same scene r1 checkpoints.
 fn demo_dag() !cord.Dag {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);
@@ -214,7 +214,7 @@ pub fn main() !void {
     if (knot.state.star_count != 1) return error.KnotStar;
 
     // The crux: render the Knot to a record, parse it back, and the recovered Knot
-    // verifies and carries the byte-identical sealed supply — a checkpoint crosses
+    // verifies and carries the byte-identical sealed supply -- a checkpoint crosses
     // to a stranger as readable bytes.
     var buf: [max_record]u8 = undefined;
     const n = try render(&knot, buf[0..]);
@@ -241,7 +241,7 @@ pub fn main() !void {
     if (n2 != n) return error.RenderNotFixed;
     if (!std.mem.eql(u8, buf[0..n], buf2[0..n2])) return error.RenderDrift;
 
-    // Refusal: a tampered star line breaks the digest — the recovered Knot no
+    // Refusal: a tampered star line breaks the digest -- the recovered Knot no
     // longer verifies, and continuing it refuses KnotCorrupt on rebuild.
     var tampered: cord_knot.Knot = undefined;
     try parse(buf[0..n], &tampered);

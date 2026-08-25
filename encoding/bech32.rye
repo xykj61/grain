@@ -1,28 +1,28 @@
-//! encoding/bech32.rye — Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye. Bech32 is the checksummed binary-to-text form a
-//! modern address wears: a human-readable prefix (the "hrp" — bc for Bitcoin mainnet, npub for a Nostr identity key, cosmos for a Cosmos
+//! encoding/bech32.rye -- Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye. Bech32 is the checksummed binary-to-text form a
+//! modern address wears: a human-readable prefix (the "hrp" -- bc for Bitcoin mainnet, npub for a Nostr identity key, cosmos for a Cosmos
 //! account), a '1' separator, the payload rendered in a case-safe 32-character alphabet, and a six-symbol BCH checksum so a single mistyped
 //! character is caught. Where Base58Check catches a mistype with a truncated double-SHA-256, Bech32 catches it with a genuine error-detecting
-//! code that also localizes small errors — the form segwit outputs, Nostr npub/nsec keys, and Cosmos-family accounts all travel in. The
+//! code that also localizes small errors -- the form segwit outputs, Nostr npub/nsec keys, and Cosmos-family accounts all travel in. The
 //! crypto library proves the key bytes; this module renders them to the checksummed alphabet and back, byte-for-byte.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, base32.rye, and
+//! Season: encoding -- the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, base32.rye, and
 //! hex.rye. Both keep one discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a
 //! reference runnable now. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Clean-room: the alphabet, the generator, and the checksum law are BIP-173 and BIP-350's own; the arithmetic is ours
-//! (.claude/rules/gratitude-licenses.md). Composes with crypto/ed25519_*.rye — a proven 32-byte public key becomes an npub the moment it wears
+//! (.claude/rules/gratitude-licenses.md). Composes with crypto/ed25519_*.rye -- a proven 32-byte public key becomes an npub the moment it wears
 //! this armor.
 //!
-//! THE CRUX — Bech32 squashes the payload into 5-bit groups over the alphabet "qpzry9x8gf2tvdw0s3jn54khce6mua7l", then appends six checksum
+//! THE CRUX -- Bech32 squashes the payload into 5-bit groups over the alphabet "qpzry9x8gf2tvdw0s3jn54khce6mua7l", then appends six checksum
 //! symbols computed by a BCH code over GF(32): a polymod folds the hrp (expanded high bits, a zero, then low bits), the data, and six trailing
 //! zeros through a five-term generator, XORs a spec constant (1 for Bech32, 0x2bc830a3 for Bech32m), and reads the residue out as six symbols.
 //! Decoding recomputes the polymod over the whole data-plus-checksum and demands the constant back. The two specs differ ONLY in that constant,
-//! so a Bech32 string is refused under Bech32m and vice versa — exactly the version-binding BIP-350 introduced. Every step is a bounded loop
+//! so a Bech32 string is refused under Bech32m and vice versa -- exactly the version-binding BIP-350 introduced. Every step is a bounded loop
 //! over small integers.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std bech32 (Zig ships
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std bech32 (Zig ships
 //! none) and no std.crypto. Parity is proven at selftest against two references runnable now: the BIP-173 §Test-vectors and BIP-350 valid
 //! checksums (round-tripped byte-for-byte and cross-refused across specs), the canonical BIP-173 segwit example
-//! (bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 → witness v0, program 751e76e8199196d454941c45d1b3a323f1433bd6), and a second, INDEPENDENT
+//! (bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 -> witness v0, program 751e76e8199196d454941c45d1b3a323f1433bd6), and a second, INDEPENDENT
 //! polymod authored here that folds the same residue through a precomputed 32-entry generator table rather than the primary's per-bit loop.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/bech32.rye selftest
@@ -34,7 +34,7 @@ const print = std.debug.print;
 pub const bech32_version = "20260816.050000";
 
 /// The Bech32 alphabet (BIP-173): one glyph per 5-bit value, ordered so no glyph collides with another read aloud, and excluding '1', 'b',
-/// 'i', 'o' — the characters most often mistyped. encode and decode read the symbol map from this one source.
+/// 'i', 'o' -- the characters most often mistyped. encode and decode read the symbol map from this one source.
 pub const alphabet = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 const separator: u8 = '1';
 
@@ -50,7 +50,7 @@ fn spec_constant(spec: Spec) u32 {
     };
 }
 
-/// The largest human-readable part this module accepts — BIP-173's own ceiling.
+/// The largest human-readable part this module accepts -- BIP-173's own ceiling.
 pub const max_hrp_len: u32 = 83;
 /// The largest 5-bit data run (payload symbols plus the six checksum symbols) this module encodes or decodes in one call.
 pub const max_data_len: u32 = 4096;
@@ -64,9 +64,9 @@ const gen = [_]u32{ 0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3 }
 
 /// The faults this module can raise, each refused at the edge before a partial result escapes.
 pub const Bech32Error = error{
-    /// An hrp, data run, or string longer than its named bound — refused before a symbol is written.
+    /// An hrp, data run, or string longer than its named bound -- refused before a symbol is written.
     TooLong,
-    /// The caller's destination buffer is smaller than the exact output — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact output -- refused before the first write.
     DestTooSmall,
     /// An empty hrp, which Bech32 forbids.
     HrpEmpty,
@@ -98,7 +98,7 @@ fn polymod_step(chk: u32, value: u8) u32 {
     return next;
 }
 
-/// The residue over the whole checksummed message: the hrp expanded (high bits · a zero · low bits), the data, then tail_zeros trailing
+/// The residue over the whole checksummed message: the hrp expanded (high bits - a zero - low bits), the data, then tail_zeros trailing
 /// zeros. verify passes tail_zeros = 0; create passes tail_zeros = 6, then reads the six checksum symbols out of the residue.
 fn message_polymod(hrp: []const u8, data: []const u8, tail_zeros: u32) u32 {
     // invariant: both runs fit their named bounds, so every loop below is bounded.
@@ -191,7 +191,7 @@ pub fn encode(dest: []u8, hrp: []const u8, data: []const u8, spec: Spec) Bech32E
 pub const Decoded = struct { hrp: []const u8, data: []const u8 };
 
 /// Decode a Bech32 (or Bech32m) string under the requested spec into the caller's hrp and data buffers. Refuses mixed case, a missing
-/// separator, an out-of-range hrp, an out-of-alphabet symbol, and a checksum that does not verify — each with its named error. Returns the
+/// separator, an out-of-range hrp, an out-of-alphabet symbol, and a checksum that does not verify -- each with its named error. Returns the
 /// lowercased hrp and the data payload with the six checksum symbols removed.
 pub fn decode(hrp_dest: []u8, data_dest: []u8, source: []const u8, spec: Spec) Bech32Error!Decoded {
     if (source.len > max_string_len) return error.TooLong;
@@ -367,7 +367,7 @@ fn lowered_eq(got: []const u8, original: []const u8) bool {
 }
 
 /// Independent reference polymod: the same residue folded through a precomputed 32-entry generator table (indexed by the top five bits) rather
-/// than the primary's per-bit conditional loop — a genuinely different structure, used ONLY inside the selftest since Zig ships no std bech32.
+/// than the primary's per-bit conditional loop -- a genuinely different structure, used ONLY inside the selftest since Zig ships no std bech32.
 fn ref_message_polymod(hrp: []const u8, data: []const u8, tail_zeros: u32) u32 {
     // Precompute gen_table[b] = XOR of gen[i] for each set bit i of b, for all 32 values of the top five bits.
     var gen_table = [_]u32{0} ** 32;
@@ -427,7 +427,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. The canonical BIP-173 segwit example: decode, witness version 0 in the first symbol, the rest convertbits'd 5→8 to the 20-byte program.
+    // 3. The canonical BIP-173 segwit example: decode, witness version 0 in the first symbol, the rest convertbits'd 5->8 to the 20-byte program.
     {
         const addr = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
         const d = try decode(&hbuf, &dbuf, addr, .bech32);
@@ -471,7 +471,7 @@ fn run_selftest() !u8 {
     // 6. The edges refuse: a flipped checksum, mixed case, a missing separator, an out-of-alphabet symbol, an empty hrp, and a too-small
     //    destination each raise their named error before a partial result escapes.
     {
-        // Flip the last character of a valid vector — the checksum must fail.
+        // Flip the last character of a valid vector -- the checksum must fail.
         var flipped: [16]u8 = undefined;
         const base = "a12uel5l";
         var i: u32 = 0;
@@ -481,7 +481,7 @@ fn run_selftest() !u8 {
 
         if (decode(&hbuf, &dbuf, "A12Uel5L", .bech32)) |_| return error.MixedCaseSlipped else |err| if (err != error.MixedCase) return error.WrongMixedCase;
         if (decode(&hbuf, &dbuf, "abcdefghij", .bech32)) |_| return error.NoSepSlipped else |err| if (err != error.BadLength) return error.WrongNoSep;
-        // 'b' is not in the alphabet — a data symbol out of range.
+        // 'b' is not in the alphabet -- a data symbol out of range.
         if (decode(&hbuf, &dbuf, "a1bcdef2xxx", .bech32)) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
         if (decode(&hbuf, &dbuf, "1qqqqqqx", .bech32)) |_| return error.HrpEmptySlipped else |err| if (err != error.HrpEmpty) return error.WrongHrpEmpty;
 

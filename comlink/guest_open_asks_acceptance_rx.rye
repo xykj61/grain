@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_acceptance_rx.rye — OA-L5 device wire acceptance RX guest.
+//! comlink/guest_open_asks_acceptance_rx.rye -- OA-L5 device wire acceptance RX guest.
 
 const std = @import("std");
 const vn = @import("virtio_net.rye");

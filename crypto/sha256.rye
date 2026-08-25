@@ -1,24 +1,24 @@
-//! crypto/sha256.rye — Season G (Cryptography): SHA-256 authored in pure Rye. SHA-256 (FIPS 180-4) is the 256-bit hash the tree
-//! already leans on through std.crypto — Tablecloth's content-addressed keying (pond/apps/tablecloth_keyed.rye), the Mycelium
-//! consensus spine's rendezvous placement (SHA-256(domain · world-id · host-pk) in puddle.rye), and the constel test network's
+//! crypto/sha256.rye -- Season G (Cryptography): SHA-256 authored in pure Rye. SHA-256 (FIPS 180-4) is the 256-bit hash the tree
+//! already leans on through std.crypto -- Tablecloth's content-addressed keying (pond/apps/tablecloth_keyed.rye), the Mycelium
+//! consensus spine's rendezvous placement (SHA-256(domain - world-id - host-pk) in puddle.rye), and the constel test network's
 //! name-to-seed derivation (seed = SHA-256(name)) all name content or identity with it. Season G's thesis is to author our own,
-//! parity-checked, calling no std.crypto — so this rung lifts SHA-256 off the standard library the same way SHA-512, BLAKE2b, and the
-//! SHA3 pair already stand. It is the 32-bit sibling of SHA-512: the same Merkle–Damgård shape over 32-bit words instead of 64.
+//! parity-checked, calling no std.crypto -- so this rung lifts SHA-256 off the standard library the same way SHA-512, BLAKE2b, and the
+//! SHA3 pair already stand. It is the 32-bit sibling of SHA-512: the same Merkle-Damgård shape over 32-bit words instead of 64.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 //! Kin: crypto/sha512.rye (the 64-bit sibling, GREEN on metal), crypto/sha3.rye (the Keccak hash). Monocypher (vendor/monocypher,
 //! CC0/BSD-dual) does not itself ship SHA-256; this hash is authored from FIPS 180-4 directly and proven against Zig's independent
-//! std.crypto, exactly as SHA3 was added for Aurora's need (.claude/rules/gratitude-licenses.md — our own arithmetic, clean-room).
+//! std.crypto, exactly as SHA3 was added for Aurora's need (.claude/rules/gratitude-licenses.md -- our own arithmetic, clean-room).
 //!
-//! THE CRUX — SHA-256 is a bounded loop over 32-bit words, mod 2^32. The message is padded to a whole number of 64-byte blocks (a
+//! THE CRUX -- SHA-256 is a bounded loop over 32-bit words, mod 2^32. The message is padded to a whole number of 64-byte blocks (a
 //! 0x80 byte, zeros, then the 64-bit big-endian bit length), each block expanded to sixty-four message-schedule words and folded
 //! through sixty-four rounds of the Ch/Maj/Sigma functions into an eight-word hash state. Every add is mod 2^32 (Zig's wrapping +%);
-//! every rotation and shift is a fixed constant from the standard. Nothing here is a claim about a device — it is arithmetic anyone
+//! every rotation and shift is a fixed constant from the standard. Nothing here is a claim about a device -- it is arithmetic anyone
 //! can replay against FIPS 180-4.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it is
-//! authored from the standard. Parity is proven at selftest against two references runnable now — the FIPS 180-4 known-answers for
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it is
+//! authored from the standard. Parity is proven at selftest against two references runnable now -- the FIPS 180-4 known-answers for
 //! "abc" and the empty message, and Zig's own std.crypto SHA-256 as an independent implementation, byte-for-byte over the empty
 //! message, "abc", a 55-byte input (the padding edge where the length still fits the block), a 56-byte input (the edge that forces a
 //! second all-padding block), and a multi-block input. Constant-time timing-safety is a separate named horizon.
@@ -39,23 +39,23 @@ pub const hex_len: u32 = digest_len * 2;
 const rounds: u32 = 64;
 
 /// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact, yet named so the
-/// bit-length field and the block loop both cite a maximum — the TAME reflex that every loop and every count declares its ceiling.
+/// bit-length field and the block loop both cite a maximum -- the TAME reflex that every loop and every count declares its ceiling.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is mixed.
 pub const Sha256Error = error{
-    /// A message whose length exceeds max_message_bytes — refused at the edge, before padding or the block loop begins.
+    /// A message whose length exceeds max_message_bytes -- refused at the edge, before padding or the block loop begins.
     MessageTooLong,
 };
 
-/// The SHA-256 initial hash value — the eight 32-bit words (FIPS 180-4 §5.3.3), the fractional parts of the square roots of the first
+/// The SHA-256 initial hash value -- the eight 32-bit words (FIPS 180-4 §5.3.3), the fractional parts of the square roots of the first
 /// eight primes. Named as a constant so init reads from one source of truth.
 const h_init = [8]u32{
     0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
     0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
 };
 
-/// The sixty-four SHA-256 round constants (FIPS 180-4 §4.2.2) — the fractional parts of the cube roots of the first sixty-four primes.
+/// The sixty-four SHA-256 round constants (FIPS 180-4 §4.2.2) -- the fractional parts of the cube roots of the first sixty-four primes.
 /// A single wrong entry breaks parity against the standard at once, which the selftest proves it does not.
 const k = [64]u32{
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -96,7 +96,7 @@ fn small_sigma1(x: u32) u32 {
 /// message schedule, which drives sixty-four rounds of the Ch/Maj/Sigma round function over eight working words, then the working
 /// words fold back into h.
 fn compress(h: *[8]u32, block: *const [block_bytes]u8) void {
-    // invariant: the block carries exactly sixteen 32-bit words — the first sixteen entries of the message schedule.
+    // invariant: the block carries exactly sixteen 32-bit words -- the first sixteen entries of the message schedule.
     comptime assert(block_bytes == 16 * 4);
     // invariant: the schedule runs the sixty-four rounds the standard defines.
     comptime assert(rounds == 64);
@@ -143,17 +143,17 @@ fn compress(h: *[8]u32, block: *const [block_bytes]u8) void {
     h[7] +%= hh;
 }
 
-/// Hash a message to its 32-byte SHA-256 digest. The message is padded per FIPS 180-4 §5.1.1 — a 0x80 byte, then zeros, then the
-/// message length in bits as a 64-bit big-endian integer — filling a whole number of 64-byte blocks, then every block is compressed
+/// Hash a message to its 32-byte SHA-256 digest. The message is padded per FIPS 180-4 §5.1.1 -- a 0x80 byte, then zeros, then the
+/// message length in bits as a 64-bit big-endian integer -- filling a whole number of 64-byte blocks, then every block is compressed
 /// in order.
 pub fn hash(msg: []const u8) Sha256Error![digest_len]u8 {
-    // invariant: SHA-256's shapes are the standard's own — 32-byte digest, 64-byte block. Proven at compile time.
+    // invariant: SHA-256's shapes are the standard's own -- 32-byte digest, 64-byte block. Proven at compile time.
     comptime assert(digest_len == 32 and block_bytes == 64);
     // invariant: the message fits the named bound, so its length casts to u32 losslessly and the bit length never overflows u64.
     if (msg.len > max_message_bytes) return error.MessageTooLong;
 
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [8]u32 = h_init;
@@ -165,9 +165,9 @@ pub fn hash(msg: []const u8) Sha256Error![digest_len]u8 {
     }
 
     // The tail is 0..63 leftover bytes. Build the padded final block(s): the tail, a 0x80 marker, zeros, then the 64-bit big-endian
-    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted — the 56-byte edge.
+    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted -- the 56-byte edge.
     const rem = total - offset;
-    // invariant: the leftover is strictly less than a whole block — every full block was consumed above.
+    // invariant: the leftover is strictly less than a whole block -- every full block was consumed above.
     assert(rem < block_bytes);
 
     var tail = [_]u8{0} ** (block_bytes * 2);
@@ -209,7 +209,7 @@ pub fn to_hex(digest: [digest_len]u8) [hex_len]u8 {
     return out;
 }
 
-// The FIPS 180-4 known-answer for SHA-256 of the ASCII string "abc" — the neutral public reference our Rye and any auditor's
+// The FIPS 180-4 known-answer for SHA-256 of the ASCII string "abc" -- the neutral public reference our Rye and any auditor's
 // reference must both reproduce.
 const fips_abc_hex = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad";
 // The published SHA-256 of the empty message.

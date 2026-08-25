@@ -1,4 +1,4 @@
-//! Rye test: std.mem.readVarInt — pass 9910.
+//! Rye test: std.mem.readVarInt -- pass 9910.
 //!
 //! Variable-width integer decode from byte buffers; wire-endian paths.
 

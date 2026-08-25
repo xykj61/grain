@@ -1,16 +1,16 @@
-//! aurora/src/deciding.rye — Aurora's deciding stage: the boot that chooses.
+//! aurora/src/deciding.rye -- Aurora's deciding stage: the boot that chooses.
 //!
 //! The relay (`relay.rye`) proved that stages can hand named values along a
-//! line — wake, prove, rest. This grows it by one true step: a stage that
+//! line -- wake, prove, rest. This grows it by one true step: a stage that
 //! reads the machine state and **chooses** what comes next, constructing a
 //! new value that names the decision. This is the seed of a boot that
 //! selects which system to load.
 //!
 //! Four stages:
-//!   1. Wake   — read the machine's identity (hart, ISA)
-//!   2. Prove  — assert the identity is sound
-//!   3. Decide — read the ISA, choose a configuration path, name the choice
-//!   4. Rest   — announce the decision and power down
+//!   1. Wake   -- read the machine's identity (hart, ISA)
+//!   2. Prove  -- assert the identity is sound
+//!   3. Decide -- read the ISA, choose a configuration path, name the choice
+//!   4. Rest   -- announce the decision and power down
 //!
 //! Build and run with `aurora/run.sh deciding`.
 
@@ -23,28 +23,28 @@ const isa_compressed: usize = 1 << ('C' - 'A');
 const isa_atomic: usize = 1 << ('A' - 'A');
 const isa_multiply: usize = 1 << ('M' - 'A');
 
-/// The machine's identity — what stage one learned.
+/// The machine's identity -- what stage one learned.
 /// usize here is XLEN on rv64: the honest width for CSR values (hartid, misa).
 const Machine = struct {
     hartid: usize,
     isa: usize,
 };
 
-/// The boot decision — what stage three chose.
+/// The boot decision -- what stage three chose.
 /// A real boot would name a kernel image hash here; this seed names a
 /// configuration path so the concept is proven without the full machinery.
 const Decision = struct {
     machine: Machine,
     path: Path,
-    /// A stand-in for a content hash — in the full Aurora, this would be the
+    /// A stand-in for a content hash -- in the full Aurora, this would be the
     /// SHA3-256 digest of the next stage's verified image.
     config_tag: u32,
 };
 
 const Path = enum {
-    /// Full ISA: atomics, multiply, compressed — the capable machine.
+    /// Full ISA: atomics, multiply, compressed -- the capable machine.
     full,
-    /// Minimal ISA: base integer only — the constrained machine.
+    /// Minimal ISA: base integer only -- the constrained machine.
     minimal,
 };
 
@@ -60,7 +60,7 @@ export fn _start() linksection(".text.init") callconv(.naked) noreturn {
 }
 
 // =========================================================================
-// § Stage 1: Wake — read the machine
+// § Stage 1: Wake -- read the machine
 // =========================================================================
 
 export fn stage_wake() callconv(.c) noreturn {
@@ -72,23 +72,23 @@ export fn stage_wake() callconv(.c) noreturn {
 }
 
 // =========================================================================
-// § Stage 2: Prove — assert the identity
+// § Stage 2: Prove -- assert the identity
 // =========================================================================
 
 fn stage_prove(machine: Machine) noreturn {
-    // invariant: base integer ISA present — this code could not run otherwise
+    // invariant: base integer ISA present -- this code could not run otherwise
     assert((machine.isa & isa_base_integer) != 0);
     stage_decide(machine);
 }
 
 // =========================================================================
-// § Stage 3: Decide — choose what runs next
+// § Stage 3: Decide -- choose what runs next
 // =========================================================================
 
 /// The deciding stage. Reads the machine's ISA extensions and chooses a
 /// configuration path. A full boot would select a kernel image by content
-/// hash; this seed chooses between two named paths so the concept — a stage
-/// that creates a value it chose, rather than passing one through — is proven.
+/// hash; this seed chooses between two named paths so the concept -- a stage
+/// that creates a value it chose, rather than passing one through -- is proven.
 fn stage_decide(machine: Machine) noreturn {
     // Read the ISA extensions the machine offers.
     const has_atomics = (machine.isa & isa_atomic) != 0;
@@ -141,7 +141,7 @@ fn stage_announce(decision: Decision) noreturn {
 }
 
 // =========================================================================
-// § Console helpers (bare metal — no std beneath us)
+// § Console helpers (bare metal -- no std beneath us)
 // =========================================================================
 
 fn read_csr(comptime name: []const u8) usize {

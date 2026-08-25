@@ -1,14 +1,14 @@
-//! brushstroke/wade1_brush_style_test.rye — WADE1 authoring loop, end-to-end.
+//! brushstroke/wade1_brush_style_test.rye -- WADE1 authoring loop, end-to-end.
 //!
 //! Closes the seam the WADE1 bridge names
 //! (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md): a
 //! `.brush` *file* declares a `style:` token block; the parser reassembles it
 //! into a flat Bron token sheet; tokens.rye's infuse cascade resolves it; and a
-//! resolved sheet dresses a Skate grid to the declared colors. Source → token
-//! sheet → infuse cascade → Skate styled runs, proven from a file on disk.
+//! resolved sheet dresses a Skate grid to the declared colors. Source -> token
+//! sheet -> infuse cascade -> Skate styled runs, proven from a file on disk.
 //!
-//! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
-//! on every assert · short verb-named functions · named errors with try.
+//! TAME (hosted Rye): opening triad - u32 counts - named bounds - `// invariant:`
+//! on every assert - short verb-named functions - named errors with try.
 //!
 //!   rye/bin/rye run brushstroke/wade1_brush_style_test.rye
 
@@ -19,10 +19,10 @@ const brush = @import("brush_parse.rye");
 const tokens = @import("tokens.rye");
 const skate = @import("skate_grid.rye");
 
-/// The fixture `.brush` this loop reads — a file that declares a style block.
+/// The fixture `.brush` this loop reads -- a file that declares a style block.
 const styled_fixture = "brushstroke/styled-frame.brush";
 
-/// Grid shape for the proof — narrow, so the whole loop stays cheap.
+/// Grid shape for the proof -- narrow, so the whole loop stays cheap.
 const grid_cols: u32 = 32;
 const grid_rows: u32 = 4;
 
@@ -42,7 +42,7 @@ fn read_style_sheet(garden: std.mem.Allocator, io: std.Io, out: *[brush.max_styl
     return n;
 }
 
-/// Prove the full source→pixels loop: a file's declared style resolves through
+/// Prove the full source->pixels loop: a file's declared style resolves through
 /// infuse and dresses a grid to the declared paper (Bark) and ink (Flax).
 fn prove_authoring_loop(garden: std.mem.Allocator, io: std.Io) !void {
     var sheet_buf: [brush.max_style_bytes]u8 = undefined;
@@ -55,7 +55,7 @@ fn prove_authoring_loop(garden: std.mem.Allocator, io: std.Io) !void {
     // invariant: the fixture's declared ink (Flax) survived the reassembly
     assert(std.mem.indexOf(u8, declared, "ink 0xFFF2ECDF") != null);
 
-    // Resolve the declared sheet through tokens.rye's infuse cascade — an empty
+    // Resolve the declared sheet through tokens.rye's infuse cascade -- an empty
     // override is identity, so the resolved sheet is the file's own style,
     // normalized through the same per-key mechanism a real cascade would use.
     var resolved: [tokens.max_sheet_bytes]u8 = undefined;
@@ -96,7 +96,7 @@ fn prove_authoring_loop(garden: std.mem.Allocator, io: std.Io) !void {
     // invariant: the file-declared text renders visibly against its own paper
     assert(lit > 100);
 
-    // A styled run wears a declared token too — paint cells [0,6) in the edge
+    // A styled run wears a declared token too -- paint cells [0,6) in the edge
     // rule the file declared, proving a run reads its color from the sheet.
     const edge_color = try tokens.dress_run(&grid, 0, 0, 6, sheet, "edge", 1);
     // invariant: the edge run seated a real, warm, distinct color from ink

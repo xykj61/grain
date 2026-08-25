@@ -1,20 +1,20 @@
-//! lotus/render_bundle.rye — ALES222: manifest and .wav as one saveable artifact. ALES221 gave a render a sealed, content-
-//! addressed manifest that binds its own .wav by Sha256 — yet the two still travel apart: a keeper holds a manifest AND a .wav,
+//! lotus/render_bundle.rye -- ALES222: manifest and .wav as one saveable artifact. ALES221 gave a render a sealed, content-
+//! addressed manifest that binds its own .wav by Sha256 -- yet the two still travel apart: a keeper holds a manifest AND a .wav,
 //! two things to keep together. A publish or a chain of custody wants ONE thing to save and later open. This rung joins them: a
 //! bounded byte frame carrying the manifest and the .wav side by side, opened verify-before-trust.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES222.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES222.
 //! Design read: active-designing/date/20260815/20260815-134607_fill-ales222-lotus-render-bundle.md
-//! Stands on: lotus/render_manifest.rye (ALES221) — open_manifest and verify_wav, the whole verify-before-trust the bundle
-//! inherits; lotus/wav.rye (ALES215) — the .wav bytes the bundle carries. No new hash, no new grammar — only a frame.
+//! Stands on: lotus/render_manifest.rye (ALES221) -- open_manifest and verify_wav, the whole verify-before-trust the bundle
+//! inherits; lotus/wav.rye (ALES215) -- the .wav bytes the bundle carries. No new hash, no new grammar -- only a frame.
 //!
 //! THE CRUX: the bundle needs NO NEW SEAL. The manifest already binds its own text (the ALES38 seal digest) AND the audio it
-//! names (the wav_digest), so a bundle that lays the two side by side is ALREADY fully verify-before-trust — tamper the audio and
+//! names (the wav_digest), so a bundle that lays the two side by side is ALREADY fully verify-before-trust -- tamper the audio and
 //! verify_wav refuses WavDigestMismatch, tamper the manifest and open_manifest refuses DigestMismatch, corrupt a length header
 //! and the slices shift into one of those same refusals. The rung's whole job is a bounded frame plus the proof of that binding.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded byte frame over two in-process byte slices, siloed to lotus/. It proves
-//! an artifact arrived whole, NOT who made it — no signature, no key. No real file, no DAC, no acoustic or electrical fact, no
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded byte frame over two in-process byte slices, siloed to lotus/. It proves
+//! an artifact arrived whole, NOT who made it -- no signature, no key. No real file, no DAC, no acoustic or electrical fact, no
 //! network, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/render_bundle.rye selftest
@@ -28,11 +28,11 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const render_bundle_version = "20260815.134607";
 
-/// The bundle's kind marker — eight bytes at the head, so a stranger container refuses before any length is trusted. Not text,
+/// The bundle's kind marker -- eight bytes at the head, so a stranger container refuses before any length is trusted. Not text,
 /// not a seal: a single fixed tag that names this frame's shape.
 pub const bundle_magic = "LOTUSBND";
 
-/// The fixed frame preamble: the 8-byte magic, then two u32 little-endian lengths (manifest bytes · wav bytes). Named so the one
+/// The fixed frame preamble: the 8-byte magic, then two u32 little-endian lengths (manifest bytes - wav bytes). Named so the one
 /// place the body offset is computed reads from a single source.
 pub const bundle_header_len: u32 = 8 + 4 + 4;
 
@@ -41,9 +41,9 @@ pub const bundle_header_len: u32 = 8 + 4 + 4;
 pub const max_part_bytes: u32 = 1 << 24;
 
 /// The bundle's faults: the manifest's whole set (seal + grammar + content), plus BadBundle for a frame that is not a
-/// well-formed bundle — a wrong magic, or two lengths that do not tile the buffer exactly.
+/// well-formed bundle -- a wrong magic, or two lengths that do not tile the buffer exactly.
 pub const BundleError = render_manifest.ManifestError || error{
-    /// The frame is malformed — too short for the header, a wrong magic, or lengths that do not tile the buffer exactly (a
+    /// The frame is malformed -- too short for the header, a wrong magic, or lengths that do not tile the buffer exactly (a
     /// trailing byte or a shortfall). Refused rather than parsing a partial or padded artifact.
     BadBundle,
 };
@@ -64,7 +64,7 @@ pub fn pack(out: []u8, manifest: []const u8, wav: []const u8) BundleError!u32 {
     const wav_len: u32 = @intCast(wav.len);
 
     const total: u32 = bundle_header_len + manifest_len + wav_len;
-    // invariant: the whole frame fits the caller's buffer — refused, never truncated.
+    // invariant: the whole frame fits the caller's buffer -- refused, never truncated.
     if (total > out.len) return error.Overflow;
 
     tally_copy.copy_disjoint(u8, out[0..bundle_magic.len], bundle_magic);
@@ -78,12 +78,12 @@ pub fn pack(out: []u8, manifest: []const u8, wav: []const u8) BundleError!u32 {
     return total;
 }
 
-/// Unpack a framed artifact — the integrity gate BEFORE trust. The magic must match, the two lengths must tile the buffer
+/// Unpack a framed artifact -- the integrity gate BEFORE trust. The magic must match, the two lengths must tile the buffer
 /// exactly, the manifest slice must open whole (seal verify + parse), and the .wav slice must verify against that manifest; only
 /// then are the manifest and the verified .wav returned. A malformed frame refuses BadBundle; a tampered part refuses the
 /// manifest's own DigestMismatch / WavDigestMismatch before the artifact is trusted.
 pub fn unpack(bytes: []const u8) BundleError!Bundle {
-    // invariant: a bundle is at least its own header — a shorter input can carry no frame.
+    // invariant: a bundle is at least its own header -- a shorter input can carry no frame.
     if (bytes.len < bundle_header_len) return error.BadBundle;
     if (!std.mem.eql(u8, bytes[0..bundle_magic.len], bundle_magic)) return error.BadBundle;
 
@@ -91,7 +91,7 @@ pub fn unpack(bytes: []const u8) BundleError!Bundle {
     const wav_len = std.mem.readInt(u32, bytes[12..16], .little);
     if (manifest_len > max_part_bytes or wav_len > max_part_bytes) return error.BadBundle;
 
-    // The two lengths must tile the buffer EXACTLY — a trailing byte or a shortfall is a malformed frame, not a padded one.
+    // The two lengths must tile the buffer EXACTLY -- a trailing byte or a shortfall is a malformed frame, not a padded one.
     if (bundle_header_len + manifest_len + wav_len != bytes.len) return error.BadBundle;
 
     const manifest_bytes = bytes[bundle_header_len .. bundle_header_len + manifest_len];
@@ -103,9 +103,9 @@ pub fn unpack(bytes: []const u8) BundleError!Bundle {
     return .{ .manifest = m, .wav = wav };
 }
 
-// --- selftest: THE ROUND-TRIP LAW — pack then unpack recovers every field and the exact .wav; THE SELF-BINDING LAW — a flipped
-//     .wav byte refuses WavDigestMismatch and a flipped manifest byte DigestMismatch, no new seal needed; THE FRAME LAW — a wrong
-//     magic and a length that does not tile the buffer refuse BadBundle; THE ATOMIC LAW — a small buffer refuses Overflow -------
+// --- selftest: THE ROUND-TRIP LAW -- pack then unpack recovers every field and the exact .wav; THE SELF-BINDING LAW -- a flipped
+//     .wav byte refuses WavDigestMismatch and a flipped manifest byte DigestMismatch, no new seal needed; THE FRAME LAW -- a wrong
+//     magic and a length that does not tile the buffer refuse BadBundle; THE ATOMIC LAW -- a small buffer refuses Overflow -------
 
 fn run_selftest() !u8 {
     const wav = "RIFF....WAVEfmt ........data....\x01\x00\x02\x00\x03\x00\x04\x00";
@@ -114,12 +114,12 @@ fn run_selftest() !u8 {
     const channels: u32 = 2;
     const frames: u32 = 4;
 
-    // Build a real sealed manifest for this render — the bundle carries exactly what ALES221 produces.
+    // Build a real sealed manifest for this render -- the bundle carries exactly what ALES221 produces.
     var man: [render_manifest.max_manifest_bytes]u8 = undefined;
     const man_n = try render_manifest.seal_manifest(man[0..], preset_name, sample_rate, channels, frames, wav);
     const manifest_bytes = man[0..man_n];
 
-    // 1. THE ROUND-TRIP LAW — pack, unpack, recover every field and the exact .wav bytes.
+    // 1. THE ROUND-TRIP LAW -- pack, unpack, recover every field and the exact .wav bytes.
     {
         var out: [512]u8 = undefined;
         const n = try pack(out[0..], manifest_bytes, wav);
@@ -131,7 +131,7 @@ fn run_selftest() !u8 {
         if (!std.mem.eql(u8, b.wav, wav)) return error.WavWrong;
     }
 
-    // 2. THE SELF-BINDING LAW — a flipped .wav byte refuses WavDigestMismatch; a flipped manifest byte refuses DigestMismatch.
+    // 2. THE SELF-BINDING LAW -- a flipped .wav byte refuses WavDigestMismatch; a flipped manifest byte refuses DigestMismatch.
     {
         var out: [512]u8 = undefined;
         const n = try pack(out[0..], manifest_bytes, wav);
@@ -140,12 +140,12 @@ fn run_selftest() !u8 {
 
         var out2: [512]u8 = undefined;
         const n2 = try pack(out2[0..], manifest_bytes, wav);
-        // a byte inside the manifest body — after the header, before the .wav; the seal digest catches it.
+        // a byte inside the manifest body -- after the header, before the .wav; the seal digest catches it.
         out2[bundle_header_len + man_n - 2] ^= 0x01;
         if (unpack(out2[0..n2])) |_| return error.ManTamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongManTamper;
     }
 
-    // 3. THE FRAME LAW — a wrong magic refuses BadBundle; a length that does not tile the buffer refuses BadBundle.
+    // 3. THE FRAME LAW -- a wrong magic refuses BadBundle; a length that does not tile the buffer refuses BadBundle.
     {
         var out: [512]u8 = undefined;
         const n = try pack(out[0..], manifest_bytes, wav);
@@ -159,7 +159,7 @@ fn run_selftest() !u8 {
         if (unpack("LOTUS")) |_| return error.ShortSlipped else |e| if (e != error.BadBundle) return error.WrongShort;
     }
 
-    // 4. THE ATOMIC LAW — a buffer too small for the frame refuses Overflow rather than writing past its end.
+    // 4. THE ATOMIC LAW -- a buffer too small for the frame refuses Overflow rather than writing past its end.
     {
         var tiny: [16]u8 = undefined; // exactly the header, no room for the parts
         if (pack(tiny[0..], manifest_bytes, wav)) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;

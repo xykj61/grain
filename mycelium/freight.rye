@@ -1,12 +1,12 @@
-//! mycelium/freight.rye — a world carries its whole signed ledger to its new berth (r1, the freight crux).
+//! mycelium/freight.rye -- a world carries its whole signed ledger to its new berth (r1, the freight crux).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r1.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r1.
 //! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! Puddle proved WHICH host runs which world, and healed a departure by moving only the worlds the failed
-//! host carried. Yet it named a world by its id alone — it never carried the one thing a world exists to
+//! host carried. Yet it named a world by its id alone -- it never carried the one thing a world exists to
 //! keep: its STATE. Freight is what a world carries to its berth: its whole signed Mycelium ledger (a Cord
-//! Dag). This rung proves the durability guarantee a fleet is worthless without — when a host departs and
+//! Dag). This rung proves the durability guarantee a fleet is worthless without -- when a host departs and
 //! the world re-berths, it arrives on its new host reading the BYTE-IDENTICAL account position it held on
 //! the old one. Placement moves; state does not.
 //!
@@ -16,13 +16,13 @@
 //!   - a moved world genuinely changed host (a real migration, not a no-op);
 //!   - its order-head digest + position triple are byte-identical across the move (it arrives whole);
 //!   - a world that stayed keeps both its berth and its position;
-//!   - a freight TAMPERED in transit is caught (`FreightTampered`) — the receiving host recomputes an
+//!   - a freight TAMPERED in transit is caught (`FreightTampered`) -- the receiving host recomputes an
 //!     order-head that disagrees with the advertised head and refuses, rather than serving a rewritten
 //!     position.
 //!
 //! Composes `puddle` + `cord` + `lapse` + `statement` + `fold` + `voucher` + `kumara` public API only,
-//! editing none (each re-runs GREEN at this witness's door). The position is derived, never re-declared —
-//! there is no set_position. Siloed, dev-only, demo host/world/keeper seeds — no real key, no funds, no
+//! editing none (each re-runs GREEN at this witness's door). The position is derived, never re-declared --
+//! there is no set_position. Siloed, dev-only, demo host/world/keeper seeds -- no real key, no funds, no
 //! network, no world provisioned or moved; a served migration reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight.rye
@@ -52,7 +52,7 @@ pub const FreightError = error{
     BerthUnchanged, // a "moved" world kept its host — not a real migration
 };
 
-/// A world's account POSITION — the plain triple the Statement voice reads, plus the order-head digest that
+/// A world's account POSITION -- the plain triple the Statement voice reads, plus the order-head digest that
 /// fingerprints the whole ledger. Read from the ledger bytes alone; no host is an input.
 pub const Position = struct {
     balance: u64,
@@ -61,7 +61,7 @@ pub const Position = struct {
     present: bool,
     order_head: [voucher.order_head_len]u8,
 
-    /// Two positions are equal exactly when the fingerprint and the triple agree — the same ledger read the
+    /// Two positions are equal exactly when the fingerprint and the triple agree -- the same ledger read the
     /// same way. Used to prove a move changed nothing about the state.
     pub fn same(a: *const Position, b: *const Position) bool {
         // invariant: an order-head is exactly one block-address width, in both operands.
@@ -76,7 +76,7 @@ pub const Position = struct {
 
 /// Read a world's position out of its ledger (a Cord Dag) for one account. This is the whole trick, stated
 /// once: `resolve` folds the committed order into a Ledger, `statement_for` reads the account, and
-/// `order_head_of` fingerprints the order — none of which sees a host. So this same function, run on the
+/// `order_head_of` fingerprints the order -- none of which sees a host. So this same function, run on the
 /// sending host and the receiving host, must return the same Position for the same Dag.
 pub fn read_position(dag: *const cord.Dag, account: []const u8) !Position {
     // invariant: an account key is exactly one public-key width.
@@ -99,7 +99,7 @@ pub fn read_position(dag: *const cord.Dag, account: []const u8) !Position {
 }
 
 /// Receive a moving world onto a new host: rebuild its ledger from the carried blocks, and refuse unless the
-/// rebuilt order-head equals the freight's ADVERTISED head. A carrier that flips one block cannot pass — the
+/// rebuilt order-head equals the freight's ADVERTISED head. A carrier that flips one block cannot pass -- the
 /// receiving host proves the corruption before it reads a single position. This is the freight's teeth: a
 /// migration is a re-read of trusted bytes, never a trusted copy.
 pub fn receive(blocks: []const cord.Block, advertised_head: []const u8, account: []const u8) FreightError!Position {
@@ -156,9 +156,9 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 /// A world's ledger: a funder credits `owner` `amount`, and the owner pledges `amount` to `to` under a far
-/// deadline the two-block order never reaches — the plain open-pledge scene the Statement voice reads. The
+/// deadline the two-block order never reaches -- the plain open-pledge scene the Statement voice reads. The
 /// pledge id seeds a DISTINCT ledger per world, so no two worlds share an order-head. Returns two blocks
-/// (genesis · pledge); a caller resolves them into the world's Dag.
+/// (genesis - pledge); a caller resolves them into the world's Dag.
 fn seat_ledger(pledge_id: u8, amount: u64, funder: u8, owner: u8, to: []const u8) ![2]cord.Block {
     const kf = seeded(funder);
     const ka = seeded(owner);
@@ -190,7 +190,7 @@ fn dag_of(blocks: []const cord.Block) !cord.Dag {
 
 pub fn main() !void {
     // Three worlds, each with its own distinct ledger; every world's owner is credited a different amount so
-    // the positions are visibly its own. The recipient of every pledge is a fixed stranger — the pledges
+    // the positions are visibly its own. The recipient of every pledge is a fixed stranger -- the pledges
     // stay OPEN (a far deadline the order never reaches), so each owner reads balance 0, reserved = amount.
     const ids = [_][]const u8{ "alpha", "bravo", "charlie" };
     const owners = [_]u8{ 0xA1, 0xB2, 0xC3 };
@@ -203,7 +203,7 @@ pub fn main() !void {
         blocks[i] = try seat_ledger(@truncate(0x10 + i), amounts[i], 0xF0, owners[i], stranger[0..]);
     }
 
-    // --- Scene 1 — THE CRUX: a host departs, a moved world reads the identical position on its new berth --
+    // --- Scene 1 -- THE CRUX: a host departs, a moved world reads the identical position on its new berth --
     {
         const all = [_]u8{ 0x11, 0x22, 0x33 };
         const cap: u32 = 8; // generous — capacity never binds, so the berth is exactly pure HRW
@@ -211,7 +211,7 @@ pub fn main() !void {
         var pb: [puddle.max_worlds]u32 = undefined;
         try puddle.berth(&before, &pb);
 
-        // Depart the host carrying the most worlds — so the scene shows both a move and a stay.
+        // Depart the host carrying the most worlds -- so the scene shows both a move and a stay.
         var departed: u32 = 0;
         var best_load: u32 = 0;
         var hi: u32 = 0;
@@ -239,7 +239,7 @@ pub fn main() !void {
         try puddle.berth(&after, &pa);
 
         // World by world: read each world's position on its OLD berth and its NEW berth. The berth may move;
-        // the position never does — it is read from the world's own ledger bytes, which the move never touches.
+        // the position never does -- it is read from the world's own ledger bytes, which the move never touches.
         var moved: u32 = 0;
         var stayed: u32 = 0;
         var w: u32 = 0;
@@ -248,7 +248,7 @@ pub fn main() !void {
             const dag = try dag_of(blocks[w][0..]);
             const pos_before = try read_position(&dag, owner_pk[0..]);
             // Each owner reads its own credited amount reserved, balance 0 (the open pledge holds it), and no
-            // received (the stranger is the recipient, not the owner) — the position is visibly the world's.
+            // received (the stranger is the recipient, not the owner) -- the position is visibly the world's.
             if (pos_before.reserved != amounts[w] or pos_before.balance != 0) return error.PositionMoved;
 
             const was = try berth_of(&before, &pb, ids[w]);
@@ -258,15 +258,15 @@ pub fn main() !void {
             const pos_after = try receive(blocks[w][0..], pos_before.order_head[0..], owner_pk[0..]);
 
             if (std.mem.eql(u8, was, departed_pk)) {
-                // This world berthed at the departed host — it MUST move, and land on a survivor.
+                // This world berthed at the departed host -- it MUST move, and land on a survivor.
                 if (std.mem.eql(u8, now, departed_pk)) return error.StayedOnDeparted;
                 if (std.mem.eql(u8, was, now)) return error.BerthUnchanged;
-                // The berth changed — yet the position is byte-identical. Placement moved; state did not.
+                // The berth changed -- yet the position is byte-identical. Placement moved; state did not.
                 if (!pos_before.same(&pos_after)) return error.PositionMoved;
                 if (!std.mem.eql(u8, pos_before.order_head[0..], pos_after.order_head[0..])) return error.FingerprintMoved;
                 moved += 1;
             } else {
-                // A survivor-tenant kept its host — and, of course, its position.
+                // A survivor-tenant kept its host -- and, of course, its position.
                 if (!std.mem.eql(u8, was, now)) return error.StayedOnDeparted;
                 if (!pos_before.same(&pos_after)) return error.PositionMoved;
                 stayed += 1;
@@ -276,14 +276,14 @@ pub fn main() !void {
         if (stayed == 0) return error.HostsAll;
     }
 
-    // --- Scene 2 — THE TEETH: a freight tampered in transit refuses -------------------------------------
+    // --- Scene 2 -- THE TEETH: a freight tampered in transit refuses -------------------------------------
     {
         const owner_pk = seeded(owners[0]).public_key.toBytes();
         const dag = try dag_of(blocks[0][0..]);
         const honest = try read_position(&dag, owner_pk[0..]);
 
         // A carrier flips one byte of the pledge block's fact body. The receiving host recomputes an
-        // order-head that disagrees with the advertised head and refuses — no rewritten position is served.
+        // order-head that disagrees with the advertised head and refuses -- no rewritten position is served.
         var tampered: [2]cord.Block = blocks[0];
         tampered[1].fact.body[0] +%= 1;
         const verdict = receive(tampered[0..], honest.order_head[0..], owner_pk[0..]);
@@ -298,7 +298,7 @@ pub fn main() !void {
         if (!ok.same(&honest)) return error.PositionMoved;
     }
 
-    // --- Scene 3 — DISTINCTNESS: no world reads another's freight ---------------------------------------
+    // --- Scene 3 -- DISTINCTNESS: no world reads another's freight ---------------------------------------
     {
         var w: u32 = 0;
         while (w < ids.len) : (w += 1) {
@@ -311,7 +311,7 @@ pub fn main() !void {
                 const other_dag = try dag_of(blocks[other][0..]);
                 var oh: [voucher.order_head_len]u8 = undefined;
                 voucher.order_head_of(&other_dag, &oh);
-                // Distinct ledgers carry distinct order-heads — one world's freight can never masquerade as
+                // Distinct ledgers carry distinct order-heads -- one world's freight can never masquerade as
                 // another's, so the migration cannot cross-wire two worlds' state.
                 if (std.mem.eql(u8, mine.order_head[0..], oh[0..])) return error.FingerprintMoved;
             }

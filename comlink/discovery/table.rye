@@ -1,6 +1,6 @@
-//! comlink/discovery/table.rye — bounded peer table over Tally stack + Region.
+//! comlink/discovery/table.rye -- bounded peer table over Tally stack + Region.
 //!
-//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do.
 //! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
 //!   discovery_max_peers 256
 //!   discovery_staleness_max_seconds 4096
@@ -8,9 +8,9 @@
 //!
 //! Free-list of slot indices lives in a Stack. Descriptor bodies pack into a
 //! Region garden when a caller wants contiguous export bytes. Mycelium stays
-//! untouched — this table finds peers and never orders them.
-//! Check shape: claim↔reach both ways · bound bitten · tally stack LIFO untouched.
-//! Gossip and introduce wait their own rounds (narrow-scope · fascia < 80).
+//! untouched -- this table finds peers and never orders them.
+//! Check shape: claim<->reach both ways - bound bitten - tally stack LIFO untouched.
+//! Gossip and introduce wait their own rounds (narrow-scope - fascia < 80).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/table.rye
 
@@ -22,13 +22,13 @@ const tally_stack = @import("tally_stack.rye");
 const tally_gardens = @import("tally_gardens.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// Hard ceiling — seated before this file existed (v27 · explicit_bounds).
+/// Hard ceiling -- seated before this file existed (v27 - explicit_bounds).
 pub const max_peers: u32 = 256;
 
-/// Age-out window on the one clock — seconds.
+/// Age-out window on the one clock -- seconds.
 pub const staleness_max_seconds: u32 = 4096;
 
-/// Peer identity length ceiling — matches a Kumara key face (32 bytes).
+/// Peer identity length ceiling -- matches a Kumara key face (32 bytes).
 pub const peer_id_max_bytes: u32 = 32;
 
 pub const PeerId = struct {
@@ -215,9 +215,9 @@ pub const PeerTable = struct {
     }
 };
 
-/// Selftest — Check shape: claim↔reach · bound bitten · stack LIFO · pack.
+/// Selftest -- Check shape: claim<->reach - bound bitten - stack LIFO - pack.
 pub fn main() !void {
-    // Tally stack LIFO proof — the free-list's own type, untouched beneath the table.
+    // Tally stack LIFO proof -- the free-list's own type, untouched beneath the table.
     var lifo = tally_stack.StackType(u32, 4){};
     lifo.push(1);
     lifo.push(2);
@@ -241,10 +241,10 @@ pub fn main() !void {
     try table.upsert(id_b, d_b, 200);
     if (table.count() != 2) return error.CountWrong;
 
-    // Claim → reach: every claimed id is gettable.
+    // Claim -> reach: every claimed id is gettable.
     if (table.get(id_a) == null) return error.ClaimUnreachableA;
     if (table.get(id_b) == null) return error.ClaimUnreachableB;
-    // Reach → claim: every live slot's id round-trips through get.
+    // Reach -> claim: every live slot's id round-trips through get.
     var live_seen: u32 = 0;
     var si: u32 = 0;
     while (si < max_peers) : (si += 1) {
@@ -262,7 +262,7 @@ pub fn main() !void {
     if (got.seen_at != 250) return error.SeenWrong;
     if (!std.mem.eql(u8, got.descriptor.as_slice(), d_a2.as_slice())) return error.DescMismatch;
 
-    // Free-stack LIFO reuse: age-out walks low→high, so last freed is first reused.
+    // Free-stack LIFO reuse: age-out walks low->high, so last freed is first reused.
     const removed = table.age_out(250 + staleness_max_seconds + 1);
     if (removed != 2) return error.AgeOutWrong;
     if (table.count() != 0) return error.AgeOutLeftLive;

@@ -1,4 +1,4 @@
-//! glow/lower_compose.rye — lower a cross-line face→call desk to one `.rye`.
+//! glow/lower_compose.rye -- lower a cross-line face->call desk to one `.rye`.
 //!
 //! Thin STOA11 face (exactly two lines):
 //!   =/  amount  5
@@ -115,7 +115,7 @@ fn emit_compose(spec: *const ComposeSpec, welcome: bool, out: []u8) LowerError!u
     const fn_len = try zig_safe_ident(face_slice(spec), &zf);
     const gn = try zig_safe_ident(gate_slice(spec), &zg);
     const expect: u32 = if (welcome) compose_expect else compose_expect +% 1;
-    // double(sample) => sample *% 2; welcome expects 2*value when value is 5 → 10.
+    // double(sample) => sample *% 2; welcome expects 2*value when value is 5 -> 10.
     // Keep expect fixed at compose_expect for the thin desk (value must be 5).
     if (spec.value != 5) return error.MalformedValue;
 

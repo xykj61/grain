@@ -1,13 +1,13 @@
-//! pond/apps/mantra_browser_theme.rye — BUHR Journey 2, Rung 4: a .brush theme
+//! pond/apps/mantra_browser_theme.rye -- BUHR Journey 2, Rung 4: a .brush theme
 //! recolors the living edge.
 //!
-//! Rung three lit each lane's head revision — the living edge of a history — in
+//! Rung three lit each lane's head revision -- the living edge of a history -- in
 //! the design system's own `head` token, seated in `tokens.base_sheet`. This rung
 //! closes the authoring loop the token was named for: a `.brush` file's optional
 //! `style:` block overrides the `head` key, the WADE1 cascade infuses that override
 //! over the base sheet, and the same `paint_heads` lowering paints each lane's head
 //! in the *authored* color. The proof this rung wants is that the living edge is
-//! genuinely themeable — a person editing a `.brush` file, never Skate or Rye,
+//! genuinely themeable -- a person editing a `.brush` file, never Skate or Rye,
 //! recolors the newest node of every lane by writing one token line.
 //!
 //! It stays on witnessed ground end to end. The theme is read by the real `.brush`
@@ -16,7 +16,7 @@
 //! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint
 //! is rung three's `paint_heads` unchanged. The recolor is proven two ways: the
 //! themed head resolves to the authored color, and the base sheet's default head
-//! color leaves *zero* pixels on the themed canvas — a recolor, not an addition.
+//! color leaves *zero* pixels on the themed canvas -- a recolor, not an addition.
 //!
 //! Additive by construction: it imports mantra_browser, mantra_browser_heads,
 //! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
@@ -37,11 +37,11 @@ const bp = @import("brushstroke/brush_parse.rye");
 
 const mantra_browser_theme_version = "20260812.140000";
 
-// The theme fixture the rung reads — a real `.brush` authoring file whose style
+// The theme fixture the rung reads -- a real `.brush` authoring file whose style
 // block recolors the `head` token (and paper/ink for a full dark theme).
 const theme_path = "pond/apps/hot-edge.brush";
 
-// The head color the theme authors — a hotter terracotta than the base sheet's
+// The head color the theme authors -- a hotter terracotta than the base sheet's
 // ochre. Warm and low-blue (R180 > G80 > B45), so it passes the design system's
 // own palette law; distinctly redder, so the recolor is unmistakable.
 const themed_head_argb: u32 = 0xFF_B4_50_2D;
@@ -88,7 +88,7 @@ pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
 }
 
 /// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
-/// rasterized buffer — a witness helper proving a specific token color reached (or
+/// rasterized buffer -- a witness helper proving a specific token color reached (or
 /// never reached) the canvas.
 fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
     // invariant: the stride holds a full row of ARGB8888 pixels.
@@ -120,7 +120,7 @@ fn welcome_theme_recolors_head(allocator: std.mem.Allocator, io: std.Io) !void {
     const themed = themed_buf[0..n];
 
     // The themed sheet's head token now resolves to the authored terracotta, not
-    // the base sheet's default ochre — the override won the cascade on its own key.
+    // the base sheet's default ochre -- the override won the cascade on its own key.
     const themed_head = try tokens.token_color(themed, "head");
     const base_head = try tokens.token_color(tokens.base_sheet, "head");
     assert(themed_head.r == 0xB4);
@@ -128,7 +128,7 @@ fn welcome_theme_recolors_head(allocator: std.mem.Allocator, io: std.Io) !void {
     assert(themed_head.b == 0x2D);
     assert(themed_head.r != base_head.r or themed_head.g != base_head.g or themed_head.b != base_head.b);
 
-    // Paint the graph with the themed sheet — every lane's head wears the new color.
+    // Paint the graph with the themed sheet -- every lane's head wears the new color.
     var catalog = try mb.demo_catalog();
     var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
     const rows = try heads.paint_heads(&catalog, &grid, themed);
@@ -147,9 +147,9 @@ fn welcome_theme_recolors_head(allocator: std.mem.Allocator, io: std.Io) !void {
     const h_u: u32 = @intCast(height);
     const themed_head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, themed_head);
     const base_head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_head);
-    // The authored head color reached the canvas — the living edge burns terracotta.
+    // The authored head color reached the canvas -- the living edge burns terracotta.
     assert(themed_head_pixels > 0);
-    // The default ochre left zero pixels — this is a recolor, never an addition.
+    // The default ochre left zero pixels -- this is a recolor, never an addition.
     assert(base_head_pixels == 0);
     print("mantra_browser_theme: {d} themed-head pixels on the canvas, {d} default-head pixels (recolored)\n", .{ themed_head_pixels, base_head_pixels });
 }
@@ -157,7 +157,7 @@ fn welcome_theme_recolors_head(allocator: std.mem.Allocator, io: std.Io) !void {
 fn welcome_theme_head_is_warm(io: std.Io) !void {
     var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
     const n = try resolve_theme(io, theme_path, &themed_buf);
-    // token_color asserts warm/low-blue on the way — a theme cannot smuggle a cold
+    // token_color asserts warm/low-blue on the way -- a theme cannot smuggle a cold
     // head past the design system's own palette law. The authored value it returns
     // is exactly the terracotta the fixture declared.
     const themed_head = try tokens.token_color(themed_buf[0..n], "head");
@@ -183,7 +183,7 @@ fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void
     var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
     _ = try heads.paint_heads(&catalog, &grid, themed_buf[0..n]);
 
-    // Theming touches only color — the painted glyphs still carry the very bytes
+    // Theming touches only color -- the painted glyphs still carry the very bytes
     // rung one renders. Editor (render) and view (grid) stay one graph.
     var buf: [mb.max_render_bytes]u8 = undefined;
     const text = try mb.render(&catalog, &buf);
@@ -197,7 +197,7 @@ fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void
 }
 
 fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
-    // A paint with the untouched base sheet keeps the default ochre head — proving
+    // A paint with the untouched base sheet keeps the default ochre head -- proving
     // it is the theme's override, not the paint path, that recolors the living edge.
     var catalog = try mb.demo_catalog();
     var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
@@ -222,7 +222,7 @@ fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
 
 fn welcome_theme_refuses_styleless(io: std.Io) !void {
     // The seed fixture declares no style block; theming it names ThemeMissingHead
-    // rather than silently painting the default — a theme must carry a head to win.
+    // rather than silently painting the default -- a theme must carry a head to win.
     var out: [tokens.max_sheet_bytes]u8 = undefined;
     if (resolve_theme(io, "brushstroke/seed-frame.brush", &out)) |_| {
         unreachable;

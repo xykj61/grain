@@ -1,4 +1,4 @@
-//! glow/lower_trap.rye — lower a parsed `|-` bound to runnable `.rye` text.
+//! glow/lower_trap.rye -- lower a parsed `|-` bound to runnable `.rye` text.
 //!
 //! Per active-designing/20260716-093000_glow-and-rye-what-shares-under-the-hood.md:
 //! Glow's hop emits ordinary Rye; Rye's bridge takes it from there. Literal
@@ -15,7 +15,7 @@ pub const LowerError = rbt.ParseError || error{
     BadIdent,
 };
 
-/// Demo subject length for `(lent …)` emit — enough to prove runtime `.len`.
+/// Demo subject length for `(lent ...)` emit -- enough to prove runtime `.len`.
 pub const lent_demo_len: u32 = 5;
 
 /// Emit a complete `.rye` main that walks `actual_steps` under `bound`.

@@ -1,4 +1,4 @@
-//! comlink/discovery/descriptor_test.rye — welcome and refuse for the bound.
+//! comlink/discovery/descriptor_test.rye -- welcome and refuse for the bound.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye
 

@@ -1,4 +1,4 @@
-//! Rye test: SplitIterator.peek via splitScalar — pass 9969.
+//! Rye test: SplitIterator.peek via splitScalar -- pass 9969.
 //!
 //! Rishi splits every line on newlines and peeks ahead while parsing.
 //! next() was strengthened in 9993; peek now carries the same sub-slice contract.

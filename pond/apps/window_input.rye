@@ -1,4 +1,4 @@
-//! pond/apps/window_input.rye — Dexter line editor (keyboard → Rishi line).
+//! pond/apps/window_input.rye -- Dexter line editor (keyboard -> Rishi line).
 //!
 //! Composes key events into one submitted line for `runOneInput`. The Wayland
 //! seam in Brushstroke drains into these actions; this module stays pure so
@@ -109,7 +109,7 @@ pub const LineEditor = struct {
     }
 };
 
-/// Bytes to remove from the end: one UTF-8 codepoint (1–4 bytes).
+/// Bytes to remove from the end: one UTF-8 codepoint (1-4 bytes).
 fn utf8_delete_len(buf: []const u8) u32 {
     // invariant: the buffer holds room for at least one byte, since a zero-length one would
     // read a key into nothing and report it delivered
@@ -122,7 +122,7 @@ fn utf8_delete_len(buf: []const u8) u32 {
         if (b & 0xC0 != 0x80) {
             return @intCast(buf.len - i);
         }
-        // Guard: orphan continuations — delete one byte.
+        // Guard: orphan continuations -- delete one byte.
         if (buf.len - i >= 4) return 1;
     }
     return 1;

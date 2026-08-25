@@ -2,7 +2,7 @@
 //!
 //! Goal: prove that SHA3-256, as provided by the standard crypto library,
 //! produces the known-correct digest for a sample input. SHA3-256 is
-//! the content-naming primitive Mantra uses for its weave lines — a
+//! the content-naming primitive Mantra uses for its weave lines -- a
 //! shorter digest than SHA3-512, trading some collision resistance for
 //! a name that fits comfortably in a line of text.
 //!

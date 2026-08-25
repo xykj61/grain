@@ -1,31 +1,31 @@
-//! crypto/fe25519.rye — Season G (Cryptography), the sixth rung: the Curve25519 base field GF(2^255 − 19) authored in pure Rye. Every
-//! remaining Monocypher-parity primitive the decision wave names — Ed25519 signing (the Lotus signed carry, Kumara identity, Vault,
-//! Comlink) and X25519 key agreement — stands on this one finite field. The five GREEN primitives before it (BLAKE2b, SHA-512, ChaCha20,
+//! crypto/fe25519.rye -- Season G (Cryptography), the sixth rung: the Curve25519 base field GF(2^255 − 19) authored in pure Rye. Every
+//! remaining Monocypher-parity primitive the decision wave names -- Ed25519 signing (the Lotus signed carry, Kumara identity, Vault,
+//! Comlink) and X25519 key agreement -- stands on this one finite field. The five GREEN primitives before it (BLAKE2b, SHA-512, ChaCha20,
 //! Poly1305, and the ChaCha20-Poly1305 AEAD) were integer arithmetic alone; the AEAD's own header stated the boundary plainly: it "adds no
-//! new field math (the curve, edwards25519, still wants its own design round)." This file is that design round's crux — the durable stone
+//! new field math (the curve, edwards25519, still wants its own design round)." This file is that design round's crux -- the durable stone
 //! every later curve operation reaches for, built and proven before any of them.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (this round) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its
 //! field math a separate gated round).
-//! Kin: crypto/poly1305.rye (the limb-arithmetic sibling — five 26-bit limbs mod 2^130 − 5; this is five 51-bit limbs mod 2^255 − 19).
-//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the
+//! Kin: crypto/poly1305.rye (the limb-arithmetic sibling -- five 26-bit limbs mod 2^130 − 5; this is five 51-bit limbs mod 2^255 − 19).
+//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own arithmetic, studied clean-room from the
 //! public mathematics of Curve25519 and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a field element is a residue mod the prime p = 2^255 − 19, carried in five 51-bit limbs (radix 2^51), the exact sibling of
+//! THE CRUX -- a field element is a residue mod the prime p = 2^255 − 19, carried in five 51-bit limbs (radix 2^51), the exact sibling of
 //! Poly1305's five 26-bit limbs over 2^130 − 5. Addition and subtraction are limbwise (subtraction adds a folded 2p first so no limb goes
 //! negative). Multiplication is the schoolbook product with the field's own reduction: any partial product past limb 4 lands at 2^255 or
-//! beyond, and 2^255 ≡ 19 (mod p), so those terms fold back multiplied by 19 — precisely how Poly1305 folds ×5 because 2^130 ≡ 5. The
+//! beyond, and 2^255 ≡ 19 (mod p), so those terms fold back multiplied by 19 -- precisely how Poly1305 folds ×5 because 2^130 ≡ 5. The
 //! products accumulate in 128-bit words, then a carry chain returns the result to reduced 51-bit limbs. Squaring is the product of an
 //! element with itself. The multiplicative inverse is Fermat's: a^(p−2) = a^(2^255 − 21), computed by a fixed square-and-multiply ladder
 //! (254 squarings, skipping the two multiplies the exponent's bit pattern omits). Packing to 32 bytes performs a final conditional subtract
 //! of p, so the output is always the true canonical residue. Nothing here is a claim about a device; it is arithmetic anyone can replay.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A field element is arithmetic, not a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A field element is arithmetic, not a
 //! secret and not a signature: this file signs nothing (Ed25519's signing with an identity key stays its own separate, gated round). It
-//! calls no std.crypto in the primitive itself. Parity is proven at selftest against two references runnable now — small known-answers
-//! anyone can check by hand (1·1 = 1, 2·3 = 6, canonical round-trips, a − a = 0, a·a⁻¹ = 1, and a non-canonical encoding reducing to its
+//! calls no std.crypto in the primitive itself. Parity is proven at selftest against two references runnable now -- small known-answers
+//! anyone can check by hand (1-1 = 1, 2-3 = 6, canonical round-trips, a − a = 0, a-a⁻¹ = 1, and a non-canonical encoding reducing to its
 //! true residue), and Zig's own std.crypto.ecc.Edwards25519.Fe as an independent radix-2^51 implementation, compared byte-for-byte on the
 //! canonical packing of add, sub, mul, sq, and invert across a deterministic spread of field elements. Because the comparison is on
 //! canonical bytes, the two implementations may carry limbs differently and still must agree exactly. Monocypher-source parity stays the
@@ -41,11 +41,11 @@ const print = std.debug.print;
 
 pub const fe25519_version = "20260815.193010";
 
-/// The limb mask — 2^51 − 1. A field element is five limbs, each holding 51 bits of the 255-bit residue, so a limb-by-limb product of two
+/// The limb mask -- 2^51 − 1. A field element is five limbs, each holding 51 bits of the 255-bit residue, so a limb-by-limb product of two
 /// weakly-reduced limbs (each below 2^53) stays under 2^106 and a sum of five such terms with a ×19 fold fits a single 128-bit word.
 const mask51: u64 = 0x7ffffffffffff;
 
-/// The reduction constant. Because 2^255 ≡ 19 (mod p), any weight past the fifth limb folds back multiplied by 19 — the field's own trick,
+/// The reduction constant. Because 2^255 ≡ 19 (mod p), any weight past the fifth limb folds back multiplied by 19 -- the field's own trick,
 /// exactly as Poly1305 folds ×5 for 2^130 ≡ 5.
 const reduce_fold: u64 = 19;
 
@@ -72,13 +72,13 @@ pub fn from_bytes(s: *const [32]u8) Field {
     f.l[4] = (std.mem.readInt(u64, s[24..32], .little) >> 12) & mask51;
     // invariant: every unpacked limb is masked to 51 bits, so the element is weakly reduced from the start.
     assert(f.l[0] <= mask51 and f.l[1] <= mask51 and f.l[2] <= mask51 and f.l[3] <= mask51 and f.l[4] <= mask51);
-    // invariant: bit 255 is dropped — limb 4 holds bits 204..254, never bit 255, so the value is a residue mod 2^255.
+    // invariant: bit 255 is dropped -- limb 4 holds bits 204..254, never bit 255, so the value is a residue mod 2^255.
     assert(f.l[4] <= mask51);
     return f;
 }
 
 /// Reduce an element to its true canonical residue in [0, p): two carry passes fold the limbs below 2^51, then a conditional subtract of p
-/// (staged as an add of p's complement) leaves the least non-negative representative. Branchless by construction — the choice rides in the
+/// (staged as an add of p's complement) leaves the least non-negative representative. Branchless by construction -- the choice rides in the
 /// carry, not in a branch on the value.
 fn reduce(f: *Field) void {
     var i: u32 = 0;
@@ -120,11 +120,11 @@ fn reduce(f: *Field) void {
         f.l[i] &= mask51;
     }
     f.l[4] &= mask51;
-    // invariant: the element is now the canonical residue — every limb below 2^51.
+    // invariant: the element is now the canonical residue -- every limb below 2^51.
     assert(f.l[0] <= mask51 and f.l[1] <= mask51 and f.l[2] <= mask51 and f.l[3] <= mask51 and f.l[4] <= mask51);
 }
 
-/// Pack a field element to 32 little-endian bytes, first reducing to the canonical residue so equal values always serialize identically —
+/// Pack a field element to 32 little-endian bytes, first reducing to the canonical residue so equal values always serialize identically --
 /// the property the byte-for-byte parity check depends on.
 pub fn to_bytes(a: Field) [32]u8 {
     var f = a;
@@ -137,7 +137,7 @@ pub fn to_bytes(a: Field) [32]u8 {
     return s;
 }
 
-/// Add two field elements limbwise. Operands are weakly reduced (limbs below 2^53), so each sum stays below 2^54 — well inside u64 and
+/// Add two field elements limbwise. Operands are weakly reduced (limbs below 2^53), so each sum stays below 2^54 -- well inside u64 and
 /// inside the multiply schedule's headroom.
 pub fn add(a: Field, b: Field) Field {
     var f: Field = undefined;
@@ -173,7 +173,7 @@ pub fn sub(a: Field, b: Field) Field {
     return f;
 }
 
-/// Multiply two field elements. Schoolbook radix-2^51 product with the 2^255 ≡ 19 fold: partial products a_i·b_j land at limb (i+j), and
+/// Multiply two field elements. Schoolbook radix-2^51 product with the 2^255 ≡ 19 fold: partial products a_i-b_j land at limb (i+j), and
 /// any i+j ≥ 5 crosses 2^255 and folds back ×19. Products accumulate in 128-bit words; a carry chain returns the result to weakly-reduced
 /// 51-bit limbs (each below 2^52).
 pub fn mul(a: Field, b: Field) Field {
@@ -183,7 +183,7 @@ pub fn mul(a: Field, b: Field) Field {
     const a3 = a.l[3];
     const a4 = a.l[4];
 
-    // The ×19 folds of b's upper limbs — each stays below 2^58 (19 · 2^53), safe as a u64 multiplicand.
+    // The ×19 folds of b's upper limbs -- each stays below 2^58 (19 - 2^53), safe as a u64 multiplicand.
     const b0 = b.l[0];
     const b1 = b.l[1];
     const b2 = b.l[2];
@@ -229,7 +229,7 @@ pub fn mul(a: Field, b: Field) Field {
     return f;
 }
 
-/// Square a field element — the product of the element with itself. Kept as its own named contract so callers (the inverse ladder) read
+/// Square a field element -- the product of the element with itself. Kept as its own named contract so callers (the inverse ladder) read
 /// plainly, and so a future dedicated squaring schedule can replace the body without touching the callers.
 pub fn square(a: Field) Field {
     const r = mul(a, a);
@@ -239,8 +239,8 @@ pub fn square(a: Field) Field {
 }
 
 /// The multiplicative inverse by Fermat's little theorem: a^(p−2) = a^(2^255 − 21). A fixed square-and-multiply ladder of 254 squarings
-/// multiplies in a at every step except the two the exponent's bit pattern omits (positions 2 and 4), so a·invert(a) = 1 for every nonzero
-/// a. invert(0) is 0 (0 has no inverse); callers never invert zero. Data-independent by construction — the ladder's shape is fixed.
+/// multiplies in a at every step except the two the exponent's bit pattern omits (positions 2 and 4), so a-invert(a) = 1 for every nonzero
+/// a. invert(0) is 0 (0 has no inverse); callers never invert zero. Data-independent by construction -- the ladder's shape is fixed.
 pub fn invert(a: Field) Field {
     var c = a;
     var i: i32 = 253;
@@ -256,7 +256,7 @@ pub fn invert(a: Field) Field {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Build a small field element from a u64 that fits one limb — used only for the by-hand known-answers (1, 2, 3, 6).
+/// Build a small field element from a u64 that fits one limb -- used only for the by-hand known-answers (1, 2, 3, 6).
 fn from_small(v: u64) Field {
     // invariant: the value fits a single 51-bit limb, so the constructed element is already canonical.
     assert(v <= mask51);
@@ -272,7 +272,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// A deterministic spread of test encodings — the same generator shape the sibling primitives use, seeded so each element differs and none
+/// A deterministic spread of test encodings -- the same generator shape the sibling primitives use, seeded so each element differs and none
 /// is zero. Bit 255 is cleared so the encoding is a clean 255-bit value both unpackers read identically.
 fn test_bytes(seed: u8) [32]u8 {
     var s: [32]u8 = undefined;
@@ -288,7 +288,7 @@ fn test_bytes(seed: u8) [32]u8 {
 const ZFe = std.crypto.ecc.Edwards25519.Fe;
 
 fn run_selftest() !u8 {
-    // 1. By-hand known-answers anyone can check: canonical round-trips, 1·1 = 1, 2·3 = 6, a − a = 0, and a non-canonical encoding
+    // 1. By-hand known-answers anyone can check: canonical round-trips, 1-1 = 1, 2-3 = 6, a − a = 0, and a non-canonical encoding
     //    reducing to its true residue.
     {
         // Canonical round-trip of the Curve25519 base u-coordinate, 9.
@@ -296,13 +296,13 @@ fn run_selftest() !u8 {
         nine[0] = 9;
         if (!bytes_eq(&to_bytes(from_bytes(&nine)), &nine)) return error.RoundTripMismatch;
 
-        // 1·1 = 1.
+        // 1-1 = 1.
         const one = from_small(1);
         var one_b = [_]u8{0} ** 32;
         one_b[0] = 1;
         if (!bytes_eq(&to_bytes(mul(one, one)), &one_b)) return error.OneMismatch;
 
-        // 2·3 = 6.
+        // 2-3 = 6.
         var six_b = [_]u8{0} ** 32;
         six_b[0] = 6;
         if (!bytes_eq(&to_bytes(mul(from_small(2), from_small(3))), &six_b)) return error.ProductMismatch;
@@ -312,7 +312,7 @@ fn run_selftest() !u8 {
         var zero_b = [_]u8{0} ** 32;
         if (!bytes_eq(&to_bytes(sub(a, a)), &zero_b)) return error.SubMismatch;
 
-        // a · a⁻¹ = 1.
+        // a - a⁻¹ = 1.
         if (!bytes_eq(&to_bytes(mul(a, invert(a))), &one_b)) return error.InverseMismatch;
 
         // A non-canonical encoding reduces to its true residue: the encoding of p is 0, and the encoding of p + 5 is 5.

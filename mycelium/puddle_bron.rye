@@ -1,16 +1,16 @@
-//! mycelium/puddle_bron.rye — a fleet travels as a readable record, and berths the same offline (r3).
+//! mycelium/puddle_bron.rye -- a fleet travels as a readable record, and berths the same offline (r3).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r3 — travel.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r3 -- travel.
 //! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! r1 derived the berth; r2 healed the fleet. A fleet a node cannot hand to another is only a local layout,
-//! so r3 lets the whole roster cross as `format puddle-fleet-v1` bytes — one `host <pk-hex> <capacity>` line
+//! so r3 lets the whole roster cross as `format puddle-fleet-v1` bytes -- one `host <pk-hex> <capacity>` line
 //! per host in enrollment order, one `world <id>` line per world. The reader rebuilds the fleet through r1's
 //! own `add_host`/`add_world`, so the fleet's laws (a host once, a world once, the static bounds, a real
-//! capacity and name) travel with it — a record can never rebuild a fleet r1 would refuse to build.
+//! capacity and name) travel with it -- a record can never rebuild a fleet r1 would refuse to build.
 //!
 //! The crux is THE PLACEMENT SURVIVES THE WIRE, not merely the bytes: a fleet parsed from bytes berths to
-//! the byte-identical placement as the fleet in memory — two nodes agree on where every world runs by
+//! the byte-identical placement as the fleet in memory -- two nodes agree on where every world runs by
 //! exchanging the roster alone. Render writes it, parse reads it back byte-for-byte, so a round trip is a
 //! fixed point.
 //!
@@ -18,7 +18,7 @@
 //! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad hex key `BadHex`, a bad capacity
 //! `BadInt`, and the fleet's own laws surface as `DuplicateHost`/`DuplicateWorld`/`BadCapacity`/
 //! `BadWorldName` on rebuild. Composes puddle.rye public API only. Siloed, dev-only, demo host and world
-//! seeds — no key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served
+//! seeds -- no key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served
 //! gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_bron.rye
@@ -31,7 +31,7 @@ const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// The record buffer bound — a full fleet's host and world lines fit with room.
+/// The record buffer bound -- a full fleet's host and world lines fit with room.
 pub const max_record: u32 = 8192;
 
 pub const BronError = error{
@@ -74,7 +74,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one fleet to a `format puddle-fleet-v1` record — one host line (key hex · capacity) in enrollment
+/// Render one fleet to a `format puddle-fleet-v1` record -- one host line (key hex - capacity) in enrollment
 /// order, then one world line each. Refuses an overflow rather than a partial record.
 pub fn render(f: *const puddle.Fleet, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -106,7 +106,7 @@ pub fn render(f: *const puddle.Fleet, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to three tokens; returns the count (or four to signal a token past any line's
-/// width — a host line, at three, is the widest).
+/// width -- a host line, at three, is the widest).
 fn tokens(line: []const u8, out: *[3][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -195,7 +195,7 @@ pub fn main() !void {
     var recovered: puddle.Fleet = undefined;
     try parse(buf[0..len], &recovered);
 
-    // The whole roster survives the wire — same hosts (key + capacity) and worlds in the same order.
+    // The whole roster survives the wire -- same hosts (key + capacity) and worlds in the same order.
     if (!fleets_agree(&f, &recovered)) return error.FleetChanged;
 
     // Re-rendering the recovered fleet reproduces the exact bytes (fixed point).
@@ -204,7 +204,7 @@ pub fn main() !void {
     if (len2 != len) return error.NotFixedPoint;
     if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
 
-    // THE CRUX: the recovered fleet berths to the byte-identical placement as the one in memory — two nodes
+    // THE CRUX: the recovered fleet berths to the byte-identical placement as the one in memory -- two nodes
     // agree on where every world runs by exchanging the roster alone.
     var pr: [puddle.max_worlds]u32 = undefined;
     try puddle.berth(&recovered, &pr);
@@ -253,7 +253,7 @@ pub fn main() !void {
             if (err != error.BadInt) return error.WrongBadInt;
         }
     }
-    // Refusal: a duplicate host line refuses DuplicateHost — the fleet's own law travels with the bytes.
+    // Refusal: a duplicate host line refuses DuplicateHost -- the fleet's own law travels with the bytes.
     {
         var pk_hex: [puddle.pk_len * 2]u8 = undefined;
         to_hex(host_key(0x11)[0..puddle.pk_len], &pk_hex);

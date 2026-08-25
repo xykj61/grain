@@ -1,7 +1,7 @@
-//! glow/lower_calln.rye — lower a parsed `%*` call to runnable `.rye`.
+//! glow/lower_calln.rye -- lower a parsed `%*` call to runnable `.rye`.
 //!
 //! Thin STOA9 face: closed demo gate `mix` with a named-sample struct
-//! `{ left, right }` — demos 5 and 3 → expect 8. Unknown gates refuse.
+//! `{ left, right }` -- demos 5 and 3 -> expect 8. Unknown gates refuse.
 
 const std = @import("std");
 const rn = @import("rune_calln.rye");

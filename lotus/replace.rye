@@ -1,26 +1,26 @@
-//! lotus/replace.rye — ALES115: replace — remove the `count` samples starting at `at` and insert `src` in their place, IN PLACE, so [at, at+src.len) becomes `src`, everything
-//! before `at` is untouched, everything after the removed span follows the new audio unchanged, and the length becomes len − count + src.len. This is the GENERAL span-edit — the
+//! lotus/replace.rye -- ALES115: replace -- remove the `count` samples starting at `at` and insert `src` in their place, IN PLACE, so [at, at+src.len) becomes `src`, everything
+//! before `at` is untouched, everything after the removed span follows the new audio unchanged, and the length becomes len − count + src.len. This is the GENERAL span-edit -- the
 //! one gesture that ties ALES2's cut/splice and ALES114's paste_over together: it is exactly cut(at, count) then splice(at, src), composed over ALES2's OWN public API, inventing
-//! no new transport, buffer, or error. Paste-into-a-selection is the button every editor ships — circle a span, drop different audio in its place, and the take changes length by
+//! no new transport, buffer, or error. Paste-into-a-selection is the button every editor ships -- circle a span, drop different audio in its place, and the take changes length by
 //! however much longer or shorter the new audio is. Fix a flubbed bar with a shorter clean take and the song tightens; drop a fuller phrase over a thin one and it lengthens.
 //!
-//! The rule, stated once: replace(clip, at, count, src) removes [at, at+count) and inserts `src` at `at`. It checks ALL bounds BEFORE any write — BadRange when the removed span
+//! The rule, stated once: replace(clip, at, count, src) removes [at, at+count) and inserts `src` at `at`. It checks ALL bounds BEFORE any write -- BadRange when the removed span
 //! falls outside the current samples (at > len, or count > len − at, without underflow), and ClipFull when the result would run past the fixed buffer (src.len > buf.len − len +
-//! count) — then composes ALES2's cut then splice, each pre-validated to succeed, so a refusal never lands mid-edit. It reuses ALES2's EditError whole.
+//! count) -- then composes ALES2's cut then splice, each pre-validated to succeed, so a refusal never lands mid-edit. It reuses ALES2's EditError whole.
 //!
-//! The crux — four laws. THE REPLACE LAW: the span [at, at+src.len) holds `src` exactly, the head is untouched, the tail after the removed span follows the new audio unchanged, and
+//! The crux -- four laws. THE REPLACE LAW: the span [at, at+src.len) holds `src` exactly, the head is untouched, the tail after the removed span follows the new audio unchanged, and
 //! the length is len − count + src.len (checked shorter, longer, and equal). THE GENERALIZATION LAW: an empty `src` equals ALES2's cut byte for byte; a zero `count` equals ALES2's
-//! splice byte for byte; a `src.len == count` equals ALES114's paste_over byte for byte — one law, three faces. THE LENGTH LAW: the length changes by exactly src.len − count — it
+//! splice byte for byte; a `src.len == count` equals ALES114's paste_over byte for byte -- one law, three faces. THE LENGTH LAW: the length changes by exactly src.len − count -- it
 //! shrinks when the replacement is shorter, grows when longer, holds when equal. THE DEGENERATE / REFUSAL LAW: replace(clip, at, 0, empty) is the identity; a removed span past the
 //! samples BadRange, a result past the buffer ClipFull, each before any write.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES115.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES115.
 //! Design read: active-designing/date/20260815/20260815-014021_fill-ales115-lotus-replace.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the cut and splice this rung composes, and the EditError reused whole; lotus/paste_over.rye (ALES114) —
-//! the length-preserving overwrite this rung generalizes (src.len == count), imported by the selftest to prove one corner of the generalization law; lotus/meter.rye (ALES13) — the
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the cut and splice this rung composes, and the EditError reused whole; lotus/paste_over.rye (ALES114) --
+//! the length-preserving overwrite this rung generalizes (src.len == count), imported by the selftest to prove one corner of the generalization law; lotus/meter.rye (ALES13) -- the
 //! peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It removes an existing span and writes caller-supplied samples
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It removes an existing span and writes caller-supplied samples
 //! in its place, changing the length by a bounded amount and reading no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/replace.rye selftest
@@ -35,31 +35,31 @@ const paste_over = @import("paste_over.rye");
 
 pub const replace_version = "20260815.014021";
 
-/// replace forwards ALES2's OWN faults reused by name — BadRange when the removed span falls outside the current samples, ClipFull when the result would overflow the fixed buffer —
+/// replace forwards ALES2's OWN faults reused by name -- BadRange when the removed span falls outside the current samples, ClipFull when the result would overflow the fixed buffer --
 /// and invents none of its own; `at`, `count`, and the payload length are plain position/span/size bounds with no illegal value save the ranges the samples and the buffer name.
 pub const ReplaceError = timeline.EditError;
 
-/// Remove the `count` samples starting at `at` and insert `src` in their place, in place — [at, at+src.len) becomes `src`, the head is untouched, the tail after the removed span
+/// Remove the `count` samples starting at `at` and insert `src` in their place, in place -- [at, at+src.len) becomes `src`, the head is untouched, the tail after the removed span
 /// follows the new audio unchanged, and the length becomes len − count + src.len. All bounds are checked before any write; then it composes ALES2's cut then splice. This is the
 /// general span-edit that generalizes cut (empty src), splice (zero count), and ALES114's paste_over (src.len == count).
 pub fn replace(clip: *timeline.Clip, at: u32, count: u32, src: []const i16) ReplaceError!void {
-    // invariant: the length never claims more samples than the buffer holds — the ground both sub-edits stand on.
+    // invariant: the length never claims more samples than the buffer holds -- the ground both sub-edits stand on.
     assert(clip.len <= clip.buf.len);
 
-    // invariant: the payload never exceeds the whole timeline bound — src comes from a caller slice, so bound it once against max_clip before it names a u32 size.
+    // invariant: the payload never exceeds the whole timeline bound -- src comes from a caller slice, so bound it once against max_clip before it names a u32 size.
     if (src.len > timeline.max_clip) return error.BadRange;
     const ins_len: u32 = @intCast(src.len);
 
-    // invariant: the removed span lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    // invariant: the removed span lies wholly within the current samples (checked without underflow -- count against the remainder), refused by name before any write.
     if (at > clip.len) return error.BadRange;
     if (count > clip.len - at) return error.BadRange;
 
-    // invariant: the result fits the fixed buffer — the length after removal is len − count, and the insert must fit the remaining headroom (checked without underflow, so the
+    // invariant: the result fits the fixed buffer -- the length after removal is len − count, and the insert must fit the remaining headroom (checked without underflow, so the
     //            ClipFull refusal lands BEFORE the cut mutates a single sample rather than after).
     const headroom: u32 = timeline.max_clip - clip.len + count;
     if (ins_len > headroom) return error.ClipFull;
 
-    // Every check passed, so each composed sub-edit is pre-validated to succeed — cut removes the span, splice fills it, and no refusal can land mid-edit.
+    // Every check passed, so each composed sub-edit is pre-validated to succeed -- cut removes the span, splice fills it, and no refusal can land mid-edit.
     try timeline.cut(clip, at, count);
     try timeline.splice(clip, at, src);
 
@@ -67,9 +67,9 @@ pub fn replace(clip: *timeline.Clip, at: u32, count: u32, src: []const i16) Repl
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE REPLACE LAW — the span becomes src, the head untouched, the tail follows the new audio, the length is len − count + src.len (shorter, longer, equal); THE
-//     GENERALIZATION LAW — empty src equals ALES2's cut, zero count equals ALES2's splice, src.len == count equals ALES114's paste_over, each byte for byte; THE LENGTH LAW — the
-//     length changes by exactly src.len − count in all three directions; THE DEGENERATE / REFUSAL LAW — replace(at, 0, empty) the identity, a span past the samples BadRange, a
+// --- selftest: THE REPLACE LAW -- the span becomes src, the head untouched, the tail follows the new audio, the length is len − count + src.len (shorter, longer, equal); THE
+//     GENERALIZATION LAW -- empty src equals ALES2's cut, zero count equals ALES2's splice, src.len == count equals ALES114's paste_over, each byte for byte; THE LENGTH LAW -- the
+//     length changes by exactly src.len − count in all three directions; THE DEGENERATE / REFUSAL LAW -- replace(at, 0, empty) the identity, a span past the samples BadRange, a
 //     result past the buffer ClipFull ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -84,24 +84,24 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE REPLACE LAW — the span becomes src, the head untouched, the tail after the removed span follows the new audio, the length is len − count + src.len. Proven three ways:
+    // 1. THE REPLACE LAW -- the span becomes src, the head untouched, the tail after the removed span follows the new audio, the length is len − count + src.len. Proven three ways:
     //    a SHORTER replacement (the clip tightens), a LONGER one (it lengthens), and an EQUAL one (the length holds).
     {
-        // shorter: remove 3 samples at 1, insert 1 — length 5 → 3.
+        // shorter: remove 3 samples at 1, insert 1 -- length 5 -> 3.
         var shorter = timeline.Clip{};
         try load_clip(&shorter, &[_]i16{ 10, 20, 30, 40, 50 });
         try replace(&shorter, 1, 3, &[_]i16{77});
         if (shorter.len != 3) return error.ShorterLength;
         if (!eq(shorter.samples(), &[_]i16{ 10, 77, 50 })) return error.ShorterWrong;
 
-        // longer: remove 1 sample at 1, insert 3 — length 4 → 6.
+        // longer: remove 1 sample at 1, insert 3 -- length 4 -> 6.
         var longer = timeline.Clip{};
         try load_clip(&longer, &[_]i16{ 10, 20, 30, 40 });
         try replace(&longer, 1, 1, &[_]i16{ 71, 72, 73 });
         if (longer.len != 6) return error.LongerLength;
         if (!eq(longer.samples(), &[_]i16{ 10, 71, 72, 73, 30, 40 })) return error.LongerWrong;
 
-        // equal: remove 2 at 1, insert 2 — length holds at 5.
+        // equal: remove 2 at 1, insert 2 -- length holds at 5.
         var equal = timeline.Clip{};
         try load_clip(&equal, &[_]i16{ 10, 20, 30, 40, 50 });
         try replace(&equal, 1, 2, &[_]i16{ 88, 99 });
@@ -109,11 +109,11 @@ fn run_selftest() !u8 {
         if (!eq(equal.samples(), &[_]i16{ 10, 88, 99, 40, 50 })) return error.EqualWrong;
     }
 
-    // 2. THE GENERALIZATION LAW — replace generalizes three proven rungs; each corner is proven byte for byte against its own rung over one anchor.
+    // 2. THE GENERALIZATION LAW -- replace generalizes three proven rungs; each corner is proven byte for byte against its own rung over one anchor.
     {
         const seed = [_]i16{ 10, 20, 30, 40, 50 };
 
-        // empty src → pure cut: replace(at, count, {}) equals ALES2's cut(at, count).
+        // empty src -> pure cut: replace(at, count, {}) equals ALES2's cut(at, count).
         var r_cut = timeline.Clip{};
         try load_clip(&r_cut, &seed);
         try replace(&r_cut, 1, 2, &[_]i16{});
@@ -122,7 +122,7 @@ fn run_selftest() !u8 {
         try timeline.cut(&c_cut, 1, 2);
         if (!eq(r_cut.samples(), c_cut.samples())) return error.CutCornerBroken;
 
-        // zero count → pure splice: replace(at, 0, src) equals ALES2's splice(at, src).
+        // zero count -> pure splice: replace(at, 0, src) equals ALES2's splice(at, src).
         const ins = [_]i16{ 7, 8, 9 };
         var r_spl = timeline.Clip{};
         try load_clip(&r_spl, &seed);
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         try timeline.splice(&s_spl, 2, &ins);
         if (!eq(r_spl.samples(), s_spl.samples())) return error.SpliceCornerBroken;
 
-        // src.len == count → paste_over: replace(at, n, src) with src.len == n equals ALES114's paste_over(at, src).
+        // src.len == count -> paste_over: replace(at, n, src) with src.len == n equals ALES114's paste_over(at, src).
         const paint = [_]i16{ 61, 62 };
         var r_pov = timeline.Clip{};
         try load_clip(&r_pov, &seed);
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (!eq(r_pov.samples(), p_pov.samples())) return error.PasteOverCornerBroken;
     }
 
-    // 3. THE LENGTH LAW — the length changes by exactly src.len − count over one anchor: it shrinks, grows, and holds by the arithmetic alone.
+    // 3. THE LENGTH LAW -- the length changes by exactly src.len − count over one anchor: it shrinks, grows, and holds by the arithmetic alone.
     {
         const seed = [_]i16{ 1, 2, 3, 4, 5, 6 }; // len 6
 
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (hold.len != 6) return error.HoldArithmetic;
     }
 
-    // 4a. THE DEGENERATE LAW — replace(at, 0, empty) removes nothing and inserts nothing: the identity.
+    // 4a. THE DEGENERATE LAW -- replace(at, 0, empty) removes nothing and inserts nothing: the identity.
     {
         var idc = timeline.Clip{};
         try load_clip(&idc, &[_]i16{ 7, 8, 9 });
@@ -171,23 +171,23 @@ fn run_selftest() !u8 {
         if (!eq(idc.samples(), &[_]i16{ 7, 8, 9 })) return error.IdentityMoved;
     }
 
-    // 4b. THE REFUSAL LAW — a removed span past the samples refuses BadRange, and a result past the buffer refuses ClipFull, each before any write, the clip untouched.
+    // 4b. THE REFUSAL LAW -- a removed span past the samples refuses BadRange, and a result past the buffer refuses ClipFull, each before any write, the clip untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
 
-        // at past the samples → BadRange, nothing written.
+        // at past the samples -> BadRange, nothing written.
         if (replace(&clip, 4, 0, &[_]i16{9})) |_| return error.AtNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // count past the remainder → BadRange, nothing written.
+        // count past the remainder -> BadRange, nothing written.
         if (replace(&clip, 2, 3, &[_]i16{9})) |_| return error.CountNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
         if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
     }
 
-    // 4c. THE REFUSAL LAW (headroom) — a result wider than the buffer refuses ClipFull BEFORE the cut mutates a sample: fill the clip to its bound, then a replace that removes one
+    // 4c. THE REFUSAL LAW (headroom) -- a result wider than the buffer refuses ClipFull BEFORE the cut mutates a sample: fill the clip to its bound, then a replace that removes one
     //     and inserts three would end one past the buffer.
     {
         var full = timeline.Clip{};

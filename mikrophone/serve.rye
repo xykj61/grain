@@ -1,15 +1,15 @@
-//! mikrophone/serve.rye — DREY9: the desk serves a wanted recording. The want-response to DREY8's have-advertisement:
+//! mikrophone/serve.rye -- DREY9: the desk serves a wanted recording. The want-response to DREY8's have-advertisement:
 //! given a content address a far hand asked for, the desk re-frames the held recording into exactly the wire frame that
-//! carries it — or refuses `NotHeld` if it does not hold that address. Together with DREY7's catalog and DREY8's
-//! manifest, this closes a complete, purely local content-addressed sync: advertise holdings → compute wanted → serve
-//! each wanted → deposit verify-before-keep.
+//! carries it -- or refuses `NotHeld` if it does not hold that address. Together with DREY7's catalog and DREY8's
+//! manifest, this closes a complete, purely local content-addressed sync: advertise holdings -> compute wanted -> serve
+//! each wanted -> deposit verify-before-keep.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY9.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY9.
 //! Design read: active-designing/date/20260814/20260814-065650_drey9-desk-serves-a-wanted-recording-exploration.md
-//! Stands on: mikrophone/catalog.rye (DREY7) — fetch a held payload by address; mikrophone/wire.rye (DREY1) — the one
-//! proven framing path; mikrophone/session.rye (DREY0) — a committed session the frame reads.
+//! Stands on: mikrophone/catalog.rye (DREY7) -- fetch a held payload by address; mikrophone/wire.rye (DREY1) -- the one
+//! proven framing path; mikrophone/session.rye (DREY0) -- a committed session the frame reads.
 //!
-//! This rung stays purely LOCAL — `serve` yields the frame bytes; it moves them over no transport. Producing a frame
+//! This rung stays purely LOCAL -- `serve` yields the frame bytes; it moves them over no transport. Producing a frame
 //! from a held recording crosses no gate; serving those bytes over a real network to a real far hand reaches the
 //! Comlink-served custody gate (Season 1, Journey 2) and waits for the maintainer's word. No disk, no network, no key
 //! signs, no funds (custody gate %2 untouched); the content address stays an integrity identity, not a signature.
@@ -27,11 +27,11 @@ const manifest = @import("manifest.rye");
 pub const serve_version = "20260814.065650";
 
 pub const ServeError = error{
-    /// A serve was asked for an address the catalog does not hold — refused before a frame is built.
+    /// A serve was asked for an address the catalog does not hold -- refused before a frame is built.
     NotHeld,
 };
 
-/// Serve a wanted recording — re-frame the payload the catalog holds under `address` into `out`, or refuse `NotHeld` if
+/// Serve a wanted recording -- re-frame the payload the catalog holds under `address` into `out`, or refuse `NotHeld` if
 /// the catalog does not hold it. Re-framing rebuilds a committed session from the held payload and calls `wire.frame`,
 /// reusing the one proven framing path rather than inventing a second. Because the frame's Sha256 is computed over the
 /// identical payload bytes, the served frame's content address equals the address asked for.
@@ -47,19 +47,19 @@ pub fn serve(cat: *const catalog.Catalog, address: catalog.Address, out: *wire.F
     try session.commit(&s);
     try wire.frame(&s, out);
 
-    // invariant: the served frame carries exactly the held payload — content-preserving, verifiable by the far hand.
+    // invariant: the served frame carries exactly the held payload -- content-preserving, verifiable by the far hand.
     const carried = try wire.deframe(out.bytes());
     // invariant: the payload carried across arrives byte for byte, so a difference means the
     // wire changed a capture rather than moved it
     assert(std.mem.eql(u8, carried, payload));
-    // invariant: the served frame's content address equals the address asked for — the sync converges.
+    // invariant: the served frame's content address equals the address asked for -- the sync converges.
     assert(std.mem.eql(u8, &catalog.address_of(carried), &address));
 }
 
 // --- selftest: serve answers only what is held, the answer is content-preserving, the whole local loop converges, and
 //     a tampered served frame still refuses ------------------------------------------------------------------------------
 
-/// Frame the text as a committed session would carry it — so each block deposits from a real wire frame.
+/// Frame the text as a committed session would carry it -- so each block deposits from a real wire frame.
 fn framed(text: []const u8) !wire.Frame {
     var s = session.Session.init();
     var i: u32 = 0;
@@ -71,7 +71,7 @@ fn framed(text: []const u8) !wire.Frame {
 }
 
 fn run_selftest() !u8 {
-    // 1. Serve answers only what is held — a held address yields a frame; an absent address refuses NotHeld.
+    // 1. Serve answers only what is held -- a held address yields a frame; an absent address refuses NotHeld.
     {
         var cat = catalog.Catalog.init();
         var a = try framed("held recording");
@@ -89,7 +89,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. The answer is content-preserving — the served frame's content address equals the address served, and a far
+    // 2. The answer is content-preserving -- the served frame's content address equals the address served, and a far
     //    hand deposits it under that same address.
     {
         var desk = catalog.Catalog.init();
@@ -104,7 +104,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, catalog.fetch(&far, addr).?, "prove the address"));
     }
 
-    // 3. The whole local loop converges — a far hand holding a subset, given the desk's manifest, serves each wanted
+    // 3. The whole local loop converges -- a far hand holding a subset, given the desk's manifest, serves each wanted
     //    address and ends holding exactly what the desk holds.
     {
         var desk = catalog.Catalog.init();
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. A tampered served frame still refuses — the far hand's deposit is verify-before-trust, so a frame corrupted in
+    // 4. A tampered served frame still refuses -- the far hand's deposit is verify-before-trust, so a frame corrupted in
     //    the answer refuses DigestMismatch and lands nothing.
     {
         var desk = catalog.Catalog.init();

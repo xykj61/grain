@@ -1,4 +1,4 @@
-//! linengrow/wov_core.rye — WOV — exit honesty + dual-monarch D1.
+//! linengrow/wov_core.rye -- WOV -- exit honesty + dual-monarch D1.
 //!
 //!   rye build linengrow/wov_core.rye -femit-bin=linengrow/bin/wov
 //!   linengrow/bin/wov selftest
@@ -19,7 +19,7 @@ const tally_parse_int = @import("parse_int.rye");
 
 pub const wov_version = "20260709.224634";
 
-/// Pinned witness seeds — distinct from MUR (0x61/0x62; was MALA) and Open Asks (0x51–0x53).
+/// Pinned witness seeds -- distinct from MUR (0x61/0x62; was MALA) and Open Asks (0x51-0x53).
 pub const monarch_seed = [_]u8{0x71} ** kumara.seed_length;
 pub const holder_a_seed = [_]u8{0x72} ** kumara.seed_length;
 pub const holder_b_seed = [_]u8{0x73} ** kumara.seed_length;
@@ -338,7 +338,7 @@ pub fn publish_root(
         .stamp = stamp,
     };
 
-    // Root facts use amount 0 — sign via receipt_core directly (MUR fold refuses 0).
+    // Root facts use amount 0 -- sign via receipt_core directly (MUR fold refuses 0).
     var canonical: [rc.max_fact_len]u8 = undefined;
     const canonical_len = try rc.write_canonical_fact(fields, &canonical);
     try append_signed_line(canonical[0..canonical_len], monarch, log, log_len);

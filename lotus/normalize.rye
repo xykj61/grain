@@ -1,26 +1,26 @@
-//! lotus/normalize.rye — ALES103: peak normalization — measure the loudest sample through ALES13's meter, then scale the WHOLE clip through ALES2's gain so that
+//! lotus/normalize.rye -- ALES103: peak normalization -- measure the loudest sample through ALES13's meter, then scale the WHOLE clip through ALES2's gain so that
 //! loudest sample lands exactly on a chosen target. This is the single most-reached-for gesture in every editor and DAW: the "Normalize" button. A take recorded quiet
 //! and a take recorded hot both leave the same peak after normalize, so a keeper mixes without fighting the input level. It amplifies a quiet clip (peak below target)
-//! and attenuates a hot one (peak above target) with the SAME arithmetic — one fraction, target/peak, applied to every sample.
+//! and attenuates a hot one (peak above target) with the SAME arithmetic -- one fraction, target/peak, applied to every sample.
 //!
 //! The rule, stated once: measure the clip's peak magnitude through ALES13's `measure`; a silent clip (peak 0) has no peak to lift and is left EXACTLY as it is (no
 //! divide by zero); otherwise scale the whole clip `[0, clip.len)` by target/peak through ALES2's `gain`. The peak sample, at magnitude `peak`, maps to exactly ±target
-//! (a division that is exact for that sample), and every other sample, being strictly quieter, maps strictly inside ±target — so the NEW peak equals `target` exactly.
+//! (a division that is exact for that sample), and every other sample, being strictly quieter, maps strictly inside ±target -- so the NEW peak equals `target` exactly.
 //!
-//! The crux — four laws. THE SCALE LAW: normalize is nothing but ALES13's `measure` followed by ALES2's `gain(clip, 0, len, target, peak)` — it invents no new arithmetic,
+//! The crux -- four laws. THE SCALE LAW: normalize is nothing but ALES13's `measure` followed by ALES2's `gain(clip, 0, len, target, peak)` -- it invents no new arithmetic,
 //! so it can never drift from the meter it reads or the gain it delegates to. THE PEAK LAW: after normalize to `target`, the clip's peak magnitude equals `target` exactly
-//! (for any non-silent clip, at any target) — the loudest sample lands on the target and nothing overshoots. THE SILENCE LAW: an all-zero clip (and an empty clip) is
-//! unchanged whatever the target — no peak, no gain, no fault. THE IDEMPOTENCE LAW: normalizing to a target, then again to the same target, is a no-op the second time
-//! (the peak already sits on the target, so the second gain is unity) — normalize is settled once it lands.
+//! (for any non-silent clip, at any target) -- the loudest sample lands on the target and nothing overshoots. THE SILENCE LAW: an all-zero clip (and an empty clip) is
+//! unchanged whatever the target -- no peak, no gain, no fault. THE IDEMPOTENCE LAW: normalizing to a target, then again to the same target, is a no-op the second time
+//! (the peak already sits on the target, so the second gain is unity) -- normalize is settled once it lands.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES103.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES103.
 //! Design read: active-designing/date/20260815/20260815-001849_fill-ales103-lotus-peak-normalize.md
-//! Stands on: lotus/meter.rye (ALES13) — the peak/RMS meter, its `measure` and `peak` read the loudest sample read-only; lotus/timeline.rye (ALES2) — the Clip and the
-//! saturating `gain` that scales it; lotus/power.rye (ALES11) — the isqrt the meter is built on, reached only through ALES13.
+//! Stands on: lotus/meter.rye (ALES13) -- the peak/RMS meter, its `measure` and `peak` read the loudest sample read-only; lotus/timeline.rye (ALES2) -- the Clip and the
+//! saturating `gain` that scales it; lotus/power.rye (ALES11) -- the isqrt the meter is built on, reached only through ALES13.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It changes only sample VALUES through ALES2's own
-//! gain, never a length, never a byte fabricated; the target is a plain magnitude in samples, NOT a decibel level (no real reference level exists yet — that conversion
-//! is a later rung), and no loudness model (K-weighting, LUFS) is claimed — this is PEAK normalization, the plainest reading. No real sample rate, no network, no keys,
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It changes only sample VALUES through ALES2's own
+//! gain, never a length, never a byte fabricated; the target is a plain magnitude in samples, NOT a decibel level (no real reference level exists yet -- that conversion
+//! is a later rung), and no loudness model (K-weighting, LUFS) is claimed -- this is PEAK normalization, the plainest reading. No real sample rate, no network, no keys,
 //! no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/normalize.rye selftest
@@ -34,49 +34,49 @@ const meter = @import("meter.rye");
 
 pub const normalize_version = "20260815.001849";
 
-/// Peak normalization's faults are the meter's own `MeterError` (only the honest-unreachable MeterFull — a Clip is bounded well inside the meter's window) and the
-/// editor's own `EditError` (from `gain`, only the honest-unreachable BadGain/BadRange — the denominator is a measured non-zero peak and the span is the whole clip),
+/// Peak normalization's faults are the meter's own `MeterError` (only the honest-unreachable MeterFull -- a Clip is bounded well inside the meter's window) and the
+/// editor's own `EditError` (from `gain`, only the honest-unreachable BadGain/BadRange -- the denominator is a measured non-zero peak and the span is the whole clip),
 /// reused by name, plus one of its own: `BadTarget` for a target that is zero (not a normalize) or past the positive full-scale ceiling (unreachable by any sample).
 pub const NormalizeError = meter.MeterError || timeline.EditError || error{
-    /// A target of zero (normalizing to silence is not a normalize) or past `sample_max` (no positive sample can reach it) — refused before any read or write.
+    /// A target of zero (normalizing to silence is not a normalize) or past `sample_max` (no positive sample can reach it) -- refused before any read or write.
     BadTarget,
 };
 
 /// Scale `clip` so its loudest sample lands exactly on `target` (a magnitude in [1, sample_max]). Measures the peak through ALES13's `measure`, then scales the whole
-/// clip by target/peak through ALES2's `gain` — amplifying a quiet clip and attenuating a hot one with the same fraction. A silent clip (peak 0) is left exactly as it
+/// clip by target/peak through ALES2's `gain` -- amplifying a quiet clip and attenuating a hot one with the same fraction. A silent clip (peak 0) is left exactly as it
 /// is; a zero or over-ceiling target refuses `BadTarget`, the clip untouched.
 pub fn normalize_peak(clip: *timeline.Clip, target: u32) NormalizeError!void {
-    // invariant: the target is a reachable positive magnitude — zero is not a normalize, and no positive i16 sample can exceed sample_max, so a larger target is a lie.
+    // invariant: the target is a reachable positive magnitude -- zero is not a normalize, and no positive i16 sample can exceed sample_max, so a larger target is a lie.
     if (target == 0 or target > @as(u32, @intCast(timeline.sample_max))) return error.BadTarget;
 
     const original_len: u32 = clip.len;
 
-    // Measure the loudest sample read-only through ALES13 — all of the meter's own bounds run here before a single sample is scaled.
+    // Measure the loudest sample read-only through ALES13 -- all of the meter's own bounds run here before a single sample is scaled.
     const m = try meter.measure(clip);
     const peak_mag: u32 = meter.peak(&m);
 
     // invariant: the meter read exactly this clip's samples, and its peak is a legal magnitude within the meter's domain.
     assert(m.count == original_len and peak_mag <= meter.sample_peak_max);
 
-    // A silent clip has no peak to lift — leaving it exactly as it is is the only honest normalize, and it keeps the division below from ever dividing by zero.
+    // A silent clip has no peak to lift -- leaving it exactly as it is is the only honest normalize, and it keeps the division below from ever dividing by zero.
     if (peak_mag == 0) {
-        // invariant: the silent path changes nothing — same length, same samples.
+        // invariant: the silent path changes nothing -- same length, same samples.
         assert(clip.len == original_len);
         return;
     }
 
-    // Scale the whole clip by target/peak through ALES2's saturating gain — the peak sample maps to exactly ±target, every quieter sample strictly inside it. The
+    // Scale the whole clip by target/peak through ALES2's saturating gain -- the peak sample maps to exactly ±target, every quieter sample strictly inside it. The
     // denominator is the measured non-zero peak (no BadGain) and the span is the whole clip (no BadRange), so the forwarded EditError is honestly unreachable here.
     try timeline.gain(clip, 0, original_len, @intCast(target), peak_mag);
 
-    // invariant: normalize changes sample values only — the length and bound are exactly what they were.
+    // invariant: normalize changes sample values only -- the length and bound are exactly what they were.
     assert(clip.len == original_len);
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE SCALE LAW — normalize equals measure-then-gain on a known peak (a ×2 amplify and a ×0.5 attenuate land exact values); THE PEAK LAW — after normalize
-//     to a target, the re-measured peak equals the target exactly across many clips and targets, including the i16-minimum peak at the domain ceiling; THE SILENCE LAW —
-//     an all-zero clip and an empty clip are unchanged whatever the target; THE IDEMPOTENCE LAW — normalize twice to one target equals once; plus amplify-vs-attenuate
+// --- selftest: THE SCALE LAW -- normalize equals measure-then-gain on a known peak (a ×2 amplify and a ×0.5 attenuate land exact values); THE PEAK LAW -- after normalize
+//     to a target, the re-measured peak equals the target exactly across many clips and targets, including the i16-minimum peak at the domain ceiling; THE SILENCE LAW --
+//     an all-zero clip and an empty clip are unchanged whatever the target; THE IDEMPOTENCE LAW -- normalize twice to one target equals once; plus amplify-vs-attenuate
 //     direction and the two BadTarget refusals leaving the clip untouched ---------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -90,14 +90,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+/// The clip's current peak magnitude, re-measured through ALES13 -- the reader the peak law checks the result against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE SCALE LAW — normalize is measure-then-gain, so a known peak lands known values. A clip whose peak is 8000, normalized to 16000, is scaled ×2 exactly; a clip
+    // 1. THE SCALE LAW -- normalize is measure-then-gain, so a known peak lands known values. A clip whose peak is 8000, normalized to 16000, is scaled ×2 exactly; a clip
     //    whose peak is 30000, normalized to 15000, is scaled ×0.5 exactly. divTrunc rounds toward zero, the plain gain rule.
     {
         var up = timeline.Clip{};
@@ -111,7 +111,7 @@ fn run_selftest() !u8 {
         if (!eq(down.samples(), &[_]i16{ 10000, -15000, 5000 })) return error.ScaleDownWrong; // ×0.5
     }
 
-    // 2. THE PEAK LAW — after normalize to a target, the re-measured peak equals the target EXACTLY, for every non-silent clip at every target. The loudest sample lands
+    // 2. THE PEAK LAW -- after normalize to a target, the re-measured peak equals the target EXACTLY, for every non-silent clip at every target. The loudest sample lands
     //    on the target and nothing overshoots (each quieter sample maps strictly inside ±target).
     {
         const clips = [_][]const i16{
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. THE SILENCE LAW — an all-zero clip is unchanged whatever the target (peak 0, no gain, no divide by zero), and an empty clip likewise (nothing to measure).
+    // 3. THE SILENCE LAW -- an all-zero clip is unchanged whatever the target (peak 0, no gain, no divide by zero), and an empty clip likewise (nothing to measure).
     {
         const targets = [_]u32{ 1, 1000, 32767 };
         var ti: u32 = 0;
@@ -150,7 +150,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE IDEMPOTENCE LAW — normalize to a target, then again to the same target, is a no-op the second time: the peak already sits on the target, so the second gain
+    // 4. THE IDEMPOTENCE LAW -- normalize to a target, then again to the same target, is a no-op the second time: the peak already sits on the target, so the second gain
     //    is unity and every sample maps to itself.
     {
         var clip = timeline.Clip{};
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), once.samples())) return error.NotIdempotent;
     }
 
-    // 5. AMPLIFY vs ATTENUATE — a clip quieter than the target gets louder (its peak rises to the target), a clip louder than the target gets quieter (its peak falls to
+    // 5. AMPLIFY vs ATTENUATE -- a clip quieter than the target gets louder (its peak rises to the target), a clip louder than the target gets quieter (its peak falls to
     //    the target). Two directions, one fraction.
     {
         var quiet = timeline.Clip{};
@@ -180,7 +180,7 @@ fn run_selftest() !u8 {
         if (!(after_h < before_h and after_h == 5000)) return error.AttenuateWrong;
     }
 
-    // 6a. A ZERO TARGET refuses BadTarget — normalizing to silence is not a normalize; the clip is untouched.
+    // 6a. A ZERO TARGET refuses BadTarget -- normalizing to silence is not a normalize; the clip is untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 100, -200, 300 });
@@ -188,7 +188,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &[_]i16{ 100, -200, 300 })) return error.ZeroTargetMutated;
     }
 
-    // 6b. A TARGET PAST sample_max refuses BadTarget — no positive sample can reach it, so it is a lie; the clip is untouched.
+    // 6b. A TARGET PAST sample_max refuses BadTarget -- no positive sample can reach it, so it is a lie; the clip is untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 100, -200, 300 });

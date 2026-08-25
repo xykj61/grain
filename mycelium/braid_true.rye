@@ -1,27 +1,27 @@
-//! mycelium/braid_true.rye — the Braid reads a real reverting-chain fixture true (r4, the arc closes).
+//! mycelium/braid_true.rye -- the Braid reads a real reverting-chain fixture true (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Braid - rung r4.
 //! Design read: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
 //!
-//! r1 fixed the linked-chain verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in
+//! r1 fixed the linked-chain verdict, r2 let it travel, r3 read it across a Knot -- all over Dags seated in
 //! code. This closing rung carries the reader onto a **real** on-disk Cord record carrying a genuine reverting
 //! chain a keeper can open and walk, and proves the property the whole Braid rests on: the atom's ALL-OR-
-//! NOTHING is true to the bytes — a chain whose final link overdraws reverses whole, and not one coin moves.
+//! NOTHING is true to the bytes -- a chain whose final link overdraws reverses whole, and not one coin moves.
 //!
 //! The corpus is `tools/fixtures/braid_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/braid_fixture_gen.rye` (a demo funder credits Alice 100 and Bob 50; a three-link braid routes
-//! Alice→Bob 100, Bob→Carol 120, Carol→Dave 200 — the final link overdraws, so the whole chain reverses),
-//! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` — no network, the bytes read
+//! Alice->Bob 100, Bob->Carol 120, Carol->Dave 200 -- the final link overdraws, so the whole chain reverses),
+//! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read
 //! are the tree's own. Two independent readings must agree: the app parses the record through `cord_bron`,
 //! **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves it through `braid`, and
 //! reports the **terminal recipient**, the **committed count**, and the **rejected count**; the r4 witness
-//! cross-checks that triple against `tools/fixtures/braid_dag_truth.awk`'s reading of the same file — two
+//! cross-checks that triple against `tools/fixtures/braid_dag_truth.awk`'s reading of the same file -- two
 //! tools, one answer. The awk seeds balances from the genesis credits and simulates the chain atomically in
 //! file order (round-ascending here); the app applies the full agreed-order resolution; the single chain's
 //! reversal is unambiguous, so both name the same terminal recipient and the same reject verdict.
 //!
-//! Additive — composes `cord_bron` + `cord` + `braid` public API only (each re-runs GREEN).
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Additive -- composes `cord_bron` + `cord` + `braid` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/braid_true.rye -femit-bin=mycelium/bin/braid_true
 //!   mycelium/bin/braid_true selftest | measure
@@ -35,12 +35,12 @@ const braid = @import("braid.rye");
 
 pub const braid_true_version = "20260813.081709";
 
-/// The real reverting-chain Cord record, bound at compile time — the tree's own bytes, never a drift.
+/// The real reverting-chain Cord record, bound at compile time -- the tree's own bytes, never a drift.
 const real_dag = @embedFile("corpora/braid_dag.bron");
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the same width the record's link recipient carries, so the app's terminal
+/// Encode bytes to lowercase hex -- the same width the record's link recipient carries, so the app's terminal
 /// recipient and awk's terminal recipient are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -60,7 +60,7 @@ pub const Reading = struct {
     rejected: u32 = 0,
 };
 
-/// The `to` of a braid's final link — the terminal recipient the whole chain routes toward.
+/// The `to` of a braid's final link -- the terminal recipient the whole chain routes toward.
 fn terminal_link(b: *const braid.Braid) !*const braid.Link {
     // invariant: a real chain carries at least one link.
     if (b.link_count == 0) return error.EmptyBraid;
@@ -71,7 +71,7 @@ fn terminal_link(b: *const braid.Braid) !*const braid.Link {
 /// signature), resolve it through the Braid, and read off the terminal recipient and the atom-verdict counts.
 pub fn read_braid(text: []const u8) !Reading {
     const rec = try cord_bron.parse(text);
-    // invariant: a real linked-chain record carries blocks — an empty Dag holds no braid to read.
+    // invariant: a real linked-chain record carries blocks -- an empty Dag holds no braid to read.
     if (rec.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try braid.resolve(&dag);
@@ -89,7 +89,7 @@ pub fn read_braid(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the same
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the same
 /// bytes, so the two tools must name one terminal recipient and one reject verdict.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_braid(real_dag);
@@ -100,7 +100,7 @@ fn welcome_reading_true_to_bytes() !void {
     print("braid-true: the terminal recipient, the committed count, and the rejected count match an independent reading of the same bytes.\n", .{});
 }
 
-/// The reverting chain moved not one coin — the terminal recipient holds nothing, and every account stands
+/// The reverting chain moved not one coin -- the terminal recipient holds nothing, and every account stands
 /// exactly as genesis left it. Atomic all-or-nothing, read from the real bytes.
 fn welcome_reversal_moved_nothing() !void {
     const rec = try cord_bron.parse(real_dag);
@@ -108,14 +108,14 @@ fn welcome_reversal_moved_nothing() !void {
     const verdict = try braid.resolve(&dag);
     const b = verdict.braid_at(0) orelse return error.NoBraid;
     const lk = try terminal_link(b);
-    // invariant: the reverting chain paid its terminal recipient nothing — the atom left no trace.
+    // invariant: the reverting chain paid its terminal recipient nothing -- the atom left no trace.
     assert(verdict.balance_of(lk.to[0..]) == 0);
-    // invariant: not one coin moved — the balances still sum to exactly what genesis issued.
+    // invariant: not one coin moved -- the balances still sum to exactly what genesis issued.
     assert(verdict.balances_sum() == verdict.total_issued);
     print("braid-true: the reverting chain moved not one coin — the terminal recipient holds nothing, balances stand as genesis left them.\n", .{});
 }
 
-/// Conservation holds over the real bytes: the balances sum to exactly what genesis issued — no coin made or
+/// Conservation holds over the real bytes: the balances sum to exactly what genesis issued -- no coin made or
 /// destroyed, whether a chain commits or reverses.
 fn welcome_conservation_over_the_real_bytes() !void {
     const rec = try cord_bron.parse(real_dag);
@@ -123,12 +123,12 @@ fn welcome_conservation_over_the_real_bytes() !void {
     const verdict = try braid.resolve(&dag);
     // invariant: the real record issued exactly the hundred-fifty the two genesis credits fund.
     assert(verdict.total_issued == 150);
-    // invariant: conservation — the balances sum to exactly what genesis issued.
+    // invariant: conservation -- the balances sum to exactly what genesis issued.
     assert(verdict.balances_sum() == 150);
     print("braid-true: conservation holds over the real bytes — the balances sum to the 150 genesis issued, no coin made or lost.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A flipped
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true. A flipped
 /// header byte refuses `BadFormat`; a flipped signature byte would refuse at add.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<terminal-recipient-hex> <committed> <rejected>`), so the witness can
-/// compare the app's reading against `braid_dag_truth.awk` byte for byte — two tools, one answer.
+/// compare the app's reading against `braid_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_braid(real_dag);
     print("{s} {d} {d}\n", .{ r.terminal_hex, r.committed, r.rejected });

@@ -1,20 +1,20 @@
-//! mycelium/freight_true.rye — a real freight manifest reads true, and is the freight of a real ledger (r4,
+//! mycelium/freight_true.rye -- a real freight manifest reads true, and is the freight of a real ledger (r4,
 //! the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 — reads true.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r4 -- reads true.
 //! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
-//! state across a healing, r3 let a world's freight travel as text — all over ledgers seated in code. r4
-//! carries the reader onto a REAL on-disk `format freight-v1` record a keeper can open and read —
+//! state across a healing, r3 let a world's freight travel as text -- all over ledgers seated in code. r4
+//! carries the reader onto a REAL on-disk `format freight-v1` record a keeper can open and read --
 //! `tools/fixtures/freight_manifest.bron`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:
-//!   - TWO TOOLS, ONE ANSWER — the app parses the record through r3's reader and reports the position triple
-//!     (balance · reserved · received); the r4 witness cross-checks it against `freight_manifest_truth.awk`'s
+//!   - TWO TOOLS, ONE ANSWER -- the app parses the record through r3's reader and reports the position triple
+//!     (balance - reserved - received); the r4 witness cross-checks it against `freight_manifest_truth.awk`'s
 //!     reading of the same bytes, so a carried position can never drift from a record a keeper reads by hand.
-//!   - THE RECORD IS THE FREIGHT OF A REAL LEDGER — the app rebuilds the world's ledger from the fixture's own
+//!   - THE RECORD IS THE FREIGHT OF A REAL LEDGER -- the app rebuilds the world's ledger from the fixture's own
 //!     seeds, reads its position the way r1 does, and confirms the parsed manifest's position and order-head
 //!     match the freshly-derived ones byte for byte, AND that the advertised head accepts the real blocks
 //!     through `freight.receive`. So the fixture is what a real world emits, not a hand-mock.
@@ -22,7 +22,7 @@
 //! and a tampered header refuses `BadFormat`.
 //!
 //! Composes freight + freight_bron + freight_fixture_gen + cord + kumara public API only. Siloed, dev-only,
-//! demo host/world/keeper seeds — no real key, no funds, no network, no world moved.
+//! demo host/world/keeper seeds -- no real key, no funds, no network, no world moved.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_true.rye selftest
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_true.rye measure
@@ -45,7 +45,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// Parse the real manifest and read its position triple — the numbers the app reports and awk independently
+/// Parse the real manifest and read its position triple -- the numbers the app reports and awk independently
 /// reads off the same bytes.
 fn read_manifest() !freight_bron.Manifest {
     var m: freight_bron.Manifest = undefined;
@@ -68,10 +68,10 @@ fn welcome_reading_true_and_real() !void {
     for (blocks) |blk| try cord.add(&dag, blk);
     const fresh = try freight.read_position(&dag, owner_pk[0..]);
 
-    // The record carries exactly the real world's position — head and triple.
+    // The record carries exactly the real world's position -- head and triple.
     if (!m.pos.same(&fresh)) return error.RecordNotReal;
 
-    // And the advertised head accepts the real ledger blocks through receive — the light record is honest
+    // And the advertised head accepts the real ledger blocks through receive -- the light record is honest
     // against the heavy ledger it claims to summarize.
     const accepted = try freight.receive(blocks[0..], m.pos.order_head[0..], owner_pk[0..]);
     if (!accepted.same(&m.pos)) return error.RecordNotReal;

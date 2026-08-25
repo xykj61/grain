@@ -1,4 +1,4 @@
-//! comlink/guest_tablecloth_query_client_tx.rye — Tablecloth query device: client TX (filter request).
+//! comlink/guest_tablecloth_query_client_tx.rye -- Tablecloth query device: client TX (filter request).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

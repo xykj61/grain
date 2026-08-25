@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold0_check.rye — print Desk hold status from cache.
+//! linengrow/setu_desk_hold0_check.rye -- print Desk hold status from cache.
 //!
 //! Reads tools/.cache/setu0/station.bron and reports lane_ping.bin /
 //! lane_frame.bin presence and size.

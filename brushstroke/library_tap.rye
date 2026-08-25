@@ -1,14 +1,14 @@
-//! brushstroke/library_tap.rye — HUNK70: tap a picture on the wall to open it in the editor.
+//! brushstroke/library_tap.rye -- HUNK70: tap a picture on the wall to open it in the editor.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK70.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK70.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
 //! Teacher, thanked clean-room: tapping a thumbnail in iCloud Photos / Google Photos to open the full picture
 //! (concept only, siloed).
 //!
 //! HUNK69 painted the library as one wall, every tile at a fixed origin. This rung reads that geometry BACKWARD:
 //! a tap in wall cells resolves to the library index under the finger (or nothing, on a gap or past the last
-//! tile), and `open_tapped` fetches that image and opens the Photos editor over it — closing the loop the
-//! journey has been building: library → tap → open → edit → save → library. The fetch proves every bead against
+//! tile), and `open_tapped` fetches that image and opens the Photos editor over it -- closing the loop the
+//! journey has been building: library -> tap -> open -> edit -> save -> library. The fetch proves every bead against
 //! its digest FIRST (HUNK1), so a tapped tile opens only a verified picture, never garbage. A pixel tap maps to
 //! a wall cell through Skate's own cell size, so a real finger reaches the same tile the wall drew. No network,
 //! no key, no funds.
@@ -29,7 +29,7 @@ const skate = @import("skate_grid.rye");
 
 pub const library_tap_version = "20260813.231000";
 
-/// Map a pixel tap to a wall-cell coordinate through Skate's fixed cell size — the same conversion the surface
+/// Map a pixel tap to a wall-cell coordinate through Skate's fixed cell size -- the same conversion the surface
 /// paints at, so a finger lands on the tile it sees.
 pub fn tap_cell(px_x: u32, px_y: u32) struct { col: u32, row: u32 } {
     // invariant: a Skate cell is a real size on each axis, so the division never divides by zero.
@@ -49,7 +49,7 @@ pub fn tap_tile(
     cell_col: u32,
     cell_row: u32,
 ) ?u32 {
-    // invariant: a wall is at least one tile across and one cell per axis — the pitch is never zero.
+    // invariant: a wall is at least one tile across and one cell per axis -- the pitch is never zero.
     assert(wall_cols >= 1);
     assert(tw >= 1);
     assert(th >= 1);
@@ -70,9 +70,9 @@ pub fn tap_tile(
 }
 
 /// Resolve a wall-cell tap and, when it lands on a tile, fetch that image and open the Photos editor over it.
-/// The fetched source is written into `source_out`, which the returned editor borrows — so the caller owns the
+/// The fetched source is written into `source_out`, which the returned editor borrows -- so the caller owns the
 /// pixmap and it outlives the editor. Returns `null` when the tap misses every tile. The fetch proves every bead
-/// FIRST, so a tapped tile opens a verified picture or refuses (`DigestMismatch`) — never garbage on the canvas.
+/// FIRST, so a tapped tile opens a verified picture or refuses (`DigestMismatch`) -- never garbage on the canvas.
 pub fn open_tapped(
     allocator: std.mem.Allocator,
     cat: *const tablecloth.Catalog,
@@ -89,7 +89,7 @@ pub fn open_tapped(
     // invariant: a resolved index names a live tile.
     assert(idx < lib.count);
     const name = lib.entry_at(idx).name_slice();
-    // The fetch proves every bead before it returns a byte — a tampered tile refuses here, unopened.
+    // The fetch proves every bead before it returns a byte -- a tampered tile refuses here, unopened.
     source_out.* = try image_artifact.fetch_image(allocator, cat, store, name);
     // invariant: the fetched source is well-formed RGBA before the editor opens over it.
     assert(source_out.pixels.len == @as(usize, source_out.width) * @as(usize, source_out.height) * 4);
@@ -152,7 +152,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(tap_tile(wall_cols, tw, th, lib.count, org5.col + 1, org5.row + 1) == null);
     }
 
-    // A pixel tap maps through Skate's cell size to the same wall cell — a finger on tile 3 opens tile 3.
+    // A pixel tap maps through Skate's cell size to the same wall cell -- a finger on tile 3 opens tile 3.
     const org3 = library_view.tile_origin(3, wall_cols, tw, th);
     const px_x = (org3.col + 1) * skate.cell_w + 2;
     const px_y = (org3.row + 1) * skate.cell_h + 2;
@@ -175,7 +175,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(missed == null);
 
     // Close the loop: save the opened picture under a new name, rebuild the library, and confirm the wall grew
-    // by one tile carrying that name — library → tap → open → save → library, end to end.
+    // by one tile carrying that name -- library -> tap -> open -> save -> library, end to end.
     _ = try image_artifact.store_image(garden, &cat, &store, "meadow-copy.qoi", &opened);
     const lib2 = try photo_library.build_library(garden, &cat, &store, 3, 3);
     assert(lib2.count == 6);

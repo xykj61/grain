@@ -1,18 +1,18 @@
-//! brushstroke/photo_save.rye — HUNK67: save the edited picture — the Photos editor meets the content-addressed store.
+//! brushstroke/photo_save.rye -- HUNK67: save the edited picture -- the Photos editor meets the content-addressed store.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK67.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK67.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-//! Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) — an edit becomes a new
+//! Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) -- an edit becomes a new
 //! image the library holds, the original untouched (concept only, siloed).
 //!
 //! HUNK66 gave the Photos app one editing surface: a keeper crops, filters, and undoes across both tools over ONE
 //! history. Yet an edit that lives only in a running editor is lost the moment the editor closes. This rung closes the
-//! loop the journey opened at HUNK0/HUNK1: the editor's `current_view` — the source with every committed edit applied —
+//! loop the journey opened at HUNK0/HUNK1: the editor's `current_view` -- the source with every committed edit applied --
 //! is encoded to QOI and BEADED into a Tablecloth artifact under a name, exactly as a stored image is (HUNK1). The saved
 //! picture inherits every property of a content-addressed artifact for free: its name pins a SHA3 address, a fetch proves
 //! every bead before a pixel is read, and two identical edits are stored once (the dedup dividend). The source pixmap is
-//! never mutated, and the saved image is itself a well-formed source a fresh editor can re-open — so the road runs
-//! open → edit → save → re-open with no seam. A pure composition over two proven seams. No network, no key, no funds.
+//! never mutated, and the saved image is itself a well-formed source a fresh editor can re-open -- so the road runs
+//! open -> edit -> save -> re-open with no seam. A pure composition over two proven seams. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/photo_save.rye selftest
 
@@ -29,7 +29,7 @@ const filter_preset = @import("filter_preset.rye");
 pub const photo_save_version = "20260813.230000";
 
 /// Save an editor's current picture as a content-addressed Tablecloth artifact under `name`. The picture stored is
-/// `editor.current_view` — the immutable source with every committed crop and filter applied (HUNK66) — encoded to QOI
+/// `editor.current_view` -- the immutable source with every committed crop and filter applied (HUNK66) -- encoded to QOI
 /// and beaded exactly as a stored image is (HUNK1), so the saved copy carries a content address and per-bead integrity
 /// for free. The source is never mutated; a second save of the identical edit stores nothing new (the dedup dividend).
 /// Returns the beading report so a caller can see whether the edit deposited fresh beads. Refuses a stream past the
@@ -41,13 +41,13 @@ pub fn save_edit(
     editor: *const photos_editor.PhotosEditor,
     name: []const u8,
 ) !beading.BeadReport {
-    // invariant: a real name identifies the artifact — an empty name pins nothing a later fetch could find.
+    // invariant: a real name identifies the artifact -- an empty name pins nothing a later fetch could find.
     assert(name.len > 0);
     const view = try editor.current_view(allocator);
-    // invariant: the saved view is a well-formed RGBA image — four bytes per pixel — before it reaches the codec.
+    // invariant: the saved view is a well-formed RGBA image -- four bytes per pixel -- before it reaches the codec.
     assert(view.pixels.len == @as(usize, view.width) * @as(usize, view.height) * 4);
     const report = try image_artifact.store_image(allocator, cat, store, name, &view);
-    // invariant: a stored artifact holds at least one bead — a saved image is never an empty address.
+    // invariant: a stored artifact holds at least one bead -- a saved image is never an empty address.
     assert(report.bead_count >= 1);
     return report;
 }
@@ -112,7 +112,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(ed2.filter_count() == 9); // a re-opened image is a first-class editable source
     }
 
-    // A bare editor (no edits) saves the SOURCE itself — save collapses exactly the committed history.
+    // A bare editor (no edits) saves the SOURCE itself -- save collapses exactly the committed history.
     {
         var ed3 = try photos_editor.PhotosEditor.open(&pm, 8, 8);
         _ = try save_edit(garden, &cat, &store, &ed3, "source.qoi");
@@ -120,7 +120,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(src_back.same_bytes(&pm)); // an unedited save is the source, byte for byte
     }
 
-    // Unwelcome: a tampered saved bead refuses BEFORE a pixel is read — the saved edit is integrity-guarded like any
+    // Unwelcome: a tampered saved bead refuses BEFORE a pixel is read -- the saved edit is integrity-guarded like any
     // stored image. Corrupt a held bead in a fresh store so the rest of the selftest is untouched.
     {
         var store_t: beading.BeadStore = .empty();

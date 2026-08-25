@@ -1,28 +1,28 @@
-//! lotus/cue_seal.rye — ALES37: the cue sheet, SEALED — the arrangement map that verifies before it is trusted. ALES34 gave the rack
-//! sheet an integrity gate; a keeper saves TWO kinds of thing, though — the rack (the held audio) and the cue sheet (the arrangement
+//! lotus/cue_seal.rye -- ALES37: the cue sheet, SEALED -- the arrangement map that verifies before it is trusted. ALES34 gave the rack
+//! sheet an integrity gate; a keeper saves TWO kinds of thing, though -- the rack (the held audio) and the cue sheet (the arrangement
 //! map: where the intro, verse, chorus, outro fall). ALES22 lets that map travel as a `format lotus-cue-sheet-v1` record, yet plain
-//! text carries no proof it arrived whole — a hand-edited marker position or a truncated map parses as SOME OTHER arrangement without a
+//! text carries no proof it arrived whole -- a hand-edited marker position or a truncated map parses as SOME OTHER arrangement without a
 //! word, the same gap ALES34 closed for the rack. This rung hands the ALES0 wire's verify-before-trust to the saveable cue sheet, and
 //! reveals that the seal is not specific to a rack: it is a law for any travels-as-text record.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES37.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES37.
 //! Design read: active-designing/date/20260814/20260814-153033_fill-ales37-lotus-cue-seal.md
-//! Stands on: lotus/cue_sheet.rye (ALES22) — render_sheet / parse_sheet reused WHOLE as the sealed body, so the seal adds only the
-//! digest layer and no new grammar; lotus/markers.rye (ALES20) — the Markers track sealed and rebuilt. Mirrors lotus/rack_seal.rye
-//! (ALES34) and the Sha256 verify-before-trust of lotus/wire.rye (ALES0) — an integrity check the reader recomputes itself, not a
+//! Stands on: lotus/cue_sheet.rye (ALES22) -- render_sheet / parse_sheet reused WHOLE as the sealed body, so the seal adds only the
+//! digest layer and no new grammar; lotus/markers.rye (ALES20) -- the Markers track sealed and rebuilt. Mirrors lotus/rack_seal.rye
+//! (ALES34) and the Sha256 verify-before-trust of lotus/wire.rye (ALES0) -- an integrity check the reader recomputes itself, not a
 //! signature.
 //!
-//! THE CRUX: a sealed cue sheet parses back to EXACTLY the same markers track ONLY when its digest matches its body — verify_and_parse
+//! THE CRUX: a sealed cue sheet parses back to EXACTLY the same markers track ONLY when its digest matches its body -- verify_and_parse
 //! recomputes the Sha256 over the embedded ALES22 record and refuses DigestMismatch before a single marker is trusted, so a hand-edited
 //! position or a truncated tail is caught at the gate rather than parsed as some other arrangement. Two facts make this exact. The seal
 //! wraps ALES22 whole: seal_sheet renders the plain record with cue_sheet.render_sheet and writes a Sha256 over exactly those body
 //! bytes, so the digest covers the canonical text with nothing added or omitted. And verify runs BEFORE trust: verify_and_parse checks
-//! the digest first and hands the body to cue_sheet.parse_sheet only on a match, so no corrupt record ever reaches the parser — the
+//! the digest first and hands the body to cue_sheet.parse_sheet only on a match, so no corrupt record ever reaches the parser -- the
 //! integrity gate is independent of and prior to every ALES22 grammar and position-bound check. The one honest difference from the rack
 //! seal: parse_sheet validates positions against a master clip, so verify_and_parse takes that master and passes it through.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A Sha256 integrity check over an in-process text record, siloed to lotus/. It proves a
-//! sheet arrived whole, NOT who wrote it — no signature, no key. No socket, no network, no keys, no funds, no real device, no real
+//! HONEST SCOPE -- software only, purely LOCAL. A Sha256 integrity check over an in-process text record, siloed to lotus/. It proves a
+//! sheet arrived whole, NOT who wrote it -- no signature, no key. No socket, no network, no keys, no funds, no real device, no real
 //! meter, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/cue_seal.rye selftest
@@ -38,7 +38,7 @@ const seal = @import("seal.rye");
 
 pub const cue_seal_version = "20260814.153033";
 
-/// The sealed record header, its own line — distinct from the plain ALES22 header AND from the rack's sealed header, so no record is
+/// The sealed record header, its own line -- distinct from the plain ALES22 header AND from the rack's sealed header, so no record is
 /// ever mistaken for another kind. `seal.open` requires a parsed record to open with exactly this before its digest is read. The digest
 /// framing itself (the `digest ` prefix, the 64-hex width, the Sha256 verify-before-trust) is ALES38's shared law in lotus/seal.rye.
 const sealed_header = "format lotus-cue-sheet-sealed-v1";
@@ -49,7 +49,7 @@ const sealed_header = "format lotus-cue-sheet-sealed-v1";
 pub const CueSealError = seal.SealError || cue_sheet.MarkerTextError;
 
 /// Seal a markers track as a `format lotus-cue-sheet-sealed-v1` record into `out`, returning the length written. The record is the
-/// sealed header line, a `digest <64 hex>` line over the body, then the whole plain ALES22 record as the body — the frame owned by
+/// sealed header line, a `digest <64 hex>` line over the body, then the whole plain ALES22 record as the body -- the frame owned by
 /// ALES38's seal.begin / seal.finish, the body rendered directly into `out` between them so the digest covers the canonical text with
 /// nothing added or omitted and no scratch buffer is used. Refuses Overflow rather than writing past the caller's buffer. So a keeper's
 /// arrangement map travels as text that verifies before it is trusted.
@@ -62,14 +62,14 @@ pub fn seal_sheet(m: *const markers.Markers, out: []u8) CueSealError!u32 {
     return seal.finish(out, frame, body_len);
 }
 
-/// Verify a sealed record and parse it into a fresh markers track over `master` — the integrity gate BEFORE trust. seal.open recomputes
+/// Verify a sealed record and parse it into a fresh markers track over `master` -- the integrity gate BEFORE trust. seal.open recomputes
 /// the Sha256 over the body and returns the body slice only when the sealed header and `digest <64 hex>` line are well-formed and the
 /// digest matches; only then is that body handed to ALES22's cue_sheet.parse_sheet (which validates each marker's position against
-/// `master` — the one honest per-format difference, living here in the caller after the gate). A missing or malformed header or digest
-/// line refuses BadRecord; a body that no longer matches its digest refuses DigestMismatch — in every refusal `out` is left an empty
+/// `master` -- the one honest per-format difference, living here in the caller after the gate). A missing or malformed header or digest
+/// line refuses BadRecord; a body that no longer matches its digest refuses DigestMismatch -- in every refusal `out` is left an empty
 /// track and no marker is trusted.
 pub fn verify_and_parse(text: []const u8, master: *const pan.StereoClip, out: *markers.Markers) CueSealError!void {
-    // invariant: verification starts from an empty track — a refused record leaves nothing half-parsed.
+    // invariant: verification starts from an empty track -- a refused record leaves nothing half-parsed.
     out.* = markers.Markers{};
     // invariant: the sink is empty when this runs, so a leftover count means a prior render was
     // never drained and its samples would be mixed into this one
@@ -78,13 +78,13 @@ pub fn verify_and_parse(text: []const u8, master: *const pan.StereoClip, out: *m
     // The integrity gate: seal.open returns the verified body BYTES, or refuses before any marker is trusted.
     const body = try seal.open(text, sealed_header);
 
-    // Verified whole — only now is the body trusted to the ALES22 parser (which bounds each position against master).
+    // Verified whole -- only now is the body trusted to the ALES22 parser (which bounds each position against master).
     try cue_sheet.parse_sheet(body, master, out);
     // invariant: a verified track holds no more than the marker ceiling.
     assert(out.count <= markers.max_markers);
 }
 
-// --- selftest: THE CRUX — a sealed markers track round-trips through verify_and_parse; a flipped body byte and a truncated tail refuse
+// --- selftest: THE CRUX -- a sealed markers track round-trips through verify_and_parse; a flipped body byte and a truncated tail refuse
 //     DigestMismatch; a malformed header or digest line refuses BadRecord; the body verified is the exact ALES22 record ------------
 
 fn run_selftest() !u8 {
@@ -98,7 +98,7 @@ fn run_selftest() !u8 {
     try markers.add(&track, &master, 250, "chorus");
     try markers.add(&track, &master, 400, "outro");
 
-    // 1. THE CRUX — a sealed record opens with the sealed header and a digest line, and verify_and_parse recovers the exact track.
+    // 1. THE CRUX -- a sealed record opens with the sealed header and a digest line, and verify_and_parse recovers the exact track.
     {
         var text: [600]u8 = undefined;
         const n = try seal_sheet(&track, text[0..]);
@@ -117,7 +117,7 @@ fn run_selftest() !u8 {
         if (markers.pos_of(&back, 3) != 400 or !std.mem.eql(u8, markers.name_of(&back, 3), "outro")) return error.Verify3Wrong;
     }
 
-    // 2. a single flipped BODY byte refuses DigestMismatch — the integrity gate, before any marker is parsed. The final byte is the
+    // 2. a single flipped BODY byte refuses DigestMismatch -- the integrity gate, before any marker is parsed. The final byte is the
     //    body's trailing newline; step back to a name character and change it.
     {
         var text: [600]u8 = undefined;
@@ -128,7 +128,7 @@ fn run_selftest() !u8 {
         if (back.count != 0) return error.TamperMutated;
     }
 
-    // 3. a TRUNCATED tail refuses — the shortened body hashes differently. Drop the last byte of a good record.
+    // 3. a TRUNCATED tail refuses -- the shortened body hashes differently. Drop the last byte of a good record.
     {
         var text: [600]u8 = undefined;
         const n = try seal_sheet(&track, text[0..]);
@@ -136,8 +136,8 @@ fn run_selftest() !u8 {
         if (verify_and_parse(text[0 .. n - 1], &master, &back)) |_| return error.TruncSlipped else |e| if (e != error.DigestMismatch) return error.WrongTrunc;
     }
 
-    // 4. a malformed header or digest line refuses BadRecord — a plain (unsealed) record, a missing digest line, a short digest, and a
-    //    non-hex digit in the digest — each caught before the body is hashed or parsed.
+    // 4. a malformed header or digest line refuses BadRecord -- a plain (unsealed) record, a missing digest line, a short digest, and a
+    //    non-hex digit in the digest -- each caught before the body is hashed or parsed.
     {
         var back = markers.Markers{};
         if (verify_and_parse("format lotus-cue-sheet-v1\nmark 0 intro\n", &master, &back)) |_| return error.PlainSlipped else |e| if (e != error.BadRecord) return error.WrongPlain;

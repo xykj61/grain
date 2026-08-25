@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findDiff — pass 9949.
+//! Rye test: std.mem.findDiff -- pass 9949.
 //!
 //! First inequality index pairs with mem.eql (9996) and mem.order (9953).
 

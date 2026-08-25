@@ -1,39 +1,39 @@
-//! mycelium/lapse_knot.rye — the deadline verdict reads across a Knot (rung r3).
+//! mycelium/lapse_knot.rye -- the deadline verdict reads across a Knot (rung r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the deadline verdict · rung r3.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the deadline verdict - rung r3.
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
-//! Rung 1 resolved a whole Cord Dag into a deadline-clock Ledger — which pledges reserved
+//! Rung 1 resolved a whole Cord Dag into a deadline-clock Ledger -- which pledges reserved
 //! coins, which were honored, released, or LAPSED when the order's clock passed their
 //! deadline. Yet a ledger a family runs for years does not carry its whole past unbroken:
 //! the Knot (`cord_knot.rye`) ties off a committed prefix into a sealed `fold.FoldState` so a
 //! bounded Dag runs forever, and new facts continue onto that seal. This rung makes the
-//! Lapse's corpus a Knot plus its live suffix — the checkpointed accounts and open pledges
+//! Lapse's corpus a Knot plus its live suffix -- the checkpointed accounts and open pledges
 //! read through the same verdict, their deadlines still keeping time across the cut.
 //!
 //! The crux is a deadline that reaches ACROSS the cut. A pledge opens under a deadline inside
 //! the SEALED prefix (coins reserved, the promise still young); the past is tied off and
 //! pruned; then the order's clock passes the deadline in the LIVE suffix, and the pledge
-//! LAPSES there — the reserved coins home to the pledger, on time, though the deadline was
+//! LAPSES there -- the reserved coins home to the pledger, on time, though the deadline was
 //! set before the checkpoint and reached after it. Every honest node names the same outcome
 //! whether it reads the whole Cord or a Knot plus a live suffix.
 //!
 //! The honest seam this crux surfaces, new to the Lapse: the Pledge's timing was irrelevant
 //! to its verdict, so `pledge_knot` folds its suffix at LOCAL positions (the pruned prefix's
-//! global order is simply gone). The Lapse cannot — its deadline is an ABSOLUTE order
+//! global order is simply gone). The Lapse cannot -- its deadline is an ABSOLUTE order
 //! position, so the clock must not restart at the cut. So a `LapseKnot` carries one thing
 //! more than the two-phase Knot did: the epoch BASE, the count of order positions the sealed
 //! prefix consumed. The suffix continues the clock at `base + i`, so a deadline set before the
-//! cut still fires at exactly the order position it named — the checkpoint prunes the past
+//! cut still fires at exactly the order position it named -- the checkpoint prunes the past
 //! without resetting the hour. As in `pledge_knot`, the Knot seals only fold's GLOBAL supply
-//! law (issued · taxed · reserved stars), whose `issued` equals the prefix's `total_issued`;
+//! law (issued - taxed - reserved stars), whose `issued` equals the prefix's `total_issued`;
 //! the account-and-pledge map (with each pledge's deadline) travels beside it.
 //!
 //! Additive by construction: it imports `lapse` (r1's `Ledger` / `fold_lapse` /
 //! `balances_sum`), `cord_knot`, `cord`, and `fold`, and calls only their public API. Rung
 //! one stays its own green binary; the Knot stays its own green binary. No storage, no
-//! transport, no network, no custody — a node reads across its own sealed checkpoint. Demo
-//! keeper seeds only — no real key, no funds.
+//! transport, no network, no custody -- a node reads across its own sealed checkpoint. Demo
+//! keeper seeds only -- no real key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse_knot.rye
 
@@ -49,7 +49,7 @@ const tally_copy = @import("tally_copy.rye");
 
 /// A checkpointed deadline verdict: the Knot sealing the prefix's global supply law under a
 /// digest, beside the prefix's account-and-pledge map (with each pledge's deadline), and the
-/// epoch BASE — the count of order positions the prefix consumed, so the live suffix
+/// epoch BASE -- the count of order positions the prefix consumed, so the live suffix
 /// continues the clock unbroken at `base + i`.
 pub const LapseKnot = struct {
     knot: cord_knot.Knot = .{},
@@ -57,7 +57,7 @@ pub const LapseKnot = struct {
     base: u64 = 0,
 };
 
-/// The count of order positions a committed prefix consumes — the epoch base the suffix
+/// The count of order positions a committed prefix consumes -- the epoch base the suffix
 /// continues the clock from. Computed with the Cord's own deterministic commit, so the base
 /// is the same number `lapse.resolve` walked.
 fn committed_len(dag: *const cord.Dag) u64 {
@@ -70,7 +70,7 @@ fn committed_len(dag: *const cord.Dag) u64 {
     return committed;
 }
 
-/// Seal a committed prefix Dag into a LapseKnot — resolve it to its deadline verdict, tie off
+/// Seal a committed prefix Dag into a LapseKnot -- resolve it to its deadline verdict, tie off
 /// its global supply with a Knot, and record the epoch base. The prefix's accounts and open
 /// pledges (deadlines intact) travel in `verdict`; the sealed `FoldState` in `knot` is the
 /// integrity-checked starting supply; `base` is where the suffix resumes the clock. A prefix
@@ -83,13 +83,13 @@ pub fn seal_lapse(dag: *const cord.Dag) (lapse.FoldError || error{ LogFull, Star
     const base = committed_len(dag);
     // invariant: the sealed Knot verifies the instant it is made.
     assert(cord_knot.verify(&k));
-    // invariant: the sealed global issue equals the per-account issue — the number
+    // invariant: the sealed global issue equals the per-account issue -- the number
     // conservation is measured against travels integrity-checked.
     assert(k.state.issued == v.total_issued);
     return .{ .knot = k, .verdict = v, .base = base };
 }
 
-/// Continue the deadline verdict onto a checkpoint — verify the Knot, seed a Ledger with the
+/// Continue the deadline verdict onto a checkpoint -- verify the Knot, seed a Ledger with the
 /// prefix's accounts and open pledges, then walk the live suffix through `lapse.fold_lapse` at
 /// positions `base + i`, so the clock resumes exactly where the prefix left it. A suffix fact
 /// whose position reaches an open pledge's deadline LAPSES it across the cut; a suffix post
@@ -104,7 +104,7 @@ pub fn continue_lapse(lk: *const LapseKnot, suffix: *const fold.Log) (error{Knot
     assert(lk.knot.state.taxed <= lk.knot.state.issued);
     // invariant: the whole continued epoch fits the fold's position ceiling.
     assert(lk.base + suffix.len <= fold.myc_log_max_facts);
-    // The Knot is untrusted input — a tampered one violates its own digest by design, so its
+    // The Knot is untrusted input -- a tampered one violates its own digest by design, so its
     // integrity is a runtime GATE (verify), never an assert. A corrupt Knot refuses whole
     // before a single suffix fact is folded.
     if (!cord_knot.verify(&lk.knot)) return error.KnotCorrupt;
@@ -119,15 +119,15 @@ pub fn continue_lapse(lk: *const LapseKnot, suffix: *const fold.Log) (error{Knot
         const pos: u32 = @intCast(lk.base + i);
         try lapse.fold_lapse(&l, &suffix.facts[i], pos);
     }
-    // invariant: conservation — balance + reserved still sums to what genesis issued.
+    // invariant: conservation -- balance + reserved still sums to what genesis issued.
     assert(l.balances_sum() + l.reserved_sum() == l.total_issued);
     return l;
 }
 
 /// The deadline verdict never drifts between a full Cord and a Knot-continued resolution: the
-/// pledge and settlement counts (posted · voided · lapsed), the issued total, each account's
+/// pledge and settlement counts (posted - voided - lapsed), the issued total, each account's
 /// balance and reserve, and every pledge's settlement, amount, and deadline agree. Position is
-/// deliberately not compared — it is local to each epoch's own numbering.
+/// deliberately not compared -- it is local to each epoch's own numbering.
 pub fn lapses_match(whole: *const lapse.Ledger, across: *const lapse.Ledger) bool {
     // invariant: both verdicts stay within the named ceilings.
     assert(whole.pledge_count <= lapse.lapse_max_pledges);
@@ -177,7 +177,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -188,7 +188,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = tag;
@@ -198,7 +198,7 @@ fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
 
 /// Seat the scene: genesis credits Alice 100 (round 0); Alice pledges 100 to Bob under the
 /// given deadline (round 1); Alice posts it (round 2). The prefix is genesis + pledge (base 2),
-/// the suffix the post — so a deadline of 2 is reached in the suffix (lapse across the cut),
+/// the suffix the post -- so a deadline of 2 is reached in the suffix (lapse across the cut),
 /// and a far deadline is honored in the suffix (kept across the cut).
 fn seat(id: []const u8, deadline: u64) !struct { g: cord.Block, pledge: cord.Block, post: cord.Block, void_block: cord.Block, post_fact: fold.Fact, void_fact: fold.Fact } {
     const kf = seeded(0xF0);
@@ -242,12 +242,12 @@ pub fn main() !void {
     // --- The crux: a deadline set before the cut, reached after it ---------------
     // Deadline 2. Prefix = genesis + pledge (base 2). The pledge stands OPEN at the seal (no
     // order position past 1 was walked). The suffix post rides absolute position base+0 = 2,
-    // so the clock reaches the deadline there and LAPSES the pledge across the cut — the coins
+    // so the clock reaches the deadline there and LAPSES the pledge across the cut -- the coins
     // home to Alice, the late post a no-op.
     {
         const s = try seat(id[0..], 2);
 
-        // The truth to match: the WHOLE history resolved as one Cord — the post at position 2
+        // The truth to match: the WHOLE history resolved as one Cord -- the post at position 2
         // finds the deadline (2) already reached, so the pledge lapses.
         var whole = cord.Dag.empty();
         try cord.add(&whole, s.g);
@@ -264,7 +264,7 @@ pub fn main() !void {
         try cord.add(&prefix, s.pledge);
         const lk = try seal_lapse(&prefix);
         if (lk.base != 2) return error.PrefixBase;
-        // At the seal the pledge is OPEN — reserved, the deadline not yet reached.
+        // At the seal the pledge is OPEN -- reserved, the deadline not yet reached.
         if (lk.verdict.open_seen() != 1) return error.PrefixOpen;
         if (lk.verdict.lapsed_seen() != 0) return error.PrefixLapsed;
         if (lk.verdict.reserved_of(alice_pk[0..]) != 100) return error.PrefixReserve;
@@ -275,7 +275,7 @@ pub fn main() !void {
         suffix.len = 1;
         const across = try continue_lapse(&lk, &suffix);
 
-        // The crux: the deadline named before the cut fires in the suffix — the pledge lapses
+        // The crux: the deadline named before the cut fires in the suffix -- the pledge lapses
         // across the checkpoint, the coins home to Alice, the post a lawful no-op.
         if (across.lapsed_seen() != 1) return error.AcrossLapsed;
         if (across.posted_seen() != 0) return error.AcrossPosted;
@@ -318,7 +318,7 @@ pub fn main() !void {
 
     // --- The companion: a deadline far enough that the suffix HONORS across the cut ---
     // Deadline 5. Prefix = genesis + pledge (base 2). The suffix post rides position 2 < 5, so
-    // the pledge is still alive and the post honors it — a promise made before the cut, kept
+    // the pledge is still alive and the post honors it -- a promise made before the cut, kept
     // after it, exactly as the two-phase Knot showed, now under a deadline that had time.
     {
         const s = try seat(id[0..], 5);
@@ -337,7 +337,7 @@ pub fn main() !void {
         if (honored.reserved_of(alice_pk[0..]) != 0) return error.HonoredReserve;
         if (honored.balances_sum() + honored.reserved_sum() != 100) return error.HonoredNotConserved;
 
-        // A void in the suffix releases the still-alive pledge instead — reserved home to
+        // A void in the suffix releases the still-alive pledge instead -- reserved home to
         // Alice, an atomic reversal spanning the checkpoint.
         var suffix_void = fold.Log.empty();
         suffix_void.facts[0] = s.void_fact;

@@ -1,4 +1,4 @@
-//! linengrow/murr_delivery.rye — MUR M2: mint crosses Comlink; receipt crosses back (hosted; was murr_delivery).
+//! linengrow/murr_delivery.rye -- MUR M2: mint crosses Comlink; receipt crosses back (hosted; was murr_delivery).
 //!
 //!   rye build linengrow/murr_delivery.rye -lc -femit-bin=linengrow/bin/murr-delivery
 //!   linengrow/bin/murr-delivery selftest
@@ -23,9 +23,9 @@ const SOCK_DGRAM: c_uint = 2;
 const SOL_SOCKET: c_int = 1;
 const SO_REUSEADDR: c_int = 2;
 
-/// Mint fact → holder.
+/// Mint fact -> holder.
 const mint_port: u16 = 38492;
-/// Receipt fact → issuer.
+/// Receipt fact -> issuer.
 const receipt_port: u16 = 38493;
 
 const sockaddr_in = extern struct {
@@ -173,7 +173,7 @@ fn run_selftest(_: std.Io) !u8 {
         parties.holder_kp.public_key,
     );
 
-    // Unwelcome — tampered outer wire refused at open.
+    // Unwelcome -- tampered outer wire refused at open.
     var bad_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
     const mint_len: usize = @intCast(mint_wire_len);
     tally_copy.copy_disjoint(u8, bad_wire[0..mint_len], mint_wire[0..mint_len]);
@@ -182,7 +182,7 @@ fn run_selftest(_: std.Io) !u8 {
         return error.UnwelcomePassed;
     } else |_| print("murr m2: tampered wire refused — GREEN unwelcome path\n", .{});
 
-    // Unwelcome — holder-signed mint refused at fold.
+    // Unwelcome -- holder-signed mint refused at fold.
     var forged_wire: [@intCast(wf.wire_capacity)]u8 = undefined;
     const forged_len = try encode_sealed_fact(mint_fields, parties.holder_kp, &forged_wire);
     const forged_fact_len = try open_and_decode(forged_wire[0..@intCast(forged_len)], &sig_buf, &fact_buf);
@@ -242,7 +242,7 @@ fn run_holder(_: std.Io) !u8 {
 fn run_issuer(_: std.Io) !u8 {
     const parties = party_hexes();
 
-    // Bind receipt port before sending mint — race discipline from lap brief.
+    // Bind receipt port before sending mint -- race discipline from lap brief.
     const receipt_fd = try open_socket();
     defer _ = c.close(receipt_fd);
     var receipt_bind = localhost_addr(receipt_port);

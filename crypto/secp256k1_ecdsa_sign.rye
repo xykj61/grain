@@ -1,31 +1,31 @@
-//! crypto/secp256k1_ecdsa_sign.rye — Season G (Cryptography): ECDSA signature SIGNING on secp256k1 authored in pure Rye, the rung that
+//! crypto/secp256k1_ecdsa_sign.rye -- Season G (Cryptography): ECDSA signature SIGNING on secp256k1 authored in pure Rye, the rung that
 //! completes the signature scheme the verifier (crypto/secp256k1_ecdsa.rye) could only check. It composes entirely over the GREEN rungs
-//! beneath it — the base field (crypto/fe_secp256k1.rye), the group law (crypto/secp256k1_group.rye), the scalar ladder
+//! beneath it -- the base field (crypto/fe_secp256k1.rye), the group law (crypto/secp256k1_group.rye), the scalar ladder
 //! (crypto/secp256k1_scalarmul.rye), the scalar field modulo the group order n (crypto/secp256k1_scalar.rye), the keyed hash
 //! (crypto/hmac_sha256.rye) that drives the deterministic nonce, and the message digest (crypto/sha256.rye). It authors no new cryptography;
-//! it is the exact sibling of crypto/ed25519_sign.rye over the edwards25519 group — the signature scheme Bitcoin and Ethereum sign with.
+//! it is the exact sibling of crypto/ed25519_sign.rye over the edwards25519 group -- the signature scheme Bitcoin and Ethereum sign with.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 //! Design read: active-designing/date/20260816/20260816-033541_secp256k1-ecdsa-sign.md (this rung's claim) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-//! Kin: crypto/secp256k1_ecdsa.rye (the verifier this signer round-trips through, GREEN) · crypto/secp256k1_scalar.rye (the order field, GREEN) ·
-//! crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) · crypto/hmac_sha256.rye (the DRBG's keyed hash, GREEN) · crypto/ed25519_sign.rye
+//! Kin: crypto/secp256k1_ecdsa.rye (the verifier this signer round-trips through, GREEN) - crypto/secp256k1_scalar.rye (the order field, GREEN) -
+//! crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) - crypto/hmac_sha256.rye (the DRBG's keyed hash, GREEN) - crypto/ed25519_sign.rye
 //! (the sibling signer over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is not a rung here; the algebraic
 //! round-trip plus Zig's independent std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 are the two witnesses (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — SEC 1 signing with a deterministic nonce, exactly Zig's. Given a private scalar d in [1, n−1] and a message hash z (SHA-256 of
+//! THE CRUX -- SEC 1 signing with a deterministic nonce, exactly Zig's. Given a private scalar d in [1, n−1] and a message hash z (SHA-256 of
 //! the message, folded mod n): derive a per-message nonce k in [1, n−1] DETERMINISTICALLY from d and the raw message hash (no randomness, so
-//! the same key and message always sign to the same bytes); form R = k·G over the GREEN ladder; take r = affine x of R mod n and refuse r = 0;
-//! compute s = k⁻¹·(z + r·d) mod n and refuse s = 0; emit (r, s) big-endian. The nonce follows Zig's "Deterministic ECDSA with Additional
-//! Randomness" DRBG with null noise — RFC 6979's HMAC-DRBG with a 32-byte zero noise block between the domain byte and the key, and the raw
-//! SHA-256 digest fed to the DRBG rather than RFC 6979's h1 mod n — reproduced exactly so the whole signature is byte-identical to Zig's.
+//! the same key and message always sign to the same bytes); form R = k-G over the GREEN ladder; take r = affine x of R mod n and refuse r = 0;
+//! compute s = k⁻¹-(z + r-d) mod n and refuse s = 0; emit (r, s) big-endian. The nonce follows Zig's "Deterministic ECDSA with Additional
+//! Randomness" DRBG with null noise -- RFC 6979's HMAC-DRBG with a 32-byte zero noise block between the domain byte and the key, and the raw
+//! SHA-256 digest fed to the DRBG rather than RFC 6979's h1 mod n -- reproduced exactly so the whole signature is byte-identical to Zig's.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. SIGNING touches a secret — the private
-//! scalar d and the nonce k — so unlike verification this rung is NOT value-public: the double-and-add ladder and the scalar inversion branch
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. SIGNING touches a secret -- the private
+//! scalar d and the nonce k -- so unlike verification this rung is NOT value-public: the double-and-add ladder and the scalar inversion branch
 //! on the secret, so this signer is correct and parity-GREEN yet NOT yet timing-safe (the Season's named constant-time horizon,
 //! crypto/CONSTANT_TIME.md, deliberately-variable-time posture beside ed25519_sign.rye). It signs ONLY with a caller-supplied TEST key, exactly
-//! as ed25519_sign.rye does; signing a record with the maintainer's OWN identity key stays the custody gate (#3/#4) — the agent builds and
-//! proves the signer, the key stays the maintainer's hand. Parity is proven at selftest against two references runnable now — an algebraic
+//! as ed25519_sign.rye does; signing a record with the maintainer's OWN identity key stays the custody gate (#3/#4) -- the agent builds and
+//! proves the signer, the key stays the maintainer's hand. Parity is proven at selftest against two references runnable now -- an algebraic
 //! round-trip (our signature verifies through our own GREEN verifier; a tampered message no longer verifies; signing is deterministic) and
 //! Zig's own std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 signature, BYTE-FOR-BYTE equal across a spread of deterministic key pairs and messages.
 //!
@@ -45,7 +45,7 @@ const ecdsa = @import("secp256k1_ecdsa.rye");
 
 pub const secp256k1_ecdsa_sign_version = "20260816.033541";
 
-/// The one fixed width this rung works in: a 32-byte coordinate, scalar, or hash — the width every secp256k1 value encodes.
+/// The one fixed width this rung works in: a 32-byte coordinate, scalar, or hash -- the width every secp256k1 value encodes.
 pub const field_bytes: u32 = 32;
 
 /// The deterministic-nonce DRBG message buffer width: V(32) || domain(1) || noise(32 zeros) || key(32) || hash(32). Named so the offsets
@@ -59,7 +59,7 @@ pub const max_nonce_tries: u32 = 256;
 /// The largest message this file will hash and sign, inherited from the SHA-256 message bound beneath it.
 pub const max_sign_message_bytes: u32 = sha.max_message_bytes;
 
-/// The errors signing can name — a private key outside [1, n−1], the astronomically-unreachable nonce exhaustion, the
+/// The errors signing can name -- a private key outside [1, n−1], the astronomically-unreachable nonce exhaustion, the
 /// probability-zero r = 0 or s = 0, and an oversize message. Named so a caller reads a word, never a bare failure.
 pub const SignError = error{
     InvalidPrivateKey,
@@ -69,35 +69,35 @@ pub const SignError = error{
     MessageTooLong,
 };
 
-/// A signature is the pair (r, s), each a 32-byte big-endian scalar — the ecosystem's wire shape, r || s.
+/// A signature is the pair (r, s), each a 32-byte big-endian scalar -- the ecosystem's wire shape, r || s.
 pub const Signature = struct {
     r: [field_bytes]u8,
     s: [field_bytes]u8,
 };
 
-/// The x-coordinate of the SEC 2 base point G, big-endian — the published generator of secp256k1's prime-order group, a defining curve
+/// The x-coordinate of the SEC 2 base point G, big-endian -- the published generator of secp256k1's prime-order group, a defining curve
 /// parameter entered as bytes and parsed through the proven base field, never raw limbs.
 const g_x_be = [32]u8{
     0x79, 0xbe, 0x66, 0x7e, 0xf9, 0xdc, 0xbb, 0xac, 0x55, 0xa0, 0x62, 0x95, 0xce, 0x87, 0x0b, 0x07,
     0x02, 0x9b, 0xfc, 0xdb, 0x2d, 0xce, 0x28, 0xd9, 0x59, 0xf2, 0x81, 0x5b, 0x16, 0xf8, 0x17, 0x98,
 };
 
-/// The y-coordinate of the SEC 2 base point G, big-endian — the second published generator coordinate, parsed through the proven base field.
+/// The y-coordinate of the SEC 2 base point G, big-endian -- the second published generator coordinate, parsed through the proven base field.
 const g_y_be = [32]u8{
     0x48, 0x3a, 0xda, 0x77, 0x26, 0xa3, 0xc4, 0x65, 0x5d, 0xa4, 0xfb, 0xfc, 0x0e, 0x11, 0x08, 0xa8,
     0xfd, 0x17, 0xb4, 0x48, 0xa6, 0x85, 0x54, 0x19, 0x9c, 0x47, 0xd0, 0x8f, 0xfb, 0x10, 0xd4, 0xb8,
 };
 
-/// The field element 1 — the projective Z of an affine point (x, y) lifted to (X : Y : 1).
+/// The field element 1 -- the projective Z of an affine point (x, y) lifted to (X : Y : 1).
 fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0, 0, 0, 0 } };
 }
 
 /// The base point G in projective coordinates (Gx : Gy : 1), built from its published big-endian coordinate bytes through the proven base
-/// field. G is a finite generator, so Z = 1 ≠ 0 — the ladder never sees infinity from this seed.
+/// field. G is a finite generator, so Z = 1 ≠ 0 -- the ladder never sees infinity from this seed.
 fn base_point() pt.Point {
     const g = pt.Point{ .x = fe.from_bytes(&g_x_be), .y = fe.from_bytes(&g_y_be), .z = fe_one() };
-    // invariant: the base point is finite — its projective Z is exactly 1, never the point at infinity.
+    // invariant: the base point is finite -- its projective Z is exactly 1, never the point at infinity.
     assert(g.z.l[0] == 1 and g.z.l[7] == 0);
     return g;
 }
@@ -115,7 +115,7 @@ fn reverse32(s: *const [32]u8) [32]u8 {
     return r;
 }
 
-/// True when a 32-byte encoding is all zero — the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
+/// True when a 32-byte encoding is all zero -- the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
 fn is_zero32(s: *const [32]u8) bool {
     var acc: u8 = 0;
     var i: u32 = 0;
@@ -123,7 +123,7 @@ fn is_zero32(s: *const [32]u8) bool {
     return acc == 0;
 }
 
-/// Fold a big-endian 32-byte value modulo the group order n into a canonical little-endian scalar — the same reduction the verifier runs for
+/// Fold a big-endian 32-byte value modulo the group order n into a canonical little-endian scalar -- the same reduction the verifier runs for
 /// the hash and for the affine x. The big-endian value is reversed into the low 32 bytes of a 64-byte little-endian buffer, then reduced.
 fn scalar_from_be(be: *const [32]u8) [32]u8 {
     const le = reverse32(be);
@@ -138,7 +138,7 @@ fn scalar_from_be(be: *const [32]u8) [32]u8 {
 }
 
 /// (a + b) mod n, both operands canonical little-endian scalars below n. The sum of two sub-n values is below 2n, so it fits in 33 bytes; it
-/// is laid into a 64-byte little-endian buffer and reduced by the GREEN scalar field — the modular addition the scalar module does not export.
+/// is laid into a 64-byte little-endian buffer and reduced by the GREEN scalar field -- the modular addition the scalar module does not export.
 fn add_mod_n(a_le: *const [32]u8, b_le: *const [32]u8) [32]u8 {
     var wide = [_]u8{0} ** 64;
     var carry: u16 = 0;
@@ -156,7 +156,7 @@ fn add_mod_n(a_le: *const [32]u8, b_le: *const [32]u8) [32]u8 {
     return sc.reduce(&wide);
 }
 
-/// Copy the 32-byte V into the head of the DRBG message buffer, so a fresh K = HMAC_K(V || …) reads the current V.
+/// Copy the 32-byte V into the head of the DRBG message buffer, so a fresh K = HMAC_K(V || ...) reads the current V.
 fn set_v(m: *[drbg_msg_bytes]u8, v: *const [32]u8) void {
     var i: u32 = 0;
     while (i < field_bytes) : (i += 1) {
@@ -166,13 +166,13 @@ fn set_v(m: *[drbg_msg_bytes]u8, v: *const [32]u8) void {
     }
 }
 
-/// HMAC-SHA-256 over a bounded message with a 32-byte key — the DRBG's one primitive. The message is at most 129 bytes and the key is 32,
+/// HMAC-SHA-256 over a bounded message with a 32-byte key -- the DRBG's one primitive. The message is at most 129 bytes and the key is 32,
 /// both far below hmac's max bounds, so the error can never fire; catch unreachable states that honestly (the ed25519_sign.rye pattern).
 fn prf(msg: []const u8, key: *const [32]u8) [32]u8 {
     return hmac.mac(msg, key[0..]) catch unreachable;
 }
 
-/// Derive the deterministic per-message nonce k, big-endian, in [1, n−1] — Zig's null-noise "Deterministic ECDSA with Additional Randomness"
+/// Derive the deterministic per-message nonce k, big-endian, in [1, n−1] -- Zig's null-noise "Deterministic ECDSA with Additional Randomness"
 /// DRBG reproduced exactly (RFC 6979 HMAC-DRBG with a 32-byte zero noise block and the raw message hash). The private key and hash both arrive
 /// big-endian; the returned nonce is big-endian, ready to reverse for the ladder.
 fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![32]u8 {
@@ -202,10 +202,10 @@ fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![3
 
     var tries: u32 = 0;
     while (tries < max_nonce_tries) : (tries += 1) {
-        // T = HMAC_K(V) — for secp256k1 qlen equals hlen, so one HMAC block fills the candidate.
+        // T = HMAC_K(V) -- for secp256k1 qlen equals hlen, so one HMAC block fills the candidate.
         v = prf(v[0..], &k_hmac);
         const k_le = reverse32(&v);
-        // Accept exactly when the candidate is a canonical nonzero scalar in [1, n−1] — Zig's fromBytes success condition.
+        // Accept exactly when the candidate is a canonical nonzero scalar in [1, n−1] -- Zig's fromBytes success condition.
         if (sc.is_canonical(&k_le) and !is_zero32(&k_le)) return v;
         // Retry: K = HMAC_K(V || 0x00); V = HMAC_K(V)
         set_v(&m, &v);
@@ -216,7 +216,7 @@ fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![3
     return error.NonceExhausted;
 }
 
-/// The public key Q = d·G for a private scalar d, returned as affine coordinates (Qx, Qy), both big-endian — the point the signature verifies
+/// The public key Q = d-G for a private scalar d, returned as affine coordinates (Qx, Qy), both big-endian -- the point the signature verifies
 /// against. d arrives big-endian and must be a canonical nonzero scalar. Composes only the GREEN ladder and group law.
 pub fn derive_public(d_be: *const [32]u8) SignError!struct { qx: [field_bytes]u8, qy: [field_bytes]u8 } {
     const d_le = reverse32(d_be);
@@ -224,13 +224,13 @@ pub fn derive_public(d_be: *const [32]u8) SignError!struct { qx: [field_bytes]u8
     if (!sc.is_canonical(&d_le)) return error.InvalidPrivateKey;
     if (is_zero32(&d_le)) return error.InvalidPrivateKey;
     const q = mul_pt.scalarmul(base_point(), &d_le);
-    // invariant: d ≠ 0 mod n, so d·G is a finite point with a well-defined affine form.
+    // invariant: d ≠ 0 mod n, so d-G is a finite point with a well-defined affine form.
     assert(!is_zero32(&fe.to_bytes(q.z)));
     return .{ .qx = pt.affine_x(q), .qy = pt.affine_y(q) };
 }
 
 /// Sign a pre-hashed message: given a private scalar d and a 32-byte message hash (both big-endian), produce the ECDSA signature (r, s).
-/// Deterministic — the same d and hash always yield the same bytes. Composes only GREEN rungs and the deterministic-nonce DRBG.
+/// Deterministic -- the same d and hash always yield the same bytes. Composes only GREEN rungs and the deterministic-nonce DRBG.
 pub fn sign_prehashed(d_be: *const [32]u8, hash_be: *const [32]u8) SignError!Signature {
     const d_le = reverse32(d_be);
     // invariant: the signing key is a canonical scalar strictly inside [1, n−1].
@@ -242,15 +242,15 @@ pub fn sign_prehashed(d_be: *const [32]u8, hash_be: *const [32]u8) SignError!Sig
     // invariant: the deterministic nonce is a canonical nonzero scalar by construction of the DRBG loop above.
     assert(sc.is_canonical(&k_le) and !is_zero32(&k_le));
 
-    // R = k·G; r = affine x of R reduced mod n.
+    // R = k-G; r = affine x of R reduced mod n.
     const r_pt = mul_pt.scalarmul(base_point(), &k_le);
-    // invariant: k ≠ 0 mod n, so k·G is finite and its affine x is well-defined.
+    // invariant: k ≠ 0 mod n, so k-G is finite and its affine x is well-defined.
     assert(!is_zero32(&fe.to_bytes(r_pt.z)));
     const rx_be = pt.affine_x(r_pt);
     const r_le = scalar_from_be(&rx_be);
     if (is_zero32(&r_le)) return error.RIsZero; // probability zero; refused rather than emitted
 
-    // s = k⁻¹·(z + r·d) mod n.
+    // s = k⁻¹-(z + r-d) mod n.
     const z_le = scalar_from_be(hash_be);
     const rd = sc.mul(&r_le, &d_le);
     const zrd = add_mod_n(&z_le, &rd);
@@ -295,7 +295,7 @@ fn run_selftest() !u8 {
     var seed_byte: u8 = 1;
     while (seed_byte <= 8) : (seed_byte += 1) {
         const seed = [_]u8{seed_byte} ** 32;
-        // Zig's own deterministic key pair — the reference key and the ground-truth signer.
+        // Zig's own deterministic key pair -- the reference key and the ground-truth signer.
         const kp = try ZEcdsa.KeyPair.generateDeterministic(seed);
         const d_be = kp.secret_key.toBytes(); // the private scalar, big-endian — a TEST key, never an identity key
         const zaff = kp.public_key.p.affineCoordinates();
@@ -308,7 +308,7 @@ fn run_selftest() !u8 {
         if (!bytes_eq(&ours_pub.qy, &zqy)) return error.PublicKeyYMismatch;
 
         for (messages) |msg| {
-            // Zig's deterministic signature — the byte-for-byte ground truth.
+            // Zig's deterministic signature -- the byte-for-byte ground truth.
             const zsig = (try kp.sign(msg, null)).toBytes(); // r || s, big-endian
             var zr: [32]u8 = undefined;
             var zs: [32]u8 = undefined;

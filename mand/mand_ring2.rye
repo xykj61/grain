@@ -1,14 +1,14 @@
-//! mand/mand_ring2.rye — Mand ring-2: retention eligibility (decide, never erase).
+//! mand/mand_ring2.rye -- Mand ring-2: retention eligibility (decide, never erase).
 //!
-//! Seam (SLC): what is this record's standing under its published schedule —
+//! Seam (SLC): what is this record's standing under its published schedule --
 //! keep until X, eligible, or held under H?
 //!
 //! Ring-2 DESTROYS NOTHING. Deletion is key-destruction and belongs to a later
 //! ring. This lap decides and records on Mand ring-1's audit log.
 //!
 //! Reason: custody doctrine's published retention and legal-hold regime
-//! (foundations/20260724-200912_nothing-to-give-custody-first-principle.md ·
-//! counsel Hands We Grow) — ordinary release must be scheduled, announced,
+//! (foundations/20260724-200912_nothing-to-give-custody-first-principle.md -
+//! counsel Hands We Grow) -- ordinary release must be scheduled, announced,
 //! and suspended the instant a hold arrives.
 //!
 //!   rye build mand/mand_ring2_witness.rye -femit-bin=mand/bin/mand_ring2_witness
@@ -60,7 +60,7 @@ pub const Schedule = struct {
     class_len: u32 = 0,
     /// Inclusive start of the keep window (persisted chronological stamp).
     keep_from: u64 = 0,
-    /// Exclusive end of the keep window — at and after this stamp, standing
+    /// Exclusive end of the keep window -- at and after this stamp, standing
     /// is ELIGIBLE unless a hold is in force.
     keep_until: u64 = 0,
 
@@ -120,7 +120,7 @@ pub fn hold_in_force(holds: []const Hold) bool {
     return false;
 }
 
-/// Eligibility path only — window vs now. Does not consult holds.
+/// Eligibility path only -- window vs now. Does not consult holds.
 pub fn standing_by_window(schedule: *const Schedule, now: u64) Standing {
     // invariant: the window is compared as a range, so an unordered one would place every date
     // outside it and read as eligible
@@ -130,7 +130,7 @@ pub fn standing_by_window(schedule: *const Schedule, now: u64) Standing {
     return .eligible;
 }
 
-/// Hold path — past-window standing becomes HELD when any hold is in force.
+/// Hold path -- past-window standing becomes HELD when any hold is in force.
 pub fn standing_with_holds(window_standing: Standing, holds: []const Hold) RetentionError!Standing {
     // invariant: the holds are walked up to this count, and the ceiling is what the record's
     // own array was sized for
@@ -144,7 +144,7 @@ pub fn standing_with_holds(window_standing: Standing, holds: []const Hold) Reten
     return .eligible;
 }
 
-/// Full standing: schedule required (fail closed) · window · holds.
+/// Full standing: schedule required (fail closed) - window - holds.
 pub fn retention_standing(
     schedule: ?*const Schedule,
     now: u64,

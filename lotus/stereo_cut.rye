@@ -1,26 +1,26 @@
-//! lotus/stereo_cut.rye — ALES117: stereo_cut — the foundational span-remove carried into stereo, both channels in lockstep. ALES2 named `cut` — remove `count` samples starting at
-//! `start` and close the gap — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME
+//! lotus/stereo_cut.rye -- ALES117: stereo_cut -- the foundational span-remove carried into stereo, both channels in lockstep. ALES2 named `cut` -- remove `count` samples starting at
+//! `start` and close the gap -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME
 //! length so the two channels stay aligned in time. This rung carries cut into stereo the way ALES116 carried replace: run ALES2's proven mono `cut` on each channel with the SAME
-//! `at` and `count`, so the deletion lands identically in both and the stereo image stays balanced. Cut is the family's root — crop keeps the complement of what cut removes, move
-//! is a cut followed by a splice — so naming its stereo twin gives every destructive stereo span-edit its base gesture: circle a span on the master, delete it, both speakers at once.
+//! `at` and `count`, so the deletion lands identically in both and the stereo image stays balanced. Cut is the family's root -- crop keeps the complement of what cut removes, move
+//! is a cut followed by a splice -- so naming its stereo twin gives every destructive stereo span-edit its base gesture: circle a span on the master, delete it, both speakers at once.
 //!
 //! The rule, stated once: stereo_cut(sc, at, count) removes [at, at+count) from both channels, reusing ALES2's mono `cut` per channel over its public API. BOTH channels are
-//! validated BEFORE either is mutated — because cut can fault only with BadRange (a removed span outside the samples) and both channels enter equal-length, the shared span is checked
+//! validated BEFORE either is mutated -- because cut can fault only with BadRange (a removed span outside the samples) and both channels enter equal-length, the shared span is checked
 //! once against the common length up front, so once the check passes each mono cut is pre-validated to succeed and a refusal never desynchronises the channels. It reuses ALES2's
 //! EditError whole and invents none of its own.
 //!
-//! The crux — four laws. THE STEREO CUT LAW: the left channel equals mono cut(left, at, count) and the right equals mono cut(right, at, count), each byte for byte. THE BALANCE /
-//! INVARIANT LAW: left.len == right.len after the edit — equal starting lengths minus the same count leave the channels aligned. THE ATOMICITY LAW: any refusal leaves BOTH channels
+//! The crux -- four laws. THE STEREO CUT LAW: the left channel equals mono cut(left, at, count) and the right equals mono cut(right, at, count), each byte for byte. THE BALANCE /
+//! INVARIANT LAW: left.len == right.len after the edit -- equal starting lengths minus the same count leave the channels aligned. THE ATOMICITY LAW: any refusal leaves BOTH channels
 //! byte for byte untouched and still balanced, the check running before either channel is mutated. THE DEGENERATE / SHRINK LAW: count 0 the identity on both channels, a full-length
 //! cut empties both, and each channel's length is non-increasing because cut only drops samples.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES117.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES117.
 //! Design read: active-designing/date/20260815/20260815-015354_fill-ales117-lotus-stereo-cut.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the mono cut run once per channel, and the EditError reused whole; lotus/pan.rye (ALES10) — the StereoClip
-//! (two mono Clips, left/right) and its balance invariant; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the mono cut run once per channel, and the EditError reused whole; lotus/pan.rye (ALES10) -- the StereoClip
+//! (two mono Clips, left/right) and its balance invariant; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It removes a span from both channels through the proven
-//! mono cut, reading no byte past either channel's len — it invents no sample and changes no value it keeps. No real sample rate, no network, no keys, no funds, no real device, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It removes a span from both channels through the proven
+//! mono cut, reading no byte past either channel's len -- it invents no sample and changes no value it keeps. No real sample rate, no network, no keys, no funds, no real device, no
 //! real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_cut.rye selftest
@@ -35,32 +35,32 @@ const meter = @import("meter.rye");
 
 pub const stereo_cut_version = "20260815.015354";
 
-/// stereo_cut forwards ALES2's OWN fault reused by name — BadRange (a removed span outside the samples) — and invents none of its own.
+/// stereo_cut forwards ALES2's OWN fault reused by name -- BadRange (a removed span outside the samples) -- and invents none of its own.
 pub const StereoCutError = timeline.EditError;
 
 /// Remove [at, at+count) from both channels in lockstep, the stereo image staying balanced. Both channels are validated before either is mutated: because mono cut can fault only with
 /// BadRange and the channels enter equal-length, the shared span is checked once against the common length up front, so a refusal never leaves one channel edited and the other not.
 /// Reuses ALES2's mono cut per channel.
 pub fn stereo_cut(sc: *pan.StereoClip, at: u32, count: u32) StereoCutError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the removed span lies wholly within the (shared) current samples, checked without underflow, refused by name before any write — the same guard ALES2's cut keeps,
+    // invariant: the removed span lies wholly within the (shared) current samples, checked without underflow, refused by name before any write -- the same guard ALES2's cut keeps,
     //            run once against the common length so a refusal lands before either channel mutates a single sample and the channels can never desynchronise.
     const len: u32 = sc.left.len;
     if (at > len) return error.BadRange;
     if (count > len - at) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono cut is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono cut is pre-validated to succeed -- no refusal can land between the two channel edits.
     try timeline.cut(&sc.left, at, count);
     try timeline.cut(&sc.right, at, count);
 
-    // invariant: the channels leave balanced — each shrank by the same count, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each shrank by the same count, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO CUT LAW — each channel equals ALES2's mono cut on that channel byte for byte; THE BALANCE / INVARIANT LAW — left.len == right.len after; THE ATOMICITY LAW
-//     — a refused call leaves BOTH channels untouched; THE DEGENERATE / SHRINK LAW — count 0 the identity, a full-length cut empties both, the length non-increasing ----------
+// --- selftest: THE STEREO CUT LAW -- each channel equals ALES2's mono cut on that channel byte for byte; THE BALANCE / INVARIANT LAW -- left.len == right.len after; THE ATOMICITY LAW
+//     -- a refused call leaves BOTH channels untouched; THE DEGENERATE / SHRINK LAW -- count 0 the identity, a full-length cut empties both, the length non-increasing ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -75,7 +75,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO CUT LAW — each channel equals ALES2's mono cut on that channel, proven side by side over one anchor with different per-channel samples.
+    // 1. THE STEREO CUT LAW -- each channel equals ALES2's mono cut on that channel, proven side by side over one anchor with different per-channel samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -95,7 +95,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 11, 51 })) return error.RightSpanWrong;
     }
 
-    // 2. THE BALANCE / INVARIANT LAW — the channels stay equal length across a mid span, the head, and the tail; the stereo image stays aligned.
+    // 2. THE BALANCE / INVARIANT LAW -- the channels stay equal length across a mid span, the head, and the tail; the stereo image stays aligned.
     {
         var mid = pan.StereoClip{};
         try load_stereo(&mid, &[_]i16{ 1, 2, 3, 4, 5 }, &[_]i16{ 6, 7, 8, 9, 10 });
@@ -118,16 +118,16 @@ fn run_selftest() !u8 {
         if (!eq(tail.right.samples(), &[_]i16{ 5, 6 })) return error.TailRightWrong;
     }
 
-    // 3. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a start past the samples and a count past the remainder.
+    // 3. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a start past the samples and a count past the remainder.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
 
-        // a start past the samples → BadRange, nothing written.
+        // a start past the samples -> BadRange, nothing written.
         if (stereo_cut(&sc, 4, 1)) |_| return error.StartNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // a count past the remainder → BadRange, nothing written.
+        // a count past the remainder -> BadRange, nothing written.
         if (stereo_cut(&sc, 2, 5)) |_| return error.CountNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
@@ -136,7 +136,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
     }
 
-    // 4. THE DEGENERATE / SHRINK LAW — count 0 the identity on both channels; a full-length cut empties both; the length is non-increasing because cut only drops samples.
+    // 4. THE DEGENERATE / SHRINK LAW -- count 0 the identity on both channels; a full-length cut empties both; the length is non-increasing because cut only drops samples.
     {
         var idc = pan.StereoClip{};
         try load_stereo(&idc, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

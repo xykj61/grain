@@ -1,13 +1,13 @@
-//! comlink/discovery/introduce.rye — star-as-introducer seam, hops bounded.
+//! comlink/discovery/introduce.rye -- star-as-introducer seam, hops bounded.
 //!
-//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do.
 //! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
 //!   discovery_introduce_hops_max 2
 //!   discovery_descriptor_max_bytes 512
 //!
 //! Check shape: a peer arrives carrying only what Aparigraha allows; identity
 //! checked at the seam through the kumara path; negative space asserted as
-//! loudly as welcome — a stranger with the wrong shape is turned away.
+//! loudly as welcome -- a stranger with the wrong shape is turned away.
 //! Mycelium untouched.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/introduce.rye
@@ -20,7 +20,7 @@ const table_mod = @import("table.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// Star introduces ship — one hop up, one down; deeper wants a word.
+/// Star introduces ship -- one hop up, one down; deeper wants a word.
 pub const introduce_hops_max: u32 = 2;
 
 pub const IntroduceRole = enum(u8) {
@@ -28,7 +28,7 @@ pub const IntroduceRole = enum(u8) {
     ship = 2,
 };
 
-/// One introduction — Aparigraha: only identity, descriptor, hop, and seal.
+/// One introduction -- Aparigraha: only identity, descriptor, hop, and seal.
 pub const Introduction = struct {
     introducer_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
     introduced: table_mod.PeerId = .{},
@@ -84,7 +84,7 @@ fn canonical_message(intro: *const Introduction, out: []u8) usize {
     return off;
 }
 
-/// Next hop after a successful introduction — null past the ceiling.
+/// Next hop after a successful introduction -- null past the ceiling.
 pub fn next_hop(current: u32) ?u32 {
     if (current == 0) return 1;
     if (current >= introduce_hops_max) return null;
@@ -112,7 +112,7 @@ pub fn accept(table: *table_mod.PeerTable, intro: Introduction, now: u64) error{
     try table.upsert(intro.introduced, intro.descriptor, now);
 }
 
-/// Selftest — Check shape: Aparigraha payload · kumara seam · negative space loud.
+/// Selftest -- Check shape: Aparigraha payload - kumara seam - negative space loud.
 pub fn main() !void {
     if (introduce_hops_max != 2) return error.HopsBound;
 
@@ -126,7 +126,7 @@ pub fn main() !void {
     const d_ship = desc.Descriptor.from_slice("ship|udp://10|fresh|star-line") orelse return error.DescShip;
     const d_peer = desc.Descriptor.from_slice("peer|udp://11|fresh|ship-line") orelse return error.DescPeer;
 
-    // Hop 1: star introduces ship — kumara-sealed.
+    // Hop 1: star introduces ship -- kumara-sealed.
     const hop1 = Introduction.mint(star_kp, ship_id, d_ship, 1, .star) orelse return error.Hop1Mint;
     var backing: [4096]u8 = undefined;
     var table = table_mod.PeerTable.init(&backing);
@@ -139,14 +139,14 @@ pub fn main() !void {
     try accept(&table, hop2, 1001);
     if (table.count() != 2) return error.CountAfterTwo;
 
-    // Negative space — wrong shape turned away loudly.
+    // Negative space -- wrong shape turned away loudly.
     if (next_hop(2) != null) return error.NextHop3ShouldNull;
     if (Introduction.mint(ship_kp, peer_id, d_peer, 3, .ship) != null) return error.Hop3ShouldRefuse;
     if (Introduction.mint(ship_kp, peer_id, d_peer, 1, .ship) != null) return error.ShipHop1;
     if (Introduction.mint(star_kp, peer_id, d_peer, 2, .star) != null) return error.StarHop2;
     if (Introduction.mint(star_kp, ship_id, desc.Descriptor.init_empty(), 1, .star) != null) return error.EmptyDesc;
 
-    // Tampered signature — IdentityRefused; table unchanged.
+    // Tampered signature -- IdentityRefused; table unchanged.
     var bad = hop1;
     bad.sig[0] ^= 0xff;
     const before = table.count();
@@ -155,7 +155,7 @@ pub fn main() !void {
     }
     if (table.count() != before) return error.TamperMutated;
 
-    // Wrong hop on an otherwise-sealed blob — HopRefused.
+    // Wrong hop on an otherwise-sealed blob -- HopRefused.
     var wrong_hop = hop1;
     wrong_hop.hop = 3;
     if (accept(&table, wrong_hop, 1003)) |_| return error.Hop3Accepted else |err| {

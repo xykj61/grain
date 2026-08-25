@@ -1,31 +1,31 @@
-//! crypto/eip155_tx.rye — the EIP-155 legacy Ethereum transaction digest, authored in pure Rye as a COMPOSITION over stones already GREEN in
+//! crypto/eip155_tx.rye -- the EIP-155 legacy Ethereum transaction digest, authored in pure Rye as a COMPOSITION over stones already GREEN in
 //! this tree: the Recursive Length Prefix serialization (encoding/rlp.rye), the Keccak-256 hash (crypto/keccak256.rye), the secp256k1 public-key
 //! recovery (crypto/secp256k1_ecrecover.rye), and the Ethereum address derivation (crypto/eth_address.rye). It authors NO new cryptography and
-//! no new serialization — only the one small assembly the Ethereum world performs before every send: lay the transaction's fields out as an RLP
+//! no new serialization -- only the one small assembly the Ethereum world performs before every send: lay the transaction's fields out as an RLP
 //! list, hash that list with Keccak-256, and you hold the exact 32 bytes a wallet signs. Recover the signature back through ecrecover and you
-//! hold the sender. This is the rung the RLP module named next — "a signed transaction is the keccak256 of the RLP of its fields, recovered back
-//! to its sender's address" — made concrete against Ethereum's own published example.
+//! hold the sender. This is the rung the RLP module named next -- "a signed transaction is the keccak256 of the RLP of its fields, recovered back
+//! to its sender's address" -- made concrete against Ethereum's own published example.
 //!
-//! Season: crypto (Season G · Cryptography), the seventh composition on the shelf, beside eth_address, eth_personal_sign, and eip712. Where
+//! Season: crypto (Season G - Cryptography), the seventh composition on the shelf, beside eth_address, eth_personal_sign, and eip712. Where
 //! eip712 hashes a TREE of typed fields for an off-chain "sign this typed data," eip155_tx hashes the FLAT nine-field list of an on-chain
-//! transaction — the two shapes a key is ever asked to sign. Both stand entirely on the same GREEN Keccak-256, ecrecover, and eth_address.
+//! transaction -- the two shapes a key is ever asked to sign. Both stand entirely on the same GREEN Keccak-256, ecrecover, and eth_address.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
 //! Clean-room: the rules are EIP-155 and the Ethereum Yellow Paper; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — EIP-155 replay protection, stated positively. A pre-155 legacy transaction signs the RLP of six fields
+//! THE CRUX -- EIP-155 replay protection, stated positively. A pre-155 legacy transaction signs the RLP of six fields
 //! [nonce, gasPrice, gas, to, value, data] and carries v = 27 or 28. EIP-155 folds the chain id into the signed preimage: the SIGNING list is
 //! nine fields [nonce, gasPrice, gas, to, value, data, chainId, 0, 0], its Keccak-256 is the sighash, and the final v = recovery_id + 2*chainId
-//! + 35 — so a signature valid on one chain can never replay on another, because the chain id is inside the very bytes that were hashed. The
+//! + 35 -- so a signature valid on one chain can never replay on another, because the chain id is inside the very bytes that were hashed. The
 //! SIGNED transaction that goes on the wire replaces the last three fields with the real [v, r, s]. This module builds the signing sighash from
-//! the fields, and recovers the sender from (sighash, r, s, v) — the two halves of "who signed this transaction, and for which chain."
+//! the fields, and recovers the sender from (sighash, r, s, v) -- the two halves of "who signed this transaction, and for which chain."
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. This module NEVER signs: signing needs a secret
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. This module NEVER signs: signing needs a secret
 //! scalar, and signing with the maintainer's own identity key is the custody gate that stays the maintainer's hand. It builds the public preimage
 //! and recovers from a published signature, both of which touch no secret. Parity is proven three ways anyone can replay: (1) a PUBLISHED
-//! known-answer bound to the world — the EIP-155 specification's own canonical example transaction (nonce 9, 20 gwei, 21000 gas, to 0x3535…35,
-//! 1 ETH, chain id 1) hashes byte-for-byte to the spec's stated sighash 0xdaf5a779…4c8e53; (2) a RECOVERY against that same example — the spec's
-//! published (v=37, r, s) recovers through our GREEN ecrecover to exactly the example's published sender 0x9d8a62f6…855a4f, the address of the
-//! spec's test key 0x4646…46, so a one-bit encoding error anywhere would break the recovery; and (3) an INDEPENDENT construction — the same
+//! known-answer bound to the world -- the EIP-155 specification's own canonical example transaction (nonce 9, 20 gwei, 21000 gas, to 0x3535...35,
+//! 1 ETH, chain id 1) hashes byte-for-byte to the spec's stated sighash 0xdaf5a779...4c8e53; (2) a RECOVERY against that same example -- the spec's
+//! published (v=37, r, s) recovers through our GREEN ecrecover to exactly the example's published sender 0x9d8a62f6...855a4f, the address of the
+//! spec's test key 0x4646...46, so a one-bit encoding error anywhere would break the recovery; and (3) an INDEPENDENT construction -- the same
 //! sighash built a second time with Zig's own std.crypto Keccak-256 over the identical RLP bytes, byte-for-byte equal to our GREEN path.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/eip155_tx.rye selftest
@@ -49,8 +49,8 @@ pub const address_bytes: u32 = eth.address_bytes; // 20
 /// [chainId, 0, 0], the signed list ends in [v, r, s]. Named so every field walk cites its bound.
 pub const tx_fields: u32 = 9;
 
-/// The largest RLP-encoded transaction preimage this module hashes. A legacy transaction is small — nine fields, a twenty-byte address, two
-/// thirty-two-byte scalars, and a data payload — yet the ceiling is stated generously and explicitly, the TAME reflex that a buffer names its
+/// The largest RLP-encoded transaction preimage this module hashes. A legacy transaction is small -- nine fields, a twenty-byte address, two
+/// thirty-two-byte scalars, and a data payload -- yet the ceiling is stated generously and explicitly, the TAME reflex that a buffer names its
 /// maximum before it is filled. Well inside Keccak-256's own million-byte message bound.
 pub const max_tx_bytes: u32 = 1 << 16;
 
@@ -59,13 +59,13 @@ pub const max_tx_bytes: u32 = 1 << 16;
 pub const Eip155Error = error{
     /// A signing or signed field list that is not exactly tx_fields items.
     BadFieldCount,
-    /// A v value below 27 — not a legacy recovery id (27/28) nor an EIP-155 v (>= 35).
+    /// A v value below 27 -- not a legacy recovery id (27/28) nor an EIP-155 v (>= 35).
     BadV,
     /// An r or s that is not exactly thirty-two bytes.
     BadScalarLength,
 } || rlp.RlpError || keccak.Keccak256Error || ecr.RecoverError || eth.EthAddressError;
 
-/// The Keccak-256 sighash of a legacy transaction's SIGNING list — the exact thirty-two bytes a wallet signs. The caller hands the nine signing
+/// The Keccak-256 sighash of a legacy transaction's SIGNING list -- the exact thirty-two bytes a wallet signs. The caller hands the nine signing
 /// fields as RLP items ([nonce, gasPrice, gas, to, value, data, chainId, empty, empty] for EIP-155, or the six-field pre-155 form padded by the
 /// caller); this lays them out as one RLP list and hashes it. Composes encoding/rlp.rye and crypto/keccak256.rye, authoring neither.
 pub fn signing_sighash(signing_fields: []const rlp.Item) Eip155Error![digest_bytes]u8 {
@@ -89,7 +89,7 @@ pub const VParts = struct {
 /// Split a transaction's v into its recovery id and chain id. v = 27 or 28 is the pre-155 form (chain id 0); v >= 35 is EIP-155
 /// (chainId = (v - 35) / 2, recovery_id = (v - 35) & 1). A v below 27 is not a legacy signature and is refused.
 pub fn v_parts(v: u64) Eip155Error!VParts {
-    // invariant: a legacy v is 27, 28, or an EIP-155 value at least 35 — nothing below 27 is a valid recovery byte.
+    // invariant: a legacy v is 27, 28, or an EIP-155 value at least 35 -- nothing below 27 is a valid recovery byte.
     if (v < 27) return error.BadV;
     if (v == 27 or v == 28) {
         const rid: u8 = @intCast(v - 27);
@@ -108,14 +108,14 @@ pub fn v_parts(v: u64) Eip155Error!VParts {
 
 /// Recover the twenty-byte sender address from a legacy transaction's sighash and its signature scalars. recovery_id is v_parts(v).recovery_id.
 /// Composes crypto/secp256k1_ecrecover.rye (public-key recovery from public data) and crypto/eth_address.rye (Keccak-256 of the key, low twenty
-/// bytes) — touching no secret scalar, exactly as an Ethereum node does when it credits a transaction's gas to its sender.
+/// bytes) -- touching no secret scalar, exactly as an Ethereum node does when it credits a transaction's gas to its sender.
 pub fn recover_sender(
     sighash: []const u8,
     r_be: []const u8,
     s_be: []const u8,
     recovery_id: u8,
 ) Eip155Error![address_bytes]u8 {
-    // invariant: the sighash is exactly thirty-two bytes and each scalar exactly thirty-two — refused otherwise before recovery.
+    // invariant: the sighash is exactly thirty-two bytes and each scalar exactly thirty-two -- refused otherwise before recovery.
     if (sighash.len != digest_bytes) return error.BadScalarLength;
     if (r_be.len != 32 or s_be.len != 32) return error.BadScalarLength;
 
@@ -159,14 +159,14 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // The EIP-155 specification's own canonical example transaction, field for field. Test key 0x4646…46, chain id 1.
+    // The EIP-155 specification's own canonical example transaction, field for field. Test key 0x4646...46, chain id 1.
     const to = [_]u8{0x35} ** 20; // to = 0x3535353535353535353535353535353535353535
     const gas_price = [_]u8{ 0x04, 0xa8, 0x17, 0xc8, 0x00 }; // 20 gwei = 20e9
     const gas = [_]u8{ 0x52, 0x08 }; // 21000
     const value = [_]u8{ 0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x64, 0x00, 0x00 }; // 1 ETH = 1e18 wei
 
     // The nine SIGNING fields: [nonce, gasPrice, gas, to, value, data, chainId, 0, 0]. The two trailing empties are RLP empty strings, exactly
-    // as EIP-155 specifies — the chain id folded into the preimage, then two zero placeholders where r and s will later go.
+    // as EIP-155 specifies -- the chain id folded into the preimage, then two zero placeholders where r and s will later go.
     const signing_fields = [_]rlp.Item{
         rlp.Item{ .str = &[_]u8{0x09} }, // nonce 9
         rlp.Item{ .str = &gas_price }, // gasPrice 20e9
@@ -188,7 +188,7 @@ fn run_selftest() !u8 {
     if (!slice_eq(&sighash, &sighash_want)) return error.SighashMismatch;
 
     // 2. Independent construction: the identical RLP preimage hashed by Zig's own Keccak-256 gives the same sighash. A different implementation,
-    //    the same bytes, the same digest — so the parity rests on two independent Keccak paths, not one.
+    //    the same bytes, the same digest -- so the parity rests on two independent Keccak paths, not one.
     {
         var buf: [max_tx_bytes]u8 = undefined;
         const encoded = try rlp.encode_item(&buf, rlp.Item{ .list = &signing_fields }, 0);
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. Recovery against the published signature: EIP-155's own (v=37, r, s) recovers to the example's published sender. v = 37 splits to
-    //    recovery id 0 and chain id 1 — the same chain id folded into the signed preimage above, a cross-check the two halves agree.
+    //    recovery id 0 and chain id 1 -- the same chain id folded into the signed preimage above, a cross-check the two halves agree.
     const v: u64 = 37;
     const parts = try v_parts(v);
     if (parts.recovery_id != 0) return error.RecoveryIdMismatch;
@@ -215,14 +215,14 @@ fn run_selftest() !u8 {
         0xf5, 0x55, 0xc9, 0xf3, 0xdc, 0x64, 0x21, 0x4b, 0x29, 0x7f, 0xb1, 0x96, 0x6a, 0x3b, 0x6d, 0x83,
     };
     const sender = try recover_sender(&sighash, &r, &s, parts.recovery_id);
-    // The address of the EIP-155 example's test key 0x4646…46.
+    // The address of the EIP-155 example's test key 0x4646...46.
     const sender_want = [_]u8{
         0x9d, 0x8a, 0x62, 0xf6, 0x56, 0xa8, 0xd1, 0x61, 0x5c, 0x12,
         0x94, 0xfd, 0x71, 0xe9, 0xcf, 0xb3, 0xe4, 0x85, 0x5a, 0x4f,
     };
     if (!slice_eq(&sender, &sender_want)) return error.SenderMismatch;
 
-    // 4. The SIGNED transaction on the wire — the same nine fields with [v, r, s] in the trailing three slots — assembles, and its list header
+    // 4. The SIGNED transaction on the wire -- the same nine fields with [v, r, s] in the trailing three slots -- assembles, and its list header
     //    reads back through the RLP decoder to exactly its own bytes. The frame a node receives, proven to round-trip.
     {
         const signed_fields = [_]rlp.Item{

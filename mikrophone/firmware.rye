@@ -1,19 +1,19 @@
-//! mikrophone/firmware.rye — DREY3: the whole firmware loop. A recorded, committed run — and only such a run — carries
+//! mikrophone/firmware.rye -- DREY3: the whole firmware loop. A recorded, committed run -- and only such a run -- carries
 //! out to a verify-before-trust wire frame; an uncommitted run, a forgotten run, or a powered-down device carries
 //! nothing, and a tampered frame refuses by name before a byte is yielded.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY3.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY3.
 //! Design read: active-designing/date/20260814/20260814-022312_drey3-firmware-loop-carry-committed-run-to-the-wire-exploration.md
 //! Stands on: mikrophone/session.rye (DREY0), mikrophone/wire.rye (DREY1), mikrophone/recorder.rye (DREY2).
 //!
 //! Three rungs stand, each proven alone: the session that forgets, the wire frame that carries only what was committed,
-//! the record control that lets a sample land only while recording. This rung proves the three of them meeting — the
+//! the record control that lets a sample land only while recording. This rung proves the three of them meeting -- the
 //! whole gesture a keeper performs: press record, speak, keep it on purpose, set the device down, and let only the kept
 //! capture cross the single wire. A keeper never touches `session.capture` or `wire.frame` directly; they hold a
 //! recorder, record into it, commit what they mean to keep, and carry it out through this thin loop. Nothing new is
-//! invented here — the loop composes the three known-correct rungs and proves the forgetting promise survives every seam
-//! between them. No disk, no network, no key signs, no funds (custody gate %2 — real hardware, a real record button, a
-//! real wire — untouched). The Sha256 digest stays an integrity check the far side recomputes, not a signature.
+//! invented here -- the loop composes the three known-correct rungs and proves the forgetting promise survives every seam
+//! between them. No disk, no network, no key signs, no funds (custody gate %2 -- real hardware, a real record button, a
+//! real wire -- untouched). The Sha256 digest stays an integrity check the far side recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/firmware.rye selftest
 
@@ -27,7 +27,7 @@ const recorder = @import("recorder.rye");
 pub const firmware_version = "20260814.022312";
 
 /// The deliberate keep, reached through the recorder the keeper already holds. Delegates to `session.commit` over the
-/// recorder's session, so an empty run refuses `NothingToCommit` and a redundant keep `AlreadyCommitted` — the session's
+/// recorder's session, so an empty run refuses `NothingToCommit` and a redundant keep `AlreadyCommitted` -- the session's
 /// own guards, unchanged. This is the one act that decides what may leave the device.
 pub fn commit(rec: *recorder.Recorder) !void {
     // invariant: the committed payload can only be what the working buffer held before this keep.
@@ -41,21 +41,21 @@ pub fn commit(rec: *recorder.Recorder) !void {
 /// whole, a committed payload stands. The forgetting promise, threaded through the control the keeper holds.
 pub fn power_down(rec: *recorder.Recorder) void {
     session.power_down(&rec.ses);
-    // invariant: power-down forgets the working buffer entirely — no residue of an uncommitted capture survives.
+    // invariant: power-down forgets the working buffer entirely -- no residue of an uncommitted capture survives.
     assert(rec.working().len == 0);
 }
 
 /// Frame the recorder's committed carry for the wire. Delegates to `wire.frame` over the recorder's session, so a run
-/// that committed nothing refuses `NothingToCarry` — the forgotten working buffer never reaches the wire, even through
+/// that committed nothing refuses `NothingToCarry` -- the forgotten working buffer never reaches the wire, even through
 /// the composed loop. Only what a deliberate commit kept is ever framed.
 pub fn carry_frame(rec: *const recorder.Recorder, out: *wire.Frame) !void {
-    // invariant: the wire carries only the committed payload — never the live working buffer.
+    // invariant: the wire carries only the committed payload -- never the live working buffer.
     try wire.frame(&rec.ses, out);
     // invariant: a framed loop yields at least a whole header; an empty carry would have refused NothingToCarry above.
     assert(out.len >= wire.header_len);
 }
 
-/// Deframe wire bytes back to their proven payload — a thin read-through to `wire.deframe`, so the loop reads as one
+/// Deframe wire bytes back to their proven payload -- a thin read-through to `wire.deframe`, so the loop reads as one
 /// surface end to end. Every corruption check runs before a byte is yielded, exactly as the wire rung proved.
 pub fn carried_bytes(frame_bytes: []const u8) ![]const u8 {
     return wire.deframe(frame_bytes);
@@ -65,7 +65,7 @@ pub fn carried_bytes(frame_bytes: []const u8) ![]const u8 {
 //     and a tampered frame refuses by name -----------------------------------------------------------------------------
 
 fn run_selftest() !u8 {
-    // 1. The whole loop carries the kept capture — press record, speak, keep, stop, carry out, read back byte-for-byte.
+    // 1. The whole loop carries the kept capture -- press record, speak, keep, stop, carry out, read back byte-for-byte.
     {
         var r = recorder.Recorder.init();
         try recorder.start(&r);
@@ -82,7 +82,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, got, "field"));
     }
 
-    // 2. Only the committed crosses, even with an uncommitted tail — commit "keep", feed "X" still recording, stop; the
+    // 2. Only the committed crosses, even with an uncommitted tail -- commit "keep", feed "X" still recording, stop; the
     //    wire carries exactly "keep", the tail forgotten because the frame reads the committed carry, not the working buffer.
     {
         var r = recorder.Recorder.init();
@@ -102,7 +102,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, got, "keep"));
     }
 
-    // 3. A forgotten run carries nothing through the loop — recorded but never committed, then powered down; the frame
+    // 3. A forgotten run carries nothing through the loop -- recorded but never committed, then powered down; the frame
     //    refuses NothingToCarry and the working buffer reads empty.
     {
         var r = recorder.Recorder.init();
@@ -121,7 +121,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. A tampered frame refuses by name — a single flipped payload byte on the loop's own frame refuses DigestMismatch
+    // 4. A tampered frame refuses by name -- a single flipped payload byte on the loop's own frame refuses DigestMismatch
     //    before the payload is yielded, DREY1's verify-before-trust intact across the composition.
     {
         var r = recorder.Recorder.init();
@@ -135,7 +135,7 @@ fn run_selftest() !u8 {
         try recorder.stop(&r);
         var f = wire.Frame{};
         try carry_frame(&r, &f);
-        // Flip one payload byte — the digest is checked before the payload is returned.
+        // Flip one payload byte -- the digest is checked before the payload is returned.
         var c = f;
         c.buf[wire.header_len] = c.buf[wire.header_len] ^ 0x01;
         if (carried_bytes(c.bytes())) |_| {

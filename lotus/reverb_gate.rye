@@ -1,31 +1,31 @@
-//! lotus/reverb_gate.rye — ALES200: THE GATE — the reverb's GATED TAIL, the classic gated-reverb sound. ALES190 gave the reverb WHICH room,
-//! ALES192/193 HOW MUCH (the wet/dry balance), ALES194–197 WHEN (the pre-delay), ALES198/199 HOW BRIGHT (the tone). The axis this rung adds is
+//! lotus/reverb_gate.rye -- ALES200: THE GATE -- the reverb's GATED TAIL, the classic gated-reverb sound. ALES190 gave the reverb WHICH room,
+//! ALES192/193 HOW MUCH (the wet/dry balance), ALES194-197 WHEN (the pre-delay), ALES198/199 HOW BRIGHT (the tone). The axis this rung adds is
 //! HOW LONG the tail is HEARD: a real gated reverb reverberates a source into a big room, then slams a noise gate across the reverberant tail so the
-//! quiet decay below a chosen threshold is pushed down (or silenced), leaving only the loud early wash — the abrupt, dramatic drum sound every
+//! quiet decay below a chosen threshold is pushed down (or silenced), leaving only the loud early wash -- the abrupt, dramatic drum sound every
 //! console has named since the eighties (the Phil Collins snare). Without it a reverb rings on forever; with it the tail is cut to a shape a keeper
 //! chooses. This rung is that gate.
 //!
-//! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then gate the wet with ALES49's proven downward gate —
+//! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then gate the wet with ALES49's proven downward gate --
 //!   wet = reverb_preset(span)
 //!   out = gate(wet, threshold, ratio_num, ratio_den)
 //! ratio_num == ratio_den is the identity (a unit-ratio gate is exactly the un-gated reverb); a larger ratio pushes the below-threshold tail harder
 //! toward silence, and a large-enough ratio cuts it clean. This invents NO new audio arithmetic: every gated sample is written by a stage already
 //! proven byte-for-byte (ALES49's gate over ALES190's wet), so no value is ever recomputed or can wrap. The gate's threshold and ratio are validated
-//! BEFORE the wet is written — the SAME guards ALES49's gate raises (a threshold in [1, sample_max], a ratio at least one with a nonzero denominator),
+//! BEFORE the wet is written -- the SAME guards ALES49's gate raises (a threshold in [1, sample_max], a ratio at least one with a nonzero denominator),
 //! raised up front so a bad setting leaves the clip DRY rather than half-reverbed. The up-front check is the atomicity crux.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES200.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES200.
 //! Design read: active-designing/date/20260815/20260815-105453_fill-ales200-lotus-reverb-gate.md
-//! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
-//! lotus/gate.rye (ALES49) — the downward gate and its guards, the gating applied to the wet span (its BadThreshold / BadRatio forwarded, its
-//! BadRange the reverb's BadRange); lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion
-//! reverb_preset uses) into a sample count; lotus/timeline.rye (ALES2) — the Clip, its max_clip bounding the span and its sample_max the gate's rail.
+//! Stands on: lotus/reverb_preset.rye (ALES190) -- the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
+//! lotus/gate.rye (ALES49) -- the downward gate and its guards, the gating applied to the wet span (its BadThreshold / BadRatio forwarded, its
+//! BadRange the reverb's BadRange); lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting the span (the SAME conversion
+//! reverb_preset uses) into a sample count; lotus/timeline.rye (ALES2) -- the Clip, its max_clip bounding the span and its sample_max the gate's rail.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
-//! lotus/. No new audio arithmetic — the gate is ALES49's proven downward gate over the proven wet. A WET-TAIL gate: a single downward gate over the
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
+//! lotus/. No new audio arithmetic -- the gate is ALES49's proven downward gate over the proven wet. A WET-TAIL gate: a single downward gate over the
 //! whole reverberant span, the honest first gated-reverb knob. A true time-following envelope gate (an attack/hold/release that opens on the
 //! transient and closes over the decay, so the cut has a shaped edge) is a richer, separate rung that wants the ALES gate-envelope primitive carried
-//! onto the wet — named here as a horizon, not claimed. No socket, no network, no keys, no funds, no real device.
+//! onto the wet -- named here as a horizon, not claimed. No socket, no network, no keys, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb_gate.rye selftest
 
@@ -40,21 +40,21 @@ const gate = @import("gate.rye");
 
 pub const reverb_gate_version = "20260815.105453";
 
-/// The named rooms are ALES190's own — reused whole, so the gate and the presets name the same tunings and cannot drift apart.
+/// The named rooms are ALES190's own -- reused whole, so the gate and the presets name the same tunings and cannot drift apart.
 pub const Room = reverb_preset.Room;
 
 /// The gated reverb's faults are ALES190's `ReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay /
-/// BadGain / BadRange, forwarded whole) beside this rung's two own faults, forwarded from ALES49's gate: `BadThreshold` — a threshold outside
-/// [1, sample_max] — and `BadRatio` — a ratio below one or with a zero denominator. Each is refused by name before any write. (ALES49's gate also
+/// BadGain / BadRange, forwarded whole) beside this rung's two own faults, forwarded from ALES49's gate: `BadThreshold` -- a threshold outside
+/// [1, sample_max] -- and `BadRatio` -- a ratio below one or with a zero denominator. Each is refused by name before any write. (ALES49's gate also
 /// names BadRange; here that span fault is the reverb's own BadRange, raised up front, so the two error sets meet on one name.)
 pub const ReverbGateError = reverb_preset.ReverbPresetError || error{ BadThreshold, BadRatio };
 
 /// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM, then gate the reverberant tail below `threshold` by the ratio
 /// ratio_num/ratio_den. Convert the span through ALES5's clock (the SAME conversion reverb_preset uses); PRE-CHECK the gate's threshold and ratio
-/// with the SAME guards ALES49's gate raises (refusing BadThreshold / BadRatio before any write, so a bad setting leaves the clip dry — the atomicity
+/// with the SAME guards ALES49's gate raises (refusing BadThreshold / BadRatio before any write, so a bad setting leaves the clip dry -- the atomicity
 /// crux); range-check the span (BadRange, the reverb's own, raised up front); run ALES190's reverb_preset over the span (the wet, in place,
 /// unchanged); then gate the wet span through ALES49's gate.
-///   ratio_num == ratio_den is the identity — the span equals reverb_preset byte for byte; a larger ratio cuts the quiet tail harder.
+///   ratio_num == ratio_den is the identity -- the span equals reverb_preset byte for byte; a larger ratio cuts the quiet tail harder.
 /// Refuses BadThreshold / BadRatio on an illegal gate, then forwards ALES190's ReverbPresetError (DurationTooLong on a span past the clip, BadRange
 /// on an out-of-range span, and the reverb's own faults) before any write; on refusal the clip is untouched.
 pub fn reverb_gate(
@@ -67,10 +67,10 @@ pub fn reverb_gate(
     ratio_num: u32,
     ratio_den: u32,
 ) ReverbGateError!void {
-    // invariant: the clock is valid — the span is spoken against it, and reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
 
-    // Pre-check the gate's threshold and ratio BEFORE any write — the atomicity crux. These are the SAME guards ALES49's gate raises (its single
+    // Pre-check the gate's threshold and ratio BEFORE any write -- the atomicity crux. These are the SAME guards ALES49's gate raises (its single
     // source of truth), raised up front so a bad gate leaves the clip DRY rather than reverbed-then-refused.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
@@ -81,14 +81,14 @@ pub fn reverb_gate(
     // DurationTooLong here, before any write.
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
-    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet is written.
+    // The span must be in-bounds before any write -- the same BadRange the reverb would raise, raised before the wet is written.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
-    // The wet, in place — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
+    // The wet, in place -- ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
     try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
 
-    // Gate the wet span through ALES49's downward gate — its threshold and ratio prechecked just above, and the span range-checked, so it cannot
+    // Gate the wet span through ALES49's downward gate -- its threshold and ratio prechecked just above, and the span range-checked, so it cannot
     // fail here.
     gate.gate(clip, start, count, threshold, ratio_num, ratio_den) catch unreachable;
 
@@ -97,10 +97,10 @@ pub fn reverb_gate(
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE IDENTITY EDGE (ratio_num == ratio_den) — equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION — for a
-//     firm ratio, reverb_gate equals reverb_preset then gate byte for byte, and the gated tail DIFFERS from the un-gated wet; THE TAIL IS GATED —
+// --- selftest: THE IDENTITY EDGE (ratio_num == ratio_den) -- equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION -- for a
+//     firm ratio, reverb_gate equals reverb_preset then gate byte for byte, and the gated tail DIFFERS from the un-gated wet; THE TAIL IS GATED --
 //     the gated tail's total energy (summed magnitude) is strictly less than the un-gated wet's; SILENCE STAYS SILENCE; and the faults forward,
-//     ATOMIC — a bad threshold BadThreshold and a bad ratio BadRatio each with the clip untouched (still dry), a span past the clip DurationTooLong,
+//     ATOMIC -- a bad threshold BadThreshold and a bad ratio BadRatio each with the clip untouched (still dry), a span past the clip DurationTooLong,
 //     an out-of-range span BadRange ----------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -114,7 +114,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The total energy of a span — the sum of absolute sample magnitudes. A downward gate reduces every below-threshold magnitude, so gating a signal
+/// The total energy of a span -- the sum of absolute sample magnitudes. A downward gate reduces every below-threshold magnitude, so gating a signal
 /// that carries any quiet tail strictly reduces this. Run in i64 so a long loud span never overflows the accumulator.
 fn energy(s: []const i16) i64 {
     var total: i64 = 0;
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. THE IDENTITY EDGE — ratio_num == ratio_den (a unit-ratio gate) equals ALES190's reverb_preset over the span, byte for byte. A unit-ratio
+    // 1. THE IDENTITY EDGE -- ratio_num == ratio_den (a unit-ratio gate) equals ALES190's reverb_preset over the span, byte for byte. A unit-ratio
     //    gate is exactly the un-gated reverb, at any threshold.
     {
         var gated = timeline.Clip{};
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (!eq(gated.samples(), preset.samples())) return error.IdentityGateNotPreset;
     }
 
-    // 2. IT EQUALS ITS COMPOSITION — for a firm ratio (8:1, a hard gate) at a mid threshold, reverb_gate equals reverb_preset then gate computed side
+    // 2. IT EQUALS ITS COMPOSITION -- for a firm ratio (8:1, a hard gate) at a mid threshold, reverb_gate equals reverb_preset then gate computed side
     //    by side, byte for byte. It invents no arithmetic; every gated sample is written by a proven stage. And the gated tail genuinely DIFFERS from
     //    the un-gated wet.
     {
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (eq(gated.samples(), wet.samples())) return error.GatedEqualsWet;
     }
 
-    // 3. THE TAIL IS GATED — the gated tail's total energy (summed magnitude) is strictly less than the un-gated wet's. A gate pushes the quiet decay
+    // 3. THE TAIL IS GATED -- the gated tail's total energy (summed magnitude) is strictly less than the un-gated wet's. A gate pushes the quiet decay
     //    down, so the tail carries less energy than it did un-gated.
     {
         var gated = timeline.Clip{};
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         if (energy(gated.samples()) >= energy(wet.samples())) return error.TailNotGated;
     }
 
-    // 4. SILENCE STAYS SILENCE — an all-zero clip at any gate stays all zeros; a gate of silence is silence.
+    // 4. SILENCE STAYS SILENCE -- an all-zero clip at any gate stays all zeros; a gate of silence is silence.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -191,26 +191,26 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 5. THE FAULTS FORWARD, ATOMIC — a bad threshold refuses BadThreshold and a bad ratio refuses BadRatio, each with the clip UNTOUCHED (still dry
-    //    — the gate is prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by name with
+    // 5. THE FAULTS FORWARD, ATOMIC -- a bad threshold refuses BadThreshold and a bad ratio refuses BadRatio, each with the clip UNTOUCHED (still dry
+    //    -- the gate is prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by name with
     //    the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // a threshold of zero has no band left to gate below it — BadThreshold, before any write, the clip still dry.
+        // a threshold of zero has no band left to gate below it -- BadThreshold, before any write, the clip still dry.
         if (reverb_gate(&clip, c, .room, 0, 3, 0, 4, 1)) |_| return error.BadThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongBadThreshold;
         if (!eq(clip.samples(), &three)) return error.RefusedBadThresholdMutated;
-        // a threshold past the i16 rail (everything would fall below it) — BadThreshold, before any write.
+        // a threshold past the i16 rail (everything would fall below it) -- BadThreshold, before any write.
         if (reverb_gate(&clip, c, .room, 0, 3, @as(i32, timeline.sample_max) + 1, 4, 1)) |_| return error.HighThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongHighThreshold;
         if (!eq(clip.samples(), &three)) return error.RefusedHighThresholdMutated;
-        // a ratio below unity (num 1 < den 4) would BOOST the quiet — a different tool — BadRatio, before any write.
+        // a ratio below unity (num 1 < den 4) would BOOST the quiet -- a different tool -- BadRatio, before any write.
         if (reverb_gate(&clip, c, .room, 0, 3, 1000, 1, 4)) |_| return error.BadRatioSlipped else |e| if (e != error.BadRatio) return error.WrongBadRatio;
         if (!eq(clip.samples(), &three)) return error.RefusedBadRatioMutated;
-        // a zero ratio denominator is a divide by zero — BadRatio, before any write.
+        // a zero ratio denominator is a divide by zero -- BadRatio, before any write.
         if (reverb_gate(&clip, c, .room, 0, 3, 1000, 4, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadRatio) return error.WrongZeroDen;
         if (!eq(clip.samples(), &three)) return error.RefusedZeroDenMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (reverb_gate(&clip, c, .room, 0, timeline.max_clip + 1, 1000, 4, 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.

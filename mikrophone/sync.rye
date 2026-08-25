@@ -1,16 +1,16 @@
-//! mikrophone/sync.rye — DREY12: the desk pull loop. DREY7–DREY9 gave the desk the three git-style primitives of
-//! content-addressed sync — catalog (address by content), manifest (advertise WHAT is held, no payload), serve (answer a
+//! mikrophone/sync.rye -- DREY12: the desk pull loop. DREY7-DREY9 gave the desk the three git-style primitives of
+//! content-addressed sync -- catalog (address by content), manifest (advertise WHAT is held, no payload), serve (answer a
 //! WANT by re-framing the recording asked for). This rung lifts the whole negotiation into one named, reusable, bounded
 //! operation: `pull` reads a remote desk's manifest verify-before-trust, and for each advertised address the local desk
-//! lacks, serves it and deposits it — ending with the local desk holding every address the remote advertised. The git
+//! lacks, serves it and deposits it -- ending with the local desk holding every address the remote advertised. The git
 //! pull, proven pure before a single wire is strung.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY12.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY12.
 //! Design read: active-designing/date/20260814/20260814-071500_drey12-desk-sync-pull-loop-exploration.md
-//! Stands on: mikrophone/manifest.rye (DREY8) — the have-advertisement and the have/want primitive; mikrophone/serve.rye
-//! (DREY9) — the want-response; mikrophone/catalog.rye (DREY7) — the content-addressed desk deposit and holds.
+//! Stands on: mikrophone/manifest.rye (DREY8) -- the have-advertisement and the have/want primitive; mikrophone/serve.rye
+//! (DREY9) -- the want-response; mikrophone/catalog.rye (DREY7) -- the content-addressed desk deposit and holds.
 //!
-//! This rung stays purely LOCAL — `pull` moves bytes between two in-memory catalogs over their public APIs, inventing no
+//! This rung stays purely LOCAL -- `pull` moves bytes between two in-memory catalogs over their public APIs, inventing no
 //! transport of its own. Running it between two real desks over a real network reaches the Comlink-served custody gate
 //! (Season 1, Journey 2) and waits for the maintainer's word. No disk, no network, no key signs, no funds (custody gate
 //! #2 untouched); the content address stays an integrity identity the far hand recomputes, not a signature.
@@ -27,7 +27,7 @@ const wire = @import("wire.rye");
 
 pub const sync_version = "20260814.071500";
 
-/// The report a pull returns — how many recordings the remote advertised, how many the local desk lacked before the
+/// The report a pull returns -- how many recordings the remote advertised, how many the local desk lacked before the
 /// pull, and how many frames actually crossed. On success `served == wanted`; nothing crosses that the local desk held.
 pub const PullReport = struct {
     advertised: u32 = 0,
@@ -35,8 +35,8 @@ pub const PullReport = struct {
     served: u32 = 0,
 };
 
-/// Pull from `remote` into `local` — the content-addressed fetch as one bounded operation. Reads the remote's manifest,
-/// verifies it whole BEFORE reading a record (verify-before-trust, even for a locally generated advertisement — the
+/// Pull from `remote` into `local` -- the content-addressed fetch as one bounded operation. Reads the remote's manifest,
+/// verifies it whole BEFORE reading a record (verify-before-trust, even for a locally generated advertisement -- the
 /// discipline is the point), then for each advertised address the local desk lacks, serves it through the one proven
 /// framing path and deposits it verify-before-keep. Returns a `PullReport`. Refuses `DigestMismatch` on a corrupt
 /// advertisement before any frame crosses, and propagates `CatalogFull` by name if a served recording would pass the
@@ -53,7 +53,7 @@ pub fn pull(local: *catalog.Catalog, remote: *const catalog.Catalog) !PullReport
     manifest.write_manifest(remote, &man);
     const records = try manifest.verify(man.bytes());
     const advertised = manifest.count_in(records);
-    // invariant: a verified advertisement never claims more than the entry ceiling — the loop below is bounded by it.
+    // invariant: a verified advertisement never claims more than the entry ceiling -- the loop below is bounded by it.
     assert(advertised <= catalog.max_entries);
 
     var report = PullReport{ .advertised = advertised, .wanted = 0, .served = 0 };
@@ -68,15 +68,15 @@ pub fn pull(local: *catalog.Catalog, remote: *const catalog.Catalog) !PullReport
         try serve.serve(remote, want_addr, &out);
         _ = try catalog.deposit(local, out.bytes());
         report.served += 1;
-        // invariant: a served address is now held — the deposit landed the recording the want named.
+        // invariant: a served address is now held -- the deposit landed the recording the want named.
         assert(catalog.holds(local, want_addr));
     }
 
-    // invariant: only the wanted crosses — no byte crosses that the local desk already held.
+    // invariant: only the wanted crosses -- no byte crosses that the local desk already held.
     assert(report.served == report.wanted);
-    // invariant: the local count grew by exactly the frames served — each served address is a new distinct recording.
+    // invariant: the local count grew by exactly the frames served -- each served address is a new distinct recording.
     assert(catalog.count_of(local) == before + report.served);
-    // invariant: convergence — on success the local desk holds every address the remote advertised.
+    // invariant: convergence -- on success the local desk holds every address the remote advertised.
     var j: u32 = 0;
     while (j < advertised) : (j += 1) {
         // invariant: the local side holds every address the remote manifest named after the
@@ -89,7 +89,7 @@ pub fn pull(local: *catalog.Catalog, remote: *const catalog.Catalog) !PullReport
 // --- selftest: a fresh desk converges whole, a partial desk pulls only its lack, a second pull is idempotent, a
 //     tampered advertisement refuses, and a full desk refuses by name at its bound -----------------------------------
 
-/// Frame the text as a committed session would carry it — capture, commit, frame — so each block deposits from a real
+/// Frame the text as a committed session would carry it -- capture, commit, frame -- so each block deposits from a real
 /// wire frame. Returns the frame; the caller reads `bytes()`.
 fn framed(text: []const u8) !wire.Frame {
     const session = @import("session.rye");
@@ -103,7 +103,7 @@ fn framed(text: []const u8) !wire.Frame {
 }
 
 fn run_selftest() !u8 {
-    // 1. Full convergence from empty — a fresh local desk pulls from a remote holding three and ends holding all three.
+    // 1. Full convergence from empty -- a fresh local desk pulls from a remote holding three and ends holding all three.
     {
         var remote = catalog.Catalog.init();
         var a = try framed("alpha");
@@ -124,7 +124,7 @@ fn run_selftest() !u8 {
         assert(catalog.holds(&local, addr_c));
     }
 
-    // 2. Partial convergence — a local desk already holding one of three pulls only the other two.
+    // 2. Partial convergence -- a local desk already holding one of three pulls only the other two.
     {
         var remote = catalog.Catalog.init();
         var a = try framed("alpha");
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
         assert(catalog.count_of(&local) == 3);
     }
 
-    // 3. Idempotent second pull — pulling again serves nothing and leaves the desk unchanged.
+    // 3. Idempotent second pull -- pulling again serves nothing and leaves the desk unchanged.
     {
         var remote = catalog.Catalog.init();
         var a = try framed("alpha");
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         assert(catalog.count_of(&local) == 2);
     }
 
-    // 4. A tampered advertisement refuses — a flipped manifest record byte refuses DigestMismatch before any frame
+    // 4. A tampered advertisement refuses -- a flipped manifest record byte refuses DigestMismatch before any frame
     //    crosses; the local desk lands nothing.
     {
         var remote = catalog.Catalog.init();
@@ -182,13 +182,13 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. Bounded refusal — a local desk filled to max_entries with its own recordings, pulling one more distinct
+    // 5. Bounded refusal -- a local desk filled to max_entries with its own recordings, pulling one more distinct
     //    recording, refuses CatalogFull by name; the bound holds.
     {
         var local = catalog.Catalog.init();
         var n: u32 = 0;
         while (n < catalog.max_entries) : (n += 1) {
-            // Distinct short recordings — a single byte that varies keeps each content address distinct.
+            // Distinct short recordings -- a single byte that varies keeps each content address distinct.
             var f = try framed(&[_]u8{ 'r', @intCast('a' + n) });
             _ = try catalog.deposit(&local, f.bytes());
         }
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         } else |e| {
             if (e != error.CatalogFull) return error.WrongOverfull;
         }
-        // The bound held — the local desk stayed exactly full, no seventeenth entry.
+        // The bound held -- the local desk stayed exactly full, no seventeenth entry.
         assert(catalog.count_of(&local) == catalog.max_entries);
     }
 

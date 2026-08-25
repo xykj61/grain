@@ -1,26 +1,26 @@
-//! crypto/mlkem_encode.rye — Season G (Cryptography): the ML-KEM serialization rung, the second stone of the post-quantum arc. Every ML-KEM key,
+//! crypto/mlkem_encode.rye -- Season G (Cryptography): the ML-KEM serialization rung, the second stone of the post-quantum arc. Every ML-KEM key,
 //! ciphertext, and message crosses the boundary between ring coefficients and bytes through two small, exact operations FIPS 203 fixes: ByteEncode
-//! /ByteDecode (the bit-packing that lays 256 d-bit coefficients into 32·d bytes and reads them back) and Compress/Decompress (the lossy rounding
+//! /ByteDecode (the bit-packing that lays 256 d-bit coefficients into 32-d bytes and reads them back) and Compress/Decompress (the lossy rounding
 //! that trades a coefficient's low bits for a shorter ciphertext, and the round that lifts a compressed value back toward the ring). This module
-//! authors those four operations in pure Rye, standing on the GREEN base ring (crypto/mlkem_ring.rye): it holds no key and runs no protocol — it
+//! authors those four operations in pure Rye, standing on the GREEN base ring (crypto/mlkem_ring.rye): it holds no key and runs no protocol -- it
 //! moves data between two representations the way the ring moved data between two bases.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 2 of the ML-KEM ladder (ByteEncode/ByteDecode and
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md -- rung 2 of the ML-KEM ladder (ByteEncode/ByteDecode and
 //! Compress/Decompress, proven by the encode/decode round-trip and the FIPS 203 compression bound). Rye-first spine:
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
-//! Kin: crypto/mlkem_ring.rye (the base ring this composes on, GREEN) · crypto/shake.rye (the XOF the next sampling rung will drive). The parity
-//! TARGET is Zig's std.crypto ml_kem and the FIPS 203 known-answers, studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//! Kin: crypto/mlkem_ring.rye (the base ring this composes on, GREEN) - crypto/shake.rye (the XOF the next sampling rung will drive). The parity
+//! TARGET is Zig's std.crypto ml_kem and the FIPS 203 known-answers, studied clean-room -- never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE ORACLE — no external dependency is needed here, exactly as the ring rung stood on self-consistency. Serialization is its own inverse: the
+//! THE ORACLE -- no external dependency is needed here, exactly as the ring rung stood on self-consistency. Serialization is its own inverse: the
 //! encode/decode round-trip ByteDecode_d(ByteEncode_d(F)) = F holds for every width d over non-trivial polynomials, and one fixed bit-packing
 //! known-answer anchors the LSB-first bit order the spec fixes. Compression carries the decisive FIPS 203 facts: the compressed value lands in
 //! [0, 2^d) and the decompressed one in [0, q); the round-trip error is bounded by round(q / 2^(d+1)) as FIPS 203 §4.2.1 proves; and the exact
 //! identity Compress_d(Decompress_d(y)) = y holds for every y in Z_{2^d}, so ciphertext compression never loses an already-compressed value.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it packs bits and
-//! rounds coefficients. It calls no std.crypto. The arithmetic is data-independent by construction — every loop bound and every branch depends
-//! only on the public width d, never on a coefficient's value — so constant-time timing-safety stays the Season's named horizon; this rung proves
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it packs bits and
+//! rounds coefficients. It calls no std.crypto. The arithmetic is data-independent by construction -- every loop bound and every branch depends
+//! only on the public width d, never on a coefficient's value -- so constant-time timing-safety stays the Season's named horizon; this rung proves
 //! CORRECTNESS.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mlkem_encode.rye selftest
@@ -36,30 +36,30 @@ pub const mlkem_encode_version = "20260816.161537";
 /// ML-KEM's prime modulus, borrowed from the base ring so the two rungs cite one number. Every raw (uncompressed) coefficient lives in [0, q).
 pub const q: u32 = ring.q;
 
-/// The ring degree — 256 coefficients per polynomial, borrowed from the base ring so encode and decode share one ceiling.
+/// The ring degree -- 256 coefficients per polynomial, borrowed from the base ring so encode and decode share one ceiling.
 pub const n: u32 = ring.n;
 
 /// The widest encoding FIPS 203 uses: d = 12 bits, exactly enough to hold a raw coefficient in [0, q) since q < 4096 = 2¹². Every ByteEncode picks
 /// a width in 1..12; compression uses the narrower widths (1, 4, 5, 10, 11). Named so the byte buffer below cites one maximum.
 pub const max_d: u32 = 12;
 
-/// The largest serialized length any single polynomial reaches: 32·d bytes at the widest width, 32·12 = 384. The Encoded buffer is sized to this
+/// The largest serialized length any single polynomial reaches: 32-d bytes at the widest width, 32-12 = 384. The Encoded buffer is sized to this
 /// ceiling and carries its true length, so one fixed array serves every width without an allocator.
 pub const max_bytes: u32 = 32 * max_d;
 
-/// The faults this rung's selftest can raise — every one a proof that failed, never a runtime path (the arithmetic below cannot fail; it packs and rounds).
+/// The faults this rung's selftest can raise -- every one a proof that failed, never a runtime path (the arithmetic below cannot fail; it packs and rounds).
 pub const MlkemEncodeError = error{
-    /// ByteDecode_d(ByteEncode_d(F)) did not return F — the bit-packing and its inverse disagree at some width.
+    /// ByteDecode_d(ByteEncode_d(F)) did not return F -- the bit-packing and its inverse disagree at some width.
     ByteRoundTripMismatch,
-    /// A fixed FIPS 203 known-answer (the LSB-first bit order, or a named compression value) did not match — a wrong bit direction or rounding.
+    /// A fixed FIPS 203 known-answer (the LSB-first bit order, or a named compression value) did not match -- a wrong bit direction or rounding.
     KnownAnswerMismatch,
-    /// A compressed value left [0, 2^d) or a decompressed value left [0, q) — the range FIPS 203 guarantees was broken.
+    /// A compressed value left [0, 2^d) or a decompressed value left [0, q) -- the range FIPS 203 guarantees was broken.
     RangeError,
-    /// round(q/2^(d+1)) was exceeded by the centered compression round-trip error — the rounding is worse than FIPS 203 §4.2.1 permits.
+    /// round(q/2^(d+1)) was exceeded by the centered compression round-trip error -- the rounding is worse than FIPS 203 §4.2.1 permits.
     CompressBoundExceeded,
-    /// Compress_d(Decompress_d(y)) did not equal y for some y in Z_{2^d} — the identity that keeps ciphertext compression lossless failed.
+    /// Compress_d(Decompress_d(y)) did not equal y for some y in Z_{2^d} -- the identity that keeps ciphertext compression lossless failed.
     CompressIdentityMismatch,
-    /// A test input came out identically zero, so a passing check would prove nothing — the selftest refuses a trivial witness.
+    /// A test input came out identically zero, so a passing check would prove nothing -- the selftest refuses a trivial witness.
     TrivialWitness,
 };
 
@@ -70,13 +70,13 @@ pub const Encoded = struct {
     len: u32,
 };
 
-/// byte_encode — FIPS 203 Algorithm 5: lay 256 coefficients, each in [0, 2^d), into 32·d bytes, LSB-first. A coefficient's low bit lands first;
+/// byte_encode -- FIPS 203 Algorithm 5: lay 256 coefficients, each in [0, 2^d), into 32-d bytes, LSB-first. A coefficient's low bit lands first;
 /// bits stream into an accumulator and flush a byte at a time. The inverse of byte_decode.
 pub fn byte_encode(f: *const [n]u32, d: u32) Encoded {
-    // invariant (precondition): the width is one FIPS 203 uses, 1..12 — narrower loses information, wider than 12 no coefficient needs.
+    // invariant (precondition): the width is one FIPS 203 uses, 1..12 -- narrower loses information, wider than 12 no coefficient needs.
     assert(d >= 1 and d <= max_d);
     var out: Encoded = .{ .bytes = [_]u8{0} ** max_bytes, .len = 32 * d };
-    // acc holds the bits gathered but not yet flushed — never more than 7 leftover plus one d-bit coefficient (< 20 bits), well inside u32.
+    // acc holds the bits gathered but not yet flushed -- never more than 7 leftover plus one d-bit coefficient (< 20 bits), well inside u32.
     var acc: u32 = 0;
     var acc_bits: u32 = 0;
     var byte_i: u32 = 0;
@@ -84,7 +84,7 @@ pub fn byte_encode(f: *const [n]u32, d: u32) Encoded {
     // invariant (bound): exactly n = 256 coefficients consumed, one per turn.
     while (i < n) : (i += 1) {
         const c = f[i];
-        // invariant: each coefficient already fits d bits (the caller reduced or compressed it) — a wider value would silently truncate.
+        // invariant: each coefficient already fits d bits (the caller reduced or compressed it) -- a wider value would silently truncate.
         assert(c < (@as(u32, 1) << @as(u5, @intCast(d))));
         acc = acc | (c << @as(u5, @intCast(acc_bits)));
         acc_bits += d;
@@ -96,16 +96,16 @@ pub fn byte_encode(f: *const [n]u32, d: u32) Encoded {
             acc_bits -= 8;
         }
     }
-    // invariant (postcondition): 256·d bits is a whole number of bytes (32·d), so nothing is left un-flushed and every output byte was written.
+    // invariant (postcondition): 256-d bits is a whole number of bytes (32-d), so nothing is left un-flushed and every output byte was written.
     assert(acc_bits == 0);
     assert(byte_i == 32 * d);
     return out;
 }
 
-/// byte_decode — FIPS 203 Algorithm 6: read 32·d bytes back into 256 coefficients, LSB-first, the inverse of byte_encode. At the widest width
+/// byte_decode -- FIPS 203 Algorithm 6: read 32-d bytes back into 256 coefficients, LSB-first, the inverse of byte_encode. At the widest width
 /// (d = 12) the raw value is reduced mod q, exactly as the spec fixes, so a decoded coefficient is always a canonical residue.
 pub fn byte_decode(b: *const Encoded, d: u32) [n]u32 {
-    // invariant (precondition): the width is one FIPS 203 uses, and the buffer carries exactly 32·d meaningful bytes.
+    // invariant (precondition): the width is one FIPS 203 uses, and the buffer carries exactly 32-d meaningful bytes.
     assert(d >= 1 and d <= max_d);
     assert(b.len == 32 * d);
     var out: [n]u32 = [_]u32{0} ** n;
@@ -116,7 +116,7 @@ pub fn byte_decode(b: *const Encoded, d: u32) [n]u32 {
     var i: u32 = 0;
     // invariant (bound): exactly n = 256 coefficients produced, one per turn.
     while (i < n) : (i += 1) {
-        // invariant (bound): pull whole bytes until the accumulator holds at least d bits — at most two per coefficient, never unbounded.
+        // invariant (bound): pull whole bytes until the accumulator holds at least d bits -- at most two per coefficient, never unbounded.
         while (acc_bits < d) {
             acc = acc | (@as(u32, b.bytes[byte_i]) << @as(u5, @intCast(acc_bits)));
             byte_i += 1;
@@ -134,8 +134,8 @@ pub fn byte_decode(b: *const Encoded, d: u32) [n]u32 {
     return out;
 }
 
-/// compress — FIPS 203 §4.2.1: round(2^d · x / q) mod 2^d, the lossy map that trades a coefficient's low bits for a shorter ciphertext. Computed
-/// as ⌊(2^(d+1)·x + q) / 2q⌋ — the exact round-half-up of 2^d·x/q — then masked to d bits. Compression widths are 1, 4, 5, 10, 11 (d = 12 is the
+/// compress -- FIPS 203 §4.2.1: round(2^d - x / q) mod 2^d, the lossy map that trades a coefficient's low bits for a shorter ciphertext. Computed
+/// as ⌊(2^(d+1)-x + q) / 2q⌋ -- the exact round-half-up of 2^d-x/q -- then masked to d bits. Compression widths are 1, 4, 5, 10, 11 (d = 12 is the
 /// lossless raw encode, never compressed).
 pub fn compress(x: u32, d: u32) u32 {
     // invariant (precondition): a compression width, 1..11; d = 12 is the raw encode and must not round.
@@ -149,12 +149,12 @@ pub fn compress(x: u32, d: u32) u32 {
     return r;
 }
 
-/// decompress — FIPS 203 §4.2.1: round(q · y / 2^d), the map that lifts a compressed value back toward the ring. Computed as
-/// ⌊(2·q·y + 2^d) / 2^(d+1)⌋ — the exact round-half-up of q·y/2^d — landing in [0, q). The approximate inverse of compress.
+/// decompress -- FIPS 203 §4.2.1: round(q - y / 2^d), the map that lifts a compressed value back toward the ring. Computed as
+/// ⌊(2-q-y + 2^d) / 2^(d+1)⌋ -- the exact round-half-up of q-y/2^d -- landing in [0, q). The approximate inverse of compress.
 pub fn decompress(y: u32, d: u32) u32 {
     // invariant (precondition): a compression width, 1..11.
     assert(d >= 1 and d <= max_d - 1);
-    // invariant (precondition): the input fits d bits, so 2·q·y stays far inside u32 (y < 2^11, 2·q·y < 1.4·10⁷).
+    // invariant (precondition): the input fits d bits, so 2-q-y stays far inside u32 (y < 2^11, 2-q-y < 1.4-10⁷).
     assert(y < (@as(u32, 1) << @as(u5, @intCast(d))));
     const num: u32 = 2 * q * y + (@as(u32, 1) << @as(u5, @intCast(d)));
     const r: u32 = num >> @as(u5, @intCast(d + 1));
@@ -165,7 +165,7 @@ pub fn decompress(y: u32, d: u32) u32 {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// A deterministic pseudo-random coefficient array from a seed, each coefficient reduced into [0, bound) — the selftest's non-trivial inputs. A
+/// A deterministic pseudo-random coefficient array from a seed, each coefficient reduced into [0, bound) -- the selftest's non-trivial inputs. A
 /// tiny LCG keeps it reproducible without any std.crypto, so a failing run always reruns identically. Same generator the ring rung uses.
 fn poly_from_seed(seed: u32, bound: u32) [n]u32 {
     var p: [n]u32 = [_]u32{0} ** n;
@@ -178,7 +178,7 @@ fn poly_from_seed(seed: u32, bound: u32) [n]u32 {
     return p;
 }
 
-/// poly_eq — do two coefficient arrays match element for element?
+/// poly_eq -- do two coefficient arrays match element for element?
 fn poly_eq(a: *const [n]u32, b: *const [n]u32) bool {
     var j: u32 = 0;
     while (j < n) : (j += 1) {
@@ -187,7 +187,7 @@ fn poly_eq(a: *const [n]u32, b: *const [n]u32) bool {
     return true;
 }
 
-/// poly_is_zero — is every coefficient zero? Used to refuse a trivial witness (a round-trip on the all-zero array proves nothing).
+/// poly_is_zero -- is every coefficient zero? Used to refuse a trivial witness (a round-trip on the all-zero array proves nothing).
 fn poly_is_zero(a: *const [n]u32) bool {
     var j: u32 = 0;
     while (j < n) : (j += 1) {
@@ -196,7 +196,7 @@ fn poly_is_zero(a: *const [n]u32) bool {
     return true;
 }
 
-/// centered_distance — the FIPS 203 mod±q distance between two residues: the representative of (a − b) in (−q/2, q/2], as a magnitude. The measure
+/// centered_distance -- the FIPS 203 mod±q distance between two residues: the representative of (a − b) in (−q/2, q/2], as a magnitude. The measure
 /// the compression bound is stated in.
 fn centered_distance(a: u32, b: u32) u32 {
     var d: u32 = if (a >= b) a - b else b - a;
@@ -206,8 +206,8 @@ fn centered_distance(a: u32, b: u32) u32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. The LSB-first bit order FIPS 203 fixes, as a fixed known-answer: encode [0xABC, 0xDEF, 0, …] at d = 12. The first coefficient's low byte
-    //    is 0xBC; its top nibble 0xA joins the next coefficient's low nibble 0xF as 0xFA; then 0xDE — bytes {0xBC, 0xFA, 0xDE}. A wrong bit
+    // 1. The LSB-first bit order FIPS 203 fixes, as a fixed known-answer: encode [0xABC, 0xDEF, 0, ...] at d = 12. The first coefficient's low byte
+    //    is 0xBC; its top nibble 0xA joins the next coefficient's low nibble 0xF as 0xFA; then 0xDE -- bytes {0xBC, 0xFA, 0xDE}. A wrong bit
     //    direction fails here before any round-trip.
     {
         var f: [n]u32 = [_]u32{0} ** n;
@@ -236,7 +236,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. The named compression known-answers for the message width d = 1 — the map a plaintext bit crosses. Decompress_1(0) = 0 and
+    // 3. The named compression known-answers for the message width d = 1 -- the map a plaintext bit crosses. Decompress_1(0) = 0 and
     //    Decompress_1(1) = round(q/2) = 1665; Compress_1(0) = 0 and Compress_1(1665) = 1. A wrong rounding direction fails here.
     {
         if (decompress(0, 1) != 0) return error.KnownAnswerMismatch;
@@ -245,7 +245,7 @@ fn run_selftest() !u8 {
         if (compress(1665, 1) != 1) return error.KnownAnswerMismatch;
     }
 
-    // 4. The exact identity Compress_d(Decompress_d(y)) = y for every y in Z_{2^d}, over each compression width — the fact that keeps ciphertext
+    // 4. The exact identity Compress_d(Decompress_d(y)) = y for every y in Z_{2^d}, over each compression width -- the fact that keeps ciphertext
     //    compression lossless on an already-compressed value. Every width's whole domain is walked (2^d ≤ 2048), and both ranges are checked.
     {
         const widths = [_]u32{ 1, 4, 5, 10, 11 };

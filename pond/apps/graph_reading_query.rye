@@ -1,9 +1,9 @@
-//! pond/apps/graph_reading_query.rye — BUHR Journey 6, Rung 4: the reading voice folds the graph.
+//! pond/apps/graph_reading_query.rye -- BUHR Journey 6, Rung 4: the reading voice folds the graph.
 //!
 //! Rungs one through three let the graph voice *count* the living surface (lanes,
 //! bolts, a head) and gathered it under the Q-vane host. This rung brings the reading
 //! voice to bear on the same surface: Scribble folds a markdown render of the graph,
-//! so the voice reads the very structure the browser shows — a title, the bolts as
+//! so the voice reads the very structure the browser shows -- a title, the bolts as
 //! headings, the lanes as their content. `outline` names the title and every bolt;
 //! `bolts` folds to just the depth-two bolt headings.
 //!
@@ -44,7 +44,7 @@ pub const QueryError = error{
 };
 
 /// Recognize the operation named at the head of the prompt. Returns UnknownOp rather
-/// than guessing — the host never invents a reading over a graph it cannot fold.
+/// than guessing -- the host never invents a reading over a graph it cannot fold.
 pub fn route_op(prompt: []const u8) QueryError!Op {
     // invariant: the prompt fits Lantern's own bound before we read it
     assert(prompt.len <= lc.max_prompt_len);
@@ -56,7 +56,7 @@ pub fn route_op(prompt: []const u8) QueryError!Op {
 }
 
 /// Append `src` into `out_buf` at `written`, bounded by the caller's buffer. Byte by
-/// byte within a named bound — no `@memcpy`, no unbounded copy.
+/// byte within a named bound -- no `@memcpy`, no unbounded copy.
 fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
     // invariant: the source respects Scribble's block bound
     assert(src.len <= sc.max_block_text);
@@ -75,7 +75,7 @@ fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
 
 /// Render the live graph as markdown, parse it with Scribble, run the routed fold for
 /// a real result, and format it as space-separated words into `out_buf`. The graph's
-/// own bytes are the corpus — never a pinned document.
+/// own bytes are the corpus -- never a pinned document.
 pub fn compute(op: Op, catalog: *const mn_catalog, out_buf: []u8) (sc.ParseError || mb.RenderError || QueryError || error{NoSpaceLeft})![]const u8 {
     // invariant: the caller's buffer respects Lantern's completion bound
     assert(out_buf.len <= max_result_text);
@@ -123,7 +123,7 @@ pub fn compute(op: Op, catalog: *const mn_catalog, out_buf: []u8) (sc.ParseError
     return out_buf[0..written];
 }
 
-/// Count whitespace-separated words in `text` — the same token sense Lantern's own
+/// Count whitespace-separated words in `text` -- the same token sense Lantern's own
 /// length budget uses when it truncates a completion.
 pub fn count_words(text: []const u8) u32 {
     // invariant: the text respects Lantern's completion bound
@@ -171,7 +171,7 @@ pub fn answer(req: lc.Request, allow_text: []const u8, catalog: *const mn_catalo
     var reason: lc.StoppedReason = .eos;
 
     // Honor Lantern's metering: when the real reading outruns the budget, truncate to
-    // max_tokens words and mark a length stop — the same discipline every other voice
+    // max_tokens words and mark a length stop -- the same discipline every other voice
     // applies to a reading that outruns its budget.
     if (tokens_out > req.max_tokens) {
         var words: u32 = 0;
@@ -255,7 +255,7 @@ fn welcome_reading_tracks_a_fork() !void {
     const allow =
         \\model_hash sha3-256-rye-forge-lap0
     ;
-    // A fork adds a lane under a *new* bolt, so the reading voice's bolt fold grows —
+    // A fork adds a lane under a *new* bolt, so the reading voice's bolt fold grows --
     // the reading tracks the living surface, exactly as the counting voice did.
     var catalog = try mb.demo_catalog();
     try catalog.append_leaf("local", "wiki", 1, "home", "w", "leaf");

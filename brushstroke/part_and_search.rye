@@ -1,19 +1,19 @@
-//! brushstroke/part_and_search.rye — HUNK79: the faceted search box on glass — a multi-clause line draws a narrowed,
+//! brushstroke/part_and_search.rye -- HUNK79: the faceted search box on glass -- a multi-clause line draws a narrowed,
 //! paged shelf.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK79.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK79.
 //! Design read: active-designing/date/20260814/20260814-000723_hunk-part-and-search-faceted-shelf-on-glass-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's search-then-see, faceted — several checks shrink the wall (concept
+//! Teacher, thanked clean-room: McMaster-Carr's search-then-see, faceted -- several checks shrink the wall (concept
 //! only, siloed).
 //!
-//! HUNK78 gave the marketplace a faceted query — a line of `key:value` clauses narrowing to the parts that satisfy
-//! EVERY one — yet in the image layer, unseen. HUNK77 drew the single-clause search on glass but reaches only one
+//! HUNK78 gave the marketplace a faceted query -- a line of `key:value` clauses narrowing to the parts that satisfy
+//! EVERY one -- yet in the image layer, unseen. HUNK77 drew the single-clause search on glass but reaches only one
 //! facet. This rung joins them: `and_search_shelf` reads a catalog, a multi-clause typed line, and a page offset, and
-//! draws exactly the narrowed page — the faceted search box end to end, from keystroke to lit swatch.
+//! draws exactly the narrowed page -- the faceted search box end to end, from keystroke to lit swatch.
 //!
 //! The crux is HUNK77's, now over the conjunction: WHAT A KEEPER TYPES IS WHAT A KEEPER SEES. The drawn page is
-//! precisely what `part_window` would draw over the catalog `filter_and` narrows — no part shown that fails any clause,
-//! no satisfying part hidden. The view invents nothing; it is the faithful composition parse_and → filter_and →
+//! precisely what `part_window` would draw over the catalog `filter_and` narrows -- no part shown that fails any clause,
+//! no satisfying part hidden. The view invents nothing; it is the faithful composition parse_and -> filter_and ->
 //! part_window, inheriting every law those proved (the clauses commute, an empty line is a match-all, a match-none
 //! compound draws a real empty page, paging loses nothing). A malformed clause surfaces the parser's own named refusal
 //! rather than a wrong shelf.
@@ -35,7 +35,7 @@ const skate = @import("skate_grid.rye");
 
 pub const part_and_search_version = "20260814.000723";
 
-/// How many parts a multi-clause line keeps — parse the line into an `AndQuery`, then count the parts passing every
+/// How many parts a multi-clause line keeps -- parse the line into an `AndQuery`, then count the parts passing every
 /// clause. A caller shows this as *N results* and sizes the paging before it draws. A malformed clause surfaces the
 /// parser's own named refusal.
 pub fn and_search_result_count(cat: *const part_catalog.PartCatalog, text: []const u8) !u32 {
@@ -46,7 +46,7 @@ pub fn and_search_result_count(cat: *const part_catalog.PartCatalog, text: []con
     return n;
 }
 
-/// How many pages the narrowed result needs at `rows` parts per page — parse, filter into a fresh sub-catalog over the
+/// How many pages the narrowed result needs at `rows` parts per page -- parse, filter into a fresh sub-catalog over the
 /// same sheet with the conjunction, and count the pages over it. Zero matches is zero pages.
 pub fn and_search_page_count(
     allocator: std.mem.Allocator,
@@ -66,7 +66,7 @@ pub fn and_search_page_count(
     return pages;
 }
 
-/// Draw the narrowed page — parse the multi-clause line into an `AndQuery`, filter the catalog into a fresh sub-catalog
+/// Draw the narrowed page -- parse the multi-clause line into an `AndQuery`, filter the catalog into a fresh sub-catalog
 /// over the SAME sheet with `filter_and`, and render the page `[offset, offset + rows)` with `part_window`. So what a
 /// keeper types is what a keeper sees: the drawn page shows exactly the parts that satisfy every clause, in held order,
 /// each swatch true to the one shared sheet. A malformed clause surfaces the parser's named refusal and an over-long
@@ -91,7 +91,7 @@ pub fn and_search_shelf(
     return part_row.part_window(allocator, &sub, cols, rows, offset);
 }
 
-// --- selftest: five parts, a faceted search — the narrowed page shows exactly the parts passing every clause (the same
+// --- selftest: five parts, a faceted search -- the narrowed page shows exactly the parts passing every clause (the same
 //     the hand-filtered window draws), the clauses commute on glass, a match-none compound draws a real empty page, a
 //     bad offset and a malformed clause each refuse by name ---------------------------------------------------------
 
@@ -115,7 +115,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's fact line back as bytes — trim the blank tail, so the selftest sees exactly the painted fact text
+/// Read a row's fact line back as bytes -- trim the blank tail, so the selftest sees exactly the painted fact text
 /// (the part_row reader's own idiom).
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
@@ -139,7 +139,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const cols: u32 = 48;
 
     // A faceted line: stainless-304 AND at most 100 cents keeps only hexnut (bolt is stainless but 125c). The page
-    // draws exactly that one part — what a keeper types is what a keeper sees, over the conjunction.
+    // draws exactly that one part -- what a keeper types is what a keeper sees, over the conjunction.
     {
         assert((try and_search_result_count(&cat, "material:stainless-304 max:100")) == 1);
         assert((try and_search_page_count(garden, &cat, "material:stainless-304 max:100", 4)) == 1);
@@ -147,12 +147,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         var buf: [part_row.max_fact_line]u8 = undefined;
         const r0 = row_text(&page, 0, buf[0..]);
         assert(std.mem.startsWith(u8, buf[0..r0], "hexnut  HX-N8  stainless-304  $0.55"));
-        // Only one part matched — the second row's label region is blank.
+        // Only one part matched -- the second row's label region is blank.
         const r1 = row_text(&page, 1, buf[0..]);
         assert(r1 == 0);
     }
 
-    // The narrowed page equals the hand-filtered window drawn directly — the faceted search view invents nothing.
+    // The narrowed page equals the hand-filtered window drawn directly -- the faceted search view invents nothing.
     {
         const via_search = try and_search_shelf(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
         const aq = try part_and.parse_and("material:stainless-304 max:100");
@@ -170,7 +170,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The clauses COMMUTE on glass — the same one part is drawn whichever facet is named first.
+    // The clauses COMMUTE on glass -- the same one part is drawn whichever facet is named first.
     {
         const forward = try and_search_shelf(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
         const reverse = try and_search_shelf(garden, &cat, "max:100 material:stainless-304", cols, 4, 0);
@@ -182,7 +182,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, a[0..na], b[0..nb]));
     }
 
-    // An empty line is a MATCH-ALL — every part drawn, the first row the held-order first (bolt).
+    // An empty line is a MATCH-ALL -- every part drawn, the first row the held-order first (bolt).
     {
         assert((try and_search_result_count(&cat, "")) == cat.len());
         const page = try and_search_shelf(garden, &cat, "", cols, 4, 0);
@@ -191,8 +191,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..r0], "bolt  HX-M8-40  stainless-304  $1.25"));
     }
 
-    // A match-none compound draws a REAL empty page — stainless AND at most 10 cents keeps nothing (both stainless
-    // parts are dearer) — zero results, zero pages, every row blank.
+    // A match-none compound draws a REAL empty page -- stainless AND at most 10 cents keeps nothing (both stainless
+    // parts are dearer) -- zero results, zero pages, every row blank.
     {
         assert((try and_search_result_count(&cat, "material:stainless-304 max:10")) == 0);
         assert((try and_search_page_count(garden, &cat, "material:stainless-304 max:10", 4)) == 0);
@@ -204,12 +204,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // An offset past the narrowed result refuses BadOffset — one match, so page offset 1 is past it.
+    // An offset past the narrowed result refuses BadOffset -- one match, so page offset 1 is past it.
     if (and_search_shelf(garden, &cat, "material:stainless-304 max:100", cols, 1, 1)) |_| return error.OffsetSlipped else |e| {
         if (e != error.BadOffset) return error.WrongOffset;
     }
 
-    // A malformed clause surfaces the parser's own named refusal to the glass layer — a bad facet draws nothing.
+    // A malformed clause surfaces the parser's own named refusal to the glass layer -- a bad facet draws nothing.
     if (and_search_shelf(garden, &cat, "material:stainless-304 color:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongLine;
     }

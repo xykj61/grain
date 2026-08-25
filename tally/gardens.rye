@@ -1,16 +1,16 @@
-//! tally/gardens.rye — Tally v1: named gardens.
+//! tally/gardens.rye -- Tally v1: named gardens.
 //!
 //! A Gardens holds a fixed set of named Regions. Each Region is a bounded
 //! garden with a stated edge: bump-allocate within, fail past, clear whole in
-//! one gesture. Gardens adds naming — so a caller can declare "this memory is
+//! one gesture. Gardens adds naming -- so a caller can declare "this memory is
 //! the blob garden" or "this memory is the diff garden" and retrieve it by name.
 //!
 //! Three gardens cover the near stack:
-//!   blob  — working memory for one Mantra blob (read buffer, serialize buffer)
-//!   diff  — line buffer for LCS diff computation
-//!   frame — Brushstroke widget tree per redraw
+//!   blob  -- working memory for one Mantra blob (read buffer, serialize buffer)
+//!   diff  -- line buffer for LCS diff computation
+//!   frame -- Brushstroke widget tree per redraw
 //!
-//! A request past the edge fails with error.OutOfBounds — named and loud,
+//! A request past the edge fails with error.OutOfBounds -- named and loud,
 //! not silent. A clear returns the cursor to zero; the season ends and a new
 //! one may begin over the same backing store.
 //!
@@ -49,7 +49,7 @@ const buf_len_u32 = region_mod.buf_len_u32;
 pub const Region = region_mod.Region;
 
 // =========================================================================
-// § Gardens — a named collection of Regions
+// § Gardens -- a named collection of Regions
 // =========================================================================
 
 /// Maximum name length for a garden name.
@@ -76,7 +76,7 @@ pub const Gardens = struct {
     entries: [max_gardens]NamedRegion,
     count: u32,
 
-    /// An empty Gardens — no regions yet.
+    /// An empty Gardens -- no regions yet.
     pub fn init() Gardens {
         return .{
             .entries = undefined,
@@ -106,7 +106,7 @@ pub const Gardens = struct {
         assert(self.count <= max_gardens);
     }
 
-    /// Register a named garden carved from `parent` — divide and name in one
+    /// Register a named garden carved from `parent` -- divide and name in one
     /// motion, so no caller ever does the offset arithmetic that overlapping
     /// gardens come from.
     pub fn add_division(self: *Gardens, name: []const u8, parent: *Region, n: u32) !void {
@@ -135,7 +135,7 @@ pub const Gardens = struct {
         return null;
     }
 
-    /// Clear one named garden — the season ends for that garden only.
+    /// Clear one named garden -- the season ends for that garden only.
     /// Asserts the garden exists (a caller naming a non-existent garden
     /// is always a mistake).
     pub fn clear_one(self: *Gardens, name: []const u8) void {
@@ -154,7 +154,7 @@ pub const Gardens = struct {
         assert(false);
     }
 
-    /// Clear all gardens at once — the whole season ends.
+    /// Clear all gardens at once -- the whole season ends.
     pub fn clear_all(self: *Gardens) void {
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |*e| {
@@ -168,7 +168,7 @@ pub const Gardens = struct {
         }
     }
 
-    /// Total bytes across all gardens — the denominator `total_remaining`
+    /// Total bytes across all gardens -- the denominator `total_remaining`
     /// needs to mean anything. Aparigraha asks for named budgets; a budget
     /// whose remainder is visible and whose whole is not is half a budget.
     pub fn total_capacity(self: *const Gardens) u32 {
@@ -197,7 +197,7 @@ pub const Gardens = struct {
 };
 
 // =========================================================================
-// § Proof — main asserts all facts hold
+// § Proof -- main asserts all facts hold
 // =========================================================================
 
 pub fn main() void {
@@ -245,7 +245,7 @@ pub fn main() void {
     assert(diff_r.remaining() == 256);
     assert(blob_r.remaining() == 412);
 
-    // Re-allocate diff after clear — same memory, new season.
+    // Re-allocate diff after clear -- same memory, new season.
     const c = diff_r.alloc(256) catch unreachable;
     assert(c.len == 256);
     assert(c.ptr == @as([*]u8, @ptrCast(&diff_buf[0])));

@@ -1,13 +1,13 @@
-//! lotus/album_manifest.rye — ALES224: a whole record's own content address, sealed. ALES221 gave a single render a sealed,
-//! content-addressed manifest; ALES223 gathered many renders into an album — yet the album as a whole has no small, citable name.
+//! lotus/album_manifest.rye -- ALES224: a whole record's own content address, sealed. ALES221 gave a single render a sealed,
+//! content-addressed manifest; ALES223 gathered many renders into an album -- yet the album as a whole has no small, citable name.
 //! A keeper who wants to publish a record, cite it in a chain of custody, or prove two copies are the same record needs ONE short
 //! sealed record that fixes the whole collection's identity, without shipping the audio to do it. This rung seats it: a sealed
 //! `format lotus-album-v1` body listing the track count and, per track, its name and the Sha256 of its whole bundle bytes.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES224.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES224.
 //! Design read: active-designing/date/20260815/20260815-140211_fill-ales224-lotus-album-manifest.md
-//! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/render_album.rye
-//! (ALES223) — the TrackIn (name · bundle bytes) this manifest names, and its max_tracks / max_track_name bounds; std.crypto Sha256
+//! Stands on: lotus/seal.rye (ALES38) -- begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/render_album.rye
+//! (ALES223) -- the TrackIn (name - bundle bytes) this manifest names, and its max_tracks / max_track_name bounds; std.crypto Sha256
 //! for each track's bundle digest, the same hash the seal and the render manifest already carry. No new hash, no new frame.
 //!
 //! album_manifest is to the album exactly what render_manifest is to a single render, one level up. Each track's bundle Sha256
@@ -15,7 +15,7 @@
 //! collection; the seal's own digest binds this listing's text. Content-addressing, never a signature: it proves a collection's
 //! identity is whole, NOT who made it. No key, no custody.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. No real file, no DAC, no
+//! HONEST SCOPE -- software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. No real file, no DAC, no
 //! acoustic or electrical fact, no network, no keys, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/album_manifest.rye selftest
@@ -33,27 +33,27 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 
 pub const album_manifest_version = "20260815.140211";
 
-/// The sealed record's kind line — the header seal.begin writes and seal.open matches. An album manifest sealed under this kind
+/// The sealed record's kind line -- the header seal.begin writes and seal.open matches. An album manifest sealed under this kind
 /// can never be opened as a render manifest or any other format.
 pub const header = "format lotus-album-v1";
 
-/// The most tracks one album manifest lists — harmonized with the album's own bound, so a manifest names exactly the catalog a
+/// The most tracks one album manifest lists -- harmonized with the album's own bound, so a manifest names exactly the catalog a
 /// LOTUSALB frame can carry.
 pub const max_tracks: u32 = render_album.max_tracks;
 
-/// The longest track name the manifest carries — harmonized with the album's bound. In this readable body a name is a single
+/// The longest track name the manifest carries -- harmonized with the album's bound. In this readable body a name is a single
 /// token (the line grammar reserves the space and the newline), so a name with a space refuses NameTooLong rather than breaking a
 /// line the reader trusts.
 pub const max_track_name: u32 = render_album.max_track_name;
 
-/// The 64 lowercase hex characters of a full Sha256 — the same width the seal and the render manifest carry.
+/// The 64 lowercase hex characters of a full Sha256 -- the same width the seal and the render manifest carry.
 pub const digest_hex_len: u32 = seal.digest_hex_len;
 
-/// The widest count line — `count ` (6) plus a u32's widest decimal (10) plus a newline. Named so the body ceiling reads from one
+/// The widest count line -- `count ` (6) plus a u32's widest decimal (10) plus a newline. Named so the body ceiling reads from one
 /// source.
 pub const count_line_max: u32 = 6 + 10 + 1;
 
-/// The widest single track line — `track ` (6) plus the name bound, a space, the 64-hex digest, and a newline.
+/// The widest single track line -- `track ` (6) plus the name bound, a space, the 64-hex digest, and a newline.
 pub const track_line_max: u32 = 6 + max_track_name + 1 + digest_hex_len + 1;
 
 /// The widest sealed album manifest: the seal frame overhead (the header line, the `digest <64 hex>` line) plus the body (the
@@ -62,7 +62,7 @@ pub const track_line_max: u32 = 6 + max_track_name + 1 + digest_hex_len + 1;
 pub const max_album_manifest_bytes: u32 =
     @intCast(header.len + 1 + seal.digest_prefix.len + digest_hex_len + 1 + count_line_max + max_tracks * track_line_max);
 
-/// The album manifest's own faults, unioned with the seal's (DigestMismatch · BadRecord · Overflow). BadAlbumManifest is a
+/// The album manifest's own faults, unioned with the seal's (DigestMismatch - BadRecord - Overflow). BadAlbumManifest is a
 /// malformed body field; NameTooLong a name that is not a single token; TooManyTracks a count past the bound; the three Mismatch
 /// faults are what verify_album refuses when a collection in hand is not the record the manifest names.
 pub const AlbumManifestError = seal.SealError || error{
@@ -70,13 +70,13 @@ pub const AlbumManifestError = seal.SealError || error{
     BadAlbumManifest,
     /// A track name is empty, longer than max_track_name, or carries a space or newline the readable line grammar reserves.
     NameTooLong,
-    /// The track count is past max_tracks — refused before the fixed entry array could overflow.
+    /// The track count is past max_tracks -- refused before the fixed entry array could overflow.
     TooManyTracks,
     /// verify_album was handed a collection with a different number of tracks than the manifest names.
     CountMismatch,
     /// verify_album found a track whose name does not match the manifest's, in order.
     TrackNameMismatch,
-    /// verify_album recomputed a track's bundle Sha256 and it does not match the manifest's digest — a swapped or edited track.
+    /// verify_album recomputed a track's bundle Sha256 and it does not match the manifest's digest -- a swapped or edited track.
     TrackDigestMismatch,
 };
 
@@ -86,14 +86,14 @@ pub const Entry = struct {
     digest: []const u8,
 };
 
-/// A parsed, sealed album manifest — the ordered catalog of `(name, digest)` entries the seal already proved whole, and how many
+/// A parsed, sealed album manifest -- the ordered catalog of `(name, digest)` entries the seal already proved whole, and how many
 /// are live. Lives only as long as the text it was opened from.
 pub const AlbumManifest = struct {
     entries: [max_tracks]Entry = undefined,
     count: u32 = 0,
 };
 
-/// Write `bytes` as lowercase hex into `out`, two characters per byte — the `{x:0>2}` idiom, so a zero byte renders `00`. `out`
+/// Write `bytes` as lowercase hex into `out`, two characters per byte -- the `{x:0>2}` idiom, so a zero byte renders `00`. `out`
 /// must hold exactly `bytes.len * 2` characters.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex characters per byte.
@@ -131,7 +131,7 @@ pub fn seal_album_manifest(out: []u8, tracks: []const render_album.TrackIn) Albu
     var i: u32 = 0;
     while (i < count) : (i += 1) {
         const t = tracks[i];
-        // invariant: each track name is a single legal token — checked before it is written, so a bad name never half-fills the body.
+        // invariant: each track name is a single legal token -- checked before it is written, so a bad name never half-fills the body.
         if (!name_ok(t.name)) return error.NameTooLong;
         var dg: [Sha256.digest_length]u8 = undefined;
         Sha256.hash(t.bundle, &dg, .{});
@@ -164,9 +164,9 @@ fn count_field(body: []const u8) AlbumManifestError!struct { value: []const u8, 
 
 /// Read one `track <name> <digest>` line at `body[cursor..]`: the prefix, a single-token name up to a space, then exactly
 /// digest_hex_len hex to a newline. Returns the name and digest slices and the cursor just past the newline. Any malformation
-/// refuses BadAlbumManifest — the reader never guesses a field.
+/// refuses BadAlbumManifest -- the reader never guesses a field.
 fn track_line(body: []const u8, cursor: u32) AlbumManifestError!struct { name: []const u8, digest: []const u8, next: u32 } {
-    // invariant: the cursor stays within the body — an exhausted body is a malformed record, not a silent stop.
+    // invariant: the cursor stays within the body -- an exhausted body is a malformed record, not a silent stop.
     if (cursor > body.len) return error.BadAlbumManifest;
     const rest = body[cursor..];
     const prefix = "track ";
@@ -181,7 +181,7 @@ fn track_line(body: []const u8, cursor: u32) AlbumManifestError!struct { name: [
     const after_name = after[sp + 1 ..];
     const nl = std.mem.indexOfScalar(u8, after_name, '\n') orelse return error.BadAlbumManifest;
     const digest = after_name[0..nl];
-    // invariant: the digest is exactly the full hex width — a short or long field is a malformed line.
+    // invariant: the digest is exactly the full hex width -- a short or long field is a malformed line.
     if (digest.len != digest_hex_len) return error.BadAlbumManifest;
 
     // seam: every offset is a std usize into a body bounded well under u32; they narrow safely at this edge.
@@ -191,10 +191,10 @@ fn track_line(body: []const u8, cursor: u32) AlbumManifestError!struct { name: [
     return .{ .name = name, .digest = digest, .next = cursor + prefix_len + sp_u32 + 1 + nl_u32 + 1 };
 }
 
-/// Open a sealed album manifest — the integrity gate BEFORE trust. seal.open recomputes the record's digest and refuses
+/// Open a sealed album manifest -- the integrity gate BEFORE trust. seal.open recomputes the record's digest and refuses
 /// DigestMismatch / BadRecord before a field is read; only a whole record's body is parsed into an AlbumManifest.
 pub fn open_album_manifest(text: []const u8) AlbumManifestError!AlbumManifest {
-    // invariant: the body is verified whole before any field is trusted — no partial parse of a corrupt record.
+    // invariant: the body is verified whole before any field is trusted -- no partial parse of a corrupt record.
     const body = try seal.open(text, header);
 
     const f_count = try count_field(body);
@@ -210,16 +210,16 @@ pub fn open_album_manifest(text: []const u8) AlbumManifestError!AlbumManifest {
         cursor = tl.next;
     }
 
-    // invariant: the whole body was consumed — a trailing line is a record this grammar does not know, refused not ignored.
+    // invariant: the whole body was consumed -- a trailing line is a record this grammar does not know, refused not ignored.
     if (cursor != body.len) return error.BadAlbumManifest;
     return am;
 }
 
 /// Confirm a collection in hand IS the record its manifest names: the count must match, then each track's name and recomputed
 /// bundle Sha256 must match the manifest, in order. A swapped, edited, missing, or added track refuses by name before the
-/// collection is trusted. Infallible otherwise — a match returns cleanly.
+/// collection is trusted. Infallible otherwise -- a match returns cleanly.
 pub fn verify_album(am: *const AlbumManifest, tracks: []const render_album.TrackIn) AlbumManifestError!void {
-    // invariant: the manifest names no more than its bound — open_album_manifest already proved it, re-asserted at the use site.
+    // invariant: the manifest names no more than its bound -- open_album_manifest already proved it, re-asserted at the use site.
     assert(am.count <= max_tracks);
     if (tracks.len != am.count) return error.CountMismatch;
 
@@ -235,13 +235,13 @@ pub fn verify_album(am: *const AlbumManifest, tracks: []const render_album.Track
     }
 }
 
-// --- selftest: THE CONTENT-ADDRESS LAW — seal then open recovers the count and every (name, digest) in order, verify_album accepts
-//     the exact tracks; THE TAMPER LAW — a flipped bundle byte refuses TrackDigestMismatch, a swapped name TrackNameMismatch, a
-//     dropped track CountMismatch; THE SEAL LAW — a tampered body refuses DigestMismatch, a wrong header BadRecord; THE GRAMMAR LAW
-//     — a spaced name refuses NameTooLong, a malformed body BadAlbumManifest; THE ATOMIC LAW — a small buffer refuses Overflow ----
+// --- selftest: THE CONTENT-ADDRESS LAW -- seal then open recovers the count and every (name, digest) in order, verify_album accepts
+//     the exact tracks; THE TAMPER LAW -- a flipped bundle byte refuses TrackDigestMismatch, a swapped name TrackNameMismatch, a
+//     dropped track CountMismatch; THE SEAL LAW -- a tampered body refuses DigestMismatch, a wrong header BadRecord; THE GRAMMAR LAW
+//     -- a spaced name refuses NameTooLong, a malformed body BadAlbumManifest; THE ATOMIC LAW -- a small buffer refuses Overflow ----
 
 fn run_selftest() !u8 {
-    // Three stand-in bundles — any bytes serve, since the manifest addresses bundle OUTPUT bytes, it does not build one.
+    // Three stand-in bundles -- any bytes serve, since the manifest addresses bundle OUTPUT bytes, it does not build one.
     const b0 = "LOTUSBND....first bundle bytes....\x01\x02\x03";
     const b1 = "LOTUSBND....second bundle bytes...\x04\x05\x06";
     const b2 = "LOTUSBND....third bundle bytes....\x07\x08\x09";
@@ -251,7 +251,7 @@ fn run_selftest() !u8 {
         .{ .name = "closer", .bundle = b2 },
     };
 
-    // 1. THE CONTENT-ADDRESS LAW — seal, open, recover the count and every entry in order; verify_album accepts the exact tracks.
+    // 1. THE CONTENT-ADDRESS LAW -- seal, open, recover the count and every entry in order; verify_album accepts the exact tracks.
     {
         var out: [max_album_manifest_bytes]u8 = undefined;
         const n = try seal_album_manifest(out[0..], tracks[0..]);
@@ -263,7 +263,7 @@ fn run_selftest() !u8 {
         try verify_album(&am, tracks[0..]); // the record names exactly these tracks
     }
 
-    // 2. THE TAMPER LAW — a flipped byte in a bundle refuses TrackDigestMismatch; a swapped name TrackNameMismatch; a dropped track
+    // 2. THE TAMPER LAW -- a flipped byte in a bundle refuses TrackDigestMismatch; a swapped name TrackNameMismatch; a dropped track
     //    CountMismatch.
     {
         var out: [max_album_manifest_bytes]u8 = undefined;
@@ -290,7 +290,7 @@ fn run_selftest() !u8 {
         if (verify_album(&am, tracks[0..2])) |_| return error.CountSlipped else |e| if (e != error.CountMismatch) return error.WrongCount;
     }
 
-    // 3. THE SEAL LAW — a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
+    // 3. THE SEAL LAW -- a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
     {
         var out: [max_album_manifest_bytes]u8 = undefined;
         const n = try seal_album_manifest(out[0..], tracks[0..]);
@@ -302,14 +302,14 @@ fn run_selftest() !u8 {
         if (seal.open(again[0..n2], "format lotus-other-v1")) |_| return error.HeaderSlipped else |e| if (e != error.BadRecord) return error.WrongHeader;
     }
 
-    // 4. THE GRAMMAR LAW — a name with a space refuses NameTooLong at seal; a count past the bound refuses TooManyTracks; a
+    // 4. THE GRAMMAR LAW -- a name with a space refuses NameTooLong at seal; a count past the bound refuses TooManyTracks; a
     //    hand-built body with a malformed track line refuses BadAlbumManifest at open.
     {
         var out: [max_album_manifest_bytes]u8 = undefined;
         const spaced = [_]render_album.TrackIn{.{ .name = "two words", .bundle = b0 }};
         if (seal_album_manifest(out[0..], spaced[0..])) |_| return error.SpaceSlipped else |e| if (e != error.NameTooLong) return error.WrongSpace;
 
-        // A hand-built body whose single track line is missing its digest — open must refuse BadAlbumManifest, not guess.
+        // A hand-built body whose single track line is missing its digest -- open must refuse BadAlbumManifest, not guess.
         const bad_body = "count 1\ntrack opener \n";
         var hand: [max_album_manifest_bytes]u8 = undefined;
         const fr = try seal.begin(hand[0..], header);
@@ -318,7 +318,7 @@ fn run_selftest() !u8 {
         if (open_album_manifest(hand[0..hn])) |_| return error.BadBodySlipped else |e| if (e != error.BadAlbumManifest) return error.WrongBadBody;
     }
 
-    // 5. THE ATOMIC LAW — a buffer too small for the sealed record refuses Overflow rather than truncating it.
+    // 5. THE ATOMIC LAW -- a buffer too small for the sealed record refuses Overflow rather than truncating it.
     {
         var tiny: [96]u8 = undefined; // room for the header and digest line, not the body's three track lines
         if (seal_album_manifest(tiny[0..], tracks[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;

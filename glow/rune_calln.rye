@@ -1,5 +1,5 @@
 //! glow-book: runes.md#g-calln
-//! glow/rune_calln.rye — parses Glow's `%*` named-argument call rune head.
+//! glow/rune_calln.rye -- parses Glow's `%*` named-argument call rune head.
 //!
 //! Per the sameness rune brief `%` category: `%*` calls a gate with named
 //! samples. Sixteenth rune head (STOA9). Thin one-line shape (exactly two

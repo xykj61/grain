@@ -1,25 +1,25 @@
-//! pond/apps/provenance_real.rye — GISM Journey 6 (Provenance), Rung 1.
+//! pond/apps/provenance_real.rye -- GISM Journey 6 (Provenance), Rung 1.
 //!
 //! Season 2, Yield: every module the tree built stands on real data, not a demo
-//! literal. BUHR Journey 7 built Tablecloth's owner-signed catalog — a settled
-//! Kumara identity presents its Deed, signs the exact publication (point · name ·
-//! length · a SHA-256 of the content), and only then may the store bead and name
-//! the bytes — yet every one of those proofs ran over a hand-written demo sentence
+//! literal. BUHR Journey 7 built Tablecloth's owner-signed catalog -- a settled
+//! Kumara identity presents its Deed, signs the exact publication (point - name -
+//! length - a SHA-256 of the content), and only then may the store bead and name
+//! the bytes -- yet every one of those proofs ran over a hand-written demo sentence
 //! (`doc_planet`, `doc_star`) tuned to sit inside the store. This rung carries the
 //! chain of custody onto a **real tree document**: a landed-edge waymark green-claim
-//! — genuine testimony of what actually landed at an edge — embedded at compile time
+//! -- genuine testimony of what actually landed at an edge -- embedded at compile time
 //! through a symlink (the @embedFile idiom GISM Journey 5 lived with; no network, no
 //! runtime filesystem, the same bytes a keeper reads).
 //!
 //! The chain of custody stands on real bytes: a settled planet identity signs the
 //! exact real content, `store_owned` beads and names it, `fetch_owned` returns
 //! exactly those bytes, `owner_of` resolves to the publishing point and `place_of`
-//! to its planet in the d12·d60 fractal. Every tamper along the chain refuses — a
+//! to its planet in the d12-d60 fractal. Every tamper along the chain refuses -- a
 //! flipped byte in the store (`DigestMismatch`), a forged signature (`BadSignature`),
 //! and a signature over other content (`BadSignature`, the real digest is bound in).
 //!
 //! The real bytes surface one Yield red (#73): a real front-door document
-//! (`SECURITY.md`, 2689 B) refuses `ContentTooLarge` — it does not fit one 512-byte
+//! (`SECURITY.md`, 2689 B) refuses `ContentTooLarge` -- it does not fit one 512-byte
 //! resin. Unlike red %72's block bound, the fix is not a one-line raise:
 //! `max_resin_bytes` cannot rise past `max_beads × max_bead_bytes` without breaking
 //! beading's invariant that a bead-index is itself a valid resin. So this round books
@@ -46,18 +46,18 @@ const settlement = @import("constellation.rye");
 
 const provenance_real_version = "20260812.185056";
 
-// The real artifact — a symlink to a living waymark green-claim, landed-edge
+// The real artifact -- a symlink to a living waymark green-claim, landed-edge
 // testimony a keeper can open and read. Compile-time embedding gives real bytes with
 // a demo's determinism: the same publication every build, no network.
 const real_doc = @embedFile("corpora/waymark_green.md");
 
-// A real front-door document that will NOT fit one resin — bound at compile time to
+// A real front-door document that will NOT fit one resin -- bound at compile time to
 // prove Yield red %73 on metal (a real document exceeds the 512-byte artifact bound).
 const big_doc = @embedFile("corpora/security.md");
 
 const sig_len: u32 = 64;
 
-// Demo keeper seeds — no real key, no custody. Mirrors tablecloth_keyed's selftest.
+// Demo keeper seeds -- no real key, no custody. Mirrors tablecloth_keyed's selftest.
 const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
@@ -86,7 +86,7 @@ const World = struct {
     planet: settlement.Deed,
 };
 
-/// Seat a demo galaxy → star → planet, so a settled planet identity may publish.
+/// Seat a demo galaxy -> star -> planet, so a settled planet identity may publish.
 fn seat_world() !World {
     const g_bind = tilak.make_bind(&g_key, &g_keeper);
     const s_bind = tilak.make_bind(&s_key, &s_keeper);
@@ -135,12 +135,12 @@ fn welcome_real_provenance() !void {
     // invariant: the real artifact is owned by the planet that signed it
     assert(owner == planet_num);
     const place = keyed.place_of(owner) orelse return error.NoPlace;
-    // invariant: the owner resolves to a planet in the d12·d60 fractal
+    // invariant: the owner resolves to a planet in the d12-d60 fractal
     assert(place.tier == .planet);
     print("provenance_real: real artifact — {d} bytes, owner {d} (planet), fetched byte-for-byte\n", .{ n, owner });
 }
 
-/// A flipped byte in the store refuses the fetch by digest — content-addressed
+/// A flipped byte in the store refuses the fetch by digest -- content-addressed
 /// storage makes tamper detection free for the chain of custody.
 fn unwelcome_store_tamper() !void {
     const w = try seat_world();
@@ -160,7 +160,7 @@ fn unwelcome_store_tamper() !void {
     print("provenance_real: store tamper refused (DigestMismatch)\n", .{});
 }
 
-/// A forged signature refuses before any byte is stored — the keeper never signed.
+/// A forged signature refuses before any byte is stored -- the keeper never signed.
 fn unwelcome_forged_signature() !void {
     const w = try seat_world();
     var store: beading.BeadStore = .empty();
@@ -178,7 +178,7 @@ fn unwelcome_forged_signature() !void {
     print("provenance_real: forged signature refused (BadSignature), nothing stored\n", .{});
 }
 
-/// A signature over other content refuses — the real digest is bound into the signed
+/// A signature over other content refuses -- the real digest is bound into the signed
 /// message, so a tampered artifact cannot ride a real signature.
 fn unwelcome_content_mismatch() !void {
     const w = try seat_world();
@@ -203,7 +203,7 @@ fn red_real_document_too_large() !void {
     const w = try seat_world();
     var store: beading.BeadStore = .empty();
     var kc: keyed.KeyedCatalog = .empty();
-    // invariant: the real front-door document genuinely exceeds one resin — the red is real
+    // invariant: the real front-door document genuinely exceeds one resin -- the red is real
     assert(big_doc.len > tablecloth.max_content_bytes);
     const sig = keyed.sign_publication(&p_keeper, planet_num, "security.md", big_doc);
     if (keyed.store_owned(&kc, &store, &w.con, &w.planet, "security.md", big_doc, &sig)) |_| {

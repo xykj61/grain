@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_fields_witness.rye — proves Glow FactFields parse surface.
+//! linengrow/glow_seva_b0_fields_witness.rye -- proves Glow FactFields parse surface.
 //!
 //!   rye build linengrow/glow_seva_b0_fields_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_fields_witness

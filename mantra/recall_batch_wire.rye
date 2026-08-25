@@ -1,4 +1,4 @@
-//! mantra/recall_batch_wire.rye — wire payloads for resin-batch sync (hosted lap 3w-4).
+//! mantra/recall_batch_wire.rye -- wire payloads for resin-batch sync (hosted lap 3w-4).
 //!
 //! Reuses sync request shape; response carries one sealed batch body (≤ max_wire_payload)
 //! or multiple chunk frames when the batch exceeds one datagram.

@@ -1,11 +1,11 @@
-//! glow/lower_switch.rye — lower a parsed `?-` subject to runnable `.rye`.
+//! glow/lower_switch.rye -- lower a parsed `?-` subject to runnable `.rye`.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
 //! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`. Arms are
 //! named faces (defaults minted/sent), decimal literals, nested
 //! `^-  @uN  <decimal>`, `(lent <face>)`, `(mix <face> <face>)`,
-//! `(jam <face> <face>)`, or `(cue <face>)` after `%mint` / `%send` — parsed
+//! `(jam <face> <face>)`, or `(cue <face>)` after `%mint` / `%send` -- parsed
 //! through `expr.rye`. Arm decimals, lengths, XOR, cell-pack, and cue-unpack
 //! results are payloads, not Hoon loobeans; exits are POSIX (0 success). See
 //! glow/truth_semantics.rye. Other parenthesized arm expressions refuse.

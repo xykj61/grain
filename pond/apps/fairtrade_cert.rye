@@ -1,8 +1,8 @@
-//! pond/apps/fairtrade_cert.rye — AYRE Journey 7 (Fair-trade), Rung 1: a certificate a record satisfies.
+//! pond/apps/fairtrade_cert.rye -- AYRE Journey 7 (Fair-trade), Rung 1: a certificate a record satisfies.
 //!
-//! Season 2, Yield — the harvest's second promise beyond *stands on real data*: trades
-//! fairly. A fair-trade certificate should mean exactly one honest thing — a set of
-//! criteria a cooperative record either satisfies in full or fails by name — never a badge
+//! Season 2, Yield -- the harvest's second promise beyond *stands on real data*: trades
+//! fairly. A fair-trade certificate should mean exactly one honest thing -- a set of
+//! criteria a cooperative record either satisfies in full or fails by name -- never a badge
 //! a seller prints. This rung fixes that meaning as the join it is: a declaration of what
 //! fair trade requires, evaluated against a record of what a cooperative actually holds, so
 //! certification can never claim a criterion the record does not meet.
@@ -12,10 +12,10 @@
 //! and refuses the whole evaluation when the store cannot serve a required artifact, this
 //! reads a `format fairtrade-cert-v1` certificate (one `require <criterion>` line per
 //! requirement) and refuses the whole certification (`Unsatisfied`) on the first criterion
-//! the cooperative record lacks — never certifying a gap. A malformed or empty certificate
+//! the cooperative record lacks -- never certifying a gap. A malformed or empty certificate
 //! refuses (`BadCertificate`).
 //!
-//! This rung is pure declaration-satisfaction: no signing, no books yet — the spine the
+//! This rung is pure declaration-satisfaction: no signing, no books yet -- the spine the
 //! later rungs wire real identity (r2, mirroring commerce_trade_signed) and a fair-value
 //! trade (r4, mirroring commerce_trade) into, known correct first. Facts only; no funds
 //! move, no key is held (custody gate %3 untouched). Demo attestations only.
@@ -31,14 +31,14 @@ const print = std.debug.print;
 
 pub const fairtrade_cert_version = "20260812.193727";
 
-/// A cooperative record holds at most this many named attestations — the criteria it can
+/// A cooperative record holds at most this many named attestations -- the criteria it can
 /// honestly claim. Bounded small: a record is a short roster of met criteria, not a corpus.
 pub const max_attestations: u32 = 16;
 
-/// A certificate declares at most this many required criteria — likewise a short roster.
+/// A certificate declares at most this many required criteria -- likewise a short roster.
 pub const max_criteria: u32 = 16;
 
-/// A criterion or attestation name honors this width — a short kebab token (`price-floor`,
+/// A criterion or attestation name honors this width -- a short kebab token (`price-floor`,
 /// `cooperative-member`), never a paragraph.
 pub const max_criterion_len: u32 = 48;
 
@@ -49,7 +49,7 @@ pub const CertError = error{
     NameTooLong, // a criterion name exceeds max_criterion_len
 };
 
-/// A cooperative record — the bounded set of criteria the cooperative honestly holds. It is
+/// A cooperative record -- the bounded set of criteria the cooperative honestly holds. It is
 /// the store side of the join, exactly as tablecloth_brix evaluates against a live catalog.
 // Invariant: count <= max_attestations; every held name honors max_criterion_len.
 pub const Record = struct {
@@ -89,7 +89,7 @@ pub const Record = struct {
     }
 };
 
-/// A satisfied certificate — the criteria a record met, in the order the certificate declared
+/// A satisfied certificate -- the criteria a record met, in the order the certificate declared
 /// them. It exists only when every required criterion was held, so its very existence is the
 /// proof; it never names a criterion the record lacked.
 // Invariant: count <= max_criteria; every named criterion honors max_criterion_len.
@@ -130,7 +130,7 @@ pub fn evaluate(cert_text: []const u8, record: *const Record) CertError!Certifie
         if (name.len > max_criterion_len) return error.NameTooLong;
 
         // The join: a declared criterion the record does not hold refuses the whole
-        // certification — never a certificate naming a criterion the cooperative lacks.
+        // certification -- never a certificate naming a criterion the cooperative lacks.
         if (!record.holds(name)) return error.Unsatisfied;
 
         const i = out.count;
@@ -150,7 +150,7 @@ pub fn evaluate(cert_text: []const u8, record: *const Record) CertError!Certifie
 
 fn seat_record() !Record {
     var r = Record.empty();
-    // A demo cooperative's honestly-held criteria — plainly demo tokens, no real cooperative.
+    // A demo cooperative's honestly-held criteria -- plainly demo tokens, no real cooperative.
     try r.attest("price-floor");
     try r.attest("cooperative-member");
     try r.attest("producer-signed");
@@ -171,7 +171,7 @@ fn run_fairtrade_cert_selftest() !u8 {
     assert(std.mem.eql(u8, certified.criterion(2), "producer-signed"));
 
     // Unwelcome: a certificate requiring a criterion the record does not hold refuses the
-    // whole certification — it never certifies a gap.
+    // whole certification -- it never certifies a gap.
     {
         const cert_gap = "format fairtrade-cert-v1\nrequire price-floor\nrequire living-wage\n";
         if (evaluate(cert_gap, &record)) |_| {
@@ -200,7 +200,7 @@ fn run_fairtrade_cert_selftest() !u8 {
         }
     }
 
-    // Unwelcome: a certificate declaring two names on one require line refuses — one
+    // Unwelcome: a certificate declaring two names on one require line refuses -- one
     // criterion per line, so no line certifies more than it says.
     {
         if (evaluate("format fairtrade-cert-v1\nrequire price-floor cooperative-member\n", &record)) |_| {

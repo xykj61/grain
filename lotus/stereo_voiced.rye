@@ -1,39 +1,39 @@
-//! lotus/stereo_voiced.rye — ALES146: the voiced/unvoiced/silent classifier carried into stereo, ONE SHARED BAND/FLOOR/SPLIT and TWO INDEPENDENT VERDICTS — the suite's second STEREO ANALYSIS rung. ALES94 named `voiced`:
-//! the first Lotus rung to FUSE two analysis readers into one verdict — ENERGY (ALES13's RMS) separates sound from silence, CROSSING RATE (ALES93's count read through the ALES92 band) separates the two kinds of sound above
-//! that floor. The rule, energy gate FIRST: rms < silence_floor → Silent; else crossings ≥ voice_split → Unvoiced; else → Voiced. The oldest decision in speech processing, answered from exactly two features. Where ALES145
+//! lotus/stereo_voiced.rye -- ALES146: the voiced/unvoiced/silent classifier carried into stereo, ONE SHARED BAND/FLOOR/SPLIT and TWO INDEPENDENT VERDICTS -- the suite's second STEREO ANALYSIS rung. ALES94 named `voiced`:
+//! the first Lotus rung to FUSE two analysis readers into one verdict -- ENERGY (ALES13's RMS) separates sound from silence, CROSSING RATE (ALES93's count read through the ALES92 band) separates the two kinds of sound above
+//! that floor. The rule, energy gate FIRST: rms < silence_floor -> Silent; else crossings ≥ voice_split -> Unvoiced; else -> Voiced. The oldest decision in speech processing, answered from exactly two features. Where ALES145
 //! carried the single crossing-count reader into stereo (two counters reading two channels), this rung carries the reader that FUSES two of them: two classifiers reading two channels, each returning a three-valued verdict,
 //! writing not one sample.
 //!
 //! A Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the classifier into stereo the plain way, mirroring the meter's own
 //! stereo shape (ALES17) and the stereo zero-cross (ALES145): run ALES94's proven mono classifier on each channel with the SAME band, floor, and split, so one setting reads BOTH speakers. Unlike ALES145's counter the
-//! classifier carries NO running state — a verdict is a pure function of one span — so this rung offers ONE form, `classify_stereo`, returning the pair, mirroring the stereo meter's whole-master `measure_stereo` rather than a
+//! classifier carries NO running state -- a verdict is a pure function of one span -- so this rung offers ONE form, `classify_stereo`, returning the pair, mirroring the stereo meter's whole-master `measure_stereo` rather than a
 //! carried counter.
 //!
-//! The honest signature of a stereo analysis rung: EACH channel is classified on its OWN two features — its own RMS energy, its own crossing count. So the two verdicts are INDEPENDENT: an identical-channel master (left = right)
-//! reads the SAME verdict on both, while a loud-periodic left over a quiet right reads VOICED left and SILENT right. The verdicts measure per-channel character, never a single shared label — a keeper reads left and right apart,
+//! The honest signature of a stereo analysis rung: EACH channel is classified on its OWN two features -- its own RMS energy, its own crossing count. So the two verdicts are INDEPENDENT: an identical-channel master (left = right)
+//! reads the SAME verdict on both, while a loud-periodic left over a quiet right reads VOICED left and SILENT right. The verdicts measure per-channel character, never a single shared label -- a keeper reads left and right apart,
 //! exactly as the stereo meter reads two levels and the stereo zero-cross reads two counts.
 //!
-//! The crux — the FUSION RULE carried up ONE LEVEL, in stereo. ALES94's crux is that `classify` invents no new measurement: its verdict equals a decision built BY HAND from ALES93's count_crossings and ALES13's RMS over the
+//! The crux -- the FUSION RULE carried up ONE LEVEL, in stereo. ALES94's crux is that `classify` invents no new measurement: its verdict equals a decision built BY HAND from ALES93's count_crossings and ALES13's RMS over the
 //! same span, so it can never drift from the two readers it composes. Carried into stereo, each channel's verdict equals ALES94's mono `classify` on that channel, so `classify_stereo` can never drift from the mono classifier,
-//! which itself cannot drift from its two readers. The fusion rule made stereo — and it is the whole reason this rung composes ALES94's `classify` per channel rather than re-reading energy and crossings a third way.
+//! which itself cannot drift from its two readers. The fusion rule made stereo -- and it is the whole reason this rung composes ALES94's `classify` per channel rather than re-reading energy and crossings a third way.
 //!
-//! The rule, stated once: the classifier READS only — the source StereoClip leaves byte for byte unchanged, both channels, and each verdict is a three-valued label over one span (NOT a phoneme or a transcript). It carries ONE
+//! The rule, stated once: the classifier READS only -- the source StereoClip leaves byte for byte unchanged, both channels, and each verdict is a three-valued label over one span (NOT a phoneme or a transcript). It carries ONE
 //! band, ONE floor, ONE split and names ALES94's own faults whole. The shared band and span are validated through ALES92's own `precheck` (BadThreshold on an illegal band, BadRange on a span outside the samples) and the floor
-//! against the peak ceiling (BadFloor) ONCE up front, because both channels are balanced, so a refusal never classifies one channel and returns a half answer. ClassifyError reused whole — the stereo lift adds no fault.
+//! against the peak ceiling (BadFloor) ONCE up front, because both channels are balanced, so a refusal never classifies one channel and returns a half answer. ClassifyError reused whole -- the stereo lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO FUSION LAW: each channel's verdict equals ALES94's mono `classify` on that channel with the same band, floor, and split. THE READ-ONLY / BALANCE LAW: the source StereoClip is byte for byte
+//! The crux -- four laws. THE STEREO FUSION LAW: each channel's verdict equals ALES94's mono `classify` on that channel with the same band, floor, and split. THE READ-ONLY / BALANCE LAW: the source StereoClip is byte for byte
 //! unchanged after classifying (both channels), and the two channels stay balanced (reading writes nothing). THE INDEPENDENT-VERDICT LAW: each channel is classified on its own features, so a loud-periodic left over a quiet
 //! right reads voiced / silent, an identical master reads equal verdicts, and the energy gate reads first on each (a quiet many-crossing channel reads silent, never unvoiced). THE ATOMICITY / DEGENERATE LAW: a shared illegal
 //! floor (BadFloor), inverted band (BadThreshold), or out-of-range span (BadRange) refuses before either channel is classified, the clip untouched; the floor-zero convention holds on both (floor 0 disables silence, an all-zero
 //! span reads voiced).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES146.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES146.
 //! Design read: active-designing/date/20260815/20260815-045940_fill-ales146-lotus-stereo-voiced.md
-//! Stands on: lotus/voiced.rye (ALES94) — the mono voiced/unvoiced/silent classifier run once per channel, its `classify`, its `Verdict`, and its `ClassifyError`, all reused whole; lotus/schmitt.rye (ALES92) — the band's
-//! own `precheck` (so the band-and-span law and named errors are the classifier's own); lotus/meter.rye (ALES13) — `sample_peak_max`, the floor ceiling; lotus/stereo_zero_cross.rye (ALES145) — the stereo analysis shape this
-//! mirrors (one shared setting, per-channel independence); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples.
+//! Stands on: lotus/voiced.rye (ALES94) -- the mono voiced/unvoiced/silent classifier run once per channel, its `classify`, its `Verdict`, and its `ClassifyError`, all reused whole; lotus/schmitt.rye (ALES92) -- the band's
+//! own `precheck` (so the band-and-span law and named errors are the classifier's own); lotus/meter.rye (ALES13) -- `sample_peak_max`, the floor ceiling; lotus/stereo_zero_cross.rye (ALES145) -- the stereo analysis shape this
+//! mirrors (one shared setting, per-channel independence); lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/, NEVER mutated by this rung. Each verdict is a three-valued label over one span per
+//! HONEST SCOPE -- software only, purely LOCAL, and READ-ONLY. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/, NEVER mutated by this rung. Each verdict is a three-valued label over one span per
 //! channel, NOT a phoneme or a transcript; the voiced/unvoiced names follow the classic speech convention over exactly two features and claim nothing about a real speaker. No adaptive floor, no time windowing, no real sample
 //! rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -51,20 +51,20 @@ const voiced = @import("voiced.rye");
 
 pub const stereo_voiced_version = "20260815.045940";
 
-/// Stereo voiced's faults are exactly ALES94's own `ClassifyError` — the two readers' band-and-span faults (BadThreshold, BadRange), their accumulation bounds (CountFull, MeterFull, which cannot fire on a single span), and
-/// BadFloor — reused by name, since the stereo lift adds no new fault: it only runs the same classifier on each channel after one shared validation.
+/// Stereo voiced's faults are exactly ALES94's own `ClassifyError` -- the two readers' band-and-span faults (BadThreshold, BadRange), their accumulation bounds (CountFull, MeterFull, which cannot fire on a single span), and
+/// BadFloor -- reused by name, since the stereo lift adds no new fault: it only runs the same classifier on each channel after one shared validation.
 pub const StereoClassifyError = voiced.ClassifyError;
 
-/// A per-channel pair of classifications, returned by `classify_stereo` — the left and right speaker's verdicts read apart, never a single shared label.
+/// A per-channel pair of classifications, returned by `classify_stereo` -- the left and right speaker's verdicts read apart, never a single shared label.
 pub const StereoVerdict = struct {
-    /// The left channel's verdict — silent, voiced, or unvoiced.
+    /// The left channel's verdict -- silent, voiced, or unvoiced.
     left: voiced.Verdict,
-    /// The right channel's verdict — read apart from the left, so a keeper sees per-channel character.
+    /// The right channel's verdict -- read apart from the left, so a keeper sees per-channel character.
     right: voiced.Verdict,
 };
 
 /// Classify `count` samples starting at `start` in BOTH channels of `sc` as silent, voiced, or unvoiced, reading each channel's RMS energy and crossing count over the SAME span through ONE shared band `[t_low, t_high]`, floor,
-/// and split, then fusing them by ALES94's one rule per channel: below `silence_floor` is silent; at or above `voice_split` crossings is unvoiced; otherwise voiced. The energy gate is read FIRST on each channel. READ-ONLY —
+/// and split, then fusing them by ALES94's one rule per channel: below `silence_floor` is silent; at or above `voice_split` crossings is unvoiced; otherwise voiced. The energy gate is read FIRST on each channel. READ-ONLY --
 /// not one sample is written on either speaker. Validates the shared band and span through ALES92's own `precheck` (BadThreshold on an illegal band, BadRange on a span outside the samples) and the floor against the peak
 /// ceiling (BadFloor) ONCE up front, before either channel is read; because both channels are balanced one validation covers both, so a refusal never classifies one channel and returns a half answer.
 pub fn classify_stereo(
@@ -76,27 +76,27 @@ pub fn classify_stereo(
     silence_floor: u32,
     voice_split: u32,
 ) StereoClassifyError!StereoVerdict {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, so one shared validation is honest for both.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, so one shared validation is honest for both.
     assert(sc.left.len == sc.right.len);
 
-    // Validate once up front against the shared length, band, and floor, so a refusal classifies NEITHER channel — the atomicity the pair form owes. This mirrors ALES94's own prechecks exactly, in the same order (band/span
+    // Validate once up front against the shared length, band, and floor, so a refusal classifies NEITHER channel -- the atomicity the pair form owes. This mirrors ALES94's own prechecks exactly, in the same order (band/span
     // first, then floor), so the stereo classifier can never validate differently than the mono classifier it composes.
     try schmitt.precheck(sc.left.len, start, count, t_low, t_high);
-    // invariant: a floor no RMS could ever reach would make every span silent — refuse it rather than answer meaninglessly. A floor of 0 is legal (it disables the silence verdict), so the ceiling is the only illegal floor.
+    // invariant: a floor no RMS could ever reach would make every span silent -- refuse it rather than answer meaninglessly. A floor of 0 is legal (it disables the silence verdict), so the ceiling is the only illegal floor.
     if (silence_floor > meter.sample_peak_max) return error.BadFloor;
 
-    // Pre-validated to succeed on both — each channel is classified through ALES94's own `classify` over the matching channel with the shared setting. Read-only: classify writes no sample.
+    // Pre-validated to succeed on both -- each channel is classified through ALES94's own `classify` over the matching channel with the shared setting. Read-only: classify writes no sample.
     const left = try voiced.classify(&sc.left, start, count, t_low, t_high, silence_floor, voice_split);
     const right = try voiced.classify(&sc.right, start, count, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: the channels stay balanced — classifying changed no length.
+    // invariant: the channels stay balanced -- classifying changed no length.
     assert(sc.left.len == sc.right.len);
     return .{ .left = left, .right = right };
 }
 
-// --- selftest: THE STEREO FUSION LAW — each channel's verdict equals ALES94's mono classify on that channel with the same band, floor, and split; THE READ-ONLY / BALANCE LAW — the source StereoClip byte for byte unchanged
-//     after classifying, both channels, the pair balanced; THE INDEPENDENT-VERDICT LAW — a loud-periodic left over a quiet right reading voiced / silent, an identical master reading equal verdicts on both, the energy gate
-//     read first per channel; THE ATOMICITY / DEGENERATE LAW — a shared BadFloor / BadThreshold / BadRange refusing before either channel is classified with the clip untouched, the floor-zero convention holding on both -----
+// --- selftest: THE STEREO FUSION LAW -- each channel's verdict equals ALES94's mono classify on that channel with the same band, floor, and split; THE READ-ONLY / BALANCE LAW -- the source StereoClip byte for byte unchanged
+//     after classifying, both channels, the pair balanced; THE INDEPENDENT-VERDICT LAW -- a loud-periodic left over a quiet right reading voiced / silent, an identical master reading equal verdicts on both, the energy gate
+//     read first per channel; THE ATOMICITY / DEGENERATE LAW -- a shared BadFloor / BadThreshold / BadRange refusing before either channel is classified with the clip untouched, the floor-zero convention holding on both -----
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // 1. THE STEREO FUSION LAW — each channel's verdict equals ALES94's mono classify on that channel with the same band, floor, and split, proven side by side over one span with different per-channel samples across several
-    //    floors and splits. The verdict on each speaker is exactly ALES94's, read twice with one shared setting — so the stereo classifier can never drift from the mono classifier, which cannot drift from its two readers.
+    // 1. THE STEREO FUSION LAW -- each channel's verdict equals ALES94's mono classify on that channel with the same band, floor, and split, proven side by side over one span with different per-channel samples across several
+    //    floors and splits. The verdict on each speaker is exactly ALES94's, read twice with one shared setting -- so the stereo classifier can never drift from the mono classifier, which cannot drift from its two readers.
     {
         const li = [_]i16{ 20000, 20000, 20000, 20000, -20000, -20000, -20000, -20000, 60, -60, 8000, -8000 }; // a strong low-crossing run then a little chatter
         const ri = [_]i16{ 15000, -15000, 15000, -15000, 15000, -15000, 40, -40, 25000, -25000, 25000, -25000 }; // a strong high-crossing run
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE READ-ONLY / BALANCE LAW — the source StereoClip is byte for byte UNCHANGED after classifying (not one sample written on either speaker), and the two channels stay equal length.
+    // 2. THE READ-ONLY / BALANCE LAW -- the source StereoClip is byte for byte UNCHANGED after classifying (not one sample written on either speaker), and the two channels stay equal length.
     {
         const li = [_]i16{ 111, 20000, -20000, 222, 50, -50, 333 };
         const ri = [_]i16{ -111, 950, -950, -222, 1600, -1600, -333 };
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.Unbalanced;
     }
 
-    // 3a. THE INDEPENDENT-VERDICT LAW, a LOUD-PERIODIC left over a QUIET right reads VOICED / SILENT — the two channels carry different character and are classified apart, never a single shared label.
+    // 3a. THE INDEPENDENT-VERDICT LAW, a LOUD-PERIODIC left over a QUIET right reads VOICED / SILENT -- the two channels carry different character and are classified apart, never a single shared label.
     {
         const loud = [_]i16{ 20000, 20000, 20000, 20000, -20000, -20000, -20000, -20000 }; // large RMS, one crossing → voiced
         const quiet = [_]i16{ 40, -40, 40, -40, 40, -40, 40, -40 }; // rms ≈ 40 below the floor, many crossings → silent (energy gate first)
@@ -165,7 +165,7 @@ fn run_selftest() !u8 {
         if (pair.right != .silent) return error.QuietRightNotSilent;
     }
 
-    // 3b. THE INDEPENDENT-VERDICT LAW, an IDENTICAL-CHANNEL master reads EQUAL verdicts on both — a shared setting on equal inputs classifies the same on each (a mono-in-stereo signal reads once). Use a loud noisy signal
+    // 3b. THE INDEPENDENT-VERDICT LAW, an IDENTICAL-CHANNEL master reads EQUAL verdicts on both -- a shared setting on equal inputs classifies the same on each (a mono-in-stereo signal reads once). Use a loud noisy signal
     //     so the shared verdict is unvoiced on both.
     {
         const s = [_]i16{ 20000, -20000, 20000, -20000, 20000, -20000, 20000, -20000 }; // large RMS, many crossings → unvoiced
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         if (pair.left != .unvoiced) return error.IdenticalVerdictWrong;
     }
 
-    // 3c. THE ENERGY GATE READS FIRST per channel — a quiet MANY-crossing channel reads SILENT, not unvoiced, even with the split set low enough that the crossing rate alone would say unvoiced. Proven on both speakers at
+    // 3c. THE ENERGY GATE READS FIRST per channel -- a quiet MANY-crossing channel reads SILENT, not unvoiced, even with the split set low enough that the crossing rate alone would say unvoiced. Proven on both speakers at
     //     once so the ordering invariant carries per channel.
     {
         const quiet_noisy = [_]i16{ 40, -40, 40, -40, 40, -40 }; // many crossings, rms ≈ 40 under the floor
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &li) or !eq(sc.right.samples(), &ri)) return error.BadRangeMutatedClip;
     }
 
-    // 4d. THE FLOOR-ZERO CONVENTION on both — with silence_floor 0, an all-zero span (rms 0, zero crossings) classifies VOICED on both (the low-crossing branch), NOT silent (rms < 0 is never true). The deliberate degenerate,
+    // 4d. THE FLOOR-ZERO CONVENTION on both -- with silence_floor 0, an all-zero span (rms 0, zero crossings) classifies VOICED on both (the low-crossing branch), NOT silent (rms < 0 is never true). The deliberate degenerate,
     //     carried per channel.
     {
         const z = [_]i16{ 0, 0, 0, 0, 0, 0 };
@@ -227,7 +227,7 @@ fn run_selftest() !u8 {
         if (pair.left != .voiced or pair.right != .voiced) return error.FloorZeroNotVoiced;
     }
 
-    // 4e. THE SPAN DISCIPLINE — classifying a sub-span reads only [start, count) on each channel and leaves the whole clip byte for byte unchanged. Put loud noisy samples OUTSIDE the span and a quiet run INSIDE it; both
+    // 4e. THE SPAN DISCIPLINE -- classifying a sub-span reads only [start, count) on each channel and leaves the whole clip byte for byte unchanged. Put loud noisy samples OUTSIDE the span and a quiet run INSIDE it; both
     //     verdicts must be silent from the inner samples alone, proving the outer loud samples were not read into either channel's features.
     {
         const li = [_]i16{ 30000, -30000, 40, -40, 40, -40, 30000, -30000 }; // indices 2..5 are the quiet inner span

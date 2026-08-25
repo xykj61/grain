@@ -1,23 +1,23 @@
-//! lotus/album_diff.rye — ALES232: what changed between two record versions. ALES231 let a keeper reach into one record by track name;
-//! yet a record grows and changes — a keeper remasters a track, drops a rough take, adds a bonus cut, and reseals the album the same
+//! lotus/album_diff.rye -- ALES232: what changed between two record versions. ALES231 let a keeper reach into one record by track name;
+//! yet a record grows and changes -- a keeper remasters a track, drops a rough take, adds a bonus cut, and reseals the album the same
 //! evening, and the honest question the next morning is what changed in this record since the last master. ALES229 answered exactly
 //! that one level up, for a catalog of records; this rung answers it one level down, for a record of tracks: a bounded classification
-//! of two opened album manifests, a BEFORE and an AFTER, into three verdicts — added, removed, changed — every other track unchanged.
+//! of two opened album manifests, a BEFORE and an AFTER, into three verdicts -- added, removed, changed -- every other track unchanged.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES232.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES232.
 //! Design read: active-designing/date/20260815/20260815-144541_fill-ales232-lotus-album-diff.md
-//! Stands on: lotus/album_find.rye (ALES231) — the find / digest_of resolve this composes on; lotus/album_manifest.rye (ALES224) — the
+//! Stands on: lotus/album_find.rye (ALES231) -- the find / digest_of resolve this composes on; lotus/album_manifest.rye (ALES224) -- the
 //! two opened AlbumManifest values this compares. The album level's own second-order primitive, standing ON album_find rather than
-//! beside it — the shape the level grows in, mirroring library_diff (ALES229). No new hash, no new frame.
+//! beside it -- the shape the level grows in, mirroring library_diff (ALES229). No new hash, no new frame.
 //!
-//! THE CRUX — a diff composes on the resolve, it does not re-walk from scratch. Each classification is a find into the other record:
-//! name present or absent, digest same or different. The digest IS the whole comparison — content-addressing already proved two
+//! THE CRUX -- a diff composes on the resolve, it does not re-walk from scratch. Each classification is a find into the other record:
+//! name present or absent, digest same or different. The digest IS the whole comparison -- content-addressing already proved two
 //! matching digests mean identical bundle bytes and two differing digests mean the track moved, so a diff needs no byte compare and no
 //! new hash, only the handles the manifests already carry.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded classification over in-process fields already proven whole by
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded classification over in-process fields already proven whole by
 //! open_album_manifest, siloed to lotus/. Content-addressing on every handle it reports, never a signature: it names what moved, not
-//! who made it — the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact,
+//! who made it -- the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact,
 //! no network, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/album_diff.rye selftest
@@ -32,7 +32,7 @@ const render_album = @import("render_album.rye");
 
 pub const album_diff_version = "20260815.144541";
 
-/// One track present in BOTH records whose content-address digest moved — the same track slot, remastered. Both digests are slices
+/// One track present in BOTH records whose content-address digest moved -- the same track slot, remastered. Both digests are slices
 /// into their respective opened manifest bodies.
 pub const Change = struct {
     name: []const u8,
@@ -41,7 +41,7 @@ pub const Change = struct {
 };
 
 /// The whole verdict of comparing a before-record to an after-record. Every list is bounded by the manifest's own track ceiling, so
-/// the classification can never overflow and always terminates. `same_count` counts tracks present in both with an identical digest —
+/// the classification can never overflow and always terminates. `same_count` counts tracks present in both with an identical digest --
 /// they need no line, only a tally.
 pub const Diff = struct {
     added: [album_manifest.max_tracks]album_manifest.Entry = undefined,
@@ -55,10 +55,10 @@ pub const Diff = struct {
 
 /// Classify every track of `before` and `after` into added / removed / changed / same. For each track in `after`, find it in
 /// `before`: absent means added, present-with-a-different-digest means changed, present-and-equal means counted same. For each track
-/// in `before`, absent from `after` means removed. One ordered pass over each record — both bounded on open, so the walk is total and
+/// in `before`, absent from `after` means removed. One ordered pass over each record -- both bounded on open, so the walk is total and
 /// the verdict infallible.
 pub fn classify(before: *const album_manifest.AlbumManifest, after: *const album_manifest.AlbumManifest) Diff {
-    // invariant: neither record names more tracks than the shared bound — open_album_manifest already proved it, re-asserted here.
+    // invariant: neither record names more tracks than the shared bound -- open_album_manifest already proved it, re-asserted here.
     assert(before.count <= album_manifest.max_tracks and after.count <= album_manifest.max_tracks);
     var d: Diff = .{};
 
@@ -67,7 +67,7 @@ pub fn classify(before: *const album_manifest.AlbumManifest, after: *const album
     while (i < after.count) : (i += 1) {
         const a = after.entries[i];
         if (album_find.find(before, a.name)) |bi| {
-            // present in both — same digest is unchanged, a different digest is a remaster.
+            // present in both -- same digest is unchanged, a different digest is a remaster.
             if (std.mem.eql(u8, album_find.digest_of(before, bi), a.digest)) {
                 d.same_count += 1;
             } else {
@@ -80,7 +80,7 @@ pub fn classify(before: *const album_manifest.AlbumManifest, after: *const album
         }
     }
 
-    // Removed: walk the before against the after — a track the after no longer holds.
+    // Removed: walk the before against the after -- a track the after no longer holds.
     var j: u32 = 0;
     while (j < before.count) : (j += 1) {
         const b = before.entries[j];
@@ -90,22 +90,22 @@ pub fn classify(before: *const album_manifest.AlbumManifest, after: *const album
         }
     }
 
-    // invariant: every after-track landed in exactly one of added / changed / same — the three tallies account for the whole after.
+    // invariant: every after-track landed in exactly one of added / changed / same -- the three tallies account for the whole after.
     assert(d.added_count + d.changed_count + d.same_count == after.count);
-    // invariant: no list overflowed its bound — each is at most one record's worth of tracks.
+    // invariant: no list overflowed its bound -- each is at most one record's worth of tracks.
     assert(d.added_count <= after.count and d.removed_count <= before.count and d.changed_count <= after.count);
     return d;
 }
 
-// --- selftest: THE ADDED LAW — an after-only track appears once as added with its digest; THE REMOVED LAW — a before-only track
-//     appears once as removed with its digest; THE CHANGED LAW — a name in both with a moved digest appears once as changed carrying
-//     both digests, an unchanged name appears in no list and is counted same; THE IDENTITY LAW — a record against itself yields all
+// --- selftest: THE ADDED LAW -- an after-only track appears once as added with its digest; THE REMOVED LAW -- a before-only track
+//     appears once as removed with its digest; THE CHANGED LAW -- a name in both with a moved digest appears once as changed carrying
+//     both digests, an unchanged name appears in no list and is counted same; THE IDENTITY LAW -- a record against itself yields all
 //     zeros and same_count equal to the track count ---------------------------------------------------------------------------------
 
-/// Seal a small album manifest over stand-in bundles into `out`, returning its length — the content address a keeper holds for a
+/// Seal a small album manifest over stand-in bundles into `out`, returning its length -- the content address a keeper holds for a
 /// whole record. Any bytes serve as a bundle here; the manifest addresses their OUTPUT bytes.
 fn make_album(out: []u8, names: []const []const u8, bundles: []const []const u8) !u32 {
-    // invariant: a witness helper builds a small, well-formed record — the two arrays run in lockstep.
+    // invariant: a witness helper builds a small, well-formed record -- the two arrays run in lockstep.
     assert(names.len == bundles.len);
     var tracks: [8]render_album.TrackIn = undefined;
     var i: u32 = 0;
@@ -114,14 +114,14 @@ fn make_album(out: []u8, names: []const []const u8, bundles: []const []const u8)
 }
 
 fn run_selftest() !u8 {
-    // Stand-in bundle bytes. b1b shares b1's track NAME ("verse") but different bytes — a remaster, so a changed verdict.
+    // Stand-in bundle bytes. b1b shares b1's track NAME ("verse") but different bytes -- a remaster, so a changed verdict.
     const b0 = "LOTUSBND....first bundle bytes....\x01\x02\x03";
     const b1 = "LOTUSBND....second bundle bytes...\x04\x05\x06";
     const b1b = "LOTUSBND....second bundle REMASTER\x04\x05\x07";
     const b2 = "LOTUSBND....third bundle bytes....\x07\x08\x09";
 
-    // before: {intro, verse}. after: {intro (same), verse (remastered → changed), bridge (new → added)}. intro same; verse changed;
-    // bridge added; nothing removed here — a removal is proven in its own block below.
+    // before: {intro, verse}. after: {intro (same), verse (remastered -> changed), bridge (new -> added)}. intro same; verse changed;
+    // bridge added; nothing removed here -- a removal is proven in its own block below.
     var before_rec: [album_manifest.max_album_manifest_bytes]u8 = undefined;
     var after_rec: [album_manifest.max_album_manifest_bytes]u8 = undefined;
     const bn = try make_album(before_rec[0..], &.{ "intro", "verse" }, &.{ b0, b1 });
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
     const before = try album_manifest.open_album_manifest(before_rec[0..bn]);
     const after = try album_manifest.open_album_manifest(after_rec[0..an]);
 
-    // 1. THE ADDED & CHANGED LAWS — bridge added once with its digest; verse changed once carrying old and new; intro unchanged,
+    // 1. THE ADDED & CHANGED LAWS -- bridge added once with its digest; verse changed once carrying old and new; intro unchanged,
     //    counted same and in no list.
     {
         const d = classify(&before, &after);
@@ -147,7 +147,7 @@ fn run_selftest() !u8 {
         if (d.removed_count != 0) return error.RemovedLeaked;
     }
 
-    // 2. THE REMOVED LAW — retire verse: after holds only {intro}. verse appears once as removed, with its before-digest.
+    // 2. THE REMOVED LAW -- retire verse: after holds only {intro}. verse appears once as removed, with its before-digest.
     {
         var small_rec: [album_manifest.max_album_manifest_bytes]u8 = undefined;
         const sn = try make_album(small_rec[0..], &.{"intro"}, &.{b0});
@@ -160,7 +160,7 @@ fn run_selftest() !u8 {
         if (d.same_count != 1) return error.RemovedSameWrong; // intro still same
     }
 
-    // 3. THE IDENTITY LAW — a record diffed against itself: nothing added, removed, or changed; same_count is the track count.
+    // 3. THE IDENTITY LAW -- a record diffed against itself: nothing added, removed, or changed; same_count is the track count.
     {
         const d = classify(&before, &before);
         if (d.added_count != 0 or d.removed_count != 0 or d.changed_count != 0) return error.IdentityMoved;

@@ -1,37 +1,37 @@
-//! crypto/aead.rye — Season G (Cryptography), the fifth rung: the ChaCha20-Poly1305 AEAD (RFC 8439 §2.8) assembled in pure Rye from the
+//! crypto/aead.rye -- Season G (Cryptography), the fifth rung: the ChaCha20-Poly1305 AEAD (RFC 8439 §2.8) assembled in pure Rye from the
 //! two GREEN halves. This is the composition the decision wave named as the crux after the stream cipher and the authenticator each stood
 //! alone: ChaCha20 gives confidentiality, Poly1305 gives the one-time tag that proves the ciphertext and its associated data arrived
-//! exactly as sent, and this file binds them into Monocypher's authenticated-encryption construction — the primitive Lotus's signed carry,
+//! exactly as sent, and this file binds them into Monocypher's authenticated-encryption construction -- the primitive Lotus's signed carry,
 //! Vault, Comlink, and every module that must seal a record will reach for. It adds no new field math (the curve, edwards25519, still wants
 //! its own design round); it is the tractable, highest-Lindy move that turns two proven stones into one usable seal.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the ChaCha/Poly line and
 //! the ChaCha20-Poly1305 AEAD as the composition that unblocks the Lotus signed carry) and active-designing/20260815-180728_open-season-g-
 //! crypto-blake2b.md (the season's opening read).
-//! Kin: crypto/chacha20.rye · crypto/poly1305.rye (the two halves this composes, GREEN on metal) · crypto/blake2b.rye · crypto/sha512.rye.
-//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from
+//! Kin: crypto/chacha20.rye - crypto/poly1305.rye (the two halves this composes, GREEN on metal) - crypto/blake2b.rye - crypto/sha512.rye.
+//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from
 //! the public RFC and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — the RFC 8439 §2.8 construction, step for step. First a one-time Poly1305 key is grown from the cipher itself: ChaCha20 with
+//! THE CRUX -- the RFC 8439 §2.8 construction, step for step. First a one-time Poly1305 key is grown from the cipher itself: ChaCha20 with
 //! block counter 0 over the key and nonce yields a 64-byte block whose first 32 bytes are the one-time key (otk). The plaintext is then
 //! enciphered with ChaCha20 starting at block counter 1 (counter 0 is spent on the otk). The tag authenticates a MAC message built as
 //! aad ‖ pad16(aad) ‖ ciphertext ‖ pad16(ciphertext) ‖ le64(aad_len) ‖ le64(cipher_len), where pad16(x) is the zero bytes that round x up
-//! to a 16-byte boundary — so the MAC message is always a whole number of 16-byte blocks, and the AEAD feeds Poly1305 block by block over
+//! to a 16-byte boundary -- so the MAC message is always a whole number of 16-byte blocks, and the AEAD feeds Poly1305 block by block over
 //! its already-padded regions rather than materializing the concatenation. Opening reverses it: recompute the tag over the received
 //! ciphertext and aad, compare it against the received tag in constant time, and only on a match decipher. A single altered byte anywhere
-//! — ciphertext, aad, nonce, or tag — changes the recomputed tag and the open refuses. Nothing here is a claim about a device; it is
+//! -- ciphertext, aad, nonce, or tag -- changes the recomputed tag and the open refuses. Nothing here is a claim about a device; it is
 //! arithmetic anyone can replay against RFC 8439.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. The key and nonce are the RFC's own
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. The key and nonce are the RFC's own
 //! public test vectors, never a real secret; the AEAD holds no long-lived key and signs nothing (an AEAD tag authenticates a message under
-//! a shared key — it does not sign with an identity, which is Ed25519's separate, gated round). It calls no std.crypto; it composes our own
-//! two primitives. Parity is proven at selftest against two references runnable now — the RFC 8439 §2.8.2 known-answer (the ciphertext and
+//! a shared key -- it does not sign with an identity, which is Ed25519's separate, gated round). It calls no std.crypto; it composes our own
+//! two primitives. Parity is proven at selftest against two references runnable now -- the RFC 8439 §2.8.2 known-answer (the ciphertext and
 //! tag for the RFC's own plaintext, aad, key, and nonce, hex for hex), and Zig's own std.crypto ChaCha20Poly1305 as an independent
 //! implementation, byte-for-byte on both ciphertext and tag across the empty message, a sub-block input, exact-block boundaries, a
 //! multi-block input, and several associated-data lengths including none. A round-trip opens back to the plaintext, and a tampered tag,
-//! ciphertext, aad, and nonce each make the open refuse. Monocypher passes the same RFC vector — its vendored source is a held network
-//! fetch — so Monocypher-source parity is an honest HORIZON rung, added later without changing a byte. Constant-time timing-safety is a
+//! ciphertext, aad, and nonce each make the open refuse. Monocypher passes the same RFC vector -- its vendored source is a held network
+//! fetch -- so Monocypher-source parity is an honest HORIZON rung, added later without changing a byte. Constant-time timing-safety is a
 //! separate named horizon: the cipher and the limb schedule are data-independent by construction and the tag compare accumulates a
 //! difference without branching on it, yet a timing claim wants measurement, not a boast, so it stays a horizon.
 //!
@@ -62,18 +62,18 @@ pub const max_aad_bytes: u32 = 1 << 10;
 /// The faults this AEAD can raise. Every fault is refused before it could mislead: a size fault before any byte is enciphered, an
 /// authentication fault before a single plaintext byte is revealed on open.
 pub const AeadError = error{
-    /// A plaintext or ciphertext longer than max_message_bytes — refused at the edge.
+    /// A plaintext or ciphertext longer than max_message_bytes -- refused at the edge.
     MessageTooLong,
-    /// Associated data longer than max_aad_bytes — refused at the edge.
+    /// Associated data longer than max_aad_bytes -- refused at the edge.
     AadTooLong,
-    /// Ciphertext and plaintext slices of unequal length — an AEAD writes exactly as many bytes as it reads.
+    /// Ciphertext and plaintext slices of unequal length -- an AEAD writes exactly as many bytes as it reads.
     LengthMismatch,
-    /// The recomputed tag did not match the received tag — the message was altered or the key/nonce/aad differ. No plaintext is revealed.
+    /// The recomputed tag did not match the received tag -- the message was altered or the key/nonce/aad differ. No plaintext is revealed.
     AuthFailed,
 };
 
 /// Grow the one-time Poly1305 key from the cipher (RFC 8439 §2.6): ChaCha20 block counter 0 over the key and nonce, first 32 bytes. The
-/// otk is used for exactly one message — the tag half's one-time-key rule — and is derived fresh from the nonce on every call.
+/// otk is used for exactly one message -- the tag half's one-time-key rule -- and is derived fresh from the nonce on every call.
 fn poly_key_gen(key: *const [key_bytes]u8, nonce: *const [nonce_bytes]u8) [poly1305.key_bytes]u8 {
     const ks = chacha20.block(key, 0, nonce);
     // invariant: the keystream block is at least as large as the one-time key we cut from its front.
@@ -85,7 +85,7 @@ fn poly_key_gen(key: *const [key_bytes]u8, nonce: *const [nonce_bytes]u8) [poly1
 }
 
 /// Feed one region (aad or ciphertext) into the running Poly1305 state as whole 16-byte blocks, padding a final partial block with zeros
-/// (RFC 8439 §2.8's pad16). Every block is absorbed as a full block — the AEAD's MAC message is a whole number of 16-byte blocks by
+/// (RFC 8439 §2.8's pad16). Every block is absorbed as a full block -- the AEAD's MAC message is a whole number of 16-byte blocks by
 /// construction, so no 0x01 length marker is ever used here. Bounded: the region fits max_message_bytes, so the block count is bounded.
 fn mac_region(st: *poly1305.State, region: []const u8) void {
     // invariant: a region is at most a whole message, so its block loop is bounded by the named ceiling.
@@ -97,7 +97,7 @@ fn mac_region(st: *poly1305.State, region: []const u8) void {
     }
     if (offset < total) {
         const rem = total - offset;
-        // invariant: the remainder is a strict partial block — a full block would have been taken above.
+        // invariant: the remainder is a strict partial block -- a full block would have been taken above.
         assert(rem < mac_block_bytes);
         var buf = [_]u8{0} ** mac_block_bytes;
         var i: u32 = 0;
@@ -133,7 +133,7 @@ fn tags_equal(a: *const [tag_bytes]u8, b: *const [tag_bytes]u8) bool {
 }
 
 /// Seal: encipher plaintext and authenticate it together with the associated data (RFC 8439 §2.8). Writes the ciphertext (same length as
-/// the plaintext) and the 16-byte tag. The nonce must be unique per key — reusing a nonce breaks both the cipher and the one-time tag.
+/// the plaintext) and the 16-byte tag. The nonce must be unique per key -- reusing a nonce breaks both the cipher and the one-time tag.
 pub fn seal(cipher: []u8, tag: *[tag_bytes]u8, plain: []const u8, aad: []const u8, key: *const [key_bytes]u8, nonce: *const [nonce_bytes]u8) AeadError!void {
     // invariant: an AEAD writes exactly as many ciphertext bytes as plaintext bytes.
     if (cipher.len != plain.len) return error.LengthMismatch;
@@ -148,7 +148,7 @@ pub fn seal(cipher: []u8, tag: *[tag_bytes]u8, plain: []const u8, aad: []const u
 }
 
 /// Open: verify the tag over the received ciphertext and associated data, and only on a match decipher into plain (RFC 8439 §2.8). On any
-/// authentication failure it returns AuthFailed without writing a plaintext byte — a forged or altered message reveals nothing.
+/// authentication failure it returns AuthFailed without writing a plaintext byte -- a forged or altered message reveals nothing.
 pub fn open(plain: []u8, cipher: []const u8, tag: *const [tag_bytes]u8, aad: []const u8, key: *const [key_bytes]u8, nonce: *const [nonce_bytes]u8) AeadError!void {
     // invariant: an AEAD writes exactly as many plaintext bytes as ciphertext bytes.
     if (plain.len != cipher.len) return error.LengthMismatch;
@@ -168,7 +168,7 @@ pub fn open(plain: []u8, cipher: []const u8, tag: *const [tag_bytes]u8, aad: []c
 const max_hex_input: u32 = 256;
 fn to_hex(bytes: []const u8, out: *[max_hex_input * 2]u8) u32 {
     const alphabet = "0123456789abcdef";
-    // invariant: the input fits the hex buffer — two hex characters per byte.
+    // invariant: the input fits the hex buffer -- two hex characters per byte.
     assert(bytes.len <= max_hex_input);
     var i: u32 = 0;
     while (i < bytes.len) : (i += 1) {
@@ -178,7 +178,7 @@ fn to_hex(bytes: []const u8, out: *[max_hex_input * 2]u8) u32 {
     return @as(u32, @intCast(bytes.len)) * 2;
 }
 
-// The RFC 8439 §2.8.2 test vectors — public, never a real secret. Key 0x80..0x9f, the AEAD nonce (constant 07:00:00:00 then the IV
+// The RFC 8439 §2.8.2 test vectors -- public, never a real secret. Key 0x80..0x9f, the AEAD nonce (constant 07:00:00:00 then the IV
 // 40..47), the associated data, and the RFC's own plaintext. A single wrong step in the construction breaks the tag at once.
 const rfc_key = [key_bytes]u8{
     0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
@@ -268,7 +268,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. Tamper detection: a flipped tag byte, a flipped ciphertext byte, altered aad, and a changed nonce each make open refuse with
-    //    AuthFailed — and none reveals a plaintext byte.
+    //    AuthFailed -- and none reveals a plaintext byte.
     {
         const msg = "seal me and prove a single altered byte is caught";
         var cipher: [msg.len]u8 = undefined;

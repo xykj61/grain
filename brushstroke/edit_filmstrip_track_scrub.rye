@@ -1,19 +1,19 @@
-//! brushstroke/edit_filmstrip_track_scrub.rye — HUNK59: drag a windowed filmstrip — a history too long for the strip finally scrubs.
+//! brushstroke/edit_filmstrip_track_scrub.rye -- HUNK59: drag a windowed filmstrip -- a history too long for the strip finally scrubs.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK59.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK59.
 //! Design read: active-designing/date/20260813/20260813-215013_hunk-filmstrip-track-exploration.md (the HUNK59 fork named there)
-//! Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses
+//! Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) -- a keeper presses
 //! the visible slice of a long edit strip and drags, scrubbing the picture band by band within the shown window (concept
 //! only, siloed).
 //!
-//! HUNK56 turned a drag on the WHOLE filmstrip into a scrub — yet the whole strip refuses `FilmstripTooWide` once a
+//! HUNK56 turned a drag on the WHOLE filmstrip into a scrub -- yet the whole strip refuses `FilmstripTooWide` once a
 //! history outgrows the map ceiling, so a real 64-edit history could not be scrubbed at all. HUNK58 gave the strip a
 //! following window that paints at every step. This rung fuses them: `FilmstripTrackScrub` owns one `FilmstripTrack` and
-//! adds the drag arming (HUNK50's down/move/up law) over a GESTURE WINDOW — the window is snapshotted at the press and
+//! adds the drag arming (HUNK50's down/move/up law) over a GESTURE WINDOW -- the window is snapshotted at the press and
 //! held fixed through the drag, so the band under the finger is the band the marker shows (no drift), exactly as HUNK56
 //! did but within a bounded slice. While a finger is down, paint shows the gesture window; when it lifts, the window
 //! re-follows the cursor (HUNK58). The crux it earns: a drag scrubs a history the whole-strip scrub cannot even paint.
-//! A pure composition — HUNK16's `seek` moves the cursor, HUNK57's `filmstrip_window` paints, no new failure mode. No
+//! A pure composition -- HUNK16's `seek` moves the cursor, HUNK57's `filmstrip_window` paints, no new failure mode. No
 //! network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_filmstrip_track_scrub.rye selftest
@@ -33,11 +33,11 @@ pub const edit_filmstrip_track_scrub_version = "20260813.221500";
 
 pub const FilmstripTrackScrubError = edit_filmstrip_track.FilmstripTrackError;
 
-/// A drag-to-scrub surface over the FOLLOWING filmstrip window: it owns one `FilmstripTrack` (HUNK58) — the cursor, the
-/// thumbnail geometry, and the window that follows the cursor — and adds only the drag arming and a gesture-window
+/// A drag-to-scrub surface over the FOLLOWING filmstrip window: it owns one `FilmstripTrack` (HUNK58) -- the cursor, the
+/// thumbnail geometry, and the window that follows the cursor -- and adds only the drag arming and a gesture-window
 /// snapshot. On press it captures `gesture_first`, the window then displayed, and holds it fixed through the whole drag,
 /// so a finger at window-pixel `x` picks window-band `x / band_px` and lands on absolute step `gesture_first + band`
-/// (clamped to the shown bands, so a scrub always lands). While armed, `paint` shows the frozen gesture window — the band
+/// (clamped to the shown bands, so a scrub always lands). While armed, `paint` shows the frozen gesture window -- the band
 /// under the finger equals the marked band; on lift the window re-follows the cursor. It invents no cursor move (HUNK16's
 /// `seek`), no pixels (HUNK57's `filmstrip_window`), and no arithmetic beyond a clamped division.
 pub const FilmstripTrackScrub = struct {
@@ -65,12 +65,12 @@ pub const FilmstripTrackScrub = struct {
         assert(self.track.jump.cursor.position == self.track.jump.cursor.list.count);
     }
 
-    /// How many steps the history holds — always at least one (the source).
+    /// How many steps the history holds -- always at least one (the source).
     pub fn steps(self: *const FilmstripTrackScrub) u32 {
         return self.track.steps();
     }
 
-    /// The pixel width of one thumbnail band — the divisor a scrub is classified against, positive by construction.
+    /// The pixel width of one thumbnail band -- the divisor a scrub is classified against, positive by construction.
     pub fn band_px(self: *const FilmstripTrackScrub) u32 {
         return self.track.band_px();
     }
@@ -90,7 +90,7 @@ pub const FilmstripTrackScrub = struct {
 
     /// Classify a window-pixel `x` to the NEAREST band OF THE GESTURE WINDOW, returned as an absolute step. A negative
     /// `x` clamps to the first shown band; `band = x / band_px`; a band past the last shown band clamps to it. Always a
-    /// real step in `[gesture_first, gesture_first + gesture_vis)`, so a scrub always lands. Pure — reads geometry, moves
+    /// real step in `[gesture_first, gesture_first + gesture_vis)`, so a scrub always lands. Pure -- reads geometry, moves
     /// nothing. Callable only while armed (a gesture window has been captured).
     pub fn scrub_step(self: *const FilmstripTrackScrub, x: i32) u32 {
         const vis = self.gesture_vis();
@@ -109,10 +109,10 @@ pub const FilmstripTrackScrub = struct {
     }
 
     /// A finger presses the strip at window-pixel `x`: snapshot the window then displayed as the gesture window, arm the
-    /// scrub, and seek the cursor to the nearest band within it — the press that begins the sweep already lands the
+    /// scrub, and seek the cursor to the nearest band within it -- the press that begins the sweep already lands the
     /// picture. Returns the absolute step the cursor landed on. Forgets nothing (HUNK16's `seek`).
     pub fn finger_down(self: *FilmstripTrackScrub, x: i32) u32 {
-        // Snapshot the following window at the press — held fixed through the whole drag.
+        // Snapshot the following window at the press -- held fixed through the whole drag.
         self.gesture_first = self.track.window_first();
         self.scrubbing = true;
         const step = self.scrub_step(x);
@@ -124,7 +124,7 @@ pub const FilmstripTrackScrub = struct {
     }
 
     /// The finger sweeps to window-pixel `x`: while armed, seek the cursor to the nearest band of the FROZEN gesture
-    /// window and return the absolute step — the continuous heart of the gesture, tracking the finger within the shown
+    /// window and return the absolute step -- the continuous heart of the gesture, tracking the finger within the shown
     /// slice. A move with no press before it (not armed) fires nothing and returns null (HUNK50's arming law).
     pub fn finger_move(self: *FilmstripTrackScrub, x: i32) ?u32 {
         // invariant: the cursor stands within its history whether or not it is armed.
@@ -138,7 +138,7 @@ pub const FilmstripTrackScrub = struct {
     }
 
     /// The finger lifts at window-pixel `x`: seek the cursor to the nearest band of the gesture window, disarm, and return
-    /// the absolute step — the lift settles the picture where the finger left it, and the window then re-follows on the
+    /// the absolute step -- the lift settles the picture where the finger left it, and the window then re-follows on the
     /// next paint. A lift only follows a press.
     pub fn finger_up(self: *FilmstripTrackScrub, x: i32) u32 {
         // invariant: a lift only follows a landed finger.
@@ -154,7 +154,7 @@ pub const FilmstripTrackScrub = struct {
 
     /// Paint the filmstrip window: while armed, the FROZEN gesture window (so the band under the finger equals the marked
     /// band, no drift); when idle, the FOLLOWING window (HUNK58, re-centered on the cursor). Either way the marker sits on
-    /// the current step. Pure — the history is read, the source never mutated.
+    /// the current step. Pure -- the history is read, the source never mutated.
     pub fn paint(self: *const FilmstripTrackScrub, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
         // invariant: the cursor stands within its history before the replay.
         assert(self.track.jump.cursor.position <= self.track.jump.cursor.list.count);
@@ -173,7 +173,7 @@ pub const FilmstripTrackScrub = struct {
     }
 };
 
-// --- selftest: a full 64-edit history the whole-strip scrub cannot paint — a windowed drag scrubs it band by band
+// --- selftest: a full 64-edit history the whole-strip scrub cannot paint -- a windowed drag scrubs it band by band
 //     within a frozen gesture window (the band under the finger is the marked band, no drift), a second press re-centers
 //     the window, a scrub pins at both shown ends, a move with no press fires nothing, and open refuses by name --------
 
@@ -196,7 +196,7 @@ fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The x-pixel at the center of window-band `local` — a real touch a device would report inside that band's span.
+/// The x-pixel at the center of window-band `local` -- a real touch a device would report inside that band's span.
 fn band_center_x(surface: *const FilmstripTrackScrub, local: u32) i32 {
     const bpx = surface.band_px();
     return @intCast(local * bpx + bpx / 2);
@@ -224,15 +224,15 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const trows: u32 = 2;
     const win_bands: u32 = 5;
 
-    // A full 64-edit history — 65 steps — that the WHOLE-strip scrub cannot paint: the whole filmstrip refuses
-    // FilmstripTooWide (65·4 > 256). This is the history the windowed scrub exists for.
+    // A full 64-edit history -- 65 steps -- that the WHOLE-strip scrub cannot paint: the whole filmstrip refuses
+    // FilmstripTooWide (65-4 > 256). This is the history the windowed scrub exists for.
     var surface = try FilmstripTrackScrub.open(tcols, trows, win_bands);
     {
         var e: u32 = 0;
         while (e < edits.max_edits) : (e += 1) try surface.push(.flip_h);
     }
     assert(surface.steps() == edits.max_edits + 1);
-    // The whole strip refuses this history — proof the crux is real.
+    // The whole strip refuses this history -- proof the crux is real.
     if (edit_filmstrip.filmstrip(garden, &pm, &surface.track.jump.cursor, tcols, trows)) |_| {
         return error.WideSlipped;
     } else |e| {
@@ -240,7 +240,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // Stand the cursor in the middle and press: the gesture window centers on it (window_first = position − win_bands/2).
-    // A drag sweeps band by band within the frozen window — at each reported point the cursor's step is gesture_first +
+    // A drag sweeps band by band within the frozen window -- at each reported point the cursor's step is gesture_first +
     // the band under the finger, and the repainted (frozen) window shows the marker on exactly that band. The window
     // stays fixed through the whole drag (cols and first unchanged), the true test of a gesture window.
     {
@@ -255,7 +255,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(film.cols == win_bands * tcols); // a full, frozen gesture window
             marker_on_band(&film, tcols, 2);
         }
-        // Sweep left to band 0, then right to band 4 — the cursor tracks, the window stays frozen at gf.
+        // Sweep left to band 0, then right to band 4 -- the cursor tracks, the window stays frozen at gf.
         var local: u32 = 0;
         while (local < win_bands) : (local += 1) {
             const step = surface.finger_move(band_center_x(&surface, local));
@@ -282,7 +282,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         marker_on_band(&film, tcols, settled - follow_first);
     }
 
-    // A second press re-centers the gesture window on wherever the cursor now stands — each drag opens its own window.
+    // A second press re-centers the gesture window on wherever the cursor now stands -- each drag opens its own window.
     {
         _ = surface.track.seek(60);
         _ = surface.finger_down(band_center_x(&surface, 2));
@@ -291,7 +291,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A scrub pins at both shown ends: past the right of the window rests on the last shown band, off the left rests on
-    // the first — a scrub always lands, unlike a tap.
+    // the first -- a scrub always lands, unlike a tap.
     {
         _ = surface.track.seek(30);
         _ = surface.finger_down(band_center_x(&surface, 2));
@@ -313,7 +313,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         _ = surface.finger_up(band_center_x(&surface, 0));
     }
 
-    // A move with no press before it fires nothing — the arming law (HUNK50).
+    // A move with no press before it fires nothing -- the arming law (HUNK50).
     {
         var fresh = try FilmstripTrackScrub.open(tcols, trows, win_bands);
         try fresh.push(.flip_h);
@@ -324,7 +324,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(fresh.track.jump.cursor.position == 2); // no press, no scrub
     }
 
-    // Genuinely seen: a scrubbed window rasterizes to a lit canvas — the too-long history reaches the glass.
+    // Genuinely seen: a scrubbed window rasterizes to a lit canvas -- the too-long history reaches the glass.
     {
         _ = surface.track.seek(20);
         _ = surface.finger_down(band_center_x(&surface, 1));
@@ -342,7 +342,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         _ = surface.finger_up(band_center_x(&surface, 1));
     }
 
-    // Open refuses by name — delegated from FilmstripTrack: a zero window, a too-wide window, a bad thumbnail.
+    // Open refuses by name -- delegated from FilmstripTrack: a zero window, a too-wide window, a bad thumbnail.
     if (FilmstripTrackScrub.open(tcols, trows, 0)) |_| return error.WindowSlipped else |e| {
         if (e != error.BadWindow) return error.WrongWindow;
     }

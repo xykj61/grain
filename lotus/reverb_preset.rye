@@ -1,29 +1,29 @@
-//! lotus/reverb_preset.rye — ALES190: NAMED ROOMS — a reverb a keeper reaches for by name. ALES186 seated the reverb network, ALES187 its
+//! lotus/reverb_preset.rye -- ALES190: NAMED ROOMS -- a reverb a keeper reaches for by name. ALES186 seated the reverb network, ALES187 its
 //! stereo carry, ALES188 its real-time face (reverb_ms) and ALES189 the stereo timed face (stereo_reverb_ms). The network is powerful yet
 //! bare: a caller must hand it a whole bank of comb and allpass specs. A musician does not think "four combs at 25, 27, 29, 31 ms with
-//! feedbacks 7/10" — a musician thinks "a hall," "a room," "a plate." This rung gives the reverb that face: three named rooms, each a curated
+//! feedbacks 7/10" -- a musician thinks "a hall," "a room," "a plate." This rung gives the reverb that face: three named rooms, each a curated
 //! bank of timed stages (CombSpecMs / AllpassSpecMs, ALES188's own spec types), chosen by name and run through the proven timed reverb.
 //!
 //! The crux is the family's signature made higher: A PRESET IS EXACTLY ITS NAMED BANK, NOTHING MORE. reverb_preset picks the bank for the
-//! named room and delegates to ALES188's reverb_ms UNCHANGED, so a preset invents NO new arithmetic and NO new fault — it is a curated
+//! named room and delegates to ALES188's reverb_ms UNCHANGED, so a preset invents NO new arithmetic and NO new fault -- it is a curated
 //! constant bank plus the proven timed reverb. The witness proves this literally: a preset over a signal equals reverb_ms called with that
 //! room's explicit published bank, byte for byte. The rooms differ by their tunings (a hall's longer, denser network from a plate's short
 //! dense one), each decays to silence (every stage below unity, so their composition settles), and every fault of the underlying reverb and
 //! clock forwards by name before any write. The banks are named in MILLISECONDS, so one preset sounds the same room at any sample rate.
 //!
 //! The three rooms, tuned as bounded honest constants (delays in ms, feedbacks and gains named fractions strictly below unity):
-//!   ROOM  — a small room: four short combs (11..17 ms) lightly fed back, one allpass — a close, quick decay.
-//!   HALL  — a large hall: four long combs (25..31 ms) strongly fed back, two allpasses — a spacious, long decay.
-//!   PLATE — a plate: four dense mid combs (7..13 ms), three allpasses — a bright, dense, metallic wash.
+//!   ROOM  -- a small room: four short combs (11..17 ms) lightly fed back, one allpass -- a close, quick decay.
+//!   HALL  -- a large hall: four long combs (25..31 ms) strongly fed back, two allpasses -- a spacious, long decay.
+//!   PLATE -- a plate: four dense mid combs (7..13 ms), three allpasses -- a bright, dense, metallic wash.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES190.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES190.
 //! Design read: active-designing/date/20260815/20260815-095435_fill-ales190-lotus-named-room-reverb-presets.md
-//! Stands on: lotus/reverb_time.rye (ALES188) — the timed reverb this delegates to unchanged, its CombSpecMs / AllpassSpecMs the preset
-//! banks' element types and its ReverbTimeError forwarded whole; lotus/clock.rye (ALES5) — the sample clock the preset is spoken against;
-//! lotus/reverb.rye (ALES186) — the max_stages bound each preset bank stays within; lotus/timeline.rye (ALES2) — the Clip.
+//! Stands on: lotus/reverb_time.rye (ALES188) -- the timed reverb this delegates to unchanged, its CombSpecMs / AllpassSpecMs the preset
+//! banks' element types and its ReverbTimeError forwarded whole; lotus/clock.rye (ALES5) -- the sample clock the preset is spoken against;
+//! lotus/reverb.rye (ALES186) -- the max_stages bound each preset bank stays within; lotus/timeline.rye (ALES2) -- the Clip.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and three fixed compile-time banks
-//! each within reverb.max_stages, siloed to lotus/. No new arithmetic on the audio path — a constant bank, then the proven timed reverb. The
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and three fixed compile-time banks
+//! each within reverb.max_stages, siloed to lotus/. No new arithmetic on the audio path -- a constant bank, then the proven timed reverb. The
 //! room names are a keeper's word for a tuning, not a claim about any real hall; the delays are milliseconds, the feedbacks and gains named
 //! fractions, none a decibel or a room size in metres. No socket, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -40,21 +40,21 @@ const reverb_time = @import("reverb_time.rye");
 
 pub const reverb_preset_version = "20260815.095435";
 
-/// The named rooms this rung offers — a keeper's word for a curated reverb tuning. Each names a fixed bank of timed comb and allpass stages;
+/// The named rooms this rung offers -- a keeper's word for a curated reverb tuning. Each names a fixed bank of timed comb and allpass stages;
 /// `bank_for` returns that room's combs and allpasses, and `reverb_preset` runs them through the proven timed reverb.
 pub const Room = enum {
-    /// A small room — four short combs lightly fed back, one allpass: a close, quick decay.
+    /// A small room -- four short combs lightly fed back, one allpass: a close, quick decay.
     room,
-    /// A large hall — four long combs strongly fed back, two allpasses: a spacious, long decay.
+    /// A large hall -- four long combs strongly fed back, two allpasses: a spacious, long decay.
     hall,
-    /// A plate — four dense mid combs, three allpasses: a bright, dense, metallic wash.
+    /// A plate -- four dense mid combs, three allpasses: a bright, dense, metallic wash.
     plate,
 };
 
-// The three rooms, tuned as bounded honest constants — delays in MILLISECONDS, feedbacks and gains named fractions strictly below unity so
+// The three rooms, tuned as bounded honest constants -- delays in MILLISECONDS, feedbacks and gains named fractions strictly below unity so
 // every stage decays. Each bank stays within reverb.max_stages (asserted in bank_for). Published so the witness can prove a preset IS its bank.
 
-/// ROOM — a small room: four short combs (11..17 ms) lightly fed back (~1/2), a close quick decay.
+/// ROOM -- a small room: four short combs (11..17 ms) lightly fed back (~1/2), a close quick decay.
 pub const room_combs = [_]reverb_time.CombSpecMs{
     .{ .delay_ms = 11, .fb_num = 1, .fb_den = 2 },
     .{ .delay_ms = 13, .fb_num = 5, .fb_den = 11 },
@@ -65,7 +65,7 @@ pub const room_allpasses = [_]reverb_time.AllpassSpecMs{
     .{ .delay_ms = 5, .num = 1, .den = 2 },
 };
 
-/// HALL — a large hall: four long combs (25..31 ms) strongly fed back (~7/10), two allpasses, a spacious long decay.
+/// HALL -- a large hall: four long combs (25..31 ms) strongly fed back (~7/10), two allpasses, a spacious long decay.
 pub const hall_combs = [_]reverb_time.CombSpecMs{
     .{ .delay_ms = 25, .fb_num = 7, .fb_den = 10 },
     .{ .delay_ms = 27, .fb_num = 17, .fb_den = 25 },
@@ -77,7 +77,7 @@ pub const hall_allpasses = [_]reverb_time.AllpassSpecMs{
     .{ .delay_ms = 2, .num = 7, .den = 10 },
 };
 
-/// PLATE — a plate: four dense mid combs (7..13 ms), three allpasses, a bright dense metallic wash.
+/// PLATE -- a plate: four dense mid combs (7..13 ms), three allpasses, a bright dense metallic wash.
 pub const plate_combs = [_]reverb_time.CombSpecMs{
     .{ .delay_ms = 7, .fb_num = 3, .fb_den = 5 },
     .{ .delay_ms = 9, .fb_num = 29, .fb_den = 50 },
@@ -90,19 +90,19 @@ pub const plate_allpasses = [_]reverb_time.AllpassSpecMs{
     .{ .delay_ms = 2, .num = 3, .den = 5 },
 };
 
-/// The timed reverb preset's faults are exactly ALES188's `ReverbTimeError` — the clock's DurationTooLong and the reverb's NoCombs,
-/// TooManyStages, BadDelay, BadGain, and BadRange — forwarded whole, since a preset is a constant bank run through the proven timed reverb
+/// The timed reverb preset's faults are exactly ALES188's `ReverbTimeError` -- the clock's DurationTooLong and the reverb's NoCombs,
+/// TooManyStages, BadDelay, BadGain, and BadRange -- forwarded whole, since a preset is a constant bank run through the proven timed reverb
 /// and adds no fault of its own.
 pub const ReverbPresetError = reverb_time.ReverbTimeError;
 
-/// A named room's two banks together — the comb bank and the allpass bank a preset hands to the timed reverb. One named type, so `bank_for`'s
+/// A named room's two banks together -- the comb bank and the allpass bank a preset hands to the timed reverb. One named type, so `bank_for`'s
 /// three switch arms share it rather than each inferring a distinct anonymous struct.
 pub const Bank = struct {
     combs: []const reverb_time.CombSpecMs,
     allpasses: []const reverb_time.AllpassSpecMs,
 };
 
-/// The published comb and allpass banks for a named room — the single source of truth a preset and the witness both read. A preset IS these
+/// The published comb and allpass banks for a named room -- the single source of truth a preset and the witness both read. A preset IS these
 /// banks: `reverb_preset(clip, clk, room, ...)` equals `reverb_time.reverb_ms(clip, clk, ..., combs, allpasses)` byte for byte.
 pub fn bank_for(room: Room) Bank {
     const banks: Bank = switch (room) {
@@ -110,14 +110,14 @@ pub fn bank_for(room: Room) Bank {
         .hall => .{ .combs = hall_combs[0..], .allpasses = hall_allpasses[0..] },
         .plate => .{ .combs = plate_combs[0..], .allpasses = plate_allpasses[0..] },
     };
-    // invariant: every published bank stays within the reverb's stage bound and carries at least one comb — a preset can never overflow the
+    // invariant: every published bank stays within the reverb's stage bound and carries at least one comb -- a preset can never overflow the
     // network or sum to silence.
     assert(banks.combs.len >= 1 and banks.combs.len <= reverb.max_stages);
     assert(banks.allpasses.len <= reverb.max_stages);
     return banks;
 }
 
-/// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM — pick the room's published bank and delegate to ALES188's `reverb_ms`
+/// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM -- pick the room's published bank and delegate to ALES188's `reverb_ms`
 /// UNCHANGED. A preset IS its bank: this equals `reverb_ms` called with that room's explicit combs and allpasses, byte for byte, so it invents
 /// no new arithmetic and no new fault. The banks are named in MILLISECONDS, so one preset sounds the same room at any sample rate. Forwards
 /// ALES188's ReverbTimeError (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain / BadRange) before any
@@ -129,15 +129,15 @@ pub fn reverb_preset(
     start_ms: u32,
     count_ms: u32,
 ) ReverbPresetError!void {
-    // invariant: the clock is valid — the preset is spoken against it, and reverb_ms asserts the same.
+    // invariant: the clock is valid -- the preset is spoken against it, and reverb_ms asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
     const banks = bank_for(room);
-    // The bank is a constant; the reverb is ALES188's, unchanged — the preset added only the name.
+    // The bank is a constant; the reverb is ALES188's, unchanged -- the preset added only the name.
     try reverb_time.reverb_ms(clip, clk, start_ms, count_ms, banks.combs, banks.allpasses);
 }
 
-// --- selftest: A PRESET IS ITS NAMED BANK — a preset equals reverb_ms called with that room's published bank byte for byte, for all three
-//     rooms; THE ROOMS DIFFER — hall, room, and plate over the same signal produce genuinely different output; EACH DECAYS — every preset's
+// --- selftest: A PRESET IS ITS NAMED BANK -- a preset equals reverb_ms called with that room's published bank byte for byte, for all three
+//     rooms; THE ROOMS DIFFER -- hall, room, and plate over the same signal produce genuinely different output; EACH DECAYS -- every preset's
 //     tail settles to silence within a long enough clip; SILENCE STAYS SILENCE; and the underlying faults forward (a span past the clip
 //     DurationTooLong, an out-of-range span BadRange), the clip untouched ----------------------------------------------------------------
 
@@ -155,8 +155,8 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     // A legible clock (1 sample per ms) so each ms delay is one sample and the bench clip holds the longest bank (hall combs to 31 ms).
     const c = try clock.make(1000);
-    // 1024 samples == 1024 ms at this clock — long enough for the hall's strongest comb (delay 25, feedback 7/10) to recirculate all the way
-    //   to silence: 12000·(7/10)^k rounds to zero by k≈29, so the last nonzero tap sits near sample 725 plus a little diffusion — well before
+    // 1024 samples == 1024 ms at this clock -- long enough for the hall's strongest comb (delay 25, feedback 7/10) to recirculate all the way
+    //   to silence: 12000-(7/10)^k rounds to zero by k≈29, so the last nonzero tap sits near sample 725 plus a little diffusion -- well before
     //   the last eighth. A shorter clip cannot settle a long strong hall, so the tail law needs the room the hall actually decays in.
     const impulse = blk: {
         var b: [1024]i16 = [_]i16{0} ** 1024;
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. A PRESET IS ITS NAMED BANK — for every room, reverb_preset equals reverb_ms called with that room's published bank, byte for byte.
+    // 1. A PRESET IS ITS NAMED BANK -- for every room, reverb_preset equals reverb_ms called with that room's published bank, byte for byte.
     //    The preset adds only the name; the audio is the proven timed reverb over the published constant bank.
     {
         const rooms = [_]Room{ .room, .hall, .plate };
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE ROOMS DIFFER — hall, room, and plate over the same impulse produce genuinely different output: the named tunings are real, not
+    // 2. THE ROOMS DIFFER -- hall, room, and plate over the same impulse produce genuinely different output: the named tunings are real, not
     //    three names for one bank.
     {
         var h = timeline.Clip{};
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         if (eq(r.samples(), p.samples())) return error.RoomEqualsPlate;
     }
 
-    // 3. EACH ROOM DECAYS TO SILENCE WITHIN THE CLIP — every stage is below unity, so each preset's composition settles: the body carries a
+    // 3. EACH ROOM DECAYS TO SILENCE WITHIN THE CLIP -- every stage is below unity, so each preset's composition settles: the body carries a
     //    real reverberant tail and the last eighth of the clip (samples 896..1024) is silence for all three rooms, even the long strong hall.
     {
         const rooms = [_]Room{ .room, .hall, .plate };
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. SILENCE STAYS SILENCE — an all-zero clip through any preset stays all zeros; the network adds nothing to nothing.
+    // 4. SILENCE STAYS SILENCE -- an all-zero clip through any preset stays all zeros; the network adds nothing to nothing.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -230,13 +230,13 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 5. THE UNDERLYING FAULTS FORWARD — a span whose sample count exceeds the clip refuses DurationTooLong (a count_ms past max_clip), and an
+    // 5. THE UNDERLYING FAULTS FORWARD -- a span whose sample count exceeds the clip refuses DurationTooLong (a count_ms past max_clip), and an
     //    out-of-range span refuses BadRange, each by name with the clip untouched. The preset adds no fault; ALES188's forward whole.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // count_ms past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // count_ms past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (reverb_preset(&clip, c, .room, 0, timeline.max_clip + 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) forwards BadRange.

@@ -1,4 +1,4 @@
-//! Rye test: mem.collapseRepeats — pass 9913.
+//! Rye test: mem.collapseRepeats -- pass 9913.
 //!
 //! Collapse consecutive duplicate elements; pairs with replaceScalar (9914).
 

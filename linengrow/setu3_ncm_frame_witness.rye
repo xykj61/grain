@@ -1,4 +1,4 @@
-//! linengrow/setu3_ncm_frame_witness.rye — proves SETU3 NCM-shaped frame.
+//! linengrow/setu3_ncm_frame_witness.rye -- proves SETU3 NCM-shaped frame.
 //!
 //!   rye build linengrow/setu3_ncm_frame_witness.rye \
 //!     -femit-bin=linengrow/bin/setu3_ncm_frame_witness

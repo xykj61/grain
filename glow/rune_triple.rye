@@ -1,11 +1,11 @@
 //! glow-book: runes.md#g-triple
-//! glow/rune_triple.rye — parses Glow's `:+` triple-cell rune head.
+//! glow/rune_triple.rye -- parses Glow's `:+` triple-cell rune head.
 //!
 //! Per the sameness rune brief `:` category: `:+` builds a triple. Tenth
 //! rune head (STOA3). Shape:
 //!   :+  from  amount  note
 //!
-//! Faces only — nested values stay later. Quad cell `:^` is STOA4
+//! Faces only -- nested values stay later. Quad cell `:^` is STOA4
 //! (`rune_quad.rye`).
 
 const std = @import("std");

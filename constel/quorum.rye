@@ -1,24 +1,24 @@
-//! constel/quorum.rye — FORA9: from a census, decide whether a majority may act. FORA8 gave the constellation a tally — who
-//! answered a ping and, by slot, who stayed silent. A count is a fact; it is not yet a DECISION. Every consensus protocol —
-//! a leader election, a block commit, a name claimed once across the whole sky — leans first on one bounded question: do
+//! constel/quorum.rye -- FORA9: from a census, decide whether a majority may act. FORA8 gave the constellation a tally -- who
+//! answered a ping and, by slot, who stayed silent. A count is a fact; it is not yet a DECISION. Every consensus protocol --
+//! a leader election, a block commit, a name claimed once across the whole sky -- leans first on one bounded question: do
 //! enough piers agree that the constellation may act at all? That question is the quorum, and this rung takes it and nothing
 //! more: it turns a census tally into a strict-majority decision and names WHICH piers form the deciding set.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA9. Design read: active-designing/date/20260814/20260814-052238_fora9-constel-quorum-majority-decision.md
-//! Stands on: constel/census.rye (FORA8) — its public announce/respond/hear collect the votes; constel/switchboard.rye (FORA6)
-//! — the medium; constel/roster.rye (FORA1) — the bound.
+//! Stands on: constel/census.rye (FORA8) -- its public announce/respond/hear collect the votes; constel/switchboard.rye (FORA6)
+//! -- the medium; constel/roster.rye (FORA1) -- the bound.
 //!
-//! The safety of a quorum is one property: a STRICT majority, 2·threshold > n. Any two strict-majority quorums of the same
-//! constellation must intersect in at least one pier, so two disjoint quorums can never each decide a conflicting value —
+//! The safety of a quorum is one property: a STRICT majority, 2-threshold > n. Any two strict-majority quorums of the same
+//! constellation must intersect in at least one pier, so two disjoint quorums can never each decide a conflicting value --
 //! that intersection is the whole reason consensus rests on > n/2. The naming-law border still guards every vote (hear
 //! deframes at wire.deframe, so a real-@p-shaped name can never enter a quorum even as a reply), the round stays interleaved
 //! so the caller's mailbox never holds more than one reply at a time (never ChannelFull), and a stranger caller refuses
 //! NoSuchPier before any announce.
 //!
-//! Purely LOCAL — a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
-//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire —
-//! and gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire --
+//! and gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/quorum.rye selftest
 
@@ -36,21 +36,21 @@ const census = @import("census.rye");
 pub const quorum_version = "20260814.052238";
 
 pub const QuorumError = error{
-    /// The caller sealed a quorum below the strict-majority threshold and then required it to act — the constellation cannot
+    /// The caller sealed a quorum below the strict-majority threshold and then required it to act -- the constellation cannot
     /// proceed on a minority.
     NoQuorum,
-    /// A reply already recorded from this slot arrived again — a fresh vote is expected once per member per round.
+    /// A reply already recorded from this slot arrived again -- a fresh vote is expected once per member per round.
     DoubleCount,
 } || switchboard.SwitchboardError;
 
 /// The strict-majority threshold for a constellation of n: floor(n/2) + 1. The one safety property of a quorum lives in the
-/// assert — 2·threshold > n — so any two quorums of this constellation must share at least one pier.
+/// assert -- 2-threshold > n -- so any two quorums of this constellation must share at least one pier.
 pub fn majority_of(n: u32) u32 {
     // invariant: a constellation has at least one pier and never more than the roster bound.
     assert(n >= 1);
     assert(n <= roster.max_piers);
     const threshold = n / 2 + 1;
-    // invariant: the threshold is a STRICT majority — the whole safety of a quorum, so two quorums always intersect.
+    // invariant: the threshold is a STRICT majority -- the whole safety of a quorum, so two quorums always intersect.
     assert(2 * threshold > n);
     // invariant: a majority never exceeds the constellation it is drawn from.
     assert(threshold <= n);
@@ -69,7 +69,7 @@ pub const Quorum = struct {
     reached: bool = false,
     sealed: bool = false,
 
-    /// Record one heard reply by roster slot, refusing to double-count — a slot heard twice is not a fresh vote. A reply is
+    /// Record one heard reply by roster slot, refusing to double-count -- a slot heard twice is not a fresh vote. A reply is
     /// only recorded before the decision is sealed.
     pub fn record(self: *Quorum, slot: u32) QuorumError!void {
         // invariant: only a real roster slot, other than the caller's own, is ever recorded before the seal.
@@ -101,7 +101,7 @@ pub const Quorum = struct {
         assert(self.reached == (2 * self.live > self.size));
     }
 
-    /// Whether the member at a slot is part of the deciding set — the caller itself, or a member whose reply was heard.
+    /// Whether the member at a slot is part of the deciding set -- the caller itself, or a member whose reply was heard.
     pub fn in_quorum(self: *const Quorum, slot: u32) bool {
         // invariant: a membership read stays within the constellation.
         assert(slot < self.size);
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         assert(majority_of(roster.max_piers) == 5); // eight piers → five is the smallest majority
     }
 
-    // 1. A full sky of four is quorate — every member replies, live is four, threshold three, and all four slots decide.
+    // 1. A full sky of four is quorate -- every member replies, live is four, threshold three, and all four slots decide.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(4);
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         assert(q.in_quorum(0) and q.in_quorum(1) and q.in_quorum(2) and q.in_quorum(3));
     }
 
-    // 2. One silent member in a sky of four still holds a majority — drive the round by hand with slot 2 declining. Live is
+    // 2. One silent member in a sky of four still holds a majority -- drive the round by hand with slot 2 declining. Live is
     //    three (caller 0, slots 1 and 3), threshold three, reached; slot 2 is NOT in the deciding set, yet the sky may act.
     {
         var sb = switchboard.Switchboard{};
@@ -188,7 +188,7 @@ fn run_selftest() !u8 {
         assert(!q.in_quorum(2)); // the silent member, known by slot, outside the majority
     }
 
-    // 3. Two silent members in a sky of four lose the majority — slots 2 and 3 decline. Live is two, below the threshold of
+    // 3. Two silent members in a sky of four lose the majority -- slots 2 and 3 decline. Live is two, below the threshold of
     //    three, so require refuses NoQuorum: the constellation cannot act on a minority.
     {
         var sb = switchboard.Switchboard{};
@@ -198,7 +198,7 @@ fn run_selftest() !u8 {
         if (require(&q)) |_| return error.MinorityActed else |e| if (e != error.NoQuorum) return error.WrongMinority;
     }
 
-    // 4. A sky of three, all present, is quorate — live three, threshold two.
+    // 4. A sky of three, all present, is quorate -- live three, threshold two.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
@@ -209,7 +209,7 @@ fn run_selftest() !u8 {
         assert(q.live == 3 and q.threshold == 2 and q.reached);
     }
 
-    // 5. Two of three is a majority — one silent in a sky of three. Live is two, threshold two, reached.
+    // 5. Two of three is a majority -- one silent in a sky of three. Live is two, threshold two, reached.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
@@ -218,7 +218,7 @@ fn run_selftest() !u8 {
         try require(&q);
     }
 
-    // 6. A lone pier is never a quorum — both others silent in a sky of three. Live is one, below the threshold of two, so
+    // 6. A lone pier is never a quorum -- both others silent in a sky of three. Live is one, below the threshold of two, so
     //    require refuses NoQuorum: a pier alone never mistakes itself for the sky.
     {
         var sb = switchboard.Switchboard{};
@@ -228,14 +228,14 @@ fn run_selftest() !u8 {
         if (require(&q)) |_| return error.LoneActed else |e| if (e != error.NoQuorum) return error.WrongLone;
     }
 
-    // 7. A stranger cannot open a quorum — run_quorum from a name no roster holds refuses NoSuchPier before any announce.
+    // 7. A stranger cannot open a quorum -- run_quorum from a name no roster holds refuses NoSuchPier before any announce.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
         if (run_quorum(&sb, "zzzz9")) |_| return error.StrangerQuorum else |e| if (e != error.NoSuchPier) return error.WrongStranger;
     }
 
-    // 8. The border guards every vote — a member replying with a vowel-bearing greeting is refused at the caller's hear, so a
+    // 8. The border guards every vote -- a member replying with a vowel-bearing greeting is refused at the caller's hear, so a
     //    real-@p-shaped name can never enter a quorum even as a present token. (Same tamper the census border proves.)
     {
         var sb = switchboard.Switchboard{};
@@ -269,7 +269,7 @@ fn run_selftest() !u8 {
         if (census.hear(&sb, cn)) |_| return error.VowelVoted else |e| if (e != error.VowelPresent) return error.WrongVowelVote;
     }
 
-    // 9. A full constellation of eight is quorate and bounded — seven replies, live eight, threshold five, no ChannelFull
+    // 9. A full constellation of eight is quorate and bounded -- seven replies, live eight, threshold five, no ChannelFull
     //    because run_quorum interleaves respond and hear.
     {
         var sb = switchboard.Switchboard{};
@@ -291,10 +291,10 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-// --- selftest helpers: a silent member cannot be driven to reply, so partial-presence rounds are walked by hand — announce,
+// --- selftest helpers: a silent member cannot be driven to reply, so partial-presence rounds are walked by hand -- announce,
 //     then respond+hear only the present members and record each, exactly as census walks its own silent-member scenario ----
 
-/// Run a quorum in the current constellation with one named slot staying silent — it drains its ping (it was reachable) but
+/// Run a quorum in the current constellation with one named slot staying silent -- it drains its ping (it was reachable) but
 /// never replies, so it is absent from the tally by slot.
 fn quorum_with_silence(sb: *switchboard.Switchboard, silent: u32) QuorumError!Quorum {
     const n = sb.size();
@@ -325,7 +325,7 @@ fn quorum_with_silence(sb: *switchboard.Switchboard, silent: u32) QuorumError!Qu
     return q;
 }
 
-/// Run a quorum with two named slots staying silent — the minority-loses and lone-pier scenarios.
+/// Run a quorum with two named slots staying silent -- the minority-loses and lone-pier scenarios.
 fn quorum_with_two_silent(sb: *switchboard.Switchboard, silent_a: u32, silent_b: u32) QuorumError!Quorum {
     const n = sb.size();
     // invariant: two distinct real, non-caller members stay silent.
@@ -357,14 +357,14 @@ fn quorum_with_two_silent(sb: *switchboard.Switchboard, silent_a: u32, silent_b:
     return q;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- respond/hear mutate
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

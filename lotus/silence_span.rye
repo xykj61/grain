@@ -1,27 +1,27 @@
-//! lotus/silence_span.rye — ALES110: silence_span — write silence over `count` samples starting at `start`, IN PLACE, leaving the length and every sample outside the span
+//! lotus/silence_span.rye -- ALES110: silence_span -- write silence over `count` samples starting at `start`, IN PLACE, leaving the length and every sample outside the span
 //! exactly as they were. This is the third and last way a span meets silence, beside ALES2's cut (which removes a span and SHRINKS the clip) and ALES109's insert_silence
 //! (which opens a gap and GROWS the clip): silence_span OVERWRITES the span and leaves the length exactly as it is. This is the Silence Audio Selection button every editor
-//! ships — drop a cough, mute a bleed, clear a region to quiet without moving anything around it. Naming it beside cut and insert_silence completes the trio and teaches the
+//! ships -- drop a cough, mute a bleed, clear a region to quiet without moving anything around it. Naming it beside cut and insert_silence completes the trio and teaches the
 //! one distinction that matters about a span of quiet: REMOVE, OPEN, or OVERWRITE.
 //!
 //! The rule, stated once: silence_span(clip, start, count) writes zero into the count samples starting at start, leaving every sample outside the span and the length itself
-//! exactly as they were. It refuses BadRange when the span falls outside the current samples — checked without underflow, count against the remainder — before any write,
+//! exactly as they were. It refuses BadRange when the span falls outside the current samples -- checked without underflow, count against the remainder -- before any write,
 //! reusing ALES2's EditError whole. One in-place pass bounded by count, no allocation, no second buffer.
 //!
-//! The crux — four laws. THE SILENCE LAW: after silence_span(clip, start, count) the span [start, start+count) is all zero and every sample outside it is byte-for-byte
-//! unchanged, the length untouched, checked against a hand-built vector. THE TRIO / LENGTH LAW: the length is exactly unchanged — the third way a span meets silence beside
+//! The crux -- four laws. THE SILENCE LAW: after silence_span(clip, start, count) the span [start, start+count) is all zero and every sample outside it is byte-for-byte
+//! unchanged, the length untouched, checked against a hand-built vector. THE TRIO / LENGTH LAW: the length is exactly unchanged -- the third way a span meets silence beside
 //! cut (which shrinks by count) and insert_silence (which grows by count), the same span proven all three ways in one selftest. THE IDEMPOTENCE / PEAK LAW: silence_span is
 //! IDEMPOTENT (silencing a span twice equals once) and NOT invertible (the overwritten samples are gone, a lossy overwrite honest about its loss); the peak re-measured
-//! through ALES13 is non-increasing — silencing the span that holds the loudest sample strictly lowers the peak, silencing an already-silent span holds it. THE DEGENERATE /
+//! through ALES13 is non-increasing -- silencing the span that holds the loudest sample strictly lowers the peak, silencing an already-silent span holds it. THE DEGENERATE /
 //! REFUSAL LAW: count = 0 the identity, silence_span(0, len) clears the whole clip, the empty clip its own silence, a start past the samples or a count past the remainder
 //! refuses BadRange before any write.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES110.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES110.
 //! Design read: active-designing/date/20260815/20260815-010618_fill-ales110-lotus-silence-span.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio against
-//! ALES109's insert_silence; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that overwriting with silence never raises the peak.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio against
+//! ALES109's insert_silence; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to prove that overwriting with silence never raises the peak.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It writes SILENCE (zero) over an existing span — the
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It writes SILENCE (zero) over an existing span -- the
 //! one thing it writes, and silence is the honest content of a region a keeper cleared on purpose; it invents no non-zero sample, moves nothing, changes no length, and reads
 //! no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -37,17 +37,17 @@ const insert_silence = @import("insert_silence.rye");
 
 pub const silence_span_version = "20260815.010618";
 
-/// silence_span forwards ALES2's OWN fault reused by name — BadRange when the span falls outside the current samples — and invents none of its own; `count` is a plain span
+/// silence_span forwards ALES2's OWN fault reused by name -- BadRange when the span falls outside the current samples -- and invents none of its own; `count` is a plain span
 /// length with no illegal value save the range the samples already name.
 pub const SilenceSpanError = timeline.EditError;
 
-/// Write silence over the `count` samples starting at `start`, in place — the length and every sample outside the span left exactly as they were. Refuses BadRange when the
-/// span falls outside the current samples, before any write. This is ALES2's cut read as an overwrite rather than a removal — the length-preserving third of the trio.
+/// Write silence over the `count` samples starting at `start`, in place -- the length and every sample outside the span left exactly as they were. Refuses BadRange when the
+/// span falls outside the current samples, before any write. This is ALES2's cut read as an overwrite rather than a removal -- the length-preserving third of the trio.
 pub fn silence_span(clip: *timeline.Clip, start: u32, count: u32) SilenceSpanError!void {
-    // invariant: the length never claims more samples than the buffer holds — every seat we clear is inside the buffer.
+    // invariant: the length never claims more samples than the buffer holds -- every seat we clear is inside the buffer.
     assert(clip.len <= clip.buf.len);
 
-    // invariant: the span lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    // invariant: the span lies wholly within the current samples (checked without underflow -- count against the remainder), refused by name before any write.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -58,13 +58,13 @@ pub fn silence_span(clip: *timeline.Clip, start: u32, count: u32) SilenceSpanErr
     var i: u32 = start;
     while (i < end) : (i += 1) clip.buf[i] = 0;
 
-    // invariant: silence_span writes values only — the length and its bound are exactly what they were.
+    // invariant: silence_span writes values only -- the length and its bound are exactly what they were.
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE SILENCE LAW — silence_span zeroes exactly the named span and leaves the rest byte for byte; THE TRIO / LENGTH LAW — the same span keeps the length here,
-//     shrinks it through ALES2's cut, and grows it through ALES109's insert_silence; THE IDEMPOTENCE / PEAK LAW — silencing twice equals once, and the peak re-measured
-//     through ALES13 is non-increasing (silencing the loudest span strictly lowers it, an already-silent span holds); THE DEGENERATE / REFUSAL LAW — count 0 the identity,
+// --- selftest: THE SILENCE LAW -- silence_span zeroes exactly the named span and leaves the rest byte for byte; THE TRIO / LENGTH LAW -- the same span keeps the length here,
+//     shrinks it through ALES2's cut, and grows it through ALES109's insert_silence; THE IDEMPOTENCE / PEAK LAW -- silencing twice equals once, and the peak re-measured
+//     through ALES13 is non-increasing (silencing the loudest span strictly lowers it, an already-silent span holds); THE DEGENERATE / REFUSAL LAW -- count 0 the identity,
 //     silence_span(0, len) all silence, the empty clip its own silence, a span past the samples BadRange ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -78,14 +78,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+/// The clip's current peak magnitude, re-measured through ALES13 -- the reader the peak law checks the result against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE SILENCE LAW — silence_span zeroes exactly the named span and leaves every sample outside it, the length untouched. Proven at a mid span, the head, and the tail.
+    // 1. THE SILENCE LAW -- silence_span zeroes exactly the named span and leaves every sample outside it, the length untouched. Proven at a mid span, the head, and the tail.
     {
         var mid = timeline.Clip{};
         try load_clip(&mid, &[_]i16{ 10, 20, 30, 40, 50 });
@@ -103,7 +103,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.samples(), &[_]i16{ 10, 0, 0 })) return error.SilenceTailWrong;
     }
 
-    // 2. THE TRIO / LENGTH LAW — the same span [1, 1+2) meets silence three ways: silence_span KEEPS the length (overwrite), ALES2's cut SHRINKS it by 2 (remove), and
+    // 2. THE TRIO / LENGTH LAW -- the same span [1, 1+2) meets silence three ways: silence_span KEEPS the length (overwrite), ALES2's cut SHRINKS it by 2 (remove), and
     //    ALES109's insert_silence GROWS it by 2 (open). One span, three lengths, proven side by side.
     {
         const src = [_]i16{ 10, 20, 30, 40 };
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(opened.samples(), &[_]i16{ 10, 0, 0, 20, 30, 40 })) return error.InsertWrong;
     }
 
-    // 3. THE IDEMPOTENCE / PEAK LAW — silencing a span twice equals once, and the peak re-measured through ALES13 is non-increasing: silencing the span that holds the
+    // 3. THE IDEMPOTENCE / PEAK LAW -- silencing a span twice equals once, and the peak re-measured through ALES13 is non-increasing: silencing the span that holds the
     //    loudest sample strictly lowers the peak, silencing an already-silent span holds it.
     {
         var idem = timeline.Clip{};
@@ -152,7 +152,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&keep_peak) != kb) return error.KeepPeakMoved;
     }
 
-    // 4a. THE DEGENERATE LAW — count 0 is the identity (nothing clears), silence_span(0, len) clears the whole clip, and the empty clip is its own silence.
+    // 4a. THE DEGENERATE LAW -- count 0 is the identity (nothing clears), silence_span(0, len) clears the whole clip, and the empty clip is its own silence.
     {
         var idc = timeline.Clip{};
         try load_clip(&idc, &[_]i16{ 7, 8, 9 });
@@ -169,7 +169,7 @@ fn run_selftest() !u8 {
         if (empty.len != 0) return error.EmptyChanged;
     }
 
-    // 4b. THE REFUSAL LAW — a `start` past the current samples and a `count` past the remainder each refuse BadRange before any write, the clip untouched.
+    // 4b. THE REFUSAL LAW -- a `start` past the current samples and a `count` past the remainder each refuse BadRange before any write, the clip untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         if (silence_span(&clip, 2, 5)) |_| return error.CountNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // The clip is untouched by the refused calls — each refusal came before any write.
+        // The clip is untouched by the refused calls -- each refusal came before any write.
         if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
     }
 

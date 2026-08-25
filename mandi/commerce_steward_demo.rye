@@ -1,6 +1,6 @@
-//! mandi/commerce_steward_demo.rye — Commerce citizen steward demo (tip 419).
+//! mandi/commerce_steward_demo.rye -- Commerce citizen steward demo (tip 419).
 //!
-//! List on Mandi → settle (MALA + in-memory WOV) → Dimeroll receipt.
+//! List on Mandi -> settle (MALA + in-memory WOV) -> Dimeroll receipt.
 //! Live TB and WOV seam B stay closed.
 //!
 //!   rye build mandi/commerce_steward_demo.rye -femit-bin=mandi/bin/commerce-steward
@@ -122,7 +122,7 @@ fn run_selftest(io: std.Io) !u8 {
     try settle.record_settle(&settled, &listing_receipt);
     print("commerce steward: listed 25 murr — settled\n", .{});
 
-    // 5. Dimeroll receipt — welcome journal + vessel sale.
+    // 5. Dimeroll receipt -- welcome journal + vessel sale.
     var journal_buf: [gc.max_journal_len]u8 = undefined;
     const journal = try std.fmt.bufPrint(
         &journal_buf,

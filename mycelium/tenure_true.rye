@@ -1,9 +1,9 @@
-//! mycelium/tenure_true.rye — the Tenure reads a real contested fixture true (r4, the arc closes).
+//! mycelium/tenure_true.rye -- the Tenure reads a real contested fixture true (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the contested-name verdict · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the contested-name verdict - rung r4.
 //! Design read: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 //!
-//! r1 fixed the verdict, r2 let it travel, r3 read it across a Knot — all over Dags
+//! r1 fixed the verdict, r2 let it travel, r3 read it across a Knot -- all over Dags
 //! seated in code. This closing rung carries the reader onto a **real** on-disk Cord
 //! record carrying a genuine name-contest a keeper can open and walk, and proves the
 //! property the whole namespace rests on: the WINNER of a contested name is true to the
@@ -12,19 +12,19 @@
 //! The corpus is `tools/fixtures/tenure_dag.bron`, a genuine record produced
 //! reproducibly by `mycelium/tenure_fixture_gen.rye` (genesis funds; "vega" uncontested;
 //! "bandun" reserved by one keeper at round 1 and contested by another at round 2),
-//! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` — no
+//! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no
 //! network, the bytes read are the tree's own. Two independent readings must agree: the
 //! app parses the record through `cord_bron`, **rebuilds** the Dag under `cord.add`
 //! (re-verifying every signature), resolves it through `tenure`, and reports the
 //! **holder of "bandun"** (the winning signer), the **held count**, and the **reservation
 //! count**; the r4 witness cross-checks that triple against
-//! `tools/fixtures/tenure_dag_truth.awk`'s reading of the same file — two tools, one
+//! `tools/fixtures/tenure_dag_truth.awk`'s reading of the same file -- two tools, one
 //! answer. The awk applies the simplest honest slice of the agreed order (earlier round
 //! wins); the app applies the full commit tie-break; on this fixture the rounds differ,
 //! so both name the same holder.
 //!
-//! Additive — composes `cord_bron` + `cord` + `tenure` public API only (each re-runs
-//! GREEN). Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Additive -- composes `cord_bron` + `cord` + `tenure` public API only (each re-runs
+//! GREEN). Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/tenure_true.rye -femit-bin=mycelium/bin/tenure_true
 //!   mycelium/bin/tenure_true selftest | measure
@@ -38,15 +38,15 @@ const tenure = @import("tenure.rye");
 
 pub const tenure_true_version = "20260813.062952";
 
-/// The real contested Cord record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real contested Cord record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_dag = @embedFile("corpora/tenure_dag.bron");
 
-/// The contested name this fixture carries — the one two keepers reach for at once.
+/// The contested name this fixture carries -- the one two keepers reach for at once.
 const contested_name = "bandun";
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the same width the record's signer field carries, so the app's
+/// Encode bytes to lowercase hex -- the same width the record's signer field carries, so the app's
 /// holder and awk's winning signer are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -70,7 +70,7 @@ pub const Reading = struct {
 /// signature), resolve it through the Tenure, and read off the holder of the contested name.
 pub fn read_tenure(text: []const u8) !Reading {
     const pl = try cord_bron.parse(text);
-    // invariant: a real contested record carries blocks — an empty Dag holds no contest to read.
+    // invariant: a real contested record carries blocks -- an empty Dag holds no contest to read.
     if (pl.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&pl);
     const verdict = try tenure.resolve(&dag);
@@ -84,7 +84,7 @@ pub fn read_tenure(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must name one winner.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_tenure(real_dag);
@@ -95,22 +95,22 @@ fn welcome_reading_true_to_bytes() !void {
     print("tenure-true: the holder of the contested name, the held count, and the reservation count match an independent reading of the same bytes.\n", .{});
 }
 
-/// The winner read from the real bytes is the round-1 reservation, not the round-2 contestant — the
+/// The winner read from the real bytes is the round-1 reservation, not the round-2 contestant -- the
 /// earlier round holds the name, exactly as the agreed order rules.
 fn welcome_winner_is_the_earlier_round() !void {
     const pl = try cord_bron.parse(real_dag);
     var dag = try cord_bron.rebuild(&pl);
     const verdict = try tenure.resolve(&dag);
-    // Exactly one contested loss recorded — "bandun" reached for twice, granted once.
+    // Exactly one contested loss recorded -- "bandun" reached for twice, granted once.
     assert(verdict.contest_count == 1);
     const loser = verdict.contests[0].loser_pk[0..];
     const winner = verdict.holder_of(contested_name) orelse return error.ContestedNameFree;
-    // invariant: the winner is not the loser — the order turned exactly one keeper away.
+    // invariant: the winner is not the loser -- the order turned exactly one keeper away.
     assert(!std.mem.eql(u8, winner, loser));
     print("tenure-true: the winner of the contested name holds it; the round-2 contestant is a recorded loss, holding nothing.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true. A
 /// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse `BadSignature` at add.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<winner-hex> <held> <reservations>`), so the witness can compare
-/// the app's reading against `tenure_dag_truth.awk` byte for byte — two tools, one answer.
+/// the app's reading against `tenure_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_tenure(real_dag);
     print("{s} {d} {d}\n", .{ r.winner_hex, r.held, r.reservations });

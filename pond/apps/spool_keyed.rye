@@ -1,10 +1,10 @@
-//! pond/apps/spool_keyed.rye — GISM red %73 follow: the owner-signed large-artifact store.
+//! pond/apps/spool_keyed.rye -- GISM red %73 follow: the owner-signed large-artifact store.
 //!
 //! Season 2, Yield. The spool (mantra/spool.rye) closed red %73 by winding a large
 //! artifact across ordered resins; spool_cloth (pond/apps/spool_cloth.rye) bound a human
 //! name to a whole spool. This rung is the true payoff red %73 was reaching for:
 //! **provenance on a large real document**. It is tablecloth_keyed's sibling for large
-//! artifacts — a name does not merely pin a large document's bytes; a settled Kumara
+//! artifacts -- a name does not merely pin a large document's bytes; a settled Kumara
 //! **identity** vouches for which bytes, and only that identity may publish under the
 //! catalog. A real front-door document (SECURITY.md, TWO_ROOMS.md), far too large for
 //! one resin, is now owner-signed, stored across resins, and fetched back byte-for-byte,
@@ -12,7 +12,7 @@
 //!
 //! The gate mirrors tablecloth_keyed's exactly: the owner presents the point's Deed
 //! (verified against the constellation's shared surface) and signs the exact publication
-//! — the point, the whole length, the name, and a SHA-256 of the whole content — so a
+//! -- the point, the whole length, the name, and a SHA-256 of the whole content -- so a
 //! stolen id cannot publish for another identity, a forged signature cannot publish at
 //! all, and a tampered large artifact refuses before a single resin is wound. It invents
 //! no signing and no storage: it composes tablecloth_keyed's public signing/verify
@@ -57,8 +57,8 @@ pub const KeyedLargeCatalog = struct {
 };
 
 /// Publish a large artifact owned by a settled point. The owner presents the point's
-/// Deed — verified against the constellation, so it is the current member — and signs the
-/// exact publication (point · whole length · name · SHA-256 of the whole content). Only
+/// Deed -- verified against the constellation, so it is the current member -- and signs the
+/// exact publication (point - whole length - name - SHA-256 of the whole content). Only
 /// then is the content wound across resins and named (spool_cloth's store_large), and the
 /// owning point recorded. A non-owner refuses (NotOwner), a forged or content-mismatched
 /// signature refuses (BadSignature) before a single resin is wound, and spool_cloth's own
@@ -72,7 +72,7 @@ pub fn store_owned_large(
     content: []const u8,
     keeper_sig: *const [sig_len]u8,
 ) (beading.BeadError || spool.SpoolError || cloth.ClothError || keyed.KeyError)!spool.SpoolReport {
-    // invariant: the caller owns the point — its deed is the current member
+    // invariant: the caller owns the point -- its deed is the current member
     if (!settlement.verify(con, deed)) return error.NotOwner;
     const cd = keyed.digest_of(content);
     // invariant: the keeper signed this exact whole content under this name for this point
@@ -87,7 +87,7 @@ pub fn store_owned_large(
     return report;
 }
 
-/// Fetch an owned large artifact by name — exactly spool_cloth's fetch over the wrapped
+/// Fetch an owned large artifact by name -- exactly spool_cloth's fetch over the wrapped
 /// catalog, every bead proven by digest, every resin by its whole-digest, the whole by
 /// its content address.
 pub fn fetch_owned_large(
@@ -108,8 +108,8 @@ pub fn owner_of(kc: *const KeyedLargeCatalog, name: []const u8) ?u32 {
     return kc.owners[i];
 }
 
-/// Resolve a publishing point to its place in the d12·d60 fractal — the galaxy, star, or
-/// planet the owner settled as — or null if the number has no place.
+/// Resolve a publishing point to its place in the d12-d60 fractal -- the galaxy, star, or
+/// planet the owner settled as -- or null if the number has no place.
 pub fn place_of(point: u32) ?topology.Address {
     return topology.decode(point);
 }
@@ -162,7 +162,7 @@ fn seat_world() !World {
     return .{ .con = con, .star = star, .planet = planet };
 }
 
-// An unsettled deed for a point that never settled — used to prove the non-owner refusal.
+// An unsettled deed for a point that never settled -- used to prove the non-owner refusal.
 fn ghost_deed(point: u32) settlement.Deed {
     const addr = topology.decode(point).?;
     const zero: [pubkey_len]u8 = .{0} ** pubkey_len;
@@ -180,7 +180,7 @@ fn ghost_deed(point: u32) settlement.Deed {
 }
 
 // Two real front-door documents, far too large for one resin, embedded at compile time
-// through the corpora symlinks — the bytes a keeper reads, owner-signed and wound whole.
+// through the corpora symlinks -- the bytes a keeper reads, owner-signed and wound whole.
 const doc_security = @embedFile("corpora/security.md");
 const doc_two_rooms = @embedFile("corpora/two_rooms.md");
 
@@ -190,7 +190,7 @@ fn run_spool_keyed_selftest() !u8 {
     var kc: KeyedLargeCatalog = .empty();
     var out: [spool.max_content_bytes]u8 = undefined;
 
-    // invariant: both documents genuinely exceed one resin — this store earns its keep
+    // invariant: both documents genuinely exceed one resin -- this store earns its keep
     // only on artifacts the small owner-signed catalog could not hold
     assert(doc_security.len > beading.max_resin_bytes);
     assert(doc_two_rooms.len > beading.max_resin_bytes);
@@ -220,7 +220,7 @@ fn run_spool_keyed_selftest() !u8 {
     if (star_place.tier != .star) return error.PlaceNotStar;
     if (owner_of(&kc, "absent.md") != null) return error.GhostOwner;
 
-    // Unwelcome: a non-owner cannot publish — a ghost deed for a point that never settled
+    // Unwelcome: a non-owner cannot publish -- a ghost deed for a point that never settled
     // refuses, and not a single resin is wound.
     const ghost = ghost_deed(500);
     const gsig = keyed.sign_publication(&p_keeper, 500, "ghost.md", doc_security);
@@ -232,7 +232,7 @@ fn run_spool_keyed_selftest() !u8 {
     }
     assert(kc.cat.count == before_ghost); // the refusal wound nothing
 
-    // Unwelcome: a forged signature refuses — the keeper never signed this publication.
+    // Unwelcome: a forged signature refuses -- the keeper never signed this publication.
     const zero_sig: [sig_len]u8 = .{0} ** sig_len;
     if (store_owned_large(&kc, &store, &w.con, &w.planet, "forged.md", doc_security, &zero_sig)) |_| {
         return error.ForgedPublished;
@@ -240,7 +240,7 @@ fn run_spool_keyed_selftest() !u8 {
         assert(err == error.BadSignature);
     }
 
-    // Unwelcome: a signature over other content refuses — the whole content's digest is
+    // Unwelcome: a signature over other content refuses -- the whole content's digest is
     // bound in, so a tampered large artifact cannot ride a real signature.
     const tsig = keyed.sign_publication(&p_keeper, planet_num, "tamper.md", doc_security);
     if (store_owned_large(&kc, &store, &w.con, &w.planet, "tamper.md", doc_two_rooms, &tsig)) |_| {
@@ -250,7 +250,7 @@ fn run_spool_keyed_selftest() !u8 {
     }
 
     // Unwelcome: a tampered bead refuses the fetch by digest even after an honest publish
-    // — content-addressed storage guards the large artifact end to end.
+    // -- content-addressed storage guards the large artifact end to end.
     {
         var store_t: beading.BeadStore = .empty();
         var kc_t: KeyedLargeCatalog = .empty();

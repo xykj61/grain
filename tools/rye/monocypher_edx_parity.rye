@@ -1,14 +1,14 @@
-//! tools/rye/monocypher_edx_parity.rye — our authored crypto/ed25519_to_x25519.rye asked for its OWN Edwards↔Montgomery key conversion, printed one
+//! tools/rye/monocypher_edx_parity.rye -- our authored crypto/ed25519_to_x25519.rye asked for its OWN Edwards<->Montgomery key conversion, printed one
 //! 64-hex-character value per line, so tools/cr/crypto_monocypher_edx_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_edx_harness.c) byte-for-byte — the identity-unification map that lets one Ed25519 key both sign and agree, proven
-//! against the audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! (tools/fixtures/monocypher_edx_harness.c) byte-for-byte -- the identity-unification map that lets one Ed25519 key both sign and agree, proven
+//! against the audit's parity target. Season G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
-//! The three printed lines are, in order: eddsa_to_x25519(Edwards base) — RFC 7748 §4.1 fixes it to u = 9; eddsa_to_x25519(RFC 8032 Test 1 public
-//! key) — the real second-implementation oracle; and x25519_to_eddsa(X25519 base u = 9) — RFC 7748 §4.1 fixes it to the sign-0 Edwards base
-//! encoding 5866…66. So the parity witness compares like against like over identical inputs.
+//! The three printed lines are, in order: eddsa_to_x25519(Edwards base) -- RFC 7748 §4.1 fixes it to u = 9; eddsa_to_x25519(RFC 8032 Test 1 public
+//! key) -- the real second-implementation oracle; and x25519_to_eddsa(X25519 base u = 9) -- RFC 7748 §4.1 fixes it to the sign-0 Edwards base
+//! encoding 5866...66. So the parity witness compares like against like over identical inputs.
 //!
-//! This authors NO cryptography — it is a printing harness over the GREEN crypto/ed25519_to_x25519.rye (reached through the tools/*.rye symlinks,
-//! since Rye resolves imports beside the importing file). Purely local — no key of ours, no network, no funds, no device.
+//! This authors NO cryptography -- it is a printing harness over the GREEN crypto/ed25519_to_x25519.rye (reached through the tools/*.rye symlinks,
+//! since Rye resolves imports beside the importing file). Purely local -- no key of ours, no network, no funds, no device.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_edx_parity.rye
@@ -39,7 +39,7 @@ const x_base_u = [_]u8{
 
 const hex_alphabet = "0123456789abcdef";
 
-/// print_bytes — render a 32-byte value as a line of 64 lowercase hex characters.
+/// print_bytes -- render a 32-byte value as a line of 64 lowercase hex characters.
 fn print_bytes(b: *const [32]u8) void {
     var out: [64]u8 = undefined;
     var i: u32 = 0;
@@ -48,7 +48,7 @@ fn print_bytes(b: *const [32]u8) void {
         out[i * 2] = hex_alphabet[b[i] >> 4];
         out[i * 2 + 1] = hex_alphabet[b[i] & 0x0f];
     }
-    // invariant (postcondition): the rendered line is the fixed 64-character width — a full 32-byte value, never a truncation.
+    // invariant (postcondition): the rendered line is the fixed 64-character width -- a full 32-byte value, never a truncation.
     assert(out.len == 64);
     print("{s}\n", .{out});
 }
@@ -67,7 +67,7 @@ pub fn main(init: std.process.Init) !u8 {
     const rfc_u = edx.eddsa_to_x25519(&rfc8032_pub);
     print_bytes(&rfc_u);
 
-    // 3. Reverse map of the X25519 base u = 9: expected the sign-0 Edwards base encoding 5866…66.
+    // 3. Reverse map of the X25519 base u = 9: expected the sign-0 Edwards base encoding 5866...66.
     const base_y = edx.x25519_to_eddsa(&x_base_u);
     print_bytes(&base_y);
 

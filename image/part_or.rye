@@ -1,22 +1,22 @@
-//! image/part_or.rye — HUNK83: an OR of clauses — widen the marketplace to the parts matching ANY facet.
+//! image/part_or.rye -- HUNK83: an OR of clauses -- widen the marketplace to the parts matching ANY facet.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK83.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK83.
 //! Design read: active-designing/date/20260814/20260814-004500_hunk-part-or-any-of-query-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens the wall to
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- checking two values of one facet widens the wall to
 //! the union of both (concept only, siloed).
 //!
-//! HUNK78 gave the marketplace a conjunction — a line of clauses narrowing to the parts that satisfy EVERY one. Yet a
+//! HUNK78 gave the marketplace a conjunction -- a line of clauses narrowing to the parts that satisfy EVERY one. Yet a
 //! real facet sidebar also WIDENS: a keeper who checks both `material:stainless-304` and `material:brass` wants the
 //! union, the parts matching EITHER. This rung is that disjunction, dual to HUNK78. `parse_or` reads a
 //! whitespace-separated line of `key:value` clauses into a bounded `OrQuery`, and `filter_or` builds the sub-catalog of
-//! parts that satisfy ANY clause, over the same shared sheet — an ordinary `PartCatalog` that paints, pages, and
+//! parts that satisfy ANY clause, over the same shared sheet -- an ordinary `PartCatalog` that paints, pages, and
 //! round-trips like any other.
 //!
 //! The crux is that a line of clauses under OR MEANS THE UNION OF THEIR MATCHES, and the clauses commute: `filter_or`
-//! keeps exactly the parts that pass at least one clause, in held order, each part once — because HUNK75's `matches`
+//! keeps exactly the parts that pass at least one clause, in held order, each part once -- because HUNK75's `matches`
 //! already reads the stored facts, a disjunction is just `matches` asked of every clause with an OR. The honest
 //! identity is the De Morgan dual of AND's: where an empty AND is a match-ALL (all-of-nothing is true), an empty OR is
-//! a match-NONE (any-of-nothing is false) — a keeper who has typed nothing under OR has named no way to match. And OR
+//! a match-NONE (any-of-nothing is false) -- a keeper who has typed nothing under OR has named no way to match. And OR
 //! is always a SUPERSET of AND over the same clauses: every part the conjunction keeps, the disjunction keeps too.
 //!
 //! A price clause COMPARES a recorded cent count; nothing is moved (custody gate %3 untouched). No network, no key,
@@ -36,7 +36,7 @@ const part_and = @import("part_and.rye");
 
 pub const part_or_version = "20260814.004500";
 
-/// The most facets a keeper widens on at once — the same handful the conjunction admits, so AND and OR share one
+/// The most facets a keeper widens on at once -- the same handful the conjunction admits, so AND and OR share one
 /// ceiling and the cross-check (OR superset of AND) is measured at equal width (TAME bound).
 pub const max_clauses: u32 = part_and.max_clauses;
 
@@ -45,14 +45,14 @@ pub const OrError = error{
 };
 
 /// A disjunction of widening clauses: the parts kept are those that satisfy AT LEAST ONE clause. The clause slice's
-/// text operands borrow into the caller's own typed line (never copied), exactly as one `part_filter.Query` does — so
+/// text operands borrow into the caller's own typed line (never copied), exactly as one `part_filter.Query` does -- so
 /// the `OrQuery` lives no longer than the line it was parsed from. Zero clauses is a valid match-none query.
 pub const OrQuery = struct {
     clauses: [max_clauses]part_filter.Query = undefined,
     count: u32 = 0,
 };
 
-/// Parse one line a keeper typed — several space-separated `key:value` clauses — into the `OrQuery` it means. Blank
+/// Parse one line a keeper typed -- several space-separated `key:value` clauses -- into the `OrQuery` it means. Blank
 /// runs between clauses are skipped, so extra spacing is tolerated. Each clause is parsed by HUNK76's own
 /// `parse_query`, so every single-clause law (the four keys, the price ceiling, the named refusals) is reused verbatim;
 /// a malformed clause surfaces the parser's own error. Zero clauses (an empty or all-blank line) is a match-none query.
@@ -60,7 +60,7 @@ pub fn parse_or(text: []const u8) !OrQuery {
     var oq = OrQuery{};
     var it = std.mem.tokenizeScalar(u8, text, ' ');
     while (it.next()) |tok| {
-        // invariant: a tokenized clause is never empty — tokenizeScalar skips blank runs.
+        // invariant: a tokenized clause is never empty -- tokenizeScalar skips blank runs.
         assert(tok.len > 0);
         if (oq.count == max_clauses) return error.TooManyClauses;
         // invariant: there is room for one more clause before it is written.
@@ -86,7 +86,7 @@ fn check_clauses(oq: OrQuery) part_filter.FilterError!void {
     }
 }
 
-/// Does the i-th part of `cat` satisfy AT LEAST ONE clause? An empty clause set is trivially false — a match-none
+/// Does the i-th part of `cat` satisfy AT LEAST ONE clause? An empty clause set is trivially false -- a match-none
 /// query (the De Morgan dual of `matches_all`'s empty-is-true). Each clause is checked by HUNK75's own `matches`, so
 /// the disjunction reads exactly the stored facts, never a copy.
 pub fn matches_any(cat: *const part_catalog.PartCatalog, i: u32, oq: OrQuery) bool {
@@ -101,7 +101,7 @@ pub fn matches_any(cat: *const part_catalog.PartCatalog, i: u32, oq: OrQuery) bo
     return false;
 }
 
-/// How many parts pass any clause — a bounded walk of the whole catalog, so a caller can size a page before it
+/// How many parts pass any clause -- a bounded walk of the whole catalog, so a caller can size a page before it
 /// filters. The count never exceeds the catalog's own length.
 pub fn count_or(cat: *const part_catalog.PartCatalog, oq: OrQuery) !u32 {
     try check_clauses(oq);
@@ -119,11 +119,11 @@ pub fn count_or(cat: *const part_catalog.PartCatalog, oq: OrQuery) !u32 {
     return kept;
 }
 
-/// Widen `cat` into `out` — a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that satisfy
+/// Widen `cat` into `out` -- a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that satisfy
 /// at least one clause, in held order, each part once. Each match is re-added through `add_part` with its own window
 /// and facts, validated once by the source catalog, so the rebuild never half-adds. A zero-clause query yields a real
 /// empty catalog (match-none); a query whose clauses together match everything reproduces the catalog. The result is
-/// an ordinary `PartCatalog` — it paints, pages, and round-trips like any other, so a disjunction composes with a
+/// an ordinary `PartCatalog` -- it paints, pages, and round-trips like any other, so a disjunction composes with a
 /// further narrowing.
 pub fn filter_or(
     cat: *const part_catalog.PartCatalog,
@@ -149,7 +149,7 @@ pub fn filter_or(
     assert(out.len() <= cat.len());
 }
 
-// --- selftest: five parts across three materials and a price spread — parse a multi-clause line, prove the disjunction
+// --- selftest: five parts across three materials and a price spread -- parse a multi-clause line, prove the disjunction
 //     keeps exactly the union, that a single clause behaves like the plain filter, that the clauses commute, that an
 //     empty line is a match-none, that OR is a superset of AND over the same clauses, and that a malformed clause and
 //     an over-many-clause line each refuse by name -----------------------------------------------------------------
@@ -173,14 +173,14 @@ fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The held-order names a catalog holds — walk it and collect its product names into `names`.
+/// The held-order names a catalog holds -- walk it and collect its product names into `names`.
 fn kept_names(cat: *const part_catalog.PartCatalog, names: [][]const u8) u32 {
     var i: u32 = 0;
     while (i < cat.len()) : (i += 1) names[i] = cat.index.entry(i).name;
     return cat.len();
 }
 
-/// Whether a catalog holds a part by this name — a small membership reader the union reference leans on.
+/// Whether a catalog holds a part by this name -- a small membership reader the union reference leans on.
 fn holds(cat: *const part_catalog.PartCatalog, name: []const u8) bool {
     var i: u32 = 0;
     while (i < cat.len()) : (i += 1) {
@@ -202,7 +202,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var typed: [sprite.max_products][]const u8 = undefined;
 
     // A two-clause line under OR means the UNION: stainless-304 OR brass keeps every stainless part (bolt, hexnut) plus
-    // every brass part (none here) — so the two stainless parts, in held order. Each part once.
+    // every brass part (none here) -- so the two stainless parts, in held order. Each part once.
     {
         const oq = try parse_or("material:stainless-304 material:brass");
         assert(oq.count == 2);
@@ -216,7 +216,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A disjunction across DIFFERENT facets: stainless-304 OR at most 10 cents keeps the two stainless parts (bolt,
-    // hexnut) plus the two cheapest (washer 7c, pin... 30c is dearer than 10c, so only washer) — the union bolt,
+    // hexnut) plus the two cheapest (washer 7c, pin... 30c is dearer than 10c, so only washer) -- the union bolt,
     // washer, hexnut, in held order, each once. The membership reference confirms every kept part passes some clause
     // and every dropped part passes none.
     {
@@ -236,7 +236,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The clauses COMMUTE — the same union, in the same held order, whichever clause is named first (held order is the
+    // The clauses COMMUTE -- the same union, in the same held order, whichever clause is named first (held order is the
     // catalog's, not the clauses').
     {
         const forward = try parse_or("material:stainless-304 max:10");
@@ -253,7 +253,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         while (i < an) : (i += 1) assert(std.mem.eql(u8, typed[i], bn_names[i]));
     }
 
-    // A single clause under OR behaves exactly like HUNK75's own filter — the OR of one is that one.
+    // A single clause under OR behaves exactly like HUNK75's own filter -- the OR of one is that one.
     {
         const oq = try parse_or("material:stainless-304");
         assert(oq.count == 1);
@@ -265,7 +265,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, typed[1], "hexnut"));
     }
 
-    // An empty (all-blank) line under OR is a MATCH-NONE — the De Morgan dual of AND's match-all. A keeper who has
+    // An empty (all-blank) line under OR is a MATCH-NONE -- the De Morgan dual of AND's match-all. A keeper who has
     // named no way to match keeps nothing.
     {
         const oq = try parse_or("   ");
@@ -276,7 +276,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(sub.len() == 0);
     }
 
-    // OR is always a SUPERSET of AND over the same clauses — every part the conjunction keeps, the disjunction keeps.
+    // OR is always a SUPERSET of AND over the same clauses -- every part the conjunction keeps, the disjunction keeps.
     // stainless-304 max:60 under AND keeps only hexnut; under OR it keeps stainless (bolt, hexnut) union cheap (washer,
     // hexnut, pin) = bolt, washer, hexnut, pin. Every AND match is an OR match.
     {
@@ -291,13 +291,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         while (i < and_sub.len()) : (i += 1) {
             assert(holds(&or_sub, and_sub.index.entry(i).name));
         }
-        // And the OR is strictly wider here — it keeps more than the conjunction did.
+        // And the OR is strictly wider here -- it keeps more than the conjunction did.
         assert(or_sub.len() > and_sub.len());
         assert(and_sub.len() == 1); // hexnut alone
         assert(or_sub.len() == 4); // bolt, washer, hexnut, pin
     }
 
-    // A malformed clause surfaces the parser's own named refusal — a bad OR draws nothing, never a wrong shelf.
+    // A malformed clause surfaces the parser's own named refusal -- a bad OR draws nothing, never a wrong shelf.
     if (parse_or("material:stainless-304 color:red")) |_| return error.BadClauseSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongClause;
     }
@@ -305,7 +305,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.NoColon) return error.WrongClause;
     }
 
-    // Over-many clauses refuse by name — one past the ceiling, before the catalog is walked.
+    // Over-many clauses refuse by name -- one past the ceiling, before the catalog is walked.
     {
         var line: [max_clauses * 8 + 16]u8 = undefined;
         var n: u32 = 0;

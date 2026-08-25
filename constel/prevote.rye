@@ -1,26 +1,26 @@
-//! constel/prevote.rye — FORA22: a partitioned pier cannot disrupt a stable sky (Raft §9.6, pre-vote). FORA16 made a monotonic
-//! term the guard against a stale leader — a leader whose term the sky has passed can never commit. That guard has a liveness
+//! constel/prevote.rye -- FORA22: a partitioned pier cannot disrupt a stable sky (Raft §9.6, pre-vote). FORA16 made a monotonic
+//! term the guard against a stale leader -- a leader whose term the sky has passed can never commit. That guard has a liveness
 //! cost:
 //!
-//!   A pier partitioned away keeps hitting its election timeout, and each timeout INCREMENTS its term — so its term balloons in
+//!   A pier partitioned away keeps hitting its election timeout, and each timeout INCREMENTS its term -- so its term balloons in
 //!   isolation. When the partition heals and it rejoins, its very high term forces the CURRENT, HEALTHY leader to step down (a
 //!   higher term always wins), triggering a needless election. The sky was stable; one disconnected node disrupts it, and it can
 //!   repeat every time that node's term climbs again.
 //!
 //! Pre-vote is Raft's answer: a candidate must win a PRACTICE election before it is allowed to bump its real term. In a pre-vote
-//! round NO node changes its term; each peer answers "would I vote for you next term?" and pre-grants only when BOTH hold — it has
+//! round NO node changes its term; each peer answers "would I vote for you next term?" and pre-grants only when BOTH hold -- it has
 //! NOT heard from a current leader recently (its own timeout elapsed), AND the candidate's log is at least as up-to-date (FORA21's
 //! at_least_as_current, reused). Only if a MAJORITY pre-grant does the candidate increment its real term. So a partitioned node,
 //! however high its private term, can never force the sky to move until a majority already agree the leader is gone.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA22. Design read: active-designing/date/20260814/20260814-084500_fora22-constel-prevote-no-disruption.md
-//! Stands on: constel/vote.rye (FORA21) — at_least_as_current, the up-to-date check a pre-vote reuses unchanged; constel/quorum.rye
-//! (FORA9) — the majority threshold; constel/roster.rye (FORA1) — the bound.
+//! Stands on: constel/vote.rye (FORA21) -- at_least_as_current, the up-to-date check a pre-vote reuses unchanged; constel/quorum.rye
+//! (FORA9) -- the majority threshold; constel/roster.rye (FORA1) -- the bound.
 //!
-//! Purely LOCAL — a bounded pre-vote count and per-peer leader-contact flags on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real
-//! wire — and gate %4 — real Kumara — both untouched). A served pre-vote reaches the Comlink-served gate; the socket rung stays
+//! Purely LOCAL -- a bounded pre-vote count and per-peer leader-contact flags on one bench, siloed to constel/, run from inside the
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real
+//! wire -- and gate %4 -- real Kumara -- both untouched). A served pre-vote reaches the Comlink-served gate; the socket rung stays
 //! the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/prevote.rye selftest
@@ -44,7 +44,7 @@ pub const Peer = struct {
 };
 
 /// A PEER PRE-GRANTS iff BOTH conditions hold: it has NOT heard from a current leader recently (its timeout elapsed), AND the
-/// candidate's log is at least as up-to-date as the peer's own (FORA21's rule, reused unchanged). Either condition alone is a no —
+/// candidate's log is at least as up-to-date as the peer's own (FORA21's rule, reused unchanged). Either condition alone is a no --
 /// a peer that still hears a leader never pre-grants, and a behind candidate is refused here exactly as in a real vote.
 pub fn pre_grants(peer: *const Peer, cand_last_term: u32, cand_len: u32) bool {
     // invariant: a pre-grant never fires while the peer still hears a healthy leader.
@@ -66,7 +66,7 @@ pub fn pre_vote_tally(peers: []const Peer, cand_last_term: u32, cand_len: u32) u
     return grants;
 }
 
-/// Whether the pre-vote PASSES — a strict majority would pre-grant.
+/// Whether the pre-vote PASSES -- a strict majority would pre-grant.
 pub fn pre_vote_passes(peers: []const Peer, cand_last_term: u32, cand_len: u32, threshold: u32) bool {
     // invariant: the threshold is a real strict majority within the roster.
     assert(threshold >= 1 and threshold <= peers.len);
@@ -75,7 +75,7 @@ pub fn pre_vote_passes(peers: []const Peer, cand_last_term: u32, cand_len: u32, 
 
 /// BUMP THE REAL TERM ONLY AFTER A PRE-VOTE PASSES. Returns the term the candidate should carry into a real election: the SAME
 /// current_term (no disruption) when the pre-vote fails, or current_term + 1 when it passes. This is the whole anti-disruption
-/// guarantee — the real term never advances on a partitioned node's say-so alone.
+/// guarantee -- the real term never advances on a partitioned node's say-so alone.
 pub fn maybe_start_election(peers: []const Peer, cand_last_term: u32, cand_len: u32, current_term: u32, threshold: u32) u32 {
     // invariant: the current term leaves room to advance without overflow.
     assert(current_term < std.math.maxInt(u32));
@@ -91,20 +91,20 @@ fn run_selftest() !u8 {
     const five: u32 = 5;
     const th = quorum.majority_of(five); // 3
 
-    // 1. A PEER PRE-GRANTS ONLY WHEN BOTH CONDITIONS HOLD — leader-silence AND an up-to-date candidate.
+    // 1. A PEER PRE-GRANTS ONLY WHEN BOTH CONDITIONS HOLD -- leader-silence AND an up-to-date candidate.
     {
-        // A peer that has lost the leader and whose log the candidate matches — pre-grants.
+        // A peer that has lost the leader and whose log the candidate matches -- pre-grants.
         const silent_current = Peer{ .heard_leader_recently = false, .last_term = 2, .len = 3 };
         assert(pre_grants(&silent_current, 2, 3)); // both hold
-        // The SAME peer while it still hears the leader — never pre-grants, however current the candidate.
+        // The SAME peer while it still hears the leader -- never pre-grants, however current the candidate.
         const hearing = Peer{ .heard_leader_recently = true, .last_term = 2, .len = 3 };
         assert(!pre_grants(&hearing, 2, 3)); // still hears a leader — no
-        // A silent peer, but the candidate is BEHIND (shorter at the same term) — refused by the up-to-date rule.
+        // A silent peer, but the candidate is BEHIND (shorter at the same term) -- refused by the up-to-date rule.
         const silent_ahead = Peer{ .heard_leader_recently = false, .last_term = 2, .len = 5 };
         assert(!pre_grants(&silent_ahead, 2, 3)); // candidate one short — no
     }
 
-    // 2. A STABLE SKY IS NOT DISRUPTED — the crux. A majority of five still HEAR a healthy leader; a rejoining candidate whose
+    // 2. A STABLE SKY IS NOT DISRUPTED -- the crux. A majority of five still HEAR a healthy leader; a rejoining candidate whose
     //    PRIVATE term ballooned to 99 and whose log is fully current still fails the pre-vote, and its real term is NOT bumped.
     {
         const peers = [_]Peer{
@@ -114,14 +114,14 @@ fn run_selftest() !u8 {
             .{ .heard_leader_recently = false, .last_term = 2, .len = 3 }, // only two have lost contact
             .{ .heard_leader_recently = false, .last_term = 2, .len = 3 },
         };
-        // The candidate is up-to-date (term 2, len 3) and its private term is enormous — yet it may not bump a real term.
+        // The candidate is up-to-date (term 2, len 3) and its private term is enormous -- yet it may not bump a real term.
         assert(pre_vote_tally(&peers, 2, 3) == 2); // only the two silent peers pre-grant
         assert(!pre_vote_passes(&peers, 2, 3, th)); // below the majority — the pre-vote FAILS
         const real_term = maybe_start_election(&peers, 2, 3, 5, th); // the leader's real term is 5; candidate's private term 99
         assert(real_term == 5); // UNCHANGED — the healthy leader is not forced to step down
     }
 
-    // 3. A GENUINELY LEADERLESS SKY DOES ELECT — when a majority HAVE lost the leader (real failure) and the candidate is current,
+    // 3. A GENUINELY LEADERLESS SKY DOES ELECT -- when a majority HAVE lost the leader (real failure) and the candidate is current,
     //    the pre-vote passes and only then is the term bumped. Pre-vote blocks disruption, never a true election.
     {
         const peers = [_]Peer{
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         assert(real_term == 6); // NOW the term advances by exactly one — a legitimate election begins
     }
 
-    // 4. A BEHIND CANDIDATE FAILS THE PRE-VOTE EVEN LEADERLESS — the up-to-date check (FORA21) still binds, so pre-vote never
+    // 4. A BEHIND CANDIDATE FAILS THE PRE-VOTE EVEN LEADERLESS -- the up-to-date check (FORA21) still binds, so pre-vote never
     //    elects an incomplete leader either.
     {
         const peers = [_]Peer{
@@ -147,13 +147,13 @@ fn run_selftest() !u8 {
             .{ .heard_leader_recently = false, .last_term = 2, .len = 3 },
             .{ .heard_leader_recently = false, .last_term = 2, .len = 3 },
         };
-        // ...but the candidate is BEHIND (term 2, len 2 — one entry short). No peer pre-grants.
+        // ...but the candidate is BEHIND (term 2, len 2 -- one entry short). No peer pre-grants.
         assert(pre_vote_tally(&peers, 2, 2) == 0);
         assert(!pre_vote_passes(&peers, 2, 2, th)); // incomplete candidate — pre-vote fails
         assert(maybe_start_election(&peers, 2, 2, 5, th) == 5); // term unchanged
     }
 
-    // 5. THE TERM IS BUMPED EXACTLY ONCE AND ONLY ON SUCCESS — a failed pre-vote leaves the term; a passed one advances it by one.
+    // 5. THE TERM IS BUMPED EXACTLY ONCE AND ONLY ON SUCCESS -- a failed pre-vote leaves the term; a passed one advances it by one.
     {
         const all_hearing = [_]Peer{
             .{ .heard_leader_recently = true, .last_term = 1, .len = 1 },
@@ -169,7 +169,7 @@ fn run_selftest() !u8 {
         assert(maybe_start_election(&all_silent, 1, 1, 7, quorum.majority_of(3)) == 8); // pass → +1 exactly
     }
 
-    // 6. BOUNDED — the pre-vote poll runs over a full roster of eight within the pier cap.
+    // 6. BOUNDED -- the pre-vote poll runs over a full roster of eight within the pier cap.
     {
         var peers: [roster.max_piers]Peer = [_]Peer{.{ .heard_leader_recently = false, .last_term = 1, .len = 1 }} ** roster.max_piers;
         const grants = pre_vote_tally(&peers, 1, 1); // every peer is silent and matched — all pre-grant

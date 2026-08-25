@@ -1,21 +1,21 @@
-//! pond/apps/commerce_trade_bron.rye — TACT Journey 4, Rung 3: the trade made portable.
+//! pond/apps/commerce_trade_bron.rye -- TACT Journey 4, Rung 3: the trade made portable.
 //!
 //! Rungs one and two booked a fair-value trade and proved it one both parties signed. A trade is
-//! only useful, though, if both sides can carry the identical fact — written to a file, pinned in
+//! only useful, though, if both sides can carry the identical fact -- written to a file, pinned in
 //! Tablecloth, or handed to the other keeper. This rung renders a signed trade to a
 //! `format trade-v1` Bron record and parses it back byte-for-byte, so the agreement survives the
 //! crossing intact.
 //!
-//! The crux is preservation: `parse(render(signed))` recovers an equal signed trade — same points,
-//! item, price, stamp, and both signatures — and the recovered trade still passes `both_agree`, so
+//! The crux is preservation: `parse(render(signed))` recovers an equal signed trade -- same points,
+//! item, price, stamp, and both signatures -- and the recovered trade still passes `both_agree`, so
 //! nothing about the two-party agreement was lost in becoming text. The reader is a purpose-built
 //! bounded Bron reader (flat `key value` lines, the tree's shared idiom), never a general parser:
 //! an unknown field refuses (never dropped), a missing field refuses, a wrong header refuses, and
 //! malformed hex refuses rather than decode to garbage.
 //!
-//! It composes rungs one and two — a recovered trade builds a `commerce.Trade` and a
+//! It composes rungs one and two -- a recovered trade builds a `commerce.Trade` and a
 //! `signed.SignedTrade` view over its own owned buffers, verified by rung two's `both_agree`. It
-//! reads no network — the serve transport that carries this record across the wire is the
+//! reads no network -- the serve transport that carries this record across the wire is the
 //! Comlink-served custody gate (Keaton's hand). Demo keeper seeds only.
 //!
 //!   rye build pond/apps/commerce_trade_bron.rye -femit-bin=pond/bin/commerce-trade-bron
@@ -137,7 +137,7 @@ pub fn render(signed: *const signed_mod.SignedTrade, out: []u8) BronError!u32 {
     return @intCast(text.len);
 }
 
-/// Split a line into its first-token key and trimmed remainder value — the flat-Bron idiom.
+/// Split a line into its first-token key and trimmed remainder value -- the flat-Bron idiom.
 fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     var sp: usize = 0; // seam: slice index over the source
     while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
@@ -246,7 +246,7 @@ fn trades_equal(a: *const signed_mod.SignedTrade, b: *const signed_mod.SignedTra
 }
 
 /// A signed trade renders to Bron and parses back byte-for-byte, and the recovered trade still
-/// passes both_agree — the two-party agreement survived the crossing whole.
+/// passes both_agree -- the two-party agreement survived the crossing whole.
 fn welcome_round_trip_preserves() !void {
     var buf: [max_record]u8 = undefined;
     const signed = demo_signed();
@@ -258,7 +258,7 @@ fn welcome_round_trip_preserves() !void {
     print("commerce_trade_bron: a signed trade round-tripped through Bron byte-for-byte and still passed both_agree.\n", .{});
 }
 
-/// An unknown field refuses — never silently dropped.
+/// An unknown field refuses -- never silently dropped.
 fn unwelcome_unknown_field_refuses() !void {
     const record = "format trade-v1\nseller 7\nbuyer 12\nitem x\nprice 1000\nstamp s\nseller-sig " ++ ("0" ** 128) ++ "\nbuyer-sig " ++ ("0" ** 128) ++ "\nsurprise yes\n";
     const parsed = parse(record);

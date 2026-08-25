@@ -1,27 +1,27 @@
-//! lotus/split_silence.rye — ALES97: the silence splitter — segment the clip through ALES95, then cut AT the silence, keeping each non-silent region as its own take.
-//! ALES95's own scope note named three tools its loop enables — every voice-activity gate, every silence trimmer, every AUTO-SPLITTER in a hundred years of audio
+//! lotus/split_silence.rye -- ALES97: the silence splitter -- segment the clip through ALES95, then cut AT the silence, keeping each non-silent region as its own take.
+//! ALES95's own scope note named three tools its loop enables -- every voice-activity gate, every silence trimmer, every AUTO-SPLITTER in a hundred years of audio
 //! editing. ALES96 built the trimmer (remove the silent runs, close ranks); this is the auto-splitter, the twin gesture in every recorder, sampler, and podcast
-//! tool: split on silence — find where the silence lives and cut the clip THERE, so each spoken sentence, each take, each sample lands as its own separate clip.
+//! tool: split on silence -- find where the silence lives and cut the clip THERE, so each spoken sentence, each take, each sample lands as its own separate clip.
 //! Where ALES96 REMOVES the silent runs and joins the rest, ALES97 CUTS AT the silence and keeps the non-silent regions apart. Two ends of one segmentation.
 //!
 //! The rule, stated once: segment [0, clip.len) through ALES95, then coalesce every maximal span of CONSECUTIVE non-silent runs into one Take (a {start, count}
-//! span into the original). It splits AT silence, not at every verdict change — a voiced run directly followed by an unvoiced run (no pause between) is ONE take,
+//! span into the original). It splits AT silence, not at every verdict change -- a voiced run directly followed by an unvoiced run (no pause between) is ONE take,
 //! because a keeper splits a recording on its pauses, not on every phoneme boundary. A take is a maximal non-silent region between two silent runs, or a clip edge.
 //!
-//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE TAKE LAW: the index-th take clip equals, byte for byte, the
-//! original's samples over the index-th non-silent region's [start, start+count), and out.len equals the number of non-silent regions the segmenter names — the
+//! The crux -- two laws, each tying this rung to a proven predecessor so it can never drift. THE TAKE LAW: the index-th take clip equals, byte for byte, the
+//! original's samples over the index-th non-silent region's [start, start+count), and out.len equals the number of non-silent regions the segmenter names -- the
 //! splitter is the segmenter's non-silent runs coalesced and named, nothing more. THE JOIN LAW: concatenating every take clip in order, in one clip, equals ALES96's
-//! trim_silence on the same signal, byte for byte — the trimmer joins the non-silent samples, the splitter keeps them apart, and re-joining the splitter's pieces
+//! trim_silence on the same signal, byte for byte -- the trimmer joins the non-silent samples, the splitter keeps them apart, and re-joining the splitter's pieces
 //! returns exactly the trimmer's clip. This binds ALES97 to ALES96 the way ALES96 is bound to ALES95.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES97.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES97.
 //! Design read: active-designing/date/20260814/20260814-232954_fill-ales97-lotus-silence-splitter.md
-//! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name so the splitter keeps exactly the runs the segmenter named; lotus/
-//! trim_silence.rye (ALES96) — the silence stripper, the join-law twin; lotus/timeline.rye (ALES2) — the Clip and splice; lotus/voiced.rye (ALES94) — the .silent
+//! Stands on: lotus/segment.rye (ALES95) -- the voice-activity segmenter, reused by name so the splitter keeps exactly the runs the segmenter named; lotus/
+//! trim_silence.rye (ALES96) -- the silence stripper, the join-law twin; lotus/timeline.rye (ALES2) -- the Clip and splice; lotus/voiced.rye (ALES94) -- the .silent
 //! verdict.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, read-only through the split. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. The split READS
-//! — it names spans and mutates not one sample of the source; take_clip WRITES only a fresh destination clip, copying whole classified-non-silent samples through
+//! HONEST SCOPE -- software only, purely LOCAL, read-only through the split. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. The split READS
+//! -- it names spans and mutates not one sample of the source; take_clip WRITES only a fresh destination clip, copying whole classified-non-silent samples through
 //! ALES2's own splice, fabricating nothing and reordering nothing. NOT a transcript, not a diarizer, not a real adaptive VAD; those stay later rungs. No real sample
 //! rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -38,22 +38,22 @@ const trim_silence = @import("trim_silence.rye");
 
 pub const split_silence_version = "20260814.232954";
 
-/// A non-silent region named as a span into the ORIGINAL clip — the auto-splitter's unit of result. A take never crosses a silent run; consecutive non-silent runs
+/// A non-silent region named as a span into the ORIGINAL clip -- the auto-splitter's unit of result. A take never crosses a silent run; consecutive non-silent runs
 /// (voiced then unvoiced, no pause between) coalesce into one take, since a keeper splits on pauses, not phonemes.
 pub const Take = struct {
     start: u32,
     count: u32,
 };
 
-/// The most takes any legal split can hold — one per non-silent run, bounded by the segmenter's own ceiling (its runs are bounded by max_segments). So a Take per
+/// The most takes any legal split can hold -- one per non-silent run, bounded by the segmenter's own ceiling (its runs are bounded by max_segments). So a Take per
 /// non-silent run is always representable and TakesFull, below, stays an honest unreachable-under-the-bound named path.
 pub const max_takes: u32 = segment.max_segments;
 
 /// The splitter's faults are the segmenter's OWN faults (ALES95's SegmentError) reused by name for the split, and the editor's OWN faults (ALES2's EditError from
-/// splice) reused by name for take_clip. The splitter invents none of its own — an empty clip refuses BadFrame through the segmenter, so a keeper reads exactly one
+/// splice) reused by name for take_clip. The splitter invents none of its own -- an empty clip refuses BadFrame through the segmenter, so a keeper reads exactly one
 /// error vocabulary across the analysis and the materialization. TakesFull is named for the honest path though max_takes cannot be exceeded.
 pub const SplitError = segment.SegmentError || timeline.EditError || error{
-    /// More coalesced takes than max_takes — impossible while max_takes equals the segmenter's own run ceiling, kept named for the honest path.
+    /// More coalesced takes than max_takes -- impossible while max_takes equals the segmenter's own run ceiling, kept named for the honest path.
     TakesFull,
 };
 
@@ -65,14 +65,14 @@ pub const Takes = struct {
 
     /// A read-only view of the takes actually written.
     pub fn takes(self: *const Takes) []const Take {
-        // invariant: len never exceeds the bound — every push checks it at the edge.
+        // invariant: len never exceeds the bound -- every push checks it at the edge.
         assert(self.len <= max_takes);
         return self.items[0..self.len];
     }
 };
 
 /// Split `clip` on its silence, writing one Take per maximal non-silent region into `out`. Segments the whole clip `[0, clip.len)` into frames of `frame_len`
-/// samples through ALES95, then coalesces every span of consecutive non-silent runs into one take. READ-ONLY — not one sample of `clip` is written. Validates the
+/// samples through ALES95, then coalesces every span of consecutive non-silent runs into one take. READ-ONLY -- not one sample of `clip` is written. Validates the
 /// whole span, band, floor, and frame length through ALES95's own checks BEFORE any take is written; on refusal `out` is left empty. An empty clip refuses `BadFrame`
 /// through the segmenter (a zero span cannot carry a legal frame); an all-silent clip yields zero takes; a no-silent clip yields exactly one take of the whole clip.
 pub fn split_on_silence(
@@ -86,16 +86,16 @@ pub fn split_on_silence(
 ) SplitError!void {
     out.len = 0;
 
-    // Segment the whole clip once — the takes are exactly the segmenter's non-silent runs coalesced, so the splitter can never keep a region the segmenter did not
+    // Segment the whole clip once -- the takes are exactly the segmenter's non-silent runs coalesced, so the splitter can never keep a region the segmenter did not
     // name. All of ALES95's validation (precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame) runs here before a take.
     var segs = segment.Segments{};
     try segment.segment(clip, &segs, 0, clip.len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: segmenting a non-empty clip yields at least one run that tiles it — the segmenter's own postcondition, relied on here.
+    // invariant: segmenting a non-empty clip yields at least one run that tiles it -- the segmenter's own postcondition, relied on here.
     assert(segs.len >= 1 and segs.len <= segment.max_segments);
 
     // Coalesce every maximal span of consecutive NON-silent runs into one take. A silent run closes the open take; the next non-silent run opens a new one. Splitting
-    // AT silence — not at every verdict change — is exactly this: a voiced run directly followed by an unvoiced run extends the open take rather than opening a new.
+    // AT silence -- not at every verdict change -- is exactly this: a voiced run directly followed by an unvoiced run extends the open take rather than opening a new.
     var open: bool = false;
     var i: u32 = 0;
     while (i < segs.len) : (i += 1) {
@@ -105,7 +105,7 @@ pub fn split_on_silence(
             open = false;
         } else if (open) {
             // Extend the open take across this consecutive non-silent run (no pause since the last one).
-            // invariant: the segmenter tiles the span, so this run begins exactly where the open take currently ends — the extension stays contiguous.
+            // invariant: the segmenter tiles the span, so this run begins exactly where the open take currently ends -- the extension stays contiguous.
             assert(run.start == out.items[out.len - 1].start + out.items[out.len - 1].count);
             out.items[out.len - 1].count += run.count;
         } else {
@@ -117,7 +117,7 @@ pub fn split_on_silence(
         }
     }
 
-    // invariant: takes are in strict order and each lies wholly inside the clip — the segmenter's own ordering carried through the coalesce.
+    // invariant: takes are in strict order and each lies wholly inside the clip -- the segmenter's own ordering carried through the coalesce.
     assert(out.len <= max_takes);
     if (out.len > 0) {
         // invariant: the first split starts at or after the beginning and the last ends at or
@@ -139,7 +139,7 @@ pub fn take_clip(
     assert(index < out.len);
     assert(dst.len == 0);
     const take = out.items[index];
-    // invariant: the take's span sits wholly inside the source — the split's own postcondition, re-checked before the read.
+    // invariant: the take's span sits wholly inside the source -- the split's own postcondition, re-checked before the read.
     assert(take.start + take.count <= src.len);
     const samples = src.samples();
     try timeline.splice(dst, 0, samples[take.start .. take.start + take.count]);
@@ -147,7 +147,7 @@ pub fn take_clip(
     assert(dst.len == take.count);
 }
 
-// --- selftest: THE TAKE LAW — the index-th take clip equals the original over its span and out.len equals the non-silent-region count; THE JOIN LAW — the takes
+// --- selftest: THE TAKE LAW -- the index-th take clip equals the original over its span and out.len equals the non-silent-region count; THE JOIN LAW -- the takes
 //     concatenated equal ALES96's trim_silence byte for byte; an all-silent clip yields zero takes; a no-silent clip yields one whole-clip take; consecutive
 //     non-silent runs coalesce into one take (split AT silence, not at every verdict); the source is byte-for-byte unchanged (read-only); an empty clip, a ragged
 //     frame length, an inverted band, and an illegal floor each refuse by name, out left empty ---------------------------------------------------------------------
@@ -163,7 +163,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built take list the splitter is checked against — segment the ORIGINAL, then coalesce consecutive non-silent runs into regions, exactly as the splitter
+/// The hand-built take list the splitter is checked against -- segment the ORIGINAL, then coalesce consecutive non-silent runs into regions, exactly as the splitter
 /// must. Kept independent of split_on_silence's own loop so the crux compares two paths, not one against itself.
 fn by_hand(out: *Takes, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
     out.len = 0;
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail — the classic dead-air-at-the-ends recording plus an
+    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail -- the classic dead-air-at-the-ends recording plus an
     // interior gap. Frames of 4 samples. Quiet runs classify silent; the big-positive/big-negative body voiced; the alternating run unvoiced.
     const mixed = [_]i16{
         40,    -40,   40,    -40, // silent (quiet head)
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         50,    -50,   50,    -50, // silent (quiet tail)
     };
 
-    // 1. THE TAKE LAW — over many frame lengths, floors, and splits, split_on_silence names exactly the hand-coalesced non-silent regions, and each materialized
+    // 1. THE TAKE LAW -- over many frame lengths, floors, and splits, split_on_silence names exactly the hand-coalesced non-silent regions, and each materialized
     //    take clip equals the original's samples over that region's span.
     {
         const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 }; // each divides 24
@@ -225,20 +225,20 @@ fn run_selftest() !u8 {
                     while (t < want.len) : (t += 1) {
                         if (got.items[t].start != want.items[t].start) return error.TakeStartWrong;
                         if (got.items[t].count != want.items[t].count) return error.TakeCountSpanWrong;
-                        // Each take clip equals the original over its span — materialize and compare.
+                        // Each take clip equals the original over its span -- materialize and compare.
                         var dst = timeline.Clip{};
                         try take_clip(&src, &got, t, &dst);
                         const span = mixed[got.items[t].start .. got.items[t].start + got.items[t].count];
                         if (!eq(dst.samples(), span)) return error.TakeClipWrong;
                     }
-                    // The source is byte-for-byte unchanged — the split reads only.
+                    // The source is byte-for-byte unchanged -- the split reads only.
                     if (!eq(src.samples(), &mixed)) return error.SourceMutated;
                 }
             }
         }
     }
 
-    // 2. THE JOIN LAW — concatenating every take clip in order equals ALES96's trim_silence on the same signal, byte for byte.
+    // 2. THE JOIN LAW -- concatenating every take clip in order equals ALES96's trim_silence on the same signal, byte for byte.
     {
         const flens = [_]u32{ 1, 2, 4, 6, 12 };
         const floors = [_]u32{ 500, 1000 };
@@ -264,7 +264,7 @@ fn run_selftest() !u8 {
                         try timeline.splice(&joined, joined.len, dst.samples());
                     }
 
-                    // Trim the same signal through ALES96 — the join must equal it exactly.
+                    // Trim the same signal through ALES96 -- the join must equal it exactly.
                     var trimmed = timeline.Clip{};
                     try load_clip(&trimmed, &mixed);
                     try trim_silence.trim_silence(&trimmed, flens[li], band_low, band_high, floors[fi], splits[si]);
@@ -275,7 +275,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. A MIXED CLIP with frame 4 and floor 500 yields exactly two takes — the body (two voiced frames, one region) and the tail noisy frame — split by the
+    // 3. A MIXED CLIP with frame 4 and floor 500 yields exactly two takes -- the body (two voiced frames, one region) and the tail noisy frame -- split by the
     //    interior silent gap; the head and tail silence bound them.
     {
         var src = timeline.Clip{};
@@ -283,15 +283,15 @@ fn run_selftest() !u8 {
         var takes = Takes{};
         try split_on_silence(&src, &takes, 4, band_low, band_high, 500, 2);
         if (takes.len != 2) return error.MixedTakeCount;
-        // Take 0 — the two voiced frames, coalesced into one region of 8 samples starting at index 4.
+        // Take 0 -- the two voiced frames, coalesced into one region of 8 samples starting at index 4.
         if (takes.items[0].start != 4 or takes.items[0].count != 8) return error.MixedTake0;
-        // Take 1 — the unvoiced frame, 4 samples starting at index 16.
+        // Take 1 -- the unvoiced frame, 4 samples starting at index 16.
         if (takes.items[1].start != 16 or takes.items[1].count != 4) return error.MixedTake1;
-        // A pause always sits between takes — take 1 starts strictly after take 0 ends.
+        // A pause always sits between takes -- take 1 starts strictly after take 0 ends.
         if (takes.items[1].start <= takes.items[0].start + takes.items[0].count) return error.NoPauseBetween;
     }
 
-    // 4. CONSECUTIVE NON-SILENT RUNS COALESCE — a voiced frame directly followed by an unvoiced frame (no silence between) is ONE take, not two (split AT silence,
+    // 4. CONSECUTIVE NON-SILENT RUNS COALESCE -- a voiced frame directly followed by an unvoiced frame (no silence between) is ONE take, not two (split AT silence,
     //    not at every verdict change).
     {
         const adjacent = [_]i16{
@@ -338,7 +338,7 @@ fn run_selftest() !u8 {
         if (takes.len != 0) return error.EmptyWroteTakes;
     }
 
-    // 7b. A RAGGED FRAME LENGTH — one that does not divide the clip — refuses BadFrame, out left empty.
+    // 7b. A RAGGED FRAME LENGTH -- one that does not divide the clip -- refuses BadFrame, out left empty.
     {
         const five = [_]i16{ 1, 2, 3, 4, 5 };
         var src = timeline.Clip{};
@@ -359,7 +359,7 @@ fn run_selftest() !u8 {
         if (takes.len != 0) return error.InvertedWroteTakes;
     }
 
-    // 7d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, out left empty.
+    // 7d. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor, out left empty.
     {
         const four = [_]i16{ 10, 20, 30, 40 };
         var src = timeline.Clip{};

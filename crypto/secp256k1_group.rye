@@ -1,33 +1,33 @@
-//! crypto/secp256k1_group.rye — Season G (Cryptography): the secp256k1 group law authored in pure Rye, composed entirely over the GREEN base
-//! field (crypto/fe_secp256k1.rye). ECDSA over secp256k1 — the signature scheme Bitcoin and Ethereum both sign with, and the reach
-//! eth_address.rye was built toward — multiplies a point by a scalar; that ladder is a composition over exactly two operations, point
+//! crypto/secp256k1_group.rye -- Season G (Cryptography): the secp256k1 group law authored in pure Rye, composed entirely over the GREEN base
+//! field (crypto/fe_secp256k1.rye). ECDSA over secp256k1 -- the signature scheme Bitcoin and Ethereum both sign with, and the reach
+//! eth_address.rye was built toward -- multiplies a point by a scalar; that ladder is a composition over exactly two operations, point
 //! addition and point doubling, and this file authors both. It adds no new field math (fe_secp256k1 proved that) and no scalar ladder yet
 //! (that is its own next round); it is the tractable, highest-Lindy move that turns a proven field into a proven group, exactly as
 //! ed25519_group.rye turned crypto/fe25519.rye into the edwards25519 group.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 //! Design read: active-designing/date/20260816/20260816-022000_secp256k1-group-law-the-proven-curve.md (this round) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-//! Kin: crypto/fe_secp256k1.rye (the base field this composes over, GREEN) · crypto/ed25519_group.rye (the sibling group law over the twisted
+//! Kin: crypto/fe_secp256k1.rye (the base field this composes over, GREEN) - crypto/ed25519_group.rye (the sibling group law over the twisted
 //! Edwards field). secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference known-answers plus Zig's
 //! independent std.crypto.ecc.Secp256k1 are the two witnesses (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a point on secp256k1 (y² = x³ + 7, so a = 0 and b = 7) is carried in standard homogeneous projective coordinates (X, Y, Z)
+//! THE CRUX -- a point on secp256k1 (y² = x³ + 7, so a = 0 and b = 7) is carried in standard homogeneous projective coordinates (X, Y, Z)
 //! with x = X/Z and y = Y/Z. In this representation the complete short-Weierstrass addition and doubling formulas of Renes, Costello, and
 //! Batina (eprint 2015/1060, Algorithms 7 and 9 for the a = 0 case) are exception-free: one formula adds every pair of points, including a
 //! point to itself and a point to its own negation, with no branch and no inversion inside the group law. The one constant the formulas need
-//! is b3 = 3·b = 21, a field element built here in our own arithmetic. Negation flips the sign of Y; subtraction is addition of the negation.
+//! is b3 = 3-b = 21, a field element built here in our own arithmetic. Negation flips the sign of Y; subtraction is addition of the negation.
 //! The single inversion in the whole group law appears only when a point is finally read to affine coordinates (x = X/Z, y = Y/Z) at the
-//! boundary. The point at infinity — the group identity — is any point with Z = 0; a sum that lands there (P + (−P)) packs its Z to zero.
+//! boundary. The point at infinity -- the group identity -- is any point with Z = 0; a sum that lands there (P + (−P)) packs its Z to zero.
 //! Nothing here is a claim about a device; it is arithmetic anyone can replay against the published formulas.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A curve point is arithmetic, not a secret
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A curve point is arithmetic, not a secret
 //! and not a signature: this file signs nothing and holds no key (ECDSA's signing with an identity key stays its own separate, gated round;
 //! even the scalar-multiplication ladder is a later non-gated round). The primitive calls no std.crypto. Parity is proven at selftest against
-//! two references runnable now — algebraic identities anyone can check (the base point reads to its published affine coordinates, B + B = 2B,
+//! two references runnable now -- algebraic identities anyone can check (the base point reads to its published affine coordinates, B + B = 2B,
 //! B + (−B) is the point at infinity with Z = 0, and −(−B) = B), and Zig's own std.crypto.ecc.Secp256k1 as an independent implementation,
 //! compared byte-for-byte on the affine coordinates of dbl, add, sub, and neg across the base point and several of its multiples.
-//! Constant-time timing-safety stays a separate named horizon (the group law is data-independent by construction — a fixed sequence of field
+//! Constant-time timing-safety stays a separate named horizon (the group law is data-independent by construction -- a fixed sequence of field
 //! operations with no branch on any coordinate).
 //!
 //! Run from the repository root:
@@ -53,19 +53,19 @@ fn fe_zero() fe.Field {
     return fe.Field{ .l = .{ 0, 0, 0, 0, 0, 0, 0, 0 } };
 }
 
-/// Double a field element, a + a — the one small helper the RCB formulas lean on.
+/// Double a field element, a + a -- the one small helper the RCB formulas lean on.
 fn fe_dbl(a: fe.Field) fe.Field {
     return fe.add(a, a);
 }
 
-/// The curve constant b3 = 3·b = 21 (b = 7 for secp256k1), built in our own field arithmetic so no borrowed literal enters the group law. It
+/// The curve constant b3 = 3-b = 21 (b = 7 for secp256k1), built in our own field arithmetic so no borrowed literal enters the group law. It
 /// fits a single 32-bit limb, so the constructed element is already canonical.
 fn fe_b3() fe.Field {
     return fe.Field{ .l = .{ 21, 0, 0, 0, 0, 0, 0, 0 } };
 }
 
-/// Double a point (Renes–Costello–Batina, eprint 2015/1060 Algorithm 9, specialized to a = 0). A fixed sequence of squarings, doublings,
-/// adds, subtracts, and multiplies — no inversion, no branch — so the result is another projective point on the curve.
+/// Double a point (Renes-Costello-Batina, eprint 2015/1060 Algorithm 9, specialized to a = 0). A fixed sequence of squarings, doublings,
+/// adds, subtracts, and multiplies -- no inversion, no branch -- so the result is another projective point on the curve.
 pub fn dbl(p: Point) Point {
     const b3 = fe_b3();
     var t0 = fe.square(p.y);
@@ -92,8 +92,8 @@ pub fn dbl(p: Point) Point {
     return r;
 }
 
-/// Add two points (Renes–Costello–Batina, eprint 2015/1060 Algorithm 7, specialized to a = 0). Complete for all inputs — a point added to
-/// itself, to its negation, or to the identity — with no exceptional case, no branch, and no inversion, so doubling and addition compose
+/// Add two points (Renes-Costello-Batina, eprint 2015/1060 Algorithm 7, specialized to a = 0). Complete for all inputs -- a point added to
+/// itself, to its negation, or to the identity -- with no exceptional case, no branch, and no inversion, so doubling and addition compose
 /// into the scalar ladder its own later round will build.
 pub fn add(p: Point, q: Point) Point {
     const b3 = fe_b3();
@@ -138,17 +138,17 @@ pub fn add(p: Point, q: Point) Point {
     return r;
 }
 
-/// Negate a point — flip the sign of Y, keeping X and Z. The additive inverse: p + neg(p) is the point at infinity.
+/// Negate a point -- flip the sign of Y, keeping X and Z. The additive inverse: p + neg(p) is the point at infinity.
 pub fn neg(p: Point) Point {
     return Point{ .x = p.x, .y = fe.sub(fe_zero(), p.y), .z = p.z };
 }
 
-/// Subtract a point — addition of the negation.
+/// Subtract a point -- addition of the negation.
 pub fn sub(p: Point, q: Point) Point {
     return add(p, neg(q));
 }
 
-/// The 32-bit limb mask — used only in the coordinate-shape asserts above.
+/// The 32-bit limb mask -- used only in the coordinate-shape asserts above.
 const fe_mask: u64 = 0xffffffff;
 
 /// Read a point to its affine X coordinate, x = X/Z, packed to 32 big-endian bytes. The one inversion in the whole group law lives here, at
@@ -188,7 +188,7 @@ fn from_zig(zp: ZSec) Point {
     return Point{ .x = fe.from_bytes(&xb), .y = fe.from_bytes(&yb), .z = fe.from_bytes(&zb) };
 }
 
-/// True when our point reads to the same affine (x, y) as the Zig point — the parity check for a non-identity result.
+/// True when our point reads to the same affine (x, y) as the Zig point -- the parity check for a non-identity result.
 fn affine_eq(p: Point, zp: ZSec) bool {
     const za = zp.affineCoordinates();
     return bytes_eq(&affine_x(p), &za.x.toBytes(.big)) and bytes_eq(&affine_y(p), &za.y.toBytes(.big));
@@ -216,7 +216,7 @@ fn run_selftest() !u8 {
         var zero_b = [_]u8{0} ** 32;
         if (!bytes_eq(&fe.to_bytes(inf.z), &zero_b)) return error.InfinityNotZeroMismatch;
 
-        // −(−B) = B — double negation returns the same affine point.
+        // −(−B) = B -- double negation returns the same affine point.
         if (!affine_eq(neg(neg(pb)), b)) return error.DoubleNegMismatch;
     }
 

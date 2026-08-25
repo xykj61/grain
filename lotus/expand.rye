@@ -1,22 +1,22 @@
-//! lotus/expand.rye — ALES60: a downward expander — the compressor mirrored under the threshold. The compressor (ALES50) keeps
+//! lotus/expand.rye -- ALES60: a downward expander -- the compressor mirrored under the threshold. The compressor (ALES50) keeps
 //! the threshold whole and divides the EXCESS above it; the expander keeps the threshold whole and widens the DEFICIT below it.
-//! Where the compressor softens the loud, the expander deepens the quiet — the space between phrases opened wider, the tail of a
+//! Where the compressor softens the loud, the expander deepens the quiet -- the space between phrases opened wider, the tail of a
 //! note pushed further down, the room tone under a pause lowered without ever slamming shut. It is the fourth member of the
 //! dynamics family and the one that makes it symmetric: the limiter (ALES49) pins the peak, the compressor (ALES50) softens it,
-//! the gate (ALES51) floors the quiet, and the expander softens THAT floor — continuous at the threshold, the gate its hardest
+//! the gate (ALES51) floors the quiet, and the expander softens THAT floor -- continuous at the threshold, the gate its hardest
 //! limit. Its knob is the same ratio the compressor speaks, only now it names how far the below-threshold band is widened
-//! downward, and at its extreme the expander drives the quiet to silence — the gate reached from within.
+//! downward, and at its extreme the expander drives the quiet to silence -- the gate reached from within.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES60.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES60.
 //! Design read: active-designing/date/20260814/20260814-183030_fill-ales60-lotus-downward-expander.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/compress.rye (ALES50) — the
-//! excess-above-threshold law this mirrors, re-proven beside it; lotus/gate.rye (ALES51) — the below-threshold floor this softens.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, the range law shape; lotus/compress.rye (ALES50) -- the
+//! excess-above-threshold law this mirrors, re-proven beside it; lotus/gate.rye (ALES51) -- the below-threshold floor this softens.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the threshold is a magnitude in sample units, not
-//! decibels, the ratio a plain fraction, and the expansion is instantaneous (no attack, hold, or release — those are later rungs).
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the threshold is a magnitude in sample units, not
+//! decibels, the ratio a plain fraction, and the expansion is instantaneous (no attack, hold, or release -- those are later rungs).
 //! One comparison, one multiply, one divide per sample; nothing on the audio path can overflow, since the widened deficit is
-//! computed in i64 (|sample_min|·ratio fits easily) and the result is floored at zero and at most the input magnitude before it
+//! computed in i64 (|sample_min|-ratio fits easily) and the result is floored at zero and at most the input magnitude before it
 //! narrows to i16.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/expand.rye selftest
@@ -30,26 +30,26 @@ const timeline = @import("timeline.rye");
 pub const expand_version = "20260814.183030";
 
 /// The expander's faults: a threshold outside the legal range (a magnitude in [1, sample_max]), a ratio below unity or with a zero
-/// denominator (a ratio below one would narrow the deficit — an upward gesture, a different tool), and a span outside the samples.
+/// denominator (a ratio below one would narrow the deficit -- an upward gesture, a different tool), and a span outside the samples.
 /// BadRange coincides by name with timeline's, the EQ family's, the limiter's, the compressor's, and the gate's, so a composer
 /// sees one consistent fault across the whole suite.
 pub const ExpandError = error{
-    /// A threshold of zero (there is no band left below it to expand) or above sample_max (everything would fall below it) — refused.
+    /// A threshold of zero (there is no band left below it to expand) or above sample_max (everything would fall below it) -- refused.
     BadThreshold,
-    /// A ratio below unity (would narrow the deficit, not widen it) or with a zero denominator — refused, no write.
+    /// A ratio below unity (would narrow the deficit, not widen it) or with a zero denominator -- refused, no write.
     BadRatio,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Expand `count` samples starting at `start` in place below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least
 /// one). A sample at or above the threshold passes byte-for-byte (the expander touches only what falls below); below it, the
-/// deficit threshold − m is multiplied by the ratio and the sample rewritten sign(x)·max(0, threshold − deficit·ratio_num/ratio_den).
+/// deficit threshold − m is multiplied by the ratio and the sample rewritten sign(x)-max(0, threshold − deficit-ratio_num/ratio_den).
 /// This is the exact mirror of the compressor about the threshold: the compressor divides the excess above, the expander widens the
 /// deficit below. After the call every written magnitude is at most the input's (the expander reduces, never boosts) and no sign is
 /// changed; the write is continuous at the threshold (a threshold sample is the identity). Unit ratio is the identity everywhere.
 /// Refuses BadThreshold on a threshold outside [1, sample_max], BadRatio on a ratio below unity or a zero denominator, and BadRange
-/// on a span outside the samples — each before any write. Values only — never the length.
+/// on a span outside the samples -- each before any write. Values only -- never the length.
 pub fn expand(
     clip: *timeline.Clip,
     start: u32,
@@ -58,14 +58,14 @@ pub fn expand(
     ratio_num: u32,
     ratio_den: u32,
 ) ExpandError!void {
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would narrow the deficit
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero -- a ratio below one would narrow the deficit
     // (an upward gesture), a zero denominator would divide by zero. A downward expander only ever widens the below-threshold deficit.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -80,7 +80,7 @@ pub fn expand(
             const deficit: i64 = thr - m; // strictly positive below the threshold
             // Widen the deficit by the ratio (num/den), keeping the threshold whole: only the gap below threshold is leaned on, and
             // it is pushed FURTHER down. divTrunc of positives is floor; the ratio being >= 1 makes the widened deficit >= deficit,
-            // so the result is at most m. A widened deficit larger than the threshold would drive the sample past zero — floored.
+            // so the result is at most m. A widened deficit larger than the threshold would drive the sample past zero -- floored.
             const widened: i64 = @divTrunc(deficit * num, den);
             const raw: i64 = thr - widened;
             const new_m: i64 = if (raw < 0) 0 else raw; // floor at silence (the gate reached from within the expander)
@@ -91,7 +91,7 @@ pub fn expand(
             // invariant: the written sample holds the input's sign (magnitude only shrank), zero being sign-neutral.
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample at or above the threshold is left exactly as it was — the expander is continuous at the threshold.
+        // a sample at or above the threshold is left exactly as it was -- the expander is continuous at the threshold.
     }
     // invariant: an expander changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
@@ -101,7 +101,7 @@ pub fn expand(
 // --- selftest: silence stays silence; a signal at or above the threshold passes byte-for-byte (the threshold is the identity, the
 //     expander's signature continuity versus the gate's step); UNIT RATIO is the identity everywhere (even below threshold); a quiet
 //     signal has its floor deepened with the sign held and the magnitude never expanding, each below-threshold sample landing at
-//     max(0, thr − deficit·num/den); a HIGHER RATIO expands at least as hard (monotone), a ratio far past the deficit floors the
+//     max(0, thr − deficit-num/den); a HIGHER RATIO expands at least as hard (monotone), a ratio far past the deficit floors the
 //     quiet to silence (the gate within); and a bad threshold, a sub-unity ratio, a zero ratio denominator, and an out-of-range
 //     span each refuse by name --------------------------------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip expands to all zeros at any legal threshold and ratio.
+    // 1. silence stays silence -- an all-zero clip expands to all zeros at any legal threshold and ratio.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -130,7 +130,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. AT OR ABOVE THE THRESHOLD IS THE IDENTITY — a signal whose every peak reaches the threshold passes byte-for-byte. This is
+    // 2. AT OR ABOVE THE THRESHOLD IS THE IDENTITY -- a signal whose every peak reaches the threshold passes byte-for-byte. This is
     //    the expander's signature: continuity at the threshold, where the gate would step. A threshold sample has a zero deficit.
     {
         const loud = [_]i16{ 5000, -9000, 1000, -1000, 32000, -3000 };
@@ -140,7 +140,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.ThresholdNotIdentity;
     }
 
-    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den writes thr − deficit·1 = m byte-for-byte even for samples
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den writes thr − deficit-1 = m byte-for-byte even for samples
     //    below the threshold. A 1:1 expander passes the whole signal through, guaranteed by construction.
     {
         const quiet = [_]i16{ 300, -300, 5000, -20, 20, -400 };
@@ -150,8 +150,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &quiet)) return error.UnitRatioNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a signal below the threshold expands so every output magnitude is at
-    //    most the input's, every sign matches, and each below-threshold sample lands exactly at max(0, thr − deficit·num/den).
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a signal below the threshold expands so every output magnitude is at
+    //    most the input's, every sign matches, and each below-threshold sample lands exactly at max(0, thr − deficit-num/den).
     {
         const mixed = [_]i16{ 800, -800, 5000, -600, 200, -9000 };
         var clip = timeline.Clip{};
@@ -176,8 +176,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A HIGHER RATIO EXPANDS AT LEAST AS HARD — for the same below-threshold sample, 8:1 yields a magnitude no greater than 2:1
-    //    (the ratio knob is monotone), and a ratio high enough floors the quiet exactly to silence — the gate reached from within.
+    // 5. A HIGHER RATIO EXPANDS AT LEAST AS HARD -- for the same below-threshold sample, 8:1 yields a magnitude no greater than 2:1
+    //    (the ratio knob is monotone), and a ratio high enough floors the quiet exactly to silence -- the gate reached from within.
     {
         const one = [_]i16{900};
         const thr: i32 = 1000; // deficit 100

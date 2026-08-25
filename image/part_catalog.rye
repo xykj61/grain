@@ -1,11 +1,11 @@
-//! image/part_catalog.rye — HUNK71: the parts marketplace carries honest facts beside each window.
+//! image/part_catalog.rye -- HUNK71: the parts marketplace carries honest facts beside each window.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK71.
-//! Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A — the parts marketplace).
-//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed — a part is a picture PLUS its facts).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK71.
+//! Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A -- the parts marketplace).
+//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed -- a part is a picture PLUS its facts).
 //!
-//! HUNK4–HUNK7 built the visual half of the marketplace: one decoded sheet, each product a window into it, the
-//! index travelling as text. A real parts catalog carries more than a picture — a part has a *part number*, a
+//! HUNK4-HUNK7 built the visual half of the marketplace: one decoded sheet, each product a window into it, the
+//! index travelling as text. A real parts catalog carries more than a picture -- a part has a *part number*, a
 //! *material*, and a *price*. This rung binds those honest facts beside each window: a `PartCatalog` holds one
 //! `SpriteIndex` (the picture) and, in the same held order, one `PartRecord` per product (the facts). `add_part`
 //! grows both together, so a product is never a window without facts or facts without a window. `render_part`
@@ -13,7 +13,7 @@
 //! as a flat-Bron `format part-catalog-v1` record, so `render(parse(render(x)))` is a fixed point over both the
 //! windows AND the facts.
 //!
-//! Price is recorded as a FACT — a `u64` count of cents, the shape money takes on the wire — never a balance the
+//! Price is recorded as a FACT -- a `u64` count of cents, the shape money takes on the wire -- never a balance the
 //! tree can move. No network, no key, no funds; disbursement stays a custody gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_catalog.rye selftest
@@ -34,7 +34,7 @@ pub const part_catalog_version = "20260814.000000";
 pub const max_part_number_len: u32 = 32;
 pub const max_material_len: u32 = 32;
 
-/// A price is a count of cents — the smallest honest unit, so no fraction is ever lost. Held as a `u64` (money
+/// A price is a count of cents -- the smallest honest unit, so no fraction is ever lost. Held as a `u64` (money
 /// is a wire-persistent quantity), bounded to a named ceiling so a parsed price can never wrap a downstream sum.
 /// A hundred million dollars in cents; a marketplace part never legitimately reaches it, so it doubles as a
 /// malformed-input fence.
@@ -98,7 +98,7 @@ pub const PartCatalog = struct {
     index: sprite.SpriteIndex,
     facts: [sprite.max_products]PartRecord = [_]PartRecord{.{}} ** sprite.max_products,
 
-    /// Open a catalog over an already-decoded sheet — the sheet is decoded once and shared by every product,
+    /// Open a catalog over an already-decoded sheet -- the sheet is decoded once and shared by every product,
     /// exactly as the sprite index intends.
     pub fn init(sheet: *const qoi.Pixmap) PartCatalog {
         return PartCatalog{ .index = sprite.SpriteIndex.init(sheet) };
@@ -106,7 +106,7 @@ pub const PartCatalog = struct {
 
     /// Bind a product to BOTH a window into the sheet and its honest facts. The window is validated by the
     /// sprite index (an out-of-bounds or duplicate window refuses there); the facts are token-checked and the
-    /// price ceiling-checked here — so a part is never half-added. The two arrays stay the same length.
+    /// price ceiling-checked here -- so a part is never half-added. The two arrays stay the same length.
     pub fn add_part(
         self: *PartCatalog,
         product: []const u8,
@@ -136,11 +136,11 @@ pub const PartCatalog = struct {
         tally_copy.copy_disjoint(u8, rec.number_buf[0..number.len], number);
         tally_copy.copy_disjoint(u8, rec.material_buf[0..material.len], material);
         self.facts[slot] = rec;
-        // invariant: the two arrays grew together — one new window, one new fact.
+        // invariant: the two arrays grew together -- one new window, one new fact.
         assert(self.index.len() == slot + 1);
     }
 
-    /// How many parts the catalog holds — a reader walks `0..len` to render both halves as text.
+    /// How many parts the catalog holds -- a reader walks `0..len` to render both halves as text.
     pub fn len(self: *const PartCatalog) u32 {
         // invariant: the count never exceeds the sheet's product ceiling.
         assert(self.index.len() <= sprite.max_products);
@@ -170,7 +170,7 @@ pub const PartCatalog = struct {
         return error.UnknownProduct;
     }
 
-    /// Render a product's picture — cut the ONE sheet at its window, a fresh open image. Reuses the sprite
+    /// Render a product's picture -- cut the ONE sheet at its window, a fresh open image. Reuses the sprite
     /// index, so a rendered part is still an open image that re-encodes and round-trips.
     pub fn render_part(self: *const PartCatalog, allocator: std.mem.Allocator, product: []const u8) !qoi.Pixmap {
         return self.index.render(allocator, product);
@@ -211,7 +211,7 @@ pub fn render_part_catalog(cat: *const PartCatalog, out: []u8) PartError!u32 {
 }
 
 /// Parse a `format part-catalog-v1` record into a fresh catalog over `sheet`. Each part is added through
-/// `add_part`, so every window is validated against the real sheet and every fact token-checked — a catalog can
+/// `add_part`, so every window is validated against the real sheet and every fact token-checked -- a catalog can
 /// never name bytes the sheet lacks or carry a field that would not round-trip. An unknown header, a malformed
 /// line, or an out-of-range field refuses `BadPartCatalog`; a window past the sheet surfaces the index's own
 /// named refusal.
@@ -292,7 +292,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const n = try render_part_catalog(&cat, buf[0..]);
     const text = buf[0..n];
 
-    // Parse it back over the same sheet, and prove the rebuilt catalog equals the original — BOTH halves,
+    // Parse it back over the same sheet, and prove the rebuilt catalog equals the original -- BOTH halves,
     // window field for window field AND fact for fact.
     var rebuilt: PartCatalog = undefined;
     try parse_part_catalog(text, &sheet, &rebuilt);
@@ -330,11 +330,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (cat.part_of("phantom")) |_| return error.UnknownSlipped else |e| {
         if (e != error.UnknownProduct) return error.WrongUnknown;
     }
-    // Unwelcome: a window past the sheet refuses at add time — no half-added part.
+    // Unwelcome: a window past the sheet refuses at add time -- no half-added part.
     if (cat.add_part("wide", 6, 0, 4, 2, "W-1", "steel", 10)) |_| return error.BoundsSlipped else |e| {
         if (e != error.WindowOutOfBounds) return error.WrongBounds;
     }
-    // Unwelcome: a fact with an embedded space would break its own line — refuses.
+    // Unwelcome: a fact with an embedded space would break its own line -- refuses.
     if (cat.add_part("spacey", 0, 4, 2, 2, "P 1", "steel", 10)) |_| return error.SpaceSlipped else |e| {
         if (e != error.FieldHasSpace) return error.WrongSpace;
     }

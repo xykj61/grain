@@ -1,16 +1,16 @@
-//! brushstroke/edit_preview.rye — HUNK13: the Skate view of a pending edit, seen before it is committed.
+//! brushstroke/edit_preview.rye -- HUNK13: the Skate view of a pending edit, seen before it is committed.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK13.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK13.
 //! Design read: active-designing/date/20260813/20260813-160955_hunk-edit-preview-seen-before-committed-exploration.md.
-//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the non-destructive edit history of
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - the non-destructive edit history of
 //! iCloud Photos / Google Photos (concept only, siloed).
 //!
 //! HUNK11 recorded the Photos verbs as data and proved replay is deterministic and non-destructive; HUNK12
-//! banked that determinism as a content address. Both work in bytes — neither lets a keeper look. This rung is
-//! the eye: `preview` replays an edit-list over a source image (`photo_edits.apply` — pure, the source untouched,
+//! banked that determinism as a content address. Both work in bytes -- neither lets a keeper look. This rung is
+//! the eye: `preview` replays an edit-list over a source image (`photo_edits.apply` -- pure, the source untouched,
 //! nothing stored) and down-maps the fresh result to a Skate grid (`image_skate.down_map`) that lights the
-//! canvas. So a pending edit is *seen* before it is committed — no name, no bead, no funds. Pure composition
-//! over two proven seams: it adds no new failure mode, only sequences the refusals already proven — an
+//! canvas. So a pending edit is *seen* before it is committed -- no name, no bead, no funds. Pure composition
+//! over two proven seams: it adds no new failure mode, only sequences the refusals already proven -- an
 //! out-of-bounds crop surfaces `OutOfBounds` through the fold, an empty image or an over-ceiling grid refuses
 //! from the down-map. No network, no key, no funds.
 //!
@@ -28,7 +28,7 @@ pub const edit_preview_version = "20260813.160955";
 
 /// Replay an edit-list over a source image and hand the fresh result to the Skate down-map, returning the
 /// cols×rows grid a keeper looks at. Pure: `photo_edits.apply` folds from a clone, so the source is never
-/// touched, and nothing is stored — a preview is a look, not a commit. Adds no new failure mode: a verb's own
+/// touched, and nothing is stored -- a preview is a look, not a commit. Adds no new failure mode: a verb's own
 /// refusal (an out-of-bounds crop) surfaces by its name through the fold, and an empty image or an over-ceiling
 /// grid refuses from `down_map`, each before a grid is returned.
 pub fn preview(
@@ -40,7 +40,7 @@ pub fn preview(
 ) !skate.Grid {
     // invariant: the edit-list stays within its named ceiling before a single verb replays.
     assert(list.len() <= photo_edits.max_edits);
-    // invariant: the source is a well-formed image — four bytes per pixel — the whole pipeline relies on.
+    // invariant: the source is a well-formed image -- four bytes per pixel -- the whole pipeline relies on.
     assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
 
     const edited = try photo_edits.apply(allocator, source, list);
@@ -53,7 +53,7 @@ pub fn preview(
 // --- selftest: preview a two-tone image, prove the view shows the replayed result faithfully, is
 //     non-destructive and deterministic, changes with a pending edit, lights the canvas, and refuses by name ----
 
-/// Build an 8×8 image whose left half is red and right half is blue — a spatial pattern a preview must carry,
+/// Build an 8×8 image whose left half is red and right half is blue -- a spatial pattern a preview must carry,
 /// and one a `flip_h` visibly swaps.
 fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
@@ -102,7 +102,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, empty_prev.fg_index, source_map.fg_index));
 
     // A pending edit changes the view: the source's left cell reads red, the flipped preview's left cell reads
-    // blue — the keeper sees the edit before committing it, and the two grids differ.
+    // blue -- the keeper sees the edit before committing it, and the two grids differ.
     const left_i: usize = 0;
     assert(source_map.fg_index[left_i] == red_slot);
     assert(prev.fg_index[left_i] == blue_slot);

@@ -1,6 +1,6 @@
-//! pond/apps/constel_consensus_true.rye — the converged mesh reads true (gossip-convergence r4, the arc closes).
+//! pond/apps/constel_consensus_true.rye -- the converged mesh reads true (gossip-convergence r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - gossip-convergence r4.
 //! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! r1 converged two nodes over gossip; r2 healed a partition; r3 carried the agreed
@@ -9,25 +9,25 @@
 //! open and count**, and proves the property the whole consensus rests on: the order
 //! two honest nodes converge to is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/cord_dag.bron` — the canonical committed Cord record
+//! The corpus is `tools/fixtures/cord_dag.bron` -- the canonical committed Cord record
 //! produced reproducibly by `mycelium/cord_fixture_gen.rye` (the honest four-block
-//! scene, supply 700 over one star) — `@embedFile`-bound through a symlink in
+//! scene, supply 700 over one star) -- `@embedFile`-bound through a symlink in
 //! `pond/apps/corpora/`, no network, the tree's own bytes. Two readings must agree:
 //! the app parses the record, rebuilds the Dag under r1's own `add` (re-verifying
 //! every signature, requiring every parent already held), commits it, and reports the
 //! **block count**, the **folded supply**, and the **star count**; the r4 witness
 //! cross-checks that triple against `tools/fixtures/cord_dag_truth.awk`'s reading of
-//! the same file — two tools, one answer.
+//! the same file -- two tools, one answer.
 //!
 //! The crux distinct from the Cord's own r4 (which read a seated-in-code Dag): here
 //! two nodes begun from their **own separate genesis** gossip to convergence over
 //! r1's `gossip_merge`, and the converged Dag renders **byte-identically** to the
 //! canonical on-disk record. So the record a keeper walks by hand is exactly the one
-//! the network agrees on — convergence produces the true bytes, not a private draft.
+//! the network agrees on -- convergence produces the true bytes, not a private draft.
 //!
-//! Additive — composes r3's `converge_two_nodes` and the Cord's cord-bron reader/writer
+//! Additive -- composes r3's `converge_two_nodes` and the Cord's cord-bron reader/writer
 //! over public API; r1/r2/r3 re-run GREEN at this round's door. Siloed, dev-only, demo
-//! seeds — no real key, no funds, no network, no custody; a Cord gossiped over Comlink
+//! seeds -- no real key, no funds, no network, no custody; a Cord gossiped over Comlink
 //! reaches the serve gate.
 //!
 //!   rye build pond/apps/constel_consensus_true.rye -femit-bin=pond/bin/constel-consensus-true
@@ -43,7 +43,7 @@ const travels = @import("constel_consensus_travels.rye");
 
 pub const constel_consensus_true_version = "20260813.042829";
 
-/// The canonical committed Cord record, bound at compile time — the tree's own bytes,
+/// The canonical committed Cord record, bound at compile time -- the tree's own bytes,
 /// never a drifting copy.
 const real_record = @embedFile("corpora/cord_dag.bron");
 
@@ -58,11 +58,11 @@ pub const Reading = struct {
 /// Read the real record: parse it, rebuild the Dag under r1's own `add` (verifying every
 /// signature and requiring every parent already held), commit it, and fold the supply
 /// through the real Mycelium law. The fixture's block lines stand in agreed order, so the
-/// app's independent commit must be the identity permutation over them — else the record
+/// app's independent commit must be the identity permutation over them -- else the record
 /// is not a committed Cord and the reading refuses `OrderNotCanonical`.
 pub fn read_record(text: []const u8) !Reading {
     const pl = try cord_bron.parse(text);
-    // invariant: a real record carries at least one block — an empty Dag is no consensus.
+    // invariant: a real record carries at least one block -- an empty Dag is no consensus.
     if (pl.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&pl);
     var order: [cord.cord_max_blocks]u32 = undefined;
@@ -82,7 +82,7 @@ pub fn read_record(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this triple against awk's
+/// The reading of the real record -- the witness cross-checks this triple against awk's
 /// reading of the same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_record(real_record);
@@ -95,7 +95,7 @@ fn welcome_reading_true_to_bytes() !void {
 }
 
 /// The r4 crux: two nodes begun from their own genesis gossip to convergence, and the
-/// converged Dag renders byte-identically to the canonical on-disk record — so the bytes
+/// converged Dag renders byte-identically to the canonical on-disk record -- so the bytes
 /// a keeper walks by hand are exactly the order the network agrees on.
 fn welcome_convergence_matches_the_record() !void {
     const converged = try travels.converge_two_nodes();
@@ -110,7 +110,7 @@ fn welcome_convergence_matches_the_record() !void {
     print("constel-true: two nodes from their own genesis gossip to convergence and render byte-identically to the on-disk record — the network agrees on exactly the bytes a keeper can count.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record
 /// as true. A flipped header byte refuses `BadFormat`; a flipped signature byte would
 /// refuse `BadSignature` at add on rebuild.
 fn unwelcome_tampered_record_refuses() !void {
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<blocks> <supply> <stars>`), so the witness can
-/// compare the app's reading against `cord_dag_truth.awk` byte for byte — two tools, one answer.
+/// compare the app's reading against `cord_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_record(real_record);
     print("{d} {d} {d}\n", .{ r.blocks, r.supply, r.stars });

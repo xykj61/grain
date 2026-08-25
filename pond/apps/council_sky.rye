@@ -1,28 +1,28 @@
-//! pond/apps/council_sky.rye — Season 3 Journey 11 (Council skies), Rung 1: a community loads a sky, and the sky's odd fractal gives it a tie-free quorum and complete roles.
+//! pond/apps/council_sky.rye -- Season 3 Journey 11 (Council skies), Rung 1: a community loads a sky, and the sky's odd fractal gives it a tie-free quorum and complete roles.
 //!
-//! Season 3, Commons — a community shapes its own deliberation. Journey 10 (Membership) drew quorum at a
+//! Season 3, Commons -- a community shapes its own deliberation. Journey 10 (Membership) drew quorum at a
 //! threshold a caller chooses, over a flat roster. Journey 11 draws the load-bearing move the
 //! loadable-topologies brief named: a council does not merely pick a threshold, it **loads a whole shape**
-//! — a *sky* — the way a console loads a game, and the sky's own odd fractal *gives* the council its
+//! -- a *sky* -- the way a console loads a game, and the sky's own odd fractal *gives* the council its
 //! tie-free quorum and its roles.
 //!
 //! The crux: **an odd sky gives a tie-free quorum and a complete triad.** A `Council` loads a `Sky`
-//! (`comlink/topology.rye`) and seats a body at one of the sky's own fractal levels — its `galaxies`,
-//! `stars`, `planets`, or `prosperity`. The council sky's four counts are 15 · 3 · 9 · 27, the odd-quorum
-//! fractal **3 · 9 · 15 · 27**, every one odd. The council's quorum is the strict majority of that odd
+//! (`comlink/topology.rye`) and seats a body at one of the sky's own fractal levels -- its `galaxies`,
+//! `stars`, `planets`, or `prosperity`. The council sky's four counts are 15 - 3 - 9 - 27, the odd-quorum
+//! fractal **3 - 9 - 15 - 27**, every one odd. The council's quorum is the strict majority of that odd
 //! body (`size / 2 + 1`); because the body is **odd**, yes-votes and no-votes can never both reach the
-//! quorum, so once every seat has voted one side always holds the majority — a proposal is never left
-//! forever undecided. The civic `compass_sky` is not a council sky: its `prosperity` is 60 — even — so
+//! quorum, so once every seat has voted one side always holds the majority -- a proposal is never left
+//! forever undecided. The civic `compass_sky` is not a council sky: its `prosperity` is 60 -- even -- so
 //! seating its d60 as a deliberating body would risk a tie, and the rule refuses it (`EvenCouncil`). Each
-//! seat wears a **modality role** — one of `initiator · sustainer · adapter` — derived from its position
+//! seat wears a **modality role** -- one of `initiator - sustainer - adapter` -- derived from its position
 //! (`seat mod 3`), so any three consecutive seats hold one of each: odd *and* complete, one to open, one
 //! to hold, one to bridge. The typing is a pure function of the seat, so it can never drift from the body
 //! the sky seated.
 //!
-//! This is the pure rule as a bounded state machine — no signing yet (r2 signs each vote with the
+//! This is the pure rule as a bounded state machine -- no signing yet (r2 signs each vote with the
 //! member's settled Kumara identity, mirroring `skate_group_signed`). Facts only, custody-first: it
 //! records the facts of a loaded shape and its votes and holds nothing, opens no network, and generates
-//! no real identity (a council shared over the wire reaches the serve gate — Keaton's hand). Demo seats
+//! no real identity (a council shared over the wire reaches the serve gate -- Keaton's hand). Demo seats
 //! (plain indices) only.
 //!
 //!   rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky
@@ -38,15 +38,15 @@ const Sky = topology.Sky;
 
 pub const council_sky_app_version = "20260812.210603";
 
-/// A council seats at most this many members — bounded so a loaded body never grows unbounded. Set above
+/// A council seats at most this many members -- bounded so a loaded body never grows unbounded. Set above
 /// the council sky's d27 (27) and the compass sky's d60 (60), so the even d60 refuses for being *even*,
-/// never merely for being too large — the honest reason surfaces.
+/// never merely for being too large -- the honest reason surfaces.
 pub const max_seats: u32 = 64;
 
-/// A council holds at most this many distinct ballots — bounded so consent never grows unbounded.
+/// A council holds at most this many distinct ballots -- bounded so consent never grows unbounded.
 pub const max_votes: u32 = 512;
 
-/// A member's worn role in the council — the brief's role tilak, drawn here as the seat's own mode. A
+/// A member's worn role in the council -- the brief's role tilak, drawn here as the seat's own mode. A
 /// healthy triad holds one of each: one to open (initiator), one to hold (sustainer), one to bridge
 /// (adapter). Odd and complete.
 pub const Mode = enum {
@@ -71,7 +71,7 @@ pub const CouncilError = error{
     VotesFull, // the vote book is at its bound — refuse rather than drop consent
 };
 
-/// One seat's ballot on one proposal — attributed to a distinct seat, so a quorum is the count of
+/// One seat's ballot on one proposal -- attributed to a distinct seat, so a quorum is the count of
 /// distinct such ballots on one side, never one seat counted twice.
 const Ballot = struct {
     seat: u32,
@@ -79,8 +79,8 @@ const Ballot = struct {
     yea: bool,
 };
 
-/// The modality role a seat wears — a pure function of its position, so the role can never drift from the
-/// body the sky seated. Seats cycle initiator · sustainer · adapter, so any consecutive triad is complete.
+/// The modality role a seat wears -- a pure function of its position, so the role can never drift from the
+/// body the sky seated. Seats cycle initiator - sustainer - adapter, so any consecutive triad is complete.
 pub fn mode_of_seat(seat: u32) Mode {
     return switch (seat % 3) {
         0 => .initiator,
@@ -90,7 +90,7 @@ pub fn mode_of_seat(seat: u32) Mode {
     };
 }
 
-/// Whether a size is one of a sky's own fractal levels — its galaxy, star, planet, or prosperity count.
+/// Whether a size is one of a sky's own fractal levels -- its galaxy, star, planet, or prosperity count.
 /// A council may seat a body only at a level the loaded sky actually names.
 fn is_fractal_level(sky: Sky, size: u32) bool {
     return size == sky.galaxies or size == sky.stars or size == sky.planets or size == sky.prosperity();
@@ -98,7 +98,7 @@ fn is_fractal_level(sky: Sky, size: u32) bool {
 
 /// A deliberating body loaded over a sky: a fixed odd size, a majority quorum computed from it, the
 /// modality role each seat wears (derived, not stored), and every distinct ballot cast. An outcome is
-/// *derived* — a proposal passes only when the count of distinct yes-ballots reaches the quorum — so the
+/// *derived* -- a proposal passes only when the count of distinct yes-ballots reaches the quorum -- so the
 /// tie-free law cannot be bypassed by writing an outcome directly.
 // Invariant: 3 <= size <= max_seats; size is odd; 2 * quorum > size (so both sides can never reach quorum).
 pub const Council = struct {
@@ -113,7 +113,7 @@ pub const Council = struct {
     pub fn load(sky: Sky, size: u32) CouncilError!Council {
         // invariant: a council seats only at a level the loaded sky actually names.
         if (!is_fractal_level(sky, size)) return error.NotAFractalLevel;
-        // invariant: an odd body — so yes and no can never both reach a majority (no tie-breaker needed).
+        // invariant: an odd body -- so yes and no can never both reach a majority (no tie-breaker needed).
         if (size % 2 == 0) return error.EvenCouncil;
         // invariant: the body fits the bound.
         if (size > max_seats) return error.TooManySeats;
@@ -123,7 +123,7 @@ pub const Council = struct {
         // invariant: a council is at least a triad (the smallest odd deliberating body).
         assert(size >= 3);
         assert(size % 2 == 1);
-        // invariant: both sides can never reach the quorum at once — 2*quorum > size — so no tie is possible.
+        // invariant: both sides can never reach the quorum at once -- 2*quorum > size -- so no tie is possible.
         assert(2 * quorum > size);
         assert(quorum <= size);
         return Council{ .size = size, .quorum = quorum, .votes = undefined, .vote_count = 0 };
@@ -136,7 +136,7 @@ pub const Council = struct {
         return mode_of_seat(seat);
     }
 
-    /// Does this exact seat→proposal ballot already stand?
+    /// Does this exact seat->proposal ballot already stand?
     fn has_ballot(self: *const Council, seat: u32, proposal: u32) bool {
         // invariant: the vote book never exceeds its bound.
         assert(self.vote_count <= max_votes);
@@ -147,7 +147,7 @@ pub const Council = struct {
         return false;
     }
 
-    /// How many distinct seats voted a given way on this proposal — a count of distinct hands on one side.
+    /// How many distinct seats voted a given way on this proposal -- a count of distinct hands on one side.
     pub fn tally(self: *const Council, proposal: u32, yea: bool) u32 {
         // invariant: the vote book never exceeds its bound.
         assert(self.vote_count <= max_votes);
@@ -161,21 +161,21 @@ pub const Council = struct {
         return count;
     }
 
-    /// The outcome of a proposal — the whole odd-quorum rule folded to one answer. Because the body is
+    /// The outcome of a proposal -- the whole odd-quorum rule folded to one answer. Because the body is
     /// odd (`2 * quorum > size`), yes and no can never both reach the quorum, so at most one of passed /
     /// failed holds; `open` until one side does.
     pub fn outcome(self: *const Council, proposal: u32) Outcome {
         const yes = self.tally(proposal, true);
         const no = self.tally(proposal, false);
         const both_reach_quorum = yes >= self.quorum and no >= self.quorum;
-        // invariant: the odd body forbids both sides reaching the quorum at once — never a tie.
+        // invariant: the odd body forbids both sides reaching the quorum at once -- never a tie.
         assert(!both_reach_quorum);
         if (yes >= self.quorum) return .passed;
         if (no >= self.quorum) return .failed;
         return .open;
     }
 
-    /// Whether every seat has voted on a proposal — the state in which an odd body is *always* decided.
+    /// Whether every seat has voted on a proposal -- the state in which an odd body is *always* decided.
     pub fn fully_voted(self: *const Council, proposal: u32) bool {
         const cast = self.tally(proposal, true) + self.tally(proposal, false);
         // invariant: the ballots cast on one proposal never exceed the seated body.
@@ -197,14 +197,14 @@ pub const Council = struct {
         // invariant: the vote book grew by exactly one, within its bound.
         assert(self.vote_count == i + 1);
         assert(self.vote_count <= max_votes);
-        // invariant: an odd body fully voted is always decided — never left open on a tie.
+        // invariant: an odd body fully voted is always decided -- never left open on a tie.
         assert(!self.fully_voted(proposal) or self.outcome(proposal) != .open);
     }
 };
 
 // --- selftest -----------------------------------------------------------
 
-/// The council sky's four fractal levels — 3 · 9 · 15 · 27 — all seat a council, each with its own odd
+/// The council sky's four fractal levels -- 3 - 9 - 15 - 27 -- all seat a council, each with its own odd
 /// majority quorum. The odd fractal is the whole point: a community loads it and every level decides.
 fn welcome_odd_levels_all_seat() !void {
     const sky = topology.council_sky; // 15 galaxies · 3 stars · 9 planets → prosperity 27
@@ -225,13 +225,13 @@ fn welcome_odd_levels_all_seat() !void {
 }
 
 /// An odd body can never tie: on a triad, one yes and one no leave the outcome open, and the third vote
-/// always decides — yes and no can never both reach the quorum of two.
+/// always decides -- yes and no can never both reach the quorum of two.
 fn welcome_odd_quorum_never_ties() !void {
     const sky = topology.council_sky;
     var c = try Council.load(sky, 3);
     const prop: u32 = 7;
 
-    // Seat 0 votes yes, seat 1 votes no: one each, quorum two — the outcome holds open, no tie declared.
+    // Seat 0 votes yes, seat 1 votes no: one each, quorum two -- the outcome holds open, no tie declared.
     try c.vote(0, prop, true);
     assert(c.outcome(prop) == .open);
     try c.vote(1, prop, false);
@@ -240,7 +240,7 @@ fn welcome_odd_quorum_never_ties() !void {
     assert(c.tally(prop, false) == 1);
     assert(!c.fully_voted(prop));
 
-    // Seat 2 casts the deciding vote. Every seat has now voted; an odd body is always decided — here, yes.
+    // Seat 2 casts the deciding vote. Every seat has now voted; an odd body is always decided -- here, yes.
     try c.vote(2, prop, true);
     assert(c.fully_voted(prop));
     assert(c.outcome(prop) == .passed);
@@ -248,8 +248,8 @@ fn welcome_odd_quorum_never_ties() !void {
     print("council_sky: a one-each split held open, and the odd third vote decided — a majority of an odd body never ties.\n", .{});
 }
 
-/// Every seat wears a modality role by position; any consecutive triad holds one of each — odd and
-/// complete — and the cycle repeats, so a large body is a weave of complete triads.
+/// Every seat wears a modality role by position; any consecutive triad holds one of each -- odd and
+/// complete -- and the cycle repeats, so a large body is a weave of complete triads.
 fn welcome_modality_triad_complete() !void {
     const sky = topology.council_sky;
     var c = try Council.load(sky, 9);
@@ -257,7 +257,7 @@ fn welcome_modality_triad_complete() !void {
     assert(c.mode_at(0) == .initiator);
     assert(c.mode_at(1) == .sustainer);
     assert(c.mode_at(2) == .adapter);
-    // The three modes of a triad are distinct — one to open, one to hold, one to bridge.
+    // The three modes of a triad are distinct -- one to open, one to hold, one to bridge.
     assert(c.mode_at(0) != c.mode_at(1));
     assert(c.mode_at(1) != c.mode_at(2));
     assert(c.mode_at(0) != c.mode_at(2));
@@ -267,16 +267,16 @@ fn welcome_modality_triad_complete() !void {
     print("council_sky: seats wore initiator-sustainer-adapter each once per triad, the cycle repeating — a body of complete triads.\n", .{});
 }
 
-/// The civic compass sky is not a council sky: its prosperity is 60 — even — so seating its d60 as a
+/// The civic compass sky is not a council sky: its prosperity is 60 -- even -- so seating its d60 as a
 /// deliberating body refuses EvenCouncil rather than risk a tie. Its odd star level (5) still seats.
 fn unwelcome_even_level_refuses() !void {
     const compass = topology.compass_sky; // 12 galaxies · 5 stars · 12 planets → prosperity 60
 
-    // The d60 is a real fractal level, yet even — a council of it could deadlock, so it refuses.
+    // The d60 is a real fractal level, yet even -- a council of it could deadlock, so it refuses.
     const even = Council.load(compass, 60);
     assert(even == error.EvenCouncil);
 
-    // The compass sky's star level (5) is odd — a valid council of five, quorum three.
+    // The compass sky's star level (5) is odd -- a valid council of five, quorum three.
     const five = try Council.load(compass, 5);
     assert(five.quorum == 3);
     print("council_sky: the compass sky's even d60 refused EvenCouncil, yet its odd star level (5) seated a council of quorum three.\n", .{});
@@ -291,7 +291,7 @@ fn unwelcome_not_a_level_refuses() !void {
     print("council_sky: a size the sky does not name refused NotAFractalLevel — a council seats only at a loaded level.\n", .{});
 }
 
-/// Only a seated index votes, and one seat votes on a proposal once — a lone hand can never fake a
+/// Only a seated index votes, and one seat votes on a proposal once -- a lone hand can never fake a
 /// majority.
 fn unwelcome_nonseat_and_double_vote_refuse() !void {
     const sky = topology.council_sky;
@@ -306,7 +306,7 @@ fn unwelcome_nonseat_and_double_vote_refuse() !void {
     try c.vote(0, prop, true);
     const doubled = c.vote(0, prop, true);
     assert(doubled == error.AlreadyVoted);
-    // The tally did not budge — one hand cannot count for two.
+    // The tally did not budge -- one hand cannot count for two.
     assert(c.tally(prop, true) == 1);
     assert(c.outcome(prop) == .open);
     print("council_sky: a non-seat vote refused NotSeated and a doubled ballot refused AlreadyVoted, the tally held at one — one hand can never fake a majority.\n", .{});

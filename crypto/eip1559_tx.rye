@@ -1,33 +1,33 @@
-//! crypto/eip1559_tx.rye — the EIP-1559 typed-transaction (type-2) digest, authored in pure Rye as a COMPOSITION over stones already GREEN in
+//! crypto/eip1559_tx.rye -- the EIP-1559 typed-transaction (type-2) digest, authored in pure Rye as a COMPOSITION over stones already GREEN in
 //! this tree: the Recursive Length Prefix serialization (encoding/rlp.rye), the Keccak-256 hash (crypto/keccak256.rye), the secp256k1 ECDSA
-//! signer (crypto/secp256k1_ecdsa_sign.rye — over a PUBLIC TEST KEY only), the secp256k1 public-key recovery (crypto/secp256k1_ecrecover.rye),
-//! and the Ethereum address derivation (crypto/eth_address.rye). It authors NO new cryptography and no new serialization — only the one small
+//! signer (crypto/secp256k1_ecdsa_sign.rye -- over a PUBLIC TEST KEY only), the secp256k1 public-key recovery (crypto/secp256k1_ecrecover.rye),
+//! and the Ethereum address derivation (crypto/eth_address.rye). It authors NO new cryptography and no new serialization -- only the one small
 //! assembly the modern Ethereum world performs before every type-2 send: prepend the transaction-type byte 0x02, lay the fields out as an RLP
 //! list, hash that with Keccak-256, and you hold the exact 32 bytes a wallet signs. Recover the signature back through ecrecover and you hold the
 //! sender. Where eip155_tx (the seventh composition) hashes the FLAT legacy nine-field list, eip1559_tx hashes the TYPED, type-prefixed list of
-//! EIP-1559 — the two on-chain shapes a key is asked to sign since the London fork made type-2 the default.
+//! EIP-1559 -- the two on-chain shapes a key is asked to sign since the London fork made type-2 the default.
 //!
-//! Season: crypto (Season G · Cryptography), the ninth composition on the shelf, beside eth_address, eth_personal_sign, eip712, and eip155_tx.
+//! Season: crypto (Season G - Cryptography), the ninth composition on the shelf, beside eth_address, eth_personal_sign, eip712, and eip155_tx.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
 //! Clean-room: the rules are EIP-1559, EIP-2718 (typed transaction envelope), and the Ethereum Yellow Paper; the arithmetic is ours
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — the typed envelope and the dynamic-fee market, stated positively. EIP-2718 wraps a transaction in a one-byte type tag so new
+//! THE CRUX -- the typed envelope and the dynamic-fee market, stated positively. EIP-2718 wraps a transaction in a one-byte type tag so new
 //! transaction shapes can be added without a hard fork; EIP-1559 defines type 0x02, replacing the single gasPrice with a base-fee market:
 //! maxPriorityFeePerGas (the tip to the validator) and maxFeePerGas (the ceiling the sender will pay). The SIGNING payload is
-//! 0x02 ‖ rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]) — nine fields, the accessList itself
-//! an RLP list (empty for a plain transfer) — and its Keccak-256 is the sighash. The SIGNED transaction on the wire is
-//! 0x02 ‖ rlp([...the nine..., yParity, r, s]) — twelve fields, the recovery bit named yParity (0 or 1) rather than the legacy v, because the
+//! 0x02 ‖ rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]) -- nine fields, the accessList itself
+//! an RLP list (empty for a plain transfer) -- and its Keccak-256 is the sighash. The SIGNED transaction on the wire is
+//! 0x02 ‖ rlp([...the nine..., yParity, r, s]) -- twelve fields, the recovery bit named yParity (0 or 1) rather than the legacy v, because the
 //! chain id already lives inside the signed list and needs no folding into v. This module builds the signing sighash from the fields, and
 //! recovers the sender from (sighash, r, s, yParity).
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no maintainer key, no network, no funds, no real device. This module NEVER signs with a real
+//! HONEST SCOPE -- software only, purely LOCAL, no maintainer key, no network, no funds, no real device. This module NEVER signs with a real
 //! identity key: signing with the maintainer's own key is the custody gate that stays the maintainer's hand. The selftest signs a PUBLISHED test
-//! key (EIP-155's own example key 0x4646…46) whose Ethereum address 0x9d8a62f6…855a4f is public, so the proof touches no secret worth guarding.
-//! Parity is proven three ways anyone can replay, WITHOUT a fabricated external constant: (1) a WORLD BINDING — deriving the public test key's
-//! address through our GREEN secp256k1 + eth_address yields exactly the address EIP-155 already publishes for that key, 0x9d8a62f6…855a4f;
-//! (2) an INDEPENDENT construction — the type-2 sighash built a second time with Zig's own std.crypto Keccak-256 over the identical
-//! 0x02 ‖ rlp(...) bytes is byte-for-byte equal to our GREEN path; and (3) a FULL ROUND-TRIP — deterministically signing the sighash with that
+//! key (EIP-155's own example key 0x4646...46) whose Ethereum address 0x9d8a62f6...855a4f is public, so the proof touches no secret worth guarding.
+//! Parity is proven three ways anyone can replay, WITHOUT a fabricated external constant: (1) a WORLD BINDING -- deriving the public test key's
+//! address through our GREEN secp256k1 + eth_address yields exactly the address EIP-155 already publishes for that key, 0x9d8a62f6...855a4f;
+//! (2) an INDEPENDENT construction -- the type-2 sighash built a second time with Zig's own std.crypto Keccak-256 over the identical
+//! 0x02 ‖ rlp(...) bytes is byte-for-byte equal to our GREEN path; and (3) a FULL ROUND-TRIP -- deterministically signing the sighash with that
 //! test key (RFC-6979, reproducible) then recovering the sender through our ecrecover returns exactly the derived, published address, so a
 //! one-bit error anywhere in the RLP layout, the type prefix, the hash, the signer, or the recovery would break the match.
 //!
@@ -50,17 +50,17 @@ pub const digest_bytes: u32 = keccak.digest_256; // 32
 pub const address_bytes: u32 = eth.address_bytes; // 20
 
 /// The EIP-2718 transaction-type byte for an EIP-1559 dynamic-fee transaction. Prepended before the RLP list in both the signing preimage and
-/// the signed wire form — the tag that tells a node "this is not a legacy transaction, decode it as type 2."
+/// the signed wire form -- the tag that tells a node "this is not a legacy transaction, decode it as type 2."
 pub const tx_type: u8 = 0x02;
 
 /// The number of fields in each list. EIP-1559 fixes the signing list at nine
-/// [chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList], and the signed list at twelve — the same nine
+/// [chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList], and the signed list at twelve -- the same nine
 /// followed by [yParity, r, s]. Named so every field walk cites its bound.
 pub const signing_fields_count: u32 = 9;
 pub const signed_fields_count: u32 = 12;
 
-/// The largest type-2 preimage this module hashes. A dynamic-fee transaction is small — nine fields, a twenty-byte address, a handful of
-/// integer fees, an access list, and a data payload — yet the ceiling is stated generously and explicitly, the TAME reflex that a buffer names
+/// The largest type-2 preimage this module hashes. A dynamic-fee transaction is small -- nine fields, a twenty-byte address, a handful of
+/// integer fees, an access list, and a data payload -- yet the ceiling is stated generously and explicitly, the TAME reflex that a buffer names
 /// its maximum before it is filled. Well inside Keccak-256's own million-byte message bound.
 pub const max_tx_bytes: u32 = 1 << 16;
 
@@ -69,7 +69,7 @@ pub const max_tx_bytes: u32 = 1 << 16;
 pub const Eip1559Error = error{
     /// A signing field list that is not exactly signing_fields_count items.
     BadFieldCount,
-    /// A yParity that is neither 0 nor 1 — the only two recovery bits a type-2 signature carries.
+    /// A yParity that is neither 0 nor 1 -- the only two recovery bits a type-2 signature carries.
     BadYParity,
     /// An r or s that is not exactly thirty-two bytes.
     BadScalarLength,
@@ -77,7 +77,7 @@ pub const Eip1559Error = error{
     PreimageTooLong,
 } || rlp.RlpError || keccak.Keccak256Error || ecr.RecoverError || eth.EthAddressError;
 
-/// Write the type-2 signing preimage — the type byte 0x02 followed by the RLP list of the nine signing fields — into dest, returning the exact
+/// Write the type-2 signing preimage -- the type byte 0x02 followed by the RLP list of the nine signing fields -- into dest, returning the exact
 /// written slice. The one small assembly EIP-2718 adds over a legacy transaction: a single tag byte before the familiar RLP frame. Composes
 /// encoding/rlp.rye, authoring no serialization.
 pub fn signing_preimage(dest: []u8, signing_list: []const rlp.Item) Eip1559Error![]const u8 {
@@ -93,7 +93,7 @@ pub fn signing_preimage(dest: []u8, signing_list: []const rlp.Item) Eip1559Error
     return dest[0 .. 1 + encoded.len];
 }
 
-/// The Keccak-256 sighash of a type-2 transaction's SIGNING list — the exact thirty-two bytes a wallet signs. Builds the type-prefixed preimage,
+/// The Keccak-256 sighash of a type-2 transaction's SIGNING list -- the exact thirty-two bytes a wallet signs. Builds the type-prefixed preimage,
 /// then hashes it. Composes encoding/rlp.rye and crypto/keccak256.rye, authoring neither.
 pub fn signing_sighash(signing_list: []const rlp.Item) Eip1559Error![digest_bytes]u8 {
     var buf: [max_tx_bytes]u8 = undefined;
@@ -104,7 +104,7 @@ pub fn signing_sighash(signing_list: []const rlp.Item) Eip1559Error![digest_byte
 }
 
 /// Recover the twenty-byte sender address from a type-2 transaction's sighash, its signature scalars, and its yParity recovery bit. Composes
-/// crypto/secp256k1_ecrecover.rye (public-key recovery from public data) and crypto/eth_address.rye (Keccak-256 of the key, low twenty bytes) —
+/// crypto/secp256k1_ecrecover.rye (public-key recovery from public data) and crypto/eth_address.rye (Keccak-256 of the key, low twenty bytes) --
 /// touching no secret scalar, exactly as an Ethereum node does when it credits a type-2 transaction's gas to its sender.
 pub fn recover_sender(
     sighash: []const u8,
@@ -112,9 +112,9 @@ pub fn recover_sender(
     s_be: []const u8,
     y_parity: u8,
 ) Eip1559Error![address_bytes]u8 {
-    // invariant: yParity is exactly 0 or 1 — a type-2 signature carries no other recovery bit.
+    // invariant: yParity is exactly 0 or 1 -- a type-2 signature carries no other recovery bit.
     if (y_parity > 1) return error.BadYParity;
-    // invariant: the sighash is exactly thirty-two bytes and each scalar exactly thirty-two — refused otherwise before recovery.
+    // invariant: the sighash is exactly thirty-two bytes and each scalar exactly thirty-two -- refused otherwise before recovery.
     if (sighash.len != digest_bytes) return error.BadScalarLength;
     if (r_be.len != 32 or s_be.len != 32) return error.BadScalarLength;
 
@@ -158,7 +158,7 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // EIP-155's own example test key 0x4646…46 — a PUBLISHED test key, never a real identity. Its Ethereum address is public and already lives
+    // EIP-155's own example test key 0x4646...46 -- a PUBLISHED test key, never a real identity. Its Ethereum address is public and already lives
     // in crypto/eip155_tx.rye as that spec's stated sender; we bind to it below rather than to any secret.
     const test_key = [_]u8{0x46} ** 32;
     const address_want = [_]u8{
@@ -206,7 +206,7 @@ fn run_selftest() !u8 {
     {
         var buf: [max_tx_bytes]u8 = undefined;
         const preimage = try signing_preimage(&buf, &signing_list);
-        // The type byte must lead the preimage, and the RLP list header must follow it — the EIP-2718 envelope, checked in place.
+        // The type byte must lead the preimage, and the RLP list header must follow it -- the EIP-2718 envelope, checked in place.
         if (preimage[0] != tx_type) return error.TypeByteMissing;
         if (preimage[1] < 0xc0) return error.NotAnRlpList;
         var zsig: [32]u8 = undefined;
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. Full round-trip: deterministically sign the sighash with the public test key (RFC-6979, reproducible), then recover the sender. yParity
-    //    is the recovery bit that reconstructs the signer's own address — determined by trying both 0 and 1 against the world-bound address,
+    //    is the recovery bit that reconstructs the signer's own address -- determined by trying both 0 and 1 against the world-bound address,
     //    exactly the check a verifier runs. The recovered sender equals the derived, published address, so a one-bit error anywhere breaks it.
     const sig = try signer.sign_prehashed(&test_key, &sighash);
     var y_parity: u8 = 2; // sentinel: not yet found
@@ -235,7 +235,7 @@ fn run_selftest() !u8 {
     // invariant: exactly one recovery bit reconstructs the world-bound sender; a signature that recovers to neither would leave the sentinel.
     if (y_parity > 1) return error.NoRecoveryBit;
 
-    // 4. The SIGNED transaction on the wire — the type byte, then the twelve fields with [yParity, r, s] appended — assembles, leads with 0x02,
+    // 4. The SIGNED transaction on the wire -- the type byte, then the twelve fields with [yParity, r, s] appended -- assembles, leads with 0x02,
     //    and its RLP list round-trips through the decoder to exactly twelve fields. The frame a node receives, proven to hold together.
     {
         const y_item: [1]u8 = .{y_parity};

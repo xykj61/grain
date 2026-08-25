@@ -1,4 +1,4 @@
-//! tally/bud.rye — Curve25519 Pedersen commitment (amount·G + dew·H).
+//! tally/bud.rye -- Curve25519 Pedersen commitment (amount-G + dew-H).
 //!
 //! Warm name **bud** for the commitment; **dew** for the blinding scalar;
 //! **bloom** is the prose for opening. Inherited teacher name: Pedersen.
@@ -13,17 +13,17 @@ const print = std.debug.print;
 const Edwards25519 = std.crypto.ecc.Edwards25519;
 const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 
-/// Same stamp string as the first published pedersen seat — pinned means pinned.
+/// Same stamp string as the first published pedersen seat -- pinned means pinned.
 pub const pedersen_version = "20260709.194437";
 pub const bud_version = pedersen_version;
 
-/// Domain separation for the second generator H — bytes hashed, then fromUniform.
+/// Domain separation for the second generator H -- bytes hashed, then fromUniform.
 pub const h_domain = "veganreyklah2/slcl4/pedersen-H/v1";
 
 pub const point_len: u32 = 32;
 pub const scalar_len: u32 = 32;
 
-/// Pinned H compressed bytes — asserted equal to derive_h() at startup.
+/// Pinned H compressed bytes -- asserted equal to derive_h() at startup.
 pub const pinned_h_bytes: [point_len]u8 = .{
     0x9c, 0xf8, 0x58, 0x7f, 0x8f, 0x72, 0xd4, 0x10,
     0xbb, 0x4b, 0x87, 0xef, 0x20, 0xcf, 0x0a, 0xff,
@@ -49,7 +49,7 @@ pub fn assert_pinned_h() !void {
     if (!std.mem.eql(u8, &bytes, &pinned_h_bytes)) return error.HMismatch;
 }
 
-/// Bud: C = amount·G + dew·H (variable-time public mul — witness data).
+/// Bud: C = amount-G + dew-H (variable-time public mul -- witness data).
 pub fn commit(amount: u64, dew: *const [scalar_len]u8) !Edwards25519 {
     const h = derive_h();
     const amt = scalar_from_u64(amount);

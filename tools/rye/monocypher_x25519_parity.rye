@@ -1,15 +1,15 @@
-//! tools/rye/monocypher_x25519_parity.rye — our authored crypto/x25519.rye asked for its OWN X25519 public keys and shared secrets over RFC 7748
+//! tools/rye/monocypher_x25519_parity.rye -- our authored crypto/x25519.rye asked for its OWN X25519 public keys and shared secrets over RFC 7748
 //! §6.1's Alice/Bob key exchange, printed one 64-hex-character value per line, so tools/cr/crypto_monocypher_x25519_parity_witness.rish can diff our
-//! bytes against the vendored Monocypher's C (tools/fixtures/monocypher_x25519_harness.c) byte-for-byte — the key agreement the Kumara sealed door
-//! (crypto/kumara_sealed.rye) rests on, proven against the audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! bytes against the vendored Monocypher's C (tools/fixtures/monocypher_x25519_harness.c) byte-for-byte -- the key agreement the Kumara sealed door
+//! (crypto/kumara_sealed.rye) rests on, proven against the audit's parity target. Season G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The two private scalars are RFC 7748 §6.1's own published Alice and Bob keys. The four printed lines are, in order: Alice's public key
 //! (x25519_base(alice)), Bob's public key (x25519_base(bob)), the shared secret from Alice's side (x25519(alice, bob_pub)), and the shared secret
-//! from Bob's side (x25519(bob, alice_pub)) — so the parity witness compares like against like over identical inputs.
+//! from Bob's side (x25519(bob, alice_pub)) -- so the parity witness compares like against like over identical inputs.
 //!
-//! This authors NO cryptography — it is a printing harness over the GREEN crypto/x25519.rye (reached through the tools/rye/x25519.rye and
+//! This authors NO cryptography -- it is a printing harness over the GREEN crypto/x25519.rye (reached through the tools/rye/x25519.rye and
 //! tools/rye/fe25519.rye symlinks, since Rye resolves imports beside the importing file). Both our x25519 and Monocypher clamp the scalar internally
-//! per RFC 7748 §5, so each is fed the raw published scalar. Purely local — no key of ours, no network, no funds, no device.
+//! per RFC 7748 §5, so each is fed the raw published scalar. Purely local -- no key of ours, no network, no funds, no device.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_x25519_parity.rye
@@ -34,7 +34,7 @@ const bob_priv = [_]u8{
 
 const hex_alphabet = "0123456789abcdef";
 
-/// print_bytes — render a 32-byte X25519 value as a line of 64 lowercase hex characters.
+/// print_bytes -- render a 32-byte X25519 value as a line of 64 lowercase hex characters.
 fn print_bytes(b: *const [32]u8) void {
     var out: [64]u8 = undefined;
     var i: u32 = 0;
@@ -43,7 +43,7 @@ fn print_bytes(b: *const [32]u8) void {
         out[i * 2] = hex_alphabet[b[i] >> 4];
         out[i * 2 + 1] = hex_alphabet[b[i] & 0x0f];
     }
-    // invariant (postcondition): the rendered line is the fixed 64-character width — a full 32-byte value, never a truncation.
+    // invariant (postcondition): the rendered line is the fixed 64-character width -- a full 32-byte value, never a truncation.
     assert(out.len == 64);
     print("{s}\n", .{out});
 }
@@ -54,11 +54,11 @@ pub fn main(init: std.process.Init) !u8 {
     // invariant (construction): both published scalars are the fixed 32-byte X25519 width.
     assert(alice_priv.len == 32 and bob_priv.len == 32);
 
-    // 1. Alice's public key: base·alice.
+    // 1. Alice's public key: base-alice.
     const alice_pub = x.x25519_base(&alice_priv);
     print_bytes(&alice_pub);
 
-    // 2. Bob's public key: base·bob.
+    // 2. Bob's public key: base-bob.
     const bob_pub = x.x25519_base(&bob_priv);
     print_bytes(&bob_pub);
 

@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu3_witness.rye — proves LULU3 home_id editor helpers.
+//! linengrow/hearth_lulu3_witness.rye -- proves LULU3 home_id editor helpers.
 //!
 //!   rye build linengrow/hearth_lulu3_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu3_witness

@@ -1,5 +1,5 @@
-//! lotus/stereo_width.rye — ALES211: STEREO WIDTH — the image narrowed or widened, by scaling the SIDE and recombining, the first rung to spend
-//! ALES210's mid/side primitive. A keeper mixing a stereo master reaches for one knob more than almost any other in the field: WIDTH — pull the
+//! lotus/stereo_width.rye -- ALES211: STEREO WIDTH -- the image narrowed or widened, by scaling the SIDE and recombining, the first rung to spend
+//! ALES210's mid/side primitive. A keeper mixing a stereo master reaches for one knob more than almost any other in the field: WIDTH -- pull the
 //! image in toward mono to sit a part back in the mix, or push it out past the speakers for air. Width is exactly "scale the side, recombine": the
 //! MID (the shared centre) is the mono core, the SIDE (the half-difference) is the stereo spread, so scaling the side alone widens or narrows the
 //! image without touching what both channels share.
@@ -10,21 +10,21 @@
 //!   3. decode MID/SIDE back to LEFT/RIGHT in place (ALES210's `mid_side.decode`)
 //! Every sample it writes is written by a stage already proven byte for byte; width invents no arithmetic of its own.
 //!
-//! The three edges name the knob. `width == den` (unity) is the mid/side round-trip — the near-identity, exact on a same-parity master. `width == 0`
+//! The three edges name the knob. `width == den` (unity) is the mid/side round-trip -- the near-identity, exact on a same-parity master. `width == 0`
 //! is the MONO COLLAPSE: the side is zeroed, so both channels become the shared mid, the image pulled fully to centre. `width > den` WIDENS: the side
 //! grows, so the channel difference grows, the image pushed outward (saturating at the rail rather than wrapping). A CENTRED master (left == right)
-//! has a zero side, so width leaves it untouched at any setting — a mono signal has no width to turn.
+//! has a zero side, so width leaves it untouched at any setting -- a mono signal has no width to turn.
 //!
 //! The width is validated BEFORE any write (a zero or over-bound denominator, or an over-bound numerator, refuses `BadWidth`), and the encode runs
 //! only after that check, so a refusal leaves the master untouched and balanced. Once the width is legal the gain over the full valid span and the
-//! decode cannot fault — the op refuses whole up front or completes whole.
+//! decode cannot fault -- the op refuses whole up front or completes whole.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES211.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES211.
 //! Design read: active-designing/date/20260815/20260815-121345_fill-ales211-lotus-stereo-width.md
-//! Stands on: lotus/mid_side.rye (ALES210) — the reversible mid/side change of basis, encode and decode, spent whole; lotus/timeline.rye (ALES2) —
-//! the Clip and its proven `gain` (the side scaled by a fraction, saturated once); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant.
+//! Stands on: lotus/mid_side.rye (ALES210) -- the reversible mid/side change of basis, encode and decode, spent whole; lotus/timeline.rye (ALES2) --
+//! the Clip and its proven `gain` (the side scaled by a fraction, saturated once); lotus/pan.rye (ALES10) -- the StereoClip and its balance invariant.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. Width is a pure
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. Width is a pure
 //! composition of proven stages over existing samples; it fabricates none, changes no length, and reads no byte past either channel's len. It
 //! inherits ALES210's honest ≤ 1 LSB round-trip cost at unity. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -42,7 +42,7 @@ pub const stereo_width_version = "20260815.121345";
 
 /// The widest and narrowest fraction this rung proves. A width is `num/den`: 0 is mono (side zeroed), `den` is unity, past `den` widens. The
 /// denominator is bounded like ALES10's pan denominator so a width is a real fraction, and the numerator is bounded so no width can ask for an
-/// absurd amplification (the gain saturates anyway; this names the intent). Generous rather than tight — a handful of times unity already pushes an
+/// absurd amplification (the gain saturates anyway; this names the intent). Generous rather than tight -- a handful of times unity already pushes an
 /// image past the speakers.
 pub const max_width_den: u32 = 4096;
 pub const max_width_num: u32 = 32768;
@@ -54,37 +54,37 @@ pub const StereoWidthError = error{BadWidth};
 /// Narrow or widen `sc` by scaling the SIDE by `width_num/width_den` and recombining. `width_den` unity is the mid/side round-trip (the near-identity,
 /// exact on a same-parity master); `width_num == 0` collapses to mono (both channels the shared mid); `width_num > width_den` widens (the channel
 /// difference grows, saturating at the rail). Refuses `BadWidth` on a zero or over-bound denominator or an over-bound numerator before any write, so
-/// a bad width leaves the master untouched and balanced. Values only — never a length.
+/// a bad width leaves the master untouched and balanced. Values only -- never a length.
 pub fn stereo_width(sc: *pan.StereoClip, width_num: u32, width_den: u32) StereoWidthError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: the width is a real, bounded fraction — a zero denominator is no fraction at all, an over-bound term would ask for an absurd scale.
+    // invariant: the width is a real, bounded fraction -- a zero denominator is no fraction at all, an over-bound term would ask for an absurd scale.
     // Refused before any write so a bad width never half-transforms the master.
     if (width_den == 0 or width_den > max_width_den or width_num > max_width_num) return error.BadWidth;
 
     const n: u32 = sc.left.len;
 
-    // 1. Fold LEFT/RIGHT into MID/SIDE in place — ALES210, total, no fault.
+    // 1. Fold LEFT/RIGHT into MID/SIDE in place -- ALES210, total, no fault.
     mid_side.encode(sc);
-    // 2. Scale the SIDE channel (the right Clip now holds the side) by width_num/width_den — ALES2's proven gain, saturating once. The span is the
+    // 2. Scale the SIDE channel (the right Clip now holds the side) by width_num/width_den -- ALES2's proven gain, saturating once. The span is the
     //    full valid clip and the denominator is proven non-zero above, so this cannot raise BadGain or BadRange; the catch restores the master and
     //    re-raises as our own fault, yet the invariant is that it never fires.
     timeline.gain(&sc.right, 0, n, @intCast(width_num), width_den) catch {
-        // invariant: unreachable — the width is prechecked legal and the span is the whole clip; restore the master if the impossible happens.
+        // invariant: unreachable -- the width is prechecked legal and the span is the whole clip; restore the master if the impossible happens.
         mid_side.decode(sc);
         return error.BadWidth;
     };
-    // 3. Fold MID/SIDE back into LEFT/RIGHT in place — ALES210, total, no fault.
+    // 3. Fold MID/SIDE back into LEFT/RIGHT in place -- ALES210, total, no fault.
     mid_side.decode(sc);
 
-    // invariant: width writes values only — both channels keep their length, so the master leaves balanced.
+    // invariant: width writes values only -- both channels keep their length, so the master leaves balanced.
     assert(sc.left.len == sc.right.len and sc.left.len == n);
 }
 
-// --- selftest: THE UNITY EDGE — width == den is the mid/side round-trip, exact on a same-parity master (byte for byte the original); THE MONO
-//     COLLAPSE — width == 0 makes both channels the shared mid = (l+r)/2, the image fully centred; THE WIDEN LAW — width == 2·den doubles the side,
-//     so the per-sample channel difference |L−R| grows (a wider image), the result differing from the original; THE CENTRED-INVARIANT LAW — a
-//     centred master (l == r) is untouched at any width (a mono signal has no width); THE BALANCE / FAULT LAW — both channels stay balanced, and a
+// --- selftest: THE UNITY EDGE -- width == den is the mid/side round-trip, exact on a same-parity master (byte for byte the original); THE MONO
+//     COLLAPSE -- width == 0 makes both channels the shared mid = (l+r)/2, the image fully centred; THE WIDEN LAW -- width == 2-den doubles the side,
+//     so the per-sample channel difference |L−R| grows (a wider image), the result differing from the original; THE CENTRED-INVARIANT LAW -- a
+//     centred master (l == r) is untouched at any width (a mono signal has no width); THE BALANCE / FAULT LAW -- both channels stay balanced, and a
 //     zero or over-bound width refuses BadWidth with the master untouched ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -100,11 +100,11 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // A same-parity master (every pair l+r even) so the mid/side round-trip is exact — the unity and widen laws read against the true original.
+    // A same-parity master (every pair l+r even) so the mid/side round-trip is exact -- the unity and widen laws read against the true original.
     const l0 = [_]i16{ 1000, -2000, 3000, 500 };
     const r0 = [_]i16{ 200, 400, -600, 500 };
 
-    // 1. THE UNITY EDGE — width == den scales the side by one, so stereo_width is exactly decode(encode): on a same-parity master, the original byte
+    // 1. THE UNITY EDGE -- width == den scales the side by one, so stereo_width is exactly decode(encode): on a same-parity master, the original byte
     //    for byte. The knob at rest moves nothing.
     {
         var sc = pan.StereoClip{};
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.UnityRightWrong;
     }
 
-    // 2. THE MONO COLLAPSE — width == 0 zeroes the side, so decode gives both channels the shared mid = (l+r)/2: the image is pulled fully to centre,
-    //    left == right everywhere. mid: (1000,200)→600, (-2000,400)→-800, (3000,-600)→1200, (500,500)→500.
+    // 2. THE MONO COLLAPSE -- width == 0 zeroes the side, so decode gives both channels the shared mid = (l+r)/2: the image is pulled fully to centre,
+    //    left == right everywhere. mid: (1000,200)->600, (-2000,400)->-800, (3000,-600)->1200, (500,500)->500.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &l0, &r0);
@@ -123,18 +123,18 @@ fn run_selftest() !u8 {
         const mid = [_]i16{ 600, -800, 1200, 500 };
         if (!eq(sc.left.samples(), &mid)) return error.CollapseLeftWrong;
         if (!eq(sc.right.samples(), &mid)) return error.CollapseRightWrong;
-        // the defining property: both channels identical — the image is centred, no width left.
+        // the defining property: both channels identical -- the image is centred, no width left.
         if (!eq(sc.left.samples(), sc.right.samples())) return error.CollapseNotCentred;
     }
 
-    // 3. THE WIDEN LAW — width == 2·den doubles the side, so decode pushes the channels apart: the per-sample difference |L−R| grows against the
-    //    original, the image widened. side doubles: 400→800, -1200→-2400, 1800→3600, 0→0; decode l=mid+side, r=mid-side.
+    // 3. THE WIDEN LAW -- width == 2-den doubles the side, so decode pushes the channels apart: the per-sample difference |L−R| grows against the
+    //    original, the image widened. side doubles: 400->800, -1200->-2400, 1800->3600, 0->0; decode l=mid+side, r=mid-side.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &l0, &r0);
         try stereo_width(&sc, 4, 2); // 2× width
-        //  l = mid+2·side: 600+800=1400   -800-2400=-3200   1200+3600=4800   500
-        //  r = mid-2·side:  600-800=-200   -800+2400=1600    1200-3600=-2400  500
+        //  l = mid+2-side: 600+800=1400   -800-2400=-3200   1200+3600=4800   500
+        //  r = mid-2-side:  600-800=-200   -800+2400=1600    1200-3600=-2400  500
         if (!eq(sc.left.samples(), &[_]i16{ 1400, -3200, 4800, 500 })) return error.WidenLeftWrong;
         if (!eq(sc.right.samples(), &[_]i16{ -200, 1600, -2400, 500 })) return error.WidenRightWrong;
         // the channel difference has genuinely grown where the master was not centred (the last sample, centred, stays zero-difference).
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE CENTRED-INVARIANT LAW — a centred master (left == right) has a zero side, so scaling the side by ANY width leaves it untouched: a mono
+    // 4. THE CENTRED-INVARIANT LAW -- a centred master (left == right) has a zero side, so scaling the side by ANY width leaves it untouched: a mono
     //    signal has no width to turn. Proven at the mono collapse and at 2× width, both returning the centred original exactly (l+r = 2l is even).
     {
         const centre = [_]i16{ 5000, -5000, 3000, -2000 };
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (!eq(wide.left.samples(), &centre) or !eq(wide.right.samples(), &centre)) return error.CentredWideMoved;
     }
 
-    // 5a. THE BALANCE LAW — width holds left.len == right.len and each channel's length, at an even and an odd length; the image stays aligned.
+    // 5a. THE BALANCE LAW -- width holds left.len == right.len and each channel's length, at an even and an odd length; the image stays aligned.
     {
         var odd = pan.StereoClip{};
         try load_stereo(&odd, &[_]i16{ 100, -200, 300 }, &[_]i16{ 40, 60, -80 });
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         if (empty.left.len != 0 or empty.right.len != 0) return error.EmptyChanged;
     }
 
-    // 5b. THE FAULT LAW — a zero denominator, an over-bound denominator, and an over-bound numerator each refuse BadWidth BEFORE any write, so the
+    // 5b. THE FAULT LAW -- a zero denominator, an over-bound denominator, and an over-bound numerator each refuse BadWidth BEFORE any write, so the
     //     master is left untouched and balanced (the width is checked before encode ever runs).
     {
         var sc = pan.StereoClip{};

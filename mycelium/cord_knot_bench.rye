@@ -1,24 +1,24 @@
-//! mycelium/cord_knot_bench.rye — checkpointing is a genuine bound win, measured honestly.
+//! mycelium/cord_knot_bench.rye -- checkpointing is a genuine bound win, measured honestly.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r3 — the measured bound win.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r3 -- the measured bound win.
 //! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 proved a checkpoint folds identical to the whole history; r2 let it travel.
 //! r3 measures what the Knot buys: the Cord's Dag is statically allocated
 //! (cord.cord_max_blocks = 256), so a history longer than that ceiling cannot live
-//! in one Dag at all — and this rung proves it (a fresh Dag filled to the ceiling
+//! in one Dag at all -- and this rung proves it (a fresh Dag filled to the ceiling
 //! refuses the next block DagFull). Yet checkpoint-and-prune folds a history past
 //! the ceiling while the LIVE Dag never exceeds one bounded window, reaching the
 //! byte-identical supply as folding the whole history from empty.
 //!
-//! Two Rooms honesty: the module ASSERTS only what it proves exactly — the ceiling
+//! Two Rooms honesty: the module ASSERTS only what it proves exactly -- the ceiling
 //! refuses, the final supply equals the whole-history fold, the live Dag stays at
-//! the window — and REPORTS the amortization as a measured `loom` observation
+//! the window -- and REPORTS the amortization as a measured `loom` observation
 //! (blocks a un-checkpointed run would need vs blocks the live Dag ever holds),
 //! never an asserted invariant. A wall-time benchmark stays a named later round.
 //!
 //! Composes cord.rye + fold.rye + cord_knot.rye public API only. Siloed, dev-only,
-//! demo seeds — no key, funds, network, or custody.
+//! demo seeds -- no key, funds, network, or custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_bench.rye
 
@@ -30,18 +30,18 @@ const kumara = @import("kumara.rye");
 const cord = @import("cord.rye");
 const cord_knot = @import("cord_knot.rye");
 
-/// The static Dag ceiling the Knot lifts — a history past it cannot live in one Dag.
+/// The static Dag ceiling the Knot lifts -- a history past it cannot live in one Dag.
 const dag_ceiling: u32 = cord.cord_max_blocks;
 
-/// Blocks per epoch before a Knot ties the epoch off and the Dag is pruned — the
+/// Blocks per epoch before a Knot ties the epoch off and the Dag is pruned -- the
 /// live-Dag window, chosen well under the ceiling so the win is visible.
 const window: u32 = 64;
 
-/// Epochs in the measured run — five windows of 64 carry 320 facts, past the 256
+/// Epochs in the measured run -- five windows of 64 carry 320 facts, past the 256
 /// ceiling, so an un-checkpointed run provably could not represent this history.
 const windows: u32 = 5;
 
-/// The whole history's fact count — window * windows.
+/// The whole history's fact count -- window * windows.
 const total_facts: u32 = window * windows;
 
 fn seeded(byte: u8) kumara.KeyPair {
@@ -49,7 +49,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// A distinct issue fact for index `i` — amount 1, a unique body so every fact
+/// A distinct issue fact for index `i` -- amount 1, a unique body so every fact
 /// (and thus every single-fact block over it) is distinct.
 fn issue_i(k: kumara.KeyPair, i: u32) !fold.Fact {
     var body: [16]u8 = undefined;
@@ -69,7 +69,7 @@ fn dag_log(dag: *const cord.Dag) fold.Log {
 pub fn main() !void {
     const k = seeded(0x5A);
 
-    // invariant: the run genuinely exceeds the static ceiling — else it proves
+    // invariant: the run genuinely exceeds the static ceiling -- else it proves
     // nothing about a history a single Dag cannot hold.
     assert(total_facts > dag_ceiling);
 
@@ -84,7 +84,7 @@ pub fn main() !void {
     if (ground.issued != total_facts) return error.GroundSupply;
 
     // The ceiling is real: fill a fresh Dag to cord_max_blocks (distinct rounds
-    // over one fact), and the next block refuses DagFull — a history past the
+    // over one fact), and the next block refuses DagFull -- a history past the
     // ceiling cannot live in one Dag.
     const f0 = try issue_i(k, 0);
     var one = cord.Dag.empty();
@@ -120,7 +120,7 @@ pub fn main() !void {
         const wlog = dag_log(&dag);
         const state = try cord_knot.continue_verified(&knot, &wlog);
         knot = cord_knot.seal(state);
-        // the epoch Dag falls out of scope here — pruned; only the Knot carries on.
+        // the epoch Dag falls out of scope here -- pruned; only the Knot carries on.
     }
 
     // invariant: the checkpoint chain reaches the exact whole-history supply.

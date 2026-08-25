@@ -1,29 +1,29 @@
-//! mycelium/lapse_bron.rye — the deadline verdict travels as a readable record.
+//! mycelium/lapse_bron.rye -- the deadline verdict travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Lapse rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Lapse rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
-//! r1 resolved a Cord's agreed order into a Ledger under the deadline clock — every
+//! r1 resolved a Cord's agreed order into a Ledger under the deadline clock -- every
 //! account's spendable balance and reserved holdings, and every pledge's settlement (open,
 //! posted, voided, or LAPSED by the order's own position). A verdict a node cannot hand to
 //! another is only a local reading, so r2 lets a resolved Ledger cross as `format lapse-v1`
 //! bytes: an `issued <total>` line, one `holds <pk> <balance> <reserved>` line per account,
-//! one `pledge <id> <from> <to> <amount> <deadline> <state> <pos>` line per pledge — the
+//! one `pledge <id> <from> <to> <amount> <deadline> <state> <pos>` line per pledge -- the
 //! deadline the clock reads travelling with the pledge it governs. Render writes it, parse
 //! reads it back, so a round trip is a fixed point, and the recovered Ledger reports the
 //! identical balances, reserves, settlements (a lapse crosses as a lapse), deadlines, and
-//! totals — the deadline verdict crosses to a stranger unchanged.
+//! totals -- the deadline verdict crosses to a stranger unchanged.
 //!
 //! The record carries conservation as its own law, the Pledge's unwidened: the balances PLUS
 //! the reserves a record claims must sum to exactly the `issued` total it names, or the
-//! reader refuses `BadInt` before the record is trusted — no coin appears or vanishes in the
+//! reader refuses `BadInt` before the record is trusted -- no coin appears or vanishes in the
 //! crossing, whether spendable, held in an open pledge, or returned home by a lapse.
 //!
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses
 //! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line `BadLine`,
 //! a bad integer or broken conservation law or unknown state `BadInt`, a bad hex field
 //! `BadHex`, an over-long record `TooManyAccounts`/`TooManyPledges`. Composes lapse.rye +
-//! cord.rye + fold.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no
+//! cord.rye + fold.rye public API only. Siloed, dev-only, demo seeds -- no key, no funds, no
 //! network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse_bron.rye
@@ -38,14 +38,14 @@ const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled record carries at most this many accounts — a dev-net ledger is small
+/// A travelled record carries at most this many accounts -- a dev-net ledger is small
 /// and legible, well under the Ledger's own ceiling.
 pub const max_accounts_in_record: u32 = 64;
 
 /// And at most this many pledges.
 pub const max_pledges_in_record: u32 = 32;
 
-/// The record buffer bound — a small ledger's whole verdict fits with room.
+/// The record buffer bound -- a small ledger's whole verdict fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{
@@ -130,7 +130,7 @@ pub fn render(l: *const lapse.Ledger, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to eight tokens; returns the count (or nine to signal a trailing
-/// token past what any line allows — the pledge line, at eight, is the widest).
+/// token past what any line allows -- the pledge line, at eight, is the widest).
 fn tokens(line: []const u8, out: *[8][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -142,7 +142,7 @@ fn tokens(line: []const u8, out: *[8][]const u8) u32 {
     return count;
 }
 
-/// Sum the parsed spendable balances — the conservation law's left half, computed
+/// Sum the parsed spendable balances -- the conservation law's left half, computed
 /// without the read's own assert so a broken record refuses cleanly rather than trips it.
 fn balances_total(out: *const lapse.Ledger) u64 {
     var sum: u64 = 0;
@@ -151,7 +151,7 @@ fn balances_total(out: *const lapse.Ledger) u64 {
     return sum;
 }
 
-/// Sum the parsed reserved holdings — the conservation law's right half.
+/// Sum the parsed reserved holdings -- the conservation law's right half.
 fn reserves_total(out: *const lapse.Ledger) u64 {
     var sum: u64 = 0;
     var i: u32 = 0;
@@ -204,7 +204,7 @@ pub fn parse(text: []const u8, out: *lapse.Ledger) BronError!void {
             out.pledges[at].amount = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
             out.pledges[at].deadline = parse_int.parse_int(u64, tok[5], .{}) catch return error.BadInt;
             const st = parse_int.parse_int(u8, tok[6], .{}) catch return error.BadInt;
-            // Only the four settlement states travel — an unknown state refuses.
+            // Only the four settlement states travel -- an unknown state refuses.
             if (st != lapse.state_open and st != lapse.state_posted and st != lapse.state_voided and st != lapse.state_lapsed) return error.BadInt;
             out.pledges[at].state = st;
             out.pledges[at].pos = parse_int.parse_int(u32, tok[7], .{}) catch return error.BadInt;
@@ -241,7 +241,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -252,7 +252,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn post_body(id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_post;
@@ -261,7 +261,7 @@ fn post_body(id: []const u8, out: []u8) u32 {
 }
 
 /// Build a scene that travels a LAPSED pledge and an open one: genesis credits 200 to Alice;
-/// Alice pledges 100 to Bob under deadline 2, then posts it — yet the post rides order
+/// Alice pledges 100 to Bob under deadline 2, then posts it -- yet the post rides order
 /// position 2, so the clock lapses the pledge first (coins home to Alice); Alice then pledges
 /// 100 to Carol under a far deadline and leaves it open (reserved). The record must carry the
 /// lapsed settlement, the open one, the reserved holding, and each deadline.
@@ -358,7 +358,7 @@ pub fn main() !void {
     if (recovered.lapsed_seen() != 1) return error.LapsedCount;
     if (recovered.open_seen() != 1) return error.OpenCount;
     if (recovered.total_issued != 200) return error.IssuedValue;
-    // Conservation survives the crossing — balance + reserved still sums to issued.
+    // Conservation survives the crossing -- balance + reserved still sums to issued.
     if (recovered.balances_sum() + recovered.reserved_sum() != 200) return error.NotConserved;
     if (recovered.reserved_sum() != 100) return error.ReservedValue;
 
@@ -392,7 +392,7 @@ pub fn main() !void {
             if (err != error.BadInt) return error.WrongBadState;
         }
     }
-    // A lapsed state (3) parses cleanly — the new settlement class travels.
+    // A lapsed state (3) parses cleanly -- the new settlement class travels.
     {
         const lapsed_line = "format lapse-v1\nissued 0\npledge " ++ ("00" ** lapse.id_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " 0 2 3 0\n";
         if (parse(lapsed_line, &scratch)) |_| {} else |_| return error.LapsedRejected;

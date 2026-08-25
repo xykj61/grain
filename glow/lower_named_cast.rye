@@ -1,14 +1,14 @@
-//! glow/lower_named_cast.rye — resolve `^-  <name>` against a `+$` mold.
+//! glow/lower_named_cast.rye -- resolve `^-  <name>` against a `+$` mold.
 //!
 //! STOA77: same-desk `+$` / `$:` then `^-`.
 //! STOA79: cross-desk `/+` then `^-` for `$:` molds.
-//! STOA81: same-desk · cross-desk `^-` against unit `$%` molds.
-//! STOA82: same-desk · cross-desk `^-` against payload `$%` molds.
-//! STOA84–85: dispatch peeks via `tokens.rye`.
-//! STOA87: TAME tidy — assert · u32 · copy_disjoint · split emitters.
-//! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer→lower).
+//! STOA81: same-desk - cross-desk `^-` against unit `$%` molds.
+//! STOA82: same-desk - cross-desk `^-` against payload `$%` molds.
+//! STOA84-85: dispatch peeks via `tokens.rye`.
+//! STOA87: TAME tidy -- assert - u32 - copy_disjoint - split emitters.
+//! STOA93: cross-desk parse walks `tokens.cross_desk_parts` (lexer->lower).
 //! STOA94: same-desk mold-body span via `tokens.named_cast_parts`.
-//! STOA175: multi-field `$:` named-cast (pair…nona) — full struct emit · demo vals.
+//! STOA175: multi-field `$:` named-cast (pair...nona) -- full struct emit - demo vals.
 //! STOA182: `$:` `@t` named-cast mirrors mold lower (`[aura_t_max_bytes]u8` + demo cord).
 //! STOA184: `$:` `@ux` named-cast mirrors mold lower (`[aura_ux_max_bytes]u8` + demo hex).
 //! STOA187: `$%` payload `@t`/`@ux` parse.
@@ -134,7 +134,7 @@ pub fn zig_stem(spec: *const CrossDeskSpec, out: *[max_stem_len]u8) LowerError!u
     return zig_safe_ident(stem_slice(spec), out);
 }
 
-/// True when a multi-line desk is `+$` … `==` followed by `^-  <name>`.
+/// True when a multi-line desk is `+$` ... `==` followed by `^-  <name>`.
 pub fn looks_like_named_cast(src: []const u8) bool {
     return tokens.looks_like_named_cast(src);
 }
@@ -195,7 +195,7 @@ fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, b
     // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
     // would hand the print a negative span
     assert(used.* <= out.len);
-    // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
+    // Bound-copy loop in emit (no memcpy token in this file -- TAME scan).
     try append_print(out, used,
         \\fn {s}(comptime s: []const u8) [{d}]u8 {{
         \\    var buf = [_]u8{{0}} ** {d};

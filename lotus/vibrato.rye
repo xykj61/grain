@@ -1,29 +1,29 @@
-//! lotus/vibrato.rye — ALES72: the vibrato — the triangle-LFO modulated delay heard WET-ONLY. ALES71 gave Lotus the chorus: a triangle LFO
+//! lotus/vibrato.rye -- ALES72: the vibrato -- the triangle-LFO modulated delay heard WET-ONLY. ALES71 gave Lotus the chorus: a triangle LFO
 //! swings the scaled delay gently up and back round a centre, and the DRY MIXED WITH that slowly-detuned copy of itself makes one voice sound
-//! like several. Heard wet-only — the modulated delayed copy ALONE, no dry underneath — the same swinging delay is no longer a widening of one
+//! like several. Heard wet-only -- the modulated delayed copy ALONE, no dry underneath -- the same swinging delay is no longer a widening of one
 //! voice but a PITCH WOBBLE: as the delay lengthens the copy is read slower and drops in pitch, as it shortens it is read faster and rises, so
 //! a steady note gently waves sharp and flat. That is the VIBRATO, and it is exactly the chorus with the dry removed and the wet at full.
 //!
-//! The crux is that THE SAME MODULATED READ, HEARD ALONE, IS THE VIBRATO. This rung invents no new arithmetic — it reuses ALES71's
+//! The crux is that THE SAME MODULATED READ, HEARD ALONE, IS THE VIBRATO. This rung invents no new arithmetic -- it reuses ALES71's
 //! `triangle_delay_at` driver and ALES70's fractional interpolation read verbatim, and only changes what reaches the output. Over one period P
 //! (a positive multiple of four, q = P/4) with phase p = k % P, the scaled delay is d_s(k) = centre_scaled + triangle(depth_scaled, P, k);
-//! then near = dry[i − d_whole], far = dry[i − d_whole − 1], delayed = (near·(glide_scale − frac) + far·frac)/glide_scale, and where the
-//! chorus writes saturate(x[i] + delayed) the vibrato writes `delayed` ALONE — the wet voice by itself. So chorus[i] = saturate(dry[i] +
+//! then near = dry[i − d_whole], far = dry[i − d_whole − 1], delayed = (near-(glide_scale − frac) + far-frac)/glide_scale, and where the
+//! chorus writes saturate(x[i] + delayed) the vibrato writes `delayed` ALONE -- the wet voice by itself. So chorus[i] = saturate(dry[i] +
 //! vibrato[i]) at every sample: the two rungs are one delay heard two ways. Because `delayed` is a convex combination of two i16 neighbours
-//! (weights non-negative, summing to glide_scale), it ALREADY fits the i16 rail — there is no dry sum to overflow; the write goes through the
+//! (weights non-negative, summing to glide_scale), it ALREADY fits the i16 rail -- there is no dry sum to overflow; the write goes through the
 //! one true saturate for family uniformity, yet it never actually clips (the vibrato voice can only be as loud as the dry it reads). Every
 //! read is off a FROZEN snapshot of the dry prefix (the ALES68/ALES70/ALES71 idiom, reused), so a moving read never reads a sample it just
 //! wrote. The delay never dips below one whole sample (centre − depth ≥ glide_scale) and never reaches past the widest clip
-//! ((centre + depth)/glide_scale ≤ max_clip), both checked before any write. The vibrato is inherently full-wet — the delayed voice IS the
-//! whole output — so there is no num/den mix level, and thus no BadLevel fault; the other four carry over from the chorus exactly.
+//! ((centre + depth)/glide_scale ≤ max_clip), both checked before any write. The vibrato is inherently full-wet -- the delayed voice IS the
+//! whole output -- so there is no num/den mix level, and thus no BadLevel fault; the other four carry over from the chorus exactly.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES72.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES72.
 //! Design read: active-designing/date/20260814/20260814-195637_fill-ales72-lotus-vibrato-wet-only-modulated-delay.md
-//! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at` this reuses; lotus/glide.rye (ALES70) — the
-//! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip, saturate.
+//! Stands on: lotus/chorus.rye (ALES71) -- the triangle-LFO driver `triangle_delay_at` this reuses; lotus/glide.rye (ALES70) -- the
+//! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, max_clip, saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the delay is counted in scaled sample indices and the period in samples, not milliseconds or
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the delay is counted in scaled sample indices and the period in samples, not milliseconds or
 //! hertz (the real-time twin follows as echo_ms and multitap_ms did). No lookahead beyond the snapshot read. The dry prefix is snapshotted
 //! into one bounded [max_clip]i16 scratch (chorus/glide's width); the triangle and the interpolation run in i64 and the write saturates once
 //! (a no-op on the in-range vibrato voice), so nothing on the path can overflow.
@@ -42,47 +42,47 @@ pub const vibrato_version = "20260814.195637";
 
 /// The vibrato's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need
 /// P/4 whole) or wider than max_clip, a swing that would dip below one whole sample (centre − depth < glide_scale) or reach past the widest
-/// clip (centre + depth whole > max_clip), and a span outside the samples. Each refused before any write. There is NO BadLevel — the vibrato
+/// clip (centre + depth whole > max_clip), and a span outside the samples. Each refused before any write. There is NO BadLevel -- the vibrato
 /// is heard wet-only, the delayed voice is the whole output, so it carries no mix level.
 pub const VibratoError = error{
-    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample — refused, no write.
+    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample -- refused, no write.
     BadDepth,
-    /// A swing whose top (centre + depth) whole delay is longer than max_clip samples — refused, no write.
+    /// A swing whose top (centre + depth) whole delay is longer than max_clip samples -- refused, no write.
     BadDelay,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
-/// Validate a vibrato's LFO and span against a clip length ONCE, before any write — factored out of `vibrato` so the stereo lift
+/// Validate a vibrato's LFO and span against a clip length ONCE, before any write -- factored out of `vibrato` so the stereo lift
 /// (`stereo_vibrato`, ALES178) can refuse against the shared length before either channel is snapshotted, mirroring ALES75's `ring_mod.precheck`.
 /// Refuses a period that is not a positive multiple of four (or wider than max_clip) BadPeriod, a negative depth or a swing dipping below one
-/// whole sample BadDepth, a swing top past the widest clip BadDelay, and a span outside `clip_len` BadRange. There is no BadLevel — the vibrato
+/// whole sample BadDepth, a swing top past the widest clip BadDelay, and a span outside `clip_len` BadRange. There is no BadLevel -- the vibrato
 /// is heard wet-only and carries no mix level.
 pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) VibratoError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
     if (period > timeline.max_clip) return error.BadPeriod;
-    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample — below that there is no `far`
+    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample -- below that there is no `far`
     // neighbour to interpolate toward before the clip, and the delay is meaningless.
     if (depth_scaled < 0) return error.BadDepth;
     if (centre_scaled - depth_scaled < glide.glide_scale) return error.BadDepth;
     // invariant: the swing's top whole delay fits the widest clip, so the reach is bounded.
     if (@divTrunc(centre_scaled + depth_scaled, glide.glide_scale) > @as(i64, timeline.max_clip)) return error.BadDelay;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
 
 /// Apply a vibrato over `count` samples starting at `start` in place in `clip`: a triangle LFO of `depth_scaled` round `centre_scaled` over
 /// `period` samples drives the scaled delay (ALES71's `triangle_delay_at`), each sample read by LINEAR INTERPOLATION of the two dry
-/// neighbours straddling its fractional delay (ALES70's read), and the delayed voice is written ALONE — y[i] = interp(dry, i, d_s(i)), no
+/// neighbours straddling its fractional delay (ALES70's read), and the delayed voice is written ALONE -- y[i] = interp(dry, i, d_s(i)), no
 /// dry added. So chorus[i] = saturate(dry[i] + vibrato[i]) at every sample. Every read is off a FROZEN snapshot of the dry prefix, so a
-/// moving read never reads a sample it just wrote. The write saturates once for family uniformity, yet never clips — the vibrato voice is a
+/// moving read never reads a sample it just wrote. The write saturates once for family uniformity, yet never clips -- the vibrato voice is a
 /// convex combination of two dry neighbours and so is already within the i16 rail. Refuses BadPeriod, BadDepth, BadDelay, and BadRange before
-/// any write; on refusal the clip is untouched. Values only — never a length.
+/// any write; on refusal the clip is untouched. Values only -- never a length.
 pub fn vibrato(
     clip: *timeline.Clip,
     start: u32,
@@ -91,12 +91,12 @@ pub fn vibrato(
     depth_scaled: i64,
     period: u32,
 ) VibratoError!void {
-    // invariant: the LFO and span are legal — the four faults refused before any read, so a refusal never half-writes. ALES178's stereo lift
+    // invariant: the LFO and span are legal -- the four faults refused before any read, so a refusal never half-writes. ALES178's stereo lift
     // reuses this same `precheck` against the shared length.
     try precheck(clip.len, start, count, centre_scaled, depth_scaled, period);
 
     const end: u32 = start + count;
-    // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio — the ALES68/ALES70/ALES71
+    // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio -- the ALES68/ALES70/ALES71
     // snapshot-before-write idiom, reused. One bounded scratch, the width chorus and glide already carry.
     var dry: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
     {
@@ -123,13 +123,13 @@ pub fn vibrato(
         const far_ix: i64 = near_ix - 1;
         const near_val: i64 = if (near_ix >= 0) @as(i64, dry[@intCast(near_ix)]) else 0;
         const far_val: i64 = if (far_ix >= 0) @as(i64, dry[@intCast(far_ix)]) else 0;
-        // invariant: both neighbours already fit the i16 rail — they are dry audio, never a wide intermediate.
+        // invariant: both neighbours already fit the i16 rail -- they are dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
         // Linear interpolation (ALES70's read): near weighted by (scale − frac), far by frac, divided once. frac = 0 returns near exactly;
         // frac = scale/2 returns the exact average. |near|,|far| <= 32768 and the weights sum to glide_scale, so the product fits i64.
         const delayed: i64 = @divTrunc(near_val * (scale - frac) + far_val * frac, scale);
-        // invariant: the vibrato voice is a convex combination of two in-range dry samples, so it ALREADY fits the i16 rail — the saturate
+        // invariant: the vibrato voice is a convex combination of two in-range dry samples, so it ALREADY fits the i16 rail -- the saturate
         // below is a documented no-op, never an actual clip. This is the whole reason the wet-only write cannot overflow.
         assert(delayed >= @as(i64, timeline.sample_min) and delayed <= @as(i64, timeline.sample_max));
         clip.buf[i] = timeline.saturate(delayed); // the delayed voice ALONE — no dry added
@@ -157,7 +157,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const scale = glide.glide_scale;
 
-    // 1. THE CHORUS IS THE DRY PLUS THE VIBRATO — the family identity. Snapshot the dry, run the vibrato for the wet voice V, run the chorus
+    // 1. THE CHORUS IS THE DRY PLUS THE VIBRATO -- the family identity. Snapshot the dry, run the vibrato for the wet voice V, run the chorus
     //    at full wet 1/1 for C; then C[i] == saturate(dry[i] + V[i]) at every sample. The two rungs are one delay heard two ways. A modulation
     //    wide enough to exercise the swing.
     {
@@ -175,11 +175,11 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. A HAND-COMPUTED WET-ONLY READ — the chorus's whole-sample-anchored case (centre = 2·scale, depth = 1·scale, period = 4, q = 1), but
+    // 2. A HAND-COMPUTED WET-ONLY READ -- the chorus's whole-sample-anchored case (centre = 2-scale, depth = 1-scale, period = 4, q = 1), but
     //    heard wet-only: each output is dry[i − delay(i)] ALONE, no dry added.
     //      k:        0  1  2  3  4  5
     //      delay(k): 2  3  2  1  2  3   (triangle: centre, top, centre, bottom, centre, top)
-    //    On sig[i] = i·1000 (dry[j]=0 for j<0), y[i] = dry[i − delay(i)]:
+    //    On sig[i] = i-1000 (dry[j]=0 for j<0), y[i] = dry[i − delay(i)]:
     //      i0 d2: dry[-2]=0 ; i1 d3: dry[-2]=0 ; i2 d2: dry[0]=0 ; i3 d1: dry[2]=2000 ; i4 d2: dry[2]=2000 ; i5 d3: dry[2]=2000
     {
         const sig = [_]i16{ 0, 1000, 2000, 3000, 4000, 5000 };
@@ -190,8 +190,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.WetOnlyReadWrong;
     }
 
-    // 3. A ZERO-DEPTH VIBRATO IS A FIXED FRACTIONAL DELAY HEARD ALONE — depth == 0, the LFO at rest, a fixed whole delay of `centre`: the
-    //    output is that steady delayed copy alone (a pure echo voice with no dry). centre = 2·scale (delay 2), so y[i] = dry[i-2].
+    // 3. A ZERO-DEPTH VIBRATO IS A FIXED FRACTIONAL DELAY HEARD ALONE -- depth == 0, the LFO at rest, a fixed whole delay of `centre`: the
+    //    output is that steady delayed copy alone (a pure echo voice with no dry). centre = 2-scale (delay 2), so y[i] = dry[i-2].
     {
         const sig = [_]i16{ 100, 200, 300, 400, 500, 600 };
         var clip = timeline.Clip{};
@@ -202,7 +202,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.ZeroDepthNotFixedDelay;
     }
 
-    // 4. THE VIBRATO VOICE NEVER EXCEEDS THE DRY RAIL — a loud steady signal read wet-only stays within [sample_min, sample_max] and never
+    // 4. THE VIBRATO VOICE NEVER EXCEEDS THE DRY RAIL -- a loud steady signal read wet-only stays within [sample_min, sample_max] and never
     //    wraps: a convex combination of two in-range samples is in range. A steady 30000 read at a fixed whole delay of 1 is just 30000
     //    (or silence before the clip), never a wrap. The saturate on the write is a proven no-op here.
     {
@@ -214,7 +214,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.VibratoExceedsRail;
     }
 
-    // 5a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod —
+    // 5a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod --
     //     before any write.
     {
         var clip = timeline.Clip{};
@@ -229,12 +229,12 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWidePeriodMutated;
     }
 
-    // 5b. A DEPTH that swings below one whole sample refuses BadDepth; a swing top past max_clip refuses BadDelay — each before any write.
+    // 5b. A DEPTH that swings below one whole sample refuses BadDepth; a swing top past max_clip refuses BadDelay -- each before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // centre 1·scale, depth 1·scale → bottom = 0 < glide_scale
+        // centre 1-scale, depth 1-scale -> bottom = 0 < glide_scale
         if (vibrato(&clip, 0, clip.len, 1 * scale, 1 * scale, 4)) |_| return error.LowSwingSlipped else |e| if (e != error.BadDepth) return error.WrongLowSwing;
         if (!eq(clip.samples(), &three)) return error.RefusedLowSwingMutated;
         // top = centre + depth whole past max_clip

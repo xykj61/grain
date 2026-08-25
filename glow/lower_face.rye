@@ -1,12 +1,12 @@
-//! glow/lower_face.rye — lower a parsed `=/` face binding to runnable `.rye`.
+//! glow/lower_face.rye -- lower a parsed `=/` face binding to runnable `.rye`.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
 //! decimal literals (default 7), nested `^-  @uN  <decimal>`, `(lent <face>)`
-//! — length of a demo subject — `(mix <face> <face>)` — bitwise XOR of two
-//! demo atoms — `(jam <face> <face>)` — thin cell-pack `(a << 16) | b` —
-//! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam —
-//! and `(cue <face>)` — low 16 bits of a jam pack, through `expr.rye`.
+//! -- length of a demo subject -- `(mix <face> <face>)` -- bitwise XOR of two
+//! demo atoms -- `(jam <face> <face>)` -- thin cell-pack `(a << 16) | b` --
+//! `(jam (mix <face> <face>) <face>)` -- one-deep nest left under jam --
+//! and `(cue <face>)` -- low 16 bits of a jam pack, through `expr.rye`.
 //! Other parenthesized forms still refuse.
 //! Named molds still refuse.
 
@@ -132,7 +132,7 @@ fn map_expr_err(err: expr.ParseError) LowerError {
 }
 
 /// Trailing value after the face clause: default, decimal, nested `^-`,
-/// `(lent …)`, `(mix …)`, `(jam …)`, nest jam, or `(cue …)`.
+/// `(lent ...)`, `(mix ...)`, `(jam ...)`, nest jam, or `(cue ...)`.
 fn bound_value(line: []const u8, face: []const u8, mold: []const u8) LowerError!BoundValue {
     var clause_buf: [rf.max_name_len * 2 + 1]u8 = undefined;
     const clause = try clause_text(face, mold, &clause_buf);
@@ -403,7 +403,7 @@ fn emit_cast(
     return @intCast(written.len);
 }
 
-/// Nested `^-  @u64` — source is u128 so 2^64 can overflow the cast (same as lower_cast).
+/// Nested `^-  @u64` -- source is u128 so 2^64 can overflow the cast (same as lower_cast).
 fn emit_cast_u64(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -470,7 +470,7 @@ fn emit_cast_u64(
     return @intCast(written.len);
 }
 
-/// `(mix <left> <right>)` under a face — bind demo atoms XOR (Hoon +mix).
+/// `(mix <left> <right>)` under a face -- bind demo atoms XOR (Hoon +mix).
 fn emit_mix(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -549,7 +549,7 @@ fn emit_mix(
     return @intCast(written.len);
 }
 
-/// `(jam (mix <a> <b>) <c>)` under a face — nest left then cell-pack.
+/// `(jam (mix <a> <b>) <c>)` under a face -- nest left then cell-pack.
 fn emit_jam_nest(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -710,7 +710,7 @@ fn emit_jam_nest(
     return @intCast(written.len);
 }
 
-/// `(jam (mix <a> <b>) (mix <c> <d>))` under a face — nest both then cell-pack.
+/// `(jam (mix <a> <b>) (mix <c> <d>))` under a face -- nest both then cell-pack.
 fn emit_jam_both_nest(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -821,7 +821,7 @@ fn emit_jam_both_nest(
     return @intCast(written.len);
 }
 
-/// `(jam <a> (mix <b> <c>))` under a face — cell-pack with nest right.
+/// `(jam <a> (mix <b> <c>))` under a face -- cell-pack with nest right.
 fn emit_jam_right_nest(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -982,7 +982,7 @@ fn emit_jam_right_nest(
     return @intCast(written.len);
 }
 
-/// `(jam <left> <right>)` under a face — thin cell-pack `(a << 16) | b`.
+/// `(jam <left> <right>)` under a face -- thin cell-pack `(a << 16) | b`.
 fn emit_jam(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1061,7 +1061,7 @@ fn emit_jam(
     return @intCast(written.len);
 }
 
-/// `(lent <subject>)` under a face — bind the subject's demo `.len`.
+/// `(lent <subject>)` under a face -- bind the subject's demo `.len`.
 fn emit_lent(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1105,7 +1105,7 @@ fn emit_lent(
     return @intCast(written.len);
 }
 
-/// `(cue (jam (mix <a> <b>) <c>))` under a face — nest pack then unpack.
+/// `(cue (jam (mix <a> <b>) <c>))` under a face -- nest pack then unpack.
 fn emit_cue_jam_nest(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1270,7 +1270,7 @@ fn emit_cue_jam_nest(
     return @intCast(written.len);
 }
 
-/// `(cue (jam (mix <a> <b>) (mix <c> <d>)))` under a face — nest-both pack then unpack.
+/// `(cue (jam (mix <a> <b>) (mix <c> <d>)))` under a face -- nest-both pack then unpack.
 fn emit_cue_jam_nest_both(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1383,7 +1383,7 @@ fn emit_cue_jam_nest_both(
     return @intCast(written.len);
 }
 
-/// `(cue (jam <a> (mix <b> <c>)))` under a face — nest-right pack then unpack.
+/// `(cue (jam <a> (mix <b> <c>)))` under a face -- nest-right pack then unpack.
 fn emit_cue_jam_nest_right(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1548,7 +1548,7 @@ fn emit_cue_jam_nest_right(
     return @intCast(written.len);
 }
 
-/// `(cue (jam <a> <b>))` under a face — pack then unpack low 16.
+/// `(cue (jam <a> <b>))` under a face -- pack then unpack low 16.
 fn emit_cue_jam(
     glow_label: []const u8,
     face_mold: []const u8,
@@ -1629,7 +1629,7 @@ fn emit_cue_jam(
     return @intCast(written.len);
 }
 
-/// `(cue <cell>)` under a face — low 16 bits of a jam cell-pack.
+/// `(cue <cell>)` under a face -- low 16 bits of a jam cell-pack.
 fn emit_cue(
     glow_label: []const u8,
     face_mold: []const u8,

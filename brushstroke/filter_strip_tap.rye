@@ -1,15 +1,15 @@
-//! brushstroke/filter_strip_tap.rye — HUNK65: tap the filter strip — a finger lands on a thumbnail, that filter is chosen.
+//! brushstroke/filter_strip_tap.rye -- HUNK65: tap the filter strip -- a finger lands on a thumbnail, that filter is chosen.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK65.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK65.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
-//! Teacher, thanked clean-room: the tappable filter row of a photo app (iCloud Photos / Instagram / VSCO) — a keeper
+//! Teacher, thanked clean-room: the tappable filter row of a photo app (iCloud Photos / Instagram / VSCO) -- a keeper
 //! taps the thumbnail they want and the app selects that filter (concept only, siloed).
 //!
-//! HUNK64 painted the whole filter book as a strip a keeper reads; yet reading is not choosing — the selection still moved
+//! HUNK64 painted the whole filter book as a strip a keeper reads; yet reading is not choosing -- the selection still moved
 //! by a discrete call, not a finger on the glass. This rung turns the strip into a tappable carousel, the exact parallel
 //! of HUNK55 tapping the history filmstrip. `FilterStripTap` owns a `FilterPicker` (HUNK63) and the thumbnail geometry the
 //! strip tiles with; `tap_band` classifies a pixel tap into the filter band it lands on (`x / band_px`, the exact
-//! parallel of HUNK55's idiom), and `tap_at` selects that filter so `paint`'s marker lands where the finger did — the
+//! parallel of HUNK55's idiom), and `tap_at` selects that filter so `paint`'s marker lands where the finger did -- the
 //! band a keeper TAPS is the band the strip MARKS, no drift. `commit` then pushes the tapped filter into the history
 //! (HUNK16). A pure composition over three proven seams; it invents no pixel op and refuses `BadThumb` at open for a
 //! zero-dimension thumbnail. The source is never mutated. No network, no key, no funds.
@@ -32,7 +32,7 @@ pub const FilterStripTapError = error{
 };
 
 /// A tap-to-select surface over the filter strip: it owns a `FilterPicker` (the book, the history, the selection) and the
-/// thumbnail geometry the strip tiles with. It invents no pixels of its own — `paint` is HUNK64's `paint_strip`, and a
+/// thumbnail geometry the strip tiles with. It invents no pixels of its own -- `paint` is HUNK64's `paint_strip`, and a
 /// tap moves the picker's selection so the marker lands where the finger did. The governing geometry: one filter band is
 /// `tcols` cells, each `skate.cell_w` pixels wide, so a tap at pixel `x` picks band `x / band_px`, the exact parallel of
 /// HUNK55's history-filmstrip idiom.
@@ -55,7 +55,7 @@ pub const FilterStripTap = struct {
         return FilterStripTap{ .picker = picker, .tcols = tcols, .trows = trows };
     }
 
-    /// The pixel width of one filter band — `tcols` cells, each `skate.cell_w` pixels at scale 1. The divisor a tap is
+    /// The pixel width of one filter band -- `tcols` cells, each `skate.cell_w` pixels at scale 1. The divisor a tap is
     /// classified against; positive by construction (`tcols >= 1`), so the classification is well-formed.
     pub fn band_px(self: *const FilterStripTap) u32 {
         // invariant: a band spans at least one cell's worth of pixels.
@@ -65,7 +65,7 @@ pub const FilterStripTap = struct {
 
     /// Classify a pixel tap at `x` into the filter band it lands on, or `null` for a tap off the strip. A negative `x`
     /// (off the left edge) fires nothing; `band = x / band_px`; a band past the last filter (`band >= count`) fires
-    /// nothing. Pure — it reads the geometry and moves nothing.
+    /// nothing. Pure -- it reads the geometry and moves nothing.
     pub fn tap_band(self: *const FilterStripTap, x: i32) ?u32 {
         // invariant: the selection stays within the held book.
         assert(self.picker.selection < self.picker.book.len());
@@ -90,26 +90,26 @@ pub const FilterStripTap = struct {
         return band;
     }
 
-    /// Paint the filter strip with the marker over the selected band — HUNK64's `paint_strip` unchanged. Because a tap
+    /// Paint the filter strip with the marker over the selected band -- HUNK64's `paint_strip` unchanged. Because a tap
     /// selects the filter and the marker paints at the selection, the band a keeper tapped is the band the marker shows.
-    /// Pure — the book and history are read, never moved, the source never mutated.
+    /// Pure -- the book and history are read, never moved, the source never mutated.
     pub fn paint(self: *const FilterStripTap, allocator: std.mem.Allocator) !skate.Grid {
         return filter_strip.paint_strip(allocator, &self.picker, self.tcols, self.trows);
     }
 
-    /// Commit the tapped filter into the history (HUNK63's `commit` — the whole recipe pushed onto the cursor). Returns
+    /// Commit the tapped filter into the history (HUNK63's `commit` -- the whole recipe pushed onto the cursor). Returns
     /// how many edits the recipe pushed. The source is never mutated.
     pub fn commit(self: *FilterStripTap, allocator: std.mem.Allocator) !u32 {
         return self.picker.commit(allocator);
     }
 
-    /// The picture a keeper currently sees — the source with every committed filter applied (HUNK16). A fresh allocation.
+    /// The picture a keeper currently sees -- the source with every committed filter applied (HUNK16). A fresh allocation.
     pub fn current_view(self: *const FilterStripTap, allocator: std.mem.Allocator) !qoi.Pixmap {
         return self.picker.current_view(allocator);
     }
 };
 
-// --- selftest: a color source — a tap centered on band k selects filter k and the repainted marker sits on band k (no
+// --- selftest: a color source -- a tap centered on band k selects filter k and the repainted marker sits on band k (no
 //     drift), a tap off the strip fires nothing, a tapped filter commits into the history, and a bad thumbnail refuses --
 
 fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
@@ -149,7 +149,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var tap = try FilterStripTap.open(&pm, tcols, trows);
     const bpx = tap.band_px(); // 2 cells * 8 px = 16 px per band
 
-    // A tap centered on each band k selects filter k, and the repainted marker sits on exactly band k — no drift.
+    // A tap centered on each band k selects filter k, and the repainted marker sits on exactly band k -- no drift.
     {
         var k: u32 = 0;
         while (k < tap.picker.count()) : (k += 1) {
@@ -163,7 +163,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A tap off the left edge and a tap past the last band each fire nothing — the selection stays put.
+    // A tap off the left edge and a tap past the last band each fire nothing -- the selection stays put.
     {
         tap.picker.select_to(4); // park on a known filter
         const off_left = tap.tap_at(-1);

@@ -1,13 +1,13 @@
-// linengrow/retting_timer.rye — the retting timer, ring one.
+// linengrow/retting_timer.rye -- the retting timer, ring one.
 //
 // Simple: two commands, one append-only log. Lovable: your fiber batches,
 // on your own machine, named and counted in days. Complete: start, status,
-// ready — the loop closes. Keaton named this the first shippable candidate;
+// ready -- the loop closes. Keaton named this the first shippable candidate;
 // ring two is the Wasm build of this same file (pier lane).
 //
 // State is a pure fold over an append-only log (house law): each `start`
 // appends one line `start <epoch> <days> <name>`; `status` folds the log.
-// Season home: RETTING_HOME env, else linengrow/.retting (durable — /tmp
+// Season home: RETTING_HOME env, else linengrow/.retting (durable -- /tmp
 // clears with the enclosure; REDS row 8).
 const std = @import("std");
 const assert = std.debug.assert;
@@ -158,7 +158,7 @@ pub fn main(init: std.process.Init) !u8 {
     return 2;
 }
 
-// Refusals speak the fault by name and exit nonzero — never a silent pass.
+// Refusals speak the fault by name and exit nonzero -- never a silent pass.
 fn refuse(err: anyerror) u8 {
     print("retting: refused — {s}\n", .{@errorName(err)});
     return 1;

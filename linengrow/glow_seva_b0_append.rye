@@ -1,14 +1,14 @@
-//! linengrow/glow_seva_b0_append.rye — Glow product append surface for Seva B0 demo log.
+//! linengrow/glow_seva_b0_append.rye -- Glow product append surface for Seva B0 demo log.
 //!
 //! STOA195: owned three-event demo log build via elder `append_event`.
 //! STOA203: `append_event` builds through glow_seva_b0_sign + glow_seva_b0_line
 //! (elder sign/format bodies underneath those wraps). Replay still elder.
 //! Digests through glow_seva_b0_digest.
 //! STOA229: `append_demo_log` first event from `format_demo_line_from_pins`
-//! (STOA227); events 2–3 stay sign+line. HAWM1 root unchanged.
-//! STOA231: all three events from seated pin emit (event 1–3 hex pins).
+//! (STOA227); events 2-3 stay sign+line. HAWM1 root unchanged.
+//! STOA231: all three events from seated pin emit (event 1-3 hex pins).
 //! STOA233: `append_demo_log_from_desk` builds the same log from runtime
-//! desk text (face='…' extract). Pin path remains. HAWM1 root unchanged.
+//! desk text (face='...' extract). Pin path remains. HAWM1 root unchanged.
 //! STOA266: `append_typed_memo` feeds a Dexter-shaped live memo through
 //! `append_event`. HAWM1 three-event pin path stays untouched.
 //!

@@ -1,17 +1,17 @@
-//! image/photo_revert.rye — HUNK14: the Photos app reverts — step back through the edit-list, the original one apply away.
+//! image/photo_revert.rye -- HUNK14: the Photos app reverts -- step back through the edit-list, the original one apply away.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK14.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK14.
 //! Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
-//! Teacher, thanked clean-room: the "revert to original" of iCloud Photos / Google Photos — the original is never
+//! Teacher, thanked clean-room: the "revert to original" of iCloud Photos / Google Photos -- the original is never
 //! overwritten, so a revert only forgets edits, it never reconstructs pixels (concept only, siloed).
 //!
 //! HUNK11 recorded the six Photos verbs as a bounded `EditList` and replayed them over an untouched source. This rung
 //! is the other half non-destructiveness buys for free: because the source is never mutated, a *revert* is nothing but
-//! dropping edits off the end of the list — the earlier image is always one `apply` of the shorter list away, and the
+//! dropping edits off the end of the list -- the earlier image is always one `apply` of the shorter list away, and the
 //! original is one `apply` of the empty list away. `drop_last` forgets the last `k` edits; `truncate` keeps the first
 //! `keep`; both are **pure over the count**, returning a fresh shorter list and leaving the caller's own list whole,
 //! so a keeper can revert without ever losing the edits they might redo. No pixels are stored, no bytes reconstructed
-//! from a history log — only the recipe is shortened. No network, no key, no funds.
+//! from a history log -- only the recipe is shortened. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/photo_revert.rye selftest
 
@@ -25,24 +25,24 @@ const edits = @import("photo_edits.rye");
 pub const photo_revert_version = "20260813.161500";
 
 /// Keep the first `keep` edits of a list, returning a fresh shorter list. `keep` past the list's own length keeps
-/// the whole list (a copy), never reading past the held edits. Pure — the caller's list is untouched, so the dropped
+/// the whole list (a copy), never reading past the held edits. Pure -- the caller's list is untouched, so the dropped
 /// edits are only forgotten by *this* result, never destroyed at the source.
 pub fn truncate(list: *const edits.EditList, keep: u32) edits.EditList {
     // invariant: the source list is within its named ceiling.
     assert(list.count <= edits.max_edits);
     var out = edits.EditList.init();
-    // A value copy of the whole fixed array — the tail past `count` is never read, `count` bounds every access.
+    // A value copy of the whole fixed array -- the tail past `count` is never read, `count` bounds every access.
     out.items = list.items;
     out.count = if (keep >= list.count) list.count else keep;
-    // invariant: a truncation only shrinks — the result never holds more than the source, nor past the ceiling.
+    // invariant: a truncation only shrinks -- the result never holds more than the source, nor past the ceiling.
     assert(out.count <= list.count);
     assert(out.count <= edits.max_edits);
     return out;
 }
 
-/// Drop the last `k` edits, returning a fresh shorter list — a revert by `k` steps. Dropping at least as many as the
+/// Drop the last `k` edits, returning a fresh shorter list -- a revert by `k` steps. Dropping at least as many as the
 /// list holds recovers the empty list (the original image is always one empty-list `apply` away), never underflowing.
-/// Pure — the caller's list is untouched.
+/// Pure -- the caller's list is untouched.
 pub fn drop_last(list: *const edits.EditList, k: u32) edits.EditList {
     // invariant: the source list is within its named ceiling.
     assert(list.count <= edits.max_edits);
@@ -53,7 +53,7 @@ pub fn drop_last(list: *const edits.EditList, k: u32) edits.EditList {
     return out;
 }
 
-/// Drop exactly the last edit — the common single-step undo. A revert of one; the empty list stays empty.
+/// Drop exactly the last edit -- the common single-step undo. A revert of one; the empty list stays empty.
 pub fn revert_one(list: *const edits.EditList) edits.EditList {
     return drop_last(list, 1);
 }
@@ -62,7 +62,7 @@ pub fn revert_one(list: *const edits.EditList) edits.EditList {
 //     without underflow, keeps the source list whole, and its result still travels as an open, fixed-point record ---
 
 /// Build a 6×6 image where each pixel encodes its own coordinates, so a replayed revert's correctness is
-/// unambiguous: pixel (x,y) = (x·40, y·40, x+y, 255). Matches photo_edits.rye's own craft so proofs line up.
+/// unambiguous: pixel (x,y) = (x-40, y-40, x+y, 255). Matches photo_edits.rye's own craft so proofs line up.
 fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 6;
     const h: u32 = 6;
@@ -99,7 +99,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const by_hand_crop = try photos.crop(garden, &pm, 1, 1, 4, 4);
     const by_hand_step2 = try photos.rotate_quarter(garden, &by_hand_crop, 1);
     assert(step2_replay.same_bytes(&by_hand_step2));
-    // truncate and drop_last are duals over the same count — same result bytes.
+    // truncate and drop_last are duals over the same count -- same result bytes.
     const trunc2_replay = try edits.apply(garden, &pm, &trunc2);
     assert(trunc2_replay.same_bytes(&step2_replay));
 
@@ -110,7 +110,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const drop0_replay = try edits.apply(garden, &pm, &drop0);
     assert(drop0_replay.same_bytes(&full));
 
-    // Revert all the way: dropping every edit recovers the ORIGINAL — one empty-list apply away, byte-for-byte.
+    // Revert all the way: dropping every edit recovers the ORIGINAL -- one empty-list apply away, byte-for-byte.
     const all_back = drop_last(&list, list.len());
     assert(all_back.len() == 0);
     const original = try edits.apply(garden, &pm, &all_back);
@@ -125,7 +125,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const keep_over_replay = try edits.apply(garden, &pm, &keep_over);
     assert(keep_over_replay.same_bytes(&full));
 
-    // Pure: the caller's own list is untouched by any revert — the dropped edits are never destroyed at the source,
+    // Pure: the caller's own list is untouched by any revert -- the dropped edits are never destroyed at the source,
     // so a keeper can revert then redo.
     assert(list.len() == 3);
     const redo = try edits.apply(garden, &pm, &list);
@@ -146,7 +146,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const rebuilt_replay = try edits.apply(garden, &pm, &rebuilt);
     assert(rebuilt_replay.same_bytes(&step2_replay));
 
-    // The empty list reverts to itself — revert_one of empty stays empty, no underflow.
+    // The empty list reverts to itself -- revert_one of empty stays empty, no underflow.
     var empty = edits.EditList.init();
     const still_empty = revert_one(&empty);
     assert(still_empty.len() == 0);

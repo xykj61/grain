@@ -1,7 +1,7 @@
-//! aurora/src/relay.rye — Aurora's second stage: a boot as a flow of named values.
+//! aurora/src/relay.rye -- Aurora's second stage: a boot as a flow of named values.
 //!
 //! The seed (`seed.rye`) proved the smallest boot: wake, speak, rest. This grows
-//! it by one true step — the first *relay*. Three stages hand control along a
+//! it by one true step -- the first *relay*. Three stages hand control along a
 //! line, and a value flows with them: stage one reads the machine's identity,
 //! stage two proves what it found and speaks it, stage three rests. Each handoff
 //! is a tail call; each stage asserts what it leans on. This is the
@@ -50,7 +50,7 @@ export fn stage_wake() callconv(.c) noreturn {
 
 /// Stage two: prove what stage one found, speak it, and hand off to rest.
 fn stage_prove(machine: Machine) noreturn {
-    // The base integer ISA must be present — this very code could not run
+    // The base integer ISA must be present -- this very code could not run
     // otherwise. Naming the invariant means an impossible machine would stop
     // loudly, right here, rather than wander on.
     // invariant: the base integer set is what every instruction this relay stages assumes, so a
@@ -86,7 +86,7 @@ fn write_str(text: []const u8) void {
     for (text) |byte| uart_tx.* = byte;
 }
 
-/// Write an unsigned value in decimal. Small and stack-only — there is no
+/// Write an unsigned value in decimal. Small and stack-only -- there is no
 /// allocator on a bare hart, and none is needed for at most twenty digits.
 fn write_dec(value: usize) void {
     var buf: [20]u8 = undefined;

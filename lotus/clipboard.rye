@@ -1,25 +1,25 @@
-//! lotus/clipboard.rye — ALES25: the clipboard — a held span PASTED anywhere, any number of times, ACROSS masters. The graft
+//! lotus/clipboard.rye -- ALES25: the clipboard -- a held span PASTED anywhere, any number of times, ACROSS masters. The graft
 //! (ALES24) copies and moves a span within one master, source and destination in the same audio; yet the gesture a keeper reaches
-//! for across a session is older and wider — HOLD a span, then PASTE it: later, again, and into a DIFFERENT master. Copy the chorus
+//! for across a session is older and wider -- HOLD a span, then PASTE it: later, again, and into a DIFFERENT master. Copy the chorus
 //! off one take and drop it into the mixdown; lift a clean count-in and reuse it on three songs. A clipboard is that held span,
 //! decoupled from any one master in both place and time.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES25.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES25.
 //! Design read: active-designing/20260814-fill-ales25-lotus-clipboard.md
-//! Stands on: lotus/selection.rye (ALES23) — the validated Selection a keeper fills the clipboard from, and its cut for lift-and-hold;
-//! lotus/timeline.rye (ALES2) — splice, applied to each destination channel; lotus/pan.rye (ALES10) — the StereoClip whose two
+//! Stands on: lotus/selection.rye (ALES23) -- the validated Selection a keeper fills the clipboard from, and its cut for lift-and-hold;
+//! lotus/timeline.rye (ALES2) -- splice, applied to each destination channel; lotus/pan.rye (ALES10) -- the StereoClip whose two
 //! channels share one length (left.len == right.len), the invariant lockstep rests on.
 //!
-//! THE CRUX: a held span pastes byte-for-byte into ANY master, repeatably, keeping both channels in LOCKSTEP — the clipboard itself
+//! THE CRUX: a held span pastes byte-for-byte into ANY master, repeatably, keeping both channels in LOCKSTEP -- the clipboard itself
 //! never changes when it is pasted. Three facts make this exact. The clipboard holds its OWN copy: copy_to / cut_to snapshot both
 //! channels' span samples into the clipboard's own bounded buffers, so the held audio survives after the source master is edited,
-//! closed, or replaced — the clipboard depends on no master once filled. Paste is NON-CONSUMING and cross-master: paste splices the
+//! closed, or replaced -- the clipboard depends on no master once filled. Paste is NON-CONSUMING and cross-master: paste splices the
 //! held samples into the destination and leaves the clipboard untouched, so the same span pastes into three places and three masters
 //! identically. And lockstep rests on equal-length held channels: the clipboard's two channels are always the same length and every
 //! paste passes the SAME (at, span) to each destination channel with capacity checked FIRST, so a paste grows both by the same count
 //! and the stereo stays aligned, or neither channel is touched.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 PCM buffers held beside a stereo master, spliced in place,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 PCM buffers held beside a stereo master, spliced in place,
 //! siloed to lotus/. A clipboard is a held pair of sample buffers, not a signal on a wire. No socket, no network, no keys, no funds,
 //! no real device, no real meter, no real speaker.
 //!
@@ -38,18 +38,18 @@ pub const clipboard_version = "20260814.140611";
 /// The combined error set of a clipboard: an empty paste, and ALES23's selection faults forwarded (which already carry ALES2's
 /// ClipFull / BadRange / BadGain). Every fault refuses by name before either destination channel is touched.
 pub const ClipboardError = error{
-    /// A paste of a clipboard that holds no span — refused, never a zero-length no-op mistaken for a real paste.
+    /// A paste of a clipboard that holds no span -- refused, never a zero-length no-op mistaken for a real paste.
     Empty,
 } || selection.SelectionError;
 
-/// A held stereo span — the audio a keeper carries between places and masters. Two bounded buffers of one shared length; no master
+/// A held stereo span -- the audio a keeper carries between places and masters. Two bounded buffers of one shared length; no master
 /// reference, so once filled it stands alone and survives any edit to the master it was copied from.
 pub const Clipboard = struct {
     left: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip,
     right: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip,
     len: u32 = 0,
 
-    /// The length of the held span in samples — 0 when the clipboard is empty. What a paste inserts into each destination channel.
+    /// The length of the held span in samples -- 0 when the clipboard is empty. What a paste inserts into each destination channel.
     pub fn held(self: *const Clipboard) u32 {
         // invariant: the held length never claims more samples than either buffer holds.
         assert(self.len <= self.left.len and self.len <= self.right.len);
@@ -57,7 +57,7 @@ pub const Clipboard = struct {
     }
 };
 
-/// Fill the clipboard from a selection over `master` — both channels' span samples copied into the clipboard's own buffers, the
+/// Fill the clipboard from a selection over `master` -- both channels' span samples copied into the clipboard's own buffers, the
 /// source master untouched. The clipboard now holds its own copy and depends on the master no further. So a keeper grabs a span to
 /// carry it elsewhere.
 pub fn copy_to(cb: *Clipboard, master: *const pan.StereoClip, sel: selection.Selection) ClipboardError!void {
@@ -78,20 +78,20 @@ pub fn copy_to(cb: *Clipboard, master: *const pan.StereoClip, sel: selection.Sel
     assert(cb.len == n);
 }
 
-/// Fill the clipboard from a selection, then remove the span from `master` — the lift-and-hold gesture. The clipboard holds its own
+/// Fill the clipboard from a selection, then remove the span from `master` -- the lift-and-hold gesture. The clipboard holds its own
 /// copy first (so the lift never races the hold), then ALES23's selection.cut removes the span from both channels in lockstep. So a
 /// keeper lifts a span out of one master to drop it into another.
 pub fn cut_to(cb: *Clipboard, master: *pan.StereoClip, sel: selection.Selection) ClipboardError!void {
-    // invariant: hold before cut — the copy reads the original audio before any mutation.
+    // invariant: hold before cut -- the copy reads the original audio before any mutation.
     try copy_to(cb, master, sel);
     try selection.cut(master, sel);
     // invariant: the clipboard still holds the lifted span after the source shrank.
     assert(cb.len == sel.span());
 }
 
-/// Paste the held span into `master` at `at` — both channels in LOCKSTEP, the clipboard UNCHANGED so it pastes again and into other
+/// Paste the held span into `master` at `at` -- both channels in LOCKSTEP, the clipboard UNCHANGED so it pastes again and into other
 /// masters. Refuses Empty when nothing is held, BadRange when `at` falls past the master, and ClipFull when the paste would overflow
-/// — the capacity checked FIRST (both channels share one bound and length, so a fit on the left is a fit on the right), so either
+/// -- the capacity checked FIRST (both channels share one bound and length, so a fit on the left is a fit on the right), so either
 /// both destination channels change or neither does. So a keeper drops a carried span anywhere, any number of times.
 pub fn paste(cb: *const Clipboard, master: *pan.StereoClip, at: u32) ClipboardError!void {
     // invariant: the destination's two channels share one length on entry.
@@ -108,7 +108,7 @@ pub fn paste(cb: *const Clipboard, master: *pan.StereoClip, at: u32) ClipboardEr
     assert(master.left.len == master.right.len);
 }
 
-// --- selftest: THE CRUX — copy_to fills the clipboard and leaves the source untouched; paste drops the held span byte-for-byte in
+// --- selftest: THE CRUX -- copy_to fills the clipboard and leaves the source untouched; paste drops the held span byte-for-byte in
 //     both channels; the SAME clipboard pastes into a second DIFFERENT master identically (cross-master) and pastes TWICE into one
 //     master (non-consuming), the held length unchanged; cut_to lifts the span and the lifted audio pastes elsewhere whole; every
 //     edge refuses by name -----------------------------------------------------------------------------------------------------
@@ -121,8 +121,8 @@ fn eq(got: []const i16, want: []const i16) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CRUX — copy_to fills the clipboard from a selection and leaves the source untouched; paste drops the held span into a
-    //    master byte-for-byte in BOTH channels. Source left {0..5}, right {0,-1,…,-5}; copy [1,3) → hold {1,2}/{-1,-2}; paste at 4.
+    // 1. THE CRUX -- copy_to fills the clipboard from a selection and leaves the source untouched; paste drops the held span into a
+    //    master byte-for-byte in BOTH channels. Source left {0..5}, right {0,-1,...,-5}; copy [1,3) -> hold {1,2}/{-1,-2}; paste at 4.
     {
         var src = pan.StereoClip{};
         try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (src.left.len != src.right.len) return error.PasteNotAligned;
     }
 
-    // 2. CROSS-MASTER — the same clipboard pastes into a SECOND, different master identically, and the held length is unchanged.
+    // 2. CROSS-MASTER -- the same clipboard pastes into a SECOND, different master identically, and the held length is unchanged.
     {
         var src = pan.StereoClip{};
         try timeline.splice(&src.left, 0, &[_]i16{ 10, 20, 30, 40 });
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (cb.held() != 2) return error.CrossMasterHeldChanged;
     }
 
-    // 3. NON-CONSUMING — the same clipboard pastes TWICE into one master; paste is a read, never a move out of the clipboard.
+    // 3. NON-CONSUMING -- the same clipboard pastes TWICE into one master; paste is a read, never a move out of the clipboard.
     {
         var m = pan.StereoClip{};
         try timeline.splice(&m.left, 0, &[_]i16{ 0, 9 });
@@ -183,8 +183,8 @@ fn run_selftest() !u8 {
         if (cb.held() != 1) return error.TwicePasteHeldChanged;
     }
 
-    // 4. cut_to LIFTS the span (source shrinks) and the lifted audio pastes elsewhere whole — a move across masters. Source
-    //    {0..5}; cut_to [2,4) → source becomes {0,1,4,5}, clipboard holds {2,3}; paste into a fresh master.
+    // 4. cut_to LIFTS the span (source shrinks) and the lifted audio pastes elsewhere whole -- a move across masters. Source
+    //    {0..5}; cut_to [2,4) -> source becomes {0,1,4,5}, clipboard holds {2,3}; paste into a fresh master.
     {
         var src = pan.StereoClip{};
         try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
@@ -204,7 +204,7 @@ fn run_selftest() !u8 {
         if (!eq(dst.left.samples(), &want)) return error.CutToPasteWrong;
     }
 
-    // 5. every edge refuses by name — an empty clipboard refuses Empty; a paste past the master refuses BadRange; a paste that
+    // 5. every edge refuses by name -- an empty clipboard refuses Empty; a paste past the master refuses BadRange; a paste that
     //    would overflow the destination refuses ClipFull; each before either channel is touched.
     {
         var m = pan.StereoClip{};
@@ -222,7 +222,7 @@ fn run_selftest() !u8 {
         const untouched = [_]i16{ 1, 2, 3 };
         if (!eq(m.left.samples(), &untouched)) return error.RefusedPasteMutated;
 
-        // fill a master to one sample of room, hold a two-sample span, and paste — the capacity guard bites ClipFull.
+        // fill a master to one sample of room, hold a two-sample span, and paste -- the capacity guard bites ClipFull.
         var full = pan.StereoClip{};
         full.left.len = timeline.max_clip - 1;
         full.right.len = timeline.max_clip - 1;

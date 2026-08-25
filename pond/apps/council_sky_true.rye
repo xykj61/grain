@@ -1,24 +1,24 @@
-//! pond/apps/council_sky_true.rye — Season 3 Journey 11 (Council skies), Rung 4: the council reads true (Journey 11 closes).
+//! pond/apps/council_sky_true.rye -- Season 3 Journey 11 (Council skies), Rung 4: the council reads true (Journey 11 closes).
 //!
 //! Rungs one through three fixed the council rule, signed each ballot, and let a signed council travel as
-//! Bron — all over councils seated in code. This closing rung carries the reader onto a **real** council
+//! Bron -- all over councils seated in code. This closing rung carries the reader onto a **real** council
 //! record a keeper can open and count, and proves the property the whole council layer rests on: what the
 //! reader *reports* about a council is true to the bytes.
 //!
 //! The corpus is `surf/fixtures/council.bron`, a genuine `format council-sky-v1` record with real
 //! Ed25519 ballot signatures (the council sky's triad, size 3, quorum 2; two yes-ballots decide proposal
 //! A, one yes-ballot holds proposal B open), `@embedFile`-bound at compile time through a symlink in
-//! `pond/apps/corpora/` — no network, the bytes read are the tree's own. Two independent readings must
+//! `pond/apps/corpora/` -- no network, the bytes read are the tree's own. Two independent readings must
 //! agree: the app parses the record through rung three and reports the **seated size**, the **ballot
 //! count**, and the **decided-proposal count** (distinct proposals whose one-sided tally reaches the
-//! quorum — a proposal short of quorum holds open and is not counted), and the witness cross-checks that
-//! triple against `tools/fixtures/council_sky_truth.awk`'s reading of the same file — two tools, one
+//! quorum -- a proposal short of quorum holds open and is not counted), and the witness cross-checks that
+//! triple against `tools/fixtures/council_sky_truth.awk`'s reading of the same file -- two tools, one
 //! answer. And the record is genuinely tie-free and quorum-honest: `still_quorum_honest` re-verifies
 //! every carried ballot signature against the demo keyring, and `rebuild` recovers proposal A's passage
 //! and proposal B's open hold exactly, so the fixture is a real signed council, not a hollow shape.
 //!
-//! Additive — composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
-//! only, reads no network (a council served over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
+//! only, reads no network (a council served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/council_sky_true.rye -femit-bin=pond/bin/council-sky-true
 //!   pond/bin/council-sky-true selftest
@@ -36,7 +36,7 @@ const kumara = @import("kumara.rye");
 
 pub const council_sky_true_version = "20260812.210603";
 
-/// The real council record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real council record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_council = @embedFile("corpora/council.bron");
 
 /// The three facts a keeper can count by hand: the seated size, the ballots cast, and proposals decided.
@@ -46,7 +46,7 @@ pub const Reading = struct {
     decided: u32,
 };
 
-/// The majority quorum of an odd body — the same rule rung one seats. A record's size is odd, so this is
+/// The majority quorum of an odd body -- the same rule rung one seats. A record's size is odd, so this is
 /// its strict majority.
 fn quorum_of(size: u32) u32 {
     return size / 2 + 1;
@@ -66,7 +66,7 @@ fn side_tally(pc: *const bron.PortableCouncil, proposal: u32, yea: bool) u32 {
     return count;
 }
 
-/// Count proposals decided by quorum — a distinct proposal whose yes-tally or no-tally reaches the
+/// Count proposals decided by quorum -- a distinct proposal whose yes-tally or no-tally reaches the
 /// quorum. Each proposal is judged once (at its first ballot line), so a proposal voted on twice is not
 /// double-counted, and one short of quorum on both sides is not counted at all.
 fn decided_count(pc: *const bron.PortableCouncil) u32 {
@@ -98,7 +98,7 @@ pub fn read_council(text: []const u8) bron.BronError!Reading {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — the same seeds the fixture was signed with, so the record verifies as real.
+// Demo keeper seeds -- the same seeds the fixture was signed with, so the record verifies as real.
 const seat0_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const seat1_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const seat2_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -119,7 +119,7 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_council(real_council);
@@ -131,7 +131,7 @@ fn welcome_reading_true_to_bytes() !void {
     print("council_sky_true: the reading of the real record — size, ballots, decided — matches an independent count of the same bytes.\n", .{});
 }
 
-/// The record is genuinely tie-free and quorum-honest — every carried ballot signature verifies against
+/// The record is genuinely tie-free and quorum-honest -- every carried ballot signature verifies against
 /// the demo keyring, and the rebuilt council carries proposal A's passage and proposal B's open hold
 /// exactly, the odd-body tie-free invariant holding.
 fn welcome_record_is_really_honest() !void {
@@ -145,7 +145,7 @@ fn welcome_record_is_really_honest() !void {
     print("council_sky_true: the real record re-verified every ballot offline and rebuilt proposal A's passage and proposal B's open hold exactly.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true.
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true.
 fn unwelcome_tampered_record_refuses() !void {
     // Flip a byte inside the header so the record no longer names its format.
     var buf: [real_council.len]u8 = undefined;
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<size> <ballots> <decided>`), so the witness can compare the
-/// app's reading against `council_sky_truth.awk` byte for byte — two tools, one answer.
+/// app's reading against `council_sky_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_council(real_council);
     print("{d} {d} {d}\n", .{ r.size, r.ballots, r.decided });

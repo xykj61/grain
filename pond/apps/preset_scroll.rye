@@ -1,16 +1,16 @@
-//! pond/apps/preset_scroll.rye — HUNK40: the scroll cursor — a live viewport offset from a keeper's gesture.
+//! pond/apps/preset_scroll.rye -- HUNK40: the scroll cursor -- a live viewport offset from a keeper's gesture.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK40.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK40.
 //! Design read: active-designing/date/20260813/20260813-192957_hunk-scroll-cursor-exploration.md
-//! Teacher, thanked clean-room: the scroll viewport of any list surface (iCloud Photos / a McMaster-Carr catalog) —
+//! Teacher, thanked clean-room: the scroll viewport of any list surface (iCloud Photos / a McMaster-Carr catalog) --
 //! a position walks up and down over a library taller than the screen, pinned at both ends (concept only, siloed).
 //!
 //! HUNK37 gave the installed-book shelf a pager: `shelf_window(offset)` renders the books `[offset, offset + rows)`,
-//! and walking page-aligned offsets covers the whole library. Yet nothing held *where a keeper's viewport sits* — a
+//! and walking page-aligned offsets covers the whole library. Yet nothing held *where a keeper's viewport sits* -- a
 //! page number is a fact about the library; a scroll offset is a fact about the reader. This rung is that piece: a
 //! `ScrollCursor` holds `{ count, rows, offset }` and moves the offset by gestures (`line_down`, `page_up`, `to_top`,
 //! `to_bottom`), clamping at both edges so it can never fall off the ends. The one governing law is that a viewport
-//! is bottom-pinned — a keeper scrolls until the last book sits at the bottom row, never further, so the surface
+//! is bottom-pinned -- a keeper scrolls until the last book sits at the bottom row, never further, so the surface
 //! never shows blank rows past the end. The reward the pager could not claim: a scroll cursor's window NEVER refuses
 //! `BadOffset`, because every reachable offset is a real page. Composes HUNK37's `shelf_window`, inventing no storage
 //! and no new render error. No network, no key, no funds.
@@ -31,12 +31,12 @@ pub const ScrollError = error{
     BadTrack,
 };
 
-/// A sensible bound on a scrollbar track — a small screen never renders a taller bar. The scroll thumb is measured
+/// A sensible bound on a scrollbar track -- a small screen never renders a taller bar. The scroll thumb is measured
 /// against this, so a track never runs past what a display could hold.
 pub const max_track: u32 = 4096;
 
 /// A live viewport over a library of `count` books, `rows` books tall, its top row showing book `offset`. No pixels
-/// and no book text live here — a cursor is a place in a library, three counts. The governing invariant, preserved
+/// and no book text live here -- a cursor is a place in a library, three counts. The governing invariant, preserved
 /// by every gesture: `offset <= max_offset`, where `max_offset` bottom-pins the viewport (the last book can reach the
 /// bottom row, never fall below it). A library that fits the screen (`count <= rows`) has `max_offset == 0` and never
 /// scrolls at all.
@@ -127,7 +127,7 @@ pub const ScrollCursor = struct {
         assert(self.offset == 0);
     }
 
-    /// Snap to the bottom — the last book pinned to the bottom row.
+    /// Snap to the bottom -- the last book pinned to the bottom row.
     pub fn to_bottom(self: *ScrollCursor) void {
         // invariant: the cursor stands within its library.
         assert(self.offset <= self.max_offset());
@@ -148,7 +148,7 @@ pub const ScrollCursor = struct {
         return self.offset == self.max_offset();
     }
 
-    /// How many books the current viewport shows — a full `rows` mid-library, fewer only when the whole library is
+    /// How many books the current viewport shows -- a full `rows` mid-library, fewer only when the whole library is
     /// shorter than the viewport (the bottom pin guarantees a full page whenever the library is taller). Reuses
     /// HUNK37's own `window_len`, so the cursor and the pager agree on what is visible.
     pub fn visible(self: *const ScrollCursor, listing: *const preset_detail.DetailListing) u32 {
@@ -158,9 +158,9 @@ pub const ScrollCursor = struct {
     }
 };
 
-/// Render the page a keeper currently sees — the books at the cursor's offset — onto a fresh Skate grid, through
+/// Render the page a keeper currently sees -- the books at the cursor's offset -- onto a fresh Skate grid, through
 /// HUNK37's `shelf_window`. The guarantee the pager alone could not make: because the cursor's offset is always a
-/// bottom-pinned, in-range viewport, this window can never refuse `BadOffset` — every gesture lands on a real page.
+/// bottom-pinned, in-range viewport, this window can never refuse `BadOffset` -- every gesture lands on a real page.
 pub fn window(
     allocator: std.mem.Allocator,
     listing: *const preset_detail.DetailListing,
@@ -176,8 +176,8 @@ pub fn window(
 
 /// A scrollbar thumb over a track of `track` rows: a filled run `[thumb_start, thumb_start + thumb_len)` that shows a
 /// keeper where in the library they stand and how much of it fits. The thumb length is proportional to how much of
-/// the library the viewport shows (`rows / count`), and its position to how far the cursor has scrolled — pinned to
-/// the top edge at the top and the bottom edge at the bottom. It always sits inside the track. No pixels here — three
+/// the library the viewport shows (`rows / count`), and its position to how far the cursor has scrolled -- pinned to
+/// the top edge at the top and the bottom edge at the bottom. It always sits inside the track. No pixels here -- three
 /// counts a surface paints.
 pub const ScrollBar = struct {
     track: u32 = 0,
@@ -198,7 +198,7 @@ pub const ScrollBar = struct {
 };
 
 /// Measure the scrollbar thumb for a cursor against a track of `track_len` rows. A library that fits the viewport
-/// fills the whole track (nothing to scroll — the thumb IS the track). Otherwise the thumb is `rows/count` of the
+/// fills the whole track (nothing to scroll -- the thumb IS the track). Otherwise the thumb is `rows/count` of the
 /// track (at least one row so it is always visible), and its start is `offset/max_offset` of the leftover travel,
 /// pinned to 0 at the top and to `track - thumb_len` at the bottom so the edges read exactly. Pure over the cursor;
 /// refuses `BadTrack` on a zero or over-ceiling track. The products run in u64 so no term wraps.
@@ -251,7 +251,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const preset_store = @import("preset_store.rye");
     const photo_edits = @import("photo_edits.rye");
 
-    // Build a real five-book library, exactly as the HUNK37 pager selftest does — three one-preset books beside the
+    // Build a real five-book library, exactly as the HUNK37 pager selftest does -- three one-preset books beside the
     // stock and a small custom book, so the library holds five in a known held order.
     var store: beading.BeadStore = .empty();
     var cat: tablecloth.Catalog = .empty();
@@ -285,7 +285,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(cur.offset == 0);
     assert(cur.at_top());
     assert(!cur.at_bottom());
-    // max_offset bottom-pins: five books, two rows → the last full viewport starts at book 3 (shows books 3,4).
+    // max_offset bottom-pins: five books, two rows -> the last full viewport starts at book 3 (shows books 3,4).
     assert(cur.max_offset() == 3);
     assert(cur.visible(&lib) == 2);
     {
@@ -303,13 +303,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.indexOf(u8, v.row_cells(0), lib.at(1).name_slice()) != null);
         assert(std.mem.indexOf(u8, v.row_cells(1), lib.at(2).name_slice()) != null);
     }
-    // line_up reverses it — a walk is reversible.
+    // line_up reverses it -- a walk is reversible.
     cur.line_up(1);
     assert(cur.offset == 0);
     assert(cur.at_top());
 
     // Bottom-pinned: to_bottom lands on max_offset, at_bottom is true, and the window shows the LAST two books with
-    // the final book on the bottom row — no blank row past the end.
+    // the final book on the bottom row -- no blank row past the end.
     cur.to_bottom();
     assert(cur.offset == 3);
     assert(cur.at_bottom());
@@ -338,7 +338,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(cur.offset == 0); // clamped at the top
 
     // The cursor's window never refuses: at every reachable offset from top to bottom, shelf_window returns a real
-    // page whose visible count matches window_len — a keeper's gesture always lands on a real page.
+    // page whose visible count matches window_len -- a keeper's gesture always lands on a real page.
     {
         var ofs: u32 = 0;
         while (ofs <= cur.max_offset()) : (ofs += 1) {
@@ -351,7 +351,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
     cur.to_top();
 
-    // Coverage: paging top-to-bottom by page_down shows every one of the five books at least once — scrolling loses
+    // Coverage: paging top-to-bottom by page_down shows every one of the five books at least once -- scrolling loses
     // nothing, exactly as the HUNK37 pager walk proved.
     {
         var seen = [_]bool{false} ** 5;
@@ -374,7 +374,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A library that fits the screen never scrolls: rows tall enough to hold every book gives max_offset 0, and every
-    // gesture is a no-op — at_top and at_bottom both true at once.
+    // gesture is a no-op -- at_top and at_bottom both true at once.
     {
         var fit = try ScrollCursor.open(lib.count, 8); // eight rows over five books
         assert(fit.max_offset() == 0);
@@ -392,7 +392,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.EmptyViewport) return error.WrongViewport;
     }
 
-    // HUNK41 — the scrollbar thumb: a keeper sees where in the library they stand. Over a 10-row track on the
+    // HUNK41 -- the scrollbar thumb: a keeper sees where in the library they stand. Over a 10-row track on the
     // five-book, two-row viewport (max_offset 3), the thumb is 2/5 of the track (four rows) and its start walks the
     // leftover six rows of travel with the offset.
     const track: u32 = 10;
@@ -400,7 +400,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     {
         const bar = try scroll_bar(&cur, track);
         assert(bar.track == track);
-        // A shorter thumb than the track: only part of the library is in view (two of five books → 4/10).
+        // A shorter thumb than the track: only part of the library is in view (two of five books -> 4/10).
         assert(bar.thumb_len == 4);
         assert(bar.thumb_len < track);
         // At the top the thumb pins to the top edge.
@@ -409,7 +409,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(!bar.at_track_bottom());
         assert(bar.thumb_start + bar.thumb_len <= track);
     }
-    // At the bottom the thumb pins to the bottom edge — start + len == track exactly, so the edge reads true.
+    // At the bottom the thumb pins to the bottom edge -- start + len == track exactly, so the edge reads true.
     cur.to_bottom();
     {
         const bar = try scroll_bar(&cur, track);
@@ -419,7 +419,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // Monotone and always-inside: walking the offset top to bottom, the thumb start never moves up and the thumb
-    // always sits wholly inside the track — a keeper's position reads honestly at every step.
+    // always sits wholly inside the track -- a keeper's position reads honestly at every step.
     {
         var prev_start: u32 = 0;
         var ofs: u32 = 0;
@@ -434,7 +434,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
     cur.to_top();
 
-    // A library that fits the screen fills the whole track — nothing to scroll, so the thumb IS the track.
+    // A library that fits the screen fills the whole track -- nothing to scroll, so the thumb IS the track.
     {
         var fit = try ScrollCursor.open(lib.count, 8);
         const bar = try scroll_bar(&fit, track);

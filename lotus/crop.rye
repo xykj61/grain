@@ -1,27 +1,27 @@
-//! lotus/crop.rye — ALES111: crop — keep the `count` samples starting at `start` and DROP every sample before and after, so the clip becomes exactly that span, IN PLACE,
+//! lotus/crop.rye -- ALES111: crop -- keep the `count` samples starting at `start` and DROP every sample before and after, so the clip becomes exactly that span, IN PLACE,
 //! its length exactly `count`. This is the exact complement of ALES2's cut: where cut REMOVES the named span and keeps everything around it (the clip SHRINKS by the span),
-//! crop KEEPS the named span and removes everything else (the clip becomes the span). Trim to Selection — Crop — is the button every editor ships: circle the one phrase worth
+//! crop KEEPS the named span and removes everything else (the clip becomes the span). Trim to Selection -- Crop -- is the button every editor ships: circle the one phrase worth
 //! keeping, drop the rest, and the take becomes exactly that phrase. Naming it beside cut completes the pair and teaches the one distinction about a span you have circled:
 //! REMOVE it, or KEEP ONLY it.
 //!
 //! The rule, stated once: crop(clip, start, count) slides the kept span [start, start+count) to the front in one bounded forward pass, then sets the length to count. It refuses
-//! BadRange when the span falls outside the current samples — checked without underflow, count against the remainder — before any write, reusing ALES2's EditError whole. No
+//! BadRange when the span falls outside the current samples -- checked without underflow, count against the remainder -- before any write, reusing ALES2's EditError whole. No
 //! allocation, no second buffer.
 //!
-//! The crux — four laws. THE CROP LAW: after crop(clip, start, count) the clip is byte-for-byte original[start .. start+count) and its length is exactly count. THE COMPLEMENT
-//! LAW: crop keeps exactly what cut removes and removes exactly what cut keeps — on one source, crop(start, count) yields the middle span while cut(start, count) yields the
+//! The crux -- four laws. THE CROP LAW: after crop(clip, start, count) the clip is byte-for-byte original[start .. start+count) and its length is exactly count. THE COMPLEMENT
+//! LAW: crop keeps exactly what cut removes and removes exactly what cut keeps -- on one source, crop(start, count) yields the middle span while cut(start, count) yields the
 //! head-plus-tail around it, and splicing the crop back at start into the cut reconstructs the source byte for byte. THE SUBSET / PEAK LAW: crop is a pure subset (it invents no
-//! sample, reorders none, only drops), so the peak re-measured through ALES13 is non-increasing — cropping away the loudest sample strictly lowers the peak, cropping a span that
+//! sample, reorders none, only drops), so the peak re-measured through ALES13 is non-increasing -- cropping away the loudest sample strictly lowers the peak, cropping a span that
 //! still holds it holds it. THE DEGENERATE / REFUSAL LAW: crop(0, len) the identity, crop(start, 0) the empty clip, the empty clip its own crop, a start past the samples or a
 //! count past the remainder refuses BadRange before any write.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES111.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES111.
 //! Design read: active-designing/date/20260815/20260815-011317_fill-ales111-lotus-crop.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the complement law;
-//! lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that dropping samples never raises the peak.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the complement law;
+//! lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to prove that dropping samples never raises the peak.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It reseats an existing span to the front and shortens the
-//! length — it invents no sample, changes no value, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It reseats an existing span to the front and shortens the
+//! length -- it invents no sample, changes no value, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/crop.rye selftest
 
@@ -34,17 +34,17 @@ const meter = @import("meter.rye");
 
 pub const crop_version = "20260815.011317";
 
-/// crop forwards ALES2's OWN fault reused by name — BadRange when the span falls outside the current samples — and invents none of its own; `start` and `count` are plain span
+/// crop forwards ALES2's OWN fault reused by name -- BadRange when the span falls outside the current samples -- and invents none of its own; `start` and `count` are plain span
 /// bounds with no illegal value save the range the samples already name.
 pub const CropError = timeline.EditError;
 
-/// Keep the `count` samples starting at `start` and drop every sample before and after — the clip becomes exactly that span, in place, its length exactly `count`. Refuses
+/// Keep the `count` samples starting at `start` and drop every sample before and after -- the clip becomes exactly that span, in place, its length exactly `count`. Refuses
 /// BadRange when the span falls outside the current samples, before any write. This is ALES2's cut read as its complement: cut removes the span, crop keeps only it.
 pub fn crop(clip: *timeline.Clip, start: u32, count: u32) CropError!void {
-    // invariant: the length never claims more samples than the buffer holds — every seat we read is inside the buffer.
+    // invariant: the length never claims more samples than the buffer holds -- every seat we read is inside the buffer.
     assert(clip.len <= clip.buf.len);
 
-    // invariant: the kept span lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    // invariant: the kept span lies wholly within the current samples (checked without underflow -- count against the remainder), refused by name before any write.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -58,9 +58,9 @@ pub fn crop(clip: *timeline.Clip, start: u32, count: u32) CropError!void {
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE CROP LAW — crop keeps exactly the named span and drops the rest, the length exactly count; THE COMPLEMENT LAW — crop keeps what ALES2's cut removes and
-//     removes what cut keeps, the two partitioning the source; THE SUBSET / PEAK LAW — crop only drops, so the peak re-measured through ALES13 is non-increasing (cropping away
-//     the loudest sample strictly lowers it, cropping a span that holds it holds it); THE DEGENERATE / REFUSAL LAW — crop(0, len) the identity, crop(start, 0) empty, the empty
+// --- selftest: THE CROP LAW -- crop keeps exactly the named span and drops the rest, the length exactly count; THE COMPLEMENT LAW -- crop keeps what ALES2's cut removes and
+//     removes what cut keeps, the two partitioning the source; THE SUBSET / PEAK LAW -- crop only drops, so the peak re-measured through ALES13 is non-increasing (cropping away
+//     the loudest sample strictly lowers it, cropping a span that holds it holds it); THE DEGENERATE / REFUSAL LAW -- crop(0, len) the identity, crop(start, 0) empty, the empty
 //     clip its own crop, a span past the samples BadRange ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -74,14 +74,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+/// The clip's current peak magnitude, re-measured through ALES13 -- the reader the peak law checks the result against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CROP LAW — crop keeps exactly the named span and drops the rest, its length exactly count. Proven at a mid span, the head, and the tail.
+    // 1. THE CROP LAW -- crop keeps exactly the named span and drops the rest, its length exactly count. Proven at a mid span, the head, and the tail.
     {
         var mid = timeline.Clip{};
         try load_clip(&mid, &[_]i16{ 10, 20, 30, 40, 50 });
@@ -100,7 +100,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.samples(), &[_]i16{ 20, 30 })) return error.CropTailWrong;
     }
 
-    // 2. THE COMPLEMENT LAW — crop keeps exactly what cut removes and removes what cut keeps. crop(1, 2) yields the middle span; cut(1, 2) yields the head-plus-tail around it;
+    // 2. THE COMPLEMENT LAW -- crop keeps exactly what cut removes and removes what cut keeps. crop(1, 2) yields the middle span; cut(1, 2) yields the head-plus-tail around it;
     //    splicing the crop's result back at 1 into the cut's result reconstructs the source byte for byte.
     {
         const src = [_]i16{ 10, 20, 30, 40 };
@@ -115,14 +115,14 @@ fn run_selftest() !u8 {
         try timeline.cut(&removed, 1, 2);
         if (!eq(removed.samples(), &[_]i16{ 10, 40 })) return error.CutAroundWrong; // the head plus tail
 
-        // Splice the kept middle back at 1 into the cut's head-plus-tail — the source returns byte for byte, proving crop and cut partition the span.
+        // Splice the kept middle back at 1 into the cut's head-plus-tail -- the source returns byte for byte, proving crop and cut partition the span.
         var rebuilt = timeline.Clip{};
         try load_clip(&rebuilt, removed.samples());
         try timeline.splice(&rebuilt, 1, kept.samples());
         if (!eq(rebuilt.samples(), &src)) return error.PartitionBroken;
     }
 
-    // 3. THE SUBSET / PEAK LAW — crop only drops, so the peak re-measured through ALES13 is non-increasing: cropping away the span that holds the loudest sample strictly lowers
+    // 3. THE SUBSET / PEAK LAW -- crop only drops, so the peak re-measured through ALES13 is non-increasing: cropping away the span that holds the loudest sample strictly lowers
     //    the peak, cropping a span that still holds it holds it.
     {
         var drop_peak = timeline.Clip{};
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&keep_peak) != kb) return error.KeepPeakMoved;
     }
 
-    // 4a. THE DEGENERATE LAW — crop(0, len) is the identity (the whole clip kept), crop(start, 0) yields the empty clip, and the empty clip is its own crop.
+    // 4a. THE DEGENERATE LAW -- crop(0, len) is the identity (the whole clip kept), crop(start, 0) yields the empty clip, and the empty clip is its own crop.
     {
         var idc = timeline.Clip{};
         try load_clip(&idc, &[_]i16{ 7, 8, 9 });
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (empty.len != 0) return error.EmptyChanged;
     }
 
-    // 4b. THE REFUSAL LAW — a `start` past the current samples and a `count` past the remainder each refuse BadRange before any write, the clip untouched.
+    // 4b. THE REFUSAL LAW -- a `start` past the current samples and a `count` past the remainder each refuse BadRange before any write, the clip untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
@@ -166,7 +166,7 @@ fn run_selftest() !u8 {
         if (crop(&clip, 2, 5)) |_| return error.CountNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // The clip is untouched by the refused calls — each refusal came before any write.
+        // The clip is untouched by the refused calls -- each refusal came before any write.
         if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
     }
 

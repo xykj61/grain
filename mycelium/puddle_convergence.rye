@@ -1,25 +1,25 @@
-//! mycelium/puddle_convergence.rye — the Puddle heals: a host departs, and only its worlds re-berth (r2,
+//! mycelium/puddle_convergence.rye -- the Puddle heals: a host departs, and only its worlds re-berth (r2,
 //! convergence with minimal disruption).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r2 — the fleet heals.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r2 -- the fleet heals.
 //! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! r1 fixed the berth: placement is a pure function of the fleet, derived by highest weave-score, invariant
-//! under arrival order. r2 proves the property that method was CHOSEN for over hash-mod-count — MINIMAL
+//! under arrival order. r2 proves the property that method was CHOSEN for over hash-mod-count -- MINIMAL
 //! DISRUPTION. When a host departs (a machine fails, a keeper retires a node), a fleet must re-place the
 //! worlds that host carried WITHOUT reshuffling everyone: a mass migration is its own outage. Highest
-//! weave-score gives it for free. Under generous capacity the berth is exactly pure HRW — each world takes
-//! its single highest-scoring host — so removing one host:
+//! weave-score gives it for free. Under generous capacity the berth is exactly pure HRW -- each world takes
+//! its single highest-scoring host -- so removing one host:
 //!   - moves ONLY the worlds that had berthed at the departed host (their next-highest-score host receives
 //!     them);
 //!   - leaves EVERY world on a surviving host exactly where it was (its top host still stands, so its argmax
-//!     is unchanged — byte-identical berth).
+//!     is unchanged -- byte-identical berth).
 //! And the symmetric join is minimal too: a new host only PULLS the worlds whose new top is the newcomer;
 //! no world reshuffles among the hosts that were already there.
 //!
-//! The crux `heal` composes r1's public API only — it builds the after-fleet from the surviving hosts and
+//! The crux `heal` composes r1's public API only -- it builds the after-fleet from the surviving hosts and
 //! re-berths, comparing world-by-world by host public key (indices differ once a host is gone). It edits r1
-//! nothing; the r1 berth re-runs GREEN at this witness's door. Siloed, dev-only, demo host and world seeds —
+//! nothing; the r1 berth re-runs GREEN at this witness's door. Siloed, dev-only, demo host and world seeds --
 //! no real key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_convergence.rye
@@ -60,14 +60,14 @@ pub fn main() !void {
     const all = [_]u8{ 0x11, 0x22, 0x33, 0x44 };
     const cap: u32 = 8; // generous — capacity never binds, so berth is exactly pure HRW
 
-    // --- Scene 1 — THE CRUX: a host departs, only its worlds re-berth ------------------------------------
+    // --- Scene 1 -- THE CRUX: a host departs, only its worlds re-berth ------------------------------------
     {
         var before = try build(all[0..], cap, ids[0..]);
         var pb: [puddle.max_worlds]u32 = undefined;
         try puddle.berth(&before, &pb);
 
         // Choose the departed host = the one carrying the most worlds (deterministic), and require it to
-        // carry at least one world yet not all — so the scene shows both a move and a stay.
+        // carry at least one world yet not all -- so the scene shows both a move and a stay.
         var departed: u32 = 0;
         var best_load: u32 = 0;
         var hi: u32 = 0;
@@ -103,11 +103,11 @@ pub fn main() !void {
             const was = try berth_of(&before, &pb, id);
             const now = try berth_of(&after, &pa, id);
             if (std.mem.eql(u8, was, departed_pk)) {
-                // this world berthed at the departed host — it must move, and land on a survivor
+                // this world berthed at the departed host -- it must move, and land on a survivor
                 if (std.mem.eql(u8, now, departed_pk)) return error.StayedOnDeparted;
                 moved += 1;
             } else {
-                // this world was on a surviving host — it must not have moved at all
+                // this world was on a surviving host -- it must not have moved at all
                 if (!std.mem.eql(u8, was, now)) return error.SurvivorMoved;
                 stayed += 1;
             }
@@ -118,7 +118,7 @@ pub fn main() !void {
         if (stayed == 0) return error.NoneStayed;
     }
 
-    // --- Scene 2 — the symmetric join: a newcomer only pulls, never reshuffles ---------------------------
+    // --- Scene 2 -- the symmetric join: a newcomer only pulls, never reshuffles ---------------------------
     {
         const three = [_]u8{ 0x11, 0x22, 0x33 };
         var before = try build(three[0..], cap, ids[0..]);
@@ -131,7 +131,7 @@ pub fn main() !void {
         try puddle.berth(&after, &pa);
         const newcomer_pk = host_key(0x44);
 
-        // Every world either stayed exactly where it was, or moved ONTO the newcomer — never from one old
+        // Every world either stayed exactly where it was, or moved ONTO the newcomer -- never from one old
         // host to another. A join disturbs only the worlds the newcomer now wins.
         var pulled: u32 = 0;
         for (ids) |id| {
@@ -145,7 +145,7 @@ pub fn main() !void {
         if (pulled == 0) return error.NewcomerIdle;
     }
 
-    // --- Scene 3 — the healed fleet is still arrival-order independent -----------------------------------
+    // --- Scene 3 -- the healed fleet is still arrival-order independent -----------------------------------
     {
         const survivors = [_]u8{ 0x11, 0x33, 0x44 };
         var fa = try build(survivors[0..], cap, ids[0..]);

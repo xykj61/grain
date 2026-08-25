@@ -1,18 +1,18 @@
-//! lotus/stream.rye — ALES1: a bounded audio byte stream, one frame at a time, reassembled gapless. ALES0 framed one buffer
-//! of samples verify-before-trust; a real recorder or interface does not hand over one buffer — it delivers a continuous
+//! lotus/stream.rye -- ALES1: a bounded audio byte stream, one frame at a time, reassembled gapless. ALES0 framed one buffer
+//! of samples verify-before-trust; a real recorder or interface does not hand over one buffer -- it delivers a continuous
 //! BYTE STREAM: frames arrive back to back, a frame may be split across two arrivals, and the samples of many frames must
 //! reassemble into ONE continuous timeline in order. This rung introduces the one new concern a live audio source forces and
-//! ALES0 did not — cut each whole frame out of the stream, waiting when a frame is not yet complete, and replay every frame's
+//! ALES0 did not -- cut each whole frame out of the stream, waiting when a frame is not yet complete, and replay every frame's
 //! samples into one gapless sequence.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES1.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES1.
 //! Design read: active-designing/20260814-fill-ales1-lotus-audio-stream.md
-//! Stands on: lotus/wire.rye (ALES0) — the frame the stream delimits and the audio border it keeps. Byte-stream idiom proven
+//! Stands on: lotus/wire.rye (ALES0) -- the frame the stream delimits and the audio border it keeps. Byte-stream idiom proven
 //! at constel/channel.rye (FORA5).
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process byte FIFO over a fixed buffer on one bench, siloed to
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process byte FIFO over a fixed buffer on one bench, siloed to
 //! lotus/. No socket, no network, no keys, no funds, no real device. The stream's ONLY job is delimiting and ordered
-//! reassembly; it never re-checks a frame's integrity — the reassembly runs wire.deframe, so ALES0's two gates (the Sha256
+//! reassembly; it never re-checks a frame's integrity -- the reassembly runs wire.deframe, so ALES0's two gates (the Sha256
 //! and the audio border) stay exactly where ALES0 put them. A real audio input is this same stream with a device or file
 //! read standing in for the buffer.
 //!
@@ -29,16 +29,16 @@ pub const stream_version = "20260814.112000";
 /// The stream buffer holds at least two whole frames, so the back-to-back case is real and bounded. No heap outlives it.
 pub const max_stream: u32 = 2 * wire.max_frame;
 
-/// The widest reassembled timeline this rung proves — samples from several frames laid end to end. Bounded so a runaway
+/// The widest reassembled timeline this rung proves -- samples from several frames laid end to end. Bounded so a runaway
 /// stream can never grow an unbounded timeline; a real session is many such bounded windows.
 pub const max_timeline: u32 = 4 * wire.max_samples;
 
 pub const StreamError = error{
-    /// A push would overflow the fixed buffer — refused, never a silent overwrite.
+    /// A push would overflow the fixed buffer -- refused, never a silent overwrite.
     StreamFull,
-    /// Not a whole frame is available yet — the header, or the payload's tail, has not arrived. The cursor does not move.
+    /// Not a whole frame is available yet -- the header, or the payload's tail, has not arrived. The cursor does not move.
     NeedMoreBytes,
-    /// A frame header declares a payload length past wire.max_payload — refused before any over-read.
+    /// A frame header declares a payload length past wire.max_payload -- refused before any over-read.
     BadFrame,
     /// Reassembly would grow the timeline past its bound.
     TimelineFull,
@@ -78,12 +78,12 @@ pub const AudioStream = struct {
     /// Read exactly ONE whole frame from the cursor, or refuse NeedMoreBytes. A header not fully arrived, a payload tail not
     /// arrived, and a wild declared length each fail closed WITHOUT moving the cursor, so the caller retries after more
     /// bytes. Only a whole frame advances the cursor. Returns raw frame bytes; the caller runs wire.deframe for the trust
-    /// gates — the stream delimits, it never re-checks.
+    /// gates -- the stream delimits, it never re-checks.
     pub fn read_frame(self: *AudioStream) StreamError![]const u8 {
         const have = self.available();
         if (have < wire.header_len) return error.NeedMoreBytes;
         const base = self.cursor;
-        // The declared payload length — the same little-endian u32 wire reads, at offset 6 of the LOTS header.
+        // The declared payload length -- the same little-endian u32 wire reads, at offset 6 of the LOTS header.
         const plen = std.mem.readInt(u32, self.buf[base + 6 ..][0..4], .little);
         if (plen > wire.max_payload) return error.BadFrame;
         const whole = wire.header_len + plen;
@@ -99,7 +99,7 @@ pub const AudioStream = struct {
     }
 };
 
-/// Push a Frame's bytes onto a stream — a small helper so a scenario reads as "the source writes a frame."
+/// Push a Frame's bytes onto a stream -- a small helper so a scenario reads as "the source writes a frame."
 pub fn feed(st: *AudioStream, frame: *const wire.Frame) StreamError!void {
     try st.push(frame.bytes());
 }
@@ -111,7 +111,7 @@ pub const Timeline = struct {
     len: u32 = 0,
     frames: u32 = 0,
 
-    /// The reassembled samples in order — exactly what every drained frame carried, concatenated.
+    /// The reassembled samples in order -- exactly what every drained frame carried, concatenated.
     pub fn samples(self: *const Timeline) []const i16 {
         // invariant: the length never claims more samples than the buffer holds.
         assert(self.len <= self.buf.len);
@@ -120,7 +120,7 @@ pub const Timeline = struct {
 };
 
 /// Drain every whole frame currently available and reassemble their samples into one gapless timeline, in arrival order. A
-/// partial trailing frame is LEFT in the stream (its bytes untouched) for a later push to complete — reassembly never tears
+/// partial trailing frame is LEFT in the stream (its bytes untouched) for a later push to complete -- reassembly never tears
 /// a frame. Each frame is deframed verify-before-trust, so ALES0's two gates run per frame; a corrupt frame propagates its
 /// error and stops the drain with the timeline holding every whole frame before it. Refuses TimelineFull rather than overrun.
 pub fn drain(st: *AudioStream, out: *Timeline) StreamError!void {
@@ -129,7 +129,7 @@ pub fn drain(st: *AudioStream, out: *Timeline) StreamError!void {
     var read: u32 = 0;
     while (read < guard) : (read += 1) {
         const frame_bytes = st.read_frame() catch |e| {
-            // NeedMoreBytes is the clean end of what has arrived — not a fault; anything else is a real fault.
+            // NeedMoreBytes is the clean end of what has arrived -- not a fault; anything else is a real fault.
             if (e == error.NeedMoreBytes) return;
             return e;
         };
@@ -142,7 +142,7 @@ pub fn drain(st: *AudioStream, out: *Timeline) StreamError!void {
         // invariant: the timeline grows by exactly the samples the frame carried and never past its bound.
         assert(out.len <= out.buf.len);
     }
-    // invariant: the drain bound is a real bound — the stream cannot hold more minimal frames than the guard allows.
+    // invariant: the drain bound is a real bound -- the stream cannot hold more minimal frames than the guard allows.
     assert(read <= guard);
 }
 
@@ -151,7 +151,7 @@ pub fn drain(st: *AudioStream, out: *Timeline) StreamError!void {
 //     every frame off the stream ------------------------------------------------------------------------------------------
 
 fn run_selftest() !u8 {
-    // Three distinct blocks, so a gapless in-order reassembly is a real check — their concatenation is the true timeline.
+    // Three distinct blocks, so a gapless in-order reassembly is a real check -- their concatenation is the true timeline.
     const b0 = [_]i16{ 0, 1, -1, 32767 };
     const b1 = [_]i16{ -32768, 100, -100 };
     const b2 = [_]i16{ 4242, -4242, 7, 8, 9 };
@@ -175,14 +175,14 @@ fn run_selftest() !u8 {
         assert(tl.frames == 3);
         assert(tl.len == b0.len + b1.len + b2.len);
 
-        // The reassembled timeline equals b0 ++ b1 ++ b2 exactly — no gap, no reorder, no torn sample.
+        // The reassembled timeline equals b0 ++ b1 ++ b2 exactly -- no gap, no reorder, no torn sample.
         const want = [_]i16{ 0, 1, -1, 32767, -32768, 100, -100, 4242, -4242, 7, 8, 9 };
         assert(tl.len == want.len);
         var i: u32 = 0;
         while (i < want.len) : (i += 1) assert(tl.samples()[i] == want[i]);
     }
 
-    // 2. A split frame waits — all but the last byte drains nothing and leaves the cursor untouched; the final byte lets the
+    // 2. A split frame waits -- all but the last byte drains nothing and leaves the cursor untouched; the final byte lets the
     //    same frame complete, its samples appended with no tear.
     {
         var f0 = wire.Frame{};
@@ -214,7 +214,7 @@ fn run_selftest() !u8 {
         if (drain(&st, &tl)) |_| return error.WildSlipped else |e| if (e != error.BadFrame) return error.WrongWild;
     }
 
-    // 4. An overfull stream refuses StreamFull, never a silent overwrite — push whole frames without draining until one
+    // 4. An overfull stream refuses StreamFull, never a silent overwrite -- push whole frames without draining until one
     //    refuses, within a bound.
     {
         var f0 = wire.Frame{};
@@ -225,7 +225,7 @@ fn run_selftest() !u8 {
         var hit_full = false;
         while (pushed < guard) : (pushed += 1) {
             if (st.push(f0.bytes())) |_| {
-                // room remained — keep pushing
+                // room remained -- keep pushing
             } else |e| {
                 if (e != error.StreamFull) return error.WrongOverfull;
                 hit_full = true;
@@ -235,7 +235,7 @@ fn run_selftest() !u8 {
         if (!hit_full) return error.OverfullSlipped;
     }
 
-    // 5. The audio border still guards every frame off the stream — a frame read cleanly by the delimiter but carrying an
+    // 5. The audio border still guards every frame off the stream -- a frame read cleanly by the delimiter but carrying an
     //    odd (torn-sample) payload length, digest fixed up, still refuses PartialSample at wire.deframe during reassembly.
     {
         var f0 = wire.Frame{};

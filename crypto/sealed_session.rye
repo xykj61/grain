@@ -1,32 +1,32 @@
-//! crypto/sealed_session.rye — Season G (Cryptography), the sixteenth rung: the SECOND composition over the GREEN primitives, and the one
-//! Comlink reaches for — a sealed session carry that lets one keeper send another a confidential message over an open channel. Where
+//! crypto/sealed_session.rye -- Season G (Cryptography), the sixteenth rung: the SECOND composition over the GREEN primitives, and the one
+//! Comlink reaches for -- a sealed session carry that lets one keeper send another a confidential message over an open channel. Where
 //! crypto/signed_carry.rye answers "who made this record" (integrity + provenance, in the clear), this answers "only you can read this"
-//! (confidentiality, to a named recipient). It authors NO new cryptography: it composes three primitives already parity-GREEN — X25519 (the
+//! (confidentiality, to a named recipient). It authors NO new cryptography: it composes three primitives already parity-GREEN -- X25519 (the
 //! key agreement), BLAKE2b-512 (the key-derivation hash), and ChaCha20-Poly1305 (the authenticated encryption).
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — X25519 "lets two keepers agree a shared
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- X25519 "lets two keepers agree a shared
 //! secret before they trust each other" (Comlink session keys, Vault sealed storage). The 1,024-round itinerary, Season 3 Journey 9 (Skate)
 //! and the Comlink session surface both stand on exactly this shape.
-//! Kin: crypto/x25519.rye (the agreement, GREEN) · crypto/aead.rye (the seal, GREEN) · crypto/blake2b.rye (the KDF, GREEN) ·
-//! crypto/signed_carry.rye (its sibling composition — provenance where this is confidentiality). Pure composition, no primitive re-authored.
+//! Kin: crypto/x25519.rye (the agreement, GREEN) - crypto/aead.rye (the seal, GREEN) - crypto/blake2b.rye (the KDF, GREEN) -
+//! crypto/signed_carry.rye (its sibling composition -- provenance where this is confidentiality). Pure composition, no primitive re-authored.
 //!
-//! THE SEALED BOX — the standard "seal to a public key" pattern (NaCl's crypto_box_seal, in our own Rye over our own primitives):
-//!   The sender never reuses a key. For each message it takes a FRESH ephemeral X25519 keypair (esk, epk) — the caller supplies the ephemeral
-//!   private as fresh randomness; this library invents no entropy — and agrees a one-message shared secret with the recipient's public key:
+//! THE SEALED BOX -- the standard "seal to a public key" pattern (NaCl's crypto_box_seal, in our own Rye over our own primitives):
+//!   The sender never reuses a key. For each message it takes a FRESH ephemeral X25519 keypair (esk, epk) -- the caller supplies the ephemeral
+//!   private as fresh randomness; this library invents no entropy -- and agrees a one-message shared secret with the recipient's public key:
 //!     shared = X25519(esk, recipient_pub)          [sender]   ==   X25519(recipient_priv, epk)   [recipient]
 //!   A single BLAKE2b-512 over (shared ‖ epk ‖ recipient_pub) yields both the 32-byte session key and the 12-byte nonce, so every message
-//!   carries a fresh key AND a fresh nonce — the AEAD nonce is never reused under a key, the one rule ChaCha20-Poly1305 must keep. The
+//!   carries a fresh key AND a fresh nonce -- the AEAD nonce is never reused under a key, the one rule ChaCha20-Poly1305 must keep. The
 //!   recipient's own public key is fed to the AEAD as authenticated data, so a frame sealed to one keeper cannot be replayed as if sealed to
 //!   another. The frame carries the ephemeral public key so the recipient can rederive the same secret; the sender's long-term identity never
 //!   appears (a sealed box is anonymous by construction).
 //!
-//! THE FRAME — magic "GSS1" ‖ ephemeral-pubkey(32) ‖ cipher-len(u64 BE) ‖ ciphertext(len) ‖ Poly1305 tag(16). open() reads only public bytes,
-//! rederives key and nonce from the recipient's private key, and returns plaintext ONLY when the AEAD tag verifies — a wrong recipient, a
+//! THE FRAME -- magic "GSS1" ‖ ephemeral-pubkey(32) ‖ cipher-len(u64 BE) ‖ ciphertext(len) ‖ Poly1305 tag(16). open() reads only public bytes,
+//! rederives key and nonce from the recipient's private key, and returns plaintext ONLY when the AEAD tag verifies -- a wrong recipient, a
 //! tampered ciphertext, a tampered tag, or a tampered ephemeral key all fail the same way: OpenFailed, no plaintext revealed.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. Every keypair in the selftest is a TEST
-//! scalar, never a real key; the frames are held in memory, sent nowhere. The ephemeral private must be fresh randomness in real use — the
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Every keypair in the selftest is a TEST
+//! scalar, never a real key; the frames are held in memory, sent nowhere. The ephemeral private must be fresh randomness in real use -- the
 //! selftest supplies deterministic TEST ephemerals to prove the mathematics, and names that randomness duty plainly. Constant-time
 //! timing-safety stays the Season's named horizon (it lives in the primitives this composes, unchanged), and agreeing a session with the
 //! maintainer's own identity key stays the custody gate.
@@ -57,20 +57,20 @@ pub const tag_len: u32 = aead.tag_bytes; // 16 — Poly1305 tag
 pub const header_len: u32 = magic_len + epk_len + ctlen_field_len; // 44
 pub const frame_overhead: u32 = header_len + tag_len; // 60
 
-/// The largest plaintext a single sealed carry holds — inherited from the AEAD's own message bound, so the composition adds no looser limit.
+/// The largest plaintext a single sealed carry holds -- inherited from the AEAD's own message bound, so the composition adds no looser limit.
 pub const max_plain_bytes: u32 = aead.max_message_bytes; // 1 << 16
 pub const max_frame_bytes: u32 = frame_overhead + max_plain_bytes;
 
 pub const SealedSessionError = error{
-    /// seal's output buffer is too small to hold the whole frame — refused before any byte is written.
+    /// seal's output buffer is too small to hold the whole frame -- refused before any byte is written.
     OutTooSmall,
-    /// A plaintext longer than max_plain_bytes — refused before any key agreement or encryption.
+    /// A plaintext longer than max_plain_bytes -- refused before any key agreement or encryption.
     PayloadTooLong,
     /// open was handed a buffer shorter than the fixed overhead, so it cannot hold even an empty-plaintext frame.
     FrameTooShort,
-    /// The frame's declared ciphertext length disagrees with its actual length, or exceeds the bound — malformed or truncated.
+    /// The frame's declared ciphertext length disagrees with its actual length, or exceeds the bound -- malformed or truncated.
     LengthMismatch,
-    /// The first four bytes are not the GSS1 magic — this is not a sealed session frame.
+    /// The first four bytes are not the GSS1 magic -- this is not a sealed session frame.
     BadMagic,
     /// The AEAD tag did not verify: a wrong recipient, a tampered ciphertext/tag, or a tampered ephemeral key. No plaintext is revealed.
     OpenFailed,
@@ -100,7 +100,7 @@ fn read_u64_be(src: *const [8]u8) u64 {
 }
 
 /// Derive the AEAD session key (32 bytes) and nonce (12 bytes) from the X25519 shared secret and the public transcript (ephemeral key,
-/// recipient key), by one BLAKE2b-512. Hashing the raw DH output with the transcript — rather than using the shared secret as a key directly —
+/// recipient key), by one BLAKE2b-512. Hashing the raw DH output with the transcript -- rather than using the shared secret as a key directly --
 /// is the standard KDF step: it spreads the secret across the whole key and binds this message's key to this exact pair of public keys, so a
 /// fresh ephemeral yields a fresh key AND a fresh nonce every message.
 const Session = struct {
@@ -116,7 +116,7 @@ fn derive_session(shared: *const [32]u8, epk: *const [32]u8, recipient_pub: *con
         kdf_in[32 + i] = epk[i];
         kdf_in[64 + i] = recipient_pub[i];
     }
-    // The KDF input is a fixed 96 bytes, far inside BLAKE2b's bound, so the hash cannot refuse — catch unreachable is honest.
+    // The KDF input is a fixed 96 bytes, far inside BLAKE2b's bound, so the hash cannot refuse -- catch unreachable is honest.
     const h = blake2b.hash512(kdf_in[0..]) catch unreachable;
     var s: Session = undefined;
     var k: u32 = 0;
@@ -136,7 +136,7 @@ pub fn seal(ephemeral_priv: *const [32]u8, recipient_pub: *const [32]u8, plain: 
     if (plain.len > max_plain_bytes) return error.PayloadTooLong;
     const ptlen: u32 = @intCast(plain.len);
     const frame_len: u32 = frame_overhead + ptlen;
-    // invariant: the caller's buffer holds the whole frame — checked at the edge before a byte is written.
+    // invariant: the caller's buffer holds the whole frame -- checked at the edge before a byte is written.
     if (out.len < frame_len) return error.OutTooSmall;
 
     // Agree the one-message shared secret and derive its session key + nonce from the transcript.
@@ -158,12 +158,12 @@ pub fn seal(ephemeral_priv: *const [32]u8, recipient_pub: *const [32]u8, plain: 
     const cipher = out[header_len .. header_len + ptlen];
     var tag: [aead.tag_bytes]u8 = undefined;
     // The plaintext is within the AEAD's bound (checked above) and the aad is the 32-byte recipient key (within max_aad_bytes), so the seal
-    // cannot refuse for length here — catch unreachable is honest.
+    // cannot refuse for length here -- catch unreachable is honest.
     aead.seal(cipher, &tag, plain, recipient_pub[0..], &session.key, &session.nonce) catch unreachable;
     var t: u32 = 0;
     while (t < tag_len) : (t += 1) out[header_len + ptlen + t] = tag[t];
 
-    // invariant: the whole frame was written — overhead plus ciphertext — and nothing past it was touched.
+    // invariant: the whole frame was written -- overhead plus ciphertext -- and nothing past it was touched.
     assert(header_len + ptlen + tag_len == frame_len);
     return frame_len;
 }
@@ -217,7 +217,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Fill a buffer with a deterministic spread of test bytes — TEST keys and TEST plaintexts only, never a real key or real randomness.
+/// Fill a buffer with a deterministic spread of test bytes -- TEST keys and TEST plaintexts only, never a real key or real randomness.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
     while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
@@ -229,7 +229,7 @@ fn run_selftest() !u8 {
     var frame_buf2: [max_frame_bytes]u8 = undefined;
     var out_buf: [max_plain_bytes]u8 = undefined;
 
-    // TEST keypairs — recipient B, plus an unrelated keeper C for the wrong-recipient test. NOT real identity keys.
+    // TEST keypairs -- recipient B, plus an unrelated keeper C for the wrong-recipient test. NOT real identity keys.
     var b_priv: [32]u8 = undefined;
     fill_test(b_priv[0..], 55);
     const b_pub = x25519.x25519_base(&b_priv);
@@ -290,7 +290,7 @@ fn run_selftest() !u8 {
         if (f1 != f2 or !bytes_eq(frame_buf[0..f1], frame_buf2[0..f2])) return error.DeterminismWrong;
     }
 
-    // 5. Wrong recipient — keeper C cannot open a frame sealed to keeper B: the rederived secret differs, so the tag fails OpenFailed.
+    // 5. Wrong recipient -- keeper C cannot open a frame sealed to keeper B: the rederived secret differs, so the tag fails OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 31);
@@ -300,7 +300,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. Tamper the ciphertext — the tag no longer verifies, OpenFailed, no plaintext revealed.
+    // 6. Tamper the ciphertext -- the tag no longer verifies, OpenFailed, no plaintext revealed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 41);
@@ -311,7 +311,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 7. Tamper the tag — OpenFailed.
+    // 7. Tamper the tag -- OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 43);
@@ -322,7 +322,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 8. Tamper the ephemeral public key — the rederived shared secret changes, so key/nonce change and the tag fails OpenFailed.
+    // 8. Tamper the ephemeral public key -- the rederived shared secret changes, so key/nonce change and the tag fails OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 47);

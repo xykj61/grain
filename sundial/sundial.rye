@@ -1,16 +1,16 @@
-//! sundial/sundial.rye — the health face: the tree's health at a glance.
+//! sundial/sundial.rye -- the health face: the tree's health at a glance.
 //!
 //! A sundial tells the time of day by a shadow; this one tells the HEALTH of the day.
-//! It gathers a set of module readings — each module and whether its witness stands
-//! green — and shows them as one face: which modules hold, how many are green, the
+//! It gathers a set of module readings -- each module and whether its witness stands
+//! green -- and shows them as one face: which modules hold, how many are green, the
 //! health percent, and the tree's fascia (connective-reference) metric.
 //!
 //! It is the rendering of a **Ledgerworks** roll-up (the bat fleet's portfolio
-//! archetype): many modules gathered under one head. Its `emit` prints exactly that —
-//! a `format baton-v1` · `archetype ledgerworks` document the Scribe reader validates.
+//! archetype): many modules gathered under one head. Its `emit` prints exactly that --
+//! a `format baton-v1` - `archetype ledgerworks` document the Scribe reader validates.
 //!
 //! The old `sundial` fixture made fund dedications and was rightly withheld; this
-//! Sundial's dharma is honest — a status face anyone can read in a glance, and a
+//! Sundial's dharma is honest -- a status face anyone can read in a glance, and a
 //! health line the recursion batons can carry.
 //!
 //!   rye build sundial/sundial.rye -femit-bin=sundial/bin/sundial
@@ -23,7 +23,7 @@ const print = std.debug.print;
 
 pub const sundial_version = "20260810.104500";
 
-// A sundial holds at most this many module readings — the tree is bounded, named once.
+// A sundial holds at most this many module readings -- the tree is bounded, named once.
 pub const max_modules: u32 = 256;
 
 /// One reading: a module's name and whether its witness stands green.

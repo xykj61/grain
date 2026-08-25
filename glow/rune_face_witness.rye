@@ -1,4 +1,4 @@
-//! glow/rune_face_witness.rye — proves the `=/` typed-let (face) rune head.
+//! glow/rune_face_witness.rye -- proves the `=/` typed-let (face) rune head.
 //!
 //!   rye build glow/rune_face_witness.rye -femit-bin=glow/bin/rune_face_witness
 //!   glow/bin/rune_face_witness

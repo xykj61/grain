@@ -1,14 +1,14 @@
-//! pond/apps/preset_list.rye — HUNK34: a keeper lists their installed filter-preset books, an honest index.
+//! pond/apps/preset_list.rye -- HUNK34: a keeper lists their installed filter-preset books, an honest index.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK34.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK34.
 //! Design read: active-designing/date/20260813/20260813-184007_hunk-preset-book-listing-exploration.md.
-//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO — a keeper sees the books they
+//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO -- a keeper sees the books they
 //! have installed and how much each holds (concept only, siloed).
 //!
-//! HUNK32 banked a curated filter book content-addressed — store it, reopen it whole from cold. This rung surfaces
+//! HUNK32 banked a curated filter book content-addressed -- store it, reopen it whole from cold. This rung surfaces
 //! the index, mirroring `session_list` (HUNK19/20) over the preset store: `list_books` walks the catalog, selects
 //! every artifact ending in `.presets`, and `open_book` each (every bead proven against its digest and the whole
-//! against its recorded address BEFORE parse), recording a bounded summary — name and preset count. The honesty
+//! against its recorded address BEFORE parse), recording a bounded summary -- name and preset count. The honesty
 //! guarantee, borrowed from `session_list`: a listing never names a book it cannot honestly reopen, so a tampered
 //! book makes the whole listing refuse `DigestMismatch`. The listing travels both ways as a `format preset-list-v1`
 //! record. No network, no key, no funds.
@@ -32,7 +32,7 @@ pub const preset_list_version = "20260813.184007";
 /// selects exactly those, leaving images, edit-lists, sessions, and sprites unlisted.
 pub const preset_suffix = ".presets";
 
-/// The most summaries one listing holds — the catalog's own bound, so a listing can never outgrow what is stored.
+/// The most summaries one listing holds -- the catalog's own bound, so a listing can never outgrow what is stored.
 pub const max_summaries: u32 = tablecloth.max_artifacts;
 
 /// A safe upper bound on one rendered listing line: `book ` (5) + a name (`max_name`) + one space + a u32 count
@@ -48,7 +48,7 @@ pub const PresetListError = error{
 
 const header = "format preset-list-v1\n";
 
-/// One book's summary — what a keeper needs to choose, no recipe bodies. The name is held in a fixed buffer copied
+/// One book's summary -- what a keeper needs to choose, no recipe bodies. The name is held in a fixed buffer copied
 /// out of the catalog, so a summary outlives the walk that built it.
 pub const BookSummary = struct {
     name: [tablecloth.max_name]u8 = undefined,
@@ -78,13 +78,13 @@ pub const BookListing = struct {
     }
 };
 
-/// Whether `name` ends in the preset suffix — the selector that keeps the listing to installed books alone.
+/// Whether `name` ends in the preset suffix -- the selector that keeps the listing to installed books alone.
 fn is_book(name: []const u8) bool {
     return std.mem.endsWith(u8, name, preset_suffix);
 }
 
 /// Walk the catalog and record a summary for every installed preset book, each read from a verified reopen. A
-/// tampered book refuses `DigestMismatch` through `open_book` and the whole listing refuses with it — the index
+/// tampered book refuses `DigestMismatch` through `open_book` and the whole listing refuses with it -- the index
 /// never names a book it cannot honestly reopen. A non-book artifact is skipped, never opened.
 pub fn list_books(
     cat: *const tablecloth.Catalog,
@@ -100,7 +100,7 @@ pub fn list_books(
         const name = tablecloth.artifact_name(cat, i);
         if (!is_book(name)) continue;
 
-        // Open it verified — a tampered book refuses here, before it is ever advertised.
+        // Open it verified -- a tampered book refuses here, before it is ever advertised.
         var book: filter_preset.PresetBook = undefined;
         try preset_store.open_book(cat, store, name, &book);
         // invariant: a reopened book never holds more than the preset ceiling.
@@ -145,7 +145,7 @@ pub fn render_listing(listing: *const BookListing, out: []u8) PresetListError!u3
 /// Parse a `format preset-list-v1` record into a fresh listing, closing the travel round-trip so
 /// `render(parse(render(x)))` is a fixed point (HUNK7's own idiom). Each line names a book and exactly its preset
 /// count. Refuses `BadListing` on a bad header, an unknown tag, a malformed field, an extra field, a name past the
-/// summary buffer, or a preset count past the book ceiling — the book's own bound, enforced at the text edge. More
+/// summary buffer, or a preset count past the book ceiling -- the book's own bound, enforced at the text edge. More
 /// than `max_summaries` lines refuses `TooManyEntries`.
 pub fn parse_listing(text: []const u8, out: *BookListing) PresetListError!void {
     out.* = BookListing{ .count = 0 };
@@ -208,7 +208,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try small.define("quarter", &spin);
     _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
 
-    // A non-book artifact stored between them — it must be skipped, never opened as a book.
+    // A non-book artifact stored between them -- it must be skipped, never opened as a book.
     _ = try tablecloth.store_artifact(&cat, &store, "notes.txt", "just some bytes");
 
     // List: exactly the two books, in held order, the non-book skipped.
@@ -218,7 +218,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, listing.at(0).name_slice(), "stock.presets"));
     assert(std.mem.eql(u8, listing.at(1).name_slice(), "custom.presets"));
 
-    // True summaries: the stock book reports its nine presets, the custom book its two — each read from a verified
+    // True summaries: the stock book reports its nine presets, the custom book its two -- each read from a verified
     // reopen, not a stored number.
     assert(listing.at(0).presets == 9);
     assert(listing.at(1).presets == 2);
@@ -267,7 +267,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.BadListing) return error.WrongOver;
     }
 
-    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch — it never names a
+    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch -- it never names a
     // book it cannot honestly reopen.
     {
         var store_t: beading.BeadStore = .empty();

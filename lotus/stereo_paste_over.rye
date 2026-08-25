@@ -1,28 +1,28 @@
-//! lotus/stereo_paste_over.rye — ALES121: stereo_paste_over — the overwrite paste carried into stereo, both channels in lockstep. ALES114 named `paste_over` — write the `src` samples
-//! over the clip IN PLACE starting at `at`, so [at, at+src.len) becomes `src` and the length HOLDS — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard
+//! lotus/stereo_paste_over.rye -- ALES121: stereo_paste_over -- the overwrite paste carried into stereo, both channels in lockstep. ALES114 named `paste_over` -- write the `src` samples
+//! over the clip IN PLACE starting at `at`, so [at, at+src.len) becomes `src` and the length HOLDS -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard
 //! together whose defining invariant is that LEFT and RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries paste_over into stereo the way ALES116
 //! carried replace and ALES120 carried duplicate: run ALES114's proven mono `paste_over` on each channel over the SAME span, so punching a clean take over a flubbed bar lands on both
-//! speakers at once. Where stereo_replace (ALES116) inserts a payload and can resize the channels, stereo_paste_over writes ON TOP and keeps the length — the length-preserving paste mode.
+//! speakers at once. Where stereo_replace (ALES116) inserts a payload and can resize the channels, stereo_paste_over writes ON TOP and keeps the length -- the length-preserving paste mode.
 //!
 //! The rule, stated once: stereo_paste_over(sc, at, left_src, right_src) writes left_src over [at, at+left_src.len) in the left channel and right_src over the same span in the right,
-//! reusing ALES114's mono `paste_over` per channel over its public API. BOTH channels are validated BEFORE either is mutated — a stereo payload names ONE span across both channels, so
+//! reusing ALES114's mono `paste_over` per channel over its public API. BOTH channels are validated BEFORE either is mutated -- a stereo payload names ONE span across both channels, so
 //! its two sides must be the same length (BadRange otherwise), and the mono preconditions are checked once against the shared length up front, so once they pass each mono paste_over is
 //! pre-validated to succeed and a refusal never desynchronises the channels. It reuses ALES2's EditError whole and invents none of its own.
 //!
-//! The crux — four laws. THE STEREO OVERWRITE LAW: the left channel equals mono paste_over(left, at, left_src) and the right equals mono paste_over(right, at, right_src), each byte for
-//! byte, every sample outside the span unchanged. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length — overwrite writes values only, never
+//! The crux -- four laws. THE STEREO OVERWRITE LAW: the left channel equals mono paste_over(left, at, left_src) and the right equals mono paste_over(right, at, right_src), each byte for
+//! byte, every sample outside the span unchanged. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length -- overwrite writes values only, never
 //! resizing, so the stereo image stays aligned. THE INSERT-CONTRAST LAW: the same payloads at the same `at` keep the length here and grow both channels through ALES116's stereo_replace
 //! with count 0 (the insert twin), the two paste modes side by side. THE ATOMICITY / DEGENERATE LAW: any refusal leaves BOTH channels byte for byte untouched and still balanced; empty
 //! payloads the identity on both, mismatched payloads BadRange, a paste past the samples BadRange.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES121.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES121.
 //! Design read: active-designing/date/20260815/20260815-021504_fill-ales121-lotus-stereo-paste-over.md
-//! Stands on: lotus/paste_over.rye (ALES114) — the mono overwrite paste run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
-//! invariant; lotus/stereo_replace.rye (ALES116) — the insert-mode stereo paste imported by the selftest to prove the insert-contrast law; lotus/timeline.rye (ALES2) — the Clip, its
-//! max_clip bound, and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//! Stands on: lotus/paste_over.rye (ALES114) -- the mono overwrite paste run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/stereo_replace.rye (ALES116) -- the insert-mode stereo paste imported by the selftest to prove the insert-contrast law; lotus/timeline.rye (ALES2) -- the Clip, its
+//! max_clip bound, and the EditError reused whole; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It writes caller-supplied samples over an existing span in
-//! each channel — changing no length, inventing no sample, and reading no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It writes caller-supplied samples over an existing span in
+//! each channel -- changing no length, inventing no sample, and reading no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_paste_over.rye selftest
 
@@ -38,40 +38,40 @@ const meter = @import("meter.rye");
 
 pub const stereo_paste_over_version = "20260815.021504";
 
-/// stereo_paste_over forwards ALES2's OWN fault reused by name — BadRange (a write past the samples, or two payloads of unequal length naming inconsistent spans) — and invents none.
+/// stereo_paste_over forwards ALES2's OWN fault reused by name -- BadRange (a write past the samples, or two payloads of unequal length naming inconsistent spans) -- and invents none.
 pub const StereoPasteOverError = timeline.EditError;
 
-/// Write left_src over [at, at+left_src.len) in the left channel and right_src over the same span in the right, in lockstep — the stereo image staying balanced and the length holding.
+/// Write left_src over [at, at+left_src.len) in the left channel and right_src over the same span in the right, in lockstep -- the stereo image staying balanced and the length holding.
 /// Both channels are validated before either is mutated: the payloads must name the same span length (BadRange otherwise) and the mono preconditions are checked once against the shared
 /// length up front, so a refusal never leaves one channel written and the other not. Reuses ALES114's mono paste_over per channel.
 pub fn stereo_paste_over(sc: *pan.StereoClip, at: u32, left_src: []const i16, right_src: []const i16) StereoPasteOverError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: a stereo payload names ONE span across both channels, so its two sides must be the same length — an unequal pair names inconsistent spans, refused by name before any
+    // invariant: a stereo payload names ONE span across both channels, so its two sides must be the same length -- an unequal pair names inconsistent spans, refused by name before any
     //            write so the channels can never desynchronise.
     if (left_src.len != right_src.len) return error.BadRange;
 
-    // invariant: the payload never exceeds the whole timeline bound — bound it once against max_clip before it names a u32 size, the same guard ALES114 keeps per channel.
+    // invariant: the payload never exceeds the whole timeline bound -- bound it once against max_clip before it names a u32 size, the same guard ALES114 keeps per channel.
     if (left_src.len > timeline.max_clip) return error.BadRange;
     const count: u32 = @intCast(left_src.len);
 
-    // invariant: the write lies wholly within the (shared) current samples, checked without underflow — count against the remainder — refused by name before any write.
+    // invariant: the write lies wholly within the (shared) current samples, checked without underflow -- count against the remainder -- refused by name before any write.
     const len: u32 = sc.left.len;
     if (at > len) return error.BadRange;
     if (count > len - at) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono paste_over is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono paste_over is pre-validated to succeed -- no refusal can land between the two channel edits.
     try paste_over.paste_over(&sc.left, at, left_src);
     try paste_over.paste_over(&sc.right, at, right_src);
 
-    // invariant: the channels leave balanced — overwrite writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    // invariant: the channels leave balanced -- overwrite writes values only, so each channel holds its starting length and the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO OVERWRITE LAW — each channel equals ALES114's mono paste_over on that channel byte for byte, the length held; THE BALANCE / LENGTH LAW — left.len == right.len
-//     after, both holding their starting length; THE INSERT-CONTRAST LAW — the same payloads keep the length here and grow both channels through ALES116's stereo_replace(count 0); THE
-//     ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched, empty payloads the identity, mismatched payloads BadRange ----------
+// --- selftest: THE STEREO OVERWRITE LAW -- each channel equals ALES114's mono paste_over on that channel byte for byte, the length held; THE BALANCE / LENGTH LAW -- left.len == right.len
+//     after, both holding their starting length; THE INSERT-CONTRAST LAW -- the same payloads keep the length here and grow both channels through ALES116's stereo_replace(count 0); THE
+//     ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched, empty payloads the identity, mismatched payloads BadRange ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -86,7 +86,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO OVERWRITE LAW — each channel equals ALES114's mono paste_over on that channel, proven side by side over one anchor with different per-channel payloads.
+    // 1. THE STEREO OVERWRITE LAW -- each channel equals ALES114's mono paste_over on that channel, proven side by side over one anchor with different per-channel payloads.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -106,7 +106,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 11, 78, 89, 41, 51 })) return error.RightSpanWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at the head and through the tail.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at the head and through the tail.
     {
         var head = pan.StereoClip{};
         try load_stereo(&head, &[_]i16{ 1, 2, 3 }, &[_]i16{ 6, 7, 8 });
@@ -124,7 +124,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.right.samples(), &[_]i16{ 6, 44, 33 })) return error.TailRightWrong;
     }
 
-    // 3. THE INSERT-CONTRAST LAW — the same payloads at the same `at` keep the length through stereo_paste_over and grow both channels by count through ALES116's stereo_replace(count 0).
+    // 3. THE INSERT-CONTRAST LAW -- the same payloads at the same `at` keep the length through stereo_paste_over and grow both channels by count through ALES116's stereo_replace(count 0).
     {
         const l0 = [_]i16{ 10, 20, 30, 40 };
         const r0 = [_]i16{ 11, 21, 31, 41 };
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         if (!eq(ins.right.samples(), &[_]i16{ 11, 5, 6, 21, 31, 41 })) return error.InsertRightWrong;
     }
 
-    // 4a. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for mismatched payloads and a paste past the samples.
+    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for mismatched payloads and a paste past the samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — empty payloads the identity on both channels.
+    // 4b. THE DEGENERATE LAW -- empty payloads the identity on both channels.
     {
         var zero = pan.StereoClip{};
         try load_stereo(&zero, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

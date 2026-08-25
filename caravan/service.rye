@@ -1,4 +1,4 @@
-//! caravan/service.rye — ring B: supervise a bounded multi-tick service dependent.
+//! caravan/service.rye -- ring B: supervise a bounded multi-tick service dependent.
 //!
 //! The chain proved ordered stages with restart-on-fall per stage. This program
 //! proves the service semantic: one long-running dependent runs a bounded tick loop

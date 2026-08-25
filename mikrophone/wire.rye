@@ -1,18 +1,18 @@
-//! mikrophone/wire.rye — DREY1: the wire frame that carries only what was committed. A session's committed payload is
-//! framed into a self-describing wire frame (magic · version · length · digest · payload), and the far side proves the
-//! payload whole before it yields a single byte — a corrupted, truncated, or overlong frame refuses by name, never a
+//! mikrophone/wire.rye -- DREY1: the wire frame that carries only what was committed. A session's committed payload is
+//! framed into a self-describing wire frame (magic - version - length - digest - payload), and the far side proves the
+//! payload whole before it yields a single byte -- a corrupted, truncated, or overlong frame refuses by name, never a
 //! wrong byte handed onward.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY1.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY1.
 //! Design read: active-designing/date/20260814/20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md
-//! Stands on: mikrophone/session.rye (DREY0) — the memory that forgets. `carry()` hands back the one committed payload.
+//! Stands on: mikrophone/session.rye (DREY0) -- the memory that forgets. `carry()` hands back the one committed payload.
 //!
 //! The Mantrapod's forgetting promise reaches all the way to the wire: `frame` reads `carry()`, so a session powered
-//! down without a commit frames NOTHING (`NothingToCarry`). Uncommitted or forgotten work never leaves the device — the
+//! down without a commit frames NOTHING (`NothingToCarry`). Uncommitted or forgotten work never leaves the device -- the
 //! wire carries only what a deliberate commit kept. Deframing is verify-before-trust, the same discipline the Open Image
-//! artifact and the constellation Deed already keep: every check — magic, version, declared length against the bound,
-//! truncation, and a Sha256 digest over the payload — runs BEFORE the payload slice is returned. No disk, no network, no
-//! key signs, no funds move (custody gate %2 — real hardware and any real wire — untouched). The Sha256 digest is an
+//! artifact and the constellation Deed already keep: every check -- magic, version, declared length against the bound,
+//! truncation, and a Sha256 digest over the payload -- runs BEFORE the payload slice is returned. No disk, no network, no
+//! key signs, no funds move (custody gate %2 -- real hardware and any real wire -- untouched). The Sha256 digest is an
 //! integrity check the far side recomputes itself, not a signature; a signed carry is a later, gated rung.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/wire.rye selftest
@@ -30,18 +30,18 @@ pub const wire_version = "20260814.021218";
 /// rather than guessing at a layout it does not know.
 pub const frame_version: u8 = 1;
 
-/// The four magic bytes that open every Mikrophone frame — "MPOD" (Mantrapod). A frame that does not open with these
+/// The four magic bytes that open every Mikrophone frame -- "MPOD" (Mantrapod). A frame that does not open with these
 /// refuses `BadMagic` before any field is read.
 pub const magic: [4]u8 = [4]u8{ 'M', 'P', 'O', 'D' };
 
-/// The digest length — a full Sha256 over the payload, so a single flipped payload byte fails the check.
+/// The digest length -- a full Sha256 over the payload, so a single flipped payload byte fails the check.
 pub const digest_len: u32 = 32;
 
-/// The fixed header before every payload: magic(4) · version(1) · payload_len(u32, 4) · digest(32). Named once so the
+/// The fixed header before every payload: magic(4) - version(1) - payload_len(u32, 4) - digest(32). Named once so the
 /// frame layout is a single source of truth and `deframe` can never read a field at the wrong offset.
 pub const header_len: u32 = 4 + 1 + 4 + digest_len;
 
-/// The widest a whole frame runs — the header plus a full-capacity payload. Bounded once by the session's own ceiling,
+/// The widest a whole frame runs -- the header plus a full-capacity payload. Bounded once by the session's own ceiling,
 /// so a frame can never outgrow the session it carries. No heap outlives this fixed buffer.
 pub const max_frame: u32 = header_len + session.max_samples;
 
@@ -56,28 +56,28 @@ pub const WireError = error{
 };
 
 /// A bounded wire frame: a fixed buffer sized for the widest possible frame, and the length actually written into it.
-/// `bytes()` reads back exactly the framed region — never a byte past what `frame` wrote.
+/// `bytes()` reads back exactly the framed region -- never a byte past what `frame` wrote.
 pub const Frame = struct {
     buf: [max_frame]u8 = [_]u8{0} ** max_frame,
     len: u32 = 0,
 
-    /// The framed bytes as they stand — exactly the header plus payload written by `frame`.
+    /// The framed bytes as they stand -- exactly the header plus payload written by `frame`.
     pub fn bytes(self: *const Frame) []const u8 {
         // invariant: the frame length never claims more than the buffer holds.
         assert(self.len <= self.buf.len);
-        // invariant: a written frame is at least a whole header — a payload can be empty, a header can never be.
+        // invariant: a written frame is at least a whole header -- a payload can be empty, a header can never be.
         assert(self.len == 0 or self.len >= header_len);
         return self.buf[0..self.len];
     }
 };
 
-/// Frame the session's committed payload for the wire. Reads `carry()` — so a session that committed nothing refuses
+/// Frame the session's committed payload for the wire. Reads `carry()` -- so a session that committed nothing refuses
 /// `NothingToCarry`, and the forgotten working buffer never reaches the wire. Writes magic, version, the payload length,
 /// a Sha256 digest of the payload, then the payload itself. The payload copy is a plain bounded loop, never a bare
 /// memcpy.
 pub fn frame(self: *const session.Session, out: *Frame) !void {
     const payload = self.carry();
-    // invariant: the wire carries only what a deliberate commit kept — an uncommitted session frames nothing.
+    // invariant: the wire carries only what a deliberate commit kept -- an uncommitted session frames nothing.
     if (payload.len == 0) return error.NothingToCarry;
     // invariant: the committed payload is bounded by the session ceiling, so the frame fits its fixed buffer.
     assert(payload.len <= session.max_samples);
@@ -91,12 +91,12 @@ pub fn frame(self: *const session.Session, out: *Frame) !void {
     out.buf[4] = frame_version;
     // payload length (u32, little-endian)
     std.mem.writeInt(u32, out.buf[5..9], plen, .little);
-    // digest (32) — Sha256 over the payload region
+    // digest (32) -- Sha256 over the payload region
     var dg: [digest_len]u8 = undefined;
     Sha256.hash(payload, &dg, .{});
     var d: u32 = 0;
     while (d < digest_len) : (d += 1) out.buf[9 + d] = dg[d];
-    // payload — a plain bounded loop, never a bare memcpy
+    // payload -- a plain bounded loop, never a bare memcpy
     var p: u32 = 0;
     while (p < plen) : (p += 1) out.buf[header_len + p] = payload[p];
 
@@ -110,7 +110,7 @@ pub fn frame(self: *const session.Session, out: *Frame) !void {
 /// order and returns on failure: too short for a header, wrong magic, wrong version, a declared length past the bound, a
 /// truncated tail, and finally a Sha256 digest that must match the payload. Only when all pass is the payload returned.
 pub fn deframe(bytes: []const u8) ![]const u8 {
-    // invariant: a frame is at least a whole header — anything shorter cannot be read as one.
+    // invariant: a frame is at least a whole header -- anything shorter cannot be read as one.
     if (bytes.len < header_len) return error.FrameTooShort;
     // magic
     var i: u32 = 0;
@@ -119,13 +119,13 @@ pub fn deframe(bytes: []const u8) ![]const u8 {
     }
     // version
     if (bytes[4] != frame_version) return error.BadVersion;
-    // declared payload length — never trusted past the named ceiling, before any payload read
+    // declared payload length -- never trusted past the named ceiling, before any payload read
     const plen = std.mem.readInt(u32, bytes[5..9], .little);
     if (plen > session.max_samples) return error.LengthOverflow;
-    // truncation — the bytes must actually hold the whole declared payload
+    // truncation -- the bytes must actually hold the whole declared payload
     const whole = header_len + plen;
     if (bytes.len < whole) return error.FrameTruncated;
-    // digest — recompute over the payload region and match BEFORE yielding the slice
+    // digest -- recompute over the payload region and match BEFORE yielding the slice
     const payload = bytes[header_len..whole];
     var dg: [digest_len]u8 = undefined;
     Sha256.hash(payload, &dg, .{});
@@ -133,7 +133,7 @@ pub fn deframe(bytes: []const u8) ![]const u8 {
     while (d < digest_len) : (d += 1) {
         if (bytes[9 + d] != dg[d]) return error.DigestMismatch;
     }
-    // invariant: every check passed — the payload is proven whole and within the bound before it is returned.
+    // invariant: every check passed -- the payload is proven whole and within the bound before it is returned.
     assert(plen <= session.max_samples);
     assert(payload.len == plen);
     return payload;
@@ -142,7 +142,7 @@ pub fn deframe(bytes: []const u8) ![]const u8 {
 // --- selftest: a committed payload round-trips exactly, the wire carries only the committed, and every corruption
 //     refuses by name before a byte is yielded ------------------------------------------------------------------------
 
-/// Capture the bytes of `text` into a fresh session and commit them, returning the committed session — a small helper so
+/// Capture the bytes of `text` into a fresh session and commit them, returning the committed session -- a small helper so
 /// each selftest block reads as its own clean scenario.
 fn committed_session(text: []const u8) !session.Session {
     var s = session.Session.init();
@@ -153,7 +153,7 @@ fn committed_session(text: []const u8) !session.Session {
 }
 
 fn run_selftest() !u8 {
-    // 1. Round-trip is exact — a committed payload frames and deframes back byte-for-byte.
+    // 1. Round-trip is exact -- a committed payload frames and deframes back byte-for-byte.
     {
         var s = try committed_session("field recording one");
         var f = Frame{};
@@ -163,10 +163,10 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, got, s.carry()));
     }
 
-    // 2. The wire carries ONLY the committed — an uncommitted session frames nothing, and an uncommitted tail is never
+    // 2. The wire carries ONLY the committed -- an uncommitted session frames nothing, and an uncommitted tail is never
     //    carried.
     {
-        // Captured, powered down without a commit — nothing to carry, nothing to frame.
+        // Captured, powered down without a commit -- nothing to carry, nothing to frame.
         var s = session.Session.init();
         try session.capture(&s, 'l');
         try session.capture(&s, 'o');
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         } else |e| {
             if (e != error.NothingToCarry) return error.WrongNothingToCarry;
         }
-        // Committed "save", then an uncommitted tail "XY" — the frame carries exactly "save".
+        // Committed "save", then an uncommitted tail "XY" -- the frame carries exactly "save".
         var s2 = try committed_session("save");
         try session.capture(&s2, 'X');
         try session.capture(&s2, 'Y');
@@ -242,7 +242,7 @@ fn run_selftest() !u8 {
             if (e != error.FrameTruncated) return error.WrongTruncated;
         }
 
-        // A single flipped payload byte refuses DigestMismatch — the digest is checked before the payload is yielded.
+        // A single flipped payload byte refuses DigestMismatch -- the digest is checked before the payload is yielded.
         {
             var c = f;
             c.buf[header_len] = c.buf[header_len] ^ 0x01;
@@ -254,7 +254,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. The frame is bounded — a full-capacity session frames within max_frame and never claims a length past the bound.
+    // 4. The frame is bounded -- a full-capacity session frames within max_frame and never claims a length past the bound.
     {
         var s = session.Session.init();
         var n: u32 = 0;

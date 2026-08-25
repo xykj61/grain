@@ -1,7 +1,7 @@
-//! linengrow/setu_desk_hold0.rye — HOLD0: Desk status over held hearth + frame.
+//! linengrow/setu_desk_hold0.rye -- HOLD0: Desk status over held hearth + frame.
 //!
 //! Season: Desk Hearth Hold (`20260718.185147`). Desk reads station.bron and
-//! reports whether lane_ping.bin / lane_frame.bin are held — one status line.
+//! reports whether lane_ping.bin / lane_frame.bin are held -- one status line.
 //! When wire_lane is not armed (local), leftover ping/frame files are ignored.
 
 const std = @import("std");
@@ -45,7 +45,7 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
 }
 
 /// Parse station.bron text into hold fields (frame/ping supplied by caller).
-/// Unarmed wire (local) never claims ping/frame — leftovers stay on disk unread.
+/// Unarmed wire (local) never claims ping/frame -- leftovers stay on disk unread.
 pub fn status_from_station(
     station_text: []const u8,
     ping_held: bool,
@@ -68,7 +68,7 @@ pub fn status_from_station(
     return out;
 }
 
-/// `hold · {home} · {preset} · {wire} · ping {yes|no} · frame {n}`
+/// `hold - {home} - {preset} - {wire} - ping {yes|no} - frame {n}`
 pub fn format_hold_line(s: HoldStatus, out: *[status_line_max]u8) ?[]const u8 {
     const ping = if (s.ping_held) "yes" else "no";
     const line = std.fmt.bufPrint(

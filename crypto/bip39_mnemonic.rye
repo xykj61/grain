@@ -1,11 +1,11 @@
-//! crypto/bip39_mnemonic.rye — Season G (Cryptography), the wallet arc's entropy↔mnemonic rung: BIP-39's OTHER half — the one the seed rung
+//! crypto/bip39_mnemonic.rye -- Season G (Cryptography), the wallet arc's entropy<->mnemonic rung: BIP-39's OTHER half -- the one the seed rung
 //! (crypto/bip39_seed.rye) explicitly left as "its own separate rung". Where bip39_seed folds an already-written phrase into the 512-bit seed,
 //! this rung is the birth and the check of the phrase itself: `from_entropy` turns raw entropy into the twelve-to-twenty-four English words a
-//! keeper writes down, and `to_entropy` reads a written phrase back to its entropy WHILE VERIFYING its checksum — the guard that catches a
+//! keeper writes down, and `to_entropy` reads a written phrase back to its entropy WHILE VERIFYING its checksum -- the guard that catches a
 //! mistyped or misremembered backup word before it ever grows a wrong wallet. Together with bip39_seed, BIP-39 now stands whole in our Rye:
-//! entropy → mnemonic (here) → seed (bip39_seed) → HD tree (bip32).
+//! entropy -> mnemonic (here) -> seed (bip39_seed) -> HD tree (bip32).
 //!
-//! It authors NO new cryptography. The mathematics is one already-GREEN hash — SHA-256 (crypto/sha256.rye) — for the checksum, plus a pure
+//! It authors NO new cryptography. The mathematics is one already-GREEN hash -- SHA-256 (crypto/sha256.rye) -- for the checksum, plus a pure
 //! 11-bit bit-packing over BIP-39's fixed 2048-word English list. The recipe (BIP-39 §"Generating the mnemonic"):
 //!   CS = ENT / 32 checksum bits = the top CS bits of SHA-256(entropy); the ENT-bit entropy followed by those CS bits is cut into 11-bit
 //!   groups, each the index of one word in the 2048-word list; MS = (ENT + CS) / 11 words result. Decoding inverts it and RE-checks CS.
@@ -13,22 +13,22 @@
 //! The 2048-word English list is the canonical bitcoin/bips bip-0039/english.txt, embedded byte-exact at crypto/data/bip39_english.txt and
 //! proven authentic at selftest: SHA-256 of the embedded list equals the published canonical digest
 //! 2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda, so a one-word tamper in the table would go RED rather than sign a wrong
-//! phrase. The list is a public standard, embedded and hash-pinned — never recited from memory.
+//! phrase. The list is a public standard, embedded and hash-pinned -- never recited from memory.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/bip39_seed.rye (the seed rung this one feeds) · crypto/sha256.rye (the checksum hash, GREEN on metal) ·
-//! crypto/bip32.rye (the HD tree the seed grows). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye,
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/bip39_seed.rye (the seed rung this one feeds) - crypto/sha256.rye (the checksum hash, GREEN on metal) -
+//! crypto/bip32.rye (the HD tree the seed grows). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target -- our own Rye,
 //! studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
 //!
-//! HONEST SCOPE — software only, purely LOCAL, TEST entropy from BIP-39's own published Trezor vectors, no real identity key, no network, no
+//! HONEST SCOPE -- software only, purely LOCAL, TEST entropy from BIP-39's own published Trezor vectors, no real identity key, no network, no
 //! funds, no real device. The module calls no std.crypto. NFKD normalization does not arise here: the English list is pure ASCII, and this rung
 //! emits and reads those exact ASCII words. Generating cryptographically strong entropy is the caller's job and a named horizon (a keeper feeds
-//! this rung real randomness; the vectors feed it fixed test entropy). Constant-time discipline is not a concern here — every value (entropy for
+//! this rung real randomness; the vectors feed it fixed test entropy). Constant-time discipline is not a concern here -- every value (entropy for
 //! a test vector, the word list, the checksum) is public; a real secret entropy's timing-safety is the caller's horizon.
 //!
 //! Parity is proven at selftest against BIP-39's OWN published Trezor vectors (English), fetched byte-exact from the canonical
-//! trezor/python-mnemonic vectors, never recited: six entropy values across all three published ENT lengths (128, 192, 256 bits → 12, 18, 24
+//! trezor/python-mnemonic vectors, never recited: six entropy values across all three published ENT lengths (128, 192, 256 bits -> 12, 18, 24
 //! words), both extremes (all-zero and all-ones) each, encode to EXACTLY their published mnemonics word-for-word; each decodes back to EXACTLY
 //! its entropy byte-for-byte with the checksum verified; a single flipped word is REFUSED with InvalidChecksum.
 //!
@@ -56,15 +56,15 @@ pub const max_mnemonic_bytes: u32 = 256;
 
 /// The faults this rung can raise, each refused at the edge before a wrong phrase or a wrong entropy escapes.
 pub const Bip39MnemonicError = error{
-    /// An entropy length not in {16,20,24,28,32} bytes — refused before it is encoded.
+    /// An entropy length not in {16,20,24,28,32} bytes -- refused before it is encoded.
     BadEntropyLength,
-    /// A word count not in {12,15,18,21,24} — refused before decode.
+    /// A word count not in {12,15,18,21,24} -- refused before decode.
     BadWordCount,
-    /// A token that is not one of the 2048 English words — refused before it names an index.
+    /// A token that is not one of the 2048 English words -- refused before it names an index.
     InvalidWord,
-    /// A checksum that does not match SHA-256(entropy)'s top CS bits — the guard against a mistyped backup word.
+    /// A checksum that does not match SHA-256(entropy)'s top CS bits -- the guard against a mistyped backup word.
     InvalidChecksum,
-    /// A sentence longer than max_mnemonic_bytes — refused before assembly overruns.
+    /// A sentence longer than max_mnemonic_bytes -- refused before assembly overruns.
     MnemonicTooLong,
 };
 
@@ -91,7 +91,7 @@ fn build_words() [wordlist_count][]const u8 {
             start = i + 1;
         }
     }
-    // invariant: the embedded list holds exactly wordlist_count words — a table of any other size is a tampered or truncated file.
+    // invariant: the embedded list holds exactly wordlist_count words -- a table of any other size is a tampered or truncated file.
     assert(idx == wordlist_count);
     return w;
 }
@@ -109,7 +109,7 @@ fn byte_order(a: []const u8, b: []const u8) i8 {
     return 0;
 }
 
-/// The index of `word` in the sorted 2048-word list, or null when it is not a BIP-39 word. Binary search — bounded by design at 11 compares.
+/// The index of `word` in the sorted 2048-word list, or null when it is not a BIP-39 word. Binary search -- bounded by design at 11 compares.
 fn word_index(word: []const u8) ?u32 {
     var lo: u32 = 0;
     var hi: u32 = wordlist_count; // exclusive upper bound
@@ -132,7 +132,7 @@ fn word_index(word: []const u8) ?u32 {
 /// Read one big-endian bit at position `p` (0 = the most-significant bit of byte 0) from a byte buffer.
 fn get_bit(buf: []const u8, p: u32) u1 {
     const byte: u32 = p / 8;
-    // invariant: the bit position lies inside the buffer — a caller never reads past the assembled stream.
+    // invariant: the bit position lies inside the buffer -- a caller never reads past the assembled stream.
     assert(byte < buf.len);
     const shift: u3 = @intCast(7 - (p % 8));
     return @intCast((buf[byte] >> shift) & 1);
@@ -141,13 +141,13 @@ fn get_bit(buf: []const u8, p: u32) u1 {
 /// Set one big-endian bit at position `p` to `v` in a byte buffer (the buffer starts zeroed).
 fn set_bit(buf: []u8, p: u32, v: u1) void {
     const byte: u32 = p / 8;
-    // invariant: the bit position lies inside the buffer — a caller never writes past the assembled stream.
+    // invariant: the bit position lies inside the buffer -- a caller never writes past the assembled stream.
     assert(byte < buf.len);
     const shift: u3 = @intCast(7 - (p % 8));
     if (v == 1) buf[byte] |= (@as(u8, 1) << shift);
 }
 
-/// BIP-39 entropy → mnemonic: turn `entropy` (16,20,24,28, or 32 bytes) into the English backup phrase, written into `out`, returning its byte
+/// BIP-39 entropy -> mnemonic: turn `entropy` (16,20,24,28, or 32 bytes) into the English backup phrase, written into `out`, returning its byte
 /// length. CS = entropy_bytes/4 checksum bits are the top bits of SHA-256(entropy); the entropy followed by those CS bits is cut into 11-bit
 /// word indices.
 pub fn from_entropy(out: *[max_mnemonic_bytes]u8, entropy: []const u8) Bip39MnemonicError!u32 {
@@ -158,14 +158,14 @@ pub fn from_entropy(out: *[max_mnemonic_bytes]u8, entropy: []const u8) Bip39Mnem
     const cs_bits: u32 = ent_bytes / 4; // ENT/32 = (ent_bytes*8)/32
     const total_bits: u32 = ent_bytes * 8 + cs_bits;
     const ms: u32 = total_bits / index_bits;
-    // invariant: (ENT+CS) is an exact multiple of 11 for every legal ENT — the mnemonic word count is whole, never truncated.
+    // invariant: (ENT+CS) is an exact multiple of 11 for every legal ENT -- the mnemonic word count is whole, never truncated.
     assert(ms * index_bits == total_bits);
     // invariant: the word count is one of the five BIP-39 sizes.
     assert(ms == 12 or ms == 15 or ms == 18 or ms == 21 or ms == 24);
 
     // The combined stream is the entropy bytes followed by one checksum byte holding the top CS bits of SHA-256(entropy); no reader ever
     // touches beyond total_bits ≤ ent_bytes*8 + 8, so a single trailing byte suffices.
-    // invariant: entropy is ≤ 32 bytes, far under sha256's max_message_bytes, so this hash cannot fault — asserted, not swallowed.
+    // invariant: entropy is ≤ 32 bytes, far under sha256's max_message_bytes, so this hash cannot fault -- asserted, not swallowed.
     const h = sha256.hash(entropy) catch unreachable;
     var combined: [max_entropy_bytes + 1]u8 = undefined;
     var c: u32 = 0;
@@ -203,8 +203,8 @@ pub fn from_entropy(out: *[max_mnemonic_bytes]u8, entropy: []const u8) Bip39Mnem
     return pos;
 }
 
-/// BIP-39 mnemonic → entropy: read `mnemonic` (space-separated English words) back to its entropy, written into `out`, returning the entropy
-/// byte length — AND verify the checksum, refusing InvalidChecksum when a word was mistyped. This is the guard a wallet runs on a phrase a
+/// BIP-39 mnemonic -> entropy: read `mnemonic` (space-separated English words) back to its entropy, written into `out`, returning the entropy
+/// byte length -- AND verify the checksum, refusing InvalidChecksum when a word was mistyped. This is the guard a wallet runs on a phrase a
 /// keeper types in.
 pub fn to_entropy(out: *[max_entropy_bytes]u8, mnemonic: []const u8) Bip39MnemonicError!u32 {
     // Gather the 11-bit indices, one per word, refusing an unknown word or an illegal count at the edge.
@@ -216,7 +216,7 @@ pub fn to_entropy(out: *[max_entropy_bytes]u8, mnemonic: []const u8) Bip39Mnemon
         if (i >= mnemonic.len) break;
         const start: u32 = i;
         while (i < mnemonic.len and mnemonic[i] != ' ') : (i += 1) {}
-        // invariant: a mnemonic never carries more than 24 words — a longer stream is a bad phrase, refused before lookup.
+        // invariant: a mnemonic never carries more than 24 words -- a longer stream is a bad phrase, refused before lookup.
         if (ms >= max_words) return error.BadWordCount;
         const idx = word_index(mnemonic[start..i]) orelse return error.InvalidWord;
         indices[ms] = idx;
@@ -255,13 +255,13 @@ pub fn to_entropy(out: *[max_entropy_bytes]u8, mnemonic: []const u8) Bip39Mnemon
     const h = sha256.hash(out[0..ent_bytes]) catch unreachable;
     // The mask keeps the top cs_bits (4..8) of a byte; a mismatch there is a mistyped or misremembered word.
     const mask: u8 = @intCast((@as(u32, 0xFF) << @as(u5, @intCast(8 - cs_bits))) & 0xFF);
-    // invariant: the low (8-cs_bits) bits of the checksum byte were never written, so they must be zero — a nonzero there means a packing bug.
+    // invariant: the low (8-cs_bits) bits of the checksum byte were never written, so they must be zero -- a nonzero there means a packing bug.
     assert((combined[ent_bytes] & ~mask) == 0);
     if ((combined[ent_bytes] & mask) != (h[0] & mask)) return error.InvalidChecksum;
     return ent_bytes;
 }
 
-/// True when `mnemonic` is a well-formed BIP-39 phrase (known words, legal count, checksum verified) — the one-call guard a keeper's typed
+/// True when `mnemonic` is a well-formed BIP-39 phrase (known words, legal count, checksum verified) -- the one-call guard a keeper's typed
 /// phrase passes before it grows a wallet.
 pub fn is_valid(mnemonic: []const u8) bool {
     var out: [max_entropy_bytes]u8 = undefined;
@@ -274,12 +274,12 @@ pub fn is_valid(mnemonic: []const u8) bool {
 
 fn nibble(c: u8) u8 {
     if (c >= '0' and c <= '9') return c - '0';
-    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    // invariant: the vector hex uses only lowercase a-f beyond the digits.
     assert(c >= 'a' and c <= 'f');
     return c - 'a' + 10;
 }
 
-/// Decode a hex string into `out`, returning the byte count — for reading the published entropy vectors.
+/// Decode a hex string into `out`, returning the byte count -- for reading the published entropy vectors.
 fn from_hex(out: []u8, hex: []const u8) u32 {
     // invariant: two hex chars name one byte, so the buffer must hold half the hex length.
     assert(hex.len % 2 == 0 and out.len * 2 >= hex.len);
@@ -325,7 +325,7 @@ fn run_selftest() !u8 {
 
     // 2. BIP-39's OWN published Trezor known-answers, both directions: each entropy encodes to EXACTLY its published mnemonic word-for-word,
     //    and each mnemonic decodes back to EXACTLY its entropy byte-for-byte with the checksum verified. Covers ENT 128/192/256 and both
-    //    extremes — the checksum widths 4, 6, and 8 bits, the word counts 12, 18, and 24.
+    //    extremes -- the checksum widths 4, 6, and 8 bits, the word counts 12, 18, and 24.
     {
         var vi: u32 = 0;
         while (vi < v_ent.len) : (vi += 1) {
@@ -343,7 +343,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. The checksum guard bites: flip the LAST word of a valid 12-word phrase ("about" → "abandon", both real words, so it is a checksum
+    // 3. The checksum guard bites: flip the LAST word of a valid 12-word phrase ("about" -> "abandon", both real words, so it is a checksum
     //    fault not an unknown-word fault) and decode must refuse InvalidChecksum. is_valid agrees true-for-valid, false-for-tampered.
     {
         const good = v_mnemonic[0];

@@ -1,4 +1,4 @@
-//! mantra/snapshot_export_delivery.rye — I2 snapshot export: hosted Comlink crossing · 20260713.
+//! mantra/snapshot_export_delivery.rye -- I2 snapshot export: hosted Comlink crossing - 20260713.
 //!
 //!   rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=mantra/bin/snapshot-export-delivery
 //!   mantra/bin/snapshot-export-delivery selftest

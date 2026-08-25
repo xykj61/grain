@@ -1,4 +1,4 @@
-//! mantra/recall_subscribe_poll.rye — outer subscribe poll: bounded cycles over catch-up.
+//! mantra/recall_subscribe_poll.rye -- outer subscribe poll: bounded cycles over catch-up.
 //!
 //! Each cycle runs catch-up-to-latest for every named peer/bolt pair (host mirror
 //! configuration). A test-only cycle bound makes the loop witnessable without a
@@ -128,7 +128,7 @@ fn run_interval_selftest(_: std.Io) !u8 {
 }
 
 fn selftest_single_pair_poll(path: []const u8) !void {
-    // Single pair: source gains rev 2 after cycle 1 — counsel witness shape.
+    // Single pair: source gains rev 2 after cycle 1 -- counsel witness shape.
     var source: recall_lap1.BoltCatalog = .empty();
     try source.append_leaf("peerB", "b", 1, path, "rev-one", "plain-text");
 

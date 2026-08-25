@@ -1,18 +1,18 @@
-//! lotus/strip.rye — ALES9: mute and solo — the channel strip's two switches, resolved to an effective fader column. ALES8
+//! lotus/strip.rye -- ALES9: mute and solo -- the channel strip's two switches, resolved to an effective fader column. ALES8
 //! gave each track a fader (a level), yet a mixing keeper reaches constantly for two switches BESIDE the level: MUTE (silence
 //! this track) and SOLO (silence every OTHER track). This rung opens them as first-class session state and resolves them the
-//! way every desk does — solo, when any track holds it, wins: only soloed tracks are heard; otherwise every un-muted track is
+//! way every desk does -- solo, when any track holds it, wins: only soloed tracks are heard; otherwise every un-muted track is
 //! heard. The resolution produces an EFFECTIVE fader column, and the mix itself is ALES8's `fader.render` unchanged.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES9.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES9.
 //! Design read: active-designing/20260814-fill-ales9-lotus-mute-solo.md
-//! Stands on: lotus/fader.rye (ALES8) — a Strip carries a Fader, and `render` resolves mute/solo to an effective fader column
-//! then delegates to `fader.render` whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) — the Session
-//! table the strips align with; lotus/timeline.rye (ALES2) — the Clip and the one true saturation, reached through ALES8.
+//! Stands on: lotus/fader.rye (ALES8) -- a Strip carries a Fader, and `render` resolves mute/solo to an effective fader column
+//! then delegates to `fader.render` whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) -- the Session
+//! table the strips align with; lotus/timeline.rye (ALES2) -- the Clip and the one true saturation, reached through ALES8.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process channel-strip column over an ALES6 table of i16 PCM Clips
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process channel-strip column over an ALES6 table of i16 PCM Clips
 //! on one bench, siloed to lotus/. No socket, no network, no keys, no funds, no real device. Nothing here re-derives the mix:
-//! mute and solo are a pure resolution to an effective level, and the only sum in the suite stays ALES8's — a track silenced
+//! mute and solo are a pure resolution to an effective level, and the only sum in the suite stays ALES8's -- a track silenced
 //! by mute or solo carries a 0/1 fader, so the master saturates once over the true sum exactly as before.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/strip.rye selftest
@@ -28,19 +28,19 @@ const fader = @import("fader.rye");
 
 pub const strip_version = "20260814.121500";
 
-/// A silencing fader — a level of 0/1, the effective fader a muted or non-soloed track carries into ALES8's mix. Named so the
+/// A silencing fader -- a level of 0/1, the effective fader a muted or non-soloed track carries into ALES8's mix. Named so the
 /// resolution reads plainly and the mix stays ALES8's one sum: a silenced track contributes zero, never a special case.
 pub const silence: fader.Fader = .{ .num = 0, .den = 1 };
 
 /// One channel strip: a track's fader (ALES8) plus its two switches. `muted` silences this track; `soloed` marks it to be
-/// heard when any track in the session holds solo. Default is an audible unity strip — no mute, no solo, level 1/1.
+/// heard when any track in the session holds solo. Default is an audible unity strip -- no mute, no solo, level 1/1.
 pub const Strip = struct {
     fader: fader.Fader = .{},
     muted: bool = false,
     soloed: bool = false,
 };
 
-/// True when any strip in the column holds solo — the one fact that flips the whole desk from "hear the un-muted" to "hear
+/// True when any strip in the column holds solo -- the one fact that flips the whole desk from "hear the un-muted" to "hear
 /// only the soloed." Bounded by the column length, which aligns one-to-one with the session's tracks.
 pub fn any_solo(strips: []const Strip) bool {
     var i: u32 = 0;
@@ -51,7 +51,7 @@ pub fn any_solo(strips: []const Strip) bool {
 }
 
 /// Whether a single strip is heard, given whether any strip in its column is soloed. The desk rule, stated positively: a
-/// soloed strip is always heard (solo overrides its own mute — solo-in-place); otherwise a strip is heard only when no solo
+/// soloed strip is always heard (solo overrides its own mute -- solo-in-place); otherwise a strip is heard only when no solo
 /// is active AND it is not muted. So solo, when present anywhere, silences every non-soloed strip.
 pub fn audible(strip: Strip, solo_active: bool) bool {
     if (strip.soloed) return true;
@@ -59,10 +59,10 @@ pub fn audible(strip: Strip, solo_active: bool) bool {
 }
 
 /// Resolve a channel-strip column into the EFFECTIVE fader column ALES8's mix consumes: an audible strip carries its own
-/// fader, a silenced strip carries `silence` (0/1). This is the whole of mute/solo — a pure map from switches to levels — so
+/// fader, a silenced strip carries `silence` (0/1). This is the whole of mute/solo -- a pure map from switches to levels -- so
 /// the mix stays ALES8's one sum. `out` must hold one effective fader per strip.
 pub fn resolve(strips: []const Strip, out: []fader.Fader) void {
-    // invariant: the effective column aligns one-to-one with the strips — one level per strip, no more, no fewer.
+    // invariant: the effective column aligns one-to-one with the strips -- one level per strip, no more, no fewer.
     assert(out.len == strips.len);
     assert(strips.len <= track.max_tracks);
     const solo_active = any_solo(strips);
@@ -74,7 +74,7 @@ pub fn resolve(strips: []const Strip, out: []fader.Fader) void {
     assert(i == strips.len);
 }
 
-/// Render a session under its channel-strip column — mute and solo resolved, then the mix delegated to ALES8's `fader.render`
+/// Render a session under its channel-strip column -- mute and solo resolved, then the mix delegated to ALES8's `fader.render`
 /// WHOLE. The strip column aligns one-to-one with the session's tracks (`strips.len` equals `session.count`, asserted). Every
 /// refusal is ALES8's, forwarded: a zero denominator on an audible strip refuses `BadGain`, a track past the master bound
 /// refuses `ClipFull`, a duration too long forwards `DurationTooLong`. No new accumulation and no second saturation live here.
@@ -89,7 +89,7 @@ pub fn render(
     assert(session.count <= track.max_tracks);
     var eff: [track.max_tracks]fader.Fader = [_]fader.Fader{.{}} ** track.max_tracks;
     resolve(strips, eff[0..session.count]);
-    // The mix itself is ALES8, unchanged — the effective column is the only thing mute/solo contributes.
+    // The mix itself is ALES8, unchanged -- the effective column is the only thing mute/solo contributes.
     try fader.render(session, eff[0..session.count], clk, out);
 }
 
@@ -109,7 +109,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms — a millisecond offset equals a sample offset, legible on a bench
 
-    // 1. no mute, no solo reproduces ALES8's fader mix byte-for-byte — mute/solo adds two switches without changing the audio
+    // 1. no mute, no solo reproduces ALES8's fader mix byte-for-byte -- mute/solo adds two switches without changing the audio
     //    when both rest, so the channel strip generalizes the fader column.
     {
         var a = timeline.Clip{};
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         if (!eq(via_strip.samples(), &want)) return error.RestWrong;
     }
 
-    // 2. a MUTED track goes silent, the rest unchanged — the master is A alone.
+    // 2. a MUTED track goes silent, the rest unchanged -- the master is A alone.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.MuteWrong;
     }
 
-    // 3. a SOLOED track silences every OTHER track — only the soloed A is heard, B silent though un-muted.
+    // 3. a SOLOED track silences every OTHER track -- only the soloed A is heard, B silent though un-muted.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.SoloWrong;
     }
 
-    // 4. TWO solos are heard together, everything un-soloed silent — solo gathers a subset, not just one.
+    // 4. TWO solos are heard together, everything un-soloed silent -- solo gathers a subset, not just one.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -183,7 +183,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.TwoSoloWrong;
     }
 
-    // 5. a muted-AND-soloed track is still heard — solo-in-place overrides the track's own mute, the standard desk rule.
+    // 5. a muted-AND-soloed track is still heard -- solo-in-place overrides the track's own mute, the standard desk rule.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.SoloOverMuteWrong;
     }
 
-    // 6. a zero denominator on an AUDIBLE strip forwards ALES8's BadGain — mute/solo adds no new refusal, it forwards.
+    // 6. a zero denominator on an AUDIBLE strip forwards ALES8's BadGain -- mute/solo adds no new refusal, it forwards.
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{1});
@@ -210,7 +210,7 @@ fn run_selftest() !u8 {
         if (render(&s, &strips, c, &out)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
     }
 
-    // 7. a track whose placed end exceeds the master bound forwards ClipFull — the bound check is ALES8's, inherited whole.
+    // 7. a track whose placed end exceeds the master bound forwards ClipFull -- the bound check is ALES8's, inherited whole.
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{ 0, 0 });

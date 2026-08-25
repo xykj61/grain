@@ -1,16 +1,16 @@
-//! mycelium/portage_fixture_gen.rye — reproducibly emit the Portage record fixture (r4 support).
+//! mycelium/portage_fixture_gen.rye -- reproducibly emit the Portage record fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
-//! Seats the two real worlds of one crossing — World A where a funder credits Alice 100 and Alice signs a
+//! Seats the two real worlds of one crossing -- World A where a funder credits Alice 100 and Alice signs a
 //! portage-OUT of 40 to Bob, and World B where a gateway signs the matching portage-IN bound to the crossing
-//! digest — builds the r3 `Record` around them (every field read from the real worlds), and renders a
+//! digest -- builds the r3 `Record` around them (every field read from the real worlds), and renders a
 //! `format portage-v1` receipt to stderr. Those are the exact bytes `mycelium/portage_true.rye` reads back and
 //! the r4 witness cross-checks against an independent awk reading. Deterministic: seeded demo keys and a pure
 //! render mean the same bytes every run, so the on-disk fixture is what a real crossing emits, never a mock.
 //!
-//! Siloed, dev-only, demo world/keeper seeds — no real key, no funds, no network, no value crossed.
+//! Siloed, dev-only, demo world/keeper seeds -- no real key, no funds, no network, no value crossed.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_fixture_gen.rye \
 //!     2> tools/fixtures/portage_record.bron
@@ -25,7 +25,7 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-// The fixture constants — portage_true.rye rebuilds the identical worlds from these, so the on-disk record is
+// The fixture constants -- portage_true.rye rebuilds the identical worlds from these, so the on-disk record is
 // provably the receipt of a real crossing, not a mock. Keep the two files in step.
 pub const world_name = "world-b";
 pub const id_byte: u8 = 0x2C;
@@ -54,7 +54,7 @@ pub fn crossing_id() [portage.id_len]u8 {
     return .{id_byte} ** portage.id_len;
 }
 
-/// The crossing's content digest — derived from the fixture's own seeds, independent of any record text.
+/// The crossing's content digest -- derived from the fixture's own seeds, independent of any record text.
 pub fn crossing_digest() [portage.digest_len]u8 {
     const alice = seeded(alice_byte).public_key.toBytes();
     const bob = seeded(bob_byte).public_key.toBytes();
@@ -114,7 +114,7 @@ pub fn seat_dest_dag() !cord.Dag {
     return dag;
 }
 
-/// Build the r3 record around the two real worlds — the receipt the crossing would carry to the far shore.
+/// Build the r3 record around the two real worlds -- the receipt the crossing would carry to the far shore.
 pub fn build_record() !portage_bron.Record {
     const alice = seeded(alice_byte).public_key.toBytes();
     const bob = seeded(bob_byte).public_key.toBytes();

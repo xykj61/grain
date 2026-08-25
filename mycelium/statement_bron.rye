@@ -1,18 +1,18 @@
-//! mycelium/statement_bron.rye — an account statement travels as a readable record.
+//! mycelium/statement_bron.rye -- an account statement travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Statement - rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
-//! r1 read one account's line out of a resolved ledger — balance, reserved, received, and every
-//! pledge it made or received — and proved the line RECONCILES (reserved equals the sum of its own
+//! r1 read one account's line out of a resolved ledger -- balance, reserved, received, and every
+//! pledge it made or received -- and proved the line RECONCILES (reserved equals the sum of its own
 //! still-open outbound pledges). A statement a holder cannot hand to another is only a local reading,
 //! so r2 lets it cross as `format statement-v1` bytes: an `account <pk> <balance> <reserved>
 //! <received> <present>` line, then one `line <dir> <counterparty> <amount> <state>` per pledge the
-//! account touched (dir 1 made · 2 received; state 0 open · 1 posted · 2 voided · 3 lapsed). Render
+//! account touched (dir 1 made - 2 received; state 0 open - 1 posted - 2 voided - 3 lapsed). Render
 //! writes it, parse reads it back, so a round trip is a fixed point and the recovered statement is
 //! byte-for-byte the same line.
 //!
-//! The crux is RECONCILIATION SURVIVES THE WIRE: the record carries its own reconciliation as a law —
+//! The crux is RECONCILIATION SURVIVES THE WIRE: the record carries its own reconciliation as a law --
 //! a parsed PRESENT statement whose reserved does not equal the sum of its own still-open made lines
 //! refuses `BadReconcile` before it is trusted, so a statement cannot make or drop a reserve in the
 //! crossing. A holder who receives the bytes checks the same arithmetic r1 asserted, needing no ledger
@@ -22,7 +22,7 @@
 //! unknown field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer or unknown
 //! direction or unknown state `BadInt`, a bad hex field `BadHex`, a broken reconciliation
 //! `BadReconcile`, an over-long statement `TooManyLines`. Composes statement.rye + lapse.rye public
-//! API only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//! API only. Siloed, dev-only, demo seeds -- no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement_bron.rye
 
@@ -37,10 +37,10 @@ const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled statement carries at most this many lines — bounded by the ledger's own pledge ceiling.
+/// A travelled statement carries at most this many lines -- bounded by the ledger's own pledge ceiling.
 pub const max_lines_in_record: u32 = statement.statement_max_lines;
 
-/// The record buffer bound — one account's whole line fits with room.
+/// The record buffer bound -- one account's whole line fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{
@@ -115,7 +115,7 @@ pub fn render(s: *const statement.Statement, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to six tokens; returns the count (or seven to signal a trailing token past
-/// what any line allows — the account record, at six, is the widest).
+/// what any line allows -- the account record, at six, is the widest).
 fn tokens(line: []const u8, out: *[6][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -200,7 +200,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -211,7 +211,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 /// Build a scene and resolve it: genesis credits Alice 200; Alice pledges 100 to Bob under a far
-/// deadline (open) and 100 to Carol under a far deadline (open) — Alice's statement then carries two
+/// deadline (open) and 100 to Carol under a far deadline (open) -- Alice's statement then carries two
 /// open made lines and reserves 200, a line the wire must carry whole.
 fn build_ledger() !lapse.Ledger {
     const id1 = [_]u8{0x01} ** lapse.id_len;
@@ -271,7 +271,7 @@ pub fn main() !void {
     const ledger = try build_ledger();
     const alice_pk = seeded(0xA1).public_key.toBytes();
     const s = try statement.statement_for(&ledger, alice_pk[0..]);
-    // Alice reserves 200 across two open made lines — the line the wire must carry whole.
+    // Alice reserves 200 across two open made lines -- the line the wire must carry whole.
     assert(s.present);
     assert(s.reserved == 200);
     assert(s.count_dir(statement.dir_made) == 2);
@@ -295,7 +295,7 @@ pub fn main() !void {
     if (len2 != len) return error.NotFixedPoint;
     if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
 
-    // A stranger's true zero statement also travels — present=0, no lines, reconciles trivially.
+    // A stranger's true zero statement also travels -- present=0, no lines, reconciles trivially.
     {
         const stranger_pk = seeded(0xCC).public_key.toBytes();
         const nobody = try statement.statement_for(&ledger, stranger_pk[0..]);
@@ -339,7 +339,7 @@ pub fn main() !void {
             if (err != error.BadInt) return error.WrongBadState;
         }
     }
-    // Refusal: a broken reconciliation refuses BadReconcile — a present statement claiming reserved 50
+    // Refusal: a broken reconciliation refuses BadReconcile -- a present statement claiming reserved 50
     // with an open made line of 100 made or dropped a reserve in the crossing.
     {
         const broken = "format statement-v1\naccount " ++ ("00" ** statement.pk_len) ++ " 0 50 100 1\nline 1 " ++ ("11" ** statement.pk_len) ++ " 100 0\n";

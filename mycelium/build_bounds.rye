@@ -1,9 +1,9 @@
-//! mycelium/build_bounds.rye — assert Build Journey ceilings match the seated brix.
+//! mycelium/build_bounds.rye -- assert Build Journey ceilings match the seated brix.
 //!
-//! Design-shapes wing · door 7 · equinox A · journey 3 (h3 Radiant Style) · quest Do.
+//! Design-shapes wing - door 7 - equinox A - journey 3 (h3 Radiant Style) - quest Do.
 //! Builds inherit bounds; they never invent them. Mycelium pubs are checked on
 //! metal here. Discovery ceilings are pinned as seated literals (their metal
-//! lives under comlink/discovery/ and stays GREEN on its own witnesses — rye
+//! lives under comlink/discovery/ and stays GREEN on its own witnesses -- rye
 //! refuses imports outside the module path).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/build_bounds.rye
@@ -16,7 +16,7 @@ const ship_sol = @import("ship_sol.rye");
 const fold_persist = @import("fold_persist.rye");
 const refusal_storm = @import("refusal_storm.rye");
 
-/// Seated v27 — must match tools/gen/season/recursion_block.brix.
+/// Seated v27 -- must match tools/gen/season/recursion_block.brix.
 const seated_descriptor_max: u32 = 512;
 const seated_max_peers: u32 = 256;
 const seated_staleness: u32 = 4096;
@@ -41,14 +41,14 @@ pub fn main() !void {
     if (fold_persist.myc_fold_snapshot_max_bytes != seated_fold_snapshot) return error.SnapshotDrift;
     if (refusal_storm.refusal_storm_min_cases != seated_refusal_storm_min) return error.StormMinDrift;
 
-    // Discovery seats — brix data pinned; metal proven under comlink/discovery/.
+    // Discovery seats -- brix data pinned; metal proven under comlink/discovery/.
     if (seated_descriptor_max != 512) return error.DescriptorSeat;
     if (seated_max_peers != 256) return error.PeersSeat;
     if (seated_staleness != 4096) return error.StalenessSeat;
     if (seated_fanout != 8) return error.FanoutSeat;
     if (seated_hops != 2) return error.HopsSeat;
 
-    // Myc policy numbers — data in the brix; fold does not invent release/expiry.
+    // Myc policy numbers -- data in the brix; fold does not invent release/expiry.
     if (seated_myc_genesis == 0) return error.GenesisZero;
     if (seated_myc_star_price == 0) return error.PriceZero;
     if (seated_myc_ceiling == 0) return error.CeilingZero;

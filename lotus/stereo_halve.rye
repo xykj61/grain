@@ -1,33 +1,33 @@
-//! lotus/stereo_halve.rye — ALES139: the half-wave rectifier carried into stereo, ONE SHARED THRESHOLD AT ZERO, the EVEN+ODD member of the stereo NONLINEAR class's even corner. ALES85 named `halve` — y = max(x, 0),
+//! lotus/stereo_halve.rye -- ALES139: the half-wave rectifier carried into stereo, ONE SHARED THRESHOLD AT ZERO, the EVEN+ODD member of the stereo NONLINEAR class's even corner. ALES85 named `halve` -- y = max(x, 0),
 //! keep the positive half of the wave whole and fold the negative half AWAY to silence (where the full-wave rectifier ALES84 folded it UP). Where a diode bridge makes full-wave rectification, a single diode makes
-//! half-wave — it passes current one way and blocks it the other; harmonically it is the average of the dry and full-wave waves, max(x, 0) = (x + |x|) / 2, an EVEN+ODD mix carrying the fundamental plus the even
+//! half-wave -- it passes current one way and blocks it the other; harmonically it is the average of the dry and full-wave waves, max(x, 0) = (x + |x|) / 2, an EVEN+ODD mix carrying the fundamental plus the even
 //! harmonics plus a DC term, not the pure even of |x|. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries
 //! the half-wave into stereo the plain way: run ALES85's proven mono `halve` on each channel over the SAME span, so one threshold at zero lands on BOTH speakers together.
 //!
 //! The half-wave PARTITIONS where the full-wave (ALES138) COLLAPSED. The full-wave folded +a and −a both onto a, so an out-of-phase master returned IDENTICAL; the half-wave keeps only the positive half, so an
-//! out-of-phase master (right the exact negation of left) returns PARTITIONED — at each index exactly one channel survives: where left is positive it is kept while right (= −left, negative) goes to silence, and
-//! where left is negative it goes to silence while right (positive) is kept. Two facts hold at every index: left[i] · right[i] = 0 (the channels are DISJOINT, never both sounding at once), and left[i] + right[i] =
-//! |left[i]| (the two half-waves PARTITION the antisymmetric pair, their sum reconstructing the full-wave magnitude). That is the honest half-wave story read in the stereo field — the pair split into complementary
+//! out-of-phase master (right the exact negation of left) returns PARTITIONED -- at each index exactly one channel survives: where left is positive it is kept while right (= −left, negative) goes to silence, and
+//! where left is negative it goes to silence while right (positive) is kept. Two facts hold at every index: left[i] - right[i] = 0 (the channels are DISJOINT, never both sounding at once), and left[i] + right[i] =
+//! |left[i]| (the two half-waves PARTITION the antisymmetric pair, their sum reconstructing the full-wave magnitude). That is the honest half-wave story read in the stereo field -- the pair split into complementary
 //! one-sided channels rather than folded to mono. Yet a 1:2 master keeps its ratio on the kept samples (both zero elsewhere), and an identical-channel master stays identical.
 //!
-//! The rule, stated once: max(x, 0) is EXACT for EVERY i16 with NO rail edge at all (a non-negative sample passes unchanged, a negative becomes 0 — neither branch can overflow), so the half-wave needs NO saturate —
-//! even plainer than the full-wave lift. It carries no gain, no ceiling, and no threshold (fixed at zero), naming exactly one fault. Refuse BadRange (a span outside the samples) BEFORE either channel is mutated — the
+//! The rule, stated once: max(x, 0) is EXACT for EVERY i16 with NO rail edge at all (a non-negative sample passes unchanged, a negative becomes 0 -- neither branch can overflow), so the half-wave needs NO saturate --
+//! even plainer than the full-wave lift. It carries no gain, no ceiling, and no threshold (fixed at zero), naming exactly one fault. Refuse BadRange (a span outside the samples) BEFORE either channel is mutated -- the
 //! check depends only on the shared length, made ONCE up front, so a refusal never rectifies one channel and leaves the other signed; otherwise halve both channels over [start, start+count) via ALES85's `halve`.
-//! HalveError reused whole — the stereo lift adds no fault.
+//! HalveError reused whole -- the stereo lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO HALVE LAW: each channel equals ALES85's mono `halve` over the same span byte for byte — every output max(x, 0), non-negatives passing unchanged and negatives going to silence, no
+//! The crux -- four laws. THE STEREO HALVE LAW: each channel equals ALES85's mono `halve` over the same span byte for byte -- every output max(x, 0), non-negatives passing unchanged and negatives going to silence, no
 //! rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a halve writes values only). THE IMAGE-PARTITION LAW: because max(x, 0) keeps only the positive half,
-//! an out-of-phase master (right = −left) returns PARTITIONED — left[i] · right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude) at every index; yet a 1:2
+//! an out-of-phase master (right = −left) returns PARTITIONED -- left[i] - right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude) at every index; yet a 1:2
 //! master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-negative on both, and the map is idempotent (twice equals once). THE ATOMICITY / DEGENERATE LAW: the lone
 //! refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES139.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES139.
 //! Design read: active-designing/date/20260815/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
-//! Stands on: lotus/halve.rye (ALES85) — the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge; lotus/stereo_rectify.rye (ALES138) — the pure-even full-wave sibling this rung partitions
-//! where that one collapsed; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//! Stands on: lotus/halve.rye (ALES85) -- the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge; lotus/stereo_rectify.rye (ALES138) -- the pure-even full-wave sibling this rung partitions
+//! where that one collapsed; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES85's own halve, each output at most its input and
-//! never below zero, never a length; the shape is a half-wave threshold at zero, instantaneous (no attack/release, no anti-aliasing). No saturate is owed — max(x, 0) never leaves the rail. No real sample rate, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES85's own halve, each output at most its input and
+//! never below zero, never a length; the shape is a half-wave threshold at zero, instantaneous (no attack/release, no anti-aliasing). No saturate is owed -- max(x, 0) never leaves the rail. No real sample rate, no
 //! network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_halve.rye selftest
@@ -42,35 +42,35 @@ const halve = @import("halve.rye");
 
 pub const stereo_halve_version = "20260815.040747";
 
-/// Stereo halve's faults are exactly ALES85's own `HalveError` — `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same halve on each channel after
-/// one shared validation. The half-wave rectifier names no other fault (max(x, 0) has no illegal parameter — no gain, no ceiling, and the threshold is fixed at zero).
+/// Stereo halve's faults are exactly ALES85's own `HalveError` -- `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new fault: it only runs the same halve on each channel after
+/// one shared validation. The half-wave rectifier names no other fault (max(x, 0) has no illegal parameter -- no gain, no ceiling, and the threshold is fixed at zero).
 pub const StereoHalveError = halve.HalveError;
 
-/// Half-wave-rectify `[start, start+count)` in BOTH channels of `sc`, the SAME threshold at zero on each, running ALES85's proven mono `halve`. Each sample becomes `max(x, 0)` — the positive half of the wave kept
+/// Half-wave-rectify `[start, start+count)` in BOTH channels of `sc`, the SAME threshold at zero on each, running ALES85's proven mono `halve`. Each sample becomes `max(x, 0)` -- the positive half of the wave kept
 /// whole, the negative half folded away to silence. Exact for every i16 with no rail edge (a non-negative sample passes unchanged, a negative becomes 0), so no saturate is owed. Validates the span once against the
-/// shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced and both non-negative over the span.
+/// shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced and both non-negative over the span.
 pub fn stereo_halve(sc: *pan.StereoClip, start: u32, count: u32) StereoHalveError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the span is legal — refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front; it
+    // invariant: the span is legal -- refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front; it
     // mirrors ALES85's own guard exactly, so each mono halve below is pre-validated to succeed. The half-wave carries no other parameter, so this lone check is the whole gate.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono halve is pre-validated to succeed — no refusal can land between the two channel edits. The SAME threshold at zero on each.
+    // Every check passed and holds identically for both channels, so each mono halve is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME threshold at zero on each.
     try halve.halve(&sc.left, start, count);
     try halve.halve(&sc.right, start, count);
 
-    // invariant: the channels leave balanced — a halve writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a halve writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO HALVE LAW — each channel equals ALES85's mono halve over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length;
-//     THE IMAGE-PARTITION LAW — an OUT-OF-PHASE master (right = −left) returns PARTITIONED (left·right = 0 and left+right = |left| at each index, the two half-waves splitting the pair), yet a 1:2 master keeps its
-//     ratio on the kept samples, an identical-channel master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched and
+// --- selftest: THE STEREO HALVE LAW -- each channel equals ALES85's mono halve over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
+//     THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right = −left) returns PARTITIONED (left-right = 0 and left+right = |left| at each index, the two half-waves splitting the pair), yet a 1:2 master keeps its
+//     ratio on the kept samples, an identical-channel master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and
 //     balanced, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -86,7 +86,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO HALVE LAW — each channel equals ALES85's mono halve over the same span, proven side by side with different per-channel samples; non-negatives pass unchanged, negatives go to silence, and there
+    // 1. THE STEREO HALVE LAW -- each channel equals ALES85's mono halve over the same span, proven side by side with different per-channel samples; non-negatives pass unchanged, negatives go to silence, and there
     //    is no rail edge (sample_min, the full-wave's one over-rail sample, simply becomes 0 here).
     {
         var sc = pan.StereoClip{};
@@ -107,7 +107,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 100, 0, 0, 0 })) return error.RightHandWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a halve writes values only.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a halve writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300, -400, 500 }, &[_]i16{ -500, 400, -300, 200, -100 });
@@ -116,8 +116,8 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 3a. THE IMAGE-PARTITION LAW — an OUT-OF-PHASE master (right the exact negation of left) rectified through the same threshold returns PARTITIONED: at each index exactly one channel survives, because a sample
-    //     and its negation cannot both be positive. left[i] · right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude). This is the honest CONTRAST with
+    // 3a. THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same threshold returns PARTITIONED: at each index exactly one channel survives, because a sample
+    //     and its negation cannot both be positive. left[i] - right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude). This is the honest CONTRAST with
     //     ALES138's full-wave, which collapsed the same pair to identical channels.
     {
         var sc = pan.StereoClip{};
@@ -140,7 +140,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ 0, 300, 0, 700 })) return error.RightPartitionWrong;
     }
 
-    // 3b. THE RATIO HOLDS ON THE KEPT SAMPLES — a 1:2 master (right twice left) keeps its 1:2 ratio where left is positive (both kept, right = 2·left), and both go to silence where left is negative; the ratio
+    // 3b. THE RATIO HOLDS ON THE KEPT SAMPLES -- a 1:2 master (right twice left) keeps its 1:2 ratio where left is positive (both kept, right = 2-left), and both go to silence where left is negative; the ratio
     //     survives on the surviving half.
     {
         var sc = pan.StereoClip{};
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ 2000, 0, 1400, 0 })) return error.RatioRightWrong;
     }
 
-    // 3c. EVERY OUTPUT NON-NEGATIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL — a half-wave rectifier makes a one-sided signal, so no output on either channel is below zero; halving twice
+    // 3c. EVERY OUTPUT NON-NEGATIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL -- a half-wave rectifier makes a one-sided signal, so no output on either channel is below zero; halving twice
     //     equals once (a non-negative sample halves to itself); and a shared threshold on equal channels gives equal channels.
     {
         var once = pan.StereoClip{};
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (!eq(same.left.samples(), same.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3d. THE SPAN DISCIPLINE — halving a sub-span leaves samples outside [start, count) exactly as they were on both channels, negatives among them preserved (the in-place discipline the whole suite keeps).
+    // 3d. THE SPAN DISCIPLINE -- halving a sub-span leaves samples outside [start, count) exactly as they were on both channels, negatives among them preserved (the in-place discipline the whole suite keeps).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ -100, -200, -500, 500, -300, -400 }, &[_]i16{ 400, 300, -500, 500, -300, -400 });
@@ -190,7 +190,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 400, 300, 0, 500, -300, -400 })) return error.RightSpanLeaked;
     }
 
-    // 4a. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The half-wave names no other fault (max(x, 0) has no illegal parameter),
+    // 4a. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The half-wave names no other fault (max(x, 0) has no illegal parameter),
     //     so this lone refusal is the whole atomicity story.
     {
         var sc = pan.StereoClip{};
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadRangeUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — count = 0 is the identity on both channels (an empty span thresholds nothing).
+    // 4b. THE DEGENERATE LAW -- count = 0 is the identity on both channels (an empty span thresholds nothing).
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });

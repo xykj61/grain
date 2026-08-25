@@ -1,34 +1,34 @@
-//! lotus/stereo_echo.rye — ALES181: the ECHO carried into stereo — ALES66's feedback delay run on BOTH channels with the SAME delay and the SAME feedback, each channel reading and feeding back through ITS OWN LIVE buffer — the FIRST rung of
-//! the stereo TIME-BASED wing. The stereo MODULATION class is whole (ALES176–180: the amplitude pair — tremolo, ring modulator — beside the delay-line trio — vibrato, chorus, flanger). ALES66 opened the mono time-based wing with its
-//! primitive, the feedback delay y[i] = x[i] + fb·y[i-d]: each sample the dry input plus a fraction fb = num/den of the OUTPUT one delay earlier, so each echo feeds the next and the train decays. Carrying that primitive into stereo opens
-//! the stereo delay wing exactly as ALES66 opened the mono one — one primitive, then compositions — and it is the natural crux to take next: the flanger (ALES180) already reads its own live output through a feedback path, so the echo, the
+//! lotus/stereo_echo.rye -- ALES181: the ECHO carried into stereo -- ALES66's feedback delay run on BOTH channels with the SAME delay and the SAME feedback, each channel reading and feeding back through ITS OWN LIVE buffer -- the FIRST rung of
+//! the stereo TIME-BASED wing. The stereo MODULATION class is whole (ALES176-180: the amplitude pair -- tremolo, ring modulator -- beside the delay-line trio -- vibrato, chorus, flanger). ALES66 opened the mono time-based wing with its
+//! primitive, the feedback delay y[i] = x[i] + fb-y[i-d]: each sample the dry input plus a fraction fb = num/den of the OUTPUT one delay earlier, so each echo feeds the next and the train decays. Carrying that primitive into stereo opens
+//! the stereo delay wing exactly as ALES66 opened the mono one -- one primitive, then compositions -- and it is the natural crux to take next: the flanger (ALES180) already reads its own live output through a feedback path, so the echo, the
 //! plain longer feedback delay the flanger's zero-depth case reduces to, is the foundation that whole wing already stands on. It is the SIMPLER live-feedback carry (a fixed whole delay, no LFO) and so the honest rung to seat the wing's base.
 //!
-//! The crux — the SAME delay and feedback on BOTH channels, each on its OWN live buffer, is the linked stereo echo: both trains decay in lockstep, the image held. An echo's delay and feedback are a sample count and a named fraction the
-//! caller NAMES, not scalars measured across the field, so the same parameters on each channel preserve the stereo image for free — no linking machinery, no measurement. Mono `echo` reads the delayed OUTPUT off the clip buffer ITSELF (the
-//! delay line IS the buffer), so run once per channel the left feeds back through the left's buffer and the right through the right's, never crossed — NO cross-channel feedback, the two channels never hear each other. Because the delay is
-//! at least one whole sample, `buf[i-delay]` sits strictly BEFORE the write index — a sample already written this pass (true feedback), the dry audio before the span, or silence before the clip — so an echo needs no carried state and a span
+//! The crux -- the SAME delay and feedback on BOTH channels, each on its OWN live buffer, is the linked stereo echo: both trains decay in lockstep, the image held. An echo's delay and feedback are a sample count and a named fraction the
+//! caller NAMES, not scalars measured across the field, so the same parameters on each channel preserve the stereo image for free -- no linking machinery, no measurement. Mono `echo` reads the delayed OUTPUT off the clip buffer ITSELF (the
+//! delay line IS the buffer), so run once per channel the left feeds back through the left's buffer and the right through the right's, never crossed -- NO cross-channel feedback, the two channels never hear each other. Because the delay is
+//! at least one whole sample, `buf[i-delay]` sits strictly BEFORE the write index -- a sample already written this pass (true feedback), the dry audio before the span, or silence before the clip -- so an echo needs no carried state and a span
 //! in two pieces equals the whole once, per channel. Feedback strictly below unity decays, so each echo is smaller than the last and a constructive sum past the rail saturates once, per channel. Because each channel's feedback loop stays
-//! wholly within its own buffer, an identical-channel (centred) master stays identical — the image law the sense a mix cares about most. Honestly noted, like the flanger (ALES180) and unlike the snapshot rungs (vibrato, chorus), the echo
-//! does NOT preserve an exact PANNED integer ratio: the feedback path accumulates `@divTrunc` truncation, so a right exactly half the left drifts from that ratio by ones once the loop has fed a few samples. That is honest and expected —
+//! wholly within its own buffer, an identical-channel (centred) master stays identical -- the image law the sense a mix cares about most. Honestly noted, like the flanger (ALES180) and unlike the snapshot rungs (vibrato, chorus), the echo
+//! does NOT preserve an exact PANNED integer ratio: the feedback path accumulates `@divTrunc` truncation, so a right exactly half the left drifts from that ratio by ones once the loop has fed a few samples. That is honest and expected --
 //! an accumulating feedback delay is not a linear scaler.
 //!
-//! The rule, stated once: refuse BadDelay (a delay of zero, or wider than max_clip), BadFeedback (a zero denominator, or a feedback at or above unity — a runaway that would never decay), and BadRange (a span past the shared length) BEFORE
-//! either channel is touched — the delay, feedback, and span validated ONCE against the shared length up front (ALES66's own `precheck`, factored out for this exactly as ALES73's was for the flanger), so a refusal never echoes one channel
+//! The rule, stated once: refuse BadDelay (a delay of zero, or wider than max_clip), BadFeedback (a zero denominator, or a feedback at or above unity -- a runaway that would never decay), and BadRange (a span past the shared length) BEFORE
+//! either channel is touched -- the delay, feedback, and span validated ONCE against the shared length up front (ALES66's own `precheck`, factored out for this exactly as ALES73's was for the flanger), so a refusal never echoes one channel
 //! and leaves the other torn; then run ALES66's `echo` on each channel with the SAME delay and feedback.
 //!
-//! The crux — three laws. THE STEREO ECHO LAW: each channel equals ALES66's mono `echo` with the SAME delay and feedback over the same span byte for byte, proven side by side with genuinely different per-channel content — the left rung by
-//! the left's samples, the right by the right's, never crossed. THE DRY-IDENTITY LAW: a zero-feedback (fb_num = 0) stereo echo is the exact dry master on both channels — no delayed voice added, the identity — so the feedback genuinely
+//! The crux -- three laws. THE STEREO ECHO LAW: each channel equals ALES66's mono `echo` with the SAME delay and feedback over the same span byte for byte, proven side by side with genuinely different per-channel content -- the left rung by
+//! the left's samples, the right by the right's, never crossed. THE DRY-IDENTITY LAW: a zero-feedback (fb_num = 0) stereo echo is the exact dry master on both channels -- no delayed voice added, the identity -- so the feedback genuinely
 //! governs the train. THE IMAGE / BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an identical-channel (centred) master stays identical (each channel's feedback loop wholly within its own buffer); an all-silent master echoes to silence on
 //! both; left.len == right.len after; a bad delay, a bad feedback, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both. Honestly noted: unlike the
 //! snapshot rungs, the echo does not preserve an exact panned integer ratio (the feedback's `@divTrunc` truncation drifts it by ones), so the image law proven is the identical-channel one.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES181.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES181.
 //! Design read: active-designing/date/20260815/20260815-085411_fill-ales181-lotus-stereo-echo.md
-//! Stands on: lotus/echo.rye (ALES66) — the mono feedback delay run once per channel, its EchoError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/pan.rye (ALES10) — the StereoClip
-//! and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and the one true saturate the mono echo reuses.
+//! Stands on: lotus/echo.rye (ALES66) -- the mono feedback delay run once per channel, its EchoError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/pan.rye (ALES10) -- the StereoClip
+//! and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and the one true saturate the mono echo reuses.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each rung through ALES66's own live-buffer feedback delay — one delayed read and at most one multiply-divide per sample, run in i64 and each
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each rung through ALES66's own live-buffer feedback delay -- one delayed read and at most one multiply-divide per sample, run in i64 and each
 //! channel reading and feeding back through its own buffer, the fed sum saturating once, siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The delay is a count of sample INDICES, not
 //! milliseconds against a clock; the feedback is a named fraction strictly below unity, not a decibel. No cross-channel feedback, no real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -44,17 +44,17 @@ const echo = @import("echo.rye");
 
 pub const stereo_echo_version = "20260815.085411";
 
-/// The stereo echo's faults are exactly ALES66's own `EchoError` — `BadDelay`, `BadFeedback`, and `BadRange` — reused by name, since
+/// The stereo echo's faults are exactly ALES66's own `EchoError` -- `BadDelay`, `BadFeedback`, and `BadRange` -- reused by name, since
 /// carrying the echo into stereo adds no new fault: it validates one shared delay, feedback, and span against the shared length, then
 /// runs the same mono echo on each channel.
 pub const StereoEchoError = echo.EchoError;
 
-/// Apply a feedback echo over `count` samples starting at `start` in BOTH channels of `sc` with the SAME delay and feedback — each sample
-/// the dry input plus a fraction `fb_num/fb_den` of the OUTPUT one `delay` earlier — by running ALES66's proven mono `echo` on each
+/// Apply a feedback echo over `count` samples starting at `start` in BOTH channels of `sc` with the SAME delay and feedback -- each sample
+/// the dry input plus a fraction `fb_num/fb_den` of the OUTPUT one `delay` earlier -- by running ALES66's proven mono `echo` on each
 /// channel. The shared delay and feedback preserve the stereo image: an identical-channel master stays identical (each channel's feedback
-/// loop wholly within its own buffer). Each channel reads and feeds back through its OWN live buffer — no cross-channel feedback. Validates
+/// loop wholly within its own buffer). Each channel reads and feeds back through its OWN live buffer -- no cross-channel feedback. Validates
 /// the delay, feedback, and span ONCE against the shared length before either channel is mutated (ALES66's `precheck`): refuses BadDelay,
-/// BadFeedback, and BadRange, both channels untouched. Values only — never the length; the two channels leave balanced.
+/// BadFeedback, and BadRange, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_echo(
     sc: *pan.StereoClip,
     start: u32,
@@ -63,24 +63,24 @@ pub fn stereo_echo(
     fb_num: u32,
     fb_den: u32,
 ) StereoEchoError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared delay and feedback preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared delay and feedback preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the delay, feedback, and span are legal against the SHARED length — checked before any write, so a refusal never echoes one channel and leaves the other torn.
+    // invariant: the delay, feedback, and span are legal against the SHARED length -- checked before any write, so a refusal never echoes one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     try echo.precheck(len, start, count, delay, fb_num, fb_den);
 
-    // Every check passed and holds identically for both channels (same delay, same feedback, same span, shared length), so each mono echo is pre-validated to succeed — no refusal can land between the two channel edits. The SAME delay and
+    // Every check passed and holds identically for both channels (same delay, same feedback, same span, shared length), so each mono echo is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME delay and
     // feedback on each channel, each reading and feeding back through its OWN live buffer, never the other's.
     try echo.echo(&sc.left, start, count, delay, fb_num, fb_den);
     try echo.echo(&sc.right, start, count, delay, fb_num, fb_den);
 
-    // invariant: the channels leave balanced — an echo writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- an echo writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO ECHO LAW — each channel equals ALES66's mono echo with the SAME delay and feedback byte for byte, different per-channel content; THE DRY-IDENTITY LAW — a zero-feedback echo is the dry master on both; THE IMAGE /
-//     BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — an identical-channel master staying identical, silence to silence, balanced, each of three refusals untouched, count 0 identity
+// --- selftest: THE STEREO ECHO LAW -- each channel equals ALES66's mono echo with the SAME delay and feedback byte for byte, different per-channel content; THE DRY-IDENTITY LAW -- a zero-feedback echo is the dry master on both; THE IMAGE /
+//     BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW -- an identical-channel master staying identical, silence to silence, balanced, each of three refusals untouched, count 0 identity
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -95,7 +95,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO ECHO LAW — each channel equals ALES66's mono echo with the SAME delay and feedback, proven side by side over one span with genuinely different per-channel content: the left rung by the left's samples, the right by the
+    // 1. THE STEREO ECHO LAW -- each channel equals ALES66's mono echo with the SAME delay and feedback, proven side by side over one span with genuinely different per-channel content: the left rung by the left's samples, the right by the
     //    right's, never crossed.
     {
         const ll = [_]i16{ 8000, 0, 3000, 0, 5000, 0, 7000, 0 };
@@ -113,11 +113,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftEchoNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightEchoNotMono;
-        // The two channels genuinely differ — the left is not the right rung, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right rung, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2. THE DRY-IDENTITY LAW — a zero-feedback (fb_num = 0) stereo echo adds nothing, the dry master passing byte for byte on both channels at any delay.
+    // 2. THE DRY-IDENTITY LAW -- a zero-feedback (fb_num = 0) stereo echo adds nothing, the dry master passing byte for byte on both channels at any delay.
     {
         const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
         const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100 };
@@ -128,9 +128,9 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &rr)) return error.ZeroFbRightChanged;
     }
 
-    // 3. THE IMAGE LAW (identical-channel) — an identical-channel (mono-in-stereo) master stays identical through the echo: the same input through the same delay and feedback and the same live-buffer read is the same deterministic output
+    // 3. THE IMAGE LAW (identical-channel) -- an identical-channel (mono-in-stereo) master stays identical through the echo: the same input through the same delay and feedback and the same live-buffer read is the same deterministic output
     //    on both channels, so a centred signal never splits. Like the flanger (ALES180) and unlike the snapshot rungs, the echo does NOT preserve an exact panned integer ratio (the feedback path's `@divTrunc` truncation drifts it by ones);
-    //    the honest image law here is the identical-channel one — the sense a mix cares about most (a centred voice stays centred).
+    //    the honest image law here is the identical-channel one -- the sense a mix cares about most (a centred voice stays centred).
     {
         const same = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
         var sc = pan.StereoClip{};
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master echoes to silence on both; the channels stay equal length and each holds its starting length.
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master echoes to silence on both; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 8) return error.LengthChanged;
     }
 
-    // 4b. THE ATOMICITY LAW — a bad delay (zero), a bad feedback (at or above unity — a runaway), and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 4b. THE ATOMICITY LAW -- a bad delay (zero), a bad feedback (at or above unity -- a runaway), and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7, -8 };
         const tr = [_]i16{ -7, 6, -5, 4 };
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to echo.
+    // 4c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no sample to echo.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

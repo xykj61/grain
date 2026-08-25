@@ -1,4 +1,4 @@
-//! Rye test: std.mem.sortContext / sortUnstableContext — pass 9890.
+//! Rye test: std.mem.sortContext / sortUnstableContext -- pass 9890.
 //!
 //! Index-based in-place sorting; postcondition checked via sorted range.
 

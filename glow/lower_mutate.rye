@@ -1,4 +1,4 @@
-//! glow/lower_mutate.rye — lower a parsed `=.` mutate to runnable `.rye`.
+//! glow/lower_mutate.rye -- lower a parsed `=.` mutate to runnable `.rye`.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=.` mutates one leg. This hop lowers bare `root` to a Zig `var` write,

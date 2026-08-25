@@ -1,4 +1,4 @@
-//! glow/lower_compose_core_payload.rye — outer face → payload `|%` core.
+//! glow/lower_compose_core_payload.rye -- outer face -> payload `|%` core.
 //!
 //! Thin STOA24 face (exactly five lines):
 //!   =/  note  7
@@ -7,35 +7,35 @@
 //!   ++  double
 //!   --
 //!
-//! STOA30 — same shape with an open/nest arm:
+//! STOA30 -- same shape with an open/nest arm:
 //!   =/  note  7
 //!   |%
 //!   =/  amount  5
 //!   ++  pack  (jam amount amount)
 //!   --
 //!
-//! STOA61 — same shape with cue-of-jam arm:
+//! STOA61 -- same shape with cue-of-jam arm:
 //!   =/  note  7
 //!   |%
 //!   =/  amount  5
 //!   ++  unpack  (cue (jam amount amount))
 //!   --
 //!
-//! STOA62 — nest-left cue-of-jam under payload:
+//! STOA62 -- nest-left cue-of-jam under payload:
 //!   =/  note  7
 //!   |%
 //!   =/  amount  5
 //!   ++  unpack  (cue (jam (mix amount amount) amount))
 //!   --
 //!
-//! STOA63 — nest-right cue-of-jam under payload:
+//! STOA63 -- nest-right cue-of-jam under payload:
 //!   =/  note  7
 //!   |%
 //!   =/  amount  5
 //!   ++  unpack  (cue (jam amount (mix amount amount)))
 //!   --
 //!
-//! STOA64 — nest-both cue-of-jam under payload:
+//! STOA64 -- nest-both cue-of-jam under payload:
 //!   =/  note  7
 //!   |%
 //!   =/  amount  5

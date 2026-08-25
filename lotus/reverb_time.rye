@@ -1,31 +1,31 @@
-//! lotus/reverb_time.rye — ALES188: the REVERB in real time — a network named in MILLISECONDS. ALES186 seated the reverb (Schroeder's
-//! network — parallel combs summed then diffused through series allpasses), yet every comb and allpass delay is a count of sample INDICES
-//! ("a comb at 1600 samples"). A keeper names a room in TIME — the pre-delays and decays of a hall are milliseconds, not sample counts —
+//! lotus/reverb_time.rye -- ALES188: the REVERB in real time -- a network named in MILLISECONDS. ALES186 seated the reverb (Schroeder's
+//! network -- parallel combs summed then diffused through series allpasses), yet every comb and allpass delay is a count of sample INDICES
+//! ("a comb at 1600 samples"). A keeper names a room in TIME -- the pre-delays and decays of a hall are milliseconds, not sample counts --
 //! and the one missing fact is the sample rate, which ALES5's validated Clock already holds. reverb.rye's own header named this rung
 //! ("a real-time twin `reverb_ms` through the ALES5 clock is a later rung, exactly as echo_ms followed the index-named echo"); every
-//! index-named rung has earned its real-time twin this way — echo_ms over the echo (ALES67), multitap_ms over the multi-tap (ALES69),
-//! and now reverb_ms over the whole network. This rung gives the reverb the same face, mirroring multitap_ms exactly — a BANK of delays,
+//! index-named rung has earned its real-time twin this way -- echo_ms over the echo (ALES67), multitap_ms over the multi-tap (ALES69),
+//! and now reverb_ms over the whole network. This rung gives the reverb the same face, mirroring multitap_ms exactly -- a BANK of delays,
 //! each converted through the clock, then the proven tool run unchanged.
 //!
 //! The crux is the family's signature: THE CLOCK ADDS ONLY THE UNITS, NEVER THE AUDIO. reverb_ms converts start_ms, count_ms, and every
 //! comb's and allpass's delay_ms through ALES5's proven clock.samples_for (bounded, refusing DurationTooLong past the clip) into an
 //! index-named comb bank and allpass bank, then delegates to ALES186's reverb UNCHANGED, so the millisecond-named reverb lands
-//! BYTE-FOR-BYTE the same samples as the index-named reverb over the converted delays and span. Because samples_for is divTrunc(rate·ms,
-//! 1000), a comb or allpass delay too short to be one whole sample converts to 0, which ALES186 already refuses BadDelay — so a
+//! BYTE-FOR-BYTE the same samples as the index-named reverb over the converted delays and span. Because samples_for is divTrunc(rate-ms,
+//! 1000), a comb or allpass delay too short to be one whole sample converts to 0, which ALES186 already refuses BadDelay -- so a
 //! sub-sample stage refuses honestly rather than silently doing nothing. The two bank counts are checked against reverb.max_stages first
 //! (NoCombs on an empty comb bank, TooManyStages on either over-long bank) BEFORE any conversion, so the two bounded stack buffers always
 //! hold their stages and the clip is untouched on a bad count.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES188.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES188.
 //! Design read: active-designing/date/20260815/20260815-094453_fill-ales188-lotus-reverb-in-real-time.md
-//! Stands on: lotus/reverb.rye (ALES186) — the Schroeder network this speaks in real time, delegated unchanged, and its CombSpec/
-//! AllpassSpec/ReverbError reused whole; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting ms to a bounded sample
-//! count; lotus/multitap_time.rye (ALES69) — the bank-converting twin this mirrors exactly.
+//! Stands on: lotus/reverb.rye (ALES186) -- the Schroeder network this speaks in real time, delegated unchanged, and its CombSpec/
+//! AllpassSpec/ReverbError reused whole; lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting ms to a bounded sample
+//! count; lotus/multitap_time.rye (ALES69) -- the bank-converting twin this mirrors exactly.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and two bounded stack banks of
-//! at most reverb.max_stages timed stages, siloed to lotus/. No socket, no network, no keys, no funds, no real device — the clock is a
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and two bounded stack banks of
+//! at most reverb.max_stages timed stages, siloed to lotus/. No socket, no network, no keys, no funds, no real device -- the clock is a
 //! samples-per-second count, not a claim about any hardware clock; the feedbacks and gains are plain fractions, not room sizes in seconds.
-//! No new arithmetic on the audio path — the clock's own conversion into the bounded banks, then the proven reverb. Because ALES186's
+//! No new arithmetic on the audio path -- the clock's own conversion into the bounded banks, then the proven reverb. Because ALES186's
 //! reverb does not claim split-equals-whole (each stage re-reads a per-call dry snapshot), neither does this face; a single call over the
 //! span is exact.
 //!
@@ -45,38 +45,38 @@ pub const reverb_time_version = "20260815.094453";
 /// `CombSpec`, whose delay is in sample indices; `reverb_ms` converts the delay through the clock and hands the feedback to ALES186
 /// unchanged.
 pub const CombSpecMs = struct {
-    /// The comb delay in MILLISECONDS — converted through the clock; a sub-sample delay (0 samples) is refused BadDelay by the reverb.
+    /// The comb delay in MILLISECONDS -- converted through the clock; a sub-sample delay (0 samples) is refused BadDelay by the reverb.
     delay_ms: u32,
-    /// The feedback numerator — strictly below fb_den (a recirculation below unity so the comb train decays).
+    /// The feedback numerator -- strictly below fb_den (a recirculation below unity so the comb train decays).
     fb_num: u32,
-    /// The feedback denominator — nonzero.
+    /// The feedback denominator -- nonzero.
     fb_den: u32,
 };
 
 /// One series ALLPASS stage named in real time: a delay in MILLISECONDS and a gain fraction num/den. The timed twin of ALES186's
 /// `AllpassSpec`; `reverb_ms` converts the delay through the clock and hands the gain to ALES186 unchanged.
 pub const AllpassSpecMs = struct {
-    /// The allpass delay in MILLISECONDS — converted through the clock; a sub-sample delay (0 samples) is refused BadDelay by the reverb.
+    /// The allpass delay in MILLISECONDS -- converted through the clock; a sub-sample delay (0 samples) is refused BadDelay by the reverb.
     delay_ms: u32,
-    /// The gain numerator — strictly below den (a diffusion coefficient below unity so the diffuse tail settles).
+    /// The gain numerator -- strictly below den (a diffusion coefficient below unity so the diffuse tail settles).
     num: u32,
-    /// The gain denominator — nonzero.
+    /// The gain denominator -- nonzero.
     den: u32,
 };
 
 /// The combined error set of the timed reverb face: ALES5's clock edges and ALES186's reverb edges, forwarded unchanged. Every fault
-/// refuses by name before any write — DurationTooLong from the clock (a span or stage delay past the clip), and NoCombs, TooManyStages,
+/// refuses by name before any write -- DurationTooLong from the clock (a span or stage delay past the clip), and NoCombs, TooManyStages,
 /// BadDelay (a converted delay being zero among them), BadGain, and BadRange from the reverb.
 pub const ReverbTimeError = clock.ClockError || reverb.ReverbError;
 
 /// Reverberate a span named in MILLISECONDS: convert `start_ms`, `count_ms`, and every comb's and allpass's `delay_ms` through ALES5's
 /// proven clock.samples_for (bounded, refusing DurationTooLong past the clip) into an index-named comb bank and allpass bank, then
-/// delegate to ALES186's reverb UNCHANGED — the same Schroeder network, now named in real time. The clock adds only the units, so this
+/// delegate to ALES186's reverb UNCHANGED -- the same Schroeder network, now named in real time. The clock adds only the units, so this
 /// lands byte-for-byte the same samples as the index-named reverb over the converted delays and span. A stage delay too short to be one
 /// whole sample converts to zero, which the reverb refuses BadDelay, so a sub-sample stage refuses honestly. The bank counts are checked
 /// against reverb.max_stages first (NoCombs on an empty comb bank, TooManyStages on either over-long bank before any conversion, so the
 /// bounded stack banks always hold them). Forwards ALES5's DurationTooLong and ALES186's NoCombs / TooManyStages / BadDelay / BadGain /
-/// BadRange before any write; on refusal the clip is untouched. Values only — never a length.
+/// BadRange before any write; on refusal the clip is untouched. Values only -- never a length.
 pub fn reverb_ms(
     clip: *timeline.Clip,
     clk: clock.Clock,
@@ -87,14 +87,14 @@ pub fn reverb_ms(
 ) ReverbTimeError!void {
     // invariant: the clock is valid, so each conversion is bounded and safe; the units change, never the audio.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
-    // invariant: a reverb needs at least one comb and a bounded bank on each side — checked BEFORE any conversion so the two stack banks
+    // invariant: a reverb needs at least one comb and a bounded bank on each side -- checked BEFORE any conversion so the two stack banks
     // always hold their stages and the clip is untouched on a bad count. The reverb re-validates the same bounds, so this is the timed
     // face's own up-front guard mirroring multitap_ms's tap-count check, not a second source of truth.
     if (combs_ms.len == 0) return error.NoCombs;
     if (combs_ms.len > reverb.max_stages) return error.TooManyStages;
     if (allpasses_ms.len > reverb.max_stages) return error.TooManyStages;
 
-    // Convert each timed comb into an index-named CombSpec in a bounded stack bank — the delay through the clock, the feedback unchanged.
+    // Convert each timed comb into an index-named CombSpec in a bounded stack bank -- the delay through the clock, the feedback unchanged.
     var comb_buf: [reverb.max_stages]reverb.CombSpec = undefined;
     var i: u32 = 0;
     while (i < combs_ms.len) : (i += 1) {
@@ -103,7 +103,7 @@ pub fn reverb_ms(
         comb_buf[i] = .{ .delay = delay, .fb_num = c.fb_num, .fb_den = c.fb_den };
     }
 
-    // Convert each timed allpass into an index-named AllpassSpec in a bounded stack bank — the delay through the clock, the gain unchanged.
+    // Convert each timed allpass into an index-named AllpassSpec in a bounded stack bank -- the delay through the clock, the gain unchanged.
     var allpass_buf: [reverb.max_stages]reverb.AllpassSpec = undefined;
     var j: u32 = 0;
     while (j < allpasses_ms.len) : (j += 1) {
@@ -117,13 +117,13 @@ pub fn reverb_ms(
     // invariant: exactly the given stages were converted, each within its buffer bound.
     assert(i == combs_ms.len and i <= comb_buf.len);
     assert(j == allpasses_ms.len and j <= allpass_buf.len);
-    // The reverb is ALES186's, unchanged — the clock added only the units. A zero converted delay is refused BadDelay there.
+    // The reverb is ALES186's, unchanged -- the clock added only the units. A zero converted delay is refused BadDelay there.
     try reverb.reverb(clip, start, count, comb_buf[0..combs_ms.len], allpass_buf[0..allpasses_ms.len]);
 }
 
 // --- selftest: at a legible clock (1 sample per ms) a reverb named in ms lands byte-for-byte the same samples as the index-named reverb
 //     over the converted delays and span (the grounding law, both tools run, against ALES186's hand value); at a real 48 kHz rate the
-//     delays convert by divTrunc(48000·ms, 1000) and the reverb lands over exactly those delays; a sub-sample comb refuses BadDelay; a
+//     delays convert by divTrunc(48000-ms, 1000) and the reverb lands over exactly those delays; a sub-sample comb refuses BadDelay; a
 //     stage delay past the clip refuses DurationTooLong; and the reverb's own bank faults forward, the clip untouched --------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -138,7 +138,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CLOCK ADDS ONLY UNITS — at 1 sample per ms, a reverb named in ms lands byte-for-byte the same samples as the index-named
+    // 1. THE CLOCK ADDS ONLY UNITS -- at 1 sample per ms, a reverb named in ms lands byte-for-byte the same samples as the index-named
     //    reverb over the converted delays and span. Use ALES186's own two-comb + one-allpass network over an impulse of 8000, named in ms;
     //    run both tools and demand equality, AND equal ALES186's hand value [-8000,0,10000,-1333,8000,2000,5056,1000]: reverb_ms adds no
     //    arithmetic on the audio path.
@@ -169,7 +169,7 @@ fn run_selftest() !u8 {
         if (!eq(timed.samples(), &want)) return error.NetworkWrong;
     }
 
-    // 2. A REAL RATE CONVERTS HONESTLY — at 48 kHz, 1 ms converts to divTrunc(48000·1, 1000) = 48 samples. A single comb at delay 1 ms
+    // 2. A REAL RATE CONVERTS HONESTLY -- at 48 kHz, 1 ms converts to divTrunc(48000-1, 1000) = 48 samples. A single comb at delay 1 ms
     //    over a clip long enough to hold two taps lands its first recirculation exactly 48 samples after the impulse, matching the
     //    index-named reverb at delay 48. Proven by equality against the index form and by reading the tap position.
     {
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (timed.samples()[48] != 5000) return error.TapNotAtConvertedDelay;
     }
 
-    // 3. A SUB-SAMPLE COMB REFUSES BadDelay — at 1 sample per ms a comb delay of 0 ms converts to 0 samples, which the reverb refuses; the
+    // 3. A SUB-SAMPLE COMB REFUSES BadDelay -- at 1 sample per ms a comb delay of 0 ms converts to 0 samples, which the reverb refuses; the
     //    timed face forwards it by name rather than silently doing nothing, the clip untouched.
     {
         const c = try clock.make(1000);
@@ -205,7 +205,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedSubSampleMutated;
     }
 
-    // 4. A STAGE DELAY PAST THE CLIP REFUSES DurationTooLong — an allpass delay_ms whose sample count exceeds max_clip is refused by the
+    // 4. A STAGE DELAY PAST THE CLIP REFUSES DurationTooLong -- an allpass delay_ms whose sample count exceeds max_clip is refused by the
     //    clock's own bound during conversion, before any write, the clip untouched. A valid comb sits ahead of it to prove the fault
     //    forwards from the allpass conversion, not only the first stage.
     {
@@ -220,7 +220,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedLongDelayMutated;
     }
 
-    // 5. THE REVERB'S BANK FAULTS FORWARD — an empty comb bank refuses NoCombs (before any conversion), an over-long comb bank refuses
+    // 5. THE REVERB'S BANK FAULTS FORWARD -- an empty comb bank refuses NoCombs (before any conversion), an over-long comb bank refuses
     //    TooManyStages, a feedback at unity refuses BadGain, and an out-of-range span refuses BadRange, each by name, the clip untouched.
     {
         const c = try clock.make(1000);

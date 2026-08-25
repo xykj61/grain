@@ -2,7 +2,7 @@
 //!
 //! Goal: prove that SHA3-512, as provided by the standard crypto library,
 //! produces the known-correct digest for a sample input. When this passes,
-//! SHA3-512 in Rye works exactly as it does in Zig 0.16.0 — because Rye's
+//! SHA3-512 in Rye works exactly as it does in Zig 0.16.0 -- because Rye's
 //! first version is the Zig 0.16.0 toolchain wearing a new name, so the
 //! cryptography is the very same code.
 //!

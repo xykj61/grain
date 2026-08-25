@@ -1,42 +1,42 @@
-//! crypto/elligator_key_pair.rye — Season G (Cryptography): the hidden keypair, the composition that closes the Elligator key-hiding arc end to
+//! crypto/elligator_key_pair.rye -- Season G (Cryptography): the hidden keypair, the composition that closes the Elligator key-hiding arc end to
 //! end. crypto/elligator.rye maps a curve point to a uniformly random representative and back, yet only about half of all points are
 //! representable; crypto/x25519_dirty.rye produces a public key that ranges over the WHOLE curve so its representative is genuinely
 //! indistinguishable from noise. This rung marries the two behind one door: from a 32-byte seed, derive a fresh secret key, take its dirty
-//! public key, and try to hide it — retrying with a fresh seed-derived key until one lands representable — returning the X25519 secret key and
+//! public key, and try to hide it -- retrying with a fresh seed-derived key until one lands representable -- returning the X25519 secret key and
 //! the uniformly random 32-byte representative a network observer cannot tell from a coin-flip string. This is exactly the key Comlink's
 //! obfuscated first packet carries: a handshake public key that looks like nothing at all.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names reimplementing Monocypher
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G names reimplementing Monocypher
 //! primitives in Rye with byte-for-byte parity as the crux; the prior rung (crypto/x25519_dirty.rye) named this composition as its next crux.
-//! Kin: crypto/elligator.rye (the map/rev this drives) · crypto/x25519_dirty.rye (the dirty public key it hides) · crypto/chacha20.rye (the
-//! keystream that turns one seed into each candidate secret) · crypto/fe25519.rye (the field all three stand on). Monocypher (vendor/monocypher,
-//! CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from Monocypher's public
+//! Kin: crypto/elligator.rye (the map/rev this drives) - crypto/x25519_dirty.rye (the dirty public key it hides) - crypto/chacha20.rye (the
+//! keystream that turns one seed into each candidate secret) - crypto/fe25519.rye (the field all three stand on). Monocypher (vendor/monocypher,
+//! CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from Monocypher's public
 //! crypto_elligator_key_pair API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — the loop Monocypher's crypto_elligator_key_pair runs, reproduced step for step:
+//! THE CRUX -- the loop Monocypher's crypto_elligator_key_pair runs, reproduced step for step:
 //!   1. SEED the 64-byte working buffer's high half (bytes 32..64) with the caller's seed.
 //!   2. STREAM: run ChaCha20 keyed by the buffer's high half, counter 0, zero nonce, to fill the whole 64-byte buffer. The low half (0..32)
 //!      becomes the candidate secret key; the high half (32..64) becomes a fresh value.
 //!   3. DIRTY: take the dirty X25519 public key of the candidate secret (crypto/x25519_dirty.rye's dirty_small).
 //!   4. HIDE: try crypto/elligator.rye's rev on that public key with tweak = the high half's first byte. When it succeeds the representative
-//!      overwrites the high half and the loop stops; when it fails the high half keeps its fresh ChaCha bytes and becomes the next key — so a
+//!      overwrites the high half and the loop stops; when it fails the high half keeps its fresh ChaCha bytes and becomes the next key -- so a
 //!      failed try feeds the next one, exactly as Monocypher's do/while does.
 //!   The result is the low half (the secret key) and the high half (the representative). About half of tries succeed, so the loop almost always
 //!   ends in one or two passes; it is bounded at a named maximum whose exhaustion is astronomically unlikely (a failure named, never a hang).
 //!
-//! ONE CLEAN REUSE — Monocypher calls crypto_chacha20_DJB (8-byte nonce, 64-bit counter); we call crypto/chacha20.rye's IETF block (12-byte
-//! nonce, 32-bit counter). At counter 0 with an all-zero nonce the two layouts COINCIDE — DJB's state words are [const, key, ctr_lo=0, ctr_hi=0,
+//! ONE CLEAN REUSE -- Monocypher calls crypto_chacha20_DJB (8-byte nonce, 64-bit counter); we call crypto/chacha20.rye's IETF block (12-byte
+//! nonce, 32-bit counter). At counter 0 with an all-zero nonce the two layouts COINCIDE -- DJB's state words are [const, key, ctr_lo=0, ctr_hi=0,
 //! nonce0=0, nonce1=0] and IETF's are [const, key, ctr=0, nonce0=0, nonce1=0, nonce2=0], so words 12..15 are zero either way and the single
 //! 64-byte block is byte-identical. The byte-for-byte Monocypher-source parity witness (which uses the real DJB call) is what proves this
 //! reuse correct, not this comment.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a signature and a seed
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a signature and a seed
 //! handed here is a test seed; this file signs nothing and holds no real key. It calls no std.crypto in the composition itself. Zig's std.crypto
-//! ships no Elligator keypair, so — like every rung of the key-hiding family — there is no independent std.crypto oracle; the byte-for-byte
+//! ships no Elligator keypair, so -- like every rung of the key-hiding family -- there is no independent std.crypto oracle; the byte-for-byte
 //! agreement with the actual vendored Monocypher in tools/cr/crypto_monocypher_elligator_key_pair_parity_witness.rish is the external anchor.
 //! Constant-time timing-safety stays a separate named horizon: rev's one representability test is variable-time, which is the very reason keys
-//! are tried at RANDOM here rather than fixed — the arithmetic beneath is data-independent by construction.
+//! are tried at RANDOM here rather than fixed -- the arithmetic beneath is data-independent by construction.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/elligator_key_pair.rye selftest
@@ -53,16 +53,16 @@ pub const elligator_key_pair_version = "20260816.160000";
 
 pub const ElligatorKeyPairError = error{
     /// The retry loop ran its full named maximum of tries without finding a representable dirty key. Each try is representable with probability
-    /// ~1/2 and independent, so reaching this bound has probability ~2^(−max_tries) — astronomically unlikely for any real seed. It is named,
+    /// ~1/2 and independent, so reaching this bound has probability ~2^(−max_tries) -- astronomically unlikely for any real seed. It is named,
     /// bounded, and returned rather than looped forever, honoring the "bound everything, fail with a named error" discipline.
     NotRepresentable,
-    /// A hex helper in the selftest received a buffer whose length did not match its declared 32-byte field width — names only the selftest's
+    /// A hex helper in the selftest received a buffer whose length did not match its declared 32-byte field width -- names only the selftest's
     /// contract, never a runtime path.
     LengthMismatch,
 };
 
 /// The retry bound. About half of dirty public keys are representable, so the expected number of tries is two and the chance of needing more
-/// than 64 is ~2^(−64) — indistinguishable from never. Bounding the loop at a named maximum turns a "cannot happen" into a named error rather
+/// than 64 is ~2^(−64) -- indistinguishable from never. Bounding the loop at a named maximum turns a "cannot happen" into a named error rather
 /// than an unbounded wait, exactly as the discipline asks.
 const max_tries: u32 = 64;
 
@@ -73,14 +73,14 @@ const zero_nonce = [12]u8{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /// The hidden keypair: the X25519 secret key and the uniformly random 32-byte representative of its dirty public key.
 pub const HiddenKeyPair = struct {
-    /// The X25519 secret key — the low half of the working buffer, the raw ChaCha output, taken unclamped exactly as the dirty ladder expects.
+    /// The X25519 secret key -- the low half of the working buffer, the raw ChaCha output, taken unclamped exactly as the dirty ladder expects.
     secret_key: [32]u8,
-    /// The representative — 32 bytes indistinguishable from random, the Elligator inverse of the secret's dirty public key. This is what a
+    /// The representative -- 32 bytes indistinguishable from random, the Elligator inverse of the secret's dirty public key. This is what a
     /// handshake puts on the wire in place of a recognizable public key.
     hidden: [32]u8,
 };
 
-/// key_pair — derive a hidden keypair from a 32-byte seed, reproducing Monocypher's crypto_elligator_key_pair step for step. Seed the working
+/// key_pair -- derive a hidden keypair from a 32-byte seed, reproducing Monocypher's crypto_elligator_key_pair step for step. Seed the working
 /// buffer's high half, then loop: ChaCha-stream the whole buffer keyed by the high half, take the dirty public key of the low half, and try to
 /// hide it with the high half's first byte as tweak. A representable key ends the loop; an unrepresentable one leaves its fresh ChaCha bytes in
 /// the high half to seed the next try. Returns the secret key (low half) and the representative (high half), or NotRepresentable if the bounded
@@ -100,7 +100,7 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
     // invariant: the loop is bounded by a named maximum; it cannot spin forever, and exhaustion is a named error, not a hang.
     while (tries < max_tries) : (tries += 1) {
         // Copy the high half out as the ChaCha key BEFORE overwriting the buffer, since the keystream fills the same 64 bytes the key lives in
-        // — the key must be read first, matching Monocypher, where the key is loaded into state before the output is written.
+        // -- the key must be read first, matching Monocypher, where the key is loaded into state before the output is written.
         var key: [32]u8 = undefined;
         var k: u32 = 0;
         while (k < 32) : (k += 1) key[k] = buf[32 + k];
@@ -115,7 +115,7 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
         // invariant (construction): the full 64-byte block was laid into the buffer.
         assert(b == 64);
 
-        // The dirty public key of the candidate secret (buf[0..32]) — ranges over the whole curve, so its representative is uniform.
+        // The dirty public key of the candidate secret (buf[0..32]) -- ranges over the whole curve, so its representative is uniform.
         var candidate: [32]u8 = undefined;
         var c: u32 = 0;
         while (c < 32) : (c += 1) candidate[c] = buf[c];
@@ -124,7 +124,7 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
         // Try to hide it, tweak = the high half's first byte (buf[32]). rev succeeds for ~half of points.
         const rr = elligator.rev(&pk, buf[32]);
         if (rr.ok) {
-            // Representative found — it overwrites the high half, exactly as Monocypher writes buf+32. Split the buffer into the result.
+            // Representative found -- it overwrites the high half, exactly as Monocypher writes buf+32. Split the buffer into the result.
             var out: HiddenKeyPair = undefined;
             var j: u32 = 0;
             while (j < 32) : (j += 1) {
@@ -135,9 +135,9 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
             assert(j == 32);
             return out;
         }
-        // Unrepresentable: the high half keeps its fresh ChaCha bytes and becomes the next key — the do/while's continuation. No byte to touch.
+        // Unrepresentable: the high half keeps its fresh ChaCha bytes and becomes the next key -- the do/while's continuation. No byte to touch.
     }
-    // invariant (postcondition): the loop exhausted its bound only if every one of max_tries independent keys was unrepresentable — a ~2^(−max_tries) event.
+    // invariant (postcondition): the loop exhausted its bound only if every one of max_tries independent keys was unrepresentable -- a ~2^(−max_tries) event.
     assert(tries == max_tries);
     return error.NotRepresentable;
 }
@@ -145,7 +145,7 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
 // ---- selftest ------------------------------------------------------------------------------------------------------------------------------
 
 fn from_hex(comptime s: []const u8) [32]u8 {
-    // invariant (construction): a 32-byte value is exactly 64 hex characters — a mistyped literal fails to compile rather than truncating.
+    // invariant (construction): a 32-byte value is exactly 64 hex characters -- a mistyped literal fails to compile rather than truncating.
     comptime assert(s.len == 64);
     var out: [32]u8 = undefined;
     var i: u32 = 0;
@@ -169,7 +169,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // Property 1: the composition is closed — the representative it returns really does hide the secret's dirty public key. Feed the returned
+    // Property 1: the composition is closed -- the representative it returns really does hide the secret's dirty public key. Feed the returned
     // representative through the forward Elligator map and it must equal the dirty public key of the returned secret key. This proves the two
     // halves of the result belong together without needing any external vector: the whole point of the keypair, checked end to end.
     {
@@ -181,13 +181,13 @@ fn run_selftest() !u8 {
             const kp = try key_pair(&s);
             const pk_of_secret = dirty.dirty_small(&kp.secret_key);
             const pk_from_hidden = elligator.map(&kp.hidden);
-            // invariant: the representative maps back to the dirty public key of the secret — the keypair is a true hide of a real key.
+            // invariant: the representative maps back to the dirty public key of the secret -- the keypair is a true hide of a real key.
             if (!bytes_eq(&pk_from_hidden, &pk_of_secret)) return error.HidingBroken;
         }
         print("elligator-key-pair selftest: map(hidden) == dirty_small(secret) across 24 seeds — the representative truly hides the key — OK\n", .{});
     }
 
-    // Property 2: determinism — the same seed yields the same keypair every call (a pure function of the seed), the property parity depends on.
+    // Property 2: determinism -- the same seed yields the same keypair every call (a pure function of the seed), the property parity depends on.
     {
         const s = from_hex("0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20");
         const a = try key_pair(&s);
@@ -197,7 +197,7 @@ fn run_selftest() !u8 {
         print("elligator-key-pair selftest: key_pair is deterministic in its seed — OK\n", .{});
     }
 
-    // Property 3: the representative is a clean 32 bytes and the secret is non-trivial — a silent failure that returned zeros would be caught.
+    // Property 3: the representative is a clean 32 bytes and the secret is non-trivial -- a silent failure that returned zeros would be caught.
     {
         const s = from_hex("ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00");
         const kp = try key_pair(&s);
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
             if (kp.secret_key[j] != 0) nonzero_secret = true;
             if (kp.hidden[j] != 0) nonzero_hidden = true;
         }
-        // invariant: neither half is all-zero — a real keypair is never the trivial one, which a broken loop might silently emit.
+        // invariant: neither half is all-zero -- a real keypair is never the trivial one, which a broken loop might silently emit.
         if (!nonzero_secret or !nonzero_hidden) return error.TrivialKeyPair;
         print("elligator-key-pair selftest: secret and representative both non-trivial — OK\n", .{});
     }

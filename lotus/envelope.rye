@@ -1,18 +1,18 @@
-//! lotus/envelope.rye — ALES52: an envelope follower — the time base the whole dynamics family waits for. The limiter (ALES49),
+//! lotus/envelope.rye -- ALES52: an envelope follower -- the time base the whole dynamics family waits for. The limiter (ALES49),
 //! compressor (ALES50), and gate (ALES51) each act on a sample the instant they see it, with no memory of the sound a moment ago.
 //! A real dynamics processor hears a peak ARRIVE and leans in over a few samples (the attack), then eases off as the sound falls
-//! away (the release). That shape is exactly one thing — a running estimate of how loud the signal is right now, rising quickly
+//! away (the release). That shape is exactly one thing -- a running estimate of how loud the signal is right now, rising quickly
 //! toward a new peak and falling slowly after it. Build it once, prove it, and the attack/release versions of the limiter,
 //! compressor, and gate all read the same proven time base. It is the crux that opens the rest of dynamics.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES52.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES52.
 //! Design read: active-designing/date/20260814/20260814-172539_fill-ales52-lotus-envelope-follower.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/tone.rye (ALES40/43) — the
-//! forced-unit-step exact-reach guarantee and the carried-state lesson, re-used here for the envelope; lotus/gate.rye (ALES51) —
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, the range law shape; lotus/tone.rye (ALES40/43) -- the
+//! forced-unit-step exact-reach guarantee and the carried-state lesson, re-used here for the envelope; lotus/gate.rye (ALES51) --
 //! the dynamics rung this time base will later drive, re-proven beside it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the attack and release are fractions per sample index,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the attack and release are fractions per sample index,
 //! not milliseconds against a clock, and the follower renders a magnitude curve rather than routing it into a gain yet (wiring the
 //! envelope into the limiter, compressor, and gate is the next rung). One comparison and at most one multiply-divide per sample;
 //! nothing on the path can overflow, since the envelope is bounded in [0, sample_max], which fits i16.
@@ -31,10 +31,10 @@ pub const envelope_version = "20260814.172539";
 /// BadRange coincides by name with timeline's, the EQ family's, and the whole dynamics family's, so a composer sees one
 /// consistent fault.
 pub const EnvelopeError = error{
-    /// An attack or release coefficient outside (0, 1] — a zero numerator (the envelope would freeze), a numerator past the
+    /// An attack or release coefficient outside (0, 1] -- a zero numerator (the envelope would freeze), a numerator past the
     /// denominator (a step overshooting the gap), or a zero denominator (a divide by zero). Refused, no write.
     BadCoeff,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
@@ -43,12 +43,12 @@ pub const EnvelopeError = error{
 /// Public so a dynamics tool that reads this time base (ALES53's attack/release compressor) validates coefficients by the one
 /// rule the follower proves, rather than restating it and risking drift.
 pub fn coeff_ok(num: u32, den: u32) bool {
-    // invariant: legality is exactly 1 <= num <= den — the fraction lies in (0, 1].
+    // invariant: legality is exactly 1 <= num <= den -- the fraction lies in (0, 1].
     return den != 0 and num != 0 and num <= den;
 }
 
 /// Advance the envelope by one sample toward the magnitude of `x` and return the new envelope value. `env` holds the running
-/// magnitude at full i64 precision in sample units. The target is min(|x|, sample_max) — a full-scale negative peak reads at the
+/// magnitude at full i64 precision in sample units. The target is min(|x|, sample_max) -- a full-scale negative peak reads at the
 /// positive rail. The envelope steps a fraction num/den of the way toward the target, choosing the attack fraction when rising and
 /// the release fraction when falling; when that fractional step truncates to zero yet the gap remains, it advances by one, so a
 /// held level is reached EXACTLY in finite steps (ALES40's guarantee). The step never overshoots, so convergence is monotone.
@@ -62,33 +62,33 @@ pub fn env_step(
     release_num: u32,
     release_den: u32,
 ) i16 {
-    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] — coeff_ok ran at the edge.
+    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] -- coeff_ok ran at the edge.
     assert(coeff_ok(attack_num, attack_den) and coeff_ok(release_num, release_den));
     const mag: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
     const rail: i64 = @as(i64, timeline.sample_max);
     const target: i64 = if (mag > rail) rail else mag; // clamp the full-scale negative peak to the positive rail
     const gap: i64 = target - env.*;
-    // Rising uses the attack fraction, falling (or level) the release fraction — the asymmetry that makes attack and release two
+    // Rising uses the attack fraction, falling (or level) the release fraction -- the asymmetry that makes attack and release two
     // separate knobs. gap == 0 takes the release branch and steps nothing.
     const num: i64 = if (gap > 0) @as(i64, attack_num) else @as(i64, release_num);
     const den: i64 = if (gap > 0) @as(i64, attack_den) else @as(i64, release_den);
     var step: i64 = @divTrunc(gap * num, den);
-    // The forced unit step fires only when the fractional step rounds to nothing yet the gap remains — so a held level is reached
+    // The forced unit step fires only when the fractional step rounds to nothing yet the gap remains -- so a held level is reached
     // exactly rather than left with a residual offset.
     if (step == 0 and gap != 0) step = if (gap > 0) 1 else -1;
-    // invariant: the step only ever shrinks the gap — it never overshoots the target, so convergence is monotone.
+    // invariant: the step only ever shrinks the gap -- it never overshoots the target, so convergence is monotone.
     assert((step >= 0 and step <= gap) or (step <= 0 and step >= gap));
     env.* += step;
-    // invariant: the envelope stays a legal i16 magnitude — never negative, never past the rail — so it fits i16 unsigned by sign.
+    // invariant: the envelope stays a legal i16 magnitude -- never negative, never past the rail -- so it fits i16 unsigned by sign.
     assert(env.* >= 0 and env.* <= rail);
     return @intCast(env.*);
 }
 
-/// Follow `count` samples starting at `start` in place, CONTINUING from the caller's `env` rather than from silence — the
+/// Follow `count` samples starting at `start` in place, CONTINUING from the caller's `env` rather than from silence -- the
 /// carried-state form (ALES43's lesson). The caller owns the i64 envelope across calls, so following a span in two pieces (the
 /// second carrying the first's ending envelope) equals following the whole span once: no fresh transient at the seam. A fresh
 /// `env` of 0 follows from silence. Refuses BadCoeff on an illegal attack or release coefficient and BadRange on a span outside
-/// the samples, before any write; on refusal `env` is left untouched. Values only — never the length.
+/// the samples, before any write; on refusal `env` is left untouched. Values only -- never the length.
 pub fn follow_carry(
     clip: *timeline.Clip,
     start: u32,
@@ -99,10 +99,10 @@ pub fn follow_carry(
     release_num: u32,
     release_den: u32,
 ) EnvelopeError!void {
-    // invariant: both coefficients are legal fractions in (0, 1] — checked before any write.
+    // invariant: both coefficients are legal fractions in (0, 1] -- checked before any write.
     if (!coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -116,7 +116,7 @@ pub fn follow_carry(
 }
 
 /// Follow `count` samples starting at `start` in place, from a zero initial envelope (from silence), by the attack and release
-/// coefficients. A fresh `env` of 0 is exactly this from-silence form — one implementation, so the two forms cannot drift.
+/// coefficients. A fresh `env` of 0 is exactly this from-silence form -- one implementation, so the two forms cannot drift.
 /// Refuses BadCoeff on an illegal coefficient and BadRange on a span outside the samples, before any write.
 pub fn follow(
     clip: *timeline.Clip,
@@ -152,7 +152,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip follows to all zeros at any legal coefficients.
+    // 1. silence stays silence -- an all-zero clip follows to all zeros at any legal coefficients.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -161,7 +161,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. UNIT ATTACK AND RELEASE ARE THE INSTANTANEOUS MAGNITUDE — num == den on both makes step = gap, so the envelope becomes
+    // 2. UNIT ATTACK AND RELEASE ARE THE INSTANTANEOUS MAGNITUDE -- num == den on both makes step = gap, so the envelope becomes
     //    min(|x|, sample_max) every sample: a follower with no smoothing IS the rectified signal, byte-for-byte by construction.
     {
         const sig = [_]i16{ 5000, -9000, 0, -32768, 32767, -400 };
@@ -172,7 +172,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.UnitNotInstantaneous;
     }
 
-    // 3. A CONSTANT INPUT IS REACHED EXACTLY, monotonically, from below via the attack — no drifting steady-state offset. The
+    // 3. A CONSTANT INPUT IS REACHED EXACTLY, monotonically, from below via the attack -- no drifting steady-state offset. The
     //    geometric step decays until the fractional step truncates to zero, then the forced unit step finishes it: exact in finite
     //    steps, given enough samples (a 1:4 attack over 64 samples converges well before the tail).
     {
@@ -191,7 +191,7 @@ fn run_selftest() !u8 {
 
     // 4. A CONSTANT-THEN-QUIETER INPUT falls to the new level EXACTLY via the release, monotonically, from above.
     {
-        // rise to 10000 with an instantaneous attack, then hold 2000 — the release must ease DOWN to exactly 2000 in finite steps.
+        // rise to 10000 with an instantaneous attack, then hold 2000 -- the release must ease DOWN to exactly 2000 in finite steps.
         var clip = timeline.Clip{};
         try load_clip(&clip, &([_]i16{10000} ++ ([_]i16{2000} ** 63)));
         try follow(&clip, 0, clip.len, 1, 1, 1, 3); // instant attack, slow release 1:3
@@ -205,7 +205,7 @@ fn run_selftest() !u8 {
         if (out[out.len - 1] != 2000) return error.ReleaseNotExact; // reached the lower level exactly
     }
 
-    // 5. A FASTER ATTACK RISES AT LEAST AS FAST — for the same rising target, 1:2 reaches a magnitude no less than 1:8 at every
+    // 5. A FASTER ATTACK RISES AT LEAST AS FAST -- for the same rising target, 1:2 reaches a magnitude no less than 1:8 at every
     //    sample (the attack knob is monotone).
     {
         const ramp = [_]i16{ 12000, 12000, 12000, 12000, 12000, 12000 };
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. THE STATE CARRIES — following a span in two pieces (the second continuing the first's ending envelope) equals following
+    // 6. THE STATE CARRIES -- following a span in two pieces (the second continuing the first's ending envelope) equals following
     //    the whole span once, byte-for-byte: the seam invisible, so the coming attack/release dynamics can span and automate.
     {
         const sig = [_]i16{ 3000, -14000, 14000, -2000, 9000, -9000, 500, -500 };

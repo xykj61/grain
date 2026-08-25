@@ -1,4 +1,4 @@
-//! linengrow/neth_serial_core_delivery.rye — Neth's serial core, carried for real over Comlink.
+//! linengrow/neth_serial_core_delivery.rye -- Neth's serial core, carried for real over Comlink.
 //!
 //!   rye build linengrow/neth_serial_core_delivery.rye -lc -femit-bin=linengrow/bin/neth-serial-core-delivery
 //!   linengrow/bin/neth-serial-core-delivery selftest
@@ -6,13 +6,13 @@
 //!
 //! Every Neth witness so far (neth_root_witness.rye, neth_serial_core.rye,
 //! neth_root_install.rye, neth_apply_step.rye, neth_sim.rye) names Comlink
-//! carriage as "living outside this call" — a pipelined stage assumed
+//! carriage as "living outside this call" -- a pipelined stage assumed
 //! real, never actually exercised. This module closes that one remaining
 //! gap: a follower replica receives one already-signed record over a
 //! genuine hosted UDP hop, sealed under Comlink's own wire_format (the
 //! same primitive mantra's recall delivery family and linengrow's own
 //! murr_delivery.rye already use), and applies it through
-//! neth_serial_core.rye's already-witnessed `append_and_reroot` —
+//! neth_serial_core.rye's already-witnessed `append_and_reroot` --
 //! unmodified, the exact same call every earlier Neth witness already
 //! proved correct in-process.
 //!
@@ -21,21 +21,21 @@
 //! the signature and the fact, which comfortably fits `receipt_core`'s
 //! own 768-byte append bound yet does *not* fit Comlink's 340-byte
 //! (`wire_format.wire_capacity` minus its own header) sealed-datagram
-//! ceiling — a single hop is smaller than a single log append. This
+//! ceiling -- a single hop is smaller than a single log append. This
 //! module carries the record over the wire in `receipt_core`'s existing
 //! compact binary payload (raw signature bytes plus the raw fact, the
 //! same encoding `murr_delivery.rye` already uses for its own mint/receipt
-//! hop) rather than the hex line — the wire's own concern is carrying
+//! hop) rather than the hex line -- the wire's own concern is carrying
 //! bytes compactly, the log's own concern is a stable on-disk shape, and
 //! this lap keeps the two honestly separate rather than assuming one
 //! format serves both.
 //!
 //! The one claim this lap exists to prove: a record that crosses a real
-//! wire produces the identical root a record applied in-process would —
+//! wire produces the identical root a record applied in-process would --
 //! carriage changes nothing about the fold's own deterministic outcome.
 //! The source computes its own expected root independently, before
 //! sending, and only then compares it against what the follower reports
-//! back over its own sealed hop — never trusting the follower's answer
+//! back over its own sealed hop -- never trusting the follower's answer
 //! on its own word alone.
 
 const std = @import("std");
@@ -56,9 +56,9 @@ const SOCK_DGRAM: c_uint = 2;
 const SOL_SOCKET: c_int = 1;
 const SO_REUSEADDR: c_int = 2;
 
-/// New signed record → follower.
+/// New signed record -> follower.
 const record_port: u16 = 38494;
-/// Follower's resulting root → source, for the source's own independent check.
+/// Follower's resulting root -> source, for the source's own independent check.
 const root_port: u16 = 38495;
 
 const sockaddr_in = extern struct {
@@ -116,7 +116,7 @@ fn party_hexes() struct {
 }
 
 /// Both replicas already hold this same starting log before the lap
-/// begins — the pre-shared state every earlier Neth witness also starts
+/// begins -- the pre-shared state every earlier Neth witness also starts
 /// from, standing in for whatever earlier crossing put it there.
 fn starting_log(log: *[rc.max_log_len]u8, issuer_kp: kumara.KeyPair, holder_kp: kumara.KeyPair, issuer_hex: *const [mc.pubkey_hex_len]u8, holder_hex: *const [mc.pubkey_hex_len]u8) !u32 {
     return try mc.build_welcome_log(log, issuer_kp, holder_kp, issuer_hex, holder_hex);

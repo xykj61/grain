@@ -1,4 +1,4 @@
-//! glow/expr_witness.rye — proves the shared nest-expression parser.
+//! glow/expr_witness.rye -- proves the shared nest-expression parser.
 //!
 //!   rye build glow/expr_witness.rye -femit-bin=glow/bin/expr_witness
 //!   glow/bin/expr_witness

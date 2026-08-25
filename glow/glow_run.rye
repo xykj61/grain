@@ -1,4 +1,4 @@
-//! glow/glow_run.rye — lower a `.glow` generator to `.rye` (language hop).
+//! glow/glow_run.rye -- lower a `.glow` generator to `.rye` (language hop).
 //!
 //!   rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run
 //!   glow/bin/glow_run glow/gen/bound-tick.glow
@@ -6,7 +6,7 @@
 //!
 //! Skips `::` comments and blanks. One rune line uses the head dispatch;
 //! two to four bare `=/` literals share one multi-line lower (STOA10).
-//! Named-cast dispatch peeks the shared token stream (STOA84 same-desk ·
+//! Named-cast dispatch peeks the shared token stream (STOA84 same-desk -
 //! STOA85 cross-desk). Build/run stay in tools/g/glow_run.rish.
 
 
@@ -91,8 +91,8 @@ pub fn main(init: std.process.Init) !u8 {
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
 
-    // STOA176: same-desk named-cast (≤9 `$:` faces → ≤12 Glow lines) bypasses
-    // the bare multi-line budget of six — peek + lower share named_cast_parts.
+    // STOA176: same-desk named-cast (≤9 `$:` faces -> ≤12 Glow lines) bypasses
+    // the bare multi-line budget of six -- peek + lower share named_cast_parts.
     if (!sample_argv and lower_named_cast.looks_like_named_cast(src)) {
         var nc_buf: [4096]u8 = undefined;
         const nc_len = lower_named_cast.lower_source_welcome(src, &nc_buf) catch |err| {

@@ -1,15 +1,15 @@
-//! mycelium/lapse_fixture_gen.rye — reproducibly emit a deadline-clock Cord dev-net fixture (r4 support).
+//! mycelium/lapse_fixture_gen.rye -- reproducibly emit a deadline-clock Cord dev-net fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Lapse · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Lapse - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
-//! Seats a real four-block scene carrying a genuine LAPSED reservation — a pledge opened under a
+//! Seats a real four-block scene carrying a genuine LAPSED reservation -- a pledge opened under a
 //! short deadline the order reaches before it is settled, and a second pledge left standing open
 //! under a far deadline. A demo funder issues a genesis credit of 200 to Alice (round 0); Alice
-//! pledges 100 to Bob under deadline 2 (round 1, id 0x01…) reserving her coins; Alice posts that
-//! pledge (round 2) — yet the post rides order position 2, so the clock has reached the deadline
+//! pledges 100 to Bob under deadline 2 (round 1, id 0x01...) reserving her coins; Alice posts that
+//! pledge (round 2) -- yet the post rides order position 2, so the clock has reached the deadline
 //! and the pledge LAPSES, the reserved hundred home to Alice, the post a no-op; Alice pledges 100
-//! to Carol under a far deadline (round 3, id 0x02…) and leaves it open. The whole order is
+//! to Carol under a far deadline (round 3, id 0x02...) and leaves it open. The whole order is
 //! unambiguous by round, so a keeper (or an awk) can walk the block lines in file order, track the
 //! deadline each pledge carries, and name the same lapsed recipient, lapsed count, and open count
 //! the Lapse's agreed-order resolution names. Committing and rendering to a `format cord-dag-v1`
@@ -20,7 +20,7 @@
 //! fixture is what the Cord emits, never a hand-mock. Emitted on stderr (hosted `print` is
 //! `std.debug.print`), so capture with `2>`.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse_fixture_gen.rye \
 //!     2> tools/fixtures/lapse_dag.bron
@@ -54,7 +54,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -65,7 +65,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn post_body(id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_post;
@@ -73,7 +73,7 @@ fn post_body(id: []const u8, out: []u8) u32 {
     return 1 + lapse.id_len;
 }
 
-/// Seat the deadline four-block Dag — genesis credits Alice 200; Alice pledges 100 to Bob under
+/// Seat the deadline four-block Dag -- genesis credits Alice 200; Alice pledges 100 to Bob under
 /// deadline 2 at round 1; Alice posts it at round 2, yet the clock has reached the deadline so the
 /// pledge LAPSES (coins home to Alice, the post a no-op); Alice pledges 100 to Carol under a far
 /// deadline at round 3 and leaves it open.
@@ -127,7 +127,7 @@ pub fn main() !void {
     const pl = try cord_bron.from_dag(&dag);
     var buf: [cord_bron.max_record]u8 = undefined;
     const n = try cord_bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_bron.max_record);
     print("{s}", .{buf[0..n]});

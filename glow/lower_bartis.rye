@@ -1,50 +1,50 @@
-//! glow/lower_bartis.rye — lower a thin `|=` bartis gate to runnable `.rye` (STOA100–107).
+//! glow/lower_bartis.rye -- lower a thin `|=` bartis gate to runnable `.rye` (STOA100-107).
 //!
-//! Identity gate: `|=  sample=@u32` / `sample` — takes u32 and returns it.
-//! Call body: `|=  sample=@u32` / `%-  <gate>  sample` — closed demos:
-//!   double → *% 2 (STOA103) · inc → +% 1 · dec → -% 1 (STOA104).
+//! Identity gate: `|=  sample=@u32` / `sample` -- takes u32 and returns it.
+//! Call body: `|=  sample=@u32` / `%-  <gate>  sample` -- closed demos:
+//!   double -> *% 2 (STOA103) - inc -> +% 1 - dec -> -% 1 (STOA104).
 //! STOA100: baked demo sample 5; identity exits 0 when bartis_gate(5) == 5.
-//! STOA101: argv sample path — main reads one decimal `@u32` and checks the body result.
-//! STOA105: TAME tidy — assert · u32 · append_print · split emitters.
-//! STOA107: nest/type surface — non-`@u32` sample refuses `SampleDoesNotNest`.
-//! STOA109 / STOA122: named molds `amount-mold` · `count-mold` lower as `@u32`.
-//! STOA123: `kind-mold` identity lowers as `KindShape` enum · baked `.mint`.
-//! STOA124: `xact-mold` identity lowers as `XactShape` union · baked `.mint` amount 5.
-//! STOA125: `xfer-mold` identity lowers as `XferShape` union · baked `.mint` from 5 amount 3.
-//! STOA126: `pair-mold` identity lowers as `PairShape` struct · baked from 5 amount 3.
-//! STOA134: `triple-mold` identity lowers as `TripleShape` struct · baked from 5 amount 3 fee 1.
-//! STOA135: `quad-mold` identity lowers as `QuadShape` struct · baked from 5 amount 3 fee 1 nonce 2.
-//! STOA136: `triple-mold` call body `%-  flip` → TripleShape swap · baked 5/3/1 → 3/5/1.
-//! STOA137: `quad-mold` call body `%-  flip` → QuadShape swap · baked 5/3/1/2 → 3/5/1/2.
-//! STOA138: `penta-mold` identity lowers as `PentaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7.
-//! STOA139: `penta-mold` call body `%-  flip` → PentaShape swap · baked 5/3/1/2/7 → 3/5/1/2/7.
-//! STOA140: `hexa-mold` identity lowers as `HexaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
-//! STOA141: `hexa-mold` call body `%-  flip` → HexaShape swap · baked 5/3/1/2/7/4 → 3/5/1/2/7/4.
-//! STOA142: `hepta-mold` identity lowers as `HeptaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
-//! STOA143: `hepta-mold` call body `%-  flip` → HeptaShape swap · baked 5/3/1/2/7/4/6 → 3/5/1/2/7/4/6.
-//! STOA144: `octa-mold` identity lowers as `OctaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
-//! STOA145: `octa-mold` call body `%-  flip` → OctaShape swap · baked 5/3/1/2/7/4/6/8 → 3/5/1/2/7/4/6/8.
-//! STOA146: `nona-mold` identity lowers as `NonaShape` struct · baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
-//! STOA147: `nona-mold` call body `%-  flip` → NonaShape swap · baked 5/3/1/2/7/4/6/8/9 → 3/5/1/2/7/4/6/8/9.
-//! STOA253: pair…nona identity emit collapses through `emit_n_field_identity`
-//! (faces · demos shared).
-//! STOA259: pair…nona flip call-body collapses through `emit_n_field_flip_call_body`
-//! (same faces · demos; from↔amount swap).
-//! STOA127: `kind-mold` call body `%-  flip` → KindShape switch · baked `.mint` → `.send`.
-//! STOA128: `xact-mold` call body `%-  flip` → XactShape switch · baked mint/5 → `.send`.
-//! STOA129: `xfer-mold` call body `%-  flip` → XferShape switch · baked mint/5/3 → `.send`.
+//! STOA101: argv sample path -- main reads one decimal `@u32` and checks the body result.
+//! STOA105: TAME tidy -- assert - u32 - append_print - split emitters.
+//! STOA107: nest/type surface -- non-`@u32` sample refuses `SampleDoesNotNest`.
+//! STOA109 / STOA122: named molds `amount-mold` - `count-mold` lower as `@u32`.
+//! STOA123: `kind-mold` identity lowers as `KindShape` enum - baked `.mint`.
+//! STOA124: `xact-mold` identity lowers as `XactShape` union - baked `.mint` amount 5.
+//! STOA125: `xfer-mold` identity lowers as `XferShape` union - baked `.mint` from 5 amount 3.
+//! STOA126: `pair-mold` identity lowers as `PairShape` struct - baked from 5 amount 3.
+//! STOA134: `triple-mold` identity lowers as `TripleShape` struct - baked from 5 amount 3 fee 1.
+//! STOA135: `quad-mold` identity lowers as `QuadShape` struct - baked from 5 amount 3 fee 1 nonce 2.
+//! STOA136: `triple-mold` call body `%-  flip` -> TripleShape swap - baked 5/3/1 -> 3/5/1.
+//! STOA137: `quad-mold` call body `%-  flip` -> QuadShape swap - baked 5/3/1/2 -> 3/5/1/2.
+//! STOA138: `penta-mold` identity lowers as `PentaShape` struct - baked from 5 amount 3 fee 1 nonce 2 memo 7.
+//! STOA139: `penta-mold` call body `%-  flip` -> PentaShape swap - baked 5/3/1/2/7 -> 3/5/1/2/7.
+//! STOA140: `hexa-mold` identity lowers as `HexaShape` struct - baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4.
+//! STOA141: `hexa-mold` call body `%-  flip` -> HexaShape swap - baked 5/3/1/2/7/4 -> 3/5/1/2/7/4.
+//! STOA142: `hepta-mold` identity lowers as `HeptaShape` struct - baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6.
+//! STOA143: `hepta-mold` call body `%-  flip` -> HeptaShape swap - baked 5/3/1/2/7/4/6 -> 3/5/1/2/7/4/6.
+//! STOA144: `octa-mold` identity lowers as `OctaShape` struct - baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8.
+//! STOA145: `octa-mold` call body `%-  flip` -> OctaShape swap - baked 5/3/1/2/7/4/6/8 -> 3/5/1/2/7/4/6/8.
+//! STOA146: `nona-mold` identity lowers as `NonaShape` struct - baked from 5 amount 3 fee 1 nonce 2 memo 7 tag 4 to 6 via 8 ref 9.
+//! STOA147: `nona-mold` call body `%-  flip` -> NonaShape swap - baked 5/3/1/2/7/4/6/8/9 -> 3/5/1/2/7/4/6/8/9.
+//! STOA253: pair...nona identity emit collapses through `emit_n_field_identity`
+//! (faces - demos shared).
+//! STOA259: pair...nona flip call-body collapses through `emit_n_field_flip_call_body`
+//! (same faces - demos; from<->amount swap).
+//! STOA127: `kind-mold` call body `%-  flip` -> KindShape switch - baked `.mint` -> `.send`.
+//! STOA128: `xact-mold` call body `%-  flip` -> XactShape switch - baked mint/5 -> `.send`.
+//! STOA129: `xfer-mold` call body `%-  flip` -> XferShape switch - baked mint/5/3 -> `.send`.
 //! STOA293: xact+xfer flip call-body collapses through `emit_tagged_payload_flip_call_body`
 //!   (mint_faces 1|2). Kind unit flip stays its own family.
 //! STOA297: kind flip call-body collapses through `emit_tagged_unit_flip_call_body`.
-//! STOA131: `pair-mold` call body `%-  flip` → PairShape swap · baked 5/3 → 3/5.
-//! STOA132: `amount-mold` argv identity — generator beside fixture (u32-shaped named mold).
-//! STOA133: `count-mold` argv identity — twin generator beside fixture.
-//! STOA300: `kind-mold` argv identity — unit-tag reader (`mint`/`send`).
-//! STOA303: `xact-mold` argv identity — payload tag + amount (`mint <u32>` / `send`).
-//! STOA305: `xfer-mold` argv identity — payload tag + two mint faces (`mint <from> <amount>` / `send`).
-//! STOA307–321: pair…nona `$:` argv readers (survey).
-//! STOA324: `$:` argv dispatch collapses — shape → N → `emit_n_field_argv` (sameness).
-//! STOA326: `$:` welcome dispatch collapses — shape → N → identity / flip (sameness).
+//! STOA131: `pair-mold` call body `%-  flip` -> PairShape swap - baked 5/3 -> 3/5.
+//! STOA132: `amount-mold` argv identity -- generator beside fixture (u32-shaped named mold).
+//! STOA133: `count-mold` argv identity -- twin generator beside fixture.
+//! STOA300: `kind-mold` argv identity -- unit-tag reader (`mint`/`send`).
+//! STOA303: `xact-mold` argv identity -- payload tag + amount (`mint <u32>` / `send`).
+//! STOA305: `xfer-mold` argv identity -- payload tag + two mint faces (`mint <from> <amount>` / `send`).
+//! STOA307-321: pair...nona `$:` argv readers (survey).
+//! STOA324: `$:` argv dispatch collapses -- shape -> N -> `emit_n_field_argv` (sameness).
+//! STOA326: `$:` welcome dispatch collapses -- shape -> N -> identity / flip (sameness).
 //! STOA328: N-path reads `nest_type.closed_tuple_field_count`; living locals say shape.
 //! STOA338a: pair-faces parse seats; lower answers PairNotYetLowered until 338b.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
@@ -60,10 +60,10 @@ pub const LowerError = rb.ParseError || error{Overflow};
 pub const bartis_demo_sample: u32 = 5;
 /// Expected result for identity body with baked sample.
 pub const bartis_identity_expect: u32 = 5;
-/// Baked multi-face xfer mint (matches mold-xfer welcome · STOA125).
+/// Baked multi-face xfer mint (matches mold-xfer welcome - STOA125).
 pub const bartis_xfer_demo_from: u32 = 5;
 pub const bartis_xfer_demo_amount: u32 = 3;
-/// Baked multi-field pair (matches mold-pair welcome · STOA126).
+/// Baked multi-field pair (matches mold-pair welcome - STOA126).
 pub const bartis_pair_demo_from: u32 = 5;
 pub const bartis_pair_demo_amount: u32 = 3;
 pub const bartis_triple_demo_from: u32 = 5;
@@ -188,7 +188,7 @@ fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]c
         return std.fmt.bufPrint(buf, "if ({s} <= {d}) 1 else 0", .{ zface, rb.max_prodto_bound }) catch return error.Overflow;
     }
     if (std.mem.eql(u8, gate, "gardens_lawful")) {
-        // STOA344 · O3: the check reads the vane's own constant through the plant's import.
+        // STOA344 - O3: the check reads the vane's own constant through the plant's import.
         return std.fmt.bufPrint(buf, "if ({s} <= gardens.max_gardens) 1 else 0", .{zface}) catch return error.Overflow;
     }
     if (std.mem.eql(u8, gate, "caps_lawful")) {
@@ -224,7 +224,7 @@ fn call_expect(gate: []const u8, sample: u32) LowerError!u32 {
 
 fn fold_sumto_expect(n: u32, bound: u32) u32 {
     if (n == 0 or n > bound) return 0;
-    // Triangular number 1..n — closed form, width named.
+    // Triangular number 1..n -- closed form, width named.
     return (n *% (n +% 1)) / 2;
 }
 
@@ -255,7 +255,7 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
     };
 }
 
-/// STOA333/335: welcome-path expect for `|+ sum` — sum of closed-tuple demos for the sample's N.
+/// STOA333/335: welcome-path expect for `|+ sum` -- sum of closed-tuple demos for the sample's N.
 fn fold_sum_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
     const sn = rb.shape_name_slice(spec);
     const n = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
@@ -267,7 +267,7 @@ fn fold_sum_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
     return acc;
 }
 
-/// STOA336: product expect over the same demo fields — identity 1, not 0.
+/// STOA336: product expect over the same demo fields -- identity 1, not 0.
 fn fold_prod_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
     const sn = rb.shape_name_slice(spec);
     const n = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
@@ -308,9 +308,9 @@ fn emit_fold_prodto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32
 }
 
 
-/// STOA333: pair list-fold welcome — seated elder bytes; STOA335 delegates here at n=2.
+/// STOA333: pair list-fold welcome -- seated elder bytes; STOA335 delegates here at n=2.
 
-/// STOA336: list fold by product — welcome path. Operator *%; identity of none is 1.
+/// STOA336: list fold by product -- welcome path. Operator *%; identity of none is 1.
 fn emit_fold_prod_n_welcome(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -357,7 +357,7 @@ fn emit_fold_prod_n_welcome(out: []u8, field_count: u32, zface: []const u8, comm
     return used;
 }
 
-/// STOA336: list fold by product — argv path; answer spoken; wraps with *%.
+/// STOA336: list fold by product -- argv path; answer spoken; wraps with *%.
 fn emit_fold_prod_n_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -434,7 +434,7 @@ fn emit_fold_sum_pair_welcome(out: []u8, zface: []const u8, comment: []const u8)
     return used;
 }
 
-/// STOA333: pair list-fold argv — seated elder bytes; STOA335 delegates here at n=2.
+/// STOA333: pair list-fold argv -- seated elder bytes; STOA335 delegates here at n=2.
 fn emit_fold_sum_pair_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -463,7 +463,7 @@ fn emit_fold_sum_pair_argv(out: []u8, zface: []const u8, comment: []const u8) Lo
     return used;
 }
 
-/// STOA335: `|+ sum` over closed `$:` pair…nona — at n=2 delegates to the elder pair emitter.
+/// STOA335: `|+ sum` over closed `$:` pair...nona -- at n=2 delegates to the elder pair emitter.
 fn emit_fold_sum_n_welcome(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -511,7 +511,7 @@ fn emit_fold_sum_n_welcome(out: []u8, field_count: u32, zface: []const u8, comme
     return used;
 }
 
-/// STOA335: `|+ sum` argv — at n=2 delegates to the elder pair emitter.
+/// STOA335: `|+ sum` argv -- at n=2 delegates to the elder pair emitter.
 fn emit_fold_sum_n_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -600,7 +600,7 @@ fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const
     try append_print(out, used, "}}\n", .{});
 }
 
-/// PLEAC 1.2 — the speaking argv main: the gate's answer reaches stdout.
+/// PLEAC 1.2 -- the speaking argv main: the gate's answer reaches stdout.
 /// say is argv-only; the welcome road refuses it honestly at expect_for.
 fn emit_argv_speaking_main(out: []u8, used: *u32, zface: []const u8) LowerError!void {
     try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
@@ -637,7 +637,7 @@ fn is_xfer_sample(spec: *const rb.GateSpec) bool {
     return nest_type.is_xfer_named_shape(rb.shape_name_slice(spec));
 }
 
-/// STOA123: closed unit `$%` kind-mold identity → KindShape enum · baked `.mint`.
+/// STOA123: closed unit `$%` kind-mold identity -> KindShape enum - baked `.mint`.
 fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -656,7 +656,7 @@ fn emit_kind_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA300: closed unit `$%` kind-mold argv identity → KindShape · tag word from argv.
+/// STOA300: closed unit `$%` kind-mold argv identity -> KindShape - tag word from argv.
 fn emit_kind_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -679,8 +679,8 @@ fn emit_kind_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
     return used;
 }
 
-/// STOA303: closed payload `$%` xact-mold argv identity → XactShape · tag + amount from argv.
-/// `mint <u32>` → `.mint { .amount }` · `send` → `.send`. Distinct from kind unit tags and u32 parseInt-only.
+/// STOA303: closed payload `$%` xact-mold argv identity -> XactShape - tag + amount from argv.
+/// `mint <u32>` -> `.mint { .amount }` - `send` -> `.send`. Distinct from kind unit tags and u32 parseInt-only.
 fn emit_xact_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -713,7 +713,7 @@ fn emit_xact_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
     return used;
 }
 
-/// STOA305: closed multi-face payload `$%` xfer-mold argv identity → XferShape · tag + from/amount.
+/// STOA305: closed multi-face payload `$%` xfer-mold argv identity -> XferShape - tag + from/amount.
 /// `mint <from> <amount>` / `send`. Distinct from xact (one mint face) and kind unit tags.
 fn emit_xfer_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
@@ -748,7 +748,7 @@ fn emit_xfer_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
     return used;
 }
 
-/// STOA127 / STOA297: closed unit `$%` kind-mold call body → KindShape flip (via unit helper).
+/// STOA127 / STOA297: closed unit `$%` kind-mold call body -> KindShape flip (via unit helper).
 fn emit_kind_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the body written below is shaped for this one gate kind, so the parse and the
     // lowering are pinned to each other here -- a gate of another kind would be lowered as this
@@ -758,7 +758,7 @@ fn emit_kind_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
 }
 
 /// STOA297: one tagged-unit `$%` flip call-body emit for kind (KindShape enum).
-/// mint ↔ send. Distinct from payload union flip and from `$:` N-field.
+/// mint <-> send. Distinct from payload union flip and from `$:` N-field.
 fn emit_tagged_unit_flip_call_body(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -777,7 +777,7 @@ fn emit_tagged_unit_flip_call_body(out: []u8, zface: []const u8, comment: []cons
     return used;
 }
 
-/// STOA124: closed payload `$%` xact-mold identity → XactShape union · baked mint/5.
+/// STOA124: closed payload `$%` xact-mold identity -> XactShape union - baked mint/5.
 fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -799,7 +799,7 @@ fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA128 / STOA293: closed payload `$%` xact-mold call body → XactShape flip (via payload helper).
+/// STOA128 / STOA293: closed payload `$%` xact-mold call body -> XactShape flip (via payload helper).
 fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the body written below is shaped for this one gate kind, so the parse and the
     // lowering are pinned to each other here -- a gate of another kind would be lowered as this
@@ -808,7 +808,7 @@ fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
     return emit_tagged_payload_flip_call_body(out, 1, zface, comment);
 }
 
-/// STOA125: closed multi-face payload `$%` xfer-mold → XferShape · baked mint/5/3.
+/// STOA125: closed multi-face payload `$%` xfer-mold -> XferShape - baked mint/5/3.
 fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
@@ -830,7 +830,7 @@ fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
     return used;
 }
 
-/// STOA129 / STOA293: closed multi-face payload `$%` xfer-mold call body → XferShape flip (via payload helper).
+/// STOA129 / STOA293: closed multi-face payload `$%` xfer-mold call body -> XferShape flip (via payload helper).
 fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the body written below is shaped for this one gate kind, so the parse and the
     // lowering are pinned to each other here -- a gate of another kind would be lowered as this
@@ -840,7 +840,7 @@ fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: 
 }
 
 /// STOA293: one tagged-payload `$%` flip call-body emit for xact (1 mint face) and xfer (2).
-/// mint → .send; send → empty mint. Distinct from KindShape unit-enum flip and from `$:` N-field.
+/// mint -> .send; send -> empty mint. Distinct from KindShape unit-enum flip and from `$:` N-field.
 fn emit_tagged_payload_flip_call_body(out: []u8, mint_faces: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the tagged payload is emitted in a one-face or a two-face form and no other,
     // so a third would fall through to whichever branch came last
@@ -878,10 +878,10 @@ fn emit_tagged_payload_flip_call_body(out: []u8, mint_faces: u32, zface: []const
     return used;
 }
 
-/// Closed `$:` face order for pair…nona identity emit (STOA253).
+/// Closed `$:` face order for pair...nona identity emit (STOA253).
 const closed_tuple_faces = [_][]const u8{ "from", "amount", "fee", "nonce", "memo", "tag", "to", "via", "ref" };
 
-/// Closed `$:` demo vals for pair…nona identity emit (STOA253) — matches seated pins.
+/// Closed `$:` demo vals for pair...nona identity emit (STOA253) -- matches seated pins.
 const closed_tuple_demos = [_]u32{ 5, 3, 1, 2, 7, 4, 6, 8, 9 };
 
 fn closed_tuple_type_name(field_count: u32) []const u8 {
@@ -898,7 +898,7 @@ fn closed_tuple_type_name(field_count: u32) []const u8 {
     };
 }
 
-/// STOA307 / STOA324: N-field `$:` argv identity — parse N decimals from argv[1..N].
+/// STOA307 / STOA324: N-field `$:` argv identity -- parse N decimals from argv[1..N].
 /// Distinct from tagged `$%` argv and from single-u32 parseInt.
 fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
@@ -955,7 +955,7 @@ fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []
     return used;
 }
 
-/// STOA253: one N-field identity emit for closed `$:` pair…nona (N = 2…9).
+/// STOA253: one N-field identity emit for closed `$:` pair...nona (N = 2...9).
 fn emit_n_field_identity(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -1001,8 +1001,8 @@ fn emit_n_field_identity(out: []u8, field_count: u32, zface: []const u8, comment
     return used;
 }
 
-/// STOA259: one N-field flip call-body emit for closed `$:` pair…nona (N = 2…9).
-/// Swaps from↔amount; remaining faces pass through. Demo pins match closed_tuple_demos.
+/// STOA259: one N-field flip call-body emit for closed `$:` pair...nona (N = 2...9).
+/// Swaps from<->amount; remaining faces pass through. Demo pins match closed_tuple_demos.
 fn emit_n_field_flip_call_body(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
     // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
@@ -1152,7 +1152,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA326: closed `$:` pair…nona welcome — one path (shape → N → identity / flip).
+    // STOA326: closed `$:` pair...nona welcome -- one path (shape -> N -> identity / flip).
     if (nest_type.closed_tuple_field_count(shape)) |n| {
         switch (spec.body) {
             .identity => {
@@ -1206,7 +1206,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             // lowered as this one
             assert(rb.is_closed_call_gate(gate));
             if (vane_decide_import(gate)) |imp| {
-                // STOA344/345 · O3: the plant imports its vane; the expect lives in-plant.
+                // STOA344/345 - O3: the plant imports its vane; the expect lives in-plant.
                 try append_print(out, &used, "{s}", .{imp});
                 var body_buf: [160]u8 = undefined;
                 const body_return = try call_body_expr(gate, zface, &body_buf);
@@ -1286,7 +1286,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
     const zn = try zig_safe_ident(face, &zig_face_buf);
     const zface = zig_face_buf[0..@as(usize, @intCast(zn))];
 
-    // STOA300: kind unit-tag argv identity — distinct from u32 parseInt reader.
+    // STOA300: kind unit-tag argv identity -- distinct from u32 parseInt reader.
     if (is_kind_sample(spec)) {
         switch (spec.body) {
             .identity => {
@@ -1306,7 +1306,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA303: xact payload argv identity — tag + amount; distinct from kind and u32-only.
+    // STOA303: xact payload argv identity -- tag + amount; distinct from kind and u32-only.
     if (is_xact_sample(spec)) {
         switch (spec.body) {
             .identity => {
@@ -1326,7 +1326,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA305: xfer payload argv identity — tag + from/amount.
+    // STOA305: xfer payload argv identity -- tag + from/amount.
     if (is_xfer_sample(spec)) {
         switch (spec.body) {
             .identity => {
@@ -1346,7 +1346,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         }
     }
 
-    // STOA324: closed `$:` pair…nona argv — one path (shape → N → emit_n_field_argv).
+    // STOA324: closed `$:` pair...nona argv -- one path (shape -> N -> emit_n_field_argv).
     if (nest_type.closed_tuple_field_count(shape)) |n| {
         switch (spec.body) {
             .identity => {
@@ -1399,7 +1399,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return used;
             }
             if (vane_decide_import(gate)) |imp| {
-                // STOA344/345 · O3: the argv plant imports its vane; body and expect share one expression.
+                // STOA344/345 - O3: the argv plant imports its vane; body and expect share one expression.
                 try append_print(out, &used, "{s}", .{imp});
             }
             var body_buf: [160]u8 = undefined;

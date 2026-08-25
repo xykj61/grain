@@ -1,31 +1,31 @@
-//! lotus/stereo_decimate.rye — ALES137: the sample-rate decimator carried into stereo, ONE SHARED RUN GRID, the time corner of the stereo NONLINEAR class. ALES83 named `decimate` — a zero-order hold: partition
+//! lotus/stereo_decimate.rye -- ALES137: the sample-rate decimator carried into stereo, ONE SHARED RUN GRID, the time corner of the stereo NONLINEAR class. ALES83 named `decimate` -- a zero-order hold: partition
 //! a span into runs of `hold` samples anchored at `start`, and pin every sample in a run to the run's FIRST sample (its anchor), so a stream that entered at the full rate leaves at half, a quarter, a
 //! sixteenth: the aliased, stepped, sample-and-hold voice of a converter read too slow. Where ALES136's bit-crush drops the low bits (the resolution axis) and the four amplitude corners shape the value, the
-//! decimator shapes the THIRD axis — TIME — holding one sample across a whole run. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the
+//! decimator shapes the THIRD axis -- TIME -- holding one sample across a whole run. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the
 //! SAME length. This rung carries the decimator into stereo the plain way: run ALES83's proven mono `decimate` on each channel with the SAME hold, so one run grid lands on BOTH speakers together.
 //!
 //! The decimator is the HONEST REVERSE of the two not-odd members (ALES135 tube, ALES136 crush). Crush and tube compute NEW values, so they broke the inter-channel image; the decimator computes NO new number
-//! at all — it COPIES an anchor across its run. Both channels share the same run grid (the same start and hold), so at each time index each channel holds ITS OWN anchor, and the stereo image at that index
-//! equals the image that was at the run's anchor. The inter-channel relationship is therefore PRESERVED from the anchor — an out-of-phase master STAYS out of phase (right = −left holds through, since
-//! right[i] = right[anchor] = −left[anchor] = −left[i]), a 1:2 master keeps its ratio at each held index, an identical-channel master stays identical — smeared in time, never split across channels. That is the
+//! at all -- it COPIES an anchor across its run. Both channels share the same run grid (the same start and hold), so at each time index each channel holds ITS OWN anchor, and the stereo image at that index
+//! equals the image that was at the run's anchor. The inter-channel relationship is therefore PRESERVED from the anchor -- an out-of-phase master STAYS out of phase (right = −left holds through, since
+//! right[i] = right[anchor] = −left[anchor] = −left[i]), a 1:2 master keeps its ratio at each held index, an identical-channel master stays identical -- smeared in time, never split across channels. That is the
 //! honest contrast the not-odd members lack, stated positively.
 //!
-//! The rule, stated once: the mono decimator carries NO pre-gain and NO grid — a pure time map, the crush's twin. Refuse BadHold (a hold outside [1, max_clip]) and BadRange (a span outside the samples) BEFORE
-//! either channel is mutated — each fault depends only on the shared hold or the shared length, so each check is made ONCE up front, and a refusal never decimates one channel and leaves the other at the full
-//! rate; otherwise decimate both channels over [start, start+count) by `hold` via ALES83's `decimate`. DecimateError reused whole — the stereo lift adds no fault.
+//! The rule, stated once: the mono decimator carries NO pre-gain and NO grid -- a pure time map, the crush's twin. Refuse BadHold (a hold outside [1, max_clip]) and BadRange (a span outside the samples) BEFORE
+//! either channel is mutated -- each fault depends only on the shared hold or the shared length, so each check is made ONCE up front, and a refusal never decimates one channel and leaves the other at the full
+//! rate; otherwise decimate both channels over [start, start+count) by `hold` via ALES83's `decimate`. DecimateError reused whole -- the stereo lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO DECIMATE LAW: each channel equals ALES83's mono `decimate` with the same `hold` over the same span byte for byte — every sample equals its run's anchor, the runs
+//! The crux -- four laws. THE STEREO DECIMATE LAW: each channel equals ALES83's mono `decimate` with the same `hold` over the same span byte for byte -- every sample equals its run's anchor, the runs
 //! partitioned identically in each channel because the grid is shared. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a decimation copies values only). THE
-//! SHARED-GRID IMAGE LAW: because both channels hold their own anchor at the same time index, the stereo image at each index equals the image at that run's anchor — an out-of-phase master STAYS out of phase, a
+//! SHARED-GRID IMAGE LAW: because both channels hold their own anchor at the same time index, the stereo image at each index equals the image at that run's anchor -- an out-of-phase master STAYS out of phase, a
 //! 1:2 master keeps its ratio at each held index, an identical-channel master stays identical (the honest reverse of the not-odd members, which broke the image); the map is idempotent, hold = 1 the identity.
 //! THE ATOMICITY / DEGENERATE LAW: any refusal (BadHold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; hold = 1 the identity on both, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES137.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES137.
 //! Design read: active-designing/date/20260815/20260815-035333_fill-ales137-lotus-stereo-decimate.md
-//! Stands on: lotus/decimate.rye (ALES83) — the mono zero-order hold run once per channel; lotus/stereo_crush.rye (ALES136) — the resolution-axis twin whose image-breaking this rung reverses; lotus/pan.rye
-//! (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max, max_clip.
+//! Stands on: lotus/decimate.rye (ALES83) -- the mono zero-order hold run once per channel; lotus/stereo_crush.rye (ALES136) -- the resolution-axis twin whose image-breaking this rung reverses; lotus/pan.rye
+//! (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max, max_clip.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES83's own decimate, copying existing
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES83's own decimate, copying existing
 //! samples and fabricating none, never a length; the `hold` is a sample count (unity = 1), the shape a zero-order hold, instantaneous per run (no interpolation, no anti-aliasing filter). No real sample rate, no
 //! network, no keys, no funds, no real device, no real speaker.
 //!
@@ -41,18 +41,18 @@ const decimate = @import("decimate.rye");
 
 pub const stereo_decimate_version = "20260815.035333";
 
-/// Stereo decimate's faults are exactly ALES83's own `DecimateError` — `BadHold` (a hold outside [1, max_clip]) and `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new
+/// Stereo decimate's faults are exactly ALES83's own `DecimateError` -- `BadHold` (a hold outside [1, max_clip]) and `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new
 /// fault: it only runs the same decimation on each channel after one shared validation.
 pub const StereoDecimateError = decimate.DecimateError;
 
 /// Decimate `[start, start+count)` in BOTH channels of `sc` by the same `hold`, the SAME run grid on each, running ALES83's proven mono `decimate`. Each run of `hold` samples is held to its first sample (its
-/// anchor) — a zero-order hold on the time axis. `hold = 1` is the identity. Validates both channels once against the shared hold and length before either is mutated: refuses `BadHold` / `BadRange`, both
-/// channels untouched. Values only — never the length; the two channels leave balanced.
+/// anchor) -- a zero-order hold on the time axis. `hold = 1` is the identity. Validates both channels once against the shared hold and length before either is mutated: refuses `BadHold` / `BadRange`, both
+/// channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_decimate(sc: *pan.StereoClip, start: u32, count: u32, hold: u32) StereoDecimateError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the hold and span are legal — refused by name before any write, so a refusal never decimates one channel and leaves the other at the full rate. The hold check depends only on the shared hold;
+    // invariant: the hold and span are legal -- refused by name before any write, so a refusal never decimates one channel and leaves the other at the full rate. The hold check depends only on the shared hold;
     // the span check on the shared length. These mirror ALES83's own guards exactly, so each mono decimation below is pre-validated to succeed.
     if (hold < 1) return error.BadHold;
     if (hold > decimate.max_hold) return error.BadHold;
@@ -60,18 +60,18 @@ pub fn stereo_decimate(sc: *pan.StereoClip, start: u32, count: u32, hold: u32) S
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono decimation is pre-validated to succeed — no refusal can land between the two channel edits. The SAME run grid on each.
+    // Every check passed and holds identically for both channels, so each mono decimation is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME run grid on each.
     try decimate.decimate(&sc.left, start, count, hold);
     try decimate.decimate(&sc.right, start, count, hold);
 
-    // invariant: the channels leave balanced — a decimation copies values only, so each channel holds its starting length and the stereo image stays aligned.
+    // invariant: the channels leave balanced -- a decimation copies values only, so each channel holds its starting length and the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO DECIMATE LAW — each channel equals ALES83's mono decimate with the same hold byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length;
-//     THE SHARED-GRID IMAGE LAW — the stereo image at each index equals the image at its run's anchor, an OUT-OF-PHASE master STAYING out of phase (the honest reverse of the not-odd members), a 1:2 master
-//     keeping its ratio at each held index, an identical-channel master staying identical, the map idempotent, hold = 1 the identity; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched
+// --- selftest: THE STEREO DECIMATE LAW -- each channel equals ALES83's mono decimate with the same hold byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
+//     THE SHARED-GRID IMAGE LAW -- the stereo image at each index equals the image at its run's anchor, an OUT-OF-PHASE master STAYING out of phase (the honest reverse of the not-odd members), a 1:2 master
+//     keeping its ratio at each held index, an identical-channel master staying identical, the map idempotent, hold = 1 the identity; THE ATOMICITY / DEGENERATE LAW -- each refusal leaves both channels untouched
 //     and balanced, hold = 1 the identity, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -87,7 +87,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO DECIMATE LAW — each channel equals ALES83's mono decimate with the same hold, proven side by side over one span with different per-channel samples; a hold of 2 keeps every other sample and
+    // 1. THE STEREO DECIMATE LAW -- each channel equals ALES83's mono decimate with the same hold, proven side by side over one span with different per-channel samples; a hold of 2 keeps every other sample and
     //    repeats it once, per channel, the runs partitioned identically because the grid is shared.
     {
         var sc = pan.StereoClip{};
@@ -103,12 +103,12 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: hold 2 holds each pair to its first — {300,300,1000,1000} / {100,100,2500,2500}.
+        // by hand: hold 2 holds each pair to its first -- {300,300,1000,1000} / {100,100,2500,2500}.
         if (!eq(sc.left.samples(), &[_]i16{ 300, 300, 1000, 1000 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 100, 100, 2500, 2500 })) return error.RightHandWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a decimation copies values only. Proven at an even and an odd length (the odd length forcing a partial
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a decimation copies values only. Proven at an even and an odd length (the odd length forcing a partial
     //    last run).
     {
         var even = pan.StereoClip{};
@@ -127,8 +127,8 @@ fn run_selftest() !u8 {
         if (!eq(odd.right.samples(), &[_]i16{ 300, 300, 100 })) return error.OddPartialRightWrong;
     }
 
-    // 3a. THE SHARED-GRID IMAGE LAW, the ANTISYMMETRY HOLDS — an out-of-phase master (right the exact negation of left) decimated through the same run grid STAYS out of phase, because the decimator copies each
-    //     channel's own anchor at the same time index: right[i] = right[anchor] = −left[anchor] = −left[i]. This is the HONEST REVERSE of ALES135/136 (the not-odd members that broke the antisymmetry) — the
+    // 3a. THE SHARED-GRID IMAGE LAW, the ANTISYMMETRY HOLDS -- an out-of-phase master (right the exact negation of left) decimated through the same run grid STAYS out of phase, because the decimator copies each
+    //     channel's own anchor at the same time index: right[i] = right[anchor] = −left[anchor] = −left[i]. This is the HONEST REVERSE of ALES135/136 (the not-odd members that broke the antisymmetry) -- the
     //     decimator computes no new value, so it preserves the image.
     {
         var sc = pan.StereoClip{};
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3b. THE SHARED-GRID IMAGE LAW, the RATIO HOLDS — a 1:2 master (right twice left) keeps its 1:2 ratio at each held index, because both channels hold their own anchor at the same time index. Where a not-odd
+    // 3b. THE SHARED-GRID IMAGE LAW, the RATIO HOLDS -- a 1:2 master (right twice left) keeps its 1:2 ratio at each held index, because both channels hold their own anchor at the same time index. Where a not-odd
     //     map compressed the ratio, the decimator preserves it.
     {
         var sc = pan.StereoClip{};
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3c. idempotence, and an identical-channel master stays identical — a held run holds to the same anchor, so decimating twice equals once on both channels; and a shared grid on equal inputs gives equal
+    // 3c. idempotence, and an identical-channel master stays identical -- a held run holds to the same anchor, so decimating twice equals once on both channels; and a shared grid on equal inputs gives equal
     //     outputs.
     {
         var once = pan.StereoClip{};
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         if (!eq(same.left.samples(), same.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 4a. THE ATOMICITY LAW, bad hold — a hold of zero refuses BadHold, both channels byte for byte untouched and still balanced.
+    // 4a. THE ATOMICITY LAW, bad hold -- a hold of zero refuses BadHold, both channels byte for byte untouched and still balanced.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadHoldUnbalanced;
     }
 
-    // 4b. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    // 4b. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — hold = 1 makes each run one sample held to itself, so it is the identity on both channels; and count = 0 is the identity on both.
+    // 4c. THE DEGENERATE LAW -- hold = 1 makes each run one sample held to itself, so it is the identity on both channels; and count = 0 is the identity on both.
     {
         var unit = pan.StereoClip{};
         try load_stereo(&unit, &[_]i16{ 401, -299, 703 }, &[_]i16{ -701, 201, -401 });

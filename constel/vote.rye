@@ -1,25 +1,25 @@
-//! constel/vote.rye — FORA21: a vote goes only to an up-to-date log (Raft §5.4.1, the election restriction). FORA18 stated the
-//! Figure 8 commit rule and rested its transitive commit on a promise — "Leader Completeness guarantees no future leader can be
+//! constel/vote.rye -- FORA21: a vote goes only to an up-to-date log (Raft §5.4.1, the election restriction). FORA18 stated the
+//! Figure 8 commit rule and rested its transitive commit on a promise -- "Leader Completeness guarantees no future leader can be
 //! elected without them." That promise is not free; it is earned by one rule this ladder had not yet written:
 //!
 //!   A voter grants its vote to a candidate ONLY IF the candidate's log is at least as up-to-date as its own. "Up-to-date" is
 //!   compared by the last entry: a higher last TERM wins; at an equal last term, the LONGER log wins.
 //!
-//! Without it, a candidate whose log is MISSING a committed entry could still gather a majority and win — then, as leader,
-//! overwrite that committed entry or never learn of it, forking the ledger FORA12–FORA18 worked to keep whole. This rung writes
+//! Without it, a candidate whose log is MISSING a committed entry could still gather a majority and win -- then, as leader,
+//! overwrite that committed entry or never learn of it, forking the ledger FORA12-FORA18 worked to keep whole. This rung writes
 //! the restriction and proves the completeness it buys, by the same intersection lemma that made the leader unique (FORA9) and
 //! the commit safe (FORA18): any majority an incomplete candidate needs intersects the committed majority at a voter that HOLDS
-//! the entry, and that voter — strictly more up-to-date — refuses. So no candidate lacking a committed entry can ever win.
+//! the entry, and that voter -- strictly more up-to-date -- refuses. So no candidate lacking a committed entry can ever win.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA21. Design read: active-designing/date/20260814/20260814-084300_fora21-constel-vote-election-restriction.md
-//! Stands on: constel/repair.rye (FORA17) — the TermedLog, its last_term and length, the (lastTerm, lastIndex) pair §5.4.1
-//! compares; constel/quorum.rye (FORA9) — majority_of, the intersection lemma; constel/commit.rye (FORA18) — the committed prefix
+//! Stands on: constel/repair.rye (FORA17) -- the TermedLog, its last_term and length, the (lastTerm, lastIndex) pair §5.4.1
+//! compares; constel/quorum.rye (FORA9) -- majority_of, the intersection lemma; constel/commit.rye (FORA18) -- the committed prefix
 //! whose completeness this guarantees.
 //!
-//! Purely LOCAL — bounded in-memory TermedLogs and a vote count on one bench, siloed to constel/, run from inside the jailed pier.
-//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and
-//! gate %4 — real Kumara — both untouched). A served election reaches the Comlink-served gate; the socket rung stays the
+//! Purely LOCAL -- bounded in-memory TermedLogs and a vote count on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and
+//! gate %4 -- real Kumara -- both untouched). A served election reaches the Comlink-served gate; the socket rung stays the
 //! maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/vote.rye selftest
@@ -39,15 +39,15 @@ const max_entries = repair.max_entries;
 
 /// THE UP-TO-DATE COMPARISON (Raft §5.4.1): is a candidate's log at least as up-to-date as a voter's? A higher last TERM wins
 /// outright; at an equal last term, the LONGER (or equal-length) log wins. This is the whole election restriction in one
-/// predicate — compared by the last entry alone, exactly as Raft's RequestVote does.
+/// predicate -- compared by the last entry alone, exactly as Raft's RequestVote does.
 pub fn at_least_as_current(cand_last_term: u32, cand_len: u32, voter_last_term: u32, voter_len: u32) bool {
-    // invariant: lengths are bounded by the entry cap — a log never claims more entries than it can hold.
+    // invariant: lengths are bounded by the entry cap -- a log never claims more entries than it can hold.
     assert(cand_len <= max_entries and voter_len <= max_entries);
     if (cand_last_term != voter_last_term) return cand_last_term > voter_last_term;
     return cand_len >= voter_len; // equal last term — the longer log carries at least as much history
 }
 
-/// A VOTER GRANTS ITS VOTE iff the candidate is at least as up-to-date as the voter's own log — the AppendEntries-free half of a
+/// A VOTER GRANTS ITS VOTE iff the candidate is at least as up-to-date as the voter's own log -- the AppendEntries-free half of a
 /// RequestVote. The voter measures the candidate against its OWN last term and length; a candidate one entry short at the same
 /// term is refused.
 pub fn grant_vote(voter_log: *const TermedLog, cand_last_term: u32, cand_len: u32) bool {
@@ -57,7 +57,7 @@ pub fn grant_vote(voter_log: *const TermedLog, cand_last_term: u32, cand_len: u3
 }
 
 /// HOW MANY OF A BOUNDED ROSTER WOULD GRANT the candidate their vote. A candidate wins the election iff this reaches the majority
-/// threshold — the counting form of the restriction, over the same bound every Constel roster keeps.
+/// threshold -- the counting form of the restriction, over the same bound every Constel roster keeps.
 pub fn poll(voter_logs: []const *const TermedLog, cand_last_term: u32, cand_len: u32) u32 {
     // invariant: the roster polled is bounded to the constellation.
     assert(voter_logs.len <= roster.max_piers);
@@ -77,7 +77,7 @@ pub fn poll(voter_logs: []const *const TermedLog, cand_last_term: u32, cand_len:
 //     bounded. ------------------------------------------------------------------------------------------------------------------
 
 fn run_selftest() !u8 {
-    // 1. THE UP-TO-DATE PREDICATE IS RAFT §5.4.1 — the full truth table over (last_term, len).
+    // 1. THE UP-TO-DATE PREDICATE IS RAFT §5.4.1 -- the full truth table over (last_term, len).
     {
         assert(at_least_as_current(3, 1, 2, 9)); // a higher last term wins regardless of length
         assert(!at_least_as_current(2, 9, 3, 1)); // a lower last term loses even when far longer
@@ -86,7 +86,7 @@ fn run_selftest() !u8 {
         assert(!at_least_as_current(2, 4, 2, 5)); // equal term, SHORTER — not current, the restriction bites
     }
 
-    // 2. A VOTE IS GRANTED TO AN UP-TO-DATE CANDIDATE AND REFUSED TO A STALE ONE — grant_vote over real TermedLogs.
+    // 2. A VOTE IS GRANTED TO AN UP-TO-DATE CANDIDATE AND REFUSED TO A STALE ONE -- grant_vote over real TermedLogs.
     {
         var voter = TermedLog{};
         _ = try voter.append_entry(1, 10);
@@ -98,14 +98,14 @@ fn run_selftest() !u8 {
         assert(!grant_vote(&voter, 1, 9)); // a lower last term though longer — refused
     }
 
-    // 3. THE ELECTION RESTRICTION KEEPS AN INCOMPLETE CANDIDATE FROM WINNING — the crux (Leader Completeness). An entry is
+    // 3. THE ELECTION RESTRICTION KEEPS AN INCOMPLETE CANDIDATE FROM WINNING -- the crux (Leader Completeness). An entry is
     //    committed on a strict majority of five (three logs hold the term-2 entry at index 1); a candidate whose log LACKS it (only
     //    the term-1 prefix) stands. Every majority it needs intersects the committed majority at a holder, which refuses. The
-    //    candidate's grant count falls below the threshold — it cannot win.
+    //    candidate's grant count falls below the threshold -- it cannot win.
     {
         const th = quorum.majority_of(5); // 3
 
-        // Three complete logs — the committed majority, each holding [ (t1,10), (t2,20) ].
+        // Three complete logs -- the committed majority, each holding [ (t1,10), (t2,20) ].
         var a = TermedLog{};
         _ = try a.append_entry(1, 10);
         _ = try a.append_entry(2, 20);
@@ -115,7 +115,7 @@ fn run_selftest() !u8 {
         var c = TermedLog{};
         _ = try c.append_entry(1, 10);
         _ = try c.append_entry(2, 20);
-        // Two lagging logs — behind the commit, holding only the term-1 prefix.
+        // Two lagging logs -- behind the commit, holding only the term-1 prefix.
         var d = TermedLog{};
         _ = try d.append_entry(1, 10);
         var e = TermedLog{};
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
 
         const all = [_]*const TermedLog{ &a, &b, &c, &d, &e };
 
-        // The INCOMPLETE candidate: last_term 1, len 1 — it lacks the committed term-2 entry the majority holds.
+        // The INCOMPLETE candidate: last_term 1, len 1 -- it lacks the committed term-2 entry the majority holds.
         const cand_grants = poll(&all, 1, 1);
         // Only d and e (equally behind) would grant; a, b, c each refuse (they hold a strictly more up-to-date term-2 entry).
         assert(cand_grants == 2);
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         assert(!grant_vote(&a, 1, 1) and !grant_vote(&b, 1, 1) and !grant_vote(&c, 1, 1));
     }
 
-    // 4. A COMPLETE CANDIDATE STILL WINS — a candidate whose log holds the committed entry (last_term 2, len 2) gathers the whole
+    // 4. A COMPLETE CANDIDATE STILL WINS -- a candidate whose log holds the committed entry (last_term 2, len 2) gathers the whole
     //    committed majority plus itself; the restriction blocks only the incomplete, never the current.
     {
         const th = quorum.majority_of(5); // 3
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         assert(cand_grants >= th); // a majority — the complete candidate wins
     }
 
-    // 5. THE DOMINANCE IS BY THE ENTRY, NOT BY LUCK — the refusing voter refuses BECAUSE it holds an entry the candidate lacks: its
+    // 5. THE DOMINANCE IS BY THE ENTRY, NOT BY LUCK -- the refusing voter refuses BECAUSE it holds an entry the candidate lacks: its
     //    last term/length strictly dominate the candidate's, so at_least_as_current is false for a real reason, not a tie-break.
     {
         var holder = TermedLog{};
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         assert(holder.last_term() == 2 and holder.len == 2); // the exact entry the candidate is missing
     }
 
-    // 6. BOUNDED — the poll runs over a full roster of eight within the pier cap; a unanimous up-to-date poll grants every vote.
+    // 6. BOUNDED -- the poll runs over a full roster of eight within the pier cap; a unanimous up-to-date poll grants every vote.
     {
         var logs: [roster.max_piers]TermedLog = [_]TermedLog{.{}} ** roster.max_piers;
         var ptrs: [roster.max_piers]*const TermedLog = undefined;

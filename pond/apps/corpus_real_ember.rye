@@ -1,10 +1,10 @@
-//! pond/apps/corpus_real_ember.rye — GISM Journey 5 (Real corpora), Rung 2.
+//! pond/apps/corpus_real_ember.rye -- GISM Journey 5 (Real corpora), Rung 2.
 //!
 //! Rung one carried the reading voice (Scribble) onto a real tree document. This
 //! rung carries the **craft voice** (Ember) onto a real corpus: a Bron catalog of
-//! chunks (path · kind · line count). Ember's demo read a hand-written catalog whose
+//! chunks (path - kind - line count). Ember's demo read a hand-written catalog whose
 //! line counts were invented numbers; this catalog is **derived at compile time from
-//! real embedded tree files**, so every line count is provably the real file's own —
+//! real embedded tree files**, so every line count is provably the real file's own --
 //! it cannot drift into a fiction, because the count is computed from the very bytes
 //! the build embeds (the @embedFile idiom, through symlinks in pond/apps/corpora/).
 //!
@@ -31,7 +31,7 @@ const cq = @import("corpus_query.rye");
 
 const corpus_real_ember_version = "20260812.182600";
 
-// The real corpus — symlinks to living tree files. Compile-time embedding gives real
+// The real corpus -- symlinks to living tree files. Compile-time embedding gives real
 // bytes with a demo's determinism: the same corpus every build, no network.
 const f_greet = @embedFile("corpora/greet.rye");
 const f_stack = @embedFile("corpora/stack.rye");
@@ -51,13 +51,13 @@ const members = [_]Member{
     .{ .path = "tools/o/one_clock_witness.rish", .kind = "rish", .bytes = f_clock },
 };
 
-// The generated catalog never exceeds this — three chunks of a bounded shape, far
+// The generated catalog never exceeds this -- three chunks of a bounded shape, far
 // inside Ember's own max_chunks (64). Named so the builder's buffer is bounded.
 const max_catalog_bytes: u32 = 1024;
 
 const allow_line = "model_hash sha3-256-rye-forge-lap0";
 
-/// Count newlines in a real file's bytes — the same line sense `wc -l` uses, so the
+/// Count newlines in a real file's bytes -- the same line sense `wc -l` uses, so the
 /// derived count matches the witness's independent cross-check exactly.
 fn count_lines(bytes: []const u8) u32 {
     // invariant: the corpus member fits Scribble's whole-document bound
@@ -73,7 +73,7 @@ fn count_lines(bytes: []const u8) u32 {
 }
 
 /// Build a real Bron catalog from the embedded members, each line count measured
-/// from the real bytes. Returns the written slice — a corpus derived from the tree,
+/// from the real bytes. Returns the written slice -- a corpus derived from the tree,
 /// never a hand-written fiction.
 fn build_catalog(out_buf: []u8) error{ResultTooLong}![]const u8 {
     // invariant: the builder's buffer honors the catalog bound
@@ -99,7 +99,7 @@ fn build_catalog(out_buf: []u8) error{ResultTooLong}![]const u8 {
     return out_buf[0..written];
 }
 
-/// The craft voice reads the real corpus and counts its rye members — two real rye
+/// The craft voice reads the real corpus and counts its rye members -- two real rye
 /// files, the third a rish witness.
 fn welcome_real_count_rye() !void {
     var cat_buf: [max_catalog_bytes]u8 = undefined;
@@ -117,7 +117,7 @@ fn welcome_real_count_rye() !void {
     print("corpus_real_ember: real count_rye — '{s}' eos\n", .{resp.text});
 }
 
-/// The craft voice sums the real corpus's line counts — each measured from real
+/// The craft voice sums the real corpus's line counts -- each measured from real
 /// bytes, so the total is the tree's own.
 fn welcome_real_sum_lines() !void {
     var cat_buf: [max_catalog_bytes]u8 = undefined;
@@ -146,7 +146,7 @@ fn welcome_real_sum_lines() !void {
     print("corpus_real_ember: real sum_lines — '{s}' eos (truth {d})\n", .{ resp.text, truth });
 }
 
-/// The craft voice lists the real corpus's rye paths — the real tree paths, in order.
+/// The craft voice lists the real corpus's rye paths -- the real tree paths, in order.
 fn welcome_real_paths_rye() !void {
     var cat_buf: [max_catalog_bytes]u8 = undefined;
     const catalog = try build_catalog(&cat_buf);
@@ -182,7 +182,7 @@ fn unwelcome_model_not_allowed() !void {
     print("corpus_real_ember: model not allowed refused\n", .{});
 }
 
-/// An unrecognized operation refuses over the real corpus — no fake answer.
+/// An unrecognized operation refuses over the real corpus -- no fake answer.
 fn unwelcome_unknown_op() !void {
     var cat_buf: [max_catalog_bytes]u8 = undefined;
     const catalog = try build_catalog(&cat_buf);

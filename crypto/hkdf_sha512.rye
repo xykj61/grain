@@ -1,27 +1,27 @@
-//! crypto/hkdf_sha512.rye — Season G (Cryptography), a key-derivation rung: HKDF-SHA-512 (RFC 5869) authored in pure Rye. HKDF is the
-//! standard "turn one shared secret into as many independent keys as a protocol needs" primitive — the extract-then-expand key
+//! crypto/hkdf_sha512.rye -- Season G (Cryptography), a key-derivation rung: HKDF-SHA-512 (RFC 5869) authored in pure Rye. HKDF is the
+//! standard "turn one shared secret into as many independent keys as a protocol needs" primitive -- the extract-then-expand key
 //! derivation function every modern handshake, sealed box, and vault key schedule stands on. It authors no new cryptography: it composes
 //! the GREEN crypto/hmac_sha512.rye through RFC 5869's own two steps, so it is buildable this round and provable against an independent
 //! reference and against the RFC-4231-anchored HMAC beneath it.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN on metal) · crypto/sha512.rye (the hash beneath that). Monocypher
-//! (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye, studied clean-room from the public standards
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN on metal) - crypto/sha512.rye (the hash beneath that). Monocypher
+//! (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target -- our own Rye, studied clean-room from the public standards
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — RFC 5869's two steps, both HMAC and nothing more:
-//!   extract(salt, ikm) = HMAC(salt, ikm) → PRK, a 64-byte pseudorandom key (an absent salt is HashLen zero bytes).
-//!   expand(PRK, info, L) = the first L bytes of T(1) ‖ T(2) ‖ … where T(0) is empty and
+//! THE CRUX -- RFC 5869's two steps, both HMAC and nothing more:
+//!   extract(salt, ikm) = HMAC(salt, ikm) -> PRK, a 64-byte pseudorandom key (an absent salt is HashLen zero bytes).
+//!   expand(PRK, info, L) = the first L bytes of T(1) ‖ T(2) ‖ ... where T(0) is empty and
 //!                          T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i)), i counting up from 1, at most 255 blocks.
-//! No new mathematics — only the RFC's composition over a MAC a lower rung already proved. The same salt, ikm, info, and length always
+//! No new mathematics -- only the RFC's composition over a MAC a lower rung already proved. The same salt, ikm, info, and length always
 //! fold to the same key material anyone can replay against an independent HKDF.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The module calls
+//! HONEST SCOPE -- software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The module calls
 //! no std.crypto in the primitive. RFC 5869 publishes its known-answer vectors over SHA-256 and SHA-1 rather than SHA-512, so this
 //! SHA-512 instantiation is proven at selftest against two references runnable now: Zig's own std.crypto HKDF-SHA-512 as an independent
 //! implementation, byte-for-byte across the RFC's three input shapes (salt + info, longer inputs, and zero-length salt + info); AND the
-//! RFC-4231-anchored HMAC beneath it — extract(salt, ikm) reproduces crypto/hmac_sha512.rye's mac(ikm, salt) exactly, and the first
+//! RFC-4231-anchored HMAC beneath it -- extract(salt, ikm) reproduces crypto/hmac_sha512.rye's mac(ikm, salt) exactly, and the first
 //! expand block reproduces mac(info ‖ 0x01, prk), so both HKDF steps tie transitively back to the published HMAC known-answer. Constant
 //! -time discipline is the HMAC layer's named horizon; HKDF derives keys and returns them.
 //!
@@ -41,33 +41,33 @@ pub const hkdf_sha512_version = "20260816.000000";
 pub const prk_len: u32 = hmac.tag_len;
 pub const block_len: u32 = hmac.tag_len;
 
-/// The largest inputs this primitive accepts, each refused at the edge before a byte is mixed. HKDF's real uses — a handshake secret, a
-/// salt, a short context label — sit far below these; the bounds are named so every buffer beneath cites a ceiling, and so each HMAC
+/// The largest inputs this primitive accepts, each refused at the edge before a byte is mixed. HKDF's real uses -- a handshake secret, a
+/// salt, a short context label -- sit far below these; the bounds are named so every buffer beneath cites a ceiling, and so each HMAC
 /// call the composition makes stays provably within crypto/hmac_sha512.rye's own message and key bounds.
 pub const max_ikm_bytes: u32 = 1 << 12;
 pub const max_salt_bytes: u32 = 1 << 12;
 pub const max_info_bytes: u32 = 1 << 12;
 
-/// The largest key material one expand call yields: RFC 5869 caps expansion at 255 blocks of HashLen, so 255 · 64 = 16320 bytes is the
+/// The largest key material one expand call yields: RFC 5869 caps expansion at 255 blocks of HashLen, so 255 - 64 = 16320 bytes is the
 /// standard's own ceiling, named here so the counter can never overflow a single byte and the output buffer cites a bound.
 pub const max_okm_bytes: u32 = 255 * block_len;
 
 /// The three faults this primitive can raise, each refused at the edge before a byte is mixed.
 pub const HkdfError = error{
-    /// An ikm longer than max_ikm_bytes — refused before extract mixes it.
+    /// An ikm longer than max_ikm_bytes -- refused before extract mixes it.
     IkmTooLong,
-    /// A salt longer than max_salt_bytes — refused before extract keys on it.
+    /// A salt longer than max_salt_bytes -- refused before extract keys on it.
     SaltTooLong,
-    /// An info longer than max_info_bytes — refused before expand mixes it.
+    /// An info longer than max_info_bytes -- refused before expand mixes it.
     InfoTooLong,
-    /// A requested output longer than max_okm_bytes (RFC 5869's 255-block cap) — refused before expand fills a byte.
+    /// A requested output longer than max_okm_bytes (RFC 5869's 255-block cap) -- refused before expand fills a byte.
     OutputTooLong,
 };
 
-/// RFC 5869 step 1 — extract(salt, ikm) = HMAC-SHA-512(salt, ikm), producing the 64-byte pseudorandom key PRK. An empty salt becomes
+/// RFC 5869 step 1 -- extract(salt, ikm) = HMAC-SHA-512(salt, ikm), producing the 64-byte pseudorandom key PRK. An empty salt becomes
 /// HashLen zero bytes, exactly as the standard directs, so a caller with no salt still keys the HMAC on a defined block.
 pub fn extract(salt: []const u8, ikm: []const u8) HkdfError![prk_len]u8 {
-    // invariant: PRK is exactly the HMAC output width, proven at compile time — HKDF keys expand on this whole block.
+    // invariant: PRK is exactly the HMAC output width, proven at compile time -- HKDF keys expand on this whole block.
     comptime assert(prk_len == 64 and block_len == 64);
     // invariant: the salt fits the named bound, so it stays within HMAC's own key bound and its mac call cannot fault below.
     if (salt.len > max_salt_bytes) return error.SaltTooLong;
@@ -77,14 +77,14 @@ pub fn extract(salt: []const u8, ikm: []const u8) HkdfError![prk_len]u8 {
     if (salt.len == 0) {
         // No salt: RFC 5869 keys the extract HMAC on HashLen zero bytes. This buffer is that defined salt.
         const zero_salt = [_]u8{0} ** prk_len;
-        // The bounds above put both inputs within HMAC's message and key bounds, so this mac cannot fault — asserted, not swallowed.
+        // The bounds above put both inputs within HMAC's message and key bounds, so this mac cannot fault -- asserted, not swallowed.
         return hmac.mac(ikm, &zero_salt) catch unreachable;
     }
-    // The salt keys the HMAC, the ikm is its message — extract is exactly one HMAC, provably within bounds, so it cannot fault.
+    // The salt keys the HMAC, the ikm is its message -- extract is exactly one HMAC, provably within bounds, so it cannot fault.
     return hmac.mac(ikm, salt) catch unreachable;
 }
 
-/// RFC 5869 step 2 — expand(PRK, info, L) fills out with the first out.len bytes of T(1) ‖ T(2) ‖ …, where T(0) is empty and
+/// RFC 5869 step 2 -- expand(PRK, info, L) fills out with the first out.len bytes of T(1) ‖ T(2) ‖ ..., where T(0) is empty and
 /// T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i)). The counter runs from 1, at most 255 blocks, so the byte(i) tag never overflows.
 pub fn expand(out: []u8, prk: [prk_len]u8, info: []const u8) HkdfError!void {
     // invariant: the info fits the named bound, so each T(i) HMAC message (block + info + 1) stays within HMAC's own message bound.
@@ -93,7 +93,7 @@ pub fn expand(out: []u8, prk: [prk_len]u8, info: []const u8) HkdfError!void {
     if (out.len > max_okm_bytes) return error.OutputTooLong;
 
     const ilen: u32 = @intCast(info.len);
-    // invariant: the info-length cast lost nothing — it is bounded by max_info_bytes above.
+    // invariant: the info-length cast lost nothing -- it is bounded by max_info_bytes above.
     assert(ilen <= max_info_bytes);
 
     // The HMAC message for each block: the previous block (0 bytes on the first, 64 after), then info, then the one counter byte.
@@ -104,7 +104,7 @@ pub fn expand(out: []u8, prk: [prk_len]u8, info: []const u8) HkdfError!void {
     var done: u32 = 0;
     var i: u32 = 1;
     const total: u32 = @intCast(out.len);
-    // invariant: the output-length cast lost nothing — it is bounded by max_okm_bytes above.
+    // invariant: the output-length cast lost nothing -- it is bounded by max_okm_bytes above.
     assert(total == out.len);
 
     while (done < total) : (i += 1) {
@@ -193,7 +193,7 @@ fn ref_parity(salt: []const u8, ikm: []const u8, info: []const u8, out: []u8, re
 
 fn run_selftest() !u8 {
     // 1. HKDF-extract ties transitively back to the RFC 4231-anchored HMAC: extract(salt, ikm) is exactly HMAC(salt, ikm), and an empty
-    //    salt keys the HMAC on HashLen zeros — both reproduced against the already-GREEN crypto/hmac_sha512.rye.
+    //    salt keys the HMAC on HashLen zeros -- both reproduced against the already-GREEN crypto/hmac_sha512.rye.
     {
         const salt = "hkdf salt bytes";
         const ikm = "input keying material";
@@ -226,13 +226,13 @@ fn run_selftest() !u8 {
     // 3. Independent-implementation parity across RFC 5869's three input shapes, byte-for-byte against Zig's std.crypto HKDF-SHA-512:
     //    a with-salt-and-info case, a longer-inputs case spanning several blocks, and a zero-length-salt-and-info case.
     {
-        // Shape A — RFC 5869 Test Case 1 structure (short salt, short info), 42 output bytes.
+        // Shape A -- RFC 5869 Test Case 1 structure (short salt, short info), 42 output bytes.
         {
             var out: [42]u8 = undefined;
             var ref: [42]u8 = undefined;
             try ref_parity("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c", "\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b", "\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9", &out, &ref);
         }
-        // Shape B — RFC 5869 Test Case 2 structure (longer salt, info, and ikm), 82 output bytes spanning several blocks.
+        // Shape B -- RFC 5869 Test Case 2 structure (longer salt, info, and ikm), 82 output bytes spanning several blocks.
         {
             var ikm: [80]u8 = undefined;
             var salt: [80]u8 = undefined;
@@ -247,13 +247,13 @@ fn run_selftest() !u8 {
             var ref: [82]u8 = undefined;
             try ref_parity(&salt, &ikm, &info, &out, &ref);
         }
-        // Shape C — RFC 5869 Test Case 3 structure (zero-length salt and info), 42 output bytes.
+        // Shape C -- RFC 5869 Test Case 3 structure (zero-length salt and info), 42 output bytes.
         {
             var out: [42]u8 = undefined;
             var ref: [42]u8 = undefined;
             try ref_parity("", "\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b", "", &out, &ref);
         }
-        // Shape D — a full-length request at RFC 5869's 255-block ceiling, to prove the counter walks every block and the tail lands.
+        // Shape D -- a full-length request at RFC 5869's 255-block ceiling, to prove the counter walks every block and the tail lands.
         {
             var out: [max_okm_bytes]u8 = undefined;
             var ref: [max_okm_bytes]u8 = undefined;

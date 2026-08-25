@@ -1,29 +1,29 @@
-//! crypto/x25519.rye — Season G (Cryptography), the fourteenth rung: X25519 elliptic-curve Diffie-Hellman authored in pure Rye. This is the
+//! crypto/x25519.rye -- Season G (Cryptography), the fourteenth rung: X25519 elliptic-curve Diffie-Hellman authored in pure Rye. This is the
 //! LAST Monocypher-parity primitive the decision wave named (Monocypher's Ed25519, X25519, BLAKE2b, and the ChaCha/Poly line): Ed25519 signs
-//! and verifies; X25519 lets two keepers agree a shared secret over an open channel. It is the key-agreement half of the identity story —
+//! and verifies; X25519 lets two keepers agree a shared secret over an open channel. It is the key-agreement half of the identity story --
 //! Comlink's session keys, Vault's sealed storage, and any two Ponds that need a shared secret before they trust each other all reach for
 //! this one operation. It adds NO new field mathematics: it is the Montgomery ladder composed entirely over the GREEN base field
 //! (crypto/fe25519.rye), exactly as Ed25519's scalar multiply composed over the GREEN group law.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 beside Ed25519 as a
 //! Monocypher-parity primitive) and active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on).
-//! Kin: crypto/fe25519.rye (the base field beneath it, GREEN) · crypto/ed25519_scalarmul.rye (the Edwards-curve scalar multiply, its twin over
-//! the same prime). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied
+//! Kin: crypto/fe25519.rye (the base field beneath it, GREEN) - crypto/ed25519_scalarmul.rye (the Edwards-curve scalar multiply, its twin over
+//! the same prime). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own arithmetic, studied
 //! clean-room from RFC 7748 and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — X25519(scalar, u) is a scalar multiplication on Curve25519 carried in the Montgomery model, where a point is tracked by its
+//! THE CRUX -- X25519(scalar, u) is a scalar multiplication on Curve25519 carried in the Montgomery model, where a point is tracked by its
 //! projective u-coordinate alone (x2 : z2). The scalar is clamped per RFC 7748 (low three bits cleared, bit 255 cleared, bit 254 set), then a
 //! constant-number-of-steps ladder runs from bit 254 down to bit 0. Each step does one conditional swap (branchless, driven by the scalar
 //! bit through an XOR mask so the memory pattern never depends on the secret) and one "double-and-add" built from field add, subtract,
-//! square, and multiply — plus a single multiply by the curve constant a24 = 121665 = (486662 − 2)/4. The ladder holds the standard
-//! two-point invariant (x3:z3 stays exactly one step ahead of x2:z2), so after 255 steps x2:z2 is scalar·(u). The affine answer is
-//! x2 · z2⁻¹, packed to 32 canonical little-endian bytes. Every line is field arithmetic anyone can replay; nothing here is a claim about a
+//! square, and multiply -- plus a single multiply by the curve constant a24 = 121665 = (486662 − 2)/4. The ladder holds the standard
+//! two-point invariant (x3:z3 stays exactly one step ahead of x2:z2), so after 255 steps x2:z2 is scalar-(u). The affine answer is
+//! x2 - z2⁻¹, packed to 32 canonical little-endian bytes. Every line is field arithmetic anyone can replay; nothing here is a claim about a
 //! device.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. X25519 here computes shared secrets from
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. X25519 here computes shared secrets from
 //! TEST scalars only: it holds no real private key, agrees no real session, and calls no std.crypto in the primitive itself. Parity is proven
-//! at selftest against two references runnable now — the published RFC 7748 §5.2 known-answer vectors anyone can check against the standard,
+//! at selftest against two references runnable now -- the published RFC 7748 §5.2 known-answer vectors anyone can check against the standard,
 //! and Zig's own std.crypto.dh.X25519 (an independent RFC 7748 implementation) compared byte-for-byte across a deterministic spread of
 //! scalars and u-coordinates, over both arbitrary points and the base point (the public-key case), with a Diffie-Hellman round-trip proving
 //! the two-party shared secret agrees. Monocypher-source parity is now closed: tools/cr/crypto_monocypher_x25519_parity_witness.rish compiles the
@@ -46,7 +46,7 @@ pub const x25519_version = "20260816.000000";
 /// already canonical and safe as a multiply operand.
 const a24_limb: u64 = 121665;
 
-/// The Curve25519 base u-coordinate is 9 — the standard generator RFC 7748 fixes for public-key derivation and the 1,000-iteration vectors.
+/// The Curve25519 base u-coordinate is 9 -- the standard generator RFC 7748 fixes for public-key derivation and the 1,000-iteration vectors.
 const base_u: u8 = 9;
 
 pub const X25519Error = error{
@@ -60,15 +60,15 @@ fn field_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
 }
 
-/// The field element 0 (the initial z2 — the point at infinity's projective z).
+/// The field element 0 (the initial z2 -- the point at infinity's projective z).
 fn field_zero() fe.Field {
     return fe.Field{ .l = .{ 0, 0, 0, 0, 0 } };
 }
 
 /// Constant-time conditional swap of two field elements' limbs. `swap` is 0 or 1; the mask is all-zero or all-ones, so the exchange happens
-/// with no branch on the secret bit — the same memory operations run either way, only the values differ.
+/// with no branch on the secret bit -- the same memory operations run either way, only the values differ.
 fn cswap(swap: u64, a: *fe.Field, b: *fe.Field) void {
-    // invariant: the control is a single bit, so the mask is exactly all-zero or all-ones — no partial mask can corrupt a limb.
+    // invariant: the control is a single bit, so the mask is exactly all-zero or all-ones -- no partial mask can corrupt a limb.
     assert(swap <= 1);
     const mask: u64 = 0 -% swap; // 0 → 0x000..0, 1 → 0xfff..f (wrapping negate of a 0/1 value)
     var i: u32 = 0;
@@ -77,7 +77,7 @@ fn cswap(swap: u64, a: *fe.Field, b: *fe.Field) void {
         a.l[i] ^= t;
         b.l[i] ^= t;
     }
-    // invariant: XOR-swap is its own witness — when mask is zero nothing moved, when all-ones the limbs exchanged exactly.
+    // invariant: XOR-swap is its own witness -- when mask is zero nothing moved, when all-ones the limbs exchanged exactly.
     assert(i == 5);
 }
 
@@ -89,8 +89,8 @@ fn scalar_bit(k: *const [32]u8, t: u32) u64 {
     return (@as(u64, k[t >> 3]) >> shift) & 1;
 }
 
-/// The X25519 scalar multiplication: given a 32-byte scalar and a 32-byte u-coordinate, return scalar·(u) as a 32-byte shared secret /
-/// public key. Composes the RFC 7748 Montgomery ladder entirely over the GREEN base field — no new field mathematics.
+/// The X25519 scalar multiplication: given a 32-byte scalar and a 32-byte u-coordinate, return scalar-(u) as a 32-byte shared secret /
+/// public key. Composes the RFC 7748 Montgomery ladder entirely over the GREEN base field -- no new field mathematics.
 pub fn x25519(scalar: *const [32]u8, u_coord: *const [32]u8) [32]u8 {
     // Clamp the scalar per RFC 7748 §5: clear the low three bits (cofactor 8), clear bit 255, set bit 254. The clamp guarantees the ladder
     // multiplies by a value in the safe subgroup range and fixes the top bit so every scalar runs the identical number of steps.
@@ -98,7 +98,7 @@ pub fn x25519(scalar: *const [32]u8, u_coord: *const [32]u8) [32]u8 {
     k[0] &= 248;
     k[31] &= 127;
     k[31] |= 64;
-    // invariant: the clamp cleared the cofactor bits and fixed bit 254 — the ladder's step count and subgroup are now pinned.
+    // invariant: the clamp cleared the cofactor bits and fixed bit 254 -- the ladder's step count and subgroup are now pinned.
     assert((k[0] & 7) == 0 and (k[31] & 0x80) == 0 and (k[31] & 0x40) == 0x40);
 
     const x1 = fe.from_bytes(u_coord); // from_bytes already drops bit 255, exactly the u-coordinate masking RFC 7748 requires.
@@ -134,17 +134,17 @@ pub fn x25519(scalar: *const [32]u8, u_coord: *const [32]u8) [32]u8 {
         x2 = fe.mul(aa, bb);
         z2 = fe.mul(e, fe.add(aa, fe.mul(a24, e)));
     }
-    // Undo the last pending swap, then read off the affine u-coordinate x2 · z2⁻¹.
+    // Undo the last pending swap, then read off the affine u-coordinate x2 - z2⁻¹.
     cswap(swap, &x2, &x3);
     cswap(swap, &z2, &z3);
-    // invariant: the ladder completed exactly at bit 0, so x2:z2 now holds scalar·(u) in projective form.
+    // invariant: the ladder completed exactly at bit 0, so x2:z2 now holds scalar-(u) in projective form.
     assert(t == -1);
 
     const out = fe.mul(x2, fe.invert(z2));
     return fe.to_bytes(out);
 }
 
-/// The public-key case: scalar·(base point 9). This is X25519 over the standard generator — the operation that turns a private scalar into a
+/// The public-key case: scalar-(base point 9). This is X25519 over the standard generator -- the operation that turns a private scalar into a
 /// shareable public key.
 pub fn x25519_base(scalar: *const [32]u8) [32]u8 {
     var u = [_]u8{0} ** 32;
@@ -163,7 +163,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// A deterministic spread of test bytes — the same generator shape the sibling primitives use, seeded so each 32-byte value differs and none
+/// A deterministic spread of test bytes -- the same generator shape the sibling primitives use, seeded so each 32-byte value differs and none
 /// is all-zero.
 fn test_bytes(seed: u8) [32]u8 {
     var s: [32]u8 = undefined;
@@ -227,7 +227,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. Diffie-Hellman round-trip: two keepers derive the same shared secret from each other's public keys — the whole point of X25519.
+    // 4. Diffie-Hellman round-trip: two keepers derive the same shared secret from each other's public keys -- the whole point of X25519.
     {
         const a_priv = test_bytes(7);
         const b_priv = test_bytes(88);

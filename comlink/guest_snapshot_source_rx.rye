@@ -1,4 +1,4 @@
-//! comlink/guest_snapshot_source_rx.rye — I2 snapshot device: source RX (verify snapshot batch request) · 20260713.
+//! comlink/guest_snapshot_source_rx.rye -- I2 snapshot device: source RX (verify snapshot batch request) - 20260713.
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

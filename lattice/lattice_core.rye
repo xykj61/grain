@@ -1,6 +1,6 @@
-//! lattice/lattice_core.rye — f32 tensors in Tally-shaped fixed gardens · 20260729.
+//! lattice/lattice_core.rye -- f32 tensors in Tally-shaped fixed gardens - 20260729.
 //!
-//! Parity-gated tensor ops before Lantern. Laps through hard_sigmoid · rsqrt · hardtanh · cube.
+//! Parity-gated tensor ops before Lantern. Laps through hard_sigmoid - rsqrt - hardtanh - cube.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -56,7 +56,7 @@ pub const Matrix = struct {
     }
 };
 
-/// True when every paired element sits within `epsilon` — the witness-grade
+/// True when every paired element sits within `epsilon` -- the witness-grade
 /// float comparison. Exact `==` on f32 reports false for values a computation
 /// reached by different but equally correct routes, so witnesses that need
 /// agreement rather than identity ask here.
@@ -90,7 +90,7 @@ pub fn add(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// C = A × B — asserts inner dimension match and output shape at entry.
+/// C = A × B -- asserts inner dimension match and output shape at entry.
 pub fn matmul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.cols != b.rows) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != b.cols) return error.ShapeMismatch;
@@ -108,7 +108,7 @@ pub fn matmul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void
     }
 }
 
-/// Row-major reshape — element count must match; copies in held order.
+/// Row-major reshape -- element count must match; copies in held order.
 pub fn reshape(src: *const Matrix, out: *Matrix) TensorError!void {
     if (src.len() != out.len()) return error.ShapeMismatch;
     var i: u32 = 0;
@@ -121,7 +121,7 @@ pub fn reshape(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Full-matrix sum into a 1×1 — asserts output shape at entry.
+/// Full-matrix sum into a 1×1 -- asserts output shape at entry.
 pub fn reduce_sum(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
     var sum: f32 = 0;
@@ -134,7 +134,7 @@ pub fn reduce_sum(src: *const Matrix, out: *Matrix) TensorError!void {
     out.set(0, 0, sum);
 }
 
-/// Full-matrix mean into a 1×1 — asserts output shape at entry.
+/// Full-matrix mean into a 1×1 -- asserts output shape at entry.
 pub fn reduce_mean(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
     var sum: f32 = 0;
@@ -147,7 +147,7 @@ pub fn reduce_mean(src: *const Matrix, out: *Matrix) TensorError!void {
     out.set(0, 0, sum / @as(f32, @floatFromInt(src.len())));
 }
 
-/// Elementwise scale — out must match src shape; multiplies every element by `factor`.
+/// Elementwise scale -- out must match src shape; multiplies every element by `factor`.
 pub fn scale(src: *const Matrix, factor: f32, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -159,7 +159,7 @@ pub fn scale(src: *const Matrix, factor: f32, out: *Matrix) TensorError!void {
     }
 }
 
-/// Transpose — out must be cols×rows of src; copies src[r,c] to out[c,r].
+/// Transpose -- out must be cols×rows of src; copies src[r,c] to out[c,r].
 pub fn transpose(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.cols or out.cols != src.rows) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -171,7 +171,7 @@ pub fn transpose(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise multiply (Hadamard) — shapes must match; out[i] = a[i] * b[i].
+/// Elementwise multiply (Hadamard) -- shapes must match; out[i] = a[i] * b[i].
 pub fn mul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
@@ -184,7 +184,7 @@ pub fn mul(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Fill every element of `out` with `value` — shape already held by the matrix.
+/// Fill every element of `out` with `value` -- shape already held by the matrix.
 pub fn fill(out: *Matrix, value: f32) void {
     var r: u32 = 0;
     while (r < out.rows) : (r += 1) {
@@ -195,7 +195,7 @@ pub fn fill(out: *Matrix, value: f32) void {
     }
 }
 
-/// Copy every element from `src` into `out` — shapes must match.
+/// Copy every element from `src` into `out` -- shapes must match.
 pub fn copy(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -207,7 +207,7 @@ pub fn copy(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise subtract — shapes must match.
+/// Elementwise subtract -- shapes must match.
 pub fn sub(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
@@ -220,7 +220,7 @@ pub fn sub(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise negate — shapes must match.
+/// Elementwise negate -- shapes must match.
 pub fn neg(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -232,7 +232,7 @@ pub fn neg(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise divide — shapes must match; zero divisor refused.
+/// Elementwise divide -- shapes must match; zero divisor refused.
 pub fn div(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
@@ -247,7 +247,7 @@ pub fn div(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise absolute value — shapes must match.
+/// Elementwise absolute value -- shapes must match.
 pub fn abs(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -260,7 +260,7 @@ pub fn abs(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise clamp into [lo, hi] — shapes must match.
+/// Elementwise clamp into [lo, hi] -- shapes must match.
 pub fn clamp(src: *const Matrix, lo: f32, hi: f32, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -274,7 +274,7 @@ pub fn clamp(src: *const Matrix, lo: f32, hi: f32, out: *Matrix) TensorError!voi
     }
 }
 
-/// Full-matrix max into a 1×1 — asserts output shape at entry.
+/// Full-matrix max into a 1×1 -- asserts output shape at entry.
 pub fn reduce_max(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
     var max_v: f32 = src.at(0, 0);
@@ -288,7 +288,7 @@ pub fn reduce_max(src: *const Matrix, out: *Matrix) TensorError!void {
     out.set(0, 0, max_v);
 }
 
-/// Full-matrix min into a 1×1 — asserts output shape at entry.
+/// Full-matrix min into a 1×1 -- asserts output shape at entry.
 pub fn reduce_min(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != 1 or out.cols != 1) return error.ShapeMismatch;
     var min_v: f32 = src.at(0, 0);
@@ -302,7 +302,7 @@ pub fn reduce_min(src: *const Matrix, out: *Matrix) TensorError!void {
     out.set(0, 0, min_v);
 }
 
-/// Elementwise square root — shapes must match; negative input refused.
+/// Elementwise square root -- shapes must match; negative input refused.
 pub fn sqrt(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -316,7 +316,7 @@ pub fn sqrt(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise exp — shapes must match.
+/// Elementwise exp -- shapes must match.
 pub fn exp(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -328,7 +328,7 @@ pub fn exp(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise natural log — shapes must match; non-positive input refused.
+/// Elementwise natural log -- shapes must match; non-positive input refused.
 pub fn log(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -342,7 +342,7 @@ pub fn log(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise power with scalar exponent — shapes must match; negative base refused.
+/// Elementwise power with scalar exponent -- shapes must match; negative base refused.
 pub fn pow(src: *const Matrix, exponent: f32, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -356,7 +356,7 @@ pub fn pow(src: *const Matrix, exponent: f32, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise ReLU — shapes must match; max(0, v).
+/// Elementwise ReLU -- shapes must match; max(0, v).
 pub fn relu(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -369,7 +369,7 @@ pub fn relu(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise sigmoid — shapes must match; 1 / (1 + exp(-x)).
+/// Elementwise sigmoid -- shapes must match; 1 / (1 + exp(-x)).
 pub fn sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -382,7 +382,7 @@ pub fn sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Row-wise softmax — shapes must match; each row sums to 1.
+/// Row-wise softmax -- shapes must match; each row sums to 1.
 pub fn softmax(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -407,7 +407,7 @@ pub fn softmax(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise tanh — shapes must match.
+/// Elementwise tanh -- shapes must match.
 pub fn tanh(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -419,7 +419,7 @@ pub fn tanh(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise GELU (tanh approximation) — shapes must match; gelu(0) = 0.
+/// Elementwise GELU (tanh approximation) -- shapes must match; gelu(0) = 0.
 pub fn gelu(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     const k: f32 = 0.7978845608; // sqrt(2/pi)
@@ -434,7 +434,7 @@ pub fn gelu(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise SiLU (swish) — x · σ(x); shapes must match; silu(0) = 0.
+/// Elementwise SiLU (swish) -- x - σ(x); shapes must match; silu(0) = 0.
 pub fn silu(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -447,7 +447,7 @@ pub fn silu(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise leaky ReLU — max(0,v) + α·min(0,v); shapes must match.
+/// Elementwise leaky ReLU -- max(0,v) + α-min(0,v); shapes must match.
 pub fn leaky_relu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -460,7 +460,7 @@ pub fn leaky_relu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void
     }
 }
 
-/// Elementwise softplus — log(1+exp(x)); shapes must match; softplus(0) ≈ ln(2).
+/// Elementwise softplus -- log(1+exp(x)); shapes must match; softplus(0) ≈ ln(2).
 pub fn softplus(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -473,7 +473,7 @@ pub fn softplus(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise maximum of two matrices — shapes must match.
+/// Elementwise maximum of two matrices -- shapes must match.
 pub fn maximum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
@@ -488,7 +488,7 @@ pub fn maximum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!voi
     }
 }
 
-/// Elementwise minimum of two matrices — shapes must match.
+/// Elementwise minimum of two matrices -- shapes must match.
 pub fn minimum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;
@@ -503,7 +503,7 @@ pub fn minimum(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!voi
     }
 }
 
-/// Elementwise ELU — v if v>=0 else α·(exp(v)-1); shapes must match; elu(0)=0.
+/// Elementwise ELU -- v if v>=0 else α-(exp(v)-1); shapes must match; elu(0)=0.
 pub fn elu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -516,7 +516,7 @@ pub fn elu(src: *const Matrix, alpha: f32, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise softsign — v / (1 + |v|); softsign(0)=0; softsign(1)=0.5.
+/// Elementwise softsign -- v / (1 + |v|); softsign(0)=0; softsign(1)=0.5.
 pub fn softsign(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -529,7 +529,7 @@ pub fn softsign(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise square — v·v; shapes must match.
+/// Elementwise square -- v-v; shapes must match.
 pub fn square(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -542,7 +542,7 @@ pub fn square(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise sign — −1 / 0 / +1; shapes must match.
+/// Elementwise sign -- −1 / 0 / +1; shapes must match.
 pub fn sign(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -555,7 +555,7 @@ pub fn sign(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise reciprocal — 1/v; zero refused; shapes must match.
+/// Elementwise reciprocal -- 1/v; zero refused; shapes must match.
 pub fn reciprocal(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -569,7 +569,7 @@ pub fn reciprocal(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise hard sigmoid — clamp(0.2·v + 0.5, 0, 1); shapes must match.
+/// Elementwise hard sigmoid -- clamp(0.2-v + 0.5, 0, 1); shapes must match.
 pub fn hard_sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -582,7 +582,7 @@ pub fn hard_sigmoid(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise rsqrt — 1/√v; non-positive refused; shapes must match.
+/// Elementwise rsqrt -- 1/√v; non-positive refused; shapes must match.
 pub fn rsqrt(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -596,7 +596,7 @@ pub fn rsqrt(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise hardtanh — clamp(v, −1, 1); shapes must match.
+/// Elementwise hardtanh -- clamp(v, −1, 1); shapes must match.
 pub fn hardtanh(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -609,7 +609,7 @@ pub fn hardtanh(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise cube — v·v·v; shapes must match.
+/// Elementwise cube -- v-v-v; shapes must match.
 pub fn cube(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;

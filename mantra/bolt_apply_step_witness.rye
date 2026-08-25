@@ -1,4 +1,4 @@
-//! mantra/bolt_apply_step_witness.rye — proves a bolt written is not a bolt visible.
+//! mantra/bolt_apply_step_witness.rye -- proves a bolt written is not a bolt visible.
 //!
 //!   rye build mantra/bolt_apply_step_witness.rye -femit-bin=mantra/bin/bolt-apply-step-witness
 //!   mantra/bin/bolt-apply-step-witness

@@ -1,8 +1,8 @@
-//! linengrow/seva_session_core.rye — Seva B0: a session is a signed, ordered, replayable log.
+//! linengrow/seva_session_core.rye -- Seva B0: a session is a signed, ordered, replayable log.
 //!
 //! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B0: a broadcast (or a recorded session, Asciinema's shape) is not a
-//! video — it is a replayable log of signed, timestamped, strictly-ordered
+//! video -- it is a replayable log of signed, timestamped, strictly-ordered
 //! events, re-rendered by folding. This is the smallest real lap of the Seva
 //! broadcast lane, and it gates on nothing except the fold primitives already
 //! green (it does not wait on Pool P0; only live carriage, B1, does).
@@ -18,8 +18,8 @@
 //!   stamp  = the event time
 //!
 //! The sequence riding `amount` gives ordering for free through the proven
-//! parse_amount_signed, so B0 enforces the one discipline a broadcast needs —
-//! strict order — without writing a new parser. Two replays of the same log
+//! parse_amount_signed, so B0 enforces the one discipline a broadcast needs --
+//! strict order -- without writing a new parser. Two replays of the same log
 //! agree bit-for-bit on the session root, because a fold over an immutable
 //! ordered log always reproduces: that is the whole claim.
 
@@ -31,18 +31,18 @@ const rc = @import("receipt_core.rye");
 const mc = @import("murr_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// One event line may never exceed this — small enough to eyeball, well under
+/// One event line may never exceed this -- small enough to eyeball, well under
 /// receipt_core.max_line_len (1153). Sized like neth_serial_core's own bound,
 /// since a signed line hex-doubles its fact: the two fixed pubkey-hex fields
 /// alone spend ~260 bytes before any payload.
 pub const max_event_bytes: u32 = 768;
 
-/// A bounded session — small enough to hold whole in memory and reason about.
+/// A bounded session -- small enough to hold whole in memory and reason about.
 pub const max_events: u32 = 64;
 
 pub const SessionError = error{ EventTooLarge, OutOfOrder, Overflow, ReplayFailed, UnknownSigner };
 
-/// A bounded registry of the actors whose signed events a session admits —
+/// A bounded registry of the actors whose signed events a session admits --
 /// the broadcaster and the viewers whose chat has been consented into the
 /// stream. Multi-signer replay verifies each event against the key named in
 /// its own `from` field, and refuses an event from any actor not registered
@@ -196,7 +196,7 @@ pub fn replay(
 /// Replay a multi-signer session: broadcaster content and viewer chat in one
 /// ordered log, each event verified against the key named in its own `from`
 /// field, looked up in the registry. An event from an actor not admitted to
-/// the registry is refused UnknownSigner — the back-channel folds only
+/// the registry is refused UnknownSigner -- the back-channel folds only
 /// consented voices. Order and determinism hold exactly as in `replay`.
 pub fn replay_multi(
     log: []const u8,
@@ -225,7 +225,7 @@ pub fn replay_multi(
         var fields: rc.FactFields = undefined;
         rc.parse_fact_fields(fact, &fields) catch return error.ReplayFailed;
 
-        // The signer is whoever the event names in `from` — and must be a
+        // The signer is whoever the event names in `from` -- and must be a
         // registered, consented actor, or the event is refused.
         const pk = registry.find(fields.from) orelse return error.UnknownSigner;
         rc.verify_record(sig_buf[0..parsed.sig_len], fact, pk) catch return error.ReplayFailed;

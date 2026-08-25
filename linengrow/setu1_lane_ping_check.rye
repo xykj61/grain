@@ -1,4 +1,4 @@
-//! linengrow/setu1_lane_ping_check.rye — seal a lane ping from cached station.
+//! linengrow/setu1_lane_ping_check.rye -- seal a lane ping from cached station.
 //!
 //! Reads tools/.cache/setu0/station.bron. If wire_lane is local, prints SKIP
 //! (lane not armed). If usb_desk, seals + opens a Comlink ping, writes

@@ -1,20 +1,20 @@
-//! pond/apps/mcp_json.rye — BUHR Journey 3, Rung 2: the Bron<->JSON tiles.
+//! pond/apps/mcp_json.rye -- BUHR Journey 3, Rung 2: the Bron<->JSON tiles.
 //!
 //! Rung one fixed the descriptor shape: MCP spoken in Bron, call and result
 //! envelopes that round-trip on the owned notation. This rung opens the named
-//! horizon — the tiles that let a Grain tool meet a JSON-speaking MCP host without
+//! horizon -- the tiles that let a Grain tool meet a JSON-speaking MCP host without
 //! either side bending to the other. A Bron `Call` renders to a real JSON-RPC
 //! `tools/call` request; a JSON request reads back into the same bounded `Call`. A
 //! Bron `Result` renders to the JSON-RPC response shape (a `content` text item on
 //! success, a `code`/`message` object on error) and reads back into the same
 //! `Result`. The crux property carries across the tile: parse(render(x)) recovers x,
-//! and render(parse(json)) reproduces the json — the two worlds meet, faithfully.
+//! and render(parse(json)) reproduces the json -- the two worlds meet, faithfully.
 //!
 //! This is a purpose-built reader for the MCP `tools/call` envelope, not a general
 //! JSON parser: it reads objects, strings, and unsigned ids, refuses an unknown
 //! field rather than dropping it, and bounds every collection. It reuses rung one's
 //! `mcp_bron.rye` shapes (Call, Arg, Result) and the byte-by-byte bounded append the
-//! tree already trusts (kin to mantra_browser.rye) — no @memcpy, no new transport.
+//! tree already trusts (kin to mantra_browser.rye) -- no @memcpy, no new transport.
 //!
 //!   rye build pond/apps/mcp_json.rye -femit-bin=pond/bin/mcp-json
 //!   pond/bin/mcp-json selftest
@@ -43,7 +43,7 @@ pub const JsonError = error{
 // --- the writer: Bron shapes -> JSON bytes ---------------------------------
 
 /// Append `s` into `out` at cursor `n`, bounded by the caller's buffer. Byte by
-/// byte within a named bound — the tree's trusted append, no @memcpy.
+/// byte within a named bound -- the tree's trusted append, no @memcpy.
 pub fn append(out: []u8, n: *u32, s: []const u8) JsonError!void {
     // invariant: the buffer respects the JSON envelope bound
     assert(out.len <= max_json);
@@ -72,7 +72,7 @@ pub fn append_uint(out: []u8, n: *u32, v: u32) JsonError!void {
 
 /// Append `s` as a JSON string body (the bytes between the quotes), escaping the
 /// two characters a JSON string must escape. A control byte is refused rather than
-/// mis-emitted — honest about the subset this tile speaks.
+/// mis-emitted -- honest about the subset this tile speaks.
 pub fn append_escaped(out: []u8, n: *u32, s: []const u8) JsonError!void {
     // invariant: the cursor stays within the buffer
     assert(n.* <= out.len);
@@ -250,7 +250,7 @@ pub const Parser = struct {
         return std.fmt.parseInt(u32, self.src[start..self.pos], 10) catch return error.BadJson;
     }
 
-    /// Skip a signed integer — the JSON-RPC error `code` this tile does not carry back.
+    /// Skip a signed integer -- the JSON-RPC error `code` this tile does not carry back.
     fn skip_int(self: *Parser) JsonError!void {
         self.skip_ws();
         const start = self.pos;
@@ -260,8 +260,8 @@ pub const Parser = struct {
     }
 };
 
-/// Parse the `params` object of a `tools/call` request — the tool name and its
-/// arguments object — into the Call.
+/// Parse the `params` object of a `tools/call` request -- the tool name and its
+/// arguments object -- into the Call.
 fn parse_params(p: *Parser, sc: *Scratch, call: *mcp.Call, have_name: *bool) JsonError!void {
     // invariant: the cursor sits within the source
     assert(p.pos <= p.src.len);
@@ -294,7 +294,7 @@ fn parse_params(p: *Parser, sc: *Scratch, call: *mcp.Call, have_name: *bool) Jso
     assert(p.pos <= p.src.len);
 }
 
-/// Parse the `arguments` object — each member a named string argument — into the Call.
+/// Parse the `arguments` object -- each member a named string argument -- into the Call.
 fn parse_arguments(p: *Parser, sc: *Scratch, call: *mcp.Call) JsonError!void {
     // invariant: the cursor sits within the source
     assert(p.pos <= p.src.len);
@@ -329,7 +329,7 @@ fn parse_arguments(p: *Parser, sc: *Scratch, call: *mcp.Call) JsonError!void {
 
 /// Read a JSON-RPC `tools/call` request into a bounded Call, interning its strings
 /// into `scratch`. A non-`tools/call` method, an unknown field, or a malformed byte
-/// is refused with a named error — the tile never guesses.
+/// is refused with a named error -- the tile never guesses.
 pub fn call_from_json(src: []const u8, scratch: []u8, call: *mcp.Call) JsonError!void {
     // invariant: a request carries at least an opening byte
     assert(src.len > 0);
@@ -375,7 +375,7 @@ pub fn call_from_json(src: []const u8, scratch: []u8, call: *mcp.Call) JsonError
     assert(call.arg_count <= mcp.max_args);
 }
 
-/// Parse the success `result` object — a `content` array of one text item — and
+/// Parse the success `result` object -- a `content` array of one text item -- and
 /// return the text value, interned into the scratch arena.
 fn parse_result_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
     // invariant: the cursor sits within the source
@@ -419,7 +419,7 @@ fn parse_result_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
     return text;
 }
 
-/// Parse the `error` object — a code (ignored) and a message — returning the message
+/// Parse the `error` object -- a code (ignored) and a message -- returning the message
 /// name interned into the scratch arena.
 fn parse_error_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
     // invariant: the cursor sits within the source
@@ -455,8 +455,8 @@ fn parse_error_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
     return msg;
 }
 
-/// Read a JSON-RPC response into a bounded Result — a success value or a named error,
-/// exactly one — interning its strings into `scratch`.
+/// Read a JSON-RPC response into a bounded Result -- a success value or a named error,
+/// exactly one -- interning its strings into `scratch`.
 pub fn result_from_json(src: []const u8, scratch: []u8, out: *mcp.Result) JsonError!void {
     // invariant: a response carries at least an opening byte
     assert(src.len > 0);

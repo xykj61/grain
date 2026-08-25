@@ -1,29 +1,29 @@
-//! crypto/secp256k1_pubkey.rye — SEC1 public-key serialization for secp256k1, authored in pure Rye as a COMPOSITION over stones already GREEN in
-//! this tree: the public-key derivation d·G (crypto/secp256k1_ecdsa_sign.rye · derive_public), the point decompression that lifts a compressed x
-//! back to its y (crypto/secp256k1_ecrecover.rye · decompress), and the base field beneath both. It authors NO new cryptography — only the one
+//! crypto/secp256k1_pubkey.rye -- SEC1 public-key serialization for secp256k1, authored in pure Rye as a COMPOSITION over stones already GREEN in
+//! this tree: the public-key derivation d-G (crypto/secp256k1_ecdsa_sign.rye - derive_public), the point decompression that lifts a compressed x
+//! back to its y (crypto/secp256k1_ecrecover.rye - decompress), and the base field beneath both. It authors NO new cryptography -- only the one
 //! small envelope the Bitcoin/Ethereum world wraps a public key in: a leading tag byte that says which form follows, then the coordinates. This
 //! is the rung every address, every wallet import, and the coming BIP-32 hierarchical-deterministic keys reach for: "hand me a public key as the
 //! 33 or 65 bytes the ecosystem passes around, and read one back."
 //!
-//! Season: crypto (Season G · Cryptography), a composition on the shelf beside eth_address and bitcoin_address. Where those derive a HASHED
-//! address from a key, this rung serializes the key ITSELF in its two canonical SEC 2 forms — the 33-byte COMPRESSED encoding (0x02 for an even
+//! Season: crypto (Season G - Cryptography), a composition on the shelf beside eth_address and bitcoin_address. Where those derive a HASHED
+//! address from a key, this rung serializes the key ITSELF in its two canonical SEC 2 forms -- the 33-byte COMPRESSED encoding (0x02 for an even
 //! y, 0x03 for an odd y, then the 32-byte x) that a compact wallet and BIP-32's serP(point) use, and the 65-byte UNCOMPRESSED encoding (0x04,
 //! then x, then y) that the recovery world and Ethereum's own pubkey body expand to. Both stand entirely on the same GREEN tower.
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the priority spine: Rye first).
 //! Clean-room: the SEC 2 tag-and-coordinates convention is a public standard (Standards for Efficient Cryptography, SEC 1 §2.3.3); the assembly
 //! is ours, standing on our own parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a public key is a curve point, and a curve point has two published dresses. COMPRESSED keeps only x and one parity bit, because the
+//! THE CRUX -- a public key is a curve point, and a curve point has two published dresses. COMPRESSED keeps only x and one parity bit, because the
 //! curve equation y² = x³ + 7 fixes y up to sign; the tag 0x02/0x03 records which of the two roots is meant, so the reader recovers y by solving
 //! the equation (the GREEN ecrecover.decompress) rather than carrying it. UNCOMPRESSED carries both coordinates whole behind the tag 0x04. This
 //! module writes both from a private scalar (composing derive_public), writes both from a known point's coordinates, and parses either form back
-//! to (x, y) — refusing a wrong tag or a wrong length before a single coordinate is trusted.
+//! to (x, y) -- refusing a wrong tag or a wrong length before a single coordinate is trusted.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Serializing a PUBLIC key touches no secret; the private
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Serializing a PUBLIC key touches no secret; the private
 //! scalar handed to from_private_* is a TEST key in the selftest, never the maintainer's own identity key (that stays the custody gate). Parity is
-//! proven the self-contained way the tree favours — against Zig's own std.crypto.ecc.Secp256k1 as an independent oracle: for eight deterministic
+//! proven the self-contained way the tree favours -- against Zig's own std.crypto.ecc.Secp256k1 as an independent oracle: for eight deterministic
 //! test scalars, our compressed and uncompressed encodings equal Zig's toCompressedSec1 and toUncompressedSec1 byte-for-byte, our parse of each
-//! form recovers exactly Zig's own affine coordinates, and our parse of Zig's OWN compressed bytes recovers the same y — so a one-bit error in the
+//! form recovers exactly Zig's own affine coordinates, and our parse of Zig's OWN compressed bytes recovers the same y -- so a one-bit error in the
 //! tag, the coordinate order, or the parity would break the match. No published constant is trusted; the oracle is a second implementation.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/secp256k1_pubkey.rye selftest
@@ -37,7 +37,7 @@ const ecr = @import("secp256k1_ecrecover.rye");
 
 pub const secp256k1_pubkey_version = "20260816.120000";
 
-/// A field element — one coordinate — is 32 bytes big-endian, the width secp256k1's base field fixes. Named so every buffer walk cites it.
+/// A field element -- one coordinate -- is 32 bytes big-endian, the width secp256k1's base field fixes. Named so every buffer walk cites it.
 pub const field_bytes: u32 = 32;
 
 /// The COMPRESSED SEC1 encoding is one tag byte plus the x coordinate: 1 + 32 = 33. The tag is 0x02 (even y) or 0x03 (odd y).
@@ -56,23 +56,23 @@ pub const tag_uncompressed: u8 = 0x04;
 pub const PubkeyError = error{
     /// A parse input whose length is neither compressed_bytes nor uncompressed_bytes.
     BadLength,
-    /// A parse input whose leading tag does not match its length — a 33-byte frame not tagged 0x02/0x03, or a 65-byte frame not tagged 0x04.
+    /// A parse input whose leading tag does not match its length -- a 33-byte frame not tagged 0x02/0x03, or a 65-byte frame not tagged 0x04.
     BadTag,
 } || sign.SignError || ecr.RecoverError;
 
-/// A parsed public key: the affine coordinates (x, y), each 32 bytes big-endian — the uncompressed body the ecosystem expands a key to.
+/// A parsed public key: the affine coordinates (x, y), each 32 bytes big-endian -- the uncompressed body the ecosystem expands a key to.
 pub const PubKey = struct {
     x: [field_bytes]u8,
     y: [field_bytes]u8,
 };
 
 /// Serialize a known point (qx, qy) in COMPRESSED SEC1 form: tag 0x02 for an even y, 0x03 for an odd y, then the 32-byte x. Authors no
-/// arithmetic — it reads the parity of y and lays out the bytes.
+/// arithmetic -- it reads the parity of y and lays out the bytes.
 pub fn compress_xy(qx: *const [field_bytes]u8, qy: *const [field_bytes]u8) [compressed_bytes]u8 {
-    // invariant: the compressed frame is exactly one tag byte plus one coordinate — the width the caller's buffer was sized against.
+    // invariant: the compressed frame is exactly one tag byte plus one coordinate -- the width the caller's buffer was sized against.
     comptime assert(compressed_bytes == 1 + field_bytes);
     var out: [compressed_bytes]u8 = undefined;
-    // The parity of the y coordinate lives in its lowest bit; big-endian, that is the last byte. Even → 0x02, odd → 0x03.
+    // The parity of the y coordinate lives in its lowest bit; big-endian, that is the last byte. Even -> 0x02, odd -> 0x03.
     out[0] = if ((qy[field_bytes - 1] & 1) == 0) tag_even else tag_odd;
     var i: u32 = 0;
     while (i < field_bytes) : (i += 1) {
@@ -85,7 +85,7 @@ pub fn compress_xy(qx: *const [field_bytes]u8, qy: *const [field_bytes]u8) [comp
 
 /// Serialize a known point (qx, qy) in UNCOMPRESSED SEC1 form: tag 0x04, then the 32-byte x, then the 32-byte y. Authors no arithmetic.
 pub fn uncompress_xy(qx: *const [field_bytes]u8, qy: *const [field_bytes]u8) [uncompressed_bytes]u8 {
-    // invariant: the uncompressed frame is one tag byte plus both coordinates — the width the caller's buffer was sized against.
+    // invariant: the uncompressed frame is one tag byte plus both coordinates -- the width the caller's buffer was sized against.
     comptime assert(uncompressed_bytes == 1 + field_bytes + field_bytes);
     var out: [uncompressed_bytes]u8 = undefined;
     out[0] = tag_uncompressed;
@@ -99,28 +99,28 @@ pub fn uncompress_xy(qx: *const [field_bytes]u8, qy: *const [field_bytes]u8) [un
     return out;
 }
 
-/// Derive the COMPRESSED public key of a private scalar: q = d·G, then compress. Composes crypto/secp256k1_ecdsa_sign.rye derive_public (the
-/// GREEN base-point ladder) — the private scalar is used only to compute the PUBLIC point, and the result carries no secret.
+/// Derive the COMPRESSED public key of a private scalar: q = d-G, then compress. Composes crypto/secp256k1_ecdsa_sign.rye derive_public (the
+/// GREEN base-point ladder) -- the private scalar is used only to compute the PUBLIC point, and the result carries no secret.
 pub fn from_private_compressed(d_be: *const [field_bytes]u8) PubkeyError![compressed_bytes]u8 {
     const q = try sign.derive_public(d_be);
-    // invariant: derive_public returned two 32-byte coordinates for a canonical key — the widths compress_xy consumes whole.
+    // invariant: derive_public returned two 32-byte coordinates for a canonical key -- the widths compress_xy consumes whole.
     comptime assert(sign.field_bytes == field_bytes);
     assert(q.qx.len == field_bytes and q.qy.len == field_bytes);
     return compress_xy(&q.qx, &q.qy);
 }
 
-/// Derive the UNCOMPRESSED public key of a private scalar: q = d·G, then expand. Composes the same GREEN derive_public.
+/// Derive the UNCOMPRESSED public key of a private scalar: q = d-G, then expand. Composes the same GREEN derive_public.
 pub fn from_private_uncompressed(d_be: *const [field_bytes]u8) PubkeyError![uncompressed_bytes]u8 {
     const q = try sign.derive_public(d_be);
-    // invariant: derive_public returned two 32-byte coordinates for a canonical key — the widths uncompress_xy consumes whole.
+    // invariant: derive_public returned two 32-byte coordinates for a canonical key -- the widths uncompress_xy consumes whole.
     comptime assert(sign.field_bytes == field_bytes);
     assert(q.qx.len == field_bytes and q.qy.len == field_bytes);
     return uncompress_xy(&q.qx, &q.qy);
 }
 
-/// Copy a 32-byte coordinate out of a slice into a fixed array. Bounded and disjoint — a small, explicit fill, the TAME reflex over a bare copy.
+/// Copy a 32-byte coordinate out of a slice into a fixed array. Bounded and disjoint -- a small, explicit fill, the TAME reflex over a bare copy.
 fn take32(source: []const u8, offset: u32) [field_bytes]u8 {
-    // invariant: the window [offset, offset+32) lies wholly inside the source — the caller checked the frame length first.
+    // invariant: the window [offset, offset+32) lies wholly inside the source -- the caller checked the frame length first.
     assert(offset + field_bytes <= source.len);
     var out: [field_bytes]u8 = undefined;
     var i: u32 = 0;
@@ -133,11 +133,11 @@ fn take32(source: []const u8, offset: u32) [field_bytes]u8 {
     return out;
 }
 
-/// Parse a SEC1 public key — compressed (33 bytes, tag 0x02/0x03) or uncompressed (65 bytes, tag 0x04) — back to its affine (x, y). A compressed
+/// Parse a SEC1 public key -- compressed (33 bytes, tag 0x02/0x03) or uncompressed (65 bytes, tag 0x04) -- back to its affine (x, y). A compressed
 /// key's y is recovered by solving y² = x³ + 7 at the tag's parity through the GREEN ecrecover.decompress. A wrong length or a tag that does not
 /// match its length is refused before a coordinate is trusted.
 pub fn parse(sec1: []const u8) PubkeyError!PubKey {
-    // invariant: a SEC1 frame is exactly compressed_bytes or uncompressed_bytes — nothing else is a public key.
+    // invariant: a SEC1 frame is exactly compressed_bytes or uncompressed_bytes -- nothing else is a public key.
     if (sec1.len != compressed_bytes and sec1.len != uncompressed_bytes) return error.BadLength;
 
     if (sec1.len == uncompressed_bytes) {
@@ -196,7 +196,7 @@ fn run_selftest() !u8 {
         if (!slice_eq(&pc.x, &zx) or !slice_eq(&pc.y, &zy)) return error.ParseCompressedMismatch;
         if (!slice_eq(&pu.x, &zx) or !slice_eq(&pu.y, &zy)) return error.ParseUncompressedMismatch;
 
-        // 3. Parse parity (Zig's own bytes): parsing Zig's compressed encoding recovers the same y — our decompress agrees with Zig's curve.
+        // 3. Parse parity (Zig's own bytes): parsing Zig's compressed encoding recovers the same y -- our decompress agrees with Zig's curve.
         const pz = try parse(&zc);
         if (!slice_eq(&pz.x, &zx) or !slice_eq(&pz.y, &zy)) return error.ParseForeignMismatch;
 

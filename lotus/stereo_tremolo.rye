@@ -1,32 +1,32 @@
-//! lotus/stereo_tremolo.rye — ALES176: the TREMOLO carried into stereo — ALES74's triangle-LFO-on-amplitude run on BOTH channels with the SAME swing (centre, depth, period), the rung that OPENS the stereo MODULATION class the way
-//! ALES170's tone opened the stereo EQ class. The EQ / filter class (ALES170–175) shapes a signal's SPECTRUM by a fixed or swept coefficient; the modulation family points a moving LFO at a target and lets it swing over time. ALES74
-//! built the thinnest such rung for a mono Clip — the tremolo, the oldest amplitude effect there is: a triangle LFO drives the GAIN, so a steady note gently rises and falls in loudness. It is the thinnest because every output sample
+//! lotus/stereo_tremolo.rye -- ALES176: the TREMOLO carried into stereo -- ALES74's triangle-LFO-on-amplitude run on BOTH channels with the SAME swing (centre, depth, period), the rung that OPENS the stereo MODULATION class the way
+//! ALES170's tone opened the stereo EQ class. The EQ / filter class (ALES170-175) shapes a signal's SPECTRUM by a fixed or swept coefficient; the modulation family points a moving LFO at a target and lets it swing over time. ALES74
+//! built the thinnest such rung for a mono Clip -- the tremolo, the oldest amplitude effect there is: a triangle LFO drives the GAIN, so a steady note gently rises and falls in loudness. It is the thinnest because every output sample
 //! depends only on ITS OWN input sample (never a neighbour), so it writes in place with no snapshot, no delay line, no lookahead. That thinness is exactly why it opens the stereo modulation class: with no carried state and no
 //! backward read, a stereo tremolo is the cleanest possible per-channel pass.
 //!
-//! The crux — the SAME LFO on BOTH channels is the classic LINKED (auto-)tremolo: both speakers pulse together, the image held. A tremolo's swing (centre, depth, period) is scaled units the caller NAMES, not scalars measured across
-//! the field, so the same swing on each channel preserves the stereo image for free — no linking machinery, no measurement. Because each output sample is its own input times the SHARED gain g(k) at that index, an identical-channel
+//! The crux -- the SAME LFO on BOTH channels is the classic LINKED (auto-)tremolo: both speakers pulse together, the image held. A tremolo's swing (centre, depth, period) is scaled units the caller NAMES, not scalars measured across
+//! the field, so the same swing on each channel preserves the stereo image for free -- no linking machinery, no measurement. Because each output sample is its own input times the SHARED gain g(k) at that index, an identical-channel
 //! (mono-in-stereo) master stays identical (the same input through the same LFO is the same output), and a PANNED master keeps its pan exactly: both sides are scaled by the same g(k), so the left:right ratio at every sample is
-//! untouched — the tremolo pulses the whole field without wandering the image (an offset-phase stereo tremolo, which DOES wander the image, is a later rung; this opener is the linked one). Like the stateless EQ shelf/notch/bell and
+//! untouched -- the tremolo pulses the whole field without wandering the image (an offset-phase stereo tremolo, which DOES wander the image, is a later rung; this opener is the linked one). Like the stateless EQ shelf/notch/bell and
 //! unlike the band-pass, there is no carried state to thread across a seam.
 //!
-//! The rule, stated once: refuse BadPeriod (a period not a positive multiple of four, or wider than max_clip), BadDepth (a negative depth or a floor below silence), BadGain (a top above unity — the tremolo attenuates, never boosts),
-//! and BadRange (a span past the shared length) BEFORE either channel is touched — the swing and span validated once against the shared length up front (ALES74's own `precheck`, factored out for this), so a refusal never tremolos
+//! The rule, stated once: refuse BadPeriod (a period not a positive multiple of four, or wider than max_clip), BadDepth (a negative depth or a floor below silence), BadGain (a top above unity -- the tremolo attenuates, never boosts),
+//! and BadRange (a span past the shared length) BEFORE either channel is touched -- the swing and span validated once against the shared length up front (ALES74's own `precheck`, factored out for this), so a refusal never tremolos
 //! one channel and leaves the other torn; then run ALES74's `tremolo` on each channel with the SAME swing. Unity gain (centre = glide_scale, depth = 0) passes both byte for byte; the gain is held to an attenuation, so the per-sample
 //! saturate is a proven no-op and no tremolo voice is ever louder than the dry it scales, per channel.
 //!
-//! The crux — four laws. THE STEREO TREMOLO LAW: each channel equals ALES74's mono `tremolo` with the SAME swing over the same span byte for byte, proven side by side with genuinely different per-channel content — the left tremoloed
+//! The crux -- four laws. THE STEREO TREMOLO LAW: each channel equals ALES74's mono `tremolo` with the SAME swing over the same span byte for byte, proven side by side with genuinely different per-channel content -- the left tremoloed
 //! by the left's samples, the right by the right's, never crossed. THE IMAGE LAW: an identical-channel master stays identical through the tremolo (a mono-in-stereo signal never splits), AND a panned pair keeps its left:right ratio at
-//! every sample (both sides scaled by the same shared gain — the linked tremolo pulses without wandering the image). THE ATTENUATION LAW: unity gain passes both channels byte for byte even at the rail, and no tremolo voice exceeds
+//! every sample (both sides scaled by the same shared gain -- the linked tremolo pulses without wandering the image). THE ATTENUATION LAW: unity gain passes both channels byte for byte even at the rail, and no tremolo voice exceeds
 //! the dry it scales on either channel (the gain an attenuation, the saturate a no-op). THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an all-silent master tremolos to silence on both; left.len == right.len after; a bad period,
 //! a bad depth, a bad gain, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES176.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES176.
 //! Design read: active-designing/date/20260815/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
-//! Stands on: lotus/tremolo.rye (ALES74) — the mono tremolo run once per channel, its TremoloError reused whole and its `precheck` reused for the up-front atomic validation; lotus/glide.rye (ALES70) — glide_scale, the fixed-point
-//! unit (256 = unity gain); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and the one true saturate.
+//! Stands on: lotus/tremolo.rye (ALES74) -- the mono tremolo run once per channel, its TremoloError reused whole and its `precheck` reused for the up-front atomic validation; lotus/glide.rye (ALES70) -- glide_scale, the fixed-point
+//! unit (256 = unity gain); lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and the one true saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each tremoloed through ALES74's own attenuating triangle gain (the triangle and multiply in i64, the write saturating once as a proven
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each tremoloed through ALES74's own attenuating triangle gain (the triangle and multiply in i64, the write saturating once as a proven
 //! no-op), siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The gain is counted in scaled units (256 = unity) and the period in samples, not hertz (a real time base is a later rung).
 //! No delay line, no snapshot, no lookahead, no real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -43,13 +43,13 @@ const tremolo = @import("tremolo.rye");
 
 pub const stereo_tremolo_version = "20260815.082400";
 
-/// The stereo tremolo's faults are exactly ALES74's own `TremoloError` — `BadPeriod`, `BadDepth`, `BadGain`, and `BadRange` — reused by name, since carrying the tremolo into stereo adds no new fault: it validates one shared swing
+/// The stereo tremolo's faults are exactly ALES74's own `TremoloError` -- `BadPeriod`, `BadDepth`, `BadGain`, and `BadRange` -- reused by name, since carrying the tremolo into stereo adds no new fault: it validates one shared swing
 /// and span against the shared length, then runs the same mono tremolo on each channel.
 pub const StereoTremoloError = tremolo.TremoloError;
 
-/// Apply a tremolo over `count` samples starting at `start` in BOTH channels of `sc` with the SAME swing — a triangle LFO of `depth_scaled` round `centre_scaled` over `period` samples driving the scaled GAIN — by running ALES74's
+/// Apply a tremolo over `count` samples starting at `start` in BOTH channels of `sc` with the SAME swing -- a triangle LFO of `depth_scaled` round `centre_scaled` over `period` samples driving the scaled GAIN -- by running ALES74's
 /// proven mono `tremolo` on each channel. The shared swing preserves the stereo image: an identical-channel master stays identical, and a panned master keeps its pan (both sides scaled by the same gain). Validates the swing and span
-/// ONCE against the shared length before either channel is mutated (ALES74's `precheck`): refuses BadPeriod, BadDepth, BadGain, and BadRange, both channels untouched. Values only — never the length; the two channels leave balanced.
+/// ONCE against the shared length before either channel is mutated (ALES74's `precheck`): refuses BadPeriod, BadDepth, BadGain, and BadRange, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_tremolo(
     sc: *pan.StereoClip,
     start: u32,
@@ -58,24 +58,24 @@ pub fn stereo_tremolo(
     depth_scaled: i64,
     period: u32,
 ) StereoTremoloError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared swing preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared swing preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: the swing and span are legal against the SHARED length — checked before any write, so a refusal never tremolos one channel and leaves the other torn.
+    // invariant: the swing and span are legal against the SHARED length -- checked before any write, so a refusal never tremolos one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     try tremolo.precheck(len, start, count, centre_scaled, depth_scaled, period);
 
-    // Every check passed and holds identically for both channels (same swing, same span, shared length), so each mono tremolo is pre-validated to succeed — no refusal can land between the two channel edits. The SAME LFO on each
+    // Every check passed and holds identically for both channels (same swing, same span, shared length), so each mono tremolo is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME LFO on each
     // channel, each scaling its own samples by the shared gain.
     try tremolo.tremolo(&sc.left, start, count, centre_scaled, depth_scaled, period);
     try tremolo.tremolo(&sc.right, start, count, centre_scaled, depth_scaled, period);
 
-    // invariant: the channels leave balanced — a tremolo writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a tremolo writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO TREMOLO LAW — each channel equals ALES74's mono tremolo with the SAME swing byte for byte, different per-channel content; THE IMAGE LAW — an identical-channel master staying identical, a panned pair
-//     keeping its ratio; THE ATTENUATION LAW — unity passthrough exact on both, no voice louder than the dry; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal untouched, count 0 identity
+// --- selftest: THE STEREO TREMOLO LAW -- each channel equals ALES74's mono tremolo with the SAME swing byte for byte, different per-channel content; THE IMAGE LAW -- an identical-channel master staying identical, a panned pair
+//     keeping its ratio; THE ATTENUATION LAW -- unity passthrough exact on both, no voice louder than the dry; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW -- silence to silence, balanced, each refusal untouched, count 0 identity
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -99,7 +99,7 @@ fn run_selftest() !u8 {
     const centre: i64 = @divTrunc(scale, 2);
     const depth: i64 = @divTrunc(scale, 2);
 
-    // 1. THE STEREO TREMOLO LAW — each channel equals ALES74's mono tremolo with the SAME swing, proven side by side over one span with genuinely different per-channel content: the left tremoloed by the left's samples, the right by
+    // 1. THE STEREO TREMOLO LAW -- each channel equals ALES74's mono tremolo with the SAME swing, proven side by side over one span with genuinely different per-channel content: the left tremoloed by the left's samples, the right by
     //    the right's, never crossed.
     {
         const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000 };
@@ -117,11 +117,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftTremoloNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightTremoloNotMono;
-        // The two channels genuinely differ — the left is not the right tremoloed, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right tremoloed, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the tremolo: the same input through the same LFO is the same deterministic output, so the two channels never split.
+    // 2. THE IMAGE LAW -- an identical-channel (mono-in-stereo) master stays identical through the tremolo: the same input through the same LFO is the same deterministic output, so the two channels never split.
     {
         const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
         var sc = pan.StereoClip{};
@@ -130,8 +130,8 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 2b. THE IMAGE LAW, panned — a panned pair (the right a fixed fraction of the left) keeps its left:right ratio at every sample, because both sides are scaled by the SAME gain g(k). The linked tremolo pulses the whole field
-    //     without wandering the image: wherever the pre-tremolo pair held 2·right == left, the post-tremolo pair holds it too (within one unit of integer rounding, checked as an exact match on the doubled right).
+    // 2b. THE IMAGE LAW, panned -- a panned pair (the right a fixed fraction of the left) keeps its left:right ratio at every sample, because both sides are scaled by the SAME gain g(k). The linked tremolo pulses the whole field
+    //     without wandering the image: wherever the pre-tremolo pair held 2-right == left, the post-tremolo pair holds it too (within one unit of integer rounding, checked as an exact match on the doubled right).
     {
         const ll = [_]i16{ 8000, -8000, 12000, -4000, 16000, -16000, 2000, -2000 };
         var rr: [8]i16 = undefined;
@@ -140,14 +140,14 @@ fn run_selftest() !u8 {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &ll, &rr);
         try stereo_tremolo(&sc, 0, 8, centre, depth, 8);
-        // Each side scaled by the same g(k): left'' = left·g/scale, right'' = (left/2)·g/scale. Since left is even and g·left is divisible cleanly here, 2·right'' == left'' holds sample for sample — the pan is preserved.
+        // Each side scaled by the same g(k): left'' = left-g/scale, right'' = (left/2)-g/scale. Since left is even and g-left is divisible cleanly here, 2-right'' == left'' holds sample for sample -- the pan is preserved.
         const lo = sc.left.samples();
         const ro = sc.right.samples();
         var k: u32 = 0;
         while (k < 8) : (k += 1) if (2 * @as(i64, ro[k]) != @as(i64, lo[k])) return error.PanRatioWandered;
     }
 
-    // 3. THE ATTENUATION LAW — unity gain (centre = scale, depth = 0) passes both channels byte for byte even at the rail (the saturate a no-op), and no tremolo voice exceeds the dry it scales on either channel.
+    // 3. THE ATTENUATION LAW -- unity gain (centre = scale, depth = 0) passes both channels byte for byte even at the rail (the saturate a no-op), and no tremolo voice exceeds the dry it scales on either channel.
     {
         const ll = [_]i16{ 32767, -32768, 1000, -1000, 20000, -20000, 5, -5 };
         const rr = [_]i16{ -32768, 32767, -1000, 1000, -20000, 20000, -5, 5 };
@@ -166,7 +166,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master tremolos to silence on both; the channels stay equal length and each holds its starting length.
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master tremolos to silence on both; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 4) return error.LengthChanged;
     }
 
-    // 4b. THE ATOMICITY LAW — a bad period (not a multiple of four), a bad depth (floor below silence), a bad gain (top above unity), and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still
+    // 4b. THE ATOMICITY LAW -- a bad period (not a multiple of four), a bad depth (floor below silence), a bad gain (top above unity), and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still
     //     balanced.
     {
         const tl = [_]i16{ 5, -6, 7, -8 };
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to tremolo.
+    // 4c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no sample to tremolo.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

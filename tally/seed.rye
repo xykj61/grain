@@ -1,10 +1,10 @@
-//! tally/seed.rye — the first running Tally: a bounded region with asserted edges.
+//! tally/seed.rye -- the first running Tally: a bounded region with asserted edges.
 //!
 //! Tally is the garden allocator of the Rye family: a region of memory with a
 //! stated start, length, and end, where bump allocation either lands inside the
-//! edges or fails with a reason — no silent wrap, no undefined behavior. This
+//! edges or fails with a reason -- no silent wrap, no undefined behavior. This
 //! seed is the smallest version that runs: one backing buffer, one region, bump
-//! allocation, and clear whole — proved by hosted assertions so the design lives
+//! allocation, and clear whole -- proved by hosted assertions so the design lives
 //! in running code and not only in prose.
 //!
 //! Build and run:
@@ -15,8 +15,8 @@
 //!
 //! Expected output: tally seed: all facts held.
 //!
-//! The design grows toward Tally v1 — named regions per service with explicit
-//! start, length, and end — and eventually forms the floor that Pond's mem_mb
+//! The design grows toward Tally v1 -- named regions per service with explicit
+//! start, length, and end -- and eventually forms the floor that Pond's mem_mb
 //! measures. See active-designing/20260619-084412_the-first-seeds.md.
 
 const std = @import("std");
@@ -25,7 +25,7 @@ const print = std.debug.print;
 
 const tally_seed_version = "20260620.211712";
 
-/// Stack backing for the proof — small enough to hold in mind, large enough to prove.
+/// Stack backing for the proof -- small enough to hold in mind, large enough to prove.
 const BACKING_LEN: u32 = 64;
 
 // `Region` and `buf_len_u32` stood here whole, and `tally/gardens.rye` held a copy of them that
@@ -40,7 +40,7 @@ pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
     const stdout = std.Io.File.stdout();
 
-    // A 64-byte stack garden — small enough to hold in mind, large enough to prove.
+    // A 64-byte stack garden -- small enough to hold in mind, large enough to prove.
     var backing: [BACKING_LEN]u8 = undefined;
     var region = Region.init(&backing);
 
@@ -60,13 +60,13 @@ pub fn main(init: std.process.Init) !u8 {
     assert(region.pos == 30);
     assert(region.remaining() == 34);
 
-    // The slices are real memory — write into them and read the values back.
+    // The slices are real memory -- write into them and read the values back.
     @memset(a, 'A');
     @memset(b, 'B');
     assert(a[0] == 'A');
     assert(b[0] == 'B');
 
-    // Allocate all the way to the edge — the last byte is still inside.
+    // Allocate all the way to the edge -- the last byte is still inside.
     const c = try region.alloc(34);
     assert(c.len == 34);
     assert(region.pos == 64);
@@ -79,7 +79,7 @@ pub fn main(init: std.process.Init) !u8 {
         if (overflow) |_| unreachable else |err| assert(err == error.OutOfBounds);
     }
 
-    // Zero bytes at the edge succeeds — no space consumed, cursor unchanged.
+    // Zero bytes at the edge succeeds -- no space consumed, cursor unchanged.
     const empty = try region.alloc(0);
     assert(empty.len == 0);
     assert(region.pos == 64);
@@ -95,7 +95,7 @@ pub fn main(init: std.process.Init) !u8 {
     assert(region.pos == 16);
     assert(d.ptr == backing[0..].ptr);
 
-    // Old and new allocations do not overlap across a clear — the cursor reset.
+    // Old and new allocations do not overlap across a clear -- the cursor reset.
     assert(region.remaining() == 48);
 
     stdout.writeStreamingAll(io, "tally seed: all facts held.\n") catch {};

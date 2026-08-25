@@ -1,4 +1,4 @@
-//! linengrow/setu5_device_payload_check.rye — write lane_frame.bin for Desk hold.
+//! linengrow/setu5_device_payload_check.rye -- write lane_frame.bin for Desk hold.
 //!
 //! Builds the NCM-framed SETU1 ping and writes tools/.cache/setu0/lane_frame.bin
 //! when it fits the Comlink device max_frame.

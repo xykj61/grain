@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_witness.rye — proves Dexter glass demo + live KEY drain.
+//! linengrow/dexter_glass_witness.rye -- proves Dexter glass demo + live KEY drain.
 //!
 //!   rye build linengrow/dexter_glass_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_glass_witness
@@ -29,7 +29,7 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, line[0..len], "glow") != null);
     print("dexter-glass: Skate line \"{s}\" -- GREEN\n", .{line[0..len]});
 
-    // Live KEY drain — Android-shaped downs through the same mapper NativeActivity uses.
+    // Live KEY drain -- Android-shaped downs through the same mapper NativeActivity uses.
     assert(key.action_from_key_down(.{ .key_code = key.keycode_a }) != null);
     // ZETA6: Enter is newline (matches glass ret); send is the ^ key.
     assert(key.action_from_key_down(.{ .key_code = key.keycode_enter }).? == .newline);
@@ -59,7 +59,7 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, line[0..len], "P1") != null);
     print("dexter-glass: live KEY drain \"{s}\" -- GREEN\n", .{line[0..len]});
 
-    // ZETA3 — caret phase + live line with glyph.
+    // ZETA3 -- caret phase + live line with glyph.
     assert(glass.caret_visible_at(0));
     assert(!glass.caret_visible_at(glass.caret_period_ms));
     assert(glass.caret_visible_at(glass.caret_period_ms * 2));

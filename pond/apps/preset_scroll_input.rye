@@ -1,16 +1,16 @@
-//! pond/apps/preset_scroll_input.rye — HUNK43: the input seam — a keeper's raw gesture drives the cursor.
+//! pond/apps/preset_scroll_input.rye -- HUNK43: the input seam -- a keeper's raw gesture drives the cursor.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK43.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK43.
 //! Design read: active-designing/date/20260813/20260813-195500_hunk-scroll-input-exploration.md
-//! Teacher, thanked clean-room: the input layer of any scroll surface — a wheel notch, a drag delta, a Page-Down key
+//! Teacher, thanked clean-room: the input layer of any scroll surface -- a wheel notch, a drag delta, a Page-Down key
 //! become one move over a list (concept only, siloed).
 //!
 //! HUNK40 gave a pure `ScrollCursor` whose gestures each clamp at both ends; HUNK42 painted its page beside a live
-//! scroll bar. What was missing is the boundary above the cursor: the translation from a raw input event — a signed
-//! scroll delta, a page key, a home/end key — into exactly one cursor move. This rung is that seam: `apply(cursor,
+//! scroll bar. What was missing is the boundary above the cursor: the translation from a raw input event -- a signed
+//! scroll delta, a page key, a home/end key -- into exactly one cursor move. This rung is that seam: `apply(cursor,
 //! input)` maps one event to one gesture, preserving every clamp the cursor already holds, so a fling of ten thousand
 //! lines past the end still lands on the bottom-pinned page and a delta at the i32 extremes never under/overflows
-//! before the clamp. A pure composition over HUNK40 — no storage, no render, no new refusal. No network, no key, no
+//! before the clamp. A pure composition over HUNK40 -- no storage, no render, no new refusal. No network, no key, no
 //! funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_input.rye selftest
@@ -34,7 +34,7 @@ pub const InputKind = enum {
     to_bottom,
 };
 
-/// One raw input event. `lines` is read only for `scroll` — a signed line delta from a wheel notch or a drag; the
+/// One raw input event. `lines` is read only for `scroll` -- a signed line delta from a wheel notch or a drag; the
 /// other kinds ignore it. A plain record over one value model: an enum tag and a signed count.
 pub const Input = struct {
     kind: InputKind,
@@ -45,7 +45,7 @@ pub const Input = struct {
     }
 };
 
-/// The magnitude of a signed delta as a `u32`, capped at `cap` (the library count is a safe cap — no scroll needs to
+/// The magnitude of a signed delta as a `u32`, capped at `cap` (the library count is a safe cap -- no scroll needs to
 /// move more books than exist). Taken through `i64` so even `i32` min negates without overflow before the cap.
 fn magnitude(lines: i32, cap: u32) u32 {
     // invariant: the cap is a real library bound, never absurd.
@@ -118,27 +118,27 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
     assert(cur.max_offset() == 3);
 
-    // A signed scroll delta walks the offset: +2 scrolls down two books, -1 back up one — a raw gesture reversible.
+    // A signed scroll delta walks the offset: +2 scrolls down two books, -1 back up one -- a raw gesture reversible.
     apply(&cur, Input.scroll_by(2));
     assert(cur.offset == 2);
     apply(&cur, Input.scroll_by(-1));
     assert(cur.offset == 1);
 
     // A huge positive delta clamps to the bottom-pinned offset (never past it, no wrap); a huge negative one to the
-    // top — a fling can never fall off the ends.
+    // top -- a fling can never fall off the ends.
     apply(&cur, Input.scroll_by(100000));
     assert(cur.offset == 3); // clamped at max_offset
     apply(&cur, Input.scroll_by(-100000));
     assert(cur.offset == 0); // clamped at the top
 
-    // The i32 extremes as deltas both clamp cleanly — the magnitude is taken in i64 so i32 min negates without
+    // The i32 extremes as deltas both clamp cleanly -- the magnitude is taken in i64 so i32 min negates without
     // overflow before the cap.
     apply(&cur, Input.scroll_by(std.math.maxInt(i32)));
     assert(cur.offset == 3);
     apply(&cur, Input.scroll_by(std.math.minInt(i32)));
     assert(cur.offset == 0);
 
-    // A zero delta is a no-op — an input event that moves nothing moves the cursor nowhere.
+    // A zero delta is a no-op -- an input event that moves nothing moves the cursor nowhere.
     apply(&cur, Input.scroll_by(0));
     assert(cur.offset == 0);
 
@@ -157,7 +157,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(cur.offset == 0);
     assert(cur.at_top());
 
-    // A library that fits the screen never moves, whatever the input arrives — max_offset 0, every gesture a no-op.
+    // A library that fits the screen never moves, whatever the input arrives -- max_offset 0, every gesture a no-op.
     {
         var fit = try preset_scroll.ScrollCursor.open(lib.count, 8); // eight rows over five books
         assert(fit.max_offset() == 0);
@@ -167,7 +167,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(fit.offset == 0); // never moved
     }
 
-    // Every reachable offset stays a real, bottom-pinned viewport under a long stream of mixed inputs — drive the
+    // Every reachable offset stays a real, bottom-pinned viewport under a long stream of mixed inputs -- drive the
     // cursor by wheel deltas and page keys and it never leaves its library.
     {
         const stream = [_]Input{

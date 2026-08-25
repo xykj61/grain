@@ -1,4 +1,4 @@
-//! linengrow/neth_serial_core_witness.rye — proves Neth's small serial core.
+//! linengrow/neth_serial_core_witness.rye -- proves Neth's small serial core.
 //!
 //!   rye build linengrow/neth_serial_core_witness.rye -femit-bin=linengrow/bin/neth_serial_core_witness
 //!   linengrow/bin/neth_serial_core_witness

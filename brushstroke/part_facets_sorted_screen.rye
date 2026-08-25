@@ -1,22 +1,22 @@
-//! brushstroke/part_facets_sorted_screen.rye — HUNK90: the sorted screen — a header names the sort above the very
+//! brushstroke/part_facets_sorted_screen.rye -- HUNK90: the sorted screen -- a header names the sort above the very
 //! cheapest-first parts it ordered.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK90.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK90.
 //! Design read: active-designing/date/20260814/20260814-012818_hunk-part-facets-sorted-screen-exploration.md
 //! Teacher, thanked clean-room: a search box that says *sorted by price* above the parts it ordered (concept only,
 //! siloed).
 //!
 //! HUNK89 sorts the faceted result cheapest-first and HUNK88 crowns the faceted shelf with a header naming the query,
-//! the count, and the page — yet the two never met: the paged header sat over the HELD-ORDER shelf, and the sorted
-//! shelf carried no header at all. A keeper reading a sorted page had no word it WAS sorted — the order was silent.
+//! the count, and the page -- yet the two never met: the paged header sat over the HELD-ORDER shelf, and the sorted
+//! shelf carried no header at all. A keeper reading a sorted page had no word it WAS sorted -- the order was silent.
 //! This rung says it: `format_sorted_header` appends `  sorted by price` to HUNK88's paged header, and
 //! `facets_sorted_screen` stacks that header over HUNK89's `facets_sorted_shelf`, so the whole sorted search reads top
-//! to bottom in one surface — what I asked · how many I found · which page I am on · that it is sorted by price · the
+//! to bottom in one surface -- what I asked - how many I found - which page I am on - that it is sorted by price - the
 //! cheapest-first parts of that page.
 //!
 //! The crux is NO DRIFT between the word and the order: the header names `sorted by price` and the shelf beneath is the
 //! actually price-sorted page (HUNK89), and the page the header names is the page the shelf draws (HUNK88). Both read
-//! the same typed line through the same `parse_facets`. A zero-result line carries neither page nor sort tail — it
+//! the same typed line through the same `parse_facets`. A zero-result line carries neither page nor sort tail -- it
 //! names no order because there is nothing to order. A malformed clause surfaces the parser's named refusal before any
 //! sort work.
 //!
@@ -39,10 +39,10 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const part_facets_sorted_screen_version = "20260814.012818";
 
-/// The sort tail — a two-space gap and `sorted by price`. A named constant so a scratch can be sized to hold it.
+/// The sort tail -- a two-space gap and `sorted by price`. A named constant so a scratch can be sized to hold it.
 const sort_tail = "  sorted by price";
 
-/// The widest a sorted header line runs — HUNK88's whole paged header plus the sort tail. A caller sizes its scratch to
+/// The widest a sorted header line runs -- HUNK88's whole paged header plus the sort tail. A caller sizes its scratch to
 /// this, so a sorted header can never overflow.
 pub const max_sorted_header_line: u32 = part_facets_paged.max_paged_header_line + sort_tail.len;
 
@@ -50,9 +50,9 @@ pub const SortedScreenError = error{
     HeaderOverflow,
 };
 
-/// Assemble the sorted header line — HUNK88's whole paged header (query echo · result count · `page N of M`) followed
+/// Assemble the sorted header line -- HUNK88's whole paged header (query echo - result count - `page N of M`) followed
 /// by `  sorted by price`, added only when a result exists. A zero-result line names no sort, exactly as HUNK88 names
-/// no page — there is nothing to order. The base header comes straight from HUNK88, so the query echo, count, and page
+/// no page -- there is nothing to order. The base header comes straight from HUNK88, so the query echo, count, and page
 /// are unchanged; only the sort note is added. A malformed clause surfaces the parser's named refusal through the base
 /// header, before any sort work.
 pub fn format_sorted_header(
@@ -67,7 +67,7 @@ pub fn format_sorted_header(
     assert(rows > 0);
     var tmp: [max_sorted_header_line]u8 = undefined;
     var n = try part_facets_paged.format_facets_header_paged(allocator, cat, text, rows, offset, tmp[0..]);
-    // invariant: the paged header never filled the whole sorted scratch — the sort tail has room.
+    // invariant: the paged header never filled the whole sorted scratch -- the sort tail has room.
     assert(n <= part_facets_paged.max_paged_header_line);
     const count = try part_facets_search.facets_search_result_count(cat, text);
     if (count >= 1) {
@@ -83,7 +83,7 @@ pub fn format_sorted_header(
     return n;
 }
 
-/// Draw the sorted header as a fresh one-row anchor-palette grid — the sorted header line truncated to `cols`. Refuses
+/// Draw the sorted header as a fresh one-row anchor-palette grid -- the sorted header line truncated to `cols`. Refuses
 /// `EmptyHeader` on a zero dimension and `HeaderTooLarge` past the down-map ceiling (through the same guards HUNK88
 /// uses), so a header a keeper reads always fits a real grid; a malformed clause surfaces the parser's named refusal.
 pub fn sorted_header_row(
@@ -111,7 +111,7 @@ pub fn sorted_header_row(
 /// The whole sorted faceted search screen in one call: the sorted header row atop HUNK89's cheapest-first shelf page,
 /// stacked into one grid `cols` wide and `1 + rows` tall (HUNK53's cell-for-cell copy idiom). Row 0 equals
 /// `sorted_header_row` cell-for-cell and the shelf region equals `facets_sorted_shelf` cell-for-cell, so the stack adds
-/// no drift — the parts under the *sorted by price* header are the actually-sorted parts. A malformed clause refuses
+/// no drift -- the parts under the *sorted by price* header are the actually-sorted parts. A malformed clause refuses
 /// through the header first; an offset past the sorted result refuses `BadOffset` through the shelf; a too-thin row
 /// refuses the shelf's own named error.
 pub fn facets_sorted_screen(
@@ -134,7 +134,7 @@ pub fn facets_sorted_screen(
     // invariant: the stacked screen is one row taller than the shelf.
     assert(grid.rows == rows + 1);
 
-    // Row 0 — the sorted header, cell-for-cell.
+    // Row 0 -- the sorted header, cell-for-cell.
     var c: u32 = 0;
     while (c < cols) : (c += 1) {
         const i: usize = @intCast(c);
@@ -145,7 +145,7 @@ pub fn facets_sorted_screen(
         grid.fg_index[i] = header.fg_index[i];
     }
 
-    // Rows 1.. — the sorted shelf page, each source cell into the row below the header.
+    // Rows 1.. -- the sorted shelf page, each source cell into the row below the header.
     var r: u32 = 0;
     while (r < rows) : (r += 1) {
         var sc: u32 = 0;
@@ -162,7 +162,7 @@ pub fn facets_sorted_screen(
     return grid;
 }
 
-// --- selftest: five parts across four bands with a price spread and a 55c tie — the sorted header names the sort, a
+// --- selftest: five parts across four bands with a price spread and a 55c tie -- the sorted header names the sort, a
 //     zero-result line names neither page nor sort, the page named is the sorted page drawn (no drift), the screen
 //     stacks header over the sorted shelf cell-for-cell, and the named refusals fire --------------------------------
 
@@ -186,7 +186,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+/// Read a row's cells back as bytes, trimming the blank tail -- so the selftest sees exactly the painted text.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
     var n: u32 = @intCast(cells.len);
@@ -209,7 +209,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     const cols: u32 = 96; // wide enough that the longest header line (query + count + page + sort tail, 86 cols) fits without truncation
 
-    // The sorted header names the sort — (stainless|brass) max:100 keeps three, so at two rows per page the header
+    // The sorted header names the sort -- (stainless|brass) max:100 keeps three, so at two rows per page the header
     // reads `... 3 results  page 1 of 2  sorted by price`.
     {
         var buf: [max_sorted_header_line]u8 = undefined;
@@ -217,21 +217,21 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..n], "material:stainless-304|material:brass max:100  3 results  page 1 of 2  sorted by price"));
     }
 
-    // An empty line is a match-all — five parts, sorted, header names page and sort.
+    // An empty line is a match-all -- five parts, sorted, header names page and sort.
     {
         var buf: [max_sorted_header_line]u8 = undefined;
         const n = try format_sorted_header(garden, &cat, "", 5, 0, buf[0..]);
         assert(std.mem.eql(u8, buf[0..n], "all parts  5 results  page 1 of 1  sorted by price"));
     }
 
-    // A ZERO-RESULT line names NEITHER page NOR sort — there is nothing to order.
+    // A ZERO-RESULT line names NEITHER page NOR sort -- there is nothing to order.
     {
         var buf: [max_sorted_header_line]u8 = undefined;
         const n = try format_sorted_header(garden, &cat, "material:stainless-304 max:10", 1, 0, buf[0..]);
         assert(std.mem.eql(u8, buf[0..n], "material:stainless-304 max:10  0 results"));
     }
 
-    // NO DRIFT, word to order: the header says `sorted by price` and the shelf beneath is the actually-sorted page —
+    // NO DRIFT, word to order: the header says `sorted by price` and the shelf beneath is the actually-sorted page --
     // over the three-part union at three rows per page, the first row is the cheapest (hexnut $0.55).
     {
         const line = "material:stainless-304|material:brass max:100";
@@ -261,7 +261,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // No drift, shelf region: the screen's rows 1.. equal facets_sorted_shelf cell-for-cell — the sorted page, unmoved.
+    // No drift, shelf region: the screen's rows 1.. equal facets_sorted_shelf cell-for-cell -- the sorted page, unmoved.
     {
         const g = try facets_sorted_screen(garden, &cat, "", cols, 5, 0);
         const shelf = try part_facets_sort.facets_sorted_shelf(garden, &cat, "", cols, 5, 0);
@@ -277,7 +277,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The composed sorted screen rasterizes to a lit canvas — the whole sorted search reaches the glass.
+    // The composed sorted screen rasterizes to a lit canvas -- the whole sorted search reaches the glass.
     {
         const g = try facets_sorted_screen(garden, &cat, "", cols, 5, 0);
         const scale: u32 = 1;
@@ -307,7 +307,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.HeaderTooLarge) return error.WrongHeader;
     }
 
-    // An offset past the sorted result refuses BadOffset through the shelf — three matches, so offset 3 at one row per
+    // An offset past the sorted result refuses BadOffset through the shelf -- three matches, so offset 3 at one row per
     // page is past the result.
     if (facets_sorted_screen(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 3)) |_| {
         return error.OffsetSlipped;

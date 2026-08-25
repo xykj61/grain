@@ -1,20 +1,20 @@
-//! brushstroke/part_facets_search.rye — HUNK86: the faceted grammar to glass — OR-within, AND-across draws one paged
+//! brushstroke/part_facets_search.rye -- HUNK86: the faceted grammar to glass -- OR-within, AND-across draws one paged
 //! shelf.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK86.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK86.
 //! Design read: active-designing/date/20260814/20260814-005836_hunk-part-facets-search-shelf-on-glass-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — OR within a facet, AND across facets (concept only,
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- OR within a facet, AND across facets (concept only,
 //! siloed).
 //!
-//! HUNK85 joined the AND and the OR into the canonical faceted query — OR within a facet, AND across facets — yet in the
+//! HUNK85 joined the AND and the OR into the canonical faceted query -- OR within a facet, AND across facets -- yet in the
 //! image layer, unseen. HUNK79 drew the pure AND on glass and HUNK84 the pure OR. This rung draws the WHOLE sidebar
 //! grammar: `facets_search_shelf` reads a catalog, a faceted typed line, and a page offset, and paints exactly the parts
-//! that satisfy every group — the query algebra a keeper can SEE, complete.
+//! that satisfy every group -- the query algebra a keeper can SEE, complete.
 //!
 //! The crux is HUNK79's and HUNK84's, now over the faceted grammar: WHAT A KEEPER TYPES IS WHAT A KEEPER SEES. The drawn
 //! page is precisely what `part_window` would draw over the catalog `filter_facets` narrows-and-widens. The view invents
-//! nothing; it is the faithful composition parse_facets → filter_facets → part_window, inheriting every law HUNK85
-//! proved. Because a `|`-free line IS HUNK78's conjunction, this view is a strict superset of HUNK79 — every AND page it
+//! nothing; it is the faithful composition parse_facets -> filter_facets -> part_window, inheriting every law HUNK85
+//! proved. Because a `|`-free line IS HUNK78's conjunction, this view is a strict superset of HUNK79 -- every AND page it
 //! drew, this rung draws identically, plus the within-facet unions HUNK79 could not express. A malformed clause
 //! surfaces the parser's own named refusal rather than a wrong shelf.
 //!
@@ -35,7 +35,7 @@ const skate = @import("skate_grid.rye");
 
 pub const part_facets_search_version = "20260814.005836";
 
-/// How many parts a faceted line keeps — parse the line into a `FacetQuery`, then count the parts passing every group.
+/// How many parts a faceted line keeps -- parse the line into a `FacetQuery`, then count the parts passing every group.
 /// A caller shows this as *N results* and sizes the paging before it draws. A malformed clause surfaces the parser's
 /// own named refusal.
 pub fn facets_search_result_count(cat: *const part_catalog.PartCatalog, text: []const u8) !u32 {
@@ -46,7 +46,7 @@ pub fn facets_search_result_count(cat: *const part_catalog.PartCatalog, text: []
     return n;
 }
 
-/// How many pages the faceted result needs at `rows` parts per page — parse, filter into a fresh sub-catalog over the
+/// How many pages the faceted result needs at `rows` parts per page -- parse, filter into a fresh sub-catalog over the
 /// same sheet with the faceted query, and count the pages over it. Zero matches is zero pages.
 pub fn facets_search_page_count(
     allocator: std.mem.Allocator,
@@ -66,7 +66,7 @@ pub fn facets_search_page_count(
     return pages;
 }
 
-/// Draw the faceted page — parse the faceted line into a `FacetQuery`, filter the catalog into a fresh sub-catalog over
+/// Draw the faceted page -- parse the faceted line into a `FacetQuery`, filter the catalog into a fresh sub-catalog over
 /// the SAME sheet with `filter_facets`, and render the page `[offset, offset + rows)` with `part_window`. So what a
 /// keeper types is what a keeper sees: the drawn page shows exactly the parts that satisfy every group (each by any of
 /// its `|`-clauses), in held order, each swatch true to the one shared sheet. A malformed clause surfaces the parser's
@@ -91,7 +91,7 @@ pub fn facets_search_shelf(
     return part_row.part_window(allocator, &sub, cols, rows, offset);
 }
 
-// --- selftest: four parts across four bands, a faceted search — the narrowed-and-widened page shows exactly the parts
+// --- selftest: four parts across four bands, a faceted search -- the narrowed-and-widened page shows exactly the parts
 //     passing every group (the same the hand-filtered window draws), an empty line is a match-all, a bad offset and a
 //     malformed clause each refuse by name -----------------------------------------------------------------------
 
@@ -115,7 +115,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's fact line back as bytes — trim the blank tail, so the selftest sees exactly the painted fact text
+/// Read a row's fact line back as bytes -- trim the blank tail, so the selftest sees exactly the painted fact text
 /// (the part_row reader's own idiom).
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
@@ -140,8 +140,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const cols: u32 = 48;
 
     // A faceted line: (stainless OR brass) AND (at most 100 cents) keeps, from the material union {bolt, nut, hexnut},
-    // only the two under a dollar — nut (60c), hexnut (55c). bolt is stainless yet 125c, dropped by the price group.
-    // The page draws exactly that — what a keeper types is what a keeper sees, over the faceted grammar.
+    // only the two under a dollar -- nut (60c), hexnut (55c). bolt is stainless yet 125c, dropped by the price group.
+    // The page draws exactly that -- what a keeper types is what a keeper sees, over the faceted grammar.
     {
         assert((try facets_search_result_count(&cat, "material:stainless-304|material:brass max:100")) == 2);
         assert((try facets_search_page_count(garden, &cat, "material:stainless-304|material:brass max:100", 4)) == 1);
@@ -151,12 +151,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..r0], "nut  NY-M8  brass  $0.60"));
         const r1 = row_text(&page, 1, buf[0..]);
         assert(std.mem.startsWith(u8, buf[0..r1], "hexnut  HX-N8  stainless-304  $0.55"));
-        // Only two parts matched — the third row's label region is blank.
+        // Only two parts matched -- the third row's label region is blank.
         const r2 = row_text(&page, 2, buf[0..]);
         assert(r2 == 0);
     }
 
-    // The faceted page equals the hand-filtered window drawn directly — the faceted search view invents nothing.
+    // The faceted page equals the hand-filtered window drawn directly -- the faceted search view invents nothing.
     {
         const line = "material:stainless-304|material:brass max:100";
         const via_search = try facets_search_shelf(garden, &cat, line, cols, 4, 0);
@@ -175,7 +175,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A `|`-free faceted line is exactly HUNK79's AND page — the faceted search is a strict superset. stainless AND
+    // A `|`-free faceted line is exactly HUNK79's AND page -- the faceted search is a strict superset. stainless AND
     // max:100 draws the one stainless part under a dollar (hexnut), the same page part_and_search would draw.
     {
         assert((try facets_search_result_count(&cat, "material:stainless-304 max:100")) == 1);
@@ -187,7 +187,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(r1 == 0);
     }
 
-    // An empty line is a MATCH-ALL — every part drawn, the first row the held-order first (bolt).
+    // An empty line is a MATCH-ALL -- every part drawn, the first row the held-order first (bolt).
     {
         assert((try facets_search_result_count(&cat, "")) == cat.len());
         const page = try facets_search_shelf(garden, &cat, "", cols, 4, 0);
@@ -196,12 +196,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..r0], "bolt  HX-M8-40  stainless-304  $1.25"));
     }
 
-    // An offset past the faceted result refuses BadOffset — two matches, so page offset 2 (at rows=1) is past it.
+    // An offset past the faceted result refuses BadOffset -- two matches, so page offset 2 (at rows=1) is past it.
     if (facets_search_shelf(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 2)) |_| return error.OffsetSlipped else |e| {
         if (e != error.BadOffset) return error.WrongOffset;
     }
 
-    // A malformed clause surfaces the parser's own named refusal to the glass layer — a bad facet draws nothing.
+    // A malformed clause surfaces the parser's own named refusal to the glass layer -- a bad facet draws nothing.
     if (facets_search_shelf(garden, &cat, "material:stainless-304|color:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongLine;
     }

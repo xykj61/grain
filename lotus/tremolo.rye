@@ -1,28 +1,28 @@
-//! lotus/tremolo.rye — ALES74: the tremolo — the triangle LFO turned on AMPLITUDE, not delay. The chorus (ALES71), the vibrato (ALES72),
-//! and the flanger (ALES73) all point the triangle LFO at ONE target — the delay: a mixed swinging copy, that copy heard alone, that copy fed
-//! back. The LFO driver `triangle_delay_at` is a GENERAL scaled triangle, though — named for its first use, it knows nothing of delay. Point it
+//! lotus/tremolo.rye -- ALES74: the tremolo -- the triangle LFO turned on AMPLITUDE, not delay. The chorus (ALES71), the vibrato (ALES72),
+//! and the flanger (ALES73) all point the triangle LFO at ONE target -- the delay: a mixed swinging copy, that copy heard alone, that copy fed
+//! back. The LFO driver `triangle_delay_at` is a GENERAL scaled triangle, though -- named for its first use, it knows nothing of delay. Point it
 //! at the sample's own amplitude instead, and a steady note gently rises and falls in loudness: that is the TREMOLO, the oldest amplitude
 //! effect there is, and the modulation family's first rung on a genuinely new target.
 //!
-//! The crux is that THE SAME TRIANGLE THAT DROVE THE DELAY DRIVES THE GAIN — no new LFO, no new arithmetic, only a new target. Over one period
+//! The crux is that THE SAME TRIANGLE THAT DROVE THE DELAY DRIVES THE GAIN -- no new LFO, no new arithmetic, only a new target. Over one period
 //! P (a positive multiple of four, q = P/4) with phase p = k % P, the scaled gain is g(k) = centre_scaled + triangle(depth_scaled, P, k), read
-//! in units of glide_scale (256 = unity); then y[i] = saturate(x[i]·g(i)/glide_scale). Because every output sample depends only on ITS OWN
-//! input sample — never a neighbour — the tremolo writes IN PLACE WITH NO SNAPSHOT: reading x[i] and writing y[i] at the same index touches no
+//! in units of glide_scale (256 = unity); then y[i] = saturate(x[i]-g(i)/glide_scale). Because every output sample depends only on ITS OWN
+//! input sample -- never a neighbour -- the tremolo writes IN PLACE WITH NO SNAPSHOT: reading x[i] and writing y[i] at the same index touches no
 //! sample another step needs. The vibrato had to freeze the dry prefix precisely because its read moved backward through samples it was
-//! overwriting; the tremolo's read never moves, so the whole snapshot machinery falls away — this is the thinnest rung in the modulation family.
+//! overwriting; the tremolo's read never moves, so the whole snapshot machinery falls away -- this is the thinnest rung in the modulation family.
 //!
-//! The gain is held to an ATTENUATION — 0 ≤ g(k) ≤ glide_scale (top at or below unity, floor at or above silence) — so x·g/scale is never
+//! The gain is held to an ATTENUATION -- 0 ≤ g(k) ≤ glide_scale (top at or below unity, floor at or above silence) -- so x-g/scale is never
 //! louder than x itself and so ALREADY fits the i16 rail: the write goes through the one true saturate for family uniformity, yet it never
 //! actually clips (a full-scale sample at unity passes through byte-for-byte, at the trough falls to silence, between traces the triangle).
-//! There is no BadDelay and no BadLevel — the tremolo has no delay line to overrun and no dry/wet mix to level; the gain IS the level.
+//! There is no BadDelay and no BadLevel -- the tremolo has no delay line to overrun and no dry/wet mix to level; the gain IS the level.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES74.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES74.
 //! Design read: active-designing/date/20260814/20260814-201204_fill-ales74-lotus-tremolo-amplitude-modulation.md
-//! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at` this reuses, read as a gain; lotus/glide.rye (ALES70) —
-//! `glide_scale`, the fixed-point unit (256 = unity gain); lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//! Stands on: lotus/chorus.rye (ALES71) -- the triangle-LFO driver `triangle_delay_at` this reuses, read as a gain; lotus/glide.rye (ALES70) --
+//! `glide_scale`, the fixed-point unit (256 = unity gain); lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, the one true saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the gain is counted in scaled units (256 = unity) and the period in samples, not hertz (the
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the gain is counted in scaled units (256 = unity) and the period in samples, not hertz (the
 //! real-time twin follows as echo_ms and multitap_ms did). No delay line, no snapshot, no lookahead. The triangle and the multiply run in i64
 //! and the write saturates once (a no-op on the attenuated voice), so nothing on the path can overflow.
 //!
@@ -40,44 +40,44 @@ pub const tremolo_version = "20260814.201204";
 
 /// The tremolo's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need P/4
 /// whole) or wider than max_clip, a swing whose floor (centre − depth) falls below silence (a negative gain would be a sign flip, a different
-/// effect), a swing whose top (centre + depth) rises above unity (glide_scale — the tremolo attenuates, it does not boost), and a span outside
-/// the samples. Each refused before any write. There is NO BadDelay and NO BadLevel — the tremolo has no delay line and no mix level; the gain
+/// effect), a swing whose top (centre + depth) rises above unity (glide_scale -- the tremolo attenuates, it does not boost), and a span outside
+/// the samples. Each refused before any write. There is NO BadDelay and NO BadLevel -- the tremolo has no delay line and no mix level; the gain
 /// IS the level.
 pub const TremoloError = error{
-    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose floor (centre − depth) falls below silence (a negative gain) — refused, no write.
+    /// A negative depth, or a swing whose floor (centre − depth) falls below silence (a negative gain) -- refused, no write.
     BadDepth,
-    /// A swing whose top (centre + depth) rises above unity (glide_scale) — the tremolo attenuates, never boosts — refused, no write.
+    /// A swing whose top (centre + depth) rises above unity (glide_scale) -- the tremolo attenuates, never boosts -- refused, no write.
     BadGain,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Apply a tremolo over `count` samples starting at `start` in place in `clip`: a triangle LFO of `depth_scaled` round `centre_scaled` over
 /// `period` samples drives the scaled GAIN (ALES71's `triangle_delay_at`, read as a gain in units of glide_scale), and each sample is scaled
-/// by that gain — y[i] = saturate(x[i]·g(i)/glide_scale). No delay line and no snapshot: every output depends only on its own input sample, so
+/// by that gain -- y[i] = saturate(x[i]-g(i)/glide_scale). No delay line and no snapshot: every output depends only on its own input sample, so
 /// the in-place read-then-write at one index touches nothing another step needs. The gain is an attenuation (0 ≤ g ≤ glide_scale), so the
-/// write saturates once yet never clips — the tremolo voice is no louder than the dry it scales, and so already fits the i16 rail. Refuses
-/// BadPeriod, BadDepth, BadGain, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
-/// Validate a tremolo's period, swing, and span together, before any sample is touched — the four faults refused up front so a caller (the
+/// write saturates once yet never clips -- the tremolo voice is no louder than the dry it scales, and so already fits the i16 rail. Refuses
+/// BadPeriod, BadDepth, BadGain, and BadRange before any write; on refusal the clip is untouched. Values only -- never a length.
+/// Validate a tremolo's period, swing, and span together, before any sample is touched -- the four faults refused up front so a caller (the
 /// mono `tremolo`, or a stereo lift running the same swing on each channel) can prove atomicity once against the shared length. The period must
 /// be a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than max_clip; the depth non-negative with a
-/// floor (centre − depth) at or above silence; the top (centre + depth) at or below unity (glide_scale — the tremolo attenuates, never boosts);
+/// floor (centre − depth) at or above silence; the top (centre + depth) at or below unity (glide_scale -- the tremolo attenuates, never boosts);
 /// and the span wholly within the samples. Refuses BadPeriod, BadDepth, BadGain, and BadRange.
 pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) TremoloError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
     if (period > timeline.max_clip) return error.BadPeriod;
-    // invariant: the depth is non-negative and the swing's floor stays at or above silence — a negative gain would flip the sample's sign,
+    // invariant: the depth is non-negative and the swing's floor stays at or above silence -- a negative gain would flip the sample's sign,
     // a different effect entirely, not a tremolo.
     if (depth_scaled < 0) return error.BadDepth;
     if (centre_scaled - depth_scaled < 0) return error.BadDepth;
-    // invariant: the swing's top stays at or below unity — the tremolo attenuates, it does not boost; a gain above glide_scale could push a
+    // invariant: the swing's top stays at or below unity -- the tremolo attenuates, it does not boost; a gain above glide_scale could push a
     // loud sample past the rail. This is what keeps the write's saturate a proven no-op.
     if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadGain;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
@@ -90,24 +90,24 @@ pub fn tremolo(
     depth_scaled: i64,
     period: u32,
 ) TremoloError!void {
-    // invariant: the period, swing, and span are all legal — the four faults refused before any read, so a refusal never half-writes.
+    // invariant: the period, swing, and span are all legal -- the four faults refused before any read, so a refusal never half-writes.
     try precheck(clip.len, start, count, centre_scaled, depth_scaled, period);
 
     const scale: i64 = glide.glide_scale;
     var k: u32 = 0;
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
-        // ALES71's `triangle_delay_at` is a general scaled triangle — here it drives the GAIN, not a delay. g in [centre − depth, centre + depth].
+        // ALES71's `triangle_delay_at` is a general scaled triangle -- here it drives the GAIN, not a delay. g in [centre − depth, centre + depth].
         const g: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, k);
         // invariant: the gain never leaves the validated attenuation window, so it stays between silence and unity.
         assert(g >= 0 and g <= scale);
         const dry: i64 = @as(i64, clip.buf[i]);
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
         // The gained voice: dry scaled by g/scale. |dry| ≤ 32768 and g ≤ scale, so the product fits i64 and the quotient's magnitude is no
         // larger than |dry|. g = scale returns dry exactly; g = 0 returns silence; between, a fraction of the dry.
         const gained: i64 = @divTrunc(dry * g, scale);
-        // invariant: the tremolo voice is an attenuation of an in-range sample, so it ALREADY fits the i16 rail — the saturate below is a
+        // invariant: the tremolo voice is an attenuation of an in-range sample, so it ALREADY fits the i16 rail -- the saturate below is a
         // documented no-op, never an actual clip. This is the whole reason the amplitude write cannot overflow.
         assert(gained >= @as(i64, timeline.sample_min) and gained <= @as(i64, timeline.sample_max));
         clip.buf[i] = timeline.saturate(gained);
@@ -135,8 +135,8 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const scale = glide.glide_scale;
 
-    // 1. A STEADY SIGNAL TRACES THE TRIANGLE GAIN — the family recognition. A DC signal of value A under the tremolo yields
-    //    y[k] == A·g(k)/scale at every sample, matched directly against ALES71's driver. The LFO drives amplitude the same way it drove delay.
+    // 1. A STEADY SIGNAL TRACES THE TRIANGLE GAIN -- the family recognition. A DC signal of value A under the tremolo yields
+    //    y[k] == A-g(k)/scale at every sample, matched directly against ALES71's driver. The LFO drives amplitude the same way it drove delay.
     {
         const a: i16 = 12000;
         var clip = timeline.Clip{};
@@ -152,11 +152,11 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. A HAND-COMPUTED WHOLE-ANCHOR CASE — centre scale/2, depth scale/2, period 4 (q = 1): the gain traces the four anchors
-    //    centre → top → centre → bottom → centre = ½ → 1 → ½ → 0 → ½ → 1. On a steady 1000:
+    // 2. A HAND-COMPUTED WHOLE-ANCHOR CASE -- centre scale/2, depth scale/2, period 4 (q = 1): the gain traces the four anchors
+    //    centre -> top -> centre -> bottom -> centre = ½ -> 1 -> ½ -> 0 -> ½ -> 1. On a steady 1000:
     //      k:      0    1     2   3    4    5
     //      g(k):   128  256   128 0    128  256   (½, 1, ½, 0, ½, 1 of scale=256)
-    //      y[k]: 1000·g/256 =  500 1000 500 0 500 1000
+    //      y[k]: 1000-g/256 =  500 1000 500 0 500 1000
     {
         const sig = [_]i16{ 1000, 1000, 1000, 1000, 1000, 1000 };
         var clip = timeline.Clip{};
@@ -166,8 +166,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.HandAnchorWrong;
     }
 
-    // 3. A ZERO-DEPTH TREMOLO IS A CONSTANT-GAIN FADER — depth == 0, the LFO at rest, a fixed gain of `centre`: the output is a plain scaling
-    //    x·centre/scale, equal to a fader set once. centre = scale/2 halves every sample.
+    // 3. A ZERO-DEPTH TREMOLO IS A CONSTANT-GAIN FADER -- depth == 0, the LFO at rest, a fixed gain of `centre`: the output is a plain scaling
+    //    x-centre/scale, equal to a fader set once. centre = scale/2 halves every sample.
     {
         const sig = [_]i16{ 100, 200, 300, 400 };
         var clip = timeline.Clip{};
@@ -177,7 +177,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.ZeroDepthNotFader;
     }
 
-    // 4. UNITY PASSTHROUGH IS EXACT — centre = scale, depth = 0: the gain is one, so every sample passes through byte-for-byte, including
+    // 4. UNITY PASSTHROUGH IS EXACT -- centre = scale, depth = 0: the gain is one, so every sample passes through byte-for-byte, including
     //    sample_min at the very edge of the rail. This proves the write's saturate is a documented no-op.
     {
         const sig = [_]i16{ timeline.sample_min, -1, 0, 12345, timeline.sample_max };
@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.UnityNotPassthrough;
     }
 
-    // 5. THE TREMOLO VOICE NEVER EXCEEDS THE DRY RAIL — a loud steady signal under a full swing stays within [sample_min, sample_max] and
+    // 5. THE TREMOLO VOICE NEVER EXCEEDS THE DRY RAIL -- a loud steady signal under a full swing stays within [sample_min, sample_max] and
     //    never wraps: an attenuation of an in-range sample is in range. A steady -30000 under centre ½, depth ½ traces the triangle downward
     //    from -15000, never past the rail.
     {
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod —
+    // 6a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod --
     //     before any write.
     {
         var clip = timeline.Clip{};
@@ -216,19 +216,19 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWidePeriodMutated;
     }
 
-    // 6b. A DEPTH that swings below silence refuses BadDepth; a negative depth refuses BadDepth; a swing top past unity refuses BadGain — each
+    // 6b. A DEPTH that swings below silence refuses BadDepth; a negative depth refuses BadDepth; a swing top past unity refuses BadGain -- each
     //     before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // centre ½·scale, depth ¾·scale → floor = centre − depth < 0
+        // centre ½-scale, depth ¾-scale -> floor = centre − depth < 0
         if (tremolo(&clip, 0, clip.len, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
         if (!eq(clip.samples(), &three)) return error.RefusedLowFloorMutated;
         // negative depth
         if (tremolo(&clip, 0, clip.len, @divTrunc(scale, 2), -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
         if (!eq(clip.samples(), &three)) return error.RefusedNegDepthMutated;
-        // centre unity, depth ½·scale → top = centre + depth > glide_scale
+        // centre unity, depth ½-scale -> top = centre + depth > glide_scale
         if (tremolo(&clip, 0, clip.len, scale, @divTrunc(scale, 2), 4)) |_| return error.HighTopSlipped else |e| if (e != error.BadGain) return error.WrongHighTop;
         if (!eq(clip.samples(), &three)) return error.RefusedHighTopMutated;
     }

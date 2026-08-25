@@ -1,22 +1,22 @@
-//! lotus/limit_env.rye — ALES55: an attack/release limiter — the peak limiter's hard ceiling given a patient sense of time, and the
+//! lotus/limit_env.rye -- ALES55: an attack/release limiter -- the peak limiter's hard ceiling given a patient sense of time, and the
 //! rung that completes the breathing trio. The limiter (ALES49) pins a sample the instant it crosses the ceiling; the compressor
 //! (ALES53) and the gate (ALES54) already learned to breathe over ALES52's proven envelope. This rung gives the limiter the same
 //! breath: it drives the gain reduction from the smoothed envelope rather than the bare sample, so the ceiling is approached over an
-//! attack and released gently. It is the compressor at an infinite ratio — the envelope's target pinned exactly to the ceiling —
+//! attack and released gently. It is the compressor at an infinite ratio -- the envelope's target pinned exactly to the ceiling --
 //! stated as its own clean tool, no ratio knob to turn. The time base is not re-invented; the module reads the one ALES52 proved.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES55.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES55.
 //! Design read: active-designing/date/20260814/20260814-174700_fill-ales55-lotus-attack-release-limiter.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/limit.rye (ALES49) — the
-//! hard ceiling this drives over time, re-proven beside it; lotus/envelope.rye (ALES52) — the proven time base, its env_step
-//! advancing the same follower one sample at a time; lotus/compress_env.rye (ALES53) — the sibling this mirrors, its softened
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, the range law shape; lotus/limit.rye (ALES49) -- the
+//! hard ceiling this drives over time, re-proven beside it; lotus/envelope.rye (ALES52) -- the proven time base, its env_step
+//! advancing the same follower one sample at a time; lotus/compress_env.rye (ALES53) -- the sibling this mirrors, its softened
 //! ceiling pinned here to the hard one.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the attack and release are fractions per sample index,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the attack and release are fractions per sample index,
 //! not milliseconds against a clock, and the ceiling is a magnitude in sample units. One envelope step and at most one
 //! multiply-divide per sample; nothing on the path can overflow, since the gain ceil/envelope sits in (0, 1) so every written
-//! magnitude is at most the input's, which already fits i16. NO LOOKAHEAD — a slow attack lets a fast transient briefly overshoot
+//! magnitude is at most the input's, which already fits i16. NO LOOKAHEAD -- a slow attack lets a fast transient briefly overshoot
 //! the ceiling before the envelope catches it (this is a gain-reducer over time, not a sample-clamp); a true brickwall that never
 //! crosses the ceiling under any attack wants a lookahead delay line, named as a horizon rung, taken only on Keaton's word.
 //!
@@ -33,24 +33,24 @@ const envelope = @import("envelope.rye");
 pub const limit_env_version = "20260814.174700";
 
 /// The attack/release limiter's faults, one consistent name each: a ceiling outside [1, sample_max], an attack or release
-/// coefficient outside (0, 1], and a span outside the samples. Each coincides by name with the tool it borrows from — BadCeiling
-/// from the limiter, BadCoeff from the follower, BadRange from the whole family — so a composer sees one consistent fault surface.
+/// coefficient outside (0, 1], and a span outside the samples. Each coincides by name with the tool it borrows from -- BadCeiling
+/// from the limiter, BadCoeff from the follower, BadRange from the whole family -- so a composer sees one consistent fault surface.
 pub const LimitEnvError = error{
-    /// A ceiling of zero (would silence, not limit) or above sample_max (nothing could ever reach it) — refused, no write.
+    /// A ceiling of zero (would silence, not limit) or above sample_max (nothing could ever reach it) -- refused, no write.
     BadCeiling,
-    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    /// An attack or release coefficient outside (0, 1] -- a frozen envelope, an overshooting step, or a divide by zero.
     BadCoeff,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Limit `count` samples starting at `start` in place to the magnitude `ceil`, the gain reduction FOLLOWING an envelope that
-/// CONTINUES from the caller's `env` rather than from silence — the carried-state form (ALES43's lesson). Each sample advances the
+/// CONTINUES from the caller's `env` rather than from silence -- the carried-state form (ALES43's lesson). Each sample advances the
 /// proven ALES52 follower one step (the attack fraction while it rises, the release while it falls); when the smoothed envelope
 /// sits within the ceiling the sample passes byte-for-byte, and when it rises above, the gain ceil/envelope (in (0, 1)) is applied
-/// to the raw sample — ALES49's ceiling reached over time rather than clamped the instant it is crossed. The caller owns the i64
-/// envelope across calls, so a span limited in two pieces equals the whole once — no fresh transient at the seam. Refuses
-/// BadCeiling, BadCoeff, and BadRange before any write; on refusal the clip is untouched. Values only — never the length.
+/// to the raw sample -- ALES49's ceiling reached over time rather than clamped the instant it is crossed. The caller owns the i64
+/// envelope across calls, so a span limited in two pieces equals the whole once -- no fresh transient at the seam. Refuses
+/// BadCeiling, BadCoeff, and BadRange before any write; on refusal the clip is untouched. Values only -- never the length.
 pub fn limit_follow_carry(
     clip: *timeline.Clip,
     start: u32,
@@ -62,13 +62,13 @@ pub fn limit_follow_carry(
     release_num: u32,
     release_den: u32,
 ) LimitEnvError!void {
-    // invariant: the ceiling is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the ceiling is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (ceil < 1) return error.BadCeiling;
     if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
-    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] -- checked by the follower's one proven rule.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -79,22 +79,22 @@ pub fn limit_follow_carry(
         // Advance the proven ALES52 follower one sample; e is the smoothed magnitude, in [0, sample_max].
         _ = envelope.env_step(env, x, attack_num, attack_den, release_num, release_den);
         const e: i64 = env.*;
-        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (env_step's own guarantee).
+        // invariant: the envelope stays a legal magnitude -- never negative, never past the rail (env_step's own guarantee).
         assert(e >= 0 and e <= @as(i64, timeline.sample_max));
         if (e > cl) {
             // The smoothed detector has crossed the ceiling; the gain is ceil/e, in (0, 1) since 1 <= ceil < e. e > cl >= 1, so the
             // divide is always safe (the zero-envelope case the gate faced cannot arise on the above-ceiling branch).
             const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
-            // Apply the gain ceil/e to the raw sample. m·ceil <= 32768·32767 fits i64; divTrunc keeps it strictly below m.
+            // Apply the gain ceil/e to the raw sample. m-ceil <= 32768-32767 fits i64; divTrunc keeps it strictly below m.
             const new_m: i64 = @divTrunc(m * cl, e);
-            // invariant: the gain reduces, never boosts — ceil < e makes ceil/e < 1, so a smoothed limiter only ever leans down.
+            // invariant: the gain reduces, never boosts -- ceil < e makes ceil/e < 1, so a smoothed limiter only ever leans down.
             assert(new_m <= m);
             const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
             clip.buf[start + i] = y;
             // invariant: the written sample holds the input's sign (magnitude only shrank).
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample whose smoothed envelope sits within the ceiling is left exactly as it was — the gain reduction has not opened.
+        // a sample whose smoothed envelope sits within the ceiling is left exactly as it was -- the gain reduction has not opened.
     }
     // invariant: a limiter changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
@@ -102,7 +102,7 @@ pub fn limit_follow_carry(
 }
 
 /// Limit `count` samples starting at `start` in place, the gain reduction following an envelope that begins FROM SILENCE (a fresh
-/// env of 0) — one implementation shared with the carried form, so the two cannot drift. Refuses BadCeiling, BadCoeff, and
+/// env of 0) -- one implementation shared with the carried form, so the two cannot drift. Refuses BadCeiling, BadCoeff, and
 /// BadRange before any write.
 pub fn limit_follow(
     clip: *timeline.Clip,
@@ -141,7 +141,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip limits to all zeros at any legal ceiling and coefficients.
+    // 1. silence stays silence -- an all-zero clip limits to all zeros at any legal ceiling and coefficients.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -150,9 +150,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. UNIT ATTACK AND RELEASE REDUCE IT TO THE PLAIN LIMITER — with instant attack and release the envelope IS the instantaneous
-    //    magnitude (ALES52's unit identity), so for |x| > ceil the gain application |x|·ceil/|x| = ceil lands the sample exactly on
-    //    the ceiling — ALES49's own output. Proven by running BOTH tools on the same signal (|x| <= sample_max throughout).
+    // 2. UNIT ATTACK AND RELEASE REDUCE IT TO THE PLAIN LIMITER -- with instant attack and release the envelope IS the instantaneous
+    //    magnitude (ALES52's unit identity), so for |x| > ceil the gain application |x|-ceil/|x| = ceil lands the sample exactly on
+    //    the ceiling -- ALES49's own output. Proven by running BOTH tools on the same signal (|x| <= sample_max throughout).
     {
         const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 32767, -32767, 1200 };
         var smoothed = timeline.Clip{};
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (!eq(smoothed.samples(), plain.samples())) return error.UnitNotPlainLimiter;
     }
 
-    // 3. BELOW THE CEILING IS THE IDENTITY — a signal whose every peak sits within the ceiling never drives the envelope above it,
+    // 3. BELOW THE CEILING IS THE IDENTITY -- a signal whose every peak sits within the ceiling never drives the envelope above it,
     //    so the whole signal passes byte-for-byte regardless of smoothing.
     {
         const quiet = [_]i16{ 500, -900, 1000, -1000, 250, -500, 999, -999 };
@@ -174,7 +174,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &quiet)) return error.QuietNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a loud signal limits so every output magnitude is at most the input's
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a loud signal limits so every output magnitude is at most the input's
     //    and every sign matches, under a real attack and release.
     {
         const loud = [_]i16{ 6000, -6000, 800, -12000, 12000, -300, 9000, -9000 };
@@ -189,10 +189,10 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A SLOWER ATTACK LETS THE TRANSIENT THROUGH — on a sudden loud onset after quiet, a slower attack reduces the first
-    //    above-ceiling samples LESS than an instant attack (the gain reduction lags the peak — the honest overshoot of a limiter
+    // 5. A SLOWER ATTACK LETS THE TRANSIENT THROUGH -- on a sudden loud onset after quiet, a slower attack reduces the first
+    //    above-ceiling samples LESS than an instant attack (the gain reduction lags the peak -- the honest overshoot of a limiter
     //    without lookahead). So at the onset the slow-attack magnitude is no smaller than the instant-attack magnitude at every
-    //    sample — the attack knob is monotone — and the first onset sample under a slow attack is strictly louder than under an
+    //    sample -- the attack knob is monotone -- and the first onset sample under a slow attack is strictly louder than under an
     //    instant attack (the transient audibly survives, overshooting the ceiling the instant limiter would have pinned).
     {
         const onset = [_]i16{ 100, 100, 15000, 15000, 15000, 15000, 15000, 15000 }; // quiet, then a hard onset
@@ -208,13 +208,13 @@ fn run_selftest() !u8 {
             if (abs16(slow.samples()[i]) < abs16(fast.samples()[i])) return error.SlowAttackClampedMore;
         }
         // the first onset sample (index 2) rises hard: the instant attack pins it exactly on the ceiling, the slow attack lets much
-        // of it through — and past the ceiling, the honest no-lookahead overshoot.
+        // of it through -- and past the ceiling, the honest no-lookahead overshoot.
         if (abs16(slow.samples()[2]) <= abs16(fast.samples()[2])) return error.TransientDidNotSurvive;
         // the instant-attack onset sample lands exactly on the ceiling (the brickwall reached from within at instant attack).
         if (abs16(fast.samples()[2]) != ceil) return error.InstantNotOnCeiling;
     }
 
-    // 6. THE STATE CARRIES — limiting a span in two pieces (the second continuing the first's ending envelope) equals limiting the
+    // 6. THE STATE CARRIES -- limiting a span in two pieces (the second continuing the first's ending envelope) equals limiting the
     //    whole once, byte-for-byte: the seam invisible, so dynamics can span and automate.
     {
         const sig = [_]i16{ 2000, -14000, 14000, -2000, 9000, -9000, 6000, -6000 };

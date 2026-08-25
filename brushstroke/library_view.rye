@@ -1,15 +1,15 @@
-//! brushstroke/library_view.rye — HUNK69: paint the Photos library as one wall of thumbnails on glass.
+//! brushstroke/library_view.rye -- HUNK69: paint the Photos library as one wall of thumbnails on glass.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK69.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK69.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-//! Teacher, thanked clean-room: the grid wall of iCloud Photos / Google Photos — thumbnails tiled left to right,
+//! Teacher, thanked clean-room: the grid wall of iCloud Photos / Google Photos -- thumbnails tiled left to right,
 //! wrapping down the screen (concept only, siloed).
 //!
 //! HUNK68 built the library model: an ordered set of verified image tiles, each a small Skate thumbnail. This
-//! rung lays that set onto one surface — the wall a keeper actually sees. `paint_wall` composites every tile's
+//! rung lays that set onto one surface -- the wall a keeper actually sees. `paint_wall` composites every tile's
 //! thumbnail into a single Skate grid, `wall_cols` tiles across, wrapping down as many rows as the count needs,
 //! a one-cell gap between tiles. Each tile lands at a fixed offset, so a later rung can map a pixel tap back to
-//! the tile under the finger and open it into the editor. The composite is a pure cell-and-palette blit — no
+//! the tile under the finger and open it into the editor. The composite is a pure cell-and-palette blit -- no
 //! image is re-fetched or re-decoded here; the library already proved every picture. No network, no key, no
 //! funds.
 //!
@@ -28,13 +28,13 @@ const skate = @import("skate_grid.rye");
 
 pub const library_view_version = "20260813.230500";
 
-/// The gap between tiles, in cells — one blank column and row so the pictures read as separate tiles.
+/// The gap between tiles, in cells -- one blank column and row so the pictures read as separate tiles.
 pub const tile_gap: u32 = 1;
 
-/// A pleasant default — three thumbnails across before wrapping, the shape a narrow glass surface wants.
+/// A pleasant default -- three thumbnails across before wrapping, the shape a narrow glass surface wants.
 pub const default_wall_cols: u32 = 3;
 
-/// Wall ceilings — the composite is a thumbnail wall, not a full panel; both axes bounded at construction.
+/// Wall ceilings -- the composite is a thumbnail wall, not a full panel; both axes bounded at construction.
 pub const max_wall_cols: u32 = image_skate.max_map_cols;
 pub const max_wall_rows: u32 = image_skate.max_map_rows;
 
@@ -44,7 +44,7 @@ pub const LibraryViewError = error{
     RaggedTiles,
 };
 
-/// How many tile-rows a wall of `count` tiles needs at `wall_cols` tiles across — ceil(count / wall_cols).
+/// How many tile-rows a wall of `count` tiles needs at `wall_cols` tiles across -- ceil(count / wall_cols).
 pub fn tile_row_count(count: u32, wall_cols: u32) u32 {
     // invariant: a wall is at least one tile across, so the division never divides by zero.
     assert(wall_cols >= 1);
@@ -105,7 +105,7 @@ pub fn paint_wall(
     while (i < lib.count) : (i += 1) {
         const e = lib.entry_at(i);
         const org = tile_origin(i, wall_cols, tw, th);
-        // invariant: the whole tile lands inside the wall — its far corner sits within bounds.
+        // invariant: the whole tile lands inside the wall -- its far corner sits within bounds.
         assert(org.col + tw <= wall_w);
         assert(org.row + th <= wall_h);
         var r: u32 = 0;
@@ -176,7 +176,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         _ = try image_artifact.store_image(garden, &cat, &store, names[k], &pm);
     }
 
-    // An empty library paints no wall — the refusal, not an empty grid.
+    // An empty library paints no wall -- the refusal, not an empty grid.
     {
         const empty: photo_library.Library = .empty();
         if (paint_wall(garden, &empty, default_wall_cols)) |_| {

@@ -1,4 +1,4 @@
-//! Rye test: std.SemanticVersion.format — pass 9946.
+//! Rye test: std.SemanticVersion.format -- pass 9946.
 //!
 //! Round-trip with parse (9947) and order (9948); backs capability bounds.
 

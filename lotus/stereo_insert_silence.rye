@@ -1,29 +1,29 @@
-//! lotus/stereo_insert_silence.rye — ALES123: stereo_insert_silence — opening a silent gap carried into stereo, both channels in lockstep. ALES109 named `insert_silence` — open
-//! `count` samples of silence at position `at`, shifting the tail right so the clip GROWS by exactly `count` and every existing sample is KEPT — for a mono Clip. Yet a Lotus master is a
+//! lotus/stereo_insert_silence.rye -- ALES123: stereo_insert_silence -- opening a silent gap carried into stereo, both channels in lockstep. ALES109 named `insert_silence` -- open
+//! `count` samples of silence at position `at`, shifting the tail right so the clip GROWS by exactly `count` and every existing sample is KEPT -- for a mono Clip. Yet a Lotus master is a
 //! StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries
 //! insert_silence into stereo the way ALES120 carried duplicate and ALES122 carried silence_span: run ALES109's proven mono `insert_silence` on each channel with the SAME `at` and
-//! `count`, so the gap opens identically in both and the stereo image stays balanced. It is the growth-twin of ALES122's stereo_silence_span — where silence_span writes zeros over an
+//! `count`, so the gap opens identically in both and the stereo image stays balanced. It is the growth-twin of ALES122's stereo_silence_span -- where silence_span writes zeros over an
 //! existing span and the length HOLDS, insert_silence opens new zero seats and the length GROWS: silence written in place versus silence made room for.
 //!
 //! The rule, stated once: stereo_insert_silence(sc, at, count) opens `count` silent samples at `at` in both channels, reusing ALES109's mono `insert_silence` per channel over its public
-//! API. BOTH channels are validated BEFORE either is mutated — because mono insert_silence can fault only with BadRange (an insertion point past the samples) or ClipFull (a grow past the
+//! API. BOTH channels are validated BEFORE either is mutated -- because mono insert_silence can fault only with BadRange (an insertion point past the samples) or ClipFull (a grow past the
 //! fixed buffer) and both channels enter equal-length over the same fixed buffer, the two checks are made once against the shared length up front, so once they pass each mono
 //! insert_silence is pre-validated to succeed and a refusal never desynchronises the channels. It reuses ALES2's EditError whole and invents none of its own.
 //!
-//! The crux — four laws. THE STEREO INSERT LAW: the left channel equals mono insert_silence(left, at, count) and the right equals mono insert_silence(right, at, count), each byte for
+//! The crux -- four laws. THE STEREO INSERT LAW: the left channel equals mono insert_silence(left, at, count) and the right equals mono insert_silence(right, at, count), each byte for
 //! byte, both grown by count, the opened gap all zero and every existing sample kept. THE BALANCE / INVARIANT LAW: left.len == right.len after the edit, both grown by exactly count, the
-//! stereo image staying aligned. THE INVERSE LAW: stereo_insert_silence(at, count) then ALES117's stereo_cut(at, count) returns both channels to the original byte for byte — insert_silence
+//! stereo image staying aligned. THE INVERSE LAW: stereo_insert_silence(at, count) then ALES117's stereo_cut(at, count) returns both channels to the original byte for byte -- insert_silence
 //! is the EXACT inverse of cut, the lossless round-trip lifted from mono ALES109 into stereo. THE ATOMICITY / DEGENERATE LAW: any refusal leaves BOTH channels byte for byte untouched and
 //! still balanced; count 0 the identity on both, at = len appending silence at the tail, a bad insertion point BadRange, a grow past the buffer ClipFull.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES123.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES123.
 //! Design read: active-designing/date/20260815/20260815-022429_fill-ales123-lotus-stereo-insert-silence.md
-//! Stands on: lotus/insert_silence.rye (ALES109) — the mono gap-opening gesture run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
-//! invariant; lotus/stereo_cut.rye (ALES117) — the stereo span-remove imported by the selftest to prove the inverse law; lotus/timeline.rye (ALES2) — the Clip, its max_clip bound, and the
-//! EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//! Stands on: lotus/insert_silence.rye (ALES109) -- the mono gap-opening gesture run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/stereo_cut.rye (ALES117) -- the stereo span-remove imported by the selftest to prove the inverse law; lotus/timeline.rye (ALES2) -- the Clip, its max_clip bound, and the
+//! EditError reused whole; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It opens a gap in each channel through the proven mono
-//! insert_silence and fills it with SILENCE (zero) — the one thing it writes that was not already there, and silence is the honest content of a gap a keeper opened on purpose; it invents
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It opens a gap in each channel through the proven mono
+//! insert_silence and fills it with SILENCE (zero) -- the one thing it writes that was not already there, and silence is the honest content of a gap a keeper opened on purpose; it invents
 //! no non-zero sample, drops nothing, and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_insert_silence.rye selftest
@@ -40,35 +40,35 @@ const meter = @import("meter.rye");
 
 pub const stereo_insert_silence_version = "20260815.022429";
 
-/// stereo_insert_silence forwards ALES2's OWN faults reused by name — BadRange (an insertion point past the samples) and ClipFull (a grow past the fixed buffer) — and invents none of its own.
+/// stereo_insert_silence forwards ALES2's OWN faults reused by name -- BadRange (an insertion point past the samples) and ClipFull (a grow past the fixed buffer) -- and invents none of its own.
 pub const StereoInsertSilenceError = timeline.EditError;
 
 /// Open `count` samples of silence at position `at` in both channels in lockstep, shifting each tail right so the clip grows by exactly `count`, the stereo image staying balanced. Both
 /// channels are validated before either is mutated: because mono insert_silence can fault only with BadRange or ClipFull and the channels enter equal-length over the same fixed buffer, the
 /// two checks are made once against the shared length up front, so a refusal never leaves one channel grown and the other not. Reuses ALES109's mono insert_silence per channel.
 pub fn stereo_insert_silence(sc: *pan.StereoClip, at: u32, count: u32) StereoInsertSilenceError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the insertion point lies within the (shared) current samples, refused by name before any write — the same guard ALES109's insert_silence keeps, run once against the
+    // invariant: the insertion point lies within the (shared) current samples, refused by name before any write -- the same guard ALES109's insert_silence keeps, run once against the
     //            common length so a refusal lands before either channel mutates.
     const len: u32 = sc.left.len;
     if (at > len) return error.BadRange;
 
     // invariant: the grow of `count` samples fits within the fixed buffer for both channels alike (equal length, equal max_clip), refused ClipFull before any write, checked without
-    //            underflow — count against the free seats that remain.
+    //            underflow -- count against the free seats that remain.
     if (count > timeline.max_clip - len) return error.ClipFull;
 
-    // Every check passed and holds identically for both channels, so each mono insert_silence is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono insert_silence is pre-validated to succeed -- no refusal can land between the two channel edits.
     try insert_silence.insert_silence(&sc.left, at, count);
     try insert_silence.insert_silence(&sc.right, at, count);
 
-    // invariant: the channels leave balanced — each grew by the same opened span, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each grew by the same opened span, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO INSERT LAW — each channel equals ALES109's mono insert_silence on that channel byte for byte, both grown by count, the gap all zero; THE BALANCE / INVARIANT LAW
-//     — left.len == right.len after, both grown by count; THE INVERSE LAW — insert_silence then ALES117's stereo_cut(at, count) returns both channels; THE ATOMICITY / DEGENERATE LAW — a
+// --- selftest: THE STEREO INSERT LAW -- each channel equals ALES109's mono insert_silence on that channel byte for byte, both grown by count, the gap all zero; THE BALANCE / INVARIANT LAW
+//     -- left.len == right.len after, both grown by count; THE INVERSE LAW -- insert_silence then ALES117's stereo_cut(at, count) returns both channels; THE ATOMICITY / DEGENERATE LAW -- a
 //     refusal leaves both channels untouched, count 0 the identity, at = len appends at the tail, a grow past the buffer ClipFull ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -84,7 +84,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO INSERT LAW — each channel equals ALES109's mono insert_silence on that channel, proven side by side over one anchor with different per-channel samples.
+    // 1. THE STEREO INSERT LAW -- each channel equals ALES109's mono insert_silence on that channel, proven side by side over one anchor with different per-channel samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -104,7 +104,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 11, 21, 0, 0, 31, 41, 51 })) return error.RightSpanWrong;
     }
 
-    // 2. THE BALANCE / INVARIANT LAW — the channels stay equal length and each grows by exactly count; the stereo image stays aligned. Proven at the head and appending at the tail.
+    // 2. THE BALANCE / INVARIANT LAW -- the channels stay equal length and each grows by exactly count; the stereo image stays aligned. Proven at the head and appending at the tail.
     {
         var head = pan.StereoClip{};
         try load_stereo(&head, &[_]i16{ 1, 2, 3 }, &[_]i16{ 6, 7, 8 });
@@ -122,7 +122,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.right.samples(), &[_]i16{ 6, 7, 8, 0, 0 })) return error.TailRightWrong;
     }
 
-    // 3. THE INVERSE LAW — stereo_insert_silence(at, count) then ALES117's stereo_cut(at, count) returns both channels to the original byte for byte: open a gap, then remove exactly it.
+    // 3. THE INVERSE LAW -- stereo_insert_silence(at, count) then ALES117's stereo_cut(at, count) returns both channels to the original byte for byte: open a gap, then remove exactly it.
     {
         var sc = pan.StereoClip{};
         const l0 = [_]i16{ 10, 20, 30, 40 };
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.InverseRightWrong;
     }
 
-    // 4a. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for an insertion point past the samples and a grow past the fixed buffer.
+    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for an insertion point past the samples and a grow past the fixed buffer.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 4, 5, 6 })) return error.RefusedWroteRight;
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
 
-        // A grow past the fixed buffer refuses ClipFull before any write — fill both channels to their bound, then an insert that would grow past it must refuse, both untouched.
+        // A grow past the fixed buffer refuses ClipFull before any write -- fill both channels to their bound, then an insert that would grow past it must refuse, both untouched.
         var full = pan.StereoClip{};
         var i: u32 = 0;
         while (i < timeline.max_clip) : (i += 1) {
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         if (full.left.len != full.right.len) return error.RefusedFullUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — count 0 the identity on both channels.
+    // 4b. THE DEGENERATE LAW -- count 0 the identity on both channels.
     {
         var zero = pan.StereoClip{};
         try load_stereo(&zero, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

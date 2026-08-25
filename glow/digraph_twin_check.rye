@@ -1,4 +1,4 @@
-//! Digraph twin check — each fixture line tokenizes as Kind.rune2 (STOA333).
+//! Digraph twin check -- each fixture line tokenizes as Kind.rune2 (STOA333).
 //!
 //!   rye build glow/digraph_twin_check.rye -femit-bin=glow/bin/digraph_twin_check
 //!   glow/bin/digraph_twin_check

@@ -1,22 +1,22 @@
-//! brushstroke/part_tap.rye — HUNK80: tap a searched part to open its detail — the marketplace loop closes.
+//! brushstroke/part_tap.rye -- HUNK80: tap a searched part to open its detail -- the marketplace loop closes.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK80.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK80.
 //! Design read: active-designing/date/20260814/20260814-001609_hunk-part-tap-open-a-searched-part-exploration.md
 //! Teacher, thanked clean-room: tapping a McMaster-Carr search result to open the part's own page (concept only, siloed).
 //!
-//! HUNK71–79 built the marketplace whole on the reading side — a content-addressed catalog, a painted row, a paged
+//! HUNK71-79 built the marketplace whole on the reading side -- a content-addressed catalog, a painted row, a paged
 //! shelf, and a faceted search box that draws exactly the parts a keeper types. Yet a keeper could read the shelf and
 //! not reach into it. The Photos journey met this seam at HUNK70 and closed it with `library_tap`; this rung carries the
 //! same gesture to the marketplace. `part_tap` reads the shelf's row geometry BACKWARD: a tap resolves to the part the
-//! keeper sees, and — this is the crux — across the search narrowing. The shelf HUNK79 drew is the NARROWED catalog, so
+//! keeper sees, and -- this is the crux -- across the search narrowing. The shelf HUNK79 drew is the NARROWED catalog, so
 //! the row a finger touches sits at one place on glass and its part at another place in the original catalog. Reading
 //! row `k` as catalog part `k` is a lie the moment a search hides a part above the tap. `open_tapped_and` resolves the
-//! tap over the narrowed page, then maps the tapped part back to its home in the ORIGINAL catalog by its stable name —
+//! tap over the narrowed page, then maps the tapped part back to its home in the ORIGINAL catalog by its stable name --
 //! so the second stainless row opens the catalog's fourth part when that is the second stainless one, never its literal
 //! second part. A tap past the last result resolves to nothing; a malformed clause surfaces the parser's named refusal.
 //!
 //! The returned `PartRef` borrows the caller's long-lived catalog, never the local sub-catalog whose sheet is shared but
-//! whose storage is a stack frame — so a detail page reads a live handle. No network, no key, no funds; a price is a
+//! whose storage is a stack frame -- so a detail page reads a live handle. No network, no key, no funds; a price is a
 //! fact COMPARED, never moved (custody gate %3 untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_tap.rye selftest
@@ -34,7 +34,7 @@ const skate = @import("skate_grid.rye");
 pub const part_tap_version = "20260814.001609";
 
 /// A tapped part's detail handle: its index in the ORIGINAL catalog (a stable pointer back into the source), its name,
-/// and its honest facts. Every slice borrows the caller's own catalog, so the handle outlives the resolution — a detail
+/// and its honest facts. Every slice borrows the caller's own catalog, so the handle outlives the resolution -- a detail
 /// page reads it after the local sub-catalog a search built has fallen out of scope.
 pub const PartRef = struct {
     index: u32,
@@ -42,13 +42,13 @@ pub const PartRef = struct {
     facts: part_catalog.PartFacts,
 };
 
-/// Map a pixel tap to a shelf cell row through Skate's fixed cell height — the same pitch `part_row` paints each row at,
+/// Map a pixel tap to a shelf cell row through Skate's fixed cell height -- the same pitch `part_row` paints each row at,
 /// so a real finger lands on the row it sees.
 pub fn tap_cell_row(px_y: u32) u32 {
     // invariant: a Skate cell is a real height, so the division never divides by zero.
     assert(skate.cell_h >= 1);
     const row = px_y / skate.cell_h;
-    // invariant: the resolved row is the floor of the tap — it never sits below the pixel that produced it.
+    // invariant: the resolved row is the floor of the tap -- it never sits below the pixel that produced it.
     assert(row * skate.cell_h <= px_y);
     return row;
 }
@@ -67,7 +67,7 @@ pub fn tap_row(rows: u32, page_len: u32, cell_row: u32) ?u32 {
     return cell_row;
 }
 
-/// The index a product name holds in `cat`, or nothing when the catalog holds no such name — the map from a narrowed
+/// The index a product name holds in `cat`, or nothing when the catalog holds no such name -- the map from a narrowed
 /// part back to its home in the source catalog. Names in one catalog are unique (the sprite index refuses a duplicate),
 /// so the first match is the only match.
 pub fn find_in_catalog(cat: *const part_catalog.PartCatalog, name: []const u8) ?u32 {
@@ -84,7 +84,7 @@ pub fn find_in_catalog(cat: *const part_catalog.PartCatalog, name: []const u8) ?
     return null;
 }
 
-/// Resolve a tap on a plain catalog page to the part under it — the part at `offset + within`, with its stable name and
+/// Resolve a tap on a plain catalog page to the part under it -- the part at `offset + within`, with its stable name and
 /// honest facts read from `cat`. Nothing on a miss (an empty tail row, or an offset past the catalog, which draws no
 /// part). The returned handle borrows `cat`, so it outlives this call.
 pub fn tap_part(cat: *const part_catalog.PartCatalog, rows: u32, offset: u32, cell_row: u32) ?PartRef {
@@ -98,7 +98,7 @@ pub fn tap_part(cat: *const part_catalog.PartCatalog, rows: u32, offset: u32, ce
     return PartRef{ .index = idx, .name = cat.index.entry(idx).name, .facts = cat.facts_at(idx) };
 }
 
-/// Resolve a tap on a NARROWED search page and open the part it lands on — the crux. Parse the multi-clause line, narrow
+/// Resolve a tap on a NARROWED search page and open the part it lands on -- the crux. Parse the multi-clause line, narrow
 /// `cat` with `filter_and`, resolve the tap over the narrowed page, then map the tapped part back to its home in the
 /// ORIGINAL catalog by its stable name. So what a keeper taps is the part they see, across the narrowing: the second row
 /// of a stainless-only shelf opens the catalog's fourth part when that is the second stainless one. A malformed clause
@@ -133,10 +133,10 @@ pub fn open_tapped_and(
     return PartRef{ .index = home, .name = cat.index.entry(home).name, .facts = cat.facts_at(home) };
 }
 
-// --- selftest: five parts across three materials and a price spread — a plain-page tap lands on each row's part, a
+// --- selftest: five parts across three materials and a price spread -- a plain-page tap lands on each row's part, a
 //     pixel tap maps through Skate's cell height, a tap on an empty tail row resolves to nothing, and the crux: a
 //     faceted-search tap resolves the part the keeper SEES back to its home in the original catalog, ACROSS the
-//     narrowing — the second stainless row opens the catalog's fourth part. A malformed clause refuses by name. --------
+//     narrowing -- the second stainless row opens the catalog's fourth part. A malformed clause refuses by name. --------
 
 /// A 16×8 sheet in four solid vertical bands (the part_row/part_and_search fixture), so a 4-wide window is legible.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
@@ -161,8 +161,8 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const sheet = try craft_bands(garden);
     var cat = part_catalog.PartCatalog.init(&sheet);
-    // Five... four parts across the bands, three materials, a price spread. Two are stainless-304, and — key to the
-    // crux — they sit at catalog index 0 (bolt) and index 3 (hexnut), a gap the narrowing must resolve across.
+    // Five... four parts across the bands, three materials, a price spread. Two are stainless-304, and -- key to the
+    // crux -- they sit at catalog index 0 (bolt) and index 3 (hexnut), a gap the narrowing must resolve across.
     try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
     try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
     try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
@@ -171,7 +171,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     const rows: u32 = 8; // taller than the catalog, so the tail rows are empty and a miss is real
 
-    // A plain-page tap lands on each row's part, name-for-name — one part per row, HUNK73's geometry read backward.
+    // A plain-page tap lands on each row's part, name-for-name -- one part per row, HUNK73's geometry read backward.
     {
         const names = [_][]const u8{ "bolt", "nut", "gear", "hexnut" };
         var i: u32 = 0;
@@ -182,7 +182,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A pixel tap maps through Skate's cell height to the same row — a finger on row 2 opens part 2.
+    // A pixel tap maps through Skate's cell height to the same row -- a finger on row 2 opens part 2.
     {
         const px_y = 2 * skate.cell_h + 3;
         const cell = tap_cell_row(px_y);
@@ -196,8 +196,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // A tap on an offset page past the catalog draws no part, so it opens nothing.
     assert(tap_part(&cat, rows, 4, 0) == null);
 
-    // THE CRUX — a search narrows to the two stainless parts (bolt at 0, hexnut at 3). On the narrowed page they sit at
-    // rows 0 and 1. Tapping row 1 must open hexnut — the ORIGINAL catalog's index 3 — not the catalog's literal second
+    // THE CRUX -- a search narrows to the two stainless parts (bolt at 0, hexnut at 3). On the narrowed page they sit at
+    // rows 0 and 1. Tapping row 1 must open hexnut -- the ORIGINAL catalog's index 3 -- not the catalog's literal second
     // part (nut). The tap resolves the part the keeper SEES back to its home, across the narrowing.
     {
         assert((try open_tapped_and(&cat, "material:stainless-304", rows, 0, 0)).?.index == 0); // row 0 -> bolt (orig 0)
@@ -208,7 +208,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(r1.facts.price_cents == 55);
     }
 
-    // A faceted line: stainless AND under a dollar keeps only hexnut. Row 0 opens hexnut; row 1 is an empty tail — a tap
+    // A faceted line: stainless AND under a dollar keeps only hexnut. Row 0 opens hexnut; row 1 is an empty tail -- a tap
     // there opens nothing rather than a wrong part.
     {
         const only = (try open_tapped_and(&cat, "material:stainless-304 max:100", rows, 0, 0)) orelse unreachable;
@@ -216,7 +216,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert((try open_tapped_and(&cat, "material:stainless-304 max:100", rows, 0, 1)) == null);
     }
 
-    // A malformed search line surfaces the parser's own named refusal rather than opening a wrong part — nine clauses
+    // A malformed search line surfaces the parser's own named refusal rather than opening a wrong part -- nine clauses
     // past the eight-clause ceiling refuse `TooManyClauses`.
     {
         const many = "a:1 a:1 a:1 a:1 a:1 a:1 a:1 a:1 a:1";

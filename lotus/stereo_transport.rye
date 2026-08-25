@@ -1,23 +1,23 @@
-//! lotus/stereo_transport.rye — ALES15: the stereo transport — one head reading two channels in lockstep. Two arcs of the
+//! lotus/stereo_transport.rye -- ALES15: the stereo transport -- one head reading two channels in lockstep. Two arcs of the
 //! suite converge here: the READ side (play ALES7, meter ALES13, loop ALES14) grew over a MONO master, and the STEREO side
 //! (pan ALES10, equal power ALES11, crossfade ALES12) built the SECOND channel and rendered stereo masters that nothing has
 //! ever PLAYED. A StereoClip is two channels at rest; a keeper hears a mix by playing both together, in step. This rung makes
 //! the read side genuinely stereo.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES15.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES15.
 //! Design read: active-designing/20260814-fill-ales15-lotus-stereo-transport.md
-//! Stands on: lotus/transport.rye (ALES7) — the single-position Transport head reused whole (a stereo master needs no second
-//! cursor); lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length; lotus/clock.rye (ALES5) — seek and
-//! elapsed speak real time; lotus/timeline.rye (ALES2) — the Clip each channel is.
+//! Stands on: lotus/transport.rye (ALES7) -- the single-position Transport head reused whole (a stereo master needs no second
+//! cursor); lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length; lotus/clock.rye (ALES5) -- seek and
+//! elapsed speak real time; lotus/timeline.rye (ALES2) -- the Clip each channel is.
 //!
 //! THE CRUX: one head reads BOTH channels in lockstep, because a stereo master's two channels share one length (ALES10's
 //! StereoClip invariant left.len == right.len). A single sample position advances through both channels at once, copying the
-//! same span from each into its own out buffer — no second cursor, no per-channel bookkeeping. The correctness beyond running
+//! same span from each into its own out buffer -- no second cursor, no per-channel bookkeeping. The correctness beyond running
 //! ALES7 twice is the LOCKSTEP: both channels advance by the same count every block, so left and right never drift out of
 //! sample alignment, and concatenating every block reproduces EACH channel byte-for-byte.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded read cursor over an in-process two-channel i16 PCM master, siloed to
-//! lotus/. No audio leaves the process — a block is COPIED samples, not a sound-card write (that real write is the paused
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded read cursor over an in-process two-channel i16 PCM master, siloed to
+//! lotus/. No audio leaves the process -- a block is COPIED samples, not a sound-card write (that real write is the paused
 //! hardware round). No socket, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_transport.rye selftest
@@ -34,11 +34,11 @@ const transport = @import("transport.rye");
 pub const stereo_transport_version = "20260814.131500";
 
 pub const StereoReadError = error{
-    /// The two out buffers differ in length — a stereo block is one length, filled into both channels. Refused before any copy.
+    /// The two out buffers differ in length -- a stereo block is one length, filled into both channels. Refused before any copy.
     BadBlock,
 };
 
-/// The head sits exactly at the master's end — playback is complete. Exactly `pos == stereo.left.len` (the two channels' shared
+/// The head sits exactly at the master's end -- playback is complete. Exactly `pos == stereo.left.len` (the two channels' shared
 /// length), so a caller loops `while (!at_end)` and stops with nothing left unread in either channel.
 pub fn at_end(t: *const transport.Transport, stereo: *const pan.StereoClip) bool {
     // invariant: a stereo master's two channels share one length, and the head never runs past it.
@@ -48,7 +48,7 @@ pub fn at_end(t: *const transport.Transport, stereo: *const pan.StereoClip) bool
 }
 
 /// Copy the next up-to-`out_left.len` samples of each channel into its buffer, advance the ONE head by exactly that many, and
-/// return the count — a full block mid-master, an honestly SHORT block at the end, and zero past it (never a wrap). Both
+/// return the count -- a full block mid-master, an honestly SHORT block at the end, and zero past it (never a wrap). Both
 /// channels advance in lockstep off the single head, so left and right stay sample-aligned. Refuses BadBlock when the two out
 /// buffers differ in length (a stereo block is one length).
 pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, out_left: []i16, out_right: []i16) StereoReadError!u32 {
@@ -87,7 +87,7 @@ pub fn seek_ms(t: *transport.Transport, stereo: *const pan.StereoClip, clk: cloc
     assert(t.pos <= stereo.left.len);
 }
 
-/// The head's position reported back as a real duration through the clock — honestly lossy like ALES5's ms_for. So a stereo
+/// The head's position reported back as a real duration through the clock -- honestly lossy like ALES5's ms_for. So a stereo
 /// transport shows the keeper a time, not a raw index.
 pub fn elapsed_ms(t: *const transport.Transport, clk: clock.Clock) u32 {
     // invariant: the clock is valid, so the conversion is safe.
@@ -112,7 +112,7 @@ fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms — a millisecond position equals a sample position, legible on a bench
 
     // 1. reading fixed 2-sample blocks from the start concatenates back to EACH channel byte-for-byte; both channels advance in
-    //    lockstep (the same count every block); the last block is honestly short (5 samples → 2,2,1) and the read past the end
+    //    lockstep (the same count every block); the last block is honestly short (5 samples -> 2,2,1) and the read past the end
     //    empty (0). Left and right stay aligned throughout.
     {
         var stereo = pan.StereoClip{};
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         if (try read_block(&t, &stereo, &tl, &tr) != 0) return error.PastEndReadWrong;
     }
 
-    // 2. at_end is exact — a fresh head over an empty stereo master is already at end; a head becomes at end only when it reads
+    // 2. at_end is exact -- a fresh head over an empty stereo master is already at end; a head becomes at end only when it reads
     //    the final sample of both channels.
     {
         var empty = pan.StereoClip{};
@@ -160,7 +160,7 @@ fn run_selftest() !u8 {
         if (!at_end(&t, &stereo)) return error.NotAtEndAfterAll;
     }
 
-    // 3. mismatched out buffers refuse BadBlock — a stereo block is one length, filled into both channels.
+    // 3. mismatched out buffers refuse BadBlock -- a stereo block is one length, filled into both channels.
     {
         var stereo = pan.StereoClip{};
         try timeline.splice(&stereo.left, 0, &[_]i16{ 1, 2, 3 });
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (seek_ms(&t, &stereo, c, 7)) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
     }
 
-    // 5. a StereoClip rendered by ALES11's power.render_stereo plays back its two channels EXACTLY — the read side meets the
+    // 5. a StereoClip rendered by ALES11's power.render_stereo plays back its two channels EXACTLY -- the read side meets the
     //    stereo side. A track panned center renders 0.707 per side, and the transport reads exactly those samples.
     {
         var a = timeline.Clip{};
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (n != 2 or !eq(bl[0..n], &seven_hundred) or !eq(br[0..n], &seven_hundred)) return error.RenderedPlaybackWrong;
     }
 
-    // 6. the transport reads only — playing a stereo master through, then rewinding and replaying, reads the identical bytes in
+    // 6. the transport reads only -- playing a stereo master through, then rewinding and replaying, reads the identical bytes in
     //    both channels; the rendered stereo is untouched.
     {
         var stereo = pan.StereoClip{};

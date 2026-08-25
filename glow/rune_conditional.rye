@@ -1,9 +1,9 @@
 //! glow-book: runes.md#g-conditional
-//! glow/rune_conditional.rye — parses Glow's `?:` if/then/else rune head.
+//! glow/rune_conditional.rye -- parses Glow's `?:` if/then/else rune head.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `?` category: `?:` is if/then/else. The brief's worked examples name the
-//! test as the first child — `(gth tick 32)`, `(dropped-this-tick rand)` —
+//! test as the first child -- `(gth tick 32)`, `(dropped-this-tick rand)` --
 //! with then/else arms following. glow/rune_bounded_trap.rye and
 //! glow/rune_cast.rye already proved two categories' front halves; this is
 //! the third, proving the head-parser shape across bar / cast / conditional.
@@ -12,7 +12,7 @@
 //!   ?:  (gth tick 32)
 //!
 //! No general expression parser, no then/else lowering, no `?-` exhaustiveness
-//! yet — this extracts the test expression only. Arms that follow on the
+//! yet -- this extracts the test expression only. Arms that follow on the
 //! same line are left to later laps, the same discipline the first two
 //! parsers name for themselves.
 
@@ -39,7 +39,7 @@ pub fn test_slice(spec: *const IfSpec) []const u8 {
 }
 
 /// Parses one line of Glow's `?:` rune. Recognizes the rune head and its
-/// test child only — never the then/else arms.
+/// test child only -- never the then/else arms.
 pub fn parse(line: []const u8) ParseError!IfSpec {
     if (line.len < 2 or !std.mem.eql(u8, line[0..2], "?:")) return error.NotAnIf;
 
@@ -47,7 +47,7 @@ pub fn parse(line: []const u8) ParseError!IfSpec {
     rest = std.mem.trimStart(u8, rest, " \t");
     if (rest.len == 0) return error.MissingTest;
 
-    // Cut at the first whitespace OUTSIDE parentheses — then/else arms, if
+    // Cut at the first whitespace OUTSIDE parentheses -- then/else arms, if
     // they follow on the same line, are not this parser's job.
     var end: u32 = 0;
     var depth: i32 = 0;

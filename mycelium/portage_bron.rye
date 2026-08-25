@@ -1,19 +1,19 @@
-//! mycelium/portage_bron.rye — a crossing travels as a readable record, and a world accepts it by that alone (r3, travel).
+//! mycelium/portage_bron.rye -- a crossing travels as a readable record, and a world accepts it by that alone (r3, travel).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r3 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r3 -- travel.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
-//! r1 proved value crosses two worlds and the pair conserves; r2 made the crossing atomic — it lands on both
+//! r1 proved value crosses two worlds and the pair conserves; r2 made the crossing atomic -- it lands on both
 //! ledgers or neither. Both read the two worlds' ledger blocks in hand. Yet the correspondent a portage means
 //! to replace is exactly the party a receiving world would otherwise trust for word of the far shore. r3 lets
-//! the crossing cross as a RECORD: a `format portage-v1` line-per-field receipt carrying id · from · to-world ·
-//! to-account · amount · digest · out-head · in-head. Render writes it, parse reads it back byte-for-byte — a
+//! the crossing cross as a RECORD: a `format portage-v1` line-per-field receipt carrying id - from - to-world -
+//! to-account - amount - digest - out-head - in-head. Render writes it, parse reads it back byte-for-byte -- a
 //! round trip is a fixed point.
 //!
 //! The crux is that the record is SELF-CERTIFYING and TIED TO BOTH LEDGERS, so a world accepts a cross-world
 //! transfer by reading its record alone rather than believing a correspondent:
-//!   - the carried digest is a pure function of the record's own bound fields (id·amount·from·to-world·
-//!     to-account), so re-deriving it from the record and comparing catches any altered field — a tampered
+//!   - the carried digest is a pure function of the record's own bound fields (id-amount-from-to-world-
+//!     to-account), so re-deriving it from the record and comparing catches any altered field -- a tampered
 //!     amount or recipient makes the record fail `self_certifies` before a coin is considered;
 //!   - the out-head fingerprints World A's real ledger and the in-head fingerprints World B's, and `accept`
 //!     ties the light record to r1's heavy proof: the carried out-head must equal World A's real order-head
@@ -27,7 +27,7 @@
 //! `UnknownField` (never dropped), a malformed line `BadLine`, a bad hex field `BadHex`, a bad amount `BadInt`,
 //! a missing field `MissingField`, an overflow `RecordTooLong`. Composes portage + cord + voucher + kumara
 //! public API only, editing none (r1's own selftest re-runs GREEN at this witness's door). Siloed, dev-only,
-//! demo world/keeper seeds — no key, no funds, no network, no value crossed; a served crossing (World B
+//! demo world/keeper seeds -- no key, no funds, no network, no value crossed; a served crossing (World B
 //! fetching World A's record over Comlink) reaches the Comlink-served gate (Keaton's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_bron.rye
@@ -51,7 +51,7 @@ pub const world_tag_len: u32 = portage.world_tag_len;
 pub const digest_len: u32 = portage.digest_len;
 pub const head_len: u32 = voucher.order_head_len;
 
-/// The record buffer bound — a full portage record fits with room to spare.
+/// The record buffer bound -- a full portage record fits with room to spare.
 pub const max_record: u32 = 1024;
 
 /// The eight fields a record must carry; a parse refuses `MissingField` unless every bit is set.
@@ -83,12 +83,12 @@ pub const AcceptError = error{
     BurnAbsent, // World A never burned this crossing's digest
 } || portage.WorldError;
 
-/// The amount a record's crossing moves, once accepted — the value the two shores agree on.
+/// The amount a record's crossing moves, once accepted -- the value the two shores agree on.
 pub const Accepted = struct {
     amount: u64,
 };
 
-/// A portage record: the whole crossing as bytes. `id·from·world·to` are the fields the digest binds; the
+/// A portage record: the whole crossing as bytes. `id-from-world-to` are the fields the digest binds; the
 /// digest content-addresses them; the two heads fingerprint the two worlds the crossing joined.
 pub const Record = struct {
     id: [id_len]u8,
@@ -132,7 +132,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one record to a `format portage-v1` receipt — one field per line, in a fixed order. Refuses an
+/// Render one record to a `format portage-v1` receipt -- one field per line, in a fixed order. Refuses an
 /// overflow rather than a partial record.
 pub fn render(r: *const Record, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -166,7 +166,7 @@ pub fn render(r: *const Record, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to two tokens; returns the count (or three to signal a token past a record line's
-/// width — every line is exactly `field value`, two tokens).
+/// width -- every line is exactly `field value`, two tokens).
 fn tokens(line: []const u8, out: *[2][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -228,8 +228,8 @@ pub fn parse(text: []const u8, out: *Record) BronError!void {
     if (seen != field_all) return error.MissingField;
 }
 
-/// The record reads its own bound fields alone: the carried digest is a pure function of id·amount·from·
-/// world·to, so re-deriving it and comparing catches any field altered in transit. True exactly when the
+/// The record reads its own bound fields alone: the carried digest is a pure function of id-amount-from-
+/// world-to, so re-deriving it and comparing catches any field altered in transit. True exactly when the
 /// digest the record carries is the digest of the fields it carries.
 pub fn self_certifies(r: *const Record) bool {
     var d: [digest_len]u8 = undefined;
@@ -245,7 +245,7 @@ pub fn accept(r: *const Record, dag_a: *const cord.Dag, dag_b: *const cord.Dag) 
     // invariant: an order-head is exactly one block-address width.
     assert(head_len == cord.hash_len);
 
-    // The record certifies its own identity from its bound fields — no correspondent consulted.
+    // The record certifies its own identity from its bound fields -- no correspondent consulted.
     if (!self_certifies(r)) return error.NotSelfCertified;
 
     // The out-head fingerprints World A's real ledger, and World A burned exactly this digest.
@@ -256,7 +256,7 @@ pub fn accept(r: *const Record, dag_a: *const cord.Dag, dag_b: *const cord.Dag) 
     if (!la.out_present) return error.BurnAbsent;
     if (!std.mem.eql(u8, la.out_digest_slice(), r.digest[0..])) return error.BurnAbsent;
 
-    // The in-head fingerprints World B's real ledger, and World B credits the recipient under this digest —
+    // The in-head fingerprints World B's real ledger, and World B credits the recipient under this digest --
     // resolve_world refuses NoMatchingBurn for any other, so acceptance is a pure function of the two ledgers.
     var hb: [head_len]u8 = undefined;
     portage.world_head(dag_b, &hb);
@@ -326,7 +326,7 @@ fn dag_of(blocks: []const cord.Block) !cord.Dag {
     return dag;
 }
 
-/// Build the record that advertises the crossing the two worlds settled — every field read from the real
+/// Build the record that advertises the crossing the two worlds settled -- every field read from the real
 /// worlds, never invented.
 fn build_record(id: []const u8, from: []const u8, world: []const u8, to: []const u8, amount: u64, digest: []const u8, dag_a: *const cord.Dag, dag_b: *const cord.Dag) Record {
     var r: Record = undefined;
@@ -360,7 +360,7 @@ pub fn main() !void {
     const in_block = try seat_dest(0xF1, id[0..], digest[0..], amount, bob[0..]);
     var dag_b = try dag_of(&[_]cord.Block{in_block});
 
-    // The record that advertises the settled crossing — every field read from the real worlds.
+    // The record that advertises the settled crossing -- every field read from the real worlds.
     const record = build_record(id[0..], alice[0..], wtag[0..], bob[0..], amount, digest[0..], &dag_a, &dag_b);
 
     // --- Travel: render writes the record, parse reads it back byte-for-byte (a fixed point) ---------------
@@ -403,7 +403,7 @@ pub fn main() !void {
     if (lb.balance_of(bob[0..]) != accepted.amount) return error.NotConserved;
 
     // --- Teeth: a record altered in transit refuses, field by field ---------------------------------------
-    // A tampered bound field (the amount) breaks self-certification — the digest no longer binds it.
+    // A tampered bound field (the amount) breaks self-certification -- the digest no longer binds it.
     {
         var t = recovered;
         t.amount = amount + 1;

@@ -1,29 +1,29 @@
-//! lotus/crush.rye — ALES81: the bit-crusher — drop the low bits, and the map is no longer odd. The hard clip (ALES78), the overdrive (ALES79),
+//! lotus/crush.rye -- ALES81: the bit-crusher -- drop the low bits, and the map is no longer odd. The hard clip (ALES78), the overdrive (ALES79),
 //! and the wavefolder (ALES80) all shape AMPLITUDE while holding the sample's RESOLUTION: every one of the 65,536 i16 codes still crosses. The
-//! bit-crusher shapes the other axis — it drops the low bits, so a signal that entered at sixteen bits leaves at eight, or four, or one: the coarse,
+//! bit-crusher shapes the other axis -- it drops the low bits, so a signal that entered at sixteen bits leaves at eight, or four, or one: the coarse,
 //! gritty, quantized voice of an early sampler, a lo-fi drum machine, a digital signal starved of resolution.
 //!
 //! The crux is that DROPPING THE LOW BITS FLOORS TOWARD NEGATIVE INFINITY, so the bit-crush is the DRIVE family's FIRST map that is NOT odd. A crush
 //! to `bits` bits keeps the top `bits` bits and clears the rest; clearing the low s = 16 − bits bits of a two's-complement integer is exactly
-//! flooring to the grid of step 2^s, floor toward −∞ — the meaning of an arithmetic right-shift on a signed value: step = 1 << (16 − bits), q =
-//! divFloor(x, step) · step. Every prior DRIVE map is odd (it shapes the magnitude and carries the sign); this one floors the SIGNED value, so
-//! crush(−100) = −256 while crush(100) = 0 at bits = 8. That faint downward DC offset IS bit reduction's honest fingerprint — two's-complement
-//! truncation floors, it does not round toward zero — and the rung states it positively rather than dressing the map in a symmetry it lacks.
+//! flooring to the grid of step 2^s, floor toward −∞ -- the meaning of an arithmetic right-shift on a signed value: step = 1 << (16 − bits), q =
+//! divFloor(x, step) - step. Every prior DRIVE map is odd (it shapes the magnitude and carries the sign); this one floors the SIGNED value, so
+//! crush(−100) = −256 while crush(100) = 0 at bits = 8. That faint downward DC offset IS bit reduction's honest fingerprint -- two's-complement
+//! truncation floors, it does not round toward zero -- and the rung states it positively rather than dressing the map in a symmetry it lacks.
 //!
 //! The grid of step 2^s (s ≤ 15) includes sample_min = −2^15 (a multiple of every such step) and every reachable grid point sits at or below x, so
 //! q lands in [sample_min, sample_max] BEFORE the write: the shape does the bounding, and the saturate that follows is a documented no-op. The map is
-//! IDEMPOTENT — a grid point crushes to itself, so crush(crush(x)) = crush(x). It is MEMORYLESS — every output depends only on its own input, so the
+//! IDEMPOTENT -- a grid point crushes to itself, so crush(crush(x)) = crush(x). It is MEMORYLESS -- every output depends only on its own input, so the
 //! in-place read-then-write touches nothing another step needs, and crushing a span block by block equals crushing it whole. bits = 16 is the
 //! IDENTITY (a shift of zero clears no bits), so the map generalizes the untouched clip.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES81.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES81.
 //! Design read: active-designing/date/20260814/20260814-211634_fill-ales81-lotus-bit-crush.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate. It carries NO pre-gain and NO ceiling — the purest DRIVE
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, the one true saturate. It carries NO pre-gain and NO ceiling -- the purest DRIVE
 //! member; a keeper who wants a boosted crush runs lotus/drive.rye (ALES78) then crush over the same span, both in-place span maps that compose.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the resolution is a bit count, the grid a power-of-two step in sample units, and the shape a
-//! quantizer, instantaneous (no attack/release, no dither, no anti-aliasing — a bit-crush is a heavy harmonic generator, and its quantization noise
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the resolution is a bit count, the grid a power-of-two step in sample units, and the shape a
+//! quantizer, instantaneous (no attack/release, no dither, no anti-aliasing -- a bit-crush is a heavy harmonic generator, and its quantization noise
 //! folds in the i16 domain exactly as any integer decimator's). One divide, one multiply per sample; the crush only lowers resolution, so the output
 //! fits the i16 rail by construction.
 //!
@@ -38,28 +38,28 @@ const timeline = @import("timeline.rye");
 pub const crush_version = "20260814.211634";
 
 /// The widest resolution the i16 rail holds. A sample is sixteen bits, so a crush names between one bit (a two-level output) and sixteen (the
-/// identity). Past sixteen there are no low bits to drop; below one there is no signal — both refuse BadBits.
+/// identity). Past sixteen there are no low bits to drop; below one there is no signal -- both refuse BadBits.
 pub const max_bits: u32 = 16;
 
 /// The bit-crusher's faults, one consistent name each. BadRange coincides by name with the sibling drives and ALES2's timeline (Zig merges error
-/// sets by name), so a composer sees one consistent span fault. BadBits is the bit-crush's own — the resolution axis no other DRIVE member names.
+/// sets by name), so a composer sees one consistent span fault. BadBits is the bit-crush's own -- the resolution axis no other DRIVE member names.
 pub const CrushError = error{
-    /// A resolution of zero (names no signal) or past sixteen (no low bits to drop) — refused, no write.
+    /// A resolution of zero (names no signal) or past sixteen (no low bits to drop) -- refused, no write.
     BadBits,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
-/// Crush `count` samples starting at `start` in place in `clip` to `bits` bits of resolution: each sample's low `16 − bits` bits are cleared —
-/// q = divFloor(x, step) · step with step = 2^(16 − bits), a floor toward −∞ onto the grid of that step. After the call every written sample lands
+/// Crush `count` samples starting at `start` in place in `clip` to `bits` bits of resolution: each sample's low `16 − bits` bits are cleared --
+/// q = divFloor(x, step) - step with step = 2^(16 − bits), a floor toward −∞ onto the grid of that step. After the call every written sample lands
 /// on a multiple of the step, its value is at most the input's (the floor never raises a sample), and every output depends only on its own input
 /// (the crush is memoryless). `bits = 16` is the identity (step 1). Refuses BadBits on a resolution outside [1, 16] and BadRange on a span outside
-/// the samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// the samples -- each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn crush(clip: *timeline.Clip, start: u32, count: u32, bits: u32) CrushError!void {
-    // invariant: the resolution is legal — at least one bit (a two-level signal) and no more than the i16 rail's sixteen. Checked BEFORE any write.
+    // invariant: the resolution is legal -- at least one bit (a two-level signal) and no more than the i16 rail's sixteen. Checked BEFORE any write.
     if (bits < 1) return error.BadBits;
     if (bits > max_bits) return error.BadBits;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the sibling drives.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the sibling drives.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -75,16 +75,16 @@ pub fn crush(clip: *timeline.Clip, start: u32, count: u32, bits: u32) CrushError
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         const dry: i64 = @as(i64, clip.buf[i]);
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
         // Clear the low bits: floor the SIGNED value onto the grid of `step`. @divFloor rounds toward −∞, the exact meaning of dropping the low
-        // bits of a two's-complement integer — this is why the map is not odd (a negative sample floors DOWN, away from zero).
+        // bits of a two's-complement integer -- this is why the map is not odd (a negative sample floors DOWN, away from zero).
         const q: i64 = @divFloor(dry, step) * step;
-        // invariant: the floor never raises a sample and never drops one below sample_min — the grid includes sample_min (a multiple of every
+        // invariant: the floor never raises a sample and never drops one below sample_min -- the grid includes sample_min (a multiple of every
         // step ≤ 2^15) and the largest reachable grid point sits at or below the input, so q lands in [sample_min, sample_max] BY CONSTRUCTION and
         // the saturate that follows is a documented no-op.
         assert(q <= dry and q >= @as(i64, timeline.sample_min) and q <= @as(i64, timeline.sample_max));
-        // invariant: the output sits on the grid — its low `shift` bits are clear (idempotence rests on this: a grid point crushes to itself).
+        // invariant: the output sits on the grid -- its low `shift` bits are clear (idempotence rests on this: a grid point crushes to itself).
         assert(@mod(q, step) == 0);
         clip.buf[i] = timeline.saturate(q);
     }
@@ -94,9 +94,9 @@ pub fn crush(clip: *timeline.Clip, start: u32, count: u32, bits: u32) CrushError
 }
 
 // --- selftest: bits = 16 is the IDENTITY (a shift of zero clears no bits); DROP-THE-LOW-BITS by hand (bits 8, step 256, positives and negatives);
-//     the ONE-BIT FLOOR (bits 1: non-negatives → 0, negatives → sample_min); every output is a MULTIPLE OF THE STEP and the map is IDEMPOTENT; the
+//     the ONE-BIT FLOOR (bits 1: non-negatives -> 0, negatives -> sample_min); every output is a MULTIPLE OF THE STEP and the map is IDEMPOTENT; the
 //     RAIL is preserved (sample_min fixed, sample_max floors to 32512, every output in range under any bits); the map is NOT ODD, the honest DC
-//     signature (crush(−100,8) = −256 ≠ −crush(100,8) = 0); the SPAN discipline holds; and each fault — BadBits, BadRange — refuses by name, the
+//     signature (crush(−100,8) = −256 ≠ −crush(100,8) = 0); the SPAN discipline holds; and each fault -- BadBits, BadRange -- refuses by name, the
 //     clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -111,7 +111,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. bits = 16 IS THE IDENTITY — a shift of zero clears no bits, so the crush returns the clip byte-for-byte. The map generalizes the untouched
+    // 1. bits = 16 IS THE IDENTITY -- a shift of zero clears no bits, so the crush returns the clip byte-for-byte. The map generalizes the untouched
     //    clip, the way ALES8's unity fader reproduces the plain render.
     {
         const sig = [_]i16{ 1, -1, 12345, -12345, 32767, timeline.sample_min, 0, 255 };
@@ -121,9 +121,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.SixteenNotIdentity;
     }
 
-    // 2. DROP-THE-LOW-BITS BY HAND — bits = 8, step 256, the floor read directly. 0→0; 255→0 (below the first grid step); 256→256 (a grid point);
-    //    500→256 (floored down); −1→−256 (the floor goes DOWN); −256→−256 (a grid point); −257→−512 (the next step down). The negatives floor away
-    //    from zero — the crux's asymmetry.
+    // 2. DROP-THE-LOW-BITS BY HAND -- bits = 8, step 256, the floor read directly. 0->0; 255->0 (below the first grid step); 256->256 (a grid point);
+    //    500->256 (floored down); −1->−256 (the floor goes DOWN); −256->−256 (a grid point); −257->−512 (the next step down). The negatives floor away
+    //    from zero -- the crux's asymmetry.
     {
         const sig = [_]i16{ 0, 255, 256, 500, -1, -256, -257 };
         var clip = timeline.Clip{};
@@ -133,7 +133,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.LowBitsWrong;
     }
 
-    // 3. THE ONE-BIT FLOOR — bits = 1, step 32768. Every non-negative sample floors to 0 and every negative to sample_min: a real two-level output
+    // 3. THE ONE-BIT FLOOR -- bits = 1, step 32768. Every non-negative sample floors to 0 and every negative to sample_min: a real two-level output
     //    {0, −32768}, the coarsest crush the rail holds.
     {
         const sig = [_]i16{ 0, 1, 32767, -1, timeline.sample_min, 12345, -12345 };
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.OneBitWrong;
     }
 
-    // 4. EVERY OUTPUT IS A MULTIPLE OF THE STEP, AND THE MAP IS IDEMPOTENT — at bits = 4 (step 4096) each crushed sample lands on the grid, and
+    // 4. EVERY OUTPUT IS A MULTIPLE OF THE STEP, AND THE MAP IS IDEMPOTENT -- at bits = 4 (step 4096) each crushed sample lands on the grid, and
     //    crushing the already-crushed clip a second time changes nothing (a grid point crushes to itself).
     {
         const sig = [_]i16{ 5000, -5000, 100, -100, 20000, -20000, 4096, -4096 };
@@ -161,7 +161,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. THE RAIL IS PRESERVED — sample_min is a grid point at every resolution (it floors to itself); sample_max floors to 32512 at bits = 8; and
+    // 5. THE RAIL IS PRESERVED -- sample_min is a grid point at every resolution (it floors to itself); sample_max floors to 32512 at bits = 8; and
     //    under any legal bits every output stays within [sample_min, sample_max], the floor never overflowing the rail it started inside.
     {
         const rails = [_]i16{ timeline.sample_min, 32767 };
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (eight.samples()[0] != 32512) return error.MaxFloorWrong; // 32767 floored to a multiple of 256 is 32512
     }
 
-    // 6. THE MAP IS NOT ODD — the honest DC signature. crush(−100, 8) floors DOWN to −256, while crush(100, 8) floors to 0, so crush(−x) ≠ −crush(x):
+    // 6. THE MAP IS NOT ODD -- the honest DC signature. crush(−100, 8) floors DOWN to −256, while crush(100, 8) floors to 0, so crush(−x) ≠ −crush(x):
     //    the low-bit drop's downward floor, the fingerprint of two's-complement bit reduction that no odd waveshaper makes.
     {
         const sig = [_]i16{ 100, -100 };
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         if (out[1] == -out[0]) return error.UnexpectedlyOdd; // −256 ≠ −0: the map is genuinely not odd
     }
 
-    // 7. THE SPAN DISCIPLINE — crushing a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
+    // 7. THE SPAN DISCIPLINE -- crushing a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
     //    suite keeps. Crush the middle two of six at bits = 8; the first and last two are untouched.
     {
         const sig = [_]i16{ 100, 200, 500, -500, 300, 400 };
@@ -204,7 +204,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 8. A ZERO / OVER-WIDE RESOLUTION refuses BadBits; a SPAN past the end refuses BadRange — each before any write, the clip untouched.
+    // 8. A ZERO / OVER-WIDE RESOLUTION refuses BadBits; a SPAN past the end refuses BadRange -- each before any write, the clip untouched.
     {
         const sig = [_]i16{ 9, 10, 11 };
         var clip = timeline.Clip{};

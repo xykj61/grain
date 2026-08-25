@@ -1,17 +1,17 @@
-//! lotus/tone.rye — ALES40: a tone control — a one-pole filter that shapes a clip's brightness. Every edit gesture so far
+//! lotus/tone.rye -- ALES40: a tone control -- a one-pole filter that shapes a clip's brightness. Every edit gesture so far
 //! changed a clip's level (gain, fade), its arrangement (splice, joins, mix), or its map (markers, racks); none changed its
-//! FREQUENCY balance. This rung opens the first filter — a one-pole low-pass that softens a harsh take (rolls off treble) and
+//! FREQUENCY balance. This rung opens the first filter -- a one-pole low-pass that softens a harsh take (rolls off treble) and
 //! its exact high-pass complement that thins a boomy one (cuts bass). The one correctness a recursive filter owes on integer
-//! PCM is that it reach a constant input EXACTLY — no drifting steady-state offset — while never overshooting and never
+//! PCM is that it reach a constant input EXACTLY -- no drifting steady-state offset -- while never overshooting and never
 //! wrapping. It reuses ALES2's one true clamp (timeline.saturate) where the high-pass difference runs past the i16 range.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES40.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES40.
 //! Design read: active-designing/date/20260814/20260814-160501_fill-ales40-lotus-tone-control.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip it filters and the saturation it reuses. A tone control shapes what gain
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip it filters and the saturation it reuses. A tone control shapes what gain
 //! and fade cannot: not louder or softer, but brighter or warmer.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the coefficient num/den is a smoothing fraction over
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the coefficient num/den is a smoothing fraction over
 //! sample INDICES, not a cutoff in hertz (a real time base is a later rung). The filter state runs at full i64 precision so
 //! no fractional information is lost between samples, and every intermediate runs in i64 so nothing overflows before the clamp.
 //!
@@ -26,28 +26,28 @@ const timeline = @import("timeline.rye");
 pub const tone_version = "20260814.160501";
 
 pub const ToneError = error{
-    /// A coefficient num/den that is not a legal filter strength in (0, 1] — a zero denominator (divide by zero), a zero or
+    /// A coefficient num/den that is not a legal filter strength in (0, 1] -- a zero denominator (divide by zero), a zero or
     /// negative numerator (a filter that never moves or moves backward), or a numerator past the denominator (a coefficient
-    /// above one — an unstable filter that overshoots). Refused before a sample is touched.
+    /// above one -- an unstable filter that overshoots). Refused before a sample is touched.
     BadCoeff,
-    /// A start offset or count names samples outside the clip's current length — refused before any read or write.
+    /// A start offset or count names samples outside the clip's current length -- refused before any read or write.
     BadRange,
 };
 
 /// Validate a filter call's coefficient and span together, before any sample is touched. The coefficient num/den must be a
 /// legal filter strength: den > 0 (no divide by zero), num >= 1 (the filter must move forward), and num <= den (the
-/// coefficient is at most one — a stable one-pole never overshoots). The span must lie wholly within the current samples.
+/// coefficient is at most one -- a stable one-pole never overshoots). The span must lie wholly within the current samples.
 fn check(clip_len: u32, start: u32, count: u32, num: i32, den: u32) ToneError!void {
-    // invariant: a legal coefficient is a fraction in (0, 1] — den nonzero, num in [1, den].
+    // invariant: a legal coefficient is a fraction in (0, 1] -- den nonzero, num in [1, den].
     if (den == 0) return error.BadCoeff;
     if (num < 1) return error.BadCoeff;
     if (@as(i64, num) > @as(i64, den)) return error.BadCoeff;
-    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    // invariant: the span lies wholly within the current samples (checked without underflow -- count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
 
-/// The public face of `check` — one implementation of the coefficient-and-span law, shared so a composer (ALES46's band-pass)
+/// The public face of `check` -- one implementation of the coefficient-and-span law, shared so a composer (ALES46's band-pass)
 /// can validate BOTH its stage coefficients before either stage writes, rather than duplicating the check or letting a legal
 /// first stage mutate the span before an illegal second stage refuses. Same rules, same named errors as every filter call.
 pub fn precheck(clip_len: u32, start: u32, count: u32, num: i32, den: u32) ToneError!void {
@@ -57,28 +57,28 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, num: i32, den: u32) ToneE
 /// Advance the one-pole low-pass by one sample and return its output. `state` holds the smoothed estimate scaled by `den` at
 /// full i64 precision, so no fractional information is lost between samples. The state steps a fraction num/den of the way
 /// toward the input's scaled value; when that fractional step truncates to zero yet the state has not reached the input, the
-/// state advances by one — the guarantee that makes a constant input reachable EXACTLY in finite steps rather than approached
+/// state advances by one -- the guarantee that makes a constant input reachable EXACTLY in finite steps rather than approached
 /// forever. The step never overshoots (|step| <= |gap|), so a constant input is reached monotonically: the low-pass character.
 fn lp_step(state: *i64, x: i16, num: i32, den: u32) i16 {
-    // invariant: the coefficient reaching this step is already a legal fraction in (0, 1] — check() ran at the edge.
+    // invariant: the coefficient reaching this step is already a legal fraction in (0, 1] -- check() ran at the edge.
     assert(num >= 1 and @as(i64, num) <= @as(i64, den));
     const den_i: i64 = @as(i64, den);
     const target: i64 = @as(i64, x) * den_i;
     const gap: i64 = target - state.*;
     var step: i64 = @divTrunc(gap * @as(i64, num), den_i);
-    // The forced unit step fires only when the fractional step rounds to nothing yet the gap remains — so direct current is
+    // The forced unit step fires only when the fractional step rounds to nothing yet the gap remains -- so direct current is
     // reached exactly rather than left with a residual offset.
     if (step == 0 and gap != 0) step = if (gap > 0) 1 else -1;
-    // invariant: the step only ever shrinks the gap — it never overshoots the target, so convergence is monotone.
+    // invariant: the step only ever shrinks the gap -- it never overshoots the target, so convergence is monotone.
     assert((step >= 0 and step <= gap) or (step <= 0 and step >= gap));
     state.* += step;
     // The output is the scaled state divided back down; the state stays within the input's range times den, so the quotient is
-    // always a legal sample — saturate is a proven safety, never a live clamp on the low-pass path.
+    // always a legal sample -- saturate is a proven safety, never a live clamp on the low-pass path.
     const y: i64 = @divTrunc(state.*, den_i);
     return timeline.saturate(y);
 }
 
-/// Low-pass `count` samples starting at `start` in place, CONTINUING from the caller's `state` rather than from silence — the
+/// Low-pass `count` samples starting at `start` in place, CONTINUING from the caller's `state` rather than from silence -- the
 /// carried-state form (ALES43). The caller owns the i64 state across calls, so filtering a span in two pieces (the second
 /// carrying the first's ending state) equals filtering the whole span once: no fresh transient at the seam, the click a
 /// per-span restart would leave. A fresh `state` of 0 is exactly the from-silence low_pass. Refuses BadCoeff on an illegal
@@ -96,15 +96,15 @@ pub fn low_pass_carry(clip: *timeline.Clip, start: u32, count: u32, state: *i64,
 
 /// Low-pass `count` samples starting at `start` in place, from a zero initial state, by the coefficient num/den. num = den is
 /// the identity (pass-through); a smaller fraction smooths harder (rolls off more treble). Refuses BadCoeff on an illegal
-/// coefficient and BadRange on a span outside the samples, before any write. Values only — never the length. The from-silence
-/// case of low_pass_carry — one implementation, so the carried and from-silence forms can never drift.
+/// coefficient and BadRange on a span outside the samples, before any write. Values only -- never the length. The from-silence
+/// case of low_pass_carry -- one implementation, so the carried and from-silence forms can never drift.
 pub fn low_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
     var state: i64 = 0;
     return low_pass_carry(clip, start, count, &state, num, den);
 }
 
 /// High-pass `count` samples starting at `start` in place, CONTINUING from the caller's low-pass `state` rather than from
-/// silence — the carried-state complement (ALES45). The high-pass output is `x − lp`, and `lp` is a pure function of the carried
+/// silence -- the carried-state complement (ALES45). The high-pass output is `x − lp`, and `lp` is a pure function of the carried
 /// low-pass state, so lifting that state to the caller makes the complement continue exactly as low_pass_carry does: a span
 /// high-passed in two pieces (the second carrying the first's ending state) equals the whole high-passed once, no re-transient
 /// at the seam. A fresh `state` of 0 is exactly the from-silence high_pass. Refuses BadCoeff on an illegal coefficient and
@@ -123,11 +123,11 @@ pub fn high_pass_carry(clip: *timeline.Clip, start: u32, count: u32, state: *i64
     assert(clip.len <= clip.buf.len);
 }
 
-/// High-pass `count` samples starting at `start` in place, from a zero initial state — the exact complement of the low-pass:
+/// High-pass `count` samples starting at `start` in place, from a zero initial state -- the exact complement of the low-pass:
 /// each output is the input minus the low-pass output at that sample, saturated to the i16 range. Where the difference fits,
-/// low_pass + high_pass = x sample-for-sample; a constant input drives the output to zero (direct current removed — a bass cut);
+/// low_pass + high_pass = x sample-for-sample; a constant input drives the output to zero (direct current removed -- a bass cut);
 /// a transient past the i16 range saturates rather than wraps. Refuses BadCoeff and BadRange exactly as the low-pass, before any
-/// write. The from-silence case of high_pass_carry — one implementation, so the carried and from-silence forms cannot drift.
+/// write. The from-silence case of high_pass_carry -- one implementation, so the carried and from-silence forms cannot drift.
 pub fn high_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
     var state: i64 = 0;
     return high_pass_carry(clip, start, count, &state, num, den);
@@ -149,14 +149,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// True when the samples never decrease left to right — the monotone rise a low-pass owes on a constant input from silence.
+/// True when the samples never decrease left to right -- the monotone rise a low-pass owes on a constant input from silence.
 fn nondecreasing(s: []const i16) bool {
     var i: u32 = 1;
     while (i < s.len) : (i += 1) if (s[i] < s[i - 1]) return false;
     return true;
 }
 
-/// The largest sample in the span — used to prove the low-pass never overshoots a constant input.
+/// The largest sample in the span -- used to prove the low-pass never overshoots a constant input.
 fn peak(s: []const i16) i16 {
     var m: i16 = timeline.sample_min;
     var i: u32 = 0;
@@ -167,7 +167,7 @@ fn peak(s: []const i16) i16 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip low-passes and high-passes to all zeros.
+    // 1. silence stays silence -- an all-zero clip low-passes and high-passes to all zeros.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -178,7 +178,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceHighWrong;
     }
 
-    // 2. identity at coefficient one — num = den reaches the input every sample: the low-pass is a pass-through, the high-pass
+    // 2. identity at coefficient one -- num = den reaches the input every sample: the low-pass is a pass-through, the high-pass
     //    is silence. The state steps the whole gap each sample, so nothing is smoothed.
     {
         var clip = timeline.Clip{};
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         if (!eq(clip2.samples(), &silence)) return error.IdentityHighWrong;
     }
 
-    // 3. THE CRUX — a constant input from silence low-passes monotonically toward the input, never exceeding it, and settles to
+    // 3. THE CRUX -- a constant input from silence low-passes monotonically toward the input, never exceeding it, and settles to
     //    it EXACTLY. The first sample is below the input (smoothing is happening); the last equals the input (direct current is
     //    reached, not merely approached).
     {
@@ -232,7 +232,7 @@ fn run_selftest() !u8 {
     }
 
     // 5. the high-pass SATURATES rather than wraps. A long run at sample_min drives the low-pass estimate deeply negative; one
-    //    sample_max sample then makes x - lp exceed the ceiling — it pins to sample_max, never a wrapped negative.
+    //    sample_max sample then makes x - lp exceed the ceiling -- it pins to sample_max, never a wrapped negative.
     {
         var clip = timeline.Clip{};
         const src = [_]i16{timeline.sample_min} ** 60 ++ [_]i16{timeline.sample_max};
@@ -242,7 +242,7 @@ fn run_selftest() !u8 {
         if (last != timeline.sample_max) return error.SaturateWrong; // clamped high, not wrapped negative
     }
 
-    // 6a. a zero-denominator coefficient refuses BadCoeff — no divide by zero.
+    // 6a. a zero-denominator coefficient refuses BadCoeff -- no divide by zero.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
@@ -256,7 +256,7 @@ fn run_selftest() !u8 {
         if (low_pass(&clip, 0, clip.len, 0, 4)) |_| return error.ZeroNumSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroNum;
     }
 
-    // 6c. a numerator past the denominator (a coefficient above one — unstable) refuses BadCoeff.
+    // 6c. a numerator past the denominator (a coefficient above one -- unstable) refuses BadCoeff.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });

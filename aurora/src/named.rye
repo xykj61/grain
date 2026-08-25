@@ -1,8 +1,8 @@
-//! aurora/src/named.rye — content-naming on the bare hart.
+//! aurora/src/named.rye -- content-naming on the bare hart.
 //!
 //! A freestanding RISC-V program that names a message by its SHA3-512 content
-//! hash — the hash we strengthened first, run with no operating system beneath
-//! it — and speaks the name over the console. This is where Aurora's bare-metal
+//! hash -- the hash we strengthened first, run with no operating system beneath
+//! it -- and speaks the name over the console. This is where Aurora's bare-metal
 //! reach meets Mantra's content-addressing: the cryptography our network leans
 //! on, proven to run freestanding on RISC-V. The seal and the full encrypted
 //! datagram grow from here (active-designing/993; external-research/yonder/20260618-212112_content-centric-messaging.md, /985).
@@ -27,7 +27,7 @@ export fn _start() linksection(".text.init") callconv(.naked) noreturn {
 export fn kmain() callconv(.c) noreturn {
     const message = "named on the bare hart";
 
-    // Name the message by its content — the strengthened hash, freestanding.
+    // Name the message by its content -- the strengthened hash, freestanding.
     var digest: [Sha3_512.digest_length]u8 = undefined;
     Sha3_512.hash(message, &digest, .{});
 

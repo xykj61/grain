@@ -1,4 +1,4 @@
-//! nock/nock_jet_dec_witness.rye — proves the dec jet: fast, slow, and dispatched.
+//! nock/nock_jet_dec_witness.rye -- proves the dec jet: fast, slow, and dispatched.
 //!
 //!   rye build nock/nock_jet_dec_witness.rye -femit-bin=nock/bin/nock_jet_dec_witness
 //!   nock/bin/nock_jet_dec_witness

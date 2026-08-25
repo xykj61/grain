@@ -1,24 +1,24 @@
-//! pond/apps/skate_circle_bron.rye — Season 3 Journey 9 (Skate), Rung 3: the signed circle travels.
+//! pond/apps/skate_circle_bron.rye -- Season 3 Journey 9 (Skate), Rung 3: the signed circle travels.
 //!
 //! Rungs one and two fixed the consent rule and bound each act to a keeper's signature. A circle is
-//! only useful to a commons if it can be *carried* — handed to another keeper, checked with no live
+//! only useful to a commons if it can be *carried* -- handed to another keeper, checked with no live
 //! circle in hand. This rung renders a signed circle to a `format skate-circle-v1` Bron record and
 //! parses it back byte-for-byte, still consent-honest **offline**.
 //!
-//! A `SignedCircle` keeps, beside rung one's live circle, the signature that authorized each act — a
-//! join signature per member, a link-request signature per request — so the record it renders carries
+//! A `SignedCircle` keeps, beside rung one's live circle, the signature that authorized each act -- a
+//! join signature per member, a link-request signature per request -- so the record it renders carries
 //! not just *that* a keeper joined but *their word* that they did. The traveled `PortableCircle` owns
 //! its own buffers, and `still_consented` re-verifies every carried signature against the recipient's
-//! keyring through rung two's own `verify_join` / `verify_request` — so a signature flipped after the
+//! keyring through rung two's own `verify_join` / `verify_request` -- so a signature flipped after the
 //! crossing refuses `BadConsent` with no network, no store, no live circle. `rebuild` replays the
 //! carried acts through rung two's verified paths into an equal live circle, so the traveled verdicts
 //! (`linked`, `visible`) match the original exactly.
 //!
 //! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
 //! general parser: an unknown field refuses `UnknownField` (never dropped), a malformed line
-//! `BadLine`, a wrong header `BadFormat`, bad hex `BadHex`. Additive — composes rungs one and two over
+//! `BadLine`, a wrong header `BadFormat`, bad hex `BadHex`. Additive -- composes rungs one and two over
 //! public API; both re-run GREEN. Demo keeper seeds only, no network (a circle served over the wire
-//! reaches the serve gate — Keaton's hand).
+//! reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_circle_bron.rye -femit-bin=pond/bin/skate-circle-bron
 //!   pond/bin/skate-circle-bron selftest
@@ -121,7 +121,7 @@ pub const SignedCircle = struct {
         return sc;
     }
 
-    /// Record a signed join — verify through rung two (which joins the live circle), then keep the
+    /// Record a signed join -- verify through rung two (which joins the live circle), then keep the
     /// point and its signature so the join can travel with its keeper's word.
     pub fn record_join(self: *SignedCircle, ring: *const signed.Keyring, point: u32, sig: *const [sig_len]u8) signed.CircleActError!void {
         try signed.join_signed(&self.circle, ring, self.circle_id, point, sig);
@@ -133,7 +133,7 @@ pub const SignedCircle = struct {
         assert(self.member_count == self.circle.member_count);
     }
 
-    /// Record a signed link-request — verify through rung two, then keep the pair and its signature.
+    /// Record a signed link-request -- verify through rung two, then keep the pair and its signature.
     pub fn record_request(self: *SignedCircle, ring: *const signed.Keyring, from: u32, to: u32, sig: *const [sig_len]u8) signed.CircleActError!void {
         try signed.request_signed(&self.circle, ring, self.circle_id, from, to, sig);
         const i = self.link_count;
@@ -158,7 +158,7 @@ pub const PortableCircle = struct {
     link_sigs: [max_links][sig_len]u8,
     link_count: u32,
 
-    /// Re-verify every carried signature against the recipient's keyring, offline — a join by
+    /// Re-verify every carried signature against the recipient's keyring, offline -- a join by
     /// `verify_join`, a request by `verify_request`. A flipped or forged signature refuses by rung
     /// two's exact reason, so a tampered record cannot pass with no live circle in hand.
     pub fn still_consented(self: *const PortableCircle, ring: *const signed.Keyring) signed.SignedError!void {
@@ -279,7 +279,7 @@ pub fn parse(text: []const u8) BronError!PortableCircle {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 
@@ -341,7 +341,7 @@ fn welcome_round_trip_still_consented() !void {
     print("skate_circle_bron: a signed circle rendered to Bron, parsed back byte-for-byte, still consented offline, and rebuilt the identical link.\n", .{});
 }
 
-/// A signature flipped after the crossing refuses offline — a tampered record cannot pass.
+/// A signature flipped after the crossing refuses offline -- a tampered record cannot pass.
 fn unwelcome_flipped_signature_refuses() !void {
     const ring = try demo_ring();
     var sc = try build_linked(&ring);
@@ -355,7 +355,7 @@ fn unwelcome_flipped_signature_refuses() !void {
     print("skate_circle_bron: a link signature flipped after the crossing refused BadConsent offline.\n", .{});
 }
 
-/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+/// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
     const text = "format skate-circle-v1\ncircle 7\nmember 101 " ++ ("00" ** sig_len) ++ "\nghost 5\n";
     const bad = parse(text);
@@ -363,21 +363,21 @@ fn unwelcome_unknown_field_refuses() !void {
     print("skate_circle_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
 }
 
-/// A wrong header refuses — the record must name its own format.
+/// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
     const bad = parse("format other-v1\ncircle 7\n");
     assert(bad == error.BadFormat);
     print("skate_circle_bron: a wrong header refused BadFormat.\n", .{});
 }
 
-/// A record that never names its circle refuses — consent is bound to a circle, so the id is required.
+/// A record that never names its circle refuses -- consent is bound to a circle, so the id is required.
 fn unwelcome_missing_circle_refuses() !void {
     const bad = parse("format skate-circle-v1\n");
     assert(bad == error.MissingCircle);
     print("skate_circle_bron: a record with no circle id refused MissingCircle.\n", .{});
 }
 
-/// Malformed hex in a signature refuses — the reader will not accept a corrupt signature field.
+/// Malformed hex in a signature refuses -- the reader will not accept a corrupt signature field.
 fn unwelcome_bad_hex_refuses() !void {
     const bad = parse("format skate-circle-v1\ncircle 7\nmember 101 zz\n");
     assert(bad == error.BadHex);

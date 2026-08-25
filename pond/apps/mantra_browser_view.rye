@@ -1,14 +1,14 @@
-//! pond/apps/mantra_browser_view.rye — BUHR Journey 2, Rung 2: the graph, painted.
+//! pond/apps/mantra_browser_view.rye -- BUHR Journey 2, Rung 2: the graph, painted.
 //!
 //! Rung one rendered Mantra's append-only log as a readable revision graph in plain
 //! text. This rung carries that very same graph onto WADE1's styled Skate surface:
-//! each rendered line lands on a grid row, dressed by a resolved token sheet — Flax
+//! each rendered line lands on a grid row, dressed by a resolved token sheet -- Flax
 //! paper and Bark ink by default, or the dark cascade when the sheet flips. The
 //! browser holds the graph; the sheet holds the colors; Skate paints the glyphs.
 //!
 //! This is the first proof that editor and view share one graph: `paint_graph`
 //! calls `mantra_browser.render` for the exact bytes rung one witnesses, so the
-//! painted surface can never drift from the readable text — they are one reading.
+//! painted surface can never drift from the readable text -- they are one reading.
 //!
 //! Additive by construction: it imports mantra_browser, brushstroke/tokens, and
 //! brushstroke/skate_grid, calling only their public functions. No file beneath it
@@ -39,7 +39,7 @@ pub const ViewError = error{
 /// Paint the browser's append-only graph onto a styled Skate grid. Each rendered
 /// line lands on the next grid row, dressed by `sheet` (paper/ink). Returns the
 /// number of rows painted. The graph comes straight from `mantra_browser.render`,
-/// so the painted view and the readable text are the same reading — never two.
+/// so the painted view and the readable text are the same reading -- never two.
 pub fn paint_graph(catalog: *const mn.BoltCatalog, grid: *skate.Grid, sheet: []const u8) !u32 {
     // invariant: the grid is at least one row tall
     assert(grid.rows >= 1);
@@ -89,7 +89,7 @@ fn welcome_shared_graph(allocator: std.mem.Allocator) !void {
     _ = try paint_graph(&catalog, &grid, tokens.base_sheet);
 
     // Re-render the same catalog and confirm the painted grid carries the very same
-    // first line — editor (render) and view (grid) are one graph, not two readings.
+    // first line -- editor (render) and view (grid) are one graph, not two readings.
     var buf: [mb.max_render_bytes]u8 = undefined;
     const text = try mb.render(&catalog, &buf);
     const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
@@ -113,14 +113,14 @@ fn welcome_lit_pixels(allocator: std.mem.Allocator) !void {
     const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
     const pixels = try allocator.alloc(u8, pixel_count);
     grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
-    // Glyphs actually reached the canvas — some pixels differ from the paper ground.
+    // Glyphs actually reached the canvas -- some pixels differ from the paper ground.
     const lit = grid.lit_pixel_count(pixels, stride, width, height, paint.paper);
     assert(lit > 0);
     print("mantra_browser_view: {d} ink pixels lit over Flax paper\n", .{lit});
 }
 
 fn welcome_styling_varies() !void {
-    // The light sheet and the dark cascade lower to different papers — the styling
+    // The light sheet and the dark cascade lower to different papers -- the styling
     // truly changes the view, it is not a decorative no-op.
     const light = try tokens.dress(tokens.base_sheet);
     var out: [tokens.max_sheet_bytes]u8 = undefined;
@@ -128,13 +128,13 @@ fn welcome_styling_varies() !void {
     const dark = try tokens.dress(out[0..n]);
     // invariant: dark paper is a distinct ground from light paper
     assert(light.paper.r != dark.paper.r or light.paper.g != dark.paper.g or light.paper.b != dark.paper.b);
-    // Flax paper is far brighter than Bark paper — a wide, honest lightness spread.
+    // Flax paper is far brighter than Bark paper -- a wide, honest lightness spread.
     assert(light.paper.r > dark.paper.r);
     print("mantra_browser_view: light and dark sheets paint distinct grounds\n", .{});
 }
 
 fn welcome_bounded_viewport(allocator: std.mem.Allocator) !void {
-    // A grid shorter than the graph paints only what fits — bounded, never an
+    // A grid shorter than the graph paints only what fits -- bounded, never an
     // overflow past the viewport's rows.
     var catalog = try mb.demo_catalog();
     var grid = try skate.Grid.init(allocator, view_cols, 3);

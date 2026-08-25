@@ -1,37 +1,37 @@
-//! mycelium/muster_true.rye — a real quorum passes a real roll, true to the bytes (r4, the arc closes).
+//! mycelium/muster_true.rye -- a real quorum passes a real roll, true to the bytes (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r4.
 //! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
-//! r1 bound a Chorus to a known validator set (a Muster) — believed only when its enrolled voices meet the
+//! r1 bound a Chorus to a known validator set (a Muster) -- believed only when its enrolled voices meet the
 //! Byzantine threshold read from the roll's size; r2 let the whole roll travel as bytes; r3 judged a quorum
-//! against a roll across a Knot — all over Dags seated in code. This closing rung carries the roll onto a
+//! against a roll across a Knot -- all over Dags seated in code. This closing rung carries the roll onto a
 //! REAL on-disk Cord record a keeper can open and hash, and proves the property the whole Muster rests on:
-//! the roll's verdict on a quorum of the real ledger is TRUE TO THE BYTES — an enrolled quorum of the mesh
+//! the roll's verdict on a quorum of the real ledger is TRUE TO THE BYTES -- an enrolled quorum of the mesh
 //! passes, the enrolled-voice count the threshold reads is the count of members present, and a roll of
 //! strangers refuses the same real quorum.
 //!
 //! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron` (a demo funder credits Alice
 //! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
 //! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
-//! time through the existing `mycelium/corpora/` symlink — no network, the bytes read are the tree's own.
+//! time through the existing `mycelium/corpora/` symlink -- no network, the bytes read are the tree's own.
 //! The mesh IS the validator set: the three demo nodes that vouch are exactly the roll enrolled here, so a
 //! real quorum is judged against the real roll it belongs to.
 //!
 //! Two independent readings must agree, and the roll's verdict must be honest:
-//!   - THE POSITION — the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
+//!   - THE POSITION -- the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
 //!     (re-verifying every signature), gathers a three-node quorum over the genesis-funded account, and
 //!     emits the agreed triple; the r4 witness cross-checks it against `tools/fixtures/statement_dag_truth.awk`'s
-//!     per-account deadline-clock reading of the same bytes — two tools, one answer.
-//!   - THE VERDICT — the roll enrolling exactly the mesh's three nodes passes the real quorum
+//!     per-account deadline-clock reading of the same bytes -- two tools, one answer.
+//!   - THE VERDICT -- the roll enrolling exactly the mesh's three nodes passes the real quorum
 //!     (`pass_muster`), the Byzantine threshold their number sets is three, the enrolled-voice count is the
 //!     count of members present, and a roll of three strangers refuses the same real quorum `NotMember`.
 //!
-//! The chosen account is the GENESIS-FUNDED one — the recipient of the issue fact, whom both tools identify
-//! the same way — so no magic constant chooses whose position the quorum vouches.
+//! The chosen account is the GENESIS-FUNDED one -- the recipient of the issue fact, whom both tools identify
+//! the same way -- so no magic constant chooses whose position the quorum vouches.
 //!
-//! Additive — composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `muster` +
-//! `kumara` public API only (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds — no real
+//! Additive -- composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `muster` +
+//! `kumara` public API only (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds -- no real
 //! key, no funds, no network, no custody. A SERVED muster (a holder fetching the live validator set over
 //! Comlink) reaches the Comlink-served gate, the maintainer's hand.
 //!
@@ -52,13 +52,13 @@ const kumara = @import("kumara.rye");
 
 pub const muster_true_version = "20260813.110039";
 
-/// The real ledger record, bound at compile time — the tree's own bytes, never a drift. Reused from the
+/// The real ledger record, bound at compile time -- the tree's own bytes, never a drift. Reused from the
 /// Lapse's fixture, since a roll judges a quorum of signatures over exactly the position that ledger projects.
 const real_dag = @embedFile("corpora/lapse_dag.bron");
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the width the record's account keys carry, so the app's chosen account
+/// Encode bytes to lowercase hex -- the width the record's account keys carry, so the app's chosen account
 /// and awk's chosen account are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -71,7 +71,7 @@ fn to_hex(bytes: []const u8, out: []u8) void {
 }
 
 /// The facts a keeper can read by hand off a roll's verdict on a real quorum: whose position it vouches, the
-/// position — balance · reserved · received — how many distinct voices agreed it, how many validators the
+/// position -- balance - reserved - received -- how many distinct voices agreed it, how many validators the
 /// roll enrolls, and the Byzantine threshold their number sets.
 pub const Reading = struct {
     account_hex: [statement.pk_len * 2]u8 = undefined,
@@ -83,7 +83,7 @@ pub const Reading = struct {
     threshold: u32 = 0,
 };
 
-/// Three distinct demo node keypairs — the mesh that vouches, and the roll enrolled to judge it. Dev-only
+/// Three distinct demo node keypairs -- the mesh that vouches, and the roll enrolled to judge it. Dev-only
 /// seeds; no real key is ever held.
 fn three_nodes() [3]kumara.KeyPair {
     const a: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
@@ -92,7 +92,7 @@ fn three_nodes() [3]kumara.KeyPair {
     return .{ kumara.keypair_from_seed(&a), kumara.keypair_from_seed(&b), kumara.keypair_from_seed(&c) };
 }
 
-/// The roll enrolling exactly the mesh's three nodes — the validator set a real quorum belongs to.
+/// The roll enrolling exactly the mesh's three nodes -- the validator set a real quorum belongs to.
 fn mesh_roll(nodes: []const kumara.KeyPair) !muster.Muster {
     var m = muster.Muster.empty();
     for (nodes) |n| {
@@ -102,7 +102,7 @@ fn mesh_roll(nodes: []const kumara.KeyPair) !muster.Muster {
     return m;
 }
 
-/// The genesis-funded account's index — the one seat whose received equals what genesis issued. Both tools
+/// The genesis-funded account's index -- the one seat whose received equals what genesis issued. Both tools
 /// choose the vouched account this way, so neither picks a favorite by a hidden constant.
 fn funded_account(l: *const lapse.Ledger) ?u32 {
     var found: ?u32 = null;
@@ -123,7 +123,7 @@ fn funded_account(l: *const lapse.Ledger) ?u32 {
 /// the members present.
 pub fn judge_real(text: []const u8) !Reading {
     const rec = try cord_bron.parse(text);
-    // invariant: a real ledger record carries blocks — an empty Dag holds no account to vouch.
+    // invariant: a real ledger record carries blocks -- an empty Dag holds no account to vouch.
     if (rec.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
@@ -139,7 +139,7 @@ pub fn judge_real(text: []const u8) !Reading {
     const roll = try mesh_roll(nodes[0..]);
     // invariant: the roll enrolling exactly the mesh passes the real quorum it belongs to.
     try muster.pass_muster(&roll, &c);
-    // invariant: a roll of the three nodes sets a Byzantine threshold of exactly three — the members present.
+    // invariant: a roll of the three nodes sets a Byzantine threshold of exactly three -- the members present.
     assert(muster.byzantine_threshold(&roll) == c.count);
 
     var r = Reading{
@@ -156,7 +156,7 @@ pub fn judge_real(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The agreed reading of the real record — the witness cross-checks this tuple against awk's reading of the
+/// The agreed reading of the real record -- the witness cross-checks this tuple against awk's reading of the
 /// same bytes, so the two tools must name one account and one position.
 fn welcome_real_quorum_passes_its_roll() !void {
     const r = try judge_real(real_dag);
@@ -173,7 +173,7 @@ fn welcome_real_quorum_passes_its_roll() !void {
 /// the roll's size sets is three.
 fn welcome_enrolled_count_and_threshold() !void {
     const r = try judge_real(real_dag);
-    // invariant: three validators enrolled, three voices present, threshold three — nothing invented.
+    // invariant: three validators enrolled, three voices present, threshold three -- nothing invented.
     assert(r.validators == 3);
     assert(r.voices == 3);
     assert(r.threshold == 3);
@@ -181,7 +181,7 @@ fn welcome_enrolled_count_and_threshold() !void {
 }
 
 /// A roll of strangers refuses the same real quorum: the mesh's three real voices are not enrolled in a roll
-/// of three fresh keys, so `pass_muster` refuses `NotMember` — a real quorum never passes a roll it does not
+/// of three fresh keys, so `pass_muster` refuses `NotMember` -- a real quorum never passes a roll it does not
 /// belong to.
 fn unwelcome_stranger_roll_refuses() !void {
     const rec = try cord_bron.parse(real_dag);
@@ -198,14 +198,14 @@ fn unwelcome_stranger_roll_refuses() !void {
         kumara.keypair_from_seed(&([_]u8{0xE3} ** kumara.seed_length)),
     };
     const stranger_roll = try mesh_roll(strangers[0..]);
-    // invariant: the real quorum refuses a roll of strangers — a fresh key never passes for a validator.
+    // invariant: the real quorum refuses a roll of strangers -- a fresh key never passes for a validator.
     if (muster.pass_muster(&stranger_roll, &c)) |_| return error.StrangerBelieved else |err| {
         if (err != error.NotMember) return error.WrongStranger;
     }
     print("muster-true: a roll of three strangers refuses the same real quorum NotMember — a real quorum never passes a roll it does not belong to.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not judge a corrupted record. A flipped
+/// A tampered copy of the real bytes refuses -- the reader will not judge a corrupted record. A flipped
 /// header byte refuses `BadFormat`.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -228,7 +228,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format tuple (`<account-hex> <balance> <reserved> <received>`), so the witness can
-/// compare the app's agreed reading against `statement_dag_truth.awk` byte for byte — two tools, one answer.
+/// compare the app's agreed reading against `statement_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try judge_real(real_dag);
     print("{s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });

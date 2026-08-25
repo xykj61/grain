@@ -1,15 +1,15 @@
-//! mycelium/warrant.rye — the Warrant: a validator set rotates only when the current quorum certifies its
+//! mycelium/warrant.rye -- the Warrant: a validator set rotates only when the current quorum certifies its
 //! successor (r1, the crux).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Warrant - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 //!
-//! The Muster named WHICH nodes are the legitimate validators — a bounded open roll with a Byzantine
+//! The Muster named WHICH nodes are the legitimate validators -- a bounded open roll with a Byzantine
 //! threshold read from its own size. Yet the roll is FROZEN: nothing lets a validator set change. Real
 //! fault-tolerant systems must retire a compromised node, admit a new one, or rotate a whole committee
-//! between epochs (TigerBeetle changes its view, Mysticeti reconfigures its committee) — and each faces the
+//! between epochs (TigerBeetle changes its view, Mysticeti reconfigures its committee) -- and each faces the
 //! same trap: WHO authorizes the new roll? If a fresh set of keys could simply declare itself the
-//! validators, the Muster's whole guarantee evaporates — an attacker mints a roll of their own keys, calls
+//! validators, the Muster's whole guarantee evaporates -- an attacker mints a roll of their own keys, calls
 //! it the committee, and a stranger cannot tell the real succession from a coup.
 //!
 //! The Warrant fills that blind spot: a validator set rotates only when a QUORUM OF THE CURRENT ROLL
@@ -18,17 +18,17 @@
 //! validators signed the successor's content-address. The crux `verify_warrant(warrant, prev, next)` passes
 //! exactly when:
 //!   - the digests bind the two real rolls (prev_digest == roll_digest(prev), next_digest ==
-//!     roll_digest(next); else DigestMismatch — a certificate cannot be re-pointed at rolls it never signed);
-//!   - every endorser is an enrolled member of the PREVIOUS roll (else NotMember — the CRUX: the successor's
+//!     roll_digest(next); else DigestMismatch -- a certificate cannot be re-pointed at rolls it never signed);
+//!   - every endorser is an enrolled member of the PREVIOUS roll (else NotMember -- the CRUX: the successor's
 //!     own fresh keys, signing their own coronation, do not authorize themselves; a set cannot crown itself);
-//!   - the endorsers are distinct (else DuplicateSigner — one outgoing node cannot sign the handoff twice);
+//!   - the endorsers are distinct (else DuplicateSigner -- one outgoing node cannot sign the handoff twice);
 //!   - every signature holds over the bound tuple (else BadSignature);
-//!   - the count meets the PREVIOUS roll's Byzantine threshold (else BelowQuorum — a thin handoff, short of
+//!   - the count meets the PREVIOUS roll's Byzantine threshold (else BelowQuorum -- a thin handoff, short of
 //!     the outgoing set's own bar, is not yet a lawful succession).
 //!
-//! Composes muster · muster_bron · kumara public API only, editing none; the succession law is the
+//! Composes muster - muster_bron - kumara public API only, editing none; the succession law is the
 //! Warrant's own bounded fold over two rolls and a quorum of the first. Siloed, dev-only, demo validator and
-//! keeper seeds — no real key, no funds, no network, no custody. A SERVED warrant (a holder fetching the
+//! keeper seeds -- no real key, no funds, no network, no custody. A SERVED warrant (a holder fetching the
 //! live succession chain over Comlink) reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/warrant.rye
@@ -47,13 +47,13 @@ pub const warrant_version = "20260813.112420";
 /// A validator key is a full encoded holder identity, the width the roll seats.
 pub const pk_len: u32 = muster.pk_len;
 
-/// A signature encodes to a fixed width — the octets an endorsement carries.
+/// A signature encodes to a fixed width -- the octets an endorsement carries.
 pub const sig_len: u32 = kumara.signature_length;
 
 /// A roll's content-address is a SHA-256 digest of its canonical bytes.
 pub const digest_len: u32 = 32;
 
-/// A handoff is endorsed by at most this many outgoing validators — one certificate never grows past the
+/// A handoff is endorsed by at most this many outgoing validators -- one certificate never grows past the
 /// largest roll it can be drawn from.
 pub const warrant_max_sigs: u32 = muster.muster_max_members;
 
@@ -61,7 +61,7 @@ pub const warrant_max_sigs: u32 = muster.muster_max_members;
 /// signature made elsewhere can be replayed as an endorsement.
 pub const warrant_domain = "myc-warrant-v1";
 
-/// The canonical signed body: domain tag · epoch (u32 little-endian) · prev digest · next digest.
+/// The canonical signed body: domain tag - epoch (u32 little-endian) - prev digest - next digest.
 pub const body_len: u32 = @intCast(warrant_domain.len + 4 + digest_len + digest_len);
 
 pub const WarrantError = error{
@@ -73,7 +73,7 @@ pub const WarrantError = error{
     BelowQuorum, // fewer endorsements than the previous roll's Byzantine threshold — a thin handoff
 } || muster_bron.BronError;
 
-/// One outgoing validator's endorsement of a handoff — its key and its signature over the bound tuple.
+/// One outgoing validator's endorsement of a handoff -- its key and its signature over the bound tuple.
 pub const Endorsement = struct {
     signer_pk: [pk_len]u8 = undefined,
     sig: [sig_len]u8 = undefined,
@@ -85,7 +85,7 @@ pub const Endorsement = struct {
     }
 };
 
-/// A fixed, bounded certificate binding one epoch handoff — the epoch, the retiring and successor roll
+/// A fixed, bounded certificate binding one epoch handoff -- the epoch, the retiring and successor roll
 /// digests, and a quorum of the outgoing validators' endorsements. It invents no attestation of its own;
 /// its authority is exactly the gathered endorsement of a quorum of the previous roll.
 pub const Warrant = struct {
@@ -108,8 +108,8 @@ pub fn roll_digest(m: *const muster.Muster, out: *[digest_len]u8) muster_bron.Br
     Sha256.hash(buf[0..n], out, .{});
 }
 
-/// Fill the canonical signed body for a handoff into `out`: domain tag · epoch (little-endian u32) · prev
-/// digest · next digest. Every endorser signs exactly these bytes, and verify rebuilds them, so a signature
+/// Fill the canonical signed body for a handoff into `out`: domain tag - epoch (little-endian u32) - prev
+/// digest - next digest. Every endorser signs exactly these bytes, and verify rebuilds them, so a signature
 /// binds the epoch and both rolls with nothing left implicit.
 fn warrant_body(epoch: u32, prev_digest: *const [digest_len]u8, next_digest: *const [digest_len]u8, out: *[body_len]u8) void {
     // invariant: the body layout matches its declared width exactly.
@@ -127,7 +127,7 @@ fn warrant_body(epoch: u32, prev_digest: *const [digest_len]u8, next_digest: *co
     assert(off == body_len);
 }
 
-/// Open a handoff certificate for a rotation — computing both roll digests from the actual rolls, with no
+/// Open a handoff certificate for a rotation -- computing both roll digests from the actual rolls, with no
 /// endorsements yet. The epoch is the successor's sequence number, monotone across a chain of handoffs.
 pub fn open(epoch: u32, prev: *const muster.Muster, next: *const muster.Muster) muster_bron.BronError!Warrant {
     // invariant: both rolls honor the static bound before a digest is taken.
@@ -139,7 +139,7 @@ pub fn open(epoch: u32, prev: *const muster.Muster, next: *const muster.Muster) 
     return w;
 }
 
-/// Gather one outgoing validator's endorsement — sign the bound tuple and append. Refuses `DuplicateSigner`
+/// Gather one outgoing validator's endorsement -- sign the bound tuple and append. Refuses `DuplicateSigner`
 /// for a key already present and `WarrantFull` past the bound rather than growing. Enrollment in the
 /// previous roll is weighed at verify, not here, so a forgery scene can be constructed and then refused.
 pub fn endorse(w: *Warrant, signer_kp: kumara.KeyPair) WarrantError!void {
@@ -168,7 +168,7 @@ pub fn endorse(w: *Warrant, signer_kp: kumara.KeyPair) WarrantError!void {
 
 /// The crux: a successor roll is authorized only when a Byzantine quorum of the PREVIOUS roll's own
 /// validators signed it. The digests bind the two real rolls first (else DigestMismatch); then every
-/// endorser must be an enrolled member of `prev` (else NotMember — a set cannot crown itself), the
+/// endorser must be an enrolled member of `prev` (else NotMember -- a set cannot crown itself), the
 /// endorsers distinct (else DuplicateSigner), every signature holds over the bound tuple (else
 /// BadSignature), and the count meets the previous roll's Byzantine threshold (else BelowQuorum).
 pub fn verify_warrant(w: *const Warrant, prev: *const muster.Muster, next: *const muster.Muster) WarrantError!void {
@@ -178,7 +178,7 @@ pub fn verify_warrant(w: *const Warrant, prev: *const muster.Muster, next: *cons
     // invariant: the certificate honors its static bound.
     assert(w.count <= warrant_max_sigs);
 
-    // 1. The digests bind the two real rolls — a certificate cannot be re-pointed at rolls it never signed.
+    // 1. The digests bind the two real rolls -- a certificate cannot be re-pointed at rolls it never signed.
     var pd: [digest_len]u8 = undefined;
     var nd: [digest_len]u8 = undefined;
     try roll_digest(prev, &pd);
@@ -194,11 +194,11 @@ pub fn verify_warrant(w: *const Warrant, prev: *const muster.Muster, next: *cons
     while (i < w.count) : (i += 1) {
         const e = &w.endorsements[i];
 
-        // 2. Every endorser is an enrolled member of the PREVIOUS roll — the crux: an outsider, and the
+        // 2. Every endorser is an enrolled member of the PREVIOUS roll -- the crux: an outsider, and the
         //    successor's own keys, never authorize the succession.
         if (!muster.is_member(prev, e.signer_slice())) return error.NotMember;
 
-        // 3. The endorsers are distinct — one outgoing node cannot sign the handoff twice.
+        // 3. The endorsers are distinct -- one outgoing node cannot sign the handoff twice.
         var j: u32 = i + 1;
         while (j < w.count) : (j += 1) {
             if (std.mem.eql(u8, e.signer_slice(), w.endorsements[j].signer_slice())) return error.DuplicateSigner;
@@ -209,7 +209,7 @@ pub fn verify_warrant(w: *const Warrant, prev: *const muster.Muster, next: *cons
         kumara.verify_bytes(body[0..], e.sig[0..sig_len], pk) catch return error.BadSignature;
     }
 
-    // 5. The count meets the PREVIOUS roll's Byzantine threshold — a thin handoff is not a lawful succession.
+    // 5. The count meets the PREVIOUS roll's Byzantine threshold -- a thin handoff is not a lawful succession.
     const t = muster.byzantine_threshold(prev);
     if (w.count < t) return error.BelowQuorum;
 
@@ -217,7 +217,7 @@ pub fn verify_warrant(w: *const Warrant, prev: *const muster.Muster, next: *cons
     assert(w.count <= prev.len);
 }
 
-/// Print a warrant a keeper can read — the epoch and the count of outgoing validators who endorsed it.
+/// Print a warrant a keeper can read -- the epoch and the count of outgoing validators who endorsed it.
 pub fn render(w: *const Warrant) void {
     print("warrant epoch={d} endorsements={d}\n", .{ w.epoch, w.count });
 }
@@ -240,14 +240,14 @@ fn muster_of(seeds: []const u8) !muster.Muster {
 }
 
 pub fn main() !void {
-    // The outgoing roll — four validators, Byzantine threshold three — hands authority to a fresh successor
+    // The outgoing roll -- four validators, Byzantine threshold three -- hands authority to a fresh successor
     // roll of three new validators.
     const prev = try muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x44 });
     const next = try muster_of(&[_]u8{ 0xA1, 0xB2, 0xC3 });
     if (prev.len != 4) return error.PrevSize;
     if (muster.byzantine_threshold(&prev) != 3) return error.PrevThreshold;
 
-    // Scene 1 — a lawful handoff passes. Three of the four OUTGOING validators endorse the fresh successor;
+    // Scene 1 -- a lawful handoff passes. Three of the four OUTGOING validators endorse the fresh successor;
     // the digests bind both real rolls, every endorser is enrolled in prev, and three meets prev's
     // threshold of three.
     {
@@ -258,7 +258,7 @@ pub fn main() !void {
         try verify_warrant(&w, &prev, &next);
     }
 
-    // Scene 2 — THE CRUX. The successor's OWN fresh validators sign their own coronation. Their signatures
+    // Scene 2 -- THE CRUX. The successor's OWN fresh validators sign their own coronation. Their signatures
     // hold and they are three distinct keys, yet none is enrolled in the previous roll, so verify_warrant
     // refuses NotMember: a set cannot crown itself; only the roll it succeeds can hand authority forward.
     {
@@ -271,7 +271,7 @@ pub fn main() !void {
         }
     }
 
-    // Scene 3 — a thin handoff refuses. Two of the outgoing validators is a genuine but sub-Byzantine
+    // Scene 3 -- a thin handoff refuses. Two of the outgoing validators is a genuine but sub-Byzantine
     // quorum; the succession refuses BelowQuorum rather than admit a roll fewer than three of the outgoing
     // set attested.
     {
@@ -283,9 +283,9 @@ pub fn main() !void {
         }
     }
 
-    // Scene 4 — a re-pointed certificate refuses. A warrant lawfully endorsed for `next` is presented
+    // Scene 4 -- a re-pointed certificate refuses. A warrant lawfully endorsed for `next` is presented
     // against a DIFFERENT successor roll; the next digest no longer binds, so verify_warrant refuses
-    // DigestMismatch — a certificate cannot be lifted onto a roll it never authorized.
+    // DigestMismatch -- a certificate cannot be lifted onto a roll it never authorized.
     {
         const other = try muster_of(&[_]u8{ 0xD4, 0xE5, 0xF6 });
         var w = try open(1, &prev, &next);
@@ -297,9 +297,9 @@ pub fn main() !void {
         }
     }
 
-    // Scene 5 — a padded handoff refuses whole. Three enrolled outgoing validators would pass, but one
+    // Scene 5 -- a padded handoff refuses whole. Three enrolled outgoing validators would pass, but one
     // stranger endorsing among them makes verify_warrant refuse NotMember rather than silently trim the
-    // outsider and count the rest — a certificate with a non-member endorsement is malformed, not oversized.
+    // outsider and count the rest -- a certificate with a non-member endorsement is malformed, not oversized.
     {
         var w = try open(1, &prev, &next);
         try endorse(&w, seeded(0x11));
@@ -311,7 +311,7 @@ pub fn main() !void {
         }
     }
 
-    // Scene 6 — a forged endorsement refuses. An enrolled validator's key is present, yet its signature is
+    // Scene 6 -- a forged endorsement refuses. An enrolled validator's key is present, yet its signature is
     // one made over some other bytes (a different epoch's body); the signature does not verify over the
     // bound tuple, so verify_warrant refuses BadSignature.
     {
@@ -319,7 +319,7 @@ pub fn main() !void {
         try endorse(&w, seeded(0x11));
         try endorse(&w, seeded(0x22));
         try endorse(&w, seeded(0x33));
-        // Corrupt one endorsement's signature by flipping a byte — the key stays enrolled, the signature
+        // Corrupt one endorsement's signature by flipping a byte -- the key stays enrolled, the signature
         // no longer holds.
         w.endorsements[0].sig[0] ^= 0xFF;
         if (verify_warrant(&w, &prev, &next)) |_| return error.ForgedBelieved else |err| {
@@ -327,7 +327,7 @@ pub fn main() !void {
         }
     }
 
-    // Scene 7 — endorse refusals. A re-endorsement by the same signer refuses DuplicateSigner; a
+    // Scene 7 -- endorse refusals. A re-endorsement by the same signer refuses DuplicateSigner; a
     // certificate past its bound refuses WarrantFull.
     {
         var w = try open(1, &prev, &next);
@@ -350,7 +350,7 @@ pub fn main() !void {
         if (wf.count != warrant_max_sigs) return error.FullCount;
     }
 
-    // Scene 8 — a roll's digest is its content-address. The retiring roll and a re-built copy of it share
+    // Scene 8 -- a roll's digest is its content-address. The retiring roll and a re-built copy of it share
     // one digest; a roll that differs by one validator has a different digest.
     {
         var d1: [digest_len]u8 = undefined;

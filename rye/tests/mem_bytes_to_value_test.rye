@@ -1,4 +1,4 @@
-//! Rye test: std.mem.bytesToValue — pass 9896.
+//! Rye test: std.mem.bytesToValue -- pass 9896.
 //!
 //! Byte buffer to typed copy; pairs with bytesAsValue (9922) and toBytes (9923).
 

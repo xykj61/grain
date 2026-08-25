@@ -1,7 +1,7 @@
-//! linengrow/setu6_device_lab.rye — SETU6: device-wire lab harness.
+//! linengrow/setu6_device_lab.rye -- SETU6: device-wire lab harness.
 //!
 //! Approved thin face: Desk proves the SETU5 payload is lab-ready and classifies
-//! the host gadget iface (none → stand-in · usb0/ncm → armed). Live CDC-NCM TX
+//! the host gadget iface (none -> stand-in - usb0/ncm -> armed). Live CDC-NCM TX
 //! over a real iface stays the next kg once Pixel/QEMU exposes one.
 
 const std = @import("std");
@@ -44,7 +44,7 @@ pub const LabStatus = struct {
     }
 };
 
-/// Build lab status from SETU5 payload + optional iface name (empty → none).
+/// Build lab status from SETU5 payload + optional iface name (empty -> none).
 pub fn make_lab_status(iface_name: []const u8) ?LabStatus {
     var frame: [setu3.max_frame]u8 = undefined;
     const flen = setu5.build_device_payload(&frame) orelse return null;
@@ -61,7 +61,7 @@ pub fn make_lab_status(iface_name: []const u8) ?LabStatus {
     return out;
 }
 
-/// `lab · payload {yes|no} · {n}b · iface {name|none} · {stand-in|armed}`
+/// `lab - payload {yes|no} - {n}b - iface {name|none} - {stand-in|armed}`
 pub fn format_lab_line(s: LabStatus, out: *[status_line_max]u8) ?[]const u8 {
     const ready = if (s.payload_ready) "yes" else "no";
     const line = std.fmt.bufPrint(
@@ -101,7 +101,7 @@ pub fn format_lab_bron(s: LabStatus, out: *[max_lab_bron_len]u8) ?u32 {
     return @intCast(text.len);
 }
 
-/// Device-free: no iface → stand-in lab with ready payload.
+/// Device-free: no iface -> stand-in lab with ready payload.
 pub fn fixture_stand_in_lab_ready() bool {
     const s = make_lab_status("") orelse return false;
     if (!s.payload_ready) return false;
@@ -114,7 +114,7 @@ pub fn fixture_stand_in_lab_ready() bool {
         std.mem.indexOf(u8, line, "payload yes") != null;
 }
 
-/// Device-free: named usb0 → armed mode.
+/// Device-free: named usb0 -> armed mode.
 pub fn fixture_armed_when_iface() bool {
     const s = make_lab_status("usb0") orelse return false;
     if (s.mode != .armed) return false;

@@ -1,15 +1,15 @@
-//! brushstroke/edit_filmstrip_track.rye — HUNK58: a filmstrip window that follows the cursor — the step you stand on stays in view.
+//! brushstroke/edit_filmstrip_track.rye -- HUNK58: a filmstrip window that follows the cursor -- the step you stand on stays in view.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK58.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK58.
 //! Design read: active-designing/date/20260813/20260813-215013_hunk-filmstrip-track-exploration.md
-//! Teacher, thanked clean-room: the scrollable edit-history strip of a photo app (iCloud Photos / Google Photos) — the
+//! Teacher, thanked clean-room: the scrollable edit-history strip of a photo app (iCloud Photos / Google Photos) -- the
 //! strip shows a handful of thumbnails and scrolls to keep the step you stand on in view, pinning at both ends (concept
 //! only, siloed).
 //!
 //! HUNK57 gave the filmstrip a bounded window (`filmstrip_window(first, count)`) so a history longer than the strip is
-//! wide is paintable a slice at a time — yet it forced no decision about WHICH window to show, blanking the marker row
+//! wide is paintable a slice at a time -- yet it forced no decision about WHICH window to show, blanking the marker row
 //! honestly when the current step is scrolled off-view. This rung decides: `FilmstripTrack` owns one `FilmstripJump`
-//! (its cursor and thumbnail geometry) and one number, `win_bands`, and adds one pure function — `window_first` — that
+//! (its cursor and thumbnail geometry) and one number, `win_bands`, and adds one pure function -- `window_first` -- that
 //! centers the cursor and clamps to the edges. Because the cursor is always inside the window it computes, the tracking
 //! window NEVER blanks the marker (the honest contrast to a fixed window); it pins at the original near step 0, climbs
 //! by one across the middle, and pins at the live edge. A pure composition over proven seams: no new cursor move, no new
@@ -38,11 +38,11 @@ pub const FilmstripTrackError = error{
     BadThumb,
 };
 
-/// A following-window surface over the edit-history filmstrip: it owns one `FilmstripJump` (HUNK55) — the cursor a keeper
-/// builds and navigates, and the thumbnail geometry the strip tiles with — and one number, `win_bands`, the count of
+/// A following-window surface over the edit-history filmstrip: it owns one `FilmstripJump` (HUNK55) -- the cursor a keeper
+/// builds and navigates, and the thumbnail geometry the strip tiles with -- and one number, `win_bands`, the count of
 /// thumbnails the window shows at once. It invents one pure function, `window_first`, that centers the cursor and clamps
-/// to the edges, and overrides `paint` to draw that window through HUNK57's `filmstrip_window`. Every other surface —
-/// building the history (`push`), navigating it (`seek`/`undo`/`redo`), the band geometry (`band_px`) — delegates
+/// to the edges, and overrides `paint` to draw that window through HUNK57's `filmstrip_window`. Every other surface --
+/// building the history (`push`), navigating it (`seek`/`undo`/`redo`), the band geometry (`band_px`) -- delegates
 /// unchanged. The governing law: the window it computes always contains the cursor, so the current step is always in
 /// view and the marker never blanks.
 pub const FilmstripTrack = struct {
@@ -64,7 +64,7 @@ pub const FilmstripTrack = struct {
         // rather than place it on the surface
         assert(jump.tcols >= 1);
         assert(jump.trows >= 1);
-        // A window wider than the map ceiling could never paint — refuse at construction rather than at every paint.
+        // A window wider than the map ceiling could never paint -- refuse at construction rather than at every paint.
         if (win_bands > edit_filmstrip.max_film_cols / jump.tcols) return error.WindowTooWide;
         // invariant: the window is a real, paintable width.
         assert(win_bands >= 1);
@@ -82,13 +82,13 @@ pub const FilmstripTrack = struct {
         assert(self.jump.cursor.position == self.jump.cursor.list.count);
     }
 
-    /// How many steps the filmstrip holds — the untouched source plus one thumbnail per recorded edit. Always at least
+    /// How many steps the filmstrip holds -- the untouched source plus one thumbnail per recorded edit. Always at least
     /// one (the source).
     pub fn steps(self: *const FilmstripTrack) u32 {
         return self.jump.steps();
     }
 
-    /// The pixel width of one thumbnail band — positive by construction. Delegated from the owned jump.
+    /// The pixel width of one thumbnail band -- positive by construction. Delegated from the owned jump.
     pub fn band_px(self: *const FilmstripTrack) u32 {
         return self.jump.band_px();
     }
@@ -105,10 +105,10 @@ pub const FilmstripTrack = struct {
         return vis;
     }
 
-    /// The absolute step the window begins on — the following rule, and the one arithmetic this rung invents. When the
+    /// The absolute step the window begins on -- the following rule, and the one arithmetic this rung invents. When the
     /// whole history fits the window (`steps <= win_bands`), the window is the whole strip (`first = 0`). Otherwise the
     /// cursor is centered and clamped to the edges: `first = clamp(position - win_bands/2, 0, steps - win_bands)`. The
-    /// clamp proves the promise — the cursor always lands inside `[first, first + win_bands)` — so the current step is
+    /// clamp proves the promise -- the cursor always lands inside `[first, first + win_bands)` -- so the current step is
     /// always in view and the marker never blanks. Pure: it reads the cursor and moves nothing.
     pub fn window_first(self: *const FilmstripTrack) u32 {
         const s = self.steps();
@@ -127,7 +127,7 @@ pub const FilmstripTrack = struct {
         const ideal: u32 = if (pos <= half) 0 else pos - half;
         const first: u32 = if (ideal > max_first) max_first else ideal;
 
-        // invariant: the window is a full window (the history is longer than it), and the cursor lands inside it — this
+        // invariant: the window is a full window (the history is longer than it), and the cursor lands inside it -- this
         // is why the tracking window never blanks the marker.
         assert(first + self.win_bands <= s);
         assert(pos >= first);
@@ -135,7 +135,7 @@ pub const FilmstripTrack = struct {
         return first;
     }
 
-    /// Move the cursor to `target` through HUNK16's `seek` — a walk that forgets nothing — so the window re-follows on the
+    /// Move the cursor to `target` through HUNK16's `seek` -- a walk that forgets nothing -- so the window re-follows on the
     /// next paint. Returns the step the cursor landed on (clamped to the live edge).
     pub fn seek(self: *FilmstripTrack, target: u32) u32 {
         self.jump.cursor.seek(target);
@@ -158,9 +158,9 @@ pub const FilmstripTrack = struct {
         assert(self.jump.cursor.position <= self.jump.cursor.list.count);
     }
 
-    /// Paint the following window: `win_bands` thumbnails from `window_first()`, the marker on the current step —
+    /// Paint the following window: `win_bands` thumbnails from `window_first()`, the marker on the current step --
     /// HUNK57's `filmstrip_window` with the first the tracking rule chose. Because the window always contains the cursor,
-    /// the marker always shows. Pure — the history is read, the source never mutated.
+    /// the marker always shows. Pure -- the history is read, the source never mutated.
     pub fn paint(self: *const FilmstripTrack, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
         // invariant: the cursor stands within its history before the replay.
         assert(self.jump.cursor.position <= self.jump.cursor.list.count);
@@ -176,7 +176,7 @@ pub const FilmstripTrack = struct {
     }
 };
 
-// --- selftest: a full 64-edit history the whole strip cannot paint — the tracking window paints GREEN at EVERY step,
+// --- selftest: a full 64-edit history the whole strip cannot paint -- the tracking window paints GREEN at EVERY step,
 //     the marker always in view, no drift, following monotonically and pinning at both ends; a short history equals the
 //     whole filmstrip; a bad window, a too-wide window, and a bad thumbnail each refuse by name -----------------------
 
@@ -199,7 +199,7 @@ fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// A direct thumbnail of the first k edits — the ground truth a window band must equal.
+/// A direct thumbnail of the first k edits -- the ground truth a window band must equal.
 fn direct_thumb(garden: std.mem.Allocator, source: *const qoi.Pixmap, cursor: *const edit_cursor.EditCursor, k: u32, tcols: u32, trows: u32) !skate.Grid {
     var prefix = edits.EditList.init();
     var i: u32 = 0;
@@ -228,8 +228,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const trows: u32 = 2;
     const win_bands: u32 = 5;
 
-    // A full 64-edit history — 65 steps — far longer than a five-band window, and wide enough that the WHOLE strip
-    // refuses FilmstripTooWide (65·4 > 256). This is the history the tracking window exists for.
+    // A full 64-edit history -- 65 steps -- far longer than a five-band window, and wide enough that the WHOLE strip
+    // refuses FilmstripTooWide (65-4 > 256). This is the history the tracking window exists for.
     var track = try FilmstripTrack.open(tcols, trows, win_bands);
     {
         var e: u32 = 0;
@@ -239,14 +239,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const total_steps: u32 = edits.max_edits + 1; // 65
     assert(track.steps() == total_steps);
 
-    // The whole filmstrip cannot paint this history — it refuses by name. The window is the only way to read it.
+    // The whole filmstrip cannot paint this history -- it refuses by name. The window is the only way to read it.
     if (edit_filmstrip.filmstrip(garden, &pm, &track.jump.cursor, tcols, trows)) |_| {
         return error.WideSlipped;
     } else |e| {
         if (e != error.FilmstripTooWide) return error.WrongWide;
     }
 
-    // The crux: walk EVERY step 0..64. At each the tracking window paints GREEN — a full five-band window, the marker
+    // The crux: walk EVERY step 0..64. At each the tracking window paints GREEN -- a full five-band window, the marker
     // always in view (never blank), the marked band equal to a direct preview of its absolute step cell-for-cell (no
     // drift), and the window rasterizing to a lit canvas. The window follows monotonically and pins at both ends.
     var prev_first: u32 = 0;
@@ -271,7 +271,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(win.cols == win_bands * tcols);
             assert(win.rows == trows + 1);
 
-            // The marker is ALWAYS in view — the honest contrast to HUNK57's fixed window, which blanks off-view. It sits
+            // The marker is ALWAYS in view -- the honest contrast to HUNK57's fixed window, which blanks off-view. It sits
             // on exactly the window-relative band of the current step.
             const mb = marked_band(&win, tcols);
             assert(mb != null);
@@ -293,7 +293,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
                 }
             }
 
-            // Genuinely seen: the window rasterizes to a lit canvas — every step of a too-long history reaches the glass.
+            // Genuinely seen: the window rasterizes to a lit canvas -- every step of a too-long history reaches the glass.
             {
                 const scale: u32 = 1;
                 const wpx: u32 = win.cols * skate.cell_w * scale;
@@ -308,11 +308,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             }
         }
     }
-    // The window pinned at both ends over the walk — it rested on the original early and the live edge late.
+    // The window pinned at both ends over the walk -- it rested on the original early and the live edge late.
     assert(saw_left_pin);
     assert(saw_right_pin);
 
-    // Short-history parity: a history that fits the window is shown whole — the tracking window equals HUNK54's whole
+    // Short-history parity: a history that fits the window is shown whole -- the tracking window equals HUNK54's whole
     // filmstrip cell-for-cell, at first == 0.
     {
         var short = try FilmstripTrack.open(tcols, trows, win_bands);
@@ -349,7 +349,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (FilmstripTrack.open(tcols, trows, 0)) |_| return error.WindowSlipped else |e| {
         if (e != error.BadWindow) return error.WrongWindow;
     }
-    // A window wider than the map ceiling could never paint — refused at construction.
+    // A window wider than the map ceiling could never paint -- refused at construction.
     if (FilmstripTrack.open(tcols, trows, edit_filmstrip.max_film_cols / tcols + 1)) |_| return error.WideSlipped else |e| {
         if (e != error.WindowTooWide) return error.WrongWide;
     }

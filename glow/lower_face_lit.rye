@@ -1,6 +1,6 @@
-//! glow/lower_face_lit.rye — emit Zig bytes from face=lit samples (STOA220).
+//! glow/lower_face_lit.rye -- emit Zig bytes from face=lit samples (STOA220).
 //!
-//! STOA220 (C4): parsed `FaceLitSpec` → Zig expressions carrying the lit
+//! STOA220 (C4): parsed `FaceLitSpec` -> Zig expressions carrying the lit
 //! bytes themselves. Face-name demos (`glow_demo_cord` / `glow_demo_hex`) stay
 //! on mold lower until a later wire. Desk pin held (C5).
 //!

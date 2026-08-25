@@ -1,31 +1,31 @@
-//! lotus/stereo_dc_remove.rye — ALES155: the DC-offset remover carried into stereo, TWO INDEPENDENT MEANS taken back out, a per-channel PURE TRANSLATION that PRESERVES the stereo image. ALES90 named `dc_remove`:
+//! lotus/stereo_dc_remove.rye -- ALES155: the DC-offset remover carried into stereo, TWO INDEPENDENT MEANS taken back out, a per-channel PURE TRANSLATION that PRESERVES the stereo image. ALES90 named `dc_remove`:
 //! subtract a span's mean from every sample, y = saturate(x − mean), the block-mean remover every chain carries right after a nonlinearity (a rectifier or asymmetric drive shifts the mean off zero, and a DC
-//! offset eats headroom and thumps at a cut seam). That is a mono edit. Yet a Lotus master is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT hold the SAME length — and the two
+//! offset eats headroom and thumps at a cut seam). That is a mono edit. Yet a Lotus master is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT hold the SAME length -- and the two
 //! channels carry their OWN offsets: an even map or an asymmetric clip can bias the left and the right by DIFFERENT amounts. So this rung removes each channel's own mean INDEPENDENTLY: run ALES90's proven mono
 //! `dc_remove` on each channel over the SAME span, the left correcting the left's offset and the right the right's.
 //!
 //! The rung is the honest OPPOSITE of the stereo rectifier (ALES138). The rectifier is an EVEN map that COLLAPSES the stereo image (an out-of-phase master folds to mono); DC removal is a per-channel PURE
 //! TRANSLATION, and a translation PRESERVES every sample-to-sample difference, so it PRESERVES the image: an out-of-phase master (right = −left) that rides a common-mode DC offset comes back STILL out of phase
-//! (each channel's own mean removed, right = −left again), the antisymmetry kept rather than collapsed. The stereo lift is length-preserving, so it meets NO desync wall (unlike the silence edits ALES148–154): the
+//! (each channel's own mean removed, right = −left again), the antisymmetry kept rather than collapsed. The stereo lift is length-preserving, so it meets NO desync wall (unlike the silence edits ALES148-154): the
 //! two channels simply run their own removal, each landing its own mean under one LSB, and the balance invariant is never at risk because no length changes.
 //!
-//! The rule, stated once: refuse BadRange (a span outside the samples) BEFORE either channel is mutated — the check depends only on the shared length, so it is made ONCE up front, and a refusal never DC-removes one
-//! channel and leaves the other biased; otherwise `dc_remove` both channels over [start, start+count) via ALES90. DcError reused whole — the stereo lift adds no fault (the operation takes no coefficient, only a span).
+//! The rule, stated once: refuse BadRange (a span outside the samples) BEFORE either channel is mutated -- the check depends only on the shared length, so it is made ONCE up front, and a refusal never DC-removes one
+//! channel and leaves the other biased; otherwise `dc_remove` both channels over [start, start+count) via ALES90. DcError reused whole -- the stereo lift adds no fault (the operation takes no coefficient, only a span).
 //!
-//! The crux — five laws. THE STEREO DC-REMOVE LAW: each channel equals ALES90's mono `dc_remove` over the same span byte for byte — each channel's own truncated mean subtracted, saturating once per sample at the
-//! rail. THE INDEPENDENT-OFFSET LAW (the stereo crux): two channels carrying DIFFERENT DC offsets each land under one LSB INDEPENDENTLY — the left's offset never leaks into the right, and a channel already zero-mean
+//! The crux -- five laws. THE STEREO DC-REMOVE LAW: each channel equals ALES90's mono `dc_remove` over the same span byte for byte -- each channel's own truncated mean subtracted, saturating once per sample at the
+//! rail. THE INDEPENDENT-OFFSET LAW (the stereo crux): two channels carrying DIFFERENT DC offsets each land under one LSB INDEPENDENTLY -- the left's offset never leaks into the right, and a channel already zero-mean
 //! is unchanged while its partner is corrected. THE IMAGE-PRESERVE LAW: because the map is a per-channel translation, an out-of-phase master riding a common-mode offset returns STILL out of phase (the honest
-//! opposite of the rectifier's collapse), a both-zero-mean master is unchanged exactly, and the remove is idempotent where nothing saturates. THE COMPOSITION LAW: it undoes the stereo rectifier's offset — a
+//! opposite of the rectifier's collapse), a both-zero-mean master is unchanged exactly, and the remove is idempotent where nothing saturates. THE COMPOSITION LAW: it undoes the stereo rectifier's offset -- a
 //! symmetric master rectified through ALES138 rides a positive DC on BOTH channels, and stereo_dc_remove restores a near-zero mean on each. THE BALANCE / ATOMICITY / DEGENERATE LAW: left.len == right.len after (a
 //! remove writes values only), a refusal leaves BOTH channels byte for byte untouched and still balanced, count = 0 and the empty span the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES155.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES155.
 //! Design read: active-designing/date/20260815/20260815-060518_fill-ales155-lotus-stereo-dc-remove.md
-//! Stands on: lotus/dc_remove.rye (ALES90) — the mono block-mean DC remover run once per channel, its `dc_remove` and `DcError` reused whole; lotus/stereo_rectify.rye (ALES138) — the EVEN map whose per-channel DC
-//! offset this rung undoes (the composition proof) and whose image-COLLAPSE this rung's image-PRESERVE answers; lotus/rectify.rye (ALES84) — the mono rectifier underneath ALES138; lotus/pan.rye (ALES10) — the
-//! StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max, and the one true saturate reused through ALES90.
+//! Stands on: lotus/dc_remove.rye (ALES90) -- the mono block-mean DC remover run once per channel, its `dc_remove` and `DcError` reused whole; lotus/stereo_rectify.rye (ALES138) -- the EVEN map whose per-channel DC
+//! offset this rung undoes (the composition proof) and whose image-COLLAPSE this rung's image-PRESERVE answers; lotus/rectify.rye (ALES84) -- the mono rectifier underneath ALES138; lotus/pan.rye (ALES10) -- the
+//! StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max, and the one true saturate reused through ALES90.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES90's own dc_remove — a two-pass block statistic
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES90's own dc_remove -- a two-pass block statistic
 //! per channel (sum in i64, then subtract, one saturate per sample), memoryless (no carried state, no feedback, no delay line), never a length. The "DC" is the arithmetic mean of the block, the zero-frequency
 //! component by definition, not a claim about any hardware highpass; no real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -41,36 +41,36 @@ const dc_remove = @import("dc_remove.rye");
 
 pub const stereo_dc_remove_version = "20260815.060518";
 
-/// Stereo DC-remove's faults are exactly ALES90's own `DcError` — `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault: it runs the same removal on each channel after
+/// Stereo DC-remove's faults are exactly ALES90's own `DcError` -- `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new fault: it runs the same removal on each channel after
 /// one shared validation. The remover names no other fault (it takes no gain and no threshold, only a span).
 pub const StereoDcError = dc_remove.DcError;
 
-/// Remove the DC offset from `[start, start+count)` in BOTH channels of `sc`, each channel's OWN mean subtracted, running ALES90's proven mono `dc_remove`. Each sample becomes `saturate(x − mean_of_its_channel)` — a
+/// Remove the DC offset from `[start, start+count)` in BOTH channels of `sc`, each channel's OWN mean subtracted, running ALES90's proven mono `dc_remove`. Each sample becomes `saturate(x − mean_of_its_channel)` -- a
 /// per-channel pure translation that lands each channel's span average on zero. The two channels carry independent offsets, so each removes its own: the left's mean never touches the right. Validates the span once
-/// against the shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced, each with residual mean magnitude under
+/// against the shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced, each with residual mean magnitude under
 /// one LSB where nothing saturates. An EMPTY span (count == 0) is a clean no-op on both.
 pub fn stereo_dc_remove(sc: *pan.StereoClip, start: u32, count: u32) StereoDcError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the span is legal — refused by name before any write, so a refusal never DC-removes one channel and leaves the other biased. The span check depends only on the shared length, made once up front; it
+    // invariant: the span is legal -- refused by name before any write, so a refusal never DC-removes one channel and leaves the other biased. The span check depends only on the shared length, made once up front; it
     // mirrors ALES90's own guard exactly, so each mono removal below is pre-validated to succeed. The remover carries no other parameter, so this lone check is the whole gate.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono dc_remove is pre-validated to succeed — no refusal can land between the two channel edits. Each channel's OWN mean is subtracted.
+    // Every check passed and holds identically for both channels, so each mono dc_remove is pre-validated to succeed -- no refusal can land between the two channel edits. Each channel's OWN mean is subtracted.
     try dc_remove.dc_remove(&sc.left, start, count);
     try dc_remove.dc_remove(&sc.right, start, count);
 
-    // invariant: the channels leave balanced — a DC remove writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a DC remove writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO DC-REMOVE LAW — each channel equals ALES90's mono dc_remove over the same span byte for byte; THE INDEPENDENT-OFFSET LAW — two channels carrying DIFFERENT offsets each land under one LSB
-//     independently, a zero-mean channel unchanged while its partner is corrected; THE IMAGE-PRESERVE LAW — an out-of-phase master riding a common offset returns STILL out of phase (the honest opposite of the
-//     rectifier's collapse), a both-zero-mean master unchanged, the map idempotent; THE COMPOSITION LAW — it undoes the stereo rectifier's per-channel offset; THE BALANCE / ATOMICITY / DEGENERATE LAW — length held,
+// --- selftest: THE STEREO DC-REMOVE LAW -- each channel equals ALES90's mono dc_remove over the same span byte for byte; THE INDEPENDENT-OFFSET LAW -- two channels carrying DIFFERENT offsets each land under one LSB
+//     independently, a zero-mean channel unchanged while its partner is corrected; THE IMAGE-PRESERVE LAW -- an out-of-phase master riding a common offset returns STILL out of phase (the honest opposite of the
+//     rectifier's collapse), a both-zero-mean master unchanged, the map idempotent; THE COMPOSITION LAW -- it undoes the stereo rectifier's per-channel offset; THE BALANCE / ATOMICITY / DEGENERATE LAW -- length held,
 //     a refusal leaving both channels untouched and balanced, count = 0 and the empty span the identity ------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -99,7 +99,7 @@ fn abs_i64(v: i64) i64 {
 fn run_selftest() !u8 {
     const stereo_rectify = @import("stereo_rectify.rye"); // ALES138 — the EVEN map whose per-channel offset this rung undoes, and whose image-collapse this rung's image-preserve answers
 
-    // 1. THE STEREO DC-REMOVE LAW — each channel equals ALES90's mono dc_remove over the same span, proven side by side with DIFFERENT per-channel offsets: a left biased +1100, a right biased −500.
+    // 1. THE STEREO DC-REMOVE LAW -- each channel equals ALES90's mono dc_remove over the same span, proven side by side with DIFFERENT per-channel offsets: a left biased +1100, a right biased −500.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1000, 1200, 900, 1300 }, &[_]i16{ -400, -600, -300, -700 });
@@ -114,12 +114,12 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: left mean 1100 → {−100, 100, −200, 200}; right mean −500 → {100, −100, 200, −200}.
+        // by hand: left mean 1100 -> {−100, 100, −200, 200}; right mean −500 -> {100, −100, 200, −200}.
         if (!eq(sc.left.samples(), &[_]i16{ -100, 100, -200, 200 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 100, -100, 200, -200 })) return error.RightHandWrong;
     }
 
-    // 2. THE INDEPENDENT-OFFSET LAW — the stereo crux. Two channels carrying DIFFERENT offsets each land under one LSB after removal, independently; the left's large offset never leaks into the right's residual, and
+    // 2. THE INDEPENDENT-OFFSET LAW -- the stereo crux. Two channels carrying DIFFERENT offsets each land under one LSB after removal, independently; the left's large offset never leaks into the right's residual, and
     //    the right's small offset never inflates the left's. Both residual sums strictly below the count.
     {
         var sc = pan.StereoClip{};
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
         if (abs_i64(span_sum(sc.right.samples())) >= 6) return error.RightResidualUnbounded; // the small right offset removed to under one LSB
     }
 
-    // 2b. A ZERO-MEAN CHANNEL IS UNCHANGED WHILE ITS PARTNER IS CORRECTED — the left already centers on zero (mean 0, nothing subtracted), the right rides a +600 offset; removal touches only the right.
+    // 2b. A ZERO-MEAN CHANNEL IS UNCHANGED WHILE ITS PARTNER IS CORRECTED -- the left already centers on zero (mean 0, nothing subtracted), the right rides a +600 offset; removal touches only the right.
     {
         const centered = [_]i16{ 100, -100, 200, -200 };
         var sc = pan.StereoClip{};
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -100, 100, -200, 200 })) return error.PartnerRightWrong; // the right corrected
     }
 
-    // 3. THE IMAGE-PRESERVE LAW — the honest opposite of the rectifier (ALES138), which COLLAPSES an out-of-phase master to mono. DC removal is a per-channel PURE TRANSLATION, so it PRESERVES the image: an out-of-
+    // 3. THE IMAGE-PRESERVE LAW -- the honest opposite of the rectifier (ALES138), which COLLAPSES an out-of-phase master to mono. DC removal is a per-channel PURE TRANSLATION, so it PRESERVES the image: an out-of-
     //    phase master (right = −left AC) riding a common-mode +1000 offset comes back STILL out of phase (each channel's own mean removed), right = −left at every index, the antisymmetry KEPT.
     {
         // left = 1000 + w, right = 1000 − w, with w = {200, −300, 500, −400} (zero-mean AC). Both channels' mean is 1000.
@@ -155,7 +155,7 @@ fn run_selftest() !u8 {
         if (!eq(l, &[_]i16{ 200, -300, 500, -400 })) return error.ImagePreserveMagnitudeWrong;
     }
 
-    // 3b. A BOTH-ZERO-MEAN MASTER IS UNCHANGED EXACTLY, AND THE MAP IS IDEMPOTENT where nothing saturates — a master already centered on both channels passes byte for byte, and removing a mid-level master twice
+    // 3b. A BOTH-ZERO-MEAN MASTER IS UNCHANGED EXACTLY, AND THE MAP IS IDEMPOTENT where nothing saturates -- a master already centered on both channels passes byte for byte, and removing a mid-level master twice
     //     equals removing it once.
     {
         const zl = [_]i16{ 300, -300, 600, -600 };
@@ -178,7 +178,7 @@ fn run_selftest() !u8 {
         if (!eq(once.right.samples(), twice.right.samples())) return error.RightNotIdempotent;
     }
 
-    // 4. THE COMPOSITION LAW — the reason this rung exists, read in stereo. A symmetric zero-mean master full-wave-rectified through ALES138 turns every sample positive on BOTH channels, each riding a large positive
+    // 4. THE COMPOSITION LAW -- the reason this rung exists, read in stereo. A symmetric zero-mean master full-wave-rectified through ALES138 turns every sample positive on BOTH channels, each riding a large positive
     //    DC offset; stereo_dc_remove restores a near-zero mean on each. Prove the whole road: the rectified means are large and positive on both, the DC-removed residuals under one LSB on both.
     {
         var sc = pan.StereoClip{};
@@ -191,8 +191,8 @@ fn run_selftest() !u8 {
         if (abs_i64(span_sum(sc.right.samples())) >= 6) return error.RectRightOffsetNotRemoved;
     }
 
-    // 5. THE SPAN DISCIPLINE — DC-removing a sub-span leaves the samples outside [start, count) exactly as they were on both channels, and removes only the inner span's mean per channel. Remove the middle two of six
-    //    on both; the left inner {5000, 5000} has mean 5000 → both drop to 0, the right inner {−800, −800} has mean −800 → both to 0; the outer four untouched on each.
+    // 5. THE SPAN DISCIPLINE -- DC-removing a sub-span leaves the samples outside [start, count) exactly as they were on both channels, and removes only the inner span's mean per channel. Remove the middle two of six
+    //    on both; the left inner {5000, 5000} has mean 5000 -> both drop to 0, the right inner {−800, −800} has mean −800 -> both to 0; the outer four untouched on each.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, 200, 5000, 5000, 300, 400 }, &[_]i16{ -10, -20, -800, -800, -30, -40 });
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -10, -20, 0, 0, -30, -40 })) return error.RightSpanLeaked;
     }
 
-    // 6a. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a DC remove writes values only.
+    // 6a. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a DC remove writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1000, 1200, 900, 1300, 1100 }, &[_]i16{ -500, -400, -600, -300, -700 });
@@ -210,7 +210,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 6b. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The remover names no other fault (it takes no coefficient), so this lone
+    // 6b. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The remover names no other fault (it takes no coefficient), so this lone
     //     refusal is the whole atomicity story.
     {
         var sc = pan.StereoClip{};
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadRangeUnbalanced;
     }
 
-    // 6c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no mean to remove and no divide by zero.
+    // 6c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no mean to remove and no divide by zero.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 700, -700, 1400 }, &[_]i16{ -1400, 700, -700 });

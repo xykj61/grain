@@ -1,6 +1,6 @@
-//! brushstroke/sprite_shelf.rye — HUNK38: the marketplace catalog painted as a paged shelf on glass.
+//! brushstroke/sprite_shelf.rye -- HUNK38: the marketplace catalog painted as a paged shelf on glass.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK38 (sprite quest).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK38 (sprite quest).
 //! Design read: active-designing/date/20260813/20260813-203000_hunk-sprite-catalog-shelf-exploration.md
 //! Teacher, thanked clean-room: McMaster-Carr's fast one-sprite-sheet index page (concept only, siloed).
 //!
@@ -8,13 +8,13 @@
 //! down-mapped a decoded image into Skate's palette-indexed cells; HUNK36/37 proved a paged shelf over a
 //! library. This rung is the marketplace's own front door: `catalog_shelf` renders a whole `SpriteIndex` onto
 //! one Skate grid, one row per product reading `<name>` at the left and a fixed-width color **swatch** at the
-//! right. HUNK39 makes the swatch a real **thumbnail strip** — the product's window down-mapped to a horizontal
-//! run — so a product's left-to-right shape reads, not only its dominant color: a two-tone part shows two
+//! right. HUNK39 makes the swatch a real **thumbnail strip** -- the product's window down-mapped to a horizontal
+//! run -- so a product's left-to-right shape reads, not only its dominant color: a two-tone part shows two
 //! colors. A window thinner than the swatch stretches to fill it; a one-column window is a solid swatch, valid
-//! for a window of any size. So a keeper reads the whole catalog at a glance — each product's name beside its
+//! for a window of any size. So a keeper reads the whole catalog at a glance -- each product's name beside its
 //! own thumbnail, every product drawn from the ONE shared sheet. `catalog_window` pages a catalog larger than
 //! the screen, `[offset, offset+rows)`, so nothing is unreachable and nothing is silently dropped. Pure
-//! composition over public APIs — no new storage, codec, or palette. No network, no key, no funds.
+//! composition over public APIs -- no new storage, codec, or palette. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/sprite_shelf.rye selftest
 
@@ -28,7 +28,7 @@ const skate = @import("skate_grid.rye");
 
 pub const sprite_shelf_version = "20260813.204500";
 
-/// The width, in cells, of the color swatch each product wears at the right of its row — a fixed, readable chip.
+/// The width, in cells, of the color swatch each product wears at the right of its row -- a fixed, readable chip.
 pub const swatch_cols: u32 = 6;
 /// One empty column between a product's name and its swatch, so the two never touch.
 pub const gap_cols: u32 = 1;
@@ -43,7 +43,7 @@ pub const SpriteShelfError = error{
     BadOffset,
 };
 
-/// How many full pages a catalog of this size needs at `rows` products per page — a ceiling division, so the
+/// How many full pages a catalog of this size needs at `rows` products per page -- a ceiling division, so the
 /// last short page still counts. Zero products is zero pages.
 pub fn page_count(index: *const sprite.SpriteIndex, rows: u32) u32 {
     // invariant: paging needs at least one row per page.
@@ -53,7 +53,7 @@ pub fn page_count(index: *const sprite.SpriteIndex, rows: u32) u32 {
     return (n + rows - 1) / rows;
 }
 
-/// How many products the page starting at `offset` shows — a full `rows` mid-catalog, fewer on the last page,
+/// How many products the page starting at `offset` shows -- a full `rows` mid-catalog, fewer on the last page,
 /// zero when the offset lands at or past the catalog.
 pub fn window_len(index: *const sprite.SpriteIndex, rows: u32, offset: u32) u32 {
     // invariant: a window is at least one row tall.
@@ -69,7 +69,7 @@ pub fn window_len(index: *const sprite.SpriteIndex, rows: u32, offset: u32) u32 
 /// Draw one product onto `grid` at `row`: its name at the left (clamped to the label width so it never reaches
 /// the swatch), and a solid color swatch at the right wearing the slot its window down-maps to. The name and
 /// the swatch derive from exactly the entry the index holds, so a row can never show a product the catalog does
-/// not name. The refusal travels — the render underneath is over a bound-checked window, so it cannot fail on
+/// not name. The refusal travels -- the render underneath is over a bound-checked window, so it cannot fail on
 /// bounds.
 fn draw_product_row(
     allocator: std.mem.Allocator,
@@ -99,11 +99,11 @@ fn draw_product_row(
     try paint_swatch(allocator, grid, row, &window);
 }
 
-/// Paint a product's thumbnail swatch across the right `swatch_cols` cells of `row` — the product's `window`
+/// Paint a product's thumbnail swatch across the right `swatch_cols` cells of `row` -- the product's `window`
 /// down-mapped to a horizontal strip (HUNK2), so its left-to-right shape reads, not only its dominant color: a
 /// two-tone part shows two colors, not one average. A strip narrower than the swatch (a thin window) stretches
 /// to fill it; a 1-wide strip is a solid swatch, valid for a window of any size. Shared by the sprite shelf and
-/// the parts shelf (HUNK73), so the swatch idiom lives in one place — a caller renders a window, this paints it.
+/// the parts shelf (HUNK73), so the swatch idiom lives in one place -- a caller renders a window, this paints it.
 pub fn paint_swatch(
     allocator: std.mem.Allocator,
     grid: *skate.Grid,
@@ -114,11 +114,11 @@ pub fn paint_swatch(
     assert(row < grid.rows);
     // invariant: the grid is wide enough to hold the swatch (min_cols checked by the caller).
     assert(grid.cols >= swatch_cols);
-    // invariant: the rendered window is a real open image — four bytes per pixel.
+    // invariant: the rendered window is a real open image -- four bytes per pixel.
     assert(window.pixels.len == @as(usize, window.width) * @as(usize, window.height) * 4);
     const swatch_x0 = grid.cols - swatch_cols;
     const strip_n: u32 = @min(swatch_cols, window.width);
-    // invariant: a strip is at least one cell wide — a window has at least one column.
+    // invariant: a strip is at least one cell wide -- a window has at least one column.
     assert(strip_n >= 1);
     const strip = try image_skate.down_map(allocator, window, strip_n, 1);
     // invariant: the strip holds exactly one slot per down-mapped column.
@@ -155,11 +155,11 @@ fn fresh_grid(allocator: std.mem.Allocator, cols: u32, rows: u32) !skate.Grid {
     return grid;
 }
 
-/// Render one page of the catalog — the products `[offset, offset + rows)` — onto a fresh grid, so a catalog
+/// Render one page of the catalog -- the products `[offset, offset + rows)` -- onto a fresh grid, so a catalog
 /// larger than the screen is fully reachable one page at a time. A window is meant to show a slice, so it never
 /// refuses `ShelfTooSmall`; it refuses `BadOffset` when the offset lands past the catalog (a page with no
 /// product), so every page a keeper reaches is a real one. Together the pages cover the whole catalog in held
-/// order, each product once — paging loses nothing.
+/// order, each product once -- paging loses nothing.
 pub fn catalog_window(
     allocator: std.mem.Allocator,
     index: *const sprite.SpriteIndex,
@@ -170,7 +170,7 @@ pub fn catalog_window(
     // invariant: the catalog never outgrew its own bound before it is paged.
     assert(index.len() <= sprite.max_products);
     var grid = try fresh_grid(allocator, cols, rows);
-    // An offset past the catalog shows no product — refuse rather than paint an empty page. Offset 0 on an empty
+    // An offset past the catalog shows no product -- refuse rather than paint an empty page. Offset 0 on an empty
     // catalog is a real (empty) first page and is allowed.
     if (offset >= index.len() and !(offset == 0 and index.len() == 0)) return error.BadOffset;
 
@@ -187,8 +187,8 @@ pub fn catalog_window(
 }
 
 /// Render a whole catalog onto one Skate grid, one row per product reading `<name>` and a color swatch. Refuses
-/// `ShelfTooSmall` when the grid has fewer rows than the catalog has products — a rendered shelf shows every
-/// product or none, never a silent drop — beside the dimension refusals `fresh_grid` names.
+/// `ShelfTooSmall` when the grid has fewer rows than the catalog has products -- a rendered shelf shows every
+/// product or none, never a silent drop -- beside the dimension refusals `fresh_grid` names.
 pub fn catalog_shelf(
     allocator: std.mem.Allocator,
     index: *const sprite.SpriteIndex,
@@ -198,7 +198,7 @@ pub fn catalog_shelf(
     // invariant: the catalog never outgrew its own bound before it is drawn.
     assert(index.len() <= sprite.max_products);
     const n = index.len();
-    // A shelf shows every product or none — never the products past the last row silently dropped.
+    // A shelf shows every product or none -- never the products past the last row silently dropped.
     if (rows < n) return error.ShelfTooSmall;
 
     var grid = try fresh_grid(allocator, cols, rows);
@@ -217,7 +217,7 @@ pub fn catalog_shelf(
 //     each row's swatch carries its product's own color, each row names its product, paging loses nothing, the
 //     shelf is pure, and the named refusals fire ---------------------------------------------------------------
 
-/// Build a 16×8 sheet in four solid vertical bands — red, green, blue, yellow — so four 4×8 windows each carry
+/// Build a 16×8 sheet in four solid vertical bands -- red, green, blue, yellow -- so four 4×8 windows each carry
 /// one unambiguous color a down-map resolves to a known anchor slot.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
@@ -229,7 +229,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
         while (x < w) : (x += 1) {
             const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
             const band = x / 4; // 0..3
-            // red, green, blue, yellow — matching image_skate anchors slots 3,4,5,6.
+            // red, green, blue, yellow -- matching image_skate anchors slots 3,4,5,6.
             buf[off] = if (band == 0 or band == 3) 255 else 0; // r
             buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
             buf[off + 2] = if (band == 2) 255 else 0; // b
@@ -239,7 +239,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The slot the swatch of `row` wears — the first swatch cell at the right of the row.
+/// The slot the swatch of `row` wears -- the first swatch cell at the right of the row.
 fn row_swatch_slot(grid: *const skate.Grid, row: u32) u8 {
     const swatch_x0 = grid.cols - swatch_cols;
     const ci: usize = @intCast(row * grid.cols + swatch_x0);
@@ -266,7 +266,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(grid.cols == cols);
     assert(grid.rows == rows);
 
-    // Each row's swatch wears exactly its product's down-mapped color: red→3, green→4, blue→5, yellow→6.
+    // Each row's swatch wears exactly its product's down-mapped color: red->3, green->4, blue->5, yellow->6.
     assert(row_swatch_slot(&grid, 0) == 3);
     assert(row_swatch_slot(&grid, 1) == 4);
     assert(row_swatch_slot(&grid, 2) == 5);
@@ -323,7 +323,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(window_len(&index, page_rows, 4) == 0);
 
     // Paging loses nothing: walk every page in order and the products shown, concatenated, are exactly the whole
-    // catalog in held order — no product skipped, none shown twice.
+    // catalog in held order -- no product skipped, none shown twice.
     {
         var seen: u32 = 0;
         var pageno: u32 = 0;
@@ -350,7 +350,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (catalog_window(garden, &index, cols, page_rows, 4)) |_| return error.OffsetSlipped else |e| {
         if (e != error.BadOffset) return error.WrongOffset;
     }
-    // A grid with fewer rows than products refuses ShelfTooSmall — every product or none, never a silent drop.
+    // A grid with fewer rows than products refuses ShelfTooSmall -- every product or none, never a silent drop.
     if (catalog_shelf(garden, &index, cols, 3)) |_| return error.SmallSlipped else |e| {
         if (e != error.ShelfTooSmall) return error.WrongSmall;
     }

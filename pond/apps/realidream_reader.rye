@@ -1,18 +1,18 @@
-//! pond/apps/realidream_reader.rye — BUHR Journey 5, Rung 1: a read source and a
+//! pond/apps/realidream_reader.rye -- BUHR Journey 5, Rung 1: a read source and a
 //! written program are two lanes on one graph.
 //!
 //! Journey 2 built the reading of the Mantra log; Journey 4 built the writing of the
-//! program. Realidream promises both at once, on one graph — and its foundation names
+//! program. Realidream promises both at once, on one graph -- and its foundation names
 //! the motion exactly: two sources can feed one node, so separate inputs fuse cleanly
 //! into a single view (foundations/20260728-220203_realidream.md). This rung opens that
-//! fusion: a *read lane* — a fetched or pinned fragment of an outside source, held as
-//! revision content under its own `read/` path — is a lane like any other, and the very
+//! fusion: a *read lane* -- a fetched or pinned fragment of an outside source, held as
+//! revision content under its own `read/` path -- is a lane like any other, and the very
 //! same `mantra_browser.render` paints it beside the program lanes.
 //!
 //! The crux joins them without a new abstraction: the web-read half is a lane whose
 //! content came from a read, the program-write half is a lane whose content came from
 //! an edit, and one fold over the shared log shows both. A write on one origin never
-//! disturbs the other — they are two chains on one append-only history.
+//! disturbs the other -- they are two chains on one append-only history.
 //!
 //! `pin_read` appends a read source's content to a `BoltCatalog` under a `read/` path,
 //! marking its origin honestly (it refuses a path that does not name itself a read),
@@ -23,7 +23,7 @@
 //!
 //! This rung reads no network: the read content is supplied in-process, exactly as the
 //! browser's demo catalog supplies its content today. A real web fetch is a genuine
-//! outward act and stays a named seam behind a bounded reader — its own later rung.
+//! outward act and stays a named seam behind a bounded reader -- its own later rung.
 //!
 //! Additive by construction: it imports mantra_browser and mantra_editor, calling only
 //! their public functions. No file beneath it changes; Journeys 2 and 4 stay green.
@@ -48,8 +48,8 @@ pub const ReadError = error{
 
 /// Pin a read source as a lane on the shared graph: append `content` under a `read/`
 /// path, so the graph carries the outside source beside the program a person writes.
-/// A read lane is a lane like any other — Journey 2's browser renders it because it
-/// renders the log — yet its `read/` path marks its origin honestly, so a reader can
+/// A read lane is a lane like any other -- Journey 2's browser renders it because it
+/// renders the log -- yet its `read/` path marks its origin honestly, so a reader can
 /// tell a fetched source from their own hand. Refuses a path that does not name itself
 /// a read (`NotAReadPath`), and lets `open_lane` refuse a lane that already exists or a
 /// full catalog. Returns the read lane's first revision, always one.
@@ -76,7 +76,7 @@ pub fn pin_read(
 }
 
 /// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
-/// length — a witness helper proving a lane marker appears exactly once (or not at all).
+/// length -- a witness helper proving a lane marker appears exactly once (or not at all).
 fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
     // invariant: a real needle has bytes to match.
     assert(needle.len > 0);
@@ -93,7 +93,7 @@ fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
     return count;
 }
 
-/// Return the rendered line that contains `marker`, without its trailing newline —
+/// Return the rendered line that contains `marker`, without its trailing newline --
 /// a witness helper so a lane can be compared before and after an edit.
 fn line_with(text: []const u8, marker: []const u8) []const u8 {
     // invariant: a real marker has bytes to find.
@@ -123,14 +123,14 @@ fn welcome_read_lane_beside_program() !void {
     assert(std.mem.indexOf(u8, after, "read/home: r1[") != null);
     assert(std.mem.indexOf(u8, after, "a.txt: r1[") != null);
     assert(std.mem.indexOf(u8, after, "b.txt: r1[") != null);
-    // Grouped by bolt exactly as the browser groups — the read rides its own bolt.
+    // Grouped by bolt exactly as the browser groups -- the read rides its own bolt.
     assert(std.mem.indexOf(u8, after, "local/web\n") != null);
     assert(std.mem.indexOf(u8, after, "local/notes\n") != null);
     print("realidream_reader: pinned a read lane beside the program lanes; one render shows both origins on one graph\n", .{});
 }
 
 fn welcome_edit_leaves_read_untouched() !void {
-    // A write on the program origin never disturbs the read origin — two chains on one
+    // A write on the program origin never disturbs the read origin -- two chains on one
     // append-only history. Pin a read lane, then commit an edit to a program lane.
     var catalog = try mb.demo_catalog();
     _ = try pin_read(&catalog, "local", "web", "read/home", "<h1>hello world</h1>", "leaf");
@@ -146,14 +146,14 @@ fn welcome_edit_leaves_read_untouched() !void {
     // The program lane grew by exactly one node.
     const b_after = line_with(after, "b.txt:");
     assert(count_occurrences(b_after, "->") == 1);
-    // The read lane is byte-for-byte unchanged — the edit touched only the program.
+    // The read lane is byte-for-byte unchanged -- the edit touched only the program.
     const read_after = line_with(after, "read/home:");
     assert(std.mem.eql(u8, read_before, read_after));
     print("realidream_reader: an edit grew the program lane; the read lane stood byte-for-byte unchanged\n", .{});
 }
 
 fn welcome_refuses_non_read_path() !void {
-    // A path that does not name itself a read refuses — the graph must be able to tell
+    // A path that does not name itself a read refuses -- the graph must be able to tell
     // a fetched source from a written program by the path alone.
     var catalog = try mb.demo_catalog();
     if (pin_read(&catalog, "local", "web", "home.html", "<h1>x</h1>", "leaf")) |_| {
@@ -162,7 +162,7 @@ fn welcome_refuses_non_read_path() !void {
         // invariant: a non-read path refuses by the named error.
         assert(err == error.NotAReadPath);
     }
-    // And a duplicate pin refuses through open_lane — a read lane is a lane like any.
+    // And a duplicate pin refuses through open_lane -- a read lane is a lane like any.
     _ = try pin_read(&catalog, "local", "web", "read/home", "<h1>hello</h1>", "leaf");
     if (pin_read(&catalog, "local", "web", "read/home", "<h1>again</h1>", "leaf")) |_| {
         unreachable;

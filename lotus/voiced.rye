@@ -1,31 +1,31 @@
-//! lotus/voiced.rye — ALES94: the voiced/unvoiced/silent classifier — the first Lotus rung to FUSE two analysis readers into one verdict.
-//! ALES93 gave the suite its first analysis reader — a count of the signal's genuine crossings. ALES13 already carried the other classic feature — the RMS
+//! lotus/voiced.rye -- ALES94: the voiced/unvoiced/silent classifier -- the first Lotus rung to FUSE two analysis readers into one verdict.
+//! ALES93 gave the suite its first analysis reader -- a count of the signal's genuine crossings. ALES13 already carried the other classic feature -- the RMS
 //! energy. This rung is the first to fuse two readers into one verdict: the oldest decision in speech processing, is this frame VOICED, UNVOICED, or SILENT? A
 //! century of telephony, every speech codec, every voice-activity gate answers it the same way, from exactly these two features. ENERGY (RMS) separates sound
-//! from silence — below a floor there is nothing to classify. CROSSING RATE separates the two kinds of sound above that floor — a VOICED sound (a vowel, a
+//! from silence -- below a floor there is nothing to classify. CROSSING RATE separates the two kinds of sound above that floor -- a VOICED sound (a vowel, a
 //! hummed note, a periodic tone) carries most of its energy low and crosses FEW times; an UNVOICED sound (a fricative sss, a hiss, broadband noise) carries its
 //! energy high and crosses MANY times.
 //!
-//! The rule, stated once: if rms < silence_floor → Silent; else if crossings ≥ voice_split → Unvoiced; else → Voiced. The energy gate comes FIRST — a signal
+//! The rule, stated once: if rms < silence_floor -> Silent; else if crossings ≥ voice_split -> Unvoiced; else -> Voiced. The energy gate comes FIRST -- a signal
 //! that crosses many times but sits below the floor is SILENT, not unvoiced (a quiet noise floor is silence, not a fricative). Reading the floor before the
 //! crossing rate is the rule's one ordering invariant.
 //!
 //! The crux: this rung invents no new measurement. Its whole correctness is that its verdict equals a decision built BY HAND from ALES93's count_crossings and
-//! ALES13's RMS over the SAME span — the classifier is the FUSION RULE, not a third reader that could disagree with the two it names. So it can never drift from
+//! ALES13's RMS over the SAME span -- the classifier is the FUSION RULE, not a third reader that could disagree with the two it names. So it can never drift from
 //! the two readers it composes, exactly as ALES93 can never drift from the trigger it counts.
 //!
 //! The floor-zero convention: a silence_floor of 0 DISABLES the silence verdict (rms < 0 is never true), so an all-zero span (rms 0, zero crossings) classifies
 //! VOICED (the low-crossing branch). A keeper who wants true silence caught sets the floor to at least 1. Stated plainly so the degenerate is deliberate.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES94.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES94.
 //! Design read: active-designing/date/20260814/20260814-230352_fill-ales94-lotus-voiced-unvoiced-classifier.md
-//! Stands on: lotus/zero_cross.rye (ALES93) — the crossing count, one feature, read through the ALES92 band; lotus/meter.rye (ALES13) — the RMS energy, the
-//! other feature; lotus/schmitt.rye (ALES92) — the band's precheck (so the band-and-span law and named errors are the trigger's own); lotus/timeline.rye (ALES2)
-//! — the Clip, sample_min/max.
+//! Stands on: lotus/zero_cross.rye (ALES93) -- the crossing count, one feature, read through the ALES92 band; lotus/meter.rye (ALES13) -- the RMS energy, the
+//! other feature; lotus/schmitt.rye (ALES92) -- the band's precheck (so the band-and-span law and named errors are the trigger's own); lotus/timeline.rye (ALES2)
+//! -- the Clip, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/, never mutated by this rung.
+//! HONEST SCOPE -- software only, purely LOCAL, and READ-ONLY. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/, never mutated by this rung.
 //! The verdict is a three-valued label over one span, NOT a phoneme, not a transcript, not a probability: a real voice-activity detector adds hysteresis over
-//! time, adaptive floors, and a spectral tilt this rung does not — those are later rungs. The "voiced/unvoiced" names follow the classic speech-processing
+//! time, adaptive floors, and a spectral tilt this rung does not -- those are later rungs. The "voiced/unvoiced" names follow the classic speech-processing
 //! convention over exactly two features (energy and crossing rate); they claim nothing about a real speaker, language, or recording. No real sample rate, no
 //! windowing over time, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -43,29 +43,29 @@ const meter = @import("meter.rye");
 pub const voiced_version = "20260814.230352";
 
 /// The classifier's faults are the two readers' OWN faults, reused by name so the classifier never invents an error the readers do not raise: ALES93's
-/// ZeroCrossError (the band-and-span faults BadThreshold/BadRange from ALES92, and CountFull) and ALES13's MeterError (MeterFull) — plus one of its own for an
+/// ZeroCrossError (the band-and-span faults BadThreshold/BadRange from ALES92, and CountFull) and ALES13's MeterError (MeterFull) -- plus one of its own for an
 /// illegal energy floor. CountFull and MeterFull cannot fire here (a single span is at most timeline.max_clip samples, far below either reader's bound), yet the
 /// union stays honest about what the composed readers may raise rather than hiding a path the type system can see.
 pub const ClassifyError = zero_cross.ZeroCrossError || meter.MeterError || error{
-    /// The silence floor is above the peak magnitude ceiling — no RMS could ever reach it, so every span would read silent, a meaningless setting. Refused
-    /// before any feature is read. (A floor of 0 is legal — it deliberately disables the silence verdict.)
+    /// The silence floor is above the peak magnitude ceiling -- no RMS could ever reach it, so every span would read silent, a meaningless setting. Refused
+    /// before any feature is read. (A floor of 0 is legal -- it deliberately disables the silence verdict.)
     BadFloor,
 };
 
-/// The three-valued outcome of one classification over one span — the oldest decision in speech processing. `silent` below the energy floor, `voiced` above it
+/// The three-valued outcome of one classification over one span -- the oldest decision in speech processing. `silent` below the energy floor, `voiced` above it
 /// with a low crossing rate (periodic sound), `unvoiced` above it with a high crossing rate (noise, fricatives).
 pub const Verdict = enum {
-    /// Below the energy floor — nothing to classify.
+    /// Below the energy floor -- nothing to classify.
     silent,
-    /// Loud with a low crossing rate — a periodic sound (vowel, note, tone).
+    /// Loud with a low crossing rate -- a periodic sound (vowel, note, tone).
     voiced,
-    /// Loud with a high crossing rate — a noisy sound (fricative, hiss, broadband).
+    /// Loud with a high crossing rate -- a noisy sound (fricative, hiss, broadband).
     unvoiced,
 };
 
-/// Classify `count` samples starting at `start` as silent, voiced, or unvoiced — reading the crossing count through the ALES92 band `[t_low, t_high]` and the
+/// Classify `count` samples starting at `start` as silent, voiced, or unvoiced -- reading the crossing count through the ALES92 band `[t_low, t_high]` and the
 /// RMS energy over the SAME span, then fusing them by the one rule: below `silence_floor` is silent; at or above `voice_split` crossings is unvoiced; otherwise
-/// voiced. The energy gate is read FIRST. READ-ONLY — not one sample is written. Validates the band and span through ALES92's own precheck (BadThreshold on an
+/// voiced. The energy gate is read FIRST. READ-ONLY -- not one sample is written. Validates the band and span through ALES92's own precheck (BadThreshold on an
 /// illegal band, BadRange on a span outside the samples) and the floor against the peak ceiling (BadFloor) before reading either feature; on refusal nothing is
 /// read into a verdict and the clip is untouched.
 pub fn classify(
@@ -77,27 +77,27 @@ pub fn classify(
     silence_floor: u32,
     voice_split: u32,
 ) ClassifyError!Verdict {
-    // invariant: the band and span are the two readers' own law — one precheck shared with ALES92/ALES93, so the classifier can never validate differently than
+    // invariant: the band and span are the two readers' own law -- one precheck shared with ALES92/ALES93, so the classifier can never validate differently than
     // the counter it composes.
     try schmitt.precheck(clip.len, start, count, t_low, t_high);
-    // invariant: a floor no RMS could ever reach would make every span silent — refuse it rather than answer meaninglessly. A floor of 0 is legal (it disables
+    // invariant: a floor no RMS could ever reach would make every span silent -- refuse it rather than answer meaninglessly. A floor of 0 is legal (it disables
     // the silence verdict), so the ceiling is the only illegal floor.
     if (silence_floor > meter.sample_peak_max) return error.BadFloor;
 
-    // Feature one — the RMS energy over exactly this span (ALES13), read from a fresh meter fed the span's samples, never the whole clip.
+    // Feature one -- the RMS energy over exactly this span (ALES13), read from a fresh meter fed the span's samples, never the whole clip.
     var m = meter.Meter{};
     const samples = clip.samples();
     try meter.feed(&m, samples[start .. start + count]);
     const rms: u32 = meter.rms(&m);
 
-    // The energy gate FIRST: below the floor is silence, whatever the crossing rate — a quiet noise floor is silence, not a fricative.
+    // The energy gate FIRST: below the floor is silence, whatever the crossing rate -- a quiet noise floor is silence, not a fricative.
     if (rms < silence_floor) return .silent;
 
-    // Feature two — the genuine crossing count over the same span (ALES93), read through the same band. Only reached once the span is known loud enough to carry
+    // Feature two -- the genuine crossing count over the same span (ALES93), read through the same band. Only reached once the span is known loud enough to carry
     // a real sound.
     const crossings: u32 = try zero_cross.count_crossings(clip, start, count, t_low, t_high);
 
-    // invariant: the reader that ran cannot have changed the clip's length — both features are read-only.
+    // invariant: the reader that ran cannot have changed the clip's length -- both features are read-only.
     assert(clip.len <= clip.buf.len);
 
     // The crossing gate SECOND: a high rate is unvoiced (noise), a low rate voiced (periodic).
@@ -105,7 +105,7 @@ pub fn classify(
     return .voiced;
 }
 
-// --- selftest: loud-and-periodic → voiced; loud-and-noisy → unvoiced; quiet → silent; the floor dominates the crossing rate; the verdict is exactly the two
+// --- selftest: loud-and-periodic -> voiced; loud-and-noisy -> unvoiced; quiet -> silent; the floor dominates the crossing rate; the verdict is exactly the two
 //     readers fused (the crux); the clip is byte-for-byte unchanged (read-only); the floor-zero convention; an illegal floor, band, and span each refuse by
 //     name; the span discipline holds ---------------------------------------------------------------------------------------------------------------------
 
@@ -120,7 +120,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built fusion the classifier is checked against in the crux — the SAME rule read from the two readers directly.
+/// The hand-built fusion the classifier is checked against in the crux -- the SAME rule read from the two readers directly.
 fn by_hand(clip: *const timeline.Clip, start: u32, count: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !Verdict {
     var m = meter.Meter{};
     try meter.feed(&m, clip.samples()[start .. start + count]);
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // 1. LOUD AND PERIODIC → VOICED — a strong signal that stays high for a long run then low for a long run crosses FEW times (well below a high voice_split)
+    // 1. LOUD AND PERIODIC -> VOICED -- a strong signal that stays high for a long run then low for a long run crosses FEW times (well below a high voice_split)
     //    yet carries large RMS. Classify voiced.
     {
         // eight big-positive then eight big-negative: rms large, exactly one crossing across the whole span
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
         if (v != .voiced) return error.LoudPeriodicNotVoiced;
     }
 
-    // 2. LOUD AND NOISY → UNVOICED — a strong signal that alternates every sample crosses MANY times (at or above a small voice_split) with large RMS. Classify
+    // 2. LOUD AND NOISY -> UNVOICED -- a strong signal that alternates every sample crosses MANY times (at or above a small voice_split) with large RMS. Classify
     //    unvoiced.
     {
         const sig = [_]i16{ 20000, -20000, 20000, -20000, 20000, -20000, 20000, -20000, 20000, -20000, 20000, -20000 };
@@ -155,7 +155,7 @@ fn run_selftest() !u8 {
         if (v != .unvoiced) return error.LoudNoisyNotUnvoiced;
     }
 
-    // 3. QUIET → SILENT — a low-amplitude signal whose RMS falls below the floor classifies silent whatever its crossing count. Use a small alternating signal
+    // 3. QUIET -> SILENT -- a low-amplitude signal whose RMS falls below the floor classifies silent whatever its crossing count. Use a small alternating signal
     //    (many crossings) with RMS well under the floor.
     {
         const sig = [_]i16{ 50, -50, 50, -50, 50, -50, 50, -50 }; // rms ≈ 50, many crossings
@@ -165,7 +165,7 @@ fn run_selftest() !u8 {
         if (v != .silent) return error.QuietNotSilent;
     }
 
-    // 4. THE FLOOR DOMINATES THE CROSSING RATE — the SAME quiet, many-crossing signal that would be "unvoiced" by crossing rate alone is SILENT because its RMS
+    // 4. THE FLOOR DOMINATES THE CROSSING RATE -- the SAME quiet, many-crossing signal that would be "unvoiced" by crossing rate alone is SILENT because its RMS
     //    is below the floor: the energy gate is read first. (Set voice_split low so crossings alone would say unvoiced.)
     {
         const sig = [_]i16{ 40, -40, 40, -40, 40, -40 }; // many crossings, rms ≈ 40
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         if (v != .silent) return error.FloorDidNotDominate;
     }
 
-    // 5. THE CRUX — over several spans and settings, classify equals a hand-built decision from the SAME two readers (count_crossings and a Meter's RMS). The
+    // 5. THE CRUX -- over several spans and settings, classify equals a hand-built decision from the SAME two readers (count_crossings and a Meter's RMS). The
     //    classifier is the fusion rule, not a third reader that could disagree.
     {
         const sig = [_]i16{ 15000, -15000, 300, -300, 8000, 8000, -8000, -8000, 60, -60, 25000, -25000, 25000, -25000 };
@@ -195,7 +195,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. READ-ONLY — the source clip is byte-for-byte unchanged after classifying (both features read, none write).
+    // 6. READ-ONLY -- the source clip is byte-for-byte unchanged after classifying (both features read, none write).
     {
         const src = [_]i16{ 111, 20000, -20000, 222, 50, -50, 333 };
         var clip = timeline.Clip{};
@@ -204,7 +204,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &src)) return error.ClassifyingWrote;
     }
 
-    // 7. THE FLOOR-ZERO CONVENTION — with silence_floor 0, an all-zero span (rms 0, zero crossings) classifies VOICED (the low-crossing branch), NOT silent
+    // 7. THE FLOOR-ZERO CONVENTION -- with silence_floor 0, an all-zero span (rms 0, zero crossings) classifies VOICED (the low-crossing branch), NOT silent
     //    (rms < 0 is never true). Deliberate degenerate.
     {
         const sig = [_]i16{ 0, 0, 0, 0, 0, 0 };
@@ -214,7 +214,7 @@ fn run_selftest() !u8 {
         if (v != .voiced) return error.FloorZeroNotVoiced;
     }
 
-    // 8a. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, the clip untouched.
+    // 8a. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor, the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
@@ -239,7 +239,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedMutatedRange;
     }
 
-    // 9. THE SPAN DISCIPLINE — classifying a sub-span reads only [start, count). Put loud noisy samples OUTSIDE the span and a quiet run INSIDE it; the verdict
+    // 9. THE SPAN DISCIPLINE -- classifying a sub-span reads only [start, count). Put loud noisy samples OUTSIDE the span and a quiet run INSIDE it; the verdict
     //    must be silent (from the inner samples alone), proving the outer loud samples were not read into the features.
     {
         const sig = [_]i16{ 30000, -30000, 40, -40, 40, -40, 30000, -30000 }; // indices 2..5 are the quiet inner span

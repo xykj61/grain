@@ -1,31 +1,31 @@
-//! lotus/stereo_fold.rye — ALES134: the wavefolder carried into stereo, ONE SHARED TRIANGLE, the reflecting corner of the stereo NONLINEAR class. ALES80 named `wavefold` — a pre-gain into a ceiling where
-//! the excess that would cross the ceiling REFLECTS back down rather than pinning: a triangle in the boosted magnitude with period 2·ceil, the West-Coast fold that turns a plain tone into a bright metallic
+//! lotus/stereo_fold.rye -- ALES134: the wavefolder carried into stereo, ONE SHARED TRIANGLE, the reflecting corner of the stereo NONLINEAR class. ALES80 named `wavefold` -- a pre-gain into a ceiling where
+//! the excess that would cross the ceiling REFLECTS back down rather than pinning: a triangle in the boosted magnitude with period 2-ceil, the West-Coast fold that turns a plain tone into a bright metallic
 //! swarm, for a mono Clip. Where ALES132's hard clip builds a wall, the fold builds a mirror. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
 //! RIGHT hold the SAME length. This rung carries the fold into stereo the plain way, ALES132/ALES133's sibling: run ALES80's proven mono `wavefold` on each channel with the SAME gain and ceiling, so one
 //! fold lands on BOTH speakers together.
 //!
-//! The nonlinear class holds exactly as ALES132 stated it, honestly: a fold is still NOT linear, so a shared triangle does NOT preserve the inter-channel ratio in general — a 1:2 master folded through a
+//! The nonlinear class holds exactly as ALES132 stated it, honestly: a fold is still NOT linear, so a shared triangle does NOT preserve the inter-channel ratio in general -- a 1:2 master folded through a
 //! ceiling can land BOTH channels on the same value (a 1000/2000 field folded through 1500 gives 1000/1000), the ratio collapsing not by pinning but by REFLECTION. That is not a bug to design around; it is
 //! what a stereo fold IS. What the shared map DOES keep, per channel, is the ceiling and sign discipline (a fold is odd, holding the sign and staying within ±ceil); and an identical-channel master still
-//! folds to an identical-channel output. Where the hard drive pins the excess, the fold reflects it — the two agree below the ceiling and diverge above.
+//! folds to an identical-channel output. Where the hard drive pins the excess, the fold reflects it -- the two agree below the ceiling and diverge above.
 //!
 //! The rule, stated once: refuse BadGain (a zero denominator, a below-unity gain, an oversized numerator), BadCeiling (a ceiling outside [1, sample_max]), and BadRange (a span outside the samples) BEFORE
-//! either channel is mutated — every fault depends only on the shared parameters or the shared length, so each check is made ONCE up front, and a refusal never folds one channel and leaves the other dry;
+//! either channel is mutated -- every fault depends only on the shared parameters or the shared length, so each check is made ONCE up front, and a refusal never folds one channel and leaves the other dry;
 //! otherwise wavefold both channels over [start, start+count) by num/den into ceil via ALES80's `wavefold`. FoldError reused whole.
 //!
-//! The crux — four laws. THE STEREO FOLD LAW: each channel equals ALES80's mono `wavefold` with the same (num, den, ceil) over the same span byte for byte — a boosted sample below the ceiling passing clean,
+//! The crux -- four laws. THE STEREO FOLD LAW: each channel equals ALES80's mono `wavefold` with the same (num, den, ceil) over the same span byte for byte -- a boosted sample below the ceiling passing clean,
 //! the excess above reflecting back down the triangle, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a fold writes values only). THE
 //! PER-CHANNEL NONLINEAR LAW: a fold is nonlinear, so a shared triangle does NOT hold the inter-channel ratio (a 1:2 master folded through a ceiling landing both channels on one value, the ratio collapsing by
-//! reflection) — unlike the linear amplitude class; yet the ceiling and sign discipline hold per channel, an identical-channel master stays identical, and where the hard drive pins the excess the fold
+//! reflection) -- unlike the linear amplitude class; yet the ceiling and sign discipline hold per channel, an identical-channel master stays identical, and where the hard drive pins the excess the fold
 //! reflects it. THE ATOMICITY / DEGENERATE LAW: any refusal (BadGain, BadCeiling, BadRange) leaves BOTH channels byte for byte untouched and still balanced; a unity fold whose samples all sit below the
 //! ceiling is the identity on both, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES134.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES134.
 //! Design read: active-designing/date/20260815/20260815-033358_fill-ales134-lotus-stereo-fold.md
-//! Stands on: lotus/fold.rye (ALES80) — the mono wavefolder run once per channel, itself ALES78's pre-gain reflected off ALES49's ceiling; lotus/stereo_drive.rye (ALES132) — the hard-drive sibling this
-//! mirrors; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//! Stands on: lotus/fold.rye (ALES80) -- the mono wavefolder run once per channel, itself ALES78's pre-gain reflected off ALES49's ceiling; lotus/stereo_drive.rye (ALES132) -- the hard-drive sibling this
+//! mirrors; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES80's own wavefold, never a length,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES80's own wavefold, never a length,
 //! never a byte fabricated; the drive gain is a rational num/den (unity = 1/1), the ceiling a magnitude in sample units NOT decibels, the fold a piecewise-linear triangle, instantaneous (no attack/release,
 //! no anti-aliasing). No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -42,18 +42,18 @@ const fold = @import("fold.rye");
 
 pub const stereo_fold_version = "20260815.033358";
 
-/// Stereo fold's faults are exactly ALES80's own `FoldError` — `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadCeiling` (a ceiling outside [1, sample_max]), and `BadRange` (a span
-/// outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same wavefold on each channel after one shared validation.
+/// Stereo fold's faults are exactly ALES80's own `FoldError` -- `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadCeiling` (a ceiling outside [1, sample_max]), and `BadRange` (a span
+/// outside the samples) -- reused by name, since the stereo lift adds no new fault: it only runs the same wavefold on each channel after one shared validation.
 pub const StereoFoldError = fold.FoldError;
 
 /// Wavefold `[start, start+count)` in BOTH channels of `sc` by the rational gain `num`/`den` (at least unity) into the magnitude `ceil`, the SAME triangle on each, running ALES80's proven mono `wavefold`. A
 /// boosted sample below the ceiling passes clean, the excess above reflects back down the triangle. Validates both channels once against the shared parameters and length before either is mutated: refuses
-/// `BadGain` / `BadCeiling` / `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced.
+/// `BadGain` / `BadCeiling` / `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_fold(sc: *pan.StereoClip, start: u32, count: u32, num: u32, den: u32, ceil: i32) StereoFoldError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the gain, ceiling, and span are legal — refused by name before any write, so a refusal never folds one channel and leaves the other dry. The gain and ceiling checks depend only on the
+    // invariant: the gain, ceiling, and span are legal -- refused by name before any write, so a refusal never folds one channel and leaves the other dry. The gain and ceiling checks depend only on the
     // shared parameters; the span check on the shared length. These mirror ALES80's own guards exactly, so each mono wavefold below is pre-validated to succeed.
     if (den == 0) return error.BadGain;
     if (num < den) return error.BadGain;
@@ -64,18 +64,18 @@ pub fn stereo_fold(sc: *pan.StereoClip, start: u32, count: u32, num: u32, den: u
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono wavefold is pre-validated to succeed — no refusal can land between the two channel edits. The SAME triangle on each.
+    // Every check passed and holds identically for both channels, so each mono wavefold is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME triangle on each.
     try fold.wavefold(&sc.left, start, count, num, den, ceil);
     try fold.wavefold(&sc.right, start, count, num, den, ceil);
 
-    // invariant: the channels leave balanced — a fold writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    // invariant: the channels leave balanced -- a fold writes values only, so each channel holds its starting length and the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO FOLD LAW — each channel equals ALES80's mono wavefold with the same params byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting
-//     length; THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign hold per channel, a 1:2 master's ratio COLLAPSES by reflection under a shared fold, an identical-channel master staying identical, the fold
-//     reflecting where the hard drive pins; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, a unity fold below the ceiling the identity, count = 0 the identity ----
+// --- selftest: THE STEREO FOLD LAW -- each channel equals ALES80's mono wavefold with the same params byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting
+//     length; THE PER-CHANNEL NONLINEAR LAW -- the ceiling and sign hold per channel, a 1:2 master's ratio COLLAPSES by reflection under a shared fold, an identical-channel master staying identical, the fold
+//     reflecting where the hard drive pins; THE ATOMICITY / DEGENERATE LAW -- each refusal leaves both channels untouched and balanced, a unity fold below the ceiling the identity, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -90,7 +90,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO FOLD LAW — each channel equals ALES80's mono wavefold with the same params, proven side by side over one span with different per-channel samples; a ×2 fold into a low ceiling passes the
+    // 1. THE STEREO FOLD LAW -- each channel equals ALES80's mono wavefold with the same params, proven side by side over one span with different per-channel samples; a ×2 fold into a low ceiling passes the
     //    small samples and reflects the boosted large ones back down the triangle, per channel.
     {
         var sc = pan.StereoClip{};
@@ -108,7 +108,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a fold writes values only. Proven at an even and an odd length.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a fold writes values only. Proven at an even and an odd length.
     {
         var even = pan.StereoClip{};
         try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
         if (odd.left.len != 3) return error.OddLength;
     }
 
-    // 3a. THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign discipline hold per channel: every output magnitude is at most the ceiling and every sign matches the input, on BOTH channels, under a hard
+    // 3a. THE PER-CHANNEL NONLINEAR LAW -- the ceiling and sign discipline hold per channel: every output magnitude is at most the ceiling and every sign matches the input, on BOTH channels, under a hard
     //     boost that folds many times. This is the fold's honest promise (contrast the linear amplitude class, which preserved a ratio).
     {
         var sc = pan.StereoClip{};
@@ -143,8 +143,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COLLAPSES BY REFLECTION — a 1:2 master (right twice left) folded through a ceiling does NOT keep its 1:2 ratio, because a fold is nonlinear and reflecting:
-    //     1000 sits below the 1500 ceiling and passes clean, while 2000's excess reflects to 3000 − 2000 = 1000, so both channels land on 1000 — the ratio collapsed to 1:1, and NEITHER is at the ceiling
+    // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COLLAPSES BY REFLECTION -- a 1:2 master (right twice left) folded through a ceiling does NOT keep its 1:2 ratio, because a fold is nonlinear and reflecting:
+    //     1000 sits below the 1500 ceiling and passes clean, while 2000's excess reflects to 3000 − 2000 = 1000, so both channels land on 1000 -- the ratio collapsed to 1:1, and NEITHER is at the ceiling
     //     (the honest contrast with ALES132's hard drive, which would have PINNED both to the ceiling).
     {
         var sc = pan.StereoClip{};
@@ -157,7 +157,7 @@ fn run_selftest() !u8 {
         if (l[0] == 1500 or r[0] == 1500) return error.FoldPinnedNotReflected; // neither at the ceiling — reflection, not the hard drive's pin
     }
 
-    // 3c. an identical-channel master stays identical through the fold — a shared triangle on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a nonlinear map).
+    // 3c. an identical-channel master stays identical through the fold -- a shared triangle on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a nonlinear map).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
@@ -165,7 +165,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3d. THE FOLD REFLECTS WHERE THE HARD DRIVE PINS — below the ceiling the two agree, above it they diverge: a value boosted just past the ceiling folds BACK DOWN (strictly below the ceiling) while
+    // 3d. THE FOLD REFLECTS WHERE THE HARD DRIVE PINS -- below the ceiling the two agree, above it they diverge: a value boosted just past the ceiling folds BACK DOWN (strictly below the ceiling) while
     //     ALES132's hard drive pins it AT the ceiling. Proven on both channels against ALES78's own hard drive run per channel.
     {
         const sl = [_]i16{ 900, 1600 }; // 900 below the 1500 ceiling (agree), 1600 just past it (diverge)
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (folded.left.samples()[1] >= 1500) return error.FoldNotBelowCeil; // reflection lands strictly below the ceiling
     }
 
-    // 4a. THE ATOMICITY LAW, bad gain — a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
+    // 4a. THE ATOMICITY LAW, bad gain -- a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
@@ -195,7 +195,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadGainUnbalanced;
     }
 
-    // 4b. THE ATOMICITY LAW, bad ceiling — a zero ceiling refuses BadCeiling, both channels untouched.
+    // 4b. THE ATOMICITY LAW, bad ceiling -- a zero ceiling refuses BadCeiling, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
@@ -204,7 +204,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 3, 2, 1 })) return error.BadCeilingRightMutated;
     }
 
-    // 4c. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    // 4c. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
@@ -213,7 +213,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
     }
 
-    // 4d. THE DEGENERATE LAW — a unity fold whose samples all sit below the ceiling is the identity on both channels (nothing crosses the ceiling, nothing reflects), and count = 0 is the identity on both.
+    // 4d. THE DEGENERATE LAW -- a unity fold whose samples all sit below the ceiling is the identity on both channels (nothing crosses the ceiling, nothing reflects), and count = 0 is the identity on both.
     {
         var below = pan.StereoClip{};
         try load_stereo(&below, &[_]i16{ 500, -900, 1400 }, &[_]i16{ -1400, 250, -500 });

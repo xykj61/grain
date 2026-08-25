@@ -1,6 +1,6 @@
-//! Rye test: std.mem.alignForwardLog2 / isAlignedAnyAlign — pass 9899.
+//! Rye test: std.mem.alignForwardLog2 / isAlignedAnyAlign -- pass 9899.
 //!
-//! Log2 forward round-up and arbitrary-alignment predicate; pairs with 9900–9902.
+//! Log2 forward round-up and arbitrary-alignment predicate; pairs with 9900-9902.
 
 const std = @import("std");
 const mem = std.mem;

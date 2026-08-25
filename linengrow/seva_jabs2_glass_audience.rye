@@ -1,7 +1,7 @@
-//! linengrow/seva_jabs2_glass_audience.rye — JABS2 audience lines for glass.
+//! linengrow/seva_jabs2_glass_audience.rye -- JABS2 audience lines for glass.
 //!
-//! Layout word: Skate grows to 20 rows; JABS2 paints rows 14–15;
-//! ZETA keyboard sits on 16–19. Two chat voices from the welcome audience.
+//! Layout word: Skate grows to 20 rows; JABS2 paints rows 14-15;
+//! ZETA keyboard sits on 16-19. Two chat voices from the welcome audience.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -18,7 +18,7 @@ pub const keyboard_row0: u32 = 16;
 pub const grid_rows: u32 = 20;
 
 /// Paint a live chat line from a Dexter submit (Skate-safe preview).
-/// Empty prompt (bare ret) still lands a chat face — first-tap ret must work.
+/// Empty prompt (bare ret) still lands a chat face -- first-tap ret must work.
 pub fn format_chat_line(prompt: []const u8, out_line: *[audience_line_max]u8, out_len: *u32) bool {
     // invariant: Dexter line bound
     assert(prompt.len <= dexter.max_line_len);
@@ -45,7 +45,7 @@ pub fn format_chat_line(prompt: []const u8, out_line: *[audience_line_max]u8, ou
     return true;
 }
 
-/// Device-free: submit text lands as a chat · line.
+/// Device-free: submit text lands as a chat - line.
 pub fn chat_line_from_glow() bool {
     var line: [audience_line_max]u8 = undefined;
     var len: u32 = 0;
@@ -53,7 +53,7 @@ pub fn chat_line_from_glow() bool {
     return std.mem.eql(u8, line[0..len], "chat · glow");
 }
 
-/// Device-free: bare ret (empty prompt) still paints chat ·.
+/// Device-free: bare ret (empty prompt) still paints chat -.
 pub fn chat_line_from_empty_ret() bool {
     var line: [audience_line_max]u8 = undefined;
     var len: u32 = 0;
@@ -61,7 +61,7 @@ pub fn chat_line_from_empty_ret() bool {
     return std.mem.eql(u8, line[0..len], "chat ·");
 }
 
-/// Welcome audience → two Skate lines. Returns false if roots diverge.
+/// Welcome audience -> two Skate lines. Returns false if roots diverge.
 pub fn run_demo_audience(
     out_lines: *[audience_rows][audience_line_max]u8,
     out_lens: *[audience_rows]u32,

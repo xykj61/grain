@@ -1,22 +1,22 @@
-//! encoding/base64.rye — Base64 (RFC 4648) authored in pure Rye. Base64 is the binary-to-text armor every wire format and text-safe
+//! encoding/base64.rye -- Base64 (RFC 4648) authored in pure Rye. Base64 is the binary-to-text armor every wire format and text-safe
 //! artifact leans on: a signed-carry frame written into a Bron field, a vault-sealed blob pasted into a note, a public key or a content
 //! address rendered for a human to read. The crypto library proves the bytes; this module renders them to text and back, byte-for-byte,
 //! so a hand can carry a key or a seal through any channel that only passes printable characters and recover it exactly.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography). Where crypto/ authors the mathematics that produces bytes
+//! Season: encoding -- the serialization sibling of Season G (Cryptography). Where crypto/ authors the mathematics that produces bytes
 //! (hashes, signatures, sealed boxes), encoding/ authors the text forms those bytes travel in. Both keep the same discipline: authored
 //! from the standard, calling no std.base64 in the primitive, proven byte-for-byte against a reference runnable now.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the alphabet and the padding law are RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — Base64 packs three 8-bit bytes into four 6-bit symbols, each symbol an index into a 64-character alphabet. The standard
-//! alphabet (A–Z a–z 0–9 + /) pads a short final group with '=' so the text length is always a multiple of four; the URL-safe alphabet
-//! (A–Z a–z 0–9 - _) is written here without padding, the form used in tokens and file names. Decoding inverts the map, refusing any
+//! THE CRUX -- Base64 packs three 8-bit bytes into four 6-bit symbols, each symbol an index into a 64-character alphabet. The standard
+//! alphabet (A-Z a-z 0-9 + /) pads a short final group with '=' so the text length is always a multiple of four; the URL-safe alphabet
+//! (A-Z a-z 0-9 - _) is written here without padding, the form used in tokens and file names. Decoding inverts the map, refusing any
 //! character outside the alphabet and any padding that does not match the group length. Every step is a bounded loop over small integers.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.base64; it is
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.base64; it is
 //! authored from RFC 4648. Parity is proven at selftest against two references runnable now: the RFC 4648 §10 known-answer vectors
-//! ("" · "f" · "fo" · "foo" · "foob" · "fooba" · "foobar"), and Zig's own std.base64 as an independent implementation, byte-for-byte
+//! ("" - "f" - "fo" - "foo" - "foob" - "fooba" - "foobar"), and Zig's own std.base64 as an independent implementation, byte-for-byte
 //! across a sweep of every remainder class and a round-trip on random-shaped inputs, both the standard and URL-safe alphabets.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/base64.rye selftest
@@ -34,7 +34,7 @@ pub const url_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01
 const pad_char: u8 = '=';
 
 /// The largest binary payload this module encodes or the largest decode it produces in one call. Generous for a key, a signature, a
-/// sealed frame, or any in-process artifact, yet named so every buffer bound and every loop cites a maximum — the TAME reflex that a
+/// sealed frame, or any in-process artifact, yet named so every buffer bound and every loop cites a maximum -- the TAME reflex that a
 /// count declares its ceiling before it grows.
 pub const max_decoded_bytes: u32 = 1 << 20;
 
@@ -43,9 +43,9 @@ pub const max_encoded_bytes: u32 = ((max_decoded_bytes + 2) / 3) * 4;
 
 /// The faults this module can raise, each refused at the edge before a partial result escapes.
 pub const Base64Error = error{
-    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) — refused before a symbol is written.
+    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) -- refused before a symbol is written.
     TooLong,
-    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact output length -- refused before the first write.
     DestTooSmall,
     /// A decode input whose length is not a legal base64 length for its alphabet (padded: a multiple of four; unpadded: never one past).
     BadLength,
@@ -54,7 +54,7 @@ pub const Base64Error = error{
 };
 
 /// The exact number of base64 symbols an n-byte payload encodes to. Padded alphabets always fill to a multiple of four; the unpadded
-/// URL form writes only the symbols the bits require — ceil(n*8 / 6).
+/// URL form writes only the symbols the bits require -- ceil(n*8 / 6).
 pub fn encoded_len(n: u32, padded: bool) u32 {
     // invariant: the payload fits the named bound, so the multiply-by-four never overflows u32.
     assert(n <= max_decoded_bytes);
@@ -66,7 +66,7 @@ pub fn encoded_len(n: u32, padded: bool) u32 {
 }
 
 /// Encode source into dest using the given alphabet, padding with '=' when padded is true. Returns the exact written slice of dest.
-/// The primitive calls no std.base64 — it maps six bits at a time straight from RFC 4648's alphabet.
+/// The primitive calls no std.base64 -- it maps six bits at a time straight from RFC 4648's alphabet.
 fn encode_with(alphabet: []const u8, padded: bool, dest: []u8, source: []const u8) Base64Error![]const u8 {
     // invariant: the alphabet is exactly the 64 symbols base64 indexes.
     assert(alphabet.len == 64);
@@ -80,7 +80,7 @@ fn encode_with(alphabet: []const u8, padded: bool, dest: []u8, source: []const u
 
     var di: u32 = 0;
     var si: u32 = 0;
-    // Whole 3-byte groups → 4 symbols each.
+    // Whole 3-byte groups -> 4 symbols each.
     while (n - si >= 3) : (si += 3) {
         const b0 = source[si];
         const b1 = source[si + 1];
@@ -93,7 +93,7 @@ fn encode_with(alphabet: []const u8, padded: bool, dest: []u8, source: []const u
     }
 
     const rem = n - si;
-    // invariant: the leftover is 0, 1, or 2 bytes — every whole group was consumed above.
+    // invariant: the leftover is 0, 1, or 2 bytes -- every whole group was consumed above.
     assert(rem < 3);
     if (rem == 1) {
         const b0 = source[si];
@@ -178,7 +178,7 @@ fn decode_with(alphabet: []const u8, padded: bool, dest: []u8, source: []const u
     }
 
     const rem = body_len - si;
-    // invariant: the leftover is 0, 2, or 3 symbols — a 1-symbol tail was refused above.
+    // invariant: the leftover is 0, 2, or 3 symbols -- a 1-symbol tail was refused above.
     assert(rem == 0 or rem == 2 or rem == 3);
     if (rem == 2) {
         const v0 = table[source[si]];
@@ -201,7 +201,7 @@ fn decode_with(alphabet: []const u8, padded: bool, dest: []u8, source: []const u
     return dest[0..di];
 }
 
-/// Encode source as standard base64 (A–Z a–z 0–9 + /) with '=' padding — the form of MIME, PEM, and most text-armored keys.
+/// Encode source as standard base64 (A-Z a-z 0-9 + /) with '=' padding -- the form of MIME, PEM, and most text-armored keys.
 pub fn encode(dest: []u8, source: []const u8) Base64Error![]const u8 {
     return encode_with(standard_alphabet, true, dest, source);
 }
@@ -211,7 +211,7 @@ pub fn decode(dest: []u8, source: []const u8) Base64Error![]const u8 {
     return decode_with(standard_alphabet, true, dest, source);
 }
 
-/// Encode source as URL-safe base64 (A–Z a–z 0–9 - _) without padding — the form of tokens and file names.
+/// Encode source as URL-safe base64 (A-Z a-z 0-9 - _) without padding -- the form of tokens and file names.
 pub fn encode_url(dest: []u8, source: []const u8) Base64Error![]const u8 {
     return encode_with(url_alphabet, false, dest, source);
 }
@@ -221,7 +221,7 @@ pub fn decode_url(dest: []u8, source: []const u8) Base64Error![]const u8 {
     return decode_with(url_alphabet, false, dest, source);
 }
 
-// The RFC 4648 §10 known-answer vectors for standard base64 — the neutral public reference our Rye must reproduce exactly.
+// The RFC 4648 §10 known-answer vectors for standard base64 -- the neutral public reference our Rye must reproduce exactly.
 const rfc_inputs = [_][]const u8{ "", "f", "fo", "foo", "foob", "fooba", "foobar" };
 const rfc_outputs = [_][]const u8{ "", "Zg==", "Zm8=", "Zm9v", "Zm9vYg==", "Zm9vYmE=", "Zm9vYmFy" };
 

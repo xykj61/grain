@@ -1,29 +1,29 @@
-//! mycelium/testament_bron.rye — a named constellation's certificate travels as a readable record (r3).
+//! mycelium/testament_bron.rye -- a named constellation's certificate travels as a readable record (r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r3 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r3 -- travel.
 //! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //! r1 sealed a reading into a Testament and verified it OFFLINE from the roster names alone; r2 carried the
 //! roll's fault tolerance into that offline certificate. Yet the certificate still lived in memory. A belief
 //! a keeper cannot hand to another is only a local reading, so r3 lets the whole Testament cross as
-//! `format testament-v1` bytes: one `ship <name>` line per roster ship (the NAME only — a ship's key is a
+//! `format testament-v1` bytes: one `ship <name>` line per roster ship (the NAME only -- a ship's key is a
 //! pure function of its name, so the record needs no key), then the shared claim named once (`head`,
 //! `account`, `position <balance> <reserved> <received>`), then one `member <node-hex> <sig-hex>` line per
 //! sealing ship. Render writes it, parse reads it back, so a round trip is a fixed point.
 //!
 //! The distinction from the bare `chorus_bron` record is exactly the roster: a `chorus-v1` record STATES its
 //! threshold and carries no membership, so a recipient trusts the number and the keys the record names. A
-//! `testament-v1` record carries the constellation's NAMES and states NO threshold — parse boots the roster
+//! `testament-v1` record carries the constellation's NAMES and states NO threshold -- parse boots the roster
 //! from the names, DERIVES the Byzantine threshold from the roster's size, and re-runs r1's `verify` over the
 //! recovered certificate, so the named binding travels: a member whose key is not one of the roster's names
 //! refuses `NotMember`, a quorum too thin refuses `BelowQuorum`, a tampered ship name re-derives a different
-//! key so a real signer stops being a member (`NotMember`) — the same teeth r1 proved, now across the wire.
+//! key so a real signer stops being a member (`NotMember`) -- the same teeth r1 proved, now across the wire.
 //!
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
 //! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer `BadInt`, a bad hex field
 //! `BadHex`, a missing claim field `BadFormat`, an over-full roster `TooManyShips`, an over-full member set
 //! `TooManyMembers`. Composes testament + constel + chorus + voucher public API only, editing none. Siloed
-//! dev fixtures, demo seeds — no key held, no funds, no network, no custody.
+//! dev fixtures, demo seeds -- no key held, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_bron.rye
 
@@ -45,7 +45,7 @@ pub const head_len: u32 = testament.head_len;
 pub const max_name_len: u32 = testament.max_name_len;
 pub const max_ships: u32 = testament.testament_max_ships;
 
-/// The record buffer bound — a full roster's ship lines plus the claim and one member line per voice fit
+/// The record buffer bound -- a full roster's ship lines plus the claim and one member line per voice fit
 /// with room to spare.
 pub const max_record: u32 = 8192;
 
@@ -91,7 +91,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one Testament to a `format testament-v1` record — the roster names, the shared claim once, and one
+/// Render one Testament to a `format testament-v1` record -- the roster names, the shared claim once, and one
 /// member line per sealing voice. States NO threshold: the record carries the names a verifier re-derives it
 /// from. Refuses an overflow rather than a partial record.
 pub fn render(t: *const testament.Testament, out: []u8) BronError!u32 {
@@ -137,7 +137,7 @@ pub fn render(t: *const testament.Testament, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to four tokens; returns the count (or five to signal a token past a member line's
-/// width — the position record, at four, is the widest).
+/// width -- the position record, at four, is the widest).
 fn tokens(line: []const u8, out: *[4][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -149,7 +149,7 @@ fn tokens(line: []const u8, out: *[4][]const u8) u32 {
     return count;
 }
 
-/// Parse a `format testament-v1` record into `out`, then — the crux — re-run r1's `verify` over the recovered
+/// Parse a `format testament-v1` record into `out`, then -- the crux -- re-run r1's `verify` over the recovered
 /// certificate: boot the roster from the carried names, derive the Byzantine threshold from its size, and pass
 /// the seal offline. A record whose sealing voices are not the named roster's ships refuses `NotMember`, one
 /// too thin refuses `BelowQuorum`, so a certificate that does not prove its own NAMED quorum refuses before
@@ -213,13 +213,13 @@ pub fn parse(text: []const u8, out: *testament.Testament) !void {
     if (out.seal.count == 0) return error.BadFormat;
 
     // The named quorum law travels: the recovered certificate must prove itself against the constellation its
-    // OWN names define, deriving the threshold from that roster — no stated number to trust.
+    // OWN names define, deriving the threshold from that roster -- no stated number to trust.
     try testament.verify(out);
 }
 
 // --- selftest: a named certificate travels and still proves itself against its own roster ----------------
 
-// The Testament dev-net roster — the same five named ships r1 sealed (see testament.rye for the naming law).
+// The Testament dev-net roster -- the same five named ships r1 sealed (see testament.rye for the naming law).
 const roster = [_][]const u8{
     "xnvethqua",
     "kwelmirran",
@@ -228,7 +228,7 @@ const roster = [_][]const u8{
     "xwendakosh",
 };
 
-/// Two certificates name the same constellation and the same seal — roster names, claim, and every member's
+/// Two certificates name the same constellation and the same seal -- roster names, claim, and every member's
 /// node key and signature, in order.
 fn testaments_agree(a: *const testament.Testament, b: *const testament.Testament) bool {
     if (a.roster_count != b.roster_count) return false;
@@ -267,7 +267,7 @@ pub fn main() !void {
 
     // The recovered certificate is the identical constellation and seal.
     if (!testaments_agree(&t, &recovered)) return error.CertificateChanged;
-    // Verify again explicitly — the belief survives the crossing, from the names alone.
+    // Verify again explicitly -- the belief survives the crossing, from the names alone.
     try testament.verify(&recovered);
     // The recovered roster derives the same Byzantine threshold from its own names.
     const threshold = try testament.threshold_of(&recovered);
@@ -309,7 +309,7 @@ pub fn main() !void {
         }
     }
 
-    // --- Teeth 1 — the named binding travels: a stranger's valid voice refuses NotMember on the wire ----
+    // --- Teeth 1 -- the named binding travels: a stranger's valid voice refuses NotMember on the wire ----
     // A bare chorus-v1 record would ACCEPT this honest, agreeing signature; a testament-v1 record refuses it
     // because the signer is not one of the roster's own named ships.
     {
@@ -322,7 +322,7 @@ pub fn main() !void {
             if (err != error.NotMember) return error.WrongStranger;
         }
     }
-    // --- Teeth 2 — a thin quorum short of the derived threshold refuses BelowQuorum on the wire ---------
+    // --- Teeth 2 -- a thin quorum short of the derived threshold refuses BelowQuorum on the wire ---------
     {
         const thin = try testament.seal_subset(&c, &dag, account_pk[0..], threshold - 1);
         var tb: [max_record]u8 = undefined;
@@ -331,9 +331,9 @@ pub fn main() !void {
             if (err != error.BelowQuorum) return error.WrongThin;
         }
     }
-    // --- Teeth 3 — a tampered ship name re-derives a different key, so a real signer stops being a member -
+    // --- Teeth 3 -- a tampered ship name re-derives a different key, so a real signer stops being a member -
     // Flip one byte of the first ship name in the record; parse boots a different key for that slot, the real
-    // sealing voucher is no longer a member, and the certificate refuses NotMember — bound to the exact names.
+    // sealing voucher is no longer a member, and the certificate refuses NotMember -- bound to the exact names.
     {
         var tmp: [max_record]u8 = undefined;
         tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);

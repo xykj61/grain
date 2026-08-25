@@ -1,7 +1,7 @@
-//! linengrow/seva_r2_surface.rye — Seva R2 demo surface as a callable unit.
+//! linengrow/seva_r2_surface.rye -- Seva R2 demo surface as a callable unit.
 //!
 //! Same three capability-isolated Pool agents as seva_surface_witness.rye
-//! Claim 1 (ask · receipt · reputation), gathered onto one Surface for the
+//! Claim 1 (ask - receipt - reputation), gathered onto one Surface for the
 //! NativeActivity present seam. B0 still owns the session root; R2 owns the
 //! multi-panel thin-view.
 

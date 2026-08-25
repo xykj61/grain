@@ -1,4 +1,4 @@
-//! linengrow/pool_isolation_witness.rye — proves Pool P1, the capability boundary.
+//! linengrow/pool_isolation_witness.rye -- proves Pool P1, the capability boundary.
 //!
 //!   rye build linengrow/pool_isolation_witness.rye -femit-bin=linengrow/bin/pool_isolation_witness
 //!   linengrow/bin/pool_isolation_witness
@@ -8,14 +8,14 @@
 //! own state resource in Caravan's capability table, cannot touch each
 //! other's state except through a named, granted capability. Five claims:
 //!   1. Agent A, granted its own state, is hosted and folds its own log;
-//!      agent B likewise on its own state — and their states differ, so the
+//!      agent B likewise on its own state -- and their states differ, so the
 //!      two are genuinely independent, not a shared ledger.
-//!   2. Agent A trying to touch agent B's state is refused NotAdmitted —
+//!   2. Agent A trying to touch agent B's state is refused NotAdmitted --
 //!      the isolation guarantee: no grant, no access.
-//!   3. Agent B trying to touch agent A's state is refused too — the
+//!   3. Agent B trying to touch agent A's state is refused too -- the
 //!      boundary holds in both directions.
 //!   4. Granting agent A an explicit capability over B's state is the ONLY
-//!      thing that opens the door — cross-access exists solely by a named,
+//!      thing that opens the door -- cross-access exists solely by a named,
 //!      granted capability, never by default.
 //!   5. The grant to A does not leak the other way: B still cannot touch A's
 //!      state after A gains access to B's.

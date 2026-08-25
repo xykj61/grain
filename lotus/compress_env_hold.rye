@@ -1,24 +1,24 @@
-//! lotus/compress_env_hold.rye — ALES58: an attack/HOLD/release compressor — the breathing compressor given the one stage between
+//! lotus/compress_env_hold.rye -- ALES58: an attack/HOLD/release compressor -- the breathing compressor given the one stage between
 //! its two knobs. ALES53 gave the compressor (ALES50) a patient sense of time, driving the softened ceiling from ALES52's proven
 //! envelope follower so it leans in over the attack and eases the gain back over the release. Yet an un-held compressor still lets
-//! its gain jump back toward unity the moment a loud passage momentarily DUCKS below the threshold — it PUMPS, and the ear hears the
+//! its gain jump back toward unity the moment a loud passage momentarily DUCKS below the threshold -- it PUMPS, and the ear hears the
 //! gain breathe in and out. A real compressor carries a HOLD knob for exactly this: on a fall away from a peak, it pins the peak for
 //! a little while before the release begins, so the gain reduction stays engaged through the duck and the level stays steady. ALES56
 //! built that hold stage INSIDE the follower (hold_env.env_step_hold) and proved it once. This rung spends that proof: it drives
-//! ALES50's softened ceiling from the HELD follower rather than the plain one — the same compressor, now with the patience that keeps
+//! ALES50's softened ceiling from the HELD follower rather than the plain one -- the same compressor, now with the patience that keeps
 //! it from pumping. The gain math is not re-invented (it is ALES50's), and the time base is not re-invented (it is ALES56's held
 //! env_step); this rung is exactly their composition over public APIs, adding only the hold knob. It is the mirror of ALES57's held
 //! gate: where the gate's hold keeps the door OPEN across a dip, the compressor's hold keeps the gain reduction ENGAGED across a duck.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES58.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES58.
 //! Design read: active-designing/date/20260814/20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/compress.rye
-//! (ALES50) — the softened ceiling this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) — the HELD time base, its
-//! env_step_hold advancing the same follower one sample at a time with the hold pinning the peak; lotus/compress_env.rye (ALES53) —
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/compress.rye
+//! (ALES50) -- the softened ceiling this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) -- the HELD time base, its
+//! env_step_hold advancing the same follower one sample at a time with the hold pinning the peak; lotus/compress_env.rye (ALES53) --
 //! the un-held attack/release compressor this reduces to at a hold of zero, re-proven beside it as the zero-hold limit.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the attack, release, and hold are counted in sample INDICES,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the attack, release, and hold are counted in sample INDICES,
 //! not milliseconds against a clock, and the threshold is a magnitude in sample units, the ratio a plain fraction. One held envelope
 //! step and at most one multiply-divide per sample; nothing on the path can overflow, since the compressed envelope is at most the
 //! envelope so the gain sits in (0, 1] and every written magnitude is at most the input's, which already fits i16.
@@ -38,30 +38,30 @@ pub const compress_env_hold_version = "20260814.181719";
 
 /// The attack/hold/release compressor's faults, one consistent name each: a threshold outside [1, sample_max], a ratio below unity or
 /// with a zero denominator, an attack or release coefficient outside (0, 1], a hold longer than the widest clip, and a span outside
-/// the samples. Each coincides by name with the tool it borrows from — BadThreshold and BadRatio from the compressor, BadCoeff from
-/// the follower, BadHold from the held follower, BadRange from the whole family — so a composer sees one consistent fault surface.
+/// the samples. Each coincides by name with the tool it borrows from -- BadThreshold and BadRatio from the compressor, BadCoeff from
+/// the follower, BadHold from the held follower, BadRange from the whole family -- so a composer sees one consistent fault surface.
 pub const CompressEnvHoldError = error{
     /// A threshold of zero (no band left to compress below it) or above sample_max (nothing could ever cross it).
     BadThreshold,
-    /// A ratio below unity (would expand, not compress) or with a zero denominator — refused, no write.
+    /// A ratio below unity (would expand, not compress) or with a zero denominator -- refused, no write.
     BadRatio,
-    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    /// An attack or release coefficient outside (0, 1] -- a frozen envelope, an overshooting step, or a divide by zero.
     BadCoeff,
-    /// A hold longer than max_clip samples — no clip is that long, so such a hold could never expire within a span; refused, no write.
+    /// A hold longer than max_clip samples -- no clip is that long, so such a hold could never expire within a span; refused, no write.
     BadHold,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Compress `count` samples starting at `start` in place above the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the gain
-/// reduction FOLLOWING a HELD envelope that CONTINUES from the caller's `env` and `hold_left` rather than from silence — the
+/// reduction FOLLOWING a HELD envelope that CONTINUES from the caller's `env` and `hold_left` rather than from silence -- the
 /// carried-state form (ALES43's lesson), now carrying BOTH the envelope and the hold countdown so the hold survives across a call
 /// boundary. Each sample advances the proven ALES56 held follower one step (attack while rising and rearming the hold, the peak pinned
 /// while the countdown lasts, the release only once it expires); when the held envelope sits within the threshold the sample passes
 /// byte-for-byte, and when it rises above, the envelope's excess is divided by the ratio (ALES50's softened ceiling) and that gain
 /// applied to the raw sample. With `hold_samples` zero the held follower reduces to ALES52's plain env_step, so this compressor
 /// reduces to ALES53's un-held compressor byte-for-byte. Refuses BadThreshold, BadRatio, BadCoeff, BadHold, and BadRange before any
-/// write; on refusal the clip and the carried state are untouched. Values only — never the length.
+/// write; on refusal the clip and the carried state are untouched. Values only -- never the length.
 pub fn compress_hold_follow_carry(
     clip: *timeline.Clip,
     start: u32,
@@ -77,18 +77,18 @@ pub fn compress_hold_follow_carry(
     release_den: u32,
     hold_samples: u32,
 ) CompressEnvHoldError!void {
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would expand.
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero -- a ratio below one would expand.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] -- checked by the follower's one proven rule.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span. Before any write.
+    // invariant: the hold is bounded by the widest clip -- a longer hold could never expire within any span. Before any write.
     if (hold_samples > timeline.max_clip) return error.BadHold;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -101,25 +101,25 @@ pub fn compress_hold_follow_carry(
         // Advance the proven ALES56 HELD follower one sample; e is the smoothed-and-held magnitude, in [0, sample_max].
         _ = hold_env.env_step_hold(env, hold_left, x, attack_num, attack_den, release_num, release_den, hold_samples);
         const e: i64 = env.*;
-        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (the held step's own guarantee).
+        // invariant: the envelope stays a legal magnitude -- never negative, never past the rail (the held step's own guarantee).
         assert(e >= 0 and e <= @as(i64, timeline.sample_max));
         if (e > thr) {
             const excess: i64 = e - thr; // strictly positive: the held detector has crossed the ceiling
-            // The compressed envelope target — ALES50's softened ceiling, computed on the ENVELOPE not the bare sample.
+            // The compressed envelope target -- ALES50's softened ceiling, computed on the ENVELOPE not the bare sample.
             const comp: i64 = thr + @divTrunc(excess * den, num);
-            // invariant: the compressed envelope sits within [threshold, envelope] — the gain comp/e is in (0, 1].
+            // invariant: the compressed envelope sits within [threshold, envelope] -- the gain comp/e is in (0, 1].
             assert(comp >= thr and comp <= e);
             const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
-            // Apply the gain comp/e to the raw sample. m·comp <= 32768·32767 fits i64; divTrunc keeps it at most m.
+            // Apply the gain comp/e to the raw sample. m-comp <= 32768-32767 fits i64; divTrunc keeps it at most m.
             const new_m: i64 = @divTrunc(m * comp, e);
-            // invariant: the gain reduces, never boosts — a smoothed compressor only ever leans down.
+            // invariant: the gain reduces, never boosts -- a smoothed compressor only ever leans down.
             assert(new_m <= m);
             const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
             clip.buf[start + i] = y;
             // invariant: the written sample holds the input's sign (magnitude only shrank).
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample whose held envelope sits within the threshold is left exactly as it was — the gain reduction has not opened; the
+        // a sample whose held envelope sits within the threshold is left exactly as it was -- the gain reduction has not opened; the
         // hold keeping the peak pinned above the threshold is what keeps that reduction engaged across a brief duck rather than pumping.
     }
     // invariant: a compressor changes sample values only, never the clip's length or bound.
@@ -128,7 +128,7 @@ pub fn compress_hold_follow_carry(
 }
 
 /// Compress `count` samples starting at `start` in place, the gain reduction following a HELD envelope that begins FROM SILENCE (a
-/// fresh env of 0 with the hold unarmed) — one implementation shared with the carried form, so the two cannot drift. Refuses
+/// fresh env of 0 with the hold unarmed) -- one implementation shared with the carried form, so the two cannot drift. Refuses
 /// BadThreshold, BadRatio, BadCoeff, BadHold, and BadRange before any write.
 pub fn compress_hold_follow(
     clip: *timeline.Clip,
@@ -151,7 +151,7 @@ pub fn compress_hold_follow(
 // --- selftest: silence stays silence; a HOLD OF ZERO reduces to the plain ALES53 attack/release compressor byte-for-byte (the
 //     zero-hold limit); UNIT RATIO is the identity everywhere; a loud signal has its magnitude reduced with the sign held and never
 //     expanding; a NONZERO HOLD keeps the gain reduction engaged across a brief duck (it does not pump, the knob monotone); the state
-//     CARRIES — env and hold_left both — so a span in two pieces equals the whole once; and a bad threshold, a sub-unity ratio, an
+//     CARRIES -- env and hold_left both -- so a span in two pieces equals the whole once; and a bad threshold, a sub-unity ratio, an
 //     illegal coefficient, a hold past max_clip, and an out-of-range span each refuse by name ---------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -170,7 +170,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip compresses to all zeros at any legal threshold, ratio, coefficients, and hold.
+    // 1. silence stays silence -- an all-zero clip compresses to all zeros at any legal threshold, ratio, coefficients, and hold.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. A HOLD OF ZERO IS THE PLAIN ALES53 COMPRESSOR — with hold_samples == 0 the held follower's fall branch never pins, so every
+    // 2. A HOLD OF ZERO IS THE PLAIN ALES53 COMPRESSOR -- with hold_samples == 0 the held follower's fall branch never pins, so every
     //    sample moves through ALES52's env_step exactly as ALES53's un-held compressor does: the held compressor with no hold IS the
     //    ALES53 compressor, byte-for-byte by construction. Proven by running BOTH tools on the same signal (the zero-hold limit).
     {
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         if (!eq(held.samples(), plain.samples())) return error.ZeroHoldNotPlainCompressor;
     }
 
-    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den makes the compressed envelope equal the envelope, so the gain
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den makes the compressed envelope equal the envelope, so the gain
     //    is exactly one at every sample regardless of smoothing or hold: the whole signal passes byte-for-byte.
     {
         const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400 };
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.UnitRatioNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a loud signal compresses so every output magnitude is at most the input's
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a loud signal compresses so every output magnitude is at most the input's
     //    and every sign matches, under a real attack, release, and hold.
     {
         const loud = [_]i16{ 6000, -6000, 800, -12000, 12000, -300, 9000, -9000 };
@@ -218,9 +218,9 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A NONZERO HOLD KEEPS THE GAIN REDUCTION ENGAGED ACROSS A BRIEF DUCK — a loud sample, one quiet duck below the threshold, then
+    // 5. A NONZERO HOLD KEEPS THE GAIN REDUCTION ENGAGED ACROSS A BRIEF DUCK -- a loud sample, one quiet duck below the threshold, then
     //    loud again. With INSTANT attack and INSTANT release and NO hold, the duck drops the envelope below the threshold so the gain
-    //    reduction disengages and the duck passes byte-for-byte (the compressor PUMPS — its gain jumped back to unity). With a hold
+    //    reduction disengages and the duck passes byte-for-byte (the compressor PUMPS -- its gain jumped back to unity). With a hold
     //    that spans the duck, the peak stays pinned above the threshold so the gain reduction stays engaged and the duck is
     //    attenuated. So the held magnitude is no LARGER than the un-held one at every sample (the hold only ever keeps the gain DOWN,
     //    the knob monotone in the compressor's direction), and strictly QUIETER at the duck (the pumping avoided).
@@ -238,11 +238,11 @@ fn run_selftest() !u8 {
             if (abs16(held.samples()[i]) > abs16(none.samples()[i])) return error.HoldPumpedMore;
         }
         // the duck sample (index 1): the held compressor keeps the pinned peak above threshold so the gain reduction stays engaged and
-        // attenuates it, the un-held compressor has already released to unity and passes it whole — the hold avoided the pump.
+        // attenuates it, the un-held compressor has already released to unity and passes it whole -- the hold avoided the pump.
         if (abs16(held.samples()[1]) >= abs16(none.samples()[1])) return error.HoldDidNotEngage;
     }
 
-    // 6. THE STATE CARRIES — env AND hold_left both — so compressing a span in two pieces, the split falling MID-HOLD, equals
+    // 6. THE STATE CARRIES -- env AND hold_left both -- so compressing a span in two pieces, the split falling MID-HOLD, equals
     //    compressing the whole once, byte-for-byte: the seam invisible, so dynamics can span and automate.
     {
         const sig = [_]i16{ 14000, 14000, 400, 400, 400, 9000, 6000, 6000 };

@@ -1,33 +1,33 @@
-//! crypto/eth_personal_sign.rye — Season G (Cryptography): the Ethereum EIP-191 personal_sign message digest and its signer recovery, authored
-//! in pure Rye as a composition over three already-GREEN rungs — the Keccak-256 in crypto/keccak256.rye, the ECDSA public-key recovery in
+//! crypto/eth_personal_sign.rye -- Season G (Cryptography): the Ethereum EIP-191 personal_sign message digest and its signer recovery, authored
+//! in pure Rye as a composition over three already-GREEN rungs -- the Keccak-256 in crypto/keccak256.rye, the ECDSA public-key recovery in
 //! crypto/secp256k1_ecrecover.rye, and the address derivation in crypto/eth_address.rye. This is "Sign in with Ethereum": a wallet never signs
-//! a raw message, it signs the Keccak-256 of "\x19Ethereum Signed Message:\n" ++ decimal(len) ++ message — the EIP-191 0x45 (personal_sign)
+//! a raw message, it signs the Keccak-256 of "\x19Ethereum Signed Message:\n" ++ decimal(len) ++ message -- the EIP-191 0x45 (personal_sign)
 //! framing, whose leading 0x19 byte can never begin a valid RLP transaction, so a signed login message can never be replayed as a transaction.
-//! Given that message and a 65-byte signature (r ‖ s ‖ v), recover_signer reads the SENDER's twenty-byte address back out — the exact operation
+//! Given that message and a 65-byte signature (r ‖ s ‖ v), recover_signer reads the SENDER's twenty-byte address back out -- the exact operation
 //! behind every EIP-191 authentication, every SIWE session, and every off-chain signed receipt an app checks before it trusts a claim.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready). This rung authors NO new
 //! cryptography: it frames a message with the EIP-191 prefix, hashes it with the GREEN Keccak-256, recovers the public key with the GREEN
-//! ecrecover, and resolves that key to an address with the GREEN eth_address — every arithmetic step already proven on metal beneath it.
-//! Design read: active-designing/date/20260816/20260816-040220_secp256k1-ecrecover.md (the recovery rung this stands on, which named this composition next) ·
-//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, the Dimeroll receipt /
+//! ecrecover, and resolves that key to an address with the GREEN eth_address -- every arithmetic step already proven on metal beneath it.
+//! Design read: active-designing/date/20260816/20260816-040220_secp256k1-ecrecover.md (the recovery rung this stands on, which named this composition next) -
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave, the Dimeroll receipt /
 //! Kumara login against an Ethereum key this unblocks).
-//! Kin: crypto/secp256k1_ecrecover.rye (the recovery this composes, GREEN) · crypto/eth_address.rye (the address the recovered key resolves to,
-//! GREEN) · crypto/keccak256.rye (the hash of the framed message, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the prehashed signer whose (r, s)
+//! Kin: crypto/secp256k1_ecrecover.rye (the recovery this composes, GREEN) - crypto/eth_address.rye (the address the recovered key resolves to,
+//! GREEN) - crypto/keccak256.rye (the hash of the framed message, GREEN) - crypto/secp256k1_ecdsa_sign.rye (the prehashed signer whose (r, s)
 //! the round-trip reads a signer out of, GREEN). Clean-room: EIP-191 is Ethereum's own public standard; the composition is ours, standing on
 //! our own parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — personal_hash frames the message as "\x19Ethereum Signed Message:\n" ++ ascii_decimal(message.len) ++ message and returns its
+//! THE CRUX -- personal_hash frames the message as "\x19Ethereum Signed Message:\n" ++ ascii_decimal(message.len) ++ message and returns its
 //! Keccak-256; recover_signer takes that digest as the ECDSA z, splits the 65-byte signature into r ‖ s ‖ v (v is 27/28, the low bit of R's
 //! y-coordinate + 27, or 0/1 accepted directly), calls the GREEN recover to read the public key Q, packs Q as the 64-byte x‖y body, and hands
-//! it to the GREEN address_from_pubkey. The only arithmetic of our own is the base-ten rendering of the message length — checked at selftest
+//! it to the GREEN address_from_pubkey. The only arithmetic of our own is the base-ten rendering of the message length -- checked at selftest
 //! against Zig's own std.fmt formatter over a spread of lengths that exercise one-, two-, three-, and five-digit counts.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device, no identity. In EIP-191 recovery every value — the
-//! message, the signature, the recovery byte, the recovered key and address — is PUBLIC (recovery reconstructs a public key from public data; it
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device, no identity. In EIP-191 recovery every value -- the
+//! message, the signature, the recovery byte, the recovered key and address -- is PUBLIC (recovery reconstructs a public key from public data; it
 //! touches no secret scalar), so the composed variable-time arithmetic leaks nothing already public. This file holds no key and calls no
-//! std.crypto in the primitive. It answers "who signed this message?" — never "sign this message": signing with a real identity key stays the
-//! custody gate (#3/#4). Parity is proven at selftest two ways runnable now — an algebraic round-trip (our GREEN prehashed signer signs the
+//! std.crypto in the primitive. It answers "who signed this message?" -- never "sign this message": signing with a real identity key stays the
+//! custody gate (#3/#4). Parity is proven at selftest two ways runnable now -- an algebraic round-trip (our GREEN prehashed signer signs the
 //! personal digest with a TEST key, the correct v recovers, and recover_signer returns exactly that key's own Ethereum address) AND an
 //! independent framing check (personal_hash equals Zig's std.crypto Keccak-256 over the prefix std.fmt assembles, byte-for-byte, across message
 //! lengths 0, 5, 11, 100, and 9001).
@@ -53,7 +53,7 @@ pub const digest_bytes: u32 = 32;
 pub const signature_bytes: u32 = 65;
 pub const address_bytes: u32 = 20;
 
-/// The largest message this rung frames and hashes — a login/SIWE message is small; 16 KiB is generous while keeping the framed stack buffer
+/// The largest message this rung frames and hashes -- a login/SIWE message is small; 16 KiB is generous while keeping the framed stack buffer
 /// modest. The framed length is prefix(26) + at most ten base-ten digits + the message, all well within Keccak-256's own million-byte bound.
 pub const max_personal_message_bytes: u32 = 1 << 14;
 pub const max_len_digits: u32 = 10; // ceil(log10(2^32)); a u32 length never renders more than ten decimal digits
@@ -64,14 +64,14 @@ const eip191_prefix = "\x19Ethereum Signed Message:\n";
 
 /// The faults this composition can raise, each refused at the edge before a partial result escapes.
 pub const PersonalHashError = error{
-    /// A message longer than the named cap — refused before framing rather than overrunning the stack buffer.
+    /// A message longer than the named cap -- refused before framing rather than overrunning the stack buffer.
     MessageTooLong,
 };
 
 pub const PersonalSignError = error{
-    /// A signature whose length is not exactly 65 bytes (r ‖ s ‖ v) — refused before splitting.
+    /// A signature whose length is not exactly 65 bytes (r ‖ s ‖ v) -- refused before splitting.
     BadSignatureLength,
-    /// A recovery byte that is neither 27/28 nor 0/1 — refused before recovery.
+    /// A recovery byte that is neither 27/28 nor 0/1 -- refused before recovery.
     BadRecoveryByte,
 } || PersonalHashError || ecr.RecoverError || eth.EthAddressError;
 
@@ -153,9 +153,9 @@ fn recovery_id_from_v(v: u8) PersonalSignError!u8 {
 }
 
 /// Recover the twenty-byte Ethereum address that signed a message under EIP-191 personal_sign, given the message and a 65-byte signature
-/// r ‖ s ‖ v. Composes the GREEN personal digest, ecrecover, and address derivation — no arithmetic of its own beyond splitting the signature.
+/// r ‖ s ‖ v. Composes the GREEN personal digest, ecrecover, and address derivation -- no arithmetic of its own beyond splitting the signature.
 pub fn recover_signer(message: []const u8, sig: []const u8) PersonalSignError![address_bytes]u8 {
-    // invariant: a personal_sign signature is exactly 65 bytes — 32 for r, 32 for s, 1 for the recovery byte v.
+    // invariant: a personal_sign signature is exactly 65 bytes -- 32 for r, 32 for s, 1 for the recovery byte v.
     if (sig.len != signature_bytes) return error.BadSignatureLength;
 
     var r_be: [32]u8 = undefined;
@@ -187,7 +187,7 @@ pub fn recover_signer(message: []const u8, sig: []const u8) PersonalSignError![a
 // ---- selftest ------------------------------------------------------------------------------------------------------------------------
 
 /// Independent references used ONLY inside the selftest; the primitive above never calls them. Zig's own Keccak-256 gives a second, independent
-/// construction of the framed digest, and std.fmt an independent base-ten rendering of the length — cross-checking this file's own framing.
+/// construction of the framed digest, and std.fmt an independent base-ten rendering of the length -- cross-checking this file's own framing.
 const ZKeccak = std.crypto.hash.sha3.Keccak256;
 
 fn eq(a: []const u8, b: []const u8) bool {
@@ -198,7 +198,7 @@ fn eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Build the EIP-191 framed digest a second way — Zig's std.fmt for the length, Zig's std.crypto for the hash — as an independent witness of
+/// Build the EIP-191 framed digest a second way -- Zig's std.fmt for the length, Zig's std.crypto for the hash -- as an independent witness of
 /// this file's own framing and decimal rendering.
 fn zig_personal_hash(message: []const u8, out: *[32]u8) void {
     var framed: [max_framed_bytes]u8 = undefined;
@@ -222,7 +222,7 @@ fn zig_personal_hash(message: []const u8, out: *[32]u8) void {
 
 fn run_selftest() !u8 {
     // 1. Independent framing parity: personal_hash equals Zig's std.fmt + std.crypto Keccak-256 construction across a spread of lengths that
-    //    exercise one-, two-, three-, and multi-digit decimal renderings — a direct witness of this file's own length rendering and byte layout.
+    //    exercise one-, two-, three-, and multi-digit decimal renderings -- a direct witness of this file's own length rendering and byte layout.
     {
         const lengths = [_]u32{ 0, 5, 11, 100, 9001 };
         for (lengths) |len| {
@@ -239,7 +239,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. Full personal_sign round-trip through every GREEN rung: our prehashed signer signs the personal digest with a TEST key, the correct v
-    //    recovers, and recover_signer returns exactly that key's own Ethereum address — the EIP-191 authentication chain, end to end.
+    //    recovers, and recover_signer returns exactly that key's own Ethereum address -- the EIP-191 authentication chain, end to end.
     {
         const messages = [_][]const u8{
             "",
@@ -289,7 +289,7 @@ fn run_selftest() !u8 {
                 const recovered = try recover_signer(msg, &sig65);
                 if (!eq(&recovered, &true_addr)) return error.SignerAddressMismatch;
 
-                // A one-byte tamper of the message recovers a different address (or none) — never the true signer.
+                // A one-byte tamper of the message recovers a different address (or none) -- never the true signer.
                 if (msg.len > 0) {
                     var tampered: [max_personal_message_bytes]u8 = undefined;
                     var k: u32 = 0;

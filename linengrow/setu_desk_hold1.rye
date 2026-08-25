@@ -1,7 +1,7 @@
-//! linengrow/setu_desk_hold1.rye — HOLD1: Desk paints HOLD0 hold on Skate.
+//! linengrow/setu_desk_hold1.rye -- HOLD1: Desk paints HOLD0 hold on Skate.
 //!
-//! Season: Desk Hearth Hold. Device-free: station → hold chrome → skate_grid
-//! under SETU0.5 Desk metrics. Two rows (UTF-8 · lines exceed 48 cols as one).
+//! Season: Desk Hearth Hold. Device-free: station -> hold chrome -> skate_grid
+//! under SETU0.5 Desk metrics. Two rows (UTF-8 - lines exceed 48 cols as one).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -66,7 +66,7 @@ fn row_equals(grid: *const skate.Grid, row: u32, line: []const u8) bool {
     return true;
 }
 
-/// `hold · {home} · {preset} · {wire}`
+/// `hold - {home} - {preset} - {wire}`
 pub fn format_hold_chrome(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(
         out,
@@ -79,7 +79,7 @@ pub fn format_hold_chrome(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]con
     return line;
 }
 
-/// `ping {yes|no} · frame {n}`
+/// `ping {yes|no} - frame {n}`
 pub fn format_hold_detail(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]const u8 {
     const ping = if (s.ping_held) "yes" else "no";
     const line = std.fmt.bufPrint(
@@ -93,7 +93,7 @@ pub fn format_hold_detail(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]con
     return line;
 }
 
-/// Paint HOLD0 status onto Desk Skate rows 0–1 (caller owns grid cells).
+/// Paint HOLD0 status onto Desk Skate rows 0-1 (caller owns grid cells).
 pub fn paint_hold_on_grid(
     grid: *skate.Grid,
     station_text: []const u8,

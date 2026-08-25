@@ -1,34 +1,34 @@
-//! linengrow/tube_manifest.rye — TUBE0: the Glow app-manifest mold.
+//! linengrow/tube_manifest.rye -- TUBE0: the Glow app-manifest mold.
 //!
 //! Per expanding-prompts/yonder/20260716-142818_glow-application-framework-and-
 //! publishing.md, Part 3 and Part 5 (rung TUBE0): an installable Glow
-//! application is a Pool agent, and what an app *is* — its name, its
+//! application is a Pool agent, and what an app *is* -- its name, its
 //! version, the capabilities it declares needing, the resource ceiling its
-//! own bounded loops run under — is a bounded `+$` mold, not a free-form
+//! own bounded loops run under -- is a bounded `+$` mold, not a free-form
 //! bag of fields. This is the manifest half of that mold, expressed as a
 //! Rye value type with its own validation, before Pool's own agent runtime
-//! exists to admit anything against it — a pure value witness, buildable
+//! exists to admit anything against it -- a pure value witness, buildable
 //! and checkable today, needing no emulator, no device, no agent host.
 //!
 //! Deliberately reuses caravan/capabilities.rye's own `right_*` bit
 //! constants for declared capabilities rather than inventing a parallel
 //! set: a manifest's own declared capability is exactly a
 //! (resource, rights_mask) pair, the same shape Pool's capability table
-//! already grants against — sameness, not two vocabularies for one idea.
+//! already grants against -- sameness, not two vocabularies for one idea.
 //!
 //! What "well-formed" means here, checked by `validate`:
 //!   - the app name and version are non-empty and within the bounded
 //!     name-length ceiling (mirrors Capability.name's own bound);
 //!   - at least one capability is declared (an app that declares nothing
-//!     could never be admitted to anything — an empty manifest is not a
+//!     could never be admitted to anything -- an empty manifest is not a
 //!     minimal app, it is a malformed one);
 //!   - every declared capability names a non-empty resource and carries a
 //!     non-zero rights mask (a capability granting no right at all is
 //!     meaningless, and Pool's own `Rights.contains` would refuse it
-//!     silently forever — better to refuse the manifest that declares it,
+//!     silently forever -- better to refuse the manifest that declares it,
 //!     loudly, before admission is ever attempted);
 //!   - the declared iteration bound is non-zero (per TAME root rule 2 and
-//!     the rune brief's own bounded-trap discipline — a loop whose stated
+//!     the rune brief's own bounded-trap discipline -- a loop whose stated
 //!     ceiling is zero can never legitimately run at all, which is not a
 //!     valid bound, it is an authoring mistake the manifest should catch
 //!     at its own boundary rather than let surface as a confusing runtime
@@ -63,7 +63,7 @@ fn slice_len_u32(comptime T: type, buf: []const T) u32 {
 }
 
 // =========================================================================
-// § DeclaredCapability — one resource this app needs, and the right over it
+// § DeclaredCapability -- one resource this app needs, and the right over it
 // =========================================================================
 
 // Invariant: resource_len <= max_name_len; rights_mask uses only bits
@@ -101,7 +101,7 @@ pub const DeclaredCapability = struct {
 };
 
 // =========================================================================
-// § Manifest — the whole of what an app declares about itself
+// § Manifest -- the whole of what an app declares about itself
 // =========================================================================
 
 pub const ManifestError = error{
@@ -130,7 +130,7 @@ pub const Manifest = struct {
     caps: [max_declared_caps]DeclaredCapability = undefined,
     cap_count: u32 = 0,
     /// The stated ceiling every bounded loop in this app's own code must
-    /// carry at its own site, per the rune brief's `|- <bound>` design —
+    /// carry at its own site, per the rune brief's `|- <bound>` design --
     /// TUBE0 does not enforce individual loops (that is the compiler's own
     /// job once Glow lowers `|-`); it asserts the manifest at least
     /// *declares* a real, non-zero ceiling, the same way a mold refuses a
@@ -171,7 +171,7 @@ pub const Manifest = struct {
     }
 };
 
-/// Build a manifest from its parts and immediately validate it — a
+/// Build a manifest from its parts and immediately validate it -- a
 /// Manifest value that exists at all is, by construction, well-formed;
 /// there is no half-built, unchecked manifest anywhere in this module,
 /// the same "checked at expansion, never merely trusted" discipline the
@@ -224,7 +224,7 @@ fn append_line(out: []u8, off: *u32, line: []const u8) ManifestError!void {
     off.* += 1;
 }
 
-/// Canonical resin bytes for a well-formed Manifest — deterministic fold of
+/// Canonical resin bytes for a well-formed Manifest -- deterministic fold of
 /// name, version, iteration bound, and every declared capability. Used by
 /// TUBE2 publish so Granary stores the mold, not a free-form bag.
 pub fn write_canonical(m: *const Manifest, out: []u8) ManifestError!u32 {

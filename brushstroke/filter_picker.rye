@@ -1,17 +1,17 @@
-//! brushstroke/filter_picker.rye — HUNK63: the filter picker — swipe the stock filters, see each over the picture, keep one.
+//! brushstroke/filter_picker.rye -- HUNK63: the filter picker -- swipe the stock filters, see each over the picture, keep one.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK63.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK63.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md
-//! Teacher, thanked clean-room: the filter carousel of a photo app (iCloud Photos / Instagram / VSCO) — a keeper swipes
+//! Teacher, thanked clean-room: the filter carousel of a photo app (iCloud Photos / Instagram / VSCO) -- a keeper swipes
 //! through named filters, sees each over their own photo, and commits the one they like (concept only, siloed).
 //!
-//! The crop sub-arc (HUNK60–62) made cropping a whole tool: drag a frame, see it, commit it into the history, chain
-//! another. This rung lands the second central Photos gesture — choosing a filter — as the exact parallel tool.
-//! `FilterPicker` owns the immutable `source`, the stock `PresetBook` (HUNK30), an `EditCursor` (HUNK16 — the same
+//! The crop sub-arc (HUNK60-62) made cropping a whole tool: drag a frame, see it, commit it into the history, chain
+//! another. This rung lands the second central Photos gesture -- choosing a filter -- as the exact parallel tool.
+//! `FilterPicker` owns the immutable `source`, the stock `PresetBook` (HUNK30), an `EditCursor` (HUNK16 -- the same
 //! non-destructive history the crop tool commits into), and a `selection` (which filter is under the keeper's finger).
 //! `select_next`/`select_prev` walk the selection clamped to the book's ends; `preview` previews the SELECTED filter over
 //! the CURRENT view (source + committed edits, HUNK16) as a Skate grid; `commit` pushes the selected preset's whole recipe
-//! onto the cursor, so a chosen filter joins the edit-list every gesture lives in (HUNK11) — it travels, reproduces, and
+//! onto the cursor, so a chosen filter joins the edit-list every gesture lives in (HUNK11) -- it travels, reproduces, and
 //! walks with undo/redo for free. A second filter chains over the first. A pure composition over four proven seams; it
 //! invents no pixel op and one honest refusal, `EmptyImage`, for a zero-dimension source. The source is never mutated.
 //! No network, no key, no funds.
@@ -35,7 +35,7 @@ pub const PickerError = error{
 };
 
 /// A filter picker over one source image: it owns the immutable `source`, the stock `PresetBook` (the filters the app
-/// knows by name), an `EditCursor` (the non-destructive edit history), and a `selection` — the index of the filter a
+/// knows by name), an `EditCursor` (the non-destructive edit history), and a `selection` -- the index of the filter a
 /// keeper currently has under their finger. The governing law: the selection always names a real filter in the book
 /// (clamped to `0..book.len()`), and every preview and commit reads the CURRENT view, so a chosen filter chains onto the
 /// ones committed before it, exactly as a crop chains over a crop.
@@ -52,7 +52,7 @@ pub const FilterPicker = struct {
     /// for a zero-dimension source, before any book is built.
     pub fn open(source: *const qoi.Pixmap, cols: u32, rows: u32) !FilterPicker {
         if (source.width == 0 or source.height == 0) return error.EmptyImage;
-        // invariant: a well-formed source carries exactly four bytes per pixel — the whole pipeline relies on it.
+        // invariant: a well-formed source carries exactly four bytes per pixel -- the whole pipeline relies on it.
         assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
         const book = try filter_preset.stock_book();
         // invariant: the stock book is non-empty, so the opening selection names a real filter.
@@ -67,14 +67,14 @@ pub const FilterPicker = struct {
         };
     }
 
-    /// How many filters the picker can choose among — the book's held count.
+    /// How many filters the picker can choose among -- the book's held count.
     pub fn count(self: *const FilterPicker) u32 {
         // invariant: the selection never names a filter the book does not hold.
         assert(self.selection < self.book.len());
         return self.book.len();
     }
 
-    /// The name of the filter currently under the finger — a slice into the book's own storage.
+    /// The name of the filter currently under the finger -- a slice into the book's own storage.
     pub fn selected_name(self: *const FilterPicker) []const u8 {
         // invariant: the selection stays within the held book.
         assert(self.selection < self.book.len());
@@ -99,7 +99,7 @@ pub const FilterPicker = struct {
         assert(self.selection < self.book.len());
     }
 
-    /// Jump the selection to `target`, clamping to the last filter — a swipe that lands anywhere on the carousel.
+    /// Jump the selection to `target`, clamping to the last filter -- a swipe that lands anywhere on the carousel.
     pub fn select_to(self: *FilterPicker, target: u32) void {
         const last = self.book.len() - 1;
         self.selection = if (target > last) last else target;
@@ -107,13 +107,13 @@ pub const FilterPicker = struct {
         assert(self.selection < self.book.len());
     }
 
-    /// The picture a keeper currently sees — the source with every committed edit applied (HUNK16). A fresh allocation;
+    /// The picture a keeper currently sees -- the source with every committed edit applied (HUNK16). A fresh allocation;
     /// the source is never mutated.
     pub fn current_view(self: *const FilterPicker, allocator: std.mem.Allocator) !qoi.Pixmap {
         return edit_cursor.view(allocator, self.source, &self.cursor);
     }
 
-    /// Preview the SELECTED filter over the CURRENT view (HUNK13 preview — pure, nothing committed): what a keeper sees
+    /// Preview the SELECTED filter over the CURRENT view (HUNK13 preview -- pure, nothing committed): what a keeper sees
     /// while swiping, before they commit. A fresh Skate grid; the source is never mutated.
     pub fn preview(self: *const FilterPicker, allocator: std.mem.Allocator) !skate.Grid {
         const v = try self.current_view(allocator);
@@ -124,7 +124,7 @@ pub const FilterPicker = struct {
 
     /// Commit the selected filter: push its whole recipe (each verb in book order) onto the history (HUNK16, forgetting
     /// any redo tail on the first push; refusing `TooManyEdits` at the list ceiling), so a chosen filter joins the same
-    /// edit-list every gesture lives in — it chains over the committed edits and walks with undo/redo. Returns how many
+    /// edit-list every gesture lives in -- it chains over the committed edits and walks with undo/redo. Returns how many
     /// edits the recipe pushed. A stock recipe never refuses on a well-formed image, so a committed filter always lands.
     pub fn commit(self: *FilterPicker, allocator: std.mem.Allocator) !u32 {
         _ = allocator;
@@ -143,23 +143,23 @@ pub const FilterPicker = struct {
         return pushed;
     }
 
-    /// Step one edit back (HUNK16 undo — a no-op at the original). Edit-granular: a two-verb filter walks in two undos.
+    /// Step one edit back (HUNK16 undo -- a no-op at the original). Edit-granular: a two-verb filter walks in two undos.
     pub fn undo(self: *FilterPicker) void {
         self.cursor.undo();
     }
 
-    /// Step one edit forward (HUNK16 redo — a no-op at the live edge).
+    /// Step one edit forward (HUNK16 redo -- a no-op at the live edge).
     pub fn redo(self: *FilterPicker) void {
         self.cursor.redo();
     }
 };
 
-// --- selftest: a color image — the picker walks the stock filters (clamping at both ends), previews the selected
+// --- selftest: a color image -- the picker walks the stock filters (clamping at both ends), previews the selected
 //     filter over the current view with no drift, commits named filters that chain, walks them with undo/redo, and
 //     recovers the source byte-for-byte -----------------------------------------------------------------------------
 
 /// A small image where each pixel carries a distinct color, so a filter's color work shows in the view. Pixel (x,y) =
-/// (x·40+20, y·30+10, (x·3+y·7)·5, 255).
+/// (x-40+20, y-30+10, (x-3+y-7)-5, 255).
 fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
@@ -196,7 +196,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(pk.selection == n - 1);
     }
 
-    // preview of the selected filter equals a direct preview of that recipe over the current view — no drift.
+    // preview of the selected filter equals a direct preview of that recipe over the current view -- no drift.
     {
         pk.select_to(2); // "mono"
         assert(std.mem.eql(u8, pk.selected_name(), "mono"));
@@ -252,7 +252,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(src.same_bytes(&pm)); // undo to the source recovers it byte-for-byte
     }
 
-    // A two-verb filter commits two edits, and one undo steps back a single verb — the edit-granular history made plain.
+    // A two-verb filter commits two edits, and one undo steps back a single verb -- the edit-granular history made plain.
     {
         var fresh = try FilterPicker.open(&pm, 4, 4);
         fresh.select_to(3); // "noir" — saturate 0/1, then adjust contrast (two verbs)

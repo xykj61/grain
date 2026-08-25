@@ -1,34 +1,34 @@
-//! lotus/reverb.rye — ALES186: the REVERB — Schroeder's reverberator, parallel COMB stages summed then diffused through series ALLPASS
-//! stages. The time-based wing now holds every primitive the reverb was ever going to stand on: the comb is the feedback echo (ALES66) —
-//! a delay read as recirculating output, a decaying train — and the allpass is Schroeder's diffusion stage (ALES184) — the delayed DRY
+//! lotus/reverb.rye -- ALES186: the REVERB -- Schroeder's reverberator, parallel COMB stages summed then diffused through series ALLPASS
+//! stages. The time-based wing now holds every primitive the reverb was ever going to stand on: the comb is the feedback echo (ALES66) --
+//! a delay read as recirculating output, a decaying train -- and the allpass is Schroeder's diffusion stage (ALES184) -- the delayed DRY
 //! read against the delayed OUTPUT, an inverted spike then a smooth dense tail. Both stand mono and both stand stereo (ALES181, ALES185).
 //! The reverb, named since ALES66 as the wing's large composition, was never one more read of the delay line; it is the NETWORK those two
 //! stage kinds compose into, and with both stages proven the network itself is the keystone crux the whole wing was climbing toward.
 //!
-//! The law: wet[n] = series_allpass( sum over k of comb_k(dry) )[n]. It invents NO new arithmetic — every sample it writes is written by a
+//! The law: wet[n] = series_allpass( sum over k of comb_k(dry) )[n]. It invents NO new arithmetic -- every sample it writes is written by a
 //! stage already proven byte-for-byte; the reverb's own work is the SHAPE of the composition, not any new sample law. Three facts make it
 //! exact and safe. First, THE COMBS RUN IN PARALLEL, EACH ON ITS OWN COPY OF THE DRY: each comb is ALES66's echo run on a fresh whole-clip
 //! copy so the combs never feed one another, and their outputs over the span are summed sample by sample, the sum saturating ONCE per
 //! sample through timeline.saturate (ALES3's one true saturation) so a constructive pile-up of comb trains pins to the i16 rail rather
 //! than wrapping. Second, THE ALLPASSES RUN IN SERIES, IN PLACE, ON THE COMB-BANK SUM: after the sum is written into the span each allpass
 //! (ALES184) diffuses it in order, smearing the comb train into a dense reverberant wash. Third, EVERY STAGE IS VALIDATED BEFORE ANY
-//! WRITE — THE REVERB IS ATOMIC: a fault in the last allpass must never leave a clip half-reverbed, so the span and every stage are
+//! WRITE -- THE REVERB IS ATOMIC: a fault in the last allpass must never leave a clip half-reverbed, so the span and every stage are
 //! prechecked through the stages' own precheck functions (ALES66/ALES184, reused whole) before a single sample is written; on any refusal
 //! the clip is untouched. A bank of one comb and no allpasses is the honest degenerate: exactly the feedback echo (ALES66), byte-for-byte
-//! — the reverb over a single comb with no diffusion IS the echo.
+//! -- the reverb over a single comb with no diffusion IS the echo.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES186.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES186.
 //! Design read: active-designing/date/20260815/20260815-093042_fill-ales186-lotus-reverb.md
-//! Stands on: lotus/echo.rye (ALES66) — the COMB stage and its precheck, run once per comb on a dry copy; lotus/allpass.rye (ALES184) —
-//! the ALLPASS diffusion stage and its precheck, run in series on the comb-bank sum; lotus/timeline.rye (ALES2) — the Clip, max_clip, and
-//! the one true saturate reused for the parallel sum; lotus/mix.rye (ALES3) — the same saturate, the summing lesson.
+//! Stands on: lotus/echo.rye (ALES66) -- the COMB stage and its precheck, run once per comb on a dry copy; lotus/allpass.rye (ALES184) --
+//! the ALLPASS diffusion stage and its precheck, run in series on the comb-bank sum; lotus/timeline.rye (ALES2) -- the Clip, max_clip, and
+//! the one true saturate reused for the parallel sum; lotus/mix.rye (ALES3) -- the same saturate, the summing lesson.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, one bounded whole-clip comb copy, and one bounded
-//! sum scratch, siloed to lotus/. No socket, no network, no keys, no funds, no real device, no real sample rate — the delays are counts of
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, one bounded whole-clip comb copy, and one bounded
+//! sum scratch, siloed to lotus/. No socket, no network, no keys, no funds, no real device, no real sample rate -- the delays are counts of
 //! sample INDICES, not milliseconds against a clock (a real-time twin `reverb_ms` through the ALES5 clock is a later rung, exactly as
 //! echo_ms followed the index-named echo); the feedbacks and gains are plain fractions, not room sizes in seconds. Because each comb reads
 //! a per-call dry copy and each allpass a per-call dry snapshot, a split across two calls re-reads already-written samples (the stages'
-//! own boundary), so split-equals-whole is NOT claimed — a single call over the span is exact. Every stage's arithmetic is a stage already
+//! own boundary), so split-equals-whole is NOT claimed -- a single call over the span is exact. Every stage's arithmetic is a stage already
 //! proven byte-for-byte; the reverb adds only the saturating parallel sum and the series ordering, so nothing new on the path can overflow.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb.rye selftest
@@ -43,53 +43,53 @@ const allpass = @import("allpass.rye");
 
 pub const reverb_version = "20260815.093042";
 
-/// The widest stage bank this rung proves — a reverb may carry up to this many parallel combs and up to this many series allpasses.
+/// The widest stage bank this rung proves -- a reverb may carry up to this many parallel combs and up to this many series allpasses.
 /// Bounded so no bank can grow an unbounded loop; a classic Schroeder reverb is four combs and two allpasses, Freeverb eight and four,
 /// both well within this bound.
 pub const max_stages: u32 = 16;
 
-/// One parallel COMB stage — a feedback echo (ALES66): a delay and a feedback fraction fb_num/fb_den strictly below unity. Plain values,
+/// One parallel COMB stage -- a feedback echo (ALES66): a delay and a feedback fraction fb_num/fb_den strictly below unity. Plain values,
 /// never a length.
 pub const CombSpec = struct {
-    /// The delay in sample indices — at least one, no wider than max_clip.
+    /// The delay in sample indices -- at least one, no wider than max_clip.
     delay: u32,
-    /// The feedback numerator — strictly below fb_den (a recirculation below unity so the comb train decays).
+    /// The feedback numerator -- strictly below fb_den (a recirculation below unity so the comb train decays).
     fb_num: u32,
-    /// The feedback denominator — nonzero.
+    /// The feedback denominator -- nonzero.
     fb_den: u32,
 };
 
-/// One series ALLPASS stage — Schroeder's diffusion (ALES184): a delay and a gain fraction num/den strictly below unity. Plain values.
+/// One series ALLPASS stage -- Schroeder's diffusion (ALES184): a delay and a gain fraction num/den strictly below unity. Plain values.
 pub const AllpassSpec = struct {
-    /// The delay in sample indices — at least one, no wider than max_clip.
+    /// The delay in sample indices -- at least one, no wider than max_clip.
     delay: u32,
-    /// The gain numerator — strictly below den (a diffusion coefficient below unity so the diffuse tail settles).
+    /// The gain numerator -- strictly below den (a diffusion coefficient below unity so the diffuse tail settles).
     num: u32,
-    /// The gain denominator — nonzero.
+    /// The gain denominator -- nonzero.
     den: u32,
 };
 
 /// The reverb's faults, one consistent name each: an empty comb bank (a reverb with nothing to reverberate would erase the span), a bank
-/// longer than max_stages, and the two stage faults folded into one honest name each — an illegal delay (BadDelay), an illegal
+/// longer than max_stages, and the two stage faults folded into one honest name each -- an illegal delay (BadDelay), an illegal
 /// recirculation or diffusion fraction (BadGain, a feedback or gain at unity or a zero denominator), and a span outside the samples
 /// (BadRange). Each refused before any write.
 pub const ReverbError = error{
-    /// No comb stages — a reverb needs at least one comb; an empty bank would sum to silence and erase the span. Refused, no write.
+    /// No comb stages -- a reverb needs at least one comb; an empty bank would sum to silence and erase the span. Refused, no write.
     NoCombs,
-    /// More than max_stages combs or allpasses — refused, no unbounded bank.
+    /// More than max_stages combs or allpasses -- refused, no unbounded bank.
     TooManyStages,
-    /// A comb's or allpass's delay is zero or wider than max_clip — refused, no write.
+    /// A comb's or allpass's delay is zero or wider than max_clip -- refused, no write.
     BadDelay,
-    /// A comb's feedback or an allpass's gain is at or above unity, or has a zero denominator — refused, no write.
+    /// A comb's feedback or an allpass's gain is at or above unity, or has a zero denominator -- refused, no write.
     BadGain,
-    /// The span lies outside the current samples — refused, no write.
+    /// The span lies outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Validate one comb stage against a clip length WITHOUT touching a sample, folding ALES66's EchoError into ReverbError's names: an
 /// illegal delay is BadDelay, an illegal feedback (at unity or a zero denominator) is BadGain, an out-of-range span is BadRange.
 fn check_comb(clip_len: u32, start: u32, count: u32, c: CombSpec) ReverbError!void {
-    // invariant: the comb's own precheck is the single source of truth for its delay, feedback, and span — reused whole, its faults
+    // invariant: the comb's own precheck is the single source of truth for its delay, feedback, and span -- reused whole, its faults
     // renamed to the reverb's, before any write.
     echo.precheck(clip_len, start, count, c.delay, c.fb_num, c.fb_den) catch |e| return switch (e) {
         error.BadDelay => error.BadDelay,
@@ -101,7 +101,7 @@ fn check_comb(clip_len: u32, start: u32, count: u32, c: CombSpec) ReverbError!vo
 /// Validate one allpass stage against a clip length WITHOUT touching a sample, folding ALES184's AllpassError into ReverbError's names:
 /// an illegal delay is BadDelay, an illegal gain (at unity or a zero denominator) is BadGain, an out-of-range span is BadRange.
 fn check_allpass(clip_len: u32, start: u32, count: u32, a: AllpassSpec) ReverbError!void {
-    // invariant: the allpass's own precheck is the single source of truth for its delay, gain, and span — reused whole, its faults
+    // invariant: the allpass's own precheck is the single source of truth for its delay, gain, and span -- reused whole, its faults
     // renamed to the reverb's, before any write.
     allpass.precheck(clip_len, start, count, a.delay, a.num, a.den) catch |e| return switch (e) {
         error.BadDelay => error.BadDelay,
@@ -110,19 +110,19 @@ fn check_allpass(clip_len: u32, start: u32, count: u32, a: AllpassSpec) ReverbEr
     };
 }
 
-/// Validate a whole reverb bank and span against a clip length WITHOUT touching a sample — the same invariants `reverb` enforces up front,
+/// Validate a whole reverb bank and span against a clip length WITHOUT touching a sample -- the same invariants `reverb` enforces up front,
 /// factored out so a stereo carry can validate one shared bank and span against both channels' shared length before either channel is
 /// reverbed (mirroring ALES66/ALES184's own precheck refactors). Refuses NoCombs (an empty bank), TooManyStages (a bank past max_stages),
 /// and each stage's own BadDelay/BadGain/BadRange, all before any write. Takes a plain length rather than a clip, so it reads no buffer.
 pub fn precheck(clip_len: u32, start: u32, count: u32, combs: []const CombSpec, allpasses: []const AllpassSpec) ReverbError!void {
-    // invariant: a reverb needs at least one comb and a bounded bank — an empty bank would erase the span, an unbounded one is refused.
+    // invariant: a reverb needs at least one comb and a bounded bank -- an empty bank would erase the span, an unbounded one is refused.
     if (combs.len == 0) return error.NoCombs;
     if (combs.len > max_stages) return error.TooManyStages;
     if (allpasses.len > max_stages) return error.TooManyStages;
-    // invariant: the span lies wholly within the current samples — checked without underflow before any stage runs.
+    // invariant: the span lies wholly within the current samples -- checked without underflow before any stage runs.
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
-    // invariant: EVERY stage is legal — validate all combs then all allpasses, so a fault in a late stage never leaves a half-reverbed
+    // invariant: EVERY stage is legal -- validate all combs then all allpasses, so a fault in a late stage never leaves a half-reverbed
     // clip (the reverb is atomic).
     for (combs) |c| try check_comb(clip_len, start, count, c);
     for (allpasses) |a| try check_allpass(clip_len, start, count, a);
@@ -131,9 +131,9 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, combs: []const CombSpec, 
 /// Reverberate `count` samples starting at `start` in place in `clip` through Schroeder's network: sum every comb (a feedback echo,
 /// ALES66) run in parallel on its own copy of the dry, then diffuse that sum through each allpass (ALES184) in series. The comb-bank sum
 /// saturates once per sample (ALES3's one true saturation) so a constructive pile-up pins to the i16 rail rather than wrapping. Every
-/// stage and the span are validated BEFORE any write (the stages' own precheck, reused), so the reverb is atomic — a bad allpass after
+/// stage and the span are validated BEFORE any write (the stages' own precheck, reused), so the reverb is atomic -- a bad allpass after
 /// valid combs leaves the clip untouched. A bank of one comb and no allpasses is exactly ALES66's echo. Refuses NoCombs, TooManyStages,
-/// BadDelay, BadGain, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
+/// BadDelay, BadGain, and BadRange before any write; on refusal the clip is untouched. Values only -- never a length.
 pub fn reverb(
     clip: *timeline.Clip,
     start: u32,
@@ -141,16 +141,16 @@ pub fn reverb(
     combs: []const CombSpec,
     allpasses: []const AllpassSpec,
 ) ReverbError!void {
-    // invariant: the whole bank and span are legal before ANY write — every comb, every allpass, and the span validated up front through
+    // invariant: the whole bank and span are legal before ANY write -- every comb, every allpass, and the span validated up front through
     // `precheck`, so a fault in a late stage never leaves a half-reverbed clip (the reverb is atomic).
     try precheck(clip.len, start, count, combs, allpasses);
 
     const end: u32 = start + count;
-    // The comb-bank sum over the span, in one bounded scratch — index i-start. Each comb's output is added here and saturated once, so the
+    // The comb-bank sum over the span, in one bounded scratch -- index i-start. Each comb's output is added here and saturated once, so the
     // pile-up of parallel comb trains pins to the i16 rail rather than wrapping.
     var acc: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
     for (combs) |c| {
-        // Run this comb on a fresh whole-clip COPY of the dry, so the combs run in parallel and never feed one another — the copy holds
+        // Run this comb on a fresh whole-clip COPY of the dry, so the combs run in parallel and never feed one another -- the copy holds
         // the dry before the span (ALES66 reads it there) and the span itself; the echo writes the comb train into the copy's span only.
         var scratch: timeline.Clip = clip.*;
         // invariant: prechecked above against this same length and span, so the echo cannot fail here.
@@ -161,14 +161,14 @@ pub fn reverb(
             acc[i - start] = timeline.saturate(@as(i64, acc[i - start]) + @as(i64, scratch.buf[i]));
         }
     }
-    // Write the comb-bank sum into the span — the dry outside the span is untouched (a reverb changes only what it reverberates).
+    // Write the comb-bank sum into the span -- the dry outside the span is untouched (a reverb changes only what it reverberates).
     {
         var i: u32 = start;
         // invariant: the span stays within the clip, so the write never runs past the buffer.
         assert(end <= clip.len and end <= clip.buf.len);
         while (i < end) : (i += 1) clip.buf[i] = acc[i - start];
     }
-    // Diffuse the comb-bank sum through each allpass in series, in place — each reads the sum in the span and the dry before it (ALES184's
+    // Diffuse the comb-bank sum through each allpass in series, in place -- each reads the sum in the span and the dry before it (ALES184's
     // own frozen snapshot per call), smearing the comb train into a dense tail.
     for (allpasses) |a| {
         // invariant: prechecked above against this same length and span, so the allpass cannot fail here.
@@ -182,7 +182,7 @@ pub fn reverb(
 // --- selftest: the reverb EQUALS its explicit composition (parallel combs summed then a series allpass, computed against the proven
 //     primitives byte-for-byte, with a hand value anchoring it); a single comb and no allpass IS the plain echo; silence stays silence;
 //     the reverb tail DECAYS to silence within the clip; a loud constructive comb sum SATURATES rather than wraps; and each fault refuses
-//     by name, the clip untouched — including a bad allpass AFTER valid combs (atomicity) -------------------------------------------------
+//     by name, the clip untouched -- including a bad allpass AFTER valid combs (atomicity) -------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -196,11 +196,11 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE REVERB EQUALS ITS EXPLICIT COMPOSITION — a reverb of two combs (delay 2 fb 1/2, delay 3 fb 1/3) and one allpass (delay 2
+    // 1. THE REVERB EQUALS ITS EXPLICIT COMPOSITION -- a reverb of two combs (delay 2 fb 1/2, delay 3 fb 1/3) and one allpass (delay 2
     //    g 1/2) over an impulse of 8000 is computed independently: echo on two copies, summed once through saturate, then the allpass on
     //    the sum. The reverb must equal that composition byte-for-byte, AND equal the hand-computed value that anchors it:
     //      comb1 = [8000,0,4000,0,2000,0,1000,0]; comb2 = [8000,0,0,2666,0,0,888,0]; sum = [16000,0,4000,2666,2000,0,1888,0];
-    //      allpass(sum,2,1/2) = [-8000,0,10000,-1333,8000,2000,5056,1000] — computed by hand.
+    //      allpass(sum,2,1/2) = [-8000,0,10000,-1333,8000,2000,5056,1000] -- computed by hand.
     {
         const impulse = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
         const combs = [_]CombSpec{ .{ .delay = 2, .fb_num = 1, .fb_den = 2 }, .{ .delay = 3, .fb_num = 1, .fb_den = 3 } };
@@ -231,7 +231,7 @@ fn run_selftest() !u8 {
         if (!eq(got.samples(), &want)) return error.ReverbHandValueWrong;
     }
 
-    // 2. A SINGLE COMB AND NO ALLPASS IS THE PLAIN ECHO — the reverb over one comb with nothing to diffuse and nothing to sum against is
+    // 2. A SINGLE COMB AND NO ALLPASS IS THE PLAIN ECHO -- the reverb over one comb with nothing to diffuse and nothing to sum against is
     //    exactly ALES66's echo, byte-for-byte. The reverb stands honestly on the comb it composes.
     {
         const sig = [_]i16{ 5000, -3000, 4000, -2000, 6000, -1000, 3000, -4000 };
@@ -248,7 +248,7 @@ fn run_selftest() !u8 {
         if (!eq(got.samples(), want.samples())) return error.SingleCombNotEcho;
     }
 
-    // 3. SILENCE STAYS SILENCE — an all-zero clip reverbs to all zeros under any legal bank; the network adds nothing to nothing.
+    // 3. SILENCE STAYS SILENCE -- an all-zero clip reverbs to all zeros under any legal bank; the network adds nothing to nothing.
     {
         const combs = [_]CombSpec{ .{ .delay = 2, .fb_num = 1, .fb_den = 2 }, .{ .delay = 3, .fb_num = 1, .fb_den = 3 } };
         const allpasses = [_]AllpassSpec{.{ .delay = 2, .num = 1, .den = 3 }};
@@ -259,9 +259,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 4. THE REVERB TAIL DECAYS TO SILENCE WITHIN THE CLIP — an impulse of 60 through a comb (delay 2, fb 1/3) and an allpass (delay 2,
+    // 4. THE REVERB TAIL DECAYS TO SILENCE WITHIN THE CLIP -- an impulse of 60 through a comb (delay 2, fb 1/3) and an allpass (delay 2,
     //    g 1/3) over 16 samples reaches silence and stays there: both stages decay (feedback below unity, gain below unity), so their
-    //    composition decays. The body is nonzero and the last quarter is all zeros — a reverb tail always settles, never grows.
+    //    composition decays. The body is nonzero and the last quarter is all zeros -- a reverb tail always settles, never grows.
     {
         const combs = [_]CombSpec{.{ .delay = 2, .fb_num = 1, .fb_den = 3 }};
         const allpasses = [_]AllpassSpec{.{ .delay = 2, .num = 1, .den = 3 }};
@@ -275,7 +275,7 @@ fn run_selftest() !u8 {
         while (lane < out.len) : (lane += 1) if (out[lane] != 0) return error.TailDidNotReachSilence;
     }
 
-    // 5. A LOUD CONSTRUCTIVE COMB SUM SATURATES RATHER THAN WRAPS — two identical loud combs on an impulse of 30000 sum in phase past the
+    // 5. A LOUD CONSTRUCTIVE COMB SUM SATURATES RATHER THAN WRAPS -- two identical loud combs on an impulse of 30000 sum in phase past the
     //    i16 rail; the first sample pins to sample_max (ALES3's ceiling) rather than wrapping negative. No allpass, so the comb-bank sum is
     //    read directly. comb (delay 1, fb 1/2) on [30000,0,0,0] = [30000,15000,7500,3750]; summed twice = [60000->32767,30000,15000,7500].
     {
@@ -332,7 +332,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedUnityFbMutated;
     }
 
-    // 6e. a bad allpass AFTER valid combs refuses BadDelay before any write — the reverb is ATOMIC, every stage validated before the first
+    // 6e. a bad allpass AFTER valid combs refuses BadDelay before any write -- the reverb is ATOMIC, every stage validated before the first
     //     comb runs, so a fault in a late stage leaves the clip untouched (the crux of the up-front validation).
     {
         var clip = timeline.Clip{};

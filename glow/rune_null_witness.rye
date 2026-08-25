@@ -1,4 +1,4 @@
-//! glow/rune_null_witness.rye — proves the `?~` null-test rune head.
+//! glow/rune_null_witness.rye -- proves the `?~` null-test rune head.
 //!
 //!   rye build glow/rune_null_witness.rye -femit-bin=glow/bin/rune_null_witness
 //!   glow/bin/rune_null_witness

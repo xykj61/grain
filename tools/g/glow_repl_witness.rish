@@ -1,4 +1,4 @@
-# glow_repl_witness.rish — Rishi glow mode SLC stub GREEN.
+# glow_repl_witness.rish -- Rishi glow mode SLC stub GREEN.
 #
 # Drives stdin: one accept per seated single-line head family, one refusal, :quit.
 # Builds a sibling binary so the running rishi witness is never FileBusy.
@@ -18,11 +18,11 @@ assert build.ok else "rishi-glow-wit rebuild failed"
 let session = run ["sh" "-c" "env RYE_ZIG=${zig} ${bin} glow < tools/fixtures/glow_repl_stdin.txt"]
 assert session.ok else "glow repl session exited non-zero"
 let text = "${session.out}${session.err}"
-assert text contains "glow — sixteen single-line heads" else "missing warm greeting"
-assert text contains "glow: refuse — not a seated single-line head" else "missing named refusal"
+assert text contains "glow -- sixteen single-line heads" else "missing warm greeting"
+assert text contains "glow: refuse -- not a seated single-line head" else "missing named refusal"
 assert text contains "glow: session closed." else "missing clean quit"
-let refuse_lines = where (lines text) as ln: ln contains "glow: refuse — not a seated single-line head"
+let refuse_lines = where (lines text) as ln: ln contains "glow: refuse -- not a seated single-line head"
 assert (length refuse_lines) == 1 else "expected exactly one head-family refusal"
 assert text contains "glow: ok" else "missing accept path (glow: ok)"
 
-say "GREEN: Rishi glow mode SLC — sixteen heads, one refusal, :quit."
+say "GREEN: Rishi glow mode SLC -- sixteen heads, one refusal, :quit."

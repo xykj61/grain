@@ -1,26 +1,26 @@
-//! lotus/stereo_move.rye — ALES119: stereo_move — the drag gesture carried into stereo, both channels in lockstep. ALES113 named `move` — lift the `count` samples starting at `start`
-//! out of the timeline and reinsert them at `dest` — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
+//! lotus/stereo_move.rye -- ALES119: stereo_move -- the drag gesture carried into stereo, both channels in lockstep. ALES113 named `move` -- lift the `count` samples starting at `start`
+//! out of the timeline and reinsert them at `dest` -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
 //! RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries move into stereo the way ALES117 carried cut and ALES118 carried crop: run ALES113's proven
 //! mono `move` on each channel with the SAME `start`, `count`, and `dest`, so the relocation lands identically in both and the stereo image stays balanced. With cut (ALES117), crop
-//! (ALES118), and now move, the stereo edit family stands whole — remove a span, keep only a span, or carry a span somewhere new, always both speakers at once.
+//! (ALES118), and now move, the stereo edit family stands whole -- remove a span, keep only a span, or carry a span somewhere new, always both speakers at once.
 //!
 //! The rule, stated once: stereo_move(sc, start, count, dest) relocates [start, start+count) to `dest` in both channels, reusing ALES113's mono `move` per channel over its public API.
-//! BOTH channels are validated BEFORE either is mutated — because move can fault only with BadRange (a span outside the samples, or a dest outside the removed timeline) and both
+//! BOTH channels are validated BEFORE either is mutated -- because move can fault only with BadRange (a span outside the samples, or a dest outside the removed timeline) and both
 //! channels enter equal-length, the three range checks are made once against the shared length up front, so once they pass each mono move is pre-validated to succeed and a refusal
 //! never desynchronises the channels. It reuses ALES2's EditError whole and invents none of its own.
 //!
-//! The crux — four laws. THE STEREO MOVE LAW: the left channel equals mono move(left, start, count, dest) and the right equals mono move(right, start, count, dest), each byte for byte.
-//! THE BALANCE / INVARIANT LAW: left.len == right.len after the edit, and both hold their starting length — move relocates without changing the count of samples, so the channels stay
+//! The crux -- four laws. THE STEREO MOVE LAW: the left channel equals mono move(left, start, count, dest) and the right equals mono move(right, start, count, dest), each byte for byte.
+//! THE BALANCE / INVARIANT LAW: left.len == right.len after the edit, and both hold their starting length -- move relocates without changing the count of samples, so the channels stay
 //! aligned. THE INVERSE LAW: stereo_move(start, count, dest) then stereo_move(dest, count, start) returns both channels to the original byte for byte. THE ATOMICITY / DEGENERATE LAW:
 //! any refusal leaves BOTH channels byte for byte untouched and still balanced; count 0 the identity on both, dest = start the identity, a bad range BadRange.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES119.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES119.
 //! Design read: active-designing/date/20260815/20260815-020325_fill-ales119-lotus-stereo-move.md
-//! Stands on: lotus/move.rye (ALES113) — the mono drag gesture run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//! Stands on: lotus/move.rye (ALES113) -- the mono drag gesture run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip and the EditError reused whole; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It relocates an existing span within each channel through
-//! the proven mono move (one bounded scratch buffer per channel), reading no byte past either channel's len — it invents no sample and changes no value it keeps. No real sample rate,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It relocates an existing span within each channel through
+//! the proven mono move (one bounded scratch buffer per channel), reading no byte past either channel's len -- it invents no sample and changes no value it keeps. No real sample rate,
 //! no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_move.rye selftest
@@ -36,33 +36,33 @@ const meter = @import("meter.rye");
 
 pub const stereo_move_version = "20260815.020325";
 
-/// stereo_move forwards ALES2's OWN fault reused by name — BadRange (a span outside the samples, or a dest outside the removed timeline) — and invents none of its own.
+/// stereo_move forwards ALES2's OWN fault reused by name -- BadRange (a span outside the samples, or a dest outside the removed timeline) -- and invents none of its own.
 pub const StereoMoveError = timeline.EditError;
 
 /// Relocate [start, start+count) to `dest` in both channels in lockstep, the stereo image staying balanced and each channel's length holding. Both channels are validated before either
 /// is mutated: because mono move can fault only with BadRange and the channels enter equal-length, the three range checks are made once against the shared length up front, so a
 /// refusal never leaves one channel moved and the other not. Reuses ALES113's mono move per channel.
 pub fn stereo_move(sc: *pan.StereoClip, start: u32, count: u32, dest: u32) StereoMoveError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
     // invariant: the span lies wholly within the (shared) current samples and `dest` lies within the timeline that remains once the span is removed, all checked without underflow and
-    //            refused by name before any write — the same three guards ALES113's move keeps, run once against the common length so a refusal lands before either channel mutates.
+    //            refused by name before any write -- the same three guards ALES113's move keeps, run once against the common length so a refusal lands before either channel mutates.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
     if (dest > len - count) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono move is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono move is pre-validated to succeed -- no refusal can land between the two channel edits.
     try move.move(&sc.left, start, count, dest);
     try move.move(&sc.right, start, count, dest);
 
-    // invariant: the channels leave balanced — each relocated the same span without changing its count of samples, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each relocated the same span without changing its count of samples, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO MOVE LAW — each channel equals ALES113's mono move on that channel byte for byte; THE BALANCE / INVARIANT LAW — left.len == right.len after, the length
-//     held; THE INVERSE LAW — move then move(dest, count, start) returns both channels; THE ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched, the identity faces
+// --- selftest: THE STEREO MOVE LAW -- each channel equals ALES113's mono move on that channel byte for byte; THE BALANCE / INVARIANT LAW -- left.len == right.len after, the length
+//     held; THE INVERSE LAW -- move then move(dest, count, start) returns both channels; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched, the identity faces
 //     ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -78,7 +78,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO MOVE LAW — each channel equals ALES113's mono move on that channel, proven side by side over one anchor with different per-channel samples.
+    // 1. THE STEREO MOVE LAW -- each channel equals ALES113's mono move on that channel, proven side by side over one anchor with different per-channel samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -98,7 +98,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 31, 41, 51, 11, 21 })) return error.RightSpanWrong;
     }
 
-    // 2. THE BALANCE / INVARIANT LAW — the channels stay equal length and hold their starting length across a forward and a backward move; the stereo image stays aligned.
+    // 2. THE BALANCE / INVARIANT LAW -- the channels stay equal length and hold their starting length across a forward and a backward move; the stereo image stays aligned.
     {
         var fwd = pan.StereoClip{};
         try load_stereo(&fwd, &[_]i16{ 1, 2, 3, 4, 5 }, &[_]i16{ 6, 7, 8, 9, 10 });
@@ -115,7 +115,7 @@ fn run_selftest() !u8 {
         if (!eq(back.right.samples(), &[_]i16{ 9, 10, 6, 7, 8 })) return error.BackRightWrong;
     }
 
-    // 3. THE INVERSE LAW — stereo_move(start, count, dest) then stereo_move(dest, count, start) returns both channels to the original byte for byte.
+    // 3. THE INVERSE LAW -- stereo_move(start, count, dest) then stereo_move(dest, count, start) returns both channels to the original byte for byte.
     {
         var sc = pan.StereoClip{};
         const l0 = [_]i16{ 10, 20, 30, 40, 50 };
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.InverseRightWrong;
     }
 
-    // 4a. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a span past the samples and a dest past len − count.
+    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a span past the samples and a dest past len − count.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — count 0 the identity on both channels, dest = start the identity on both.
+    // 4b. THE DEGENERATE LAW -- count 0 the identity on both channels, dest = start the identity on both.
     {
         var zero = pan.StereoClip{};
         try load_stereo(&zero, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

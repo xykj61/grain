@@ -1,30 +1,30 @@
-//! crypto/pbkdf2_sha512.rye — Season G (Cryptography), a key-derivation rung: PBKDF2-HMAC-SHA-512 (RFC 8018 / RFC 2898) authored in pure
+//! crypto/pbkdf2_sha512.rye -- Season G (Cryptography), a key-derivation rung: PBKDF2-HMAC-SHA-512 (RFC 8018 / RFC 2898) authored in pure
 //! Rye. PBKDF2 is the standard "stretch a password into a key by iterating a keyed hash many times" primitive; run with SHA-512 as its PRF
 //! it is the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds, salt "mnemonic"‖passphrase),
 //! and the KDF several LUKS and PGP deployments run. It authors no new cryptography: it composes the GREEN crypto/hmac_sha512.rye through
 //! RFC 8018's own iteration-and-XOR, so it is buildable this round and provable against an independent implementation and the HMAC beneath.
 //! It stands beside crypto/pbkdf2_sha256.rye (the same construction over a 32-byte PRF) and crypto/argon2.rye (memory-hard, where this is
-//! iteration-hard) — a security audit expects the tree to hold each, and to say which each caller should reach for.
+//! iteration-hard) -- a security audit expects the tree to hold each, and to say which each caller should reach for.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN on metal) · crypto/sha512.rye (the hash beneath that) ·
-//! crypto/hkdf_sha512.rye (a sibling that composes the same HMAC, extract-and-expand rather than iterate-and-XOR) ·
-//! crypto/pbkdf2_sha256.rye (the SHA-256 sibling of this exact construction). The coming BIP-39 mnemonic→seed rung stands on this one.
-//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye, studied clean-room from the public
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN on metal) - crypto/sha512.rye (the hash beneath that) -
+//! crypto/hkdf_sha512.rye (a sibling that composes the same HMAC, extract-and-expand rather than iterate-and-XOR) -
+//! crypto/pbkdf2_sha256.rye (the SHA-256 sibling of this exact construction). The coming BIP-39 mnemonic->seed rung stands on this one.
+//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target -- our own Rye, studied clean-room from the public
 //! standards (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — RFC 8018 §5.2, PRF = HMAC-SHA-512, nothing more:
-//!   DK = T(1) ‖ T(2) ‖ … ‖ T(l), truncated to dkLen, where l = ceil(dkLen / hLen) and each block
-//!   T(i) = U(1) XOR U(2) XOR … XOR U(c), with U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)).
-//! The password P keys every HMAC; the salt S with the big-endian block index seeds the first U; the count c is the whole cost — c HMAC
+//! THE CRUX -- RFC 8018 §5.2, PRF = HMAC-SHA-512, nothing more:
+//!   DK = T(1) ‖ T(2) ‖ ... ‖ T(l), truncated to dkLen, where l = ceil(dkLen / hLen) and each block
+//!   T(i) = U(1) XOR U(2) XOR ... XOR U(c), with U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)).
+//! The password P keys every HMAC; the salt S with the big-endian block index seeds the first U; the count c is the whole cost -- c HMAC
 //! calls per block make each password guess c times as expensive. No new mathematics, only the RFC's composition over a MAC a lower rung
 //! already proved. The same password, salt, iteration count, and length always fold to the same key.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The module calls
-//! no std.crypto in the primitive. Parity is proven at selftest the same no-fabricated-constant way crypto/secp256k1_pubkey.rye favours —
+//! HONEST SCOPE -- software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The module calls
+//! no std.crypto in the primitive. Parity is proven at selftest the same no-fabricated-constant way crypto/secp256k1_pubkey.rye favours --
 //! against Zig's own std.crypto.pwhash.pbkdf2 with HmacSha512 as an INDEPENDENT implementation, byte-for-byte across several shapes
-//! including a multi-block output and a partial tail; AND transitively against the RFC-4231-anchored HMAC beneath it — a single-iteration
+//! including a multi-block output and a partial tail; AND transitively against the RFC-4231-anchored HMAC beneath it -- a single-iteration
 //! block is exactly HMAC(P, S ‖ INT_32_BE(1)) over the already-GREEN crypto/hmac_sha512.rye. The world-bound published known-answer for
 //! this exact PRF is BIP-39's own Trezor vector; it arrives with the BIP-39 rung this one unblocks. Constant-time discipline is the HMAC
 //! layer's named horizon; PBKDF2 derives a key and returns it.
@@ -46,7 +46,7 @@ pub const dk_block_len: u32 = hmac.tag_len;
 
 /// The largest inputs this primitive accepts, each refused at the edge before a byte is mixed. The password keys every HMAC, so it sits
 /// within HMAC's own key bound; the salt is followed by a 4-byte block index inside the first HMAC message, so it sits four bytes below
-/// HMAC's message bound. Real uses — a passphrase, a per-user salt, a BIP-39 "mnemonic"‖passphrase salt — sit far below these, yet the
+/// HMAC's message bound. Real uses -- a passphrase, a per-user salt, a BIP-39 "mnemonic"‖passphrase salt -- sit far below these, yet the
 /// bounds are named so every buffer cites a ceiling and each HMAC call stays provably within crypto/hmac_sha512.rye's own bounds.
 pub const max_password_bytes: u32 = hmac.max_key_bytes;
 pub const max_salt_bytes: u32 = hmac.max_message_bytes - 4;
@@ -55,30 +55,30 @@ pub const max_salt_bytes: u32 = hmac.max_message_bytes - 4;
 /// 2048, modern password stores hundreds of thousands) so the loop that iterates the PRF cites a maximum rather than trusting a caller.
 pub const max_iterations: u32 = 1 << 24;
 
-/// The largest derived key one call yields. PBKDF2's theoretical ceiling is (2^32 − 1)·hLen; this names a practical bound so the block
-/// index stays far below 2^32 and the output buffer cites a maximum. Real derived keys — a 64-byte BIP-39 seed, a 32-byte session key —
+/// The largest derived key one call yields. PBKDF2's theoretical ceiling is (2^32 − 1)-hLen; this names a practical bound so the block
+/// index stays far below 2^32 and the output buffer cites a maximum. Real derived keys -- a 64-byte BIP-39 seed, a 32-byte session key --
 /// sit far below 4096 bytes.
 pub const max_dk_bytes: u32 = 1 << 12;
 
 /// The five faults this primitive can raise, each refused at the edge before a byte is mixed.
 pub const PbkdfError = error{
-    /// A password longer than max_password_bytes — refused before it keys the first HMAC.
+    /// A password longer than max_password_bytes -- refused before it keys the first HMAC.
     PasswordTooLong,
-    /// A salt longer than max_salt_bytes — refused before the first HMAC message is filled.
+    /// A salt longer than max_salt_bytes -- refused before the first HMAC message is filled.
     SaltTooLong,
-    /// A zero iteration count — RFC 8018 requires c ≥ 1; refused before any block is computed.
+    /// A zero iteration count -- RFC 8018 requires c ≥ 1; refused before any block is computed.
     IterationsZero,
-    /// An iteration count above max_iterations — refused before the PRF loop begins.
+    /// An iteration count above max_iterations -- refused before the PRF loop begins.
     IterationsTooMany,
-    /// A requested key longer than max_dk_bytes — refused before a block is filled.
+    /// A requested key longer than max_dk_bytes -- refused before a block is filled.
     OutputTooLong,
 };
 
-/// RFC 8018 §5.2 block function F(P, S, c, i) = U(1) XOR U(2) XOR … XOR U(c), where U(1) = HMAC(P, S ‖ INT_32_BE(i)) and each later
+/// RFC 8018 §5.2 block function F(P, S, c, i) = U(1) XOR U(2) XOR ... XOR U(c), where U(1) = HMAC(P, S ‖ INT_32_BE(i)) and each later
 /// U(j) = HMAC(P, U(j-1)). Returns the one 64-byte block; the caller places it into the derived key. Bounds are the public pbkdf2's job,
 /// asserted here as preconditions, so every HMAC call is provably within bounds and its error is unreachable rather than swallowed.
 fn block(password: []const u8, salt: []const u8, iterations: u32, index: u32) [dk_block_len]u8 {
-    // invariant: RFC 8018 requires at least one iteration — the caller refuses a zero count before reaching here.
+    // invariant: RFC 8018 requires at least one iteration -- the caller refuses a zero count before reaching here.
     assert(iterations >= 1);
     // invariant: the block index is a positive INT_32_BE value, 1..=l, bounded far below 2^32 by max_dk_bytes.
     assert(index >= 1);
@@ -90,7 +90,7 @@ fn block(password: []const u8, salt: []const u8, iterations: u32, index: u32) [d
     // The first HMAC's message is the salt with the big-endian block index appended: S ‖ INT_32_BE(i).
     var msg: [max_salt_bytes + 4]u8 = undefined;
     const slen: u32 = @intCast(salt.len);
-    // invariant: the salt-length cast lost nothing — it is bounded by max_salt_bytes above.
+    // invariant: the salt-length cast lost nothing -- it is bounded by max_salt_bytes above.
     assert(slen <= max_salt_bytes);
 
     var p: u32 = 0;
@@ -109,7 +109,7 @@ fn block(password: []const u8, salt: []const u8, iterations: u32, index: u32) [d
     p += 1;
 
     // U(1) = HMAC(P, S ‖ INT_32_BE(i)); the message is at most max_salt_bytes + 4 = HMAC's message bound and the password is within
-    // HMAC's key bound, so this mac cannot fault — asserted, not swallowed.
+    // HMAC's key bound, so this mac cannot fault -- asserted, not swallowed.
     var u = hmac.mac(msg[0..p], password) catch unreachable;
     // The running XOR accumulator that becomes F(P, S, c, i); it begins as U(1).
     var acc = u;
@@ -124,14 +124,14 @@ fn block(password: []const u8, salt: []const u8, iterations: u32, index: u32) [d
     return acc;
 }
 
-/// PBKDF2-HMAC-SHA-512 — fill dk with the derived key stretched from password and salt over `iterations` rounds. The whole "expensive by
-/// design" arc: dk is T(1) ‖ T(2) ‖ … truncated to dk.len, each block c HMAC calls deep.
+/// PBKDF2-HMAC-SHA-512 -- fill dk with the derived key stretched from password and salt over `iterations` rounds. The whole "expensive by
+/// design" arc: dk is T(1) ‖ T(2) ‖ ... truncated to dk.len, each block c HMAC calls deep.
 pub fn pbkdf2(dk: []u8, password: []const u8, salt: []const u8, iterations: u32) PbkdfError!void {
     // invariant: the password fits HMAC's key bound, so it keys every HMAC below.
     if (password.len > max_password_bytes) return error.PasswordTooLong;
     // invariant: the salt fits four bytes below HMAC's message bound, so salt ‖ INT_32_BE stays within it.
     if (salt.len > max_salt_bytes) return error.SaltTooLong;
-    // invariant: RFC 8018 requires c ≥ 1 — a zero count would derive no work and is refused.
+    // invariant: RFC 8018 requires c ≥ 1 -- a zero count would derive no work and is refused.
     if (iterations == 0) return error.IterationsZero;
     // invariant: the iteration count fits the named ceiling, so the PRF loop is bounded.
     if (iterations > max_iterations) return error.IterationsTooMany;
@@ -139,7 +139,7 @@ pub fn pbkdf2(dk: []u8, password: []const u8, salt: []const u8, iterations: u32)
     if (dk.len > max_dk_bytes) return error.OutputTooLong;
 
     const total: u32 = @intCast(dk.len);
-    // invariant: the output-length cast lost nothing — it is bounded by max_dk_bytes above.
+    // invariant: the output-length cast lost nothing -- it is bounded by max_dk_bytes above.
     assert(total == dk.len);
 
     var done: u32 = 0;
@@ -197,31 +197,31 @@ fn ref_parity(password: []const u8, salt: []const u8, iterations: u32, out: []u8
 }
 
 fn run_selftest() !u8 {
-    // 1. Independent-implementation parity, byte-for-byte against Zig's std.crypto.pwhash.pbkdf2 with HmacSha512 — a second implementation
+    // 1. Independent-implementation parity, byte-for-byte against Zig's std.crypto.pwhash.pbkdf2 with HmacSha512 -- a second implementation
     //    as the oracle, no fabricated constant trusted, exactly the way crypto/secp256k1_pubkey.rye proves itself. Several shapes: a single
     //    iteration; the BIP-39 depth (2048 rounds, "mnemonic" salt) folding to a 64-byte seed; a multi-block key spanning three 64-byte
     //    blocks with a partial third; and a short partial tail that does not land on a block boundary.
     {
-        // Shape A — single iteration, 64-byte key.
+        // Shape A -- single iteration, 64-byte key.
         {
             var out: [64]u8 = undefined;
             var ref: [64]u8 = undefined;
             try ref_parity("passwd", "salt", 1, &out, &ref);
         }
-        // Shape B — the BIP-39 iteration depth and salt prefix, 64-byte seed: 2048 rounds over "mnemonic"‖passphrase, the exact shape the
+        // Shape B -- the BIP-39 iteration depth and salt prefix, 64-byte seed: 2048 rounds over "mnemonic"‖passphrase, the exact shape the
         //    coming BIP-39 rung folds a mnemonic and passphrase into a wallet seed with.
         {
             var out: [64]u8 = undefined;
             var ref: [64]u8 = undefined;
             try ref_parity("legal winner thank year wave sausage worth", "mnemonicTREZOR", 2048, &out, &ref);
         }
-        // Shape C — a multi-block key: 150 bytes over 4096 iterations spans three 64-byte blocks with a partial third.
+        // Shape C -- a multi-block key: 150 bytes over 4096 iterations spans three 64-byte blocks with a partial third.
         {
             var out: [150]u8 = undefined;
             var ref: [150]u8 = undefined;
             try ref_parity("multi block password", "multi block salt", 4096, &out, &ref);
         }
-        // Shape D — a short partial tail that does not fill a block boundary, to prove the truncation lands.
+        // Shape D -- a short partial tail that does not fill a block boundary, to prove the truncation lands.
         {
             var out: [37]u8 = undefined;
             var ref: [37]u8 = undefined;
@@ -237,7 +237,7 @@ fn run_selftest() !u8 {
         var dk: [dk_block_len]u8 = undefined;
         try pbkdf2(&dk, password, salt, 1);
 
-        // The first HMAC message is the salt with INT_32_BE(1) appended — "a salt" is 6 bytes, so 10 bytes with the index.
+        // The first HMAC message is the salt with INT_32_BE(1) appended -- "a salt" is 6 bytes, so 10 bytes with the index.
         var built: [10]u8 = undefined;
         var b: u32 = 0;
         while (b < salt.len) : (b += 1) built[b] = salt[b];

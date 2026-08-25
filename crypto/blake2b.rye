@@ -1,23 +1,23 @@
-//! crypto/blake2b.rye — Season G (Cryptography), the first primitive: BLAKE2b-512 authored in pure Rye. BLAKE2b is Monocypher's own
-//! hash — every EdDSA signature Monocypher makes hashes with it — so this one primitive is the foundation the whole Rye-native signing
+//! crypto/blake2b.rye -- Season G (Cryptography), the first primitive: BLAKE2b-512 authored in pure Rye. BLAKE2b is Monocypher's own
+//! hash -- every EdDSA signature Monocypher makes hashes with it -- so this one primitive is the foundation the whole Rye-native signing
 //! stack will stand on. It is pure 64-bit integer arithmetic (no big-integer field math, unlike the curve), so it is genuinely
 //! buildable in authored Rye this round rather than a season of its own, and it carries a published RFC 7693 Appendix A known-answer
 //! (BLAKE2b-512("abc")) that ties the parity check to a neutral, public reference our Rye and Monocypher must both satisfy.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md
 //! Kin: the decision wave (active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) seats Season G. Monocypher
-//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — this is our own arithmetic, studied clean-room from
+//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- this is our own arithmetic, studied clean-room from
 //! the public RFC and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a hash is a bounded loop over 64-bit words, mod 2^64. BLAKE2b takes the message in 128-byte blocks, mixes each into an
+//! THE CRUX -- a hash is a bounded loop over 64-bit words, mod 2^64. BLAKE2b takes the message in 128-byte blocks, mixes each into an
 //! eight-word chaining value through twelve rounds of the G function under the SIGMA permutation schedule, and carries a byte counter
 //! and a final-block flag so the same bytes always fold to the same 64-byte digest. Every add is mod 2^64 (Zig's wrapping +%); every
-//! rotation is a fixed constant (32, 24, 16, 63). Nothing here is a claim about a real device — it is arithmetic anyone can replay
+//! rotation is a fixed constant (32, 24, 16, 63). Nothing here is a claim about a real device -- it is arithmetic anyone can replay
 //! against the RFC.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive itself calls no std.crypto;
-//! it is authored from the algorithm. Parity is proven at selftest against two references runnable now — the RFC 7693 known-answer,
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive itself calls no std.crypto;
+//! it is authored from the algorithm. Parity is proven at selftest against two references runnable now -- the RFC 7693 known-answer,
 //! and Zig's own std.crypto BLAKE2b as an independent implementation, byte-for-byte over the empty message, "abc", an exact-128-byte
 //! boundary, and a multi-block input. The vendored Monocypher source is an empty submodule (its network fetch is held on Keaton's
 //! hand), so Monocypher-source parity is an honest HORIZON rung, gated behind that fetch; Monocypher passes the same RFC vectors, so
@@ -40,30 +40,30 @@ pub const block_bytes: u32 = 128;
 pub const hex_len: u32 = digest_len * 2;
 
 /// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact, yet named so the
-/// byte counter and the block loop both cite a maximum — the TAME reflex that every loop and every count declares its ceiling. A
+/// byte counter and the block loop both cite a maximum -- the TAME reflex that every loop and every count declares its ceiling. A
 /// streaming API for larger inputs is a later rung; this bound is a promise, not a limitation of the algorithm.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The faults this primitive can raise, each refused before a single byte is mixed.
 pub const Blake2bError = error{
-    /// A message whose length exceeds max_message_bytes — refused at the edge, before the counter or the block loop begins.
+    /// A message whose length exceeds max_message_bytes -- refused at the edge, before the counter or the block loop begins.
     MessageTooLong,
-    /// A variable-length request of zero bytes or more than digest_len (64) — refused before hash_var mixes a byte. BLAKE2b's own
+    /// A variable-length request of zero bytes or more than digest_len (64) -- refused before hash_var mixes a byte. BLAKE2b's own
     /// parameter block carries the output length in a single byte 1..64, so a request outside that range is not a BLAKE2b digest at all.
     BadOutputLen,
-    /// A key longer than digest_len (64) — refused before hash_keyed mixes a byte. BLAKE2b's parameter block carries the key length in a
+    /// A key longer than digest_len (64) -- refused before hash_keyed mixes a byte. BLAKE2b's parameter block carries the key length in a
     /// single byte 0..64, and the key is folded through one 128-byte block, so a key beyond 64 bytes is not a BLAKE2b key at all.
     BadKeyLen,
 };
 
-/// The BLAKE2b initialization vector — the eight 64-bit words that seed the chaining value (identical to SHA-512's IV). Named as a
+/// The BLAKE2b initialization vector -- the eight 64-bit words that seed the chaining value (identical to SHA-512's IV). Named as a
 /// constant so the compression function and the init both read from one source of truth.
 const iv = [8]u64{
     0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
     0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179,
 };
 
-/// The SIGMA message-permutation schedule — twelve rounds, each naming the order the sixteen message words feed the eight G calls.
+/// The SIGMA message-permutation schedule -- twelve rounds, each naming the order the sixteen message words feed the eight G calls.
 /// Rounds ten and eleven repeat rows zero and one, exactly as the specification defines. This table IS the diffusion of BLAKE2b; a
 /// single wrong entry would break parity against the RFC at once, which the selftest proves it does not.
 const sigma = [12][16]u8{
@@ -81,12 +81,12 @@ const sigma = [12][16]u8{
     .{ 14, 10, 4, 8, 9, 15, 13, 6, 1, 12, 0, 2, 11, 7, 5, 3 },
 };
 
-/// The G mixing function — the quarter-round at the heart of BLAKE2b. It stirs four words of the sixteen-word working vector with two
+/// The G mixing function -- the quarter-round at the heart of BLAKE2b. It stirs four words of the sixteen-word working vector with two
 /// message words, using the fixed rotation constants 32, 24, 16, 63. Every add is mod 2^64 (Zig's wrapping +%), which is the algorithm's
 /// definition, not an accident to guard against. a, b, c, d are comptime so the compiler unrolls each call and the index bounds are
 /// proven at compile time.
 inline fn mix(v: *[16]u64, comptime a: u32, comptime b: u32, comptime c: u32, comptime d: u32, x: u64, y: u64) void {
-    // invariant: the four addressed lanes lie within the sixteen-word working vector — proven at compile time so no bound can slip.
+    // invariant: the four addressed lanes lie within the sixteen-word working vector -- proven at compile time so no bound can slip.
     comptime assert(a < 16 and b < 16 and c < 16 and d < 16);
     // invariant: the four lanes are distinct, so the two halves of the diagonal/column each touch four separate words as G requires.
     comptime assert(a != b and a != c and a != d and b != c and b != d and c != d);
@@ -105,7 +105,7 @@ inline fn mix(v: *[16]u64, comptime a: u32, comptime b: u32, comptime c: u32, co
 /// block's sixteen little-endian 64-bit words feed twelve rounds of eight G calls under the SIGMA schedule, then h folds back the two
 /// halves of the working vector.
 fn compress(h: *[8]u64, block: *const [block_bytes]u8, t: u128, last: bool) void {
-    // invariant: the block carries exactly sixteen 64-bit message words — the compression's whole input width.
+    // invariant: the block carries exactly sixteen 64-bit message words -- the compression's whole input width.
     comptime assert(block_bytes == 16 * 8);
     // invariant: the schedule runs the twelve rounds BLAKE2b defines, no more and no fewer.
     comptime assert(sigma.len == 12);
@@ -150,13 +150,13 @@ fn compress(h: *[8]u64, block: *const [block_bytes]u8, t: u128, last: bool) void
 /// is a full block of zeros) folds in with last = true and the counter at the total length. The parameter block for an unkeyed
 /// 64-byte digest xors 0x01010040 into the first chaining word (0x01010000 for depth/fanout of one, xor the 64-byte output length).
 pub fn hash512(msg: []const u8) Blake2bError![digest_len]u8 {
-    // invariant: BLAKE2b-512's shapes are the algorithm's own — 64-byte digest, 128-byte block. Proven at compile time.
+    // invariant: BLAKE2b-512's shapes are the algorithm's own -- 64-byte digest, 128-byte block. Proven at compile time.
     comptime assert(digest_len == 64 and block_bytes == 128);
     // invariant: the message fits the named bound, so its length casts to u32 losslessly and the counter never overflows the loop.
     if (msg.len > max_message_bytes) return error.MessageTooLong;
 
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [8]u64 = iv;
@@ -174,7 +174,7 @@ pub fn hash512(msg: []const u8) Blake2bError![digest_len]u8 {
         }
         // The final block: the remaining 1..128 bytes, zero-padded, counter at the total length, last = true.
         const rem = total - offset;
-        // invariant: the tail is a non-empty block-sized-or-smaller span — the loop above consumed every earlier full block.
+        // invariant: the tail is a non-empty block-sized-or-smaller span -- the loop above consumed every earlier full block.
         assert(rem > 0 and rem <= block_bytes);
         var last_block = [_]u8{0} ** block_bytes;
         var j: u32 = 0;
@@ -190,7 +190,7 @@ pub fn hash512(msg: []const u8) Blake2bError![digest_len]u8 {
     return out;
 }
 
-/// Hash a message to a variable-length digest of 1..64 bytes — the general BLAKE2b that hash512 is the 64-byte special case of. The only
+/// Hash a message to a variable-length digest of 1..64 bytes -- the general BLAKE2b that hash512 is the 64-byte special case of. The only
 /// difference from hash512 is the parameter block: an unkeyed digest of out.len bytes xors 0x01010000 (fanout and depth of one) with the
 /// output length itself into the first chaining word, and the emit copies exactly the first out.len bytes of the eight-word state. This
 /// is the primitive Argon2's blake2b_long chain and its final key derivation stand on (RFC 9106 uses BLAKE2b at every output length from
@@ -202,10 +202,10 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
     if (msg.len > max_message_bytes) return error.MessageTooLong;
 
     const out_len: u32 = @intCast(out.len);
-    // invariant: the output length is the exact byte count requested — the bounded check above proves 1 <= out_len <= 64.
+    // invariant: the output length is the exact byte count requested -- the bounded check above proves 1 <= out_len <= 64.
     assert(out_len >= 1 and out_len <= digest_len);
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [8]u64 = iv;
@@ -213,7 +213,7 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
     h[0] ^= 0x0000000001010000 ^ @as(u64, out_len);
 
     if (total == 0) {
-        // The empty message is one final block of all zeros, counter zero — the same last-block rule hash512 keeps.
+        // The empty message is one final block of all zeros, counter zero -- the same last-block rule hash512 keeps.
         const empty = [_]u8{0} ** block_bytes;
         compress(&h, &empty, 0, true);
     } else {
@@ -222,7 +222,7 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
             compress(&h, msg[offset..][0..block_bytes], @as(u128, offset + block_bytes), false);
         }
         const rem = total - offset;
-        // invariant: the tail is a non-empty block-sized-or-smaller span — the loop above consumed every earlier full block.
+        // invariant: the tail is a non-empty block-sized-or-smaller span -- the loop above consumed every earlier full block.
         assert(rem > 0 and rem <= block_bytes);
         var last_block = [_]u8{0} ** block_bytes;
         var j: u32 = 0;
@@ -230,7 +230,7 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
         compress(&h, &last_block, @as(u128, total), true);
     }
 
-    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes — BLAKE2b's own truncation rule.
+    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes -- BLAKE2b's own truncation rule.
     var digest: [digest_len]u8 = undefined;
     var i: u32 = 0;
     while (i < 8) : (i += 1) {
@@ -242,11 +242,11 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
     assert(k == out_len);
 }
 
-/// Hash a message under a secret key to a variable-length digest of 1..64 bytes — keyed BLAKE2b, the MAC mode that makes BLAKE2b a keyed
+/// Hash a message under a secret key to a variable-length digest of 1..64 bytes -- keyed BLAKE2b, the MAC mode that makes BLAKE2b a keyed
 /// authenticator (a message tag no one without the key can forge) as well as a hash. It is the primitive Monocypher exposes as
 /// crypto_blake2b_keyed, and the shape Grain's own key-derivation and per-record authentication will reach for. The only two differences
-/// from hash_var: the parameter block also carries the key length in its second byte (0x01010000 | key_len<<8 | out_len), and the key —
-/// zero-padded to one full 128-byte block — is prepended to the message stream, its block counted as a full block by the counter. An empty
+/// from hash_var: the parameter block also carries the key length in its second byte (0x01010000 | key_len<<8 | out_len), and the key --
+/// zero-padded to one full 128-byte block -- is prepended to the message stream, its block counted as a full block by the counter. An empty
 /// key (key.len == 0) is exactly the unkeyed hash_var, so this defers to it; the algorithm and its parity are identical there.
 pub fn hash_keyed(out: []u8, key: []const u8, msg: []const u8) Blake2bError!void {
     // invariant: BLAKE2b carries its output length in one parameter byte, so a variable request is meaningful only for 1..64 bytes.
@@ -258,11 +258,11 @@ pub fn hash_keyed(out: []u8, key: []const u8, msg: []const u8) Blake2bError!void
 
     const out_len: u32 = @intCast(out.len);
     const key_len: u32 = @intCast(key.len);
-    // An empty key is unkeyed BLAKE2b exactly — one code path, so keyed and unkeyed can never drift apart.
+    // An empty key is unkeyed BLAKE2b exactly -- one code path, so keyed and unkeyed can never drift apart.
     if (key_len == 0) return hash_var(out, msg);
 
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [8]u64 = iv;
@@ -289,7 +289,7 @@ pub fn hash_keyed(out: []u8, key: []const u8, msg: []const u8) Blake2bError!void
         }
         // The final message block: the remaining 1..128 bytes, zero-padded, counter at the key block plus the total message length, last = true.
         const rem = total - offset;
-        // invariant: the tail is a non-empty block-sized-or-smaller span — the loop above consumed every earlier full block.
+        // invariant: the tail is a non-empty block-sized-or-smaller span -- the loop above consumed every earlier full block.
         assert(rem > 0 and rem <= block_bytes);
         var last_block = [_]u8{0} ** block_bytes;
         var j: u32 = 0;
@@ -297,7 +297,7 @@ pub fn hash_keyed(out: []u8, key: []const u8, msg: []const u8) Blake2bError!void
         compress(&h, &last_block, @as(u128, block_bytes + total), true);
     }
 
-    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes — BLAKE2b's own truncation rule.
+    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes -- BLAKE2b's own truncation rule.
     var digest: [digest_len]u8 = undefined;
     var i: u32 = 0;
     while (i < 8) : (i += 1) {
@@ -323,10 +323,10 @@ pub fn to_hex(digest: [digest_len]u8) [hex_len]u8 {
     return out;
 }
 
-// The RFC 7693 Appendix A known-answer for BLAKE2b-512 of the ASCII string "abc" — the neutral public reference our Rye and Monocypher
+// The RFC 7693 Appendix A known-answer for BLAKE2b-512 of the ASCII string "abc" -- the neutral public reference our Rye and Monocypher
 // must both reproduce.
 const rfc_abc_hex = "ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d17d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923";
-// The published BLAKE2b-512 of the empty message — the second neutral reference.
+// The published BLAKE2b-512 of the empty message -- the second neutral reference.
 const rfc_empty_hex = "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f71f5419d25e1031afee585313896444934eb04b903a685b1448b755d56f701afe9be2ce";
 
 /// Independent reference: Zig's own std.crypto BLAKE2b-512, used ONLY inside the selftest as a second implementation to prove our
@@ -378,7 +378,7 @@ fn run_selftest() !u8 {
     // 3. Independent-implementation parity: our authored Rye equals Zig's std.crypto BLAKE2b byte-for-byte over the empty message,
     //    "abc", an exact-128-byte boundary block, and a multi-block input. The vendored Monocypher is now a SECOND independent target:
     //    tools/cr/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over these
-    //    same four messages — the audit's parity target, closed on metal.
+    //    same four messages -- the audit's parity target, closed on metal.
     {
         const empty = try hash512("");
         if (!bytes_eq(empty, ref_hash512(""))) return error.RefEmptyMismatch;
@@ -386,14 +386,14 @@ fn run_selftest() !u8 {
         const abc = try hash512("abc");
         if (!bytes_eq(abc, ref_hash512("abc"))) return error.RefAbcMismatch;
 
-        // Exactly one full 128-byte block — the boundary where "the last block" and "a full block" coincide.
+        // Exactly one full 128-byte block -- the boundary where "the last block" and "a full block" coincide.
         var one_block: [128]u8 = undefined;
         var i: u32 = 0;
         while (i < 128) : (i += 1) one_block[i] = @as(u8, @truncate(i));
         const ob = try hash512(&one_block);
         if (!bytes_eq(ob, ref_hash512(&one_block))) return error.RefBlockMismatch;
 
-        // A multi-block input (200 bytes) — one full block folded with last = false, then a 72-byte final block.
+        // A multi-block input (200 bytes) -- one full block folded with last = false, then a 72-byte final block.
         var multi: [200]u8 = undefined;
         i = 0;
         while (i < 200) : (i += 1) multi[i] = @as(u8, @truncate(i *% 7 +% 1));
@@ -402,7 +402,7 @@ fn run_selftest() !u8 {
     }
 
     // 3b. Keyed parity: our authored hash_keyed equals Zig's independent std.crypto keyed BLAKE2b-512 byte-for-byte across a spread of
-    //     (key, message) pairs — a full 64-byte key, a short key, the empty message, and a multi-block message. The standalone Monocypher
+    //     (key, message) pairs -- a full 64-byte key, a short key, the empty message, and a multi-block message. The standalone Monocypher
     //     rung (tools/cr/crypto_monocypher_blake2b_keyed_parity_witness.rish) proves the same against the vendored C at every output length.
     {
         // A full 64-byte key (byte i = i) over "abc".
@@ -413,12 +413,12 @@ fn run_selftest() !u8 {
         try hash_keyed(&got, &full_key, "abc");
         if (!bytes_eq(got, ref_hash_keyed(&full_key, "abc"))) return error.RefKeyedFullMismatch;
 
-        // A short 8-byte key over the empty message — the key block folds in as the final block.
+        // A short 8-byte key over the empty message -- the key block folds in as the final block.
         const short_key = "keybytes";
         try hash_keyed(&got, short_key, "");
         if (!bytes_eq(got, ref_hash_keyed(short_key, ""))) return error.RefKeyedEmptyMismatch;
 
-        // A 32-byte key over a 200-byte multi-block message — the key block, one full message block, then a partial final block.
+        // A 32-byte key over a 200-byte multi-block message -- the key block, one full message block, then a partial final block.
         var mid_key: [32]u8 = undefined;
         ki = 0;
         while (ki < 32) : (ki += 1) mid_key[ki] = @as(u8, @truncate(ki *% 3 +% 5));
@@ -428,7 +428,7 @@ fn run_selftest() !u8 {
         try hash_keyed(&got, &mid_key, &multi);
         if (!bytes_eq(got, ref_hash_keyed(&mid_key, &multi))) return error.RefKeyedMultiMismatch;
 
-        // An empty key is unkeyed BLAKE2b exactly — hash_keyed must reproduce hash512 there.
+        // An empty key is unkeyed BLAKE2b exactly -- hash_keyed must reproduce hash512 there.
         try hash_keyed(&got, "", "abc");
         if (!bytes_eq(got, try hash512("abc"))) return error.KeyedEmptyKeyMismatch;
     }
@@ -436,7 +436,7 @@ fn run_selftest() !u8 {
     // 4. The bound refuses an over-long message before any byte is mixed. A zero-length slice at the ceiling proves only the length
     //    check; we assert the error surfaces by name using a slice whose declared length exceeds the bound.
     {
-        // A slice one byte past the ceiling. Its bytes are never read — the length check refuses first.
+        // A slice one byte past the ceiling. Its bytes are never read -- the length check refuses first.
         const oversize: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_message_bytes + 1];
         if (hash512(oversize)) |_| return error.OversizeSlipped else |e| if (e != error.MessageTooLong) return error.WrongOversize;
     }

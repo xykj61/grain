@@ -1,29 +1,29 @@
-//! constel/learner.rye — FORA25: a new member joins as a non-voting LEARNER, catches up, and is promoted only once caught up
+//! constel/learner.rye -- FORA25: a new member joins as a non-voting LEARNER, catches up, and is promoted only once caught up
 //! (Raft, Ongaro thesis §4.2.1, "catching up new servers"). FORA13 (reconfig) proved a joint-consensus membership change where the
-//! union of the old and new configs must both agree — the safe way to CHANGE who votes. This rung proves the safe way to ADD a
+//! union of the old and new configs must both agree -- the safe way to CHANGE who votes. This rung proves the safe way to ADD a
 //! member in the first place: bring it in as a replica that receives and applies the log yet counts toward nothing, let it catch
 //! up out of the critical path, and admit it to the voting set only after it is caught up.
 //!
 //! The gap it closes:
 //!   A brand-new member's log is empty. If it joins straight as a VOTER, it immediately enlarges the majority the leader must reach
-//!   for every commit — yet it cannot ack the entries it does not yet have. So while a fresh voter catches up, the cluster's spare
+//!   for every commit -- yet it cannot ack the entries it does not yet have. So while a fresh voter catches up, the cluster's spare
 //!   fault tolerance is spent on a member that answers nothing: one slow or partitioned old voter is now enough to STALL commits.
 //!   Raft's fix is the learner (non-voting replica): the new member replicates and applies the log like a follower, but the voter
 //!   majority does not grow and its ack never counts toward commit, so availability is untouched while it catches up. Once its match
 //!   index is within a bounded lag of the leader's commit, it is safe to promote to a full voter.
 //!
 //! This is the companion to FORA13 (reconfig) and FORA15 (catchup): reconfig changes the voting set safely, catchup carries a
-//! lagging log forward, and the learner is the staging role between them — the place a member lives while catchup runs and before
+//! lagging log forward, and the learner is the staging role between them -- the place a member lives while catchup runs and before
 //! reconfig admits it to the vote.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA25. Design read: active-designing/date/20260814/20260814-073705_fora25-constel-learner-non-voting-replica.md
-//! Stands on: constel/quorum.rye (FORA9) — majority_of, the strict-majority threshold, here drawn over VOTERS ONLY;
-//! constel/roster.rye (FORA1) — max_piers, the bound every membership array runs within.
+//! Stands on: constel/quorum.rye (FORA9) -- majority_of, the strict-majority threshold, here drawn over VOTERS ONLY;
+//! constel/roster.rye (FORA1) -- max_piers, the bound every membership array runs within.
 //!
-//! Purely LOCAL — bounded per-pier role flags and index scalars on one bench, siloed to constel/, run from inside the jailed pier.
-//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and
-//! gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- bounded per-pier role flags and index scalars on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and
+//! gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/learner.rye selftest
 
@@ -37,27 +37,27 @@ const quorum = @import("quorum.rye");
 pub const learner_version = "20260814.073705";
 
 pub const LearnerError = error{
-    /// A promote attempted before the learner's log is within the bounded lag of the leader's commit — refused so an empty replica
+    /// A promote attempted before the learner's log is within the bounded lag of the leader's commit -- refused so an empty replica
     /// never enters the voting set and enlarges the majority it cannot yet answer.
     NotCaughtUp,
 };
 
-/// HOW MANY MEMBERS VOTE. `roles` holds one flag per member — true for a voter, false for a learner (non-voting replica). Only
+/// HOW MANY MEMBERS VOTE. `roles` holds one flag per member -- true for a voter, false for a learner (non-voting replica). Only
 /// voters count toward elections and commits, so the majority is drawn over this count, never over the whole membership.
 pub fn voter_count(roles: []const bool) u32 {
-    // invariant: the membership is bounded by the pier cap — no config exceeds the roster.
+    // invariant: the membership is bounded by the pier cap -- no config exceeds the roster.
     assert(roles.len <= roster.max_piers);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < roles.len) : (i += 1) {
         if (roles[i]) count += 1;
     }
-    // invariant: a config always keeps at least one voter — a sky with no voters can decide nothing.
+    // invariant: a config always keeps at least one voter -- a sky with no voters can decide nothing.
     assert(count >= 1 and count <= roles.len);
     return count;
 }
 
-/// THE MAJORITY DRAWN OVER VOTERS ONLY. A learner's presence never enlarges the threshold the leader must reach — the whole point
+/// THE MAJORITY DRAWN OVER VOTERS ONLY. A learner's presence never enlarges the threshold the leader must reach -- the whole point
 /// of the non-voting role. Delegates the strict-majority safety to FORA9's majority_of over the voter count alone.
 pub fn voter_majority(roles: []const bool) u32 {
     // invariant: the membership is bounded by the pier cap.
@@ -78,7 +78,7 @@ pub fn ack_counts(roles: []const bool, slot: u32) bool {
     return roles[slot];
 }
 
-/// HOW MANY ACKS ADVANCE THE COMMIT. Counts only the voters among the members that answered this entry — a learner's ack in `acks`
+/// HOW MANY ACKS ADVANCE THE COMMIT. Counts only the voters among the members that answered this entry -- a learner's ack in `acks`
 /// is present but ignored, so an empty replica can never be mistaken for backing a commit it did not truly acknowledge.
 pub fn commit_backing(roles: []const bool, acks: []const bool) u32 {
     // invariant: the role flags and ack flags describe the SAME membership, bounded by the pier cap.
@@ -88,40 +88,40 @@ pub fn commit_backing(roles: []const bool, acks: []const bool) u32 {
     while (i < roles.len) : (i += 1) {
         if (roles[i] and acks[i]) count += 1;
     }
-    // invariant: the counted backing never exceeds the voters — a learner's ack was skipped.
+    // invariant: the counted backing never exceeds the voters -- a learner's ack was skipped.
     assert(count <= voter_count(roles));
     return count;
 }
 
-/// IS THE ENTRY COMMITTED? Its voter backing reaches the voter majority — learners neither raise the bar nor help clear it.
+/// IS THE ENTRY COMMITTED? Its voter backing reaches the voter majority -- learners neither raise the bar nor help clear it.
 pub fn committed(roles: []const bool, acks: []const bool) bool {
     // invariant: roles and acks describe the same bounded membership.
     assert(roles.len == acks.len and roles.len <= roster.max_piers);
     return commit_backing(roles, acks) >= voter_majority(roles);
 }
 
-/// IS THE LEARNER CAUGHT UP? Its match index sits within `lag_bound` of the leader's commit — close enough that admitting it to
+/// IS THE LEARNER CAUGHT UP? Its match index sits within `lag_bound` of the leader's commit -- close enough that admitting it to
 /// the vote will not stall the cluster. The lag is computed in u64 so a leader far ahead of a fresh replica can never wrap.
 pub fn caught_up(learner_match: u32, leader_commit: u32, lag_bound: u32) bool {
     // invariant: a learner never runs ahead of the commit it is catching up to.
     assert(learner_match <= leader_commit);
     const lag: u64 = @as(u64, leader_commit) - @as(u64, learner_match);
     const near = lag <= @as(u64, lag_bound);
-    // invariant: a learner already at the exact commit is caught up at any bound — the boundary can never lock out a current replica.
+    // invariant: a learner already at the exact commit is caught up at any bound -- the boundary can never lock out a current replica.
     assert(!(learner_match == leader_commit) or near);
     return near;
 }
 
-/// MAY THIS LEARNER BE PROMOTED TO A VOTER? Only once it is caught up — a bare predicate for the reconfig path to consult before it
+/// MAY THIS LEARNER BE PROMOTED TO A VOTER? Only once it is caught up -- a bare predicate for the reconfig path to consult before it
 /// admits the member to the voting set (FORA13).
 pub fn may_promote(learner_match: u32, leader_commit: u32, lag_bound: u32) bool {
-    // invariant: the indices are ordered — a learner never leads the commit it trails.
+    // invariant: the indices are ordered -- a learner never leads the commit it trails.
     assert(learner_match <= leader_commit);
     return caught_up(learner_match, leader_commit, lag_bound);
 }
 
 /// PROMOTE, GUARDED. Refuses NotCaughtUp when the learner still trails past the lag bound, so an empty replica can never slip into
-/// the voting set and enlarge a majority it cannot yet answer — the reconfig path calls this with `try` before enlarging the vote.
+/// the voting set and enlarge a majority it cannot yet answer -- the reconfig path calls this with `try` before enlarging the vote.
 pub fn require_caught_up(learner_match: u32, leader_commit: u32, lag_bound: u32) LearnerError!void {
     // invariant: the indices are ordered.
     assert(learner_match <= leader_commit);
@@ -133,7 +133,7 @@ pub fn require_caught_up(learner_match: u32, leader_commit: u32, lag_bound: u32)
 //     until caught up; bounded over a full roster. -------------------------------------------------------------------------------
 
 fn run_selftest() !u8 {
-    // 1. VOTER_COUNT COUNTS ONLY VOTERS; THE MAJORITY IS DRAWN OVER THEM ALONE — a five-member sky with two learners has three
+    // 1. VOTER_COUNT COUNTS ONLY VOTERS; THE MAJORITY IS DRAWN OVER THEM ALONE -- a five-member sky with two learners has three
     //    voters, so its majority is two, not the three a five-voter sky would need.
     {
         const three_voters_two_learners = [_]bool{ true, true, true, false, false };
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         assert(voter_majority(&all_voters) == quorum.majority_of(5)); // 3
     }
 
-    // 2. A LEARNER'S ACK NEVER COUNTS TOWARD COMMIT — the same ack set commits or does not purely by whether the answering members
+    // 2. A LEARNER'S ACK NEVER COUNTS TOWARD COMMIT -- the same ack set commits or does not purely by whether the answering members
     //    are voters. Four members, the fourth a learner. All four ack: voter backing is 3 (the learner skipped).
     {
         const roles = [_]bool{ true, true, true, false }; // three voters, one learner
@@ -154,11 +154,11 @@ fn run_selftest() !u8 {
         assert(commit_backing(&roles, &all_ack) == 3); // the learner's ack was skipped
     }
 
-    // 3. THE CRUX — THE LEARNER STAGING PRESERVES AVAILABILITY WHERE A FRESH VOTER WOULD STALL IT. A healthy three-voter sky
+    // 3. THE CRUX -- THE LEARNER STAGING PRESERVES AVAILABILITY WHERE A FRESH VOTER WOULD STALL IT. A healthy three-voter sky
     //    (majority 2) tolerates one slow voter. A brand-new empty member arrives while one old voter is partitioned away.
     //
     //    AS A VOTER (the wrong way): the config is now four voters, majority 3. The partitioned old voter answers nothing, and the
-    //    new voter's log is empty so it cannot ack the latest entry either — only the leader and one other old voter ack. Backing 2
+    //    new voter's log is empty so it cannot ack the latest entry either -- only the leader and one other old voter ack. Backing 2
     //    of a threshold 3: the entry CANNOT commit. Adding the voter stalled the cluster.
     {
         const as_voter = [_]bool{ true, true, true, true }; // four voters — the new member joined the vote empty
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
         assert(!committed(&as_voter, &acks)); // STALLED — the empty voter enlarged a majority it cannot answer
     }
     //    AS A LEARNER (the right way): the new member is a non-voting replica. The voter set is unchanged at three, majority 2. The
-    //    same one old voter is partitioned — yet the leader and one other old voter still make a majority. The entry COMMITS. The
+    //    same one old voter is partitioned -- yet the leader and one other old voter still make a majority. The entry COMMITS. The
     //    learner catches up out of the critical path; only then is it promoted.
     {
         const as_learner = [_]bool{ true, true, true, false }; // three voters, the new member a learner
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
 
     // 4. CATCH-UP IS A BOUNDED LAG; PROMOTION IS REFUSED UNTIL CAUGHT UP. A fresh learner at match 0 while the leader has committed
     //    to index 12, lag bound 3: not caught up, promotion refused. Once it reaches match 10 (lag 2 ≤ 3): caught up, promotion
-    //    allowed. The boundary is exact — lag == bound is caught up; lag == bound + 1 is not.
+    //    allowed. The boundary is exact -- lag == bound is caught up; lag == bound + 1 is not.
     {
         const empty = require_caught_up(0, 12, 3);
         if (empty) |_| unreachable else |e| assert(e == error.NotCaughtUp); // an empty replica may not vote
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         assert(!caught_up(8, 12, 3)); // lag 4 == bound + 1 — one short
     }
 
-    // 5. A FULLY-CAUGHT-UP LEARNER AND A LONE-VOTER SKY BEHAVE — a learner at the leader's exact commit is caught up at any bound; a
+    // 5. A FULLY-CAUGHT-UP LEARNER AND A LONE-VOTER SKY BEHAVE -- a learner at the leader's exact commit is caught up at any bound; a
     //    single-voter sky (any number of learners beside it) has majority 1 and commits on the leader's own ack.
     {
         assert(caught_up(7, 7, 0)); // exactly current — caught up even with zero slack
@@ -205,7 +205,7 @@ fn run_selftest() !u8 {
         assert(committed(&one_voter_two_learners, &only_leader)); // the lone voter's own ack is a majority
     }
 
-    // 6. BOUNDED — a full roster of eight, one a learner: seven voters, majority four, every voter acking commits, and the counts
+    // 6. BOUNDED -- a full roster of eight, one a learner: seven voters, majority four, every voter acking commits, and the counts
     //    stay within the pier cap.
     {
         var roles: [roster.max_piers]bool = [_]bool{true} ** roster.max_piers;

@@ -1,22 +1,22 @@
-//! lotus/loop.rye — ALES14: the transport loop — a marked region read round and round, the first read that does not end.
+//! lotus/loop.rye -- ALES14: the transport loop -- a marked region read round and round, the first read that does not end.
 //! ALES7 opened the read side with a play head that reads a master forward and stops EXACTLY at the end, the end a hard wall.
-//! That is ordinary playback. The read a musician reaches for second is LOOP — mark a region and hear it round and round: the
+//! That is ordinary playback. The read a musician reaches for second is LOOP -- mark a region and hear it round and round: the
 //! practice loop over a hard bar, the comping cycle a take is punched into. This rung extends the ALES7 head with a region it
 //! wraps at instead of stopping.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES14.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES14.
 //! Design read: active-designing/20260814-fill-ales14-lotus-transport-loop.md
-//! Stands on: lotus/transport.rye (ALES7) — the play head this rung extends (a loop OFF delegates to it whole); lotus/clock.rye
-//! (ALES5) — mark_ms sets the region in real time; lotus/timeline.rye (ALES2) — the Clip the master is.
+//! Stands on: lotus/transport.rye (ALES7) -- the play head this rung extends (a loop OFF delegates to it whole); lotus/clock.rye
+//! (ALES5) -- mark_ms sets the region in real time; lotus/timeline.rye (ALES2) -- the Clip the master is.
 //!
 //! THE CRUX: a loop is a play head that WRAPS at a marked end instead of stopping. ALES7's head only moved forward and halted
-//! at master.len; a loop keeps a region [start, end) and, whenever the head reaches end, wraps it back to start — so a
+//! at master.len; a loop keeps a region [start, end) and, whenever the head reaches end, wraps it back to start -- so a
 //! continuous read cycles the region forever and the pulled block is always full (a non-empty region never runs dry). The head
 //! stays WITHIN the region after every read (start ≤ pos < end, asserted), so the cycle is exact: reading K cycles concatenates
 //! to the region repeated K times, no sample skipped at the seam and none doubled. A loop OFF is ALES7's forward read exactly.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded read cursor over an in-process i16 PCM master, siloed to lotus/. No
-//! audio leaves the process — a block is COPIED samples, not a sound-card write (that real write is the paused hardware round).
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded read cursor over an in-process i16 PCM master, siloed to lotus/. No
+//! audio leaves the process -- a block is COPIED samples, not a sound-card write (that real write is the paused hardware round).
 //! No socket, no network, no keys, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/loop.rye selftest
@@ -32,7 +32,7 @@ const transport = @import("transport.rye");
 pub const loop_version = "20260814.130000";
 
 pub const LoopError = error{
-    /// A region that is empty or inverted (start ≥ end) or runs past the master (end > master.len) — refused at the edge, so
+    /// A region that is empty or inverted (start ≥ end) or runs past the master (end > master.len) -- refused at the edge, so
     /// every armed loop below rests on a non-empty region wholly within the master.
     BadLoop,
 };
@@ -44,7 +44,7 @@ pub const Loop = struct {
     end: u32 = 0,
     on: bool = false,
 
-    /// The region's length in samples — always ≥ 1 for an armed loop (make refuses an empty region).
+    /// The region's length in samples -- always ≥ 1 for an armed loop (make refuses an empty region).
     pub fn span(self: *const Loop) u32 {
         // invariant: an armed loop is a non-empty region; a disarmed default reports zero.
         assert(self.end >= self.start);
@@ -65,7 +65,7 @@ pub fn make(start: u32, end: u32, master_len: u32) LoopError!Loop {
     return lp;
 }
 
-/// Mark the loop region in REAL TIME through the ALES5 clock — start_ms and end_ms convert to sample offsets, then `make`
+/// Mark the loop region in REAL TIME through the ALES5 clock -- start_ms and end_ms convert to sample offsets, then `make`
 /// validates them. Forwards the clock's DurationTooLong past the master bound. So a keeper sets loop points in seconds, not
 /// sample indices.
 pub fn mark_ms(clk: clock.Clock, start_ms: u32, end_ms: u32, master: *const timeline.Clip) (LoopError || clock.ClockError)!Loop {
@@ -76,7 +76,7 @@ pub fn mark_ms(clk: clock.Clock, start_ms: u32, end_ms: u32, master: *const time
     return make(s, e, master.len);
 }
 
-/// Place the head at the region start, arming the cycle — a keeper hits loop and the transport jumps to the top of the region.
+/// Place the head at the region start, arming the cycle -- a keeper hits loop and the transport jumps to the top of the region.
 /// A no-op region check is left to `make`; here the loop is assumed already validated.
 pub fn enter(t: *transport.Transport, lp: *const Loop) void {
     // invariant: an entered loop is a legal, armed, non-empty region.
@@ -87,7 +87,7 @@ pub fn enter(t: *transport.Transport, lp: *const Loop) void {
 }
 
 /// The looping read: copy the next up-to-out.len samples into out, advancing the head and WRAPPING at the region end. When the
-/// loop is OFF this is ALES7's forward read exactly (delegated whole — a short block at the end, zero past it). When ON, the
+/// loop is OFF this is ALES7's forward read exactly (delegated whole -- a short block at the end, zero past it). When ON, the
 /// head that reaches `end` wraps to `start`, so the block is always filled (a non-empty region never runs dry) and the head is
 /// left within [start, end). Returns the count copied.
 pub fn read_block(t: *transport.Transport, master: *const timeline.Clip, lp: *const Loop, out: []i16) u32 {
@@ -103,7 +103,7 @@ pub fn read_block(t: *transport.Transport, master: *const timeline.Clip, lp: *co
     const want: u32 = @intCast(out.len);
     var i: u32 = 0;
     while (i < want) : (i += 1) {
-        // invariant: the head is within the region at the top of each copy — wrap the instant it reaches the end.
+        // invariant: the head is within the region at the top of each copy -- wrap the instant it reaches the end.
         if (t.pos >= lp.end) t.pos = lp.start;
         // invariant: the playhead stays inside the loop it is looping, so a position outside
         // would read samples from beyond the region and call them the loop
@@ -120,10 +120,10 @@ pub fn read_block(t: *transport.Transport, master: *const timeline.Clip, lp: *co
 }
 
 // --- selftest: a loop OFF reads identically to ALES7's forward read (short last block, empty past the end); a region [1,4) of
-//     a five-sample master cycles 20,30,40,20,30,40,… exactly, K cycles concatenating to the region repeated K times; the head
+//     a five-sample master cycles 20,30,40,20,30,40,... exactly, K cycles concatenating to the region repeated K times; the head
 //     stays within [start,end) after every read; a loop over the whole master cycles the full master; a single-sample region
 //     repeats that one sample; make refuses BadLoop (empty, inverted, past the master); mark_ms places the region at real
-//     times; the loop reads only — the master is never mutated ------------------------------------------------------------
+//     times; the loop reads only -- the master is never mutated ------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -135,7 +135,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms — a millisecond equals a sample index, legible on a bench
 
-    // 1. a loop OFF reads identically to ALES7's forward read — the last block honestly short (5 samples in 2s → 2,2,1) and the
+    // 1. a loop OFF reads identically to ALES7's forward read -- the last block honestly short (5 samples in 2s -> 2,2,1) and the
     //    read past the end empty. The loop generalizes the transport: disarmed, it IS the transport.
     {
         var master = timeline.Clip{};
@@ -157,7 +157,7 @@ fn run_selftest() !u8 {
         if (!eq(gathered[0..got], master.samples())) return error.OffConcatWrong;
     }
 
-    // 2. THE CRUX — a region [1,4) of [10,20,30,40,50] cycles 20,30,40,20,30,40,… exactly. Reading nine samples (three cycles of
+    // 2. THE CRUX -- a region [1,4) of [10,20,30,40,50] cycles 20,30,40,20,30,40,... exactly. Reading nine samples (three cycles of
     //    the three-sample region) concatenates to the region repeated three times, no seam sample skipped or doubled.
     {
         var master = timeline.Clip{};
@@ -173,7 +173,7 @@ fn run_selftest() !u8 {
         if (!(t.position() >= 1 and t.position() < 4)) return error.HeadOutsideRegion;
     }
 
-    // 3. the head stays within [start,end) after every read, whatever the block size — read one sample at a time across a full
+    // 3. the head stays within [start,end) after every read, whatever the block size -- read one sample at a time across a full
     //    cycle-and-a-bit and confirm the head never leaves the region.
     {
         var master = timeline.Clip{};
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. a loop over the WHOLE master [0,len) cycles the full master — continuous replay, the master heard end to end and again.
+    // 4. a loop over the WHOLE master [0,len) cycles the full master -- continuous replay, the master heard end to end and again.
     {
         var master = timeline.Clip{};
         try timeline.splice(&master, 0, &[_]i16{ 7, 8, 9 });
@@ -202,7 +202,7 @@ fn run_selftest() !u8 {
         if (n != 7 or !eq(seven[0..n], &two_and_a_bit)) return error.WholeLoopWrong;
     }
 
-    // 5. a single-sample region [2,3) repeats that one sample forever — the tightest cycle, proving the wrap never skips.
+    // 5. a single-sample region [2,3) repeats that one sample forever -- the tightest cycle, proving the wrap never skips.
     {
         var master = timeline.Clip{};
         try timeline.splice(&master, 0, &[_]i16{ 11, 22, 33, 44 });
@@ -215,7 +215,7 @@ fn run_selftest() !u8 {
         if (!eq(&four, &all_thirty_three)) return error.SingleSampleWrong;
     }
 
-    // 6. make refuses BadLoop at the edge — an empty region (start == end), an inverted one (start > end), and one past the
+    // 6. make refuses BadLoop at the edge -- an empty region (start == end), an inverted one (start > end), and one past the
     //    master (end > len) each refuse by name, leaving no half-built loop.
     {
         if (make(3, 3, 5)) |_| return error.EmptySlipped else |e| if (e != error.BadLoop) return error.WrongEmpty;
@@ -223,7 +223,7 @@ fn run_selftest() !u8 {
         if (make(2, 6, 5)) |_| return error.PastSlipped else |e| if (e != error.BadLoop) return error.WrongPast;
     }
 
-    // 7. mark_ms places the region at real times through the clock — at 1000 Hz, [200ms, 400ms) is samples [200,400). The clock
+    // 7. mark_ms places the region at real times through the clock -- at 1000 Hz, [200ms, 400ms) is samples [200,400). The clock
     //    converts the units; the region is the same one `make` would build from indices.
     {
         var master = timeline.Clip{};
@@ -236,7 +236,7 @@ fn run_selftest() !u8 {
         if (lp.span() != 200) return error.MarkMsSpanWrong;
     }
 
-    // 8. the loop reads ONLY — cycling a master many times over, then checking the master is byte-for-byte unchanged. Read-only
+    // 8. the loop reads ONLY -- cycling a master many times over, then checking the master is byte-for-byte unchanged. Read-only
     //    playback, exactly as ALES7.
     {
         var master = timeline.Clip{};

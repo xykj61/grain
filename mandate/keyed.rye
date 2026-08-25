@@ -1,15 +1,15 @@
-//! mandate/keyed.rye — Kumara-keyed records: a vector belongs to a settled identity.
+//! mandate/keyed.rye -- Kumara-keyed records: a vector belongs to a settled identity.
 //!
 //! Mandate's bare store (`store.rye`) keys a vector by any `u32`. This layer makes the
 //! key an **identity**: a record belongs to a settled Kumara **point**, and only that
 //! point's owner may store its vector. The gate mirrors the name registry's
 //! (`../settlement/names.rye`): the owner presents the point's **Deed**, verified
-//! against the constellation's shared surface, and **signs** the exact vector — so a
+//! against the constellation's shared surface, and **signs** the exact vector -- so a
 //! stolen id cannot poison another identity's search, and a search returns *who*, not
 //! merely *which number*.
 //!
 //! A query result is a point number, and `place_of` resolves it to its place in the
-//! fractal — the galaxy, star, or planet the identity settled as. The vector store
+//! fractal -- the galaxy, star, or planet the identity settled as. The vector store
 //! stays exactly what it was; this file only decides whose hand may write to it.
 //!
 //!   rye build mandate/keyed.rye -femit-bin=mandate/bin/keyed
@@ -60,7 +60,7 @@ fn vec_digest(vec: *const [store.max_dim]f32) [digest_len]u8 {
 }
 
 // The message a keeper signs to store a vector: the point, the tag, and the vector's
-// digest — 40 bytes, fixed, so possessing an id is never enough to write for it.
+// digest -- 40 bytes, fixed, so possessing an id is never enough to write for it.
 const auth_msg_len: u32 = 4 + 4 + digest_len; // 40
 
 fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32) void {
@@ -72,7 +72,7 @@ fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store
     for (d, 0..) |b, i| out[8 + i] = b;
 }
 
-/// Sign a record — the owner's word that this exact vector, with this tag, belongs to
+/// Sign a record -- the owner's word that this exact vector, with this tag, belongs to
 /// this point. Signed under the keeper seed.
 pub fn sign_record(keeper_seed: *const [kumara.seed_length]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
@@ -92,8 +92,8 @@ fn verify_record(keeper: [pubkey_len]u8, point: u32, tag: u32, vec: *const [stor
     return true;
 }
 
-/// Store a vector owned by a settled point. The owner presents the point's Deed —
-/// verified against the constellation, so it is the current member — and signs the
+/// Store a vector owned by a settled point. The owner presents the point's Deed --
+/// verified against the constellation, so it is the current member -- and signs the
 /// exact vector. The record's key is the point number, so the search knows whose it
 /// is. An upsert on the same point updates in place.
 pub fn upsert_owned(
@@ -104,15 +104,15 @@ pub fn upsert_owned(
     vec: *const [store.max_dim]f32,
     keeper_sig: *const [sig_len]u8,
 ) KeyError!void {
-    // invariant: the caller owns the point — its deed is the current member.
+    // invariant: the caller owns the point -- its deed is the current member.
     if (!settlement.verify(con, deed)) return error.NotOwner;
     // invariant: the keeper signed this exact vector for this point.
     if (!verify_record(deed.keeper, deed.point, tag, vec, keeper_sig)) return error.BadSignature;
     store.upsert(vstore, deed.point, tag, vec) catch return error.StoreFull;
 }
 
-/// Resolve a search match's point number to its place in the fractal — the galaxy,
-/// star, or planet the identity settled as — or null if the number has no place.
+/// Resolve a search match's point number to its place in the fractal -- the galaxy,
+/// star, or planet the identity settled as -- or null if the number has no place.
 pub fn place_of(match: store.Match) ?topology.Address {
     return topology.decode(match.id);
 }
@@ -165,7 +165,7 @@ fn seat_world() !World {
     return .{ .con = con, .star = star, .planet = planet };
 }
 
-// An unsettled deed for a point that never settled — used to prove the non-owner refusal.
+// An unsettled deed for a point that never settled -- used to prove the non-owner refusal.
 fn ghost_deed(point: u32) settlement.Deed {
     const addr = topology.decode(point).?;
     const zero: [pubkey_len]u8 = .{0} ** pubkey_len;
@@ -206,7 +206,7 @@ fn run_selftest() !u8 {
     const star_place = place_of(r.matches[1]) orelse return error.NoStarPlace;
     if (star_place.tier != .star) return error.PlaceNotStar;
 
-    // A non-owner cannot write — a ghost deed for a point that never settled refuses.
+    // A non-owner cannot write -- a ghost deed for a point that never settled refuses.
     const ghost = ghost_deed(500);
     const gv: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
     const gsig = sign_record(&p_keeper, 500, 1, &gv);
@@ -214,13 +214,13 @@ fn run_selftest() !u8 {
         if (e != error.NotOwner) return error.GhostWrongError;
     }
 
-    // A forged signature refuses — the keeper never signed this vector.
+    // A forged signature refuses -- the keeper never signed this vector.
     const zero_sig: [sig_len]u8 = .{0} ** sig_len;
     if (upsert_owned(&vstore, &w.con, &w.planet, 1, &pv, &zero_sig)) |_| return error.ForgedWrote else |e| {
         if (e != error.BadSignature) return error.ForgedWrongError;
     }
 
-    // A tampered vector refuses — the signature is over the exact vector's digest.
+    // A tampered vector refuses -- the signature is over the exact vector's digest.
     const tampered: [store.max_dim]f32 = .{ 1, 0, 0, 0.5, 0, 0, 0, 0 };
     if (upsert_owned(&vstore, &w.con, &w.planet, 1, &tampered, &psig)) |_| return error.TamperedWrote else |e| {
         if (e != error.BadSignature) return error.TamperedWrongError;

@@ -1,19 +1,19 @@
-//! pond/apps/provenance_receipt.rye — GISM Journey 6 (Provenance), Rung 2.
+//! pond/apps/provenance_receipt.rye -- GISM Journey 6 (Provenance), Rung 2.
 //!
 //! Season 2, Yield: provenance that outlives the store it was born in. Rung one bound
 //! a real tree document to a settled identity inside the owner-signed catalog; this
 //! rung carries that signed word *out of the store* as a portable **receipt** for the
 //! same real bytes, and proves it travels as text and returns whole.
 //!
-//! TACT Journey 2 built the receipt machinery (publish_receipt · publish_receipt_bron)
+//! TACT Journey 2 built the receipt machinery (publish_receipt - publish_receipt_bron)
 //! and proved it over a hand-written demo sentence. Here the receipt vouches for a
-//! **real** tree document — the same landed-edge waymark green-claim rung one carried,
+//! **real** tree document -- the same landed-edge waymark green-claim rung one carried,
 //! embedded at compile time through a symlink. The whole chain is proven over real
 //! bytes: a receipt for the real content verifies offline against the publisher's key
 //! (no store, no network), renders to a `format publication-v1` Bron record, parses
 //! back byte-for-byte, still verifies, and the held **real** content matches the bound
 //! digest. The digest the receipt signs is cross-checked in the witness against an
-//! independent `sha256sum` of the same real file — two tools, one answer — so the
+//! independent `sha256sum` of the same real file -- two tools, one answer -- so the
 //! signed provenance can never drift from what a keeper computes by hand.
 //!
 //! Every tamper refuses: a flipped real byte fails the content half (matches_content),
@@ -35,11 +35,11 @@ const kumara = @import("kumara.rye");
 
 const provenance_receipt_version = "20260812.190000";
 
-// The real artifact — the same living waymark green-claim rung one carried, embedded
+// The real artifact -- the same living waymark green-claim rung one carried, embedded
 // at compile time. The receipt vouches for exactly these real bytes.
 const real_doc = @embedFile("corpora/waymark_green.md");
 
-// Demo keeper seed and its settled planet point — no real key, no custody.
+// Demo keeper seed and its settled planet point -- no real key, no custody.
 const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
 const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
 const planet_num: u32 = 267;
@@ -58,7 +58,7 @@ fn receipts_equal(a: *const receipt_mod.Publication, b: *const receipt_mod.Publi
 }
 
 /// A receipt for the real document verifies offline and its real content matches the
-/// bound digest — both halves of trust green, over real bytes, with no store. The
+/// bound digest -- both halves of trust green, over real bytes, with no store. The
 /// bound digest is printed as hex for the witness to cross-check against sha256sum.
 fn welcome_real_receipt_verifies() !void {
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
@@ -81,7 +81,7 @@ fn welcome_real_receipt_verifies() !void {
 }
 
 /// The receipt for the real document travels as Bron and returns byte-for-byte, still
-/// verifying offline and still matching the real content — provenance outlives the store.
+/// verifying offline and still matching the real content -- provenance outlives the store.
 fn welcome_real_receipt_travels() !void {
     var buf: [receipt_bron.max_record]u8 = undefined;
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
@@ -96,7 +96,7 @@ fn welcome_real_receipt_travels() !void {
     print("provenance_receipt: real receipt travelled through Bron ({d} bytes) and returned whole, still verifying\n", .{n});
 }
 
-/// A single flipped real byte fails the content half even under an authentic signature —
+/// A single flipped real byte fails the content half even under an authentic signature --
 /// possessing a valid receipt is never license to swap the real bytes.
 fn unwelcome_tampered_real_content() !void {
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
@@ -110,7 +110,7 @@ fn unwelcome_tampered_real_content() !void {
     print("provenance_receipt: tampered real content refused (the digest is bound in)\n", .{});
 }
 
-/// A different keeper's key refuses the signature half — the receipt names exactly who
+/// A different keeper's key refuses the signature half -- the receipt names exactly who
 /// published the real document.
 fn unwelcome_wrong_keeper() !void {
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
@@ -119,7 +119,7 @@ fn unwelcome_wrong_keeper() !void {
     print("provenance_receipt: wrong keeper key refused; the receipt names who published\n", .{});
 }
 
-/// An unknown field in the travelled record refuses — never silently dropped.
+/// An unknown field in the travelled record refuses -- never silently dropped.
 fn unwelcome_unknown_field() !void {
     var buf: [receipt_bron.max_record]u8 = undefined;
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);

@@ -1,27 +1,27 @@
-//! lotus/insert_join.rye — ALES28: the two-sided insert-join, the trailing-seam law. ALES26 gave an inserted span the choice
-//! of law where its HEAD meets the outgoing tail — overlap the two and cross them equal-power, so that seam flows through
+//! lotus/insert_join.rye -- ALES28: the two-sided insert-join, the trailing-seam law. ALES26 gave an inserted span the choice
+//! of law where its HEAD meets the outgoing tail -- overlap the two and cross them equal-power, so that seam flows through
 //! ALES12's −3 dB curve rather than stepping into a click. Yet `join` only crosses the LEADING seam: it appends the span to the
-//! very end of a clip, where there is no audio after it. A keeper rarely inserts at the end — they drop a span into the MIDDLE,
+//! very end of a clip, where there is no audio after it. A keeper rarely inserts at the end -- they drop a span into the MIDDLE,
 //! and the moment they do a SECOND seam appears: where the span's TAIL meets the audio that follows. ALES26 leaves that trailing
-//! seam a hard butt, and a butt is a click. This rung names the trailing-seam law — an insert that crosses BOTH edges.
+//! seam a hard butt, and a butt is a click. This rung names the trailing-seam law -- an insert that crosses BOTH edges.
 //!
 //! The crux is a composition, not new arithmetic: a two-sided insert IS ALES26's `join` applied twice, once at each seam. Split
 //! the clip at `at` into a head A = clip[0..at] and a following B = clip[at..]. Crossfade-join the span onto A over `lead` (the
-//! leading seam, exactly ALES26), then crossfade-join B onto that over `trail` (the trailing seam, ALES26 again) — so the
+//! leading seam, exactly ALES26), then crossfade-join B onto that over `trail` (the trailing seam, ALES26 again) -- so the
 //! result A~S~B flows through power at BOTH boundaries. The new length shares both overlaps: clip.len + span − lead − trail.
 //!
 //! The correctness beyond calling `join` twice is ATOMICITY. An insert touches the middle of the clip, so a half-done insert
 //! would corrupt audio a keeper already has. This rung builds the whole result in its OWN scratch Clip and copies it back only on
-//! full success, so any refusal — a past-the-master position, a lead wider than the head, a trail wider than the following
-//! audio, an overflow — leaves the clip EXACTLY as it was. The real clip is never written until both seams are proven legal.
+//! full success, so any refusal -- a past-the-master position, a lead wider than the head, a trail wider than the following
+//! audio, an overflow -- leaves the clip EXACTLY as it was. The real clip is never written until both seams are proven legal.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES28.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES28.
 //! Design read: active-designing/20260814-fill-ales28-lotus-two-sided-insert-join.md
-//! Stands on: lotus/join.rye (ALES26) — the one-sided crossfade `join` run once per seam, reused whole over its public API, so
-//! both seams inherit the proven equal-power law rather than re-deriving it; lotus/timeline.rye (ALES2) — the `Clip` it edits and
+//! Stands on: lotus/join.rye (ALES26) -- the one-sided crossfade `join` run once per seam, reused whole over its public API, so
+//! both seams inherit the proven equal-power law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the `Clip` it edits and
 //! `max_clip` as the one shared bound.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no
 //! network, no keys, no funds, no real device, no real speaker. A stereo two-sided insert in lockstep across both channels is a
 //! natural next rung. The real two-channel sound-card write stays a paused hardware round.
 //!
@@ -40,32 +40,32 @@ pub const insert_join_version = "20260814.142637";
 /// clip[0..at] crosses the span's head over `lead`) and the trailing seam (the span's tail crosses the following B = clip[at..]
 /// over `trail`). Both seams flow through ALES12's −3 dB curve rather than butting, so neither boundary steps into a click. The
 /// new length shares both overlaps: `clip.len + ins.len − lead − trail`. The result is built in a private scratch Clip and copied
-/// back only on full success, so the insert is ATOMIC — a refusal leaves `clip` exactly as it was. Refuses, before any write:
+/// back only on full success, so the insert is ATOMIC -- a refusal leaves `clip` exactly as it was. Refuses, before any write:
 ///   • BadRange when `at` names a sample past the clip's length; when `lead` exceeds the head A or the span's head; when `trail`
 ///     exceeds the built head~span tail or the following B; or when either overlap is under two (ALES26's own guards, per seam);
 ///   • ClipFull when the two-seam result would overflow the fixed buffer.
 pub fn insert_join(clip: *timeline.Clip, at: u32, ins: []const i16, lead: u32, trail: u32) timeline.EditError!void {
-    // invariant: the insert point is a real position within the clip — a span joins BETWEEN existing audio, so both a head to
+    // invariant: the insert point is a real position within the clip -- a span joins BETWEEN existing audio, so both a head to
     // lead-cross and a following tail to trail-cross must exist (the leading/trailing joins below enforce their own widths).
     if (at > clip.len) return error.BadRange;
 
-    // Build the whole two-seam result in a scratch Clip so the real clip is never touched until both seams are proven legal —
+    // Build the whole two-seam result in a scratch Clip so the real clip is never touched until both seams are proven legal --
     // this is the atomicity the middle-of-the-clip edit owes (the graft/clipboard "capacity checked first" idiom, carried to two
     // seams). A = clip[0..at] is the head; B = clip[at..] is the following audio, read straight from the still-untouched clip.
     var result = timeline.Clip{};
     try timeline.splice(&result, 0, clip.buf[0..at]);
-    // The leading seam: cross A's tail with the span's head — exactly ALES26, refusing by name if `lead` outfits neither.
+    // The leading seam: cross A's tail with the span's head -- exactly ALES26, refusing by name if `lead` outfits neither.
     try join.join(&result, ins, lead);
-    // The trailing seam: cross the built head~span's tail with the following B — ALES26 again, the second seam. `try` keeps the
+    // The trailing seam: cross the built head~span's tail with the following B -- ALES26 again, the second seam. `try` keeps the
     // scratch honest; either refusal leaves `clip` untouched because we have not written it.
     try join.join(&result, clip.buf[at..clip.len], trail);
 
-    // invariant: the scratch result shares both overlaps in time — clip + span − lead − trail — and fits the clip's own buffer,
+    // invariant: the scratch result shares both overlaps in time -- clip + span − lead − trail -- and fits the clip's own buffer,
     // so the copy-back below cannot overflow and cannot fail.
     assert(result.len == clip.len + @as(u32, @intCast(ins.len)) - lead - trail);
     assert(result.len <= clip.buf.len);
 
-    // Copy the proven result back into the clip — the one and only write to the real clip, on the success path alone.
+    // Copy the proven result back into the clip -- the one and only write to the real clip, on the success path alone.
     var i: u32 = 0;
     while (i < result.len) : (i += 1) clip.buf[i] = result.buf[i];
     const old_len: u32 = clip.len;
@@ -77,7 +77,7 @@ pub fn insert_join(clip: *timeline.Clip, at: u32, ins: []const i16, lead: u32, t
 }
 
 // --- selftest: an inserted span flows through power at BOTH seams (leading head continues the clip before it, trailing tail
-//     continues the audio after it — neither steps); the new length shares both overlaps (clip + span − lead − trail); a butt
+//     continues the audio after it -- neither steps); the new length shares both overlaps (clip + span − lead − trail); a butt
 //     insert at the same point steps at both seams where the two-sided join flows; and a past-the-master position, a lead wider
 //     than the head, a trail wider than the following audio, and an overflow each refuse by name leaving the clip untouched ----
 
@@ -89,7 +89,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. the insert SHARES both overlaps in time — new length is clip.len + span − lead − trail. A 10-sample clip with a
+    // 1. the insert SHARES both overlaps in time -- new length is clip.len + span − lead − trail. A 10-sample clip with a
     //    5-sample span inserted at the middle over lead 2 and trail 2 lands at 10 + 5 − 2 − 2 = 11, where a butt insert lands at 15.
     {
         var clip = timeline.Clip{};
@@ -98,7 +98,7 @@ fn run_selftest() !u8 {
         if (clip.len != 11) return error.InsertLengthWrong; // both overlaps shared, not summed
     }
 
-    // 2. BOTH seams move through POWER, not a step — the whole reason the trailing-seam law exists. Insert a span whose head
+    // 2. BOTH seams move through POWER, not a step -- the whole reason the trailing-seam law exists. Insert a span whose head
     //    disagrees with the head-clip's tail AND whose tail disagrees with the following audio's head; both seam samples must sit
     //    strictly inside their raw steps. Head A ends +30000, span head is −30000 (leading step 60000); span tail is +30000, the
     //    following B head is −30000 (trailing step 60000). Over lead 3 and trail 3, neither seam sample is a raw extreme.
@@ -106,7 +106,7 @@ fn run_selftest() !u8 {
         var clip = timeline.Clip{};
         // head A = [0, +30000, +30000]; following B = [−30000, −30000, 0]. Insert BETWEEN them at at=3.
         try timeline.splice(&clip, 0, &[_]i16{ 0, 30000, 30000, -30000, -30000, 0 });
-        // span crosses low→high→low: head −30000 (disagrees with A's +30000 tail), tail +30000 (disagrees with B's −30000 head).
+        // span crosses low->high->low: head −30000 (disagrees with A's +30000 tail), tail +30000 (disagrees with B's −30000 head).
         try insert_join(&clip, 3, &[_]i16{ -30000, -30000, -30000, 30000, 30000, 30000 }, 3, 3);
         // new length: 6 + 6 − 3 − 3 = 6.
         if (clip.len != 6) return error.TwoSeamLengthWrong;
@@ -130,20 +130,20 @@ fn run_selftest() !u8 {
     }
 
     // 4. the leading seam still continues the clip before the insert (pure outgoing at the overlap head) and the trailing seam
-    //    still continues the audio after it (pure incoming at the overlap tail) — the two-sided join is continuous end to end.
+    //    still continues the audio after it (pure incoming at the overlap tail) -- the two-sided join is continuous end to end.
     {
         var clip = timeline.Clip{};
         try timeline.splice(&clip, 0, &[_]i16{ 100, 100, 100, 100, 200, 200, 200, 200 });
         // insert a span at at=4 (between the 100s and the 200s), lead 2 trail 2.
         try insert_join(&clip, 4, &[_]i16{ 500, 500, 500, 500 }, 2, 2);
-        // the leading seam head is the head-clip's tail-start sample (pure outgoing) — still a 100.
+        // the leading seam head is the head-clip's tail-start sample (pure outgoing) -- still a 100.
         if (clip.samples()[2] != 100) return error.LeadingHeadNotContinuous;
-        // the trailing seam tail is the following audio's overlap-end sample (pure incoming) — still a 200.
+        // the trailing seam tail is the following audio's overlap-end sample (pure incoming) -- still a 200.
         if (clip.samples()[clip.len - 1] != 200) return error.TrailingTailNotContinuous;
         if (clip.len != 8) return error.Case4LengthWrong; // 8 + 4 − 2 − 2
     }
 
-    // 5. every edge refuses BY NAME before any write, and a refused insert leaves the clip exactly as it was — the atomicity a
+    // 5. every edge refuses BY NAME before any write, and a refused insert leaves the clip exactly as it was -- the atomicity a
     //    middle-of-the-clip edit owes.
     {
         var clip = timeline.Clip{};
@@ -156,12 +156,12 @@ fn run_selftest() !u8 {
         if (insert_join(&clip, 1, &[_]i16{ 9, 9, 9, 9 }, 2, 2)) |_| return error.LeadTooWideSlipped else |e| if (e != error.BadRange) return error.WrongLeadTooWide;
         // a trail wider than the following B (at=5 leaves a 1-sample following tail, trail 2 cannot cross it).
         if (insert_join(&clip, 5, &[_]i16{ 9, 9, 9, 9 }, 2, 2)) |_| return error.TrailTooWideSlipped else |e| if (e != error.BadRange) return error.WrongTrailTooWide;
-        // a lead under two — no interval to cross (ALES26's own guard, at the leading seam).
+        // a lead under two -- no interval to cross (ALES26's own guard, at the leading seam).
         if (insert_join(&clip, 3, &[_]i16{ 9, 9, 9, 9 }, 1, 2)) |_| return error.ShortLeadSlipped else |e| if (e != error.BadRange) return error.WrongShortLead;
         // the clip is untouched by every refused insert.
         if (!eq(clip.samples(), &src)) return error.RefusedInsertMutated;
 
-        // an overflowing insert refuses ClipFull — the two-seam result would pass the fixed bound.
+        // an overflowing insert refuses ClipFull -- the two-seam result would pass the fixed bound.
         var big = timeline.Clip{};
         big.len = timeline.max_clip - 1; // one sample of room
         // at the tail with lead 2 / trail 2 against a wide span: grows by span − 4, past the one free sample.

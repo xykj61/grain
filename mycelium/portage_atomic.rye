@@ -1,35 +1,35 @@
-//! mycelium/portage_atomic.rye — a crossing lands on BOTH worlds or NEITHER (r2, atomic all-or-nothing).
+//! mycelium/portage_atomic.rye -- a crossing lands on BOTH worlds or NEITHER (r2, atomic all-or-nothing).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r2.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r2.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! r1 proved value crosses two worlds and the pair conserves: a signed portage-out debits the sender on A,
 //! a signed portage-in credits the recipient on B only when its digest matches the verified burn. Yet r1's
-//! out was a one-shot burn — the coins left A the instant the out folded, with no way back if the in never
+//! out was a one-shot burn -- the coins left A the instant the out folded, with no way back if the in never
 //! landed on B. A real crossing must be ATOMIC: it lands on both ledgers or on neither, with no window where
 //! the coins are gone from A and absent on B (a loss) or present on both (a double).
 //!
 //! So the out becomes TWO-PHASE, the Pledge's own atomicity widened from two phases to two shards. Alice
-//! STAGES a crossing (`S·id·digest`): her spendable balance falls, a matching RESERVED amount rises, and an
-//! open crossing is seated under the id — the coins are held IN TRANSIT, neither spent nor returned. Once the
-//! matching in lands on B, Alice COMMITS (`C·id`): the reserved coins leave circulation (they are Bob's now).
-//! If the in never lands, Alice REVERTS (`B·id`): the reserved coins return to her balance, whole. The
+//! STAGES a crossing (`S-id-digest`): her spendable balance falls, a matching RESERVED amount rises, and an
+//! open crossing is seated under the id -- the coins are held IN TRANSIT, neither spent nor returned. Once the
+//! matching in lands on B, Alice COMMITS (`C-id`): the reserved coins leave circulation (they are Bob's now).
+//! If the in never lands, Alice REVERTS (`B-id`): the reserved coins return to her balance, whole. The
 //! crossing settles exactly once.
 //!
 //! The crux is the TWO-OUTCOME LAW read against World B:
-//!   - a COMMITTED source pairs with a landed in — Alice's spendable fell by the amount AND Bob rose by it
+//!   - a COMMITTED source pairs with a landed in -- Alice's spendable fell by the amount AND Bob rose by it
 //!     (both moved);
-//!   - a REVERTED source pairs with no in — Alice is whole AND Bob is unpaid (neither moved), the two-world
+//!   - a REVERTED source pairs with no in -- Alice is whole AND Bob is unpaid (neither moved), the two-world
 //!     sum exactly as if the crossing never began;
 //!   - never a loss (Alice short, Bob unpaid) and never a double (Alice whole, Bob paid).
 //! And, as the Pledge proved for two phases, EQUIVOCATION is decided once: Alice signs BOTH a commit and a
 //! revert for one crossing at the same round, and the agreed order names one identical verdict regardless of
-//! arrival — the second resolution is a lawful no-op. A staged-but-undecided crossing holds its coins
+//! arrival -- the second resolution is a lawful no-op. A staged-but-undecided crossing holds its coins
 //! reserved (in transit), never lost.
 //!
-//! Grown beside portage.rye, cord.rye, fold.rye — editing none, composing portage + cord + fold + kumara
+//! Grown beside portage.rye, cord.rye, fold.rye -- editing none, composing portage + cord + fold + kumara
 //! public API only (portage r1's own selftest re-runs GREEN at this witness's door). Siloed, dev-only, demo
-//! world/keeper seeds — no real key, no funds, no network, no value crossed. A served commit-after-landing
+//! world/keeper seeds -- no real key, no funds, no network, no value crossed. A served commit-after-landing
 //! (World A learning of B's in over Comlink) reaches the Comlink-served gate (Keaton's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_atomic.rye
@@ -49,7 +49,7 @@ pub const pk_len: u32 = portage.pk_len;
 pub const id_len: u32 = portage.id_len;
 pub const digest_len: u32 = portage.digest_len;
 
-/// Body tags for the two-phase source — stage · commit · revert, each bound into the signer's signature.
+/// Body tags for the two-phase source -- stage - commit - revert, each bound into the signer's signature.
 pub const tag_stage: u8 = 'S';
 pub const tag_commit: u8 = 'C';
 pub const tag_revert: u8 = 'B';
@@ -77,15 +77,15 @@ pub const SourceError = error{
     TooManyCrossings,
 };
 
-/// One account's purse on the source world — spendable, and coins held reserved in open crossings.
+/// One account's purse on the source world -- spendable, and coins held reserved in open crossings.
 pub const Account = struct {
     pk: [pk_len]u8 = undefined,
     balance: u64 = 0,
     reserved: u64 = 0,
 };
 
-/// One crossing the source world staged — its id, the digest binding it to the destination in, its amount,
-/// and its settlement (staged · committed · reverted).
+/// One crossing the source world staged -- its id, the digest binding it to the destination in, its amount,
+/// and its settlement (staged - committed - reverted).
 pub const Crossing = struct {
     id: [id_len]u8 = undefined,
     who: [pk_len]u8 = undefined,
@@ -222,14 +222,14 @@ fn issue_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
 }
 
 /// Fold one signed fact into the source Source under the two-phase law. A genesis credits; a STAGE reserves
-/// coins balance→reserved and opens a crossing; a COMMIT moves the reserve out of circulation (to the
-/// destination); a REVERT returns the reserve to the sender. A crossing settles exactly once — the first
+/// coins balance->reserved and opens a crossing; a COMMIT moves the reserve out of circulation (to the
+/// destination); a REVERT returns the reserve to the sender. A crossing settles exactly once -- the first
 /// resolution the order places decides, a second for one id is a lawful no-op.
 pub fn fold_source(l: *Source, fact: *const fold.Fact) SourceError!void {
     // invariant: a genuine fact carries a bounded body under the fact ceiling.
     assert(fact.body_len <= fold.myc_fact_max_bytes);
 
-    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    // Corruption is not a verdict -- a broken signature refuses before any coin moves.
     if (!fold.verify_fact(fact)) return error.IdentityRefused;
 
     if (fact.kind == fold.kind_issue) {
@@ -245,12 +245,12 @@ pub fn fold_source(l: *Source, fact: *const fold.Fact) SourceError!void {
     const from = fact.signer_pk[0..];
 
     if (tag == tag_stage) {
-        // invariant: a stage body is exactly tag · id · digest.
+        // invariant: a stage body is exactly tag - id - digest.
         if (body.len != 1 + id_len + digest_len) return error.Malformed;
         const id = body[1 .. 1 + id_len];
         const digest = body[1 + id_len ..];
         if (crossing_index(l, id) != null) return error.CrossingExists;
-        // A sender can stage only coins she actually holds — never conjure a debit.
+        // A sender can stage only coins she actually holds -- never conjure a debit.
         if (fact.amount > l.balance_of(from)) return error.NeverPaid;
         const si = try ensure_account(l, from);
         // invariant: an accepted stage never reserves more than the sender can spend.
@@ -264,7 +264,7 @@ pub fn fold_source(l: *Source, fact: *const fold.Fact) SourceError!void {
     }
 
     if (tag == tag_commit or tag == tag_revert) {
-        // invariant: a resolution body is exactly tag · id.
+        // invariant: a resolution body is exactly tag - id.
         if (body.len != 1 + id_len) return error.Malformed;
         const id = body[1..];
         const ci = crossing_index(l, id) orelse return error.UnknownCrossing;
@@ -279,10 +279,10 @@ pub fn fold_source(l: *Source, fact: *const fold.Fact) SourceError!void {
         assert(l.accounts[ki].reserved >= cr.amount);
         l.accounts[ki].reserved -= cr.amount;
         if (tag == tag_commit) {
-            // The coins leave circulation on the source — they are the recipient's on the destination now.
+            // The coins leave circulation on the source -- they are the recipient's on the destination now.
             cr.state = state_committed;
         } else {
-            // The coins return to the sender, whole — the crossing never landed.
+            // The coins return to the sender, whole -- the crossing never landed.
             const nb = l.accounts[ki].balance +% cr.amount;
             if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
             l.accounts[ki].balance = nb;
@@ -328,7 +328,7 @@ fn dag_of(blocks: []const cord.Block) !cord.Dag {
     return dag;
 }
 
-/// Two source ledgers name the same verdict — the crossing's settlement and both purses agree.
+/// Two source ledgers name the same verdict -- the crossing's settlement and both purses agree.
 fn sources_equal(x: *const Source, y: *const Source) bool {
     if (x.crossing_count != y.crossing_count) return false;
     if (x.committed_seen() != y.committed_seen()) return false;
@@ -377,7 +377,7 @@ fn seat_resolve(owner: u8, tag: u8, id: []const u8, amount: u64, parent: []const
     return b;
 }
 
-/// The destination in-block bound to `digest`, crediting Bob `amount` — r1's own in-fact.
+/// The destination in-block bound to `digest`, crediting Bob `amount` -- r1's own in-fact.
 fn seat_in(gateway: u8, id: []const u8, digest: []const u8, amount: u64, to: []const u8) !cord.Block {
     const kg = seeded(gateway);
     var ib: [1 + portage.id_len + portage.digest_len + portage.pk_len]u8 = undefined;
@@ -414,7 +414,7 @@ pub fn main() !void {
     const b_revert = try seat_resolve(0xA1, tag_revert, id[0..], amount, shead[0..]);
     const b_in = try seat_in(0xF1, id[0..], digest[0..], amount, bob[0..]);
 
-    // --- Scene 1 — COMMITTED source pairs with a landed in: BOTH worlds move -------------------------------
+    // --- Scene 1 -- COMMITTED source pairs with a landed in: BOTH worlds move -------------------------------
     {
         var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_commit });
         const sa = try resolve_source(&dag_a);
@@ -433,7 +433,7 @@ pub fn main() !void {
         assert(left_a == amount);
     }
 
-    // --- Scene 2 — REVERTED source pairs with no in: NEITHER world moves -----------------------------------
+    // --- Scene 2 -- REVERTED source pairs with no in: NEITHER world moves -----------------------------------
     {
         var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_revert });
         const sa = try resolve_source(&dag_a);
@@ -441,7 +441,7 @@ pub fn main() !void {
         assert(sa.committed_seen() == 0);
         assert(sa.balance_of(alice[0..]) == start); // Alice whole again
         assert(sa.reserved_of(alice[0..]) == 0);
-        // No in landed on B — Bob is unpaid; the two-world sum is exactly the pre-crossing sum.
+        // No in landed on B -- Bob is unpaid; the two-world sum is exactly the pre-crossing sum.
         var dag_b = try dag_of(&[_]cord.Block{});
         const lb = try portage.resolve_world(&dag_b, &digest);
         assert(lb.balance_of(bob[0..]) == 0);
@@ -450,7 +450,7 @@ pub fn main() !void {
         assert(lb.balance_of(bob[0..]) == 0); // the recipient is unpaid
     }
 
-    // --- Scene 3 — EQUIVOCATION decided once, identically across arrival order -----------------------------
+    // --- Scene 3 -- EQUIVOCATION decided once, identically across arrival order -----------------------------
     {
         var d1 = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_commit, b_revert });
         const s1 = try resolve_source(&d1);
@@ -461,7 +461,7 @@ pub fn main() !void {
         assert(sources_equal(&s1, &s2));
     }
 
-    // --- Scene 4 — a STAGED but undecided crossing holds its coins in transit, never lost ------------------
+    // --- Scene 4 -- a STAGED but undecided crossing holds its coins in transit, never lost ------------------
     {
         var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1] });
         const sa = try resolve_source(&dag_a);

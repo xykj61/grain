@@ -1,6 +1,6 @@
-//! granary/resin_serve_delivery.rye — Granary — Comlink resin serve for Sharing.
+//! granary/resin_serve_delivery.rye -- Granary -- Comlink resin serve for Sharing.
 //!
-//! Reuses Amphora fetch-by-digest wire (0x31/0x32). Hosted ports: guest 38496 · host 38497.
+//! Reuses Amphora fetch-by-digest wire (0x31/0x32). Hosted ports: guest 38496 - host 38497.
 //! Device wire: ports 15573/15574 (virtio lab). Name-facts stay local; only resin bytes cross.
 //! WOV settlement waits.
 //!
@@ -133,7 +133,7 @@ fn run_selftest(io: std.Io) !u8 {
     var reg = gc.Registry.empty();
     try gc.append_fact(&reg, fact[0..n]);
 
-    // Wire round-trip: encode request → seal → open → decode → encode response → seal → open → decode.
+    // Wire round-trip: encode request -> seal -> open -> decode -> encode response -> seal -> open -> decode.
     var req: vfw.FetchRequest = .{ .digest_hex = undefined };
     tally_copy.copy_disjoint(u8, req.digest_hex[0..], digest[0..]);
     var req_buf: [vfw.max_wire_payload]u8 = undefined;
@@ -184,7 +184,7 @@ fn run_selftest(io: std.Io) !u8 {
     print("rsd: digest mismatch refused — GREEN unwelcome\n", .{});
 
     // Unwelcome: an unpublished resin in the same store is refused over the wire.
-    // A digest is an address, never a capability — no name-fact, no serve.
+    // A digest is an address, never a capability -- no name-fact, no serve.
     const private_note = "draft: not yet published anywhere";
     const private_digest = try gc.put_resin(&host, private_note);
     assert(!gc.digest_is_published(&reg, private_digest[0..]));

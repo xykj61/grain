@@ -1,29 +1,29 @@
-//! mycelium/lapse_true.rye — the Lapse reads a real deadline-clock fixture true (r4, the arc closes).
+//! mycelium/lapse_true.rye -- the Lapse reads a real deadline-clock fixture true (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Lapse · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Lapse - rung r4.
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
-//! r1 fixed the deadline verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in
+//! r1 fixed the deadline verdict, r2 let it travel, r3 read it across a Knot -- all over Dags seated in
 //! code. This closing rung carries the reader onto a **real** on-disk Cord record carrying a genuine lapsed
 //! reservation a keeper can open and walk, and proves the property the whole Lapse rests on: the LAPSED
-//! recipient — the one the coins never reached because the order's clock ran out — is true to the bytes.
+//! recipient -- the one the coins never reached because the order's clock ran out -- is true to the bytes.
 //!
 //! The corpus is `tools/fixtures/lapse_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/lapse_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to Bob under
-//! deadline 2 at round 1; Alice posts it at round 2 — yet the post rides order position 2, so the clock has
+//! deadline 2 at round 1; Alice posts it at round 2 -- yet the post rides order position 2, so the clock has
 //! reached the deadline and the pledge LAPSES, the hundred home to Alice, the post a no-op; Alice pledges
 //! 100 to Carol under a far deadline at round 3 and leaves it open), `@embedFile`-bound at compile time
-//! through a symlink in `mycelium/corpora/` — no network, the bytes read are the tree's own. Two independent
+//! through a symlink in `mycelium/corpora/` -- no network, the bytes read are the tree's own. Two independent
 //! readings must agree: the app parses the record through `cord_bron`, **rebuilds** the Dag under `cord.add`
 //! (re-verifying every signature), resolves it through `lapse`, and reports the **lapsed recipient**, the
 //! **lapsed count**, and the **open count**; the r4 witness cross-checks that triple against
-//! `tools/fixtures/lapse_dag_truth.awk`'s reading of the same file — two tools, one answer. The awk applies
+//! `tools/fixtures/lapse_dag_truth.awk`'s reading of the same file -- two tools, one answer. The awk applies
 //! the simplest honest slice of the agreed order (deadline-clock accounting in file order, lapsing an open
 //! pledge the moment the running position reaches its deadline); the app applies the full commit tie-break;
 //! the genesis is first and the order is round-ascending, so both name the same lapsed recipient.
 //!
-//! Additive — composes `cord_bron` + `cord` + `lapse` public API only (each re-runs GREEN).
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Additive -- composes `cord_bron` + `cord` + `lapse` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/lapse_true.rye -femit-bin=mycelium/bin/lapse_true
 //!   mycelium/bin/lapse_true selftest | measure
@@ -37,12 +37,12 @@ const lapse = @import("lapse.rye");
 
 pub const lapse_true_version = "20260813.085046";
 
-/// The real deadline-clock Cord record, bound at compile time — the tree's own bytes, never a drift.
+/// The real deadline-clock Cord record, bound at compile time -- the tree's own bytes, never a drift.
 const real_dag = @embedFile("corpora/lapse_dag.bron");
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the same width the record's body recipient carries, so the app's lapsed
+/// Encode bytes to lowercase hex -- the same width the record's body recipient carries, so the app's lapsed
 /// recipient and awk's lapsed recipient are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -76,7 +76,7 @@ fn first_lapsed(l: *const lapse.Ledger) ?u32 {
 /// signature), resolve it through the Lapse, and read off the lapsed pledge's intended recipient.
 pub fn read_lapse(text: []const u8) !Reading {
     const rec = try cord_bron.parse(text);
-    // invariant: a real deadline record carries blocks — an empty Dag holds no pledge to read.
+    // invariant: a real deadline record carries blocks -- an empty Dag holds no pledge to read.
     if (rec.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
@@ -94,7 +94,7 @@ pub fn read_lapse(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the same
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the same
 /// bytes, so the two tools must name one lapsed recipient.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_lapse(real_dag);
@@ -105,22 +105,22 @@ fn welcome_reading_true_to_bytes() !void {
     print("lapse-true: the lapsed recipient, the lapsed count, and the open count match an independent reading of the same bytes.\n", .{});
 }
 
-/// The lapsed pledge's coins never reached its intended recipient — they came home to the pledger when the
-/// clock ran out — and the open pledge still holds coins reserved. The deadline law read from the real bytes.
+/// The lapsed pledge's coins never reached its intended recipient -- they came home to the pledger when the
+/// clock ran out -- and the open pledge still holds coins reserved. The deadline law read from the real bytes.
 fn welcome_lapsed_came_home_open_reserved() !void {
     const rec = try cord_bron.parse(real_dag);
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const pi = first_lapsed(&verdict) orelse return error.NoLapsedPledge;
     const pl = verdict.pledge_at(pi) orelse return error.NoLapsedPledge;
-    // invariant: the lapsed pledge's intended recipient received nothing — the clock ran out first.
+    // invariant: the lapsed pledge's intended recipient received nothing -- the clock ran out first.
     assert(verdict.balance_of(pl.to[0..]) == 0);
     // invariant: exactly one pledge still stands open, its coins reserved by the pledger.
     assert(verdict.reserved_sum() == 100);
     print("lapse-true: the lapsed pledge's coins never reached its recipient — they came home to the pledger; the open pledge still holds coins reserved.\n", .{});
 }
 
-/// Conservation holds over the real bytes: balance + reserved sums to exactly what genesis issued — no coin
+/// Conservation holds over the real bytes: balance + reserved sums to exactly what genesis issued -- no coin
 /// made or destroyed by reserving, lapsing, or holding a pledge.
 fn welcome_conservation_over_the_real_bytes() !void {
     const rec = try cord_bron.parse(real_dag);
@@ -128,12 +128,12 @@ fn welcome_conservation_over_the_real_bytes() !void {
     const verdict = try lapse.resolve(&dag);
     // invariant: the real record issued exactly the two hundred the genesis credit funds.
     assert(verdict.total_issued == 200);
-    // invariant: conservation — balance + reserved sums to exactly what genesis issued.
+    // invariant: conservation -- balance + reserved sums to exactly what genesis issued.
     assert(verdict.balances_sum() + verdict.reserved_sum() == 200);
     print("lapse-true: conservation holds over the real bytes — balance + reserved sums to the 200 genesis issued, no coin made or lost.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true. A
 /// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse at add.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<lapsed-recipient-hex> <lapsed> <open>`), so the witness can compare
-/// the app's reading against `lapse_dag_truth.awk` byte for byte — two tools, one answer.
+/// the app's reading against `lapse_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_lapse(real_dag);
     print("{s} {d} {d}\n", .{ r.lapsed_hex, r.lapsed, r.open });

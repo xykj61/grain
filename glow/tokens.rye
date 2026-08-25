@@ -8,22 +8,22 @@
 //! glow-book: machine-reading.md#gm-bounds
 //! glow-book: runes.md#gd-desk
 //! glow-book: runes.md#g-lib
-//! glow/tokens.rye — bounded shared Glow token stream (STOA83–86 · STOA93).
+//! glow/tokens.rye -- bounded shared Glow token stream (STOA83-86 - STOA93).
 //!
 //! Classifies desk bytes into a fixed-cap token array (kind + byte span).
 //! Skips `::` line comments and spaces/tabs. Newlines stay significant.
-//! STOA84–85: named-cast peeks for glow_run dispatch.
-//! STOA86: TAME tidy — assert contracts, u32 spans, split lex steps.
-//! STOA93: cross-desk named-cast parse joins the lexer→lower seam
+//! STOA84-85: named-cast peeks for glow_run dispatch.
+//! STOA86: TAME tidy -- assert contracts, u32 spans, split lex steps.
+//! STOA93: cross-desk named-cast parse joins the lexer->lower seam
 //! (`cross_desk_parts`).
 //! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
 //! STOA95: mold-only `+$` dispatch peek via `looks_like_shape_only`.
-//! STOA97: `rune_shape.parse_source` consumes this stream → ShapeSpec.
-//! STOA176: `named_cast_parts` line budget 4–12 (field_count+3 ≤ freeze).
+//! STOA97: `rune_shape.parse_source` consumes this stream -> ShapeSpec.
+//! STOA176: `named_cast_parts` line budget 4-12 (field_count+3 ≤ freeze).
 //! STOA180: `@t` cord aura lex (bound in nest_type).
 //! STOA183: `@ux` hex aura lex (bound in nest_type).
-//! STOA216: single-quoted cord literal `'…'` (interior ≤ max_cord_lit_bytes).
-//! STOA217: `@ux` + hex digits → hex_lit (bare `@ux` stays aura).
+//! STOA216: single-quoted cord literal `'...'` (interior ≤ max_cord_lit_bytes).
+//! STOA217: `@ux` + hex digits -> hex_lit (bare `@ux` stays aura).
 //!
 //!   +$  xact-mold
 //!     $%  [%mint amount=@u32]
@@ -34,15 +34,15 @@
 const std = @import("std");
 const assert = std.debug.assert;
 
-/// Desk token budget — one fixed array; overflow is TooManyTokens.
+/// Desk token budget -- one fixed array; overflow is TooManyTokens.
 pub const max_tokens: u32 = 64;
 /// Ident / tag name ceiling (matches rune_shape.max_name_len).
 pub const max_name_len: u32 = 64;
 /// Hosted desk read ceiling (glow_run limited(64 * 1024)).
 pub const max_src_len: u32 = 64 * 1024;
-/// STOA216: cord literal interior ceiling — matches nest_type.aura_t_max_bytes (1024).
+/// STOA216: cord literal interior ceiling -- matches nest_type.aura_t_max_bytes (1024).
 pub const max_cord_lit_bytes: u32 = 1024;
-/// STOA217: hex literal digit ceiling — matches nest_type.aura_ux_max_bytes × 2 (64).
+/// STOA217: hex literal digit ceiling -- matches nest_type.aura_ux_max_bytes × 2 (64).
 pub const max_hex_lit_digits: u32 = 64;
 
 pub const TokenError = error{
@@ -226,7 +226,7 @@ fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32) TokenError
     return i + 1 + n;
 }
 
-/// Single-quoted cord literal `'…'` — span includes quotes; no escapes; no newlines.
+/// Single-quoted cord literal `'...'` -- span includes quotes; no escapes; no newlines.
 fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: the span this builds includes the opening quote and the scan starts one past
@@ -271,7 +271,7 @@ pub fn hex_lit_digits(src: []const u8, tok: Token) []const u8 {
     return full[3..];
 }
 
-/// `@ux` + even hex digits (1–32 bytes). Bare `@ux` stays aura (STOA183).
+/// `@ux` + even hex digits (1-32 bytes). Bare `@ux` stays aura (STOA183).
 fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: the scan starts at i + 3 without re-reading the prefix, so the caller's
@@ -295,14 +295,14 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     if (i + 1 >= src_len) return error.BadToken;
     const a1 = src[@as(usize, @intCast(i + 1))];
-    // STOA180: `@t` cord aura — bound named in nest_type.aura_t_max_bytes.
+    // STOA180: `@t` cord aura -- bound named in nest_type.aura_t_max_bytes.
     if (a1 == 't') {
         const after = i + 2;
         if (after < src_len and is_ident_char(src[@as(usize, @intCast(after))])) return error.BadToken;
         try push(out, used, .aura, i, 2);
         return i + 2;
     }
-    // `@u32` / `@u64` unsigned · STOA183 `@ux` hex peer · STOA217 `@ux…` hex lit.
+    // `@u32` / `@u64` unsigned - STOA183 `@ux` hex peer - STOA217 `@ux...` hex lit.
     if (a1 != 'u') return error.BadToken;
     if (i + 2 >= src_len) return error.BadToken;
     const a2 = src[@as(usize, @intCast(i + 2))];
@@ -350,7 +350,7 @@ fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     }
     // `%tag` cold atom (call runes `%-` / `%+` already matched above).
     if (c == '%') return lex_percent_tag(src, i, out, used);
-    // `@u32` / `@u64` / `@t` / `@ux` auras (STOA180 cord · STOA183 hex).
+    // `@u32` / `@u64` / `@t` / `@ux` auras (STOA180 cord - STOA183 hex).
     if (c == '@') return lex_aura(src, i, out, used);
     // STOA216: `'cord'` source literal.
     if (c == '\'') return lex_cord_lit(src, i, out, used);
@@ -436,16 +436,16 @@ fn rune2_is(src: []const u8, tok: Token, lit: []const u8) bool {
 }
 
 /// Spans into `src` for a same-desk named-cast desk (STOA94).
-/// `mold_start`/`mold_len` cover bytes before the `^-` line (`+$` … `==`).
+/// `mold_start`/`mold_len` cover bytes before the `^-` line (`+$` ... `==`).
 pub const NamedCastParts = struct {
     mold_start: u32 = 0,
     mold_len: u32 = 0,
     cast_mold: Token = .{},
 };
 
-/// 4–12 Glow lines (STOA176: capacity freeze ≤9 `$:` faces → field_count+3):
+/// 4-12 Glow lines (STOA176: capacity freeze ≤9 `$:` faces -> field_count+3):
 /// head `+$`, last line `^- <mold-name>`, no cast-line junk.
-/// Returns null when the shape fails — peek and lower share this gate.
+/// Returns null when the shape fails -- peek and lower share this gate.
 pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return null;
@@ -486,7 +486,7 @@ pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     };
 }
 
-/// True when the token stream is a same-desk named-cast desk (STOA84 peek · STOA94 parse).
+/// True when the token stream is a same-desk named-cast desk (STOA84 peek - STOA94 parse).
 pub fn looks_like_named_cast(src: []const u8) bool {
     return named_cast_parts(src) != null;
 }
@@ -498,7 +498,7 @@ pub const CrossDeskParts = struct {
 };
 
 /// Exactly two Glow lines: `/+ <stem>` then `^- <mold-name>`.
-/// Returns null when the shape fails — peek and parse share this gate.
+/// Returns null when the shape fails -- peek and parse share this gate.
 pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return null;
@@ -521,7 +521,7 @@ pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
     if (i >= n) return null;
     if (!rune2_is(src, toks[i], "^-")) return null;
     i += 1;
-    // Named mold is ident; aura (`@u32`) is also a mold token — parse refuses it later.
+    // Named mold is ident; aura (`@u32`) is also a mold token -- parse refuses it later.
     if (i >= n or (toks[i].kind != .ident and toks[i].kind != .aura)) return null;
     const mold = toks[i];
     i += 1;
@@ -531,13 +531,13 @@ pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
     return .{ .stem = stem, .mold = mold };
 }
 
-/// True when the token stream is a cross-desk named-cast desk (STOA85 peek · STOA93 parse).
+/// True when the token stream is a cross-desk named-cast desk (STOA85 peek - STOA93 parse).
 pub fn looks_like_cross_desk(src: []const u8) bool {
     return cross_desk_parts(src) != null;
 }
 
-/// True when the token stream is a mold-only `+$` … `==` desk (STOA95 peek).
-/// 3–11 Glow lines (STOA168: capacity freeze ≤9 `$:` faces → field_count+2), head `+$`,
+/// True when the token stream is a mold-only `+$` ... `==` desk (STOA95 peek).
+/// 3-11 Glow lines (STOA168: capacity freeze ≤9 `$:` faces -> field_count+2), head `+$`,
 /// last line is not `^-` (named-cast wins first in glow_run).
 pub fn looks_like_shape_only(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;

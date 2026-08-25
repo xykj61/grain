@@ -1,12 +1,12 @@
-//! image/qoi.rye — the open image codec (HUNK0, the crux).
+//! image/qoi.rye -- the open image codec (HUNK0, the crux).
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK0.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - opening journey Open Image - rung HUNK0.
 //! Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md
-//! Teacher, thanked clean-room: gratitude/qoi.md (the "Quite OK Image" format — public spec only, never the C).
+//! Teacher, thanked clean-room: gratitude/qoi.md (the "Quite OK Image" format -- public spec only, never the C).
 //!
 //! An image is verified bytes that DECODE, deterministically and within named bounds, to a pixel grid; a
 //! malformed or truncated stream refuses BY NAME rather than painting garbage. QOI is the teacher because it
-//! is a real lossless compressor (index · diff · luma · run chunks) small enough to hold whole in one hand —
+//! is a real lossless compressor (index - diff - luma - run chunks) small enough to hold whole in one hand --
 //! exactly the tree's aesthetic, and exactly the "existing open-source image format with the compression
 //! wanted" Season A names beneath the parts marketplace and the Photos app.
 //!
@@ -24,16 +24,16 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const qoi_version = "20260813.144218";
 
-/// Header is fixed: 4 magic · 4 width · 4 height · 1 channels · 1 colorspace.
+/// Header is fixed: 4 magic - 4 width - 4 height - 1 channels - 1 colorspace.
 pub const header_len: u32 = 14;
 
-/// The stream ends in exactly these eight bytes — seven zeros and a one.
+/// The stream ends in exactly these eight bytes -- seven zeros and a one.
 pub const end_marker = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 1 };
 
-/// Per-axis ceiling — a right-to-repair panel is far smaller; the bound is honest headroom, not ambition.
+/// Per-axis ceiling -- a right-to-repair panel is far smaller; the bound is honest headroom, not ambition.
 pub const qoi_max_dim: u32 = 8192;
 
-/// Decoded-buffer ceiling in pixels — 1<<20 (a 1024×1024 image), 4 MiB RGBA, named at construction.
+/// Decoded-buffer ceiling in pixels -- 1<<20 (a 1024×1024 image), 4 MiB RGBA, named at construction.
 pub const qoi_max_pixels: u32 = 1 << 20;
 
 /// The eight-byte magic-and-tag alphabet.
@@ -45,7 +45,7 @@ const op_rgb: u8 = 0xFE; // a full RGB pixel (alpha carried)
 const op_rgba: u8 = 0xFF; // a full RGBA pixel
 const tag_mask: u8 = 0xC0;
 
-/// The six op kinds, in the order the encoder counts them (RGB · RGBA · INDEX · DIFF · LUMA · RUN).
+/// The six op kinds, in the order the encoder counts them (RGB - RGBA - INDEX - DIFF - LUMA - RUN).
 pub const op_count_kinds: u32 = 6;
 pub const kind_rgb: u32 = 0;
 pub const kind_rgba: u32 = 1;
@@ -66,7 +66,7 @@ const Rgba = struct {
     }
 };
 
-/// The running-index slot of a pixel — the QOI hash, computed identically on both sides.
+/// The running-index slot of a pixel -- the QOI hash, computed identically on both sides.
 fn index_slot(p: Rgba) u32 {
     // invariant: the slot is one of the 64 the format defines.
     const h = (@as(u32, p.r) * 3 + @as(u32, p.g) * 5 + @as(u32, p.b) * 7 + @as(u32, p.a) * 11) % 64;
@@ -91,7 +91,7 @@ fn write_u32_be(b: []u8, v: u32) void {
     b[3] = @intCast(v & 0xFF);
 }
 
-/// A decoded image — pixels always RGBA, len == width*height*4.
+/// A decoded image -- pixels always RGBA, len == width*height*4.
 pub const Pixmap = struct {
     width: u32 = 0,
     height: u32 = 0,
@@ -115,7 +115,7 @@ pub const Pixmap = struct {
     }
 };
 
-/// What an encode produced — the byte length written, and how many of each op kind it used, so a witness can
+/// What an encode produced -- the byte length written, and how many of each op kind it used, so a witness can
 /// prove the encoder truly reached for all six chunk kinds (and the round-trip then proves the decoder read
 /// each one).
 pub const EncodeResult = struct {
@@ -202,7 +202,7 @@ pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !Pixmap {
                 px.r = px.r +% vg +% drg;
                 px.b = px.b +% vg +% dbg;
             } else {
-                // (b1 & tag_mask) == op_run — a run of the previous pixel, biased by one.
+                // (b1 & tag_mask) == op_run -- a run of the previous pixel, biased by one.
                 run = (b1 & 0x3F);
             }
             index[index_slot(px)] = px;
@@ -214,7 +214,7 @@ pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !Pixmap {
         out[off + 3] = px.a;
     }
 
-    // The tail must be exactly the eight-byte end marker — no fewer (Truncated), no more (TrailingData),
+    // The tail must be exactly the eight-byte end marker -- no fewer (Truncated), no more (TrailingData),
     // no other bytes (BadEndMarker). A run that overran the pixel count leaves the cursor short here.
     if (run != 0) return error.BadStream;
     const remaining = @as(u64, bytes.len) - @as(u64, p);
@@ -383,7 +383,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     while (k < op_count_kinds) : (k += 1) {
         assert(res.ops[k] >= 1);
     }
-    // invariant: compression happened — encoded is smaller than the raw RGBA.
+    // invariant: compression happened -- encoded is smaller than the raw RGBA.
     assert(res.len < pm.pixels.len);
 
     const stream = dst[0..res.len];

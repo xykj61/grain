@@ -1,25 +1,25 @@
-//! lotus/paste_over.rye — ALES114: paste_over — write the `src` samples over the clip IN PLACE starting at `at`, so [at, at+src.len) becomes `src` and every sample outside it is
+//! lotus/paste_over.rye -- ALES114: paste_over -- write the `src` samples over the clip IN PLACE starting at `at`, so [at, at+src.len) becomes `src` and every sample outside it is
 //! left exactly as it was, the length HOLDING. This is the OVERWRITE-twin of ALES2's splice (which INSERTS its payload and GROWS the clip): paste_over writes its payload ON TOP of
-//! what is there and keeps the length — the two paste modes every editor ships. It is also the general case of ALES110's silence_span, which overwrites a span with zeros:
+//! what is there and keeps the length -- the two paste modes every editor ships. It is also the general case of ALES110's silence_span, which overwrites a span with zeros:
 //! paste_over overwrites it with ANY samples, so silence is just the overwrite whose paint is zero. Drop a corrected word onto a muffled one, punch a clean take over a flubbed
 //! bar, and the new samples land on top of the old without moving anything after them. Naming it beside splice completes the paste pair: make room for it, or write it over.
 //!
 //! The rule, stated once: paste_over(clip, at, src) writes the `src` samples over the clip starting at `at`, refusing BadRange when the write would run past the current samples
 //! (at > len, or src.len > len − at, checked without underflow) BEFORE any write, reusing ALES2's EditError whole. One in-place pass, no allocation, no second buffer.
 //!
-//! The crux — four laws. THE OVERWRITE LAW: after paste_over the span [at, at+src.len) holds `src` exactly and every sample outside it is byte for byte unchanged, the length
+//! The crux -- four laws. THE OVERWRITE LAW: after paste_over the span [at, at+src.len) holds `src` exactly and every sample outside it is byte for byte unchanged, the length
 //! untouched, checked at a mid span, the head, and the tail. THE SPECIALIZATION LAW: paste_over of an all-zero src equals ALES110's silence_span(clip, at, src.len) byte for byte
-//! — silence is the overwrite whose paint is zero. THE INSERT-CONTRAST / LENGTH LAW: the same src at the same `at` KEEPS the length here and GROWS it by src.len through ALES2's
-//! splice, the two paste modes two lengths side by side (overwrite honestly not lossless — the covered samples are gone unless the caller kept them). THE DEGENERATE / REFUSAL LAW:
+//! -- silence is the overwrite whose paint is zero. THE INSERT-CONTRAST / LENGTH LAW: the same src at the same `at` KEEPS the length here and GROWS it by src.len through ALES2's
+//! splice, the two paste modes two lengths side by side (overwrite honestly not lossless -- the covered samples are gone unless the caller kept them). THE DEGENERATE / REFUSAL LAW:
 //! an empty src the identity, a paste past the samples BadRange, before any write.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES114.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES114.
 //! Design read: active-designing/date/20260815/20260815-013334_fill-ales114-lotus-paste-over.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the splice the length law contrasts against; lotus/silence_span.rye
-//! (ALES110) — the zero-paint overwrite this rung generalizes, imported by the selftest to prove the specialization law; lotus/meter.rye (ALES13) — the peak/RMS meter, used only
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the EditError reused whole, and the splice the length law contrasts against; lotus/silence_span.rye
+//! (ALES110) -- the zero-paint overwrite this rung generalizes, imported by the selftest to prove the specialization law; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only
 //! by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It writes caller-supplied samples over an existing span — it
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It writes caller-supplied samples over an existing span -- it
 //! changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/paste_over.rye selftest
@@ -34,22 +34,22 @@ const silence_span = @import("silence_span.rye");
 
 pub const paste_over_version = "20260815.013334";
 
-/// paste_over forwards ALES2's OWN fault reused by name — BadRange when the write would run past the current samples — and invents none of its own; `at` and the payload length are
+/// paste_over forwards ALES2's OWN fault reused by name -- BadRange when the write would run past the current samples -- and invents none of its own; `at` and the payload length are
 /// plain position/span bounds with no illegal value save the range the samples already name.
 pub const PasteOverError = timeline.EditError;
 
-/// Write the `src` samples over the clip in place starting at `at` — the span [at, at+src.len) becomes `src` and every sample outside it is left exactly as it was, the length
-/// unchanged. Refuses BadRange when the write would run past the current samples, before any write. This is ALES2's splice read as an overwrite rather than an insert — the
+/// Write the `src` samples over the clip in place starting at `at` -- the span [at, at+src.len) becomes `src` and every sample outside it is left exactly as it was, the length
+/// unchanged. Refuses BadRange when the write would run past the current samples, before any write. This is ALES2's splice read as an overwrite rather than an insert -- the
 /// length-preserving paste mode, and the general case of ALES110's silence_span (zero paint).
 pub fn paste_over(clip: *timeline.Clip, at: u32, src: []const i16) PasteOverError!void {
-    // invariant: the length never claims more samples than the buffer holds — every seat we write is inside the buffer.
+    // invariant: the length never claims more samples than the buffer holds -- every seat we write is inside the buffer.
     assert(clip.len <= clip.buf.len);
 
-    // invariant: the payload never exceeds the whole timeline bound — src comes from a caller slice, so bound it once against max_clip before it indexes the buffer.
+    // invariant: the payload never exceeds the whole timeline bound -- src comes from a caller slice, so bound it once against max_clip before it indexes the buffer.
     if (src.len > timeline.max_clip) return error.BadRange;
     const count: u32 = @intCast(src.len);
 
-    // invariant: the write lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    // invariant: the write lies wholly within the current samples (checked without underflow -- count against the remainder), refused by name before any write.
     if (at > clip.len) return error.BadRange;
     if (count > clip.len - at) return error.BadRange;
 
@@ -60,13 +60,13 @@ pub fn paste_over(clip: *timeline.Clip, at: u32, src: []const i16) PasteOverErro
     var i: u32 = 0;
     while (i < count) : (i += 1) clip.buf[at + i] = src[i];
 
-    // invariant: paste_over writes values only — the length and its bound are exactly what they were.
+    // invariant: paste_over writes values only -- the length and its bound are exactly what they were.
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE OVERWRITE LAW — paste_over writes exactly the named span and leaves the rest byte for byte, the length untouched; THE SPECIALIZATION LAW — paste_over of a zero
-//     src equals ALES110's silence_span byte for byte; THE INSERT-CONTRAST / LENGTH LAW — the same src keeps the length here and grows it by src.len through ALES2's splice; THE
-//     DEGENERATE / REFUSAL LAW — an empty src the identity, a paste past the samples BadRange ----------
+// --- selftest: THE OVERWRITE LAW -- paste_over writes exactly the named span and leaves the rest byte for byte, the length untouched; THE SPECIALIZATION LAW -- paste_over of a zero
+//     src equals ALES110's silence_span byte for byte; THE INSERT-CONTRAST / LENGTH LAW -- the same src keeps the length here and grows it by src.len through ALES2's splice; THE
+//     DEGENERATE / REFUSAL LAW -- an empty src the identity, a paste past the samples BadRange ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -80,7 +80,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE OVERWRITE LAW — paste_over writes exactly the named span and leaves every sample outside it, the length untouched. Proven at a mid span, the head, and the tail.
+    // 1. THE OVERWRITE LAW -- paste_over writes exactly the named span and leaves every sample outside it, the length untouched. Proven at a mid span, the head, and the tail.
     {
         var mid = timeline.Clip{};
         try load_clip(&mid, &[_]i16{ 10, 20, 30, 40, 50 });
@@ -99,7 +99,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.samples(), &[_]i16{ 10, 55, 66 })) return error.OverwriteTailWrong;
     }
 
-    // 2. THE SPECIALIZATION LAW — paste_over of an all-zero src equals ALES110's silence_span(clip, at, src.len) byte for byte: silence is the overwrite whose paint is zero.
+    // 2. THE SPECIALIZATION LAW -- paste_over of an all-zero src equals ALES110's silence_span(clip, at, src.len) byte for byte: silence is the overwrite whose paint is zero.
     {
         const seed = [_]i16{ 10, 20, 30, 40, 50 };
         var pasted = timeline.Clip{};
@@ -113,7 +113,7 @@ fn run_selftest() !u8 {
         if (!eq(pasted.samples(), silenced.samples())) return error.SpecializationBroken;
     }
 
-    // 3. THE INSERT-CONTRAST / LENGTH LAW — the same src at the same `at` keeps the length through paste_over and grows it by src.len through ALES2's splice.
+    // 3. THE INSERT-CONTRAST / LENGTH LAW -- the same src at the same `at` keeps the length through paste_over and grows it by src.len through ALES2's splice.
     {
         const seed = [_]i16{ 10, 20, 30, 40 };
         const payload = [_]i16{ 7, 8 };
@@ -131,7 +131,7 @@ fn run_selftest() !u8 {
         if (!eq(ins.samples(), &[_]i16{ 10, 7, 8, 20, 30, 40 })) return error.SpliceContrastWrong;
     }
 
-    // 4a. THE DEGENERATE LAW — an empty src is the identity (nothing written, the length unchanged).
+    // 4a. THE DEGENERATE LAW -- an empty src is the identity (nothing written, the length unchanged).
     {
         var idc = timeline.Clip{};
         try load_clip(&idc, &[_]i16{ 7, 8, 9 });
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (!eq(idc.samples(), &[_]i16{ 7, 8, 9 })) return error.EmptyPayloadMoved;
     }
 
-    // 4b. THE REFUSAL LAW — a `at` past the current samples and a payload that runs past the remainder each refuse BadRange, before any write, the clip untouched.
+    // 4b. THE REFUSAL LAW -- a `at` past the current samples and a payload that runs past the remainder each refuse BadRange, before any write, the clip untouched.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
@@ -149,7 +149,7 @@ fn run_selftest() !u8 {
         if (paste_over(&clip, 2, &[_]i16{ 9, 9, 9 })) |_| return error.LenNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // The clip is untouched by the refused calls — each refusal came before any write.
+        // The clip is untouched by the refused calls -- each refusal came before any write.
         if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
     }
 

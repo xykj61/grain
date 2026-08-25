@@ -1,4 +1,4 @@
-//! linengrow/tube1_admission_witness.rye — proves TUBE1 admission.
+//! linengrow/tube1_admission_witness.rye -- proves TUBE1 admission.
 //!
 //!   rye build linengrow/tube1_admission_witness.rye -femit-bin=linengrow/bin/tube1_admission_witness
 //!   linengrow/bin/tube1_admission_witness
@@ -44,7 +44,7 @@ fn run_selftest() !u8 {
     const manifest = try tube.build("seva-broadcaster", "0.1.0", &declared, 1024);
     assert(manifest.declares(pool.ledger_resource, caps.right_read | caps.right_write));
 
-    // Claim 1: matching grant → admitted + fold.
+    // Claim 1: matching grant -> admitted + fold.
     var table: caps.CapabilityTable = .{};
     const agent = try table.add_child("ledger-agent");
     try agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
@@ -68,7 +68,7 @@ fn run_selftest() !u8 {
     });
     print("tube1: welcome path -- GREEN\n", .{});
 
-    // Claim 2: no grant → NotAdmitted.
+    // Claim 2: no grant -> NotAdmitted.
     var empty: caps.CapabilityTable = .{};
     _ = try empty.add_child("ledger-agent");
     assert(!tube1.admit_manifest(&empty, "ledger-agent", &manifest));
@@ -89,7 +89,7 @@ fn run_selftest() !u8 {
     }
     print("tube1: missing grant refuses NotAdmitted -- GREEN unwelcome path\n", .{});
 
-    // Claim 3: grant weaker than manifest declaration → NotAdmitted.
+    // Claim 3: grant weaker than manifest declaration -> NotAdmitted.
     var weak: caps.CapabilityTable = .{};
     const weak_agent = try weak.add_child("ledger-agent");
     try weak_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read));
@@ -121,7 +121,7 @@ fn run_selftest() !u8 {
     assert(hosted_scoped.balances.issuer == 200);
     print("tube1: matching grant + Storage Scope admits -- GREEN scoped path\n", .{});
 
-    // Claim 6a: scope covers the resource, yet grants only read → refuse.
+    // Claim 6a: scope covers the resource, yet grants only read -> refuse.
     const scope_weak = try scope_mod.Scope.build(&[_]scope_mod.ScopeEntry{
         scope_mod.ScopeEntry.init(pool.ledger_resource, caps.right_read),
     });

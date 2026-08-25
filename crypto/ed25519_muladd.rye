@@ -1,34 +1,34 @@
-//! crypto/ed25519_muladd.rye — Season G (Cryptography), the twelfth rung: scalar multiply-add modulo the group order L authored in pure Rye,
+//! crypto/ed25519_muladd.rye -- Season G (Cryptography), the twelfth rung: scalar multiply-add modulo the group order L authored in pure Rye,
 //! the LAST arithmetic piece Ed25519 signing needs. Verification (RFC 8032 §5.1.7) only ever reads scalars and reduces a hash; signing must also
-//! COMBINE them — the signature's S component is S = (r + k·a) mod L, where r is the per-message nonce scalar, k the challenge, and a the secret
+//! COMBINE them -- the signature's S component is S = (r + k-a) mod L, where r is the per-message nonce scalar, k the challenge, and a the secret
 //! scalar. That single multiply-add mod L is the one operation the GREEN scalar rung (crypto/ed25519_scalar.rye) did not yet author. This file
 //! authors it as a composition: multiply two 32-byte scalars into their full 512-bit product, add the third 32-byte scalar, then reduce the
-//! 64-byte result modulo L over the GREEN reduce. With mul_add GREEN, every arithmetic piece Ed25519 SIGNING needs stands — the signing rung that
+//! 64-byte result modulo L over the GREEN reduce. With mul_add GREEN, every arithmetic piece Ed25519 SIGNING needs stands -- the signing rung that
 //! follows is a pure composition over decode, the ladder, the group law, SHA-512, reduce, and this multiply-add.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
-//! signing's S = (r + k·a) mod L is the multiply-add this rung authors, the piece between the GREEN reduce and the signing composition).
-//! Kin: crypto/ed25519_scalar.rye (reduce / is_canonical, GREEN — this rung composes reduce over its own 512-bit product) · crypto/sha512.rye
-//! (the hash whose reductions feed r and k, GREEN) · crypto/ed25519_scalarmul.rye (the ladder signing multiplies the base point by, GREEN).
-//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from the
+//! signing's S = (r + k-a) mod L is the multiply-add this rung authors, the piece between the GREEN reduce and the signing composition).
+//! Kin: crypto/ed25519_scalar.rye (reduce / is_canonical, GREEN -- this rung composes reduce over its own 512-bit product) - crypto/sha512.rye
+//! (the hash whose reductions feed r and k, GREEN) - crypto/ed25519_scalarmul.rye (the ladder signing multiplies the base point by, GREEN).
+//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from the
 //! public mathematics of RFC 8032 and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a full-precision multiply, then the GREEN reduce. Two 32-byte scalars a and b are each below 2^256, so their product a·b is below
-//! 2^512, and adding a third scalar c below 2^256 keeps a·b + c below 2^512 − 2^256 < 2^512 (max: (2^256−1)² + (2^256−1) = 2^512 − 2^256). The
-//! whole sum therefore fits EXACTLY in 64 little-endian bytes with nothing carried past the top — a proven width, asserted, not hoped. The 512-bit
-//! product is formed by bytewise schoolbook: 32·32 byte-products accumulate into 64 column sums (each sum bounded well below 2^64), the third
+//! THE CRUX -- a full-precision multiply, then the GREEN reduce. Two 32-byte scalars a and b are each below 2^256, so their product a-b is below
+//! 2^512, and adding a third scalar c below 2^256 keeps a-b + c below 2^512 − 2^256 < 2^512 (max: (2^256−1)² + (2^256−1) = 2^512 − 2^256). The
+//! whole sum therefore fits EXACTLY in 64 little-endian bytes with nothing carried past the top -- a proven width, asserted, not hoped. The 512-bit
+//! product is formed by bytewise schoolbook: 32-32 byte-products accumulate into 64 column sums (each sum bounded well below 2^64), the third
 //! scalar folds into the low 32 columns, then one carry-propagation pass settles the columns into bytes. That 64-byte value goes straight into the
-//! GREEN reduce — this rung writes NO new reduction, it composes the one already proven. Zig's own scalar.mulAdd computes the same value by
-//! Montgomery arithmetic; the mathematics is identical because (a·b + c) mod L does not depend on the multiplication's internal representation.
+//! GREEN reduce -- this rung writes NO new reduction, it composes the one already proven. Zig's own scalar.mulAdd computes the same value by
+//! Montgomery arithmetic; the mathematics is identical because (a-b + c) mod L does not depend on the multiplication's internal representation.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity held. This file SIGNS NOTHING and holds no key:
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity held. This file SIGNS NOTHING and holds no key:
 //! it is arithmetic on 32-byte integers. When signing eventually calls it, one input (the secret scalar a) IS secret, so a constant-time
-//! multiply-add for the signing path is the Season's named timing-safety HORIZON — this rung's bytewise schoolbook is authored for correctness and
+//! multiply-add for the signing path is the Season's named timing-safety HORIZON -- this rung's bytewise schoolbook is authored for correctness and
 //! parity first, exactly as the ladder and reduce carry the same honest horizon; timing-safety wants measurement, not a claim. Parity is proven at
-//! selftest against algebraic known-answers anyone can check (1·1+0 = 1, 0·x+c = c mod L, a·1+0 = a mod L) and against Zig's own independent
-//! std.crypto.ecc.Edwards25519.scalar.mulAdd across a spread of scalar triples — including the all-ones extreme that maximally exercises the
-//! 512-bit carry — byte-for-byte. Monocypher-source parity stays the same held-fetch horizon the other primitives carry.
+//! selftest against algebraic known-answers anyone can check (1-1+0 = 1, 0-x+c = c mod L, a-1+0 = a mod L) and against Zig's own independent
+//! std.crypto.ecc.Edwards25519.scalar.mulAdd across a spread of scalar triples -- including the all-ones extreme that maximally exercises the
+//! 512-bit carry -- byte-for-byte. Monocypher-source parity stays the same held-fetch horizon the other primitives carry.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ed25519_muladd.rye selftest
@@ -56,12 +56,12 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Form the 64-byte little-endian value a·b + c from three 32-byte little-endian scalars, exactly — no reduction yet. a·b < 2^512 and c < 2^256,
-/// so a·b + c < 2^512 fits the 64 bytes with no carry past the top (asserted). Bytewise schoolbook: accumulate the 32·32 byte-products into 64
+/// Form the 64-byte little-endian value a-b + c from three 32-byte little-endian scalars, exactly -- no reduction yet. a-b < 2^512 and c < 2^256,
+/// so a-b + c < 2^512 fits the 64 bytes with no carry past the top (asserted). Bytewise schoolbook: accumulate the 32-32 byte-products into 64
 /// column sums, fold c into the low columns, then settle the columns into bytes with one carry pass.
 fn mul_wide(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [64]u8 {
-    // Column accumulators: col[k] gathers every byte-product a[i]·b[j] with i + j == k, plus (for k < 32) the addend byte c[k]. Each column sums
-    // at most 32 products of two bytes (≤ 32·255·255 < 2^21) plus one addend byte and an incoming carry, so a u64 column never overflows.
+    // Column accumulators: col[k] gathers every byte-product a[i]-b[j] with i + j == k, plus (for k < 32) the addend byte c[k]. Each column sums
+    // at most 32 products of two bytes (≤ 32-255-255 < 2^21) plus one addend byte and an incoming carry, so a u64 column never overflows.
     var col = [_]u64{0} ** 64;
     var i: u32 = 0;
     while (i < scalar_bytes) : (i += 1) {
@@ -72,7 +72,7 @@ fn mul_wide(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [64]u8 {
             col[i + j] += @as(u64, a[i]) * @as(u64, b[j]);
         }
     }
-    // Fold the addend c into the low 32 columns — c contributes only to bytes 0..31 of the sum.
+    // Fold the addend c into the low 32 columns -- c contributes only to bytes 0..31 of the sum.
     var t: u32 = 0;
     while (t < scalar_bytes) : (t += 1) col[t] += @as(u64, c[t]);
 
@@ -85,18 +85,18 @@ fn mul_wide(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [64]u8 {
         out[k] = @truncate(v & 0xff);
         carry = v >> 8;
     }
-    // invariant: a·b + c < 2^512, so the 64-byte little-endian value holds the whole sum with no carry escaping the top limb.
+    // invariant: a-b + c < 2^512, so the 64-byte little-endian value holds the whole sum with no carry escaping the top limb.
     assert(carry == 0);
     return out;
 }
 
-/// Return (a·b + c) mod L for three 32-byte little-endian scalars — the signing arithmetic S = (r + k·a) mod L in one call (with a←k, b←a, c←r).
-/// Composes the full-precision 512-bit product-plus-addend over the GREEN reduce; writes no new reduction. Holds no key and signs nothing — the
+/// Return (a-b + c) mod L for three 32-byte little-endian scalars -- the signing arithmetic S = (r + k-a) mod L in one call (with a<-k, b<-a, c<-r).
+/// Composes the full-precision 512-bit product-plus-addend over the GREEN reduce; writes no new reduction. Holds no key and signs nothing -- the
 /// secret-scalar timing horizon belongs to the signing path that will call it, not to this total arithmetic function.
 pub fn mul_add(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [32]u8 {
     const wide = mul_wide(a, b, c);
     const out = sc.reduce(&wide);
-    // invariant: the result is the canonical scalar below L — the exact shape a signature's S component must carry.
+    // invariant: the result is the canonical scalar below L -- the exact shape a signature's S component must carry.
     assert(sc.is_canonical(&out));
     // invariant: reducing the already-reduced result again is a fixed point, confirming the value is fully folded modulo L.
     var ext = [_]u8{0} ** 64;
@@ -110,7 +110,7 @@ pub fn mul_add(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [32]u8 {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// A deterministic spread of 32-byte scalar encodings — the same generator shape the other crypto selftests use, seeded so each differs and some
+/// A deterministic spread of 32-byte scalar encodings -- the same generator shape the other crypto selftests use, seeded so each differs and some
 /// land above L, giving the multiply-add's reduction something real to fold.
 fn scalar_seed(seed: u8) [32]u8 {
     var s: [32]u8 = undefined;
@@ -134,17 +134,17 @@ fn run_selftest() !u8 {
 
     // 1. Algebraic known-answers anyone can check.
     {
-        // 1·1 + 0 = 1.
+        // 1-1 + 0 = 1.
         if (!bytes_eq(&mul_add(&one, &one, &zero), &one)) return error.OneMulOneMismatch;
 
-        // 0·x + c = c mod L — with c below L, the reduced answer is c unchanged.
+        // 0-x + c = c mod L -- with c below L, the reduced answer is c unchanged.
         const c_small = scalar_seed(3); // top byte 0x03 ⇒ below L, canonical unchanged by reduce
-        // invariant: the chosen addend is already canonical, so 0·x + c must return it byte-for-byte.
+        // invariant: the chosen addend is already canonical, so 0-x + c must return it byte-for-byte.
         if (!sc.is_canonical(&c_small)) return error.AddendNotCanonical;
         const x = scalar_seed(9);
         if (!bytes_eq(&mul_add(&zero, &x, &c_small), &c_small)) return error.ZeroMulAddMismatch;
 
-        // a·1 + 0 = a mod L — equals reduce of a zero-extended to 64 bytes, our own reference.
+        // a-1 + 0 = a mod L -- equals reduce of a zero-extended to 64 bytes, our own reference.
         var a_ext = [_]u8{0} ** 64;
         const a = scalar_seed(21);
         var i: u32 = 0;

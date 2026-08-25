@@ -1,33 +1,33 @@
-//! lotus/mid_side.rye — ALES210: MID/SIDE — the stereo master read as its SUM and its DIFFERENCE, the reversible primitive the width family spends.
-//! Every stereo edit so far has spoken in LEFT and RIGHT — the two speakers. Yet the deepest stereo tools speak a second language: MID (what the two
+//! lotus/mid_side.rye -- ALES210: MID/SIDE -- the stereo master read as its SUM and its DIFFERENCE, the reversible primitive the width family spends.
+//! Every stereo edit so far has spoken in LEFT and RIGHT -- the two speakers. Yet the deepest stereo tools speak a second language: MID (what the two
 //! channels share, the centre, the mono sum) and SIDE (what they differ by, the width, the stereo spread). Mid/side is the change of basis between
 //! them, and it is the handle a keeper reaches for to widen or narrow an image, to EQ the centre without touching the sides, to check mono
-//! compatibility — the reverb WIDTH knob (ALES209 named it next) is exactly "scale the side, recombine". This rung opens no width control yet; it
+//! compatibility -- the reverb WIDTH knob (ALES209 named it next) is exactly "scale the side, recombine". This rung opens no width control yet; it
 //! lays the reversible primitive every one of those rungs will stand on, proven whole first.
 //!
 //! The law, stated once. `encode` folds LEFT/RIGHT into MID/SIDE in place:
-//!   mid  = (l + r) / 2     — the average: what both channels share, the mono centre
-//!   side = (l - r) / 2     — the half-difference: what they differ by, the stereo width
+//!   mid  = (l + r) / 2     -- the average: what both channels share, the mono centre
+//!   side = (l - r) / 2     -- the half-difference: what they differ by, the stereo width
 //! Both provably fit the i16 rail with NO clip: |l + r| / 2 ≤ 32768 and |l - r| / 2 ≤ 32767, so encode never saturates (asserted in place, then routed
-//! through ALES2's one true `saturate` which is exact on an in-range value — the rail lives in one place even where it is never reached). `decode`
+//! through ALES2's one true `saturate` which is exact on an in-range value -- the rail lives in one place even where it is never reached). `decode`
 //! folds MID/SIDE back into LEFT/RIGHT:
 //!   l = saturate(mid + side)   r = saturate(mid - side)
-//! where the sum CAN exceed the rail, so ALES2's `saturate` pins it once. Both ops are TOTAL — they name no span, hold each channel's length, and
+//! where the sum CAN exceed the rail, so ALES2's `saturate` pins it once. Both ops are TOTAL -- they name no span, hold each channel's length, and
 //! keep the balance invariant (left.len == right.len) trivially, so neither raises a fault: `void`, no EditError, no `try`, exactly as ALES127's
 //! stereo_invert.
 //!
 //! The reconstruction law, honest about the halved side. Because side is HALVED to stay on the i16 rail, one bit of the difference cannot be stored,
 //! so `decode(encode(sc))` is EXACT for every sample where `l + r` is even (equivalently l and r share parity), and off by AT MOST ONE LSB
-//! otherwise — the well-known cost of a 16-bit mid/side over a 17-bit-side lossless store, named plainly rather than hidden. A centred master
-//! (l == r everywhere) encodes to an ALL-ZERO side and a mid equal to the shared channel — the defining mono-compatibility property, and there the
+//! otherwise -- the well-known cost of a 16-bit mid/side over a 17-bit-side lossless store, named plainly rather than hidden. A centred master
+//! (l == r everywhere) encodes to an ALL-ZERO side and a mid equal to the shared channel -- the defining mono-compatibility property, and there the
 //! round-trip is always exact (l + r = 2l is even).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES210.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES210.
 //! Design read: active-designing/date/20260815/20260815-120505_fill-ales210-lotus-mid-side.md
-//! Stands on: lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant, the ground both ops preserve;
-//! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and `saturate`, the one true clamp reused so the rail lives in one place.
+//! Stands on: lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant, the ground both ops preserve;
+//! lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples, and `saturate`, the one true clamp reused so the rail lives in one place.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. Mid/side is a pure
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. Mid/side is a pure
 //! change of basis over existing samples; it fabricates none, changes no length, and reads no byte past either channel's len. The halved side loses
 //! at most one LSB by design (stated, not hidden). No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -45,16 +45,16 @@ pub const mid_side_version = "20260815.120505";
 /// Fold `sc` from LEFT/RIGHT into MID/SIDE in place: the left channel becomes mid = (l + r) / 2 (the shared centre), the right becomes
 /// side = (l - r) / 2 (the half-difference, the stereo width). Both results provably sit on the i16 rail with no clip, yet each is routed through
 /// ALES2's `saturate` so the one true clamp is the only path to a sample even where it is never reached; the assert proves saturate is exact here.
-/// Total on any balanced StereoClip — it names no span, holds each channel's length, and preserves the balance invariant, so it raises no fault.
+/// Total on any balanced StereoClip -- it names no span, holds each channel's length, and preserves the balance invariant, so it raises no fault.
 pub fn encode(sc: *pan.StereoClip) void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the change of basis preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the change of basis preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: neither channel claims more samples than its buffer holds — every seat read and written is inside the buffer.
+    // invariant: neither channel claims more samples than its buffer holds -- every seat read and written is inside the buffer.
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 
     const n: u32 = sc.left.len;
     var i: u32 = 0;
-    // invariant: i walks every seat once, folding the matched left/right pair into mid/side in place — no seat skipped, none past len touched.
+    // invariant: i walks every seat once, folding the matched left/right pair into mid/side in place -- no seat skipped, none past len touched.
     while (i < n) : (i += 1) {
         // invariant: the sample is read out of the clip by this index with no bounds check of
         // its own
@@ -64,22 +64,22 @@ pub fn encode(sc: *pan.StereoClip) void {
         // mid = average, side = half-difference; the sum runs in i64 so it never overflows before the halving.
         const mid: i64 = @divTrunc(l + r, 2);
         const side: i64 = @divTrunc(l - r, 2);
-        // invariant: both fit the i16 rail exactly — |l + r| / 2 ≤ 32768 and |l - r| / 2 ≤ 32767 — so encode never clips; saturate is exact here.
+        // invariant: both fit the i16 rail exactly -- |l + r| / 2 ≤ 32768 and |l - r| / 2 ≤ 32767 -- so encode never clips; saturate is exact here.
         assert(mid >= timeline.sample_min and mid <= timeline.sample_max);
         assert(side >= timeline.sample_min and side <= timeline.sample_max);
         sc.left.buf[i] = timeline.saturate(mid);
         sc.right.buf[i] = timeline.saturate(side);
     }
 
-    // invariant: the change of basis writes values only — both channels keep their length, so the master leaves balanced.
+    // invariant: the change of basis writes values only -- both channels keep their length, so the master leaves balanced.
     assert(sc.left.len == sc.right.len and sc.left.len == n);
 }
 
 /// Fold `sc` from MID/SIDE back into LEFT/RIGHT in place: the left channel (mid) and right (side) become l = saturate(mid + side) and
-/// r = saturate(mid - side). Here the sum CAN exceed the i16 rail, so ALES2's `saturate` pins it once — the inverse of `encode` up to the one LSB the
+/// r = saturate(mid - side). Here the sum CAN exceed the i16 rail, so ALES2's `saturate` pins it once -- the inverse of `encode` up to the one LSB the
 /// halved side cannot carry. Total on any balanced StereoClip, exactly as `encode`.
 pub fn decode(sc: *pan.StereoClip) void {
-    // invariant: the two channels enter balanced — mid and side are matched per seat, so their lengths must agree.
+    // invariant: the two channels enter balanced -- mid and side are matched per seat, so their lengths must agree.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 
@@ -97,14 +97,14 @@ pub fn decode(sc: *pan.StereoClip) void {
         sc.right.buf[i] = timeline.saturate(mid - side);
     }
 
-    // invariant: the inverse basis writes values only — both channels keep their length, so the master leaves balanced.
+    // invariant: the inverse basis writes values only -- both channels keep their length, so the master leaves balanced.
     assert(sc.left.len == sc.right.len and sc.left.len == n);
 }
 
-// --- selftest: THE ENCODE LAW — left holds (l+r)/2 and right holds (l-r)/2 per seat, byte for byte against a hand vector; THE MONO-COMPATIBILITY
-//     LAW — a centred master (l == r) encodes to an all-zero side and a mid equal to the shared channel; THE RECONSTRUCTION LAW — decode(encode) is
+// --- selftest: THE ENCODE LAW -- left holds (l+r)/2 and right holds (l-r)/2 per seat, byte for byte against a hand vector; THE MONO-COMPATIBILITY
+//     LAW -- a centred master (l == r) encodes to an all-zero side and a mid equal to the shared channel; THE RECONSTRUCTION LAW -- decode(encode) is
 //     EXACT where l+r is even and off by at most one LSB otherwise (per-sample magnitude ≤ 1), and always exact for a centred master; THE BALANCE /
-//     LENGTH LAW — both ops hold left.len == right.len and each channel's length; THE EMPTY / DECODE-SHAPE LAW — an empty pair is unchanged, and
+//     LENGTH LAW -- both ops hold left.len == right.len and each channel's length; THE EMPTY / DECODE-SHAPE LAW -- an empty pair is unchanged, and
 //     decode is the honest inverse fold of encode (a hand-built mid/side pair decodes to the matching left/right) ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -120,20 +120,20 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE ENCODE LAW — encode lands exactly the hand-computed mid/side: left[i] = (l+r)/2 (truncated toward zero), right[i] = (l-r)/2. The i16
+    // 1. THE ENCODE LAW -- encode lands exactly the hand-computed mid/side: left[i] = (l+r)/2 (truncated toward zero), right[i] = (l-r)/2. The i16
     //    extremes ride along on both channels so the range claim (mid, side never clip) is proven in place, not merely asserted.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, 10, -32768, 32767, 7 }, &[_]i16{ 40, -6, -32768, -32768, 8 });
         encode(&sc);
         //  l,r:    100,40     10,-6      -32768,-32768   32767,-32768    7,8
-        //  mid  = (l+r)/2:  70          2           -32768          0 (-1/2 trunc→0)    7 (15/2)
+        //  mid  = (l+r)/2:  70          2           -32768          0 (-1/2 trunc->0)    7 (15/2)
         //  side = (l-r)/2:  30          8            0              32767 (65535/2)     0 (-1/2 trunc)
         if (!eq(sc.left.samples(), &[_]i16{ 70, 2, -32768, 0, 7 })) return error.EncodeMidWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 30, 8, 0, 32767, 0 })) return error.EncodeSideWrong;
     }
 
-    // 2. THE MONO-COMPATIBILITY LAW — a centred master (left == right everywhere) encodes to an ALL-ZERO side and a mid equal to the shared channel:
+    // 2. THE MONO-COMPATIBILITY LAW -- a centred master (left == right everywhere) encodes to an ALL-ZERO side and a mid equal to the shared channel:
     //    a mono/centred signal has no width, the defining property mid/side exists to expose.
     {
         var sc = pan.StereoClip{};
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 0, 0, 0, 0, 0, 0 })) return error.CentreSideNotZero;
     }
 
-    // 3a. THE RECONSTRUCTION LAW, exact — where every pair shares parity (l+r even), decode(encode) returns the master to the byte: the change of
+    // 3a. THE RECONSTRUCTION LAW, exact -- where every pair shares parity (l+r even), decode(encode) returns the master to the byte: the change of
     //     basis is a true inverse there. Every pair below is same-parity, so the halved side loses nothing.
     {
         var sc = pan.StereoClip{};
@@ -157,7 +157,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.ReconRightNotExact;
     }
 
-    // 3b. THE RECONSTRUCTION LAW, bounded — where a pair's parity differs (l+r odd), the halved side cannot carry the last bit, so decode(encode)
+    // 3b. THE RECONSTRUCTION LAW, bounded -- where a pair's parity differs (l+r odd), the halved side cannot carry the last bit, so decode(encode)
     //     lands within ONE LSB of the original per sample; the cost is bounded and named, never silent drift.
     {
         var sc = pan.StereoClip{};
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3c. THE RECONSTRUCTION LAW for a centred master is always EXACT — l == r makes l+r = 2l even at every seat, so a mono-compatible master
+    // 3c. THE RECONSTRUCTION LAW for a centred master is always EXACT -- l == r makes l+r = 2l even at every seat, so a mono-compatible master
     //     survives the round-trip untouched however loud.
     {
         var sc = pan.StereoClip{};
@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &centre)) return error.CentreReconRightWrong;
     }
 
-    // 4. THE BALANCE / LENGTH LAW — encode and decode each hold left.len == right.len and each channel's starting length, at an even and an odd
+    // 4. THE BALANCE / LENGTH LAW -- encode and decode each hold left.len == right.len and each channel's starting length, at an even and an odd
     //    length; the stereo image stays aligned across the change of basis.
     {
         var even = pan.StereoClip{};
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         if (odd.left.len != odd.right.len or odd.left.len != 3) return error.OddUnbalanced;
     }
 
-    // 5a. THE EMPTY LAW — an empty pair is its own encode and its own decode: no seat to fold, the balance held at zero length.
+    // 5a. THE EMPTY LAW -- an empty pair is its own encode and its own decode: no seat to fold, the balance held at zero length.
     {
         var empty = pan.StereoClip{};
         encode(&empty);
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (empty.left.len != 0 or empty.right.len != 0) return error.EmptyDecodeChanged;
     }
 
-    // 5b. THE DECODE-SHAPE LAW — decode is the honest inverse fold: a hand-built mid/side pair decodes to l = saturate(mid+side), r = saturate(mid-side),
+    // 5b. THE DECODE-SHAPE LAW -- decode is the honest inverse fold: a hand-built mid/side pair decodes to l = saturate(mid+side), r = saturate(mid-side),
     //     with the rail pinned once where the sum overflows. Proven directly on a pair chosen to exercise a clean case and a saturating case.
     {
         var sc = pan.StereoClip{};
@@ -220,7 +220,7 @@ fn run_selftest() !u8 {
         //  side:  40    20000    -20000
         try load_stereo(&sc, &[_]i16{ 100, 20000, -20000 }, &[_]i16{ 40, 20000, -20000 });
         decode(&sc);
-        //  l = mid+side: 140   40000→32767 (rail)   -40000→-32768 (rail)
+        //  l = mid+side: 140   40000->32767 (rail)   -40000->-32768 (rail)
         //  r = mid-side:  60       0                    0
         if (!eq(sc.left.samples(), &[_]i16{ 140, 32767, -32768 })) return error.DecodeLeftWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 60, 0, 0 })) return error.DecodeRightWrong;

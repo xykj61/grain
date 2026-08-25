@@ -1,28 +1,28 @@
-//! lotus/limit_env_hold.rye — ALES59: an attack/HOLD/release limiter — the breathing limiter given the one stage between its two
+//! lotus/limit_env_hold.rye -- ALES59: an attack/HOLD/release limiter -- the breathing limiter given the one stage between its two
 //! knobs, and the rung that completes the HELD dynamics trio. ALES55 gave the limiter (ALES49) a patient sense of time, driving the
 //! hard ceiling from ALES52's proven envelope follower so the ceiling is approached over an attack and released gently. Yet an un-held
-//! limiter still lets its gain jump back toward unity the moment a loud passage momentarily DUCKS below the ceiling — it PUMPS. A real
+//! limiter still lets its gain jump back toward unity the moment a loud passage momentarily DUCKS below the ceiling -- it PUMPS. A real
 //! limiter carries a HOLD knob for exactly this: on a fall away from a peak, it pins the peak for a little while before the release
 //! begins, so the gain reduction stays engaged through the duck and the level stays steady. ALES56 built that hold stage INSIDE the
 //! follower (hold_env.env_step_hold) and proved it once. This rung spends that proof: it drives ALES49's hard ceiling from the HELD
-//! follower rather than the plain one — the same limiter, now with the patience that keeps it from pumping. The gain math is not
+//! follower rather than the plain one -- the same limiter, now with the patience that keeps it from pumping. The gain math is not
 //! re-invented (it is ALES49's), and the time base is not re-invented (it is ALES56's held env_step); this rung is exactly their
 //! composition over public APIs, adding only the hold knob. It is the mirror-sibling of ALES58's held compressor (the compressor at an
-//! infinite ratio, the target pinned to the ceiling), and with it the gate (ALES57), compressor (ALES58), and limiter all hold — the
+//! infinite ratio, the target pinned to the ceiling), and with it the gate (ALES57), compressor (ALES58), and limiter all hold -- the
 //! held trio whole, the mirror of the un-held trio (ALES53-55) over one proven held follower.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES59.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES59.
 //! Design read: active-designing/date/20260814/20260814-182307_fill-ales59-lotus-attack-hold-release-limiter.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/limit.rye (ALES49) —
-//! the hard ceiling this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) — the HELD time base, its env_step_hold
-//! advancing the same follower one sample at a time with the hold pinning the peak; lotus/limit_env.rye (ALES55) — the un-held
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/limit.rye (ALES49) --
+//! the hard ceiling this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) -- the HELD time base, its env_step_hold
+//! advancing the same follower one sample at a time with the hold pinning the peak; lotus/limit_env.rye (ALES55) -- the un-held
 //! attack/release limiter this reduces to at a hold of zero, re-proven beside it as the zero-hold limit.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the attack, release, and hold are counted in sample INDICES,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the attack, release, and hold are counted in sample INDICES,
 //! not milliseconds against a clock, and the ceiling is a magnitude in sample units. One held envelope step and at most one
 //! multiply-divide per sample; nothing on the path can overflow, since the gain ceil/envelope sits in (0, 1) so every written
-//! magnitude is at most the input's, which already fits i16. NO LOOKAHEAD — a slow attack lets a fast transient briefly overshoot the
+//! magnitude is at most the input's, which already fits i16. NO LOOKAHEAD -- a slow attack lets a fast transient briefly overshoot the
 //! ceiling before the envelope catches it (this is a gain-reducer over time, not a sample-clamp); a true brickwall that never crosses
 //! the ceiling under any attack wants a lookahead delay line, named as a horizon rung, taken only on Keaton's word.
 //!
@@ -41,27 +41,27 @@ pub const limit_env_hold_version = "20260814.182307";
 
 /// The attack/hold/release limiter's faults, one consistent name each: a ceiling outside [1, sample_max], an attack or release
 /// coefficient outside (0, 1], a hold longer than the widest clip, and a span outside the samples. Each coincides by name with the
-/// tool it borrows from — BadCeiling from the limiter, BadCoeff from the follower, BadHold from the held follower, BadRange from the
-/// whole family — so a composer sees one consistent fault surface.
+/// tool it borrows from -- BadCeiling from the limiter, BadCoeff from the follower, BadHold from the held follower, BadRange from the
+/// whole family -- so a composer sees one consistent fault surface.
 pub const LimitEnvHoldError = error{
-    /// A ceiling of zero (would silence, not limit) or above sample_max (nothing could ever reach it) — refused, no write.
+    /// A ceiling of zero (would silence, not limit) or above sample_max (nothing could ever reach it) -- refused, no write.
     BadCeiling,
-    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    /// An attack or release coefficient outside (0, 1] -- a frozen envelope, an overshooting step, or a divide by zero.
     BadCoeff,
-    /// A hold longer than max_clip samples — no clip is that long, so such a hold could never expire within a span; refused, no write.
+    /// A hold longer than max_clip samples -- no clip is that long, so such a hold could never expire within a span; refused, no write.
     BadHold,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Limit `count` samples starting at `start` in place to the magnitude `ceil`, the gain reduction FOLLOWING a HELD envelope that
-/// CONTINUES from the caller's `env` and `hold_left` rather than from silence — the carried-state form (ALES43's lesson), now carrying
+/// CONTINUES from the caller's `env` and `hold_left` rather than from silence -- the carried-state form (ALES43's lesson), now carrying
 /// BOTH the envelope and the hold countdown so the hold survives across a call boundary. Each sample advances the proven ALES56 held
 /// follower one step (attack while rising and rearming the hold, the peak pinned while the countdown lasts, the release only once it
 /// expires); when the held envelope sits within the ceiling the sample passes byte-for-byte, and when it rises above, the gain
-/// ceil/envelope (in (0, 1)) is applied to the raw sample — ALES49's ceiling reached over time. With `hold_samples` zero the held
+/// ceil/envelope (in (0, 1)) is applied to the raw sample -- ALES49's ceiling reached over time. With `hold_samples` zero the held
 /// follower reduces to ALES52's plain env_step, so this limiter reduces to ALES55's un-held limiter byte-for-byte. Refuses BadCeiling,
-/// BadCoeff, BadHold, and BadRange before any write; on refusal the clip and the carried state are untouched. Values only — never the
+/// BadCoeff, BadHold, and BadRange before any write; on refusal the clip and the carried state are untouched. Values only -- never the
 /// length.
 pub fn limit_hold_follow_carry(
     clip: *timeline.Clip,
@@ -76,15 +76,15 @@ pub fn limit_hold_follow_carry(
     release_den: u32,
     hold_samples: u32,
 ) LimitEnvHoldError!void {
-    // invariant: the ceiling is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the ceiling is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (ceil < 1) return error.BadCeiling;
     if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
-    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] -- checked by the follower's one proven rule.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span. Before any write.
+    // invariant: the hold is bounded by the widest clip -- a longer hold could never expire within any span. Before any write.
     if (hold_samples > timeline.max_clip) return error.BadHold;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -95,22 +95,22 @@ pub fn limit_hold_follow_carry(
         // Advance the proven ALES56 HELD follower one sample; e is the smoothed-and-held magnitude, in [0, sample_max].
         _ = hold_env.env_step_hold(env, hold_left, x, attack_num, attack_den, release_num, release_den, hold_samples);
         const e: i64 = env.*;
-        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (the held step's own guarantee).
+        // invariant: the envelope stays a legal magnitude -- never negative, never past the rail (the held step's own guarantee).
         assert(e >= 0 and e <= @as(i64, timeline.sample_max));
         if (e > cl) {
             // The held detector has crossed the ceiling; the gain is ceil/e, in (0, 1) since 1 <= ceil < e. e > cl >= 1, so the divide
             // is always safe (the zero-envelope case the gate faced cannot arise on the above-ceiling branch).
             const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
-            // Apply the gain ceil/e to the raw sample. m·ceil <= 32768·32767 fits i64; divTrunc keeps it strictly below m.
+            // Apply the gain ceil/e to the raw sample. m-ceil <= 32768-32767 fits i64; divTrunc keeps it strictly below m.
             const new_m: i64 = @divTrunc(m * cl, e);
-            // invariant: the gain reduces, never boosts — ceil < e makes ceil/e < 1, so a smoothed limiter only ever leans down.
+            // invariant: the gain reduces, never boosts -- ceil < e makes ceil/e < 1, so a smoothed limiter only ever leans down.
             assert(new_m <= m);
             const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
             clip.buf[start + i] = y;
             // invariant: the written sample holds the input's sign (magnitude only shrank).
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample whose held envelope sits within the ceiling is left exactly as it was — the gain reduction has not opened; the hold
+        // a sample whose held envelope sits within the ceiling is left exactly as it was -- the gain reduction has not opened; the hold
         // keeping the peak pinned above the ceiling is what keeps that reduction engaged across a brief duck rather than pumping.
     }
     // invariant: a limiter changes sample values only, never the clip's length or bound.
@@ -119,7 +119,7 @@ pub fn limit_hold_follow_carry(
 }
 
 /// Limit `count` samples starting at `start` in place, the gain reduction following a HELD envelope that begins FROM SILENCE (a fresh
-/// env of 0 with the hold unarmed) — one implementation shared with the carried form, so the two cannot drift. Refuses BadCeiling,
+/// env of 0 with the hold unarmed) -- one implementation shared with the carried form, so the two cannot drift. Refuses BadCeiling,
 /// BadCoeff, BadHold, and BadRange before any write.
 pub fn limit_hold_follow(
     clip: *timeline.Clip,
@@ -139,8 +139,8 @@ pub fn limit_hold_follow(
 
 // --- selftest: silence stays silence; a HOLD OF ZERO reduces to the plain ALES55 attack/release limiter byte-for-byte (the zero-hold
 //     limit); BELOW THE CEILING is the identity; a loud signal has its magnitude reduced with the sign held and never expanding; a
-//     NONZERO HOLD keeps the gain reduction engaged across a brief duck (it does not pump, the knob monotone); the state CARRIES — env
-//     and hold_left both — so a span in two pieces equals the whole once; and a bad ceiling, an illegal coefficient, a hold past
+//     NONZERO HOLD keeps the gain reduction engaged across a brief duck (it does not pump, the knob monotone); the state CARRIES -- env
+//     and hold_left both -- so a span in two pieces equals the whole once; and a bad ceiling, an illegal coefficient, a hold past
 //     max_clip, and an out-of-range span each refuse by name ------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -159,7 +159,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip limits to all zeros at any legal ceiling, coefficients, and hold.
+    // 1. silence stays silence -- an all-zero clip limits to all zeros at any legal ceiling, coefficients, and hold.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. A HOLD OF ZERO IS THE PLAIN ALES55 LIMITER — with hold_samples == 0 the held follower's fall branch never pins, so every
+    // 2. A HOLD OF ZERO IS THE PLAIN ALES55 LIMITER -- with hold_samples == 0 the held follower's fall branch never pins, so every
     //    sample moves through ALES52's env_step exactly as ALES55's un-held limiter does: the held limiter with no hold IS the ALES55
     //    limiter, byte-for-byte by construction. Proven by running BOTH tools on the same signal (the zero-hold limit).
     {
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         if (!eq(held.samples(), plain.samples())) return error.ZeroHoldNotPlainLimiter;
     }
 
-    // 3. BELOW THE CEILING IS THE IDENTITY — a signal whose every peak sits within the ceiling never drives the envelope above it, so
+    // 3. BELOW THE CEILING IS THE IDENTITY -- a signal whose every peak sits within the ceiling never drives the envelope above it, so
     //    the whole signal passes byte-for-byte regardless of smoothing or hold.
     {
         const quiet = [_]i16{ 500, -900, 1000, -1000, 250, -500, 999, -999 };
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &quiet)) return error.QuietNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a loud signal limits so every output magnitude is at most the input's and
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a loud signal limits so every output magnitude is at most the input's and
     //    every sign matches, under a real attack, release, and hold.
     {
         const loud = [_]i16{ 6000, -6000, 800, -12000, 12000, -300, 9000, -9000 };
@@ -207,9 +207,9 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A NONZERO HOLD KEEPS THE GAIN REDUCTION ENGAGED ACROSS A BRIEF DUCK — a loud sample, one quiet duck below the ceiling, then
+    // 5. A NONZERO HOLD KEEPS THE GAIN REDUCTION ENGAGED ACROSS A BRIEF DUCK -- a loud sample, one quiet duck below the ceiling, then
     //    loud again. With INSTANT attack and INSTANT release and NO hold, the duck drops the envelope below the ceiling so the gain
-    //    reduction disengages and the duck passes byte-for-byte (the limiter PUMPS — its gain jumped back to unity). With a hold that
+    //    reduction disengages and the duck passes byte-for-byte (the limiter PUMPS -- its gain jumped back to unity). With a hold that
     //    spans the duck, the peak stays pinned above the ceiling so the gain reduction stays engaged and the duck is attenuated. So
     //    the held magnitude is no LARGER than the un-held one at every sample (the hold only ever keeps the gain DOWN, the knob
     //    monotone), and strictly QUIETER at the duck (the pumping avoided).
@@ -227,11 +227,11 @@ fn run_selftest() !u8 {
             if (abs16(held.samples()[i]) > abs16(none.samples()[i])) return error.HoldPumpedMore;
         }
         // the duck sample (index 1): the held limiter keeps the pinned peak above the ceiling so the gain reduction stays engaged and
-        // attenuates it, the un-held limiter has already released to unity and passes it whole — the hold avoided the pump.
+        // attenuates it, the un-held limiter has already released to unity and passes it whole -- the hold avoided the pump.
         if (abs16(held.samples()[1]) >= abs16(none.samples()[1])) return error.HoldDidNotEngage;
     }
 
-    // 6. THE STATE CARRIES — env AND hold_left both — so limiting a span in two pieces, the split falling MID-HOLD, equals limiting the
+    // 6. THE STATE CARRIES -- env AND hold_left both -- so limiting a span in two pieces, the split falling MID-HOLD, equals limiting the
     //    whole once, byte-for-byte: the seam invisible, so dynamics can span and automate.
     {
         const sig = [_]i16{ 14000, 14000, 400, 400, 400, 9000, 6000, 6000 };

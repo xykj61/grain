@@ -1,8 +1,8 @@
-//! Rye test: SHA3-256 across the block boundary — a guard for pass 9994.
+//! Rye test: SHA3-256 across the block boundary -- a guard for pass 9994.
 //!
 //! SHA3-256 absorbs in blocks of 136 bytes (rate = (1600 - 256*2) / 8),
-//! not the 72 bytes of SHA3-512. The Keccak generic's TAME assertions —
-//! that the cursor stays within one block, `offset <= block_length` —
+//! not the 72 bytes of SHA3-512. The Keccak generic's TAME assertions --
+//! that the cursor stays within one block, `offset <= block_length` --
 //! were proven for SHA3-512 in pass 9998. This sweep confirms those same
 //! assertions hold for SHA3-256's wider block, including the boundary
 //! case where an exact multiple of 136 bytes leaves the cursor at

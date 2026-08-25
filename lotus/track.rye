@@ -1,16 +1,16 @@
-//! lotus/track.rye — ALES6: the track table — many placed clips rendered into one master. ALES3's `mix` summed TWO clips
-//! from index zero; ALES5's `place_at` summed ONE clip onto a base at a real offset. A session is neither — it is MANY clips,
+//! lotus/track.rye -- ALES6: the track table -- many placed clips rendered into one master. ALES3's `mix` summed TWO clips
+//! from index zero; ALES5's `place_at` summed ONE clip onto a base at a real offset. A session is neither -- it is MANY clips,
 //! each beginning at its own real moment, heard together. This rung opens the track table a DAW is built around: a bounded set
-//! of placed clips summed into one master, each aligned through the ALES5 clock, the sum saturated ONCE over the whole — not
+//! of placed clips summed into one master, each aligned through the ALES5 clock, the sum saturated ONCE over the whole -- not
 //! once per track.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES6.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES6.
 //! Design read: active-designing/20260814-fill-ales6-lotus-track-table.md
-//! Stands on: lotus/clock.rye (ALES5) — each track's real offset converts through `samples_for`; lotus/timeline.rye (ALES2) —
-//! the Clip a track holds and the one true saturation the master reuses; lotus/mix.rye (ALES3) — the two-track sum this rung
+//! Stands on: lotus/clock.rye (ALES5) -- each track's real offset converts through `samples_for`; lotus/timeline.rye (ALES2) --
+//! the Clip a track holds and the one true saturation the master reuses; lotus/mix.rye (ALES3) -- the two-track sum this rung
 //! generalizes to N.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process table of i16 PCM Clips on one bench, siloed to lotus/. No
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process table of i16 PCM Clips on one bench, siloed to lotus/. No
 //! socket, no network, no keys, no funds, no real device. The one correctness beyond a per-track add is that the master
 //! saturates over the TRUE sum of all tracks (a wide i64 accumulator per sample, clamped once), so three mid-range tracks
 //! clip exactly as an audio editor owes rather than per-track.
@@ -26,28 +26,28 @@ const clock = @import("clock.rye");
 
 pub const track_version = "20260814.114921";
 
-/// The widest track table this rung proves — a bounded small mixer. A real session is many such bounded tables; the bound
+/// The widest track table this rung proves -- a bounded small mixer. A real session is many such bounded tables; the bound
 /// keeps render's accumulator and the master both fixed.
 pub const max_tracks: u32 = 8;
 
 pub const TrackError = error{
-    /// Adding a track past the table's fixed bound — refused, never a silent overwrite of the table.
+    /// Adding a track past the table's fixed bound -- refused, never a silent overwrite of the table.
     SessionFull,
 };
 
-/// A clip placed at a real offset. The offset is a duration in milliseconds, converted through the ALES5 clock at render —
+/// A clip placed at a real offset. The offset is a duration in milliseconds, converted through the ALES5 clock at render --
 /// so a track's start is a real moment, not a bare sample index.
 pub const Track = struct {
     clip: timeline.Clip,
     at_ms: u32,
 };
 
-/// A bounded table of placed clips — the multi-track session. Rendered into one master by summing every track at its offset.
+/// A bounded table of placed clips -- the multi-track session. Rendered into one master by summing every track at its offset.
 pub const Session = struct {
     tracks: [max_tracks]Track = [_]Track{.{ .clip = .{}, .at_ms = 0 }} ** max_tracks,
     count: u32 = 0,
 
-    /// The placed tracks in order — exactly the session under render.
+    /// The placed tracks in order -- exactly the session under render.
     pub fn placed(self: *const Session) []const Track {
         // invariant: the count never claims more tracks than the table holds.
         assert(self.count <= self.tracks.len);
@@ -56,7 +56,7 @@ pub const Session = struct {
 };
 
 /// Append a placed clip to the session at real offset `at_ms`. Refuses SessionFull past the fixed table bound, before any
-/// write — the table never overruns.
+/// write -- the table never overruns.
 pub fn add_track(session: *Session, clip: *const timeline.Clip, at_ms: u32) TrackError!void {
     // invariant: the table has room for one more track.
     if (session.count >= session.tracks.len) return error.SessionFull;
@@ -67,7 +67,7 @@ pub fn add_track(session: *Session, clip: *const timeline.Clip, at_ms: u32) Trac
 }
 
 /// Render every track into one master at its real offset, summing over a wide accumulator and saturating ONCE over the whole
-/// sum — the one correctness beyond a per-track add, so three mid-range tracks clip exactly as an audio editor owes. Each
+/// sum -- the one correctness beyond a per-track add, so three mid-range tracks clip exactly as an audio editor owes. Each
 /// offset converts through the ALES5 clock; a track whose placed end exceeds the master bound refuses ClipFull before any
 /// write; a duration too long for the clip forwards ALES5's DurationTooLong. The master is always a legal, bounded clip.
 pub fn render(session: *const Session, clk: clock.Clock, out: *timeline.Clip) (TrackError || clock.ClockError || timeline.EditError)!void {
@@ -82,7 +82,7 @@ pub fn render(session: *const Session, clk: clock.Clock, out: *timeline.Clip) (T
     while (t < session.count) : (t += 1) {
         const tr = &session.tracks[t];
         const off = try clock.samples_for(clk, tr.at_ms);
-        // invariant: the track's placed end must fit the master bound — checked without overflow.
+        // invariant: the track's placed end must fit the master bound -- checked without overflow.
         if (tr.clip.len > out.buf.len - off) return error.ClipFull;
         const placed_end: u32 = off + tr.clip.len;
         var i: u32 = 0;
@@ -135,7 +135,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.RenderWrong;
     }
 
-    // 2. the sum SATURATES once over all three tracks — three mid-range tracks whose true sum exceeds the i16 range clamp to
+    // 2. the sum SATURATES once over all three tracks -- three mid-range tracks whose true sum exceeds the i16 range clamp to
     //    the extreme, exactly as summing-then-clamping owes. Per-track saturation would clip the first two and lose the third
     //    track's contribution; the wide accumulator keeps the true sum before the single clamp.
     {
@@ -151,14 +151,14 @@ fn run_selftest() !u8 {
         try add_track(&s, &d, 0);
         var out = timeline.Clip{};
         try render(&s, c, &out);
-        // true sum 60000 → clamps to +32767. (Two-at-a-time i16 saturation would already pin at 32767 after two, still
-        //   32767 after three — same here — so also prove the negative edge where order-of-clamp could differ is unneeded;
+        // true sum 60000 -> clamps to +32767. (Two-at-a-time i16 saturation would already pin at 32767 after two, still
+        //   32767 after three -- same here -- so also prove the negative edge where order-of-clamp could differ is unneeded;
         //   the point is the accumulator holds 60000, not a pre-clamped 32767, before the one clamp.)
         const want = [_]i16{timeline.sample_max};
         if (!eq(out.samples(), &want)) return error.SaturateWrong;
     }
 
-    // 3. an empty session renders silence — a master of length zero, no samples.
+    // 3. an empty session renders silence -- a master of length zero, no samples.
     {
         var s = Session{};
         var out = timeline.Clip{};
@@ -166,7 +166,7 @@ fn run_selftest() !u8 {
         if (out.len != 0) return error.EmptyWrong;
     }
 
-    // 4. a single track reproduces place_at — one clip at a real offset, the lead-in silent, the clip landing at its moment.
+    // 4. a single track reproduces place_at -- one clip at a real offset, the lead-in silent, the clip landing at its moment.
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{ 5, 6 });
@@ -178,7 +178,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.SingleWrong;
     }
 
-    // 5. two tracks at offset zero reproduce ALES3's mix — the table generalizes the two-track sum.
+    // 5. two tracks at offset zero reproduce ALES3's mix -- the table generalizes the two-track sum.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.MixGeneralizeWrong;
     }
 
-    // 6. adding past max_tracks refuses SessionFull — the table never overruns.
+    // 6. adding past max_tracks refuses SessionFull -- the table never overruns.
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{1});
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         if (add_track(&s, &a, 0)) |_| return error.OverfullSlipped else |e| if (e != error.SessionFull) return error.WrongOverfull;
     }
 
-    // 7. a track whose placed end exceeds the master bound refuses ClipFull — never a silent overwrite past the buffer.
+    // 7. a track whose placed end exceeds the master bound refuses ClipFull -- never a silent overwrite past the buffer.
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{ 0, 0 });

@@ -1,34 +1,34 @@
-//! crypto/secp256k1_ecdsa.rye — Season G (Cryptography): ECDSA signature VERIFICATION on secp256k1 authored in pure Rye, composed entirely
-//! over the GREEN rungs beneath it — the base field (crypto/fe_secp256k1.rye), the group law (crypto/secp256k1_group.rye), the scalar ladder
+//! crypto/secp256k1_ecdsa.rye -- Season G (Cryptography): ECDSA signature VERIFICATION on secp256k1 authored in pure Rye, composed entirely
+//! over the GREEN rungs beneath it -- the base field (crypto/fe_secp256k1.rye), the group law (crypto/secp256k1_group.rye), the scalar ladder
 //! (crypto/secp256k1_scalarmul.rye), and the scalar field modulo the group order n (crypto/secp256k1_scalar.rye). It authors no new
-//! cryptography; it is the assembly the whole secp256k1 tower was climbing toward — the signature scheme Bitcoin and Ethereum sign with —
+//! cryptography; it is the assembly the whole secp256k1 tower was climbing toward -- the signature scheme Bitcoin and Ethereum sign with --
 //! and the exact sibling of crypto/ed25519_verify.rye over the edwards25519 group. Verification is the non-gated half of ECDSA: every value
 //! it touches is PUBLIC, so it holds no key and signs nothing.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 //! Design read: active-designing/date/20260816/20260816-025516_secp256k1-ecdsa-verify.md (this rung's claim) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-//! Kin: crypto/secp256k1_scalar.rye (the order field ECDSA runs in, GREEN) · crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) ·
-//! crypto/secp256k1_group.rye (the group law, GREEN) · crypto/fe_secp256k1.rye (the base field, GREEN) · crypto/ed25519_verify.rye (the
+//! Kin: crypto/secp256k1_scalar.rye (the order field ECDSA runs in, GREEN) - crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) -
+//! crypto/secp256k1_group.rye (the group law, GREEN) - crypto/fe_secp256k1.rye (the base field, GREEN) - crypto/ed25519_verify.rye (the
 //! sibling verifier over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is not a rung here; the algebraic
 //! known-answers plus Zig's independent std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 are the two witnesses (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — SEC 1 verification, exactly. Given a public key Q = (Qx, Qy), a message hash z, and a signature (r, s): reject unless r and s
-//! both lie in [1, n−1]; fold the hash to a scalar z mod n; compute w = s⁻¹ mod n, then the two scalars u1 = z·w mod n and u2 = r·w mod n;
-//! form the point R = u1·G + u2·Q over the GREEN ladder and complete group law; reject if R is the point at infinity; and accept exactly when
+//! THE CRUX -- SEC 1 verification, exactly. Given a public key Q = (Qx, Qy), a message hash z, and a signature (r, s): reject unless r and s
+//! both lie in [1, n−1]; fold the hash to a scalar z mod n; compute w = s⁻¹ mod n, then the two scalars u1 = z-w mod n and u2 = r-w mod n;
+//! form the point R = u1-G + u2-Q over the GREEN ladder and complete group law; reject if R is the point at infinity; and accept exactly when
 //! the affine x-coordinate of R, reduced mod n, equals r. The base point G is the SEC 2 generator, entered as its published big-endian
 //! coordinate bytes and parsed through the proven base field (never raw limbs), with Z = 1. One honest strengthening beyond the reference's
 //! verify path: because this file takes affine coordinates directly rather than a validated PublicKey, it adds an ON-CURVE check (y² = x³ + 7
 //! in the base field) and refuses a public key that does not satisfy the curve equation. The one product with the outside world is byte order
-//! — the ecosystem encodes r, s, z, and coordinates big-endian while the scalar field and the ladder walk little-endian, so this file reverses
+//! -- the ecosystem encodes r, s, z, and coordinates big-endian while the scalar field and the ladder walk little-endian, so this file reverses
 //! at its boundary and keeps the arithmetic in its native order.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. In ECDSA VERIFICATION every value — r, s, z,
-//! Q, and the inverse — is PUBLIC, so the variable-time reduction, inversion, and double-and-add ladder leak no secret; that is precisely why
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. In ECDSA VERIFICATION every value -- r, s, z,
+//! Q, and the inverse -- is PUBLIC, so the variable-time reduction, inversion, and double-and-add ladder leak no secret; that is precisely why
 //! verification is the non-gated rung. This file holds no key and calls no std.crypto in the primitive. ECDSA SIGNING with a real private key
-//! (Q = d·G for a secret d, and a per-message nonce k) stays the custody gate (#3/#4) — the agent builds and proves the verifier; the key
-//! stays the maintainer's hand — and a constant-time signing arithmetic stays the Season's named horizon. Parity is proven at selftest against
-//! two references runnable now — algebraic known-answers anyone can check (a valid signature verifies; a one-bit tamper of r, s, z, or a
+//! (Q = d-G for a secret d, and a per-message nonce k) stays the custody gate (#3/#4) -- the agent builds and proves the verifier; the key
+//! stays the maintainer's hand -- and a constant-time signing arithmetic stays the Season's named horizon. Parity is proven at selftest against
+//! two references runnable now -- algebraic known-answers anyone can check (a valid signature verifies; a one-bit tamper of r, s, z, or a
 //! coordinate is refused; an all-zero r or s is refused; an off-curve key is refused; and (r, n−s) verifies exactly when (r, s) does), and
 //! Zig's own std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 as an independent implementation, true-for-true and false-for-false across a spread of
 //! deterministic key pairs and messages.
@@ -46,33 +46,33 @@ const sc = @import("secp256k1_scalar.rye");
 
 pub const secp256k1_ecdsa_version = "20260816.025516";
 
-/// The one fixed width this rung works in: a 32-byte coordinate, scalar, or hash — the width every secp256k1 value encodes. Named so the array
+/// The one fixed width this rung works in: a 32-byte coordinate, scalar, or hash -- the width every secp256k1 value encodes. Named so the array
 /// bounds are a stated constant rather than a literal buried in the walk.
 pub const field_bytes: u32 = 32;
 
-/// The x-coordinate of the SEC 2 base point G, big-endian — the published generator of secp256k1's prime-order group. A defining curve
+/// The x-coordinate of the SEC 2 base point G, big-endian -- the published generator of secp256k1's prime-order group. A defining curve
 /// parameter (like b = 7), entered as bytes and parsed through the proven base field, never as raw limbs.
 const g_x_be = [32]u8{
     0x79, 0xbe, 0x66, 0x7e, 0xf9, 0xdc, 0xbb, 0xac, 0x55, 0xa0, 0x62, 0x95, 0xce, 0x87, 0x0b, 0x07,
     0x02, 0x9b, 0xfc, 0xdb, 0x2d, 0xce, 0x28, 0xd9, 0x59, 0xf2, 0x81, 0x5b, 0x16, 0xf8, 0x17, 0x98,
 };
 
-/// The y-coordinate of the SEC 2 base point G, big-endian — the second published generator coordinate, parsed through the proven base field.
+/// The y-coordinate of the SEC 2 base point G, big-endian -- the second published generator coordinate, parsed through the proven base field.
 const g_y_be = [32]u8{
     0x48, 0x3a, 0xda, 0x77, 0x26, 0xa3, 0xc4, 0x65, 0x5d, 0xa4, 0xfb, 0xfc, 0x0e, 0x11, 0x08, 0xa8,
     0xfd, 0x17, 0xb4, 0x48, 0xa6, 0x85, 0x54, 0x19, 0x9c, 0x47, 0xd0, 0x8f, 0xfb, 0x10, 0xd4, 0xb8,
 };
 
-/// The field element 1 — the projective Z of an affine point (x, y) lifted to (X : Y : 1).
+/// The field element 1 -- the projective Z of an affine point (x, y) lifted to (X : Y : 1).
 fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0, 0, 0, 0 } };
 }
 
 /// The base point G in projective coordinates (Gx : Gy : 1), built from its published big-endian coordinate bytes through the proven base
-/// field. Callers of scalarmul never see infinity here — G is a finite generator, so Z = 1 ≠ 0.
+/// field. Callers of scalarmul never see infinity here -- G is a finite generator, so Z = 1 ≠ 0.
 fn base_point() pt.Point {
     const g = pt.Point{ .x = fe.from_bytes(&g_x_be), .y = fe.from_bytes(&g_y_be), .z = fe_one() };
-    // invariant: the base point is finite — its projective Z is exactly 1, never the point at infinity.
+    // invariant: the base point is finite -- its projective Z is exactly 1, never the point at infinity.
     assert(g.z.l[0] == 1 and g.z.l[7] == 0);
     return g;
 }
@@ -90,7 +90,7 @@ fn reverse32(s: *const [32]u8) [32]u8 {
     return r;
 }
 
-/// True when a 32-byte encoding is all zero — the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
+/// True when a 32-byte encoding is all zero -- the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
 fn is_zero32(s: *const [32]u8) bool {
     var acc: u8 = 0;
     var i: u32 = 0;
@@ -106,7 +106,7 @@ fn eq32(a: *const [32]u8, b: *const [32]u8) bool {
     return diff == 0;
 }
 
-/// Fold a big-endian 32-byte value modulo the group order n into a canonical little-endian scalar — the hash-to-scalar step, the same
+/// Fold a big-endian 32-byte value modulo the group order n into a canonical little-endian scalar -- the hash-to-scalar step, the same
 /// reduction the reference runs. The big-endian value is reversed into the low 32 bytes of a 64-byte little-endian buffer, then reduced.
 fn hash_to_scalar(be: *const [32]u8) [32]u8 {
     const le = reverse32(be);
@@ -120,7 +120,7 @@ fn hash_to_scalar(be: *const [32]u8) [32]u8 {
     return sc.reduce(&wide);
 }
 
-/// True when the affine point (Qx, Qy) satisfies the curve equation y² = x³ + 7 in the base field — the on-curve gate this file adds beyond
+/// True when the affine point (Qx, Qy) satisfies the curve equation y² = x³ + 7 in the base field -- the on-curve gate this file adds beyond
 /// the reference's verify path, so an off-curve public key is refused rather than trusted. Both coordinates arrive big-endian.
 pub fn on_curve(qx_be: *const [32]u8, qy_be: *const [32]u8) bool {
     const x = fe.from_bytes(qx_be);
@@ -135,7 +135,7 @@ pub fn on_curve(qx_be: *const [32]u8, qy_be: *const [32]u8) bool {
 
 /// Verify an ECDSA signature (r, s) on secp256k1 over a message hash, for a public key given as affine coordinates (Qx, Qy). Every argument
 /// is big-endian, the ecosystem convention. Returns true exactly when the signature is valid by the SEC 1 verification equation. Composes
-/// only the GREEN scalar field, the GREEN point ladder, and the GREEN group law — no new cryptography, no std.crypto, no secret.
+/// only the GREEN scalar field, the GREEN point ladder, and the GREEN group law -- no new cryptography, no std.crypto, no secret.
 pub fn verify(
     qx_be: *const [32]u8,
     qy_be: *const [32]u8,
@@ -143,29 +143,29 @@ pub fn verify(
     r_be: *const [32]u8,
     s_be: *const [32]u8,
 ) bool {
-    // invariant: the range gate runs before any arithmetic — r and s must lie in [1, n−1], or the signature is refused outright.
+    // invariant: the range gate runs before any arithmetic -- r and s must lie in [1, n−1], or the signature is refused outright.
     const r_le = reverse32(r_be);
     const s_le = reverse32(s_be);
     if (!sc.is_canonical(&r_le) or !sc.is_canonical(&s_le)) return false; // r, s < n
     if (is_zero32(&r_le) or is_zero32(&s_le)) return false; // r, s ≥ 1
 
-    // The public key must be a real point on the curve — an off-curve key is refused, not trusted.
+    // The public key must be a real point on the curve -- an off-curve key is refused, not trusted.
     if (!on_curve(qx_be, qy_be)) return false;
 
     // Hash to a scalar mod n; the reference refuses a zero hash-scalar, and so does this file.
     const z_le = hash_to_scalar(hash_be);
     if (is_zero32(&z_le)) return false;
 
-    // w = s⁻¹ mod n, then u1 = z·w and u2 = r·w — the two scalars the verification point is a combination of.
+    // w = s⁻¹ mod n, then u1 = z-w and u2 = r-w -- the two scalars the verification point is a combination of.
     const w = sc.invert(&s_le);
     const u1_le = sc.mul(&z_le, &w);
     const u2_le = sc.mul(&r_le, &w);
 
-    // R = u1·G + u2·Q over the GREEN ladder and complete group law.
+    // R = u1-G + u2-Q over the GREEN ladder and complete group law.
     const q = pt.Point{ .x = fe.from_bytes(qx_be), .y = fe.from_bytes(qy_be), .z = fe_one() };
     const r_pt = pt.add(mul_pt.scalarmul(base_point(), &u1_le), mul_pt.scalarmul(q, &u2_le));
 
-    // A verification point at infinity has no affine x — such a signature is refused before the affine read (which would invert Z = 0).
+    // A verification point at infinity has no affine x -- such a signature is refused before the affine read (which would invert Z = 0).
     const z_bytes = fe.to_bytes(r_pt.z);
     if (is_zero32(&z_bytes)) return false;
 
@@ -173,7 +173,7 @@ pub fn verify(
     const rx_be = pt.affine_x(r_pt);
     const vr_le = hash_to_scalar(&rx_be); // affine x reduced mod n, in the scalar field's order
 
-    // Accept exactly when the reduced affine x equals r — the SEC 1 verification check.
+    // Accept exactly when the reduced affine x equals r -- the SEC 1 verification check.
     return eq32(&vr_le, &r_le);
 }
 
@@ -219,7 +219,7 @@ fn run_selftest() !u8 {
 
             for (messages) |msg| {
                 const sig = try kp.sign(msg, null); // deterministic signature
-                // The reference agrees this signature is valid — the ground truth we check against.
+                // The reference agrees this signature is valid -- the ground truth we check against.
                 sig.verify(msg, kp.public_key) catch return error.ReferenceRejectedOwnSignature;
 
                 const sb = sig.toBytes(); // r || s, big-endian
@@ -260,7 +260,7 @@ fn run_selftest() !u8 {
                     if (verify(&qx, &qy, &h, &r_be, &zero)) return error.ZeroSAccepted;
                 }
 
-                // Malleability fact: (r, n−s) verifies exactly when (r, s) does — the counterpart signature is equally valid.
+                // Malleability fact: (r, n−s) verifies exactly when (r, s) does -- the counterpart signature is equally valid.
                 {
                     const s2 = negate_scalar_be(&s_be);
                     if (!verify(&qx, &qy, &h, &r_be, &s2)) return error.MalleableCounterpartRejected;

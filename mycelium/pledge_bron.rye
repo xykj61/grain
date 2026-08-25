@@ -1,28 +1,28 @@
-//! mycelium/pledge_bron.rye — the two-phase verdict travels as a readable record.
+//! mycelium/pledge_bron.rye -- the two-phase verdict travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Pledge rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Pledge rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
-//! r1 resolved a Cord's agreed order into a Ledger — every account's spendable balance
+//! r1 resolved a Cord's agreed order into a Ledger -- every account's spendable balance
 //! and reserved holdings, and every pledge's settlement (open, posted, or voided). A
 //! verdict a node cannot hand to another node is only a local reading, so r2 lets a
 //! resolved Ledger cross as `format pledge-v1` bytes: an `issued <total>` line, one
 //! `holds <pk> <balance> <reserved>` line per account, one
 //! `pledge <id> <from> <to> <amount> <state> <pos>` line per pledge. Render writes it,
-//! parse reads it back, so a round trip is a fixed point — and the recovered Ledger
+//! parse reads it back, so a round trip is a fixed point -- and the recovered Ledger
 //! reports the identical balances, reserves, settlements, and totals, so the two-phase
 //! verdict crosses to a stranger unchanged.
 //!
 //! The record carries conservation as its own law, the Purse's supply law widened by
 //! one column: the balances PLUS the reserves a record claims must sum to exactly the
-//! `issued` total it names, or the reader refuses `BadInt` before the record is trusted —
+//! `issued` total it names, or the reader refuses `BadInt` before the record is trusted --
 //! no coin appears or vanishes in the crossing, whether spendable or held in a pledge.
 //!
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses
 //! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
 //! `BadLine`, a bad integer or broken conservation law or unknown state `BadInt`, a bad
 //! hex field `BadHex`, an over-long record `TooManyAccounts`/`TooManyPledges`. Composes
-//! pledge.rye + cord.rye + fold.rye public API only. Siloed, dev-only, demo seeds —
+//! pledge.rye + cord.rye + fold.rye public API only. Siloed, dev-only, demo seeds --
 //! no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge_bron.rye
@@ -37,14 +37,14 @@ const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled record carries at most this many accounts — a dev-net ledger is small
+/// A travelled record carries at most this many accounts -- a dev-net ledger is small
 /// and legible, well under the Ledger's own ceiling.
 pub const max_accounts_in_record: u32 = 64;
 
 /// And at most this many pledges.
 pub const max_pledges_in_record: u32 = 32;
 
-/// The record buffer bound — a small ledger's whole verdict fits with room.
+/// The record buffer bound -- a small ledger's whole verdict fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{
@@ -141,7 +141,7 @@ fn tokens(line: []const u8, out: *[7][]const u8) u32 {
     return count;
 }
 
-/// Sum the parsed spendable balances — the conservation law's left half, computed
+/// Sum the parsed spendable balances -- the conservation law's left half, computed
 /// without the read's own assert so a broken record refuses cleanly rather than trips it.
 fn balances_total(out: *const pledge.Ledger) u64 {
     var sum: u64 = 0;
@@ -150,7 +150,7 @@ fn balances_total(out: *const pledge.Ledger) u64 {
     return sum;
 }
 
-/// Sum the parsed reserved holdings — the conservation law's right half.
+/// Sum the parsed reserved holdings -- the conservation law's right half.
 fn reserves_total(out: *const pledge.Ledger) u64 {
     var sum: u64 = 0;
     var i: u32 = 0;
@@ -203,7 +203,7 @@ pub fn parse(text: []const u8, out: *pledge.Ledger) BronError!void {
             try from_hex(tok[3], out.pledges[at].to[0..]);
             out.pledges[at].amount = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
             const st = parse_int.parse_int(u8, tok[5], .{}) catch return error.BadInt;
-            // Only the three settlement states travel — an unknown state refuses.
+            // Only the three settlement states travel -- an unknown state refuses.
             if (st != pledge.state_open and st != pledge.state_posted and st != pledge.state_voided) return error.BadInt;
             out.pledges[at].state = st;
             out.pledges[at].pos = parse_int.parse_int(u32, tok[6], .{}) catch return error.BadInt;
@@ -229,7 +229,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · recipient exactly.
+    // invariant: the buffer holds tag - id - recipient exactly.
     assert(out.len >= 1 + pledge.id_len + pledge.pk_len);
     assert(id.len == pledge.id_len);
     out[0] = pledge.tag_pledge;
@@ -239,7 +239,7 @@ fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
 }
 
 fn post_body(id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + pledge.id_len);
     assert(id.len == pledge.id_len);
     out[0] = pledge.tag_post;
@@ -338,7 +338,7 @@ pub fn main() !void {
     if (recovered.pledges_seen() != 2) return error.PledgeCount;
     if (recovered.posted_seen() != 1) return error.PostedCount;
     if (recovered.total_issued != 200) return error.IssuedValue;
-    // Conservation survives the crossing — balance + reserved still sums to issued.
+    // Conservation survives the crossing -- balance + reserved still sums to issued.
     if (recovered.balances_sum() + recovered.reserved_sum() != 200) return error.NotConserved;
     if (recovered.reserved_sum() != 100) return error.ReservedValue;
 

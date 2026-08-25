@@ -1,4 +1,4 @@
-//! Rye test: std.mem.absorbSentinel — pass 9897.
+//! Rye test: std.mem.absorbSentinel -- pass 9897.
 //!
 //! Sentinel-terminated slice to plain slice; pairs with span (9942) and sliceAsBytes (9926).
 

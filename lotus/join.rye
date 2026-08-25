@@ -1,7 +1,7 @@
-//! lotus/join.rye — ALES26: the crossfade join — the choice of law where an inserted span meets its neighbour. Every edit so
+//! lotus/join.rye -- ALES26: the crossfade join -- the choice of law where an inserted span meets its neighbour. Every edit so
 //! far butts its samples hard against the audio already there: ALES2's `splice` drops the incoming span in with a seam, and
 //! the graft (ALES24) and clipboard (ALES25) paste through that same hard butt. A butt splice is exact, yet where the outgoing
-//! tail's last sample and the incoming head's first sample disagree, the waveform steps — and a step in a waveform is a click a
+//! tail's last sample and the incoming head's first sample disagree, the waveform steps -- and a step in a waveform is a click a
 //! keeper hears. This rung offers the join the choice of law ALES12 already proved: instead of butting the span on, OVERLAP its
 //! head with the outgoing tail and cross them equal-power, so the seam flows through the −3 dB curve rather than stepping.
 //!
@@ -9,16 +9,16 @@
 //! tail (the clip's last `overlap` samples) crosses the incoming head (the span's first `overlap` samples); the crossed window
 //! overwrites the tail in place; the rest of the span appends after it. Because ALES12's overlap BEGINS as pure outgoing and
 //! ENDS as pure incoming, the join's first sample still continues the clip before it and its last sample still continues the
-//! span after it — the boundary moves through power, never through a step. New length is clip.len + span − overlap: the two
+//! span after it -- the boundary moves through power, never through a step. New length is clip.len + span − overlap: the two
 //! neighbours SHARE the overlap in time rather than the span merely following the tail.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES26.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES26.
 //! Design read: active-designing/20260814-fill-ales26-lotus-crossfade-join.md
-//! Stands on: lotus/crossfade.rye (ALES12) — the equal-power `crossfade` read at the seam, reused whole over its public API,
-//! so the join inherits the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) — the `Clip` it edits, `splice`
+//! Stands on: lotus/crossfade.rye (ALES12) -- the equal-power `crossfade` read at the seam, reused whole over its public API,
+//! so the join inherits the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the `Clip` it edits, `splice`
 //! reused to fill the overlap windows and to append the span's tail, and `max_clip` as the one shared bound.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
 //! no network, no keys, no funds, no real device, no real speaker. The join reads and writes one mono Clip; a stereo join in
 //! lockstep across both channels is a natural next rung. The real two-channel sound-card write stays a paused hardware round.
 //!
@@ -37,19 +37,19 @@ pub const join_version = "20260814.141500";
 /// Append the samples `ins` to `clip`, crossing the last `overlap` samples of the clip (the outgoing tail) equal-power with the
 /// first `overlap` samples of `ins` (the incoming head), so the seam flows through ALES12's −3 dB curve rather than stepping.
 /// The crossed window overwrites the clip's tail in place; the rest of `ins` (`ins[overlap..]`) appends after it, so the new
-/// length is `clip.len + ins.len − overlap` — the neighbours share the overlap in time. Refuses, before any write:
+/// length is `clip.len + ins.len − overlap` -- the neighbours share the overlap in time. Refuses, before any write:
 ///   • BadRange when `overlap < 2` (a crossfade needs an interval to cross), when `overlap` exceeds the clip's own samples or
 ///     the incoming span (no window to cross), or when `overlap − 1` exceeds the equal-power denominator cap;
 ///   • ClipFull when the shared-overlap result would overflow the fixed buffer.
 /// Values only into `clip`; a refused join leaves the clip exactly as it was.
 pub fn join(clip: *timeline.Clip, ins: []const i16, overlap: u32) timeline.EditError!void {
     const n_ins: u32 = @intCast(ins.len);
-    // invariant: the overlap is a real crossfade window that fits BOTH neighbours — at least two samples (one interval), no
+    // invariant: the overlap is a real crossfade window that fits BOTH neighbours -- at least two samples (one interval), no
     // wider than the outgoing tail the clip holds, and no wider than the incoming head the span offers.
     if (overlap < 2) return error.BadRange;
     if (overlap > clip.len) return error.BadRange;
     if (overlap > n_ins) return error.BadRange;
-    // invariant: the overlap's interval count is a legal equal-power denominator — refuse rather than trip ALES12's assert.
+    // invariant: the overlap's interval count is a legal equal-power denominator -- refuse rather than trip ALES12's assert.
     if (overlap - 1 > power.max_pan_den) return error.BadRange;
     // invariant: the shared-overlap result (clip.len + n_ins − overlap) fits the fixed buffer. Written as an add against the
     // remaining room so nothing overflows: the appended count is n_ins − overlap (overlap ≤ n_ins holds above).
@@ -59,7 +59,7 @@ pub fn join(clip: *timeline.Clip, ins: []const i16, overlap: u32) timeline.EditE
     const old_len: u32 = clip.len;
     const tail_start: u32 = clip.len - overlap;
 
-    // Snapshot the two overlap windows into their own Clips, then cross them — the outgoing tail is read BEFORE it is
+    // Snapshot the two overlap windows into their own Clips, then cross them -- the outgoing tail is read BEFORE it is
     // overwritten, so the crossfade sees the true tail, never a half-written one.
     var out_win = timeline.Clip{};
     var in_win = timeline.Clip{};
@@ -70,15 +70,15 @@ pub fn join(clip: *timeline.Clip, ins: []const i16, overlap: u32) timeline.EditE
     // invariant: the crossed window holds exactly the overlap length ALES12 was handed.
     assert(crossed.len == overlap);
 
-    // Overwrite the outgoing tail with the crossed window in place — length unchanged by this step.
+    // Overwrite the outgoing tail with the crossed window in place -- length unchanged by this step.
     var i: u32 = 0;
     while (i < overlap) : (i += 1) clip.buf[tail_start + i] = crossed.buf[i];
 
     // Append the incoming span's remainder after the crossed seam. When overlap == n_ins the neighbours share the whole span
-    // and nothing appends — a pure crossfade over the join.
+    // and nothing appends -- a pure crossfade over the join.
     if (appended > 0) try timeline.splice(clip, clip.len, ins[overlap..]);
 
-    // invariant: the neighbours shared the overlap — the clip grew by exactly n_ins − overlap and stays within its bound.
+    // invariant: the neighbours shared the overlap -- the clip grew by exactly n_ins − overlap and stays within its bound.
     assert(clip.len == old_len + n_ins - overlap);
     assert(clip.len <= clip.buf.len);
 }
@@ -96,7 +96,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. the join SHARES the overlap in time — new length is clip.len + span − overlap, not clip.len + span. A five-sample clip
+    // 1. the join SHARES the overlap in time -- new length is clip.len + span − overlap, not clip.len + span. A five-sample clip
     //    joined to a five-sample span over a two-sample overlap lands at 5 + 5 − 2 = 8, where a butt splice would land at 10.
     {
         var clip = timeline.Clip{};
@@ -108,22 +108,22 @@ fn run_selftest() !u8 {
     // 2. the seam moves through POWER, not a step: the join's overlap head equals the clip's original tail head (pure outgoing)
     //    and its overlap tail equals the span's overlap-th sample (pure incoming), so it flows into the appended remainder. With
     //    overlap = 5 (den = 4), the crossed window's first sample is the outgoing tail's first sample and its last is the
-    //    incoming head's last — exactly ALES12's seamless-splice endpoints, read at the edit.
+    //    incoming head's last -- exactly ALES12's seamless-splice endpoints, read at the edit.
     {
         var clip = timeline.Clip{};
         try timeline.splice(&clip, 0, &[_]i16{ 0, 0, 0, 0, 1000, 1000, 1000, 1000, 1000 });
         const tail_start: u32 = 4; // clip.len(9) − overlap(5)
         try join(&clip, &[_]i16{ 200, 200, 200, 200, 200, 777, 888 }, 5);
-        // head of the crossed window: pure outgoing → the clip's original sample at tail_start (1000).
+        // head of the crossed window: pure outgoing -> the clip's original sample at tail_start (1000).
         if (clip.samples()[tail_start] != 1000) return error.SeamHeadNotContinuous;
-        // tail of the crossed window: pure incoming → the span's 5th sample (200), and the appended remainder follows it.
+        // tail of the crossed window: pure incoming -> the span's 5th sample (200), and the appended remainder follows it.
         if (clip.samples()[tail_start + 4] != 200) return error.SeamTailNotContinuous;
         if (clip.samples()[tail_start + 5] != 777) return error.RemainderNotAppended;
         if (clip.samples()[tail_start + 6] != 888) return error.RemainderTailWrong;
         if (clip.len != 11) return error.Case2LengthWrong; // 9 + 7 − 5
     }
 
-    // 3. a butt splice STEPS where the join FLOWS — the whole reason the choice of law exists. Butt a +30000 tail against a
+    // 3. a butt splice STEPS where the join FLOWS -- the whole reason the choice of law exists. Butt a +30000 tail against a
     //    −30000 head and the seam jumps 60000 in one sample; cross the same two over an overlap and the boundary sample is the
     //    equal-power blend, never that raw step. Proven positively: the join's seam sample sits strictly between the two
     //    extremes, where the butt splice leaves them adjacent and unblended.
@@ -137,12 +137,12 @@ fn run_selftest() !u8 {
         var joined = timeline.Clip{};
         try timeline.splice(&joined, 0, &[_]i16{ 0, 30000, 30000 });
         try join(&joined, &[_]i16{ -30000, -30000, 0 }, 3); // cross the same seam over a 3-sample overlap
-        // the crossed center sample is the equal-power blend of +30000 and −30000, far inside the raw step — no 60000 jump.
+        // the crossed center sample is the equal-power blend of +30000 and −30000, far inside the raw step -- no 60000 jump.
         const seam = joined.samples()[1];
         if (seam >= 30000 or seam <= -30000) return error.JoinDidNotFlow;
     }
 
-    // 4. a FULL overlap (overlap == span length) is a pure crossfade over the join — nothing appends, the length is unchanged,
+    // 4. a FULL overlap (overlap == span length) is a pure crossfade over the join -- nothing appends, the length is unchanged,
     //    and the joined region is exactly ALES12's crossfade of the tail with the whole span.
     {
         var clip = timeline.Clip{};
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (clip.samples()[4] != 100) return error.FullOverlapTailWrong;
     }
 
-    // 5. a self-join holds CONSTANT across the seam — cross a flat tail with a flat head of the same level and the equal-power
+    // 5. a self-join holds CONSTANT across the seam -- cross a flat tail with a flat head of the same level and the equal-power
     //    law lifts the middle at or above the level, never below (the opposite of a linear crossfade's dip). No sample in the
     //    crossed window falls beneath the shared level.
     {
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         const src = [_]i16{ 1, 2, 3, 4 };
         try timeline.splice(&clip, 0, &src);
 
-        // overlap < 2 — no interval to cross.
+        // overlap < 2 -- no interval to cross.
         if (join(&clip, &[_]i16{ 9, 9 }, 1)) |_| return error.ShortOverlapSlipped else |e| if (e != error.BadRange) return error.WrongShortOverlap;
         // overlap wider than the clip's own tail.
         if (join(&clip, &[_]i16{ 9, 9, 9, 9, 9 }, 5)) |_| return error.OverTailSlipped else |e| if (e != error.BadRange) return error.WrongOverTail;
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         // the clip is untouched by every refused join.
         if (!eq(clip.samples(), &src)) return error.RefusedJoinMutated;
 
-        // an overflowing join refuses ClipFull — the shared-overlap result would pass the fixed bound.
+        // an overflowing join refuses ClipFull -- the shared-overlap result would pass the fixed bound.
         var big = timeline.Clip{};
         big.len = timeline.max_clip - 1; // one sample of room
         const ins = [_]i16{ 0, 0, 0, 0 }; // overlap 2 → appends 2, past the one free sample

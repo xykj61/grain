@@ -1,17 +1,17 @@
-//! mycelium/muster_bron.rye — a validator set travels as a readable record (r2).
+//! mycelium/muster_bron.rye -- a validator set travels as a readable record (r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
-//! r1 bound a Chorus to a known validator set — a Muster — and proved a quorum is believed only when its
+//! r1 bound a Chorus to a known validator set -- a Muster -- and proved a quorum is believed only when its
 //! enrolled voices meet the Byzantine threshold read from the roll's size. A roll a holder cannot hand to
 //! another is only a local standard, so r2 lets the whole Muster cross as `format muster-v1` bytes: one
-//! `validator <pk-hex>` line per enrolled node, in enrollment order. The threshold is NOT written — it is
+//! `validator <pk-hex>` line per enrolled node, in enrollment order. The threshold is NOT written -- it is
 //! derived from the count by the reader (`byzantine_threshold`), so a roll cannot carry a lowered bar
 //! across the wire; a tampered count changes the threshold honestly, never a hidden field.
 //!
 //! The crux is THE ROLL'S VERDICT SURVIVES THE WIRE: a Chorus judged against a Muster parsed from bytes
-//! reaches the identical verdict as against the roll in memory — an enrolled quorum passes, an outsider
+//! reaches the identical verdict as against the roll in memory -- an enrolled quorum passes, an outsider
 //! quorum refuses `NotMember`, a thin one refuses `BelowQuorum`. A recipient reads the same standard r1
 //! enforced, needing no roll of their own. Render writes it, parse reads it back byte-for-byte, so a round
 //! trip is a fixed point.
@@ -20,7 +20,7 @@
 //! roll `BadFormat` (a meaningful roll enrolls at least one validator), an unknown field `UnknownField`
 //! (never dropped), a malformed line `BadLine`, a bad hex key `BadHex`, a repeated validator `Duplicate`,
 //! an over-full roll `MusterFull`. Composes muster.rye + chorus.rye public API only. Siloed, dev-only,
-//! demo seeds — no key, no funds, no network, no custody.
+//! demo seeds -- no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/muster_bron.rye
 
@@ -34,7 +34,7 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// The record buffer bound — a full roll's validator lines fit with room.
+/// The record buffer bound -- a full roll's validator lines fit with room.
 pub const max_record: u32 = 4096;
 
 pub const BronError = error{
@@ -78,7 +78,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one Muster to a `format muster-v1` record — one validator line per enrolled key, in enrollment
+/// Render one Muster to a `format muster-v1` record -- one validator line per enrolled key, in enrollment
 /// order. Refuses an overflow rather than a partial record.
 pub fn render(m: *const muster.Muster, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -102,7 +102,7 @@ pub fn render(m: *const muster.Muster, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to two tokens; returns the count (or three to signal a trailing token past any
-/// line's width — a validator line, at two, is the widest).
+/// line's width -- a validator line, at two, is the widest).
 fn tokens(line: []const u8, out: *[2][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -116,7 +116,7 @@ fn tokens(line: []const u8, out: *[2][]const u8) u32 {
 
 /// Parse a `format muster-v1` record into `out`, enrolling each validator through `muster.enroll` so the
 /// roll's own laws (a validator counts once; the roll honors its bound) travel with it. Refuses an empty
-/// roll — a meaningful validator set names at least one node.
+/// roll -- a meaningful validator set names at least one node.
 pub fn parse(text: []const u8, out: *muster.Muster) BronError!void {
     var lines = std.mem.splitScalar(u8, text, '\n');
     const header = lines.next() orelse return error.BadFormat;
@@ -152,7 +152,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// A minimal honest scene — one genesis issue of 100 to Alice — enough for a Chorus to vouch a position a
+/// A minimal honest scene -- one genesis issue of 100 to Alice -- enough for a Chorus to vouch a position a
 /// roll is weighed against.
 fn issue_dag(alice_pk: []const u8) !cord.Dag {
     const kf = seeded(0xF0);
@@ -251,7 +251,7 @@ pub fn main() !void {
             if (err != error.BadHex) return error.WrongBadHex;
         }
     }
-    // Refusal: a repeated validator refuses Duplicate — a validator counts once on the wire too.
+    // Refusal: a repeated validator refuses Duplicate -- a validator counts once on the wire too.
     {
         const dup = try muster_of(&[_]u8{ 0x11, 0x22 });
         var db: [max_record]u8 = undefined;

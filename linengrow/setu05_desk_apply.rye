@@ -1,8 +1,8 @@
-//! linengrow/setu05_desk_apply.rye — SETU0.5: Desk applies a pulled Hearth.
+//! linengrow/setu05_desk_apply.rye -- SETU0.5: Desk applies a pulled Hearth.
 //!
 //! After SETU0 carries hearth_home + hearth.bron over USB, Desk inherits the
 //! fold: parse, apply the display preset under a seated Desk window, and write
-//! a station card. No CDC-NCM yet — the cable's file path earns a Desk home.
+//! a station card. No CDC-NCM yet -- the cable's file path earns a Desk home.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -52,7 +52,7 @@ pub fn apply_pulled(
     };
 }
 
-/// Chrome line: `station · {home} · {preset} · {lw}x{lh} · s{scale}`.
+/// Chrome line: `station - {home} - {preset} - {lw}x{lh} - s{scale}`.
 pub fn format_station_line(s: Station, out: *[station_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(
         out,
@@ -110,7 +110,7 @@ pub fn format_station_bron(s: Station, out: *[max_station_bron_len]u8) ?u32 {
     return @intCast(text.len);
 }
 
-/// Device-free: fixture kd · scaled_540 applies on Desk and names station.
+/// Device-free: fixture kd - scaled_540 applies on Desk and names station.
 pub fn fixture_station_applies() bool {
     const pointer = "kd\n";
     const bron =

@@ -1,6 +1,6 @@
-//! mycelium/voucher.rye — the Voucher: a node's signed attestation of a holder's position.
+//! mycelium/voucher.rye -- the Voucher: a node's signed attestation of a holder's position.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Voucher - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
 //! The Statement answered WHERE DO I STAND as a pure projection of one account, and statement_bron let
@@ -9,23 +9,23 @@
 //! could hand over any balance at all, and the counterparty's only recourse would be to replay the whole
 //! ledger. The Voucher fills that blind spot: PROOF OF POSITION WITHOUT REPLAY.
 //!
-//! A VOUCHER is a fixed record a node signs — its own key, an ORDER-HEAD (a single SHA-256 digest of the
+//! A VOUCHER is a fixed record a node signs -- its own key, an ORDER-HEAD (a single SHA-256 digest of the
 //! committed block order the reading was taken against), the account vouched, and the position (balance,
-//! reserved, received) read straight from the Statement — under an Ed25519 signature over
-//! order-head · account · balance · reserved · received.
+//! reserved, received) read straight from the Statement -- under an Ed25519 signature over
+//! order-head - account - balance - reserved - received.
 //!
 //! The crux is A VOUCHER IS BOUND TO THE ORDER IT WAS READ AGAINST:
-//!   - verify_voucher checks the signature offline against the record's own node key — trust the node,
+//!   - verify_voucher checks the signature offline against the record's own node key -- trust the node,
 //!     no ledger needed; a tampered field or wrong signer refuses BadSignature.
 //!   - check_against(dag) re-derives the order-head and re-reads the Statement from the same Dag, then
-//!     confirms every signed field matches — a node cannot vouch a false balance to a verifier who holds
+//!     confirms every signed field matches -- a node cannot vouch a false balance to a verifier who holds
 //!     the blocks, nor silently swap the order (the order-head is inside the signature).
 //!   - Arrival-independence is inherited: cord.commit yields one agreed order per permutation, so the
-//!     order-head folds to one digest and the Statement to one position — a voucher made against one
+//!     order-head folds to one digest and the Statement to one position -- a voucher made against one
 //!     arrival checks against another. The attestation binds the AGREED order, not the arrival accident.
 //!
 //! The order-head fold lives here as the Voucher's own bounded derivation; cord, lapse, statement, and
-//! kumara are composed by public API only, edited none. Siloed, dev-only, demo seeds — no real key, no
+//! kumara are composed by public API only, edited none. Siloed, dev-only, demo seeds -- no real key, no
 //! funds, no network, no custody. A SERVED voucher (a holder fetching a node's attestation over Comlink)
 //! reaches the Comlink-served gate.
 //!
@@ -51,7 +51,7 @@ pub const order_head_len: u32 = cord.hash_len;
 /// A node key and an account key are each a full encoded holder identity, the width the ledger seats.
 pub const pk_len: u32 = statement.pk_len;
 
-/// The signed body: order-head · account · balance · reserved · received. Three u64 positions, each
+/// The signed body: order-head - account - balance - reserved - received. Three u64 positions, each
 /// eight little-endian octets, follow the two fixed-width keys' worth of digest and account.
 pub const pos_len: u32 = 8;
 pub const body_len: u32 = order_head_len + pk_len + 3 * pos_len;
@@ -88,7 +88,7 @@ pub const Voucher = struct {
     }
 };
 
-/// Write a u64 as eight little-endian octets — the one place the position width is laid out.
+/// Write a u64 as eight little-endian octets -- the one place the position width is laid out.
 fn write_u64(value: u64, out: []u8) void {
     // invariant: a position field is exactly eight octets wide.
     assert(out.len == pos_len);
@@ -102,7 +102,7 @@ fn write_u64(value: u64, out: []u8) void {
     assert(i == pos_len);
 }
 
-/// Lay out the signed body from its parts — the single canonical shape both signing and verifying read,
+/// Lay out the signed body from its parts -- the single canonical shape both signing and verifying read,
 /// so the two can never disagree on what bytes the signature covers.
 fn voucher_body(order_head: []const u8, account_pk: []const u8, balance: u64, reserved: u64, received: u64, out: []u8) u32 {
     // invariant: the caller's buffer holds the whole fixed body.
@@ -125,7 +125,7 @@ fn voucher_body(order_head: []const u8, account_pk: []const u8, balance: u64, re
     return off;
 }
 
-/// Fold one order-head digest over a Dag's committed order — SHA-256 over the count and each ordered
+/// Fold one order-head digest over a Dag's committed order -- SHA-256 over the count and each ordered
 /// block address, in agreed order. Stable exactly when the agreed order is, so two arrival permutations
 /// of the same blocks fold to the identical head.
 pub fn order_head_of(dag: *const cord.Dag, out: *[order_head_len]u8) void {
@@ -175,7 +175,7 @@ pub fn make_voucher(dag: *const cord.Dag, node_kp: kumara.KeyPair, account_pk: [
     return v;
 }
 
-/// Verify a voucher's signature offline against its own node key — trust the node, no ledger needed. A
+/// Verify a voucher's signature offline against its own node key -- trust the node, no ledger needed. A
 /// tampered field or a wrong signer refuses BadSignature.
 pub fn verify_voucher(v: *const Voucher) error{BadSignature}!void {
     // invariant: the signed body is the fixed width both sides lay out.
@@ -192,7 +192,7 @@ pub fn verify_voucher(v: *const Voucher) error{BadSignature}!void {
 pub fn check_against(v: *const Voucher, dag: *const cord.Dag) !bool {
     // invariant: the account read is a full holder identity.
     assert(v.account_pk.len == pk_len);
-    // The signature must hold first — an unsigned or forged voucher checks against nothing.
+    // The signature must hold first -- an unsigned or forged voucher checks against nothing.
     verify_voucher(v) catch return false;
 
     var head: [order_head_len]u8 = undefined;
@@ -210,7 +210,7 @@ pub fn check_against(v: *const Voucher, dag: *const cord.Dag) !bool {
 const hex_digits = "0123456789abcdef";
 
 fn hex8(bytes: []const u8, out: []u8) void {
-    // invariant: eight bytes render to sixteen nibbles — a short, legible fingerprint.
+    // invariant: eight bytes render to sixteen nibbles -- a short, legible fingerprint.
     assert(out.len == 16);
     assert(bytes.len >= 8);
     var i: u32 = 0;
@@ -220,7 +220,7 @@ fn hex8(bytes: []const u8, out: []u8) void {
     }
 }
 
-/// Print a voucher a keeper can read — the node, the order-head, the account, and the vouched position.
+/// Print a voucher a keeper can read -- the node, the order-head, the account, and the vouched position.
 pub fn render(v: *const Voucher) void {
     var nfp: [16]u8 = undefined;
     var hfp: [16]u8 = undefined;
@@ -252,7 +252,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -263,7 +263,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = tag;
@@ -271,8 +271,8 @@ fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
     return 1 + lapse.id_len;
 }
 
-/// Seat a scene — the same block-building the Statement's own selftest proved. Returns four blocks
-/// (genesis · pledge · post · void); a caller resolves the prefix it wants.
+/// Seat a scene -- the same block-building the Statement's own selftest proved. Returns four blocks
+/// (genesis - pledge - post - void); a caller resolves the prefix it wants.
 fn seat_scene(id: []const u8, deadline: u64) ![4]cord.Block {
     const kf = seeded(0xF0);
     const ka = seeded(0xA1);
@@ -320,7 +320,7 @@ pub fn main() !void {
     const node = seeded(0x0D);
     const alice_pk = seeded(0xA1).public_key.toBytes();
 
-    // Scene 1 — an OPEN pledge stands. The node vouches Alice's position (balance 0, reserved 100,
+    // Scene 1 -- an OPEN pledge stands. The node vouches Alice's position (balance 0, reserved 100,
     // received 100) at the two-block order-head. The voucher verifies offline and checks against the
     // very Dag it was read from.
     {
@@ -335,7 +335,7 @@ pub fn main() !void {
         if (!std.mem.eql(u8, v.account_slice(), alice_pk[0..])) return error.OpenAccount;
     }
 
-    // Scene 2 — a POSTED pledge. Alice's reserved returns to 0; the node vouches the new position at the
+    // Scene 2 -- a POSTED pledge. Alice's reserved returns to 0; the node vouches the new position at the
     // three-block order-head, and it checks against that longer order.
     {
         const s = try seat_scene(id[0..], 9);
@@ -346,7 +346,7 @@ pub fn main() !void {
         if (!try check_against(&v, &dag)) return error.PostedCheck;
     }
 
-    // Scene 3 — a LAPSED pledge: the clock lapses first, Alice's coins come home (balance 100, reserved
+    // Scene 3 -- a LAPSED pledge: the clock lapses first, Alice's coins come home (balance 100, reserved
     // 0). The node vouches the returned position; it verifies and checks true.
     {
         const s = try seat_scene(id[0..], 2);
@@ -357,7 +357,7 @@ pub fn main() !void {
         if (!try check_against(&v, &dag)) return error.LapsedCheck;
     }
 
-    // Scene 4 — arrival-independence inherited. A voucher made against one permutation of the round-2
+    // Scene 4 -- arrival-independence inherited. A voucher made against one permutation of the round-2
     // facts CHECKS AGAINST the other permutation: the order-head folds to one digest and the Statement
     // to one position. The attestation binds the agreed order, not the arrival.
     {
@@ -372,7 +372,7 @@ pub fn main() !void {
         if (!try check_against(&v, &dag_b)) return error.PermCheck;
     }
 
-    // Scene 5 — tamper refuses. A flipped balance breaks the offline signature; a wrong node key does
+    // Scene 5 -- tamper refuses. A flipped balance breaks the offline signature; a wrong node key does
     // too; and a voucher honest for one ledger fails check_against a genuinely different ledger (a
     // shorter order where the pledge has not posted).
     {
@@ -394,7 +394,7 @@ pub fn main() !void {
         if (try check_against(&v, &dag_open)) return error.CrossLedgerPassed;
     }
 
-    // A last render, for eyes — a plain open-pledge voucher.
+    // A last render, for eyes -- a plain open-pledge voucher.
     {
         const s = try seat_scene(id[0..], 9);
         const dag = try dag_of(&[_]cord.Block{ s[0], s[1] });

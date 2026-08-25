@@ -1,26 +1,26 @@
-//! brushstroke/part_search_header.rye — HUNK82: the query header — the typed clauses and their result count, above
+//! brushstroke/part_search_header.rye -- HUNK82: the query header -- the typed clauses and their result count, above
 //! the narrowed shelf.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK82.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK82.
 //! Design read: active-designing/date/20260814/20260814-003328_hunk-part-search-header-typed-line-and-count-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's search box — the query echoed back and a result count over the wall of
+//! Teacher, thanked clean-room: McMaster-Carr's search box -- the query echoed back and a result count over the wall of
 //! parts (concept only, siloed).
 //!
-//! HUNK79 drew the faceted search on glass — a keeper types a multi-clause line and the marketplace narrows to the
-//! parts that pass every clause — yet the drawn page carries no word of WHAT was asked or HOW MANY were found. A real
+//! HUNK79 drew the faceted search on glass -- a keeper types a multi-clause line and the marketplace narrows to the
+//! parts that pass every clause -- yet the drawn page carries no word of WHAT was asked or HOW MANY were found. A real
 //! search box answers both: the clauses echoed so a keeper trusts the machine heard them, and an *N results* line so a
 //! keeper knows whether to refine. This rung paints that header and stacks it above the narrowed shelf, so the whole
-//! search reads top to bottom in one surface: what I asked · how many I found · the parts themselves.
+//! search reads top to bottom in one surface: what I asked - how many I found - the parts themselves.
 //!
 //! The crux is NO DRIFT between the header and the shelf. Both read the same typed text through the same
 //! `part_and.parse_and`: the header counts with `count_and`, the shelf filters with `filter_and`, so a header can never
 //! claim a count the shelf does not number, nor echo a facet the filter ignored. A sharper law makes the echo
-//! trustworthy: `format_query` renders a CANONICAL line that RE-PARSES to the same query —
-//! `parse_and(format_query(parse_and(text)))` reaches the same `AndQuery` as `parse_and(text)` — so the echo is the
+//! trustworthy: `format_query` renders a CANONICAL line that RE-PARSES to the same query --
+//! `parse_and(format_query(parse_and(text)))` reaches the same `AndQuery` as `parse_and(text)` -- so the echo is the
 //! query the machine understood, a fixed point of the parser (as the sprite catalog and the edit-list are of theirs),
 //! not a hopeful transcript of keystrokes.
 //!
-//! A price is echoed as the keeper's own cents (the canonical `max:100`, re-parseable) — a fact drawn for reading,
+//! A price is echoed as the keeper's own cents (the canonical `max:100`, re-parseable) -- a fact drawn for reading,
 //! never a balance the tree can move (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_search_header.rye selftest
@@ -45,15 +45,15 @@ pub const part_search_header_version = "20260814.003328";
 pub const max_clause_key: u32 = 8;
 
 /// A clause's value is either a bounded text operand or a `u64` price rendered as decimal digits. Take the wider of the
-/// two, so a scratch buffer can hold either — a text query token or a full-width cents count.
+/// two, so a scratch buffer can hold either -- a text query token or a full-width cents count.
 pub const max_clause_value: u32 =
     if (part_filter.max_query_text > 20) part_filter.max_query_text else 20;
 
-/// The widest a canonical query line runs — every clause its longest (`<key>:<value>`) plus a separating space, over the
+/// The widest a canonical query line runs -- every clause its longest (`<key>:<value>`) plus a separating space, over the
 /// whole clause ceiling. A scratch buffer this wide can never overflow while a query line is assembled.
 pub const max_query_line: u32 = part_and.max_clauses * (max_clause_key + 1 + max_clause_value + 1);
 
-/// The widest a header line runs — the canonical query, a two-space gap, a `u64` count (20 digits), and ` results`.
+/// The widest a header line runs -- the canonical query, a two-space gap, a `u64` count (20 digits), and ` results`.
 /// The `all parts` label is shorter than the gap-plus-count-plus-word tail, so this bound covers it too.
 pub const max_header_line: u32 = max_query_line + 32;
 
@@ -64,7 +64,7 @@ pub const HeaderError = error{
 };
 
 /// Copy `src` into the front of `dst`, returning the count copied. The caller sizes `dst` (a `max_*` scratch) to hold
-/// every run, so the fit is a construction invariant — the same bounded append the fact-line assembler leans on.
+/// every run, so the fit is a construction invariant -- the same bounded append the fact-line assembler leans on.
 fn append(dst: []u8, src: []const u8) u32 {
     // invariant: the destination holds the appended run (the scratch is sized to the sum of the parts).
     assert(src.len <= dst.len);
@@ -76,7 +76,7 @@ fn append(dst: []u8, src: []const u8) u32 {
 }
 
 /// Write a `u64` as its decimal digits into `out`, returning the count written. Even zero prints one digit. The digit
-/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded — no unbounded work.
+/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded -- no unbounded work.
 fn write_u64(v: u64, out: []u8) u32 {
     // invariant: at least one digit is always written, so the destination needs at least one cell.
     assert(out.len >= 1);
@@ -103,7 +103,7 @@ fn write_u64(v: u64, out: []u8) u32 {
     return count;
 }
 
-/// The canonical key a clause kind prints under — the exact word `parse_query` reads back, so a rendered clause
+/// The canonical key a clause kind prints under -- the exact word `parse_query` reads back, so a rendered clause
 /// re-parses to its own kind.
 fn clause_key(kind: part_filter.QueryKind) []const u8 {
     return switch (kind) {
@@ -115,7 +115,7 @@ fn clause_key(kind: part_filter.QueryKind) []const u8 {
 }
 
 /// Render a parsed `AndQuery` back to its canonical space-separated `key:value` line, returning the length. Each clause
-/// prints its key, a colon, and its operand — a text clause its own bytes, a price clause its cents as decimal digits —
+/// prints its key, a colon, and its operand -- a text clause its own bytes, a price clause its cents as decimal digits --
 /// in held order, so `parse_and(format_query(aq))` reaches the same query (a fixed point of the parser). Zero clauses
 /// renders the empty line, which re-parses to the match-all query, so the round-trip law holds universally. Refuses
 /// `HeaderOverflow` rather than write past `out`.
@@ -148,9 +148,9 @@ pub fn format_query(aq: part_and.AndQuery, out: []u8) HeaderError!u32 {
     return n;
 }
 
-/// Assemble the header line a keeper reads — the canonical query (or `all parts` when zero clauses) followed by a
+/// Assemble the header line a keeper reads -- the canonical query (or `all parts` when zero clauses) followed by a
 /// two-space gap and `N result` / `N results`, the count read straight from `part_and.count_and`. So the echo and the
-/// count both come from the one parse of the one typed line — no drift from the shelf that filters it. A malformed
+/// count both come from the one parse of the one typed line -- no drift from the shelf that filters it. A malformed
 /// clause surfaces the parser's own named refusal, so a header is never drawn over a query the machine could not read.
 pub fn format_header(
     cat: *const part_catalog.PartCatalog,
@@ -182,7 +182,7 @@ pub fn format_header(
     return n;
 }
 
-/// Draw the header as a fresh one-row anchor-palette grid — the header line truncated to `cols`. Refuses `EmptyHeader`
+/// Draw the header as a fresh one-row anchor-palette grid -- the header line truncated to `cols`. Refuses `EmptyHeader`
 /// on a zero dimension and `HeaderTooLarge` past the down-map ceiling, so a header a keeper reads always fits a real
 /// grid; a malformed clause surfaces the parser's named refusal through `format_header`.
 pub fn header_row(
@@ -231,7 +231,7 @@ pub fn search_screen(
     // invariant: the stacked screen is one row taller than the shelf.
     assert(grid.rows == rows + 1);
 
-    // Row 0 — the header, cell-for-cell.
+    // Row 0 -- the header, cell-for-cell.
     var c: u32 = 0;
     while (c < cols) : (c += 1) {
         const i: usize = @intCast(c);
@@ -242,7 +242,7 @@ pub fn search_screen(
         grid.fg_index[i] = header.fg_index[i];
     }
 
-    // Rows 1.. — the narrowed shelf, each source cell into the row below the header.
+    // Rows 1.. -- the narrowed shelf, each source cell into the row below the header.
     var r: u32 = 0;
     while (r < rows) : (r += 1) {
         var sc: u32 = 0;
@@ -259,7 +259,7 @@ pub fn search_screen(
     return grid;
 }
 
-// --- selftest: four parts across four bands — the header echoes the canonical query and its result count, the echo
+// --- selftest: four parts across four bands -- the header echoes the canonical query and its result count, the echo
 //     re-parses to the same query (a fixed point), the header count equals the shelf's narrowed count (no drift), the
 //     screen stacks header over shelf cell-for-cell, singular/plural read right, and the named refusals fire ---------
 
@@ -283,7 +283,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+/// Read a row's cells back as bytes, trimming the blank tail -- so the selftest sees exactly the painted text.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
     var n: u32 = @intCast(cells.len);
@@ -293,7 +293,7 @@ fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     return n;
 }
 
-/// Two `AndQuery`s hold the same clauses in the same order — kind, and text or price by kind. The heart of the
+/// Two `AndQuery`s hold the same clauses in the same order -- kind, and text or price by kind. The heart of the
 /// round-trip law: `format_query` then `parse_and` must reach exactly the query it rendered.
 fn same_query(a: part_and.AndQuery, b: part_and.AndQuery) bool {
     if (a.count != b.count) return false;
@@ -320,7 +320,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     const cols: u32 = 48;
 
-    // The header echoes the canonical query and its result count — a faceted line keeping one part reads
+    // The header echoes the canonical query and its result count -- a faceted line keeping one part reads
     // `material:stainless-304 max:100  1 result` (singular), the count exactly the one the shelf narrows to.
     {
         var buf: [max_header_line]u8 = undefined;
@@ -335,7 +335,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..n], "all parts  4 results"));
     }
 
-    // The echo is a FIXED POINT of the parser — the canonical line re-parses to the same query, for a compound line and
+    // The echo is a FIXED POINT of the parser -- the canonical line re-parses to the same query, for a compound line and
     // for the empty (match-all) line. So the header shows the query the machine understood, not a hopeful transcript.
     {
         const aq = try part_and.parse_and("prefix:HX- material:stainless-304 min:100");
@@ -383,7 +383,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // No drift, shelf region: the screen's rows 1.. equal and_search_shelf cell-for-cell — the narrowed page, unmoved.
+    // No drift, shelf region: the screen's rows 1.. equal and_search_shelf cell-for-cell -- the narrowed page, unmoved.
     {
         const g = try search_screen(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
         const shelf = try part_and_search.and_search_shelf(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
@@ -399,7 +399,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The header reads the same first part the shelf draws beneath it — one reading, no drift: the header names one
+    // The header reads the same first part the shelf draws beneath it -- one reading, no drift: the header names one
     // result, and the shelf's first row is the one stainless part under a dollar (hexnut $0.55).
     {
         const g = try search_screen(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
@@ -410,7 +410,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..sr], "hexnut  HX-N8  stainless-304  $0.55"));
     }
 
-    // The composed screen rasterizes to a lit canvas — the whole search reaches the glass.
+    // The composed screen rasterizes to a lit canvas -- the whole search reaches the glass.
     {
         const g = try search_screen(garden, &cat, "material:stainless-304 max:100", cols, 4, 0);
         const scale: u32 = 1;
@@ -425,7 +425,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(lit > 0);
     }
 
-    // A malformed clause surfaces the parser's own named refusal through the header (before any shelf work) — a bad
+    // A malformed clause surfaces the parser's own named refusal through the header (before any shelf work) -- a bad
     // facet draws no screen, never a wrong one.
     if (search_screen(garden, &cat, "material:stainless-304 color:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongLine;
@@ -445,7 +445,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.HeaderTooLarge) return error.WrongHeader;
     }
 
-    // An offset past the narrowed result refuses BadOffset through the shelf — one match, so page offset 1 is past it.
+    // An offset past the narrowed result refuses BadOffset through the shelf -- one match, so page offset 1 is past it.
     if (search_screen(garden, &cat, "material:stainless-304 max:100", cols, 1, 1)) |_| return error.OffsetSlipped else |e| {
         if (e != error.BadOffset) return error.WrongOffset;
     }

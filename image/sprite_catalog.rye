@@ -1,12 +1,12 @@
-//! image/sprite_catalog.rye — HUNK7: the marketplace catalog travels as text (the sprite quest closes).
+//! image/sprite_catalog.rye -- HUNK7: the marketplace catalog travels as text (the sprite quest closes).
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK7 (sprite quest close).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK7 (sprite quest close).
 //! Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
 //! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 //!
 //! HUNK4 bound each product to a window, HUNK5 painted a window as a page, HUNK6 gave the sheet a content
 //! address. This rung lets the *index itself* travel: `render_catalog` writes a `SpriteIndex` as a flat-Bron
-//! `format sprite-catalog-v1` record — one `product <name> <x> <y> <w> <h>` line per entry — and
+//! `format sprite-catalog-v1` record -- one `product <name> <x> <y> <w> <h>` line per entry -- and
 //! `parse_catalog` reads that text back into a fresh index over a given sheet, so `render(parse(render(x)))`
 //! is a fixed point and the rebuilt index renders every product from the same window byte-for-byte. Parse
 //! validates each window against the actual sheet (a window past it refuses through `SpriteIndex.add`), so a
@@ -61,7 +61,7 @@ pub fn render_catalog(index: *const sprite.SpriteIndex, out: []u8) CatalogError!
 }
 
 /// Parse a `format sprite-catalog-v1` record into a fresh index over `sheet`. Each product is added through
-/// `SpriteIndex.add`, so every window is validated against the real sheet and every name against uniqueness —
+/// `SpriteIndex.add`, so every window is validated against the real sheet and every name against uniqueness --
 /// a catalog can never name a window the sheet lacks. An unknown header, a malformed line, or an out-of-range
 /// field refuses `BadCatalog`; a window past the sheet surfaces `add`'s own named refusal.
 pub fn parse_catalog(text: []const u8, sheet: *const qoi.Pixmap, out: *sprite.SpriteIndex) !void {
@@ -156,7 +156,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const b_bolt = try rebuilt.render(garden, "bolt");
     assert(a_bolt.same_bytes(&b_bolt));
 
-    // Unwelcome: parsing over a SMALLER sheet refuses — a catalog can never name a window the sheet lacks.
+    // Unwelcome: parsing over a SMALLER sheet refuses -- a catalog can never name a window the sheet lacks.
     const small = qoi.Pixmap{
         .width = 4,
         .height = 4,

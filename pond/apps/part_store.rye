@@ -1,17 +1,17 @@
-//! pond/apps/part_store.rye — HUNK72: the parts catalog is a content-addressed Tablecloth artifact.
+//! pond/apps/part_store.rye -- HUNK72: the parts catalog is a content-addressed Tablecloth artifact.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK72.
-//! Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A — parts marketplace).
-//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed — a part is a picture PLUS its facts).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK72.
+//! Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A -- parts marketplace).
+//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed -- a part is a picture PLUS its facts).
 //!
-//! HUNK71 made a parts catalog travel as a `format part-catalog-v1` record — a window AND its facts for every
+//! HUNK71 made a parts catalog travel as a `format part-catalog-v1` record -- a window AND its facts for every
 //! product. HUNK6 gave the sprite SHEET a content address; this rung gives the CATALOG one. `store_catalog`
 //! renders a `PartCatalog` to its text and beads that text content-addressed (HUNK1's Tablecloth store), and
-//! `open_catalog` fetches it back — the fetch proving every bead against its digest and the whole against its
-//! recorded address BEFORE the text is parsed — then parses it over a sheet into a fresh catalog. So a whole
+//! `open_catalog` fetches it back -- the fetch proving every bead against its digest and the whole against its
+//! recorded address BEFORE the text is parsed -- then parses it over a sheet into a fresh catalog. So a whole
 //! marketplace (pictures and prices) is reproducible from cold out of the pair (sheet, catalog address): a
 //! tampered catalog refuses `DigestMismatch` and an unknown market refuses `UnknownArtifact`, each before a
-//! single window or price is read. Pure composition over public APIs — no new codec, no new notation. No
+//! single window or price is read. Pure composition over public APIs -- no new codec, no new notation. No
 //! network, no key, no funds; disbursement stays a custody gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/part_store.rye selftest
@@ -26,7 +26,7 @@ const beading = @import("mantra/beading.rye");
 
 pub const part_store_version = "20260814.000000";
 
-/// The largest catalog text this rung stores — a resin's worth (the artifact-content bound). A marketplace page
+/// The largest catalog text this rung stores -- a resin's worth (the artifact-content bound). A marketplace page
 /// of parts fits well inside it; a catalog too long to bead refuses rather than truncating.
 pub const max_catalog_stream: u32 = tablecloth.max_content_bytes;
 
@@ -54,7 +54,7 @@ pub fn store_catalog(
 }
 
 /// Open a parts catalog by name into a fresh catalog over `sheet`. The fetch reassembles the beads and proves
-/// each against its digest and the whole against its recorded address BEFORE this parses anything — so a tampered
+/// each against its digest and the whole against its recorded address BEFORE this parses anything -- so a tampered
 /// catalog refuses (`DigestMismatch`) and an unknown market refuses (`UnknownArtifact`), each before a window or a
 /// price is read. Only verified text ever reaches the parser, and every window is then validated against the real
 /// sheet by the catalog's own parse.
@@ -97,7 +97,7 @@ fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const sheet = try craft_sheet(garden);
 
-    // A three-part catalog — each product a window into the sheet AND its honest facts.
+    // A three-part catalog -- each product a window into the sheet AND its honest facts.
     var built = part_catalog.PartCatalog.init(&sheet);
     try built.add_part("bolt", 0, 0, 4, 4, "HX-M8-40", "stainless-304", 129);
     try built.add_part("washer", 4, 0, 4, 4, "FW-M8", "zinc-steel", 7);
@@ -113,7 +113,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try open_catalog(&cat, &store, "market.parts", &sheet, &cold);
     assert(cold.len() == built.len());
 
-    // The crux: the cold-opened catalog carries both halves — every picture renders byte-for-byte and every
+    // The crux: the cold-opened catalog carries both halves -- every picture renders byte-for-byte and every
     // fact survives, out of nothing but (sheet, name).
     {
         var i: u32 = 0;
@@ -142,7 +142,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(cold2.len() == built.len());
 
     // Unwelcome: a tampered catalog refuses BEFORE a window or price is read. Store the same catalog in a fresh
-    // store, flip a single stored byte, and prove open_catalog refuses DigestMismatch — so no market is served
+    // store, flip a single stored byte, and prove open_catalog refuses DigestMismatch -- so no market is served
     // from a catalog whose bytes are not the ones its name pins.
     {
         var store_t: beading.BeadStore = .empty();

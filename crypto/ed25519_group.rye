@@ -1,29 +1,29 @@
-//! crypto/ed25519_group.rye — Season G (Cryptography), the seventh rung: the edwards25519 group law authored in pure Rye, composed
-//! entirely over the GREEN base field (crypto/fe25519.rye). Ed25519 signing — the Lotus signed carry, Kumara identity, Vault, Comlink —
+//! crypto/ed25519_group.rye -- Season G (Cryptography), the seventh rung: the edwards25519 group law authored in pure Rye, composed
+//! entirely over the GREEN base field (crypto/fe25519.rye). Ed25519 signing -- the Lotus signed carry, Kumara identity, Vault, Comlink --
 //! adds a point to itself many times (scalar multiplication) over this curve; that ladder is a composition over exactly two operations,
 //! point addition and point doubling, and this file authors both. It adds no new field math (fe25519 proved that) and no scalar ladder yet
 //! (that is its own next round); it is the tractable, highest-Lindy move that turns a proven field into a proven group.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its
 //! group arithmetic a composition over the field).
-//! Kin: crypto/fe25519.rye (the base field this composes over, GREEN) · crypto/poly1305.rye (the limb-arithmetic sibling). Monocypher
-//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from the public
+//! Kin: crypto/fe25519.rye (the base field this composes over, GREEN) - crypto/poly1305.rye (the limb-arithmetic sibling). Monocypher
+//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from the public
 //! mathematics of twisted Edwards curves and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a point on edwards25519 is carried in extended twisted-Edwards coordinates (X, Y, Z, T) with x = X/Z, y = Y/Z, and
-//! T = XY/Z, the representation that makes the group law complete and division-free (Hisil–Wong–Carter–Dawson, 2008; RFC 8032 §5.1). The
+//! THE CRUX -- a point on edwards25519 is carried in extended twisted-Edwards coordinates (X, Y, Z, T) with x = X/Z, y = Y/Z, and
+//! T = XY/Z, the representation that makes the group law complete and division-free (Hisil-Wong-Carter-Dawson, 2008; RFC 8032 §5.1). The
 //! curve constant is d = −121665/121666 (mod p), derived here in our own field arithmetic rather than copied as a literal, and 2d is the
 //! constant the unified addition needs. Point doubling and point addition are each a fixed sequence of field squarings, multiplies, adds,
-//! and subtracts — no field element is ever inverted inside the group law; a single inversion appears only when a point is finally
+//! and subtracts -- no field element is ever inverted inside the group law; a single inversion appears only when a point is finally
 //! compressed to 32 bytes (Y/Z, with the low bit of X/Z carried in the top bit). Negation flips the sign of X and T; subtraction is
 //! addition of the negation. Nothing here is a claim about a device; it is arithmetic anyone can replay against RFC 8032.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A curve point is arithmetic, not a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A curve point is arithmetic, not a
 //! secret and not a signature: this file signs nothing and holds no key (Ed25519's signing with an identity key stays its own separate,
 //! gated round; even the scalar-multiplication ladder is a later non-gated round). The primitive calls no std.crypto. Parity is proven at
-//! selftest against two references runnable now — algebraic identities anyone can check (the base point compresses to its published
+//! selftest against two references runnable now -- algebraic identities anyone can check (the base point compresses to its published
 //! encoding, the identity compresses to Y = 1, B + B = 2B, and B + (−B) = the identity), and Zig's own
 //! std.crypto.ecc.Edwards25519 as an independent implementation, compared byte-for-byte on the compression of dbl, add, sub, and neg
 //! across the base point and several of its multiples. Monocypher-source parity stays the same held-fetch horizon the other primitives
@@ -58,12 +58,12 @@ fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
 }
 
-/// Negate a field element — 0 − a. Used for the curve constant and for point negation.
+/// Negate a field element -- 0 − a. Used for the curve constant and for point negation.
 fn fe_neg(a: fe.Field) fe.Field {
     return fe.sub(fe_zero(), a);
 }
 
-/// Twice the square of a field element, 2·a² — the one doubled term the point-doubling formula needs.
+/// Twice the square of a field element, 2-a² -- the one doubled term the point-doubling formula needs.
 fn fe_sq2(a: fe.Field) fe.Field {
     const s = fe.square(a);
     return fe.add(s, s);
@@ -78,7 +78,7 @@ fn edwards_d2() fe.Field {
     return fe.add(d, d);
 }
 
-/// Double a point (RFC 8032 §5.1.4, extended coordinates). A fixed sequence of squarings, adds, and subtracts — no inversion — so the
+/// Double a point (RFC 8032 §5.1.4, extended coordinates). A fixed sequence of squarings, adds, and subtracts -- no inversion -- so the
 /// result is another extended-coordinate point on the curve.
 pub fn dbl(p: Point) Point {
     const t0 = fe.square(fe.add(p.x, p.y));
@@ -88,7 +88,7 @@ pub fn dbl(p: Point) Point {
     const z = fe.sub(yy, xx);
     const x = fe.sub(t0, y);
     const t = fe.sub(fe_sq2(p.z), z);
-    // invariant: the doubled point keeps the extended-coordinate relation T·Z = X·Y by construction of the four products below.
+    // invariant: the doubled point keeps the extended-coordinate relation T-Z = X-Y by construction of the four products below.
     const r = Point{ .x = fe.mul(x, t), .y = fe.mul(y, z), .z = fe.mul(z, t), .t = fe.mul(x, y) };
     // invariant: the limbs stay inside the 51-bit radix, so a doubling that left one wide would
     // carry into the next on the following add rather than reduce
@@ -97,7 +97,7 @@ pub fn dbl(p: Point) Point {
 }
 
 /// Add two points (RFC 8032 §5.1.4, unified extended-coordinate addition with the 2d constant). Complete for all inputs on the prime-order
-/// subgroup — no exceptional case, no inversion — so doubling and addition compose into the scalar ladder its own later round will build.
+/// subgroup -- no exceptional case, no inversion -- so doubling and addition compose into the scalar ladder its own later round will build.
 pub fn add(p: Point, q: Point) Point {
     const a = fe.mul(fe.sub(p.y, p.x), fe.sub(q.y, q.x));
     const b = fe.mul(fe.add(p.x, p.y), fe.add(q.x, q.y));
@@ -116,12 +116,12 @@ pub fn add(p: Point, q: Point) Point {
     return r;
 }
 
-/// Negate a point — flip the sign of X and T, keeping Y and Z. The additive inverse: p + neg(p) is the identity.
+/// Negate a point -- flip the sign of X and T, keeping Y and Z. The additive inverse: p + neg(p) is the identity.
 pub fn neg(p: Point) Point {
     return Point{ .x = fe_neg(p.x), .y = p.y, .z = p.z, .t = fe_neg(p.t) };
 }
 
-/// Subtract a point — addition of the negation.
+/// Subtract a point -- addition of the negation.
 pub fn sub(p: Point, q: Point) Point {
     return add(p, neg(q));
 }
@@ -132,7 +132,7 @@ pub fn to_bytes(p: Point) [32]u8 {
     const zi = fe.invert(p.z);
     var s = fe.to_bytes(fe.mul(p.y, zi));
     const xs = fe.to_bytes(fe.mul(p.x, zi));
-    // invariant: the sign bit is a single bit — the parity of X/Z — placed in the top bit of the last byte.
+    // invariant: the sign bit is a single bit -- the parity of X/Z -- placed in the top bit of the last byte.
     assert((s[31] & 0x80) == 0);
     s[31] ^= (xs[0] & 1) << 7;
     return s;

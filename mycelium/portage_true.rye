@@ -1,22 +1,22 @@
-//! mycelium/portage_true.rye — a real portage record reads true, and is the receipt of a real crossing (r4,
+//! mycelium/portage_true.rye -- a real portage record reads true, and is the receipt of a real crossing (r4,
 //! the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 — reads true.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r4 -- reads true.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! r1 proved value crosses two worlds and the pair conserves, r2 made the crossing atomic, r3 let it travel as
-//! text — all over worlds seated in code. r4 carries the reader onto a REAL on-disk `format portage-v1` record
-//! a keeper can open and read — `tools/fixtures/portage_record.bron`, produced reproducibly by
+//! text -- all over worlds seated in code. r4 carries the reader onto a REAL on-disk `format portage-v1` record
+//! a keeper can open and read -- `tools/fixtures/portage_record.bron`, produced reproducibly by
 //! `mycelium/portage_fixture_gen.rye`, `@embedFile`-bound at compile time through the `mycelium/corpora/`
 //! symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:
-//!   - TWO TOOLS, ONE ANSWER — the app parses the record and derives the crossing's value INDEPENDENTLY of the
+//!   - TWO TOOLS, ONE ANSWER -- the app parses the record and derives the crossing's value INDEPENDENTLY of the
 //!     record's own amount field (by accepting the crossing against both worlds' real rebuilt ledgers, reading
 //!     the amount off World A's burn) and the digest from the crossing's own content seeds; the r4 witness
 //!     cross-checks the pair `<amount> <digest8>` against `portage_record_truth.awk`'s reading of the same
 //!     bytes, so a carried crossing can never drift from a record a keeper reads by hand.
-//!   - THE RECORD IS THE RECEIPT OF A REAL CROSSING — the app rebuilds World A and World B from the fixture's
+//!   - THE RECORD IS THE RECEIPT OF A REAL CROSSING -- the app rebuilds World A and World B from the fixture's
 //!     own seeds, and `accept` ties the parsed record to both real ledgers: the digest self-certifies its
 //!     bound fields, the out-head is World A's real order-head with a matching burn, the in-head is World B's
 //!     real order-head crediting the recipient under this digest. So the fixture is what a real crossing emits,
@@ -25,7 +25,7 @@
 //! tampered header refuses `BadFormat`.
 //!
 //! Composes portage + portage_bron + portage_fixture_gen + cord + kumara public API only. Siloed, dev-only,
-//! demo world/keeper seeds — no real key, no funds, no network, no value crossed.
+//! demo world/keeper seeds -- no real key, no funds, no network, no value crossed.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_true.rye selftest
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_true.rye measure
@@ -50,7 +50,7 @@ fn read_record() !portage_bron.Record {
     return r;
 }
 
-/// The first eight hex characters of a digest — the prefix a keeper reads off the record and the awk reports.
+/// The first eight hex characters of a digest -- the prefix a keeper reads off the record and the awk reports.
 fn digest8(d: []const u8, out: *[8]u8) void {
     // invariant: eight hex chars read four whole digest bytes.
     assert(d.len >= 4);
@@ -83,7 +83,7 @@ fn welcome_reading_true_and_real() !void {
     var dag_a = try gen.seat_source_dag();
     var dag_b = try gen.seat_dest_dag();
 
-    // accept ties the parsed record to both real ledgers — self-certifying digest, both heads, matching burn.
+    // accept ties the parsed record to both real ledgers -- self-certifying digest, both heads, matching burn.
     const accepted = try portage_bron.accept(&r, &dag_a, &dag_b);
     if (accepted.amount != gen.amount) return error.RecordNotReal;
 

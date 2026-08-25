@@ -1,6 +1,6 @@
-//! glow/lower_compose_core.rye — lower face→`|%` core compose to one `.rye`.
+//! glow/lower_compose_core.rye -- lower face->`|%` core compose to one `.rye`.
 //!
-//! STOA18 (four lines) — one arm · STOA19 (five) — two arms · STOA22 (six) — three:
+//! STOA18 (four lines) -- one arm - STOA19 (five) -- two arms - STOA22 (six) -- three:
 //!   =/  amount  5
 //!   |%
 //!   ++  double
@@ -8,31 +8,31 @@
 //!   ++  dec
 //!   --
 //!
-//! STOA28 — face→open/nest arm (four lines):
+//! STOA28 -- face->open/nest arm (four lines):
 //!   =/  amount  5
 //!   |%
 //!   ++  pack  (jam sample sample)
 //!   --
 //!
-//! STOA53 — face→cue-of-jam arm (four lines):
+//! STOA53 -- face->cue-of-jam arm (four lines):
 //!   =/  amount  5
 //!   |%
 //!   ++  unpack  (cue (jam sample sample))
 //!   --
 //!
-//! STOA54 — face→nest-left cue-of-jam (four lines):
+//! STOA54 -- face->nest-left cue-of-jam (four lines):
 //!   =/  amount  5
 //!   |%
 //!   ++  unpack  (cue (jam (mix sample sample) sample))
 //!   --
 //!
-//! STOA55 — face→nest-right cue-of-jam (four lines):
+//! STOA55 -- face->nest-right cue-of-jam (four lines):
 //!   =/  amount  5
 //!   |%
 //!   ++  unpack  (cue (jam sample (mix sample sample)))
 //!   --
 //!
-//! STOA56 — face→nest-both cue-of-jam (four lines):
+//! STOA56 -- face->nest-both cue-of-jam (four lines):
 //!   =/  amount  5
 //!   |%
 //!   ++  unpack  (cue (jam (mix sample sample) (mix sample sample)))

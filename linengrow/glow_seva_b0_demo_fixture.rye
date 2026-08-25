@@ -1,10 +1,10 @@
-//! linengrow/glow_seva_b0_demo_fixture.rye — product pin of Seva B0 demo constants.
+//! linengrow/glow_seva_b0_demo_fixture.rye -- product pin of Seva B0 demo constants.
 //!
-//! STOA193: checkable elder stamp · memo · root strings beside the Glow
+//! STOA193: checkable elder stamp - memo - root strings beside the Glow
 //! shape desk (`shape-demo-fixture-constants`). Fold rewrite stays held.
 //! Elder `seva_b0_fold` still embeds the same literals; this module owns
 //! the product pin surface for future Glow ports.
-//! STOA197: no longer imports the claim shell (breaks claim→replay→fixture cycle).
+//! STOA197: no longer imports the claim shell (breaks claim->replay->fixture cycle).
 //! STOA223: product pins bind to Glow face=lit desk
 //! (`glow/gen/sample-demo-fixture-lits.glow`). Callers still read these
 //! comptime pin strings; `lit_desk_binds_pins` proves the desk text carries
@@ -19,7 +19,7 @@ const fold = @import("seva_b0_fold.rye");
 
 pub const fixture_version = "20260722.131511";
 
-/// Glow face=lit sample desk that pins the same elder strings (STOA221 · STOA223).
+/// Glow face=lit sample desk that pins the same elder strings (STOA221 - STOA223).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fixture-lits.glow";
 
 /// Three-event demo stamps (elder `run_demo_fold` order).
@@ -44,7 +44,7 @@ pub fn root_pin_agrees() bool {
 }
 
 fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []const u8) bool {
-    // Cord: face='lit' · hex: face=@uxdigits (no quotes).
+    // Cord: face='lit' - hex: face=@uxdigits (no quotes).
     const needle = face ++ "='" ++ lit ++ "'";
     return std.mem.indexOf(u8, src, needle) != null;
 }

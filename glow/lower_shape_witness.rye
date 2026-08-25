@@ -1,4 +1,4 @@
-//! glow/lower_shape_witness.rye — proves mold lowers to runnable `.rye`.
+//! glow/lower_shape_witness.rye -- proves mold lowers to runnable `.rye`.
 //!
 //!   rye build glow/lower_shape_witness.rye -femit-bin=glow/bin/lower_shape_witness
 //!   glow/bin/lower_shape_witness

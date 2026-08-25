@@ -1,8 +1,8 @@
-//! linengrow/glow_seva_b0_fields.rye — Glow product FactFields parse surface.
+//! linengrow/glow_seva_b0_fields.rye -- Glow product FactFields parse surface.
 //!
 //! STOA212 (C2): owns parse_fact_fields + parse_amount_signed while calling
 //! elder receipt_core. Replay compose wires through this surface.
-//! STOA249: product-authored fields body — parse lives here; elder
+//! STOA249: product-authored fields body -- parse lives here; elder
 //! receipt_core stays peer baseline.
 //!
 //!   rye build linengrow/glow_seva_b0_fields_witness.rye \
@@ -25,7 +25,7 @@ fn trim_line(line: []const u8) []const u8 {
     return std.mem.trim(u8, line, " \t\r\n");
 }
 
-/// Parse canonical fact text into FactFields — product body (STOA249).
+/// Parse canonical fact text into FactFields -- product body (STOA249).
 pub fn parse_fact_fields(text: []const u8, fields: *rc.FactFields) FieldsError!void {
     var from_set = false;
     var to_set = false;
@@ -64,7 +64,7 @@ pub fn parse_fact_fields(text: []const u8, fields: *rc.FactFields) FieldsError!v
     if (!from_set or !to_set or !amount_set or !memo_set or !stamp_set) return error.InvalidFact;
 }
 
-/// Parse a signed amount string — product body: tally_parse_int (STOA249).
+/// Parse a signed amount string -- product body: tally_parse_int (STOA249).
 pub fn parse_amount_signed(amount_text: []const u8) FieldsError!i64 {
     return tally_parse_int.parse_int(i64, amount_text, .{}) catch return error.InvalidAmount;
 }

@@ -1,4 +1,4 @@
-//! enrich_file — add surface + width sections to pass docs missing them.
+//! enrich_file -- add surface + width sections to pass docs missing them.
 
 const std = @import("std");
 const constants = @import("constants.rye");

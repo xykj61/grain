@@ -1,18 +1,18 @@
-//! constel/wire.rye — FORA3: the handshake, framed for a local wire. FORA2 proved the pure handshake — two fake piers
-//! confirm they are distinct never-a-ship members of one constellation, each of open · accept · finish handing back an
-//! immutable value (Greeting · Ack · Session). This rung carries those three proven values across a self-describing frame,
+//! constel/wire.rye -- FORA3: the handshake, framed for a local wire. FORA2 proved the pure handshake -- two fake piers
+//! confirm they are distinct never-a-ship members of one constellation, each of open - accept - finish handing back an
+//! immutable value (Greeting - Ack - Session). This rung carries those three proven values across a self-describing frame,
 //! deframed verify-before-trust, exactly as DREY1 proved the Mikrophone's committed payload before any real wire.
 //!
-//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA3.
+//! Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA3.
 //! Design read: active-designing/date/20260814/20260814-043551_fora3-constel-local-wire-frame.md
-//! Stands on: constel/handshake.rye (FORA2) — the three values; constel/name.rye (FORA0) — the naming law at the border.
+//! Stands on: constel/handshake.rye (FORA2) -- the three values; constel/name.rye (FORA0) -- the naming law at the border.
 //!
-//! Purely LOCAL — a bounded in-memory frame on the bench, siloed to constel/, run from inside the jailed pier. No network,
-//! no Comlink transport, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire —
-//! and gate %4 — real Kumara, real network — both untouched). The frame layout: magic(4 "CNST") · version(1) · kind(1) ·
-//! payload_len(u32 LE) · digest(32 Sha256 over payload) · payload. Deframing is verify-before-trust and TWO independent
+//! Purely LOCAL -- a bounded in-memory frame on the bench, siloed to constel/, run from inside the jailed pier. No network,
+//! no Comlink transport, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire --
+//! and gate %4 -- real Kumara, real network -- both untouched). The frame layout: magic(4 "CNST") - version(1) - kind(1) -
+//! payload_len(u32 LE) - digest(32 Sha256 over payload) - payload. Deframing is verify-before-trust and TWO independent
 //! gates: the Sha256 proves the payload WHOLE (no byte flipped), and the naming law re-run at the border proves it LAWFUL
-//! (no vowel-bearing, real-@p-shaped name smuggled in). A payload passes only when both hold — so a real address can never
+//! (no vowel-bearing, real-@p-shaped name smuggled in). A payload passes only when both hold -- so a real address can never
 //! cross a Constel channel even inside a frame whose digest was fixed up after tampering. The Sha256 is an integrity check
 //! the far side recomputes itself, not a signature; a signed carry is a later, gated rung.
 //!
@@ -33,11 +33,11 @@ pub const wire_version = "20260814.043551";
 /// a layout it does not know.
 pub const frame_version: u8 = 1;
 
-/// The four magic bytes that open every Constel frame — "CNST" (Constel). A frame that does not open with these refuses
+/// The four magic bytes that open every Constel frame -- "CNST" (Constel). A frame that does not open with these refuses
 /// `BadMagic` before any field is read.
 pub const magic: [4]u8 = [4]u8{ 'C', 'N', 'S', 'T' };
 
-/// The digest length — a full Sha256 over the payload, so a single flipped payload byte fails the check.
+/// The digest length -- a full Sha256 over the payload, so a single flipped payload byte fails the check.
 pub const digest_len: u32 = 32;
 
 /// Which handshake value a frame's payload carries. One byte on the wire; anything else refuses `BadKind`.
@@ -47,18 +47,18 @@ pub const Kind = enum(u8) {
     session = 3,
 };
 
-/// The fixed header before every payload: magic(4) · version(1) · kind(1) · payload_len(u32, 4) · digest(32). Named once so
+/// The fixed header before every payload: magic(4) - version(1) - kind(1) - payload_len(u32, 4) - digest(32). Named once so
 /// the layout is a single source of truth and `deframe` can never read a field at the wrong offset.
 pub const header_len: u32 = 4 + 1 + 1 + 4 + digest_len;
 
 /// A field length prefix is a little-endian u32.
 const len_prefix: u32 = 4;
 
-/// The widest payload of any kind — a Greeting: from_len(4) · from(max_ship_len) · whole_len(4) · whole
+/// The widest payload of any kind -- a Greeting: from_len(4) - from(max_ship_len) - whole_len(4) - whole
 /// (max_constellation_bytes). Named so `max_frame` bounds the whole frame once.
 pub const max_payload: u32 = len_prefix + name.max_ship_len + len_prefix + name.max_constellation_bytes;
 
-/// The widest a whole frame runs — the header plus the widest payload. No heap outlives this fixed buffer.
+/// The widest a whole frame runs -- the header plus the widest payload. No heap outlives this fixed buffer.
 pub const max_frame: u32 = header_len + max_payload;
 
 pub const WireError = error{
@@ -70,11 +70,11 @@ pub const WireError = error{
     BadVersion,
     /// The kind byte names no known handshake value.
     BadKind,
-    /// A declared payload length past the kind's own ceiling — refused before any payload byte is read.
+    /// A declared payload length past the kind's own ceiling -- refused before any payload byte is read.
     LengthOverflow,
     /// The bytes do not hold the whole declared payload.
     FrameTruncated,
-    /// The recomputed Sha256 does not match the framed digest — a byte flipped in transit.
+    /// The recomputed Sha256 does not match the framed digest -- a byte flipped in transit.
     DigestMismatch,
     /// A length prefix inside a payload claims more than the payload holds.
     FieldOverrun,
@@ -83,16 +83,16 @@ pub const WireError = error{
 } || handshake.HandshakeError;
 
 /// A bounded wire frame: a fixed buffer sized for the widest possible frame, and the length actually written into it.
-/// `bytes()` reads back exactly the framed region — never a byte past what a framer wrote.
+/// `bytes()` reads back exactly the framed region -- never a byte past what a framer wrote.
 pub const Frame = struct {
     buf: [max_frame]u8 = [_]u8{0} ** max_frame,
     len: u32 = 0,
 
-    /// The framed bytes as they stand — exactly the header plus payload a framer wrote.
+    /// The framed bytes as they stand -- exactly the header plus payload a framer wrote.
     pub fn bytes(self: *const Frame) []const u8 {
         // invariant: the frame length never claims more than the buffer holds.
         assert(self.len <= self.buf.len);
-        // invariant: a written frame is at least a whole header — a payload can be empty, a header can never be.
+        // invariant: a written frame is at least a whole header -- a payload can be empty, a header can never be.
         assert(self.len == 0 or self.len >= header_len);
         return self.buf[0..self.len];
     }
@@ -115,7 +115,7 @@ fn read_kind(raw: u8) WireError!Kind {
     };
 }
 
-/// The declared payload ceiling for a kind — each value's own widest serialization, so an overlong length refuses before a
+/// The declared payload ceiling for a kind -- each value's own widest serialization, so an overlong length refuses before a
 /// byte is read. Bounds are named per kind rather than all sharing `max_payload`, so a tampered Ack cannot claim Greeting
 /// room.
 fn payload_ceiling(k: Kind) u32 {
@@ -139,7 +139,7 @@ fn put_field(out: []u8, at: u32, field: []const u8) u32 {
 }
 
 /// Read a length-prefixed field from `src` at `at`, returning the slice and the new offset. Refuses `FieldOverrun` when the
-/// prefix claims more than `src` holds — before the slice is formed, so an overrun never reads foreign bytes.
+/// prefix claims more than `src` holds -- before the slice is formed, so an overrun never reads foreign bytes.
 fn get_field(src: []const u8, at: u32) WireError!struct { field: []const u8, next: u32 } {
     if (at + len_prefix > src.len) return error.FieldOverrun;
     const flen = std.mem.readInt(u32, src[at..][0..4], .little);
@@ -150,7 +150,7 @@ fn get_field(src: []const u8, at: u32) WireError!struct { field: []const u8, nex
     return .{ .field = src[start .. start + flen], .next = start + flen };
 }
 
-/// Write the header (magic · version · kind · payload_len · digest) then set `out.len`. The digest is a Sha256 over exactly
+/// Write the header (magic - version - kind - payload_len - digest) then set `out.len`. The digest is a Sha256 over exactly
 /// the payload region already written into `out.buf[header_len..]`.
 fn seal(out: *Frame, k: Kind, plen: u32) void {
     // invariant: the payload fits the fixed frame with room for its header.
@@ -170,7 +170,7 @@ fn seal(out: *Frame, k: Kind, plen: u32) void {
     assert(out.len <= out.buf.len);
 }
 
-/// Frame a Greeting for the wire — from_len · from · whole_len · whole. The names are already lawful (open() proved them),
+/// Frame a Greeting for the wire -- from_len - from - whole_len - whole. The names are already lawful (open() proved them),
 /// yet the frame carries them so the far side can re-prove them itself.
 pub fn frame_greeting(g: *const handshake.Greeting, out: *Frame) void {
     // invariant: a greeting carries a lawful never-a-ship member of its own constellation.
@@ -181,7 +181,7 @@ pub fn frame_greeting(g: *const handshake.Greeting, out: *Frame) void {
     seal(out, Kind.greeting, at - header_len);
 }
 
-/// Frame an Ack for the wire — to_len · to.
+/// Frame an Ack for the wire -- to_len - to.
 pub fn frame_ack(a: *const handshake.Ack, out: *Frame) void {
     // invariant: an ack answers with a lawful never-a-ship name.
     assert(name.never_a_ship(a.to()));
@@ -190,7 +190,7 @@ pub fn frame_ack(a: *const handshake.Ack, out: *Frame) void {
     seal(out, Kind.ack, at - header_len);
 }
 
-/// Frame a Session for the wire — a_len · a · b_len · b · complete(1).
+/// Frame a Session for the wire -- a_len - a - b_len - b - complete(1).
 pub fn frame_session(s: *const handshake.Session, out: *Frame) void {
     // invariant: a session names two distinct lawful piers.
     assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
@@ -233,13 +233,13 @@ fn open_frame(bytes: []const u8) WireError!struct { kind: Kind, payload: []const
 
 /// Deframe a Greeting, verify-before-trust. The frame must be whole (digest) AND lawful (naming law): every name read back
 /// is re-run through check_ship / check_constellation, so a vowel-bearing party smuggled into the payload refuses
-/// `VowelPresent` at the border — integrity alone can never carry a real @p across.
+/// `VowelPresent` at the border -- integrity alone can never carry a real @p across.
 pub fn deframe_greeting(bytes: []const u8) WireError!handshake.Greeting {
     const opened = try open_frame(bytes);
     if (opened.kind != Kind.greeting) return error.BadKind;
     const f0 = try get_field(opened.payload, 0);
     const f1 = try get_field(opened.payload, f0.next);
-    // The naming law at the border — the payload is whole, now prove it lawful before it becomes a value.
+    // The naming law at the border -- the payload is whole, now prove it lawful before it becomes a value.
     try name.check_ship(f0.field);
     try name.check_constellation(f1.field);
     if (!handshake.is_member(f1.field, f0.field)) return error.NotAMember;
@@ -250,7 +250,7 @@ pub fn deframe_greeting(bytes: []const u8) WireError!handshake.Greeting {
     return g;
 }
 
-/// Deframe an Ack, verify-before-trust — whole (digest) and lawful (naming law re-run on the answered name).
+/// Deframe an Ack, verify-before-trust -- whole (digest) and lawful (naming law re-run on the answered name).
 pub fn deframe_ack(bytes: []const u8) WireError!handshake.Ack {
     const opened = try open_frame(bytes);
     if (opened.kind != Kind.ack) return error.BadKind;
@@ -266,7 +266,7 @@ pub fn deframe_ack(bytes: []const u8) WireError!handshake.Ack {
     return a;
 }
 
-/// Deframe a Session, verify-before-trust — whole (digest) and lawful (naming law re-run on both piers). The complete flag
+/// Deframe a Session, verify-before-trust -- whole (digest) and lawful (naming law re-run on both piers). The complete flag
 /// must be a clean 0 or 1; anything else refuses `BadFlag`.
 pub fn deframe_session(bytes: []const u8) WireError!handshake.Session {
     const opened = try open_frame(bytes);
@@ -296,7 +296,7 @@ pub fn deframe_session(bytes: []const u8) WireError!handshake.Session {
 }
 
 // --- selftest: each of the three values round-trips exactly; every corruption refuses by name before a value is formed;
-//     and — the FORA proof — a vowel smuggled into a payload whose digest was fixed up still refuses at the border --------
+//     and -- the FORA proof -- a vowel smuggled into a payload whose digest was fixed up still refuses at the border --------
 
 fn run_selftest() !u8 {
     const sky = "xnb-xnc-xnd"; // a small lawful constellation of three fake piers
@@ -369,7 +369,7 @@ fn run_selftest() !u8 {
             return error.TruncatedSlipped;
         } else |e| if (e != error.FrameTruncated) return error.WrongTruncated;
 
-        // A single flipped payload byte — digest checked before any field is read.
+        // A single flipped payload byte -- digest checked before any field is read.
         {
             var c = fg;
             c.buf[header_len] = c.buf[header_len] ^ 0x01;
@@ -379,7 +379,7 @@ fn run_selftest() !u8 {
         if (deframe_session(fg.bytes())) |_| return error.KindConfused else |e| if (e != error.BadKind) return error.WrongKindConfused;
     }
 
-    // 3. The FORA proof — a vowel-bearing (real-@p-shaped) name smuggled into a payload, with the digest FIXED UP so
+    // 3. The FORA proof -- a vowel-bearing (real-@p-shaped) name smuggled into a payload, with the digest FIXED UP so
     //    integrity passes, still refuses VowelPresent at the naming-law border. A real address can never cross a Constel
     //    channel, not even inside a whole frame.
     {
@@ -389,13 +389,13 @@ fn run_selftest() !u8 {
         fa.buf[header_len + len_prefix + 0] = 'z';
         fa.buf[header_len + len_prefix + 1] = 'o'; // the smuggled vowel
         fa.buf[header_len + len_prefix + 2] = 'd';
-        // Recompute the digest so integrity alone would pass — only the naming law can catch this.
+        // Recompute the digest so integrity alone would pass -- only the naming law can catch this.
         const plen = std.mem.readInt(u32, fa.buf[6..10], .little);
         var dg: [digest_len]u8 = undefined;
         Sha256.hash(fa.buf[header_len .. header_len + plen], &dg, .{});
         var d: u32 = 0;
         while (d < digest_len) : (d += 1) fa.buf[10 + d] = dg[d];
-        // The digest now matches the tampered payload — yet the border refuses the vowel.
+        // The digest now matches the tampered payload -- yet the border refuses the vowel.
         if (deframe_ack(fa.bytes())) |_| return error.VowelSmuggled else |e| if (e != error.VowelPresent) return error.WrongVowel;
     }
 

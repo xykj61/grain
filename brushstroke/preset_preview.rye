@@ -1,13 +1,13 @@
-//! brushstroke/preset_preview.rye — HUNK33: the Skate preview of a named filter, seen before it is committed.
+//! brushstroke/preset_preview.rye -- HUNK33: the Skate preview of a named filter, seen before it is committed.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK33.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK33.
 //! Design read: active-designing/date/20260813/20260813-183502_hunk-preset-preview-exploration.md.
-//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the named filter strips of Instagram / VSCO /
-//! iCloud Photos — a keeper sees "vivid" or "noir" over their own photo before tapping it (concept only, siloed).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - the named filter strips of Instagram / VSCO /
+//! iCloud Photos -- a keeper sees "vivid" or "noir" over their own photo before tapping it (concept only, siloed).
 //!
-//! HUNK30 gave a keeper filters by name; HUNK13 gave the eye — a pending edit-list previewed as a Skate grid before
+//! HUNK30 gave a keeper filters by name; HUNK13 gave the eye -- a pending edit-list previewed as a Skate grid before
 //! it is committed. Neither lets a keeper LOOK at a filter by its name. This rung joins the two: `preview_preset`
-//! looks a recipe up in a `PresetBook` (HUNK30's `find`) and previews it (HUNK13's `preview` — pure, the source
+//! looks a recipe up in a `PresetBook` (HUNK30's `find`) and previews it (HUNK13's `preview` -- pure, the source
 //! untouched, nothing stored). `preview_book` is the filter strip: every named filter previewed over one image at
 //! once, so a keeper scrolls the whole book and taps the one they want, none committed. No name is stored, no bead
 //! written, no network, no key, no funds.
@@ -26,9 +26,9 @@ const skate = @import("skate_grid.rye");
 pub const preset_preview_version = "20260813.183502";
 
 /// Preview a named filter over a source image: look the recipe up in the book by name, then preview its edit-list
-/// as a Skate grid (HUNK13's `preview` — pure, the source never touched, nothing stored). An absent name refuses
+/// as a Skate grid (HUNK13's `preview` -- pure, the source never touched, nothing stored). An absent name refuses
 /// `UnknownPreset` before a single verb replays or a grid is built; a verb's own refusal folds through `preview`
-/// by that verb's name, and the down-map's own `EmptyImage` / `GridTooLarge` surface unchanged — no new failure
+/// by that verb's name, and the down-map's own `EmptyImage` / `GridTooLarge` surface unchanged -- no new failure
 /// mode, only proven refusals sequenced.
 pub fn preview_preset(
     allocator: std.mem.Allocator,
@@ -40,7 +40,7 @@ pub fn preview_preset(
 ) !skate.Grid {
     // invariant: the book stays within its named ceiling before a lookup.
     assert(book.len() <= filter_preset.max_presets);
-    // invariant: the source is a well-formed image — four bytes per pixel — the whole pipeline relies on.
+    // invariant: the source is a well-formed image -- four bytes per pixel -- the whole pipeline relies on.
     assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
 
     const idx = book.find(preset_name) orelse return error.UnknownPreset;
@@ -50,7 +50,7 @@ pub fn preview_preset(
 }
 
 /// The filter strip: preview EVERY named filter in the book over one source, filling `out_grids` in book order and
-/// returning the count previewed. The property `edit_preview` cannot claim — a keeper sees the whole book of
+/// returning the count previewed. The property `edit_preview` cannot claim -- a keeper sees the whole book of
 /// named filters over their own photo at once, none committed. Refuses `Overflow` when the caller's slice is
 /// smaller than the book, rather than writing past it; each preview is pure, so the source is read many times and
 /// touched never.
@@ -83,7 +83,7 @@ pub fn preview_book(
 //     preview is non-destructive and deterministic and genuinely lit, and that the named refusals fire ----------
 
 /// Build a small image where each pixel carries a distinct color, so a filter's color work is visible in the
-/// down-mapped grid. Pixel (x,y) = (x·40+20, y·30+10, (x*3+y*7)·5, 255).
+/// down-mapped grid. Pixel (x,y) = (x-40+20, y-30+10, (x*3+y*7)-5, 255).
 fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
@@ -116,11 +116,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, by_name.fg_index, by_hand.fg_index));
 
     // The named preview shows the filter's real work: `mono` (grayscale) previews to a different view than `vivid`
-    // (saturated) over the same image — a name is not a no-op in the eye.
+    // (saturated) over the same image -- a name is not a no-op in the eye.
     const mono_view = try preview_preset(garden, &book, "mono", &pm, cols, rows);
     assert(!std.mem.eql(u8, mono_view.fg_index, by_name.fg_index));
 
-    // The filter strip: preview EVERY named filter over one photo at once — one grid per preset, each equal to that
+    // The filter strip: preview EVERY named filter over one photo at once -- one grid per preset, each equal to that
     // preset's own `preview_preset` cell-for-cell. A keeper scrolls the whole book over their photo, none committed.
     const strip = try garden.alloc(skate.Grid, filter_preset.max_presets);
     const drawn = try preview_book(garden, &book, &pm, cols, rows, strip);

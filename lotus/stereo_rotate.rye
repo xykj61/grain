@@ -1,28 +1,28 @@
-//! lotus/stereo_rotate.rye — ALES126: stereo_rotate — the cyclic turn of a master carried into stereo, both channels in lockstep. ALES106 named `rotate_left` — cyclic left-shift the whole clip
-//! by k samples, the k that fall off the front wrapping onto the tail — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that
+//! lotus/stereo_rotate.rye -- ALES126: stereo_rotate -- the cyclic turn of a master carried into stereo, both channels in lockstep. ALES106 named `rotate_left` -- cyclic left-shift the whole clip
+//! by k samples, the k that fall off the front wrapping onto the tail -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that
 //! LEFT and RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries rotate into stereo the way ALES125 carried reverse: run ALES106's proven mono `rotate_left` on
 //! each channel with the SAME shift `by`, so rotating the loop to the downbeat swings both speakers by the same amount at once. It is the second lift of the stereo suite's PURE REARRANGEMENT
-//! class — where every position changes and no value does — beside the end-for-end turn (reverse, lifted at ALES125), the value-mirror (invert), and the parity flip (nyquist_flip) still to lift;
+//! class -- where every position changes and no value does -- beside the end-for-end turn (reverse, lifted at ALES125), the value-mirror (invert), and the parity flip (nyquist_flip) still to lift;
 //! like reverse it is TOTAL and needs no validation.
 //!
 //! The rule, stated once: stereo_rotate_left(sc, by) cyclic-left-shifts both channels by the same `by`, reusing ALES106's mono `rotate_left` per channel over its public API. Because mono rotate
-//! reduces the shift modulo each channel's length (an over-long shift is the equivalent short one) and holds each channel's length, the balance invariant is preserved trivially — both channels
+//! reduces the shift modulo each channel's length (an over-long shift is the equivalent short one) and holds each channel's length, the balance invariant is preserved trivially -- both channels
 //! enter equal-length, both reduce the same `by` against the same length, both reseat in place, both hold their length, so they leave equal-length; there is no fault to forward, no EditError, no
 //! `try`. One `by` for both channels, because a stereo master is rotated to the downbeat as one thing.
 //!
-//! The crux — four laws. THE STEREO ROTATE LAW: the left channel equals mono rotate_left(left, by) and the right equals mono rotate_left(right, by), each byte for byte against a hand-rotated
+//! The crux -- four laws. THE STEREO ROTATE LAW: the left channel equals mono rotate_left(left, by) and the right equals mono rotate_left(right, by), each byte for byte against a hand-rotated
 //! vector, result index j holding original (j + by) mod len per channel, the front `by` samples moving to the tail. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold
-//! their starting length — rotate reseats samples cyclically, never the count, so the stereo image stays aligned. THE MODULAR / COMPOSITION-AND-INVERSE LAW: rotating by 0, by len, or a full turn
-//! is the identity on both channels, and rotate(k) equals rotate(k mod len); stereo_rotate_left(k1) then (k2) equals (k1+k2), and (k) then (len-k) returns both channels to the byte — every
+//! their starting length -- rotate reseats samples cyclically, never the count, so the stereo image stays aligned. THE MODULAR / COMPOSITION-AND-INVERSE LAW: rotating by 0, by len, or a full turn
+//! is the identity on both channels, and rotate(k) equals rotate(k mod len); stereo_rotate_left(k1) then (k2) equals (k1+k2), and (k) then (len-k) returns both channels to the byte -- every
 //! rotation's inverse another rotation, so a keeper who over-rotates a master rotates the rest of the way home. THE PERMUTATION / FIXPOINT LAW: rotate is a pure rearrangement, so each channel's
 //! peak magnitude (re-measured through ALES13) is unchanged; an empty pair and a single-sample pair are each their own rotation for any shift.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES126.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES126.
 //! Design read: active-designing/date/20260815/20260815-024103_fill-ales126-lotus-stereo-rotate.md
-//! Stands on: lotus/rotate.rye (ALES106) — the mono cyclic left-shift run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove a permutation moves no loudness in either channel.
+//! Stands on: lotus/rotate.rye (ALES106) -- the mono cyclic left-shift run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples; lotus/meter.rye (ALES13) -- the peak/RMS meter, used by the witness to prove a permutation moves no loudness in either channel.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats existing samples cyclically in each channel and fabricates
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats existing samples cyclically in each channel and fabricates
 //! none; it changes no length and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_rotate.rye selftest
@@ -39,23 +39,23 @@ const meter = @import("meter.rye");
 pub const stereo_rotate_version = "20260815.024103";
 
 /// Cyclic left-shift both channels of `sc` by the same `by` samples in lockstep, the front `by mod len` samples of each channel moving to the tail, the stereo image staying balanced and each
-/// channel's length holding. Reduced modulo each channel's length so any `by` is legal — an over-long shift is the equivalent short one. Total on any balanced StereoClip: mono rotate raises no
+/// channel's length holding. Reduced modulo each channel's length so any `by` is legal -- an over-long shift is the equivalent short one. Total on any balanced StereoClip: mono rotate raises no
 /// fault and holds each length, so the two channels leave equal-length and no refusal can land between them. Reuses ALES106's mono rotate_left per channel.
 pub fn stereo_rotate_left(sc: *pan.StereoClip, by: u32) void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
     // Mono rotate is total and holds the length, so each channel reseats the same `by` against the same length and no fault can land between the two edits.
     rotate.rotate_left(&sc.left, by);
     rotate.rotate_left(&sc.right, by);
 
-    // invariant: the channels leave balanced — each held its length under the same rotation, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each held its length under the same rotation, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO ROTATE LAW — each channel equals ALES106's mono rotate_left on that channel byte for byte, result[j] = original[(j+by) mod len], the front `by` moving to the tail;
-//     THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length; THE MODULAR / COMPOSITION-AND-INVERSE LAW — rotate by 0/len/full-turn the identity, rotate(k)
-//     equals rotate(k mod len), rotate(k1) then rotate(k2) equals rotate(k1+k2), rotate(k) then rotate(len-k) the identity; THE PERMUTATION / FIXPOINT LAW — each channel's peak unchanged, an
+// --- selftest: THE STEREO ROTATE LAW -- each channel equals ALES106's mono rotate_left on that channel byte for byte, result[j] = original[(j+by) mod len], the front `by` moving to the tail;
+//     THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length; THE MODULAR / COMPOSITION-AND-INVERSE LAW -- rotate by 0/len/full-turn the identity, rotate(k)
+//     equals rotate(k mod len), rotate(k1) then rotate(k2) equals rotate(k1+k2), rotate(k) then rotate(len-k) the identity; THE PERMUTATION / FIXPOINT LAW -- each channel's peak unchanged, an
 //     empty pair and a single-sample pair their own rotation ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -70,14 +70,14 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// A channel's current peak magnitude, re-measured through ALES13 — the reader the permutation law checks each channel against.
+/// A channel's current peak magnitude, re-measured through ALES13 -- the reader the permutation law checks each channel against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO ROTATE LAW — each channel equals ALES106's mono rotate_left on that channel, proven side by side over one shift with different per-channel samples; the front `by` moves to
+    // 1. THE STEREO ROTATE LAW -- each channel equals ALES106's mono rotate_left on that channel, proven side by side over one shift with different per-channel samples; the front `by` moves to
     //    the tail.
     {
         var sc = pan.StereoClip{};
@@ -98,7 +98,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 31, 41, 51, 11, 21 })) return error.RightRotateWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at two offsets over a length-6 pair.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at two offsets over a length-6 pair.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3, 4, 5, 6 }, &[_]i16{ 7, 8, 9, 10, 11, 12 });
@@ -109,7 +109,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 10, 11, 12, 7, 8, 9 })) return error.BalanceRightWrong;
     }
 
-    // 3a. THE MODULAR LAW — rotating by 0, by len, and by a full-turn multiple is the identity on both channels; rotate by k equals rotate by k+len. No over-long shift is ever out of range.
+    // 3a. THE MODULAR LAW -- rotating by 0, by len, and by a full-turn multiple is the identity on both channels; rotate by k equals rotate by k+len. No over-long shift is ever out of range.
     {
         const l0 = [_]i16{ 10, 20, 30, 40, 50 };
         const r0 = [_]i16{ 11, 21, 31, 41, 51 };
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         if (!eq(short.right.samples(), wrapped.right.samples())) return error.ModularRightWrong;
     }
 
-    // 3b. THE COMPOSITION-AND-INVERSE LAW — rotate(k1) then rotate(k2) equals rotate(k1+k2) on both channels, so rotations add; and rotate(k) then rotate(len-k) returns both channels to the
+    // 3b. THE COMPOSITION-AND-INVERSE LAW -- rotate(k1) then rotate(k2) equals rotate(k1+k2) on both channels, so rotations add; and rotate(k) then rotate(len-k) returns both channels to the
     //     byte, every rotation's inverse another rotation.
     {
         const l0 = [_]i16{ -5, 10, -15, 20, -25, 30, 100, -100 }; // len 8
@@ -158,7 +158,7 @@ fn run_selftest() !u8 {
         if (!eq(inv.right.samples(), &r0)) return error.InverseRightWrong;
     }
 
-    // 4a. THE PERMUTATION LAW — rotate moves no value, only its seat, so each channel's peak re-measured through ALES13 is unchanged, even when the loudest sample rides the wrap. The i16
+    // 4a. THE PERMUTATION LAW -- rotate moves no value, only its seat, so each channel's peak re-measured through ALES13 is unchanged, even when the loudest sample rides the wrap. The i16
     //     minimum (magnitude 32768) rides along at the meter's domain ceiling.
     {
         var sc = pan.StereoClip{};
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&sc.right) != rb) return error.RightPeakMoved;
     }
 
-    // 4b. THE FIXPOINT LAW — an empty pair and a single-sample pair are each their own rotation for any shift, no special-casing.
+    // 4b. THE FIXPOINT LAW -- an empty pair and a single-sample pair are each their own rotation for any shift, no special-casing.
     {
         var empty = pan.StereoClip{};
         stereo_rotate_left(&empty, 5);

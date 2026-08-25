@@ -1,28 +1,28 @@
-//! lotus/stereo_shift.rye — ALES124: stereo_shift — the grid nudge carried into stereo, both channels in lockstep. ALES108 named `shift` — slide the whole clip by `by` samples and DROP
-//! what falls off the edge, filling the vacated end with silence, so the length HOLDS — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining
+//! lotus/stereo_shift.rye -- ALES124: stereo_shift -- the grid nudge carried into stereo, both channels in lockstep. ALES108 named `shift` -- slide the whole clip by `by` samples and DROP
+//! what falls off the edge, filling the vacated end with silence, so the length HOLDS -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining
 //! invariant is that LEFT and RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries shift into stereo the way ALES122 carried silence_span: run ALES108's
 //! proven mono `shift` on each channel with the SAME signed `by`, so nudging a take earlier or later on the grid slides both speakers by the same amount at once. It is the plainest lift of
-//! the family — mono shift is TOTAL (it names no out-of-range span, so it raises no fault), so this stereo twin needs no validation and can never refuse, and the length-preserving reseat
+//! the family -- mono shift is TOTAL (it names no out-of-range span, so it raises no fault), so this stereo twin needs no validation and can never refuse, and the length-preserving reseat
 //! beside stereo_silence_span (which overwrites in place) and stereo_move (which relocates).
 //!
 //! The rule, stated once: stereo_shift(sc, by) slides both channels by the same signed `by`, reusing ALES108's mono `shift` per channel over its public API. Because mono shift is total and
-//! holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both slide by the same magnitude, both hold their length, so they leave
+//! holds each channel's length, the balance invariant is preserved trivially -- both channels enter equal-length, both slide by the same magnitude, both hold their length, so they leave
 //! equal-length; there is no fault to forward, no EditError, no `try`. Negative `by` slides LEFT (earlier), positive slides RIGHT (later); a shift at or past the length leaves an all-silent
 //! channel. One signed `by` for both channels, because a stereo master is nudged on the grid as one thing.
 //!
-//! The crux — four laws. THE STEREO SHIFT LAW: the left channel equals mono shift(left, by) and the right equals mono shift(right, by), each byte for byte in both directions, the surviving
-//! samples sliding by `by` and the vacated end silent. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length — shift reseats values and fills
+//! The crux -- four laws. THE STEREO SHIFT LAW: the left channel equals mono shift(left, by) and the right equals mono shift(right, by), each byte for byte in both directions, the surviving
+//! samples sliding by `by` and the vacated end silent. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length -- shift reseats values and fills
 //! silence, never resizing, so the stereo image stays aligned. THE COMPOSITION-LOSS LAW, HONEST: stereo_shift(k) then stereo_shift(-k) returns the leading k samples as SILENCE on both
-//! channels, not their bytes — shift is not invertible, the dropped edge is gone; only a stereo clip whose shifted-off region was already silence round-trips. THE MAGNITUDE / DEGENERATE LAW:
+//! channels, not their bytes -- shift is not invertible, the dropped edge is gone; only a stereo clip whose shifted-off region was already silence round-trips. THE MAGNITUDE / DEGENERATE LAW:
 //! the peak magnitude of each channel (re-measured through ALES13) is non-increasing; by 0 the identity on both, |by| >= len all silence on both, the empty stereo pair its own shift.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES124.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES124.
 //! Design read: active-designing/date/20260815/20260815-023038_fill-ales124-lotus-stereo-shift.md
-//! Stands on: lotus/shift.rye (ALES108) — the mono grid nudge run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove dropping an edge never raises a channel's peak.
+//! Stands on: lotus/shift.rye (ALES108) -- the mono grid nudge run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples; lotus/meter.rye (ALES13) -- the peak/RMS meter, used by the witness to prove dropping an edge never raises a channel's peak.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats existing samples in each channel and fills the vacated
-//! end with SILENCE (zero) — the one thing it writes that was not already there, and silence is the honest content of an edge a clip was nudged away from; it invents no non-zero sample,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It reseats existing samples in each channel and fills the vacated
+//! end with SILENCE (zero) -- the one thing it writes that was not already there, and silence is the honest content of an edge a clip was nudged away from; it invents no non-zero sample,
 //! changes no length, and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_shift.rye selftest
@@ -42,20 +42,20 @@ pub const stereo_shift_version = "20260815.023038";
 /// and each channel's length holding. Negative `by` shifts left (earlier), positive shifts right (later). Total on any balanced StereoClip: mono shift raises no fault and holds each length,
 /// so the two channels leave equal-length and no refusal can land between them. Reuses ALES108's mono shift per channel.
 pub fn stereo_shift(sc: *pan.StereoClip, by: i32) void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
     // Mono shift is total and holds the length, so each channel slides the same magnitude and no fault can land between the two edits.
     shift.shift(&sc.left, by);
     shift.shift(&sc.right, by);
 
-    // invariant: the channels leave balanced — each held its length under the same shift, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each held its length under the same shift, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO SHIFT LAW — each channel equals ALES108's mono shift on that channel byte for byte, both directions, the vacated end silent; THE BALANCE / LENGTH LAW — left.len ==
-//     right.len after, both holding their starting length; THE COMPOSITION-LOSS LAW — stereo_shift(k) then stereo_shift(-k) zeros the leading k on both, a pre-silent region round-tripping;
-//     THE MAGNITUDE / DEGENERATE LAW — each channel's peak non-increasing, by 0 the identity, |by| >= len all silence, the empty pair its own shift ----------
+// --- selftest: THE STEREO SHIFT LAW -- each channel equals ALES108's mono shift on that channel byte for byte, both directions, the vacated end silent; THE BALANCE / LENGTH LAW -- left.len ==
+//     right.len after, both holding their starting length; THE COMPOSITION-LOSS LAW -- stereo_shift(k) then stereo_shift(-k) zeros the leading k on both, a pre-silent region round-tripping;
+//     THE MAGNITUDE / DEGENERATE LAW -- each channel's peak non-increasing, by 0 the identity, |by| >= len all silence, the empty pair its own shift ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -69,14 +69,14 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// A channel's current peak magnitude, re-measured through ALES13 — the reader the magnitude law checks each channel against.
+/// A channel's current peak magnitude, re-measured through ALES13 -- the reader the magnitude law checks each channel against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO SHIFT LAW — each channel equals ALES108's mono shift on that channel, proven side by side over one anchor with different per-channel samples, both directions.
+    // 1. THE STEREO SHIFT LAW -- each channel equals ALES108's mono shift on that channel, proven side by side over one anchor with different per-channel samples, both directions.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -103,7 +103,7 @@ fn run_selftest() !u8 {
         if (!eq(lft.right.samples(), &[_]i16{ 31, 41, 51, 0, 0 })) return error.LeftDirRightWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven both directions.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven both directions.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 6, 7, 8 });
@@ -114,7 +114,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 0, 6, 7 })) return error.BalanceRightWrong;
     }
 
-    // 3. THE COMPOSITION-LOSS LAW — stereo_shift is NOT invertible: shift(k) then shift(-k) returns the leading k samples as silence on both channels, the dropped edge gone; yet a
+    // 3. THE COMPOSITION-LOSS LAW -- stereo_shift is NOT invertible: shift(k) then shift(-k) returns the leading k samples as silence on both channels, the dropped edge gone; yet a
     //    pre-silent region round-trips exactly, because nothing non-zero is lost.
     {
         var lossy = pan.StereoClip{};
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         if (!eq(presilent.right.samples(), &[_]i16{ 0, 0, 31, 0, 0 })) return error.PreSilentRightWrong;
     }
 
-    // 4a. THE MAGNITUDE LAW — each channel's peak re-measured through ALES13 is non-increasing: a shift that drops a loud edge strictly lowers that channel's peak, a shift that drops only
+    // 4a. THE MAGNITUDE LAW -- each channel's peak re-measured through ALES13 is non-increasing: a shift that drops a loud edge strictly lowers that channel's peak, a shift that drops only
     //     silence holds it.
     {
         var sc = pan.StereoClip{};
@@ -147,7 +147,7 @@ fn run_selftest() !u8 {
         if (!(ra <= rb)) return error.RightPeakRose;
     }
 
-    // 4b. THE DEGENERATE LAW — by 0 the identity on both channels, |by| >= len all silence on both, the empty stereo pair its own shift, balanced throughout.
+    // 4b. THE DEGENERATE LAW -- by 0 the identity on both channels, |by| >= len all silence on both, the empty stereo pair its own shift, balanced throughout.
     {
         var idc = pan.StereoClip{};
         try load_stereo(&idc, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

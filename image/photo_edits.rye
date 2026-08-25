@@ -1,20 +1,20 @@
-//! image/photo_edits.rye — HUNK11: the non-destructive edit-list — verbs as data, replayed and travelling.
+//! image/photo_edits.rye -- HUNK11: the non-destructive edit-list -- verbs as data, replayed and travelling.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK11.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK11.
 //! Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md
-//! Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos — the
+//! Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos -- the
 //! original is never overwritten, the edits ride alongside as data (concept only, siloed).
 //!
-//! HUNK3–HUNK10 gave the Photos app six pure verbs (crop, flip_h, flip_v, rotate_quarter, scale, adjust), each
+//! HUNK3-HUNK10 gave the Photos app six pure verbs (crop, flip_h, flip_v, rotate_quarter, scale, adjust), each
 //! returning a fresh open image and leaving its source untouched. This rung is the keystone that purity is built
 //! for: an `EditList` records those verbs *as data*, and `apply` replays the whole list over a source image to
-//! produce a fresh edited image, the source never touched. Replay is deterministic — the same list over the same
-//! source yields the same bytes every time — which is the content-address guarantee an edited image never needs
+//! produce a fresh edited image, the source never touched. Replay is deterministic -- the same list over the same
+//! source yields the same bytes every time -- which is the content-address guarantee an edited image never needs
 //! its pixels stored, only the pair (source, edit-list). The list itself travels as a flat-Bron
 //! `format photo-edits-v1` record, so `render(parse(render(x)))` is a fixed point. No network, no key, no funds.
 //!
 //! HUNK28 joined the first of the HUNK21+ filter family to this grammar (`saturate`); HUNK29 completes the
-//! vocabulary — `hue_turn` (one `thirds` field) plus the four nullary filters `blur`, `sharpen`, `stretch`,
+//! vocabulary -- `hue_turn` (one `thirds` field) plus the four nullary filters `blur`, `sharpen`, `stretch`,
 //! and `edges` now record, replay, and travel like any verb. The edit-list is the one home for every gesture
 //! the Photos app can do, so no edit is a wound. Each filter's own refusal folds through by name; no new error.
 //!
@@ -30,7 +30,7 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const photo_edits_version = "20260813.155719";
 
-/// The most verbs one edit-list holds — a keeper's photo carries a handful of edits, never thousands. Named at
+/// The most verbs one edit-list holds -- a keeper's photo carries a handful of edits, never thousands. Named at
 /// construction so a list can never grow unbounded (TAME bound).
 pub const max_edits: u32 = 64;
 
@@ -48,7 +48,7 @@ pub const EditsError = error{
 const header = "format photo-edits-v1\n";
 
 /// The Photos verbs the edit-list carries, named as an enum so an edit-list is a bounded array of tagged verbs.
-/// HUNK28 joined the first filter (`saturate`); HUNK29 completes the vocabulary — the whole HUNK21–27 filter
+/// HUNK28 joined the first filter (`saturate`); HUNK29 completes the vocabulary -- the whole HUNK21-27 filter
 /// family (`hue_turn`, `blur`, `sharpen`, `stretch`, `edges`) now records like any verb, so no gesture is a wound.
 pub const EditKind = enum(u8) {
     crop,
@@ -65,7 +65,7 @@ pub const EditKind = enum(u8) {
     edges,
 };
 
-/// One recorded edit — a verb plus exactly the parameters that verb takes. A tagged union so `apply` and the
+/// One recorded edit -- a verb plus exactly the parameters that verb takes. A tagged union so `apply` and the
 /// travel functions switch over one value model, and a new verb joins by adding one variant. Two field shapes
 /// cover the whole family: a small parameter struct, or `void` for a filter that takes only the image.
 pub const Edit = union(EditKind) {
@@ -83,7 +83,7 @@ pub const Edit = union(EditKind) {
     edges: void,
 };
 
-/// A bounded, ordered sequence of edits recorded as data — the non-destructive edit history beside an image.
+/// A bounded, ordered sequence of edits recorded as data -- the non-destructive edit history beside an image.
 pub const EditList = struct {
     items: [max_edits]Edit = undefined,
     count: u32 = 0,
@@ -114,7 +114,7 @@ pub const EditList = struct {
     }
 };
 
-/// Copy a pixmap into a fresh buffer — a pure clone, so `apply` returns a fresh image even for the empty list and
+/// Copy a pixmap into a fresh buffer -- a pure clone, so `apply` returns a fresh image even for the empty list and
 /// never hands back the caller's own source buffer.
 fn clone(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
     // invariant: the source buffer is exactly four bytes per pixel.
@@ -133,7 +133,7 @@ fn clone(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
 }
 
 /// Replay an edit-list over a source image, folding each verb's fresh result into the next, and return the final
-/// edited image. Pure — the source is never mutated (the fold begins from a clone). The empty list recovers the
+/// edited image. Pure -- the source is never mutated (the fold begins from a clone). The empty list recovers the
 /// source byte-for-byte. A verb's own refusal (an out-of-bounds crop, a bad contrast) surfaces by that verb's
 /// named error through the fold; the edit-list adds no new failure mode, it only sequences the proven ones.
 pub fn apply(allocator: std.mem.Allocator, source: *const qoi.Pixmap, list: *const EditList) !qoi.Pixmap {
@@ -281,7 +281,7 @@ fn field_i32(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!i32 {
     return parse_int.parse_int(i32, tok, .{}) catch return error.BadEdits;
 }
 
-/// Refuse `BadEdits` when a line carries a field past the verb's own — no slack past the shape.
+/// Refuse `BadEdits` when a line carries a field past the verb's own -- no slack past the shape.
 fn no_slack(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!void {
     if (parts.next() != null) return error.BadEdits;
 }
@@ -290,7 +290,7 @@ fn no_slack(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!void {
 //     non-destructive, stays open, travels as a fixed point, and refuses malformed records by name --------------
 
 /// Build a 6×6 image where each pixel encodes its own coordinates, so a replayed edit's correctness is
-/// unambiguous: pixel (x,y) = (x·40, y·40, x+y, 255).
+/// unambiguous: pixel (x,y) = (x-40, y-40, x+y, 255).
 fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 6;
     const h: u32 = 6;
@@ -358,7 +358,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const from_text = try apply(garden, &pm, &rebuilt);
     assert(from_text.same_bytes(&replayed));
 
-    // HUNK28 — a filter joins the grammar: an edit-list `crop → saturate` equals the same two verbs called by
+    // HUNK28 -- a filter joins the grammar: an edit-list `crop -> saturate` equals the same two verbs called by
     // hand, byte-for-byte, so a filter replays like any verb.
     var filt = EditList.init();
     try filt.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
@@ -377,14 +377,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(filt_from_text.same_bytes(&filt_replayed));
 
     // The filter's OWN refusal folds through: a zero denominator refuses BadSaturation by its own name, not a new
-    // one — the edit-list adds no failure mode, it sequences the verb's proven ones.
+    // one -- the edit-list adds no failure mode, it sequences the verb's proven ones.
     var bad_sat = EditList.init();
     try bad_sat.push(.{ .saturate = .{ .num = 3, .den = 0 } });
     if (apply(garden, &pm, &bad_sat)) |_| return error.SatSlipped else |e| {
         if (e != error.BadSaturation) return error.WrongSat;
     }
 
-    // HUNK29 — the rest of the family joins: an edit-list `hue_turn → blur` equals the same two verbs called by
+    // HUNK29 -- the rest of the family joins: an edit-list `hue_turn -> blur` equals the same two verbs called by
     // hand, byte-for-byte. A parametered filter (thirds) and a nullary filter (blur) both replay like any verb.
     var fam = EditList.init();
     try fam.push(.{ .hue_turn = .{ .thirds = 1 } });
@@ -394,7 +394,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const fam_hand = try photos.blur(garden, &fam_hue);
     assert(fam_replayed.same_bytes(&fam_hand));
 
-    // A list carrying every verb kind renders and parses back to the same bytes — the WHOLE value model travels,
+    // A list carrying every verb kind renders and parses back to the same bytes -- the WHOLE value model travels,
     // now including the complete filter family (saturate, hue_turn, blur, sharpen, stretch, edges).
     var all = EditList.init();
     try all.push(.flip_h);
@@ -420,7 +420,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (parse_edits("format wrong-v1\n", &bad_hdr)) |_| return error.HdrSlipped else |e| {
         if (e != error.BadEdits) return error.WrongHdr;
     }
-    // Unwelcome: an unknown verb tag refuses (a tag no verb in the grammar names — `sharpen` is a real verb now,
+    // Unwelcome: an unknown verb tag refuses (a tag no verb in the grammar names -- `sharpen` is a real verb now,
     // so an honestly-unknown tag stands in its place).
     var bad_verb: EditList = undefined;
     if (parse_edits("format photo-edits-v1\nvignette 3\n", &bad_verb)) |_| return error.VerbSlipped else |e| {
@@ -436,7 +436,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (parse_edits("format photo-edits-v1\nrotate 1 9\n", &slack)) |_| return error.SlackSlipped else |e| {
         if (e != error.BadEdits) return error.WrongSlack;
     }
-    // Unwelcome: a verb's OWN refusal surfaces through the fold — an out-of-bounds crop in a list refuses by its
+    // Unwelcome: a verb's OWN refusal surfaces through the fold -- an out-of-bounds crop in a list refuses by its
     // own name, not a new one.
     var oob = EditList.init();
     try oob.push(.{ .crop = .{ .x = 4, .y = 0, .w = 3, .h = 2 } }); // 4+3 > 6

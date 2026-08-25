@@ -1,13 +1,13 @@
-//! mycelium/purse_knot.rye — the Purse verdict reads across a Knot (rung r3).
+//! mycelium/purse_knot.rye -- the Purse verdict reads across a Knot (rung r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the per-account double-spend · rung r3.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the per-account double-spend - rung r3.
 //! Design read: active-designing/date/20260813/20260813-072541_mycelium-purse-knot-across-a-cut-exploration.md
 //!
-//! Rung 1 resolved a whole Cord Dag into a Purse — which transfers moved coins between
+//! Rung 1 resolved a whole Cord Dag into a Purse -- which transfers moved coins between
 //! accounts, which came up short. Yet a ledger a family runs for years does not carry
 //! its whole past unbroken: the Knot (`cord_knot.rye`) ties off a committed prefix into
 //! a sealed `fold.FoldState` so a bounded Dag runs forever, and new facts continue onto
-//! that seal. This rung makes the Purse's corpus a Knot plus its live suffix — the
+//! that seal. This rung makes the Purse's corpus a Knot plus its live suffix -- the
 //! checkpointed per-account map read through the same verdict, continued by the
 //! transfers that arrived since the cut.
 //!
@@ -15,30 +15,30 @@
 //! transfers it to Bob inside the SEALED prefix; after the past is tied off and pruned,
 //! she signs a fresh transfer of that same hundred to Carol in the live suffix. Her
 //! purse emptied in the checkpointed past, so the suffix transfer finds nothing and
-//! comes up SHORT — a lawful no-op (amount <= what she ever received), the ledger whole,
+//! comes up SHORT -- a lawful no-op (amount <= what she ever received), the ledger whole,
 //! Carol paid nothing. Every honest node names the same winner whether it reads the
 //! whole Cord or a Knot plus a live suffix.
 //!
 //! The one honest seam a per-account Knot names: a `cord_knot.Knot` seals only fold's
-//! GLOBAL supply law (issued · taxed · the reserved-star set), not WHO holds what. So a
-//! Purse-across-a-Knot carries two things across the cut — the Knot (the integrity-sealed
+//! GLOBAL supply law (issued - taxed - the reserved-star set), not WHO holds what. So a
+//! Purse-across-a-Knot carries two things across the cut -- the Knot (the integrity-sealed
 //! supply, whose `issued` equals the prefix's `total_issued`, both counting only genesis
 //! credits) and the prefix verdict's per-account balances and received marks (the map the
 //! FoldState omits). The Knot's digest is integrity-in-travel for the number conservation
 //! is measured against; the per-account map travels beside it, and every suffix transfer
 //! re-proves its own signer and folds the Purse's own per-account law through the shared
 //! `purse.fold_transfer` step. A prefix that itself held a double-spend would fail
-//! `seal_dag` at the global overdraw — correct, because a checkpoint seals a SETTLED
+//! `seal_dag` at the global overdraw -- correct, because a checkpoint seals a SETTLED
 //! prefix; the contest belongs across the cut, in the live suffix.
 //!
 //! Additive by construction: it imports `purse` (r1's `Purse` / `fold_transfer` /
 //! `balances_sum`), `cord_knot`, `cord`, and `fold`, and calls only their public API.
 //! Rung one stays its own green binary; the Knot stays its own green binary. No storage,
-//! no transport, no network, no custody — a node reads across its own sealed checkpoint.
-//! Demo keeper seeds only — no real key, no funds.
+//! no transport, no network, no custody -- a node reads across its own sealed checkpoint.
+//! Demo keeper seeds only -- no real key, no funds.
 //!
 //! Named horizon (not this arc): a Purse served to another node without re-resolving,
-//! and a quorum-agreed checkpoint (a node pruning on a Knot it did not compute) — both
+//! and a quorum-agreed checkpoint (a node pruning on a Knot it did not compute) -- both
 //! reach the Comlink-served gate, Keaton's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/purse_knot.rye
@@ -60,11 +60,11 @@ pub const PurseKnot = struct {
     verdict: purse.Purse = .{},
 };
 
-/// Seal a committed prefix Dag into a PurseKnot — resolve it to its per-account verdict,
+/// Seal a committed prefix Dag into a PurseKnot -- resolve it to its per-account verdict,
 /// then tie off its global supply with a Knot. The prefix's balances and received marks
 /// travel in `verdict`; the sealed `FoldState` in `knot` is the integrity-checked
 /// starting supply. A prefix that itself overdrew globally (a double-spend before the
-/// cut) refuses at `seal_dag` — a checkpoint seals a settled prefix.
+/// cut) refuses at `seal_dag` -- a checkpoint seals a settled prefix.
 pub fn seal_purse(dag: *const cord.Dag) error{
     IdentityRefused,
     Malformed,
@@ -84,17 +84,17 @@ pub fn seal_purse(dag: *const cord.Dag) error{
     const k = try cord_knot.seal_dag(dag);
     // invariant: the sealed Knot verifies the instant it is made.
     assert(cord_knot.verify(&k));
-    // invariant: the sealed global issue equals the per-account issue — the number
+    // invariant: the sealed global issue equals the per-account issue -- the number
     // conservation is measured against travels integrity-checked.
     assert(k.state.issued == v.total_issued);
     return .{ .knot = k, .verdict = v };
 }
 
-/// Continue the per-account verdict onto a checkpoint — verify the Knot, seed a Purse
+/// Continue the per-account verdict onto a checkpoint -- verify the Knot, seed a Purse
 /// with the prefix's balances and received marks, then walk the live suffix one fact at
 /// a time through `purse.fold_transfer`. A suffix transfer the sender's checkpointed
 /// purse can pay moves coins; one it can no longer pay yet once could afford (amount <=
-/// what that holder ever received) comes up short — the same verdict r1 records within
+/// what that holder ever received) comes up short -- the same verdict r1 records within
 /// one Cord, now across the cut. A corrupt Knot refuses before a single fact is folded;
 /// a never-could-pay transfer, a broken signature, a star reserve, and a malformed
 /// recipient each still refuse whole. Conservation holds past the cut.
@@ -114,7 +114,7 @@ pub fn continue_purse(pk: *const PurseKnot, suffix: *const fold.Log) error{
     assert(suffix.len <= fold.myc_log_max_facts);
     // invariant: the sealed prefix state is a lawful fold state before it is trusted.
     assert(pk.knot.state.taxed <= pk.knot.state.issued);
-    // The Knot is untrusted input — a tampered one violates its own digest by design,
+    // The Knot is untrusted input -- a tampered one violates its own digest by design,
     // so its integrity is a runtime GATE (verify), never an assert. A corrupt Knot
     // refuses whole before a single suffix fact is folded.
     if (!cord_knot.verify(&pk.knot)) return error.KnotCorrupt;
@@ -122,12 +122,12 @@ pub fn continue_purse(pk: *const PurseKnot, suffix: *const fold.Log) error{
     var p = pk.verdict; // the prefix per-account map, carried across the cut
     var i: u32 = 0;
     while (i < suffix.len) : (i += 1) {
-        // Position is local to the live epoch — the pruned prefix's global order is
+        // Position is local to the live epoch -- the pruned prefix's global order is
         // gone, which is exactly what a checkpoint means. Round is likewise local; the
         // signer, the coins, and the verdict are what carry across the cut.
         try purse.fold_transfer(&p, &suffix.facts[i], i, 0);
     }
-    // invariant: conservation — the balances still sum to exactly what genesis issued.
+    // invariant: conservation -- the balances still sum to exactly what genesis issued.
     assert(p.balances_sum() == p.total_issued);
     return p;
 }
@@ -135,7 +135,7 @@ pub fn continue_purse(pk: *const PurseKnot, suffix: *const fold.Log) error{
 /// The per-account verdict never drifts between a full Cord and a Knot-continued
 /// resolution: the move and short counts, the coins moved and lost, the issued total,
 /// each loser's signer, and every account's balance agree. Position and round are
-/// deliberately not compared — both are local to the live epoch across a cut.
+/// deliberately not compared -- both are local to the live epoch across a cut.
 pub fn purses_match(whole: *const purse.Purse, across: *const purse.Purse) bool {
     // invariant: both verdicts stay within the named ceilings.
     assert(whole.move_count <= purse.purse_max_moves);
@@ -146,7 +146,7 @@ pub fn purses_match(whole: *const purse.Purse, across: *const purse.Purse) bool 
     if (whole.total_moved() != across.total_moved()) return false;
     if (whole.total_lost() != across.total_lost()) return false;
     if (whole.account_count != across.account_count) return false;
-    // The loser is the verdict's fingerprint — one holder came up short.
+    // The loser is the verdict's fingerprint -- one holder came up short.
     var i: u32 = 0;
     while (i < whole.short_count) : (i += 1) {
         const w = whole.short_at(i) orelse return false;
@@ -186,7 +186,7 @@ pub fn main() !void {
     const f_bob = fold.mint_fact(ka, fold.kind_tax, 100, "", bob_pk[0..]) orelse return error.MintBob;
     const f_carol = fold.mint_fact(ka, fold.kind_tax, 100, "", carol_pk[0..]) orelse return error.MintCarol;
 
-    // Genesis at round 0; Alice→Bob at round 1 (references genesis); Alice→Carol at round
+    // Genesis at round 0; Alice->Bob at round 1 (references genesis); Alice->Carol at round
     // 2 (references the Bob block), so the whole order is unambiguous by round.
     const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
     var hg: [cord.hash_len]u8 = undefined;
@@ -198,8 +198,8 @@ pub fn main() !void {
     const roots2 = [_][cord.hash_len]u8{hbob};
     const b_carol = cord.mint_block(ka, 2, roots2[0..], f_carol) orelse return error.BlockCarol;
 
-    // The truth to match: the WHOLE history resolved as one Cord Dag. Alice→Bob moves the
-    // coins; Alice→Carol finds an empty purse and comes up short.
+    // The truth to match: the WHOLE history resolved as one Cord Dag. Alice->Bob moves the
+    // coins; Alice->Carol finds an empty purse and comes up short.
     var whole = cord.Dag.empty();
     try cord.add(&whole, g);
     try cord.add(&whole, b_bob);
@@ -211,8 +211,8 @@ pub fn main() !void {
     if (whole_verdict.balance_of(carol_pk[0..]) != 0) return error.WholeCarol;
     if (whole_verdict.balance_of(alice_pk[0..]) != 0) return error.WholeAlice;
 
-    // The Knot path: seal the prefix (genesis + Alice→Bob), then continue the suffix
-    // (Alice→Carol) onto the checkpoint.
+    // The Knot path: seal the prefix (genesis + Alice->Bob), then continue the suffix
+    // (Alice->Carol) onto the checkpoint.
     var prefix = cord.Dag.empty();
     try cord.add(&prefix, g);
     try cord.add(&prefix, b_bob);
@@ -223,7 +223,7 @@ pub fn main() !void {
     if (pk.knot.state.issued != 100) return error.PrefixIssued;
     if (pk.verdict.balance_of(bob_pk[0..]) != 100) return error.PrefixBob;
 
-    // The live suffix: Alice transfers 100 to Carol — her checkpointed purse holds 0, yet
+    // The live suffix: Alice transfers 100 to Carol -- her checkpointed purse holds 0, yet
     // she received 100 in the sealed past, so it once could have been paid: a lawful
     // no-op spent-out loss. Carol receives nothing; the coin was spent to Bob before the cut.
     var suffix = fold.Log.empty();
@@ -232,7 +232,7 @@ pub fn main() !void {
     const across = try continue_purse(&pk, &suffix);
 
     // The crux: Alice's suffix transfer is a spent-out loss across the cut for her full
-    // 100, Bob still holds the coin, Carol holds nothing, conservation holds — and the
+    // 100, Bob still holds the coin, Carol holds nothing, conservation holds -- and the
     // checkpoint is invisible to the verdict.
     if (across.moves_seen() != 1) return error.AcrossMoves;
     if (across.shorts_seen() != 1) return error.AcrossShorts;
@@ -272,7 +272,7 @@ pub fn main() !void {
         if (err != error.IdentityRefused) return error.WrongTamper;
     }
 
-    // 3. A suffix transfer for more than Alice ever received never could pay — it refuses
+    // 3. A suffix transfer for more than Alice ever received never could pay -- it refuses
     //    whole across the cut, proof the never-could-pay line holds past a checkpoint
     //    exactly as within one Cord (500 > the 100 she was ever credited).
     const f_greedy = fold.mint_fact(ka, fold.kind_tax, 500, "", carol_pk[0..]) orelse return error.MintGreedy;

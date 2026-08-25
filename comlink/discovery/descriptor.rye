@@ -1,9 +1,9 @@
-//! comlink/discovery/descriptor.rye — a peer's signed self-description, bounded.
+//! comlink/discovery/descriptor.rye -- a peer's signed self-description, bounded.
 //!
-//! Build Journey v32 · slot 0 · five_primitives · equinox A · journey 1.
+//! Build Journey v32 - slot 0 - five_primitives - equinox A - journey 1.
 //! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
 //!   discovery_descriptor_max_bytes 512
-//! A descriptor is key · transport hints · freshness · lineage — nothing more.
+//! A descriptor is key - transport hints - freshness - lineage -- nothing more.
 //! Mycelium is untouched; discovery finds peers and never orders them.
 //!
 //!   rye run comlink/discovery/descriptor_test.rye
@@ -13,7 +13,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tally_copy = @import("tally_copy.rye");
 
-/// Hard ceiling — seated before this file existed (v27 · explicit_bounds).
+/// Hard ceiling -- seated before this file existed (v27 - explicit_bounds).
 pub const descriptor_max_bytes: u32 = 512;
 
 /// One peer descriptor: length-prefixed bytes inside the seated bound.

@@ -1,4 +1,4 @@
-//! amphora/vessel_fetch_wire.rye — Amphora fetch-by-digest: one resin over one or more sealed datagrams.
+//! amphora/vessel_fetch_wire.rye -- Amphora fetch-by-digest: one resin over one or more sealed datagrams.
 //!
 //! Request names a SHA3-256 hex digest. Small resins ride one response frame;
 //! larger resins ride kind-0x33 chunk frames and reassemble before digest verify.
@@ -18,7 +18,7 @@ const kind_response: u8 = 0x32;
 const kind_response_chunk: u8 = 0x33;
 
 pub const digest_hex_len: u32 = 64;
-/// Assembled resin ceiling — chunked when it will not fit one datagram.
+/// Assembled resin ceiling -- chunked when it will not fit one datagram.
 /// couples: vessel_seal.max_seal_plain
 pub const max_resin_bytes: u32 = 1024;
 /// couples: main.max_chunk_datagram
@@ -297,7 +297,7 @@ fn run_selftest_chunk() !void {
     }
     assert(std.mem.eql(u8, asm_big.resin(), &big));
 
-    // Unwelcome: flip last chunk body — assembled digest must refuse.
+    // Unwelcome: flip last chunk body -- assembled digest must refuse.
     var asm_bad: ResinAssembler = .{};
     c = 0;
     while (c < count) : (c += 1) {

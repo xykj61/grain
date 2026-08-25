@@ -1,27 +1,27 @@
-//! crypto/ripemd160.rye — Season G (Cryptography): RIPEMD-160 authored in pure Rye. RIPEMD-160 (Dobbertin·Bosselaers·Preneel, 1996)
-//! is the 160-bit hash that completes Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)) — the address-derivation step the tree's just-landed
+//! crypto/ripemd160.rye -- Season G (Cryptography): RIPEMD-160 authored in pure Rye. RIPEMD-160 (Dobbertin-Bosselaers-Preneel, 1996)
+//! is the 160-bit hash that completes Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)) -- the address-derivation step the tree's just-landed
 //! Base58Check (encoding/base58check.rye) and Bech32 (encoding/bech32.rye) both encode. SHA-256 already stands in our own GREEN Rye
 //! (crypto/sha256.rye); this rung adds the second hash of that pipeline, so a public key can travel all the way to a Bitcoin address
 //! in nothing but authored Grain arithmetic. It is the crux that turns the recently-landed address encoders into real addresses.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 //! Kin: crypto/sha256.rye (HASH160's first hash, GREEN), encoding/base58check.rye and encoding/bech32.rye (the address encoders that
 //! sit downstream). Monocypher (vendor/monocypher, CC0/BSD-dual) does not ship RIPEMD-160, and Zig's std.crypto ships no RIPEMD codec
-//! either, so this hash is authored from the RIPEMD-160 specification directly and proven against its published known-answer suite —
-//! the same discipline Base58 stands on when std ships no reference (.claude/rules/gratitude-licenses.md — our own arithmetic).
+//! either, so this hash is authored from the RIPEMD-160 specification directly and proven against its published known-answer suite --
+//! the same discipline Base58 stands on when std ships no reference (.claude/rules/gratitude-licenses.md -- our own arithmetic).
 //!
-//! THE CRUX — RIPEMD-160 folds each 64-byte block through TWO parallel lines of eighty steps, a left line and a right line, each over a
+//! THE CRUX -- RIPEMD-160 folds each 64-byte block through TWO parallel lines of eighty steps, a left line and a right line, each over a
 //! five-word 32-bit state, then crosses their results into the hash state. Every word is little-endian (unlike the SHA family's
 //! big-endian), the message length is appended as a 64-bit LITTLE-endian bit count, and every add is mod 2^32 (Zig's wrapping +%). The
 //! two lines use the five nonlinear functions in opposite order, mirrored message-word schedules, mirrored rotation amounts, and their
-//! own round constants. Nothing here is a claim about a device — it is arithmetic anyone can replay against the standard's vectors.
+//! own round constants. Nothing here is a claim about a device -- it is arithmetic anyone can replay against the standard's vectors.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto. Zig
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto. Zig
 //! ships no RIPEMD reference, so parity is proven at selftest against the RIPEMD-160 authors' own published known-answer suite: the
-//! empty message, "a", "abc", "message digest", the lowercase alphabet, the 56-byte "abcdbcde…" boundary vector (the edge that forces a
+//! empty message, "a", "abc", "message digest", the lowercase alphabet, the 56-byte "abcdbcde..." boundary vector (the edge that forces a
 //! second all-padding block), a 62-byte mixed string, eight repetitions of "1234567890" (80 bytes, multi-block), and one million "a"
-//! (the many-block length-field stress) — each matched hex for hex. HASH160 = RIPEMD-160(SHA-256(x)) is exercised as a live composition
+//! (the many-block length-field stress) -- each matched hex for hex. HASH160 = RIPEMD-160(SHA-256(x)) is exercised as a live composition
 //! over the GREEN crypto/sha256.rye. Constant-time timing-safety is a separate named horizon.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ripemd160.rye selftest
@@ -41,16 +41,16 @@ pub const hex_len: u32 = digest_len * 2;
 const steps: u32 = 80;
 
 /// The largest message this primitive hashes in one call. Sized to admit the standard's one-million-"a" stress vector (1_000_000 bytes)
-/// while still naming a ceiling every loop and the bit-length field can cite — the TAME reflex that every count declares its maximum.
+/// while still naming a ceiling every loop and the bit-length field can cite -- the TAME reflex that every count declares its maximum.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is mixed.
 pub const Ripemd160Error = error{
-    /// A message whose length exceeds max_message_bytes — refused at the edge, before padding or the block loop begins.
+    /// A message whose length exceeds max_message_bytes -- refused at the edge, before padding or the block loop begins.
     MessageTooLong,
 };
 
-/// The RIPEMD-160 initial hash value — the five 32-bit words the specification seeds the state with (the MD4/MD5 constants plus a fifth
+/// The RIPEMD-160 initial hash value -- the five 32-bit words the specification seeds the state with (the MD4/MD5 constants plus a fifth
 /// word). Named as a constant so hash reads its start from one source of truth.
 const h_init = [5]u32{
     0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0,
@@ -58,7 +58,7 @@ const h_init = [5]u32{
 
 /// The five round constants of the LEFT line, one per sixteen-step round (specification §2). The right line uses its own set below.
 const kl = [5]u32{ 0x00000000, 0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xA953FD4E };
-/// The five round constants of the RIGHT line — the mirror set that gives the parallel line its independent trajectory.
+/// The five round constants of the RIGHT line -- the mirror set that gives the parallel line its independent trajectory.
 const kr = [5]u32{ 0x50A28BE6, 0x5C4DD124, 0x6D703EF3, 0x7A6D76E9, 0x00000000 };
 
 /// LEFT-line message-word schedule: which of the sixteen block words each of the eighty steps mixes (specification's r table).
@@ -69,7 +69,7 @@ const rl = [80]u32{
     1,  9,  11, 10, 0,  8,  12, 4,  13, 3,  7,  15, 14, 5,  6,  2,
     4,  0,  5,  9,  7,  12, 2,  10, 14, 1,  3,  8,  11, 6,  15, 13,
 };
-/// RIGHT-line message-word schedule (specification's r' table) — the mirror of rl.
+/// RIGHT-line message-word schedule (specification's r' table) -- the mirror of rl.
 const rr = [80]u32{
     5,  14, 7,  0,  9,  2,  11, 4,  13, 6,  15, 8,  1,  10, 3,  12,
     6,  11, 3,  7,  0,  13, 5,  10, 14, 15, 8,  12, 4,  9,  1,  2,
@@ -85,7 +85,7 @@ const sl = [80]u32{
     11, 12, 14, 15, 14, 15, 9,  8,  9,  14, 5,  6,  8,  6,  5,  12,
     9,  15, 5,  11, 6,  8,  13, 12, 5,  12, 13, 14, 11, 8,  5,  6,
 };
-/// RIGHT-line rotation amounts (specification's s' table) — the mirror of sl.
+/// RIGHT-line rotation amounts (specification's s' table) -- the mirror of sl.
 const sr = [80]u32{
     8,  9,  9,  11, 13, 15, 15, 5,  7,  7,  8,  11, 14, 14, 12, 6,
     9,  13, 15, 7,  12, 8,  9,  11, 7,  7,  12, 7,  6,  15, 13, 11,
@@ -94,10 +94,10 @@ const sr = [80]u32{
     8,  5,  12, 9,  12, 5,  14, 6,  8,  13, 6,  5,  15, 13, 11, 11,
 };
 
-/// The five RIPEMD-160 nonlinear functions, selected by round index 0..4. The left line reads them in order (round r → f[r]); the right
-/// line reads them reversed (round r → f[4 - r]) — the mirror that keeps the two parallel lines independent.
+/// The five RIPEMD-160 nonlinear functions, selected by round index 0..4. The left line reads them in order (round r -> f[r]); the right
+/// line reads them reversed (round r -> f[4 - r]) -- the mirror that keeps the two parallel lines independent.
 fn f(idx: u32, x: u32, y: u32, z: u32) u32 {
-    // invariant: idx names exactly one of the five rounds — the caller passes a round in 0..4 or its mirror.
+    // invariant: idx names exactly one of the five rounds -- the caller passes a round in 0..4 or its mirror.
     assert(idx < 5);
     return switch (idx) {
         0 => x ^ y ^ z,
@@ -166,16 +166,16 @@ fn compress(h: *[5]u32, block: *const [block_bytes]u8) void {
     h[0] = t;
 }
 
-/// Hash a message to its 20-byte RIPEMD-160 digest. The message is padded MD4-style — a 0x80 byte, then zeros, then the message length
-/// in bits as a 64-bit LITTLE-endian integer — filling a whole number of 64-byte blocks, then every block is compressed in order.
+/// Hash a message to its 20-byte RIPEMD-160 digest. The message is padded MD4-style -- a 0x80 byte, then zeros, then the message length
+/// in bits as a 64-bit LITTLE-endian integer -- filling a whole number of 64-byte blocks, then every block is compressed in order.
 pub fn hash(msg: []const u8) Ripemd160Error![digest_len]u8 {
-    // invariant: RIPEMD-160's shapes are the standard's own — 20-byte digest, 64-byte block. Proven at compile time.
+    // invariant: RIPEMD-160's shapes are the standard's own -- 20-byte digest, 64-byte block. Proven at compile time.
     comptime assert(digest_len == 20 and block_bytes == 64);
     // invariant: the message fits the named bound, so its length casts to u32 losslessly and the bit length never overflows u64.
     if (msg.len > max_message_bytes) return error.MessageTooLong;
 
     const total: u32 = @intCast(msg.len);
-    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    // invariant: the u32 count names exactly the message bytes -- the bounded cast lost nothing.
     assert(total == msg.len);
 
     var h: [5]u32 = h_init;
@@ -187,9 +187,9 @@ pub fn hash(msg: []const u8) Ripemd160Error![digest_len]u8 {
     }
 
     // The tail is 0..63 leftover bytes. Build the padded final block(s): the tail, a 0x80 marker, zeros, then the 64-bit little-endian
-    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted — the 56-byte edge.
+    // bit length. When the tail plus marker plus length would exceed one block, two padded blocks are emitted -- the 56-byte edge.
     const rem = total - offset;
-    // invariant: the leftover is strictly less than a whole block — every full block was consumed above.
+    // invariant: the leftover is strictly less than a whole block -- every full block was consumed above.
     assert(rem < block_bytes);
 
     var tail = [_]u8{0} ** (block_bytes * 2);
@@ -231,19 +231,19 @@ pub fn to_hex(digest: [digest_len]u8) [hex_len]u8 {
     return out;
 }
 
-// The RIPEMD-160 authors' published known-answer suite (Dobbertin·Bosselaers·Preneel) — the neutral public reference our Rye and any
+// The RIPEMD-160 authors' published known-answer suite (Dobbertin-Bosselaers-Preneel) -- the neutral public reference our Rye and any
 // auditor's reference must both reproduce. Each pairs a message with its 40-character hex digest.
 const vec_empty_hex = "9c1185a5c5e9fc54612808977ee8f548b2258d31";
 const vec_a_hex = "0bdc9d2d256b3ee9daae347be6f4dc835a467ffe";
 const vec_abc_hex = "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc";
 const vec_msgdigest_hex = "5d0689ef49d2fae572b881b123a85ffa21595f36";
 const vec_alphabet_hex = "f71c27109c692c1b56bbdceb5b9d2865b3708dbc";
-// The 56-byte "abcdbcde…" boundary vector — its tail leaves no room for the length field, forcing a second all-padding block.
+// The 56-byte "abcdbcde..." boundary vector -- its tail leaves no room for the length field, forcing a second all-padding block.
 const vec_boundary_hex = "12a053384a9c0c88e405a06c27dcf49ada62eb2b";
 const vec_alnum_hex = "b0e20b6e3116640286ed3a87a5713079b21f5189";
-// Eight repetitions of "1234567890" (80 bytes) — a multi-block message.
+// Eight repetitions of "1234567890" (80 bytes) -- a multi-block message.
 const vec_eightnum_hex = "9b752e45573d4b39f4dbd3323cab82bf63326bfb";
-// One million "a" — the many-block stress that exercises the length field across thousands of blocks.
+// One million "a" -- the many-block stress that exercises the length field across thousands of blocks.
 const vec_milliona_hex = "52783243c1697bdbe16d37f97f68f08325dc1528";
 
 fn hex_eq(got: [hex_len]u8, want: []const u8) bool {
@@ -261,7 +261,7 @@ fn vector_ok(msg: []const u8, want: []const u8) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. The short published known-answers: each message hashes to the RIPEMD-160 authors' digest, hex for hex. "abcdbcde…" is the
+    // 1. The short published known-answers: each message hashes to the RIPEMD-160 authors' digest, hex for hex. "abcdbcde..." is the
     //    56-byte boundary that forces a second padding block; the alphabet and alphanumeric strings are single blocks.
     {
         try vector_ok("", vec_empty_hex);
@@ -291,14 +291,14 @@ fn run_selftest() !u8 {
         try vector_ok(&million, vec_milliona_hex);
     }
 
-    // 3. HASH160 = RIPEMD-160(SHA-256(x)) composes over the GREEN crypto/sha256.rye — the Bitcoin address-derivation step the tree's
+    // 3. HASH160 = RIPEMD-160(SHA-256(x)) composes over the GREEN crypto/sha256.rye -- the Bitcoin address-derivation step the tree's
     //    Base58Check and Bech32 encoders sit downstream of. Proven here as a live composition producing a 20-byte result deterministically
     //    (the same input always folds to the same 20 bytes); the encoders that turn it into an address are witnessed in encoding/.
     {
         const inner = try sha256.hash("abc");
         const h160_a = try hash(&inner);
         const h160_b = try hash(&(try sha256.hash("abc")));
-        // invariant: HASH160 is a pure function — the same input yields the same 20 bytes every time.
+        // invariant: HASH160 is a pure function -- the same input yields the same 20 bytes every time.
         var i: u32 = 0;
         while (i < digest_len) : (i += 1) {
             if (h160_a[i] != h160_b[i]) return error.Hash160NotDeterministic;

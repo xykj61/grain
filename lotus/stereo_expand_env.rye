@@ -1,12 +1,12 @@
-//! lotus/stereo_expand_env.rye — ALES164: the ATTACK/RELEASE DOWNWARD EXPANDER carried into stereo — the LINKED envelope (ALES160) driving ONE LINKED widening (ALES159) over time, and the rung that makes the stereo time-
+//! lotus/stereo_expand_env.rye -- ALES164: the ATTACK/RELEASE DOWNWARD EXPANDER carried into stereo -- the LINKED envelope (ALES160) driving ONE LINKED widening (ALES159) over time, and the rung that makes the stereo time-
 //! varying dynamics QUARTET whole. ALES159's stereo_expand leans on a pair the instant it sees it: a pair below the threshold has its deficit widened the moment it arrives, and the widening vanishes the moment the pair rises.
-//! A real expander breathes — it hears a sound END and holds through the release before it deepens, so the tail of a note falls smoothly rather than being wrenched down, and the expander does not pump on every dip. ALES160
+//! A real expander breathes -- it hears a sound END and holds through the release before it deepens, so the tail of a note falls smoothly rather than being wrenched down, and the expander does not pump on every dip. ALES160
 //! built exactly that breath for stereo (one shared envelope tracking the linked peak) and proved it once; ALES161 spent it for the compressor, ALES162 for the gate, ALES163 for the limiter. This rung spends the same proof
-//! for the EXPANDER: it drives the downward widening from the smoothed LINKED envelope rather than the bare pair, and applies the ONE resulting gain to both channels — the quiet pushed down together, the image held to the
+//! for the EXPANDER: it drives the downward widening from the smoothed LINKED envelope rather than the bare pair, and applies the ONE resulting gain to both channels -- the quiet pushed down together, the image held to the
 //! sample the whole time.
 //!
 //! Two proofs fused. The DETECTOR is linked and time-smoothed (ALES160): the one envelope steps toward max(|left|, |right|) clamped to the rail, the louder channel deciding the shared loudness over time. The GAIN is linked
-//! (ALES159): where the smoothed envelope falls below the threshold its deficit is widened by the ratio (ALES60's deepened floor, exp = max(0, threshold − deficit·num/den), computed on the ENVELOPE not the bare sample) and the
+//! (ALES159): where the smoothed envelope falls below the threshold its deficit is widened by the ratio (ALES60's deepened floor, exp = max(0, threshold − deficit-num/den), computed on the ENVELOPE not the bare sample) and the
 //! single gain exp/e is applied to BOTH raw samples. Expanding each channel by its own envelope would deepen on different samples and tear the image; one detector and one gain keep the field aligned.
 //!
 //! The rule, stated once: refuse BadThreshold (outside [1, sample_max]), BadRatio (below one or a zero denominator), BadCoeff (an attack or release outside (0, 1]), and BadRange (a span past the shared length) BEFORE any
@@ -14,21 +14,21 @@
 //! continuous at the threshold); envelope below the threshold applies the one widened gain exp/e to both raw samples. A shared envelope of exactly zero arises only when both channels are silent, so nothing to expand and no
 //! divide by zero.
 //!
-//! The crux — six laws. THE INSTANTANEOUS LAW (the crux link): unit attack and unit release make the linked envelope the instantaneous linked peak, so this equals ALES159's memoryless stereo_expand byte for byte on both — the
+//! The crux -- six laws. THE INSTANTANEOUS LAW (the crux link): unit attack and unit release make the linked envelope the instantaneous linked peak, so this equals ALES159's memoryless stereo_expand byte for byte on both -- the
 //! time-varying rung's zero-smoothing limit is exactly the memoryless rung already proven. THE LINKED-GAIN-OVER-TIME LAW: a left-always-peak master has left' equal to ALES61's mono expand_env(left) byte for byte, the right
 //! scaled by the same fraction exp/e, the independent per-channel expand_env genuinely differing. THE IMAGE LAW: the shared gain preserves the L:R ratio, an out-of-phase pair returning still out of phase, no magnitude
 //! expanding, no sign flipping. THE KNOB LAWS: unit ratio the identity everywhere, a slower release easing the widening longer (a quiet tail surviving, monotone). THE CARRY LAW: a span expanded in two pieces equals the whole
 //! once on both. THE AT-THRESHOLD / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a master whose linked envelope never falls below the threshold passing byte for byte, silence staying silence, left.len == right.len after,
 //! each of the four refusals leaving both channels untouched and balanced, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES164.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES164.
 //! Design read: active-designing/date/20260815/20260815-070944_fill-ales164-lotus-stereo-expand-env.md
-//! Stands on: lotus/stereo_envelope.rye (ALES160) — the LINKED envelope, its stereo_env_step advancing the one shared detector toward the linked peak, reused whole; lotus/stereo_expand.rye (ALES159) — the LINKED widening this
-//! drives over time, its instantaneous form the unit-coefficient limit re-proven beside it; lotus/expand_env.rye (ALES61) — the mono attack/release expander, its ExpandEnvError reused whole and its output the left-always-peak
-//! comparison; lotus/expand.rye (ALES60) — the deepened floor exp = max(0, threshold − deficit·num/den); lotus/pan.rye (ALES10) — the StereoClip; lotus/timeline.rye (ALES2) — the Clip, sample_max.
+//! Stands on: lotus/stereo_envelope.rye (ALES160) -- the LINKED envelope, its stereo_env_step advancing the one shared detector toward the linked peak, reused whole; lotus/stereo_expand.rye (ALES159) -- the LINKED widening this
+//! drives over time, its instantaneous form the unit-coefficient limit re-proven beside it; lotus/expand_env.rye (ALES61) -- the mono attack/release expander, its ExpandEnvError reused whole and its output the left-always-peak
+//! comparison; lotus/expand.rye (ALES60) -- the deepened floor exp = max(0, threshold − deficit-num/den); lotus/pan.rye (ALES10) -- the StereoClip; lotus/timeline.rye (ALES2) -- the Clip, sample_max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope, siloed to lotus/. One linked-peak comparison and at most one widen and one multiply-then-divide
-//! for the gain per channel, all in i64 (|sample|·exp <= 32768·32767 never overflowing), the gain exp/e in [0, 1) so every scaled magnitude is at most its input's and fits i16. The threshold is a magnitude in sample units, the
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope, siloed to lotus/. One linked-peak comparison and at most one widen and one multiply-then-divide
+//! for the gain per channel, all in i64 (|sample|-exp <= 32768-32767 never overflowing), the gain exp/e in [0, 1) so every scaled magnitude is at most its input's and fits i16. The threshold is a magnitude in sample units, the
 //! ratio a plain fraction, the attack and release fractions per sample index rather than milliseconds against a clock. No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_expand_env.rye selftest
@@ -47,15 +47,15 @@ const expand = @import("expand.rye");
 
 pub const stereo_expand_env_version = "20260815.070944";
 
-/// The linked attack/release expander's faults are exactly ALES61's own `ExpandEnvError` — `BadThreshold`, `BadRatio`, `BadCoeff`, `BadRange` — reused by name, since fusing the linked detector with the linked widening adds no
+/// The linked attack/release expander's faults are exactly ALES61's own `ExpandEnvError` -- `BadThreshold`, `BadRatio`, `BadCoeff`, `BadRange` -- reused by name, since fusing the linked detector with the linked widening adds no
 /// new fault: it validates one shared threshold, one shared ratio, one shared attack, one shared release, and one span, then advances a single envelope and applies one gain per pair to both channels together.
 pub const StereoExpandEnvError = expand_env.ExpandEnvError;
 
 /// Expand `count` sample-PAIRS starting at `start` in the stereo master `sc` below the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the ONE downward widening FOLLOWING the LINKED envelope that CONTINUES from the
 /// caller's shared `env` (carried-state, ALES43's lesson). Each pair advances ALES160's linked follower one step toward the linked peak `max(|left|, |right|)` (the attack fraction while rising, release while falling); where the
-/// smoothed envelope sits at or above the threshold the expander is idle and both channels pass byte for byte, and where it falls below, the envelope's deficit is widened by the ratio (`exp = max(0, threshold − deficit·num/den)`,
-/// ALES60's deepened floor on the linked envelope) and the single gain `exp/e` applied to BOTH raw samples — one detector, one gain, the image held. The caller owns the i64 envelope across calls, so a span expanded in two
-/// pieces equals the whole once, the release easing across the boundary. Refuses BadThreshold, BadRatio, BadCoeff, and BadRange before any write; on refusal `env` and both channels are untouched. Values only — never the length,
+/// smoothed envelope sits at or above the threshold the expander is idle and both channels pass byte for byte, and where it falls below, the envelope's deficit is widened by the ratio (`exp = max(0, threshold − deficit-num/den)`,
+/// ALES60's deepened floor on the linked envelope) and the single gain `exp/e` applied to BOTH raw samples -- one detector, one gain, the image held. The caller owns the i64 envelope across calls, so a span expanded in two
+/// pieces equals the whole once, the release easing across the boundary. Refuses BadThreshold, BadRatio, BadCoeff, and BadRange before any write; on refusal `env` and both channels are untouched. Values only -- never the length,
 /// and the channels leave balanced.
 pub fn stereo_expand_follow_carry(
     sc: *pan.StereoClip,
@@ -70,18 +70,18 @@ pub fn stereo_expand_follow_carry(
     release_num: u32,
     release_den: u32,
 ) StereoExpandEnvError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared gain preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared gain preserves.
     assert(sc.left.len == sc.right.len);
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) with a nonzero denominator — a ratio below one would narrow the deficit (an upward gesture), a zero denominator would divide by zero. An expander only ever widens.
+    // invariant: the ratio is at least one (num >= den) with a nonzero denominator -- a ratio below one would narrow the deficit (an upward gesture), a zero denominator would divide by zero. An expander only ever widens.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] -- checked by the follower's one proven rule.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never expands one channel and leaves the other torn.
+    // invariant: the span lies wholly within the SHARED length -- checked once, without underflow, so it holds identically for both channels and a refusal never expands one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
@@ -96,30 +96,30 @@ pub fn stereo_expand_follow_carry(
         // Advance the ONE shared linked follower toward the pair's linked peak (ALES160's proven step); e is the smoothed linked magnitude, in [0, sample_max].
         _ = stereo_envelope.stereo_env_step(env, xl, xr, attack_num, attack_den, release_num, release_den);
         const e: i64 = env.*;
-        // invariant: the linked envelope stays a legal magnitude — never negative, never past the rail (the follower's own guarantee).
+        // invariant: the linked envelope stays a legal magnitude -- never negative, never past the rail (the follower's own guarantee).
         assert(e >= 0 and e <= @as(i64, timeline.sample_max));
         if (e < thr) {
             if (e == 0) {
-                // The smoothed linked detector reads exact silence. stereo_env_step forces at least a unit step toward any nonzero linked peak, so a zero envelope can only arise when the peak is zero — both channels are
+                // The smoothed linked detector reads exact silence. stereo_env_step forces at least a unit step toward any nonzero linked peak, so a zero envelope can only arise when the peak is zero -- both channels are
                 // silent this sample, nothing to expand, and no divide by zero.
                 // invariant: the tail is fully attenuated when this runs, which is what the
                 // envelope exists to reach -- a residue here means the release never completed
                 // and the next clip would open over it
                 assert(xl == 0 and xr == 0);
             } else {
-                // The expanded envelope target — ALES60's deepened floor computed on the LINKED envelope, not the bare sample: the deficit thr − e widened by the ratio (num/den >= 1) and floored at zero. thr−e <= 32767.
+                // The expanded envelope target -- ALES60's deepened floor computed on the LINKED envelope, not the bare sample: the deficit thr − e widened by the ratio (num/den >= 1) and floored at zero. thr−e <= 32767.
                 const deficit: i64 = thr - e; // strictly positive here (e < thr)
                 const widened: i64 = @divTrunc(deficit * num, den);
                 const raw_exp: i64 = thr - widened;
                 const exp: i64 = if (raw_exp < 0) 0 else raw_exp; // floor at silence — the gate reached from within the expander
-                // invariant: the expanded envelope sits within [0, envelope] — the single gain exp/e is in [0, 1) (num/den >= 1 => exp <= e).
+                // invariant: the expanded envelope sits within [0, envelope] -- the single gain exp/e is in [0, 1) (num/den >= 1 => exp <= e).
                 assert(exp >= 0 and exp <= e);
                 const ml: i64 = if (xl < 0) -@as(i64, xl) else @as(i64, xl); // |left| — safe in i64 (|sample_min| = 32768 fits)
                 const mr: i64 = if (xr < 0) -@as(i64, xr) else @as(i64, xr); // |right|
-                // ONE shared gain exp/e across both channels: m·exp <= 32768·32767 fits i64; divTrunc keeps each quotient at most its m.
+                // ONE shared gain exp/e across both channels: m-exp <= 32768-32767 fits i64; divTrunc keeps each quotient at most its m.
                 const nl: i64 = @divTrunc(ml * exp, e);
                 const nr: i64 = @divTrunc(mr * exp, e);
-                // invariant: the shared gain reduces, never boosts, and never below zero, on each channel — a smoothed expander only ever leans down.
+                // invariant: the shared gain reduces, never boosts, and never below zero, on each channel -- a smoothed expander only ever leans down.
                 assert(nl <= ml and nl >= 0 and nr <= mr and nr >= 0);
                 const yl: i16 = @intCast(if (xl < 0) -nl else nl); // safe: 0 <= nl <= ml <= sample_max
                 const yr: i16 = @intCast(if (xr < 0) -nr else nr);
@@ -130,15 +130,15 @@ pub fn stereo_expand_follow_carry(
                 assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
             }
         }
-        // envelope at or above the threshold: the pair plays — both left exactly as they were (continuous at the threshold, the expander idle).
+        // envelope at or above the threshold: the pair plays -- both left exactly as they were (continuous at the threshold, the expander idle).
     }
 
-    // invariant: an expander changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    // invariant: an expander changes sample values only -- each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-/// Expand `count` sample-pairs starting at `start` in the stereo master `sc`, the one downward widening following a LINKED envelope that begins FROM SILENCE (a fresh shared env of 0) — one implementation shared with the
+/// Expand `count` sample-pairs starting at `start` in the stereo master `sc`, the one downward widening following a LINKED envelope that begins FROM SILENCE (a fresh shared env of 0) -- one implementation shared with the
 /// carried form, so the two cannot drift. Refuses BadThreshold, BadRatio, BadCoeff, and BadRange before any write.
 pub fn stereo_expand_follow(
     sc: *pan.StereoClip,
@@ -156,9 +156,9 @@ pub fn stereo_expand_follow(
     return stereo_expand_follow_carry(sc, start, count, &env, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den);
 }
 
-// --- selftest: THE INSTANTANEOUS LAW — unit attack and release reduce it to ALES159's memoryless stereo_expand byte for byte on both; THE LINKED-GAIN-OVER-TIME LAW — a left-always-peak master has left' == ALES61's mono
-//     expand_env(left), the right scaled by the same fraction, the independent widening differing; THE IMAGE LAW — no magnitude expands, no sign flips, an out-of-phase pair returns still out of phase; THE KNOB LAWS — unit
-//     ratio the identity, a slower release easing the widening longer; THE CARRY LAW — a span in two pieces equals the whole once on both; THE AT-THRESHOLD / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW ----------------
+// --- selftest: THE INSTANTANEOUS LAW -- unit attack and release reduce it to ALES159's memoryless stereo_expand byte for byte on both; THE LINKED-GAIN-OVER-TIME LAW -- a left-always-peak master has left' == ALES61's mono
+//     expand_env(left), the right scaled by the same fraction, the independent widening differing; THE IMAGE LAW -- no magnitude expands, no sign flips, an out-of-phase pair returns still out of phase; THE KNOB LAWS -- unit
+//     ratio the identity, a slower release easing the widening longer; THE CARRY LAW -- a span in two pieces equals the whole once on both; THE AT-THRESHOLD / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW ----------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -177,7 +177,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE INSTANTANEOUS LAW — the crux link. With unit attack AND unit release the linked envelope IS the instantaneous linked peak (ALES160's unit identity), so the gain application lands each pair at exactly ALES159's
+    // 1. THE INSTANTANEOUS LAW -- the crux link. With unit attack AND unit release the linked envelope IS the instantaneous linked peak (ALES160's unit identity), so the gain application lands each pair at exactly ALES159's
     //    memoryless stereo_expand output. Proven by running BOTH tools on the same master and demanding byte-for-byte equality on both channels.
     {
         const ll = [_]i16{ 500, -800, 2000, -300, 900, -200, 600, -600 };
@@ -192,8 +192,8 @@ fn run_selftest() !u8 {
         if (!eq(smoothed.right.samples(), plain.right.samples())) return error.UnitRightNotMemoryless;
     }
 
-    // 2. THE LINKED-GAIN-OVER-TIME LAW — the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere) makes the shared envelope equal the mono envelope of the left, so left' equals ALES61's
-    //    mono expand_env(left) byte for byte, and the right is scaled by the SAME fraction exp/e — a different, image-preserving result than expanding the right on its own.
+    // 2. THE LINKED-GAIN-OVER-TIME LAW -- the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere) makes the shared envelope equal the mono envelope of the left, so left' equals ALES61's
+    //    mono expand_env(left) byte for byte, and the right is scaled by the SAME fraction exp/e -- a different, image-preserving result than expanding the right on its own.
     {
         const ll = [_]i16{ 12000, 200, 200, 200, 200, 200, 6000, -6000 }; // the left holds the peak; a loud head, then a quiet tail (the linked envelope releases below threshold), then loud again
         const rr = [_]i16{ -3000, 50, -40, 30, -50, 40, -1500, 1500 }; // |right| <= |left| everywhere
@@ -207,14 +207,14 @@ fn run_selftest() !u8 {
         try expand_env.expand_follow(&mono_l, 0, 8, 1000, 2, 1, 1, 1, 1, 2);
         if (!eq(sc.left.samples(), mono_l.samples())) return error.PeakLeftNotMono;
 
-        // the INDEPENDENT widening genuinely differs — mono expand_env of the right alone follows the right's own (quieter) envelope, deepening on different samples, an image-shifting result.
+        // the INDEPENDENT widening genuinely differs -- mono expand_env of the right alone follows the right's own (quieter) envelope, deepening on different samples, an image-shifting result.
         var mono_r = timeline.Clip{};
         try timeline.splice(&mono_r, 0, &rr);
         try expand_env.expand_follow(&mono_r, 0, 8, 1000, 2, 1, 1, 1, 1, 2);
         if (eq(sc.right.samples(), mono_r.samples())) return error.IndependentDidNotDiffer;
     }
 
-    // 3. THE IMAGE LAW — the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left) comes back STILL out of phase, both
+    // 3. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left) comes back STILL out of phase, both
     //    scaled by the identical time-smoothed fraction.
     {
         const il = [_]i16{ 900, -700, 5000, -400, 300, -300 };
@@ -242,7 +242,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both — ratio_num == ratio_den makes exp == e, so the gain is exactly one at every sample regardless of smoothing: the whole master passes byte for byte, even below threshold.
+    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both -- ratio_num == ratio_den makes exp == e, so the gain is exactly one at every sample regardless of smoothing: the whole master passes byte for byte, even below threshold.
     {
         const ll = [_]i16{ 300, -800, 500, -900, 20, -400 };
         const rr = [_]i16{ -50, 400, -700, 200, -50, 100 };
@@ -252,7 +252,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.UnitRatioNotIdentity;
     }
 
-    // 4b. A SLOWER RELEASE EASES THE WIDENING LONGER — after a loud passage ends, a slower release keeps the linked envelope above threshold for longer, so a quiet tail is attenuated LESS than under a fast release (the
+    // 4b. A SLOWER RELEASE EASES THE WIDENING LONGER -- after a loud passage ends, a slower release keeps the linked envelope above threshold for longer, so a quiet tail is attenuated LESS than under a fast release (the
     //     expander does not wrench the note's fall or pump). So on the tail the slow-release magnitude is no smaller than the fast-release magnitude at every sample on the left, and the first tail sample is strictly louder
     //     under the slow release (the expander audibly eases out).
     {
@@ -272,7 +272,7 @@ fn run_selftest() !u8 {
         if (abs16(slow.left.samples()[3]) <= abs16(fast.left.samples()[3])) return error.HoldDidNotSurvive;
     }
 
-    // 5. THE CARRY LAW — expanding a span in two pieces (the second continuing the first's ending shared envelope) equals expanding the whole span once, byte for byte on BOTH channels.
+    // 5. THE CARRY LAW -- expanding a span in two pieces (the second continuing the first's ending shared envelope) equals expanding the whole span once, byte for byte on BOTH channels.
     {
         const ll = [_]i16{ 12000, 12000, 400, 400, 300, 300, 9000, 200 };
         const rr = [_]i16{ -3000, 2000, -100, 90, -80, 70, -1500, 50 };
@@ -289,7 +289,7 @@ fn run_selftest() !u8 {
         if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
     }
 
-    // 6a. THE AT-THRESHOLD LAW — a master whose linked envelope never falls below the threshold passes byte for byte on both (the expander never opens).
+    // 6a. THE AT-THRESHOLD LAW -- a master whose linked envelope never falls below the threshold passes byte for byte on both (the expander never opens).
     {
         const ll = [_]i16{ 5000, -9000, 1200, -1000, 8000 };
         const rr = [_]i16{ 3000, -80, 40, -1000, -50 }; // even where the right is quiet the left is at/above threshold, so the linked envelope stays at or above it
@@ -299,7 +299,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.AtThresholdNotIdentity;
     }
 
-    // 6b. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master expands to zero on both; the channels stay equal length and each holds its starting length.
+    // 6b. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master expands to zero on both; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
@@ -314,7 +314,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 5) return error.LengthChanged;
     }
 
-    // 6c. THE ATOMICITY LAW — a bad threshold, a sub-unity ratio, a zero denominator, an illegal coefficient, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 6c. THE ATOMICITY LAW -- a bad threshold, a sub-unity ratio, a zero denominator, an illegal coefficient, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -340,7 +340,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 6d. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to expand.
+    // 6d. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to expand.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 500, -500, 200 }, &[_]i16{ -50, 60, -70 });
@@ -349,7 +349,7 @@ fn run_selftest() !u8 {
         if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
     }
 
-    // silence the unused import in builds that trim it — expand is named in the doc lineage; touch it so the reference stays honest.
+    // silence the unused import in builds that trim it -- expand is named in the doc lineage; touch it so the reference stays honest.
     _ = expand.expand_version;
 
     print("GREEN ales-stereo-expand-env: the ATTACK/RELEASE DOWNWARD EXPANDER CARRIED INTO STEREO — the LINKED envelope driving ONE LINKED widening over time, the stereo time-varying dynamics QUARTET made whole. Expand a " ++

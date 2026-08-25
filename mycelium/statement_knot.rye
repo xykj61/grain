@@ -1,6 +1,6 @@
-//! mycelium/statement_knot.rye — an account statement reads continuous across a Knot (rung r3).
+//! mycelium/statement_knot.rye -- an account statement reads continuous across a Knot (rung r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r3 — across a Knot.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Statement - rung r3 -- across a Knot.
 //! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
 //! r1 read one account's line out of a whole resolved ledger; r2 let it travel. Yet a ledger a family
@@ -10,21 +10,21 @@
 //! account's statement over a Knot-continued ledger and proves it is CONTINUOUS across the cut.
 //!
 //! The crux is A STATEMENT DOES NOT DRIFT AT THE CHECKPOINT: the statement read over the whole Cord and
-//! the statement read over the Knot-plus-suffix are the identical line — same position (balance ·
-//! reserved · received), same pledge lines, same states — and it still RECONCILES. A holder who reads
+//! the statement read over the Knot-plus-suffix are the identical line -- same position (balance -
+//! reserved - received), same pledge lines, same states -- and it still RECONCILES. A holder who reads
 //! their line after a checkpoint reads exactly what they would over the unpruned history.
 //!
 //! The honest seam this surfaces, the one the Statement meets across a Knot: an account's RECEIVED is
 //! cumulative inflow, so it must ACCUMULATE across the base, not restart at it. Because `continue_lapse`
 //! seeds its ledger with the prefix's account map (received intact) and the suffix's own credits add
-//! onto it, the Statement reads received continuous — an account credited before the cut and honored
+//! onto it, the Statement reads received continuous -- an account credited before the cut and honored
 //! after it reads its whole inflow, not merely the suffix's share. The Statement adds nothing here; it
 //! reads the continuity the Lapse's epoch base already keeps.
 //!
 //! Additive by construction: imports `statement` (r1's projection), `lapse_knot` (r3's checkpoint),
 //! `lapse`, `cord`, and `fold`, calling only their public API. Each stays its own green binary. No
-//! storage, no transport, no network, no custody — a node reads its own line across its own sealed
-//! checkpoint. Demo keeper seeds only — no real key, no funds.
+//! storage, no transport, no network, no custody -- a node reads its own line across its own sealed
+//! checkpoint. Demo keeper seeds only -- no real key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement_knot.rye
 
@@ -78,7 +78,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -89,7 +89,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = tag;
@@ -106,7 +106,7 @@ const Scene = struct {
 
 /// Seat the scene: genesis credits Alice 100 (round 0); Alice pledges 100 to Bob under the given
 /// deadline (round 1); Alice posts it (round 2). The prefix is genesis + pledge (base 2), the suffix
-/// the post — so a deadline of 2 is reached in the suffix (lapse across the cut) and a far deadline is
+/// the post -- so a deadline of 2 is reached in the suffix (lapse across the cut) and a far deadline is
 /// honored across it.
 fn seat(id: []const u8, deadline: u64) !Scene {
     const kf = seeded(0xF0);
@@ -135,7 +135,7 @@ fn seat(id: []const u8, deadline: u64) !Scene {
     return .{ .g = g, .pledge = b_pledge, .post = b_post, .post_fact = f_post };
 }
 
-/// Resolve the whole three-block Cord — the truth a Knot-continued reading must match.
+/// Resolve the whole three-block Cord -- the truth a Knot-continued reading must match.
 fn resolve_whole(s: *const Scene) !lapse.Ledger {
     var whole = cord.Dag.empty();
     try cord.add(&whole, s.g);
@@ -184,7 +184,7 @@ pub fn main() !void {
         const bob_across = try statement.statement_for(&across, bob_pk[0..]);
         if (!statements_match(&bob_whole, &bob_across)) return error.BobDrifted;
 
-        // A Knot corrupted after sealing refuses whole — no statement is ever read from it.
+        // A Knot corrupted after sealing refuses whole -- no statement is ever read from it.
         var prefix = cord.Dag.empty();
         try cord.add(&prefix, s.g);
         try cord.add(&prefix, s.pledge);
@@ -201,7 +201,7 @@ pub fn main() !void {
     // --- The seam: received accumulates across the cut (a far deadline, honored in the suffix) ---
     // Deadline 5. The suffix post rides position 2 < 5, so the pledge honors across the cut: Bob is
     // credited in the SUFFIX, having been absent at the seal. His received must read 100 (his whole
-    // inflow), not restart at the cut — the continuity the epoch base keeps and the Statement reads.
+    // inflow), not restart at the cut -- the continuity the epoch base keeps and the Statement reads.
     {
         const s = try seat(id[0..], 5);
         const whole = try resolve_whole(&s);
@@ -210,13 +210,13 @@ pub fn main() !void {
 
         const bob_whole = try statement.statement_for(&whole, bob_pk[0..]);
         const bob_across = try statement.statement_for(&across, bob_pk[0..]);
-        // Bob was absent at the seal, credited in the suffix — his received reads his whole inflow.
+        // Bob was absent at the seal, credited in the suffix -- his received reads his whole inflow.
         if (bob_across.received != 100 or bob_across.balance != 100) return error.BobReceivedRestart;
         if (!statements_match(&bob_whole, &bob_across)) return error.BobHonoredDrifted;
         const bl = bob_across.line_at(0) orelse return error.BobNoLine;
         if (bl.state != lapse.state_posted) return error.BobNotPosted;
 
-        // Alice's line agrees too — reserved returned, the made line reads posted, reconciles.
+        // Alice's line agrees too -- reserved returned, the made line reads posted, reconciles.
         const alice_whole = try statement.statement_for(&whole, alice_pk[0..]);
         const alice_across = try statement.statement_for(&across, alice_pk[0..]);
         if (alice_across.reserved != 0) return error.AliceHonoredReserve;

@@ -1,4 +1,4 @@
-//! linengrow/setu5_device_payload_witness.rye — proves SETU5 device payload bound.
+//! linengrow/setu5_device_payload_witness.rye -- proves SETU5 device payload bound.
 //!
 //!   rye build linengrow/setu5_device_payload_witness.rye \
 //!     -femit-bin=linengrow/bin/setu5_device_payload_witness

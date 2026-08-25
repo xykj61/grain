@@ -1,25 +1,25 @@
-//! constel/snapshot.rye — FORA14: compact the log so it can serve forever. FORA12 built the append-only replicated log every
+//! constel/snapshot.rye -- FORA14: compact the log so it can serve forever. FORA12 built the append-only replicated log every
 //! consensus exists to produce; FORA13 let the sky change its own membership without a fork. Both leave one honest bound: the
 //! log is a fixed [max_entries]u32 and append refuses LogFull at the cap. A ledger that can only ever hold sixty-four decisions
-//! is a demonstration, not a ledger. A real replicated log runs for years and must COMPACT — fold its settled history into a
-//! small summary and reclaim the room — or it stops. This rung takes that one new concern: snapshot / log compaction.
+//! is a demonstration, not a ledger. A real replicated log runs for years and must COMPACT -- fold its settled history into a
+//! small summary and reclaim the room -- or it stops. This rung takes that one new concern: snapshot / log compaction.
 //!
 //! The state a log accumulates is a DETERMINISTIC, ORDER-SENSITIVE fold over its committed values, applied in order:
 //!   state_0 = fold_seed;  state_n = state_{n-1} *% fold_mul +% value_n  (wrapping u32).
-//! A Snapshot is (count, state) — how many committed entries it absorbed, and their fold. Because two piers that committed the
+//! A Snapshot is (count, state) -- how many committed entries it absorbed, and their fold. Because two piers that committed the
 //! same prefix apply the same values in the same order (FORA12: each index commits AT MOST ONE value), their snapshots are
-//! IDENTICAL — the no-fork guarantee carries straight into compaction rather than being re-argued. A CompactLog keeps a
+//! IDENTICAL -- the no-fork guarantee carries straight into compaction rather than being re-argued. A CompactLog keeps a
 //! snapshot plus a live tail of entries committed after it; compact folds the tail into the snapshot and empties it, so the
 //! effective log grows past the tail bound in bounded memory, and can never fork.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA14. Design read: active-designing/date/20260814/20260814-060326_fora14-constel-snapshot-log-compaction.md
-//! Stands on: constel/log.rye (FORA12) — the append-only order the snapshot preserves; constel/decree.rye (FORA11) — each entry
-//! is one committed decree; constel/switchboard.rye (FORA6) — the medium; constel/roster.rye (FORA1) — the bound.
+//! Stands on: constel/log.rye (FORA12) -- the append-only order the snapshot preserves; constel/decree.rye (FORA11) -- each entry
+//! is one committed decree; constel/switchboard.rye (FORA6) -- the medium; constel/roster.rye (FORA1) -- the bound.
 //!
-//! Purely LOCAL — a bounded in-memory compact log over the switchboard on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any
-//! real wire — and gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- a bounded in-memory compact log over the switchboard on one bench, siloed to constel/, run from inside the
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any
+//! real wire -- and gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/snapshot.rye selftest
 
@@ -36,43 +36,43 @@ pub const snapshot_version = "20260814.060326";
 
 /// The most live entries a Constel compact log holds in its tail before a compaction is wanted. A bounded tail, named at
 /// construction like every collection in the tree; compaction folds it into the snapshot, so the EFFECTIVE log runs far past
-/// this bound in bounded memory — the whole point of the rung.
+/// this bound in bounded memory -- the whole point of the rung.
 pub const max_tail: u32 = 64;
 
 /// The seed and multiplier of the deterministic fold. The fold is order-sensitive on purpose (a rolling combine, not a sum),
-/// so a snapshot preserves the log's ORDERING, not merely its multiset of values. The multiplier is the FNV-1a prime — an
+/// so a snapshot preserves the log's ORDERING, not merely its multiset of values. The multiplier is the FNV-1a prime -- an
 /// arbitrary odd constant that mixes well; any fixed odd constant would keep the determinism this rung actually depends on.
 pub const fold_seed: u32 = 2166136261; // FNV offset basis, used as a plain deterministic seed
 pub const fold_mul: u32 = 16777619; // FNV prime — an arbitrary odd multiplier; determinism is what matters, not cryptography
 
 pub const SnapshotError = error{
-    /// The live tail is at its cap — compact() before appending more, or run_and_append auto-compacts.
+    /// The live tail is at its cap -- compact() before appending more, or run_and_append auto-compacts.
     TailFull,
-    /// A read named an effective index already folded into the snapshot and discarded — the compaction reclaimed it.
+    /// A read named an effective index already folded into the snapshot and discarded -- the compaction reclaimed it.
     Compacted,
     /// A read named an effective index the log has not committed.
     NoEntry,
 } || decree.DecreeError;
 
 /// One deterministic fold step: advance a running state by one committed value. Wrapping arithmetic keeps it total over all
-/// u32 — a fold never traps, it only mixes.
+/// u32 -- a fold never traps, it only mixes.
 pub fn fold_step(state: u32, value: u32) u32 {
-    // invariant: the step is pure in its inputs — same (state, value) always yields the same next state, which is exactly why
+    // invariant: the step is pure in its inputs -- same (state, value) always yields the same next state, which is exactly why
     // two piers folding the same committed prefix reach the same snapshot.
     return (state *% fold_mul) +% value;
 }
 
 /// The compacted summary of a committed prefix: how many entries it absorbed, and their order-sensitive fold. Two snapshots
-/// that absorbed the same committed prefix are identical in both fields — the no-fork guarantee, carried into compaction.
+/// that absorbed the same committed prefix are identical in both fields -- the no-fork guarantee, carried into compaction.
 pub const Snapshot = struct {
     count: u32 = 0,
     state: u32 = fold_seed,
 
     /// Fold one more committed value into this snapshot, advancing both the count and the running state. The one mutation a
-    /// snapshot ever takes — it only ever absorbs the next committed value, never rewrites a past one.
+    /// snapshot ever takes -- it only ever absorbs the next committed value, never rewrites a past one.
     pub fn fold(self: *Snapshot, value: u32) void {
         // invariant: a snapshot never absorbs more than a full compacted log could hold; the caller (compact) bounds this by
-        // max_tail per call, and total across the log is what climbs — the snapshot count itself is monotone.
+        // max_tail per call, and total across the log is what climbs -- the snapshot count itself is monotone.
         const before = self.count;
         self.state = fold_step(self.state, value);
         self.count = before + 1;
@@ -80,7 +80,7 @@ pub const Snapshot = struct {
         assert(self.count == before + 1);
     }
 
-    /// Whether two snapshots absorbed the same committed prefix — identical count AND identical fold. The replication check at
+    /// Whether two snapshots absorbed the same committed prefix -- identical count AND identical fold. The replication check at
     /// the snapshot level: same committed prefix, same summary.
     pub fn matches(self: *const Snapshot, other: *const Snapshot) bool {
         return self.count == other.count and self.state == other.state;
@@ -94,7 +94,7 @@ pub const CompactLog = struct {
     tail: [max_tail]u32 = [_]u32{0} ** max_tail,
     tail_len: u32 = 0,
 
-    /// The effective committed length — the snapshot's absorbed count plus the live tail. This is the number a client sees;
+    /// The effective committed length -- the snapshot's absorbed count plus the live tail. This is the number a client sees;
     /// it grows without bound (in bounded memory) as compaction folds the tail away.
     pub fn total(self: *const CompactLog) u32 {
         // invariant: the tail never exceeds its bound, so the sum is well defined.
@@ -102,7 +102,7 @@ pub const CompactLog = struct {
         return self.snap.count + self.tail_len;
     }
 
-    /// Append an already-committed value to the live tail, refusing TailFull at the cap. No prior entry moves — append-only,
+    /// Append an already-committed value to the live tail, refusing TailFull at the cap. No prior entry moves -- append-only,
     /// exactly as FORA12's log; the only difference is that the tail can be reclaimed by compaction.
     pub fn append(self: *CompactLog, value: u32) SnapshotError!u32 {
         // invariant: the tail never grows past its named bound.
@@ -118,24 +118,24 @@ pub const CompactLog = struct {
         return idx;
     }
 
-    /// Fold the entire live tail into the snapshot, in order, then empty the tail — the reclaim. The effective length is
+    /// Fold the entire live tail into the snapshot, in order, then empty the tail -- the reclaim. The effective length is
     /// preserved (the entries move from tail into the snapshot's count), and effective_state is unchanged (folding then
     /// continuing equals folding all at once).
     pub fn compact(self: *CompactLog) void {
-        // invariant: the tail is within bound before the fold — bounded work per compaction.
+        // invariant: the tail is within bound before the fold -- bounded work per compaction.
         assert(self.tail_len <= max_tail);
         const total_before = self.total();
         const state_before = self.effective_state();
         var i: u32 = 0;
         while (i < self.tail_len) : (i += 1) self.snap.fold(self.tail[i]);
         self.tail_len = 0;
-        // invariant: compaction preserves the effective length and the effective state — it reclaims room, it changes nothing
+        // invariant: compaction preserves the effective length and the effective state -- it reclaims room, it changes nothing
         // a client can observe. This is why two piers may compact on different schedules and never fork.
         assert(self.total() == total_before);
         assert(self.effective_state() == state_before);
     }
 
-    /// The full fold over every committed value — the snapshot's state advanced by the live tail. Whether or not a compaction
+    /// The full fold over every committed value -- the snapshot's state advanced by the live tail. Whether or not a compaction
     /// has happened, two logs that committed the same prefix report the same effective_state.
     pub fn effective_state(self: *const CompactLog) u32 {
         var s = self.snap.state;
@@ -147,7 +147,7 @@ pub const CompactLog = struct {
     }
 
     /// Read a committed entry by effective index. An index already folded into the snapshot refuses Compacted (the compaction
-    /// reclaimed it — a real client would read the snapshot instead); an index past the end refuses NoEntry.
+    /// reclaimed it -- a real client would read the snapshot instead); an index past the end refuses NoEntry.
     pub fn get(self: *const CompactLog, index: u32) SnapshotError!u32 {
         if (index < self.snap.count) return error.Compacted;
         if (index >= self.total()) return error.NoEntry;
@@ -157,7 +157,7 @@ pub const CompactLog = struct {
         return self.tail[tail_idx];
     }
 
-    /// Whether two compact logs are equivalent as ledgers — same effective length AND same effective state — regardless of how
+    /// Whether two compact logs are equivalent as ledgers -- same effective length AND same effective state -- regardless of how
     /// each has compacted. This is the no-fork check for compaction: replication is judged by the committed history, not by the
     /// bookkeeping of when each pier reclaimed its tail.
     pub fn equivalent(self: *const CompactLog, other: *const CompactLog) bool {
@@ -165,7 +165,7 @@ pub const CompactLog = struct {
     }
 };
 
-/// Run one FORA11 decree and, only on a clean commit, append the committed value to the compact log — auto-compacting when the
+/// Run one FORA11 decree and, only on a clean commit, append the committed value to the compact log -- auto-compacting when the
 /// tail is full so the round never fails for room. Any decree error (NoDecree below a majority, NoSuchPier for a stranger
 /// leader, VowelPresent at the border) propagates and leaves the log UNCHANGED, so the log never carries a gap or an
 /// uncommitted value.
@@ -187,7 +187,7 @@ pub fn run_and_append(clog: *CompactLog, sb: *switchboard.Switchboard, leader: [
 //     compaction carries the effective log past max_tail; a real sky commits a sequence past the tail cap, a failure untouched -
 
 fn run_selftest() !u8 {
-    // 1. The fold is deterministic and ORDER-SENSITIVE — the same values in a different order fold to a different state, so a
+    // 1. The fold is deterministic and ORDER-SENSITIVE -- the same values in a different order fold to a different state, so a
     //    snapshot preserves ordering, not merely contents.
     {
         var a = Snapshot{};
@@ -247,7 +247,7 @@ fn run_selftest() !u8 {
         assert(clog.total() == 4);
     }
 
-    // 4. NO FORK across compaction — two logs fed the same committed sequence, one compacting midway and one never compacting,
+    // 4. NO FORK across compaction -- two logs fed the same committed sequence, one compacting midway and one never compacting,
     //    hold the same total() and the same effective_state(). Compaction introduces no divergence.
     {
         var eager = CompactLog{}; // compacts after every few appends
@@ -265,7 +265,7 @@ fn run_selftest() !u8 {
         assert(eager.equivalent(&lazy)); // yet equivalent as ledgers — no fork
         assert(eager.total() == lazy.total() and eager.total() == seq.len);
 
-        // A log fed a DIFFERENT sequence is honestly NOT equivalent — the check is real, not a constant true.
+        // A log fed a DIFFERENT sequence is honestly NOT equivalent -- the check is real, not a constant true.
         var other = CompactLog{};
         _ = try other.append(3);
         _ = try other.append(1);
@@ -278,7 +278,7 @@ fn run_selftest() !u8 {
         assert(!eager.equivalent(&other));
     }
 
-    // 5. Compaction carries the effective log PAST the original bound — append the tail to full, compact, append more, so
+    // 5. Compaction carries the effective log PAST the original bound -- append the tail to full, compact, append more, so
     //    total() climbs past max_tail in bounded memory.
     {
         var clog = CompactLog{};
@@ -293,7 +293,7 @@ fn run_selftest() !u8 {
         assert((try clog.get(max_tail)) == 1000); // the first post-snapshot entry reads back
     }
 
-    // 6. Over a REAL sky — run_and_append drives decrees into a compact log, auto-compacting when the tail fills, committing a
+    // 6. Over a REAL sky -- run_and_append drives decrees into a compact log, auto-compacting when the tail fills, committing a
     //    sequence in order past the tail cap; a stranger leader refuses NoSuchPier and leaves the log untouched.
     {
         var sb = switchboard.Switchboard{};
@@ -328,14 +328,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — the decree round mutates
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- the decree round mutates
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_key.rye — Android-shaped key downs → Dexter Action.
+//! linengrow/dexter_glass_key.rye -- Android-shaped key downs -> Dexter Action.
 //!
 //! Device-free mapper for soft-keyboard / hardware KEY events. NativeActivity
 //! drains AInputEvent KEY through these fields; the witness replays the same
@@ -9,7 +9,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const dexter = @import("window_input.rye");
 
-/// Android AKEYCODE_* (android/keycodes.h) — subset used on glass.
+/// Android AKEYCODE_* (android/keycodes.h) -- subset used on glass.
 pub const keycode_a: i32 = 29;
 pub const keycode_z: i32 = 54;
 pub const keycode_0: i32 = 7;

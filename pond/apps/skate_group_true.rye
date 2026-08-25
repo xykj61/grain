@@ -1,24 +1,24 @@
-//! pond/apps/skate_group_true.rye — Season 3 Journey 10 (Membership), Rung 4: the group reads true (Journey 10 closes).
+//! pond/apps/skate_group_true.rye -- Season 3 Journey 10 (Membership), Rung 4: the group reads true (Journey 10 closes).
 //!
 //! Rungs one through three fixed the quorum rule, signed each vote, and let a signed group travel as
-//! Bron — all over groups seated in code. This closing rung carries the reader onto a **real** Skate
+//! Bron -- all over groups seated in code. This closing rung carries the reader onto a **real** Skate
 //! group record a keeper can open and count, and proves the property the whole membership layer rests
 //! on: what the reader *reports* about a group is true to the bytes.
 //!
 //! The corpus is `surf/fixtures/group.bron`, a genuine `format skate-group-v1` record with real Ed25519
 //! vote signatures (three founders at quorum 2; two votes admit Bram, one one-sided vote for Cate holds),
-//! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` — no network, the bytes
+//! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` -- no network, the bytes
 //! read are the tree's own. Two independent readings must agree: the app parses the record through rung
 //! three and reports the founder count, the vote count, and the **admitted-by-quorum count** (distinct
-//! candidates whose distinct-vote tally reaches the quorum — a candidate short of quorum holds and is not
+//! candidates whose distinct-vote tally reaches the quorum -- a candidate short of quorum holds and is not
 //! counted), and the witness cross-checks that triple against `tools/fixtures/skate_group_truth.awk`'s
-//! reading of the same file — two tools, one answer. And the record is genuinely quorum-honest:
+//! reading of the same file -- two tools, one answer. And the record is genuinely quorum-honest:
 //! `still_quorum_honest` re-verifies every carried vote signature against the demo keyring, and `rebuild`
 //! recovers Bram's admission and Cate's hold exactly, so the fixture is a real signed group, not a hollow
 //! shape.
 //!
-//! Additive — composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
-//! only, reads no network (a group served over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
+//! only, reads no network (a group served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_group_true.rye -femit-bin=pond/bin/skate-group-true
 //!   pond/bin/skate-group-true selftest
@@ -36,7 +36,7 @@ const kumara = @import("kumara.rye");
 
 pub const skate_group_true_version = "20260812.204233";
 
-/// The real group record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real group record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_group = @embedFile("corpora/skate_group.bron");
 
 /// The three facts a keeper can count by hand: founders, votes, and candidates admitted by quorum.
@@ -60,7 +60,7 @@ fn tally_of(pg: *const bron.PortableGroup, candidate: u32) u32 {
     return count;
 }
 
-/// Count candidates admitted by quorum — a distinct candidate whose tally reaches the record's quorum.
+/// Count candidates admitted by quorum -- a distinct candidate whose tally reaches the record's quorum.
 /// A candidate is counted once (at the first vote line that names them), so a candidate voted for twice
 /// is not double-counted, and one short of quorum is not counted at all.
 fn admitted_count(pg: *const bron.PortableGroup) u32 {
@@ -90,7 +90,7 @@ pub fn read_group(text: []const u8) bron.BronError!Reading {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — the same seeds the fixture was signed with, so the record verifies as real.
+// Demo keeper seeds -- the same seeds the fixture was signed with, so the record verifies as real.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -114,7 +114,7 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_group(real_group);
@@ -126,7 +126,7 @@ fn welcome_reading_true_to_bytes() !void {
     print("skate_group_true: the reading of the real record — founders, votes, admitted — matches an independent count of the same bytes.\n", .{});
 }
 
-/// The record is genuinely quorum-honest — every carried vote signature verifies against the demo
+/// The record is genuinely quorum-honest -- every carried vote signature verifies against the demo
 /// keyring, and the rebuilt group carries Bram's admission and Cate's hold exactly.
 fn welcome_record_is_really_honest() !void {
     const ring = try demo_ring();
@@ -140,7 +140,7 @@ fn welcome_record_is_really_honest() !void {
     print("skate_group_true: the real record re-verified every vote offline and rebuilt Bram's admission and Cate's hold exactly.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true.
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true.
 fn unwelcome_tampered_record_refuses() !void {
     // Flip a byte inside the header so the record no longer names its format.
     var buf: [real_group.len]u8 = undefined;
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<founders> <votes> <admitted>`), so the witness can compare the
-/// app's reading against `skate_group_truth.awk` byte for byte — two tools, one answer.
+/// app's reading against `skate_group_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_group(real_group);
     print("{d} {d} {d}\n", .{ r.founders, r.votes, r.admitted });

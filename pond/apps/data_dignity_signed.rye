@@ -1,31 +1,31 @@
-//! pond/apps/data_dignity_signed.rye — Season 3 Journey 12 (Data-dignity), Rung 2: a succession whose two proofs cannot be forged.
+//! pond/apps/data_dignity_signed.rye -- Season 3 Journey 12 (Data-dignity), Rung 2: a succession whose two proofs cannot be forged.
 //!
-//! Rung one fixed the succession rule as a pure state machine — a keeper wills each holding bequeathed or
+//! Rung one fixed the succession rule as a pure state machine -- a keeper wills each holding bequeathed or
 //! rested, seals the directive, the heir accepts, and custody passes only on both proofs. Yet a bare state
 //! machine trusts whoever calls it: a steward could seal a directive in a departed keeper's name, or
 //! record an acceptance the heir never gave, and the tree would read a succession no one authorized. This
-//! rung binds **each of the two proofs** to a settled Kumara identity — the keeper's seal to the keeper's
-//! key, the heir's acceptance to the heir's key — so a succession a keeper never sealed, or an heir never
+//! rung binds **each of the two proofs** to a settled Kumara identity -- the keeper's seal to the keeper's
+//! key, the heir's acceptance to the heir's key -- so a succession a keeper never sealed, or an heir never
 //! accepted, cannot fire.
 //!
 //! The keeper's **directive** is signed over the exact facts it commits to: a tag (so a seal is never
 //! replayed as another act), the estate id (so a seal cannot cross estates), the keeper and heir points,
-//! and a **digest of the will's own marks** — every willed item and its disposition, in order. Binding the
+//! and a **digest of the will's own marks** -- every willed item and its disposition, in order. Binding the
 //! digest is the honesty crux: alter a bequeathed mark to rested (or slip a holding in) after the keeper
 //! signed, and the recomputed digest no longer matches the one the keeper's signature covers, so the seal
-//! falls (`BadConsent`) — a steward cannot rewrite the will a departed keeper meant. The heir's
+//! falls (`BadConsent`) -- a steward cannot rewrite the will a departed keeper meant. The heir's
 //! **acceptance** is signed over a tag, the estate id, and the keeper and heir points, so an acceptance
 //! cannot be lifted from one estate to another; an heir is never conscripted, and no one can forge the yes.
 //!
-//! A `Keyring` maps a point to its keeper public key — the caller's statement of whose word to trust (as
+//! A `Keyring` maps a point to its keeper public key -- the caller's statement of whose word to trust (as
 //! `council_sky_signed` maps a seat to its key). `seal_signed` verifies the keeper's directive over the
 //! estate's *current* will before sealing; `accept_signed` verifies the heir's acceptance before
 //! recording it. Succession itself is rung one's unchanged two-proof gate, so a signed round still needs
 //! both a sealed directive and an acceptance to move custody.
 //!
-//! Additive — composes rung one (`data_dignity`) and `kumara` over public API; rung one stays its own
-//! GREEN binary. Demo keeper and heir seeds only — no real key, no network, no real identity or seed (the
-//! maintainer's own succession over a real Kumara instance is the maintainer's hand — gate %4-adjacent).
+//! Additive -- composes rung one (`data_dignity`) and `kumara` over public API; rung one stays its own
+//! GREEN binary. Demo keeper and heir seeds only -- no real key, no network, no real identity or seed (the
+//! maintainer's own succession over a real Kumara instance is the maintainer's hand -- gate %4-adjacent).
 //!
 //!   rye build pond/apps/data_dignity_signed.rye -femit-bin=pond/bin/data-dignity-signed
 //!   pond/bin/data-dignity-signed selftest
@@ -51,7 +51,7 @@ pub const digest_len: u32 = 32;
 /// headroom for a caller that enrolls a wider circle of trusted points.
 pub const max_keyring: u32 = 64;
 
-/// The act a signature speaks for — a distinct tag per proof, so a seal can never be replayed as an
+/// The act a signature speaks for -- a distinct tag per proof, so a seal can never be replayed as an
 /// acceptance, nor either as another act.
 const tag_directive: u8 = 1;
 const tag_acceptance: u8 = 2;
@@ -70,7 +70,7 @@ pub const SignedError = error{
 
 pub const EstateActError = SignedError || estate_mod.EstateError;
 
-/// The digest of a will's own marks — every willed item and its disposition, in order — so a directive
+/// The digest of a will's own marks -- every willed item and its disposition, in order -- so a directive
 /// signs *what the keeper willed*, and any later tampering of a mark falls the signature. A rested mark
 /// carries one byte, a bequeathed mark another, so flipping one changes the digest.
 pub fn will_digest(estate: *const estate_mod.Estate) [digest_len]u8 {
@@ -113,7 +113,7 @@ fn acceptance_message(out: *[acceptance_msg_len]u8, estate_id: u32, keeper: u32,
     return acceptance_msg_len;
 }
 
-/// The keeper's signature over their directive — proof this keeper sealed *this will* to *this heir*.
+/// The keeper's signature over their directive -- proof this keeper sealed *this will* to *this heir*.
 pub fn sign_directive(keeper_seed: *const [kumara.seed_length]u8, estate_id: u32, keeper: u32, heir: u32, digest: *const [digest_len]u8) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
     var msg: [directive_msg_len]u8 = undefined;
@@ -121,7 +121,7 @@ pub fn sign_directive(keeper_seed: *const [kumara.seed_length]u8, estate_id: u32
     return kumara.sign(msg[0..len], kp, null).toBytes();
 }
 
-/// The heir's signature over their acceptance — proof this heir freely accepted custody of this estate.
+/// The heir's signature over their acceptance -- proof this heir freely accepted custody of this estate.
 pub fn sign_acceptance(heir_seed: *const [kumara.seed_length]u8, estate_id: u32, keeper: u32, heir: u32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(heir_seed);
     var msg: [acceptance_msg_len]u8 = undefined;
@@ -138,7 +138,7 @@ fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8)
     return true;
 }
 
-/// A bounded map from a point to its keeper public key — whose word the caller trusts.
+/// A bounded map from a point to its keeper public key -- whose word the caller trusts.
 // Invariant: count <= max_keyring.
 pub const Keyring = struct {
     points: [max_keyring]u32,
@@ -175,7 +175,7 @@ pub const Keyring = struct {
 };
 
 /// Verify the keeper's directive over a will digest against the keyring, refusing an unenrolled keeper
-/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no estate — the verification half
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no estate -- the verification half
 /// alone, so a traveled record (r3) can re-check a directive offline.
 pub fn verify_directive(ring: *const Keyring, estate_id: u32, keeper: u32, heir: u32, digest: *const [digest_len]u8, sig: *const [sig_len]u8) SignedError!void {
     const key = ring.key_of(keeper) orelse return error.UnknownKeeper;
@@ -210,7 +210,7 @@ pub fn accept_signed(estate: *estate_mod.Estate, ring: *const Keyring, estate_id
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+// Demo keeper and heir seeds -- plainly not real keys, so no identity is invented.
 const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const stranger_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -240,7 +240,7 @@ fn demo_estate() estate_mod.EstateError!estate_mod.Estate {
 }
 
 /// Both proofs signed by the right parties: the keeper seals their will, the heir accepts, and succession
-/// passes exactly the bequeathed set — the rested holding still rests.
+/// passes exactly the bequeathed set -- the rested holding still rests.
 fn welcome_signed_succession() !void {
     var e = try demo_estate();
     const ring = try demo_ring();
@@ -260,7 +260,7 @@ fn welcome_signed_succession() !void {
     print("data_dignity_signed: a keeper-signed directive and an heir-signed acceptance passed exactly the bequeathed set, the rested holding still resting.\n", .{});
 }
 
-/// The honesty crux — a steward flips a bequeathed mark to rested after the keeper sealed it and reuses
+/// The honesty crux -- a steward flips a bequeathed mark to rested after the keeper sealed it and reuses
 /// the keeper's signature; the recomputed will digest no longer matches, so the seal falls `BadConsent`.
 fn unwelcome_tampered_will_refuses() !void {
     // The keeper signs a directive over a will that bequeaths item 2.
@@ -268,7 +268,7 @@ fn unwelcome_tampered_will_refuses() !void {
     const honest_digest = will_digest(&honest);
     const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &honest_digest);
 
-    // A steward builds a different will — item 2 rested instead of bequeathed — and reuses the signature.
+    // A steward builds a different will -- item 2 rested instead of bequeathed -- and reuses the signature.
     var tampered = try estate_mod.Estate.open(keeper_pt, heir_pt);
     try tampered.bequeath(1);
     try tampered.rest(2); // the changed mark
@@ -281,20 +281,20 @@ fn unwelcome_tampered_will_refuses() !void {
     print("data_dignity_signed: a will tampered after the keeper sealed it refused BadConsent — a steward cannot rewrite the marks a departed keeper meant.\n", .{});
 }
 
-/// The keeper's directive must be signed by the keeper — a stranger's signature over the same facts falls,
+/// The keeper's directive must be signed by the keeper -- a stranger's signature over the same facts falls,
 /// and a wrong-signer acceptance falls too. Neither proof can be forged by another hand.
 fn unwelcome_forged_proofs_refuse() !void {
     var e = try demo_estate();
     const ring = try demo_ring();
     const digest = will_digest(&e);
 
-    // A stranger signs the directive claiming to be the keeper — it does not verify against the keeper key.
+    // A stranger signs the directive claiming to be the keeper -- it does not verify against the keeper key.
     const forged_seal = sign_directive(&stranger_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
     const bad_seal = seal_signed(&e, &ring, demo_estate_id, &forged_seal);
     assert(bad_seal == error.BadConsent);
     assert(!e.sealed);
 
-    // Seal honestly, then a stranger signs the acceptance claiming to be the heir — it falls.
+    // Seal honestly, then a stranger signs the acceptance claiming to be the heir -- it falls.
     const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
     try seal_signed(&e, &ring, demo_estate_id, &seal_sig);
     const forged_accept = sign_acceptance(&stranger_seed, demo_estate_id, keeper_pt, heir_pt);
@@ -304,12 +304,12 @@ fn unwelcome_forged_proofs_refuse() !void {
     print("data_dignity_signed: a forged directive and a forged acceptance each refused BadConsent — neither proof can be signed by another hand.\n", .{});
 }
 
-/// A party the ring does not enroll has no key to check — its word cannot be trusted, so the proof refuses
+/// A party the ring does not enroll has no key to check -- its word cannot be trusted, so the proof refuses
 /// `UnknownKeeper` before the estate is touched, even though the point is real.
 fn unwelcome_unknown_keeper_refuses() !void {
     var e = try demo_estate();
     const digest = will_digest(&e);
-    // A ring that enrolls the heir but not the keeper — the keeper is real but unenrolled.
+    // A ring that enrolls the heir but not the keeper -- the keeper is real but unenrolled.
     var ring = Keyring.open();
     try ring.enroll(heir_pt, pubkey_of(&demo_heir_seed));
 
@@ -320,7 +320,7 @@ fn unwelcome_unknown_keeper_refuses() !void {
     print("data_dignity_signed: a directive by a keeper the ring does not enroll refused UnknownKeeper — whose word is unknown cannot seal a succession.\n", .{});
 }
 
-/// A signature bound to one estate does not cross into another — both proofs name their estate id.
+/// A signature bound to one estate does not cross into another -- both proofs name their estate id.
 fn unwelcome_cross_estate_refuses() !void {
     var e = try demo_estate();
     const ring = try demo_ring();

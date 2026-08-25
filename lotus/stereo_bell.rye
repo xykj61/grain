@@ -1,33 +1,33 @@
-//! lotus/stereo_bell.rye — ALES174: a PARAMETRIC BELL (PEAKING EQ) carried into stereo — ALES48's residual-scaled middle band run on BOTH channels with the SAME two cutoffs and the SAME gain, the fifth rung of the stereo EQ /
-//! filter class and the surgical everyday EQ. The class has its tone control (ALES170), shelf (ALES171), band-pass (ALES172, isolate the middle), and notch (ALES173, drop the middle); the bell TURNS the middle — boosts or cuts
+//! lotus/stereo_bell.rye -- ALES174: a PARAMETRIC BELL (PEAKING EQ) carried into stereo -- ALES48's residual-scaled middle band run on BOTH channels with the SAME two cutoffs and the SAME gain, the fifth rung of the stereo EQ /
+//! filter class and the surgical everyday EQ. The class has its tone control (ALES170), shelf (ALES171), band-pass (ALES172, isolate the middle), and notch (ALES173, drop the middle); the bell TURNS the middle -- boosts or cuts
 //! it by a chosen gain while the edges stay exactly as they were. It is the single most-reached-for tool in a mix: lift a vocal's presence, tame a boxy room mode, dig out a kick's thump. ALES48 built that for a mono Clip on the
 //! tone stack's lesson: the middle is the EXACT residual M = x − L − H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction. The bell is the whole fixed-EQ family at
-//! three gains — unity the identity, zero the notch, a larger gain a boost. This rung carries it into stereo the way the EQ class asks — run ALES48's proven mono `bell` on each channel with the SAME cutoffs and gain, so the turned
+//! three gains -- unity the identity, zero the notch, a larger gain a boost. This rung carries it into stereo the way the EQ class asks -- run ALES48's proven mono `bell` on each channel with the SAME cutoffs and gain, so the turned
 //! band lifts on BOTH speakers together.
 //!
 //! Like every parametric edit (ALES130's fade, ALES171's shelf, ALES172's band, ALES173's notch), a bell's cutoffs and gain are fractions the caller NAMES, not scalars measured across the field, so the SAME parameters on each
-//! channel preserve the stereo image for free — no linking, no measurement. Each channel bells its OWN content through those shared knobs, which is exactly right for EQ: an identical-channel (mono-in-stereo) master stays identical
-//! because the same input through the same knobs is the same deterministic output, while a panned master shapes each side by its own spectrum. Like the shelf and notch and unlike the band-pass, there is no carried state to lift —
+//! channel preserve the stereo image for free -- no linking, no measurement. Each channel bells its OWN content through those shared knobs, which is exactly right for EQ: an identical-channel (mono-in-stereo) master stays identical
+//! because the same input through the same knobs is the same deterministic output, while a panned master shapes each side by its own spectrum. Like the shelf and notch and unlike the band-pass, there is no carried state to lift --
 //! ALES48's bell runs fresh filters over the whole span each call, so a stereo bell is a stateless per-channel pass with nothing to thread across a seam.
 //!
-//! The rule, stated once: refuse BadCoeff (a low or high cutoff outside (0, 1]), BadGain (a zero gain denominator), and BadRange (a span past the shared length) BEFORE either channel is touched — the two cutoffs, the gain
+//! The rule, stated once: refuse BadCoeff (a low or high cutoff outside (0, 1]), BadGain (a zero gain denominator), and BadRange (a span past the shared length) BEFORE either channel is touched -- the two cutoffs, the gain
 //! denominator, and the span validated once against the shared length up front, so a refusal never bells one channel and leaves the other torn; then run ALES48's `bell` on each channel with the SAME cutoffs and gain. Unity gain
 //! (gain_num = gain_den) reconstructs the input on both; zero gain (gain_num = 0) is exactly ALES173's stereo notch on both; at direct current the mid band is zero, so the bell turns only the middle and never the settled edges,
 //! per channel.
 //!
-//! The crux — four laws. THE STEREO BELL LAW: each channel equals ALES48's mono `bell` with the SAME cutoffs and gain over the same span byte for byte, proven side by side with genuinely different per-channel content — the left
+//! The crux -- four laws. THE STEREO BELL LAW: each channel equals ALES48's mono `bell` with the SAME cutoffs and gain over the same span byte for byte, proven side by side with genuinely different per-channel content -- the left
 //! belled by the left's spectrum, the right by the right's, never crossed. THE THREE-GAIN LAW: unity gain reconstructs the input byte for byte on both (the residual keeps the edges), zero gain equals ALES173's stereo notch on
-//! both (the middle rejected), and a settled constant survives on both at any gain (the mid band zero at direct current — the bell turns only the middle, per channel). THE IMAGE LAW: an identical-channel master stays identical
+//! both (the middle rejected), and a settled constant survives on both at any gain (the mid band zero at direct current -- the bell turns only the middle, per channel). THE IMAGE LAW: an identical-channel master stays identical
 //! through the bell (a mono-in-stereo signal never splits), the shared knobs holding the image. THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an all-silent master bells to silence on both; left.len == right.len after; an
 //! illegal low cutoff, an illegal high cutoff, a zero gain denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES174.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES174.
 //! Design read: active-designing/date/20260815/20260815-080752_fill-ales174-lotus-stereo-bell.md
-//! Stands on: lotus/bell.rye (ALES48) — the mono parametric bell run once per channel, its BellError reused whole; lotus/notch.rye (ALES47) — the zero-gain equality target, carried into stereo at ALES173; lotus/tone.rye (ALES40)
-//! — the low-pass/high-pass edges and the `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the
+//! Stands on: lotus/bell.rye (ALES48) -- the mono parametric bell run once per channel, its BellError reused whole; lotus/notch.rye (ALES47) -- the zero-gain equality target, carried into stereo at ALES173; lotus/tone.rye (ALES40)
+//! -- the low-pass/high-pass edges and the `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the
 //! Clip and the one true saturate the bell's sum reuses.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each belled through ALES48's own residual and scratch bands, siloed to lotus/. It changes sample VALUES only, never a length; every
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each belled through ALES48's own residual and scratch bands, siloed to lotus/. It changes sample VALUES only, never a length; every
 //! band scale and sum runs in i64 so nothing overflows before the single clamp per channel. The cutoffs set where the turned band falls over sample INDICES, not crossovers in hertz (a real time base is a later rung), and the
 //! gain is a plain fraction, NOT decibels. No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -45,13 +45,13 @@ const notch = @import("notch.rye");
 
 pub const stereo_bell_version = "20260815.080752";
 
-/// The stereo bell's faults are exactly ALES48's own `BellError` — `BadCoeff` on an illegal cutoff (either edge), `BadGain` on a zero gain denominator, and `BadRange` on a span outside the samples — reused by name, since carrying
+/// The stereo bell's faults are exactly ALES48's own `BellError` -- `BadCoeff` on an illegal cutoff (either edge), `BadGain` on a zero gain denominator, and `BadRange` on a span outside the samples -- reused by name, since carrying
 /// the bell into stereo adds no new fault: it validates two shared cutoffs, one shared gain, and one span against the shared length, then runs the same mono bell on each channel.
 pub const StereoBellError = bell.BellError;
 
-/// Peak `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME two cutoffs and the SAME gain: keep each channel's low and high bands at unity and scale the mid band — the exact residual M = x − L − H — by
-/// gain_num/gain_den, writing the sum saturated once — ALES48's proven mono bell, run per channel. Unity gain reconstructs the input on both; zero gain is exactly the stereo notch on both; a settled constant survives on both.
-/// Validates the two cutoffs, the gain denominator, and the span ONCE against the shared length before either channel is mutated: refuses BadCoeff, BadGain, and BadRange, both channels untouched. Values only — never the length;
+/// Peak `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME two cutoffs and the SAME gain: keep each channel's low and high bands at unity and scale the mid band -- the exact residual M = x − L − H -- by
+/// gain_num/gain_den, writing the sum saturated once -- ALES48's proven mono bell, run per channel. Unity gain reconstructs the input on both; zero gain is exactly the stereo notch on both; a settled constant survives on both.
+/// Validates the two cutoffs, the gain denominator, and the span ONCE against the shared length before either channel is mutated: refuses BadCoeff, BadGain, and BadRange, both channels untouched. Values only -- never the length;
 /// the two channels leave balanced.
 pub fn stereo_bell(
     sc: *pan.StereoClip,
@@ -64,27 +64,27 @@ pub fn stereo_bell(
     gain_num: i32,
     gain_den: u32,
 ) StereoBellError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared knobs preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared knobs preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies wholly within the SHARED length — checked before any write, so a refusal never bells one channel and leaves the other torn.
+    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies wholly within the SHARED length -- checked before any write, so a refusal never bells one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     try tone.precheck(len, start, count, low_num, low_den);
     try tone.precheck(len, start, count, high_num, high_den);
     // invariant: the gain does not divide by zero.
     if (gain_den == 0) return error.BadGain;
 
-    // Every check passed and holds identically for both channels (same cutoffs, same gain, same span, shared length), so each mono bell is pre-validated to succeed — no refusal can land between the two channel edits. The SAME
+    // Every check passed and holds identically for both channels (same cutoffs, same gain, same span, shared length), so each mono bell is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME
     // knobs on each channel, each turning its own content.
     try bell.bell(&sc.left, start, count, low_num, low_den, high_num, high_den, gain_num, gain_den);
     try bell.bell(&sc.right, start, count, low_num, low_den, high_num, high_den, gain_num, gain_den);
 
-    // invariant: the channels leave balanced — a bell writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a bell writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO BELL LAW — each channel equals ALES48's mono bell with the SAME knobs byte for byte, different per-channel content; THE THREE-GAIN LAW — unity the identity on both, zero equal to the stereo notch on
-//     both, a settled constant surviving per channel; THE IMAGE LAW — an identical-channel master staying identical; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal untouched, count
+// --- selftest: THE STEREO BELL LAW -- each channel equals ALES48's mono bell with the SAME knobs byte for byte, different per-channel content; THE THREE-GAIN LAW -- unity the identity on both, zero equal to the stereo notch on
+//     both, a settled constant surviving per channel; THE IMAGE LAW -- an identical-channel master staying identical; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW -- silence to silence, balanced, each refusal untouched, count
 //     0 identity
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -100,7 +100,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO BELL LAW — each channel equals ALES48's mono bell with the SAME cutoffs and gain, proven side by side over one span with genuinely different per-channel content: the left belled by the left's spectrum, the
+    // 1. THE STEREO BELL LAW -- each channel equals ALES48's mono bell with the SAME cutoffs and gain, proven side by side over one span with genuinely different per-channel content: the left belled by the left's spectrum, the
     //    right by the right's, never crossed.
     {
         const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000, 1000, 500, -900, 1100 };
@@ -118,11 +118,11 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftBellNotMono;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightBellNotMono;
-        // The two channels genuinely differ — the left is not the right belled, proving no crossing.
+        // The two channels genuinely differ -- the left is not the right belled, proving no crossing.
         if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
     }
 
-    // 2a. THE THREE-GAIN LAW, unity — unity gain (gain_num == gain_den) keeps the middle at unity, so the residual reconstructs L + H + M = x byte for byte on both channels.
+    // 2a. THE THREE-GAIN LAW, unity -- unity gain (gain_num == gain_den) keeps the middle at unity, so the residual reconstructs L + H + M = x byte for byte on both channels.
     {
         const ll = [_]i16{ 100, -200, 3000, -4000, 500, 42 };
         const rr = [_]i16{ 42, 500, -4000, 3000, -200, 100 };
@@ -133,7 +133,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &rr)) return error.RightUnityWrong;
     }
 
-    // 2b. THE THREE-GAIN LAW, zero — zero gain (gain_num == 0) drops the middle, so the bell is exactly ALES173's stereo notch on both channels (the same two cutoffs).
+    // 2b. THE THREE-GAIN LAW, zero -- zero gain (gain_num == 0) drops the middle, so the bell is exactly ALES173's stereo notch on both channels (the same two cutoffs).
     {
         const ll = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600 };
         const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100, -1500, 1500 };
@@ -149,7 +149,7 @@ fn run_selftest() !u8 {
         if (!eq(belled.right.samples(), notched.right.samples())) return error.RightZeroGainNotNotch;
     }
 
-    // 2c. a settled constant survives the bell on both channels at a boosting gain — at direct current the mid band is zero, so the bell turns only the middle and the settled tail equals the input exactly, per channel.
+    // 2c. a settled constant survives the bell on both channels at a boosting gain -- at direct current the mid band is zero, so the bell turns only the middle and the settled tail equals the input exactly, per channel.
     {
         const run = [_]i16{2500} ** 40;
         var sc = pan.StereoClip{};
@@ -158,7 +158,7 @@ fn run_selftest() !u8 {
         if (sc.left.samples()[39] != 2500 or sc.right.samples()[39] != 2500) return error.BellMovedDc;
     }
 
-    // 3. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the bell: the same input through the same knobs is the same deterministic output, so the two channels never split.
+    // 3. THE IMAGE LAW -- an identical-channel (mono-in-stereo) master stays identical through the bell: the same input through the same knobs is the same deterministic output, so the two channels never split.
     {
         const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
         var sc = pan.StereoClip{};
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master bells to silence on both at any gain; the channels stay equal length and each holds its starting length.
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW -- an all-silent master bells to silence on both at any gain; the channels stay equal length and each holds its starting length.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0 });
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 5) return error.LengthChanged;
     }
 
-    // 4b. THE ATOMICITY LAW — an illegal low cutoff (above one), an illegal high cutoff (zero denominator), a zero gain denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still
+    // 4b. THE ATOMICITY LAW -- an illegal low cutoff (above one), an illegal high cutoff (zero denominator), a zero gain denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still
     //     balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
@@ -209,7 +209,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to bell.
+    // 4c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to bell.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

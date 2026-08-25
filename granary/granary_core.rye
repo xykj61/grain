@@ -1,4 +1,4 @@
-//! granary/granary_core.rye — Granary: name-facts, resolve, resin fold, Scribble, write gate, mirror.
+//! granary/granary_core.rye -- Granary: name-facts, resolve, resin fold, Scribble, write gate, mirror.
 //!
 //! Four doors open through Exchange listing; WOV settlement waits; Mandi is its own room.
 //!
@@ -26,7 +26,7 @@ pub const max_frame_line: u32 = 128;
 pub const digest_hex_len: u32 = 64;
 pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 
-/// Publisher witness seed — distinct from vessel 0x62, seal 0x63, delivery 0x64.
+/// Publisher witness seed -- distinct from vessel 0x62, seal 0x63, delivery 0x64.
 const publisher_seed: [kumara.seed_length]u8 = .{0x65} ** kumara.seed_length;
 
 pub const fixture_front_page = "granary/fixtures/front_page.md";
@@ -308,7 +308,7 @@ fn find_by_sig(reg: *const Registry, stamp_sig: []const u8) ?*const StoredFact {
     return null;
 }
 
-/// Resolve `person/weave` — latest matching name-fact wins (accrete-never-break).
+/// Resolve `person/weave` -- latest matching name-fact wins (accrete-never-break).
 pub fn resolve(reg: *const Registry, path: []const u8) NameFactError!NameFact {
     const slash = std.mem.indexOfScalar(u8, path, '/') orelse return error.PathBad;
     if (slash == 0 or slash + 1 >= path.len) return error.PathBad;
@@ -450,7 +450,7 @@ pub fn mirror_weave(
 ) NameFactError!MirrorReport {
     const fact = try resolve(reg, path);
     if (has_resin(guest, fact.resin_digest)) {
-        // Guest already holds — prove host agrees (equal mirrors).
+        // Guest already holds -- prove host agrees (equal mirrors).
         var guest_buf: [max_resin_bytes]u8 = undefined;
         var host_buf: [max_resin_bytes]u8 = undefined;
         const gl = try clone_resin(guest, fact.resin_digest, &guest_buf);
@@ -494,7 +494,7 @@ fn push_frame_line(frame: *Frame, text: []const u8) NameFactError!void {
     frame.line_count += 1;
 }
 
-/// Fold Scribble blocks into a drawn frame (text lines — citizen's window).
+/// Fold Scribble blocks into a drawn frame (text lines -- citizen's window).
 pub fn render_front_page(markdown: []const u8, frame: *Frame) NameFactError!void {
     frame.* = .{};
     var blocks: [scribble.max_blocks]scribble.Block = undefined;

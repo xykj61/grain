@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findNonePos and findNone — pass 9965.
+//! Rye test: std.mem.findNonePos and findNone -- pass 9965.
 //!
 //! strspn-like search for the first byte outside a set.
 //! Pairs with findAnyPos (9967).

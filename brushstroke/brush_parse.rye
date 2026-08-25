@@ -1,12 +1,12 @@
-//! brushstroke/brush_parse.rye — .brush → Frame → stdout/Skate grid (p23–p28 · p52).
+//! brushstroke/brush_parse.rye -- .brush -> Frame -> stdout/Skate grid (p23-p28 - p52).
 //!
-//! `.brush` describes how a value at a nib is drawn. Parse · refuse · lower to
+//! `.brush` describes how a value at a nib is drawn. Parse - refuse - lower to
 //! glass `Frame` (alias `BrushFrame` for the sur museum); `redraw_brush_frame`
 //! paints stdout; `brush_frame_to_grid` fills a skate_grid.Grid (headless raster
-//! proof). No Wayland window · no CSS/HTML/JSON.
+//! proof). No Wayland window - no CSS/HTML/JSON.
 //!
-//! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
-//! on every assert · short verb-named functions · named errors with try.
+//! TAME (hosted Rye): opening triad - u32 counts - named bounds - `// invariant:`
+//! on every assert - short verb-named functions - named errors with try.
 //!
 //! Build and run:
 //!   mkdir -p brushstroke/bin
@@ -25,25 +25,25 @@ const skate = @import("skate_grid.rye");
 
 pub const brush_parse_version = "20260728.215608";
 
-/// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
+/// Tally-bounded Frame ceiling -- matches seed.rye - wayland_seed.rye - sur pedestal.
 pub const max_frame_lines: u32 = 8;
 
-/// Thin Skate proof grid — not the full Wayland window; seats seed Frame lines.
+/// Thin Skate proof grid -- not the full Wayland window; seats seed Frame lines.
 pub const brush_skate_cols: u32 = 40;
 pub const brush_skate_rows: u32 = max_frame_lines;
 
 /// Bound on a single .brush source file this parser will read.
 pub const max_brush_bytes: u32 = 16 * 1024;
 
-/// Bound on one pin value (nib name · present word) after trim.
+/// Bound on one pin value (nib name - present word) after trim.
 pub const max_pin_bytes: u32 = 128;
 
-/// Bound on the OPTIONAL `style:` block's token count — one flat Bron token per
-/// line (paper · ink · edge · weight · space · elevate and their kin). Sized to
+/// Bound on the OPTIONAL `style:` block's token count -- one flat Bron token per
+/// line (paper - ink - edge - weight - space - elevate and their kin). Sized to
 /// hold the seam's named token family with headroom, well under infuse's 64.
 pub const max_style_tokens: u32 = 16;
 
-/// Bound on the reassembled `style:` token sheet in bytes — a bounded Bron buffer
+/// Bound on the reassembled `style:` token sheet in bytes -- a bounded Bron buffer
 /// tokens.rye's infuse/dress consume directly (infuse's own max_line is 512).
 pub const max_style_bytes: u32 = 512;
 
@@ -53,11 +53,11 @@ pub const BrushSurface = struct {
     max_lines: u32,
     line_count: u32,
     /// Count of `style:` token lines seen. Zero when the file declares no style
-    /// block — the additive default, byte-for-byte the pre-style parse.
+    /// block -- the additive default, byte-for-byte the pre-style parse.
     style_count: u32,
 };
 
-/// Frame lowered from a welcome .brush — line texts slice the source buffer.
+/// Frame lowered from a welcome .brush -- line texts slice the source buffer.
 /// Glass contract name is `Frame` (p52); `BrushFrame` stays the seated museum alias.
 pub const BrushFrame = struct {
     at_nib: []const u8,
@@ -65,7 +65,7 @@ pub const BrushFrame = struct {
     lines: []const []const u8,
 };
 
-/// Glass Frame — same type as BrushFrame. Wayland host converts via Frame.from_brush.
+/// Glass Frame -- same type as BrushFrame. Wayland host converts via Frame.from_brush.
 pub const Frame = BrushFrame;
 
 pub const ParseError = error{
@@ -84,7 +84,7 @@ pub const ParseError = error{
     StyleSheetTooLarge,
 };
 
-/// Raw pins collected while scanning — unfinished until `finish_brush_surface`.
+/// Raw pins collected while scanning -- unfinished until `finish_brush_surface`.
 const BrushPins = struct {
     at_nib: ?[]const u8 = null,
     present: ?[]const u8 = null,
@@ -142,7 +142,7 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
             in_style = false;
             continue;
         }
-        // OPTIONAL `style:` block — a flat Bron token sheet tokens.rye consumes.
+        // OPTIONAL `style:` block -- a flat Bron token sheet tokens.rye consumes.
         // Additive: a file with no `style:` header never enters this branch, so
         // its parse is byte-for-byte the pre-style behavior.
         if (std.mem.startsWith(u8, body, "style:")) {
@@ -171,7 +171,7 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
     return pins;
 }
 
-/// Finish pins into a surface — every refuse path is a named ParseError.
+/// Finish pins into a surface -- every refuse path is a named ParseError.
 fn finish_brush_surface(pins: BrushPins) ParseError!BrushSurface {
     const nib = pins.at_nib orelse return error.MissingAtNib;
     // invariant: at-nib pin is non-empty when present
@@ -243,7 +243,7 @@ fn count_frame_line(line: []const u8, body: []const u8, line_count: *u32) ParseE
 
 /// Count one indented `style:` token line (`::    key value`). Returns whether
 /// still in-style. A token is a flat Bron pair: a space-delimited key and a
-/// non-empty value — exactly what tokens.rye's infuse/dress parse.
+/// non-empty value -- exactly what tokens.rye's infuse/dress parse.
 fn count_style_token(line: []const u8, body: []const u8, style_count: *u32) ParseError!bool {
     // invariant: counter never enters past the style-token ceiling
     assert(style_count.* <= max_style_tokens);
@@ -262,7 +262,7 @@ fn count_style_token(line: []const u8, body: []const u8, style_count: *u32) Pars
 }
 
 /// A well-formed style token is `key value`: a non-empty key, a space, then a
-/// non-empty value — the flat Bron shape tokens.rye parses. No CSS `:`/`;`, no
+/// non-empty value -- the flat Bron shape tokens.rye parses. No CSS `:`/`;`, no
 /// braces; the owned tongue only.
 fn style_token_well_formed(text: []const u8) bool {
     const n = slice_len_u32(text);
@@ -341,9 +341,9 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
 }
 
 /// Reassemble the OPTIONAL `style:` block into a flat Bron token sheet in
-/// `out` — `key value\n` per token, exactly the shape tokens.rye's infuse and
+/// `out` -- `key value\n` per token, exactly the shape tokens.rye's infuse and
 /// dress parse. Returns the byte length written (0 when the file declares no
-/// style block). This is the WADE1 bridge: a `.brush` file → a token sheet.
+/// style block). This is the WADE1 bridge: a `.brush` file -> a token sheet.
 pub fn collect_brush_style(src: []const u8, out: []u8) ParseError!u32 {
     // invariant: collect shares parse's source budget
     assert(src.len <= max_brush_bytes);
@@ -410,8 +410,8 @@ fn emit_style_line(out: []u8, pos: u32, text: []const u8) ParseError!u32 {
     return p;
 }
 
-/// Redraw a BrushFrame to stdout — thin hosted Skate lean (one line = one grid row).
-/// Pure pass from values; no Wayland · no retained tree.
+/// Redraw a BrushFrame to stdout -- thin hosted Skate lean (one line = one grid row).
+/// Pure pass from values; no Wayland - no retained tree.
 /// The column count a grid needs to hold this frame with nothing truncated.
 /// `Grid.put_line` clips silently at `cols`, so a caller sizing a grid asks
 /// here first and learns the requirement before the machine runs.
@@ -452,7 +452,7 @@ pub fn redraw_brush_frame(frame: BrushFrame, io: std.Io) !void {
     }
 }
 
-/// Fill a skate_grid.Grid from a BrushFrame — Pond agents' Skate target (p28).
+/// Fill a skate_grid.Grid from a BrushFrame -- Pond agents' Skate target (p28).
 pub fn brush_frame_to_grid(frame: BrushFrame, allocator: std.mem.Allocator) !skate.Grid {
     // invariant: Frame carries lines before grid fill
     assert(frame.lines.len > 0);
@@ -474,7 +474,7 @@ pub fn brush_frame_to_grid(frame: BrushFrame, allocator: std.mem.Allocator) !ska
     return grid;
 }
 
-/// Headless raster lit-pixel count for a grid — proves glyphs left the buffer.
+/// Headless raster lit-pixel count for a grid -- proves glyphs left the buffer.
 fn grid_lit_count(garden: std.mem.Allocator, grid: skate.Grid) !u32 {
     const scale: u32 = 1;
     const width: i32 = @intCast(brush_skate_cols * skate.cell_w * scale);
@@ -513,7 +513,7 @@ fn trim_right(s: []const u8) []const u8 {
     return s[0..end];
 }
 
-/// Zig slice `.len` is usize at the inherited seam — authored arithmetic stays u32.
+/// Zig slice `.len` is usize at the inherited seam -- authored arithmetic stays u32.
 fn slice_len_u32(s: []const u8) u32 {
     // invariant: brush buffers never exceed the named source budget
     assert(s.len <= max_brush_bytes);
@@ -536,7 +536,7 @@ fn parse_u32_decimal(text: []const u8) ParseError!u32 {
     return value;
 }
 
-/// Prove one refuse path by named ParseError — call-seam capture, not `) == error.`.
+/// Prove one refuse path by named ParseError -- call-seam capture, not `) == error.`.
 fn assert_parse_error(src: []const u8, want: ParseError) void {
     // invariant: refuse fixtures stay inside the source budget
     assert(src.len <= max_brush_bytes);
@@ -562,13 +562,13 @@ fn prove_seed_fixture(garden: std.mem.Allocator, io: std.Io) !void {
     assert(surface.max_lines == 8);
     // invariant: seed Frame carries three example lines
     assert(surface.line_count == 3);
-    // invariant: the seed fixture declares no style block — the additive default
+    // invariant: the seed fixture declares no style block -- the additive default
     assert(surface.style_count == 0);
 }
 
 /// Prove the OPTIONAL `style:` block: a `.brush` declaring style pins parses
 /// into a token sheet whose bytes are the flat Bron tokens.rye consumes, and a
-/// `.brush` with no style block collects an empty sheet — additive by default.
+/// `.brush` with no style block collects an empty sheet -- additive by default.
 fn prove_style_block() ParseError!void {
     const with_style =
         \\::  at-nib:     styled-seed
@@ -600,7 +600,7 @@ fn prove_style_block() ParseError!void {
     assert(std.mem.indexOf(u8, sheet, ";") == null);
     assert(std.mem.indexOf(u8, sheet, "{") == null);
 
-    // A .brush with no style block collects an empty sheet — additive default.
+    // A .brush with no style block collects an empty sheet -- additive default.
     const no_style =
         \\::  at-nib:     plain-seed
         \\::  present:    Frame
@@ -619,7 +619,7 @@ fn prove_style_block() ParseError!void {
 
 /// Refuse a malformed or empty `style:` block by named ParseError.
 fn prove_refuse_style() void {
-    // A style header with no tokens is an empty block — refused.
+    // A style header with no tokens is an empty block -- refused.
     assert_parse_error(
         \\::  at-nib:     x
         \\::  present:    Frame
@@ -630,7 +630,7 @@ fn prove_refuse_style() void {
     ,
         error.StyleTokenMalformed,
     );
-    // A bare-word token (no value) is malformed — refused.
+    // A bare-word token (no value) is malformed -- refused.
     assert_parse_error(
         \\::  at-nib:     x
         \\::  present:    Frame

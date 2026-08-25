@@ -1,4 +1,4 @@
-//! scribble/scribble_core.rye — Markdown subset → value blocks.
+//! scribble/scribble_core.rye -- Markdown subset -> value blocks.
 //!
 //! Headings, paragraphs, fenced code (rye / rish / plain). Heading, paragraph, fence-kind, plain-snippet extract, and heading-depth filter for views.
 
@@ -8,9 +8,9 @@ const assert = std.debug.assert;
 pub const max_doc_bytes: u32 = 8192;
 pub const max_blocks: u32 = 32;
 // A real reference document runs consecutive bullet lines into one paragraph
-// block far past the 512-byte demo literals were tuned to fit — the largest
+// block far past the 512-byte demo literals were tuned to fit -- the largest
 // paragraph in context/TAME_CORE.md measures 1327 bytes (Yield red %72). The
-// bound doubles twice, 512 → 2048, to admit real reference-doc paragraphs with
+// bound doubles twice, 512 -> 2048, to admit real reference-doc paragraphs with
 // headroom over the measured maximum rather than tracking one corpus exactly.
 pub const max_block_text: u32 = 2048;
 pub const max_fence_lang: u32 = 16;
@@ -166,17 +166,17 @@ pub fn parse_markdown(text: []const u8, out: []Block) ParseError!u32 {
     return count;
 }
 
-/// Collect every `rye_fence` body in source order — training snippets for Anvil forge.
+/// Collect every `rye_fence` body in source order -- training snippets for Anvil forge.
 pub fn extract_rye_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
     return extract_kind_snippets(blocks, .rye_fence, out);
 }
 
-/// Collect every `rish_fence` body in source order — witness-script snippets for Anvil forge.
+/// Collect every `rish_fence` body in source order -- witness-script snippets for Anvil forge.
 pub fn extract_rish_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
     return extract_kind_snippets(blocks, .rish_fence, out);
 }
 
-/// Collect every plain `code_fence` body in source order — unmarked fences for corpus work.
+/// Collect every plain `code_fence` body in source order -- unmarked fences for corpus work.
 pub fn extract_plain_snippets(blocks: []const Block, out: []Snippet) ParseError!u32 {
     return extract_kind_snippets(blocks, .code_fence, out);
 }
@@ -210,7 +210,7 @@ pub const Heading = struct {
 
 pub const max_headings: u32 = 16;
 
-/// Collect every heading title in source order — outline for Scribble view.
+/// Collect every heading title in source order -- outline for Scribble view.
 pub fn extract_headings(blocks: []const Block, out: []Heading) ParseError!u32 {
     var count: u32 = 0;
     var i: u32 = 0;
@@ -228,7 +228,7 @@ pub fn extract_headings(blocks: []const Block, out: []Heading) ParseError!u32 {
     return count;
 }
 
-/// Collect headings at one depth — h1/h2 outline folds for Scribble views.
+/// Collect headings at one depth -- h1/h2 outline folds for Scribble views.
 pub fn extract_headings_at_depth(blocks: []const Block, depth: u8, out: []Heading) ParseError!u32 {
     var count: u32 = 0;
     var i: u32 = 0;
@@ -258,7 +258,7 @@ pub const Paragraph = struct {
 
 pub const max_paragraphs: u32 = 16;
 
-/// Collect every paragraph body in source order — prose fold for Scribble view.
+/// Collect every paragraph body in source order -- prose fold for Scribble view.
 pub fn extract_paragraphs(blocks: []const Block, out: []Paragraph) ParseError!u32 {
     var count: u32 = 0;
     var i: u32 = 0;
@@ -282,7 +282,7 @@ pub const FenceKinds = struct {
     plain: u32 = 0,
 };
 
-/// Count rye / rish / plain fences in source order — fence-kinds fold for Scribble view.
+/// Count rye / rish / plain fences in source order -- fence-kinds fold for Scribble view.
 pub fn count_fence_kinds(blocks: []const Block) FenceKinds {
     var kinds: FenceKinds = .{};
     var i: u32 = 0;

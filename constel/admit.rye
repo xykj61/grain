@@ -1,27 +1,27 @@
-//! constel/admit.rye — FORA26: the whole add-a-member lifecycle, closed. A non-voting learner (FORA25) is promoted into the voting
-//! set only once it is caught up, and the promotion is carried by reconfig's joint consensus (FORA13) — so the "safe way to add a
+//! constel/admit.rye -- FORA26: the whole add-a-member lifecycle, closed. A non-voting learner (FORA25) is promoted into the voting
+//! set only once it is caught up, and the promotion is carried by reconfig's joint consensus (FORA13) -- so the "safe way to add a
 //! member" is proven end to end: catch up out of the critical path, then switch the membership without a fork.
 //!
 //! The gap it closes:
-//!   FORA25 gave a learner and a `may_promote` predicate, yet nothing consumed it — the learner could catch up, but no rung actually
-//!   admitted it to the vote. FORA13 gave a joint-consensus membership switch, yet it would admit ANY new slot, empty log and all —
+//!   FORA25 gave a learner and a `may_promote` predicate, yet nothing consumed it -- the learner could catch up, but no rung actually
+//!   admitted it to the vote. FORA13 gave a joint-consensus membership switch, yet it would admit ANY new slot, empty log and all --
 //!   the very stall FORA25 warned against. This rung joins the two: `admit` refuses to even PROPOSE a promotion until the learner is
-//!   caught up (learner.require_caught_up), and only then builds the joint config old → old∪{learner} that reconfig's ballot commits
+//!   caught up (learner.require_caught_up), and only then builds the joint config old -> old∪{learner} that reconfig's ballot commits
 //!   with a strict majority in BOTH configs. So a member is added exactly the safe way: never as an empty voter, never without the
 //!   no-fork joint switch.
 //!
-//! This composes FORA25 (learner — the catch-up gate) with FORA13 (reconfig — the no-fork joint switch), over their public APIs
+//! This composes FORA25 (learner -- the catch-up gate) with FORA13 (reconfig -- the no-fork joint switch), over their public APIs
 //! only. No new transport, no new quorum math: the promotion is a reconfig transition whose new config is the old plus one caught-up
 //! learner, and the joint ballot's own two-majority rule carries the FORA9 intersection lemma across the switch unchanged.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA26. Design read: active-designing/date/20260814/20260814-074656_fora26-constel-admit-learner-promotion.md
-//! Stands on: constel/learner.rye (FORA25) — require_caught_up, the bounded-lag gate; constel/reconfig.rye (FORA13) — config_of,
-//! JointConfig, JointBallot, require_joint, the no-fork joint switch; constel/roster.rye (FORA1) — max_piers, the membership bound.
+//! Stands on: constel/learner.rye (FORA25) -- require_caught_up, the bounded-lag gate; constel/reconfig.rye (FORA13) -- config_of,
+//! JointConfig, JointBallot, require_joint, the no-fork joint switch; constel/roster.rye (FORA1) -- max_piers, the membership bound.
 //!
-//! Purely LOCAL — bounded membership masks and index scalars on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and gate
-//! #4 — real Kumara — both untouched).
+//! Purely LOCAL -- bounded membership masks and index scalars on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and gate
+//! #4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/admit.rye selftest
 
@@ -36,7 +36,7 @@ const reconfig = @import("reconfig.rye");
 pub const admit_version = "20260814.074656";
 
 pub const AdmitError = error{
-    /// The slot proposed for promotion is already a voter in the old config — a learner, not a voter, is what gets admitted.
+    /// The slot proposed for promotion is already a voter in the old config -- a learner, not a voter, is what gets admitted.
     AlreadyVoter,
 };
 
@@ -45,8 +45,8 @@ pub const AdmitError = error{
 pub const PromoteError = AdmitError || learner.LearnerError || reconfig.ReconfigError;
 
 /// ADMIT A CAUGHT-UP LEARNER TO THE VOTE. Given the old voting mask and a learner's slot + catch-up state, refuse unless the learner
-/// is genuinely a non-voter (AlreadyVoter) AND caught up (NotCaughtUp), then build the joint config old → old∪{learner} that a
-/// reconfig ballot commits. Nothing is proposed until both gates pass — an empty replica can never begin a promotion it would stall.
+/// is genuinely a non-voter (AlreadyVoter) AND caught up (NotCaughtUp), then build the joint config old -> old∪{learner} that a
+/// reconfig ballot commits. Nothing is proposed until both gates pass -- an empty replica can never begin a promotion it would stall.
 pub fn admit(
     old_mask: [roster.max_piers]bool,
     learner_slot: u32,
@@ -64,12 +64,12 @@ pub fn admit(
     new_mask[learner_slot] = true; // the new config is the old plus this one caught-up learner
     const old = try reconfig.config_of(old_mask);
     const new = try reconfig.config_of(new_mask);
-    // invariant: promotion grows the voting set by exactly one — the caught-up learner, no other change.
+    // invariant: promotion grows the voting set by exactly one -- the caught-up learner, no other change.
     assert(new.size == old.size + 1);
     return reconfig.JointConfig{ .old = old, .new = new };
 }
 
-/// Build a membership mask from a list of voter slots — a small pure helper for callers and the selftest.
+/// Build a membership mask from a list of voter slots -- a small pure helper for callers and the selftest.
 pub fn mask_of(slots: []const u32) [roster.max_piers]bool {
     // invariant: the slot list is bounded by the roster it indexes.
     assert(slots.len <= roster.max_piers);
@@ -85,11 +85,11 @@ pub fn mask_of(slots: []const u32) [roster.max_piers]bool {
 }
 
 // --- selftest: a learner not caught up is refused promotion; an already-voter is refused; a CAUGHT-UP learner is admitted into a
-//     joint config old → old∪{learner} that commits only with a strict majority in BOTH configs; the promoted member then counts
+//     joint config old -> old∪{learner} that commits only with a strict majority in BOTH configs; the promoted member then counts
 //     toward the new majority; an old-only or new-only quorum cannot smuggle the switch; bounded. -----------------------------------
 
 fn run_selftest() !u8 {
-    // 1. A LEARNER NOT CAUGHT UP IS REFUSED PROMOTION — no joint config is ever built, so the voter set cannot change. Three voters
+    // 1. A LEARNER NOT CAUGHT UP IS REFUSED PROMOTION -- no joint config is ever built, so the voter set cannot change. Three voters
     //    {0,1,2}, a learner at slot 3 with an empty log while the leader has committed to 12, lag bound 3.
     {
         const old = mask_of(&[_]u32{ 0, 1, 2 });
@@ -97,16 +97,16 @@ fn run_selftest() !u8 {
         if (r) |_| unreachable else |e| assert(e == error.NotCaughtUp); // an empty replica may not be promoted
     }
 
-    // 2. AN ALREADY-VOTER IS REFUSED — slot 1 is already in the old config, so there is no learner there to admit.
+    // 2. AN ALREADY-VOTER IS REFUSED -- slot 1 is already in the old config, so there is no learner there to admit.
     {
         const old = mask_of(&[_]u32{ 0, 1, 2 });
         const r = admit(old, 1, 12, 12, 3);
         if (r) |_| unreachable else |e| assert(e == error.AlreadyVoter);
     }
 
-    // 3. THE CRUX — A CAUGHT-UP LEARNER IS ADMITTED, AND THE SWITCH COMMITS ONLY WITH A STRICT MAJORITY IN BOTH CONFIGS. The learner
-    //    at slot 3 reaches match 10 (lag 2 ≤ 3): caught up. `admit` yields the joint config old {0,1,2} → new {0,1,2,3}. A joint
-    //    ballot where the whole union votes yes carries a strict majority in both (3 of 3 old, 4 of 4 new) — the promotion commits.
+    // 3. THE CRUX -- A CAUGHT-UP LEARNER IS ADMITTED, AND THE SWITCH COMMITS ONLY WITH A STRICT MAJORITY IN BOTH CONFIGS. The learner
+    //    at slot 3 reaches match 10 (lag 2 ≤ 3): caught up. `admit` yields the joint config old {0,1,2} -> new {0,1,2,3}. A joint
+    //    ballot where the whole union votes yes carries a strict majority in both (3 of 3 old, 4 of 4 new) -- the promotion commits.
     {
         const old = mask_of(&[_]u32{ 0, 1, 2 });
         const joint = try admit(old, 3, 10, 12, 3);
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE PROMOTED MEMBER NOW COUNTS TOWARD THE NEW MAJORITY. After the switch the voting set is four; its majority is three, and
-    //    a commit backed by any three of the four voters (the new member among them) reaches it — the member's voice now weighs.
+    //    a commit backed by any three of the four voters (the new member among them) reaches it -- the member's voice now weighs.
     {
         const new_roles = [_]bool{ true, true, true, true }; // four voters after promotion
         assert(learner.voter_majority(&new_roles) == 3);
@@ -132,9 +132,9 @@ fn run_selftest() !u8 {
         assert(learner.committed(&new_roles, &with_promoted)); // the promoted member's ack helped commit
     }
 
-    // 5. THE OLD CONFIG'S MAJORITY ALONE CANNOT SMUGGLE THE SWITCH — the joint rule needs a strict majority in BOTH configs, so the
+    // 5. THE OLD CONFIG'S MAJORITY ALONE CANNOT SMUGGLE THE SWITCH -- the joint rule needs a strict majority in BOTH configs, so the
     //    promoted member's own config must also agree. A ballot of just the two old voters {0,1} carries an old majority (2 of 3) yet
-    //    only 2 of the 4 new members — NOT a new majority (which needs 3) — so require_joint refuses NoJointMajority: the pre-promotion
+    //    only 2 of the 4 new members -- NOT a new majority (which needs 3) -- so require_joint refuses NoJointMajority: the pre-promotion
     //    set cannot force a new member in over the new config's own head.
     {
         const old = mask_of(&[_]u32{ 0, 1, 2 });
@@ -148,8 +148,8 @@ fn run_selftest() !u8 {
         assert(b.yes_old == 2 and b.yes_new == 2 and !b.reached);
     }
 
-    // 6. BOUNDED — a full roster: seven voters {0..6} and a caught-up learner at the last slot promoted to an eighth voter, the joint
-    //    config sizing exactly seven → eight within the pier cap.
+    // 6. BOUNDED -- a full roster: seven voters {0..6} and a caught-up learner at the last slot promoted to an eighth voter, the joint
+    //    config sizing exactly seven -> eight within the pier cap.
     {
         const seven = mask_of(&[_]u32{ 0, 1, 2, 3, 4, 5, 6 });
         const joint = try admit(seven, roster.max_piers - 1, 20, 20, 0); // exactly current, zero slack

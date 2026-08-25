@@ -1,4 +1,4 @@
-//! Rye test: std.mem.sort / sortUnstable — pass 9891.
+//! Rye test: std.mem.sort / sortUnstable -- pass 9891.
 //!
 //! In-place slice sorting; postconditions checked for len <= 64.
 

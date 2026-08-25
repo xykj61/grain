@@ -1,11 +1,11 @@
-//! encoding/pem.rye — PEM (RFC 7468) textual encoding authored in pure Rye as a composition, no new base conversion. PEM is the armor a
+//! encoding/pem.rye -- PEM (RFC 7468) textual encoding authored in pure Rye as a composition, no new base conversion. PEM is the armor a
 //! key, a certificate, or a signature wears when it travels as text: a `-----BEGIN LABEL-----` line, the payload rendered in standard Base64
 //! and wrapped at 64 characters a line, and a `-----END LABEL-----` line to close it. It is the exact form an Ed25519 key or a signed carry
-//! is pasted into a config file, mailed between two hands, or committed beside its code — the shape `openssl` prints and every TLS stack reads.
-//! This module composes one already-GREEN rung — the standard-alphabet Base64 rendering from encoding/base64.rye — and authors none of its
+//! is pasted into a config file, mailed between two hands, or committed beside its code -- the shape `openssl` prints and every TLS stack reads.
+//! This module composes one already-GREEN rung -- the standard-alphabet Base64 rendering from encoding/base64.rye -- and authors none of its
 //! own base arithmetic; it adds only the label framing and the line wrapping RFC 7468 lays down.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye and base58check.rye. Where base64.rye renders
+//! Season: encoding -- the serialization sibling of Season G (Cryptography), beside base64.rye and base58check.rye. Where base64.rye renders
 //! raw bytes to symbols, this rung wraps those symbols in the labelled envelope a real key or certificate carries, so a keeper can read what
 //! a block holds at a glance and a parser can find exactly the bytes between the markers. base64.rye's own front door already names PEM as
 //! its purpose; this rung seats that armor in our own Rye.
@@ -13,13 +13,13 @@
 //! Clean-room: the `-----BEGIN/END LABEL-----` framing and the 64-character wrap are RFC 7468's own public convention; the composition is
 //! ours, standing on our own parity-GREEN Base64 primitive (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — encode writes `-----BEGIN <label>-----`, then the Base64 of the payload broken into lines of at most 64 characters each ended
+//! THE CRUX -- encode writes `-----BEGIN <label>-----`, then the Base64 of the payload broken into lines of at most 64 characters each ended
 //! by a newline, then `-----END <label>-----`. decode inverts it: locate the BEGIN and END markers for the requested label, gather every
-//! Base64 character between them (skipping the line-wrap whitespace), and Base64-decode the gathered body — refusing BadLabel when a marker
+//! Base64 character between them (skipping the line-wrap whitespace), and Base64-decode the gathered body -- refusing BadLabel when a marker
 //! is absent or names a different label, so a block is never decoded as something it does not claim to be. No new base conversion: the Base64
 //! beneath is already proven on metal.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std codec: the rendering
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std codec: the rendering
 //! is encoding/base64.rye (RFC 4648, parity-GREEN against std.base64). Parity is proven at selftest against a reproducible RFC-4648-anchored
 //! known-answer (the block wrapping "foobar" is exactly `-----BEGIN GRAIN TEST-----` ‖ `Zm9vYmFy` ‖ `-----END GRAIN TEST-----`, since
 //! "Zm9vYmFy" is RFC 4648 §10's published Base64 of "foobar"), a round-trip across payload lengths that exercises the 64-character wrap, a
@@ -38,11 +38,11 @@ pub const pem_version = "20260816.010000";
 /// RFC 7468 wraps the Base64 body so each line carries at most 64 characters. Named so every line-copy loop cites the ceiling it fills to.
 pub const line_width: u32 = 64;
 
-/// The largest binary payload this module frames, and the largest a decode produces — inherited from the Base64 primitive beneath so the
+/// The largest binary payload this module frames, and the largest a decode produces -- inherited from the Base64 primitive beneath so the
 /// rendering always fits. Generous for a key, a certificate, or a signed carry.
 pub const max_der_bytes: u32 = base64.max_decoded_bytes;
 
-/// The longest label this module frames — "CERTIFICATE", "PUBLIC KEY", "ED25519 PRIVATE KEY" and their kin all fit well within this.
+/// The longest label this module frames -- "CERTIFICATE", "PUBLIC KEY", "ED25519 PRIVATE KEY" and their kin all fit well within this.
 pub const max_label_len: u32 = 64;
 
 const begin_prefix = "-----BEGIN ";
@@ -52,13 +52,13 @@ const eol: u8 = '\n';
 
 /// The faults this module can raise, each refused at the edge before a partial result escapes.
 pub const PemError = error{
-    /// A payload larger than max_der_bytes, or a label longer than max_label_len — refused before a byte is written.
+    /// A payload larger than max_der_bytes, or a label longer than max_label_len -- refused before a byte is written.
     BadLength,
-    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact output length -- refused before the first write.
     DestTooSmall,
-    /// A decode input carrying a Base64 character outside the alphabet, or a malformed Base64 body — surfaced from the primitive beneath.
+    /// A decode input carrying a Base64 character outside the alphabet, or a malformed Base64 body -- surfaced from the primitive beneath.
     BadChar,
-    /// A decode input missing the `-----BEGIN <label>-----` or `-----END <label>-----` marker for the requested label — a block that does
+    /// A decode input missing the `-----BEGIN <label>-----` or `-----END <label>-----` marker for the requested label -- a block that does
     /// not claim to hold what the caller asked for is refused rather than decoded as something else.
     BadLabel,
 };
@@ -109,7 +109,7 @@ fn marker_line(buf: []u8, prefix: []const u8, label: []const u8, with_eol: bool)
 }
 
 /// Encode payload as a PEM block with the given label into dest, returning the exact written slice. Composes the standard-Base64 rendering,
-/// wrapping the body at 64 characters a line and framing it with the RFC 7468 BEGIN/END markers — no new base arithmetic.
+/// wrapping the body at 64 characters a line and framing it with the RFC 7468 BEGIN/END markers -- no new base arithmetic.
 pub fn encode(dest: []u8, label: []const u8, payload: []const u8) PemError![]const u8 {
     if (payload.len > max_der_bytes) return error.BadLength;
     if (label.len > max_label_len) return error.BadLength;
@@ -173,18 +173,18 @@ fn index_of(haystack: []const u8, needle: []const u8) ?u32 {
     return null;
 }
 
-/// True when c is one of the line-wrap whitespace bytes RFC 7468 allows between Base64 symbols — space, tab, carriage return, or newline.
+/// True when c is one of the line-wrap whitespace bytes RFC 7468 allows between Base64 symbols -- space, tab, carriage return, or newline.
 fn is_wrap_space(c: u8) bool {
     return c == ' ' or c == '\t' or c == '\r' or c == eol;
 }
 
 /// Decode a PEM block bearing the requested label from source into dest, returning the exact payload bytes. Locates the BEGIN and END
-/// markers, gathers the Base64 body between them (skipping the wrap whitespace), and Base64-decodes it — refusing BadLabel when the block
+/// markers, gathers the Base64 body between them (skipping the wrap whitespace), and Base64-decodes it -- refusing BadLabel when the block
 /// does not claim the requested label, so bytes are never returned from a block of the wrong kind.
 pub fn decode(dest: []u8, source: []const u8, label: []const u8) PemError![]const u8 {
     if (label.len > max_label_len) return error.BadLength;
 
-    // Build the exact marker tokens (no trailing eol — the markers may be followed by CRLF or LF) and locate them in source.
+    // Build the exact marker tokens (no trailing eol -- the markers may be followed by CRLF or LF) and locate them in source.
     var begin_tok: [begin_prefix.len + max_label_len + marker_suffix.len]u8 = undefined;
     var end_tok: [end_prefix.len + max_label_len + marker_suffix.len]u8 = undefined;
     const begin = marker_line(&begin_tok, begin_prefix, label, false);
@@ -222,14 +222,14 @@ pub fn decode(dest: []u8, source: []const u8, label: []const u8) PemError![]cons
 }
 
 // The reproducible RFC-4648-anchored known-answer: the Base64 of "foobar" is "Zm9vYmFy" (RFC 4648 §10), so the PEM block wrapping "foobar"
-// under the label "GRAIN TEST" is exactly the three lines below — a neutral reference any reader reproduces from the published Base64 vector
+// under the label "GRAIN TEST" is exactly the three lines below -- a neutral reference any reader reproduces from the published Base64 vector
 // and RFC 7468's literal markers.
 const kat_label = "GRAIN TEST";
 const kat_payload = "foobar";
 const kat_block = "-----BEGIN GRAIN TEST-----\nZm9vYmFy\n-----END GRAIN TEST-----\n";
 
 /// Independent deframer used ONLY inside the selftest: split the block on newlines, drop the first line (BEGIN) and every line that opens the
-/// END marker, and concatenate the interior lines into out — so the block's framing is checked by a second, separate reader rather than by
+/// END marker, and concatenate the interior lines into out -- so the block's framing is checked by a second, separate reader rather than by
 /// the same code that wrote it. Returns the recovered Base64 body.
 fn ref_body(block: []const u8, out: []u8) []const u8 {
     // invariant: the scratch is large enough to hold the whole block, which bounds the body it recovers.
@@ -302,7 +302,7 @@ fn run_selftest() !u8 {
             const body = try decode(&dec, block, "GRAIN DATA");
             if (!slice_eq(body, payload[0..n])) return error.RoundtripMismatch;
 
-            // A second, independent deframer recovers the same Base64 body, and Base64-decoding it returns the same payload — the framing
+            // A second, independent deframer recovers the same Base64 body, and Base64-decoding it returns the same payload -- the framing
             // is checked by a reader that never shares code with encode.
             var refbuf: [512]u8 = undefined;
             const rb = ref_body(block, &refbuf);
@@ -313,7 +313,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. The label and buffer guards: decoding with the wrong label refuses BadLabel; a body carrying a non-Base64 character refuses
-    //    BadChar; a too-small destination refuses DestTooSmall — each before a partial result escapes.
+    //    BadChar; a too-small destination refuses DestTooSmall -- each before a partial result escapes.
     {
         var junk: [64]u8 = undefined;
         if (decode(&junk, kat_block, "OTHER LABEL")) |_| return error.LabelSlipped else |err| if (err != error.BadLabel) return error.WrongBadLabel;

@@ -1,13 +1,13 @@
-//! pond/apps/ship_pilot.rye — TACT Journey 1, Rung 1: the pilot spine.
+//! pond/apps/ship_pilot.rye -- TACT Journey 1, Rung 1: the pilot spine.
 //!
 //! Season 1 of the 1,024-round itinerary (The World, TACT) carries one durable promise: a
 //! stranger reaches a working, signed, publishable instance without the maintainer's hand on
-//! each step. Ship-Pilot is the guided first-run that keeps that promise — it pilots a new
+//! each step. Ship-Pilot is the guided first-run that keeps that promise -- it pilots a new
 //! keeper from zero to a running Pond.
 //!
 //! Every onboarding step already has a module of its own (identity in settlement/constellation,
 //! receipt policy in pond/customs, a runnable app in pond/apps). The durable artifact this rung
-//! fixes is neither of those: it is the ordered, enforced *arc* — the pilot that knows which
+//! fixes is neither of those: it is the ordered, enforced *arc* -- the pilot that knows which
 //! steps a keeper takes, in what order, and refuses to report READY until every one has
 //! genuinely passed. A checklist that cannot be cheated is read every first-run for as long as
 //! the tree onboards anyone, so the spine is the crux.
@@ -17,10 +17,10 @@
 //! jump (OutOfOrder) and refuses to advance a step whose precondition is unmet (StepNotReady,
 //! and the cursor does not move). It reports PILOT READY only when every step has passed in
 //! order. In this rung each precondition is a supplied signal, so the *enforcement* is proven
-//! pure before any module is wired — r2 wires identity to constellation, r3 wires customs to
+//! pure before any module is wired -- r2 wires identity to constellation, r3 wires customs to
 //! pond/customs, r4 composes the ready-to-run report.
 //!
-//! It invents no storage and reads no network — a bounded state machine over an owned buffer.
+//! It invents no storage and reads no network -- a bounded state machine over an owned buffer.
 //!
 //!   rye build pond/apps/ship_pilot.rye -femit-bin=pond/bin/ship-pilot
 //!   pond/bin/ship-pilot selftest
@@ -71,7 +71,7 @@ pub const Pilot = struct {
     passed: [step_count]bool,
     cursor: u32,
 
-    /// A fresh pilot at the start of the arc — nothing passed, cursor at the first step.
+    /// A fresh pilot at the start of the arc -- nothing passed, cursor at the first step.
     pub fn begin() Pilot {
         var p = Pilot{ .passed = undefined, .cursor = 0 };
         var i: u32 = 0;
@@ -95,7 +95,7 @@ pub const Pilot = struct {
 
     /// Attempt a step. It must be the step at the cursor (else OutOfOrder), and its precondition
     /// must hold (else StepNotReady, and the cursor does not move). Only a met precondition on
-    /// the current step advances the pilot — the one path forward.
+    /// the current step advances the pilot -- the one path forward.
     pub fn attempt(self: *Pilot, step: Step, precondition_met: bool) PilotError!void {
         // invariant: the cursor is a valid position in or at the end of the arc
         assert(self.cursor <= step_count);
@@ -133,7 +133,7 @@ pub const Pilot = struct {
         return self.cursor == step_count;
     }
 
-    /// Render the arc as a keeper reads it — one line per step, checked or open, and a final
+    /// Render the arc as a keeper reads it -- one line per step, checked or open, and a final
     /// verdict. Refuses when the rendering exceeds its bounded buffer.
     pub fn report(self: *const Pilot, out: []u8) PilotError!u32 {
         // invariant: the report buffer honors its bound
@@ -191,7 +191,7 @@ fn welcome_full_arc_reaches_ready() !void {
     print("ship_pilot: the four-step arc walked in order reaches PILOT READY.\n", .{});
 }
 
-/// A step attempted out of order refuses — the cursor cannot be jumped past an earlier step.
+/// A step attempted out of order refuses -- the cursor cannot be jumped past an earlier step.
 fn unwelcome_out_of_order_refuses() !void {
     var p = Pilot.begin();
     const jumped = p.attempt(.customs, true);
@@ -202,7 +202,7 @@ fn unwelcome_out_of_order_refuses() !void {
     print("ship_pilot: a step jumped out of order refused OutOfOrder; the cursor held.\n", .{});
 }
 
-/// A step whose precondition is unmet refuses and does not advance — a keeper cannot be marked
+/// A step whose precondition is unmet refuses and does not advance -- a keeper cannot be marked
 /// past a step they have not truly completed.
 fn unwelcome_unmet_precondition_holds() !void {
     var p = Pilot.begin();
@@ -219,7 +219,7 @@ fn unwelcome_unmet_precondition_holds() !void {
     print("ship_pilot: an unmet precondition held at its step, then advanced once met.\n", .{});
 }
 
-/// The report reads a keeper's progress honestly — passed steps checked, the current step named,
+/// The report reads a keeper's progress honestly -- passed steps checked, the current step named,
 /// and the verdict matching the arc's true state.
 fn welcome_report_reads_progress() !void {
     var buf: [max_report]u8 = undefined;

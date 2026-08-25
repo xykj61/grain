@@ -1,15 +1,15 @@
-//! brushstroke/filter_strip.rye — HUNK64: the filter strip — every filter previewed over the picture, the selection marked.
+//! brushstroke/filter_strip.rye -- HUNK64: the filter strip -- every filter previewed over the picture, the selection marked.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK64.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK64.
 //! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
-//! Teacher, thanked clean-room: the filter strip of a photo app (iCloud Photos / Instagram / VSCO) — a row of the same
+//! Teacher, thanked clean-room: the filter strip of a photo app (iCloud Photos / Instagram / VSCO) -- a row of the same
 //! photo under each named filter, the chosen one framed, so a keeper reads the whole book at a glance (concept only, siloed).
 //!
-//! HUNK63 gave a keeper the filter tool — walk the stock filters, preview the selected one, commit it. Yet the picker
+//! HUNK63 gave a keeper the filter tool -- walk the stock filters, preview the selected one, commit it. Yet the picker
 //! showed one filter at a time; a keeper could not see the WHOLE book over their own picture and read which one they had
 //! under their finger. This rung paints that carousel. `paint_strip` previews every filter in the picker's book over the
 //! CURRENT view (HUNK33/HUNK13, pure) and tiles the thumbnails left to right into one Skate grid, a marker row above
-//! wearing a solid block over the SELECTED band — so the filter a keeper reads as chosen is exactly the one `commit` will
+//! wearing a solid block over the SELECTED band -- so the filter a keeper reads as chosen is exactly the one `commit` will
 //! push. The exact parallel of the crop overlay (HUNK61) framing the pending crop, and of the filmstrip (HUNK54) tiling
 //! the history. A pure read over three proven seams; it invents no pixel op and refuses `StripTooWide` rather than
 //! allocate past the map ceiling. The source is never mutated. No network, no key, no funds.
@@ -28,12 +28,12 @@ const filter_picker = @import("filter_picker.rye");
 
 pub const filter_strip_version = "20260813.223956";
 
-/// The widest strip this rung paints — the down-map ceiling, so the tiled grid stays bounded (TAME bound at
+/// The widest strip this rung paints -- the down-map ceiling, so the tiled grid stays bounded (TAME bound at
 /// construction). A book of many thumbnails must still fit inside the map ceiling, or it refuses rather than allocating
 /// past the bound.
 pub const max_strip_cols: u32 = image_skate.max_map_cols;
 
-/// The palette slot the "you are here" marker wears — white (anchor slot 2), a solid block over the selected filter's
+/// The palette slot the "you are here" marker wears -- white (anchor slot 2), a solid block over the selected filter's
 /// band so a keeper reads their choice at a glance. Distinct from the thumbnail colors beneath it.
 pub const marker_slot: u8 = 2;
 
@@ -42,9 +42,9 @@ pub const StripError = error{
 };
 
 /// Paint the filter strip: preview every filter in the picker's book over the current view, tiled left to right into one
-/// grid (`count·tcols` wide, `trows + 1` tall), a marker row above wearing a solid block over the selected band. The band
+/// grid (`count-tcols` wide, `trows + 1` tall), a marker row above wearing a solid block over the selected band. The band
 /// a keeper reads as chosen is exactly the filter `picker.commit` will push. Refuses `StripTooWide` when the book would
-/// pass the map ceiling. Pure — the book and cursor are read, never moved, and the source is never mutated.
+/// pass the map ceiling. Pure -- the book and cursor are read, never moved, and the source is never mutated.
 pub fn paint_strip(
     allocator: std.mem.Allocator,
     picker: *const filter_picker.FilterPicker,
@@ -54,7 +54,7 @@ pub fn paint_strip(
     // invariant: a thumbnail has both dimensions, so each filter down-maps a real block.
     assert(tcols >= 1);
     assert(trows >= 1);
-    // invariant: the selection names a real filter — the marker always lands on a held band.
+    // invariant: the selection names a real filter -- the marker always lands on a held band.
     assert(picker.selection < picker.book.len());
 
     const filters = picker.book.len();
@@ -69,7 +69,7 @@ pub fn paint_strip(
     assert(width <= max_strip_cols);
     assert(height == trows + 1);
 
-    // The current view — the picture with every committed edit applied. Read once; every filter previews over it.
+    // The current view -- the picture with every committed edit applied. Read once; every filter previews over it.
     const view = try picker.current_view(allocator);
     // invariant: the current view is a well-formed image the filters can preview over.
     assert(view.pixels.len == @as(usize, view.width) * @as(usize, view.height) * 4);
@@ -123,7 +123,7 @@ pub fn paint_strip(
     return grid;
 }
 
-// --- selftest: a color source — the strip tiles every stock filter over the current view (each band equal to a direct
+// --- selftest: a color source -- the strip tiles every stock filter over the current view (each band equal to a direct
 //     preview cell-for-cell), the marker sits over the selected band and follows the selection, the strip previews over
 //     the edited view after a commit, and a too-wide strip refuses by name -----------------------------------------
 
@@ -184,7 +184,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const tcols: u32 = 2;
     const trows: u32 = 2;
 
-    // The strip tiles every stock filter (nine) over the current view; it is filters·tcols wide, trows+1 tall.
+    // The strip tiles every stock filter (nine) over the current view; it is filters-tcols wide, trows+1 tall.
     pk.select_to(0); // "vivid"
     {
         const grid = try paint_strip(garden, &pk, tcols, trows);
@@ -197,7 +197,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert_marker_on(&grid, 0, tcols);
     }
 
-    // Moving the selection moves the marker — the strip reads which filter is under the finger.
+    // Moving the selection moves the marker -- the strip reads which filter is under the finger.
     pk.select_to(3); // "noir"
     {
         const grid = try paint_strip(garden, &pk, tcols, trows);

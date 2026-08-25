@@ -1,7 +1,7 @@
-//! pond/apps/mcp_prompt_list.rye — BUHR Journey 11, Rung 2: the prompt list.
+//! pond/apps/mcp_prompt_list.rye -- BUHR Journey 11, Rung 2: the prompt list.
 //!
-//! Rung one served `prompts/get` — a caller who already knows a prompt names it and receives
-//! the filled text. This rung serves `prompts/list` — a caller *discovers* every prompt a
+//! Rung one served `prompts/get` -- a caller who already knows a prompt names it and receives
+//! the filled text. This rung serves `prompts/list` -- a caller *discovers* every prompt a
 //! server offers, and its arity, the template half's mirror of Journey 3's `tools/list` (J9)
 //! and Journey 10's `resources/list`. A bounded prompt book projects to a
 //! `format mcp-prompt-list-v1` envelope, one `prompt <name> <argc>` line per template, in held
@@ -9,11 +9,11 @@
 //!
 //! The list is more than a printout: it is proven an *honest index* of the book it names. For
 //! every listed prompt, the book truly holds a descriptor of that name whose declared argument
-//! count equals the advertised arity — so a caller handed the list can trust that every prompt
+//! count equals the advertised arity -- so a caller handed the list can trust that every prompt
 //! it names exists, taking exactly the arguments it promised, before spending a `prompts/get`.
 //! It composes over rung one's public API only: it holds real `mcp_prompt.PromptDesc` values,
 //! renders its own envelope, and reads each descriptor through rung one, which stays its own
-//! green binary. It reads no network — the Comlink-served transport stays the held serve gate.
+//! green binary. It reads no network -- the Comlink-served transport stays the held serve gate.
 //!
 //!   rye build pond/apps/mcp_prompt_list.rye -femit-bin=pond/bin/mcp-prompt-list
 //!   pond/bin/mcp-prompt-list selftest
@@ -45,7 +45,7 @@ pub const ListError = error{
     NotHonest,
 };
 
-/// A bounded book of prompt descriptors — the templates a server offers.
+/// A bounded book of prompt descriptors -- the templates a server offers.
 // Invariant: count <= max_prompts.
 pub const PromptBook = struct {
     descs: [max_prompts]mp.PromptDesc,
@@ -73,7 +73,7 @@ pub const PromptEntry = struct {
     argc: u32,
 };
 
-/// A parsed prompt list — the prompts a server advertises, in held order.
+/// A parsed prompt list -- the prompts a server advertises, in held order.
 // Invariant: count <= max_prompts.
 pub const PromptList = struct {
     entries: [max_prompts]PromptEntry,
@@ -165,7 +165,7 @@ fn held_desc(book: *const PromptBook, name: []const u8) ?*const mp.PromptDesc {
 
 /// Prove a parsed list is an honest index of a live book: every listed prompt names a
 /// descriptor the book truly holds, whose declared argument count equals the advertised arity.
-/// A name the book lacks, or an arity that disagrees, refuses `NotHonest` — so a caller can
+/// A name the book lacks, or an arity that disagrees, refuses `NotHonest` -- so a caller can
 /// trust the list before spending a `prompts/get`.
 pub fn verify_list(list: *const PromptList, book: *const PromptBook) ListError!void {
     // invariant: the list stays within the prompt bound

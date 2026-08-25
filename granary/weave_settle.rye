@@ -1,4 +1,4 @@
-//! granary/weave_settle.rye — Granary — settle weave listing (selftest).
+//! granary/weave_settle.rye -- Granary -- settle weave listing (selftest).
 //!
 //!   rye build granary/weave_settle.rye -femit-bin=granary/bin/weave-settle
 //!   granary/bin/weave-settle selftest
@@ -92,7 +92,7 @@ fn run_selftest(io: std.Io) !u8 {
     var wov_digest: [settle.digest_hex_len]u8 = undefined;
     settle.digest_bytes(wov_line_len, &wov_digest);
 
-    // 4. Payment body → payment digest.
+    // 4. Payment body -> payment digest.
     const payment_fields = settle.PaymentFields{
         .amount = "100",
         .currency = "murr",

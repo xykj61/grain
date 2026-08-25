@@ -1,6 +1,6 @@
-//! lotus/segment.rye — ALES95: the voice-activity segmenter — ALES94's classifier read across a whole clip, frame by frame, coalesced into runs.
+//! lotus/segment.rye -- ALES95: the voice-activity segmenter -- ALES94's classifier read across a whole clip, frame by frame, coalesced into runs.
 //! ALES94 answered the oldest question in speech processing over ONE span: is this frame voiced, unvoiced, or silent? Its own scope note named this rung plainly
-//! — a real voice-activity detector adds hysteresis over TIME. A classifier reads one window; a segmenter reads a whole clip as a sequence of windows and reports
+//! -- a real voice-activity detector adds hysteresis over TIME. A classifier reads one window; a segmenter reads a whole clip as a sequence of windows and reports
 //! where each kind of sound begins and ends. Every voice-activity gate, every silence trimmer, every auto-splitter in a century of audio editing is exactly this
 //! loop: classify each frame, then coalesce neighbouring frames of the same verdict into runs.
 //!
@@ -8,20 +8,20 @@
 //! differs from the run being built, close that run and open a new one; otherwise extend the run. The output is a run-length label sequence over the clip.
 //!
 //! The crux: this rung invents no new measurement. Its segmentation equals a decision built BY HAND from repeated ALES94 classify calls over consecutive frames,
-//! coalesced — the segmenter is the SEQUENCING rule, not a fourth reader that could disagree with the classifier it composes. So it can never drift from ALES94,
+//! coalesced -- the segmenter is the SEQUENCING rule, not a fourth reader that could disagree with the classifier it composes. So it can never drift from ALES94,
 //! exactly as ALES94 can never drift from the two readers it fuses and ALES93 can never drift from the trigger it counts. The family stays a tower of readers.
 //!
-//! The frame-length law: frame_len must be at least 1, at most count, and must divide count evenly — a ragged final frame is refused BadFrame rather than
+//! The frame-length law: frame_len must be at least 1, at most count, and must divide count evenly -- a ragged final frame is refused BadFrame rather than
 //! classified short, so every frame carries the same weight and the segments tile the span exactly. Stated plainly so the refusal is deliberate.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES95.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES95.
 //! Design read: active-designing/date/20260814/20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md
-//! Stands on: lotus/voiced.rye (ALES94) — the per-frame classifier, reused by name so the segmenter can never classify differently than the reader it sequences;
-//! lotus/timeline.rye (ALES2) — the Clip, max_clip; lotus/schmitt.rye (ALES92) — the band-and-span precheck; lotus/meter.rye (ALES13) — the floor's peak ceiling.
+//! Stands on: lotus/voiced.rye (ALES94) -- the per-frame classifier, reused by name so the segmenter can never classify differently than the reader it sequences;
+//! lotus/timeline.rye (ALES2) -- the Clip, max_clip; lotus/schmitt.rye (ALES92) -- the band-and-span precheck; lotus/meter.rye (ALES13) -- the floor's peak ceiling.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/, never mutated by this rung.
+//! HONEST SCOPE -- software only, purely LOCAL, and READ-ONLY. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/, never mutated by this rung.
 //! The output is a run-length label sequence over one clip, NOT a transcript, not a diarization, not a phoneme boundary: a real voice-activity detector adds
-//! adaptive floors, spectral tilt, and smoothing hysteresis this rung does not — those are later rungs. No real sample rate, no windowing overlap, no network, no
+//! adaptive floors, spectral tilt, and smoothing hysteresis this rung does not -- those are later rungs. No real sample rate, no windowing overlap, no network, no
 //! keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/segment.rye selftest
@@ -38,17 +38,17 @@ const voiced = @import("voiced.rye");
 pub const segment_version = "20260814.231217";
 
 /// The worst case is one segment per single-sample frame over the largest clip, so any legal span is representable and SegmentsFull can be raised honestly even
-/// though it cannot fire under this bound — the same honesty ALES94 keeps about CountFull/MeterFull, a path the type system can see kept named rather than hidden.
+/// though it cannot fire under this bound -- the same honesty ALES94 keeps about CountFull/MeterFull, a path the type system can see kept named rather than hidden.
 pub const max_segments: u32 = timeline.max_clip;
 
 /// The segmenter's faults are the classifier's OWN faults, reused by name (ALES94's ClassifyError: the band-and-span BadThreshold/BadRange from ALES92, the floor
-/// BadFloor, and the composed CountFull/MeterFull), plus two of its own — an illegal frame length, and a segment overflow that cannot fire under max_segments yet
+/// BadFloor, and the composed CountFull/MeterFull), plus two of its own -- an illegal frame length, and a segment overflow that cannot fire under max_segments yet
 /// stays named because the type system can see the path.
 pub const SegmentError = voiced.ClassifyError || error{
-    /// The frame length is zero, larger than the span, or does not divide the span evenly — a ragged final frame would carry less weight than the rest. Refused
+    /// The frame length is zero, larger than the span, or does not divide the span evenly -- a ragged final frame would carry less weight than the rest. Refused
     /// before any frame is read.
     BadFrame,
-    /// More coalesced runs than max_segments — impossible while max_segments equals the clip's own sample ceiling, kept named for the honest path.
+    /// More coalesced runs than max_segments -- impossible while max_segments equals the clip's own sample ceiling, kept named for the honest path.
     SegmentsFull,
 };
 
@@ -60,7 +60,7 @@ pub const Segment = struct {
     count: u32,
 };
 
-/// A bounded run-length label sequence over one clip — the coalesced verdicts, written through an out-pointer so no large struct is returned by value (the same
+/// A bounded run-length label sequence over one clip -- the coalesced verdicts, written through an out-pointer so no large struct is returned by value (the same
 /// discipline splice and feed keep).
 pub const Segments = struct {
     items: [max_segments]Segment = undefined,
@@ -68,7 +68,7 @@ pub const Segments = struct {
 
     /// A read-only view of the runs actually written.
     pub fn runs(self: *const Segments) []const Segment {
-        // invariant: len never exceeds the bound — every push checks it at the edge.
+        // invariant: len never exceeds the bound -- every push checks it at the edge.
         assert(self.len <= max_segments);
         return self.items[0..self.len];
     }
@@ -76,7 +76,7 @@ pub const Segments = struct {
 
 /// Segment `[start, count)` into runs of same-verdict frames, writing the coalesced result into `out`. Splits the span into consecutive frames of exactly
 /// `frame_len` samples, classifies each through ALES94 (reading the crossing count through the band `[t_low, t_high]` and the RMS energy over that frame, fused by
-/// the energy-gate-first rule), and coalesces neighbouring frames of the same verdict. READ-ONLY — not one sample is written. Validates the whole span and band
+/// the energy-gate-first rule), and coalesces neighbouring frames of the same verdict. READ-ONLY -- not one sample is written. Validates the whole span and band
 /// through ALES92's precheck (BadThreshold / BadRange), the floor against the peak ceiling (BadFloor), and the frame length (BadFrame) BEFORE reading any frame;
 /// on refusal `out` is left exactly as it was and the clip is untouched.
 pub fn segment(
@@ -90,17 +90,17 @@ pub fn segment(
     silence_floor: u32,
     voice_split: u32,
 ) SegmentError!void {
-    // invariant: the band and span are the classifier's own law — one precheck shared with ALES92/ALES94, so the segmenter can never validate differently than
+    // invariant: the band and span are the classifier's own law -- one precheck shared with ALES92/ALES94, so the segmenter can never validate differently than
     // the reader it sequences.
     try schmitt.precheck(clip.len, start, count, t_low, t_high);
-    // invariant: a floor no RMS could ever reach would make every frame silent — refuse it once up front rather than per frame. A floor of 0 is legal (it
+    // invariant: a floor no RMS could ever reach would make every frame silent -- refuse it once up front rather than per frame. A floor of 0 is legal (it
     // disables the silence verdict), so the ceiling is the only illegal floor.
     if (silence_floor > meter.sample_peak_max) return error.BadFloor;
-    // invariant: every frame carries the same weight — a zero, oversized, or non-dividing frame length is refused so the segments tile the span exactly.
+    // invariant: every frame carries the same weight -- a zero, oversized, or non-dividing frame length is refused so the segments tile the span exactly.
     if (frame_len == 0 or frame_len > count or count % frame_len != 0) return error.BadFrame;
 
     const frames: u32 = count / frame_len;
-    // invariant: the frame count never exceeds the span, itself bounded by the clip's ceiling — so it never exceeds max_segments.
+    // invariant: the frame count never exceeds the span, itself bounded by the clip's ceiling -- so it never exceeds max_segments.
     assert(frames <= count and count <= max_segments);
 
     // Refuse into a fresh, empty result so a caller reusing an `out` never sees a half-written mix of this call and the last.
@@ -123,7 +123,7 @@ pub fn segment(
         }
     }
 
-    // invariant: the runs tile the span exactly — at least one run whenever there was a frame, the first starting at `start`, none exceeding the bound.
+    // invariant: the runs tile the span exactly -- at least one run whenever there was a frame, the first starting at `start`, none exceeding the bound.
     assert(out.len <= max_segments);
     assert((frames == 0) == (out.len == 0));
     if (out.len > 0) assert(out.items[0].start == start);
@@ -144,7 +144,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built segmentation the segmenter is checked against in the crux — the SAME loop of classify calls, coalesced, read directly.
+/// The hand-built segmentation the segmenter is checked against in the crux -- the SAME loop of classify calls, coalesced, read directly.
 fn by_hand(out: *Segments, clip: *const timeline.Clip, start: u32, count: u32, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
     out.len = 0;
     const frames = count / frame_len;
@@ -191,10 +191,10 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // 1. A UNIFORM CLIP IS ONE RUN — a loud periodic signal, split into small frames, all classify voiced and coalesce into a single .voiced run over the whole
+    // 1. A UNIFORM CLIP IS ONE RUN -- a loud periodic signal, split into small frames, all classify voiced and coalesce into a single .voiced run over the whole
     //    span.
     {
-        // four frames of four samples, each a big-positive/big-negative run (few crossings, large rms) → each voiced
+        // four frames of four samples, each a big-positive/big-negative run (few crossings, large rms) -> each voiced
         const sig = [_]i16{
             20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000,
             20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000,
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         if (!tiles(&out, 0, clip.len)) return error.UniformDoesNotTile;
     }
 
-    // 2. A TWO-REGION CLIP IS TWO COALESCED RUNS — a quiet region (silent) followed by a loud noisy region (unvoiced), each two frames, coalesce into exactly two
+    // 2. A TWO-REGION CLIP IS TWO COALESCED RUNS -- a quiet region (silent) followed by a loud noisy region (unvoiced), each two frames, coalesce into exactly two
     //    runs whose boundary sits where the sound changes.
     {
         const sig = [_]i16{
@@ -225,7 +225,7 @@ fn run_selftest() !u8 {
         if (!tiles(&out, 0, clip.len)) return error.TwoRegionDoesNotTile;
     }
 
-    // 3. THE CRUX — over several spans, frame lengths, floors, and splits, segment equals a hand-built loop of classify calls coalesced. The segmenter is the
+    // 3. THE CRUX -- over several spans, frame lengths, floors, and splits, segment equals a hand-built loop of classify calls coalesced. The segmenter is the
     //    sequencing rule, not a fourth reader that could disagree.
     {
         const sig = [_]i16{
@@ -255,7 +255,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. READ-ONLY — the source clip is byte-for-byte unchanged after segmenting.
+    // 4. READ-ONLY -- the source clip is byte-for-byte unchanged after segmenting.
     {
         const src = [_]i16{ 111, 20000, -20000, 222, 40, -40, 40, -40, 333, 15000, -15000, 444 };
         var clip = timeline.Clip{};
@@ -276,7 +276,7 @@ fn run_selftest() !u8 {
         if (out.len != 1 or out.runs()[0].verdict != v or out.runs()[0].start != 0 or out.runs()[0].count != clip.len) return error.SingleFrameWrong;
     }
 
-    // 6. A SUB-SPAN — segmenting [start, count) reads only that window and starts the first run at `start`, proving the offset is honoured.
+    // 6. A SUB-SPAN -- segmenting [start, count) reads only that window and starts the first run at `start`, proving the offset is honoured.
     {
         const sig = [_]i16{
             30000, -30000, 30000, -30000, // loud noisy prefix, OUTSIDE the span
@@ -301,7 +301,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedMutatedZero;
     }
 
-    // 7b. A RAGGED FRAME LENGTH — one that does not divide the span — refuses BadFrame.
+    // 7b. A RAGGED FRAME LENGTH -- one that does not divide the span -- refuses BadFrame.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3, 4, 5 }); // count 5, frame 2 does not divide
@@ -309,7 +309,7 @@ fn run_selftest() !u8 {
         if (segment(&clip, &out, 0, 5, 2, band_low, band_high, 500, 3)) |_| return error.RaggedSlipped else |e| if (e != error.BadFrame) return error.WrongRagged;
     }
 
-    // 7c. AN OVERSIZED FRAME LENGTH — larger than the span — refuses BadFrame.
+    // 7c. AN OVERSIZED FRAME LENGTH -- larger than the span -- refuses BadFrame.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3 });
@@ -335,7 +335,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedMutatedRange;
     }
 
-    // 7f. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor.
+    // 7f. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 1, 2, 3, 4 });

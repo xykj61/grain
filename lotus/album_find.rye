@@ -1,25 +1,25 @@
-//! lotus/album_find.rye — ALES231: resolve a track by name in a record. ALES228 gave the catalog an index — a keeper reaches straight
+//! lotus/album_find.rye -- ALES231: resolve a track by name in a record. ALES228 gave the catalog an index -- a keeper reaches straight
 //! to the record they name rather than scrolling a discography. Yet one level down the record itself is still only a scroll: the album
 //! manifest (ALES224) and the album sheet (ALES225) walk the tracks in order, top to bottom. A working creator reaching inside a record
-//! wants the same move the catalog already has — name the track, get its place and its citable handle. Every later per-track workflow —
-//! open THIS track's bundle, compare THIS track's digest across two masters, cite THIS one — begins by resolving a name to its entry.
+//! wants the same move the catalog already has -- name the track, get its place and its citable handle. Every later per-track workflow --
+//! open THIS track's bundle, compare THIS track's digest across two masters, cite THIS one -- begins by resolving a name to its entry.
 //! This rung seats that resolve, so an album is an index a keeper reaches into, not only a scroll they read down.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES231.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES231.
 //! Design read: active-designing/date/20260815/20260815-144122_fill-ales231-lotus-album-find.md
-//! Stands on: lotus/album_manifest.rye (ALES224) — the opened AlbumManifest (its ordered (name, digest) entries) this reads. The find /
+//! Stands on: lotus/album_manifest.rye (ALES224) -- the opened AlbumManifest (its ordered (name, digest) entries) this reads. The find /
 //! name_of resolve idiom is the exact shape of lotus/library_find.rye (ALES228), lifted from a catalog of records to a record of
-//! tracks, unchanged. No new frame, no new hash — a read over fields the seal already proved whole.
+//! tracks, unchanged. No new frame, no new hash -- a read over fields the seal already proved whole.
 //!
-//! THE CRUX — a resolve turns a listing into an index. The manifest and the sheet walk the record in order; find reaches straight to
+//! THE CRUX -- a resolve turns a listing into an index. The manifest and the sheet walk the record in order; find reaches straight to
 //! the track a keeper names, and digest_of hands back the citable content address that track points at. A miss is an ANSWER, not a
 //! fault: a record that does not hold a name returns null (the honest optional library.find returns), so a caller tells ABSENT from
-//! MALFORMED without an error path. It brings the album level to parity with the library level — both carry content address, readable
+//! MALFORMED without an error path. It brings the album level to parity with the library level -- both carry content address, readable
 //! page, and resolve.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded lookup over in-process fields already proven whole by open_album_manifest,
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded lookup over in-process fields already proven whole by open_album_manifest,
 //! siloed to lotus/. Content-addressing on the handle it returns, never a signature: it points to a track, it does not prove who made
-//! one — the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact, no
+//! one -- the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact, no
 //! network, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/album_find.rye selftest
@@ -33,7 +33,7 @@ const render_album = @import("render_album.rye");
 
 pub const album_find_version = "20260815.144122";
 
-/// The track name at index `i` — a slice into the opened manifest body. Mirrors library_find.name_of one level down: a track is a
+/// The track name at index `i` -- a slice into the opened manifest body. Mirrors library_find.name_of one level down: a track is a
 /// slot, a record is a catalog, the accessor is the same.
 pub fn name_of(am: *const album_manifest.AlbumManifest, i: u32) []const u8 {
     // invariant: the index names a live track whose name fits the manifest's own bound.
@@ -41,35 +41,35 @@ pub fn name_of(am: *const album_manifest.AlbumManifest, i: u32) []const u8 {
     return am.entries[i].name;
 }
 
-/// The 64-hex content-address digest of the track at index `i` — the citable handle a resolve exists to hand back. A slice into the
+/// The 64-hex content-address digest of the track at index `i` -- the citable handle a resolve exists to hand back. A slice into the
 /// opened manifest body.
 pub fn digest_of(am: *const album_manifest.AlbumManifest, i: u32) []const u8 {
-    // invariant: the index names a live track whose digest is exactly the full hex width — open_album_manifest already proved it.
+    // invariant: the index names a live track whose digest is exactly the full hex width -- open_album_manifest already proved it.
     assert(i < am.count and am.entries[i].digest.len == album_manifest.digest_hex_len);
     return am.entries[i].digest;
 }
 
 /// The index of the track named `name`, or null when the record holds no such name. One ordered pass; a track name is unique within
-/// an album manifest, so the first match is the only match. A miss is a clean null, never a fault — absence and malformation are
+/// an album manifest, so the first match is the only match. A miss is a clean null, never a fault -- absence and malformation are
 /// different answers, and the manifest was already proven whole.
 pub fn find(am: *const album_manifest.AlbumManifest, name: []const u8) ?u32 {
-    // invariant: the search never reads past the live tracks — the manifest's own bound holds.
+    // invariant: the search never reads past the live tracks -- the manifest's own bound holds.
     assert(am.count <= album_manifest.max_tracks);
     var i: u32 = 0;
     while (i < am.count) : (i += 1) {
         if (std.mem.eql(u8, name_of(am, i), name)) return i;
     }
-    // invariant: a null answer means every live track was compared — an ordered, total pass, not an early stop.
+    // invariant: a null answer means every live track was compared -- an ordered, total pass, not an early stop.
     assert(i == am.count);
     return null;
 }
 
-// --- selftest: THE RESOLVE LAW — a present name resolves to its index in order, and digest_of returns the exact digest the manifest
-//     holds; THE ABSENCE LAW — a name the record lacks returns null, never a wrong index, and a prefix of a name still misses; THE
-//     FIRST-MATCH LAW — the null answer means every track was compared; THE EMPTY LAW — a search over a zero-track record returns null
+// --- selftest: THE RESOLVE LAW -- a present name resolves to its index in order, and digest_of returns the exact digest the manifest
+//     holds; THE ABSENCE LAW -- a name the record lacks returns null, never a wrong index, and a prefix of a name still misses; THE
+//     FIRST-MATCH LAW -- the null answer means every track was compared; THE EMPTY LAW -- a search over a zero-track record returns null
 
 fn run_selftest() !u8 {
-    // Three stand-in bundles — any bytes serve; the album manifest addresses their OUTPUT bytes, and find reads the opened record.
+    // Three stand-in bundles -- any bytes serve; the album manifest addresses their OUTPUT bytes, and find reads the opened record.
     // Small hand-built bundles keep the witness self-contained.
     const b0 = "LOTUSBND....first bundle bytes....\x01\x02\x03";
     const b1 = "LOTUSBND....second bundle bytes...\x04\x05\x06";
@@ -84,7 +84,7 @@ fn run_selftest() !u8 {
     const rn = try album_manifest.seal_album_manifest(rec[0..], tracks[0..]);
     const am = try album_manifest.open_album_manifest(rec[0..rn]);
 
-    // 1. THE RESOLVE LAW — each present name resolves to its own index in order, and digest_of at that index returns the exact digest
+    // 1. THE RESOLVE LAW -- each present name resolves to its own index in order, and digest_of at that index returns the exact digest
     //    the manifest holds for it (the citable handle the resolve exists to hand back).
     {
         const idx0 = find(&am, "opener") orelse return error.OpenerMissing;
@@ -97,15 +97,15 @@ fn run_selftest() !u8 {
         if (digest_of(&am, idx2).len != album_manifest.digest_hex_len) return error.DigestWidthWrong;
     }
 
-    // 2. THE ABSENCE LAW — a name the record does not hold returns null, never a wrong index and never a fault.
+    // 2. THE ABSENCE LAW -- a name the record does not hold returns null, never a wrong index and never a fault.
     {
         if (find(&am, "encore") != null) return error.AbsentSlipped;
         if (find(&am, "") != null) return error.EmptyNameSlipped;
-        // a name that is a prefix of a present one still misses — the match is whole, not partial.
+        // a name that is a prefix of a present one still misses -- the match is whole, not partial.
         if (find(&am, "open") != null) return error.PrefixSlipped;
     }
 
-    // 3. THE EMPTY LAW — a search over a zero-track record returns null for any name.
+    // 3. THE EMPTY LAW -- a search over a zero-track record returns null for any name.
     {
         var erec: [album_manifest.max_album_manifest_bytes]u8 = undefined;
         const empty = [_]render_album.TrackIn{};

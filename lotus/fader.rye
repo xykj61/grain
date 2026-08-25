@@ -1,17 +1,17 @@
-//! lotus/fader.rye — ALES8: the per-track fader column — each track's level scales its contribution before the sum. ALES6's
+//! lotus/fader.rye -- ALES8: the per-track fader column -- each track's level scales its contribution before the sum. ALES6's
 //! `render` summed many placed clips into one master, yet every track entered at FULL level: the table places a clip, it never
-//! balances one. This rung opens the mixing-desk channel strip's one essential control — a per-track fader, a level as a
+//! balances one. This rung opens the mixing-desk channel strip's one essential control -- a per-track fader, a level as a
 //! fraction num/den, applied to each track BEFORE it joins the sum. A mix without faders is a pile; a mix with faders is a mix.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES8.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES8.
 //! Design read: active-designing/20260814-fill-ales8-lotus-fader-column.md
-//! Stands on: lotus/track.rye (ALES6) — the Session table this rung renders, its bound and offset alignment reused whole;
-//! lotus/timeline.rye (ALES2) — the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
-//! lotus/clock.rye (ALES5) — each track's real offset converts through `samples_for`.
+//! Stands on: lotus/track.rye (ALES6) -- the Session table this rung renders, its bound and offset alignment reused whole;
+//! lotus/timeline.rye (ALES2) -- the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
+//! lotus/clock.rye (ALES5) -- each track's real offset converts through `samples_for`.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process fader column over an ALES6 table of i16 PCM Clips on one
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process fader column over an ALES6 table of i16 PCM Clips on one
 //! bench, siloed to lotus/. No socket, no network, no keys, no funds, no real device. The one correctness beyond ALES6 is that
-//! the fader multiply happens INSIDE the accumulation, per sample, in a wide i64 — so a boosted track scales in the wide
+//! the fader multiply happens INSIDE the accumulation, per sample, in a wide i64 -- so a boosted track scales in the wide
 //! domain and the master saturates ONCE over the true faded sum, never a clamp between the fader and the sum. That is why a
 //! fader column cannot be gain-then-render: ALES2's gain would clamp each track before it could join the mix.
 //!
@@ -27,7 +27,7 @@ const track = @import("track.rye");
 
 pub const fader_version = "20260814.120123";
 
-/// A per-track level as a fraction num/den. Default unity (1/1) — a fader at rest changes nothing. A negative `num` inverts a
+/// A per-track level as a fraction num/den. Default unity (1/1) -- a fader at rest changes nothing. A negative `num` inverts a
 /// track's phase in the mix (the null test's tool); `0/den` mutes a track (present in the table, silent in the sum). The same
 /// value model ALES2's gain uses: a signed numerator over an unsigned, nonzero denominator.
 pub const Fader = struct {
@@ -35,7 +35,7 @@ pub const Fader = struct {
     den: u32 = 1,
 };
 
-/// Build a validated Fader, refusing BadGain on a zero denominator at the edge — the one fact render rests on, proven once at
+/// Build a validated Fader, refusing BadGain on a zero denominator at the edge -- the one fact render rests on, proven once at
 /// construction so no later divide meets a zero. Reuses ALES2's BadGain rather than coining a second name for the same fault.
 pub fn make(num: i32, den: u32) timeline.EditError!Fader {
     // invariant: the denominator is nonzero, so every scaling divide is well-defined.
@@ -47,9 +47,9 @@ pub fn make(num: i32, den: u32) timeline.EditError!Fader {
 }
 
 /// Render every track into one master at its real offset, each scaled by its fader in the wide accumulator, the sum saturated
-/// ONCE over the whole faded sum. The fader column aligns with the table one-to-one — `faders.len` equals `session.count`.
+/// ONCE over the whole faded sum. The fader column aligns with the table one-to-one -- `faders.len` equals `session.count`.
 /// Each fader's multiply and divide run in i64 (the ALES2 gain rule, @divTrunc toward zero) BEFORE the value joins the
-/// accumulator, so only the final sum meets the floor and ceiling — a boosted track scales in the wide domain, never clamped
+/// accumulator, so only the final sum meets the floor and ceiling -- a boosted track scales in the wide domain, never clamped
 /// between the fader and the mix. Refuses BadGain on a zero denominator, forwards ClipFull / DurationTooLong at the edge
 /// exactly as ALES6. A unity column reproduces ALES6's `render` byte-for-byte.
 pub fn render(
@@ -60,7 +60,7 @@ pub fn render(
 ) (track.TrackError || clock.ClockError || timeline.EditError)!void {
     // invariant: the clock is valid, so every offset conversion is bounded and safe.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
-    // invariant: the fader column aligns one-to-one with the placed tracks — one level per track, no more, no fewer.
+    // invariant: the fader column aligns one-to-one with the placed tracks -- one level per track, no more, no fewer.
     assert(faders.len == session.count);
 
     // A wide accumulator per sample, so the master saturates over the TRUE faded sum of all tracks, never once per track.
@@ -71,16 +71,16 @@ pub fn render(
     while (t < session.count) : (t += 1) {
         const tr = &session.tracks[t];
         const f = faders[t];
-        // invariant: no divide by zero — a fader reaching render carries a nonzero denominator, checked before any scale.
+        // invariant: no divide by zero -- a fader reaching render carries a nonzero denominator, checked before any scale.
         if (f.den == 0) return error.BadGain;
         const off = try clock.samples_for(clk, tr.at_ms);
-        // invariant: the track's placed end must fit the master bound — checked without overflow, exactly as ALES6.
+        // invariant: the track's placed end must fit the master bound -- checked without overflow, exactly as ALES6.
         if (tr.clip.len > out.buf.len - off) return error.ClipFull;
         const placed_end: u32 = off + tr.clip.len;
         var i: u32 = 0;
         while (i < tr.clip.len) : (i += 1) {
             // The fader scale runs in i64 so it never overflows before the divide, and the faded value joins the accumulator
-            // UNCLAMPED — the single saturation below is the only clamp, over the true sum.
+            // UNCLAMPED -- the single saturation below is the only clamp, over the true sum.
             const scaled: i64 = @as(i64, tr.clip.buf[i]) * @as(i64, f.num);
             acc[off + i] += @divTrunc(scaled, @as(i64, f.den));
         }
@@ -99,7 +99,7 @@ pub fn render(
 
 // --- selftest: a unity column reproduces ALES6's master exactly (the mixer generalizes the table); a 1/2 fader halves a track
 //     before the sum; a 0/1 fader mutes a track (present, silent); two loud tracks each boosted still saturate ONCE over the
-//     true faded sum; a -1/1 fader nulls a track against its own copy to EXACT silence (the wide-domain phase-cancel — only
+//     true faded sum; a -1/1 fader nulls a track against its own copy to EXACT silence (the wide-domain phase-cancel -- only
 //     correct because the negative fader scales before the single clamp); a zero denominator refuses BadGain; a track past the
 //     master bound forwards ClipFull ---------------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms, so a millisecond offset equals a sample offset — legible on a bench
 
-    // 1. a column of UNITY faders reproduces ALES6's render byte-for-byte — the fader column adds a control without changing
+    // 1. a column of UNITY faders reproduces ALES6's render byte-for-byte -- the fader column adds a control without changing
     //    the audio when every fader rests at unity, so the mixer generalizes the track table.
     {
         var a = timeline.Clip{};
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.HalfWrong;
     }
 
-    // 3. a 0/1 fader MUTES a track — it is present in the table yet contributes silence, so the master is A alone.
+    // 3. a 0/1 fader MUTES a track -- it is present in the table yet contributes silence, so the master is A alone.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -172,12 +172,12 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.MuteWrong;
     }
 
-    // 4. two loud tracks each BOOSTED still saturate ONCE over the true faded sum — the fader scales in the wide domain, the
-    //    clamp meets only the final sum. Two tracks of 10000 each boosted ×2 → faded 20000 + 20000 = 40000 → clamps to
+    // 4. two loud tracks each BOOSTED still saturate ONCE over the true faded sum -- the fader scales in the wide domain, the
+    //    clamp meets only the final sum. Two tracks of 10000 each boosted ×2 -> faded 20000 + 20000 = 40000 -> clamps to
     //    +32767. A gain-then-render would clamp each track to 20000 first (still 20000, in range) then sum to 40000 then
-    //    clamp — same result here, so also prove the case where per-track clamp WOULD differ: two tracks of 20000 boosted ×2
-    //    → each faded 40000; a per-track i16 clamp would pin each to 32767 (sum 65534 → 32767) while the wide accumulator
-    //    holds the true 80000 → 32767. Same ceiling, yet the accumulator carries the true sum, not a pre-clamped one.
+    //    clamp -- same result here, so also prove the case where per-track clamp WOULD differ: two tracks of 20000 boosted ×2
+    //    -> each faded 40000; a per-track i16 clamp would pin each to 32767 (sum 65534 -> 32767) while the wide accumulator
+    //    holds the true 80000 -> 32767. Same ceiling, yet the accumulator carries the true sum, not a pre-clamped one.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.BoostSaturateWrong;
     }
 
-    // 5. the NULL test — a -1/1 fader inverts a track's phase, so a clip mixed with a copy of itself faded at -1 cancels to
+    // 5. the NULL test -- a -1/1 fader inverts a track's phase, so a clip mixed with a copy of itself faded at -1 cancels to
     //    EXACT silence. This is only correct because the negative fader scales in the wide domain BEFORE the single clamp: the
     //    accumulator holds v + (-v) = 0, which saturate leaves at 0. It is the sharpest proof the fader multiply is inside the
     //    accumulation, not after it.
@@ -209,17 +209,17 @@ fn run_selftest() !u8 {
         var out = timeline.Clip{};
         const col = [_]Fader{ .{}, try make(-1, 1) }; // second copy phase-inverted at unity
         try render(&s, &col, c, &out);
-        // every sample cancels: v + (-1 * v) = 0. (sample_min inverts to +32768 in the wide domain — 5 samples of silence.)
+        // every sample cancels: v + (-1 * v) = 0. (sample_min inverts to +32768 in the wide domain -- 5 samples of silence.)
         const want = [_]i16{ 0, 0, 0, 0, 0 };
         if (!eq(out.samples(), &want)) return error.NullWrong;
     }
 
-    // 6. a zero denominator refuses BadGain at construction — no divide by zero ever reaches render.
+    // 6. a zero denominator refuses BadGain at construction -- no divide by zero ever reaches render.
     {
         if (make(1, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
     }
 
-    // 7. a track whose placed end exceeds the master bound forwards ClipFull — never a silent overwrite past the buffer, the
+    // 7. a track whose placed end exceeds the master bound forwards ClipFull -- never a silent overwrite past the buffer, the
     //    fader column inherits ALES6's bound check unchanged.
     {
         var a = timeline.Clip{};

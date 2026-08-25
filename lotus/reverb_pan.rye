@@ -1,30 +1,30 @@
-//! lotus/reverb_pan.rye — ALES213: REVERB PAN — reverberate the master WET, then place the reverberated result WHERE it sits in the field, the
+//! lotus/reverb_pan.rye -- ALES213: REVERB PAN -- reverberate the master WET, then place the reverberated result WHERE it sits in the field, the
 //! next rung after ALES212 closed HOW WIDE the wash sits. Width answered how wide; pan answers where. A keeper wants the reverb return pushed toward
-//! one side while the dry mix holds centre — a wash panned left or right — and that is exactly "reverberate, then pan the wet image".
+//! one side while the dry mix holds centre -- a wash panned left or right -- and that is exactly "reverberate, then pan the wet image".
 //!
 //! The shape, composing three proven stages with NO new audio arithmetic:
 //!   1. validate the pan fraction BEFORE any write (a zero or over-bound denominator, or a position past the field, refuses `BadPan`)
-//!   2. reverberate the master WET in place — ALES191's `stereo_reverb_preset`, unchanged (it prechecks its own faults before any write)
+//!   2. reverberate the master WET in place -- ALES191's `stereo_reverb_preset`, unchanged (it prechecks its own faults before any write)
 //!   3. read ALES11's equal-power split `[w_left, w_right]` for the position, and scale each wet channel by its weight over the field denominator
-//!      through ALES2's proven `timeline.gain` — the pan already proven legal so neither gain can fault
+//!      through ALES2's proven `timeline.gain` -- the pan already proven legal so neither gain can fault
 //! The pan is checked first so a bad position never lets the reverb write: the op refuses whole up front (the master left dry) or completes whole.
 //!
 //! The edges name the knob. `pan == 0` (HARD LEFT) gives weights [den, 0]: the left channel is scaled by den/den (identity) and the right by 0/den
-//! (silence), so the whole wet wash routes to the LEFT and the right goes quiet. `pan == den` (HARD RIGHT) mirrors it — the wash routes wholly RIGHT.
-//! `pan == den/2` (CENTRE) gives equal weights isqrt(den²/2) ≈ 0.707·den on both sides: the EQUAL-POWER centre holds the wash's loudness (−3 dB per
+//! (silence), so the whole wet wash routes to the LEFT and the right goes quiet. `pan == den` (HARD RIGHT) mirrors it -- the wash routes wholly RIGHT.
+//! `pan == den/2` (CENTRE) gives equal weights isqrt(den²/2) ≈ 0.707-den on both sides: the EQUAL-POWER centre holds the wash's loudness (−3 dB per
 //! channel) rather than the linear −6 dB, so a centred wet stays centred and both channels are attenuated equally below the pure wet. Because each
 //! weight is a non-negative amplitude no greater than den (ALES11's isqrt is monotone, den² its cap), each channel is a fraction of the wet, so the
-//! gain's saturate is a proven NO-OP — the pan attenuates, never amplifies.
+//! gain's saturate is a proven NO-OP -- the pan attenuates, never amplifies.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES213.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES213.
 //! Design read: active-designing/date/20260815/20260815-123603_fill-ales213-lotus-reverb-pan.md
-//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
-//! forwarded whole; lotus/power.rye (ALES11) — the equal-power split `split(pos, den)` = [isqrt(den·(den−pos)), isqrt(den·pos)], the two amplitude
-//! weights on the quarter circle, reused verbatim; lotus/timeline.rye (ALES2) — the Clip and its proven `gain` (each wet channel scaled by a
-//! fraction, saturated once); lotus/pan.rye (ALES10) — the StereoClip, its balance invariant, and the fold bound `max_pan_den`; lotus/clock.rye
-//! (ALES5) — the validated sample clock the preset speaks its span against.
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) -- the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den−pos)), isqrt(den-pos)], the two amplitude
+//! weights on the quarter circle, reused verbatim; lotus/timeline.rye (ALES2) -- the Clip and its proven `gain` (each wet channel scaled by a
+//! fraction, saturated once); lotus/pan.rye (ALES10) -- the StereoClip, its balance invariant, and the fold bound `max_pan_den`; lotus/clock.rye
+//! (ALES5) -- the validated sample clock the preset speaks its span against.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. One bounded in-process i16 StereoClip, a validated clock, ALES191's fixed banks, siloed to lotus/.
+//! HONEST SCOPE -- software only, purely LOCAL. One bounded in-process i16 StereoClip, a validated clock, ALES191's fixed banks, siloed to lotus/.
 //! Reverb pan is a pure composition of proven stages over existing samples; it fabricates none, changes no length, and reads no byte past either
 //! channel. The pan law is a routing weight, not a psychoacoustic or electrical claim. No real sample rate, no network, no keys, no funds, no real
 //! device, no real speaker.
@@ -43,21 +43,21 @@ const power = @import("power.rye");
 
 pub const reverb_pan_version = "20260815.123603";
 
-/// The named rooms are ALES190's own, reached through ALES191 — reused whole, so reverb pan and the presets name the same tunings and cannot drift
+/// The named rooms are ALES190's own, reached through ALES191 -- reused whole, so reverb pan and the presets name the same tunings and cannot drift
 /// apart.
 pub const Room = stereo_reverb_preset.Room;
 
-/// The widest pan denominator this rung admits is ALES10's own fold bound, reached through ALES11 — reused whole, so reverb pan and the plain pan
+/// The widest pan denominator this rung admits is ALES10's own fold bound, reached through ALES11 -- reused whole, so reverb pan and the plain pan
 /// name the same field and cannot drift apart. A pan is `pos/den`: 0 is hard left, `den` is hard right, `den/2` is the equal-power centre.
 pub const max_pan_den: u32 = power.max_pan_den;
 
 /// Reverb pan's faults are ALES191's `StereoReverbPresetError` (the clock's DurationTooLong and the reverb's own faults, forwarded whole) beside one
-/// own fault, `BadPan` — a pan with a zero or over-bound denominator or a position past the field, refused by name before any write.
+/// own fault, `BadPan` -- a pan with a zero or over-bound denominator or a position past the field, refused by name before any write.
 pub const ReverbPanError = stereo_reverb_preset.StereoReverbPresetError || error{BadPan};
 
 /// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM, then place the reverberated result at `pan_pos/pan_den` in the
 /// field by scaling each wet channel by its equal-power weight. `pan_pos == 0` routes the whole wash to the LEFT (right silenced); `pan_pos ==
-/// pan_den` routes it to the RIGHT; `pan_pos == pan_den/2` is the equal-power centre (both channels ≈ 0.707·wet, the wash held centred at its
+/// pan_den` routes it to the RIGHT; `pan_pos == pan_den/2` is the equal-power centre (both channels ≈ 0.707-wet, the wash held centred at its
 /// loudness). Refuses BadPan on a bad fraction BEFORE the reverb writes, then forwards ALES191's StereoReverbPresetError (DurationTooLong on a span
 /// past the clip, BadRange on an out-of-range span) before any write; on refusal the master is left dry, untouched, and balanced.
 pub fn reverb_pan(
@@ -69,48 +69,48 @@ pub fn reverb_pan(
     pan_pos: u32,
     pan_den: u32,
 ) ReverbPanError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared preset and gains preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant the shared preset and gains preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the clock is valid — the span is spoken against it, and stereo_reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and stereo_reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
-    // invariant: the pan is a real, bounded fraction — checked BEFORE the reverb writes so a bad pan never leaves a wet, un-placed master. A zero
+    // invariant: the pan is a real, bounded fraction -- checked BEFORE the reverb writes so a bad pan never leaves a wet, un-placed master. A zero
     // denominator is no fraction at all; a position past the field is no place in it; the denominator is bounded to ALES11's fold bound so the
     // equal-power split stays within its proven range.
     if (pan_den == 0 or pan_den > max_pan_den or pan_pos > pan_den) return error.BadPan;
 
     const n: u32 = sc.left.len;
 
-    // 1. Reverberate the master WET in place — ALES191's stereo_reverb_preset, unchanged. It prechecks DurationTooLong / BadRange / its own reverb
+    // 1. Reverberate the master WET in place -- ALES191's stereo_reverb_preset, unchanged. It prechecks DurationTooLong / BadRange / its own reverb
     //    faults before any write, so a reverb fault here leaves the master dry and balanced (and the pan already proven legal above).
     try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
 
-    // 2. Read ALES11's equal-power split for the proven-legal position — [w_left, w_right], each a non-negative amplitude ≤ pan_den (isqrt monotone,
+    // 2. Read ALES11's equal-power split for the proven-legal position -- [w_left, w_right], each a non-negative amplitude ≤ pan_den (isqrt monotone,
     //    pan_den² its cap). No pan arithmetic is re-derived here; the split is spent verbatim.
     const w = power.split(pan_pos, pan_den);
-    // invariant: each weight is a legal attenuation numerator — no greater than the field denominator, so each channel gain is a fraction of the wet
+    // invariant: each weight is a legal attenuation numerator -- no greater than the field denominator, so each channel gain is a fraction of the wet
     //   and the gain's saturate is a proven no-op (the pan attenuates, never amplifies).
     assert(w[0] <= pan_den and w[1] <= pan_den);
 
-    // 3. Scale each wet channel by its weight over the field denominator — ALES2's proven gain, saturating once. The span is the full valid clip and
+    // 3. Scale each wet channel by its weight over the field denominator -- ALES2's proven gain, saturating once. The span is the full valid clip and
     //    the denominator is proven non-zero above, so neither gain can raise BadGain or BadRange; the catch restores nothing new and re-raises as our
     //    own fault, yet the invariant is that it never fires.
     timeline.gain(&sc.left, 0, n, @intCast(w[0]), pan_den) catch {
-        // invariant: unreachable — the pan is prechecked legal and the span is the whole clip, so gain cannot fault here.
+        // invariant: unreachable -- the pan is prechecked legal and the span is the whole clip, so gain cannot fault here.
         return error.BadPan;
     };
     timeline.gain(&sc.right, 0, n, @intCast(w[1]), pan_den) catch {
-        // invariant: unreachable — as above, for the right channel.
+        // invariant: unreachable -- as above, for the right channel.
         return error.BadPan;
     };
 
-    // invariant: reverb pan writes values only — both channels keep their length, so the master leaves balanced.
+    // invariant: reverb pan writes values only -- both channels keep their length, so the master leaves balanced.
     assert(sc.left.len == sc.right.len and sc.left.len == n);
 }
 
-// --- selftest: THE HARD-LEFT LAW (pan == 0) — the left channel is the pure wet left byte-exact, the right silenced; THE HARD-RIGHT LAW (pan == den)
-//     — the mirror; THE COMPOSITION LAW (an off-centre pan) — reverb_pan equals stereo_reverb_preset then the two equal-power gains byte for byte, and
-//     each channel is an attenuation of the wet; THE CENTRE-SYMMETRY LAW — a centred master reverberates to a centred wet, and the equal-power centre
-//     gives equal weights, so panning it to centre keeps left == right, each attenuated; THE FAULT LAW — a bad pan refuses BadPan, a span past the
+// --- selftest: THE HARD-LEFT LAW (pan == 0) -- the left channel is the pure wet left byte-exact, the right silenced; THE HARD-RIGHT LAW (pan == den)
+//     -- the mirror; THE COMPOSITION LAW (an off-centre pan) -- reverb_pan equals stereo_reverb_preset then the two equal-power gains byte for byte, and
+//     each channel is an attenuation of the wet; THE CENTRE-SYMMETRY LAW -- a centred master reverberates to a centred wet, and the equal-power centre
+//     gives equal weights, so panning it to centre keeps left == right, each attenuated; THE FAULT LAW -- a bad pan refuses BadPan, a span past the
 //     clip DurationTooLong, an out-of-range span BadRange, each leaving the master dry and untouched ------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -144,14 +144,14 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // The pure stereo reverb — the wet the pan reshapes. Computed once so every edge reads against the same wash.
+    // The pure stereo reverb -- the wet the pan reshapes. Computed once so every edge reads against the same wash.
     var wet = pan.StereoClip{};
     try load_stereo(&wet, &left, &right);
     try stereo_reverb_preset.stereo_reverb_preset(&wet, c, .hall, 0, 1024);
     const wl = wet.left.samples();
     const wr = wet.right.samples();
 
-    // 1. THE HARD-LEFT LAW — pan == 0 gives weights [den, 0]: the left channel is scaled by den/den (identity) so it is byte-exact the pure wet left,
+    // 1. THE HARD-LEFT LAW -- pan == 0 gives weights [den, 0]: the left channel is scaled by den/den (identity) so it is byte-exact the pure wet left,
     //    and the right by 0/den (silence) so it is all zero. The whole wash routes left.
     {
         var clip = pan.StereoClip{};
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         while (i < wr.len) : (i += 1) if (clip.right.samples()[i] != 0) return error.HardLeftRightNotSilent;
     }
 
-    // 2. THE HARD-RIGHT LAW — pan == den gives weights [0, den]: the right channel is byte-exact the pure wet right, the left all zero. The mirror.
+    // 2. THE HARD-RIGHT LAW -- pan == den gives weights [0, den]: the right channel is byte-exact the pure wet right, the left all zero. The mirror.
     {
         var clip = pan.StereoClip{};
         try load_stereo(&clip, &left, &right);
@@ -172,7 +172,7 @@ fn run_selftest() !u8 {
         while (i < wl.len) : (i += 1) if (clip.left.samples()[i] != 0) return error.HardRightLeftNotSilent;
     }
 
-    // 3. THE COMPOSITION LAW — an off-centre pan with a wide denominator: reverb_pan IS reverberate-then-place, so its result equals ALES191's reverb
+    // 3. THE COMPOSITION LAW -- an off-centre pan with a wide denominator: reverb_pan IS reverberate-then-place, so its result equals ALES191's reverb
     //    over a fresh copy, then ALES11's equal-power gains, BYTE FOR BYTE on both channels (the composition proof, no new arithmetic); and each
     //    channel is an attenuation of the pure wet (each weight ≤ den, so the gain never amplifies).
     {
@@ -180,7 +180,7 @@ fn run_selftest() !u8 {
         try load_stereo(&clip, &left, &right);
         try reverb_pan(&clip, c, .hall, 0, 1024, 1000, 4096); // off-centre, wide denominator (truncation lives here)
 
-        // the reference: the pure reverb, then the two equal-power gains — exactly the stages reverb_pan composes.
+        // the reference: the pure reverb, then the two equal-power gains -- exactly the stages reverb_pan composes.
         var ref = pan.StereoClip{};
         try load_stereo(&ref, &left, &right);
         try stereo_reverb_preset.stereo_reverb_preset(&ref, c, .hall, 0, 1024);
@@ -191,7 +191,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.left.samples(), ref.left.samples())) return error.CompositionLeftBroken;
         if (!eq(clip.right.samples(), ref.right.samples())) return error.CompositionRightBroken;
 
-        // each channel is an attenuation of the pure wet — the pan places, it does not amplify.
+        // each channel is an attenuation of the pure wet -- the pan places, it does not amplify.
         var i: u32 = 0;
         while (i < wl.len) : (i += 1) {
             if (abs16(clip.left.samples()[i]) > abs16(wl[i])) return error.LeftAmplified;
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE CENTRE-SYMMETRY LAW — a centred master (left == right) reverberates through one shared bank to a centred wet (left == right); the
+    // 4. THE CENTRE-SYMMETRY LAW -- a centred master (left == right) reverberates through one shared bank to a centred wet (left == right); the
     //    equal-power centre gives equal weights (isqrt(den²/2) on both sides), so panning it to centre keeps the two channels identical, each
     //    attenuated below the pure wet.
     {
@@ -218,23 +218,23 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. THE FAULT LAW — a zero denominator, an over-bound denominator, and a position past the field each refuse BadPan BEFORE the reverb writes, so
+    // 5. THE FAULT LAW -- a zero denominator, an over-bound denominator, and a position past the field each refuse BadPan BEFORE the reverb writes, so
     //    the master is left DRY, untouched, and balanced; a count past max_clip forwards DurationTooLong; an out-of-range span forwards BadRange.
     {
         var clip = pan.StereoClip{};
         const threel = [_]i16{ 1, 2, 3 };
         const threer = [_]i16{ 4, 5, 6 };
         try load_stereo(&clip, &threel, &threer);
-        // a zero denominator is no pan — BadPan, before the reverb writes, the master left dry.
+        // a zero denominator is no pan -- BadPan, before the reverb writes, the master left dry.
         if (reverb_pan(&clip, c, .room, 0, 3, 1, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadPan) return error.WrongZeroDen;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.ZeroDenMutated;
-        // an over-bound denominator — BadPan, master dry.
+        // an over-bound denominator -- BadPan, master dry.
         if (reverb_pan(&clip, c, .room, 0, 3, 1, max_pan_den + 1)) |_| return error.OverDenSlipped else |e| if (e != error.BadPan) return error.WrongOverDen;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.OverDenMutated;
-        // a position past the field — BadPan, master dry.
+        // a position past the field -- BadPan, master dry.
         if (reverb_pan(&clip, c, .room, 0, 3, 3, 2)) |_| return error.OverPosSlipped else |e| if (e != error.BadPan) return error.WrongOverPos;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.OverPosMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock, before any write.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock, before any write.
         if (reverb_pan(&clip, c, .room, 0, timeline.max_clip + 1, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.LongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before any write.

@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_typed_append_witness.rye — STOA266 typed memo append.
+//! linengrow/glow_seva_b0_typed_append_witness.rye -- STOA266 typed memo append.
 //!
 //! Feeds a Dexter-shaped live memo through product `append_typed_memo` /
 //! `append_event`, verifies sign+line+fields, and proves the HAWM1 three-event
@@ -23,7 +23,7 @@ const fields_mod = @import("glow_seva_b0_fields.rye");
 
 const witness_version = "20260722.151008";
 
-/// Dexter-seeded held line on NativeActivity — typed shape, not a fixture memo.
+/// Dexter-seeded held line on NativeActivity -- typed shape, not a fixture memo.
 const typed_memo = "glow";
 const typed_stamp = "20260722.151008";
 const typed_seq: i64 = 1;

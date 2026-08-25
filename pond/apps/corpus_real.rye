@@ -1,21 +1,21 @@
-//! pond/apps/corpus_real.rye — GISM Journey 5 (Real corpora), Rung 1.
+//! pond/apps/corpus_real.rye -- GISM Journey 5 (Real corpora), Rung 1.
 //!
 //! Season 2, Yield: every module the tree built stands on real data, not a demo
 //! catalog. The reading voice has only ever read `reading_query.rye`'s `pinned_doc`
-//! — a markdown slice hand-tuned to sit inside every Scribble bound. This rung
+//! -- a markdown slice hand-tuned to sit inside every Scribble bound. This rung
 //! carries that same Lantern-contracted Scribble reading onto a **real tree
-//! document**, embedded at compile time (no network, no runtime filesystem — the
+//! document**, embedded at compile time (no network, no runtime filesystem -- the
 //! `@embedFile` idiom already lived-with in mandate/store.rye). The corpus is a
 //! symlink to the living context/TAME_CORE.md, so the bytes read here are exactly
 //! the bytes a keeper reads, and can never drift into a stale copy.
 //!
-//! The real bytes surfaced one Yield red (#72): a real reference paragraph — a run
-//! of consecutive bullet lines — measured 1327 bytes, far past the 512-byte
+//! The real bytes surfaced one Yield red (#72): a real reference paragraph -- a run
+//! of consecutive bullet lines -- measured 1327 bytes, far past the 512-byte
 //! `max_block_text` the demo literal was tuned to fit, so parse_markdown refused
 //! `BlockTooLarge`. The fix closed on metal: scribble_core's `max_block_text`
-//! doubled twice, 512 → 2048, admitting real reference-doc paragraphs with headroom
+//! doubled twice, 512 -> 2048, admitting real reference-doc paragraphs with headroom
 //! over the measured maximum. This witness proves the real reading now runs GREEN,
-//! and proves the red was real — the largest real block exceeds the old bound.
+//! and proves the red was real -- the largest real block exceeds the old bound.
 //!
 //! Additive by construction: it reuses reading_query's public `answer_over` /
 //! `compute_over` over the embedded corpus; the demo `answer` over `pinned_doc`
@@ -33,12 +33,12 @@ const rq = @import("reading_query.rye");
 
 const corpus_real_version = "20260812.181015";
 
-// The real corpus — a symlink to the living context/TAME_CORE.md. Compile-time
+// The real corpus -- a symlink to the living context/TAME_CORE.md. Compile-time
 // embedding gives real bytes with a demo's determinism: the same reading every
 // build, no network, no runtime filesystem.
 const real_doc = @embedFile("corpora/tame_core.md");
 
-// The old block-text bound the demo literal was tuned to fit — before Yield red
+// The old block-text bound the demo literal was tuned to fit -- before Yield red
 // #72 raised it. Named here only to prove the red was real (a real block exceeds
 // it), never used as a live limit.
 const old_max_block_text: u32 = 512;
@@ -46,7 +46,7 @@ const old_max_block_text: u32 = 512;
 const allow_line = "model_hash sha3-256-rye-forge-lap0";
 
 /// Prove the real corpus now parses where it once refused BlockTooLarge, and that
-/// the red was real — the largest real paragraph block exceeds the old 512-byte
+/// the red was real -- the largest real paragraph block exceeds the old 512-byte
 /// bound yet fits the raised one.
 fn welcome_real_parse() !void {
     var blocks: [sc.max_blocks]sc.Block = undefined;
@@ -64,15 +64,15 @@ fn welcome_real_parse() !void {
         const len: u32 = @intCast(blocks[i].text_slice().len);
         if (len > largest) largest = len;
     }
-    // invariant: the largest real block exceeds the old bound — red %72 was real
+    // invariant: the largest real block exceeds the old bound -- red %72 was real
     assert(largest > old_max_block_text);
-    // invariant: and fits the raised bound — the fix admits it with headroom
+    // invariant: and fits the raised bound -- the fix admits it with headroom
     assert(largest <= sc.max_block_text);
     print("corpus_real: real parse — blocks {d}, largest block {d} bytes (old bound {d})\n", .{ block_count, largest, old_max_block_text });
 }
 
-/// The reading voice reads the real corpus's outline — every heading, in source
-/// order — through the same Lantern contract the demo reading obeys.
+/// The reading voice reads the real corpus's outline -- every heading, in source
+/// order -- through the same Lantern contract the demo reading obeys.
 fn welcome_real_outline() !void {
     var buf: [lc.max_completion_len]u8 = undefined;
     const req = lc.Request{
@@ -89,7 +89,7 @@ fn welcome_real_outline() !void {
     print("corpus_real: real outline — '{s}' eos\n", .{resp.text});
 }
 
-/// The reading voice counts fence kinds in the real corpus — TAME_CORE.md carries
+/// The reading voice counts fence kinds in the real corpus -- TAME_CORE.md carries
 /// no fenced code, so the honest reading is zero of each kind (never a guess).
 fn welcome_real_fences() !void {
     var buf: [lc.max_completion_len]u8 = undefined;
@@ -99,13 +99,13 @@ fn welcome_real_fences() !void {
         .max_tokens = 64,
     };
     const resp = try rq.answer_over(req, real_doc, allow_line, &buf);
-    // invariant: the real document holds no fenced code — the reading says so plainly
+    // invariant: the real document holds no fenced code -- the reading says so plainly
     assert(std.mem.eql(u8, resp.text, "rye 0 rish 0 plain 0"));
     assert(resp.stopped_reason == .eos);
     print("corpus_real: real fences — '{s}' eos\n", .{resp.text});
 }
 
-/// Lantern's length budget bites on the real reading exactly as on the demo — a
+/// Lantern's length budget bites on the real reading exactly as on the demo -- a
 /// tight budget truncates the real outline and marks a length stop.
 fn welcome_length_budget() !void {
     var buf: [lc.max_completion_len]u8 = undefined;
@@ -139,7 +139,7 @@ fn unwelcome_model_not_allowed() !void {
     print("corpus_real: model not allowed refused\n", .{});
 }
 
-/// An unrecognized operation refuses over the real corpus — no fake answer.
+/// An unrecognized operation refuses over the real corpus -- no fake answer.
 fn unwelcome_unknown_op() !void {
     var buf: [lc.max_completion_len]u8 = undefined;
     const req = lc.Request{

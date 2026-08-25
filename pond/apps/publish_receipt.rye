@@ -1,21 +1,21 @@
-//! pond/apps/publish_receipt.rye — TACT Journey 2, Rung 1: the offline-verifiable receipt.
+//! pond/apps/publish_receipt.rye -- TACT Journey 2, Rung 1: the offline-verifiable receipt.
 //!
-//! Journey 1 piloted a keeper to a running Pond; this journey lets that keeper publish — offer an
+//! Journey 1 piloted a keeper to a running Pond; this journey lets that keeper publish -- offer an
 //! owned artifact to another keeper, signed so the receiver can trust it. BUHR-J7r4 bound a stored
 //! artifact to a settled Kumara identity (a Deed presented, the exact publication signed, only
 //! then stored). This rung carries that same signed word *out of the store* into a portable
 //! receipt a recipient verifies entirely on their own.
 //!
 //! A Publication receipt carries the point that published, the name, the whole length, the
-//! content digest, and the signature — nothing else. Verification is offline and in two honest
+//! content digest, and the signature -- nothing else. Verification is offline and in two honest
 //! halves. The signature verifies over the bound facts by the publisher's keeper key (a forged or
-//! wrong-key signature refuses) — this needs no content at all, only the receipt. And a recipient
+//! wrong-key signature refuses) -- this needs no content at all, only the receipt. And a recipient
 //! who holds the content confirms its SHA-256 matches the bound digest (a tampered artifact
 //! refuses). Neither half touches a store or a network.
 //!
-//! It reuses BUHR-J7r4's own signed-message layout (`sign_publication` · `verify_receipt` ·
+//! It reuses BUHR-J7r4's own signed-message layout (`sign_publication` - `verify_receipt` -
 //! `digest_of`), so a detached receipt and a stored publication carry the identical signed word.
-//! It reads no network — the serve transport that carries a receipt across the wire is the
+//! It reads no network -- the serve transport that carries a receipt across the wire is the
 //! Comlink-served custody gate (r4), surfaced there, never crossed. Demo keeper seeds only.
 //!
 //!   rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt
@@ -39,7 +39,7 @@ pub const digest_len: u32 = 32;
 
 pub const ReceiptError = error{ NameTooLong };
 
-/// A detached, portable publication receipt — the signed word a keeper hands to another keeper.
+/// A detached, portable publication receipt -- the signed word a keeper hands to another keeper.
 /// It carries only the facts the signature binds; it holds no content and no store handle.
 // Invariant: name_len <= tablecloth.max_name.
 pub const Publication = struct {
@@ -57,7 +57,7 @@ pub const Publication = struct {
     }
 };
 
-/// Sign a publication into a detached receipt — the owner's word that this exact content, under
+/// Sign a publication into a detached receipt -- the owner's word that this exact content, under
 /// this name, at this length, is published by this point. Reuses BUHR-J7r4's signing, so the
 /// receipt's signed word is identical to a stored publication's. Refuses an overlong name rather
 /// than truncate the signed facts.
@@ -89,7 +89,7 @@ pub fn make_publication(
     return receipt;
 }
 
-/// Verify the receipt's signature offline, against a publisher's keeper public key — no content,
+/// Verify the receipt's signature offline, against a publisher's keeper public key -- no content,
 /// no store, no network. A forged signature or a key that never signed these facts refuses.
 pub fn verify_offline(receipt: *const Publication, keeper_pubkey: [pubkey_len]u8) bool {
     return keyed.verify_receipt(
@@ -114,7 +114,7 @@ pub fn matches_content(receipt: *const Publication, content: []const u8) bool {
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real keeper's key, so no identity is invented.
+// Example seeds -- plainly not a real keeper's key, so no identity is invented.
 const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
 const demo_point: u32 = 3;
@@ -124,7 +124,7 @@ fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
 }
 
 /// A real receipt verifies offline against the publisher's key, and its content matches the bound
-/// digest — the two halves of trust, both green, with no store and no network.
+/// digest -- the two halves of trust, both green, with no store and no network.
 fn welcome_receipt_verifies_offline() !void {
     const content = "the harvest ledger, spring";
     const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", content);
@@ -134,7 +134,7 @@ fn welcome_receipt_verifies_offline() !void {
     print("publish_receipt: a receipt verified offline against the publisher's key; content matched the digest.\n", .{});
 }
 
-/// A forged signature refuses — a single flipped byte breaks the signed word.
+/// A forged signature refuses -- a single flipped byte breaks the signed word.
 fn unwelcome_forged_signature_refuses() !void {
     var receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");
     receipt.sig[0] ^= 0xFF;
@@ -142,14 +142,14 @@ fn unwelcome_forged_signature_refuses() !void {
     print("publish_receipt: a forged signature refused offline verification.\n", .{});
 }
 
-/// A different keeper's key refuses — the receipt names exactly who published it.
+/// A different keeper's key refuses -- the receipt names exactly who published it.
 fn unwelcome_wrong_keeper_refuses() !void {
     const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");
     assert(!verify_offline(&receipt, pubkey_of(&other_keeper)));
     print("publish_receipt: a wrong keeper key refused; the receipt names exactly who published.\n", .{});
 }
 
-/// Tampered content refuses the digest half even under an authentic signature — the content is
+/// Tampered content refuses the digest half even under an authentic signature -- the content is
 /// bound in, so possessing a valid receipt is never license to swap the bytes.
 fn unwelcome_tampered_content_refuses() !void {
     const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");

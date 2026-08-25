@@ -1,14 +1,14 @@
 //! glow-book: runes.md#g-shape
-//! glow/rune_shape.rye — parses Glow's `+$` / `$:` / `$%` shape (STOA74–80).
+//! glow/rune_shape.rye -- parses Glow's `+$` / `$:` / `$%` shape (STOA74-80).
 //!
-//! STOA97: token→ShapeSpec — tokenize src via tokens.rye, walk token stream
+//! STOA97: token->ShapeSpec -- tokenize src via tokens.rye, walk token stream
 //! directly to build ShapeSpec, retiring lower_multi.collect_lines and
 //! byte-level head parsing inside parse_source.
 //!
-//! `$:` tuple of admitted field auras (1–9). `$%` tagged union of cold
+//! `$:` tuple of admitted field auras (1-9). `$%` tagged union of cold
 //! atoms with unit payload `[%tag ~]` or one-to-three-face payload
-//! (2–3 tags). STOA187: payload `@t`/`@ux` parse. STOA188: payload cord/hex
-//! lower emit. STOA189: API rename. `20260724.205719`: `@u64` admitted —
+//! (2-3 tags). STOA187: payload `@t`/`@ux` parse. STOA188: payload cord/hex
+//! lower emit. STOA189: API rename. `20260724.205719`: `@u64` admitted --
 //! list is DATA in `admitted_shape_auras` (one place; rung-1a lesson).
 //!
 //!   +$  xfer-mold
@@ -25,7 +25,7 @@ pub const max_name_len: u32 = 64;
 pub const max_fields: u32 = 9;
 pub const max_payload_faces: u32 = 3;
 
-/// Admitted `$:` / `$%` field auras — DATA in one place (rung-1a lesson).
+/// Admitted `$:` / `$%` field auras -- DATA in one place (rung-1a lesson).
 /// Widen here; parse and lower both consult this table. Bound named.
 pub const admitted_shape_aura_count: u32 = 4;
 pub const admitted_shape_auras = [_][]const u8{ "@u32", "@t", "@ux", "@u64" };
@@ -111,15 +111,15 @@ pub const ShapeSpec = struct {
     payload_face_lens: [max_fields][max_payload_faces]usize = [_][max_payload_faces]usize{
         [_]usize{0} ** max_payload_faces,
     } ** max_fields,
-    /// STOA187: per payload face — `@t` cord (exclusive of hex).
+    /// STOA187: per payload face -- `@t` cord (exclusive of hex).
     payload_face_is_cord: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
         [_]bool{false} ** max_payload_faces,
     } ** max_fields,
-    /// STOA187: per payload face — `@ux` hex (exclusive of cord).
+    /// STOA187: per payload face -- `@ux` hex (exclusive of cord).
     payload_face_is_hex: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
         [_]bool{false} ** max_payload_faces,
     } ** max_fields,
-    /// `20260724.205719`: per payload face — `@u64` (exclusive of cord/hex).
+    /// `20260724.205719`: per payload face -- `@u64` (exclusive of cord/hex).
     payload_face_is_u64: [max_fields][max_payload_faces]bool = [_][max_payload_faces]bool{
         [_]bool{false} ** max_payload_faces,
     } ** max_fields,
@@ -176,7 +176,7 @@ fn push_name(spec: *ShapeSpec, face: []const u8) ParseError!void {
     return push_field(spec, face, .{});
 }
 
-/// `$:` face with aura kind — cord `@t` · hex `@ux` · `@u64` · else `@u32`.
+/// `$:` face with aura kind -- cord `@t` - hex `@ux` - `@u64` - else `@u32`.
 fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseError!void {
     // invariant: the face is copied into a fixed buffer of max_name_len, and its three aura
     // flags are read independently downstream, so one kind per face is what keeps a field from
@@ -237,7 +237,7 @@ fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
     spec.field_count += 1;
 }
 
-/// Record a payload `$%` arm (`faces` holds 1–3 face-name slices) into `spec`.
+/// Record a payload `$%` arm (`faces` holds 1-3 face-name slices) into `spec`.
 /// Parallel aura flag slices; all false means `@u32`.
 fn push_tag_faces(
     spec: *ShapeSpec,
@@ -316,9 +316,9 @@ pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
     return any_payload_cord_field(spec) or any_payload_hex_field(spec);
 }
 
-/// Parse mold source via token stream (STOA97 token→ShapeSpec).
-/// Accepts `$:` tuples (1–9 admitted field auras) and `$%` tagged unions
-/// (2–3 arms, each `[%tag ~]` or `[%tag face=<admitted> …]`).
+/// Parse mold source via token stream (STOA97 token->ShapeSpec).
+/// Accepts `$:` tuples (1-9 admitted field auras) and `$%` tagged unions
+/// (2-3 arms, each `[%tag ~]` or `[%tag face=<admitted> ...]`).
 /// Same public signature as before: `parse_source(src) ParseError!ShapeSpec`.
 pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
     if (src.len == 0) return error.EmptySource;
@@ -396,7 +396,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
         if (spec.field_count == 0) return error.MissingField;
     } else if (rune2_text_is(src, body_tok, "$%")) {
         spec.body = .tagged;
-        // Tag arms: [ %tag ~ ] or [ %tag face=@u32 … ], repeated until ==.
+        // Tag arms: [ %tag ~ ] or [ %tag face=@u32 ... ], repeated until ==.
         while (true) {
             while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
             if (i >= n) return error.MissingEnd;

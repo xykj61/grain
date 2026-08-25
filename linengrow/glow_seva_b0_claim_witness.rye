@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_claim_witness.rye — proves Glow claim shell.
+//! linengrow/glow_seva_b0_claim_witness.rye -- proves Glow claim shell.
 //!
 //!   rye build linengrow/glow_seva_b0_claim_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_claim_witness

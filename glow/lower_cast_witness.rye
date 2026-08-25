@@ -1,4 +1,4 @@
-//! glow/lower_cast_witness.rye — proves `^-` lowers to runnable `.rye`.
+//! glow/lower_cast_witness.rye -- proves `^-` lowers to runnable `.rye`.
 //!
 //!   rye build glow/lower_cast_witness.rye -femit-bin=glow/bin/lower_cast_witness
 //!   glow/bin/lower_cast_witness

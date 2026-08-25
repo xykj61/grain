@@ -1,25 +1,25 @@
-//! lotus/stereo_reverb_preset.rye — ALES191: STEREO NAMED ROOMS — the reverb a keeper reaches for by name, now across a stereo master.
-//! ALES190 gave the MONO timed reverb a musician's face: three named rooms (room · hall · plate), each a curated bank of timed comb and allpass
+//! lotus/stereo_reverb_preset.rye -- ALES191: STEREO NAMED ROOMS -- the reverb a keeper reaches for by name, now across a stereo master.
+//! ALES190 gave the MONO timed reverb a musician's face: three named rooms (room - hall - plate), each a curated bank of timed comb and allpass
 //! stages, run through ALES188's reverb_ms. Yet a keeper mixing a stereo master still had to hand ALES189's stereo_reverb_ms a whole bank by
-//! hand — the named-room comfort stopped at mono. This rung is the thin twin ALES190 itself named next: the SAME three published banks, now run
+//! hand -- the named-room comfort stopped at mono. This rung is the thin twin ALES190 itself named next: the SAME three published banks, now run
 //! through ALES189's stereo_reverb_ms, so a stereo master reverberates by name.
 //!
-//! The crux, the family's signature held: A STEREO PRESET IS EXACTLY ITS NAMED BANK, NOTHING MORE — and the bank is ALES190's OWN. This rung
+//! The crux, the family's signature held: A STEREO PRESET IS EXACTLY ITS NAMED BANK, NOTHING MORE -- and the bank is ALES190's OWN. This rung
 //! invents no new tuning: it imports reverb_preset.Room and reverb_preset.bank_for (the exact published banks the mono preset and its witness
-//! already read) and delegates to stereo_reverb_ms UNCHANGED. One bank definition, two faces — the mono reverb_preset and the stereo
+//! already read) and delegates to stereo_reverb_ms UNCHANGED. One bank definition, two faces -- the mono reverb_preset and the stereo
 //! stereo_reverb_preset are provably the same rooms, because they read the same constants; a future tuning of `hall` moves both at once. The
 //! witness proves this literally: a stereo preset over a master equals stereo_reverb_ms called with that room's explicit published bank, byte
-//! for byte, on BOTH channels. No new arithmetic on the audio path, no new fault — the constant bank, then the proven timed stereo reverb.
+//! for byte, on BOTH channels. No new arithmetic on the audio path, no new fault -- the constant bank, then the proven timed stereo reverb.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES191.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES191.
 //! Design read: active-designing/date/20260815/20260815-100148_fill-ales191-lotus-stereo-named-room-reverb-presets.md
-//! Stands on: lotus/reverb_preset.rye (ALES190) — the named rooms (Room, bank_for, and the three published banks) reused whole, the single
-//! source of truth for a room's tuning; lotus/stereo_reverb_time.rye (ALES189) — the timed stereo reverb this delegates to unchanged, its
-//! StereoReverbTimeError forwarded whole; lotus/pan.rye (ALES) — the StereoClip; lotus/clock.rye (ALES5) — the sample clock; lotus/reverb.rye
-//! (ALES186) — the max_stages bound each preset bank stays within; lotus/timeline.rye (ALES2) — the Clip each channel holds.
+//! Stands on: lotus/reverb_preset.rye (ALES190) -- the named rooms (Room, bank_for, and the three published banks) reused whole, the single
+//! source of truth for a room's tuning; lotus/stereo_reverb_time.rye (ALES189) -- the timed stereo reverb this delegates to unchanged, its
+//! StereoReverbTimeError forwarded whole; lotus/pan.rye (ALES) -- the StereoClip; lotus/clock.rye (ALES5) -- the sample clock; lotus/reverb.rye
+//! (ALES186) -- the max_stages bound each preset bank stays within; lotus/timeline.rye (ALES2) -- the Clip each channel holds.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, and ALES190's three fixed
-//! compile-time banks each within reverb.max_stages, siloed to lotus/. No new arithmetic on the audio path — a constant bank, then the proven
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, and ALES190's three fixed
+//! compile-time banks each within reverb.max_stages, siloed to lotus/. No new arithmetic on the audio path -- a constant bank, then the proven
 //! timed stereo reverb. It changes sample VALUES only, never a length; the two channels leave balanced. The room names are a keeper's word for a
 //! tuning, not a claim about any real hall. No cross-channel read, no socket, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -38,18 +38,18 @@ const stereo_reverb_time = @import("stereo_reverb_time.rye");
 
 pub const stereo_reverb_preset_version = "20260815.100148";
 
-/// The named rooms are ALES190's own — reused whole, so the stereo preset and the mono preset name the same tunings and cannot drift apart.
+/// The named rooms are ALES190's own -- reused whole, so the stereo preset and the mono preset name the same tunings and cannot drift apart.
 pub const Room = reverb_preset.Room;
 
-/// The stereo timed preset's faults are exactly ALES189's `StereoReverbTimeError` — the clock's DurationTooLong beside the reverb's NoCombs,
-/// TooManyStages, BadDelay, BadGain, and BadRange — forwarded whole, since a preset is a constant bank run through the proven timed stereo
+/// The stereo timed preset's faults are exactly ALES189's `StereoReverbTimeError` -- the clock's DurationTooLong beside the reverb's NoCombs,
+/// TooManyStages, BadDelay, BadGain, and BadRange -- forwarded whole, since a preset is a constant bank run through the proven timed stereo
 /// reverb and adds no fault of its own.
 pub const StereoReverbPresetError = stereo_reverb_time.StereoReverbTimeError;
 
-/// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM — pick ALES190's published bank for the room and delegate
+/// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM -- pick ALES190's published bank for the room and delegate
 /// to ALES189's `stereo_reverb_ms` UNCHANGED. A stereo preset IS its bank: this equals `stereo_reverb_ms` called with that room's explicit combs
 /// and allpasses, byte for byte, on both channels, so it invents no new arithmetic and no new fault. One shared bank feeds both channels, each
-/// reverberating its OWN audio — the image is held. The banks are named in MILLISECONDS, so one preset sounds the same room at any sample rate.
+/// reverberating its OWN audio -- the image is held. The banks are named in MILLISECONDS, so one preset sounds the same room at any sample rate.
 /// Forwards ALES189's StereoReverbPresetError (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain /
 /// BadRange) before any write; on refusal both channels are untouched and balanced.
 pub fn stereo_reverb_preset(
@@ -59,20 +59,20 @@ pub fn stereo_reverb_preset(
     start_ms: u32,
     count_ms: u32,
 ) StereoReverbPresetError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared bank and reverb preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant the shared bank and reverb preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the clock is valid — the preset is spoken against it, and stereo_reverb_ms asserts the same.
+    // invariant: the clock is valid -- the preset is spoken against it, and stereo_reverb_ms asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
     const banks = reverb_preset.bank_for(room);
-    // The bank is ALES190's constant; the reverb is ALES189's, unchanged — the stereo preset added only the name.
+    // The bank is ALES190's constant; the reverb is ALES189's, unchanged -- the stereo preset added only the name.
     try stereo_reverb_time.stereo_reverb_ms(sc, clk, start_ms, count_ms, banks.combs, banks.allpasses);
-    // invariant: the channels leave balanced — a timed reverb writes values only, so each channel keeps its starting length.
+    // invariant: the channels leave balanced -- a timed reverb writes values only, so each channel keeps its starting length.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: A STEREO PRESET IS ITS NAMED BANK — a stereo preset equals stereo_reverb_ms called with that room's published bank byte for
-//     byte on BOTH channels, for all three rooms; THE ROOMS DIFFER — hall, room, and plate over the same master produce genuinely different
-//     washes; THE IMAGE IS HELD — a centred master stays identical channel-to-channel, a genuinely stereo master keeps its channels distinct;
+// --- selftest: A STEREO PRESET IS ITS NAMED BANK -- a stereo preset equals stereo_reverb_ms called with that room's published bank byte for
+//     byte on BOTH channels, for all three rooms; THE ROOMS DIFFER -- hall, room, and plate over the same master produce genuinely different
+//     washes; THE IMAGE IS HELD -- a centred master stays identical channel-to-channel, a genuinely stereo master keeps its channels distinct;
 //     THE CHANNELS LEAVE BALANCED; and the underlying faults forward (a span past the clip DurationTooLong, an out-of-range span BadRange),
 //     both channels untouched and balanced ------------------------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 fn run_selftest() !u8 {
     // A legible clock (1 sample per ms) so each ms delay is one sample and the bench clip holds the longest bank (hall combs to 31 ms).
     const c = try clock.make(1000);
-    // 1024 samples == 1024 ms at this clock — long enough for the hall's strongest comb to recirculate all the way to silence, the room ALES190
+    // 1024 samples == 1024 ms at this clock -- long enough for the hall's strongest comb to recirculate all the way to silence, the room ALES190
     //   proved a long strong hall actually decays in. Two distinct impulses so the channels genuinely differ (no crossing can hide).
     const left = blk: {
         var b: [1024]i16 = [_]i16{0} ** 1024;
@@ -104,7 +104,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. A STEREO PRESET IS ITS NAMED BANK — for every room, stereo_reverb_preset equals stereo_reverb_ms called with that room's published
+    // 1. A STEREO PRESET IS ITS NAMED BANK -- for every room, stereo_reverb_preset equals stereo_reverb_ms called with that room's published
     //    bank, byte for byte on BOTH channels. The preset adds only the name; the audio is the proven timed stereo reverb over the constant bank.
     {
         const rooms = [_]Room{ .room, .hall, .plate };
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE ROOMS DIFFER — hall, room, and plate over the same stereo master produce genuinely different washes on the left channel: the named
+    // 2. THE ROOMS DIFFER -- hall, room, and plate over the same stereo master produce genuinely different washes on the left channel: the named
     //    tunings are real, not three names for one bank.
     {
         var h = pan.StereoClip{};
@@ -140,8 +140,8 @@ fn run_selftest() !u8 {
         if (eq(r.left.samples(), p.left.samples())) return error.RoomEqualsPlate;
     }
 
-    // 3. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel through any preset, since one shared bank feeds
-    //    both channels; and our genuinely STEREO master (left != right) keeps its two channels distinct — no crossing.
+    // 3. THE IMAGE IS HELD -- a CENTRED master (left == right) stays identical channel-to-channel through any preset, since one shared bank feeds
+    //    both channels; and our genuinely STEREO master (left != right) keeps its two channels distinct -- no crossing.
     {
         // centred: the same impulse on both channels; the preset must leave them identical.
         var centred = pan.StereoClip{};
@@ -155,7 +155,7 @@ fn run_selftest() !u8 {
         if (eq(stereo.left.samples(), stereo.right.samples())) return error.ChannelsCrossed;
     }
 
-    // 4. THE CHANNELS LEAVE BALANCED — after every preset the defining StereoClip invariant holds (left.len == right.len), and silence stays
+    // 4. THE CHANNELS LEAVE BALANCED -- after every preset the defining StereoClip invariant holds (left.len == right.len), and silence stays
     //    silence: an all-zero master through any preset stays all zeros on both channels.
     {
         var clip = pan.StereoClip{};
@@ -168,14 +168,14 @@ fn run_selftest() !u8 {
         if (!eq(clip.right.samples(), &zr)) return error.SilenceWrongRight;
     }
 
-    // 5. THE UNDERLYING FAULTS FORWARD — a span whose sample count exceeds the clip refuses DurationTooLong, and an out-of-range span refuses
+    // 5. THE UNDERLYING FAULTS FORWARD -- a span whose sample count exceeds the clip refuses DurationTooLong, and an out-of-range span refuses
     //    BadRange, each by name with BOTH channels untouched and balanced. The preset adds no fault; ALES189's forward whole.
     {
         var clip = pan.StereoClip{};
         const threel = [_]i16{ 1, 2, 3 };
         const threer = [_]i16{ 4, 5, 6 };
         try load_stereo(&clip, &threel, &threer);
-        // count_ms past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // count_ms past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (stereo_reverb_preset(&clip, c, .room, 0, timeline.max_clip + 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) forwards BadRange.

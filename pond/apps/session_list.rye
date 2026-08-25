@@ -1,15 +1,15 @@
-//! pond/apps/session_list.rye — HUNK19: a keeper lists their saved editing sessions, an honest index.
+//! pond/apps/session_list.rye -- HUNK19: a keeper lists their saved editing sessions, an honest index.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK19.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK19.
 //! Design read: active-designing/date/20260813/20260813-175000_hunk-session-list-exploration.md (names HUNK19).
-//! Teacher, thanked clean-room: the "recent edits" surface of iCloud Photos / Google Photos — a keeper sees the
+//! Teacher, thanked clean-room: the "recent edits" surface of iCloud Photos / Google Photos -- a keeper sees the
 //! sessions they have saved and where each stands (concept only, siloed).
 //!
-//! HUNK18 made an editing session a content-addressed artifact — store it, reopen it from cold, undo and redo
+//! HUNK18 made an editing session a content-addressed artifact -- store it, reopen it from cold, undo and redo
 //! intact. This rung surfaces the list: `list_sessions` walks the catalog (`tablecloth.artifact_name`), selects
 //! every artifact whose name ends in `.session`, and `open_session` each (HUNK18, every bead proven against its
-//! digest and the whole against its recorded address BEFORE parse), recording a bounded summary — name, edit-count,
-//! live position — for each. The honesty guarantee, borrowed from `mcp_resource_list`: a listing never names a
+//! digest and the whole against its recorded address BEFORE parse), recording a bounded summary -- name, edit-count,
+//! live position -- for each. The honesty guarantee, borrowed from `mcp_resource_list`: a listing never names a
 //! session it cannot honestly reopen, so a tampered session refuses `DigestMismatch` through the open and the whole
 //! listing refuses rather than advertising a phantom. The listing travels as a flat-Bron `format session-list-v1`
 //! record. No network, no key, no funds.
@@ -17,7 +17,7 @@
 //! HUNK20 closes the travel round-trip: `parse_listing` reads a `format session-list-v1` record back into a fresh
 //! listing, so `render(parse(render(x)))` is a fixed point exactly as the sprite catalog's is (HUNK7). Each line
 //! names a session and exactly its two counts; a bad header, an unknown tag, a malformed field, an extra field, or
-//! a position standing past its edit-count each refuse `BadListing` — the same position bound the cursor itself
+//! a position standing past its edit-count each refuse `BadListing` -- the same position bound the cursor itself
 //! keeps, enforced again at the text boundary.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/session_list.rye selftest
@@ -38,7 +38,7 @@ pub const session_list_version = "20260813.175000";
 /// selects exactly those, leaving images, edit-lists, and sprites unlisted.
 pub const session_suffix = ".session";
 
-/// The most summaries one listing holds — the catalog's own bound, so a listing can never outgrow what is stored.
+/// The most summaries one listing holds -- the catalog's own bound, so a listing can never outgrow what is stored.
 pub const max_summaries: u32 = tablecloth.max_artifacts;
 
 /// A safe upper bound on one rendered listing line: `session ` (8) + a name (`max_name`) + two spaces + two u32
@@ -55,7 +55,7 @@ pub const SessionListError = error{
 
 const header = "format session-list-v1\n";
 
-/// One session's summary — what a keeper needs to choose, no recipe body and no pixels. The name is held in a
+/// One session's summary -- what a keeper needs to choose, no recipe body and no pixels. The name is held in a
 /// fixed buffer copied out of the catalog, so a summary outlives the walk that built it.
 pub const SessionSummary = struct {
     name: [tablecloth.max_name]u8 = undefined,
@@ -69,7 +69,7 @@ pub const SessionSummary = struct {
         return self.name[0..self.name_len];
     }
 
-    /// How many edits stand ahead of the live position — the redo depth a keeper could roll forward.
+    /// How many edits stand ahead of the live position -- the redo depth a keeper could roll forward.
     pub fn redo_depth(self: *const SessionSummary) u32 {
         // invariant: a session never stands past its own history.
         assert(self.position <= self.edits);
@@ -93,13 +93,13 @@ pub const SessionListing = struct {
     }
 };
 
-/// Whether `name` ends in the session suffix — the selector that keeps the listing to saved sessions alone.
+/// Whether `name` ends in the session suffix -- the selector that keeps the listing to saved sessions alone.
 fn is_session(name: []const u8) bool {
     return std.mem.endsWith(u8, name, session_suffix);
 }
 
 /// Walk the catalog and record a summary for every saved session, each read from a verified reopen. A tampered
-/// session refuses `DigestMismatch` through `open_session` and the whole listing refuses with it — the index never
+/// session refuses `DigestMismatch` through `open_session` and the whole listing refuses with it -- the index never
 /// names a session it cannot honestly reopen. A non-session artifact is skipped, never opened.
 pub fn list_sessions(
     cat: *const tablecloth.Catalog,
@@ -115,7 +115,7 @@ pub fn list_sessions(
         const name = tablecloth.artifact_name(cat, i);
         if (!is_session(name)) continue;
 
-        // Open it verified — a tampered session refuses here, before it is ever advertised.
+        // Open it verified -- a tampered session refuses here, before it is ever advertised.
         var cursor: edit_cursor.EditCursor = undefined;
         try session_store.open_session(cat, store, name, &cursor);
         // invariant: a reopened cursor never stands past its own history.
@@ -158,10 +158,10 @@ pub fn render_listing(listing: *const SessionListing, out: []u8) SessionListErro
     return off;
 }
 
-/// Parse a `format session-list-v1` record into a fresh listing — HUNK20, closing the travel round-trip so
+/// Parse a `format session-list-v1` record into a fresh listing -- HUNK20, closing the travel round-trip so
 /// `render(parse(render(x)))` is a fixed point (HUNK7's own idiom). Each line names a session and exactly its two
 /// counts. Refuses `BadListing` on a bad header, an unknown tag, a malformed field, an extra field, a name past the
-/// summary buffer, or a position standing past its edit-count — the cursor's own bound, enforced at the text edge.
+/// summary buffer, or a position standing past its edit-count -- the cursor's own bound, enforced at the text edge.
 /// More than `max_summaries` lines refuses `TooManyEntries`.
 pub fn parse_listing(text: []const u8, out: *SessionListing) SessionListError!void {
     out.* = SessionListing{ .count = 0 };
@@ -212,7 +212,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var store: beading.BeadStore = .empty();
     var cat: tablecloth.Catalog = .empty();
 
-    // A three-edit session rewound one step — a redo tail of one waiting.
+    // A three-edit session rewound one step -- a redo tail of one waiting.
     var rewound = edit_cursor.EditCursor.init();
     try rewound.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
     try rewound.push(.{ .rotate = .{ .turns = 1 } });
@@ -220,13 +220,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     rewound.undo(); // position 2 of 3
     _ = try session_store.store_session(&cat, &store, "portrait.session", &rewound);
 
-    // A two-edit session at its live edge — nothing to redo.
+    // A two-edit session at its live edge -- nothing to redo.
     var live = edit_cursor.EditCursor.init();
     try live.push(.flip_h);
     try live.push(.flip_v);
     _ = try session_store.store_session(&cat, &store, "landscape.session", &live);
 
-    // A non-session artifact stored between them — it must be skipped, never opened as a session.
+    // A non-session artifact stored between them -- it must be skipped, never opened as a session.
     _ = try tablecloth.store_artifact(&cat, &store, "notes.txt", "just some bytes");
 
     // List: exactly the two sessions, in held order, the non-session skipped.
@@ -252,7 +252,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.indexOf(u8, text, "session portrait.session 3 2\n") != null);
     assert(std.mem.indexOf(u8, text, "session landscape.session 2 2\n") != null);
 
-    // HUNK20: travels BOTH ways — parse the record back and prove render(parse(render(x))) is a fixed point, the
+    // HUNK20: travels BOTH ways -- parse the record back and prove render(parse(render(x))) is a fixed point, the
     // rebuilt listing carrying the same names and counts.
     var rebuilt: SessionListing = undefined;
     try parse_listing(text, &rebuilt);
@@ -291,7 +291,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.BadListing) return error.WrongPast;
     }
 
-    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch — it never names a
+    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch -- it never names a
     // session it cannot honestly reopen.
     {
         var store_t: beading.BeadStore = .empty();

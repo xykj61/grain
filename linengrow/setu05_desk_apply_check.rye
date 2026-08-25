@@ -1,4 +1,4 @@
-//! linengrow/setu05_desk_apply_check.rye — apply cached SETU0 pull on Desk.
+//! linengrow/setu05_desk_apply_check.rye -- apply cached SETU0 pull on Desk.
 //!
 //! Reads tools/.cache/setu0/hearth_home + hearth.bron, applies under the seated
 //! Desk window, writes tools/.cache/setu0/station.bron, prints the station line.

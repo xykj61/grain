@@ -1,4 +1,4 @@
-//! glow/rune_barket_witness.rye — proves barket parse (STOA112–118).
+//! glow/rune_barket_witness.rye -- proves barket parse (STOA112-118).
 //!
 //!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
 //!   glow/bin/rune_barket_witness
@@ -56,7 +56,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("barket: @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA118 / STOA122–126 / STOA134–135/138/140/142/144/146 / STOA257:
+    // STOA118 / STOA122-126 / STOA134-135/138/140/142/144/146 / STOA257:
     // living samples speak -shape; shape_name_slice keeps source spelling.
     const amt = try rb.parse_source("|^  sample=amount-shape\nsample\n");
     assert(amt.body == .identity);

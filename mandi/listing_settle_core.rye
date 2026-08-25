@@ -1,7 +1,7 @@
-//! mandi/listing_settle_core.rye — Mandi — listing settle: settle a vessel listing (in-process) · 20260728.
+//! mandi/listing_settle_core.rye -- Mandi -- listing settle: settle a vessel listing (in-process) - 20260728.
 //!
 //! Binds listing_receipt + payment digest under Kumara seed 0x68.
-//! Payment digests MUR send + WOV transfer proofs — no buyer/seller identities.
+//! Payment digests MUR send + WOV transfer proofs -- no buyer/seller identities.
 //! Amphora carriage and live TB wait.
 //!
 //! Ground: [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md)
@@ -20,7 +20,7 @@ pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 pub const max_price_len: u32 = 16;
 pub const max_settled: u32 = 8;
 
-/// Settle seed — distinct from Mandi listing 0x67, Exchange 0x66, delivery 0x64.
+/// Settle seed -- distinct from Mandi listing 0x67, Exchange 0x66, delivery 0x64.
 const settle_seed: [kumara.seed_length]u8 = .{0x68} ** kumara.seed_length;
 
 pub const SettleError = error{

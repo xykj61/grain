@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_consent_rx.rye — OA-L5 device wire consent RX guest.
+//! comlink/guest_open_asks_consent_rx.rye -- OA-L5 device wire consent RX guest.
 //!
 //! Receives sealed consent, verifies it, rebuilds the witness log, and folds reputation.
 

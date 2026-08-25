@@ -1,33 +1,33 @@
-//! lotus/dc_remove.rye — ALES90: the DC-offset remover — subtract the span's MEAN from every sample, y = x − mean, a PURE TRANSLATION.
-//! The DRIVE family grew a whole shelf of even-harmonic generators — the full-wave rectifier (ALES84, y = |x|), the two half-wave rectifiers (ALES85,
+//! lotus/dc_remove.rye -- ALES90: the DC-offset remover -- subtract the span's MEAN from every sample, y = x − mean, a PURE TRANSLATION.
+//! The DRIVE family grew a whole shelf of even-harmonic generators -- the full-wave rectifier (ALES84, y = |x|), the two half-wave rectifiers (ALES85,
 //! ALES86), the asymmetric tube drive (ALES82, a different rail per sign), the 1-bit crush (ALES81, a floored 0/sample_min map. Each does one thing beyond
-//! adding harmonics that none of the odd maps do: it SHIFTS THE MEAN OFF ZERO — rectify a symmetric wave and every sample turns positive, the audio riding
+//! adding harmonics that none of the odd maps do: it SHIFTS THE MEAN OFF ZERO -- rectify a symmetric wave and every sample turns positive, the audio riding
 //! on a large positive DC offset. A DC offset eats headroom (the wave rides toward one rail) and thumps at a cut seam (the mean steps); every real chain
-//! that carries a nonlinearity carries a DC remover right after it. Nothing in the suite took that offset back out — this rung does.
+//! that carries a nonlinearity carries a DC remover right after it. Nothing in the suite took that offset back out -- this rung does.
 //!
-//! The crux: DC removal is a PURE TRANSLATION — the SAME constant leaves every sample — and a translation PRESERVES EVERY SAMPLE-TO-SAMPLE DIFFERENCE
+//! The crux: DC removal is a PURE TRANSLATION -- the SAME constant leaves every sample -- and a translation PRESERVES EVERY SAMPLE-TO-SAMPLE DIFFERENCE
 //! exactly: where no sample saturates, y[i] − y[j] = (x[i] − m) − (x[j] − m) = x[i] − x[j], so only the mean moves and the waveform SHAPE (all its AC
 //! content, every harmonic the distortion just made) carries through untouched. That is what distinguishes it from ALES2's gain: a gain SCALES the
 //! differences (changes the shape and loudness), a DC remove SLIDES them (changes only where zero sits). The mean is the one offset whose subtraction lands
 //! the span's average on zero.
 //!
 //! The mean is truncated toward zero (@divTrunc, the suite's honest-lossy division rule, exactly ALES2's gain), so the residual is BOUNDED AND PROVABLE:
-//! after subtraction |Σ y[i]| < count — the residual mean magnitude is strictly LESS THAN ONE LSB. Two facts fall out: a zero-mean signal is UNCHANGED
+//! after subtraction |Σ y[i]| < count -- the residual mean magnitude is strictly LESS THAN ONE LSB. Two facts fall out: a zero-mean signal is UNCHANGED
 //! EXACTLY (mean = 0, nothing subtracted); and the remove is IDEMPOTENT where nothing saturates (the residual sum is smaller than count, so the second
 //! pass's mean truncates to 0). Saturation is the one honest caveat: a sample near a rail that the mean pushes past pins to ±sample_max (ALES2's saturate
-//! reused — never a wrap to the opposite sign), and at that one sample the translation is no longer exact; the rung names it rather than hides it.
+//! reused -- never a wrap to the opposite sign), and at that one sample the translation is no longer exact; the rung names it rather than hides it.
 //!
-//! This is the BLOCK-MEAN remover: exact, memoryless, no feedback, no carried state — it undoes exactly the CONSTANT offset a rectifier or asymmetric clip
-//! introduces over a bounded region. Its cousin the one-pole IIR DC blocker (y[n] = x[n] − x[n−1] + R·y[n−1]) removes a DRIFTING offset sample-by-sample
-//! with feedback, and it wants a carried-state design and a stability bound of its own (the ALES43 shape) — a later, named rung.
+//! This is the BLOCK-MEAN remover: exact, memoryless, no feedback, no carried state -- it undoes exactly the CONSTANT offset a rectifier or asymmetric clip
+//! introduces over a bounded region. Its cousin the one-pole IIR DC blocker (y[n] = x[n] − x[n−1] + R-y[n−1]) removes a DRIFTING offset sample-by-sample
+//! with feedback, and it wants a carried-state design and a stability bound of its own (the ALES43 shape) -- a later, named rung.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES90.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES90.
 //! Design read: active-designing/date/20260814/20260814-222356_fill-ales90-lotus-dc-offset-remover.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, and the one true saturate; lotus/rectify.rye (ALES84) — the full-wave rectifier whose
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, and the one true saturate; lotus/rectify.rye (ALES84) -- the full-wave rectifier whose
 //! introduced DC offset this rung undoes (the composition proof).
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. The operation is a two-pass block
-//! statistic — sum, then subtract — memoryless in the DSP sense (no carried state, no feedback, no delay line), computed in i64 so the accumulation never
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. The operation is a two-pass block
+//! statistic -- sum, then subtract -- memoryless in the DSP sense (no carried state, no feedback, no delay line), computed in i64 so the accumulation never
 //! overflows and clamped once per sample by the one true saturate. No frequency, no real sample rate (the "DC" is the arithmetic mean of the block, the
 //! zero-frequency component by definition, not a claim about any hardware highpass), no anti-aliasing, no socket, no network, no keys, no funds, no device.
 //!
@@ -42,25 +42,25 @@ const timeline = @import("timeline.rye");
 pub const dc_remove_version = "20260814.222356";
 
 /// The DC remover's one fault. BadRange coincides by name with the drives, the rectifiers, the clippers, and ALES2's timeline (Zig merges error sets by
-/// name), so a composer sees one consistent span law across the whole suite. There is no threshold and no gain denominator here — the operation takes no
+/// name), so a composer sees one consistent span law across the whole suite. There is no threshold and no gain denominator here -- the operation takes no
 /// coefficient, only a span.
 pub const DcError = error{
-    /// A span outside the current samples — refused, no read, no write.
+    /// A span outside the current samples -- refused, no read, no write.
     BadRange,
 };
 
-/// Remove the DC offset from `count` samples starting at `start` in place in `clip`: compute the span's mean and subtract it from every sample —
+/// Remove the DC offset from `count` samples starting at `start` in place in `clip`: compute the span's mean and subtract it from every sample --
 /// y = saturate(x − mean), a PURE TRANSLATION that lands the span's average on zero. The same constant leaves every sample, so every sample-to-sample
 /// difference is preserved exactly (the waveform shape carried through untouched) wherever no sample saturates. The mean is truncated toward zero, so the
 /// residual mean magnitude is strictly less than one LSB (|Σ y| < count); a zero-mean span is unchanged exactly, and a second pass is a no-op (idempotent)
 /// where nothing saturated. A sample near a rail that the mean pushes past pins to ±sample_max (never a wrap). An EMPTY span (count == 0) is a clean no-op:
-/// the mean of nothing is undefined, so there is nothing to remove and no divide by zero. Refuses BadRange on a span outside the samples — BEFORE any read
-/// or write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// the mean of nothing is undefined, so there is nothing to remove and no divide by zero. Refuses BadRange on a span outside the samples -- BEFORE any read
+/// or write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn dc_remove(clip: *timeline.Clip, start: u32, count: u32) DcError!void {
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the rest of the suite.
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder), exactly as the rest of the suite.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
-    // invariant: the mean of an empty span is undefined — there is no DC to remove, so a zero-length span is the honest identity, and the guard below keeps
+    // invariant: the mean of an empty span is undefined -- there is no DC to remove, so a zero-length span is the honest identity, and the guard below keeps
     // the division's divisor strictly positive (no divide by zero can reach the @divTrunc).
     if (count == 0) return;
 
@@ -70,21 +70,21 @@ pub fn dc_remove(clip: *timeline.Clip, start: u32, count: u32) DcError!void {
     var sum: i64 = 0;
     var i: u32 = start;
     while (i < end) : (i += 1) {
-        // invariant: each sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: each sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(clip.buf[i] >= timeline.sample_min and clip.buf[i] <= timeline.sample_max);
         sum += @as(i64, clip.buf[i]);
     }
-    // invariant: the span holds at most max_clip samples, each no wider than one past the rail, so the i64 sum carries vast headroom (|sum| ≤ 32768 ·
-    // max_clip, far inside i64) — the accumulation above cannot have overflowed.
+    // invariant: the span holds at most max_clip samples, each no wider than one past the rail, so the i64 sum carries vast headroom (|sum| ≤ 32768 -
+    // max_clip, far inside i64) -- the accumulation above cannot have overflowed.
     assert(count <= timeline.max_clip);
 
-    // The mean, truncated toward zero — the suite's honest-lossy division rule (@divTrunc, exactly ALES2's gain). count > 0 here, so the divisor is safe.
+    // The mean, truncated toward zero -- the suite's honest-lossy division rule (@divTrunc, exactly ALES2's gain). count > 0 here, so the divisor is safe.
     const mean: i64 = @divTrunc(sum, @as(i64, count));
     // invariant: the mean is an average of samples each in [sample_min, sample_max], and truncation toward zero only shrinks its magnitude, so the mean is
-    // itself a legal sample value — the constant subtracted below is bounded by the rails.
+    // itself a legal sample value -- the constant subtracted below is bounded by the rails.
     assert(mean >= @as(i64, timeline.sample_min) and mean <= @as(i64, timeline.sample_max));
 
-    // Second pass: subtract the SAME mean from every sample — the pure translation — saturating once per sample at the rails (ALES2's saturate reused, never
+    // Second pass: subtract the SAME mean from every sample -- the pure translation -- saturating once per sample at the rails (ALES2's saturate reused, never
     // a wrap to the opposite sign).
     i = start;
     while (i < end) : (i += 1) {
@@ -96,8 +96,8 @@ pub fn dc_remove(clip: *timeline.Clip, start: u32, count: u32) DcError!void {
 }
 
 // --- selftest: REMOVES A PURE DC OFFSET (a constant span drops to zero); A ZERO-MEAN SIGNAL IS UNCHANGED EXACTLY; THE PURE TRANSLATION PRESERVES DIFFERENCES
-//     (the crux — every adjacent difference carried through); THE RESIDUAL MEAN IS BOUNDED below one LSB (|Σ y| < count); IDEMPOTENT where nothing
-//     saturates (twice equals once); IT UNDOES THE RECTIFIER'S OFFSET (the composition crux — rectify then dc_remove restores near-zero mean); SATURATION
+//     (the crux -- every adjacent difference carried through); THE RESIDUAL MEAN IS BOUNDED below one LSB (|Σ y| < count); IDEMPOTENT where nothing
+//     saturates (twice equals once); IT UNDOES THE RECTIFIER'S OFFSET (the composition crux -- rectify then dc_remove restores near-zero mean); SATURATION
 //     AT THE RAIL is honest (a max sample under a negative mean pins, never wraps); THE SPAN DISCIPLINE holds; THE EMPTY SPAN is a clean no-op; and BadRange
 //     refuses by name, the clip untouched ---
 
@@ -122,8 +122,8 @@ fn span_sum(s: []const i16) i64 {
 fn run_selftest() !u8 {
     const rectify = @import("rectify.rye"); // ALES84 — the full-wave rectifier whose introduced DC this rung undoes
 
-    // 1. REMOVES A PURE DC OFFSET — a constant span rides on nothing but DC, so its mean IS the whole signal; subtracting it silences the span. [1000]*4 →
-    //    mean 1000 → all 0.
+    // 1. REMOVES A PURE DC OFFSET -- a constant span rides on nothing but DC, so its mean IS the whole signal; subtracting it silences the span. [1000]*4 ->
+    //    mean 1000 -> all 0.
     {
         const sig = [_]i16{ 1000, 1000, 1000, 1000 };
         var clip = timeline.Clip{};
@@ -133,7 +133,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.PureOffsetWrong;
     }
 
-    // 2. A ZERO-MEAN SIGNAL IS UNCHANGED EXACTLY — a wave already centered on zero has mean 0, so nothing is subtracted and the audio passes byte-for-byte.
+    // 2. A ZERO-MEAN SIGNAL IS UNCHANGED EXACTLY -- a wave already centered on zero has mean 0, so nothing is subtracted and the audio passes byte-for-byte.
     {
         const sig = [_]i16{ 100, -100, 200, -200 };
         var clip = timeline.Clip{};
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroMeanChanged;
     }
 
-    // 3. THE PURE TRANSLATION PRESERVES DIFFERENCES — the crux. A positive-biased ramp DC-removed keeps EVERY adjacent difference x[i+1] − x[i] exactly (the
+    // 3. THE PURE TRANSLATION PRESERVES DIFFERENCES -- the crux. A positive-biased ramp DC-removed keeps EVERY adjacent difference x[i+1] − x[i] exactly (the
     //    waveform shape carried through), because the same constant left every sample. Read the result by hand and confirm the differences.
     {
         const sig = [_]i16{ 1000, 1200, 900, 1300 }; // sum 4400, mean 1100
@@ -161,8 +161,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE RESIDUAL MEAN IS BOUNDED BELOW ONE LSB — for a signal whose sum is not divisible by the count, |Σ y| < count after removal. [1000,1000,1000,
-    //    1001] sum 4001, mean trunc(4001/4) = 1000 → [0,0,0,1], residual sum 1 < 4.
+    // 4. THE RESIDUAL MEAN IS BOUNDED BELOW ONE LSB -- for a signal whose sum is not divisible by the count, |Σ y| < count after removal. [1000,1000,1000,
+    //    1001] sum 4001, mean trunc(4001/4) = 1000 -> [0,0,0,1], residual sum 1 < 4.
     {
         const sig = [_]i16{ 1000, 1000, 1000, 1001 };
         var clip = timeline.Clip{};
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.ResidualWrong;
     }
 
-    // 5. IDEMPOTENT WHERE NOTHING SATURATES — the residual sum is smaller than the count, so a second pass computes mean 0 and changes nothing. DC-remove a
+    // 5. IDEMPOTENT WHERE NOTHING SATURATES -- the residual sum is smaller than the count, so a second pass computes mean 0 and changes nothing. DC-remove a
     //    mid-level signal twice; it equals removing it once.
     {
         const sig = [_]i16{ 4000, 4200, 3900, 4300, 4100, 3950 };
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
         if (!eq(twice.samples(), once.samples())) return error.NotIdempotent;
     }
 
-    // 6. IT UNDOES THE RECTIFIER'S OFFSET — the composition crux, and the reason this rung exists. A symmetric zero-mean wave full-wave-rectified (ALES84)
+    // 6. IT UNDOES THE RECTIFIER'S OFFSET -- the composition crux, and the reason this rung exists. A symmetric zero-mean wave full-wave-rectified (ALES84)
     //    turns every sample positive, riding on a large positive DC offset; DC-removing it restores a near-zero mean (|Σ| < count). Prove the whole road:
     //    the rectified mean is large and positive, the DC-removed mean is under one LSB.
     {
@@ -205,8 +205,8 @@ fn run_selftest() !u8 {
         if (mag >= @as(i64, sig.len)) return error.RectOffsetNotRemoved;
     }
 
-    // 7. SATURATION AT THE RAIL IS HONEST — a sample_max sample under a negative mean would exceed the rail; it pins to sample_max rather than wrapping to a
-    //    negative. [32767, -20000, -20000] sum −7233, mean trunc(−7233/3) = −2411; 32767 − (−2411) = 35178 → saturates to 32767.
+    // 7. SATURATION AT THE RAIL IS HONEST -- a sample_max sample under a negative mean would exceed the rail; it pins to sample_max rather than wrapping to a
+    //    negative. [32767, -20000, -20000] sum −7233, mean trunc(−7233/3) = −2411; 32767 − (−2411) = 35178 -> saturates to 32767.
     {
         const sig = [_]i16{ 32767, -20000, -20000 };
         var clip = timeline.Clip{};
@@ -218,7 +218,7 @@ fn run_selftest() !u8 {
         if (out[1] != -17589 or out[2] != -17589) return error.SaturationLeaked;
     }
 
-    // 8. THE SPAN DISCIPLINE — DC-removing a sub-span leaves the samples outside [start, count) exactly as they were, and removes the mean of only that
+    // 8. THE SPAN DISCIPLINE -- DC-removing a sub-span leaves the samples outside [start, count) exactly as they were, and removes the mean of only that
     //    inner span. Remove the middle two of six; the mean of {5000, 5000} is 5000, so both drop to 0; the outer four are untouched.
     {
         const sig = [_]i16{ 100, 200, 5000, 5000, 300, 400 };
@@ -229,7 +229,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 9. THE EMPTY SPAN IS A CLEAN NO-OP — count 0 has no mean to remove and must not divide by zero; the clip is returned exactly as it was.
+    // 9. THE EMPTY SPAN IS A CLEAN NO-OP -- count 0 has no mean to remove and must not divide by zero; the clip is returned exactly as it was.
     {
         const sig = [_]i16{ 700, -700, 1400 };
         var clip = timeline.Clip{};
@@ -238,7 +238,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.EmptySpanTouched;
     }
 
-    // 10. A SPAN past the end refuses BadRange — before any read or write, the clip untouched.
+    // 10. A SPAN past the end refuses BadRange -- before any read or write, the clip untouched.
     {
         const sig = [_]i16{ 9, -10, 11 };
         var clip = timeline.Clip{};

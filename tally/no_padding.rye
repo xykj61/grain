@@ -1,17 +1,17 @@
-//! tally/no_padding.rye — proves a type carries no hidden padding bytes.
+//! tally/no_padding.rye -- proves a type carries no hidden padding bytes.
 //!
-//! An `extern struct` promises a byte-for-byte layout — every field at a known
+//! An `extern struct` promises a byte-for-byte layout -- every field at a known
 //! offset, nothing hidden between them. The promise is easy to keep by accident
 //! and easy to break by accident too: reorder two fields, and the compiler may
 //! insert padding to satisfy alignment without a single visible line changing.
 //! `no_padding(T)` turns that promise into something the machine checks: it
 //! walks a struct's fields in order, confirms each one starts exactly where the
-//! one before it ended, and confirms the whole type's size matches the sum —
+//! one before it ended, and confirms the whole type's size matches the sum --
 //! nothing hidden, front, middle, or back.
 //!
 //! This is where it matters most in this tree: `comlink/virtio_net.rye`'s five
-//! hand-designed structures — `VirtioNetHdr`, `VqDesc`, `VqAvail`, `VqUsedElem`,
-//! `VqUsed` — describe a wire format the virtio device itself expects to read
+//! hand-designed structures -- `VirtioNetHdr`, `VqDesc`, `VqAvail`, `VqUsedElem`,
+//! `VqUsed` -- describe a wire format the virtio device itself expects to read
 //! byte for byte. A silent padding byte there leaves a guest mute to its host
 //! rather than a style question.
 //!
@@ -19,7 +19,7 @@
 //! upstream form carries a u128-alignment check this tree has no field wide
 //! enough to need yet, so that branch is left for the day a real one appears,
 //! rather than carried here unused. The enum branch's `maybe(info.is_exhaustive)`
-//! is kept exactly as TigerBeetle wrote it — a real, borrowed use of the mark
+//! is kept exactly as TigerBeetle wrote it -- a real, borrowed use of the mark
 //! the moment it enters this tree, rather than a demonstration built to justify one.
 //!
 //! Gratitude: TigerBeetle's `stdx.no_padding`, ported at the letter where the
@@ -36,7 +36,7 @@ const maybe = maybe_mod.maybe;
 
 pub const tally_no_padding_version = "20260707.185612";
 
-/// Checks that a type carries no implicit padding — every byte of its size is
+/// Checks that a type carries no implicit padding -- every byte of its size is
 /// accounted for by a field, in field order, with nothing hidden between them.
 pub fn no_padding(comptime T: type) bool {
     comptime switch (@typeInfo(T)) {
@@ -72,7 +72,7 @@ pub fn no_padding(comptime T: type) bool {
 }
 
 fn run_selftest(_: std.Io) !u8 {
-    // A naturally aligned extern struct — no gaps, no trailing slack.
+    // A naturally aligned extern struct -- no gaps, no trailing slack.
     const Tight = extern struct { a: u32, b: u32 };
     comptime assert(no_padding(Tight));
     assert(@sizeOf(Tight) == 8);
@@ -84,7 +84,7 @@ fn run_selftest(_: std.Io) !u8 {
     // A struct that would need padding is caught, not merely suspected: two
     // u8 fields followed by a u32 leave the compiler free to insert two bytes
     // of slack under `.auto` layout, since `.auto` carries no offset promise
-    // at all — the honest case this function exists to refuse.
+    // at all -- the honest case this function exists to refuse.
     const Loose = struct { a: u8, b: u8, c: u32 };
     comptime assert(!no_padding(Loose));
 

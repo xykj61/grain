@@ -1,31 +1,31 @@
-//! lotus/stereo_rectify.rye — ALES138: the full-wave rectifier carried into stereo, ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class. ALES84 named `rectify` — y = |x|, the plainest even
+//! lotus/stereo_rectify.rye -- ALES138: the full-wave rectifier carried into stereo, ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class. ALES84 named `rectify` -- y = |x|, the plainest even
 //! generator: fold the whole negative half of the wave up onto the positive side, turning a symmetric wave into a one-sided, DC-heavy signal at DOUBLE the frequency (the diode bridge, the octave-up fuzz). Where
-//! ALES132–ALES137 shape or hold a wave through ODD and NOT-ODD maps — the hard clip, soft clip, wavefold, tube, bit-crush, decimator — the rectifier is the complement: it takes the ABSOLUTE VALUE, the purest
+//! ALES132-ALES137 shape or hold a wave through ODD and NOT-ODD maps -- the hard clip, soft clip, wavefold, tube, bit-crush, decimator -- the rectifier is the complement: it takes the ABSOLUTE VALUE, the purest
 //! EVEN map, |−x| = |x|. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the rectifier into stereo
 //! the plain way: run ALES84's proven mono `rectify` on each channel over the SAME span, so one fold at zero lands on BOTH speakers together.
 //!
-//! The rectifier is the STRONGEST image-break in the class — the honest opposite of the decimator (ALES137). The decimator copies an anchor and so PRESERVED the stereo image; crush and tube (ALES135/136)
+//! The rectifier is the STRONGEST image-break in the class -- the honest opposite of the decimator (ALES137). The decimator copies an anchor and so PRESERVED the stereo image; crush and tube (ALES135/136)
 //! computed new values and BROKE the antisymmetry; the rectifier, an EVEN map, COLLAPSES it. An out-of-phase master (right the exact negation of left) rectified through the same fold comes back with
 //! right = |−left| = |left| = left: the two channels become IDENTICAL, the stereo image folded down to mono on the magnitude. That is not a bug to design around; it is the full-wave rectifier's whole point read
-//! in the stereo field — the even map lands +a and −a on the same a, so an antisymmetric stereo pair lands on one signal. Yet the RATIO holds: |2x| = 2|x|, so a 1:2 master keeps its 1:2 ratio (both sides
+//! in the stereo field -- the even map lands +a and −a on the same a, so an antisymmetric stereo pair lands on one signal. Yet the RATIO holds: |2x| = 2|x|, so a 1:2 master keeps its 1:2 ratio (both sides
 //! non-negative after), and an identical-channel master stays identical.
 //!
-//! The rule, stated once: the mono rectifier carries NO gain, NO ceiling, and NO resolution — an absolute value has no parameter that could be illegal — so this is the PLAINEST lift in the whole class, naming
-//! exactly one fault. Refuse BadRange (a span outside the samples) BEFORE either channel is mutated — the check depends only on the shared length, so it is made ONCE up front, and a refusal never rectifies one
-//! channel and leaves the other signed; otherwise rectify both channels over [start, start+count) via ALES84's `rectify`. RectifyError reused whole — the stereo lift adds no fault.
+//! The rule, stated once: the mono rectifier carries NO gain, NO ceiling, and NO resolution -- an absolute value has no parameter that could be illegal -- so this is the PLAINEST lift in the whole class, naming
+//! exactly one fault. Refuse BadRange (a span outside the samples) BEFORE either channel is mutated -- the check depends only on the shared length, so it is made ONCE up front, and a refusal never rectifies one
+//! channel and leaves the other signed; otherwise rectify both channels over [start, start+count) via ALES84's `rectify`. RectifyError reused whole -- the stereo lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO RECTIFY LAW: each channel equals ALES84's mono `rectify` over the same span byte for byte — every output is |x| pinned to the rail (sample_min's magnitude 32768 saturating to
+//! The crux -- four laws. THE STEREO RECTIFY LAW: each channel equals ALES84's mono `rectify` over the same span byte for byte -- every output is |x| pinned to the rail (sample_min's magnitude 32768 saturating to
 //! sample_max, the one place |x| leaves the i16 rail). THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a rectify writes values only). THE IMAGE-COLLAPSE LAW:
 //! because |x| is an EVEN map, an out-of-phase master (right = −left) comes back with IDENTICAL channels (right = |−left| = |left| = left), the antisymmetry collapsed to mono rather than merely broken; yet the
 //! ratio holds (|2x| = 2|x|, a 1:2 master keeping its ratio), an identical-channel master stays identical, every output on both channels is NON-NEGATIVE, and the map is idempotent (twice equals once). THE
 //! ATOMICITY / DEGENERATE LAW: a refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES138.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES138.
 //! Design read: active-designing/date/20260815/20260815-040027_fill-ales138-lotus-stereo-rectify.md
-//! Stands on: lotus/rectify.rye (ALES84) — the mono full-wave rectifier run once per channel, |x| pinned to the rail; lotus/stereo_decimate.rye (ALES137) — the image-PRESERVING member whose opposite pole this
-//! rung is; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//! Stands on: lotus/rectify.rye (ALES84) -- the mono full-wave rectifier run once per channel, |x| pinned to the rail; lotus/stereo_decimate.rye (ALES137) -- the image-PRESERVING member whose opposite pole this
+//! rung is; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES84's own rectify, each output at most its
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES84's own rectify, each output at most its
 //! input's magnitude, never a length; the shape is a full-wave absolute value, instantaneous (no attack/release, no anti-aliasing). No real sample rate, no network, no keys, no funds, no real device, no real
 //! speaker.
 //!
@@ -41,35 +41,35 @@ const rectify = @import("rectify.rye");
 
 pub const stereo_rectify_version = "20260815.040027";
 
-/// Stereo rectify's faults are exactly ALES84's own `RectifyError` — `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same rectify on each
+/// Stereo rectify's faults are exactly ALES84's own `RectifyError` -- `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new fault: it only runs the same rectify on each
 /// channel after one shared validation. The rectifier names no other fault (an absolute value has no illegal parameter).
 pub const StereoRectifyError = rectify.RectifyError;
 
-/// Rectify `[start, start+count)` in BOTH channels of `sc`, the SAME fold at zero on each, running ALES84's proven mono `rectify`. Each sample becomes its absolute value `|x|` — the negative half of the wave
+/// Rectify `[start, start+count)` in BOTH channels of `sc`, the SAME fold at zero on each, running ALES84's proven mono `rectify`. Each sample becomes its absolute value `|x|` -- the negative half of the wave
 /// folded up onto the positive side, exact for every i16 except sample_min, whose magnitude 32768 overflows the positive rail and saturates to sample_max. Validates the span once against the shared length before
-/// either channel is mutated: refuses `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced and both non-negative over the span.
+/// either channel is mutated: refuses `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced and both non-negative over the span.
 pub fn stereo_rectify(sc: *pan.StereoClip, start: u32, count: u32) StereoRectifyError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the span is legal — refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front;
+    // invariant: the span is legal -- refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front;
     // it mirrors ALES84's own guard exactly, so each mono rectify below is pre-validated to succeed. The rectifier carries no other parameter, so this lone check is the whole gate.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono rectify is pre-validated to succeed — no refusal can land between the two channel edits. The SAME fold at zero on each.
+    // Every check passed and holds identically for both channels, so each mono rectify is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME fold at zero on each.
     try rectify.rectify(&sc.left, start, count);
     try rectify.rectify(&sc.right, start, count);
 
-    // invariant: the channels leave balanced — a rectify writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a rectify writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO RECTIFY LAW — each channel equals ALES84's mono rectify over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length;
-//     THE IMAGE-COLLAPSE LAW — an OUT-OF-PHASE master (right = −left) comes back with IDENTICAL channels (the even map collapses antisymmetry to mono), yet a 1:2 master KEEPS its ratio, an identical-channel
-//     master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched and balanced, count = 0 the identity ----
+// --- selftest: THE STEREO RECTIFY LAW -- each channel equals ALES84's mono rectify over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
+//     THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right = −left) comes back with IDENTICAL channels (the even map collapses antisymmetry to mono), yet a 1:2 master KEEPS its ratio, an identical-channel
+//     master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and balanced, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -84,7 +84,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO RECTIFY LAW — each channel equals ALES84's mono rectify over the same span, proven side by side with different per-channel samples; negatives fold to their magnitude, the rail edge saturates
+    // 1. THE STEREO RECTIFY LAW -- each channel equals ALES84's mono rectify over the same span, proven side by side with different per-channel samples; negatives fold to their magnitude, the rail edge saturates
     //    sample_min to sample_max, non-negatives pass unchanged.
     {
         var sc = pan.StereoClip{};
@@ -105,7 +105,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 100, 50, 32767, 2500 })) return error.RightHandWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a rectify writes values only.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a rectify writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300, -400, 500 }, &[_]i16{ -500, 400, -300, 200, -100 });
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 3a. THE IMAGE-COLLAPSE LAW — an OUT-OF-PHASE master (right the exact negation of left) rectified through the same fold comes back with IDENTICAL channels, because the even map lands +a and −a on the same a:
-    //     right[i] = |−left[i]| = |left[i]| = left[i] (after both are non-negative). The antisymmetry is not merely broken (crush/tube) but COLLAPSED to mono — the honest opposite of the decimator, which preserved
+    // 3a. THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same fold comes back with IDENTICAL channels, because the even map lands +a and −a on the same a:
+    //     right[i] = |−left[i]| = |left[i]| = left[i] (after both are non-negative). The antisymmetry is not merely broken (crush/tube) but COLLAPSED to mono -- the honest opposite of the decimator, which preserved
     //     the image.
     {
         var sc = pan.StereoClip{};
@@ -130,7 +130,7 @@ fn run_selftest() !u8 {
         if (!eq(l, &[_]i16{ 100, 300, 500, 700 })) return error.CollapseMagnitudeWrong;
     }
 
-    // 3b. THE IMAGE-COLLAPSE LAW, the RATIO HOLDS — a 1:2 master (right twice left) keeps its 1:2 ratio at each index, because |2x| = 2|x|; where the antisymmetry collapses, the magnitude ratio survives.
+    // 3b. THE IMAGE-COLLAPSE LAW, the RATIO HOLDS -- a 1:2 master (right twice left) keeps its 1:2 ratio at each index, because |2x| = 2|x|; where the antisymmetry collapses, the magnitude ratio survives.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ -1000, 400, -700, 200 }, &[_]i16{ -2000, 800, -1400, 400 }); // right = 2·left
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3c. EVERY OUTPUT NON-NEGATIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL — a rectifier makes a one-sided signal, so no output on either channel is below zero; rectifying twice
+    // 3c. EVERY OUTPUT NON-NEGATIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL -- a rectifier makes a one-sided signal, so no output on either channel is below zero; rectifying twice
     //     equals once (a non-negative sample rectifies to itself); and a shared fold on equal channels gives equal channels.
     {
         var once = pan.StereoClip{};
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (!eq(same.left.samples(), same.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3d. THE SPAN DISCIPLINE — rectifying a sub-span leaves samples outside [start, count) exactly as they were on both channels, negatives among them preserved (the in-place discipline the whole suite keeps).
+    // 3d. THE SPAN DISCIPLINE -- rectifying a sub-span leaves samples outside [start, count) exactly as they were on both channels, negatives among them preserved (the in-place discipline the whole suite keeps).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ -100, -200, -500, 500, -300, -400 }, &[_]i16{ 400, 300, -500, 500, -300, -400 });
@@ -177,7 +177,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 400, 300, 500, 500, -300, -400 })) return error.RightSpanLeaked;
     }
 
-    // 4a. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The rectifier names no other fault (an absolute value has no illegal
+    // 4a. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The rectifier names no other fault (an absolute value has no illegal
     //     parameter), so this lone refusal is the whole atomicity story.
     {
         var sc = pan.StereoClip{};
@@ -188,7 +188,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadRangeUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — count = 0 is the identity on both channels (an empty span folds nothing).
+    // 4b. THE DEGENERATE LAW -- count = 0 is the identity on both channels (an empty span folds nothing).
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });

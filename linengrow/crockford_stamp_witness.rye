@@ -1,15 +1,15 @@
-//! linengrow/crockford_stamp_witness.rye — Decision 6 bijection + negative space.
+//! linengrow/crockford_stamp_witness.rye -- Decision 6 bijection + negative space.
 //!
 //!   rye build linengrow/crockford_stamp_witness.rye \
 //!     -femit-bin=linengrow/bin/crockford_stamp_witness
 //!   linengrow/bin/crockford_stamp_witness
 //!
 //! Claims:
-//!   1. Round-trip encode→decode over a fixture set (wire LE + Crockford).
+//!   1. Round-trip encode->decode over a fixture set (wire LE + Crockford).
 //!   2. Encoded length is exactly thirteen.
 //!   3. Reject base32 containing I, L, O, or U.
 //!   4. Reject over-long and under-long input.
-//!   5. Decode is case-insensitive for A–Z.
+//!   5. Decode is case-insensitive for A-Z.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -35,7 +35,7 @@ fn run_selftest() !u8 {
     assert(cf.wire_bytes == 8);
     assert(cf.alphabet.len == 32);
 
-    // Claim 1–2: round-trip + length + fixture agree + wire LE.
+    // Claim 1-2: round-trip + length + fixture agree + wire LE.
     for (fixtures) |fix| {
         var enc: [cf.encoded_len]u8 = undefined;
         cf.encode(fix.value, &enc);

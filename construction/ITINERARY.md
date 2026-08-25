@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `e9582afd36` -- `Region` folded into `tally/`, `rye` and `rishi` each taught a second way to be asked, and every room given a way home. Suite 109 green.
+**Git nib:** `4b0b2b3e95` -- `Region` folded into `tally/`, `rye` and `rishi` each taught a second way to be asked, every room given a way home, and Rye's comments swept to ASCII. Suite 109 green.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
 upward is a school grade -- 20% becomes **80, a B**.
@@ -192,8 +192,9 @@ Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 **Open, named, and waiting on its own lap.** The **fascia weave** over thirty-nine browsed
 `active-designing/` documents, as a living index page per cluster. **`docs/STOA.md`** at **166 lines
 against the `<=80` its own title declares**. The ten pages duty 4 names as wanting a Status line.
-The doc-comment ASCII sweep at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456
-characters). And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
+*The comment ASCII sweep landed `20260825.014325`* -- the real population was **1,507 of 1,894
+files**, not two rooms; comments fell **32,064 -> 4,338** and the remainder is notation rather than
+punctuation. **1,683 witnesses stand on disk where 56 are gated** -- the door this opened. And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
 bytes and `image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 

@@ -1,42 +1,42 @@
-//! mycelium/lapse.rye — the Lapse: a two-phase transfer the order lets expire on time.
+//! mycelium/lapse.rye -- the Lapse: a two-phase transfer the order lets expire on time.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
-//! The Pledge reserves coins now and settles them later — honored or released, decided once
+//! The Pledge reserves coins now and settles them later -- honored or released, decided once
 //! by the order. Yet a reservation neither honored nor released would lock a purse forever,
 //! and a counterparty who simply falls silent would strand another's balance to the end of
-//! the ledger. TigerBeetle answers this with a PENDING-TRANSFER TIMEOUT — a reservation the
+//! the ledger. TigerBeetle answers this with a PENDING-TRANSFER TIMEOUT -- a reservation the
 //! ledger itself expires when its clock passes a deadline, returning the held coins to their
 //! owner with no one's further signature. That is the Lapse, the third of TigerBeetle's
 //! signature primitives (after the two-phase Pledge and the linked Braid), read here as the
 //! agreed order's own law.
 //!
 //! The clock is the one thing every honest node already agrees on: the POSITION of each fact
-//! in the committed order — never the wall, which two nodes never share. A pledge opened at
+//! in the committed order -- never the wall, which two nodes never share. A pledge opened at
 //! order position `p` names a DEADLINE `d > p`. The resolver walks the committed order; at
 //! each step, BEFORE applying the fact at position `pos`, it lapses every still-open pledge
-//! whose `deadline <= pos` — reserved coins return to the pledger's spendable balance, state
+//! whose `deadline <= pos` -- reserved coins return to the pledger's spendable balance, state
 //! becomes LAPSED. Only then is the fact at `pos` applied.
 //!
 //! The crux is EXPIRY BEATS A LATE HONOR: a post the order places at or past the deadline
-//! finds the pledge already lapsed — its coins already home — so the honor is a lawful no-op.
+//! finds the pledge already lapsed -- its coins already home -- so the honor is a lawful no-op.
 //! And because the Cord's order is deterministic regardless of arrival, whether a given honor
 //! is ON TIME is a property of the committed order, never of who heard which block first, so
-//! every honest node names the identical verdict — proven, as the Pledge and Braid proved it,
+//! every honest node names the identical verdict -- proven, as the Pledge and Braid proved it,
 //! by resolving every arrival permutation to one identical ledger.
 //!
 //! Conservation is the Pledge's law, unwidened: at every step balances + reserved sums to
-//! exactly what genesis issued. A lapse moves coins reserved → balance, exactly as a void
-//! does — no coin is made or destroyed by the passage of the deadline.
+//! exactly what genesis issued. A lapse moves coins reserved -> balance, exactly as a void
+//! does -- no coin is made or destroyed by the passage of the deadline.
 //!
 //! A deadline rides INSIDE the signed pledge body so it cannot be moved after the signature:
-//! `P · id(16) · deadline(8, little-endian u64) · to(32)` reserves; `H · id(16)` honors,
-//! `V · id(16)` releases (unchanged from the Pledge). A pledge whose deadline is not strictly
+//! `P - id(16) - deadline(8, little-endian u64) - to(32)` reserves; `H - id(16)` honors,
+//! `V - id(16)` releases (unchanged from the Pledge). A pledge whose deadline is not strictly
 //! after its own opening position is expired at birth and refuses whole (BadDeadline).
 //!
-//! Grown beside cord.rye, fold.rye, pledge.rye — editing none, composing cord + fold +
-//! kumara public API only. Siloed, dev-only, demo seeds — no real key, no funds, no network,
+//! Grown beside cord.rye, fold.rye, pledge.rye -- editing none, composing cord + fold +
+//! kumara public API only. Siloed, dev-only, demo seeds -- no real key, no funds, no network,
 //! no custody. A served lapse reaches the Comlink-served gate (the maintainer's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse.rye
@@ -52,13 +52,13 @@ const tally_copy = @import("tally_copy.rye");
 /// A keeper's public key, in its encoded (holder-identity) width.
 pub const pk_len: u32 = kumara.PublicKey.encoded_length;
 
-/// A pledge id — a fixed 16-byte tag naming one open promise across its phases.
+/// A pledge id -- a fixed 16-byte tag naming one open promise across its phases.
 pub const id_len: u32 = 16;
 
 /// The deadline is a little-endian u64 order position, carried in the pledge body.
 pub const deadline_len: u32 = 8;
 
-/// Body tags — the phase, bound into the signer's signature over the fact body.
+/// Body tags -- the phase, bound into the signer's signature over the fact body.
 pub const tag_pledge: u8 = 'P';
 pub const tag_post: u8 = 'H';
 pub const tag_void: u8 = 'V';
@@ -73,10 +73,10 @@ pub const state_lapsed: u8 = 3;
 /// journey of blocks (256), so twice that bounds the distinct-account table.
 pub const lapse_max_accounts: u32 = 2 * cord.cord_max_blocks;
 
-/// At most one pledge opened per block — the Dag holds a journey of blocks.
+/// At most one pledge opened per block -- the Dag holds a journey of blocks.
 pub const lapse_max_pledges: u32 = cord.cord_max_blocks;
 
-/// One account's purse under two-phase accounting — what it can spend, what it holds
+/// One account's purse under two-phase accounting -- what it can spend, what it holds
 /// reserved in open pledges, and the cumulative inflow that proves a loss lawful.
 pub const Account = struct {
     pk: [pk_len]u8 = undefined,
@@ -85,7 +85,7 @@ pub const Account = struct {
     received: u64 = 0,
 };
 
-/// One pledge the agreed order seated — coins reserved from one purse toward another under a
+/// One pledge the agreed order seated -- coins reserved from one purse toward another under a
 /// deadline, settled exactly once (posted, voided, or lapsed by the order's clock) or
 /// standing open at the ledger's end because the order never walked past its deadline.
 pub const Pledge = struct {
@@ -217,7 +217,7 @@ fn ensure_account(l: *Ledger, pk: []const u8) error{TooManyAccounts}!u32 {
     return at;
 }
 
-/// Credit an account — spendable balance and cumulative inflow both rise. A wrap refuses.
+/// Credit an account -- spendable balance and cumulative inflow both rise. A wrap refuses.
 fn credit(l: *Ledger, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
     const k = try ensure_account(l, pk);
     const nb = l.accounts[k].balance +% amount;
@@ -241,7 +241,7 @@ fn pledge_index(l: *const Ledger, id: []const u8) ?u32 {
     return null;
 }
 
-/// The recipient named in a pledge body's `to` field — a full, valid holder key, or a
+/// The recipient named in a pledge body's `to` field -- a full, valid holder key, or a
 /// refusal when it is not exactly one parseable key.
 fn valid_key(bytes: []const u8) error{Malformed}![]const u8 {
     if (bytes.len != pk_len) return error.Malformed;
@@ -251,12 +251,12 @@ fn valid_key(bytes: []const u8) error{Malformed}![]const u8 {
     return bytes;
 }
 
-/// The genesis-credit body of a kind_issue fact names the account to fund — one full key.
+/// The genesis-credit body of a kind_issue fact names the account to fund -- one full key.
 fn credit_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
     return valid_key(fact.body_slice());
 }
 
-/// Read a little-endian u64 from an 8-byte slice — the deadline as it rides the body.
+/// Read a little-endian u64 from an 8-byte slice -- the deadline as it rides the body.
 fn read_deadline(bytes: []const u8) u64 {
     // invariant: a deadline is exactly the fixed order-position width.
     assert(bytes.len == deadline_len);
@@ -294,7 +294,7 @@ fn open_pledge(l: *Ledger, id: []const u8, from: []const u8, to: []const u8, amo
 
 /// The clock step: before applying the fact at `pos`, lapse every still-open pledge whose
 /// deadline the order has now reached (deadline <= pos). Reserved coins return to the
-/// pledger — conserved, exactly as a void — and the pledge is recorded lapsed. This is the
+/// pledger -- conserved, exactly as a void -- and the pledge is recorded lapsed. This is the
 /// only place the deadline acts, and it acts on the order's own position, so every honest
 /// node lapses the identical pledges at the identical steps.
 fn lapse_expired(l: *Ledger, pos: u32) void {
@@ -307,7 +307,7 @@ fn lapse_expired(l: *Ledger, pos: u32) void {
         // invariant: an open pledge's reserve is still held by its pledger.
         assert(l.accounts[ki].reserved >= pl.amount);
         l.accounts[ki].reserved -= pl.amount;
-        // A lapse returns the reserve to the pledger's own balance (conserved) — a wrap is
+        // A lapse returns the reserve to the pledger's own balance (conserved) -- a wrap is
         // impossible (these coins left this balance when the pledge opened), yet named.
         const nb = l.accounts[ki].balance +% pl.amount;
         // invariant: a lapse never lowers a balance, so a new balance below the old one would
@@ -336,7 +336,7 @@ pub const FoldError = error{
 };
 
 /// Fold one signed fact into a Ledger under the deadline clock. `pos` is the fact's position
-/// in the agreed order — the clock the deadline reads. The clock advances first (expired
+/// in the agreed order -- the clock the deadline reads. The clock advances first (expired
 /// pledges lapse before the fact at `pos` is applied), so a settlement the order places at or
 /// past a pledge's deadline finds it already lapsed and is a lawful no-op. A broken signature
 /// refuses whole before any coin moves; a pledge whose deadline is not strictly after its own
@@ -349,10 +349,10 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
     // invariant: a fact's position is a real index within the fold's log ceiling.
     assert(pos < fold.myc_log_max_facts);
 
-    // The clock ticks before the fact lands — the deadline decides on the order's position.
+    // The clock ticks before the fact lands -- the deadline decides on the order's position.
     lapse_expired(l, pos);
 
-    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    // Corruption is not a verdict -- a broken signature refuses before any coin moves.
     if (!fold.verify_fact(fact)) return error.IdentityRefused;
 
     if (fact.kind == fold.kind_issue) {
@@ -376,12 +376,12 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
     const from = fact.signer_pk[0..];
 
     if (tag == tag_pledge) {
-        // invariant: a pledge body is exactly tag · id · deadline · recipient.
+        // invariant: a pledge body is exactly tag - id - deadline - recipient.
         if (body.len != 1 + id_len + deadline_len + pk_len) return error.Malformed;
         const id = body[1 .. 1 + id_len];
         const deadline = read_deadline(body[1 + id_len .. 1 + id_len + deadline_len]);
         const to = try valid_key(body[1 + id_len + deadline_len ..]);
-        // A reservation must name a future — a deadline at or before its own position is
+        // A reservation must name a future -- a deadline at or before its own position is
         // expired at birth, and refuses the whole resolution.
         if (deadline <= pos) return error.BadDeadline;
         if (pledge_index(l, id) != null) return error.PledgeExists;
@@ -393,11 +393,11 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
         // Never-could-pay: more than the holder ever received refuses whole.
         if (fact.amount > received_here) return error.NeverPaid;
         if (fact.amount > balance_here) {
-            // Lost a race: an earlier winning phase already spent these coins — a lawful
+            // Lost a race: an earlier winning phase already spent these coins -- a lawful
             // no-op (the coins were in this purse once), folding continues.
             return;
         }
-        // Accepted: coins move balance → reserved (conserved), an open pledge is seated.
+        // Accepted: coins move balance -> reserved (conserved), an open pledge is seated.
         const sidx = try ensure_account(l, from);
         // invariant: an accepted pledge never reserves more than the sender can spend.
         assert(fact.amount <= l.accounts[sidx].balance);
@@ -410,16 +410,16 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
     }
 
     if (tag == tag_post or tag == tag_void) {
-        // invariant: a resolution body is exactly tag · id.
+        // invariant: a resolution body is exactly tag - id.
         if (body.len != 1 + id_len) return error.Malformed;
         const id = body[1..];
         const pi = pledge_index(l, id) orelse return error.UnknownPledge;
         const pl = &l.pledges[pi];
-        // Only the pledger settles their own pledge, and the signed amount must equal it —
+        // Only the pledger settles their own pledge, and the signed amount must equal it --
         // the signature binds phase, id, and sum together.
         if (!std.mem.eql(u8, pl.from[0..], from)) return error.WrongSigner;
         if (fact.amount != pl.amount) return error.AmountMismatch;
-        // Already posted, voided, or lapsed — the order (or its clock) already decided.
+        // Already posted, voided, or lapsed -- the order (or its clock) already decided.
         if (pl.state != state_open) return; // a lawful no-op
 
         const ki = account_index(l, from) orelse return error.UnknownPledge;
@@ -427,11 +427,11 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
         assert(l.accounts[ki].reserved >= pl.amount);
         l.accounts[ki].reserved -= pl.amount;
         if (tag == tag_post) {
-            // Honor: reserved → recipient (conserved).
+            // Honor: reserved -> recipient (conserved).
             try credit(l, pl.to[0..], pl.amount);
             pl.state = state_posted;
         } else {
-            // Release: reserved → pledger's own balance (conserved).
+            // Release: reserved -> pledger's own balance (conserved).
             const nb = l.accounts[ki].balance +% pl.amount;
             if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
             l.accounts[ki].balance = nb;
@@ -443,7 +443,7 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
     return error.Malformed;
 }
 
-/// Resolve a committed Dag into a two-phase Ledger under the deadline clock — the verdict of
+/// Resolve a committed Dag into a two-phase Ledger under the deadline clock -- the verdict of
 /// the agreed order. Conservation holds over every phase: balance + reserved sums to exactly
 /// what genesis issued, whether a pledge is honored, released, lapsed, or standing open.
 pub fn resolve(dag: *const cord.Dag) FoldError!Ledger {
@@ -464,7 +464,7 @@ pub fn resolve(dag: *const cord.Dag) FoldError!Ledger {
         try fold_lapse(&l, &blk.fact, i);
     }
 
-    // invariant: conservation — balance + reserved sums to exactly what genesis issued.
+    // invariant: conservation -- balance + reserved sums to exactly what genesis issued.
     assert(l.balances_sum() + l.reserved_sum() == l.total_issued);
     return l;
 }
@@ -488,7 +488,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + id_len + deadline_len + pk_len);
     assert(id.len == id_len);
     out[0] = tag_pledge;
@@ -499,7 +499,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + id_len);
     assert(id.len == id_len);
     out[0] = tag;
@@ -539,7 +539,7 @@ fn ledgers_equal(x: *const Ledger, y: *const Ledger) bool {
 /// Seat the deadline scene: genesis credits Alice 100; Alice pledges 100 to Bob under the
 /// given deadline; Alice signs BOTH a post and a void for that pledge at the same round (both
 /// children of the pledge block). The four blocks let a caller resolve any prefix or arrival
-/// order — the crux is whether the order reaches the deadline before the settlement.
+/// order -- the crux is whether the order reaches the deadline before the settlement.
 fn seat_scene(id: []const u8, deadline: u64) ![4]cord.Block {
     const kf = seeded(0xF0);
     const ka = seeded(0xA1);
@@ -583,10 +583,10 @@ pub fn main() !void {
     const alice_pk = ka.public_key.toBytes();
     const bob_pk = kb.public_key.toBytes();
 
-    // The crux — a late honor loses to the deadline. The pledge opens at order position 1;
+    // The crux -- a late honor loses to the deadline. The pledge opens at order position 1;
     // its deadline is 2. Both the post and the void ride round 2 (order positions 2 and 3).
     // The clock reaches position 2 before either settles, so the deadline lapses the pledge
-    // first — reserved coins return to Alice — and both the post AND the void are lawful
+    // first -- reserved coins return to Alice -- and both the post AND the void are lawful
     // no-ops. Neither arrival order of the two round-2 facts can honor a lapsed pledge.
     {
         const s = try seat_scene(id[0..], 2);
@@ -601,15 +601,15 @@ pub fn main() !void {
         assert(late.balances_sum() + late.reserved_sum() == late.total_issued);
         assert(late.total_issued == 100);
 
-        // Permutation independence — swapping the arrival of the two round-2 siblings names
+        // Permutation independence -- swapping the arrival of the two round-2 siblings names
         // the identical verdict, because the deadline lapsed the pledge before either.
         const late_swapped = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[3], s[2] });
         assert(ledgers_equal(&late, &late_swapped));
     }
 
-    // On time — the same post, under a deadline the order has not yet reached, honors. The
+    // On time -- the same post, under a deadline the order has not yet reached, honors. The
     // post rides order position 2; the deadline is 4, so the clock has not passed it, and the
-    // reserved coins reach Bob. (A pure chain g → pledge → post, so no equivocation muddies
+    // reserved coins reach Bob. (A pure chain g -> pledge -> post, so no equivocation muddies
     // the honored verdict.)
     {
         const s = try seat_scene(id[0..], 4);
@@ -622,7 +622,7 @@ pub fn main() !void {
         assert(ontime.balances_sum() + ontime.reserved_sum() == ontime.total_issued);
     }
 
-    // The same deadline, two clocks — the honest meaning of "measured in the order." A pledge
+    // The same deadline, two clocks -- the honest meaning of "measured in the order." A pledge
     // with deadline 2 opened at position 1: if the order walks no further (only g and the
     // pledge), position 2 is never reached, so the pledge stands OPEN with coins reserved. It
     // lapses only once the order's clock actually reaches the deadline (the late scene above).
@@ -648,7 +648,7 @@ pub fn main() !void {
         assert(released.balances_sum() + released.reserved_sum() == released.total_issued);
     }
 
-    // Refusals — each holds honestly.
+    // Refusals -- each holds honestly.
     {
         const kf = seeded(0xF0);
         const kz = seeded(0xE9); // a stranger who signed no pledge
@@ -686,7 +686,7 @@ pub fn main() !void {
         const b_badamt = cord.mint_block(ka, 2, roots[0..], f_badamt) orelse return error.BlockBadAmt;
         assert(std.meta.isError(resolve_perm(&[_]cord.Block{ s2[0], s2[1], b_badamt })));
 
-        // A star reservation is not the Lapse's resource — it refuses whole.
+        // A star reservation is not the Lapse's resource -- it refuses whole.
         const f_star = fold.mint_fact(ka, fold.kind_star_reserve, 10, "acmestar", "reserve") orelse return error.MintStar;
         const b_star = cord.mint_block(ka, 1, roots[0..], f_star) orelse return error.BlockStar;
         assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_star })));

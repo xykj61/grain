@@ -1,22 +1,22 @@
-//! pond/apps/skate_circle_true.rye — Season 3 Journey 9 (Skate), Rung 4: the circle reads true (Journey 9 closes).
+//! pond/apps/skate_circle_true.rye -- Season 3 Journey 9 (Skate), Rung 4: the circle reads true (Journey 9 closes).
 //!
 //! Rungs one through three fixed the consent rule, signed each act, and let a signed circle travel as
-//! Bron — all over circles seated in code. This closing rung carries the reader onto a **real** Skate
+//! Bron -- all over circles seated in code. This closing rung carries the reader onto a **real** Skate
 //! circle record a keeper can open and count, and proves the property the whole social layer rests on:
 //! what the reader *reports* about a circle is true to the bytes.
 //!
 //! The corpus is `surf/fixtures/circle.bron`, a genuine `format skate-circle-v1` record with real
 //! Ed25519 signatures (three members; one mutual link and one one-sided hold), `@embedFile`-bound at
-//! compile time through a symlink in `pond/apps/corpora/` — no network, the bytes read are the tree's
+//! compile time through a symlink in `pond/apps/corpora/` -- no network, the bytes read are the tree's
 //! own. Two independent readings must agree: the app parses the record through rung three and reports
 //! the member count, the link count, and the **mutual-link count** (an unordered pair both of whose
-//! directed requests appear — a one-sided hold is not counted), and the witness cross-checks that
-//! triple against `tools/fixtures/skate_circle_truth.awk`'s reading of the same file — two tools, one
+//! directed requests appear -- a one-sided hold is not counted), and the witness cross-checks that
+//! triple against `tools/fixtures/skate_circle_truth.awk`'s reading of the same file -- two tools, one
 //! answer. And the record is genuinely consent-honest: `still_consented` re-verifies every carried
 //! signature against the demo keyring, so the fixture is a real signed circle, not a hollow shape.
 //!
-//! Additive — composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
-//! only, reads no network (a circle served over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rungs one, two, and three over public API (all re-run GREEN). Demo keeper seeds
+//! only, reads no network (a circle served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_circle_true.rye -femit-bin=pond/bin/skate-circle-true
 //!   pond/bin/skate-circle-true selftest
@@ -34,7 +34,7 @@ const kumara = @import("kumara.rye");
 
 pub const skate_circle_true_version = "20260812.201611";
 
-/// The real circle record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real circle record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_circle = @embedFile("corpora/skate_circle.bron");
 
 /// The three facts a keeper can count by hand: members, link requests, and mutual links.
@@ -44,7 +44,7 @@ pub const Reading = struct {
     mutual: u32,
 };
 
-/// Count the mutual links in a parsed circle — an unordered pair {a,b} where both `a→b` and `b→a`
+/// Count the mutual links in a parsed circle -- an unordered pair {a,b} where both `a->b` and `b->a`
 /// appear. Each mutual pair is counted once (when the reciprocal sits at a later index), so a
 /// one-sided hold is never counted among them.
 fn mutual_links(pc: *const bron.PortableCircle) u32 {
@@ -58,7 +58,7 @@ fn mutual_links(pc: *const bron.PortableCircle) u32 {
             if (pc.link_from[i] == pc.link_to[j] and pc.link_to[i] == pc.link_from[j]) count += 1;
         }
     }
-    // invariant: no pair is counted more than once — mutual links cannot exceed the request count.
+    // invariant: no pair is counted more than once -- mutual links cannot exceed the request count.
     assert(count <= pc.link_count);
     return count;
 }
@@ -73,7 +73,7 @@ pub fn read_circle(text: []const u8) bron.BronError!Reading {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — the same seeds the fixture was signed with, so the record verifies as real.
+// Demo keeper seeds -- the same seeds the fixture was signed with, so the record verifies as real.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -95,11 +95,11 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_circle(real_circle);
-    // The fixture holds three members, three requests, and exactly one mutual link (ivy↔wren).
+    // The fixture holds three members, three requests, and exactly one mutual link (ivy<->wren).
     assert(r.members == 3);
     assert(r.links == 3);
     assert(r.mutual == 1);
@@ -107,7 +107,7 @@ fn welcome_reading_true_to_bytes() !void {
     print("skate_circle_true: the reading of the real record — members, links, mutual — matches an independent count of the same bytes.\n", .{});
 }
 
-/// The record is genuinely consent-honest — every carried signature verifies against the demo keyring,
+/// The record is genuinely consent-honest -- every carried signature verifies against the demo keyring,
 /// and the rebuilt circle carries the mutual link and the one-sided hold exactly.
 fn welcome_record_is_really_consented() !void {
     const ring = try demo_ring();
@@ -120,7 +120,7 @@ fn welcome_record_is_really_consented() !void {
     print("skate_circle_true: the real record re-verified every signature offline and rebuilt the mutual link and the one-sided hold exactly.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true.
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true.
 fn unwelcome_tampered_record_refuses() !void {
     // Flip a byte inside the header so the record no longer names its format.
     var buf: [real_circle.len]u8 = undefined;
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<members> <links> <mutual>`), so the witness can compare the
-/// app's reading against `skate_circle_truth.awk` byte for byte — two tools, one answer.
+/// app's reading against `skate_circle_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_circle(real_circle);
     print("{d} {d} {d}\n", .{ r.members, r.links, r.mutual });

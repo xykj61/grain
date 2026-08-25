@@ -1,10 +1,10 @@
-//! mycelium/chorus.rye — the Chorus: a quorum of independent Vouchers, a position believed when
+//! mycelium/chorus.rye -- the Chorus: a quorum of independent Vouchers, a position believed when
 //! distinct nodes agree (r1, the crux).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
-//! The Voucher made a holder's position PROVABLE under one node's signature — a node reads an account's
+//! The Voucher made a holder's position PROVABLE under one node's signature -- a node reads an account's
 //! Statement out of a Dag and signs it, bound to the order-head the reading was taken against. Yet a
 //! verifier who does not hold the blocks (the ordinary case, since the whole point of a proof is that you
 //! need not obtain the ledger) must simply TRUST that the single signing node read the ledger faithfully.
@@ -12,20 +12,20 @@
 //!
 //! The Chorus fills that blind spot: a bounded quorum of independent Vouchers for the SAME account
 //! position at the SAME order-head. Where the Voucher is one node's word, the Chorus is a threshold of
-//! independent words that agree — a stranger who trusts no single node trusts that `threshold` distinct
+//! independent words that agree -- a stranger who trusts no single node trusts that `threshold` distinct
 //! nodes all read the same position against the same agreed order. The crux `verify_chorus(threshold)`
 //! passes exactly when:
 //!   - every member's signature holds offline against its own node key (else BadSignature);
-//!   - every member names the one claimed order-head · account · position (else Disagreement);
-//!   - the signers are distinct — no node counts twice, so one voice cannot manufacture a quorum
+//!   - every member names the one claimed order-head - account - position (else Disagreement);
+//!   - the signers are distinct -- no node counts twice, so one voice cannot manufacture a quorum
 //!     (a repeated signer refuses DuplicateNode: Sybil-by-repetition cannot inflate belief);
-//!   - the distinct count meets the threshold (else BelowThreshold — a thin quorum is not yet believed).
+//!   - the distinct count meets the threshold (else BelowThreshold -- a thin quorum is not yet believed).
 //! And `check_against(dag)`, for a verifier who DOES hold the blocks, re-derives the order-head and
 //! re-reads the Statement once and confirms the one claim is true. Arrival-independence is inherited from
 //! the Voucher: a chorus gathered against one arrival permutation verifies and checks against another.
 //!
-//! Composes voucher · cord · lapse · statement · kumara public API only, editing none; the quorum law is
-//! the Chorus's own bounded fold over its member set. Siloed, dev-only, demo seeds — no real key, no
+//! Composes voucher - cord - lapse - statement - kumara public API only, editing none; the quorum law is
+//! the Chorus's own bounded fold over its member set. Siloed, dev-only, demo seeds -- no real key, no
 //! funds, no network, no custody. A SERVED chorus (a holder fetching several nodes' attestations over
 //! Comlink) reaches the Comlink-served gate.
 //!
@@ -50,7 +50,7 @@ pub const pk_len: u32 = voucher.pk_len;
 /// An order-head is one block-address-width digest of the whole agreed order.
 pub const order_head_len: u32 = voucher.order_head_len;
 
-/// A quorum is bounded — at most this many independent voices gather into one Chorus.
+/// A quorum is bounded -- at most this many independent voices gather into one Chorus.
 pub const chorus_max_members: u32 = 16;
 
 pub const ChorusError = error{
@@ -62,7 +62,7 @@ pub const ChorusError = error{
 };
 
 /// A bounded quorum of independent Vouchers for one account position at one order-head. The Chorus
-/// carries the single CLAIM the quorum is asked to attest — order-head · account · position — and the
+/// carries the single CLAIM the quorum is asked to attest -- order-head - account - position -- and the
 /// MEMBERS, each an independent node's signed slip. It invents no attestation of its own; its trust is
 /// exactly the gathered agreement of its members' Voucher signatures.
 pub const Chorus = struct {
@@ -89,7 +89,7 @@ pub const Chorus = struct {
     }
 };
 
-/// Open a Chorus over one Dag for one account — the CLAIM is the true reading: the Dag's own order-head
+/// Open a Chorus over one Dag for one account -- the CLAIM is the true reading: the Dag's own order-head
 /// and the account's Statement position. Honest members added afterward agree by construction; the
 /// quorum law then proves they do independently. No member is gathered yet.
 pub fn open(dag: *const cord.Dag, account_pk: []const u8) !Chorus {
@@ -122,7 +122,7 @@ pub fn add(c: *Chorus, dag: *const cord.Dag, node_kp: kumara.KeyPair) !void {
     assert(c.count <= chorus_max_members);
 }
 
-/// Append an already-made Voucher as a member — the seam a caller uses to gather a voice made elsewhere,
+/// Append an already-made Voucher as a member -- the seam a caller uses to gather a voice made elsewhere,
 /// or (in a witness) a forged or disagreeing one the quorum law must refuse. Refuses TooManyMembers.
 pub fn add_voucher(c: *Chorus, v: voucher.Voucher) !void {
     // invariant: the member set honors its static bound.
@@ -134,7 +134,7 @@ pub fn add_voucher(c: *Chorus, v: voucher.Voucher) !void {
     assert(c.count <= chorus_max_members);
 }
 
-/// Does a member attest the chorus's one claim — the same order-head, account, and position?
+/// Does a member attest the chorus's one claim -- the same order-head, account, and position?
 fn agrees(c: *const Chorus, v: *const voucher.Voucher) bool {
     if (!std.mem.eql(u8, v.head_slice(), c.head_slice())) return false;
     if (!std.mem.eql(u8, v.account_slice(), c.account_slice())) return false;
@@ -143,7 +143,7 @@ fn agrees(c: *const Chorus, v: *const voucher.Voucher) bool {
 
 /// The crux: a position is believed when at least `threshold` distinct, independent nodes have each
 /// honestly signed the one claimed reading. Every member verifies offline (else BadSignature); every
-/// member agrees on the one claim (else Disagreement); the signers are distinct — a repeated node refuses
+/// member agrees on the one claim (else Disagreement); the signers are distinct -- a repeated node refuses
 /// DuplicateNode, so one voice cannot manufacture a quorum; and the distinct count meets the threshold
 /// (else BelowThreshold).
 pub fn verify_chorus(c: *const Chorus, threshold: u32) ChorusError!void {
@@ -157,12 +157,12 @@ pub fn verify_chorus(c: *const Chorus, threshold: u32) ChorusError!void {
     while (i < c.count) : (i += 1) {
         voucher.verify_voucher(&c.members[i]) catch return error.BadSignature;
     }
-    // 2. Every member attests the one claim — one position, never a blur of several.
+    // 2. Every member attests the one claim -- one position, never a blur of several.
     i = 0;
     while (i < c.count) : (i += 1) {
         if (!agrees(c, &c.members[i])) return error.Disagreement;
     }
-    // 3. The signers are distinct — no node key counts twice.
+    // 3. The signers are distinct -- no node key counts twice.
     i = 0;
     while (i < c.count) : (i += 1) {
         var j: u32 = i + 1;
@@ -172,12 +172,12 @@ pub fn verify_chorus(c: *const Chorus, threshold: u32) ChorusError!void {
             }
         }
     }
-    // 4. The distinct count meets the threshold — a thin quorum is not yet believed.
+    // 4. The distinct count meets the threshold -- a thin quorum is not yet believed.
     if (c.count < threshold) return error.BelowThreshold;
 }
 
 /// For a verifier who holds the blocks: re-derive the order-head and re-read the Statement from the given
-/// Dag once, and confirm the chorus's single claim is the true one — reusing the Voucher's own
+/// Dag once, and confirm the chorus's single claim is the true one -- reusing the Voucher's own
 /// check-against property for the whole quorum at one cost. Returns false on any disagreement.
 pub fn check_against(c: *const Chorus, dag: *const cord.Dag) !bool {
     // invariant: the claimed account is a full holder identity.
@@ -197,7 +197,7 @@ pub fn check_against(c: *const Chorus, dag: *const cord.Dag) !bool {
 const hex_digits = "0123456789abcdef";
 
 fn hex8(bytes: []const u8, out: []u8) void {
-    // invariant: eight bytes render to sixteen nibbles — a short, legible fingerprint.
+    // invariant: eight bytes render to sixteen nibbles -- a short, legible fingerprint.
     assert(out.len == 16);
     assert(bytes.len >= 8);
     var i: u32 = 0;
@@ -207,7 +207,7 @@ fn hex8(bytes: []const u8, out: []u8) void {
     }
 }
 
-/// Print a chorus a keeper can read — the claim (order-head, account, position) and the count of voices.
+/// Print a chorus a keeper can read -- the claim (order-head, account, position) and the count of voices.
 pub fn render(c: *const Chorus) void {
     var hfp: [16]u8 = undefined;
     var afp: [16]u8 = undefined;
@@ -237,7 +237,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -248,7 +248,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
 }
 
 fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + lapse.id_len);
     assert(id.len == lapse.id_len);
     out[0] = tag;
@@ -256,8 +256,8 @@ fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
     return 1 + lapse.id_len;
 }
 
-/// Seat a scene — the same block-building the Voucher's own selftest proved. Returns four blocks
-/// (genesis · pledge · post · void); a caller resolves the prefix it wants.
+/// Seat a scene -- the same block-building the Voucher's own selftest proved. Returns four blocks
+/// (genesis - pledge - post - void); a caller resolves the prefix it wants.
 fn seat_scene(id: []const u8, deadline: u64) ![4]cord.Block {
     const kf = seeded(0xF0);
     const ka = seeded(0xA1);
@@ -300,7 +300,7 @@ fn dag_of(blocks: []const cord.Block) !cord.Dag {
     return dag;
 }
 
-/// Three distinct honest nodes — a small mesh that vouches together.
+/// Three distinct honest nodes -- a small mesh that vouches together.
 fn three_nodes() [3]kumara.KeyPair {
     return .{ seeded(0x11), seeded(0x22), seeded(0x33) };
 }
@@ -310,7 +310,7 @@ pub fn main() !void {
     const nodes = three_nodes();
     const alice_pk = seeded(0xA1).public_key.toBytes();
 
-    // Scene 1 — an OPEN pledge stands. Three distinct nodes each vouch Alice's position (balance 0,
+    // Scene 1 -- an OPEN pledge stands. Three distinct nodes each vouch Alice's position (balance 0,
     // reserved 100, received 100) at the two-block order-head. The chorus believes at threshold 3 and 2,
     // refuses BelowThreshold at 4, and checks against the very ledger it vouches.
     {
@@ -327,7 +327,7 @@ pub fn main() !void {
         if (!try check_against(&c, &dag)) return error.OpenCheck;
     }
 
-    // Scene 2 — a POSTED pledge. Alice's reserved returns to 0; three nodes vouch the new position at the
+    // Scene 2 -- a POSTED pledge. Alice's reserved returns to 0; three nodes vouch the new position at the
     // three-block order-head, believed at threshold 2, and it checks against that longer order.
     {
         const s = try seat_scene(id[0..], 9);
@@ -339,7 +339,7 @@ pub fn main() !void {
         if (!try check_against(&c, &dag)) return error.PostedCheck;
     }
 
-    // Scene 3 — a LAPSED pledge: the clock lapses first, Alice's coins come home (balance 100, reserved
+    // Scene 3 -- a LAPSED pledge: the clock lapses first, Alice's coins come home (balance 100, reserved
     // 0). Three nodes vouch the returned position, believed at the full threshold 3, and it checks true.
     {
         const s = try seat_scene(id[0..], 2);
@@ -351,7 +351,7 @@ pub fn main() !void {
         if (!try check_against(&c, &dag)) return error.LapsedCheck;
     }
 
-    // Scene 4 — arrival-independence inherited. A chorus gathered against one permutation of the round-2
+    // Scene 4 -- arrival-independence inherited. A chorus gathered against one permutation of the round-2
     // facts VERIFIES and CHECKS AGAINST the other permutation: every honest member folds to one
     // order-head and reads one position. The quorum binds the agreed order, not the arrival.
     {
@@ -368,13 +368,13 @@ pub fn main() !void {
         if (!try check_against(&c, &dag_b)) return error.PermCheck;
     }
 
-    // Scene 5 — the quorum law refuses. A thin quorum, a repeated signer that cannot inflate the count,
+    // Scene 5 -- the quorum law refuses. A thin quorum, a repeated signer that cannot inflate the count,
     // a disagreeing voice, and a forged voice each hold the reading back.
     {
         const s = try seat_scene(id[0..], 9);
         const dag = try dag_of(&[_]cord.Block{ s[0], s[1], s[2] });
 
-        // BelowThreshold — two distinct honest voices cannot meet a threshold of three.
+        // BelowThreshold -- two distinct honest voices cannot meet a threshold of three.
         {
             var c = try open(&dag, alice_pk[0..]);
             try add(&c, &dag, nodes[0]);
@@ -384,7 +384,7 @@ pub fn main() !void {
             }
         }
 
-        // DuplicateNode — a repeated signer cannot inflate a two-voice quorum to three. The same honest
+        // DuplicateNode -- a repeated signer cannot inflate a two-voice quorum to three. The same honest
         // node vouches twice; the quorum law refuses rather than counting one voice as many.
         {
             var c = try open(&dag, alice_pk[0..]);
@@ -396,7 +396,7 @@ pub fn main() !void {
             }
         }
 
-        // Disagreement — a voice honestly made against a DIFFERENT ledger (the open two-block order,
+        // Disagreement -- a voice honestly made against a DIFFERENT ledger (the open two-block order,
         // where the pledge has not posted) has a valid signature yet names a different order-head and
         // position, so the quorum refuses rather than blur two readings into one.
         {
@@ -411,7 +411,7 @@ pub fn main() !void {
             }
         }
 
-        // BadSignature — a forged voice (an honest member with its balance flipped) breaks its own
+        // BadSignature -- a forged voice (an honest member with its balance flipped) breaks its own
         // signature, so the quorum refuses before it is trusted.
         {
             var c = try open(&dag, alice_pk[0..]);
@@ -426,7 +426,7 @@ pub fn main() !void {
         }
     }
 
-    // A last render, for eyes — a plain open-pledge chorus of three voices.
+    // A last render, for eyes -- a plain open-pledge chorus of three voices.
     {
         const s = try seat_scene(id[0..], 9);
         const dag = try dag_of(&[_]cord.Block{ s[0], s[1] });

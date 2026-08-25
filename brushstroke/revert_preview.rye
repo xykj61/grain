@@ -1,15 +1,15 @@
-//! brushstroke/revert_preview.rye — HUNK15: the Skate view of a revert, seen before it is committed.
+//! brushstroke/revert_preview.rye -- HUNK15: the Skate view of a revert, seen before it is committed.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK15.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK15.
 //! Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (revert horizon).
-//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the "revert to original" of iCloud Photos /
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - the "revert to original" of iCloud Photos /
 //! Google Photos (concept only, siloed).
 //!
 //! HUNK13 let a keeper *see* a pending edit; HUNK14 let a keeper *revert* by dropping edits off the end of the
 //! list. This rung joins them so a keeper sees exactly what a revert will restore before committing it.
-//! `preview_revert` drops the last `k` edits (`photo_revert.drop_last`, pure — the caller's list untouched) and
+//! `preview_revert` drops the last `k` edits (`photo_revert.drop_last`, pure -- the caller's list untouched) and
 //! hands the shorter list to `edit_preview.preview`, returning the Skate grid of the earlier image. Reverting all
-//! the way previews the **original** — the empty list's own down-map — so "revert to original" is a look, not a
+//! the way previews the **original** -- the empty list's own down-map -- so "revert to original" is a look, not a
 //! reconstruction: no pixels stored, no history replayed backward. Pure composition over two proven seams, adding
 //! no new failure mode; and because a revert removes edits, reverting away a bad edit **rescues** a list that
 //! refused, previewing cleanly. No network, no key, no funds.
@@ -30,7 +30,7 @@ pub const revert_preview_version = "20260813.162400";
 
 /// Preview the image a revert of `k` steps would restore: drop the last `k` edits and hand the shorter list to
 /// `edit_preview.preview`, returning the cols×rows Skate grid a keeper looks at. Pure: `drop_last` leaves the
-/// caller's list whole and `preview` folds from a clone, so neither the list nor the source is touched — a preview
+/// caller's list whole and `preview` folds from a clone, so neither the list nor the source is touched -- a preview
 /// is a look, not a commit. Reverting at least as many steps as the list holds previews the original image. Adds
 /// no new failure mode: a surviving verb's own refusal surfaces by its name through the fold, and an empty or
 /// over-ceiling grid refuses from the down-map, each before a grid is returned.
@@ -44,11 +44,11 @@ pub fn preview_revert(
 ) !skate.Grid {
     // invariant: the edit-list stays within its named ceiling before a single edit is dropped or replayed.
     assert(list.len() <= photo_edits.max_edits);
-    // invariant: the source is a well-formed image — four bytes per pixel — the whole pipeline relies on.
+    // invariant: the source is a well-formed image -- four bytes per pixel -- the whole pipeline relies on.
     assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
 
     var reverted = photo_revert.drop_last(list, k);
-    // invariant: a revert only shrinks the list — never more edits survive than the source held.
+    // invariant: a revert only shrinks the list -- never more edits survive than the source held.
     assert(reverted.len() <= list.len());
 
     return edit_preview.preview(allocator, source, &reverted, cols, rows);
@@ -58,7 +58,7 @@ pub fn preview_revert(
 //     reverting all previews the original, that a revert changes the view and is pure and deterministic, that a
 //     revert rescues a refusing list, and that the grid refusals still land by name -----------------------------
 
-/// Build an 8×8 image whose left half is red and right half is blue — a spatial pattern a preview must carry, and
+/// Build an 8×8 image whose left half is red and right half is blue -- a spatial pattern a preview must carry, and
 /// one a `flip_h` visibly swaps, so each revert step is visible in the left cell.
 fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
@@ -91,7 +91,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var list = photo_edits.EditList.init();
     try list.push(.flip_h);
 
-    // The full view (nothing reverted): the left cell reads blue — the flip is in effect.
+    // The full view (nothing reverted): the left cell reads blue -- the flip is in effect.
     const full = try edit_preview.preview(garden, &pm, &list, cols, rows);
     assert(full.fg_index[left_i] == blue_slot);
 
@@ -101,7 +101,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, rev0.fg_index, full.fg_index));
 
     // Revert of one restores the ORIGINAL: the view equals the source's own down-map, the left cell reads red
-    // again, and the reverted view differs from the full view — the keeper sees what a revert restores.
+    // again, and the reverted view differs from the full view -- the keeper sees what a revert restores.
     const rev1 = try preview_revert(garden, &pm, &list, 1, cols, rows);
     const source_map = try image_skate.down_map(garden, &pm, cols, rows);
     assert(std.mem.eql(u8, rev1.cells, source_map.cells));
@@ -109,7 +109,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(rev1.fg_index[left_i] == red_slot);
     assert(!std.mem.eql(u8, rev1.fg_index, full.fg_index));
 
-    // Reverting past the count also previews the original — clamped, never underflowing.
+    // Reverting past the count also previews the original -- clamped, never underflowing.
     const rev_over = try preview_revert(garden, &pm, &list, list.len() + 9, cols, rows);
     assert(std.mem.eql(u8, rev_over.fg_index, source_map.fg_index));
 
@@ -123,7 +123,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.eql(u8, rev1.cells, rev1b.cells));
     assert(std.mem.eql(u8, rev1.fg_index, rev1b.fg_index));
 
-    // Rescue: a list ending in an out-of-bounds crop refuses when previewed whole — yet reverting that one bad
+    // Rescue: a list ending in an out-of-bounds crop refuses when previewed whole -- yet reverting that one bad
     // edit previews cleanly, exactly the flip's own view. A revert removes the failure.
     var bad = photo_edits.EditList.init();
     try bad.push(.flip_h);

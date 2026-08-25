@@ -1,13 +1,13 @@
-//! image/sprite.rye — HUNK4: the single-sprite marketplace index — one sheet, each product a window into it.
+//! image/sprite.rye -- HUNK4: the single-sprite marketplace index -- one sheet, each product a window into it.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK4 (sprite-index quest opens).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK4 (sprite-index quest opens).
 //! Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
 //! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 //!
 //! Season A names the parts marketplace plainly: "one massive sprite image web-hosted, each product rendered
 //! as an index into that single image (their speed trick)." This rung fixes the crux of that trick over the
-//! open image module the HUNK0–HUNK3 quest built: a `SpriteIndex` binds each product name to a bounded
-//! rectangle — a *window* — into ONE decoded sheet, and `render` returns that window as a fresh open image by
+//! open image module the HUNK0-HUNK3 quest built: a `SpriteIndex` binds each product name to a bounded
+//! rectangle -- a *window* -- into ONE decoded sheet, and `render` returns that window as a fresh open image by
 //! reusing HUNK3's own `photos.crop`. The one sheet is decoded once and shared by every product; a render
 //! mutates nothing. Every window is bound-checked at index time, so a bound that reaches past the sheet
 //! refuses by name when a product is added, never when it is rendered. No network, no key, no funds.
@@ -23,7 +23,7 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const sprite_version = "20260813.201500";
 
-/// A marketplace holds many products, yet a bounded many — the sheet is one image, the catalog a page a
+/// A marketplace holds many products, yet a bounded many -- the sheet is one image, the catalog a page a
 /// person reads. 256 products per sheet, each name at most 48 bytes; both named at construction (TAME bounds).
 pub const max_products: u32 = 256;
 pub const max_name_len: u32 = 48;
@@ -67,7 +67,7 @@ const Cell = struct {
 };
 
 /// The index: one decoded sheet, a bounded catalog of named windows into it. The sheet is borrowed, never
-/// owned — the whole point of the trick is that every product shares the single decoded image.
+/// owned -- the whole point of the trick is that every product shares the single decoded image.
 pub const SpriteIndex = struct {
     sheet: *const qoi.Pixmap,
     cells: [max_products]Cell = [_]Cell{.{}} ** max_products,
@@ -76,7 +76,7 @@ pub const SpriteIndex = struct {
     /// Open an index over an already-decoded sheet. The sheet is decoded once, by the caller, and read by
     /// every product from here on.
     pub fn init(sheet: *const qoi.Pixmap) SpriteIndex {
-        // invariant: a real sheet holds exactly four bytes per pixel — the open module's decoded shape.
+        // invariant: a real sheet holds exactly four bytes per pixel -- the open module's decoded shape.
         assert(sheet.pixels.len == @as(usize, sheet.width) * @as(usize, sheet.height) * 4);
         // invariant: the sheet has at least one pixel to window into.
         assert(sheet.width > 0);
@@ -93,7 +93,7 @@ pub const SpriteIndex = struct {
         if (self.count == max_products) return error.TooManyProducts;
         if (product.len == 0 or product.len > max_name_len) return error.NameTooLong;
         if (w == 0 or h == 0) return error.EmptyWindow;
-        // The right and bottom edges must land within the sheet — checked in u64 so a large x+w cannot wrap.
+        // The right and bottom edges must land within the sheet -- checked in u64 so a large x+w cannot wrap.
         if (@as(u64, x) + @as(u64, w) > self.sheet.width) return error.WindowOutOfBounds;
         if (@as(u64, y) + @as(u64, h) > self.sheet.height) return error.WindowOutOfBounds;
 
@@ -111,7 +111,7 @@ pub const SpriteIndex = struct {
         assert(self.count <= max_products);
     }
 
-    /// How many products the catalog holds — a reader walks `entry(0..len)` to render the catalog as text.
+    /// How many products the catalog holds -- a reader walks `entry(0..len)` to render the catalog as text.
     pub fn len(self: *const SpriteIndex) u32 {
         // invariant: the count never exceeds the array behind it.
         assert(self.count <= max_products);
@@ -138,7 +138,7 @@ pub const SpriteIndex = struct {
 
     /// Render a product: crop the ONE sheet at the product's window, returning a fresh open image. Reuses
     /// HUNK3's `photos.crop`, so a rendered product is still an open image that re-encodes and round-trips.
-    /// The sheet is never mutated — every product is a read of the same decoded bytes.
+    /// The sheet is never mutated -- every product is a read of the same decoded bytes.
     pub fn render(self: *const SpriteIndex, allocator: std.mem.Allocator, product: []const u8) !qoi.Pixmap {
         const win = try self.window_of(product);
         // invariant: a stored window was bound-checked at add time, so it still fits the sheet at render.
@@ -152,7 +152,7 @@ pub const SpriteIndex = struct {
 //     the sheet is shared and unmutated, prove windows are disjoint, and prove the named refusals ------------
 
 /// Build an 8×8 sheet where each pixel encodes its own coordinates, so a window's correctness is unambiguous:
-/// pixel (x,y) = (x·30, y·30, x+y, 255).
+/// pixel (x,y) = (x-30, y-30, x+y, 255).
 fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
     const h: u32 = 8;
@@ -193,7 +193,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const sheet = try craft_sheet(garden);
     var index = SpriteIndex.init(&sheet);
 
-    // Three products, three windows into the one sheet — a bolt top-left, a washer top-right, a gear below.
+    // Three products, three windows into the one sheet -- a bolt top-left, a washer top-right, a gear below.
     try index.add("bolt", 0, 0, 4, 4);
     try index.add("washer", 4, 0, 4, 4);
     try index.add("gear", 2, 4, 4, 4);
@@ -207,7 +207,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const gear = try index.render(garden, "gear");
     assert_window(&sheet, &gear, 2, 4);
 
-    // Disjoint windows carry different pixels — a product's render can never leak a neighbor's bytes. The
+    // Disjoint windows carry different pixels -- a product's render can never leak a neighbor's bytes. The
     // tagged sheet makes this exact: bolt's top-left pixel (0,0) differs from washer's top-left (4,0).
     assert(bolt.pixels[0] != washer.pixels[0]);
 
@@ -223,7 +223,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const back = try qoi.decode(garden, dst[0..res.len]);
     assert(back.same_bytes(&bolt));
 
-    // The trick, measured: three products served from ONE decoded sheet of 8×8×4 = 256 bytes — one decode,
+    // The trick, measured: three products served from ONE decoded sheet of 8×8×4 = 256 bytes -- one decode,
     // many windows, no per-product image stored.
     const sheet_bytes: u32 = sheet.width * sheet.height * 4;
     assert(sheet_bytes == 256);

@@ -1,27 +1,27 @@
-//! lotus/stereo_smooth_runs.rye — ALES153: the run-length smoother carried into stereo, TWO INDEPENDENT HYSTERESIS HOLDS — the smoothing ALES95 named as a later rung,
+//! lotus/stereo_smooth_runs.rye -- ALES153: the run-length smoother carried into stereo, TWO INDEPENDENT HYSTERESIS HOLDS -- the smoothing ALES95 named as a later rung,
 //! now read across both speakers. ALES101 named `smooth_runs`: absorb every run shorter than a minimum into what surrounds it, so a one-frame tick inside a pause no
-//! longer splits it and a spurious quiet frame inside speech no longer spares a click — the decisive robustness move that turns a per-frame reader into a usable
-//! segmenter. That is a mono rewrite. Carried into stereo it meets NO desync wall, unlike the silence edits (ALES148–152): `smooth_runs` is READ-ONLY over the labels —
-//! it rewrites a run-length sequence and touches no PCM, changing no clip length — so the two channels never fall out of balance. Its honest stereo shape is the
+//! longer splits it and a spurious quiet frame inside speech no longer spares a click -- the decisive robustness move that turns a per-frame reader into a usable
+//! segmenter. That is a mono rewrite. Carried into stereo it meets NO desync wall, unlike the silence edits (ALES148-152): `smooth_runs` is READ-ONLY over the labels --
+//! it rewrites a run-length sequence and touches no PCM, changing no clip length -- so the two channels never fall out of balance. Its honest stereo shape is the
 //! ANALYSIS-CORNER one ALES146 and ALES147 took: run the proven mono reader on EACH channel independently, keeping the two results apart in a StereoSegments.
 //!
 //! The rule, stated once: smooth `in.left` into `out.left` and `in.right` into `out.right` through ALES101's own `smooth_runs`, with the one shared `min_run`. The two
-//! channels flicker independently — ALES147 proved their segmentations differ in count and boundary — so they smooth independently: a tick on the left is absorbed by the
+//! channels flicker independently -- ALES147 proved their segmentations differ in count and boundary -- so they smooth independently: a tick on the left is absorbed by the
 //! left's neighbours, never the right's. Each channel inherits every one of ALES101's laws, because each channel IS a mono smooth.
 //!
-//! The crux — the STEREO SMOOTH LAW: each channel's smoothed runs equal ALES101's mono `smooth_runs` on that channel, run for run. This rung invents no new rewrite and
+//! The crux -- the STEREO SMOOTH LAW: each channel's smoothed runs equal ALES101's mono `smooth_runs` on that channel, run for run. This rung invents no new rewrite and
 //! no new fault; it composes the proven mono smoother twice, once per side, and its whole content is that the two sides stay apart (a left blip smoothed by the left, a
-//! right blip by the right) rather than one shared list — the same per-channel independence the stereo segmenter proved for the runs this smooths.
+//! right blip by the right) rather than one shared list -- the same per-channel independence the stereo segmenter proved for the runs this smooths.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES153.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES153.
 //! Design read: active-designing/date/20260815/20260815-055925_fill-ales153-lotus-stereo-smooth-runs.md
-//! Stands on: lotus/smooth_runs.rye (ALES101) — the mono run-length smoother, run once per channel, its `smooth_runs` and `SmoothError` reused whole; lotus/stereo_segment.rye
-//! (ALES147) — the stereo voice-activity segmenter, whose `StereoSegments{left, right}` this reads and rewrites (the two channels' runs kept apart); lotus/segment.rye
-//! (ALES95) — the mono `Segments` and `max_segments`; lotus/voiced.rye (ALES94) — the Verdict the runs carry.
+//! Stands on: lotus/smooth_runs.rye (ALES101) -- the mono run-length smoother, run once per channel, its `smooth_runs` and `SmoothError` reused whole; lotus/stereo_segment.rye
+//! (ALES147) -- the stereo voice-activity segmenter, whose `StereoSegments{left, right}` this reads and rewrites (the two channels' runs kept apart); lotus/segment.rye
+//! (ALES95) -- the mono `Segments` and `max_segments`; lotus/voiced.rye (ALES94) -- the Verdict the runs carry.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of two Segments (left, right) on one bench, siloed to lotus/,
+//! HONEST SCOPE -- software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of two Segments (left, right) on one bench, siloed to lotus/,
 //! touching no PCM on either speaker. A causal, left-to-right minimum-duration hold per channel: it cannot rescue a too-short OPENING run on either side and does not do
-//! the symmetric two-sided smoothing or the adaptive floors a production VAD would — those stay later rungs. Not a transcript, not a diarization; no real sample rate, no
+//! the symmetric two-sided smoothing or the adaptive floors a production VAD would -- those stay later rungs. Not a transcript, not a diarization; no real sample rate, no
 //! network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_smooth_runs.rye selftest
@@ -37,37 +37,37 @@ const smooth_runs = @import("smooth_runs.rye");
 
 pub const stereo_smooth_runs_version = "20260815.055925";
 
-/// The stereo smoother's only fault is ALES101's OWN `SmoothError` (the honest, unreachable `SegmentsFull` — smoothing only ever merges runs, so a smoothed list can
+/// The stereo smoother's only fault is ALES101's OWN `SmoothError` (the honest, unreachable `SegmentsFull` -- smoothing only ever merges runs, so a smoothed list can
 /// never grow past `max_segments`) reused by name. The stereo lift invents none of its own.
 pub const StereoSmoothError = smooth_runs.SmoothError;
 
 /// Smooth BOTH channels of `in` into `out` by absorbing every run shorter than `min_run` samples into the run it extends, per channel, keeping each channel's tiling exact
-/// and coalesced. READ-ONLY over the labels — not one PCM sample is read or written on either speaker; this rewrites two run-length sequences, nothing else. Runs ALES101's
-/// proven mono `smooth_runs` on `in.left → out.left`, then on `in.right → out.right`, with the one shared `min_run`. Each channel is smoothed on its OWN runs, so the two
+/// and coalesced. READ-ONLY over the labels -- not one PCM sample is read or written on either speaker; this rewrites two run-length sequences, nothing else. Runs ALES101's
+/// proven mono `smooth_runs` on `in.left -> out.left`, then on `in.right -> out.right`, with the one shared `min_run`. Each channel is smoothed on its OWN runs, so the two
 /// results stay apart. `min_run = 0` is the identity on both; an empty channel yields an empty side; a single-run channel is unchanged.
 pub fn smooth_runs_stereo(
     in: *const stereo_segment.StereoSegments,
     out: *stereo_segment.StereoSegments,
     min_run: u32,
 ) StereoSmoothError!void {
-    // invariant: each side of the input is a well-formed run list the mono smoother can trust — no more than the bound. The per-run tiling/coalesced contract is asserted
+    // invariant: each side of the input is a well-formed run list the mono smoother can trust -- no more than the bound. The per-run tiling/coalesced contract is asserted
     // inside ALES101's own `smooth_runs`, so this seam names only the ceiling both sides share.
     assert(in.left.len <= segment.max_segments and in.right.len <= segment.max_segments);
 
     // Smooth each channel through ALES101's proven mono smoother, into its own side of `out`. Read-only: `smooth_runs` writes no sample and only ever merges runs, so
-    // neither call can grow past the bound. The two channels are smoothed apart — a short excursion on one side is absorbed only by that side's neighbours.
+    // neither call can grow past the bound. The two channels are smoothed apart -- a short excursion on one side is absorbed only by that side's neighbours.
     try smooth_runs.smooth_runs(&in.left, &out.left, min_run);
     try smooth_runs.smooth_runs(&in.right, &out.right, min_run);
 
-    // invariant: smoothing never grows either channel's run count — it only ever merges. This is ALES101's own postcondition, restated here per side for the stereo seam.
+    // invariant: smoothing never grows either channel's run count -- it only ever merges. This is ALES101's own postcondition, restated here per side for the stereo seam.
     assert(out.left.len <= in.left.len and out.right.len <= in.right.len);
-    // invariant: neither side exceeds the run-list ceiling — the mono smoother checks it at every push.
+    // invariant: neither side exceeds the run-list ceiling -- the mono smoother checks it at every push.
     assert(out.left.len <= segment.max_segments and out.right.len <= segment.max_segments);
 }
 
-// --- selftest: THE STEREO SMOOTH LAW — each channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run, across a grid of min_run values and
-//     several per-channel input shapes (the crux); THE INDEPENDENCE LAW — a left blip and a clean right smooth apart, identical channels smooth identically; THE
-//     WELL-FORMED LAW — each output tiles the same span, is coalesced, and holds min_run past the first, per channel; THE DEGENERATE LAW — min_run 0 the identity on both,
+// --- selftest: THE STEREO SMOOTH LAW -- each channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run, across a grid of min_run values and
+//     several per-channel input shapes (the crux); THE INDEPENDENCE LAW -- a left blip and a clean right smooth apart, identical channels smooth identically; THE
+//     WELL-FORMED LAW -- each output tiles the same span, is coalesced, and holds min_run past the first, per channel; THE DEGENERATE LAW -- min_run 0 the identity on both,
 //     an empty channel empty, a single run unchanged, a min_run past a channel's span coalescing it to one ------------------------------------------------------------
 
 fn same(a: *const segment.Segments, b: *const segment.Segments) bool {
@@ -81,7 +81,7 @@ fn same(a: *const segment.Segments, b: *const segment.Segments) bool {
     return true;
 }
 
-/// The summed length of every run in a sequence — the span it tiles.
+/// The summed length of every run in a sequence -- the span it tiles.
 fn total_count(seq: *const segment.Segments) u32 {
     var sum: u32 = 0;
     var i: u32 = 0;
@@ -107,7 +107,7 @@ fn well_smoothed(out: *const segment.Segments, in: *const segment.Segments, min_
     return covered == total_count(in);
 }
 
-/// Build a Segments by hand from a list of (verdict, count) pairs tiling from start 0 — a small independent way to hand a known label sequence to the smoother.
+/// Build a Segments by hand from a list of (verdict, count) pairs tiling from start 0 -- a small independent way to hand a known label sequence to the smoother.
 fn build(out: *segment.Segments, verdicts: []const voiced.Verdict, counts: []const u32) void {
     out.len = 0;
     var start: u32 = 0;
@@ -122,7 +122,7 @@ fn build(out: *segment.Segments, verdicts: []const voiced.Verdict, counts: []con
 fn run_selftest() !u8 {
     const V = voiced.Verdict;
 
-    // 1. THE STEREO SMOOTH LAW — over a grid of min_run values, each channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run. The two
+    // 1. THE STEREO SMOOTH LAW -- over a grid of min_run values, each channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run. The two
     //    channels carry DIFFERENT flicker on purpose: the left a blip inside a pause, the right a clean two-region take.
     {
         const mins = [_]u32{ 0, 1, 2, 3, 5, 8, 20, 100, 1000 };
@@ -146,8 +146,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE INDEPENDENCE LAW — a left carrying a short blip smooths to fewer runs while a clean right is untouched; the left's absorption never touches the right. With
-    //    min_run 10: the left silent(100)·voiced(2)·silent(100) coalesces to one silent(202), the right voiced(80)·silent(80) stays two.
+    // 2. THE INDEPENDENCE LAW -- a left carrying a short blip smooths to fewer runs while a clean right is untouched; the left's absorption never touches the right. With
+    //    min_run 10: the left silent(100)-voiced(2)-silent(100) coalesces to one silent(202), the right voiced(80)-silent(80) stays two.
     {
         var in = stereo_segment.StereoSegments{};
         build(&in.left, &[_]V{ .silent, .voiced, .silent }, &[_]u32{ 100, 2, 100 });
@@ -158,7 +158,7 @@ fn run_selftest() !u8 {
         if (got.right.len != 2 or got.right.items[0].verdict != .voiced or got.right.items[1].count != 80) return error.IndependenceRightWrong;
     }
 
-    // 3. IDENTICAL CHANNELS smooth identically — a master with the same runs on both sides yields the same smoothed runs on both.
+    // 3. IDENTICAL CHANNELS smooth identically -- a master with the same runs on both sides yields the same smoothed runs on both.
     {
         var in = stereo_segment.StereoSegments{};
         build(&in.left, &[_]V{ .voiced, .silent, .voiced, .silent, .unvoiced }, &[_]u32{ 40, 3, 5, 50, 4 });
@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (!same(&got.left, &got.right)) return error.IdenticalNotIdentical;
     }
 
-    // 4. THE DEGENERATE LAW — min_run 0 is the identity on both channels; an empty channel yields an empty side; a single-run channel is unchanged.
+    // 4. THE DEGENERATE LAW -- min_run 0 is the identity on both channels; an empty channel yields an empty side; a single-run channel is unchanged.
     {
         var in = stereo_segment.StereoSegments{};
         build(&in.left, &[_]V{ .silent, .voiced, .unvoiced }, &[_]u32{ 12, 20, 16 });
@@ -198,7 +198,7 @@ fn run_selftest() !u8 {
         if (got.right.len != 1 or got.right.items[0].verdict != .voiced or got.right.items[0].count != 400) return error.SpanRightWrong;
     }
 
-    // 6. GROUNDED IN THE STEREO SEGMENTER — smoothing the runs ALES147 actually produces stays well-formed on both channels. A flickering left (a tick buried in a quiet
+    // 6. GROUNDED IN THE STEREO SEGMENTER -- smoothing the runs ALES147 actually produces stays well-formed on both channels. A flickering left (a tick buried in a quiet
     //    stretch) and a clean right, smoothed with a modest min_run, hold each channel's structure.
     {
         var in = stereo_segment.StereoSegments{};

@@ -1,4 +1,4 @@
-//! glow/lower_quad_witness.rye — proves `:^` lowers to runnable `.rye`.
+//! glow/lower_quad_witness.rye -- proves `:^` lowers to runnable `.rye`.
 //!
 //!   rye build glow/lower_quad_witness.rye -femit-bin=glow/bin/lower_quad_witness
 

@@ -1,30 +1,30 @@
-//! mycelium/constel_true.rye — a real Constel roster reads true, and is the receipt of the real
+//! mycelium/constel_true.rye -- a real Constel roster reads true, and is the receipt of the real
 //! constellation (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 — reads true.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r4 -- reads true.
 //! Design read: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //! r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
-//! record — all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
-//! record a keeper can open and read — `tools/fixtures/constel_roster.bron`, produced reproducibly by
+//! record -- all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
+//! record a keeper can open and read -- `tools/fixtures/constel_roster.bron`, produced reproducibly by
 //! `mycelium/constel_fixture_gen.rye`, `@embedFile`-bound at compile time through the `mycelium/corpora/`
 //! symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:
-//!   - TWO TOOLS, ONE ANSWER — the app derives the roster shape (`<count> <firstkey8>`) INDEPENDENTLY of the
+//!   - TWO TOOLS, ONE ANSWER -- the app derives the roster shape (`<count> <firstkey8>`) INDEPENDENTLY of the
 //!     record text, by BOOTING the constellation from its ship names (each key a pure function of its name);
 //!     the r4 witness cross-checks that pair against `constel_roster_truth.awk`'s reading of the same bytes,
 //!     so a named constellation can never drift from a roster a keeper reads by hand.
-//!   - THE RECORD IS THE RECEIPT OF THE REAL CONSTELLATION — the app parses the record (which self-certifies:
+//!   - THE RECORD IS THE RECEIPT OF THE REAL CONSTELLATION -- the app parses the record (which self-certifies:
 //!     every carried key must be the one its name yields, else `PkMismatch`), boots the same roster from its
-//!     names, and confirms name for name and key for key that the record carries the real constellation —
+//!     names, and confirms name for name and key for key that the record carries the real constellation --
 //!     which then reaches quorum on a demo Dag's true order-head. So the fixture is a real constellation, not
 //!     a hand-mock.
 //! Genuineness beyond that: re-rendering the parsed roster reproduces the embedded bytes (a fixed point), and
 //! a tampered header refuses `BadFormat`.
 //!
 //! Composes constel + constel_bron + constel_fixture_gen + voucher public API only. Siloed, dev-only, demo
-//! ship seeds — no real key, no funds, no network, no real value.
+//! ship seeds -- no real key, no funds, no network, no real value.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_true.rye selftest
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_true.rye measure
@@ -43,7 +43,7 @@ pub const head_len: u32 = constel.head_len;
 
 const real_record = @embedFile("corpora/constel_roster.bron");
 
-/// Parse the real roster off the embedded fixture bytes (self-certifying — a carried key its name does not
+/// Parse the real roster off the embedded fixture bytes (self-certifying -- a carried key its name does not
 /// yield refuses PkMismatch).
 fn read_constel() !constel.Constel {
     var c: constel.Constel = undefined;
@@ -51,7 +51,7 @@ fn read_constel() !constel.Constel {
     return c;
 }
 
-/// The first eight hex characters of a key — the prefix a keeper reads off the record and the awk reports.
+/// The first eight hex characters of a key -- the prefix a keeper reads off the record and the awk reports.
 fn key8(k: []const u8, out: *[8]u8) void {
     // invariant: eight hex chars read four whole key bytes.
     assert(k.len >= 4);
@@ -81,7 +81,7 @@ fn welcome_reading_true_and_real() !void {
     var rec = try read_constel();
     var booted = try gen.booted();
 
-    // The record carries the real constellation — same ships, names, and (self-certified) keys, in order.
+    // The record carries the real constellation -- same ships, names, and (self-certified) keys, in order.
     if (rec.count != booted.count) return error.RecordNotReal;
     var i: u32 = 0;
     while (i < rec.count) : (i += 1) {
@@ -91,7 +91,7 @@ fn welcome_reading_true_and_real() !void {
         if (!std.mem.eql(u8, pr[0..], pb[0..])) return error.RecordNotReal;
     }
 
-    // The record's constellation reaches quorum on a demo Dag's true order-head — a real, believing dev-net.
+    // The record's constellation reaches quorum on a demo Dag's true order-head -- a real, believing dev-net.
     const issuer = constel.seeded(0xF0);
     const account = constel.seeded(0xA1);
     const account_pk = account.public_key.toBytes();

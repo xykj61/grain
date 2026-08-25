@@ -1,19 +1,19 @@
-//! constel/elect.rye — FORA10: from a quorum, elect ONE leader. FORA9 answered whether a majority may act; it proved the one
-//! property the whole track rests on — 2·threshold > n, so any two quorums of a constellation must share at least one pier.
+//! constel/elect.rye -- FORA10: from a quorum, elect ONE leader. FORA9 answered whether a majority may act; it proved the one
+//! property the whole track rests on -- 2-threshold > n, so any two quorums of a constellation must share at least one pier.
 //! That intersection was stated, not yet spent. This rung spends it on the first real decision every consensus leans on: a
 //! single leader, chosen once. Each pier casts ONE vote for a candidate slot; the constellation elects the candidate a strict
-//! majority names, and refuses when none holds one. This rung takes that one new concern — the decision — and nothing more.
+//! majority names, and refuses when none holds one. This rung takes that one new concern -- the decision -- and nothing more.
 //!
 //! The crux is not the counting; it is the SAFETY carried over from the quorum: because any two majorities intersect and a
 //! pier votes exactly once, AT MOST ONE candidate can ever reach a majority. Two piers can never each believe a different
-//! leader won. That uniqueness is the load-bearing invariant, asserted at the seal — the quorum-intersection property made
+//! leader won. That uniqueness is the load-bearing invariant, asserted at the seal -- the quorum-intersection property made
 //! checkable, not merely hoped.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA10. Design read: active-designing/date/20260814/20260814-053151_fora10-constel-leader-election.md
-//! Stands on: constel/quorum.rye (FORA9) — majority_of, the strict-majority threshold; constel/census.rye (FORA8) — its public
-//! announce/respond/hear collect the votes at the border; constel/switchboard.rye (FORA6) — the medium; constel/roster.rye
-//! (FORA1) — the bound.
+//! Stands on: constel/quorum.rye (FORA9) -- majority_of, the strict-majority threshold; constel/census.rye (FORA8) -- its public
+//! announce/respond/hear collect the votes at the border; constel/switchboard.rye (FORA6) -- the medium; constel/roster.rye
+//! (FORA1) -- the bound.
 //!
 //! The medium is unchanged: a vote counts only from a member proven present over the wire (respond drains its ping, hear
 //! deframes at the naming-law border), so a vowel-bearing (real-@p-shaped) reply refuses VowelPresent and a stranger caller
@@ -21,9 +21,9 @@
 //! over the wire. The round interleaves respond and hear, so the caller's mailbox never holds more than one reply at a time
 //! (never ChannelFull) for any constellation up to max_piers.
 //!
-//! Purely LOCAL — a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
-//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire —
-//! and gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire --
+//! and gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/elect.rye selftest
 
@@ -42,9 +42,9 @@ const quorum = @import("quorum.rye");
 pub const elect_version = "20260814.053151";
 
 pub const ElectError = error{
-    /// No candidate held a strict majority — the constellation is split and elects no one. A minority never leads.
+    /// No candidate held a strict majority -- the constellation is split and elects no one. A minority never leads.
     NoLeader,
-    /// A voter already cast this round voted again — a pier votes exactly once per election, exactly as a quorum records a
+    /// A voter already cast this round voted again -- a pier votes exactly once per election, exactly as a quorum records a
     /// reply once.
     DoubleVote,
 } || switchboard.SwitchboardError;
@@ -56,7 +56,7 @@ pub const Ballot = struct {
     cast: [roster.max_piers]bool = [_]bool{false} ** roster.max_piers,
     size: u32 = 0,
 
-    /// Record one honest vote: voter names a candidate. A voter that has already cast refuses DoubleVote — a pier votes once
+    /// Record one honest vote: voter names a candidate. A voter that has already cast refuses DoubleVote -- a pier votes once
     /// per round. Both voter and candidate are real slots of the constellation.
     pub fn vote(self: *Ballot, voter: u32, candidate: u32) ElectError!void {
         // invariant: both the voter and the candidate name real members of the constellation.
@@ -81,7 +81,7 @@ pub const Ballot = struct {
         return votes;
     }
 
-    /// The number of votes cast so far — bounded by the constellation.
+    /// The number of votes cast so far -- bounded by the constellation.
     pub fn cast_count(self: *const Ballot) u32 {
         var n: u32 = 0;
         var i: u32 = 0;
@@ -94,7 +94,7 @@ pub const Ballot = struct {
     }
 
     /// Elect the candidate a strict majority named, or refuse NoLeader. The seal asserts the whole safety of the round: NO
-    /// second candidate also reached the majority — the quorum-intersection property, made checkable. Because any two
+    /// second candidate also reached the majority -- the quorum-intersection property, made checkable. Because any two
     /// majorities of the same size must share a pier and a pier votes exactly once, two different candidates can never each
     /// hold a majority; the assert proves that arithmetic held for this concrete ballot.
     pub fn elect(self: *const Ballot) ElectError!u32 {
@@ -106,7 +106,7 @@ pub const Ballot = struct {
         var c: u32 = 0;
         while (c < self.size) : (c += 1) {
             if (self.tally(c) >= threshold) {
-                // invariant: at most one candidate reaches a strict majority — two would each need a majority, yet any two
+                // invariant: at most one candidate reaches a strict majority -- two would each need a majority, yet any two
                 // majorities of one constellation intersect and a pier votes once, so this is impossible. Proven per ballot.
                 assert(!found);
                 leader = c;
@@ -121,7 +121,7 @@ pub const Ballot = struct {
 };
 
 /// The whole round over the switchboard: open (the caller is a member, else NoSuchPier), announce, drive every other member
-/// respond+hear interleaved — so a vote counts only from a member proven present at the border — record each member's own
+/// respond+hear interleaved -- so a vote counts only from a member proven present at the border -- record each member's own
 /// choice from `choices` (indexed by roster slot), record the caller's own choice, and elect. `choices[i]` is member i's
 /// honest vote; the medium proves the right to cast it, this function never invents a vote.
 pub fn run_election(sb: *switchboard.Switchboard, choices: []const u32) ElectError!u32 {
@@ -143,7 +143,7 @@ pub fn run_election(sb: *switchboard.Switchboard, choices: []const u32) ElectErr
     assert(reached == n - 1);
 
     var b = Ballot{ .size = n };
-    // The caller votes its own choice directly — it is present by definition.
+    // The caller votes its own choice directly -- it is present by definition.
     try b.vote(caller_slot, bound_choice(choices[caller_slot], n));
 
     var i: u32 = 0;
@@ -163,7 +163,7 @@ pub fn run_election(sb: *switchboard.Switchboard, choices: []const u32) ElectErr
     return b.elect();
 }
 
-/// Fold any supplied choice into a real candidate slot — a caller's `choices` array is honest data, yet bound it defensively
+/// Fold any supplied choice into a real candidate slot -- a caller's `choices` array is honest data, yet bound it defensively
 /// so a stray value can never index past the constellation.
 fn bound_choice(choice: u32, n: u32) u32 {
     // invariant: the folded choice always names a real member of the constellation.
@@ -175,7 +175,7 @@ fn bound_choice(choice: u32, n: u32) u32 {
 //     a lone vote never does; DoubleVote refuses a second cast; a stranger cannot open; the border guards; eight stay bounded -
 
 fn run_selftest() !u8 {
-    // 1. A clear majority elects a leader — a sky of four with three votes for slot 1 and one for slot 2 elects slot 1.
+    // 1. A clear majority elects a leader -- a sky of four with three votes for slot 1 and one for slot 2 elects slot 1.
     {
         var b = Ballot{ .size = 4 };
         try b.vote(0, 1);
@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         assert(b.tally(1) == 3 and b.tally(2) == 1);
     }
 
-    // 2. A split refuses NoLeader — a sky of four evenly divided (two for 1, two for 2) elects no one; a minority never leads.
+    // 2. A split refuses NoLeader -- a sky of four evenly divided (two for 1, two for 2) elects no one; a minority never leads.
     {
         var b = Ballot{ .size = 4 };
         try b.vote(0, 1);
@@ -197,7 +197,7 @@ fn run_selftest() !u8 {
         if (b.elect()) |_| return error.SplitElected else |e| if (e != error.NoLeader) return error.WrongSplit;
     }
 
-    // 3. Uniqueness — exhaustively, over EVERY arrangement of single votes in a sky of four, at most one candidate ever holds
+    // 3. Uniqueness -- exhaustively, over EVERY arrangement of single votes in a sky of four, at most one candidate ever holds
     //    the strict majority. The elect assert would fire if two did; here we also count winners directly to prove zero-or-one.
     {
         const n: u32 = 4;
@@ -233,7 +233,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. A unanimous sky elects unanimously; a lone vote never elects — one vote in a sky of three is a minority (NoLeader).
+    // 4. A unanimous sky elects unanimously; a lone vote never elects -- one vote in a sky of three is a minority (NoLeader).
     {
         var u = Ballot{ .size = 3 };
         try u.vote(0, 2);
@@ -246,14 +246,14 @@ fn run_selftest() !u8 {
         if (lone.elect()) |_| return error.LoneElected else |e| if (e != error.NoLeader) return error.WrongLone;
     }
 
-    // 5. DoubleVote refuses a pier voting twice — a fresh vote is expected once per member per round.
+    // 5. DoubleVote refuses a pier voting twice -- a fresh vote is expected once per member per round.
     {
         var b = Ballot{ .size = 3 };
         try b.vote(0, 1);
         if (b.vote(0, 2)) |_| return error.DoubleVoteAccepted else |e| if (e != error.DoubleVote) return error.WrongDoubleVote;
     }
 
-    // 6. The whole round over the wire — a sky of four, three members choosing slot 1, elects slot 1 through real announce,
+    // 6. The whole round over the wire -- a sky of four, three members choosing slot 1, elects slot 1 through real announce,
     //    respond, and hear (each vote proven present at the border).
     {
         var sb = switchboard.Switchboard{};
@@ -263,7 +263,7 @@ fn run_selftest() !u8 {
         assert(leader == 1);
     }
 
-    // 7. A stranger cannot open an election — a switchboard whose slot-0 opener is a member always opens; prove the guard by a
+    // 7. A stranger cannot open an election -- a switchboard whose slot-0 opener is a member always opens; prove the guard by a
     //    direct switchboard.member on a name no roster holds refusing NoSuchPier (the same gate run_election opens with).
     {
         var sb = switchboard.Switchboard{};
@@ -271,7 +271,7 @@ fn run_selftest() !u8 {
         if (sb.member("zzzz9")) |_| return error.StrangerOpened else |e| if (e != error.NoSuchPier) return error.WrongStranger;
     }
 
-    // 8. The border guards every vote — a member replying with a vowel-bearing greeting is refused at the caller's hear, so a
+    // 8. The border guards every vote -- a member replying with a vowel-bearing greeting is refused at the caller's hear, so a
     //    real-@p-shaped name can never enter an election even as a present token. (Same tamper the census/quorum border proves.)
     {
         var sb = switchboard.Switchboard{};
@@ -305,7 +305,7 @@ fn run_selftest() !u8 {
         if (census.hear(&sb, cn)) |_| return error.VowelVoted else |e| if (e != error.VowelPresent) return error.WrongVowelVote;
     }
 
-    // 9. A full constellation of eight elects and stays bounded — every member votes slot 3, run_election interleaves respond
+    // 9. A full constellation of eight elects and stays bounded -- every member votes slot 3, run_election interleaves respond
     //    and hear so the caller's mailbox holds one reply at a time (no ChannelFull), and slot 3 is elected unanimously.
     {
         var sb = switchboard.Switchboard{};
@@ -326,14 +326,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- respond/hear mutate
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

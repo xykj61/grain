@@ -1,18 +1,18 @@
-//! lotus/library_diff_sheet.rye — ALES230: what changed, as a readable page. ALES229 classified two catalog versions into added,
-//! removed, and changed — the honest answer to what changed since yesterday's catalog — yet that answer lives in a Diff struct a
+//! lotus/library_diff_sheet.rye -- ALES230: what changed, as a readable page. ALES229 classified two catalog versions into added,
+//! removed, and changed -- the honest answer to what changed since yesterday's catalog -- yet that answer lives in a Diff struct a
 //! program reads, not a page a keeper reads. A keeper wants to SEE the change at a glance: which records arrived, which retired, which
 //! were remastered, and how many stood still. This rung draws that page.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES230.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES230.
 //! Design read: active-designing/date/20260815/20260815-143513_fill-ales230-lotus-library-diff-sheet.md
-//! Stands on: lotus/library_diff.rye (ALES229) — the classified Diff this reads. The readable-projection idiom is the same one
-//! library_sheet (ALES227) took over a manifest: no new frame, no new hash — a projection, not a round-trip.
+//! Stands on: lotus/library_diff.rye (ALES229) -- the classified Diff this reads. The readable-projection idiom is the same one
+//! library_sheet (ALES227) took over a manifest: no new frame, no new hash -- a projection, not a round-trip.
 //!
 //! A PROJECTION, NOT A ROUND-TRIP. The Diff is the computed verdict; this sheet is the eye's version of it. It parses back to nothing
-//! — it completes the diff's usefulness the way album_sheet completed the album manifest and library_sheet the library manifest:
+//! -- it completes the diff's usefulness the way album_sheet completed the album manifest and library_sheet the library manifest:
 //! every catalog primitive earns its readable page.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded text render over in-process fields already proven whole by classify, siloed
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded text render over in-process fields already proven whole by classify, siloed
 //! to lotus/. Content-addressing on the page, never a signature. No real file, no DAC, no acoustic or electrical fact, no network, no
 //! keys, no funds, no real device.
 //!
@@ -27,7 +27,7 @@ const library_diff = @import("library_diff.rye");
 
 pub const library_diff_sheet_version = "20260815.143513";
 
-/// The page's first line, its own line — names the shape so a reader (or a grep) can tell it from a library sheet or a manifest.
+/// The page's first line, its own line -- names the shape so a reader (or a grep) can tell it from a library sheet or a manifest.
 pub const sheet_header = "format lotus-library-diff-sheet-v1";
 
 /// The widest single moved-album line is a changed line: `changed ` (8), the name bound, a space, two 64-hex digests with a space
@@ -38,14 +38,14 @@ pub const moved_line_max: u32 = 8 + library_manifest.max_album_name + 1 + librar
 pub const summary_line_max: u32 = 8 + 4 * 10 + 3 + 1;
 
 /// The most bytes a rendered diff sheet can need: the header line, the summary line, then one moved line for every album across all
-/// three lists — each list bounded by the manifest's album ceiling, so at most three catalogs' worth of lines.
+/// three lists -- each list bounded by the manifest's album ceiling, so at most three catalogs' worth of lines.
 pub const max_sheet_bytes: u32 =
     @intCast(sheet_header.len + 1 + summary_line_max + 3 * library_manifest.max_albums * moved_line_max);
 
 /// The sheet's only fault: a render whose text would exceed the caller's buffer, refused rather than truncated. A projection is
-/// otherwise infallible — every field it reads was already proven by classify.
+/// otherwise infallible -- every field it reads was already proven by classify.
 pub const SheetError = error{
-    /// The rendered page would exceed the caller's buffer — refused, never truncated.
+    /// The rendered page would exceed the caller's buffer -- refused, never truncated.
     Overflow,
 };
 
@@ -53,7 +53,7 @@ pub const SheetError = error{
 /// `summary <added> <removed> <changed> <same>` line, then one line per moved album in order: `added <name> <digest>`,
 /// `removed <name> <digest>`, `changed <name> <old_digest> <new_digest>`. Refuses Overflow rather than writing past the buffer.
 pub fn render_sheet(diff: *const library_diff.Diff, out: []u8) SheetError!u32 {
-    // invariant: every list stays within the manifest's album ceiling — classify already proved it, re-asserted before a byte renders.
+    // invariant: every list stays within the manifest's album ceiling -- classify already proved it, re-asserted before a byte renders.
     assert(diff.added_count <= library_manifest.max_albums and diff.removed_count <= library_manifest.max_albums and diff.changed_count <= library_manifest.max_albums);
     const head = std.fmt.bufPrint(out, "{s}\nsummary {d} {d} {d} {d}\n", .{ sheet_header, diff.added_count, diff.removed_count, diff.changed_count, diff.same_count }) catch return error.Overflow;
     var off: u32 = @intCast(head.len);
@@ -61,7 +61,7 @@ pub fn render_sheet(diff: *const library_diff.Diff, out: []u8) SheetError!u32 {
     var a: u32 = 0;
     while (a < diff.added_count) : (a += 1) {
         const e = diff.added[a];
-        // invariant: the digest is exactly the full hex width — classify carried it straight from a proven manifest entry.
+        // invariant: the digest is exactly the full hex width -- classify carried it straight from a proven manifest entry.
         assert(e.digest.len == library_manifest.digest_hex_len);
         const line = std.fmt.bufPrint(out[off..], "added {s} {s}\n", .{ e.name, e.digest }) catch return error.Overflow;
         off += @intCast(line.len);
@@ -80,7 +80,7 @@ pub fn render_sheet(diff: *const library_diff.Diff, out: []u8) SheetError!u32 {
     var c: u32 = 0;
     while (c < diff.changed_count) : (c += 1) {
         const ch = diff.changed[c];
-        // invariant: both digests are the full hex width — a changed line carries the record's before and after handles.
+        // invariant: both digests are the full hex width -- a changed line carries the record's before and after handles.
         assert(ch.old_digest.len == library_manifest.digest_hex_len and ch.new_digest.len == library_manifest.digest_hex_len);
         const line = std.fmt.bufPrint(out[off..], "changed {s} {s} {s}\n", .{ ch.name, ch.old_digest, ch.new_digest }) catch return error.Overflow;
         off += @intCast(line.len);
@@ -91,12 +91,12 @@ pub fn render_sheet(diff: *const library_diff.Diff, out: []u8) SheetError!u32 {
     return off;
 }
 
-// --- selftest: THE SUMMARY LAW — the page opens with the format line and a summary line carrying the four tallies; THE MOVED LAW —
+// --- selftest: THE SUMMARY LAW -- the page opens with the format line and a summary line carrying the four tallies; THE MOVED LAW --
 //     every added / removed / changed album appears in order with its name and full digest(s), a changed line carrying both; THE QUIET
-//     LAW — an unchanged album appears in no album line; THE ATOMIC LAW — a too-small buffer refuses Overflow -----------------------
+//     LAW -- an unchanged album appears in no album line; THE ATOMIC LAW -- a too-small buffer refuses Overflow -----------------------
 
 fn make_library(out: []u8, names: []const []const u8, manifests: []const []const u8) !u32 {
-    // invariant: a witness helper builds a small, well-formed catalog — the two arrays run in lockstep.
+    // invariant: a witness helper builds a small, well-formed catalog -- the two arrays run in lockstep.
     assert(names.len == manifests.len);
     var albums: [8]library_manifest.AlbumIn = undefined;
     var i: u32 = 0;
@@ -110,7 +110,7 @@ fn run_selftest() !u8 {
     const m1b = "second album manifest RESEALED.\x04\x05\x07";
     const m2 = "third album manifest bytes.....\x07\x08\x09";
 
-    // before {debut, sequel, oldie}; after {debut same, sequel resealed → changed, finale new → added}; oldie dropped → removed.
+    // before {debut, sequel, oldie}; after {debut same, sequel resealed -> changed, finale new -> added}; oldie dropped -> removed.
     var before_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
     var after_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
     const bn = try make_library(before_rec[0..], &.{ "debut", "sequel", "oldie" }, &.{ m0, m1, m2 });
@@ -123,21 +123,21 @@ fn run_selftest() !u8 {
     const sn = try render_sheet(&diff, sheet[0..]);
     const text = sheet[0..sn];
 
-    // 1. THE SUMMARY LAW — the page opens with the format line and the four-tally summary (1 added · 1 removed · 1 changed · 1 same).
+    // 1. THE SUMMARY LAW -- the page opens with the format line and the four-tally summary (1 added - 1 removed - 1 changed - 1 same).
     if (std.mem.indexOf(u8, text, "format lotus-library-diff-sheet-v1\n") != 0) return error.HeaderWrong;
     if (std.mem.indexOf(u8, text, "summary 1 1 1 1\n") == null) return error.SummaryWrong;
 
-    // 2. THE MOVED LAW — each moved album appears with its name; a changed line carries BOTH the old and the new digest.
+    // 2. THE MOVED LAW -- each moved album appears with its name; a changed line carries BOTH the old and the new digest.
     if (std.mem.indexOf(u8, text, "added finale ") == null) return error.AddedMissing;
     if (std.mem.indexOf(u8, text, "removed oldie ") == null) return error.RemovedMissing;
     if (std.mem.indexOf(u8, text, "changed sequel ") == null) return error.ChangedMissing;
     if (std.mem.indexOf(u8, text, diff.changed[0].old_digest) == null) return error.OldDigestMissing;
     if (std.mem.indexOf(u8, text, diff.changed[0].new_digest) == null) return error.NewDigestMissing;
 
-    // 3. THE QUIET LAW — the unchanged album (debut) never appears in an album line; only the summary counts it.
+    // 3. THE QUIET LAW -- the unchanged album (debut) never appears in an album line; only the summary counts it.
     if (std.mem.indexOf(u8, text, "debut") != null) return error.QuietBroken;
 
-    // 4. THE ATOMIC LAW — a buffer too small for the whole page refuses Overflow rather than truncating it.
+    // 4. THE ATOMIC LAW -- a buffer too small for the whole page refuses Overflow rather than truncating it.
     {
         var tiny: [40]u8 = undefined; // room for the header at most, not the summary and moved lines
         if (render_sheet(&diff, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;

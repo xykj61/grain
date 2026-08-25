@@ -1,4 +1,4 @@
-//! linengrow/seva_surface_witness.rye — proves Seva R2: the unified viewer.
+//! linengrow/seva_surface_witness.rye -- proves Seva R2: the unified viewer.
 //!
 //!   rye build linengrow/seva_surface_witness.rye -femit-bin=linengrow/bin/seva_surface_witness
 //!   linengrow/bin/seva_surface_witness
@@ -11,9 +11,9 @@
 //!      own state, render onto one surface as three panels, each reflecting
 //!      its own distinct fold.
 //!   2. Building the surface twice from the same hosted states yields
-//!      byte-identical panels — deterministic.
+//!      byte-identical panels -- deterministic.
 //!   3. The surface is bounded (panel count within the limit).
-//!   4. Only Pool-hosted agents earn a panel — a refused agent (no
+//!   4. Only Pool-hosted agents earn a panel -- a refused agent (no
 //!      capability) contributes nothing, so the surface shows exactly what
 //!      Pool admitted.
 

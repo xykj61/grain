@@ -1,26 +1,26 @@
-//! lotus/graft.rye — ALES24: the graft — a selected span COPIED or MOVED onto a second point, both channels in lockstep. The
+//! lotus/graft.rye -- ALES24: the graft -- a selected span COPIED or MOVED onto a second point, both channels in lockstep. The
 //! selection (ALES23) lets a keeper grab the span between two marks and edit it whole; yet the two gestures a keeper reaches for
-//! most are still missing — copy the grabbed span to a second point, and move it there. Double the chorus, relocate the verse, lift
+//! most are still missing -- copy the grabbed span to a second point, and move it there. Double the chorus, relocate the verse, lift
 //! the count-in off the front and drop it after the bridge. A graft is that gesture: a selected span placed at a second point, the
-//! horticulturist's move the tree already lives by — take a living piece and join it whole at another place, so it grows there as if
+//! horticulturist's move the tree already lives by -- take a living piece and join it whole at another place, so it grows there as if
 //! it always had.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES24.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES24.
 //! Design read: active-designing/20260814-fill-ales24-lotus-graft.md
-//! Stands on: lotus/selection.rye (ALES23) — the validated Selection this rung relocates; lotus/timeline.rye (ALES2) — splice and
-//! cut, the two proven in-place edits, applied to each channel; lotus/pan.rye (ALES10) — the StereoClip whose two channels share
+//! Stands on: lotus/selection.rye (ALES23) -- the validated Selection this rung relocates; lotus/timeline.rye (ALES2) -- splice and
+//! cut, the two proven in-place edits, applied to each channel; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share
 //! one length (left.len == right.len), the invariant lockstep rests on.
 //!
 //! THE CRUX: a grafted span lands byte-for-byte at the destination, keeps the two channels in LOCKSTEP, and never corrupts itself
 //! when source and destination overlap. Three facts make this exact. Both channels' span samples are copied into a bounded scratch
 //! BEFORE a single splice or cut touches the master, so a copy whose destination sits inside or before its own source reads the
-//! ORIGINAL audio, never a half-shifted buffer — the classic self-overlap corruption cannot occur. The two channels share one
+//! ORIGINAL audio, never a half-shifted buffer -- the classic self-overlap corruption cannot occur. The two channels share one
 //! length and every graft passes the SAME (at, span) to each, so a copy grows both by the same count and a move keeps both equal,
 //! capacity checked against the shared buffer FIRST so the edit is atomic. And a move is copy-then-cut with the destination re-based
 //! honestly: snapshot the span, cut the source (both shrink by span), then splice at a destination shifted left by span when it sat
-//! after the source and left in place when it sat at or before it — the net length unchanged, so a move can never overflow.
+//! after the source and left in place when it sat at or before it -- the net length unchanged, so a move can never overflow.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Indices and a bounded sample scratch over an in-process two-channel i16 PCM master,
+//! HONEST SCOPE -- software only, purely LOCAL. Indices and a bounded sample scratch over an in-process two-channel i16 PCM master,
 //! edited in place, siloed to lotus/. A graft is a copy and a splice of offsets, not a signal on a wire. No socket, no network, no
 //! keys, no funds, no real device, no real meter, no real speaker.
 //!
@@ -39,14 +39,14 @@ pub const graft_version = "20260814.140030";
 /// The combined error set of a graft: a bad destination at the edge, and ALES23's selection faults forwarded (which already carry
 /// ALES2's ClipFull / BadRange / BadGain). Every fault refuses by name before either channel is touched.
 pub const GraftError = error{
-    /// A destination reaching past the master's shared length, or — for a move — falling strictly inside the moved span (an
+    /// A destination reaching past the master's shared length, or -- for a move -- falling strictly inside the moved span (an
     /// undefined self-move). Refused before any edit.
     BadDest,
 } || selection.SelectionError;
 
 /// Snapshot the selected span from both channels into two bounded scratch buffers, returning the sample count. The copy happens
 /// BEFORE any master mutation, so a later splice or cut over an overlapping region always reads the original audio. Bounded by
-/// max_clip — the same width ALES2 proves — so the scratch never grows unbounded.
+/// max_clip -- the same width ALES2 proves -- so the scratch never grows unbounded.
 fn snapshot(
     master: *const pan.StereoClip,
     sel: selection.Selection,
@@ -69,7 +69,7 @@ fn snapshot(
     return n;
 }
 
-/// Duplicate the selected span at `at`, the source kept — both channels grow by sel.span() in LOCKSTEP. The destination is checked
+/// Duplicate the selected span at `at`, the source kept -- both channels grow by sel.span() in LOCKSTEP. The destination is checked
 /// against the shared length and the buffer capacity FIRST (so left and right both fit or neither is touched), then both channels'
 /// span samples are snapshotted before either splice, so a destination before or inside the source still copies the original audio.
 /// So a keeper drops a second copy of a marked span anywhere in the master, the stereo staying aligned.
@@ -91,9 +91,9 @@ pub fn copy(master: *pan.StereoClip, sel: selection.Selection, at: u32) GraftErr
     assert(master.left.len == master.right.len);
 }
 
-/// Relocate the selected span to `at`, the source removed — the net length unchanged and both channels staying aligned. A move is
+/// Relocate the selected span to `at`, the source removed -- the net length unchanged and both channels staying aligned. A move is
 /// copy-then-cut: snapshot the span, cut the source from both channels, then splice the snapshot at a destination re-based for the
-/// samples the cut removed — a destination at or before the source stays put, a destination after it shifts left by span. A
+/// samples the cut removed -- a destination at or before the source stays put, a destination after it shifts left by span. A
 /// destination strictly inside the span (an undefined self-move) refuses BadDest; a destination on either edge is the honest
 /// identity no-op. So a keeper slides a marked span to a new place without ever changing the master's length.
 pub fn move(master: *pan.StereoClip, sel: selection.Selection, at: u32) GraftError!void {
@@ -121,7 +121,7 @@ pub fn move(master: *pan.StereoClip, sel: selection.Selection, at: u32) GraftErr
     assert(master.left.len == master.right.len);
 }
 
-// --- selftest: THE CRUX — a copy duplicates the span at the destination in both channels, the source untouched and the two
+// --- selftest: THE CRUX -- a copy duplicates the span at the destination in both channels, the source untouched and the two
 //     channels aligned; a copy whose destination sits BEFORE its own source still reads the original span (the self-overlap
 //     snapshot proof); a move relocates the span, the source gone, the net length unchanged and the stereo aligned; a move after
 //     the source re-bases correctly; a move onto its own edge is the identity; every edge refuses by name -------------------
@@ -134,8 +134,8 @@ fn eq(got: []const i16, want: []const i16) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CRUX — a copy duplicates the span at the destination in BOTH channels, the source untouched. Master left {0..7},
-    //    right {0,-1,…,-7}; select [1,3) (samples 1,2), copy to 5. Both channels gain {1,2} spliced at index 5, aligned.
+    // 1. THE CRUX -- a copy duplicates the span at the destination in BOTH channels, the source untouched. Master left {0..7},
+    //    right {0,-1,...,-7}; select [1,3) (samples 1,2), copy to 5. Both channels gain {1,2} spliced at index 5, aligned.
     {
         var master = pan.StereoClip{};
         try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7 });
@@ -149,9 +149,9 @@ fn run_selftest() !u8 {
         if (master.left.len != master.right.len) return error.CopyNotAligned;
     }
 
-    // 2. THE SELF-OVERLAP PROOF — a copy whose destination sits BEFORE its own source reads the ORIGINAL span, not a half-shifted
+    // 2. THE SELF-OVERLAP PROOF -- a copy whose destination sits BEFORE its own source reads the ORIGINAL span, not a half-shifted
     //    buffer. Master {0..5}; select [3,5) (samples 3,4), copy to 0. The snapshot {3,4} must be read before the front splice
-    //    shifts the source right — result {3,4,0,1,2,3,4,5}, the copied pair still the original 3,4.
+    //    shifts the source right -- result {3,4,0,1,2,3,4,5}, the copied pair still the original 3,4.
     {
         var master = pan.StereoClip{};
         try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. a move relocates the span, the source GONE and the net length unchanged. Master {0..7}; select [1,3) (samples 1,2),
-    //    move to 6 (after the source). Cut removes {1,2} → {0,3,4,5,6,7} (len 6); dest re-bases 6 → 4; splice {1,2} at 4 →
+    //    move to 6 (after the source). Cut removes {1,2} -> {0,3,4,5,6,7} (len 6); dest re-bases 6 -> 4; splice {1,2} at 4 ->
     //    {0,3,4,5,1,2,6,7}, length back to 8, aligned.
     {
         var master = pan.StereoClip{};
@@ -179,8 +179,8 @@ fn run_selftest() !u8 {
         if (master.left.len != master.right.len) return error.MoveNotAligned;
     }
 
-    // 4. a move to a destination BEFORE the source needs no re-base — select [4,6) (samples 4,5), move to 1. Cut → {0,1,2,3,6,7}
-    //    (the tail after 6 shifts left), dest stays 1, splice {4,5} at 1 → {0,4,5,1,2,3,6,7}.
+    // 4. a move to a destination BEFORE the source needs no re-base -- select [4,6) (samples 4,5), move to 1. Cut -> {0,1,2,3,6,7}
+    //    (the tail after 6 shifts left), dest stays 1, splice {4,5} at 1 -> {0,4,5,1,2,3,6,7}.
     {
         var master = pan.StereoClip{};
         try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7 });
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (master.left.len != master.right.len) return error.MoveBeforeMisaligned;
     }
 
-    // 5. a move onto its own edge is the IDENTITY — moving [2,5) to 5 (its own end) or to 2 (its own start) returns the master
+    // 5. a move onto its own edge is the IDENTITY -- moving [2,5) to 5 (its own end) or to 2 (its own start) returns the master
     //    unchanged, the honest no-op.
     {
         var master = pan.StereoClip{};
@@ -207,7 +207,7 @@ fn run_selftest() !u8 {
         if (!eq(master.left.samples(), &original)) return error.MoveStartNotIdentity;
     }
 
-    // 6. every edge refuses by name — a copy or move past the master refuses BadDest; a move strictly INSIDE its own span refuses
+    // 6. every edge refuses by name -- a copy or move past the master refuses BadDest; a move strictly INSIDE its own span refuses
     //    BadDest; and a copy that would overflow the fixed buffer refuses ClipFull, all before either channel is touched.
     {
         var master = pan.StereoClip{};
@@ -224,7 +224,7 @@ fn run_selftest() !u8 {
         if (!eq(master.left.samples(), &untouched)) return error.RefusedGraftMutated;
         if (master.left.len != master.right.len) return error.RefusedGraftMisaligned;
 
-        // a copy that would overflow the fixed buffer refuses ClipFull — fill the master to one sample of room, then copy a
+        // a copy that would overflow the fixed buffer refuses ClipFull -- fill the master to one sample of room, then copy a
         // two-sample span. The capacity guard bites before either channel is spliced.
         var full = pan.StereoClip{};
         full.left.len = timeline.max_clip - 1;

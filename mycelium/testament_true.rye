@@ -1,22 +1,22 @@
-//! mycelium/testament_true.rye — a real Testament certificate reads true, the receipt of the real
+//! mycelium/testament_true.rye -- a real Testament certificate reads true, the receipt of the real
 //! constellation's verdict (r4, the Testament arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r4 — reads true.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r4 -- reads true.
 //! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //! r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
-//! it travel as a record — all over certificates sealed in the same process. r4 carries the reader onto a
-//! REAL on-disk `format testament-v1` certificate a keeper can open and read — `tools/fixtures/testament_cert.bron`,
+//! it travel as a record -- all over certificates sealed in the same process. r4 carries the reader onto a
+//! REAL on-disk `format testament-v1` certificate a keeper can open and read -- `tools/fixtures/testament_cert.bron`,
 //! produced reproducibly by `mycelium/testament_fixture_gen.rye`, `@embedFile`-bound at compile time through
 //! the `mycelium/corpora/` symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:
-//!   - TWO TOOLS, ONE ANSWER — the app derives the certificate's shape (`<ship_count> <head8>`) INDEPENDENTLY
+//!   - TWO TOOLS, ONE ANSWER -- the app derives the certificate's shape (`<ship_count> <head8>`) INDEPENDENTLY
 //!     of the record text: the ship count by BOOTING the constellation from its names, the head by REBUILDING
 //!     the demo Dag and computing its true order-head. The r4 witness cross-checks that pair against
 //!     `testament_cert_truth.awk`'s reading of the same bytes, so a certificate can never drift from one a
 //!     keeper reads by hand.
-//!   - THE CERTIFICATE IS THE RECEIPT OF THE REAL VERDICT — the app parses the record (which self-proves: parse
+//!   - THE CERTIFICATE IS THE RECEIPT OF THE REAL VERDICT -- the app parses the record (which self-proves: parse
 //!     boots the roster from the names, derives the threshold, and re-runs r1's `verify`, so a certificate that
 //!     does not prove its own NAMED quorum refuses), confirms the parsed roster matches the constellation
 //!     booted from its names name-for-name, and that the sealed head is the demo Dag's true order-head. So the
@@ -25,7 +25,7 @@
 //! and a tampered header refuses `BadFormat`.
 //!
 //! Composes testament + testament_bron + testament_fixture_gen + constel + voucher public API only. Siloed,
-//! dev-only, demo ship and keeper seeds — no real key, no funds, no network, no real value.
+//! dev-only, demo ship and keeper seeds -- no real key, no funds, no network, no real value.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_true.rye selftest
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_true.rye measure
@@ -45,7 +45,7 @@ pub const head_len: u32 = testament.head_len;
 
 const real_record = @embedFile("corpora/testament_cert.bron");
 
-/// Parse the real certificate off the embedded fixture bytes. `parse` self-proves — it boots the roster from
+/// Parse the real certificate off the embedded fixture bytes. `parse` self-proves -- it boots the roster from
 /// the carried names, derives the Byzantine threshold, and re-runs r1's `verify`, so a certificate that does
 /// not prove its own named quorum never returns.
 fn read_testament() !testament.Testament {
@@ -54,7 +54,7 @@ fn read_testament() !testament.Testament {
     return t;
 }
 
-/// The first eight hex characters of the sealed order-head — the reading a keeper sees on the `head` line and
+/// The first eight hex characters of the sealed order-head -- the reading a keeper sees on the `head` line and
 /// the awk reports.
 fn head8(head: []const u8, out: *[8]u8) void {
     // invariant: eight hex chars read four whole head bytes.
@@ -69,7 +69,7 @@ fn head8(head: []const u8, out: *[8]u8) void {
 
 /// Derive the certificate's shape INDEPENDENTLY of the record text: the ship count by booting the roster from
 /// its names, the head by rebuilding the demo Dag and computing its true order-head. The app's answer for the
-/// two-tools cross-check — blind to the bytes on disk.
+/// two-tools cross-check -- blind to the bytes on disk.
 fn derive_answer(count_out: *u32, h8_out: *[8]u8) !void {
     const c = try constel.boot(gen.roster[0..]);
     // invariant: the fixture roster is non-empty.
@@ -86,10 +86,10 @@ fn derive_answer(count_out: *u32, h8_out: *[8]u8) !void {
 /// the sealed head is the demo Dag's true order-head.
 fn welcome_reading_true_and_real() !void {
     const cert = try read_testament(); // self-proving: parse re-ran verify
-    // Verify again explicitly — the certificate stands offline from its names alone.
+    // Verify again explicitly -- the certificate stands offline from its names alone.
     try testament.verify(&cert);
 
-    // The certificate names the real constellation — same ships, same names, in order.
+    // The certificate names the real constellation -- same ships, same names, in order.
     const booted = try constel.boot(gen.roster[0..]);
     if (cert.roster_count != booted.count) return error.CertNotReal;
     var i: u32 = 0;
@@ -97,7 +97,7 @@ fn welcome_reading_true_and_real() !void {
         if (!std.mem.eql(u8, cert.name_slice(i), booted.ships[i].name_slice())) return error.CertNotReal;
     }
 
-    // The sealed head is the demo Dag's true order-head — the certificate swears the real reading.
+    // The sealed head is the demo Dag's true order-head -- the certificate swears the real reading.
     var dag = try gen.fixture_dag();
     var expected: [head_len]u8 = undefined;
     voucher.order_head_of(&dag, &expected);

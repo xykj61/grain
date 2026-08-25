@@ -1,14 +1,14 @@
-//! lotus/stereo_loop.rye — ALES16: the stereo loop — one marked region cycled through two channels in lockstep. ALES15 made the
-//! read side genuinely stereo, yet that head still only reads FORWARD and stops — the plain playback of ALES7 carried to two
-//! channels. The read a musician reaches for second is the same one ALES14 opened for mono: LOOP — mark a region and hear it
+//! lotus/stereo_loop.rye -- ALES16: the stereo loop -- one marked region cycled through two channels in lockstep. ALES15 made the
+//! read side genuinely stereo, yet that head still only reads FORWARD and stops -- the plain playback of ALES7 carried to two
+//! channels. The read a musician reaches for second is the same one ALES14 opened for mono: LOOP -- mark a region and hear it
 //! round and round. This rung carries the loop to stereo, the twin of the move ALES15 proved for play.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES16.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES16.
 //! Design read: active-designing/20260814-fill-ales16-lotus-stereo-loop.md
-//! Stands on: lotus/loop.rye (ALES14) — the Loop region and make/mark_ms/enter reused whole (a loop OFF delegates to the stereo
-//! transport, an armed loop reuses the same validated region); lotus/stereo_transport.rye (ALES15) — the stereo forward read a
-//! loop OFF delegates to whole, and the StereoReadError.BadBlock it shares; lotus/pan.rye (ALES10) — the StereoClip whose two
-//! channels share one length; lotus/clock.rye (ALES5) — mark_ms sets the region in real time; lotus/timeline.rye (ALES2) — the
+//! Stands on: lotus/loop.rye (ALES14) -- the Loop region and make/mark_ms/enter reused whole (a loop OFF delegates to the stereo
+//! transport, an armed loop reuses the same validated region); lotus/stereo_transport.rye (ALES15) -- the stereo forward read a
+//! loop OFF delegates to whole, and the StereoReadError.BadBlock it shares; lotus/pan.rye (ALES10) -- the StereoClip whose two
+//! channels share one length; lotus/clock.rye (ALES5) -- mark_ms sets the region in real time; lotus/timeline.rye (ALES2) -- the
 //! Clip each channel is.
 //!
 //! THE CRUX: one region and one head cycle BOTH channels in lockstep, because a stereo master's two channels share one length
@@ -18,8 +18,8 @@
 //! sample every cycle, so left and right never drift out of alignment even as the region repeats forever, and reading K cycles
 //! concatenates to EACH channel's region repeated K times, no seam sample skipped or doubled in either channel.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded, wrapping read cursor over an in-process two-channel i16 PCM master,
-//! siloed to lotus/. No audio leaves the process — a block is COPIED samples, not a sound-card write (that real write is the
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded, wrapping read cursor over an in-process two-channel i16 PCM master,
+//! siloed to lotus/. No audio leaves the process -- a block is COPIED samples, not a sound-card write (that real write is the
 //! paused hardware round). No socket, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_loop.rye selftest
@@ -37,7 +37,7 @@ const stereo_transport = @import("stereo_transport.rye");
 
 pub const stereo_loop_version = "20260814.130009";
 
-/// Build a validated, armed loop over [start, end) against the stereo master's SHARED length — refusing loop.BadLoop at the edge
+/// Build a validated, armed loop over [start, end) against the stereo master's SHARED length -- refusing loop.BadLoop at the edge
 /// on an empty, inverted, or past-the-master region. A thin stereo face over ALES14's `make`: the two channels are one length,
 /// so one region governs both. So a keeper marks a stereo loop the same way they mark a mono one.
 pub fn make(start: u32, end: u32, stereo: *const pan.StereoClip) loop.LoopError!loop.Loop {
@@ -46,7 +46,7 @@ pub fn make(start: u32, end: u32, stereo: *const pan.StereoClip) loop.LoopError!
     return loop.make(start, end, stereo.left.len);
 }
 
-/// Mark the stereo loop region in REAL TIME through the ALES5 clock, validated against the shared length — start_ms and end_ms
+/// Mark the stereo loop region in REAL TIME through the ALES5 clock, validated against the shared length -- start_ms and end_ms
 /// convert to sample offsets, then `make` validates them. Forwards the clock's DurationTooLong past the master bound. So a keeper
 /// sets stereo loop points in seconds, not sample indices.
 pub fn mark_ms(clk: clock.Clock, start_ms: u32, end_ms: u32, stereo: *const pan.StereoClip) (loop.LoopError || clock.ClockError)!loop.Loop {
@@ -59,10 +59,10 @@ pub fn mark_ms(clk: clock.Clock, start_ms: u32, end_ms: u32, stereo: *const pan.
 }
 
 /// The stereo looping read: copy the next up-to-out.len samples of EACH channel into its buffer, advancing the ONE head and
-/// WRAPPING at the region end. When the loop is OFF this is ALES15's stereo forward read exactly (delegated whole — both channels
+/// WRAPPING at the region end. When the loop is OFF this is ALES15's stereo forward read exactly (delegated whole -- both channels
 /// concatenate byte-for-byte, a short block at the end, zero past it). When ON, the one head that reaches `end` wraps to `start`,
 /// so both channels' blocks are always filled (a non-empty region never runs dry) and the head is left within [start, end).
-/// Both channels wrap on the same sample every cycle — the lockstep across the seam. Refuses BadBlock when the two out buffers
+/// Both channels wrap on the same sample every cycle -- the lockstep across the seam. Refuses BadBlock when the two out buffers
 /// differ in length (a stereo block is one length). Returns the count copied into each channel.
 pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, lp: *const loop.Loop, out_left: []i16, out_right: []i16) stereo_transport.StereoReadError!u32 {
     // invariant: the two channels share one length and the head is within the master before the read.
@@ -73,13 +73,13 @@ pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, lp: *c
 
     // invariant: an armed loop is a non-empty region wholly within the master's shared length.
     assert(lp.start < lp.end and lp.end <= stereo.left.len);
-    // a head outside the region (a fresh seek, or a just-armed loop) enters at the region start — both channels together.
+    // a head outside the region (a fresh seek, or a just-armed loop) enters at the region start -- both channels together.
     if (t.pos < lp.start or t.pos >= lp.end) t.pos = lp.start;
 
     const want: u32 = @intCast(out_left.len);
     var i: u32 = 0;
     while (i < want) : (i += 1) {
-        // invariant: the head is within the region at the top of each copy — wrap the instant it reaches the end, for both
+        // invariant: the head is within the region at the top of each copy -- wrap the instant it reaches the end, for both
         // channels off the one head, so left and right never drift out of alignment across the seam.
         if (t.pos >= lp.end) t.pos = lp.start;
         // invariant: the playhead stays inside the loop it is looping, so a position outside
@@ -102,7 +102,7 @@ pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, lp: *c
 //     region repeated K times; the head stays within [start,end) after every read at any block size; a whole-master loop cycles
 //     both channels; a single-sample region repeats that one sample per channel; mismatched out buffers refuse BadBlock; mark_ms
 //     places the region at real times; a StereoClip rendered by ALES11's power.render_stereo loops back its two channels exactly;
-//     the loop reads only — neither channel is mutated -------------------------------------------------------------------------
+//     the loop reads only -- neither channel is mutated -------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -114,8 +114,8 @@ fn eq(got: []const i16, want: []const i16) bool {
 fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms — a millisecond position equals a sample position, legible on a bench
 
-    // 1. a loop OFF reads identically to ALES15's stereo forward read — both channels concatenate byte-for-byte, the last block
-    //    honestly short (5 samples in 2s → 2,2,1) and the read past the end empty. The stereo loop generalizes the stereo
+    // 1. a loop OFF reads identically to ALES15's stereo forward read -- both channels concatenate byte-for-byte, the last block
+    //    honestly short (5 samples in 2s -> 2,2,1) and the read past the end empty. The stereo loop generalizes the stereo
     //    transport: disarmed, it IS the stereo transport.
     {
         var stereo = pan.StereoClip{};
@@ -142,8 +142,8 @@ fn run_selftest() !u8 {
         if (!eq(gr[0..got], stereo.right.samples())) return error.OffRightConcatWrong;
     }
 
-    // 2. THE CRUX — a region [1,4) of a five-sample stereo master cycles BOTH channels in lockstep. Left cycles 20,30,40,… and
-    //    right cycles -2,-3,-4,… ; reading nine samples (three cycles of the three-sample region) concatenates to each channel's
+    // 2. THE CRUX -- a region [1,4) of a five-sample stereo master cycles BOTH channels in lockstep. Left cycles 20,30,40,... and
+    //    right cycles -2,-3,-4,... ; reading nine samples (three cycles of the three-sample region) concatenates to each channel's
     //    region repeated three times, no seam sample skipped or doubled, left and right aligned every wrap.
     {
         var stereo = pan.StereoClip{};
@@ -161,7 +161,7 @@ fn run_selftest() !u8 {
         if (!(t.position() >= 1 and t.position() < 4)) return error.HeadOutsideRegion;
     }
 
-    // 3. the head stays within [start,end) after every read, whatever the block size — read one sample at a time across a full
+    // 3. the head stays within [start,end) after every read, whatever the block size -- read one sample at a time across a full
     //    cycle-and-a-bit and confirm the one head never leaves the region (both channels wrap together).
     {
         var stereo = pan.StereoClip{};
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. a loop over the WHOLE master [0,len) cycles both channels — continuous stereo replay, heard end to end and again.
+    // 4. a loop over the WHOLE master [0,len) cycles both channels -- continuous stereo replay, heard end to end and again.
     {
         var stereo = pan.StereoClip{};
         try timeline.splice(&stereo.left, 0, &[_]i16{ 7, 8, 9 });
@@ -195,7 +195,7 @@ fn run_selftest() !u8 {
         if (n != 7 or !eq(sl[0..n], &left_bit) or !eq(sr[0..n], &right_bit)) return error.WholeLoopWrong;
     }
 
-    // 5. a single-sample region [2,3) repeats that one sample forever in EACH channel — the tightest cycle, proving the wrap
+    // 5. a single-sample region [2,3) repeats that one sample forever in EACH channel -- the tightest cycle, proving the wrap
     //    never skips and the two channels stay aligned on it.
     {
         var stereo = pan.StereoClip{};
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (!eq(&fl, &all_left) or !eq(&fr, &all_right)) return error.SingleSampleWrong;
     }
 
-    // 6. mismatched out buffers refuse BadBlock — a stereo block is one length, filled into both channels, whether the loop is on
+    // 6. mismatched out buffers refuse BadBlock -- a stereo block is one length, filled into both channels, whether the loop is on
     //    or off.
     {
         var stereo = pan.StereoClip{};
@@ -227,7 +227,7 @@ fn run_selftest() !u8 {
     }
 
     // 7. mark_ms places the region at real times through the clock, and a StereoClip rendered by ALES11's power.render_stereo
-    //    loops back its two channels EXACTLY — a track panned center renders 0.707 per side, and the stereo loop cycles exactly
+    //    loops back its two channels EXACTLY -- a track panned center renders 0.707 per side, and the stereo loop cycles exactly
     //    those samples. The read side meets the stereo side, round and round.
     {
         var a = timeline.Clip{};
@@ -250,7 +250,7 @@ fn run_selftest() !u8 {
         if (!eq(&rl, &seven_hundred) or !eq(&rr, &seven_hundred)) return error.RenderedLoopWrong;
     }
 
-    // 8. the loop reads ONLY — cycling a stereo master many times over, then checking BOTH channels are byte-for-byte unchanged.
+    // 8. the loop reads ONLY -- cycling a stereo master many times over, then checking BOTH channels are byte-for-byte unchanged.
     //    Read-only playback, exactly as ALES15.
     {
         var stereo = pan.StereoClip{};

@@ -1,7 +1,7 @@
-//! linengrow/dexter_glass_core.rye — device-free Dexter path for glass (D0).
+//! linengrow/dexter_glass_core.rye -- device-free Dexter path for glass (D0).
 //!
 //! Feeds Android-shaped key actions into the pure Dexter LineEditor
-//! (`window_input.rye` → pond/apps). No AInputQueue here — the glass and
+//! (`window_input.rye` -> pond/apps). No AInputQueue here -- the glass and
 //! device-free door. Live KEY drain: dexter_glass_key + glow_native_activity.
 
 const std = @import("std");
@@ -10,7 +10,7 @@ const print = std.debug.print;
 const dexter = @import("window_input.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// Demo payload typed on glass — short, printable, Skate-safe.
+/// Demo payload typed on glass -- short, printable, Skate-safe.
 pub const demo_submitted: []const u8 = "glow";
 
 pub const DexterLens = struct {

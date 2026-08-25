@@ -1,19 +1,19 @@
-//! image/color.rye — the open sRGB color algebra (Season G, the smallest tractable crux).
+//! image/color.rye -- the open sRGB color algebra (Season G, the smallest tractable crux).
 //!
-//! Season G (Open Media Primitives) · the color floor beside image/qoi.rye and the audio wire.
+//! Season G (Open Media Primitives) - the color floor beside image/qoi.rye and the audio wire.
 //! Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md
-//! Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB — public standards only).
+//! Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
 //!
-//! A color is four bytes — sRGB red · green · blue · alpha — held exactly, so a color that goes in comes
+//! A color is four bytes -- sRGB red - green - blue - alpha -- held exactly, so a color that goes in comes
 //! back out byte-for-byte. Every other form is a *reading* of those four bytes: a hex text, a functional
 //! rgb()/hsl() text, an HSL triple, a blend of two, a quantization to fewer levels. A malformed text refuses
-//! BY NAME (BadHexLength · BadHexDigit · BadFunctionForm · ChannelOutOfRange · BadLevels) rather than
+//! BY NAME (BadHexLength - BadHexDigit - BadFunctionForm - ChannelOutOfRange - BadLevels) rather than
 //! guessing a color. All arithmetic is integer fixed-point, so the results are deterministic across targets;
 //! integer HSL cannot round-trip byte-exact, and this module states its measured tolerance rather than
 //! claiming an exactness it does not have. On top of the WCAG luminance and contrast floor it offers the
-//! readable-ink pick (readable_ink · best_ink) and the AA/AAA conformance predicates (meets_aa ·
-//! meets_aa_large · meets_aaa), so a surface chooses legible text on any fill rather than guessing.
-//! No network, no key, no funds — the color model Brushstroke and Skate read the day the design system lands.
+//! readable-ink pick (readable_ink - best_ink) and the AA/AAA conformance predicates (meets_aa -
+//! meets_aa_large - meets_aaa), so a surface chooses legible text on any fill rather than guessing.
+//! No network, no key, no funds -- the color model Brushstroke and Skate read the day the design system lands.
 //!
 //!   rishi/bin/rishi run tools/co/color_algebra_witness.rish
 //!
@@ -26,10 +26,10 @@ const print = std.debug.print;
 
 pub const color_version = "20260816.210735";
 
-/// The longest color text we will read — a generous ceiling over `#rrggbbaa` and `hsla(360,100%,100%,255)`.
+/// The longest color text we will read -- a generous ceiling over `#rrggbbaa` and `hsla(360,100%,100%,255)`.
 pub const color_max_text: u32 = 64;
 
-/// A color — always four sRGB bytes in memory, alpha last, opaque by default.
+/// A color -- always four sRGB bytes in memory, alpha last, opaque by default.
 pub const Rgba = struct {
     r: u8 = 0,
     g: u8 = 0,
@@ -41,7 +41,7 @@ pub const Rgba = struct {
     }
 };
 
-/// An HSL reading of a color — hue in degrees, saturation and lightness in percent, alpha carried through.
+/// An HSL reading of a color -- hue in degrees, saturation and lightness in percent, alpha carried through.
 pub const Hsl = struct {
     h: u16 = 0, // 0..=360
     s: u8 = 0, // 0..=100
@@ -86,7 +86,7 @@ fn write_hex_byte(dst: []u8, v: u8) void {
 /// Parse a hex color: `#rgb`, `#rgba`, `#rrggbb`, or `#rrggbbaa` (the leading `#` optional). Short forms
 /// double each nibble, exactly as CSS does; a length that is none of {3,4,6,8} refuses BadHexLength.
 pub fn parse_hex(text: []const u8) !Rgba {
-    // invariant: a hex color is bounded text — never longer than the module's ceiling.
+    // invariant: a hex color is bounded text -- never longer than the module's ceiling.
     if (text.len > color_max_text) return error.BadHexLength;
     const body = if (text.len > 0 and text[0] == '#') text[1..] else text;
     if (body.len == 3 or body.len == 4) {
@@ -117,7 +117,7 @@ pub fn parse_hex(text: []const u8) !Rgba {
 /// Format a color as canonical lowercase `#rrggbbaa` into a caller buffer (needs 9 bytes); returns the slice
 /// written. Canonical always carries all four channels, so parse(format(c)) recovers c byte-for-byte.
 pub fn format_hex(c: Rgba, dst: []u8) ![]const u8 {
-    // invariant: the canonical form is exactly nine bytes — a hash and four byte-pairs.
+    // invariant: the canonical form is exactly nine bytes -- a hash and four byte-pairs.
     if (dst.len < 9) return error.BufferTooSmall;
     dst[0] = '#';
     write_hex_byte(dst[1..3], c.r);
@@ -232,7 +232,7 @@ pub fn parse_func(text: []const u8) !Rgba {
     return c;
 }
 
-/// Parse any supported color text — a `#`/bare hex form, or a functional form — dispatching on the first
+/// Parse any supported color text -- a `#`/bare hex form, or a functional form -- dispatching on the first
 /// non-space byte. This is the front door the surface calls.
 pub fn parse(text: []const u8) !Rgba {
     const t = trim_spaces(text);
@@ -253,7 +253,7 @@ fn min3(a: u32, b: u32, c: u32) u32 {
     return @min(a, @min(b, c));
 }
 
-/// RGB → HSL by integer arithmetic with rounding. Deterministic; the standard CSS formulas, computed so the
+/// RGB -> HSL by integer arithmetic with rounding. Deterministic; the standard CSS formulas, computed so the
 /// primary colors land exactly (pure red is hsl(0,100,50), the greys are hsl(0,0,l)).
 pub fn rgb_to_hsl(c: Rgba) Hsl {
     const r: u32 = c.r;
@@ -270,7 +270,7 @@ pub fn rgb_to_hsl(c: Rgba) Hsl {
     assert(l_pct <= 100);
 
     if (delta == 0) {
-        // A grey has no hue and no saturation — every channel equal.
+        // A grey has no hue and no saturation -- every channel equal.
         return Hsl{ .h = 0, .s = 0, .l = @intCast(l_pct), .a = c.a };
     }
 
@@ -320,7 +320,7 @@ fn hue_channel(p: i32, q: i32, t_deg_in: i32) u8 {
     }
     if (frac < 0) frac = 0;
     if (frac > 10000) frac = 10000;
-    // Fraction of full scale → byte, rounded: frac/10000 * 255.
+    // Fraction of full scale -> byte, rounded: frac/10000 * 255.
     const v: i32 = @divTrunc(frac * 255 + 5000, 10000);
     // invariant: a channel byte stays in 0..255.
     assert(v >= 0);
@@ -328,7 +328,7 @@ fn hue_channel(p: i32, q: i32, t_deg_in: i32) u8 {
     return @intCast(v);
 }
 
-/// HSL → RGB by the reference integer algorithm in /10000 fixed point. A zero-saturation color is the exact
+/// HSL -> RGB by the reference integer algorithm in /10000 fixed point. A zero-saturation color is the exact
 /// grey l*255/100; otherwise the two lightness anchors p and q drive the three hue channels.
 pub fn hsl_to_rgb(hsl: Hsl) Rgba {
     // invariant: an HSL reading arrives already inside its named bands.
@@ -409,7 +409,7 @@ pub fn over(src: Rgba, dst: Rgba) Rgba {
     };
 }
 
-/// Largest palette depth per channel the quantizer names — a full byte of levels.
+/// Largest palette depth per channel the quantizer names -- a full byte of levels.
 pub const quantize_max_levels: u32 = 256;
 
 fn quantize_channel(v: u8, levels: u32) u8 {
@@ -461,7 +461,7 @@ const srgb_linear: [256]u32 = blk: {
     break :blk table;
 };
 
-/// Relative luminance of a color (WCAG 2.x), scaled to 0..luminance_scale. Alpha is ignored — luminance is a
+/// Relative luminance of a color (WCAG 2.x), scaled to 0..luminance_scale. Alpha is ignored -- luminance is a
 /// property of the three color channels. Pure black is 0, pure white is luminance_scale.
 pub fn relative_luminance(c: Rgba) u32 {
     const rl: u64 = srgb_linear[c.r];
@@ -572,7 +572,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             const c = try parse_hex(f);
             var buf = [_]u8{0} ** 9;
             const hex = try format_hex(c, buf[0..]);
-            // invariant: canonical text re-parses to the same four bytes — an exact color round-trip.
+            // invariant: canonical text re-parses to the same four bytes -- an exact color round-trip.
             const c2 = try parse_hex(hex);
             try expect_color(c2, c);
         }
@@ -590,7 +590,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         try expect_color(try parse("hsl(240,100,50)"), Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 });
     }
 
-    // 3) Named refusals — each malformed input fails by its own name.
+    // 3) Named refusals -- each malformed input fails by its own name.
     {
         if (parse_hex("#12345")) |_| return error.HexLenSlipped else |e| {
             if (e != error.BadHexLength) return error.WrongHexLen;
@@ -609,7 +609,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 4) RGB → HSL known vectors, exact.
+    // 4) RGB -> HSL known vectors, exact.
     {
         const red = rgb_to_hsl(Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
         if (!(red.h == 0 and red.s == 100 and red.l == 50)) return error.HslRedWrong;
@@ -623,7 +623,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!(grey.s == 0 and grey.l == 50)) return error.HslGreyWrong;
     }
 
-    // 5) HSL → RGB primaries, exact.
+    // 5) HSL -> RGB primaries, exact.
     {
         try expect_color(hsl_to_rgb(Hsl{ .h = 0, .s = 100, .l = 50, .a = 255 }), Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
         try expect_color(hsl_to_rgb(Hsl{ .h = 120, .s = 100, .l = 50, .a = 255 }), Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 });
@@ -632,7 +632,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         try expect_color(hsl_to_rgb(Hsl{ .h = 0, .s = 0, .l = 100, .a = 255 }), Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 });
     }
 
-    // 6) RGB → HSL → RGB sweep, measuring the true worst-channel error (honest tolerance, not a claim).
+    // 6) RGB -> HSL -> RGB sweep, measuring the true worst-channel error (honest tolerance, not a claim).
     var max_err: u32 = 0;
     {
         var r: u32 = 0;
@@ -696,7 +696,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (wb_x100 != 2100) return error.ContrastWhiteBlackWrong; // 21.00, the maximum
         if (contrast_ratio_x100(black, white) != 2100) return error.ContrastOrderWrong; // order-free
         if (contrast_ratio_x100(white, white) != 100) return error.ContrastSelfWrong; // 1.00, no contrast
-        // A green channel weighs most — pure green is far brighter than pure blue.
+        // A green channel weighs most -- pure green is far brighter than pure blue.
         if (!(relative_luminance(Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }) >
             relative_luminance(Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }))) return error.LumWeightWrong;
     }

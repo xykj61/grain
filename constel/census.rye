@@ -1,17 +1,17 @@
-//! constel/census.rye — FORA8: census, announce and collect, and know who is present. FORA7 gave the constellation a voice
-//! that reaches every ear at once; yet an announce is only half a round. A real protocol needs the OTHER half — collect the
+//! constel/census.rye -- FORA8: census, announce and collect, and know who is present. FORA7 gave the constellation a voice
+//! that reaches every ear at once; yet an announce is only half a round. A real protocol needs the OTHER half -- collect the
 //! replies and know who answered. A heartbeat, a roll call, a quorum vote all share one shape: one pier announces, every
 //! other replies, and the caller tallies who is present and, just as important, who is silent. This rung takes that one new
-//! concern — the collect-and-tally half of a gossip round — and nothing more.
+//! concern -- the collect-and-tally half of a gossip round -- and nothing more.
 //!
-//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA8.
+//! Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA8.
 //! Design read: active-designing/date/20260814/20260814-051119_fora8-constel-census-liveness-round.md
-//! Stands on: constel/gossip.rye (FORA7) — the announce; constel/switchboard.rye (FORA6) — the medium; constel/exchange.rye
-//! (FORA4) — a member's own greeting, reused as its "present" token (no new frame kind).
+//! Stands on: constel/gossip.rye (FORA7) -- the announce; constel/switchboard.rye (FORA6) -- the medium; constel/exchange.rye
+//! (FORA4) -- a member's own greeting, reused as its "present" token (no new frame kind).
 //!
-//! Purely LOCAL — a bounded orchestration over the switchboard on one bench, siloed to constel/, run from inside the jailed
-//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real
-//! wire — and gate %4 — real Kumara, real network — both untouched). take_census INTERLEAVES respond and hear, so the
+//! Purely LOCAL -- a bounded orchestration over the switchboard on one bench, siloed to constel/, run from inside the jailed
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real
+//! wire -- and gate %4 -- real Kumara, real network -- both untouched). take_census INTERLEAVES respond and hear, so the
 //! caller's inbox never holds more than one reply at a time and the round is bounded for any constellation up to max_piers,
 //! never risking ChannelFull. The border guards every reply: hear deframes each at wire.deframe, so a real-@p-shaped name can
 //! never enter the census even as an answer. This is the liveness primitive every consensus protocol stands on.
@@ -34,17 +34,17 @@ const gossip = @import("gossip.rye");
 pub const census_version = "20260814.051119";
 
 pub const CensusError = error{
-    /// A reply already heard from this slot arrived again — a fresh present is expected once per member per round.
+    /// A reply already heard from this slot arrived again -- a fresh present is expected once per member per round.
     DoubleCount,
 } || switchboard.SwitchboardError;
 
 /// A present-set: one bool per roster slot, marked true as each member's reply is heard. A silent member is a slot left
-/// false — absence is knowable by slot, not merely a smaller count. Bounded by max_piers, exactly like the roster it indexes.
+/// false -- absence is knowable by slot, not merely a smaller count. Bounded by max_piers, exactly like the roster it indexes.
 pub const Census = struct {
     present: [roster.max_piers]bool = [_]bool{false} ** roster.max_piers,
     count: u32 = 0,
 
-    /// Mark a roster slot present, refusing to double-count — a reply already heard from this slot is a fault the caller
+    /// Mark a roster slot present, refusing to double-count -- a reply already heard from this slot is a fault the caller
     /// surfaces rather than silently re-tallying.
     fn mark(self: *Census, slot: u32) CensusError!void {
         // invariant: only a real roster slot is ever marked.
@@ -64,7 +64,7 @@ pub const Census = struct {
     }
 };
 
-/// Build the caller's greeting into `ping` and broadcast it to the whole constellation — the announce half of the round.
+/// Build the caller's greeting into `ping` and broadcast it to the whole constellation -- the announce half of the round.
 /// Returns the count reached (size - 1 on a clean fan-out).
 pub fn announce(sb: *switchboard.Switchboard, caller: []const u8, ping: *wire.Frame) switchboard.SwitchboardError!u32 {
     var sky_buf: [name.max_constellation_bytes]u8 = undefined;
@@ -76,7 +76,7 @@ pub fn announce(sb: *switchboard.Switchboard, caller: []const u8, ping: *wire.Fr
     return gossip.broadcast(sb, caller, ping);
 }
 
-/// `who` drains the ping it heard — proving it was reachable — and replies its own greeting to `to`'s mailbox. A member that
+/// `who` drains the ping it heard -- proving it was reachable -- and replies its own greeting to `to`'s mailbox. A member that
 /// never received the announce has nothing to drain and cannot reply (NeedMoreBytes), so a reply always proves the ear.
 pub fn respond(sb: *switchboard.Switchboard, who: []const u8, to: []const u8) switchboard.SwitchboardError!void {
     _ = try sb.receive(who); // drain the ping — a member with no ping waiting refuses NeedMoreBytes
@@ -121,7 +121,7 @@ pub fn take_census(sb: *switchboard.Switchboard, caller: []const u8) CensusError
     while (i < n) : (i += 1) {
         if (i == caller_slot) continue; // the caller does not census itself
         const who = try sb.roster.member(i);
-        // Copy the name out — respond/hear mutate mailboxes, never the roster, yet hold a plain slice for clarity.
+        // Copy the name out -- respond/hear mutate mailboxes, never the roster, yet hold a plain slice for clarity.
         var wb: [name.max_ship_len]u8 = undefined;
         const wn = copy_name(&wb, who);
         try respond(sb, wn, caller); // the member replies to the caller
@@ -138,7 +138,7 @@ pub fn take_census(sb: *switchboard.Switchboard, caller: []const u8) CensusError
 //     border guards every reply; a stranger cannot open a census; and the round is bounded for a full constellation ---------
 
 fn run_selftest() !u8 {
-    // 1. A full census in a sky of four returns three present — exactly the three other slots, the caller's own left clear.
+    // 1. A full census in a sky of four returns three present -- exactly the three other slots, the caller's own left clear.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(4);
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
         assert(c.is_present(1) and c.is_present(2) and c.is_present(3));
     }
 
-    // 2. A silent member is detected by slot — run the round by hand with slot 2 declining to reply. The census counts two,
+    // 2. A silent member is detected by slot -- run the round by hand with slot 2 declining to reply. The census counts two,
     //    and slot 2 stays false; the caller knows WHICH pier is absent, not only how many.
     {
         var sb = switchboard.Switchboard{};
@@ -171,7 +171,7 @@ fn run_selftest() !u8 {
             var wb: [name.max_ship_len]u8 = undefined;
             const wn = copy_name(&wb, who);
             if (i == 2) {
-                // Slot 2 stays silent — it drains its ping (it was reachable) but never replies.
+                // Slot 2 stays silent -- it drains its ping (it was reachable) but never replies.
                 _ = try sb.receive(wn);
                 continue;
             }
@@ -184,7 +184,7 @@ fn run_selftest() !u8 {
         assert(!c.is_present(2)); // the silent member, known by slot
     }
 
-    // 3. A reply proves reachability — a member with no ping waiting cannot reply (respond drains first, refusing
+    // 3. A reply proves reachability -- a member with no ping waiting cannot reply (respond drains first, refusing
     //    NeedMoreBytes). Stand up a sky, do NOT announce, and a bare respond refuses.
     {
         var sb = switchboard.Switchboard{};
@@ -198,7 +198,7 @@ fn run_selftest() !u8 {
         if (respond(&sb, wn, cn)) |_| return error.UnreachableReplied else |e| if (e != error.NeedMoreBytes) return error.WrongUnreachable;
     }
 
-    // 4. The border guards every reply — a member replying with a vowel-bearing greeting is refused at the caller's hear.
+    // 4. The border guards every reply -- a member replying with a vowel-bearing greeting is refused at the caller's hear.
     //    Build a real ping/pong round but tamper the pong's from-name to a vowel-bearing run (digest fixed up).
     {
         var sb = switchboard.Switchboard{};
@@ -233,14 +233,14 @@ fn run_selftest() !u8 {
         if (hear(&sb, cn)) |_| return error.VowelCensused else |e| if (e != error.VowelPresent) return error.WrongVowelCensus;
     }
 
-    // 5. A stranger cannot open a census — take_census from a name no roster holds refuses NoSuchPier before any announce.
+    // 5. A stranger cannot open a census -- take_census from a name no roster holds refuses NoSuchPier before any announce.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
         if (take_census(&sb, "zzzz9")) |_| return error.StrangerCensused else |e| if (e != error.NoSuchPier) return error.WrongStranger;
     }
 
-    // 6. The round is bounded for a full constellation — a census of eight (seven replies) completes without a ChannelFull,
+    // 6. The round is bounded for a full constellation -- a census of eight (seven replies) completes without a ChannelFull,
     //    because take_census interleaves respond and hear so the caller's inbox holds one reply at a time.
     {
         var sb = switchboard.Switchboard{};
@@ -262,14 +262,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- respond/hear mutate
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

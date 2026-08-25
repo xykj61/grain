@@ -1,13 +1,13 @@
-//! comlink/discovery/gossip.rye — exchange fold over the bounded peer table.
+//! comlink/discovery/gossip.rye -- exchange fold over the bounded peer table.
 //!
-//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do.
 //! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
 //!   discovery_gossip_fanout 8
 //!   discovery_max_peers 256
 //!   discovery_descriptor_max_bytes 512
 //!
-//! Check shape: whatever crosses is a value · named ceiling · refuse whole on
-//! malformed arrival — never trimmed quietly. Mycelium untouched.
+//! Check shape: whatever crosses is a value - named ceiling - refuse whole on
+//! malformed arrival -- never trimmed quietly. Mycelium untouched.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/gossip.rye
 
@@ -17,7 +17,7 @@ const print = std.debug.print;
 const desc = @import("descriptor.rye");
 const table_mod = @import("table.rye");
 
-/// Peers told per exchange — seated v27.
+/// Peers told per exchange -- seated v27.
 pub const gossip_fanout: u32 = 8;
 
 pub const GossipOffer = struct {
@@ -87,19 +87,19 @@ pub const Travel = struct {
     pub fn from_parts(id: table_mod.PeerId, descriptor: desc.Descriptor) ?Travel {
         if (id.len == 0 or id.len > table_mod.peer_id_max_bytes) return null;
         if (descriptor.len > desc.descriptor_max_bytes) return null;
-        // Empty descriptor body is not a value that crosses — refuse whole.
+        // Empty descriptor body is not a value that crosses -- refuse whole.
         if (descriptor.len == 0) return null;
         return .{ .id = id, .descriptor = descriptor };
     }
 };
 
-/// Append one travel value to an offer. Refuse whole — never trim to fit.
+/// Append one travel value to an offer. Refuse whole -- never trim to fit.
 pub fn offer_append(offer: *GossipOffer, travel: Travel) error{FanoutFull, Malformed}!void {
     // invariant: the offer never carries more peers than the gossip fanout, since the array it
     // is packed into is sized by that constant
     assert(offer.len <= gossip_fanout);
     if (offer.len >= gossip_fanout) return error.FanoutFull;
-    // Re-check shape at the append seam — a bad value is refused, not shortened.
+    // Re-check shape at the append seam -- a bad value is refused, not shortened.
     const checked = Travel.from_parts(travel.id, travel.descriptor) orelse return error.Malformed;
     offer.ids[offer.len] = checked.id;
     offer.descriptors[offer.len] = checked.descriptor;
@@ -110,12 +110,12 @@ pub fn offer_append(offer: *GossipOffer, travel: Travel) error{FanoutFull, Malfo
 }
 
 /// Fold a remote offer into the local table at `now`.
-/// Malformed entries refuse whole (skip none quietly — the offer is rejected).
+/// Malformed entries refuse whole (skip none quietly -- the offer is rejected).
 pub fn fold_offer(table: *table_mod.PeerTable, offer: *const GossipOffer, now: u64) error{Full, Malformed}!u32 {
     if (offer.len > gossip_fanout) return error.Malformed;
     var i: u32 = 0;
     while (i < offer.len) : (i += 1) {
-        // Validate every entry before mutating — refuse whole on any bad shape.
+        // Validate every entry before mutating -- refuse whole on any bad shape.
         if (Travel.from_parts(offer.ids[i], offer.descriptors[i]) == null) return error.Malformed;
     }
     var folded: u32 = 0;
@@ -127,7 +127,7 @@ pub fn fold_offer(table: *table_mod.PeerTable, offer: *const GossipOffer, now: u
     return folded;
 }
 
-/// Selftest — Check shape: value travels · fanout ceiling · refuse whole · never trim.
+/// Selftest -- Check shape: value travels - fanout ceiling - refuse whole - never trim.
 pub fn main() !void {
     if (gossip_fanout != 8) return error.FanoutBound;
 
@@ -139,7 +139,7 @@ pub fn main() !void {
     if (Travel.from_parts(ok_id, desc.Descriptor.init_empty()) != null) return error.EmptyDescAccepted;
     var oversized: [desc.descriptor_max_bytes + 1]u8 = undefined;
     @memset(&oversized, 'x');
-    // Descriptor.from_slice already refuses oversized — Travel sees only valid Descriptors.
+    // Descriptor.from_slice already refuses oversized -- Travel sees only valid Descriptors.
     // Prove append refuses fanout overflow rather than trimming.
     var offer = GossipOffer.empty();
     var n: u32 = 0;

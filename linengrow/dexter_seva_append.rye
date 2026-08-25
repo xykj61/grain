@@ -1,6 +1,6 @@
-//! linengrow/dexter_seva_append.rye — Dexter submit → Glow typed Seva append (STOA268).
+//! linengrow/dexter_seva_append.rye -- Dexter submit -> Glow typed Seva append (STOA268).
 //!
-//! Names the LineEditor→`append_typed_memo` seam before NativeActivity wire.
+//! Names the LineEditor->`append_typed_memo` seam before NativeActivity wire.
 //! Device-free: demo editor submits `glow`, then product append signs it.
 //! HAWM1 three-event pin path stays untouched. Glass submit wire stays lean C.
 //!

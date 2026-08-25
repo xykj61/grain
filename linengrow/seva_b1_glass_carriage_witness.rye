@@ -1,4 +1,4 @@
-//! linengrow/seva_b1_glass_carriage_witness.rye — proves JABS1 glass welcome line.
+//! linengrow/seva_b1_glass_carriage_witness.rye -- proves JABS1 glass welcome line.
 //!
 //!   rye build linengrow/seva_b1_glass_carriage_witness.rye \
 //!     -femit-bin=linengrow/bin/seva_b1_glass_carriage_witness

@@ -1,4 +1,4 @@
-//! Rye test: mem.swap — pass 9919.
+//! Rye test: mem.swap -- pass 9919.
 //!
 //! Exchange two memory locations; pairs with mem.reverse (9921).
 

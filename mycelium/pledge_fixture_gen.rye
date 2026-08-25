@@ -1,13 +1,13 @@
-//! mycelium/pledge_fixture_gen.rye — reproducibly emit a two-phase-transfer Cord dev-net fixture (r4 support).
+//! mycelium/pledge_fixture_gen.rye -- reproducibly emit a two-phase-transfer Cord dev-net fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the two-phase transfer - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
-//! Seats a real four-block scene carrying a genuine two-phase transfer — a pledge opened, honored,
+//! Seats a real four-block scene carrying a genuine two-phase transfer -- a pledge opened, honored,
 //! and a second pledge left standing open. A demo funder issues a genesis credit of 200 to Alice
-//! (round 0); Alice pledges 100 to Bob (round 1, id 0x01…) reserving her coins; Alice posts that
+//! (round 0); Alice pledges 100 to Bob (round 1, id 0x01...) reserving her coins; Alice posts that
 //! pledge (round 2), honoring it so the reserved hundred reaches Bob; Alice pledges 100 to Carol
-//! (round 3, id 0x02…) and leaves it open. The whole order is unambiguous by round, so a keeper (or an
+//! (round 3, id 0x02...) and leaves it open. The whole order is unambiguous by round, so a keeper (or an
 //! awk) can walk the block lines in file order and name the same honored recipient, posted count, and
 //! open count the Pledge's agreed-order resolution names. Committing and rendering to a
 //! `format cord-dag-v1` record gives the exact bytes `mycelium/pledge_true.rye` reads back and the r4
@@ -17,7 +17,7 @@
 //! fixture is what the Cord emits, never a hand-mock. Emitted on stderr (hosted `print` is
 //! `std.debug.print`), so capture with `2>`.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge_fixture_gen.rye \
 //!     2> tools/fixtures/pledge_dag.bron
@@ -40,7 +40,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · recipient exactly.
+    // invariant: the buffer holds tag - id - recipient exactly.
     assert(out.len >= 1 + pledge.id_len + pledge.pk_len);
     assert(id.len == pledge.id_len);
     out[0] = pledge.tag_pledge;
@@ -50,7 +50,7 @@ fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
 }
 
 fn post_body(id: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id exactly.
+    // invariant: the buffer holds tag - id exactly.
     assert(out.len >= 1 + pledge.id_len);
     assert(id.len == pledge.id_len);
     out[0] = pledge.tag_post;
@@ -58,7 +58,7 @@ fn post_body(id: []const u8, out: []u8) u32 {
     return 1 + pledge.id_len;
 }
 
-/// Seat the two-phase four-block Dag — genesis credits Alice 200; Alice pledges 100 to Bob at round 1;
+/// Seat the two-phase four-block Dag -- genesis credits Alice 200; Alice pledges 100 to Bob at round 1;
 /// Alice posts it at round 2 (honored, Bob receives the reserved hundred); Alice pledges 100 to Carol at
 /// round 3 and leaves it open.
 fn seat_dag() !cord.Dag {
@@ -111,7 +111,7 @@ pub fn main() !void {
     const pl = try cord_bron.from_dag(&dag);
     var buf: [cord_bron.max_record]u8 = undefined;
     const n = try cord_bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_bron.max_record);
     print("{s}", .{buf[0..n]});

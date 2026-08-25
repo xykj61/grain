@@ -1,17 +1,17 @@
-//! lotus/album_sheet.rye — ALES225: a whole record's readable table of contents. ALES223 gathered many renders into an album and
-//! ALES224 sealed its content address — yet both are byte frames a program reads, not a page a keeper reads. Before opening every
+//! lotus/album_sheet.rye -- ALES225: a whole record's readable table of contents. ALES223 gathered many renders into an album and
+//! ALES224 sealed its content address -- yet both are byte frames a program reads, not a page a keeper reads. Before opening every
 //! track, a keeper wants to SEE what a record holds: how many tracks, and for each its name, preset, rate, channels, frames, and
-//! size. This rung draws that page — a bounded, human-readable listing rendered from an already-unpacked album.
+//! size. This rung draws that page -- a bounded, human-readable listing rendered from an already-unpacked album.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES225.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES225.
 //! Design read: active-designing/date/20260815/20260815-140635_fill-ales225-lotus-album-sheet.md
-//! Stands on: lotus/render_album.rye (ALES223) — the unpacked Album (its Tracks and their parsed Manifests) this reads; through
-//! it render_manifest.rye (ALES221, the manifest fields) and render_bundle.rye (ALES222). No new frame, no new hash — a projection.
+//! Stands on: lotus/render_album.rye (ALES223) -- the unpacked Album (its Tracks and their parsed Manifests) this reads; through
+//! it render_manifest.rye (ALES221, the manifest fields) and render_bundle.rye (ALES222). No new frame, no new hash -- a projection.
 //!
 //! A PROJECTION, NOT A ROUND-TRIP. Like the cue sheet's render (ALES21), this draws a human view; it does not parse back, because
 //! the audio is not in the page. The album frame (ALES223) is the round-trippable artifact; this sheet is the eye's version of it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded text render over in-process fields, siloed to lotus/. No real file, no
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded text render over in-process fields, siloed to lotus/. No real file, no
 //! DAC, no acoustic or electrical fact, no network, no keys, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/album_sheet.rye selftest
@@ -26,11 +26,11 @@ const render_bundle = @import("render_bundle.rye");
 
 pub const album_sheet_version = "20260815.140635";
 
-/// The sheet's first line, its own line — names the page's shape so a reader (or a grep) can tell it from a cue sheet or a manifest.
+/// The sheet's first line, its own line -- names the page's shape so a reader (or a grep) can tell it from a cue sheet or a manifest.
 pub const sheet_header = "format lotus-album-sheet-v1";
 
 /// The widest single track line: `track ` (6), a u32 index (10), a space, the track name bound, a space, the preset name bound, a
-/// space, and four bounded u32 fields (rate · channels · frames · wav_bytes) each with its leading space, then a newline. A named
+/// space, and four bounded u32 fields (rate - channels - frames - wav_bytes) each with its leading space, then a newline. A named
 /// ceiling so the whole page is proven to fit a fixed buffer, never an unbounded string.
 pub const track_line_max: u32 = 6 + 10 + 1 + render_album.max_track_name + 1 + render_manifest.max_preset_name + 1 + 4 * (10 + 1) + 1;
 
@@ -38,14 +38,14 @@ pub const track_line_max: u32 = 6 + 10 + 1 + render_album.max_track_name + 1 + r
 pub const max_sheet_bytes: u32 = @intCast(sheet_header.len + 1 + 6 + 10 + 1 + render_album.max_tracks * track_line_max);
 
 /// The sheet's only fault: a render whose text would exceed the caller's buffer, refused rather than writing past its end. A
-/// projection is otherwise infallible — every field it reads was already proven by open_manifest / unpack.
+/// projection is otherwise infallible -- every field it reads was already proven by open_manifest / unpack.
 pub const SheetError = error{
-    /// The rendered page would exceed the caller's buffer — refused, never truncated.
+    /// The rendered page would exceed the caller's buffer -- refused, never truncated.
     Overflow,
 };
 
 /// Render an unpacked album as its readable table of contents into `out`, returning the length written. The header line, an
-/// `album <count>` line, then one `track <i> <name> <preset> <rate> <channels> <frames> <wav_bytes>` line per track in order — the
+/// `album <count>` line, then one `track <i> <name> <preset> <rate> <channels> <frames> <wav_bytes>` line per track in order -- the
 /// eye's version of a record. Refuses Overflow rather than writing past the buffer a caller supplied.
 pub fn render_sheet(album: *const render_album.Album, out: []u8) SheetError!u32 {
     // invariant: the album stays within its named ceiling before a byte is rendered.
@@ -57,7 +57,7 @@ pub fn render_sheet(album: *const render_album.Album, out: []u8) SheetError!u32 
     while (i < album.count) : (i += 1) {
         const t = album.tracks[i];
         const m = t.bundle.manifest;
-        // Every field is bounded — a u32 index, a name and preset within their bounds, four bounded u32s — so a line can never
+        // Every field is bounded -- a u32 index, a name and preset within their bounds, four bounded u32s -- so a line can never
         // overrun a well-sized buffer; a too-small buffer refuses Overflow at the seam.
         const line = std.fmt.bufPrint(
             out[off..],
@@ -72,11 +72,11 @@ pub fn render_sheet(album: *const render_album.Album, out: []u8) SheetError!u32 
     return off;
 }
 
-// --- selftest: THE LISTING LAW — every track appears in order with its name and manifest fields; THE HEADER LAW — the page opens
-//     with the format line and an `album <count>` line; THE EMPTY LAW — a zero-track album renders just the two header lines; THE
-//     ATOMIC LAW — a too-small buffer refuses Overflow ---------------------------------------------------------------------------
+// --- selftest: THE LISTING LAW -- every track appears in order with its name and manifest fields; THE HEADER LAW -- the page opens
+//     with the format line and an `album <count>` line; THE EMPTY LAW -- a zero-track album renders just the two header lines; THE
+//     ATOMIC LAW -- a too-small buffer refuses Overflow ---------------------------------------------------------------------------
 
-/// Build a real ALES222 bundle for `wav` under `preset_name` into `out`, returning its length — exactly what a keeper would save.
+/// Build a real ALES222 bundle for `wav` under `preset_name` into `out`, returning its length -- exactly what a keeper would save.
 fn make_bundle(out: []u8, preset_name: []const u8, wav: []const u8, frames: u32) !u32 {
     var man: [render_manifest.max_manifest_bytes]u8 = undefined;
     const man_n = try render_manifest.seal_manifest(man[0..], preset_name, 48_000, 2, frames, wav);
@@ -96,7 +96,7 @@ fn run_selftest() !u8 {
         .{ .name = "closer", .bundle = buf_b[0..nb] },
     };
 
-    // 1. THE LISTING & HEADER LAWS — pack, unpack, render; the page opens with the format and count lines and lists both tracks in
+    // 1. THE LISTING & HEADER LAWS -- pack, unpack, render; the page opens with the format and count lines and lists both tracks in
     //    order with their names, presets, and fields.
     {
         var frame: [2048]u8 = undefined;
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
         if (std.mem.indexOf(u8, text, want0) == null) return error.Bytes0Wrong;
     }
 
-    // 2. THE EMPTY LAW — a zero-track album renders exactly the two header lines and no track line.
+    // 2. THE EMPTY LAW -- a zero-track album renders exactly the two header lines and no track line.
     {
         var frame: [64]u8 = undefined;
         const empty = [_]render_album.TrackIn{};
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         if (std.mem.indexOf(u8, text, "track ") != null) return error.EmptyHadTrack;
     }
 
-    // 3. THE ATOMIC LAW — a buffer too small for the whole page refuses Overflow rather than truncating it.
+    // 3. THE ATOMIC LAW -- a buffer too small for the whole page refuses Overflow rather than truncating it.
     {
         var frame: [2048]u8 = undefined;
         const fn_ = try render_album.pack(frame[0..], tracks[0..]);

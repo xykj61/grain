@@ -1,4 +1,4 @@
-//! Rye test: mem.replaceOwned — pass 9915.
+//! Rye test: mem.replaceOwned -- pass 9915.
 //!
 //! Allocating replace; pairs with replacementSize (9916) and replace (9917).
 

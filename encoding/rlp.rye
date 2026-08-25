@@ -1,26 +1,26 @@
-//! encoding/rlp.rye — Recursive Length Prefix (RLP) authored in pure Rye. RLP is the one serialization the whole Ethereum world stands on:
+//! encoding/rlp.rye -- Recursive Length Prefix (RLP) authored in pure Rye. RLP is the one serialization the whole Ethereum world stands on:
 //! every transaction, every account, every receipt, every trie node, every devp2p frame is an RLP-encoded byte string or list. It encodes
-//! exactly two shapes — a byte string, and a list of items (each itself a string or a list) — and nothing else: no integers, no floats, no
+//! exactly two shapes -- a byte string, and a list of items (each itself a string or a list) -- and nothing else: no integers, no floats, no
 //! maps. A number is a byte string of its big-endian minimal bytes; a struct is a list of its fields; meaning lives one layer up, in whoever
 //! reads the bytes. This module authors that law once, parity-checked, so the tree serializes the Ethereum way through one proven door.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, base32.rye,
+//! Season: encoding -- the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, base32.rye,
 //! hex.rye, bech32.rye, and pem.rye. Where crypto/ authors the mathematics that produces bytes, encoding/ authors the forms those bytes
-//! travel in. RLP is the form the Ethereum-family primitives already GREEN in crypto/ — keccak256, secp256k1 ECDSA sign/recover, eth_address,
-//! eip712 — reach for next: a signed transaction is the keccak256 of the RLP of its fields, recovered back to its sender's address.
+//! travel in. RLP is the form the Ethereum-family primitives already GREEN in crypto/ -- keccak256, secp256k1 ECDSA sign/recover, eth_address,
+//! eip712 -- reach for next: a signed transaction is the keccak256 of the RLP of its fields, recovered back to its sender's address.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the rules are the Ethereum Yellow Paper's Appendix B; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — three cases, stated positively. A single byte in [0x00, 0x7f] is its own encoding. A byte string is 0x80+len then the bytes when
+//! THE CRUX -- three cases, stated positively. A single byte in [0x00, 0x7f] is its own encoding. A byte string is 0x80+len then the bytes when
 //! len ≤ 55, else 0xb7+len_of_len, the big-endian minimal length, then the bytes. A list is 0xc0+payload_len then the concatenated item
 //! encodings when the payload is ≤ 55 bytes, else 0xf7+len_of_len, the big-endian minimal length, then the items. Canonical RLP is minimal: a
-//! value below 0x80 is never wrapped, and a length is never carried in more bytes than it needs — decode refuses both, since a non-minimal
+//! value below 0x80 is never wrapped, and a length is never carried in more bytes than it needs -- decode refuses both, since a non-minimal
 //! encoding of the same data would hash to a different transaction.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. RLP is pure serialization; it holds no secret and
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. RLP is pure serialization; it holds no secret and
 //! makes no timing claim. Zig ships no RLP codec, so parity is proven the way base58 and bech32 are: against the Ethereum Yellow Paper's own
-//! published known-answers (dog · [cat,dog] · the empty string and list · the set-theoretic three · the 56-byte Lorem long-string form) byte-
-//! for-byte, AND against a second, independent path — a decoder that reads the length prefixes back (a genuinely different algorithm from the
+//! published known-answers (dog - [cat,dog] - the empty string and list - the set-theoretic three - the 56-byte Lorem long-string form) byte-
+//! for-byte, AND against a second, independent path -- a decoder that reads the length prefixes back (a genuinely different algorithm from the
 //! encoder that writes them), round-tripping every vector and a nine-field transaction-shaped list to exactly its own bytes.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/rlp.rye selftest
@@ -32,12 +32,12 @@ const print = std.debug.print;
 pub const rlp_version = "20260816.094500";
 
 /// The largest single byte string this module encodes, and the largest total payload it produces or reads in one call. Generous for a
-/// transaction, an account, or a trie node — named so every buffer bound and every loop cites a maximum, the TAME reflex that a count
+/// transaction, an account, or a trie node -- named so every buffer bound and every loop cites a maximum, the TAME reflex that a count
 /// declares its ceiling before it grows.
 pub const max_item_bytes: u32 = 1 << 20;
 
 /// The deepest nesting of lists-within-lists this module encodes or decodes. RLP is recursive by definition, so recursion is bounded by a
-/// named maximum rather than left open — no Ethereum structure nests remotely this deep (a transaction list is one level, a trie node two).
+/// named maximum rather than left open -- no Ethereum structure nests remotely this deep (a transaction list is one level, a trie node two).
 pub const max_depth: u32 = 16;
 
 /// The most items a single list may hold. A transaction is nine to twelve fields; this ceiling is generous while still naming a bound, so no
@@ -50,22 +50,22 @@ pub const short_limit: u32 = 55;
 
 /// The faults this module can raise, each refused at the edge before a partial or dishonest result escapes.
 pub const RlpError = error{
-    /// An item or payload larger than max_item_bytes — refused before a byte is written or trusted.
+    /// An item or payload larger than max_item_bytes -- refused before a byte is written or trusted.
     TooLong,
     /// A structure nested deeper than max_depth, or a list holding more than max_children items.
     TooDeep,
-    /// The caller's destination buffer is smaller than the exact encoded length — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact encoded length -- refused before the first write.
     DestTooSmall,
-    /// A decode input that ends before the length it declared — a truncated frame.
+    /// A decode input that ends before the length it declared -- a truncated frame.
     Truncated,
     /// A decode input that is not canonical: a value below 0x80 wrapped as a string, or a length carried in more bytes than it needs. Two
     /// encodings of the same data must never both be accepted, or one transaction could wear two hashes.
     NonMinimal,
-    /// decode_bytes met a list header (tag ≥ 0xc0), or decode_list_header met a string — the shape asked for is not the shape found.
+    /// decode_bytes met a list header (tag ≥ 0xc0), or decode_list_header met a string -- the shape asked for is not the shape found.
     WrongShape,
 };
 
-/// The number of bytes needed to write n big-endian with no leading zero — RLP's minimal length-of-length. n is assumed positive; the long
+/// The number of bytes needed to write n big-endian with no leading zero -- RLP's minimal length-of-length. n is assumed positive; the long
 /// form is only reached for lengths above short_limit, which are never zero.
 fn be_len(n: u32) u32 {
     // invariant: the long form is only reached above short_limit, so n is never zero here.
@@ -100,7 +100,7 @@ fn read_be(bytes: []const u8) u64 {
     return v;
 }
 
-/// Copy source into dest byte by byte — a bounded, disjoint move that reaches for no std codec and no bare builtin.
+/// Copy source into dest byte by byte -- a bounded, disjoint move that reaches for no std codec and no bare builtin.
 fn copy_into(dest: []u8, source: []const u8) void {
     // invariant: the destination holds every source byte.
     assert(dest.len >= source.len);
@@ -108,7 +108,7 @@ fn copy_into(dest: []u8, source: []const u8) void {
     while (i < source.len) : (i += 1) dest[i] = source[i];
 }
 
-/// The exact number of bytes encode_bytes writes for this byte string, without writing them — the size half of the two-pass list encoder.
+/// The exact number of bytes encode_bytes writes for this byte string, without writing them -- the size half of the two-pass list encoder.
 fn str_encoded_len(source: []const u8) RlpError!u32 {
     if (source.len > max_item_bytes) return error.TooLong;
     const n: u32 = @intCast(source.len);
@@ -119,7 +119,7 @@ fn str_encoded_len(source: []const u8) RlpError!u32 {
     return 1 + be_len(n) + n;
 }
 
-/// Encode a single byte string as RLP into dest — the string case, the leaf every transaction field, address, and integer becomes. Returns
+/// Encode a single byte string as RLP into dest -- the string case, the leaf every transaction field, address, and integer becomes. Returns
 /// the exact written slice. A one-byte value below 0x80 is its own encoding; the empty string is 0x80.
 pub fn encode_bytes(dest: []u8, source: []const u8) RlpError![]const u8 {
     if (source.len > max_item_bytes) return error.TooLong;
@@ -154,7 +154,7 @@ pub fn encode_bytes(dest: []u8, source: []const u8) RlpError![]const u8 {
     return dest[0..total];
 }
 
-/// The number of bytes a list header takes for a payload of the given length — 1 in the short form, 1 + length-of-length in the long form.
+/// The number of bytes a list header takes for a payload of the given length -- 1 in the short form, 1 + length-of-length in the long form.
 fn list_header_len(payload_len: u32) u32 {
     if (payload_len <= short_limit) return 1;
     return 1 + be_len(payload_len);
@@ -181,14 +181,14 @@ pub fn encode_list_header(dest: []u8, payload_len: u32) RlpError![]const u8 {
     return dest[0..total];
 }
 
-/// An RLP item is exactly one of two shapes: a byte string, or a list of items. Meaning lives one layer up — a number is the big-endian
+/// An RLP item is exactly one of two shapes: a byte string, or a list of items. Meaning lives one layer up -- a number is the big-endian
 /// bytes of a str, a transaction is a list of str fields.
 pub const Item = union(enum) {
     str: []const u8,
     list: []const Item,
 };
 
-/// The exact number of bytes encode_item writes for this item, without writing them — the size pass a list needs before it can write its own
+/// The exact number of bytes encode_item writes for this item, without writing them -- the size pass a list needs before it can write its own
 /// length prefix. Recurses under the same depth bound as the encoder.
 pub fn encoded_len(item: Item, depth: u32) RlpError!u32 {
     if (depth >= max_depth) return error.TooDeep;
@@ -207,7 +207,7 @@ pub fn encoded_len(item: Item, depth: u32) RlpError!u32 {
     }
 }
 
-/// Encode an item — a byte string, or a list nesting strings and lists — as RLP into dest. Returns the exact written slice. A list is a two-
+/// Encode an item -- a byte string, or a list nesting strings and lists -- as RLP into dest. Returns the exact written slice. A list is a two-
 /// pass write: measure the payload, write the header for that length, then write each child after it.
 pub fn encode_item(dest: []u8, item: Item, depth: u32) RlpError![]const u8 {
     if (depth >= max_depth) return error.TooDeep;
@@ -245,7 +245,7 @@ pub const Decoded = struct {
     consumed: u32,
 };
 
-/// Read one RLP byte string from the front of source — the inverse of encode_bytes, a genuinely different algorithm that reads the length
+/// Read one RLP byte string from the front of source -- the inverse of encode_bytes, a genuinely different algorithm that reads the length
 /// prefix rather than writing it. Refuses a truncated frame, a non-minimal encoding, and a list header where a string was asked for.
 pub fn decode_bytes(source: []const u8) RlpError!Decoded {
     if (source.len == 0) return error.Truncated;
@@ -258,7 +258,7 @@ pub fn decode_bytes(source: []const u8) RlpError!Decoded {
         const total = 1 + len;
         if (source.len < total) return error.Truncated;
         const val = source[1..total];
-        // A single byte below 0x80 must be its own encoding — wrapping it is non-canonical.
+        // A single byte below 0x80 must be its own encoding -- wrapping it is non-canonical.
         if (len == 1 and val[0] < 0x80) return error.NonMinimal;
         return Decoded{ .value = val, .consumed = total };
     }
@@ -316,7 +316,7 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Decode encoded through the independent decoder path and assert it matches item exactly — bytes for a string, structure for a list. The
+/// Decode encoded through the independent decoder path and assert it matches item exactly -- bytes for a string, structure for a list. The
 /// second, independent implementation the parity claim rests on: it reads every prefix the encoder wrote and reconstructs the same shape.
 fn decode_and_match(encoded: []const u8, item: Item, depth: u32) RlpError!void {
     if (depth >= max_depth) return error.TooDeep;
@@ -343,7 +343,7 @@ fn decode_and_match(encoded: []const u8, item: Item, depth: u32) RlpError!void {
     }
 }
 
-// The Ethereum Yellow Paper's own published RLP examples — the neutral reference the encoder must reproduce byte-for-byte, and the decoder
+// The Ethereum Yellow Paper's own published RLP examples -- the neutral reference the encoder must reproduce byte-for-byte, and the decoder
 // must read back to exactly these shapes. Covers a single low byte (its own encoding), the empty string and list, a short string, a short
 // list, deep nesting, and the long-string boundary at 56 bytes.
 const lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
@@ -417,7 +417,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. The transaction shape — the exact operation Ethereum tx signing performs: encode nine fields as strings, wrap them in a list, and
+    // 3. The transaction shape -- the exact operation Ethereum tx signing performs: encode nine fields as strings, wrap them in a list, and
     //    prove the assembled frame round-trips to itself. The fields stand in for (nonce, gasPrice, gas, to, value, data, v, r, s).
     {
         const to = [_]u8{ 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35, 0x35 };

@@ -1,7 +1,7 @@
-//! nock/nock_jet_dec.rye — a real jet: dec, fast and slow, proven identical.
+//! nock/nock_jet_dec.rye -- a real jet: dec, fast and slow, proven identical.
 //!
 //! Per the runes-scoping study's own jet proposal ("every jet in Glow ships
-//! with a paired witness — a fixture proving the accelerated path and the
+//! with a paired witness -- a fixture proving the accelerated path and the
 //! pure Glow path produce identical output on the same input"), this is the
 //! first real jet: dec (decrement), the classic example, since Nock has a
 //! native increment (opcode 4) but no native decrement at all -- computing

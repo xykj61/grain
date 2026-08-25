@@ -1,15 +1,15 @@
-//! tools/rye/monocypher_aead_parity.rye — our authored crypto/aead.rye asked for its OWN ChaCha20-Poly1305 AEAD ciphertext and tag over RFC 8439
+//! tools/rye/monocypher_aead_parity.rye -- our authored crypto/aead.rye asked for its OWN ChaCha20-Poly1305 AEAD ciphertext and tag over RFC 8439
 //! §2.8.2's key, nonce, associated data, and plaintext, printed one hex value per line, so tools/cr/crypto_monocypher_aead_parity_witness.rish can
-//! diff our bytes against the vendored Monocypher's C (tools/fixtures/monocypher_aead_harness.c) byte-for-byte — the authenticated-encryption
-//! seal Lotus's signed carry, Vault, and Comlink rest on, proven against the audit's parity target. Season G (Cryptography · Rye-native,
-//! Monocypher-parity, audit-ready) — the FOURTH primitive line the decision wave named, closing ChaCha/Poly against the source.
+//! diff our bytes against the vendored Monocypher's C (tools/fixtures/monocypher_aead_harness.c) byte-for-byte -- the authenticated-encryption
+//! seal Lotus's signed carry, Vault, and Comlink rest on, proven against the audit's parity target. Season G (Cryptography - Rye-native,
+//! Monocypher-parity, audit-ready) -- the FOURTH primitive line the decision wave named, closing ChaCha/Poly against the source.
 //!
-//! The two printed lines are, in order: the ciphertext (114 bytes → 228 hex characters) and the 16-byte Poly1305 tag (32 hex characters) — the
+//! The two printed lines are, in order: the ciphertext (114 bytes -> 228 hex characters) and the 16-byte Poly1305 tag (32 hex characters) -- the
 //! same two lines the Monocypher C harness prints, so the parity witness compares like against like over identical inputs. Monocypher's IETF
 //! authenticated stream (crypto_aead_init_ietf + crypto_aead_write) is byte-for-byte RFC 8439 §2.8, which is exactly what our aead.rye composes.
 //!
-//! This authors NO cryptography — it is a printing harness over the GREEN crypto/aead.rye (reached through the tools/rye/aead.rye, tools/rye/chacha20.rye,
-//! and tools/rye/poly1305.rye symlinks, since Rye resolves imports beside the importing file). Purely local — the key and nonce are the RFC's public
+//! This authors NO cryptography -- it is a printing harness over the GREEN crypto/aead.rye (reached through the tools/rye/aead.rye, tools/rye/chacha20.rye,
+//! and tools/rye/poly1305.rye symlinks, since Rye resolves imports beside the importing file). Purely local -- the key and nonce are the RFC's public
 //! vectors, no key of ours, no signature, no network, no funds, no device.
 //!
 //! Run from the repository root:
@@ -33,12 +33,12 @@ const rfc_nonce = [aead.nonce_bytes]u8{ 0x07, 0x00, 0x00, 0x00, 0x40, 0x41, 0x42
 /// RFC 8439 §2.8.2 associated data.
 const rfc_aad = [_]u8{ 0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 };
 
-/// RFC 8439 §2.8.2 plaintext — the sunscreen line, 114 bytes.
+/// RFC 8439 §2.8.2 plaintext -- the sunscreen line, 114 bytes.
 const rfc_plaintext = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
 
 const hex_alphabet = "0123456789abcdef";
 
-/// print_hex — render a byte slice as a line of lowercase hex, two characters per byte. Bounded by a named ceiling on the slice length.
+/// print_hex -- render a byte slice as a line of lowercase hex, two characters per byte. Bounded by a named ceiling on the slice length.
 const max_hex_bytes: u32 = 128;
 fn print_hex(bytes: []const u8) void {
     // invariant: the slice fits the hex ceiling, so each byte renders to exactly two characters within a bounded line.
@@ -49,7 +49,7 @@ fn print_hex(bytes: []const u8) void {
         out[i * 2] = hex_alphabet[bytes[i] >> 4];
         out[i * 2 + 1] = hex_alphabet[bytes[i] & 0x0f];
     }
-    // invariant (postcondition): exactly two hex characters were written per byte — a full rendering, never a truncation.
+    // invariant (postcondition): exactly two hex characters were written per byte -- a full rendering, never a truncation.
     const n: u32 = @as(u32, @intCast(bytes.len)) * 2;
     print("{s}\n", .{out[0..n]});
 }
@@ -66,7 +66,7 @@ pub fn main(init: std.process.Init) !u8 {
     var tag: [aead.tag_bytes]u8 = undefined;
     try aead.seal(&cipher, &tag, rfc_plaintext, &rfc_aad, &rfc_key, &rfc_nonce);
 
-    // 1. The ciphertext (114 bytes → 228 hex characters).
+    // 1. The ciphertext (114 bytes -> 228 hex characters).
     print_hex(&cipher);
 
     // 2. The 16-byte Poly1305 tag (32 hex characters).

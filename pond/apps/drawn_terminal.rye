@@ -1,11 +1,11 @@
-//! pond/apps/drawn_terminal.rye — SLC-2a drawn terminal + SLC-2b Dexter keyboard.
+//! pond/apps/drawn_terminal.rye -- SLC-2a drawn terminal + SLC-2b Dexter keyboard.
 //!
 //! Composes Rishi's live session (run_one_input + session_lines) with Brushstroke's
 //! Skate surface. SLC-2b carries keyboard input through Wayland so one typed
 //! line in the window runs through Rishi and redraws the frame. Inference and
 //! commerce folds share the same glass under the thin-view exception.
 //!
-//! Build (from repo root — prefer rishi):
+//! Build (from repo root -- prefer rishi):
 //!   rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 //!
 //! Manual rye escape hatch: see pond/README.md
@@ -15,77 +15,77 @@
 //!   pond/bin/drawn-terminal keyboardtest # headless SLC-2b witness
 //!   pond/bin/drawn-terminal rw2collabtest  # headless RW-2 app collaboration witness
 //!   pond/bin/drawn-terminal rw5collabtest  # headless RW-5 Lantern collaboration (parity tip 420)
-//!   pond/bin/drawn-terminal thinviewtest   # Realidream thin view — local MALA/WOV fixtures
-//!   pond/bin/drawn-terminal booksviewtest  # Dimeroll books view — trial balance + P&L + BS
-//!   pond/bin/drawn-terminal sightviewtest  # Linengrow sight — carriage + books on one Skate frame
-//!   pond/bin/drawn-terminal assistviewtest # Inference assist — corpus + lantern + books fold (tip 428 asks complete_fixture)
-//!   pond/bin/drawn-terminal assistviewsighttest # Assist sight — carriage + assist on one frame
-//!   pond/bin/drawn-terminal queryviewtest  # Realidream query view — Tablecloth query-wire hits
-//!   pond/bin/drawn-terminal querydeviceviewtest # Query device-wire hits → Skate
+//!   pond/bin/drawn-terminal thinviewtest   # Realidream thin view -- local MALA/WOV fixtures
+//!   pond/bin/drawn-terminal booksviewtest  # Dimeroll books view -- trial balance + P&L + BS
+//!   pond/bin/drawn-terminal sightviewtest  # Linengrow sight -- carriage + books on one Skate frame
+//!   pond/bin/drawn-terminal assistviewtest # Inference assist -- corpus + lantern + books fold (tip 428 asks complete_fixture)
+//!   pond/bin/drawn-terminal assistviewsighttest # Assist sight -- carriage + assist on one frame
+//!   pond/bin/drawn-terminal queryviewtest  # Realidream query view -- Tablecloth query-wire hits
+//!   pond/bin/drawn-terminal querydeviceviewtest # Query device-wire hits -> Skate
 //!   pond/bin/drawn-terminal queryunifiedviewtest # Hosted + device query hits on one Skate frame
-//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view — live Amphora pour → Skate
-//!   pond/bin/drawn-terminal forgedeviceviewtest # Forge device-wire fetch → Skate
+//!   pond/bin/drawn-terminal forgeviewtest  # Realidream forge view -- live Amphora pour -> Skate
+//!   pond/bin/drawn-terminal forgedeviceviewtest # Forge device-wire fetch -> Skate
 //!   pond/bin/drawn-terminal forgeunifiedviewtest # Hosted pour + device fetch on one Skate frame
-//!   pond/bin/drawn-terminal forgequeryviewtest # Forge Tablecloth-query hits → Skate
-//!   pond/bin/drawn-terminal forgequerydeviceviewtest # Forge query device-wire hits → Skate
+//!   pond/bin/drawn-terminal forgequeryviewtest # Forge Tablecloth-query hits -> Skate
+//!   pond/bin/drawn-terminal forgequerydeviceviewtest # Forge query device-wire hits -> Skate
 //!   pond/bin/drawn-terminal forgequeryunifiedviewtest # Hosted + device forge query hits
-//!   pond/bin/drawn-terminal corpusviewtest # Ember corpus query hits → Skate
-//!   pond/bin/drawn-terminal corpusprefixviewtest # Ember path_prefix query → Skate
-//!   pond/bin/drawn-terminal corpusrishviewtest # Ember rish-kind query → Skate
-//!   pond/bin/drawn-terminal corpusryeprefixviewtest # Ember rye + pond/ → Skate
-//!   pond/bin/drawn-terminal corpustoolsprefixviewtest # Ember tools/ prefix → Skate
-//!   pond/bin/drawn-terminal corpuscandyprefixviewtest # Ember dimeroll/ prefix → Skate
-//!   pond/bin/drawn-terminal corpusappsprefixviewtest # Ember pond/apps/ prefix → Skate
-//!   pond/bin/drawn-terminal scribbleviewtest # Scribble outline headings → Skate
-//!   pond/bin/drawn-terminal scribbleparaviewtest # Scribble paragraphs → Skate
-//!   pond/bin/drawn-terminal scribblefenceviewtest # Scribble fence kinds → Skate
-//!   pond/bin/drawn-terminal scribbleplainviewtest # Scribble plain snippets → Skate
-//!   pond/bin/drawn-terminal scribbleryeviewtest # Scribble rye snippets → Skate
-//!   pond/bin/drawn-terminal scribblerishviewtest # Scribble rish snippets → Skate
-//!   pond/bin/drawn-terminal scribbleh1viewtest # Scribble h1 headings → Skate
-//!   pond/bin/drawn-terminal scribbleh2viewtest # Scribble h2 headings → Skate
-//!   pond/bin/drawn-terminal scribbleh3viewtest # Scribble h3 headings → Skate
-//!   pond/bin/drawn-terminal scribbledepthviewtest # Scribble h1/h2/h3 depth tallies → Skate
-//!   pond/bin/drawn-terminal scribbletallyviewtest # Scribble headings+paragraphs tally → Skate
-//!   pond/bin/drawn-terminal scribbleblocksviewtest # Scribble block count → Skate
-//!   pond/bin/drawn-terminal scribblefenceheadingviewtest # Scribble fence+heading combo → Skate
-//!   pond/bin/drawn-terminal scribbletallyblocksviewtest # Scribble tally+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribbleparablocksviewtest # Scribble paragraphs+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribbleh1blocksviewtest # Scribble h1+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribbleh2blocksviewtest # Scribble h2+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribbleh3blocksviewtest # Scribble h3+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribbleryeblocksviewtest # Scribble rye+blocks combo → Skate
-//!   pond/bin/drawn-terminal scribblerishblocksviewtest # Scribble rish+blocks combo → Skate
-//!   pond/bin/drawn-terminal corpusryecandyprefixviewtest # Ember rye + dimeroll/ → Skate
-//!   pond/bin/drawn-terminal corpusrishtoolsprefixviewtest # Ember rish + tools/ → Skate
-//!   pond/bin/drawn-terminal corpusryeappsprefixviewtest # Ember rye + pond/apps/ → Skate
-//!   pond/bin/drawn-terminal corpusminlinesviewtest # Ember min_lines filter → Skate
-//!   pond/bin/drawn-terminal corpusmaxlinesviewtest # Ember max_lines filter → Skate
-//!   pond/bin/drawn-terminal corpuspathsuffixviewtest # Ember path_suffix filter → Skate
-//!   pond/bin/drawn-terminal corpussumlinesviewtest # Ember sum_lines fold → Skate
-//!   pond/bin/drawn-terminal exceptionviewtest # Dimeroll exception queue → Skate
-//!   pond/bin/drawn-terminal pnlviewtest # Dimeroll P&L income statement → Skate
-//!   pond/bin/drawn-terminal bsviewtest # Dimeroll balance sheet → Skate
-//!   pond/bin/drawn-terminal tbviewtest # Dimeroll trial balance → Skate
-//!   pond/bin/drawn-terminal journalviewtest # Dimeroll journal entries → Skate
-//!   pond/bin/drawn-terminal chartviewtest # Dimeroll chart of accounts → Skate
-//!   pond/bin/drawn-terminal cashaccountviewtest # Dimeroll cash account filter → Skate
-//!   pond/bin/drawn-terminal memoprefixviewtest # Dimeroll memo prefix filter → Skate
-//!   pond/bin/drawn-terminal cashflowviewtest # Dimeroll cash flow fold → Skate
-//!   pond/bin/drawn-terminal sumamountsviewtest # Dimeroll sum amounts → Skate
-//!   pond/bin/drawn-terminal granaryviewtest # Granary weave view — resolve + Scribble → Skate
-//!   pond/bin/drawn-terminal exchangeviewtest # Granary Exchange view — weave listing → Skate
-//!   pond/bin/drawn-terminal mandiviewtest   # Mandi floor view — vessel listing → Skate
-//!   pond/bin/drawn-terminal mandisettletest # Mandi settle view — vessel settle → Skate
-//!   pond/bin/drawn-terminal stewardviewtest # Commerce steward — list → settle → Dimeroll on one frame
-//!   pond/bin/drawn-terminal stewardsighttest # Steward sight — livelihood + books on one frame (tip 423)
-//!   pond/bin/drawn-terminal settlevie       # Granary settle view — weave settle → Skate
-//!   pond/bin/drawn-terminal granarystewardtest # Granary steward — list → settle → Dimeroll (tip 424)
-//!   pond/bin/drawn-terminal granarystewardsighttest # Granary steward sight — weave + books (tip 425)
-//!   pond/bin/drawn-terminal openasksviewtest # Open Asks — closed ask loop on Skate (tip 426)
-//!   pond/bin/drawn-terminal openasksescrowviewtest # Open Asks escrow — hold/release on Skate (tip 427)
-//!   pond/bin/drawn-terminal openasksreputationviewtest # Open Asks reputation — consent-before-counting (tip 429)
-//!   pond/bin/drawn-terminal openaskscivicsighttest # Open Asks civic sight — L1+L3+L4 on one frame (tip 430)
+//!   pond/bin/drawn-terminal corpusviewtest # Ember corpus query hits -> Skate
+//!   pond/bin/drawn-terminal corpusprefixviewtest # Ember path_prefix query -> Skate
+//!   pond/bin/drawn-terminal corpusrishviewtest # Ember rish-kind query -> Skate
+//!   pond/bin/drawn-terminal corpusryeprefixviewtest # Ember rye + pond/ -> Skate
+//!   pond/bin/drawn-terminal corpustoolsprefixviewtest # Ember tools/ prefix -> Skate
+//!   pond/bin/drawn-terminal corpuscandyprefixviewtest # Ember dimeroll/ prefix -> Skate
+//!   pond/bin/drawn-terminal corpusappsprefixviewtest # Ember pond/apps/ prefix -> Skate
+//!   pond/bin/drawn-terminal scribbleviewtest # Scribble outline headings -> Skate
+//!   pond/bin/drawn-terminal scribbleparaviewtest # Scribble paragraphs -> Skate
+//!   pond/bin/drawn-terminal scribblefenceviewtest # Scribble fence kinds -> Skate
+//!   pond/bin/drawn-terminal scribbleplainviewtest # Scribble plain snippets -> Skate
+//!   pond/bin/drawn-terminal scribbleryeviewtest # Scribble rye snippets -> Skate
+//!   pond/bin/drawn-terminal scribblerishviewtest # Scribble rish snippets -> Skate
+//!   pond/bin/drawn-terminal scribbleh1viewtest # Scribble h1 headings -> Skate
+//!   pond/bin/drawn-terminal scribbleh2viewtest # Scribble h2 headings -> Skate
+//!   pond/bin/drawn-terminal scribbleh3viewtest # Scribble h3 headings -> Skate
+//!   pond/bin/drawn-terminal scribbledepthviewtest # Scribble h1/h2/h3 depth tallies -> Skate
+//!   pond/bin/drawn-terminal scribbletallyviewtest # Scribble headings+paragraphs tally -> Skate
+//!   pond/bin/drawn-terminal scribbleblocksviewtest # Scribble block count -> Skate
+//!   pond/bin/drawn-terminal scribblefenceheadingviewtest # Scribble fence+heading combo -> Skate
+//!   pond/bin/drawn-terminal scribbletallyblocksviewtest # Scribble tally+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribbleparablocksviewtest # Scribble paragraphs+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribbleh1blocksviewtest # Scribble h1+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribbleh2blocksviewtest # Scribble h2+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribbleh3blocksviewtest # Scribble h3+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribbleryeblocksviewtest # Scribble rye+blocks combo -> Skate
+//!   pond/bin/drawn-terminal scribblerishblocksviewtest # Scribble rish+blocks combo -> Skate
+//!   pond/bin/drawn-terminal corpusryecandyprefixviewtest # Ember rye + dimeroll/ -> Skate
+//!   pond/bin/drawn-terminal corpusrishtoolsprefixviewtest # Ember rish + tools/ -> Skate
+//!   pond/bin/drawn-terminal corpusryeappsprefixviewtest # Ember rye + pond/apps/ -> Skate
+//!   pond/bin/drawn-terminal corpusminlinesviewtest # Ember min_lines filter -> Skate
+//!   pond/bin/drawn-terminal corpusmaxlinesviewtest # Ember max_lines filter -> Skate
+//!   pond/bin/drawn-terminal corpuspathsuffixviewtest # Ember path_suffix filter -> Skate
+//!   pond/bin/drawn-terminal corpussumlinesviewtest # Ember sum_lines fold -> Skate
+//!   pond/bin/drawn-terminal exceptionviewtest # Dimeroll exception queue -> Skate
+//!   pond/bin/drawn-terminal pnlviewtest # Dimeroll P&L income statement -> Skate
+//!   pond/bin/drawn-terminal bsviewtest # Dimeroll balance sheet -> Skate
+//!   pond/bin/drawn-terminal tbviewtest # Dimeroll trial balance -> Skate
+//!   pond/bin/drawn-terminal journalviewtest # Dimeroll journal entries -> Skate
+//!   pond/bin/drawn-terminal chartviewtest # Dimeroll chart of accounts -> Skate
+//!   pond/bin/drawn-terminal cashaccountviewtest # Dimeroll cash account filter -> Skate
+//!   pond/bin/drawn-terminal memoprefixviewtest # Dimeroll memo prefix filter -> Skate
+//!   pond/bin/drawn-terminal cashflowviewtest # Dimeroll cash flow fold -> Skate
+//!   pond/bin/drawn-terminal sumamountsviewtest # Dimeroll sum amounts -> Skate
+//!   pond/bin/drawn-terminal granaryviewtest # Granary weave view -- resolve + Scribble -> Skate
+//!   pond/bin/drawn-terminal exchangeviewtest # Granary Exchange view -- weave listing -> Skate
+//!   pond/bin/drawn-terminal mandiviewtest   # Mandi floor view -- vessel listing -> Skate
+//!   pond/bin/drawn-terminal mandisettletest # Mandi settle view -- vessel settle -> Skate
+//!   pond/bin/drawn-terminal stewardviewtest # Commerce steward -- list -> settle -> Dimeroll on one frame
+//!   pond/bin/drawn-terminal stewardsighttest # Steward sight -- livelihood + books on one frame (tip 423)
+//!   pond/bin/drawn-terminal settlevie       # Granary settle view -- weave settle -> Skate
+//!   pond/bin/drawn-terminal granarystewardtest # Granary steward -- list -> settle -> Dimeroll (tip 424)
+//!   pond/bin/drawn-terminal granarystewardsighttest # Granary steward sight -- weave + books (tip 425)
+//!   pond/bin/drawn-terminal openasksviewtest # Open Asks -- closed ask loop on Skate (tip 426)
+//!   pond/bin/drawn-terminal openasksescrowviewtest # Open Asks escrow -- hold/release on Skate (tip 427)
+//!   pond/bin/drawn-terminal openasksreputationviewtest # Open Asks reputation -- consent-before-counting (tip 429)
+//!   pond/bin/drawn-terminal openaskscivicsighttest # Open Asks civic sight -- L1+L3+L4 on one frame (tip 430)
 //!   pond/bin/drawn-terminal metalsmoke     # Wayland metal smoke (needs WAYLAND_DISPLAY)
 
 const std = @import("std");
@@ -310,7 +310,7 @@ fn first_non_comment_line(text: []const u8) ?[]const u8 {
 }
 
 /// Compose a Skate frame from local MALA mint + WOV exit-bundle fixtures.
-/// No network, no new input, no Pond policy — Realidream thin-view exception.
+/// No network, no new input, no Pond policy -- Realidream thin-view exception.
 fn compose_thin_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
@@ -368,7 +368,7 @@ fn run_thin_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — missing fixture path refuses.
+    // Unwelcome -- missing fixture path refuses.
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
     if (cwd.readFile(io, "tools/fixtures/does_not_exist_thin_view.bron", &probe)) |_| {
@@ -506,7 +506,7 @@ fn run_books_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Unified sight — carriage facts (MALA/WOV) + books fold (Dimeroll) on one Skate frame.
+/// Unified sight -- carriage facts (MALA/WOV) + books fold (Dimeroll) on one Skate frame.
 fn compose_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
@@ -613,7 +613,7 @@ fn count_corpus_kinds(text: []const u8) struct { rye: u32, rish: u32 } {
     return .{ .rye = rye, .rish = rish };
 }
 
-/// Inference assist — Ember corpus + Scribble snippets + Lantern + journal on one Skate frame.
+/// Inference assist -- Ember corpus + Scribble snippets + Lantern + journal on one Skate frame.
 fn count_scribble_fence_kinds(text: []const u8) struct { rye: u32, rish: u32 } {
     var rye: u32 = 0;
     var rish: u32 = 0;
@@ -631,7 +631,7 @@ fn count_scribble_fences(text: []const u8) u32 {
     return kinds.rye + kinds.rish;
 }
 
-/// RW-5 assist integration — lantern band via the same `complete_fixture` ask path as tip 420.
+/// RW-5 assist integration -- lantern band via the same `complete_fixture` ask path as tip 420.
 const LanternAssistBand = struct {
     model_hash: []const u8,
     tokens_in: u32,
@@ -826,7 +826,7 @@ fn run_assist_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Inference assist sight — MALA/WOV carriage + assist fold on one Skate frame.
+/// Inference assist sight -- MALA/WOV carriage + assist fold on one Skate frame.
 fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var mint_buf: [512]u8 = undefined;
@@ -904,7 +904,7 @@ fn run_assist_sight_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream query view — fold Tablecloth query-wire hit fixture into a Skate frame.
+/// Realidream query view -- fold Tablecloth query-wire hit fixture into a Skate frame.
 /// Same answer shape the hosted filter returns; no new input, no Dexter graduation.
 fn compose_query_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
@@ -964,7 +964,7 @@ fn run_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — missing fixture path refuses.
+    // Unwelcome -- missing fixture path refuses.
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
     if (cwd.readFile(io, "tools/fixtures/does_not_exist_query_view.bron", &probe)) |_| {
@@ -981,7 +981,7 @@ fn run_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream query device view — fold Tablecloth device-wire hit fixture into a Skate frame.
+/// Realidream query device view -- fold Tablecloth device-wire hit fixture into a Skate frame.
 /// Same answer shape as virtio ports 15575/15576; no new input, no Dexter graduation.
 fn compose_query_device_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
@@ -1043,7 +1043,7 @@ fn run_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — hosted fixture lacks wire=device mark.
+    // Unwelcome -- hosted fixture lacks wire=device mark.
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
     const hosted = try cwd.readFile(io, tablecloth_query_hits_fixture, &buf);
@@ -1059,7 +1059,7 @@ fn run_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream query unified view — hosted + device Tablecloth hits on one Skate frame.
+/// Realidream query unified view -- hosted + device Tablecloth hits on one Skate frame.
 /// Sight-shaped fold; thin-view exception; no new wire, no Dexter graduation.
 fn first_hit_line(text: []const u8) ![]const u8 {
     var lines_iter = std.mem.splitScalar(u8, text, '\n');
@@ -1134,7 +1134,7 @@ fn run_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — device fixture without wire=device refused.
+    // Unwelcome -- device fixture without wire=device refused.
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
     const hosted = try cwd.readFile(io, tablecloth_query_hits_fixture, &buf);
@@ -1150,7 +1150,7 @@ fn run_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge view — the cellar + Amphora vessel from a live pour bundle.
+/// Realidream forge view -- the cellar + Amphora vessel from a live pour bundle.
 /// Witness runs tools/fixtures/forge_view_pour.sh before forgeviewtest.
 fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
@@ -1257,7 +1257,7 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge device view — Amphora virtio fetch-by-digest shape → Skate.
+/// Realidream forge device view -- Amphora virtio fetch-by-digest shape -> Skate.
 fn compose_forge_device_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
@@ -1320,7 +1320,7 @@ fn run_forge_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge unified view — hosted pour + device fetch on one Skate frame.
+/// Realidream forge unified view -- hosted pour + device fetch on one Skate frame.
 fn compose_forge_unified_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var man_buf: [2048]u8 = undefined;
@@ -1403,7 +1403,7 @@ fn run_forge_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge query view — Tablecloth-query hit shape for cellar/Amphora forge facts.
+/// Realidream forge query view -- Tablecloth-query hit shape for cellar/Amphora forge facts.
 fn compose_forge_query_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
@@ -1471,7 +1471,7 @@ fn run_forge_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge query device view — device-wire forge Tablecloth hits → Skate.
+/// Realidream forge query device view -- device-wire forge Tablecloth hits -> Skate.
 fn compose_forge_query_device_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
@@ -1531,7 +1531,7 @@ fn run_forge_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — hosted fixture lacks wire=device mark.
+    // Unwelcome -- hosted fixture lacks wire=device mark.
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
     const hosted = try cwd.readFile(io, forge_query_hits_fixture, &buf);
@@ -1547,7 +1547,7 @@ fn run_forge_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Scribble paragraphs view — paragraph extract folded onto a Skate frame.
+/// Scribble paragraphs view -- paragraph extract folded onto a Skate frame.
 fn compose_scribble_para_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -1601,7 +1601,7 @@ fn run_scribble_para_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll balance-sheet view — BS alone on Skate.
+/// Dimeroll balance-sheet view -- BS alone on Skate.
 fn compose_bs_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -1656,7 +1656,7 @@ fn run_bs_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble fence-kinds view — rye/rish/plain counts on Skate.
+/// Scribble fence-kinds view -- rye/rish/plain counts on Skate.
 fn compose_scribble_fence_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -1709,7 +1709,7 @@ fn run_scribble_fence_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble plain-snippets view — unmarked fence bodies on Skate.
+/// Scribble plain-snippets view -- unmarked fence bodies on Skate.
 fn compose_scribble_plain_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -1768,7 +1768,7 @@ fn scribble_first_line(text: []const u8) []const u8 {
     return text;
 }
 
-/// Scribble rye-snippets view — rye fence first lines on Skate.
+/// Scribble rye-snippets view -- rye fence first lines on Skate.
 fn compose_scribble_rye_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -1826,7 +1826,7 @@ fn run_scribble_rye_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble rish-snippets view — rish fence first lines on Skate.
+/// Scribble rish-snippets view -- rish fence first lines on Skate.
 fn compose_scribble_rish_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -1884,7 +1884,7 @@ fn run_scribble_rish_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll trial-balance view — account nets alone on Skate.
+/// Dimeroll trial-balance view -- account nets alone on Skate.
 fn compose_tb_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -1937,7 +1937,7 @@ fn run_tb_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll journal view — append-only entry memos on Skate before the fold.
+/// Dimeroll journal view -- append-only entry memos on Skate before the fold.
 fn compose_journal_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -1990,7 +1990,7 @@ fn run_journal_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll chart view — four account names on Skate.
+/// Dimeroll chart view -- four account names on Skate.
 fn compose_chart_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     _ = io;
     const lines = try garden.alloc(surface.SkateLine, chart_view_max_lines);
@@ -2038,7 +2038,7 @@ fn run_chart_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll cash account filter view — entries involving cash on Skate.
+/// Dimeroll cash account filter view -- entries involving cash on Skate.
 fn compose_cash_account_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -2094,7 +2094,7 @@ fn run_cash_account_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll memo prefix view — stipend* memos on Skate.
+/// Dimeroll memo prefix view -- stipend* memos on Skate.
 fn compose_memo_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -2150,7 +2150,7 @@ fn run_memo_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll cash flow view — inflow/outflow/net on Skate.
+/// Dimeroll cash flow view -- inflow/outflow/net on Skate.
 fn compose_cash_flow_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -2205,7 +2205,7 @@ fn run_cash_flow_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Dimeroll sum amounts view — journal amount total on Skate.
+/// Dimeroll sum amounts view -- journal amount total on Skate.
 fn compose_sum_amounts_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -2260,7 +2260,7 @@ fn run_sum_amounts_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus view — query filter hits folded onto a Skate frame.
+/// Ember corpus view -- query filter hits folded onto a Skate frame.
 fn compose_corpus_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2316,7 +2316,7 @@ fn run_corpus_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge query unified view — hosted + device forge Tablecloth hits on one Skate frame.
+/// Realidream forge query unified view -- hosted + device forge Tablecloth hits on one Skate frame.
 fn compose_forge_query_unified_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var hosted_buf: [1024]u8 = undefined;
@@ -2379,7 +2379,7 @@ fn run_forge_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — device fixture without wire=device refused.
+    // Unwelcome -- device fixture without wire=device refused.
     const cwd = std.Io.Dir.cwd();
     var bad_buf: [1024]u8 = undefined;
     const bad = try cwd.readFile(io, forge_query_hits_fixture, &bad_buf);
@@ -2395,7 +2395,7 @@ fn run_forge_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !
     return 0;
 }
 
-/// Ember corpus path-prefix view — pond/ filter hits on Skate.
+/// Ember corpus path-prefix view -- pond/ filter hits on Skate.
 fn compose_corpus_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2449,7 +2449,7 @@ fn run_corpus_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus tools-prefix view — tools/ filter hits on Skate.
+/// Ember corpus tools-prefix view -- tools/ filter hits on Skate.
 fn compose_corpus_tools_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2503,7 +2503,7 @@ fn run_corpus_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !
     return 0;
 }
 
-/// Ember corpus dimeroll-prefix view — dimeroll/ filter hits on Skate.
+/// Ember corpus dimeroll-prefix view -- dimeroll/ filter hits on Skate.
 fn compose_corpus_dimeroll_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2557,7 +2557,7 @@ fn run_corpus_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     return 0;
 }
 
-/// Ember corpus pond/apps-prefix view — pond/apps/ filter hits on Skate.
+/// Ember corpus pond/apps-prefix view -- pond/apps/ filter hits on Skate.
 fn compose_corpus_apps_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2635,7 +2635,7 @@ fn dimeroll_exception_summary() !struct { count: u32, first_reason: []const u8, 
     return .{ .count = count, .first_reason = out_ex[0].reason, .second_reason = out_ex[1].reason, .unknown_n = unknown_n, .bad_n = bad_n, .kinds_n = kinds_n };
 }
 
-/// Dimeroll exception queue view — refused drafts on Skate.
+/// Dimeroll exception queue view -- refused drafts on Skate.
 fn compose_exception_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     _ = io;
     const drafts = [_][]const u8{
@@ -2709,7 +2709,7 @@ fn run_exception_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus rish-kind view — rish query hits on Skate.
+/// Ember corpus rish-kind view -- rish query hits on Skate.
 fn compose_corpus_rish_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2763,7 +2763,7 @@ fn run_corpus_rish_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus rye + path-prefix view — kind rye under pond/ on Skate.
+/// Ember corpus rye + path-prefix view -- kind rye under pond/ on Skate.
 fn compose_corpus_rye_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -2817,7 +2817,7 @@ fn run_corpus_rye_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8
     return 0;
 }
 
-/// Dimeroll P&L view — income statement alone on Skate.
+/// Dimeroll P&L view -- income statement alone on Skate.
 fn compose_pnl_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -2869,7 +2869,7 @@ fn run_pnl_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble outline view — heading extract folded onto a Skate frame.
+/// Scribble outline view -- heading extract folded onto a Skate frame.
 fn compose_scribble_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -2925,7 +2925,7 @@ fn run_scribble_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble h1 view — depth-1 headings on Skate.
+/// Scribble h1 view -- depth-1 headings on Skate.
 fn compose_scribble_h1_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -2979,7 +2979,7 @@ fn run_scribble_h1_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble h2 view — depth-2 headings on Skate.
+/// Scribble h2 view -- depth-2 headings on Skate.
 fn compose_scribble_h2_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3033,7 +3033,7 @@ fn run_scribble_h2_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble h3 view — depth-3 headings on Skate.
+/// Scribble h3 view -- depth-3 headings on Skate.
 fn compose_scribble_h3_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3087,7 +3087,7 @@ fn run_scribble_h3_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus rye + dimeroll/ prefix view — kind rye under dimeroll/ on Skate.
+/// Ember corpus rye + dimeroll/ prefix view -- kind rye under dimeroll/ on Skate.
 fn compose_corpus_rye_dimeroll_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3141,7 +3141,7 @@ fn run_corpus_rye_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: st
     return 0;
 }
 
-/// Ember corpus rish + tools/ prefix view — kind rish under tools/ on Skate.
+/// Ember corpus rish + tools/ prefix view -- kind rish under tools/ on Skate.
 fn compose_corpus_rish_tools_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3195,7 +3195,7 @@ fn run_corpus_rish_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.
     return 0;
 }
 
-/// Scribble depth tally view — h1/h2/h3 counts on Skate.
+/// Scribble depth tally view -- h1/h2/h3 counts on Skate.
 fn compose_scribble_depth_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3251,7 +3251,7 @@ fn run_scribble_depth_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Ember corpus rye + pond/apps/ prefix view — kind rye under pond/apps/ on Skate.
+/// Ember corpus rye + pond/apps/ prefix view -- kind rye under pond/apps/ on Skate.
 fn compose_corpus_rye_apps_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3305,7 +3305,7 @@ fn run_corpus_rye_apps_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     return 0;
 }
 
-/// Ember corpus min_lines view — chunks with lines >= 600 on Skate.
+/// Ember corpus min_lines view -- chunks with lines >= 600 on Skate.
 fn compose_corpus_min_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3359,7 +3359,7 @@ fn run_corpus_min_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Ember corpus max_lines view — chunks with lines <= 300 on Skate.
+/// Ember corpus max_lines view -- chunks with lines <= 300 on Skate.
 fn compose_corpus_max_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3413,7 +3413,7 @@ fn run_corpus_max_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Ember corpus path_suffix view — .rish chunks on Skate.
+/// Ember corpus path_suffix view -- .rish chunks on Skate.
 fn compose_corpus_path_suffix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3467,7 +3467,7 @@ fn run_corpus_path_suffix_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Ember corpus sum_lines view — rye line total on Skate.
+/// Ember corpus sum_lines view -- rye line total on Skate.
 fn compose_corpus_sum_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
@@ -3523,7 +3523,7 @@ fn run_corpus_sum_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Scribble tally view — heading + paragraph counts on Skate.
+/// Scribble tally view -- heading + paragraph counts on Skate.
 fn compose_scribble_tally_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3579,7 +3579,7 @@ fn run_scribble_tally_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble blocks view — total parsed blocks on Skate.
+/// Scribble blocks view -- total parsed blocks on Skate.
 fn compose_scribble_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3631,7 +3631,7 @@ fn run_scribble_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Scribble fence+heading combo — fence kinds and heading count on one Skate frame.
+/// Scribble fence+heading combo -- fence kinds and heading count on one Skate frame.
 fn compose_scribble_fence_heading_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var fence_buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3686,7 +3686,7 @@ fn run_scribble_fence_heading_view_witness(garden: std.mem.Allocator, io: std.Io
     return 0;
 }
 
-/// Scribble tally+blocks combo — headings/paragraphs tally and block count on one Skate frame.
+/// Scribble tally+blocks combo -- headings/paragraphs tally and block count on one Skate frame.
 fn compose_scribble_tally_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3742,7 +3742,7 @@ fn run_scribble_tally_blocks_view_witness(garden: std.mem.Allocator, io: std.Io)
     return 0;
 }
 
-/// Scribble paragraphs+blocks combo — paragraph count and block count on one Skate frame.
+/// Scribble paragraphs+blocks combo -- paragraph count and block count on one Skate frame.
 fn compose_scribble_para_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3796,7 +3796,7 @@ fn run_scribble_para_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) 
     return 0;
 }
 
-/// Scribble h1+blocks combo — depth-1 heading count and block count on one Skate frame.
+/// Scribble h1+blocks combo -- depth-1 heading count and block count on one Skate frame.
 fn compose_scribble_h1_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3850,7 +3850,7 @@ fn run_scribble_h1_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Scribble h2+blocks combo — depth-2 heading count and block count on one Skate frame.
+/// Scribble h2+blocks combo -- depth-2 heading count and block count on one Skate frame.
 fn compose_scribble_h2_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3904,7 +3904,7 @@ fn run_scribble_h2_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Scribble h3+blocks combo — depth-3 heading count and block count on one Skate frame.
+/// Scribble h3+blocks combo -- depth-3 heading count and block count on one Skate frame.
 fn compose_scribble_h3_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -3958,7 +3958,7 @@ fn run_scribble_h3_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Scribble rye+blocks combo — rye fence count and block count on one Skate frame.
+/// Scribble rye+blocks combo -- rye fence count and block count on one Skate frame.
 fn compose_scribble_rye_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -4012,7 +4012,7 @@ fn run_scribble_rye_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) !
     return 0;
 }
 
-/// Scribble rish+blocks combo — rish fence count and block count on one Skate frame.
+/// Scribble rish+blocks combo -- rish fence count and block count on one Skate frame.
 fn compose_scribble_rish_blocks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [scribble.max_doc_bytes]u8 = undefined;
@@ -4066,7 +4066,7 @@ fn run_scribble_rish_blocks_view_witness(garden: std.mem.Allocator, io: std.Io) 
     return 0;
 }
 
-/// Granary weave view — resolve person/weave, fold-clone resin, Scribble → Skate.
+/// Granary weave view -- resolve person/weave, fold-clone resin, Scribble -> Skate.
 fn compose_granary_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var md_buf: [granary.max_resin_bytes]u8 = undefined;
@@ -4142,7 +4142,7 @@ fn run_granary_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — missing fixture path refuses.
+    // Unwelcome -- missing fixture path refuses.
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
     if (cwd.readFile(io, "tools/fixtures/does_not_exist_granary_view.md", &probe)) |_| {
@@ -4159,7 +4159,7 @@ fn run_granary_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Granary Exchange view — weave listing priced in MALA → Skate.
+/// Granary Exchange view -- weave listing priced in MALA -> Skate.
 fn compose_exchange_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     var store = granary.ResinStore.empty();
     const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
@@ -4211,7 +4211,7 @@ fn run_exchange_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — registry digest mismatch refused.
+    // Unwelcome -- registry digest mismatch refused.
     var store = granary.ResinStore.empty();
     const digest = try granary.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [granary.max_fact_len]u8 = undefined;
@@ -4237,7 +4237,7 @@ fn run_exchange_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Mandi floor view — signed vessel listing priced in MALA → Skate.
+/// Mandi floor view -- signed vessel listing priced in MALA -> Skate.
 fn compose_mandi_floor_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     var parent: [mandi.digest_hex_len]u8 = undefined;
     mandi.witness_vessel_parent(&parent);
@@ -4283,7 +4283,7 @@ fn run_mandi_floor_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — lying stamp_sig refused.
+    // Unwelcome -- lying stamp_sig refused.
     var parent: [mandi.digest_hex_len]u8 = undefined;
     mandi.witness_vessel_parent(&parent);
     var lying: [mandi.max_listing_len]u8 = undefined;
@@ -4307,7 +4307,7 @@ fn run_mandi_floor_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Mandi settle view — vessel listing closed with MALA/WOV payment → Skate.
+/// Mandi settle view -- vessel listing closed with MALA/WOV payment -> Skate.
 /// Vessel listing receipt for Mandi price-25 settle / steward path.
 fn mandi_vessel_listing_receipt(out: *[mandi.digest_hex_len]u8) !void {
     var parent: [mandi.digest_hex_len]u8 = undefined;
@@ -4443,7 +4443,7 @@ fn run_mandi_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     assert(std.mem.eql(u8, frame[4].text, "settled"));
     assert(std.mem.eql(u8, frame[5].text, "fold green"));
 
-    // Unwelcome — double settle refused.
+    // Unwelcome -- double settle refused.
     var settled = settle.SettledSet.empty();
     var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
     try mandi_vessel_listing_receipt(&listing_receipt);
@@ -4486,7 +4486,7 @@ const SaleJournalFold = struct {
     journal_count: u32,
 };
 
-/// Welcome journal + sale entry → cash / pnl / count (steward and granary steward).
+/// Welcome journal + sale entry -> cash / pnl / count (steward and granary steward).
 fn fold_welcome_sale_journal(sale_entry: []const u8, expect_cash: i64, expect_pnl: i64) !SaleJournalFold {
     var journal_buf: [dimeroll.max_journal_len]u8 = undefined;
     const journal = try std.fmt.bufPrint(
@@ -4537,7 +4537,7 @@ fn run_steward_fold() !StewardFold {
     };
 }
 
-/// Commerce steward composition — list → settle → Dimeroll receipt on one Skate frame.
+/// Commerce steward composition -- list -> settle -> Dimeroll receipt on one Skate frame.
 fn compose_steward_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     const fold = try run_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, steward_view_max_lines);
@@ -4579,7 +4579,7 @@ fn run_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     };
     assert(lines_equal(&golden, frame));
 
-    // Unwelcome — zero-sale amount refused.
+    // Unwelcome -- zero-sale amount refused.
     const zero_sale =
         \\debit cash
         \\credit revenue
@@ -4605,7 +4605,7 @@ fn run_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Steward sight — livelihood loop + books fold from the same journal on one Skate frame.
+/// Steward sight -- livelihood loop + books fold from the same journal on one Skate frame.
 fn compose_steward_sight_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     const fold = try run_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, steward_sight_view_max_lines);
@@ -4756,7 +4756,7 @@ fn granary_settle_payment_slip(
     try weave_settle.verify_against_listing(slip[0..sn], listing_receipt, payment_hex, "100", "100");
 }
 
-/// Granary settle view — Exchange listing closed with MALA/WOV payment → Skate.
+/// Granary settle view -- Exchange listing closed with MALA/WOV payment -> Skate.
 fn compose_granary_settle_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     try granary_exchange_listing_receipt(&listing_receipt);
@@ -4795,7 +4795,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const sig = try surface.content_signature(garden, frame);
     assert(sig != sig_empty);
 
-    // Golden prefixes — listing receipt matches Exchange view; payment from payment_digest.
+    // Golden prefixes -- listing receipt matches Exchange view; payment from payment_digest.
     assert(std.mem.eql(u8, frame[0].text, "granary settle view"));
     assert(std.mem.eql(u8, frame[1].text, "listing 1c4c8f3e9e13"));
     assert(std.mem.eql(u8, frame[2].text, "price 100 murr"));
@@ -4804,7 +4804,7 @@ fn run_granary_settle_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     assert(std.mem.eql(u8, frame[4].text, "settled"));
     assert(std.mem.eql(u8, frame[5].text, "fold green"));
 
-    // Unwelcome — double settle refused.
+    // Unwelcome -- double settle refused.
     var settled = weave_settle.SettledSet.empty();
     var listing_receipt: [exchange.digest_hex_len]u8 = undefined;
     try granary_exchange_listing_receipt(&listing_receipt);
@@ -4867,7 +4867,7 @@ fn run_granary_steward_fold() !GranaryStewardFold {
     };
 }
 
-/// Granary weave steward — list → settle → Dimeroll receipt on one Skate frame.
+/// Granary weave steward -- list -> settle -> Dimeroll receipt on one Skate frame.
 fn compose_granary_steward_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     const fold = try run_granary_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, granary_steward_view_max_lines);
@@ -4934,7 +4934,7 @@ fn run_granary_steward_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Granary steward sight — weave livelihood + books fold from the same journal.
+/// Granary steward sight -- weave livelihood + books fold from the same journal.
 fn compose_granary_steward_sight_view_lines(garden: std.mem.Allocator) ![]surface.SkateLine {
     const fold = try run_granary_steward_fold();
     const lines = try garden.alloc(surface.SkateLine, granary_steward_sight_view_max_lines);
@@ -4991,7 +4991,7 @@ fn run_granary_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io)
     return 0;
 }
 
-/// Open Asks view — OA-L1 closed ask loop on one Skate frame.
+/// Open Asks view -- OA-L1 closed ask loop on one Skate frame.
 fn compose_open_asks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_welcome_fold(io);
     // invariant: the open-asks view exists to show a CLOSED loop, so the whole lifecycle is
@@ -5054,7 +5054,7 @@ fn run_open_asks_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Open Asks escrow view — OA-L3 hold then release on one Skate frame.
+/// Open Asks escrow view -- OA-L3 hold then release on one Skate frame.
 fn compose_open_asks_escrow_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_escrow_welcome_fold(io);
     // invariant: the escrow view shows a loop that both closed and settled, so a
@@ -5119,7 +5119,7 @@ fn run_open_asks_escrow_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Open Asks reputation view — OA-L4 consent-before-counting on one Skate frame.
+/// Open Asks reputation view -- OA-L4 consent-before-counting on one Skate frame.
 fn compose_open_asks_reputation_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_reputation_welcome_fold(io);
     // invariant: the reputation view draws consented totals only, so both are proven to be the
@@ -5176,7 +5176,7 @@ fn run_open_asks_reputation_view_witness(garden: std.mem.Allocator, io: std.Io) 
     return 0;
 }
 
-/// Open Asks civic sight — OA-L1 · OA-L3 · OA-L4 seated folds on one Skate frame.
+/// Open Asks civic sight -- OA-L1 - OA-L3 - OA-L4 seated folds on one Skate frame.
 fn compose_open_asks_civic_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const life = try open_asks.run_welcome_fold(io);
     // invariant: the civic sight draws three folds at once, and each is proven whole before
@@ -5365,7 +5365,7 @@ fn run_rw2_collaboration_witness(garden: std.mem.Allocator, io: std.Io, init: st
     return 0;
 }
 
-/// RW-5 collaboration — drawn terminal asks Lantern via complete_fixture (fixture stub).
+/// RW-5 collaboration -- drawn terminal asks Lantern via complete_fixture (fixture stub).
 fn run_rw5_collaboration_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     _ = garden;
     const cwd = std.Io.Dir.cwd();

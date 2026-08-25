@@ -1,32 +1,32 @@
-//! constel/repair.rye — FORA17: the leader heals a follower's divergent suffix. Two gaps sit exactly at the seam between FORA15
-//! and FORA16. FORA15's catch-up heals only a follower that is BEHIND with a MATCHING prefix — when the overlap DISAGREES it
+//! constel/repair.rye -- FORA17: the leader heals a follower's divergent suffix. Two gaps sit exactly at the seam between FORA15
+//! and FORA16. FORA15's catch-up heals only a follower that is BEHIND with a MATCHING prefix -- when the overlap DISAGREES it
 //! rightly refuses Diverged and changes nothing, because a CompactLog stores only values and cannot tell a conflict from a lag.
-//! FORA16 proved an old leader can never COMMIT — yet before it is out-voted it can still have APPENDED to its own local log,
+//! FORA16 proved an old leader can never COMMIT -- yet before it is out-voted it can still have APPENDED to its own local log,
 //! entries in a stale term that never reached a quorum. When that pier rejoins under a newer leader it carries an UNCOMMITTED
 //! DIVERGENT SUFFIX, and someone must repair it. This rung takes that one concern: the leader forces a follower's log to match
-//! its own, truncating the follower's conflicting stale-term suffix and appending the leader's true entries — Raft's
+//! its own, truncating the follower's conflicting stale-term suffix and appending the leader's true entries -- Raft's
 //! AppendEntries consistency check and its LOG MATCHING PROPERTY, named in Constel's terms.
 //!
-//! The missing ingredient is a per-entry term. FORA12's Log stores [max_entries]u32 — values only — and you cannot tell a
+//! The missing ingredient is a per-entry term. FORA12's Log stores [max_entries]u32 -- values only -- and you cannot tell a
 //! conflict (same index, different history) from a lag with values alone. So this rung introduces a TermedLog: an append-only
 //! log of (term, value) entries, terms NON-DECREASING along the log (a leader only appends in its own term, and terms climb by
 //! FORA16). This is the structure Raft actually replicates; FORA12's value-log was the honest simplification that let the
 //! ordering law be proven first.
 //!
 //! THE LOG MATCHING PROPERTY (the crux): if two logs hold an entry at the same index with the same term, they are identical in
-//! every entry up through that index — because a leader creates at most one entry per index in its term and appends its entries
+//! every entry up through that index -- because a leader creates at most one entry per index in its term and appends its entries
 //! in one term-non-decreasing run, so a matching (index, term) pins the whole prefix. The repair spends it directly: find the
 //! highest index where follower and leader agree, replace only the strictly-newer suffix. The common prefix is NEVER rewritten
-//! (append-only holds for it); only the divergent tail — which by FORA16 could never have committed — is discarded.
+//! (append-only holds for it); only the divergent tail -- which by FORA16 could never have committed -- is discarded.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA17. Design read: active-designing/date/20260814/20260814-083500_fora17-constel-log-repair-matching.md
-//! Stands on: constel/term.rye (FORA16) — terms, and run_termed_decree for the real-sky leader; constel/log.rye (FORA12) — the
-//! append-only order and max_entries bound; constel/switchboard.rye (FORA6) — the medium the real-sky scenario uses.
+//! Stands on: constel/term.rye (FORA16) -- terms, and run_termed_decree for the real-sky leader; constel/log.rye (FORA12) -- the
+//! append-only order and max_entries bound; constel/switchboard.rye (FORA6) -- the medium the real-sky scenario uses.
 //!
-//! Purely LOCAL — bounded in-memory TermedLog values on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and
-//! gate %4 — real Kumara — both untouched). The socket rung (this same repair over a real file descriptor) stays the
+//! Purely LOCAL -- bounded in-memory TermedLog values on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real wire -- and
+//! gate %4 -- real Kumara -- both untouched). The socket rung (this same repair over a real file descriptor) stays the
 //! maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/repair.rye selftest
@@ -43,14 +43,14 @@ const term = @import("term.rye");
 
 pub const repair_version = "20260814.083500";
 
-/// The most entries a Constel termed log holds — the same bound as FORA12's value-log, so the two ledgers stay one shape.
+/// The most entries a Constel termed log holds -- the same bound as FORA12's value-log, so the two ledgers stay one shape.
 pub const max_entries: u32 = log.max_entries;
 
-/// The term before any leader has written — an empty log's "last term". A term only ever climbs from here (FORA16).
+/// The term before any leader has written -- an empty log's "last term". A term only ever climbs from here (FORA16).
 pub const ground_term: u32 = term.ground_term;
 
 pub const RepairError = error{
-    /// The log is at its entry cap — a bounded ledger refuses to grow past max_entries rather than overrun.
+    /// The log is at its entry cap -- a bounded ledger refuses to grow past max_entries rather than overrun.
     LogFull,
     /// An append whose term is below the log's last term. Terms only ever climb (FORA16), so a backward term is a fault the log
     /// refuses rather than silently accept a non-monotonic history.
@@ -68,7 +68,7 @@ pub const TermedEntry = struct {
 
 /// An append-only log of (term, value) entries, terms non-decreasing along the log. `len` entries are filled, index 0 first. The
 /// only mutation that REMOVES an entry is truncate_to, and it only ever drops an uncommitted stale-term suffix (the tissue FORA16
-/// proved could never have committed) — the committed prefix is never rewritten.
+/// proved could never have committed) -- the committed prefix is never rewritten.
 pub const TermedLog = struct {
     entry: [max_entries]TermedEntry = [_]TermedEntry{.{}} ** max_entries,
     len: u32 = 0,
@@ -89,7 +89,7 @@ pub const TermedLog = struct {
         return self.entry[i].value;
     }
 
-    /// The last entry's term, or ground_term for an empty log — the floor an append must not fall below.
+    /// The last entry's term, or ground_term for an empty log -- the floor an append must not fall below.
     pub fn last_term(self: *const TermedLog) u32 {
         // invariant: the length never exceeds the bound, so len-1 is a real index when len > 0.
         assert(self.len <= max_entries);
@@ -98,7 +98,7 @@ pub const TermedLog = struct {
     }
 
     /// Append one entry at the next index, refusing LogFull at the cap and TermRegressed if the term falls below the last term.
-    /// Terms climb, never fall — the invariant FORA16 gives the ledger.
+    /// Terms climb, never fall -- the invariant FORA16 gives the ledger.
     pub fn append_entry(self: *TermedLog, entry_term: u32, value: u32) RepairError!u32 {
         // invariant: the log never grows past its named bound.
         assert(self.len <= max_entries);
@@ -114,9 +114,9 @@ pub const TermedLog = struct {
     }
 
     /// Drop every entry at or past `new_len`, keeping the first `new_len`. The ONLY entry-removing mutation, and repair only ever
-    /// calls it to shed an uncommitted stale-term suffix — never a committed prefix entry.
+    /// calls it to shed an uncommitted stale-term suffix -- never a committed prefix entry.
     pub fn truncate_to(self: *TermedLog, new_len: u32) void {
-        // invariant: a truncation only ever shortens a bounded log — it never invents entries.
+        // invariant: a truncation only ever shortens a bounded log -- it never invents entries.
         assert(new_len <= self.len);
         assert(self.len <= max_entries);
         self.len = new_len;
@@ -124,7 +124,7 @@ pub const TermedLog = struct {
         assert(self.len == new_len);
     }
 
-    /// Whether two logs are identical entry for entry — term and value both. The replication / no-fork check for termed logs.
+    /// Whether two logs are identical entry for entry -- term and value both. The replication / no-fork check for termed logs.
     pub fn matches(self: *const TermedLog, other: *const TermedLog) bool {
         if (self.len != other.len) return false;
         var i: u32 = 0;
@@ -148,7 +148,7 @@ pub fn consistent_at(self: *const TermedLog, match_len: u32, boundary_term: u32)
     return self.entry[match_len - 1].term == boundary_term; // the last required entry must carry the leader's claimed term
 }
 
-/// The length of the longest common prefix of two logs where both term AND value agree — the divergence point. Everything below
+/// The length of the longest common prefix of two logs where both term AND value agree -- the divergence point. Everything below
 /// it is identical; the first index where they differ (or the end of the shorter log) is where repair takes over. By the Log
 /// Matching Property, this common prefix is exactly the history the two piers truly share.
 pub fn agree_upto(follower: *const TermedLog, leader: *const TermedLog) u32 {
@@ -167,10 +167,10 @@ pub fn agree_upto(follower: *const TermedLog, leader: *const TermedLog) u32 {
 
 /// Heal `follower` to match `leader`: truncate the follower's divergent suffix at the agreement point, then append the leader's
 /// true suffix. Returns the count of entries the follower gained (the leader's suffix length). The common prefix is never
-/// rewritten, and the only entries removed are the follower's uncommitted stale-term tail (FORA16 — they could never have
+/// rewritten, and the only entries removed are the follower's uncommitted stale-term tail (FORA16 -- they could never have
 /// committed). Ends with follower.matches(leader), asserted.
 pub fn repair(follower: *TermedLog, leader: *const TermedLog) RepairError!u32 {
-    // invariant: the leader's own log is validly built — terms non-decreasing — so appending its suffix never regresses a term.
+    // invariant: the leader's own log is validly built -- terms non-decreasing -- so appending its suffix never regresses a term.
     var v: u32 = 1;
     // invariant: the leader's entries come out ordered, stated after the repair rather than
     // trusted from the merge that built them
@@ -192,7 +192,7 @@ pub fn repair(follower: *TermedLog, leader: *const TermedLog) RepairError!u32 {
     while (i < leader.len) : (i += 1) {
         _ = try follower.append_entry(leader.entry[i].term, leader.entry[i].value);
     }
-    // invariant: the follower now holds exactly the leader's history — no fork — having grown by the leader's suffix.
+    // invariant: the follower now holds exactly the leader's history -- no fork -- having grown by the leader's suffix.
     assert(follower.matches(leader));
     assert(follower.len == leader.len);
     return leader.len - common;
@@ -222,7 +222,7 @@ fn run_selftest() !u8 {
         if (full.append_entry(1, 999)) |_| return error.GrewPastCap else |e| if (e != error.LogFull) return error.WrongLogFull;
     }
 
-    // 2. THE LOG MATCHING PROPERTY — two validly-built logs that share an entry at the same index with the same term are
+    // 2. THE LOG MATCHING PROPERTY -- two validly-built logs that share an entry at the same index with the same term are
     //    identical in every entry up through that index. Built honestly: both replicate the same leader's term-1 run, so where
     //    their terms agree at an index their whole prefix agrees; a later divergence in a fresh term marks the true split point.
     {
@@ -250,7 +250,7 @@ fn run_selftest() !u8 {
         assert((try a.term_at(split)) != (try b.term_at(split))); // the split is a real term disagreement
     }
 
-    // 3. consistent_at — the AppendEntries gate accepts a matching prev boundary and refuses a stale-term or an absent one.
+    // 3. consistent_at -- the AppendEntries gate accepts a matching prev boundary and refuses a stale-term or an absent one.
     {
         var l = TermedLog{};
         _ = try l.append_entry(1, 5);
@@ -262,7 +262,7 @@ fn run_selftest() !u8 {
         assert(consistent_at(&l, 1, 1)); // a one-entry prefix ends in term 1 — matches
     }
 
-    // 4. THE HEAL — a follower carrying a divergent stale-term suffix is repaired to match the leader exactly. The common prefix
+    // 4. THE HEAL -- a follower carrying a divergent stale-term suffix is repaired to match the leader exactly. The common prefix
     //    is byte-unchanged and the divergent suffix is gone.
     {
         var leader = TermedLog{};
@@ -285,7 +285,7 @@ fn run_selftest() !u8 {
         assert((try follower.value_at(2)) == 30 and (try follower.term_at(2)) == 2); // divergent tail replaced by the true one
     }
 
-    // 5. ONLY THE UNCOMMITTED TAIL MOVES — a follower that is merely BEHIND (a matching prefix, no conflict) is repaired by pure
+    // 5. ONLY THE UNCOMMITTED TAIL MOVES -- a follower that is merely BEHIND (a matching prefix, no conflict) is repaired by pure
     //    append (its prefix never rewritten); a follower ALREADY matching is repaired with zero changes.
     {
         var leader = TermedLog{};
@@ -315,7 +315,7 @@ fn run_selftest() !u8 {
         assert(gained_longer == 0 and longer.matches(&leader) and longer.len == 3); // the surplus tail was shed
     }
 
-    // 6. NO FORK ACROSS REPAIR — two followers with DIFFERENT divergent suffixes both repair to the same leader, and thus to each
+    // 6. NO FORK ACROSS REPAIR -- two followers with DIFFERENT divergent suffixes both repair to the same leader, and thus to each
     //    other. The heal converges every honest pier onto the one true history.
     {
         var leader = TermedLog{};
@@ -341,7 +341,7 @@ fn run_selftest() !u8 {
         assert(one.matches(&two)); // and to each other — no fork
     }
 
-    // 7. OVER A REAL SKY — FORA16 -> FORA17. A leader log grows by termed decrees: a term-1 prefix the whole sky committed, then
+    // 7. OVER A REAL SKY -- FORA16 -> FORA17. A leader log grows by termed decrees: a term-1 prefix the whole sky committed, then
     //    a term-2 suffix under a NEW leader. A follower holds the term-1 prefix plus a term-1 OLD leader's uncommitted appends
     //    (the exact scribbles FORA16 proved could never commit). Repair removes precisely that tissue and installs the true tail.
     {
@@ -375,7 +375,7 @@ fn run_selftest() !u8 {
         _ = try leader.append_entry(2, c3);
 
         // Meanwhile the OLD term-1 leader (slot 0), out-voted so it could never commit (FORA16), had still scribbled into its own
-        // follower log — an uncommitted stale-term-1 suffix.
+        // follower log -- an uncommitted stale-term-1 suffix.
         _ = try follower.append_entry(1, 900);
         _ = try follower.append_entry(1, 901);
         assert(!follower.matches(&leader)); // the follower has forked locally
@@ -387,7 +387,7 @@ fn run_selftest() !u8 {
         assert((try follower.value_at(2)) == 33 and (try follower.term_at(2)) == 2);
     }
 
-    // 8. A full-length repair stays bounded — a follower whose whole log diverges at index 1 is rebuilt to the leader's length up
+    // 8. A full-length repair stays bounded -- a follower whose whole log diverges at index 1 is rebuilt to the leader's length up
     //    to the cap without overrunning.
     {
         var leader = TermedLog{};
@@ -415,14 +415,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — the decree round mutates
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- the decree round mutates
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

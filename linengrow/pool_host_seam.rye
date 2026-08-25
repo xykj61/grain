@@ -1,9 +1,9 @@
-//! linengrow/pool_host_seam.rye — Pool P0: the userspace host seam.
+//! linengrow/pool_host_seam.rye -- Pool P0: the userspace host seam.
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung P0: a minimal Pool that hosts one agent over Caravan's own
 //! capability table (`caravan/capabilities.rye`, imported here as the real
-//! thing, not a copy) — the agent is admitted only if the table grants the
+//! thing, not a copy) -- the agent is admitted only if the table grants the
 //! right it needs, it runs bounded, and its state is a pure fold over a
 //! signed, append-only log. This is the keystone that turns Glow's green
 //! spine (Comlink, Mantra, Neth, Kumara, the MALA fold) into something a
@@ -13,7 +13,7 @@
 //!   - Admission is a capability check, not a name check. Pool asks the
 //!     Caravan table `allows(agent, resource, right)` and hosts the agent
 //!     only when the grant is real. An agent with no grant is refused at
-//!     the door — the same customs place/hold/refuse shape Pond keeps.
+//!     the door -- the same customs place/hold/refuse shape Pond keeps.
 //!   - The hosted agent's state is a fold. Pool never mutates agent state
 //!     directly; it applies a signed event by folding, exactly as Neth and
 //!     Seva already do. A tampered or wrongly-signed event is refused; the
@@ -21,8 +21,8 @@
 //!   - Everything is bounded (the log, the event, the agent count) and the
 //!     agent runs within its granted right and nothing more.
 //!
-//! First tenant: a minimal ledger agent — the smallest real agent whose
-//! state is a MALA balance fold — standing in for the richer closed
+//! First tenant: a minimal ledger agent -- the smallest real agent whose
+//! state is a MALA balance fold -- standing in for the richer closed
 //! Open Ask loop, which is the P1 tenant. P0 proves the host *seam*
 //! (capability admission + bounded fold), not a specific rich agent.
 
@@ -82,7 +82,7 @@ pub fn host_ledger_agent(
     return .{ .admitted = true, .balances = balances };
 }
 
-/// Host an agent against a *named* state resource — the generalization P1
+/// Host an agent against a *named* state resource -- the generalization P1
 /// needs. Each agent's state is its own resource in the table, so admission
 /// to one agent's state says nothing about another's: isolation is a
 /// capability boundary, not an accident. An agent may touch a state resource

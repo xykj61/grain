@@ -1,17 +1,17 @@
-//! mycelium/cord_knot_fixture_gen.rye — reproducibly emit the Knot fixture (r4 support).
+//! mycelium/cord_knot_fixture_gen.rye -- reproducibly emit the Knot fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! Seats the honest four-fact history r1/r2/r3 checkpoint (two genesis issues, a tax,
-//! a star reserve — issued 1000 · taxed 300 · supply 700 · one star vega), seals it to
+//! a star reserve -- issued 1000 - taxed 300 - supply 700 - one star vega), seals it to
 //! a Knot, and renders that Knot to a `format cord-knot-v1` record on stderr: the exact
 //! bytes `mycelium/cord_knot_true.rye` reads back and the r4 witness cross-checks
-//! against an independent awk reading. Deterministic — seeded demo keys and a pure
+//! against an independent awk reading. Deterministic -- seeded demo keys and a pure
 //! commit-and-fold mean the same bytes every run, so the on-disk fixture is what the
 //! Knot emits, never a hand-mock.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_fixture_gen.rye \
 //!     2> tools/fixtures/cord_knot.bron
@@ -30,7 +30,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// Seat the honest four-fact history and commit it to a Cord — the same scene the
+/// Seat the honest four-fact history and commit it to a Cord -- the same scene the
 /// Knot's selftests checkpoint.
 fn seat_dag(out: *cord.Dag) !void {
     const ka = seeded(0xA1);
@@ -68,7 +68,7 @@ pub fn main() !void {
     assert(knot.state.star_count == 1);
     var buf: [cord_knot_bron.max_record]u8 = undefined;
     const n = try cord_knot_bron.render(&knot, buf[0..]);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_knot_bron.max_record);
     print("{s}", .{buf[0..n]});

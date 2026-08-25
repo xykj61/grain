@@ -1,4 +1,4 @@
-//! pond/apps/realidream_view_theme.rye — BUHR Journey 5, Rung 6: a .brush theme
+//! pond/apps/realidream_view_theme.rye -- BUHR Journey 5, Rung 6: a .brush theme
 //! recolors the read origin.
 //!
 //! Rung five painted the read, program, and fused lanes together on one styled
@@ -7,7 +7,7 @@
 //! named for: a `.brush` file's optional `style:` block overrides the `read` key, the
 //! WADE1 cascade infuses that override over the base sheet, and rung five's own
 //! `paint_origins` lowering paints every read origin in the *authored* color. The
-//! proof this rung wants is that the read origin is genuinely themeable — a person
+//! proof this rung wants is that the read origin is genuinely themeable -- a person
 //! editing a `.brush` file, never Skate or Rye, recolors every fetched source's mark
 //! by writing one token line, while the ink, the edge rule, and the living-edge head
 //! stand untouched.
@@ -18,7 +18,7 @@
 //! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint
 //! is rung five's `paint_origins` unchanged. The recolor is proven two ways: the
 //! themed read resolves to the authored amber, and the base sheet's default read color
-//! (Madder) leaves *zero* pixels on the themed canvas — a recolor, not an addition.
+//! (Madder) leaves *zero* pixels on the themed canvas -- a recolor, not an addition.
 //!
 //! Additive by construction: it imports realidream_view, mantra_browser,
 //! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
@@ -39,11 +39,11 @@ const bp = @import("brushstroke/brush_parse.rye");
 
 const realidream_view_theme_version = "20260812.133056";
 
-// The theme fixture the rung reads — a real `.brush` authoring file whose style block
+// The theme fixture the rung reads -- a real `.brush` authoring file whose style block
 // recolors the `read` origin token only, leaving ground and head to inherit.
 const theme_path = "pond/apps/read-source.brush";
 
-// The read color the theme authors — a warm amber, distinct from the base sheet's
+// The read color the theme authors -- a warm amber, distinct from the base sheet's
 // Madder. Warm and low-blue (R204 > G122 > B51), so it passes the design system's own
 // palette law; distinctly brighter, so the recolor is unmistakable.
 const themed_read_argb: u32 = 0xFF_CC_7A_33;
@@ -90,7 +90,7 @@ pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
 }
 
 /// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
-/// rasterized buffer — a witness helper proving a specific token color reached (or
+/// rasterized buffer -- a witness helper proving a specific token color reached (or
 /// never reached) the canvas.
 fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
     // invariant: the stride holds a full row of ARGB8888 pixels.
@@ -122,7 +122,7 @@ fn welcome_theme_recolors_read(allocator: std.mem.Allocator, io: std.Io) !void {
     const themed = themed_buf[0..n];
 
     // The themed sheet's read token now resolves to the authored amber, not the base
-    // sheet's default Madder — the override won the cascade on its own key.
+    // sheet's default Madder -- the override won the cascade on its own key.
     const themed_read = try tokens.token_color(themed, "read");
     const base_read = try tokens.token_color(tokens.base_sheet, "read");
     assert(themed_read.r == 0xCC);
@@ -130,16 +130,16 @@ fn welcome_theme_recolors_read(allocator: std.mem.Allocator, io: std.Io) !void {
     assert(themed_read.b == 0x33);
     assert(themed_read.r != base_read.r or themed_read.g != base_read.g or themed_read.b != base_read.b);
 
-    // The ink, the edge rule, and the living-edge head all inherit unchanged — the
+    // The ink, the edge rule, and the living-edge head all inherit unchanged -- the
     // theme touched only the read origin.
     const themed_head = try tokens.token_color(themed, "head");
     const base_head = try tokens.token_color(tokens.base_sheet, "head");
-    // invariant: the living-edge head inherits unchanged — the theme touched only read.
+    // invariant: the living-edge head inherits unchanged -- the theme touched only read.
     assert(themed_head.r == base_head.r);
     assert(themed_head.g == base_head.g);
     assert(themed_head.b == base_head.b);
 
-    // Paint the fused scene with the themed sheet — every read origin wears the amber.
+    // Paint the fused scene with the themed sheet -- every read origin wears the amber.
     var catalog = try view.fused_scene();
     var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
     const rows = try view.paint_origins(&catalog, &grid, themed);
@@ -158,9 +158,9 @@ fn welcome_theme_recolors_read(allocator: std.mem.Allocator, io: std.Io) !void {
     const h_u: u32 = @intCast(height);
     const themed_read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, themed_read);
     const base_read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_read);
-    // The authored read color reached the canvas — every read origin burns amber.
+    // The authored read color reached the canvas -- every read origin burns amber.
     assert(themed_read_pixels > 0);
-    // The default Madder left zero pixels — this is a recolor, never an addition.
+    // The default Madder left zero pixels -- this is a recolor, never an addition.
     assert(base_read_pixels == 0);
     print("realidream_view_theme: {d} themed-read pixels on the canvas, {d} default-read pixels (recolored)\n", .{ themed_read_pixels, base_read_pixels });
 }
@@ -168,7 +168,7 @@ fn welcome_theme_recolors_read(allocator: std.mem.Allocator, io: std.Io) !void {
 fn welcome_theme_read_is_warm(io: std.Io) !void {
     var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
     const n = try resolve_theme(io, theme_path, &themed_buf);
-    // token_color asserts warm/low-blue on the way — a theme cannot smuggle a cold
+    // token_color asserts warm/low-blue on the way -- a theme cannot smuggle a cold
     // read origin past the design system's own palette law. The authored value it
     // returns is exactly the amber the fixture declared.
     const themed_read = try tokens.token_color(themed_buf[0..n], "read");
@@ -193,7 +193,7 @@ fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void
     var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
     _ = try view.paint_origins(&catalog, &grid, themed_buf[0..n]);
 
-    // Theming touches only color — the painted glyphs still carry the very bytes rung
+    // Theming touches only color -- the painted glyphs still carry the very bytes rung
     // one renders. Editor (render) and view (grid) stay one graph.
     var buf: [mb.max_render_bytes]u8 = undefined;
     const text = try mb.render(&catalog, &buf);
@@ -207,7 +207,7 @@ fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void
 }
 
 fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
-    // A paint with the untouched base sheet keeps the default Madder read origin —
+    // A paint with the untouched base sheet keeps the default Madder read origin --
     // proving it is the theme's override, not the paint path, that recolors the mark.
     var catalog = try view.fused_scene();
     var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
@@ -232,7 +232,7 @@ fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
 
 fn welcome_theme_refuses_styleless(io: std.Io) !void {
     // The seed fixture declares no style block; theming it names ThemeMissingRead
-    // rather than silently painting the default — a theme must carry a read to win.
+    // rather than silently painting the default -- a theme must carry a read to win.
     var out: [tokens.max_sheet_bytes]u8 = undefined;
     if (resolve_theme(io, "brushstroke/seed-frame.brush", &out)) |_| {
         unreachable;

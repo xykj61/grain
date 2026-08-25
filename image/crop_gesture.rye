@@ -1,19 +1,19 @@
-//! image/crop_gesture.rye — HUNK60: drag a rectangle on the picture, lift, and it becomes a crop edit.
+//! image/crop_gesture.rye -- HUNK60: drag a rectangle on the picture, lift, and it becomes a crop edit.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK60.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK60.
 //! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md
-//! Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) — a keeper drags a
+//! Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) -- a keeper drags a
 //! rectangle over the picture and the app crops to it (concept only, siloed).
 //!
-//! HUNK3 gave the Photos app a pure `crop` verb, and the itinerary names cropping the crux gesture of the app — yet a
+//! HUNK3 gave the Photos app a pure `crop` verb, and the itinerary names cropping the crux gesture of the app -- yet a
 //! keeper could only crop by naming four numbers, never by dragging a rectangle. This rung is that gesture. `CropGesture`
 //! owns the image dimensions and a drag (HUNK50's down/move/up law) in IMAGE pixels: press sets an anchor corner, a
 //! sweep moves the opposite corner, and lift settles the rectangle. It normalizes any drag direction to a top-left
 //! rectangle (`min`/`max` of the two corners), clamps both corners inside the image, and turns the result into a
-//! `.crop` edit a keeper's cursor can `push` — so a dragged crop joins the same non-destructive history as every other
+//! `.crop` edit a keeper's cursor can `push` -- so a dragged crop joins the same non-destructive history as every other
 //! verb. `preview` applies the rectangle to the source for a live look at what commit will produce. A degenerate drag
 //! (zero width or height) commits nothing, refusing `NoRect` by name rather than an empty crop. A pure composition over
-//! HUNK3's `crop` and HUNK11's edit vocabulary — no new pixel op, no new failure mode of its own. No network, no key,
+//! HUNK3's `crop` and HUNK11's edit vocabulary -- no new pixel op, no new failure mode of its own. No network, no key,
 //! no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/crop_gesture.rye selftest
@@ -32,7 +32,7 @@ pub const CropGestureError = error{
     NoRect,
 };
 
-/// A normalized crop rectangle in image pixels — a top-left corner and a size, the shape HUNK3's `crop` takes. Produced
+/// A normalized crop rectangle in image pixels -- a top-left corner and a size, the shape HUNK3's `crop` takes. Produced
 /// from the two dragged corners; `w` or `h` of zero means the drag named no area to keep.
 pub const CropRect = struct {
     x: u32,
@@ -68,7 +68,7 @@ pub const CropGesture = struct {
         return CropGesture{ .width = width, .height = height };
     }
 
-    /// Clamp an x pixel into `[0, width]` — the right edge is inclusive, so a corner may rest on `width` (the exclusive
+    /// Clamp an x pixel into `[0, width]` -- the right edge is inclusive, so a corner may rest on `width` (the exclusive
     /// right boundary) and a rectangle can reach the last column. A negative x rests on the left edge.
     fn clamp_x(self: *const CropGesture, x: i32) u32 {
         if (x < 0) return 0;
@@ -76,7 +76,7 @@ pub const CropGesture = struct {
         return if (ux > self.width) self.width else ux;
     }
 
-    /// Clamp a y pixel into `[0, height]` — the bottom edge inclusive, mirroring `clamp_x`.
+    /// Clamp a y pixel into `[0, height]` -- the bottom edge inclusive, mirroring `clamp_x`.
     fn clamp_y(self: *const CropGesture, y: i32) u32 {
         if (y < 0) return 0;
         const uy: u32 = @intCast(y);
@@ -99,7 +99,7 @@ pub const CropGesture = struct {
         assert(self.by <= self.height);
     }
 
-    /// The finger sweeps to `(x, y)`: while armed, move the opposite corner to the clamped point — the anchor stays put,
+    /// The finger sweeps to `(x, y)`: while armed, move the opposite corner to the clamped point -- the anchor stays put,
     /// so the rectangle grows and shrinks under the finger. A move with no press before it (not armed) moves nothing
     /// (HUNK50's arming law).
     pub fn finger_move(self: *CropGesture, x: i32, y: i32) void {
@@ -127,20 +127,20 @@ pub const CropGesture = struct {
 
     /// The normalized rectangle the two corners currently name: top-left `min` of the corners, size their `max` minus
     /// `min`. Always inside the image by the corner clamps, so `x + w <= width` and `y + h <= height`. A `w` or `h` of
-    /// zero means the drag named no area. Pure — reads the corners, moves nothing.
+    /// zero means the drag named no area. Pure -- reads the corners, moves nothing.
     pub fn rect(self: *const CropGesture) CropRect {
         const left: u32 = if (self.ax < self.bx) self.ax else self.bx;
         const right: u32 = if (self.ax > self.bx) self.ax else self.bx;
         const top: u32 = if (self.ay < self.by) self.ay else self.by;
         const bottom: u32 = if (self.ay > self.by) self.ay else self.by;
         const r = CropRect{ .x = left, .y = top, .w = right - left, .h = bottom - top };
-        // invariant: the rectangle sits wholly inside the image — exactly what HUNK3's crop requires of x+w, y+h.
+        // invariant: the rectangle sits wholly inside the image -- exactly what HUNK3's crop requires of x+w, y+h.
         assert(@as(u64, r.x) + @as(u64, r.w) <= self.width);
         assert(@as(u64, r.y) + @as(u64, r.h) <= self.height);
         return r;
     }
 
-    /// True when the current rectangle has real area — the drag named something to keep.
+    /// True when the current rectangle has real area -- the drag named something to keep.
     pub fn has_rect(self: *const CropGesture) bool {
         const r = self.rect();
         return r.w > 0 and r.h > 0;
@@ -148,7 +148,7 @@ pub const CropGesture = struct {
 
     /// Turn the current rectangle into a `.crop` edit a keeper's cursor can `push`, so a dragged crop joins the same
     /// non-destructive history as every other verb. Refuses `NoRect` when the drag named no area (a tap, a zero-width or
-    /// zero-height sweep) — a crop of nothing is never committed. The returned edit is in-bounds by construction, so its
+    /// zero-height sweep) -- a crop of nothing is never committed. The returned edit is in-bounds by construction, so its
     /// later `apply` cannot raise `OutOfBounds`.
     pub fn as_edit(self: *const CropGesture) CropGestureError!edits.Edit {
         const r = self.rect();
@@ -162,7 +162,7 @@ pub const CropGesture = struct {
     }
 
     /// A live preview of what committing the crop will produce: apply the current rectangle to `source` through HUNK3's
-    /// `crop`. Refuses `NoRect` on a degenerate rectangle, so a preview never shows an empty image. Pure — `source` is
+    /// `crop`. Refuses `NoRect` on a degenerate rectangle, so a preview never shows an empty image. Pure -- `source` is
     /// never mutated; the cropped pixmap is a fresh allocation.
     pub fn preview(self: *const CropGesture, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !qoi.Pixmap {
         // invariant: the preview crops the very image the gesture was opened over.
@@ -174,7 +174,7 @@ pub const CropGesture = struct {
     }
 };
 
-// --- selftest: an 8x8 two-tone source — a drag from (2,2) to (6,6) commits crop{2,2,4,4} whose preview equals a direct
+// --- selftest: an 8x8 two-tone source -- a drag from (2,2) to (6,6) commits crop{2,2,4,4} whose preview equals a direct
 //     crop cell-for-cell and whose edit round-trips the vocabulary; a reverse drag normalizes the same; corners past the
 //     edges clamp to the whole image; a tap and a zero-width sweep refuse NoRect; an unarmed move moves nothing; a bad
 //     image refuses at open ---------------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var g = try CropGesture.open(pm.width, pm.height);
 
     // A drag from (2,2) to (6,6): press, sweep, lift. The rectangle is crop{2,2,4,4}, and its live preview equals a
-    // direct crop cell-for-cell — the dragged rectangle is exactly what commit produces.
+    // direct crop cell-for-cell -- the dragged rectangle is exactly what commit produces.
     {
         g.finger_down(2, 2);
         assert(!g.has_rect()); // a press alone names no area yet
@@ -234,7 +234,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(live.height == 4);
         assert(same_bytes(&live, &direct)); // the preview is the crop, no drift
 
-        // The edit round-trips the vocabulary: push it, render, parse, apply — the same cropped image returns.
+        // The edit round-trips the vocabulary: push it, render, parse, apply -- the same cropped image returns.
         const e = try g.as_edit();
         var list = edits.EditList.init();
         try list.push(e);
@@ -247,7 +247,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_bytes(&applied, &direct)); // a dragged crop is a first-class edit
     }
 
-    // A reverse drag (bottom-right to top-left) normalizes to the SAME rectangle — direction never matters.
+    // A reverse drag (bottom-right to top-left) normalizes to the SAME rectangle -- direction never matters.
     {
         var rg = try CropGesture.open(pm.width, pm.height);
         rg.finger_down(6, 6);
@@ -276,7 +276,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(same_bytes(&whole, &pm)); // cropping to the whole image recovers the source
     }
 
-    // A tap (press and lift at one point) names no area — it refuses NoRect rather than committing an empty crop.
+    // A tap (press and lift at one point) names no area -- it refuses NoRect rather than committing an empty crop.
     {
         var tg = try CropGesture.open(pm.width, pm.height);
         tg.finger_down(3, 3);
@@ -290,7 +290,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A zero-width sweep (a vertical line) names no area either — a crop needs both dimensions.
+    // A zero-width sweep (a vertical line) names no area either -- a crop needs both dimensions.
     {
         var zg = try CropGesture.open(pm.width, pm.height);
         zg.finger_down(2, 2);
@@ -302,7 +302,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A move with no press before it moves nothing — the arming law (HUNK50): a fresh surface, a move without a down, the
+    // A move with no press before it moves nothing -- the arming law (HUNK50): a fresh surface, a move without a down, the
     // corners still at the origin.
     {
         var fg = try CropGesture.open(pm.width, pm.height);
@@ -314,7 +314,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(!fg.dragging);
     }
 
-    // A bad image refuses at open by name — a zero dimension has no area to crop from.
+    // A bad image refuses at open by name -- a zero dimension has no area to crop from.
     if (CropGesture.open(0, 8)) |_| return error.ImageSlipped else |e| {
         if (e != error.BadImage) return error.WrongImage;
     }

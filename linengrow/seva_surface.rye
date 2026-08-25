@@ -1,14 +1,14 @@
-//! linengrow/seva_surface.rye — Seva R2: the unified viewer, many agents on one surface.
+//! linengrow/seva_surface.rye -- Seva R2: the unified viewer, many agents on one surface.
 //!
 //! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
-//! rung R2: ask, receipt, reputation, sanctuary — each a Pool-hosted agent,
-//! capability-isolated (P1) — rendered as its own bounded frame (R1) and
+//! rung R2: ask, receipt, reputation, sanctuary -- each a Pool-hosted agent,
+//! capability-isolated (P1) -- rendered as its own bounded frame (R1) and
 //! gathered onto ONE Seva surface. This is the Landscape-parallel proper:
 //! one window over many sovereign, isolated agents, each shown as a pure
 //! fold, none able to touch another's state.
 //!
 //! A surface is a bounded list of panels; a panel is a labelled frame. Only
-//! Pool-hosted agents earn a panel — an agent Pool refused (no capability)
+//! Pool-hosted agents earn a panel -- an agent Pool refused (no capability)
 //! contributes nothing to the view, so the surface shows exactly what Pool
 //! admitted, no more. Everything bounded, per TAME.
 

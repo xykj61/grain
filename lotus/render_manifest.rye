@@ -1,23 +1,23 @@
-//! lotus/render_manifest.rye — ALES221: a render describes itself, sealed. The render family (ALES217 mono, ALES218 stereo)
-//! turns an ordered chain of the tree's own proven effects into a canonical .wav another program plays — yet that .wav leaves
-//! carrying nothing about what it is: which preset shaped it, at what rate, over how many channels and frames, and — the durable
-//! question a publish or a chain of custody asks — whether the bytes in hand are the exact bytes the render produced. This rung
+//! lotus/render_manifest.rye -- ALES221: a render describes itself, sealed. The render family (ALES217 mono, ALES218 stereo)
+//! turns an ordered chain of the tree's own proven effects into a canonical .wav another program plays -- yet that .wav leaves
+//! carrying nothing about what it is: which preset shaped it, at what rate, over how many channels and frames, and -- the durable
+//! question a publish or a chain of custody asks -- whether the bytes in hand are the exact bytes the render produced. This rung
 //! seats the small, honest record that travels beside the audio and binds it: a `format lotus-render-v1` manifest, sealed
 //! verify-before-trust, whose body carries the Sha256 of the .wav bytes themselves.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES221.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES221.
 //! Design read: active-designing/date/20260815/20260815-133848_fill-ales221-lotus-render-manifest.md
-//! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the general verify-before-trust frame reused WHOLE, so the manifest
+//! Stands on: lotus/seal.rye (ALES38) -- begin/finish/open, the general verify-before-trust frame reused WHOLE, so the manifest
 //! adds only its own body grammar and one new promise; std.crypto Sha256 for the audio digest, the same hash the seal and the
-//! ALES0 wire already carry. No audio import — the manifest describes a render's OUTPUT bytes, it does not run one.
+//! ALES0 wire already carry. No audio import -- the manifest describes a render's OUTPUT bytes, it does not run one.
 //!
-//! TWO HASHES, TWO JOBS. The seal's own digest (written by seal.finish over the manifest body) binds the manifest TEXT — a
+//! TWO HASHES, TWO JOBS. The seal's own digest (written by seal.finish over the manifest body) binds the manifest TEXT -- a
 //! hand-edited rate or a truncated tail refuses DigestMismatch at the gate. The `wav_digest` field binds the AUDIO the text
-//! describes — Sha256 over the .wav bytes, so the artifact the manifest names cannot be silently swapped or a single sample
+//! describes -- Sha256 over the .wav bytes, so the artifact the manifest names cannot be silently swapped or a single sample
 //! flipped without verify_wav catching it. Content-addressing, never a signature: it proves the render arrived whole, NOT who
 //! made it. No key, no custody.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. No real file opened, no
+//! HONEST SCOPE -- software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. No real file opened, no
 //! DAC, no acoustic or electrical fact, no network, no keys, no funds, no real device. A signed carry stays a later rung on
 //! Keaton's word.
 //!
@@ -35,30 +35,30 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 
 pub const render_manifest_version = "20260815.133848";
 
-/// The sealed record's kind line — the header seal.begin writes and seal.open matches. A manifest sealed under this kind can
+/// The sealed record's kind line -- the header seal.begin writes and seal.open matches. A manifest sealed under this kind can
 /// never be opened as another format.
 pub const header = "format lotus-render-v1";
 
 /// The widest sealed record this rung writes: the header line, the seal's `digest <64 hex>` line, and the six-field body. A
 /// named ceiling so seal_manifest's output buffer is bounded and every field is checked against one bound; 320 bytes clears the
-/// worst case (header 22 · seal digest line 72 · body under 160) with headroom.
+/// worst case (header 22 - seal digest line 72 - body under 160) with headroom.
 pub const max_manifest_bytes: u32 = 320;
 
-/// The longest preset name the manifest carries — well over the catalog's own `gentle_master`. A name past this refuses
+/// The longest preset name the manifest carries -- well over the catalog's own `gentle_master`. A name past this refuses
 /// NameTooLong rather than overrunning the body; a name is a single token, so it may hold neither space nor newline (either
 /// would break the line grammar the reader trusts).
 pub const max_preset_name: u32 = 24;
 
-/// The 64 lowercase hex characters of a full Sha256 — the same width the seal and the ALES0 wire carry, so a single flipped .wav
+/// The 64 lowercase hex characters of a full Sha256 -- the same width the seal and the ALES0 wire carry, so a single flipped .wav
 /// byte fails the content check.
 pub const wav_digest_hex_len: u32 = Sha256.digest_length * 2;
 
-/// A .wav is mono or stereo here — the manifest records the channel count a render used, and refuses any other as BadManifest so
+/// A .wav is mono or stereo here -- the manifest records the channel count a render used, and refuses any other as BadManifest so
 /// a nonsense channel field can never parse as a real render.
 pub const min_channels: u32 = 1;
 pub const max_channels: u32 = 2;
 
-/// The manifest's own faults, unioned with the seal's (DigestMismatch · BadRecord · Overflow, which merge by name with a body
+/// The manifest's own faults, unioned with the seal's (DigestMismatch - BadRecord - Overflow, which merge by name with a body
 /// format's own where they coincide). BadManifest is a malformed body field; NameTooLong a preset name past the bound;
 /// WavLenMismatch and WavDigestMismatch are the content checks verify_wav runs against the audio in hand.
 pub const ManifestError = seal.SealError || error{
@@ -66,9 +66,9 @@ pub const ManifestError = seal.SealError || error{
     BadManifest,
     /// The preset name is longer than max_preset_name, or carries a space or newline that would break the line grammar.
     NameTooLong,
-    /// verify_wav was handed a .wav whose length is not the wav_bytes the manifest recorded — refused before the digest is run.
+    /// verify_wav was handed a .wav whose length is not the wav_bytes the manifest recorded -- refused before the digest is run.
     WavLenMismatch,
-    /// verify_wav recomputed the .wav's Sha256 and it does not match the manifest's wav_digest — a swapped artifact or a flipped
+    /// verify_wav recomputed the .wav's Sha256 and it does not match the manifest's wav_digest -- a swapped artifact or a flipped
     /// sample, caught before the audio is trusted as the one the manifest names.
     WavDigestMismatch,
 };
@@ -85,7 +85,7 @@ pub const Manifest = struct {
     wav_digest: []const u8,
 };
 
-/// Write `bytes` as lowercase hex into `out`, two characters per byte — the same `{x:0>2}` idiom the tree uses, so a zero byte
+/// Write `bytes` as lowercase hex into `out`, two characters per byte -- the same `{x:0>2}` idiom the tree uses, so a zero byte
 /// renders `00` rather than a bare `0`. `out` must hold exactly `bytes.len * 2` characters. Kept private: callers seal and verify
 /// through this module, never by hashing themselves.
 fn to_hex(bytes: []const u8, out: []u8) void {
@@ -108,8 +108,8 @@ fn name_ok(name: []const u8) bool {
     return true;
 }
 
-/// Seal a render's own description into `out`: render the `format lotus-render-v1` body — preset · sample_rate · channels ·
-/// frames · wav_bytes · wav_digest — inside a seal.begin/finish frame, where wav_digest is the Sha256 of `wav` (the render's
+/// Seal a render's own description into `out`: render the `format lotus-render-v1` body -- preset - sample_rate - channels -
+/// frames - wav_bytes - wav_digest -- inside a seal.begin/finish frame, where wav_digest is the Sha256 of `wav` (the render's
 /// output .wav bytes). Returns the total sealed length. Refuses NameTooLong / BadManifest for an illegal name or channel count,
 /// and Overflow rather than writing past the buffer.
 pub fn seal_manifest(
@@ -120,12 +120,12 @@ pub fn seal_manifest(
     frames: u32,
     wav: []const u8,
 ) ManifestError!u32 {
-    // invariant: the name is a single legal token — checked before a byte is written, so a bad name never half-fills the buffer.
+    // invariant: the name is a single legal token -- checked before a byte is written, so a bad name never half-fills the buffer.
     if (!name_ok(preset_name)) return error.NameTooLong;
-    // invariant: the channel count is one this suite renders — 1 (mono) or 2 (stereo), never a nonsense value.
+    // invariant: the channel count is one this suite renders -- 1 (mono) or 2 (stereo), never a nonsense value.
     if (channels < min_channels or channels > max_channels) return error.BadManifest;
 
-    // The audio digest — Sha256 over the .wav bytes themselves, rendered to 64 hex for the body.
+    // The audio digest -- Sha256 over the .wav bytes themselves, rendered to 64 hex for the body.
     var dg: [Sha256.digest_length]u8 = undefined;
     Sha256.hash(wav, &dg, .{});
     var wav_hex: [wav_digest_hex_len]u8 = undefined;
@@ -145,9 +145,9 @@ pub fn seal_manifest(
 }
 
 /// Read one `key value` line at `body[cursor..]`: the line must start with `key ` and run to a newline; returns the value slice
-/// and the cursor just past the newline. A missing key, prefix, or newline refuses BadManifest — the reader never guesses a field.
+/// and the cursor just past the newline. A missing key, prefix, or newline refuses BadManifest -- the reader never guesses a field.
 fn field(body: []const u8, cursor: u32, key: []const u8) ManifestError!struct { value: []const u8, next: u32 } {
-    // invariant: the cursor stays within the body — an exhausted body is a malformed record, not a silent stop.
+    // invariant: the cursor stays within the body -- an exhausted body is a malformed record, not a silent stop.
     if (cursor > body.len) return error.BadManifest;
     const rest = body[cursor..];
     if (rest.len < key.len + 1) return error.BadManifest;
@@ -156,7 +156,7 @@ fn field(body: []const u8, cursor: u32, key: []const u8) ManifestError!struct { 
     const after_key = rest[key.len + 1 ..];
     const nl = std.mem.indexOfScalar(u8, after_key, '\n') orelse return error.BadManifest;
     const value = after_key[0..nl];
-    // invariant: the returned value carries no newline — it is exactly one line's worth.
+    // invariant: the returned value carries no newline -- it is exactly one line's worth.
     assert(std.mem.indexOfScalar(u8, value, '\n') == null);
     // seam: key.len and nl are std usize; the manifest body is bounded well under u32, so both narrow safely at this edge.
     const key_len: u32 = @intCast(key.len);
@@ -164,17 +164,17 @@ fn field(body: []const u8, cursor: u32, key: []const u8) ManifestError!struct { 
     return .{ .value = value, .next = cursor + key_len + 1 + nl_u32 + 1 };
 }
 
-/// Parse a strict decimal u32 from a body value, refusing BadManifest for anything that is not a plain unsigned number — the
+/// Parse a strict decimal u32 from a body value, refusing BadManifest for anything that is not a plain unsigned number -- the
 /// tree's own parse_int, so a leading zero (`007` masquerading as `7`) refuses rather than silently coercing.
 fn field_u32(value: []const u8) ManifestError!u32 {
     return parse_int.parse_int(u32, value, .{}) catch error.BadManifest;
 }
 
-/// Open a sealed manifest — the integrity gate BEFORE trust. seal.open recomputes the record's own digest and refuses
+/// Open a sealed manifest -- the integrity gate BEFORE trust. seal.open recomputes the record's own digest and refuses
 /// DigestMismatch / BadRecord before a field is read; only a whole record's body is parsed into a Manifest. The metadata reads
 /// without the artifact present; verify_wav confirms the audio when it is in hand.
 pub fn open_manifest(text: []const u8) ManifestError!Manifest {
-    // invariant: the body is verified whole before any field is trusted — no partial parse of a corrupt record.
+    // invariant: the body is verified whole before any field is trusted -- no partial parse of a corrupt record.
     const body = try seal.open(text, header);
 
     const f_preset = try field(body, 0, "preset");
@@ -189,7 +189,7 @@ pub fn open_manifest(text: []const u8) ManifestError!Manifest {
     if (channels < min_channels or channels > max_channels) return error.BadManifest;
     if (f_digest.value.len != wav_digest_hex_len) return error.BadManifest;
 
-    // invariant: the whole body was consumed — a trailing field is a record this grammar does not know, refused not ignored.
+    // invariant: the whole body was consumed -- a trailing field is a record this grammar does not know, refused not ignored.
     if (f_digest.next != body.len) return error.BadManifest;
 
     return .{
@@ -204,9 +204,9 @@ pub fn open_manifest(text: []const u8) ManifestError!Manifest {
 
 /// Confirm a .wav in hand IS the artifact its manifest names: the length must equal wav_bytes (checked first, cheaply), then the
 /// recomputed Sha256 must equal wav_digest. A swapped artifact refuses WavLenMismatch or WavDigestMismatch before the audio is
-/// trusted. Infallible otherwise — a match returns cleanly.
+/// trusted. Infallible otherwise -- a match returns cleanly.
 pub fn verify_wav(m: *const Manifest, wav: []const u8) ManifestError!void {
-    // invariant: the manifest carries a full-width digest — open_manifest already proved it, re-asserted at the use site.
+    // invariant: the manifest carries a full-width digest -- open_manifest already proved it, re-asserted at the use site.
     assert(m.wav_digest.len == wav_digest_hex_len);
     if (wav.len != m.wav_bytes) return error.WavLenMismatch;
 
@@ -217,10 +217,10 @@ pub fn verify_wav(m: *const Manifest, wav: []const u8) ManifestError!void {
     if (!std.mem.eql(u8, wav_hex[0..], m.wav_digest)) return error.WavDigestMismatch;
 }
 
-// --- selftest: THE SELF-DESCRIBING LAW — a render sealed then opened recovers every field, its wav_digest matches the .wav; the
-//     CONTENT-ADDRESS LAW — verify_wav accepts the exact bytes, refuses a flipped byte (WavDigestMismatch) and a wrong length
-//     (WavLenMismatch); the SEAL LAW — a tampered body refuses DigestMismatch, a wrong header BadRecord; the GRAMMAR LAW — a
-//     malformed field / over-long name refuses BadManifest / NameTooLong; the ATOMIC LAW — a small buffer refuses Overflow -----
+// --- selftest: THE SELF-DESCRIBING LAW -- a render sealed then opened recovers every field, its wav_digest matches the .wav; the
+//     CONTENT-ADDRESS LAW -- verify_wav accepts the exact bytes, refuses a flipped byte (WavDigestMismatch) and a wrong length
+//     (WavLenMismatch); the SEAL LAW -- a tampered body refuses DigestMismatch, a wrong header BadRecord; the GRAMMAR LAW -- a
+//     malformed field / over-long name refuses BadManifest / NameTooLong; the ATOMIC LAW -- a small buffer refuses Overflow -----
 
 fn run_selftest() !u8 {
     // A stand-in render output: any bytes serve, since the manifest describes OUTPUT bytes, it does not run a render.
@@ -230,7 +230,7 @@ fn run_selftest() !u8 {
     const channels: u32 = 2;
     const frames: u32 = 4;
 
-    // 1. THE SELF-DESCRIBING LAW — seal, open, recover every field; the wav_digest matches the .wav in hand.
+    // 1. THE SELF-DESCRIBING LAW -- seal, open, recover every field; the wav_digest matches the .wav in hand.
     {
         var out: [max_manifest_bytes]u8 = undefined;
         const n = try seal_manifest(out[0..], preset_name, sample_rate, channels, frames, wav);
@@ -243,7 +243,7 @@ fn run_selftest() !u8 {
         try verify_wav(&m, wav); // the recorded digest names exactly these bytes
     }
 
-    // 2. THE CONTENT-ADDRESS LAW — a single flipped audio byte refuses WavDigestMismatch; a shorter .wav refuses WavLenMismatch.
+    // 2. THE CONTENT-ADDRESS LAW -- a single flipped audio byte refuses WavDigestMismatch; a shorter .wav refuses WavLenMismatch.
     {
         var out: [max_manifest_bytes]u8 = undefined;
         const n = try seal_manifest(out[0..], preset_name, sample_rate, channels, frames, wav);
@@ -257,7 +257,7 @@ fn run_selftest() !u8 {
         if (verify_wav(&m, wav[0 .. wav.len - 1])) |_| return error.LenSlipped else |e| if (e != error.WavLenMismatch) return error.WrongLen;
     }
 
-    // 3. THE SEAL LAW — a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
+    // 3. THE SEAL LAW -- a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
     {
         var out: [max_manifest_bytes]u8 = undefined;
         const n = try seal_manifest(out[0..], preset_name, sample_rate, channels, frames, wav);
@@ -266,11 +266,11 @@ fn run_selftest() !u8 {
 
         var again: [max_manifest_bytes]u8 = undefined;
         const n2 = try seal_manifest(again[0..], preset_name, sample_rate, channels, frames, wav);
-        // seal.open under a wrong header refuses BadRecord — proven here by opening a good record as the wrong kind through open.
+        // seal.open under a wrong header refuses BadRecord -- proven here by opening a good record as the wrong kind through open.
         if (seal.open(again[0..n2], "format lotus-other-v1")) |_| return error.HeaderSlipped else |e| if (e != error.BadRecord) return error.WrongHeader;
     }
 
-    // 4. THE GRAMMAR LAW — an over-long preset name refuses NameTooLong; a bad channel count refuses BadManifest; a body missing
+    // 4. THE GRAMMAR LAW -- an over-long preset name refuses NameTooLong; a bad channel count refuses BadManifest; a body missing
     //    a field refuses BadManifest.
     {
         var out: [max_manifest_bytes]u8 = undefined;
@@ -278,7 +278,7 @@ fn run_selftest() !u8 {
         if (seal_manifest(out[0..], long_name, sample_rate, channels, frames, wav)) |_| return error.LongNameSlipped else |e| if (e != error.NameTooLong) return error.WrongLongName;
         if (seal_manifest(out[0..], preset_name, sample_rate, 3, frames, wav)) |_| return error.BadChanSlipped else |e| if (e != error.BadManifest) return error.WrongBadChan;
 
-        // A hand-built record whose body is missing the trailing wav_digest line — open must refuse BadManifest, not guess.
+        // A hand-built record whose body is missing the trailing wav_digest line -- open must refuse BadManifest, not guess.
         const short_body = "preset gentle_master\nsample_rate 48000\nchannels 2\nframes 4\nwav_bytes 8\n";
         var hand: [max_manifest_bytes]u8 = undefined;
         const fr = try seal.begin(hand[0..], header);
@@ -287,7 +287,7 @@ fn run_selftest() !u8 {
         if (open_manifest(hand[0..hn])) |_| return error.ShortSlipped else |e| if (e != error.BadManifest) return error.WrongShort;
     }
 
-    // 5. THE ATOMIC LAW — a buffer too small for the sealed record refuses Overflow rather than truncating it.
+    // 5. THE ATOMIC LAW -- a buffer too small for the sealed record refuses Overflow rather than truncating it.
     {
         var tiny: [48]u8 = undefined; // room for the header and digest line, not the body
         if (seal_manifest(tiny[0..], preset_name, sample_rate, channels, frames, wav)) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;

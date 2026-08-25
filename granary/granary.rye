@@ -1,4 +1,4 @@
-//! granary/granary.rye — Granary laps 1–3 selftest (registry · write gate · Sharing).
+//! granary/granary.rye -- Granary laps 1-3 selftest (registry - write gate - Sharing).
 //!
 //!   rye build granary/granary.rye -femit-bin=granary/bin/granary
 //!   granary/bin/granary selftest
@@ -35,7 +35,7 @@ fn welcome_registry_resolve_clone_frame(io: std.Io) !void {
     var reg = gc.Registry.empty();
     try gc.append_fact(&reg, fact_buf[0..fact_len]);
 
-    // Second fact for another weave — registry holds more than one.
+    // Second fact for another weave -- registry holds more than one.
     const other_md = "# other\n\nparked.\n";
     const other_digest = try gc.put_resin(&store, other_md);
     var other_buf: [gc.max_fact_len]u8 = undefined;
@@ -101,7 +101,7 @@ fn unwelcome_lying_signature() !void {
     var fact_buf: [gc.max_fact_len]u8 = undefined;
     const fact_len = try gc.sign_name_fact(gc.granary_version, "rio", "lie", &digest, &fact_buf);
 
-    // Flip one hex nibble in stamp_sig — signature lies.
+    // Flip one hex nibble in stamp_sig -- signature lies.
     var lying: [gc.max_fact_len]u8 = undefined;
     tally_copy.copy_disjoint(u8, lying[0..fact_len], fact_buf[0..fact_len]);
     const sig_key = "stamp_sig ";

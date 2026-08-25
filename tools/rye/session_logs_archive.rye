@@ -1,4 +1,4 @@
-//! Session-log fold — tidy prior days beneath `session-logs/date/YYYYMMDD/`.
+//! Session-log fold -- tidy prior days beneath `session-logs/date/YYYYMMDD/`.
 //!
 //! Convention ([`ORGANIZING.md`](../ORGANIZING.md)): today's logs stay flat; earlier days
 //! fold under `date/<day>/`. README links rewrite in place when `fold` runs.
@@ -22,11 +22,11 @@
 //! tool that knew only `.bron` and `.md` would have left every one of them behind.
 //!
 //! Entry points (read and mutate stay separate):
-//!   `rye run tools/rye/session_logs_archive.rye preview [--today YYYYMMDD] [--room NAME]` — count
-//!   `rye run tools/rye/session_logs_archive.rye fold [--today YYYYMMDD] [--room NAME]`    — move
-//!   `rye run tools/rye/session_logs_archive.rye index-preview [--room NAME]` — count index rows
-//!   `rye run tools/rye/session_logs_archive.rye index-fold [--room NAME]`    — shelve them
-//!   `rye run tools/rye/session_logs_archive.rye selftest`                    — fixture proof
+//!   `rye run tools/rye/session_logs_archive.rye preview [--today YYYYMMDD] [--room NAME]` -- count
+//!   `rye run tools/rye/session_logs_archive.rye fold [--today YYYYMMDD] [--room NAME]`    -- move
+//!   `rye run tools/rye/session_logs_archive.rye index-preview [--room NAME]` -- count index rows
+//!   `rye run tools/rye/session_logs_archive.rye index-fold [--room NAME]`    -- shelve them
+//!   `rye run tools/rye/session_logs_archive.rye selftest`                    -- fixture proof
 //!
 //! Witness: `rishi/bin/rishi run tools/s/session_logs_archive_witness.rish`
 

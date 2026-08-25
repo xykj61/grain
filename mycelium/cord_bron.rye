@@ -1,20 +1,20 @@
-//! mycelium/cord_bron.rye — the Cord travels as text (r3).
+//! mycelium/cord_bron.rye -- the Cord travels as text (r3).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r3 — the Cord travels.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - rung r3 -- the Cord travels.
 //! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
 //! r1 fixed the deterministic-commit crux and r2 quarantined the equivocator. A
 //! consensus a developer cannot *hand to another node* is only a sandbox: a mesh
 //! becomes a network when one node's agreed order crosses to a second as readable
 //! bytes. This rung renders a committed Dag to a `format cord-dag-v1` Bron record
-//! — one `block` line per block in committed order (author key · round · fact ·
-//! the fact's signature · the block's signature) with its parents as following
-//! `parent <hash>` lines — and parses it back, rebuilding the Dag from the bytes.
+//! -- one `block` line per block in committed order (author key - round - fact -
+//! the fact's signature - the block's signature) with its parents as following
+//! `parent <hash>` lines -- and parses it back, rebuilding the Dag from the bytes.
 //!
 //! The distinctive r3 crux, over a number-only roster: **the agreed order travels
 //! with the bytes.** The recovered Dag, re-admitted block by block under r1's own
 //! `add`, commits to the byte-identical order and folds the real Mycelium supply
-//! law to the identical supply — so two nodes agree by exchanging blocks alone, no
+//! law to the identical supply -- so two nodes agree by exchanging blocks alone, no
 //! ordering message. Every signature rides in the record and is re-verified on
 //! rebuild: a tampered block refuses `BadSignature` at `add`, so corruption can
 //! never cross as consensus. The reader is a purpose-built bounded flat-Bron reader
@@ -23,8 +23,8 @@
 //! `BadInt`, a bad hex field `BadHex`, a parent before any block `ParentBeforeBlock`,
 //! a fan-in past bound `TooManyParents`, a roster past bound `TooManyBlocks`.
 //!
-//! Additive — composes r1's public API only (`commit`, `add`, `address`); r1 and r2
-//! re-run GREEN. Siloed, dev-only, demo seeds — no real key, no funds, no network,
+//! Additive -- composes r1's public API only (`commit`, `add`, `address`); r1 and r2
+//! re-run GREEN. Siloed, dev-only, demo seeds -- no real key, no funds, no network,
 //! no custody; a Cord gossiped over the wire reaches the serve gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_bron.rye
@@ -42,7 +42,7 @@ const pk_len = kumara.PublicKey.encoded_length;
 const sig_len = kumara.signature_length;
 const hash_len = cord.hash_len;
 
-/// A dev-net Cord is small and legible — a demo bench never bundles thousands of
+/// A dev-net Cord is small and legible -- a demo bench never bundles thousands of
 /// blocks. Bounded here well under r1's own `cord_max_blocks`, generous over the
 /// demo's handful.
 pub const max_blocks: u32 = 32;
@@ -52,7 +52,7 @@ pub const max_blocks: u32 = 32;
 /// `parent` lines. Bounded generously over the worst case (32 blocks).
 pub const max_record: u32 = 65536;
 
-/// The sentinel token for an empty star or body field — hex is never a lone dash,
+/// The sentinel token for an empty star or body field -- hex is never a lone dash,
 /// so an empty field can never be mistaken for content.
 const empty_field = "-";
 
@@ -273,7 +273,7 @@ pub fn parse(text: []const u8) BronError!PortableDag {
 }
 
 /// Rebuild a live Dag from a portable one by re-admitting each block under r1's
-/// own `add`, in the record's (committed) order — so every signature is re-verified
+/// own `add`, in the record's (committed) order -- so every signature is re-verified
 /// and every parent must already be held. A tampered block refuses at `add`.
 pub fn rebuild(pl: *const PortableDag) !cord.Dag {
     var dag = cord.Dag.empty();
@@ -292,7 +292,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 /// The honest four-block scene from r1/r2: two genesis issues, then a tax and a
-/// star reserve each referencing both. issued 1000 · taxed 300 · supply 700.
+/// star reserve each referencing both. issued 1000 - taxed 300 - supply 700.
 fn seat_dag() !cord.Dag {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);

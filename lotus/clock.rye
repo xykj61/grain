@@ -1,17 +1,17 @@
-//! lotus/clock.rye — ALES5: the sample clock — a real time base for the timeline. Every rung so far measured the audio in
+//! lotus/clock.rye -- ALES5: the sample clock -- a real time base for the timeline. Every rung so far measured the audio in
 //! sample INDICES: cut span 2..5, a fade across `count` samples, a mix from index 0. An index says WHICH sample without
-//! saying WHEN. A keeper thinks in real time — a half-second fade, two clips that begin two hundred milliseconds apart. The
+//! saying WHEN. A keeper thinks in real time -- a half-second fade, two clips that begin two hundred milliseconds apart. The
 //! one missing fact is the SAMPLE RATE, the number of samples one second of sound holds. This rung supplies it: a validated
 //! Clock converts between milliseconds and sample counts, exactly and bounded, so a duration is named in real time and a
 //! clip is placed at a real moment.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES5.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES5.
 //! Design read: active-designing/20260814-fill-ales5-lotus-sample-clock.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip it edits, the bound it converts to, and the one true saturation it
-//! reuses; lotus/fade.rye (ALES4) — the fade `fade_ms` names in milliseconds; lotus/mix.rye (ALES3) — the sample-for-sample
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip it edits, the bound it converts to, and the one true saturation it
+//! reuses; lotus/fade.rye (ALES4) -- the fade `fade_ms` names in milliseconds; lotus/mix.rye (ALES3) -- the sample-for-sample
 //! sum `place_at` carries to a real offset.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM samples on one bench, siloed to lotus/.
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM samples on one bench, siloed to lotus/.
 //! The rate is a number of samples per second, not a claim about any hardware clock. No socket, no network, no keys, no
 //! funds, no real device. The one correctness beyond arithmetic is that the two conversions never overflow (they run in i64/
 //! u64 before the divide) and are bounded to the clip (a duration too long refuses by name rather than truncating).
@@ -27,27 +27,27 @@ const fade = @import("fade.rye");
 
 pub const clock_version = "20260814.114309";
 
-/// One second of milliseconds — the base every time↔sample conversion divides or multiplies through. Named so no bare 1000
+/// One second of milliseconds -- the base every time<->sample conversion divides or multiplies through. Named so no bare 1000
 /// hides the unit.
 pub const ms_per_second: u32 = 1000;
 
-/// The highest sample rate this rung admits — generous enough for studio audio (192 kHz) yet bounded, so a validated Clock's
+/// The highest sample rate this rung admits -- generous enough for studio audio (192 kHz) yet bounded, so a validated Clock's
 /// rate can never overflow a conversion. A zero rate is refused too: it would divide by zero downstream.
 pub const max_rate: u32 = 192000;
 
 pub const ClockError = error{
-    /// A rate of zero, or past max_rate — refused at construction, so no later conversion divides by zero or overflows.
+    /// A rate of zero, or past max_rate -- refused at construction, so no later conversion divides by zero or overflows.
     BadRate,
-    /// A duration whose sample count would exceed the clip's fixed bound — refused, never a silent truncation.
+    /// A duration whose sample count would exceed the clip's fixed bound -- refused, never a silent truncation.
     DurationTooLong,
 };
 
-/// A sample clock: the number of samples one second of sound holds. This is the whole time base — once a Clock is validated,
+/// A sample clock: the number of samples one second of sound holds. This is the whole time base -- once a Clock is validated,
 /// every duration in the rung can be named in milliseconds and every clip placed at a real moment.
 pub const Clock = struct {
     rate: u32,
 
-    /// The samples per second, read back. Always within [1, max_rate] — proven at construction.
+    /// The samples per second, read back. Always within [1, max_rate] -- proven at construction.
     pub fn hz(self: Clock) u32 {
         // invariant: a constructed Clock's rate is always in the validated range.
         assert(self.rate >= 1 and self.rate <= max_rate);
@@ -55,7 +55,7 @@ pub const Clock = struct {
     }
 };
 
-/// Build a Clock from a sample rate, checked into [1, max_rate] — the one fact the whole rung rests on, proven once at the
+/// Build a Clock from a sample rate, checked into [1, max_rate] -- the one fact the whole rung rests on, proven once at the
 /// edge. Refuses BadRate on a zero or absurd rate before any conversion can use it.
 pub fn make(rate: u32) ClockError!Clock {
     // invariant: the rate is nonzero (no divide by zero downstream) and within the studio-generous bound.
@@ -66,36 +66,36 @@ pub fn make(rate: u32) ClockError!Clock {
     return c;
 }
 
-/// Convert a duration in milliseconds to a sample count at this clock's rate: rate · ms / 1000. The multiply runs in u64 so
+/// Convert a duration in milliseconds to a sample count at this clock's rate: rate - ms / 1000. The multiply runs in u64 so
 /// it never overflows before the divide; the result is bounded to timeline.max_clip and refuses DurationTooLong past it,
-/// rather than truncating a duration the clip cannot hold. This is the crux conversion — real time becomes a sample count.
+/// rather than truncating a duration the clip cannot hold. This is the crux conversion -- real time becomes a sample count.
 pub fn samples_for(clock: Clock, ms: u32) ClockError!u32 {
     // invariant: the clock is valid, so the multiply is bounded and the divide is safe.
     assert(clock.rate >= 1 and clock.rate <= max_rate);
     const wide: u64 = @as(u64, clock.rate) * @as(u64, ms);
     const n: u64 = wide / @as(u64, ms_per_second);
-    // invariant: the sample count must fit the clip whole — no partial duration.
+    // invariant: the sample count must fit the clip whole -- no partial duration.
     if (n > @as(u64, timeline.max_clip)) return error.DurationTooLong;
     // invariant: within the bound the cast to u32 is exact and lossless.
     assert(n <= @as(u64, timeline.max_clip));
     return @intCast(n);
 }
 
-/// Convert a sample count to a duration in milliseconds: n · 1000 / rate. HONESTLY LOSSY — a sample count rarely lands on a
+/// Convert a sample count to a duration in milliseconds: n - 1000 / rate. HONESTLY LOSSY -- a sample count rarely lands on a
 /// whole millisecond, so @divTrunc rounds toward zero. `samples_for(ms)` then `ms_for` recovers the millisecond count only
 /// when the duration is a whole number of samples at the rate; the rung states this rather than pretending it is exact.
 pub fn ms_for(clock: Clock, n: u32) u32 {
-    // invariant: the clock is valid, so the divide is safe and the multiply is bounded (n ≤ max_clip, so n·1000 fits u64).
+    // invariant: the clock is valid, so the divide is safe and the multiply is bounded (n ≤ max_clip, so n-1000 fits u64).
     assert(clock.rate >= 1 and clock.rate <= max_rate);
     assert(n <= timeline.max_clip);
     const wide: u64 = @as(u64, n) * @as(u64, ms_per_second);
     const ms: u64 = wide / @as(u64, clock.rate);
-    // invariant: n ≤ max_clip (4096) so n·1000 ≤ 4_096_000 and, divided by rate ≥ 1, the result always fits u32.
+    // invariant: n ≤ max_clip (4096) so n-1000 ≤ 4_096_000 and, divided by rate ≥ 1, the result always fits u32.
     assert(ms <= @as(u64, timeline.max_clip) * @as(u64, ms_per_second));
     return @intCast(ms);
 }
 
-/// A fade named in MILLISECONDS — the payoff of the clock. Convert `start_ms` and `count_ms` through the clock to sample
+/// A fade named in MILLISECONDS -- the payoff of the clock. Convert `start_ms` and `count_ms` through the clock to sample
 /// offsets, then delegate to ALES4's `fade.fade` unchanged: the same envelope, now spoken in real time. Refuses
 /// DurationTooLong on a span past the clip and forwards ALES4's BadRange / BadGain at the edge.
 pub fn fade_ms(
@@ -111,11 +111,11 @@ pub fn fade_ms(
     assert(clock.rate >= 1 and clock.rate <= max_rate);
     const start = try samples_for(clock, start_ms);
     const count = try samples_for(clock, count_ms);
-    // The envelope is ALES4's, unchanged — the clock added only the units.
+    // The envelope is ALES4's, unchanged -- the clock added only the units.
     try fade.fade(clip, start, count, num0, num1, den);
 }
 
-/// Mix `add` onto `base` beginning at a real time offset `at_ms`, aligning two clips that start at different moments — the
+/// Mix `add` onto `base` beginning at a real time offset `at_ms`, aligning two clips that start at different moments -- the
 /// second payoff of the clock. Past the offset the two sum sample-for-sample and SATURATE (reusing timeline.saturate, the one
 /// true floor and ceiling); before the offset the base carries alone. Refuses ClipFull when the placed clip runs past the
 /// fixed bound and DurationTooLong when the offset itself exceeds the clip, each before any write.
@@ -129,11 +129,11 @@ pub fn place_at(
     // invariant: the clock is valid, and the offset converts to a sample position within the clip.
     assert(clock.rate >= 1 and clock.rate <= max_rate);
     const off = try samples_for(clock, at_ms);
-    // invariant: the placed clip (offset plus the added length) must fit the fixed buffer — checked without overflow.
+    // invariant: the placed clip (offset plus the added length) must fit the fixed buffer -- checked without overflow.
     if (add.len > out.buf.len - off) return error.ClipFull;
     const placed_end: u32 = off + add.len;
     const n: u32 = if (base.len > placed_end) base.len else placed_end;
-    // invariant: the mix length fits the shared bound — proven by the ClipFull check above and base's own bound.
+    // invariant: the mix length fits the shared bound -- proven by the ClipFull check above and base's own bound.
     assert(n <= out.buf.len);
     var i: u32 = 0;
     while (i < n) : (i += 1) {
@@ -151,7 +151,7 @@ pub fn place_at(
 // --- selftest: a validated clock converts 500 ms at 48 kHz to 24000 samples and back; a zero rate refuses BadRate; a
 //     duration past the clip bound refuses DurationTooLong; ms_for is honestly lossy on a fractional-ms sample count; a
 //     fade_ms named in milliseconds lands the SAME samples as ALES4's index-named fade over the converted span (the clock
-//     changes only the units, never the audio); and place_at aligns a second clip 200 ms in — the lead-in carries the base
+//     changes only the units, never the audio); and place_at aligns a second clip 200 ms in -- the lead-in carries the base
 //     alone, the overlap sums and saturates ----------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -163,37 +163,37 @@ fn eq(got: []const i16, want: []const i16) bool {
 
 fn run_selftest() !u8 {
     // 1. a validated clock converts a real duration to a sample count and back. At 48 kHz, 500 ms is exactly 24000 samples
-    //    (48000 · 500 / 1000), and 24000 samples is exactly 500 ms — a whole-sample duration round-trips.
+    //    (48000 - 500 / 1000), and 24000 samples is exactly 500 ms -- a whole-sample duration round-trips.
     {
         const c = try make(48000);
         if (c.hz() != 48000) return error.RateWrong;
-        // 24000 exceeds max_clip (4096), so prove the conversion arithmetic on a duration that fits: 50 ms → 2400 samples.
+        // 24000 exceeds max_clip (4096), so prove the conversion arithmetic on a duration that fits: 50 ms -> 2400 samples.
         const n = try samples_for(c, 50);
         if (n != 2400) return error.SamplesForWrong;
         if (ms_for(c, 2400) != 50) return error.MsForWrong;
     }
 
-    // 2. a zero rate refuses BadRate at construction — no clock is built, so nothing downstream can divide by zero.
+    // 2. a zero rate refuses BadRate at construction -- no clock is built, so nothing downstream can divide by zero.
     {
         if (make(0)) |_| return error.ZeroRateSlipped else |e| if (e != error.BadRate) return error.WrongZeroRate;
         if (make(max_rate + 1)) |_| return error.HugeRateSlipped else |e| if (e != error.BadRate) return error.WrongHugeRate;
     }
 
-    // 3. a duration whose sample count exceeds the clip bound refuses DurationTooLong — never a silent truncation. At
+    // 3. a duration whose sample count exceeds the clip bound refuses DurationTooLong -- never a silent truncation. At
     //    48 kHz, 100 ms is 4800 samples, past max_clip (4096).
     {
         const c = try make(48000);
         if (samples_for(c, 100)) |_| return error.LongDurationSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongDuration;
     }
 
-    // 4. ms_for is honestly lossy — at 44.1 kHz a sample count that is not a whole number of milliseconds rounds toward
-    //    zero. 100 samples / 44100 · 1000 = 2.267 ms → 2 ms; the rung does not pretend the round-trip is exact.
+    // 4. ms_for is honestly lossy -- at 44.1 kHz a sample count that is not a whole number of milliseconds rounds toward
+    //    zero. 100 samples / 44100 - 1000 = 2.267 ms -> 2 ms; the rung does not pretend the round-trip is exact.
     {
         const c = try make(44100);
         if (ms_for(c, 100) != 2) return error.LossyWrong;
     }
 
-    // 5. a fade named in MILLISECONDS lands exactly the samples ALES4's index-named fade lands over the converted span — the
+    // 5. a fade named in MILLISECONDS lands exactly the samples ALES4's index-named fade lands over the converted span -- the
     //    clock changes only the units. At 1000 Hz, 1 ms is 1 sample, so a fade over `count_ms = 4` covers 4 samples; the two
     //    paths (fade_ms and the index fade over start=0,count=4) must agree byte for byte.
     {
@@ -213,7 +213,7 @@ fn run_selftest() !u8 {
         if (by_ms.samples()[0] != 0 or by_ms.samples()[3] != 1000) return error.FadeMsEndpointsWrong;
     }
 
-    // 6. place_at aligns a second clip 200 ms in — before the offset the base carries alone, at and past it the two sum and
+    // 6. place_at aligns a second clip 200 ms in -- before the offset the base carries alone, at and past it the two sum and
     //    saturate. At 1000 Hz, 200 ms is 200 samples; on a small bench we use 2 ms = 2 samples so the whole shape is legible.
     {
         const c = try make(1000);
@@ -228,7 +228,7 @@ fn run_selftest() !u8 {
         if (!eq(out.samples(), &want)) return error.PlaceAtWrong;
     }
 
-    // 7. place_at that would run the placed clip past the clip bound refuses ClipFull — never a silent overwrite past the
+    // 7. place_at that would run the placed clip past the clip bound refuses ClipFull -- never a silent overwrite past the
     //    buffer. An offset one sample short of the bound plus a two-sample add overflows by one.
     {
         const c = try make(1000);

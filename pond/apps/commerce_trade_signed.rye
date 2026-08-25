@@ -1,19 +1,19 @@
-//! pond/apps/commerce_trade_signed.rye — TACT Journey 4, Rung 2: a trade both parties signed.
+//! pond/apps/commerce_trade_signed.rye -- TACT Journey 4, Rung 2: a trade both parties signed.
 //!
-//! Rung one booked a fair-value trade on both parties' books at one agreed price — fair value by
+//! Rung one booked a fair-value trade on both parties' books at one agreed price -- fair value by
 //! construction. Yet a booking alone does not prove *agreement*: a steward could write a number
-//! one side never accepted. This rung binds the trade to two settled Kumara identities — the seller
+//! one side never accepted. This rung binds the trade to two settled Kumara identities -- the seller
 //! and the buyer each sign the exact same facts (their two points, the item, the one price), and a
 //! trade is booked only when *both* signatures verify over the identical facts.
 //!
 //! The crux: a recorded trade is one both hands agreed to. The signed message carries the two
-//! parties and the single price, so a signature is a promise about that exact number — change the
+//! parties and the single price, so a signature is a promise about that exact number -- change the
 //! price after signing and both signatures fall, because the agreement was to the old price, not
 //! the new one. A forged signature, a wrong keeper key, or a tampered fact each refuses, and an
 //! unagreed trade never reaches the books.
 //!
 //! It composes rung one's `record_trade` over the Kumara signing the settlement already witnessed
-//! (`kumara.rye`, the same layout `tablecloth_keyed` signs publications with) — inventing no new
+//! (`kumara.rye`, the same layout `tablecloth_keyed` signs publications with) -- inventing no new
 //! signing and no new booking. Demo keeper seeds only; no real key, no funds, no custody. Settling
 //! a booked trade reaches custody gate %3 (moving funds / a payment rail) and waits on counsel.
 //!
@@ -57,7 +57,7 @@ fn auth_message(out: *[max_msg_len]u8, trade: *const commerce.Trade) u32 {
     return off;
 }
 
-/// One party's signature over the exact trade facts — the seller's word, or the buyer's, that this
+/// One party's signature over the exact trade facts -- the seller's word, or the buyer's, that this
 /// item at this price between these two points is a trade they accept.
 pub fn sign_trade(keeper_seed: *const [kumara.seed_length]u8, trade: *const commerce.Trade) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
@@ -79,7 +79,7 @@ pub fn verify_trade(keeper: [pubkey_len]u8, trade: *const commerce.Trade, sig: *
     return true;
 }
 
-/// A trade carrying both parties' signatures — the durable artifact of an agreed trade.
+/// A trade carrying both parties' signatures -- the durable artifact of an agreed trade.
 pub const SignedTrade = struct {
     trade: commerce.Trade,
     seller_sig: [sig_len]u8,
@@ -87,7 +87,7 @@ pub const SignedTrade = struct {
 };
 
 /// Both parties agreed: the seller's signature and the buyer's signature each verify over the
-/// identical facts. Neither side alone is enough — a trade one party never signed is not agreed.
+/// identical facts. Neither side alone is enough -- a trade one party never signed is not agreed.
 pub fn both_agree(signed: *const SignedTrade, seller_key: [pubkey_len]u8, buyer_key: [pubkey_len]u8) bool {
     if (!verify_trade(seller_key, &signed.trade, &signed.seller_sig)) return false;
     if (!verify_trade(buyer_key, &signed.trade, &signed.buyer_sig)) return false;
@@ -108,7 +108,7 @@ pub fn record_signed(
 
 // ---- witnesses ----
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const seller_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const buyer_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 
@@ -128,7 +128,7 @@ fn sign_both(trade: *const commerce.Trade) SignedTrade {
     };
 }
 
-/// A trade both parties signed verifies and books — both signatures check over the identical facts,
+/// A trade both parties signed verifies and books -- both signatures check over the identical facts,
 /// and the booked pair still holds fair value by construction.
 fn welcome_both_agree_and_books() !void {
     const trade = demo_trade(1000);
@@ -139,7 +139,7 @@ fn welcome_both_agree_and_books() !void {
     print("commerce_trade_signed: a trade both parties signed verified and booked; fair value held at 1000.\n", .{});
 }
 
-/// A forged seller signature refuses — one flipped byte breaks the seller's promise, and the trade
+/// A forged seller signature refuses -- one flipped byte breaks the seller's promise, and the trade
 /// never reaches the books.
 fn unwelcome_forged_seller_refuses() !void {
     const trade = demo_trade(1000);
@@ -151,7 +151,7 @@ fn unwelcome_forged_seller_refuses() !void {
     print("commerce_trade_signed: a forged seller signature refused NotAgreed; the trade never booked.\n", .{});
 }
 
-/// A forged buyer signature refuses just the same — both hands must have signed.
+/// A forged buyer signature refuses just the same -- both hands must have signed.
 fn unwelcome_forged_buyer_refuses() !void {
     const trade = demo_trade(1000);
     var signed = sign_both(&trade);
@@ -160,16 +160,16 @@ fn unwelcome_forged_buyer_refuses() !void {
     print("commerce_trade_signed: a forged buyer signature refused; both hands must have signed.\n", .{});
 }
 
-/// A wrong keeper key refuses — the signatures name exactly which two keepers agreed.
+/// A wrong keeper key refuses -- the signatures name exactly which two keepers agreed.
 fn unwelcome_wrong_key_refuses() !void {
     const trade = demo_trade(1000);
     const signed = sign_both(&trade);
-    // The buyer's key stands in for the seller's — the seller's signature is not by this key.
+    // The buyer's key stands in for the seller's -- the seller's signature is not by this key.
     assert(!both_agree(&signed, pubkey_of(&buyer_seed), pubkey_of(&buyer_seed)));
     print("commerce_trade_signed: a wrong keeper key refused; the signatures name exactly who agreed.\n", .{});
 }
 
-/// The honesty crux: change the price after both signed, and both signatures fall — the agreement
+/// The honesty crux: change the price after both signed, and both signatures fall -- the agreement
 /// was to the old price, so a steward cannot quietly rebook the trade at a number neither accepted.
 fn unwelcome_price_tamper_refuses() !void {
     const trade = demo_trade(1000);

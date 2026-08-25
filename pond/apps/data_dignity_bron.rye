@@ -1,25 +1,25 @@
-//! pond/apps/data_dignity_bron.rye — Season 3 Journey 12 (Data-dignity), Rung 3: the signed succession travels.
+//! pond/apps/data_dignity_bron.rye -- Season 3 Journey 12 (Data-dignity), Rung 3: the signed succession travels.
 //!
 //! Rungs one and two fixed the succession rule and bound each of its two proofs to a settled identity. A
-//! succession is only useful past a keeper's lifetime if it can be *carried* — handed to an executor, a
+//! succession is only useful past a keeper's lifetime if it can be *carried* -- handed to an executor, a
 //! kin, or a court, and checked with no live estate in hand. This rung renders a signed estate to a
 //! `format data-dignity-v1` Bron record and parses it back byte-for-byte, still dignity-honest **offline**.
 //!
 //! A `SignedEstate` keeps rung one's estate (keeper, heir, and the sealed will of bequeathed/rested marks)
-//! beside the estate id and the two signatures that authorized it — the keeper's directive and the heir's
-//! acceptance — so the record carries not just *that* a succession was authorized but *the will it passed*
+//! beside the estate id and the two signatures that authorized it -- the keeper's directive and the heir's
+//! acceptance -- so the record carries not just *that* a succession was authorized but *the will it passed*
 //! and *the two hands that agreed to it*. The traveled `PortableEstate` owns its own arrays.
 //! `still_dignity_honest` rebuilds the will, recomputes its digest, and re-verifies both signatures
-//! through rung two — so a mark tampered or a signature flipped after the crossing refuses `BadConsent`
+//! through rung two -- so a mark tampered or a signature flipped after the crossing refuses `BadConsent`
 //! with no network, no live estate. `rebuild` replays the will through rung one, seals and accepts through
-//! rung two's signed gates, and succeeds — recovering an estate whose holder of each item matches, the
+//! rung two's signed gates, and succeeds -- recovering an estate whose holder of each item matches, the
 //! rested set still extinguished.
 //!
 //! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a general
 //! parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`, a wrong
 //! header `BadFormat`, bad hex `BadHex`, a bad disposition or integer `BadInt`, a missing estate or proof
-//! line its own error. Additive — composes rungs one and two over public API; both re-run GREEN. Demo
-//! keeper and heir seeds only, no network (a succession served over the wire reaches the serve gate —
+//! line its own error. Additive -- composes rungs one and two over public API; both re-run GREEN. Demo
+//! keeper and heir seeds only, no network (a succession served over the wire reaches the serve gate --
 //! Keaton's hand).
 //!
 //!   rye build pond/apps/data_dignity_bron.rye -femit-bin=pond/bin/data-dignity-bron
@@ -91,7 +91,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// A disposition renders as one byte and parses back: 0 bequeathed, 1 rested — matching rung one's enum
+/// A disposition renders as one byte and parses back: 0 bequeathed, 1 rested -- matching rung one's enum
 /// order, so the mark survives the crossing exactly.
 fn parse_disposition(tok: []const u8) BronError!estate_mod.Disposition {
     if (std.mem.eql(u8, tok, "0")) return .bequeathed;
@@ -120,7 +120,7 @@ pub const PortableEstate = struct {
     directive_sig: [sig_len]u8,
     acceptance_sig: [sig_len]u8,
 
-    /// Rebuild the estate's will (open + will each holding), without sealing — the shape a digest and a
+    /// Rebuild the estate's will (open + will each holding), without sealing -- the shape a digest and a
     /// verify need. Refuses exactly as rung one would (a self-heir, a repeated item, an overfull will).
     fn to_estate(self: *const PortableEstate) estate_mod.EstateError!estate_mod.Estate {
         var e = try estate_mod.Estate.open(self.keeper, self.heir);
@@ -146,8 +146,8 @@ pub const PortableEstate = struct {
         try signed.verify_acceptance(ring, self.estate_id, self.keeper, self.heir, &self.acceptance_sig);
     }
 
-    /// Replay the succession into a succeeded estate — seal and accept through rung two's signed gates,
-    /// then succeed — so the traveled outcome matches the original: a bequeathed item is the heir's, a
+    /// Replay the succession into a succeeded estate -- seal and accept through rung two's signed gates,
+    /// then succeed -- so the traveled outcome matches the original: a bequeathed item is the heir's, a
     /// rested item rests. Refuses exactly as the lower rungs would on a bad mark or a bad signature.
     pub fn rebuild(self: *const PortableEstate, ring: *const signed.Keyring) signed.EstateActError!estate_mod.Estate {
         var e = try self.to_estate();
@@ -258,7 +258,7 @@ pub fn parse(text: []const u8) BronError!PortableEstate {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+// Demo keeper and heir seeds -- plainly not real keys, so no identity is invented.
 const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 
@@ -278,7 +278,7 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
 }
 
 /// Build a signed estate willing two holdings to the heir and resting one, both proofs signed, sealed and
-/// accepted — ready to succeed and to travel.
+/// accepted -- ready to succeed and to travel.
 fn build_signed(ring: *const signed.Keyring) !SignedEstate {
     var e = try estate_mod.Estate.open(keeper_pt, heir_pt);
     try e.bequeath(1);
@@ -319,7 +319,7 @@ fn welcome_round_trip_still_honest() !void {
     // Still dignity-honest offline: both carried proofs re-verify.
     try pe.still_dignity_honest(&ring);
 
-    // The rebuilt succession carries the identical holders — the rested set still extinguished.
+    // The rebuilt succession carries the identical holders -- the rested set still extinguished.
     const rebuilt = try pe.rebuild(&ring);
     assert(rebuilt.holder_of(1) == .heir);
     assert(rebuilt.holder_of(2) == .heir);
@@ -328,7 +328,7 @@ fn welcome_round_trip_still_honest() !void {
     print("data_dignity_bron: a signed estate rendered to Bron, parsed back byte-for-byte, stayed dignity-honest offline, and rebuilt the identical succession — the rested set still resting.\n", .{});
 }
 
-/// A directive signature flipped after the crossing refuses offline — a tampered record cannot pass, and
+/// A directive signature flipped after the crossing refuses offline -- a tampered record cannot pass, and
 /// cannot rebuild a succession either.
 fn unwelcome_flipped_directive_refuses() !void {
     const ring = try demo_ring();
@@ -347,7 +347,7 @@ fn unwelcome_flipped_directive_refuses() !void {
 }
 
 /// A hold mark tampered after the crossing shifts the will digest, so the keeper's directive no longer
-/// verifies — the rested/bequeathed marks travel under the signature, not beside it.
+/// verifies -- the rested/bequeathed marks travel under the signature, not beside it.
 fn unwelcome_tampered_mark_refuses() !void {
     const ring = try demo_ring();
     var se = try build_signed(&ring);
@@ -365,7 +365,7 @@ fn unwelcome_tampered_mark_refuses() !void {
     print("data_dignity_bron: a hold mark flipped after the crossing refused BadConsent — the will's marks travel under the keeper's signature.\n", .{});
 }
 
-/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+/// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
     const text = "format data-dignity-v1\nestate 7 11 42\nghost 5\n";
     const bad = parse(text);
@@ -373,35 +373,35 @@ fn unwelcome_unknown_field_refuses() !void {
     print("data_dignity_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
 }
 
-/// A wrong header refuses — the record must name its own format.
+/// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
     const bad = parse("format other-v1\nestate 7 11 42\n");
     assert(bad == error.BadFormat);
     print("data_dignity_bron: a wrong header refused BadFormat.\n", .{});
 }
 
-/// A record with no estate line refuses — the estate id, keeper, and heir are required.
+/// A record with no estate line refuses -- the estate id, keeper, and heir are required.
 fn unwelcome_missing_estate_refuses() !void {
     const bad = parse("format data-dignity-v1\nhold 1 0\n");
     assert(bad == error.MissingEstate);
     print("data_dignity_bron: a record with no estate line refused MissingEstate.\n", .{});
 }
 
-/// A record with an estate but no proof lines refuses — a succession travels with both signatures.
+/// A record with an estate but no proof lines refuses -- a succession travels with both signatures.
 fn unwelcome_missing_proof_refuses() !void {
     const bad = parse("format data-dignity-v1\nestate 7 11 42\nhold 1 0\n");
     assert(bad == error.MissingDirective);
     print("data_dignity_bron: a record with no directive refused MissingDirective.\n", .{});
 }
 
-/// A bad disposition byte refuses — a mark is strictly 0 (bequeathed) or 1 (rested).
+/// A bad disposition byte refuses -- a mark is strictly 0 (bequeathed) or 1 (rested).
 fn unwelcome_bad_disposition_refuses() !void {
     const bad = parse("format data-dignity-v1\nestate 7 11 42\nhold 1 2\n");
     assert(bad == error.BadInt);
     print("data_dignity_bron: a disposition that is neither 0 nor 1 refused BadInt.\n", .{});
 }
 
-/// Malformed hex in a signature refuses — the reader will not accept a corrupt proof field.
+/// Malformed hex in a signature refuses -- the reader will not accept a corrupt proof field.
 fn unwelcome_bad_hex_refuses() !void {
     const bad = parse("format data-dignity-v1\nestate 7 11 42\ndirective zz\n");
     assert(bad == error.BadHex);

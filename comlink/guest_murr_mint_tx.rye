@@ -1,4 +1,4 @@
-//! comlink/guest_murr_mint_tx.rye — MUR M2b (was MALA) mint hop TX (issuer → holder).
+//! comlink/guest_murr_mint_tx.rye -- MUR M2b (was MALA) mint hop TX (issuer -> holder).
 //!
 //! Signs the pinned mint fact, seals the compact payload, sends across virtio-net.
 

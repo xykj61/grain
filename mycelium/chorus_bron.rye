@@ -1,19 +1,19 @@
-//! mycelium/chorus_bron.rye — a quorum of vouchers travels as a readable record (r2).
+//! mycelium/chorus_bron.rye -- a quorum of vouchers travels as a readable record (r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
-//! r1 gathered a Chorus — a bounded quorum of independent Vouchers for one account position at one
-//! order-head — and proved it is believed only when a threshold of distinct nodes agree. A quorum a
+//! r1 gathered a Chorus -- a bounded quorum of independent Vouchers for one account position at one
+//! order-head -- and proved it is believed only when a threshold of distinct nodes agree. A quorum a
 //! holder cannot hand to another is only a local reading, so r2 lets the whole Chorus cross as
 //! `format chorus-v1` bytes. Because every member attests the SAME claim, the record names the claim
-//! once — a `head` line, an `account` line, a `position <balance> <reserved> <received>` line, a
-//! `threshold <t>` line — then one `member <node-hex> <sig-hex>` line per voice: each member carries
+//! once -- a `head` line, an `account` line, a `position <balance> <reserved> <received>` line, a
+//! `threshold <t>` line -- then one `member <node-hex> <sig-hex>` line per voice: each member carries
 //! only its own node key and its signature, since the head, account, and position it signed are the
 //! shared claim. Render writes it, parse reads it back, so a round trip is a fixed point.
 //!
 //! The crux is THE QUORUM LAW SURVIVES THE WIRE: a parsed Chorus is reconstructed member by member from
-//! the shared claim, then re-run through r1's `verify_chorus` at the record's own stated threshold — so a
+//! the shared claim, then re-run through r1's `verify_chorus` at the record's own stated threshold -- so a
 //! record whose members do not meet that threshold (`BelowThreshold`), whose members are not distinct
 //! (`DuplicateNode`), or one of whose signatures does not verify over the claim (`BadSignature`) refuses
 //! before it is trusted. A recipient reads the same quorum r1 asserted, needing no ledger of their own; a
@@ -22,7 +22,7 @@
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
 //! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer `BadInt`, a bad hex
 //! field `BadHex`, a missing field `BadFormat`, an over-full member set `TooManyMembers`. Composes
-//! chorus.rye + voucher.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no network,
+//! chorus.rye + voucher.rye public API only. Siloed, dev-only, demo seeds -- no key, no funds, no network,
 //! no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/chorus_bron.rye
@@ -39,7 +39,7 @@ const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 const parse_int = @import("parse_int.rye");
 
-/// The record buffer bound — a full quorum's claim lines plus one member line per voice fit with room.
+/// The record buffer bound -- a full quorum's claim lines plus one member line per voice fit with room.
 pub const max_record: u32 = 8192;
 
 pub const BronError = error{
@@ -129,7 +129,7 @@ pub fn render(c: *const chorus.Chorus, threshold: u32, out: []u8) BronError!u32 
 }
 
 /// Split a line into up to four tokens; returns the count (or five to signal a trailing token past what
-/// any line allows — the position record, at four, is the widest).
+/// any line allows -- the position record, at four, is the widest).
 fn tokens(line: []const u8, out: *[4][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -142,7 +142,7 @@ fn tokens(line: []const u8, out: *[4][]const u8) u32 {
 }
 
 /// Parse a `format chorus-v1` record into `out`, returning the record's stated threshold. Reconstructs
-/// each member from the shared claim, then — the crux — re-runs r1's `verify_chorus` at that threshold,
+/// each member from the shared claim, then -- the crux -- re-runs r1's `verify_chorus` at that threshold,
 /// so a record that does not prove its own quorum refuses before it is trusted.
 pub fn parse(text: []const u8, out: *chorus.Chorus) BronError!u32 {
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -233,7 +233,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
-    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    // invariant: the buffer holds tag - id - deadline - recipient exactly.
     assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
     assert(id.len == lapse.id_len);
     out[0] = lapse.tag_pledge;
@@ -243,7 +243,7 @@ fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
     return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
 }
 
-/// Build a Dag: genesis credits Alice 100, Alice pledges 100 to Bob under a far deadline (open) — so a
+/// Build a Dag: genesis credits Alice 100, Alice pledges 100 to Bob under a far deadline (open) -- so a
 /// chorus over Alice reads balance 0, reserved 100, received 100, the position the wire must carry whole.
 fn build_dag() !cord.Dag {
     const id = [_]u8{0x01} ** lapse.id_len;
@@ -348,7 +348,7 @@ pub fn main() !void {
             if (err != error.BadHex) return error.WrongBadHex;
         }
     }
-    // Refusal — the crux: a forged member (one signature byte flipped) breaks the quorum, so the record
+    // Refusal -- the crux: a forged member (one signature byte flipped) breaks the quorum, so the record
     // refuses BadSignature before it is trusted.
     {
         var forged_c = c;
@@ -359,7 +359,7 @@ pub fn main() !void {
             if (err != error.BadSignature) return error.WrongForge;
         }
     }
-    // Refusal — the crux: a record whose members do not meet its own stated threshold refuses
+    // Refusal -- the crux: a record whose members do not meet its own stated threshold refuses
     // BelowThreshold (three honest voices cannot satisfy a threshold of four).
     {
         var tb: [max_record]u8 = undefined;
@@ -368,7 +368,7 @@ pub fn main() !void {
             if (err != error.BelowThreshold) return error.WrongThin;
         }
     }
-    // Refusal — the crux: a record padded with a repeated signer refuses DuplicateNode, so a quorum
+    // Refusal -- the crux: a record padded with a repeated signer refuses DuplicateNode, so a quorum
     // cannot be inflated on the wire any more than in memory.
     {
         var dup = try chorus.open(&dag, alice_pk[0..]);

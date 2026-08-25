@@ -1,21 +1,21 @@
-//! brushstroke/part_facets_sort_query.rye — HUNK93: the keeper types the direction — a `sort:` directive in the query
+//! brushstroke/part_facets_sort_query.rye -- HUNK93: the keeper types the direction -- a `sort:` directive in the query
 //! line picks which way the price sort turns.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK93.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK93.
 //! Design read: active-designing/date/20260814/20260814-014131_hunk-part-facets-sort-direction-named-exploration.md (HUNK92 kin)
 //! Teacher, thanked clean-room: a search box where the sort control is part of the same query a keeper types (concept
 //! only, siloed).
 //!
-//! HUNK92 gives the sorted screen a direction, yet the direction is a parameter a caller chooses in code — a keeper
+//! HUNK92 gives the sorted screen a direction, yet the direction is a parameter a caller chooses in code -- a keeper
 //! typing a query still cannot pick it. This rung hands the choice to the keeper: a `sort:price-asc` or `sort:price-desc`
 //! token anywhere in the typed line selects the direction, and every other token stays the faceted query it always was.
 //! `parse_sort_query` lifts the sort directive out of the line (default ascending when none is typed) and hands the rest
-//! — byte-for-byte the faceted query minus the sort token — to HUNK92's `facets_sorted_screen_dir`.
+//! -- byte-for-byte the faceted query minus the sort token -- to HUNK92's `facets_sorted_screen_dir`.
 //!
 //! The crux is that the typed line drives BOTH the direction and the facets, without disturbing the faceted grammar: a
 //! line with no sort token behaves exactly as HUNK92 ascending, so this is a strict superset. An unknown sort value
 //! refuses `UnknownSortValue` by name, a second sort token refuses `DuplicateSort`, and a line that would overflow the
-//! bounded scratch refuses `LineTooLong` — each before any catalog work. The stripped rest still surfaces the faceted
+//! bounded scratch refuses `LineTooLong` -- each before any catalog work. The stripped rest still surfaces the faceted
 //! parser's own named refusal for a malformed clause.
 //!
 //! A price is echoed, compared, and reordered by; nothing is moved (custody gate %3 untouched). No network, no key, no
@@ -44,11 +44,11 @@ pub const sort_key = "sort:";
 pub const sort_value_asc = "price-asc";
 pub const sort_value_desc = "price-desc";
 
-/// The widest a whole sort directive token runs — `sort:` plus the longer value. A caller sizes a scratch to this so a
+/// The widest a whole sort directive token runs -- `sort:` plus the longer value. A caller sizes a scratch to this so a
 /// directive token can never overflow.
 pub const max_sort_token: u32 = sort_key.len + sort_value_desc.len;
 
-/// The widest an input line runs — a whole faceted line (HUNK87's bound) plus one sort directive token and its space. A
+/// The widest an input line runs -- a whole faceted line (HUNK87's bound) plus one sort directive token and its space. A
 /// caller sizes its scratch to this, so a typed line can never overflow the strip.
 pub const max_sort_line: u32 = part_facets_header.max_facets_line + max_sort_token + 1;
 
@@ -58,14 +58,14 @@ pub const SortQueryError = error{
     LineTooLong,
 };
 
-/// A parsed sort query — the direction the keeper typed (or ascending by default) and the faceted line with the sort
+/// A parsed sort query -- the direction the keeper typed (or ascending by default) and the faceted line with the sort
 /// directive removed. The rest is held in an owned buffer so it outlives the typed line it was lifted from.
 pub const SortQuery = struct {
     dir: SortDir = .ascending,
     rest_buf: [part_facets_header.max_facets_line]u8 = undefined,
     rest_len: u32 = 0,
 
-    /// The faceted query with the sort directive stripped — exactly what the faceted parser reads.
+    /// The faceted query with the sort directive stripped -- exactly what the faceted parser reads.
     pub fn rest(self: *const SortQuery) []const u8 {
         // invariant: the stripped rest never claims more than its buffer holds.
         assert(self.rest_len <= self.rest_buf.len);
@@ -73,7 +73,7 @@ pub const SortQuery = struct {
     }
 };
 
-/// The direction a `sort:` value names — `price-asc` ascending, `price-desc` descending, anything else refused by name.
+/// The direction a `sort:` value names -- `price-asc` ascending, `price-desc` descending, anything else refused by name.
 /// This is the single point where a typed value becomes a direction.
 fn dir_for_value(value: []const u8) !SortDir {
     if (std.mem.eql(u8, value, sort_value_asc)) return .ascending;
@@ -81,17 +81,17 @@ fn dir_for_value(value: []const u8) !SortDir {
     return error.UnknownSortValue;
 }
 
-/// Lift the sort directive out of `text` into `out` — every space token that starts with `sort:` sets the direction
+/// Lift the sort directive out of `text` into `out` -- every space token that starts with `sort:` sets the direction
 /// (default ascending, a second one refusing `DuplicateSort`), and every other token is copied into `out.rest_buf`
 /// joined by single spaces, so the rest is the faceted query minus the directive. An unknown sort value refuses by name
-/// and a line that would overflow the bounded scratch refuses `LineTooLong` — each before any catalog work.
+/// and a line that would overflow the bounded scratch refuses `LineTooLong` -- each before any catalog work.
 pub fn parse_sort_query(text: []const u8, out: *SortQuery) !void {
     out.* = SortQuery{};
     var seen_sort = false;
     var n: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, text, ' ');
     while (it.next()) |tok| {
-        // invariant: a tokenized run is never empty — tokenizeScalar skips blank runs.
+        // invariant: a tokenized run is never empty -- tokenizeScalar skips blank runs.
         assert(tok.len > 0);
         if (std.mem.startsWith(u8, tok, sort_key)) {
             if (seen_sort) return error.DuplicateSort;
@@ -116,7 +116,7 @@ pub fn parse_sort_query(text: []const u8, out: *SortQuery) !void {
     assert(out.rest_len <= out.rest_buf.len);
 }
 
-/// Draw the whole sorted faceted screen from one typed line — parse the sort directive, then hand the stripped faceted
+/// Draw the whole sorted faceted screen from one typed line -- parse the sort directive, then hand the stripped faceted
 /// query and the keeper's chosen direction to HUNK92's `facets_sorted_screen_dir`. So a keeper types
 /// `material:stainless-304 sort:price-desc` and reads the stainless parts dearest-first under a header that says so. An
 /// unknown sort value, a duplicate directive, and an over-long line each refuse by name before any catalog work; the
@@ -134,7 +134,7 @@ pub fn facets_sorted_query_screen(
     return part_facets_sort_dir.facets_sorted_screen_dir(allocator, cat, sq.rest(), cols, rows, offset, sq.dir);
 }
 
-// --- selftest: five parts across four bands with a 55c tie — the typed directive picks the direction, the stripped rest
+// --- selftest: five parts across four bands with a 55c tie -- the typed directive picks the direction, the stripped rest
 //     is the faceted query, an absent directive defaults to ascending, and the named refusals fire ------------------
 
 /// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known color.
@@ -157,7 +157,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+/// Read a row's cells back as bytes, trimming the blank tail -- so the selftest sees exactly the painted text.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
     var n: u32 = @intCast(cells.len);
@@ -180,7 +180,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     const cols: u32 = 100;
 
-    // The directive is LIFTED and the rest is the faceted query — `sort:price-desc` before the facets sets descending
+    // The directive is LIFTED and the rest is the faceted query -- `sort:price-desc` before the facets sets descending
     // and leaves `material:stainless-304|material:brass max:100`.
     {
         var sq: SortQuery = undefined;
@@ -189,7 +189,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, sq.rest(), "material:stainless-304|material:brass max:100"));
     }
 
-    // The directive is lifted from ANYWHERE — a `sort:price-asc` in the MIDDLE sets ascending and the rest rejoins the
+    // The directive is lifted from ANYWHERE -- a `sort:price-asc` in the MIDDLE sets ascending and the rest rejoins the
     // surrounding facets with a single space, in typed order.
     {
         var sq: SortQuery = undefined;
@@ -198,7 +198,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, sq.rest(), "material:stainless-304 max:100"));
     }
 
-    // NO directive DEFAULTS to ascending, and the rest is the line unchanged — a strict superset of HUNK92 ascending.
+    // NO directive DEFAULTS to ascending, and the rest is the line unchanged -- a strict superset of HUNK92 ascending.
     {
         var sq: SortQuery = undefined;
         try parse_sort_query("material:stainless-304 max:100", &sq);
@@ -206,7 +206,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, sq.rest(), "material:stainless-304 max:100"));
     }
 
-    // A directive-ONLY line lifts the direction and leaves an EMPTY rest — a match-all, sorted the chosen way.
+    // A directive-ONLY line lifts the direction and leaves an EMPTY rest -- a match-all, sorted the chosen way.
     {
         var sq: SortQuery = undefined;
         try parse_sort_query("sort:price-desc", &sq);
@@ -214,7 +214,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(sq.rest().len == 0);
     }
 
-    // The KEEPER'S TYPED DIRECTION reaches the glass — `sort:price-desc` draws the whole catalog dearest-first under a
+    // The KEEPER'S TYPED DIRECTION reaches the glass -- `sort:price-desc` draws the whole catalog dearest-first under a
     // `high to low` header, `sort:price-asc` cheapest-first under a `low to high` header.
     {
         const g = try facets_sorted_query_screen(garden, &cat, "sort:price-desc", cols, 5, 0);
@@ -233,7 +233,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..sr], "hexnut  HX-N8  stainless-304  $0.55"));
     }
 
-    // The typed direction AND the typed facets both land — `material:stainless-304 sort:price-desc` draws only the
+    // The typed direction AND the typed facets both land -- `material:stainless-304 sort:price-desc` draws only the
     // stainless parts, dearest-first (bolt $1.25, then the 55c tie in held order).
     {
         const g = try facets_sorted_query_screen(garden, &cat, "material:stainless-304 sort:price-desc", cols, 5, 0);
@@ -254,7 +254,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A SECOND sort directive refuses DuplicateSort — one line, one direction.
+    // A SECOND sort directive refuses DuplicateSort -- one line, one direction.
     {
         var sq: SortQuery = undefined;
         if (parse_sort_query("sort:price-asc material:brass sort:price-desc", &sq)) |_| {

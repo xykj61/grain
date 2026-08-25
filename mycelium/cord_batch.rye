@@ -1,26 +1,26 @@
-//! mycelium/cord_batch.rye — the batched Cord: one block seals many facts.
+//! mycelium/cord_batch.rye -- the batched Cord: one block seals many facts.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - fact batching - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
-//! The single-fact Cord (mycelium/cord.rye) buys — for one author signature, one
-//! node in the agreed order, one round of admission — exactly one fact. From
+//! The single-fact Cord (mycelium/cord.rye) buys -- for one author signature, one
+//! node in the agreed order, one round of admission -- exactly one fact. From
 //! TigerBeetle comes the batching insight: amortize that fixed per-block cost
 //! across many facts by sealing a bounded *batch* under one author signature.
-//! Clean-room — TigerBeetle is studied, never copied.
+//! Clean-room -- TigerBeetle is studied, never copied.
 //!
 //! Grown BESIDE the elder, never over it: the single-fact `cord.Block` and its
 //! whole witnessed arc stay a green binary. A `BatchBlock` carries `fact_count`
 //! facts, sealed together under one author signature, admitted and ordered as one
-//! node of the Dag — the topological commit rule (round asc · author key · block
+//! node of the Dag -- the topological commit rule (round asc - author key - block
 //! hash) is the elder's exactly; only the payload per node grows from one fact to
 //! a bounded batch.
 //!
 //! The crux: a batched history and a single-fact history over the identical facts
-//! fold to the byte-identical supply — batching is a throughput transform, never a
+//! fold to the byte-identical supply -- batching is a throughput transform, never a
 //! semantic one. The supply never notices how the facts were packed.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch.rye
 
@@ -34,13 +34,13 @@ const tally_copy = @import("tally_copy.rye");
 
 const Sha256 = std.crypto.hash.sha2.Sha256;
 
-/// A batch seals at most this many facts under one author signature — a named
+/// A batch seals at most this many facts under one author signature -- a named
 /// ceiling, generous over the demo's handful and well under the fold log bound
 /// (fold.myc_log_max_facts = 1024). An over-full batch refuses `BatchFull`.
 pub const max_facts_per_block: u32 = 16;
 
-/// Canonical batch-block bytes: author_pk · round(le4) · parent_count(le4) ·
-/// parents(32 each) · fact_count(le4) · each fact's signature(64). One author
+/// Canonical batch-block bytes: author_pk - round(le4) - parent_count(le4) -
+/// parents(32 each) - fact_count(le4) - each fact's signature(64). One author
 /// signature seals the whole batch; each fact's own signature (bound in here)
 /// binds its own content, so a tampered fact anywhere breaks the block signature.
 const batch_bytes_max: u32 =
@@ -103,7 +103,7 @@ fn batch_bytes(b: *const BatchBlock, out: []u8) u32 {
     return off;
 }
 
-/// The batch block's address — SHA-256 over its canonical bytes.
+/// The batch block's address -- SHA-256 over its canonical bytes.
 fn batch_hash(b: *const BatchBlock, out: *[cord.hash_len]u8) void {
     var buf: [batch_bytes_max]u8 = undefined;
     const n = batch_bytes(b, &buf);
@@ -113,7 +113,7 @@ fn batch_hash(b: *const BatchBlock, out: *[cord.hash_len]u8) void {
     Sha256.hash(buf[0..n], out, .{});
 }
 
-/// A batch block's address, exposed for a Byzantine-aware caller. Additive — the
+/// A batch block's address, exposed for a Byzantine-aware caller. Additive -- the
 /// r1 admission path is unchanged.
 pub fn address_batch(b: *const BatchBlock, out: *[cord.hash_len]u8) void {
     batch_hash(b, out);
@@ -189,7 +189,7 @@ fn find_index(dag: *const BatchDag, hash: *const [cord.hash_len]u8) ?u32 {
     return null;
 }
 
-/// Admit a batch block. Refuses whole (Dag unchanged) on any fault — a forged
+/// Admit a batch block. Refuses whole (Dag unchanged) on any fault -- a forged
 /// block bypassing `mint_batch` is still caught here.
 pub fn add_batch(dag: *BatchDag, block: BatchBlock) error{
     BadSignature,
@@ -239,7 +239,7 @@ fn parents_emitted(dag: *const BatchDag, idx: u32, emitted: []const bool) bool {
 }
 
 /// The deterministic tie-break, identical to the elder Cord's: round ascending,
-/// then author key, then block hash — a total order over distinct blocks.
+/// then author key, then block hash -- a total order over distinct blocks.
 fn block_less(dag: *const BatchDag, a: u32, b: u32) bool {
     // invariant: both indices name real seats.
     assert(a < dag.len);
@@ -252,7 +252,7 @@ fn block_less(dag: *const BatchDag, a: u32, b: u32) bool {
     return std.mem.order(u8, dag.hashes[a][0..], dag.hashes[b][0..]) == .lt;
 }
 
-/// Commit — linearize the Dag to one total order of block indices. A pure
+/// Commit -- linearize the Dag to one total order of block indices. A pure
 /// function of the graph: the same blocks yield the identical order whatever
 /// order they arrived in.
 pub fn commit_batch(dag: *const BatchDag, order_out: []u32) u32 {
@@ -272,7 +272,7 @@ pub fn commit_batch(dag: *const BatchDag, order_out: []u32) u32 {
             if (best == null or block_less(dag, i, best.?)) best = i;
         }
         // invariant: acyclic by construction, so a ready block always exists
-        // until all are emitted — a stall would mean a cycle got in.
+        // until all are emitted -- a stall would mean a cycle got in.
         assert(best != null);
         order_out[count] = best.?;
         emitted[best.?] = true;
@@ -283,7 +283,7 @@ pub fn commit_batch(dag: *const BatchDag, order_out: []u32) u32 {
     return count;
 }
 
-/// Gather the committed batches' facts into a fold Log — committed block order,
+/// Gather the committed batches' facts into a fold Log -- committed block order,
 /// facts within a block in array order. The one place batching flattens back to
 /// the single stream `fold_log` folds.
 pub fn committed_batch_log(
@@ -323,8 +323,8 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// The shared four facts both histories fold — two genesis issues, then a tax and
-/// a star reserve. Their aggregates (issued · taxed · star) are packing-invariant:
+/// The shared four facts both histories fold -- two genesis issues, then a tax and
+/// a star reserve. Their aggregates (issued - taxed - star) are packing-invariant:
 /// issues commute, and round ordering keeps the round-1 drains after them.
 const Facts = struct {
     fa: fold.Fact,
@@ -377,7 +377,7 @@ fn fold_single(f: *const Facts) !fold.FoldState {
     return try fold.fold_log(&log);
 }
 
-/// Fold the SAME four facts as two batched blocks — one round-0 batch of the two
+/// Fold the SAME four facts as two batched blocks -- one round-0 batch of the two
 /// genesis issues, one round-1 batch of the tax and the reserve.
 fn fold_batched(f: *const Facts) !fold.FoldState {
     const ka = seeded(0xA1);

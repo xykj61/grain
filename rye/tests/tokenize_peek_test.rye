@@ -1,4 +1,4 @@
-//! Rye test: TokenIterator.peek via tokenizeScalar — pass 9957.
+//! Rye test: TokenIterator.peek via tokenizeScalar -- pass 9957.
 //!
 //! Tokenize skips delimiter runs; peek matches next without advancing.
 //! Pairs with SplitIterator.peek (9969).

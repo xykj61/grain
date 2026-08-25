@@ -1,7 +1,7 @@
-//! glow/face_lit.rye — parse face=cord_lit|hex_lit sample clauses (STOA219).
+//! glow/face_lit.rye -- parse face=cord_lit|hex_lit sample clauses (STOA219).
 //!
-//! STOA219 (C3): one Glow value clause `face='…'` or `face=@ux…` after lex
-//! (STOA216–217). Mold `face=@t` / `face=@ux` stay in rune_shape — this surface
+//! STOA219 (C3): one Glow value clause `face='...'` or `face=@ux...` after lex
+//! (STOA216-217). Mold `face=@t` / `face=@ux` stay in rune_shape -- this surface
 //! is sample values only. Lower emit and desk pin held (C4 / C5).
 //!
 //!   rye build glow/face_lit_witness.rye -femit-bin=glow/bin/face_lit_witness

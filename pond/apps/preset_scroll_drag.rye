@@ -1,8 +1,8 @@
-//! pond/apps/preset_scroll_drag.rye — HUNK44: the drag seam — a touch drag in pixels becomes line deltas.
+//! pond/apps/preset_scroll_drag.rye -- HUNK44: the drag seam -- a touch drag in pixels becomes line deltas.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK44.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK44.
 //! Design read: active-designing/date/20260813/20260813-195829_hunk-scroll-drag-exploration.md
-//! Teacher, thanked clean-room: the pixel-quantizing layer of any touch scroll surface — a finger drag in pixels
+//! Teacher, thanked clean-room: the pixel-quantizing layer of any touch scroll surface -- a finger drag in pixels
 //! becomes whole line moves over a row's pixel height, the sub-cell remainder carried between events (concept only,
 //! siloed).
 //!
@@ -11,7 +11,7 @@
 //! seam directly above HUNK43: `feed(pixels)` quantizes a pixel drag into a whole-line delta over the cell height,
 //! carrying the sub-cell remainder so a slow drag accumulates instead of flooring to nothing every event; `drag`
 //! composes that delta with HUNK43's `apply`, so a pixel drag drives the HUNK40 cursor with every clamp inherited. A
-//! pure quantizer over a bounded carry — no storage, no render, and the one new refusal only `BadCellHeight`. No
+//! pure quantizer over a bounded carry -- no storage, no render, and the one new refusal only `BadCellHeight`. No
 //! network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_drag.rye selftest
@@ -28,13 +28,13 @@ pub const DragError = error{
     BadCellHeight,
 };
 
-/// A cell taller than any real display row is absurd — a row's pixel height is bounded so a divisor is always sane.
+/// A cell taller than any real display row is absurd -- a row's pixel height is bounded so a divisor is always sane.
 pub const max_cell_px: u32 = 4096;
 
 /// The pixel-to-line quantizer for a touch drag. `cell_px` is the pixel height of one library row; `residual` is the
-/// signed sub-cell carry — the pixels a drag has moved that do not yet make a whole line. The governing invariant,
+/// signed sub-cell carry -- the pixels a drag has moved that do not yet make a whole line. The governing invariant,
 /// preserved by every feed: `|residual| < cell_px`, so the carry is bounded and never grows. No cursor and no library
-/// live here — a quantizer is two numbers: a row height and a leftover.
+/// live here -- a quantizer is two numbers: a row height and a leftover.
 pub const DragScroll = struct {
     residual: i32 = 0,
     cell_px: u32 = 1,
@@ -49,7 +49,7 @@ pub const DragScroll = struct {
     /// Add `pixels` of drag to the carry and return the whole-line delta it crosses (positive scrolls the content
     /// down, matching HUNK43's own sign). The running total is taken in `i64` so an `i32`-min delta added to a negative
     /// residual never wraps before the divide; the quotient (`@divTrunc`, toward zero) is the emitted line count and
-    /// the remainder (`@rem`, magnitude strictly below `cell_px`) stays as the new carry — so a slow drag of sub-cell
+    /// the remainder (`@rem`, magnitude strictly below `cell_px`) stays as the new carry -- so a slow drag of sub-cell
     /// deltas accumulates instead of flooring to zero every event.
     pub fn feed(self: *DragScroll, pixels: i32) i32 {
         // invariant: the carry stands within one cell before the drag (a bounded, never-growing remainder).
@@ -60,7 +60,7 @@ pub const DragScroll = struct {
         const total: i64 = @as(i64, self.residual) + @as(i64, pixels);
         const lines: i64 = @divTrunc(total, cell);
         const rem: i64 = @rem(total, cell);
-        // invariant: the division identity holds exactly — no pixel is lost or invented.
+        // invariant: the division identity holds exactly -- no pixel is lost or invented.
         assert(lines * cell + rem == total);
         // invariant: the new carry is strictly within one cell (the remainder of a divide by cell_px).
         assert(rem > -cell);
@@ -73,7 +73,7 @@ pub const DragScroll = struct {
     }
 };
 
-/// True when a carry sits strictly within one cell — the bound every `feed` preserves. Taken in `i64` so an extreme
+/// True when a carry sits strictly within one cell -- the bound every `feed` preserves. Taken in `i64` so an extreme
 /// residual (never actually reached) could not wrap the check.
 fn carry_within(residual: i32, cell_px: u32) bool {
     // invariant: the cell height is a real divisor.
@@ -84,7 +84,7 @@ fn carry_within(residual: i32, cell_px: u32) bool {
 
 /// Drive a cursor by a touch drag of `pixels`: quantize the drag to a whole-line delta over the cell height (carrying
 /// the remainder), then route that delta through HUNK43's `apply`, so the drag moves the HUNK40 cursor with every
-/// clamp inherited. Returns the line delta it applied — zero when the drag has not yet crossed a whole cell. Pure over
+/// clamp inherited. Returns the line delta it applied -- zero when the drag has not yet crossed a whole cell. Pure over
 /// the cursor beyond the offset move HUNK43 performs.
 pub fn drag(cursor: *preset_scroll.ScrollCursor, quant: *DragScroll, pixels: i32) i32 {
     // invariant: the cursor stands on a real viewport before the drag.
@@ -139,7 +139,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
     assert(cur.max_offset() == 3);
 
-    // A full-cell drag scrolls exactly one line; two cells, two lines — the divide is exact when the drag is a whole
+    // A full-cell drag scrolls exactly one line; two cells, two lines -- the divide is exact when the drag is a whole
     // multiple of the cell height. Reversible: an upward drag of the same pixels walks straight back.
     {
         var q = try DragScroll.open(cell);
@@ -151,7 +151,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(q.residual == 0);
     }
 
-    // The carry accumulates: four sub-cell drags of three pixels over a ten-pixel cell emit 0, 0, 0, then 1 — the
+    // The carry accumulates: four sub-cell drags of three pixels over a ten-pixel cell emit 0, 0, 0, then 1 -- the
     // remainder was never floored away, and after the whole line crosses two pixels wait for the next drag.
     {
         var q = try DragScroll.open(cell);
@@ -177,7 +177,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(q.residual == -1);
     }
 
-    // The residual stays strictly within one cell after every feed in a long mixed stream — a bounded, never-growing
+    // The residual stays strictly within one cell after every feed in a long mixed stream -- a bounded, never-growing
     // carry, whatever the drags arrive.
     {
         var q = try DragScroll.open(cell);
@@ -190,7 +190,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // An i32-min pixel delta added onto a negative residual quantizes cleanly — the total is taken in i64, so the
+    // An i32-min pixel delta added onto a negative residual quantizes cleanly -- the total is taken in i64, so the
     // divide never wraps, and the carry lands back inside one cell.
     {
         var q = try DragScroll.open(cell);
@@ -213,7 +213,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(cur.offset == 0); // clamped at the top
     }
 
-    // A library that fits the screen never moves whatever the drag — max_offset 0, so the cursor stays put even as the
+    // A library that fits the screen never moves whatever the drag -- max_offset 0, so the cursor stays put even as the
     // quantizer emits real line deltas.
     {
         var fit = try preset_scroll.ScrollCursor.open(lib.count, 8); // eight rows over five books
@@ -224,7 +224,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(fit.offset == 0); // the cursor never moved
     }
 
-    // A zero or over-ceiling cell height refuses BadCellHeight — a row must have a real pixel height to quantize over.
+    // A zero or over-ceiling cell height refuses BadCellHeight -- a row must have a real pixel height to quantize over.
     if (DragScroll.open(0)) |_| return error.CellSlipped else |e| {
         if (e != error.BadCellHeight) return error.WrongCell;
     }

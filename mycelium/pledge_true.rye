@@ -1,9 +1,9 @@
-//! mycelium/pledge_true.rye — the Pledge reads a real two-phase-transfer fixture true (r4, the arc closes).
+//! mycelium/pledge_true.rye -- the Pledge reads a real two-phase-transfer fixture true (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the two-phase transfer - rung r4.
 //! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
-//! r1 fixed the two-phase verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated
+//! r1 fixed the two-phase verdict, r2 let it travel, r3 read it across a Knot -- all over Dags seated
 //! in code. This closing rung carries the reader onto a **real** on-disk Cord record carrying a genuine
 //! two-phase transfer a keeper can open and walk, and proves the property the whole Pledge rests on: the
 //! HONORED recipient is true to the bytes.
@@ -11,17 +11,17 @@
 //! The corpus is `tools/fixtures/pledge_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/pledge_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to Bob at round 1;
 //! Alice posts it at round 2, honoring it so the reserved hundred reaches Bob; Alice pledges 100 to Carol at
-//! round 3 and leaves it open), `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` —
+//! round 3 and leaves it open), `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` --
 //! no network, the bytes read are the tree's own. Two independent readings must agree: the app parses the
 //! record through `cord_bron`, **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves
 //! it through `pledge`, and reports the **honored recipient**, the **posted count**, and the **open count**;
 //! the r4 witness cross-checks that triple against `tools/fixtures/pledge_dag_truth.awk`'s reading of the same
-//! file — two tools, one answer. The awk applies the simplest honest slice of the agreed order (pledge-state
+//! file -- two tools, one answer. The awk applies the simplest honest slice of the agreed order (pledge-state
 //! accounting in file order); the app applies the full commit tie-break; the single post unambiguously honors
 //! the round-1 pledge, so both name the same honored recipient.
 //!
-//! Additive — composes `cord_bron` + `cord` + `pledge` public API only (each re-runs GREEN).
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Additive -- composes `cord_bron` + `cord` + `pledge` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/pledge_true.rye -femit-bin=mycelium/bin/pledge_true
 //!   mycelium/bin/pledge_true selftest | measure
@@ -35,12 +35,12 @@ const pledge = @import("pledge.rye");
 
 pub const pledge_true_version = "20260813.075049";
 
-/// The real two-phase-transfer Cord record, bound at compile time — the tree's own bytes, never a drift.
+/// The real two-phase-transfer Cord record, bound at compile time -- the tree's own bytes, never a drift.
 const real_dag = @embedFile("corpora/pledge_dag.bron");
 
 const hex_digits = "0123456789abcdef";
 
-/// Encode bytes to lowercase hex — the same width the record's body recipient carries, so the app's honored
+/// Encode bytes to lowercase hex -- the same width the record's body recipient carries, so the app's honored
 /// recipient and awk's honored recipient are compared as identical strings.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex nibbles per byte.
@@ -74,7 +74,7 @@ fn first_posted(l: *const pledge.Ledger) ?u32 {
 /// signature), resolve it through the Pledge, and read off the honored pledge's recipient.
 pub fn read_pledge(text: []const u8) !Reading {
     const rec = try cord_bron.parse(text);
-    // invariant: a real two-phase record carries blocks — an empty Dag holds no pledge to read.
+    // invariant: a real two-phase record carries blocks -- an empty Dag holds no pledge to read.
     if (rec.len == 0) return error.BadFormat;
     var dag = try cord_bron.rebuild(&rec);
     const verdict = try pledge.resolve(&dag);
@@ -92,7 +92,7 @@ pub fn read_pledge(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the same
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the same
 /// bytes, so the two tools must name one honored recipient.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_pledge(real_dag);
@@ -104,7 +104,7 @@ fn welcome_reading_true_to_bytes() !void {
 }
 
 /// The honored pledge's reserved coins reached its recipient, and the open pledge still holds coins reserved
-/// by its pledger — the two-phase law read from the real bytes.
+/// by its pledger -- the two-phase law read from the real bytes.
 fn welcome_honored_moved_open_reserved() !void {
     const rec = try cord_bron.parse(real_dag);
     var dag = try cord_bron.rebuild(&rec);
@@ -118,7 +118,7 @@ fn welcome_honored_moved_open_reserved() !void {
     print("pledge-true: the honored pledge's coins reached its recipient; the open pledge still holds coins reserved.\n", .{});
 }
 
-/// Conservation holds over the real bytes: balance + reserved sums to exactly what genesis issued — no coin
+/// Conservation holds over the real bytes: balance + reserved sums to exactly what genesis issued -- no coin
 /// made or destroyed by reserving, honoring, or holding a pledge.
 fn welcome_conservation_over_the_real_bytes() !void {
     const rec = try cord_bron.parse(real_dag);
@@ -126,12 +126,12 @@ fn welcome_conservation_over_the_real_bytes() !void {
     const verdict = try pledge.resolve(&dag);
     // invariant: the real record issued exactly the two hundred the genesis credit funds.
     assert(verdict.total_issued == 200);
-    // invariant: conservation — balance + reserved sums to exactly what genesis issued.
+    // invariant: conservation -- balance + reserved sums to exactly what genesis issued.
     assert(verdict.balances_sum() + verdict.reserved_sum() == 200);
     print("pledge-true: conservation holds over the real bytes — balance + reserved sums to the 200 genesis issued, no coin made or lost.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true. A
 /// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse at add.
 fn unwelcome_tampered_record_refuses() !void {
     var buf: [real_dag.len]u8 = undefined;
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<honored-recipient-hex> <posted> <open>`), so the witness can compare
-/// the app's reading against `pledge_dag_truth.awk` byte for byte — two tools, one answer.
+/// the app's reading against `pledge_dag_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_pledge(real_dag);
     print("{s} {d} {d}\n", .{ r.honored_hex, r.posted, r.open });

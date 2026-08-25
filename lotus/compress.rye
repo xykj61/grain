@@ -1,18 +1,18 @@
-//! lotus/compress.rye — ALES50: a compressor — the limiter's ceiling made gentle. The limiter (ALES49) is a brickwall: past the
-//! ceiling nothing gets through. The compressor is the same ceiling softened — past the threshold a signal still rises, only by a
+//! lotus/compress.rye -- ALES50: a compressor -- the limiter's ceiling made gentle. The limiter (ALES49) is a brickwall: past the
+//! ceiling nothing gets through. The compressor is the same ceiling softened -- past the threshold a signal still rises, only by a
 //! fraction (the ratio) of what it would. Where the limiter says "no louder than this," the compressor says "louder still, but
 //! softer the louder you get." It is the most-reached-for dynamics tool: it evens a vocal so every word sits, glues a drum bus,
 //! tames a bass that jumps. The ratio is the one knob that names how hard it leans, and at its extreme the compressor IS the
-//! limiter — a very high ratio divides the excess to nothing, seating an above-threshold sample at the threshold.
+//! limiter -- a very high ratio divides the excess to nothing, seating an above-threshold sample at the threshold.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES50.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES50.
 //! Design read: active-designing/date/20260814/20260814-171338_fill-ales50-lotus-compressor.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/limit.rye (ALES49) — the
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, the range law shape; lotus/limit.rye (ALES49) -- the
 //! brickwall this softens, re-proven beside it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the threshold is a magnitude in sample units, not
-//! decibels, the ratio a plain fraction, and the compression is instantaneous (no attack, release, or knee — those are later
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the threshold is a magnitude in sample units, not
+//! decibels, the ratio a plain fraction, and the compression is instantaneous (no attack, release, or knee -- those are later
 //! rungs). One comparison and at most one divide per sample; nothing on the audio path can overflow, since the ratio is at least
 //! one so a compressed magnitude is at most the input magnitude, which already fits i16.
 //!
@@ -27,23 +27,23 @@ const timeline = @import("timeline.rye");
 pub const compress_version = "20260814.171338";
 
 /// The compressor's faults: a threshold outside the legal range (a magnitude in [1, sample_max]), a ratio below unity or with a
-/// zero denominator (a ratio below one would EXPAND — a different tool), and a span outside the samples. BadRange coincides by
+/// zero denominator (a ratio below one would EXPAND -- a different tool), and a span outside the samples. BadRange coincides by
 /// name with timeline's, the EQ family's, and the limiter's, so a composer sees one consistent fault.
 pub const CompressError = error{
     /// A threshold of zero (there is no band left to compress below it) or above sample_max (nothing could ever cross it).
     BadThreshold,
-    /// A ratio below unity (would expand, not compress) or with a zero denominator — refused, no write.
+    /// A ratio below unity (would expand, not compress) or with a zero denominator -- refused, no write.
     BadRatio,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Compress `count` samples starting at `start` in place above the magnitude `threshold` by the ratio `ratio_num/ratio_den`
 /// (at least one). A sample within the threshold passes byte-for-byte; above it, the excess m − threshold is divided by the
-/// ratio and the sample rewritten sign(x)·(threshold + excess·ratio_den/ratio_num). After the call every written magnitude is at
+/// ratio and the sample rewritten sign(x)-(threshold + excess-ratio_den/ratio_num). After the call every written magnitude is at
 /// most the input's (the compressor reduces, never boosts) and no sign is changed. Unit ratio is the identity everywhere.
 /// Refuses BadThreshold on a threshold outside [1, sample_max], BadRatio on a ratio below unity or a zero denominator, and
-/// BadRange on a span outside the samples — each before any write. Values only — never the length.
+/// BadRange on a span outside the samples -- each before any write. Values only -- never the length.
 pub fn compress(
     clip: *timeline.Clip,
     start: u32,
@@ -52,14 +52,14 @@ pub fn compress(
     ratio_num: u32,
     ratio_den: u32,
 ) CompressError!void {
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would expand, a zero
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero -- a ratio below one would expand, a zero
     // denominator would divide by zero. A downward compressor only ever reduces the excess.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -82,7 +82,7 @@ pub fn compress(
             // invariant: the written sample holds the input's sign (magnitude only shrank).
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample within the threshold is left exactly as it was — the compressor touches only what rises above.
+        // a sample within the threshold is left exactly as it was -- the compressor touches only what rises above.
     }
     // invariant: a compressor changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
@@ -111,7 +111,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip compresses to all zeros at any legal threshold and ratio.
+    // 1. silence stays silence -- an all-zero clip compresses to all zeros at any legal threshold and ratio.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -120,7 +120,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. BELOW THE THRESHOLD IS THE IDENTITY — a signal whose every peak sits within the threshold passes byte-for-byte.
+    // 2. BELOW THE THRESHOLD IS THE IDENTITY -- a signal whose every peak sits within the threshold passes byte-for-byte.
     {
         const quiet = [_]i16{ 500, -900, 1000, -1000, 250, -500 };
         var clip = timeline.Clip{};
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &quiet)) return error.QuietNotIdentity;
     }
 
-    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den writes threshold + excess·1 = |x| byte-for-byte even for
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den writes threshold + excess-1 = |x| byte-for-byte even for
     //    samples above the threshold. A 1:1 compressor passes the whole signal through, guaranteed by construction.
     {
         const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400 };
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.UnitRatioNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a signal above the threshold compresses so every output magnitude is
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a signal above the threshold compresses so every output magnitude is
     //    at most the input's, every sign matches, and each above-threshold peak lands exactly at threshold + excess/ratio.
     {
         const loud = [_]i16{ 5000, -5000, 800, -9000, 9000, -200 };
@@ -160,8 +160,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A HIGHER RATIO COMPRESSES AT LEAST AS HARD — for the same above-threshold sample, 8:1 yields a magnitude no greater than
-    //    2:1 (the ratio knob is monotone), and a ratio high enough seats the peak exactly at the threshold — the limiter within.
+    // 5. A HIGHER RATIO COMPRESSES AT LEAST AS HARD -- for the same above-threshold sample, 8:1 yields a magnitude no greater than
+    //    2:1 (the ratio knob is monotone), and a ratio high enough seats the peak exactly at the threshold -- the limiter within.
     {
         const one = [_]i16{9000};
         const thr: i32 = 1000;

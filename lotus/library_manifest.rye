@@ -1,23 +1,23 @@
-//! lotus/library_manifest.rye — ALES226: a keeper's whole catalog, content-addressed. ALES224 sealed a single record's content
-//! address; ALES225 drew its page. Yet a working creator holds many records — a musician a discography, a podcaster many seasons,
-//! a filmmaker a body of work — and that whole catalog wants ONE short, citable, sealed name a keeper can publish or compare
+//! lotus/library_manifest.rye -- ALES226: a keeper's whole catalog, content-addressed. ALES224 sealed a single record's content
+//! address; ALES225 drew its page. Yet a working creator holds many records -- a musician a discography, a podcaster many seasons,
+//! a filmmaker a body of work -- and that whole catalog wants ONE short, citable, sealed name a keeper can publish or compare
 //! without shipping any audio. This rung seats it: a sealed `format lotus-library-v1` body listing the album count and, per album,
 //! its name and the Sha256 of its whole `album_manifest` bytes (the album's own content address, ALES224).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES226.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES226.
 //! Design read: active-designing/date/20260815/20260815-141539_fill-ales226-lotus-library-manifest.md
-//! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/album_manifest.rye
-//! (ALES224) — the album content-address this names, and its max_track_name bound reused for album names; std.crypto Sha256 for
+//! Stands on: lotus/seal.rye (ALES38) -- begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/album_manifest.rye
+//! (ALES224) -- the album content-address this names, and its max_track_name bound reused for album names; std.crypto Sha256 for
 //! each album's manifest digest, the same hash the seal and every manifest already carry. No new hash, no new frame.
 //!
-//! THE CRUX — content-addressing composes upward where bytes cannot. The album frame (ALES223) inlined whole bundles because a
+//! THE CRUX -- content-addressing composes upward where bytes cannot. The album frame (ALES223) inlined whole bundles because a
 //! record totals tens of megabytes; a library that inlined whole album frames would multiply an album's own ceiling by the catalog
-//! size — past u32, past any real keeper's RAM. So a library names each album by the Sha256 of its sealed album_manifest, exactly
+//! size -- past u32, past any real keeper's RAM. So a library names each album by the Sha256 of its sealed album_manifest, exactly
 //! as an album manifest names each track by the Sha256 of its bundle. library_manifest is album_manifest one level up, unchanged in
-//! shape: track → album, bundle → album_manifest. A library manifest stays a few kilobytes no matter how large the records it fixes.
+//! shape: track -> album, bundle -> album_manifest. A library manifest stays a few kilobytes no matter how large the records it fixes.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. Content-addressing, never a
-//! signature: it proves a catalog's identity is whole, NOT who made it — no key, no custody. The signed carry that names who made
+//! HONEST SCOPE -- software only, purely LOCAL. A Sha256 record over in-process bytes, siloed to lotus/. Content-addressing, never a
+//! signature: it proves a catalog's identity is whole, NOT who made it -- no key, no custody. The signed carry that names who made
 //! it remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact, no network, no funds, no
 //! real device.
 //!
@@ -37,27 +37,27 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 
 pub const library_manifest_version = "20260815.141539";
 
-/// The sealed record's kind line — the header seal.begin writes and seal.open matches. A library manifest sealed under this kind
+/// The sealed record's kind line -- the header seal.begin writes and seal.open matches. A library manifest sealed under this kind
 /// can never be opened as an album manifest, a render manifest, or any other format.
 pub const header = "format lotus-library-v1";
 
-/// The most albums one library manifest lists — a named ceiling so the count is bounded, the fixed entry array cannot overflow, and
+/// The most albums one library manifest lists -- a named ceiling so the count is bounded, the fixed entry array cannot overflow, and
 /// the walk always terminates. Sixty-four clears a long-running artist's whole discography or a podcast's many seasons with room.
 pub const max_albums: u32 = 64;
 
-/// The longest album name the manifest carries — reused from the album manifest's own name bound so the two agree. In this readable
+/// The longest album name the manifest carries -- reused from the album manifest's own name bound so the two agree. In this readable
 /// body a name is a single token (the line grammar reserves the space and the newline), so a name with a space refuses NameTooLong
 /// rather than breaking a line the reader trusts.
 pub const max_album_name: u32 = album_manifest.max_track_name;
 
-/// The 64 lowercase hex characters of a full Sha256 — the same width the seal and every manifest carry.
+/// The 64 lowercase hex characters of a full Sha256 -- the same width the seal and every manifest carry.
 pub const digest_hex_len: u32 = seal.digest_hex_len;
 
-/// The widest count line — `count ` (6) plus a u32's widest decimal (10) plus a newline. Named so the body ceiling reads from one
+/// The widest count line -- `count ` (6) plus a u32's widest decimal (10) plus a newline. Named so the body ceiling reads from one
 /// source.
 pub const count_line_max: u32 = 6 + 10 + 1;
 
-/// The widest single album line — `album ` (6) plus the name bound, a space, the 64-hex digest, and a newline.
+/// The widest single album line -- `album ` (6) plus the name bound, a space, the 64-hex digest, and a newline.
 pub const album_line_max: u32 = 6 + max_album_name + 1 + digest_hex_len + 1;
 
 /// The widest sealed library manifest: the seal frame overhead (the header line, the `digest <64 hex>` line) plus the body (the
@@ -66,7 +66,7 @@ pub const album_line_max: u32 = 6 + max_album_name + 1 + digest_hex_len + 1;
 pub const max_library_manifest_bytes: u32 =
     @intCast(header.len + 1 + seal.digest_prefix.len + digest_hex_len + 1 + count_line_max + max_albums * album_line_max);
 
-/// The library manifest's own faults, unioned with the seal's (DigestMismatch · BadRecord · Overflow). BadLibraryManifest is a
+/// The library manifest's own faults, unioned with the seal's (DigestMismatch - BadRecord - Overflow). BadLibraryManifest is a
 /// malformed body field; NameTooLong a name that is not a single token; TooManyAlbums a count past the bound; the three Mismatch
 /// faults are what verify_library refuses when a catalog in hand is not the record the manifest names.
 pub const LibraryManifestError = seal.SealError || error{
@@ -74,13 +74,13 @@ pub const LibraryManifestError = seal.SealError || error{
     BadLibraryManifest,
     /// An album name is empty, longer than max_album_name, or carries a space or newline the readable line grammar reserves.
     NameTooLong,
-    /// The album count is past max_albums — refused before the fixed entry array could overflow.
+    /// The album count is past max_albums -- refused before the fixed entry array could overflow.
     TooManyAlbums,
     /// verify_library was handed a catalog with a different number of albums than the manifest names.
     CountMismatch,
     /// verify_library found an album whose name does not match the manifest's, in order.
     AlbumNameMismatch,
-    /// verify_library recomputed an album's manifest Sha256 and it does not match the manifest's digest — a swapped or edited album.
+    /// verify_library recomputed an album's manifest Sha256 and it does not match the manifest's digest -- a swapped or edited album.
     AlbumDigestMismatch,
 };
 
@@ -98,14 +98,14 @@ pub const Entry = struct {
     digest: []const u8,
 };
 
-/// A parsed, sealed library manifest — the ordered catalog of `(name, digest)` entries the seal already proved whole, and how many
+/// A parsed, sealed library manifest -- the ordered catalog of `(name, digest)` entries the seal already proved whole, and how many
 /// are live. Lives only as long as the text it was opened from.
 pub const LibraryManifest = struct {
     entries: [max_albums]Entry = undefined,
     count: u32 = 0,
 };
 
-/// Write `bytes` as lowercase hex into `out`, two characters per byte — the `{x:0>2}` idiom, so a zero byte renders `00`. `out`
+/// Write `bytes` as lowercase hex into `out`, two characters per byte -- the `{x:0>2}` idiom, so a zero byte renders `00`. `out`
 /// must hold exactly `bytes.len * 2` characters.
 fn to_hex(bytes: []const u8, out: []u8) void {
     // invariant: the output holds exactly two hex characters per byte.
@@ -143,7 +143,7 @@ pub fn seal_library_manifest(out: []u8, albums: []const AlbumIn) LibraryManifest
     var i: u32 = 0;
     while (i < count) : (i += 1) {
         const a = albums[i];
-        // invariant: each album name is a single legal token — checked before it is written, so a bad name never half-fills the body.
+        // invariant: each album name is a single legal token -- checked before it is written, so a bad name never half-fills the body.
         if (!name_ok(a.name)) return error.NameTooLong;
         var dg: [Sha256.digest_length]u8 = undefined;
         Sha256.hash(a.album_manifest, &dg, .{});
@@ -176,9 +176,9 @@ fn count_field(body: []const u8) LibraryManifestError!struct { value: []const u8
 
 /// Read one `album <name> <digest>` line at `body[cursor..]`: the prefix, a single-token name up to a space, then exactly
 /// digest_hex_len hex to a newline. Returns the name and digest slices and the cursor just past the newline. Any malformation
-/// refuses BadLibraryManifest — the reader never guesses a field.
+/// refuses BadLibraryManifest -- the reader never guesses a field.
 fn album_line(body: []const u8, cursor: u32) LibraryManifestError!struct { name: []const u8, digest: []const u8, next: u32 } {
-    // invariant: the cursor stays within the body — an exhausted body is a malformed record, not a silent stop.
+    // invariant: the cursor stays within the body -- an exhausted body is a malformed record, not a silent stop.
     if (cursor > body.len) return error.BadLibraryManifest;
     const rest = body[cursor..];
     const prefix = "album ";
@@ -193,7 +193,7 @@ fn album_line(body: []const u8, cursor: u32) LibraryManifestError!struct { name:
     const after_name = after[sp + 1 ..];
     const nl = std.mem.indexOfScalar(u8, after_name, '\n') orelse return error.BadLibraryManifest;
     const digest = after_name[0..nl];
-    // invariant: the digest is exactly the full hex width — a short or long field is a malformed line.
+    // invariant: the digest is exactly the full hex width -- a short or long field is a malformed line.
     if (digest.len != digest_hex_len) return error.BadLibraryManifest;
 
     // seam: every offset is a std usize into a body bounded well under u32; they narrow safely at this edge.
@@ -203,10 +203,10 @@ fn album_line(body: []const u8, cursor: u32) LibraryManifestError!struct { name:
     return .{ .name = name, .digest = digest, .next = cursor + prefix_len + sp_u32 + 1 + nl_u32 + 1 };
 }
 
-/// Open a sealed library manifest — the integrity gate BEFORE trust. seal.open recomputes the record's digest and refuses
+/// Open a sealed library manifest -- the integrity gate BEFORE trust. seal.open recomputes the record's digest and refuses
 /// DigestMismatch / BadRecord before a field is read; only a whole record's body is parsed into a LibraryManifest.
 pub fn open_library_manifest(text: []const u8) LibraryManifestError!LibraryManifest {
-    // invariant: the body is verified whole before any field is trusted — no partial parse of a corrupt record.
+    // invariant: the body is verified whole before any field is trusted -- no partial parse of a corrupt record.
     const body = try seal.open(text, header);
 
     const f_count = try count_field(body);
@@ -222,16 +222,16 @@ pub fn open_library_manifest(text: []const u8) LibraryManifestError!LibraryManif
         cursor = al.next;
     }
 
-    // invariant: the whole body was consumed — a trailing line is a record this grammar does not know, refused not ignored.
+    // invariant: the whole body was consumed -- a trailing line is a record this grammar does not know, refused not ignored.
     if (cursor != body.len) return error.BadLibraryManifest;
     return lm;
 }
 
 /// Confirm a catalog in hand IS the record its manifest names: the count must match, then each album's name and recomputed
 /// `album_manifest` Sha256 must match the manifest, in order. A swapped, edited, missing, or added album refuses by name before the
-/// catalog is trusted. Infallible otherwise — a match returns cleanly.
+/// catalog is trusted. Infallible otherwise -- a match returns cleanly.
 pub fn verify_library(lm: *const LibraryManifest, albums: []const AlbumIn) LibraryManifestError!void {
-    // invariant: the manifest names no more than its bound — open_library_manifest already proved it, re-asserted at the use site.
+    // invariant: the manifest names no more than its bound -- open_library_manifest already proved it, re-asserted at the use site.
     assert(lm.count <= max_albums);
     if (albums.len != lm.count) return error.CountMismatch;
 
@@ -247,16 +247,16 @@ pub fn verify_library(lm: *const LibraryManifest, albums: []const AlbumIn) Libra
     }
 }
 
-// --- selftest: THE CONTENT-ADDRESS LAW — seal then open recovers the count and every (name, digest) in order, verify_library
-//     accepts the exact albums; THE TAMPER LAW — a flipped album-manifest byte refuses AlbumDigestMismatch, a swapped name
-//     AlbumNameMismatch, a dropped album CountMismatch; THE SEAL LAW — a tampered body refuses DigestMismatch, a wrong header
-//     BadRecord; THE GRAMMAR LAW — a spaced name refuses NameTooLong, a malformed body BadLibraryManifest; THE ATOMIC LAW — a small
+// --- selftest: THE CONTENT-ADDRESS LAW -- seal then open recovers the count and every (name, digest) in order, verify_library
+//     accepts the exact albums; THE TAMPER LAW -- a flipped album-manifest byte refuses AlbumDigestMismatch, a swapped name
+//     AlbumNameMismatch, a dropped album CountMismatch; THE SEAL LAW -- a tampered body refuses DigestMismatch, a wrong header
+//     BadRecord; THE GRAMMAR LAW -- a spaced name refuses NameTooLong, a malformed body BadLibraryManifest; THE ATOMIC LAW -- a small
 //     buffer refuses Overflow ----
 
-/// Seal a real ALES224 album_manifest for a set of stand-in bundles into `out`, returning its length — exactly the content address
+/// Seal a real ALES224 album_manifest for a set of stand-in bundles into `out`, returning its length -- exactly the content address
 /// a keeper holds for one record.
 fn make_album_manifest(out: []u8, names: []const []const u8, bundles: []const []const u8) !u32 {
-    // invariant: a witness helper builds a small, well-formed catalog — the two arrays run in lockstep.
+    // invariant: a witness helper builds a small, well-formed catalog -- the two arrays run in lockstep.
     assert(names.len == bundles.len);
     var tracks: [8]render_album.TrackIn = undefined;
     var i: u32 = 0;
@@ -265,7 +265,7 @@ fn make_album_manifest(out: []u8, names: []const []const u8, bundles: []const []
 }
 
 fn run_selftest() !u8 {
-    // Two records, each a small sealed album_manifest over stand-in bundle bytes — any bytes serve, since the library addresses
+    // Two records, each a small sealed album_manifest over stand-in bundle bytes -- any bytes serve, since the library addresses
     // manifest OUTPUT bytes, it does not build one.
     const b0 = "LOTUSBND....first bundle bytes....\x01\x02\x03";
     const b1 = "LOTUSBND....second bundle bytes...\x04\x05\x06";
@@ -281,7 +281,7 @@ fn run_selftest() !u8 {
         .{ .name = "sequel", .album_manifest = m_second[0..ns] },
     };
 
-    // 1. THE CONTENT-ADDRESS LAW — seal, open, recover the count and every entry in order; verify_library accepts the exact albums.
+    // 1. THE CONTENT-ADDRESS LAW -- seal, open, recover the count and every entry in order; verify_library accepts the exact albums.
     {
         var out: [max_library_manifest_bytes]u8 = undefined;
         const n = try seal_library_manifest(out[0..], albums[0..]);
@@ -293,7 +293,7 @@ fn run_selftest() !u8 {
         try verify_library(&lm, albums[0..]); // the record names exactly these albums
     }
 
-    // 2. THE TAMPER LAW — a flipped byte in an album's manifest refuses AlbumDigestMismatch; a swapped name AlbumNameMismatch; a
+    // 2. THE TAMPER LAW -- a flipped byte in an album's manifest refuses AlbumDigestMismatch; a swapped name AlbumNameMismatch; a
     //    dropped album CountMismatch.
     {
         var out: [max_library_manifest_bytes]u8 = undefined;
@@ -318,7 +318,7 @@ fn run_selftest() !u8 {
         if (verify_library(&lm, albums[0..1])) |_| return error.CountSlipped else |e| if (e != error.CountMismatch) return error.WrongCount;
     }
 
-    // 3. THE SEAL LAW — a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
+    // 3. THE SEAL LAW -- a flipped body byte refuses DigestMismatch; a wrong header refuses BadRecord (inherited from ALES38).
     {
         var out: [max_library_manifest_bytes]u8 = undefined;
         const n = try seal_library_manifest(out[0..], albums[0..]);
@@ -330,14 +330,14 @@ fn run_selftest() !u8 {
         if (seal.open(again[0..n2], "format lotus-other-v1")) |_| return error.HeaderSlipped else |e| if (e != error.BadRecord) return error.WrongHeader;
     }
 
-    // 4. THE GRAMMAR LAW — a name with a space refuses NameTooLong at seal; a hand-built body with a malformed album line refuses
+    // 4. THE GRAMMAR LAW -- a name with a space refuses NameTooLong at seal; a hand-built body with a malformed album line refuses
     //    BadLibraryManifest at open.
     {
         var out: [max_library_manifest_bytes]u8 = undefined;
         const spaced = [_]AlbumIn{.{ .name = "two words", .album_manifest = m_first[0..nf] }};
         if (seal_library_manifest(out[0..], spaced[0..])) |_| return error.SpaceSlipped else |e| if (e != error.NameTooLong) return error.WrongSpace;
 
-        // A hand-built body whose single album line is missing its digest — open must refuse BadLibraryManifest, not guess.
+        // A hand-built body whose single album line is missing its digest -- open must refuse BadLibraryManifest, not guess.
         const bad_body = "count 1\nalbum debut \n";
         var hand: [max_library_manifest_bytes]u8 = undefined;
         const fr = try seal.begin(hand[0..], header);
@@ -346,7 +346,7 @@ fn run_selftest() !u8 {
         if (open_library_manifest(hand[0..hn])) |_| return error.BadBodySlipped else |e| if (e != error.BadLibraryManifest) return error.WrongBadBody;
     }
 
-    // 5. THE ATOMIC LAW — a buffer too small for the sealed record refuses Overflow rather than truncating it.
+    // 5. THE ATOMIC LAW -- a buffer too small for the sealed record refuses Overflow rather than truncating it.
     {
         var tiny: [96]u8 = undefined; // room for the header and digest line, not the body's count and album lines
         if (seal_library_manifest(tiny[0..], albums[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;

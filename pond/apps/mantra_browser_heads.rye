@@ -1,19 +1,19 @@
-//! pond/apps/mantra_browser_heads.rye — BUHR Journey 2, Rung 3: the living edge, lit.
+//! pond/apps/mantra_browser_heads.rye -- BUHR Journey 2, Rung 3: the living edge, lit.
 //!
 //! Rung two carried Mantra's append-only graph onto WADE1's styled Skate surface,
 //! every line dressed in one paper and one ink. This rung takes the next crux: it
-//! lights each lane's *head* revision — the newest node in a chain, the living edge
-//! of that history — in a distinct token color, while the older nodes keep the
+//! lights each lane's *head* revision -- the newest node in a chain, the living edge
+//! of that history -- in a distinct token color, while the older nodes keep the
 //! reading ink. The proof this rung wants is that the styled surface carries
-//! *semantic* color per cell — a person reading the graph sees at a glance where
-//! each lane's history currently stands — not merely one paper and one ink.
+//! *semantic* color per cell -- a person reading the graph sees at a glance where
+//! each lane's history currently stands -- not merely one paper and one ink.
 //!
 //! It stays on witnessed ground. The head is found in the very bytes rung one
 //! renders (the rightmost `r<n>[digest]` on a lane line), so the painted color can
 //! never point at a node the readable text does not show. The color lands through
 //! WADE1's own `dress_run`, wearing the sheet's warm `edge` token, seated in a
 //! bounded palette slot; cells outside the head keep the default ink, so the paint
-//! is strictly additive over rung two's single-color lowering — the glyphs, and the
+//! is strictly additive over rung two's single-color lowering -- the glyphs, and the
 //! text a reader sees, are byte-for-byte the same.
 //!
 //! Additive by construction: it imports mantra_browser, brushstroke/tokens, and
@@ -34,15 +34,15 @@ const skate = @import("brushstroke/skate_grid.rye");
 const mantra_browser_heads_version = "20260812.120515";
 
 // A bounded viewport, wide enough for a lane line and tall enough for the demo
-// graph — the same discipline rung two keeps.
+// graph -- the same discipline rung two keeps.
 pub const view_cols: u32 = 48;
 pub const view_rows: u32 = 16;
 
 // The palette slot the head node wears. A real slot (never the fg sentinel),
-// inside Skate's bounded run palette — one color for the living edge.
+// inside Skate's bounded run palette -- one color for the living edge.
 pub const head_slot: u8 = 3;
 
-// The token a head node wears — the sheet's own `head` accent, a semantic token
+// The token a head node wears -- the sheet's own `head` accent, a semantic token
 // named for exactly this mark, so a `.brush` theme recolors the living edge on its
 // own key without touching the edge rule or the ink. Warmer and brighter than the
 // ink, it draws the eye to where each lane's history currently stands.
@@ -54,7 +54,7 @@ pub const HeadsError = error{
 
 /// The column span of the head revision node on a rendered line, or null when the
 /// line carries no node (the graph title, a bolt header, a blank line). The head is
-/// the rightmost `r<digits>[<digest>]` — the newest revision in a dense chain, since
+/// the rightmost `r<digits>[<digest>]` -- the newest revision in a dense chain, since
 /// Mantra's append-only law renders revisions in ascending order. The span is a
 /// half-open `[start, end)` of columns, read straight from the bytes rung one wrote.
 pub fn head_span(line: []const u8) ?struct { start: u32, end: u32 } {
@@ -63,7 +63,7 @@ pub fn head_span(line: []const u8) ?struct { start: u32, end: u32 } {
     if (line.len == 0) return null;
     const n: u32 = @intCast(line.len);
 
-    // Walk back to the rightmost ']' — the close of the head node.
+    // Walk back to the rightmost ']' -- the close of the head node.
     var close: u32 = n; // n means "no close found" (past the last index)
     var i: u32 = n;
     while (i > 0) : (i -= 1) {
@@ -100,7 +100,7 @@ pub fn head_span(line: []const u8) ?struct { start: u32, end: u32 } {
     return .{ .start = start, .end = close + 1 };
 }
 
-/// True when a byte is an ASCII decimal digit — the revision number's alphabet.
+/// True when a byte is an ASCII decimal digit -- the revision number's alphabet.
 fn is_digit(c: u8) bool {
     return c >= '0' and c <= '9';
 }
@@ -134,7 +134,7 @@ pub fn paint_heads(catalog: *const mn.BoltCatalog, grid: *skate.Grid, sheet: []c
         if (line.len > grid.cols) return error.ViewTooNarrow;
         _ = try tokens.dress_grid(grid, row, line, sheet);
         if (head_span(line)) |span| {
-            // The head — the living edge of this lane — wears the head token.
+            // The head -- the living edge of this lane -- wears the head token.
             _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, head_token, head_slot);
         }
         row += 1;
@@ -179,7 +179,7 @@ fn welcome_heads_lit(allocator: std.mem.Allocator) !void {
     assert(rows == 6);
 
     // Every lane line lit exactly one head node; the title and bolt headers lit none.
-    // Count grid cells wearing the head slot — one contiguous head run per lane.
+    // Count grid cells wearing the head slot -- one contiguous head run per lane.
     var head_cells: u32 = 0;
     var idx: u32 = 0;
     const total: u32 = grid.cols * grid.rows;
@@ -209,12 +209,12 @@ fn welcome_head_span_reads_true() !void {
     assert(line[span.start] == 'r');
     assert(line[span.start + 1] == '2');
     assert(line[span.end - 1] == ']');
-    // A single-node lane lights its only node — that node is also its head.
+    // A single-node lane lights its only node -- that node is also its head.
     const solo = "  b.txt: r1[beta1234]";
     const solo_span = head_span(solo).?;
     assert(solo[solo_span.start] == 'r');
     assert(solo[solo_span.start + 1] == '1');
-    // A bolt header and the title carry no node — nothing to light.
+    // A bolt header and the title carry no node -- nothing to light.
     assert(head_span("local/notes") == null);
     assert(head_span("mantra log — append-only graph") == null);
     print("mantra_browser_heads: head_span finds the rightmost node, refuses non-lanes\n", .{});
@@ -226,7 +226,7 @@ fn welcome_head_distinct_from_ink() !void {
     const head = try tokens.token_color(tokens.base_sheet, head_token);
     const paint = try tokens.dress(tokens.base_sheet);
     assert(head.r != paint.ink.r or head.g != paint.ink.g or head.b != paint.ink.b);
-    // The head wears its own semantic token, not the edge rule — a theme can recolor
+    // The head wears its own semantic token, not the edge rule -- a theme can recolor
     // the living edge without disturbing borders or ink.
     const edge = try tokens.token_color(tokens.base_sheet, "edge");
     assert(head.r != edge.r or head.g != edge.g or head.b != edge.b);
@@ -265,7 +265,7 @@ fn welcome_both_colors_reach_canvas(allocator: std.mem.Allocator) !void {
     const pixels = try allocator.alloc(u8, pixel_count);
     grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
 
-    // The crux, proven on metal: two token colors reached the canvas at once — the
+    // The crux, proven on metal: two token colors reached the canvas at once -- the
     // reading ink for the body, the head color for each lane's living edge.
     const w_u: u32 = @intCast(width);
     const h_u: u32 = @intCast(height);
@@ -277,7 +277,7 @@ fn welcome_both_colors_reach_canvas(allocator: std.mem.Allocator) !void {
 }
 
 fn welcome_bounded_viewport(allocator: std.mem.Allocator) !void {
-    // A grid shorter than the graph paints only what fits — bounded, never an
+    // A grid shorter than the graph paints only what fits -- bounded, never an
     // overflow, and the head paint respects the same viewport bound.
     var catalog = try mb.demo_catalog();
     var grid = try skate.Grid.init(allocator, view_cols, 3);

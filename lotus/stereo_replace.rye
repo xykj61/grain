@@ -1,25 +1,25 @@
-//! lotus/stereo_replace.rye — ALES116: stereo_replace — the general span-edit carried into stereo, both channels in lockstep. ALES115 named `replace` — remove `count`, insert
-//! `src` — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length so the two
+//! lotus/stereo_replace.rye -- ALES116: stereo_replace -- the general span-edit carried into stereo, both channels in lockstep. ALES115 named `replace` -- remove `count`, insert
+//! `src` -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length so the two
 //! channels stay aligned in time. This rung carries replace into stereo the way ALES29 carried the insert-join: run ALES115's proven mono `replace` on each channel with the SAME
 //! `at` and `count` and a stereo payload (a left slice and a right slice of equal length), so the edit lands identically in both and the stereo image stays balanced. Lift the
-//! family's general case and the whole mono edit family (ALES111–115) becomes usable on real stereo masters.
+//! family's general case and the whole mono edit family (ALES111-115) becomes usable on real stereo masters.
 //!
 //! The rule, stated once: stereo_replace(sc, at, count, left_src, right_src) removes [at, at+count) from both channels and inserts left_src into the left and right_src into the
-//! right, reusing ALES115's `replace` per channel over its public API. BOTH channels are validated BEFORE either is mutated — the two payloads must name the same span length
+//! right, reusing ALES115's `replace` per channel over its public API. BOTH channels are validated BEFORE either is mutated -- the two payloads must name the same span length
 //! (left_src.len == right_src.len, else BadRange), and the mono preconditions (BadRange on a removed span outside the samples, ClipFull on a result past the buffer) are checked
-//! against the shared length up front — so a refusal never desynchronises the channels. It reuses ALES2's EditError whole.
+//! against the shared length up front -- so a refusal never desynchronises the channels. It reuses ALES2's EditError whole.
 //!
-//! The crux — four laws. THE STEREO REPLACE LAW: the left channel equals mono replace(left, at, count, left_src) and the right equals mono replace(right, at, count, right_src),
-//! each byte for byte. THE BALANCE / INVARIANT LAW: left.len == right.len after the edit — equal starting lengths plus equal-length payloads change each channel by the same
+//! The crux -- four laws. THE STEREO REPLACE LAW: the left channel equals mono replace(left, at, count, left_src) and the right equals mono replace(right, at, count, right_src),
+//! each byte for byte. THE BALANCE / INVARIANT LAW: left.len == right.len after the edit -- equal starting lengths plus equal-length payloads change each channel by the same
 //! amount, the stereo image staying aligned. THE ATOMICITY LAW: any refusal leaves BOTH channels byte for byte untouched, every check running before either channel is mutated. THE
-//! DEGENERATE / GENERALIZATION LAW: empty payloads with count 0 the identity on both channels, and per channel it inherits ALES115's three faces (cut · splice · paste_over).
+//! DEGENERATE / GENERALIZATION LAW: empty payloads with count 0 the identity on both channels, and per channel it inherits ALES115's three faces (cut - splice - paste_over).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES116.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES116.
 //! Design read: active-designing/date/20260815/20260815-014739_fill-ales116-lotus-stereo-replace.md
-//! Stands on: lotus/replace.rye (ALES115) — the mono general span-edit run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
-//! invariant; lotus/timeline.rye (ALES2) — the Clip and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//! Stands on: lotus/replace.rye (ALES115) -- the mono general span-edit run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/timeline.rye (ALES2) -- the Clip and the EditError reused whole; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the witness to read the result.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It removes a span from both channels and writes
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It removes a span from both channels and writes
 //! caller-supplied stereo samples in its place through the proven mono replace, reading no byte past either channel's len. No real sample rate, no network, no keys, no funds, no
 //! real device, no real speaker.
 //!
@@ -36,22 +36,22 @@ const meter = @import("meter.rye");
 
 pub const stereo_replace_version = "20260815.014739";
 
-/// stereo_replace forwards ALES2's OWN faults reused by name — BadRange (a removed span outside the samples, or two payloads of unequal length naming inconsistent spans) and
-/// ClipFull (a result past the fixed buffer) — and invents none of its own.
+/// stereo_replace forwards ALES2's OWN faults reused by name -- BadRange (a removed span outside the samples, or two payloads of unequal length naming inconsistent spans) and
+/// ClipFull (a result past the fixed buffer) -- and invents none of its own.
 pub const StereoReplaceError = timeline.EditError;
 
-/// Remove [at, at+count) from both channels and insert left_src into the left and right_src into the right, in lockstep — the stereo image staying balanced. Both channels are
+/// Remove [at, at+count) from both channels and insert left_src into the left and right_src into the right, in lockstep -- the stereo image staying balanced. Both channels are
 /// validated before either is mutated: the payloads must name the same span length (BadRange otherwise), and the mono preconditions are checked against the shared channel length,
 /// so a refusal never leaves one channel edited and the other not. Reuses ALES115's mono replace per channel.
 pub fn stereo_replace(sc: *pan.StereoClip, at: u32, count: u32, left_src: []const i16, right_src: []const i16) StereoReplaceError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: a stereo payload names ONE span across both channels, so its two sides must be the same length — an unequal pair names inconsistent spans, refused by name before
+    // invariant: a stereo payload names ONE span across both channels, so its two sides must be the same length -- an unequal pair names inconsistent spans, refused by name before
     //            any write so the channels can never desynchronise.
     if (left_src.len != right_src.len) return error.BadRange;
 
-    // invariant: the payload never exceeds the whole timeline bound — bound it once against max_clip before it names a u32 size, the same guard ALES115 keeps per channel.
+    // invariant: the payload never exceeds the whole timeline bound -- bound it once against max_clip before it names a u32 size, the same guard ALES115 keeps per channel.
     if (left_src.len > timeline.max_clip) return error.BadRange;
     const ins_len: u32 = @intCast(left_src.len);
 
@@ -60,21 +60,21 @@ pub fn stereo_replace(sc: *pan.StereoClip, at: u32, count: u32, left_src: []cons
     if (at > len) return error.BadRange;
     if (count > len - at) return error.BadRange;
 
-    // invariant: the result fits the fixed buffer — the same headroom check ALES115 makes, run once against the shared length so the ClipFull refusal lands before either channel
+    // invariant: the result fits the fixed buffer -- the same headroom check ALES115 makes, run once against the shared length so the ClipFull refusal lands before either channel
     //            mutates a single sample (equal lengths and equal-length payloads make the two channels' checks identical).
     const headroom: u32 = timeline.max_clip - len + count;
     if (ins_len > headroom) return error.ClipFull;
 
-    // Every check passed and holds identically for both channels, so each mono replace is pre-validated to succeed — no refusal can land between the two channel edits.
+    // Every check passed and holds identically for both channels, so each mono replace is pre-validated to succeed -- no refusal can land between the two channel edits.
     try replace.replace(&sc.left, at, count, left_src);
     try replace.replace(&sc.right, at, count, right_src);
 
-    // invariant: the channels leave balanced — each changed length by the same left/right-equal amount, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each changed length by the same left/right-equal amount, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO REPLACE LAW — each channel equals ALES115's mono replace on that channel byte for byte; THE BALANCE / INVARIANT LAW — left.len == right.len after; THE
-//     ATOMICITY LAW — a refused call leaves BOTH channels untouched; THE DEGENERATE / GENERALIZATION LAW — empty payloads count 0 the identity, and the three mono faces per channel
+// --- selftest: THE STEREO REPLACE LAW -- each channel equals ALES115's mono replace on that channel byte for byte; THE BALANCE / INVARIANT LAW -- left.len == right.len after; THE
+//     ATOMICITY LAW -- a refused call leaves BOTH channels untouched; THE DEGENERATE / GENERALIZATION LAW -- empty payloads count 0 the identity, and the three mono faces per channel
 //     ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -90,7 +90,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO REPLACE LAW — each channel equals ALES115's mono replace on that channel, proven side by side over one anchor with different left/right payloads.
+    // 1. THE STEREO REPLACE LAW -- each channel equals ALES115's mono replace on that channel, proven side by side over one anchor with different left/right payloads.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -107,7 +107,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
     }
 
-    // 2. THE BALANCE / INVARIANT LAW — the channels stay equal length across shorter, longer, and equal-length edits; the stereo image stays aligned.
+    // 2. THE BALANCE / INVARIANT LAW -- the channels stay equal length across shorter, longer, and equal-length edits; the stereo image stays aligned.
     {
         var shorter = pan.StereoClip{};
         try load_stereo(&shorter, &[_]i16{ 1, 2, 3, 4, 5 }, &[_]i16{ 6, 7, 8, 9, 10 });
@@ -128,16 +128,16 @@ fn run_selftest() !u8 {
         if (equal.left.len != 5) return error.EqualLength;
     }
 
-    // 3. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched, proven for the mismatched-payload refusal, a bad span, and an overflow.
+    // 3. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched, proven for the mismatched-payload refusal, a bad span, and an overflow.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
 
-        // mismatched payload lengths → BadRange, nothing written.
+        // mismatched payload lengths -> BadRange, nothing written.
         if (stereo_replace(&sc, 1, 1, &[_]i16{ 9, 9 }, &[_]i16{9})) |_| return error.MismatchNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // a removed span past the samples → BadRange, nothing written.
+        // a removed span past the samples -> BadRange, nothing written.
         if (stereo_replace(&sc, 2, 3, &[_]i16{9}, &[_]i16{9})) |_| return error.SpanNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
     }
 
-    // 3b. THE ATOMICITY LAW (headroom) — a result wider than the buffer refuses ClipFull before either channel mutates: fill both channels to the bound, then a replace that removes
+    // 3b. THE ATOMICITY LAW (headroom) -- a result wider than the buffer refuses ClipFull before either channel mutates: fill both channels to the bound, then a replace that removes
     //     one and inserts three would end one past the buffer.
     {
         var full = pan.StereoClip{};
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (full.left.buf[0] != left0 or full.right.buf[0] != right0) return error.FullWrote;
     }
 
-    // 4. THE DEGENERATE / GENERALIZATION LAW — empty payloads with count 0 the identity on both channels; and per channel the paste_over face (payload length = count) holds.
+    // 4. THE DEGENERATE / GENERALIZATION LAW -- empty payloads with count 0 the identity on both channels; and per channel the paste_over face (payload length = count) holds.
     {
         var idc = pan.StereoClip{};
         try load_stereo(&idc, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });

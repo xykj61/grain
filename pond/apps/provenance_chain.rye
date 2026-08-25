@@ -1,21 +1,21 @@
-//! pond/apps/provenance_chain.rye — GISM Journey 6 (Provenance), Rung 3.
+//! pond/apps/provenance_chain.rye -- GISM Journey 6 (Provenance), Rung 3.
 //!
 //! Season 2, Yield: custody is a verifiable *chain*, not a single stamp. Rung one bound
 //! a real tree document to one settled identity; rung two carried that word out of the
-//! store as a portable receipt. This rung lengthens the chain — a real artifact is
+//! store as a portable receipt. This rung lengthens the chain -- a real artifact is
 //! **handed** from one settled identity to the next, each transfer signed by the current
 //! holder, so a reader can prove not only whose it is now but the whole ordered line of
 //! who held it before.
 //!
 //! The design, chosen for the settlement's shrunk shared surface: a custody link is
-//! **self-describing** — it records the from-point, the to-point, a sequence number, the
+//! **self-describing** -- it records the from-point, the to-point, a sequence number, the
 //! from-holder's keeper public key, and the signature over exactly those facts bound to
 //! the constant artifact digest. That makes the chain tamper-evident on its own (a
 //! forged or reordered link breaks a signature or the contiguity), yet a link's stored
 //! keeper is only a convenience: re-verifying a chain from cold **re-presents each
 //! holder's Deed** (exactly as BUHR-J7r4's store_owned required a Deed), and verify_chain
 //! confirms each presented Deed is a current constellation member whose keeper matches
-//! the link — so a self-signed forgery that never settled cannot pass. The tie to the
+//! the link -- so a self-signed forgery that never settled cannot pass. The tie to the
 //! settled ledger is what makes the chain trustworthy, not the bytes alone.
 //!
 //! A transfer refuses a non-holder (NotHolder), an unsettled holder (NotSettled), and a
@@ -100,7 +100,7 @@ pub const CustodyChain = struct {
 /// ownership is established by rung one's owner-signed publication; this records the
 /// artifact digest and the origin holder, ready to hand on.
 pub fn open_chain(content: []const u8, origin_deed: *const settlement.Deed, con: *const settlement.Constellation) ChainError!CustodyChain {
-    // invariant: the origin is a current settled member — an unsettled origin cannot hold
+    // invariant: the origin is a current settled member -- an unsettled origin cannot hold
     if (!settlement.verify(con, origin_deed)) return error.NotSettled;
     return .{
         .digest = keyed.digest_of(content),
@@ -142,7 +142,7 @@ pub fn transfer(
     assert(chain.head_point() == to_point);
 }
 
-/// Verify one link's signature against a presented Deed — the tie to the settled ledger.
+/// Verify one link's signature against a presented Deed -- the tie to the settled ledger.
 /// The presented Deed must be a current member, its point must be the link's from-point,
 /// and its keeper must be the keeper the link recorded and that signed the transfer.
 fn verify_link(chain: *const CustodyChain, i: u32, from_deed: *const settlement.Deed, con: *const settlement.Constellation) bool {
@@ -162,7 +162,7 @@ fn verify_link(chain: *const CustodyChain, i: u32, from_deed: *const settlement.
 /// Verify the whole custody chain from cold, given the holders' presented Deeds in order
 /// (the origin Deed first, then each to-holder as it received the artifact). Confirms the
 /// line is contiguous, every link's signature valid by a current settled holder, and the
-/// digest constant — returning the head holder's point, or refusing.
+/// digest constant -- returning the head holder's point, or refusing.
 pub fn verify_chain(
     chain: *const CustodyChain,
     con: *const settlement.Constellation,
@@ -231,7 +231,7 @@ fn seat_world() !World {
     return .{ .con = con, .galaxy = galaxy_deed, .star = star, .planet = planet };
 }
 
-/// The real artifact is handed planet → star → galaxy, each transfer signed by the
+/// The real artifact is handed planet -> star -> galaxy, each transfer signed by the
 /// current holder; the whole chain re-verifies from cold and resolves the head holder.
 fn welcome_chain_lengthens() !void {
     const w = try seat_world();
@@ -252,7 +252,7 @@ fn welcome_chain_lengthens() !void {
     print("provenance_chain: real artifact handed {d} -> {d} -> {d}, chain verified, head {d}\n", .{ planet_num, star_num, galaxy_num, head });
 }
 
-/// Only the current holder may hand the artifact on — the star cannot transfer while the
+/// Only the current holder may hand the artifact on -- the star cannot transfer while the
 /// planet still holds it.
 fn unwelcome_non_holder() !void {
     const w = try seat_world();
@@ -269,13 +269,13 @@ fn unwelcome_non_holder() !void {
     print("provenance_chain: non-holder transfer refused (NotHolder), nothing appended\n", .{});
 }
 
-/// A forged link fails cold re-verification — the signature is over facts a real holder
+/// A forged link fails cold re-verification -- the signature is over facts a real holder
 /// never signed.
 fn unwelcome_forged_link() !void {
     const w = try seat_world();
     var chain = try open_chain(real_doc, &w.planet, &w.con);
     try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
-    // Flip a byte of the recorded signature — a real holder never signed this.
+    // Flip a byte of the recorded signature -- a real holder never signed this.
     chain.links[0].sig[0] +%= 1;
     const holders = [_]settlement.Deed{ w.planet, w.star };
     if (verify_chain(&chain, &w.con, holders[0..])) |_| {
@@ -287,13 +287,13 @@ fn unwelcome_forged_link() !void {
     print("provenance_chain: forged link refused on re-verification (BadTransfer)\n", .{});
 }
 
-/// A swapped artifact digest breaks every link — the transfers are bound to *this*
+/// A swapped artifact digest breaks every link -- the transfers are bound to *this*
 /// artifact, so a chain cannot be lifted onto other bytes.
 fn unwelcome_swapped_digest() !void {
     const w = try seat_world();
     var chain = try open_chain(real_doc, &w.planet, &w.con);
     try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
-    // Repoint the chain at other content — the links signed the real digest.
+    // Repoint the chain at other content -- the links signed the real digest.
     chain.digest = keyed.digest_of("a different artifact entirely");
     const holders = [_]settlement.Deed{ w.planet, w.star };
     if (verify_chain(&chain, &w.con, holders[0..])) |_| {
@@ -305,13 +305,13 @@ fn unwelcome_swapped_digest() !void {
     print("provenance_chain: swapped artifact digest refused (BadTransfer)\n", .{});
 }
 
-/// A wrong holder Deed presented at verify refuses — the ledger tie catches a Deed that
+/// A wrong holder Deed presented at verify refuses -- the ledger tie catches a Deed that
 /// is not the recorded holder even if the chain bytes are internally consistent.
 fn unwelcome_wrong_presented_deed() !void {
     const w = try seat_world();
     var chain = try open_chain(real_doc, &w.planet, &w.con);
     try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
-    // Present the galaxy Deed where the star should be — a mismatched holder line.
+    // Present the galaxy Deed where the star should be -- a mismatched holder line.
     const holders = [_]settlement.Deed{ w.planet, w.galaxy };
     if (verify_chain(&chain, &w.con, holders[0..])) |_| {
         return error.UnwelcomePassed;

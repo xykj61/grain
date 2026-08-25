@@ -1,17 +1,17 @@
-//! pond/apps/mantra_browser.rye — BUHR Journey 2, Rung 1: the first Realidream app.
+//! pond/apps/mantra_browser.rye -- BUHR Journey 2, Rung 1: the first Realidream app.
 //!
 //! Realidream is the unified editor-browser surface where a person reads history and
 //! writes the program over one graph. Its face is far horizon; its substrate is real
-//! and landed this season — Mantra for the append-only namespace, Tally for bounds,
+//! and landed this season -- Mantra for the append-only namespace, Tally for bounds,
 //! Skate for paint. This rung authors the first Realidream-branded Pond app: a
 //! Mantra *browser* that reads a BoltCatalog and renders its append-only log as a
-//! readable revision graph. No new abstraction — it composes over Mantra's public
+//! readable revision graph. No new abstraction -- it composes over Mantra's public
 //! catalog API only, exactly as Journey 1 composed the voices over their contracts.
 //!
 //! The graph is the append-only truth made legible: under each peer/bolt, each path
 //! is a lane, and each lane's revisions chain r1 -> r2 -> r3, every node carrying a
 //! short content digest. History accretes and never rewrites, so the graph is
-//! deterministic — the same catalog renders the same bytes for all time.
+//! deterministic -- the same catalog renders the same bytes for all time.
 //!
 //! The styled Skate surface (WADE1's token cascade over this same graph) is the named
 //! horizon for a later rung; this rung proves the reading is true and bounded first.
@@ -31,7 +31,7 @@ const mantra_browser_version = "20260812.150800";
 // node; this budget comfortably holds the whole append-only log rendered readable.
 pub const max_render_bytes: u32 = 4096;
 
-// A short digest prefix per node — enough to recognize a resin at a glance without
+// A short digest prefix per node -- enough to recognize a resin at a glance without
 // spending the lane's whole width on 64 hex characters.
 const digest_prefix_len: u32 = 8;
 
@@ -39,7 +39,7 @@ pub const RenderError = error{
     RenderTooLong,
 };
 
-/// The peer/bolt/path slices of a leaf, read from its fixed arrays. A view only —
+/// The peer/bolt/path slices of a leaf, read from its fixed arrays. A view only --
 /// it borrows the leaf's own bytes and never copies them.
 fn leaf_peer(leaf: *const mn.LeafBinding) []const u8 {
     // invariant: the recorded length never exceeds the peer array
@@ -65,7 +65,7 @@ fn leaf_path(leaf: *const mn.LeafBinding) []const u8 {
     return leaf.path[0..leaf.path_len];
 }
 
-/// True when two leaves sit under the same peer/bolt — the coarse grouping of the
+/// True when two leaves sit under the same peer/bolt -- the coarse grouping of the
 /// graph, one header per distinct bolt.
 fn same_bolt(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
     // invariant: both leaves carry a bound peer
@@ -77,7 +77,7 @@ fn same_bolt(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
     return std.mem.eql(u8, leaf_peer(a), leaf_peer(b)) and std.mem.eql(u8, leaf_bolt(a), leaf_bolt(b));
 }
 
-/// True when two leaves sit on the same lane — the same peer/bolt *and* path, the
+/// True when two leaves sit on the same lane -- the same peer/bolt *and* path, the
 /// revisions of which chain together in the graph.
 fn same_lane(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
     // invariant: same-lane is a refinement of same-bolt
@@ -89,7 +89,7 @@ fn same_lane(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
     return same_bolt(a, b) and std.mem.eql(u8, leaf_path(a), leaf_path(b));
 }
 
-/// Count distinct peer/bolt groups in the catalog — one header per bolt in the
+/// Count distinct peer/bolt groups in the catalog -- one header per bolt in the
 /// rendered graph. A leaf counts when no earlier leaf shares its bolt.
 pub fn bolt_count(catalog: *const mn.BoltCatalog) u32 {
     // invariant: the catalog respects Mantra's binding budget
@@ -114,7 +114,7 @@ pub fn bolt_count(catalog: *const mn.BoltCatalog) u32 {
     return count;
 }
 
-/// Count distinct lanes (peer/bolt/path) in the catalog — one lane line per path.
+/// Count distinct lanes (peer/bolt/path) in the catalog -- one lane line per path.
 pub fn lane_count(catalog: *const mn.BoltCatalog) u32 {
     // invariant: the catalog respects Mantra's binding budget
     assert(catalog.leaf_count <= mn.max_bindings);
@@ -138,7 +138,7 @@ pub fn lane_count(catalog: *const mn.BoltCatalog) u32 {
     return count;
 }
 
-/// The head revision on a lane — the newest node in its chain — or null when the
+/// The head revision on a lane -- the newest node in its chain -- or null when the
 /// lane has no leaf yet. The living edge the browser lights (rung three) is this
 /// revision; an editor reads it to know which revision its next append continues.
 /// Reads the append-only log the same way the graph does, so the number it returns
@@ -180,7 +180,7 @@ fn find_rev(catalog: *const mn.BoltCatalog, anchor: *const mn.LeafBinding, revis
 }
 
 /// Append `src` into `out` at `written`, bounded by the caller's buffer. Byte by
-/// byte within a named bound — no @memcpy, no unbounded copy.
+/// byte within a named bound -- no @memcpy, no unbounded copy.
 fn append(out: []u8, written: *u32, src: []const u8) RenderError!void {
     // invariant: the render buffer honors its own budget
     assert(out.len <= max_render_bytes);
@@ -217,7 +217,7 @@ pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 
         return out[0..written];
     }
 
-    // Walk bolt anchors — the first leaf of each distinct peer/bolt — in append
+    // Walk bolt anchors -- the first leaf of each distinct peer/bolt -- in append
     // order, so the graph reads in the order history was written.
     var bi: u32 = 0;
     while (bi < catalog.leaf_count) : (bi += 1) {
@@ -237,7 +237,7 @@ pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 
         try append(out, &written, leaf_bolt(bolt_anchor));
         try append(out, &written, "\n");
 
-        // Walk lane anchors within this bolt — the first leaf of each distinct path.
+        // Walk lane anchors within this bolt -- the first leaf of each distinct path.
         var li: u32 = 0;
         while (li < catalog.leaf_count) : (li += 1) {
             const lane_anchor = &catalog.leaves[li];
@@ -288,8 +288,8 @@ pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 
 /// Render the same append-only log as a **markdown** outline into `out`: a title
 /// heading, then one `## peer/bolt` heading per distinct bolt, then a `- path` line
 /// per lane beneath it. Deterministic and bounded exactly like `render`, walking the
-/// bolts in append order. This is the reading-voice's door onto the graph — a
-/// markdown structure Scribble can outline — so a voice folds the very grouping the
+/// bolts in append order. This is the reading-voice's door onto the graph -- a
+/// markdown structure Scribble can outline -- so a voice folds the very grouping the
 /// browser shows, rather than a separate reading of the catalog.
 pub fn render_markdown(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 {
     // invariant: the caller's buffer respects the render budget
@@ -300,7 +300,7 @@ pub fn render_markdown(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]
     var written: u32 = 0;
     try append(out, &written, "# mantra log\n");
 
-    // Walk bolt anchors — the first leaf of each distinct peer/bolt — in append order,
+    // Walk bolt anchors -- the first leaf of each distinct peer/bolt -- in append order,
     // exactly as `render` does, so the markdown outline matches the readable graph.
     var bi: u32 = 0;
     while (bi < catalog.leaf_count) : (bi += 1) {
@@ -321,7 +321,7 @@ pub fn render_markdown(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]
         try append(out, &written, leaf_bolt(bolt_anchor));
         try append(out, &written, "\n");
 
-        // A `- path` line per distinct lane in this bolt — prose, not a heading, so an
+        // A `- path` line per distinct lane in this bolt -- prose, not a heading, so an
         // outline names the bolts while the lanes read as their content.
         var li: u32 = 0;
         while (li < catalog.leaf_count) : (li += 1) {
@@ -395,7 +395,7 @@ fn welcome_empty_log() !void {
     var catalog = mn.BoltCatalog.empty();
     var buf: [max_render_bytes]u8 = undefined;
     const text = try render(&catalog, &buf);
-    // An empty catalog renders a stable, bounded, honest view — never a crash.
+    // An empty catalog renders a stable, bounded, honest view -- never a crash.
     assert(std.mem.indexOf(u8, text, "(empty log)") != null);
     assert(bolt_count(&catalog) == 0);
     assert(lane_count(&catalog) == 0);
@@ -408,7 +408,7 @@ fn welcome_deterministic() !void {
     var buf_b: [max_render_bytes]u8 = undefined;
     const a = try render(&catalog, &buf_a);
     const b = try render(&catalog, &buf_b);
-    // The same catalog renders the same bytes — Mantra's referential transparency,
+    // The same catalog renders the same bytes -- Mantra's referential transparency,
     // carried into the view.
     assert(std.mem.eql(u8, a, b));
     print("mantra_browser: render is deterministic — same catalog, same bytes\n", .{});

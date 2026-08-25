@@ -1,29 +1,29 @@
-//! lotus/glide.rye — ALES70: the gliding delay — a fractional delay read by linear interpolation. Every delay so far reads the line at a
+//! lotus/glide.rye -- ALES70: the gliding delay -- a fractional delay read by linear interpolation. Every delay so far reads the line at a
 //! WHOLE-sample position: the feedback echo (ALES66) at a fixed integer delay, the multi-tap (ALES68) at several fixed integer delays. The
-//! effects a keeper reaches for next — the chorus, the flanger, the vibrato — all share one move those cannot make: the delay MOVES,
+//! effects a keeper reaches for next -- the chorus, the flanger, the vibrato -- all share one move those cannot make: the delay MOVES,
 //! gliding smoothly through positions BETWEEN two samples. A delay of two-and-a-half samples has no sample sitting there; the honest read
 //! is the LINEAR INTERPOLATION of the two that straddle it. That interpolation is the one genuinely new arithmetic the whole
-//! modulated-delay family needs, and this rung introduces it in its simplest honest form — a delay that glides linearly from a start
+//! modulated-delay family needs, and this rung introduces it in its simplest honest form -- a delay that glides linearly from a start
 //! position to an end position across the span (the flanger's sweep), read fractionally.
 //!
 //! The crux is that A FRACTIONAL DELAY IS THE LINEAR INTERPOLATION OF ITS TWO NEIGHBOURS. The delay is carried in FIXED POINT: a scaled
-//! integer d_s = delay·glide_scale (glide_scale = 256), so the whole delay is d_s/glide_scale and the fractional part is d_s%glide_scale
+//! integer d_s = delay-glide_scale (glide_scale = 256), so the whole delay is d_s/glide_scale and the fractional part is d_s%glide_scale
 //! over glide_scale. At each span sample the scaled delay glides linearly from d0_scaled to d1_scaled; the read is
-//! delayed = (near·(glide_scale − frac) + far·frac)/glide_scale, near = dry[i − d_whole] (the nearer, smaller-delay sample) and far =
-//! dry[i − d_whole − 1] (the further, larger-delay one), and y[i] = saturate(x[i] + level·delayed). Every read is off a FROZEN snapshot of
+//! delayed = (near-(glide_scale − frac) + far-frac)/glide_scale, near = dry[i − d_whole] (the nearer, smaller-delay sample) and far =
+//! dry[i − d_whole − 1] (the further, larger-delay one), and y[i] = saturate(x[i] + level-delayed). Every read is off a FROZEN snapshot of
 //! the dry prefix (the ALES68 idiom, reused), so a moving read never reads a sample it just wrote. Two facts anchor the interpolation: at
 //! frac = 0 the read returns `near` EXACTLY (a whole-sample glide is a moving integer tap, so a fixed whole delay reduces to ALES68's
 //! one-tap multi-tap byte-for-byte), and at frac = glide_scale/2 it returns the EXACT AVERAGE of the two neighbours. dry[j] = 0 for j < 0
 //! (silence before the clip). The wet is mixed at level = num/den (num ≤ den, a chorus voice at or below the dry) and the sum saturates
 //! once (ALES3's one true saturation, reused).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES70.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES70.
 //! Design read: active-designing/date/20260814/20260814-194031_fill-ales70-lotus-gliding-interpolated-delay.md
-//! Stands on: lotus/taps.rye (ALES68) — the multi-tap whose fixed integer taps this generalizes to a moving fractional one, and whose
-//! snapshot-before-write idiom this reuses; lotus/timeline.rye (ALES2) — the Clip, sample_max, max_clip, and the one true saturate.
+//! Stands on: lotus/taps.rye (ALES68) -- the multi-tap whose fixed integer taps this generalizes to a moving fractional one, and whose
+//! snapshot-before-write idiom this reuses; lotus/timeline.rye (ALES2) -- the Clip, sample_max, max_clip, and the one true saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the delay is counted in sample indices (scaled by glide_scale), not milliseconds (the
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the delay is counted in sample indices (scaled by glide_scale), not milliseconds (the
 //! real-time twin follows as echo_ms and multitap_ms did). No lookahead beyond the snapshot read. The dry prefix is snapshotted into one
 //! bounded [max_clip]i16 scratch (graft/taps' width); the ramp, the interpolation, and the wet mix all run in i64 and saturate once, so
 //! nothing on the path can overflow.
@@ -47,22 +47,22 @@ pub const glide_scale: i64 = 256;
 /// clip) or a whole delay wider than the widest clip, a wet level above unity (a voice louder than the dry) or with a zero denominator,
 /// and a span outside the samples. Each refused before any write.
 pub const GlideError = error{
-    /// A scaled delay under one whole sample (`< glide_scale`) or a whole delay longer than max_clip samples — refused, no write.
+    /// A scaled delay under one whole sample (`< glide_scale`) or a whole delay longer than max_clip samples -- refused, no write.
     BadDelay,
-    /// A wet numerator above the denominator (a voice louder than the dry) or a zero denominator — refused, no write.
+    /// A wet numerator above the denominator (a voice louder than the dry) or a zero denominator -- refused, no write.
     BadLevel,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
-/// The scaled delay at span offset `k` of `n`, gliding linearly from `d0_scaled` to `d1_scaled`. Exact at the endpoints — `k = 0` returns
-/// `d0_scaled`, `k = n-1` returns `d1_scaled` — and honestly `@divTrunc`-quantized between (a scaled delay rarely lands on a whole ramp
+/// The scaled delay at span offset `k` of `n`, gliding linearly from `d0_scaled` to `d1_scaled`. Exact at the endpoints -- `k = 0` returns
+/// `d0_scaled`, `k = n-1` returns `d1_scaled` -- and honestly `@divTrunc`-quantized between (a scaled delay rarely lands on a whole ramp
 /// step). For `n <= 1` the whole span sits at `d0_scaled`. Pure and public, so the sweep is testable directly.
 pub fn scaled_delay_at(d0_scaled: i64, d1_scaled: i64, n: u32, k: u32) i64 {
     // invariant: the offset lies within the span, so the ramp reads a real position.
     assert(k < n or (n == 0 and k == 0));
     if (n <= 1) return d0_scaled;
-    // Linear ramp: d0 + (d1 - d0)·k/(n-1). Signed i64 so a falling glide (d1 < d0) is exact; @divTrunc rounds toward zero, honestly lossy.
+    // Linear ramp: d0 + (d1 - d0)-k/(n-1). Signed i64 so a falling glide (d1 < d0) is exact; @divTrunc rounds toward zero, honestly lossy.
     const span_i: i64 = @as(i64, n) - 1;
     const dd: i64 = d1_scaled - d0_scaled;
     return d0_scaled + @divTrunc(dd * @as(i64, k), span_i);
@@ -70,10 +70,10 @@ pub fn scaled_delay_at(d0_scaled: i64, d1_scaled: i64, n: u32, k: u32) i64 {
 
 /// Glide `count` samples starting at `start` in place in `clip`: the delay glides linearly from `d0_scaled` to `d1_scaled` across the span,
 /// each sample read by LINEAR INTERPOLATION of the two dry neighbours straddling its fractional delay, then mixed with the dry at
-/// `num/den` — y[i] = saturate(x[i] + level·interp(dry, i, d_s)). Every read is off a FROZEN snapshot of the dry prefix, so a moving read
+/// `num/den` -- y[i] = saturate(x[i] + level-interp(dry, i, d_s)). Every read is off a FROZEN snapshot of the dry prefix, so a moving read
 /// never reads a sample it just wrote (the ALES68 idiom). At frac = 0 the read is the nearer sample exactly (a whole-sample glide is an
 /// exact integer tap); at frac = glide_scale/2 it is the exact average of the two neighbours; dry before the clip is silence. The wet plus
-/// dry saturates once. Refuses BadDelay, BadLevel, and BadRange before any write; on refusal the clip is untouched. Values only — never a
+/// dry saturates once. Refuses BadDelay, BadLevel, and BadRange before any write; on refusal the clip is untouched. Values only -- never a
 /// length.
 pub fn glide(
     clip: *timeline.Clip,
@@ -84,21 +84,21 @@ pub fn glide(
     num: u32,
     den: u32,
 ) GlideError!void {
-    // invariant: each scaled delay is at least one whole sample — below that there is no `far` neighbour to interpolate toward before the
+    // invariant: each scaled delay is at least one whole sample -- below that there is no `far` neighbour to interpolate toward before the
     // clip, and the delay is meaningless. Checked at the edge before any read.
     if (d0_scaled < glide_scale or d1_scaled < glide_scale) return error.BadDelay;
     // invariant: the widest whole delay fits the widest clip, so the reach is bounded.
     const max_scaled: i64 = if (d0_scaled > d1_scaled) d0_scaled else d1_scaled;
     if (@divTrunc(max_scaled, glide_scale) > @as(i64, timeline.max_clip)) return error.BadDelay;
-    // invariant: the wet is a legal fraction at or below unity — a nonzero denominator, a numerator no larger. num == 0 (dry only) is legal.
+    // invariant: the wet is a legal fraction at or below unity -- a nonzero denominator, a numerator no larger. num == 0 (dry only) is legal.
     if (den == 0) return error.BadLevel;
     if (num > den) return error.BadLevel;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
     const end: u32 = start + count;
-    // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio — the ALES68/graft
+    // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio -- the ALES68/graft
     // snapshot-before-write idiom, reused. One bounded scratch, the width taps and graft already carry.
     var dry: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
     {
@@ -127,7 +127,7 @@ pub fn glide(
         const far_ix: i64 = near_ix - 1;
         const near_val: i64 = if (near_ix >= 0) @as(i64, dry[@intCast(near_ix)]) else 0;
         const far_val: i64 = if (far_ix >= 0) @as(i64, dry[@intCast(far_ix)]) else 0;
-        // invariant: both neighbours already fit the i16 rail — they are dry audio, never a wide intermediate.
+        // invariant: both neighbours already fit the i16 rail -- they are dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
         // Linear interpolation: near weighted by (scale - frac), far by frac, divided once. frac = 0 returns near exactly; frac =
@@ -135,7 +135,7 @@ pub fn glide(
         const delayed: i64 = @divTrunc(near_val * (glide_scale - frac) + far_val * frac, glide_scale);
         // The wet voice at level num/den (num <= den, so |wet| <= |delayed|), then the dry plus wet saturates ONCE over the true sum.
         const wet: i64 = @divTrunc(wet_num * delayed, wet_den);
-        // invariant: the wet voice is no louder in magnitude than the interpolated read — a level at or below unity only attenuates it.
+        // invariant: the wet voice is no louder in magnitude than the interpolated read -- a level at or below unity only attenuates it.
         assert((if (wet < 0) -wet else wet) <= (if (delayed < 0) -delayed else delayed));
         clip.buf[i] = timeline.saturate(x + wet);
     }
@@ -162,7 +162,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. level = 0 IS THE DRY IDENTITY — a zero wet numerator adds nothing, the dry signal passes byte-for-byte at any glide.
+    // 1. level = 0 IS THE DRY IDENTITY -- a zero wet numerator adds nothing, the dry signal passes byte-for-byte at any glide.
     {
         const sig = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
         var clip = timeline.Clip{};
@@ -171,9 +171,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroLevelNotIdentity;
     }
 
-    // 2. A WHOLE-SAMPLE GLIDE IS AN EXACT INTEGER TAP — d0 == d1 == 2·scale (a fixed delay of exactly 2, frac 0), wet 1/1: the
+    // 2. A WHOLE-SAMPLE GLIDE IS AN EXACT INTEGER TAP -- d0 == d1 == 2-scale (a fixed delay of exactly 2, frac 0), wet 1/1: the
     //    interpolation returns the nearer sample exactly, so this equals ALES68's one-tap multi-tap at delay 2, level 1/1, byte-for-byte.
-    //    Both tools run — the interpolation is exact at integer positions.
+    //    Both tools run -- the interpolation is exact at integer positions.
     {
         const sig = [_]i16{ 100, 200, 300, 400, 500, 600 };
         var glided = timeline.Clip{};
@@ -186,7 +186,7 @@ fn run_selftest() !u8 {
         if (!eq(glided.samples(), tapped.samples())) return error.WholeGlideNotIntegerTap;
     }
 
-    // 3. THE HALF-SAMPLE IS THE EXACT AVERAGE — a fixed delay of 2.5 (d0 == d1 == 2·scale + scale/2, frac = 128), wet 1/1: each sample
+    // 3. THE HALF-SAMPLE IS THE EXACT AVERAGE -- a fixed delay of 2.5 (d0 == d1 == 2-scale + scale/2, frac = 128), wet 1/1: each sample
     //    reads (dry[i-2] + dry[i-3])/2. Computed by hand on a legible signal.
     {
         //             i:   0     1     2     3      4      5
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.HalfSampleNotAverage;
     }
 
-    // 4. THE GLIDE HONORS ITS RAMP ENDPOINTS AND MOVES MONOTONICALLY — scaled_delay_at returns d0 at k=0 and d1 at the last offset, and a
+    // 4. THE GLIDE HONORS ITS RAMP ENDPOINTS AND MOVES MONOTONICALLY -- scaled_delay_at returns d0 at k=0 and d1 at the last offset, and a
     //    rising glide is non-decreasing between. Proven directly on the pure ramp helper.
     {
         const d0: i64 = 2 * glide_scale;
@@ -225,7 +225,7 @@ fn run_selftest() !u8 {
         if (scaled_delay_at(d0, d1, 1, 0) != d0) return error.SingleSpanWrong;
     }
 
-    // 5. A LOUD WET+DRY SUM SATURATES RATHER THAN WRAPS — a loud dry sample under a loud in-phase interpolated read would exceed the i16
+    // 5. A LOUD WET+DRY SUM SATURATES RATHER THAN WRAPS -- a loud dry sample under a loud in-phase interpolated read would exceed the i16
     //    rail; the sum pins to sample_max (ALES3's ceiling) instead of wrapping negative. A steady 30000 with a whole delay 1, wet 1/1
     //    sums 30000 + 30000 = 60000 from index 1 on, saturated to 32767.
     {
@@ -237,7 +237,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SaturateWrong;
     }
 
-    // 6a. A SUB-SAMPLE DELAY refuses BadDelay; a whole delay past max_clip refuses BadDelay — each before any write.
+    // 6a. A SUB-SAMPLE DELAY refuses BadDelay; a whole delay past max_clip refuses BadDelay -- each before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
@@ -249,7 +249,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWideDelayMutated;
     }
 
-    // 6b. A WET ABOVE UNITY refuses BadLevel; a zero denominator refuses BadLevel — each before any write.
+    // 6b. A WET ABOVE UNITY refuses BadLevel; a zero denominator refuses BadLevel -- each before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };

@@ -1,29 +1,29 @@
-//! mycelium/cord_batch_bron.rye — the batched Cord travels as text (fact batching r2).
+//! mycelium/cord_batch_bron.rye -- the batched Cord travels as text (fact batching r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r2.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - fact batching - rung r2.
 //! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
 //! r1 proved a batched history folds to the byte-identical supply as the same facts
 //! placed one-per-block. A consensus a developer cannot hand to another node is only
-//! a sandbox — so this rung lets a batched Dag cross to a stranger as readable bytes.
-//! It renders a committed BatchDag to a `format cord-batch-v1` record — per block a
-//! `block` line (author key · round · block signature), then one `fact` line per
-//! fact in the batch (kind · amount · star · body · fact-signer key · fact signature),
-//! then the block's `parent` lines — and parses it back, rebuilding the Dag from the
+//! a sandbox -- so this rung lets a batched Dag cross to a stranger as readable bytes.
+//! It renders a committed BatchDag to a `format cord-batch-v1` record -- per block a
+//! `block` line (author key - round - block signature), then one `fact` line per
+//! fact in the batch (kind - amount - star - body - fact-signer key - fact signature),
+//! then the block's `parent` lines -- and parses it back, rebuilding the Dag from the
 //! bytes.
 //!
 //! The crux, as in the single-fact Cord's own travel rung: **the agreed order travels
 //! with the bytes.** The recovered batched Dag, re-admitted block by block under r1's
 //! own `add_batch`, commits to the byte-identical order and folds the identical supply
-//! — two nodes agree by exchanging batched blocks alone. Every signature rides in the
+//! -- two nodes agree by exchanging batched blocks alone. Every signature rides in the
 //! record and is re-verified on rebuild: a tampered fact breaks its block's signature
 //! at `add_batch` (`BadSignature`), so corruption can never cross as consensus. The
-//! reader is a purpose-built bounded flat-Bron reader — an unknown field refuses
+//! reader is a purpose-built bounded flat-Bron reader -- an unknown field refuses
 //! `UnknownField` (never dropped), a wrong header `BadFormat`, a fact before any block
 //! `FactBeforeBlock`, a batch with no facts `EmptyBatch`, and the elder's own refusals.
 //!
-//! Additive — composes cord_batch + cord + fold public API only; the elder single-fact
-//! cord-bron (r3) is untouched and re-runs GREEN. Siloed, dev-only, demo seeds — no
+//! Additive -- composes cord_batch + cord + fold public API only; the elder single-fact
+//! cord-bron (r3) is untouched and re-runs GREEN. Siloed, dev-only, demo seeds -- no
 //! real key, no funds, no network, no custody; a Cord gossiped over Comlink reaches
 //! the serve gate.
 //!
@@ -43,8 +43,8 @@ const pk_len = kumara.PublicKey.encoded_length;
 const sig_len = kumara.signature_length;
 const hash_len = cord.hash_len;
 
-/// A batched dev-net record bundles few blocks — the whole point of batching is
-/// fewer, fuller blocks — so the roster bound is small and legible.
+/// A batched dev-net record bundles few blocks -- the whole point of batching is
+/// fewer, fuller blocks -- so the roster bound is small and legible.
 pub const max_blocks: u32 = 8;
 
 /// The rendered record: per block one `block` line, up to sixteen `fact` lines,
@@ -52,7 +52,7 @@ pub const max_blocks: u32 = 8;
 /// small batched dev-net roster.
 pub const max_record: u32 = 16384;
 
-/// The sentinel token for an empty star or body field — hex is never a lone dash.
+/// The sentinel token for an empty star or body field -- hex is never a lone dash.
 const empty_field = "-";
 
 pub const BronError = error{
@@ -307,7 +307,7 @@ pub fn parse(text: []const u8) BronError!PortableBatchDag {
 }
 
 /// Rebuild a live BatchDag from a portable one by re-admitting each block under
-/// r1's own `add_batch`, in the record's (committed) order — so every signature is
+/// r1's own `add_batch`, in the record's (committed) order -- so every signature is
 /// re-verified and every parent must already be held. A tampered block refuses.
 /// Writes through `out` rather than returning by value: a BatchDag statically
 /// allocates its full block bound, so a return copy would put a second whole Dag
@@ -329,8 +329,8 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 /// The honest batched scene from r1: a round-0 batch of the two genesis issues and
-/// a round-1 batch of the tax and the star reserve. issued 1000 · taxed 300 · 700.
-/// Writes through `out` — a BatchDag is too large to return by value on the stack.
+/// a round-1 batch of the tax and the star reserve. issued 1000 - taxed 300 - 700.
+/// Writes through `out` -- a BatchDag is too large to return by value on the stack.
 fn seat_batch_dag(out: *cord_batch.BatchDag) !void {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);
@@ -423,11 +423,11 @@ pub fn main() !void {
     if (!std.mem.eql(u8, buf1[0..n1], buf2[0..n2])) return error.RenderNotFixedPoint;
 
     // A tampered fact cannot cross as consensus: flip one byte of a fact signature
-    // in the record and the rebuild refuses BadSignature at add_batch — the batch's
+    // in the record and the rebuild refuses BadSignature at add_batch -- the batch's
     // own author signature seals every fact's signature.
     var tampered = back;
     tampered.blocks[0].facts[0].sig[0] ^= 0xff;
-    // reuse dag2's storage — the order comparison above is done with it.
+    // reuse dag2's storage -- the order comparison above is done with it.
     if (rebuild(&tampered, &dag2)) |_| return error.TamperCrossed else |err| {
         if (err != error.BadSignature) return error.WrongTamper;
     }

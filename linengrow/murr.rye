@@ -1,4 +1,4 @@
-//! linengrow/murr.rye — MUR M1: one issuer, one holder, mint/send/fold/verify (was murr.rye / MALA).
+//! linengrow/murr.rye -- MUR M1: one issuer, one holder, mint/send/fold/verify (was murr.rye / MALA).
 //!
 //!   rye build linengrow/murr.rye -femit-bin=linengrow/bin/murr
 //!   linengrow/bin/murr selftest

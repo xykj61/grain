@@ -1,34 +1,34 @@
-//! constel/catchup.rye — FORA15: a lagging pier brought current from a leader's snapshot + tail. FORA12 built the append-only
+//! constel/catchup.rye -- FORA15: a lagging pier brought current from a leader's snapshot + tail. FORA12 built the append-only
 //! replicated log every consensus exists to produce; FORA14 let it serve forever by folding its settled prefix into a compact
 //! snapshot and reclaiming the room. Both rungs assume every pier already holds the whole committed history. Yet the reason a
-//! real system compacts at all is the pier that FELL BEHIND — offline, or joined late — now holding fewer entries than the
+//! real system compacts at all is the pier that FELL BEHIND -- offline, or joined late -- now holding fewer entries than the
 //! leader. This rung takes that one new concern: CATCH-UP, and it spends FORA14's snapshot directly, because a follower so far
-//! behind that the entries it lacks are already compacted away cannot be replayed one-by-one — it must INSTALL the snapshot.
+//! behind that the entries it lacks are already compacted away cannot be replayed one-by-one -- it must INSTALL the snapshot.
 //! This is Raft's own InstallSnapshot, named in Constel's terms.
 //!
 //! A follower behind a leader lacks the effective entries [follower.total(), leader.total()). The leader can SERVE an effective
-//! index i only if i >= leader.snap.count — below that boundary the entry was folded into the snapshot and discarded. So the
+//! index i only if i >= leader.snap.count -- below that boundary the entry was folded into the snapshot and discarded. So the
 //! follower's position relative to that boundary decides the method:
 //!   * TAIL CATCH-UP  (follower.total() >= leader.snap.count): every lacked entry is still live in the leader's tail; the leader
 //!     serves them in order, the follower appends each (auto-compacting its own tail so it runs in bounded memory however far
-//!     behind it was). The overlap is verifiable here, so catch-up VERIFIES before it appends — the follower's effective_state
+//!     behind it was). The overlap is verifiable here, so catch-up VERIFIES before it appends -- the follower's effective_state
 //!     must equal the leader's reconstructed state at the follower's length, or it refuses Diverged and changes nothing.
-//!   * SNAPSHOT INSTALL (follower.total() < leader.snap.count): the lacked entries are already compacted on the leader — nothing
+//!   * SNAPSHOT INSTALL (follower.total() < leader.snap.count): the lacked entries are already compacted on the leader -- nothing
 //!     to replay. The follower adopts the leader's snapshot WHOLESALE (its count and order-sensitive state), empties its tail,
 //!     then appends the leader's whole live tail. Correctness rests on the snapshot-identity property FORA14 proved: two piers
 //!     that committed the same prefix hold the SAME snapshot, so installing the leader's snapshot is adopting the one true
 //!     summary of that prefix. Trust-the-snapshot by construction, exactly as InstallSnapshot is.
 //!
-//! The postcondition of every non-refusing catch_up is follower.equivalent(leader) — asserted, not hoped.
+//! The postcondition of every non-refusing catch_up is follower.equivalent(leader) -- asserted, not hoped.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA15. Design read: active-designing/date/20260814/20260814-083100_fora15-constel-catchup-snapshot-install.md
-//! Stands on: constel/snapshot.rye (FORA14) — the CompactLog, its snapshot, and the order-sensitive fold; constel/log.rye
-//! (FORA12) — the append-only order both piers replicate; constel/switchboard.rye (FORA6) — the medium the real-sky scenario uses.
+//! Stands on: constel/snapshot.rye (FORA14) -- the CompactLog, its snapshot, and the order-sensitive fold; constel/log.rye
+//! (FORA12) -- the append-only order both piers replicate; constel/switchboard.rye (FORA6) -- the medium the real-sky scenario uses.
 //!
-//! Purely LOCAL — a bounded in-memory operation between two CompactLog values on one bench, siloed to constel/, run from inside
-//! the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any
-//! real wire — and gate %4 — real Kumara — both untouched). The socket rung stays the maintainer's hand.
+//! Purely LOCAL -- a bounded in-memory operation between two CompactLog values on one bench, siloed to constel/, run from inside
+//! the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any
+//! real wire -- and gate %4 -- real Kumara -- both untouched). The socket rung stays the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/catchup.rye selftest
 
@@ -49,18 +49,18 @@ const fold_step = snapshot.fold_step;
 const max_tail = snapshot.max_tail;
 
 pub const CatchupError = error{
-    /// The follower is longer than the leader — a follower never syncs backward. The caller pointed catch-up the wrong way.
+    /// The follower is longer than the leader -- a follower never syncs backward. The caller pointed catch-up the wrong way.
     Ahead,
-    /// A verifiable overlap between follower and leader disagrees — the two have committed a DIFFERENT value at some shared
+    /// A verifiable overlap between follower and leader disagrees -- the two have committed a DIFFERENT value at some shared
     /// index. This is a real fork the higher consensus layer must never allow; catch-up refuses it rather than paper over it.
     Diverged,
 } || snapshot.SnapshotError;
 
-/// Reconstruct the leader's order-sensitive fold at effective length `k` — the state a snapshot would hold if it had absorbed
+/// Reconstruct the leader's order-sensitive fold at effective length `k` -- the state a snapshot would hold if it had absorbed
 /// exactly the first `k` committed values. Defined only for `k >= leader.snap.count`, because below that boundary the entries
 /// were folded away and cannot be re-walked. This is the verification tool of the tail path.
 pub fn leader_state_at(leader: *const CompactLog, k: u32) u32 {
-    // invariant: k is within the reconstructable range — at or past the snapshot boundary, and no further than the whole log.
+    // invariant: k is within the reconstructable range -- at or past the snapshot boundary, and no further than the whole log.
     assert(k >= leader.snap.count);
     assert(k <= leader.total());
     var s = leader.snap.state;
@@ -80,7 +80,7 @@ pub fn leader_state_at(leader: *const CompactLog, k: u32) u32 {
 pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u32 {
     const f_total = follower.total();
     const l_total = leader.total();
-    // invariant: both lengths are well defined (each tail within its bound) — read once, up front.
+    // invariant: both lengths are well defined (each tail within its bound) -- read once, up front.
     assert(follower.tail_len <= max_tail);
     assert(leader.tail_len <= max_tail);
 
@@ -93,23 +93,23 @@ pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u
 
     // The follower is strictly behind. Choose the method by the leader's snapshot boundary.
     if (f_total >= leader.snap.count) {
-        // TAIL CATCH-UP — every lacked entry is live in the leader's tail. Verify the overlap BEFORE appending a single entry,
+        // TAIL CATCH-UP -- every lacked entry is live in the leader's tail. Verify the overlap BEFORE appending a single entry,
         // so a divergent follower is refused whole rather than half-mutated.
         const overlap_state = leader_state_at(leader, f_total);
         if (follower.effective_state() != overlap_state) return error.Diverged;
         var i = f_total;
         while (i < l_total) : (i += 1) {
-            // invariant: index i is live in the leader's tail — at or past the boundary, before the end.
+            // invariant: index i is live in the leader's tail -- at or past the boundary, before the end.
             assert(i >= leader.snap.count and i < leader.total());
             const v = leader.tail[i - leader.snap.count];
             if (follower.tail_len >= max_tail) follower.compact(); // reclaim so the follower stays bounded however far behind
             _ = try follower.append(v);
         }
-        // invariant: the follower now holds exactly the leader's committed history — no fork.
+        // invariant: the follower now holds exactly the leader's committed history -- no fork.
         assert(follower.equivalent(leader));
         return l_total - f_total;
     } else {
-        // SNAPSHOT INSTALL — the lacked entries are already compacted on the leader. Adopt its snapshot wholesale, then take its
+        // SNAPSHOT INSTALL -- the lacked entries are already compacted on the leader. Adopt its snapshot wholesale, then take its
         // whole live tail. The follower is strictly behind the snapshot boundary (f_total < snap.count), so it overwrites no
         // committed entry it had already verified.
         // invariant: the follower is behind the leader by construction, so a total at or past
@@ -122,7 +122,7 @@ pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u
             if (follower.tail_len >= max_tail) follower.compact();
             _ = try follower.append(leader.tail[i]);
         }
-        // invariant: install + tail leaves the follower equivalent to the leader — the same effective length and fold.
+        // invariant: install + tail leaves the follower equivalent to the leader -- the same effective length and fold.
         assert(follower.equivalent(leader));
         return l_total - f_total;
     }
@@ -133,7 +133,7 @@ pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u
 //     across catch-up (two followers caught up from one leader are equivalent); bounded past max_tail; a real sky drives it. ----
 
 fn run_selftest() !u8 {
-    // 1. TAIL CATCH-UP — a follower holding a prefix of an uncompacted leader gains the missing tail entries and reads back.
+    // 1. TAIL CATCH-UP -- a follower holding a prefix of an uncompacted leader gains the missing tail entries and reads back.
     {
         var leader = CompactLog{};
         _ = try leader.append(10);
@@ -153,7 +153,7 @@ fn run_selftest() !u8 {
         assert((try follower.get(2)) == 30 and (try follower.get(3)) == 40); // the served entries read back live
     }
 
-    // 2. SNAPSHOT INSTALL — a follower far behind a COMPACTED leader (its position below leader.snap.count) installs the snapshot
+    // 2. SNAPSHOT INSTALL -- a follower far behind a COMPACTED leader (its position below leader.snap.count) installs the snapshot
     //    and takes the tail. Build a leader whose committed prefix runs well past max_tail with a compaction, so its snap.count
     //    is large and a two-entry follower is below the boundary.
     {
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         assert(follower.tail_len <= max_tail); // still bounded
     }
 
-    // 3. ALREADY CURRENT — equal length and equivalent returns 0 and touches nothing.
+    // 3. ALREADY CURRENT -- equal length and equivalent returns 0 and touches nothing.
     {
         var leader = CompactLog{};
         _ = try leader.append(1);
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         assert(follower.total() == 2 and follower.effective_state() == before); // unchanged
     }
 
-    // 4. DIVERGED — a follower whose verifiable overlap disagrees with the leader refuses Diverged and stays unchanged. The check
+    // 4. DIVERGED -- a follower whose verifiable overlap disagrees with the leader refuses Diverged and stays unchanged. The check
     //    is real, not a constant success.
     {
         var leader = CompactLog{};
@@ -209,7 +209,7 @@ fn run_selftest() !u8 {
         assert(follower.total() == total_before and follower.effective_state() == state_before); // untouched
     }
 
-    // 5. AHEAD — a follower longer than the leader refuses Ahead (a follower never syncs backward).
+    // 5. AHEAD -- a follower longer than the leader refuses Ahead (a follower never syncs backward).
     {
         var leader = CompactLog{};
         _ = try leader.append(1);
@@ -220,7 +220,7 @@ fn run_selftest() !u8 {
         assert(follower.total() == 2); // untouched
     }
 
-    // 6. NO FORK ACROSS CATCH-UP — two followers caught up from one leader are equivalent to each other and to the leader; a
+    // 6. NO FORK ACROSS CATCH-UP -- two followers caught up from one leader are equivalent to each other and to the leader; a
     //    caught-up follower then advances with the sky and stays equivalent.
     {
         var leader = CompactLog{};
@@ -245,7 +245,7 @@ fn run_selftest() !u8 {
         assert(a.equivalent(&leader) and b.equivalent(&leader) and a.equivalent(&b));
     }
 
-    // 7. BOUNDED PAST max_tail — a follower catching up to a leader whose effective length runs well past the tail cap keeps its
+    // 7. BOUNDED PAST max_tail -- a follower catching up to a leader whose effective length runs well past the tail cap keeps its
     //    own tail within bound throughout (compaction reclaims as it goes).
     {
         var leader = CompactLog{};
@@ -264,7 +264,7 @@ fn run_selftest() !u8 {
         assert(follower.total() == max_tail * 2);
     }
 
-    // 8. OVER A REAL SKY — a leader built by FORA11 decrees through run_and_append, a fresh follower caught up to it, both
+    // 8. OVER A REAL SKY -- a leader built by FORA11 decrees through run_and_append, a fresh follower caught up to it, both
     //    equivalent, no real address ever formed.
     {
         var sb = switchboard.Switchboard{};
@@ -298,14 +298,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — the decree round mutates
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- the decree round mutates
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

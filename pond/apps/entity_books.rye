@@ -1,24 +1,24 @@
-//! pond/apps/entity_books.rye — Season 2 Journey 8 (Cash-first), Rung 1: entity books that balance, never braided.
+//! pond/apps/entity_books.rye -- Season 2 Journey 8 (Cash-first), Rung 1: entity books that balance, never braided.
 //!
-//! Dimeroll keeps one steward's centralized books of record — a journal of double-entry facts
+//! Dimeroll keeps one steward's centralized books of record -- a journal of double-entry facts
 //! folded to a trial balance, projected to income statement, balance sheet, and cash flow. The
 //! entity-books design extends that model's *scope* to two organizations (Siya Fund, Linengrow PBC)
 //! and names the one strand this journey turns on: **entity separation, never braided.** One steward
 //! keeps distinct books per entity, and a value crosses between them only as an explicit inter-entity
-//! fact recorded on both sides — never a silent shared balance.
+//! fact recorded on both sides -- never a silent shared balance.
 //!
 //! The crux: a segregated inter-entity transfer that conserves. Two entities whose own books each
-//! balance; a grant booked as one fact on both — the grantor debits an expense and credits cash, the
-//! grantee debits cash and credits revenue, of the one agreed amount — so the value the grantor parts
+//! balance; a grant booked as one fact on both -- the grantor debits an expense and credits cash, the
+//! grantee debits cash and credits revenue, of the one agreed amount -- so the value the grantor parts
 //! with equals the value the grantee receives by construction. Two conservation laws hold together:
 //! each entity's own journal conserves (Dimeroll's own law) and its balance sheet balances, and the
 //! pair conserves across the cash line (the grantor's cash falls by the amount, the grantee's rises by
 //! it, summing to zero). And segregation holds: an entry added to one entity's journal never changes
-//! the other's fold — the books are kept apart, never braided.
+//! the other's fold -- the books are kept apart, never braided.
 //!
 //! It composes `dimeroll_core`'s own `post_entry` / `fold_journal` / `fold_balance_sheet` over
 //! public API, inventing no new value model. Boundary (custody-first): it records the *facts* of an
-//! entity's books and holds nothing — actually paying a person or moving a fund's assets reaches
+//! entity's books and holds nothing -- actually paying a person or moving a fund's assets reaches
 //! custody gate %3 (a payment rail) and waits on licensed counsel. Demo entities only.
 //!
 //!   rye build pond/apps/entity_books.rye -femit-bin=pond/bin/entity-books
@@ -34,10 +34,10 @@ const gc = @import("dimeroll/dimeroll_core.rye");
 
 pub const entity_books_version = "20260812.195711";
 
-/// Each entity's own journal holds at most this many facts — a bounded book, not a corpus.
+/// Each entity's own journal holds at most this many facts -- a bounded book, not a corpus.
 pub const max_entity_entries: u32 = 16;
 
-/// An entity name honors this width — a short organization name (`Siya Fund`, `Linengrow PBC`).
+/// An entity name honors this width -- a short organization name (`Siya Fund`, `Linengrow PBC`).
 pub const max_entity_name: u32 = 32;
 
 /// The debit-positive net index for cash, read the way the core reads it.
@@ -49,10 +49,10 @@ pub const EntityError = error{
     SameEntity, // an entity cannot transfer to itself — a value must cross between two books
 };
 
-/// Every way an entity's book can refuse — its own bounds plus the core's posting laws.
+/// Every way an entity's book can refuse -- its own bounds plus the core's posting laws.
 pub const BookError = EntityError || error{ Unbalanced, BadAmount, SameAccount };
 
-/// One named entity's own set of books — its name and its own append-only journal. The journal folds
+/// One named entity's own set of books -- its name and its own append-only journal. The journal folds
 /// exactly as the running module folds one steward's books; nothing here changes the value model.
 // Invariant: count <= max_entity_entries; name_len <= max_entity_name.
 pub const Entity = struct {
@@ -93,14 +93,14 @@ pub const Entity = struct {
         assert(self.count <= max_entity_entries);
     }
 
-    /// This entity's trial balance — a pure fold of only its own journal. It sees no other entity.
+    /// This entity's trial balance -- a pure fold of only its own journal. It sees no other entity.
     pub fn trial_balance(self: *const Entity) BookError!gc.TrialBalance {
         // invariant: the fold reads only this entity's live journal.
         assert(self.count <= max_entity_entries);
         return gc.fold_journal(self.entries[0..self.count]);
     }
 
-    /// This entity's balance sheet — a projection of its own fold; the core asserts it balances.
+    /// This entity's balance sheet -- a projection of its own fold; the core asserts it balances.
     pub fn balance_sheet(self: *const Entity) BookError!gc.BalanceSheet {
         const tb = try self.trial_balance();
         return gc.fold_balance_sheet(tb);
@@ -113,7 +113,7 @@ pub const Entity = struct {
     }
 };
 
-/// The record of one inter-entity transfer — the two entities and the one amount that crossed. Both
+/// The record of one inter-entity transfer -- the two entities and the one amount that crossed. Both
 /// legs are already booked on the two entities' journals; this names the fact for later signing.
 pub const Transfer = struct {
     grantor: []const u8,
@@ -136,7 +136,7 @@ fn grantee_entry(amount: i64, memo: []const u8, stamp: []const u8) gc.Entry {
 /// Book an inter-entity transfer as one fact on both entities' own journals. The one amount feeds
 /// both legs, so the grantor's cash outflow equals the grantee's cash inflow by construction. Refuses
 /// a self-transfer (a value must cross between two distinct books) and a non-positive amount before
-/// any journal is touched. Records only — holds and moves nothing.
+/// any journal is touched. Records only -- holds and moves nothing.
 pub fn transfer(
     grantor: *Entity,
     grantee: *Entity,
@@ -179,13 +179,13 @@ fn seat_siya() !Entity {
 fn seat_linengrow() !Entity {
     var e = try Entity.open("Linengrow PBC");
     try e.post(.{ .debit = .cash, .credit = .equity, .amount = 2000, .memo = "opening contribution", .stamp = "20260812.195711" });
-    // An operating cost paid in cash — a fact of Linengrow's own, not Siya's.
+    // An operating cost paid in cash -- a fact of Linengrow's own, not Siya's.
     try e.post(.{ .debit = .expense, .credit = .cash, .amount = 300, .memo = "hemp seed", .stamp = "20260812.195711" });
     return e;
 }
 
 /// Each entity's own books balance, an inter-entity grant books on both, and the pair conserves
-/// across the cash line — the value Siya parts with equals the value Linengrow receives.
+/// across the cash line -- the value Siya parts with equals the value Linengrow receives.
 fn welcome_transfer_conserves_and_balances() !void {
     var siya = try seat_siya();
     var linengrow = try seat_linengrow();
@@ -213,14 +213,14 @@ fn welcome_transfer_conserves_and_balances() !void {
     print("entity_books: a 1500 grant booked on both entities; each book balances, the pair conserves across cash.\n", .{});
 }
 
-/// Segregation — the books are never braided: an entry added to Linengrow's journal never changes
+/// Segregation -- the books are never braided: an entry added to Linengrow's journal never changes
 /// Siya's fold. Each entity's trial balance reads only its own journal.
 fn welcome_books_never_braided() !void {
     var siya = try seat_siya();
     var linengrow = try seat_linengrow();
 
     const siya_before = try siya.trial_balance();
-    // A fact of Linengrow's alone — a further operating cost.
+    // A fact of Linengrow's alone -- a further operating cost.
     try linengrow.post(.{ .debit = .expense, .credit = .cash, .amount = 120, .memo = "loom repair", .stamp = "20260812.195711" });
     const siya_after = try siya.trial_balance();
 
@@ -228,12 +228,12 @@ fn welcome_books_never_braided() !void {
     while (i < gc.account_count) : (i += 1) {
         assert(siya_before.nets[i] == siya_after.nets[i]); // Siya's fold is untouched by Linengrow's fact
     }
-    // Linengrow's own fold did change — the fact landed on its own books.
+    // Linengrow's own fold did change -- the fact landed on its own books.
     assert((try linengrow.trial_balance()).nets[@intFromEnum(gc.Account.expense)] == 420);
     print("entity_books: an entry added to Linengrow's journal left Siya's fold byte-identical — the books are never braided.\n", .{});
 }
 
-/// A self-transfer refuses — a value must cross between two distinct books, never fold back into one.
+/// A self-transfer refuses -- a value must cross between two distinct books, never fold back into one.
 fn unwelcome_self_transfer_refuses() !void {
     var siya = try seat_siya();
     const t = transfer(&siya, &siya, 100, "self", "20260812.195711");
@@ -241,7 +241,7 @@ fn unwelcome_self_transfer_refuses() !void {
     print("entity_books: a self-transfer refused SameEntity — a value must cross between two books.\n", .{});
 }
 
-/// A non-positive transfer refuses before any journal is touched — a transfer of no value is not a
+/// A non-positive transfer refuses before any journal is touched -- a transfer of no value is not a
 /// fact the books will pretend to.
 fn unwelcome_nonpositive_transfer_refuses() !void {
     var siya = try seat_siya();
@@ -253,7 +253,7 @@ fn unwelcome_nonpositive_transfer_refuses() !void {
     print("entity_books: a zero-amount transfer refused BadAmount and touched no journal.\n", .{});
 }
 
-/// A full journal refuses rather than drop a fact — the entity's book is bounded.
+/// A full journal refuses rather than drop a fact -- the entity's book is bounded.
 fn unwelcome_full_journal_refuses() !void {
     var e = try Entity.open("Full Books");
     var n: u32 = 0;

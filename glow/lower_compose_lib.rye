@@ -1,69 +1,69 @@
-//! glow/lower_compose_lib.rye — `/+` Glow library → face → `%-` call.
+//! glow/lower_compose_lib.rye -- `/+` Glow library -> face -> `%-` call.
 //!
 //! Thin STOA26 face (exactly three lines):
 //!   /+  lib-core-open
 //!   =/  amount  5
 //!   %-  id  amount
 //!
-//! STOA29 — same shape over a nest-arm library:
+//! STOA29 -- same shape over a nest-arm library:
 //!   /+  lib-core-nest
 //!   =/  amount  5
 //!   %-  pack  amount
 //!
-//! STOA31 — payload+nest library (arm is `self`, no sample arg):
+//! STOA31 -- payload+nest library (arm is `self`, no sample arg):
 //!   /+  lib-core-payload-nest
 //!   =/  amount  5
 //!   %-  pack  amount
 //! Face value must match the library payload; call is `core.pack()`.
 //!
-//! STOA57 — cue-of-jam library:
+//! STOA57 -- cue-of-jam library:
 //!   /+  lib-core-cue-jam
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA58 — nest-left cue-of-jam library:
+//! STOA58 -- nest-left cue-of-jam library:
 //!   /+  lib-core-cue-jam-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA59 — nest-right cue-of-jam library:
+//! STOA59 -- nest-right cue-of-jam library:
 //!   /+  lib-core-cue-jam-right-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA60 — nest-both cue-of-jam library:
+//! STOA60 -- nest-both cue-of-jam library:
 //!   /+  lib-core-cue-jam-both-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA65 — payload cue-of-jam library (arm is `self`, no sample arg):
+//! STOA65 -- payload cue-of-jam library (arm is `self`, no sample arg):
 //!   /+  lib-core-payload-cue-jam
 //!   =/  amount  5
 //!   %-  unpack  amount
 //! Face value must match the library payload; call is `core.unpack()`.
 //!
-//! STOA66 — payload nest-left cue-of-jam library:
+//! STOA66 -- payload nest-left cue-of-jam library:
 //!   /+  lib-core-payload-cue-jam-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA67 — payload nest-right cue-of-jam library:
+//! STOA67 -- payload nest-right cue-of-jam library:
 //!   /+  lib-core-payload-cue-jam-right-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA68 — payload nest-both cue-of-jam library:
+//! STOA68 -- payload nest-both cue-of-jam library:
 //!   /+  lib-core-payload-cue-jam-both-nest
 //!   =/  amount  5
 //!   %-  unpack  amount
 //!
-//! STOA69 — next-root product desk (payload + `/+` + cue-of-jam):
+//! STOA69 -- next-root product desk (payload + `/+` + cue-of-jam):
 //!   /+  lib-next-root-cue-jam
 //!   =/  root  5
 //!   %-  next-root  root
 //! Face `root` matches library payload; call is `core.next_root()`.
 //!
-//! STOA70 — session-root product desk (nest-left cue-of-jam):
+//! STOA70 -- session-root product desk (nest-left cue-of-jam):
 //!   /+  lib-session-root-nest-cue-jam
 //!   =/  root  5
 //!   %-  session-root  root

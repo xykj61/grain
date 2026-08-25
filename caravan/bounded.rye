@@ -1,4 +1,4 @@
-//! Caravan bounded — supervision composed with bounded memory.
+//! Caravan bounded -- supervision composed with bounded memory.
 //!
 //! The Caravan seed proved one thing: a parent watches a dependent and
 //! restarts it on fall. This program proves the next: a dependent that
@@ -43,7 +43,7 @@ const buf_len_u32 = caravan_region.buf_len_u32;
 // § Supervisor constants
 // =========================================================================
 
-/// The dependent's memory budget — 256 bytes. Small on purpose: the proof
+/// The dependent's memory budget -- 256 bytes. Small on purpose: the proof
 /// is in the bound, not in the size.
 const dependent_budget: u32 = 256;
 
@@ -55,7 +55,7 @@ const max_restarts: u32 = 5;
 const planned_failures: u32 = 1;
 
 // =========================================================================
-// § Entry point — dispatch on mode
+// § Entry point -- dispatch on mode
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -72,7 +72,7 @@ pub fn main(init: std.process.Init) !u8 {
 }
 
 // =========================================================================
-// § Bounded dependent — works inside a Tally garden
+// § Bounded dependent -- works inside a Tally garden
 // =========================================================================
 
 fn run_bounded_dependent(should_fail: bool) u8 {
@@ -83,7 +83,7 @@ fn run_bounded_dependent(should_fail: bool) u8 {
     // invariant: garden starts full
     assert(garden.remaining() == dependent_budget);
 
-    // Allocate within the budget — 64 bytes, well within 256.
+    // Allocate within the budget -- 64 bytes, well within 256.
     const work_slice = garden.alloc(64) catch {
         print("bounded dependent: allocation failed unexpectedly\n", .{});
         return 1;
@@ -98,17 +98,17 @@ fn run_bounded_dependent(should_fail: bool) u8 {
     for (work_slice) |*byte| byte.* = 0xAA;
 
     if (should_fail) {
-        // Deliberately exceed the budget — ask for more than remains.
+        // Deliberately exceed the budget -- ask for more than remains.
         // This simulates a dependent that falls from overallocation.
         const too_much = garden.remaining() + 1;
         _ = garden.alloc(too_much) catch {
             print("bounded dependent: exceeded garden (intended failure)\n", .{});
             return 1;
         };
-        // unreachable if the garden bound holds — which it does
+        // unreachable if the garden bound holds -- which it does
     }
 
-    // Allocate the rest of the budget — fill to the edge.
+    // Allocate the rest of the budget -- fill to the edge.
     const rest = garden.alloc(garden.remaining()) catch {
         print("bounded dependent: edge allocation failed\n", .{});
         return 1;
@@ -117,7 +117,7 @@ fn run_bounded_dependent(should_fail: bool) u8 {
     assert(garden.remaining() == 0);
     assert(rest.len == dependent_budget - 64);
 
-    // Clear whole — the season ends.
+    // Clear whole -- the season ends.
     garden.clear();
     // postcondition: garden is fully available again
     assert(garden.remaining() == dependent_budget);
@@ -129,7 +129,7 @@ fn run_bounded_dependent(should_fail: bool) u8 {
 }
 
 // =========================================================================
-// § Supervisor — watches the bounded dependent
+// § Supervisor -- watches the bounded dependent
 // =========================================================================
 
 fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {

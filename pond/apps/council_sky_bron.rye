@@ -1,25 +1,25 @@
-//! pond/apps/council_sky_bron.rye — Season 3 Journey 11 (Council skies), Rung 3: the signed council travels.
+//! pond/apps/council_sky_bron.rye -- Season 3 Journey 11 (Council skies), Rung 3: the signed council travels.
 //!
 //! Rungs one and two fixed the council rule and bound each ballot to a seat's signature. A council is
-//! only useful to a commons if it can be *carried* — handed to another keeper, checked with no live
+//! only useful to a commons if it can be *carried* -- handed to another keeper, checked with no live
 //! council in hand. This rung renders a signed council to a `format council-sky-v1` Bron record and
 //! parses it back byte-for-byte, still tie-free and quorum-honest **offline**.
 //!
 //! A `SignedCouncil` keeps, beside rung one's live council, the sky it loaded (its galaxy/star/planet
-//! counts), the seated size, and the signature that authorized each ballot — so the record carries not
+//! counts), the seated size, and the signature that authorized each ballot -- so the record carries not
 //! just *that* a proposal was decided but *the ballots that decided it* and *the shape it was decided
 //! under*. The traveled `PortableCouncil` owns its own buffers; `still_quorum_honest` re-verifies every
-//! carried ballot signature against the recipient's keyring through rung two's `verify_ballot` — so a
+//! carried ballot signature against the recipient's keyring through rung two's `verify_ballot` -- so a
 //! ballot flipped after the crossing refuses `BadConsent` with no network, no live council. `rebuild`
 //! reconstructs the sky, re-seats the council through rung one's `load` (inheriting its `NotAFractalLevel`
-//! / `EvenCouncil` refusals — a record naming an even body cannot rebuild), and replays every ballot
+//! / `EvenCouncil` refusals -- a record naming an even body cannot rebuild), and replays every ballot
 //! through rung two's `vote_signed` into an equal live council whose outcome matches the original.
 //!
 //! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a general
 //! parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`, a wrong
-//! header `BadFormat`, bad hex `BadHex`, a missing council line `MissingCouncil`. Additive — composes
+//! header `BadFormat`, bad hex `BadHex`, a missing council line `MissingCouncil`. Additive -- composes
 //! rungs one and two over public API; both re-run GREEN. Demo keeper seeds only, no network (a council
-//! served over the wire reaches the serve gate — Keaton's hand).
+//! served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron
 //!   pond/bin/council-sky-bron selftest
@@ -103,7 +103,7 @@ pub const SignedCouncil = struct {
     ballot_sigs: [max_votes][sig_len]u8,
     vote_count: u32,
 
-    /// Open a signed council over a loaded sky and size — the live council opens through rung one.
+    /// Open a signed council over a loaded sky and size -- the live council opens through rung one.
     pub fn open(council_id: u32, sky: topology.Sky, size: u32) council_mod.CouncilError!SignedCouncil {
         const sc = SignedCouncil{
             .council = try council_mod.Council.load(sky, size),
@@ -122,7 +122,7 @@ pub const SignedCouncil = struct {
         return sc;
     }
 
-    /// Record a signed ballot — verify and vote through rung two, then keep the ballot and its signature
+    /// Record a signed ballot -- verify and vote through rung two, then keep the ballot and its signature
     /// so the vote can travel with its seat's word.
     pub fn record_ballot(self: *SignedCouncil, ring: *const signed.Keyring, seat: u32, proposal: u32, yea: bool, sig: *const [sig_len]u8) signed.CouncilActError!void {
         try signed.vote_signed(&self.council, ring, self.council_id, seat, proposal, yea, sig);
@@ -273,7 +273,7 @@ pub fn parse(text: []const u8) BronError!PortableCouncil {
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented. Three seats of a triad.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented. Three seats of a triad.
 const seat0_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const seat1_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const seat2_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -338,7 +338,7 @@ fn welcome_round_trip_still_honest() !void {
     print("council_sky_bron: a signed council rendered to Bron, parsed back byte-for-byte, recovered its sky, stayed quorum-honest offline, and rebuilt the identical tie-free outcome.\n", .{});
 }
 
-/// A ballot signature flipped after the crossing refuses offline — a tampered record cannot pass.
+/// A ballot signature flipped after the crossing refuses offline -- a tampered record cannot pass.
 fn unwelcome_flipped_ballot_refuses() !void {
     const ring = try demo_ring();
     var sc = try build_passed(&ring);
@@ -352,10 +352,10 @@ fn unwelcome_flipped_ballot_refuses() !void {
     print("council_sky_bron: a ballot signature flipped after the crossing refused BadConsent offline.\n", .{});
 }
 
-/// A record naming an even body cannot rebuild — the reader inherits rung one's EvenCouncil law.
+/// A record naming an even body cannot rebuild -- the reader inherits rung one's EvenCouncil law.
 fn unwelcome_even_body_cannot_rebuild() !void {
     const ring = try demo_ring();
-    // A hand-authored record naming the compass sky's even d60 (12*5*12 → prosperity 60).
+    // A hand-authored record naming the compass sky's even d60 (12*5*12 -> prosperity 60).
     const text = "format council-sky-v1\ncouncil 9 12 5 12 60\n";
     const pc = try parse(text);
     const bad = pc.rebuild(&ring);
@@ -363,7 +363,7 @@ fn unwelcome_even_body_cannot_rebuild() !void {
     print("council_sky_bron: a record naming an even body refused EvenCouncil on rebuild — the tie-free law travels with the record.\n", .{});
 }
 
-/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+/// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
     const text = "format council-sky-v1\ncouncil 9 15 3 9 3\nghost 5\n";
     const bad = parse(text);
@@ -371,21 +371,21 @@ fn unwelcome_unknown_field_refuses() !void {
     print("council_sky_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
 }
 
-/// A wrong header refuses — the record must name its own format.
+/// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
     const bad = parse("format other-v1\ncouncil 9 15 3 9 3\n");
     assert(bad == error.BadFormat);
     print("council_sky_bron: a wrong header refused BadFormat.\n", .{});
 }
 
-/// A record that never names its council line refuses — the council id, sky, and size are required.
+/// A record that never names its council line refuses -- the council id, sky, and size are required.
 fn unwelcome_missing_council_refuses() !void {
     const bad = parse("format council-sky-v1\nballot 0 3 1 " ++ ("00" ** sig_len) ++ "\n");
     assert(bad == error.MissingCouncil);
     print("council_sky_bron: a record with no council line refused MissingCouncil.\n", .{});
 }
 
-/// Malformed hex in a ballot signature refuses — the reader will not accept a corrupt signature field.
+/// Malformed hex in a ballot signature refuses -- the reader will not accept a corrupt signature field.
 fn unwelcome_bad_hex_refuses() !void {
     const bad = parse("format council-sky-v1\ncouncil 9 15 3 9 3\nballot 0 3 1 zz\n");
     assert(bad == error.BadHex);

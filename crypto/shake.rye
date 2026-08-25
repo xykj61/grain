@@ -1,28 +1,28 @@
-//! crypto/shake.rye — Season G (Cryptography): SHAKE128 and SHAKE256, the SHA-3 extendable-output functions, authored in pure Rye as a
+//! crypto/shake.rye -- Season G (Cryptography): SHAKE128 and SHAKE256, the SHA-3 extendable-output functions, authored in pure Rye as a
 //! composition over the GREEN Keccak-f[1600] sponge in crypto/sha3.rye. Where SHA3-256 and SHA3-512 read a fixed-length digest out of the
-//! sponge, a SHAKE reads as many bytes as the caller asks for — the same permutation and pad10*1 rule, one differing domain-separation
+//! sponge, a SHAKE reads as many bytes as the caller asks for -- the same permutation and pad10*1 rule, one differing domain-separation
 //! delimiter (0x1f), and a squeeze that walks across as many rate-sized blocks as the output needs. This is the extendable-output stone the
 //! modern and post-quantum world stands on: SHAKE256 is the XOF inside Ed448 and SPHINCS+, SHAKE128 seeds ML-KEM (Kyber) and ML-DSA
 //! (Dilithium) matrices, and cSHAKE / KMAC / TupleHash all build on exactly this squeeze.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
-//! cryptography: it composes one already-GREEN stone — the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202
-//! and std.crypto — passing it the 0x1f SHAKE delimiter and asking for an arbitrary output length. The decisive extension it earns from the
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! cryptography: it composes one already-GREEN stone -- the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202
+//! and std.crypto -- passing it the 0x1f SHAKE delimiter and asking for an arbitrary output length. The decisive extension it earns from the
 //! sibling is the sponge's generality: the squeeze now emits rate bytes, permutes, and reads again, so one function serves the fixed digests
 //! AND these extendable outputs. That generality is what opens SHA3-224/384, cSHAKE, KMAC, and the post-quantum XOF needs as later rungs.
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/sha3.rye (the SHA3 siblings and the sponge this composes) · crypto/keccak256.rye (the other composition over the same sponge).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/sha3.rye (the SHA3 siblings and the sponge this composes) - crypto/keccak256.rye (the other composition over the same sponge).
 //! Clean-room: the 0x1f delimiter, the two SHAKE rates, and the sponge law are the public FIPS 202 standard's own; the arithmetic is our
 //! GREEN sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — call the proven sponge with rate 168 (SHAKE128) or 136 (SHAKE256) and the 0x1f delimiter, then let it squeeze out.len bytes
-//! across as many permute-and-read blocks as the output spans. Every theta·rho·pi·chi·iota round, every absorb, every squeeze block is the
-//! permutation crypto/sha3.rye already proved on metal; the only new behaviour is reading past one rate — the extendable-output rule itself.
+//! THE CRUX -- call the proven sponge with rate 168 (SHAKE128) or 136 (SHAKE256) and the 0x1f delimiter, then let it squeeze out.len bytes
+//! across as many permute-and-read blocks as the output spans. Every theta-rho-pi-chi-iota round, every absorb, every squeeze block is the
+//! permutation crypto/sha3.rye already proved on metal; the only new behaviour is reading past one rate -- the extendable-output rule itself.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it stands on
-//! our own GREEN sha3.rye. Parity is proven at selftest against two references runnable now — the canonical SHAKE128 and SHAKE256 empty-message
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it stands on
+//! our own GREEN sha3.rye. Parity is proven at selftest against two references runnable now -- the canonical SHAKE128 and SHAKE256 empty-message
 //! known-answers from the Keccak/NIST references, and Zig's own std.crypto Shake128 and Shake256 as independent implementations, byte-for-byte
-//! across BOTH the absorb padding edges (rate-1, exact-rate, rate+1 message lengths) AND the squeeze block edges — outputs longer than one
+//! across BOTH the absorb padding edges (rate-1, exact-rate, rate+1 message lengths) AND the squeeze block edges -- outputs longer than one
 //! rate, so the extra permute-and-read blocks are exercised, not just the first. Constant-time timing-safety stays a separate named horizon
 //! (a hash of public data is data-independent by construction; the note lives in crypto/CONSTANT_TIME.md).
 //!
@@ -37,42 +37,42 @@ const sha3 = @import("sha3.rye");
 pub const shake_version = "20260816.000000";
 
 /// SHAKE's fixed shapes, read from the sibling so there is one source of truth. The rate is set by the security level's capacity
-/// (rate + capacity = 200 bytes): SHAKE128 absorbs 168 bytes per block, SHAKE256 absorbs 136 — the same rate SHA3-256 uses, since both
+/// (rate + capacity = 200 bytes): SHAKE128 absorbs 168 bytes per block, SHAKE256 absorbs 136 -- the same rate SHA3-256 uses, since both
 /// carry 256 bits of capacity. The delimiter (0x1f) is what distinguishes a SHAKE from a fixed SHA3 digest or a legacy Keccak hash.
 pub const rate_shake128: u32 = sha3.rate_shake128;
 pub const rate_shake256: u32 = sha3.rate_shake256;
 
-/// The largest message this primitive absorbs in one call — the same generous in-process bound the SHA3 sibling names, so the family agrees
+/// The largest message this primitive absorbs in one call -- the same generous in-process bound the SHA3 sibling names, so the family agrees
 /// on its ceiling.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The largest output this primitive squeezes in one call. Extendable output is unbounded in the standard, yet every caller and every loop
-/// in this tree names a maximum — the TAME reflex — so an over-long request refuses at the edge rather than allocating without bound.
+/// in this tree names a maximum -- the TAME reflex -- so an over-long request refuses at the edge rather than allocating without bound.
 pub const max_output_bytes: u32 = 1 << 16;
 
 /// The two faults this primitive can raise, each refused at the edge before any work: a message longer than the absorb bound, or an output
 /// request that is empty or longer than the squeeze bound.
 pub const ShakeError = error{
-    /// A message whose length exceeds max_message_bytes — refused before absorption begins.
+    /// A message whose length exceeds max_message_bytes -- refused before absorption begins.
     MessageTooLong,
-    /// An output request that is zero-length or exceeds max_output_bytes — refused before squeezing begins.
+    /// An output request that is zero-length or exceeds max_output_bytes -- refused before squeezing begins.
     OutputOutOfRange,
 };
 
-/// Squeeze out.len bytes of SHAKE128 output from a message — the extendable-output function at the 128-bit security level, rate 168.
+/// Squeeze out.len bytes of SHAKE128 output from a message -- the extendable-output function at the 128-bit security level, rate 168.
 /// Composes crypto/sha3.rye's GREEN sponge with the 0x1f SHAKE delimiter; authors no permutation of its own.
 pub fn shake128(msg: []const u8, out: []u8) ShakeError!void {
-    // invariant: SHAKE128's rate is the standard's own — 168 bytes, summing to the 200-byte state with 32 bytes of capacity.
+    // invariant: SHAKE128's rate is the standard's own -- 168 bytes, summing to the 200-byte state with 32 bytes of capacity.
     comptime assert(rate_shake128 == 168 and rate_shake128 == sha3.state_bytes - 2 * 16);
     if (msg.len > max_message_bytes) return error.MessageTooLong;
     if (out.len == 0 or out.len > max_output_bytes) return error.OutputOutOfRange;
     sha3.keccak_sponge(rate_shake128, sha3.shake_delim, msg, out);
 }
 
-/// Squeeze out.len bytes of SHAKE256 output from a message — the extendable-output function at the 256-bit security level, rate 136.
+/// Squeeze out.len bytes of SHAKE256 output from a message -- the extendable-output function at the 256-bit security level, rate 136.
 /// Composes crypto/sha3.rye's GREEN sponge with the 0x1f SHAKE delimiter; authors no permutation of its own.
 pub fn shake256(msg: []const u8, out: []u8) ShakeError!void {
-    // invariant: SHAKE256's rate is the standard's own — 136 bytes, summing to the 200-byte state with 64 bytes of capacity.
+    // invariant: SHAKE256's rate is the standard's own -- 136 bytes, summing to the 200-byte state with 64 bytes of capacity.
     comptime assert(rate_shake256 == 136 and rate_shake256 == sha3.state_bytes - 2 * 32);
     if (msg.len > max_message_bytes) return error.MessageTooLong;
     if (out.len == 0 or out.len > max_output_bytes) return error.OutputOutOfRange;
@@ -92,7 +92,7 @@ pub fn to_hex(bytes: []const u8, out: []u8) void {
     }
 }
 
-// The canonical SHAKE known-answers — the neutral public references our composition must reproduce, hex for hex. These are the Keccak/NIST
+// The canonical SHAKE known-answers -- the neutral public references our composition must reproduce, hex for hex. These are the Keccak/NIST
 // empty-message outputs: SHAKE128("") to 32 bytes and SHAKE256("") to 64 bytes, the most widely published XOF vectors.
 const kat_shake128_empty_32 = "7f9c2ba4e88f827d616045507605853ed73b8093f6efbc88eb1a6eacfa66ef26";
 const kat_shake256_empty_64 = "46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762fd75dc4ddd8c0f200cb05019d67b592f6fc821c49479ab48640292eacb3b7c4be";
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
 
     // 2. Independent-implementation parity across BOTH the absorb padding edges and the squeeze block edges. Each pair squeezes an output of
     //    out_len bytes from a message of msg_len bytes, then compares byte-for-byte against Zig's independent std.crypto SHAKE. The output
-    //    lengths deliberately span more than one rate — 168 (SHAKE128) / 136 (SHAKE256) is one squeeze block — so the extra permute-and-read
+    //    lengths deliberately span more than one rate -- 168 (SHAKE128) / 136 (SHAKE256) is one squeeze block -- so the extra permute-and-read
     //    blocks are exercised, not just the first. A shared scratch buffer holds both message and output; both stay within their bounds.
     {
         // SHAKE128, rate 168: message edges at 167/168/169, output lengths 1, 32, 168 (exactly one block), 169 (forces a 2nd block), and

@@ -106,7 +106,7 @@ fn welcome_summary_true() !void {
     print("ledger_query_true: summary read the real ledger — text '{s}'\n", .{resp.text});
 }
 
-// A tampered copy of the real bytes reads nothing — the voice will not report a supply over a
+// A tampered copy of the real bytes reads nothing -- the voice will not report a supply over a
 // corrupted record. A flipped header byte refuses BadFormat before a fact is folded.
 fn unwelcome_tampered_ledger_refuses() !void {
     var copy: [real_ledger.len]u8 = undefined;

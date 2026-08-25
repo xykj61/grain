@@ -1,20 +1,20 @@
-//! linengrow/tube1_admission.rye — TUBE1: admit iff the manifest matches a grant.
+//! linengrow/tube1_admission.rye -- TUBE1: admit iff the manifest matches a grant.
 //!
 //! Per expanding-prompts/yonder/20260716-142818 rung TUBE1: Pool admits one agent
 //! only when every capability the TUBE0 manifest declares is granted on the
-//! Caravan table for that agent. This is P0's door re-aimed at a Manifest —
+//! Caravan table for that agent. This is P0's door re-aimed at a Manifest --
 //! no separate agent runtime yet; the host still folds a ledger log when
 //! admission holds.
 //!
-//! Resource Scope doors (GrapheneOS Storage · Contact Scopes parallel):
+//! Resource Scope doors (GrapheneOS Storage - Contact Scopes parallel):
 //! `admit_manifest_scopes` checks every scope; any covered resource must
-//! pass scope.allows — revoke closes that door. `admit_manifest_scoped`
+//! pass scope.allows -- revoke closes that door. `admit_manifest_scoped`
 //! is the one-scope form.
 //!
 //! Network Grant door (GrapheneOS Network permission toggle parallel):
 //! `admit_manifest_networked` stacks scopes, then requires NetworkGrant
 //! when the manifest declares `network`. Denied or revoked grants refuse
-//! and appear down — they do not block manifests that omit network.
+//! and appear down -- they do not block manifests that omit network.
 //!
 //! Sensors Grant door (GrapheneOS Sensors permission toggle parallel):
 //! `admit_manifest_gated` stacks Network + Sensors toggles. Sensors engage
@@ -37,7 +37,7 @@ pub const network_resource = "network";
 /// Manifest resource name that engages the Sensors Grant door.
 pub const sensors_resource = "sensors";
 
-/// Ceiling on how many Resource Scopes one admit may stack (Storage + Contact + …).
+/// Ceiling on how many Resource Scopes one admit may stack (Storage + Contact + ...).
 pub const max_scopes_per_admit: u32 = 4;
 
 /// True when every declared capability on the manifest is granted to
@@ -73,7 +73,7 @@ fn scope_admits_manifest(storage: *const scope_mod.Scope, manifest: *const tube.
     return true;
 }
 
-/// Caravan grant, then every Resource Scope (Storage · Contact · …).
+/// Caravan grant, then every Resource Scope (Storage - Contact - ...).
 pub fn admit_manifest_scopes(
     table: *const caps.CapabilityTable,
     agent_label: []const u8,
@@ -89,7 +89,7 @@ pub fn admit_manifest_scopes(
     return true;
 }
 
-/// One-scope form — Storage or Contact alone.
+/// One-scope form -- Storage or Contact alone.
 pub fn admit_manifest_scoped(
     table: *const caps.CapabilityTable,
     agent_label: []const u8,
@@ -156,7 +156,7 @@ pub fn admit_manifest_gated(
 
 /// Host a ledger agent only after the manifest's declarations all match
 /// grants. Refuses `NotAdmitted` when the manifest door fails or when Pool's
-/// own ledger right check fails (same error — the door stayed closed).
+/// own ledger right check fails (same error -- the door stayed closed).
 pub fn host_ledger_from_manifest(
     table: *const caps.CapabilityTable,
     agent_label: []const u8,

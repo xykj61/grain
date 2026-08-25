@@ -1,9 +1,9 @@
-//! mycelium/cord.rye — the Cord: one agreed order read from a mesh of signed blocks.
+//! mycelium/cord.rye -- the Cord: one agreed order read from a mesh of signed blocks.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
-//! A Cord bundles many hyphal threads into one transporting strand — many
+//! A Cord bundles many hyphal threads into one transporting strand -- many
 //! validators' Kumara-signed blocks, one total order. From TigerBeetle it takes
 //! determinism and static allocation; from Mysticeti, order read from an
 //! uncertified DAG by a deterministic commit rule (no leader, no certificate
@@ -12,14 +12,14 @@
 //! A Block carries its author's key, a round, the hashes of the blocks it
 //! references (its parents), one `mycelium/fold` Fact, and the author's signature
 //! over its canonical bytes. A Dag admits a block only when its signature verifies
-//! and every parent it names is already held — so the graph stays closed under
+//! and every parent it names is already held -- so the graph stays closed under
 //! "references" and is acyclic by construction (a block may only point backward at
 //! blocks already present). `commit` is the pure function at the heart of it: a
 //! canonical topological walk (round, then author key, then block hash) yielding
-//! one order — identical at every honest node, independent of arrival order — over
+//! one order -- identical at every honest node, independent of arrival order -- over
 //! which `fold_log` runs unchanged.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord.rye
 
@@ -32,7 +32,7 @@ const tally_copy = @import("tally_copy.rye");
 
 const Sha256 = std.crypto.hash.sha2.Sha256;
 
-/// A dev-net Dag holds at most a journey of blocks — power of two, bounded.
+/// A dev-net Dag holds at most a journey of blocks -- power of two, bounded.
 pub const cord_max_blocks: u32 = 256;
 
 /// Bounded fan-in: a block references at most this many parents.
@@ -41,8 +41,8 @@ pub const cord_max_parents: u32 = 8;
 /// A block address is a SHA-256 digest.
 pub const hash_len: u32 = 32;
 
-/// Canonical block bytes: author_pk · round(le4) · parent_count(le4) ·
-/// parents(32 each) · fact signature(64). Signed by the author, hashed to the
+/// Canonical block bytes: author_pk - round(le4) - parent_count(le4) -
+/// parents(32 each) - fact signature(64). Signed by the author, hashed to the
 /// block's address. The fact's own signature binds the fact's content, so a
 /// tampered fact breaks the block signature.
 const block_bytes_max: u32 =
@@ -92,7 +92,7 @@ fn block_bytes(b: *const Block, out: []u8) u32 {
     return off;
 }
 
-/// The block's address — SHA-256 over its canonical bytes.
+/// The block's address -- SHA-256 over its canonical bytes.
 fn block_hash(b: *const Block, out: *[hash_len]u8) void {
     var buf: [block_bytes_max]u8 = undefined;
     const n = block_bytes(b, &buf);
@@ -103,7 +103,7 @@ fn block_hash(b: *const Block, out: *[hash_len]u8) void {
 
 /// A block's address, exposed for a Byzantine-aware caller that must tell a
 /// duplicate (same address) from an equivocation (same author and round, a
-/// *different* address). Additive — the r1 admission path is unchanged.
+/// *different* address). Additive -- the r1 admission path is unchanged.
 pub fn address(b: *const Block, out: *[hash_len]u8) void {
     block_hash(b, out);
 }
@@ -176,7 +176,7 @@ pub fn add(dag: *Dag, block: Block) error{
     if (block.parent_count > cord_max_parents) return error.TooManyParents;
     if (dag.len >= cord_max_blocks) return error.DagFull;
 
-    // invariant: only an author-signed block may join — the same check a
+    // invariant: only an author-signed block may join -- the same check a
     // Byzantine-aware caller reuses through `verify_block`.
     if (!verify_block(&block)) return error.BadSignature;
 
@@ -211,7 +211,7 @@ fn parents_emitted(dag: *const Dag, idx: u32, emitted: []const bool) bool {
 }
 
 /// The deterministic tie-break: round ascending, then author key, then hash.
-/// A total order over distinct blocks — no two blocks compare equal, since two
+/// A total order over distinct blocks -- no two blocks compare equal, since two
 /// distinct blocks with the same author and round would share no hash.
 fn block_less(dag: *const Dag, a: u32, b: u32) bool {
     // invariant: both indices name real seats.
@@ -225,7 +225,7 @@ fn block_less(dag: *const Dag, a: u32, b: u32) bool {
     return std.mem.order(u8, dag.hashes[a][0..], dag.hashes[b][0..]) == .lt;
 }
 
-/// Commit — linearize the Dag to one total order, written as block indices into
+/// Commit -- linearize the Dag to one total order, written as block indices into
 /// `order_out`, returning the count. A pure function of the graph: the same set
 /// of blocks yields the identical order regardless of the order they arrived.
 pub fn commit(dag: *const Dag, order_out: []u32) u32 {
@@ -245,7 +245,7 @@ pub fn commit(dag: *const Dag, order_out: []u32) u32 {
             if (best == null or block_less(dag, i, best.?)) best = i;
         }
         // invariant: the Dag is acyclic by construction, so a ready block always
-        // exists until all are emitted — a stall would mean a cycle got in.
+        // exists until all are emitted -- a stall would mean a cycle got in.
         assert(best != null);
         order_out[count] = best.?;
         emitted[best.?] = true;

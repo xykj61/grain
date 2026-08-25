@@ -1,22 +1,22 @@
-//! mikrophone/session.rye — DREY0: the memory that forgets — a Mikrophone session buffer that holds a capture only
+//! mikrophone/session.rye -- DREY0: the memory that forgets -- a Mikrophone session buffer that holds a capture only
 //! while powered, persists nothing except on a deliberate commit, and provably dissolves on power-down.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · founding rung DREY0.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - founding rung DREY0.
 //! Design read: active-designing/date/20260814/20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md
-//! Vision: foundations/20260801-005853_mantrapod-venture-pitch.md — "What forgets, protects."
+//! Vision: foundations/20260801-005853_mantrapod-venture-pitch.md -- "What forgets, protects."
 //!
 //! The Mantrapod's founding promise is a firmware invariant, not a slogan: working memory holds a keeper's capture
 //! while the power is on and lets it dissolve when the device is set down; nothing is kept in the dark to be mined, and
 //! what a keeper wishes to carry out they keep on purpose, with one deliberate act. This rung proves that shape pure in
-//! Rye — long before a board exists — so every surface built on it inherits a session that leaks nothing it was never
+//! Rye -- long before a board exists -- so every surface built on it inherits a session that leaks nothing it was never
 //! told to keep.
 //!
-//! Two buffers, two fates. `work` is the FORGETFUL working buffer — captures land here, and `power_down` zeroes it whole
-//! so no residue of a capture can be recovered. `keep` is the ONE deliberate memory — `commit` copies the working buffer
+//! Two buffers, two fates. `work` is the FORGETFUL working buffer -- captures land here, and `power_down` zeroes it whole
+//! so no residue of a capture can be recovered. `keep` is the ONE deliberate memory -- `commit` copies the working buffer
 //! into it, and `power_down` leaves it untouched, so a committed payload is exactly what survives the power. A capture
 //! while unpowered refuses `NotPowered`, a capture past the bound refuses `BufferFull`, an empty commit refuses
-//! `NothingToCommit`, and a redundant commit over an unchanged buffer refuses `AlreadyCommitted` — one deliberate act,
-//! not an accidental double. No disk, no network, no key, no funds (custody gate %2 — real hardware — untouched).
+//! `NothingToCommit`, and a redundant commit over an unchanged buffer refuses `AlreadyCommitted` -- one deliberate act,
+//! not an accidental double. No disk, no network, no key, no funds (custody gate %2 -- real hardware -- untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/session.rye selftest
 
@@ -26,7 +26,7 @@ const print = std.debug.print;
 
 pub const session_version = "20260814.020500";
 
-/// The widest a working session buffer runs — a bounded capture named once, so nothing the firmware holds can grow past
+/// The widest a working session buffer runs -- a bounded capture named once, so nothing the firmware holds can grow past
 /// a known ceiling. A field session is a short capture, not an archive; the bound keeps memory visible and small.
 pub const max_samples: u32 = 4096;
 
@@ -39,7 +39,7 @@ pub const SessionError = error{
 
 /// A Mikrophone working session: `work` is the forgetful working buffer that lives only while powered, `keep` is the one
 /// committed payload a deliberate commit chose to carry out, and `powered` is the power itself. No heap outlives the
-/// power — both buffers are fixed and bounded by `max_samples`.
+/// power -- both buffers are fixed and bounded by `max_samples`.
 pub const Session = struct {
     work: [max_samples]u8 = [_]u8{0} ** max_samples,
     work_len: u32 = 0,
@@ -53,14 +53,14 @@ pub const Session = struct {
         return Session{};
     }
 
-    /// The forgetful working buffer as it stands — exactly the samples captured since the last power-down.
+    /// The forgetful working buffer as it stands -- exactly the samples captured since the last power-down.
     pub fn working(self: *const Session) []const u8 {
         // invariant: the working length never claims more than the buffer holds.
         assert(self.work_len <= self.work.len);
         return self.work[0..self.work_len];
     }
 
-    /// The one committed payload — the bytes a deliberate commit chose to carry out, empty until a commit lands.
+    /// The one committed payload -- the bytes a deliberate commit chose to carry out, empty until a commit lands.
     pub fn carry(self: *const Session) []const u8 {
         // invariant: an uncommitted session carries nothing; a committed one carries within the bound.
         assert(self.committed or self.keep_len == 0);
@@ -70,13 +70,13 @@ pub const Session = struct {
 };
 
 /// Capture one sample into the forgetful working buffer. A capture holds only while powered (an unpowered session
-/// refuses `NotPowered`) and only within the bound (a full buffer refuses `BufferFull`) — each before it writes a byte,
+/// refuses `NotPowered`) and only within the bound (a full buffer refuses `BufferFull`) -- each before it writes a byte,
 /// so a refused capture never touches the buffer. Capturing persists nothing on its own; the sample lives in working
 /// memory until either a deliberate commit keeps it or a power-down dissolves it.
 pub fn capture(self: *Session, sample: u8) !void {
-    // invariant: a capture is refused unless the session is powered — the working buffer holds only while on.
+    // invariant: a capture is refused unless the session is powered -- the working buffer holds only while on.
     if (!self.powered) return error.NotPowered;
-    // invariant: a capture is refused past the bound — never a sample beyond the named ceiling.
+    // invariant: a capture is refused past the bound -- never a sample beyond the named ceiling.
     if (self.work_len >= self.work.len) return error.BufferFull;
     const before = self.work_len;
     self.work[self.work_len] = sample;
@@ -85,7 +85,7 @@ pub fn capture(self: *Session, sample: u8) !void {
     assert(self.work_len == before + 1);
 }
 
-/// Return whether the working buffer equals the committed payload byte-for-byte — the test for "unchanged since the last
+/// Return whether the working buffer equals the committed payload byte-for-byte -- the test for "unchanged since the last
 /// commit," so a redundant commit can be refused rather than silently redone.
 fn work_equals_keep(self: *const Session) bool {
     if (self.work_len != self.keep_len) return false;
@@ -99,11 +99,11 @@ fn work_equals_keep(self: *const Session) bool {
 /// The one deliberate act that lets a capture survive power-down: copy the working buffer into the committed payload. An
 /// empty buffer refuses `NothingToCommit` (there is nothing to keep); a second commit over an unchanged buffer refuses
 /// `AlreadyCommitted` (one deliberate act, not an accidental double). A commit after fresh captures updates the payload,
-/// so a keeper always carries out what they most recently chose. The copy is a plain bounded loop — never a bare memcpy.
+/// so a keeper always carries out what they most recently chose. The copy is a plain bounded loop -- never a bare memcpy.
 pub fn commit(self: *Session) !void {
     // invariant: an empty working buffer has nothing to commit.
     if (self.work_len == 0) return error.NothingToCommit;
-    // invariant: a redundant commit over an unchanged buffer is refused — commit is deliberate, not idempotent noise.
+    // invariant: a redundant commit over an unchanged buffer is refused -- commit is deliberate, not idempotent noise.
     if (self.committed and work_equals_keep(self)) return error.AlreadyCommitted;
     var i: u32 = 0;
     while (i < self.work_len) : (i += 1) {
@@ -119,7 +119,7 @@ pub fn commit(self: *Session) !void {
 /// Power down the session: dissolve the forgetful working buffer. Every working byte is overwritten to zero and the
 /// length dropped to nothing, so no residue of a capture can be recovered; the committed payload (`keep`) is left
 /// untouched, because it is the one thing a keeper deliberately chose to carry out. After this call the working buffer
-/// is provably all zero — the founding promise, on metal.
+/// is provably all zero -- the founding promise, on metal.
 pub fn power_down(self: *Session) void {
     var i: u32 = 0;
     while (i < self.work.len) : (i += 1) {
@@ -127,13 +127,13 @@ pub fn power_down(self: *Session) void {
     }
     self.work_len = 0;
     self.powered = false;
-    // invariant: the working buffer is empty after power-down — nothing captured remains.
+    // invariant: the working buffer is empty after power-down -- nothing captured remains.
     assert(self.work_len == 0);
-    // invariant: no residue — every working byte is zero.
+    // invariant: no residue -- every working byte is zero.
     assert(working_all_zero(self));
 }
 
-/// Whether every byte of the whole working buffer is zero — the proof `power_down` leaves nothing behind.
+/// Whether every byte of the whole working buffer is zero -- the proof `power_down` leaves nothing behind.
 pub fn working_all_zero(self: *const Session) bool {
     var i: u32 = 0;
     while (i < self.work.len) : (i += 1) {
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. The buffer is bounded — a capture past max_samples refuses BufferFull, and the buffer never grows past it.
+    // 2. The buffer is bounded -- a capture past max_samples refuses BufferFull, and the buffer never grows past it.
     {
         var s = Session.init();
         var n: u32 = 0;
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         try capture(&s, 'i');
         try commit(&s);
         assert(std.mem.eql(u8, s.carry(), "hi"));
-        // A second commit over the UNCHANGED buffer refuses AlreadyCommitted — one deliberate act.
+        // A second commit over the UNCHANGED buffer refuses AlreadyCommitted -- one deliberate act.
         if (commit(&s)) |_| {
             return error.DoubleCommitSlipped;
         } else |e| {
@@ -212,15 +212,15 @@ fn run_selftest() !u8 {
         try capture(&s, 'v');
         try capture(&s, 'e');
         try commit(&s);
-        // Capture MORE after the commit — this tail is uncommitted and must not survive.
+        // Capture MORE after the commit -- this tail is uncommitted and must not survive.
         try capture(&s, 'X');
         try capture(&s, 'Y');
         assert(std.mem.eql(u8, s.working(), "saveXY"));
         power_down(&s);
-        // The working buffer is empty and provably all zero — nothing captured remains.
+        // The working buffer is empty and provably all zero -- nothing captured remains.
         assert(s.working().len == 0);
         assert(working_all_zero(&s));
-        // ONLY the committed payload survived — the uncommitted tail XY is gone.
+        // ONLY the committed payload survived -- the uncommitted tail XY is gone.
         assert(std.mem.eql(u8, s.carry(), "save"));
     }
 

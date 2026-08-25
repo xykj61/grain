@@ -1,10 +1,10 @@
-//! aurora/src/seed.rye — Aurora's first seed: a hart wakes on RISC-V.
+//! aurora/src/seed.rye -- Aurora's first seed: a hart wakes on RISC-V.
 //!
 //! This is the smallest living piece of the boot story, in the spirit of Gall's
 //! Law: a working boot grows from a simpler boot that already works. Here a
 //! single hart wakes on a freestanding RISC-V machine, gives itself a stack,
 //! speaks one line over the console, and powers the machine down cleanly. No
-//! operating system sits beneath it and no standard library above it — only
+//! operating system sits beneath it and no standard library above it -- only
 //! Rye's own toolchain, aimed at bare metal, and an emulator to wake in.
 //!
 //! Build and run it with `../run.sh`, which calls `rye build` to emit the
@@ -16,7 +16,7 @@
 //! The addresses below belong to QEMU's `virt` machine: a 16550-style console
 //! UART whose transmit register sits at 0x1000_0000, and a test device at
 //! 0x10_0000 that powers the machine off when written. They are this machine's
-//! edges — the one place the hart can be heard, and the one place it can rest.
+//! edges -- the one place the hart can be heard, and the one place it can rest.
 
 /// The transmit register of the virt machine's console UART. Writing a byte
 /// here sends it to the console the emulator is wired to.
@@ -28,8 +28,8 @@ const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
 const finisher_pass: u32 = 0x5555;
 
 /// The entry point. The hart wakes here with no stack of its own, so this does
-/// the one thing that must come first — point the stack pointer at real memory,
-/// one megabyte into the RAM that begins at 0x8000_0000 — and then hands control
+/// the one thing that must come first -- point the stack pointer at real memory,
+/// one megabyte into the RAM that begins at 0x8000_0000 -- and then hands control
 /// to `kmain`. It is `naked` so no prologue runs before that stack exists, and
 /// it sits in its own section so the linker places it at the very start of RAM,
 /// exactly where the machine begins executing.
@@ -44,7 +44,7 @@ export fn _start() linksection(".text.init") callconv(.naked) noreturn {
 export fn kmain() callconv(.c) noreturn {
     const line = "Aurora seed: a hart woke on RISC-V, spoke this line, and halted.\n";
 
-    // The seed exists to be heard — a silent hart would prove nothing. State the
+    // The seed exists to be heard -- a silent hart would prove nothing. State the
     // one fact the rest depends on, so an empty line would stop loudly here
     // rather than slip by in silence.
     // invariant: an empty line would seed a stage with nothing in it, which reads downstream as
@@ -60,7 +60,7 @@ export fn kmain() callconv(.c) noreturn {
 
 /// A bare-metal `assert`: with no standard library beneath us, the seed states
 /// its own. It vanishes from a release build exactly as `std.debug.assert` does
-/// — `unreachable` carries no cost there — yet names the one fact this code
+/// -- `unreachable` carries no cost there -- yet names the one fact this code
 /// leans on, in the TAME habit. (See `../../external-research/TAME_GUIDANCE.md`.)
 fn assert(ok: bool) void {
     if (!ok) unreachable;

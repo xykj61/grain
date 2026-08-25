@@ -1,17 +1,17 @@
-//! brushstroke/part_search.rye — HUNK77: the search box on glass — a typed line draws a narrowed, paged shelf.
+//! brushstroke/part_search.rye -- HUNK77: the search box on glass -- a typed line draws a narrowed, paged shelf.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK77.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK77.
 //! Design read: active-designing/date/20260813/20260813-235517_hunk-part-search-narrowed-shelf-on-glass-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's search-then-see — a typed line shrinks the wall (concept only, siloed).
+//! Teacher, thanked clean-room: McMaster-Carr's search-then-see -- a typed line shrinks the wall (concept only, siloed).
 //!
 //! HUNK73/74 paint and page a catalog, HUNK75 filters it to the parts that match a `Query`, HUNK76 parses that query
 //! from a keeper's typed line. Yet nothing had joined them on glass. This rung is that joining: `search_shelf` reads a
-//! catalog, a typed line, and a page offset, and draws exactly the narrowed page — the search box end to end, from
+//! catalog, a typed line, and a page offset, and draws exactly the narrowed page -- the search box end to end, from
 //! keystroke to lit swatch.
 //!
 //! The crux is that WHAT A KEEPER TYPES IS WHAT A KEEPER SEES: the drawn page is precisely what `part_window` would
-//! draw over the FILTERED catalog — no failing part shown, no matching part hidden. The search view invents nothing;
-//! it is the faithful composition parse_query → filter_catalog → part_window, inheriting every law those proved. A
+//! draw over the FILTERED catalog -- no failing part shown, no matching part hidden. The search view invents nothing;
+//! it is the faithful composition parse_query -> filter_catalog -> part_window, inheriting every law those proved. A
 //! malformed line surfaces the parser's own named refusal rather than drawing the wrong shelf.
 //!
 //! A price is drawn as a FACT formatted for reading and matched by a query that COMPARES a recorded cent count;
@@ -32,7 +32,7 @@ const skate = @import("skate_grid.rye");
 
 pub const part_search_version = "20260813.235517";
 
-/// How many parts a typed line keeps — parse the query, then count the matches over the catalog. A caller shows this
+/// How many parts a typed line keeps -- parse the query, then count the matches over the catalog. A caller shows this
 /// as *N results* and sizes the paging before it draws. A malformed line surfaces the parser's own named refusal.
 pub fn search_result_count(cat: *const part_catalog.PartCatalog, text: []const u8) !u32 {
     const query = try part_query.parse_query(text);
@@ -42,7 +42,7 @@ pub fn search_result_count(cat: *const part_catalog.PartCatalog, text: []const u
     return n;
 }
 
-/// How many pages the narrowed result needs at `rows` parts per page — parse, filter into a fresh sub-catalog over
+/// How many pages the narrowed result needs at `rows` parts per page -- parse, filter into a fresh sub-catalog over
 /// the same sheet, and count the pages over it. Zero matches is zero pages.
 pub fn search_page_count(
     allocator: std.mem.Allocator,
@@ -62,7 +62,7 @@ pub fn search_page_count(
     return pages;
 }
 
-/// Draw the narrowed page — parse the typed line, filter the catalog into a fresh sub-catalog over the SAME sheet,
+/// Draw the narrowed page -- parse the typed line, filter the catalog into a fresh sub-catalog over the SAME sheet,
 /// and render the page `[offset, offset + rows)` with `part_window`. So what a keeper types is what a keeper sees:
 /// the drawn page shows exactly the parts that match, in held order, each swatch true to the one shared sheet. A
 /// malformed line surfaces the parser's named refusal; an offset past the narrowed result refuses `BadOffset` exactly
@@ -86,7 +86,7 @@ pub fn search_shelf(
     return part_row.part_window(allocator, &sub, cols, rows, offset);
 }
 
-// --- selftest: five parts, a typed search — the narrowed page shows exactly the matching parts (the same the
+// --- selftest: five parts, a typed search -- the narrowed page shows exactly the matching parts (the same the
 //     hand-filtered window draws), a match-none query draws a real empty page, a bad offset and a malformed line each
 //     refuse by name -----------------------------------------------------------------------------------------------
 
@@ -110,11 +110,11 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's fact line back as bytes — the label region a keeper reads, trimmed of the blank tail (the part_row
+/// Read a row's fact line back as bytes -- the label region a keeper reads, trimmed of the blank tail (the part_row
 /// reader's own idiom, so the selftest sees exactly the painted line).
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
-    // The label region ends where part_row's swatch and gap begin — mirror its own layout constants indirectly by
+    // The label region ends where part_row's swatch and gap begin -- mirror its own layout constants indirectly by
     // trimming the blank tail, which is enough to read the fact text a keeper sees.
     var n: u32 = @intCast(cells.len);
     while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
@@ -135,7 +135,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     const cols: u32 = 48;
 
-    // A typed material search: two results, and a page draws exactly the stainless parts in held order — the search
+    // A typed material search: two results, and a page draws exactly the stainless parts in held order -- the search
     // view shows what the keeper typed. The first row reads bolt, the part page holds first.
     {
         assert((try search_result_count(&cat, "material:stainless-304")) == 2);
@@ -146,12 +146,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..r0], "bolt  HX-M8-40  stainless-304  $1.25"));
         const r1 = row_text(&page, 1, buf[0..]);
         assert(std.mem.startsWith(u8, buf[0..r1], "hexnut  HX-N8  stainless-304  $0.55"));
-        // The third and fourth rows hold no part (only two matched) — their label region is blank.
+        // The third and fourth rows hold no part (only two matched) -- their label region is blank.
         const r2 = row_text(&page, 2, buf[0..]);
         assert(r2 == 0);
     }
 
-    // The narrowed page equals the hand-filtered window drawn directly — the search view invents nothing.
+    // The narrowed page equals the hand-filtered window drawn directly -- the search view invents nothing.
     {
         const via_search = try search_shelf(garden, &cat, "material:stainless-304", cols, 4, 0);
         var sub: part_catalog.PartCatalog = undefined;
@@ -168,7 +168,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A price-ceiling search: parts at most 60 cents — nut (60) and hexnut (55), two results.
+    // A price-ceiling search: parts at most 60 cents -- nut (60) and hexnut (55), two results.
     {
         assert((try search_result_count(&cat, "max:60")) == 2);
         const page = try search_shelf(garden, &cat, "max:60", cols, 2, 0);
@@ -177,25 +177,25 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.startsWith(u8, buf[0..r0], "nut  NY-M8  brass  $0.60"));
     }
 
-    // A match-none search draws a REAL empty page — zero results, zero pages, a page that refuses no dimension.
+    // A match-none search draws a REAL empty page -- zero results, zero pages, a page that refuses no dimension.
     {
         assert((try search_result_count(&cat, "material:titanium")) == 0);
         assert((try search_page_count(garden, &cat, "material:titanium", 4)) == 0);
         const page = try search_shelf(garden, &cat, "material:titanium", cols, 4, 0);
         var buf: [part_row.max_fact_line]u8 = undefined;
-        // Every row of the empty page is blank — nothing drawn, and nothing wrong drawn.
+        // Every row of the empty page is blank -- nothing drawn, and nothing wrong drawn.
         var row: u32 = 0;
         while (row < 4) : (row += 1) {
             assert(row_text(&page, row, buf[0..]) == 0);
         }
     }
 
-    // An offset past the narrowed result refuses BadOffset — only two stainless parts, so page offset 2 is past them.
+    // An offset past the narrowed result refuses BadOffset -- only two stainless parts, so page offset 2 is past them.
     if (search_shelf(garden, &cat, "material:stainless-304", cols, 2, 2)) |_| return error.OffsetSlipped else |e| {
         if (e != error.BadOffset) return error.WrongOffset;
     }
 
-    // A malformed typed line surfaces the parser's own named refusal to the glass layer — a bad search draws nothing.
+    // A malformed typed line surfaces the parser's own named refusal to the glass layer -- a bad search draws nothing.
     if (search_shelf(garden, &cat, "stainless-304", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.NoColon) return error.WrongLine;
     }

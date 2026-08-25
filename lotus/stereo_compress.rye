@@ -1,34 +1,34 @@
-//! lotus/stereo_compress.rye — ALES157: the compressor carried into stereo, ONE LINKED GAIN from the max detector, the image held to the sample. ALES50 named `compress`: a sample within a magnitude threshold passes
-//! byte for byte, a sample above it has its EXCESS (m − threshold) divided by a ratio and the sample rewritten sign(x)·(threshold + excess·den/num) — the limiter's ceiling made gentle, the most-reached-for dynamics
+//! lotus/stereo_compress.rye -- ALES157: the compressor carried into stereo, ONE LINKED GAIN from the max detector, the image held to the sample. ALES50 named `compress`: a sample within a magnitude threshold passes
+//! byte for byte, a sample above it has its EXCESS (m − threshold) divided by a ratio and the sample rewritten sign(x)-(threshold + excess-den/num) -- the limiter's ceiling made gentle, the most-reached-for dynamics
 //! tool (it evens a vocal, glues a bus, tames a jumping bass). That is a mono edit, deciding per sample on that sample's own magnitude. Carried into stereo it carries ALES156's linking one honest step DEEPER.
 //!
-//! The gate's below-threshold attenuation is a CONSTANT factor den/num, the same for every magnitude, so gating each channel by its own magnitude already applied the same factor to both — the link only decided WHETHER
+//! The gate's below-threshold attenuation is a CONSTANT factor den/num, the same for every magnitude, so gating each channel by its own magnitude already applied the same factor to both -- the link only decided WHETHER
 //! to gate. The compressor is different: its gain factor (threshold + excess/ratio)/magnitude depends NONLINEARLY on the magnitude. Compress each channel by its own magnitude and the loud channel is pulled down harder
-//! than the quiet one — the two receive DIFFERENT gains, and the inter-channel level difference that IS the stereo image shifts. This is the same trap ALES129 (stereo_normalize) named for the static amplitude class,
-//! now dynamic and per-sample. So this rung computes ONE gain from the linked detector and applies it to BOTH — the per-pair dynamic twin of ALES129's one-shared-gain.
+//! than the quiet one -- the two receive DIFFERENT gains, and the inter-channel level difference that IS the stereo image shifts. This is the same trap ALES129 (stereo_normalize) named for the static amplitude class,
+//! now dynamic and per-sample. So this rung computes ONE gain from the linked detector and applies it to BOTH -- the per-pair dynamic twin of ALES129's one-shared-gain.
 //!
-//! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write — the checks
+//! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write -- the checks
 //! are identical for both channels, so a refusal never compresses one channel and leaves the other untouched. Otherwise walk the span one sample-PAIR at a time: key = max(|left|, |right|), the louder of the two. key <=
-//! threshold leaves the pair within the threshold — both pass byte for byte. key > threshold computes the compressed master new_key = threshold + (key − threshold)·den/num, exactly as ALES50 would for the loud channel,
-//! then scales BOTH channels by the single fraction new_key/key: x' = sign(x)·(|x|·new_key/key). The channel holding the peak lands on new_key (byte for byte equal to ALES50's mono compress of it); the quieter channel
+//! threshold leaves the pair within the threshold -- both pass byte for byte. key > threshold computes the compressed master new_key = threshold + (key − threshold)-den/num, exactly as ALES50 would for the loud channel,
+//! then scales BOTH channels by the single fraction new_key/key: x' = sign(x)-(|x|-new_key/key). The channel holding the peak lands on new_key (byte for byte equal to ALES50's mono compress of it); the quieter channel
 //! is scaled by the identical fraction, the L:R ratio preserved to within one LSB.
 //!
-//! The crux — five laws. THE LINKED-GAIN LAW (the stereo crux): both channels scaled by the SAME fraction new_key/key from the linked max, so the loud channel equals ALES50's mono compress byte for byte while the quiet
-//! channel is scaled by the identical fraction — a master where the left always holds the peak has left' == mono compress(left), and the independent lift (mono compress of the quiet right alone) genuinely differs. THE
-//! IMAGE LAW: the shared gain preserves the L:R ratio — an out-of-phase pair returns still out of phase, no magnitude expands, no sign flips. THE SUB-THRESHOLD LAW: where the linked key is within the threshold, both
+//! The crux -- five laws. THE LINKED-GAIN LAW (the stereo crux): both channels scaled by the SAME fraction new_key/key from the linked max, so the loud channel equals ALES50's mono compress byte for byte while the quiet
+//! channel is scaled by the identical fraction -- a master where the left always holds the peak has left' == mono compress(left), and the independent lift (mono compress of the quiet right alone) genuinely differs. THE
+//! IMAGE LAW: the shared gain preserves the L:R ratio -- an out-of-phase pair returns still out of phase, no magnitude expands, no sign flips. THE SUB-THRESHOLD LAW: where the linked key is within the threshold, both
 //! pass byte for byte. THE KNOB LAWS: unit ratio the identity everywhere on both, a higher ratio compresses at least as hard (monotone), a ratio far past the excess seats the linked key at the threshold (the loud
-//! channel on threshold, the quiet proportionally — the limiter within). THE BALANCE / ATOMICITY / DEGENERATE LAW: left.len == right.len after, a refusal leaving both channels untouched and balanced, count = 0 the
+//! channel on threshold, the quiet proportionally -- the limiter within). THE BALANCE / ATOMICITY / DEGENERATE LAW: left.len == right.len after, a refusal leaving both channels untouched and balanced, count = 0 the
 //! identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES157.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES157.
 //! Design read: active-designing/date/20260815/20260815-062700_fill-ales157-lotus-stereo-compress.md
-//! Stands on: lotus/compress.rye (ALES50) — the mono compressor, its `compress` and `CompressError` reused whole (the loud-channel proof and the fault set); lotus/stereo_gate.rye (ALES156) — the sibling that opened the
-//! stereo dynamics family with the linked-DETECTOR law this rung deepens into a linked-GAIN law; lotus/stereo_normalize.rye (ALES129) — the amplitude-class one-shared-gain this rung makes dynamic and per-pair;
-//! lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, and sample_max.
+//! Stands on: lotus/compress.rye (ALES50) -- the mono compressor, its `compress` and `CompressError` reused whole (the loud-channel proof and the fault set); lotus/stereo_gate.rye (ALES156) -- the sibling that opened the
+//! stereo dynamics family with the linked-DETECTOR law this rung deepens into a linked-GAIN law; lotus/stereo_normalize.rye (ALES129) -- the amplitude-class one-shared-gain this rung makes dynamic and per-pair;
+//! lotus/pan.rye (ALES10) -- the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, and sample_max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only — one comparison of the linked key and at most one multiply-
-//! then-divide per channel per sample (computed in i64, |sample|·new_key <= 32768·32768 never overflowing), memoryless (no attack, release, or knee; those are later rungs), never a length. The threshold is a magnitude
-//! in sample units, not decibels; the ratio a plain fraction. Nothing on the audio path can overflow — new_key <= key, so every scaled magnitude is at most its input's, which already fits i16. No real sample rate, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only -- one comparison of the linked key and at most one multiply-
+//! then-divide per channel per sample (computed in i64, |sample|-new_key <= 32768-32768 never overflowing), memoryless (no attack, release, or knee; those are later rungs), never a length. The threshold is a magnitude
+//! in sample units, not decibels; the ratio a plain fraction. Nothing on the audio path can overflow -- new_key <= key, so every scaled magnitude is at most its input's, which already fits i16. No real sample rate, no
 //! anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_compress.rye selftest
@@ -43,15 +43,15 @@ const compress = @import("compress.rye");
 
 pub const stereo_compress_version = "20260815.062700";
 
-/// Stereo compression's faults are exactly ALES50's own `CompressError` — `BadThreshold` (a threshold outside [1, sample_max]), `BadRatio` (a ratio below one or with a zero denominator), `BadRange` (a span past the
-/// samples) — reused by name, since the linked lift adds no new fault: it validates one shared threshold, one shared ratio, and one span, then computes one gain per pair from both channels together.
+/// Stereo compression's faults are exactly ALES50's own `CompressError` -- `BadThreshold` (a threshold outside [1, sample_max]), `BadRatio` (a ratio below one or with a zero denominator), `BadRange` (a span past the
+/// samples) -- reused by name, since the linked lift adds no new fault: it validates one shared threshold, one shared ratio, and one span, then computes one gain per pair from both channels together.
 pub const StereoCompressError = compress.CompressError;
 
 /// Compress `count` sample-pairs starting at `start` in the stereo master `sc`, above the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least one), with ONE LINKED GAIN across the two channels. For each
-/// index the detector key is `max(|left|, |right|)`: within the threshold the pair passes byte for byte; above it the compressed master `new_key = threshold + (key − threshold)·den/num` is computed once (exactly ALES50's
-/// mono compress of the loud channel) and BOTH channels are scaled by the single fraction `new_key/key`, so the peak-holding channel lands on `new_key` and the quieter one is scaled by the identical fraction — the L:R
+/// index the detector key is `max(|left|, |right|)`: within the threshold the pair passes byte for byte; above it the compressed master `new_key = threshold + (key − threshold)-den/num` is computed once (exactly ALES50's
+/// mono compress of the loud channel) and BOTH channels are scaled by the single fraction `new_key/key`, so the peak-holding channel lands on `new_key` and the quieter one is scaled by the identical fraction -- the L:R
 /// ratio preserved. After the call every written magnitude is at most its input's (reduction, never boost) and no sign is changed. Unit ratio is the identity everywhere. Validates threshold, ratio, and span ONCE against
-/// the shared length before any write — a refusal leaves both channels untouched and balanced. Values only — never the length.
+/// the shared length before any write -- a refusal leaves both channels untouched and balanced. Values only -- never the length.
 pub fn stereo_compress(
     sc: *pan.StereoClip,
     start: u32,
@@ -60,16 +60,16 @@ pub fn stereo_compress(
     ratio_num: u32,
     ratio_den: u32,
 ) StereoCompressError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the linked gain preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the linked gain preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Refused before any write, mirroring ALES50 exactly so the above-threshold path is pre-validated.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Refused before any write, mirroring ALES50 exactly so the above-threshold path is pre-validated.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) with a nonzero denominator — a ratio below one would EXPAND (a different tool), a zero denominator would divide by zero. A compressor only ever reduces the excess.
+    // invariant: the ratio is at least one (num >= den) with a nonzero denominator -- a ratio below one would EXPAND (a different tool), a zero denominator would divide by zero. A compressor only ever reduces the excess.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never compresses one channel and leaves the other torn.
+    // invariant: the span lies wholly within the SHARED length -- checked once, without underflow, so it holds identically for both channels and a refusal never compresses one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
@@ -87,13 +87,13 @@ pub fn stereo_compress(
         const key: i64 = if (ml >= mr) ml else mr;
         if (key > thr) {
             const excess: i64 = key - thr; // strictly positive above the threshold
-            // The compressed master — exactly ALES50's mono compress of the peak-holding channel: keep the threshold whole, divide only the excess by the ratio. divTrunc of positives is floor; the ratio >= 1 makes the
+            // The compressed master -- exactly ALES50's mono compress of the peak-holding channel: keep the threshold whole, divide only the excess by the ratio. divTrunc of positives is floor; the ratio >= 1 makes the
             // quotient <= excess, so thr <= new_key <= key.
             const new_key: i64 = thr + @divTrunc(excess * den, num);
-            // invariant: the compressed master reduces toward the threshold and never below it — the single gain new_key/key is a fraction in (0, 1].
+            // invariant: the compressed master reduces toward the threshold and never below it -- the single gain new_key/key is a fraction in (0, 1].
             assert(new_key <= key and new_key >= thr);
             // ONE shared gain across both channels: scale each magnitude by new_key/key. The peak-holding channel (|x| == key) lands exactly on new_key; the quieter channel lands proportionally, the L:R ratio kept to
-            // within one LSB. |x|·new_key <= 32768·32768 fits i64; the quotient is <= |x| since new_key <= key, so it fits i16 and never flips sign.
+            // within one LSB. |x|-new_key <= 32768-32768 fits i64; the quotient is <= |x| since new_key <= key, so it fits i16 and never flips sign.
             const nl: i64 = @divTrunc(ml * new_key, key);
             const nr: i64 = @divTrunc(mr * new_key, key);
             // invariant: the shared gain reduces, never boosts, and never falls below zero, on each channel.
@@ -106,18 +106,18 @@ pub fn stereo_compress(
             assert((xl >= 0 and yl >= 0) or (xl <= 0 and yl <= 0));
             assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
         }
-        // key <= threshold: the pair is within the threshold — both samples are left exactly as they were. The compressor leans only on what the linked detector shows rising above.
+        // key <= threshold: the pair is within the threshold -- both samples are left exactly as they were. The compressor leans only on what the linked detector shows rising above.
     }
 
-    // invariant: a compressor changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    // invariant: a compressor changes sample values only -- each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE LINKED-GAIN LAW — a master where the left always holds the peak has left' == ALES50's mono compress(left) byte for byte, the right scaled by the same fraction, and the independent lift (mono
-//     compress of the right alone) genuinely differs; THE IMAGE LAW — no magnitude expands, no sign flips, an out-of-phase pair returns still out of phase; THE SUB-THRESHOLD LAW — a pair whose linked key is within the
-//     threshold passes byte for byte on both; THE KNOB LAWS — unit ratio the identity everywhere, a higher ratio compresses at least as hard, a huge ratio seats the linked key at the threshold; THE BALANCE / ATOMICITY
-//     / DEGENERATE LAW — length held, each refusal leaving both channels untouched and balanced, count = 0 the identity on both -----------------------------------------------------------------------------------------
+// --- selftest: THE LINKED-GAIN LAW -- a master where the left always holds the peak has left' == ALES50's mono compress(left) byte for byte, the right scaled by the same fraction, and the independent lift (mono
+//     compress of the right alone) genuinely differs; THE IMAGE LAW -- no magnitude expands, no sign flips, an out-of-phase pair returns still out of phase; THE SUB-THRESHOLD LAW -- a pair whose linked key is within the
+//     threshold passes byte for byte on both; THE KNOB LAWS -- unit ratio the identity everywhere, a higher ratio compresses at least as hard, a huge ratio seats the linked key at the threshold; THE BALANCE / ATOMICITY
+//     / DEGENERATE LAW -- length held, each refusal leaving both channels untouched and balanced, count = 0 the identity on both -----------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -136,8 +136,8 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE LINKED-GAIN LAW — the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere): the loud left equals ALES50's mono compress(left) byte for byte, and the right is scaled by
-    //    the SAME fraction new_key/key — a different, image-preserving result than compressing the right on its own. thr 1000, ratio 4:1.
+    // 1. THE LINKED-GAIN LAW -- the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere): the loud left equals ALES50's mono compress(left) byte for byte, and the right is scaled by
+    //    the SAME fraction new_key/key -- a different, image-preserving result than compressing the right on its own. thr 1000, ratio 4:1.
     {
         const ll = [_]i16{ 8000, -6000, 500, -9000 }; // index 2 is within the threshold on both — that pair passes
         const rr = [_]i16{ 2000, -1000, 100, -3000 };
@@ -150,13 +150,13 @@ fn run_selftest() !u8 {
         try timeline.splice(&mono_l, 0, &ll);
         try compress.compress(&mono_l, 0, 4, 1000, 4, 1);
         if (!eq(sc.left.samples(), mono_l.samples())) return error.LoudLeftNotMono;
-        // by hand: 8000→2750, 6000→2250, 500→500 (within thr), 9000→3000.
+        // by hand: 8000->2750, 6000->2250, 500->500 (within thr), 9000->3000.
         if (!eq(sc.left.samples(), &[_]i16{ 2750, -2250, 500, -3000 })) return error.LoudLeftHandWrong;
 
-        // the right scaled by the SAME fraction: index0 key8000 new2750 → 2000·2750/8000 = 687; index1 key6000 new2250 → 1000·2250/6000 = 375; index2 key500<=thr → pass 100; index3 key9000 new3000 → 3000·3000/9000 = 1000.
+        // the right scaled by the SAME fraction: index0 key8000 new2750 -> 2000-2750/8000 = 687; index1 key6000 new2250 -> 1000-2250/6000 = 375; index2 key500<=thr -> pass 100; index3 key9000 new3000 -> 3000-3000/9000 = 1000.
         if (!eq(sc.right.samples(), &[_]i16{ 687, -375, 100, -1000 })) return error.LinkedRightWrong;
 
-        // the INDEPENDENT lift genuinely differs — mono compress of the right alone would give a louder, image-shifting result.
+        // the INDEPENDENT lift genuinely differs -- mono compress of the right alone would give a louder, image-shifting result.
         var mono_r = timeline.Clip{};
         try timeline.splice(&mono_r, 0, &rr);
         try compress.compress(&mono_r, 0, 4, 1000, 4, 1); // 2000→1250, 1000→1000 (not above), 100→100, 3000→1500
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (!eq(mono_r.samples(), &[_]i16{ 1250, -1000, 100, -1500 })) return error.IndependentCompressWrong;
     }
 
-    // 2. THE IMAGE LAW — the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left, both above threshold) comes back
+    // 2. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left, both above threshold) comes back
     //    STILL out of phase, both scaled by the identical fraction.
     {
         const il = [_]i16{ 8000, -6000, 900, -7000 };
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
             if ((ir[i] > 0 and r[i] < 0) or (ir[i] < 0 and r[i] > 0)) return error.RightSignFlipped;
         }
 
-        // out-of-phase equal-magnitude pairs: right = −left, so |left| == |right| == key, both land on new_key with opposite sign → still exactly out of phase.
+        // out-of-phase equal-magnitude pairs: right = −left, so |left| == |right| == key, both land on new_key with opposite sign -> still exactly out of phase.
         var op = pan.StereoClip{};
         try load_stereo(&op, &[_]i16{ 8000, -6000, 4000 }, &[_]i16{ -8000, 6000, -4000 });
         try stereo_compress(&op, 0, 3, 1000, 4, 1);
@@ -191,11 +191,11 @@ fn run_selftest() !u8 {
         while (j < 3) : (j += 1) {
             if (@as(i32, orr[j]) != -@as(i32, ol[j])) return error.OutOfPhaseNotPreserved;
         }
-        // by hand: 8000→2750, 6000→2250, 4000→1750.
+        // by hand: 8000->2750, 6000->2250, 4000->1750.
         if (!eq(ol, &[_]i16{ 2750, -2250, 1750 })) return error.OutOfPhaseMagnitudeWrong;
     }
 
-    // 3. THE SUB-THRESHOLD LAW — a master whose every linked key is within the threshold passes byte for byte on both (below the linked threshold is the identity).
+    // 3. THE SUB-THRESHOLD LAW -- a master whose every linked key is within the threshold passes byte for byte on both (below the linked threshold is the identity).
     {
         const ql = [_]i16{ 800, -600, 200, -900 };
         const qr = [_]i16{ -400, 300, -700, 500 }; // every |sample| <= 900 < 1000, so every key <= threshold
@@ -205,7 +205,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ql) or !eq(sc.right.samples(), &qr)) return error.SubThresholdNotIdentity;
     }
 
-    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both — num == den makes new_key == key, so the fraction is 1 and every sample passes byte for byte even above the threshold.
+    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both -- num == den makes new_key == key, so the fraction is 1 and every sample passes byte for byte even above the threshold.
     {
         const ll = [_]i16{ 8000, -6000, 900, -30000 };
         const rr = [_]i16{ -3000, 2000, 400, 15000 };
@@ -215,7 +215,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.UnitRatioNotIdentity;
     }
 
-    // 4b. A HIGHER RATIO COMPRESSES AT LEAST AS HARD (monotone) and a ratio far past the excess SEATS THE LINKED KEY AT THE THRESHOLD — the loud channel lands on threshold, the quiet one proportionally (the limiter
+    // 4b. A HIGHER RATIO COMPRESSES AT LEAST AS HARD (monotone) and a ratio far past the excess SEATS THE LINKED KEY AT THE THRESHOLD -- the loud channel lands on threshold, the quiet one proportionally (the limiter
     //     within the compressor, read in stereo). One pair, left the peak.
     {
         const one_l = [_]i16{8000};
@@ -233,11 +233,11 @@ fn run_selftest() !u8 {
         try load_stereo(&seat, &one_l, &one_r);
         try stereo_compress(&seat, 0, 1, 1000, 1000000, 1); // ratio >> excess — new_key → threshold (1000)
         if (seat.left.samples()[0] != 1000) return error.LinkedKeyNotSeated; // the peak-holding left seated at threshold
-        // the quiet right scaled by the same fraction ~1000/8000: 2000·1000/8000 = 250.
+        // the quiet right scaled by the same fraction ~1000/8000: 2000-1000/8000 = 250.
         if (seat.right.samples()[0] != -250) return error.QuietNotProportional;
     }
 
-    // 5a. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a compressor writes values only.
+    // 5a. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a compressor writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 8000, -6000, 200, -9000, 100 }, &[_]i16{ -400, 3000, -700, 5000, -50 });
@@ -246,7 +246,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 5b. THE ATOMICITY LAW — a bad threshold, a sub-unity ratio, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 5b. THE ATOMICITY LAW -- a bad threshold, a sub-unity ratio, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -272,7 +272,7 @@ fn run_selftest() !u8 {
         if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 5c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to compress.
+    // 5c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to compress.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

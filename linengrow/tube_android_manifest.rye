@@ -1,9 +1,9 @@
-//! linengrow/tube_android_manifest.rye — TUBE0.5's NativeActivity envelope:
+//! linengrow/tube_android_manifest.rye -- TUBE0.5's NativeActivity envelope:
 //! emit a complete AndroidManifest.xml from a validated TUBE0 Manifest.
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: the shim is not generated per app. This module emits
-//! the one fixed envelope every Glow app reuses — Android's own
+//! the one fixed envelope every Glow app reuses -- Android's own
 //! `android.app.NativeActivity` class (no custom Kotlin or Java), with
 //! `android.app.lib_name` pointing at the Glow-built `.so`, plus the
 //! permission lines `tube_manifest_android_permission.rye` already
@@ -21,7 +21,7 @@ const perm = @import("tube_manifest_android_permission.rye");
 
 const tube_android_manifest_version = "20260717.021800";
 
-/// Default min/target SDK for GrapheneOS/Pixel-line SLC apps — Android 9
+/// Default min/target SDK for GrapheneOS/Pixel-line SLC apps -- Android 9
 /// (API 28) as the floor GrapheneOS itself still supports on older
 /// devices, API 36 as the platform this host's own HAWM0 SDK already
 /// stages. Named constants rather than buried literals.
@@ -43,7 +43,7 @@ pub const ManifestXmlError = error{
 
 /// Maximum bytes one emitted AndroidManifest.xml may occupy. Sized for
 /// the fixed envelope plus `max_emitted_permissions` permission lines
-/// and the longest allowed TUBE0 name/version — a hard ceiling, never
+/// and the longest allowed TUBE0 name/version -- a hard ceiling, never
 /// a growing buffer.
 pub const max_manifest_xml_bytes: u32 = 4096;
 
@@ -70,7 +70,7 @@ fn validate_package(package_name: []const u8) ManifestXmlError!void {
 /// `package_name` is the Android applicationId (reverse-DNS); `lib_name`
 /// is the native library NativeActivity loads (usually `glow_lib_name`).
 /// Returns bytes written. Permission lines come from the closed table in
-/// tube_manifest_android_permission.rye — never inferred.
+/// tube_manifest_android_permission.rye -- never inferred.
 pub fn render_android_manifest(
     manifest: *const tm.Manifest,
     package_name: []const u8,

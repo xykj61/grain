@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_sign_witness.rye — proves Glow sign/verify product surface.
+//! linengrow/glow_seva_b0_sign_witness.rye -- proves Glow sign/verify product surface.
 //!
 //!   rye build linengrow/glow_seva_b0_sign_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_sign_witness

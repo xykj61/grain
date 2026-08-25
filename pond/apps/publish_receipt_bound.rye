@@ -1,11 +1,11 @@
-//! pond/apps/publish_receipt_bound.rye — TACT Journey 2, Rung 2: the receipt bound to the ledger.
+//! pond/apps/publish_receipt_bound.rye -- TACT Journey 2, Rung 2: the receipt bound to the ledger.
 //!
 //! Rung one proved a receipt's signature offline against a supplied keeper key. That answers "is
 //! this signature authentic?" but not "authentic *by whom*, and are they still a real keeper?"
 //! This rung binds the receipt to the settled ledger: the publisher's Deed verifies against the
 //! constellation commitment (the current member, not a stale or forged claim), the receipt's
 //! point is exactly the Deed's point, and the signature verifies by that Deed's own keeper key.
-//! Only when all three hold does the receipt resolve to a place — the publisher's galaxy under
+//! Only when all three hold does the receipt resolve to a place -- the publisher's galaxy under
 //! the topology.
 //!
 //! So a recipient learns not merely that a signature checks out, but that it belongs to a
@@ -14,7 +14,7 @@
 //! signature the Deed's keeper never made refuses BadSignature.
 //!
 //! Composed over rung one (the offline receipt) and the settlement ledger's public verify +
-//! place_of. Demo keeper seeds only, in-process, no network — the serve transport stays the
+//! place_of. Demo keeper seeds only, in-process, no network -- the serve transport stays the
 //! Comlink-served custody gate (r4).
 //!
 //!   rye build pond/apps/publish_receipt_bound.rye -femit-bin=pond/bin/publish-receipt-bound
@@ -60,7 +60,7 @@ pub fn verify_bound(
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real keeper's key, so no identity is invented.
+// Example seeds -- plainly not a real keeper's key, so no identity is invented.
 const key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
@@ -81,7 +81,7 @@ fn welcome_bound_receipt_resolves_place() !void {
     print("publish_receipt_bound: a current member's receipt bound to the ledger and resolved a galaxy place.\n", .{});
 }
 
-/// A Deed the constellation does not hold refuses NotMember — a tampered Deed is no longer the
+/// A Deed the constellation does not hold refuses NotMember -- a tampered Deed is no longer the
 /// committed member.
 fn unwelcome_non_member_refuses() !void {
     var opened = open_demo();
@@ -92,7 +92,7 @@ fn unwelcome_non_member_refuses() !void {
     print("publish_receipt_bound: a tampered Deed refused NotMember; it is no longer the committed member.\n", .{});
 }
 
-/// A receipt whose point disagrees with the Deed refuses NotMember — the receipt and the proven
+/// A receipt whose point disagrees with the Deed refuses NotMember -- the receipt and the proven
 /// identity must name the same point.
 fn unwelcome_point_disagreement_refuses() !void {
     const opened = open_demo();
@@ -103,7 +103,7 @@ fn unwelcome_point_disagreement_refuses() !void {
     print("publish_receipt_bound: a receipt whose point disagrees with the Deed refused NotMember.\n", .{});
 }
 
-/// A signature the Deed's keeper never made refuses BadSignature — even a current member's Deed
+/// A signature the Deed's keeper never made refuses BadSignature -- even a current member's Deed
 /// cannot vouch for a signature it did not make.
 fn unwelcome_wrong_signer_refuses() !void {
     const opened = open_demo();

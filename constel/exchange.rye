@@ -1,16 +1,16 @@
-//! constel/exchange.rye — FORA4: the handshake, carried end to end across frames. FORA2 proved the three handshake steps
-//! and FORA3 framed each value whole and lawful; this rung proves the thing that matters more — two fake piers reach a
+//! constel/exchange.rye -- FORA4: the handshake, carried end to end across frames. FORA2 proved the three handshake steps
+//! and FORA3 framed each value whole and lawful; this rung proves the thing that matters more -- two fake piers reach a
 //! COMPLETE Session communicating ONLY through frames (bytes), never once sharing an in-memory value. This is the real pier
 //! boundary: the initiator never sees the responder's Ack value, only its frame, and the responder never sees the
 //! initiator's Greeting value, only its frame. Agreement is reached purely over the wire representation.
 //!
-//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA4.
+//! Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA4.
 //! Design read: active-designing/date/20260814/20260814-044312_fora4-constel-exchange-over-frames.md
-//! Stands on: constel/handshake.rye (FORA2) — the three steps; constel/wire.rye (FORA3) — the frame the steps cross on.
+//! Stands on: constel/handshake.rye (FORA2) -- the three steps; constel/wire.rye (FORA3) -- the frame the steps cross on.
 //!
-//! Purely LOCAL — a bounded exchange over in-memory frame buffers on one bench, siloed to constel/, run from inside the
+//! Purely LOCAL -- a bounded exchange over in-memory frame buffers on one bench, siloed to constel/, run from inside the
 //! jailed pier. No socket, no network, no Comlink transport, no keys, no funds, no real address ever formed (custody gate %2
-//! — real hardware / any real wire — and gate %4 — real Kumara, real network — both untouched). The naming law's border in
+//! -- real hardware / any real wire -- and gate %4 -- real Kumara, real network -- both untouched). The naming law's border in
 //! wire.rye guards every crossing, so a vowel-bearing (real-@p-shaped) party cannot enter the exchange even over the wire.
 //! The byte queue between two truly separate piers, and the real socket, stay their own later rounds (FORA5, FORA6); this
 //! hands them a conversation whose logic is already proven.
@@ -27,7 +27,7 @@ const wire = @import("wire.rye");
 
 pub const exchange_version = "20260814.044312";
 
-/// A pier's own local view — its name and the constellation it belongs to. Each side of an exchange holds only its own
+/// A pier's own local view -- its name and the constellation it belongs to. Each side of an exchange holds only its own
 /// Party; the only thing that crosses between two parties is a wire.Frame.
 pub const Party = struct {
     name_buf: [name.max_ship_len]u8,
@@ -52,7 +52,7 @@ pub const Party = struct {
 pub fn party(pier_name: []const u8, whole: []const u8) wire.WireError!Party {
     try name.check_ship(pier_name);
     try name.check_constellation(whole);
-    // A pier must actually belong to the constellation it claims — a non-member refuses NotAMember, never a panic. This is
+    // A pier must actually belong to the constellation it claims -- a non-member refuses NotAMember, never a panic. This is
     // the same fault the handshake's open/accept raise, surfaced at the earliest honest point.
     if (!handshake.is_member(whole, pier_name)) return error.NotAMember;
     var p: Party = undefined;
@@ -72,7 +72,7 @@ pub fn party(pier_name: []const u8, whole: []const u8) wire.WireError!Party {
 
 // --- the three crossings, each taking ONLY a frame from the other side -------------------------------------------------
 
-/// Crossing 1 — the initiator frames its greeting. The responder will receive only these bytes, never the Greeting value.
+/// Crossing 1 -- the initiator frames its greeting. The responder will receive only these bytes, never the Greeting value.
 pub fn initiator_greets(me: *const Party, out: *wire.Frame) wire.WireError!void {
     const g = try handshake.open(me.pier(), me.sky());
     wire.frame_greeting(&g, out);
@@ -80,7 +80,7 @@ pub fn initiator_greets(me: *const Party, out: *wire.Frame) wire.WireError!void 
     assert((try out.kind()) == wire.Kind.greeting);
 }
 
-/// Crossing 2 — the responder receives the greeting frame (bytes only), re-proves it whole and lawful at the border,
+/// Crossing 2 -- the responder receives the greeting frame (bytes only), re-proves it whole and lawful at the border,
 /// answers with accept, and frames the ack. The responder never holds the initiator's Greeting value beyond this call.
 pub fn responder_answers(me: *const Party, greeting_frame: []const u8, out: *wire.Frame) wire.WireError!void {
     const g = try wire.deframe_greeting(greeting_frame); // border re-proves the greeting lawful
@@ -90,7 +90,7 @@ pub fn responder_answers(me: *const Party, greeting_frame: []const u8, out: *wir
     assert((try out.kind()) == wire.Kind.ack);
 }
 
-/// Crossing 3 — the initiator receives the ack frame (bytes only), re-proves it at the border, seals the Session, and
+/// Crossing 3 -- the initiator receives the ack frame (bytes only), re-proves it at the border, seals the Session, and
 /// frames it. The returned frame carries the proof both piers agreed; the initiator never held the responder's Ack value
 /// beyond deframing it here. `my_greeting` is the initiator's OWN greeting frame, kept from crossing 1 (a pier remembers
 /// only what it itself sent, plus the bytes it received).
@@ -103,7 +103,7 @@ pub fn initiator_seals(my_greeting: []const u8, ack_frame: []const u8, out: *wir
     assert((try out.kind()) == wire.Kind.session);
 }
 
-/// Drive a whole exchange over frames and return the sealed Session, read back from the final frame — so the returned value
+/// Drive a whole exchange over frames and return the sealed Session, read back from the final frame -- so the returned value
 /// itself crossed the wire. Two Party views, three frames, and nothing else shared. Any fault (mismatched sky, non-member,
 /// self-greet, a smuggled vowel) refuses by name and the exchange never completes.
 pub fn exchange(from: []const u8, sky: []const u8, me: []const u8, my_sky: []const u8) wire.WireError!handshake.Session {
@@ -119,9 +119,9 @@ pub fn exchange(from: []const u8, sky: []const u8, me: []const u8, my_sky: []con
     var session_frame = wire.Frame{};
     try initiator_seals(greeting_frame.bytes(), ack_frame.bytes(), &session_frame);
 
-    // The Session that crosses the wire — read back from bytes, proving the completed value itself survived the frame.
+    // The Session that crosses the wire -- read back from bytes, proving the completed value itself survived the frame.
     const s = try wire.deframe_session(session_frame.bytes());
-    // invariant: agreement was reached over bytes alone — the sealed session names two distinct lawful piers, complete.
+    // invariant: agreement was reached over bytes alone -- the sealed session names two distinct lawful piers, complete.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
     assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
@@ -134,7 +134,7 @@ pub fn exchange(from: []const u8, sky: []const u8, me: []const u8, my_sky: []con
 fn run_selftest() !u8 {
     const sky = "xnb-xnc-xnd"; // a small lawful constellation of three fake piers
 
-    // 1. A clean exchange completes end to end across three frames — two piers agree communicating only over bytes.
+    // 1. A clean exchange completes end to end across three frames -- two piers agree communicating only over bytes.
     {
         const s = try exchange("xnb", sky, "xnc", sky);
         assert(s.complete);
@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, s.party_b(), "xnc"));
     }
 
-    // 2. Both sides agree on the sealed session — the responder can deframe the same session the initiator sealed.
+    // 2. Both sides agree on the sealed session -- the responder can deframe the same session the initiator sealed.
     {
         const a_party = try party("xnb", sky);
         const b_party = try party("xnc", sky);
@@ -158,7 +158,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, s.party_a(), "xnb") and std.mem.eql(u8, s.party_b(), "xnc"));
     }
 
-    // 3. A responder on a different constellation refuses ConstellationMismatch mid-exchange — the greeting deframes fine
+    // 3. A responder on a different constellation refuses ConstellationMismatch mid-exchange -- the greeting deframes fine
     //    (it is lawful), yet accept refuses because the skies differ, and the exchange never completes.
     {
         if (exchange("xnb", sky, "xnc", "xnc-xnd-xnf")) |_| {
@@ -172,7 +172,7 @@ fn run_selftest() !u8 {
         if (exchange("xnb", sky, "xnb", sky)) |_| return error.SelfGreetSlipped else |e| assert(e == error.SameParty);
     }
 
-    // 5. The border still guards mid-exchange — a tampered greeting frame (a smuggled vowel with a fixed-up digest) refuses
+    // 5. The border still guards mid-exchange -- a tampered greeting frame (a smuggled vowel with a fixed-up digest) refuses
     //    VowelPresent at the responder's deframe_greeting, so a real-@p-shaped party cannot enter even over the wire.
     {
         const a_party = try party("xnb", sky);

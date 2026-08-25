@@ -1,34 +1,34 @@
-//! mycelium/portage.rye — value carried across two worlds, atomic on both ledgers or neither (r1, the portage crux).
+//! mycelium/portage.rye -- value carried across two worlds, atomic on both ledgers or neither (r1, the portage crux).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
-//! Every Mycelium ledger before this conserved value it could see in ONE agreed order — the Purse within a
+//! Every Mycelium ledger before this conserved value it could see in ONE agreed order -- the Purse within a
 //! Cord, the Pledge across two phases, Puddle and Freight moving a whole world between hosts with its state
 //! byte-identical. Yet every coin lived and died inside a single Cord. A real economy is many ledgers, and
 //! its truest question is the one no single-world ledger can answer: how does value cross from one world to
 //! another with no moment where it exists in both or in neither?
 //!
-//! A PORTAGE is that crossing — the old word for goods carried overland between two navigable waters that
+//! A PORTAGE is that crossing -- the old word for goods carried overland between two navigable waters that
 //! share no channel. Alice banks on World A; Bob banks on World B; the two worlds keep separate Cords with no
-//! shared total order. A portage moves N coins from Alice to Bob bound by a content DIGEST — a SHA-256 over
-//! id·amount·from·to_world·to_account — so the two halves name one crossing and neither can be forged apart.
-//!   - a signed portage-OUT (`O·id·world·to`) on World A DEBITS the signer by N (she cannot burn coins she
-//!     never received — `NeverPaid`);
-//!   - a signed portage-IN (`I·id·digest·to`) on World B CREDITS the recipient by N, but ONLY when its
-//!     embedded digest equals the verified burn's — a credit whose digest matches no verified burn refuses
+//! shared total order. A portage moves N coins from Alice to Bob bound by a content DIGEST -- a SHA-256 over
+//! id-amount-from-to_world-to_account -- so the two halves name one crossing and neither can be forged apart.
+//!   - a signed portage-OUT (`O-id-world-to`) on World A DEBITS the signer by N (she cannot burn coins she
+//!     never received -- `NeverPaid`);
+//!   - a signed portage-IN (`I-id-digest-to`) on World B CREDITS the recipient by N, but ONLY when its
+//!     embedded digest equals the verified burn's -- a credit whose digest matches no verified burn refuses
 //!     `NoMatchingBurn`, so World B can never conjure value across the gap;
-//!   - the crossing lands once — a second in for one id refuses `AlreadyLanded`.
+//!   - the crossing lands once -- a second in for one id refuses `AlreadyLanded`.
 //!
 //! The crux is CONSERVATION ACROSS THE PAIR: the amount that left the sender on A equals the amount that
-//! reached the recipient on B — a credit somewhere for every debit, TigerBeetle's double-entry widened
+//! reached the recipient on B -- a credit somewhere for every debit, TigerBeetle's double-entry widened
 //! across two independent shards, decided by content rather than a correspondent. Because World B credits
 //! ONLY a digest it can verify against the burn, the decision is a pure function of the two ledgers' bytes;
 //! no window admits a loss (gone from A, absent on B) or a double (present on both).
 //!
-//! Grown beside cord.rye, fold.rye, voucher.rye — editing none, composing cord + fold + voucher + kumara
-//! public API only. The credit is DERIVED from a verified burn, never re-declared — there is no set_balance.
-//! Siloed, dev-only, demo world/keeper seeds — no real key, no funds, no network, no value crossed. A SERVED
+//! Grown beside cord.rye, fold.rye, voucher.rye -- editing none, composing cord + fold + voucher + kumara
+//! public API only. The credit is DERIVED from a verified burn, never re-declared -- there is no set_balance.
+//! Siloed, dev-only, demo world/keeper seeds -- no real key, no funds, no network, no value crossed. A SERVED
 //! portage (World B fetching World A's out-fact over Comlink) reaches the Comlink-served gate (Keaton's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage.rye
@@ -49,16 +49,16 @@ pub const portage_version = "20260813.124159";
 /// A keeper's public key, in its encoded (holder-identity) width.
 pub const pk_len: u32 = kumara.PublicKey.encoded_length;
 
-/// A portage id — a fixed 16-byte tag naming one crossing across its two half-facts.
+/// A portage id -- a fixed 16-byte tag naming one crossing across its two half-facts.
 pub const id_len: u32 = 16;
 
-/// A world tag — a fixed 16-byte name for the destination world, bound into the digest.
+/// A world tag -- a fixed 16-byte name for the destination world, bound into the digest.
 pub const world_tag_len: u32 = 16;
 
-/// A portage digest — a SHA-256 over id·amount·from·to_world·to_account. One order-head width.
+/// A portage digest -- a SHA-256 over id-amount-from-to_world-to_account. One order-head width.
 pub const digest_len: u32 = 32;
 
-/// Body tags — the half of the crossing, bound into the signer's signature over the fact body.
+/// Body tags -- the half of the crossing, bound into the signer's signature over the fact body.
 pub const tag_out: u8 = 'O';
 pub const tag_in: u8 = 'I';
 
@@ -107,7 +107,7 @@ pub const Ledger = struct {
         return 0;
     }
 
-    /// The sum of every account's spendable balance — a world's circulating value.
+    /// The sum of every account's spendable balance -- a world's circulating value.
     pub fn balances_sum(l: *const Ledger) u64 {
         var s: u64 = 0;
         var i: u32 = 0;
@@ -117,7 +117,7 @@ pub const Ledger = struct {
         return s;
     }
 
-    /// The digest of the one burn this world sent — valid only when `out_present`.
+    /// The digest of the one burn this world sent -- valid only when `out_present`.
     pub fn out_digest_slice(l: *const Ledger) []const u8 {
         // invariant: a world advertises a burn digest only when it actually sent one.
         assert(l.out_present);
@@ -197,7 +197,7 @@ fn write_le64(v: u64, out: []u8) void {
     }
 }
 
-/// The portage digest binding a crossing's two halves — SHA-256 over id·amount·from·to_world·to_account.
+/// The portage digest binding a crossing's two halves -- SHA-256 over id-amount-from-to_world-to_account.
 /// Content-addresses the crossing, so the same crossing hashes identically on either shore.
 pub fn portage_digest(id: []const u8, amount: u64, from: []const u8, world: []const u8, to: []const u8, out: *[digest_len]u8) void {
     // invariant: each bound field is exactly its fixed identity/tag width.
@@ -216,7 +216,7 @@ pub fn portage_digest(id: []const u8, amount: u64, from: []const u8, world: []co
     h.final(out);
 }
 
-/// The genesis-credit body of a kind_issue fact names the account to fund — one full key.
+/// The genesis-credit body of a kind_issue fact names the account to fund -- one full key.
 fn issue_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
     const body = fact.body_slice();
     if (body.len != pk_len) return error.Malformed;
@@ -234,7 +234,7 @@ pub fn fold_portage(l: *Ledger, fact: *const fold.Fact, verify: ?*const [digest_
     // invariant: a genuine fact carries a bounded body under the fact ceiling.
     assert(fact.body_len <= fold.myc_fact_max_bytes);
 
-    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    // Corruption is not a verdict -- a broken signature refuses before any coin moves.
     if (!fold.verify_fact(fact)) return error.IdentityRefused;
 
     if (fact.kind == fold.kind_issue) {
@@ -250,12 +250,12 @@ pub fn fold_portage(l: *Ledger, fact: *const fold.Fact, verify: ?*const [digest_
     const from = fact.signer_pk[0..];
 
     if (tag == tag_out) {
-        // invariant: an out body is exactly tag · id · world · to.
+        // invariant: an out body is exactly tag - id - world - to.
         if (body.len != 1 + id_len + world_tag_len + pk_len) return error.Malformed;
         const id = body[1 .. 1 + id_len];
         const world = body[1 + id_len .. 1 + id_len + world_tag_len];
         const to = body[1 + id_len + world_tag_len ..];
-        // A signer can burn only coins she actually holds — never conjure a debit.
+        // A signer can burn only coins she actually holds -- never conjure a debit.
         const have = l.balance_of(from);
         if (fact.amount > have) return error.NeverPaid;
         const si = account_index(l, from) orelse return error.NeverPaid;
@@ -270,15 +270,15 @@ pub fn fold_portage(l: *Ledger, fact: *const fold.Fact, verify: ?*const [digest_
     }
 
     if (tag == tag_in) {
-        // invariant: an in body is exactly tag · id · digest · to.
+        // invariant: an in body is exactly tag - id - digest - to.
         if (body.len != 1 + id_len + digest_len + pk_len) return error.Malformed;
         const id = body[1 .. 1 + id_len];
         const dg = body[1 + id_len .. 1 + id_len + digest_len];
         const to = body[1 + id_len + digest_len ..];
         _ = kumara.PublicKey.fromBytes(to[0..pk_len].*) catch return error.Malformed;
-        // The crossing lands once — a second in for one id refuses.
+        // The crossing lands once -- a second in for one id refuses.
         if (already_landed(l, id)) return error.AlreadyLanded;
-        // A credit is honored ONLY when its digest matches the verified burn — never conjured.
+        // A credit is honored ONLY when its digest matches the verified burn -- never conjured.
         const v = verify orelse return error.NoMatchingBurn;
         if (!std.mem.eql(u8, dg, v[0..digest_len])) return error.NoMatchingBurn;
         try credit(l, to, fact.amount);
@@ -289,7 +289,7 @@ pub fn fold_portage(l: *Ledger, fact: *const fold.Fact, verify: ?*const [digest_
     return error.Malformed;
 }
 
-/// Resolve a committed single-world Dag into a Ledger under the two-world law — the verdict of that world's
+/// Resolve a committed single-world Dag into a Ledger under the two-world law -- the verdict of that world's
 /// agreed order. `verify` is the burn digest a receiving world checks its in-facts against; a sending world
 /// passes null. Takes no host and no correspondent as input, so either shore reads the same verdict.
 pub fn resolve_world(dag: *const cord.Dag, verify: ?*const [digest_len]u8) WorldError!Ledger {
@@ -312,7 +312,7 @@ pub fn resolve_world(dag: *const cord.Dag, verify: ?*const [digest_len]u8) World
     return l;
 }
 
-/// A world's order-head — the whole-order digest that fingerprints its ledger, reused from the Voucher so a
+/// A world's order-head -- the whole-order digest that fingerprints its ledger, reused from the Voucher so a
 /// crossing can prove which two worlds it joined. Two distinct worlds fingerprint distinctly.
 pub fn world_head(dag: *const cord.Dag, out: *[voucher.order_head_len]u8) void {
     // invariant: an order-head is exactly one block-address width.
@@ -391,7 +391,7 @@ pub fn main() !void {
     var expected: [digest_len]u8 = undefined;
     portage_digest(id[0..], amount, alice[0..], wtag[0..], bob[0..], &expected);
 
-    // --- Scene 1 — THE CRUX: value leaves A, arrives on B, and the pair conserves --------------------------
+    // --- Scene 1 -- THE CRUX: value leaves A, arrives on B, and the pair conserves --------------------------
     const src = try seat_source(0xF0, 0xA1, start, id[0..], wtag[0..], amount, bob[0..]);
     var dag_a = try dag_of(&[_]cord.Block{ src[0], src[1] });
     const la = try resolve_world(&dag_a, null);
@@ -416,14 +416,14 @@ pub fn main() !void {
     assert(left_a == reached_b);
     assert(left_a == amount);
 
-    // The two worlds are genuinely distinct — their order-heads differ, so this is a real crossing.
+    // The two worlds are genuinely distinct -- their order-heads differ, so this is a real crossing.
     var head_a: [voucher.order_head_len]u8 = undefined;
     var head_b: [voucher.order_head_len]u8 = undefined;
     world_head(&dag_a, &head_a);
     world_head(&dag_b, &head_b);
     assert(!std.mem.eql(u8, head_a[0..], head_b[0..]));
 
-    // --- Scene 2 — World B refuses to conjure value: an in whose digest matches no verified burn -----------
+    // --- Scene 2 -- World B refuses to conjure value: an in whose digest matches no verified burn -----------
     {
         var wrong: [digest_len]u8 = undefined;
         tally_copy.copy_disjoint(u8, wrong[0..], expected[0..]);
@@ -437,16 +437,16 @@ pub fn main() !void {
         assert(r2 == error.NoMatchingBurn);
     }
 
-    // --- Scene 3 — the crossing lands once: a second in for one id refuses ---------------------------------
+    // --- Scene 3 -- the crossing lands once: a second in for one id refuses ---------------------------------
     {
-        // A DISTINCT gateway re-presents the same crossing id — a distinct block, one crossing.
+        // A DISTINCT gateway re-presents the same crossing id -- a distinct block, one crossing.
         const in2 = try seat_dest(0xF2, id[0..], expected[0..], amount, bob[0..]);
         var dag_twice = try dag_of(&[_]cord.Block{ in_block, in2 });
         const r = resolve_world(&dag_twice, &expected);
         assert(r == error.AlreadyLanded);
     }
 
-    // --- Scene 4 — a burn of coins never received refuses (a debit cannot be conjured either) --------------
+    // --- Scene 4 -- a burn of coins never received refuses (a debit cannot be conjured either) --------------
     {
         const overreach = try seat_source(0xF0, 0xA1, start, id[0..], wtag[0..], start + 1, bob[0..]);
         var dag_over = try dag_of(&[_]cord.Block{ overreach[0], overreach[1] });

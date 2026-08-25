@@ -1,4 +1,4 @@
-//! Rye test: std.mem.zeroes — pass 9895.
+//! Rye test: std.mem.zeroes -- pass 9895.
 //!
 //! Zero-initialize scalars and small extern structs; pairs with secure_zero (9929).
 

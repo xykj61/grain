@@ -1,9 +1,9 @@
-//! linengrow/glow_seva_b0_digest.rye — Glow product digest surface.
+//! linengrow/glow_seva_b0_digest.rye -- Glow product digest surface.
 //!
 //! STOA194: owns the session-root digest assert (SHA3-256 of log bytes)
 //! while calling elder `digest_log`.
 //! STOA204: replay claim path also asserts through this surface.
-//! STOA247: product-authored digest body — Sha3_256.hash lives here;
+//! STOA247: product-authored digest body -- Sha3_256.hash lives here;
 //! elder receipt_core.digest_log stays peer baseline.
 //!
 //!   rye build linengrow/glow_seva_b0_digest_witness.rye \
@@ -20,7 +20,7 @@ pub const digest_version = "20260722.141443";
 
 pub const DigestError = error{RootMismatch};
 
-/// Digest bounded session-log bytes — product body: Sha3_256.hash (STOA247).
+/// Digest bounded session-log bytes -- product body: Sha3_256.hash (STOA247).
 pub fn digest_log_bytes(log: []const u8) [32]u8 {
     // invariant: the log is digested whole, and the elder format fixes the ceiling, so a longer
     // one would be digested truncated and agree with a log it is not

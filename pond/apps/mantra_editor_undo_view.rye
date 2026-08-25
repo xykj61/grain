@@ -1,22 +1,22 @@
-//! pond/apps/mantra_editor_undo_view.rye — BUHR Journey 4, Rung 5: undo advances the
-//! living edge, yet the newest node shows the restored content — the visible signature
+//! pond/apps/mantra_editor_undo_view.rye -- BUHR Journey 4, Rung 5: undo advances the
+//! living edge, yet the newest node shows the restored content -- the visible signature
 //! of append-only undo.
 //!
 //! Rung two painted a commit's advance: the living edge (each lane's head, lit in the
 //! design system's `head` token) moved forward to the appended node. Rung four made
-//! undo itself an append — `revert` recalls an earlier revision's bytes and commits
+//! undo itself an append -- `revert` recalls an earlier revision's bytes and commits
 //! them as the lane's next revision. This rung carries undo onto the styled Skate
 //! surface and shows the property that makes append-only undo honest to the eye: the
 //! living edge *advances* (undo is a commit like any other, so the head moves right to
 //! the new node), yet the newest node's rendered digest equals the reverted-to node's
-//! digest — because Mantra derives each node's digest from its content, and undo
+//! digest -- because Mantra derives each node's digest from its content, and undo
 //! brought the old content back. So a reader sees the edge move forward while the head
 //! wears the old text's fingerprint: history grew, and the content returned, at once.
 //!
 //! The proof is at the cell level, deterministic and exact: on the edited lane's row,
 //! after reverting r2 back to r1, the head-token edge sits further right than before
 //! (the edge advanced to r3), the row carries `r3[`, and the digest between r3's
-//! brackets is byte-for-byte the digest between r1's — while r2's digest differs (the
+//! brackets is byte-for-byte the digest between r1's -- while r2's digest differs (the
 //! undone edit had its own content). Every other lane's row paints unchanged.
 //!
 //! Additive by construction: it imports mantra_browser, mantra_editor,
@@ -39,11 +39,11 @@ const skate = @import("brushstroke/skate_grid.rye");
 const mantra_editor_undo_view_version = "20260812.125247";
 
 // A three-node chain (r1 -> r2 -> r3) is wider than the demo viewport, so this rung
-// paints on a wider grid — the paint's own ViewTooNarrow bound is why a longer chain
+// paints on a wider grid -- the paint's own ViewTooNarrow bound is why a longer chain
 // wants more columns.
 const wide_cols: u32 = 72;
 
-/// The grid row whose text contains `marker`, or null — a witness helper so a lane's
+/// The grid row whose text contains `marker`, or null -- a witness helper so a lane's
 /// painted row can be found after an undo.
 fn find_row(grid: *const skate.Grid, marker: []const u8) ?u32 {
     // invariant: a real marker has bytes to find.
@@ -58,7 +58,7 @@ fn find_row(grid: *const skate.Grid, marker: []const u8) ?u32 {
 }
 
 /// The rightmost column on `row` painted in the head token (`heads.head_slot`), or
-/// null when the row carries no head cell — the position of the lane's living edge.
+/// null when the row carries no head cell -- the position of the lane's living edge.
 fn head_edge_col(grid: *const skate.Grid, row: u32) ?u32 {
     // invariant: the row sits inside the grid's bounded height.
     assert(row < grid.rows);
@@ -72,7 +72,7 @@ fn head_edge_col(grid: *const skate.Grid, row: u32) ?u32 {
 }
 
 /// The digest bytes between the brackets of the node `marker` (e.g. "r3[") in a
-/// rendered row — a witness helper so two nodes' content fingerprints can be compared.
+/// rendered row -- a witness helper so two nodes' content fingerprints can be compared.
 fn node_digest(row: []const u8, marker: []const u8) []const u8 {
     // invariant: a real node marker has bytes to find.
     assert(marker.len > 0);
@@ -95,7 +95,7 @@ fn welcome_undo_advances_edge_restores_content(allocator: std.mem.Allocator) !vo
     const b_before = find_row(&before, "b.txt:").?;
     const edge_before = head_edge_col(&before, b_before).?;
 
-    // Undo the edit — revert to r1 — and paint the grown graph afresh.
+    // Undo the edit -- revert to r1 -- and paint the grown graph afresh.
     const rev = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
     assert(rev == 3);
     var after = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
@@ -104,7 +104,7 @@ fn welcome_undo_advances_edge_restores_content(allocator: std.mem.Allocator) !vo
     const edge_after = head_edge_col(&after, b_after).?;
     const row = after.row_cells(b_after);
 
-    // The living edge advanced — undo is an append, so the head moved right to r3.
+    // The living edge advanced -- undo is an append, so the head moved right to r3.
     assert(edge_after > edge_before);
     assert(std.mem.indexOf(u8, row, "r3[") != null);
 
@@ -125,7 +125,7 @@ fn welcome_undo_advances_edge_restores_content(allocator: std.mem.Allocator) !vo
 }
 
 fn welcome_undo_lights_only_its_lane(allocator: std.mem.Allocator) !void {
-    // The undo lights only the lane it grew — every other lane's row paints
+    // The undo lights only the lane it grew -- every other lane's row paints
     // byte-for-byte unchanged, its living edge unmoved.
     var catalog = try mb.demo_catalog();
     _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
@@ -146,7 +146,7 @@ fn welcome_undo_lights_only_its_lane(allocator: std.mem.Allocator) !void {
 }
 
 fn welcome_head_lit_over_restored_node(allocator: std.mem.Allocator) !void {
-    // The lit head covers exactly the restored r3 node's span — the living edge really
+    // The lit head covers exactly the restored r3 node's span -- the living edge really
     // is the newest node, and it is the one wearing the reverted content.
     var catalog = try mb.demo_catalog();
     _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
@@ -157,7 +157,7 @@ fn welcome_head_lit_over_restored_node(allocator: std.mem.Allocator) !void {
     const edge = head_edge_col(&grid, b_row).?;
     const span = heads.head_span(grid.row_cells(b_row)).?;
 
-    // The living edge sits inside the rightmost node's span — the head is lit over r3.
+    // The living edge sits inside the rightmost node's span -- the head is lit over r3.
     assert(edge >= span.start);
     assert(edge < span.end);
     assert(std.mem.indexOf(u8, grid.row_cells(b_row)[span.start..span.end], "r3[") != null);

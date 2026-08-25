@@ -1,7 +1,7 @@
-//! pond/apps/mcp_list.rye — BUHR Journey 3, Rung 4: the tools/list envelope.
+//! pond/apps/mcp_list.rye -- BUHR Journey 3, Rung 4: the tools/list envelope.
 //!
 //! Rung three tiled one tool's manifest to the JSON descriptor a `tools/list`
-//! response carries — a single tool discovered. This rung carries that discovery to
+//! response carries -- a single tool discovered. This rung carries that discovery to
 //! its real shape: the whole `tools/list` response, a bounded array of descriptors,
 //! so a JSON MCP host learns every Grain tool a server offers in one exchange. A
 //! bounded Bron catalog of manifests renders to a `format tools/list` JSON-RPC
@@ -10,9 +10,9 @@
 //!
 //! The crux property carries once more, now over many: parse(render(x)) recovers x,
 //! the array reproduced tool for tool, argument for argument, byte-for-byte. It reuses
-//! rung three's single-descriptor writer and reader (`mcp_manifest.rye`) — each tool
+//! rung three's single-descriptor writer and reader (`mcp_manifest.rye`) -- each tool
 //! rendered by the same `manifest_to_json`, each read by the same `read_manifest` over
-//! one shared cursor — and the bounded JSON append the tiles already trust. No new
+//! one shared cursor -- and the bounded JSON append the tiles already trust. No new
 //! transport: the list is the descriptor, many times, inside one envelope.
 //!
 //!   rye build pond/apps/mcp_list.rye -femit-bin=pond/bin/mcp-list
@@ -35,7 +35,7 @@ pub const max_list_scratch: u32 = mj.max_scratch;
 
 pub const ListError = man.ManifestError || error{ ListTooLong, TooManyTools };
 
-/// A bounded catalog of tool manifests — the payload of a `tools/list` response.
+/// A bounded catalog of tool manifests -- the payload of a `tools/list` response.
 pub const ToolList = struct {
     tools: [max_tools]man.Manifest,
     count: u32,
@@ -43,7 +43,7 @@ pub const ToolList = struct {
 
 /// Append `s` into the larger list envelope at cursor `n`, bounded by the caller's
 /// buffer. Kin to `mj.append`, sized for the list envelope rather than one descriptor
-/// — byte by byte within a named bound, no @memcpy. The host bridge (rung five) reuses
+/// -- byte by byte within a named bound, no @memcpy. The host bridge (rung five) reuses
 /// it to place a small call response into its larger response buffer.
 pub fn append(out: []u8, n: *u32, s: []const u8) ListError!void {
     // invariant: the buffer respects the list envelope bound
@@ -96,7 +96,7 @@ pub fn list_to_json(list: *const ToolList, id: u32, out: []u8) ListError![]const
     return out[0..n];
 }
 
-/// Read the `result` object of a `tools/list` response — its `tools` array — looping
+/// Read the `result` object of a `tools/list` response -- its `tools` array -- looping
 /// rung three's `read_manifest` over a shared cursor, one descriptor per element.
 fn read_tools(p: *mj.Parser, sc: *mj.Scratch, list: *ToolList) ListError!void {
     // invariant: the cursor sits within the source
@@ -133,7 +133,7 @@ fn read_tools(p: *mj.Parser, sc: *mj.Scratch, list: *ToolList) ListError!void {
 
 /// Read a JSON-RPC `tools/list` response back into a bounded catalog, interning its
 /// strings into `scratch`. An unknown field, an unknown type, or too many tools is
-/// refused with a named error — the tile never guesses and never truncates silently.
+/// refused with a named error -- the tile never guesses and never truncates silently.
 pub fn list_from_json(src: []const u8, scratch: []u8, list: *ToolList) ListError!void {
     // invariant: a response carries at least an opening byte
     assert(src.len > 0);

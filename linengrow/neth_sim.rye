@@ -1,10 +1,10 @@
-//! linengrow/neth_sim.rye — Neth's deterministic simulation horizon.
+//! linengrow/neth_sim.rye -- Neth's deterministic simulation horizon.
 //!
 //! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 4 ("deterministic simulation as the debugging substrate"): a
 //! seeded fault/delay injection over the replica set so any liveness or
 //! safety failure replays byte-for-byte. Named as a horizon in
-//! work-in-progress/TASKS.md, "built after the real replica laps" —
+//! work-in-progress/TASKS.md, "built after the real replica laps" --
 //! this composes on the two laps that landed this same season:
 //! neth_serial_core.rye's already-witnessed `append_and_reroot` (the fold)
 //! and the two-posture-install/apply-step laps' own crash-safety shape.

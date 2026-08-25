@@ -1,22 +1,22 @@
-//! lotus/wire.rye — ALES0: the basic audio wire shape. Season C (Lotus, the creative suite) opens here, with the one thing
+//! lotus/wire.rye -- ALES0: the basic audio wire shape. Season C (Lotus, the creative suite) opens here, with the one thing
 //! every recorder, interface, and DAW leans on before a note is edited: a way to carry a buffer of audio samples from a
 //! source to the software, verify-before-trust, so a torn or tampered buffer never reaches the timeline. This is the
-//! software carrier only — the exact self-describing, Sha256-sealed frame the tree already trusts (FORA3 constel/wire.rye,
-//! DREY1 mikrophone/wire.rye) — carrying an opaque PCM sample buffer tagged by the cable kind it arrived on.
+//! software carrier only -- the exact self-describing, Sha256-sealed frame the tree already trusts (FORA3 constel/wire.rye,
+//! DREY1 mikrophone/wire.rye) -- carrying an opaque PCM sample buffer tagged by the cable kind it arrived on.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · creative suite) · waymark ALES · rung ALES0.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - creative suite) - waymark ALES - rung ALES0.
 //! Design read: active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md
 //! Stands on: the wire-frame idiom proven at constel/wire.rye (FORA3) and mikrophone/wire.rye (DREY1).
 //!
-//! HONEST SCOPE — software only. The cable kind (XLR · USB-C · guitar) is a ROUTING TAG on the buffer, nothing more: this
-//! rung asserts NO electrical fact — no voltage, impedance, pinout, balanced-vs-unbalanced wiring, or sample rate. Those
+//! HONEST SCOPE -- software only. The cable kind (XLR - USB-C - guitar) is a ROUTING TAG on the buffer, nothing more: this
+//! rung asserts NO electrical fact -- no voltage, impedance, pinout, balanced-vs-unbalanced wiring, or sample rate. Those
 //! belong to audio-interface hardware, which stays a PAUSED hardware-research round (the Six-Season doc yonder-bookmarks it
-//! on Keaton's word). No network, no keys, no funds, no real device — a bounded in-memory frame on the bench.
+//! on Keaton's word). No network, no keys, no funds, no real device -- a bounded in-memory frame on the bench.
 //!
-//! The frame layout: magic(4 "LOTS") · version(1) · cable(1) · payload_len(u32 LE, bytes) · digest(32 Sha256 over payload) ·
+//! The frame layout: magic(4 "LOTS") - version(1) - cable(1) - payload_len(u32 LE, bytes) - digest(32 Sha256 over payload) -
 //! payload (i16 little-endian PCM samples). Deframing is verify-before-trust and TWO independent gates: the Sha256 proves the
 //! payload WHOLE (no byte flipped), and the audio border proves it SAMPLE-ALIGNED (payload_len is a whole number of i16
-//! samples) — so a frame can never yield a torn half-sample onto a timeline, the one correctness a generic wire does not owe
+//! samples) -- so a frame can never yield a torn half-sample onto a timeline, the one correctness a generic wire does not owe
 //! but an audio wire does. The Sha256 is an integrity check the far side recomputes itself, not a signature; a signed carry
 //! is a later, gated rung.
 //!
@@ -34,22 +34,22 @@ pub const wire_version = "20260814.111500";
 /// layout it does not know.
 pub const frame_version: u8 = 1;
 
-/// The four magic bytes that open every Lotus audio frame — "LOTS" (Lotus). A frame that does not open with these refuses
+/// The four magic bytes that open every Lotus audio frame -- "LOTS" (Lotus). A frame that does not open with these refuses
 /// `BadMagic` before any field is read.
 pub const magic: [4]u8 = [4]u8{ 'L', 'O', 'T', 'S' };
 
-/// The digest length — a full Sha256 over the payload, so a single flipped sample byte fails the check.
+/// The digest length -- a full Sha256 over the payload, so a single flipped sample byte fails the check.
 pub const digest_len: u32 = 32;
 
-/// One PCM sample is a little-endian signed 16-bit integer (the common CD-audio format) — two bytes. Named once so the
+/// One PCM sample is a little-endian signed 16-bit integer (the common CD-audio format) -- two bytes. Named once so the
 /// sample-alignment border and the payload bound both read from a single source of truth.
 pub const sample_bytes: u32 = 2;
 
-/// The widest sample buffer one frame carries — a small bounded block, no heap outliving the fixed frame. A real stream is
+/// The widest sample buffer one frame carries -- a small bounded block, no heap outliving the fixed frame. A real stream is
 /// many such frames in sequence; this rung proves one.
 pub const max_samples: u32 = 1024;
 
-/// Which cable a buffer arrived on. A ROUTING TAG ONLY — this rung asserts no electrical property of any cable. One byte on
+/// Which cable a buffer arrived on. A ROUTING TAG ONLY -- this rung asserts no electrical property of any cable. One byte on
 /// the wire; anything else refuses `BadCable`.
 pub const Cable = enum(u8) {
     xlr = 1,
@@ -57,14 +57,14 @@ pub const Cable = enum(u8) {
     guitar = 3,
 };
 
-/// The fixed header before every payload: magic(4) · version(1) · cable(1) · payload_len(u32, 4) · digest(32). Named once so
+/// The fixed header before every payload: magic(4) - version(1) - cable(1) - payload_len(u32, 4) - digest(32). Named once so
 /// the layout is a single source of truth and `open_frame` can never read a field at the wrong offset.
 pub const header_len: u32 = 4 + 1 + 1 + 4 + digest_len;
 
-/// The widest payload — `max_samples` two-byte samples. Named so `max_frame` bounds the whole frame once.
+/// The widest payload -- `max_samples` two-byte samples. Named so `max_frame` bounds the whole frame once.
 pub const max_payload: u32 = max_samples * sample_bytes;
 
-/// The widest a whole frame runs — the header plus the widest payload. No heap outlives this fixed buffer.
+/// The widest a whole frame runs -- the header plus the widest payload. No heap outlives this fixed buffer.
 pub const max_frame: u32 = header_len + max_payload;
 
 pub const WireError = error{
@@ -76,29 +76,29 @@ pub const WireError = error{
     BadVersion,
     /// The cable byte names no known cable kind.
     BadCable,
-    /// A declared payload length past the frame's own ceiling — refused before any payload byte is read.
+    /// A declared payload length past the frame's own ceiling -- refused before any payload byte is read.
     LengthOverflow,
     /// The bytes do not hold the whole declared payload.
     FrameTruncated,
-    /// The declared payload length is not a whole number of i16 samples — a frame must never yield a torn half-sample.
+    /// The declared payload length is not a whole number of i16 samples -- a frame must never yield a torn half-sample.
     PartialSample,
-    /// The recomputed Sha256 does not match the framed digest — a byte flipped in transit.
+    /// The recomputed Sha256 does not match the framed digest -- a byte flipped in transit.
     DigestMismatch,
     /// More samples offered to a framer than one frame can carry.
     TooManySamples,
 };
 
 /// A bounded audio frame: a fixed buffer sized for the widest possible frame, and the length actually written into it.
-/// `bytes()` reads back exactly the framed region — never a byte past what the framer wrote.
+/// `bytes()` reads back exactly the framed region -- never a byte past what the framer wrote.
 pub const Frame = struct {
     buf: [max_frame]u8 = [_]u8{0} ** max_frame,
     len: u32 = 0,
 
-    /// The framed bytes as they stand — exactly the header plus payload the framer wrote.
+    /// The framed bytes as they stand -- exactly the header plus payload the framer wrote.
     pub fn bytes(self: *const Frame) []const u8 {
         // invariant: the frame length never claims more than the buffer holds.
         assert(self.len <= self.buf.len);
-        // invariant: a written frame is at least a whole header — a payload can be empty, a header can never be.
+        // invariant: a written frame is at least a whole header -- a payload can be empty, a header can never be.
         assert(self.len == 0 or self.len >= header_len);
         return self.buf[0..self.len];
     }
@@ -114,7 +114,7 @@ pub const Frame = struct {
 };
 
 /// A deframed audio buffer: its cable tag, its sample count, and the samples themselves in a bounded fixed array. `samples()`
-/// reads back exactly the count that crossed the wire — never a stale tail.
+/// reads back exactly the count that crossed the wire -- never a stale tail.
 pub const Audio = struct {
     cable: Cable = .xlr,
     count: u32 = 0,
@@ -138,12 +138,12 @@ fn read_cable(raw: u8) WireError!Cable {
     };
 }
 
-/// Write the header (magic · version · cable · payload_len · digest) then set `out.len`. The digest is a Sha256 over exactly
+/// Write the header (magic - version - cable - payload_len - digest) then set `out.len`. The digest is a Sha256 over exactly
 /// the payload region already written into `out.buf[header_len..]`.
 fn seal(out: *Frame, c: Cable, plen: u32) void {
     // invariant: the payload fits the fixed frame with room for its header.
     assert(plen <= max_payload);
-    // invariant: a sealed payload is a whole number of i16 samples — the framer only ever writes whole samples.
+    // invariant: a sealed payload is a whole number of i16 samples -- the framer only ever writes whole samples.
     assert(plen % sample_bytes == 0);
     var i: u32 = 0;
     while (i < magic.len) : (i += 1) out.buf[i] = magic[i];
@@ -194,7 +194,7 @@ fn open_frame(bytes: []const u8) WireError!struct { cable: Cable, payload: []con
     const plen = std.mem.readInt(u32, bytes[6..10], .little);
     // A declared length past the frame's ceiling refuses before any payload read.
     if (plen > max_payload) return error.LengthOverflow;
-    // THE AUDIO BORDER — a payload that is not a whole number of i16 samples would yield a torn half-sample. Refuse it before
+    // THE AUDIO BORDER -- a payload that is not a whole number of i16 samples would yield a torn half-sample. Refuse it before
     // a single sample is read, so a timeline never receives half a value.
     if (plen % sample_bytes != 0) return error.PartialSample;
     const whole = header_len + plen;
@@ -217,7 +217,7 @@ fn open_frame(bytes: []const u8) WireError!struct { cable: Cable, payload: []con
 pub fn deframe(bytes: []const u8) WireError!Audio {
     const opened = try open_frame(bytes);
     const count: u32 = @intCast(opened.payload.len / sample_bytes);
-    // invariant: the count is sample-aligned — open_frame already proved the payload a whole number of samples.
+    // invariant: the count is sample-aligned -- open_frame already proved the payload a whole number of samples.
     assert(count * sample_bytes == opened.payload.len);
     assert(count <= max_samples);
     var out = Audio{ .cable = opened.cable, .count = count };
@@ -232,7 +232,7 @@ pub fn deframe(bytes: []const u8) WireError!Audio {
 }
 
 // --- selftest: a buffer round-trips byte-for-byte on each cable; silence and full-scale samples survive; and every
-//     corruption — a torn sample, a flipped byte, an unknown cable, an overlong or truncated or short or bad-magic frame —
+//     corruption -- a torn sample, a flipped byte, an unknown cable, an overlong or truncated or short or bad-magic frame --
 //     refuses by name before a value is formed --------------------------------------------------------------------------
 
 fn run_selftest() !u8 {
@@ -276,7 +276,7 @@ fn run_selftest() !u8 {
         while (t < loud.len) : (t += 1) assert(a2.samples()[t] == loud[t]);
     }
 
-    // 3. THE AUDIO BORDER — a payload length that is not a whole number of i16 samples refuses PartialSample, so a torn
+    // 3. THE AUDIO BORDER -- a payload length that is not a whole number of i16 samples refuses PartialSample, so a torn
     //    half-sample never reaches a timeline. Declare an odd payload_len and fix the digest so only the border can catch it.
     {
         var f = Frame{};
@@ -290,7 +290,7 @@ fn run_selftest() !u8 {
         if (deframe(f.bytes())) |_| return error.PartialSlipped else |e| if (e != error.PartialSample) return error.WrongPartial;
     }
 
-    // 4. A single flipped sample byte refuses DigestMismatch — the integrity gate, independent of the audio border.
+    // 4. A single flipped sample byte refuses DigestMismatch -- the integrity gate, independent of the audio border.
     {
         var f = Frame{};
         try frame(.xlr, &tone, &f);

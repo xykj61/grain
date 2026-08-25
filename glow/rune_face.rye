@@ -1,10 +1,10 @@
 //! glow-book: runes.md#g-face
-//! glow/rune_face.rye — parses Glow's `=/` typed-let (face binding) rune head.
+//! glow/rune_face.rye -- parses Glow's `=/` typed-let (face binding) rune head.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `=` category: `=/` is let, typed. The brief's composition uses
 //! `=/  cur-record=record` and `=/  next-root=@u32` before the bound value.
-//! This extracts the face clause only — the value expression is not this
+//! This extracts the face clause only -- the value expression is not this
 //! parser's job. Fifth rune head; still no general Glow grammar.
 //!
 //! Shapes recognized:
@@ -52,7 +52,7 @@ fn is_mold_char(c: u8) bool {
     return is_ident_char(c) or c == '@';
 }
 
-/// Parses one line of Glow's `=/` rune. Face clause only — not the value.
+/// Parses one line of Glow's `=/` rune. Face clause only -- not the value.
 pub fn parse(line: []const u8) ParseError!FaceSpec {
     if (line.len < 2 or !std.mem.eql(u8, line[0..2], "=/")) return error.NotAFace;
 
@@ -87,7 +87,7 @@ pub fn parse(line: []const u8) ParseError!FaceSpec {
 
     if (eq != null) {
         if (mold_text.len == 0 or mold_text.len > max_name_len) return error.MalformedFace;
-        // Mold: aura (@u32) or named mold (record) — same rule as ^-.
+        // Mold: aura (@u32) or named mold (record) -- same rule as ^-.
         if (mold_text[0] >= '0' and mold_text[0] <= '9') return error.MalformedFace;
         for (mold_text) |c| {
             if (!is_mold_char(c)) return error.MalformedFace;

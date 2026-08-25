@@ -1,16 +1,16 @@
-//! pond/apps/preset_scroll_fling.rye — HUNK45: the fling — momentum decay after the finger lifts.
+//! pond/apps/preset_scroll_fling.rye -- HUNK45: the fling -- momentum decay after the finger lifts.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK45.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK45.
 //! Design read: active-designing/date/20260813/20260813-200615_hunk-scroll-fling-exploration.md
-//! Teacher, thanked clean-room: the momentum layer of any touch scroll surface — after the finger lifts a flick keeps
+//! Teacher, thanked clean-room: the momentum layer of any touch scroll surface -- after the finger lifts a flick keeps
 //! coasting, its velocity decaying under friction until it settles to rest (concept only, siloed).
 //!
 //! HUNK43 routed a raw event; HUNK44 quantized a pixel drag with a carried remainder. Both carry a finger touching the
 //! glass. This rung is the gesture after the finger lifts: a fling is a signed pixels-per-tick velocity that strictly
 //! decreases in magnitude every tick and settles to rest, each tick's delta fed through HUNK44's `drag` so the cursor's
 //! clamps are inherited (a hard fling lands bottom-pinned, never past) and the sign never flips (a downward fling never
-//! reverses). The friction and velocity bounds let the tick count be asserted — a fling always settles, provably, in a
-//! small bounded number of ticks. A pure decay over a bounded velocity — no storage, no render, no timer. No network,
+//! reverses). The friction and velocity bounds let the tick count be asserted -- a fling always settles, provably, in a
+//! small bounded number of ticks. A pure decay over a bounded velocity -- no storage, no render, no timer. No network,
 //! no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_fling.rye selftest
@@ -28,27 +28,27 @@ pub const FlingError = error{
     BadVelocity,
 };
 
-/// A fling always settles well within this many ticks — the friction (at least an eighth per tick) and the velocity
+/// A fling always settles well within this many ticks -- the friction (at least an eighth per tick) and the velocity
 /// cap together bound the coast, and the run loop asserts it terminates under this ceiling.
 pub const max_fling_ticks: u32 = 256;
 
-/// Below this speed a fling comes to rest — a coast slower than two pixels a tick has spent its momentum.
+/// Below this speed a fling comes to rest -- a coast slower than two pixels a tick has spent its momentum.
 pub const min_velocity: u32 = 2;
 
-/// A sane cap on an initial fling speed — a flick faster than a million pixels a tick is not a real gesture, and the
+/// A sane cap on an initial fling speed -- a flick faster than a million pixels a tick is not a real gesture, and the
 /// cap is what lets the tick count stay bounded.
 pub const max_fling_velocity: u32 = 1 << 20;
 
 /// A decaying fling. `velocity` is signed pixels-per-tick (positive coasts the content down, matching HUNK44's sign);
 /// `friction_num/friction_den` is the decay fraction applied each tick. The governing law: the velocity magnitude
 /// strictly decreases every tick and settles to exactly zero, so a fling always comes to rest. No cursor and no library
-/// live here — a fling is a velocity and a friction.
+/// live here -- a fling is a velocity and a friction.
 pub const Fling = struct {
     velocity: i32 = 0,
     friction_num: u32 = 3,
     friction_den: u32 = 4,
 
-    /// Open a fling. The friction must strictly decay (`num < den`) and by at least an eighth a tick (`8·num <= 7·den`)
+    /// Open a fling. The friction must strictly decay (`num < den`) and by at least an eighth a tick (`8-num <= 7-den`)
     /// so the coast is bounded; the denominator must be non-zero; the initial speed must sit within the display cap.
     pub fn open(velocity: i32, friction_num: u32, friction_den: u32) FlingError!Fling {
         // invariant: the friction is a real, strictly-decaying fraction that settles a fling in bounded ticks.
@@ -66,7 +66,7 @@ pub const Fling = struct {
         return self.velocity == 0;
     }
 
-    /// The speed (unsigned magnitude) of the fling — a pure read a witness uses to prove the monotone decay.
+    /// The speed (unsigned magnitude) of the fling -- a pure read a witness uses to prove the monotone decay.
     pub fn speed(self: *const Fling) u32 {
         const s: i64 = if (self.velocity < 0) -@as(i64, self.velocity) else @as(i64, self.velocity);
         // invariant: the magnitude never exceeds the display cap it opened within.
@@ -75,9 +75,9 @@ pub const Fling = struct {
     }
 
     /// Advance the fling one tick: move the cursor by the current velocity through HUNK44's `drag` (inheriting every
-    /// clamp), then decay the velocity toward rest — below `min_velocity` it settles to exactly zero, else it takes the
+    /// clamp), then decay the velocity toward rest -- below `min_velocity` it settles to exactly zero, else it takes the
     /// truncated-toward-zero fraction (so the sign never flips). Returns the pixel delta this tick carried. The decay
-    /// is taken in `i64` so `velocity · num` never wraps.
+    /// is taken in `i64` so `velocity - num` never wraps.
     pub fn step(self: *Fling, cursor: *preset_scroll.ScrollCursor, quant: *preset_scroll_drag.DragScroll) i32 {
         // invariant: a settled fling is not stepped again (the caller checks done first).
         assert(self.velocity != 0);
@@ -93,13 +93,13 @@ pub const Fling = struct {
         } else {
             self.velocity = @intCast(decayed);
         }
-        // invariant: the decay never flips the sign — a coast keeps its direction until it settles.
+        // invariant: the decay never flips the sign -- a coast keeps its direction until it settles.
         assert(self.velocity == 0 or (self.velocity < 0) == (delta < 0));
         return delta;
     }
 
     /// Run the whole coast: step the fling until it settles, bounded by `max_fling_ticks`. Returns the tick count.
-    /// The bound is a real assertion — the friction and velocity caps guarantee a fling settles well within it.
+    /// The bound is a real assertion -- the friction and velocity caps guarantee a fling settles well within it.
     pub fn run(self: *Fling, cursor: *preset_scroll.ScrollCursor, quant: *preset_scroll_drag.DragScroll) u32 {
         // invariant: the cursor stands on a real viewport before the coast.
         assert(cursor.offset <= cursor.max_offset());
@@ -107,7 +107,7 @@ pub const Fling = struct {
         while (!self.done()) {
             _ = self.step(cursor, quant);
             ticks += 1;
-            // invariant: a bounded fling always settles within the ceiling — never an unbounded coast.
+            // invariant: a bounded fling always settles within the ceiling -- never an unbounded coast.
             assert(ticks <= max_fling_ticks);
         }
         // invariant: after the coast the cursor still stands on a real, bottom-pinned viewport (clamps inherited).
@@ -192,7 +192,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // No overshoot: a hard downward fling lands exactly on the bottom-pinned offset (never past it, no wrap); a hard
-    // upward one on the top. The clamps are inherited from HUNK44/HUNK43 — the fling never falls off the ends.
+    // upward one on the top. The clamps are inherited from HUNK44/HUNK43 -- the fling never falls off the ends.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
         var q = try preset_scroll_drag.DragScroll.open(cell);
@@ -206,7 +206,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(cur.offset == 0); // top-pinned, no underflow
     }
 
-    // A gentler friction (7/8, the bound's edge) settles too, still within the ceiling — the tick bound holds at the
+    // A gentler friction (7/8, the bound's edge) settles too, still within the ceiling -- the tick bound holds at the
     // slowest allowed decay.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
@@ -217,7 +217,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(t <= max_fling_ticks); // even the slowest allowed fling settles within the ceiling
     }
 
-    // A zero-velocity fling is immediately done — no finger motion, no coast.
+    // A zero-velocity fling is immediately done -- no finger motion, no coast.
     {
         var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
         var q = try preset_scroll_drag.DragScroll.open(cell);

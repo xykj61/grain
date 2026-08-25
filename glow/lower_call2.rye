@@ -1,7 +1,7 @@
-//! glow/lower_call2.rye — lower a parsed `%+` call to runnable `.rye`.
+//! glow/lower_call2.rye -- lower a parsed `%+` call to runnable `.rye`.
 //!
 //! Thin STOA7 face: closed demo gate `add` (a +% b) with demo atoms 5 and
-//! 3 → expect 8. Unknown gates refuse at lower time.
+//! 3 -> expect 8. Unknown gates refuse at lower time.
 
 const std = @import("std");
 const r2 = @import("rune_call2.rye");

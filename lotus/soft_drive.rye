@@ -1,31 +1,31 @@
-//! lotus/soft_drive.rye — ALES79: the soft-clip overdrive — ALES78's hard clip with its corner rounded. The hard-clip drive (ALES78) pins
-//! a boosted sample abruptly at ±ceil: the transition from clean to clipped is a sharp corner, and a sharp corner is bright and buzzy — the
+//! lotus/soft_drive.rye -- ALES79: the soft-clip overdrive -- ALES78's hard clip with its corner rounded. The hard-clip drive (ALES78) pins
+//! a boosted sample abruptly at ±ceil: the transition from clean to clipped is a sharp corner, and a sharp corner is bright and buzzy -- the
 //! sound of a fuzz. An overdrive is gentler: below a KNEE the boosted signal passes clean, and between the knee and the ceiling the slope
 //! HALVES, so the wave bends toward the ceiling rather than slamming into it. That rounded shoulder is the warmth of an overdriven tube or a
-//! pushed preamp — a softer harmonic spectrum than the hard clip's, the same odd-harmonic character with the highest edges smoothed.
+//! pushed preamp -- a softer harmonic spectrum than the hard clip's, the same odd-harmonic character with the highest edges smoothed.
 //!
-//! The crux is that SOFT-CLIP DRIVE IS ALES78's HARD CLIP WITH ITS CORNER ROUNDED — and a hard clip is the soft clip whose KNEE sits AT the
+//! The crux is that SOFT-CLIP DRIVE IS ALES78's HARD CLIP WITH ITS CORNER ROUNDED -- and a hard clip is the soft clip whose KNEE sits AT the
 //! ceiling. The two rungs are one waveshaper read at two knee positions: pull the knee below the ceiling and a half-slope shoulder opens between
 //! them; push the knee up to the ceiling and the shoulder vanishes, leaving ALES78's sharp pin. So the pre-gain is ALES78's verbatim (ALES6's
 //! num/den into i64), and the shape is one piecewise-linear map on the boosted magnitude m = |boosted|, sign held: m ≤ knee passes clean; knee <
-//! m rises at half slope, knee + (m − knee)/2; and once that shoulder would reach the ceiling (m ≥ 2·ceil − knee) it pins to ceil, ALES78's own
-//! ceiling law at the shoulder's top. Three straight segments — slope one, slope one-half, slope zero — every one exact in integer arithmetic.
+//! m rises at half slope, knee + (m − knee)/2; and once that shoulder would reach the ceiling (m ≥ 2-ceil − knee) it pins to ceil, ALES78's own
+//! ceiling law at the shoulder's top. Three straight segments -- slope one, slope one-half, slope zero -- every one exact in integer arithmetic.
 //!
 //! The output magnitude never exceeds the ceiling (the shoulder is capped, the pin holds), so the write lands in [−ceil, ceil] ⊆ the i16 rail
 //! BEFORE the write, exactly as the hard clip: the saturate that follows is a documented no-op, the shape does the clipping. The map is ODD,
-//! soft_drive(−x) = −soft_drive(x) (the magnitude is shaped, the sign carried through), so a symmetric input yields a symmetric output — odd
+//! soft_drive(−x) = −soft_drive(x) (the magnitude is shaped, the sign carried through), so a symmetric input yields a symmetric output -- odd
 //! harmonics, softened. It is MEMORYLESS: every output depends only on its own input, so the in-place read-then-write touches nothing another
 //! step needs.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES79.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES79.
 //! Design read: active-designing/date/20260814/20260814-205812_fill-ales79-lotus-soft-clip-overdrive.md
-//! Stands on: lotus/drive.rye (ALES78) — the pre-gain and the ceiling pin, reused with a knee opened below the ceiling; lotus/fader.rye (ALES6)
-//! — the num/den gain in i64; lotus/limit.rye (ALES49) — the ceiling law the shoulder's top reuses; lotus/timeline.rye (ALES2) — the Clip,
+//! Stands on: lotus/drive.rye (ALES78) -- the pre-gain and the ceiling pin, reused with a knee opened below the ceiling; lotus/fader.rye (ALES6)
+//! -- the num/den gain in i64; lotus/limit.rye (ALES49) -- the ceiling law the shoulder's top reuses; lotus/timeline.rye (ALES2) -- the Clip,
 //! sample_min/max, the one true saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no
-//! keys, no funds, no real device, no real sample rate — the gain is a rational num/den (unity = 1/1), the knee and ceiling magnitudes in sample
-//! units (not decibels), and the shape a piecewise-linear waveshaper, instantaneous (no attack/release, no anti-aliasing — the harmonics fold in
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no
+//! keys, no funds, no real device, no real sample rate -- the gain is a rational num/den (unity = 1/1), the knee and ceiling magnitudes in sample
+//! units (not decibels), and the shape a piecewise-linear waveshaper, instantaneous (no attack/release, no anti-aliasing -- the harmonics fold in
 //! the i16 domain exactly as any integer waveshaper's). One multiply, one divide, and a bounded piecewise map per sample; the gain runs in i64
 //! so it never overflows before the shape, and the shaped value fits the i16 rail by construction.
 //!
@@ -41,58 +41,58 @@ const drive = @import("drive.rye");
 pub const soft_drive_version = "20260814.205812";
 
 /// The soft-clip drive's faults, one consistent name each. BadGain, BadCeiling, and BadRange coincide by name with ALES78's hard drive (and
-/// through it ALES49's limiter) — Zig merges error sets by name — so a composer sees one consistent fault whichever drive refuses. BadKnee is
+/// through it ALES49's limiter) -- Zig merges error sets by name -- so a composer sees one consistent fault whichever drive refuses. BadKnee is
 /// the one name this rung adds: the knee must be a legal magnitude at or below the ceiling, so the soft shoulder sits inside the field (a knee
 /// AT the ceiling is legal and degenerates to the hard clip).
 pub const SoftDriveError = error{
-    /// A zero denominator, a gain below unity (num < den — a drive boosts, never attenuates), or a numerator past drive.max_drive_num — no write.
+    /// A zero denominator, a gain below unity (num < den -- a drive boosts, never attenuates), or a numerator past drive.max_drive_num -- no write.
     BadGain,
-    /// A knee below one sample unit, or above the ceiling (the shoulder would sit outside the field) — refused, no write.
+    /// A knee below one sample unit, or above the ceiling (the shoulder would sit outside the field) -- refused, no write.
     BadKnee,
-    /// A ceiling of zero, or above sample_max (nothing boosted could ever be pinned there) — refused, no write.
+    /// A ceiling of zero, or above sample_max (nothing boosted could ever be pinned there) -- refused, no write.
     BadCeiling,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// The soft-clip shape on one non-negative boosted magnitude `m`: below `knee` it passes clean; between `knee` and the shoulder's top it rises at
-/// half slope, `knee + (m − knee)/2`; at or past the top (`m ≥ 2·ceil − knee`) it pins to `ceil`. Returns a magnitude in [0, ceil]. Total and
+/// half slope, `knee + (m − knee)/2`; at or past the top (`m ≥ 2-ceil − knee`) it pins to `ceil`. Returns a magnitude in [0, ceil]. Total and
 /// small so the per-sample loop reads plainly; the sign is carried by the caller.
 fn shape_magnitude(m: i64, knee: i64, ceil: i64) i64 {
-    // invariant: the inputs are legal magnitudes with the knee inside the field — 0 ≤ m, 1 ≤ knee ≤ ceil ≤ sample_max — so every segment below
+    // invariant: the inputs are legal magnitudes with the knee inside the field -- 0 ≤ m, 1 ≤ knee ≤ ceil ≤ sample_max -- so every segment below
     // is exact and non-negative.
     assert(m >= 0 and knee >= 1 and knee <= ceil and ceil <= @as(i64, timeline.sample_max));
     if (m <= knee) return m;
     // The half-slope shoulder: the excess above the knee counts half. @divTrunc toward zero, exact for a non-negative excess.
     const shaped: i64 = knee + @divTrunc(m - knee, 2);
-    // invariant: the shoulder never rises above the ceiling before the pin — it reaches ceil exactly at m = 2·ceil − knee, and this branch is
+    // invariant: the shoulder never rises above the ceiling before the pin -- it reaches ceil exactly at m = 2-ceil − knee, and this branch is
     // reached only for m > knee, so shaped ≥ knee.
     assert(shaped >= knee);
     if (shaped > ceil) return ceil;
-    // invariant: a shaped shoulder value sits in [knee, ceil] — clean below, capped above.
+    // invariant: a shaped shoulder value sits in [knee, ceil] -- clean below, capped above.
     assert(shaped >= knee and shaped <= ceil);
     return shaped;
 }
 
 /// Soft-drive `count` samples starting at `start` in place in `clip`: each sample is boosted by the rational gain `num`/`den` (at least unity)
-/// and then soft-clipped through a knee — clean below `knee`, half-slope between `knee` and `ceil`, pinned at `ceil` above. A hard clip is this
+/// and then soft-clipped through a knee -- clean below `knee`, half-slope between `knee` and `ceil`, pinned at `ceil` above. A hard clip is this
 /// same map with `knee == ceil`. After the call every written sample's magnitude is at most `ceil`, its sign matches the input's, and every
 /// output depends only on its own input (the shape is memoryless). Refuses BadGain, BadKnee (a knee outside [1, ceil]), BadCeiling, and BadRange
-/// — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+/// -- each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only -- never the length.
 pub fn soft_drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, knee: i32, ceil: i32) SoftDriveError!void {
-    // invariant: the gain is legal exactly as ALES78's hard drive — nonzero denominator, at least unity, numerator within the safe bound. The
+    // invariant: the gain is legal exactly as ALES78's hard drive -- nonzero denominator, at least unity, numerator within the safe bound. The
     // same three checks, so the same three faults, before any write.
     if (den == 0) return error.BadGain;
     if (num < den) return error.BadGain;
     if (num > drive.max_drive_num) return error.BadGain;
-    // invariant: the ceiling is a legal magnitude — at least one sample unit, no greater than the i16 rail (ALES49's exact bound).
+    // invariant: the ceiling is a legal magnitude -- at least one sample unit, no greater than the i16 rail (ALES49's exact bound).
     if (ceil < 1) return error.BadCeiling;
     if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
-    // invariant: the knee is a legal magnitude sitting inside the field — at least one sample unit and no greater than the ceiling, so the soft
+    // invariant: the knee is a legal magnitude sitting inside the field -- at least one sample unit and no greater than the ceiling, so the soft
     // shoulder [knee, ceil] is well-formed (a knee AT the ceiling is legal and degenerates to the hard clip).
     if (knee < 1) return error.BadKnee;
     if (knee > ceil) return error.BadKnee;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -100,25 +100,25 @@ pub fn soft_drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u
     const knee_v: i64 = @as(i64, knee); // safe: 1 <= knee <= ceil
     const n: i64 = @as(i64, num);
     const d: i64 = @as(i64, den);
-    // invariant: the gain terms are bounded and positive, and the knee sits inside the field — so the pre-gain never overflows i64 and the
+    // invariant: the gain terms are bounded and positive, and the knee sits inside the field -- so the pre-gain never overflows i64 and the
     // shape's segments are all exact.
     assert(n >= d and d >= 1 and n <= @as(i64, drive.max_drive_num) and knee_v >= 1 and knee_v <= ceiling);
     var k: u32 = 0;
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
         const dry: i64 = @as(i64, clip.buf[i]);
-        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        // invariant: the sample read is a legal i16 -- it is audio, never a wide intermediate.
         assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
         // The pre-gain, ALES78's verbatim: dry boosted by num/den in i64, @divTrunc toward zero exactly as ALES6's fader.
         const boosted: i64 = @divTrunc(dry * n, d);
-        // Shape the MAGNITUDE and carry the sign — the waveshaper is odd, so a symmetric input maps to a symmetric output.
+        // Shape the MAGNITUDE and carry the sign -- the waveshaper is odd, so a symmetric input maps to a symmetric output.
         const mag: i64 = if (boosted < 0) -boosted else boosted;
         const shaped_mag: i64 = shape_magnitude(mag, knee_v, ceiling);
         const shaped: i64 = if (boosted < 0) -shaped_mag else shaped_mag;
-        // invariant: the shaped value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION —
+        // invariant: the shaped value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION --
         // the shape does the clipping, and the saturate that follows is a documented no-op over an already-bounded value.
         assert(shaped >= -ceiling and shaped <= ceiling);
-        // invariant: the sign is held — the magnitude is shaped and the boosted sign carried, so an odd waveshaper never flips a sample.
+        // invariant: the sign is held -- the magnitude is shaped and the boosted sign carried, so an odd waveshaper never flips a sample.
         assert((boosted >= 0 and shaped >= 0) or (boosted <= 0 and shaped <= 0));
         clip.buf[i] = timeline.saturate(shaped);
     }
@@ -130,8 +130,8 @@ pub fn soft_drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u
 // --- selftest: A KNEE AT THE CEILING IS ALES78's HARD CLIP (the family recognition, proven byte-for-byte against the real hard drive); the
 //     HALF-SLOPE SHOULDER matches a hand computation exactly (clean below the knee, half slope to the top, pinned above); a WIDE-KNEE overdrive
 //     is GENTLER than the hard clip at the same gain (a shoulder value sits below the hard pin wherever they differ); the shape is ODD,
-//     soft_drive(−x) = −soft_drive(x); the OUTPUT NEVER EXCEEDS THE CEILING under a heavy drive; the span discipline holds; and each fault —
-//     BadGain, BadKnee (below 1, above ceil), BadCeiling, BadRange — refuses by name, the clip untouched ---
+//     soft_drive(−x) = −soft_drive(x); the OUTPUT NEVER EXCEEDS THE CEILING under a heavy drive; the span discipline holds; and each fault --
+//     BadGain, BadKnee (below 1, above ceil), BadCeiling, BadRange -- refuses by name, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -145,7 +145,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. A KNEE AT THE CEILING IS ALES78's HARD CLIP — the crux. With knee == ceil the shoulder vanishes and the soft drive reproduces the hard
+    // 1. A KNEE AT THE CEILING IS ALES78's HARD CLIP -- the crux. With knee == ceil the shoulder vanishes and the soft drive reproduces the hard
     //    drive byte-for-byte, at the same gain and ceiling, over a signal that both passes and clips. Proven against the REAL ALES78 (both run).
     {
         const sig = [_]i16{ 300, -300, 1000, -2000, 5000, -6000, 100, -50 };
@@ -158,9 +158,9 @@ fn run_selftest() !u8 {
         if (!eq(a.samples(), b.samples())) return error.KneeAtCeilNotHard;
     }
 
-    // 2. THE HALF-SLOPE SHOULDER — a hand computation. knee = 1000, ceil = 1500 (shoulder top at 2·1500 − 1000 = 2000), gain ×1/1 so the
-    //    boosted value is the input. 800 passes (clean); 1000 passes (at the knee); 1400 → 1000 + 400/2 = 1200; 1800 → 1000 + 800/2 = 1400;
-    //    2000 → 1000 + 1000/2 = 1500 (reaches the ceiling exactly); 3000 → pinned to 1500. Signs carried on the negatives.
+    // 2. THE HALF-SLOPE SHOULDER -- a hand computation. knee = 1000, ceil = 1500 (shoulder top at 2-1500 − 1000 = 2000), gain ×1/1 so the
+    //    boosted value is the input. 800 passes (clean); 1000 passes (at the knee); 1400 -> 1000 + 400/2 = 1200; 1800 -> 1000 + 800/2 = 1400;
+    //    2000 -> 1000 + 1000/2 = 1500 (reaches the ceiling exactly); 3000 -> pinned to 1500. Signs carried on the negatives.
     {
         const sig = [_]i16{ 800, -1000, 1400, -1800, 2000, -3000 };
         var clip = timeline.Clip{};
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.ShoulderWrong;
     }
 
-    // 3. A WIDE-KNEE OVERDRIVE IS GENTLER THAN THE HARD CLIP — at the same gain and ceiling, wherever the two differ the soft shoulder sits
+    // 3. A WIDE-KNEE OVERDRIVE IS GENTLER THAN THE HARD CLIP -- at the same gain and ceiling, wherever the two differ the soft shoulder sits
     //    strictly below the hard pin (a rounded corner, never louder than the abrupt one). Proven sample-by-sample against the real hard drive.
     {
         const sig = [_]i16{ 200, -400, 900, -1300, 2500, -4000, 1100, -1150 };
@@ -190,8 +190,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE SHAPE IS ODD — soft_drive(−x) = −soft_drive(x). A ± symmetric input maps to a ± symmetric output at a wide knee: out[0] = −out[1],
-    //    out[2] = −out[3], out[4] = −out[5] — the shoulder shapes the magnitude and carries the sign, so only odd harmonics arise.
+    // 4. THE SHAPE IS ODD -- soft_drive(−x) = −soft_drive(x). A ± symmetric input maps to a ± symmetric output at a wide knee: out[0] = −out[1],
+    //    out[2] = −out[3], out[4] = −out[5] -- the shoulder shapes the magnitude and carries the sign, so only odd harmonics arise.
     {
         const sig = [_]i16{ 700, -700, 3000, -3000, 60, -60 };
         var clip = timeline.Clip{};
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.NotOddSymmetric;
     }
 
-    // 5. THE OUTPUT NEVER EXCEEDS THE CEILING — under a heavy ×8 drive every output magnitude stays at or below the ceiling, its sign held. The
+    // 5. THE OUTPUT NEVER EXCEEDS THE CEILING -- under a heavy ×8 drive every output magnitude stays at or below the ceiling, its sign held. The
     //    shoulder caps and the pin holds, so no shaped value can cross the rail.
     {
         const sig = [_]i16{ 100, -100, 4000, -4000, 20000, -20000, 5, -5 };
@@ -218,7 +218,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. THE SPAN DISCIPLINE — soft-driving a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
+    // 6. THE SPAN DISCIPLINE -- soft-driving a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the
     //    whole suite keeps. Drive the middle two of six; the first and last two are untouched.
     {
         const sig = [_]i16{ 100, 200, 5000, -5000, 300, 400 };
@@ -229,7 +229,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpanLeaked;
     }
 
-    // 7a. A ZERO DENOMINATOR / BELOW-UNITY GAIN / OVERSIZED NUMERATOR each refuse BadGain — before any write, the clip untouched (ALES78's gain
+    // 7a. A ZERO DENOMINATOR / BELOW-UNITY GAIN / OVERSIZED NUMERATOR each refuse BadGain -- before any write, the clip untouched (ALES78's gain
     //     faults, verbatim).
     {
         const sig = [_]i16{ 1, 2, 3, 4 };
@@ -243,7 +243,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.RefusedWideNumTouched;
     }
 
-    // 7b. A KNEE below one sample unit refuses BadKnee; a knee ABOVE the ceiling refuses BadKnee — before any write, the clip untouched.
+    // 7b. A KNEE below one sample unit refuses BadKnee; a knee ABOVE the ceiling refuses BadKnee -- before any write, the clip untouched.
     {
         const sig = [_]i16{ 5, 6, 7, 8 };
         var clip = timeline.Clip{};
@@ -254,7 +254,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.RefusedHighKneeTouched;
     }
 
-    // 7c. A ZERO / OVER-RAIL CEILING refuses BadCeiling; a SPAN past the end refuses BadRange — before any write, the clip untouched.
+    // 7c. A ZERO / OVER-RAIL CEILING refuses BadCeiling; a SPAN past the end refuses BadRange -- before any write, the clip untouched.
     {
         const sig = [_]i16{ 9, 10, 11 };
         var clip = timeline.Clip{};

@@ -1,4 +1,4 @@
-//! mandi/listing_settle.rye — Mandi listing-settle selftest (settle vessel listing) · 20260728.
+//! mandi/listing_settle.rye -- Mandi listing-settle selftest (settle vessel listing) - 20260728.
 //!
 //!   rye build mandi/listing_settle.rye -femit-bin=mandi/bin/listing-settle
 //!   mandi/bin/listing-settle selftest
@@ -86,7 +86,7 @@ fn run_selftest(io: std.Io) !u8 {
     var wov_digest: [settle.digest_hex_len]u8 = undefined;
     settle.digest_bytes(wov_line_len, &wov_digest);
 
-    // 4. Payment body → payment digest.
+    // 4. Payment body -> payment digest.
     const payment_fields = settle.PaymentFields{
         .amount = "25",
         .currency = "murr",

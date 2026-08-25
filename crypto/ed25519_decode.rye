@@ -1,30 +1,30 @@
-//! crypto/ed25519_decode.rye — Season G (Cryptography), the ninth rung: point decompression on edwards25519 authored in pure Rye,
+//! crypto/ed25519_decode.rye -- Season G (Cryptography), the ninth rung: point decompression on edwards25519 authored in pure Rye,
 //! composed entirely over the GREEN base field (crypto/fe25519.rye), recovering a full curve point from the 32-byte encoding that the group
-//! law's compression produces. Ed25519 verification — the far side of the Lotus signed carry, Kumara identity, Vault, Comlink — receives a
+//! law's compression produces. Ed25519 verification -- the far side of the Lotus signed carry, Kumara identity, Vault, Comlink -- receives a
 //! public key A and a commitment R as 32 bytes each and must turn them back into points before it can check a signature; this file authors
 //! exactly that inverse, decode, so compression and decompression now stand as a matched pair. It is the last piece of pure curve arithmetic
 //! the verify equation needs; sign and verify themselves become compositions over this, the scalar ladder, and SHA-512.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
 //! unblock) and the group law's own header, crypto/ed25519_group.rye, whose closing line names point decode as its remaining arithmetic rung.
-//! Kin: crypto/ed25519_group.rye (compression, the inverse of this decode, GREEN) · crypto/ed25519_scalarmul.rye (the ladder, GREEN) ·
-//! crypto/fe25519.rye (the base field, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our
+//! Kin: crypto/ed25519_group.rye (compression, the inverse of this decode, GREEN) - crypto/ed25519_scalarmul.rye (the ladder, GREEN) -
+//! crypto/fe25519.rye (the base field, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our
 //! own composition, studied clean-room from the public mathematics of twisted Edwards curves and RFC 8032 (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — a 32-byte encoding carries the whole y coordinate in its low 255 bits and the sign (low bit) of x in the top bit (RFC 8032
-//! §5.1.2). To recover x from y (RFC 8032 §5.1.3): the curve equation gives x² = (y² − 1)/(d·y² + 1), so with u = y² − 1 and v = d·y² + 1 the
-//! candidate root is x = (u·v)^((p−5)/8)·u, the standard division-free square-root form. Squaring back, v·x² is either u (the root is
+//! THE CRUX -- a 32-byte encoding carries the whole y coordinate in its low 255 bits and the sign (low bit) of x in the top bit (RFC 8032
+//! §5.1.2). To recover x from y (RFC 8032 §5.1.3): the curve equation gives x² = (y² − 1)/(d-y² + 1), so with u = y² − 1 and v = d-y² + 1 the
+//! candidate root is x = (u-v)^((p−5)/8)-u, the standard division-free square-root form. Squaring back, v-x² is either u (the root is
 //! right), or −u (multiply x by √−1 = 2^((p−1)/4)), or neither (the encoding names no curve point, and decode refuses). Finally, if the low
 //! bit of x disagrees with the encoded sign, negate x. The curve constant d = −121665/121666 and √−1 are both derived in our own field
 //! arithmetic, never copied literals. Nothing here is a claim about a device; it is arithmetic anyone can replay against RFC 8032.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. Decoding a public encoding into a point is
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Decoding a public encoding into a point is
 //! arithmetic, not a secret and not a signature: this file holds no key and calls no std.crypto in the primitive. The exponentiations here
 //! run a fixed ladder over public data (an encoding is public), so they are data-independent by construction; the whole-signature
-//! constant-time posture stays the same named horizon the Season carries. Parity is proven at selftest against two references runnable now —
+//! constant-time posture stays the same named horizon the Season carries. Parity is proven at selftest against two references runnable now --
 //! an algebraic identity anyone can check (√−1 squared is −1) and a round-trip through the GREEN compression (decode then compress returns
-//! the original encoding) — and Zig's own std.crypto.ecc.Edwards25519.fromBytes as an independent implementation, matched byte-for-byte on
+//! the original encoding) -- and Zig's own std.crypto.ecc.Edwards25519.fromBytes as an independent implementation, matched byte-for-byte on
 //! the recovered coordinates over the base point and its multiples, and matched in accept/reject verdict across a spread of encodings
 //! including ones that name no curve point. Monocypher-source parity stays the same held-fetch horizon the other primitives carry.
 //!
@@ -39,7 +39,7 @@ const pt = @import("ed25519_group.rye");
 
 pub const ed25519_decode_version = "20260815.200500";
 
-/// The one way decode can refuse: the 32-byte encoding names no point on edwards25519 (v·x² is neither u nor −u). A named error, surfaced
+/// The one way decode can refuse: the 32-byte encoding names no point on edwards25519 (v-x² is neither u nor −u). A named error, surfaced
 /// before any point is returned, exactly as verify-before-trust wants.
 pub const DecodeError = error{NotOnCurve};
 
@@ -48,7 +48,7 @@ fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
 }
 
-/// Negate a field element — 0 − a.
+/// Negate a field element -- 0 − a.
 fn fe_neg(a: fe.Field) fe.Field {
     return fe.sub(fe.Field{ .l = .{ 0, 0, 0, 0, 0 } }, a);
 }
@@ -78,10 +78,10 @@ fn edwards_d() fe.Field {
 }
 
 /// Raise a field element to a fixed 256-bit little-endian exponent by square-and-multiply, most significant bit first. The two exponents
-/// decode needs — (p−5)/8 for the square-root candidate and (p−1)/4 for √−1 — are both public constants of the field, so this ladder is a
+/// decode needs -- (p−5)/8 for the square-root candidate and (p−1)/4 for √−1 -- are both public constants of the field, so this ladder is a
 /// fixed, data-independent sequence.
 fn fe_pow(a: fe.Field, e: *const [32]u8) fe.Field {
-    // invariant: the ladder walks a fixed 256 bits — the bound is a named width, not an open loop.
+    // invariant: the ladder walks a fixed 256 bits -- the bound is a named width, not an open loop.
     var r = fe_one();
     var i: u32 = 256;
     while (i > 0) {
@@ -122,7 +122,7 @@ fn sqrt_m1() fe.Field {
 
 /// Decompress a 32-byte encoding (RFC 8032 §5.1.3) into a full extended-coordinate point, or refuse NotOnCurve. The one inverse of the group
 /// law's compression: it reads y from the low 255 bits and the sign of x from the top bit, recovers x by the standard division-free square
-/// root, corrects the root branch with √−1, and fixes the sign, returning an affine point (Z = 1, T = x·y).
+/// root, corrects the root branch with √−1, and fixes the sign, returning an affine point (Z = 1, T = x-y).
 pub fn decode(s: *const [32]u8) DecodeError!pt.Point {
     var yb = s.*;
     yb[31] &= 0x7f; // y lives in the low 255 bits
@@ -164,7 +164,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// A deterministic spread of candidate encodings — the same generator shape the field's own selftest uses, seeded so each differs. The top
+/// A deterministic spread of candidate encodings -- the same generator shape the field's own selftest uses, seeded so each differs. The top
 /// bit carries a varied sign so both sign branches are exercised; some seeds land on the curve and some do not, giving the accept/reject
 /// verdict something to disagree on if decode were wrong.
 fn test_bytes(seed: u8) [32]u8 {
@@ -186,7 +186,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. Round-trip against the GREEN compression, and independent-coordinate parity against Zig's fromBytes, over the base point and several
-    //    of its multiples — every one a genuine curve point, so decode must recover it exactly.
+    //    of its multiples -- every one a genuine curve point, so decode must recover it exactly.
     {
         const b = ZEd.basePoint;
         const b2 = b.dbl();
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         for (zs) |zp| {
             const e = zp.toBytes();
             const ours = try decode(&e);
-            // decode then compress returns the original encoding — the two are a matched inverse pair.
+            // decode then compress returns the original encoding -- the two are a matched inverse pair.
             if (!bytes_eq(&pt.to_bytes(ours), &e)) return error.RoundTripMismatch;
 
             // Independent-coordinate parity: our recovered affine x and y equal Zig's decoded affine x and y byte-for-byte.
@@ -207,7 +207,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. Accept/reject verdict parity: across a spread of encodings — some on the curve, some not — our decode accepts exactly the encodings
+    // 3. Accept/reject verdict parity: across a spread of encodings -- some on the curve, some not -- our decode accepts exactly the encodings
     //    Zig's fromBytes accepts, and when both accept the recovered points compress to the same bytes.
     {
         var seed: u8 = 1;
@@ -227,7 +227,7 @@ fn run_selftest() !u8 {
                 }
             }
         }
-        // invariant: the spread genuinely exercised both verdicts — decode is not trivially accepting or rejecting everything.
+        // invariant: the spread genuinely exercised both verdicts -- decode is not trivially accepting or rejecting everything.
         if (accepted == 0 or rejected == 0) return error.SpreadTooNarrow;
     }
 

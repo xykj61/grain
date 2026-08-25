@@ -1,18 +1,18 @@
-//! mikrophone/verify.rye — DREY16: the desk fsck. The catalog (DREY7) keys each recording by the Sha256 the wire carried,
+//! mikrophone/verify.rye -- DREY16: the desk fsck. The catalog (DREY7) keys each recording by the Sha256 the wire carried,
 //! deframes verify-before-trust at deposit, and thereafter TRUSTS its stored bytes. This rung lets the desk prove that
 //! trust instead of assuming it: `verify` walks every held recording, re-derives its content address from the bytes the
-//! store actually holds now, and asserts it still equals the address the catalog keyed it under — refusing `IntegrityFault`
+//! store actually holds now, and asserts it still equals the address the catalog keyed it under -- refusing `IntegrityFault`
 //! by name the moment a single stored byte has drifted. The git fsck: a store that can prove itself sound, not merely
 //! declare it.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY16.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY16.
 //! Design read: active-designing/date/20260814/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
-//! Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store, `address_at`, `fetch`, and the one `address_of`
+//! Stands on: mikrophone/catalog.rye (DREY7) -- the content-addressed store, `address_at`, `fetch`, and the one `address_of`
 //! rule a deposit and a later verify must share, so integrity is checked by exactly the rule it was keyed by.
 //!
-//! This rung stays purely LOCAL and read-only — `verify` reads the catalog's own store and index, mutating nothing, over
+//! This rung stays purely LOCAL and read-only -- `verify` reads the catalog's own store and index, mutating nothing, over
 //! public APIs. No disk, no network, no key signs, no funds (custody gate %2 untouched); the content address stays an
-//! integrity identity, not a signature — verify proves the bytes are unchanged, never who wrote them.
+//! integrity identity, not a signature -- verify proves the bytes are unchanged, never who wrote them.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/verify.rye selftest
 
@@ -24,15 +24,15 @@ const catalog = @import("catalog.rye");
 pub const verify_version = "20260814.073400";
 
 pub const VerifyError = error{
-    /// A held recording's stored bytes no longer hash to the address it was keyed under — silent corruption of the store,
+    /// A held recording's stored bytes no longer hash to the address it was keyed under -- silent corruption of the store,
     /// caught before the drifted bytes could be served or trusted as the recording their address names.
     IntegrityFault,
 };
 
-/// Verify the whole desk — the fsck. Walks every held recording in kept order, re-derives its content address from the
+/// Verify the whole desk -- the fsck. Walks every held recording in kept order, re-derives its content address from the
 /// bytes the store holds now (through the one `catalog.address_of` rule the deposit keyed it by), and asserts it equals
 /// the keyed address. Returns the count of recordings verified sound (equal to the catalog's count on success). Refuses
-/// `IntegrityFault` by name at the first recording whose stored bytes have drifted — a read-only check that mutates
+/// `IntegrityFault` by name at the first recording whose stored bytes have drifted -- a read-only check that mutates
 /// nothing, so a keeper can run it as often as they like without disturbing what it proves.
 pub fn verify(self: *const catalog.Catalog) !u32 {
     // invariant: the walk is bounded by the count, itself bounded by the entry index.
@@ -45,12 +45,12 @@ pub fn verify(self: *const catalog.Catalog) !u32 {
         // fetch never guesses: a held address always fetches its stored bytes back.
         const payload = catalog.fetch(self, keyed) orelse return error.IntegrityFault;
         const derived = catalog.address_of(payload);
-        // invariant: the address the store's current bytes derive to must equal the address they were keyed under —
+        // invariant: the address the store's current bytes derive to must equal the address they were keyed under --
         //            equality here is exactly integrity, since both use the one address_of rule.
         if (!std.mem.eql(u8, &derived, &keyed)) return error.IntegrityFault;
     }
 
-    // invariant: on success every held recording verified sound — the count returned is the whole count.
+    // invariant: on success every held recording verified sound -- the count returned is the whole count.
     assert(i == total);
     return total;
 }
@@ -58,7 +58,7 @@ pub fn verify(self: *const catalog.Catalog) !u32 {
 // --- selftest: a whole desk verifies sound, an empty desk verifies trivially, a re-deposit stays sound, and a single
 //     flipped store byte is caught by name -----------------------------------------------------------------------------
 
-/// Frame the text as a committed session would carry it — capture, commit, frame — so each block deposits from a real
+/// Frame the text as a committed session would carry it -- capture, commit, frame -- so each block deposits from a real
 /// wire frame. Returns the frame; the caller reads `bytes()`.
 fn framed(text: []const u8) !@import("wire.rye").Frame {
     const wire = @import("wire.rye");
@@ -73,7 +73,7 @@ fn framed(text: []const u8) !@import("wire.rye").Frame {
 }
 
 fn run_selftest() !u8 {
-    // 1. A whole desk verifies sound — three recordings deposited, verify returns three and mutates nothing.
+    // 1. A whole desk verifies sound -- three recordings deposited, verify returns three and mutates nothing.
     {
         var cat = catalog.Catalog.init();
         var a = try framed("alpha");
@@ -85,19 +85,19 @@ fn run_selftest() !u8 {
 
         const sound = try verify(&cat);
         assert(sound == 3);
-        // verify is read-only — the count is untouched, so a second verify agrees.
+        // verify is read-only -- the count is untouched, so a second verify agrees.
         assert(catalog.count_of(&cat) == 3);
         assert((try verify(&cat)) == 3);
     }
 
-    // 2. An empty desk verifies trivially — nothing to check, sound by definition.
+    // 2. An empty desk verifies trivially -- nothing to check, sound by definition.
     {
         var cat = catalog.Catalog.init();
         const sound = try verify(&cat);
         assert(sound == 0);
     }
 
-    // 3. A re-deposit stays sound — depositing the same bytes twice keeps one entry, and verify still proves it.
+    // 3. A re-deposit stays sound -- depositing the same bytes twice keeps one entry, and verify still proves it.
     {
         var cat = catalog.Catalog.init();
         var a = try framed("held once");
@@ -108,7 +108,7 @@ fn run_selftest() !u8 {
         assert((try verify(&cat)) == 1);
     }
 
-    // 4. A single flipped store byte is caught by name — deposit, then corrupt one byte of the stored payload directly
+    // 4. A single flipped store byte is caught by name -- deposit, then corrupt one byte of the stored payload directly
     //    (the store is the catalog's own field), and verify must refuse IntegrityFault: the drifted bytes no longer hash
     //    to the address they were keyed under.
     {
@@ -118,7 +118,7 @@ fn run_selftest() !u8 {
         assert((try verify(&cat)) == 1);
 
         // Silent corruption: flip the first byte of the packed store. The address index is untouched, so the catalog
-        // still CLAIMS to hold the recording — only its bytes have drifted, which is exactly what verify must catch.
+        // still CLAIMS to hold the recording -- only its bytes have drifted, which is exactly what verify must catch.
         cat.store[0] = cat.store[0] ^ 0x01;
         if (verify(&cat)) |_| {
             return error.CorruptionSlipped;
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
             if (e != error.IntegrityFault) return error.WrongFault;
         }
 
-        // Flip it back, and the desk verifies sound again — proof the check tracks the bytes exactly, not a latched flag.
+        // Flip it back, and the desk verifies sound again -- proof the check tracks the bytes exactly, not a latched flag.
         cat.store[0] = cat.store[0] ^ 0x01;
         assert((try verify(&cat)) == 1);
     }

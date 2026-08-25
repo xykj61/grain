@@ -1,4 +1,4 @@
-//! glow/lower_compose_jam_cue_witness.rye — proves jam→cue cross-line compose.
+//! glow/lower_compose_jam_cue_witness.rye -- proves jam->cue cross-line compose.
 //!
 //!   rye build glow/lower_compose_jam_cue_witness.rye -femit-bin=glow/bin/lower_compose_jam_cue_witness
 

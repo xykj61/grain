@@ -1,43 +1,43 @@
-//! crypto/hybrid_sealed.rye — Season G (Cryptography), the HYBRID sealed-to-identity door: a message sealed TO a hybrid identity so its confidentiality
-//! survives a break in EITHER family — the classical X25519 key agreement Comlink uses today, AND the post-quantum ML-KEM agreement a lattice identity
+//! crypto/hybrid_sealed.rye -- Season G (Cryptography), the HYBRID sealed-to-identity door: a message sealed TO a hybrid identity so its confidentiality
+//! survives a break in EITHER family -- the classical X25519 key agreement Comlink uses today, AND the post-quantum ML-KEM agreement a lattice identity
 //! carries. It is the confidentiality sibling of crypto/hybrid_identity.rye: where that makes a signature only genuine when BOTH the Ed25519 and the
 //! ML-DSA halves verify (a forger must break both families), this seals a message only readable when BOTH the classical and the post-quantum agreements
 //! are opened (an eavesdropper must break both families). The safe-by-default confidential door for the transition years the dual-key discovery named:
 //! during the years between "the curves are fine" and "a quantum computer broke the curves," the strongest sealed box stands on both agreements, so a
-//! break in either one — a surprise lattice attack, or the quantum day for the elliptic curves — still leaves the message sealed on the other
-//! (active-designing/20260816-192400 — "hybrid, not either-or, is the safe default … a break in either family still leaves the identity standing on the other").
+//! break in either one -- a surprise lattice attack, or the quantum day for the elliptic curves -- still leaves the message sealed on the other
+//! (active-designing/20260816-192400 -- "hybrid, not either-or, is the safe default ... a break in either family still leaves the identity standing on the other").
 //!
 //! It authors NO new cryptography and adds NO new primitive. Confidentiality is an ONION of two doors already GREEN: the inner layer is
-//! crypto/kumara_sealed.rye (the CLASSICAL sealed box, addressed through the identity's Ed25519→X25519 half), and the outer layer is
+//! crypto/kumara_sealed.rye (the CLASSICAL sealed box, addressed through the identity's Ed25519->X25519 half), and the outer layer is
 //! crypto/mlkem_sealed.rye (the POST-QUANTUM sealed box, addressed through the identity's ML-KEM half). seal wraps the plaintext in the classical box,
 //! then wraps THAT whole frame in the post-quantum box; open peels the post-quantum layer, then the classical one. To read the plaintext an adversary
 //! must break BOTH: the outer ML-KEM box to reach the inner frame, AND the inner X25519 box to reach the plaintext. Break one family alone and the
-//! message stays sealed — exactly the "both must fall" guarantee crypto/hybrid_identity.rye gives a signature, now given a sealed message.
+//! message stays sealed -- exactly the "both must fall" guarantee crypto/hybrid_identity.rye gives a signature, now given a sealed message.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye (the
-//! classical confidential door) and crypto/mlkem_sealed.rye (the post-quantum one), retiring neither — a keeper who trusts one family alone uses that
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye (the
+//! classical confidential door) and crypto/mlkem_sealed.rye (the post-quantum one), retiring neither -- a keeper who trusts one family alone uses that
 //! door directly; the hybrid door is for the keeper who wants both agreements guarding one message at once.
-//! Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md (this door's own note) · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — the dual-key decision this door is the confidentiality construction of.
-//! Kin: crypto/hybrid_identity.rye (the SIGNING sibling — a signature genuine only when both families verify, GREEN) · crypto/kumara_sealed.rye (the
-//! classical inner layer, GREEN) · crypto/mlkem_sealed.rye (the post-quantum outer layer, GREEN) · crypto/kumara_pq_sealed.rye (the signed post-quantum
+//! Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md (this door's own note) - active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md -- the dual-key decision this door is the confidentiality construction of.
+//! Kin: crypto/hybrid_identity.rye (the SIGNING sibling -- a signature genuine only when both families verify, GREEN) - crypto/kumara_sealed.rye (the
+//! classical inner layer, GREEN) - crypto/mlkem_sealed.rye (the post-quantum outer layer, GREEN) - crypto/kumara_pq_sealed.rye (the signed post-quantum
 //! door). Clean-room: FIPS 203, RFC 7748/8032 are public standards studied through their specs; the onion is our own Rye wiring over our own GREEN rungs
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE ONION — outer post-quantum ML-KEM box ⟨ inner classical X25519 box ⟨ plaintext ⟩ ⟩.
+//! THE ONION -- outer post-quantum ML-KEM box ⟨ inner classical X25519 box ⟨ plaintext ⟩ ⟩.
 //!   seal: inner = kumara_sealed.seal_to(recipient Ed25519 public, fresh ephemeral) over the plaintext, then out = mlkem_sealed.seal(recipient ML-KEM ek,
 //!   fresh KEM message) over that inner frame. The returned frame is a single Grain Post-Quantum sealed frame (magic "GPQ1") whose plaintext IS the
-//!   classical sealed frame. Both the ephemeral X25519 private key and the ML-KEM message are FRESH randomness the caller supplies per message — this
+//!   classical sealed frame. Both the ephemeral X25519 private key and the ML-KEM message are FRESH randomness the caller supplies per message -- this
 //!   library invents no entropy. The bound is honest: a hybrid plaintext fits when the inner classical frame (plaintext + 60 bytes of classical overhead)
 //!   fits the post-quantum box's own plaintext bound, so max_plain_bytes is the ML-KEM plaintext bound minus that classical overhead.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity in the selftest is a TEST hybrid identity from a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. Every identity in the selftest is a TEST hybrid identity from a
 //! published-vector mnemonic; the module's own functions call no std.crypto (each layer is proven one rung down). Constant-time timing-safety stays
 //! crypto/CONSTANT_TIME.md's named horizon; sealing to or opening as the maintainer's OWN hybrid identity, grown from a real phrase, stays the custody gate.
 //!
 //! Parity is proven at selftest over every parameter set with no fabricated constant: (1) a confidential ROUND-TRIP across plaintext lengths recovers the
-//! message byte-for-byte through both layers; (2) CONFIDENTIALITY — the sealed frame body is not the plaintext; (3) BREAK-ONE-IS-NOT-ENOUGH — a holder of
+//! message byte-for-byte through both layers; (2) CONFIDENTIALITY -- the sealed frame body is not the plaintext; (3) BREAK-ONE-IS-NOT-ENOUGH -- a holder of
 //! ONLY the classical seed (no ML-KEM secret) fails at the outer post-quantum layer, and a holder of ONLY the ML-KEM secret (a wrong classical seed) peels
-//! the outer layer yet fails at the inner classical one — an eavesdropper who breaks one family alone reads nothing; (4) TAMPER — a flipped frame byte
+//! the outer layer yet fails at the inner classical one -- an eavesdropper who breaks one family alone reads nothing; (4) TAMPER -- a flipped frame byte
 //! refuses; (5) DETERMINISM given fixed ephemerals, and a stranger identity refused.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/hybrid_sealed.rye selftest
@@ -54,15 +54,15 @@ const outer_box = @import("mlkem_sealed.rye"); // the post-quantum outer layer
 
 pub const hybrid_sealed_version = "20260816.195850";
 
-/// The classical inner frame's fixed overhead (magic ‖ ephemeral pubkey ‖ ciphertext-length ‖ tag) — 60 bytes, inherited so the bound below is honest.
+/// The classical inner frame's fixed overhead (magic ‖ ephemeral pubkey ‖ ciphertext-length ‖ tag) -- 60 bytes, inherited so the bound below is honest.
 pub const inner_overhead: u32 = inner_box.frame_overhead;
 
-/// The largest inner classical frame the outer post-quantum box can carry as its plaintext — the outer box's own plaintext bound. Named so seal sizes one
+/// The largest inner classical frame the outer post-quantum box can carry as its plaintext -- the outer box's own plaintext bound. Named so seal sizes one
 /// scratch buffer to this ceiling and no larger.
 pub const max_inner_frame_bytes: u32 = outer_box.max_plain_bytes;
 
 /// The largest hybrid plaintext one sealed carry holds: the outer box's plaintext bound minus the inner classical overhead, so the inner frame always
-/// fits the outer box. This door adds no looser limit — it is strictly bounded by the tighter of the two layers.
+/// fits the outer box. This door adds no looser limit -- it is strictly bounded by the tighter of the two layers.
 pub const max_plain_bytes: u32 = outer_box.max_plain_bytes - inner_overhead;
 
 /// The 32-byte KEM message width for the outer layer, borrowed so a caller sizes one value.
@@ -71,7 +71,7 @@ pub const seed_bytes: u32 = outer_box.seed_bytes;
 /// The 32-byte ephemeral X25519 private-key width for the inner layer.
 pub const ephemeral_bytes: u32 = 32;
 
-/// max_frame_bytes — the whole hybrid envelope at the largest plaintext, per set: the outer post-quantum frame around a full inner frame. Since the inner
+/// max_frame_bytes -- the whole hybrid envelope at the largest plaintext, per set: the outer post-quantum frame around a full inner frame. Since the inner
 /// frame's maximum equals the outer box's plaintext bound, the hybrid maximum equals the outer box's own maximum frame. Named so a caller's scratch cites
 /// one ceiling.
 pub fn max_frame_bytes(comptime p: pq.PqParams) u32 {
@@ -79,19 +79,19 @@ pub fn max_frame_bytes(comptime p: pq.PqParams) u32 {
 }
 
 pub const HybridSealedError = error{
-    /// A plaintext longer than max_plain_bytes — refused before any key agreement, so the inner frame can never overrun the outer box.
+    /// A plaintext longer than max_plain_bytes -- refused before any key agreement, so the inner frame can never overrun the outer box.
     PayloadTooLong,
-    /// seal's output buffer is too small to hold the whole outer frame — refused before any byte the caller relies on.
+    /// seal's output buffer is too small to hold the whole outer frame -- refused before any byte the caller relies on.
     OutTooSmall,
     /// open was handed a frame the outer post-quantum box could not even parse (too short, malformed length, or wrong magic).
     BadFrame,
-    /// The OUTER post-quantum layer did not open — a wrong ML-KEM recipient, or a tampered outer frame. Reached by a holder of only the classical secret:
+    /// The OUTER post-quantum layer did not open -- a wrong ML-KEM recipient, or a tampered outer frame. Reached by a holder of only the classical secret:
     /// breaking one family alone leaves the outer box sealed. No plaintext is revealed.
     OuterOpenFailed,
-    /// The outer layer opened, yet the INNER classical layer did not — a wrong X25519 recipient, or a tampered inner frame. Reached by a holder of only
+    /// The outer layer opened, yet the INNER classical layer did not -- a wrong X25519 recipient, or a tampered inner frame. Reached by a holder of only
     /// the ML-KEM secret: peeling the post-quantum layer is not enough, the classical box still holds. No plaintext is revealed.
     InnerOpenFailed,
-    /// A composed seal or open rung surfaced an error outside the expected refusals — honored honestly rather than swallowed.
+    /// A composed seal or open rung surfaced an error outside the expected refusals -- honored honestly rather than swallowed.
     ComposedFailed,
 };
 
@@ -100,7 +100,7 @@ pub const Opened = struct {
     plain: []const u8,
 };
 
-/// seal_to — seal `plain` TO a hybrid identity named by its classical Ed25519 public key and its post-quantum ML-KEM encapsulation key, wrapping it in
+/// seal_to -- seal `plain` TO a hybrid identity named by its classical Ed25519 public key and its post-quantum ML-KEM encapsulation key, wrapping it in
 /// the classical box first and the post-quantum box around that. Both `ephemeral_priv` (the inner X25519 ephemeral) and `m` (the outer KEM message) are
 /// FRESH randomness the caller supplies per message. Returns the whole hybrid frame's length. A sender needs only the recipient's two PUBLIC keys.
 pub fn seal_to(
@@ -115,13 +115,13 @@ pub fn seal_to(
     // invariant (precondition): the plaintext fits the hybrid bound, so the inner frame (plaintext + inner_overhead) fits the outer box's plaintext bound.
     if (plain.len > max_plain_bytes) return error.PayloadTooLong;
 
-    // INNER LAYER — seal the plaintext in the classical X25519 box into a bounded scratch frame.
+    // INNER LAYER -- seal the plaintext in the classical X25519 box into a bounded scratch frame.
     var inner: [max_inner_frame_bytes]u8 = undefined;
     const inner_len = inner_box.seal_to(recipient_ed_pub, ephemeral_priv, plain, inner[0..]) catch return error.ComposedFailed;
     // invariant (bound): the inner frame is no larger than the outer box's plaintext bound, so the outer seal below accepts it.
     assert(inner_len <= max_inner_frame_bytes);
 
-    // OUTER LAYER — seal the whole inner frame in the post-quantum ML-KEM box into the caller's out buffer.
+    // OUTER LAYER -- seal the whole inner frame in the post-quantum ML-KEM box into the caller's out buffer.
     const outer_len = outer_box.seal(p.kem, recipient_kem_ek, m, inner[0..inner_len], out) catch |e| return switch (e) {
         error.OutTooSmall => error.OutTooSmall,
         else => error.ComposedFailed,
@@ -131,7 +131,7 @@ pub fn seal_to(
     return outer_len;
 }
 
-/// open_as — recover the plaintext of a hybrid sealed frame, peeling the outer post-quantum layer with the recipient's ML-KEM secret, then the inner
+/// open_as -- recover the plaintext of a hybrid sealed frame, peeling the outer post-quantum layer with the recipient's ML-KEM secret, then the inner
 /// classical layer with the recipient's Ed25519 seed. BOTH must open: a holder of only the ML-KEM secret peels the outer layer yet fails the inner
 /// (InnerOpenFailed); a holder of only the classical seed fails the outer layer first (OuterOpenFailed). Returns a zero-copy slice of the plaintext.
 pub fn open_as(
@@ -142,7 +142,7 @@ pub fn open_as(
     frame: []const u8,
     out: []u8,
 ) HybridSealedError!Opened {
-    // OUTER LAYER — peel the post-quantum box into a bounded scratch, recovering the inner classical frame.
+    // OUTER LAYER -- peel the post-quantum box into a bounded scratch, recovering the inner classical frame.
     var inner: [max_inner_frame_bytes]u8 = undefined;
     const outer_opened = outer_box.open(p.kem, recipient_kem_dk, recipient_kem_ek, frame, inner[0..]) catch |e| return switch (e) {
         error.FrameTooShort, error.LengthMismatch, error.BadMagic => error.BadFrame,
@@ -150,7 +150,7 @@ pub fn open_as(
         else => error.ComposedFailed,
     };
 
-    // INNER LAYER — peel the classical box, recovering the plaintext into the caller's out buffer.
+    // INNER LAYER -- peel the classical box, recovering the plaintext into the caller's out buffer.
     const inner_opened = inner_box.open_as(recipient_ed_seed, outer_opened.plain, out) catch |e| return switch (e) {
         error.BadMagic, error.OpenFailed => error.InnerOpenFailed,
         else => error.ComposedFailed,
@@ -160,7 +160,7 @@ pub fn open_as(
     return Opened{ .plain = inner_opened.plain };
 }
 
-/// seal_to_identity — the convenience door: seal TO a whole HybridType, reading its two published public keys. A sender holding a peer's hybrid identity
+/// seal_to_identity -- the convenience door: seal TO a whole HybridType, reading its two published public keys. A sender holding a peer's hybrid identity
 /// reaches seal_to without unpacking the fields.
 pub fn seal_to_identity(
     comptime p: pq.PqParams,
@@ -175,7 +175,7 @@ pub fn seal_to_identity(
     return seal_to(p, &id.classical.public_key, &id.post_quantum.agree.ek, ephemeral_priv, m, plain, out);
 }
 
-/// open_as_identity — the convenience door: open AS a whole HybridType, reading its classical seed and its ML-KEM secret. The holder of a hybrid identity
+/// open_as_identity -- the convenience door: open AS a whole HybridType, reading its classical seed and its ML-KEM secret. The holder of a hybrid identity
 /// opens without unpacking the secrets by hand.
 pub fn open_as_identity(
     comptime p: pq.PqParams,
@@ -207,10 +207,10 @@ fn fill_test(buf: []u8, seed: u8) void {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-// BIP-39's own published Trezor vector 1 — a TEST phrase, never a real one.
+// BIP-39's own published Trezor vector 1 -- a TEST phrase, never a real one.
 const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 
-/// check_param — prove the hybrid sealed door for one parameter set: a confidential round-trip, the ciphertext not the plaintext, and the load-bearing
+/// check_param -- prove the hybrid sealed door for one parameter set: a confidential round-trip, the ciphertext not the plaintext, and the load-bearing
 /// guarantee that breaking ONE family alone reveals nothing, plus tamper, determinism, and a stranger refused.
 fn check_param(comptime p: pq.PqParams) !void {
     const test_coin: u32 = 7;
@@ -218,7 +218,7 @@ fn check_param(comptime p: pq.PqParams) !void {
     const keeper = try hybrid.from_mnemonic(p, trezor_mnemonic, "RECIPIENT", test_coin, 0, 0);
     const stranger = try hybrid.from_mnemonic(p, trezor_mnemonic, "STRANGER", test_coin, 0, 0);
 
-    // Fresh TEST randomness — in real use, fresh per message.
+    // Fresh TEST randomness -- in real use, fresh per message.
     var esk: [ephemeral_bytes]u8 = undefined;
     fill_test(esk[0..], 3);
     var m: [seed_bytes]u8 = undefined;
@@ -239,7 +239,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         if (!bytes_eq(opened.plain, plain)) return error.PlainWrong;
     }
 
-    // 2. CONFIDENTIALITY — the outer frame body is NOT the plaintext (the message is enciphered through both layers, not carried in clear).
+    // 2. CONFIDENTIALITY -- the outer frame body is NOT the plaintext (the message is enciphered through both layers, not carried in clear).
     {
         var plain_buf: [128]u8 = undefined;
         fill_test(plain_buf[0..], 9);
@@ -249,20 +249,20 @@ fn check_param(comptime p: pq.PqParams) !void {
         if (bytes_eq(frame_buf[body_start .. body_start + 128], plain_buf[0..])) return error.CiphertextIsPlaintext;
     }
 
-    // 3. BREAK-ONE-IS-NOT-ENOUGH — the heart of the hybrid guarantee.
+    // 3. BREAK-ONE-IS-NOT-ENOUGH -- the heart of the hybrid guarantee.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 31);
         const flen = try seal_to_identity(p, &keeper, &esk, &m, plain_buf[0..], frame_buf[0..]);
 
         // 3a. An eavesdropper holding ONLY the classical seed (the keeper's real Ed25519 seed) yet the WRONG ML-KEM secret (the stranger's) cannot even
-        //     peel the outer post-quantum layer — breaking the classical family alone leaves the outer box sealed: OuterOpenFailed.
+        //     peel the outer post-quantum layer -- breaking the classical family alone leaves the outer box sealed: OuterOpenFailed.
         if (open_as(p, &keeper.classical.secret_seed, &stranger.post_quantum.agree.dk, &stranger.post_quantum.agree.ek, frame_buf[0..flen], out_buf[0..])) |_| {
             return error.ClassicalOnlyOpened;
         } else |e| if (e != error.OuterOpenFailed) return error.ClassicalOnlyWrongError;
 
         // 3b. An eavesdropper holding ONLY the ML-KEM secret (the keeper's real ML-KEM keypair) yet the WRONG classical seed (the stranger's) peels the
-        //     outer layer, then fails the inner classical box — breaking the post-quantum family alone is not enough: InnerOpenFailed.
+        //     outer layer, then fails the inner classical box -- breaking the post-quantum family alone is not enough: InnerOpenFailed.
         if (open_as(p, &stranger.classical.secret_seed, &keeper.post_quantum.agree.dk, &keeper.post_quantum.agree.ek, frame_buf[0..flen], out_buf[0..])) |_| {
             return error.PqOnlyOpened;
         } else |e| if (e != error.InnerOpenFailed) return error.PqOnlyWrongError;
@@ -272,7 +272,7 @@ fn check_param(comptime p: pq.PqParams) !void {
         if (!bytes_eq(opened.plain, plain_buf[0..])) return error.TrueKeeperPlainWrong;
     }
 
-    // 4. TAMPER — a flipped byte in the outer frame body breaks the post-quantum AEAD tag: OuterOpenFailed, no plaintext revealed.
+    // 4. TAMPER -- a flipped byte in the outer frame body breaks the post-quantum AEAD tag: OuterOpenFailed, no plaintext revealed.
     {
         var plain_buf: [48]u8 = undefined;
         fill_test(plain_buf[0..], 41);
@@ -284,7 +284,7 @@ fn check_param(comptime p: pq.PqParams) !void {
     }
 
     // 5. STRANGER REFUSED and DETERMINISM. A frame sealed to the keeper is refused wholesale under the stranger's identity; and sealing is a pure
-    //    function of its inputs — the same identity, ephemerals, and message seal to byte-identical frames.
+    //    function of its inputs -- the same identity, ephemerals, and message seal to byte-identical frames.
     {
         var plain_buf: [80]u8 = undefined;
         fill_test(plain_buf[0..], 53);

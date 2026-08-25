@@ -1,36 +1,36 @@
-//! mycelium/till.rye — the Till: a contested draw decided by the agreed order.
+//! mycelium/till.rye -- the Till: a contested draw decided by the agreed order.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
 //! A till is the drawer a treasury's coins sit in. When two keepers reach into one
 //! till for coins that cannot pay both, the first draw the agreed order places takes
-//! what is there, and the second finds the till already emptied — and breaks nothing.
+//! what is there, and the second finds the till already emptied -- and breaks nothing.
 //! This is the double-spend, the oldest reason a value ledger wants consensus: the
 //! Cord already derives one total order from the mesh regardless of arrival, and the
-//! Till reads that order as the treasury's verdict — the first draw wins the coins,
+//! Till reads that order as the treasury's verdict -- the first draw wins the coins,
 //! a later draw the treasury can no longer pay comes up short as a lawful no-op.
 //!
 //! The honest distinction is the whole crux, and it is the twin of the Tenure's.
 //! `fold.fold_fact` returns one `Overdraw` for two different facts: a spend that lost
 //! a race (affordable alone, refused only because a competing spend drained first)
 //! and a spend that never could pay (more than the treasury ever held). The measure
-//! that separates them is monotonic and position-respecting — `issued-so-far`, the
+//! that separates them is monotonic and position-respecting -- `issued-so-far`, the
 //! cumulative issue at the losing draw's position (issues only add; the fold invents
 //! no release). A draw that overdraws yet whose amount is <= issued-so-far LOST A
-//! RACE — the coins existed for it once — so it is a lawful no-op spent-out loss and
+//! RACE -- the coins existed for it once -- so it is a lawful no-op spent-out loss and
 //! folding continues. A draw that overdraws and asks for more than issued-so-far
-//! NEVER COULD PAY — no ordering fixes that — so it refuses the whole resolution. An
+//! NEVER COULD PAY -- no ordering fixes that -- so it refuses the whole resolution. An
 //! issue that overdraws (a u64 wrap) is never a race and stays poison unconditionally.
 //!
-//! Grown beside cord.rye, fold.rye, and tenure.rye — editing none, composing cord +
+//! Grown beside cord.rye, fold.rye, and tenure.rye -- editing none, composing cord +
 //! fold public API only. A `StarTaken` name-contest loss is the Tenure's verdict, so
 //! the Till lets it refuse the whole resolution here (a Till log carries coins, not
 //! two-keepers-one-name contests; the Tenure owns that verdict on a mixed log).
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //! Named horizon (not this arc): per-account balances (fold folds a GLOBAL supply,
-//! so a double-spend here is a supply-exhaustion race — the truest this ledger carries
+//! so a double-spend here is a supply-exhaustion race -- the truest this ledger carries
 //! today); a Till served to another node reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/till.rye
@@ -46,13 +46,13 @@ const tally_copy = @import("tally_copy.rye");
 /// A keeper's public key, in its encoded (holder-identity) width.
 pub const pk_len: u32 = kumara.PublicKey.encoded_length;
 
-/// At most one winning draw per block — the Dag holds a journey of blocks (256).
+/// At most one winning draw per block -- the Dag holds a journey of blocks (256).
 pub const till_max_draws: u32 = cord.cord_max_blocks;
 
-/// At most one spent-out loss per block — same ceiling as draws.
+/// At most one spent-out loss per block -- same ceiling as draws.
 pub const till_max_shorts: u32 = cord.cord_max_blocks;
 
-/// One spend the agreed order granted — coins the treasury paid, at its position.
+/// One spend the agreed order granted -- coins the treasury paid, at its position.
 pub const Draw = struct {
     signer_pk: [pk_len]u8 = undefined,
     amount: u64 = 0,
@@ -60,7 +60,7 @@ pub const Draw = struct {
     round: u32 = 0,
 };
 
-/// One draw the treasury could not pay — it lost the race for coins already spent.
+/// One draw the treasury could not pay -- it lost the race for coins already spent.
 /// `issued_at` records the treasury's cumulative issue at its position, the measure
 /// that proved the loss lawful (amount <= issued_at) rather than never-could-pay.
 pub const ShortDraw = struct {
@@ -107,7 +107,7 @@ pub const Till = struct {
         return sum;
     }
 
-    /// The coins asked for by draws that came up short — refused, never paid.
+    /// The coins asked for by draws that came up short -- refused, never paid.
     pub fn total_lost(t: *const Till) u64 {
         // invariant: losses stay within the ceiling before we sum them.
         assert(t.short_count <= till_max_shorts);
@@ -128,7 +128,7 @@ pub const Till = struct {
     }
 };
 
-/// Record a winning draw — coins the agreed order paid, at its position. Only a
+/// Record a winning draw -- coins the agreed order paid, at its position. Only a
 /// spend (tax or star reservation) draws; an issue funds the treasury, never draws.
 pub fn record_draw(t: *Till, fact: *const fold.Fact, pos: u32, round: u32) error{TooManyDraws}!void {
     // invariant: only a spend ever wins a draw.
@@ -142,10 +142,10 @@ pub fn record_draw(t: *Till, fact: *const fold.Fact, pos: u32, round: u32) error
     t.draw_count += 1;
 }
 
-/// Record a spent-out loss — a spend the treasury could not pay because an earlier
+/// Record a spent-out loss -- a spend the treasury could not pay because an earlier
 /// winning draw already emptied it. The twin of `record_draw` on the losing side.
 pub fn record_short(t: *Till, fact: *const fold.Fact, pos: u32, issued_at: u64) error{TooManyShorts}!void {
-    // invariant: only a spend can come up short — an issue funds, never draws.
+    // invariant: only a spend can come up short -- an issue funds, never draws.
     assert(fact.kind == fold.kind_tax or fact.kind == fold.kind_star_reserve);
     // invariant: a lawful loss asked for no more than the treasury ever issued.
     assert(fact.amount <= issued_at);
@@ -158,7 +158,7 @@ pub fn record_short(t: *Till, fact: *const fold.Fact, pos: u32, issued_at: u64) 
     t.short_count += 1;
 }
 
-/// Resolve a committed Dag into a Till — the treasury verdict of the agreed order.
+/// Resolve a committed Dag into a Till -- the treasury verdict of the agreed order.
 /// A spend the order cannot pay yet could once afford (amount <= issued-so-far) is a
 /// lawful no-op spent-out loss; a spend that never could pay, a broken signature, an
 /// unknown kind, a name-contest, and an issue wrap each refuse the whole resolution.
@@ -187,11 +187,11 @@ pub fn resolve(dag: *const cord.Dag) error{
         assert(idx < dag.len);
         const blk = &dag.blocks[idx];
         const fact = &blk.fact;
-        // The treasury's issue at this position — the high-water measure that tells
+        // The treasury's issue at this position -- the high-water measure that tells
         // a lost race (coins once existed) from a demand no order could ever meet.
         const issued_here = state.issued;
         if (fold.fold_fact(&state, fact)) |_| {
-            // Accepted — a spend the order granted took coins; an issue only funds.
+            // Accepted -- a spend the order granted took coins; an issue only funds.
             if (fact.kind == fold.kind_tax or fact.kind == fold.kind_star_reserve) {
                 try record_draw(&t, fact, i, blk.round);
             }
@@ -199,7 +199,7 @@ pub fn resolve(dag: *const cord.Dag) error{
             error.Overdraw => {
                 // The verdict: a spend that once could have been paid (amount <=
                 // issued-so-far) but lost the race to an earlier winning draw is a
-                // lawful no-op — folding continues, the ledger unbroken. A spend that
+                // lawful no-op -- folding continues, the ledger unbroken. A spend that
                 // asked for more than the treasury ever issued, or an issue wrap, was
                 // never a race and refuses the whole resolution.
                 const is_spend = fact.kind == fold.kind_tax or fact.kind == fold.kind_star_reserve;
@@ -209,7 +209,7 @@ pub fn resolve(dag: *const cord.Dag) error{
                     return error.Overdraw;
                 }
             },
-            // Corruption is not a verdict — it refuses the whole resolution. A name
+            // Corruption is not a verdict -- it refuses the whole resolution. A name
             // contest is the Tenure's verdict, not the Till's, so it refuses here.
             error.IdentityRefused => return error.IdentityRefused,
             error.UnknownKind => return error.UnknownKind,
@@ -250,7 +250,7 @@ fn tills_equal(x: *const Till, y: *const Till) bool {
     if (x.state.issued != y.state.issued) return false;
     if (x.state.taxed != y.state.taxed) return false;
     if (x.total_lost() != y.total_lost()) return false;
-    // The loser is the coin verdict's fingerprint — one signer came up short.
+    // The loser is the coin verdict's fingerprint -- one signer came up short.
     var i: u32 = 0;
     while (i < x.short_count) : (i += 1) {
         if (!std.mem.eql(u8, x.shorts[i].signer_pk[0..], y.shorts[i].signer_pk[0..])) return false;
@@ -265,7 +265,7 @@ pub fn main() !void {
     const kx = seeded(0x11); // contestant X — draws 700
     const ky = seeded(0x22); // contestant Y — draws 700
 
-    // A bounded treasury of 1000; three draws want 1500 — two fit, one comes short.
+    // A bounded treasury of 1000; three draws want 1500 -- two fit, one comes short.
     const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
     const f_vega = fold.mint_fact(kv, fold.kind_tax, 100, "", "small") orelse return error.MintVega;
     const f_bx = fold.mint_fact(kx, fold.kind_tax, 700, "", "draw-x") orelse return error.MintBx;
@@ -289,7 +289,7 @@ pub fn main() !void {
     const loser_pk = if (x_wins) pky else pkx;
     const pkv = kv.public_key.toBytes();
 
-    // Three arrival permutations of the round-1 blocks (g always first — its children
+    // Three arrival permutations of the round-1 blocks (g always first -- its children
     // reference it, so it must be held before they can be admitted).
     const p1 = [_]cord.Block{ g, u, w1, w2 };
     const p2 = [_]cord.Block{ g, w2, w1, u };
@@ -299,7 +299,7 @@ pub fn main() !void {
     const t2 = try resolve_perm(p2[0..]);
     const t3 = try resolve_perm(p3[0..]);
 
-    // The verdict: two draws take coins, exactly one comes up short — every arrival.
+    // The verdict: two draws take coins, exactly one comes up short -- every arrival.
     if (t1.draws_seen() != 2) return error.DrawCount;
     if (t1.shorts_seen() != 1) return error.ShortCount;
 
@@ -312,7 +312,7 @@ pub fn main() !void {
     const lost = t1.short_at(0) orelse return error.NoShort;
     if (!std.mem.eql(u8, lost.signer_pk[0..], loser_pk[0..])) return error.WrongLoser;
     if (lost.amount != 700) return error.ShortAmount;
-    // The loss was lawful — it asked for no more than the treasury ever issued.
+    // The loss was lawful -- it asked for no more than the treasury ever issued.
     if (lost.amount > lost.issued_at) return error.LossNotLawful;
 
     // The loser is a lawful no-op: the resolution succeeds, the treasury folds once
@@ -328,7 +328,7 @@ pub fn main() !void {
     if (!tills_equal(&t1, &t3)) return error.ArrivalChangedVerdict;
 
     // Never-could-pay still poisons: a draw for more than the treasury ever issued
-    // refuses the whole resolution — that was never a race, only a demand unmet.
+    // refuses the whole resolution -- that was never a race, only a demand unmet.
     const f_greedy = fold.mint_fact(kv, fold.kind_tax, 5000, "", "never-pays") orelse return error.MintGreedy;
     const greedy_block = cord.mint_block(kv, 1, roots[0..], f_greedy) orelse return error.BlockGreedy;
     var d_greedy = cord.Dag.empty();

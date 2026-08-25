@@ -1,6 +1,6 @@
-//! linengrow/setu65_lab_tx_check.rye — attempt lab TX from lab.bron mode/iface.
+//! linengrow/setu65_lab_tx_check.rye -- attempt lab TX from lab.bron mode/iface.
 //!
-//! Reads tools/.cache/setu0/lab.bron. Stand-in → SKIP. Armed → attempt_iface_tx.
+//! Reads tools/.cache/setu0/lab.bron. Stand-in -> SKIP. Armed -> attempt_iface_tx.
 //! Optional argv: dotted IPv4 peer (iface default gateway) for unicast lab TX.
 
 const std = @import("std");

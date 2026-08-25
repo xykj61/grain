@@ -1,20 +1,20 @@
-//! crypto/secp256k1_scalarmul.rye — Season G (Cryptography): scalar multiplication on secp256k1 authored in pure Rye, composed entirely over
+//! crypto/secp256k1_scalarmul.rye -- Season G (Cryptography): scalar multiplication on secp256k1 authored in pure Rye, composed entirely over
 //! the GREEN group law (crypto/secp256k1_group.rye), which itself stands over the GREEN base field (crypto/fe_secp256k1.rye). ECDSA over
-//! secp256k1 — the signature scheme Bitcoin and Ethereum sign with — computes the public key Q = d·G and, on every verification, the two
-//! products u1·G and u2·Q; this file authors exactly that operation, k·P, as a composition over the group's two primitives, point doubling
+//! secp256k1 -- the signature scheme Bitcoin and Ethereum sign with -- computes the public key Q = d-G and, on every verification, the two
+//! products u1-G and u2-Q; this file authors exactly that operation, k-P, as a composition over the group's two primitives, point doubling
 //! and point addition. It adds no new field math and no new group math; it is the tractable, highest-Lindy move that turns a proven group
-//! into a proven scalar multiplication — the last arithmetic rung before ECDSA verification and public-key recovery can be assembled, the
+//! into a proven scalar multiplication -- the last arithmetic rung before ECDSA verification and public-key recovery can be assembled, the
 //! exact sibling of crypto/ed25519_scalarmul.rye over the edwards25519 group.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 //! Design read: active-designing/date/20260816/20260816-022000_secp256k1-group-law-the-proven-curve.md (the group law this composes over, whose closing
 //! GREEN line names scalar multiplication as its next composition) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-//! Kin: crypto/secp256k1_group.rye (the group this composes over, GREEN) · crypto/fe_secp256k1.rye (the base field beneath it, GREEN) ·
+//! Kin: crypto/secp256k1_group.rye (the group this composes over, GREEN) - crypto/fe_secp256k1.rye (the base field beneath it, GREEN) -
 //! crypto/ed25519_scalarmul.rye (the sibling ladder over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is
 //! not a rung here; the reference known-answers plus Zig's independent std.crypto.ecc.Secp256k1 are the two witnesses.
 //!
-//! THE CRUX — a scalar k times a point P is P added to itself k times, which the double-and-add ladder computes in a number of group
+//! THE CRUX -- a scalar k times a point P is P added to itself k times, which the double-and-add ladder computes in a number of group
 //! operations proportional to the bit length of k rather than to k itself: walk the scalar's 256 bits from most significant to least, and at
 //! each bit double the running accumulator, then add P when that bit is set. The accumulator starts at the group identity, the point at
 //! infinity (X = 0, Y = 1, Z = 0). Because the complete addition and doubling formulas beneath are exception-free, the ladder needs no
@@ -22,14 +22,14 @@
 //! little-endian byte order, the order this file and the sibling Ed25519 ladder both walk; the ecosystem's big-endian scalar convention is a
 //! caller's byte reversal, not the ladder's concern.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar and a curve point are arithmetic,
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar and a curve point are arithmetic,
 //! not a secret and not a signature: this file signs nothing, holds no key, and calls no std.crypto in the primitive. ECDSA's signing with an
-//! identity key (Q = d·G for a real private d) stays its own separate, gated round; this rung only proves that k·P is computed correctly.
-//! This double-and-add ladder branches on the scalar's bits and so is deliberately VARIABLE-TIME — correct, not yet timing-safe; a
+//! identity key (Q = d-G for a real private d) stays its own separate, gated round; this rung only proves that k-P is computed correctly.
+//! This double-and-add ladder branches on the scalar's bits and so is deliberately VARIABLE-TIME -- correct, not yet timing-safe; a
 //! constant-time ladder for secret scalars stays a separate named horizon, the same horizon the whole Season carries. Parity is proven at
-//! selftest against two references runnable now — algebraic known-answers anyone can check (0·G is the point at infinity, 1·G is G, 2·G is the
-//! doubling of G, (k+1)·G is k·G plus G), and Zig's own std.crypto.ecc.Secp256k1.mul as an independent implementation, compared byte-for-byte
-//! on the affine coordinates of k·P across a spread of scalars and across both the base point and one of its multiples.
+//! selftest against two references runnable now -- algebraic known-answers anyone can check (0-G is the point at infinity, 1-G is G, 2-G is the
+//! doubling of G, (k+1)-G is k-G plus G), and Zig's own std.crypto.ecc.Secp256k1.mul as an independent implementation, compared byte-for-byte
+//! on the affine coordinates of k-P across a spread of scalars and across both the base point and one of its multiples.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/secp256k1_scalarmul.rye selftest
@@ -42,28 +42,28 @@ const pt = @import("secp256k1_group.rye");
 
 pub const secp256k1_scalarmul_version = "20260816.023000";
 
-/// The maximum number of scalar bits the ladder walks — a full little-endian 256-bit scalar, the width secp256k1 scalars occupy. Named so the
+/// The maximum number of scalar bits the ladder walks -- a full little-endian 256-bit scalar, the width secp256k1 scalars occupy. Named so the
 /// loop bound is a stated constant rather than a literal buried in the walk.
 pub const scalar_bits: u32 = 256;
 
 /// The group identity in homogeneous projective coordinates: the point at infinity, x = X/Z with Z = 0. Carried as (X = 0, Y = 1, Z = 0), the
-/// neutral element the double-and-add accumulator starts from — the complete formulas add it and double it with no special case.
+/// neutral element the double-and-add accumulator starts from -- the complete formulas add it and double it with no special case.
 pub fn identity() pt.Point {
     const r = pt.Point{
         .x = fe.Field{ .l = .{ 0, 0, 0, 0, 0, 0, 0, 0 } },
         .y = fe.Field{ .l = .{ 1, 0, 0, 0, 0, 0, 0, 0 } },
         .z = fe.Field{ .l = .{ 0, 0, 0, 0, 0, 0, 0, 0 } },
     };
-    // invariant: the identity carries Z = 0 exactly — the point at infinity, not merely some finite point.
+    // invariant: the identity carries Z = 0 exactly -- the point at infinity, not merely some finite point.
     assert(r.z.l[0] == 0 and r.y.l[0] == 1);
     return r;
 }
 
-/// Scalar multiplication k·P by the double-and-add ladder: walk the 32-byte little-endian scalar s from its most significant bit down to its
+/// Scalar multiplication k-P by the double-and-add ladder: walk the 32-byte little-endian scalar s from its most significant bit down to its
 /// least, doubling the accumulator at every bit and adding P wherever the bit is set. Composes only pt.dbl and pt.add over the GREEN group
-/// law — no field inversion, no new curve math. Deliberately variable-time (it branches on scalar bits); constant-time is the named horizon.
+/// law -- no field inversion, no new curve math. Deliberately variable-time (it branches on scalar bits); constant-time is the named horizon.
 pub fn scalarmul(p: pt.Point, s: *const [32]u8) pt.Point {
-    // invariant: the ladder walks exactly scalar_bits bits, high to low — the bound is a named constant, not an open loop.
+    // invariant: the ladder walks exactly scalar_bits bits, high to low -- the bound is a named constant, not an open loop.
     assert(scalar_bits == 256);
     var r = identity();
     var i: u32 = scalar_bits;
@@ -78,7 +78,7 @@ pub fn scalarmul(p: pt.Point, s: *const [32]u8) pt.Point {
             r = pt.add(r, p);
         }
     }
-    // invariant: the result is a well-formed projective point — every coordinate limb stays a canonical 32-bit value the group law maintains.
+    // invariant: the result is a well-formed projective point -- every coordinate limb stays a canonical 32-bit value the group law maintains.
     assert(r.z.l[0] <= 0xffffffff and r.y.l[0] <= 0xffffffff);
     return r;
 }
@@ -94,8 +94,8 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Build a 32-byte little-endian scalar from a small unsigned value — the low eight bytes carry v, the rest are zero. Used to name small
-/// known-answer scalars (1, 2, 5, …) plainly inside the selftest.
+/// Build a 32-byte little-endian scalar from a small unsigned value -- the low eight bytes carry v, the rest are zero. Used to name small
+/// known-answer scalars (1, 2, 5, ...) plainly inside the selftest.
 fn le32(v: u64) [32]u8 {
     var s = [_]u8{0} ** 32;
     var i: u32 = 0;
@@ -112,7 +112,7 @@ fn le32(v: u64) [32]u8 {
 const ZSec = std.crypto.ecc.Secp256k1;
 
 /// Copy a Zig point into our representation through the canonical byte form of each projective coordinate, so parity compares two genuinely
-/// independent implementations on the same projective representative — the same bridge the group law's selftest uses.
+/// independent implementations on the same projective representative -- the same bridge the group law's selftest uses.
 fn from_zig(zp: ZSec) pt.Point {
     const xb = zp.x.toBytes(.big);
     const yb = zp.y.toBytes(.big);
@@ -120,7 +120,7 @@ fn from_zig(zp: ZSec) pt.Point {
     return pt.Point{ .x = fe.from_bytes(&xb), .y = fe.from_bytes(&yb), .z = fe.from_bytes(&zb) };
 }
 
-/// True when our point reads to the same affine (x, y) as the Zig point — the parity check for a non-identity result.
+/// True when our point reads to the same affine (x, y) as the Zig point -- the parity check for a non-identity result.
 fn affine_eq(p: pt.Point, zp: ZSec) bool {
     const za = zp.affineCoordinates();
     return bytes_eq(&pt.affine_x(p), &za.x.toBytes(.big)) and bytes_eq(&pt.affine_y(p), &za.y.toBytes(.big));
@@ -132,28 +132,28 @@ fn run_selftest() !u8 {
 
     // 1. Algebraic known-answers anyone can check.
     {
-        // 0·G is the point at infinity — its Z coordinate packs to zero.
+        // 0-G is the point at infinity -- its Z coordinate packs to zero.
         var zero_b = [_]u8{0} ** 32;
         if (!bytes_eq(&fe.to_bytes(scalarmul(pb, &le32(0)).z), &zero_b)) return error.ZeroScalarMismatch;
 
-        // 1·G is G itself.
+        // 1-G is G itself.
         if (!affine_eq(scalarmul(pb, &le32(1)), b)) return error.OneScalarMismatch;
 
-        // 2·G is the doubling of G.
+        // 2-G is the doubling of G.
         if (!bytes_eq(&pt.affine_x(scalarmul(pb, &le32(2))), &pt.affine_x(pt.dbl(pb)))) return error.TwoScalarMismatch;
         if (!bytes_eq(&pt.affine_y(scalarmul(pb, &le32(2))), &pt.affine_y(pt.dbl(pb)))) return error.TwoScalarYMismatch;
 
-        // (k+1)·G equals k·G + G, for a small k — the ladder is consistent with a single extra addition.
+        // (k+1)-G equals k-G + G, for a small k -- the ladder is consistent with a single extra addition.
         const k: u64 = 20;
         const kb = scalarmul(pb, &le32(k));
         if (!bytes_eq(&pt.affine_x(scalarmul(pb, &le32(k + 1))), &pt.affine_x(pt.add(kb, pb)))) return error.SuccessorMismatch;
     }
 
     // 2. Independent-implementation parity: our ladder equals Zig's std.crypto.ecc.Secp256k1.mul byte-for-byte on the affine coordinates of
-    //    k·P across a spread of scalars, over both the base point and one of its multiples (3·G, still a prime-order-subgroup point).
+    //    k-P across a spread of scalars, over both the base point and one of its multiples (3-G, still a prime-order-subgroup point).
     {
         const small = [_]u64{ 1, 2, 3, 7, 16, 255, 1000, 65537 };
-        // A fixed large scalar with a small top byte — well under the group order, never zero, so Zig's mul rejects nothing.
+        // A fixed large scalar with a small top byte -- well under the group order, never zero, so Zig's mul rejects nothing.
         const big = [32]u8{
             0x9d, 0xb6, 0x1c, 0x0f, 0x27, 0x44, 0x8e, 0x11, 0xa3, 0x5c, 0x02, 0x77, 0xd8, 0x41, 0x63, 0x9a,
             0x0e, 0x5b, 0xc7, 0x30, 0x88, 0x12, 0x6f, 0xa9, 0x44, 0xd1, 0x3e, 0x07, 0x91, 0x2a, 0x60, 0x0e,

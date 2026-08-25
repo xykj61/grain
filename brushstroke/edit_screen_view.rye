@@ -1,14 +1,14 @@
-//! brushstroke/edit_screen_view.rye — HUNK53: the whole Photos screen in one call — the palette above, the picture below.
+//! brushstroke/edit_screen_view.rye -- HUNK53: the whole Photos screen in one call -- the palette above, the picture below.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK53.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK53.
 //! Design read: active-designing/date/20260813/20260813-210626_hunk-screen-view-exploration.md
-//! Teacher, thanked clean-room: the editing screen of a photo app (iCloud Photos / Google Photos) — the tool palette
+//! Teacher, thanked clean-room: the editing screen of a photo app (iCloud Photos / Google Photos) -- the tool palette
 //! stacked over the picture, one surface a keeper reads top to bottom (concept only, siloed).
 //!
-//! HUNK52 painted the gesture strip as a chip row and HUNK51 paints the edited picture — two proven surfaces a caller
+//! HUNK52 painted the gesture strip as a chip row and HUNK51 paints the edited picture -- two proven surfaces a caller
 //! still had to place by hand. This rung composes them into one canvas: paint_screen stacks HUNK52's chip row on top of
 //! HUNK51's picture into a single Skate grid, so a caller paints the whole editing screen in one call. The composition
-//! introduces no drift — the screen's top row equals paint_strip cell-for-cell and its picture region equals paint
+//! introduces no drift -- the screen's top row equals paint_strip cell-for-cell and its picture region equals paint
 //! cell-for-cell, each sub-surface written into its own place unchanged. A pure composition over two proven grids; no new
 //! render primitive, no new clamp, no new refusal beyond the strip's own EmptyStrip. No network, no key, no funds.
 //!
@@ -31,12 +31,12 @@ pub const ScreenViewError = edit_strip_view.StripViewError;
 
 /// A finger-driven Photos editing screen: HUNK52's strip view (itself HUNK51's finger view), wrapped so the one object
 /// that edits the picture and paints the palette also composes both into one canvas. No pixels and no history live here
-/// beyond the strip view's own — this surface adds only the stacking that places the palette above the picture.
+/// beyond the strip view's own -- this surface adds only the stacking that places the palette above the picture.
 pub const EditScreenView = struct {
     strip: edit_strip_view.EditStripView,
 
     /// Open the screen over a `cols`×`rows` picture grid with a gesture strip of `cell_px`-wide cells and a `swipe_px`
-    /// threshold — delegating to HUNK52, so a bad grid refuses `BadView` and a bad cell or swipe refuses
+    /// threshold -- delegating to HUNK52, so a bad grid refuses `BadView` and a bad cell or swipe refuses
     /// `BadCell` / `BadSwipe`, each caught once at construction.
     pub fn open(cols: u32, rows: u32, cell_px: u32, swipe_px: u32) ScreenViewError!EditScreenView {
         const strip = try edit_strip_view.EditStripView.open(cols, rows, cell_px, swipe_px);
@@ -57,18 +57,18 @@ pub const EditScreenView = struct {
         assert(self.strip.chips() <= edit_touch_input.max_strip);
     }
 
-    /// A finger touches down at pixel `(x, y)` — arm the finger surface (HUNK52).
+    /// A finger touches down at pixel `(x, y)` -- arm the finger surface (HUNK52).
     pub fn finger_down(self: *EditScreenView, x: i32, y: i32) void {
         self.strip.finger_down(x, y);
     }
 
-    /// The finger lifts at pixel `(x, y)` — classify and, when a gesture fires, apply it to the one cursor (HUNK52).
+    /// The finger lifts at pixel `(x, y)` -- classify and, when a gesture fires, apply it to the one cursor (HUNK52).
     /// Returns the gesture that fired, or `null` for a tap off the strip.
     pub fn finger_up(self: *EditScreenView, x: i32, y: i32) edits.EditsError!?edit_input.Gesture {
         return self.strip.finger_up(x, y);
     }
 
-    /// The pixel column at the center of chip `i` — exactly where a tap commits verb `i` (HUNK52's `chip_center_x`).
+    /// The pixel column at the center of chip `i` -- exactly where a tap commits verb `i` (HUNK52's `chip_center_x`).
     pub fn chip_center_x(self: *const EditScreenView, i: u32) i32 {
         return self.strip.chip_center_x(i);
     }
@@ -78,7 +78,7 @@ pub const EditScreenView = struct {
         return self.strip.chips();
     }
 
-    /// The undo depth — how many edits stand behind the cursor (HUNK52).
+    /// The undo depth -- how many edits stand behind the cursor (HUNK52).
     pub fn depth(self: *const EditScreenView) u32 {
         return self.strip.depth();
     }
@@ -86,8 +86,8 @@ pub const EditScreenView = struct {
     /// Paint the whole editing screen into one Skate grid: HUNK52's chip row in the top row, HUNK51's edited picture in
     /// the rows below, the grid `max(picture_cols, chips)` wide and `1 + picture_rows` tall. Each sub-surface is written
     /// into its own place unchanged, so the screen's top row equals `paint_strip` cell-for-cell and its picture region
-    /// equals `paint` cell-for-cell — the composition adds no drift. Refuses `EmptyStrip` when nothing is bound (a screen
-    /// shows a palette). Cells outside a sub-surface's width stay blank. Pure — both sub-grids are read, never mutated.
+    /// equals `paint` cell-for-cell -- the composition adds no drift. Refuses `EmptyStrip` when nothing is bound (a screen
+    /// shows a palette). Cells outside a sub-surface's width stay blank. Pure -- both sub-grids are read, never mutated.
     pub fn paint_screen(self: *const EditScreenView, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
         const chip_row = try self.strip.paint_strip(allocator); // refuses EmptyStrip before any picture work
         const picture = try self.strip.paint(allocator, source);
@@ -107,7 +107,7 @@ pub const EditScreenView = struct {
         // paints the same solid block in the same palette color as its source surface.
         image_skate.set_anchor_palette(&grid);
 
-        // Row 0 — the chip palette, left-aligned; cells past the last chip stay blank.
+        // Row 0 -- the chip palette, left-aligned; cells past the last chip stay blank.
         var c: u32 = 0;
         while (c < chip_row.cols) : (c += 1) {
             const src: usize = @intCast(c);
@@ -119,7 +119,7 @@ pub const EditScreenView = struct {
             grid.fg_index[dst] = chip_row.fg_index[src];
         }
 
-        // Rows 1.. — the picture, each source cell into the row below the palette; cells past the picture stay blank.
+        // Rows 1.. -- the picture, each source cell into the row below the palette; cells past the picture stay blank.
         var r: u32 = 0;
         while (r < picture.rows) : (r += 1) {
             var pc: u32 = 0;
@@ -137,7 +137,7 @@ pub const EditScreenView = struct {
     }
 };
 
-// --- selftest: a two-verb strip over an 8x8 two-tone on a 2x2 picture grid — paint_screen stacks the chip row over the
+// --- selftest: a two-verb strip over an 8x8 two-tone on a 2x2 picture grid -- paint_screen stacks the chip row over the
 //     picture into one grid; the top row equals paint_strip cell-for-cell, the picture region equals paint cell-for-cell
 //     (no drift); a tap centered on a chip edits the picture region; an unbound screen refuses EmptyStrip; bad geometry
 //     refuses at open ----------------------------------------------------------------------------------------------
@@ -207,7 +207,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The screen edits: a tap centered on chip 0 (flip_h) repaints the picture region — the left cell of the picture
+    // The screen edits: a tap centered on chip 0 (flip_h) repaints the picture region -- the left cell of the picture
     // turns from red (slot 3) to blue (slot 5), seen in the composed screen itself, one row below the palette.
     {
         const red_slot: u8 = 3;
@@ -223,7 +223,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(screen.depth() == 1);
     }
 
-    // The composed screen rasterizes to a lit canvas — the whole screen reaches the glass.
+    // The composed screen rasterizes to a lit canvas -- the whole screen reaches the glass.
     {
         const g = try screen.paint_screen(garden, &pm);
         const scale: u32 = 1;
@@ -238,7 +238,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(lit > 0);
     }
 
-    // An unbound screen has no palette — paint_screen refuses EmptyStrip before painting a picture.
+    // An unbound screen has no palette -- paint_screen refuses EmptyStrip before painting a picture.
     {
         var empty = try EditScreenView.open(cols, rows, cell, 12);
         if (empty.paint_screen(garden, &pm)) |_| return error.EmptySlipped else |e| {
@@ -246,7 +246,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // Bad geometry refuses at open by name (HUNK52/51 beneath) — a zero grid, a zero cell, a zero swipe.
+    // Bad geometry refuses at open by name (HUNK52/51 beneath) -- a zero grid, a zero cell, a zero swipe.
     if (EditScreenView.open(0, rows, cell, 12)) |_| return error.GridSlipped else |e| {
         if (e != error.BadView) return error.WrongGrid;
     }

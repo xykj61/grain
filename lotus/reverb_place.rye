@@ -1,16 +1,16 @@
-//! lotus/reverb_place.rye — ALES214: REVERB PLACE — reverberate the master WET, then SEAT the reverberated result in the field: how WIDE it sits
+//! lotus/reverb_place.rye -- ALES214: REVERB PLACE -- reverberate the master WET, then SEAT the reverberated result in the field: how WIDE it sits
 //! and WHERE, in one call. ALES212 answered how wide (reverb_width); ALES213 answered where (reverb_pan). A keeper mixing a stereo master reaches
-//! for both at once — seat the reverb return narrow and slightly left, or wide and centred — yet each rung asked the other's work be run separately.
+//! for both at once -- seat the reverb return narrow and slightly left, or wide and centred -- yet each rung asked the other's work be run separately.
 //! This rung is the capstone the width and pan sub-series earned: reverberate, then set the wet image's width AND position with a single seating.
 //!
 //! The shape, composing three proven stages with NO new audio arithmetic:
-//!   1. validate the WIDTH fraction (BadWidth) AND the PAN fraction (BadPan) BEFORE any write — a bad fraction leaves the master fully dry
-//!   2. reverberate the master WET in place — ALES191's `stereo_reverb_preset`, unchanged (it prechecks its own faults before any write)
-//!   3. set how wide the wet sits — ALES211's `stereo_width`, the width already proven legal so this stage cannot fault
-//!   4. place the wet image — read ALES11's equal-power split `[w_left, w_right]` for the position and scale each wet channel by its weight over the
+//!   1. validate the WIDTH fraction (BadWidth) AND the PAN fraction (BadPan) BEFORE any write -- a bad fraction leaves the master fully dry
+//!   2. reverberate the master WET in place -- ALES191's `stereo_reverb_preset`, unchanged (it prechecks its own faults before any write)
+//!   3. set how wide the wet sits -- ALES211's `stereo_width`, the width already proven legal so this stage cannot fault
+//!   4. place the wet image -- read ALES11's equal-power split `[w_left, w_right]` for the position and scale each wet channel by its weight over the
 //!      field denominator through ALES2's proven `timeline.gain`, the pan already proven legal so neither gain can fault
 //! Both fractions are checked first so a bad seating never lets the reverb write: the op refuses whole up front (the master left dry) or completes
-//! whole. One reverb, then two proven placements — every sample it writes is written by a stage already proven byte for byte.
+//! whole. One reverb, then two proven placements -- every sample it writes is written by a stage already proven byte for byte.
 //!
 //! The edges name the two knobs. `width == 0` (MONO COLLAPSE) folds the wet to its shared mid on both channels; `pan == den/2` (equal-power CENTRE)
 //! then attenuates both equally, so a mono wash is held centred below the pure wet. `width == den` (UNITY) is the mid/side round-trip over the
@@ -18,15 +18,15 @@
 //! silenced). Each pan weight is a non-negative amplitude no greater than den (ALES11's isqrt monotone, den² its cap), so the placement attenuates,
 //! never amplifies.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES214.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES214.
 //! Design read: active-designing/date/20260815/20260815-125233_fill-ales214-lotus-reverb-place.md
-//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
-//! forwarded whole; lotus/stereo_width.rye (ALES211) — the width control (encode/scale-the-side/decode), run over the wet, its BadWidth reused; lotus/
-//! power.rye (ALES11) — the equal-power split `split(pos, den)` = [isqrt(den·(den−pos)), isqrt(den·pos)], reused verbatim; lotus/timeline.rye (ALES2)
-//! — the Clip and its proven `gain`; lotus/pan.rye (ALES10) — the StereoClip, its balance invariant, and the fold bound max_pan_den; lotus/clock.rye
-//! (ALES5) — the validated sample clock the preset speaks its span against.
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) -- the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/stereo_width.rye (ALES211) -- the width control (encode/scale-the-side/decode), run over the wet, its BadWidth reused; lotus/
+//! power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den−pos)), isqrt(den-pos)], reused verbatim; lotus/timeline.rye (ALES2)
+//! -- the Clip and its proven `gain`; lotus/pan.rye (ALES10) -- the StereoClip, its balance invariant, and the fold bound max_pan_den; lotus/clock.rye
+//! (ALES5) -- the validated sample clock the preset speaks its span against.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. One bounded in-process i16 StereoClip, a validated clock, ALES191's fixed banks, siloed to lotus/.
+//! HONEST SCOPE -- software only, purely LOCAL. One bounded in-process i16 StereoClip, a validated clock, ALES191's fixed banks, siloed to lotus/.
 //! Reverb place is a pure composition of three proven stages over existing samples; it fabricates none, changes no length, and reads no byte past
 //! either channel; it inherits ALES210's honest ≤ 1 LSB round-trip cost at unity width. The width and pan laws are routing weights, not psychoacoustic
 //! or electrical claims. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
@@ -46,7 +46,7 @@ const power = @import("power.rye");
 
 pub const reverb_place_version = "20260815.125233";
 
-/// The named rooms are ALES190's own, reached through ALES191 — reused whole, so reverb place and the presets name the same tunings and cannot drift
+/// The named rooms are ALES190's own, reached through ALES191 -- reused whole, so reverb place and the presets name the same tunings and cannot drift
 /// apart.
 pub const Room = stereo_reverb_preset.Room;
 
@@ -55,20 +55,20 @@ pub const Room = stereo_reverb_preset.Room;
 pub const max_width_den: u32 = stereo_width.max_width_den;
 pub const max_width_num: u32 = stereo_width.max_width_num;
 
-/// The pan bound is ALES10's own fold bound, reached through ALES11 — reused whole so reverb place and the plain pan name the same field. A pan is
+/// The pan bound is ALES10's own fold bound, reached through ALES11 -- reused whole so reverb place and the plain pan name the same field. A pan is
 /// `pos/den`: 0 is hard left, `den` is hard right, `den/2` is the equal-power centre.
 pub const max_pan_den: u32 = power.max_pan_den;
 
 /// Reverb place's faults are ALES191's `StereoReverbPresetError` (the clock's DurationTooLong and the reverb's own faults, forwarded whole) beside
-/// two own faults — `BadWidth` (a width with a zero or over-bound denominator or an over-bound numerator) and `BadPan` (a pan with a zero or
-/// over-bound denominator or a position past the field) — each refused by name before any write.
+/// two own faults -- `BadWidth` (a width with a zero or over-bound denominator or an over-bound numerator) and `BadPan` (a pan with a zero or
+/// over-bound denominator or a position past the field) -- each refused by name before any write.
 pub const ReverbPlaceError = stereo_reverb_preset.StereoReverbPresetError || error{ BadWidth, BadPan };
 
 /// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM, then SEAT the reverberated result: scale the wet's SIDE by
 /// `width_num/width_den` (how wide) and place the result at `pan_pos/pan_den` in the field (where) by scaling each wet channel by its equal-power
 /// weight. `width_num == 0` collapses the wash to mono; `width_den == width_num` is unity (the mid/side round-trip, ≤ 1 LSB per sample). `pan_pos ==
 /// 0` routes the whole wash LEFT (right silenced); `pan_pos == pan_den` routes it RIGHT; `pan_pos == pan_den/2` is the equal-power centre (both
-/// channels ≈ 0.707·wet). Refuses BadWidth or BadPan on a bad fraction BEFORE the reverb writes, then forwards ALES191's StereoReverbPresetError
+/// channels ≈ 0.707-wet). Refuses BadWidth or BadPan on a bad fraction BEFORE the reverb writes, then forwards ALES191's StereoReverbPresetError
 /// (DurationTooLong, BadRange) before any write; on refusal the master is left dry, untouched, and balanced.
 pub fn reverb_place(
     sc: *pan.StereoClip,
@@ -81,57 +81,57 @@ pub fn reverb_place(
     pan_pos: u32,
     pan_den: u32,
 ) ReverbPlaceError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared preset, width, and gains preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant the shared preset, width, and gains preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the clock is valid — the span is spoken against it, and stereo_reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and stereo_reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
-    // invariant: the width is a real, bounded fraction — checked BEFORE the reverb writes so a bad width never leaves a wet, un-seated master. The
+    // invariant: the width is a real, bounded fraction -- checked BEFORE the reverb writes so a bad width never leaves a wet, un-seated master. The
     // same bounds ALES211 checks, so the width stage below cannot fault.
     if (width_den == 0 or width_den > max_width_den or width_num > max_width_num) return error.BadWidth;
-    // invariant: the pan is a real, bounded fraction — checked BEFORE the reverb writes too. A zero denominator is no fraction, a position past the
+    // invariant: the pan is a real, bounded fraction -- checked BEFORE the reverb writes too. A zero denominator is no fraction, a position past the
     // field no place in it; the denominator is bounded to ALES11's fold bound so the equal-power split stays within its proven range.
     if (pan_den == 0 or pan_den > max_pan_den or pan_pos > pan_den) return error.BadPan;
 
     const n: u32 = sc.left.len;
 
-    // 1. Reverberate the master WET in place — ALES191's stereo_reverb_preset, unchanged. It prechecks DurationTooLong / BadRange / its own reverb
+    // 1. Reverberate the master WET in place -- ALES191's stereo_reverb_preset, unchanged. It prechecks DurationTooLong / BadRange / its own reverb
     //    faults before any write, so a reverb fault here leaves the master dry and balanced (and both fractions already proven legal above).
     try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
 
-    // 2. Set how wide the reverberated wet sits — ALES211's stereo_width, the width proven legal above so it cannot raise BadWidth here; the catch
+    // 2. Set how wide the reverberated wet sits -- ALES211's stereo_width, the width proven legal above so it cannot raise BadWidth here; the catch
     //    re-raises as our own fault, yet the invariant is that it never fires.
     stereo_width.stereo_width(sc, width_num, width_den) catch {
-        // invariant: unreachable — the width is prechecked legal with ALES211's own bounds, so stereo_width cannot fault here.
+        // invariant: unreachable -- the width is prechecked legal with ALES211's own bounds, so stereo_width cannot fault here.
         return error.BadWidth;
     };
 
-    // 3. Read ALES11's equal-power split for the proven-legal position — [w_left, w_right], each a non-negative amplitude ≤ pan_den (isqrt monotone,
+    // 3. Read ALES11's equal-power split for the proven-legal position -- [w_left, w_right], each a non-negative amplitude ≤ pan_den (isqrt monotone,
     //    pan_den² its cap). No pan arithmetic is re-derived here; the split is spent verbatim.
     const w = power.split(pan_pos, pan_den);
-    // invariant: each weight is a legal attenuation numerator — no greater than the field denominator, so each channel gain is a fraction of the wet
+    // invariant: each weight is a legal attenuation numerator -- no greater than the field denominator, so each channel gain is a fraction of the wet
     //   and the gain's saturate is a proven no-op (the placement attenuates, never amplifies).
     assert(w[0] <= pan_den and w[1] <= pan_den);
 
-    // 4. Scale each wet channel by its weight over the field denominator — ALES2's proven gain, saturating once. The span is the full valid clip and
+    // 4. Scale each wet channel by its weight over the field denominator -- ALES2's proven gain, saturating once. The span is the full valid clip and
     //    the denominator is proven non-zero above, so neither gain can raise BadGain or BadRange; the catch re-raises as our own fault, never fires.
     timeline.gain(&sc.left, 0, n, @intCast(w[0]), pan_den) catch {
-        // invariant: unreachable — the pan is prechecked legal and the span is the whole clip, so gain cannot fault here.
+        // invariant: unreachable -- the pan is prechecked legal and the span is the whole clip, so gain cannot fault here.
         return error.BadPan;
     };
     timeline.gain(&sc.right, 0, n, @intCast(w[1]), pan_den) catch {
-        // invariant: unreachable — as above, for the right channel.
+        // invariant: unreachable -- as above, for the right channel.
         return error.BadPan;
     };
 
-    // invariant: reverb place writes values only — both channels keep their length, so the master leaves balanced.
+    // invariant: reverb place writes values only -- both channels keep their length, so the master leaves balanced.
     assert(sc.left.len == sc.right.len and sc.left.len == n);
 }
 
-// --- selftest: THE WIDTH-AT-CENTRE LAW (width == 0, pan centre) — both channels equal (mono), each an attenuation of the reverberated shared mid;
-//     THE PAN-AT-UNITY LAW (width == unity, pan == 0) — the right silenced, the left the unity-width wet placed left; THE COMPOSITION LAW — a general
+// --- selftest: THE WIDTH-AT-CENTRE LAW (width == 0, pan centre) -- both channels equal (mono), each an attenuation of the reverberated shared mid;
+//     THE PAN-AT-UNITY LAW (width == unity, pan == 0) -- the right silenced, the left the unity-width wet placed left; THE COMPOSITION LAW -- a general
 //     width and off-centre pan equals stereo_reverb_preset then stereo_width then the two equal-power gains byte for byte, each channel an attenuation
-//     of the widened wet; THE CENTRED-INVARIANT LAW — a centred master seated at centre keeps left == right, each attenuated below the pure wet; THE
-//     FAULT LAW — a bad width BadWidth, a bad pan BadPan, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the master
+//     of the widened wet; THE CENTRED-INVARIANT LAW -- a centred master seated at centre keeps left == right, each attenuated below the pure wet; THE
+//     FAULT LAW -- a bad width BadWidth, a bad pan BadPan, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the master
 //     dry and untouched --------------------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -165,12 +165,12 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // The pure stereo reverb — the wet every edge reshapes. Computed once so each edge reads against the same wash.
+    // The pure stereo reverb -- the wet every edge reshapes. Computed once so each edge reads against the same wash.
     var wet = pan.StereoClip{};
     try load_stereo(&wet, &left, &right);
     try stereo_reverb_preset.stereo_reverb_preset(&wet, c, .hall, 0, 1024);
 
-    // 1. THE WIDTH-AT-CENTRE LAW — width == 0 collapses the wet to its shared mid on both channels; pan == den/2 (centre) then attenuates both
+    // 1. THE WIDTH-AT-CENTRE LAW -- width == 0 collapses the wet to its shared mid on both channels; pan == den/2 (centre) then attenuates both
     //    equally, so the result is MONO (left == right) and each channel an attenuation of the collapsed mid.
     {
         // the reference: the pure reverb, collapsed to mono (width 0), then the two equal-power centre gains.
@@ -190,8 +190,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE PAN-AT-UNITY LAW — width == den (unity) is the mid/side round-trip over the reverberated master, so the wet keeps essentially its stereo
-    //    image (≤ 1 LSB per sample); pan == 0 then routes the whole wash left — the left is the unity-width wet placed left (identity gain), the right
+    // 2. THE PAN-AT-UNITY LAW -- width == den (unity) is the mid/side round-trip over the reverberated master, so the wet keeps essentially its stereo
+    //    image (≤ 1 LSB per sample); pan == 0 then routes the whole wash left -- the left is the unity-width wet placed left (identity gain), the right
     //    silenced.
     {
         var ref = pan.StereoClip{};
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         while (i < clip.right.samples().len) : (i += 1) if (clip.right.samples()[i] != 0) return error.PanUnityRightNotSilent;
     }
 
-    // 3. THE COMPOSITION LAW — a general width and off-centre pan: reverb_place IS reverberate-then-widen-then-place, so its result equals ALES191's
+    // 3. THE COMPOSITION LAW -- a general width and off-centre pan: reverb_place IS reverberate-then-widen-then-place, so its result equals ALES191's
     //    reverb over a fresh copy, then ALES211's width, then ALES11's equal-power gains, BYTE FOR BYTE on both channels; and each channel is an
     //    attenuation of the WIDENED wet (each pan weight ≤ den, so the gain never amplifies).
     {
@@ -216,7 +216,7 @@ fn run_selftest() !u8 {
         try load_stereo(&clip, &left, &right);
         try reverb_place(&clip, c, .hall, 0, 1024, 6000, 4096, 1000, 4096); // wider than unity, off-centre pan
 
-        // the reference: the pure reverb, then the width, then the two equal-power gains — exactly the stages reverb_place composes.
+        // the reference: the pure reverb, then the width, then the two equal-power gains -- exactly the stages reverb_place composes.
         var ref = pan.StereoClip{};
         try load_stereo(&ref, &left, &right);
         try stereo_reverb_preset.stereo_reverb_preset(&ref, c, .hall, 0, 1024);
@@ -238,7 +238,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.left.samples(), ref.left.samples())) return error.CompositionLeftBroken;
         if (!eq(clip.right.samples(), ref.right.samples())) return error.CompositionRightBroken;
 
-        // each channel is an attenuation of the widened wet — the placement seats, it does not amplify.
+        // each channel is an attenuation of the widened wet -- the placement seats, it does not amplify.
         var i: u32 = 0;
         while (i < clip.left.samples().len) : (i += 1) {
             if (abs16(clip.left.samples()[i]) > abs16(wl_copy[i])) return error.LeftAmplified;
@@ -246,7 +246,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE CENTRED-INVARIANT LAW — a centred master (left == right) reverberates through one shared bank to a centred wet whose side is zero, so
+    // 4. THE CENTRED-INVARIANT LAW -- a centred master (left == right) reverberates through one shared bank to a centred wet whose side is zero, so
     //    width leaves it untouched; a centre pan then keeps the two channels identical, each attenuated below the pure wet.
     {
         var centred_wet = pan.StereoClip{};
@@ -264,26 +264,26 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. THE FAULT LAW — a bad width, a bad pan, a span past the clip, and an out-of-range span each refuse by name BEFORE the reverb writes, so the
+    // 5. THE FAULT LAW -- a bad width, a bad pan, a span past the clip, and an out-of-range span each refuse by name BEFORE the reverb writes, so the
     //    master is left DRY, untouched, and balanced.
     {
         var clip = pan.StereoClip{};
         const threel = [_]i16{ 1, 2, 3 };
         const threer = [_]i16{ 4, 5, 6 };
         try load_stereo(&clip, &threel, &threer);
-        // a zero width denominator is no width — BadWidth, before the reverb writes, the master left dry.
+        // a zero width denominator is no width -- BadWidth, before the reverb writes, the master left dry.
         if (reverb_place(&clip, c, .room, 0, 3, 1, 0, 1, 2)) |_| return error.ZeroWidthSlipped else |e| if (e != error.BadWidth) return error.WrongZeroWidth;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.ZeroWidthMutated;
-        // an over-bound width numerator — BadWidth, master dry.
+        // an over-bound width numerator -- BadWidth, master dry.
         if (reverb_place(&clip, c, .room, 0, 3, max_width_num + 1, 4096, 1, 2)) |_| return error.OverWidthSlipped else |e| if (e != error.BadWidth) return error.WrongOverWidth;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.OverWidthMutated;
-        // a zero pan denominator is no pan — BadPan, master dry (the width is legal, so the pan check is what refuses).
+        // a zero pan denominator is no pan -- BadPan, master dry (the width is legal, so the pan check is what refuses).
         if (reverb_place(&clip, c, .room, 0, 3, 4096, 4096, 1, 0)) |_| return error.ZeroPanSlipped else |e| if (e != error.BadPan) return error.WrongZeroPan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.ZeroPanMutated;
-        // a pan position past the field — BadPan, master dry.
+        // a pan position past the field -- BadPan, master dry.
         if (reverb_place(&clip, c, .room, 0, 3, 4096, 4096, 3, 2)) |_| return error.OverPanSlipped else |e| if (e != error.BadPan) return error.WrongOverPan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.OverPanMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock, before any write.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock, before any write.
         if (reverb_place(&clip, c, .room, 0, timeline.max_clip + 1, 4096, 4096, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.LongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before any write.

@@ -1,31 +1,31 @@
-//! mycelium/muster.rye — the Muster: a known validator set a Chorus must pass (r1, the crux).
+//! mycelium/muster.rye -- the Muster: a known validator set a Chorus must pass (r1, the crux).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
 //! The Chorus made a position BELIEVABLE by a quorum of distinct independent Vouchers. Yet it counts ANY
 //! distinct keys: `verify_chorus(3)` passes the instant three fresh keypairs each sign the claim, and
 //! nothing said WHOSE keys those must be. Distinctness proves the voices are different; it cannot prove
 //! they are entitled. An attacker mints three fresh keys, signs one honest reading with each, and presents
-//! a quorum that passes at threshold three — worthless, because a stranger was never told which nodes are
+//! a quorum that passes at threshold three -- worthless, because a stranger was never told which nodes are
 //! the legitimate validators.
 //!
-//! The Muster fills that blind spot: a known, bounded, named set of validator public keys — the roll a
+//! The Muster fills that blind spot: a known, bounded, named set of validator public keys -- the roll a
 //! quorum must be drawn from. A Chorus is believed not because `t` different keys signed, but because `t`
 //! of the ENROLLED validators signed, where `t` is the Muster's own BYZANTINE THRESHOLD read from its
-//! size (`n − (n−1)/3` — the 2f+1 quorum when n = 3f+1, derived never stored, so a tampered roll cannot
+//! size (`n − (n−1)/3` -- the 2f+1 quorum when n = 3f+1, derived never stored, so a tampered roll cannot
 //! lower its own bar). The crux `pass_muster(muster, chorus)` passes exactly when:
-//!   - the Chorus is internally sound on its own terms first (verify_chorus: every voice verifies · all
-//!     agree on one claim · signers distinct);
-//!   - every distinct voice is an enrolled Muster member (else NotMember — an outsider voice never counts,
+//!   - the Chorus is internally sound on its own terms first (verify_chorus: every voice verifies - all
+//!     agree on one claim - signers distinct);
+//!   - every distinct voice is an enrolled Muster member (else NotMember -- an outsider voice never counts,
 //!     and a quorum padded with one stranger is refused whole, never silently trimmed);
-//!   - the enrolled count meets the Byzantine threshold (else BelowQuorum — a genuine but thin quorum is
+//!   - the enrolled count meets the Byzantine threshold (else BelowQuorum -- a genuine but thin quorum is
 //!     not yet believed).
 //! The crux demonstration: a Chorus of three fresh keys that PASSES `verify_chorus(3)` REFUSES
 //! `pass_muster` against a Muster those keys were never enrolled in.
 //!
-//! Composes chorus · voucher · kumara public API only, editing none; the membership-and-quorum law is the
-//! Muster's own bounded fold over its roll and the Chorus's voices. Siloed, dev-only, demo seeds — no real
+//! Composes chorus - voucher - kumara public API only, editing none; the membership-and-quorum law is the
+//! Muster's own bounded fold over its roll and the Chorus's voices. Siloed, dev-only, demo seeds -- no real
 //! key, no funds, no network, no custody. A SERVED muster (a holder fetching the live validator set over
 //! Comlink) reaches the Comlink-served gate.
 //!
@@ -46,7 +46,7 @@ pub const muster_version = "20260813.110039";
 /// A validator key is a full encoded holder identity, the width the ledger seats.
 pub const pk_len: u32 = chorus.pk_len;
 
-/// A validator set is bounded — at most this many nodes ever enroll in one roll.
+/// A validator set is bounded -- at most this many nodes ever enroll in one roll.
 pub const muster_max_members: u32 = 16;
 
 pub const MusterError = error{
@@ -56,7 +56,7 @@ pub const MusterError = error{
     BelowQuorum, // fewer enrolled voices than the Byzantine threshold — a thin quorum is not believed
 } || chorus.ChorusError;
 
-/// A known, bounded set of validator public keys — the roll a quorum must be drawn from. It carries no
+/// A known, bounded set of validator public keys -- the roll a quorum must be drawn from. It carries no
 /// signature and no stored threshold of its own; the Byzantine threshold is a pure function of the member
 /// count, so a Muster of `n` validators cannot lie about how many voices it requires.
 pub const Muster = struct {
@@ -81,7 +81,7 @@ pub fn is_member(m: *const Muster, pk: []const u8) bool {
     return false;
 }
 
-/// Enroll a validator key on the roll — once. Refuses `Duplicate` for a key already present and
+/// Enroll a validator key on the roll -- once. Refuses `Duplicate` for a key already present and
 /// `MusterFull` past the bound rather than growing.
 pub fn enroll(m: *Muster, pk: []const u8) MusterError!void {
     // invariant: a validator is enrolled by a full holder identity.
@@ -96,7 +96,7 @@ pub fn enroll(m: *Muster, pk: []const u8) MusterError!void {
     assert(m.len <= muster_max_members);
 }
 
-/// The Byzantine quorum threshold read from the roll's size: `n − (n−1)/3` — the 2f+1 quorum when the roll
+/// The Byzantine quorum threshold read from the roll's size: `n − (n−1)/3` -- the 2f+1 quorum when the roll
 /// is a smallest fault-tolerant set (n = 3f+1), and the smallest set that must intersect any other quorum
 /// in at least one honest node for any `n`. Derived here, never stored, so a tampered roll cannot quietly
 /// lower its own bar.
@@ -114,7 +114,7 @@ pub fn byzantine_threshold(m: *const Muster) u32 {
 
 /// The crux: a Chorus passes muster only when its distinct, agreeing, honestly-signed voices are all
 /// enrolled validators and their count meets the Muster's Byzantine threshold. The Chorus's own quorum law
-/// runs first (`verify_chorus` — every voice verifies · all agree on one claim · signers distinct), so a
+/// runs first (`verify_chorus` -- every voice verifies - all agree on one claim - signers distinct), so a
 /// forged, disagreeing, or Sybil-padded Chorus refuses on its own terms before the roll is consulted; then
 /// every voice must be enrolled (else `NotMember`), and the enrolled count must meet the threshold (else
 /// `BelowQuorum`).
@@ -124,17 +124,17 @@ pub fn pass_muster(m: *const Muster, c: *const chorus.Chorus) MusterError!void {
     // invariant: a meaningful roll enrolls at least one validator.
     assert(m.len >= 1);
 
-    // 1. The Chorus is internally sound on its own terms — verify · agree · distinct.
+    // 1. The Chorus is internally sound on its own terms -- verify - agree - distinct.
     try chorus.verify_chorus(c, 1);
 
-    // 2. Every distinct voice is an enrolled validator — an outsider never counts, and a quorum padded
+    // 2. Every distinct voice is an enrolled validator -- an outsider never counts, and a quorum padded
     //    with one stranger is refused whole rather than silently trimmed.
     var i: u32 = 0;
     while (i < c.count) : (i += 1) {
         if (!is_member(m, c.members[i].node_slice())) return error.NotMember;
     }
 
-    // 3. The enrolled count meets the Byzantine threshold — a thin quorum is not yet believed.
+    // 3. The enrolled count meets the Byzantine threshold -- a thin quorum is not yet believed.
     const t = byzantine_threshold(m);
     if (c.count < t) return error.BelowQuorum;
 
@@ -142,7 +142,7 @@ pub fn pass_muster(m: *const Muster, c: *const chorus.Chorus) MusterError!void {
     assert(c.count <= m.len);
 }
 
-/// Print a Muster a keeper can read — the count of enrolled validators and the Byzantine threshold their
+/// Print a Muster a keeper can read -- the count of enrolled validators and the Byzantine threshold their
 /// number sets.
 pub fn render(m: *const Muster) void {
     print("muster validators={d} byzantine_threshold={d}\n", .{ m.len, byzantine_threshold(m) });
@@ -156,7 +156,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 /// A minimal honest scene: one genesis issue of 100 to Alice, one block, one Dag. A Chorus opened over it
-/// vouches Alice's plain standing — enough to weigh a validator set against, without the pledge machinery
+/// vouches Alice's plain standing -- enough to weigh a validator set against, without the pledge machinery
 /// the Chorus's own selftest already proves.
 fn issue_dag(alice_pk: []const u8) !cord.Dag {
     const kf = seeded(0xF0);
@@ -181,13 +181,13 @@ pub fn main() !void {
     const alice_pk = seeded(0xA1).public_key.toBytes();
     const dag = try issue_dag(alice_pk[0..]);
 
-    // Four enrolled validators — n = 4 tolerates one fault, so the Byzantine threshold is three.
+    // Four enrolled validators -- n = 4 tolerates one fault, so the Byzantine threshold is three.
     const validators = [_]u8{ 0x11, 0x22, 0x33, 0x44 };
     const roll = try muster_of(validators[0..]);
     if (roll.len != 4) return error.RollSize;
     if (byzantine_threshold(&roll) != 3) return error.RollThreshold;
 
-    // Scene 1 — a full quorum passes. Three of the four enrolled validators each vouch Alice's position;
+    // Scene 1 -- a full quorum passes. Three of the four enrolled validators each vouch Alice's position;
     // the Chorus is sound, every voice is enrolled, and three meets the threshold of three.
     {
         var c = try chorus.open(&dag, alice_pk[0..]);
@@ -197,7 +197,7 @@ pub fn main() !void {
         try pass_muster(&roll, &c);
     }
 
-    // Scene 2 — a thin quorum refuses. Two enrolled validators is a genuine but sub-Byzantine quorum; the
+    // Scene 2 -- a thin quorum refuses. Two enrolled validators is a genuine but sub-Byzantine quorum; the
     // roll refuses BelowQuorum rather than believe a reading fewer than three of its own attested.
     {
         var c = try chorus.open(&dag, alice_pk[0..]);
@@ -208,8 +208,8 @@ pub fn main() !void {
         }
     }
 
-    // Scene 3 — THE CRUX. Three FRESH keys, none enrolled, each honestly vouches Alice's reading. The
-    // Chorus's own law believes them — verify_chorus(3) PASSES — because they are distinct and agree. Yet
+    // Scene 3 -- THE CRUX. Three FRESH keys, none enrolled, each honestly vouches Alice's reading. The
+    // Chorus's own law believes them -- verify_chorus(3) PASSES -- because they are distinct and agree. Yet
     // they are strangers to the roll, so pass_muster refuses NotMember: a fresh key never passes for a
     // validator. This is the blind spot the Muster closes.
     {
@@ -223,9 +223,9 @@ pub fn main() !void {
         }
     }
 
-    // Scene 4 — a padded quorum refuses whole. Three enrolled validators would pass, but one stranger
+    // Scene 4 -- a padded quorum refuses whole. Three enrolled validators would pass, but one stranger
     // added among them makes the Chorus refuse NotMember rather than silently trim the outsider and count
-    // the rest — a quorum presented with a non-member voice is malformed, not merely oversized.
+    // the rest -- a quorum presented with a non-member voice is malformed, not merely oversized.
     {
         var c = try chorus.open(&dag, alice_pk[0..]);
         try chorus.add(&c, &dag, seeded(0x11));
@@ -237,7 +237,7 @@ pub fn main() !void {
         }
     }
 
-    // Scene 5 — the Byzantine threshold is read from the size, across a range of rolls.
+    // Scene 5 -- the Byzantine threshold is read from the size, across a range of rolls.
     {
         const one = try muster_of(&[_]u8{0x11});
         const three = try muster_of(&[_]u8{ 0x11, 0x22, 0x33 });
@@ -250,7 +250,7 @@ pub fn main() !void {
         if (byzantine_threshold(&ten) != 7) return error.T10; // n=10 f=3
     }
 
-    // Scene 6 — membership and enroll refusals. A stranger is no member; a re-enroll refuses Duplicate; a
+    // Scene 6 -- membership and enroll refusals. A stranger is no member; a re-enroll refuses Duplicate; a
     // roll past its bound refuses MusterFull.
     {
         if (!is_member(&roll, seeded(0x11).public_key.toBytes()[0..])) return error.MemberMissing;

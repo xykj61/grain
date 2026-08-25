@@ -1,4 +1,4 @@
-//! comlink/guest_tablecloth_query_host_tx.rye — Tablecloth query device: host TX (name hits).
+//! comlink/guest_tablecloth_query_host_tx.rye -- Tablecloth query device: host TX (name hits).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");
@@ -19,7 +19,7 @@ export fn kmain() callconv(.c) noreturn {
     tx.init();
     vn.driver_ok();
 
-    // Same sealed answer as hosted delivery: peerB/b → two notes.txt revisions.
+    // Same sealed answer as hosted delivery: peerB/b -> two notes.txt revisions.
     var resp: qw.QueryWireResponse = .{
         .hit_count = 2,
         .hits = undefined,

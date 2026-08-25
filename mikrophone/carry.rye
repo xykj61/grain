@@ -1,19 +1,19 @@
-//! mikrophone/carry.rye — DREY5: the carry meets. A recorded, committed run on the device (DREY3's firmware loop) lands
-//! in the desk inbox (DREY4's verify-before-keep) byte-for-byte — and only such a run does. An uncommitted tail never
+//! mikrophone/carry.rye -- DREY5: the carry meets. A recorded, committed run on the device (DREY3's firmware loop) lands
+//! in the desk inbox (DREY4's verify-before-keep) byte-for-byte -- and only such a run does. An uncommitted tail never
 //! crosses, a forgotten run never touches the desk, a frame tampered in transit refuses by name and the desk keeps
 //! nothing, and after both hands forget no residue remains on either side.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY5.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY5.
 //! Design read: active-designing/date/20260814/20260814-063000_drey5-carry-meets-device-loop-to-desk-inbox-exploration.md
 //! Stands on: mikrophone/firmware.rye (DREY3, the sending hand), mikrophone/inbox.rye (DREY4, the receiving hand).
 //!
-//! The two hands of the carry were each proven alone — the device that frames only what was kept on purpose, and the
+//! The two hands of the carry were each proven alone -- the device that frames only what was kept on purpose, and the
 //! desk that keeps only what it has proven whole. This rung proves them meeting: one gesture carries the recorder's
 //! committed run across the single wire and into the inbox, held to the forgetting promise across the seam. Nothing new
-//! is invented — the join composes `firmware.carry_frame` and `inbox.accept` over their public APIs, and adds one
+//! is invented -- the join composes `firmware.carry_frame` and `inbox.accept` over their public APIs, and adds one
 //! invariant of its own: a successful carry leaves the desk holding the device's committed bytes and nothing else. The
 //! single wire is still a byte slice handed function to function; no disk, no network, no key signs, no funds (custody
-//! gate %2 — real hardware, a real cable, a real desk — untouched). The Sha256 digest stays an integrity check the
+//! gate %2 -- real hardware, a real cable, a real desk -- untouched). The Sha256 digest stays an integrity check the
 //! receiving hand recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/carry.rye selftest
@@ -32,9 +32,9 @@ pub const carry_version = "20260814.063000";
 /// sending hand (`firmware.carry_frame`, which refuses `NothingToCarry` for a forgotten run so the inbox is never
 /// touched), then accept it verify-before-trust through DREY4's receiving hand (`inbox.accept`, which refuses any
 /// corruption by name and leaves the inbox exactly as it was). On a clean carry the desk holds exactly the device's
-/// committed carry, byte-for-byte. Every refusal is inherited from the two proven hands — this join adds no new error.
+/// committed carry, byte-for-byte. Every refusal is inherited from the two proven hands -- this join adds no new error.
 pub fn carry_to_inbox(rec: *const recorder.Recorder, box: *inbox.Inbox) !void {
-    // invariant: the desk receives only through the framed carry — never the device's live working buffer.
+    // invariant: the desk receives only through the framed carry -- never the device's live working buffer.
     var f = wire.Frame{};
     try firmware.carry_frame(rec, &f);
     // invariant: a framed carry is at least a whole header before it reaches the receiving hand.
@@ -59,7 +59,7 @@ fn recorded(text: []const u8) !recorder.Recorder {
 }
 
 fn run_selftest() !u8 {
-    // 1. The carry meets — a recorded, committed run lands in the desk inbox byte-for-byte.
+    // 1. The carry meets -- a recorded, committed run lands in the desk inbox byte-for-byte.
     {
         var r = try recorded("field recording");
         try recorder.stop(&r);
@@ -69,7 +69,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, box.held(), "field recording"));
     }
 
-    // 2. Only the committed crosses — commit "keep", feed an uncommitted tail "X", stop; the desk holds exactly "keep".
+    // 2. Only the committed crosses -- commit "keep", feed an uncommitted tail "X", stop; the desk holds exactly "keep".
     {
         var r = try recorded("keep");
         // An uncommitted tail lands in the working buffer while still recording.
@@ -81,7 +81,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, box.held(), "keep"));
     }
 
-    // 3. A forgotten run never touches the desk — recorded, never committed, powered down; the carry refuses
+    // 3. A forgotten run never touches the desk -- recorded, never committed, powered down; the carry refuses
     //    NothingToCarry and an inbox already holding a prior keep is left untouched (neither lands nor erases).
     {
         var box = inbox.Inbox.init();
@@ -103,11 +103,11 @@ fn run_selftest() !u8 {
         } else |e| {
             if (e != error.NothingToCarry) return error.WrongNothingToCarry;
         }
-        // The earlier good keep still stands — the forgotten run neither landed nor erased.
+        // The earlier good keep still stands -- the forgotten run neither landed nor erased.
         assert(std.mem.eql(u8, box.held(), "prior keep"));
     }
 
-    // 4. A frame tampered in transit is refused at the desk — a single flipped payload byte between framing and accept
+    // 4. A frame tampered in transit is refused at the desk -- a single flipped payload byte between framing and accept
     //    refuses DigestMismatch; the desk keeps nothing, and a prior good keep still stands.
     {
         var box = inbox.Inbox.init();
@@ -120,18 +120,18 @@ fn run_selftest() !u8 {
         try recorder.stop(&r);
         var f = wire.Frame{};
         try firmware.carry_frame(&r, &f);
-        // Flip one payload byte in transit — the digest is checked before a byte is kept.
+        // Flip one payload byte in transit -- the digest is checked before a byte is kept.
         f.buf[wire.header_len] = f.buf[wire.header_len] ^ 0x01;
         if (inbox.accept(&box, f.bytes())) |_| {
             return error.TamperKept;
         } else |e| {
             if (e != error.DigestMismatch) return error.WrongTamper;
         }
-        // The earlier good keep still stands — the transit tamper neither landed nor erased.
+        // The earlier good keep still stands -- the transit tamper neither landed nor erased.
         assert(std.mem.eql(u8, box.held(), "keep me"));
     }
 
-    // 5. Both hands forget — after the device powers down its working buffer reads zero, and after the desk clears its
+    // 5. Both hands forget -- after the device powers down its working buffer reads zero, and after the desk clears its
     //    inbox reads zero; the whole carry leaves no residue on either hand.
     {
         var r = try recorded("forget me");
@@ -139,10 +139,10 @@ fn run_selftest() !u8 {
         var box = inbox.Inbox.init();
         try carry_to_inbox(&r, &box);
         assert(box.held().len == 9);
-        // The device forgets — power down and the working buffer is empty.
+        // The device forgets -- power down and the working buffer is empty.
         firmware.power_down(&r);
         assert(r.working().len == 0);
-        // The desk forgets — clear and the inbox is empty, the buffer zeroed whole.
+        // The desk forgets -- clear and the inbox is empty, the buffer zeroed whole.
         inbox.clear(&box);
         assert(box.held().len == 0);
         var i: u32 = 0;

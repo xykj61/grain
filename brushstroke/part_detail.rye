@@ -1,23 +1,23 @@
-//! brushstroke/part_detail.rye — HUNK81: the part detail page — a tapped ref paints the picture above its full facts.
+//! brushstroke/part_detail.rye -- HUNK81: the part detail page -- a tapped ref paints the picture above its full facts.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK81.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK81.
 //! Design read: active-designing/date/20260814/20260814-002316_hunk-part-detail-page-from-a-tapped-ref-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's product page — a tapped result opens onto the part's own picture and
+//! Teacher, thanked clean-room: McMaster-Carr's product page -- a tapped result opens onto the part's own picture and
 //! its full facts, larger than the catalog row (concept only, siloed).
 //!
 //! HUNK80 closed the marketplace loop up to the tap: a keeper narrows the shelf, touches a result, and the surface
 //! returns a `PartRef` (index, name, honest facts). Yet the tap opened onto nothing to SEE. A shelf row is a one-line
-//! glance — a fact line and a thumbnail swatch on one row; a detail page is larger, the picture bigger, each fact on
+//! glance -- a fact line and a thumbnail swatch on one row; a detail page is larger, the picture bigger, each fact on
 //! its own line. This rung paints that page from the handle HUNK80 hands over, so the whole gesture arrives: search ->
 //! tap -> the part's own page.
 //!
 //! The crux is NO DRIFT between the page and the part: the picture is the tapped part's own window into the ONE shared
 //! sheet (`cat.render_part`, down-mapped as solid blocks), and each fact line reads exactly the fact the `PartRef`
-//! carries — so the page can never show one product's picture beside another's price. The picture reuses the same
+//! carries -- so the page can never show one product's picture beside another's price. The picture reuses the same
 //! `image_skate.down_map` seam the thumbnail swatch uses, and the price reuses `part_row.format_price`, so the detail
 //! page and the shelf paint one product by one law.
 //!
-//! The page holds no state and no funds — a price is a `u64` count of the smallest honest unit, FORMATTED for reading,
+//! The page holds no state and no funds -- a price is a `u64` count of the smallest honest unit, FORMATTED for reading,
 //! never a balance the tree can move (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_detail.rye selftest
@@ -46,11 +46,11 @@ pub const DetailError = error{
 };
 
 /// Paint a tapped part's detail page: its picture down-mapped into the top `pic_rows` at full width, then the four
-/// fact rows beneath — name, part number, material, exact price — each read straight from `ref`. Because the picture
+/// fact rows beneath -- name, part number, material, exact price -- each read straight from `ref`. Because the picture
 /// and every fact row read the SAME part (the `ref` and the catalog it borrows), the page can never show one product's
 /// picture beside another's facts. Refuses `EmptyPage` on a zero dimension, `PageTooLarge` past the down-map ceiling,
 /// `EmptyPicture` on zero picture rows, and `PageTooShort` when the page cannot hold the picture plus its four fact
-/// rows — so a page a keeper reaches always holds a whole part.
+/// rows -- so a page a keeper reaches always holds a whole part.
 pub fn detail_page(
     allocator: std.mem.Allocator,
     cat: *const part_catalog.PartCatalog,
@@ -62,7 +62,7 @@ pub fn detail_page(
     if (cols == 0 or rows == 0) return error.EmptyPage;
     if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.PageTooLarge;
     if (pic_rows == 0) return error.EmptyPicture;
-    // The picture band and its four fact rows must both fit — a page shows the whole part or refuses.
+    // The picture band and its four fact rows must both fit -- a page shows the whole part or refuses.
     if (pic_rows + detail_fact_rows > rows) return error.PageTooShort;
     // invariant: the tapped ref names a live part in the catalog it borrows.
     assert(ref.index < cat.len());
@@ -73,9 +73,9 @@ pub fn detail_page(
     assert(grid.cols == cols);
     assert(grid.rows == rows);
 
-    // The picture — a fresh cut of the ONE sheet at the part's window. `down_map` only downsamples (each block spans at
+    // The picture -- a fresh cut of the ONE sheet at the part's window. `down_map` only downsamples (each block spans at
     // least one pixel), so a small window is down-mapped to its own size and then STRETCHED across the page band, the
-    // same idiom the thumbnail swatch uses (`paint_swatch`) — a picture wider than its window never empties a partition.
+    // same idiom the thumbnail swatch uses (`paint_swatch`) -- a picture wider than its window never empties a partition.
     const window = try cat.render_part(allocator, ref.name);
     const pw: u32 = @min(cols, window.width);
     const ph: u32 = @min(pic_rows, window.height);
@@ -107,7 +107,7 @@ pub fn detail_page(
         }
     }
 
-    // The facts — each on its own row beneath the picture, read straight from the ref (no drift). `put_line` truncates
+    // The facts -- each on its own row beneath the picture, read straight from the ref (no drift). `put_line` truncates
     // to the page width, so a long fact never overwrites the row below it.
     grid.put_line(pic_rows, ref.name);
     grid.put_line(pic_rows + 1, ref.facts.part_number);
@@ -118,12 +118,12 @@ pub fn detail_page(
     return grid;
 }
 
-// --- selftest: a bands sheet, parts in known color bands — the detail page paints each part's picture in its own
+// --- selftest: a bands sheet, parts in known color bands -- the detail page paints each part's picture in its own
 //     color and stacks its facts, each fact line equal to the stored fact (no drift); a different part paints a
 //     different picture and different facts; the page rasterizes to a lit canvas; the refusals fire; and the capstone:
 //     a tap on a narrowed search opens a detail page of the very part the search reached. -----------------------------
 
-/// A 16×8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window is one known color.
+/// A 16×8 sheet in four solid vertical bands -- red, green, blue, yellow -- so a 4-wide window is one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -143,7 +143,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a page row back as bytes, trimmed of the blank tail (`Grid.init` fills cells with spaces) — so the reader
+/// Read a page row back as bytes, trimmed of the blank tail (`Grid.init` fills cells with spaces) -- so the reader
 /// sees exactly the painted fact line.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
@@ -154,7 +154,7 @@ fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     return n;
 }
 
-/// Every picture cell of a page's top band is a solid color block wearing one slot — read that slot (and assert the
+/// Every picture cell of a page's top band is a solid color block wearing one slot -- read that slot (and assert the
 /// band paints blocks). Returns the slot the top-left picture cell wears.
 fn picture_slot(grid: *const skate.Grid, cols: u32, pic_rows: u32) u8 {
     var r: u32 = 0;
@@ -193,7 +193,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$1.25"));
     }
 
-    // A different part paints a different picture AND different facts — no drift between page and part.
+    // A different part paints a different picture AND different facts -- no drift between page and part.
     {
         const ref = part_tap.tap_part(&cat, rows, 0, 2) orelse unreachable; // row 2 -> gear
         const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
@@ -203,7 +203,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$8.45"));
     }
 
-    // The page is genuinely seen: it rasterizes to a lit canvas — the picture and the fact lines reach the glass.
+    // The page is genuinely seen: it rasterizes to a lit canvas -- the picture and the fact lines reach the glass.
     {
         const ref = part_tap.tap_part(&cat, rows, 0, 0) orelse unreachable;
         const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
@@ -237,7 +237,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // THE CAPSTONE — search -> tap -> detail, end to end. A stainless-only search's second row is hexnut (the catalog's
+    // THE CAPSTONE -- search -> tap -> detail, end to end. A stainless-only search's second row is hexnut (the catalog's
     // fourth part, HUNK80's crux); its detail page paints hexnut's own picture and hexnut's own facts.
     {
         const ref = (try part_tap.open_tapped_and(&cat, "material:stainless-304", rows, 0, 1)) orelse unreachable;

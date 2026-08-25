@@ -1,30 +1,30 @@
-//! crypto/bitcoin_address.rye — Season G (Cryptography): the Bitcoin address, authored in pure Rye as a composition over three already-GREEN
-//! stones — SHA-256 (crypto/sha256.rye), RIPEMD-160 (crypto/ripemd160.rye), and the two self-verifying encoders (encoding/base58check.rye and
+//! crypto/bitcoin_address.rye -- Season G (Cryptography): the Bitcoin address, authored in pure Rye as a composition over three already-GREEN
+//! stones -- SHA-256 (crypto/sha256.rye), RIPEMD-160 (crypto/ripemd160.rye), and the two self-verifying encoders (encoding/base58check.rye and
 //! encoding/bech32.rye). This is the Bitcoin-world sibling of crypto/eth_address.rye: where Ethereum keeps the low twenty bytes of a Keccak-256,
-//! Bitcoin hashes a public key with HASH160 = RIPEMD-160(SHA-256(pubkey)) and wraps those twenty bytes in one of two self-checking envelopes —
-//! the legacy Base58Check "1…" address (Pay-to-Public-Key-Hash) or the SegWit v0 Bech32 "bc1…" address (Pay-to-Witness-Public-Key-Hash).
+//! Bitcoin hashes a public key with HASH160 = RIPEMD-160(SHA-256(pubkey)) and wraps those twenty bytes in one of two self-checking envelopes --
+//! the legacy Base58Check "1..." address (Pay-to-Public-Key-Hash) or the SegWit v0 Bech32 "bc1..." address (Pay-to-Witness-Public-Key-Hash).
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
-//! cryptography: it composes stones already proven byte-for-byte on metal — SHA-256 and RIPEMD-160 (whose own witness already exercises HASH160),
-//! Base58Check (the version+checksum envelope), and Bech32 (the SegWit encoder) — into the two Bitcoin address forms the crypto wave's ITINERARY
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! cryptography: it composes stones already proven byte-for-byte on metal -- SHA-256 and RIPEMD-160 (whose own witness already exercises HASH160),
+//! Base58Check (the version+checksum envelope), and Bech32 (the SegWit encoder) -- into the two Bitcoin address forms the crypto wave's ITINERARY
 //! note named next: "a Bitcoin-side address composition over the GREEN HASH160." It is the Bitcoin sibling of crypto/eth_address.rye.
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/sha256.rye · crypto/ripemd160.rye (HASH160's two hashes, both GREEN) · encoding/base58check.rye (P2PKH envelope) ·
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/sha256.rye - crypto/ripemd160.rye (HASH160's two hashes, both GREEN) - encoding/base58check.rye (P2PKH envelope) -
 //! encoding/bech32.rye (P2WPKH SegWit encoder). Clean-room: the HASH160 rule, the P2PKH version byte, and the SegWit v0 address construction
 //! are Bitcoin's own public standards (the Bitcoin wiki, BIP-141, BIP-173); the composition is ours, standing on our own parity-GREEN stones,
 //! never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — hash160 composes SHA-256 then RIPEMD-160 over a serialized public key (33-byte compressed or 65-byte uncompressed) into the twenty
+//! THE CRUX -- hash160 composes SHA-256 then RIPEMD-160 over a serialized public key (33-byte compressed or 65-byte uncompressed) into the twenty
 //! bytes every Bitcoin address is built from. p2pkh_address wraps those bytes in the Base58Check envelope under a version byte (0x00 mainnet),
-//! giving a "1…" address. p2wpkh_address emits the SegWit v0 Bech32 address: witness version 0 as one 5-bit symbol, then the twenty bytes
-//! regrouped 8→5, under the "bc" human-readable prefix, giving a "bc1…" address. No arithmetic of our own — every hash and every base conversion
+//! giving a "1..." address. p2wpkh_address emits the SegWit v0 Bech32 address: witness version 0 as one 5-bit symbol, then the twenty bytes
+//! regrouped 8->5, under the "bc" human-readable prefix, giving a "bc1..." address. No arithmetic of our own -- every hash and every base conversion
 //! is a stone already proven on metal.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The composition calls no std.crypto; it stands on
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The composition calls no std.crypto; it stands on
 //! our own GREEN sha256.rye, ripemd160.rye, base58check.rye, and bech32.rye. Parity is proven at selftest against published references anyone can
-//! replay: the canonical Bitcoin-wiki worked example (the 65-byte uncompressed public key 0450863A…82BA6 hashes to HASH160 010966…273BEE and
-//! encodes to the P2PKH address 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM — the very HASH160 encoding/base58check.rye's own known-answer already wraps),
-//! the BIP-173 P2WPKH vector (the program 751e76e8…33bd6 under "bc" encodes to bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4), and a full round-trip
+//! replay: the canonical Bitcoin-wiki worked example (the 65-byte uncompressed public key 0450863A...82BA6 hashes to HASH160 010966...273BEE and
+//! encodes to the P2PKH address 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM -- the very HASH160 encoding/base58check.rye's own known-answer already wraps),
+//! the BIP-173 P2WPKH vector (the program 751e76e8...33bd6 under "bc" encodes to bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4), and a full round-trip
 //! (each address decodes back to exactly its HASH160). Constant-time timing-safety stays a separate named horizon (a public key and its address
 //! are public data, data-independent by construction; the note lives in crypto/CONSTANT_TIME.md).
 //!
@@ -49,14 +49,14 @@ pub const hash160_bytes: u32 = 20;
 pub const p2pkh_version_mainnet: u8 = 0x00;
 pub const segwit_v0: u8 = 0;
 
-/// The twenty bytes of HASH160 regroup to exactly this many 5-bit symbols (20·8 / 5 = 32, no leftover), which after the single witness-version
+/// The twenty bytes of HASH160 regroup to exactly this many 5-bit symbols (20-8 / 5 = 32, no leftover), which after the single witness-version
 /// symbol is the SegWit v0 data payload the Bech32 encoder renders.
 pub const segwit_program_symbols: u32 = 32;
 
 /// The faults this composition can raise. Malformed lengths are refused at the edge before a partial result escapes; the encoders' own bounded
 /// faults (a too-small destination) propagate with their names intact.
 pub const BitcoinAddressError = error{
-    /// A serialized public key whose length is neither 33 (compressed) nor 65 (uncompressed) — refused before hashing.
+    /// A serialized public key whose length is neither 33 (compressed) nor 65 (uncompressed) -- refused before hashing.
     BadPubkeyLength,
 };
 
@@ -66,16 +66,16 @@ fn is_pubkey_len(n: usize) bool {
     return n == pubkey_compressed_bytes or n == pubkey_uncompressed_bytes;
 }
 
-/// HASH160 = RIPEMD-160(SHA-256(data)) — Bitcoin's public-key hash, the address-derivation step. Composes the GREEN crypto/sha256.rye and
+/// HASH160 = RIPEMD-160(SHA-256(data)) -- Bitcoin's public-key hash, the address-derivation step. Composes the GREEN crypto/sha256.rye and
 /// crypto/ripemd160.rye; authors no hash of its own. Accepts any data (a public key in practice); a public key's length is checked by the
 /// address functions above this one.
 pub fn hash160(data: []const u8) (sha256.Sha256Error || ripemd.Ripemd160Error)![hash160_bytes]u8 {
-    // invariant: HASH160 hashes inner-first — SHA-256, then RIPEMD-160 over that 32-byte digest.
+    // invariant: HASH160 hashes inner-first -- SHA-256, then RIPEMD-160 over that 32-byte digest.
     const inner = try sha256.hash(data);
     // invariant: RIPEMD-160 consumes exactly the 32-byte SHA-256 digest.
     comptime assert(sha256.digest_len == 32);
     const outer = try ripemd.hash(&inner);
-    // invariant: HASH160 is exactly twenty bytes — RIPEMD-160's own digest width.
+    // invariant: HASH160 is exactly twenty bytes -- RIPEMD-160's own digest width.
     comptime assert(ripemd.digest_len == hash160_bytes);
     return outer;
 }
@@ -88,7 +88,7 @@ pub fn p2pkh_from_hash160(dest: []u8, version: u8, h160: [hash160_bytes]u8) base
     return base58check.encode(dest, version, &h160);
 }
 
-/// Derive the full P2PKH "1…" address from a serialized public key: HASH160 then the Base58Check envelope under `version`. Refuses a public key
+/// Derive the full P2PKH "1..." address from a serialized public key: HASH160 then the Base58Check envelope under `version`. Refuses a public key
 /// of any length but 33 or 65 with BadPubkeyLength, before hashing.
 pub fn p2pkh_address(dest: []u8, version: u8, pubkey: []const u8) (BitcoinAddressError || sha256.Sha256Error || ripemd.Ripemd160Error || base58check.Base58CheckError)![]const u8 {
     // invariant: only a legal serialized public key is hashed toward an address.
@@ -99,7 +99,7 @@ pub fn p2pkh_address(dest: []u8, version: u8, pubkey: []const u8) (BitcoinAddres
 
 /// Wrap a twenty-byte HASH160 as a SegWit v0 Bech32 P2WPKH address under the human-readable prefix `hrp` ("bc" mainnet, "tb" testnet), writing
 /// into dest and returning the exact written slice. The address is witness version 0 (one 5-bit symbol) followed by the twenty bytes regrouped
-/// 8→5. Composes the GREEN encoding/bech32.rye; propagates its bounded faults.
+/// 8->5. Composes the GREEN encoding/bech32.rye; propagates its bounded faults.
 pub fn p2wpkh_from_hash160(dest: []u8, hrp: []const u8, h160: [hash160_bytes]u8) bech32.Bech32Error![]const u8 {
     // invariant: the SegWit data is one witness-version symbol plus the regrouped program; the buffer holds exactly that.
     var data: [1 + segwit_program_symbols]u8 = undefined;
@@ -112,7 +112,7 @@ pub fn p2wpkh_from_hash160(dest: []u8, hrp: []const u8, h160: [hash160_bytes]u8)
     return bech32.encode(dest, hrp, data[0 .. 1 + written], bech32.Spec.bech32);
 }
 
-/// Derive the full P2WPKH "bc1…" address from a serialized public key: HASH160 then the SegWit v0 Bech32 envelope under `hrp`. Refuses a public
+/// Derive the full P2WPKH "bc1..." address from a serialized public key: HASH160 then the SegWit v0 Bech32 envelope under `hrp`. Refuses a public
 /// key of any length but 33 or 65 with BadPubkeyLength, before hashing.
 pub fn p2wpkh_address(dest: []u8, hrp: []const u8, pubkey: []const u8) (BitcoinAddressError || sha256.Sha256Error || ripemd.Ripemd160Error || bech32.Bech32Error)![]const u8 {
     // invariant: only a legal serialized public key is hashed toward an address.
@@ -124,13 +124,13 @@ pub fn p2wpkh_address(dest: []u8, hrp: []const u8, pubkey: []const u8) (BitcoinA
 // ---- selftest references: published values anyone with SHA-256, RIPEMD-160, Base58Check, and Bech32 can replay ----
 
 // The canonical Bitcoin-wiki "Technical background of version 1 Bitcoin addresses" worked example. The 65-byte uncompressed public key hashes
-// (HASH160) to the twenty-byte payload encoding/base58check.rye's own known-answer already wraps, and that payload encodes to the "1…" address.
+// (HASH160) to the twenty-byte payload encoding/base58check.rye's own known-answer already wraps, and that payload encodes to the "1..." address.
 const wiki_pubkey_hex = "0450863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6";
 const wiki_hash160_hex = "010966776006953d5567439e5e39f86a0d273bee";
 const wiki_p2pkh = "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM";
 
-// The BIP-173 P2WPKH known-answer: the twenty-byte witness program, and the "bc1…" address it encodes to under the "bc" prefix. This program is
-// the HASH160 of the compressed secp256k1 generator point, whose 33-byte serialization is the second vector below — so the pipeline ties end to end.
+// The BIP-173 P2WPKH known-answer: the twenty-byte witness program, and the "bc1..." address it encodes to under the "bc" prefix. This program is
+// the HASH160 of the compressed secp256k1 generator point, whose 33-byte serialization is the second vector below -- so the pipeline ties end to end.
 const bip173_program_hex = "751e76e8199196d454941c45d1b3a323f1433bd6";
 const bip173_p2wpkh = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
 const generator_compressed_hex = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798";
@@ -166,7 +166,7 @@ fn run_selftest() !u8 {
     var dest: [128]u8 = undefined;
 
     // 1. HASH160 known-answer, tying the two encoders' worlds together: the Bitcoin-wiki uncompressed public key hashes to exactly the
-    //    twenty-byte payload encoding/base58check.rye's own witness already wraps into an address — proof our HASH160 composes correctly.
+    //    twenty-byte payload encoding/base58check.rye's own witness already wraps into an address -- proof our HASH160 composes correctly.
     var wiki_pubkey: [pubkey_uncompressed_bytes]u8 = undefined;
     hex_decode(wiki_pubkey_hex, &wiki_pubkey);
     const wiki_h160 = try hash160(&wiki_pubkey);
@@ -174,8 +174,8 @@ fn run_selftest() !u8 {
     hex_decode(wiki_hash160_hex, &want_h160);
     if (!bytes_eq(&wiki_h160, &want_h160)) return error.Hash160Mismatch;
 
-    // 2. P2PKH known-answer: the wiki public key derives the published "1…" address end to end, and p2pkh_from_hash160 over the same twenty
-    //    bytes agrees, so the pubkey→HASH160→Base58Check pipeline reproduces the canonical worked example character for character.
+    // 2. P2PKH known-answer: the wiki public key derives the published "1..." address end to end, and p2pkh_from_hash160 over the same twenty
+    //    bytes agrees, so the pubkey->HASH160->Base58Check pipeline reproduces the canonical worked example character for character.
     {
         const addr = try p2pkh_address(&dest, p2pkh_version_mainnet, &wiki_pubkey);
         if (!bytes_eq(addr, wiki_p2pkh)) return error.P2pkhMismatch;
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (!bytes_eq(addr2, wiki_p2pkh)) return error.P2pkhFromHash160Mismatch;
     }
 
-    // 3. P2PKH round-trip: Base58Check decodes the address back to version ‖ HASH160, the checksum passing — the envelope inverts exactly.
+    // 3. P2PKH round-trip: Base58Check decodes the address back to version ‖ HASH160, the checksum passing -- the envelope inverts exactly.
     {
         var dbuf: [128]u8 = undefined;
         const back = try base58check.decode(&dbuf, wiki_p2pkh);
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         if (!bytes_eq(back[1..], &want_h160)) return error.P2pkhDecodePayload;
     }
 
-    // 4. P2WPKH known-answer (BIP-173): the twenty-byte witness program encodes to the published "bc1…" address under the "bc" prefix.
+    // 4. P2WPKH known-answer (BIP-173): the twenty-byte witness program encodes to the published "bc1..." address under the "bc" prefix.
     {
         var program: [hash160_bytes]u8 = undefined;
         hex_decode(bip173_program_hex, &program);
@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
     }
 
     // 5. The pipeline ties end to end: the compressed secp256k1 generator point hashes (HASH160) to exactly the BIP-173 witness program, so
-    //    p2wpkh_address over that public key derives the published "bc1…" address from a real serialized key, not a bare program.
+    //    p2wpkh_address over that public key derives the published "bc1..." address from a real serialized key, not a bare program.
     {
         var gen: [pubkey_compressed_bytes]u8 = undefined;
         hex_decode(generator_compressed_hex, &gen);
@@ -216,7 +216,7 @@ fn run_selftest() !u8 {
         if (!bytes_eq(addr, bip173_p2wpkh)) return error.P2wpkhAddressMismatch;
     }
 
-    // 6. P2WPKH round-trip: decode the Bech32 address, take the witness version, and regroup the rest 5→8 back to the twenty-byte program.
+    // 6. P2WPKH round-trip: decode the Bech32 address, take the witness version, and regroup the rest 5->8 back to the twenty-byte program.
     {
         var hrp_buf: [8]u8 = undefined;
         var data_buf: [64]u8 = undefined;

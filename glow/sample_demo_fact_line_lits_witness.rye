@@ -1,7 +1,7 @@
-//! glow/sample_demo_fact_line_lits_witness.rye — demo fact-line pins as face=lit.
+//! glow/sample_demo_fact_line_lits_witness.rye -- demo fact-line pins as face=lit.
 //!
-//! Pins must match linengrow/glow_seva_b0_line.rye demo_sig/fact · sig2/fact2 ·
-//! sig3/fact3 (STOA225 · STOA231). Duplicated here — Glow cannot import linengrow.
+//! Pins must match linengrow/glow_seva_b0_line.rye demo_sig/fact - sig2/fact2 -
+//! sig3/fact3 (STOA225 - STOA231). Duplicated here -- Glow cannot import linengrow.
 //!
 //!   rye build glow/sample_demo_fact_line_lits_witness.rye \
 //!     -femit-bin=glow/bin/sample_demo_fact_line_lits_witness

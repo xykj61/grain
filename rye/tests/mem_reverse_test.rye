@@ -1,4 +1,4 @@
-//! Rye test: std.mem.reverse — pass 9921.
+//! Rye test: std.mem.reverse -- pass 9921.
 //!
 //! In-place slice reversal; postcondition checked for len <= 64.
 

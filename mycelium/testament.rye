@@ -1,13 +1,13 @@
-//! mycelium/testament.rye — a named constellation's verdict travels as an offline certificate (r1).
+//! mycelium/testament.rye -- a named constellation's verdict travels as an offline certificate (r1).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
-//! The Constel journey gave the dev-net a name and a roster, and reached quorum on a real fact — yet that
+//! The Constel journey gave the dev-net a name and a roster, and reached quorum on a real fact -- yet that
 //! quorum lived and died in one process. A TESTAMENT is the carried belief: a portable certificate that a
 //! NAMED constellation, by Byzantine quorum, certified a reading, verifiable OFFLINE holding only the
 //! certificate and the roster NAMES. `chorus_bron` already lets a bare quorum travel and re-verify at a
-//! STATED threshold — yet it cannot tell an enrolled ship from a stranger with a valid signature, because it
+//! STATED threshold -- yet it cannot tell an enrolled ship from a stranger with a valid signature, because it
 //! carries no roster. A Testament closes exactly that gap: it carries the constellation's ship names, so a
 //! recipient BOOTS the identical roster from the names alone (Constel's gift: reproducible, no stored keys),
 //! seats the Muster, derives the Byzantine threshold from the roster's size, and confirms the sealing voices
@@ -15,9 +15,9 @@
 //! re-boot, not to a set of anonymous keys.
 //!
 //! Made WITH the ledger, verified WITHOUT it: sealing reads the Dag to make honest vouchers; verification
-//! touches no Dag — `verify_voucher`, `verify_chorus`, and `pass_muster` all work offline over the
+//! touches no Dag -- `verify_voucher`, `verify_chorus`, and `pass_muster` all work offline over the
 //! certificate's own bound facts. Composes constel + chorus + muster + voucher public API only, editing none.
-//! Demo ship and keeper seeds — no key held, no funds, no network, no real value.
+//! Demo ship and keeper seeds -- no key held, no funds, no network, no real value.
 //!
 //! Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
@@ -51,7 +51,7 @@ pub const TestamentError = error{
 };
 
 /// A carried belief: the roster NAMES that define the constellation (its keys and threshold derive from
-/// these names alone), and the sealed Chorus — the shared claim (order-head · account · position) and one
+/// these names alone), and the sealed Chorus -- the shared claim (order-head - account - position) and one
 /// voucher per sealing ship. The names make the certificate self-describing: a recipient boots the exact
 /// roster from them, needing no stored key.
 pub const Testament = struct {
@@ -60,7 +60,7 @@ pub const Testament = struct {
     roster_count: u32 = 0,
     seal: chorus.Chorus = undefined,
 
-    /// One roster ship's name — the bytes that define its whole identity in this certificate.
+    /// One roster ship's name -- the bytes that define its whole identity in this certificate.
     pub fn name_slice(t: *const Testament, i: u32) []const u8 {
         // invariant: a named ship sits within the seated roster.
         assert(i < t.roster_count);
@@ -72,7 +72,7 @@ pub const Testament = struct {
     }
 };
 
-/// Copy a constellation's ship names into a fresh Testament — the roster the certificate is bound to. The
+/// Copy a constellation's ship names into a fresh Testament -- the roster the certificate is bound to. The
 /// keys are NOT stored; a verifier re-derives them from these names. Refuses EmptyRoster and TooManyShips.
 pub fn carry_roster(c: *const constel.Constel) TestamentError!Testament {
     if (c.count == 0) return error.EmptyRoster;
@@ -87,7 +87,7 @@ pub fn carry_roster(c: *const constel.Constel) TestamentError!Testament {
         t.name_lens[i] = @intCast(nm.len);
     }
     t.roster_count = c.count;
-    // invariant: carrying N ships names exactly N — the whole roster, no more.
+    // invariant: carrying N ships names exactly N -- the whole roster, no more.
     assert(t.roster_count == c.count);
     return t;
 }
@@ -95,7 +95,7 @@ pub fn carry_roster(c: *const constel.Constel) TestamentError!Testament {
 /// Seal a reading with the first `signer_count` ships of the constellation: carry the roster names, open a
 /// Chorus over the Dag for the account, and gather each signer's honest voucher. The full-roster seal is the
 /// `signer_count == c.count` case; a subset (r2's `f` down, or the thin-quorum tooth) passes fewer. Refuses
-/// NoSigners and TooManySigners. Reads the Dag — this is the one step that needs the ledger.
+/// NoSigners and TooManySigners. Reads the Dag -- this is the one step that needs the ledger.
 pub fn seal_subset(
     c: *const constel.Constel,
     dag: *const cord.Dag,
@@ -120,14 +120,14 @@ pub fn seal_subset(
     return t;
 }
 
-/// Seal a reading with the whole constellation signing — the common case. Every ship gathers its voucher.
+/// Seal a reading with the whole constellation signing -- the common case. Every ship gathers its voucher.
 pub fn seal(c: *const constel.Constel, dag: *const cord.Dag, account_pk: []const u8) !Testament {
-    // invariant: the whole roster signs — one voice per ship.
+    // invariant: the whole roster signs -- one voice per ship.
     assert(c.count >= 1);
     return seal_subset(c, dag, account_pk, c.count);
 }
 
-/// Boot the constellation the certificate names — a pure function of the roster names, no Dag, no stored
+/// Boot the constellation the certificate names -- a pure function of the roster names, no Dag, no stored
 /// key. The returned Constel's keys are re-derived from the names, so a tampered name re-boots a different
 /// ship (which is exactly how `verify` catches tampering: the real signer stops being a member).
 pub fn boot_roster(t: *const Testament) !constel.Constel {
@@ -147,7 +147,7 @@ pub fn boot_roster(t: *const Testament) !constel.Constel {
 }
 
 /// The crux: verify the sealed quorum OFFLINE against the constellation the names define. Boot the roster
-/// from the certificate's names alone, seat it as a Muster, and pass the seal — every sealing voice must be
+/// from the certificate's names alone, seat it as a Muster, and pass the seal -- every sealing voice must be
 /// one of THIS constellation's ships (else NotMember), and the count must meet the Byzantine threshold the
 /// booted roster's size derives (else BelowQuorum). No Dag, no network, no stored key. A stranger's valid
 /// signature refuses NotMember; a thin quorum refuses BelowQuorum; a tampered name refuses NotMember.
@@ -162,7 +162,7 @@ pub fn verify(t: *const Testament) !void {
     assert(t.seal.count >= muster.byzantine_threshold(&m));
 }
 
-/// The Byzantine threshold the certificate's own named roster derives — never a number the certificate
+/// The Byzantine threshold the certificate's own named roster derives -- never a number the certificate
 /// states about itself, so a tampered roster cannot quietly lower its bar.
 pub fn threshold_of(t: *const Testament) !u32 {
     // invariant: a threshold is read over a bounded, non-empty roster.
@@ -173,7 +173,7 @@ pub fn threshold_of(t: *const Testament) !u32 {
     return muster.byzantine_threshold(&m);
 }
 
-/// Print a Testament a keeper can read — the constellation's size, its derived threshold, the voices it
+/// Print a Testament a keeper can read -- the constellation's size, its derived threshold, the voices it
 /// sealed with, and a short fingerprint of the reading it certifies.
 pub fn render(t: *const Testament) void {
     const hd = t.seal.head_slice();
@@ -185,7 +185,7 @@ pub fn render(t: *const Testament) void {
 
 // --- selftest: a named constellation's verdict verifies offline; a stranger cannot ride it -------------
 
-/// A demo genesis Dag — the issuer mints one hundred coins to the account, giving it a position the
+/// A demo genesis Dag -- the issuer mints one hundred coins to the account, giving it a position the
 /// constellation attests. Demo seeds only.
 fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
     // invariant: a genesis credits a full holder identity.
@@ -199,7 +199,7 @@ fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
     return dag;
 }
 
-// The first Testament dev-net roster — the same names the Constel journey seated, under the Constel naming
+// The first Testament dev-net roster -- the same names the Constel journey seated, under the Constel naming
 // law and the always-on placeholder-ship-names rule (single tokens, no `~`, length != 3/6/12, never @p).
 const roster = [_][]const u8{
     "xnvethqua",
@@ -218,14 +218,14 @@ pub fn main() !void {
     var c = try constel.boot(roster[0..]);
     assert(c.count == roster.len);
 
-    // --- The crux — the whole constellation seals the reading, then verifies OFFLINE ------------------
+    // --- The crux -- the whole constellation seals the reading, then verifies OFFLINE ------------------
     const t = try seal(&c, &dag, account_pk[0..]);
     assert(t.roster_count == roster.len);
     assert(t.seal.count == roster.len);
-    // Verification touches no Dag — only the certificate's names and its sealed voices.
+    // Verification touches no Dag -- only the certificate's names and its sealed voices.
     try verify(&t);
 
-    // The sealed head is the Dag's real order-head — the certificate swears the true reading, not a claim.
+    // The sealed head is the Dag's real order-head -- the certificate swears the true reading, not a claim.
     var expected_head: [head_len]u8 = undefined;
     voucher.order_head_of(&dag, &expected_head);
     assert(std.mem.eql(u8, t.seal.head_slice(), expected_head[0..]));
@@ -233,7 +233,7 @@ pub fn main() !void {
     const threshold = try threshold_of(&t);
 
     // Reproducible: re-boot the roster the certificate names and confirm byte-identical keys, ship for ship
-    // — the constellation the certificate binds to is a pure function of its names.
+    // -- the constellation the certificate binds to is a pure function of its names.
     {
         const c2 = try boot_roster(&t);
         assert(c2.count == c.count);
@@ -245,7 +245,7 @@ pub fn main() !void {
         }
     }
 
-    // --- Teeth 1 — a stranger ship's valid voice never rides the named certificate --------------------
+    // --- Teeth 1 -- a stranger ship's valid voice never rides the named certificate --------------------
     // The distinguishing power: a bare travelling Chorus would ACCEPT this honest, valid signature; a
     // Testament refuses it because the signer is not one of the constellation's own named ships.
     {
@@ -257,7 +257,7 @@ pub fn main() !void {
         }
     }
 
-    // --- Teeth 2 — a quorum too thin for the derived Byzantine threshold is not believed --------------
+    // --- Teeth 2 -- a quorum too thin for the derived Byzantine threshold is not believed --------------
     {
         const thin = try seal_subset(&c, &dag, account_pk[0..], threshold - 1);
         assert(thin.seal.count == threshold - 1);
@@ -266,7 +266,7 @@ pub fn main() !void {
         }
     }
 
-    // --- Teeth 3 — a tampered name re-boots a different ship, so the real signer stops being a member --
+    // --- Teeth 3 -- a tampered name re-boots a different ship, so the real signer stops being a member --
     // Bound to the EXACT names, byte for byte: flip one byte of one roster name and the certificate no
     // longer verifies, because the tampered name derives a key the sealing voucher never signed with.
     {

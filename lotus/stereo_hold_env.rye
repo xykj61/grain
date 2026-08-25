@@ -1,34 +1,34 @@
-//! lotus/stereo_hold_env.rye — ALES165: the HELD envelope follower carried into stereo — one LINKED detector given the HOLD stage, the patient time base the whole stereo HELD-dynamics family waits for. ALES160 carried the
+//! lotus/stereo_hold_env.rye -- ALES165: the HELD envelope follower carried into stereo -- one LINKED detector given the HOLD stage, the patient time base the whole stereo HELD-dynamics family waits for. ALES160 carried the
 //! plain follower into stereo: one shared envelope stepping toward the linked peak max(|left|, |right|), the louder channel deciding the shared loudness over time, the curve written to both so the image never pumps. ALES56
-//! had already taught the mono follower the one stage between its two knobs — the HOLD: when the signal falls away from a peak, pin the peak level for a little while BEFORE the release begins, so a gate does not chatter on a
+//! had already taught the mono follower the one stage between its two knobs -- the HOLD: when the signal falls away from a peak, pin the peak level for a little while BEFORE the release begins, so a gate does not chatter on a
 //! brief dip and a compressor does not pump on a momentary duck. This rung fuses those two lessons: it gives the LINKED detector that same held patience, so the coming stereo held compressor, gate, limiter, and expander can
 //! each read one proven, LINKED, HELD time base rather than re-inventing the hold four times over.
 //!
-//! One truth, held: the detector is SHARED and the hold is SHARED. At each pair the one envelope steps toward the linked peak, and the ONE hold countdown pins that linked peak across a fall — the louder channel arming the
+//! One truth, held: the detector is SHARED and the hold is SHARED. At each pair the one envelope steps toward the linked peak, and the ONE hold countdown pins that linked peak across a fall -- the louder channel arming the
 //! hold for both, the release beginning for both only once the shared countdown expires. Holding each channel on its own countdown would let the two channels release on different samples and tear the image exactly as an
 //! independent detector would; one detector, one hold, and the one held value written to both keep the field aligned to the sample. Every envelope MOVE is still delegated to ALES56's proven env_step_hold reasoning over
-//! ALES52's env_step, so the linked held follower cannot drift from the mono time base it holds — and with hold_samples zero it reduces to ALES160's plain linked follower byte for byte.
+//! ALES52's env_step, so the linked held follower cannot drift from the mono time base it holds -- and with hold_samples zero it reduces to ALES160's plain linked follower byte for byte.
 //!
 //! The rule, stated once: refuse BadCoeff (an attack or release fraction outside (0, 1]), BadHold (a hold longer than the widest clip), and BadRange (a span past the shared length) BEFORE any write. Otherwise walk the span
 //! one sample-PAIR at a time, advancing ONE i64 envelope with ONE u32 hold countdown toward key = max(|left|, |right|) clamped to sample_max (attack while rising and rearming the shared hold, the linked peak pinned while the
 //! countdown lasts, the release only once it expires), and writing the returned shared magnitude into BOTH channels.
 //!
-//! The crux — six laws. THE LINKED HELD DETECTOR LAW (the stereo crux): the shared held curve equals ALES56's mono hold_follow of the per-sample linked key (a synthetic clip of max(|left|, |right|) clamped) byte for byte, and
-//! both output channels equal that shared curve — while an independent per-channel held follow genuinely differs (the image-tearing bug this prevents). THE ZERO-HOLD LAW (the crux link): a hold of zero reduces to ALES160's
-//! plain linked follower byte for byte on both — the held rung's no-hold limit is exactly the plain linked rung already proven. THE HOLD-DELAYS-RELEASE LAW: a larger shared hold pins the linked peak longer, so on a quiet tail
+//! The crux -- six laws. THE LINKED HELD DETECTOR LAW (the stereo crux): the shared held curve equals ALES56's mono hold_follow of the per-sample linked key (a synthetic clip of max(|left|, |right|) clamped) byte for byte, and
+//! both output channels equal that shared curve -- while an independent per-channel held follow genuinely differs (the image-tearing bug this prevents). THE ZERO-HOLD LAW (the crux link): a hold of zero reduces to ALES160's
+//! plain linked follower byte for byte on both -- the held rung's no-hold limit is exactly the plain linked rung already proven. THE HOLD-DELAYS-RELEASE LAW: a larger shared hold pins the linked peak longer, so on a quiet tail
 //! the held envelope is no lower than under a smaller hold (the knob monotone) and strictly higher at the first falling sample. THE HOLD-EXACT LAW: with instant attack and release a linked peak is pinned for precisely `hold`
 //! samples then released in one step, byte for byte on both. THE CARRY LAW: a span followed in two pieces (the split falling mid-hold, the second continuing the first's ending envelope AND countdown) equals following the whole
 //! once, byte for byte on both. THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: left == right after, silence staying silence on both, an illegal coefficient / a hold past max_clip / an out-of-range span each refusing by
 //! name with both channels untouched and balanced, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES165.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES165.
 //! Design read: active-designing/date/20260815/20260815-071625_fill-ales165-lotus-stereo-hold-env.md
-//! Stands on: lotus/stereo_envelope.rye (ALES160) — the LINKED follower, its plain form the zero-hold limit re-proven beside it, its linked-peak key shared whole; lotus/hold_env.rye (ALES56) — the mono HELD follower, its
+//! Stands on: lotus/stereo_envelope.rye (ALES160) -- the LINKED follower, its plain form the zero-hold limit re-proven beside it, its linked-peak key shared whole; lotus/hold_env.rye (ALES56) -- the mono HELD follower, its
 //! env_step_hold reasoning (pin on a fall while the countdown runs, rearm on a rise, delegate every move to env_step) carried here over the linked key, its HoldEnvError reused whole and its output the left-always-peak
-//! comparison; lotus/envelope.rye (ALES52) — the proven env_step and coeff_ok every held move still delegates to; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip,
+//! comparison; lotus/envelope.rye (ALES52) -- the proven env_step and coeff_ok every held move still delegates to; lotus/pan.rye (ALES10) -- the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip,
 //! sample_max, max_clip.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown on one bench, siloed to lotus/. One linked-peak comparison, at
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown on one bench, siloed to lotus/. One linked-peak comparison, at
 //! most one env_step, and a single counter decrement per pair; nothing on the path can overflow, since the envelope stays in [0, sample_max] which fits i16 and the hold counter is bounded by max_clip. The attack, release, and
 //! hold are counted in sample INDICES, not milliseconds against a clock; the follower renders the linked held magnitude curve rather than routing it into a gain yet (driving the stereo held compressor, gate, limiter, and
 //! expander from it is a later rung). No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
@@ -47,16 +47,16 @@ const hold_env = @import("hold_env.rye");
 
 pub const stereo_hold_env_version = "20260815.071625";
 
-/// The linked held follower's faults are exactly ALES56's own `HoldEnvError` — `BadCoeff` (an attack or release fraction outside (0, 1]), `BadHold` (a hold longer than the widest clip), and `BadRange` (a span past the
-/// samples) — reused by name, since giving the linked detector a hold adds no new fault: it validates the one shared attack, the one shared release, one hold, and one span, then advances a single envelope with a single hold
+/// The linked held follower's faults are exactly ALES56's own `HoldEnvError` -- `BadCoeff` (an attack or release fraction outside (0, 1]), `BadHold` (a hold longer than the widest clip), and `BadRange` (a span past the
+/// samples) -- reused by name, since giving the linked detector a hold adds no new fault: it validates the one shared attack, the one shared release, one hold, and one span, then advances a single envelope with a single hold
 /// countdown from both channels together and writes the one held value to both.
 pub const StereoHoldEnvError = hold_env.HoldEnvError;
 
-/// Advance the ONE shared HELD envelope by one sample toward the LINKED peak of the pair `(xl, xr)` and return the new envelope magnitude. The key is `max(|xl|, |xr|)` clamped to `sample_max` — the louder channel decides the
+/// Advance the ONE shared HELD envelope by one sample toward the LINKED peak of the pair `(xl, xr)` and return the new envelope magnitude. The key is `max(|xl|, |xr|)` clamped to `sample_max` -- the louder channel decides the
 /// shared loudness, exactly as ALES160's plain linked step. The hold stage then sits between attack and release, carried whole from ALES56: while the linked peak is RISING the envelope moves by the attack (through the proven
 /// ALES52 env_step) and the shared hold countdown is REARMED to `hold_samples`; while the pair has fallen below the envelope the countdown is spent one sample at a time and the linked peak is PINNED, and only once the
 /// countdown reaches zero does the release begin (again through env_step). A level pair moves nothing and neither arms nor spends the hold. Every envelope MOVE is delegated to ALES52's env_step, so the linked held follower
-/// cannot drift from the mono time base it holds — and with `hold_samples` zero the fall branch never pins, so this reduces to ALES160's plain linked step every pair, byte-for-byte. Public so a stereo held-dynamics tool can
+/// cannot drift from the mono time base it holds -- and with `hold_samples` zero the fall branch never pins, so this reduces to ALES160's plain linked step every pair, byte-for-byte. Public so a stereo held-dynamics tool can
 /// later drive its one gain from this one proven, linked, held magnitude.
 pub fn stereo_env_step_hold(
     env: *i64,
@@ -69,9 +69,9 @@ pub fn stereo_env_step_hold(
     release_den: u32,
     hold_samples: u32,
 ) i16 {
-    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] — coeff_ok ran at the edge.
+    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] -- coeff_ok ran at the edge.
     assert(envelope.coeff_ok(attack_num, attack_den) and envelope.coeff_ok(release_num, release_den));
-    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span.
+    // invariant: the hold is bounded by the widest clip -- a longer hold could never expire within any span.
     assert(hold_samples <= timeline.max_clip);
 
     const ml: i64 = if (xl < 0) -@as(i64, xl) else @as(i64, xl); // |left| — safe in i64 (|sample_min| = 32768 fits)
@@ -80,32 +80,32 @@ pub fn stereo_env_step_hold(
     const rail: i64 = @as(i64, timeline.sample_max);
     // Clamp the linked peak to the positive rail so it fits i16 for the reused env_step; a full-scale negative peak (|sample_min| = 32768) reads at the rail, exactly as ALES52's own target clamp does.
     const clamped: i16 = @intCast(if (key > rail) rail else key);
-    // invariant: the clamped linked key is a legal i16 magnitude — nonnegative, no greater than the rail — so env_step's own target equals this key exactly.
+    // invariant: the clamped linked key is a legal i16 magnitude -- nonnegative, no greater than the rail -- so env_step's own target equals this key exactly.
     assert(clamped >= 0);
     const target: i64 = @as(i64, clamped);
     const gap: i64 = target - env.*; // read BEFORE env_step moves the envelope, so the rise/fall decision is on the pre-move state
 
     if (gap < 0 and hold_left.* > 0) {
-        // FALLING with the shared countdown still running — pin the linked peak and spend one hold sample; the envelope does not move at all.
+        // FALLING with the shared countdown still running -- pin the linked peak and spend one hold sample; the envelope does not move at all.
         hold_left.* -= 1;
-        // invariant: a held envelope stays a legal i16 magnitude — it did not move, so it stays where env_step last left it.
+        // invariant: a held envelope stays a legal i16 magnitude -- it did not move, so it stays where env_step last left it.
         assert(env.* >= 0 and env.* <= rail);
         return @intCast(env.*);
     }
 
-    // Otherwise the envelope moves exactly as the proven ALES52 follower moves it — attack when rising, release when the shared hold has expired, nothing when level.
+    // Otherwise the envelope moves exactly as the proven ALES52 follower moves it -- attack when rising, release when the shared hold has expired, nothing when level.
     const e: i16 = envelope.env_step(env, clamped, attack_num, attack_den, release_num, release_den);
     // A rising pair (a fresh push toward a higher linked peak) rearms the shared hold countdown; a falling pair past the hold does not.
     if (gap > 0) hold_left.* = hold_samples;
-    // invariant: env_step left the envelope a legal magnitude, and e is that value cast — the postcondition the follower guarantees.
+    // invariant: env_step left the envelope a legal magnitude, and e is that value cast -- the postcondition the follower guarantees.
     assert(env.* >= 0 and env.* <= rail);
     return e;
 }
 
-/// Follow `count` sample-pairs starting at `start` in the stereo master `sc`, CONTINUING from the caller's shared `env` and `hold_left` rather than from silence — the carried-state form (ALES43's lesson), now carrying BOTH
+/// Follow `count` sample-pairs starting at `start` in the stereo master `sc`, CONTINUING from the caller's shared `env` and `hold_left` rather than from silence -- the carried-state form (ALES43's lesson), now carrying BOTH
 /// the shared envelope and the shared hold countdown so the hold survives across a call boundary. A fresh `env` of 0 and `hold_left` of 0 follow from silence with the hold unarmed. The one envelope steps toward the linked peak
 /// `max(|left|, |right|)` per pair, pinned by the one countdown across a fall, and the shared held value is written into BOTH channels so the detector is aligned in time across the field (`left == right` after). Refuses
-/// BadCoeff on an illegal coefficient, BadHold on a hold past max_clip, and BadRange on a span outside the SHARED samples, before any write; on refusal `env`, `hold_left`, and both channels are left untouched. Values only —
+/// BadCoeff on an illegal coefficient, BadHold on a hold past max_clip, and BadRange on a span outside the SHARED samples, before any write; on refusal `env`, `hold_left`, and both channels are left untouched. Values only --
 /// never the length, and the channels leave balanced.
 pub fn stereo_hold_follow_carry(
     sc: *pan.StereoClip,
@@ -119,35 +119,35 @@ pub fn stereo_hold_follow_carry(
     release_den: u32,
     hold_samples: u32,
 ) StereoHoldEnvError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared held detector keeps.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the shared held detector keeps.
     assert(sc.left.len == sc.right.len);
-    // invariant: both coefficients are legal fractions in (0, 1] — checked before any write, by the one rule ALES52 proves.
+    // invariant: both coefficients are legal fractions in (0, 1] -- checked before any write, by the one rule ALES52 proves.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the hold is bounded by the widest clip — a longer hold names no expressible behavior. Before any write.
+    // invariant: the hold is bounded by the widest clip -- a longer hold names no expressible behavior. Before any write.
     if (hold_samples > timeline.max_clip) return error.BadHold;
-    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never follows one channel and leaves the other torn.
+    // invariant: the span lies wholly within the SHARED length -- checked once, without underflow, so it holds identically for both channels and a refusal never follows one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
     var i: u32 = 0;
     while (i < count) : (i += 1) {
-        // Read both channels at this index, advance the ONE shared held envelope toward their linked peak, and write the shared value to both — the held detector rendered identically across the field.
+        // Read both channels at this index, advance the ONE shared held envelope toward their linked peak, and write the shared value to both -- the held detector rendered identically across the field.
         const v: i16 = stereo_env_step_hold(env, hold_left, sc.left.buf[start + i], sc.right.buf[start + i], attack_num, attack_den, release_num, release_den, hold_samples);
         sc.left.buf[start + i] = v;
         sc.right.buf[start + i] = v;
-        // invariant: the shared held detector wrote the identical value to both channels at this index — the linked-detector alignment, held sample by sample.
+        // invariant: the shared held detector wrote the identical value to both channels at this index -- the linked-detector alignment, held sample by sample.
         assert(sc.left.buf[start + i] == sc.right.buf[start + i]);
     }
 
-    // invariant: a follower changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    // invariant: a follower changes sample values only -- each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
 /// Follow `count` sample-pairs starting at `start` in the stereo master `sc`, from a zero initial shared envelope with the shared hold UNARMED (from silence), by the attack, release, and hold. A fresh `env` of 0 and
-/// `hold_left` of 0 are exactly this from-silence form — one implementation shared with the carried form, so the two cannot drift. Refuses BadCoeff, BadHold, and BadRange before any write.
+/// `hold_left` of 0 are exactly this from-silence form -- one implementation shared with the carried form, so the two cannot drift. Refuses BadCoeff, BadHold, and BadRange before any write.
 pub fn stereo_hold_follow(
     sc: *pan.StereoClip,
     start: u32,
@@ -163,9 +163,9 @@ pub fn stereo_hold_follow(
     return stereo_hold_follow_carry(sc, start, count, &env, &hold_left, attack_num, attack_den, release_num, release_den, hold_samples);
 }
 
-// --- selftest: THE LINKED HELD DETECTOR LAW — the shared held curve equals ALES56's mono hold_follow of the per-sample linked key byte for byte and both channels equal it, the independent per-channel held follow differing;
-//     THE ZERO-HOLD LAW — a hold of zero reduces to ALES160's plain linked follower byte for byte on both (proven by running both tools); THE HOLD-DELAYS-RELEASE LAW — a larger shared hold pins the linked peak longer;
-//     THE HOLD-EXACT LAW — a linked peak pinned for precisely `hold` samples then released; THE CARRY LAW — a span in two pieces (split mid-hold) equals the whole once on both, env AND hold_left carrying; THE BALANCE /
+// --- selftest: THE LINKED HELD DETECTOR LAW -- the shared held curve equals ALES56's mono hold_follow of the per-sample linked key byte for byte and both channels equal it, the independent per-channel held follow differing;
+//     THE ZERO-HOLD LAW -- a hold of zero reduces to ALES160's plain linked follower byte for byte on both (proven by running both tools); THE HOLD-DELAYS-RELEASE LAW -- a larger shared hold pins the linked peak longer;
+//     THE HOLD-EXACT LAW -- a linked peak pinned for precisely `hold` samples then released; THE CARRY LAW -- a span in two pieces (split mid-hold) equals the whole once on both, env AND hold_left carrying; THE BALANCE /
 //     SILENCE / ATOMICITY / DEGENERATE LAW -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -199,8 +199,8 @@ fn load_keyclip(clip: *timeline.Clip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE LINKED HELD DETECTOR LAW — the stereo crux. Over a mixed master the shared held curve equals ALES56's mono hold_follow of the per-sample linked key (max of the two magnitudes, clamped) byte for byte, and BOTH
-    //    channels equal that curve; an INDEPENDENT per-channel held follow (each channel by its own magnitude) genuinely differs — the image-tearing bug the linked held detector prevents.
+    // 1. THE LINKED HELD DETECTOR LAW -- the stereo crux. Over a mixed master the shared held curve equals ALES56's mono hold_follow of the per-sample linked key (max of the two magnitudes, clamped) byte for byte, and BOTH
+    //    channels equal that curve; an INDEPENDENT per-channel held follow (each channel by its own magnitude) genuinely differs -- the image-tearing bug the linked held detector prevents.
     {
         const ll = [_]i16{ 12000, 12000, 400, 400, 400, 9000, 500, -100 };
         const rr = [_]i16{ -400, 6000, -1000, 200, -700, 800, -50, 60 };
@@ -214,17 +214,17 @@ fn run_selftest() !u8 {
         try hold_env.hold_follow(&keyclip, 0, 8, 1, 1, 1, 4, 2);
         if (!eq(sc.left.samples(), keyclip.samples())) return error.LeftNotLinkedKey;
         if (!eq(sc.right.samples(), keyclip.samples())) return error.RightNotLinkedKey;
-        // and both channels are equal to each other — the held detector aligned across the field.
+        // and both channels are equal to each other -- the held detector aligned across the field.
         if (!eq(sc.left.samples(), sc.right.samples())) return error.ChannelsNotEqual;
 
-        // the INDEPENDENT held follow genuinely differs — holding the right by its OWN magnitude gives a different curve (it would tear the image).
+        // the INDEPENDENT held follow genuinely differs -- holding the right by its OWN magnitude gives a different curve (it would tear the image).
         var indep_r = timeline.Clip{};
         try timeline.splice(&indep_r, 0, &rr);
         try hold_env.hold_follow(&indep_r, 0, 8, 1, 1, 1, 4, 2);
         if (eq(indep_r.samples(), keyclip.samples())) return error.IndependentDidNotDiffer;
     }
 
-    // 2. THE ZERO-HOLD LAW — the crux link. With hold_samples == 0 the fall branch never pins, so every pair moves through ALES160's plain linked step: the linked held follower with no hold IS the ALES160 plain linked
+    // 2. THE ZERO-HOLD LAW -- the crux link. With hold_samples == 0 the fall branch never pins, so every pair moves through ALES160's plain linked step: the linked held follower with no hold IS the ALES160 plain linked
     //    follower, byte-for-byte by construction. Proven by running BOTH tools on the same master and demanding equality on both channels (the no-hold limit, the sibling of the zero-hold identity ALES56 proves for mono).
     {
         const ll = [_]i16{ 3000, -14000, 2000, -500, 9000, -300, 500, -100 };
@@ -239,7 +239,7 @@ fn run_selftest() !u8 {
         if (!eq(held.right.samples(), plain.right.samples())) return error.ZeroHoldRightNotPlain;
     }
 
-    // 3. THE HOLD-DELAYS-RELEASE LAW — after a loud linked passage ends, a larger shared hold pins the linked peak longer, so on the quiet tail the held envelope is no LOWER than under a smaller hold at every sample (the knob
+    // 3. THE HOLD-DELAYS-RELEASE LAW -- after a loud linked passage ends, a larger shared hold pins the linked peak longer, so on the quiet tail the held envelope is no LOWER than under a smaller hold at every sample (the knob
     //    monotone), and strictly higher at the first falling sample (the linked peak audibly holds). Instant attack seats the peak; a slow release would otherwise ease it down. The left carries the linked peak throughout.
     {
         const tail = [_]i16{ 15000, 15000, 15000, 300, 300, 300, 300, 300 }; // a loud passage on the left, then a quiet tail
@@ -258,8 +258,8 @@ fn run_selftest() !u8 {
         if (abs16(held.left.samples()[3]) <= abs16(none.left.samples()[3])) return error.HoldDidNotPin;
     }
 
-    // 4. THE HOLD-EXACT LAW — with instant attack and instant release and a hold of 3, a linked peak followed by a lower constant is pinned for EXACTLY three held samples and then released in one step. The whole curve is
-    //    checked byte-for-byte on both channels, so the shared countdown spends precisely `hold` samples — no more, no fewer. The left carries the linked peak; both channels render the one held curve.
+    // 4. THE HOLD-EXACT LAW -- with instant attack and instant release and a hold of 3, a linked peak followed by a lower constant is pinned for EXACTLY three held samples and then released in one step. The whole curve is
+    //    checked byte-for-byte on both channels, so the shared countdown spends precisely `hold` samples -- no more, no fewer. The left carries the linked peak; both channels render the one held curve.
     {
         const ll = [_]i16{ 10000, 3000, 3000, 3000, 3000, 3000, 3000 };
         const rr = [_]i16{ -50, 40, -30, 20, -10, 5, -5 }; // quieter, so the left holds the linked peak throughout
@@ -271,7 +271,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &want) or !eq(sc.right.samples(), &want)) return error.HoldNotExact;
     }
 
-    // 5. THE CARRY LAW — the shared state carries, env AND hold_left both — so following a span in two pieces, the split falling MID-HOLD, equals following the whole once, byte for byte on BOTH channels: the seam invisible,
+    // 5. THE CARRY LAW -- the shared state carries, env AND hold_left both -- so following a span in two pieces, the split falling MID-HOLD, equals following the whole once, byte for byte on BOTH channels: the seam invisible,
     //    the hold surviving across the call boundary.
     {
         const ll = [_]i16{ 12000, 12000, 400, 400, 400, 9000, 200, 200 };
@@ -290,7 +290,7 @@ fn run_selftest() !u8 {
         if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
     }
 
-    // 6a. THE BALANCE / SILENCE / LENGTH LAW — an all-silent master follows to all zeros on both (the linked key is 0 every sample); the channels stay equal length and each holds its starting length; a follower writes values only.
+    // 6a. THE BALANCE / SILENCE / LENGTH LAW -- an all-silent master follows to all zeros on both (the linked key is 0 every sample); the channels stay equal length and each holds its starting length; a follower writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
@@ -305,7 +305,7 @@ fn run_selftest() !u8 {
         if (bc.left.len != 5) return error.LengthChanged;
     }
 
-    // 6b. THE ATOMICITY LAW — an illegal attack coefficient (numerator past the denominator), a hold past max_clip, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 6b. THE ATOMICITY LAW -- an illegal attack coefficient (numerator past the denominator), a hold past max_clip, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -326,7 +326,7 @@ fn run_selftest() !u8 {
         if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 6c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to follow.
+    // 6c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to follow.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 500, -500, 900 }, &[_]i16{ -50, 60, -70 });

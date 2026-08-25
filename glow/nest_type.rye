@@ -1,21 +1,21 @@
 //! glow-book: runes.md#gd-auras
-//! glow/nest_type.rye — nest/type surface (STOA107–110 · STOA118–130 · STOA148–160 · STOA328).
+//! glow/nest_type.rye -- nest/type surface (STOA107-110 - STOA118-130 - STOA148-160 - STOA328).
 //!
 //! Expansion-time checks that a sample nests under a stated shape:
 //!   - STOA107: stated aura equality (`@u32` under `@u32`)
 //!   - STOA108: unit `$%` tag membership (`mint` under kind-shape / study kind-mold)
 //!   - STOA109: closed named-shape bartis sample (`amount-shape` one-field `$:`)
-//!   - STOA110: nesting-sample refuse — nesting-flagged claims do not nest
+//!   - STOA110: nesting-sample refuse -- nesting-flagged claims do not nest
 //!   - STOA118: same closed named shape on barket samples
 //!   - STOA119: nesting-sample accept under a stated closed shape
 //!   - STOA120: barket/bartis expansion call `assert_sample_nesting_nests`
 //!   - STOA121: barket passes `is_nesting=true` through nesting-nests under stated shapes
-//!   - STOA122–126: closed allowlist amount · count · kind · xact · xfer · pair
-//!   - STOA130: Glow vocabulary — stated · nesting · gold (Hoon study: dry · wet · gold)
-//!   - STOA134–146: closed `$:` triple…nona (study `-mold` · living `-shape`)
-//!   - STOA148–160: Grain living aliases `*-shape` beside study `*-mold`
-//!   - STOA328: allowlist · tuple N · assert_*_shape_nests collapse to tables; living params say shape
-//! Ambient gold / free polymorphism · open `$:` beyond nona stay held (capacity freeze at 9).
+//!   - STOA122-126: closed allowlist amount - count - kind - xact - xfer - pair
+//!   - STOA130: Glow vocabulary -- stated - nesting - gold (Hoon study: dry - wet - gold)
+//!   - STOA134-146: closed `$:` triple...nona (study `-mold` - living `-shape`)
+//!   - STOA148-160: Grain living aliases `*-shape` beside study `*-mold`
+//!   - STOA328: allowlist - tuple N - assert_*_shape_nests collapse to tables; living params say shape
+//! Ambient gold / free polymorphism - open `$:` beyond nona stay held (capacity freeze at 9).
 //!
 //! Bartis calls nesting-nests stated (`false`). Barket calls nesting-nests nesting (`true`).
 //! STOA110 `assert_sample_not_nesting(true)` refuse stays on the nest_type witness.
@@ -26,10 +26,10 @@ const rune_shape = @import("rune_shape.rye");
 
 pub const nest_type_version = "20260722.202517";
 
-/// STOA180: Glow cord aura `@t` — warm text atom with a stated byte ceiling (TAME-shaped).
-/// STOA209: ceiling 1024 — covers elder max fact hex (`max_fact_len` 512 × 2).
+/// STOA180: Glow cord aura `@t` -- warm text atom with a stated byte ceiling (TAME-shaped).
+/// STOA209: ceiling 1024 -- covers elder max fact hex (`max_fact_len` 512 × 2).
 pub const aura_t_max_bytes: u32 = 1024;
-/// STOA183: Glow hex aura `@ux` — fixed pubkey-shaped byte ceiling (ed25519 peer).
+/// STOA183: Glow hex aura `@ux` -- fixed pubkey-shaped byte ceiling (ed25519 peer).
 pub const aura_ux_max_bytes: u32 = 32;
 
 /// Closed named shapes welcome in gate samples (citizen desks lead with `-shape`; study twins keep `-mold`).
@@ -65,7 +65,7 @@ const NamedAlias = struct {
     living: []const u8,
 };
 
-/// STOA328: one allowlist — study `-mold` + living `-shape` for every closed gate sample.
+/// STOA328: one allowlist -- study `-mold` + living `-shape` for every closed gate sample.
 const closed_named_allowlist = [_]NamedAlias{
     .{ .study = bartis_named_study_amount, .living = bartis_named_shape_amount },
     .{ .study = bartis_named_study_count, .living = bartis_named_shape_count },
@@ -88,7 +88,7 @@ const ClosedTupleRow = struct {
     fields: u32,
 };
 
-/// STOA328: closed `$:` pair…nona — one table teaches N for study and living names.
+/// STOA328: closed `$:` pair...nona -- one table teaches N for study and living names.
 const closed_tuple_rows = [_]ClosedTupleRow{
     .{ .study = bartis_named_study_pair, .living = bartis_named_shape_pair, .fields = 2 },
     .{ .study = bartis_named_study_triple, .living = bartis_named_shape_triple, .fields = 3 },
@@ -153,7 +153,7 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_shape.ShapeSpec) Nest
     return error.SampleDoesNotNest;
 }
 
-/// Assert `shape_name` is on the closed gate-sample allowlist (STOA109 · STOA122–160 · STOA328).
+/// Assert `shape_name` is on the closed gate-sample allowlist (STOA109 - STOA122-160 - STOA328).
 pub fn assert_bartis_named_shape(shape_name: []const u8) NestError!void {
     // invariant: the shape name is matched against the stated one, so an empty name would
     // report a mismatch it did not cause
@@ -164,7 +164,7 @@ pub fn assert_bartis_named_shape(shape_name: []const u8) NestError!void {
     return error.SampleDoesNotNest;
 }
 
-/// STOA324 / STOA328: closed `$:` pair…nona shape name → field count N (2…9).
+/// STOA324 / STOA328: closed `$:` pair...nona shape name -> field count N (2...9).
 pub fn closed_tuple_field_count(shape_name: []const u8) ?u32 {
     for (closed_tuple_rows) |row| {
         if (std.mem.eql(u8, shape_name, row.study) or std.mem.eql(u8, shape_name, row.living)) return row.fields;
@@ -247,7 +247,7 @@ pub fn assert_named_shape_nests(shape_name: []const u8, spec: *const rune_shape.
     if (spec.field_count != 1) return error.SampleDoesNotNest;
 }
 
-/// STOA328: closed `$:` pair…nona nests under an N-field tuple ShapeSpec.
+/// STOA328: closed `$:` pair...nona nests under an N-field tuple ShapeSpec.
 pub fn assert_n_field_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec, field_count: u32) NestError!void {
     const n = closed_tuple_field_count(shape_name) orelse return error.SampleDoesNotNest;
     if (n != field_count) return error.SampleDoesNotNest;
@@ -256,47 +256,47 @@ pub fn assert_n_field_shape_nests(shape_name: []const u8, spec: *const rune_shap
     if (spec.field_count != field_count) return error.SampleDoesNotNest;
 }
 
-/// Assert `shape_name` nests under a two-field `$:` ShapeSpec (pair · STOA126).
+/// Assert `shape_name` nests under a two-field `$:` ShapeSpec (pair - STOA126).
 pub fn assert_pair_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 2);
 }
 
-/// Assert `shape_name` nests under a three-field `$:` ShapeSpec (triple · STOA134).
+/// Assert `shape_name` nests under a three-field `$:` ShapeSpec (triple - STOA134).
 pub fn assert_triple_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 3);
 }
 
-/// Assert `shape_name` nests under a four-field `$:` ShapeSpec (quad · STOA135).
+/// Assert `shape_name` nests under a four-field `$:` ShapeSpec (quad - STOA135).
 pub fn assert_quad_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 4);
 }
 
-/// Assert `shape_name` nests under a five-field `$:` ShapeSpec (penta · STOA138).
+/// Assert `shape_name` nests under a five-field `$:` ShapeSpec (penta - STOA138).
 pub fn assert_penta_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 5);
 }
 
-/// Assert `shape_name` nests under a six-field `$:` ShapeSpec (hexa · STOA140).
+/// Assert `shape_name` nests under a six-field `$:` ShapeSpec (hexa - STOA140).
 pub fn assert_hexa_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 6);
 }
 
-/// Assert `shape_name` nests under a seven-field `$:` ShapeSpec (hepta · STOA142).
+/// Assert `shape_name` nests under a seven-field `$:` ShapeSpec (hepta - STOA142).
 pub fn assert_hepta_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 7);
 }
 
-/// Assert `shape_name` nests under an eight-field `$:` ShapeSpec (octa · STOA144).
+/// Assert `shape_name` nests under an eight-field `$:` ShapeSpec (octa - STOA144).
 pub fn assert_octa_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 8);
 }
 
-/// Assert `shape_name` nests under a nine-field `$:` ShapeSpec (nona · STOA146).
+/// Assert `shape_name` nests under a nine-field `$:` ShapeSpec (nona - STOA146).
 pub fn assert_nona_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     return assert_n_field_shape_nests(shape_name, spec, 9);
 }
 
-/// Assert `shape_name` nests under a unit `$%` ShapeSpec (kind-shape · STOA123).
+/// Assert `shape_name` nests under a unit `$%` ShapeSpec (kind-shape - STOA123).
 pub fn assert_kind_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     if (!is_kind_named_shape(shape_name)) return error.SampleDoesNotNest;
     if (!std.mem.eql(u8, rune_shape.name_slice(spec), shape_name)) return error.SampleDoesNotNest;
@@ -305,7 +305,7 @@ pub fn assert_kind_shape_nests(shape_name: []const u8, spec: *const rune_shape.S
     if (rune_shape.any_payload(spec)) return error.SampleDoesNotNest;
 }
 
-/// Assert `shape_name` nests under a one-face payload `$%` ShapeSpec (xact-shape · STOA124).
+/// Assert `shape_name` nests under a one-face payload `$%` ShapeSpec (xact-shape - STOA124).
 pub fn assert_xact_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     if (!is_xact_named_shape(shape_name)) return error.SampleDoesNotNest;
     if (!std.mem.eql(u8, rune_shape.name_slice(spec), shape_name)) return error.SampleDoesNotNest;
@@ -315,7 +315,7 @@ pub fn assert_xact_shape_nests(shape_name: []const u8, spec: *const rune_shape.S
     if (any_multi_face_payload(spec)) return error.SampleDoesNotNest;
 }
 
-/// Assert `shape_name` nests under a multi-face payload `$%` ShapeSpec (xfer-shape · STOA125).
+/// Assert `shape_name` nests under a multi-face payload `$%` ShapeSpec (xfer-shape - STOA125).
 pub fn assert_xfer_shape_nests(shape_name: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
     if (!is_xfer_named_shape(shape_name)) return error.SampleDoesNotNest;
     if (!std.mem.eql(u8, rune_shape.name_slice(spec), shape_name)) return error.SampleDoesNotNest;
@@ -332,10 +332,10 @@ pub fn assert_sample_not_nesting(is_nesting: bool) NestError!void {
     if (is_nesting) return error.SampleDoesNotNest;
 }
 
-/// Nesting-sample accept under a stated closed shape (STOA119 · STOA130 · STOA148–160).
+/// Nesting-sample accept under a stated closed shape (STOA119 - STOA130 - STOA148-160).
 /// Stated path (`is_nesting=false`): no-op success.
 /// Nesting path (`is_nesting=true`): sample must nest under `stated_shape` via aura
-/// equality (`@…`) or the closed named-shape allowlist.
+/// equality (`@...`) or the closed named-shape allowlist.
 pub fn assert_sample_nesting_nests(is_nesting: bool, sample: []const u8, stated_shape: []const u8) NestError!void {
     if (!is_nesting) return;
     // invariant: the nest test compares the two texts byte by byte, so an empty one would nest

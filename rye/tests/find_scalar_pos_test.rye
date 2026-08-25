@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findScalarPos — pass 9974.
+//! Rye test: std.mem.findScalarPos -- pass 9974.
 //!
 //! Offset scalar search backs Rishi string interpolation (`$`, `}`) and
 //! `let` binding (`=`). Pairs with findScalar (9996) and findScalarLast (9975).

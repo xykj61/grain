@@ -1,4 +1,4 @@
-//! linengrow/open_asks_lap5_delivery.rye — OA-L5: acceptance, completion, consent on Comlink wire.
+//! linengrow/open_asks_lap5_delivery.rye -- OA-L5: acceptance, completion, consent on Comlink wire.
 //!
 //!   rye build linengrow/open_asks_lap5_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-lap5
 //!   linengrow/bin/open-asks-lap5 selftest
@@ -57,7 +57,7 @@ fn send_wire(port: u16, wire: []const u8) !void {
     if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
 }
 
-/// Bind before any peer send — UDP has no listener queue across close/rebind.
+/// Bind before any peer send -- UDP has no listener queue across close/rebind.
 fn bind_socket(port: u16) !c.fd_t {
     const fd = try open_socket();
     var bind_addr = localhost_addr(port);
@@ -540,7 +540,7 @@ fn run_applicant(_: std.Io) !u8 {
     const applicant_kp = kumara.keypair_from_seed(&oa.applicant_seed);
     const poster_pk = poster_kp.public_key;
 
-    // One bind for request + acceptance + payment — poster sends acceptance
+    // One bind for request + acceptance + payment -- poster sends acceptance
     // and payment back-to-back; rebinding between them drops the second.
     const listen_fd = try bind_socket(applicant_port);
     defer _ = c.close(listen_fd);

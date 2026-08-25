@@ -1,35 +1,35 @@
-//! lotus/stereo_center_clip.rye — ALES141: the center clipper carried into stereo, ONE SHARED DEAD ZONE, opening the dead-zone corner of the stereo NONLINEAR class. ALES87 named `center_clip` — silence the quiet
+//! lotus/stereo_center_clip.rye -- ALES141: the center clipper carried into stereo, ONE SHARED DEAD ZONE, opening the dead-zone corner of the stereo NONLINEAR class. ALES87 named `center_clip` -- silence the quiet
 //! middle, pass the loud, y = if |x| ≤ t then 0 else x: the mirror of ALES132's hard clip, which caps the LOUD extremes at a ceiling. Where the clip flattens everything past ±ceil, the center clip zeros everything
 //! within ±t and passes the rest UNCHANGED; run together in stereo they keep only the band t < |x| ≤ ceil. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that
 //! LEFT and RIGHT hold the SAME length. This rung carries the center clip into stereo the plain way: run ALES87's proven mono `center_clip` on each channel with the SAME threshold, so one dead zone lands on BOTH
 //! speakers together.
 //!
-//! Where the crush (ALES136) and the tube (ALES135) are NOT odd and break the inter-channel antisymmetry, the center clipper IS odd — |−x| = |x|, so center_clip(−x) = −center_clip(x). That is this rung's
+//! Where the crush (ALES136) and the tube (ALES135) are NOT odd and break the inter-channel antisymmetry, the center clipper IS odd -- |−x| = |x|, so center_clip(−x) = −center_clip(x). That is this rung's
 //! distinguishing law in the stereo field: an OUT-OF-PHASE master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase (right = −left), because the dead-zone
-//! map is symmetric about zero — the mirror the not-odd siblings broke. A 1:2 master keeps its ratio on the passed samples (both silenced together in the dead zone, both passed together above it), and an
+//! map is symmetric about zero -- the mirror the not-odd siblings broke. A 1:2 master keeps its ratio on the passed samples (both silenced together in the dead zone, both passed together above it), and an
 //! identical-channel master stays identical.
 //!
-//! The rule, stated once: the center clip is EXACT for every i16 with NO rail edge and NO saturate — the only values written are 0 (the quiet middle silenced) and the untouched input (the loud passed). The magnitude
+//! The rule, stated once: the center clip is EXACT for every i16 with NO rail edge and NO saturate -- the only values written are 0 (the quiet middle silenced) and the untouched input (the loud passed). The magnitude
 //! is taken in i32 inside ALES87 so |sample_min| = 32768 is representable, one past the positive rail. It carries ONE parameter, the threshold magnitude, and names TWO faults. Refuse BadThreshold (a threshold outside
-//! [0, sample_max]) and BadRange (a span outside the samples) BEFORE either channel is mutated — each fault depends only on the shared threshold or the shared length, so each check is made ONCE up front, and a refusal
-//! never center-clips one channel and leaves the other whole; otherwise center_clip both channels over [start, start+count) with the same `thresh` via ALES87's `center_clip`. CenterClipError reused whole — the stereo
+//! [0, sample_max]) and BadRange (a span outside the samples) BEFORE either channel is mutated -- each fault depends only on the shared threshold or the shared length, so each check is made ONCE up front, and a refusal
+//! never center-clips one channel and leaves the other whole; otherwise center_clip both channels over [start, start+count) with the same `thresh` via ALES87's `center_clip`. CenterClipError reused whole -- the stereo
 //! lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO CENTER-CLIP LAW: each channel equals ALES87's mono `center_clip` with the same threshold over the same span byte for byte — every quiet sample (|x| ≤ t) silenced to 0, every louder
+//! The crux -- four laws. THE STEREO CENTER-CLIP LAW: each channel equals ALES87's mono `center_clip` with the same threshold over the same span byte for byte -- every quiet sample (|x| ≤ t) silenced to 0, every louder
 //! sample passed unchanged, no rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a center clip writes values only). THE PER-CHANNEL ODD LAW (held in
-//! stereo): the center clipper is odd (|−x| = |x|), so a shared dead zone HOLDS the inter-channel antisymmetry — an out-of-phase master comes back STILL out of phase (right = −left), the mirror the crush and tube
+//! stereo): the center clipper is odd (|−x| = |x|), so a shared dead zone HOLDS the inter-channel antisymmetry -- an out-of-phase master comes back STILL out of phase (right = −left), the mirror the crush and tube
 //! broke; yet per channel every output is either 0 or exactly its input, the map is idempotent (twice equals once), a 1:2 master keeps its ratio on the passed samples, an identical-channel master stays identical, and
 //! thresh = 0 is the identity. THE ATOMICITY / DEGENERATE LAW: any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; thresh = 0 the identity on both, count = 0 the
 //! identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES141.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES141.
 //! Design read: active-designing/date/20260815/20260815-042021_fill-ales141-lotus-stereo-center-clip.md
-//! Stands on: lotus/center_clip.rye (ALES87) — the mono center clipper run once per channel, y = if |x| ≤ t then 0 else x with no rail edge; lotus/stereo_crush.rye (ALES136) — the not-odd sibling whose
-//! antisymmetry-break this rung mirrors by HOLDING it; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples,
+//! Stands on: lotus/center_clip.rye (ALES87) -- the mono center clipper run once per channel, y = if |x| ≤ t then 0 else x with no rail edge; lotus/stereo_crush.rye (ALES136) -- the not-odd sibling whose
+//! antisymmetry-break this rung mirrors by HOLDING it; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples,
 //! sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES87's own center_clip, each output either silence
-//! or exactly its input, never a length; the shape is a static dead-zone threshold on instantaneous magnitude, memoryless (no attack/release, no envelope, no anti-aliasing). No saturate is owed — the only values
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES87's own center_clip, each output either silence
+//! or exactly its input, never a length; the shape is a static dead-zone threshold on instantaneous magnitude, memoryless (no attack/release, no envelope, no anti-aliasing). No saturate is owed -- the only values
 //! written are 0 and the legal input. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_center_clip.rye selftest
@@ -44,19 +44,19 @@ const center_clip = @import("center_clip.rye");
 
 pub const stereo_center_clip_version = "20260815.042021";
 
-/// Stereo center-clip's faults are exactly ALES87's own `CenterClipError` — `BadThreshold` (a threshold outside [0, sample_max]) and `BadRange` (a span outside the samples) — reused by name, since the stereo lift
+/// Stereo center-clip's faults are exactly ALES87's own `CenterClipError` -- `BadThreshold` (a threshold outside [0, sample_max]) and `BadRange` (a span outside the samples) -- reused by name, since the stereo lift
 /// adds no new fault: it only runs the same center_clip on each channel after one shared validation.
 pub const StereoCenterClipError = center_clip.CenterClipError;
 
 /// Center-clip `[start, start+count)` in BOTH channels of `sc` with the same `thresh`, the SAME dead zone on each, running ALES87's proven mono `center_clip`. Each sample whose magnitude is at most `thresh` becomes
-/// `0` (the quiet middle silenced), and every louder sample passes byte-for-byte — y = if |x| ≤ thresh then 0 else x. Exact for every i16 with no rail edge (the only values written are 0 and the untouched input), so
+/// `0` (the quiet middle silenced), and every louder sample passes byte-for-byte -- y = if |x| ≤ thresh then 0 else x. Exact for every i16 with no rail edge (the only values written are 0 and the untouched input), so
 /// no saturate is owed. `thresh = 0` is the identity. Validates both channels once against the shared threshold and length before either is mutated: refuses `BadThreshold` / `BadRange`, both channels untouched.
-/// Values only — never the length; the two channels leave balanced.
+/// Values only -- never the length; the two channels leave balanced.
 pub fn stereo_center_clip(sc: *pan.StereoClip, start: u32, count: u32, thresh: i32) StereoCenterClipError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the threshold and span are legal — refused by name before any write, so a refusal never center-clips one channel and leaves the other whole. The threshold check depends only on the shared magnitude
+    // invariant: the threshold and span are legal -- refused by name before any write, so a refusal never center-clips one channel and leaves the other whole. The threshold check depends only on the shared magnitude
     // bound; the span check on the shared length. These mirror ALES87's own guards exactly, so each mono center_clip below is pre-validated to succeed.
     if (thresh < 0) return error.BadThreshold;
     if (thresh > @as(i32, timeline.sample_max)) return error.BadThreshold;
@@ -64,19 +64,19 @@ pub fn stereo_center_clip(sc: *pan.StereoClip, start: u32, count: u32, thresh: i
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono center_clip is pre-validated to succeed — no refusal can land between the two channel edits. The SAME dead zone on each.
+    // Every check passed and holds identically for both channels, so each mono center_clip is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME dead zone on each.
     try center_clip.center_clip(&sc.left, start, count, thresh);
     try center_clip.center_clip(&sc.right, start, count, thresh);
 
-    // invariant: the channels leave balanced — a center clip writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a center clip writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO CENTER-CLIP LAW — each channel equals ALES87's mono center_clip with the same threshold over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both
-//     holding their starting length; THE PER-CHANNEL ODD LAW (held in stereo) — every output either 0 or exactly its input, the map idempotent, an OUT-OF-PHASE master coming back STILL out of phase (the dead zone is
+// --- selftest: THE STEREO CENTER-CLIP LAW -- each channel equals ALES87's mono center_clip with the same threshold over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both
+//     holding their starting length; THE PER-CHANNEL ODD LAW (held in stereo) -- every output either 0 or exactly its input, the map idempotent, an OUT-OF-PHASE master coming back STILL out of phase (the dead zone is
 //     symmetric about zero, so the odd law HOLDS where the crush/tube broke it), a 1:2 master keeping its ratio on the passed samples, an identical-channel master staying identical, thresh = 0 the identity; THE
-//     ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, thresh = 0 the identity, count = 0 the identity ----
+//     ATOMICITY / DEGENERATE LAW -- each refusal leaves both channels untouched and balanced, thresh = 0 the identity, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -91,7 +91,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO CENTER-CLIP LAW — each channel equals ALES87's mono center_clip with the same threshold, proven side by side over one span with different per-channel samples; at t = 1000 every quiet sample
+    // 1. THE STEREO CENTER-CLIP LAW -- each channel equals ALES87's mono center_clip with the same threshold, proven side by side over one span with different per-channel samples; at t = 1000 every quiet sample
     //    (|x| ≤ 1000) silences and every louder sample passes.
     {
         var sc = pan.StereoClip{};
@@ -112,7 +112,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 0, 0, 2500, 0, 32767 })) return error.RightHandWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a center clip writes values only. Proven at an even and an odd length.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a center clip writes values only. Proven at an even and an odd length.
     {
         var even = pan.StereoClip{};
         try load_stereo(&even, &[_]i16{ 100, -200, 3000, -4000 }, &[_]i16{ -400, 300, -200, 100 });
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (odd.left.len != 3) return error.OddLength;
     }
 
-    // 3a. THE PER-CHANNEL ODD LAW, the ANTISYMMETRY HOLDS — an out-of-phase master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase, because the dead-zone
+    // 3a. THE PER-CHANNEL ODD LAW, the ANTISYMMETRY HOLDS -- an out-of-phase master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase, because the dead-zone
     //     map is symmetric about zero (|−x| = |x|), so center_clip(−x) = −center_clip(x) and right = −left after. This is the mirror the crush and tube BROKE; the center clip holds it, the odd class made stereo.
     {
         var sc = pan.StereoClip{};
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ 0, 3000, 0, 1200 })) return error.RightPhaseWrong;
     }
 
-    // 3b. THE PER-CHANNEL ODD LAW, output shape and idempotence — every output on both channels is either 0 or exactly its input (the center clip never colors a passed sample), and center-clipping twice equals
+    // 3b. THE PER-CHANNEL ODD LAW, output shape and idempotence -- every output on both channels is either 0 or exactly its input (the center clip never colors a passed sample), and center-clipping twice equals
     //     once (a silenced 0 stays 0, a passed sample still clears t), the map memoryless and idempotent.
     {
         const li = [_]i16{ 700, -1500, 400, -90, 4000 };
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         if (!eq(once.right.samples(), twice.right.samples())) return error.RightNotIdempotent;
     }
 
-    // 3c. THE RATIO HOLDS ON THE PASSED SAMPLES — a 1:2 master (right twice left) is silenced together where left is quiet and passed together where left is loud, keeping the 1:2 ratio on the passed samples. Because
+    // 3c. THE RATIO HOLDS ON THE PASSED SAMPLES -- a 1:2 master (right twice left) is silenced together where left is quiet and passed together where left is loud, keeping the 1:2 ratio on the passed samples. Because
     //     the threshold is on magnitude, |right| = 2|left| crosses the floor with left where left ≥ t/2; the shared verdict keeps both silent or both passing.
     {
         var sc = pan.StereoClip{};
@@ -184,7 +184,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ 4000, 0, 10000, 0 })) return error.RatioRightWrong;
     }
 
-    // 3d. an identical-channel master stays identical through the center clip — a shared dead zone on equal inputs gives equal outputs (a mono-in-stereo signal never splits).
+    // 3d. an identical-channel master stays identical through the center clip -- a shared dead zone on equal inputs gives equal outputs (a mono-in-stereo signal never splits).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3e. THE SPAN DISCIPLINE — center-clipping a sub-span leaves samples outside [start, count) exactly as they were on both channels, quiet ones among them preserved (the in-place discipline the whole suite keeps).
+    // 3e. THE SPAN DISCIPLINE -- center-clipping a sub-span leaves samples outside [start, count) exactly as they were on both channels, quiet ones among them preserved (the in-place discipline the whole suite keeps).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, 200, 500, 5000, 300, 400 }, &[_]i16{ -400, -300, 500, -5000, 300, 400 });
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -400, -300, 0, -5000, 300, 400 })) return error.RightSpanLeaked;
     }
 
-    // 4a. THE ATOMICITY LAW, bad threshold — a negative threshold (a magnitude is never negative) and an over-rail threshold (a floor nothing could clear) each refuse BadThreshold, both channels byte for byte
+    // 4a. THE ATOMICITY LAW, bad threshold -- a negative threshold (a magnitude is never negative) and an over-rail threshold (a floor nothing could clear) each refuse BadThreshold, both channels byte for byte
     //     untouched and still balanced.
     {
         var sc = pan.StereoClip{};
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
         if (!eq(over.left.samples(), &[_]i16{ 1, 2, 3 })) return error.OverThreshLeftMutated;
     }
 
-    // 4b. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    // 4b. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 5, -6, 7 }, &[_]i16{ -7, 6, -5 });
@@ -226,7 +226,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -7, 6, -5 })) return error.BadRangeRightMutated;
     }
 
-    // 4c. THE DEGENERATE LAW — thresh = 0 is the identity on both channels (only x = 0 satisfies |x| ≤ 0, and it is already 0), and count = 0 is the identity on both.
+    // 4c. THE DEGENERATE LAW -- thresh = 0 is the identity on both channels (only x = 0 satisfies |x| ≤ 0, and it is already 0), and count = 0 is the identity on both.
     {
         var zero = pan.StereoClip{};
         try load_stereo(&zero, &[_]i16{ 401, -299, 703 }, &[_]i16{ -701, 201, -401 });

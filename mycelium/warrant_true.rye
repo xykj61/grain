@@ -1,26 +1,26 @@
-//! mycelium/warrant_true.rye — a handoff's signed facts are true to the bytes (r4, the arc closes).
+//! mycelium/warrant_true.rye -- a handoff's signed facts are true to the bytes (r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Warrant - rung r4.
 //! Design read: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 //!
 //! r1 bound a succession to a quorum of the outgoing roll; r2 let one handoff travel as bytes; r3 walked a
-//! whole succession chain across a checkpoint — all over rolls seated in code. This closing rung proves the
+//! whole succession chain across a checkpoint -- all over rolls seated in code. This closing rung proves the
 //! property the whole Warrant rests on: the certificate's signed facts are TRUE TO THE BYTES a keeper can
-//! open and hash. Every outgoing validator signs a tuple binding the successor roll's CONTENT-ADDRESS — a
-//! SHA-256 over the roll's canonical `format muster-v1` bytes — so a keeper who renders those same bytes and
+//! open and hash. Every outgoing validator signs a tuple binding the successor roll's CONTENT-ADDRESS -- a
+//! SHA-256 over the roll's canonical `format muster-v1` bytes -- so a keeper who renders those same bytes and
 //! hashes them with the system `sha256sum` recovers the exact digest the warrant carries and every validator
 //! endorsed. If the two agreed, the certificate cannot have signed one roll while naming another.
 //!
 //! Two independent readings must agree:
-//!   - THE DIGEST — the app carries `prev` and `next` digest hex inside the rendered `format warrant-v1`
+//!   - THE DIGEST -- the app carries `prev` and `next` digest hex inside the rendered `format warrant-v1`
 //!     record; the r4 witness pipes the same canonical roll bytes (`prev-bytes`, `next-bytes`) through
-//!     `sha256sum` and cross-checks each against the record's line — two tools, one answer.
-//!   - THE COUNT — the app reports how many outgoing validators endorsed the handoff; the witness counts the
-//!     `endorse` lines in the record independently (`grep -c`) and cross-checks — the certificate cannot
+//!     `sha256sum` and cross-checks each against the record's line -- two tools, one answer.
+//!   - THE COUNT -- the app reports how many outgoing validators endorsed the handoff; the witness counts the
+//!     `endorse` lines in the record independently (`grep -c`) and cross-checks -- the certificate cannot
 //!     claim a quorum it did not carry.
 //!
-//! Additive — composes `warrant` + `muster` + `muster_bron` + `kumara` public API only (each re-runs GREEN).
-//! Siloed, dev-only, demo validator and keeper seeds — no real key, no funds, no network, no custody. A
+//! Additive -- composes `warrant` + `muster` + `muster_bron` + `kumara` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo validator and keeper seeds -- no real key, no funds, no network, no custody. A
 //! SERVED warrant (a holder fetching the live succession chain over Comlink) reaches the Comlink-served gate.
 //!
 //!   rye build mycelium/warrant_true.rye -femit-bin=mycelium/bin/warrant_true
@@ -74,7 +74,7 @@ fn lawful_warrant() !warrant.Warrant {
 // --- selftest -----------------------------------------------------------
 
 /// The lawful handoff verifies, and the app's carried digests equal a fresh recomputation over the canonical
-/// roll bytes — the in-app half of the cross-check the witness completes with the system `sha256sum`.
+/// roll bytes -- the in-app half of the cross-check the witness completes with the system `sha256sum`.
 fn welcome_handoff_true_to_its_rolls() !void {
     const prev = try prev_roll();
     const next = try next_roll();
@@ -88,7 +88,7 @@ fn welcome_handoff_true_to_its_rolls() !void {
     // invariant: the carried digests are exactly the content-addresses of the two canonical roll records.
     assert(std.mem.eql(u8, w.prev_digest[0..], pd[0..]));
     assert(std.mem.eql(u8, w.next_digest[0..], nd[0..]));
-    // invariant: three of the four outgoing validators endorsed — the threshold their roll set.
+    // invariant: three of the four outgoing validators endorsed -- the threshold their roll set.
     assert(w.count == 3);
     assert(muster.byzantine_threshold(&prev) == 3);
     print("warrant-true: the lawful handoff verifies; its carried prev/next digests equal the content-addresses of the two canonical roll records, and three outgoing validators endorsed it — the threshold prev's size sets.\n", .{});
@@ -100,7 +100,7 @@ fn unwelcome_wrong_roll_refuses() !void {
     const prev = try prev_roll();
     const next = try next_roll();
     const w = try lawful_warrant();
-    // A different successor roll (one validator swapped) — the warrant's next digest no longer binds.
+    // A different successor roll (one validator swapped) -- the warrant's next digest no longer binds.
     const other = try muster_of(&[_]u8{ 0xA1, 0xB2, 0xD4 });
     if (warrant.verify_warrant(&w, &prev, &other)) |_| return error.WrongRollBelieved else |err| {
         if (err != error.DigestMismatch) return error.WrongRefusal;
@@ -118,7 +118,7 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// Emit the exact canonical `format muster-v1` bytes of the outgoing roll — the bytes whose SHA-256 is the
+/// Emit the exact canonical `format muster-v1` bytes of the outgoing roll -- the bytes whose SHA-256 is the
 /// warrant's `prev` digest. Piped through `sha256sum`, it must equal the record's `prev` line.
 fn emit_roll_bytes(m: *const muster.Muster) !u8 {
     var buf: [muster_bron.max_record]u8 = undefined;
@@ -128,7 +128,7 @@ fn emit_roll_bytes(m: *const muster.Muster) !u8 {
     return 0;
 }
 
-/// Emit the rendered `format warrant-v1` record — the certificate the witness reads the `prev`/`next` digest
+/// Emit the rendered `format warrant-v1` record -- the certificate the witness reads the `prev`/`next` digest
 /// lines and counts the `endorse` lines from.
 fn emit_warrant() !u8 {
     const w = try lawful_warrant();

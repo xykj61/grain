@@ -1,4 +1,4 @@
-//! linengrow/receipt_core.rye — shared sign, parse, fold, and compact wire payload.
+//! linengrow/receipt_core.rye -- shared sign, parse, fold, and compact wire payload.
 //!
 //! Imported by SLC-L1 (`receipt.rye`) and SLC-L2 (`delivery.rye`).
 
@@ -19,7 +19,7 @@ pub const max_log_len: u32 = 4096;
 pub const slcl2_payload_header: u32 = kumara.signature_length + 4;
 pub const slcl2_max_fact: u32 = 256;
 
-/// Pinned witness fact — byte-identical to `tools/fixtures/slcl1_fact.bron` canonical form.
+/// Pinned witness fact -- byte-identical to `tools/fixtures/slcl1_fact.bron` canonical form.
 pub const witness_canonical_fact =
     \\from 2152f8d19b791d24453242e15f2eab6cb7cffa7b6a5ed30097960e069881db12
     \\to 2152f8d19b791d24453242e15f2eab6cb7cffa7b6a5ed30097960e069881db12

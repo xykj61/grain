@@ -1,28 +1,28 @@
-//! lotus/stereo_reverb_tone.rye — ALES199: THE STEREO TONE — the reverb's DARKNESS knob, the high-cut on the reverberant tail, now across a stereo
+//! lotus/stereo_reverb_tone.rye -- ALES199: THE STEREO TONE -- the reverb's DARKNESS knob, the high-cut on the reverberant tail, now across a stereo
 //! master. ALES198 gave the MONO reverb its darkness: reverberate the span wet in place, then roll the treble off the wet so the room absorbs highs
-//! the way a real space does. Yet a keeper mixing a STEREO master still had no such knob — the darkness comfort stopped at mono, exactly as the
+//! the way a real space does. Yet a keeper mixing a STEREO master still had no such knob -- the darkness comfort stopped at mono, exactly as the
 //! pre-delay did before ALES195 carried it across. This rung is the thin twin ALES198 named next: the SAME high-cut, over BOTH channels of a
 //! StereoClip, one shared coefficient, the image held.
 //!
 //! The shape: reverberate the master WET in place through ALES191's stereo_reverb_preset UNCHANGED, then low-pass EACH channel's wet with ALES40's
-//! proven one-pole low-pass at the SAME coefficient tone_num/tone_den —
+//! proven one-pole low-pass at the SAME coefficient tone_num/tone_den --
 //!   out = tone.low_pass(wet, tone_num, tone_den)   per channel, no cross-channel read
 //! tone_num == tone_den is the identity (a full-open tone is exactly the un-darkened stereo reverb); a smaller fraction rolls off more treble,
 //! darkening both ears. This invents NO new audio arithmetic: every darkened sample is written by a stage already proven byte-for-byte (ALES40's
 //! low-pass over ALES191's wet), so no value is ever recomputed or can wrap. The tone coefficient is validated BEFORE the wet is written (ALES40's
-//! precheck), so a bad tone leaves both channels DRY and balanced — the up-front check is the atomicity crux. The left ear darkens left and the right
+//! precheck), so a bad tone leaves both channels DRY and balanced -- the up-front check is the atomicity crux. The left ear darkens left and the right
 //! ear darkens right with the same coefficient, so the stereo image the preset held is held through the darkening.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES199.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES199.
 //! Design read: active-designing/date/20260815/20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md
-//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
-//! forwarded whole; lotus/tone.rye (ALES40) — the one-pole low-pass and its precheck, run per channel (its BadCoeff renamed BadTone); lotus/pan.rye
-//! (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME
-//! conversion the preset uses); lotus/timeline.rye (ALES2) — the Clip each channel holds; lotus/reverb_tone.rye (ALES198) — the mono tone this
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) -- the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/tone.rye (ALES40) -- the one-pole low-pass and its precheck, run per channel (its BadCoeff renamed BadTone); lotus/pan.rye
+//! (ALES) -- the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting the span (the SAME
+//! conversion the preset uses); lotus/timeline.rye (ALES2) -- the Clip each channel holds; lotus/reverb_tone.rye (ALES198) -- the mono tone this
 //! mirrors per ear.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, and ALES191's fixed banks, siloed to
-//! lotus/. No new audio arithmetic — the tone is ALES40's proven one-pole low-pass over the proven stereo wet, run per ear. A WET-TAIL tone; a true
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, and ALES191's fixed banks, siloed to
+//! lotus/. No new audio arithmetic -- the tone is ALES40's proven one-pole low-pass over the proven stereo wet, run per ear. A WET-TAIL tone; a true
 //! in-loop Freeverb damping (a low-pass INSIDE each comb's feedback) remains a named separate horizon, not claimed. The coefficient is a plain
 //! fraction, so it means the same roll-off at any sample rate. No socket, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -40,21 +40,21 @@ const tone = @import("tone.rye");
 
 pub const stereo_reverb_tone_version = "20260815.104900";
 
-/// The named rooms are ALES190's own, reached through ALES191 — reused whole, so the stereo tone and the presets name the same tunings and cannot
+/// The named rooms are ALES190's own, reached through ALES191 -- reused whole, so the stereo tone and the presets name the same tunings and cannot
 /// drift apart.
 pub const Room = stereo_reverb_preset.Room;
 
 /// The stereo tone's faults are ALES191's `StereoReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay
-/// / BadGain / BadRange, forwarded whole) beside this rung's one own fault, `BadTone` — an illegal low-pass coefficient (ALES40's BadCoeff renamed),
+/// / BadGain / BadRange, forwarded whole) beside this rung's one own fault, `BadTone` -- an illegal low-pass coefficient (ALES40's BadCoeff renamed),
 /// refused by name before any write.
 pub const StereoReverbToneError = stereo_reverb_preset.StereoReverbPresetError || error{BadTone};
 
 /// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM, then darken the reverberant tail on BOTH channels by the
 /// low-pass coefficient tone_num/tone_den. Convert the span through ALES5's clock (the SAME conversion the preset uses); PRE-CHECK the tone
-/// coefficient against that span through ALES40's precheck (refusing BadTone before any write, so a bad tone leaves both channels dry and balanced —
+/// coefficient against that span through ALES40's precheck (refusing BadTone before any write, so a bad tone leaves both channels dry and balanced --
 /// the atomicity crux); run ALES191's stereo_reverb_preset over the master (the wet, in place, unchanged); then low-pass each channel's wet span
 /// through ALES40's tone.low_pass at the same coefficient, with no cross-channel read.
-///   tone_num == tone_den is the identity — the span equals stereo_reverb_preset byte for byte on both channels; a smaller fraction rolls off more
+///   tone_num == tone_den is the identity -- the span equals stereo_reverb_preset byte for byte on both channels; a smaller fraction rolls off more
 ///   treble on both ears.
 /// Refuses BadTone on an illegal coefficient, then forwards ALES191's StereoReverbPresetError (DurationTooLong on a span past the clip, BadRange on
 /// an out-of-range span, and the reverb's own faults) before any write; on refusal both channels are untouched and balanced.
@@ -67,32 +67,32 @@ pub fn stereo_reverb_tone(
     tone_num: i32,
     tone_den: u32,
 ) StereoReverbToneError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared preset and per-ear low-pass preserve.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant the shared preset and per-ear low-pass preserve.
     assert(sc.left.len == sc.right.len);
-    // invariant: the clock is valid — the span is spoken against it, and stereo_reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and stereo_reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
 
     // Convert the span with the SAME clock the preset uses, so the tone's precheck and the per-ear darkening cover exactly the preset's written span.
     // A span past the clip forwards DurationTooLong here, before any write.
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
-    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet is written. The channels are
+    // The span must be in-bounds before any write -- the same BadRange the reverb would raise, raised before the wet is written. The channels are
     // balanced, so one bound governs both.
     if (start > sc.left.len) return error.BadRange;
     if (count > sc.left.len - start) return error.BadRange;
 
-    // Pre-check the tone coefficient against the span BEFORE the wet is written — the atomicity crux. ALES40's precheck is the single source of truth
+    // Pre-check the tone coefficient against the span BEFORE the wet is written -- the atomicity crux. ALES40's precheck is the single source of truth
     // for a legal low-pass coefficient; its BadCoeff becomes BadTone, its BadRange the reverb's BadRange (already caught above, kept for one law).
     tone.precheck(sc.left.len, start, count, tone_num, tone_den) catch |e| return switch (e) {
         error.BadCoeff => error.BadTone,
         error.BadRange => error.BadRange,
     };
 
-    // The wet, in place — ALES191's stereo_reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves both channels dry
+    // The wet, in place -- ALES191's stereo_reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves both channels dry
     // and balanced.
     try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
 
-    // Darken each channel's wet span through ALES40's one-pole low-pass at the SAME coefficient — prechecked just above against this same length and
+    // Darken each channel's wet span through ALES40's one-pole low-pass at the SAME coefficient -- prechecked just above against this same length and
     // span, so neither ear can fail here. No cross-channel read: the left ear darkens left, the right ear darkens right, so the image is held.
     tone.low_pass(&sc.left, start, count, tone_num, tone_den) catch unreachable;
     tone.low_pass(&sc.right, start, count, tone_num, tone_den) catch unreachable;
@@ -102,11 +102,11 @@ pub fn stereo_reverb_tone(
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE IDENTITY EDGE (tone_num == tone_den) — equals stereo_reverb_preset over the span byte for byte on BOTH channels; IT EQUALS ITS
-//     COMPOSITION — for a sub-unity coefficient, each channel equals stereo_reverb_preset then tone.low_pass on that channel byte for byte, and each
-//     darkened channel differs from its wet; THE TAIL DARKENS — each darkened channel's high-frequency roughness is strictly less than its wet's; THE
-//     IMAGE IS HELD — a centred master stays identical channel-to-channel, a stereo master keeps its channels distinct; THE CHANNELS LEAVE BALANCED
-//     and silence stays silence; and the faults forward, ATOMIC — a bad tone coefficient BadTone with both channels untouched (still dry), a span
+// --- selftest: THE IDENTITY EDGE (tone_num == tone_den) -- equals stereo_reverb_preset over the span byte for byte on BOTH channels; IT EQUALS ITS
+//     COMPOSITION -- for a sub-unity coefficient, each channel equals stereo_reverb_preset then tone.low_pass on that channel byte for byte, and each
+//     darkened channel differs from its wet; THE TAIL DARKENS -- each darkened channel's high-frequency roughness is strictly less than its wet's; THE
+//     IMAGE IS HELD -- a centred master stays identical channel-to-channel, a stereo master keeps its channels distinct; THE CHANNELS LEAVE BALANCED
+//     and silence stays silence; and the faults forward, ATOMIC -- a bad tone coefficient BadTone with both channels untouched (still dry), a span
 //     past the clip DurationTooLong, an out-of-range span BadRange -----------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -121,7 +121,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// The high-frequency roughness of a span — the sum of absolute sample-to-sample differences. Treble is rapid change, so a low-pass strictly reduces
+/// The high-frequency roughness of a span -- the sum of absolute sample-to-sample differences. Treble is rapid change, so a low-pass strictly reduces
 /// this on any signal that carries treble. Run in i64 so a long loud span never overflows the accumulator.
 fn roughness(s: []const i16) i64 {
     var total: i64 = 0;
@@ -147,7 +147,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. THE IDENTITY EDGE — tone_num == tone_den (a full-open tone) equals ALES191's stereo_reverb_preset over the span, byte for byte on both
+    // 1. THE IDENTITY EDGE -- tone_num == tone_den (a full-open tone) equals ALES191's stereo_reverb_preset over the span, byte for byte on both
     //    channels. A full-open tone is exactly the un-darkened stereo reverb.
     {
         var toned = pan.StereoClip{};
@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         if (!eq(toned.right.samples(), preset.right.samples())) return error.IdentityRightNotPreset;
     }
 
-    // 2. IT EQUALS ITS COMPOSITION — for a sub-unity coefficient (1/4), each channel equals stereo_reverb_preset then tone.low_pass on that channel
+    // 2. IT EQUALS ITS COMPOSITION -- for a sub-unity coefficient (1/4), each channel equals stereo_reverb_preset then tone.low_pass on that channel
     //    computed side by side, byte for byte; and each darkened channel differs from its un-darkened wet.
     {
         var toned = pan.StereoClip{};
@@ -184,7 +184,7 @@ fn run_selftest() !u8 {
         if (eq(toned.right.samples(), wet.right.samples())) return error.DarkenedRightEqualsWet;
     }
 
-    // 3. THE TAIL DARKENS — each darkened channel's high-frequency roughness (summed first-difference) is strictly less than that channel's
+    // 3. THE TAIL DARKENS -- each darkened channel's high-frequency roughness (summed first-difference) is strictly less than that channel's
     //    un-darkened wet's. A room absorbs highs on both ears.
     {
         var toned = pan.StereoClip{};
@@ -199,8 +199,8 @@ fn run_selftest() !u8 {
         if (roughness(toned.right.samples()) >= roughness(wet.right.samples())) return error.RightDidNotDarken;
     }
 
-    // 4. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel through the shared coefficient; and our genuinely
-    //    STEREO master keeps its two channels distinct — no crossing.
+    // 4. THE IMAGE IS HELD -- a CENTRED master (left == right) stays identical channel-to-channel through the shared coefficient; and our genuinely
+    //    STEREO master keeps its two channels distinct -- no crossing.
     {
         var centred = pan.StereoClip{};
         try load_stereo(&centred, &left, &left);
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (eq(stereo.left.samples(), stereo.right.samples())) return error.ChannelsCrossed;
     }
 
-    // 5. THE CHANNELS LEAVE BALANCED and silence stays silence — an all-zero master at any tone stays all zeros on both channels, the channels
+    // 5. THE CHANNELS LEAVE BALANCED and silence stays silence -- an all-zero master at any tone stays all zeros on both channels, the channels
     //    balanced: a low-pass of silence is silence.
     {
         var clip = pan.StereoClip{};
@@ -225,20 +225,20 @@ fn run_selftest() !u8 {
         if (!eq(clip.right.samples(), &zr)) return error.SilenceWrongRight;
     }
 
-    // 6. THE FAULTS FORWARD, ATOMIC — an illegal tone coefficient refuses BadTone with both channels UNTOUCHED (still dry — the tone is prechecked
+    // 6. THE FAULTS FORWARD, ATOMIC -- an illegal tone coefficient refuses BadTone with both channels UNTOUCHED (still dry -- the tone is prechecked
     //    before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by name with both channels untouched.
     {
         var clip = pan.StereoClip{};
         const threel = [_]i16{ 1, 2, 3 };
         const threer = [_]i16{ 4, 5, 6 };
         try load_stereo(&clip, &threel, &threer);
-        // a coefficient above unity (num 5 > den 4) is an unstable low-pass — BadTone, before any write, both channels still dry.
+        // a coefficient above unity (num 5 > den 4) is an unstable low-pass -- BadTone, before any write, both channels still dry.
         if (stereo_reverb_tone(&clip, c, .room, 0, 3, 5, 4)) |_| return error.BadToneSlipped else |e| if (e != error.BadTone) return error.WrongBadTone;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadToneMutated;
-        // a zero denominator is a divide by zero — BadTone, before any write.
+        // a zero denominator is a divide by zero -- BadTone, before any write.
         if (stereo_reverb_tone(&clip, c, .room, 0, 3, 1, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadTone) return error.WrongZeroDen;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedZeroDenMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (stereo_reverb_tone(&clip, c, .room, 0, timeline.max_clip + 1, 1, 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.

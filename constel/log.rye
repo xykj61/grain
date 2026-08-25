@@ -1,23 +1,23 @@
-//! constel/log.rye — FORA12: a sequence of decrees the whole sky agrees on, in order. FORA11 committed one value, once,
-//! guarded so two piers can never hold a different value for one decision. A ledger is not one decision, though — it is a
+//! constel/log.rye -- FORA12: a sequence of decrees the whole sky agrees on, in order. FORA11 committed one value, once,
+//! guarded so two piers can never hold a different value for one decision. A ledger is not one decision, though -- it is a
 //! SEQUENCE of them, in order. The output every consensus protocol exists to produce is a replicated, append-only log: entry
-//! 0, then entry 1, then entry 2, each committed by quorum and — the whole point — the same at every pier. This rung takes
+//! 0, then entry 1, then entry 2, each committed by quorum and -- the whole point -- the same at every pier. This rung takes
 //! that one new concern: order the decrees into a log that cannot fork.
 //!
 //! The safety carries up from FORA11 by construction: because each index commits AT MOST ONE value, two logs that replicate
-//! the same committed decrees are identical entry for entry — no fork is possible. Append is ordered (index n fills before
+//! the same committed decrees are identical entry for entry -- no fork is possible. Append is ordered (index n fills before
 //! n+1), append-only (a committed entry is never rewritten, exactly Mantra's own discipline), and bounded (LogFull at the
-//! cap). A decree that fails to commit does NOT grow the log — the index stays open for a later round — so a log never carries
+//! cap). A decree that fails to commit does NOT grow the log -- the index stays open for a later round -- so a log never carries
 //! a gap or an uncommitted value.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA12. Design read: active-designing/date/20260814/20260814-054414_fora12-constel-replicated-log.md
-//! Stands on: constel/decree.rye (FORA11) — each entry is one committed decree; constel/switchboard.rye (FORA6) — the medium;
-//! constel/roster.rye (FORA1) — the bound.
+//! Stands on: constel/decree.rye (FORA11) -- each entry is one committed decree; constel/switchboard.rye (FORA6) -- the medium;
+//! constel/roster.rye (FORA1) -- the bound.
 //!
-//! Purely LOCAL — a bounded in-memory log over the switchboard on one bench, siloed to constel/, run from inside the jailed
-//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real
-//! wire — and gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- a bounded in-memory log over the switchboard on one bench, siloed to constel/, run from inside the jailed
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real hardware / any real
+//! wire -- and gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/log.rye selftest
 
@@ -37,20 +37,20 @@ pub const log_version = "20260814.054414";
 pub const max_entries: u32 = 64;
 
 pub const LogError = error{
-    /// The log is at its entry cap — a bounded ledger refuses to grow past max_entries rather than overrun.
+    /// The log is at its entry cap -- a bounded ledger refuses to grow past max_entries rather than overrun.
     LogFull,
     /// A read named an index the log has not yet committed.
     NoEntry,
 } || decree.DecreeError;
 
 /// An append-only sequence of committed values. `len` entries are filled, in order, index 0 first. A committed entry is never
-/// rewritten — the only mutation is a new value at index `len`, exactly Mantra's append-only order.
+/// rewritten -- the only mutation is a new value at index `len`, exactly Mantra's append-only order.
 pub const Log = struct {
     entry: [max_entries]u32 = [_]u32{0} ** max_entries,
     len: u32 = 0,
 
     /// Append an already-committed value at the next index, refusing LogFull at the cap. The value joins at index `len`, and
-    /// no prior entry moves — append-only by construction.
+    /// no prior entry moves -- append-only by construction.
     pub fn append(self: *Log, value: u32) LogError!u32 {
         // invariant: the log never grows past its named bound.
         assert(self.len <= max_entries);
@@ -72,7 +72,7 @@ pub const Log = struct {
         return self.entry[index];
     }
 
-    /// Whether two logs are identical entry for entry — the replication / no-fork check. Two piers that replicated the same
+    /// Whether two logs are identical entry for entry -- the replication / no-fork check. Two piers that replicated the same
     /// committed decrees must match, because each index committed at most one value (FORA11).
     pub fn matches(self: *const Log, other: *const Log) bool {
         if (self.len != other.len) return false;
@@ -84,7 +84,7 @@ pub const Log = struct {
     }
 };
 
-/// Run one FORA11 decree and, only on a clean commit, append the committed value — the whole "propose, agree, record" cycle
+/// Run one FORA11 decree and, only on a clean commit, append the committed value -- the whole "propose, agree, record" cycle
 /// of a replicated log. Any error (NoDecree below a majority, NoSuchPier for a stranger leader, VowelPresent at the border)
 /// propagates and leaves the log UNCHANGED, so the log never carries a gap or an uncommitted value.
 pub fn run_and_append(log: *Log, sb: *switchboard.Switchboard, leader: []const u8, value: u32) LogError!u32 {
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         assert((try log.get(0)) == 11 and (try log.get(1)) == 22 and (try log.get(2)) == 33);
     }
 
-    // 3. No fork — two logs driven through the same committed sequence are identical entry for entry. Each index committed one
+    // 3. No fork -- two logs driven through the same committed sequence are identical entry for entry. Each index committed one
     //    value (FORA11), so replication cannot diverge.
     {
         var sba = switchboard.Switchboard{};
@@ -162,13 +162,13 @@ fn run_selftest() !u8 {
         assert(log_a.matches(&log_b)); // the two replicas agree — no fork
         assert(log_a.len == 4);
 
-        // A log that stopped one entry short does NOT match — the check is honest, not a constant true.
+        // A log that stopped one entry short does NOT match -- the check is honest, not a constant true.
         var log_short = Log{};
         _ = try run_and_append(&log_short, &sba, lan, 7); // sba's mailboxes are empty after the round above
         assert(!log_a.matches(&log_short));
     }
 
-    // 4. A failed decree does not grow the log — a stranger leader refuses NoSuchPier and len is unchanged (the same
+    // 4. A failed decree does not grow the log -- a stranger leader refuses NoSuchPier and len is unchanged (the same
     //    early-return-before-append that NoDecree takes).
     {
         var sb = switchboard.Switchboard{};
@@ -180,7 +180,7 @@ fn run_selftest() !u8 {
         assert(log.len == 1); // the failed round left the log untouched
     }
 
-    // 5. A full constellation of eight appends bounded — run_decree interleaves respond and hear so no ChannelFull, and the
+    // 5. A full constellation of eight appends bounded -- run_decree interleaves respond and hear so no ChannelFull, and the
     //    sky commits and records two entries in order.
     {
         var sb = switchboard.Switchboard{};
@@ -205,14 +205,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — the decree round
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- the decree round
 /// mutates mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

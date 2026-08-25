@@ -1,28 +1,28 @@
-//! mycelium/purse_bron.rye — the per-account verdict travels as a readable record.
+//! mycelium/purse_bron.rye -- the per-account verdict travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Purse rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Purse rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-070923_mycelium-purse-per-account-balances-exploration.md
 //!
-//! r1 resolved a Cord's agreed order into a Purse — every account's balance, which
+//! r1 resolved a Cord's agreed order into a Purse -- every account's balance, which
 //! transfers moved coins, which came up short. A verdict a node cannot hand to
 //! another node is only a local reading, so r2 lets a resolved Purse cross as
 //! `format purse-v1` bytes: an `issued <total>` line, one `holds <pk> <balance>` line
 //! per account, one `moved <from> <to> <amount> <pos> <round>` line per winning
 //! transfer, one `short <from> <amount> <pos> <received-at>` line per spent-out loss.
-//! Render writes it, parse reads it back, so a round trip is a fixed point — and the
+//! Render writes it, parse reads it back, so a round trip is a fixed point -- and the
 //! recovered Purse reports the identical balances, counts, and totals, so the per-
 //! account verdict crosses to a stranger unchanged.
 //!
 //! The record carries conservation as its own law, the way till-v1 carried the supply
 //! law: the balances a record claims must sum to exactly the `issued` total it names,
-//! or the reader refuses `BadInt` before the record is trusted — no coin appears or
+//! or the reader refuses `BadInt` before the record is trusted -- no coin appears or
 //! vanishes in the crossing.
 //!
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses
 //! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
 //! `BadLine`, a bad integer or broken conservation law `BadInt`, a bad hex field
 //! `BadHex`, an over-long record `TooManyAccounts`/`TooManyMoves`/`TooManyShorts`.
-//! Composes purse.rye + fold.rye public API only. Siloed, dev-only, demo seeds —
+//! Composes purse.rye + fold.rye public API only. Siloed, dev-only, demo seeds --
 //! no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/purse_bron.rye
@@ -36,7 +36,7 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled record carries at most this many accounts — a dev-net ledger is small
+/// A travelled record carries at most this many accounts -- a dev-net ledger is small
 /// and legible, well under the Purse's own 512 ceiling.
 pub const max_accounts_in_record: u32 = 64;
 
@@ -46,7 +46,7 @@ pub const max_moves_in_record: u32 = 32;
 /// And at most this many spent-out losses.
 pub const max_shorts_in_record: u32 = 32;
 
-/// The record buffer bound — a small ledger's whole verdict fits with room.
+/// The record buffer bound -- a small ledger's whole verdict fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{
@@ -152,7 +152,7 @@ fn tokens(line: []const u8, out: *[6][]const u8) u32 {
     return count;
 }
 
-/// Sum the parsed balances — the conservation law's left side, computed without the
+/// Sum the parsed balances -- the conservation law's left side, computed without the
 /// read's own assert so a broken record refuses cleanly rather than tripping it.
 fn balances_total(out: *const purse.Purse) u64 {
     var sum: u64 = 0;
@@ -240,7 +240,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 }
 
 /// Build the r1 contested scene and resolve it: genesis credits 100 to Alice; Alice
-/// signs two transfers of 100 — to Bob and to Carol — at one round.
+/// signs two transfers of 100 -- to Bob and to Carol -- at one round.
 fn build_scene() !purse.Purse {
     const kf = seeded(0xF0);
     const ka = seeded(0xA1);
@@ -304,7 +304,7 @@ pub fn main() !void {
     if (recovered.moves_seen() != 1) return error.MoveCount;
     if (recovered.shorts_seen() != 1) return error.ShortCount;
     if (recovered.total_issued != 100) return error.IssuedValue;
-    // Conservation survives the crossing — the balances still sum to the issued total.
+    // Conservation survives the crossing -- the balances still sum to the issued total.
     if (recovered.balances_sum() != 100) return error.NotConserved;
     if (recovered.total_lost() != 100) return error.LostValue;
 

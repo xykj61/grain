@@ -1,24 +1,24 @@
-//! lotus/trim_silence.rye — ALES96: the silence stripper — segment the clip through ALES95, then cut every silent run, leaving the sound contiguous.
-//! ALES95 read a whole clip into a run-length sequence of silent, voiced, and unvoiced regions yet changed not one sample — a reader. Its own scope note named the
-//! first tool built on it: a silence trimmer that drops the .silent runs. That is the most common single gesture in all of audio editing — trim silence, truncate
+//! lotus/trim_silence.rye -- ALES96: the silence stripper -- segment the clip through ALES95, then cut every silent run, leaving the sound contiguous.
+//! ALES95 read a whole clip into a run-length sequence of silent, voiced, and unvoiced regions yet changed not one sample -- a reader. Its own scope note named the
+//! first tool built on it: a silence trimmer that drops the .silent runs. That is the most common single gesture in all of audio editing -- trim silence, truncate
 //! silence, the dead-air remover every recorder and podcast tool ships. This is the FIRST Lotus rung to turn an ANALYSIS result back into an EDIT: the segmenter
 //! finds where the silence lives, and this rung removes it, leaving the sound contiguous in its original order. (Named trim_silence to stand clear of ALES9's
-//! strip.rye, the channel strip's mute/solo — a different tool entirely.)
+//! strip.rye, the channel strip's mute/solo -- a different tool entirely.)
 //!
 //! The rule, stated once: segment [0, clip.len) through ALES95, then walk the runs BACK TO FRONT and cut every .silent run through ALES2's own cut. Cutting from the
-//! last silent run backward keeps every earlier run's start index valid, because a cut only shifts samples that lie AFTER it — an earlier run sits before the cut
+//! last silent run backward keeps every earlier run's start index valid, because a cut only shifts samples that lie AFTER it -- an earlier run sits before the cut
 //! and cannot move.
 //!
 //! The crux: this rung invents no new measurement and no new sample. The trimmed clip equals, byte for byte, the hand-built concatenation of the non-silent runs'
-//! samples read from the original — the trimmer is the segmenter's silent runs removed, nothing more. So it can never drift from ALES95, exactly as ALES95 can
+//! samples read from the original -- the trimmer is the segmenter's silent runs removed, nothing more. So it can never drift from ALES95, exactly as ALES95 can
 //! never drift from ALES94 and ALES94 from the two readers it fuses. The tower of readers now ACTS on the clip while staying provably its predecessor read a new way.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES96.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES96.
 //! Design read: active-designing/date/20260814/20260814-232010_fill-ales96-lotus-silence-stripper.md
-//! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name so the trimmer removes exactly the runs the segmenter named; lotus/
-//! timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict; lotus/schmitt.rye (ALES92) — the band-and-span precheck through ALES95.
+//! Stands on: lotus/segment.rye (ALES95) -- the voice-activity segmenter, reused by name so the trimmer removes exactly the runs the segmenter named; lotus/
+//! timeline.rye (ALES2) -- the Clip and cut; lotus/voiced.rye (ALES94) -- the .silent verdict; lotus/schmitt.rye (ALES92) -- the band-and-span precheck through ALES95.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. This rung WRITES — it edits the clip — yet
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. This rung WRITES -- it edits the clip -- yet
 //! only by removing whole classified-silent frames through ALES2's own cut; it fabricates no samples and reorders nothing. NOT a transcript, not a real voice-
 //! activity detector with adaptive floors or smoothing; those stay later rungs. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -35,7 +35,7 @@ const segment = @import("segment.rye");
 pub const trim_silence_version = "20260814.232010";
 
 /// The trimmer's faults are the segmenter's OWN faults (ALES95's SegmentError: the classifier's ClassifyError, plus BadFrame and the honest unreachable
-/// SegmentsFull) and the editor's OWN faults (ALES2's EditError from cut), each reused by name. The trimmer invents none of its own — an empty clip refuses
+/// SegmentsFull) and the editor's OWN faults (ALES2's EditError from cut), each reused by name. The trimmer invents none of its own -- an empty clip refuses
 /// BadFrame through the segmenter (a zero span cannot carry a legal frame), so a keeper reads exactly one error vocabulary across the analysis and the edit.
 pub const TrimError = segment.SegmentError || timeline.EditError;
 
@@ -53,13 +53,13 @@ pub fn trim_silence(
 ) TrimError!void {
     const original_len: u32 = clip.len;
 
-    // Segment the whole clip once — the verdicts are exactly the segmenter's, which are exactly the classifier's, so the trimmer can never remove a run the
+    // Segment the whole clip once -- the verdicts are exactly the segmenter's, which are exactly the classifier's, so the trimmer can never remove a run the
     // segmenter did not name. All of ALES95's validation (precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame) runs
     // here before a single sample is cut.
     var segs = segment.Segments{};
     try segment.segment(clip, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: segmenting a non-empty clip yields at least one run that tiles it — the segmenter's own postcondition, relied on here.
+    // invariant: segmenting a non-empty clip yields at least one run that tiles it -- the segmenter's own postcondition, relied on here.
     assert(segs.len >= 1 and segs.len <= segment.max_segments);
 
     // Count the silent samples up front so the postcondition can be asserted exactly, and so the degenerate paths (all-silent, no-silent) are plain.
@@ -71,20 +71,20 @@ pub fn trim_silence(
     // invariant: the silence removed can never exceed the clip it came from.
     assert(silent_total <= original_len);
 
-    // Walk the runs BACK TO FRONT, cutting each silent run. Back-to-front is the whole trick: a cut shifts only samples after it, so an earlier run — which sits
-    // before every cut made so far — keeps its original start index. `segs.len` is at least one, so the unsigned countdown starts from a real index.
+    // Walk the runs BACK TO FRONT, cutting each silent run. Back-to-front is the whole trick: a cut shifts only samples after it, so an earlier run -- which sits
+    // before every cut made so far -- keeps its original start index. `segs.len` is at least one, so the unsigned countdown starts from a real index.
     var r: u32 = segs.len;
     while (r > 0) {
         r -= 1;
         const run = segs.items[r];
         if (run.verdict == .silent) {
-            // invariant: the run lies wholly inside the current clip — it did before any cut, and only later runs (already cut) sat after it.
+            // invariant: the run lies wholly inside the current clip -- it did before any cut, and only later runs (already cut) sat after it.
             assert(run.start + run.count <= clip.len);
             try timeline.cut(clip, run.start, run.count);
         }
     }
 
-    // invariant: the trimmed clip holds exactly the non-silent samples — its length is the original minus every silent sample removed.
+    // invariant: the trimmed clip holds exactly the non-silent samples -- its length is the original minus every silent sample removed.
     assert(clip.len == original_len - silent_total);
     assert(clip.len <= clip.buf.len);
 }
@@ -104,7 +104,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built expectation the trimmer is checked against in the crux — segment the ORIGINAL, then concatenate every non-silent run's samples in order into
+/// The hand-built expectation the trimmer is checked against in the crux -- segment the ORIGINAL, then concatenate every non-silent run's samples in order into
 /// `out`. The trimmed clip must equal this exactly.
 fn by_hand(out: *timeline.Clip, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
     var segs = segment.Segments{};
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail — the classic dead-air-at-the-ends recording plus
+    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail -- the classic dead-air-at-the-ends recording plus
     // an interior gap. Frames of 4 samples. Quiet runs classify silent (rms below the floor); the big-positive/big-negative body classifies voiced; the
     // alternating run unvoiced.
     const mixed = [_]i16{
@@ -135,7 +135,7 @@ fn run_selftest() !u8 {
         50,    -50,   50,    -50, // silent (quiet tail)
     };
 
-    // 1. THE CRUX — over many frame lengths, floors, and splits, trim_silence equals the hand-built concatenation of the non-silent runs read from the original.
+    // 1. THE CRUX -- over many frame lengths, floors, and splits, trim_silence equals the hand-built concatenation of the non-silent runs read from the original.
     {
         const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 }; // each divides 24
         const floors = [_]u32{ 100, 500, 1000, 5000 }; // all above the quiet ~40 rms, below the loud
@@ -159,7 +159,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. A MIXED CLIP loses exactly its silent samples — with frame 4 and floor 500, the three quiet runs (12 samples) go and the 12 loud samples stay contiguous.
+    // 2. A MIXED CLIP loses exactly its silent samples -- with frame 4 and floor 500, the three quiet runs (12 samples) go and the 12 loud samples stay contiguous.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &mixed);
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (clip.len != 0) return error.AllSilentNotEmpty;
     }
 
-    // 4. A NO-SILENT CLIP is unchanged — every frame loud, nothing to cut.
+    // 4. A NO-SILENT CLIP is unchanged -- every frame loud, nothing to cut.
     {
         const loud = [_]i16{ 20000, 20000, -20000, -20000, 20000, -20000, 20000, -20000 };
         var clip = timeline.Clip{};
@@ -190,7 +190,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.NoSilentChanged;
     }
 
-    // 5. THE LENGTH LAW — after trimming, the length equals the original minus the silent samples, over a fresh signal.
+    // 5. THE LENGTH LAW -- after trimming, the length equals the original minus the silent samples, over a fresh signal.
     {
         const sig = [_]i16{
             20000, -20000, 20000, -20000, // unvoiced
@@ -210,7 +210,7 @@ fn run_selftest() !u8 {
         if (clip.len != 0) return error.EmptyMutated;
     }
 
-    // 6b. A RAGGED FRAME LENGTH — one that does not divide the clip — refuses BadFrame, the clip untouched.
+    // 6b. A RAGGED FRAME LENGTH -- one that does not divide the clip -- refuses BadFrame, the clip untouched.
     {
         const five = [_]i16{ 1, 2, 3, 4, 5 };
         var clip = timeline.Clip{};
@@ -228,7 +228,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &four)) return error.InvertedMutated;
     }
 
-    // 6d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, the clip untouched.
+    // 6d. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor, the clip untouched.
     {
         const four = [_]i16{ 10, 20, 30, 40 };
         var clip = timeline.Clip{};

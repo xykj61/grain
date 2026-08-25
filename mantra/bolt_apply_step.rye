@@ -1,19 +1,19 @@
-//! mantra/bolt_apply_step.rye — a bolt written is not a bolt visible.
+//! mantra/bolt_apply_step.rye -- a bolt written is not a bolt visible.
 //!
 //! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
-//! pattern 3 ("written is not acknowledged — the manifest is the moment of
+//! pattern 3 ("written is not acknowledged -- the manifest is the moment of
 //! truth"), named for Mantra directly in work-in-progress/TASKS.md: a bolt
-//! written is not a bolt visible until the namespace record admits it —
+//! written is not a bolt visible until the namespace record admits it --
 //! the same written≠acknowledged pattern as Neth's own root application
 //! (linengrow/neth_apply_step.rye).
 //!
 //! This composes on top of recall_lap1.rye's own BoltCatalog rather than
-//! editing it — recall_lap1.rye's own doc comment names the family's
+//! editing it -- recall_lap1.rye's own doc comment names the family's
 //! standing rule ("every file after it imports that foundation and edits
 //! nothing beneath itself"), and this module keeps faith with that rule.
 //! `write_leaf_pending` lands a leaf's fields somewhere real but not yet
 //! admitted; `apply_pending` is the distinct, later step that calls the
-//! foundation's own `append_leaf` — the one path that ever makes a leaf
+//! foundation's own `append_leaf` -- the one path that ever makes a leaf
 //! visible to `recall`. `recover_after_crash` discards a pending write
 //! outright, so a crash between the two costs nothing: the catalog's own
 //! `recall` and `resolve_binding` never once saw the pending leaf, and
@@ -47,7 +47,7 @@ pub const BoltApplyStep = struct {
         return .{ .catalog = .empty(), .pending = null };
     }
 
-    /// The one thing the rest of the system is ever allowed to consult —
+    /// The one thing the rest of the system is ever allowed to consult --
     /// a pending write, however real in this module's own memory, is
     /// invisible to recall/resolve_binding until apply_pending admits it.
     pub fn consulted(self: *const BoltApplyStep, name: ns.Name) ns.RecallOutcome {

@@ -1,27 +1,27 @@
-//! mycelium/freight_bron.rye — a world's freight travels as a readable record, and reads the same offline (r3).
+//! mycelium/freight_bron.rye -- a world's freight travels as a readable record, and reads the same offline (r3).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r3 — travel.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r3 -- travel.
 //! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! r1 proved a moved world reads the byte-identical position on its new berth; r2 proved the whole fleet's
 //! state is conserved across a healing. Both read the world's own ledger blocks in hand. Yet a receiving node
-//! often meets a moving world as a MANIFEST first — a small record that advertises what is coming — before it
-//! pulls the ledger. r3 lets that manifest cross as `format freight-v1` bytes: a world's id · berth host key ·
-//! ledger order-head · account position (balance · reserved · received · present). The reader rebuilds the
+//! often meets a moving world as a MANIFEST first -- a small record that advertises what is coming -- before it
+//! pulls the ledger. r3 lets that manifest cross as `format freight-v1` bytes: a world's id - berth host key -
+//! ledger order-head - account position (balance - reserved - received - present). The reader rebuilds the
 //! manifest field for field; a record can never recover a position the writer did not carry.
 //!
 //! The crux is THE POSITION SURVIVES THE WIRE, not merely the bytes: a manifest parsed from bytes reads the
-//! byte-identical position (`freight.Position.same`) as the one rendered, and — the teeth that tie the light
-//! record to r1's heavy proof — the advertised order-head it carried ACCEPTS the world's real ledger blocks
+//! byte-identical position (`freight.Position.same`) as the one rendered, and -- the teeth that tie the light
+//! record to r1's heavy proof -- the advertised order-head it carried ACCEPTS the world's real ledger blocks
 //! through `freight.receive`, while a manifest whose head was altered in transit makes those same real blocks
 //! refuse `FreightTampered`. So a node can trust a moving world by reading its record alone, and still catch a
 //! ledger that does not match the record it arrived under. Render writes it, parse reads it back byte-for-byte
-//! — a round trip is a fixed point.
+//! -- a round trip is a fixed point.
 //!
 //! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
 //! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad hex key/head `BadHex`, a bad amount
 //! `BadInt`, a bad present flag `BadBool`, a missing field `MissingField`. Composes freight + puddle + cord +
-//! lapse + fold + voucher + kumara public API only. Siloed, dev-only, demo host/world/keeper seeds — no key,
+//! lapse + fold + voucher + kumara public API only. Siloed, dev-only, demo host/world/keeper seeds -- no key,
 //! no funds, no network, no world moved; a served migration reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_bron.rye
@@ -39,7 +39,7 @@ const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// The record buffer bound — a full freight manifest fits with room to spare.
+/// The record buffer bound -- a full freight manifest fits with room to spare.
 pub const max_record: u32 = 1024;
 
 /// The seven fields a manifest must carry; a parse refuses `MissingField` unless every bit is set.
@@ -65,7 +65,7 @@ pub const BronError = error{
 };
 
 /// A world's freight manifest: which world, where it berths, and the account position it advertises. The
-/// position is `freight.Position` unchanged — the same triple + order-head r1 reads and receives.
+/// position is `freight.Position` unchanged -- the same triple + order-head r1 reads and receives.
 pub const Manifest = struct {
     id: [puddle.world_id_len]u8,
     id_len: u32,
@@ -114,7 +114,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one manifest to a `format freight-v1` record — one field per line, in a fixed order. Refuses an
+/// Render one manifest to a `format freight-v1` record -- one field per line, in a fixed order. Refuses an
 /// overflow rather than a partial record.
 pub fn render(m: *const Manifest, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -140,7 +140,7 @@ pub fn render(m: *const Manifest, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to two tokens; returns the count (or three to signal a token past a manifest line's
-/// width — every line is exactly `field value`, two tokens).
+/// width -- every line is exactly `field value`, two tokens).
 fn tokens(line: []const u8, out: *[2][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -227,7 +227,7 @@ fn write_deadline(deadline: u64, out: []u8) void {
 }
 
 /// A world's ledger: a funder credits `owner` `credit`, and the owner pledges `pledge_amt` to a stranger
-/// under a far deadline the two-block order never reaches. Returns two blocks (genesis · pledge).
+/// under a far deadline the two-block order never reaches. Returns two blocks (genesis - pledge).
 fn seat_ledger(pledge_id: u8, credit: u64, pledge_amt: u64, funder: u8, owner: u8, to: []const u8) ![2]cord.Block {
     // invariant: a pledge can only encumber value the owner holds.
     assert(pledge_amt <= credit and pledge_amt > 0);
@@ -267,7 +267,7 @@ fn build_manifest(id: []const u8, berth: []const u8, pos: *const freight.Positio
 }
 
 pub fn main() !void {
-    // One world's ledger and the position its owner reads — the freight the manifest advertises.
+    // One world's ledger and the position its owner reads -- the freight the manifest advertises.
     const owner: u8 = 0xA1;
     const owner_pk = seeded(owner).public_key.toBytes();
     const stranger = seeded(0x5E).public_key.toBytes();
@@ -285,11 +285,11 @@ pub fn main() !void {
     var recovered: Manifest = undefined;
     try parse(buf[0..len], &recovered);
 
-    // The whole manifest survives the wire — id, berth, and position all recovered.
+    // The whole manifest survives the wire -- id, berth, and position all recovered.
     if (!std.mem.eql(u8, manifest.id_slice(), recovered.id_slice())) return error.FreightChanged;
     if (!std.mem.eql(u8, manifest.berth_slice(), recovered.berth_slice())) return error.FreightChanged;
 
-    // THE CRUX: the recovered manifest reads the byte-identical position offline — a node trusts the moving
+    // THE CRUX: the recovered manifest reads the byte-identical position offline -- a node trusts the moving
     // world by reading its record alone.
     if (!manifest.pos.same(&recovered.pos)) return error.PositionDrift;
 
@@ -300,11 +300,11 @@ pub fn main() !void {
     if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
 
     // THE TEETH: the advertised order-head the manifest carried accepts the world's real ledger blocks through
-    // r1's receive — the light record is honest against the heavy ledger.
+    // r1's receive -- the light record is honest against the heavy ledger.
     const accepted = try freight.receive(blocks[0..], recovered.pos.order_head[0..], owner_pk[0..]);
     if (!accepted.same(&recovered.pos)) return error.PositionDrift;
 
-    // And a manifest whose head was altered in transit makes those same real blocks refuse FreightTampered —
+    // And a manifest whose head was altered in transit makes those same real blocks refuse FreightTampered --
     // a node catches a ledger that does not match the record it arrived under.
     {
         var tampered = recovered;

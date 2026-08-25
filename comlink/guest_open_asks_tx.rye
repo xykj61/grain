@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_tx.rye — OA-L2 device wire TX guest (freestanding RISC-V virt).
+//! comlink/guest_open_asks_tx.rye -- OA-L2 device wire TX guest (freestanding RISC-V virt).
 //!
 //! Signs the pinned witness request, seals the compact payload with wire_format,
 //! and sends it across virtio-net to the open asks RX guest.

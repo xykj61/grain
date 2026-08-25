@@ -1,4 +1,4 @@
-//! Rye test: std.mem.alignForward / alignBackward — pass 9904.
+//! Rye test: std.mem.alignForward / alignBackward -- pass 9904.
 //!
 //! Power-of-2 address rounding; pairs with alignPointer (allocator path).
 

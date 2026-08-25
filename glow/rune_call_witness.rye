@@ -1,4 +1,4 @@
-//! glow/rune_call_witness.rye — proves the `%-` call rune head.
+//! glow/rune_call_witness.rye -- proves the `%-` call rune head.
 //!
 //!   rye build glow/rune_call_witness.rye -femit-bin=glow/bin/rune_call_witness
 

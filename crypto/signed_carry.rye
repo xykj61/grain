@@ -1,34 +1,34 @@
-//! crypto/signed_carry.rye — Season G (Cryptography), the fifteenth rung: the FIRST composition over the GREEN Monocypher-parity primitives.
+//! crypto/signed_carry.rye -- Season G (Cryptography), the fifteenth rung: the FIRST composition over the GREEN Monocypher-parity primitives.
 //! Where the fourteen rungs before this authored the primitives (BLAKE2b, SHA-512, ChaCha/Poly, the whole Ed25519 family, X25519, the base
-//! field), this rung composes two of them — BLAKE2b-512 and Ed25519 sign/verify — into the one shape every module that records provenance
+//! field), this rung composes two of them -- BLAKE2b-512 and Ed25519 sign/verify -- into the one shape every module that records provenance
 //! reaches for: a self-describing, content-addressed, signed frame that answers "who made this record, and has a byte moved since." It is the
 //! decision wave's named Lotus unblock and Season 2's content-addressed chain of custody, built as a library: the agent authors and verifies
 //! it over a TEST keypair, and signing a real record with the maintainer's own identity key stays the custody gate.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — "once a Rye signing primitive is
-//! parity-GREEN, Lotus's 'who made this record' signed carry becomes buildable — the library is engineering." The 1,024-round itinerary,
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- "once a Rye signing primitive is
+//! parity-GREEN, Lotus's 'who made this record' signed carry becomes buildable -- the library is engineering." The 1,024-round itinerary,
 //! Season 2 Journey 6 (Provenance): "a real document carries a Kumara-signed, content-addressed chain of custody end to end."
-//! Kin: crypto/ed25519_sign.rye · crypto/ed25519_verify.rye (the signature, GREEN) · crypto/blake2b.rye (the content-address digest, GREEN).
-//! This file authors NO cryptography of its own — it is pure composition over primitives already proven byte-for-byte parity-GREEN.
+//! Kin: crypto/ed25519_sign.rye - crypto/ed25519_verify.rye (the signature, GREEN) - crypto/blake2b.rye (the content-address digest, GREEN).
+//! This file authors NO cryptography of its own -- it is pure composition over primitives already proven byte-for-byte parity-GREEN.
 //!
-//! THE FRAME — a signed carry is a flat, self-describing byte string laid out so a reader deframes it with no ambiguity and no allocation:
+//! THE FRAME -- a signed carry is a flat, self-describing byte string laid out so a reader deframes it with no ambiguity and no allocation:
 //!
-//!   magic    4 bytes   "GSC1"  (Grain Signed Carry, version 1) — refuses a buffer that is not one of ours before any parse
+//!   magic    4 bytes   "GSC1"  (Grain Signed Carry, version 1) -- refuses a buffer that is not one of ours before any parse
 //!   signer   32 bytes  the Ed25519 public key of whoever sealed this carry
-//!   paylen   8 bytes   u64 big-endian — the opaque payload's length (u64 because a length is a wire-persistent quantity, TAME width law)
-//!   payload  paylen    the opaque record — this library never reads its meaning, only carries and seals it
-//!   digest   64 bytes  BLAKE2b-512 of (magic ‖ signer ‖ paylen ‖ payload) — the CONTENT ADDRESS: a byte moved anywhere upstream moves this
-//!   sig      64 bytes  Ed25519 signature over the 64-byte digest — binds the signer's key to that exact content address
+//!   paylen   8 bytes   u64 big-endian -- the opaque payload's length (u64 because a length is a wire-persistent quantity, TAME width law)
+//!   payload  paylen    the opaque record -- this library never reads its meaning, only carries and seals it
+//!   digest   64 bytes  BLAKE2b-512 of (magic ‖ signer ‖ paylen ‖ payload) -- the CONTENT ADDRESS: a byte moved anywhere upstream moves this
+//!   sig      64 bytes  Ed25519 signature over the 64-byte digest -- binds the signer's key to that exact content address
 //!
 //! Signing the digest rather than the raw payload makes the digest do double duty: it is both the content address a keeper cites a record by
 //! AND the thing the signature commits to, so "this key vouches for this content address" is one verification, not two.
 //!
-//! VERIFY BEFORE TRUST — open() recomputes the digest from the frame's own bytes and refuses on any mismatch BEFORE it checks the signature,
+//! VERIFY BEFORE TRUST -- open() recomputes the digest from the frame's own bytes and refuses on any mismatch BEFORE it checks the signature,
 //! and refuses on a bad signature BEFORE it returns one payload byte. A caller never sees an unverified byte. The returned payload is a slice
 //! INTO the caller's frame buffer (zero-copy, bounded), and the verified signer key rides alongside it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. Every seal in the selftest uses a TEST seed,
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Every seal in the selftest uses a TEST seed,
 //! never a real key; the frames are held in memory, sent nowhere. Constant-time timing-safety stays the Season's named horizon (it lives in the
 //! signing primitive this composes, unchanged here), and sealing a record with the maintainer's own identity key stays the custody gate.
 //!
@@ -46,7 +46,7 @@ const blake2b = @import("blake2b.rye");
 pub const signed_carry_version = "20260816.010000";
 
 /// The four magic bytes that open every Grain Signed Carry v1 frame. A buffer that does not start with these is refused before any field is
-/// read — a cheap, unambiguous "this is not one of ours" gate.
+/// read -- a cheap, unambiguous "this is not one of ours" gate.
 pub const magic: [4]u8 = .{ 'G', 'S', 'C', '1' };
 
 /// Field widths, named once so seal and open agree on the layout by construction rather than by matching two hand-counted offsets.
@@ -66,23 +66,23 @@ pub const frame_overhead: u32 = header_len + trailer_len; // 172
 /// BLAKE2b's own 1 MiB bound, so the digest step can never refuse.
 pub const max_payload_bytes: u32 = 1 << 16;
 
-/// The largest whole frame — overhead plus the largest payload. Every seal buffer a caller provides is checked against this at the edge.
+/// The largest whole frame -- overhead plus the largest payload. Every seal buffer a caller provides is checked against this at the edge.
 pub const max_frame_bytes: u32 = frame_overhead + max_payload_bytes;
 
 pub const SignedCarryError = error{
-    /// seal's output buffer is too small to hold the whole frame — refused before any byte is written.
+    /// seal's output buffer is too small to hold the whole frame -- refused before any byte is written.
     OutTooSmall,
-    /// A payload longer than max_payload_bytes — refused before hashing or signing.
+    /// A payload longer than max_payload_bytes -- refused before hashing or signing.
     PayloadTooLong,
     /// open was handed a buffer shorter than the fixed overhead, so it cannot even hold an empty-payload frame.
     FrameTooShort,
-    /// The first four bytes are not the GSC1 magic — this is not a signed carry.
+    /// The first four bytes are not the GSC1 magic -- this is not a signed carry.
     BadMagic,
-    /// The frame's declared paylen does not match its actual length, or paylen exceeds the bound — a malformed or truncated frame.
+    /// The frame's declared paylen does not match its actual length, or paylen exceeds the bound -- a malformed or truncated frame.
     LengthMismatch,
-    /// The recomputed BLAKE2b digest does not match the embedded one — a payload, signer, or length byte moved since sealing.
+    /// The recomputed BLAKE2b digest does not match the embedded one -- a payload, signer, or length byte moved since sealing.
     DigestMismatch,
-    /// The Ed25519 signature does not verify against the embedded signer over the digest — the seal is forged or the key is wrong.
+    /// The Ed25519 signature does not verify against the embedded signer over the digest -- the seal is forged or the key is wrong.
     BadSignature,
 };
 
@@ -100,7 +100,7 @@ fn write_u64_be(dst: *[8]u8, v: u64) void {
         // Most-significant byte first: byte i holds bits [56-8i .. 63-8i].
         dst[i] = @intCast((v >> @intCast(56 - 8 * i)) & 0xff);
     }
-    // invariant: the round-trip through read_u64_be recovers the value exactly — the encoding is total and reversible.
+    // invariant: the round-trip through read_u64_be recovers the value exactly -- the encoding is total and reversible.
     assert(read_u64_be(dst) == v);
 }
 
@@ -115,7 +115,7 @@ fn read_u64_be(src: *const [8]u8) u64 {
 }
 
 /// Constant-time-independent byte compare for the selftest and the digest check. Returns false on any length or byte difference. (The digest
-/// and signature checks below guard public frames, so a data-independent compare is not required here — the signature is the secret-bearing
+/// and signature checks below guard public frames, so a data-independent compare is not required here -- the signature is the secret-bearing
 /// gate, and it lives in the verify primitive.)
 fn bytes_eq(a: []const u8, b: []const u8) bool {
     if (a.len != b.len) return false;
@@ -134,7 +134,7 @@ pub fn seal(seed: *const [32]u8, payload: []const u8, out: []u8) SignedCarryErro
     if (payload.len > max_payload_bytes) return error.PayloadTooLong;
     const paylen: u32 = @intCast(payload.len);
     const frame_len: u32 = frame_overhead + paylen;
-    // invariant: the caller's buffer holds the whole frame — checked at the edge before a single byte is written.
+    // invariant: the caller's buffer holds the whole frame -- checked at the edge before a single byte is written.
     if (out.len < frame_len) return error.OutTooSmall;
 
     // --- header: magic ‖ signer ‖ paylen -------------------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ pub fn seal(seed: *const [32]u8, payload: []const u8, out: []u8) SignedCarryErro
 
     // --- digest: BLAKE2b-512 over (magic ‖ signer ‖ paylen ‖ payload) ---------------------------------------------------------------------
     const preimage = out[0 .. header_len + paylen];
-    // invariant: the preimage is header + payload, far inside BLAKE2b's 1 MiB bound, so the digest step cannot refuse — catch unreachable is honest.
+    // invariant: the preimage is header + payload, far inside BLAKE2b's 1 MiB bound, so the digest step cannot refuse -- catch unreachable is honest.
     assert(preimage.len <= header_len + max_payload_bytes);
     const digest = blake2b.hash512(preimage) catch unreachable;
     var d: u32 = 0;
@@ -168,19 +168,19 @@ pub fn seal(seed: *const [32]u8, payload: []const u8, out: []u8) SignedCarryErro
     var s: u32 = 0;
     while (s < sig_len) : (s += 1) out[header_len + paylen + digest_len + s] = sig[s];
 
-    // invariant: the whole frame was written — overhead plus payload — and nothing past it was touched.
+    // invariant: the whole frame was written -- overhead plus payload -- and nothing past it was touched.
     assert(header_len + paylen + trailer_len == frame_len);
     return frame_len;
 }
 
-/// Open a signed carry frame: verify BEFORE returning any payload byte. Checks, in order, magic → declared length → recomputed digest →
+/// Open a signed carry frame: verify BEFORE returning any payload byte. Checks, in order, magic -> declared length -> recomputed digest ->
 /// signature; only when all four pass does it return the verified signer and a zero-copy payload slice into `frame`. Reads only public bytes;
 /// holds no key.
 pub fn open(frame: []const u8) SignedCarryError!Opened {
     // invariant: the frame is at least the fixed overhead, so every fixed field below has bytes to read.
     if (frame.len < frame_overhead) return error.FrameTooShort;
 
-    // 1. Magic — refuse anything that is not one of ours before touching another field.
+    // 1. Magic -- refuse anything that is not one of ours before touching another field.
     if (!bytes_eq(frame[0..magic_len], magic[0..])) return error.BadMagic;
 
     // 2. Declared length must match the actual frame, and stay within bounds.
@@ -190,7 +190,7 @@ pub fn open(frame: []const u8) SignedCarryError!Opened {
     if (frame.len != frame_overhead + paylen) return error.LengthMismatch;
 
     // 3. Content address: recompute the digest over the frame's own header+payload and compare to the embedded one. A byte moved anywhere
-    //    upstream — payload, signer, or length — changes this and is refused here, before the signature is even consulted.
+    //    upstream -- payload, signer, or length -- changes this and is refused here, before the signature is even consulted.
     const preimage = frame[0 .. header_len + paylen];
     const recomputed = blake2b.hash512(preimage) catch unreachable;
     const embedded_digest = frame[header_len + paylen ..][0..digest_len];
@@ -206,14 +206,14 @@ pub fn open(frame: []const u8) SignedCarryError!Opened {
     while (j < signer_len) : (j += 1) signer[j] = frame[magic_len + j];
     verify_lib.verify(&sig, recomputed[0..], &signer) catch return error.BadSignature;
 
-    // invariant: every gate passed — magic, length, digest, signature — so the payload slice below is trustworthy.
+    // invariant: every gate passed -- magic, length, digest, signature -- so the payload slice below is trustworthy.
     assert(frame.len == frame_overhead + paylen);
     return Opened{ .signer = signer, .payload = frame[header_len .. header_len + paylen] };
 }
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Fill a buffer with a deterministic spread of test bytes — the same generator shape the sibling primitives use, seeded so each value differs
+/// Fill a buffer with a deterministic spread of test bytes -- the same generator shape the sibling primitives use, seeded so each value differs
 /// and the first byte is nonzero. Used for TEST seeds and TEST payloads only; never a real key.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
@@ -225,7 +225,7 @@ fn run_selftest() !u8 {
     var frame_buf: [max_frame_bytes]u8 = undefined;
     var frame_buf2: [max_frame_bytes]u8 = undefined;
 
-    // A TEST seed — 32 bytes of deterministic material. NOT a real identity key.
+    // A TEST seed -- 32 bytes of deterministic material. NOT a real identity key.
     var seed: [32]u8 = undefined;
     fill_test(seed[0..], 42);
     const signer = signer_lib.derive_public(&seed);
@@ -256,7 +256,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. Independent cross-check: the embedded digest equals an independent BLAKE2b of the preimage, and the primitive verifier accepts the
-    //    embedded signature over that digest — parity with the primitives this library composes, checked from outside seal/open.
+    //    embedded signature over that digest -- parity with the primitives this library composes, checked from outside seal/open.
     {
         var payload_buf: [200]u8 = undefined;
         fill_test(payload_buf[0..], 5);
@@ -273,7 +273,7 @@ fn run_selftest() !u8 {
         _ = flen;
     }
 
-    // 4. Tamper the payload — the recomputed digest changes, so open refuses with DigestMismatch before ever reaching the signature.
+    // 4. Tamper the payload -- the recomputed digest changes, so open refuses with DigestMismatch before ever reaching the signature.
     {
         var payload_buf: [128]u8 = undefined;
         fill_test(payload_buf[0..], 11);
@@ -284,7 +284,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. Tamper the signature only — the digest still recomputes correctly (it is over the preimage, not the signature), so open reaches the
+    // 5. Tamper the signature only -- the digest still recomputes correctly (it is over the preimage, not the signature), so open reaches the
     //    signature check and refuses with BadSignature. This proves the two failure paths are distinct.
     {
         var payload_buf: [128]u8 = undefined;
@@ -297,7 +297,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. Tamper the embedded digest — the recomputed digest no longer matches the embedded field, so DigestMismatch fires first.
+    // 6. Tamper the embedded digest -- the recomputed digest no longer matches the embedded field, so DigestMismatch fires first.
     {
         var payload_buf: [64]u8 = undefined;
         fill_test(payload_buf[0..], 17);
@@ -308,7 +308,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 7. Wrong signer swapped in — the signer key is part of the preimage, so the recomputed digest changes and DigestMismatch fires. (A
+    // 7. Wrong signer swapped in -- the signer key is part of the preimage, so the recomputed digest changes and DigestMismatch fires. (A
     //    forger cannot substitute a key without also breaking the content address that the real signature commits to.)
     {
         var seed_b: [32]u8 = undefined;
@@ -324,7 +324,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 8. Bad magic — a buffer that is not one of ours is refused before any field parse.
+    // 8. Bad magic -- a buffer that is not one of ours is refused before any field parse.
     {
         var payload_buf: [32]u8 = undefined;
         fill_test(payload_buf[0..], 23);
@@ -335,7 +335,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 9. Truncation — a frame shorter than the fixed overhead, and one whose declared length disagrees with its actual bytes.
+    // 9. Truncation -- a frame shorter than the fixed overhead, and one whose declared length disagrees with its actual bytes.
     {
         var payload_buf: [32]u8 = undefined;
         fill_test(payload_buf[0..], 29);

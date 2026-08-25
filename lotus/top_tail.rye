@@ -1,27 +1,27 @@
-//! lotus/top_tail.rye — ALES98: the top-and-tail trimmer — segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause.
+//! lotus/top_tail.rye -- ALES98: the top-and-tail trimmer -- segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause.
 //! ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between those two lives the single most-used silence
-//! gesture in every recorder, DAW, and voice-memo app: TOP AND TAIL — trim only the dead air at the START and the END, and leave every pause INSIDE the recording
-//! exactly where the speaker left it. A podcaster clears the throat, waits, speaks two sentences with a natural breath between them, then reaches for the button —
+//! gesture in every recorder, DAW, and voice-memo app: TOP AND TAIL -- trim only the dead air at the START and the END, and leave every pause INSIDE the recording
+//! exactly where the speaker left it. A podcaster clears the throat, waits, speaks two sentences with a natural breath between them, then reaches for the button --
 //! top-and-tail drops the ums at the ends and keeps the breath, because the breath is the performance and the dead air is not.
 //!
 //! The rule, stated once: segment [0, clip.len) through ALES95, find the FIRST non-silent run and the LAST non-silent run, then cut the trailing silence (from the
 //! last non-silent run's end to the clip's end) and the leading silence (from the clip's start to the first non-silent run's start) through ALES2's own cut. The tail
-//! is cut FIRST, so the leading run's start index stays valid — a suffix cut shifts nothing before it; then the head is cut. Every silent run BETWEEN the first and
+//! is cut FIRST, so the leading run's start index stays valid -- a suffix cut shifts nothing before it; then the head is cut. Every silent run BETWEEN the first and
 //! last non-silent runs is left untouched.
 //!
-//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE SPAN LAW: the top-and-tailed clip equals, byte for byte, the original's
-//! samples over [first_nonsilent.start, last_nonsilent.start + last_nonsilent.count) — the original narrowed to exactly the span from its first non-silent sample to its
+//! The crux -- two laws, each tying this rung to a proven predecessor so it can never drift. THE SPAN LAW: the top-and-tailed clip equals, byte for byte, the original's
+//! samples over [first_nonsilent.start, last_nonsilent.start + last_nonsilent.count) -- the original narrowed to exactly the span from its first non-silent sample to its
 //! last, internal silence kept. THE BRACKET LAW: the result equals the original bracketed by ALES97's outer takes (original[takes[0].start, takes[last].end)) byte for
-//! byte, since the coalesce preserves the outer non-silent boundaries; and relative to ALES96, trim_silence.len <= top_and_tail.len <= original.len — top-and-tail keeps
+//! byte, since the coalesce preserves the outer non-silent boundaries; and relative to ALES96, trim_silence.len <= top_and_tail.len <= original.len -- top-and-tail keeps
 //! every sample the full trimmer keeps PLUS the internal silences between them, so the two lengths are equal exactly when the clip carries no interior silence.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES98.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES98.
 //! Design read: active-designing/date/20260814/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
-//! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name so it keeps exactly the span the segmenter's outer non-silent runs name;
-//! lotus/trim_silence.rye (ALES96) — the full silence stripper, the length-bracket twin; lotus/split_silence.rye (ALES97) — the auto-splitter, the outer-boundary twin;
-//! lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.
+//! Stands on: lotus/segment.rye (ALES95) -- the voice-activity segmenter, reused by name so it keeps exactly the span the segmenter's outer non-silent runs name;
+//! lotus/trim_silence.rye (ALES96) -- the full silence stripper, the length-bracket twin; lotus/split_silence.rye (ALES97) -- the auto-splitter, the outer-boundary twin;
+//! lotus/timeline.rye (ALES2) -- the Clip and cut; lotus/voiced.rye (ALES94) -- the .silent verdict.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. This rung WRITES — it edits the clip — yet only
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. This rung WRITES -- it edits the clip -- yet only
 //! by removing whole classified-silent frames at the two ends through ALES2's own cut; it fabricates no sample and reorders nothing, and it never touches a sample
 //! between the first and last non-silent runs. NOT a transcript, not a real adaptive VAD with lookahead; those stay later rungs. No real sample rate, no network, no
 //! keys, no funds, no real device, no real speaker.
@@ -41,13 +41,13 @@ const split_silence = @import("split_silence.rye");
 pub const top_tail_version = "20260814.234106";
 
 /// The top-and-tail trimmer's faults are the segmenter's OWN faults (ALES95's SegmentError) reused by name for the analysis and the editor's OWN faults (ALES2's
-/// EditError from cut) reused by name for the two end cuts. The trimmer invents none of its own — an empty clip refuses BadFrame through the segmenter (a zero span
+/// EditError from cut) reused by name for the two end cuts. The trimmer invents none of its own -- an empty clip refuses BadFrame through the segmenter (a zero span
 /// cannot carry a legal frame), so a keeper reads exactly one error vocabulary across the analysis and the edit.
 pub const TopTailError = segment.SegmentError || timeline.EditError;
 
 /// Trim ONLY the leading and trailing silence from `clip`, leaving every internal pause exactly where it lies. Segments the whole clip `[0, clip.len)` into frames of
 /// `frame_len` samples through ALES95, finds the first and last `.silent`-negated (voiced or unvoiced) runs, then cuts the trailing silence and the leading silence
-/// through ALES2's `cut` — tail first so the leading index stays valid. Validates the whole span, band, floor, and frame length through ALES95's own checks BEFORE any
+/// through ALES2's `cut` -- tail first so the leading index stays valid. Validates the whole span, band, floor, and frame length through ALES95's own checks BEFORE any
 /// cut; on refusal the clip is untouched. An empty clip refuses `BadFrame`. An all-silent clip trims to empty (no non-silent run exists); a no-silent clip is unchanged.
 pub fn top_and_tail(
     clip: *timeline.Clip,
@@ -59,12 +59,12 @@ pub fn top_and_tail(
 ) TopTailError!void {
     const original_len: u32 = clip.len;
 
-    // Segment the whole clip once — the boundaries are exactly the segmenter's, which are exactly the classifier's, so this rung can never keep a span the segmenter
+    // Segment the whole clip once -- the boundaries are exactly the segmenter's, which are exactly the classifier's, so this rung can never keep a span the segmenter
     // did not name. All of ALES95's validation (precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame) runs here before a cut.
     var segs = segment.Segments{};
     try segment.segment(clip, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: segmenting a non-empty clip yields at least one run that tiles it — the segmenter's own postcondition, relied on here.
+    // invariant: segmenting a non-empty clip yields at least one run that tiles it -- the segmenter's own postcondition, relied on here.
     assert(segs.len >= 1 and segs.len <= segment.max_segments);
 
     // Find the FIRST and LAST non-silent runs. `found` stays false only when every run is silent (an all-silence clip), in which case the whole clip is dead air.
@@ -83,7 +83,7 @@ pub fn top_and_tail(
     }
 
     if (!found) {
-        // ALL-SILENT: no living span to keep — the whole clip is leading-and-trailing silence, so top-and-tail removes it all.
+        // ALL-SILENT: no living span to keep -- the whole clip is leading-and-trailing silence, so top-and-tail removes it all.
         // invariant: cutting the whole span leaves the clip empty; the span is legal since it is exactly the clip.
         try timeline.cut(clip, 0, original_len);
         // invariant: the clip is empty when this runs, so the trim is proven to have taken
@@ -106,19 +106,19 @@ pub fn top_and_tail(
         try timeline.cut(clip, kept_end, tail_count);
     }
 
-    // Cut the LEADING silence (from the clip's start, `lead_count` samples). Everything after it — the kept span — shifts down to the front, internal pauses intact.
+    // Cut the LEADING silence (from the clip's start, `lead_count` samples). Everything after it -- the kept span -- shifts down to the front, internal pauses intact.
     if (lead_count > 0) {
-        // invariant: the leading span still lies at the front — the tail cut touched only samples after it.
+        // invariant: the leading span still lies at the front -- the tail cut touched only samples after it.
         assert(lead_count <= clip.len);
         try timeline.cut(clip, 0, lead_count);
     }
 
-    // invariant: the trimmed clip holds exactly the living span — its length is the last non-silent end minus the first non-silent start.
+    // invariant: the trimmed clip holds exactly the living span -- its length is the last non-silent end minus the first non-silent start.
     assert(clip.len == kept_end - lead_count);
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE SPAN LAW — the top-and-tailed clip equals the original over [first_ns.start, last_ns.end) byte for byte; THE BRACKET LAW — it equals the original
+// --- selftest: THE SPAN LAW -- the top-and-tailed clip equals the original over [first_ns.start, last_ns.end) byte for byte; THE BRACKET LAW -- it equals the original
 //     bracketed by ALES97's outer takes, and trim_silence.len <= top_and_tail.len <= original.len (equal to the trim only when no interior silence); an all-silent clip
 //     trims to empty; a no-silent clip is unchanged; the INTERNAL pause is KEPT (the top-tail is strictly longer than the full trim on a clip with an interior gap); an
 //     empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched -------------------------------------------------
@@ -134,7 +134,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The hand-built expectation the trimmer is checked against in the span law — segment the ORIGINAL, find the first and last non-silent runs, and copy the original's
+/// The hand-built expectation the trimmer is checked against in the span law -- segment the ORIGINAL, find the first and last non-silent runs, and copy the original's
 /// samples over [first.start, last.end) into `out`. Kept independent of top_and_tail's own loop so the crux compares two paths, not one against itself. An all-silent
 /// clip leaves `out` empty.
 fn by_hand(out: *timeline.Clip, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
     const band_low: i32 = -1000;
     const band_high: i32 = 1000;
 
-    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail — the classic dead-air-at-the-ends recording plus an
+    // A signal with a quiet head, a loud voiced body, a quiet interior gap, a loud noisy run, and a quiet tail -- the classic dead-air-at-the-ends recording plus an
     // interior gap. Frames of 4 samples. Quiet runs classify silent; the big-positive/big-negative body voiced; the alternating run unvoiced.
     const mixed = [_]i16{
         40,    -40,   40,    -40, // silent (quiet head)
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
         50,    -50,   50,    -50, // silent (quiet tail)
     };
 
-    // 1. THE SPAN LAW — over many frame lengths, floors, and splits, top_and_tail equals the hand-built span from the first non-silent sample to the last, read from
+    // 1. THE SPAN LAW -- over many frame lengths, floors, and splits, top_and_tail equals the hand-built span from the first non-silent sample to the last, read from
     //    the original, internal silence kept.
     {
         const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 }; // each divides 24
@@ -200,7 +200,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE BRACKET LAW — top_and_tail equals the original bracketed by ALES97's outer takes, byte for byte, and its length sits between ALES96's full trim and the
+    // 2. THE BRACKET LAW -- top_and_tail equals the original bracketed by ALES97's outer takes, byte for byte, and its length sits between ALES96's full trim and the
     //    original (equal to the trim only when there is no interior silence).
     {
         const flens = [_]u32{ 1, 2, 4, 6, 12 };
@@ -223,13 +223,13 @@ fn run_selftest() !u8 {
                     try load_clip(&got, &mixed);
                     try top_and_tail(&got, flens[li], band_low, band_high, floors[fi], splits[si]);
 
-                    // Full trim through ALES96 — the length lower bound.
+                    // Full trim through ALES96 -- the length lower bound.
                     var trimmed = timeline.Clip{};
                     try load_clip(&trimmed, &mixed);
                     try trim_silence.trim_silence(&trimmed, flens[li], band_low, band_high, floors[fi], splits[si]);
 
                     if (takes.len == 0) {
-                        // all silence — top-tail empty, trim empty
+                        // all silence -- top-tail empty, trim empty
                         if (got.len != 0 or trimmed.len != 0) return error.AllSilentBracket;
                     } else {
                         const bracket_start = takes.items[0].start;
@@ -244,7 +244,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. THE INTERNAL PAUSE IS KEPT — on the mixed clip (frame 4, floor 500) the interior silent gap survives, so top-and-tail is STRICTLY longer than the full trim.
+    // 3. THE INTERNAL PAUSE IS KEPT -- on the mixed clip (frame 4, floor 500) the interior silent gap survives, so top-and-tail is STRICTLY longer than the full trim.
     //    top-tail keeps [4, 20) = 16 samples (body + gap + noisy); trim keeps only the 12 non-silent samples.
     {
         var top = timeline.Clip{};
@@ -273,7 +273,7 @@ fn run_selftest() !u8 {
         if (clip.len != 0) return error.AllSilentNotEmpty;
     }
 
-    // 5. A NO-SILENT CLIP is unchanged — no dead air at either end to cut.
+    // 5. A NO-SILENT CLIP is unchanged -- no dead air at either end to cut.
     {
         const loud = [_]i16{ 20000, 20000, -20000, -20000, 20000, -20000, 20000, -20000 };
         var clip = timeline.Clip{};
@@ -282,7 +282,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.NoSilentChanged;
     }
 
-    // 6. ONLY-LEADING and ONLY-TRAILING — a head-silent, tail-loud clip loses just its head; a head-loud, tail-silent clip loses just its tail.
+    // 6. ONLY-LEADING and ONLY-TRAILING -- a head-silent, tail-loud clip loses just its head; a head-loud, tail-silent clip loses just its tail.
     {
         const head_silent = [_]i16{
             40,    -40,   40,    -40, // silent head
@@ -312,7 +312,7 @@ fn run_selftest() !u8 {
         if (clip.len != 0) return error.EmptyMutated;
     }
 
-    // 7b. A RAGGED FRAME LENGTH — one that does not divide the clip — refuses BadFrame, the clip untouched.
+    // 7b. A RAGGED FRAME LENGTH -- one that does not divide the clip -- refuses BadFrame, the clip untouched.
     {
         const five = [_]i16{ 1, 2, 3, 4, 5 };
         var clip = timeline.Clip{};
@@ -330,7 +330,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &four)) return error.InvertedMutated;
     }
 
-    // 7d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, the clip untouched.
+    // 7d. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor, the clip untouched.
     {
         const four = [_]i16{ 10, 20, 30, 40 };
         var clip = timeline.Clip{};

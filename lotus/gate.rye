@@ -1,18 +1,18 @@
-//! lotus/gate.rye — ALES51: a noise gate — the compressor's threshold turned upside down. The compressor (ALES50) leans on what
+//! lotus/gate.rye -- ALES51: a noise gate -- the compressor's threshold turned upside down. The compressor (ALES50) leans on what
 //! rises ABOVE the threshold; the gate leans on what falls BELOW it. Where the compressor softens the loud, the gate quiets the
-//! quiet — the hiss between words, the amp hum under a held chord, the room tone in a podcast pause. It is the third member of the
+//! quiet -- the hiss between words, the amp hum under a held chord, the room tone in a podcast pause. It is the third member of the
 //! dynamics family: the limiter (ALES49) caps the peaks, the compressor softens them, and the gate silences the floor. Its knob is
 //! the same ratio the compressor speaks, only now it names how hard the quiet is pushed down, and at its extreme the gate closes
-//! to silence — the below-threshold magnitude divided to nothing.
+//! to silence -- the below-threshold magnitude divided to nothing.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES51.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES51.
 //! Design read: active-designing/date/20260814/20260814-171918_fill-ales51-lotus-noise-gate.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/compress.rye (ALES50) — the
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, the range law shape; lotus/compress.rye (ALES50) -- the
 //! threshold this inverts, re-proven beside it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the threshold is a magnitude in sample units, not
-//! decibels, the ratio a plain fraction, and the gating is instantaneous (no attack, hold, or release — those are later rungs).
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the threshold is a magnitude in sample units, not
+//! decibels, the ratio a plain fraction, and the gating is instantaneous (no attack, hold, or release -- those are later rungs).
 //! One comparison and at most one divide per sample; nothing on the audio path can overflow, since the ratio is at least one so a
 //! gated magnitude is at most the input magnitude, which already fits i16.
 //!
@@ -27,23 +27,23 @@ const timeline = @import("timeline.rye");
 pub const gate_version = "20260814.171918";
 
 /// The gate's faults: a threshold outside the legal range (a magnitude in [1, sample_max]), a ratio below unity or with a zero
-/// denominator (a ratio below one would BOOST the quiet — a different tool), and a span outside the samples. BadRange coincides by
+/// denominator (a ratio below one would BOOST the quiet -- a different tool), and a span outside the samples. BadRange coincides by
 /// name with timeline's, the EQ family's, the limiter's, and the compressor's, so a composer sees one consistent fault.
 pub const GateError = error{
-    /// A threshold of zero (there is no band left to gate below it) or above sample_max (everything would fall below it) — refused.
+    /// A threshold of zero (there is no band left to gate below it) or above sample_max (everything would fall below it) -- refused.
     BadThreshold,
-    /// A ratio below unity (would boost the quiet, not attenuate it) or with a zero denominator — refused, no write.
+    /// A ratio below unity (would boost the quiet, not attenuate it) or with a zero denominator -- refused, no write.
     BadRatio,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Gate `count` samples starting at `start` in place below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least
 /// one). A sample at or above the threshold passes byte-for-byte (the gate is open); below it, the magnitude m is divided by the
-/// ratio and the sample rewritten sign(x)·(m·ratio_den/ratio_num). After the call every written magnitude is at most the input's
+/// ratio and the sample rewritten sign(x)-(m-ratio_den/ratio_num). After the call every written magnitude is at most the input's
 /// (the gate attenuates, never boosts) and no sign is changed. Unit ratio is the identity everywhere. Refuses BadThreshold on a
 /// threshold outside [1, sample_max], BadRatio on a ratio below unity or a zero denominator, and BadRange on a span outside the
-/// samples — each before any write. Values only — never the length.
+/// samples -- each before any write. Values only -- never the length.
 pub fn gate(
     clip: *timeline.Clip,
     start: u32,
@@ -52,14 +52,14 @@ pub fn gate(
     ratio_num: u32,
     ratio_den: u32,
 ) GateError!void {
-    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    // invariant: the threshold is a legal magnitude -- at least one sample unit and no greater than the i16 rail. Before any write.
     if (threshold < 1) return error.BadThreshold;
     if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
-    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would boost the quiet, a
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero -- a ratio below one would boost the quiet, a
     // zero denominator would divide by zero. A downward gate only ever reduces a below-threshold magnitude.
     if (ratio_den == 0) return error.BadRatio;
     if (ratio_num < ratio_den) return error.BadRatio;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -81,7 +81,7 @@ pub fn gate(
             // invariant: the written sample holds the input's sign (magnitude only shrank), zero being sign-neutral.
             assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
         }
-        // a sample at or above the threshold is left exactly as it was — the gate touches only what falls below.
+        // a sample at or above the threshold is left exactly as it was -- the gate touches only what falls below.
     }
     // invariant: a gate changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
@@ -110,7 +110,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip gates to all zeros at any legal threshold and ratio.
+    // 1. silence stays silence -- an all-zero clip gates to all zeros at any legal threshold and ratio.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -119,7 +119,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. ABOVE THE THRESHOLD IS THE IDENTITY — a signal whose every peak reaches the threshold passes byte-for-byte.
+    // 2. ABOVE THE THRESHOLD IS THE IDENTITY -- a signal whose every peak reaches the threshold passes byte-for-byte.
     {
         const loud = [_]i16{ 5000, -9000, 1000, -1000, 32000, -3000 };
         var clip = timeline.Clip{};
@@ -128,7 +128,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.LoudNotIdentity;
     }
 
-    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den writes m·1 = |x| byte-for-byte even for samples below the
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den writes m-1 = |x| byte-for-byte even for samples below the
     //    threshold. A 1:1 gate passes the whole signal through, guaranteed by construction.
     {
         const quiet = [_]i16{ 300, -300, 5000, -20, 20, -400 };
@@ -138,8 +138,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &quiet)) return error.UnitRatioNotIdentity;
     }
 
-    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a signal below the threshold gates so every output magnitude is at most
-    //    the input's, every sign matches, and each below-threshold sample lands exactly at m·ratio_den/ratio_num.
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a signal below the threshold gates so every output magnitude is at most
+    //    the input's, every sign matches, and each below-threshold sample lands exactly at m-ratio_den/ratio_num.
     {
         const mixed = [_]i16{ 800, -800, 5000, -600, 200, -9000 };
         var clip = timeline.Clip{};
@@ -159,8 +159,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. A HIGHER RATIO GATES AT LEAST AS HARD — for the same below-threshold sample, 8:1 yields a magnitude no greater than 2:1
-    //    (the ratio knob is monotone), and a ratio high enough drives the quiet exactly to silence — the hard gate.
+    // 5. A HIGHER RATIO GATES AT LEAST AS HARD -- for the same below-threshold sample, 8:1 yields a magnitude no greater than 2:1
+    //    (the ratio knob is monotone), and a ratio high enough drives the quiet exactly to silence -- the hard gate.
     {
         const one = [_]i16{600};
         const thr: i32 = 1000;

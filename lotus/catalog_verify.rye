@@ -1,21 +1,21 @@
-//! lotus/catalog_verify.rye — ALES238: a whole catalog proven whole, end to end. The catalog family now stands whole (manifest ·
-//! sheet · find · diff · diff_sheet · merge · merge_sheet at both levels), yet each verify to date proved ONE level: verify_library
+//! lotus/catalog_verify.rye -- ALES238: a whole catalog proven whole, end to end. The catalog family now stands whole (manifest -
+//! sheet - find - diff - diff_sheet - merge - merge_sheet at both levels), yet each verify to date proved ONE level: verify_library
 //! (ALES226) confirms each album's manifest digest matches the catalog, verify_album (ALES224) confirms each track's bundle digest
-//! matches a record. A keeper who holds a whole body of work — the library manifest, every album manifest, every bundle — wants ONE
+//! matches a record. A keeper who holds a whole body of work -- the library manifest, every album manifest, every bundle -- wants ONE
 //! answer: is all of it whole, top to bottom? This rung composes the two levels into that one deep check.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES238.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES238.
 //! Design read: active-designing/date/20260815/20260815-151716_fill-ales238-lotus-catalog-verify.md
-//! Stands on: lotus/library_manifest.rye (ALES226) — verify_library, the catalog level; lotus/album_manifest.rye (ALES224) —
-//! open_album_manifest + verify_album, the record level. Pure composition over their public APIs — no new hash, no new frame.
+//! Stands on: lotus/library_manifest.rye (ALES226) -- verify_library, the catalog level; lotus/album_manifest.rye (ALES224) --
+//! open_album_manifest + verify_album, the record level. Pure composition over their public APIs -- no new hash, no new frame.
 //!
-//! THE CRUX — content-addressing composes into a proof of the WHOLE TREE. The library digest binds each album manifest, each album
+//! THE CRUX -- content-addressing composes into a proof of the WHOLE TREE. The library digest binds each album manifest, each album
 //! manifest binds each bundle, so verifying a catalog end to end is walking two levels of digests, never re-hashing a mountain of
-//! audio into one number. A flipped byte anywhere — a swapped album manifest, a single edited bundle two levels down — surfaces by
+//! audio into one number. A flipped byte anywhere -- a swapped album manifest, a single edited bundle two levels down -- surfaces by
 //! name at the level it broke. A Merkle check the shape of the catalog itself.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded walk over in-process bytes, siloed to lotus/. Content-addressing, never a
-//! signature: it proves a catalog arrived whole, NOT who made it — the signed carry remains a later crypto seam on Keaton's word. No
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded walk over in-process bytes, siloed to lotus/. Content-addressing, never a
+//! signature: it proves a catalog arrived whole, NOT who made it -- the signed carry remains a later crypto seam on Keaton's word. No
 //! real file, no DAC, no acoustic or electrical fact, no network, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/catalog_verify.rye selftest
@@ -38,7 +38,7 @@ pub const AlbumTree = struct {
     tracks: []const render_album.TrackIn,
 };
 
-/// The deep verify's faults — the honest union of both levels it walks, so a break surfaces by the same name the single-level verify
+/// The deep verify's faults -- the honest union of both levels it walks, so a break surfaces by the same name the single-level verify
 /// already uses (AlbumDigestMismatch / AlbumNameMismatch / CountMismatch from the catalog level, TrackDigestMismatch /
 /// TrackNameMismatch / CountMismatch from the record level, plus the seal and grammar faults of either).
 pub const DeepError = library_manifest.LibraryManifestError || album_manifest.AlbumManifestError;
@@ -50,7 +50,7 @@ pub const DeepError = library_manifest.LibraryManifestError || album_manifest.Al
 pub fn verify_deep(lm: *const library_manifest.LibraryManifest, tree: []const AlbumTree) DeepError!void {
     // invariant: the catalog stays within its bound, so the fixed AlbumIn array cannot overflow and the walk terminates.
     if (tree.len > library_manifest.max_albums) return error.TooManyAlbums;
-    // invariant: the manifest names no more than its bound — open_library_manifest already proved it, re-asserted here.
+    // invariant: the manifest names no more than its bound -- open_library_manifest already proved it, re-asserted here.
     assert(lm.count <= library_manifest.max_albums);
 
     // Catalog level: prove each album manifest is the one the library names, in order.
@@ -66,16 +66,16 @@ pub fn verify_deep(lm: *const library_manifest.LibraryManifest, tree: []const Al
         try album_manifest.verify_album(&am, tree[j].tracks);
     }
 
-    // invariant: reaching here means both levels agreed for every album — the whole tree is whole.
+    // invariant: reaching here means both levels agreed for every album -- the whole tree is whole.
 }
 
-// --- selftest: THE WHOLE-TREE LAW — a catalog whose library manifest, album manifests, and bundles all match verifies cleanly; THE
-//     CATALOG-TAMPER LAW — an edited album manifest refuses AlbumDigestMismatch at the catalog level; THE RECORD-TAMPER LAW — a
-//     single flipped bundle byte two levels down refuses TrackDigestMismatch; THE NAME LAW — a renamed track refuses
-//     TrackNameMismatch; THE COUNT LAW — a dropped album refuses CountMismatch --------------------------------------------------
+// --- selftest: THE WHOLE-TREE LAW -- a catalog whose library manifest, album manifests, and bundles all match verifies cleanly; THE
+//     CATALOG-TAMPER LAW -- an edited album manifest refuses AlbumDigestMismatch at the catalog level; THE RECORD-TAMPER LAW -- a
+//     single flipped bundle byte two levels down refuses TrackDigestMismatch; THE NAME LAW -- a renamed track refuses
+//     TrackNameMismatch; THE COUNT LAW -- a dropped album refuses CountMismatch --------------------------------------------------
 
 fn make_album_manifest(out: []u8, names: []const []const u8, bundles: []const []const u8) !u32 {
-    // invariant: a witness helper builds a small, well-formed record — the two arrays run in lockstep.
+    // invariant: a witness helper builds a small, well-formed record -- the two arrays run in lockstep.
     assert(names.len == bundles.len);
     var tracks: [8]render_album.TrackIn = undefined;
     var i: u32 = 0;
@@ -103,11 +103,11 @@ fn run_selftest() !u8 {
     const ln = try library_manifest.seal_library_manifest(lib[0..], albums[0..]);
     const lm = try library_manifest.open_library_manifest(lib[0..ln]);
 
-    // The whole tree in hand — each album manifest paired with the bundles it names.
+    // The whole tree in hand -- each album manifest paired with the bundles it names.
     const first_tracks = [_]render_album.TrackIn{ .{ .name = "opener", .bundle = b0 }, .{ .name = "closer", .bundle = b1 } };
     const second_tracks = [_]render_album.TrackIn{.{ .name = "single", .bundle = b2 }};
 
-    // 1. THE WHOLE-TREE LAW — every level agrees, so the deep verify returns cleanly.
+    // 1. THE WHOLE-TREE LAW -- every level agrees, so the deep verify returns cleanly.
     {
         const tree = [_]AlbumTree{
             .{ .name = "debut", .album_manifest = m_first[0..nf], .tracks = first_tracks[0..] },
@@ -116,7 +116,7 @@ fn run_selftest() !u8 {
         try verify_deep(&lm, tree[0..]);
     }
 
-    // 2. THE CATALOG-TAMPER LAW — a whole album manifest swapped for a different (well-formed) one refuses AlbumDigestMismatch: the
+    // 2. THE CATALOG-TAMPER LAW -- a whole album manifest swapped for a different (well-formed) one refuses AlbumDigestMismatch: the
     //    library digest no longer names it, caught at the catalog level before the record level is even walked.
     {
         var m_other: [album_manifest.max_album_manifest_bytes]u8 = undefined;
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
         if (verify_deep(&lm, tree[0..])) |_| return error.CatalogTamperSlipped else |e| if (e != error.AlbumDigestMismatch) return error.WrongCatalogTamper;
     }
 
-    // 3. THE RECORD-TAMPER LAW — a single flipped byte in one bundle, two levels down, refuses TrackDigestMismatch. The album
+    // 3. THE RECORD-TAMPER LAW -- a single flipped byte in one bundle, two levels down, refuses TrackDigestMismatch. The album
     //    manifest still matches the catalog (its bytes are untouched), so the fault can only surface at the record level.
     {
         var b1_flipped: [b1.len]u8 = undefined;
@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (verify_deep(&lm, tree[0..])) |_| return error.RecordTamperSlipped else |e| if (e != error.TrackDigestMismatch) return error.WrongRecordTamper;
     }
 
-    // 4. THE NAME LAW — a track renamed in hand (its bytes and thus digest unchanged) refuses TrackNameMismatch at the record level.
+    // 4. THE NAME LAW -- a track renamed in hand (its bytes and thus digest unchanged) refuses TrackNameMismatch at the record level.
     {
         const renamed_tracks = [_]render_album.TrackIn{ .{ .name = "opener", .bundle = b0 }, .{ .name = "outro", .bundle = b1 } };
         const tree = [_]AlbumTree{
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
         if (verify_deep(&lm, tree[0..])) |_| return error.NameSlipped else |e| if (e != error.TrackNameMismatch) return error.WrongName;
     }
 
-    // 5. THE COUNT LAW — a catalog missing an album (the tree names fewer than the library) refuses CountMismatch at the catalog level.
+    // 5. THE COUNT LAW -- a catalog missing an album (the tree names fewer than the library) refuses CountMismatch at the catalog level.
     {
         const tree = [_]AlbumTree{
             .{ .name = "debut", .album_manifest = m_first[0..nf], .tracks = first_tracks[0..] },

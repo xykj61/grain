@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_escrow_hold_tx.rye — OA-L3 device wire hold TX guest · 20260713.
+//! comlink/guest_open_asks_escrow_hold_tx.rye -- OA-L3 device wire hold TX guest - 20260713.
 
 const std = @import("std");
 const vn = @import("virtio_net.rye");

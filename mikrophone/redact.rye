@@ -1,20 +1,20 @@
-//! mikrophone/redact.rye — DREY10: redact a span before the keep. A keeper strikes a span from the forgetful working
+//! mikrophone/redact.rye -- DREY10: redact a span before the keep. A keeper strikes a span from the forgetful working
 //! buffer while powered; the struck bytes are zeroed, the tail closes the gap, and the vacated tail region is zeroed too,
-//! so a redacted span leaves no residue a later read could recover — the same forgetting `power_down` proves, applied to
+//! so a redacted span leaves no residue a later read could recover -- the same forgetting `power_down` proves, applied to
 //! one span a keeper chose to forget on purpose.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY10.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY10.
 //! Design read: active-designing/date/20260814/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
-//! Stands on: mikrophone/session.rye (DREY0) — the memory that forgets; redaction shapes its working buffer before commit.
+//! Stands on: mikrophone/session.rye (DREY0) -- the memory that forgets; redaction shapes its working buffer before commit.
 //!
-//! The founding promise "What forgets, protects" is a boot-time invariant in DREY0 — power-down forgets everything. This
+//! The founding promise "What forgets, protects" is a boot-time invariant in DREY0 -- power-down forgets everything. This
 //! rung proves the deliberate half: a keeper forgetting one part on purpose while the rest stands. A civic microphone
 //! hears a name that must never leave the room; before the deliberate keep, the keeper strikes it, and the struck span
-//! must be as gone as a powered-down buffer, not merely hidden past a length. Redaction touches only the working buffer —
-//! never the committed payload — so a keeper redacts, then commits the trimmed capture, and only the trimmed capture can
+//! must be as gone as a powered-down buffer, not merely hidden past a length. Redaction touches only the working buffer --
+//! never the committed payload -- so a keeper redacts, then commits the trimmed capture, and only the trimmed capture can
 //! carry. A redaction while unpowered refuses `NotPowered`, a zero-length redaction refuses `NothingToRedact`, and a span
 //! past the working length refuses `SpanOutOfRange` before a byte moves. No disk, no network, no key signs, no funds
-//! (custody gate %2 — real hardware — untouched). The copy is a plain bounded loop, never a bare memcpy.
+//! (custody gate %2 -- real hardware -- untouched). The copy is a plain bounded loop, never a bare memcpy.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/redact.rye selftest
 
@@ -33,16 +33,16 @@ pub const RedactError = error{
 
 /// Strike `len` samples beginning at `start` from the session's forgetful working buffer. A redaction holds only while
 /// powered (an unpowered session refuses `NotPowered`), is a deliberate act (a zero `len` refuses `NothingToRedact`), and
-/// stays within what the buffer holds (a span reaching past the working length refuses `SpanOutOfRange`) — each check
+/// stays within what the buffer holds (a span reaching past the working length refuses `SpanOutOfRange`) -- each check
 /// before a byte moves, so a refused redaction never touches the buffer. Otherwise the struck span is zeroed, the tail is
-/// shifted down over it, and the region the tail vacated is zeroed, so no residue of the struck bytes — or of the tail at
-/// its old positions — can be recovered. Only the working buffer changes; the committed payload is left untouched.
+/// shifted down over it, and the region the tail vacated is zeroed, so no residue of the struck bytes -- or of the tail at
+/// its old positions -- can be recovered. Only the working buffer changes; the committed payload is left untouched.
 pub fn redact(self: *session.Session, start: u32, len: u32) !void {
-    // invariant: a redaction is refused unless the session is powered — the working buffer changes only while on.
+    // invariant: a redaction is refused unless the session is powered -- the working buffer changes only while on.
     if (!self.powered) return error.NotPowered;
-    // invariant: a redaction is a deliberate act — an empty strike is refused, never a silent no-op.
+    // invariant: a redaction is a deliberate act -- an empty strike is refused, never a silent no-op.
     if (len == 0) return error.NothingToRedact;
-    // invariant: the struck span lies wholly within the working buffer — start and len both bounded, no overflow past it.
+    // invariant: the struck span lies wholly within the working buffer -- start and len both bounded, no overflow past it.
     if (start > self.work_len) return error.SpanOutOfRange;
     if (len > self.work_len - start) return error.SpanOutOfRange;
 
@@ -50,13 +50,13 @@ pub fn redact(self: *session.Session, start: u32, len: u32) !void {
     const tail_start = start + len;
     const tail_len = self.work_len - tail_start;
 
-    // Shift the tail down over the struck span — a plain bounded loop, front to back, disjoint by construction.
+    // Shift the tail down over the struck span -- a plain bounded loop, front to back, disjoint by construction.
     var i: u32 = 0;
     while (i < tail_len) : (i += 1) {
         self.work[start + i] = self.work[tail_start + i];
     }
 
-    // Zero the region the tail vacated — every byte from the new length out to the old length, so nothing survives at the
+    // Zero the region the tail vacated -- every byte from the new length out to the old length, so nothing survives at the
     // positions the tail was shifted away from. This is the residue-free proof, the same zeroing `power_down` earns.
     const new_len = self.work_len - len;
     var j: u32 = new_len;
@@ -65,13 +65,13 @@ pub fn redact(self: *session.Session, start: u32, len: u32) !void {
     }
     self.work_len = new_len;
 
-    // invariant: the working length dropped by exactly the struck span — never more, never less.
+    // invariant: the working length dropped by exactly the struck span -- never more, never less.
     assert(self.work_len == before_len - len);
-    // invariant: no residue — every byte from the new length to the old length is zero.
+    // invariant: no residue -- every byte from the new length to the old length is zero.
     assert(freed_all_zero(self, self.work_len, before_len));
 }
 
-/// Whether every byte of the working buffer in `[lo, hi)` is zero — the proof a redaction left no residue in the region
+/// Whether every byte of the working buffer in `[lo, hi)` is zero -- the proof a redaction left no residue in the region
 /// the tail vacated. Bounded by the working buffer's own ceiling; `lo` and `hi` are working-buffer offsets.
 pub fn freed_all_zero(self: *const session.Session, lo: u32, hi: u32) bool {
     // invariant: the scanned window stays within the working buffer.
@@ -95,11 +95,11 @@ fn run_selftest() !u8 {
         // Strike the six bytes "-NAME-" beginning at index 5.
         try redact(&s, 5, 6);
         assert(std.mem.eql(u8, s.working(), "civicrecord"));
-        // No residue — every byte from the new length to the buffer ceiling is zero.
+        // No residue -- every byte from the new length to the buffer ceiling is zero.
         assert(freed_all_zero(&s, s.work_len, session.max_samples));
     }
 
-    // 2. Redaction is deliberate and bounded — an empty strike, and a span past the working length, both refuse by name
+    // 2. Redaction is deliberate and bounded -- an empty strike, and a span past the working length, both refuse by name
     //    before a byte moves.
     {
         var s = session.Session.init();
@@ -155,7 +155,7 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, t.working(), "head"));
         assert(freed_all_zero(&t, t.work_len, session.max_samples));
 
-        // Strike the whole buffer — the working buffer empties and is provably all zero.
+        // Strike the whole buffer -- the working buffer empties and is provably all zero.
         var w = session.Session.init();
         for ("erase") |c| try session.capture(&w, c);
         try redact(&w, 0, 5);
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         assert(session.working_all_zero(&w));
     }
 
-    // 5. Only the trimmed capture carries — capture, redact, commit, and the committed payload is exactly the trim; the
+    // 5. Only the trimmed capture carries -- capture, redact, commit, and the committed payload is exactly the trim; the
     //    struck span never reaches the payload that could cross the wire.
     {
         var s = session.Session.init();

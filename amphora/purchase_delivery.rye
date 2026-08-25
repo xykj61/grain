@@ -1,7 +1,7 @@
-//! amphora/purchase_delivery.rye — commerce delivery slip for purchased work in an Amphora vessel.
+//! amphora/purchase_delivery.rye -- commerce delivery slip for purchased work in an Amphora vessel.
 //!
 //! Binds vessel parent + payment digest under Kumara stamp. Granary (market floor)
-//! stays held; this lap is the delivery rite alone — Amphora carries, MALA paid,
+//! stays held; this lap is the delivery rite alone -- Amphora carries, MALA paid,
 //! Pond already gated the scrub.
 //!
 //!   rye build amphora/purchase_delivery.rye -femit-bin=amphora/bin/purchase-delivery
@@ -22,7 +22,7 @@ pub const max_slip_len: u32 = 4096;
 pub const digest_hex_len: u32 = 64;
 pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 
-/// Witness seed — distinct from vessel stamp 0x62 and seal 0x63.
+/// Witness seed -- distinct from vessel stamp 0x62 and seal 0x63.
 const delivery_stamp_seed: [kumara.seed_length]u8 = .{0x64} ** kumara.seed_length;
 
 pub const SlipFields = struct {

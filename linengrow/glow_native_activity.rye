@@ -1,30 +1,30 @@
-//! linengrow/glow_native_activity.rye — the fixed native entry every
+//! linengrow/glow_native_activity.rye -- the fixed native entry every
 //! Glow APK loads. Android's own NativeActivity looks up
 //! `ANativeActivity_onCreate` in `libglowapp.so` and calls it once.
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: one small, fixed, never-generated entry. App logic is
-//! the Seva B0 Glow fold (`glow_seva_b0_fold.rye` · STOA198/237 embedded desk),
+//! the Seva B0 Glow fold (`glow_seva_b0_fold.rye` - STOA198/237 embedded desk),
 //! the TUBE1 admit gate
 //! (`tube1_glass_gate.rye`), the R2 multi-panel surface
 //! (`seva_r2_surface.rye`), the TUBE5 tip line (`tube5_glass_tip.rye`),
-//! the TUBE2–4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
+//! the TUBE2-4 rail lines (`tube2_glass_pub.rye`, `tube3_glass_fetch.rye`,
 //! `tube4_glass_market.rye`), and Seva B1 live-carriage
 //! (`seva_b1_glass_carriage.rye`), and Dexter glass line
 //! (`dexter_glass_line.rye`) with live KEY drain (`dexter_glass_key.rye`).
 //! After writing files/seva_root.txt, registers window + input callbacks:
 //! paints panels + tip + rail + B1 + Dexter + session-root hex; KEY updates
 //! Dexter; tap finishes. Soft input is shown when TUBE1 admits.
-//! R2 and TUBE2–5 + B1 + Dexter paint only when TUBE1 admits.
+//! R2 and TUBE2-5 + B1 + Dexter paint only when TUBE1 admits.
 //! STOA270: Dexter `.submit` appends through `dexter_seva_append` and writes
-//! files/seva_live_root.txt — distinct from HAWM1 seva_root.txt.
+//! files/seva_live_root.txt -- distinct from HAWM1 seva_root.txt.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const glow_fold = @import("glow_seva_b0_fold.rye");
-/// Glow-lowered session-root (STOA70 desk → STOA71/72 import seam).
-/// Witness seats linengrow/lib_session_root_nest_cue_jam.rye → glow/.cache.
+/// Glow-lowered session-root (STOA70 desk -> STOA71/72 import seam).
+/// Witness seats linengrow/lib_session_root_nest_cue_jam.rye -> glow/.cache.
 const glow_session = @import("lib_session_root_nest_cue_jam.rye");
 const tube1_gate = @import("tube1_glass_gate.rye");
 const tube5_tip = @import("tube5_glass_tip.rye");
@@ -51,7 +51,7 @@ const lulu2 = @import("hearth_lulu2.rye");
 const lulu3 = @import("hearth_lulu3.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// LULU0→LULU1: default short-home hearth (kd · scaled_540) as Bron at the seam.
+/// LULU0->LULU1: default short-home hearth (kd - scaled_540) as Bron at the seam.
 const default_hearth_bron =
     \\format hearth-lulu0-v1
     \\home_id kd
@@ -113,7 +113,7 @@ var g_live_line_ready: bool = false;
 var g_kb_shift: bool = false;
 var g_window: ?*anyopaque = null;
 var g_caret_timer_fd: c_int = -1;
-/// LULU2: hearth-status press arm for long-press → Settings list.
+/// LULU2: hearth-status press arm for long-press -> Settings list.
 var g_hearth_down_armed: bool = false;
 var g_hearth_down_ms: u64 = 0;
 /// True once the hold timer opened/toggled the list (release must not cycle).
@@ -140,7 +140,7 @@ extern fn write(fd: c_int, buf: [*]const u8, n: usize) isize;
 extern fn close(fd: c_int) c_int;
 extern fn mkdir(path: [*:0]const u8, mode: c_int) c_int;
 
-/// Same files root as seva_root.txt — Hearth Bron lives at `{root}/{home}/hearth.bron`.
+/// Same files root as seva_root.txt -- Hearth Bron lives at `{root}/{home}/hearth.bron`.
 const android_files_root = "/data/user/0/org.glow.app.seva_broadcaster/files";
 
 fn write_root_file(hex: *const [64]u8) void {
@@ -167,7 +167,7 @@ fn write_product_root_file(root: u32) void {
     _ = write(fd, n.ptr, n.len);
 }
 
-/// STOA270: live typed-append root — never overwrites seva_root.txt (HAWM1).
+/// STOA270: live typed-append root -- never overwrites seva_root.txt (HAWM1).
 fn write_live_root_file(hex: *const [64]u8) void {
     const path = android_files_root ++ "/seva_live_root.txt";
     _ = mkdir(android_files_root, 0o700);
@@ -523,7 +523,7 @@ fn apply_dexter_action(action: dexter.Action) void {
         assert(g_dexter_held_len == prompt.len);
         // STOA270: signed live append beside HAWM1 pin (empty submit skips).
         commit_live_typed_memo(prompt);
-        // JABS2: submit always refreshes chat face — bare ret included.
+        // JABS2: submit always refreshes chat face -- bare ret included.
         if (g_jabs2_ready) {
             var chat_len: u32 = 0;
             if (jabs2_audience.format_chat_line(prompt, &g_jabs2_lines[1], &chat_len)) {
@@ -665,7 +665,7 @@ fn disarm_hearth_long_timer() void {
 fn on_hearth_timer_cb(fd: c_int, _: c_int, _: ?*anyopaque) callconv(.c) c_int {
     var drain: [8]u8 = undefined;
     _ = read(fd, &drain, drain.len);
-    // Open/toggle while still holding — do not wait for release.
+    // Open/toggle while still holding -- do not wait for release.
     if (!g_hearth_down_armed or g_hearth_long_fired) return 1;
     g_hearth_long_fired = true;
     surface.settings_open = !surface.settings_open;
@@ -716,7 +716,7 @@ fn handle_hearth_press_up() void {
 }
 
 fn handle_motion_up(tx: i32, ty: i32) void {
-    // Keys → Action/mode; LULU2 list select; hearth short/long;
+    // Keys -> Action/mode; LULU2 list select; hearth short/long;
     // close-hint finishes; other chrome dismisses Settings when open.
     if (surface.last_keyboard_hit.hit_test(tx, ty)) |key| {
         apply_glass_layout_key(key);
@@ -745,14 +745,14 @@ fn handle_motion_up(tx: i32, ty: i32) void {
         return;
     }
     if (surface.last_wire_hit.contains(tx, ty)) {
-        // LULU4: tap wire row toggles local ↔ usb_desk (preference only).
+        // LULU4: tap wire row toggles local <-> usb_desk (preference only).
         surface.active_wire = surface.active_wire.next();
         save_hearth_preference();
         repaint_window();
         return;
     }
     if (surface.last_cell_hit.contains(tx, ty)) {
-        // LULU5: tap cell row toggles off ↔ optional (preference only).
+        // LULU5: tap cell row toggles off <-> optional (preference only).
         surface.active_cellular = surface.active_cellular.next();
         save_hearth_preference();
         repaint_window();
@@ -762,7 +762,7 @@ fn handle_motion_up(tx: i32, ty: i32) void {
         handle_hearth_press_up();
         return;
     }
-    // Press slid off hearth — cancel armed hold; keep list if hold already fired.
+    // Press slid off hearth -- cancel armed hold; keep list if hold already fired.
     if (g_hearth_down_armed or g_hearth_long_fired) {
         disarm_hearth_long_timer();
         g_hearth_down_armed = false;
@@ -863,7 +863,7 @@ export fn ANativeActivity_onCreate(
     write_product_root_file(product_root);
 
     // STOA237: product path runs Glow fold from embedded fact-line lit desk
-    // (desk bytes packed in libglowapp.so · APK). Pin fold remains for hosts.
+    // (desk bytes packed in libglowapp.so - APK). Pin fold remains for hosts.
     const root = glow_fold.run_demo_fold_from_embedded_desk() catch {
         @memset(glow_last_session_root_hex[0..], 0);
         g_root_matched = false;

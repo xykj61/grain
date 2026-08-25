@@ -1,22 +1,22 @@
-//! pond/apps/entity_books_period.rye — Season 2 Journey 8 (Cash-first), Rung 3: the closed period travels.
+//! pond/apps/entity_books_period.rye -- Season 2 Journey 8 (Cash-first), Rung 3: the closed period travels.
 //!
 //! Rungs one and two booked a segregated inter-entity transfer and proved it one both stewards
-//! signed. An entity's books are only useful across time, though, if a closed period can be carried —
-//! written to a file, pinned, or handed to an auditor — and checked **offline**, with no journal in
+//! signed. An entity's books are only useful across time, though, if a closed period can be carried --
+//! written to a file, pinned, or handed to an auditor -- and checked **offline**, with no journal in
 //! hand. This rung folds an entity's period to a sealed statement (its name, its close stamp, and its
 //! trial-balance nets), renders it to a `format entity-period-v1` Bron record, and parses it back
 //! byte-for-byte, so a closed period travels as testimony a recipient can verify.
 //!
 //! The crux is preservation with the accounting identity intact: `parse(render(period))` recovers an
-//! equal statement whose reconstructed trial balance **still conserves and still balances** — the
+//! equal statement whose reconstructed trial balance **still conserves and still balances** -- the
 //! period was not merely copied but stayed a true set of books across the crossing. The reader is a
 //! purpose-built bounded Bron reader (the tree's flat `key value` idiom), never a general parser: an
 //! unknown field refuses (never dropped), a missing field refuses, a wrong header refuses, and a bad
-//! integer refuses rather than decode to garbage. A closed period is testimony, not a mutable draft —
+//! integer refuses rather than decode to garbage. A closed period is testimony, not a mutable draft --
 //! it renders what the fold sealed at close, and a recipient re-derives the balance sheet from it.
 //!
 //! It composes rung one's `Entity` fold and `dimeroll_core`'s `fold_balance_sheet` over public API,
-//! inventing no new value model. It reads no network — the serve transport is the Comlink-served gate
+//! inventing no new value model. It reads no network -- the serve transport is the Comlink-served gate
 //! (Keaton's hand). Demo entities only; facts only (custody gate %3 untouched).
 //!
 //!   rye build pond/apps/entity_books_period.rye -femit-bin=pond/bin/entity-books-period
@@ -82,7 +82,7 @@ pub const PortablePeriod = struct {
 
     /// The closed period is still true books: its reconstructed trial balance conserves, and its
     /// balance sheet balances. A statement whose nets do not conserve refuses Unbalanced rather than
-    /// pretend to be books — a traveled period cannot claim to balance if it does not.
+    /// pretend to be books -- a traveled period cannot claim to balance if it does not.
     pub fn balances(self: *const PortablePeriod) PeriodError!gc.BalanceSheet {
         const tb = self.trial_balance();
         if (tb.conservation() != 0) return error.Unbalanced;
@@ -108,7 +108,7 @@ pub fn render(ent: *const entity.Entity, close_stamp: []const u8, out: []u8) (Pe
     return @intCast(text.len);
 }
 
-/// Split a line into its first-token key and trimmed remainder value — the flat-Bron idiom.
+/// Split a line into its first-token key and trimmed remainder value -- the flat-Bron idiom.
 fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     var sp: u32 = 0;
     while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
@@ -187,7 +187,7 @@ fn periods_equal(a: *const PortablePeriod, b: *const PortablePeriod) bool {
 }
 
 /// An entity's closed period renders to Bron and parses back preserving every field, and the
-/// recovered period still conserves and still balances — the books survived the crossing whole.
+/// recovered period still conserves and still balances -- the books survived the crossing whole.
 fn welcome_round_trip_still_balances() !void {
     var linengrow = try seat_linengrow();
     const sealed_tb = try linengrow.trial_balance();
@@ -203,7 +203,7 @@ fn welcome_round_trip_still_balances() !void {
     var i: u32 = 0;
     while (i < gc.account_count) : (i += 1) assert(pp.nets[i] == sealed_tb.nets[i]);
 
-    // Parsing the same record twice yields equal periods — the reader is deterministic.
+    // Parsing the same record twice yields equal periods -- the reader is deterministic.
     const pp2 = try parse(buf[0..n]);
     assert(periods_equal(&pp, &pp2));
 
@@ -216,7 +216,7 @@ fn welcome_round_trip_still_balances() !void {
     print("entity_books_period: a closed period round-tripped through Bron preserving every field and still conserves and balances.\n", .{});
 }
 
-/// An unknown field refuses — never silently dropped.
+/// An unknown field refuses -- never silently dropped.
 fn unwelcome_unknown_field_refuses() !void {
     const record = "format entity-period-v1\nentity X\nstamp s\ncash 100\nrevenue -50\nexpense 50\nequity -100\nsurprise yes\n";
     const parsed = parse(record);
@@ -224,7 +224,7 @@ fn unwelcome_unknown_field_refuses() !void {
     print("entity_books_period: an unknown field refused UnknownField (never dropped).\n", .{});
 }
 
-/// A missing field refuses — a period statement names every account net and its two headers.
+/// A missing field refuses -- a period statement names every account net and its two headers.
 fn unwelcome_missing_field_refuses() !void {
     const record = "format entity-period-v1\nentity X\nstamp s\ncash 100\nrevenue -50\nexpense 50\n";
     const parsed = parse(record);

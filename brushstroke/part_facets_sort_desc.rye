@@ -1,20 +1,20 @@
-//! brushstroke/part_facets_sort_desc.rye — HUNK91: the sort a keeper can reverse — the faceted result read
+//! brushstroke/part_facets_sort_desc.rye -- HUNK91: the sort a keeper can reverse -- the faceted result read
 //! dearest-first, still stable, still a permutation.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK91.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK91.
 //! Design read: active-designing/date/20260814/20260814-013432_hunk-part-facets-sort-direction-exploration.md
-//! Teacher, thanked clean-room: a search box whose price sort turns both ways — low to high, high to low (concept only,
+//! Teacher, thanked clean-room: a search box whose price sort turns both ways -- low to high, high to low (concept only,
 //! siloed).
 //!
 //! HUNK89 sorts the faceted result cheapest-first and HUNK90 names that sort above the parts, yet the direction is
-//! fixed — a keeper can find the least dear part, never the dearest. A real sort control turns both ways. This rung is
+//! fixed -- a keeper can find the least dear part, never the dearest. A real sort control turns both ways. This rung is
 //! the descending half, mirroring HUNK89 clause for clause: `sort_by_price_desc` reorders a catalog DESCENDING by its
-//! recorded cent count, ties keeping HELD ORDER (a stable sort, the same tie rule as ascending — never reversed), and
+//! recorded cent count, ties keeping HELD ORDER (a stable sort, the same tie rule as ascending -- never reversed), and
 //! `facets_sorted_desc_shelf` composes it after the faceted filter, so the drawn page reads dearest-first. It is
 //! additive: HUNK89's ascending functions keep their names and their GREEN witness; this pair sits beside them.
 //!
 //! The crux is that a tie is broken by HELD ORDER in BOTH directions, so descending is NOT a naive reversal of the
-//! ascending array — for a result with no ties the two are exact reverses, yet two equal-price parts read in the order
+//! ascending array -- for a result with no ties the two are exact reverses, yet two equal-price parts read in the order
 //! a keeper added them whichever way the sort turns. The sort stays a PERMUTATION: same parts as a set, only reordered.
 //! A malformed clause surfaces the parser's named refusal before any sort.
 //!
@@ -36,7 +36,7 @@ const skate = @import("skate_grid.rye");
 pub const part_facets_sort_desc_version = "20260814.013432";
 
 /// Build `out` as a fresh sub-catalog over `src`'s own sheet, holding every part of `src` in DESCENDING price order.
-/// Ties keep HELD ORDER — a stable sort, the same tie rule as the ascending sort, so two parts at the same price read
+/// Ties keep HELD ORDER -- a stable sort, the same tie rule as the ascending sort, so two parts at the same price read
 /// in the order a keeper added them whichever way the sort turns (descending is not a naive reversal). The reorder is a
 /// selection over an index permutation bounded by `sprite.max_products`; each chosen part is re-added through
 /// `add_part`, so every window is re-validated against the shared sheet and every fact re-checked.
@@ -52,7 +52,7 @@ pub fn sort_by_price_desc(src: *const part_catalog.PartCatalog, out: *part_catal
     var taken: [sprite.max_products]bool = [_]bool{false} ** sprite.max_products;
 
     // Selection sort: n times, pick the DEAREST not-yet-taken part, earliest held index breaking ties (stable, held
-    // order — the same tie rule as ascending, so a tie is not reversed when the direction flips).
+    // order -- the same tie rule as ascending, so a tie is not reversed when the direction flips).
     var placed: u32 = 0;
     while (placed < n) : (placed += 1) {
         // invariant: fewer parts are placed than the source holds until the last is chosen.
@@ -63,7 +63,7 @@ pub fn sort_by_price_desc(src: *const part_catalog.PartCatalog, out: *part_catal
         while (i < n) : (i += 1) {
             if (taken[i]) continue;
             const price = src.facts_at(i).price_cents;
-            // A strict `>` keeps the earliest held index among equal prices — the tie stays in held order.
+            // A strict `>` keeps the earliest held index among equal prices -- the tie stays in held order.
             if (best == n or price > best_price) {
                 best = i;
                 best_price = price;
@@ -76,11 +76,11 @@ pub fn sort_by_price_desc(src: *const part_catalog.PartCatalog, out: *part_catal
         const f = src.facts_at(best);
         try out.add_part(e.name, e.win.x, e.win.y, e.win.w, e.win.h, f.part_number, f.material, f.price_cents);
     }
-    // invariant: the sorted sub-catalog holds exactly as many parts as the source — a permutation, never a change.
+    // invariant: the sorted sub-catalog holds exactly as many parts as the source -- a permutation, never a change.
     assert(out.len() == src.len());
 }
 
-/// Draw the faceted page in descending price order — parse the faceted line, filter the catalog into the query's kept
+/// Draw the faceted page in descending price order -- parse the faceted line, filter the catalog into the query's kept
 /// parts, sort those dearest-first (`sort_by_price_desc`), and render the page `[offset, offset + rows)`. So a keeper
 /// shopping for the best part rather than the cheapest is served the same result, read the other way. A malformed
 /// clause surfaces the parser's named refusal before any sort; an offset past the sorted result refuses `BadOffset`
@@ -101,14 +101,14 @@ pub fn facets_sorted_desc_shelf(
     try part_facets.filter_facets(cat, fq, &kept);
     var sorted: part_catalog.PartCatalog = undefined;
     try sort_by_price_desc(&kept, &sorted);
-    // invariant: sorting is a permutation — the sorted result holds exactly the filtered result's parts.
+    // invariant: sorting is a permutation -- the sorted result holds exactly the filtered result's parts.
     assert(sorted.len() == kept.len());
     // invariant: the sorted sub-catalog windows into the caller's own sheet, never a copy.
     assert(sorted.index.sheet == cat.index.sheet);
     return part_row.part_window(allocator, &sorted, cols, rows, offset);
 }
 
-// --- selftest: five parts across four bands with a price spread and a 55c tie — the descending sort reads
+// --- selftest: five parts across four bands with a price spread and a 55c tie -- the descending sort reads
 //     dearest-first, is the exact reverse of ascending on distinct prices, keeps held order on ties (not reversed),
 //     is a permutation, and the named refusals fire ---------------------------------------------------------------
 
@@ -132,7 +132,7 @@ fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Read a row's fact line back as bytes — trim the blank tail, so the selftest sees exactly the painted fact text.
+/// Read a row's fact line back as bytes -- trim the blank tail, so the selftest sees exactly the painted fact text.
 fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     const cells = grid.row_cells(row);
     var n: u32 = @intCast(cells.len);
@@ -142,7 +142,7 @@ fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     return n;
 }
 
-/// True if the sorted catalog holds exactly `src`'s parts as a set — every source name found once. Proves permutation.
+/// True if the sorted catalog holds exactly `src`'s parts as a set -- every source name found once. Proves permutation.
 fn same_parts_as_set(src: *const part_catalog.PartCatalog, sorted: *const part_catalog.PartCatalog) bool {
     if (src.len() != sorted.len()) return false;
     var i: u32 = 0;
@@ -172,7 +172,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const cols: u32 = 48;
 
     // DEAREST-FIRST and STABLE ON TIES (held order, NOT reversed): the descending sort reads gear(845), bolt(125),
-    // nut(60), then the 55c tie in HELD order — hexnut before washer, the SAME order the ascending sort gives them.
+    // nut(60), then the 55c tie in HELD order -- hexnut before washer, the SAME order the ascending sort gives them.
     {
         var sorted: part_catalog.PartCatalog = undefined;
         try sort_by_price_desc(&cat, &sorted);
@@ -192,7 +192,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The EXACT REVERSE of ascending on a DISTINCT-price result: bolt(125), nut(60), gear(845) have no ties, so
-    // descending reads gear, bolt, nut and ascending nut, bolt, gear — one the reverse of the other, part for part.
+    // descending reads gear, bolt, nut and ascending nut, bolt, gear -- one the reverse of the other, part for part.
     {
         var kept = part_catalog.PartCatalog.init(&sheet);
         try kept.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
@@ -211,7 +211,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The descending faceted shelf: (stainless OR brass) max:100 keeps nut(60), hexnut(55), washer(55) — descending
+    // The descending faceted shelf: (stainless OR brass) max:100 keeps nut(60), hexnut(55), washer(55) -- descending
     // reads nut, hexnut, washer top to bottom (dearest-first, tie in held order).
     {
         const line = "material:stainless-304|material:brass max:100";
@@ -227,7 +227,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(r3 == 0);
     }
 
-    // An empty line is a MATCH-ALL, descending: every part drawn dearest-first — gear first (845c), the 55c tie last.
+    // An empty line is a MATCH-ALL, descending: every part drawn dearest-first -- gear first (845c), the 55c tie last.
     {
         const page = try facets_sorted_desc_shelf(garden, &cat, "", cols, 5, 0);
         var buf: [part_row.max_fact_line]u8 = undefined;
@@ -244,7 +244,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.UnknownKey) return error.WrongLine;
     }
 
-    // An offset past the sorted result refuses BadOffset — three matches, so offset 3 at one row per page is past it.
+    // An offset past the sorted result refuses BadOffset -- three matches, so offset 3 at one row per page is past it.
     if (facets_sorted_desc_shelf(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 3)) |_| {
         return error.OffsetSlipped;
     } else |e| {

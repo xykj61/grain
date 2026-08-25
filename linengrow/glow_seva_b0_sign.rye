@@ -1,8 +1,8 @@
-//! linengrow/glow_seva_b0_sign.rye — Glow product sign/verify surface.
+//! linengrow/glow_seva_b0_sign.rye -- Glow product sign/verify surface.
 //!
 //! STOA201 (B1): owns sign_fact + verify_record assert while calling elder
 //! bodies. Format/parse log-line and Glow-rune crypto jets stay held.
-//! STOA245: product-authored sign/verify body — canonicalize + kumara.sign /
+//! STOA245: product-authored sign/verify body -- canonicalize + kumara.sign /
 //! kumara.verify_bytes live here; elder murr/receipt stay peer baseline.
 //!
 //!   rye build linengrow/glow_seva_b0_sign_witness.rye \
@@ -37,7 +37,7 @@ fn write_canonical_fact(fields: rc.FactFields, out: []u8) SignError!u32 {
     return @intCast(written.len);
 }
 
-/// Sign FactFields — product body: canonicalize + kumara.sign (STOA245).
+/// Sign FactFields -- product body: canonicalize + kumara.sign (STOA245).
 pub fn sign_fact(fields: rc.FactFields, signer: kumara.KeyPair) SignError!SignedFact {
     var canonical: [rc.max_fact_len]u8 = undefined;
     const canonical_len = try write_canonical_fact(fields, &canonical);
@@ -49,7 +49,7 @@ pub fn sign_fact(fields: rc.FactFields, signer: kumara.KeyPair) SignError!Signed
     };
 }
 
-/// Verify a signature over fact bytes — product body: kumara.verify_bytes (STOA245).
+/// Verify a signature over fact bytes -- product body: kumara.verify_bytes (STOA245).
 pub fn verify_record(sig_bytes: []const u8, fact: []const u8, pubkey: kumara.PublicKey) SignError!void {
     try kumara.verify_bytes(fact, sig_bytes, pubkey);
 }
@@ -85,7 +85,7 @@ pub fn sign_body_agrees_elder() SignError!bool {
     return true;
 }
 
-/// Sign the first demo event fields (fixture stamp1/memo1 · seq amount 1); verify round-trip.
+/// Sign the first demo event fields (fixture stamp1/memo1 - seq amount 1); verify round-trip.
 pub fn claim_demo_sign() SignError!SignedFact {
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;

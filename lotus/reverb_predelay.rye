@@ -1,10 +1,10 @@
-//! lotus/reverb_predelay.rye — ALES194: THE PRE-DELAY — the reverb's WHEN knob, the short silent gap before the reverberant tail begins. ALES192
+//! lotus/reverb_predelay.rye -- ALES194: THE PRE-DELAY -- the reverb's WHEN knob, the short silent gap before the reverberant tail begins. ALES192
 //! and ALES193 gave the reverb HOW MUCH (the wet/dry balance, mono and stereo); before that the presets gave it WHICH room. The one axis left is
-//! WHEN: on a real console the pre-delay is the single knob that sits the room a hair behind the dry rather than smearing over its onset — what
+//! WHEN: on a real console the pre-delay is the single knob that sits the room a hair behind the dry rather than smearing over its onset -- what
 //! separates a voice from its own reverb and keeps a busy mix legible. This rung is that knob.
 //!
 //! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, snapshot the wet, then rewrite the span shifted right
-//! by predelay samples —
+//! by predelay samples --
 //!   out[i] = 0            for i < predelay
 //!   out[i] = wet[i - predelay]   otherwise
 //! the reverberant tail now beginning predelay_ms into the span, the last predelay samples of tail falling off the span end (an honest, bounded
@@ -13,14 +13,14 @@
 //! (no gap is exactly the un-delayed reverb), and at predelay = count the whole wet is shifted off the end and the span is all zeros (a gap as
 //! wide as the region leaves silence). Between, the wet stands exactly predelay samples later.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES194.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES194.
 //! Design read: active-designing/date/20260815/20260815-102052_fill-ales194-lotus-reverb-predelay.md
-//! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
-//! lotus/clock.rye (ALES5) — the sample clock, its samples_for converting BOTH the span (the SAME conversion reverb_preset uses) and the pre-delay
-//! into sample counts, so one rate governs both; lotus/timeline.rye (ALES2) — the Clip, its max_clip bounding the wet snapshot.
+//! Stands on: lotus/reverb_preset.rye (ALES190) -- the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
+//! lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting BOTH the span (the SAME conversion reverb_preset uses) and the pre-delay
+//! into sample counts, so one rate governs both; lotus/timeline.rye (ALES2) -- the Clip, its max_clip bounding the wet snapshot.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, ALES190's fixed banks, and a bounded
-//! stack snapshot (max_clip = 4096 samples), siloed to lotus/. No new audio arithmetic — a bounded reindex of the proven wet, the gap true zeros.
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, ALES190's fixed banks, and a bounded
+//! stack snapshot (max_clip = 4096 samples), siloed to lotus/. No new audio arithmetic -- a bounded reindex of the proven wet, the gap true zeros.
 //! A WET-DOMAIN pre-delay: it delays the reverberant onset within the span; combined with the dry through ALES192's wet/dry mix it is the classic
 //! console pre-delay, a later rung. The pre-delay is a named duration in milliseconds, so it means the same gap at any sample rate. No socket, no
 //! network, no keys, no funds, no real device, no real speaker.
@@ -37,11 +37,11 @@ const reverb_preset = @import("reverb_preset.rye");
 
 pub const reverb_predelay_version = "20260815.102052";
 
-/// The named rooms are ALES190's own — reused whole, so the pre-delay and the presets name the same tunings and cannot drift apart.
+/// The named rooms are ALES190's own -- reused whole, so the pre-delay and the presets name the same tunings and cannot drift apart.
 pub const Room = reverb_preset.Room;
 
 /// The pre-delay's faults are ALES190's `ReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay /
-/// BadGain / BadRange, forwarded whole) beside this rung's one own fault, `BadPredelay` — a pre-delay whose sample count exceeds the span, refused
+/// BadGain / BadRange, forwarded whole) beside this rung's one own fault, `BadPredelay` -- a pre-delay whose sample count exceeds the span, refused
 /// by name before any write.
 pub const ReverbPredelayError = reverb_preset.ReverbPresetError || error{BadPredelay};
 
@@ -59,25 +59,25 @@ pub fn reverb_predelay(
     count_ms: u32,
     predelay_ms: u32,
 ) ReverbPredelayError!void {
-    // invariant: the clock is valid — the span and the pre-delay are both spoken against it, and reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span and the pre-delay are both spoken against it, and reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
 
     // Convert the span with the SAME clock reverb_preset uses, so the wet snapshot and the shift span match the preset's written span exactly. A
     // span past the clip forwards DurationTooLong here, before any write.
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
-    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet snapshot reads the clip.
+    // The span must be in-bounds before any write -- the same BadRange the reverb would raise, raised before the wet snapshot reads the clip.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
-    // The pre-delay is converted with the same clock; a gap wider than the span is no pre-delay at all — refuse BadPredelay before any write.
+    // The pre-delay is converted with the same clock; a gap wider than the span is no pre-delay at all -- refuse BadPredelay before any write.
     const predelay = try clock.samples_for(clk, predelay_ms);
     if (predelay > count) return error.BadPredelay;
-    // invariant: the span fits the snapshot bound — every Clip shares max_clip, so a whole span always fits the stack buffer.
+    // invariant: the span fits the snapshot bound -- every Clip shares max_clip, so a whole span always fits the stack buffer.
     assert(count <= timeline.max_clip);
     // invariant: the pre-delay is within the span, so every shifted read wet[i - predelay] stays inside the snapshot.
     assert(predelay <= count);
 
-    // The wet, in place — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
+    // The wet, in place -- ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
     try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
 
     // Snapshot the wet span, then rewrite it shifted right by predelay: the front predelay samples become true zeros, the rest the wet delayed.
@@ -94,9 +94,9 @@ pub fn reverb_predelay(
     assert(start + count <= clip.len);
 }
 
-// --- selftest: THE ZERO-DELAY EDGE (predelay = 0) — equals reverb_preset over the span byte for byte; THE FULL-DELAY EDGE (predelay = count) —
-//     the span is all zeros; THE SHIFT IS EXACT — the front predelay samples zero, the rest the wet shifted by exactly predelay; SILENCE STAYS
-//     SILENCE; and the faults forward — a span past the clip DurationTooLong, an out-of-range span BadRange, a pre-delay past the span
+// --- selftest: THE ZERO-DELAY EDGE (predelay = 0) -- equals reverb_preset over the span byte for byte; THE FULL-DELAY EDGE (predelay = count) --
+//     the span is all zeros; THE SHIFT IS EXACT -- the front predelay samples zero, the rest the wet shifted by exactly predelay; SILENCE STAYS
+//     SILENCE; and the faults forward -- a span past the clip DurationTooLong, an out-of-range span BadRange, a pre-delay past the span
 //     BadPredelay, the clip untouched ----------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -118,7 +118,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. THE ZERO-DELAY EDGE — predelay_ms = 0 equals ALES190's reverb_preset over the span, byte for byte. No gap is exactly the un-delayed
+    // 1. THE ZERO-DELAY EDGE -- predelay_ms = 0 equals ALES190's reverb_preset over the span, byte for byte. No gap is exactly the un-delayed
     //    reverb.
     {
         var delayed = timeline.Clip{};
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         if (!eq(delayed.samples(), preset.samples())) return error.ZeroDelayNotPreset;
     }
 
-    // 2. THE SHIFT IS EXACT — for a mid pre-delay (16 ms == 16 samples), the first 16 samples are zero and the rest are the un-delayed wet shifted
+    // 2. THE SHIFT IS EXACT -- for a mid pre-delay (16 ms == 16 samples), the first 16 samples are zero and the rest are the un-delayed wet shifted
     //    by exactly 16, byte for byte against the wet computed side by side. The reverberant tail stands exactly 16 samples later.
     {
         var wetc = timeline.Clip{};
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
         if (eq(ds, ws)) return error.DelayedEqualsUndelayed;
     }
 
-    // 3. THE FULL-DELAY EDGE — a pre-delay as wide as the span shifts the whole wet off the end; the span is all zeros.
+    // 3. THE FULL-DELAY EDGE -- a pre-delay as wide as the span shifts the whole wet off the end; the span is all zeros.
     {
         var delayed = timeline.Clip{};
         const src = [_]i16{ 5, 5, 5, 5, 5, 5, 5, 5 };
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (!eq(delayed.samples(), &zeros)) return error.FullDelayNotSilent;
     }
 
-    // 4. SILENCE STAYS SILENCE — an all-zero clip at any pre-delay stays all zeros; a shifted silence is silence.
+    // 4. SILENCE STAYS SILENCE -- an all-zero clip at any pre-delay stays all zeros; a shifted silence is silence.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -173,16 +173,16 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 5. THE FAULTS FORWARD — a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange,
+    // 5. THE FAULTS FORWARD -- a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange,
     //    each by name with the clip untouched. The pre-delay adds only BadPredelay; ALES190's faults forward whole.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // a pre-delay of 4 ms over a 3-sample span converts to 4 samples > 3 — BadPredelay, before any write.
+        // a pre-delay of 4 ms over a 3-sample span converts to 4 samples > 3 -- BadPredelay, before any write.
         if (reverb_predelay(&clip, c, .room, 0, 3, 4)) |_| return error.BadPredelaySlipped else |e| if (e != error.BadPredelay) return error.WrongBadPredelay;
         if (!eq(clip.samples(), &three)) return error.RefusedBadPredelayMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (reverb_predelay(&clip, c, .room, 0, timeline.max_clip + 1, 0)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.

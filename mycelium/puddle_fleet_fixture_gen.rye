@@ -1,15 +1,15 @@
-//! mycelium/puddle_fleet_fixture_gen.rye — reproducibly emit the Puddle fleet fixture (r4 support).
+//! mycelium/puddle_fleet_fixture_gen.rye -- reproducibly emit the Puddle fleet fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! Seats the honest four-host, six-world fleet r1/r2/r3 use (each host capacity four), renders it to a
-//! `format puddle-fleet-v1` record on stderr — the exact bytes `mycelium/puddle_true.rye` reads back and the
+//! `format puddle-fleet-v1` record on stderr -- the exact bytes `mycelium/puddle_true.rye` reads back and the
 //! r4 witness cross-checks against an independent awk reading. Deterministic: seeded demo host keys and a
 //! pure render mean the same bytes every run, so the on-disk fixture is what the Puddle emits, never a
 //! hand-mock.
 //!
-//! Siloed, dev-only, demo host and world seeds — no real key, no funds, no network, no world provisioned.
+//! Siloed, dev-only, demo host and world seeds -- no real key, no funds, no network, no world provisioned.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_fleet_fixture_gen.rye \
 //!     2> tools/fixtures/puddle_fleet.bron
@@ -27,7 +27,7 @@ fn host_key(byte: u8) [puddle.pk_len]u8 {
     return kp.public_key.toBytes();
 }
 
-/// Seat the honest four-host, six-world fleet — the same scene the Puddle's own selftests use.
+/// Seat the honest four-host, six-world fleet -- the same scene the Puddle's own selftests use.
 fn seat_fleet() !puddle.Fleet {
     const ids = [_][]const u8{ "alpha", "bravo", "charlie", "delta", "echo", "foxtrot" };
     const hosts = [_]u8{ 0x11, 0x22, 0x33, 0x44 };

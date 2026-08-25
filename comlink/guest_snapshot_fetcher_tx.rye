@@ -1,4 +1,4 @@
-//! comlink/guest_snapshot_fetcher_tx.rye — I2 snapshot device: fetcher TX (batch request, held_count=0) · 20260713.
+//! comlink/guest_snapshot_fetcher_tx.rye -- I2 snapshot device: fetcher TX (batch request, held_count=0) - 20260713.
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

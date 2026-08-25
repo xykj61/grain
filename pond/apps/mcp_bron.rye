@@ -1,14 +1,14 @@
-//! pond/apps/mcp_bron.rye — BUHR Journey 3, Rung 1: MCP-in-Bron, the descriptor shape.
+//! pond/apps/mcp_bron.rye -- BUHR Journey 3, Rung 1: MCP-in-Bron, the descriptor shape.
 //!
 //! The Model Context Protocol, spoken in Bron rather than JSON. A tool describes
 //! itself with a `format mcp-tool-v1` manifest; a caller sends a `format mcp-call-v1`
 //! envelope naming a tool and its arguments; the tool answers with a paired
-//! `format mcp-result-v1` — a result record or a named error. This rung fixes that
+//! `format mcp-result-v1` -- a result record or a named error. This rung fixes that
 //! shape: flat Bron, one `key value` field per line, every value a string or an
 //! integer, every collection bounded, an unknown field refused rather than ignored.
 //!
 //! It reuses the tree's own flat-Bron parsing idiom (kin to brix/infuse.rye) and the
-//! bounded request/response discipline (kin to mandate/serve.rye) — no new transport,
+//! bounded request/response discipline (kin to mandate/serve.rye) -- no new transport,
 //! no new abstraction. Two demonstration tools (`add` over integers, `join` over
 //! strings) prove the manifest's argument grammar generalizes across value models.
 //! The Bron<->JSON tiles are the named horizon; this rung proves the owned shape
@@ -40,7 +40,7 @@ pub const McpError = error{
     ResultTooLong,
 };
 
-/// One named argument in a call — name and value as slices into the source (zero-copy).
+/// One named argument in a call -- name and value as slices into the source (zero-copy).
 pub const Arg = struct {
     name: []const u8,
     val: []const u8,
@@ -69,7 +69,7 @@ pub const Call = struct {
 
 /// Split a line into its first space-delimited token (the key) and the trimmed
 /// remainder (the value, which may be empty). The flat-Bron reading the whole tree
-/// shares — one `key value` field per line.
+/// shares -- one `key value` field per line.
 fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     // invariant: the line respects the envelope's bounded length
     assert(line.len <= max_line);
@@ -133,7 +133,7 @@ pub fn parse_call(src: []const u8, call: *Call) McpError!void {
     assert(call.arg_count <= max_args);
 }
 
-/// A parsed result envelope — the id it answers and either a result value or a named
+/// A parsed result envelope -- the id it answers and either a result value or a named
 /// error, exactly one of the two. Proving parse(render(x)) recovers x is the crux
 /// property: the owned shape round-trips.
 pub const Result = struct {
@@ -143,7 +143,7 @@ pub const Result = struct {
     is_error: bool,
 };
 
-/// Parse a `format mcp-result-v1` envelope back into a Result — the reading sibling
+/// Parse a `format mcp-result-v1` envelope back into a Result -- the reading sibling
 /// of `dispatch`, so a caller can recover the answer from the wire bytes.
 pub fn parse_result(src: []const u8, out: *Result) McpError!void {
     // invariant: a result envelope carries at least a header
@@ -202,7 +202,7 @@ fn render_error(id: u32, err_name: []const u8, out: []u8) McpError![]const u8 {
 /// Dispatch a parsed call to its tool and render the result envelope into `out`.
 /// `add` sums two integer arguments; `join` concatenates two string arguments. An
 /// unknown tool or a missing argument answers with a named error rather than a
-/// fabricated result — the protocol never invents an answer.
+/// fabricated result -- the protocol never invents an answer.
 pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
     // invariant: the caller's buffer respects the result bound
     assert(out.len <= max_result);
@@ -233,7 +233,7 @@ pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
     return render_error(call.id, "unknown_tool", out);
 }
 
-// A pinned `format mcp-tool-v1` manifest — how the `add` tool describes itself. The
+// A pinned `format mcp-tool-v1` manifest -- how the `add` tool describes itself. The
 // reader proves it can read a manifest's shape (tool name, argument grammar, result
 // type); a future rung serves this to a JSON MCP host through the Bron<->JSON tiles.
 const add_manifest =
@@ -246,7 +246,7 @@ const add_manifest =
 ;
 
 /// Read a `format mcp-tool-v1` manifest's tool name and count its declared arguments.
-/// A minimal manifest reader — enough to prove the shape parses; the full type-check
+/// A minimal manifest reader -- enough to prove the shape parses; the full type-check
 /// against a call is a later rung.
 pub fn manifest_tool(src: []const u8, arg_count: *u32) McpError![]const u8 {
     // invariant: a manifest carries at least a header
@@ -299,7 +299,7 @@ fn welcome_add_round_trips() !void {
     const rendered = try dispatch(&call, &buf);
     assert(std.mem.eql(u8, rendered, "format mcp-result-v1\nid 7\nresult 5\n"));
 
-    // The crux property — parse the rendered result back and recover the answer.
+    // The crux property -- parse the rendered result back and recover the answer.
     var res: Result = undefined;
     try parse_result(rendered, &res);
     assert(res.id == 7);

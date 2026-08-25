@@ -1,19 +1,19 @@
-//! lotus/timeline.rye — ALES2: the edit gestures over a reassembled sample timeline — cut, gain, splice. ALES0 framed one
+//! lotus/timeline.rye -- ALES2: the edit gestures over a reassembled sample timeline -- cut, gain, splice. ALES0 framed one
 //! buffer of samples verify-before-trust; ALES1 reassembled many frames off a byte stream into one gapless Timeline. Neither
-//! CHANGES a sample — they only carry and order the audio. This rung opens the first real DAW gesture: an editable Clip of
-//! samples and the three edits every timeline owes — remove a span (cut), scale a span's loudness (gain), insert a span
-//! (splice) — each transforming the samples exactly and in order.
+//! CHANGES a sample -- they only carry and order the audio. This rung opens the first real DAW gesture: an editable Clip of
+//! samples and the three edits every timeline owes -- remove a span (cut), scale a span's loudness (gain), insert a span
+//! (splice) -- each transforming the samples exactly and in order.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES2.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES2.
 //! Design read: active-designing/20260814-fill-ales2-lotus-timeline-edits.md
-//! Stands on: lotus/stream.rye (ALES1) — the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
-//! sample width and bound. `load` copies a drained Timeline into a Clip, so the full road reads: bytes → frames → gapless
-//! timeline → edited clip.
+//! Stands on: lotus/stream.rye (ALES1) -- the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
+//! sample width and bound. `load` copies a drained Timeline into a Clip, so the full road reads: bytes -> frames -> gapless
+//! timeline -> edited clip.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM samples on one bench, siloed to lotus/.
-//! No socket, no network, no keys, no funds, no real device, no real sample rate (the samples carry no clock yet — that is a
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM samples on one bench, siloed to lotus/.
+//! No socket, no network, no keys, no funds, no real device, no real sample rate (the samples carry no clock yet -- that is a
 //! later rung). The one correctness this rung owes beyond a generic integer buffer is SATURATION: gain clamps to i16 min/max
-//! rather than wrapping, so a scaled-loud sample can never wrap to the opposite sign — the audio-editor analog of ALES0's
+//! rather than wrapping, so a scaled-loud sample can never wrap to the opposite sign -- the audio-editor analog of ALES0's
 //! audio border.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/timeline.rye selftest
@@ -27,7 +27,7 @@ const stream = @import("stream.rye");
 
 pub const timeline_version = "20260814.112555";
 
-/// The widest editable clip this rung proves — the same bound ALES1's reassembly holds, so a drained Timeline always loads.
+/// The widest editable clip this rung proves -- the same bound ALES1's reassembly holds, so a drained Timeline always loads.
 /// Bounded so no edit can grow an unbounded buffer; a real session is many such bounded windows.
 pub const max_clip: u32 = stream.max_timeline;
 
@@ -37,16 +37,16 @@ pub const sample_min: i16 = -32768;
 pub const sample_max: i16 = 32767;
 
 pub const EditError = error{
-    /// An edit would grow the clip past its fixed bound — refused, never a silent overwrite past the buffer.
+    /// An edit would grow the clip past its fixed bound -- refused, never a silent overwrite past the buffer.
     ClipFull,
-    /// A start offset or count names samples outside the clip's current length — refused before any read or shift.
+    /// A start offset or count names samples outside the clip's current length -- refused before any read or shift.
     BadRange,
-    /// A gain with a zero denominator — refused, no divide by zero.
+    /// A gain with a zero denominator -- refused, no divide by zero.
     BadGain,
 };
 
 /// Clamp a wide intermediate to the i16 sample range. A scaled or summed sample is computed in i64 so the arithmetic never
-/// overflows, then pinned to [sample_min, sample_max] — the saturation an audio edit owes so loud never wraps to the opposite
+/// overflows, then pinned to [sample_min, sample_max] -- the saturation an audio edit owes so loud never wraps to the opposite
 /// sign. Public so the mixer (ALES3) reuses the one true saturation rather than re-deriving it.
 pub fn saturate(v: i64) i16 {
     // invariant: the clamp bounds are the true i16 extremes, so the result is always a legal sample.
@@ -64,7 +64,7 @@ pub const Clip = struct {
     buf: [max_clip]i16 = [_]i16{0} ** max_clip,
     len: u32 = 0,
 
-    /// The clip's samples in order — exactly the audio under edit.
+    /// The clip's samples in order -- exactly the audio under edit.
     pub fn samples(self: *const Clip) []const i16 {
         // invariant: the length never claims more samples than the buffer holds.
         assert(self.len <= self.buf.len);
@@ -72,11 +72,11 @@ pub const Clip = struct {
     }
 };
 
-/// Copy a reassembled Timeline (ALES1) into an editable Clip — the seam that ties this rung to the road: bytes → frames →
-/// gapless timeline → editable clip. Refuses ClipFull rather than overrun, so a timeline wider than the clip never truncates
+/// Copy a reassembled Timeline (ALES1) into an editable Clip -- the seam that ties this rung to the road: bytes -> frames ->
+/// gapless timeline -> editable clip. Refuses ClipFull rather than overrun, so a timeline wider than the clip never truncates
 /// silently.
 pub fn load(tl: *const stream.Timeline, out: *Clip) EditError!void {
-    // invariant: the timeline must fit the clip whole — no partial load.
+    // invariant: the timeline must fit the clip whole -- no partial load.
     if (tl.len > out.buf.len) return error.ClipFull;
     var i: u32 = 0;
     while (i < tl.len) : (i += 1) out.buf[i] = tl.samples()[i];
@@ -86,11 +86,11 @@ pub fn load(tl: *const stream.Timeline, out: *Clip) EditError!void {
     assert(out.len <= out.buf.len);
 }
 
-/// Remove `count` samples starting at `start`, shifting the tail left to close the gap — the audio stays gapless and in
+/// Remove `count` samples starting at `start`, shifting the tail left to close the gap -- the audio stays gapless and in
 /// order, with everything after the cut preserved exactly. Refuses BadRange when the span falls outside the current samples,
 /// before any shift.
 pub fn cut(clip: *Clip, start: u32, count: u32) EditError!void {
-    // invariant: the removed span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    // invariant: the removed span lies wholly within the current samples (checked without underflow -- count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
     const tail_start = start + count;
@@ -122,7 +122,7 @@ pub fn gain(clip: *Clip, start: u32, count: u32, num: i32, den: u32) EditError!v
     assert(clip.len <= clip.buf.len);
 }
 
-/// Insert the samples `ins` at position `at`, shifting the tail right to open the gap — the inserted audio lands in order and
+/// Insert the samples `ins` at position `at`, shifting the tail right to open the gap -- the inserted audio lands in order and
 /// everything after `at` follows it, unchanged. Refuses ClipFull when the insert would overflow the fixed buffer and BadRange
 /// when `at` falls past the current samples, before any shift.
 pub fn splice(clip: *Clip, at: u32, ins: []const i16) EditError!void {
@@ -143,7 +143,7 @@ pub fn splice(clip: *Clip, at: u32, ins: []const i16) EditError!void {
 // --- selftest: cut removes a span exactly and keeps the rest in order; gain scales and SATURATES rather than wraps (the one
 //     owed correctness), a negative num inverts phase and clamps i16-min's negation; splice inserts in order; splice then cut
 //     the same span round-trips to the original; out-of-range and zero-denominator and overflow each refuse by name; and the
-//     whole rung composes on ALES1 — a stream reassembles, a clip loads and edits the reassembled audio -------------------
+//     whole rung composes on ALES1 -- a stream reassembles, a clip loads and edits the reassembled audio -------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.CutWrong;
     }
 
-    // 2. gain SATURATES rather than wraps — a sample whose doubled value exceeds the i16 range clamps to the extreme, it
+    // 2. gain SATURATES rather than wraps -- a sample whose doubled value exceeds the i16 range clamps to the extreme, it
     //    never wraps to the opposite sign. 20000 * 2 = 40000 would wrap negative in i16 arithmetic; saturation keeps +32767.
     {
         var clip = Clip{};
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. a negative num inverts phase, and negating sample_min saturates to sample_max (its true negation, +32768, is out of
-    //    range) — the clamp holds on the signed edge too.
+    //    range) -- the clamp holds on the signed edge too.
     {
         var clip = Clip{};
         const src = [_]i16{ 1, -1, 32767, sample_min };
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.GainInvertWrong;
     }
 
-    // 4. gain scales only a sub-span, leaving the rest untouched — a fractional cut (half loudness) on the middle.
+    // 4. gain scales only a sub-span, leaving the rest untouched -- a fractional cut (half loudness) on the middle.
     {
         var clip = Clip{};
         const src = [_]i16{ 400, 400, 400, 400 };
@@ -206,7 +206,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.SpliceWrong;
     }
 
-    // 6. splice then cut the SAME span round-trips to the original — the two gestures are exact inverses over one span.
+    // 6. splice then cut the SAME span round-trips to the original -- the two gestures are exact inverses over one span.
     {
         var clip = Clip{};
         const src = [_]i16{ 5, 6, 7, 8 };
@@ -227,7 +227,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &src)) return error.RefusedCutMutated;
     }
 
-    // 8. a zero-denominator gain refuses BadGain — no divide by zero.
+    // 8. a zero-denominator gain refuses BadGain -- no divide by zero.
     {
         var clip = Clip{};
         const src = [_]i16{ 1, 2, 3 };
@@ -235,7 +235,7 @@ fn run_selftest() !u8 {
         if (gain(&clip, 0, clip.len, 1, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
     }
 
-    // 9. a splice that would overflow the fixed buffer refuses ClipFull — never a silent overwrite past the bound.
+    // 9. a splice that would overflow the fixed buffer refuses ClipFull -- never a silent overwrite past the bound.
     {
         var clip = Clip{};
         clip.len = max_clip - 1; // one sample of room
@@ -243,7 +243,7 @@ fn run_selftest() !u8 {
         if (splice(&clip, 0, &ins)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
     }
 
-    // 10. the whole rung composes on ALES1 — a byte stream reassembles two frames into a gapless Timeline, a Clip loads it,
+    // 10. the whole rung composes on ALES1 -- a byte stream reassembles two frames into a gapless Timeline, a Clip loads it,
     //     and an edit lands on the reassembled audio, proving ALES2 stands on ALES1's output end to end.
     {
         const a = [_]i16{ 10, 11, 12 };

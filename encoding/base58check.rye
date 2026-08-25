@@ -1,22 +1,22 @@
-//! encoding/base58check.rye — Base58Check authored in pure Rye as a composition, no new cryptography. Base58Check is the form a real
-//! address wears: a one-byte version, the payload, and a four-byte checksum — the first four bytes of the double SHA-256 of everything
-//! before it — all rendered together in Base58. The checksum is what makes an address self-verifying: a single mistyped character almost
-//! always fails the check before a value is ever sent to a wrong destination. This module composes two already-GREEN rungs — the
-//! double SHA-256 from crypto/sha256.rye and the Base58 rendering from encoding/base58.rye — and authors none of its own arithmetic.
+//! encoding/base58check.rye -- Base58Check authored in pure Rye as a composition, no new cryptography. Base58Check is the form a real
+//! address wears: a one-byte version, the payload, and a four-byte checksum -- the first four bytes of the double SHA-256 of everything
+//! before it -- all rendered together in Base58. The checksum is what makes an address self-verifying: a single mistyped character almost
+//! always fails the check before a value is ever sent to a wrong destination. This module composes two already-GREEN rungs -- the
+//! double SHA-256 from crypto/sha256.rye and the Base58 rendering from encoding/base58.rye -- and authors none of its own arithmetic.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye and base58.rye. Where base58.rye renders raw
+//! Season: encoding -- the serialization sibling of Season G (Cryptography), beside base64.rye and base58.rye. Where base58.rye renders raw
 //! bytes, this rung adds the version-and-checksum envelope that a human-facing address carries, so a keeper reading or typing one is caught
 //! before a slip becomes a loss. It is the exact "guard the address" shape the identity and commerce surfaces will reach for.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the version+checksum envelope and the double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is
 //! ours, standing on our own parity-GREEN primitives (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — encode lays out version ‖ payload ‖ checksum, where checksum = SHA-256(SHA-256(version ‖ payload))[0..4], then Base58-encodes
+//! THE CRUX -- encode lays out version ‖ payload ‖ checksum, where checksum = SHA-256(SHA-256(version ‖ payload))[0..4], then Base58-encodes
 //! the whole. decode inverts it: Base58-decode, split off the trailing four bytes, recompute the double-SHA-256 checksum over the rest, and
-//! refuse BadChecksum if it does not match — so a corrupted address is rejected rather than silently returning wrong bytes. No new hashing,
+//! refuse BadChecksum if it does not match -- so a corrupted address is rejected rather than silently returning wrong bytes. No new hashing,
 //! no new base conversion: every stone beneath this is already proven on metal.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std codec and no
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std codec and no
 //! std.crypto: the hash is crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto), the rendering is encoding/base58.rye (parity-GREEN
 //! against the Bitcoin Core known-answers). Parity is proven at selftest against the canonical Bitcoin wiki Base58Check worked example, plus a
 //! round-trip and a corrupted-character check on every shape.
@@ -27,14 +27,14 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-// crypto_sha256.rye is an in-directory symlink to ../crypto/sha256.rye — the Rye build restricts imports to the module path, so the GREEN
+// crypto_sha256.rye is an in-directory symlink to ../crypto/sha256.rye -- the Rye build restricts imports to the module path, so the GREEN
 // hash is reached through a symlink the way linengrow reaches tally/copy.rye. The parity-GREEN primitive itself is unchanged.
 const sha256 = @import("crypto_sha256.rye");
 const base58 = @import("base58.rye");
 
 pub const base58check_version = "20260816.002751";
 
-/// The checksum is the first four bytes of the double SHA-256 — Bitcoin's own convention. Named so every buffer bound cites it.
+/// The checksum is the first four bytes of the double SHA-256 -- Bitcoin's own convention. Named so every buffer bound cites it.
 pub const checksum_len: u32 = 4;
 
 /// The largest payload this module wraps: the Base58 payload budget less the one version byte and the four checksum bytes, so the framed
@@ -45,11 +45,11 @@ pub const max_payload_bytes: u32 = base58.max_decoded_bytes - 1 - checksum_len;
 pub const Base58CheckError = error{
     /// A payload larger than max_payload_bytes (encode), or a decoded frame too short to hold a version and a checksum (decode).
     BadLength,
-    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact output length -- refused before the first write.
     DestTooSmall,
-    /// A decode input carrying a character outside the Base58 alphabet — surfaced from the Base58 primitive beneath.
+    /// A decode input carrying a character outside the Base58 alphabet -- surfaced from the Base58 primitive beneath.
     BadChar,
-    /// A decoded frame whose recomputed double-SHA-256 checksum does not match its trailing four bytes — a corrupted or mistyped address.
+    /// A decoded frame whose recomputed double-SHA-256 checksum does not match its trailing four bytes -- a corrupted or mistyped address.
     BadChecksum,
 };
 
@@ -67,7 +67,7 @@ fn checksum(data: []const u8) [checksum_len]u8 {
 }
 
 /// Encode version ‖ payload ‖ checksum as Base58Check into dest. Returns the exact written slice. Composes the double-SHA-256 checksum and
-/// the Base58 rendering — no new cryptography.
+/// the Base58 rendering -- no new cryptography.
 pub fn encode(dest: []u8, version: u8, payload: []const u8) Base58CheckError![]const u8 {
     if (payload.len > max_payload_bytes) return error.BadLength;
     const plen: u32 = @intCast(payload.len);
@@ -137,7 +137,7 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
 
 // The canonical Bitcoin wiki Base58Check worked example: version byte 0x00 and the 20-byte payload
 // 010966776006953D5567439E5E39F86A0D273BEE encode to the address below, its four-byte checksum D61967F6 the leading bytes of the
-// double SHA-256 — the neutral public reference our composition must reproduce exactly.
+// double SHA-256 -- the neutral public reference our composition must reproduce exactly.
 const kat_version: u8 = 0x00;
 const kat_payload = [_]u8{ 0x01, 0x09, 0x66, 0x77, 0x60, 0x06, 0x95, 0x3D, 0x55, 0x67, 0x43, 0x9E, 0x5E, 0x39, 0xF8, 0x6A, 0x0D, 0x27, 0x3B, 0xEE };
 const kat_address = "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM";
@@ -180,7 +180,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. The checksum guards: flip one character of the canonical address and decode must refuse BadChecksum, never return wrong bytes; a
-    //    character outside the alphabet refuses BadChar; a too-small destination refuses DestTooSmall — each before a partial result escapes.
+    //    character outside the alphabet refuses BadChar; a too-small destination refuses DestTooSmall -- each before a partial result escapes.
     {
         var corrupt: [64]u8 = undefined;
         var i: u32 = 0;

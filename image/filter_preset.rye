@@ -1,8 +1,8 @@
-//! image/filter_preset.rye — HUNK30: named filter presets — a book of recipes applied by name.
+//! image/filter_preset.rye -- HUNK30: named filter presets -- a book of recipes applied by name.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK30.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK30.
 //! Design read: active-designing/date/20260813/20260813-181925_hunk-filter-preset-book-exploration.md
-//! Teacher, thanked clean-room: the named filter sets of Instagram / VSCO / iCloud Photos — a keeper reaches for
+//! Teacher, thanked clean-room: the named filter sets of Instagram / VSCO / iCloud Photos -- a keeper reaches for
 //! "vivid" or "noir" by name, and the app knows the recipe by heart (concept only, siloed).
 //!
 //! HUNK29 closed the edit-list vocabulary: every Photos gesture records, replays, and travels as data. This rung
@@ -26,11 +26,11 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const filter_preset_version = "20260813.181925";
 
-/// The most presets one book holds — a curated shelf of named filters, never thousands. Named at construction so a
+/// The most presets one book holds -- a curated shelf of named filters, never thousands. Named at construction so a
 /// book can never grow past its buffer (TAME bound).
 pub const max_presets: u32 = 16;
 
-/// The longest preset name — a plain word like `vivid` or `noir`, bounded so a name never overruns its slot.
+/// The longest preset name -- a plain word like `vivid` or `noir`, bounded so a name never overruns its slot.
 pub const max_preset_name: u32 = 32;
 
 /// A safe upper bound on one preset's block in a book record: a `preset <name>\n` head, up to one edit-list body
@@ -38,7 +38,7 @@ pub const max_preset_name: u32 = 32;
 pub const per_preset_bound: u32 = 8 + max_preset_name + photo_edits.max_edits * photo_edits.per_line_bound + 4;
 pub const max_book_bytes: u32 = 24 + max_presets * per_preset_bound;
 
-/// The photo_edits record header a preset body is wrapped in when it travels — reused, not re-grammared, so one
+/// The photo_edits record header a preset body is wrapped in when it travels -- reused, not re-grammared, so one
 /// verb grammar is the single source of truth.
 const edits_header = "format photo-edits-v1\n";
 const book_header = "format filter-presets-v1\n";
@@ -52,7 +52,7 @@ pub const PresetError = error{
     Overflow,
 };
 
-/// One named recipe — a plain name plus the edit-list the name stands for. The name lives in a fixed buffer so a
+/// One named recipe -- a plain name plus the edit-list the name stands for. The name lives in a fixed buffer so a
 /// preset owns its bytes rather than borrowing a caller's slice.
 pub const Preset = struct {
     name_buf: [max_preset_name]u8 = undefined,
@@ -67,7 +67,7 @@ pub const Preset = struct {
     }
 };
 
-/// A bounded, named library of filter recipes — the book of filters the Photos app knows by heart.
+/// A bounded, named library of filter recipes -- the book of filters the Photos app knows by heart.
 pub const PresetBook = struct {
     presets: [max_presets]Preset = undefined,
     count: u32 = 0,
@@ -82,7 +82,7 @@ pub const PresetBook = struct {
 
     /// Define a named preset, copying the name into the book's own storage. Refuses `BadPresetName` for an empty or
     /// over-long name, `PresetExists` for a name already defined (a book never shadows a preset), and
-    /// `TooManyPresets` at the named ceiling — never overwriting, never overrunning.
+    /// `TooManyPresets` at the named ceiling -- never overwriting, never overrunning.
     pub fn define(self: *PresetBook, preset_name: []const u8, list: *const photo_edits.EditList) PresetError!void {
         // invariant: the book stays within its named ceiling before any define.
         assert(self.count <= max_presets);
@@ -99,7 +99,7 @@ pub const PresetBook = struct {
         assert(self.count <= max_presets);
     }
 
-    /// The index of a named preset, or null when the book does not hold it — a bounded scan over the held presets.
+    /// The index of a named preset, or null when the book does not hold it -- a bounded scan over the held presets.
     pub fn find(self: *const PresetBook, preset_name: []const u8) ?u32 {
         // invariant: the scan reads only held presets.
         assert(self.count <= max_presets);
@@ -110,7 +110,7 @@ pub const PresetBook = struct {
         return null;
     }
 
-    /// The preset at an index — read only within the held count.
+    /// The preset at an index -- read only within the held count.
     pub fn at(self: *const PresetBook, i: u32) *const Preset {
         // invariant: an index reads only a held preset.
         assert(i < self.count);
@@ -119,7 +119,7 @@ pub const PresetBook = struct {
 };
 
 /// Apply a named preset over ANY image: look the recipe up by name and replay its edit-list (HUNK11's `apply`,
-/// pure — the source is never touched). Returns a fresh edited image. An absent name refuses `UnknownPreset`
+/// pure -- the source is never touched). Returns a fresh edited image. An absent name refuses `UnknownPreset`
 /// before a verb runs; a verb's own refusal inside the recipe folds through `apply` by that verb's name, adding
 /// no new failure mode.
 pub fn apply_preset(
@@ -136,54 +136,54 @@ pub fn apply_preset(
     return photo_edits.apply(allocator, source, &book.presets[idx].list);
 }
 
-/// The well-known filters, each a small honest recipe over verbs the Photos app already has (HUNK21–27). A fresh
+/// The well-known filters, each a small honest recipe over verbs the Photos app already has (HUNK21-27). A fresh
 /// book preloaded so a keeper says a name and the app knows the recipe. The names are plain words; the recipes use
 /// only proven verbs, so a stock preset never refuses on a well-formed image.
 pub fn stock_book() PresetError!PresetBook {
     var book = PresetBook.init();
 
-    // vivid — colors pop: saturation up by half.
+    // vivid -- colors pop: saturation up by half.
     var vivid = photo_edits.EditList.init();
     try push_ok(&vivid, .{ .saturate = .{ .num = 3, .den = 2 } });
     try book.define("vivid", &vivid);
 
-    // pop — a stronger vivid: saturation doubled.
+    // pop -- a stronger vivid: saturation doubled.
     var pop = photo_edits.EditList.init();
     try push_ok(&pop, .{ .saturate = .{ .num = 2, .den = 1 } });
     try book.define("pop", &pop);
 
-    // mono — a true grayscale: saturation flattened to zero, each pixel its own luma.
+    // mono -- a true grayscale: saturation flattened to zero, each pixel its own luma.
     var mono = photo_edits.EditList.init();
     try push_ok(&mono, .{ .saturate = .{ .num = 0, .den = 1 } });
     try book.define("mono", &mono);
 
-    // noir — high-contrast black and white: grayscale, then contrast pivoted up around the midpoint.
+    // noir -- high-contrast black and white: grayscale, then contrast pivoted up around the midpoint.
     var noir = photo_edits.EditList.init();
     try push_ok(&noir, .{ .saturate = .{ .num = 0, .den = 1 } });
     try push_ok(&noir, .{ .adjust = .{ .brightness = 0, .num = 3, .den = 2 } });
     try book.define("noir", &noir);
 
-    // bright — a gentle lift: brightness up, color untouched.
+    // bright -- a gentle lift: brightness up, color untouched.
     var bright = photo_edits.EditList.init();
     try push_ok(&bright, .{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
     try book.define("bright", &bright);
 
-    // auto — auto-levels: stretch each channel's own range onto the full 0..255.
+    // auto -- auto-levels: stretch each channel's own range onto the full 0..255.
     var auto = photo_edits.EditList.init();
     try push_ok(&auto, .stretch);
     try book.define("auto", &auto);
 
-    // soft — a box blur: the whole image gently softened.
+    // soft -- a box blur: the whole image gently softened.
     var soft = photo_edits.EditList.init();
     try push_ok(&soft, .blur);
     try book.define("soft", &soft);
 
-    // sharp — a high-pass sharpen: edges brought forward.
+    // sharp -- a high-pass sharpen: edges brought forward.
     var sharp = photo_edits.EditList.init();
     try push_ok(&sharp, .sharpen);
     try book.define("sharp", &sharp);
 
-    // sketch — a Sobel edge map: the image reduced to its outlines.
+    // sketch -- a Sobel edge map: the image reduced to its outlines.
     var sketch = photo_edits.EditList.init();
     try push_ok(&sketch, .edges);
     try book.define("sketch", &sketch);
@@ -202,8 +202,8 @@ fn push_ok(list: *photo_edits.EditList, e: photo_edits.Edit) PresetError!void {
 /// Render a whole preset book as its `format filter-presets-v1` record into `out`, returning its length. Each
 /// preset is a `preset <name>` head, its edit-list body (reusing `photo_edits.render_edits` and stripping that
 /// record's own header so the verb grammar is not duplicated), and an `end` terminator. Refuses `Overflow` rather
-/// than writing past the buffer a caller supplied. So a curated book travels as shareable text, and — with
-/// `parse_book` — `render(parse(render(x)))` is a fixed point, exactly as the sprite catalog's is.
+/// than writing past the buffer a caller supplied. So a curated book travels as shareable text, and -- with
+/// `parse_book` -- `render(parse(render(x)))` is a fixed point, exactly as the sprite catalog's is.
 pub fn render_book(book: *const PresetBook, out: []u8) PresetError!u32 {
     // invariant: the book stays within its named ceiling before it is ever rendered.
     assert(book.count <= max_presets);
@@ -240,7 +240,7 @@ pub fn render_book(book: *const PresetBook, out: []u8) PresetError!u32 {
 /// Parse a `format filter-presets-v1` record into a fresh book. Each block is a `preset <name>` head, zero or more
 /// verb lines, and an `end` terminator; the verb lines are handed to `photo_edits.parse_edits` (the one grammar).
 /// A bad header, a line out of place, a missing terminator, a malformed verb, or a duplicate name each refuse
-/// `BadBook` — one honest error at the text edge, the `PresetBook` bounds enforced through `define`.
+/// `BadBook` -- one honest error at the text edge, the `PresetBook` bounds enforced through `define`.
 pub fn parse_book(text: []const u8, out: *PresetBook) PresetError!void {
     out.* = PresetBook.init();
     // invariant: parsing starts from an empty book.
@@ -292,7 +292,7 @@ pub fn parse_book(text: []const u8, out: *PresetBook) PresetError!void {
 //     named refusals each fire ---------------------------------------------------------------------------------
 
 /// Build a small image where each pixel carries a distinct color, so a preset's color work is visible and a
-/// saturate/adjust recipe is unambiguous. Pixel (x,y) = (x·40+20, y·30+10, (x*3+y*7)·5, 255).
+/// saturate/adjust recipe is unambiguous. Pixel (x,y) = (x-40+20, y-30+10, (x*3+y*7)-5, 255).
 fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
@@ -316,13 +316,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const book = try stock_book();
 
     // Applies by name, equalling the recipe by hand: `vivid` over image A equals photos.saturate(A, 3, 2) run by
-    // hand — the name resolves to exactly its recipe, byte for byte.
+    // hand -- the name resolves to exactly its recipe, byte for byte.
     const photos = @import("photos.rye");
     const vivid_a = try apply_preset(garden, &book, "vivid", &img_a);
     const vivid_hand_a = try photos.saturate(garden, &img_a, 3, 2);
     assert(vivid_a.same_bytes(&vivid_hand_a));
 
-    // Applies to ANY image — the property a single content-addressed recipe cannot claim: the SAME preset over a
+    // Applies to ANY image -- the property a single content-addressed recipe cannot claim: the SAME preset over a
     // DIFFERENT image equals THAT image's own recipe by hand.
     const vivid_b = try apply_preset(garden, &book, "vivid", &img_b);
     const vivid_hand_b = try photos.saturate(garden, &img_b, 3, 2);
@@ -334,7 +334,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const noir_hand = try photos.adjust(garden, &noir_gray, 0, 3, 2);
     assert(noir_a.same_bytes(&noir_hand));
 
-    // Distinct presets differ: `vivid` and `mono` over the same image produce different bytes — a name is not a
+    // Distinct presets differ: `vivid` and `mono` over the same image produce different bytes -- a name is not a
     // no-op, it carries its own recipe.
     const mono_a = try apply_preset(garden, &book, "mono", &img_a);
     assert(!vivid_a.same_bytes(&mono_a));
@@ -360,7 +360,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.UnknownPreset) return error.WrongUnknown;
     }
 
-    // Unwelcome: defining a name the book already holds refuses `PresetExists` — a book never shadows a preset.
+    // Unwelcome: defining a name the book already holds refuses `PresetExists` -- a book never shadows a preset.
     {
         var dup = book;
         var one = photo_edits.EditList.init();
@@ -400,9 +400,9 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // HUNK31 — the book travels: render the whole stock book to a `format filter-presets-v1` record, parse it
+    // HUNK31 -- the book travels: render the whole stock book to a `format filter-presets-v1` record, parse it
     // back, and prove render(parse(render(x))) is a fixed point AND a parsed preset applies to the same bytes as
-    // the original — a curated filter set is shareable text, the recipes intact.
+    // the original -- a curated filter set is shareable text, the recipes intact.
     const bookbuf = try garden.alloc(u8, max_book_bytes);
     const bn = try render_book(&book, bookbuf);
     const record = bookbuf[0..bn];
@@ -413,7 +413,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const bn2 = try render_book(&rebuilt, bookbuf2);
     assert(bn2 == bn);
     assert(std.mem.eql(u8, bookbuf2[0..bn2], record));
-    // The rebuilt `noir` applies to the same bytes as the original two-verb recipe — travel preserved the recipe.
+    // The rebuilt `noir` applies to the same bytes as the original two-verb recipe -- travel preserved the recipe.
     const noir_rebuilt = try apply_preset(garden, &rebuilt, "noir", &img_a);
     assert(noir_rebuilt.same_bytes(&noir_hand));
 

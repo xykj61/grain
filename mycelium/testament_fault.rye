@@ -1,22 +1,22 @@
-//! mycelium/testament_fault.rye — a Testament sealed with f ships down still verifies offline (r2).
+//! mycelium/testament_fault.rye -- a Testament sealed with f ships down still verifies offline (r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r2.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r2.
 //! r1 sealed a reading when EVERY ship of a named constellation vouched, and verified the certificate
 //! OFFLINE from its roster names alone. A real dev-net loses nodes: a ship is down when the seal is made.
-//! The roll's Byzantine arithmetic promises a precise fault tolerance — an n-ship roster believes any
+//! The roll's Byzantine arithmetic promises a precise fault tolerance -- an n-ship roster believes any
 //! quorum of at least `n − (n−1)/3` of its own voices, surviving up to `f = (n−1)/3` down. r2 carries that
 //! promise INTO the certificate: a Testament sealed by only `n − f` of its ships still names the WHOLE
-//! roster, and `verify` — booting the full roster from those names, deriving the full threshold, touching
-//! no Dag — believes it; sealing with one ship fewer refuses BelowQuorum, the honest edge of the guarantee.
+//! roster, and `verify` -- booting the full roster from those names, deriving the full threshold, touching
+//! no Dag -- believes it; sealing with one ship fewer refuses BelowQuorum, the honest edge of the guarantee.
 //!
 //! The distinction from Constel's own depart rung (`constel_depart.rye`) is the OFFLINE certificate: there
 //! the survivors reached quorum in one process; here their sealed belief travels as a Testament whose full
-//! roster names — not merely the up ships — carry forward, so a recipient boots the whole constellation and
+//! roster names -- not merely the up ships -- carry forward, so a recipient boots the whole constellation and
 //! measures the survivors against ITS threshold, never a shrunken one. A seal that lost `f` ships still
 //! meets the bar the full names set.
 //!
 //! Composes testament + constel + muster + voucher public API only, editing none. Demo ship and keeper
-//! seeds — no key held, no funds, no network, no real value.
+//! seeds -- no key held, no funds, no network, no real value.
 //!
 //! Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
@@ -35,18 +35,18 @@ const testament = @import("testament.rye");
 pub const pk_len: u32 = testament.pk_len;
 pub const head_len: u32 = testament.head_len;
 
-/// Seal a reading with `down` ships absent — the first `c.count − down` ships gather a voice. The certificate
+/// Seal a reading with `down` ships absent -- the first `c.count − down` ships gather a voice. The certificate
 /// still carries the WHOLE roster's names (a down ship is missing from the seal, never from the roll), so a
 /// verifier boots the full constellation and measures the survivors against its full threshold. Refuses
 /// through Testament when too few are up (BelowQuorum surfaces only at `verify`; the seal itself never
-/// invents a voice). Reads the Dag — sealing is the one step that needs the ledger.
+/// invents a voice). Reads the Dag -- sealing is the one step that needs the ledger.
 pub fn seal_with_down(
     c: *const constel.Constel,
     dag: *const cord.Dag,
     account_pk: []const u8,
     down: u32,
 ) !testament.Testament {
-    // invariant: no more ships go down than the roster holds — at least one stays up to seal.
+    // invariant: no more ships go down than the roster holds -- at least one stays up to seal.
     assert(down < c.count);
     // invariant: a seal attests one full holder identity.
     assert(account_pk.len == pk_len);
@@ -61,7 +61,7 @@ pub fn seal_with_down(
     return t;
 }
 
-// The Testament dev-net roster — the same five named ships r1 sealed (see testament.rye for the naming law).
+// The Testament dev-net roster -- the same five named ships r1 sealed (see testament.rye for the naming law).
 const roster = [_][]const u8{
     "xnvethqua",
     "kwelmirran",
@@ -86,11 +86,11 @@ pub fn main() !void {
     const account_pk = account.public_key.toBytes();
     var dag = try constel.demo_genesis(issuer, account_pk[0..]);
 
-    // The true order-head every honest seal must swear — read once, from the Dag, at sealing time.
+    // The true order-head every honest seal must swear -- read once, from the Dag, at sealing time.
     var expected_head: [head_len]u8 = undefined;
     voucher.order_head_of(&dag, &expected_head);
 
-    // --- Whole roster up — the certificate verifies offline, every ship sealed --------------------------
+    // --- Whole roster up -- the certificate verifies offline, every ship sealed --------------------------
     {
         const t = try seal_with_down(&c, &dag, account_pk[0..], 0);
         assert(t.seal.count == n);
@@ -98,21 +98,21 @@ pub fn main() !void {
         assert(std.mem.eql(u8, t.seal.head_slice(), expected_head[0..]));
     }
 
-    // --- f ships down — still believed OFFLINE, the fault tolerance carried into the certificate --------
+    // --- f ships down -- still believed OFFLINE, the fault tolerance carried into the certificate --------
     // The seal lost f voices, yet the certificate still names ALL n ships, so `verify` boots the full
     // constellation, derives the full threshold, and the survivors' count meets it exactly.
     {
         const t = try seal_with_down(&c, &dag, account_pk[0..], f);
-        // The whole roster travels — down ships are missing from the seal, never from the names.
+        // The whole roster travels -- down ships are missing from the seal, never from the names.
         assert(t.roster_count == n);
-        // The survivors sit exactly at the threshold the FULL named roster derives — one voice from the edge.
+        // The survivors sit exactly at the threshold the FULL named roster derives -- one voice from the edge.
         assert(t.seal.count == threshold);
         assert(try testament.threshold_of(&t) == threshold);
         try testament.verify(&t); // no Dag — the survivors' belief is believed from the names alone
         assert(std.mem.eql(u8, t.seal.head_slice(), expected_head[0..]));
     }
 
-    // --- (f+1) ships down — the certificate honestly refuses, the edge of the guarantee -----------------
+    // --- (f+1) ships down -- the certificate honestly refuses, the edge of the guarantee -----------------
     // The seal is made (fewer voices is not itself a fault); `verify` refuses BelowQuorum because the
     // survivors no longer meet the full roster's threshold.
     {
@@ -124,7 +124,7 @@ pub fn main() !void {
         }
     }
 
-    // --- A permanent departure — a smaller Testament re-derives its own lower threshold and is believed --
+    // --- A permanent departure -- a smaller Testament re-derives its own lower threshold and is believed --
     // A constellation that has permanently shrunk to n−1 names seals its own certificate; because the
     // threshold derives from the certificate's OWN names, the smaller roster asks less, and a seal thin for
     // the full roster's bar is a full, honest quorum for the smaller one.

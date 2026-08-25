@@ -1,20 +1,20 @@
-//! pond/apps/preset_shelf.rye — HUNK36: a keeper reads their installed filter library as a shelf on glass.
+//! pond/apps/preset_shelf.rye -- HUNK36: a keeper reads their installed filter library as a shelf on glass.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK36.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK36.
 //! Design read: active-designing/date/20260813/20260813-185517_hunk-preset-shelf-exploration.md.
-//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO — a keeper reads their whole
+//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO -- a keeper reads their whole
 //! library at a glance (concept only, siloed).
 //!
-//! HUNK35 gave a keeper an honest detailing of their installed books — every book's name and its preset names, read
+//! HUNK35 gave a keeper an honest detailing of their installed books -- every book's name and its preset names, read
 //! from a verified reopen. This rung paints that detailing on glass: `shelf_grid` renders a `DetailListing` onto a
-//! Skate grid, one row per book reading `<name>  <preset…>`, the book name wearing a real palette slot so it stands
-//! out as a chip. The shelf is a PURE view of an already-honest detailing — it can add no new way to lie, and it
+//! Skate grid, one row per book reading `<name>  <preset...>`, the book name wearing a real palette slot so it stands
+//! out as a chip. The shelf is a PURE view of an already-honest detailing -- it can add no new way to lie, and it
 //! refuses `ShelfTooSmall` rather than silently drop a book past the last row: a rendered shelf shows every book or
 //! none. No network, no key, no funds.
 //!
-//! HUNK37 answers that refusal with a window: `shelf_window` renders one page of the library — the books
-//! `[offset, offset + rows)` — so a library larger than the screen is fully reachable one page at a time. Together
-//! the pages cover the whole library in held order, each book once — paging loses nothing.
+//! HUNK37 answers that refusal with a window: `shelf_window` renders one page of the library -- the books
+//! `[offset, offset + rows)` -- so a library larger than the screen is fully reachable one page at a time. Together
+//! the pages cover the whole library in held order, each book once -- paging loses nothing.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_shelf.rye selftest
 
@@ -27,7 +27,7 @@ const skate = @import("brushstroke/skate_grid.rye");
 
 pub const preset_shelf_version = "20260813.185517";
 
-/// The palette slot the book name wears — a real slot (never the sentinel 0), so a name reads as a chip against the
+/// The palette slot the book name wears -- a real slot (never the sentinel 0), so a name reads as a chip against the
 /// presets listed beside it.
 pub const name_slot: u8 = 1;
 
@@ -39,8 +39,8 @@ pub const PresetShelfError = error{
     Overflow,
 };
 
-/// Draw one book's detail onto `grid` at `row`: the row text `<name>  <preset…>` placed with `put_line` (clamped to
-/// the grid width — a display, never an overrun), the book name painted as a chip with `put_color_run`. Shared by
+/// Draw one book's detail onto `grid` at `row`: the row text `<name>  <preset...>` placed with `put_line` (clamped to
+/// the grid width -- a display, never an overrun), the book name painted as a chip with `put_color_run`. Shared by
 /// the whole shelf and the windowed pager so both paint a row identically.
 fn draw_row(grid: *skate.Grid, row: u32, d: *const preset_detail.BookDetail) PresetShelfError!void {
     // invariant: a drawn row sits inside the grid.
@@ -65,7 +65,7 @@ fn draw_row(grid: *skate.Grid, row: u32, d: *const preset_detail.BookDetail) Pre
     if (name_len > 0) grid.put_color_run(row, 0, name_len, name_slot);
 }
 
-/// How many full pages a library of this size needs at `rows` books per page — a ceiling division, so the last
+/// How many full pages a library of this size needs at `rows` books per page -- a ceiling division, so the last
 /// short page still counts. Bounded by the detailing's own count.
 pub fn page_count(listing: *const preset_detail.DetailListing, rows: u32) u32 {
     // invariant: paging needs at least one row per page.
@@ -74,7 +74,7 @@ pub fn page_count(listing: *const preset_detail.DetailListing, rows: u32) u32 {
     return (listing.count + rows - 1) / rows;
 }
 
-/// How many books the page starting at `offset` shows — a full `rows` mid-library, fewer on the last page, zero when
+/// How many books the page starting at `offset` shows -- a full `rows` mid-library, fewer on the last page, zero when
 /// the offset lands at or past the library.
 pub fn window_len(listing: *const preset_detail.DetailListing, rows: u32, offset: u32) u32 {
     // invariant: a window is at least one row tall.
@@ -84,10 +84,10 @@ pub fn window_len(listing: *const preset_detail.DetailListing, rows: u32, offset
     return @min(remaining, rows);
 }
 
-/// Render a page of the library — the books `[offset, offset + rows)` — onto a fresh grid. Unlike `shelf_grid`, a
+/// Render a page of the library -- the books `[offset, offset + rows)` -- onto a fresh grid. Unlike `shelf_grid`, a
 /// window is meant to show a slice, so it never refuses `ShelfTooSmall`; it refuses `BadOffset` when the offset
 /// lands past the library (a page with no book to show), so every page a keeper reaches is a real one. Together the
-/// pages cover the whole library in held order, each book once — paging loses nothing. Pure over the detailing.
+/// pages cover the whole library in held order, each book once -- paging loses nothing. Pure over the detailing.
 pub fn shelf_window(
     allocator: std.mem.Allocator,
     listing: *const preset_detail.DetailListing,
@@ -99,7 +99,7 @@ pub fn shelf_window(
     assert(listing.count <= preset_detail.max_details);
     if (cols == 0 or rows == 0) return error.EmptyShelf;
     if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.ShelfTooLarge;
-    // An offset past the library shows no book — refuse rather than paint an empty page. Offset 0 on an empty
+    // An offset past the library shows no book -- refuse rather than paint an empty page. Offset 0 on an empty
     // library is a real (empty) first page and is allowed.
     if (offset >= listing.count and !(offset == 0 and listing.count == 0)) return error.BadOffset;
 
@@ -118,10 +118,10 @@ pub fn shelf_window(
     return grid;
 }
 
-/// Render a keeper's installed-book detailing onto a Skate grid, one row per book reading `<name>  <preset…>`. The
-/// book name wears `name_slot` so it stands out as a chip. Pure over the detailing — it is read many times and
+/// Render a keeper's installed-book detailing onto a Skate grid, one row per book reading `<name>  <preset...>`. The
+/// book name wears `name_slot` so it stands out as a chip. Pure over the detailing -- it is read many times and
 /// touched never. Refuses `EmptyShelf` on a zero dimension, `ShelfTooLarge` past the map ceiling, and
-/// `ShelfTooSmall` when the grid has fewer rows than the detailing has books — a rendered shelf shows every book or
+/// `ShelfTooSmall` when the grid has fewer rows than the detailing has books -- a rendered shelf shows every book or
 /// none, never a silent drop.
 pub fn shelf_grid(
     allocator: std.mem.Allocator,
@@ -133,11 +133,11 @@ pub fn shelf_grid(
     assert(listing.count <= preset_detail.max_details);
     if (cols == 0 or rows == 0) return error.EmptyShelf;
     if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.ShelfTooLarge;
-    // A shelf shows every book or none — never the books past the last row silently dropped.
+    // A shelf shows every book or none -- never the books past the last row silently dropped.
     if (rows < listing.count) return error.ShelfTooSmall;
 
     var grid = try skate.Grid.init(allocator, cols, rows);
-    // A gentle chip color for the book name — a real slot, never the sentinel.
+    // A gentle chip color for the book name -- a real slot, never the sentinel.
     grid.set_palette(name_slot, .{ .r = 120, .g = 200, .b = 255 });
 
     var i: u32 = 0;
@@ -165,7 +165,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var store: beading.BeadStore = .empty();
     var cat: tablecloth.Catalog = .empty();
 
-    // The nine-preset stock book and a small two-preset custom book — the same real corpus HUNK35 details.
+    // The nine-preset stock book and a small two-preset custom book -- the same real corpus HUNK35 details.
     const stock = try filter_preset.stock_book();
     _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
     var small = filter_preset.PresetBook.init();
@@ -198,7 +198,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.indexOf(u8, row1, "mirror") != null);
     assert(std.mem.indexOf(u8, row1, "quarter") != null);
 
-    // The name is a chip: the first cells of row 0 wear the name slot, the cells past the name do not — a name reads
+    // The name is a chip: the first cells of row 0 wear the name slot, the cells past the name do not -- a name reads
     // distinct from the presets beside it.
     assert(grid.fg_index[0] == name_slot); // first cell of the book name
     const stock_name_len = "stock.presets".len;
@@ -237,7 +237,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.ShelfTooLarge) return error.WrongLarge;
     }
 
-    // HUNK37 — the pager: build a five-book library and prove paging loses nothing. Five distinct books stored, so a
+    // HUNK37 -- the pager: build a five-book library and prove paging loses nothing. Five distinct books stored, so a
     // window at two rows per page needs three pages (2 + 2 + 1).
     var store5: beading.BeadStore = .empty();
     var cat5: tablecloth.Catalog = .empty();
@@ -273,7 +273,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.indexOf(u8, page0.row_cells(1), lib.at(1).name_slice()) != null);
 
     // Paging loses nothing: walk every page in order and the books shown, concatenated, are exactly the whole
-    // library in held order — no book skipped, none shown twice.
+    // library in held order -- no book skipped, none shown twice.
     {
         var seen: u32 = 0;
         var pageno: u32 = 0;

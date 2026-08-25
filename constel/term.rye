@@ -1,28 +1,28 @@
-//! constel/term.rye — FORA16: leadership made safe across re-election. Every rung from FORA10 on assumes ONE STABLE LEADER —
+//! constel/term.rye -- FORA16: leadership made safe across re-election. Every rung from FORA10 on assumes ONE STABLE LEADER --
 //! FORA10 elects a leader once, FORA11 lets that leader commit values, FORA12 orders them into a log. Yet a real network
 //! re-elects: a leader crashes, a partition heals, a new leader rises. The single hardest safety question a consensus protocol
-//! answers is what happens to the OLD leader — the one elected, then superseded, yet still believing it leads and trying to
+//! answers is what happens to the OLD leader -- the one elected, then superseded, yet still believing it leads and trying to
 //! commit. Without a defense it could commit a value the sky has already moved past, forking the ledger in TIME. This rung takes
-//! that one concern: a TERM — a monotonic logical clock on leadership — so that AN OLD LEADER CAN NEVER COMMIT.
+//! that one concern: a TERM -- a monotonic logical clock on leadership -- so that AN OLD LEADER CAN NEVER COMMIT.
 //!
 //! A term is a u32 that only ever climbs. Every pier tracks the highest term it has seen (ground term 0 before any leader). A
 //! leader is elected FOR a term, and a decree carries ITS term. The rule is one line, and it is the whole safety:
-//!   * a voter whose current term is GREATER than a decree's term refuses StaleTerm — it moved to a newer leader, so it will not
+//!   * a voter whose current term is GREATER than a decree's term refuses StaleTerm -- it moved to a newer leader, so it will not
 //!     lend its vote to an older one;
 //!   * a voter whose current term is at or below the decree's term adopts that term (monotonically) and accepts as in FORA11.
 //! The safety follows from FORA9's intersection lemma: once a STRICT MAJORITY has advanced to term T (exactly what electing a
-//! leader in T does), any decree in a term < T gathers accepts from at most the minority that has not advanced — below the
-//! threshold — so it can never commit. The old leader is not forbidden by fiat; it is OUT-VOTED by construction.
+//! leader in T does), any decree in a term < T gathers accepts from at most the minority that has not advanced -- below the
+//! threshold -- so it can never commit. The old leader is not forbidden by fiat; it is OUT-VOTED by construction.
 //!
-//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 //! FORA16. Design read: active-designing/date/20260814/20260814-083300_fora16-constel-terms-stale-leader.md
-//! Stands on: constel/decree.rye (FORA11) — the Decree a term guards; constel/quorum.rye (FORA9) — majority_of, the intersection
-//! lemma the safety spends; constel/census.rye (FORA8) — announce/respond/hear collect accepts at the border; constel/
-//! switchboard.rye (FORA6) — the medium; constel/roster.rye (FORA1) — the bound.
+//! Stands on: constel/decree.rye (FORA11) -- the Decree a term guards; constel/quorum.rye (FORA9) -- majority_of, the intersection
+//! lemma the safety spends; constel/census.rye (FORA8) -- announce/respond/hear collect accepts at the border; constel/
+//! switchboard.rye (FORA6) -- the medium; constel/roster.rye (FORA1) -- the bound.
 //!
-//! Purely LOCAL — a bounded term table and a decree guarded by it, over the switchboard on one bench, siloed to constel/, run
-//! from inside the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real
-//! hardware / any real wire — and gate %4 — real Kumara — both untouched).
+//! Purely LOCAL -- a bounded term table and a decree guarded by it, over the switchboard on one bench, siloed to constel/, run
+//! from inside the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 -- real
+//! hardware / any real wire -- and gate %4 -- real Kumara -- both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/term.rye selftest
 
@@ -40,16 +40,16 @@ const decree = @import("decree.rye");
 
 pub const term_version = "20260814.083300";
 
-/// The term before any leader has been elected — the ground state every pier starts in. A term only ever climbs from here.
+/// The term before any leader has been elected -- the ground state every pier starts in. A term only ever climbs from here.
 pub const ground_term: u32 = 0;
 
 pub const TermError = error{
-    /// A voter whose current term is already greater than a decree's term refuses to lend its vote — it has moved to a newer
+    /// A voter whose current term is already greater than a decree's term refuses to lend its vote -- it has moved to a newer
     /// leader. This one refusal is the whole safety of the rung: it starves a stale leader of the majority it would need.
     StaleTerm,
 } || decree.DecreeError;
 
-/// Each roster slot's highest-seen term — a bounded [max_piers]u32, exactly like the roster it indexes. A term is monotonic per
+/// Each roster slot's highest-seen term -- a bounded [max_piers]u32, exactly like the roster it indexes. A term is monotonic per
 /// slot: observe advances it, and nothing ever lowers it.
 pub const TermTable = struct {
     term: [roster.max_piers]u32 = [_]u32{ground_term} ** roster.max_piers,
@@ -63,19 +63,19 @@ pub const TermTable = struct {
         return self.term[slot];
     }
 
-    /// Advance a slot's term to max(current, t) and report whether it moved. Monotonic by construction — a term never travels
+    /// Advance a slot's term to max(current, t) and report whether it moved. Monotonic by construction -- a term never travels
     /// backward, which is exactly why a pier that has seen a newer leader can never be talked back into an older one.
     pub fn observe(self: *TermTable, slot: u32, t: u32) bool {
         // invariant: only a real slot is ever advanced.
         assert(slot < self.size);
         const before = self.term[slot];
         if (t > before) self.term[slot] = t;
-        // invariant: the term never decreased — the post-state is at least the pre-state.
+        // invariant: the term never decreased -- the post-state is at least the pre-state.
         assert(self.term[slot] >= before);
         return self.term[slot] > before;
     }
 
-    /// How many slots stand at term t or higher — the countable form of the majority argument. Once this reaches a strict
+    /// How many slots stand at term t or higher -- the countable form of the majority argument. Once this reaches a strict
     /// majority for term T, no decree below T can ever commit.
     pub fn at_least(self: *const TermTable, t: u32) u32 {
         var n: u32 = 0;
@@ -102,7 +102,7 @@ pub const TermedDecree = struct {
         return .{ .inner = decree.Decree{ .value = value, .size = size }, .term = term };
     }
 
-    /// Record one termed accept. A voter whose current term is greater than this decree's term refuses StaleTerm — its vote is
+    /// Record one termed accept. A voter whose current term is greater than this decree's term refuses StaleTerm -- its vote is
     /// not lent to an older leader. Otherwise the voter adopts this term (monotonic) and the accept records through the inner
     /// decree, inheriting DoubleAccept (a second cast) and WrongValue (an off-value accept) unchanged.
     pub fn accept(self: *TermedDecree, terms: *TermTable, voter: u32, value: u32) TermError!void {
@@ -121,7 +121,7 @@ pub const TermedDecree = struct {
     }
 
     /// Commit the proposed value when a strict majority of up-to-date piers accepted it, else refuse NoDecree. This is FORA11's
-    /// seal unchanged — the term guard has already filtered stale voters out of the count, so a majority here is a majority of
+    /// seal unchanged -- the term guard has already filtered stale voters out of the count, so a majority here is a majority of
     /// piers that agree this decree's term is current.
     pub fn commit(self: *const TermedDecree) TermError!u32 {
         return self.inner.commit();
@@ -129,7 +129,7 @@ pub const TermedDecree = struct {
 };
 
 /// The whole round over the switchboard, term-guarded: announce, then every other member responds+hears at the naming-law
-/// border and attempts a termed accept — a member that has moved on refuses StaleTerm and is simply NOT gathered (the round
+/// border and attempts a termed accept -- a member that has moved on refuses StaleTerm and is simply NOT gathered (the round
 /// continues, it does not fault), while a real fault (NoSuchPier, VowelPresent at the border) still surfaces. Commit reflects
 /// only the up-to-date majority, so a stale leader whose sky has advanced can never reach the threshold.
 pub fn run_termed_decree(sb: *switchboard.Switchboard, terms: *TermTable, leader: []const u8, term: u32, value: u32) TermError!u32 {
@@ -170,7 +170,7 @@ pub fn run_termed_decree(sb: *switchboard.Switchboard, terms: *TermTable, leader
 //     COMMIT proven at the value level and again over a real sky; a full constellation of eight runs bounded. -----------------
 
 fn run_selftest() !u8 {
-    // 1. The term table is MONOTONIC — observe advances up and never down; a lower observe is a no-op; current reads back.
+    // 1. The term table is MONOTONIC -- observe advances up and never down; a lower observe is a no-op; current reads back.
     {
         var t = TermTable{ .size = 4 };
         assert(t.current(0) == ground_term);
@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         assert(t.at_least(3) == 1 and t.at_least(1) == 1 and t.at_least(4) == 0);
     }
 
-    // 2. A GROUND COMMIT — a fresh termed decree in term 1 with every pier at ground commits, and every accepting pier adopts
+    // 2. A GROUND COMMIT -- a fresh termed decree in term 1 with every pier at ground commits, and every accepting pier adopts
     //    term 1.
     {
         var terms = TermTable{ .size = 4 };
@@ -195,7 +195,7 @@ fn run_selftest() !u8 {
         assert(terms.at_least(1) == 3); // the three that accepted adopted term 1
     }
 
-    // 3. STALE TERM — a voter already at a higher term refuses a lower-term accept, and its vote is not recorded.
+    // 3. STALE TERM -- a voter already at a higher term refuses a lower-term accept, and its vote is not recorded.
     {
         var terms = TermTable{ .size = 4 };
         _ = terms.observe(1, 5); // slot 1 has seen term 5
@@ -206,7 +206,7 @@ fn run_selftest() !u8 {
         assert(terms.current(1) == 5); // and its term was not lowered
     }
 
-    // 4. AN OLD LEADER CAN'T COMMIT — the crux, at the value level. A term-1 decree commits over a sky of four; a majority then
+    // 4. AN OLD LEADER CAN'T COMMIT -- the crux, at the value level. A term-1 decree commits over a sky of four; a majority then
     //    advances to term 2 (a new election); the old term-1 leader now gathers only its own vote (the others refuse StaleTerm)
     //    and refuses NoDecree, while the new term-2 leader commits.
     {
@@ -234,7 +234,7 @@ fn run_selftest() !u8 {
         assert(stale.support() == 1); // only the old leader itself
         if (stale.commit()) |_| return error.OldLeaderCommitted else |e| if (e != error.NoDecree) return error.WrongOldLeader;
 
-        // The NEW leader (slot 1, at term 2) commits in term 2 — the advanced majority accepts.
+        // The NEW leader (slot 1, at term 2) commits in term 2 -- the advanced majority accepts.
         var fresh = TermedDecree.init(2, 300, 4);
         try fresh.accept(&terms, 1, 300);
         try fresh.accept(&terms, 2, 300);
@@ -242,7 +242,7 @@ fn run_selftest() !u8 {
         assert((try fresh.commit()) == 300);
     }
 
-    // 5. AN OLD LEADER CAN'T COMMIT — the same story over a REAL sky, driven through announce, respond, and hear (each accept
+    // 5. AN OLD LEADER CAN'T COMMIT -- the same story over a REAL sky, driven through announce, respond, and hear (each accept
     //    proven present at the border). A term-1 round commits; a majority advances to term 2; the old term-1 run refuses
     //    NoDecree while a term-2 run commits.
     {
@@ -261,17 +261,17 @@ fn run_selftest() !u8 {
         _ = terms.observe(2, 2);
         _ = terms.observe(3, 2);
 
-        // The old leader (slot 0, term 1) runs a term-1 decree — the advanced majority refuses StaleTerm, so it cannot commit.
+        // The old leader (slot 0, term 1) runs a term-1 decree -- the advanced majority refuses StaleTerm, so it cannot commit.
         if (run_termed_decree(&sb, &terms, l0n, 1, 22)) |_| return error.OldWireLeaderCommitted else |e| if (e != error.NoDecree) return error.WrongOldWire;
 
-        // The new leader (slot 1, term 2) runs a term-2 decree — the advanced majority accepts, so it commits.
+        // The new leader (slot 1, term 2) runs a term-2 decree -- the advanced majority accepts, so it commits.
         const l1 = try name_of(&sb, 1);
         var l1b: [name.max_ship_len]u8 = undefined;
         const l1n = copy_name(&l1b, l1);
         assert((try run_termed_decree(&sb, &terms, l1n, 2, 33)) == 33);
     }
 
-    // 6. A full constellation of eight runs a termed decree bounded — the round interleaves respond and hear, so no ChannelFull.
+    // 6. A full constellation of eight runs a termed decree bounded -- the round interleaves respond and hear, so no ChannelFull.
     {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(roster.max_piers);
@@ -294,14 +294,14 @@ fn run_selftest() !u8 {
     return 0;
 }
 
-/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+/// The name at a roster slot -- a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
 fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
     // invariant: only a slot within the current constellation is ever named.
     assert(slot < sb.size());
     return sb.roster.member(slot);
 }
 
-/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice -- respond/hear mutate
 /// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
 fn copy_name(dst: []u8, src: []const u8) []const u8 {
     // invariant: a pier name always fits the ship bound, so the copy never overruns.

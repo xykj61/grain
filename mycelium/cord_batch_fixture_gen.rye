@@ -1,17 +1,17 @@
-//! mycelium/cord_batch_fixture_gen.rye — reproducibly emit the batched Cord fixture (r4 support).
+//! mycelium/cord_batch_fixture_gen.rye -- reproducibly emit the batched Cord fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - fact batching - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
-//! Seats the honest batched scene r1/r2/r3 use — a round-0 batch of the two genesis
-//! issues and a round-1 batch of the tax and the star reserve — commits it, and
+//! Seats the honest batched scene r1/r2/r3 use -- a round-0 batch of the two genesis
+//! issues and a round-1 batch of the tax and the star reserve -- commits it, and
 //! renders it to a `format cord-batch-v1` record on stdout: the exact bytes
 //! `mycelium/cord_batch_true.rye` reads back and the r4 witness cross-checks against
 //! an independent awk reading. Deterministic: seeded demo keys and a pure commit mean
 //! the same bytes every run, so the on-disk fixture is what the batched Cord emits,
 //! never a hand-mock.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch_fixture_gen.rye \
 //!     > tools/fixtures/cord_batch_dag.bron
@@ -30,7 +30,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// Seat the honest two-batch scene — the same scene the batched Cord's selftests use.
+/// Seat the honest two-batch scene -- the same scene the batched Cord's selftests use.
 fn seat_batch_dag(out: *cord_batch.BatchDag) !void {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);
@@ -62,7 +62,7 @@ pub fn main() !void {
     const pl = try cord_batch_bron.from_batch_dag(&dag);
     var buf: [cord_batch_bron.max_record]u8 = undefined;
     const n = try cord_batch_bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_batch_bron.max_record);
     print("{s}", .{buf[0..n]});

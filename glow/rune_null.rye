@@ -1,9 +1,9 @@
 //! glow-book: runes.md#g-null
-//! glow/rune_null.rye — parses Glow's `?~` null-test rune head.
+//! glow/rune_null.rye -- parses Glow's `?~` null-test rune head.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `?` category: `?~` is the null test. The brief's composition uses
-//! `?~  records.cur  root` — if the subject is null, take the then arm
+//! `?~  records.cur  root` -- if the subject is null, take the then arm
 //! (`root`); else continue. This extracts the subject wing only. Then/else
 //! arms and list-null semantics stay later. Sixth rune head.
 //!
@@ -38,7 +38,7 @@ fn is_wing_char(c: u8) bool {
     return c == '.' or c == '-' or c == '_';
 }
 
-/// Parses one line of Glow's `?~` rune. Subject only — not then/else arms.
+/// Parses one line of Glow's `?~` rune. Subject only -- not then/else arms.
 pub fn parse(line: []const u8) ParseError!NullSpec {
     if (line.len < 2 or !std.mem.eql(u8, line[0..2], "?~")) return error.NotANullTest;
 

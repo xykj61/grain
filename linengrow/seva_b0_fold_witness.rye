@@ -1,4 +1,4 @@
-//! linengrow/seva_b0_fold_witness.rye — proves seva_b0_fold.run_demo_fold
+//! linengrow/seva_b0_fold_witness.rye -- proves seva_b0_fold.run_demo_fold
 //! returns the same session root HAWM1 already proved on Android.
 //!
 //!   rye build linengrow/seva_b0_fold_witness.rye \

@@ -1,6 +1,6 @@
-//! mycelium/warrant_bron.rye — a validator-set handoff travels as a readable record (r2).
+//! mycelium/warrant_bron.rye -- a validator-set handoff travels as a readable record (r2).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - the Warrant - rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 //!
 //! r1 bound a succession to a quorum of the outgoing roll: a successor validator set is authorized only
@@ -10,7 +10,7 @@
 //! outgoing validator, in endorsement order.
 //!
 //! The crux is THE HANDOFF'S VERDICT SURVIVES THE WIRE: a Warrant parsed from bytes, judged against the two
-//! rolls, reaches the identical verdict as the certificate in memory — a lawful handoff passes, the
+//! rolls, reaches the identical verdict as the certificate in memory -- a lawful handoff passes, the
 //! successor's own keys refuse `NotMember`, a re-pointed one refuses `DigestMismatch`. A recipient re-judges
 //! the same succession r1 enforced, holding only the two rolls and the record. Render writes it, parse reads
 //! it back byte-for-byte, so a round trip is a fixed point.
@@ -19,7 +19,7 @@
 //! epoch/prev/next `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line `BadLine`,
 //! a bad hex field `BadHex`, a bad epoch `BadInt`, a repeated endorser `DuplicateSigner`, an over-full
 //! certificate `WarrantFull`. Composes warrant.rye + muster.rye public API only. Siloed, dev-only, demo
-//! seeds — no key, no funds, no network, no custody.
+//! seeds -- no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/warrant_bron.rye
 
@@ -33,7 +33,7 @@ const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// The record buffer bound — a full certificate's endorsement lines fit with room.
+/// The record buffer bound -- a full certificate's endorsement lines fit with room.
 pub const max_record: u32 = 8192;
 
 pub const BronError = error{
@@ -78,7 +78,7 @@ fn from_hex(text: []const u8, out: []u8) BronError!void {
     }
 }
 
-/// Render one Warrant to a `format warrant-v1` record — epoch, prev/next digest hex, one endorse line per
+/// Render one Warrant to a `format warrant-v1` record -- epoch, prev/next digest hex, one endorse line per
 /// signer in endorsement order. Refuses an overflow rather than a partial record.
 pub fn render(w: *const warrant.Warrant, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
@@ -108,7 +108,7 @@ pub fn render(w: *const warrant.Warrant, out: []u8) BronError!u32 {
 }
 
 /// Split a line into up to three tokens; returns the count (or four to signal a token past any line's
-/// width — an endorse line, at three, is the widest).
+/// width -- an endorse line, at three, is the widest).
 fn tokens(line: []const u8, out: *[3][]const u8) u32 {
     var count: u32 = 0;
     var it = std.mem.tokenizeScalar(u8, line, ' ');
@@ -121,7 +121,7 @@ fn tokens(line: []const u8, out: *[3][]const u8) u32 {
 }
 
 /// Parse a `format warrant-v1` record into `out`, appending each endorsement with the same duplicate and
-/// bound laws r1's `endorse` keeps. Refuses a record missing its epoch, prev, or next line — a whole
+/// bound laws r1's `endorse` keeps. Refuses a record missing its epoch, prev, or next line -- a whole
 /// certificate names all three.
 pub fn parse(text: []const u8, out: *warrant.Warrant) BronError!void {
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -203,7 +203,7 @@ pub fn main() !void {
     const prev = try muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x44 });
     const next = try muster_of(&[_]u8{ 0xA1, 0xB2, 0xC3 });
 
-    // A lawful handoff — three of the four outgoing validators endorse the fresh successor.
+    // A lawful handoff -- three of the four outgoing validators endorse the fresh successor.
     var w = try warrant.open(1, &prev, &next);
     try warrant.endorse(&w, seeded(0x11));
     try warrant.endorse(&w, seeded(0x22));
@@ -245,7 +245,7 @@ pub fn main() !void {
         }
     }
     {
-        // A re-pointed certificate — the recovered handoff judged against a different successor — refuses.
+        // A re-pointed certificate -- the recovered handoff judged against a different successor -- refuses.
         const other = try muster_of(&[_]u8{ 0xD4, 0xE5, 0xF6 });
         if (warrant.verify_warrant(&recovered, &prev, &other)) |_| return error.Repointed else |err| {
             if (err != error.DigestMismatch) return error.WrongRepoint;
@@ -291,7 +291,7 @@ pub fn main() !void {
             if (err != error.BadInt) return error.WrongBadInt;
         }
     }
-    // Refusal: a repeated endorser refuses DuplicateSigner — a validator signs the handoff once on the wire.
+    // Refusal: a repeated endorser refuses DuplicateSigner -- a validator signs the handoff once on the wire.
     {
         var db: [max_record]u8 = undefined;
         const dl = try render(&w, db[0..]);

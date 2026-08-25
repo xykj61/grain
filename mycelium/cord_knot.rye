@@ -1,32 +1,32 @@
-//! mycelium/cord_knot.rye — the Knot: a bounded Cord ties off its committed past.
+//! mycelium/cord_knot.rye -- the Knot: a bounded Cord ties off its committed past.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r1 — the crux.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
-//! The Cord's Dag is statically allocated (cord.cord_max_blocks = 256) — a
+//! The Cord's Dag is statically allocated (cord.cord_max_blocks = 256) -- a
 //! feature, exactly TigerBeetle's discipline: a consensus that cannot fail by
 //! running out of memory under load. Yet a bound reached is a mesh that stops. A
 //! ledger meant to run for years cannot hold every block it ever saw in one fixed
 //! array. From TigerBeetle comes the checkpointing insight: fold the committed
 //! past into a summary, prune it, continue from the summary as if from genesis.
-//! Clean-room — TigerBeetle is studied, never copied.
+//! Clean-room -- TigerBeetle is studied, never copied.
 //!
 //! Grown BESIDE the elder, never over it: cord.rye and fold.rye stay green
 //! binaries; this composes their public API only. A `Knot` seals a committed
-//! Cord's `fold.FoldState` (issued · taxed · every reserved star) under a SHA-256
-//! digest. It carries no signature — a Knot is a deterministic function of the
+//! Cord's `fold.FoldState` (issued - taxed - every reserved star) under a SHA-256
+//! digest. It carries no signature -- a Knot is a deterministic function of the
 //! committed Dag, so any node folds the identical Knot; its digest is
 //! integrity-in-travel, never authority. Kumara still signs each fact, the Cord
-//! still orders the blocks, the fold still decides the supply — the Knot only lets
+//! still orders the blocks, the fold still decides the supply -- the Knot only lets
 //! the first two be pruned once the third has summed them.
 //!
 //! The crux: folding new facts onto a sealed Knot yields the byte-identical supply
 //! as folding the whole history from empty, and every fold invariant
-//! (non-negative supply · star-uniqueness · each fact's own signature) holds
-//! across the cut — so a node may discard every block before the Knot and keep
+//! (non-negative supply - star-uniqueness - each fact's own signature) holds
+//! across the cut -- so a node may discard every block before the Knot and keep
 //! only the Knot plus its live Dag, bounded forever.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot.rye
 
@@ -39,7 +39,7 @@ const cord = @import("cord.rye");
 
 const Sha256 = std.crypto.hash.sha2.Sha256;
 
-/// The digest that seals a Knot — SHA-256 over the state's canonical bytes.
+/// The digest that seals a Knot -- SHA-256 over the state's canonical bytes.
 pub const knot_digest_len: u32 = 32;
 
 /// A Knot is the folded supply at a committed cut, sealed so it can travel and be
@@ -50,7 +50,7 @@ pub const Knot = struct {
     digest: [knot_digest_len]u8 = undefined,
 };
 
-/// Update a running hash with a u64, little-endian — the elder Cord's own manual
+/// Update a running hash with a u64, little-endian -- the elder Cord's own manual
 /// encoding, so a Knot's canonical bytes are as legible as a block's.
 fn put_u64(h: *Sha256, v: u64) void {
     var b: [8]u8 = undefined;
@@ -83,7 +83,7 @@ fn put_u32(h: *Sha256, v: u32) void {
     h.update(&b);
 }
 
-/// The Knot's canonical digest: issued · taxed · star_count, then each reserved
+/// The Knot's canonical digest: issued - taxed - star_count, then each reserved
 /// star's length and name, streamed so no giant buffer is needed for a state that
 /// may hold up to fold.myc_log_max_facts stars.
 fn knot_digest(state: *const fold.FoldState, out: *[knot_digest_len]u8) void {
@@ -106,7 +106,7 @@ fn knot_digest(state: *const fold.FoldState, out: *[knot_digest_len]u8) void {
     h.final(out);
 }
 
-/// Seal a folded supply into a Knot — the deterministic checkpoint of a committed
+/// Seal a folded supply into a Knot -- the deterministic checkpoint of a committed
 /// history. A freshly sealed Knot always verifies.
 pub fn seal(state: fold.FoldState) Knot {
     // invariant: only a lawful fold state may be sealed.
@@ -120,7 +120,7 @@ pub fn seal(state: fold.FoldState) Knot {
     return k;
 }
 
-/// True when the Knot's digest matches its sealed state — a Knot that traveled and
+/// True when the Knot's digest matches its sealed state -- a Knot that traveled and
 /// was corrupted fails here before a single grain of it is trusted.
 pub fn verify(k: *const Knot) bool {
     // invariant: a Knot's state is always a lawful fold state.
@@ -132,7 +132,7 @@ pub fn verify(k: *const Knot) bool {
     return std.mem.eql(u8, d[0..], k.digest[0..]);
 }
 
-/// Seal a committed Cord Dag to a Knot — commit the mesh to one order, flatten the
+/// Seal a committed Cord Dag to a Knot -- commit the mesh to one order, flatten the
 /// committed facts, fold them by the real Mycelium law, and tie off the result.
 pub fn seal_dag(dag: *const cord.Dag) error{
     IdentityRefused,
@@ -196,7 +196,7 @@ fn star_present(state: *const fold.FoldState, name: []const u8) bool {
 
 /// Deep supply equality: issued, taxed, and the whole reserved-star set (names are
 /// unique, so equal count plus every one of x's stars present in y is set
-/// equality). This is the crux's assertion — a continued fold matches a whole one.
+/// equality). This is the crux's assertion -- a continued fold matches a whole one.
 pub fn states_match(x: *const fold.FoldState, y: *const fold.FoldState) bool {
     // invariant: both star sets are bounded before comparison.
     assert(x.star_count <= fold.myc_log_max_facts);
@@ -234,7 +234,7 @@ fn make_facts() !Facts {
 }
 
 /// Build a Cord Dag over the four facts: a, b as round-0 roots; c, d as round-1
-/// children referencing both roots — the same demo history the batching arc folds.
+/// children referencing both roots -- the same demo history the batching arc folds.
 fn full_dag(f: *const Facts) !cord.Dag {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);
@@ -257,7 +257,7 @@ fn full_dag(f: *const Facts) !cord.Dag {
     return dag;
 }
 
-/// The prefix Dag — just the two genesis issues, the history a node checkpoints
+/// The prefix Dag -- just the two genesis issues, the history a node checkpoints
 /// before its Dag fills.
 fn prefix_dag(f: *const Facts) !cord.Dag {
     const ka = seeded(0xA1);
@@ -270,7 +270,7 @@ fn prefix_dag(f: *const Facts) !cord.Dag {
     return dag;
 }
 
-/// The suffix Dag — a fresh epoch rooted at the Knot: c, d as round-0 roots
+/// The suffix Dag -- a fresh epoch rooted at the Knot: c, d as round-0 roots
 /// referencing no pruned block. Committing it flattens the next-epoch facts.
 fn suffix_dag(f: *const Facts) !cord.Dag {
     const kc = seeded(0xC3);
@@ -295,7 +295,7 @@ fn dag_log(dag: *const cord.Dag) fold.Log {
 pub fn main() !void {
     const f = try make_facts();
 
-    // The whole history folded from empty — the truth the Knot must match.
+    // The whole history folded from empty -- the truth the Knot must match.
     var whole = try full_dag(&f);
     const full_state = try fold.fold_log(&dag_log(&whole));
     if (full_state.issued != 1000) return error.SupplyIssued;
@@ -304,7 +304,7 @@ pub fn main() !void {
     if (full_state.star_count != 1) return error.StarCount;
 
     // The crux: checkpoint the prefix, continue the suffix onto the Knot, and the
-    // supply is byte-identical to the whole history — the network never notices
+    // supply is byte-identical to the whole history -- the network never notices
     // where the past was tied off.
     var pre = try prefix_dag(&f);
     const knot = try seal_dag(&pre);
@@ -315,21 +315,21 @@ pub fn main() !void {
     const continued = try continue_verified(&knot, &suf_log);
     if (!states_match(&full_state, &continued)) return error.KnotChangedSupply;
 
-    // Boundary: the Knot at genesis (empty prefix) — continue the whole history
+    // Boundary: the Knot at genesis (empty prefix) -- continue the whole history
     // onto an empty checkpoint and reach the identical supply.
     const knot_genesis = seal(fold.FoldState{});
     const whole_log = dag_log(&whole);
     const from_genesis = try continue_verified(&knot_genesis, &whole_log);
     if (!states_match(&full_state, &from_genesis)) return error.GenesisMismatch;
 
-    // Boundary: the full prefix (empty suffix) — checkpoint everything, continue
+    // Boundary: the full prefix (empty suffix) -- checkpoint everything, continue
     // nothing, and the Knot already carries the whole supply.
     const knot_all = try seal_dag(&whole);
     const empty_log = fold.Log.empty();
     const from_all = try continue_verified(&knot_all, &empty_log);
     if (!states_match(&full_state, &from_all)) return error.FullPrefixMismatch;
 
-    // Refusal: a Knot corrupted after sealing refuses whole — the digest catches
+    // Refusal: a Knot corrupted after sealing refuses whole -- the digest catches
     // what a silent bit-flip in travel would otherwise hide.
     var knot_bad = knot;
     knot_bad.state.issued += 1;
@@ -340,11 +340,11 @@ pub fn main() !void {
     }
 
     // Refusal across the cut: a suffix tax exceeding the checkpointed supply
-    // overdraws — non-negativity holds against the tied-off past.
+    // overdraws -- non-negativity holds against the tied-off past.
     const kc = seeded(0xC3);
     const over = fold.mint_fact(kc, fold.kind_tax, 800, "", "over-tax") orelse return error.MintOver;
     // Built raw, not via append_fact: this fact is invalid from empty (a tax with
-    // no issue behind it) and lawful only against the checkpointed supply — which
+    // no issue behind it) and lawful only against the checkpointed supply -- which
     // is exactly why the Knot must still refuse it when it overdraws that supply.
     var over_log = fold.Log.empty();
     over_log.facts[0] = over;
@@ -355,7 +355,7 @@ pub fn main() !void {
         if (err != error.Overdraw) return error.WrongOverdraw;
     }
 
-    // Refusal across the cut: a suffix star already sealed in the Knot refuses —
+    // Refusal across the cut: a suffix star already sealed in the Knot refuses --
     // star-uniqueness holds across the boundary.
     const kd = seeded(0xD4);
     const dup = fold.mint_fact(kd, fold.kind_star_reserve, 50, "vega", "dup") orelse return error.MintDup;

@@ -1,19 +1,19 @@
-//! pond/apps/ship_pilot_ready.rye — TACT Journey 1, Rung 4: the ready-to-run report.
+//! pond/apps/ship_pilot_ready.rye -- TACT Journey 1, Rung 4: the ready-to-run report.
 //!
 //! Rungs one through three fixed the arc and wired its identity and customs steps to real
-//! modules. This rung closes Ship-Pilot's agent-doable crux — the whole first-run walked end to
+//! modules. This rung closes Ship-Pilot's agent-doable crux -- the whole first-run walked end to
 //! end, every step wired real, and a readiness report a keeper reads at the finish.
 //!
 //! The place step now decodes the settled identity's point to a real topology place (a galaxy
 //! under the compass sky); the app step names a runnable Pond app off a small allow-list of what
 //! `pond/bin` truly builds. With identity settled, place assigned, customs placing, and a real
-//! app named, the pilot reaches PILOT READY and the report names the concrete facts — the settled
+//! app named, the pilot reaches PILOT READY and the report names the concrete facts -- the settled
 //! point, its place, the placed mark, the runnable app. Any step still unmet holds the pilot
-//! exactly there, and the report says where — the first-run never claims ready on a step it did
+//! exactly there, and the report says where -- the first-run never claims ready on a step it did
 //! not prove.
 //!
 //! Composed over the spine (r1), the real identity (r2), and the real customs (r3). Demo keeper
-//! seeds only; the maintainer's own Kumara instance stays custody gate %4. It reads no network —
+//! seeds only; the maintainer's own Kumara instance stays custody gate %4. It reads no network --
 //! provisioning a real Pond host stays custody gate %2; this rung proves the arc, not the host.
 //!
 //!   rye build pond/apps/ship_pilot_ready.rye -femit-bin=pond/bin/ship-pilot-ready
@@ -34,7 +34,7 @@ pub const ship_pilot_ready_version = "20260812.172129";
 
 pub const max_ready: u32 = pilot.max_report + 128; // the pilot arc plus the named facts
 
-// The runnable Pond apps a first-run may name — a small allow-list of what pond/bin truly
+// The runnable Pond apps a first-run may name -- a small allow-list of what pond/bin truly
 // builds, so the app step names something real, never an invented binary.
 const runnable_apps = [_][]const u8{ "drawn-terminal", "mantra-browser", "quin-host" };
 
@@ -46,7 +46,7 @@ pub fn app_runnable(name: []const u8) bool {
     return false;
 }
 
-/// Assign the settled point its place in the topology — a genesis point decodes to a galaxy.
+/// Assign the settled point its place in the topology -- a genesis point decodes to a galaxy.
 /// Returns the galaxy index, or null when the point names no galaxy place.
 pub fn assign_place(point: u32) ?u8 {
     const addr = topology.decode(point) orelse return null;
@@ -87,7 +87,7 @@ pub fn pilot_ready(id: *const identity.Identity, mark: []const u8, app_name: []c
     return p;
 }
 
-/// Render the readiness report a keeper reads at the finish — the named facts, then the pilot's
+/// Render the readiness report a keeper reads at the finish -- the named facts, then the pilot's
 /// own arc verdict. Refuses when the rendering exceeds its bounded buffer.
 pub fn ready_report(
     id: *const identity.Identity,
@@ -146,7 +146,7 @@ fn welcome_full_arc_ready() !void {
     print("ship_pilot_ready: the whole arc walked real and reached PILOT READY; the report named the facts.\n", .{});
 }
 
-/// An app the tree does not build holds the pilot at the app step — the first-run never claims
+/// An app the tree does not build holds the pilot at the app step -- the first-run never claims
 /// ready on an invented binary.
 fn unwelcome_unknown_app_holds() !void {
     var buf: [max_ready]u8 = undefined;
@@ -159,7 +159,7 @@ fn unwelcome_unknown_app_holds() !void {
     print("ship_pilot_ready: an app the tree does not build held the pilot at the app step.\n", .{});
 }
 
-/// A held customs mark stops the arc before the app step — the report says where it held, and
+/// A held customs mark stops the arc before the app step -- the report says where it held, and
 /// never names PILOT READY.
 fn unwelcome_held_customs_stops_before_app() !void {
     var buf: [max_ready]u8 = undefined;

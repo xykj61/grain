@@ -1,4 +1,4 @@
-//! ember/ember.rye — Kiln corpus selftest (catalog · query · lap-2 filters · overflow).
+//! ember/ember.rye -- Oven corpus selftest (catalog - query - lap-2 filters - overflow).
 //!
 //!   rye build ember/ember.rye -femit-bin=ember/bin/ember
 //!   ember/bin/ember selftest

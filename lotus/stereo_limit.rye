@@ -1,31 +1,31 @@
-//! lotus/stereo_limit.rye — ALES158: the brickwall limiter carried into stereo, the ratio→∞ corner of the linked gain — both a true ceiling and an image held whole. ALES49 named `limit`: a hard ceiling the signal may
-//! touch yet never cross — a sample within the ceiling passes byte for byte, a sample louder than it is pinned to sign(x)·ceil, the honest floor of the whole dynamics family. That is a mono edit, pinning each sample
-//! independently. Carried into stereo, this rung is the compressor's linked gain (ALES157) taken to its LIMIT: the ratio→∞ corner already foreshadowed by ALES157's seat-at-threshold knob law.
+//! lotus/stereo_limit.rye -- ALES158: the brickwall limiter carried into stereo, the ratio->∞ corner of the linked gain -- both a true ceiling and an image held whole. ALES49 named `limit`: a hard ceiling the signal may
+//! touch yet never cross -- a sample within the ceiling passes byte for byte, a sample louder than it is pinned to sign(x)-ceil, the honest floor of the whole dynamics family. That is a mono edit, pinning each sample
+//! independently. Carried into stereo, this rung is the compressor's linked gain (ALES157) taken to its LIMIT: the ratio->∞ corner already foreshadowed by ALES157's seat-at-threshold knob law.
 //!
-//! Lift the mono limiter per channel and an asymmetric transient — loud on the left, quiet on the right — would be flattened on the left while the right passes, shifting the stereo image. The honest stereo limiter takes
+//! Lift the mono limiter per channel and an asymmetric transient -- loud on the left, quiet on the right -- would be flattened on the left while the right passes, shifting the stereo image. The honest stereo limiter takes
 //! ALES157's shape to its limit: ONE gain from the linked detector, applied to both. The quiet beauty is that the linked form is SIMULTANEOUSLY a true brickwall (after the call no sample in either channel exceeds the
 //! ceiling, since the peak lands on the ceiling and everything else is scaled below it) AND image-preserving (both channels share one gain, so the L:R ratio holds). The independent mono limiter gives only the first.
 //!
-//! The rule, stated once: refuse BadCeiling (a ceiling outside [1, sample_max]) and BadRange (a span past the shared length) BEFORE any write — the checks are identical for both channels, so a refusal never limits one
-//! channel and leaves the other untouched. Otherwise walk the span one sample-PAIR at a time: key = max(|left|, |right|), the louder of the two. key <= ceil leaves the pair within the ceiling — both pass byte for byte.
-//! key > ceil scales BOTH channels by the single fraction ceil/key: x' = sign(x)·(|x|·ceil/key). The peak-holding channel lands EXACTLY on ceil (key·ceil/key = ceil); the quieter channel is scaled by the identical
+//! The rule, stated once: refuse BadCeiling (a ceiling outside [1, sample_max]) and BadRange (a span past the shared length) BEFORE any write -- the checks are identical for both channels, so a refusal never limits one
+//! channel and leaves the other untouched. Otherwise walk the span one sample-PAIR at a time: key = max(|left|, |right|), the louder of the two. key <= ceil leaves the pair within the ceiling -- both pass byte for byte.
+//! key > ceil scales BOTH channels by the single fraction ceil/key: x' = sign(x)-(|x|-ceil/key). The peak-holding channel lands EXACTLY on ceil (key-ceil/key = ceil); the quieter channel is scaled by the identical
 //! fraction, the L:R ratio kept.
 //!
-//! The crux — five laws. THE BRICKWALL + LINKED-GAIN LAW (the stereo crux): after the call no sample in either channel exceeds ceil, and the peak-holding channel equals ALES49's mono limit byte for byte (a master where
-//! the left always holds the peak has left' == mono limit(left)) while both channels are scaled by the same fraction ceil/key — the independent lift (mono limit of the quiet right alone) genuinely differs. THE IMAGE LAW:
-//! the shared gain preserves the L:R ratio — an out-of-phase over-ceiling pair returns still out of phase, no magnitude expands, no sign flips. THE SUB-CEILING LAW: where the linked key is within the ceiling, both pass
+//! The crux -- five laws. THE BRICKWALL + LINKED-GAIN LAW (the stereo crux): after the call no sample in either channel exceeds ceil, and the peak-holding channel equals ALES49's mono limit byte for byte (a master where
+//! the left always holds the peak has left' == mono limit(left)) while both channels are scaled by the same fraction ceil/key -- the independent lift (mono limit of the quiet right alone) genuinely differs. THE IMAGE LAW:
+//! the shared gain preserves the L:R ratio -- an out-of-phase over-ceiling pair returns still out of phase, no magnitude expands, no sign flips. THE SUB-CEILING LAW: where the linked key is within the ceiling, both pass
 //! byte for byte. THE CEILING-AT-MAX LAW: a ceiling at sample_max is the identity for all in-range audio. THE BALANCE / ATOMICITY / DEGENERATE LAW: left.len == right.len after, a refusal leaving both channels untouched
 //! and balanced, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES158.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES158.
 //! Design read: active-designing/date/20260815/20260815-063222_fill-ales158-lotus-stereo-limit.md
-//! Stands on: lotus/limit.rye (ALES49) — the mono brickwall limiter, its `limit` and `LimitError` reused whole (the peak-channel proof and the fault set); lotus/stereo_compress.rye (ALES157) — the linked-gain sibling
-//! whose ratio→∞ corner this rung is; lotus/stereo_gate.rye (ALES156) — the rung that opened the stereo dynamics family with the linked detector; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, and sample_max.
+//! Stands on: lotus/limit.rye (ALES49) -- the mono brickwall limiter, its `limit` and `LimitError` reused whole (the peak-channel proof and the fault set); lotus/stereo_compress.rye (ALES157) -- the linked-gain sibling
+//! whose ratio->∞ corner this rung is; lotus/stereo_gate.rye (ALES156) -- the rung that opened the stereo dynamics family with the linked detector; lotus/pan.rye (ALES10) -- the StereoClip and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, and sample_max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only — one comparison of the linked key and at most one multiply-
-//! then-divide per channel per sample (in i64, |sample|·ceil <= 32767·32767 never overflowing), memoryless (no attack/release time base; that is a later rung), never a length. The ceiling is a magnitude in sample units,
-//! not decibels. Nothing on the audio path can overflow — ceil <= key on the scaled path, so every scaled magnitude is at most its input's, which already fits i16. No real sample rate, no anti-aliasing, no network, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only -- one comparison of the linked key and at most one multiply-
+//! then-divide per channel per sample (in i64, |sample|-ceil <= 32767-32767 never overflowing), memoryless (no attack/release time base; that is a later rung), never a length. The ceiling is a magnitude in sample units,
+//! not decibels. Nothing on the audio path can overflow -- ceil <= key on the scaled path, so every scaled magnitude is at most its input's, which already fits i16. No real sample rate, no anti-aliasing, no network, no
 //! keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_limit.rye selftest
@@ -40,22 +40,22 @@ const limit = @import("limit.rye");
 
 pub const stereo_limit_version = "20260815.063222";
 
-/// Stereo limiting's faults are exactly ALES49's own `LimitError` — `BadCeiling` (a ceiling outside [1, sample_max]) and `BadRange` (a span past the samples) — reused by name, since the linked lift adds no new fault: it
+/// Stereo limiting's faults are exactly ALES49's own `LimitError` -- `BadCeiling` (a ceiling outside [1, sample_max]) and `BadRange` (a span past the samples) -- reused by name, since the linked lift adds no new fault: it
 /// validates one shared ceiling and one span, then computes one gain per pair from both channels together.
 pub const StereoLimitError = limit.LimitError;
 
-/// Limit `count` sample-pairs starting at `start` in the stereo master `sc` to the magnitude `ceil`, with ONE LINKED GAIN across the two channels — the ratio→∞ corner of ALES157's compressor. For each index the detector
+/// Limit `count` sample-pairs starting at `start` in the stereo master `sc` to the magnitude `ceil`, with ONE LINKED GAIN across the two channels -- the ratio->∞ corner of ALES157's compressor. For each index the detector
 /// key is `max(|left|, |right|)`: within the ceiling the pair passes byte for byte; above it BOTH channels are scaled by the single fraction `ceil/key`, so the peak-holding channel lands exactly on `ceil` and the quieter
-/// one is scaled by the identical fraction — a true brickwall (no written sample exceeds `ceil`) that also preserves the L:R ratio. After the call every written magnitude is at most `ceil` and no sign is changed.
-/// Validates the ceiling and span ONCE before any write — a refusal leaves both channels untouched and balanced. Values only — never the length.
+/// one is scaled by the identical fraction -- a true brickwall (no written sample exceeds `ceil`) that also preserves the L:R ratio. After the call every written magnitude is at most `ceil` and no sign is changed.
+/// Validates the ceiling and span ONCE before any write -- a refusal leaves both channels untouched and balanced. Values only -- never the length.
 pub fn stereo_limit(sc: *pan.StereoClip, start: u32, count: u32, ceil: i32) StereoLimitError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the linked gain preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the linked gain preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the ceiling is a legal magnitude — at least one sample unit (a zero ceiling would silence, not limit) and no greater than the i16 rail. Refused before any write, mirroring ALES49 exactly.
+    // invariant: the ceiling is a legal magnitude -- at least one sample unit (a zero ceiling would silence, not limit) and no greater than the i16 rail. Refused before any write, mirroring ALES49 exactly.
     if (ceil < 1) return error.BadCeiling;
     if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
-    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never limits one channel and leaves the other torn.
+    // invariant: the span lies wholly within the SHARED length -- checked once, without underflow, so it holds identically for both channels and a refusal never limits one channel and leaves the other torn.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
@@ -70,8 +70,8 @@ pub fn stereo_limit(sc: *pan.StereoClip, start: u32, count: u32, ceil: i32) Ster
         // The LINKED detector: the louder of the two channels is the master magnitude. Above the ceiling it names the one gain both channels share; within the ceiling the pair is left whole.
         const key: i64 = if (ml >= mr) ml else mr;
         if (key > ceiling) {
-            // ONE shared gain ceil/key across both channels — the ratio→∞ compressor. The peak-holding channel (|x| == key) lands exactly on ceil (key·ceil/key = ceil); the quieter channel lands proportionally below it,
-            // so nothing crosses the ceiling and the L:R ratio holds. |x|·ceil <= 32767·32767 fits i64; the quotient is <= |x| since ceil < key here, so it fits i16 and never flips sign.
+            // ONE shared gain ceil/key across both channels -- the ratio->∞ compressor. The peak-holding channel (|x| == key) lands exactly on ceil (key-ceil/key = ceil); the quieter channel lands proportionally below it,
+            // so nothing crosses the ceiling and the L:R ratio holds. |x|-ceil <= 32767-32767 fits i64; the quotient is <= |x| since ceil < key here, so it fits i16 and never flips sign.
             const nl: i64 = @divTrunc(ml * ceiling, key);
             const nr: i64 = @divTrunc(mr * ceiling, key);
             // invariant: the shared gain reduces to at most the ceiling and never below zero, on each channel.
@@ -85,17 +85,17 @@ pub fn stereo_limit(sc: *pan.StereoClip, start: u32, count: u32, ceil: i32) Ster
             assert((xl >= 0 and yl >= 0) or (xl <= 0 and yl <= 0));
             assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
         }
-        // key <= ceiling: the pair is already within the ceiling — both samples are left exactly as they were.
+        // key <= ceiling: the pair is already within the ceiling -- both samples are left exactly as they were.
     }
 
-    // invariant: a limiter changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    // invariant: a limiter changes sample values only -- each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
     assert(sc.left.len == len and sc.right.len == len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE BRICKWALL + LINKED-GAIN LAW — no sample exceeds ceil, the peak-holding channel equals ALES49's mono limit byte for byte, both channels scaled by the same fraction, the independent lift differing;
-//     THE IMAGE LAW — no magnitude expands, no sign flips, an out-of-phase over-ceiling pair returns still out of phase; THE SUB-CEILING LAW — a pair within the linked ceiling passes byte for byte on both; THE
-//     CEILING-AT-MAX LAW — a ceiling at sample_max is the identity for all in-range audio; THE BALANCE / ATOMICITY / DEGENERATE LAW — length held, each refusal leaving both channels untouched and balanced, count = 0
+// --- selftest: THE BRICKWALL + LINKED-GAIN LAW -- no sample exceeds ceil, the peak-holding channel equals ALES49's mono limit byte for byte, both channels scaled by the same fraction, the independent lift differing;
+//     THE IMAGE LAW -- no magnitude expands, no sign flips, an out-of-phase over-ceiling pair returns still out of phase; THE SUB-CEILING LAW -- a pair within the linked ceiling passes byte for byte on both; THE
+//     CEILING-AT-MAX LAW -- a ceiling at sample_max is the identity for all in-range audio; THE BALANCE / ATOMICITY / DEGENERATE LAW -- length held, each refusal leaving both channels untouched and balanced, count = 0
 //     the identity on both -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -115,8 +115,8 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE BRICKWALL + LINKED-GAIN LAW — the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere), ceil 1000: no sample in either channel exceeds 1000; the loud left equals ALES49's
-    //    mono limit(left) byte for byte, and the right is scaled by the SAME fraction ceil/key — a different, image-preserving result than limiting the right on its own.
+    // 1. THE BRICKWALL + LINKED-GAIN LAW -- the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere), ceil 1000: no sample in either channel exceeds 1000; the loud left equals ALES49's
+    //    mono limit(left) byte for byte, and the right is scaled by the SAME fraction ceil/key -- a different, image-preserving result than limiting the right on its own.
     {
         const ll = [_]i16{ 8000, -4000, 500, -2000 }; // index 2 within the ceiling on both — that pair passes
         const rr = [_]i16{ 2000, -1000, 100, -1500 };
@@ -135,10 +135,10 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), mono_l.samples())) return error.PeakLeftNotMono;
         if (!eq(sc.left.samples(), &[_]i16{ 1000, -1000, 500, -1000 })) return error.PeakLeftHandWrong;
 
-        // the right scaled by the SAME fraction: idx0 key8000 → 2000·1000/8000 = 250; idx1 key4000 → 1000·1000/4000 = 250; idx2 key500<=ceil → pass 100; idx3 key2000 → 1500·1000/2000 = 750.
+        // the right scaled by the SAME fraction: idx0 key8000 -> 2000-1000/8000 = 250; idx1 key4000 -> 1000-1000/4000 = 250; idx2 key500<=ceil -> pass 100; idx3 key2000 -> 1500-1000/2000 = 750.
         if (!eq(sc.right.samples(), &[_]i16{ 250, -250, 100, -750 })) return error.LinkedRightWrong;
 
-        // the INDEPENDENT lift genuinely differs — mono limit of the right alone would pin only its over-ceiling samples, leaving the image shifted.
+        // the INDEPENDENT lift genuinely differs -- mono limit of the right alone would pin only its over-ceiling samples, leaving the image shifted.
         var mono_r = timeline.Clip{};
         try timeline.splice(&mono_r, 0, &rr);
         try limit.limit(&mono_r, 0, 4, 1000); // 2000→1000, -1000 within→-1000, 100→100, -1500→-1000
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         if (!eq(mono_r.samples(), &[_]i16{ 1000, -1000, 100, -1000 })) return error.IndependentLimitWrong;
     }
 
-    // 2. THE IMAGE LAW — the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase over-ceiling pair (right = −left) comes back STILL out
+    // 2. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase over-ceiling pair (right = −left) comes back STILL out
     //    of phase, both scaled by the identical fraction (both landing on the ceiling with opposite sign where they hold the peak together).
     {
         const il = [_]i16{ 8000, -4000, 900, -6000 };
@@ -176,7 +176,7 @@ fn run_selftest() !u8 {
         if (!eq(ol, &[_]i16{ 1000, -1000, 1000 })) return error.OutOfPhaseMagnitudeWrong;
     }
 
-    // 3. THE SUB-CEILING LAW — a master whose every linked key is within the ceiling passes byte for byte on both (below the linked ceiling is the identity).
+    // 3. THE SUB-CEILING LAW -- a master whose every linked key is within the ceiling passes byte for byte on both (below the linked ceiling is the identity).
     {
         const ql = [_]i16{ 800, -600, 200, -900 };
         const qr = [_]i16{ -400, 300, -700, 500 }; // every |sample| <= 900 < 1000, so every key <= ceiling
@@ -186,7 +186,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ql) or !eq(sc.right.samples(), &qr)) return error.SubCeilingNotIdentity;
     }
 
-    // 4. THE CEILING-AT-MAX LAW — a ceiling at sample_max is the identity for all in-range audio, since every magnitude is within it, so every linked key is too.
+    // 4. THE CEILING-AT-MAX LAW -- a ceiling at sample_max is the identity for all in-range audio, since every magnitude is within it, so every linked key is too.
     {
         const ll = [_]i16{ 32767, -32767, 100, -20000 };
         const rr = [_]i16{ -30000, 15000, 400, 32767 };
@@ -196,7 +196,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.CeilAtMaxNotIdentity;
     }
 
-    // 5a. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a limiter writes values only.
+    // 5a. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a limiter writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 8000, -4000, 200, -9000, 100 }, &[_]i16{ -400, 3000, -700, 5000, -50 });
@@ -205,7 +205,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 5b. THE ATOMICITY LAW — a zero ceiling, an over-rail ceiling, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    // 5b. THE ATOMICITY LAW -- a zero ceiling, an over-rail ceiling, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
     {
         const tl = [_]i16{ 5, -6, 7 };
         const tr = [_]i16{ -7, 6, -5 };
@@ -226,7 +226,7 @@ fn run_selftest() !u8 {
         if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.BadRangeRefusalMutated;
     }
 
-    // 5c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to limit.
+    // 5c. THE DEGENERATE LAW -- count = 0 (an empty span in the middle) is the identity on both channels; no pair to limit.
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });

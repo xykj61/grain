@@ -1,19 +1,19 @@
-//! encoding/hex.rye — Base16 / hexadecimal (RFC 4648) authored in pure Rye. Hex is the plainest binary-to-text form: each byte becomes two
-//! characters, high nibble then low, from the sixteen-symbol alphabet 0–9 a–f. It is the form a digest is printed in, a key is dumped in, a
-//! wire frame is inspected in — the armor a value wears when a human wants to read every bit of it, unambiguously, one byte at a time. Every
+//! encoding/hex.rye -- Base16 / hexadecimal (RFC 4648) authored in pure Rye. Hex is the plainest binary-to-text form: each byte becomes two
+//! characters, high nibble then low, from the sixteen-symbol alphabet 0-9 a-f. It is the form a digest is printed in, a key is dumped in, a
+//! wire frame is inspected in -- the armor a value wears when a human wants to read every bit of it, unambiguously, one byte at a time. Every
 //! crypto witness in the tree hand-rolls a private to_hex for exactly this; this module authors it once, parity-checked, so the tree renders
 //! bytes to hex through one proven door.
 //!
-//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, and base32.rye.
+//! Season: encoding -- the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, and base32.rye.
 //! Both keep the same discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the alphabet is RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — encode maps each byte's two nibbles to two alphabet symbols; the output is always exactly twice the input length, never
-//! padded. decode inverts it, refusing an odd-length input and any character outside 0–9 a–f A–F (decode accepts either case; encode emits
-//! lowercase, the tree's convention). Every step is a bounded loop over small integers — a table lookup, a shift, and a mask.
+//! THE CRUX -- encode maps each byte's two nibbles to two alphabet symbols; the output is always exactly twice the input length, never
+//! padded. decode inverts it, refusing an odd-length input and any character outside 0-9 a-f A-F (decode accepts either case; encode emits
+//! lowercase, the tree's convention). Every step is a bounded loop over small integers -- a table lookup, a shift, and a mask.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std hex; it is authored
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std hex; it is authored
 //! from the alphabet directly. Parity is proven at selftest two ways runnable now: a small set of known-answers, and Zig's own std.fmt hex
 //! (bytesToHex / hexToBytes) as an independent implementation, byte-for-byte across payloads 0..64 bytes with a round-trip and a mixed-case
 //! decode.
@@ -26,11 +26,11 @@ const print = std.debug.print;
 
 pub const hex_version = "20260816.003712";
 
-/// The lowercase base16 alphabet — the case encode emits, and the tree's convention for a rendered digest or key.
+/// The lowercase base16 alphabet -- the case encode emits, and the tree's convention for a rendered digest or key.
 pub const lower_alphabet = "0123456789abcdef";
 
 /// The largest binary payload this module encodes, or the largest decode it produces in one call. Generous for a digest, a key, or a wire
-/// frame — named so every buffer bound and every loop cites a maximum, the TAME reflex that a count declares its ceiling before it grows.
+/// frame -- named so every buffer bound and every loop cites a maximum, the TAME reflex that a count declares its ceiling before it grows.
 pub const max_decoded_bytes: u32 = 1 << 20;
 
 /// The largest text this module encodes to, and the largest input it decodes: exactly two hex characters per payload byte.
@@ -38,17 +38,17 @@ pub const max_encoded_bytes: u32 = max_decoded_bytes * 2;
 
 /// The faults this module can raise, each refused at the edge before a partial result escapes.
 pub const HexError = error{
-    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) — refused before a symbol is written.
+    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) -- refused before a symbol is written.
     TooLong,
-    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    /// The caller's destination buffer is smaller than the exact output length -- refused before the first write.
     DestTooSmall,
-    /// A decode input whose length is odd — hex always comes in whole-byte pairs.
+    /// A decode input whose length is odd -- hex always comes in whole-byte pairs.
     BadLength,
-    /// A decode input carrying a character outside 0–9 a–f A–F.
+    /// A decode input carrying a character outside 0-9 a-f A-F.
     BadChar,
 };
 
-/// Encode source as lowercase hex into dest — two characters per byte, high nibble first, never padded. Returns the exact written slice.
+/// Encode source as lowercase hex into dest -- two characters per byte, high nibble first, never padded. Returns the exact written slice.
 pub fn encode(dest: []u8, source: []const u8) HexError![]const u8 {
     if (source.len > max_decoded_bytes) return error.TooLong;
     const n: u32 = @intCast(source.len);
@@ -72,7 +72,7 @@ pub fn encode(dest: []u8, source: []const u8) HexError![]const u8 {
     return dest[0..di];
 }
 
-/// Map one hex character to its 0..15 value, or 0xFF if it is outside 0–9 a–f A–F. Decode accepts either case.
+/// Map one hex character to its 0..15 value, or 0xFF if it is outside 0-9 a-f A-F. Decode accepts either case.
 fn nibble(c: u8) u8 {
     if (c >= '0' and c <= '9') return c - '0';
     if (c >= 'a' and c <= 'f') return c - 'a' + 10;
@@ -80,7 +80,7 @@ fn nibble(c: u8) u8 {
     return 0xFF;
 }
 
-/// Decode hex text back to its bytes — two characters per byte, either case accepted. Returns the exact written slice. Refuses an odd
+/// Decode hex text back to its bytes -- two characters per byte, either case accepted. Returns the exact written slice. Refuses an odd
 /// length and any non-hex character before a byte is written.
 pub fn decode(dest: []u8, source: []const u8) HexError![]const u8 {
     if (source.len > max_encoded_bytes) return error.TooLong;
@@ -107,7 +107,7 @@ pub fn decode(dest: []u8, source: []const u8) HexError![]const u8 {
     return dest[0..di];
 }
 
-// A small set of known-answers — the neutral reference the encoder must reproduce exactly, covering the empty input, the nibble edges
+// A small set of known-answers -- the neutral reference the encoder must reproduce exactly, covering the empty input, the nibble edges
 // (0x00, 0xff), and a multi-byte value.
 const kat_inputs = [_][]const u8{ "", &[_]u8{0x00}, &[_]u8{0xff}, &[_]u8{ 0xde, 0xad, 0xbe, 0xef }, "foobar" };
 const kat_outputs = [_][]const u8{ "", "00", "ff", "deadbeef", "666f6f626172" };

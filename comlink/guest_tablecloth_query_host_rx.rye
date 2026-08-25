@@ -1,4 +1,4 @@
-//! comlink/guest_tablecloth_query_host_rx.rye — Tablecloth query device: host RX (open filter request).
+//! comlink/guest_tablecloth_query_host_rx.rye -- Tablecloth query device: host RX (open filter request).
 
 const std = @import("std");
 const vn = @import("virtio_net.rye");

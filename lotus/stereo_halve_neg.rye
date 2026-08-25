@@ -1,32 +1,32 @@
-//! lotus/stereo_halve_neg.rye — ALES140: the inverted half-wave rectifier carried into stereo, ONE SHARED THRESHOLD AT ZERO, COMPLETING the rectifier family in stereo. ALES86 named `halve_neg` — y = min(x, 0), keep
-//! the NEGATIVE half of the wave whole and silence the positive, the exact mirror of ALES85's positive half-wave (y = max(x, 0)): a single diode flipped the other way. Together the two half-waves PARTITION the wave —
+//! lotus/stereo_halve_neg.rye -- ALES140: the inverted half-wave rectifier carried into stereo, ONE SHARED THRESHOLD AT ZERO, COMPLETING the rectifier family in stereo. ALES86 named `halve_neg` -- y = min(x, 0), keep
+//! the NEGATIVE half of the wave whole and silence the positive, the exact mirror of ALES85's positive half-wave (y = max(x, 0)): a single diode flipped the other way. Together the two half-waves PARTITION the wave --
 //! max(x, 0) + min(x, 0) = x, the plainest decomposition of a signal into its positive and negative parts. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
 //! RIGHT hold the SAME length. This rung carries the inverted half-wave into stereo the plain way: run ALES86's proven mono `halve_neg` on each channel over the SAME span, so one threshold at zero lands on BOTH speakers
-//! together — and with it the stereo rectifier family (full-wave ALES138, positive half-wave ALES139, inverted half-wave here) stands WHOLE.
+//! together -- and with it the stereo rectifier family (full-wave ALES138, positive half-wave ALES139, inverted half-wave here) stands WHOLE.
 //!
-//! The round's finishing law is the FAMILY WHOLE: carried into stereo, the two half-waves reconstruct the dry master — stereo_halve on one copy and stereo_halve_neg on another, summed sample for sample on each channel,
+//! The round's finishing law is the FAMILY WHOLE: carried into stereo, the two half-waves reconstruct the dry master -- stereo_halve on one copy and stereo_halve_neg on another, summed sample for sample on each channel,
 //! give back the original master exactly (max(x, 0) + min(x, 0) = x). On an out-of-phase master (right the exact negation of left) the inverted half-wave returns PARTITIONED like its sibling but on the NON-POSITIVE side:
-//! at each index exactly one channel survives (left[i] · right[i] = 0, the channels DISJOINT), and their sum is the negated magnitude (left[i] + right[i] = −|left[i]|, since min(x, 0) + min(−x, 0) = −|x|). Every output
-//! on both channels is NON-POSITIVE — the mirror of ALES139's non-negative one-sided signal. Yet a 1:2 master keeps its ratio on the kept samples, and an identical-channel master stays identical.
+//! at each index exactly one channel survives (left[i] - right[i] = 0, the channels DISJOINT), and their sum is the negated magnitude (left[i] + right[i] = −|left[i]|, since min(x, 0) + min(−x, 0) = −|x|). Every output
+//! on both channels is NON-POSITIVE -- the mirror of ALES139's non-negative one-sided signal. Yet a 1:2 master keeps its ratio on the kept samples, and an identical-channel master stays identical.
 //!
-//! The rule, stated once: min(x, 0) is EXACT for EVERY i16 with NO rail edge (a non-positive sample passes unchanged, a positive becomes 0, and sample_min passes THROUGH untouched — already a legal i16, unlike the
+//! The rule, stated once: min(x, 0) is EXACT for EVERY i16 with NO rail edge (a non-positive sample passes unchanged, a positive becomes 0, and sample_min passes THROUGH untouched -- already a legal i16, unlike the
 //! full-wave rectifier where its magnitude 32768 overflowed the positive rail), so no saturate is owed. It carries no gain, no ceiling, and no threshold (fixed at zero), naming exactly one fault. Refuse BadRange (a span
-//! outside the samples) BEFORE either channel is mutated — the check depends only on the shared length, made ONCE up front, so a refusal never rectifies one channel and leaves the other signed; otherwise halve_neg both
-//! channels over [start, start+count) via ALES86's `halve_neg`. HalveNegError reused whole — the stereo lift adds no fault.
+//! outside the samples) BEFORE either channel is mutated -- the check depends only on the shared length, made ONCE up front, so a refusal never rectifies one channel and leaves the other signed; otherwise halve_neg both
+//! channels over [start, start+count) via ALES86's `halve_neg`. HalveNegError reused whole -- the stereo lift adds no fault.
 //!
-//! The crux — four laws. THE STEREO INVERTED-HALVE LAW: each channel equals ALES86's mono `halve_neg` over the same span byte for byte — every output min(x, 0), non-positives passing unchanged and positives going to
+//! The crux -- four laws. THE STEREO INVERTED-HALVE LAW: each channel equals ALES86's mono `halve_neg` over the same span byte for byte -- every output min(x, 0), non-positives passing unchanged and positives going to
 //! silence, no rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a halve_neg writes values only). THE FAMILY-WHOLE / IMAGE-PARTITION LAW: the two stereo
 //! half-waves partition the dry master (stereo_halve + stereo_halve_neg = the original, per channel per sample, max(x, 0) + min(x, 0) = x); an out-of-phase master (right = −left) returns PARTITIONED and NON-POSITIVE
-//! (left[i] · right[i] = 0, disjoint, and left[i] + right[i] = −|left[i]|) at every index; yet a 1:2 master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-positive on
+//! (left[i] - right[i] = 0, disjoint, and left[i] + right[i] = −|left[i]|) at every index; yet a 1:2 master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-positive on
 //! both, and the map is idempotent (twice equals once). THE ATOMICITY / DEGENERATE LAW: the lone refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES140.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES140.
 //! Design read: active-designing/date/20260815/20260815-041250_fill-ales140-lotus-stereo-inverted-half-wave.md
-//! Stands on: lotus/halve_neg.rye (ALES86) — the mono inverted half-wave rectifier run once per channel, min(x, 0) with no rail edge; lotus/stereo_halve.rye (ALES139) — the positive half-wave sibling this rung mirrors,
-//! the two summing to the dry master; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//! Stands on: lotus/halve_neg.rye (ALES86) -- the mono inverted half-wave rectifier run once per channel, min(x, 0) with no rail edge; lotus/stereo_halve.rye (ALES139) -- the positive half-wave sibling this rung mirrors,
+//! the two summing to the dry master; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES86's own halve_neg, each output at least its input
-//! and never above zero, never a length; the shape is an inverted half-wave threshold at zero, instantaneous. No saturate is owed — min(x, 0) never leaves the rail. No real sample rate, no network, no keys, no funds, no
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES86's own halve_neg, each output at least its input
+//! and never above zero, never a length; the shape is an inverted half-wave threshold at zero, instantaneous. No saturate is owed -- min(x, 0) never leaves the rail. No real sample rate, no network, no keys, no funds, no
 //! real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_halve_neg.rye selftest
@@ -42,37 +42,37 @@ const stereo_halve = @import("stereo_halve.rye");
 
 pub const stereo_halve_neg_version = "20260815.041250";
 
-/// Stereo inverted-halve's faults are exactly ALES86's own `HalveNegError` — `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same halve_neg on each
-/// channel after one shared validation. The inverted half-wave names no other fault (min(x, 0) has no illegal parameter — no gain, no ceiling, and the threshold is fixed at zero).
+/// Stereo inverted-halve's faults are exactly ALES86's own `HalveNegError` -- `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new fault: it only runs the same halve_neg on each
+/// channel after one shared validation. The inverted half-wave names no other fault (min(x, 0) has no illegal parameter -- no gain, no ceiling, and the threshold is fixed at zero).
 pub const StereoHalveNegError = halve_neg.HalveNegError;
 
-/// Inverted-half-wave-rectify `[start, start+count)` in BOTH channels of `sc`, the SAME threshold at zero on each, running ALES86's proven mono `halve_neg`. Each sample becomes `min(x, 0)` — the negative half of the
+/// Inverted-half-wave-rectify `[start, start+count)` in BOTH channels of `sc`, the SAME threshold at zero on each, running ALES86's proven mono `halve_neg`. Each sample becomes `min(x, 0)` -- the negative half of the
 /// wave kept whole, the positive half folded away to silence. Exact for every i16 with no rail edge (a non-positive sample passes unchanged, a positive becomes 0, sample_min passing through), so no saturate is owed.
-/// Validates the span once against the shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced and both non-positive
+/// Validates the span once against the shared length before either channel is mutated: refuses `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced and both non-positive
 /// over the span.
 pub fn stereo_halve_neg(sc: *pan.StereoClip, start: u32, count: u32) StereoHalveNegError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the span is legal — refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front; it
+    // invariant: the span is legal -- refused by name before any write, so a refusal never rectifies one channel and leaves the other signed. The span check depends only on the shared length, made once up front; it
     // mirrors ALES86's own guard exactly, so each mono halve_neg below is pre-validated to succeed. The inverted half-wave carries no other parameter, so this lone check is the whole gate.
     const len: u32 = sc.left.len;
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono halve_neg is pre-validated to succeed — no refusal can land between the two channel edits. The SAME threshold at zero on each.
+    // Every check passed and holds identically for both channels, so each mono halve_neg is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME threshold at zero on each.
     try halve_neg.halve_neg(&sc.left, start, count);
     try halve_neg.halve_neg(&sc.right, start, count);
 
-    // invariant: the channels leave balanced — a halve_neg writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    // invariant: the channels leave balanced -- a halve_neg writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO INVERTED-HALVE LAW — each channel equals ALES86's mono halve_neg over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length;
-//     THE FAMILY-WHOLE / IMAGE-PARTITION LAW — stereo_halve + stereo_halve_neg reconstructs the dry master per channel per sample (max(x,0) + min(x,0) = x), an OUT-OF-PHASE master (right = −left) returning PARTITIONED
-//     and NON-POSITIVE (left·right = 0 and left+right = −|left| at each index), a 1:2 master keeping its ratio on the kept samples, an identical-channel master staying identical, every output NON-POSITIVE on both, the
-//     map idempotent; THE ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched and balanced, count = 0 the identity ----
+// --- selftest: THE STEREO INVERTED-HALVE LAW -- each channel equals ALES86's mono halve_neg over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
+//     THE FAMILY-WHOLE / IMAGE-PARTITION LAW -- stereo_halve + stereo_halve_neg reconstructs the dry master per channel per sample (max(x,0) + min(x,0) = x), an OUT-OF-PHASE master (right = −left) returning PARTITIONED
+//     and NON-POSITIVE (left-right = 0 and left+right = −|left| at each index), a 1:2 master keeping its ratio on the kept samples, an identical-channel master staying identical, every output NON-POSITIVE on both, the
+//     map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and balanced, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
     if (got.len != want.len) return false;
@@ -87,7 +87,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO INVERTED-HALVE LAW — each channel equals ALES86's mono halve_neg over the same span, proven side by side with different per-channel samples; non-positives pass unchanged (sample_min through), and
+    // 1. THE STEREO INVERTED-HALVE LAW -- each channel equals ALES86's mono halve_neg over the same span, proven side by side with different per-channel samples; non-positives pass unchanged (sample_min through), and
     //    positives go to silence, with no rail edge.
     {
         var sc = pan.StereoClip{};
@@ -108,7 +108,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 0, -50, 0, -2500 })) return error.RightHandWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a halve_neg writes values only.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a halve_neg writes values only.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300, -400, 500 }, &[_]i16{ -500, 400, -300, 200, -100 });
@@ -117,8 +117,8 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 3a. THE FAMILY-WHOLE LAW — the two stereo half-waves partition the dry master: stereo_halve on one copy and stereo_halve_neg on another, summed sample for sample on each channel, reconstruct the original
-    //     (max(x, 0) + min(x, 0) = x). This is the round's finishing law — the rectifier family whole in stereo.
+    // 3a. THE FAMILY-WHOLE LAW -- the two stereo half-waves partition the dry master: stereo_halve on one copy and stereo_halve_neg on another, summed sample for sample on each channel, reconstruct the original
+    //     (max(x, 0) + min(x, 0) = x). This is the round's finishing law -- the rectifier family whole in stereo.
     {
         const lsrc = [_]i16{ 700, -1500, 4000, -90, 12, timeline.sample_min };
         const rsrc = [_]i16{ -4000, 900, -700, 33, -8, 32767 };
@@ -139,8 +139,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3b. THE IMAGE-PARTITION LAW — an OUT-OF-PHASE master (right the exact negation of left) rectified through the same threshold returns PARTITIONED and NON-POSITIVE: at each index exactly one channel survives
-    //     (left · right = 0, disjoint) and their sum is the negated magnitude (left + right = −|left|, since min(x,0) + min(−x,0) = −|x|). The non-positive mirror of ALES139's non-negative partition.
+    // 3b. THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same threshold returns PARTITIONED and NON-POSITIVE: at each index exactly one channel survives
+    //     (left - right = 0, disjoint) and their sum is the negated magnitude (left + right = −|left|, since min(x,0) + min(−x,0) = −|x|). The non-positive mirror of ALES139's non-negative partition.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -300, 500, -700 }, &[_]i16{ -100, 300, -500, 700 }); // right = −left, out of phase
@@ -159,7 +159,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ -100, 0, -500, 0 })) return error.RightPartitionWrong;
     }
 
-    // 3c. THE RATIO HOLDS ON THE KEPT SAMPLES — a 1:2 master (right twice left) keeps its 1:2 ratio where left is negative (both kept, right = 2·left), and both go to silence where left is positive.
+    // 3c. THE RATIO HOLDS ON THE KEPT SAMPLES -- a 1:2 master (right twice left) keeps its 1:2 ratio where left is negative (both kept, right = 2-left), and both go to silence where left is positive.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ -1000, 400, -700, 200 }, &[_]i16{ -2000, 800, -1400, 400 }); // right = 2·left
@@ -174,7 +174,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ -2000, 0, -1400, 0 })) return error.RatioRightWrong;
     }
 
-    // 3d. EVERY OUTPUT NON-POSITIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL — the inverted half-wave makes a one-sided (negative) signal; rectifying twice equals once (a non-positive
+    // 3d. EVERY OUTPUT NON-POSITIVE ON BOTH, IDEMPOTENT, AND AN IDENTICAL-CHANNEL MASTER STAYS IDENTICAL -- the inverted half-wave makes a one-sided (negative) signal; rectifying twice equals once (a non-positive
     //     sample maps to itself); and a shared threshold on equal channels gives equal channels.
     {
         var once = pan.StereoClip{};
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         if (!eq(same.left.samples(), same.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3e. THE SPAN DISCIPLINE — inverting a sub-span leaves samples outside [start, count) exactly as they were on both channels, positives among them preserved (the in-place discipline the whole suite keeps).
+    // 3e. THE SPAN DISCIPLINE -- inverting a sub-span leaves samples outside [start, count) exactly as they were on both channels, positives among them preserved (the in-place discipline the whole suite keeps).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, 200, 500, -500, 300, 400 }, &[_]i16{ -400, -300, 500, -500, 300, 400 });
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -400, -300, 0, -500, 300, 400 })) return error.RightSpanLeaked;
     }
 
-    // 4a. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The inverted half-wave names no other fault (min(x, 0) has no illegal
+    // 4a. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced. The inverted half-wave names no other fault (min(x, 0) has no illegal
     //     parameter), so this lone refusal is the whole atomicity story.
     {
         var sc = pan.StereoClip{};
@@ -219,7 +219,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadRangeUnbalanced;
     }
 
-    // 4b. THE DEGENERATE LAW — count = 0 is the identity on both channels (an empty span thresholds nothing).
+    // 4b. THE DEGENERATE LAW -- count = 0 is the identity on both channels (an empty span thresholds nothing).
     {
         var noop = pan.StereoClip{};
         try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });

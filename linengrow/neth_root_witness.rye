@@ -1,4 +1,4 @@
-//! linengrow/neth_root_witness.rye — Neth's minimal first witness.
+//! linengrow/neth_root_witness.rye -- Neth's minimal first witness.
 //!
 //!   rye build linengrow/neth_root_witness.rye -femit-bin=linengrow/bin/neth_root_witness
 //!   linengrow/bin/neth_root_witness

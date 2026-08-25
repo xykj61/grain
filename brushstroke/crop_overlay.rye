@@ -1,14 +1,14 @@
-//! brushstroke/crop_overlay.rye — HUNK61: paint the crop rectangle's outline on the picture, so a keeper sees what they will keep.
+//! brushstroke/crop_overlay.rye -- HUNK61: paint the crop rectangle's outline on the picture, so a keeper sees what they will keep.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK61.
-//! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here" — the overlay)
-//! Teacher, thanked clean-room: the crop overlay of a photo app (iCloud Photos / Google Photos) — the picture stays
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Photos-app journey - rung HUNK61.
+//! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here" -- the overlay)
+//! Teacher, thanked clean-room: the crop overlay of a photo app (iCloud Photos / Google Photos) -- the picture stays
 //! visible and a bright rectangle outlines the region a keeper will keep as they drag (concept only, siloed).
 //!
-//! HUNK60 turned a drag into a `.crop` edit, yet a keeper dragging still saw nothing — the rectangle lived only in
+//! HUNK60 turned a drag into a `.crop` edit, yet a keeper dragging still saw nothing -- the rectangle lived only in
 //! numbers. This rung paints it. `crop_overlay` down-maps the source into a Skate grid (HUNK2, the picture on glass) and
 //! draws the crop rectangle's OUTLINE over it: the rectangle's image pixels map to grid cells, and the border cells of
-//! that block wear a bright anchor slot while the interior keeps showing the picture — a keeper reads exactly what they
+//! that block wear a bright anchor slot while the interior keeps showing the picture -- a keeper reads exactly what they
 //! will keep, framed, before they lift. A pure read over two proven seams (HUNK2 `down_map`, HUNK60 `CropGesture.rect`):
 //! it invents no pixel op and no new arithmetic beyond the same integer partition `down_map` already uses. A degenerate
 //! rectangle names nothing to frame, refusing `NoRect` by name. The source is never mutated. No network, no key, no funds.
@@ -25,7 +25,7 @@ const skate = @import("skate_grid.rye");
 
 pub const crop_overlay_version = "20260813.224500";
 
-/// The palette slot the crop outline wears — anchor slot 2, a bright frame distinct from the block cells beneath it, so a
+/// The palette slot the crop outline wears -- anchor slot 2, a bright frame distinct from the block cells beneath it, so a
 /// keeper reads the rectangle at a glance over the down-mapped picture.
 pub const crop_slot: u8 = 2;
 
@@ -53,9 +53,9 @@ fn span_cells(start: u32, span: u32, size: u32, cells: u32) struct { g0: u32, g1
 
 /// Paint the source down-mapped to a `cols`×`rows` Skate grid with the current crop rectangle outlined over it. The
 /// picture fills the grid (HUNK2); the border cells of the rectangle's cell-block wear `crop_slot` while the interior
-/// keeps the picture — so a keeper sees the framed region they will keep. Refuses `NoRect` when the gesture names no area
+/// keeps the picture -- so a keeper sees the framed region they will keep. Refuses `NoRect` when the gesture names no area
 /// (a tap, a zero-width sweep), and folds `down_map`'s own refusals (`EmptyImage`, `GridTooLarge`) through unchanged.
-/// Pure — the source is never mutated; the grid is a fresh allocation.
+/// Pure -- the source is never mutated; the grid is a fresh allocation.
 pub fn crop_overlay(
     allocator: std.mem.Allocator,
     source: *const qoi.Pixmap,
@@ -69,7 +69,7 @@ pub fn crop_overlay(
     const r = gesture.rect();
     if (r.w == 0 or r.h == 0) return error.NoRect;
 
-    // The picture on glass — down_map validates the image and the grid ceiling, refusing by its own names.
+    // The picture on glass -- down_map validates the image and the grid ceiling, refusing by its own names.
     var grid = try image_skate.down_map(allocator, source, cols, rows);
 
     // The cell-block the rectangle covers, by down_map's own partition.
@@ -81,7 +81,7 @@ pub fn crop_overlay(
     assert(ys.g1 > ys.g0);
     assert(ys.g1 <= rows);
 
-    // Draw only the border cells of the block — top and bottom rows, left and right columns — leaving the interior
+    // Draw only the border cells of the block -- top and bottom rows, left and right columns -- leaving the interior
     // showing the picture. A one-cell-wide or one-cell-tall band is all border, which is correct.
     var gr = ys.g0;
     while (gr < ys.g1) : (gr += 1) {
@@ -100,7 +100,7 @@ pub fn crop_overlay(
     return grid;
 }
 
-// --- selftest: an 8x8 source down-mapped 1:1 to an 8x8 grid — a crop rectangle {2,2,4,4} outlines cells x in [2,6),
+// --- selftest: an 8x8 source down-mapped 1:1 to an 8x8 grid -- a crop rectangle {2,2,4,4} outlines cells x in [2,6),
 //     y in [2,6): every border cell wears crop_slot, every interior and exterior cell equals a plain down_map (no
 //     drift), the overlay rasterizes lit, a degenerate rectangle refuses NoRect ---------------------------------------
 
@@ -128,7 +128,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const cols: u32 = 8;
     const rows: u32 = 8; // 1:1 so the rectangle maps to exactly its image cells
 
-    // A gesture holding a crop rectangle {2,2,4,4} — a drag from (2,2) to (6,6).
+    // A gesture holding a crop rectangle {2,2,4,4} -- a drag from (2,2) to (6,6).
     var g = try crop_gesture.CropGesture.open(pm.width, pm.height);
     g.finger_down(2, 2);
     g.finger_move(6, 6);
@@ -143,7 +143,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(over.cols == cols);
     assert(over.rows == rows);
 
-    // The plain picture, for the no-drift comparison — every cell not on the outline must equal this cell-for-cell.
+    // The plain picture, for the no-drift comparison -- every cell not on the outline must equal this cell-for-cell.
     const plain = try image_skate.down_map(garden, &pm, cols, rows);
 
     // The outline is exactly the border of cells x in [2,6), y in [2,6): border cells wear crop_slot; interior and
@@ -171,10 +171,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             }
         }
     }
-    // A 4x4 rectangle has a 12-cell border (4+4+2+2) — the outline is a frame, not a fill.
+    // A 4x4 rectangle has a 12-cell border (4+4+2+2) -- the outline is a frame, not a fill.
     assert(border_seen == 12);
 
-    // Genuinely seen: the overlay rasterizes to a lit canvas — the framed picture reaches the glass.
+    // Genuinely seen: the overlay rasterizes to a lit canvas -- the framed picture reaches the glass.
     {
         const scale: u32 = 1;
         const wpx: u32 = over.cols * skate.cell_w * scale;
@@ -188,7 +188,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(lit > 0);
     }
 
-    // A one-cell-wide rectangle is all border — a thin frame, correctly drawn (no interior to keep).
+    // A one-cell-wide rectangle is all border -- a thin frame, correctly drawn (no interior to keep).
     {
         var thin = try crop_gesture.CropGesture.open(pm.width, pm.height);
         thin.finger_down(3, 1);
@@ -206,7 +206,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // A degenerate rectangle names nothing to frame — refuses NoRect rather than drawing an empty outline.
+    // A degenerate rectangle names nothing to frame -- refuses NoRect rather than drawing an empty outline.
     {
         var tap = try crop_gesture.CropGesture.open(pm.width, pm.height);
         tap.finger_down(3, 3);
@@ -216,7 +216,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The overlay folds down_map's ceiling refusal through unchanged — a grid past the map ceiling refuses GridTooLarge.
+    // The overlay folds down_map's ceiling refusal through unchanged -- a grid past the map ceiling refuses GridTooLarge.
     {
         if (crop_overlay(garden, &pm, &g, image_skate.max_map_cols + 1, rows)) |_| {
             return error.LargeSlipped;

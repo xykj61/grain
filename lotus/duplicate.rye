@@ -1,28 +1,28 @@
-//! lotus/duplicate.rye — ALES112: duplicate — insert a second copy of the `count` samples starting at `start` immediately after the span, IN PLACE, so [start, start+count)
+//! lotus/duplicate.rye -- ALES112: duplicate -- insert a second copy of the `count` samples starting at `start` immediately after the span, IN PLACE, so [start, start+count)
 //! becomes [start, start+2*count) holding the span twice back to back and the clip GROWS by exactly count. This is the growth-twin of ALES111's crop: where crop KEEPS a span
 //! and drops the rest (the clip SHRINKS to the selection), duplicate REPEATS one span in place (the clip grows by the span). Circle a bar, press Duplicate, and a second copy
-//! lands immediately after the first — the doubled drum loop, the repeated chorus, the stutter edit. Naming it beside crop completes the shrink/grow pair on a selection: keep
+//! lands immediately after the first -- the doubled drum loop, the repeated chorus, the stutter edit. Naming it beside crop completes the shrink/grow pair on a selection: keep
 //! only it, or repeat it.
 //!
 //! The rule, stated once: duplicate(clip, start, count) opens count silent seats at the span's end through ALES109's insert_silence (a bounded grow, refusing ClipFull past the
-//! fixed buffer), then copies the original span forward into that gap — source [start, end) and destination [end, end+count) are adjacent and DISJOINT, so the forward copy is
+//! fixed buffer), then copies the original span forward into that gap -- source [start, end) and destination [end, end+count) are adjacent and DISJOINT, so the forward copy is
 //! exact with no temporary buffer. It refuses BadRange when the span falls outside the current samples before any write, reusing ALES2's EditError whole. No allocation, no
 //! second buffer.
 //!
-//! The crux — four laws. THE DUPLICATE LAW: after duplicate(clip, start, count) the clip is original[0..end] ++ original[start..end] ++ original[end..len), end = start+count,
-//! the span twice back to back and the length grown by count. THE INVERSE LAW: duplicate(start, count) then ALES2's cut(end, count) returns the original byte for byte — the
+//! The crux -- four laws. THE DUPLICATE LAW: after duplicate(clip, start, count) the clip is original[0..end] ++ original[start..end] ++ original[end..len), end = start+count,
+//! the span twice back to back and the length grown by count. THE INVERSE LAW: duplicate(start, count) then ALES2's cut(end, count) returns the original byte for byte -- the
 //! inserted copy removed exactly, duplicate the honest inverse of cut on the copied span. THE COPY / PEAK LAW: duplicate copies existing samples and invents none, so the peak
 //! re-measured through ALES13 is unchanged (the loudest sample inside the span simply appears twice at the same magnitude, outside it untouched). THE DEGENERATE / REFUSAL LAW:
 //! count = 0 the identity, a start past the samples or a count past the remainder BadRange, a duplicate past the fixed buffer ClipFull, each before any write.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES112.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES112.
 //! Design read: active-designing/date/20260815/20260815-011901_fill-ales112-lotus-duplicate.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law;
-//! lotus/insert_silence.rye (ALES109) — opens the count-sample gap at the span's end without a caller slice; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law;
+//! lotus/insert_silence.rye (ALES109) -- opens the count-sample gap at the span's end without a caller slice; lotus/meter.rye (ALES13) -- the peak/RMS meter, used only by the
 //! witness to prove that copying existing samples never moves the peak.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It opens a gap through the proven insert_silence and fills
-//! it with a copy of an existing span — it invents no sample, changes no value, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device,
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It opens a gap through the proven insert_silence and fills
+//! it with a copy of an existing span -- it invents no sample, changes no value, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device,
 //! no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/duplicate.rye selftest
@@ -37,40 +37,40 @@ const insert_silence = @import("insert_silence.rye");
 
 pub const duplicate_version = "20260815.011901";
 
-/// duplicate forwards ALES2's OWN faults reused by name — BadRange when the span falls outside the current samples, ClipFull when the grow would overrun the fixed buffer — and
+/// duplicate forwards ALES2's OWN faults reused by name -- BadRange when the span falls outside the current samples, ClipFull when the grow would overrun the fixed buffer -- and
 /// invents none of its own; `start` and `count` are plain span bounds with no illegal value save the range the samples already name.
 pub const DuplicateError = timeline.EditError;
 
-/// Insert a second copy of the `count` samples starting at `start` immediately after the span, in place — the clip grows by exactly `count`, the span appearing twice back to
+/// Insert a second copy of the `count` samples starting at `start` immediately after the span, in place -- the clip grows by exactly `count`, the span appearing twice back to
 /// back. Refuses BadRange when the span falls outside the current samples and ClipFull when the grow would overrun the buffer, before any write. This is ALES111's crop read as
-/// a growth rather than a reduction — the shrink/grow twin on a selection.
+/// a growth rather than a reduction -- the shrink/grow twin on a selection.
 pub fn duplicate(clip: *timeline.Clip, start: u32, count: u32) DuplicateError!void {
-    // invariant: the length never claims more samples than the buffer holds — every seat we read is inside the buffer.
+    // invariant: the length never claims more samples than the buffer holds -- every seat we read is inside the buffer.
     assert(clip.len <= clip.buf.len);
 
-    // invariant: the span lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    // invariant: the span lies wholly within the current samples (checked without underflow -- count against the remainder), refused by name before any write.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
     const end: u32 = start + count;
 
-    // Open `count` silent seats at the span's end through ALES109 — a bounded grow that refuses ClipFull past the fixed buffer before any write. The span [start, end) stays put
+    // Open `count` silent seats at the span's end through ALES109 -- a bounded grow that refuses ClipFull past the fixed buffer before any write. The span [start, end) stays put
     // (it lies before the insertion point), the tail shifts right, and [end, end+count) becomes zero.
     try insert_silence.insert_silence(clip, end, count);
 
     // invariant: the clip grew by exactly the span, so the copy destination [end, end+count) is legal and disjoint from the source [start, end).
     assert(end + count <= clip.len);
 
-    // Fill the opened gap with a forward copy of the original span — destination end + i is always ahead of source start + i, so no live sample is overwritten before it is read.
+    // Fill the opened gap with a forward copy of the original span -- destination end + i is always ahead of source start + i, so no live sample is overwritten before it is read.
     var i: u32 = 0;
     while (i < count) : (i += 1) clip.buf[end + i] = clip.buf[start + i];
 
-    // invariant: duplicate only grew the clip and copied existing samples — the length stays within its bound.
+    // invariant: duplicate only grew the clip and copied existing samples -- the length stays within its bound.
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE DUPLICATE LAW — the span appears twice back to back and the length grows by count; THE INVERSE LAW — duplicate then ALES2's cut(end, count) returns the
-//     original byte for byte; THE COPY / PEAK LAW — duplicate copies existing samples, so the peak re-measured through ALES13 is unchanged; THE DEGENERATE / REFUSAL LAW —
+// --- selftest: THE DUPLICATE LAW -- the span appears twice back to back and the length grows by count; THE INVERSE LAW -- duplicate then ALES2's cut(end, count) returns the
+//     original byte for byte; THE COPY / PEAK LAW -- duplicate copies existing samples, so the peak re-measured through ALES13 is unchanged; THE DEGENERATE / REFUSAL LAW --
 //     count 0 the identity, a span past the samples BadRange, a grow past the buffer ClipFull ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -84,14 +84,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+/// The clip's current peak magnitude, re-measured through ALES13 -- the reader the peak law checks the result against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE DUPLICATE LAW — the span appears twice back to back and the length grows by count. Proven at a mid span, the head, and the tail.
+    // 1. THE DUPLICATE LAW -- the span appears twice back to back and the length grows by count. Proven at a mid span, the head, and the tail.
     {
         var mid = timeline.Clip{};
         try load_clip(&mid, &[_]i16{ 10, 20, 30, 40, 50 });
@@ -110,7 +110,7 @@ fn run_selftest() !u8 {
         if (!eq(tail.samples(), &[_]i16{ 10, 20, 30, 20, 30 })) return error.DupTailWrong;
     }
 
-    // 2. THE INVERSE LAW — duplicate(start, count) then ALES2's cut(end, count) returns the original byte for byte, the inserted copy removed exactly.
+    // 2. THE INVERSE LAW -- duplicate(start, count) then ALES2's cut(end, count) returns the original byte for byte, the inserted copy removed exactly.
     {
         const src = [_]i16{ 10, 20, 30, 40 };
         var clip = timeline.Clip{};
@@ -121,7 +121,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &src)) return error.InverseBroken;
     }
 
-    // 3. THE COPY / PEAK LAW — duplicate copies existing samples and invents none, so the peak re-measured through ALES13 is unchanged: the loudest sample inside the span
+    // 3. THE COPY / PEAK LAW -- duplicate copies existing samples and invents none, so the peak re-measured through ALES13 is unchanged: the loudest sample inside the span
     //    appears twice at the same magnitude, and a loudest sample outside the span is untouched.
     {
         var inside = timeline.Clip{};
@@ -137,7 +137,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&outside) != before_out) return error.PeakMovedOutside;
     }
 
-    // 4a. THE DEGENERATE LAW — count 0 is the identity (nothing inserted, the length unchanged).
+    // 4a. THE DEGENERATE LAW -- count 0 is the identity (nothing inserted, the length unchanged).
     {
         var idc = timeline.Clip{};
         try load_clip(&idc, &[_]i16{ 7, 8, 9 });
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
         if (!eq(idc.samples(), &[_]i16{ 7, 8, 9 })) return error.ZeroCountMoved;
     }
 
-    // 4b. THE REFUSAL LAW — a `start` past the current samples and a `count` past the remainder each refuse BadRange, and a grow past the fixed buffer refuses ClipFull, each
+    // 4b. THE REFUSAL LAW -- a `start` past the current samples and a `count` past the remainder each refuse BadRange, and a grow past the fixed buffer refuses ClipFull, each
     //     before any write, the clip untouched.
     {
         var clip = timeline.Clip{};
@@ -156,7 +156,7 @@ fn run_selftest() !u8 {
         if (duplicate(&clip, 2, 5)) |_| return error.CountNotRefused else |e| {
             if (e != error.BadRange) return error.WrongError;
         }
-        // The clip is untouched by the refused range calls — each refusal came before any write.
+        // The clip is untouched by the refused range calls -- each refusal came before any write.
         if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
 
         // A grow past the fixed buffer refuses ClipFull. Fill the clip to its bound, then a duplicate that would grow past it must refuse before any write.

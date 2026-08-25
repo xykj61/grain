@@ -1,11 +1,11 @@
-//! glow/lower_core.rye — lower a thin `|%` core to runnable `.rye`.
+//! glow/lower_core.rye -- lower a thin `|%` core to runnable `.rye`.
 //!
 //! STOA14: one closed arm `double`. STOA15: `double` and/or `inc`.
 //! STOA17: optional bare `=/` payload; arms read `self.<face>`.
 //! STOA20: closed arm `dec` (sample -% 1) for three-arm batteries.
 //! STOA21: optional typed payload `=/  face=@u32  <decimal>`.
-//! STOA25: open arm body — authored nest expr (`sample` / payload face ·
-//! literal). STOA27: `(mix …)` · `(jam …)` · `(lent …)` · `^-` cast bodies.
+//! STOA25: open arm body -- authored nest expr (`sample` / payload face -
+//! literal). STOA27: `(mix ...)` - `(jam ...)` - `(lent ...)` - `^-` cast bodies.
 //! Closed arms keep an empty body.
 //! Without payload, closed arms still take `sample: u32` (demo 5).
 //! Library emit (no main) is STOA16 (`lower_source_library`).

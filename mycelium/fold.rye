@@ -1,16 +1,16 @@
-//! mycelium/fold.rye — myc supply as a pure fold over signed facts.
+//! mycelium/fold.rye -- myc supply as a pure fold over signed facts.
 //!
-//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
-//! Fifth primitive door — Check shape from counsel `20260730.033648`.
-//! Bounds from tools/gen/season/recursion_block.brix (v27 · myc opening):
+//! Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do.
+//! Fifth primitive door -- Check shape from counsel `20260730.033648`.
+//! Bounds from tools/gen/season/recursion_block.brix (v27 - myc opening):
 //!   myc_fact_max_bytes 256
 //!   star_name_max_bytes 32
 //!   myc_log_max_facts 1024  (named here: one journey-of-journeys of facts)
 //!
-//! supply = Σ issued − Σ taxed at every prefix · non-negative · tax overdraw
+//! supply = Σ issued − Σ taxed at every prefix - non-negative - tax overdraw
 //! refuses whole. Facts kumara-sealed. Unknown kinds refuse whole. Star
-//! reservation unique per name. Policy numbers (genesis · price · ceiling)
-//! stay parked — this file folds; it does not invent release or expiry.
+//! reservation unique per name. Policy numbers (genesis - price - ceiling)
+//! stay parked -- this file folds; it does not invent release or expiry.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig \
 //!     rye/bin/rye run mycelium/fold.rye
@@ -21,13 +21,13 @@ const print = std.debug.print;
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// One signed fact's body ceiling — seated v27.
+/// One signed fact's body ceiling -- seated v27.
 pub const myc_fact_max_bytes: u32 = 256;
 
-/// Star name ceiling — seated v27 · %term-compatible.
+/// Star name ceiling -- seated v27 - %term-compatible.
 pub const star_name_max_bytes: u32 = 32;
 
-/// Append-only log length — power of two; holds a journey of journeys of facts.
+/// Append-only log length -- power of two; holds a journey of journeys of facts.
 pub const myc_log_max_facts: u32 = 1024;
 
 pub const kind_issue: u8 = 1;
@@ -85,7 +85,7 @@ pub const Log = struct {
 };
 
 fn canonical_bytes(f: *const Fact, out: []u8) usize {
-    // kind · amount(le8) · star · body — bound bitten before copy.
+    // kind - amount(le8) - star - body -- bound bitten before copy.
     // invariant: the frame is the tag, the eight-byte header, the star name and the body laid
     // end to end, so a buffer shorter than that sum would be written past
     assert(out.len >= 1 + 8 + f.star_len + f.body_len);
@@ -146,10 +146,10 @@ pub fn mint_fact(
 }
 
 /// Verify a fact's own signature over its canonical bytes by its signer key.
-/// Additive — `fold_fact` already runs exactly this crypto gate before applying the
+/// Additive -- `fold_fact` already runs exactly this crypto gate before applying the
 /// global-supply law; this exposes the gate alone for a resolver (like the Purse)
 /// that folds a DIFFERENT law over the same signed facts yet must still trust who
-/// signed each fact and to whom. The existing fold path is unchanged — the same
+/// signed each fact and to whom. The existing fold path is unchanged -- the same
 /// additive shape `cord.verify_block` set for a Byzantine-aware caller.
 pub fn verify_fact(fact: *const Fact) bool {
     // invariant: the canonical buffer holds the whole bounded fact layout.
@@ -205,7 +205,7 @@ pub fn fold_fact(state: *FoldState, fact: *const Fact) error{
         const name = fact.star_slice();
         if (star_taken(state, name)) return error.StarTaken;
         if (fact.amount > state.supply()) return error.Overdraw;
-        // Reservation pays tax into the twelve — same drain as tax.
+        // Reservation pays tax into the twelve -- same drain as tax.
         state.taxed += fact.amount;
         // invariant: supply is issued less taxed by definition, so a disagreement here means
         // one of the two moved without the other and the ledger no longer adds up
@@ -220,7 +220,7 @@ pub fn fold_fact(state: *FoldState, fact: *const Fact) error{
     }
 }
 
-/// Fold a whole log from empty. Refuses whole on any bad fact — no silent skip.
+/// Fold a whole log from empty. Refuses whole on any bad fact -- no silent skip.
 pub fn fold_log(log: *const Log) error{
     IdentityRefused,
     UnknownKind,
@@ -263,7 +263,7 @@ pub fn append_fact(log: *Log, fact: Fact) error{
     return state;
 }
 
-/// Selftest — Check shape: purity · invariant · kumara · star unique · refuse whole.
+/// Selftest -- Check shape: purity - invariant - kumara - star unique - refuse whole.
 pub fn main() !void {
     const seed: [kumara.seed_length]u8 = .{0x7e} ** kumara.seed_length;
     const kp = kumara.keypair_from_seed(&seed);
@@ -285,7 +285,7 @@ pub fn main() !void {
     if (state.supply() != 872) return error.SupplyAfterStar;
     if (state.star_count != 1) return error.StarCount;
 
-    // Double reservation refuses whole — log unchanged.
+    // Double reservation refuses whole -- log unchanged.
     const len_before = log.len;
     if (append_fact(&log, star_dup)) |_| return error.DupAccepted else |err| {
         if (err != error.StarTaken) return error.WrongDup;
@@ -298,7 +298,7 @@ pub fn main() !void {
     }
     if (log.len != len_before) return error.OverMutated;
 
-    // Tampered signature — IdentityRefused.
+    // Tampered signature -- IdentityRefused.
     var bad = issue;
     bad.sig[0] ^= 0xff;
     if (append_fact(&log, bad)) |_| return error.TamperAccepted else |err| {

@@ -1,30 +1,30 @@
-//! crypto/mlkem_decaps.rye — Season G (Cryptography): the ML-KEM decapsulation rung, the SIXTH stone of the post-quantum arc and the rung that closes
-//! the KEM round-trip. FIPS 203 K-PKE.Decrypt wrapped by ML-KEM.Decaps (Algorithms 15·18), authored in pure Rye: it parses a decapsulation key dk into
+//! crypto/mlkem_decaps.rye -- Season G (Cryptography): the ML-KEM decapsulation rung, the SIXTH stone of the post-quantum arc and the rung that closes
+//! the KEM round-trip. FIPS 203 K-PKE.Decrypt wrapped by ML-KEM.Decaps (Algorithms 15-18), authored in pure Rye: it parses a decapsulation key dk into
 //! (dk_pke, ek, H(ek), z), decrypts the ciphertext c back to a candidate message m' = ByteEncode_1(Compress_1(v − InvNTT(ŝ ∘ NTT(u)))), re-derives
-//! (K', r') = G(m' ‖ H(ek)), RE-ENCRYPTS m' under ek with r' via the GREEN encaps rung, and returns K' when the re-encryption reproduces c — otherwise
-//! the implicit-rejection secret K̄ = J(z ‖ c) = SHAKE256(z ‖ c). The Fujisaki–Okamoto transform's "verify by re-encryption" is exactly what makes
-//! ML-KEM CCA-secure, and this rung proves both branches. It composes only GREEN rungs — the base ring (crypto/mlkem_ring.rye), the serialization
-//! (crypto/mlkem_encode.rye), the keygen (crypto/mlkem_keygen.rye), and the encaps (crypto/mlkem_encaps.rye) for the re-encryption — plus SHAKE256, and
+//! (K', r') = G(m' ‖ H(ek)), RE-ENCRYPTS m' under ek with r' via the GREEN encaps rung, and returns K' when the re-encryption reproduces c -- otherwise
+//! the implicit-rejection secret K̄ = J(z ‖ c) = SHAKE256(z ‖ c). The Fujisaki-Okamoto transform's "verify by re-encryption" is exactly what makes
+//! ML-KEM CCA-secure, and this rung proves both branches. It composes only GREEN rungs -- the base ring (crypto/mlkem_ring.rye), the serialization
+//! (crypto/mlkem_encode.rye), the keygen (crypto/mlkem_keygen.rye), and the encaps (crypto/mlkem_encaps.rye) for the re-encryption -- plus SHAKE256, and
 //! holds no key of its own: every dk and ciphertext here is a public test vector.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 6 of the ML-KEM ladder, the decapsulation rung whose
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md -- rung 6 of the ML-KEM ladder, the decapsulation rung whose
 //! recovered shared secret meets Zig's independent std.crypto ML-KEM decaps on BOTH the honest and the implicit-rejection path.
 //! Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
-//! Kin: crypto/mlkem_encaps.rye (the fifth rung, ciphertext and shared secret GREEN) · crypto/mlkem_keygen.rye (dk layout) · crypto/mlkem_ring.rye
-//! (NTT · InvNTT · pointwise multiply, GREEN) · crypto/mlkem_encode.rye (ByteDecode · Decompress · Compress · ByteEncode, GREEN) · crypto/shake.rye
-//! (SHAKE256 for the rejection secret J). The parity TARGET is Zig's std.crypto ml_kem (nist.MLKem512/768/1024) SecretKey.decaps, studied clean-room —
+//! Kin: crypto/mlkem_encaps.rye (the fifth rung, ciphertext and shared secret GREEN) - crypto/mlkem_keygen.rye (dk layout) - crypto/mlkem_ring.rye
+//! (NTT - InvNTT - pointwise multiply, GREEN) - crypto/mlkem_encode.rye (ByteDecode - Decompress - Compress - ByteEncode, GREEN) - crypto/shake.rye
+//! (SHAKE256 for the rejection secret J). The parity TARGET is Zig's std.crypto ml_kem (nist.MLKem512/768/1024) SecretKey.decaps, studied clean-room --
 //! never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE DOUBLED ORACLE, BOTH BRANCHES — this rung authors the spec's standard-domain decryption and the FO re-encryption check, and proves the recovered
+//! THE DOUBLED ORACLE, BOTH BRANCHES -- this rung authors the spec's standard-domain decryption and the FO re-encryption check, and proves the recovered
 //! 32-byte shared secret against Zig's decaps over several deterministic keys, on the honest path (an untouched ciphertext, where decaps must recover
 //! exactly the encaps shared secret K) AND the implicit-rejection path (a tampered ciphertext, where both implementations must return the SAME derived
 //! rejection secret K̄, distinct from K). Both strangers agree on when to accept and on what to hand back when they reject.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The decaps FUNCTION calls no std.crypto — it composes our own
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. The decaps FUNCTION calls no std.crypto -- it composes our own
 //! GREEN rungs; only the SELFTEST invokes Zig's std.crypto as the parity oracle to diff against. Every dk and message is a public test vector;
 //! decapsulating with the maintainer's OWN post-quantum identity key stays the custody gate. Constant-time timing-safety stays the Season's named
-//! horizon — this rung proves CORRECTNESS. (FIPS 203's cmov-based selection is data-independent; here the branch is written plainly for clarity, since
+//! horizon -- this rung proves CORRECTNESS. (FIPS 203's cmov-based selection is data-independent; here the branch is written plainly for clarity, since
 //! the inputs are public test vectors and timing-safety is measured, not claimed.)
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mlkem_decaps.rye selftest
@@ -46,7 +46,7 @@ pub const mlkem_decaps_version = "20260816.161537";
 pub const q: u32 = ring.q;
 pub const n: u32 = ring.n;
 
-/// The bounds the whole arc cites — largest module rank, one degree-12 polynomial's byte width, the 32-byte seed/secret/shared width, and the widest
+/// The bounds the whole arc cites -- largest module rank, one degree-12 polynomial's byte width, the 32-byte seed/secret/shared width, and the widest
 /// ciphertext. Borrowed from the composed rungs so no magic number is repeated.
 pub const max_k: u32 = keygen.max_k;
 pub const poly_encoded_bytes: u32 = keygen.poly_encoded_bytes;
@@ -57,33 +57,33 @@ pub const max_du: u32 = encaps.max_du;
 pub const max_dv: u32 = encaps.max_dv;
 
 /// The faults this rung can raise. Every one is either a composed rung's honest error surfaced (impossible on our fixed widths, yet honored) or a
-/// selftest proof that failed — never a normal runtime outcome once the parity is GREEN.
+/// selftest proof that failed -- never a normal runtime outcome once the parity is GREEN.
 pub const DecapsError = error{
-    /// A composed SHA-3 call (G = SHA3-512) reported a bad length — impossible for our fixed input, honored honestly.
+    /// A composed SHA-3 call (G = SHA3-512) reported a bad length -- impossible for our fixed input, honored honestly.
     HashFailed,
-    /// A composed SHAKE256 call (the rejection secret J, or re-encryption's PRF) reported a bad length — impossible for our fixed inputs, honored.
+    /// A composed SHAKE256 call (the rejection secret J, or re-encryption's PRF) reported a bad length -- impossible for our fixed inputs, honored.
     ShakeFailed,
-    /// The GREEN encaps rung's re-encryption surfaced its own error — impossible for our fixed widths, honored honestly.
+    /// The GREEN encaps rung's re-encryption surfaced its own error -- impossible for our fixed widths, honored honestly.
     ReencryptFailed,
-    /// The Zig std.crypto reference reported an error building the secret key or decapsulating — never expected for a valid dk and ciphertext.
+    /// The Zig std.crypto reference reported an error building the secret key or decapsulating -- never expected for a valid dk and ciphertext.
     OracleFailed,
-    /// Our recovered shared secret length did not match Zig's — a width was computed wrong.
+    /// Our recovered shared secret length did not match Zig's -- a width was computed wrong.
     SizeMismatch,
-    /// Our recovered shared secret disagreed with Zig's on the honest path — decryption or the FO accept branch diverged from FIPS 203.
+    /// Our recovered shared secret disagreed with Zig's on the honest path -- decryption or the FO accept branch diverged from FIPS 203.
     HonestMismatch,
-    /// The honest decapsulation did not recover the encaps shared secret K — the KEM round-trip is broken.
+    /// The honest decapsulation did not recover the encaps shared secret K -- the KEM round-trip is broken.
     RoundTripBroken,
-    /// Our recovered shared secret disagreed with Zig's on the rejection path — the implicit-rejection secret or the reject branch diverged.
+    /// Our recovered shared secret disagreed with Zig's on the rejection path -- the implicit-rejection secret or the reject branch diverged.
     RejectMismatch,
-    /// The rejection secret equalled the honest secret, so the tampered-ciphertext test would prove nothing — the selftest refuses a trivial witness.
+    /// The rejection secret equalled the honest secret, so the tampered-ciphertext test would prove nothing -- the selftest refuses a trivial witness.
     RejectNotDistinct,
-    /// A recovered shared secret came out all-zero, so a passing parity would prove nothing — the selftest refuses a trivial witness.
+    /// A recovered shared secret came out all-zero, so a passing parity would prove nothing -- the selftest refuses a trivial witness.
     TrivialWitness,
 };
 
-/// k_pke_decrypt — FIPS 203 K-PKE.Decrypt: recover the message m from a ciphertext c under the K-PKE decryption key dk_pke = ByteEncode12(ŝ). Splits c
+/// k_pke_decrypt -- FIPS 203 K-PKE.Decrypt: recover the message m from a ciphertext c under the K-PKE decryption key dk_pke = ByteEncode12(ŝ). Splits c
 /// into the du-compressed u vector and the dv-compressed v polynomial, decompresses both, computes w = v − InvNTT(ŝ ∘ NTT(u)) coefficient-wise mod q,
-/// and returns m = ByteEncode_1(Compress_1(w)) — 32 bytes. Standard-domain throughout; composes only GREEN rungs.
+/// and returns m = ByteEncode_1(Compress_1(w)) -- 32 bytes. Standard-domain throughout; composes only GREEN rungs.
 pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke: []const u8, c: []const u8, m_out: *[seed_half_bytes]u8) void {
     // invariant (precondition): the parameter set is one ML-KEM names and the buffers hold exactly the FIPS sizes.
     assert(k >= 2 and k <= max_k);
@@ -91,14 +91,14 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
     assert(dk_pke.len == poly_encoded_bytes * k);
     assert(c.len == 32 * du * k + 32 * dv);
 
-    // u[i] = Decompress_du(ByteDecode_du(c1[i])) — the du-compressed first ciphertext segment, decompressed back into the ring.
+    // u[i] = Decompress_du(ByteDecode_du(c1[i])) -- the du-compressed first ciphertext segment, decompressed back into the ring.
     var u_vec: [max_k]ring.Poly = undefined;
     var i: u32 = 0;
     // invariant (bound): exactly k u-polynomials decoded, one per turn.
     while (i < k) : (i += 1) {
         var block: encode.Encoded = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = 32 * du };
         var b: u32 = 0;
-        // invariant (bound): exactly 32·du bytes read for this polynomial.
+        // invariant (bound): exactly 32-du bytes read for this polynomial.
         while (b < 32 * du) : (b += 1) block.bytes[b] = c[32 * du * i + b];
         const raw = encode.byte_decode(&block, du);
         var poly: ring.Poly = .{ .cs = [_]u32{0} ** n };
@@ -108,19 +108,19 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
         u_vec[i] = poly;
     }
 
-    // v = Decompress_dv(ByteDecode_dv(c2)) — the dv-compressed second segment, decompressed back into the ring.
+    // v = Decompress_dv(ByteDecode_dv(c2)) -- the dv-compressed second segment, decompressed back into the ring.
     var v_poly: ring.Poly = .{ .cs = [_]u32{0} ** n };
     {
         var block: encode.Encoded = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = 32 * dv };
         var b: u32 = 0;
-        // invariant (bound): exactly 32·dv bytes read for v.
+        // invariant (bound): exactly 32-dv bytes read for v.
         while (b < 32 * dv) : (b += 1) block.bytes[b] = c[32 * du * k + b];
         const raw = encode.byte_decode(&block, dv);
         var cc: u32 = 0;
         while (cc < n) : (cc += 1) v_poly.cs[cc] = encode.decompress(raw[cc], dv);
     }
 
-    // ŝ[j] = ByteDecode12(dk_pke[384j .. 384j+384]) — the secret vector, already in the NTT domain (keygen serialized NTT(s)).
+    // ŝ[j] = ByteDecode12(dk_pke[384j .. 384j+384]) -- the secret vector, already in the NTT domain (keygen serialized NTT(s)).
     var s_hat: [max_k]ring.Poly = undefined;
     i = 0;
     // invariant (bound): exactly k secret polynomials decoded.
@@ -160,7 +160,7 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
         w.cs[cw] = (v_poly.cs[cw] + q - su.cs[cw]) % q;
     }
 
-    // m = ByteEncode_1(Compress_1(w)) — round each coefficient to a single bit and pack, the 32-byte message.
+    // m = ByteEncode_1(Compress_1(w)) -- round each coefficient to a single bit and pack, the 32-byte message.
     var comp: [n]u32 = undefined;
     var cm: u32 = 0;
     // invariant (bound): exactly n = 256 coefficients compressed to one bit each.
@@ -171,10 +171,10 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
     while (mb < seed_half_bytes) : (mb += 1) m_out[mb] = enc.bytes[mb];
 }
 
-/// decaps — FIPS 203 ML-KEM.Decaps, parameterized by k, eta1, du, dv. Parses dk = ByteEncode12(ŝ) ‖ ek ‖ H(ek) ‖ z, decrypts c to m', re-derives
+/// decaps -- FIPS 203 ML-KEM.Decaps, parameterized by k, eta1, du, dv. Parses dk = ByteEncode12(ŝ) ‖ ek ‖ H(ek) ‖ z, decrypts c to m', re-derives
 /// (K', r') = G(m' ‖ H(ek)), RE-ENCRYPTS m' under ek with r' through the GREEN encaps rung, and returns K' when the re-encryption reproduces c
-/// byte-for-byte — otherwise the implicit-rejection secret K̄ = SHAKE256(z ‖ c). Writes the 32-byte shared secret into k_out. The dk here is a public
-/// test vector — decapsulating with a real identity key stays the custody gate.
+/// byte-for-byte -- otherwise the implicit-rejection secret K̄ = SHAKE256(z ‖ c). Writes the 32-byte shared secret into k_out. The dk here is a public
+/// test vector -- decapsulating with a real identity key stays the custody gate.
 pub fn decaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv: u32, dk: []const u8, c: []const u8, k_out: *[shared_bytes]u8) DecapsError!void {
     // invariant (precondition): the parameter set is one ML-KEM names and dk/c hold exactly the FIPS sizes.
     assert(k >= 2 and k <= max_k);
@@ -217,7 +217,7 @@ pub fn decaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv
     // invariant (bound): K' the first half of G, r' the last half.
     while (t < seed_half_bytes) : (t += 1) r2[t] = kr[seed_half_bytes + t];
 
-    // c' = K-PKE.Encrypt(ek, m', r') through the GREEN encaps rung — the Fujisaki–Okamoto re-encryption check.
+    // c' = K-PKE.Encrypt(ek, m', r') through the GREEN encaps rung -- the Fujisaki-Okamoto re-encryption check.
     var c2: [ct_max_bytes]u8 = undefined;
     encaps.k_pke_encrypt(k, eta1, du, dv, ek, &m2, &r2, c2[0..ct_len]) catch return error.ReencryptFailed;
 
@@ -234,7 +234,7 @@ pub fn decaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv
         // invariant (bound): return K' verbatim on the honest path.
         while (t < shared_bytes) : (t += 1) k_out[t] = kr[t];
     } else {
-        // K̄ = SHAKE256(z ‖ c) — the derived secret that leaks nothing about why the ciphertext was rejected.
+        // K̄ = SHAKE256(z ‖ c) -- the derived secret that leaks nothing about why the ciphertext was rejected.
         var j_in: [seed_half_bytes + ct_max_bytes]u8 = undefined;
         t = 0;
         // invariant (bound): z then the whole ciphertext.
@@ -247,7 +247,7 @@ pub fn decaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the whole ML-KEM arc uses, so a failing run reruns
+/// bytes_from_seed -- fill a byte buffer deterministically from a seed with the same tiny LCG the whole ML-KEM arc uses, so a failing run reruns
 /// identically without any std.crypto.
 fn bytes_from_seed(seed: u32, buf: []u8) void {
     var state: u32 = seed *% 2654435761 +% 1013904223;
@@ -258,7 +258,7 @@ fn bytes_from_seed(seed: u32, buf: []u8) void {
     }
 }
 
-/// all_zero — is a byte slice entirely zero? A recovered secret that is must not pass a parity check, or the witness would prove nothing.
+/// all_zero -- is a byte slice entirely zero? A recovered secret that is must not pass a parity check, or the witness would prove nothing.
 fn all_zero(buf: []const u8) bool {
     var i: u32 = 0;
     while (i < buf.len) : (i += 1) {
@@ -267,7 +267,7 @@ fn all_zero(buf: []const u8) bool {
     return true;
 }
 
-/// bytes_equal — do two equal-length byte slices agree? Used to confirm the round-trip and to prove the rejection secret is distinct.
+/// bytes_equal -- do two equal-length byte slices agree? Used to confirm the round-trip and to prove the rejection secret is distinct.
 fn bytes_equal(a: []const u8, b: []const u8) bool {
     if (a.len != b.len) return false;
     var i: u32 = 0;
@@ -277,14 +277,14 @@ fn bytes_equal(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// check_param — the doubled oracle for one parameter set, BOTH branches. Builds a key with our keygen, encapsulates with our encaps to get (K, c),
+/// check_param -- the doubled oracle for one parameter set, BOTH branches. Builds a key with our keygen, encapsulates with our encaps to get (K, c),
 /// then: (1) our decaps of the honest c must recover K and equal Zig's decaps; (2) our decaps of a tampered c must equal Zig's decaps and differ from K.
 fn check_param(comptime Kem: type, comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv: u32, d: *const [seed_half_bytes]u8, z: *const [seed_half_bytes]u8, m: *const [seed_half_bytes]u8) DecapsError!void {
     const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
     const dk_len: u32 = 2 * poly_encoded_bytes * k + 3 * seed_half_bytes;
     const ct_len: u32 = 32 * du * k + 32 * dv;
 
-    // Build the key and encapsulate — all our own GREEN rungs.
+    // Build the key and encapsulate -- all our own GREEN rungs.
     var ek_mine: [keygen.ek_max_bytes]u8 = undefined;
     var dk_mine: [keygen.dk_max_bytes]u8 = undefined;
     keygen.keygen(k, eta1, d, z, ek_mine[0..ek_len], dk_mine[0..dk_len]) catch return error.OracleFailed;
@@ -292,7 +292,7 @@ fn check_param(comptime Kem: type, comptime k: u32, comptime eta1: u32, comptime
     var c_buf: [ct_max_bytes]u8 = undefined;
     encaps.encaps(k, eta1, du, dv, ek_mine[0..ek_len], m, &k_enc, c_buf[0..ct_len]) catch return error.OracleFailed;
 
-    // Zig's secret key, rebuilt from our dk bytes — the parity oracle for both branches.
+    // Zig's secret key, rebuilt from our dk bytes -- the parity oracle for both branches.
     const sk = Kem.SecretKey.fromBytes(dk_mine[0..dk_len]) catch return error.OracleFailed;
 
     // (1) Honest path: our decaps recovers the encaps shared secret K, and equals Zig's decaps.
@@ -321,7 +321,7 @@ fn run_selftest() !u8 {
 
     // Over a deterministic spread of (key seed, message) pairs, our pure-Rye ML-KEM.Decaps must match Zig's std.crypto decaps at every parameter set,
     // on BOTH branches: the honest ciphertext (recover exactly the encaps K, agree with Zig) and a tampered ciphertext (agree with Zig on the derived
-    // implicit-rejection secret, distinct from K). This closes the KEM round-trip — keygen → encaps → decaps — end to end against an independent oracle.
+    // implicit-rejection secret, distinct from K). This closes the KEM round-trip -- keygen -> encaps -> decaps -- end to end against an independent oracle.
     {
         var seed: u32 = 1;
         while (seed <= 8) : (seed += 1) {

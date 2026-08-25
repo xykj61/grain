@@ -1,17 +1,17 @@
-//! constel/handshake.rye — FORA2: two fake piers greet, proven pure. FORA0 named the piers, FORA1 rostered them; this rung
-//! proves the one thing every real multi-pier sync leans on — agreement before exchange. Two piers must confirm they are
+//! constel/handshake.rye -- FORA2: two fake piers greet, proven pure. FORA0 named the piers, FORA1 rostered them; this rung
+//! proves the one thing every real multi-pier sync leans on -- agreement before exchange. Two piers must confirm they are
 //! distinct members of the SAME constellation before a single payload byte moves, and that confirmation is a pure protocol
 //! provable on the bench, exactly as DREY proved the Mikrophone carry pure before any wire.
 //!
 //! Three steps, each an immutable value the next validates: open (the initiator offers its name and constellation), accept
-//! (the responder confirms same-net membership and answers), finish (the initiator confirms the ack — a Session, COMPLETE
+//! (the responder confirms same-net membership and answers), finish (the initiator confirms the ack -- a Session, COMPLETE
 //! only when both are distinct never-a-ship members of the one constellation). A cross-constellation greet, a non-member,
 //! a self-greet, and a vowel-bearing (real-@p-shaped) party each refuse by name.
 //!
-//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA2.
+//! Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA2.
 //! Design read: active-designing/date/20260814/20260814-042804_fora2-constel-local-handshake.md
 //!
-//! Purely LOCAL — the three steps and the membership predicate over name.rye's public API and a constellation string (which
+//! Purely LOCAL -- the three steps and the membership predicate over name.rye's public API and a constellation string (which
 //! roster.render produces). No network, no Comlink transport, no keys, no funds, no real address. The real transport stays
 //! its own later round; this hands it a handshake whose logic is already proven.
 //!
@@ -28,13 +28,13 @@ pub const handshake_version = "20260814";
 pub const HandshakeError = error{
     /// A party named in a greeting or ack is not a member segment of the shared constellation.
     NotAMember,
-    /// The initiator and responder resolved to the same name — a pier cannot greet itself.
+    /// The initiator and responder resolved to the same name -- a pier cannot greet itself.
     SameParty,
-    /// The responder's constellation is not byte-equal to the greeting's — two different skies.
+    /// The responder's constellation is not byte-equal to the greeting's -- two different skies.
     ConstellationMismatch,
 } || name.NameError;
 
-/// True when `who` is an exact hyphen-delimited segment of `whole` — a member of the constellation, not merely a substring.
+/// True when `who` is an exact hyphen-delimited segment of `whole` -- a member of the constellation, not merely a substring.
 /// A bounded scan reusing check_constellation's split shape, failing closed on a partial match.
 pub fn is_member(whole: []const u8, who: []const u8) bool {
     // invariant: both inputs are bounded, so the segment walk is bounded.
@@ -87,7 +87,7 @@ pub const Ack = struct {
     }
 };
 
-/// The proof two piers agreed — both names, and the COMPLETE flag that is true only when every check held.
+/// The proof two piers agreed -- both names, and the COMPLETE flag that is true only when every check held.
 pub const Session = struct {
     a_buf: [name.max_ship_len]u8,
     a_len: u32,
@@ -111,7 +111,7 @@ fn stash(dst: []u8, src: []const u8) HandshakeError!u32 {
     return @intCast(src.len);
 }
 
-/// Step 1 — the initiator offers its name and constellation. Refuses unless `from` is a lawful never-a-ship name and a
+/// Step 1 -- the initiator offers its name and constellation. Refuses unless `from` is a lawful never-a-ship name and a
 /// member of `whole`, and `whole` is itself a lawful constellation.
 pub fn open(from: []const u8, whole: []const u8) HandshakeError!Greeting {
     try name.check_ship(from);
@@ -128,7 +128,7 @@ pub fn open(from: []const u8, whole: []const u8) HandshakeError!Greeting {
     return g;
 }
 
-/// Step 2 — the responder confirms same-net membership and answers. Refuses ConstellationMismatch (different sky),
+/// Step 2 -- the responder confirms same-net membership and answers. Refuses ConstellationMismatch (different sky),
 /// NotAMember (me is not in it), SameParty (me is the initiator), and any name fault by name.
 pub fn accept(greeting: *const Greeting, me: []const u8, my_whole: []const u8) HandshakeError!Ack {
     try name.check_ship(me);
@@ -147,7 +147,7 @@ pub fn accept(greeting: *const Greeting, me: []const u8, my_whole: []const u8) H
     return a;
 }
 
-/// Step 3 — the initiator confirms the ack. A Session is COMPLETE only when both parties are distinct never-a-ship members
+/// Step 3 -- the initiator confirms the ack. A Session is COMPLETE only when both parties are distinct never-a-ship members
 /// of the one constellation.
 pub fn finish(greeting: *const Greeting, ack: *const Ack) HandshakeError!Session {
     // The responder must be a member the greeting's constellation actually holds, and distinct from the initiator.
@@ -201,7 +201,7 @@ fn run_selftest() !u8 {
         if (accept(&g, "xnb", sky)) |_| return error.SelfGreetSlipped else |e| assert(e == error.SameParty);
     }
 
-    // 5. A vowel-bearing party — the exact shape a real @p wears — refuses VowelPresent before it can ever greet. The
+    // 5. A vowel-bearing party -- the exact shape a real @p wears -- refuses VowelPresent before it can ever greet. The
     //    naming law's safety reaches all the way into the handshake.
     {
         // A real-@p-shaped initiator is refused at open.
@@ -211,7 +211,7 @@ fn run_selftest() !u8 {
         if (accept(&g, "sampel", sky)) |_| return error.VowelResponderSlipped else |e| assert(e == error.VowelPresent);
     }
 
-    // 6. Membership is exact — a whole segment is a member, a mere substring is not.
+    // 6. Membership is exact -- a whole segment is a member, a mere substring is not.
     {
         assert(is_member(sky, "xnb"));
         assert(is_member(sky, "xnd"));

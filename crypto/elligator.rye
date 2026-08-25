@@ -1,36 +1,36 @@
-//! crypto/elligator.rye — Season G (Cryptography): Elligator 2 over Curve25519, the map that hides an X25519 public key as a uniformly
+//! crypto/elligator.rye -- Season G (Cryptography): Elligator 2 over Curve25519, the map that hides an X25519 public key as a uniformly
 //! random 32-byte string and reads it back. Where every earlier rung answered "is this bytes valid crypto," Elligator answers a censorship
 //! question: a handshake key that a network observer cannot distinguish from random noise. crypto_elligator_map takes a 254-bit
 //! representative to a Montgomery u-coordinate; crypto_elligator_rev takes a representable u-coordinate back to a representative under a
-//! random tweak byte. Comlink's obfuscated handshake — a first packet indistinguishable from random — is the module that reaches for this.
+//! random tweak byte. Comlink's obfuscated handshake -- a first packet indistinguishable from random -- is the module that reaches for this.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/20260816-*_elligator2-the-hidden-key.md (this round) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher primitives in
 //! Rye with byte-for-byte parity as the crux).
-//! Kin: crypto/fe25519.rye (the base field GF(2^255 − 19) this stands entirely on — Elligator adds no new field, only a new use of it) ·
+//! Kin: crypto/fe25519.rye (the base field GF(2^255 − 19) this stands entirely on -- Elligator adds no new field, only a new use of it) -
 //! crypto/x25519.rye (the key agreement whose public keys this hides and reveals). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity
-//! TARGET, never a copied line — our own arithmetic, studied clean-room from the public Elligator 2 mathematics and Monocypher's public API
+//! TARGET, never a copied line -- our own arithmetic, studied clean-room from the public Elligator 2 mathematics and Monocypher's public API
 //! (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — Elligator 2 is a pair of maps between field elements and curve points, over the SAME base field the curve already uses. The
+//! THE CRUX -- Elligator 2 is a pair of maps between field elements and curve points, over the SAME base field the curve already uses. The
 //! DIRECT map takes a representative r (a field element, its top two bits ignored so it is a clean 254-bit value): square it, and fold it
-//! through w = −A / (1 + non_square·r²) with non_square = 2, choosing between two candidate u-coordinates by whether an intermediate value is
-//! a square. The INVERSE map takes a u-coordinate and, when −non_square·u·(u+A) is a square (which happens for about half of all points),
+//! through w = −A / (1 + non_square-r²) with non_square = 2, choosing between two candidate u-coordinates by whether an intermediate value is
+//! a square. The INVERSE map takes a u-coordinate and, when −non_square-u-(u+A) is a square (which happens for about half of all points),
 //! returns the representative r whose direct map is u; when it is not a square, there is no representative and the inverse reports failure.
-//! Both maps rest on one shared operation, invsqrt(x) — the inverse square root, which in one fixed exponentiation both computes 1/√x and
+//! Both maps rest on one shared operation, invsqrt(x) -- the inverse square root, which in one fixed exponentiation both computes 1/√x and
 //! decides whether x is a square, exactly as Monocypher's own invsqrt does. The three constants Elligator needs are all DERIVED here from the
-//! field, never pasted from Monocypher's own limb basis: A = 486662, A² = A·A, and √(−1) (the one embedded value, the canonical fourth root
-//! of unity whose square is p − 1, verified equal to Monocypher's), with ufactor = −2·√(−1) built from it.
+//! field, never pasted from Monocypher's own limb basis: A = 486662, A² = A-A, and √(−1) (the one embedded value, the canonical fourth root
+//! of unity whose square is p − 1, verified equal to Monocypher's), with ufactor = −2-√(−1) built from it.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a secret and not a
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a secret and not a
 //! signature; this file signs nothing and holds no key. It calls no std.crypto in the primitive itself. Parity is proven at selftest against
-//! two references runnable now: Monocypher's OWN published Elligator test vectors, quoted byte-for-byte — the direct map's representative→u
-//! answers and the inverse map's point+tweak→status(+representative) answers — and the round-trip identity map(rev(u)) = u across a
+//! two references runnable now: Monocypher's OWN published Elligator test vectors, quoted byte-for-byte -- the direct map's representative->u
+//! answers and the inverse map's point+tweak->status(+representative) answers -- and the round-trip identity map(rev(u)) = u across a
 //! deterministic spread of points (every point a direct map produces is representable, so its inverse must succeed and re-map to it). Zig's
 //! std.crypto ships no Elligator, so unlike the hash and cipher rungs there is no independent std.crypto oracle; the byte-for-byte
 //! Monocypher-source parity in tools/cr/crypto_monocypher_elligator_parity_witness.rish is the external anchor. Constant-time timing-safety stays
-//! a separate named horizon — crypto_elligator_rev is deliberately variable-time in exactly one place (whether a point is representable),
+//! a separate named horizon -- crypto_elligator_rev is deliberately variable-time in exactly one place (whether a point is representable),
 //! which is why a caller tries fresh random keys rather than fixed ones; the arithmetic beneath is data-independent by construction.
 //!
 //! Run from the repository root:
@@ -60,7 +60,7 @@ const fe_one: Field = Field{ .l = .{ 1, 0, 0, 0, 0 } };
 /// The field's zero.
 const fe_zero: Field = Field{ .l = .{ 0, 0, 0, 0, 0 } };
 
-/// √(−1) mod p — the canonical square root of −1 (its square is p − 1), the one embedded constant Elligator needs. These are its 32
+/// √(−1) mod p -- the canonical square root of −1 (its square is p − 1), the one embedded constant Elligator needs. These are its 32
 /// little-endian bytes, the well-known ref10 value 19681161376707505956807079304988542015446066515923890162744021073123829784752; it was
 /// independently verified equal to Monocypher's own sqrtm1 constant (reconstructed from Monocypher's 10-limb basis) so the invsqrt branch
 /// that multiplies by it picks the SAME representative Monocypher would, the property byte-for-byte parity depends on.
@@ -86,12 +86,12 @@ fn ccopy(a: Field, b: Field, bit: u1) Field {
     var r: Field = undefined;
     var i: u32 = 0;
     while (i < 5) : (i += 1) r.l[i] = (a.l[i] & ~mask) | (b.l[i] & mask);
-    // invariant (postcondition): the result is exactly a's limbs or exactly b's limbs — a valid field element either way.
+    // invariant (postcondition): the result is exactly a's limbs or exactly b's limbs -- a valid field element either way.
     assert(r.l[0] == a.l[0] or r.l[0] == b.l[0]);
     return r;
 }
 
-/// Whether a field element is odd — the low bit of its canonical encoding. Elligator's inverse map uses it to pin the sign of the returned
+/// Whether a field element is odd -- the low bit of its canonical encoding. Elligator's inverse map uses it to pin the sign of the returned
 /// representative, so the same u always yields the same bytes.
 fn is_odd(a: Field) u1 {
     const b = fe.to_bytes(a);
@@ -100,7 +100,7 @@ fn is_odd(a: Field) u1 {
 }
 
 /// Whether two field elements are equal, compared on canonical bytes so two different limb representations of the same residue still compare
-/// equal — the property that makes the invsqrt case analysis exact.
+/// equal -- the property that makes the invsqrt case analysis exact.
 fn fe_eq(a: Field, b: Field) bool {
     const ab = fe.to_bytes(a);
     const bb = fe.to_bytes(b);
@@ -119,7 +119,7 @@ fn fe_is_zero(a: Field) bool {
 
 /// x^((p−5)/8) = x^(2^252 − 3), the exponent invsqrt is built on, by a fixed square-and-multiply over the exponent's known bit pattern: bit
 /// 251 down to bit 2 are set and bit 0 is set (251 ones), bit 1 alone is clear. The pattern is a compile-time constant, so the ladder is
-/// data-independent — the same shape for every input. Any correct computation yields the same field value, so this clean loop stands in for
+/// data-independent -- the same shape for every input. Any correct computation yields the same field value, so this clean loop stands in for
 /// Monocypher's optimized addition chain and must agree with it byte-for-byte.
 fn pow_p58(x: Field) Field {
     var acc = x; // consumes the set top bit, position 251
@@ -154,21 +154,21 @@ fn invsqrt(x: Field) Invsqrt {
     const m1 = fe_eq(quartic, neg(fe_one)); //  quartic == −1
     const ms = fe_eq(quartic, neg(sqrtm1)); //  quartic == −√(−1)
 
-    // isr = t0·√(−1) when the quartic is −1 or −√(−1); otherwise isr = t0 — Monocypher's `fe_ccopy(isr, t0, 1 − (m1 | ms))`.
+    // isr = t0-√(−1) when the quartic is −1 or −√(−1); otherwise isr = t0 -- Monocypher's `fe_ccopy(isr, t0, 1 − (m1 | ms))`.
     const isr_times = fe.mul(t0, sqrtm1);
     const use_t0: u1 = if (m1 or ms) 0 else 1;
     const isr = ccopy(isr_times, t0, use_t0);
 
-    // invariant (postcondition): squareness holds iff the quartic is ±1 or x is zero — the fourth-root-of-unity case analysis.
+    // invariant (postcondition): squareness holds iff the quartic is ±1 or x is zero -- the fourth-root-of-unity case analysis.
     assert((p1 or m1 or z0) == (fe_eq(fe.mul(fe.square(isr), x), fe_one) or z0));
     return Invsqrt{ .isr = isr, .is_square = p1 or m1 or z0 };
 }
 
 /// The Elligator 2 DIRECT map: a 254-bit representative (the top two bits of `hidden` ignored) to a Montgomery u-coordinate. Squares the
-/// representative, folds it through the curve, and selects between the square and non-square branches with invsqrt — the point a network
+/// representative, folds it through the curve, and selects between the square and non-square branches with invsqrt -- the point a network
 /// observer sees a random string become. Never fails: every representative maps to some point.
 pub fn map(hidden: *const [32]u8) [32]u8 {
-    // Clear the top two bits (254, 255): Monocypher's fe_frombytes_mask(·, 2) reads a clean 254-bit representative.
+    // Clear the top two bits (254, 255): Monocypher's fe_frombytes_mask(-, 2) reads a clean 254-bit representative.
     var masked = hidden.*;
     masked[31] &= 0x3f;
     const r0 = fe.from_bytes(&masked);
@@ -185,7 +185,7 @@ pub fn map(hidden: *const [32]u8) [32]u8 {
 
     const inv = invsqrt(t1);
 
-    // Non-square branch value r²·ufactor, overwritten by 1 when the intermediate is a square.
+    // Non-square branch value r²-ufactor, overwritten by 1 when the intermediate is a square.
     const ufactor = neg(fe.add(fe.from_bytes(&sqrtm1_bytes), fe.from_bytes(&sqrtm1_bytes))); // −2·√(−1)
     var u = fe.mul(r, ufactor);
     u = ccopy(u, fe_one, if (inv.is_square) 1 else 0);
@@ -211,7 +211,7 @@ pub const RevResult = struct {
 };
 
 /// The Elligator 2 INVERSE map: a Montgomery u-coordinate back to a representative, under a random `tweak` byte. Succeeds only when
-/// −non_square·u·(u+A) is a square — about half of all points — in which case it returns the representative whose direct map is u, with the
+/// −non_square-u-(u+A) is a square -- about half of all points -- in which case it returns the representative whose direct map is u, with the
 /// tweak's low bit choosing the v-coordinate sign and its top two bits padding the representative's unused high bits. When the point is not
 /// representable it reports `ok = false`. The one place whose timing depends on the input is exactly this success test, which is why keys are
 /// tried at random rather than fixed.
@@ -244,7 +244,7 @@ pub fn rev(public_key: *const [32]u8, tweak: u8) RevResult {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Decode a 64-character hex string into 32 bytes — a selftest helper for quoting Monocypher's published vectors.
+/// Decode a 64-character hex string into 32 bytes -- a selftest helper for quoting Monocypher's published vectors.
 fn from_hex(comptime s: []const u8) [32]u8 {
     // invariant (construction): a 32-byte field value is exactly 64 hex characters.
     assert(s.len == 64);
@@ -274,8 +274,8 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. Direct-map known-answers: Monocypher's OWN published elligator_dir vectors — a representative (top two bits are random padding the
-    //    map ignores) to its u-coordinate — quoted byte-for-byte. These span the square and non-square branches, so a branch error is caught.
+    // 1. Direct-map known-answers: Monocypher's OWN published elligator_dir vectors -- a representative (top two bits are random padding the
+    //    map ignores) to its u-coordinate -- quoted byte-for-byte. These span the square and non-square branches, so a branch error is caught.
     {
         const dir_in = [_][32]u8{
             from_hex("d3c41ec20dbe9fc33ccc14823d898066f433a892994ffbcc921e9f5ace519d02"),
@@ -295,8 +295,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. Inverse-map known-answers: Monocypher's OWN published elligator_inv vectors — a point and tweak to a status (representable or not) and,
-    //    on success, the representative — quoted byte-for-byte. The first point is not representable (status ff); the second is representable
+    // 2. Inverse-map known-answers: Monocypher's OWN published elligator_inv vectors -- a point and tweak to a status (representable or not) and,
+    //    on success, the representative -- quoted byte-for-byte. The first point is not representable (status ff); the second is representable
     //    under tweak 0 and tweak 1, each yielding its published representative.
     {
         const p_fail = from_hex("e6f66fdf6e230c603c5e6e59a254ea1476a13eb9511b9549846781e12e52230a");

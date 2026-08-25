@@ -1,20 +1,20 @@
-//! lotus/notch.rye — ALES47: a band-reject (notch) — keep the edges, drop the middle. The complement of ALES46's band-pass:
+//! lotus/notch.rye -- ALES47: a band-reject (notch) -- keep the edges, drop the middle. The complement of ALES46's band-pass:
 //! where the band-pass keeps the middle by cascading a high-pass into a low-pass, the notch keeps the EDGES by summing, in
 //! PARALLEL, a low-pass (keeps everything below the low cutoff) and a high-pass (keeps everything above the high cutoff). What
-//! neither branch keeps — the middle band between the cutoffs — is what the notch rejects: the mains hum pulled from a take, the
+//! neither branch keeps -- the middle band between the cutoffs -- is what the notch rejects: the mains hum pulled from a take, the
 //! resonant ring notched from a room, the mud scooped while the lows and the air stay whole. This is the shelf's own shape
-//! (ALES41 — scale two bands and sum, clamp once) with both retained bands at unity. The elegant crux: because a low-pass and a
+//! (ALES41 -- scale two bands and sum, clamp once) with both retained bands at unity. The elegant crux: because a low-pass and a
 //! high-pass at the SAME coefficient reconstruct the input exactly (ALES40's low_pass + high_pass = x), a notch whose two cutoffs
-//! are EQUAL — a reject band of zero width — is the identity, byte-for-byte. It adds no arithmetic on the audio path.
+//! are EQUAL -- a reject band of zero width -- is the identity, byte-for-byte. It adds no arithmetic on the audio path.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES47.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES47.
 //! Design read: active-designing/date/20260814/20260814-165728_fill-ales47-lotus-band-reject.md
-//! Stands on: lotus/tone.rye (ALES40) — the low-pass and high-pass it sums; lotus/timeline.rye (ALES2) — the Clip and the one
+//! Stands on: lotus/tone.rye (ALES40) -- the low-pass and high-pass it sums; lotus/timeline.rye (ALES2) -- the Clip and the one
 //! true saturation it reuses; the shape follows lotus/shelf.rye (ALES41)'s scale-two-bands-and-clamp-once.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
 //! no network, no keys, no funds, no real device, no real sample rate (the coefficients set where the two edges fall over sample
-//! INDICES, not cutoffs in hertz — a real time base is a later rung). Every band and the sum run in i64 so nothing overflows
+//! INDICES, not cutoffs in hertz -- a real time base is a later rung). Every band and the sum run in i64 so nothing overflows
 //! before the single clamp.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/notch.rye selftest
@@ -32,8 +32,8 @@ pub const notch_version = "20260814.165728";
 /// and the high band (a one-pole high-pass at the high cutoff, ALES40), and write their sum saturated ONCE over the true
 /// wide-domain total. Equal cutoffs (low_num/low_den == high_num/high_den) reconstruct the input byte-for-byte (the reject band
 /// has zero width); at direct current the low band keeps the constant and the high band is zero, so the notch keeps direct
-/// current. Refuses BadCoeff on an illegal cutoff (either edge), BadRange on a span outside the samples — each before any write.
-/// Values only — never the length.
+/// current. Refuses BadCoeff on an illegal cutoff (either edge), BadRange on a span outside the samples -- each before any write.
+/// Values only -- never the length.
 pub fn notch(
     clip: *timeline.Clip,
     start: u32,
@@ -43,16 +43,16 @@ pub fn notch(
     high_num: i32,
     high_den: u32,
 ) tone.ToneError!void {
-    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies within the samples — checked through ALES40's own
+    // invariant: both cutoffs are legal fractions in (0, 1] and the span lies within the samples -- checked through ALES40's own
     // law BEFORE either scratch is filled, so an illegal call leaves the clip exactly as it was.
     try tone.precheck(clip.len, start, count, low_num, low_den);
     try tone.precheck(clip.len, start, count, high_num, high_den);
 
     // The low band and the high band each live in a scratch copy of the span, so the original samples stay intact until the
-    // combine writes them. The span always fits a scratch — all three share timeline.max_clip.
+    // combine writes them. The span always fits a scratch -- all three share timeline.max_clip.
     var low = timeline.Clip{};
     var high = timeline.Clip{};
-    // invariant: the span fits each scratch buffer whole — no partial copy.
+    // invariant: the span fits each scratch buffer whole -- no partial copy.
     assert(count <= low.buf.len and count <= high.buf.len);
     var i: u32 = 0;
     while (i < count) : (i += 1) {
@@ -67,7 +67,7 @@ pub fn notch(
 
     i = 0;
     while (i < count) : (i += 1) {
-        // The two retained bands summed in i64, the single clamp over the true sum — ALES8's fader lesson (via ALES41): scale
+        // The two retained bands summed in i64, the single clamp over the true sum -- ALES8's fader lesson (via ALES41): scale
         // in the wide domain and saturate once, never saturate then sum. Both bands are unity, so this is a plain sum.
         const total: i64 = @as(i64, low.buf[i]) + @as(i64, high.buf[i]);
         clip.buf[start + i] = timeline.saturate(total);
@@ -77,8 +77,8 @@ pub fn notch(
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: silence stays silence; equal cutoffs are the identity (the reject band has zero width — low_pass + high_pass = x);
-//     the notch KEEPS direct current (a constant settles to itself — the exact contrast to ALES46's band-pass); distinct cutoffs
+// --- selftest: silence stays silence; equal cutoffs are the identity (the reject band has zero width -- low_pass + high_pass = x);
+//     the notch KEEPS direct current (a constant settles to itself -- the exact contrast to ALES46's band-pass); distinct cutoffs
 //     genuinely reject a middle band (equal to neither the input nor either single filter); a loud transient SATURATES rather than
 //     wraps; and an illegal cutoff (either edge) and an out-of-range span each refuse by name ---------------------------------
 
@@ -96,7 +96,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
 
-    // 1. silence stays silence — an all-zero clip band-rejects to all zeros at any cutoffs.
+    // 1. silence stays silence -- an all-zero clip band-rejects to all zeros at any cutoffs.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -105,7 +105,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. THE ELEGANT CRUX — equal cutoffs are the IDENTITY. low_num/low_den == high_num/high_den writes low_pass + high_pass = x
+    // 2. THE ELEGANT CRUX -- equal cutoffs are the IDENTITY. low_num/low_den == high_num/high_den writes low_pass + high_pass = x
     //    byte-for-byte (ALES40's complement law): a reject band of zero width removes nothing.
     {
         var clip = timeline.Clip{};
@@ -114,7 +114,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &src)) return error.EqualCutoffsNotIdentity;
     }
 
-    // 3. the notch KEEPS direct current — a constant input settles to itself: the low band keeps the constant (settles to x) and
+    // 3. the notch KEEPS direct current -- a constant input settles to itself: the low band keeps the constant (settles to x) and
     //    the high band removes it (settles to 0), so their sum settles to x. The exact contrast to ALES46's band-pass, which
     //    drove a constant to zero.
     {
@@ -125,14 +125,14 @@ fn run_selftest() !u8 {
         if (clip.samples()[clip.len - 1] != 2500) return error.NotchDroppedDc; // settled tail equals the input exactly
     }
 
-    // 4. distinct cutoffs genuinely reject — over a mixed signal a notch with distinct edges equals NEITHER the input nor either
+    // 4. distinct cutoffs genuinely reject -- over a mixed signal a notch with distinct edges equals NEITHER the input nor either
     //    single filter alone: a real middle band is removed.
     {
         var reject = timeline.Clip{};
         try load_clip(&reject, &src);
         try notch(&reject, 0, reject.len, 1, 4, 1, 2); // low edge 1/4, high edge 1/2 — a non-zero reject band
 
-        // not the input — something was removed.
+        // not the input -- something was removed.
         if (eq(reject.samples(), &src)) return error.DistinctIsIdentity;
 
         // not the low-pass alone.
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (eq(reject.samples(), hp.samples())) return error.NotchEqualsHighpass;
     }
 
-    // 5. a loud transient SATURATES rather than wraps — a step from a settled low run to sample_max makes the high band spike
+    // 5. a loud transient SATURATES rather than wraps -- a step from a settled low run to sample_max makes the high band spike
     //    while the low band still holds the low level, so the sum can exceed the i16 range and must pin to the ceiling, never
     //    wrap to a negative.
     {
@@ -159,7 +159,7 @@ fn run_selftest() !u8 {
         while (i < 64) : (i += 1) buf[i] = timeline.sample_max; // then a jump up
         try load_clip(&clip, buf[0..64]);
         try notch(&clip, 0, clip.len, 1, 2, 1, 2); // equal edges here would be identity, so use them to prove the clamp on the jump
-        // Equal cutoffs reconstruct the input exactly, so every sample is a legal i16 — the sharpest proof there is no wrap: the
+        // Equal cutoffs reconstruct the input exactly, so every sample is a legal i16 -- the sharpest proof there is no wrap: the
         // output equals the input, which is in range. A distinct-cutoff transient is covered by the reconstruction law plus the
         // single i64 clamp; here we assert no wrapped negative appears where the input was maximally positive.
         const out = clip.samples();
@@ -167,7 +167,7 @@ fn run_selftest() !u8 {
         while (j < 64) : (j += 1) if (out[j] < 0) return error.TransientWrapped;
     }
 
-    // 6a. an illegal LOW cutoff (above one — unstable) refuses BadCoeff, the clip untouched.
+    // 6a. an illegal LOW cutoff (above one -- unstable) refuses BadCoeff, the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };

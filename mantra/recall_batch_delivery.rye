@@ -1,4 +1,4 @@
-//! mantra/recall_batch_delivery.rye — NS-L3 lap 3w-4: hosted resin-batch sync under Comlink seal.
+//! mantra/recall_batch_delivery.rye -- NS-L3 lap 3w-4: hosted resin-batch sync under Comlink seal.
 //!
 //!   rye build mantra/recall_batch_delivery.rye -lc -femit-bin=mantra/bin/recall-batch-delivery
 //!   mantra/bin/recall-batch-delivery selftest
@@ -29,7 +29,7 @@ const fetcher_port: u16 = 38480;
 const source_port: u16 = 38481;
 
 // Silent-peer guard on the chunk-assembly recv loop. A quiet peer yields RecvFailed
-// after this many seconds rather than an unbounded wait — the same class of fault
+// after this many seconds rather than an unbounded wait -- the same class of fault
 // recall_catch_up_delivery's 20260707.002012 fix answered, mirrored here 20260707.011412.
 const batch_recv_timeout_sec: u32 = 2;
 
@@ -181,7 +181,7 @@ fn send_batch_payload(port: u16, batch: []const u8) !void {
 
 // Invariant: one socket, bound once, receives every frame of one assembly. The prior
 // shape reopened and rebound per frame, and a chunk landing in that unbound window was
-// silently dropped — a race the multi-frame demos lost often enough to wait without
+// silently dropped -- a race the multi-frame demos lost often enough to wait without
 // bound. Binding
 // once lets the kernel queue back-to-back frames; the timeout turns a silent peer into
 // error.RecvFailed rather than an unbounded wait (guard class per catch_up 20260707.002012).

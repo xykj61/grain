@@ -1,32 +1,32 @@
-//! lotus/stereo_soft_drive.rye — ALES133: the soft-clip overdrive carried into stereo, ONE SHARED SHOULDER, the rounded corner of the stereo NONLINEAR class. ALES79 named `soft_drive` — ALES78's hard
-//! clip with its corner rounded: below a KNEE the boosted signal passes clean, between the knee and the ceiling the slope HALVES, and once that shoulder reaches the ceiling it pins — the warmth of an
+//! lotus/stereo_soft_drive.rye -- ALES133: the soft-clip overdrive carried into stereo, ONE SHARED SHOULDER, the rounded corner of the stereo NONLINEAR class. ALES79 named `soft_drive` -- ALES78's hard
+//! clip with its corner rounded: below a KNEE the boosted signal passes clean, between the knee and the ceiling the slope HALVES, and once that shoulder reaches the ceiling it pins -- the warmth of an
 //! overdriven tube rather than the buzz of a fuzz, for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME
 //! length. This rung carries the soft drive into stereo the plain way, ALES132's sibling: run ALES79's proven mono `soft_drive` on each channel with the SAME gain, knee, and ceiling, so one overdrive
 //! lands on BOTH speakers together.
 //!
-//! The nonlinear class holds exactly as ALES132 stated it, honestly: a soft drive is still NOT linear, so a shared shoulder does NOT preserve the inter-channel ratio in general — each channel bends toward
+//! The nonlinear class holds exactly as ALES132 stated it, honestly: a soft drive is still NOT linear, so a shared shoulder does NOT preserve the inter-channel ratio in general -- each channel bends toward
 //! the same ceiling by its OWN level, a louder channel bending harder, the ratio compressing. That is not a bug to design around; it is what a stereo soft drive IS. What the shared map DOES keep, per
 //! channel, is the ceiling and sign discipline (an odd waveshaper never flips a sample, never crosses the ceiling); and an identical-channel master still soft-drives to an identical-channel output. A knee
-//! AT the ceiling degenerates both channels to ALES132's hard drive — the two stereo corners are one waveshaper read at two knee positions.
+//! AT the ceiling degenerates both channels to ALES132's hard drive -- the two stereo corners are one waveshaper read at two knee positions.
 //!
 //! The rule, stated once: refuse BadGain (a zero denominator, a below-unity gain, an oversized numerator), BadKnee (a knee below one sample unit or above the ceiling), BadCeiling (a ceiling outside
-//! [1, sample_max]), and BadRange (a span outside the samples) BEFORE either channel is mutated — every fault depends only on the shared parameters or the shared length, so each check is made ONCE up
+//! [1, sample_max]), and BadRange (a span outside the samples) BEFORE either channel is mutated -- every fault depends only on the shared parameters or the shared length, so each check is made ONCE up
 //! front, and a refusal never soft-drives one channel and leaves the other dry; otherwise soft-drive both channels over [start, start+count) by num/den through knee into ceil via ALES79's `soft_drive`.
 //! SoftDriveError reused whole.
 //!
-//! The crux — four laws. THE STEREO SOFT-DRIVE LAW: each channel equals ALES79's mono `soft_drive` with the same (num, den, knee, ceil) over the same span byte for byte — a boosted sample below the knee
-//! passing clean, one in the shoulder rising at half slope, one past the top pinning to sign(x)·ceil, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their
+//! The crux -- four laws. THE STEREO SOFT-DRIVE LAW: each channel equals ALES79's mono `soft_drive` with the same (num, den, knee, ceil) over the same span byte for byte -- a boosted sample below the knee
+//! passing clean, one in the shoulder rising at half slope, one past the top pinning to sign(x)-ceil, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their
 //! starting length (a soft drive writes values only). THE PER-CHANNEL NONLINEAR LAW: a soft drive is nonlinear, so a shared shoulder does NOT hold the inter-channel ratio (a 1:2 master driven hard bends
-//! both toward the ceiling, the ratio compressing) — unlike the linear amplitude class; yet the ceiling and sign discipline hold per channel, an identical-channel master stays identical, and a knee AT the
+//! both toward the ceiling, the ratio compressing) -- unlike the linear amplitude class; yet the ceiling and sign discipline hold per channel, an identical-channel master stays identical, and a knee AT the
 //! ceiling degenerates both channels to ALES132's hard drive byte for byte. THE ATOMICITY / DEGENERATE LAW: any refusal (BadGain, BadKnee, BadCeiling, BadRange) leaves BOTH channels byte for byte
 //! untouched and still balanced; a unity drive at the rail is the identity on both, count = 0 the identity on both.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES133.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES133.
 //! Design read: active-designing/date/20260815/20260815-032747_fill-ales133-lotus-stereo-soft-drive.md
-//! Stands on: lotus/soft_drive.rye (ALES79) — the mono soft-clip overdrive run once per channel, itself ALES78's pre-gain and ceiling with a knee opened below it; lotus/stereo_drive.rye (ALES132) — the
-//! hard-drive sibling this rounds; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//! Stands on: lotus/soft_drive.rye (ALES79) -- the mono soft-clip overdrive run once per channel, itself ALES78's pre-gain and ceiling with a knee opened below it; lotus/stereo_drive.rye (ALES132) -- the
+//! hard-drive sibling this rounds; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES79's own soft_drive, never a length,
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES79's own soft_drive, never a length,
 //! never a byte fabricated; the drive gain is a rational num/den (unity = 1/1), the knee and ceiling magnitudes in sample units NOT decibels, the shape a piecewise-linear waveshaper, instantaneous (no
 //! attack/release, no anti-aliasing). No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
@@ -43,20 +43,20 @@ const soft_drive_mod = @import("soft_drive.rye");
 
 pub const stereo_soft_drive_version = "20260815.032747";
 
-/// Stereo soft drive's faults are exactly ALES79's own `SoftDriveError` — `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadKnee` (a knee below one sample unit or above the ceiling),
-/// `BadCeiling` (a ceiling outside [1, sample_max]), and `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same soft drive on each channel
+/// Stereo soft drive's faults are exactly ALES79's own `SoftDriveError` -- `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadKnee` (a knee below one sample unit or above the ceiling),
+/// `BadCeiling` (a ceiling outside [1, sample_max]), and `BadRange` (a span outside the samples) -- reused by name, since the stereo lift adds no new fault: it only runs the same soft drive on each channel
 /// after one shared validation.
 pub const StereoSoftDriveError = soft_drive_mod.SoftDriveError;
 
 /// Soft-drive `[start, start+count)` in BOTH channels of `sc` by the rational gain `num`/`den` (at least unity) through the knee `knee` into the magnitude `ceil`, the SAME shoulder on each, running ALES79's
-/// proven mono `soft_drive`. A boosted sample below the knee passes clean, one in the shoulder rises at half slope, one past the top pins to sign(x)·ceil (the rounded corner). Validates both channels once
-/// against the shared parameters and length before either is mutated: refuses `BadGain` / `BadKnee` / `BadCeiling` / `BadRange`, both channels untouched. Values only — never the length; the two channels
+/// proven mono `soft_drive`. A boosted sample below the knee passes clean, one in the shoulder rises at half slope, one past the top pins to sign(x)-ceil (the rounded corner). Validates both channels once
+/// against the shared parameters and length before either is mutated: refuses `BadGain` / `BadKnee` / `BadCeiling` / `BadRange`, both channels untouched. Values only -- never the length; the two channels
 /// leave balanced.
 pub fn stereo_soft_drive(sc: *pan.StereoClip, start: u32, count: u32, num: u32, den: u32, knee: i32, ceil: i32) StereoSoftDriveError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
-    // invariant: the gain, knee, ceiling, and span are legal — refused by name before any write, so a refusal never soft-drives one channel and leaves the other dry. The gain, knee, and ceiling checks
+    // invariant: the gain, knee, ceiling, and span are legal -- refused by name before any write, so a refusal never soft-drives one channel and leaves the other dry. The gain, knee, and ceiling checks
     // depend only on the shared parameters; the span check on the shared length. These mirror ALES79's own guards exactly, so each mono soft drive below is pre-validated to succeed.
     if (den == 0) return error.BadGain;
     if (num < den) return error.BadGain;
@@ -69,18 +69,18 @@ pub fn stereo_soft_drive(sc: *pan.StereoClip, start: u32, count: u32, num: u32, 
     if (start > len) return error.BadRange;
     if (count > len - start) return error.BadRange;
 
-    // Every check passed and holds identically for both channels, so each mono soft drive is pre-validated to succeed — no refusal can land between the two channel edits. The SAME shoulder on each.
+    // Every check passed and holds identically for both channels, so each mono soft drive is pre-validated to succeed -- no refusal can land between the two channel edits. The SAME shoulder on each.
     try soft_drive_mod.soft_drive(&sc.left, start, count, num, den, knee, ceil);
     try soft_drive_mod.soft_drive(&sc.right, start, count, num, den, knee, ceil);
 
-    // invariant: the channels leave balanced — a soft drive writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    // invariant: the channels leave balanced -- a soft drive writes values only, so each channel holds its starting length and the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
     assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
 }
 
-// --- selftest: THE STEREO SOFT-DRIVE LAW — each channel equals ALES79's mono soft_drive with the same params byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their
-//     starting length; THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign hold per channel, a 1:2 master's ratio COMPRESSES under a hard-enough drive, an identical-channel master staying identical, a
-//     knee AT the ceiling degenerating both channels to ALES132's hard drive; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, a unity drive at the rail the
+// --- selftest: THE STEREO SOFT-DRIVE LAW -- each channel equals ALES79's mono soft_drive with the same params byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their
+//     starting length; THE PER-CHANNEL NONLINEAR LAW -- the ceiling and sign hold per channel, a 1:2 master's ratio COMPRESSES under a hard-enough drive, an identical-channel master staying identical, a
+//     knee AT the ceiling degenerating both channels to ALES132's hard drive; THE ATOMICITY / DEGENERATE LAW -- each refusal leaves both channels untouched and balanced, a unity drive at the rail the
 //     identity, count = 0 the identity ----------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -96,7 +96,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO SOFT-DRIVE LAW — each channel equals ALES79's mono soft_drive with the same params, proven side by side over one span with different per-channel samples; a ×2 drive through a wide knee
+    // 1. THE STEREO SOFT-DRIVE LAW -- each channel equals ALES79's mono soft_drive with the same params, proven side by side over one span with different per-channel samples; a ×2 drive through a wide knee
     //    passes the small samples, rounds the middle at half slope, and pins the loud ones to ±ceil, per channel.
     {
         var sc = pan.StereoClip{};
@@ -112,12 +112,12 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // Concretely (knee 1000, ceil 1500, unity gain): left 300 clean, 1400→1000+400/2=1200, 3000 past the top→1500; right 100 clean, 1800→1000+800/2=1400, 5000→1500.
+        // Concretely (knee 1000, ceil 1500, unity gain): left 300 clean, 1400->1000+400/2=1200, 3000 past the top->1500; right 100 clean, 1800->1000+800/2=1400, 5000->1500.
         if (!eq(sc.left.samples(), &[_]i16{ 300, -300, 1200, -1500 })) return error.LeftShoulderWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 100, -50, 1400, -1500 })) return error.RightShoulderWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a soft drive writes values only. Proven at an even and an odd length.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; a soft drive writes values only. Proven at an even and an odd length.
     {
         var even = pan.StereoClip{};
         try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
@@ -132,7 +132,7 @@ fn run_selftest() !u8 {
         if (odd.left.len != 3) return error.OddLength;
     }
 
-    // 3a. THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign discipline hold per channel: every output magnitude is at most the ceiling and every sign matches the input, on BOTH channels, under a hard
+    // 3a. THE PER-CHANNEL NONLINEAR LAW -- the ceiling and sign discipline hold per channel: every output magnitude is at most the ceiling and every sign matches the input, on BOTH channels, under a hard
     //     boost through a wide knee. This is the soft drive's honest promise (contrast the linear amplitude class, which preserved a ratio).
     {
         var sc = pan.StereoClip{};
@@ -152,7 +152,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COMPRESSES — a 1:2 master (right twice left) driven hard enough that both pin does NOT keep its 1:2 ratio, because a soft drive is nonlinear: both channels
+    // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COMPRESSES -- a 1:2 master (right twice left) driven hard enough that both pin does NOT keep its 1:2 ratio, because a soft drive is nonlinear: both channels
     //     are boosted past the shoulder's top and pin to the same ceiling, so the loud right no longer stands twice the left. The honest opposite of ALES130/ALES131's shared-ratio image law.
     {
         var sc = pan.StereoClip{};
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (@as(i32, r[0]) == 2 * @as(i32, l[0])) return error.RatioUnexpectedlyHeld; // the linear law does NOT hold here — that is the point
     }
 
-    // 3c. an identical-channel master stays identical through the soft drive — a shared shoulder on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a nonlinear map).
+    // 3c. an identical-channel master stays identical through the soft drive -- a shared shoulder on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a nonlinear map).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
@@ -172,7 +172,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
     }
 
-    // 3d. A KNEE AT THE CEILING IS ALES132's HARD DRIVE — with knee == ceil the shoulder vanishes and the stereo soft drive reproduces the stereo hard drive byte for byte, on both channels, over a signal
+    // 3d. A KNEE AT THE CEILING IS ALES132's HARD DRIVE -- with knee == ceil the shoulder vanishes and the stereo soft drive reproduces the stereo hard drive byte for byte, on both channels, over a signal
     //     that both passes and pins. The two stereo corners are one waveshaper read at two knee positions (the family recognition, lifted to stereo).
     {
         const sl = [_]i16{ 300, -300, 1000, -2000 };
@@ -189,7 +189,7 @@ fn run_selftest() !u8 {
         if (!eq(soft.right.samples(), hard.right.samples())) return error.KneeAtCeilRightNotHard;
     }
 
-    // 4a. THE ATOMICITY LAW, bad gain — a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
+    // 4a. THE ATOMICITY LAW, bad gain -- a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != sc.right.len) return error.BadGainUnbalanced;
     }
 
-    // 4b. THE ATOMICITY LAW, bad knee — a knee above the ceiling refuses BadKnee, both channels untouched.
+    // 4b. THE ATOMICITY LAW, bad knee -- a knee above the ceiling refuses BadKnee, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 3, 2, 1 })) return error.BadKneeRightMutated;
     }
 
-    // 4c. THE ATOMICITY LAW, bad ceiling — a zero ceiling refuses BadCeiling, both channels untouched.
+    // 4c. THE ATOMICITY LAW, bad ceiling -- a zero ceiling refuses BadCeiling, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 4, 5, 6 }, &[_]i16{ 6, 5, 4 });
@@ -217,7 +217,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 6, 5, 4 })) return error.BadCeilingRightMutated;
     }
 
-    // 4d. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    // 4d. THE ATOMICITY LAW, bad span -- a span past the samples refuses BadRange, both channels untouched.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
@@ -226,7 +226,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
     }
 
-    // 4e. THE DEGENERATE LAW — a unity drive at the rail through a rail-high knee is the identity on both channels (nothing boosted past the ceiling, the shoulder never engaged), and count = 0 is the
+    // 4e. THE DEGENERATE LAW -- a unity drive at the rail through a rail-high knee is the identity on both channels (nothing boosted past the ceiling, the shoulder never engaged), and count = 0 is the
     //     identity on both.
     {
         var rail = pan.StereoClip{};

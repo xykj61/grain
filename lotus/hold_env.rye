@@ -1,18 +1,18 @@
-//! lotus/hold_env.rye — ALES56: the envelope follower given a HOLD stage — the patience between attack and release. ALES52 built a
+//! lotus/hold_env.rye -- ALES56: the envelope follower given a HOLD stage -- the patience between attack and release. ALES52 built a
 //! follower that rises toward a peak on the attack and eases off on the release, and the limiter (ALES55), compressor (ALES53), and
 //! gate (ALES54) all breathe over it. Yet a real dynamics processor does one more thing between those two knobs: when the signal
 //! FALLS AWAY from a peak, it holds the peak level for a little while BEFORE it lets the release begin. That hold is what keeps a
 //! gate from chattering on a brief dip between two loud samples, and what keeps a limiter's gain reduction from pumping on a signal
-//! that momentarily ducks below the ceiling. This rung adds exactly that stage — and adds it INSIDE the follower, so the same held
+//! that momentarily ducks below the ceiling. This rung adds exactly that stage -- and adds it INSIDE the follower, so the same held
 //! time base can later drive the whole family, and every envelope move still goes through the one ALES52 proved.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES56.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES56.
 //! Design read: active-designing/date/20260814/20260814-175827_fill-ales56-lotus-hold-stage.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/envelope.rye
-//! (ALES52) — the proven follower, its env_step making every envelope move here so the hold cannot drift from the time base it holds.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/envelope.rye
+//! (ALES52) -- the proven follower, its env_step making every envelope move here so the hold cannot drift from the time base it holds.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
-//! no network, no keys, no funds, no real device, no real sample rate — the attack, release, and hold are counted in sample INDICES,
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate -- the attack, release, and hold are counted in sample INDICES,
 //! not milliseconds against a clock, and the follower renders a magnitude curve rather than routing it into a gain yet (driving the
 //! limiter, compressor, and gate from the held follower is a later rung). One comparison, at most one env_step, and a single counter
 //! decrement per sample; nothing on the path can overflow, since the envelope stays in [0, sample_max] and the hold counter is
@@ -33,11 +33,11 @@ pub const hold_env_version = "20260814.175827";
 /// follower, BadCoeff), a hold longer than the widest clip can hold (BadHold), and a span outside the samples (BadRange, coinciding
 /// by name with timeline's, the EQ family's, and the whole dynamics family's). A composer sees one consistent fault surface.
 pub const HoldEnvError = error{
-    /// An attack or release coefficient outside (0, 1] — refused by the follower's one proven rule (coeff_ok), no write.
+    /// An attack or release coefficient outside (0, 1] -- refused by the follower's one proven rule (coeff_ok), no write.
     BadCoeff,
-    /// A hold longer than max_clip samples — no clip is that long, so such a hold could never expire within a span; refused, no write.
+    /// A hold longer than max_clip samples -- no clip is that long, so such a hold could never expire within a span; refused, no write.
     BadHold,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
@@ -46,7 +46,7 @@ pub const HoldEnvError = error{
 /// hold countdown is REARMED to `hold_samples`; while the signal has FALLEN below the envelope the countdown is spent one sample at a
 /// time and the envelope is PINNED at its peak, and only once the countdown reaches zero does the release begin (again through
 /// env_step). A level sample (the envelope exactly at the target) moves nothing and neither arms nor spends the hold. Every envelope
-/// MOVE is delegated to ALES52's env_step, so the held follower cannot drift from the time base it holds — and with `hold_samples`
+/// MOVE is delegated to ALES52's env_step, so the held follower cannot drift from the time base it holds -- and with `hold_samples`
 /// zero the fall branch never holds, so this reduces to env_step every sample, byte-for-byte. Public so a dynamics tool can later
 /// drive its gain from the held follower and read the same proven, held magnitude.
 pub fn env_step_hold(
@@ -59,9 +59,9 @@ pub fn env_step_hold(
     release_den: u32,
     hold_samples: u32,
 ) i16 {
-    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] — coeff_ok ran at the edge.
+    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] -- coeff_ok ran at the edge.
     assert(envelope.coeff_ok(attack_num, attack_den) and envelope.coeff_ok(release_num, release_den));
-    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span.
+    // invariant: the hold is bounded by the widest clip -- a longer hold could never expire within any span.
     assert(hold_samples <= timeline.max_clip);
 
     const mag: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
@@ -70,28 +70,28 @@ pub fn env_step_hold(
     const gap: i64 = target - env.*; // read BEFORE env_step moves the envelope, so the rise/fall decision is on the pre-move state
 
     if (gap < 0 and hold_left.* > 0) {
-        // FALLING with the countdown still running — pin the peak and spend one hold sample; the envelope does not move at all.
+        // FALLING with the countdown still running -- pin the peak and spend one hold sample; the envelope does not move at all.
         hold_left.* -= 1;
-        // invariant: a held envelope stays a legal i16 magnitude — it did not move, so it stays where env_step last left it.
+        // invariant: a held envelope stays a legal i16 magnitude -- it did not move, so it stays where env_step last left it.
         assert(env.* >= 0 and env.* <= rail);
         return @intCast(env.*);
     }
 
-    // Otherwise the envelope moves exactly as the proven ALES52 follower moves it — attack when rising, release when the hold has
+    // Otherwise the envelope moves exactly as the proven ALES52 follower moves it -- attack when rising, release when the hold has
     // expired, nothing when level.
     const e: i16 = envelope.env_step(env, x, attack_num, attack_den, release_num, release_den);
     // A rising sample (a fresh push toward a higher peak) rearms the hold countdown; a falling sample past the hold does not.
     if (gap > 0) hold_left.* = hold_samples;
-    // invariant: env_step left the envelope a legal magnitude, and e is that value cast — the postcondition the follower guarantees.
+    // invariant: env_step left the envelope a legal magnitude, and e is that value cast -- the postcondition the follower guarantees.
     assert(env.* >= 0 and env.* <= rail);
     return e;
 }
 
 /// Follow `count` samples starting at `start` in place, CONTINUING from the caller's `env` and `hold_left` rather than from silence
-/// — the carried-state form (ALES43's lesson), now carrying BOTH the envelope and the hold countdown so the hold survives across a
+/// -- the carried-state form (ALES43's lesson), now carrying BOTH the envelope and the hold countdown so the hold survives across a
 /// call boundary. A fresh `env` of 0 and `hold_left` of 0 follow from silence with the hold unarmed. Refuses BadCoeff on an illegal
 /// coefficient, BadHold on a hold past max_clip, and BadRange on a span outside the samples, before any write; on refusal both the
-/// clip and the carried state are left untouched. Values only — never the length.
+/// clip and the carried state are left untouched. Values only -- never the length.
 pub fn hold_follow_carry(
     clip: *timeline.Clip,
     start: u32,
@@ -104,12 +104,12 @@ pub fn hold_follow_carry(
     release_den: u32,
     hold_samples: u32,
 ) HoldEnvError!void {
-    // invariant: both coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule, before any write.
+    // invariant: both coefficients are legal fractions in (0, 1] -- checked by the follower's one proven rule, before any write.
     if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
     if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
-    // invariant: the hold is bounded by the widest clip — a longer hold names no expressible behavior. Before any write.
+    // invariant: the hold is bounded by the widest clip -- a longer hold names no expressible behavior. Before any write.
     if (hold_samples > timeline.max_clip) return error.BadHold;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
@@ -123,7 +123,7 @@ pub fn hold_follow_carry(
 }
 
 /// Follow `count` samples starting at `start` in place, from a zero initial envelope with the hold UNARMED (from silence), by the
-/// attack, release, and hold. A fresh `env` of 0 and `hold_left` of 0 are exactly this from-silence form — one implementation shared
+/// attack, release, and hold. A fresh `env` of 0 and `hold_left` of 0 are exactly this from-silence form -- one implementation shared
 /// with the carried form, so the two cannot drift. Refuses BadCoeff, BadHold, and BadRange before any write.
 pub fn hold_follow(
     clip: *timeline.Clip,
@@ -142,8 +142,8 @@ pub fn hold_follow(
 
 // --- selftest: silence stays silence; a HOLD OF ZERO reduces to ALES52's follower byte-for-byte (the crux law, the zero-hold limit);
 //     a nonzero hold DELAYS THE RELEASE (the peak held, the tail no lower than under a smaller hold, the knob monotone); the hold
-//     EXPIRES exactly (the peak held for exactly `hold` samples, then the release resumes); the state CARRIES — env and hold_left
-//     both — so a span in two pieces equals the whole once; and an illegal coefficient, a hold past max_clip, and an out-of-range
+//     EXPIRES exactly (the peak held for exactly `hold` samples, then the release resumes); the state CARRIES -- env and hold_left
+//     both -- so a span in two pieces equals the whole once; and an illegal coefficient, a hold past max_clip, and an out-of-range
 //     span each refuse by name -------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -162,7 +162,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip follows to all zeros at any legal coefficients and any hold.
+    // 1. silence stays silence -- an all-zero clip follows to all zeros at any legal coefficients and any hold.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
@@ -171,7 +171,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. A HOLD OF ZERO IS THE PLAIN FOLLOWER — with hold_samples == 0 the fall branch never holds, so every sample moves through
+    // 2. A HOLD OF ZERO IS THE PLAIN FOLLOWER -- with hold_samples == 0 the fall branch never holds, so every sample moves through
     //    ALES52's env_step: the held follower with no hold IS the ALES52 follower, byte-for-byte by construction. Proven by running
     //    BOTH tools on the same signal and demanding equality (the zero-hold limit, the sibling of the unit-coefficient identities).
     {
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
         if (!eq(held.samples(), plain.samples())) return error.ZeroHoldNotPlain;
     }
 
-    // 3. A NONZERO HOLD DELAYS THE RELEASE — after a loud peak ends, a larger hold pins the peak longer, so on the quiet tail the
+    // 3. A NONZERO HOLD DELAYS THE RELEASE -- after a loud peak ends, a larger hold pins the peak longer, so on the quiet tail the
     //    held envelope is no LOWER than under a smaller hold at every sample (the knob is monotone), and strictly higher at the first
     //    falling sample (the peak audibly holds). Instant attack seats the peak; a slow release would otherwise ease it down.
     {
@@ -204,9 +204,9 @@ fn run_selftest() !u8 {
         if (abs16(held.samples()[3]) <= abs16(none.samples()[3])) return error.HoldDidNotPin;
     }
 
-    // 4. THE HOLD EXPIRES EXACTLY — with instant attack and instant release and a hold of 3, a peak followed by a lower constant is
+    // 4. THE HOLD EXPIRES EXACTLY -- with instant attack and instant release and a hold of 3, a peak followed by a lower constant is
     //    pinned for EXACTLY three held samples and then released in one step. The whole curve is checked byte-for-byte, so the
-    //    countdown is proven to spend precisely `hold` samples — no more, no fewer.
+    //    countdown is proven to spend precisely `hold` samples -- no more, no fewer.
     {
         const sig = [_]i16{ 10000, 3000, 3000, 3000, 3000, 3000, 3000 };
         var clip = timeline.Clip{};
@@ -218,7 +218,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.HoldNotExact;
     }
 
-    // 5. THE STATE CARRIES — env AND hold_left both — so following a span in two pieces, the split falling MID-HOLD, equals following
+    // 5. THE STATE CARRIES -- env AND hold_left both -- so following a span in two pieces, the split falling MID-HOLD, equals following
     //    the whole once, byte-for-byte: the seam invisible, the hold surviving across the call boundary.
     {
         const sig = [_]i16{ 12000, 12000, 400, 400, 400, 9000, 200, 200 };

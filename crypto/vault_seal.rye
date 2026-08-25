@@ -1,38 +1,38 @@
-//! crypto/vault_seal.rye — Season G (Cryptography), the twenty-first rung: the THIRD composition over the GREEN Monocypher-parity
-//! primitives, and the one Vault reaches for — a password-sealed box that lets a keeper lock a blob behind a remembered password, so the key
+//! crypto/vault_seal.rye -- Season G (Cryptography), the twenty-first rung: the THIRD composition over the GREEN Monocypher-parity
+//! primitives, and the one Vault reaches for -- a password-sealed box that lets a keeper lock a blob behind a remembered password, so the key
 //! that opens it need never live on the device. Where crypto/signed_carry.rye answers "who made this record" (provenance, in the clear) and
 //! crypto/sealed_session.rye answers "only you can read this" to a named public key (confidentiality to a recipient), this answers "only
 //! your password can open this" (confidentiality behind a secret only the keeper remembers). It authors NO new cryptography: it composes two
-//! primitives already parity-GREEN — Argon2id (the memory-hard password KDF) and XChaCha20-Poly1305 (the extended-nonce authenticated
+//! primitives already parity-GREEN -- Argon2id (the memory-hard password KDF) and XChaCha20-Poly1305 (the extended-nonce authenticated
 //! encryption whose 24-byte nonce is safe to draw at random).
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Argon2 is "the stone Vault stands on so
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Argon2 is "the stone Vault stands on so
 //! a key need never live on the device"; XChaCha20's extended nonce is the AEAD "safe with random nonces." This composition is exactly the
 //! Vault sealed-storage shape both were built toward.
-//! Kin: crypto/argon2.rye (the KDF, GREEN) · crypto/xchacha20.rye (the AEAD, GREEN) · crypto/signed_carry.rye and crypto/sealed_session.rye
-//! (its sibling compositions — provenance and recipient-confidentiality where this is password-confidentiality). Pure composition, no
+//! Kin: crypto/argon2.rye (the KDF, GREEN) - crypto/xchacha20.rye (the AEAD, GREEN) - crypto/signed_carry.rye and crypto/sealed_session.rye
+//! (its sibling compositions -- provenance and recipient-confidentiality where this is password-confidentiality). Pure composition, no
 //! primitive re-authored.
 //!
-//! THE PASSWORD-SEALED BOX — turn a remembered password into a key, then seal with it:
-//!   The caller supplies a FRESH random salt and a FRESH random 24-byte XChaCha20 nonce per seal — this library invents no entropy. Argon2id
+//! THE PASSWORD-SEALED BOX -- turn a remembered password into a key, then seal with it:
+//!   The caller supplies a FRESH random salt and a FRESH random 24-byte XChaCha20 nonce per seal -- this library invents no entropy. Argon2id
 //!   stretches the password against that salt, at the caller's chosen cost (t passes, m KiB, p lanes), into a 32-byte key:
 //!     key = Argon2id(password, salt, t, m, p)
-//!   XChaCha20-Poly1305 then seals the plaintext under that key and nonce, with the whole public header — magic, cost parameters, salt, and
-//!   nonce — bound as authenticated data. So tampering with the recorded salt or cost cannot trick open into deriving a different key and
+//!   XChaCha20-Poly1305 then seals the plaintext under that key and nonce, with the whole public header -- magic, cost parameters, salt, and
+//!   nonce -- bound as authenticated data. So tampering with the recorded salt or cost cannot trick open into deriving a different key and
 //!   silently accepting: any changed public byte fails the tag. The frame records the cost parameters and salt so a keeper who remembers only
 //!   the password can reopen the box; the extended 24-byte nonce means a fresh random nonce per seal is safe without a counter.
 //!
-//! THE FRAME — magic "GVS1" ‖ mode(1) ‖ t(u32 BE) ‖ m(u32 BE) ‖ p(u32 BE) ‖ salt-len(u16 BE) ‖ salt(salt-len) ‖ nonce(24) ‖
+//! THE FRAME -- magic "GVS1" ‖ mode(1) ‖ t(u32 BE) ‖ m(u32 BE) ‖ p(u32 BE) ‖ salt-len(u16 BE) ‖ salt(salt-len) ‖ nonce(24) ‖
 //!   cipher-len(u64 BE) ‖ ciphertext(len) ‖ Poly1305 tag(16). open() reads only public bytes, rederives the key from the password and the
-//!   recorded salt/cost, and returns plaintext ONLY when the AEAD tag verifies — a wrong password, a tampered ciphertext, a tampered tag, a
+//!   recorded salt/cost, and returns plaintext ONLY when the AEAD tag verifies -- a wrong password, a tampered ciphertext, a tampered tag, a
 //!   tampered salt, or a tampered cost parameter all fail the same way: OpenFailed, no plaintext revealed.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. Every password in the selftest is a TEST
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Every password in the selftest is a TEST
 //! byte string, never a real secret; the salt and nonce are deterministic TEST bytes to prove the mathematics, and the file names the
 //! caller's randomness duty plainly. The derived key is zeroed from the stack after use as best-effort hygiene, not a timing claim:
 //! constant-time timing-safety stays the Season's named horizon (it lives in the primitives this composes, unchanged), and sealing a real
-//! keeper's real secret behind their real password stays the custody gate — the library builds and verifies; it never holds a real password.
+//! keeper's real secret behind their real password stays the custody gate -- the library builds and verifies; it never holds a real password.
 //!
 //! Run from the repository root:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/vault_seal.rye
@@ -63,7 +63,7 @@ pub const ctlen_field_len: u32 = 8; // u64 big-endian ciphertext length
 pub const key_len: u32 = xchacha20.key_bytes; // 32
 pub const tag_len: u32 = xchacha20.tag_bytes; // 16 — Poly1305 tag
 
-/// A vault seal salt sits far below Argon2's own 4096-byte ceiling — a random salt of 16 to 32 bytes is the norm — so the composition names
+/// A vault seal salt sits far below Argon2's own 4096-byte ceiling -- a random salt of 16 to 32 bytes is the norm -- so the composition names
 /// its own modest cap, keeping the frame's fixed overhead small while still honoring RFC 9106's eight-byte minimum through Argon2's own edge.
 pub const min_salt_bytes: u32 = argon2.min_salt_bytes; // 8
 pub const max_salt_bytes: u32 = 64;
@@ -72,7 +72,7 @@ pub const max_salt_bytes: u32 = 64;
 /// layout offsets below cite it rather than re-summing.
 pub const fixed_header_len: u32 = magic_len + mode_field_len + 3 * cost_field_len + saltlen_field_len + nonce_len + ctlen_field_len; // 51
 
-/// The largest plaintext a single vault seal holds — inherited from the AEAD's own message bound, so the composition adds no looser limit.
+/// The largest plaintext a single vault seal holds -- inherited from the AEAD's own message bound, so the composition adds no looser limit.
 pub const max_plain_bytes: u32 = xchacha20.max_message_bytes; // 1 << 16
 pub const max_frame_bytes: u32 = fixed_header_len + max_salt_bytes + tag_len + max_plain_bytes;
 
@@ -87,19 +87,19 @@ pub const Cost = struct {
 /// The faults this composition can raise. The KDF's own refusals (a salt too short for RFC 9106, a bad time or memory cost, out of memory)
 /// surface honestly through the merged Argon2 error set rather than being flattened into one opaque failure.
 pub const VaultSealError = error{
-    /// seal's output buffer is too small to hold the whole frame — refused before any byte is written.
+    /// seal's output buffer is too small to hold the whole frame -- refused before any byte is written.
     OutTooSmall,
-    /// A plaintext longer than max_plain_bytes — refused before any key derivation or encryption.
+    /// A plaintext longer than max_plain_bytes -- refused before any key derivation or encryption.
     PayloadTooLong,
-    /// A salt longer than this composition's max_salt_bytes cap — refused before the frame reserves space for it.
+    /// A salt longer than this composition's max_salt_bytes cap -- refused before the frame reserves space for it.
     SaltTooLong,
     /// open was handed a buffer shorter than the fixed overhead, so it cannot hold even an empty-plaintext frame.
     FrameTooShort,
-    /// The frame's declared salt length or ciphertext length disagrees with its actual length, or exceeds a bound — malformed or truncated.
+    /// The frame's declared salt length or ciphertext length disagrees with its actual length, or exceeds a bound -- malformed or truncated.
     LengthMismatch,
-    /// The first four bytes are not the GVS1 magic — this is not a vault seal frame.
+    /// The first four bytes are not the GVS1 magic -- this is not a vault seal frame.
     BadMagic,
-    /// The recorded Argon2 mode byte is not Argon2id — this frame was written by a scheme this rung does not open.
+    /// The recorded Argon2 mode byte is not Argon2id -- this frame was written by a scheme this rung does not open.
     BadMode,
     /// The AEAD tag did not verify: a wrong password, a tampered ciphertext/tag, a tampered salt, or a tampered cost. No plaintext revealed.
     OpenFailed,
@@ -156,7 +156,7 @@ fn read_u64_be(src: *const [8]u8) u64 {
     return v;
 }
 
-/// Best-effort wipe of a derived key from the stack after use. This is honest hygiene, not a timing-safety claim — constant-time and
+/// Best-effort wipe of a derived key from the stack after use. This is honest hygiene, not a timing-safety claim -- constant-time and
 /// guaranteed-unelided wiping stay the Season's named horizon; the loop simply avoids leaving the key sitting in a stack frame longer than
 /// the call that used it.
 fn wipe_key(k: *[key_len]u8) void {
@@ -195,7 +195,7 @@ pub fn seal(
     const salt_len: u32 = @intCast(salt.len);
     const hlen = header_len_for(salt_len);
     const frame_len: u32 = hlen + ptlen + tag_len;
-    // invariant: the caller's buffer holds the whole frame — checked at the edge before a byte is written.
+    // invariant: the caller's buffer holds the whole frame -- checked at the edge before a byte is written.
     if (out.len < frame_len) return error.OutTooSmall;
 
     // --- header: magic ‖ mode ‖ t ‖ m ‖ p ‖ salt-len ‖ salt ‖ nonce ‖ ctlen ----------------------------------------------------------------
@@ -233,13 +233,13 @@ pub fn seal(
     const cipher = out[hlen .. hlen + ptlen];
     var tag: [tag_len]u8 = undefined;
     // The plaintext is within the AEAD's bound (checked above) and the aad is the header (within max_aad_bytes), so the seal cannot refuse
-    // for length here — catch unreachable is honest.
+    // for length here -- catch unreachable is honest.
     xchacha20.seal(cipher, &tag, plain, out[0..hlen], &key, nonce) catch unreachable;
     wipe_key(&key);
     var t: u32 = 0;
     while (t < tag_len) : (t += 1) out[hlen + ptlen + t] = tag[t];
 
-    // invariant: the whole frame was written — header plus ciphertext plus tag — and nothing past it was touched.
+    // invariant: the whole frame was written -- header plus ciphertext plus tag -- and nothing past it was touched.
     assert(hlen + ptlen + tag_len == frame_len);
     return frame_len;
 }
@@ -318,7 +318,7 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
     return true;
 }
 
-/// Fill a buffer with a deterministic spread of test bytes — TEST passwords, salts, nonces, and plaintexts only, never a real secret or real
+/// Fill a buffer with a deterministic spread of test bytes -- TEST passwords, salts, nonces, and plaintexts only, never a real secret or real
 /// randomness.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
@@ -330,11 +330,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var frame_buf2: [max_frame_bytes]u8 = undefined;
     var out_buf: [max_plain_bytes]u8 = undefined;
 
-    // A modest TEST cost — small enough that the selftest's many seals stay quick, real enough to exercise the whole Argon2id path. NOT a
+    // A modest TEST cost -- small enough that the selftest's many seals stay quick, real enough to exercise the whole Argon2id path. NOT a
     // recommendation for a real vault, whose cost should be tuned to the device.
     const cost = Cost{ .t = 1, .m = 32, .p = 1 };
 
-    // TEST password, salt, and nonce — never a real secret or real randomness.
+    // TEST password, salt, and nonce -- never a real secret or real randomness.
     var password: [16]u8 = undefined;
     fill_test(password[0..], 91);
     var salt: [16]u8 = undefined;
@@ -395,7 +395,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!bytes_eq(o2.plain, plain_buf[0..])) return error.FreshOpen2Wrong;
     }
 
-    // 5. Wrong password — a different password derives a different key, so the tag fails OpenFailed and no plaintext is revealed.
+    // 5. Wrong password -- a different password derives a different key, so the tag fails OpenFailed and no plaintext is revealed.
     {
         var wrong: [16]u8 = undefined;
         fill_test(wrong[0..], 222);
@@ -407,7 +407,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 6. Tamper the ciphertext — the tag no longer verifies, OpenFailed, no plaintext revealed.
+    // 6. Tamper the ciphertext -- the tag no longer verifies, OpenFailed, no plaintext revealed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 41);
@@ -419,7 +419,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 7. Tamper the tag — OpenFailed.
+    // 7. Tamper the tag -- OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 43);
@@ -431,7 +431,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 8. Tamper the recorded salt — the rederived key changes, and the salt is bound as authenticated data, so the tag fails OpenFailed.
+    // 8. Tamper the recorded salt -- the rederived key changes, and the salt is bound as authenticated data, so the tag fails OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 47);
@@ -443,7 +443,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 9. Tamper a cost parameter (the low byte of t) — the rederived key changes and the cost is bound as authenticated data, OpenFailed.
+    // 9. Tamper a cost parameter (the low byte of t) -- the rederived key changes and the cost is bound as authenticated data, OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 53);
@@ -451,7 +451,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         const t_low_off = magic_len + mode_field_len + cost_field_len - 1; // low byte of the u32-BE t field
         frame_buf[t_low_off] ^= 0x02; // t becomes 3, so the rederived key differs
         if (open(garden, password[0..], frame_buf[0..flen], out_buf[0..])) |_| return error.TamperCostOpened else |e| {
-            // Either the tag fails (key changed) — the honest common case.
+            // Either the tag fails (key changed) -- the honest common case.
             if (e != error.OpenFailed) return error.TamperCostWrongError;
         }
     }
@@ -479,7 +479,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // 11. seal refuses a too-small out buffer, a too-short salt, and a too-long salt — each at the edge before any key derivation.
+    // 11. seal refuses a too-small out buffer, a too-short salt, and a too-long salt -- each at the edge before any key derivation.
     {
         var small: [fixed_header_len + 16 + tag_len + 4]u8 = undefined;
         var plain_buf: [64]u8 = undefined;

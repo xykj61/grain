@@ -1,16 +1,16 @@
-//! comlink/discovery/round_trip_wire.rye — discovery wire lane body (door 15).
+//! comlink/discovery/round_trip_wire.rye -- discovery wire lane body (door 15).
 //!
 //! Two lanes exchange descriptors across a shared wire directory, converge
 //! tables at peers=2, introduce through kumara, and refuse stranger +
-//! malformed gossip loudly. Orchestration (spawn/wait-for · outer timeout)
-//! lives in tools/d/discovery_round_trip_wire.rish — this file is one lane.
+//! malformed gossip loudly. Orchestration (spawn/wait-for - outer timeout)
+//! lives in tools/d/discovery_round_trip_wire.rish -- this file is one lane.
 //!
 //! Bounds from tools/gen/season/recursion_block.brix (door 15 seat):
 //!   discovery_wire_peers 2
 //!   discovery_wire_convergence_rounds_max 8
 //!   discovery_wire_outer_timeout_seconds 64  (enforced by rish timeout)
 //!
-//! Zero new primitives — composes descriptor · table · gossip · introduce.
+//! Zero new primitives -- composes descriptor - table - gossip - introduce.
 //! Mycelium stays a process seam (fold run by the rish), not an import.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build \
@@ -29,11 +29,11 @@ const introduce = @import("introduce.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// Smallest true conversation — seated door 15.
+/// Smallest true conversation -- seated door 15.
 pub const wire_peers: u32 = 2;
-/// Settle ceiling — seated door 15.
+/// Settle ceiling -- seated door 15.
 pub const wire_convergence_rounds_max: u32 = 8;
-/// Outer long-loop bound — seated door 15; rish wraps timeout.
+/// Outer long-loop bound -- seated door 15; rish wraps timeout.
 pub const wire_outer_timeout_seconds: u32 = 64;
 
 const Lane = enum { a, b };
@@ -112,7 +112,7 @@ fn own_path(buf: []u8, joined: []const u8) []const u8 {
     return buf[0..joined.len];
 }
 
-/// Canonical table digest — sorted peer ids joined by comma (peers=2).
+/// Canonical table digest -- sorted peer ids joined by comma (peers=2).
 fn table_digest(table: *const table_mod.PeerTable, out: []u8) ![]const u8 {
     var ids: [wire_peers][]const u8 = undefined;
     var n: u32 = 0;

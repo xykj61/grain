@@ -1,16 +1,16 @@
-//! brushstroke/sprite_page.rye — HUNK5: a marketplace product page — a sprite window painted through Skate.
+//! brushstroke/sprite_page.rye -- HUNK5: a marketplace product page -- a sprite window painted through Skate.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK5 (sprite quest).
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK5 (sprite quest).
 //! Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
 //! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 //!
 //! HUNK4 made each product a bounded window into one decoded sheet; HUNK2 down-mapped a decoded image into
 //! Skate's palette-indexed cell grid. This rung joins them: `paint_product` renders a product's window
 //! (HUNK4's `sprite.render`, reusing HUNK3's crop) and down-maps that window to a Skate grid (HUNK2's
-//! `image_skate.down_map`), so a catalog entry is not only stored and windowed but *seen* — a product page a
+//! `image_skate.down_map`), so a catalog entry is not only stored and windowed but *seen* -- a product page a
 //! keeper looks at. The page derives from exactly the window the index pins, so it can never show a product
 //! the catalog does not name; an unknown product refuses by name through the whole composition. Pure
-//! composition over public APIs — no new storage, no new codec, no new palette. No network, no key, no funds.
+//! composition over public APIs -- no new storage, no new codec, no new palette. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/sprite_page.rye selftest
 
@@ -25,7 +25,7 @@ const skate = @import("skate_grid.rye");
 pub const sprite_page_version = "20260813.202400";
 
 /// Paint a product page: render the product's window out of the one sheet (HUNK4) and down-map it to a Skate
-/// grid (HUNK2). The refusal travels — an unknown product name refuses `UnknownProduct` before any paint. The
+/// grid (HUNK2). The refusal travels -- an unknown product name refuses `UnknownProduct` before any paint. The
 /// returned grid's cells carry the product window's own down-mapped colors, so the page and the index agree.
 pub fn paint_product(
     allocator: std.mem.Allocator,
@@ -34,11 +34,11 @@ pub fn paint_product(
     cols: u32,
     rows: u32,
 ) !skate.Grid {
-    // invariant: a page is a thumbnail of a bounded window — both grid axes fit the down-map ceilings.
+    // invariant: a page is a thumbnail of a bounded window -- both grid axes fit the down-map ceilings.
     assert(cols <= image_skate.max_map_cols);
     assert(rows <= image_skate.max_map_rows);
     const window = try index.render(allocator, product);
-    // invariant: the rendered window is a real open image — four bytes per pixel — ready to down-map.
+    // invariant: the rendered window is a real open image -- four bytes per pixel -- ready to down-map.
     assert(window.pixels.len == @as(usize, window.width) * @as(usize, window.height) * 4);
     return image_skate.down_map(allocator, &window, cols, rows);
 }
@@ -48,7 +48,7 @@ pub fn paint_product(
 //     unknown-product refusal travels through the composition -------------------------------------------------
 
 /// Build an 8×8 sheet with the left four columns solid red and the right four solid blue, so a window on the
-/// left half paints red cells and a window on the right half paints blue cells — an unambiguous spatial page.
+/// left half paints red cells and a window on the right half paints blue cells -- an unambiguous spatial page.
 fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 8;
     const h: u32 = 8;
@@ -68,7 +68,7 @@ fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// Every cell of a grid carries the same palette slot — a solid-color page. Returns that slot.
+/// Every cell of a grid carries the same palette slot -- a solid-color page. Returns that slot.
 fn sole_slot(grid: *const skate.Grid) u8 {
     assert(grid.cells.len >= 1);
     const first = grid.fg_index[0];
@@ -83,7 +83,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const sheet = try craft_two_tone(garden);
     var index = sprite.SpriteIndex.init(&sheet);
 
-    // Two products, two windows into the one sheet — a red part on the left half, a blue part on the right.
+    // Two products, two windows into the one sheet -- a red part on the left half, a blue part on the right.
     try index.add("red-part", 0, 0, 4, 8);
     try index.add("blue-part", 4, 0, 4, 8);
 
@@ -94,11 +94,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const blue_slot = sole_slot(&blue_page);
     assert(red_slot == 3);
     assert(blue_slot == 5);
-    // The two product pages differ — a page is seen as its own product, never a neighbor's.
+    // The two product pages differ -- a page is seen as its own product, never a neighbor's.
     assert(red_slot != blue_slot);
 
     // The page derives from exactly the product's window: painting the page equals rendering the window and
-    // down-mapping it directly, cell for cell — no drift between the index and the seen page.
+    // down-mapping it directly, cell for cell -- no drift between the index and the seen page.
     const window = try index.render(garden, "red-part");
     const direct = try image_skate.down_map(garden, &window, 2, 2);
     assert(direct.fg_index.len == red_page.fg_index.len);
@@ -110,7 +110,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    // The page paints lit pixels onto a real canvas — a keeper sees a solid color block per cell.
+    // The page paints lit pixels onto a real canvas -- a keeper sees a solid color block per cell.
     const scale: u32 = 1;
     const width: u32 = 2 * skate.cell_w * scale;
     const height: u32 = 2 * skate.cell_h * scale;

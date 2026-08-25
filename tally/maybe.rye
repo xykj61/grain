@@ -1,11 +1,11 @@
-//! tally/maybe.rye — the dual of assert: a condition that may honestly go either way.
+//! tally/maybe.rye -- the dual of assert: a condition that may honestly go either way.
 //!
 //! `assert` states what must always hold. `maybe` states what sometimes holds and
-//! sometimes does not — turning a comment that says "this branch is fine either
+//! sometimes does not -- turning a comment that says "this branch is fine either
 //! way" into a mark the reader, and one day a tool, can find by name. It asserts
 //! nothing and changes nothing; its only job is to be searchable.
 //!
-//! Gratitude: TigerBeetle's `stdx.maybe`, matched at the letter — one honest line.
+//! Gratitude: TigerBeetle's `stdx.maybe`, matched at the letter -- one honest line.
 //!
 //!   rye build tally/maybe.rye -femit-bin=tally/bin/maybe
 //!   tally/bin/maybe selftest

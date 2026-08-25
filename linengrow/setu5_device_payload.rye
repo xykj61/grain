@@ -1,4 +1,4 @@
-//! linengrow/setu5_device_payload.rye — SETU5: framed ping as device-wire payload.
+//! linengrow/setu5_device_payload.rye -- SETU5: framed ping as device-wire payload.
 //!
 //! Kg thin face: the SETU3/4 NCM-framed lane ping fits Comlink virtio-net
 //! `max_frame` (554) and reopens after a Desk hold write. Proves the bytes are

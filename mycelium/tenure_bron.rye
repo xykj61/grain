@@ -1,14 +1,14 @@
-//! mycelium/tenure_bron.rye — the namespace verdict travels as a readable record.
+//! mycelium/tenure_bron.rye -- the namespace verdict travels as a readable record.
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · Tenure rung r2 — travel.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Tenure rung r2 -- travel.
 //! Design read: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 //!
-//! r1 resolved a Cord's agreed order into a Tenure — who holds each name, who lost
+//! r1 resolved a Cord's agreed order into a Tenure -- who holds each name, who lost
 //! a contest. A verdict a node cannot hand to another node is only a local reading,
 //! so r2 lets a resolved Tenure cross as `format tenure-v1` bytes: a `supply` line,
 //! one `hold <name> <holder-pk> <pos> <round>` line per holding, one
 //! `lost <name> <loser-pk> <pos>` line per contested loss. Render writes it, parse
-//! reads it back, so a round trip is a fixed point — and the recovered Tenure
+//! reads it back, so a round trip is a fixed point -- and the recovered Tenure
 //! answers the identical `holder_of` for every name and reports the identical
 //! supply, so the namespace verdict crosses to a stranger unchanged.
 //!
@@ -16,7 +16,7 @@
 //! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
 //! `BadLine`, a bad integer `BadInt`, a bad hex field `BadHex`, an over-long record
 //! `TooManyHoldings`/`TooManyContests`. Composes tenure.rye + fold.rye public API
-//! only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//! only. Siloed, dev-only, demo seeds -- no key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure_bron.rye
 
@@ -29,14 +29,14 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const parse_int = @import("parse_int.rye");
 
-/// A travelled record carries at most this many holdings — a dev-net namespace is
+/// A travelled record carries at most this many holdings -- a dev-net namespace is
 /// small and legible, well under the Tenure's own 256 ceiling.
 pub const max_holdings_in_record: u32 = 32;
 
 /// And at most this many contested losses.
 pub const max_contests_in_record: u32 = 32;
 
-/// The record buffer bound — a small namespace's whole verdict fits with room.
+/// The record buffer bound -- a small namespace's whole verdict fits with room.
 pub const max_record: u32 = 32768;
 
 pub const BronError = error{

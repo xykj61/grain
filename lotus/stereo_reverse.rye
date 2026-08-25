@@ -1,26 +1,26 @@
-//! lotus/stereo_reverse.rye — ALES125: stereo_reverse — turning a master end for end, both channels in lockstep. ALES104 named `reverse` — turn the whole clip end for end, sample i and
-//! sample len-1-i trading seats, the first becoming the last — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
+//! lotus/stereo_reverse.rye -- ALES125: stereo_reverse -- turning a master end for end, both channels in lockstep. ALES104 named `reverse` -- turn the whole clip end for end, sample i and
+//! sample len-1-i trading seats, the first becoming the last -- for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and
 //! RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries reverse into stereo the way ALES124 carried shift: run ALES104's proven mono `reverse` on each channel,
-//! so the reversed cymbal swell, the backwards reverb, the pre-echo lifted before a downbeat all arrive in BOTH speakers at once. It opens the stereo suite's PURE REARRANGEMENT class — where
-//! every position changes and no value does — beside the value-mirror (invert), the cyclic shift (rotate), and the parity flip (nyquist_flip) still to lift; like shift it is TOTAL and needs no
+//! so the reversed cymbal swell, the backwards reverb, the pre-echo lifted before a downbeat all arrive in BOTH speakers at once. It opens the stereo suite's PURE REARRANGEMENT class -- where
+//! every position changes and no value does -- beside the value-mirror (invert), the cyclic shift (rotate), and the parity flip (nyquist_flip) still to lift; like shift it is TOTAL and needs no
 //! validation.
 //!
 //! The rule, stated once: stereo_reverse(sc) turns both channels end for end, reusing ALES104's mono `reverse` per channel over its public API. Because mono reverse is total (it names no span,
-//! so it raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both reverse in place, both hold their length, so they
+//! so it raises no fault) and holds each channel's length, the balance invariant is preserved trivially -- both channels enter equal-length, both reverse in place, both hold their length, so they
 //! leave equal-length; there is no fault to forward, no EditError, no `try`. A stereo master is turned end for end as one thing, both speakers together.
 //!
-//! The crux — four laws. THE STEREO REVERSE LAW: the left channel equals mono reverse(left) and the right equals mono reverse(right), each byte for byte against a hand-reversed vector, sample i
-//! holding what len-1-i held per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length — reverse moves seats, never the count, so the stereo
-//! image stays aligned. THE INVOLUTION LAW: stereo_reverse twice is the identity on both channels for any clip — the swap is its own inverse, so a mistaken reverse reverses back to the byte. THE
+//! The crux -- four laws. THE STEREO REVERSE LAW: the left channel equals mono reverse(left) and the right equals mono reverse(right), each byte for byte against a hand-reversed vector, sample i
+//! holding what len-1-i held per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length -- reverse moves seats, never the count, so the stereo
+//! image stays aligned. THE INVOLUTION LAW: stereo_reverse twice is the identity on both channels for any clip -- the swap is its own inverse, so a mistaken reverse reverses back to the byte. THE
 //! PERMUTATION / FIXPOINT LAW: reverse is a pure rearrangement, so each channel's peak magnitude (re-measured through ALES13) is unchanged; an empty pair, a single-sample pair, and a per-channel
 //! palindrome are each their own reverse.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES125.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES125.
 //! Design read: active-designing/date/20260815/20260815-023515_fill-ales125-lotus-stereo-reverse.md
-//! Stands on: lotus/reverse.rye (ALES104) — the mono end-for-end turn run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
-//! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove a permutation moves no loudness in either channel.
+//! Stands on: lotus/reverse.rye (ALES104) -- the mono end-for-end turn run once per channel; lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples; lotus/meter.rye (ALES13) -- the peak/RMS meter, used by the witness to prove a permutation moves no loudness in either channel.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It rearranges existing samples in each channel and fabricates none;
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It rearranges existing samples in each channel and fabricates none;
 //! it changes no length and reads no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_reverse.rye selftest
@@ -39,19 +39,19 @@ pub const stereo_reverse_version = "20260815.023515";
 /// Turn both channels of `sc` end for end in lockstep, the stereo image staying balanced and each channel's length holding. Total on any balanced StereoClip: mono reverse raises no fault and
 /// holds each length, so the two channels leave equal-length and no refusal can land between them. Reuses ALES104's mono reverse per channel.
 pub fn stereo_reverse(sc: *pan.StereoClip) void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
     assert(sc.left.len == sc.right.len);
 
     // Mono reverse is total and holds the length, so each channel turns end for end and no fault can land between the two edits.
     reverse.reverse(&sc.left);
     reverse.reverse(&sc.right);
 
-    // invariant: the channels leave balanced — each held its length under the same turn, so the stereo image stays aligned.
+    // invariant: the channels leave balanced -- each held its length under the same turn, so the stereo image stays aligned.
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO REVERSE LAW — each channel equals ALES104's mono reverse on that channel byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their
-//     starting length; THE INVOLUTION LAW — stereo_reverse twice is the identity on both channels; THE PERMUTATION / FIXPOINT LAW — each channel's peak unchanged, empty/single/palindrome pairs
+// --- selftest: THE STEREO REVERSE LAW -- each channel equals ALES104's mono reverse on that channel byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their
+//     starting length; THE INVOLUTION LAW -- stereo_reverse twice is the identity on both channels; THE PERMUTATION / FIXPOINT LAW -- each channel's peak unchanged, empty/single/palindrome pairs
 //     their own reverse ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -66,14 +66,14 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// A channel's current peak magnitude, re-measured through ALES13 — the reader the permutation law checks each channel against.
+/// A channel's current peak magnitude, re-measured through ALES13 -- the reader the permutation law checks each channel against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE STEREO REVERSE LAW — each channel equals ALES104's mono reverse on that channel, proven side by side over one anchor with different per-channel samples.
+    // 1. THE STEREO REVERSE LAW -- each channel equals ALES104's mono reverse on that channel, proven side by side over one anchor with different per-channel samples.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
@@ -93,7 +93,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ 51, 41, 31, 21, 11 })) return error.RightReverseWrong;
     }
 
-    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at an even and an odd length.
+    // 2. THE BALANCE / LENGTH LAW -- the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at an even and an odd length.
     {
         var even = pan.StereoClip{};
         try load_stereo(&even, &[_]i16{ 1, 2, 3, 4 }, &[_]i16{ 5, 6, 7, 8 });
@@ -111,7 +111,7 @@ fn run_selftest() !u8 {
         if (!eq(odd.right.samples(), &[_]i16{ 8, 7, 6 })) return error.OddRightWrong;
     }
 
-    // 3. THE INVOLUTION LAW — stereo_reverse twice is the identity on both channels for any clip, so a mistaken reverse reverses back to the byte.
+    // 3. THE INVOLUTION LAW -- stereo_reverse twice is the identity on both channels for any clip, so a mistaken reverse reverses back to the byte.
     {
         var sc = pan.StereoClip{};
         const l0 = [_]i16{ 10, 20, 30, 40, 50, 60 };
@@ -123,7 +123,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.InvolutionRightWrong;
     }
 
-    // 4a. THE PERMUTATION LAW — reverse moves no value, only its seat, so each channel's peak re-measured through ALES13 is unchanged, even when the loudest sample sits at an end.
+    // 4a. THE PERMUTATION LAW -- reverse moves no value, only its seat, so each channel's peak re-measured through ALES13 is unchanged, even when the loudest sample sits at an end.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ -30000, 100, -200, 300 }, &[_]i16{ 50, 60, 70, -32000 });
@@ -134,7 +134,7 @@ fn run_selftest() !u8 {
         if (try clip_peak(&sc.right) != rb) return error.RightPeakMoved;
     }
 
-    // 4b. THE FIXPOINT LAW — an empty pair, a single-sample pair, and a per-channel palindrome are each their own reverse.
+    // 4b. THE FIXPOINT LAW -- an empty pair, a single-sample pair, and a per-channel palindrome are each their own reverse.
     {
         var empty = pan.StereoClip{};
         stereo_reverse(&empty);

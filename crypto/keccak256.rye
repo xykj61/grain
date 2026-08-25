@@ -1,28 +1,28 @@
-//! crypto/keccak256.rye — Season G (Cryptography): Keccak-256 authored in pure Rye as a composition over the GREEN Keccak-f[1600] sponge
-//! in crypto/sha3.rye. Keccak-256 is the hash the Ethereum world runs on — an account address is the low twenty bytes of the Keccak-256
+//! crypto/keccak256.rye -- Season G (Cryptography): Keccak-256 authored in pure Rye as a composition over the GREEN Keccak-f[1600] sponge
+//! in crypto/sha3.rye. Keccak-256 is the hash the Ethereum world runs on -- an account address is the low twenty bytes of the Keccak-256
 //! of an uncompressed secp256k1 public key, an EVM function is dispatched by the first four bytes of the Keccak-256 of its signature, and
 //! every EIP-191 / EIP-712 message digest and Merkle-Patricia node name is a Keccak-256. It is NOT SHA3-256: the two share the exact same
-//! permutation and pad10*1 rule and differ in one byte — the domain-separation delimiter is the original Keccak submission's 0x01 rather
+//! permutation and pad10*1 rule and differ in one byte -- the domain-separation delimiter is the original Keccak submission's 0x01 rather
 //! than FIPS 202's 0x06. Ethereum standardized before FIPS 202 changed that byte, so the whole EVM world kept 0x01.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
-//! cryptography: it composes one already-GREEN stone — the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS
-//! 202 and std.crypto — and passes it the 0x01 delimiter, so the Ethereum-family hash stands on the same arithmetic the rest of Season G
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! cryptography: it composes one already-GREEN stone -- the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS
+//! 202 and std.crypto -- and passes it the 0x01 delimiter, so the Ethereum-family hash stands on the same arithmetic the rest of Season G
 //! does. This is the sibling that unblocks Ethereum-family address derivation once a secp256k1 rung lands, and it ties straight into the
 //! encoding suite (hex today; EIP-55 mixed-case checksum a natural next rung).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 //! Kin: crypto/sha3.rye (the SHA3 sibling and the sponge this composes). Clean-room: the 0x01 delimiter and the sponge law are the public
 //! Keccak/FIPS 202 standard's own; the arithmetic is our GREEN sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — call the proven sponge with rate 136 (the SHA3-256 rate — Keccak-256 shares it, since rate is set by the 256-bit capacity,
-//! not the delimiter) and the 0x01 delimiter instead of 0x06. Every theta·rho·pi·chi·iota round, every absorb, every squeeze is the
+//! THE CRUX -- call the proven sponge with rate 136 (the SHA3-256 rate -- Keccak-256 shares it, since rate is set by the 256-bit capacity,
+//! not the delimiter) and the 0x01 delimiter instead of 0x06. Every theta-rho-pi-chi-iota round, every absorb, every squeeze is the
 //! permutation crypto/sha3.rye already proved on metal; the only difference from SHA3-256 is the single marker byte in the final block.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it stands
-//! on our own GREEN sha3.rye. Parity is proven at selftest against two references runnable now — the canonical Keccak-256 known-answers
+//! HONEST SCOPE -- software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it stands
+//! on our own GREEN sha3.rye. Parity is proven at selftest against two references runnable now -- the canonical Keccak-256 known-answers
 //! for the empty message and "abc", and Zig's own std.crypto Keccak256 as an independent implementation, byte-for-byte across the padding
 //! edges (the rate-1 length where the 0x01 marker and the 0x80 pad collide into one 0x81 byte, the exact-rate length that forces a whole
-//! extra padding block, and multi-block inputs) — plus the real-world ERC-20 selector Keccak-256("transfer(address,uint256)")[0..4] =
+//! extra padding block, and multi-block inputs) -- plus the real-world ERC-20 selector Keccak-256("transfer(address,uint256)")[0..4] =
 //! 0xa9059cbb, the exact four bytes an Ethereum node dispatches a token transfer on. Constant-time timing-safety stays a separate named
 //! horizon (a hash of public data is data-independent by construction; the note lives in crypto/CONSTANT_TIME.md).
 //!
@@ -36,26 +36,26 @@ const sha3 = @import("sha3.rye");
 
 pub const keccak256_version = "20260816.000000";
 
-/// Keccak-256's fixed shapes, read from the sibling so there is one source of truth. The digest is 32 bytes; the sponge rate is 136 —
+/// Keccak-256's fixed shapes, read from the sibling so there is one source of truth. The digest is 32 bytes; the sponge rate is 136 --
 /// the same rate SHA3-256 absorbs at, since the rate is fixed by the 256-bit capacity (rate + capacity = 200 bytes), not by the
 /// delimiter that distinguishes Keccak from SHA3.
 pub const digest_256: u32 = sha3.digest_256;
 pub const rate_256: u32 = sha3.rate_256;
 
-/// The largest message this primitive hashes in one call — the same generous in-process bound the sibling names, so the two hashes agree
+/// The largest message this primitive hashes in one call -- the same generous in-process bound the sibling names, so the two hashes agree
 /// on their ceiling.
 pub const max_message_bytes: u32 = 1 << 20;
 
 /// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is absorbed.
 pub const Keccak256Error = error{
-    /// A message whose length exceeds max_message_bytes — refused at the edge, before absorption begins.
+    /// A message whose length exceeds max_message_bytes -- refused at the edge, before absorption begins.
     MessageTooLong,
 };
 
-/// Hash a message to its 32-byte Keccak-256 digest — the Ethereum-family hash. Composes crypto/sha3.rye's GREEN sponge with the original
+/// Hash a message to its 32-byte Keccak-256 digest -- the Ethereum-family hash. Composes crypto/sha3.rye's GREEN sponge with the original
 /// Keccak 0x01 delimiter; authors no permutation of its own.
 pub fn hash256(msg: []const u8) Keccak256Error![digest_256]u8 {
-    // invariant: Keccak-256 shares SHA3-256's shapes — 32-byte digest, 136-byte rate — and differs only in the sponge delimiter.
+    // invariant: Keccak-256 shares SHA3-256's shapes -- 32-byte digest, 136-byte rate -- and differs only in the sponge delimiter.
     comptime assert(digest_256 == 32 and rate_256 == 136);
     if (msg.len > max_message_bytes) return error.MessageTooLong;
     var out: [digest_256]u8 = undefined;
@@ -76,7 +76,7 @@ pub fn to_hex(digest: []const u8, out: []u8) void {
     }
 }
 
-// The canonical Keccak-256 known-answers — the neutral public references our composition must reproduce, hex for hex. These are the
+// The canonical Keccak-256 known-answers -- the neutral public references our composition must reproduce, hex for hex. These are the
 // original Keccak vectors (0x01 delimiter), distinct from the FIPS 202 SHA3-256 digests of the same inputs.
 const kat_empty = "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470";
 const kat_abc = "4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45";
@@ -117,7 +117,7 @@ fn parity(msg: []const u8) !void {
 
 fn run_selftest() !u8 {
     // 1. The canonical Keccak-256 known-answers: the empty message and "abc" equal the published digests, hex for hex. These differ from
-    //    SHA3-256 of the same inputs — proof the 0x01 delimiter is carried, not 0x06.
+    //    SHA3-256 of the same inputs -- proof the 0x01 delimiter is carried, not 0x06.
     {
         const a = try hash256("");
         var ah: [digest_256 * 2]u8 = undefined;
@@ -131,7 +131,7 @@ fn run_selftest() !u8 {
 
     // 2. Independent-implementation parity across the padding edges (rate 136): the empty message, "abc", 135 bytes (the rate-1 edge where
     //    the 0x01 marker and the 0x80 pad collide into one 0x81 byte), 136 bytes (a full block forcing a whole extra padding block), 137
-    //    bytes, and a 400-byte multi-block input — our authored composition equals Zig's std.crypto Keccak256 byte-for-byte at each.
+    //    bytes, and a 400-byte multi-block input -- our authored composition equals Zig's std.crypto Keccak256 byte-for-byte at each.
     {
         try parity("");
         try parity("abc");
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. The real-world ERC-20 selector: Keccak-256("transfer(address,uint256)")[0..4] == 0xa9059cbb, the exact four bytes an Ethereum
-    //    node dispatches a token transfer on — a published, load-bearing value that proves this hash is fit for EVM use.
+    //    node dispatches a token transfer on -- a published, load-bearing value that proves this hash is fit for EVM use.
     {
         const d = try hash256(erc20_transfer_sig);
         var sel: [8]u8 = undefined;

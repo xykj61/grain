@@ -1,34 +1,34 @@
-//! lotus/stereo_pad_tail.rye — ALES151: the padded top-and-tail carried into stereo — trim the leading and trailing JOINT silence like ALES150, yet keep a chosen
+//! lotus/stereo_pad_tail.rye -- ALES151: the padded top-and-tail carried into stereo -- trim the leading and trailing JOINT silence like ALES150, yet keep a chosen
 //! margin of joint silence adjacent to the content at each end, on both channels in lockstep. ALES150 `stereo_top_tail` cuts the joint dead air at both ends flush
-//! against the first and last frame either speaker fills. That is right for a sample library and wrong for a spoken take — a cut that lands exactly on the first
+//! against the first and last frame either speaker fills. That is right for a sample library and wrong for a spoken take -- a cut that lands exactly on the first
 //! consonant clips the attack and reads abrupt. Every recorder and DAW that trims silence also lets a keeper KEEP A MARGIN, so the take breathes. ALES99 added that one
 //! honest parameter to the mono trimmer, `pad`; this rung carries it into stereo. The flush stereo trim is exactly pad = 0; every larger pad keeps that much of the
 //! joint dead air back, bounded by how much joint silence each end holds.
 //!
 //! The wall is the one ALES148, ALES149, and ALES150 all met: a Lotus master is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT hold
-//! the SAME length, and ALES147 proved the two channels segment INDEPENDENTLY — their silences differ in count and boundary. Padding each channel by its OWN silence
+//! the SAME length, and ALES147 proved the two channels segment INDEPENDENTLY -- their silences differ in count and boundary. Padding each channel by its OWN silence
 //! would give the two speakers DIFFERENT margins and DIFFERENT lengths and tear the stereo image apart. So this rung keeps ONE margin for BOTH: the leading and trailing
 //! JOINT silence (a run of frames `.silent` in both channels), kept up to `pad` and cut for the excess, identically from both channels.
 //!
 //! The rule, stated once: segment BOTH channels through ALES147 over one shared frame grid, find the FIRST and LAST frame that is NOT jointly-silent (the content
 //! bracket, the union of the two speakers' outer content, exactly ALES150's), keep up to `pad` samples of the leading and trailing joint silence and cut only the
-//! EXCESS from both channels — the trailing excess first (a suffix cut shifts nothing before it), then the leading excess. Every interior pause and the kept margin stay
+//! EXCESS from both channels -- the trailing excess first (a suffix cut shifts nothing before it), then the leading excess. Every interior pause and the kept margin stay
 //! untouched, on both channels.
 //!
-//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE PAD-ZERO LAW: stereo_top_and_tail_pad(sc, ..., 0) equals ALES150's
-//! stereo_top_and_tail(sc, ...) byte for byte on both channels — the flush stereo trim is exactly the zero-margin case. THE MARGIN LAW: the result equals the original
-//! over [content_start - min(pad, lead_joint_silence), content_end + min(pad, tail_joint_silence)) byte for byte on both channels — the kept margin at each end is
+//! The crux -- two laws, each tying this rung to a proven predecessor so it can never drift. THE PAD-ZERO LAW: stereo_top_and_tail_pad(sc, ..., 0) equals ALES150's
+//! stereo_top_and_tail(sc, ...) byte for byte on both channels -- the flush stereo trim is exactly the zero-margin case. THE MARGIN LAW: the result equals the original
+//! over [content_start - min(pad, lead_joint_silence), content_end + min(pad, tail_joint_silence)) byte for byte on both channels -- the kept margin at each end is
 //! exactly min(pad, available), a pad larger than the available joint silence keeps all of it and no more (never inventing a sample), a pad at least as large as both
 //! ends leaves the master unchanged; monotone in pad; both channels leaving equal length.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES151.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES151.
 //! Design read: active-designing/date/20260815/20260815-054529_fill-ales151-lotus-stereo-pad-tail.md
-//! Stands on: lotus/stereo_top_tail.rye (ALES150) — the flush stereo top-and-tail, the pad-zero twin, its StereoTopTailError reused whole; lotus/stereo_segment.rye
-//! (ALES147) — the stereo segmenter, run once over one shared frame grid, its segment_stereo, its StereoSegments; lotus/segment.rye (ALES95) — the mono segmenter and
-//! max_segments, through ALES147; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its cut; lotus/voiced.rye
-//! (ALES94) — the .silent verdict this intersects.
+//! Stands on: lotus/stereo_top_tail.rye (ALES150) -- the flush stereo top-and-tail, the pad-zero twin, its StereoTopTailError reused whole; lotus/stereo_segment.rye
+//! (ALES147) -- the stereo segmenter, run once over one shared frame grid, its segment_stereo, its StereoSegments; lotus/segment.rye (ALES95) -- the mono segmenter and
+//! max_segments, through ALES147; lotus/pan.rye (ALES10) -- the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip and its cut; lotus/voiced.rye
+//! (ALES94) -- the .silent verdict this intersects.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It edits only by removing whole
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It edits only by removing whole
 //! excess-jointly-silent frames at the two ends through ALES2's own cut, on both channels in lockstep, fabricating no sample and reordering nothing, never touching a
 //! sample between the first and last not-jointly-silent frames or within the kept margin. NOT a transcript, not a real adaptive VAD; no real sample rate, no network,
 //! no keys, no funds, no real device, no real speaker.
@@ -47,13 +47,13 @@ const stereo_top_tail = @import("stereo_top_tail.rye");
 
 pub const stereo_pad_tail_version = "20260815.054529";
 
-/// The padded stereo trimmer's faults are ALES150's OWN faults (the stereo segmenter's StereoSegmentError and the editor's EditError) reused by name — it invents none
+/// The padded stereo trimmer's faults are ALES150's OWN faults (the stereo segmenter's StereoSegmentError and the editor's EditError) reused by name -- it invents none
 /// of its own, and `pad` is a plain count with no illegal value (a huge pad simply keeps all available joint silence).
 pub const StereoPadTailError = stereo_top_tail.StereoTopTailError;
 
 /// Trim the leading and trailing JOINT silence from both channels of `sc` like ALES150, yet keep up to `pad` samples of joint silence adjacent to the content at each
 /// end. Segments BOTH channels of the whole clip `[0, len)` into frames of `frame_len` samples through ALES147, finds the first and last frame NOT jointly-silent, keeps
-/// `min(pad, available)` of the joint silence at each end, and cuts only the excess from BOTH channels — the trailing excess first (so the leading index stays valid),
+/// `min(pad, available)` of the joint silence at each end, and cuts only the excess from BOTH channels -- the trailing excess first (so the leading index stays valid),
 /// then the leading excess. Validates the whole span, band, floor, and frame length through ALES147's own checks BEFORE any cut; on refusal both channels are untouched.
 /// `pad = 0` is exactly ALES150. An empty clip refuses `BadFrame`; an all-jointly-silent master trims to empty whatever the pad; a no-joint-silent master is unchanged.
 pub fn stereo_top_and_tail_pad(
@@ -65,25 +65,25 @@ pub fn stereo_top_and_tail_pad(
     voice_split: u32,
     pad: u32,
 ) StereoPadTailError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the whole edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the whole edit preserves.
     assert(sc.left.len == sc.right.len);
     const original_len: u32 = sc.left.len;
 
-    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here — band/span precheck, the floor ceiling, the
-    // dividing frame length, the empty-clip BadFrame — read-only, before a single sample is cut. On refusal it leaves the source untouched, so both channels are too.
+    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here -- band/span precheck, the floor ceiling, the
+    // dividing frame length, the empty-clip BadFrame -- read-only, before a single sample is cut. On refusal it leaves the source untouched, so both channels are too.
     var segs = stereo_segment.StereoSegments{};
     try stereo_segment.segment_stereo(sc, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: segmenting a non-empty clip yields at least one run per channel that tiles it — ALES147's own postcondition, relied on here.
+    // invariant: segmenting a non-empty clip yields at least one run per channel that tiles it -- ALES147's own postcondition, relied on here.
     assert(segs.left.len >= 1 and segs.left.len <= segment.max_segments);
     assert(segs.right.len >= 1 and segs.right.len <= segment.max_segments);
 
-    // The frames tile [0, original_len) exactly — the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
+    // The frames tile [0, original_len) exactly -- the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
     const frames: u32 = original_len / frame_len;
     // invariant: the frame count is real and at least one.
     assert(frames >= 1);
 
-    // Forward pass — find the FIRST and LAST frame NOT jointly-silent, the content bracket. Walk the frames, advancing one cursor per channel across its own tiling run
+    // Forward pass -- find the FIRST and LAST frame NOT jointly-silent, the content bracket. Walk the frames, advancing one cursor per channel across its own tiling run
     // list, and mark a frame jointly-silent only where it is `.silent` in both channels. `found` stays false only when every frame is jointly silent.
     var found: bool = false;
     var first_ns: u32 = 0;
@@ -95,7 +95,7 @@ pub fn stereo_top_and_tail_pad(
         const fs: u32 = k * frame_len;
         while (li + 1 < segs.left.len and segs.left.items[li].start + segs.left.items[li].count <= fs) : (li += 1) {}
         while (ri + 1 < segs.right.len and segs.right.items[ri].start + segs.right.items[ri].count <= fs) : (ri += 1) {}
-        // invariant: each cursor names the run that actually covers fs — the runs tile the span, so exactly one always does.
+        // invariant: each cursor names the run that actually covers fs -- the runs tile the span, so exactly one always does.
         assert(segs.left.items[li].start <= fs and fs < segs.left.items[li].start + segs.left.items[li].count);
         assert(segs.right.items[ri].start <= fs and fs < segs.right.items[ri].start + segs.right.items[ri].count);
         const joint_silent: bool = segs.left.items[li].verdict == .silent and segs.right.items[ri].verdict == .silent;
@@ -109,7 +109,7 @@ pub fn stereo_top_and_tail_pad(
     }
 
     if (!found) {
-        // ALL JOINTLY SILENT: no content to keep a margin around — the whole master is dead air, so it trims to empty regardless of pad (a margin needs a sound beside).
+        // ALL JOINTLY SILENT: no content to keep a margin around -- the whole master is dead air, so it trims to empty regardless of pad (a margin needs a sound beside).
         // invariant: cutting the whole span leaves each channel empty; the two cuts are identical, so balance holds.
         try timeline.cut(&sc.left, 0, original_len);
         try timeline.cut(&sc.right, 0, original_len);
@@ -119,7 +119,7 @@ pub fn stereo_top_and_tail_pad(
         return;
     }
 
-    // The content bracket runs from the first not-jointly-silent frame to the last — the frames tile the span, so every frame before first_ns is jointly-silent (the
+    // The content bracket runs from the first not-jointly-silent frame to the last -- the frames tile the span, so every frame before first_ns is jointly-silent (the
     // leading joint silence) and every frame after last_ns is jointly-silent (the trailing joint silence).
     const content_start: u32 = first_ns * frame_len; // first content sample
     const content_end: u32 = (last_ns + 1) * frame_len; // one past the last content sample
@@ -150,7 +150,7 @@ pub fn stereo_top_and_tail_pad(
     // Cut the LEADING excess (from the start, `lead_start` samples) from BOTH channels. The kept span shifts down to the front, interior pauses and the kept margins
     // intact; the same span cut from both keeps them balanced.
     if (lead_start > 0) {
-        // invariant: the leading excess still lies at the front of each channel — the tail cut touched only samples after it.
+        // invariant: the leading excess still lies at the front of each channel -- the tail cut touched only samples after it.
         assert(lead_start <= sc.left.len and lead_start <= sc.right.len);
         try timeline.cut(&sc.left, 0, lead_start);
         try timeline.cut(&sc.right, 0, lead_start);
@@ -162,7 +162,7 @@ pub fn stereo_top_and_tail_pad(
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE PAD-ZERO LAW — stereo_top_and_tail_pad(pad=0) equals ALES150's stereo_top_and_tail byte for byte on both channels; THE MARGIN LAW — the kept
+// --- selftest: THE PAD-ZERO LAW -- stereo_top_and_tail_pad(pad=0) equals ALES150's stereo_top_and_tail byte for byte on both channels; THE MARGIN LAW -- the kept
 //     margin at each end is exactly min(pad, available), the result equal to the original over the padded span per channel, both channels balanced; a known pad keeps
 //     exactly the named samples; a pad past both ends leaves the master unchanged; monotone in pad; an all-jointly-silent master trims to empty whatever the pad; a
 //     no-joint-silent master is unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, both channels untouched --
@@ -179,7 +179,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it — an independent reference to the cursor walk
+/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it -- an independent reference to the cursor walk
 /// inside stereo_top_and_tail_pad, so the crux is proven against a second implementation.
 fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
     var i: u32 = 0;
@@ -189,7 +189,7 @@ fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
     unreachable; // the runs tile the span, so a frame start always lands in one
 }
 
-/// The hand-built expectation the padded stereo trimmer is checked against in the margin law — segment BOTH channels of the ORIGINAL, find the first and last frame NOT
+/// The hand-built expectation the padded stereo trimmer is checked against in the margin law -- segment BOTH channels of the ORIGINAL, find the first and last frame NOT
 /// jointly-silent, and copy the original's samples over the padded span [content_start - min(pad, lead), content_end + min(pad, tail)) on each channel. An all-jointly-
 /// silent master leaves `out` empty.
 fn by_hand(out: *pan.StereoClip, src: *const pan.StereoClip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32, pad: u32) !void {
@@ -250,7 +250,7 @@ fn run_selftest() !u8 {
         51,    -51,    51,     -51, // frame 5 — quiet
     };
 
-    // 1. THE PAD-ZERO LAW — over many frame lengths, floors, and splits, stereo_top_and_tail_pad(pad=0) equals ALES150's flush stereo_top_and_tail on both channels.
+    // 1. THE PAD-ZERO LAW -- over many frame lengths, floors, and splits, stereo_top_and_tail_pad(pad=0) equals ALES150's flush stereo_top_and_tail on both channels.
     {
         const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 };
         const floors = [_]u32{ 100, 500, 1000, 5000 };
@@ -275,7 +275,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE MARGIN LAW — over many pads, the padded trim equals the hand-built padded span per channel, both channels balanced, the kept margin exactly min(pad, avail).
+    // 2. THE MARGIN LAW -- over many pads, the padded trim equals the hand-built padded span per channel, both channels balanced, the kept margin exactly min(pad, avail).
     {
         const pads = [_]u32{ 0, 1, 2, 3, 4, 5, 8, 100 };
         var pi: u32 = 0;
@@ -293,7 +293,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. A KNOWN PAD — with frame 4, floor 500, pad 2: content is [4, 20), each end holds 4 joint-silent samples, so 2 are kept at each end. Result = original[2, 22) =
+    // 3. A KNOWN PAD -- with frame 4, floor 500, pad 2: content is [4, 20), each end holds 4 joint-silent samples, so 2 are kept at each end. Result = original[2, 22) =
     //    20 samples per channel: the last 2 leading joint-silent samples, the content bracket (with its interior gap), and the first 2 trailing joint-silent samples.
     {
         var sc = pan.StereoClip{};
@@ -320,7 +320,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 20 or sc.right.len != 20) return error.KnownPadLength;
     }
 
-    // 4. A PAD PAST BOTH ENDS leaves the master unchanged — pad 4 keeps all 4 leading and all 4 trailing joint-silent samples, and there is no joint silence beyond them.
+    // 4. A PAD PAST BOTH ENDS leaves the master unchanged -- pad 4 keeps all 4 leading and all 4 trailing joint-silent samples, and there is no joint silence beyond them.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &left_sig, &right_sig);
@@ -328,7 +328,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &left_sig) or !eq(sc.right.samples(), &right_sig)) return error.FullPadChanged;
     }
 
-    // 5. MONOTONE IN PAD — a larger margin keeps both channels at least as long (and still balanced).
+    // 5. MONOTONE IN PAD -- a larger margin keeps both channels at least as long (and still balanced).
     {
         const pads = [_]u32{ 0, 1, 2, 3, 4, 8 };
         var prev: u32 = 0;
@@ -353,7 +353,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 0 or sc.right.len != 0) return error.AllJointSilentNotEmpty;
     }
 
-    // 7. A NO-JOINT-SILENT master is unchanged — no joint silence at either end to trim or keep. The right is loud throughout, so nothing is jointly silent.
+    // 7. A NO-JOINT-SILENT master is unchanged -- no joint silence at either end to trim or keep. The right is loud throughout, so nothing is jointly silent.
     {
         const some_l = [_]i16{
             40, -40, 40, -40, 20000, -20000, 20000, -20000, // quiet then loud on the left

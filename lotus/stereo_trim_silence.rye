@@ -1,29 +1,29 @@
-//! lotus/stereo_trim_silence.rye — ALES148: the silence stripper carried into stereo, TWO INDEPENDENT SILENCES cut in ONE LOCKSTEP — the suite's first STEREO
+//! lotus/stereo_trim_silence.rye -- ALES148: the silence stripper carried into stereo, TWO INDEPENDENT SILENCES cut in ONE LOCKSTEP -- the suite's first STEREO
 //! EDIT built on the segmenter, and the first stereo edit whose cut is decided rather than given. ALES96 named `trim_silence`: segment a clip through ALES95, then
-//! cut every `.silent` run, leaving the sound contiguous — the dead-air remover every recorder ships. That is a mono edit. Carried into stereo it meets a wall the
+//! cut every `.silent` run, leaving the sound contiguous -- the dead-air remover every recorder ships. That is a mono edit. Carried into stereo it meets a wall the
 //! length-preserving edits never did: a Lotus master is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT hold the SAME length, and
-//! ALES147 just proved the two channels segment INDEPENDENTLY — their silences differ in count and boundary. Trimming each channel by its OWN silence would give the
+//! ALES147 just proved the two channels segment INDEPENDENTLY -- their silences differ in count and boundary. Trimming each channel by its OWN silence would give the
 //! two speakers DIFFERENT lengths and tear the stereo image apart. So this rung cannot run the mono trimmer twice; it must decide ONE cut that serves BOTH.
 //!
-//! The rule, stated once — the SILENCE INTERSECTION: segment BOTH channels through ALES147 over one shared frame grid, mark a frame jointly-silent only where it is
-//! `.silent` in BOTH channels, and cut exactly those frames from BOTH channels in lockstep, walking back to front. A frame silent in only ONE channel is KEPT — a
+//! The rule, stated once -- the SILENCE INTERSECTION: segment BOTH channels through ALES147 over one shared frame grid, mark a frame jointly-silent only where it is
+//! `.silent` in BOTH channels, and cut exactly those frames from BOTH channels in lockstep, walking back to front. A frame silent in only ONE channel is KEPT -- a
 //! sound panned hard to the left is real audio the right's silence must never delete. Only a moment where NEITHER speaker carries sound is dead air, and only dead
 //! air is removed. Both channels are cut at identical positions, so they leave exactly as long as each other: the stereo image stays whole.
 //!
 //! The crux: this rung invents no new measurement and no new sample. It reads its silences through ALES147 (which reads them through ALES95, ALES94, and the two
-//! readers those fuse) and removes whole frames through ALES2's own `cut`; it fabricates nothing and reorders nothing. What is NEW is the composition rule — the
-//! intersection of two independent silences — and its whole honesty is that running the proven mono `trim_silence` (ALES96) on each channel apart would DESYNC the
+//! readers those fuse) and removes whole frames through ALES2's own `cut`; it fabricates nothing and reorders nothing. What is NEW is the composition rule -- the
+//! intersection of two independent silences -- and its whole honesty is that running the proven mono `trim_silence` (ALES96) on each channel apart would DESYNC the
 //! pair, where this cuts once for both and keeps them balanced. The first stereo edit that had to think, and thought the minimal honest thought.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES148.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES148.
 //! Design read: active-designing/date/20260815/20260815-051802_fill-ales148-lotus-stereo-trim-silence.md
-//! Stands on: lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
-//! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid and `.silent`
-//! verdict, through ALES147) and `max_segments`; lotus/trim_silence.rye (ALES96) — the mono silence stripper, imported by the selftest to prove the LOCKSTEP law (that
-//! running it per channel would desync the pair); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye
-//! (ALES2) — the Clip, its `cut`, its `max_clip`, and the EditError reused whole; lotus/voiced.rye (ALES94) — the `.silent` verdict this intersects.
+//! Stands on: lotus/stereo_segment.rye (ALES147) -- the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
+//! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) -- the mono segmenter (the frame grid and `.silent`
+//! verdict, through ALES147) and `max_segments`; lotus/trim_silence.rye (ALES96) -- the mono silence stripper, imported by the selftest to prove the LOCKSTEP law (that
+//! running it per channel would desync the pair); lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye
+//! (ALES2) -- the Clip, its `cut`, its `max_clip`, and the EditError reused whole; lotus/voiced.rye (ALES94) -- the `.silent` verdict this intersects.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. This rung WRITES — it edits both clips —
+//! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. This rung WRITES -- it edits both clips --
 //! yet only by removing whole jointly-silent frames through ALES2's own cut, on both channels in lockstep; it fabricates no samples and reorders nothing. NOT a
 //! transcript, not a real voice-activity detector with adaptive floors or smoothing; those stay later rungs. No real sample rate, no network, no keys, no funds, no
 //! real device, no real speaker.
@@ -42,18 +42,18 @@ const trim_silence = @import("trim_silence.rye");
 
 pub const stereo_trim_silence_version = "20260815.051802";
 
-/// The most frames a span can carry — one per sample, when `frame_len` is 1 — bounded by the clip's own sample ceiling. Names the jointly-silent mask's size once.
+/// The most frames a span can carry -- one per sample, when `frame_len` is 1 -- bounded by the clip's own sample ceiling. Names the jointly-silent mask's size once.
 const max_frames: u32 = timeline.max_clip;
 
 /// The stereo trimmer's faults are the stereo segmenter's OWN faults (ALES147's StereoSegmentError, itself ALES95's SegmentError: the classifier's band/floor faults,
 /// plus BadFrame and the honest unreachable SegmentsFull) and the editor's OWN faults (ALES2's EditError from cut), each reused by name. The stereo lift invents none
-/// of its own — an empty clip refuses BadFrame through the segmenter (a zero span cannot carry a legal frame), so a keeper reads one error vocabulary across the read
+/// of its own -- an empty clip refuses BadFrame through the segmenter (a zero span cannot carry a legal frame), so a keeper reads one error vocabulary across the read
 /// and the edit, mono or stereo.
 pub const StereoTrimError = stereo_segment.StereoSegmentError || timeline.EditError;
 
 /// Remove every JOINTLY-silent frame from both channels of `sc`, leaving the audio contiguous and the stereo image balanced. Segments BOTH channels of the whole clip
 /// `[0, len)` into frames of `frame_len` samples through ALES147, marks a frame jointly-silent only where it is `.silent` in BOTH channels, and cuts exactly those
-/// frames from BOTH channels through ALES2's `cut`, walking back to front so every earlier frame's index stays valid. A frame silent in only one channel is KEPT —
+/// frames from BOTH channels through ALES2's `cut`, walking back to front so every earlier frame's index stays valid. A frame silent in only one channel is KEPT --
 /// content in either speaker survives. Validates the whole span, band, floor, and frame length through ALES147's own up-front checks BEFORE any cut; on refusal both
 /// channels are untouched. An empty clip refuses `BadFrame` (nothing to trim).
 pub fn stereo_trim_silence(
@@ -64,26 +64,26 @@ pub fn stereo_trim_silence(
     silence_floor: u32,
     voice_split: u32,
 ) StereoTrimError!void {
-    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the whole edit preserves.
+    // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the whole edit preserves.
     assert(sc.left.len == sc.right.len);
     const original_len: u32 = sc.left.len;
 
-    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here — band/span precheck, the floor ceiling, the
-    // dividing frame length, the empty-clip BadFrame — read-only, before a single sample is cut. On refusal it leaves the source untouched, so both channels are too.
+    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here -- band/span precheck, the floor ceiling, the
+    // dividing frame length, the empty-clip BadFrame -- read-only, before a single sample is cut. On refusal it leaves the source untouched, so both channels are too.
     var segs = stereo_segment.StereoSegments{};
     try stereo_segment.segment_stereo(sc, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
 
-    // invariant: segmenting a non-empty clip yields at least one run per channel that tiles it — ALES147's own postcondition, relied on here.
+    // invariant: segmenting a non-empty clip yields at least one run per channel that tiles it -- ALES147's own postcondition, relied on here.
     assert(segs.left.len >= 1 and segs.left.len <= segment.max_segments);
     assert(segs.right.len >= 1 and segs.right.len <= segment.max_segments);
 
-    // The frames tile [0, original_len) exactly — the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
+    // The frames tile [0, original_len) exactly -- the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
     const frames: u32 = original_len / frame_len;
     // invariant: the frame count is real and never exceeds the mask that records it.
     assert(frames >= 1 and frames <= max_frames);
 
-    // Forward pass — the SILENCE INTERSECTION. Walk the frames left to right, advancing one cursor per channel across its own tiling run list, and mark a frame
-    // jointly-silent ONLY where it is `.silent` in both channels. A frame silent in one channel alone is left unmarked — the other speaker's content keeps it. Count
+    // Forward pass -- the SILENCE INTERSECTION. Walk the frames left to right, advancing one cursor per channel across its own tiling run list, and mark a frame
+    // jointly-silent ONLY where it is `.silent` in both channels. A frame silent in one channel alone is left unmarked -- the other speaker's content keeps it. Count
     // the jointly-silent samples so the length postcondition can be asserted exactly.
     var joint_silent = [_]bool{false} ** max_frames;
     var joint_total: u32 = 0;
@@ -95,7 +95,7 @@ pub fn stereo_trim_silence(
         // Runs tile [0, original_len) in order and frame starts only increase, so each cursor advances monotonically to the run covering this frame's start.
         while (li + 1 < segs.left.len and segs.left.items[li].start + segs.left.items[li].count <= fs) : (li += 1) {}
         while (ri + 1 < segs.right.len and segs.right.items[ri].start + segs.right.items[ri].count <= fs) : (ri += 1) {}
-        // invariant: each cursor names the run that actually covers fs — the runs tile the span, so exactly one always does.
+        // invariant: each cursor names the run that actually covers fs -- the runs tile the span, so exactly one always does.
         assert(segs.left.items[li].start <= fs and fs < segs.left.items[li].start + segs.left.items[li].count);
         assert(segs.right.items[ri].start <= fs and fs < segs.right.items[ri].start + segs.right.items[ri].count);
         if (segs.left.items[li].verdict == .silent and segs.right.items[ri].verdict == .silent) {
@@ -106,7 +106,7 @@ pub fn stereo_trim_silence(
     // invariant: the joint silence removed can never exceed the clip it came from.
     assert(joint_total <= original_len);
 
-    // Backward pass — cut every jointly-silent frame from BOTH channels in lockstep. Back-to-front is the whole trick: a cut shifts only samples after it, so an
+    // Backward pass -- cut every jointly-silent frame from BOTH channels in lockstep. Back-to-front is the whole trick: a cut shifts only samples after it, so an
     // earlier frame keeps its original start index. Cutting the SAME span from both channels keeps them balanced at every step; the bounds are asserted, so neither
     // cut can fault and leave the pair half-trimmed.
     var b: u32 = frames;
@@ -114,23 +114,23 @@ pub fn stereo_trim_silence(
         b -= 1;
         if (joint_silent[b]) {
             const fs: u32 = b * frame_len;
-            // invariant: the frame lies wholly inside both current clips — it did before any cut, and only later frames (already cut) sat after it.
+            // invariant: the frame lies wholly inside both current clips -- it did before any cut, and only later frames (already cut) sat after it.
             assert(fs + frame_len <= sc.left.len and fs + frame_len <= sc.right.len);
             try timeline.cut(&sc.left, fs, frame_len);
             try timeline.cut(&sc.right, fs, frame_len);
         }
     }
 
-    // invariant: both channels lost exactly the jointly-silent samples and leave balanced — the length holds identical on both, the original minus the joint silence.
+    // invariant: both channels lost exactly the jointly-silent samples and leave balanced -- the length holds identical on both, the original minus the joint silence.
     assert(sc.left.len == original_len - joint_total);
     assert(sc.right.len == original_len - joint_total);
     assert(sc.left.len == sc.right.len);
 }
 
-// --- selftest: THE STEREO TRIM LAW — stereo_trim_silence equals a by-hand keep of the frames NOT jointly-silent, per channel, across many frame lengths, floors, and
-//     splits (the crux); THE BALANCE / LOCKSTEP LAW — both channels leave equal length (original minus the joint silence), where running mono trim_silence per channel
-//     would DESYNC them; THE PRESERVATION LAW — a frame silent in only one channel is kept, only jointly-silent frames removed, an all-joint-silent master trims to
-//     empty on both, a no-joint-silent master unchanged on both; THE ATOMICITY / DEGENERATE LAW — a shared BadFrame / BadThreshold / BadFloor refuses before any cut,
+// --- selftest: THE STEREO TRIM LAW -- stereo_trim_silence equals a by-hand keep of the frames NOT jointly-silent, per channel, across many frame lengths, floors, and
+//     splits (the crux); THE BALANCE / LOCKSTEP LAW -- both channels leave equal length (original minus the joint silence), where running mono trim_silence per channel
+//     would DESYNC them; THE PRESERVATION LAW -- a frame silent in only one channel is kept, only jointly-silent frames removed, an all-joint-silent master trims to
+//     empty on both, a no-joint-silent master unchanged on both; THE ATOMICITY / DEGENERATE LAW -- a shared BadFrame / BadThreshold / BadFloor refuses before any cut,
 //     both channels untouched and balanced, an empty clip BadFrame ------------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -145,7 +145,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try timeline.splice(&sc.right, 0, r);
 }
 
-/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it — an independent reference to the cursor walk
+/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it -- an independent reference to the cursor walk
 /// inside `stereo_trim_silence`, so the crux is proven against a second implementation.
 fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
     var i: u32 = 0;
@@ -155,7 +155,7 @@ fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
     unreachable; // the runs tile the span, so a frame start always lands in one
 }
 
-/// The hand-built expectation the stereo trimmer is checked against — segment BOTH channels of the ORIGINAL, then, for each frame NOT silent in both, keep that
+/// The hand-built expectation the stereo trimmer is checked against -- segment BOTH channels of the ORIGINAL, then, for each frame NOT silent in both, keep that
 /// frame's samples on each channel. The trimmed pair must equal this exactly, both channels the same length.
 fn by_hand(out: *pan.StereoClip, src: *const pan.StereoClip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
     var ls = segment.Segments{};
@@ -196,7 +196,7 @@ fn run_selftest() !u8 {
         20000, 20000, -20000, -20000, // frame 3 — loud
     };
 
-    // 1. THE STEREO TRIM LAW — over many frame lengths, floors, and splits, stereo_trim_silence equals the hand-built keep of the frames NOT jointly-silent, per
+    // 1. THE STEREO TRIM LAW -- over many frame lengths, floors, and splits, stereo_trim_silence equals the hand-built keep of the frames NOT jointly-silent, per
     //    channel, and the two channels leave exactly equal length.
     {
         const flens = [_]u32{ 1, 2, 4, 8, 16 }; // each divides 16
@@ -223,7 +223,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. THE PRESERVATION LAW — with frame 4 and floor 500, ONLY the jointly-silent frame 2 is removed; frame 1 (quiet left, loud right) is KEPT on both channels,
+    // 2. THE PRESERVATION LAW -- with frame 4 and floor 500, ONLY the jointly-silent frame 2 is removed; frame 1 (quiet left, loud right) is KEPT on both channels,
     //    because its right speaker still carries sound. Both channels leave 12 samples, the frame-2 gap closed on both.
     {
         var sc = pan.StereoClip{};
@@ -244,8 +244,8 @@ fn run_selftest() !u8 {
         if (sc.left.len != 12 or sc.right.len != 12) return error.PreservationLength;
     }
 
-    // 3. THE LOCKSTEP LAW — the reason this rung exists. Running the proven mono trim_silence on each channel APART would DESYNC the pair: the left loses frames 1 and
-    //    2 (both quiet on the left → length 8) while the right loses only frame 2 (length 12). The stereo trimmer instead keeps both at 12 by cutting only the joint
+    // 3. THE LOCKSTEP LAW -- the reason this rung exists. Running the proven mono trim_silence on each channel APART would DESYNC the pair: the left loses frames 1 and
+    //    2 (both quiet on the left -> length 8) while the right loses only frame 2 (length 12). The stereo trimmer instead keeps both at 12 by cutting only the joint
     //    silence, so the stereo image never tears.
     {
         var ml = timeline.Clip{};
@@ -264,7 +264,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 12) return error.StereoWrongLength; // the joint silence is one frame, not two
     }
 
-    // 4. THE DEGENERATE LAW, all-joint-silent — a master quiet on BOTH channels everywhere trims to empty on both.
+    // 4. THE DEGENERATE LAW, all-joint-silent -- a master quiet on BOTH channels everywhere trims to empty on both.
     {
         const quiet_l = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 };
         const quiet_r = [_]i16{ 41, -41, 41, -41, 31, -31, 31, -31 };
@@ -274,7 +274,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 0 or sc.right.len != 0) return error.AllJointSilentNotEmpty;
     }
 
-    // 5. THE DEGENERATE LAW, no-joint-silent — a master loud on at least one channel in every frame is unchanged on both. Here every frame is loud on the right, so
+    // 5. THE DEGENERATE LAW, no-joint-silent -- a master loud on at least one channel in every frame is unchanged on both. Here every frame is loud on the right, so
     //    NOTHING is jointly silent even though the left goes quiet in the middle.
     {
         const some_l = [_]i16{
@@ -297,7 +297,7 @@ fn run_selftest() !u8 {
         if (sc.left.len != 0 or sc.right.len != 0) return error.EmptyMutated;
     }
 
-    // 6b. A RAGGED FRAME LENGTH — one that does not divide the clip — refuses BadFrame, both channels untouched.
+    // 6b. A RAGGED FRAME LENGTH -- one that does not divide the clip -- refuses BadFrame, both channels untouched.
     {
         const five_l = [_]i16{ 1, 2, 3, 4, 5 };
         const five_r = [_]i16{ 6, 7, 8, 9, 10 };
@@ -317,7 +317,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), &four_l) or !eq(sc.right.samples(), &four_r)) return error.InvertedMutated;
     }
 
-    // 6d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, both channels untouched and balanced.
+    // 6d. AN ILLEGAL FLOOR -- above the peak ceiling -- refuses BadFloor, both channels untouched and balanced.
     {
         const four_l = [_]i16{ 10, 20, 30, 40 };
         const four_r = [_]i16{ 50, 60, 70, 80 };

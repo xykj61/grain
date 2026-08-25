@@ -1,36 +1,36 @@
-//! crypto/mlkem_sealed.rye — Season G (Cryptography), the POST-QUANTUM sealed session: the ML-KEM sibling of crypto/sealed_session.rye and the
+//! crypto/mlkem_sealed.rye -- Season G (Cryptography), the POST-QUANTUM sealed session: the ML-KEM sibling of crypto/sealed_session.rye and the
 //! confidential door Comlink reaches for once the old elliptic curves fall. Where crypto/sealed_session.rye lets one keeper send another a
-//! confidential message by agreeing a one-message secret with X25519, this agrees that secret with ML-KEM (FIPS 203) — a key-encapsulation
-//! mechanism, not a Diffie–Hellman, so the confidentiality it buys is the same yet hardened against the quantum day. It authors NO new
-//! cryptography: it composes four primitives already GREEN — ML-KEM (the post-quantum key agreement), SHA3-256 (the recipient-key digest bound as
+//! confidential message by agreeing a one-message secret with X25519, this agrees that secret with ML-KEM (FIPS 203) -- a key-encapsulation
+//! mechanism, not a Diffie-Hellman, so the confidentiality it buys is the same yet hardened against the quantum day. It authors NO new
+//! cryptography: it composes four primitives already GREEN -- ML-KEM (the post-quantum key agreement), SHA3-256 (the recipient-key digest bound as
 //! authenticated data), BLAKE2b-512 (the key-derivation hash), and ChaCha20-Poly1305 (the authenticated encryption).
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, doubled-oracle parity, audit-ready).
-//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — "ML-KEM is the post-quantum successor to X25519 … the sealed
-//! session (sealed_session.rye, kumara_sealed.rye) … With this, the post-quantum sealed-session sibling of kumara_sealed.rye becomes buildable."
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, doubled-oracle parity, audit-ready).
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md -- "ML-KEM is the post-quantum successor to X25519 ... the sealed
+//! session (sealed_session.rye, kumara_sealed.rye) ... With this, the post-quantum sealed-session sibling of kumara_sealed.rye becomes buildable."
 //! The 1,024-round itinerary, Season 3 Journey 9 (Skate) and the Comlink session surface both stand on exactly this shape, made quantum-resistant.
-//! Kin: crypto/mlkem_encaps.rye + crypto/mlkem_decaps.rye (the KEM, GREEN) · crypto/mlkem_keygen.rye (the recipient keypair, GREEN) · crypto/aead.rye
-//! (the seal, GREEN) · crypto/blake2b.rye (the KDF, GREEN) · crypto/sha3.rye (the ek digest, GREEN) · crypto/sealed_session.rye (its classical X25519
-//! sibling) · crypto/mldsa_identity.rye (the post-quantum SIGNING identity, this one's confidentiality counterpart). Pure composition, no primitive
+//! Kin: crypto/mlkem_encaps.rye + crypto/mlkem_decaps.rye (the KEM, GREEN) - crypto/mlkem_keygen.rye (the recipient keypair, GREEN) - crypto/aead.rye
+//! (the seal, GREEN) - crypto/blake2b.rye (the KDF, GREEN) - crypto/sha3.rye (the ek digest, GREEN) - crypto/sealed_session.rye (its classical X25519
+//! sibling) - crypto/mldsa_identity.rye (the post-quantum SIGNING identity, this one's confidentiality counterpart). Pure composition, no primitive
 //! re-authored.
 //!
-//! THE SEALED BOX — the standard "seal to a public key" pattern over a KEM (NaCl's crypto_box_seal shape, made post-quantum):
+//! THE SEALED BOX -- the standard "seal to a public key" pattern over a KEM (NaCl's crypto_box_seal shape, made post-quantum):
 //!   The recipient holds a long-term ML-KEM keypair (ek, dk) and publishes ek. The sender never reuses a secret. For each message it draws a fresh
-//!   32-byte KEM message m — the caller's duty to supply fresh randomness; this library invents no entropy — and encapsulates to the recipient's ek:
+//!   32-byte KEM message m -- the caller's duty to supply fresh randomness; this library invents no entropy -- and encapsulates to the recipient's ek:
 //!     (K, kem_ct) = ML-KEM.Encaps(ek, m)      [sender]      K = ML-KEM.Decaps(dk, kem_ct)      [recipient]
-//!   ML-KEM's shared secret K is already bound (through the Fujisaki–Okamoto transform's G(m ‖ H(ek))) to this exact recipient and ciphertext, so
+//!   ML-KEM's shared secret K is already bound (through the Fujisaki-Okamoto transform's G(m ‖ H(ek))) to this exact recipient and ciphertext, so
 //!   a fresh m yields a fresh K every message. A single BLAKE2b-512 over (K ‖ H(ek)) yields both the 32-byte session key and the 12-byte nonce, so
-//!   every message carries a fresh key AND a fresh nonce — the AEAD nonce never reused under a key, the one rule ChaCha20-Poly1305 must keep. The
+//!   every message carries a fresh key AND a fresh nonce -- the AEAD nonce never reused under a key, the one rule ChaCha20-Poly1305 must keep. The
 //!   recipient's own key digest H(ek) is fed to the AEAD as authenticated data, so a frame sealed to one keeper cannot be replayed as if sealed to
 //!   another. The frame carries the KEM ciphertext so the recipient can recover the same secret; the sender's identity never appears (anonymous by
 //!   construction), and post-quantum: an adversary who records the frame today and builds a quantum computer tomorrow still cannot read it.
 //!
-//! THE FRAME — magic "GPQ1" ‖ kem-ciphertext(ct_len, fixed per parameter set) ‖ cipher-len(u64 BE) ‖ ciphertext(len) ‖ Poly1305 tag(16). open()
-//! reads only public bytes, recovers K from the recipient's dk, rederives key and nonce, and returns plaintext ONLY when the AEAD tag verifies — a
+//! THE FRAME -- magic "GPQ1" ‖ kem-ciphertext(ct_len, fixed per parameter set) ‖ cipher-len(u64 BE) ‖ ciphertext(len) ‖ Poly1305 tag(16). open()
+//! reads only public bytes, recovers K from the recipient's dk, rederives key and nonce, and returns plaintext ONLY when the AEAD tag verifies -- a
 //! wrong recipient, a tampered ciphertext, a tampered tag, or a tampered KEM ciphertext all fail the same way: OpenFailed, no plaintext revealed.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. Every keypair in the selftest is a TEST seed,
-//! never a real key; the frames are held in memory, sent nowhere. The KEM message m must be fresh randomness in real use — the selftest supplies
+//! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Every keypair in the selftest is a TEST seed,
+//! never a real key; the frames are held in memory, sent nowhere. The KEM message m must be fresh randomness in real use -- the selftest supplies
 //! deterministic TEST values to prove the mathematics, and names that randomness duty plainly. Constant-time timing-safety stays the Season's named
 //! horizon (it lives in the primitives this composes, unchanged), and agreeing a session with the maintainer's own identity key stays the custody gate.
 //!
@@ -53,7 +53,7 @@ pub const mlkem_sealed_version = "20260816.192000";
 /// The four magic bytes opening every Grain Post-Quantum sealed frame (v1).
 pub const magic: [4]u8 = .{ 'G', 'P', 'Q', '1' };
 
-/// The 32-byte KEM message m and shared secret K widths — FIPS 203's own, borrowed from the encaps rung.
+/// The 32-byte KEM message m and shared secret K widths -- FIPS 203's own, borrowed from the encaps rung.
 pub const seed_bytes: u32 = keygen.seed_half_bytes; // 32
 pub const shared_bytes: u32 = encaps.shared_bytes; // 32
 
@@ -62,7 +62,7 @@ pub const magic_len: u32 = 4;
 pub const ctlen_field_len: u32 = 8; // u64 big-endian AEAD-ciphertext length
 pub const tag_len: u32 = aead.tag_bytes; // 16 — Poly1305 tag
 
-/// One ML-KEM parameter set: the module rank k, the noise η₁, and the compression widths du, dv — every one a FIPS 203 constant. A Params value names
+/// One ML-KEM parameter set: the module rank k, the noise η₁, and the compression widths du, dv -- every one a FIPS 203 constant. A Params value names
 /// a whole set so seal / open / keypair each cite one bundle rather than four loose numbers.
 pub const Params = struct {
     k: u32,
@@ -74,7 +74,7 @@ pub const Params = struct {
 /// ML-KEM-512 (NIST category 1): k=2 η₁=3 du=10 dv=4. The smallest keys and ciphertexts.
 pub const mlkem_512 = Params{ .k = 2, .eta1 = 3, .du = 10, .dv = 4 };
 
-/// ML-KEM-768 (NIST category 3): k=3 η₁=2 du=10 dv=4. The balanced default — the set this door names for a session meant to last.
+/// ML-KEM-768 (NIST category 3): k=3 η₁=2 du=10 dv=4. The balanced default -- the set this door names for a session meant to last.
 pub const mlkem_768 = Params{ .k = 3, .eta1 = 2, .du = 10, .dv = 4 };
 
 /// ML-KEM-1024 (NIST category 5): k=4 η₁=2 du=11 dv=5. The largest keys, the highest security margin.
@@ -83,38 +83,38 @@ pub const mlkem_1024 = Params{ .k = 4, .eta1 = 2, .du = 11, .dv = 5 };
 /// The default parameter set for a post-quantum sealed session: ML-KEM-768, NIST category 3, the balanced durable choice.
 pub const default = mlkem_768;
 
-/// ek_len — the encapsulation-key (public) length for a set: 384·k + 32.
+/// ek_len -- the encapsulation-key (public) length for a set: 384-k + 32.
 pub fn ek_len(comptime p: Params) u32 {
     // invariant (postcondition): the width is FIPS 203's ek size for this set.
     return 384 * p.k + 32;
 }
 
-/// dk_len — the decapsulation-key (secret) length: 768·k + 96.
+/// dk_len -- the decapsulation-key (secret) length: 768-k + 96.
 pub fn dk_len(comptime p: Params) u32 {
     // invariant (postcondition): the width is FIPS 203's dk size for this set.
     return 768 * p.k + 96;
 }
 
-/// ct_len — the KEM ciphertext length: 32·du·k + 32·dv. Fixed per set, so the frame need not store it.
+/// ct_len -- the KEM ciphertext length: 32-du-k + 32-dv. Fixed per set, so the frame need not store it.
 pub fn ct_len(comptime p: Params) u32 {
     // invariant (postcondition): the width is FIPS 203's ciphertext size for this set.
     return 32 * p.du * p.k + 32 * p.dv;
 }
 
-/// header_len — magic ‖ kem-ciphertext ‖ ctlen-field, all fixed-width per set.
+/// header_len -- magic ‖ kem-ciphertext ‖ ctlen-field, all fixed-width per set.
 pub fn header_len(comptime p: Params) u32 {
     return magic_len + ct_len(p) + ctlen_field_len;
 }
 
-/// frame_overhead — everything a frame carries besides the plaintext-length ciphertext body: the header and the tag.
+/// frame_overhead -- everything a frame carries besides the plaintext-length ciphertext body: the header and the tag.
 pub fn frame_overhead(comptime p: Params) u32 {
     return header_len(p) + tag_len;
 }
 
-/// The largest plaintext a single sealed carry holds — inherited from the AEAD's own bound, so the composition adds no looser limit.
+/// The largest plaintext a single sealed carry holds -- inherited from the AEAD's own bound, so the composition adds no looser limit.
 pub const max_plain_bytes: u32 = aead.max_message_bytes; // 1 << 16
 
-/// max_frame_bytes — the whole frame at the largest plaintext, per set. Named so a caller's scratch cites one ceiling.
+/// max_frame_bytes -- the whole frame at the largest plaintext, per set. Named so a caller's scratch cites one ceiling.
 pub fn max_frame_bytes(comptime p: Params) u32 {
     return frame_overhead(p) + max_plain_bytes;
 }
@@ -129,19 +129,19 @@ pub fn KeypairType(comptime p: Params) type {
 }
 
 pub const MlkemSealedError = error{
-    /// seal's output buffer is too small to hold the whole frame — refused before any byte is written.
+    /// seal's output buffer is too small to hold the whole frame -- refused before any byte is written.
     OutTooSmall,
-    /// A plaintext longer than max_plain_bytes — refused before any key agreement or encryption.
+    /// A plaintext longer than max_plain_bytes -- refused before any key agreement or encryption.
     PayloadTooLong,
     /// open was handed a buffer shorter than the fixed overhead, so it cannot hold even an empty-plaintext frame.
     FrameTooShort,
-    /// The frame's declared ciphertext length disagrees with its actual length, or exceeds the bound — malformed or truncated.
+    /// The frame's declared ciphertext length disagrees with its actual length, or exceeds the bound -- malformed or truncated.
     LengthMismatch,
-    /// The first four bytes are not the GPQ1 magic — this is not a post-quantum sealed frame.
+    /// The first four bytes are not the GPQ1 magic -- this is not a post-quantum sealed frame.
     BadMagic,
     /// The AEAD tag did not verify: a wrong recipient, a tampered ciphertext/tag, or a tampered KEM ciphertext. No plaintext is revealed.
     OpenFailed,
-    /// A composed KEM or hash rung surfaced its own error — honored honestly.
+    /// A composed KEM or hash rung surfaced its own error -- honored honestly.
     ComposedFailed,
 };
 
@@ -150,8 +150,8 @@ pub const Opened = struct {
     plain: []const u8,
 };
 
-/// keypair — grow a recipient's long-term ML-KEM keypair from two 32-byte seeds (the key seed d and the rejection secret z), composing
-/// crypto/mlkem_keygen.rye. TEST seeds only — a real recipient key reaches the custody gate.
+/// keypair -- grow a recipient's long-term ML-KEM keypair from two 32-byte seeds (the key seed d and the rejection secret z), composing
+/// crypto/mlkem_keygen.rye. TEST seeds only -- a real recipient key reaches the custody gate.
 pub fn keypair(comptime p: Params, d: *const [seed_bytes]u8, z: *const [seed_bytes]u8) MlkemSealedError!KeypairType(p) {
     var kp: KeypairType(p) = undefined;
     keygen.keygen(p.k, p.eta1, d, z, kp.ek[0..], kp.dk[0..]) catch return error.ComposedFailed;
@@ -183,8 +183,8 @@ const Session = struct {
     nonce: [aead.nonce_bytes]u8,
 };
 
-/// derive_session — spread the KEM shared secret K across the whole session key and bind it to this exact recipient (via H(ek)) with one BLAKE2b-512.
-/// Because K is already fresh per message (a fresh KEM message m), the derived key AND nonce are fresh per message — the AEAD nonce is never reused.
+/// derive_session -- spread the KEM shared secret K across the whole session key and bind it to this exact recipient (via H(ek)) with one BLAKE2b-512.
+/// Because K is already fresh per message (a fresh KEM message m), the derived key AND nonce are fresh per message -- the AEAD nonce is never reused.
 fn derive_session(shared: *const [shared_bytes]u8, hek: *const [32]u8) Session {
     var kdf_in: [shared_bytes + 32]u8 = undefined; // K ‖ H(ek)
     var i: u32 = 0;
@@ -193,7 +193,7 @@ fn derive_session(shared: *const [shared_bytes]u8, hek: *const [32]u8) Session {
     var j: u32 = 0;
     // invariant (bound): copy exactly 32 bytes of the recipient key digest.
     while (j < 32) : (j += 1) kdf_in[shared_bytes + j] = hek[j];
-    // The KDF input is a fixed 64 bytes, far inside BLAKE2b's bound, so the hash cannot refuse — catch unreachable is honest.
+    // The KDF input is a fixed 64 bytes, far inside BLAKE2b's bound, so the hash cannot refuse -- catch unreachable is honest.
     const h = blake2b.hash512(kdf_in[0..]) catch unreachable;
     var s: Session = undefined;
     var k: u32 = 0;
@@ -205,7 +205,7 @@ fn derive_session(shared: *const [shared_bytes]u8, hek: *const [32]u8) Session {
     return s;
 }
 
-/// seal — encapsulate a fresh secret to the recipient's ek under a fresh KEM message m (the caller's duty to supply fresh randomness), seal the
+/// seal -- encapsulate a fresh secret to the recipient's ek under a fresh KEM message m (the caller's duty to supply fresh randomness), seal the
 /// plaintext under the derived session, and write a whole post-quantum sealed frame into `out`, returning its length. The frame is entirely public and
 /// readable only by the holder of the recipient's dk.
 pub fn seal(comptime p: Params, ek: *const [ek_len(p)]u8, m: *const [seed_bytes]u8, plain: []const u8, out: []u8) MlkemSealedError!u32 {
@@ -213,7 +213,7 @@ pub fn seal(comptime p: Params, ek: *const [ek_len(p)]u8, m: *const [seed_bytes]
     if (plain.len > max_plain_bytes) return error.PayloadTooLong;
     const ptlen: u32 = @intCast(plain.len);
     const frame_len: u32 = frame_overhead(p) + ptlen;
-    // invariant (precondition): the caller's buffer holds the whole frame — checked at the edge before a byte is written.
+    // invariant (precondition): the caller's buffer holds the whole frame -- checked at the edge before a byte is written.
     if (out.len < frame_len) return error.OutTooSmall;
 
     // Encapsulate a one-message shared secret to the recipient's ek, and bind the recipient's key digest.
@@ -238,17 +238,17 @@ pub fn seal(comptime p: Params, ek: *const [ek_len(p)]u8, m: *const [seed_bytes]
     const cipher = out[header_len(p) .. header_len(p) + ptlen];
     var tag: [aead.tag_bytes]u8 = undefined;
     // The plaintext is within the AEAD bound (checked above) and the aad is the 32-byte digest (within max_aad_bytes), so the seal cannot refuse for
-    // length here — catch unreachable is honest.
+    // length here -- catch unreachable is honest.
     aead.seal(cipher, &tag, plain, hek[0..], &session.key, &session.nonce) catch unreachable;
     var t: u32 = 0;
     while (t < tag_len) : (t += 1) out[header_len(p) + ptlen + t] = tag[t];
 
-    // invariant (postcondition): the whole frame was written — overhead plus ciphertext — and nothing past it was touched.
+    // invariant (postcondition): the whole frame was written -- overhead plus ciphertext -- and nothing past it was touched.
     assert(header_len(p) + ptlen + tag_len == frame_len);
     return frame_len;
 }
 
-/// open — recover the plaintext of a post-quantum sealed frame with the recipient's dk and ek: decapsulate the KEM ciphertext back to K, rederive the
+/// open -- recover the plaintext of a post-quantum sealed frame with the recipient's dk and ek: decapsulate the KEM ciphertext back to K, rederive the
 /// session, and return the plaintext ONLY when the AEAD tag verifies. A wrong recipient, a tampered ciphertext/tag, or a tampered KEM ciphertext all
 /// fail OpenFailed with no plaintext revealed.
 pub fn open(comptime p: Params, dk: *const [dk_len(p)]u8, ek: *const [ek_len(p)]u8, frame: []const u8, out: []u8) MlkemSealedError!Opened {
@@ -306,22 +306,22 @@ fn bytes_eq(a: []const u8, b: []const u8) bool {
 
 // ---- selftest ----------------------------------------------------------------------------------------------------------------------
 
-/// Fill a buffer with a deterministic spread of test bytes — TEST keys and TEST plaintexts only, never a real key or real randomness.
+/// Fill a buffer with a deterministic spread of test bytes -- TEST keys and TEST plaintexts only, never a real key or real randomness.
 fn fill_test(buf: []u8, seed: u8) void {
     var i: u32 = 0;
     while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
     if (buf.len > 0) buf[0] |= 1;
 }
 
-/// check_param — prove the post-quantum sealed session for one parameter set, end to end: a round-trip across plaintext lengths, confidentiality,
+/// check_param -- prove the post-quantum sealed session for one parameter set, end to end: a round-trip across plaintext lengths, confidentiality,
 /// sealed-box freshness, determinism, the wrong-recipient and four tamper refusals, and the doubled oracle (Zig's std.crypto decapsulating the very
-/// KEM ciphertext our seal embeds back to the same shared secret — the frame interoperates with the NIST standard). Kem is the Zig type.
+/// KEM ciphertext our seal embeds back to the same shared secret -- the frame interoperates with the NIST standard). Kem is the Zig type.
 fn check_param(comptime Kem: type, comptime p: Params) !void {
     var frame_buf: [max_frame_bytes(p)]u8 = undefined;
     var frame_buf2: [max_frame_bytes(p)]u8 = undefined;
     var out_buf: [max_plain_bytes]u8 = undefined;
 
-    // TEST recipients — B (the intended recipient) and an unrelated keeper C for the wrong-recipient test. NOT real identity keys.
+    // TEST recipients -- B (the intended recipient) and an unrelated keeper C for the wrong-recipient test. NOT real identity keys.
     var b_d: [seed_bytes]u8 = undefined;
     var b_z: [seed_bytes]u8 = undefined;
     fill_test(b_d[0..], 55);
@@ -357,7 +357,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         if (bytes_eq(cipher, plain_buf[0..])) return error.CiphertextIsPlaintext;
     }
 
-    // 3. Sealed-box freshness: two DIFFERENT KEM messages sealing the same plaintext to the same recipient produce DIFFERENT frames (fresh K → fresh
+    // 3. Sealed-box freshness: two DIFFERENT KEM messages sealing the same plaintext to the same recipient produce DIFFERENT frames (fresh K -> fresh
     //    key + nonce), yet BOTH open to the same plaintext.
     {
         var m2: [seed_bytes]u8 = undefined;
@@ -383,7 +383,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         if (f1 != f2 or !bytes_eq(frame_buf[0..f1], frame_buf2[0..f2])) return error.DeterminismWrong;
     }
 
-    // 5. Wrong recipient — keeper C cannot open a frame sealed to keeper B: decaps yields a different (implicit-rejection) secret and the bound digest
+    // 5. Wrong recipient -- keeper C cannot open a frame sealed to keeper B: decaps yields a different (implicit-rejection) secret and the bound digest
     //    differs, so the tag fails OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
@@ -394,7 +394,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         }
     }
 
-    // 6. Tamper the KEM ciphertext — decaps yields the reject secret, so the derived session differs and the tag fails OpenFailed.
+    // 6. Tamper the KEM ciphertext -- decaps yields the reject secret, so the derived session differs and the tag fails OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 37);
@@ -405,7 +405,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         }
     }
 
-    // 7. Tamper the ciphertext body — the tag no longer verifies, OpenFailed.
+    // 7. Tamper the ciphertext body -- the tag no longer verifies, OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 41);
@@ -416,7 +416,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         }
     }
 
-    // 8. Tamper the tag — OpenFailed.
+    // 8. Tamper the tag -- OpenFailed.
     {
         var plain_buf: [64]u8 = undefined;
         fill_test(plain_buf[0..], 43);
@@ -445,7 +445,7 @@ fn check_param(comptime Kem: type, comptime p: Params) !void {
         }
     }
 
-    // 10. THE DOUBLED ORACLE — Zig's independent std.crypto decapsulates the very KEM ciphertext our seal embeds back to the same shared secret our
+    // 10. THE DOUBLED ORACLE -- Zig's independent std.crypto decapsulates the very KEM ciphertext our seal embeds back to the same shared secret our
     //     seal used, so the frame's KEM half interoperates with the NIST standard. We recompute the (K, kem_ct) our seal produced by calling encaps
     //     directly on the same ek and m, then confirm Zig's SecretKey.decaps agrees on K.
     {

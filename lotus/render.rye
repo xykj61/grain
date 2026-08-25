@@ -1,23 +1,23 @@
-//! lotus/render.rye — ALES217: the render rung — an ordered chain of real effects over one Clip becomes a canonical .wav. ALES2
+//! lotus/render.rye -- ALES217: the render rung -- an ordered chain of real effects over one Clip becomes a canonical .wav. ALES2
 //! opened the editable Clip and its edit gestures; two hundred rungs since edit that Clip; ALES215 opened the container the Clip
 //! leaves through. This rung joins the two halves in one call: take a Clip, run a bounded, ordered chain of the tree's own
-//! already-proven effects (gain · fade · invert) over it, then encode the result into the open RIFF/WAVE byte layout another
-//! program plays. Bytes → edited samples → a real .wav. This is where the suite becomes a pipeline.
+//! already-proven effects (gain - fade - invert) over it, then encode the result into the open RIFF/WAVE byte layout another
+//! program plays. Bytes -> edited samples -> a real .wav. This is where the suite becomes a pipeline.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES217.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES217.
 //! Design read: active-designing/date/20260815/20260815-131432_fill-ales217-lotus-render.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip and `gain`; lotus/fade.rye (ALES14-family) — the linear `fade`; lotus/
-//! invert.rye (ALES105) — the whole-clip phase `invert`; lotus/wav.rye (ALES215) — the canonical mono RIFF/WAVE container the
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip and `gain`; lotus/fade.rye (ALES14-family) -- the linear `fade`; lotus/
+//! invert.rye (ALES105) -- the whole-clip phase `invert`; lotus/wav.rye (ALES215) -- the canonical mono RIFF/WAVE container the
 //! rendered samples encode into. Every effect is reused verbatim, never re-derived; render adds only the composition and one new
 //! promise, atomicity.
 //!
-//! THE ATOMIC PROMISE — gain, fade, and invert each leave the clip's LENGTH invariant (none adds or removes a sample). That
+//! THE ATOMIC PROMISE -- gain, fade, and invert each leave the clip's LENGTH invariant (none adds or removes a sample). That
 //! invariant makes the whole request checkable before it runs: every step's span is validated against the one fixed length up
-//! front, so a chain carrying any faulty step — a span past the clip, a zero denominator, a rate out of range, an output buffer
-//! too small — refuses by name and leaves the clip byte-for-byte unchanged. A failed render is a no-op, never a half-edited
+//! front, so a chain carrying any faulty step -- a span past the clip, a zero denominator, a rate out of range, an output buffer
+//! too small -- refuses by name and leaves the clip byte-for-byte unchanged. A failed render is a no-op, never a half-edited
 //! clip beside a half-written file.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. The render composes existing in-process effects over a bounded i16 buffer and
+//! HONEST SCOPE -- software only, purely LOCAL. The render composes existing in-process effects over a bounded i16 buffer and
 //! writes the canonical RIFF/WAVE bytes ALES215 proved; the stored sample rate is a carried field, not a real clock. No real
 //! file opened, no DAC, no acoustic or electrical fact, no network, no keys, no funds, no real device. Siloed to lotus/.
 //!
@@ -34,7 +34,7 @@ const wav = @import("wav.rye");
 
 pub const render_version = "20260815.131432";
 
-/// The widest chain one render carries — a bounded ceiling so a chain can never grow unbounded and every step is checked before
+/// The widest chain one render carries -- a bounded ceiling so a chain can never grow unbounded and every step is checked before
 /// any is applied. A real session is many bounded renders; this rung proves the bounded case.
 pub const max_steps: u32 = 32;
 
@@ -42,9 +42,9 @@ pub const max_steps: u32 = 32;
 pub const StepKind = enum(u8) {
     /// Scale a span's loudness by num0/den (timeline.gain). A negative num0 inverts that span's phase.
     gain,
-    /// Ramp a span linearly from num0/den to num1/den (fade.fade) — a fade-in runs 0 → den, a fade-out den → 0.
+    /// Ramp a span linearly from num0/den to num1/den (fade.fade) -- a fade-in runs 0 -> den, a fade-out den -> 0.
     fade,
-    /// Flip the whole clip's phase (invert.invert) — no span, no coefficients.
+    /// Flip the whole clip's phase (invert.invert) -- no span, no coefficients.
     invert,
 };
 
@@ -58,17 +58,17 @@ pub const Step = struct {
     num0: i32 = 0,
     /// fade: the end level; gain and invert ignore it.
     num1: i32 = 0,
-    /// gain and fade: the denominator. Never zero for those kinds — a zero refuses BadGain up front.
+    /// gain and fade: the denominator. Never zero for those kinds -- a zero refuses BadGain up front.
     den: u32 = 1,
 };
 
 /// Render composes the tree's own proven effects and the container, so its error set is the union of theirs plus one of its
-/// own. The named faults a render reports up front — `BadGain`, `BadRange` (from the edit gestures), `OutputTooSmall`,
-/// `BadSampleRate` (from the container) — are members of these merged sets, checked by `check_step` and `render` before a
+/// own. The named faults a render reports up front -- `BadGain`, `BadRange` (from the edit gestures), `OutputTooSmall`,
+/// `BadSampleRate` (from the container) -- are members of these merged sets, checked by `check_step` and `render` before a
 /// sample moves; the remaining container faults cannot fire here (a rendered clip is always canonical mono within bound) yet
 /// stay in the type honestly rather than be swallowed by an `unreachable`.
 pub const RenderError = timeline.EditError || fade.FadeError || wav.WavError || error{
-    /// A chain longer than max_steps — refused before a single sample is touched.
+    /// A chain longer than max_steps -- refused before a single sample is touched.
     TooManySteps,
 };
 
@@ -89,7 +89,7 @@ pub fn check_step(clip: *const timeline.Clip, step: Step) RenderError!void {
 }
 
 /// Apply one already-checked step to the clip in place, dispatching to the tree's own proven effect. Every call is a `try` even
-/// though check_step already proved the request legal — the effect's own asserts stay the second gate, never bypassed.
+/// though check_step already proved the request legal -- the effect's own asserts stay the second gate, never bypassed.
 pub fn apply_step(clip: *timeline.Clip, step: Step) RenderError!void {
     switch (step.kind) {
         .gain => try timeline.gain(clip, step.start, step.count, step.num0, step.den),
@@ -99,15 +99,15 @@ pub fn apply_step(clip: *timeline.Clip, step: Step) RenderError!void {
 }
 
 /// Run a bounded, ordered chain of effects over `clip`, then encode the final samples into `out` as a canonical mono RIFF/WAVE
-/// container, returning the byte length. THE ATOMIC PROMISE: the whole request is validated first — chain length, sample rate,
-/// output size, and every step's span — so a faulty chain refuses BY NAME and leaves the clip byte-for-byte unchanged with
+/// container, returning the byte length. THE ATOMIC PROMISE: the whole request is validated first -- chain length, sample rate,
+/// output size, and every step's span -- so a faulty chain refuses BY NAME and leaves the clip byte-for-byte unchanged with
 /// nothing written to `out`. Only once the request is wholly legal does a single sample move.
 pub fn render(sample_rate: u32, clip: *timeline.Clip, steps: []const Step, out: []u8) RenderError!u32 {
     // invariant: the clip is well-formed before any check.
     assert(clip.len <= clip.buf.len);
 
     if (steps.len > max_steps) return error.TooManySteps;
-    // The rate and output size are checkable up front because the length is invariant under the whole chain — encode will owe
+    // The rate and output size are checkable up front because the length is invariant under the whole chain -- encode will owe
     // exactly header_len + clip.len samples regardless of which values the effects write.
     if (sample_rate == 0 or sample_rate > wav.max_sample_rate) return error.BadSampleRate;
     const need: u32 = wav.header_len + clip.len * wav.sample_bytes;
@@ -121,7 +121,7 @@ pub fn render(sample_rate: u32, clip: *timeline.Clip, steps: []const Step, out: 
     const before_len = clip.len;
     var i: u32 = 0;
     while (i < steps.len) : (i += 1) try apply_step(clip, steps[i]);
-    // invariant: the chain preserved the length exactly — the encoded size matches the size we proved room for.
+    // invariant: the chain preserved the length exactly -- the encoded size matches the size we proved room for.
     assert(clip.len == before_len);
     assert(wav.header_len + clip.len * wav.sample_bytes == need);
     assert(need <= out.len);
@@ -132,9 +132,9 @@ pub fn render(sample_rate: u32, clip: *timeline.Clip, steps: []const Step, out: 
     return wrote;
 }
 
-// --- selftest: THE RENDER LAW — a real three-step chain renders to a .wav that decodes byte-for-byte to the hand-applied chain;
-//     THE ORDER LAW — the same steps reordered render to a different file; THE EMPTY-CHAIN LAW — a bare chain renders the clip
-//     unchanged; THE ATOMIC-FAULT LAW — a faulty step refuses by name leaving the clip unchanged; THE OUTPUT-BORDER and
+// --- selftest: THE RENDER LAW -- a real three-step chain renders to a .wav that decodes byte-for-byte to the hand-applied chain;
+//     THE ORDER LAW -- the same steps reordered render to a different file; THE EMPTY-CHAIN LAW -- a bare chain renders the clip
+//     unchanged; THE ATOMIC-FAULT LAW -- a faulty step refuses by name leaving the clip unchanged; THE OUTPUT-BORDER and
 //     STEP-BOUND and EMPTY-CLIP laws each refuse or render exactly ------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -148,14 +148,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The widest container this selftest renders — header plus the whole clip bound, sized once so no stack buffer guesses.
+/// The widest container this selftest renders -- header plus the whole clip bound, sized once so no stack buffer guesses.
 const test_cap: u32 = wav.header_len + timeline.max_clip * wav.sample_bytes;
 
 fn run_selftest() !u8 {
     const rate: u32 = 44_100;
     const tone = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
 
-    // 1. THE RENDER LAW — render a real chain (halve the whole clip, fade-in the first four samples, invert the whole clip),
+    // 1. THE RENDER LAW -- render a real chain (halve the whole clip, fade-in the first four samples, invert the whole clip),
     //    then prove the file decodes byte-for-byte to the SAME chain applied by hand.
     {
         const chain = [_]Step{
@@ -187,8 +187,8 @@ fn run_selftest() !u8 {
         if (!eq(back[0..got.count], hand.samples())) return error.RenderLawWrong;
     }
 
-    // 2. THE ORDER LAW — the same two gain steps in the opposite order render to a DIFFERENT file. gain ×3 then ×1/3 saturates a
-    //    large sample before dividing (loss); ×1/3 then ×3 divides before scaling — the two sequences disagree, so the chain is
+    // 2. THE ORDER LAW -- the same two gain steps in the opposite order render to a DIFFERENT file. gain ×3 then ×1/3 saturates a
+    //    large sample before dividing (loss); ×1/3 then ×3 divides before scaling -- the two sequences disagree, so the chain is
     //    a sequence, not a set.
     {
         const big = [_]i16{ 20000, -20000, 15000, -15000 };
@@ -211,12 +211,12 @@ fn run_selftest() !u8 {
         var b_file: [test_cap]u8 = undefined;
         const bw = try render(rate, &b_clip, &down_up, &b_file);
 
-        // Same length, different bytes — the order changed the render.
+        // Same length, different bytes -- the order changed the render.
         if (aw != bw) return error.OrderLengthDiffered;
         if (eq(a_clip.samples(), b_clip.samples())) return error.OrderLawWrong;
     }
 
-    // 3. THE EMPTY-CHAIN LAW — a chain of zero steps renders the clip's current samples unchanged: render equals a bare encode.
+    // 3. THE EMPTY-CHAIN LAW -- a chain of zero steps renders the clip's current samples unchanged: render equals a bare encode.
     {
         const empty_chain = [_]Step{};
         var clip = timeline.Clip{};
@@ -229,7 +229,7 @@ fn run_selftest() !u8 {
         if (!eq(back[0..got.count], &tone)) return error.EmptyChainWrong;
     }
 
-    // 4. THE ATOMIC-FAULT LAW — a chain whose SECOND step names a span past the clip refuses BadRange and leaves the clip
+    // 4. THE ATOMIC-FAULT LAW -- a chain whose SECOND step names a span past the clip refuses BadRange and leaves the clip
     //    byte-for-byte unchanged; a zero-denominator gain refuses BadGain, also atomically.
     {
         const bad_range = [_]Step{
@@ -251,7 +251,7 @@ fn run_selftest() !u8 {
         if (!eq(clip2.samples(), &tone)) return error.GainMutated;
     }
 
-    // 5. THE OUTPUT-BORDER LAW — an out buffer too small for the container refuses OutputTooSmall before any effect runs, the
+    // 5. THE OUTPUT-BORDER LAW -- an out buffer too small for the container refuses OutputTooSmall before any effect runs, the
     //    clip untouched.
     {
         const chain = [_]Step{.{ .kind = .invert }};
@@ -262,7 +262,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &tone)) return error.SmallMutated;
     }
 
-    // 6. THE STEP-BOUND LAW — a chain longer than max_steps refuses TooManySteps before any effect runs.
+    // 6. THE STEP-BOUND LAW -- a chain longer than max_steps refuses TooManySteps before any effect runs.
     {
         var many: [max_steps + 1]Step = undefined;
         var k: u32 = 0;
@@ -274,7 +274,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &tone)) return error.StepsMutated;
     }
 
-    // 7. THE EMPTY-CLIP LAW — a zero-sample clip renders to a valid 44-byte header and decodes back to zero samples.
+    // 7. THE EMPTY-CLIP LAW -- a zero-sample clip renders to a valid 44-byte header and decodes back to zero samples.
     {
         const chain = [_]Step{.{ .kind = .invert }}; // invert of nothing is nothing
         var clip = timeline.Clip{};

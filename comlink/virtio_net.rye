@@ -1,8 +1,8 @@
-//! comlink/virtio_net.rye — virtio-net MMIO types and freestanding driver seed.
+//! comlink/virtio_net.rye -- virtio-net MMIO types and freestanding driver seed.
 //!
 //! Shared by hosted descriptor validation (`device_wire.rye`) and freestanding
 //! guests on QEMU virt. One letter for constants, bounds, and the sub-lap 2 link
-//! pattern — no format fork between hosted algebra and bare-metal carriage.
+//! pattern -- no format fork between hosted algebra and bare-metal carriage.
 
 // --- Virtio MMIO (modern + legacy subset for virtio-net on riscv virt) ---
 
@@ -107,7 +107,7 @@ pub const VqUsed = extern struct {
     ring: [queue_depth]VqUsedElem,
 };
 
-/// Fixed guest RAM — split virtqueue pages, one triple per queue.
+/// Fixed guest RAM -- split virtqueue pages, one triple per queue.
 pub const rx_desc_addr: u64 = 0x8040_0000;
 pub const rx_avail_addr: u64 = 0x8040_1000;
 pub const rx_used_addr: u64 = 0x8040_2000;
@@ -226,7 +226,7 @@ pub fn init_device() void {
 }
 
 fn legacy_used_offset(num: u32) u32 {
-    // flags + idx + ring[num] + unused halfword — matches Linux vring_size().
+    // flags + idx + ring[num] + unused halfword -- matches Linux vring_size().
     const head = num * @sizeOf(VqDesc) + 2 + 2 + num * 2 + 2;
     return (head + legacy_vring_align - 1) & ~(legacy_vring_align - 1);
 }

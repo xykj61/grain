@@ -1,4 +1,4 @@
-//! linengrow/setu1_lane_ping_witness.rye — proves SETU1 lane ping thin face.
+//! linengrow/setu1_lane_ping_witness.rye -- proves SETU1 lane ping thin face.
 //!
 //!   rye build linengrow/setu1_lane_ping_witness.rye \
 //!     -femit-bin=linengrow/bin/setu1_lane_ping_witness

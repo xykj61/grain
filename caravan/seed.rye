@@ -1,15 +1,15 @@
-//! Caravan seed — the smallest living supervision loop.
+//! Caravan seed -- the smallest living supervision loop.
 //!
 //! One parent, one dependent, restart on fall. The supervisor spawns a dependent
 //! process, waits for it to exit, and restarts it when the exit code is
-//! non-zero. The dependent is this same binary invoked in dependent mode — it
+//! non-zero. The dependent is this same binary invoked in dependent mode -- it
 //! exits with the code given as its argument, so the supervisor can plan
 //! exactly how many failures to expect and assert the result.
 //!
 //! This seed proves two things:
 //!   1. A parent can watch a dependent and restart it on failure.
-//!   2. The restart count matches the plan exactly — supervision is
-//!      deterministic — a planned restart count, rather than a retry loop with hope.
+//!   2. The restart count matches the plan exactly -- supervision is
+//!      deterministic -- a planned restart count, rather than a retry loop with hope.
 //!
 //! The seed runs hosted, where the gates can reach it. Freestanding
 //! Caravan follows Aurora's relay pattern once the hosted proof is green.
@@ -23,7 +23,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tally_parse_int = @import("parse_int.rye");
 
-/// Caravan seed version — stamped chronologically.
+/// Caravan seed version -- stamped chronologically.
 const caravan_seed_version = "20260619.224512";
 
 /// Maximum restarts before the supervisor gives up. Bounded on purpose:
@@ -49,27 +49,27 @@ pub fn main(init: std.process.Init) !u8 {
 }
 
 // =========================================================================
-// § Dependent — the process under supervision
+// § Dependent -- the process under supervision
 // =========================================================================
 
 /// In dependent mode, exit with the code given as the second argument.
-/// A dependent that cannot parse its exit code exits 1 — a stated failure,
+/// A dependent that cannot parse its exit code exits 1 -- a stated failure,
 /// not a silent one.
 fn run_dependent(args: []const [:0]const u8) u8 {
     if (args.len < 3) return 1;
-    // invariant: exit code is a single byte, 0–255
+    // invariant: exit code is a single byte, 0-255
     const code = tally_parse_int.parse_int(u8, args[2], .{}) catch return 1;
     return code;
 }
 
 // =========================================================================
-// § Supervisor — the parent that never dies
+// § Supervisor -- the parent that never dies
 // =========================================================================
 
 /// The supervision loop. Spawns the dependent, waits for it, restarts on
 /// non-zero exit. Asserts the restart count matches the plan.
 fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]const u8) !u8 {
-    // invariant: we have at least argv[0] — our own path
+    // invariant: we have at least argv[0] -- our own path
     assert(args.len >= 1);
     const self_path = args[0];
 
@@ -106,7 +106,7 @@ fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]co
         };
 
         if (code == 0) {
-            // Dependent exited cleanly — supervision succeeded.
+            // Dependent exited cleanly -- supervision succeeded.
             print("caravan seed: dependent exited cleanly after {d} restart(s).\n", .{restarts});
             break;
         }
@@ -124,7 +124,7 @@ fn run_supervisor(allocator: std.mem.Allocator, io: std.Io, args: []const [:0]co
     }
 
     // =====================================================================
-    // § Assertions — the proof
+    // § Assertions -- the proof
     // =====================================================================
 
     // postcondition: restart count matches the plan exactly

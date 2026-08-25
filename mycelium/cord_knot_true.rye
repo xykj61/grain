@@ -1,27 +1,27 @@
-//! mycelium/cord_knot_true.rye — the Knot reads true (checkpointing r4, the arc closes).
+//! mycelium/cord_knot_true.rye -- the Knot reads true (checkpointing r4, the arc closes).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r4.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r4.
 //! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 proved a checkpoint folds identical to the whole history, r2 let it travel, r3
-//! measured the bound win — all over Knots sealed in code. This closing rung carries
+//! measured the bound win -- all over Knots sealed in code. This closing rung carries
 //! the reader onto a **real** on-disk `format cord-knot-v1` record a keeper can open
 //! and add up, and proves the property the whole checkpoint rests on: the sealed
 //! supply the Knot reports is true to the bytes.
 //!
 //! The corpus is `tools/fixtures/cord_knot.bron`, a genuine record produced
 //! reproducibly by `mycelium/cord_knot_fixture_gen.rye` (the honest four-fact history's
-//! Knot — issued 1000 · taxed 300 · supply 700 · one star vega), `@embedFile`-bound at
-//! compile time through a symlink in `mycelium/corpora/` — no network, the bytes read
+//! Knot -- issued 1000 - taxed 300 - supply 700 - one star vega), `@embedFile`-bound at
+//! compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read
 //! are the tree's own. Two independent readings must agree: the app parses the record
 //! through r2, **verifies** the recovered Knot against its own digest, and reports the
 //! **folded supply** and the **star count**; the r4 witness cross-checks that pair
-//! against `tools/fixtures/cord_knot_truth.awk`'s reading of the same file — two tools,
+//! against `tools/fixtures/cord_knot_truth.awk`'s reading of the same file -- two tools,
 //! one answer. And the record is genuinely a sealed Knot: it verifies, it continues to
 //! a lawful supply, and re-rendering the parsed Knot reproduces the embedded bytes exactly.
 //!
-//! Additive — composes r2 over public API (r1/r2/r3 re-run GREEN). Siloed, dev-only,
-//! demo seeds — no real key, no funds, no network, no custody.
+//! Additive -- composes r2 over public API (r1/r2/r3 re-run GREEN). Siloed, dev-only,
+//! demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/cord_knot_true.rye -femit-bin=mycelium/bin/cord_knot_true
 //!   mycelium/bin/cord_knot_true selftest | measure
@@ -36,7 +36,7 @@ const cord_knot_bron = @import("cord_knot_bron.rye");
 
 pub const cord_knot_true_version = "20260813.052900";
 
-/// The real Knot record, bound at compile time — the tree's own bytes.
+/// The real Knot record, bound at compile time -- the tree's own bytes.
 const real_knot = @embedFile("corpora/cord_knot.bron");
 
 /// The two facts a keeper can count by hand: the Knot's folded supply and how many
@@ -61,7 +61,7 @@ pub fn read_knot(text: []const u8) !Reading {
 
 // --- selftest -----------------------------------------------------------
 
-/// The reading of the real record — the witness cross-checks this pair against awk's
+/// The reading of the real record -- the witness cross-checks this pair against awk's
 /// reading of the same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_knot(real_knot);
@@ -96,7 +96,7 @@ fn welcome_record_is_really_a_knot() !void {
     print("cord-knot-true: the real record verifies, re-renders to the embedded bytes exactly, and continues to a lawful supply.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — a corrupted record is never read as
+/// A tampered copy of the real bytes refuses -- a corrupted record is never read as
 /// true. A flipped header byte refuses `BadFormat`; a flipped payload byte would
 /// break the digest and refuse `KnotCorrupt` at verify.
 fn unwelcome_tampered_record_refuses() !void {
@@ -125,7 +125,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format pair (`<supply> <stars>`), so the witness can compare
-/// the app's reading against `cord_knot_truth.awk` — two tools, one answer.
+/// the app's reading against `cord_knot_truth.awk` -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_knot(real_knot);
     print("{d} {d}\n", .{ r.supply, r.stars });

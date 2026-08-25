@@ -1,11 +1,11 @@
-//! mand/mand_ring3.rye — Mand ring-3: destroying ring (test-only reach).
+//! mand/mand_ring3.rye -- Mand ring-3: destroying ring (test-only reach).
 //!
 //! Seam (SLC): destroy a per-subject key after recording exactly one removal
-//! fact — never edit ciphertext bytes; fail closed on hold · malformed authority.
+//! fact -- never edit ciphertext bytes; fail closed on hold - malformed authority.
 //!
 //! Ring-3 inherits ring-2's clean seam: decides destruction only where ring-2
 //! would read ELIGIBLE, with hold re-asserted on this path. Test namespace only
-//! until production key custody seats (decision 5 · counsel 20260725.001200 § Five).
+//! until production key custody seats (decision 5 - counsel 20260725.001200 § Five).
 //!
 //!   rye build mand/mand_ring3_witness.rye -femit-bin=mand/bin/mand_ring3_witness
 
@@ -197,13 +197,13 @@ pub fn digest_log_bytes(log: []const u8) [32]u8 {
     return root;
 }
 
-/// Fail closed when witness mode is off — test-only reach at this lap.
+/// Fail closed when witness mode is off -- test-only reach at this lap.
 pub fn witness_mode_allowed(enabled: bool) bool {
     return enabled;
 }
 
 /// Destroy key for subject after writing exactly one removal fact.
-/// Ciphertext bytes in the log are never moved — only key material zeroized.
+/// Ciphertext bytes in the log are never moved -- only key material zeroized.
 pub fn destroy_key(
     store: *KeyStore,
     removal_log: *RemovalLog,

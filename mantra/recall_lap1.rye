@@ -1,4 +1,4 @@
-//! mantra/recall_lap1.rye — NS-L1 recall and NS-L2 write-revision (local, in-memory).
+//! mantra/recall_lap1.rye -- NS-L1 recall and NS-L2 write-revision (local, in-memory).
 //!
 //!   rye build mantra/recall_lap1.rye -femit-bin=mantra/bin/recall-lap1
 //!   mantra/bin/recall-lap1 selftest

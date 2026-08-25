@@ -1,20 +1,20 @@
-//! pond/apps/entity_books_signed.rye — Season 2 Journey 8 (Cash-first), Rung 2: the inter-entity fact signed.
+//! pond/apps/entity_books_signed.rye -- Season 2 Journey 8 (Cash-first), Rung 2: the inter-entity fact signed.
 //!
-//! Rung one booked a segregated inter-entity transfer on both entities' books at one agreed amount —
+//! Rung one booked a segregated inter-entity transfer on both entities' books at one agreed amount --
 //! fair by construction. Yet a booking alone does not prove *agreement*: one steward could move a
 //! value between two entities the other never accepted. This rung binds the transfer to two settled
-//! Kumara identities — each entity's steward signs the exact fact (the two entity names, the amount,
+//! Kumara identities -- each entity's steward signs the exact fact (the two entity names, the amount,
 //! the memo), and the transfer books on both books only when *both* signatures verify over the
 //! identical facts.
 //!
 //! The crux mirrors `commerce_trade_signed`: a signature is a promise about an exact fact. Change the
-//! amount after both stewards signed, and both signatures fall — the agreement was to the old number,
+//! amount after both stewards signed, and both signatures fall -- the agreement was to the old number,
 //! so a steward cannot quietly rebook the transfer at a value neither accepted, and an unagreed
 //! transfer never touches a journal. A forged signature, a wrong steward key, or a tampered fact each
 //! refuses.
 //!
 //! It composes rung one's `transfer` over the Kumara signing the settlement already witnessed
-//! (`kumara.rye`, the same layout `commerce_trade_signed` signs trades with) — inventing no new
+//! (`kumara.rye`, the same layout `commerce_trade_signed` signs trades with) -- inventing no new
 //! signing and no new booking. Demo steward seeds only; no real key, no funds, no custody. Actually
 //! moving a fund's assets reaches custody gate %3 (a payment rail) and waits on licensed counsel.
 //!
@@ -76,7 +76,7 @@ fn auth_message(out: *[max_msg_len]u8, grantor: []const u8, grantee: []const u8,
     return off;
 }
 
-/// One steward's signature over the exact transfer facts — their word that this amount crossing
+/// One steward's signature over the exact transfer facts -- their word that this amount crossing
 /// between these two entities, under this memo, is a fact they accept.
 pub fn sign_transfer(steward_seed: *const [kumara.seed_length]u8, grantor: []const u8, grantee: []const u8, amount: i64, memo: []const u8) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(steward_seed);
@@ -99,7 +99,7 @@ pub fn verify_transfer(steward: [pubkey_len]u8, grantor: []const u8, grantee: []
     return true;
 }
 
-/// A transfer carrying both stewards' signatures — the durable artifact of an agreed inter-entity
+/// A transfer carrying both stewards' signatures -- the durable artifact of an agreed inter-entity
 /// fact. The names are the two entities'; the amount and memo are the value that crossed.
 pub const SignedTransfer = struct {
     grantor_name: []const u8,
@@ -112,7 +112,7 @@ pub const SignedTransfer = struct {
 };
 
 /// Both stewards agreed: the grantor's steward signature and the grantee's each verify over the
-/// identical facts. Neither side alone is enough — a value one entity's steward never signed for is
+/// identical facts. Neither side alone is enough -- a value one entity's steward never signed for is
 /// not an agreed transfer.
 pub fn both_agree(signed: *const SignedTransfer, grantor_key: [pubkey_len]u8, grantee_key: [pubkey_len]u8) bool {
     if (!verify_transfer(grantor_key, signed.grantor_name, signed.grantee_name, signed.amount, signed.memo, &signed.grantor_sig)) return false;
@@ -140,7 +140,7 @@ pub fn record_signed_transfer(
 
 // --- witnesses ----
 
-// Demo steward seeds — plainly not real keys, so no identity is invented.
+// Demo steward seeds -- plainly not real keys, so no identity is invented.
 const siya_steward_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const linengrow_steward_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 
@@ -172,7 +172,7 @@ fn sign_both(grantor: []const u8, grantee: []const u8, amount: i64, memo: []cons
     };
 }
 
-/// A transfer both stewards signed verifies and books — both signatures check over the identical
+/// A transfer both stewards signed verifies and books -- both signatures check over the identical
 /// facts, and each entity's own books balance after the agreed transfer.
 fn welcome_both_agree_and_books() !void {
     var siya = try seat_siya();
@@ -186,7 +186,7 @@ fn welcome_both_agree_and_books() !void {
     print("entity_books_signed: a transfer both stewards signed verified and booked; each entity's books balance.\n", .{});
 }
 
-/// A forged grantor-steward signature refuses — the transfer never touches a journal.
+/// A forged grantor-steward signature refuses -- the transfer never touches a journal.
 fn unwelcome_forged_signature_refuses() !void {
     var siya = try seat_siya();
     var linengrow = try seat_linengrow();
@@ -200,7 +200,7 @@ fn unwelcome_forged_signature_refuses() !void {
     print("entity_books_signed: a forged steward signature refused NotAgreed; no journal was touched.\n", .{});
 }
 
-/// The honesty crux: change the amount after both signed, and both signatures fall — the agreement
+/// The honesty crux: change the amount after both signed, and both signatures fall -- the agreement
 /// was to the old amount, so a steward cannot rebook the transfer at a number neither accepted.
 fn unwelcome_amount_tamper_refuses() !void {
     var siya = try seat_siya();
@@ -213,7 +213,7 @@ fn unwelcome_amount_tamper_refuses() !void {
     print("entity_books_signed: an amount changed after signing refused NotAgreed; the agreement was to the signed amount.\n", .{});
 }
 
-/// A signature for one entity pair cannot book a different pair — the signed names must match the two
+/// A signature for one entity pair cannot book a different pair -- the signed names must match the two
 /// entities' own names, else NameMismatch before any signature is even checked.
 fn unwelcome_name_mismatch_refuses() !void {
     var siya = try seat_siya();

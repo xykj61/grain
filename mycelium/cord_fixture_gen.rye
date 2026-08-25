@@ -1,16 +1,16 @@
-//! mycelium/cord_fixture_gen.rye — reproducibly emit the Cord dev-net fixture (r4 support).
+//! mycelium/cord_fixture_gen.rye -- reproducibly emit the Cord dev-net fixture (r4 support).
 //!
-//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r4 support.
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - rung r4 support.
 //! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
 //! Seats the honest four-block scene r1/r2/r3 use (two genesis issues, then a tax
 //! and a star reserve each referencing both), commits it, and renders it to a
-//! `format cord-dag-v1` record on stdout — the exact bytes `mycelium/cord_true.rye`
+//! `format cord-dag-v1` record on stdout -- the exact bytes `mycelium/cord_true.rye`
 //! reads back and the r4 witness cross-checks against an independent awk reading.
 //! Deterministic: seeded demo keys and a pure commit mean the same bytes every run,
 //! so the on-disk fixture is what the Cord emits, never a hand-mock.
 //!
-//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_fixture_gen.rye \
 //!     > tools/fixtures/cord_dag.bron
@@ -28,7 +28,7 @@ fn seeded(byte: u8) kumara.KeyPair {
     return kumara.keypair_from_seed(&seed);
 }
 
-/// Seat the honest four-block Dag — the same scene the Cord's own selftests use.
+/// Seat the honest four-block Dag -- the same scene the Cord's own selftests use.
 fn seat_dag() !cord.Dag {
     const ka = seeded(0xA1);
     const kb = seeded(0xB2);
@@ -60,7 +60,7 @@ pub fn main() !void {
     const pl = try cord_bron.from_dag(&dag);
     var buf: [cord_bron.max_record]u8 = undefined;
     const n = try cord_bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record carries its header.
+    // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
     assert(n <= cord_bron.max_record);
     print("{s}", .{buf[0..n]});

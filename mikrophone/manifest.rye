@@ -1,14 +1,14 @@
-//! mikrophone/manifest.rye — DREY8: the desk manifest of holdings. A bounded, self-describing, verify-before-trust
-//! record of WHAT a content-addressed catalog holds — one entry per recording carrying its content address and payload
+//! mikrophone/manifest.rye -- DREY8: the desk manifest of holdings. A bounded, self-describing, verify-before-trust
+//! record of WHAT a content-addressed catalog holds -- one entry per recording carrying its content address and payload
 //! length, and no payload bytes at all. A far hand reads the manifest to learn the desk's holdings by address, then
 //! computes exactly which recordings it still lacks (the have/want primitive), before a single payload byte crosses.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY8.
+//! Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY8.
 //! Design read: active-designing/date/20260814/20260814-065231_drey8-desk-manifest-of-holdings-exploration.md
-//! Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed desk; and mikrophone/wire.rye (DREY1) — the same
+//! Stands on: mikrophone/catalog.rye (DREY7) -- the content-addressed desk; and mikrophone/wire.rye (DREY1) -- the same
 //! verify-before-trust framing discipline, here over metadata rather than payload.
 //!
-//! This rung stays the HAVE side only — purely descriptive, purely local, read-only. Describing holdings crosses no
+//! This rung stays the HAVE side only -- purely descriptive, purely local, read-only. Describing holdings crosses no
 //! gate; SERVING the payloads a far hand wants reaches the Comlink-served custody gate (Season 1, Journey 2) and waits
 //! for the maintainer's word. No disk, no network, no key signs, no funds (custody gate %2 untouched); the Sha256 over
 //! the record region is an integrity check the reader recomputes, not a signature.
@@ -29,19 +29,19 @@ pub const manifest_version = "20260814.065231";
 /// guessing at a layout it does not know.
 pub const man_version: u8 = 1;
 
-/// The four magic bytes that open every manifest — "MMAN" (Mikrophone MANifest). A blob that does not open with these
+/// The four magic bytes that open every manifest -- "MMAN" (Mikrophone MANifest). A blob that does not open with these
 /// refuses `BadMagic` before any field is read.
 pub const magic: [4]u8 = [4]u8{ 'M', 'M', 'A', 'N' };
 
 /// One manifest record's width on the wire: a content address (a full Sha256) followed by the payload length as a u32.
-/// No payload bytes — a record advertises identity and size, never content.
+/// No payload bytes -- a record advertises identity and size, never content.
 pub const record_len: u32 = wire.digest_len + 4;
 
-/// The fixed header before the records: magic(4) · version(1) · count(u32, 4) · digest(32). Named once so the layout is
+/// The fixed header before the records: magic(4) - version(1) - count(u32, 4) - digest(32). Named once so the layout is
 /// a single source of truth and `verify` can never read a field at the wrong offset.
 pub const header_len: u32 = 4 + 1 + 4 + wire.digest_len;
 
-/// The widest a whole manifest runs — the header plus a full catalog's worth of records. Bounded once by the catalog's
+/// The widest a whole manifest runs -- the header plus a full catalog's worth of records. Bounded once by the catalog's
 /// own entry ceiling, so a manifest can never outgrow the catalog it describes. No heap outlives this fixed buffer.
 pub const max_manifest: u32 = header_len + catalog.max_entries * record_len;
 
@@ -55,22 +55,22 @@ pub const ManifestError = error{
 };
 
 /// A bounded manifest blob: a fixed buffer sized for the widest possible manifest, and the length actually written.
-/// `bytes()` reads back exactly the written region — never a byte past what `write_manifest` wrote.
+/// `bytes()` reads back exactly the written region -- never a byte past what `write_manifest` wrote.
 pub const Manifest = struct {
     buf: [max_manifest]u8 = [_]u8{0} ** max_manifest,
     len: u32 = 0,
 
-    /// The written manifest bytes as they stand — exactly the header plus records written by `write_manifest`.
+    /// The written manifest bytes as they stand -- exactly the header plus records written by `write_manifest`.
     pub fn bytes(self: *const Manifest) []const u8 {
         // invariant: the manifest length never claims more than the buffer holds.
         assert(self.len <= self.buf.len);
-        // invariant: a written manifest is at least a whole header — a manifest can advertise zero holdings, never less.
+        // invariant: a written manifest is at least a whole header -- a manifest can advertise zero holdings, never less.
         assert(self.len == 0 or self.len >= header_len);
         return self.buf[0..self.len];
     }
 };
 
-/// Emit the manifest for a catalog — one record per kept recording, in first-deposit order, carrying its content
+/// Emit the manifest for a catalog -- one record per kept recording, in first-deposit order, carrying its content
 /// address and its payload length, and no payload bytes at all. Writes the record region first, digests it, then writes
 /// the header. Every write is a plain bounded loop, never a bare memcpy.
 pub fn write_manifest(cat: *const catalog.Catalog, out: *Manifest) void {
@@ -85,7 +85,7 @@ pub fn write_manifest(cat: *const catalog.Catalog, out: *Manifest) void {
         const address = catalog.address_at(cat, i);
         var d: u32 = 0;
         while (d < wire.digest_len) : (d += 1) out.buf[base + d] = address[d];
-        // The payload length — read back from the catalog's own fetch, so the advertised size is exactly what is held.
+        // The payload length -- read back from the catalog's own fetch, so the advertised size is exactly what is held.
         const held = catalog.fetch(cat, address).?;
         const plen: u32 = @intCast(held.len);
         std.mem.writeInt(u32, out.buf[base + wire.digest_len ..][0..4], plen, .little);
@@ -99,7 +99,7 @@ pub fn write_manifest(cat: *const catalog.Catalog, out: *Manifest) void {
     out.buf[4] = man_version;
     // count (u32, little-endian)
     std.mem.writeInt(u32, out.buf[5..9], count, .little);
-    // digest (32) — Sha256 over the record region only, so a flipped address or length fails the check
+    // digest (32) -- Sha256 over the record region only, so a flipped address or length fails the check
     var dg: [wire.digest_len]u8 = undefined;
     Sha256.hash(out.buf[header_len..records_end], &dg, .{});
     var g: u32 = 0;
@@ -111,12 +111,12 @@ pub fn write_manifest(cat: *const catalog.Catalog, out: *Manifest) void {
     assert(out.len <= out.buf.len);
 }
 
-/// Verify a manifest whole and return its record region — proving every field BEFORE a record is read. Each check runs
+/// Verify a manifest whole and return its record region -- proving every field BEFORE a record is read. Each check runs
 /// in order and returns on failure: too short for a header, wrong magic, wrong version, a count past the entry bound, a
 /// truncated tail, and finally a Sha256 over the records that must match. Only when all pass is the record slice
 /// returned.
 pub fn verify(bytes: []const u8) ![]const u8 {
-    // invariant: a manifest is at least a whole header — anything shorter cannot be read as one.
+    // invariant: a manifest is at least a whole header -- anything shorter cannot be read as one.
     if (bytes.len < header_len) return error.ManifestTooShort;
     // magic
     var i: u32 = 0;
@@ -125,13 +125,13 @@ pub fn verify(bytes: []const u8) ![]const u8 {
     }
     // version
     if (bytes[4] != man_version) return error.BadVersion;
-    // declared count — never trusted past the entry ceiling, before any record read
+    // declared count -- never trusted past the entry ceiling, before any record read
     const count = std.mem.readInt(u32, bytes[5..9], .little);
     if (count > catalog.max_entries) return error.CountOverflow;
-    // truncation — the bytes must actually hold the whole declared record region
+    // truncation -- the bytes must actually hold the whole declared record region
     const whole = header_len + count * record_len;
     if (bytes.len < whole) return error.ManifestTruncated;
-    // digest — recompute over the record region and match BEFORE yielding the slice
+    // digest -- recompute over the record region and match BEFORE yielding the slice
     const records = bytes[header_len..whole];
     var dg: [wire.digest_len]u8 = undefined;
     Sha256.hash(records, &dg, .{});
@@ -139,7 +139,7 @@ pub fn verify(bytes: []const u8) ![]const u8 {
     while (d < wire.digest_len) : (d += 1) {
         if (bytes[9 + d] != dg[d]) return error.DigestMismatch;
     }
-    // invariant: every check passed — the record region is proven whole and within the bound before it is returned.
+    // invariant: every check passed -- the record region is proven whole and within the bound before it is returned.
     assert(count <= catalog.max_entries);
     assert(records.len == count * record_len);
     return records;
@@ -158,7 +158,7 @@ pub fn count_in(records: []const u8) u32 {
 
 /// The content address advertised by the i-th record of a verified region. `i` must be within the count.
 pub fn address_in(records: []const u8, i: u32) catalog.Address {
-    // invariant: only an advertised record can be read — never past the count.
+    // invariant: only an advertised record can be read -- never past the count.
     assert(i < count_in(records));
     const base = i * record_len;
     var address: catalog.Address = undefined;
@@ -169,18 +169,18 @@ pub fn address_in(records: []const u8, i: u32) catalog.Address {
 
 /// The payload length advertised by the i-th record of a verified region. `i` must be within the count.
 pub fn len_in(records: []const u8, i: u32) u32 {
-    // invariant: only an advertised record can be read — never past the count.
+    // invariant: only an advertised record can be read -- never past the count.
     assert(i < count_in(records));
     const base = i * record_len + wire.digest_len;
     return std.mem.readInt(u32, records[base..][0..4], .little);
 }
 
-/// The have/want primitive: whether the i-th advertised address is one the local catalog does NOT already hold — the
+/// The have/want primitive: whether the i-th advertised address is one the local catalog does NOT already hold -- the
 /// recordings a far hand would need to ask for. A local catalog already holding an address wants nothing for it.
 pub fn wanted(local: *const catalog.Catalog, records: []const u8, i: u32) bool {
     const address = address_in(records, i);
     const want = !catalog.holds(local, address);
-    // invariant: wanting an address is exactly not holding it — one source of truth.
+    // invariant: wanting an address is exactly not holding it -- one source of truth.
     assert(want == !catalog.holds(local, address));
     return want;
 }
@@ -188,7 +188,7 @@ pub fn wanted(local: *const catalog.Catalog, records: []const u8, i: u32) bool {
 // --- selftest: a catalog's manifest round-trips exactly, carries no payload, refuses every corruption by name, and
 //     answers have/want honestly ---------------------------------------------------------------------------------------
 
-/// Frame the text as a committed session would carry it — capture, commit, frame — so each block deposits from a real
+/// Frame the text as a committed session would carry it -- capture, commit, frame -- so each block deposits from a real
 /// wire frame. Returns the frame; the caller reads `bytes()`.
 fn framed(text: []const u8) !wire.Frame {
     const session = @import("session.rye");
@@ -202,7 +202,7 @@ fn framed(text: []const u8) !wire.Frame {
 }
 
 fn run_selftest() !u8 {
-    // 1. Round-trip is exact — a catalog's manifest verifies and reads back the same count, and each advertised address
+    // 1. Round-trip is exact -- a catalog's manifest verifies and reads back the same count, and each advertised address
     //    and length equals the catalog's own.
     {
         var cat = catalog.Catalog.init();
@@ -225,10 +225,10 @@ fn run_selftest() !u8 {
         assert(len_in(records, 2) == "third".len);
     }
 
-    // 2. No payload travels — the manifest's whole size is header + count*record_len, independent of payload size.
+    // 2. No payload travels -- the manifest's whole size is header + count*record_len, independent of payload size.
     {
         var cat = catalog.Catalog.init();
-        // A large recording and a tiny one — the manifest is the same size per entry regardless.
+        // A large recording and a tiny one -- the manifest is the same size per entry regardless.
         var big: [1000]u8 = undefined;
         var k: u32 = 0;
         while (k < big.len) : (k += 1) big[k] = 0xAB;
@@ -295,7 +295,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. have/want is honest — a far hand holding a subset wants exactly the addresses it lacks, and none it holds.
+    // 4. have/want is honest -- a far hand holding a subset wants exactly the addresses it lacks, and none it holds.
     {
         // The desk holds three recordings; advertise them.
         var desk = catalog.Catalog.init();
@@ -309,7 +309,7 @@ fn run_selftest() !u8 {
         write_manifest(&desk, &man);
         const records = try verify(man.bytes());
 
-        // A far hand already holds "bravo" — it wants alpha and charlie, not bravo.
+        // A far hand already holds "bravo" -- it wants alpha and charlie, not bravo.
         var far = catalog.Catalog.init();
         var b2 = try framed("bravo");
         _ = try catalog.deposit(&far, b2.bytes());

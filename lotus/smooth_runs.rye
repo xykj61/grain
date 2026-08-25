@@ -1,28 +1,28 @@
-//! lotus/smooth_runs.rye — ALES101: the run-length smoother — absorb every run shorter than a minimum into what surrounds it, the smoothing hysteresis a real VAD needs.
-//! ALES95's own scope note named this rung plainly: "a real voice-activity detector adds adaptive floors, spectral tilt, and smoothing hysteresis this rung does not —
+//! lotus/smooth_runs.rye -- ALES101: the run-length smoother -- absorb every run shorter than a minimum into what surrounds it, the smoothing hysteresis a real VAD needs.
+//! ALES95's own scope note named this rung plainly: "a real voice-activity detector adds adaptive floors, spectral tilt, and smoothing hysteresis this rung does not --
 //! those are later rungs." This is that rung. Raw per-frame segmentation flickers: one loud tick inside a pause reads as a one-frame .voiced blip, one quiet frame inside
 //! speech as a spurious .silent gap. Feed that flicker to ALES96's stripper or ALES100's collapser and it splits a pause in two, or spares a click as if it were a word.
-//! Every VAD, every gate, every auto-splitter in a century of audio editing fixes this the same way: a region must last a minimum duration to count — anything shorter is
+//! Every VAD, every gate, every auto-splitter in a century of audio editing fixes this the same way: a region must last a minimum duration to count -- anything shorter is
 //! absorbed into what surrounds it. This is the decisive robustness move that turns a per-frame reader into a usable segmenter.
 //!
 //! The rule, stated once: seed the output with the first input run; walk the rest and, for each run, if it is SHORTER than min_run OR its verdict already matches the
 //! open output run, extend that open run (keeping the open run's verdict); otherwise push it as a new run. A short excursion is thus relabeled to the surrounding sound,
 //! and any two runs left adjacent with the same verdict re-coalesce in the same pass.
 //!
-//! The crux — four laws, each checked as data on the output rather than by mirroring the loop. THE COVERAGE LAW: the smoothed runs tile the same span exactly (same
-//! first start, same total length) — smoothing only relabels and merges, never adds or drops a sample. THE COALESCED LAW: no two adjacent output runs share a verdict.
-//! THE HOLD LAW: every output run except possibly the first has count >= min_run — a run is pushed only when it already meets the minimum, and merging only grows it; the
+//! The crux -- four laws, each checked as data on the output rather than by mirroring the loop. THE COVERAGE LAW: the smoothed runs tile the same span exactly (same
+//! first start, same total length) -- smoothing only relabels and merges, never adds or drops a sample. THE COALESCED LAW: no two adjacent output runs share a verdict.
+//! THE HOLD LAW: every output run except possibly the first has count >= min_run -- a run is pushed only when it already meets the minimum, and merging only grows it; the
 //! first is the honest exception, a causal left-to-right hold having nothing before the opener to absorb it into. IDEMPOTENCE + MONOTONICITY: smoothing a smoothed
 //! sequence with the same min_run is a fixed point; a larger min_run yields at most as many runs. The identity law falls out: a min_run no larger than the shortest run
 //! leaves an already-coalesced input unchanged, so min_run = 0 is exactly the identity.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES101.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES101.
 //! Design read: active-designing/date/20260815/20260815-000323_fill-ales101-lotus-run-length-smoother.md
-//! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, whose Segments this reads and rewrites; lotus/voiced.rye (ALES94) — the Verdict the runs carry.
+//! Stands on: lotus/segment.rye (ALES95) -- the voice-activity segmenter, whose Segments this reads and rewrites; lotus/voiced.rye (ALES94) -- the Verdict the runs carry.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of one Segments on one bench, siloed to lotus/, touching no
+//! HONEST SCOPE -- software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of one Segments on one bench, siloed to lotus/, touching no
 //! PCM. It is a causal, left-to-right minimum-duration hold: it cannot rescue a too-short OPENING run (nothing precedes it) and does not do the symmetric two-sided
-//! smoothing or the adaptive floors a production VAD would — those stay later rungs. Not a transcript, not a diarization; no real sample rate, no network, no keys, no
+//! smoothing or the adaptive floors a production VAD would -- those stay later rungs. Not a transcript, not a diarization; no real sample rate, no network, no keys, no
 //! funds, no real device, no real speaker.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/smooth_runs.rye selftest
@@ -36,19 +36,19 @@ const voiced = @import("voiced.rye");
 
 pub const smooth_runs_version = "20260815.000323";
 
-/// The smoother's only fault, kept named for the honest path the type system can see: more output runs than max_segments. It cannot fire — smoothing only ever merges
-/// runs, so out.len <= in.len <= max_segments — yet it stays named, the same honesty ALES95 keeps about its own SegmentsFull.
+/// The smoother's only fault, kept named for the honest path the type system can see: more output runs than max_segments. It cannot fire -- smoothing only ever merges
+/// runs, so out.len <= in.len <= max_segments -- yet it stays named, the same honesty ALES95 keeps about its own SegmentsFull.
 pub const SmoothError = error{
     SegmentsFull,
 };
 
 /// Smooth `in` into `out` by absorbing every run shorter than `min_run` samples into the run it extends, keeping the tiling exact and the sequence coalesced. READ-ONLY
-/// over the labels — not one PCM sample is read or written; this rewrites a run-length sequence, nothing else. Seeds `out` with the first input run, then for each later
+/// over the labels -- not one PCM sample is read or written; this rewrites a run-length sequence, nothing else. Seeds `out` with the first input run, then for each later
 /// run extends the open output run when the run is shorter than `min_run` OR shares the open run's verdict, else pushes it. `min_run = 0` is the identity; a `min_run`
 /// past the whole span coalesces every run into one. An empty input yields an empty output; a single-run input is unchanged. Writes into a fresh `out` so a caller
 /// reusing it never sees a half-written mix.
 pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run: u32) SmoothError!void {
-    // invariant: the input is the segmenter's own postcondition — a coalesced tiling. Assert that contract rather than re-derive it, so a caller who hands us a
+    // invariant: the input is the segmenter's own postcondition -- a coalesced tiling. Assert that contract rather than re-derive it, so a caller who hands us a
     // malformed sequence fails loudly at the seam instead of silently smoothing nonsense.
     assert(in.len <= segment.max_segments);
     {
@@ -61,7 +61,7 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
         }
     }
 
-    // Refuse into a fresh, empty result — an empty input stays empty and returns at once.
+    // Refuse into a fresh, empty result -- an empty input stays empty and returns at once.
     out.len = 0;
     if (in.len == 0) return;
 
@@ -84,9 +84,9 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
         }
     }
 
-    // invariant: smoothing never grows the run count — it only ever merges.
+    // invariant: smoothing never grows the run count -- it only ever merges.
     assert(out.len <= in.len);
-    // invariant: the output tiles the same span the input did — same first start, same total length (coverage), and it is coalesced (no adjacent shared verdict).
+    // invariant: the output tiles the same span the input did -- same first start, same total length (coverage), and it is coalesced (no adjacent shared verdict).
     if (out.len > 0) {
         // invariant: the smoothed runs begin where the input began, cover exactly what it
         // covered, carry at least one sample each, and never repeat a verdict -- four
@@ -102,7 +102,7 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
             assert(out.items[j].start == out.items[0].start + covered);
             assert(out.items[j].count > 0);
             if (j > 0) assert(out.items[j].verdict != out.items[j - 1].verdict);
-            // invariant: every run past the first meets the minimum — the causal hold's guarantee.
+            // invariant: every run past the first meets the minimum -- the causal hold's guarantee.
             if (j > 0) assert(out.items[j].count >= min_run);
             covered += out.items[j].count;
         }
@@ -112,7 +112,7 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
     }
 }
 
-/// The summed length of every run in a sequence — the span it tiles.
+/// The summed length of every run in a sequence -- the span it tiles.
 fn total_count(seq: *const segment.Segments) u32 {
     var sum: u32 = 0;
     var i: u32 = 0;
@@ -153,7 +153,7 @@ fn well_smoothed(out: *const segment.Segments, in: *const segment.Segments, min_
     return covered == total_count(in);
 }
 
-/// Build a Segments by hand from a list of (verdict, count) pairs tiling from start 0 — a small, independent way to hand a known label sequence to the smoother without
+/// Build a Segments by hand from a list of (verdict, count) pairs tiling from start 0 -- a small, independent way to hand a known label sequence to the smoother without
 /// running the segmenter, so the known cases pin exact shapes.
 fn build(out: *segment.Segments, verdicts: []const voiced.Verdict, counts: []const u32) void {
     out.len = 0;
@@ -169,8 +169,8 @@ fn build(out: *segment.Segments, verdicts: []const voiced.Verdict, counts: []con
 fn run_selftest() !u8 {
     const V = voiced.Verdict;
 
-    // 1. A SPURIOUS SHORT BLIP inside a long region is absorbed, and the two long neighbours re-coalesce into one run. silent(100) · voiced(2 tick) · silent(100), a
-    //    min_run of 10, becomes a single silent(202) run — the pause is not split by the click.
+    // 1. A SPURIOUS SHORT BLIP inside a long region is absorbed, and the two long neighbours re-coalesce into one run. silent(100) - voiced(2 tick) - silent(100), a
+    //    min_run of 10, becomes a single silent(202) run -- the pause is not split by the click.
     {
         var in = segment.Segments{};
         build(&in, &[_]V{ .silent, .voiced, .silent }, &[_]u32{ 100, 2, 100 });
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (!well_smoothed(&out, &in, 10)) return error.BlipNotWellSmoothed;
     }
 
-    // 2. A LEADING SHORT RUN honestly survives — the causal hold has nothing before the opener to absorb it into. voiced(3) · silent(100), min_run 10, stays two runs
+    // 2. A LEADING SHORT RUN honestly survives -- the causal hold has nothing before the opener to absorb it into. voiced(3) - silent(100), min_run 10, stays two runs
     //    with the short opener intact.
     {
         var in = segment.Segments{};
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         if (out.items[1].verdict != .silent or out.items[1].start != 3 or out.items[1].count != 100) return error.LeadingTailWrong;
     }
 
-    // 3. THE CRUX — the coverage, coalesced, and hold laws hold on the output over a grid of min_run values, for several input shapes that mix short and long runs.
+    // 3. THE CRUX -- the coverage, coalesced, and hold laws hold on the output over a grid of min_run values, for several input shapes that mix short and long runs.
     {
         const mins = [_]u32{ 0, 1, 2, 3, 5, 8, 20, 100, 1000 };
         // three shapes: a flickering middle, an alternating chain of shorts, and a clean two-region input.
@@ -221,7 +221,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. IDEMPOTENCE — smoothing a smoothed sequence with the same min_run is a fixed point.
+    // 4. IDEMPOTENCE -- smoothing a smoothed sequence with the same min_run is a fixed point.
     {
         const mins = [_]u32{ 0, 2, 5, 8, 20 };
         var mi: u32 = 0;
@@ -237,7 +237,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. MONOTONE IN MIN_RUN — a larger min_run yields at most as many runs.
+    // 5. MONOTONE IN MIN_RUN -- a larger min_run yields at most as many runs.
     {
         const mins = [_]u32{ 0, 1, 2, 3, 5, 8, 20, 100 };
         var in = segment.Segments{};
@@ -252,7 +252,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. THE IDENTITY — min_run = 0, and any min_run no larger than the shortest run, leave an already-coalesced input byte-for-byte unchanged.
+    // 6. THE IDENTITY -- min_run = 0, and any min_run no larger than the shortest run, leave an already-coalesced input byte-for-byte unchanged.
     {
         var in = segment.Segments{};
         build(&in, &[_]V{ .silent, .voiced, .unvoiced, .silent }, &[_]u32{ 12, 20, 16, 12 }); // shortest run is 12
@@ -288,7 +288,7 @@ fn run_selftest() !u8 {
         if (out1.len != 1 or out1.items[0].verdict != .voiced or out1.items[0].count != 3) return error.SingleRunChanged;
     }
 
-    // 9. GROUNDED IN THE SEGMENTER — smoothing the runs ALES95 actually produces stays well-formed. A clip with a loud tick buried in a quiet stretch segments to a
+    // 9. GROUNDED IN THE SEGMENTER -- smoothing the runs ALES95 actually produces stays well-formed. A clip with a loud tick buried in a quiet stretch segments to a
     //    flickering sequence; smoothing it with a modest min_run holds the pause whole.
     {
         // handed straight as labels the segmenter would emit: a long silent stretch broken by a 1-frame voiced tick, then a real voiced body.

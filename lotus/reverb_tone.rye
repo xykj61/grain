@@ -1,29 +1,29 @@
-//! lotus/reverb_tone.rye — ALES198: THE TONE — the reverb's DARKNESS knob, the high-cut on the reverberant tail. ALES190 gave the reverb WHICH
-//! room, ALES192/193 HOW MUCH (the wet/dry balance), ALES194–197 WHEN (the pre-delay). The axis left is HOW BRIGHT: a real room absorbs high
-//! frequencies as the sound bounces, so its reverberant tail is always DARKER than the source — the highs die first and the low wash lingers. Every
-//! console names this knob (damping · high-cut · tone · color); without it a reverb rings metallic, with it the tail sits behind the mix the way a
+//! lotus/reverb_tone.rye -- ALES198: THE TONE -- the reverb's DARKNESS knob, the high-cut on the reverberant tail. ALES190 gave the reverb WHICH
+//! room, ALES192/193 HOW MUCH (the wet/dry balance), ALES194-197 WHEN (the pre-delay). The axis left is HOW BRIGHT: a real room absorbs high
+//! frequencies as the sound bounces, so its reverberant tail is always DARKER than the source -- the highs die first and the low wash lingers. Every
+//! console names this knob (damping - high-cut - tone - color); without it a reverb rings metallic, with it the tail sits behind the mix the way a
 //! real space does. This rung is that knob.
 //!
 //! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then roll the treble off the wet with ALES40's proven
-//! one-pole low-pass —
+//! one-pole low-pass --
 //!   wet    = reverb_preset(span)
 //!   out    = tone.low_pass(wet, tone_num, tone_den)
 //! tone_num == tone_den is the identity (a full-open tone is exactly the un-darkened reverb); a smaller fraction rolls off more treble, darkening
 //! the tail. This invents NO new audio arithmetic: every darkened sample is written by a stage already proven byte-for-byte (ALES40's low-pass over
 //! ALES190's wet), so no value is ever recomputed or can wrap. The tone coefficient is validated BEFORE the wet is written (ALES40's precheck), so a
-//! bad tone leaves the clip DRY rather than half-reverbed — the up-front check is the atomicity crux.
+//! bad tone leaves the clip DRY rather than half-reverbed -- the up-front check is the atomicity crux.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES198.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES198.
 //! Design read: active-designing/date/20260815/20260815-104206_fill-ales198-lotus-reverb-tone.md
-//! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
-//! lotus/tone.rye (ALES40) — the one-pole low-pass and its precheck, the darkening applied to the wet span (its BadCoeff renamed BadTone);
-//! lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses) into a sample count;
-//! lotus/timeline.rye (ALES2) — the Clip and max_clip bounding the span.
+//! Stands on: lotus/reverb_preset.rye (ALES190) -- the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
+//! lotus/tone.rye (ALES40) -- the one-pole low-pass and its precheck, the darkening applied to the wet span (its BadCoeff renamed BadTone);
+//! lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses) into a sample count;
+//! lotus/timeline.rye (ALES2) -- the Clip and max_clip bounding the span.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
-//! lotus/. No new audio arithmetic — the tone is ALES40's proven one-pole low-pass over the proven wet. A WET-TAIL tone: a single first-order
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
+//! lotus/. No new audio arithmetic -- the tone is ALES40's proven one-pole low-pass over the proven wet. A WET-TAIL tone: a single first-order
 //! high-cut over the whole reverberant span, the honest first darkness knob. A true in-loop Freeverb damping (a low-pass INSIDE each comb's feedback
-//! so later echoes darken progressively) is a richer, separate rung that wants a damped-comb primitive — named here as a horizon, not claimed. The
+//! so later echoes darken progressively) is a richer, separate rung that wants a damped-comb primitive -- named here as a horizon, not claimed. The
 //! coefficient is a plain fraction, so it means the same roll-off at any sample rate. No socket, no network, no keys, no funds, no real device.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb_tone.rye selftest
@@ -39,19 +39,19 @@ const tone = @import("tone.rye");
 
 pub const reverb_tone_version = "20260815.104206";
 
-/// The named rooms are ALES190's own — reused whole, so the tone and the presets name the same tunings and cannot drift apart.
+/// The named rooms are ALES190's own -- reused whole, so the tone and the presets name the same tunings and cannot drift apart.
 pub const Room = reverb_preset.Room;
 
 /// The tone's faults are ALES190's `ReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain /
-/// BadRange, forwarded whole) beside this rung's one own fault, `BadTone` — an illegal low-pass coefficient (a zero denominator, a numerator below
+/// BadRange, forwarded whole) beside this rung's one own fault, `BadTone` -- an illegal low-pass coefficient (a zero denominator, a numerator below
 /// one, or a numerator past the denominator, ALES40's BadCoeff renamed), refused by name before any write.
 pub const ReverbToneError = reverb_preset.ReverbPresetError || error{BadTone};
 
 /// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM, then darken the reverberant tail by the low-pass coefficient
 /// tone_num/tone_den. Convert the span through ALES5's clock (the SAME conversion reverb_preset uses); PRE-CHECK the tone coefficient against that
-/// span through ALES40's precheck (refusing BadTone before any write, so a bad tone leaves the clip dry — the atomicity crux); run ALES190's
+/// span through ALES40's precheck (refusing BadTone before any write, so a bad tone leaves the clip dry -- the atomicity crux); run ALES190's
 /// reverb_preset over the span (the wet, in place, unchanged); then low-pass the wet span through ALES40's tone.low_pass.
-///   tone_num == tone_den is the identity — the span equals reverb_preset byte for byte; a smaller fraction rolls off more treble.
+///   tone_num == tone_den is the identity -- the span equals reverb_preset byte for byte; a smaller fraction rolls off more treble.
 /// Refuses BadTone on an illegal coefficient, then forwards ALES190's ReverbPresetError (DurationTooLong on a span past the clip, BadRange on an
 /// out-of-range span, and the reverb's own faults) before any write; on refusal the clip is untouched.
 pub fn reverb_tone(
@@ -63,28 +63,28 @@ pub fn reverb_tone(
     tone_num: i32,
     tone_den: u32,
 ) ReverbToneError!void {
-    // invariant: the clock is valid — the span is spoken against it, and reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
 
     // Convert the span with the SAME clock reverb_preset uses, so the tone's precheck and the low-pass darken exactly the preset's written span. A
     // span past the clip forwards DurationTooLong here, before any write.
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
-    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet is written.
+    // The span must be in-bounds before any write -- the same BadRange the reverb would raise, raised before the wet is written.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
-    // Pre-check the tone coefficient against the span BEFORE the wet is written — the atomicity crux. ALES40's precheck is the single source of truth
+    // Pre-check the tone coefficient against the span BEFORE the wet is written -- the atomicity crux. ALES40's precheck is the single source of truth
     // for a legal low-pass coefficient; its BadCoeff becomes BadTone, its BadRange the reverb's BadRange (already caught above, kept for one law).
     tone.precheck(clip.len, start, count, tone_num, tone_den) catch |e| return switch (e) {
         error.BadCoeff => error.BadTone,
         error.BadRange => error.BadRange,
     };
 
-    // The wet, in place — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
+    // The wet, in place -- ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
     try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
 
-    // Darken the wet span through ALES40's one-pole low-pass — prechecked just above against this same length and span, so it cannot fail here.
+    // Darken the wet span through ALES40's one-pole low-pass -- prechecked just above against this same length and span, so it cannot fail here.
     tone.low_pass(clip, start, count, tone_num, tone_den) catch unreachable;
 
     // invariant: the tone changed sample values only, never the clip's length or bound.
@@ -92,10 +92,10 @@ pub fn reverb_tone(
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE IDENTITY EDGE (tone_num == tone_den) — equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION — for a
+// --- selftest: THE IDENTITY EDGE (tone_num == tone_den) -- equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION -- for a
 //     sub-unity coefficient, reverb_tone equals reverb_preset then tone.low_pass byte for byte, and the darkened tail DIFFERS from the un-darkened
-//     wet; THE TAIL DARKENS — the darkened tail's high-frequency roughness (summed first-difference) is strictly less than the un-darkened wet's;
-//     SILENCE STAYS SILENCE; and the faults forward, ATOMIC — a bad tone coefficient BadTone with the clip untouched (still dry), a span past the
+//     wet; THE TAIL DARKENS -- the darkened tail's high-frequency roughness (summed first-difference) is strictly less than the un-darkened wet's;
+//     SILENCE STAYS SILENCE; and the faults forward, ATOMIC -- a bad tone coefficient BadTone with the clip untouched (still dry), a span past the
 //     clip DurationTooLong, an out-of-range span BadRange ------------------------------------------------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -109,7 +109,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The high-frequency roughness of a span — the sum of absolute sample-to-sample differences. Treble is rapid change, so a low-pass (which smooths
+/// The high-frequency roughness of a span -- the sum of absolute sample-to-sample differences. Treble is rapid change, so a low-pass (which smooths
 /// change) strictly reduces this on any signal that carries treble. Run in i64 so a long loud span never overflows the accumulator.
 fn roughness(s: []const i16) i64 {
     var total: i64 = 0;
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. THE IDENTITY EDGE — tone_num == tone_den (a full-open tone) equals ALES190's reverb_preset over the span, byte for byte. A full-open tone is
+    // 1. THE IDENTITY EDGE -- tone_num == tone_den (a full-open tone) equals ALES190's reverb_preset over the span, byte for byte. A full-open tone is
     //    exactly the un-darkened reverb.
     {
         var toned = timeline.Clip{};
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (!eq(toned.samples(), preset.samples())) return error.IdentityToneNotPreset;
     }
 
-    // 2. IT EQUALS ITS COMPOSITION — for a sub-unity coefficient (1/4, a firm high-cut), reverb_tone equals reverb_preset then tone.low_pass
+    // 2. IT EQUALS ITS COMPOSITION -- for a sub-unity coefficient (1/4, a firm high-cut), reverb_tone equals reverb_preset then tone.low_pass
     //    computed side by side, byte for byte. It invents no arithmetic; every darkened sample is written by a proven stage. And the darkened tail
     //    genuinely DIFFERS from the un-darkened wet.
     {
@@ -163,7 +163,7 @@ fn run_selftest() !u8 {
         if (eq(toned.samples(), wet.samples())) return error.DarkenedEqualsWet;
     }
 
-    // 3. THE TAIL DARKENS — the darkened tail's high-frequency roughness (summed first-difference) is strictly less than the un-darkened wet's. A
+    // 3. THE TAIL DARKENS -- the darkened tail's high-frequency roughness (summed first-difference) is strictly less than the un-darkened wet's. A
     //    room absorbs highs: the treble dies, the low wash lingers.
     {
         var toned = timeline.Clip{};
@@ -177,7 +177,7 @@ fn run_selftest() !u8 {
         if (roughness(toned.samples()) >= roughness(wet.samples())) return error.TailDidNotDarken;
     }
 
-    // 4. SILENCE STAYS SILENCE — an all-zero clip at any tone stays all zeros; a low-pass of silence is silence.
+    // 4. SILENCE STAYS SILENCE -- an all-zero clip at any tone stays all zeros; a low-pass of silence is silence.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -186,19 +186,19 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 5. THE FAULTS FORWARD, ATOMIC — an illegal tone coefficient refuses BadTone with the clip UNTOUCHED (still dry — the tone is prechecked before
+    // 5. THE FAULTS FORWARD, ATOMIC -- an illegal tone coefficient refuses BadTone with the clip UNTOUCHED (still dry -- the tone is prechecked before
     //    the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by name with the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // a coefficient above unity (num 5 > den 4) is an unstable low-pass — BadTone, before any write, the clip still dry.
+        // a coefficient above unity (num 5 > den 4) is an unstable low-pass -- BadTone, before any write, the clip still dry.
         if (reverb_tone(&clip, c, .room, 0, 3, 5, 4)) |_| return error.BadToneSlipped else |e| if (e != error.BadTone) return error.WrongBadTone;
         if (!eq(clip.samples(), &three)) return error.RefusedBadToneMutated;
-        // a zero denominator is a divide by zero — BadTone, before any write.
+        // a zero denominator is a divide by zero -- BadTone, before any write.
         if (reverb_tone(&clip, c, .room, 0, 3, 1, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadTone) return error.WrongZeroDen;
         if (!eq(clip.samples(), &three)) return error.RefusedZeroDenMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (reverb_tone(&clip, c, .room, 0, timeline.max_clip + 1, 1, 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.

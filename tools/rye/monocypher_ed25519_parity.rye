@@ -1,15 +1,15 @@
-//! tools/rye/monocypher_ed25519_parity.rye — our authored crypto/ed25519_sign.rye asked for its OWN Ed25519 public key and signatures, printed one
+//! tools/rye/monocypher_ed25519_parity.rye -- our authored crypto/ed25519_sign.rye asked for its OWN Ed25519 public key and signatures, printed one
 //! lowercase-hex value per line, so tools/cr/crypto_monocypher_ed25519_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_ed25519_harness.c) byte-for-byte — the SIGNING primitive the Lotus signed carry (and every Kumara-signed record)
-//! rests on, proven against the audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! (tools/fixtures/monocypher_ed25519_harness.c) byte-for-byte -- the SIGNING primitive the Lotus signed carry (and every Kumara-signed record)
+//! rests on, proven against the audit's parity target. Season G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The seed is RFC 8032 §7.1 TEST 2's own published secret key. The three printed lines are, in order: the public key derived from the seed
 //! (derive_public), the signature over the 1-byte message 0x72 (RFC 8032 §7.1 TEST 2's published message), and the signature over a longer
-//! deterministic message ("grain crypto parity"), which exercises the multi-block message path — so the parity witness compares like against like
+//! deterministic message ("grain crypto parity"), which exercises the multi-block message path -- so the parity witness compares like against like
 //! over identical inputs.
 //!
-//! This authors NO cryptography — it is a printing harness over the GREEN crypto/ed25519_sign.rye (reached through sibling symlinks in tools/,
-//! since Rye resolves imports beside the importing file). Signing is deterministic per RFC 8032. Purely local — it signs only a TEST seed: no key
+//! This authors NO cryptography -- it is a printing harness over the GREEN crypto/ed25519_sign.rye (reached through sibling symlinks in tools/,
+//! since Rye resolves imports beside the importing file). Signing is deterministic per RFC 8032. Purely local -- it signs only a TEST seed: no key
 //! of ours, no network, no funds, no device; signing with the maintainer's own identity key stays its own gated round.
 //!
 //! Run from the repository root:
@@ -35,9 +35,9 @@ const msg_long = "grain crypto parity";
 
 const hex_alphabet = "0123456789abcdef";
 
-/// print_bytes — render an n-byte value as a line of 2·n lowercase hex characters (n ≤ 64: a public key or a signature).
+/// print_bytes -- render an n-byte value as a line of 2-n lowercase hex characters (n ≤ 64: a public key or a signature).
 fn print_bytes(b: []const u8) void {
-    // invariant (construction): the value fits the fixed 128-character line buffer — a signature (64 bytes) is the widest value printed.
+    // invariant (construction): the value fits the fixed 128-character line buffer -- a signature (64 bytes) is the widest value printed.
     assert(b.len <= 64);
     var out: [128]u8 = undefined;
     var i: u32 = 0;
@@ -46,7 +46,7 @@ fn print_bytes(b: []const u8) void {
         out[i * 2] = hex_alphabet[b[i] >> 4];
         out[i * 2 + 1] = hex_alphabet[b[i] & 0x0f];
     }
-    // invariant (postcondition): exactly 2·len characters were rendered, never a truncation.
+    // invariant (postcondition): exactly 2-len characters were rendered, never a truncation.
     assert(i == b.len);
     print("{s}\n", .{out[0 .. b.len * 2]});
 }

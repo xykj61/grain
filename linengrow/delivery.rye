@@ -1,11 +1,11 @@
-//! linengrow/delivery.rye — SLC-L2 sealed delivery: signed receipt over Comlink hosted wire.
+//! linengrow/delivery.rye -- SLC-L2 sealed delivery: signed receipt over Comlink hosted wire.
 //!
 //! Alice signs the SLC-L1 fact, seals the compact payload with wire_format, and sends
 //! over localhost UDP. Bob opens the datagram, verifies the receipt, and folds balance.
 //!
 //!   rye build linengrow/delivery.rye -lc -femit-bin=linengrow/bin/delivery
 //!
-//! Imports `wire_format.rye` via symlink `linengrow/wire_format.rye` → `comlink/wire_format.rye`
+//! Imports `wire_format.rye` via symlink `linengrow/wire_format.rye` -> `comlink/wire_format.rye`
 //! (format stays one layout; rye module path stays within one directory).
 //!   linengrow/bin/delivery selftest
 //!   linengrow/bin/delivery demo

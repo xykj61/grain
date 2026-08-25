@@ -1,23 +1,23 @@
-//! lotus/stereo_render.rye — ALES218: the stereo render rung — an ordered effect chain over a StereoClip becomes an interleaved
+//! lotus/stereo_render.rye -- ALES218: the stereo render rung -- an ordered effect chain over a StereoClip becomes an interleaved
 //! stereo .wav. ALES217 rendered a mono Clip through a chain into a canonical container; a Lotus master is a StereoClip (ALES10),
-//! two mono Clips heard together whose defining invariant is that LEFT and RIGHT hold the same length. This rung is the mono→
+//! two mono Clips heard together whose defining invariant is that LEFT and RIGHT hold the same length. This rung is the mono->
 //! stereo twin: it reuses ALES217's own Step, check_step, and apply_step VERBATIM, applies each proven step to both channels,
-//! then encodes the two channels interleaved through ALES216's stereo_wav container. It invents no new effect and no new check —
+//! then encodes the two channels interleaved through ALES216's stereo_wav container. It invents no new effect and no new check --
 //! it only widens the render to the second channel, exactly as the reverb, width, and pan families widened their axes whole.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES218.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES218.
 //! Design read: active-designing/date/20260815/20260815-132120_fill-ales218-lotus-stereo-render.md
-//! Stands on: lotus/render.rye (ALES217) — the Step chain and its per-Clip check/apply, reused per channel; lotus/pan.rye
-//! (ALES10) — the StereoClip (left/right Clips, the equal-length invariant); lotus/stereo_wav.rye (ALES216) — the interleaved
+//! Stands on: lotus/render.rye (ALES217) -- the Step chain and its per-Clip check/apply, reused per channel; lotus/pan.rye
+//! (ALES10) -- the StereoClip (left/right Clips, the equal-length invariant); lotus/stereo_wav.rye (ALES216) -- the interleaved
 //! stereo RIFF/WAVE container the two rendered channels encode into.
 //!
-//! THE BALANCED PROMISE — a StereoClip enters balanced (left and right equal length), and gain, fade, and invert each preserve a
+//! THE BALANCED PROMISE -- a StereoClip enters balanced (left and right equal length), and gain, fade, and invert each preserve a
 //! Clip's length, so the same step applied to both channels keeps them equal-length by construction. The whole request is
 //! checkable against that one shared length before a sample moves, so ALES217's atomic promise carries over unchanged: a faulty
 //! chain refuses by name and leaves BOTH channels byte-for-byte unchanged, nothing written; the two channels stay balanced
 //! through every legal render.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. The same as ALES217, widened to two channels and the interleaved container. No
+//! HONEST SCOPE -- software only, purely LOCAL. The same as ALES217, widened to two channels and the interleaved container. No
 //! real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no funds, no real device. The stored sample
 //! rate is a carried field, not a real clock. Siloed to lotus/.
 //!
@@ -35,16 +35,16 @@ const stereo_wav = @import("stereo_wav.rye");
 pub const stereo_render_version = "20260815.132120";
 
 /// The stereo render composes ALES217's chain and the interleaved container, so its error set is the union of theirs. The named
-/// faults it reports up front — TooManySteps, BadGain, BadRange (from the chain), OutputTooSmall, BadSampleRate (from the
-/// container) — are members of these merged sets, checked before a sample moves.
+/// faults it reports up front -- TooManySteps, BadGain, BadRange (from the chain), OutputTooSmall, BadSampleRate (from the
+/// container) -- are members of these merged sets, checked before a sample moves.
 pub const StereoRenderError = render.RenderError || stereo_wav.StereoWavError;
 
 /// Run a bounded, ordered chain of effects over BOTH channels of `sc`, then encode the two channels interleaved into `out` as a
 /// canonical stereo RIFF/WAVE container, returning the byte length. THE BALANCED PROMISE: the two channels enter equal-length
-/// and the chain preserves length, so the whole request is validated once against that shared length before a sample moves — a
+/// and the chain preserves length, so the whole request is validated once against that shared length before a sample moves -- a
 /// faulty chain refuses BY NAME and leaves both channels byte-for-byte unchanged with nothing written to `out`.
 pub fn render_stereo(sample_rate: u32, sc: *pan.StereoClip, steps: []const render.Step, out: []u8) StereoRenderError!u32 {
-    // invariant: the StereoClip enters balanced — left and right are the same length, the ground the whole render preserves.
+    // invariant: the StereoClip enters balanced -- left and right are the same length, the ground the whole render preserves.
     assert(sc.left.len == sc.right.len);
 
     if (steps.len > render.max_steps) return error.TooManySteps;
@@ -53,7 +53,7 @@ pub fn render_stereo(sample_rate: u32, sc: *pan.StereoClip, steps: []const rende
     const need: u32 = stereo_wav.header_len + frames * stereo_wav.frame_bytes;
     if (out.len < need) return error.OutputTooSmall;
 
-    // Gate one: prove every step legal against the shared length before a sample moves. Checking one channel suffices — the two
+    // Gate one: prove every step legal against the shared length before a sample moves. Checking one channel suffices -- the two
     // hold the same length, and a step's legality depends only on that length.
     var c: u32 = 0;
     while (c < steps.len) : (c += 1) try render.check_step(&sc.left, steps[c]);
@@ -76,9 +76,9 @@ pub fn render_stereo(sample_rate: u32, sc: *pan.StereoClip, steps: []const rende
     return wrote;
 }
 
-// --- selftest: THE STEREO-RENDER LAW — a real chain over both channels decodes back byte-for-byte on each channel to the same
-//     chain applied by hand; THE INDEPENDENT-CHANNEL LAW — each channel renders exactly as ALES217's mono render would; THE
-//     BALANCE LAW — every legal render leaves the channels equal length; THE EMPTY-CHAIN, ATOMIC-FAULT, OUTPUT-BORDER,
+// --- selftest: THE STEREO-RENDER LAW -- a real chain over both channels decodes back byte-for-byte on each channel to the same
+//     chain applied by hand; THE INDEPENDENT-CHANNEL LAW -- each channel renders exactly as ALES217's mono render would; THE
+//     BALANCE LAW -- every legal render leaves the channels equal length; THE EMPTY-CHAIN, ATOMIC-FAULT, OUTPUT-BORDER,
 //     STEP-BOUND, BAD-RATE, and EMPTY-CLIP laws each refuse or render exactly ------------------------------------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -97,7 +97,7 @@ fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
     try load_clip(&sc.right, r);
 }
 
-/// The widest stereo container this selftest renders — header plus the whole clip bound of frames, sized once so no stack buffer
+/// The widest stereo container this selftest renders -- header plus the whole clip bound of frames, sized once so no stack buffer
 /// guesses. One frame is two i16 samples = 4 bytes.
 const test_cap: u32 = stereo_wav.header_len + timeline.max_clip * stereo_wav.frame_bytes;
 
@@ -113,7 +113,7 @@ fn run_selftest() !u8 {
         .{ .kind = .invert }, // whole-channel phase flip
     };
 
-    // 1. THE STEREO-RENDER LAW + 2. THE INDEPENDENT-CHANNEL LAW — render the StereoClip, then prove each decoded channel equals
+    // 1. THE STEREO-RENDER LAW + 2. THE INDEPENDENT-CHANNEL LAW -- render the StereoClip, then prove each decoded channel equals
     //    the SAME chain applied to that channel alone (a mono render's output), so a stereo render is two mono renders sharing a
     //    container.
     {
@@ -146,11 +146,11 @@ fn run_selftest() !u8 {
         if (!eq(back_l[0..got.frames], hand_l.samples())) return error.StereoLawLeftWrong;
         if (!eq(back_r[0..got.frames], hand_r.samples())) return error.StereoLawRightWrong;
 
-        // 3. THE BALANCE LAW — the render left the two channels equal length.
+        // 3. THE BALANCE LAW -- the render left the two channels equal length.
         if (sc.left.len != sc.right.len) return error.BalanceBroken;
     }
 
-    // 4. THE EMPTY-CHAIN LAW — a bare chain renders both channels unchanged.
+    // 4. THE EMPTY-CHAIN LAW -- a bare chain renders both channels unchanged.
     {
         const empty_chain = [_]render.Step{};
         var sc = pan.StereoClip{};
@@ -164,7 +164,7 @@ fn run_selftest() !u8 {
         if (!eq(back_r[0..got.frames], &right_src)) return error.EmptyRightWrong;
     }
 
-    // 5. THE ATOMIC-FAULT LAW — a chain whose second step names a span past the clip refuses BadRange leaving BOTH channels
+    // 5. THE ATOMIC-FAULT LAW -- a chain whose second step names a span past the clip refuses BadRange leaving BOTH channels
     //    byte-for-byte unchanged; a zero-denominator gain refuses BadGain, also atomically.
     {
         const bad_range = [_]render.Step{
@@ -186,7 +186,7 @@ fn run_selftest() !u8 {
         if (!eq(sc2.right.samples(), &right_src)) return error.GainRightMutated;
     }
 
-    // 6. THE OUTPUT-BORDER, STEP-BOUND, and BAD-RATE LAWS — each refuses before any effect runs, both channels untouched.
+    // 6. THE OUTPUT-BORDER, STEP-BOUND, and BAD-RATE LAWS -- each refuses before any effect runs, both channels untouched.
     {
         const one = [_]render.Step{.{ .kind = .invert }};
         var sc = pan.StereoClip{};
@@ -207,7 +207,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &right_src)) return error.RateMutated;
     }
 
-    // 7. THE EMPTY-CLIP LAW — a zero-frame StereoClip renders to a valid 44-byte stereo header and decodes back to zero frames.
+    // 7. THE EMPTY-CLIP LAW -- a zero-frame StereoClip renders to a valid 44-byte stereo header and decodes back to zero frames.
     {
         const one = [_]render.Step{.{ .kind = .invert }}; // invert of nothing is nothing
         var sc = pan.StereoClip{};

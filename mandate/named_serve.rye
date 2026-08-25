@@ -1,12 +1,12 @@
-//! mandate/named_serve.rye — resolve a query's matches to spoken names.
+//! mandate/named_serve.rye -- resolve a query's matches to spoken names.
 //!
 //! A bare query answers with point numbers. A *named* query answers with **who**: each
 //! match resolved through the shared name registry to the spoken name its point wears,
 //! or honestly marked unnamed when it wears none. This is the last step of "served over
-//! Comlink, resolved to a spoken name" — the resolution half, now that `names.rye`
+//! Comlink, resolved to a spoken name" -- the resolution half, now that `names.rye`
 //! offers a public `sign_claim` so a name can be claimed from here.
 //!
-//! A point with no name resolves `named = false`, never a fabricated name — the search
+//! A point with no name resolves `named = false`, never a fabricated name -- the search
 //! tells the truth about who it found.
 //!
 //!   rye build mandate/named_serve.rye -femit-bin=mandate/bin/named_serve
@@ -23,7 +23,7 @@ const kumara = @import("kumara.rye");
 
 pub const named_serve_version = "20260811.124417";
 
-/// A match resolved to who it is — the point, its score, and its spoken name when the
+/// A match resolved to who it is -- the point, its score, and its spoken name when the
 /// point wears one.
 pub const NamedMatch = struct {
     point: u32,
@@ -62,7 +62,7 @@ pub fn name_matches(res: *const store.QueryResult, registry: *const names.NameRe
 // --- selftest -----------------------------------------------------------
 
 fn prove_named_serve() !void {
-    // Seat a settled galaxy and claim a spoken name for it — through names.rye's public
+    // Seat a settled galaxy and claim a spoken name for it -- through names.rye's public
     // sign_claim, the helper that unblocks claiming a name from outside that module.
     const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
     const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
@@ -96,7 +96,7 @@ fn prove_named_serve() !void {
     if (!named.matches[0].named) return error.NearestUnnamed;
     if (!std.mem.eql(u8, named.matches[0].name.as_slice(), "polaris")) return error.NameTextWrong;
 
-    // The other point wears no name — resolved honestly as unnamed, never fabricated.
+    // The other point wears no name -- resolved honestly as unnamed, never fabricated.
     if (named.matches[1].point != 99) return error.SecondPointWrong;
     if (named.matches[1].named) return error.UnnamedClaimedNamed;
 

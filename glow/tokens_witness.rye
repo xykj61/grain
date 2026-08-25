@@ -1,4 +1,4 @@
-//! glow/tokens_witness.rye — proves TAME-tidy Glow token stream (STOA86).
+//! glow/tokens_witness.rye -- proves TAME-tidy Glow token stream (STOA86).
 //!
 //!   rye build glow/tokens_witness.rye -femit-bin=glow/bin/tokens_witness
 //!   glow/bin/tokens_witness
@@ -26,7 +26,7 @@ const amount_cast =
     \\^-  amount-mold
 ;
 
-/// Nine-field same-desk cast — STOA176 peek budget (field_count+3 = 12).
+/// Nine-field same-desk cast -- STOA176 peek budget (field_count+3 = 12).
 const nona_cast =
     \\+$  nona-shape
     \\  $:  from=@u32
@@ -175,7 +175,7 @@ fn run_selftest() !u8 {
     }
     print("tokens: unclosed cord literal refused -- GREEN\n", .{});
 
-    // STOA217: `@ux` + hex digits → hex_lit; bare `@ux` stays aura; odd/oversize refuse.
+    // STOA217: `@ux` + hex digits -> hex_lit; bare `@ux` stays aura; odd/oversize refuse.
     const root_hex =
         "@ux99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe\n";
     const nh = try tokens.tokenize(root_hex, tbuf[0..]);

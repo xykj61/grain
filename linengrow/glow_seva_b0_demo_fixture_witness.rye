@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_demo_fixture_witness.rye — proves product fixture pins.
+//! linengrow/glow_seva_b0_demo_fixture_witness.rye -- proves product fixture pins.
 //!
 //!   rye build linengrow/glow_seva_b0_demo_fixture_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_demo_fixture_witness

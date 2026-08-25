@@ -1,6 +1,6 @@
-//! lotus/flanger.rye — ALES73: the flanger — a short modulated delay with a FEEDBACK path. The chorus (ALES71) and vibrato (ALES72) both
+//! lotus/flanger.rye -- ALES73: the flanger -- a short modulated delay with a FEEDBACK path. The chorus (ALES71) and vibrato (ALES72) both
 //! read a MODULATED delay off a FROZEN snapshot of the dry, precisely so a moving read never reads a sample it just wrote. The echo (ALES66)
-//! does the opposite: it reads the LIVE buffer, so each output feeds the next and the train decays. The FLANGER is where the two meet — a
+//! does the opposite: it reads the LIVE buffer, so each output feeds the next and the train decays. The FLANGER is where the two meet -- a
 //! short modulated delay whose delayed voice is FED BACK into itself. The moving comb it makes, its notches sliding up and down and deepened
 //! by the feedback, is the jet-plane whoosh a keeper reaches for by name. It is the family's first rung that adds a GENUINELY NEW ELEMENT
 //! rather than only changing the mix: the vibrato and chorus only chose what reached the output; the flanger adds a feedback path.
@@ -8,25 +8,25 @@
 //! The crux is that A MODULATED FRACTIONAL DELAY IS READ OFF THE LIVE OUTPUT. This reuses ALES71's triangle_delay_at driver and ALES70's
 //! interpolation read, and reuses ALES66's discipline that THE DELAY LINE IS THE CLIP BUFFER ITSELF. Over one period P (a positive multiple
 //! of four, q = P/4) with phase p = k % P, d_s(k) = centre_scaled + triangle(depth_scaled, P, k); then near = buf[i − d_whole] (a prior
-//! OUTPUT — feedback — or dry before the span, silence before the clip), far = buf[i − d_whole − 1], delayed = (near·(glide_scale − frac) +
-//! far·frac)/glide_scale, and y[i] = saturate(x[i] + fb·delayed). Because the delay never dips below one whole sample (centre − depth ≥
-//! glide_scale, so d_whole ≥ 1), both neighbours sit at indices STRICTLY BEFORE i — already written this pass (true feedback), or dry before
+//! OUTPUT -- feedback -- or dry before the span, silence before the clip), far = buf[i − d_whole − 1], delayed = (near-(glide_scale − frac) +
+//! far-frac)/glide_scale, and y[i] = saturate(x[i] + fb-delayed). Because the delay never dips below one whole sample (centre − depth ≥
+//! glide_scale, so d_whole ≥ 1), both neighbours sit at indices STRICTLY BEFORE i -- already written this pass (true feedback), or dry before
 //! the span, or silence before the clip. So the read is off the LIVE buffer, not a snapshot: the flanger WANTS to hear its own output, and
-//! reading strictly-earlier indices keeps that safe in place — the exact inversion of the chorus/vibrato snapshot, and the reason the flanger
+//! reading strictly-earlier indices keeps that safe in place -- the exact inversion of the chorus/vibrato snapshot, and the reason the flanger
 //! needs none. Two facts keep it bounded, both from the echo: `delayed` is a convex combination of two i16 neighbours so it fits the rail with
-//! no snapshot, and FEEDBACK BELOW UNITY DECAYS AND THE SUM SATURATES ONCE — num < den is refused above that (BadFeedback, a runaway), each
+//! no snapshot, and FEEDBACK BELOW UNITY DECAYS AND THE SUM SATURATES ONCE -- num < den is refused above that (BadFeedback, a runaway), each
 //! fed term strictly smaller than the output it read, a constructive sum past the rail saturating rather than wrapping. fb = 0 is the dry
 //! identity, and a ZERO-DEPTH flanger is exactly ALES66's echo at its centre byte-for-byte (the periodic driver reduces to the fixed one at
 //! rest, the interpolation exact at the whole delay).
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES73.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES73.
 //! Design read: active-designing/date/20260814/20260814-200314_fill-ales73-lotus-flanger-feedback-modulated-delay.md
-//! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at`; lotus/echo.rye (ALES66) — the feedback delay whose
-//! in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte; lotus/glide.rye (ALES70) — the
-//! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip, saturate.
+//! Stands on: lotus/chorus.rye (ALES71) -- the triangle-LFO driver `triangle_delay_at`; lotus/echo.rye (ALES66) -- the feedback delay whose
+//! in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte; lotus/glide.rye (ALES70) -- the
+//! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) -- the Clip, sample_min/max, max_clip, saturate.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
-//! funds, no real device, no real sample rate — the delay is counted in scaled sample indices and the period in samples, not milliseconds or
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate -- the delay is counted in scaled sample indices and the period in samples, not milliseconds or
 //! hertz (the real-time twin follows as echo_ms and multitap_ms did). No lookahead beyond the in-place feedback read; one delayed fractional
 //! read and one multiply-divide per sample, the sum in i64 saturating once, so nothing on the path can overflow.
 //!
@@ -47,27 +47,27 @@ pub const flanger_version = "20260814.200314";
 /// clip (centre + depth whole > max_clip), a feedback at or above unity (a runaway that would never decay) or with a zero denominator, and a
 /// span outside the samples. Each refused before any write.
 pub const FlangerError = error{
-    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample — refused, no write.
+    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample -- refused, no write.
     BadDepth,
-    /// A swing whose top (centre + depth) whole delay is longer than max_clip samples — refused, no write.
+    /// A swing whose top (centre + depth) whole delay is longer than max_clip samples -- refused, no write.
     BadDelay,
-    /// A feedback numerator at or above the denominator (would never decay — a runaway) or a zero denominator — refused, no write.
+    /// A feedback numerator at or above the denominator (would never decay -- a runaway) or a zero denominator -- refused, no write.
     BadFeedback,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
 /// Apply a flanger over `count` samples starting at `start` in place in `clip`: a triangle LFO of `depth_scaled` round `centre_scaled` over
 /// `period` samples drives the scaled delay (ALES71's `triangle_delay_at`), each sample read by LINEAR INTERPOLATION of the two neighbours
-/// straddling its fractional delay (ALES70's read) off the LIVE buffer (ALES66's feedback — the delay line is the clip buffer itself), then
-/// fed back at `fb_num/fb_den` — y[i] = saturate(x[i] + fb·interp(buf, i, d_s(i))). Because the delay is at least one whole sample the two
-/// neighbours sit strictly before i (already-written outputs, dry, or silence), so the in-place read hears the flanger's own output safely —
+/// straddling its fractional delay (ALES70's read) off the LIVE buffer (ALES66's feedback -- the delay line is the clip buffer itself), then
+/// fed back at `fb_num/fb_den` -- y[i] = saturate(x[i] + fb-interp(buf, i, d_s(i))). Because the delay is at least one whole sample the two
+/// neighbours sit strictly before i (already-written outputs, dry, or silence), so the in-place read hears the flanger's own output safely --
 /// no snapshot. Feedback below unity decays; a constructive sum past the rail saturates once. `fb_num == 0` is the dry identity, and a
 /// zero-depth flanger equals ALES66's echo at its centre byte-for-byte. Refuses BadPeriod, BadDepth, BadDelay, BadFeedback, and BadRange
-/// before any write; on refusal the clip is untouched. Values only — never a length.
-/// Validate a flanger's LFO, feedback, and span against a clip length ONCE, before any write — factored out of `flanger` so the stereo lift
+/// before any write; on refusal the clip is untouched. Values only -- never a length.
+/// Validate a flanger's LFO, feedback, and span against a clip length ONCE, before any write -- factored out of `flanger` so the stereo lift
 /// (`stereo_flanger`, ALES180) can refuse against the shared length before either channel is touched, mirroring ALES71's `chorus.precheck`,
 /// ALES72's `vibrato.precheck`, and ALES75's `ring_mod.precheck`. Refuses a period not a positive multiple of four (or wider than max_clip)
 /// BadPeriod, a negative depth or a swing dipping below one whole sample BadDepth, a swing top past the widest clip BadDelay, a zero denominator
@@ -77,17 +77,17 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
     if (period > timeline.max_clip) return error.BadPeriod;
-    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample — below that the near neighbour would
+    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample -- below that the near neighbour would
     // fall on i itself (a self-read, not feedback), and there is no `far` neighbour before it. This is what makes the live read safe.
     if (depth_scaled < 0) return error.BadDepth;
     if (centre_scaled - depth_scaled < glide.glide_scale) return error.BadDepth;
     // invariant: the swing's top whole delay fits the widest clip, so the reach is bounded.
     if (@divTrunc(centre_scaled + depth_scaled, glide.glide_scale) > @as(i64, timeline.max_clip)) return error.BadDelay;
-    // invariant: the feedback is a legal fraction strictly below unity — a nonzero denominator, a numerator under it, so each echo is
+    // invariant: the feedback is a legal fraction strictly below unity -- a nonzero denominator, a numerator under it, so each echo is
     // strictly smaller than the last and the loop always decays. fb_num == 0 (the dry identity) is legal.
     if (fb_den == 0) return error.BadFeedback;
     if (fb_num >= fb_den) return error.BadFeedback;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
@@ -102,7 +102,7 @@ pub fn flanger(
     fb_num: u32,
     fb_den: u32,
 ) FlangerError!void {
-    // invariant: the LFO, feedback, and span are all legal — the five faults refused before any read, so a refusal never half-writes.
+    // invariant: the LFO, feedback, and span are all legal -- the five faults refused before any read, so a refusal never half-writes.
     // ALES180's stereo lift reuses this same `precheck` against the shared length.
     try precheck(clip.len, start, count, centre_scaled, depth_scaled, period, fb_num, fb_den);
 
@@ -120,25 +120,25 @@ pub fn flanger(
         const frac: i64 = d_s - d_whole * scale; // in [0, glide_scale)
         // invariant: the fractional part is a legal weight strictly under the scale.
         assert(frac >= 0 and frac < scale);
-        // invariant: the whole delay is at least one sample, so both neighbours sit strictly before i — the read hears prior OUTPUT
+        // invariant: the whole delay is at least one sample, so both neighbours sit strictly before i -- the read hears prior OUTPUT
         // (feedback), never the sample being written. This is the safety the BadDepth check buys.
         assert(d_whole >= 1);
         // The two neighbours straddling the fractional delay, read off the LIVE buffer: `near` at the smaller delay (a prior output inside
-        // the span — true feedback — or dry before it), `far` one sample further back. Each is silence before the clip (index < 0).
+        // the span -- true feedback -- or dry before it), `far` one sample further back. Each is silence before the clip (index < 0).
         const near_ix: i64 = @as(i64, i) - d_whole;
         const far_ix: i64 = near_ix - 1;
         const near_val: i64 = if (near_ix >= 0) @as(i64, clip.buf[@intCast(near_ix)]) else 0;
         const far_val: i64 = if (far_ix >= 0) @as(i64, clip.buf[@intCast(far_ix)]) else 0;
-        // invariant: both neighbours already fit the i16 rail — each is a written output (saturated) or dry audio, never a wide intermediate.
+        // invariant: both neighbours already fit the i16 rail -- each is a written output (saturated) or dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
         // Linear interpolation (ALES70's read): near weighted by (scale − frac), far by frac, divided once. frac = 0 returns near exactly
-        // (a whole-sample delay is an exact integer feedback tap — the zero-depth echo equality). |near|,|far| <= 32768 and the weights sum
+        // (a whole-sample delay is an exact integer feedback tap -- the zero-depth echo equality). |near|,|far| <= 32768 and the weights sum
         // to glide_scale, so the product fits i64.
         const delayed: i64 = @divTrunc(near_val * (scale - frac) + far_val * frac, scale);
         // The feedback term at fb = num/den (num < den, so |fed| < |delayed|), then the dry plus fed saturates ONCE over the true sum.
         const fed: i64 = @divTrunc(num * delayed, den);
-        // invariant: the fed-back term is strictly smaller in magnitude than the delayed read — feedback below unity only shrinks it, so
+        // invariant: the fed-back term is strictly smaller in magnitude than the delayed read -- feedback below unity only shrinks it, so
         // the loop always decays.
         assert((if (fed < 0) -fed else fed) <= (if (delayed < 0) -delayed else delayed));
         clip.buf[i] = timeline.saturate(x + fed);
@@ -168,7 +168,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 fn run_selftest() !u8 {
     const scale = glide.glide_scale;
 
-    // 1. fb = 0 IS THE DRY IDENTITY — a zero feedback numerator adds nothing, the dry signal passes byte-for-byte at any modulation.
+    // 1. fb = 0 IS THE DRY IDENTITY -- a zero feedback numerator adds nothing, the dry signal passes byte-for-byte at any modulation.
     {
         const sig = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
         var clip = timeline.Clip{};
@@ -177,8 +177,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroFbNotIdentity;
     }
 
-    // 2. A ZERO-DEPTH FLANGER IS EXACTLY ALES66's ECHO AT ITS CENTRE — depth == 0, the LFO at rest, a fixed whole delay of `centre`: the
-    //    interpolation returns the nearer sample exactly (frac 0), so the flanger equals echo(centre, fb) byte-for-byte (both tools run —
+    // 2. A ZERO-DEPTH FLANGER IS EXACTLY ALES66's ECHO AT ITS CENTRE -- depth == 0, the LFO at rest, a fixed whole delay of `centre`: the
+    //    interpolation returns the nearer sample exactly (frac 0), so the flanger equals echo(centre, fb) byte-for-byte (both tools run --
     //    the periodic driver reduces to the fixed one at rest). An impulse exercises the whole decaying tail.
     {
         const sig = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
@@ -191,17 +191,17 @@ fn run_selftest() !u8 {
         if (!eq(flanged.samples(), echoed.samples())) return error.ZeroDepthNotEcho;
     }
 
-    // 3. A HAND-COMPUTED MODULATED-FEEDBACK READ — centre = 2·scale, depth = 1·scale, period = 4 (q = 1), fb = 1/2. The triangle lands the
+    // 3. A HAND-COMPUTED MODULATED-FEEDBACK READ -- centre = 2-scale, depth = 1-scale, period = 4 (q = 1), fb = 1/2. The triangle lands the
     //    delay on WHOLE samples at every offset, so each read is an exact integer FEEDBACK tap OFF THE LIVE BUFFER:
     //      k:        0  1  2  3  4  5
     //      delay(k): 2  3  2  1  2  3   (centre, top, centre, bottom, centre, top)
-    //    On an impulse [8000,0,0,0,0,0], y[i] = dry[i] + 1/2·buf[i − delay(i)] reading already-written outputs:
-    //      i0 d2: 8000 + 1/2·buf[-2]=0     = 8000
-    //      i1 d3: 0    + 1/2·buf[-2]=0     = 0
-    //      i2 d2: 0    + 1/2·buf[0]=8000   = 4000
-    //      i3 d1: 0    + 1/2·buf[2]=4000   = 2000   (feedback: reads the output just written at i2)
-    //      i4 d2: 0    + 1/2·buf[2]=4000   = 2000
-    //      i5 d3: 0    + 1/2·buf[2]=4000   = 2000
+    //    On an impulse [8000,0,0,0,0,0], y[i] = dry[i] + 1/2-buf[i − delay(i)] reading already-written outputs:
+    //      i0 d2: 8000 + 1/2-buf[-2]=0     = 8000
+    //      i1 d3: 0    + 1/2-buf[-2]=0     = 0
+    //      i2 d2: 0    + 1/2-buf[0]=8000   = 4000
+    //      i3 d1: 0    + 1/2-buf[2]=4000   = 2000   (feedback: reads the output just written at i2)
+    //      i4 d2: 0    + 1/2-buf[2]=4000   = 2000
+    //      i5 d3: 0    + 1/2-buf[2]=4000   = 2000
     {
         const sig = [_]i16{ 8000, 0, 0, 0, 0, 0 };
         var clip = timeline.Clip{};
@@ -211,9 +211,9 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.ModulatedFeedbackWrong;
     }
 
-    // 4. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS — a loud steady signal under a loud in-phase feedback read exceeds the i16
-    //    rail; the sum pins to sample_max (ALES3's ceiling) instead of wrapping negative. A steady 30000, centre 1·scale depth 0 (a fixed
-    //    whole delay of 1), fb 1/1 is refused (runaway), so fb 1/2: index 1 on = 30000 + 1/2·30000 = 45000, saturated to 32767.
+    // 4. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS -- a loud steady signal under a loud in-phase feedback read exceeds the i16
+    //    rail; the sum pins to sample_max (ALES3's ceiling) instead of wrapping negative. A steady 30000, centre 1-scale depth 0 (a fixed
+    //    whole delay of 1), fb 1/1 is refused (runaway), so fb 1/2: index 1 on = 30000 + 1/2-30000 = 45000, saturated to 32767.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 30000, 30000, 30000, 30000 });
@@ -237,12 +237,12 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWidePeriodMutated;
     }
 
-    // 5b. A DEPTH that swings below one whole sample refuses BadDepth; a swing top past max_clip refuses BadDelay — each before any write.
+    // 5b. A DEPTH that swings below one whole sample refuses BadDepth; a swing top past max_clip refuses BadDelay -- each before any write.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // centre 1·scale, depth 1·scale → bottom = 0 < glide_scale
+        // centre 1-scale, depth 1-scale -> bottom = 0 < glide_scale
         if (flanger(&clip, 0, clip.len, 1 * scale, 1 * scale, 4, 1, 2)) |_| return error.LowSwingSlipped else |e| if (e != error.BadDepth) return error.WrongLowSwing;
         if (!eq(clip.samples(), &three)) return error.RefusedLowSwingMutated;
         // top = centre + depth whole past max_clip
@@ -251,7 +251,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedWideTopMutated;
     }
 
-    // 5c. A FEEDBACK at unity (numerator == denominator, a runaway) refuses BadFeedback; a zero denominator refuses BadFeedback — each
+    // 5c. A FEEDBACK at unity (numerator == denominator, a runaway) refuses BadFeedback; a zero denominator refuses BadFeedback -- each
     //     before any write.
     {
         var clip = timeline.Clip{};

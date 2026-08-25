@@ -1,21 +1,21 @@
-//! image/part_filter.rye — HUNK75: narrow the marketplace to the parts that match a query.
+//! image/part_filter.rye -- HUNK75: narrow the marketplace to the parts that match a query.
 //!
-//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK75.
+//! Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK75.
 //! Design read: active-designing/date/20260813/20260813-234337_hunk-part-filter-narrow-the-catalog-exploration.md
-//! Teacher, thanked clean-room: McMaster-Carr's narrowing sidebar — a wall of parts becomes the seven you want
+//! Teacher, thanked clean-room: McMaster-Carr's narrowing sidebar -- a wall of parts becomes the seven you want
 //! (concept only, siloed).
 //!
 //! HUNK71 bound honest facts beside each window; HUNK73 painted the catalog as a shelf; HUNK74 let it page. Yet a
-//! real marketplace is not read front to back — it is NARROWED. This rung is that narrowing. `filter_catalog` reads
-//! a whole `PartCatalog` and a `Query` and builds a fresh sub-catalog holding exactly the parts that match — in held
-//! order, over the very same shared sheet — so the result is itself an ordinary `PartCatalog` that paints, pages, and
+//! real marketplace is not read front to back -- it is NARROWED. This rung is that narrowing. `filter_catalog` reads
+//! a whole `PartCatalog` and a `Query` and builds a fresh sub-catalog holding exactly the parts that match -- in held
+//! order, over the very same shared sheet -- so the result is itself an ordinary `PartCatalog` that paints, pages, and
 //! round-trips by every law already proven. A filter is not a new kind of thing; it is a smaller catalog.
 //!
 //! The crux is that the filter LOSES NO MATCH and ADMITS NO STRANGER: every part whose facts satisfy the query
 //! reaches the sub-catalog exactly once in held order, and no failing part appears. A match-all query reproduces the
 //! catalog byte-for-byte; a match-none query yields a real empty catalog (zero parts, zero pages), not an error.
 //!
-//! Price is read as a FACT — compared, never moved (custody gate %3 untouched). No network, no key, no funds.
+//! Price is read as a FACT -- compared, never moved (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_filter.rye selftest
 
@@ -29,7 +29,7 @@ const part_catalog = @import("part_catalog.rye");
 pub const part_filter_version = "20260813.234337";
 
 /// The four honest ways a keeper narrows a marketplace: by an exact material, by a part-number prefix, by a price
-/// ceiling (cents at most), or by a price floor (cents at least). A closed set — every query is exactly one kind.
+/// ceiling (cents at most), or by a price floor (cents at least). A closed set -- every query is exactly one kind.
 pub const QueryKind = enum {
     material,
     number_prefix,
@@ -46,7 +46,7 @@ pub const Query = struct {
     price: u64 = 0,
 };
 
-/// The widest a query's text operand may be — the wider of the two token fields a part stores, so a material query or
+/// The widest a query's text operand may be -- the wider of the two token fields a part stores, so a material query or
 /// a part-number-prefix query is always measured against a field that could legitimately be at least this long.
 pub const max_query_text: u32 =
     if (part_catalog.max_material_len > part_catalog.max_part_number_len)
@@ -59,7 +59,7 @@ pub const FilterError = error{
 };
 
 /// Does the i-th part of `cat` satisfy `query`? Reads the part's stored facts directly (`facts_at`, `entry`), so a
-/// match is measured against exactly what the catalog holds — never a copy that could drift.
+/// match is measured against exactly what the catalog holds -- never a copy that could drift.
 pub fn matches(cat: *const part_catalog.PartCatalog, i: u32, query: Query) bool {
     // invariant: the queried index sits inside the catalog.
     assert(i < cat.len());
@@ -74,7 +74,7 @@ pub fn matches(cat: *const part_catalog.PartCatalog, i: u32, query: Query) bool 
     };
 }
 
-/// How many parts `query` would keep — a bounded walk of the whole catalog, so a caller can size a page before it
+/// How many parts `query` would keep -- a bounded walk of the whole catalog, so a caller can size a page before it
 /// filters. The count never exceeds the catalog's own length.
 pub fn count_matches(cat: *const part_catalog.PartCatalog, query: Query) FilterError!u32 {
     if (query.text.len > max_query_text) return error.QueryTextTooLong;
@@ -92,11 +92,11 @@ pub fn count_matches(cat: *const part_catalog.PartCatalog, query: Query) FilterE
     return kept;
 }
 
-/// Narrow `cat` into `out` — a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that match
+/// Narrow `cat` into `out` -- a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that match
 /// `query`, in held order. Each match is re-added through `add_part` with its own window and facts; because every
 /// window and token already passed the source catalog's checks, the rebuild never half-adds. A match-all query
 /// reproduces the catalog; a match-none query yields a real empty catalog. The result is an ordinary `PartCatalog`
-/// that paints, pages, and round-trips like any other — so a filter composes: filtering a filtered catalog narrows
+/// that paints, pages, and round-trips like any other -- so a filter composes: filtering a filtered catalog narrows
 /// further, by this same function.
 pub fn filter_catalog(
     cat: *const part_catalog.PartCatalog,
@@ -116,14 +116,14 @@ pub fn filter_catalog(
         if (!matches(cat, i, query)) continue;
         const e = cat.index.entry(i);
         const f = cat.facts_at(i);
-        // Re-add the match with its own window and facts — validated once by the source, so it re-adds cleanly.
+        // Re-add the match with its own window and facts -- validated once by the source, so it re-adds cleanly.
         try out.add_part(e.name, e.win.x, e.win.y, e.win.w, e.win.h, f.part_number, f.material, f.price_cents);
     }
     // invariant: the sub-catalog holds no more parts than the source.
     assert(out.len() <= cat.len());
 }
 
-// --- selftest: five parts across three materials and a price spread — narrow by material, by part-number prefix, by
+// --- selftest: five parts across three materials and a price spread -- narrow by material, by part-number prefix, by
 //     a price ceiling and floor; prove each result keeps exactly the matching parts in held order, a match-all query
 //     reproduces the catalog byte-for-byte, a match-none query yields a real empty catalog, a filter composes, and an
 //     over-long query text refuses by name -------------------------------------------------------------------------
@@ -148,7 +148,7 @@ fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
-/// The held-order names a query keeps — walk the sub-catalog and collect its product names into `names`.
+/// The held-order names a query keeps -- walk the sub-catalog and collect its product names into `names`.
 fn kept_names(cat: *const part_catalog.PartCatalog, names: [][]const u8) u32 {
     var i: u32 = 0;
     while (i < cat.len()) : (i += 1) names[i] = cat.index.entry(i).name;
@@ -180,7 +180,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(k == 2);
         assert(std.mem.eql(u8, buf[0], "bolt"));
         assert(std.mem.eql(u8, buf[1], "hexnut"));
-        // The kept facts are the stored facts — narrowing copies the truth, not a guess.
+        // The kept facts are the stored facts -- narrowing copies the truth, not a guess.
         const bolt = try sub.part_of("bolt");
         assert(std.mem.eql(u8, bolt.material, "stainless-304"));
         assert(bolt.price_cents == 129);
@@ -198,7 +198,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[1], "hexnut"));
     }
 
-    // Narrow by a price ceiling: the parts at most 55 cents — washer (7), hexnut (55), pin (30). 55 is kept (at MOST).
+    // Narrow by a price ceiling: the parts at most 55 cents -- washer (7), hexnut (55), pin (30). 55 is kept (at MOST).
     {
         const q = Query{ .kind = .price_at_most, .price = 55 };
         assert((try count_matches(&cat, q)) == 3);
@@ -211,7 +211,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[2], "pin"));
     }
 
-    // Narrow by a price floor: the parts at least 129 cents — bolt (129) and gear (845). 129 is kept (at LEAST).
+    // Narrow by a price floor: the parts at least 129 cents -- bolt (129) and gear (845). 129 is kept (at LEAST).
     {
         const q = Query{ .kind = .price_at_least, .price = 129 };
         assert((try count_matches(&cat, q)) == 2);
@@ -223,7 +223,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[1], "gear"));
     }
 
-    // A match-all query reproduces the catalog byte-for-byte — narrowing by nothing loses nothing.
+    // A match-all query reproduces the catalog byte-for-byte -- narrowing by nothing loses nothing.
     {
         const q = Query{ .kind = .price_at_least, .price = 0 };
         assert((try count_matches(&cat, q)) == cat.len());
@@ -238,14 +238,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, a[0..na], b[0..nb]));
     }
 
-    // A match-none query yields a REAL empty catalog — zero parts, zero pages — never an error.
+    // A match-none query yields a REAL empty catalog -- zero parts, zero pages -- never an error.
     {
         const q = Query{ .kind = .material, .text = "titanium" };
         assert((try count_matches(&cat, q)) == 0);
         var sub: part_catalog.PartCatalog = undefined;
         try filter_catalog(&cat, q, &sub);
         assert(sub.len() == 0);
-        // An empty sub-catalog still renders its header and re-parses to an empty catalog — a first-class catalog.
+        // An empty sub-catalog still renders its header and re-parses to an empty catalog -- a first-class catalog.
         var e: [part_catalog.max_part_catalog_bytes]u8 = undefined;
         const ne = try part_catalog.render_part_catalog(&sub, e[0..]);
         var reparsed: part_catalog.PartCatalog = undefined;
@@ -253,7 +253,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(reparsed.len() == 0);
     }
 
-    // A filter composes: narrow to stainless-304, then narrow THAT to part numbers starting `HX-N` — one part, hexnut.
+    // A filter composes: narrow to stainless-304, then narrow THAT to part numbers starting `HX-N` -- one part, hexnut.
     {
         var stainless: part_catalog.PartCatalog = undefined;
         try filter_catalog(&cat, Query{ .kind = .material, .text = "stainless-304" }, &stainless);

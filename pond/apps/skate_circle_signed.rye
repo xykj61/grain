@@ -1,6 +1,6 @@
-//! pond/apps/skate_circle_signed.rye — Season 3 Journey 9 (Skate), Rung 2: consent that cannot be fabricated.
+//! pond/apps/skate_circle_signed.rye -- Season 3 Journey 9 (Skate), Rung 2: consent that cannot be fabricated.
 //!
-//! Rung one fixed the consent rule as a pure state machine — a link is mutual-only, presence is never
+//! Rung one fixed the consent rule as a pure state machine -- a link is mutual-only, presence is never
 //! default. Yet a bare state machine trusts whoever calls it: a steward could `join` a keeper who
 //! never asked, or `request_link` on a keeper's behalf, and the books would read as consent. This rung
 //! binds each consent act to the keeper's **settled Kumara identity**, so a consent the keeper never
@@ -9,16 +9,16 @@
 //! Each act is signed by the very keeper it speaks for: a join is signed by the joining point, a
 //! link-request by the requesting point, over the exact facts (a tag so a join can never be replayed as
 //! a request, the circle id so it cannot cross circles, and the points). A `Keyring` maps a point to
-//! its keeper public key — the caller's statement of whose word to trust (as `commerce_trade_signed`
+//! its keeper public key -- the caller's statement of whose word to trust (as `commerce_trade_signed`
 //! passes the seller/buyer keys). `join_signed` / `request_signed` verify the acting keeper's own
 //! signature against the keyring **before** touching rung one's circle, refusing `UnknownKeeper` (the
 //! point is not enrolled) or `BadConsent` (the signature does not verify). The honesty crux mirrors
 //! commerce's price-tamper: relabel a request's `to` after signing and reuse the signature, and it
-//! falls — the signature was over the pair the keeper actually named, not the one a steward swapped in.
+//! falls -- the signature was over the pair the keeper actually named, not the one a steward swapped in.
 //!
-//! Additive — composes rung one (`skate_circle`) and `kumara` over public API; rung one stays its own
-//! GREEN binary. Demo keeper seeds only — no real key, no network, no real identity (a circle served
-//! over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rung one (`skate_circle`) and `kumara` over public API; rung one stays its own
+//! GREEN binary. Demo keeper seeds only -- no real key, no network, no real identity (a circle served
+//! over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/skate_circle_signed.rye -femit-bin=pond/bin/skate-circle-signed
 //!   pond/bin/skate-circle-signed selftest
@@ -37,10 +37,10 @@ pub const skate_circle_signed_version = "20260812.201611";
 pub const pubkey_len: u32 = 32;
 pub const sig_len: u32 = 64;
 
-/// A keyring maps a point to its keeper public key — a caller's statement of whose consent to trust.
+/// A keyring maps a point to its keeper public key -- a caller's statement of whose consent to trust.
 pub const max_keyring: u32 = skate.max_members;
 
-/// The act a signature speaks for — a tag so a join can never be replayed as a link-request.
+/// The act a signature speaks for -- a tag so a join can never be replayed as a link-request.
 const tag_join: u8 = 1;
 const tag_request: u8 = 2;
 
@@ -74,7 +74,7 @@ fn request_message(out: *[max_msg_len]u8, circle_id: u32, from: u32, to: u32) u3
     return 13;
 }
 
-/// The joining keeper's signature over their own join — proof this point asked to join this circle.
+/// The joining keeper's signature over their own join -- proof this point asked to join this circle.
 pub fn sign_join(keeper_seed: *const [kumara.seed_length]u8, circle_id: u32, point: u32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
     var msg: [max_msg_len]u8 = undefined;
@@ -82,7 +82,7 @@ pub fn sign_join(keeper_seed: *const [kumara.seed_length]u8, circle_id: u32, poi
     return kumara.sign(msg[0..len], kp, null).toBytes();
 }
 
-/// The requesting keeper's signature over their own link-request — proof this point offered this link.
+/// The requesting keeper's signature over their own link-request -- proof this point offered this link.
 pub fn sign_request(keeper_seed: *const [kumara.seed_length]u8, circle_id: u32, from: u32, to: u32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
     var msg: [max_msg_len]u8 = undefined;
@@ -99,7 +99,7 @@ fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8)
     return true;
 }
 
-/// A bounded map from a point to its keeper public key — whose consent the caller trusts.
+/// A bounded map from a point to its keeper public key -- whose consent the caller trusts.
 // Invariant: count <= max_keyring.
 pub const Keyring = struct {
     points: [max_keyring]u32,
@@ -136,7 +136,7 @@ pub const Keyring = struct {
 };
 
 /// Verify a keeper's own join signature against the keyring, refusing an unenrolled point
-/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no circle — the verification
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no circle -- the verification
 /// half alone, so a traveled record (r3) can re-check consent offline with no state to mutate.
 pub fn verify_join(ring: *const Keyring, circle_id: u32, point: u32, sig: *const [sig_len]u8) SignedError!void {
     const key = ring.key_of(point) orelse return error.UnknownKeeper;
@@ -186,7 +186,7 @@ pub fn request_signed(
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 
@@ -205,7 +205,7 @@ fn demo_ring() error{KeyringFull}!Keyring {
     return ring;
 }
 
-/// Signed joins and a mutual signed link build a real connection — each act carrying its keeper's word.
+/// Signed joins and a mutual signed link build a real connection -- each act carrying its keeper's word.
 fn welcome_signed_consent_links() !void {
     var c = skate.Circle.open();
     const ring = try demo_ring();
@@ -226,7 +226,7 @@ fn welcome_signed_consent_links() !void {
     print("skate_circle_signed: two signed joins and a mutual signed link built a real connection — each act its keeper's own word.\n", .{});
 }
 
-/// The honesty crux — a steward relabels a request's target after signing and reuses the signature; it
+/// The honesty crux -- a steward relabels a request's target after signing and reuses the signature; it
 /// falls, because the signature was over the pair the keeper actually named.
 fn unwelcome_relabel_refuses() !void {
     var c = skate.Circle.open();
@@ -251,11 +251,11 @@ fn unwelcome_relabel_refuses() !void {
     print("skate_circle_signed: a request's target relabelled after signing refused BadConsent — a steward cannot swap whom a keeper asked.\n", .{});
 }
 
-/// One keeper cannot sign another's join — the joining point must sign its own join.
+/// One keeper cannot sign another's join -- the joining point must sign its own join.
 fn unwelcome_forged_join_refuses() !void {
     var c = skate.Circle.open();
     const ring = try demo_ring();
-    // Wren signs a join naming Ivy — the wrong keeper's word for Ivy's consent.
+    // Wren signs a join naming Ivy -- the wrong keeper's word for Ivy's consent.
     const forged = sign_join(&wren_seed, demo_circle, ivy);
     const bad = join_signed(&c, &ring, demo_circle, ivy, &forged);
     assert(bad == error.BadConsent);
@@ -263,7 +263,7 @@ fn unwelcome_forged_join_refuses() !void {
     print("skate_circle_signed: a join signed by the wrong keeper refused BadConsent — a keeper signs their own join.\n", .{});
 }
 
-/// An unenrolled keeper has no key to check — their word cannot be trusted, so the act refuses.
+/// An unenrolled keeper has no key to check -- their word cannot be trusted, so the act refuses.
 fn unwelcome_unknown_keeper_refuses() !void {
     var c = skate.Circle.open();
     const ring = try demo_ring();
@@ -275,7 +275,7 @@ fn unwelcome_unknown_keeper_refuses() !void {
     print("skate_circle_signed: a join by a keeper the ring does not enroll refused UnknownKeeper.\n", .{});
 }
 
-/// A signature bound to one circle does not cross into another — consent names its circle.
+/// A signature bound to one circle does not cross into another -- consent names its circle.
 fn unwelcome_cross_circle_refuses() !void {
     var c = skate.Circle.open();
     const ring = try demo_ring();

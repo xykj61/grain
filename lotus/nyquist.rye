@@ -1,6 +1,6 @@
-//! lotus/nyquist.rye — ALES107: nyquist_flip — flip the sign of every ODD-indexed sample, y[n] = saturate((-1)^n · x[n]), the exact parity-cousin of ALES105's invert.
+//! lotus/nyquist.rye -- ALES107: nyquist_flip -- flip the sign of every ODD-indexed sample, y[n] = saturate((-1)^n - x[n]), the exact parity-cousin of ALES105's invert.
 //! Where invert flips EVERY sign about the zero line, the Nyquist flip flips every OTHER sign, holding the even seats fixed. It is the same value operation applied on a
-//! parity pattern rather than the whole — and by that one restraint it becomes modulation by the Nyquist frequency (fs/2): multiplying by (-1)^n = cos(π n) reflects the
+//! parity pattern rather than the whole -- and by that one restraint it becomes modulation by the Nyquist frequency (fs/2): multiplying by (-1)^n = cos(π n) reflects the
 //! spectrum, carrying a lowpass shape to its highpass twin. This is the classic "spectral inversion" trick every filter-design text teaches to turn a lowpass kernel into a
 //! highpass one. The operation is stated honestly in the TIME domain (a per-sample sign flip on odd indices); the spectral reading is interpretation, never computed here.
 //!
@@ -8,20 +8,20 @@
 //! saturation so the signed rail is handled exactly as gain and invert already handle it. The length is untouched; the buffer past len is never read or written. One in-place
 //! pass of len, only odd seats written, no allocation, no second buffer.
 //!
-//! The crux — four laws. THE ALTERNATING-SIGN LAW: after nyquist_flip, sample i holds saturate((-1)^i · x) — even seats unchanged, odd seats negated, checked against a
+//! The crux -- four laws. THE ALTERNATING-SIGN LAW: after nyquist_flip, sample i holds saturate((-1)^i - x) -- even seats unchanged, odd seats negated, checked against a
 //! hand-computed vector including both rails. THE INVOLUTION LAW, WITH AN HONEST RAIL: flip twice returns every sample to the byte EXCEPT an odd-indexed sample_min (-32768),
-//! whose true negation +32768 saturates to sample_max on the first flip and lands -32767 on the second — the fixed two's-complement asymmetry invert names, here confined to
+//! whose true negation +32768 saturates to sample_max on the first flip and lands -32767 on the second -- the fixed two's-complement asymmetry invert names, here confined to
 //! the odd seats; even seats, never touched, always round-trip exactly. THE MAGNITUDE LAW: off the rail |(-1)^i x| = |x|, so for a clip whose peak is not sample_min the peak
-//! magnitude (re-measured through ALES13) is unchanged — the modulation reflects the spectrum, never the peak sample's loudness. THE FIXED-SEAT / PARITY LAW: every
+//! magnitude (re-measured through ALES13) is unchanged -- the modulation reflects the spectrum, never the peak sample's loudness. THE FIXED-SEAT / PARITY LAW: every
 //! even-indexed sample is a fixed point (the operation acts only on odd seats, partitioning the clip by parity), and the all-zero and empty clips are each their own flip.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES107.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES107.
 //! Design read: active-designing/date/20260815/20260815-004633_fill-ales107-lotus-nyquist.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and `saturate`, the one true clamp reused here so the rail lives in one place; lotus/meter.rye
-//! (ALES13) — the peak/RMS meter, used only by the witness to prove a parity sign-flip off the rail moves no loudness.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip and its buf/len/samples, and `saturate`, the one true clamp reused here so the rail lives in one place; lotus/meter.rye
+//! (ALES13) -- the peak/RMS meter, used only by the witness to prove a parity sign-flip off the rail moves no loudness.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It flips the sign of existing odd-indexed samples and
-//! fabricates none; it changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker — the "Nyquist
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It flips the sign of existing odd-indexed samples and
+//! fabricates none; it changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker -- the "Nyquist
 //! frequency" it names is the interpretation of a pure per-sample sign pattern, not a measured rate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/nyquist.rye selftest
@@ -36,17 +36,17 @@ const meter = @import("meter.rye");
 pub const nyquist_version = "20260815.004633";
 
 /// Flip the sign of every odd-indexed sample of `clip` in place: for odd `i`, sample `i` becomes saturate(-x); even seats are left exactly as they are. This is
-/// y[n] = saturate((-1)^n · x[n]) — modulation by the Nyquist frequency, the parity-restricted twin of ALES105's invert. Reuses ALES2's `saturate` so the one non-exact
-/// sample — sample_min, whose negation +32768 is out of range — clamps to sample_max exactly as invert's rail already does, rather than wrapping. Total on any legal Clip: it
+/// y[n] = saturate((-1)^n - x[n]) -- modulation by the Nyquist frequency, the parity-restricted twin of ALES105's invert. Reuses ALES2's `saturate` so the one non-exact
+/// sample -- sample_min, whose negation +32768 is out of range -- clamps to sample_max exactly as invert's rail already does, rather than wrapping. Total on any legal Clip: it
 /// names no span, so it can raise no fault; the length and the samples-past-len are left exactly as they are.
 pub fn nyquist_flip(clip: *timeline.Clip) void {
-    // invariant: the length never claims more samples than the buffer holds — every seat we visit is inside the buffer.
+    // invariant: the length never claims more samples than the buffer holds -- every seat we visit is inside the buffer.
     assert(clip.len <= clip.buf.len);
 
     const original_len: u32 = clip.len;
     // Walk the odd seats only, starting at 1 and stepping by 2, so even seats are never written and the parity pattern is exact by construction.
     var i: u32 = 1;
-    // invariant: i visits every odd seat in [1, len) once and flips it in place — no odd seat is skipped, no even seat is touched, and none past len is read or written.
+    // invariant: i visits every odd seat in [1, len) once and flips it in place -- no odd seat is skipped, no even seat is touched, and none past len is read or written.
     while (i < original_len) : (i += 2) {
         // invariant: the sample is read out of the clip by this index with no bounds check of
         // its own
@@ -57,14 +57,14 @@ pub fn nyquist_flip(clip: *timeline.Clip) void {
         clip.buf[i] = timeline.saturate(-@as(i64, clip.buf[i]));
     }
 
-    // invariant: the Nyquist flip reseats values on a parity pattern, never the count — the length and its bound are exactly what they were.
+    // invariant: the Nyquist flip reseats values on a parity pattern, never the count -- the length and its bound are exactly what they were.
     assert(clip.len == original_len);
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE ALTERNATING-SIGN LAW — nyquist_flip lands a hand-computed vector, even seats unchanged and odd seats saturate(-x); THE INVOLUTION LAW — flip twice is the
+// --- selftest: THE ALTERNATING-SIGN LAW -- nyquist_flip lands a hand-computed vector, even seats unchanged and odd seats saturate(-x); THE INVOLUTION LAW -- flip twice is the
 //     identity off the floor, and pins odd-indexed sample_min seats to -32767 (their saturated round-trip) while even-indexed sample_min seats are untouched; THE MAGNITUDE
-//     LAW — for a clip whose peak is not sample_min the peak magnitude (re-measured through ALES13) is unchanged; THE FIXED-SEAT / PARITY LAW — even seats are fixed points,
+//     LAW -- for a clip whose peak is not sample_min the peak magnitude (re-measured through ALES13) is unchanged; THE FIXED-SEAT / PARITY LAW -- even seats are fixed points,
 //     and the all-zero clip and the empty clip are each their own flip ----------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -78,14 +78,14 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The clip's current peak magnitude, re-measured through ALES13 — the reader the magnitude law checks the result against.
+/// The clip's current peak magnitude, re-measured through ALES13 -- the reader the magnitude law checks the result against.
 fn clip_peak(clip: *const timeline.Clip) !u32 {
     const m = try meter.measure(clip);
     return meter.peak(&m);
 }
 
 fn run_selftest() !u8 {
-    // 1. THE ALTERNATING-SIGN LAW — nyquist_flip lands exactly the hand-computed vector: even seats (indices 0, 2, 4, …) unchanged, odd seats (1, 3, 5, …) negated. The i16
+    // 1. THE ALTERNATING-SIGN LAW -- nyquist_flip lands exactly the hand-computed vector: even seats (indices 0, 2, 4, ...) unchanged, odd seats (1, 3, 5, ...) negated. The i16
     //    floor sample_min rides along on an odd seat so its saturated negation (+32768 clamps to sample_max) is proven in place, and sample_max on an odd seat negates
     //    cleanly to -32767. A sample_min on an even seat is left untouched, proving the parity really holds.
     {
@@ -97,7 +97,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &[_]i16{ 10, 20, 30, -100, -32768, -32767, -32768, -5 })) return error.AlternatingSignWrong;
     }
 
-    // 2a. THE INVOLUTION LAW, off the rail — for a clip free of an odd-indexed sample_min, nyquist_flip twice returns every sample to the byte: the parity flip is its own
+    // 2a. THE INVOLUTION LAW, off the rail -- for a clip free of an odd-indexed sample_min, nyquist_flip twice returns every sample to the byte: the parity flip is its own
     //     inverse.
     {
         const clips = [_][]const i16{
@@ -120,7 +120,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2b. THE INVOLUTION LAW, on the rail — a clip holding sample_min on an ODD seat does NOT round-trip to the byte: nyquist_flip(-32768) = 32767, nyquist_flip(32767) =
+    // 2b. THE INVOLUTION LAW, on the rail -- a clip holding sample_min on an ODD seat does NOT round-trip to the byte: nyquist_flip(-32768) = 32767, nyquist_flip(32767) =
     //     -32767, so that odd seat lands -32767, not -32768. An even-seat sample_min is never touched and stays exact. This is the honest two's-complement asymmetry,
     //     saturated by design, confined to the odd seats.
     {
@@ -129,11 +129,11 @@ fn run_selftest() !u8 {
         try load_clip(&twice, &[_]i16{ -32768, -32768, 200, -1 });
         nyquist_flip(&twice);
         nyquist_flip(&twice);
-        //   even seat 0 (sample_min) untouched → -32768; odd seat 1 (sample_min) pinned → -32767; even seat 2 exact → 200; odd seat 3 exact → -1
+        //   even seat 0 (sample_min) untouched -> -32768; odd seat 1 (sample_min) pinned -> -32767; even seat 2 exact -> 200; odd seat 3 exact -> -1
         if (!eq(twice.samples(), &[_]i16{ -32768, -32767, 200, -1 })) return error.RailRoundTripWrong;
     }
 
-    // 3. THE MAGNITUDE LAW — off the rail |(-1)^i x| = |x|, so for a clip whose peak sample is not sample_min the peak magnitude, re-measured through ALES13, is unchanged:
+    // 3. THE MAGNITUDE LAW -- off the rail |(-1)^i x| = |x|, so for a clip whose peak sample is not sample_min the peak magnitude, re-measured through ALES13, is unchanged:
     //    the parity flip reflects the spectrum, never the peak sample's loudness. The length is unchanged too.
     {
         const clips = [_][]const i16{
@@ -153,7 +153,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 4. THE FIXED-SEAT / PARITY LAW — every even-indexed sample is a fixed point (the operation acts only on odd seats), and zero is the unique fixed point of negation, so
+    // 4. THE FIXED-SEAT / PARITY LAW -- every even-indexed sample is a fixed point (the operation acts only on odd seats), and zero is the unique fixed point of negation, so
     //    the all-zero clip and the empty clip are each their own flip. The even-seat fixity is proven directly: an all-even-nonzero clip flipped keeps its even seats, and a
     //    single-sample clip (index 0, even) is untouched.
     {
@@ -166,7 +166,7 @@ fn run_selftest() !u8 {
         nyquist_flip(&zeros);
         if (!eq(zeros.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.ZerosChanged;
 
-        // A single sample lives on the even seat 0, so it is a fixed point — the flip leaves it exactly itself.
+        // A single sample lives on the even seat 0, so it is a fixed point -- the flip leaves it exactly itself.
         var one = timeline.Clip{};
         try load_clip(&one, &[_]i16{-12345});
         nyquist_flip(&one);

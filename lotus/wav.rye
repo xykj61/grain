@@ -1,22 +1,22 @@
-//! lotus/wav.rye — ALES215: the canonical RIFF/WAVE container for mono 16-bit PCM. Two hundred and fifteen Lotus rungs edit an
-//! in-memory i16 buffer; this rung is the door every one of them leaves through — a way to turn a bounded buffer of samples
+//! lotus/wav.rye -- ALES215: the canonical RIFF/WAVE container for mono 16-bit PCM. Two hundred and fifteen Lotus rungs edit an
+//! in-memory i16 buffer; this rung is the door every one of them leaves through -- a way to turn a bounded buffer of samples
 //! into the open, decades-old .wav byte layout another program will open, and to read such a container back verify-before-trust
-//! so a torn or malformed file never yields a half-sample onto a timeline. Software only — a byte container, no real file
+//! so a torn or malformed file never yields a half-sample onto a timeline. Software only -- a byte container, no real file
 //! handle, no DAC, no acoustic or electrical fact asserted.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES215.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES215.
 //! Design read: active-designing/date/20260815/20260815-130110_fill-ales215-lotus-wav-container.md
-//! Stands on: the verify-before-trust frame idiom proven at lotus/wire.rye (ALES0) — the same two-gate discipline (structure
+//! Stands on: the verify-before-trust frame idiom proven at lotus/wire.rye (ALES0) -- the same two-gate discipline (structure
 //! whole AND sample-aligned), now speaking the RIFF/WAVE format the outside world already reads.
 //!
-//! HONEST SCOPE — software only. `encode`/`decode` convert between a bounded i16 buffer and the RIFF/WAVE byte layout; the
+//! HONEST SCOPE -- software only. `encode`/`decode` convert between a bounded i16 buffer and the RIFF/WAVE byte layout; the
 //! stored sample rate is an integer FIELD the container carries, not a real clock. No file is opened, no device driven, no
 //! network, no keys, no funds. The format (RIFF/WAVE, IBM/Microsoft 1991) is public and unencumbered, studied clean-room; this
 //! is our own bounded, asserted Rye implementation, siloed to lotus/.
 //!
 //! The canonical mono/16-bit header, 44 bytes, a single source of truth:
-//!   "RIFF"(4) · riff_size(u32 LE) · "WAVE"(4) · "fmt "(4) · fmt_size(u32=16) · format(u16=1 PCM) · channels(u16=1) ·
-//!   sample_rate(u32) · byte_rate(u32=rate*2) · block_align(u16=2) · bits(u16=16) · "data"(4) · data_size(u32) · payload(i16 LE).
+//!   "RIFF"(4) - riff_size(u32 LE) - "WAVE"(4) - "fmt "(4) - fmt_size(u32=16) - format(u16=1 PCM) - channels(u16=1) -
+//!   sample_rate(u32) - byte_rate(u32=rate*2) - block_align(u16=2) - bits(u16=16) - "data"(4) - data_size(u32) - payload(i16 LE).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/wav.rye selftest
 
@@ -26,7 +26,7 @@ const print = std.debug.print;
 
 pub const wav_version = "20260815.130110";
 
-/// One PCM sample is a little-endian signed 16-bit integer — two bytes. Named once so the sample-alignment border, the data
+/// One PCM sample is a little-endian signed 16-bit integer -- two bytes. Named once so the sample-alignment border, the data
 /// size, and the block align all read from a single source of truth.
 pub const sample_bytes: u32 = 2;
 
@@ -34,27 +34,27 @@ pub const sample_bytes: u32 = 2;
 /// Named once so encode and decode can never read a field at the wrong offset.
 pub const header_len: u32 = 44;
 
-/// The one PCM format code this container speaks — 1, uncompressed integer PCM. A container declaring anything else refuses
+/// The one PCM format code this container speaks -- 1, uncompressed integer PCM. A container declaring anything else refuses
 /// `NotPcm` rather than guessing at a codec it does not know.
 pub const pcm_format: u16 = 1;
 
-/// This rung carries one channel — mono. The stereo twin (channels == 2, interleaved) is its own later rung.
+/// This rung carries one channel -- mono. The stereo twin (channels == 2, interleaved) is its own later rung.
 pub const channels_mono: u16 = 1;
 
-/// Sixteen bits per sample — the common CD-audio depth the whole Lotus suite already edits as i16.
+/// Sixteen bits per sample -- the common CD-audio depth the whole Lotus suite already edits as i16.
 pub const bits_per_sample: u16 = 16;
 
 /// The fmt chunk body is always 16 bytes for canonical PCM. A container declaring another size refuses `BadFmtSize`.
 pub const fmt_chunk_size: u32 = 16;
 
-/// The widest sample buffer one container carries in this rung — a bounded ceiling so no size arithmetic overflows and no
+/// The widest sample buffer one container carries in this rung -- a bounded ceiling so no size arithmetic overflows and no
 /// unbounded read is ever attempted. A real long recording is a larger container; this rung proves the bounded case.
 pub const max_samples: u32 = 1 << 20;
 
-/// The widest data chunk — `max_samples` two-byte samples. Named so the whole-file bound reads from one source.
+/// The widest data chunk -- `max_samples` two-byte samples. Named so the whole-file bound reads from one source.
 pub const max_data: u32 = max_samples * sample_bytes;
 
-/// The widest whole container — header plus the widest data chunk.
+/// The widest whole container -- header plus the widest data chunk.
 pub const max_file: u32 = header_len + max_data;
 
 /// A sane upper bound on the sample-rate FIELD, so `sample_rate * sample_bytes` (the byte rate) can never overflow u32 and a
@@ -76,7 +76,7 @@ pub const WavError = error{
     BadFmtSize,
     /// The audio format code is not 1 (uncompressed integer PCM).
     NotPcm,
-    /// The channel count is not 1 — this rung carries mono only.
+    /// The channel count is not 1 -- this rung carries mono only.
     NotMono,
     /// The declared byte rate does not equal sample_rate * 2.
     ByteRateMismatch,
@@ -86,11 +86,11 @@ pub const WavError = error{
     NotSixteenBit,
     /// The chunk after fmt is not "data".
     BadData,
-    /// The declared data size is not a whole number of i16 samples — a container must never yield a torn half-sample.
+    /// The declared data size is not a whole number of i16 samples -- a container must never yield a torn half-sample.
     PartialSample,
-    /// The declared data size is past this rung's ceiling — refused before any sample is read.
+    /// The declared data size is past this rung's ceiling -- refused before any sample is read.
     DataOverflow,
-    /// The header plus declared data size does not equal the buffer length — a truncated or padded container.
+    /// The header plus declared data size does not equal the buffer length -- a truncated or padded container.
     DataSizeMismatch,
     /// The sample-rate field is zero or past the sane ceiling.
     BadSampleRate,
@@ -110,7 +110,7 @@ pub const Pcm = struct {
 fn put_tag(out: []u8, off: u32, tag: *const [4]u8) void {
     // invariant: the four tag bytes land wholly within the buffer.
     assert(off + 4 <= out.len);
-    // invariant: a tag is exactly four bytes — the RIFF chunk-id width.
+    // invariant: a tag is exactly four bytes -- the RIFF chunk-id width.
     assert(tag.len == 4);
     var i: u32 = 0;
     while (i < 4) : (i += 1) out[off + i] = tag[i];
@@ -128,7 +128,7 @@ fn tag_is(bytes: []const u8, off: u32, tag: *const [4]u8) bool {
 }
 
 /// Encode a buffer of mono i16 samples into a canonical RIFF/WAVE container written into `out`, returning the byte length.
-/// Every fault — too many samples, a wild rate, a buffer too small — refuses BEFORE a single byte is written, so a failed
+/// Every fault -- too many samples, a wild rate, a buffer too small -- refuses BEFORE a single byte is written, so a failed
 /// encode never leaves a half-written container.
 pub fn encode(sample_rate: u32, samples: []const i16, out: []u8) WavError!u32 {
     if (samples.len > max_samples) return error.TooManySamples;
@@ -167,7 +167,7 @@ pub fn encode(sample_rate: u32, samples: []const i16, out: []u8) WavError!u32 {
 }
 
 /// Prove a container whole and canonical, running every check in order BEFORE any sample is read, then read its samples into
-/// `out`. The size chain proves the file self-consistent and the audio border proves it sample-aligned — two independent
+/// `out`. The size chain proves the file self-consistent and the audio border proves it sample-aligned -- two independent
 /// gates, so a container can never yield a torn half-sample.
 pub fn decode(bytes: []const u8, out: []i16) WavError!Pcm {
     if (bytes.len < header_len) return error.FileTooShort;
@@ -187,7 +187,7 @@ pub fn decode(bytes: []const u8, out: []i16) WavError!Pcm {
     if (std.mem.readInt(u16, bytes[34..36], .little) != bits_per_sample) return error.NotSixteenBit;
     if (!tag_is(bytes, 36, "data")) return error.BadData;
     const data_size = std.mem.readInt(u32, bytes[40..44], .little);
-    // THE AUDIO BORDER — a data chunk that is not a whole number of i16 samples would yield a torn half-sample. Refuse it
+    // THE AUDIO BORDER -- a data chunk that is not a whole number of i16 samples would yield a torn half-sample. Refuse it
     // before a single sample is read.
     if (data_size % sample_bytes != 0) return error.PartialSample;
     if (data_size > max_data) return error.DataOverflow;
@@ -220,7 +220,7 @@ fn run_selftest() !u8 {
     var file: [header_len + 64 * sample_bytes]u8 = undefined;
     var back: [64]i16 = undefined;
 
-    // 1. THE ROUND-TRIP LAW — the buffer encodes and decodes back byte-for-byte, the rate preserved.
+    // 1. THE ROUND-TRIP LAW -- the buffer encodes and decodes back byte-for-byte, the rate preserved.
     const wrote = try encode(rate, &tone, &file);
     assert(wrote == header_len + tone.len * sample_bytes);
     {
@@ -231,7 +231,7 @@ fn run_selftest() !u8 {
         while (s < tone.len) : (s += 1) assert(back[s] == tone[s]);
     }
 
-    // 2. THE CANONICAL-HEADER LAW — the encoded bytes carry exactly the canonical mono/16-bit fields.
+    // 2. THE CANONICAL-HEADER LAW -- the encoded bytes carry exactly the canonical mono/16-bit fields.
     {
         assert(tag_is(file[0..wrote], 0, "RIFF"));
         assert(std.mem.readInt(u32, file[4..8], .little) == wrote - 8);
@@ -247,7 +247,7 @@ fn run_selftest() !u8 {
         assert(std.mem.readInt(u32, file[40..44], .little) == tone.len * sample_bytes);
     }
 
-    // 3. THE EMPTY LAW — zero samples encode to a valid 44-byte header and decode back to a count of zero.
+    // 3. THE EMPTY LAW -- zero samples encode to a valid 44-byte header and decode back to a count of zero.
     {
         const empty = [_]i16{};
         var ef: [header_len]u8 = undefined;
@@ -259,7 +259,7 @@ fn run_selftest() !u8 {
         assert(eg.sample_rate == rate);
     }
 
-    // 4. THE AUDIO-BORDER LAW — a data chunk one byte short of whole samples refuses PartialSample. Shorten the file and fix
+    // 4. THE AUDIO-BORDER LAW -- a data chunk one byte short of whole samples refuses PartialSample. Shorten the file and fix
     //    both size fields so only the border can catch it.
     {
         var f = file;
@@ -270,7 +270,7 @@ fn run_selftest() !u8 {
         if (decode(f[0..short_len], &back)) |_| return error.PartialSlipped else |e| if (e != error.PartialSample) return error.WrongPartial;
     }
 
-    // 5. THE FAULT LAW — every structural corruption refuses by name before a sample crosses.
+    // 5. THE FAULT LAW -- every structural corruption refuses by name before a sample crosses.
     {
         // Shorter than a whole header.
         if (decode(file[0 .. header_len - 1], &back)) |_| return error.ShortSlipped else |e| if (e != error.FileTooShort) return error.WrongShort;

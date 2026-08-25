@@ -1,29 +1,29 @@
-//! lotus/echo.rye — ALES66: the feedback delay — the echo that decays. The dynamics wing is whole (ALES49–65): every rung so far
-//! changes a sample by reading the PRESENT — a gain, a threshold crossing, a band. None yet lets a sample RETURN, heard again a while
+//! lotus/echo.rye -- ALES66: the feedback delay -- the echo that decays. The dynamics wing is whole (ALES49-65): every rung so far
+//! changes a sample by reading the PRESENT -- a gain, a threshold crossing, a band. None yet lets a sample RETURN, heard again a while
 //! later a little quieter each time. That returning is the foundation of a whole second wing of the craft: the echo, and above it the
-//! chorus, the flanger, and the reverb — each one a delay line read a different way. This rung opens the wing with its primitive, a
-//! FEEDBACK delay: y[i] = x[i] + fb·y[i-d], each sample the dry input plus a fraction fb = num/den of the OUTPUT one delay d earlier,
+//! chorus, the flanger, and the reverb -- each one a delay line read a different way. This rung opens the wing with its primitive, a
+//! FEEDBACK delay: y[i] = x[i] + fb-y[i-d], each sample the dry input plus a fraction fb = num/den of the OUTPUT one delay d earlier,
 //! so each echo feeds the next and the train decays. It opens the time-based wing exactly as ALES63's sidechain opened the keyed wing
-//! — one primitive, then compositions rather than new machinery.
+//! -- one primitive, then compositions rather than new machinery.
 //!
 //! The crux is the property a feedback loop owes on integer PCM: the echo must DECAY to silence and never WRAP. Two facts make it exact
 //! and safe. First, THE DELAY LINE IS THE CLIP BUFFER ITSELF: because the echo is applied in place, left to right, buf[i-d] for i-d
-//! inside the span already holds the OUTPUT written earlier this pass — true feedback, no separate delay buffer to size or allocate;
+//! inside the span already holds the OUTPUT written earlier this pass -- true feedback, no separate delay buffer to size or allocate;
 //! for i-d before the span it is the dry audio already there, and before the clip (i-d < 0) it is silence. So the delay memory a keeper
-//! would carry across a call boundary lives in the samples themselves — a span split in two equals the whole once, byte-for-byte, with
+//! would carry across a call boundary lives in the samples themselves -- a span split in two equals the whole once, byte-for-byte, with
 //! no extra carried state (an echo is a read of the samples already present). Second, FEEDBACK BELOW UNITY DECAYS AND THE SUM SATURATES
-//! ONCE: the one refusal that keeps the loop safe is num < den — a feedback at or above unity would grow without bound (a runaway), so
+//! ONCE: the one refusal that keeps the loop safe is num < den -- a feedback at or above unity would grow without bound (a runaway), so
 //! BadFeedback refuses it before any write; below unity each echo is strictly smaller than the last, shrinking to zero within the clip,
 //! and a constructive sum past the i16 rail SATURATES through timeline.saturate (ALES3's one true saturation, reused not re-derived)
-//! rather than wrapping. fb = 0 (a zero numerator) is the IDENTITY — the dry signal untouched, the echo turned fully off.
+//! rather than wrapping. fb = 0 (a zero numerator) is the IDENTITY -- the dry signal untouched, the echo turned fully off.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES66.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES66.
 //! Design read: active-designing/date/20260814/20260814-191111_fill-ales66-lotus-feedback-delay.md
-//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_max, max_clip, and the one true saturate this reuses; lotus/mix.rye
-//! (ALES3) — the same saturate reused for a constructive sum, the summing lesson.
+//! Stands on: lotus/timeline.rye (ALES2) -- the Clip, sample_max, max_clip, and the one true saturate this reuses; lotus/mix.rye
+//! (ALES3) -- the same saturate reused for a constructive sum, the summing lesson.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no
-//! network, no keys, no funds, no real device, no real sample rate — the delay is a count of sample INDICES, not milliseconds against a
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no
+//! network, no keys, no funds, no real device, no real sample rate -- the delay is a count of sample INDICES, not milliseconds against a
 //! clock (a real-time echo through the ALES5 clock is a later rung, exactly as fade_ms followed the index-named fade); the feedback is a
 //! plain fraction. No lookahead beyond the in-place delay read. One delayed read and at most one multiply-divide per sample; the sum
 //! runs in i64 and saturates once, so nothing on the path can overflow.
@@ -41,39 +41,39 @@ pub const echo_version = "20260814.191111";
 /// The feedback delay's faults, one consistent name each: a delay of zero or wider than the widest clip, a feedback at or above unity
 /// (a runaway that would never decay) or with a zero denominator, and a span outside the clip's samples. Each refused before any write.
 pub const EchoError = error{
-    /// A delay of zero (a sample cannot feed back into itself) or longer than max_clip samples — refused, no write.
+    /// A delay of zero (a sample cannot feed back into itself) or longer than max_clip samples -- refused, no write.
     BadDelay,
-    /// A feedback numerator at or above the denominator (would never decay — a runaway) or a zero denominator — refused, no write.
+    /// A feedback numerator at or above the denominator (would never decay -- a runaway) or a zero denominator -- refused, no write.
     BadFeedback,
-    /// A span outside the current samples — refused, no write.
+    /// A span outside the current samples -- refused, no write.
     BadRange,
 };
 
-/// Validate an echo's delay, feedback, and span against a clip length WITHOUT touching a sample — the same three invariants `echo`
+/// Validate an echo's delay, feedback, and span against a clip length WITHOUT touching a sample -- the same three invariants `echo`
 /// enforced inline, factored out so a stereo carry can validate one shared delay, feedback, and span against both channels' shared
 /// length before either channel is mutated (mirroring ALES71/72/73/75's own precheck refactors). Refuses BadDelay (a delay of zero or
-/// wider than max_clip), BadFeedback (a zero denominator or a feedback at or above unity — a runaway), and BadRange (a span past the
+/// wider than max_clip), BadFeedback (a zero denominator or a feedback at or above unity -- a runaway), and BadRange (a span past the
 /// clip's samples), each before any write. Takes a plain length rather than a clip, so it reads no buffer.
 pub fn precheck(clip_len: u32, start: u32, count: u32, delay: u32, fb_num: u32, fb_den: u32) EchoError!void {
     // invariant: the delay is at least one sample (no self-feedback) and no wider than the widest clip. Before any write.
     if (delay == 0) return error.BadDelay;
     if (delay > timeline.max_clip) return error.BadDelay;
-    // invariant: the feedback is a legal fraction strictly below unity — a nonzero denominator, and a numerator under it so each echo
+    // invariant: the feedback is a legal fraction strictly below unity -- a nonzero denominator, and a numerator under it so each echo
     // is strictly smaller than the last and the loop always decays. fb_num == 0 (the dry identity) is legal.
     if (fb_den == 0) return error.BadFeedback;
     if (fb_num >= fb_den) return error.BadFeedback;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    // invariant: the span lies wholly within the current samples -- checked without underflow (count vs the remainder).
     if (start > clip_len) return error.BadRange;
     if (count > clip_len - start) return error.BadRange;
 }
 
 /// Echo `count` samples starting at `start` in place in `clip`: each sample becomes the dry input plus a fraction `fb_num/fb_den` of the
-/// OUTPUT one `delay` earlier — y[i] = saturate(x[i] + fb·y[i-delay]). The delay line is the clip buffer itself: applied in place, left
+/// OUTPUT one `delay` earlier -- y[i] = saturate(x[i] + fb-y[i-delay]). The delay line is the clip buffer itself: applied in place, left
 /// to right, `buf[i-delay]` for i-delay inside the span already holds the output written earlier this pass (true feedback), for i-delay
-/// before the span it is the dry audio already there, and before the clip (i-delay < 0) it is silence — so an echo needs no carried
+/// before the span it is the dry audio already there, and before the clip (i-delay < 0) it is silence -- so an echo needs no carried
 /// state, and a span in two pieces equals the whole once. Feedback below unity decays to silence within the clip; a constructive sum
-/// past the i16 rail saturates (ALES3's one true saturation, reused) rather than wrapping. `fb_num == 0` is the identity — the dry
-/// signal untouched. Refuses BadDelay, BadFeedback, and BadRange before any write; on refusal the clip is untouched. Values only — never
+/// past the i16 rail saturates (ALES3's one true saturation, reused) rather than wrapping. `fb_num == 0` is the identity -- the dry
+/// signal untouched. Refuses BadDelay, BadFeedback, and BadRange before any write; on refusal the clip is untouched. Values only -- never
 /// a length.
 pub fn echo(
     clip: *timeline.Clip,
@@ -83,7 +83,7 @@ pub fn echo(
     fb_num: u32,
     fb_den: u32,
 ) EchoError!void {
-    // invariant: the delay, feedback, and span are all legal against this clip's length — checked before any write, so on refusal the
+    // invariant: the delay, feedback, and span are all legal against this clip's length -- checked before any write, so on refusal the
     // clip is untouched (the same three invariants, now shared with the stereo carry through `precheck`).
     try precheck(clip.len, start, count, delay, fb_num, fb_den);
 
@@ -97,11 +97,11 @@ pub fn echo(
         // span it is the dry audio already there; before the clip it is silence (0). i - delay computed as signed to test the floor.
         const j: i64 = @as(i64, i) - @as(i64, delay);
         const d_out: i64 = if (j >= 0) @as(i64, clip.buf[@intCast(j)]) else 0;
-        // invariant: the delayed output already fits the i16 rail — it is either a written output (saturated) or dry audio.
+        // invariant: the delayed output already fits the i16 rail -- it is either a written output (saturated) or dry audio.
         assert(d_out >= @as(i64, timeline.sample_min) and d_out <= @as(i64, timeline.sample_max));
-        // fb·d_out divided in i64 (num < den, |d_out| <= 32768, so |num·d_out| < 32768·32768 fits i64); the sum saturates once.
+        // fb-d_out divided in i64 (num < den, |d_out| <= 32768, so |num-d_out| < 32768-32768 fits i64); the sum saturates once.
         const fed: i64 = @divTrunc(num * d_out, den);
-        // invariant: the fed-back term is strictly smaller in magnitude than the delayed output — feedback below unity only shrinks it.
+        // invariant: the fed-back term is strictly smaller in magnitude than the delayed output -- feedback below unity only shrinks it.
         assert((if (fed < 0) -fed else fed) <= (if (d_out < 0) -d_out else d_out));
         clip.buf[i] = timeline.saturate(x + fed);
     }
@@ -130,7 +130,7 @@ fn abs16(v: i16) i32 {
 }
 
 fn run_selftest() !u8 {
-    // 1. silence stays silence — an all-zero clip echoes to all zeros under any legal knobs.
+    // 1. silence stays silence -- an all-zero clip echoes to all zeros under any legal knobs.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. fb = 0 IS THE IDENTITY — a zero feedback numerator adds nothing, the dry signal passes byte-for-byte at any delay.
+    // 2. fb = 0 IS THE IDENTITY -- a zero feedback numerator adds nothing, the dry signal passes byte-for-byte at any delay.
     {
         const sig = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
         var clip = timeline.Clip{};
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &sig)) return error.ZeroFbNotIdentity;
     }
 
-    // 3. A SINGLE IMPULSE YIELDS AN EXACT DECAYING ECHO TRAIN — an impulse of 8000 at index 0, delay 2, fb = 1/2, lands echoes at
+    // 3. A SINGLE IMPULSE YIELDS AN EXACT DECAYING ECHO TRAIN -- an impulse of 8000 at index 0, delay 2, fb = 1/2, lands echoes at
     //    2, 4, 6 of exactly half the previous each: 8000 -> 4000 -> 2000 -> 1000. Computed by hand and demanded byte-for-byte. The odd
     //    indices stay silent (nothing feeds them), so the train is a clean geometric decay on the even lane.
     {
@@ -156,12 +156,12 @@ fn run_selftest() !u8 {
         try load_clip(&clip, &[_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 });
         try echo(&clip, 0, clip.len, 2, 1, 2);
         // index 0: 8000 (dry, no feedback reaches back before the clip)
-        // index 2: 0 + 1/2·8000 = 4000; index 4: 0 + 1/2·4000 = 2000; index 6: 0 + 1/2·2000 = 1000; odd indices untouched (0)
+        // index 2: 0 + 1/2-8000 = 4000; index 4: 0 + 1/2-4000 = 2000; index 6: 0 + 1/2-2000 = 1000; odd indices untouched (0)
         const want = [_]i16{ 8000, 0, 4000, 0, 2000, 0, 1000, 0 };
         if (!eq(clip.samples(), &want)) return error.EchoTrainWrong;
     }
 
-    // 4. THE ECHOES DECAY, NEVER GROW — over the same even lane as case 3 the successive echo magnitudes strictly shrink and reach zero
+    // 4. THE ECHOES DECAY, NEVER GROW -- over the same even lane as case 3 the successive echo magnitudes strictly shrink and reach zero
     //    within the clip; @divTrunc pulls a small echo to silence, so the train always ends. Proven by reading the even lane.
     {
         var clip = timeline.Clip{};
@@ -181,7 +181,7 @@ fn run_selftest() !u8 {
         if (!reached_zero) return error.EchoDidNotReachSilence;
     }
 
-    // 5. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS — a loud dry sample landing atop a loud in-phase echo would exceed the i16
+    // 5. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS -- a loud dry sample landing atop a loud in-phase echo would exceed the i16
     //    rail; the sum pins to sample_max (ALES3's ceiling) instead of wrapping negative. A steady 30000 with fb = 1/2 feeds itself:
     //    index 2 = 30000 + 15000 = 45000, saturated to 32767.
     {
@@ -189,12 +189,12 @@ fn run_selftest() !u8 {
         try load_clip(&clip, &[_]i16{ 30000, 30000, 30000, 30000 });
         try echo(&clip, 0, clip.len, 2, 1, 2);
         const out = clip.samples();
-        // index 0,1: dry 30000 (no feedback yet); index 2: 30000 + 1/2·30000 = 45000 -> 32767; index 3: 30000 + 1/2·30000 = 45000 -> 32767
+        // index 0,1: dry 30000 (no feedback yet); index 2: 30000 + 1/2-30000 = 45000 -> 32767; index 3: 30000 + 1/2-30000 = 45000 -> 32767
         const want = [_]i16{ 30000, 30000, 32767, 32767 };
         if (!eq(out, &want)) return error.SaturateWrong;
     }
 
-    // 6. SPLIT EQUALS WHOLE, NO CARRIED STATE — echoing [0,4) then [4,8) equals one echo over [0,8) byte-for-byte, because the delay
+    // 6. SPLIT EQUALS WHOLE, NO CARRIED STATE -- echoing [0,4) then [4,8) equals one echo over [0,8) byte-for-byte, because the delay
     //    line is the clip buffer: the second call reads the outputs the first wrote. The seam is invisible with no state threaded, so
     //    an echo can span and automate for free.
     {

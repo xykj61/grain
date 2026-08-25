@@ -1,8 +1,8 @@
-//! mantra/recall_two_way_sync.rye — two-way sync: symmetric syncRevision composition.
+//! mantra/recall_two_way_sync.rye -- two-way sync: symmetric syncRevision composition.
 //!
 //! syncRevision already carries one direction with no asymmetry baked in. This file
-//! composes it twice — source and destination swapped, peer name matching the revision
-//! owner — so both catalogs gain what the other held. Composing rather than extending:
+//! composes it twice -- source and destination swapped, peer name matching the revision
+//! owner -- so both catalogs gain what the other held. Composing rather than extending:
 //! recall_lap1.rye is imported and left standing.
 //!
 //!   rye build mantra/recall_two_way_sync.rye -femit-bin=mantra/bin/recall-two-way-sync

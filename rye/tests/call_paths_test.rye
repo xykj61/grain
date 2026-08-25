@@ -2,8 +2,8 @@
 //! covers the call-path strengthening pass.
 //!
 //! Goal: run the standard-library functions the `rye` CLI and the Rishi shell
-//! actually call — `std.mem.trim`, `std.mem.eql`, `std.mem.indexOfScalar` and
-//! `indexOfScalarPos` (which call `findScalarPos`), and `std.fmt.parseInt` — and
+//! actually call -- `std.mem.trim`, `std.mem.eql`, `std.mem.indexOfScalar` and
+//! `indexOfScalarPos` (which call `findScalarPos`), and `std.fmt.parseInt` -- and
 //! print their results, so the parity gate can confirm the strengthened std
 //! behaves byte-for-byte like the baseline. The TAME assertions we added state
 //! invariants; they must never change what these functions return.

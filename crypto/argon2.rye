@@ -1,30 +1,30 @@
-//! crypto/argon2.rye — Season G (Cryptography), the memory-hard password rung: Argon2 (RFC 9106) authored in pure Rye, all three modes
-//! — Argon2d (data-dependent), Argon2i (data-independent), and Argon2id (the hybrid). Argon2 is the standard "turn a memorable password
-//! into a strong key, at a deliberately large memory cost" primitive — the one KDF built to make brute-forcing a stolen hash expensive in
+//! crypto/argon2.rye -- Season G (Cryptography), the memory-hard password rung: Argon2 (RFC 9106) authored in pure Rye, all three modes
+//! -- Argon2d (data-dependent), Argon2i (data-independent), and Argon2id (the hybrid). Argon2 is the standard "turn a memorable password
+//! into a strong key, at a deliberately large memory cost" primitive -- the one KDF built to make brute-forcing a stolen hash expensive in
 //! RAM as well as time. It is the stone Vault stands on: a keeper's password becomes a key without that key ever having to live on the
 //! device, so custody can rest on something a hand remembers rather than a secret a disk holds.
 //!
-//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-//! Kin: crypto/blake2b.rye (the hash beneath it — Argon2's whole diffusion is BLAKE2b's, GREEN on metal). Monocypher (vendor/monocypher,
-//! CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye, studied clean-room from the public standard RFC 9106 and Zig's own MIT
+//! Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+//! Kin: crypto/blake2b.rye (the hash beneath it -- Argon2's whole diffusion is BLAKE2b's, GREEN on metal). Monocypher (vendor/monocypher,
+//! CC0/BSD-dual) is the parity DISCIPLINE target -- our own Rye, studied clean-room from the public standard RFC 9106 and Zig's own MIT
 //! reference (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX — Argon2 fills a large memory of 1024-byte blocks and stirs each one from two earlier blocks through a BlaMka permutation
+//! THE CRUX -- Argon2 fills a large memory of 1024-byte blocks and stirs each one from two earlier blocks through a BlaMka permutation
 //! (BLAKE2b's round function over 64-bit words, with an extra 64-bit multiply that forbids a lane-only shortcut), over t passes:
 //!   H0        = BLAKE2b(LE32 params ‖ LE32(pwlen) ‖ pw ‖ LE32(saltlen) ‖ salt ‖ LE32(secretlen) ‖ secret ‖ LE32(adlen) ‖ ad)
 //!   first two blocks of each lane = blake2b_long(1024, H0 ‖ LE32(index) ‖ LE32(lane))
 //!   every later block[i]          = G(block[i-1], block[phi(i)]), phi data-independent (i) or data-dependent (d), xored across passes
 //!   derived key = blake2b_long(outlen, xor of the last block of every lane)
-//! No new mathematics — the mixing IS BLAKE2b's, the memory-hardness is the RFC's block schedule. The same password, salt, secret, ad,
+//! No new mathematics -- the mixing IS BLAKE2b's, the memory-hardness is the RFC's block schedule. The same password, salt, secret, ad,
 //! and parameters always fold to the same key anyone can replay against the published RFC 9106 known-answers.
 //!
-//! HONEST SCOPE — software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The primitive
+//! HONEST SCOPE -- software only, purely LOCAL, TEST inputs, no real identity key, no network, no funds, no real device. The primitive
 //! calls no std.crypto. It is proven at selftest byte-for-byte against RFC 9106's own published known-answer vectors for all three modes
-//! (the p=4, secret-and-ad-folded 32-byte vector each mode publishes), and against the reference argon2 p=1 24-byte vectors — the same
+//! (the p=4, secret-and-ad-folded 32-byte vector each mode publishes), and against the reference argon2 p=1 24-byte vectors -- the same
 //! answers Zig's independent std.crypto argon2 checks itself against. Constant-time timing-safety stays the Season's named horizon;
 //! Argon2i's data-independent addressing is the mode chosen for password hashing precisely because it does not branch on the secret, yet
-//! this module makes no measured timing claim. Deriving a key from a keeper's real password stays the custody gate — this builds and
+//! this module makes no measured timing claim. Deriving a key from a keeper's real password stays the custody gate -- this builds and
 //! verifies; it never holds the password or the key.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/argon2.rye selftest
@@ -45,7 +45,7 @@ pub const block_bytes: u32 = 1024;
 pub const sync_points: u32 = 4;
 pub const structure_version: u32 = 0x13;
 
-/// One 1024-byte Argon2 block as 128 words — the unit the fill schedule reads two of and writes one of.
+/// One 1024-byte Argon2 block as 128 words -- the unit the fill schedule reads two of and writes one of.
 const Block = [block_words]u64;
 
 /// Argon2's three modes, numbered exactly as RFC 9106 numbers them so @intFromEnum feeds the H0 parameter block and the address seed the
@@ -58,8 +58,8 @@ pub const Mode = enum(u32) {
 };
 
 /// The largest inputs and costs this primitive accepts, each refused at the edge before a byte is mixed. Password, salt, secret, and ad
-/// are bounded modestly because Argon2's H0 assembles them into one buffer (a streaming BLAKE2b is a later rung); the real uses — a
-/// passphrase, a random salt, a keyed secret — sit far below these. The memory bound names the block-count ceiling the arena allocation
+/// are bounded modestly because Argon2's H0 assembles them into one buffer (a streaming BLAKE2b is a later rung); the real uses -- a
+/// passphrase, a random salt, a keyed secret -- sit far below these. The memory bound names the block-count ceiling the arena allocation
 /// cites; the time and parallelism bounds keep every counter within a single u32 and every loop declaring its maximum.
 pub const min_output_bytes: u32 = 4;
 pub const max_output_bytes: u32 = 1 << 10;
@@ -80,24 +80,24 @@ pub const max_init_hash_bytes: u32 = 24 + 4 * 4 + max_password_bytes + max_salt_
 
 /// The faults this primitive can raise, each refused at the edge before any memory is filled.
 pub const Argon2Error = error{
-    /// A derived-key request shorter than min_output_bytes or longer than max_output_bytes — refused before H0 is computed.
+    /// A derived-key request shorter than min_output_bytes or longer than max_output_bytes -- refused before H0 is computed.
     BadOutputLen,
-    /// A password longer than max_password_bytes — refused before H0 mixes it.
+    /// A password longer than max_password_bytes -- refused before H0 mixes it.
     PasswordTooLong,
-    /// A salt shorter than min_salt_bytes or longer than max_salt_bytes — refused before H0 mixes it (RFC 9106 requires at least 8).
+    /// A salt shorter than min_salt_bytes or longer than max_salt_bytes -- refused before H0 mixes it (RFC 9106 requires at least 8).
     BadSaltLen,
-    /// A secret longer than max_secret_bytes — refused before H0 folds it.
+    /// A secret longer than max_secret_bytes -- refused before H0 folds it.
     SecretTooLong,
-    /// An ad longer than max_ad_bytes — refused before H0 folds it.
+    /// An ad longer than max_ad_bytes -- refused before H0 folds it.
     AdTooLong,
-    /// A time cost below min_time or above max_time — refused before any block is filled.
+    /// A time cost below min_time or above max_time -- refused before any block is filled.
     BadTimeCost,
-    /// A parallelism below min_parallelism or above max_parallelism — refused before any block is filled.
+    /// A parallelism below min_parallelism or above max_parallelism -- refused before any block is filled.
     BadParallelism,
-    /// A memory cost that yields more than max_memory_blocks, or too small for the parallelism (RFC 9106 needs m/8 >= p) — refused before
+    /// A memory cost that yields more than max_memory_blocks, or too small for the parallelism (RFC 9106 needs m/8 >= p) -- refused before
     /// the arena is asked for a block.
     BadMemoryCost,
-    /// The arena could not supply the memory the cost asked for — surfaced honestly rather than swallowed.
+    /// The arena could not supply the memory the cost asked for -- surfaced honestly rather than swallowed.
     OutOfMemory,
 };
 
@@ -112,10 +112,10 @@ pub const Params = struct {
     ad: []const u8,
 };
 
-/// BLAKE2b's variable-length hash of a length-prefixed message, extended past 64 bytes by RFC 9106's own chain — the "H prime" every
+/// BLAKE2b's variable-length hash of a length-prefixed message, extended past 64 bytes by RFC 9106's own chain -- the "H prime" every
 /// Argon2 block and the final key derivation stand on. For out.len <= 64 it is one BLAKE2b at that output length over LE32(out.len) ‖ in;
 /// past 64 it walks V(1) = BLAKE2b(LE32(out.len) ‖ in), V(i+1) = BLAKE2b(V(i)), emitting the low 32 bytes of each V and a final
-/// out.len-mod block. It authors no cryptography — it composes crypto/blake2b.rye's GREEN hash.
+/// out.len-mod block. It authors no cryptography -- it composes crypto/blake2b.rye's GREEN hash.
 fn blake2b_long(out: []u8, in: []const u8) Argon2Error!void {
     // invariant: the output is a real request and the pre-image fits the assembled-message buffer, so neither the prefix nor the chain
     // can run past a bound.
@@ -137,13 +137,13 @@ fn blake2b_long(out: []u8, in: []const u8) Argon2Error!void {
     const pre_len: u32 = 4 + in_len;
 
     if (out.len <= blake2b.digest_len) {
-        // One BLAKE2b at the exact requested output length — the whole answer, no chain.
+        // One BLAKE2b at the exact requested output length -- the whole answer, no chain.
         blake2b.hash_var(out, pre[0..pre_len]) catch return error.BadOutputLen;
         return;
     }
 
     // Past 64 bytes: RFC 9106's chain. V(1) is the full 64-byte BLAKE2b of the prefixed pre-image; each block emits the low 32 bytes,
-    // and the final tail is a variable-length BLAKE2b of the LAST emitted V — so V is rehashed only between emits, never after the last.
+    // and the final tail is a variable-length BLAKE2b of the LAST emitted V -- so V is rehashed only between emits, never after the last.
     var v = blake2b.hash512(pre[0..pre_len]) catch return error.BadOutputLen;
     const total: u32 = @intCast(out.len);
     const half: u32 = blake2b.digest_len / 2;
@@ -162,7 +162,7 @@ fn blake2b_long(out: []u8, in: []const u8) Argon2Error!void {
 
     // The final tail: a BLAKE2b at exactly the remaining length over the last emitted V, emitted whole.
     const tail: u32 = total - written;
-    // invariant: the tail is a real, digest-bounded request — the loop above stopped with 1..64 bytes left.
+    // invariant: the tail is a real, digest-bounded request -- the loop above stopped with 1..64 bytes left.
     assert(tail >= 1 and tail <= blake2b.digest_len);
     blake2b.hash_var(out[written .. written + tail], &v) catch return error.BadOutputLen;
     written += tail;
@@ -170,18 +170,18 @@ fn blake2b_long(out: []u8, in: []const u8) Argon2Error!void {
     assert(written == total);
 }
 
-/// The BlaMka mixing word — BLAKE2b's addition with an extra full 64-bit multiply of the low halves, doubled. That multiply is what makes
+/// The BlaMka mixing word -- BLAKE2b's addition with an extra full 64-bit multiply of the low halves, doubled. That multiply is what makes
 /// Argon2 memory-hard rather than merely BLAKE2b-in-a-loop: it forbids computing a block from a cheap partial state.
 inline fn f_blamka(x: u64, y: u64) u64 {
-    // invariant: the multiply is of the low 32 bits of each operand, widened to 64 — the RFC's own fBlaMka, wrapping throughout.
+    // invariant: the multiply is of the low 32 bits of each operand, widened to 64 -- the RFC's own fBlaMka, wrapping throughout.
     const xy: u64 = @as(u64, @as(u32, @truncate(x))) *% @as(u64, @as(u32, @truncate(y)));
     return x +% y +% 2 *% xy;
 }
 
-/// The BlaMka permutation over sixteen 64-bit words — BLAKE2b's eight quarter-rounds with f_blamka in place of plain addition and the
+/// The BlaMka permutation over sixteen 64-bit words -- BLAKE2b's eight quarter-rounds with f_blamka in place of plain addition and the
 /// fixed rotations 32, 24, 16, 63. Applied to every row and then every column of a block, it is Argon2's whole diffusion.
 inline fn blamka(x: *[16]u64) void {
-    // invariant: the permutation is exactly eight quarter-rounds, each stirring four of the sixteen words — no more, no fewer.
+    // invariant: the permutation is exactly eight quarter-rounds, each stirring four of the sixteen words -- no more, no fewer.
     const rounds = [8][4]u32{
         .{ 0, 4, 8, 12 }, .{ 1, 5, 9, 13 }, .{ 2, 6, 10, 14 }, .{ 3, 7, 11, 15 },
         .{ 0, 5, 10, 15 }, .{ 1, 6, 11, 12 }, .{ 2, 7, 8, 13 }, .{ 3, 4, 9, 14 },
@@ -204,10 +204,10 @@ inline fn blamka(x: *[16]u64) void {
 
 /// Argon2's compression G: out = in1 XOR in2 XOR P(in1 XOR in2), where P is the BlaMka permutation applied first to each of the eight
 /// rows of sixteen words and then to each of the eight columns. When xor is true the result is xored into out (a later pass folding over
-/// an existing block); when false it overwrites. in1 may alias out — every input word is read once, before its slot is written, because
+/// an existing block); when false it overwrites. in1 may alias out -- every input word is read once, before its slot is written, because
 /// the permuted block t is computed in full first.
 fn process_block(out: *Block, in1: *const Block, in2: *const Block, comptime xor: bool) void {
-    // invariant: a block is exactly 128 words — the compression's whole width, proven at compile time.
+    // invariant: a block is exactly 128 words -- the compression's whole width, proven at compile time.
     comptime assert(block_words == 128);
 
     var t: Block = undefined;
@@ -256,7 +256,7 @@ fn init_hash(h0: *[blake2b.digest_len + 8]u8, out_len: u32, password: []const u8
     var buf: [max_init_hash_bytes]u8 = undefined;
     var n: u32 = 0;
 
-    // The 24-byte parameter block: p, output length, m, t, structure version, mode — each a little-endian u32, in the RFC's order.
+    // The 24-byte parameter block: p, output length, m, t, structure version, mode -- each a little-endian u32, in the RFC's order.
     std.mem.writeInt(u32, buf[n..][0..4], params.p, .little);
     n += 4;
     std.mem.writeInt(u32, buf[n..][0..4], out_len, .little);
@@ -275,7 +275,7 @@ fn init_hash(h0: *[blake2b.digest_len + 8]u8, out_len: u32, password: []const u8
     n = append_len_prefixed(&buf, n, params.secret);
     n = append_len_prefixed(&buf, n, params.ad);
 
-    // invariant: the assembly stayed within the named ceiling — every input was bounded so this cannot overflow.
+    // invariant: the assembly stayed within the named ceiling -- every input was bounded so this cannot overflow.
     assert(n <= max_init_hash_bytes);
 
     const digest = blake2b.hash512(buf[0..n]) catch return error.PasswordTooLong;
@@ -287,7 +287,7 @@ fn init_hash(h0: *[blake2b.digest_len + 8]u8, out_len: u32, password: []const u8
 /// Append LE32(data.len) then data to buf at offset n, returning the new offset. One helper so each of the four inputs enters H0 the same
 /// length-prefixed way.
 fn append_len_prefixed(buf: *[max_init_hash_bytes]u8, n_in: u32, data: []const u8) u32 {
-    // invariant: the prefix and the data fit — the caller bounded every data slice below the buffer's headroom.
+    // invariant: the prefix and the data fit -- the caller bounded every data slice below the buffer's headroom.
     assert(n_in + 4 + data.len <= max_init_hash_bytes);
     var n = n_in;
     std.mem.writeInt(u32, buf[n..][0..4], @as(u32, @intCast(data.len)), .little);
@@ -355,7 +355,7 @@ fn index_alpha(rand: u64, lanes: u32, segments: u32, threads: u32, n: u32, slice
     return ref_lane * lanes + rel;
 }
 
-/// Fill one segment of one lane in one pass — the inner loop of Argon2. For Argon2i (and Argon2id's first half-pass) it derives the
+/// Fill one segment of one lane in one pass -- the inner loop of Argon2. For Argon2i (and Argon2id's first half-pass) it derives the
 /// reference-block randomness from address blocks it computes fresh (data-independent); otherwise it reads the previous block's first
 /// word (data-dependent). Each new block is G of the previous block and the referenced block, xored over the existing block after pass 0.
 fn process_segment(blocks: []Block, passes: u32, memory: u32, threads: u32, mode: Mode, lanes: u32, segments: u32, n: u32, slice: u32, lane: u32) void {
@@ -408,7 +408,7 @@ fn process_segment(blocks: []Block, passes: u32, memory: u32, threads: u32, mode
 
         const ref = index_alpha(random, lanes, segments, threads, n, slice, lane, index);
         const fold = n != 0;
-        // invariant: prev and ref both name blocks already written this fill — Argon2's schedule guarantees it, asserted by range.
+        // invariant: prev and ref both name blocks already written this fill -- Argon2's schedule guarantees it, asserted by range.
         assert(offset < memory and prev < memory and ref < memory);
         const cur = &blocks[offset];
         const p_prev = &blocks[prev];
@@ -421,7 +421,7 @@ fn process_segment(blocks: []Block, passes: u32, memory: u32, threads: u32, mode
     }
 }
 
-/// Sweep the whole memory, pass by pass, slice by slice, lane by lane — the RFC's synchronized fill. Single-lane and multi-lane both run
+/// Sweep the whole memory, pass by pass, slice by slice, lane by lane -- the RFC's synchronized fill. Single-lane and multi-lane both run
 /// sequentially here; the answer is identical to a threaded fill because the sync-slice barriers make lane order within a slice
 /// irrelevant to the result.
 fn process_blocks(blocks: []Block, time: u32, memory: u32, threads: u32, mode: Mode, lanes: u32, segments: u32) void {
@@ -439,7 +439,7 @@ fn process_blocks(blocks: []Block, time: u32, memory: u32, threads: u32, mode: M
     }
 }
 
-/// Fold every lane's last block into the final block, serialize it, and blake2b_long it to the requested output length — the RFC's tag
+/// Fold every lane's last block into the final block, serialize it, and blake2b_long it to the requested output length -- the RFC's tag
 /// extraction, the whole memory collapsed into the derived key.
 fn finalize(blocks: []Block, memory: u32, lanes: u32, out: []u8) Argon2Error!void {
     // invariant: there is a last block and each lane's last block lands inside the memory.
@@ -457,10 +457,10 @@ fn finalize(blocks: []Block, memory: u32, lanes: u32, out: []u8) Argon2Error!voi
     try blake2b_long(out, &block);
 }
 
-/// Derive a key from a password and salt at a chosen memory and time cost — Argon2 whole, all three modes. The blocks live in the season
+/// Derive a key from a password and salt at a chosen memory and time cost -- Argon2 whole, all three modes. The blocks live in the season
 /// arena, sized to exactly the memory cost and refused above the named ceiling; every input is bounded at the edge before a byte is mixed.
 pub fn kdf(garden: std.mem.Allocator, out: []u8, password: []const u8, salt: []const u8, params: Params, mode: Mode) Argon2Error!void {
-    // invariant: the output request is real — below four bytes Argon2's tag extraction is undefined, above the ceiling it is unbounded.
+    // invariant: the output request is real -- below four bytes Argon2's tag extraction is undefined, above the ceiling it is unbounded.
     if (out.len < min_output_bytes or out.len > max_output_bytes) return error.BadOutputLen;
     if (password.len > max_password_bytes) return error.PasswordTooLong;
     if (salt.len < min_salt_bytes or salt.len > max_salt_bytes) return error.BadSaltLen;
@@ -521,7 +521,7 @@ fn check_primary(garden: std.mem.Allocator, mode: Mode, want: *const [32]u8) !vo
     if (!bytes_eq(&dk, want)) return error.PrimaryMismatch;
 }
 
-/// One reference argon2 p=1 vector: password "password", salt "somesalt", empty secret and ad, t=1, m=64, p=1, 24-byte output — proving
+/// One reference argon2 p=1 vector: password "password", salt "somesalt", empty secret and ad, t=1, m=64, p=1, 24-byte output -- proving
 /// the single-lane path and a sub-digest variable-length output.
 fn check_p1(garden: std.mem.Allocator, mode: Mode, want: *const [24]u8) !void {
     var dk: [24]u8 = undefined;
@@ -530,7 +530,7 @@ fn check_p1(garden: std.mem.Allocator, mode: Mode, want: *const [24]u8) !void {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    // 1. RFC 9106's three primary known-answers (p=4, secret and ad folded, 32-byte output) — the authoritative vectors, each mode.
+    // 1. RFC 9106's three primary known-answers (p=4, secret and ad folded, 32-byte output) -- the authoritative vectors, each mode.
     const want_2d = [32]u8{ 0x51, 0x2b, 0x39, 0x1b, 0x6f, 0x11, 0x62, 0x97, 0x53, 0x71, 0xd3, 0x09, 0x19, 0x73, 0x42, 0x94, 0xf8, 0x68, 0xe3, 0xbe, 0x39, 0x84, 0xf3, 0xc1, 0xa1, 0x3a, 0x4d, 0xb9, 0xfa, 0xbe, 0x4a, 0xcb };
     const want_2i = [32]u8{ 0xc8, 0x14, 0xd9, 0xd1, 0xdc, 0x7f, 0x37, 0xaa, 0x13, 0xf0, 0xd7, 0x7f, 0x24, 0x94, 0xbd, 0xa1, 0xc8, 0xde, 0x6b, 0x01, 0x6d, 0xd3, 0x88, 0xd2, 0x99, 0x52, 0xa4, 0xc4, 0x67, 0x2b, 0x6c, 0xe8 };
     const want_2id = [32]u8{ 0x0d, 0x64, 0x0d, 0xf5, 0x8d, 0x78, 0x76, 0x6c, 0x08, 0xc0, 0x37, 0xa3, 0x4a, 0x8b, 0x53, 0xc9, 0xd0, 0x1e, 0xf0, 0x45, 0x2d, 0x75, 0xb6, 0x5e, 0xb5, 0x25, 0x20, 0xe9, 0x6b, 0x01, 0xe6, 0x59 };
@@ -538,7 +538,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try check_primary(garden, .argon2i, &want_2i);
     try check_primary(garden, .argon2id, &want_2id);
 
-    // 2. The reference argon2 p=1 vectors (24-byte output) — the single-lane path and a variable-length final block.
+    // 2. The reference argon2 p=1 vectors (24-byte output) -- the single-lane path and a variable-length final block.
     const p1_2d = [24]u8{ 0x87, 0x27, 0x40, 0x5f, 0xd0, 0x7c, 0x32, 0xc7, 0x8d, 0x64, 0xf5, 0x47, 0xf2, 0x41, 0x50, 0xd3, 0xf2, 0xe7, 0x03, 0xa8, 0x9f, 0x98, 0x1a, 0x19 };
     const p1_2i = [24]u8{ 0xb9, 0xc4, 0x01, 0xd1, 0x84, 0x4a, 0x67, 0xd5, 0x0e, 0xae, 0x39, 0x67, 0xdc, 0x28, 0x87, 0x0b, 0x22, 0xe5, 0x08, 0x09, 0x2e, 0x86, 0x1a, 0x37 };
     const p1_2id = [24]u8{ 0x65, 0x5a, 0xd1, 0x5e, 0xac, 0x65, 0x2d, 0xc5, 0x9f, 0x71, 0x70, 0xa7, 0x33, 0x2b, 0xf4, 0x9b, 0x84, 0x69, 0xbe, 0x1f, 0xdb, 0x9c, 0x28, 0xbb };

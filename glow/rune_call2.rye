@@ -1,5 +1,5 @@
 //! glow-book: runes.md#g-call2
-//! glow/rune_call2.rye — parses Glow's `%+` two-argument call rune head.
+//! glow/rune_call2.rye -- parses Glow's `%+` two-argument call rune head.
 //!
 //! Per the sameness rune brief `%` category: `%+` calls a gate with two
 //! samples. Fourteenth rune head (STOA7). Shape:

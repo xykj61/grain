@@ -1,7 +1,7 @@
-//! tools/rye/monocypher_elligator_parity.rye — our authored crypto/elligator.rye asked for its OWN Elligator 2 answers over the same thirty-two
+//! tools/rye/monocypher_elligator_parity.rye -- our authored crypto/elligator.rye asked for its OWN Elligator 2 answers over the same thirty-two
 //! cases the Monocypher C harness (tools/fixtures/monocypher_elligator_harness.c) prints, so
-//! tools/cr/crypto_monocypher_elligator_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte — the map that
-//! hides an X25519 public key as a uniformly random string, proven against the audit's parity target. Season G (Cryptography · Rye-native,
+//! tools/cr/crypto_monocypher_elligator_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte -- the map that
+//! hides an X25519 public key as a uniformly random string, proven against the audit's parity target. Season G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready).
 //!
 //! Thirty-two lines print, identical in shape to the C harness. The DIRECT map prints, for sixteen deterministic representatives
@@ -9,8 +9,8 @@
 //! pubkey[j] = (i*11 + j*5 + 2) mod 256 under tweak (i*13 + 7) mod 256, either the word "fail" (the point is not representable) or the 64-hex
 //! representative. The same generation the C harness uses, so the witness compares like against like across both success and failure.
 //!
-//! This authors NO cryptography — it is a printing harness over the GREEN crypto/elligator.rye (reached through the tools/rye/elligator.rye
-//! symlink, since Rye resolves imports beside the importing file, over the tools/rye/fe25519.rye symlink beneath it). Purely local — no key, no
+//! This authors NO cryptography -- it is a printing harness over the GREEN crypto/elligator.rye (reached through the tools/rye/elligator.rye
+//! symlink, since Rye resolves imports beside the importing file, over the tools/rye/fe25519.rye symlink beneath it). Purely local -- no key, no
 //! network, no funds, no device.
 //!
 //! Run from the repository root:
@@ -22,7 +22,7 @@ const print = std.debug.print;
 
 const el = @import("elligator.rye");
 
-/// print_hex — 32 bytes as 64 lowercase hex characters, one line, exactly the C harness's `ph`.
+/// print_hex -- 32 bytes as 64 lowercase hex characters, one line, exactly the C harness's `ph`.
 fn print_hex(b: [32]u8) void {
     var i: u32 = 0;
     while (i < 32) : (i += 1) print("{x:0>2}", .{b[i]});

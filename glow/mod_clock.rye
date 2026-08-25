@@ -1,4 +1,4 @@
-//! glow/mod_clock.rye — paired clocks for n mod 12 · n mod 16 collaboration.
+//! glow/mod_clock.rye -- paired clocks for n mod 12 - n mod 16 collaboration.
 //!
 //! Honest law: Z/12 and Z/16 differ in size, so there is no set bijection
 //! between residue classes alone. Collaboration uses the **joint clock**
@@ -46,7 +46,7 @@ pub fn compatible(house12: u32, slot16: u32) bool {
 
 pub const priority_slots: u32 = 16;
 
-/// The twelve base priorities — the ten grain strands (20260702.184312) plus
+/// The twelve base priorities -- the ten grain strands (20260702.184312) plus
 /// Radiant and single-stranded. Roster seated 20260729.203719.
 /// Data twin: tools/gen/season/recursion_block.brix priority_1..priority_12.
 pub const Priority = enum(u8) {
@@ -85,10 +85,10 @@ pub const min_emphasis_gap: u32 = 6;
 
 /// Slot to priority across one sixteen-slot journey.
 ///
-/// Emphasis slots 3 · 7 · 11 · 15 carry the four doubles, one per quarter, so
+/// Emphasis slots 3 - 7 - 11 - 15 carry the four doubles, one per quarter, so
 /// a doubled practice recurs across the whole journey rather than clustering
 /// at its end. The remaining twelve slots carry the base roster in order.
-/// The roster is data; this spacing is the fold — proposed, and one line of
+/// The roster is data; this spacing is the fold -- proposed, and one line of
 /// brix away from any other arrangement Keaton prefers.
 pub fn priority_of_slot(slot: u32) Priority {
     // invariant: the priority table is indexed by this slot directly, so a slot past its length
@@ -108,13 +108,13 @@ pub fn priority_of_slot(slot: u32) Priority {
     return @enumFromInt(@as(u8, @intCast(base)));
 }
 
-/// The priority a numbered round is walked under — n mod 16.
+/// The priority a numbered round is walked under -- n mod 16.
 pub fn priority_of_round(n: u32) Priority {
     return priority_of_slot(n % priority_slots);
 }
 
 /// Four direction houses for collaboration priority (seated Equinox e0).
-/// East 0 · North 1 · West 2 · South 3 — each covers three zodiac houses.
+/// East 0 - North 1 - West 2 - South 3 -- each covers three zodiac houses.
 pub const Direction = enum(u32) {
     east = 0,
     north = 1,
@@ -122,12 +122,12 @@ pub const Direction = enum(u32) {
     south = 3,
 };
 
-/// Zodiac house 0=Aries … 11=Pisces → direction quadrant.
+/// Zodiac house 0=Aries ... 11=Pisces -> direction quadrant.
 pub fn direction_of_house12(house12: u32) Direction {
     // invariant: the direction table is indexed by house directly, so a house past twelve would
     // read past it
     assert(house12 < mod_twelve);
-    // East: 11 (Pisces/12th), 0 (Aries/1st), 1 (Taurus/2nd) — user seat 12th·1st·2nd
+    // East: 11 (Pisces/12th), 0 (Aries/1st), 1 (Taurus/2nd) -- user seat 12th-1st-2nd
     if (house12 == 11 or house12 == 0 or house12 == 1) return .east;
     // North: 8 (Sag/9th), 9 (Cap/10th), 10 (Aqu/11th)
     if (house12 == 8 or house12 == 9 or house12 == 10) return .north;

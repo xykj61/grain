@@ -1,19 +1,19 @@
-//! pond/apps/spool_cloth.rye — GISM red %73 follow: the naming layer over the spool.
+//! pond/apps/spool_cloth.rye -- GISM red %73 follow: the naming layer over the spool.
 //!
 //! Season 2, Yield. `mantra/spool.rye` closed red %73 by winding a large artifact
 //! across ordered resins; yet a spool alone is a recipe, not a name. Tablecloth
-//! (pond/apps/tablecloth.rye) is the naming layer over one-resin beading — a human name
+//! (pond/apps/tablecloth.rye) is the naming layer over one-resin beading -- a human name
 //! bound to a content address, fetch-by-name returning exactly the bytes whose digest
 //! the name pins. This is Tablecloth's sibling for large artifacts: a human name bound
-//! to a whole spool, so a real front-door document — too large for one resin — is
+//! to a whole spool, so a real front-door document -- too large for one resin -- is
 //! stored under a name and fetched back byte-for-byte. It is the layer provenance needs
 //! to carry a *signed* real large document (a later rung), exactly as the small
 //! owner-signed catalog needed Tablecloth beneath it.
 //!
 //! It invents no storage: the beads live in the shared BeadStore the spool wound them
 //! into; the catalog holds each artifact's spool (its ordered resin recipe) and its
-//! name. Asking by name unspools — every bead proving itself by digest, every resin
-//! against its recorded whole-digest, the whole against the spool's content address —
+//! name. Asking by name unspools -- every bead proving itself by digest, every resin
+//! against its recorded whole-digest, the whole against the spool's content address --
 //! so a tampered byte anywhere refuses before a single byte is trusted. The Brix-facing
 //! face is a `format spool-cloth-v1` manifest: one `large <name> <whole-hex> <len>
 //! <resins>` line per artifact, render and parse round-tripping name, address, length,
@@ -37,7 +37,7 @@ pub const spool_cloth_version = "20260812.192400";
 // A large artifact's human name. Short and plain, so a manifest line stays readable.
 pub const max_name: u32 = 48;
 // How many large artifacts one cloth holds. Bounded small on purpose: each entry owns a
-// whole spool (its ordered resin recipe, ~33 KB), so the catalog is heavy by design —
+// whole spool (its ordered resin recipe, ~33 KB), so the catalog is heavy by design --
 // four named large artifacts is ample for the naming crux and keeps the store legible.
 pub const max_large_artifacts: u32 = 4;
 
@@ -256,7 +256,7 @@ fn run_spool_cloth_selftest() !u8 {
     var cat: LargeCatalog = .empty();
     var out: [spool.max_content_bytes]u8 = undefined;
 
-    // invariant: both real documents genuinely exceed one resin — the naming layer earns
+    // invariant: both real documents genuinely exceed one resin -- the naming layer earns
     // its keep only on artifacts the small Tablecloth could not hold
     assert(doc_security.len > beading.max_resin_bytes);
     assert(doc_two_rooms.len > beading.max_resin_bytes);

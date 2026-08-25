@@ -1,13 +1,13 @@
-//! mandate/bucket.rye — a named-object bucket over Mandate stores.
+//! mandate/bucket.rye -- a named-object bucket over Mandate stores.
 //!
 //! Where `store.rye` snapshots ONE store to one blob, a **bucket** names many: an
-//! S3-style key→object map, `name → <store snapshot>`, kept as files in a bucket
+//! S3-style key->object map, `name -> <store snapshot>`, kept as files in a bucket
 //! directory. `put` writes a store as the object `name`; `get` restores the store
-//! stored under `name`. This is the serverless shape one step out — not a single
+//! stored under `name`. This is the serverless shape one step out -- not a single
 //! object, but a bucket of named objects, each a whole Mandate store.
 //!
 //! Every object name is validated first (bounded, path-safe: no slash, no dot, no
-//! separator), so an object can never climb out of the bucket directory — a put or get
+//! separator), so an object can never climb out of the bucket directory -- a put or get
 //! addresses exactly one file inside `dir`, never a path above it.
 //!
 //!   rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket
@@ -20,13 +20,13 @@ const store = @import("store.rye");
 
 pub const bucket_version = "20260811.020442";
 
-// The longest object name a bucket accepts — bounded like every Mandate surface.
+// The longest object name a bucket accepts -- bounded like every Mandate surface.
 pub const max_name: u32 = 64;
 
 pub const NameError = error{ Empty, TooLong, BadChar };
 
 /// A path-safe object name: 1..=max_name bytes of `[a-zA-Z0-9_-]` only. No slash, no
-/// dot, no path separator — so the name can never escape the bucket directory.
+/// dot, no path separator -- so the name can never escape the bucket directory.
 fn check_name(name: []const u8) NameError!void {
     // invariant: an object name is never empty.
     if (name.len == 0) return error.Empty;
@@ -70,7 +70,7 @@ fn object_path(buf: []u8, dir: []const u8, name: []const u8) []const u8 {
     return buf[0..n];
 }
 
-/// Write `st` into the bucket as the object `name` — a store snapshot to
+/// Write `st` into the bucket as the object `name` -- a store snapshot to
 /// `<dir>/<name>.blob`. The name is validated before any path is touched.
 pub fn put(init: std.process.Init, dir: []const u8, name: []const u8, st: *const store.Store) !void {
     try check_name(name);
@@ -104,7 +104,7 @@ pub fn get(init: std.process.Init, dir: []const u8, name: []const u8) !store.Sto
 fn prove_bucket(init: std.process.Init) !void {
     const dir = "mandate/bin/bucket_objects";
 
-    // Two distinct stores — different dimensions and contents — as two named objects.
+    // Two distinct stores -- different dimensions and contents -- as two named objects.
     var images = try store.Store.init(4);
     const red: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
     const teal: [store.max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
@@ -128,11 +128,11 @@ fn prove_bucket(init: std.process.Init) !void {
     if (gt.filled != text.filled) return error.TextFilledWrong;
     if (gt.dim != text.dim) return error.TextDimWrong;
 
-    // The restored images object answers a query identically — the object is the store.
+    // The restored images object answers a query identically -- the object is the store.
     const q: [store.max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
     if (store.query(&images, &q, 1, null).matches[0].id != store.query(&gi, &q, 1, null).matches[0].id) return error.BucketQueryDrift;
 
-    // A bad name is refused before any path is touched — empty, slash, dot, and too long.
+    // A bad name is refused before any path is touched -- empty, slash, dot, and too long.
     if (check_name("")) |_| return error.EmptyNameAccepted else |_| {}
     if (check_name("a/b")) |_| return error.SlashAccepted else |_| {}
     if (check_name("a.b")) |_| return error.DotAccepted else |_| {}

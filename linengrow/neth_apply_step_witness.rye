@@ -1,4 +1,4 @@
-//! linengrow/neth_apply_step_witness.rye — proves Neth's apply step is crash-safe.
+//! linengrow/neth_apply_step_witness.rye -- proves Neth's apply step is crash-safe.
 //!
 //!   rye build linengrow/neth_apply_step_witness.rye -femit-bin=linengrow/bin/neth_apply_step_witness
 //!   linengrow/bin/neth_apply_step_witness

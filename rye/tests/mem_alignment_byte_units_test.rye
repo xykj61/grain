@@ -1,6 +1,6 @@
-//! Rye test: std.mem.Alignment toByteUnits/fromByteUnits/order/compare/max/min — pass 9892.
+//! Rye test: std.mem.Alignment toByteUnits/fromByteUnits/order/compare/max/min -- pass 9892.
 //!
-//! Enum ↔ byte-unit conversion and comparison; pairs with forward/backward/check (9893).
+//! Enum <-> byte-unit conversion and comparison; pairs with forward/backward/check (9893).
 
 const std = @import("std");
 const mem = std.mem;

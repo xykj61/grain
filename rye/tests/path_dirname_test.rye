@@ -1,4 +1,4 @@
-//! Rye test: std.fs.path.dirname — pass 9980.
+//! Rye test: std.fs.path.dirname -- pass 9980.
 //!
 //! The rye bridge resolves sibling imports with dirname on the entry path.
 //! This test exercises nested paths, roots, and bare filenames.

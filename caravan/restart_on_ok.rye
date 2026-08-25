@@ -1,4 +1,4 @@
-//! caravan/restart_on_ok.rye — ring D: restart on ordinary zero, stop on reserved code.
+//! caravan/restart_on_ok.rye -- ring D: restart on ordinary zero, stop on reserved code.
 //!
 //! Proves the exit-code convention counsel `20260707.014212` ordered before any
 //! wire or delivery work: zero means "this cycle was ordinary, spawn again";

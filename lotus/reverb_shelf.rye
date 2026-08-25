@@ -1,30 +1,30 @@
-//! lotus/reverb_shelf.rye — ALES204: THE SHELF — a two-band tone shelf on the reverberant tail, the reverb's EQ. ALES198 gave the reverb its
-//! DARKNESS knob (a plain first-order high-cut, one direction only — the tail can be darkened, never brightened, and the low wash cannot be lifted or
-//! trimmed). Yet the tone control a keeper actually turns on a reverb is a proper SHELVING EQ — two knobs, bass and treble, each boosting OR cutting
+//! lotus/reverb_shelf.rye -- ALES204: THE SHELF -- a two-band tone shelf on the reverberant tail, the reverb's EQ. ALES198 gave the reverb its
+//! DARKNESS knob (a plain first-order high-cut, one direction only -- the tail can be darkened, never brightened, and the low wash cannot be lifted or
+//! trimmed). Yet the tone control a keeper actually turns on a reverb is a proper SHELVING EQ -- two knobs, bass and treble, each boosting OR cutting
 //! its own band of the tail independently, so the wash can sit warm and dark, or bright and airy, or thinned of mud, from one span. Every real reverb
 //! carries this (the "reverb EQ", the low/high shelves on a plate); without it the darkness knob is the only color the room can take. This rung is
 //! that shelf.
 //!
-//! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then tone-shelf the wet with ALES41's proven two-band shelf —
+//! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then tone-shelf the wet with ALES41's proven two-band shelf --
 //!   wet = reverb_preset(span)
 //!   out = shelf.shelf(wet, coeff, bass_num/bass_den, treble_num/treble_den)
 //! bass == unity AND treble == unity is the identity (a flat EQ is exactly the un-shelved reverb, byte for byte); a bass boost lifts the low wash, a
 //! treble cut darkens the tail (matching ALES198's low-pass in direction while adding the boost and the low band ALES198 could not reach). This
 //! invents NO new audio arithmetic: every shelved sample is written by a stage already proven byte-for-byte (ALES41's shelf over ALES190's wet), so no
-//! value is ever recomputed or can wrap — the shelf scales each band in the wide i64 domain and saturates ONCE (ALES8's fader lesson, carried in
-//! ALES41). The shelf setting is validated BEFORE the wet is written (ALES41's precheck), so a bad shelf leaves the clip DRY rather than half-reverbed —
+//! value is ever recomputed or can wrap -- the shelf scales each band in the wide i64 domain and saturates ONCE (ALES8's fader lesson, carried in
+//! ALES41). The shelf setting is validated BEFORE the wet is written (ALES41's precheck), so a bad shelf leaves the clip DRY rather than half-reverbed --
 //! the up-front check is the atomicity crux.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES204.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES204.
 //! Design read: active-designing/date/20260815/20260815-112557_fill-ales204-lotus-reverb-shelf.md
-//! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
-//! lotus/shelf.rye (ALES41) — the two-band tone shelf and its precheck, the shelving applied to the wet span (its BadCoeff / BadGain / BadRange
-//! forwarded whole); lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses) into a
-//! sample count; lotus/timeline.rye (ALES2) — the Clip and max_clip bounding the span.
+//! Stands on: lotus/reverb_preset.rye (ALES190) -- the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
+//! lotus/shelf.rye (ALES41) -- the two-band tone shelf and its precheck, the shelving applied to the wet span (its BadCoeff / BadGain / BadRange
+//! forwarded whole); lotus/clock.rye (ALES5) -- the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses) into a
+//! sample count; lotus/timeline.rye (ALES2) -- the Clip and max_clip bounding the span.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
-//! lotus/. No new audio arithmetic — the shelf is ALES41's proven two-band shelf over the proven wet. A WET-TAIL shelf: the coefficient sets where the
-//! bass/treble split falls over sample INDICES (not a crossover in hertz — a real time base is a later rung, as reverb_ms followed the index-named
+//! HONEST SCOPE -- software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, and ALES190's fixed banks, siloed to
+//! lotus/. No new audio arithmetic -- the shelf is ALES41's proven two-band shelf over the proven wet. A WET-TAIL shelf: the coefficient sets where the
+//! bass/treble split falls over sample INDICES (not a crossover in hertz -- a real time base is a later rung, as reverb_ms followed the index-named
 //! reverb), so the shelf means the same split at any sample rate. A true in-loop damped-comb tone (a filter INSIDE each comb's feedback) stays the
 //! richer, separate horizon ALES198 already named. No socket, no network, no keys, no funds, no real device.
 //!
@@ -41,20 +41,20 @@ const shelf = @import("shelf.rye");
 
 pub const reverb_shelf_version = "20260815.112557";
 
-/// The named rooms are ALES190's own — reused whole, so the shelf and the presets name the same tunings and cannot drift apart.
+/// The named rooms are ALES190's own -- reused whole, so the shelf and the presets name the same tunings and cannot drift apart.
 pub const Room = reverb_preset.Room;
 
 /// The shelf's faults are ALES190's `ReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain /
-/// BadRange, forwarded whole) merged with ALES41's `ShelfError` (its BadCoeff — an illegal filter coefficient — and its own BadGain — a zero band
+/// BadRange, forwarded whole) merged with ALES41's `ShelfError` (its BadCoeff -- an illegal filter coefficient -- and its own BadGain -- a zero band
 /// denominator). Zig merges the two sets by name, so the shared BadGain and BadRange coincide rather than doubling.
 pub const ReverbShelfError = reverb_preset.ReverbPresetError || shelf.ShelfError;
 
-/// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM, then tone-shelve the reverberant tail — scale its low band by
+/// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM, then tone-shelve the reverberant tail -- scale its low band by
 /// bass_num/bass_den and its high band by treble_num/treble_den, the split at coefficient coeff_num/coeff_den. Convert the span through ALES5's clock
 /// (the SAME conversion reverb_preset uses); PRE-CHECK the shelf setting against that span through ALES41's precheck (refusing BadCoeff / BadGain /
-/// BadRange before any write, so a bad shelf leaves the clip dry — the atomicity crux); run ALES190's reverb_preset over the span (the wet, in place,
+/// BadRange before any write, so a bad shelf leaves the clip dry -- the atomicity crux); run ALES190's reverb_preset over the span (the wet, in place,
 /// unchanged); then shelve the wet span through ALES41's shelf.
-///   bass == unity AND treble == unity is the identity — the span equals reverb_preset byte for byte; a bass boost lifts the low wash, a treble cut
+///   bass == unity AND treble == unity is the identity -- the span equals reverb_preset byte for byte; a bass boost lifts the low wash, a treble cut
 ///   darkens the tail.
 /// Refuses BadCoeff / BadGain on an illegal shelf, then forwards ALES190's ReverbPresetError (DurationTooLong on a span past the clip, BadRange on an
 /// out-of-range span, and the reverb's own faults) before any write; on refusal the clip is untouched.
@@ -71,25 +71,25 @@ pub fn reverb_shelf(
     treble_num: i32,
     treble_den: u32,
 ) ReverbShelfError!void {
-    // invariant: the clock is valid — the span is spoken against it, and reverb_preset asserts the same.
+    // invariant: the clock is valid -- the span is spoken against it, and reverb_preset asserts the same.
     assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
 
     // Convert the span with the SAME clock reverb_preset uses, so the shelf's precheck and the shelving shape exactly the preset's written span. A
     // span past the clip forwards DurationTooLong here, before any write.
     const start = try clock.samples_for(clk, start_ms);
     const count = try clock.samples_for(clk, count_ms);
-    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet is written.
+    // The span must be in-bounds before any write -- the same BadRange the reverb would raise, raised before the wet is written.
     if (start > clip.len) return error.BadRange;
     if (count > clip.len - start) return error.BadRange;
 
-    // Pre-check the shelf setting against the span BEFORE the wet is written — the atomicity crux. ALES41's precheck is the single source of truth for
+    // Pre-check the shelf setting against the span BEFORE the wet is written -- the atomicity crux. ALES41's precheck is the single source of truth for
     // a legal shelf; its BadCoeff / BadGain / BadRange are forwarded whole (BadRange already caught above, kept for one law).
     try shelf.precheck(clip.len, start, count, coeff_num, coeff_den, bass_num, bass_den, treble_num, treble_den);
 
-    // The wet, in place — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
+    // The wet, in place -- ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
     try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
 
-    // Shelve the wet span through ALES41's two-band shelf — prechecked just above against this same length and span, so it cannot fail here.
+    // Shelve the wet span through ALES41's two-band shelf -- prechecked just above against this same length and span, so it cannot fail here.
     shelf.shelf(clip, start, count, coeff_num, coeff_den, bass_num, bass_den, treble_num, treble_den) catch unreachable;
 
     // invariant: the shelf changed sample values only, never the clip's length or bound.
@@ -97,10 +97,10 @@ pub fn reverb_shelf(
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: THE IDENTITY EDGE (bass == unity AND treble == unity) — equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION —
+// --- selftest: THE IDENTITY EDGE (bass == unity AND treble == unity) -- equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION --
 //     for a real shelf, reverb_shelf equals reverb_preset then shelf.shelf byte for byte, and the shelved tail DIFFERS from the un-shelved wet; THE
-//     TREBLE CUT DARKENS — a treble-cut tail's high-frequency roughness is strictly less than the un-shelved wet's; THE BASS BOOST LIFTS — a bass-boost
-//     tail's total energy is strictly greater than the wet's; SILENCE STAYS SILENCE; and the faults forward, ATOMIC — a bad coefficient BadCoeff, a
+//     TREBLE CUT DARKENS -- a treble-cut tail's high-frequency roughness is strictly less than the un-shelved wet's; THE BASS BOOST LIFTS -- a bass-boost
+//     tail's total energy is strictly greater than the wet's; SILENCE STAYS SILENCE; and the faults forward, ATOMIC -- a bad coefficient BadCoeff, a
 //     zero band denominator BadGain, each with the clip untouched (still dry), a span past the clip DurationTooLong, an out-of-range span BadRange ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -114,7 +114,7 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
     try timeline.splice(clip, 0, src);
 }
 
-/// The high-frequency roughness of a span — the sum of absolute sample-to-sample differences. Treble is rapid change, so a treble CUT (which scales
+/// The high-frequency roughness of a span -- the sum of absolute sample-to-sample differences. Treble is rapid change, so a treble CUT (which scales
 /// the high band below unity) strictly reduces this on any signal that carries treble. Run in i64 so a long loud span never overflows the accumulator.
 fn roughness(s: []const i16) i64 {
     var total: i64 = 0;
@@ -126,7 +126,7 @@ fn roughness(s: []const i16) i64 {
     return total;
 }
 
-/// The total absolute energy of a span — the sum of absolute sample values. A bass BOOST (which scales the low band above unity) lifts the low wash,
+/// The total absolute energy of a span -- the sum of absolute sample values. A bass BOOST (which scales the low band above unity) lifts the low wash,
 /// so this strictly grows on a tail that carries low-frequency energy short of the rail. Run in i64 so no long loud span overflows.
 fn energy(s: []const i16) i64 {
     var total: i64 = 0;
@@ -146,7 +146,7 @@ fn run_selftest() !u8 {
         break :blk b;
     };
 
-    // 1. THE IDENTITY EDGE — bass == unity AND treble == unity (a flat EQ) equals ALES190's reverb_preset over the span, byte for byte. A flat shelf is
+    // 1. THE IDENTITY EDGE -- bass == unity AND treble == unity (a flat EQ) equals ALES190's reverb_preset over the span, byte for byte. A flat shelf is
     //    exactly the un-shelved reverb, at any coefficient.
     {
         var shelved = timeline.Clip{};
@@ -160,7 +160,7 @@ fn run_selftest() !u8 {
         if (!eq(shelved.samples(), preset.samples())) return error.IdentityShelfNotPreset;
     }
 
-    // 2. IT EQUALS ITS COMPOSITION — for a real shelf (bass 2/1, treble 1/2, split 1/4), reverb_shelf equals reverb_preset then shelf.shelf computed
+    // 2. IT EQUALS ITS COMPOSITION -- for a real shelf (bass 2/1, treble 1/2, split 1/4), reverb_shelf equals reverb_preset then shelf.shelf computed
     //    side by side, byte for byte. It invents no arithmetic; every shelved sample is written by a proven stage. And the shelved tail genuinely
     //    DIFFERS from the un-shelved wet.
     {
@@ -180,8 +180,8 @@ fn run_selftest() !u8 {
         if (eq(shelved.samples(), wet.samples())) return error.ShelvedEqualsWet;
     }
 
-    // 3. THE TREBLE CUT DARKENS — a treble-cut tail's high-frequency roughness (summed first-difference) is strictly less than the un-shelved wet's. A
-    //    shelf can darken exactly as ALES198's low-pass did — the direction the two knobs share.
+    // 3. THE TREBLE CUT DARKENS -- a treble-cut tail's high-frequency roughness (summed first-difference) is strictly less than the un-shelved wet's. A
+    //    shelf can darken exactly as ALES198's low-pass did -- the direction the two knobs share.
     {
         var shelved = timeline.Clip{};
         try load_clip(&shelved, &impulse);
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         if (roughness(shelved.samples()) >= roughness(wet.samples())) return error.TrebleCutDidNotDarken;
     }
 
-    // 4. THE BASS BOOST LIFTS — a bass-boost tail's total energy is strictly greater than the un-shelved wet's: the low wash rises, the color ALES198's
+    // 4. THE BASS BOOST LIFTS -- a bass-boost tail's total energy is strictly greater than the un-shelved wet's: the low wash rises, the color ALES198's
     //    high-cut could never reach.
     {
         var shelved = timeline.Clip{};
@@ -208,7 +208,7 @@ fn run_selftest() !u8 {
         if (energy(shelved.samples()) <= energy(wet.samples())) return error.BassBoostDidNotLift;
     }
 
-    // 5. SILENCE STAYS SILENCE — an all-zero clip at any shelf stays all zeros; a shelf of silence is silence.
+    // 5. SILENCE STAYS SILENCE -- an all-zero clip at any shelf stays all zeros; a shelf of silence is silence.
     {
         var clip = timeline.Clip{};
         try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -217,26 +217,26 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 6. THE FAULTS FORWARD, ATOMIC — an illegal coefficient refuses BadCoeff and a zero band denominator refuses BadGain, each with the clip UNTOUCHED
-    //    (still dry — the shelf is prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by
+    // 6. THE FAULTS FORWARD, ATOMIC -- an illegal coefficient refuses BadCoeff and a zero band denominator refuses BadGain, each with the clip UNTOUCHED
+    //    (still dry -- the shelf is prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each by
     //    name with the clip untouched.
     {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // a coefficient above unity (num 5 > den 4) is an unstable low-pass split — BadCoeff, before any write, the clip still dry.
+        // a coefficient above unity (num 5 > den 4) is an unstable low-pass split -- BadCoeff, before any write, the clip still dry.
         if (reverb_shelf(&clip, c, .room, 0, 3, 5, 4, 1, 1, 1, 1)) |_| return error.BadCoeffSlipped else |e| if (e != error.BadCoeff) return error.WrongBadCoeff;
         if (!eq(clip.samples(), &three)) return error.RefusedBadCoeffMutated;
-        // a zero coefficient denominator is a divide by zero on the split — BadCoeff, before any write.
+        // a zero coefficient denominator is a divide by zero on the split -- BadCoeff, before any write.
         if (reverb_shelf(&clip, c, .room, 0, 3, 1, 0, 1, 1, 1, 1)) |_| return error.ZeroCoeffSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroCoeff;
         if (!eq(clip.samples(), &three)) return error.RefusedZeroCoeffMutated;
-        // a zero bass denominator is a divide by zero on the bass gain — BadGain, before any write.
+        // a zero bass denominator is a divide by zero on the bass gain -- BadGain, before any write.
         if (reverb_shelf(&clip, c, .room, 0, 3, 1, 2, 1, 0, 1, 1)) |_| return error.ZeroBassSlipped else |e| if (e != error.BadGain) return error.WrongZeroBass;
         if (!eq(clip.samples(), &three)) return error.RefusedZeroBassMutated;
-        // a zero treble denominator is a divide by zero on the treble gain — BadGain, before any write.
+        // a zero treble denominator is a divide by zero on the treble gain -- BadGain, before any write.
         if (reverb_shelf(&clip, c, .room, 0, 3, 1, 2, 1, 1, 1, 0)) |_| return error.ZeroTrebleSlipped else |e| if (e != error.BadGain) return error.WrongZeroTreble;
         if (!eq(clip.samples(), &three)) return error.RefusedZeroTrebleMutated;
-        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        // a count past max_clip converts past the clip bound -- DurationTooLong from the clock.
         if (reverb_shelf(&clip, c, .room, 0, timeline.max_clip + 1, 1, 2, 1, 1, 1, 1)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
         if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
         // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.

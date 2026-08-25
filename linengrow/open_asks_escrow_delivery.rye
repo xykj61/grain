@@ -1,4 +1,4 @@
-//! linengrow/open_asks_escrow_delivery.rye — OA-L3 — escrow hold + release under Comlink seal.
+//! linengrow/open_asks_escrow_delivery.rye -- OA-L3 -- escrow hold + release under Comlink seal.
 //!
 //!   rye build linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-escrow-delivery
 //!   linengrow/bin/open-asks-escrow-delivery selftest
@@ -58,7 +58,7 @@ fn send_wire(port: u16, wire: []const u8) !void {
     if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
 }
 
-/// Bind before any peer send — UDP has no listener queue across close/rebind.
+/// Bind before any peer send -- UDP has no listener queue across close/rebind.
 fn bind_socket(port: u16) !c.fd_t {
     const fd = try open_socket();
     var bind_addr = localhost_addr(port);
@@ -208,7 +208,7 @@ fn run_applicant(_: std.Io) !u8 {
     hex_of_key(escrow_kp.public_key, &escrow_hex);
     hex_of_key(applicant_kp.public_key, &applicant_hex);
 
-    // Bind hold and release before the poster sends — poster emits both
+    // Bind hold and release before the poster sends -- poster emits both
     // datagrams back-to-back; a late release bind drops the second under load.
     const hold_fd = try bind_socket(hold_port);
     defer _ = c.close(hold_fd);

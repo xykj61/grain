@@ -1,8 +1,8 @@
-//! pond/apps/provenance_true.rye — GISM Journey 6 (Provenance), Rung 4 (closes the journey).
+//! pond/apps/provenance_true.rye -- GISM Journey 6 (Provenance), Rung 4 (closes the journey).
 //!
 //! Season 2, Yield: a signature is only as honest as its tie to the real bytes. Rungs
 //! one through three bound a real artifact to a settled identity, carried the signed word
-//! out of the store as a receipt, and lengthened custody into a verifiable chain — each
+//! out of the store as a receipt, and lengthened custody into a verifiable chain -- each
 //! over the same real embedded document. This closing rung proves the property the whole
 //! journey rests on: the facts a publication **signs** (the whole length and the content
 //! digest) are **true to the real file a keeper can open and hash**, so a signature can
@@ -11,7 +11,7 @@
 //! Mirroring GISM-J5r4 (the reading true to the bytes), the tie is proven by an
 //! independent second tool: the app prints the signed length and the signed SHA-256; the
 //! witness cross-checks both against `wc -c` and `sha256sum` of the same real file on
-//! disk — two tools, one answer. In-app the binding is shown tight: the signed digest
+//! disk -- two tools, one answer. In-app the binding is shown tight: the signed digest
 //! matches the real content, and a single-byte-different copy does **not** match, so the
 //! digest pins these exact bytes and no neighbor.
 //!
@@ -29,7 +29,7 @@ const kumara = @import("kumara.rye");
 
 const provenance_true_version = "20260812.191000";
 
-// The same real artifact rungs one through three carried — the file a keeper can open.
+// The same real artifact rungs one through three carried -- the file a keeper can open.
 const real_doc = @embedFile("corpora/waymark_green.md");
 
 const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
@@ -43,7 +43,7 @@ fn pubkey_of(seed: *const [kumara.seed_length]u8) [receipt_mod.pubkey_len]u8 {
 
 /// The signed facts are true to the real file: the receipt's whole length equals the
 /// real byte count, its digest matches the real content, and a one-byte-different copy
-/// does not — the digest pins these exact bytes. The length and digest are printed for
+/// does not -- the digest pins these exact bytes. The length and digest are printed for
 /// the witness to cross-check against wc -c and sha256sum.
 fn welcome_signed_facts_true() !void {
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);

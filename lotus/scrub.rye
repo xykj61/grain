@@ -1,25 +1,25 @@
-//! lotus/scrub.rye — ALES19: the scrub window — a small, fixed-length read a keeper DRAGS across a stereo master. Play (ALES15),
-//! loop (ALES16), and meter (ALES17/18) all read a master from a head that RUNS — forward, or round and round. What no rung yet
+//! lotus/scrub.rye -- ALES19: the scrub window -- a small, fixed-length read a keeper DRAGS across a stereo master. Play (ALES15),
+//! loop (ALES16), and meter (ALES17/18) all read a master from a head that RUNS -- forward, or round and round. What no rung yet
 //! gives a keeper is the gesture they reach for most while editing: a short window they slide by hand, parking their eyes and
 //! ears on one bar, nudging it left and right to find the exact edit point, watching its level the whole time. This rung is that
 //! held, draggable window.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES19.
+//! Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES19.
 //! Design read: active-designing/20260814-fill-ales19-lotus-scrub.md
-//! Stands on: lotus/stereo_transport.rye (ALES15) — the stereo read head and read_block reused whole (a scrub read is a seek-then-
-//! read off that one head, no new copy path); lotus/stereo_meter.rye (ALES17) — the StereoMeter and feed reused whole for the
-//! level under the drag; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length; lotus/timeline.rye (ALES2) —
-//! the Clip and its max_clip bound; lotus/transport.rye (ALES7) — the single-position head a scrub seats at its window start.
+//! Stands on: lotus/stereo_transport.rye (ALES15) -- the stereo read head and read_block reused whole (a scrub read is a seek-then-
+//! read off that one head, no new copy path); lotus/stereo_meter.rye (ALES17) -- the StereoMeter and feed reused whole for the
+//! level under the drag; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length; lotus/timeline.rye (ALES2) --
+//! the Clip and its max_clip bound; lotus/transport.rye (ALES7) -- the single-position head a scrub seats at its window start.
 //!
 //! THE CRUX: a scrub window read at position `p` returns EXACTLY the master's samples [p, p+n) in both channels, where
-//! n = min(win, master.len − p). Two facts make this exact. A scrub is a SEEK-THEN-READ — the window at `p` is ALES15's
+//! n = min(win, master.len − p). Two facts make this exact. A scrub is a SEEK-THEN-READ -- the window at `p` is ALES15's
 //! read_block off a head seeded at `p`, so its bytes are the master's own [p, p+n) by ALES15's already-proven copy. And
-//! consecutive windows TILE — windows at 0, L, 2L, … are disjoint half-open intervals whose union is [0, master.len), so dragging
+//! consecutive windows TILE -- windows at 0, L, 2L, ... are disjoint half-open intervals whose union is [0, master.len), so dragging
 //! a scrub of length L across the master in steps of L concatenates back to EACH channel byte-for-byte, with the last window
 //! honestly short and a window seated at the end empty. Composing ALES17, metering a scrub window equals metering that master
-//! slice directly — the level a keeper watches under the drag is the true level of what the window covers.
+//! slice directly -- the level a keeper watches under the drag is the true level of what the window covers.
 //!
-//! HONEST SCOPE — software only, purely LOCAL. A bounded, held read window over a two-channel i16 PCM master, siloed to lotus/.
+//! HONEST SCOPE -- software only, purely LOCAL. A bounded, held read window over a two-channel i16 PCM master, siloed to lotus/.
 //! The scrub never mutates the master (read-only, like the transport, the loop, and the meter). A level is a number a UI would
 //! draw, not a signal on a wire. No socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 //!
@@ -38,7 +38,7 @@ const stereo_meter = @import("stereo_meter.rye");
 
 pub const scrub_version = "20260814.132352";
 
-/// The widest scrub window this rung admits — a whole master's worth (timeline.max_clip). A window may be as wide as the master
+/// The widest scrub window this rung admits -- a whole master's worth (timeline.max_clip). A window may be as wide as the master
 /// yet stays far under ALES13's meter bound (max_clip ≤ max_meter_samples), so `meter_window` is always within the meter's
 /// capacity without a second check. Bounded so a window buffer and the metered count are proven, not trusted from the caller.
 pub const max_scrub_window: u32 = timeline.max_clip;
@@ -46,14 +46,14 @@ pub const max_scrub_window: u32 = timeline.max_clip;
 /// The combined error set of the scrub: the stereo read's BadBlock, a move past the master (PastEnd), and an illegal window
 /// length (BadWindow). Every fault refuses by name before a byte is copied or metered.
 pub const ScrubError = error{
-    /// The window length is zero or exceeds max_scrub_window — refused at make, before any read.
+    /// The window length is zero or exceeds max_scrub_window -- refused at make, before any read.
     BadWindow,
-    /// A move_to target sits past the master's shared end — refused before the window is reseated.
+    /// A move_to target sits past the master's shared end -- refused before the window is reseated.
     PastEnd,
 } || stereo_transport.StereoReadError;
 
 /// A held scrub window: a fixed-length view a keeper drags. `pos` is the window start (a sample index into the shared length);
-/// `win` is the window length, fixed at make. Default is a one-sample window at the top — the smallest legal scrub — so a bare
+/// `win` is the window length, fixed at make. Default is a one-sample window at the top -- the smallest legal scrub -- so a bare
 /// `Scrub{}` is valid, and `make` seats any wider validated window.
 pub const Scrub = struct {
     pos: u32 = 0,
@@ -61,7 +61,7 @@ pub const Scrub = struct {
 };
 
 /// Build a validated scrub of window length `win`, seated at position 0. Refuses BadWindow on a zero or oversized window before
-/// the caller can ever read — the one place a scrub's window legality is proven, so every read below rests on a bounded length.
+/// the caller can ever read -- the one place a scrub's window legality is proven, so every read below rests on a bounded length.
 pub fn make(win: u32) ScrubError!Scrub {
     // invariant: a scrub window is non-empty and within the bound, so its reads and meters stay proven.
     if (win == 0 or win > max_scrub_window) return error.BadWindow;
@@ -71,7 +71,7 @@ pub fn make(win: u32) ScrubError!Scrub {
     return s;
 }
 
-/// Seat the window start at `pos`. Refuses PastEnd past the master's shared end — a window may sit exactly at the end (reading
+/// Seat the window start at `pos`. Refuses PastEnd past the master's shared end -- a window may sit exactly at the end (reading
 /// empty), the same honest edge as ALES15's seek_ms. So a keeper drops the scrub at an exact index.
 pub fn move_to(s: *Scrub, master: *const pan.StereoClip, pos: u32) ScrubError!void {
     // invariant: the two channels share one length and the window length stays legal across a move.
@@ -83,7 +83,7 @@ pub fn move_to(s: *Scrub, master: *const pan.StereoClip, pos: u32) ScrubError!vo
     assert(s.pos <= master.left.len);
 }
 
-/// Drag the window by a signed `delta`, CLAMPED to [0, master.len] — an overshoot low stops at 0, an overshoot high at the end,
+/// Drag the window by a signed `delta`, CLAMPED to [0, master.len] -- an overshoot low stops at 0, an overshoot high at the end,
 /// the natural drag gesture rather than a refusal. The move is carried in i64 so no delta can wrap the u32 position. Returns the
 /// new window start.
 pub fn nudge(s: *Scrub, master: *const pan.StereoClip, delta: i32) u32 {
@@ -103,7 +103,7 @@ pub fn nudge(s: *Scrub, master: *const pan.StereoClip, delta: i32) u32 {
     return s.pos;
 }
 
-/// Read the window at `pos` into two out buffers of length `win`, returning the count `n` actually read — a full window mid-
+/// Read the window at `pos` into two out buffers of length `win`, returning the count `n` actually read -- a full window mid-
 /// master, an honestly short window near the end, and empty at the end. Reuses ALES15's read_block off a head seeded at `pos`,
 /// so the bytes are the master's own [pos, pos+n) by ALES15's proven copy. Refuses BadBlock when the out buffers differ in length
 /// or do not match the window length (a scrub reads exactly its window).
@@ -111,7 +111,7 @@ pub fn read_window(s: *const Scrub, master: *const pan.StereoClip, out_left: []i
     // invariant: the two channels share one length, the window is legal, and the head starts within the master.
     assert(master.left.len == master.right.len);
     assert(s.win >= 1 and s.win <= max_scrub_window and s.pos <= master.left.len);
-    // a scrub reads exactly its window length into matched buffers — a mismatch is refused before any copy.
+    // a scrub reads exactly its window length into matched buffers -- a mismatch is refused before any copy.
     if (out_left.len != s.win or out_right.len != s.win) return error.BadBlock;
     var t = transport.Transport{ .pos = s.pos };
     const n = try stereo_transport.read_block(&t, master, out_left, out_right);
@@ -120,7 +120,7 @@ pub fn read_window(s: *const Scrub, master: *const pan.StereoClip, out_left: []i
     return n;
 }
 
-/// Meter the window at `pos` into a fresh ALES17 StereoMeter — the level a keeper watches under the drag. Feeds the window slice
+/// Meter the window at `pos` into a fresh ALES17 StereoMeter -- the level a keeper watches under the drag. Feeds the window slice
 /// of each channel straight into the two meters in lockstep (one length, ALES17's matched count). The window bound keeps the
 /// metered count within ALES13's capacity, so MeterFull cannot fire here. Returns the pair a stereo VU shows for the scrub.
 pub fn meter_window(s: *const Scrub, master: *const pan.StereoClip) stereo_meter.StereoMeter {
@@ -132,14 +132,14 @@ pub fn meter_window(s: *const Scrub, master: *const pan.StereoClip) stereo_meter
     assert(end >= s.pos and end <= master.left.len and end - s.pos <= s.win);
     var sm = stereo_meter.StereoMeter{};
     // both channels feed the SAME window span, so the two channel meters stay matched (ALES17's lockstep); the bounded window
-    // (≤ max_scrub_window ≤ max_meter_samples) means feed's MeterFull edge cannot fire — asserted by never exceeding the bound.
+    // (≤ max_scrub_window ≤ max_meter_samples) means feed's MeterFull edge cannot fire -- asserted by never exceeding the bound.
     stereo_meter.feed(&sm, master.left.buf[s.pos..end], master.right.buf[s.pos..end]) catch unreachable;
     // invariant: the scrub metered exactly its window span in each channel, the two channels matched.
     assert(sm.left.count == end - s.pos and sm.left.count == sm.right.count);
     return sm;
 }
 
-// --- selftest: THE CRUX — a scrub of length L dragged across a master in steps of L TILES it, the windows concatenating back to
+// --- selftest: THE CRUX -- a scrub of length L dragged across a master in steps of L TILES it, the windows concatenating back to
 //     EACH channel byte-for-byte (L of 1, 2, 3, 5), the last window honestly short and a window at the end empty; a scrub read at
 //     an arbitrary p returns exactly the master slice [p, p+n); meter_window equals metering the master slice directly; nudge
 //     clamps at both edges and a drag left-then-right lands on a covered window; a rendered center pan scrubs 0.707 per side;
@@ -153,9 +153,9 @@ fn eq(got: []const i16, want: []const i16) bool {
 }
 
 fn run_selftest() !u8 {
-    // 1. THE CRUX — tiling. A scrub of length L dragged across a five-sample stereo master in steps of L concatenates back to EACH
+    // 1. THE CRUX -- tiling. A scrub of length L dragged across a five-sample stereo master in steps of L concatenates back to EACH
     //    channel byte-for-byte, at L of 1, 2, 3, 5. The windows are disjoint and cover [0, len); the last is honestly short (5 at
-    //    L=2 → 2,2,1) and the read at the end is empty. Left and right stay aligned throughout (the scrub reads off the one head).
+    //    L=2 -> 2,2,1) and the read at the end is empty. Left and right stay aligned throughout (the scrub reads off the one head).
     {
         var sc = pan.StereoClip{};
         try timeline.splice(&sc.left, 0, &[_]i16{ 10, 20, 30, 40, 50 });
@@ -193,7 +193,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. a scrub read at an arbitrary p returns exactly the master slice [p, p+n) — a mid-master window of length 3 seated at p=2
+    // 2. a scrub read at an arbitrary p returns exactly the master slice [p, p+n) -- a mid-master window of length 3 seated at p=2
     //    of a six-sample master reads samples 3,4,5 (indices 2,3,4) in each channel; a window of length 3 seated at p=4 reads a
     //    SHORT two-sample tail. The positioned read is the master's own bytes, no skip or repeat.
     {
@@ -211,7 +211,7 @@ fn run_selftest() !u8 {
         if (n != 2 or !eq(bl[0..n], &[_]i16{ 5, 6 }) or !eq(br[0..n], &[_]i16{ 15, 16 })) return error.TailReadWrong;
     }
 
-    // 3. meter_window equals metering the master slice DIRECTLY — the level under the drag is the true level of what the window
+    // 3. meter_window equals metering the master slice DIRECTLY -- the level under the drag is the true level of what the window
     //    covers. A reference StereoMeter fed the raw slice [pos, pos+win) reads the same per-channel peak and RMS as meter_window.
     {
         var sc = pan.StereoClip{};
@@ -232,7 +232,7 @@ fn run_selftest() !u8 {
         if (tail.left.count != 2 or tail.right.count != 2) return error.TailMeterCountWrong;
     }
 
-    // 4. nudge CLAMPS at both edges and a drag left-then-right lands on a covered window — an overshoot low stops at 0, an
+    // 4. nudge CLAMPS at both edges and a drag left-then-right lands on a covered window -- an overshoot low stops at 0, an
     //    overshoot high at master.len, and a right-then-left drag returns to a legal, readable position.
     {
         var sc = pan.StereoClip{};
@@ -248,7 +248,7 @@ fn run_selftest() !u8 {
         if (n != 2 or !eq(bl[0..n], &[_]i16{ 6, 7 }) or !eq(br[0..n], &[_]i16{ 3, 2 })) return error.DraggedReadWrong;
     }
 
-    // 5. a StereoClip rendered by ALES11's power.render_stereo scrubs 0.707 per side EXACTLY — a track panned center renders 700 on
+    // 5. a StereoClip rendered by ALES11's power.render_stereo scrubs 0.707 per side EXACTLY -- a track panned center renders 700 on
     //    a 1000 source, so a scrub window over it reads 700 per channel and meters peak 700, DC rms 700. The stereo side (pan/
     //    power) meets the read side (scrub) under the drag.
     {
@@ -273,7 +273,7 @@ fn run_selftest() !u8 {
         if (stereo_meter.peak_right(&lvl) != 700 or stereo_meter.rms_right(&lvl) != 700) return error.RenderedMeterRightWrong;
     }
 
-    // 6. scrubbing and metering never mutate either channel — dragging and reading and metering a master all over, then checking
+    // 6. scrubbing and metering never mutate either channel -- dragging and reading and metering a master all over, then checking
     //    BOTH channels are byte-for-byte unchanged (read-only, like the transport, the loop, and the meter it stands on).
     {
         var sc = pan.StereoClip{};
@@ -292,7 +292,7 @@ fn run_selftest() !u8 {
         if (!std.mem.eql(i16, sc.right.samples(), &orig_r)) return error.RightMutated;
     }
 
-    // 7. the edges refuse by name — make refuses a zero and an oversized window (BadWindow); move_to past the master refuses
+    // 7. the edges refuse by name -- make refuses a zero and an oversized window (BadWindow); move_to past the master refuses
     //    PastEnd; read_window with buffers that do not match the window length refuses BadBlock. Every refusal is before a copy.
     {
         if (make(0)) |_| return error.ZeroWindowSlipped else |e| if (e != error.BadWindow) return error.WrongZeroWindow;
@@ -304,7 +304,7 @@ fn run_selftest() !u8 {
         var s = try make(2);
         if (move_to(&s, &sc, 4)) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
         try move_to(&s, &sc, 3); // exactly the end is allowed
-        // mismatched buffers refuse BadBlock — a scrub reads exactly its window length into matched buffers.
+        // mismatched buffers refuse BadBlock -- a scrub reads exactly its window length into matched buffers.
         var bl: [2]i16 = [_]i16{0} ** 2;
         var br3: [3]i16 = [_]i16{0} ** 3;
         try move_to(&s, &sc, 0);
