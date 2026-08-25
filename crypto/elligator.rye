@@ -198,6 +198,8 @@ pub fn map(hidden: *const [32]u8) [32]u8 {
     u = neg(u);
     // invariant (postcondition): the output is a canonical 32-byte u-coordinate; the map is total, so no failure path exists.
     const out = fe.to_bytes(u);
+    // invariant: the map writes a fixed 32-byte field element, so a shorter buffer would be
+    // written past and a longer one would leave a tail the caller reads as mapped
     assert(out.len == 32);
     return out;
 }

@@ -92,6 +92,8 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
     var i: u32 = 0;
     // invariant (construction): the seed is copied into the buffer's high half before the first stream, so the first ChaCha key is the seed.
     while (i < 32) : (i += 1) buf[32 + i] = seed[i];
+    // invariant: the loop is proven to have filled every one of the 32 bytes, so a short fill
+    // would leave part of a key at whatever the buffer held before
     assert(i == 32);
 
     var tries: u32 = 0;

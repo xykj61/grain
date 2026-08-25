@@ -172,6 +172,8 @@ pub fn fingerprint(ext: *const ExtKey) Bip32Error![fingerprint_bytes]u8 {
     var out: [fingerprint_bytes]u8 = undefined;
     var i: u32 = 0;
     while (i < fingerprint_bytes) : (i += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert(i < fingerprint_bytes);
         out[i] = h[i];
     }
@@ -192,6 +194,8 @@ pub fn master_from_seed(seed: []const u8) Bip32Error!ExtKey {
     var ir: [key_bytes]u8 = undefined;
     var k: u32 = 0;
     while (k < key_bytes) : (k += 1) {
+        // invariant: both writes below index fixed arrays, so each bound and the array it
+        // addresses are the same number
         assert(k < key_bytes and (key_bytes + k) < i_bytes);
         il[k] = i[k];
         ir[k] = i[key_bytes + k];
@@ -223,6 +227,8 @@ pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
         data[0] = 0x00;
         var j: u32 = 0;
         while (j < key_bytes) : (j += 1) {
+            // invariant: the write below indexes a fixed array of that length, so the loop's
+            // bound and the array's own size are the same number
             assert((1 + j) < key_data_bytes);
             data[1 + j] = parent.key[j];
         }
@@ -231,6 +237,8 @@ pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
         const pub_key = try serialize_public(&parent.key);
         var j: u32 = 0;
         while (j < key_data_bytes) : (j += 1) {
+            // invariant: the write below indexes a fixed array of that length, so the loop's
+            // bound and the array's own size are the same number
             assert(j < key_data_bytes);
             data[j] = pub_key[j];
         }
@@ -238,6 +246,8 @@ pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
     const idx = ser32(index);
     var j: u32 = 0;
     while (j < 4) : (j += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert((key_data_bytes + j) < ckd_data_bytes);
         data[key_data_bytes + j] = idx[j];
     }
@@ -247,6 +257,8 @@ pub fn ckd_priv(parent: *const ExtKey, index: u32) Bip32Error!ExtKey {
     var ir: [key_bytes]u8 = undefined;
     var k: u32 = 0;
     while (k < key_bytes) : (k += 1) {
+        // invariant: both writes below index fixed arrays, so each bound and the array it
+        // addresses are the same number
         assert(k < key_bytes and (key_bytes + k) < i_bytes);
         il[k] = i[k];
         ir[k] = i[key_bytes + k];
@@ -276,6 +288,8 @@ fn frame_bytes(ext: *const ExtKey, version: *const [4]u8, key_data: *const [key_
     var off: u32 = 0;
     var i: u32 = 0;
     while (i < 4) : (i += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert(off + i < ext_serialized_bytes);
         frame[off + i] = version[i];
     }
@@ -317,6 +331,8 @@ pub fn serialize_xprv(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
     key_data[0] = 0x00;
     var i: u32 = 0;
     while (i < key_bytes) : (i += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert((1 + i) < key_data_bytes);
         key_data[1 + i] = ext.key[i];
     }
@@ -362,6 +378,8 @@ pub fn fingerprint_pub(ext: *const ExtPub) Bip32Error![fingerprint_bytes]u8 {
     var out: [fingerprint_bytes]u8 = undefined;
     var i: u32 = 0;
     while (i < fingerprint_bytes) : (i += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert(i < fingerprint_bytes);
         out[i] = h[i];
     }
@@ -393,12 +411,16 @@ pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
     var data: [ckd_data_bytes]u8 = undefined;
     var j: u32 = 0;
     while (j < key_data_bytes) : (j += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert(j < key_data_bytes);
         data[j] = parent.pubkey[j];
     }
     const idx = ser32(index);
     j = 0;
     while (j < 4) : (j += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert((key_data_bytes + j) < ckd_data_bytes);
         data[key_data_bytes + j] = idx[j];
     }
@@ -408,6 +430,8 @@ pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
     var ir: [key_bytes]u8 = undefined;
     var k: u32 = 0;
     while (k < key_bytes) : (k += 1) {
+        // invariant: both writes below index fixed arrays, so each bound and the array it
+        // addresses are the same number
         assert(k < key_bytes and (key_bytes + k) < i_bytes);
         il[k] = i[k];
         ir[k] = i[key_bytes + k];

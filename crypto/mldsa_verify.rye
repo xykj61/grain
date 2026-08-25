@@ -248,6 +248,8 @@ pub fn verify(
     const z_poly_bytes: u32 = 32 * (gamma1_bits + 1);
     const pk_len: u32 = rho_bytes + t1_packed_bytes * k;
     const sig_len: u32 = ctilde + z_poly_bytes * l + omega + k;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(pk_bytes.len == pk_len);
     assert(sig_bytes.len == sig_len);
 

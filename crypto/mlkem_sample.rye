@@ -110,6 +110,8 @@ pub fn sample_ntt(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
     var guard: u32 = 0;
     // invariant (bound): each turn consumes three stream bytes; the buffer holds ntt_xof_bytes, so the loop runs at most ntt_xof_bytes/3 times.
     while (j < n) : (guard += 1) {
+        // invariant: the rejection sampler squeezes the XOF until it has enough coefficients,
+        // and this bound is what makes that loop end on adversarial output rather than run on
         assert(guard <= ntt_xof_bytes / 3);
         // invariant: never read past the squeezed prefix — raise rather than run off the end.
         if (pos + 3 > ntt_xof_bytes) return error.SampleExhausted;
@@ -212,6 +214,8 @@ fn sample_ntt_bitreader_reference(rho: *const [32]u8, b0: u8, b1: u8) SampleErro
     var j: u32 = 0;
     var guard: u32 = 0;
     while (j < n) : (guard += 1) {
+        // invariant: the rejection sampler squeezes the XOF until it has enough coefficients,
+        // and this bound is what makes that loop end on adversarial output rather than run on
         assert(guard <= (ntt_xof_bytes * 8) / 12);
         if (bitpos + 12 > ntt_xof_bytes * 8) return error.SampleExhausted;
         var v: u32 = 0;

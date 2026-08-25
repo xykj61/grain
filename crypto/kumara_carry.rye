@@ -97,6 +97,8 @@ pub fn seal_as(id: *const identity.Identity, payload: []const u8, out: []u8) car
     // carry and expecting this identity will find them equal; asserting it here catches any drift between the identity and carry rungs at once.
     const embedded_signer = out[carry.magic_len..][0..carry.signer_len];
     var k: u32 = 0;
+    // invariant: the derived key is compared byte for byte against the one computed directly,
+    // so the two paths are proven to agree rather than assumed to
     while (k < public_len) : (k += 1) assert(embedded_signer[k] == id.public_key[k]);
     return frame_len;
 }

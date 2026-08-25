@@ -143,6 +143,8 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
         var cc: u32 = 0;
         // invariant (bound): exactly n = 256 coefficients folded in.
         while (cc < n) : (cc += 1) {
+            // invariant: the modular arithmetic below adds without reducing first, so a
+            // coefficient already at or past q would carry rather than wrap
             assert(acc.cs[cc] < q and prod.cs[cc] < q);
             acc.cs[cc] = (acc.cs[cc] + prod.cs[cc]) % q;
         }
@@ -152,6 +154,8 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
     var cw: u32 = 0;
     // invariant (bound): w = v − su, one canonical subtraction per coefficient.
     while (cw < n) : (cw += 1) {
+        // invariant: the modular arithmetic below adds without reducing first, so a coefficient
+        // already at or past q would carry rather than wrap
         assert(v_poly.cs[cw] < q and su.cs[cw] < q);
         w.cs[cw] = (v_poly.cs[cw] + q - su.cs[cw]) % q;
     }
@@ -177,6 +181,8 @@ pub fn decaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv
     const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
     const dk_len: u32 = 2 * poly_encoded_bytes * k + 2 * seed_half_bytes + seed_half_bytes;
     const ct_len: u32 = 32 * du * k + 32 * dv;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(dk.len == dk_len);
     assert(c.len == ct_len);
 

@@ -120,6 +120,8 @@ pub fn keygen(comptime k: u32, comptime l: u32, comptime eta: u32, xi: *const [s
     const eta_bytes: u32 = eta_packed_bytes(eta);
     const pk_len: u32 = rho_bytes + t1_packed_bytes * k;
     const sk_len: u32 = rho_bytes + key_bytes + tr_bytes + eta_bytes * (l + k) + t0_packed_bytes * k;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(pk_out.len == pk_len);
     assert(sk_out.len == sk_len);
 

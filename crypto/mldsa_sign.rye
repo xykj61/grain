@@ -284,6 +284,8 @@ pub fn sign(
     const z_poly_bytes: u32 = 32 * (gamma1_bits + 1);
     const sk_len: u32 = rho_bytes + key_bytes + tr_bytes + eta_bytes * (l + k) + t0_packed_bytes * k;
     const sig_len: u32 = ctilde + z_poly_bytes * l + omega + k;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(sk_bytes.len == sk_len);
     assert(sig_out.len == sig_len);
 
@@ -453,6 +455,8 @@ pub fn sign(
             var c: u32 = 0;
             // invariant (bound): exactly n coefficients per row, one per turn.
             while (c < n) : (c += 1) {
+                // invariant: the modular arithmetic below adds without reducing first, so a
+                // coefficient already at or past q would carry rather than wrap
                 assert(w0_res[i][c] < q and cs2.cs[c] < q);
                 // w0_res − cs2 in (−q, q); add q to land in (0, 2q) then a single reduction gives the canonical residue.
                 const diff: u32 = w0_res[i][c] + q - cs2.cs[c];
