@@ -97,6 +97,8 @@ pub fn nudge(s: *Scrub, master: *const pan.StereoClip, delta: i32) u32 {
     // invariant: the clamp lands the target within [0, master.len], safe to narrow back to u32.
     assert(clamped >= 0 and clamped <= len);
     s.pos = @intCast(clamped);
+    // invariant: the scrub head stays inside the master it scrubs, so a position past the end
+    // would read beyond the take
     assert(s.pos <= master.left.len);
     return s.pos;
 }

@@ -113,6 +113,8 @@ pub fn stereo_top_and_tail_pad(
         // invariant: cutting the whole span leaves each channel empty; the two cuts are identical, so balance holds.
         try timeline.cut(&sc.left, 0, original_len);
         try timeline.cut(&sc.right, 0, original_len);
+        // invariant: both channels are empty when this runs, so the padding is proven to be all
+        // that follows rather than laid over samples still there
         assert(sc.left.len == 0 and sc.right.len == 0);
         return;
     }

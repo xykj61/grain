@@ -86,6 +86,8 @@ pub fn top_and_tail(
         // ALL-SILENT: no living span to keep — the whole clip is leading-and-trailing silence, so top-and-tail removes it all.
         // invariant: cutting the whole span leaves the clip empty; the span is legal since it is exactly the clip.
         try timeline.cut(clip, 0, original_len);
+        // invariant: the clip is empty when this runs, so the trim is proven to have taken
+        // everything rather than left a head or a tail behind
         assert(clip.len == 0);
         return;
     }

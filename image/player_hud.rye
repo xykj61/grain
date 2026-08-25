@@ -77,6 +77,8 @@ const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
 pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
     // invariant: the block's travel window has room, so the clamp below never underflows.
     const last_bx: u32 = hud_frame_w - block_w;
+    // invariant: the blocks are laid left to right and this one starts at or after the last, so
+    // a row is proven to advance rather than paint over itself
     assert(block_x0 <= last_bx);
     // invariant: the block sits in the clear mid-band, wholly within the frame.
     assert(block_y + block_h <= hud_frame_h);

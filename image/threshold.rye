@@ -81,6 +81,8 @@ pub fn histogram(src: *const qoi.Pixmap) [luma_bins]u32 {
     var summed: u64 = 0;
     var b: usize = 0;
     while (b < luma_bins) : (b += 1) summed += bins[b];
+    // invariant: the histogram counted every pixel of the image, so a shortfall means a row or
+    // a column was walked past and the threshold chosen on part of the picture
     assert(summed == @as(u64, src.width) * @as(u64, src.height));
     return bins;
 }
@@ -102,6 +104,8 @@ pub fn otsu_threshold(hist: [luma_bins]u32, total: u32) u8 {
     var tallied: u64 = 0;
     var k: usize = 0;
     while (k < luma_bins) : (k += 1) tallied += hist[k];
+    // invariant: the histogram counted every pixel of the image, so a shortfall means the
+    // threshold was chosen on part of the picture
     assert(tallied == @as(u64, total));
 
     var weight_bg: u64 = 0; // pixels with luma at most t

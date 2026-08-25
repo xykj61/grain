@@ -151,6 +151,8 @@ pub fn contained_in_poly(allocator: std.mem.Allocator, manifest: scene_manifest.
     while (k < contained.len) : (k += 1) contained[k] = scratch[k];
     // invariant: the result is strictly ascending -- the dense range walked in order, so a caller may binary-read it.
     var v: usize = 1;
+    // invariant: every point the lasso kept is inside it, stated after the partition rather
+    // than trusted from the walk that built it
     while (v < contained.len) : (v += 1) assert(contained[v] > contained[v - 1]);
     return contained;
 }

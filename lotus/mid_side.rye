@@ -56,6 +56,8 @@ pub fn encode(sc: *pan.StereoClip) void {
     var i: u32 = 0;
     // invariant: i walks every seat once, folding the matched left/right pair into mid/side in place — no seat skipped, none past len touched.
     while (i < n) : (i += 1) {
+        // invariant: the sample is read out of the clip by this index with no bounds check of
+        // its own
         assert(i < n);
         const l: i64 = sc.left.buf[i];
         const r: i64 = sc.right.buf[i];
@@ -85,6 +87,8 @@ pub fn decode(sc: *pan.StereoClip) void {
     var i: u32 = 0;
     // invariant: i walks every seat once, folding the matched mid/side pair back into left/right in place.
     while (i < n) : (i += 1) {
+        // invariant: the sample is read out of the clip by this index with no bounds check of
+        // its own
         assert(i < n);
         const mid: i64 = sc.left.buf[i];
         const side: i64 = sc.right.buf[i];

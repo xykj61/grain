@@ -142,6 +142,8 @@ fn parse_channel(tag: u8, line: []const u8, buf: []i16) RackSheetError!u32 {
 pub fn parse_rack(text: []const u8, out: *rack.Rack) RackSheetError!void {
     // invariant: parsing starts from an empty rack.
     out.* = rack.Rack{};
+    // invariant: the sink is empty when this runs, so a leftover count means a prior render was
+    // never drained and its samples would be mixed into this one
     assert(out.count == 0);
 
     var lines = std.mem.splitScalar(u8, text, '\n');

@@ -85,6 +85,8 @@ pub fn feed(m: *Meter, block: []const i16) MeterError!void {
         // invariant: a magnitude never exceeds 32768, so its square never exceeds 2³⁰ (isqrt_max) — the root's domain holds.
         assert(a <= sample_peak_max);
         const sq: u64 = @as(u64, a) * @as(u64, a);
+        // invariant: the squared sum stays inside the integer square root's own domain, so a
+        // louder passage measures rather than wraps to quiet
         assert(sq <= power.isqrt_max);
         m.sum_sq += sq;
         if (a > m.peak) m.peak = a;

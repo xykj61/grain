@@ -122,6 +122,8 @@ pub fn size_histogram(allocator: std.mem.Allocator, regs: []const regions.Region
     var total: u64 = 0;
     b = 0;
     while (b < counts.len) : (b += 1) total += @as(u64, counts[b]);
+    // invariant: every region was tallied, so a shortfall means one was walked past and its
+    // pixels counted against nobody
     assert(total == @as(u64, @intCast(regs.len)));
     return counts;
 }

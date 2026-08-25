@@ -88,10 +88,17 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
     assert(out.len <= in.len);
     // invariant: the output tiles the same span the input did — same first start, same total length (coverage), and it is coalesced (no adjacent shared verdict).
     if (out.len > 0) {
+        // invariant: the smoothed runs begin where the input began, cover exactly what it
+        // covered, carry at least one sample each, and never repeat a verdict -- four
+        // properties that together say a smoothing merged runs rather than losing or inventing
+        // them
         assert(out.items[0].start == in.items[0].start);
         var covered: u32 = 0;
         var j: u32 = 0;
         while (j < out.len) : (j += 1) {
+            // invariant: each smoothed run begins where the one before it ended, carries at
+            // least one sample, and differs in verdict from its neighbour -- three properties
+            // that together say runs were merged rather than split or duplicated
             assert(out.items[j].start == out.items[0].start + covered);
             assert(out.items[j].count > 0);
             if (j > 0) assert(out.items[j].verdict != out.items[j - 1].verdict);
@@ -99,6 +106,8 @@ pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run:
             if (j > 0) assert(out.items[j].count >= min_run);
             covered += out.items[j].count;
         }
+        // invariant: every sample of the input is covered by exactly one output run, so a
+        // shortfall means smoothing dropped a stretch of the take
         assert(covered == total_count(in));
     }
 }

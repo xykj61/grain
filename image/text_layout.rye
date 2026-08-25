@@ -94,6 +94,8 @@ pub fn measure_width(atlas: *const glyph.GlyphAtlas, text: []const u8) !u32 {
         // invariant: each advance is a real forward step within the width ceiling.
         assert(g.advance >= 1);
         pen += g.advance;
+        // invariant: the pen never passes the line width, which is what wrapping exists to keep
+        // true -- a pen past it would set a glyph outside the column
         assert(pen <= line_width_max);
     }
     return pen;
@@ -141,6 +143,8 @@ fn measure_word(atlas: *const glyph.GlyphAtlas, text: []const u8, at: u32) !Word
         // invariant: an advance is a real forward step, so a word width never stalls.
         assert(g.advance >= 1);
         wsum += g.advance;
+        // invariant: the measured run fits the line width, so a wrap decision is made on a
+        // width the line can actually hold
         assert(wsum <= line_width_max);
     }
     return WordRun{ .end = p, .width = wsum };
@@ -164,6 +168,8 @@ fn fit_glyphs(atlas: *const glyph.GlyphAtlas, text: []const u8, at: u32, end_lim
         // Keep the first glyph unconditionally (progress); stop before a later one would overflow the max.
         if (p > at and next > max_width) break;
         w = next;
+        // invariant: the placed word fits the line width, stated after placement rather than
+        // trusted from the measure that chose it
         assert(w <= line_width_max);
     }
     // invariant: at least the first glyph was placed, so the caller always advances.

@@ -112,6 +112,8 @@ pub fn load(text: []const u8, master: *const pan.StereoClip, out_rack: *rack.Rac
     // invariant: loading starts from an empty project — a refused document leaves nothing half-parsed.
     out_rack.* = rack.Rack{};
     out_markers.* = markers.Markers{};
+    // invariant: the sink is empty when this runs, so a leftover count means a prior render was
+    // never drained and its samples would be mixed into this one
     assert(out_rack.count == 0);
 
     // The whole-project integrity gate: seal.open returns the verified body BYTES, or refuses before any slot or marker is trusted.

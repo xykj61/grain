@@ -111,6 +111,8 @@ pub fn build(p: Preset, clip_len: u32) Chain {
     var out = Chain{};
     const edge = head_edge(clip_len);
     // The tail span starts `edge` samples before the end; clamped `edge` guarantees no underflow (edge <= clip_len).
+    // invariant: the edge sits inside the clip it trims, so a longer one would trim past the
+    // end and return a clip shorter than it reports
     assert(edge <= clip_len);
     const tail_start = clip_len - edge;
     switch (p) {

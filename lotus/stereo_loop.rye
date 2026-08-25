@@ -82,6 +82,8 @@ pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, lp: *c
         // invariant: the head is within the region at the top of each copy — wrap the instant it reaches the end, for both
         // channels off the one head, so left and right never drift out of alignment across the seam.
         if (t.pos >= lp.end) t.pos = lp.start;
+        // invariant: the playhead stays inside the loop it is looping, so a position outside
+        // would read samples from beyond the region and call them the loop
         assert(t.pos >= lp.start and t.pos < lp.end);
         out_left[i] = stereo.left.buf[t.pos];
         out_right[i] = stereo.right.buf[t.pos];

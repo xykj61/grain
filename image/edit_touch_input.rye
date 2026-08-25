@@ -59,6 +59,8 @@ pub const EditTouch = struct {
         if (cell_px == 0) return error.BadCell;
         // invariant: a swipe threshold is positive, so a still finger is never read as a swipe.
         if (swipe_px == 0) return error.BadSwipe;
+        // invariant: a cell and a swipe both measure at least one pixel, since a zero would
+        // divide a touch position by zero rather than place it on the grid
         assert(cell_px >= 1);
         assert(swipe_px >= 1);
         return EditTouch{ .cell_px = cell_px, .swipe_px = swipe_px };

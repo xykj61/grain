@@ -107,6 +107,8 @@ fn perp_distance(p: contour.Point, a: contour.Point, b: contour.Point) f64 {
         const gy = py - ay;
         // invariant: a plain span is never negative.
         const g = @sqrt(gx * gx + gy * gy);
+        // invariant: the shoelace area is taken as a magnitude before it is halved, so a
+        // negative here means the winding was read rather than the size
         assert(g >= 0.0);
         return g;
     }

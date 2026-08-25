@@ -91,6 +91,8 @@ pub fn schmitt_step(high: *bool, x: i16, t_low: i32, t_high: i32) i16 {
     }
     // invariant: the output is exactly one of the two rails, matching the current bit — no middle value ever appears.
     const y: i16 = if (high.*) timeline.sample_max else -timeline.sample_max;
+    // invariant: the output is at one rail or the other and the flag agrees with which, since a
+    // trigger whose state and output disagree would latch on the wrong edge
     assert((high.* and y == timeline.sample_max) or (!high.* and y == -timeline.sample_max));
     return y;
 }

@@ -56,6 +56,8 @@ pub const VAlign = enum { top, middle, bottom };
 fn scale_alpha(base: u8, cov: u8) u8 {
     // invariant: a product of two bytes, rounded and divided by 255, is itself a byte -- never overflows u8.
     const scaled: u32 = (@as(u32, base) * @as(u32, cov) + 127) / 255;
+    // invariant: the value is written into a u8 channel below, so anything past 255 would wrap
+    // to a dark pixel rather than clamp to a bright one
     assert(scaled <= 255);
     return @intCast(scaled);
 }

@@ -82,6 +82,8 @@ pub fn render_sheet(m: *const markers.Markers, out: []u8) MarkerTextError!u32 {
 pub fn parse_sheet(text: []const u8, master: *const pan.StereoClip, out: *markers.Markers) MarkerTextError!void {
     // invariant: parsing starts from an empty track and the master's two channels share one length.
     out.* = markers.Markers{};
+    // invariant: the sink is empty and the two channels are the same length, so a render begins
+    // on a drained rack over a master that has not drifted apart
     assert(out.count == 0 and master.left.len == master.right.len);
 
     var lines = std.mem.splitScalar(u8, text, '\n');

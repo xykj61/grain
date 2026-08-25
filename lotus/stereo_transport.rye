@@ -82,6 +82,8 @@ pub fn seek_ms(t: *transport.Transport, stereo: *const pan.StereoClip, clk: cloc
     // invariant: the seek target must land within the master, inclusive of its end (a seek to the end is at_end).
     if (at > stereo.left.len) return error.PastEnd;
     t.pos = at;
+    // invariant: the transport stays inside the take it plays, so a position past the end would
+    // read beyond the recording
     assert(t.pos <= stereo.left.len);
 }
 
