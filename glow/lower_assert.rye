@@ -23,18 +23,26 @@ pub const gth_welcome_tick: u32 = 40;
 pub const gth_unwelcome_tick: u32 = 10;
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const slice = out[@as(usize, @intCast(used.*))..];
     const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
     const n: u32 = @intCast(written.len);
-    assert(used.* + n <= out.len); // postcondition
+    // invariant: the print has already landed when this runs, so it states that the write
+    // stayed inside the buffer rather than checking beforehand
+    assert(used.* + n <= out.len);
     used.* += n;
 }
 
 fn emit_assert(spec: *const ra.AssertSpec, tick: u32, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     const test_expr = ra.test_slice(spec);
-    assert(std.mem.eql(u8, test_expr, "(gth tick 32)")); // invariant: thin test pin
+    // invariant: the emitter writes one test shape today and reads none, so the parse and the
+    // lowering are pinned to each other here
+    assert(std.mem.eql(u8, test_expr, "(gth tick 32)"));
     var used: u32 = 0;
     const rune: []const u8 = switch (spec.polarity) {
         .positive => "?>",
@@ -98,7 +106,9 @@ pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     if (src.len == 0) return error.EmptySource;
-    assert(src.len <= std.math.maxInt(u32)); // precondition: hosted desk
+    // invariant: the length casts to u32 downstream, so a source past the hosted desk bound
+    // would wrap rather than refuse
+    assert(src.len <= std.math.maxInt(u32));
     // First non-comment Glow line.
     var i: u32 = 0;
     const src_len: u32 = @intCast(src.len);

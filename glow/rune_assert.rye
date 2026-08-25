@@ -37,7 +37,9 @@ pub const AssertSpec = struct {
 };
 
 pub fn test_slice(spec: *const AssertSpec) []const u8 {
-    assert(spec.test_len <= max_test_len); // invariant
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.test_len <= max_test_len);
     return spec.test_expr[0..@as(usize, @intCast(spec.test_len))];
 }
 
@@ -94,7 +96,9 @@ pub fn parse(line: []const u8) ParseError!AssertSpec {
     const cut = try cut_test(rest);
     if (cut.expr.len > max_test_len) return error.TestTooLong;
     if (cut.expr[0] != '(') return error.MalformedTest;
-    assert(cut.expr.len >= 2); // precondition: parenthesized
+    // invariant: the expression is unwrapped by stripping its parentheses, so fewer than two
+    // bytes would leave nothing inside
+    assert(cut.expr.len >= 2);
     if (cut.expr[cut.expr.len - 1] != ')') return error.MalformedTest;
     if (!std.mem.eql(u8, cut.expr, "(gth tick 32)")) return error.MalformedTest;
     if (cut.after.len == 0) return error.MissingBody;

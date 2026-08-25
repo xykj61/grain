@@ -54,6 +54,8 @@ fn skip_newlines(toks: []const tokens.Token, i: *u32) void {
 pub fn parse_face_lit(src: []const u8) ParseError!FaceLitSpec {
     var buf: [tokens.max_tokens]tokens.Token = undefined;
     const n = try tokens.tokenize(src, buf[0..]);
+    // invariant: tokenize returns a count it has already bounded, and the walk below indexes
+    // the token buffer by it
     assert(n <= tokens.max_tokens);
     const toks = buf[0..n];
     var i: u32 = 0;
@@ -77,6 +79,8 @@ pub fn parse_face_lit(src: []const u8) ParseError!FaceLitSpec {
     if (i < n) return error.TrailingJunk;
 
     const face = tokens.slice_of(src, face_tok);
+    // invariant: the face is copied into a fixed buffer of max_name_len and names a binding in
+    // the generated source, so an empty one would emit a name with nothing in it
     assert(face.len >= 1);
     assert(face.len <= max_name_len);
     var spec: FaceLitSpec = .{
@@ -90,10 +94,14 @@ pub fn parse_face_lit(src: []const u8) ParseError!FaceLitSpec {
 
 /// Parse one or more newline-separated `face=<lit>` clauses (≤ max_face_lits).
 pub fn parse_face_lit_sample(src: []const u8, out: []FaceLitSpec) ParseError!u32 {
+    // invariant: the caller's array holds one entry per face literal, and the budget is what
+    // the walk below is bounded by
     assert(out.len >= 1);
     assert(out.len <= max_face_lits);
     var buf: [tokens.max_tokens]tokens.Token = undefined;
     const n = try tokens.tokenize(src, buf[0..]);
+    // invariant: tokenize returns a count it has already bounded, and the walk below indexes
+    // the token buffer by it
     assert(n <= tokens.max_tokens);
     const toks = buf[0..n];
     var i: u32 = 0;
@@ -120,6 +128,8 @@ pub fn parse_face_lit_sample(src: []const u8, out: []FaceLitSpec) ParseError!u32
         i += 1;
 
         const face = tokens.slice_of(src, face_tok);
+        // invariant: the face is copied into a fixed buffer of max_name_len and names a binding
+        // in the generated source, so an empty one would emit a name with nothing in it
         assert(face.len >= 1);
         assert(face.len <= max_name_len);
         var spec: FaceLitSpec = .{

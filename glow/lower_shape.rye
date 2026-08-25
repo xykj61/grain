@@ -38,7 +38,9 @@ pub const LowerError = rm.ParseError || error{
 pub const shape_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7, 4, 6, 8, 9 };
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    assert(face.len <= rm.max_name_len); // precondition: face within name budget
+    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
+    // would arrive truncated into a different one rather than refused
+    assert(face.len <= rm.max_name_len);
     if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
     const n: u32 = @intCast(face.len);
     var i: u32 = 0;
@@ -58,7 +60,9 @@ fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
 }
 
 fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    assert(name.len <= rm.max_name_len); // precondition
+    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
+    // would arrive truncated into a different one rather than refused
+    assert(name.len <= rm.max_name_len);
     if (name.len == 0 or name.len > rm.max_name_len) return error.BadIdent;
     // STOA190: study `-mold` names emit the same Zig stem as `-shape` (AmountShape).
     var name_norm_buf: [rm.max_name_len]u8 = undefined;
@@ -94,16 +98,22 @@ fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
 }
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
-    assert(used.* <= out.len); // invariant: cursor inside buffer
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const slice = out[@as(usize, @intCast(used.*))..];
     const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
     const n: u32 = @intCast(written.len);
-    assert(used.* + n <= out.len); // postcondition: write fits
+    // invariant: the print has already landed when this runs, so it states that the write
+    // stayed inside the buffer rather than checking beforehand
+    assert(used.* + n <= out.len);
     used.* += n;
 }
 
 fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, bound: u32) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
     try append_print(out, used,
         \\fn {s}(comptime s: []const u8) [{d}]u8 {{
@@ -119,7 +129,9 @@ fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, b
 }
 
 fn emit_tuple_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, used: *u32, library: bool) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const name = rm.name_slice(spec);
     const has_cord = rm.any_cord_field(spec);
     const has_hex = rm.any_hex_field(spec);
@@ -170,7 +182,9 @@ fn emit_tuple_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, u
 }
 
 fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     var used: u32 = 0;
     try emit_tuple_type(spec, zig_type, out, &used, false);
     const has_cord = rm.any_cord_field(spec);
@@ -219,7 +233,9 @@ fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lower
 }
 
 fn emit_tagged_unit_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, used: *u32, library: bool) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const name = rm.name_slice(spec);
     if (library) {
         try append_print(out, used,
@@ -249,7 +265,9 @@ fn emit_tagged_unit_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: [
 }
 
 fn lower_tagged_unit(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     var used: u32 = 0;
     try emit_tagged_unit_type(spec, zig_type, out, &used, false);
     try append_print(out, &used, "\npub fn main(_: std.process.Init) !u8 {{\n", .{});
@@ -275,7 +293,9 @@ fn lower_tagged_unit(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8)
 }
 
 fn emit_tagged_payload_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, used: *u32, library: bool) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const name = rm.name_slice(spec);
     const has_bytes = rm.any_payload_bytes_field(spec);
     if (library) {
@@ -337,7 +357,9 @@ fn emit_tagged_payload_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out
 }
 
 fn emit_payload_face_inits(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u32, out: []u8, used: *u32) LowerError!void {
-    assert(face_count <= rm.max_payload_faces); // invariant: mold budget
+    // invariant: a payload arm carries at least one face, and the mold budget is what the
+    // emitted struct is sized for
+    assert(face_count <= rm.max_payload_faces);
     var fi: u32 = 0;
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(arm_i)), @as(usize, @intCast(fi)));
@@ -358,7 +380,9 @@ fn emit_payload_face_inits(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u3
 }
 
 fn emit_payload_face_checks(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u32, out: []u8, used: *u32) LowerError!void {
-    assert(face_count <= rm.max_payload_faces); // invariant: mold budget
+    // invariant: a payload arm carries at least one face, and the mold budget is what the
+    // emitted struct is sized for
+    assert(face_count <= rm.max_payload_faces);
     var fi: u32 = 0;
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(arm_i)), @as(usize, @intCast(fi)));
@@ -403,7 +427,9 @@ fn emit_demo_tagged_payload_var(
 }
 
 fn lower_tagged_payload(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     var used: u32 = 0;
     try emit_tagged_payload_type(spec, zig_type, out, &used, false);
     const has_cord = rm.any_payload_cord_field(spec);
@@ -452,7 +478,9 @@ fn lower_tagged(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lowe
 }
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);
@@ -467,7 +495,9 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
 
 /// Importable mold — type only, no `main` (STOA79 `$:` · STOA81–82 `$%`).
 pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     const trimmed = std.mem.trim(u8, src, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse_source(src);

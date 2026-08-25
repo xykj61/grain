@@ -37,6 +37,8 @@ pub fn pair(n: u32) Pair {
 
 /// Compatible when house12 ≡ slot16 (mod 4).
 pub fn compatible(house12: u32, slot16: u32) bool {
+    // invariant: the two moduli are what the joint index multiplies together, so a value past
+    // either would name a joint that does not exist
     assert(house12 < mod_twelve);
     assert(slot16 < mod_sixteen);
     return (house12 % gcd_clock) == (slot16 % gcd_clock);
@@ -89,14 +91,20 @@ pub const min_emphasis_gap: u32 = 6;
 /// The roster is data; this spacing is the fold — proposed, and one line of
 /// brix away from any other arrangement Keaton prefers.
 pub fn priority_of_slot(slot: u32) Priority {
-    assert(slot < priority_slots); // precondition: caller took slot = n % 16
+    // invariant: the priority table is indexed by this slot directly, so a slot past its length
+    // would read past the table
+    assert(slot < priority_slots);
     if (slot % emphasis_stride == emphasis_stride - 1) {
         const which: u32 = slot / emphasis_stride;
-        assert(which < doubled.len); // invariant: four emphasis slots, four doubles
+        // invariant: four emphasis slots and four doubles, so the table and the index into it
+        // share one length
+        assert(which < doubled.len);
         return doubled[@intCast(which)];
     }
     const base: u32 = slot - (slot / emphasis_stride);
-    assert(base < priority_base_count); // invariant: twelve base slots, twelve names
+    // invariant: twelve base slots and twelve names, so the table and the index into it share
+    // one length
+    assert(base < priority_base_count);
     return @enumFromInt(@as(u8, @intCast(base)));
 }
 
@@ -116,6 +124,8 @@ pub const Direction = enum(u32) {
 
 /// Zodiac house 0=Aries … 11=Pisces → direction quadrant.
 pub fn direction_of_house12(house12: u32) Direction {
+    // invariant: the direction table is indexed by house directly, so a house past twelve would
+    // read past it
     assert(house12 < mod_twelve);
     // East: 11 (Pisces/12th), 0 (Aries/1st), 1 (Taurus/2nd) — user seat 12th·1st·2nd
     if (house12 == 11 or house12 == 0 or house12 == 1) return .east;
