@@ -30,9 +30,13 @@ pub const BoundedText = struct {
     pub fn copy_from(self: *BoundedText, source: []const u8) TextError!void {
         if (source.len == 0) return error.EmptyText;
         if (source.len > max_text_len) return error.TextOverflow;
-        assert(source.len <= max_text_len); // postcondition guard
+        // invariant: the copy below fills a fixed buffer of max_text_len, so a longer source
+        // would be written past its end
+        assert(source.len <= max_text_len);
         self.len = @intCast(source.len);
         tally_copy.copy_disjoint(u8, self.bytes[0..source.len], source);
+        // invariant: the stored length is what every slice of this text is taken by, so it
+        // names a span the buffer actually holds
         assert(self.len > 0);
         assert(self.len <= max_text_len);
     }

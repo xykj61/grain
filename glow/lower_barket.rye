@@ -110,7 +110,9 @@ pub const barket_nona_demo_via: u32 = 8;
 pub const barket_nona_demo_ref: u32 = 9;
 
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
-    assert(face.len <= rb.max_face_len); // precondition: face within name budget
+    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
+    // would arrive truncated into a different one rather than refused
+    assert(face.len <= rb.max_face_len);
     if (face.len == 0 or face.len > rb.max_face_len) return error.MissingFace;
     const n: u32 = @intCast(face.len);
     var i: u32 = 0;
@@ -130,11 +132,15 @@ fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
 }
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
-    assert(used.* <= out.len); // invariant: cursor inside buffer
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const slice = out[@as(usize, @intCast(used.*))..];
     const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
     const n: u32 = @intCast(written.len);
-    assert(used.* + n <= out.len); // postcondition: write fits
+    // invariant: the print has already landed when this runs, so it states that the write
+    // stayed inside the buffer rather than checking beforehand
+    assert(used.* + n <= out.len);
     used.* += n;
 }
 
@@ -297,7 +303,10 @@ fn emit_xfer_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!
 
 /// STOA127 / STOA297: closed unit `$%` kind-mold call body → KindShape flip (via unit helper).
 fn emit_kind_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
-    assert(rb.is_kind_call_gate(gate)); // parse/lower pin — flip only today
+    // invariant: the body written below is shaped for this one gate kind, so the parse and the
+    // lowering are pinned to each other here -- a gate of another kind would be lowered as this
+    // one
+    assert(rb.is_kind_call_gate(gate));
     return emit_tagged_unit_flip_call_body(out, zface, comment);
 }
 
@@ -345,7 +354,10 @@ fn emit_xact_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
 
 /// STOA128 / STOA295: closed payload `$%` xact-mold call body → XactShape flip (via payload helper).
 fn emit_xact_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
-    assert(rb.is_xact_call_gate(gate)); // parse/lower pin — flip only today
+    // invariant: the body written below is shaped for this one gate kind, so the parse and the
+    // lowering are pinned to each other here -- a gate of another kind would be lowered as this
+    // one
+    assert(rb.is_xact_call_gate(gate));
     return emit_tagged_payload_flip_call_body(out, 1, zface, comment);
 }
 
@@ -373,13 +385,18 @@ fn emit_xfer_identity(out: []u8, zface: []const u8, comment: []const u8) LowerEr
 
 /// STOA129 / STOA295: closed multi-face payload `$%` xfer-mold call body → XferShape flip (via payload helper).
 fn emit_xfer_call_body(out: []u8, zface: []const u8, gate: []const u8, comment: []const u8) LowerError!u32 {
-    assert(rb.is_xfer_call_gate(gate)); // parse/lower pin — flip only today
+    // invariant: the body written below is shaped for this one gate kind, so the parse and the
+    // lowering are pinned to each other here -- a gate of another kind would be lowered as this
+    // one
+    assert(rb.is_xfer_call_gate(gate));
     return emit_tagged_payload_flip_call_body(out, 2, zface, comment);
 }
 
 /// STOA295: one tagged-payload `$%` flip call-body emit for xact (1 mint face) and xfer (2).
 /// Barket twin of STOA293. mint → .send; send → empty mint.
 fn emit_tagged_payload_flip_call_body(out: []u8, mint_faces: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    // invariant: the tagged payload is emitted in a one-face or a two-face form and no other,
+    // so a third would fall through to whichever branch came last
     assert(mint_faces == 1 or mint_faces == 2);
     const zig_type: []const u8 = if (mint_faces == 1) "XactShape" else "XferShape";
     var used: u32 = 0;
@@ -437,6 +454,9 @@ fn closed_tuple_type_name(field_count: u32) []const u8 {
 /// STOA307 / STOA324: N-field `$:` argv identity — parse N decimals from argv[1..N].
 /// Barket twin of bartis.
 fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
+    // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
+    // and two is where a tuple starts
     assert(field_count >= 2);
     assert(field_count <= 9);
     const zig_type = closed_tuple_type_name(field_count);
@@ -490,6 +510,9 @@ fn emit_n_field_argv(out: []u8, field_count: u32, zface: []const u8, comment: []
 
 /// STOA255: one N-field identity emit for closed `$:` pair…nona (N = 2…9).
 fn emit_n_field_identity(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
+    // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
+    // and two is where a tuple starts
     assert(field_count >= 2);
     assert(field_count <= 9);
     const zig_type = closed_tuple_type_name(field_count);
@@ -534,6 +557,9 @@ fn emit_n_field_identity(out: []u8, field_count: u32, zface: []const u8, comment
 /// STOA261: one N-field flip call-body emit for closed `$:` pair…nona (N = 2…9).
 /// Barket twin of STOA259 — swaps from↔amount; remaining faces pass through.
 fn emit_n_field_flip_call_body(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    // invariant: the emitter names each field from closed_tuple_faces, a table of nine, and
+    // indexes it by position -- so nine is that table's length rather than a chosen ceiling,
+    // and two is where a tuple starts
     assert(field_count >= 2);
     assert(field_count <= 9);
     const zig_type = closed_tuple_type_name(field_count);
@@ -622,7 +648,9 @@ fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const
 
 fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
-    assert(face.len > 0); // invariant: spec carries a non-empty face
+    // invariant: the face names the gate's sample in the generated source, so an empty one
+    // would emit a binding with no name
+    assert(face.len > 0);
     const shape = sample_shape_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
@@ -712,7 +740,10 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         },
         .call_one => {
             const gate = rb.gate_slice(spec);
-            assert(rb.is_closed_call_gate(gate)); // parse pin
+            // invariant: the body written below is shaped for this one gate kind, so the parse
+            // and the lowering are pinned to each other here -- a gate of another kind would be
+            // lowered as this one
+            assert(rb.is_closed_call_gate(gate));
             const op = try call_op_expr(gate);
             var body_buf: [96]u8 = undefined;
             const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
@@ -727,7 +758,9 @@ fn emit(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
 
 fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
     const face = rb.face_slice(spec);
-    assert(face.len > 0); // invariant: spec carries a non-empty face
+    // invariant: the face names the gate's sample in the generated source, so an empty one
+    // would emit a binding with no name
+    assert(face.len > 0);
     const shape = sample_shape_label(spec);
     var zig_face_buf: [rb.max_face_len]u8 = undefined;
     const zn = try zig_safe_ident(face, &zig_face_buf);
@@ -794,7 +827,10 @@ fn emit_argv(spec: *const rb.BarketSpec, out: []u8) LowerError!u32 {
         },
         .call_one => {
             const gate = rb.gate_slice(spec);
-            assert(rb.is_closed_call_gate(gate)); // parse pin
+            // invariant: the body written below is shaped for this one gate kind, so the parse
+            // and the lowering are pinned to each other here -- a gate of another kind would be
+            // lowered as this one
+            assert(rb.is_closed_call_gate(gate));
             const op = try call_op_expr(gate);
             var body_buf: [96]u8 = undefined;
             const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;

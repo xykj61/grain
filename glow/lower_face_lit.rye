@@ -21,10 +21,14 @@ pub const LowerError = face_lit.ParseError || error{
 };
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
     assert(used.* <= out.len);
     const slice = out[@as(usize, @intCast(used.*))..];
     const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
     const n: u32 = @intCast(written.len);
+    // invariant: the print has already landed when this runs, so it states that the write
+    // stayed inside the buffer rather than checking beforehand
     assert(used.* + n <= out.len);
     used.* += n;
 }
@@ -113,6 +117,8 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     if (src.len == 0) return error.EmptySource;
     var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
     const n = try face_lit.parse_face_lit_sample(src, specs[0..]);
+    // invariant: one entry is emitted per face literal, and the budget is what the caller's
+    // array was sized for
     assert(n >= 1);
     assert(n <= face_lit.max_face_lits);
 

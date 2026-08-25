@@ -61,10 +61,10 @@ names: a private function called only from a proof entry is proof whatever it is
 `pub` function never is and a shared helper withdraws to contract. **The law reads 92%**, proven by
 15 behaviors in a throwaway pen. **The `caravan` falsifier does not fire.**
 **`pond/apps/drawn_terminal.rye` swept 0% -> 100%** -- 57 asserts, 22 blocks, wrapped at 96 to match
-caravan's median of 73. **`image/photos.rye` needed no sweep.** **`glow` swept on Keaton's word: 3.4% -> 48%**, gap 198 -> 106 across `tokens.rye`, `rune_shape.rye`
-and `lower_bartis.rye` -- 92 asserts in 53 blocks. Its reasons were largely there already as
-**trailing** comments, which is a placement rather than an absence (1,144 tree-wide). **Open door:**
-`glow` 106, `crypto` 271, `linengrow` 239, `mand` 61 at 0.0%; tree gap **1,293**.
+caravan's median of 73. **`image/photos.rye` needed no sweep.** **`glow` finished on Keaton's word: 3.4% -> 100%**, 16 files and 139 blocks. Its reasons were largely
+there already as **trailing** comments -- a placement rather than an absence (1,144 tree-wide) -- and
+each moved above and was rewritten. **Open door:** `crypto` 271, `linengrow` 239, `mand` 61 at 0.0%;
+tree **93%**, gap **1,187**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

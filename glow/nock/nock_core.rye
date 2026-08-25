@@ -97,6 +97,8 @@ pub const Interp = struct {
         const idx = self.count;
         self.cells[idx] = CellPair{ .head = noun_head, .tail = noun_tail };
         self.count += 1;
+        // invariant: the cell arena is a fixed array of max_cells and the count indexes it, so
+        // a count past the ceiling would write past the arena
         assert(self.count <= max_cells);
         return Noun{ .cell = idx };
     }
@@ -105,6 +107,8 @@ pub const Interp = struct {
         switch (n) {
             .atom => return error.SlotIntoAtom,
             .cell => |idx| {
+                // invariant: the cell is read out of the arena by this index with no bounds
+                // check of its own
                 assert(idx < self.count);
                 return self.cells[idx].head;
             },
@@ -115,6 +119,8 @@ pub const Interp = struct {
         switch (n) {
             .atom => return error.SlotIntoAtom,
             .cell => |idx| {
+                // invariant: the cell is read out of the arena by this index with no bounds
+                // check of its own
                 assert(idx < self.count);
                 return self.cells[idx].tail;
             },
@@ -134,6 +140,8 @@ pub const Interp = struct {
             .cell => |xidx| switch (y) {
                 .atom => false,
                 .cell => |yidx| {
+                    // invariant: both cells are read out of the arena by index below, so each
+                    // index is checked against the same count
                     assert(xidx < self.count and yidx < self.count);
                     const xc = self.cells[xidx];
                     const yc = self.cells[yidx];
