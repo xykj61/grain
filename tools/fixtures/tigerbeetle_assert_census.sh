@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census assert / maybe / constants.verify under gratitude/tigerbeetle/src.
-# Clean-room study only — prints counts; never copies into rye/.
+# Clean-room study only -- prints counts; never copies into rye/.
 set -eu
 ROOT=gratitude/tigerbeetle
 if ! test -d "$ROOT/src"; then

@@ -1,13 +1,13 @@
 #!/bin/sh
-# fascia_metric_v0.sh — fascia metric (i4–i9).
+# fascia_metric_v0.sh -- fascia metric (i4-i9).
 #
-# Four clutter signals → difficulty-style fascia grade 0–100.
+# Four clutter signals -> difficulty-style fascia grade 0-100.
 # Higher fascia = more knit; clutter lowers the grade.
-# i5: softer weights · window mean · self-path excludes.
-# i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
-# i7: Class A honest-anchor excludes (trial) · fall-visibility baseline = window_min.
-# i8: Class A HOLD disclosed (e104) — exclusion hides; holding discloses.
-# i9: window carry across revisions — never clear history on a rev bump;
+# i5: softer weights - window mean - self-path excludes.
+# i6: Amphora laps 1-3 stack named; weights unchanged (window stays like-to-like).
+# i7: Class A honest-anchor excludes (trial) - fall-visibility baseline = window_min.
+# i8: Class A HOLD disclosed (e104) -- exclusion hides; holding discloses.
+# i9: window carry across revisions -- never clear history on a rev bump;
 #     seed the equinox arc 100/85/92 so the −15 fall stays visible.
 # u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
 set -eu
@@ -24,7 +24,7 @@ esac
 
 metric_rev=i9
 
-# Self-path excludes — the meter must not grade its own Inner Scope seats.
+# Self-path excludes -- the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
 EXCLUDE_I45='!**/inner-scope-i[4-9]*'
 EXCLUDE_I4STAMP='!**/20260728-023240*'
@@ -70,7 +70,7 @@ if [ -f tally/parse_int.rye ]; then
   parseint=$((parseint - parseint_canon))
   [ "$parseint" -lt 0 ] && parseint=0
 fi
-# Glow lower emit strings print Zig source containing parseInt — not app call
+# Glow lower emit strings print Zig source containing parseInt -- not app call
 # sites (door named u72; exclusion seated u74). Matches advise roster lean.
 parseint_emit="$(rg -n --no-heading 'parseInt\(' \
   glow/lower_bartis.rye glow/lower_barket.rye 2>/dev/null | wc -l | tr -d ' ')"
@@ -84,8 +84,8 @@ ratchet_out=0
 [ "$camel" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
 [ "$parseint" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
 
-# --- signal 3: target-class A hits (Seva Fund lineage · held disclosed) ---
-# yonder excluded (f2 · 20260730.093112) — same relocate kit as superseded
+# --- signal 3: target-class A hits (Seva Fund lineage - held disclosed) ---
+# yonder excluded (f2 - 20260730.093112) -- same relocate kit as superseded
 # i8: count the hits; name the honest anchors; do NOT exclude them into silence.
 class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob '!**/quin-workshop/**' \
@@ -154,8 +154,8 @@ mkdir -p tools/.cache
 window_file=tools/.cache/fascia_metric_v0_window.tsv
 window_carry=honored
 window_seeded=0
-# Seed missing arc extremes (85 fall · 100 peak · 92 hold) without wiping history.
-# stamp · fascia · superseded · ratchet · class_a · over70 · clutter · metric_rev
+# Seed missing arc extremes (85 fall - 100 peak - 92 hold) without wiping history.
+# stamp - fascia - superseded - ratchet - class_a - over70 - clutter - metric_rev
 seed_tmp="$(mktemp)"
 : >"$seed_tmp"
 has85=0
@@ -177,7 +177,7 @@ if [ "$has100" -eq 0 ]; then
   window_seeded=1
 fi
 if [ "$has92seed" -eq 0 ] && [ "$has85" -eq 0 ] && [ "$has100" -eq 0 ]; then
-  # First hydration only — avoid duplicating 92 once the arc is present.
+  # First hydration only -- avoid duplicating 92 once the arc is present.
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
     "20260731.135742" "92" "0" "0" "4" "0" "8" "i8_seed" >>"$seed_tmp"
   window_seeded=1
@@ -239,7 +239,7 @@ printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
   "$stamp" "$fascia" "$superseded" "$ratchet_out" "$class_a" "$over70" "$clutter" "$metric_rev" \
   >>"$window_file"
 tmp="$(mktemp)"
-# Keep last 8, pinning remembered arc extremes (85 fall · 100 peak) when present.
+# Keep last 8, pinning remembered arc extremes (85 fall - 100 peak) when present.
 awk -F'\t' '
   { rows[NR] = $0; n = NR }
   END {

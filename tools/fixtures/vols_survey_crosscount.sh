@@ -1,11 +1,11 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_crosscount.sh — VOLS survey independent cross-count.
+# tools/fixtures/vols_survey_crosscount.sh -- VOLS survey independent cross-count.
 #
 #   sh tools/fixtures/vols_survey_crosscount.sh <root>
 #
 # The "second tool" behind vols_survey_scan.sh's hit count: a grep -r traversal (rather
 # than the scan's find-loop) over the same derived living set, counting the identical
-# bare "lap <N>" ordinal. Two tools, one answer — so no site hides between the survey
+# bare "lap <N>" ordinal. Two tools, one answer -- so no site hides between the survey
 # and a maintainer's own count. Authored in a file so the refined PCRE lookaround is
 # written once, never re-escaped through a witness string.
 #

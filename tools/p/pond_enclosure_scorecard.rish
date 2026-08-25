@@ -1,9 +1,9 @@
-# pond_enclosure_scorecard.rish — two-column scorecard living measure.
+# pond_enclosure_scorecard.rish -- two-column scorecard living measure.
 #
-# Claude 210800 · 212412 · 213600: column one = incumbent (sixbar); column two
+# Claude 210800 - 212412 - 213600: column one = incumbent (sixbar); column two
 # = gaps. Proves column one GREEN, records column-two gap rows, asserts exit
 # bron and .asc absent (master-seal policy ready) and ENCLOSURE=ai-jail in the
-# example — season-closed is measured. Exit bron counts only when master-signed.
+# example -- season-closed is measured. Exit bron counts only when master-signed.
 #
 #   rishi/bin/rishi run tools/p/pond_enclosure_scorecard.rish
 

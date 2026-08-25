@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# pond_customs_witness.sh — Pond customs: admit plain-bytes; hold await-word; refuse stranger.
+# pond_customs_witness.sh -- Pond customs: admit plain-bytes; hold await-word; refuse stranger.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 BIN="$ROOT/pond/bin/customs"
@@ -18,7 +18,7 @@ echo "$out" | grep -q 'verdict=place' || { echo "FAIL welcome not place"; echo "
 echo "$out" | grep -q 'GREEN' || { echo "FAIL welcome missing GREEN"; exit 1; }
 echo "ADMIT ok plain-bytes"
 
-# Hold — exit 1
+# Hold -- exit 1
 set +e
 hold_out=$("$BIN" inspect "$ROOT/tools/fixtures/pond_customs_hold.bron" 2>&1)
 hold_code=$?
@@ -27,7 +27,7 @@ test "$hold_code" -eq 1 || { echo "FAIL hold exit want 1 got $hold_code"; echo "
 echo "$hold_out" | grep -q 'HOLD' || { echo "FAIL hold missing HOLD"; exit 1; }
 echo "HOLD ok await-word"
 
-# Refuse — exit 2
+# Refuse -- exit 2
 set +e
 refuse_out=$("$BIN" inspect "$ROOT/tools/fixtures/pond_customs_refuse.bron" 2>&1)
 refuse_code=$?

@@ -1,8 +1,8 @@
-# rish_match_witness.rish — the `matches` primitive, the bounded pattern matcher.
+# rish_match_witness.rish -- the `matches` primitive, the bounded pattern matcher.
 #
 # Proves Rishi can now test a string against a pattern the way a shell reaches for
-# `grep -qE` or `rg -q`, without shelling out — the primitive that unlocks folding the
-# regex seams of the Python → Rishi molt into native Rishi. The engine (rishi/src/match.rye)
+# `grep -qE` or `rg -q`, without shelling out -- the primitive that unlocks folding the
+# regex seams of the Python -> Rishi molt into native Rishi. The engine (rishi/src/match.rye)
 # is a bounded, linear-time NFA simulation: no backtracking, no ReDoS, every buffer a named
 # ceiling. Its answers were checked against Python's re.search across 812 pattern×input
 # pairs; this witness pins a representative set and the real seam patterns.
@@ -58,7 +58,7 @@ let names = ["20260809-110311_a.md" "README.md" "20260101-000000_b.bron" "TASKS.
 let dated_names = where names as f: (f matches dated)
 assert (length dated_names) == 2 else "matches works inside a where filter"
 
-# `find` — every non-overlapping leftmost-longest match, as a list of substrings.
+# `find` -- every non-overlapping leftmost-longest match, as a list of substrings.
 let nums = find "a12b345c6" "\d+"
 assert (length nums) == 3 else "find returns each match"
 assert (nums[0]) == "12" else "first match"
@@ -69,7 +69,7 @@ assert (find "no digits here" "\d+") == [] else "find returns an empty list on n
 let words = find "Foo and Bar Baz" "[A-Z][a-z]+"
 assert (join words " ") == "Foo Bar Baz" else "find composes with join"
 
-# Single-char-class lookbehind — the shape claim_preserve's PATH class needs.
+# Single-char-class lookbehind -- the shape claim_preserve's PATH class needs.
 let path_pat = "(?<![A-Za-z0-9_])(?:\.\./)?(context|tools)/[A-Za-z0-9_./+-]+"
 let paths = find "see context/RIYO.md and mycontext/x and ../tools/foo.rish" path_pat
 assert (join paths "~") == "context/RIYO.md~../tools/foo.rish" else "lookbehind matches a root at a boundary, skips one mid-identifier"

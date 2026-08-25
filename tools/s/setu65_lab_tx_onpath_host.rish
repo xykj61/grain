@@ -1,7 +1,7 @@
-# setu65_lab_tx_onpath_host.rish — SETU6.5 host: TX gate after lab probe.
+# setu65_lab_tx_onpath_host.rish -- SETU6.5 host: TX gate after lab probe.
 #
 # Run on the host after SETU6 probe has written lab.bron.
-# Stand-in → SKIP GREEN. Armed → unicast framed UDP :38503 to the iface
+# Stand-in -> SKIP GREEN. Armed -> unicast framed UDP :38503 to the iface
 # default gateway (Pixel tether peer). Limited broadcast needs CAP.
 #
 #   rishi/bin/rishi run tools/s/setu6_lab_probe_onpath_host.rish

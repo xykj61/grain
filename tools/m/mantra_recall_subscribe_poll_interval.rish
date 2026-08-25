@@ -1,4 +1,4 @@
-# mantra_recall_subscribe_poll_interval.rish — poll interval at cycle boundary (in-process).
+# mantra_recall_subscribe_poll_interval.rish -- poll interval at cycle boundary (in-process).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_recall_subscribe_poll_interval.rish

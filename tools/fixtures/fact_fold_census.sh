@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/fact_fold_census.sh — design-shapes fact_fold · metal + pattern + bounds.
+# tools/fixtures/fact_fold_census.sh -- design-shapes fact_fold - metal + pattern + bounds.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 set -eu

@@ -1,5 +1,5 @@
 #!/bin/sh
-# radiant_pass_outcome.sh — classify changed vs clean for a Radiant pass row.
+# radiant_pass_outcome.sh -- classify changed vs clean for a Radiant pass row.
 # clean = only Radiant-pass metadata added (plus optional blank line before ---).
 # changed = any other body diff vs BASE ref.
 #
@@ -21,7 +21,7 @@ else
   exit 0
 fi
 
-# Any diff line that is not a Radiant-pass stamp or a lone blank addition → changed.
+# Any diff line that is not a Radiant-pass stamp or a lone blank addition -> changed.
 non_meta=$(
   git diff -U0 "${BASE}" -- "$path" \
     | grep -E '^\+[^+]' \

@@ -1,20 +1,20 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_scan.sh — CION VOLS Journey 13, the derived survey census.
+# tools/fixtures/vols_survey_scan.sh -- CION VOLS Journey 13, the derived survey census.
 #
 #   sh tools/fixtures/vols_survey_scan.sh <root>
 #
 # Where the module labeling guard (tools/fixtures/labeling_module_scan.sh) scans a
 # HAND-LISTED set of already-swept files and FAILS on drift, this scan DERIVES its
-# input set from the tree under <root> and REPORTS a census — every living surface
+# input set from the tree under <root> and REPORTS a census -- every living surface
 # that names a capability by a bare "lap <N>" ordinal, the identity the chronological-
 # semantic labeling law retired (context/specs/20260810-222755_..., addendum
 # 20260811.130827). Completeness is the point: a capability born tomorrow appears in
 # the census the day it lands, with no one editing this scan.
 #
 # A survey reports, it does not gate. verdict=ok means the census RAN COMPLETELY over
-# a derived set — however many sites it found. The GRAD seal, not VOLS, fails on drift.
+# a derived set -- however many sites it found. The GRAD seal, not VOLS, fails on drift.
 #
-# Derived set: authored living prose surfaces under <root> —
+# Derived set: authored living prose surfaces under <root> --
 #   */README.md, *.rye, *.rish, *.glow
 # Excluded structurally (dated testimony keeps the ordinals it recorded; the law
 # governs living surfaces only) and the seed/ projection (a derived copy of source,
@@ -24,7 +24,7 @@
 #
 # Bare-ordinal pattern: the refined PCRE the law already uses (labeling_module_scan.sh)
 #   (?<![-\w])lap [0-9]+(?![-\w])
-# — a structured code ("lap 4b", "OA-L3"), a "sub-lap N" compound, and a stable witness-
+# -- a structured code ("lap 4b", "OA-L3"), a "sub-lap N" compound, and a stable witness-
 # handle filename ("granary_lap1.rish", matched only inside file CONTENT, never by name)
 # are deliberately NOT the bare identity; the negative lookaround skips them.
 #

@@ -1,7 +1,7 @@
-# rish_lower_witness.rish — the `lower` string builtin.
+# rish_lower_witness.rish -- the `lower` string builtin.
 #
 # Proves Rishi can ASCII-lowercase a string, so a case-insensitive compare is a plain
-# `lower a == lower b`. Only A–Z shift; digits, punctuation, and non-letters pass
+# `lower a == lower b`. Only A-Z shift; digits, punctuation, and non-letters pass
 # through untouched, and the length never changes.
 #
 #   rishi/bin/rishi run tools/r/rish_lower_witness.rish

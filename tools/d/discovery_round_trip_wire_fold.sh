@@ -1,5 +1,5 @@
 #!/bin/sh
-# Fold supply parity helper for door 15 wire lab — two independent runs, equal supply.
+# Fold supply parity helper for door 15 wire lab -- two independent runs, equal supply.
 # Kept as shell so rish $digit expansion never touches the sed groups.
 set -eu
 export RYE_ZIG="${RYE_ZIG:-vendor/zig-toolchain/zig}"

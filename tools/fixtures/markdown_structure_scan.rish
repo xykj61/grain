@@ -1,4 +1,4 @@
-# markdown_structure_scan.rish — structural integrity gate for Markdown passes.
+# markdown_structure_scan.rish -- structural integrity gate for Markdown passes.
 #
 #   MARKDOWN_STRUCTURE_FILES=$'a.md\nb.md' rishi/bin/rishi run tools/markdown_structure_scan.rish
 #

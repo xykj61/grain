@@ -1,10 +1,10 @@
-# tools/co/comlink_r1_dual_stack_witness.rish — Ashvini R1: pier dual-stack policy (e222).
+# tools/co/comlink_r1_dual_stack_witness.rish -- Ashvini R1: pier dual-stack policy (e222).
 #
 #   rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish
 #
 # Two legs, deliberately separate:
-#   Leg A — pier pedestal + policy face + width face. Pure. No socket.
-#   Leg B — metal probe. Bind both families on loopback. Bind, never dial.
+#   Leg A -- pier pedestal + policy face + width face. Pure. No socket.
+#   Leg B -- metal probe. Bind both families on loopback. Bind, never dial.
 #           GREEN on Framework. RED on counsel without IPv6 (correct).
 
 say "r1: Language EN — pier dual-stack policy seated whole (Ashvini R1 · e222)."

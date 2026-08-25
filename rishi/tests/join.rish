@@ -1,4 +1,4 @@
-# join.rish — tests for the `join` list builtin.
+# join.rish -- tests for the `join` list builtin.
 
 let words = ["rye" "rishi" "mantra"]
 assert join words " " == "rye rishi mantra" else "join: space failed"

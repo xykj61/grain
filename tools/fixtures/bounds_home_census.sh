@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/bounds_home_census.sh — design-shapes bounds inherit the living table.
+# tools/fixtures/bounds_home_census.sh -- design-shapes bounds inherit the living table.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 # Compares seated literals in mycelium/build_bounds.rye to recursion_block.brix.
@@ -12,7 +12,7 @@ metal="${3:-mycelium/build_bounds.rye}"
 [ -f "$table" ] || { echo "verdict=missing_table"; exit 2; }
 [ -f "$metal" ] || { echo "verdict=missing_metal"; exit 2; }
 
-# README names the living table — wing charter, not invented here.
+# README names the living table -- wing charter, not invented here.
 if grep -q 'recursion_block.brix' context/design-shapes/README.md 2>/dev/null; then
   echo "detail: ok living_table_named"
   named=1

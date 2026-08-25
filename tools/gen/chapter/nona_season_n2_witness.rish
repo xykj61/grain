@@ -1,4 +1,4 @@
-# tools/gen/chapter/nona_season_n2_witness.rish — Nona Chapter n2 living residual.
+# tools/gen/chapter/nona_season_n2_witness.rish -- Nona Chapter n2 living residual.
 #
 #   rishi/bin/rishi run tools/gen/chapter/nona_season_n2_witness.rish
 
@@ -13,9 +13,9 @@ let year = run ["sh" "-c" "grep -q 'three · quad · quint · sext · sept · oc
 assert year.ok else "nona-season-n2: LEXICON year scan failed"
 assert year.out contains "YEAR_OK" else "nona-season-n2: year scopes still use retired depth words"
 
-let kiln = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Chapter' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q '| \*\*quad\*\* | Gren Chapter' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q '20260729.130911' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && echo OVEN_OK"]
-assert kiln.ok else "nona-season-n2: kiln charter scan failed"
-assert kiln.out contains "OVEN_OK" else "nona-season-n2: kiln charter living three/quad incomplete"
+let oven = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Chapter' counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md && grep -q '| \*\*quad\*\* | Gren Chapter' counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md && grep -q '20260729.130911' counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md && echo OVEN_OK"]
+assert oven.ok else "nona-season-n2: oven charter scan failed"
+assert oven.out contains "OVEN_OK" else "nona-season-n2: oven charter living three/quad incomplete"
 
 let gen = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Chapter' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && grep -q 'paused \*\*three\*\* MUR' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && grep -q '20260729.130911' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && echo GEN_OK"]
 assert gen.ok else "nona-season-n2: generator charter scan failed"
@@ -25,5 +25,5 @@ let mur = run ["sh" "-c" "grep -q 'nest \*\*three\*\* scope' counsel/date/202607
 assert mur.ok else "nona-season-n2: MUR charter scan failed"
 assert mur.out contains "MUR_OK" else "nona-season-n2: MUR charter living labels incomplete"
 
-say "GREEN: nona-season-n2 — LEXICON year · Kiln · Generator · MUR living three/quad"
+say "GREEN: nona-season-n2 — LEXICON year · Oven · Generator · MUR living three/quad"
 say "GREEN: nona-season-n2 — residual living depth cites cleared on PAUSED doors."

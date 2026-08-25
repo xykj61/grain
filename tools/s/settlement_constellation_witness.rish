@@ -1,11 +1,11 @@
-# settlement_constellation_witness.rish — the Sui settlement constellation.
+# settlement_constellation_witness.rish -- the Sui settlement constellation.
 #
 # Proves JARL's settlement, shrunk to Sui's owned/shared split. A galaxy and its d60
-# settle across five transitions — genesis, mint (spawn by capability), transfer,
+# settle across five transitions -- genesis, mint (spawn by capability), transfer,
 # rotate (keys rotate while the keeper sits cold, a reset outranking a key bump), and
 # escape (a child re-parents by its own word and the new sponsor's adoption). The
-# shared surface is a small **commitment** — point, tier, sponsor, version, and a
-# digest binding the owned **deed** — and it verifies a current deed while refusing a
+# shared surface is a small **commitment** -- point, tier, sponsor, version, and a
+# digest binding the owned **deed** -- and it verifies a current deed while refusing a
 # stale one, a tampered one, and a ghost. Every ledger refusal holds.
 #
 # Build first:  rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation

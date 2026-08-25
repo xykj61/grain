@@ -1,11 +1,11 @@
-# stranger_lap_witness.rish — OPEN_QUESTIONS #4 answer home (warm path · report).
+# stranger_lap_witness.rish -- OPEN_QUESTIONS #4 answer home (warm path - report).
 #
 # Runs the warm stranger lap and asserts the live bound comparator (elapsed
 # strictly under bound), not merely that elapsed/bound strings were printed.
-# Honest scope: warm = local path · --depth 1 · pre-warmed toolchain. Does not
-# prove network clone, full history, or cold install — see worker header.
+# Honest scope: warm = local path - --depth 1 - pre-warmed toolchain. Does not
+# prove network clone, full history, or cold install -- see worker header.
 #
-# Advisory / report seat — not wired into parity_ch01. Cold path is a mode on
+# Advisory / report seat -- not wired into parity_ch01. Cold path is a mode on
 # the same worker (STRANGER_LAP_MODE=cold). Framework cold REPORT landed
 # 20260725.174428 (29s under 1800); keep the claim ceiling until several hosts
 # justify tightening.

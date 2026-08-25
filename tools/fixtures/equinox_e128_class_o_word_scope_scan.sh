@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e128 — Class O word-scope (class/rooms, not per-path).
+# Equinox e128 -- Class O word-scope (class/rooms, not per-path).
 # Exit 0 only when the framing is seated and the cut stays closed.
 # No backtick characters. No git history walks.
 #
@@ -7,7 +7,7 @@
 #   sh tools/fixtures/equinox_e128_class_o_word_scope_scan.sh prove-red
 #
 # Law: Class O membership is a measured property; the census is authority.
-# Law: Keaton's word is on the class and/or rooms — not on each filename.
+# Law: Keaton's word is on the class and/or rooms -- not on each filename.
 # Law: kg with approvals seats the framing; it does not open the cut.
 set -eu
 

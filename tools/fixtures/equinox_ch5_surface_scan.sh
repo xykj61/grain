@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox ch5 surface scan — e119 · sixteen limbs · tool · no almanac seat.
+# Equinox ch5 surface scan -- e119 - sixteen limbs - tool - no almanac seat.
 # Exit 0 only when limbs are tracked and the surface claims no chapter-close seat.
 # No backtick characters in patterns.
 #

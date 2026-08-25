@@ -1,4 +1,4 @@
-# records.rish — records, field access, say, and equality as a gate.
+# records.rish -- records, field access, say, and equality as a gate.
 
 let enclosure = { read: ["/usr" "/lib"], write: ["/home/me"], net: false, mem_mb: 4096 }
 

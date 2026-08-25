@@ -1,4 +1,4 @@
-# caravan_witness_stop_footgun.rish — refuse witness-stop-after-N outside witness mode.
+# caravan_witness_stop_footgun.rish -- refuse witness-stop-after-N outside witness mode.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ca/caravan_witness_stop_footgun.rish

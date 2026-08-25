@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/tend_hygiene_census.sh — design-shapes tend_hygiene · baton hall 12.
+# tools/fixtures/tend_hygiene_census.sh -- design-shapes tend_hygiene - baton hall 12.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 set -eu

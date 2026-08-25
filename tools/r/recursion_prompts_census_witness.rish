@@ -1,10 +1,10 @@
-# tools/r/recursion_prompts_census_witness.rish — the recursion-prompts cellar, proven present.
+# tools/r/recursion_prompts_census_witness.rish -- the recursion-prompts cellar, proven present.
 #
 # The root-level cellar seated `20260812` on Keaton's word holds seed templates
 # (blank fillable recursion prompts) and dated filled versions (the hardened
 # resin of a real run). This witness proves the cellar's shape on metal: the
 # charter present, the three seeds present, at least one dated version present,
-# and — the load-bearing invariant — that every seed carries the custody stop
+# and -- the load-bearing invariant -- that every seed carries the custody stop
 # clause verbatim, so no minted prompt can forget where the fence is.
 #
 # Run from the repository root:
@@ -37,7 +37,7 @@ let versions = run ["sh" "-c" "ls recursion-prompts/versions/*.md >/dev/null 2>&
 assert versions.ok else "recursion-prompts/versions listing failed"
 assert versions.out contains "yes" else "recursion-prompts/versions holds no dated version yet"
 
-# invariant: the two autonomous seeds carry the GATES-ONLY stop clause — the fence
+# invariant: the two autonomous seeds carry the GATES-ONLY stop clause -- the fence
 # an unattended run prints when only custody work remains. The interactive
 # counsel seed stops-and-parks at the gates instead, so it is not counted here.
 let gate_count = run ["sh" "-c" "grep -l 'GATES-ONLY' recursion-prompts/seed/*.seed.md | wc -l"]

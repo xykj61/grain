@@ -1,13 +1,13 @@
 #!/bin/sh
-# Equinox e126 — start rung named (sh→rish) · census_control climb begun.
+# Equinox e126 -- start rung named (sh->rish) - census_control climb begun.
 # Exit 0 only when Lexicon names the start rung and the climb holds.
 # No backtick characters. No git history walks.
 #
 #   sh tools/fixtures/equinox_e126_start_rung_scan.sh
 #   sh tools/fixtures/equinox_e126_start_rung_scan.sh prove-red
 #
-# Law: foundations first — work starts at the sh→rish seam.
-# Law: approve-all seats leans; it circles no gate (128 · shred · geode stay).
+# Law: foundations first -- work starts at the sh->rish seam.
+# Law: approve-all seats leans; it circles no gate (128 - shred - geode stay).
 set -eu
 
 MODE=${1:-}
@@ -135,7 +135,7 @@ rg -q 'census_control_tracked_seam' "$RISH_ORCH" || {
   echo "verdict=misread"
   exit 1
 }
-# Entry must stay thin — not carry the old fat python body
+# Entry must stay thin -- not carry the old fat python body
 if rg -q 'duty1_h1_true' "$ENTRY"; then
   echo "climb=failed"
   echo "detail=entry_must_not_hold_duty_logic"

@@ -1,9 +1,9 @@
-# tools/au/aurora_a1_seed_length_eq_witness.rish — Ashvini equality: exact 32 (STOA337).
+# tools/au/aurora_a1_seed_length_eq_witness.rish -- Ashvini equality: exact 32 (STOA337).
 #
 #   rishi/bin/rishi run tools/au/aurora_a1_seed_length_eq_witness.rish
 #
 # gth speaks ceilings. eq speaks exactly. Aurora's seed_length=32 is the first
-# pedestal that could not decide until this rune — 32→1, neighbors→0.
+# pedestal that could not decide until this rune -- 32->1, neighbors->0.
 
 say "eq-seed: Language EN — the first exact deciding gate (STOA337)."
 say "eq-seed: Lens TAME — exact match; both sides; gth neighbor still stands."

@@ -1,8 +1,8 @@
-# mandate_serve_witness.rish — Mandate's query serve protocol.
+# mandate_serve_witness.rish -- Mandate's query serve protocol.
 #
 # Proves the wire shape of a query and its answer: a QueryRequest (k, optional tag
 # filter, vector) and a QueryResponse (matches) serialize to bounded bytes; serve()
-# decodes a request, answers it against the store, and encodes the response — so a
+# decodes a request, answers it against the store, and encodes the response -- so a
 # served query answers exactly as a direct in-process one. A bad magic, wrong version,
 # over-range k, or too-small buffer is refused at the door.
 #

@@ -1,9 +1,9 @@
-# tools/g/glow_tend_era_suite.rish — the pure era lap: everything any host can prove (e223).
+# tools/g/glow_tend_era_suite.rish -- the pure era lap: everything any host can prove (e223).
 #
 #   rishi/bin/rishi run tools/g/glow_tend_era_suite.rish
 #
 # Two laps exist, honestly separated:
-#   THIS lap is PURE — the a1 suite plus R1's socketless legs. It runs on any
+#   THIS lap is PURE -- the a1 suite plus R1's socketless legs. It runs on any
 #   host, including a bench with no IPv6 stack at all, so a red here is always a
 #   real red rather than a missing network family.
 #   The METAL lap is tools/co/comlink_r1_dual_stack_witness.rish, whose bind leg
@@ -12,7 +12,7 @@
 # was always socketless; only the bind PROBE needs a dual-stack host. Until now the
 # face was exercised solely by the metal lap, so it had no cover in the house net.
 # Neither replaces the other: the pure lap proves the work, the metal lap proves
-# the host. Names read from the tree at e223 — the seated pedestal is the pier's
+# the host. Names read from the tree at e223 -- the seated pedestal is the pier's
 # policy shape, and the width face carries the addr-width name.
 
 say "era: Language EN — the pure lap (a1 deciding gates + Rishi walls + R1 socketless)."

@@ -1,4 +1,4 @@
-# cursor_jail_macos_private_home_witness.rish — proves the --private-home
+# cursor_jail_macos_private_home_witness.rish -- proves the --private-home
 # profile emitted by tools/cu/cursor_jail_macos.rish actually denies reads to
 # a real $HOME entry outside the project, while the project's own files
 # and the ordinary write fence stay untouched.

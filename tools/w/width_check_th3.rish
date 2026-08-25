@@ -1,6 +1,6 @@
-# width_check_th3.rish — TH-3 witness: Mantra module zero authored usize.
+# width_check_th3.rish -- TH-3 witness: Mantra module zero authored usize.
 #
-# Gates mantra/src/* only — global width-check stays RED until Rishi and
+# Gates mantra/src/* only -- global width-check stays RED until Rishi and
 # Comlink migrate; width-check remains outside parity until corpus is clean.
 #
 # Run from the repository root:

@@ -1,34 +1,34 @@
 #!/usr/bin/env bash
-# hawm0_boot_worker.sh — HAWM0's actual boot worker: backgrounds the emulator,
+# hawm0_boot_worker.sh -- HAWM0's actual boot worker: backgrounds the emulator,
 # polls adb + sys.boot_completed, reads back device identity. Bash, not Rish,
 # on purpose: Rish's own `run` is blocking-only (manual/reference/rishi-language.md
-# §4) — no `&`, no `trap`, no `wait`, no sleep-and-poll loop. This mirrors
+# §4) -- no `&`, no `trap`, no `wait`, no sleep-and-poll loop. This mirrors
 # tools/p/proven_seat_g0c_lane_kvm.sh's own relationship to
 # tools/l/lane_kvm_onpath_host.rish exactly: the .rish file is the host-facing
 # entrypoint and precondition-checker; this .sh file is the one seam that
 # actually manages a long-lived background process.
 #
-# Not run directly — call tools/h/hawm0_boot_onpath_host.rish instead:
+# Not run directly -- call tools/h/hawm0_boot_onpath_host.rish instead:
 #   rishi/bin/rishi run tools/h/hawm0_boot_onpath_host.rish
 #
-# A successful GREEN close leaves the emulator running on purpose — a
+# A successful GREEN close leaves the emulator running on purpose -- a
 # caller (tools/h/hawm1_seva_witness.rish, or an interactive `adb shell`
 # session) needs it still attached a moment later. Stop it explicitly with
 # tools/h/hawm0_stop.sh when actually done. Only a failure path tears the
 # emulator back down automatically; this is a real fix, corrected
 # `20260716.140207` after an earlier version's own exit-trap killed a
-# just-proven-GREEN boot before anything downstream could ever attach —
+# just-proven-GREEN boot before anything downstream could ever attach --
 # Keaton hit this exact bug live, two GREEN HAWM0 boots in a row followed
 # immediately by HAWM1 reporting no emulator attached, seconds later.
 #
-# (context/specs/two-dev-environments-and-mobile-emulation.md · waymark fix
+# (context/specs/two-dev-environments-and-mobile-emulation.md - waymark fix
 # context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md)
 #
 # Run OUTSIDE ai-jail, from a plain host terminal that already has /dev/kvm.
 # HAWM0 never touches the ai-jail wall or tools/l/lane_kvm.sh at all: this
 # emulator never runs inside the jail in the first place (no /dev/kvm, no
 # sdkmanager/emulator binaries reachable there), so there is nothing to widen
-# and nothing to gate — it is simply a host action, same as any other program
+# and nothing to gate -- it is simply a host action, same as any other program
 # you run on this machine outside Cursor's jailed session.
 #
 # Setup already done, from inside the jail (network-only work, no /dev/kvm
@@ -36,7 +36,7 @@
 # fetched and sha-verified into tools/.cache/hawm0/ (gitignored), licenses
 # accepted, platform-tools + emulator + a stock Android 16 (API 36) Google
 # APIs x86_64 system image installed, and one AVD named "hawm0" created with
-# a Pixel-10-Pro-XL-shaped hardware profile (1344x2992 @560dpi, 4G RAM) — the
+# a Pixel-10-Pro-XL-shaped hardware profile (1344x2992 @560dpi, 4G RAM) -- the
 # flagship device this fork's own go-to-market brief names first
 # (active-designing/20260715-194500_the-slc-product-glow-on-capable-hardware.md).
 # tools/.cache/hawm0/ lives on this host's real, persistent ~/urbit partition
@@ -45,7 +45,7 @@
 #
 # This is the honest register named in the living spec: HAWM0 boots real
 # stock AOSP/Android with KVM acceleration, the same userland surface
-# GrapheneOS presents to an app. It never claims to be GrapheneOS itself —
+# GrapheneOS presents to an app. It never claims to be GrapheneOS itself --
 # HAWM2 (a real GrapheneOS build) is the only rung that actually exercises
 # GrapheneOS's own hardening, and needs the full GrapheneOS/AOSP source tree,
 # not this stock SDK image.
@@ -92,7 +92,7 @@ ADB="$ANDROID_SDK_ROOT/platform-tools/adb"
 
 # Pin the emulator serial. A GrapheneOS/Pixel phone on the same adb server
 # (common on this Framework seat) makes bare `adb wait-for-device` and
-# `adb shell` race the physical device — wait returns early, shell may hit
+# `adb shell` race the physical device -- wait returns early, shell may hit
 # "more than one device/emulator" under set -e, cleanup kills the just-launched
 # AVD, and meta stops mid-wait with no RED timeout line. Live hit
 # 20260722.153130 with Pixel 66041JEA306288 attached beside hawm0.
@@ -155,7 +155,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Wait for an emulator-* serial specifically — never bare wait-for-device,
+# Wait for an emulator-* serial specifically -- never bare wait-for-device,
 # which returns as soon as a USB phone is already listed.
 progress "emulator pid=$EPID — waiting for emulator-* adb serial (up to 60s; Pixel may already be listed)…"
 for i in $(seq 1 60); do
@@ -194,7 +194,7 @@ if [ "$booted" -ne 1 ]; then
   exit 1
 fi
 
-# Disarm the cleanup trap before declaring success — a booted emulator this
+# Disarm the cleanup trap before declaring success -- a booted emulator this
 # script just proved GREEN is exactly what a caller (HAWM1's own adb push,
 # or an interactive session) needs to still be running a moment later. The
 # trap stays live for every failure path above (a broken boot really should

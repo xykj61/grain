@@ -1,6 +1,6 @@
-# rw2_surface_contract.rish — RW-2 contract: Brushstroke surface signature obligations.
+# rw2_surface_contract.rish -- RW-2 contract: Brushstroke surface signature obligations.
 #
-# The answerer (wayland_seed) proves redraw signatures and refuses excess lines —
+# The answerer (wayland_seed) proves redraw signatures and refuses excess lines --
 # mirrored to the collaboration witness, no Pond app in the room.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/rw2_surface_contract.rish

@@ -1,4 +1,4 @@
-# arithmetic.rish — integer arithmetic and parenthesized grouping.
+# arithmetic.rish -- integer arithmetic and parenthesized grouping.
 # Proves: +, -, *, / with correct operator precedence, left-associativity,
 # negative numbers, and (expr) grouping. Each fact is asserted as a gate.
 

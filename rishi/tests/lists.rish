@@ -1,4 +1,4 @@
-# lists.rish — list values, say, contains, and list equality as a gate.
+# lists.rish -- list values, say, contains, and list equality as a gate.
 
 let langs = ["rye" "rishi" "silo"]
 say "the family: ${langs}"

@@ -1,4 +1,4 @@
-# glow_sample_argv_witness.rish — thin @u32 sample from Rishi argv (STOA92 / G3).
+# glow_sample_argv_witness.rish -- thin @u32 sample from Rishi argv (STOA92 / G3).
 #
 # Fixture cast-u32 stays argv-free; generator sample-u32 reads process argv.
 #
@@ -12,7 +12,7 @@ assert fixture.ok else "fixture cast-u32.glow failed"
 assert fixture.out contains "GREEN" else "fixture cast-u32.glow not GREEN"
 assert fixture.out contains "cast-u32.glow" else "fixture claim missing path"
 
-# 2. Generator welcome — sample 42 (matches cast welcome constant).
+# 2. Generator welcome -- sample 42 (matches cast welcome constant).
 let gen42 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/sample-u32.glow" "42"]
 assert gen42.ok else "sample-u32.glow 42 failed"
 assert gen42.out contains "GREEN" else "sample-u32.glow 42 not GREEN"
@@ -23,15 +23,15 @@ let gen7 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/sample
 assert gen7.ok else "sample-u32.glow 7 failed"
 assert gen7.out contains "GREEN" else "sample-u32.glow 7 not GREEN"
 
-# 4. Arity refuse — generator desk without sample.
+# 4. Arity refuse -- generator desk without sample.
 let no_sample = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/sample-u32.glow"]
 assert (no_sample.ok == false) else "sample-u32.glow without sample must refuse"
 
-# 5. Parse refuse — bad decimal on the built binary.
+# 5. Parse refuse -- bad decimal on the built binary.
 let bad = run ["sh" "-c" "glow/bin/sample-u32 not-a-u32 >/dev/null 2>&1; echo EXIT:$?"]
 assert bad.out contains "EXIT:2" else "sample-u32 bad decimal must exit 2"
 
-# 6. Emit pin — argv path vs baked fixture.
+# 6. Emit pin -- argv path vs baked fixture.
 let emit_argv = run ["sh" "-c" "glow/bin/glow_run --sample-argv glow/gen/sample-u32.glow"]
 assert emit_argv.ok else "argv-sample lower failed"
 let rye_argv = trim emit_argv.out

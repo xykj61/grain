@@ -1,17 +1,17 @@
-# tools/b/buhr_realidream_derive_witness.rish — BUHR Journey 5, Rung 3.
+# tools/b/buhr_realidream_derive_witness.rish -- BUHR Journey 5, Rung 3.
 #
-# A program node that depends on a read node — the graph's true fused edge. Rungs 1 and 2
+# A program node that depends on a read node -- the graph's true fused edge. Rungs 1 and 2
 # left the read lane and the program lane independent (fused on one graph, each re-read an
 # append). This rung draws the edge the Realidream foundation names most directly: two
-# sources can feed one node. A program node is derived from a read node — its content a
-# pure function of the read lane's current head — so the read is upstream of the program,
+# sources can feed one node. A program node is derived from a read node -- its content a
+# pure function of the read lane's current head -- so the read is upstream of the program,
 # not beside it. Because the derived node is a pure function of the read it consumed, a
 # re-read flows downstream honestly: refresh the read, derive again, and the new program
 # node reflects the new read while the earlier program node still recalls the value it
-# derived from the earlier read (referential transparency across the fused edge — nothing
+# derived from the earlier read (referential transparency across the fused edge -- nothing
 # mutates behind the reader). derive_from_read refuses a non-read source (NotAReadPath), a
 # read destination (NotAProgramPath), and an unpinned read (LaneUnknown). This rung reads
-# no network — the read content is supplied in-process; a real web fetch stays a named
+# no network -- the read content is supplied in-process; a real web fetch stays a named
 # seam behind a bounded reader (its own later rung, surfacing for Keaton's word).
 #
 # Run from the repository root:
@@ -33,7 +33,7 @@ assert selftest.out contains "the read is upstream of the program" else "buhr-j5
 assert selftest.out contains "a re-read flowed downstream" else "buhr-j5r3: the downstream-flow proof is missing"
 assert selftest.out contains "refuses NotAReadPath" else "buhr-j5r3: the wrong-edge refuse proof is missing"
 
-# Rungs 1 and 2 stay their own green binaries — additive.
+# Rungs 1 and 2 stay their own green binaries -- additive.
 let rung2 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_realidream_reread_witness.rish 2>&1"]
 assert rung2.ok else "buhr-j5r3: the re-read (J5r2) witness regressed"
 assert rung2.out contains "GREEN: BUHR-J5r2" else "buhr-j5r3: rung two lost its green"

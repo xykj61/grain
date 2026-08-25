@@ -1,7 +1,7 @@
-# glow_barket_parse_witness.rish — barket parse (STOA112–116).
+# glow_barket_parse_witness.rish -- barket parse (STOA112-116).
 #
 # Proves dry-shaped |^ header, identity, and closed call-body trio
-# (double · inc · dec); unknown gates refuse BodyGateNotYetLowered.
+# (double - inc - dec); unknown gates refuse BodyGateNotYetLowered.
 #
 #   rishi/bin/rishi run tools/g/glow_barket_parse_witness.rish
 

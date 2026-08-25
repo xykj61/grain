@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# pond_build_drawn_terminal.sh — TAME-guided build (hosted by pond_build_drawn_terminal.rish).
+# pond_build_drawn_terminal.sh -- TAME-guided build (hosted by pond_build_drawn_terminal.rish).
 #
 # Canonical entry: rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 # Direct .sh only when you need lines to stream during a long compile.

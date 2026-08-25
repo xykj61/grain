@@ -1,9 +1,9 @@
-# tools/t/tact_ship_pilot_identity_witness.rish — TACT Journey 1, Rung 2: the identity step, wired.
+# tools/t/tact_ship_pilot_identity_witness.rish -- TACT Journey 1, Rung 2: the identity step, wired.
 #
 # Rung one proved the pilot spine pure (each precondition a supplied signal). This rung wires
 # the first step, identity, to a real settlement: the step passes only when a genuine Kumara
-# genesis opens and its Deed verifies against the fresh constellation. From zero — a forged
-# bind, or a number that is no galaxy — no identity settles, so the pilot holds at identity and
+# genesis opens and its Deed verifies against the fresh constellation. From zero -- a forged
+# bind, or a number that is no galaxy -- no identity settles, so the pilot holds at identity and
 # never advances. Onboarding cannot walk past a keeper who has no real identity. Demo keeper
 # seeds only; the maintainer's own Kumara instance stays custody gate %4.
 #
@@ -27,7 +27,7 @@ assert selftest.out contains "a forged bind never settled; the pilot held at ide
 assert selftest.out contains "a non-galaxy number refused genesis; the pilot held at identity" else "tact1: non-galaxy refusal missing"
 assert selftest.out contains "the identity step passes only on a real, verified genesis" else "tact1: crux claim missing"
 
-# The pilot spine this rung wires into stays its own green binary — the identity step composes
+# The pilot spine this rung wires into stays its own green binary -- the identity step composes
 # over the spine's public attempt/current API, adding no new enforcement path.
 let spine_bin = "pond/bin/ship-pilot"
 let spine_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot.rye -femit-bin=${spine_bin}"]

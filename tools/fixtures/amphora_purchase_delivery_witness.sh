@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_purchase_delivery_witness.sh — pour work → delivery slip → scrub → verify bind.
+# amphora_purchase_delivery_witness.sh -- pour work -> delivery slip -> scrub -> verify bind.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 SRC="$ROOT/tools/fixtures/amphora_lap3_tree"
@@ -20,7 +20,7 @@ sh "$ROOT/tools/fixtures/amphora_pour.sh" "$SRC" "$home" "$STAMP"
 parent=$(awk '/^parent / {print $2; exit}' "$home/vessel.bron")
 test -n "$parent"
 
-# Fixture payment digest — stands for a MALA receipt name (commerce coin already seated).
+# Fixture payment digest -- stands for a MALA receipt name (commerce coin already seated).
 payment=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 {
@@ -45,7 +45,7 @@ sh "$ROOT/tools/fixtures/amphora_scrub_arrival.sh" "$far" "$SRC"
 "$BIN" verify "$far/delivery.bron" "$far/vessel.bron" >/dev/null
 echo "DELIVERY ok slip bound to vessel parent"
 
-# Unwelcome: flip payment nibble — verify must refuse.
+# Unwelcome: flip payment nibble -- verify must refuse.
 pay_line=$(grep '^payment ' "$far/delivery.bron")
 first=$(printf '%s' "$pay_line" | awk '{print substr($2,1,1)}')
 rest=$(printf '%s' "$pay_line" | awk '{print substr($2,2)}')

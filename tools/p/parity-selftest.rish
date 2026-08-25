@@ -1,4 +1,4 @@
-# std-overlay-guard.rish — guard against accidental re-fork of rye/lib/std.
+# std-overlay-guard.rish -- guard against accidental re-fork of rye/lib/std.
 #
 # 1) Assert rye/lib/std is a symlink to the pinned toolchain (not a copied tree).
 # 2) Shadow-copy vendor lib, tamper sha3.zig, prove a witness sees the change.

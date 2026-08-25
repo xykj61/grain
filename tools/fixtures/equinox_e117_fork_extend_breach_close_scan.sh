@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e117 — fork EXTEND +128 · census breach closed unspent.
+# Equinox e117 -- fork EXTEND +128 - census breach closed unspent.
 # Exit 0 only when control reads and decision limbs honor.
 # No backtick characters in patterns.
 #

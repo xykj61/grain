@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# chrono_version_scan_drive.sh — split roster, run chunk scanner, emit OK/FAIL lines.
+# chrono_version_scan_drive.sh -- split roster, run chunk scanner, emit OK/FAIL lines.
 set -eu
 ROOT="$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"

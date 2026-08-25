@@ -1,6 +1,6 @@
 #!/bin/sh
 # Flip one nibble in the seal_cargo field of an Amphora vessel file.
-# POSIX seam fixture — replaces the elder .py the tools scan refused.
+# POSIX seam fixture -- replaces the elder .py the tools scan refused.
 # Usage: sh tools/fixtures/amphora_tamper_seal_cargo.sh <vessel>
 set -e
 f="$1"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e116 — one dated definition + roof divergence + REDS 40.
+# Equinox e116 -- one dated definition + roof divergence + REDS 40.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #

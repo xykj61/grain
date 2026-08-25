@@ -1,9 +1,9 @@
-# tools/m/mantra_a2_list_fold_witness.rish — Ashvini a2: the list fold widens (e246).
+# tools/m/mantra_a2_list_fold_witness.rish -- Ashvini a2: the list fold widens (e246).
 #
 #   rishi/bin/rishi run tools/m/mantra_a2_list_fold_witness.rish
 #
 # STOA333 folded a pair's two fields. STOA335 folds every field of any closed
-# tuple, pair through nona — the same rune, one rung wider, which is Mantra's
+# tuple, pair through nona -- the same rune, one rung wider, which is Mantra's
 # Weave shape: a value reduced from a bounded sequence of named parts.
 #
 # At two fields the widened emitter delegates to the pier's pair emitter, so the

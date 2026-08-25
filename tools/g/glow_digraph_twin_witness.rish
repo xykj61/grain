@@ -1,9 +1,9 @@
-# glow_digraph_twin_witness.rish — STOA333 rung-1a digraph-table twin.
+# glow_digraph_twin_witness.rish -- STOA333 rung-1a digraph-table twin.
 #
-# Glow desk (sample-digraph-table.glow) · fixture · Rye match_rune2 extract
+# Glow desk (sample-digraph-table.glow) - fixture - Rye match_rune2 extract
 # agree byte-for-byte with each other; each fixture line tokenizes as Kind.rune2.
-# Wrong-order fixture (glow_digraph_table_wrong_order.txt — first two rows swapped)
-# proves the cmp gate turns red. Standing-exempt intentional violation — do not "fix".
+# Wrong-order fixture (glow_digraph_table_wrong_order.txt -- first two rows swapped)
+# proves the cmp gate turns red. Standing-exempt intentional violation -- do not "fix".
 #
 #   rishi/bin/rishi run tools/g/glow_digraph_twin_witness.rish
 
@@ -32,7 +32,7 @@ assert glow_n == 28 else "glow extract count not 28"
 assert fix_n == 28 else "fixture count not 28"
 assert wrong_n == 28 else "wrong-order fixture count not 28"
 
-# Byte-identical line streams — order is law.
+# Byte-identical line streams -- order is law.
 let cmp_rye = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${fixture}"]
 assert cmp_rye.ok else "rye extract != fixture (order or glyphs drifted)"
 let cmp_glow = run ["sh" "-c" "tools/fixtures/glow_digraph_desk_extract.sh | cmp -s - ${fixture}"]

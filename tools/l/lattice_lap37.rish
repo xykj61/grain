@@ -1,4 +1,4 @@
-# lattice_lap37.rish — Lattice lap 36 hard_sigmoid witness.
+# lattice_lap37.rish -- Lattice lap 36 hard_sigmoid witness.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "lattice/bin/lattice"
 let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]

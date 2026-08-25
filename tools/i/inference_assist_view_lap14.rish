@@ -1,4 +1,4 @@
-# inference_assist_view_lap14.rish — Assist view: blocks count on snippets band.
+# inference_assist_view_lap14.rish -- Assist view: blocks count on snippets band.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 14 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

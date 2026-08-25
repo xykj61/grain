@@ -1,4 +1,4 @@
-# tame_style_tools_py_ban_selftest.rish — proves the tools/*.py gate is live.
+# tame_style_tools_py_ban_selftest.rish -- proves the tools/*.py gate is live.
 #
 # Positive: repo-root scan is TOOLS_PY_OK (zero).
 # Negative: SCAN_ROOT pointed at context/fixtures/tools_py_ban_tree (planted

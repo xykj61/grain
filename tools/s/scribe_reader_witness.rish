@@ -1,8 +1,8 @@
-# scribe_reader_witness.rish — Scribe's zero-copy Kyri reader.
+# scribe_reader_witness.rish -- Scribe's zero-copy Kyri reader.
 #
 # Proves Scribe's foundation: a Kyri document (format on the first line, then key value
-# fields, # comments and blanks ignored) parses into fields **zero-copy** — each field
-# slices into the source, never copied — and Scribe **dispatches by format**, telling a
+# fields, # comments and blanks ignored) parses into fields **zero-copy** -- each field
+# slices into the source, never copied -- and Scribe **dispatches by format**, telling a
 # session-log-v1 from a baton-v1 with one honest reader (the counsel's one-notation-
 # many-formats made real). A repeatable key keeps every occurrence; get returns the
 # first; a missing key reads null.

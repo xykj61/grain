@@ -1,5 +1,5 @@
 #!/bin/sh
-# Dated-pattern scan — one definition, planted both ways.
+# Dated-pattern scan -- one definition, planted both ways.
 # Exit 0 only when controls honor and the shared classifier speaks.
 # No backtick characters in patterns.
 #
@@ -11,7 +11,7 @@
 set -eu
 
 MODE=${1:-}
-# Living mutant: the classifier now speaks Rishi (Python → Rishi molt 20260809).
+# Living mutant: the classifier now speaks Rishi (Python -> Rishi molt 20260809).
 CLASSIFY=tools/fixtures/dated_classify.rish
 RISH="rishi/bin/rishi run"
 LAW=context/specs/living-vs-dated.md

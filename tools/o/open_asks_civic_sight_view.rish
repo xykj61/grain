@@ -1,6 +1,6 @@
-# open_asks_civic_sight_view.rish — Open Asks civic sight: L1+L3+L4 on Skate (tip 430).
+# open_asks_civic_sight_view.rish -- Open Asks civic sight: L1+L3+L4 on Skate (tip 430).
 #
-# Golden: drawn terminal open asks civic sight: lifecycle=1 escrow=0 consented=3 stipend=300 withheld=excluded … — GREEN
+# Golden: drawn terminal open asks civic sight: lifecycle=1 escrow=0 consented=3 stipend=300 withheld=excluded ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/o/open_asks_civic_sight_view.rish
 

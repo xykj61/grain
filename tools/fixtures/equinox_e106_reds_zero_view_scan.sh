@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e106 — REDS row 33 zero-view law + M3/M4 already home.
+# Equinox e106 -- REDS row 33 zero-view law + M3/M4 already home.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #
@@ -33,7 +33,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- REDS row 33 · zero-view law ---
+# --- REDS row 33 - zero-view law ---
 git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "reds_row=failed"
   echo "verdict=misread"
@@ -98,7 +98,7 @@ echo "$ZERO_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "zero_view=honored"
 
-# --- M3/M4 already home (e105) — counsel A consumed ---
+# --- M3/M4 already home (e105) -- counsel A consumed ---
 git ls-files --error-unmatch "$M3" >/dev/null 2>&1 || {
   echo "m3_home=failed"
   echo "verdict=misread"
@@ -160,7 +160,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "fork=honored"
 echo "fork_status=not_consumed"
 
-# --- almanac seats 97-109 · ch7 at least 13/16 ---
+# --- almanac seats 97-109 - ch7 at least 13/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*|*"Chapter Seven (10 of 16)"*|*"Chapter Seven (11 of 16)"*|*"Chapter Seven (12 of 16)"*)

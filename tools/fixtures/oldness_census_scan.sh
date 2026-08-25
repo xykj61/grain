@@ -1,12 +1,12 @@
 #!/bin/sh
-# Oldness census scan — M3 home land.
+# Oldness census scan -- M3 home land.
 # Control first; then SAFE shape; then living/dated split over tracked md.
-# No backtick characters in patterns. Print only — never mutates SAFE.
+# No backtick characters in patterns. Print only -- never mutates SAFE.
 #
 #   sh tools/fixtures/oldness_census_scan.sh
 #
 # Law: four fifths of markdown is Tier 2 testimony; the living header
-# (born … refreshed …) is the relevancy marker for the plain-named remainder.
+# (born ... refreshed ...) is the relevancy marker for the plain-named remainder.
 # SAFE rows grow only by Keaton's word.
 set -eu
 
@@ -68,7 +68,7 @@ fi
 echo "oldness_dated_control=honored"
 echo "oldness_dated_control_path=${DATED_CONTROL}"
 
-# --- SAFE shape (cycle 1 · 0 of 64 welcome) ---
+# --- SAFE shape (cycle 1 - 0 of 64 welcome) ---
 if ! test -f "$SAFE"; then
   echo "oldness_safe=failed"
   echo "verdict=misread"
@@ -102,7 +102,7 @@ echo "oldness_safe_rows=${ROWS}"
 echo "oldness_safe_bound=64"
 echo "oldness_safe_empty=yes"
 
-# --- living / dated split (git ls-files · never find) ---
+# --- living / dated split (git ls-files - never find) ---
 SPLIT=$(python3 <<'PY'
 import re, subprocess
 from pathlib import Path

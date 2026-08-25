@@ -1,4 +1,4 @@
-# parser_hyphens.rish — hyphenated word operators vs integer subtraction.
+# parser_hyphens.rish -- hyphenated word operators vs integer subtraction.
 
 # infix word ops compared without wrapping parens
 assert "parity.rish" ends-with ".rish" == true else "ends-with == true failed"

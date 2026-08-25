@@ -1,4 +1,4 @@
-# tools/gen/amphora/amphora_resin_chunk.rish — Amphora large-resin chunking beyond one datagram.
+# tools/gen/amphora/amphora_resin_chunk.rish -- Amphora large-resin chunking beyond one datagram.
 #
 # TAME on-touch `20260728.003735` (Tensegral r8): cold rye-build under rishi
 # can hang; bound rebuilds with timeout and accept a warm binary that still

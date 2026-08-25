@@ -1,5 +1,5 @@
 #!/bin/sh
-# Isolated cwd for :version — creates .mantra in a temp dir, not the repo root.
+# Isolated cwd for :version -- creates .mantra in a temp dir, not the repo root.
 set -e
 root=$(pwd)
 tmpdir=$(mktemp -d)

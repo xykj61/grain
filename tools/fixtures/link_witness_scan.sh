@@ -1,19 +1,19 @@
 #!/bin/sh
-# link_witness_scan.sh — walk relative markdown links; assert targets resolve.
+# link_witness_scan.sh -- walk relative markdown links; assert targets resolve.
 #
 # Modes (env):
-#   LINK_WITNESS_FILES          — newline paths; fixture / scoped walk
-#   LINK_WITNESS_ALLOW_BASELINE — tree walk only; print count, exit 0 with debt
-#   LINK_WITNESS_SNAPSHOT=path  — ROUND MODE capture: write sorted dangling set, exit 0
-#   LINK_WITNESS_COMPARE=path   — ROUND MODE assert: no new missing targets
+#   LINK_WITNESS_FILES          -- newline paths; fixture / scoped walk
+#   LINK_WITNESS_ALLOW_BASELINE -- tree walk only; print count, exit 0 with debt
+#   LINK_WITNESS_SNAPSHOT=path  -- ROUND MODE capture: write sorted dangling set, exit 0
+#   LINK_WITNESS_COMPARE=path   -- ROUND MODE assert: no new missing targets
 #
-# ROUND MODE binding (counsel 20260726.025120 · refined 20260726.034200):
+# ROUND MODE binding (counsel 20260726.025120 - refined 20260726.034200):
 #   Compare missing *targets* (resolved paths that do not exist), not source:href
 #   keys. Relocating a file that already pointed at a missing path must not RED
 #   the gate; introducing a newly missing destination must.
 #   ALLOW_BASELINE is IGNORED in compare mode.
 #
-# Counsel 20260726.020825 · T0 · ROUND MODE 20260726.025120
+# Counsel 20260726.020825 - T0 - ROUND MODE 20260726.025120
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

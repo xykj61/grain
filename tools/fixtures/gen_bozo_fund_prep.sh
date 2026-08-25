@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_bozo_fund_prep.sh — Bozo fund prep (Capricorn earth · seat 10 · was Linn · Helen · DJINN)
+# gen_bozo_fund_prep.sh -- Bozo fund prep (Capricorn earth - seat 10 - was Linn - Helen - DJINN)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

@@ -1,21 +1,21 @@
-# rish_count_selftest.rish — accumulation in Rishi: fold threads state; for-each does not.
+# rish_count_selftest.rish -- accumulation in Rishi: fold threads state; for-each does not.
 #
 # `for-each` binds its loop variable in a fresh child scope each pass, so a running
 # total written there never reaches the outer binding. `fold` is Rishi's accumulator:
 # it carries the accumulator forward across every element. With the `?:` rune a fold
 # body can accumulate under a per-item condition, and a record accumulator carries
-# several values at once — the shape a census counter wants, no shell needed.
+# several values at once -- the shape a census counter wants, no shell needed.
 #
 #   rishi/bin/rishi run tools/r/rish_count_selftest.rish
 
 let items = [1 2 3]
 
-# for-each still cannot accumulate — its body's binding stays in the child scope.
+# for-each still cannot accumulate -- its body's binding stays in the child scope.
 let total = 0
 for-each items as i do let total = total + i
 assert total == 0 else "for-each does not accumulate (expected 0, proved)"
 
-# fold does — the accumulator is threaded through each element.
+# fold does -- the accumulator is threaded through each element.
 let sum = fold items from 0 as acc n: acc + n
 assert sum == 6 else "fold accumulates a sum natively"
 

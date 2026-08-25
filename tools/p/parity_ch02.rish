@@ -1,13 +1,13 @@
-# parity_ch02.rish — witness suite chapter 2 (fresh Env; ≤200 user lets).
+# parity_ch02.rish -- witness suite chapter 2 (fresh Env; ≤200 user lets).
 #
-# Lines 988–1633 of the former monolithic parity.rish · 130 lets.
+# Lines 988-1633 of the former monolithic parity.rish - 130 lets.
 # Driven by tools/p/parity.rish. Run alone:
 #   rishi/bin/rishi run tools/p/parity_ch02.rish
 #
 # Host-tool preflight (counsel 20260725.223409): wasmtime ABSENT before the clock.
 
 # S0 cost: each witness run goes through tools/p/parity_time_one.sh
-# (COST_START/FINISH on stderr · TSV at $PARITY_COST_LOG). Closing table via
+# (COST_START/FINISH on stderr - TSV at $PARITY_COST_LOG). Closing table via
 # tools/p/parity_cost_table.sh at chapter end. Zig caches seated under
 # tools/.cache/zig/ when ZIG_* unset (see parity_zig_cache_seat.sh).
 let _parity_seat = run ["sh" "tools/p/parity_zig_cache_seat.sh"]
@@ -661,7 +661,7 @@ say "GREEN: Door 3 consumer-edge pass witness passed."
 
 say "witness suite: receipt-verify Wasmtime guest (component compile lap)…"
 let receipt_verify_wasm = run ["sh" "tools/p/parity_time_one.sh" "receipt_verify_wasm" "--" "rishi/bin/rishi" "run" "tools/r/receipt_verify_wasm.rish"]
-# ABSENT is exit-0 with the restore line — count it; never soften a true RED.
+# ABSENT is exit-0 with the restore line -- count it; never soften a true RED.
 if (receipt_verify_wasm.out contains "ABSENT: wasmtime") then say "ABSENT: wasmtime — receipt_verify_wasm counted; suite PARTIAL"
 if ((receipt_verify_wasm.out contains "ABSENT: wasmtime") == false) then assert receipt_verify_wasm.ok
 if ((receipt_verify_wasm.out contains "ABSENT: wasmtime") == false) then say "GREEN: receipt-verify Wasmtime guest witness passed."

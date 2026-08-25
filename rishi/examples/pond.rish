@@ -1,8 +1,8 @@
-# pond.rish — opening a gentle enclosure, illustratively.
+# pond.rish -- opening a gentle enclosure, illustratively.
 #
 # This is the Rishi we are growing toward; today's rishi (see ../README.md)
 # runs only the small subset in tests/hello.rish. Here a sandbox policy is a
-# value rather than a scatter of stringly flags — composed, asserted, and
+# value rather than a scatter of stringly flags -- composed, asserted, and
 # handed to Pond whole. See external-research/20260618-180812_pond-foundation.md.
 
 let here = cwd()
@@ -25,6 +25,6 @@ assert (enclosure.net == false)         else  "this enclosure stays offline"
 # by composing two primitives of our own: Caravan's isolation (namespaces and
 # filesystem rules) and Tally's bounded gardens (the memory and process limits).
 # Pond re-grows the kernel's isolation as Caravan and the bounded living space
-# as Tally — the kernel's primitives and the allocator's bounds, woven into one
+# as Tally -- the kernel's primitives and the allocator's bounds, woven into one
 # wall, and nothing more.
 pond open enclosure -- ./squashfs-root/AppRun --no-sandbox "${here}"

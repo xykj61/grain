@@ -1,4 +1,4 @@
-# tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish — SUNN9 agent papers.
+# tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish -- SUNN9 agent papers.
 #
 #   rishi/bin/rishi run tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish
 
@@ -28,6 +28,6 @@ let s = read-file "STEWARDS.md"
 assert s contains "Voice:** Kyri" else "sunn9: STEWARDS want Voice Riyo"
 assert s contains "SUNN9" else "sunn9: STEWARDS want SUNN9 stamp"
 assert s contains "| **Quin** |" else "sunn9: STEWARDS want Quin faculty steward row"
-assert s contains "`ember/`" else "sunn9: STEWARDS want kiln faculty"
+assert s contains "`ember/`" else "sunn9: STEWARDS want oven faculty"
 
 say "GREEN: sunn9 — CLAUDE · llms · STEWARDS living face · Quin faculties held"

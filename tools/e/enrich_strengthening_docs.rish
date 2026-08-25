@@ -1,8 +1,8 @@
-# enrich_strengthening_docs.rish — proves the pass-doc enricher on a fixture, never on the real tree.
+# enrich_strengthening_docs.rish -- proves the pass-doc enricher on a fixture, never on the real tree.
 #
 # enrich_strengthening_docs.rye scans three real subtrees relative to the repo
-# root — rye/lib/std for Zig sources, external-research/yonder/strengthening-compiler/*.md for pass
-# docs, and reads tools/p/parity.rish read-only — then writes two whole-file
+# root -- rye/lib/std for Zig sources, external-research/yonder/strengthening-compiler/*.md for pass
+# docs, and reads tools/p/parity.rish read-only -- then writes two whole-file
 # outputs (work-in-progress/992_strengthening_width_crosswalk.md and
 # external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md) besides mutating every
 # pass doc it finds. The same VEGANREYKLAH2_ROOT override align_session_logs'
@@ -11,7 +11,7 @@
 #
 # Two runs matter here, not one: the first proves enrichment adds the surface
 # and width sections a properly backtick-wrapped std reference earns; the
-# second proves enrich_file's own idempotency check — a doc that already
+# second proves enrich_file's own idempotency check -- a doc that already
 # carries both sections is left alone, reported as zero files enriched.
 #
 # Run from the repository root:
@@ -27,7 +27,7 @@ assert real_before.ok else "could not checksum the real lexicon file before the 
 let crosswalk_path = "construction/992_strengthening_width_crosswalk.md"
 let crosswalk_before = run ["test" "-f" crosswalk_path]
 
-# Rebuild binary (gitignored under tools/bin/): rye build → tools/bin/enrich-strengthening-docs
+# Rebuild binary (gitignored under tools/bin/): rye build -> tools/bin/enrich-strengthening-docs
 let mkdir = run ["mkdir" "-p" "tools/bin"]
 assert mkdir.ok else "could not create tools/bin"
 let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/rye/enrich_strengthening_docs.rye" "-femit-bin=tools/bin/enrich-strengthening-docs"]

@@ -1,4 +1,4 @@
-# contains_string.rish — string membership via `contains`.
+# contains_string.rish -- string membership via `contains`.
 
 # list membership still works (regression guard)
 let xs = ["rye" "rishi" "mantra"]

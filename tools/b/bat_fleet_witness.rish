@@ -1,4 +1,4 @@
-# bat_fleet_witness.rish — the baton archetype fleet, read and validated by Scribe.
+# bat_fleet_witness.rish -- the baton archetype fleet, read and validated by Scribe.
 #
 # Proves two things: the reader validates every archetype shape and refuses a short
 # one (its own selftest), and each bat/<name>.kyri exemplar carries its format, its

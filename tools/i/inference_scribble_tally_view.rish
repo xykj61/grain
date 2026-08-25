@@ -1,4 +1,4 @@
-# inference_scribble_tally_view.rish — Scribble headings+paragraphs tally → Skate.
+# inference_scribble_tally_view.rish -- Scribble headings+paragraphs tally -> Skate.
 let bin = "pond/bin/drawn-terminal"
 say "build: Scribble tally view — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_shyu_fund_prep.sh — Shyu fund prep (Libra · Wayne dedication · Hyundai sponsor)
+# gen_shyu_fund_prep.sh -- Shyu fund prep (Libra - Wayne dedication - Hyundai sponsor)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

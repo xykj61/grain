@@ -1,7 +1,7 @@
-# rune_conditional_witness.rish — the `?:` if/then/else rune head, proves out.
+# rune_conditional_witness.rish -- the `?:` if/then/else rune head, proves out.
 #
 # Third rune category after |- (bounded trap) and ^- (cast). Same small
-# head-parser discipline — test expression only, no then/else lowering.
+# head-parser discipline -- test expression only, no then/else lowering.
 #
 #   rishi/bin/rishi run tools/r/rune_conditional_witness.rish
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# make_key_card_macos.sh — render identity "key cards" (landscape + portrait)
+# make_key_card_macos.sh -- render identity "key cards" (landscape + portrait)
 # on macOS, in a plain white-on-black-safe palette, from public key fingerprints.
 #
 # The macOS sibling of tools/m/make-key-card.sh (which is Linux-centric: it builds
@@ -19,11 +19,11 @@
 #   ./tools/m/make_key_card_macos.sh
 # The real config is gitignored; only the .example template is committed.
 #
-# Palette: defaults to PLAIN — white background, black text and QR — which prints
+# Palette: defaults to PLAIN -- white background, black text and QR -- which prints
 # cleanly, scans reliably, and reads the same on any screen. Override BG/FG in the
 # config for a themed card.
 #
-# TAME horizon: both halves — QR encoding and card composition — are marked for
+# TAME horizon: both halves -- QR encoding and card composition -- are marked for
 # eventual reimplementation in Glow, like the Linux script's own note.
 set -euo pipefail
 
@@ -56,8 +56,8 @@ if command -v magick >/dev/null 2>&1; then IM="magick"; elif command -v convert 
   echo "ImageMagick not found — install it: brew install imagemagick"; exit 1; fi
 
 # Resolve a monospace font, preferring Fira Code, then Menlo, then whatever
-# fontconfig offers for "monospace". fc-match never fails — it returns its best
-# guess — so a request for "Fira Code" on a Mac without it comes back as a
+# fontconfig offers for "monospace". fc-match never fails -- it returns its best
+# guess -- so a request for "Fira Code" on a Mac without it comes back as a
 # proportional fallback (e.g. Verdana). Fingerprints must be monospace, so we
 # accept a match only when its resolved family actually equals what we asked
 # for; otherwise we fall through. Menlo ships on every Mac, so this succeeds.
@@ -65,7 +65,7 @@ FONT=""; FONT_FAMILY=""
 resolve_font() {
   local want="$1" file family
   family="$(fc-match -f '%{family}' "$want" 2>/dev/null || true)"
-  # fc-match never fails — it returns its best guess — so accept a match only
+  # fc-match never fails -- it returns its best guess -- so accept a match only
   # when the resolved family actually equals what we asked for (fingerprints
   # must be monospace, never a proportional fallback like Verdana).
   printf '%s' "$family" | grep -qi "$want" || return 1

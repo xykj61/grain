@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# cursor-jail-macos.sh — start Cursor (native macOS .app/CLI) inside a
+# cursor-jail-macos.sh -- start Cursor (native macOS .app/CLI) inside a
 # sandbox-exec (Seatbelt) enclosure, with project-local state, mirroring
 # tools/cu/cursor-jail.sh's ai-jail launcher on Linux as closely as macOS allows.
 #

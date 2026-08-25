@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e118 — metal corrections: roofs CLOSED · stale Cloud-blocked retired.
+# Equinox e118 -- metal corrections: roofs CLOSED - stale Cloud-blocked retired.
 # Exit 0 only when control reads and correction limbs honor.
 # No backtick characters in patterns.
 #

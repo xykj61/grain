@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/scan_convention_scan.sh — the convention stays single-homed.
+# tools/fixtures/scan_convention_scan.sh -- the convention stays single-homed.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 #
-# Voice v6 · slot 6 · galls_law_graduation.
+# Voice v6 - slot 6 - galls_law_graduation.
 #
 # Two reds shaped this scan, both caught by its own first run:
 #

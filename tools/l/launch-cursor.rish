@@ -1,12 +1,12 @@
-# launch-cursor.rish — start Cursor inside ai-jail from the repository root.
+# launch-cursor.rish -- start Cursor inside ai-jail from the repository root.
 #
 # Primary Linux launcher (Rish). Bash elder: tools/cu/cursor-jail.sh.
-# Framework host: Ubuntu 26.04 LTS · GNOME Wayland — pass --gpu.
+# Framework host: Ubuntu 26.04 LTS - GNOME Wayland -- pass --gpu.
 #
 # Reads --cursor, --extract, --appimage, and --gpu from script args (RS-3).
-# Bind defaults before any if — Rishi resolves names in every branch.
-# Never write `if … then assert cond else "msg"` — the else binds to if, not assert.
-# Invoke with bash — cursor-jail.sh needs pipefail and arrays (Ubuntu sh is dash).
+# Bind defaults before any if -- Rishi resolves names in every branch.
+# Never write `if ... then assert cond else "msg"` -- the else binds to if, not assert.
+# Invoke with bash -- cursor-jail.sh needs pipefail and arrays (Ubuntu sh is dash).
 #
 #   # Fresh download in the pier root (chmod +x first), then extract + jail:
 #   rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
@@ -16,14 +16,14 @@
 #   rishi/bin/rishi run tools/l/launch-cursor.rish --cursor squashfs-root/AppRun --gpu
 #
 # --cursor PATH
-#   · ends with .AppImage  → extract into squashfs-root/, then launch (same as --extract)
-#   · otherwise            → treat PATH as AppRun (same as --appimage / positional)
-# --extract IMAGE          → legacy alias for AppImage extract
-# --appimage APPRUN        → legacy alias for extracted AppRun path
-# --gpu                    → ai-jail --gpu (GNOME Wayland / WebGPU)
+#   - ends with .AppImage  -> extract into squashfs-root/, then launch (same as --extract)
+#   - otherwise            -> treat PATH as AppRun (same as --appimage / positional)
+# --extract IMAGE          -> legacy alias for AppImage extract
+# --appimage APPRUN        -> legacy alias for extracted AppRun path
+# --gpu                    -> ai-jail --gpu (GNOME Wayland / WebGPU)
 #
-# Shell equivalent: ./tools/cu/cursor-jail.sh --cursor ./Cursor-….AppImage --gpu
-# See: SOURCE.md Step 9 · context/specs/enclosure-editors.md
+# Shell equivalent: ./tools/cu/cursor-jail.sh --cursor ./Cursor-....AppImage --gpu
+# See: SOURCE.md Step 9 - context/specs/enclosure-editors.md
 
 let image = ""
 let apprun = "squashfs-root/AppRun"
@@ -41,7 +41,7 @@ if image != "" then let want_extract = true
 
 if want_extract then if (args contains "--gpu") then let result = run ["bash" "tools/cu/cursor-jail.sh" "--extract" image "--gpu"] else let result = run ["bash" "tools/cu/cursor-jail.sh" "--extract" image]
 if want_extract then say "launch-cursor: extract+launch — cursor=${image} ok=${result.ok}"
-# Never `if … then assert … else "msg"` — else binds to if, not assert.
+# Never `if ... then assert ... else "msg"` -- else binds to if, not assert.
 if want_extract then assert result.ok
 if want_extract then exit 0
 

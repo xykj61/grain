@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e111 — context date dialect compact (hyphen -> YYYYMMDD backticks).
+# Equinox e111 -- context date dialect compact (hyphen -> YYYYMMDD backticks).
 # Exit 0 only when control reads and dialect limbs honor.
 # No backtick characters in patterns (except none in this file).
 #
@@ -32,7 +32,7 @@ echo "control_gate=honored"
 # --- eleven transformed files present and compact ---
 # Compact Last updated is YYYYMMDD or full one-clock YYYYMMDD.HHMMSS, wrapped
 # in backticks. Optional seconds keep a date and a timestamp both compact
-# (e132 · instrument aged when the tree moved to stamps). Build the pattern
+# (e132 - instrument aged when the tree moved to stamps). Build the pattern
 # without a literal backtick character in this source (shell-pattern hard line).
 BT=$(printf '\140')
 COMPACT_RE="^\\*\\*Last updated:\\*\\* ${BT}[0-9]{8}(\\.[0-9]{6})?${BT}"
@@ -99,7 +99,7 @@ rg -q 'Last updated' tools/fixtures/radiant_lint_scan.sh || {
   echo "verdict=misread"
   exit 1
 }
-# prove the scan still speaks (does not require zero advises — only that it runs)
+# prove the scan still speaks (does not require zero advises -- only that it runs)
 LINT_OUT=$(sh tools/fixtures/radiant_lint_scan.sh 2>&1 || true)
 echo "$LINT_OUT" | rg -q 'duty3|header|OK|ADVISE|fascia|radiant' || {
   echo "lint_dep=failed"
@@ -110,7 +110,7 @@ echo "$LINT_OUT" | rg -q 'duty3|header|OK|ADVISE|fascia|radiant' || {
 echo "lint_dep=honored"
 echo "lint_dep_note=label_only_first_25_lines"
 
-# --- seat 128 still reserved · not spent ---
+# --- seat 128 still reserved - not spent ---
 rg -q 'RESERVED' "$MAP" || {
   echo "reserve_keep=failed"
   echo "verdict=misread"
@@ -142,7 +142,7 @@ fi
 echo "surface_keep=honored"
 echo "surface_count=6"
 
-# --- almanac: seat 114 present · ch8 at least 2/16 ---
+# --- almanac: seat 114 present - ch8 at least 2/16 ---
 rg -q '^### 114\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

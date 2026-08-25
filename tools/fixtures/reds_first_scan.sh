@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/reds_first_scan.sh — the reds-first law is single-homed and cited.
+# tools/fixtures/reds_first_scan.sh -- the reds-first law is single-homed and cited.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 #
-# Voice v10 · slot 10 · sameness_as_compression. One home, three citations, and
+# Voice v10 - slot 10 - sameness_as_compression. One home, three citations, and
 # the crossing kept whole: named study in external-research, teachers in
 # gratitude, siloed law in foundations. A law kept in three places becomes three
 # laws within a season, which this house measured at v6.

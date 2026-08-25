@@ -1,5 +1,5 @@
 #!/bin/sh
-# radiant_pass_ledger_update.sh — set or refresh a file's pass stamp in the ledger.
+# radiant_pass_ledger_update.sh -- set or refresh a file's pass stamp in the ledger.
 # Usage: sh tools/fixtures/radiant_pass_ledger_update.sh <relpath> <stamp>
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

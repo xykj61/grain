@@ -1,6 +1,6 @@
-# setu6_lab_probe_onpath_host.rish — SETU6 host: classify USB/NCM iface + lab card.
+# setu6_lab_probe_onpath_host.rish -- SETU6 host: classify USB/NCM iface + lab card.
 #
-# Run on the host. Looks for usb0 / ncm* / enx* (CDC-NCM gadget shape —
+# Run on the host. Looks for usb0 / ncm* / enx* (CDC-NCM gadget shape --
 # systemd predictable names use enx<mac> for Pixel USB tether). Writes
 # tools/.cache/setu0/lab.bron. Stand-in GREEN when absent; armed when present.
 # Live frame TX over that iface: SETU6.5 onpath after this probe.
@@ -21,7 +21,7 @@ let iface = trim name.out
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu6_device_lab_check.rye -femit-bin=${check}"]
 assert build.ok else "SETU6 lab check build failed"
 
-# Armed path first — avoid stand-in asserts referencing unbound `card` when iface is set
+# Armed path first -- avoid stand-in asserts referencing unbound `card` when iface is set
 # (Rishi still typechecks then-branches of false `if` arms).
 if (iface != "") then say "setu6-host: gadget-shaped iface ${iface} — writing armed lab card…"
 if (iface != "") then let armed = run ["sh" "-c" "${check} ${iface} 2>&1"]

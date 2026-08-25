@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# lap_vocabulary_sweep.sh — word-boundary ring→lap on forward-facing prose only.
+# lap_vocabulary_sweep.sh -- word-boundary ring->lap on forward-facing prose only.
 # Thin-ring testing vocabulary becomes thin edge. Frozen witness path basenames stay
 # (slc2a_ring3_metal.rish, cellar_first_ring.rish, additive-gate.rish).
 # Run from repo root via: rishi/bin/rishi run tools/l/lap_vocabulary_sweep.rish

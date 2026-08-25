@@ -1,4 +1,4 @@
-# rw1_shell_collab.rish — RW-1 collaboration: the shell against a stub history store.
+# rw1_shell_collab.rish -- RW-1 collaboration: the shell against a stub history store.
 #
 # The asker (Rishi REPL) runs against tools/fixtures/rw1_stub_mantra/, which
 # speaks only the contract and records every call. Run from the repository root:

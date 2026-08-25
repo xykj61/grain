@@ -1,4 +1,4 @@
-# proven_seat_g1.rish — G1: receipt verify-witness on Genode POSIX seat (jailed TCG).
+# proven_seat_g1.rish -- G1: receipt verify-witness on Genode POSIX seat (jailed TCG).
 #
 # Requires guest binary (proven_seat_g1_build_guest.rish) and prior unroll steps.
 # Runs make run/receipt_verify KERNEL=nova; asserts GREEN on serial.
@@ -60,8 +60,8 @@ let tools_abs = trim abs_tools_run.out
 let abs_build_run = run ["realpath" build]
 assert abs_build_run.ok else "realpath builddir failed"
 let build_abs = trim abs_build_run.out
-# Temporary shebang patch under trap — host has no /usr/bin/expect; nested bwrap is refused in jail.
-# EXIT restores tool/run/run from git (absolute paths — make cds into the builddir).
+# Temporary shebang patch under trap -- host has no /usr/bin/expect; nested bwrap is refused in jail.
+# EXIT restores tool/run/run from git (absolute paths -- make cds into the builddir).
 let serial = run ["sh" "-c" "trap 'git -C ${src_abs} checkout -- tool/run/run' EXIT; printf '%s\n' '#!${expect_abs}' > ${run_abs}.new; tail -n +2 ${run_abs} >> ${run_abs}.new; mv ${run_abs}.new ${run_abs}; chmod +x ${run_abs}; export PATH=${tools_abs}/usr/bin:/usr/bin:/bin LD_LIBRARY_PATH=${tools_abs}/usr/lib/x86_64-linux-gnu BISON_PKGDATADIR=${tools_abs}/usr/share/bison M4=${tools_abs}/usr/bin/m4; cd ${build_abs}; make run/receipt_verify KERNEL=nova BOARD=pc CROSS_DEV_PREFIX=${cross} > ${log_path} 2>&1; status=\$?; exit \$status"]
 let log_text = read-file log
 assert log_text contains "GREEN: proven-seat G1 receipt-verify" else "serial log missing GREEN line — see ${log}"

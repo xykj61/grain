@@ -1,12 +1,12 @@
 #!/bin/sh
-# Equinox e131 — timing figure is a pin · manifest living-doc limb · shred held.
+# Equinox e131 -- timing figure is a pin - manifest living-doc limb - shred held.
 # Exit 0 when laws are tracked, REDS 43 lands, shred stays RED, 128 reserved.
 # No backtick characters.
 #
 #   sh tools/fixtures/equinox_e131_timing_pin_scan.sh
 #   sh tools/fixtures/equinox_e131_timing_pin_scan.sh prove-red
 #
-# Law: a timing figure is a pin — carry a range or re-cut, never a number.
+# Law: a timing figure is a pin -- carry a range or re-cut, never a number.
 # Law: kg names a lean; it does not circle shred yes.
 # Law: living_doc sizes make a restore verified rather than trusted.
 set -eu
@@ -68,7 +68,7 @@ rg -qi 'range or re-cut|re-cut every round|not a constant' "$LEXICON" "$COUNSEL"
 echo "timing=honored"
 echo "timing_law=figure_is_a_pin_range_or_recut"
 
-# Manifest living-doc limb (e129 artifact · e131 names why)
+# Manifest living-doc limb (e129 artifact - e131 names why)
 LIVING_N=$(rg -c '^living_doc ' "$MANIFEST" || true)
 LIVING_N=${LIVING_N:-0}
 if test "$LIVING_N" -lt 6; then

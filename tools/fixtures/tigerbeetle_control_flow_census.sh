@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census explicit control-flow / no-recursion law on held TigerStyle / TAME / clone.
-# Clean-room study only — prints presence; never copies into rye/.
+# Clean-room study only -- prints presence; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/tigerbeetle}"
 GUIDE=gratitude/TIGER_STYLE.md
@@ -46,7 +46,7 @@ if test -f "$ROOT/docs/TIGER_STYLE.md" \
   STYLE=yes
 fi
 
-# Companion bound law — loops and queues carry fixed upper bounds (same Power-of-Ten family).
+# Companion bound law -- loops and queues carry fixed upper bounds (same Power-of-Ten family).
 GUIDE_LIMIT=no
 if rg -q 'Put a limit on everything' "$GUIDE" \
   && rg -q 'fixed upper bound' "$GUIDE"; then

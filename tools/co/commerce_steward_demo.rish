@@ -1,6 +1,6 @@
-# commerce_steward_demo.rish — Commerce citizen steward demo (tip 419).
+# commerce_steward_demo.rish -- Commerce citizen steward demo (tip 419).
 #
-# List on Mandi → settle (MUR + in-memory WOV; was MALA) → Dimeroll receipt.
+# List on Mandi -> settle (MUR + in-memory WOV; was MALA) -> Dimeroll receipt.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/commerce_steward_demo.rish
 

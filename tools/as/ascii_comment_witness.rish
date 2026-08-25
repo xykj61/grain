@@ -1,4 +1,4 @@
-# ascii_comment_witness.rish -- authored Rye comments are plain ASCII, under a ceiling that only falls.
+# ascii_comment_witness.rish -- authored comments are plain ASCII, under ceilings that only fall.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/as/ascii_comment_witness.rish
@@ -7,15 +7,23 @@
 # touch. On `20260825` two modules were converted by hand, and both times the violation had been
 # written that same day -- copied from the surrounding style rather than read. A lantern that fires
 # twice becomes a loom.
+#
+# ONE LAW, TWO COMMENT SYNTAXES. The rule governs every code comment, and this witness read `*.rye`
+# alone for its first day, so 2,243 tracked Rishi sources and 580 shell sources stood outside a law
+# they are governed by -- 10,468 non-ASCII characters, measured `20260825.084500`. Rye spells a
+# comment `//` and must refuse to count a `\\` multiline string; Rishi and shell spell it `#` and
+# must refuse to count a heredoc body. Two meters, each readable alone, one guard over both.
 
 say "ascii-comment: Language EN -- plain ASCII survives every tool, terminal, diff, and re-encoding intact."
-say "ascii-comment: Style Gauge -- the number is measured on every run and printed as the scan's own output, never recited here."
-say "ascii-comment: Lens TAME -- safety first: the meter counts COMMENTS and never a string, because converting a string changes what a program prints. Purely local -- no key, no network, no funds, no device."
+say "ascii-comment: Style Gauge -- every number is measured on this run and printed as each scan's own output, never recited here."
+say "ascii-comment: Lens TAME -- safety first: the meters count COMMENTS and never program content, because converting a string or a heredoc changes what a program prints. Purely local -- no key, no network, no funds, no device."
+
+say "ascii-comment: reading one of two -- authored Rye comments."
 
 let control = run ["sh" "tools/fixtures/rye_comment_ascii_control.sh"]
-assert control.ok else "ascii-comment: the control must complete"
+assert control.ok else "ascii-comment: the Rye control must complete"
 say control.out
-assert control.out contains "control_verdict=ok" else "ascii-comment: the control must reach its own verdict"
+assert control.out contains "control_verdict=ok" else "ascii-comment: the Rye control must reach its own verdict"
 
 # Prose is counted, in all three comment forms and behind indentation.
 assert control.out contains "line_comment_counted=yes" else "ascii-comment: a // comment is prose and must be counted"
@@ -31,8 +39,46 @@ assert control.out contains "vendor_excluded=yes" else "ascii-comment: vendored 
 assert control.out contains "total_is_four=yes" else "ascii-comment: four planted prose files carry one character each, and nothing else may be counted"
 
 let living = run ["sh" "tools/fixtures/rye_comment_ascii_scan.sh"]
-assert living.ok else "ascii-comment: the living scan must complete"
+assert living.ok else "ascii-comment: the living Rye scan must complete"
 say living.out
 assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-comment -- authored Rye comments stand under a ceiling that only falls, printed above as the scan's own output rather than recited here, with seven readings proven on a planted repository. It counts comments and refuses to count strings, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
+say "ascii-comment: reading two of two -- authored Rishi and shell comments."
+
+let shell_control = run ["sh" "tools/fixtures/shell_comment_ascii_control.sh"]
+assert shell_control.ok else "ascii-comment: the shell control must complete"
+say shell_control.out
+assert shell_control.out contains "control_verdict=ok" else "ascii-comment: the shell control must reach its own verdict"
+
+# Prose is counted, in both languages and behind indentation.
+assert shell_control.out contains "rish_comment_counted=yes" else "ascii-comment: a # comment in a Rishi source is prose and must be counted"
+assert shell_control.out contains "sh_comment_counted=yes" else "ascii-comment: a # comment in a shell source is prose and must be counted"
+assert shell_control.out contains "indented_counted=yes" else "ascii-comment: leading whitespace must not hide prose from the meter"
+
+# A heredoc is program content, in every one of its four forms.
+assert shell_control.out contains "heredoc_plain_counted=no" else "ascii-comment: a <<EOF body is what a program feeds another program, never prose"
+assert shell_control.out contains "heredoc_quoted_counted=no" else "ascii-comment: a <<'EOF' body is program content too"
+assert shell_control.out contains "heredoc_dash_counted=no" else "ascii-comment: a <<-EOF body is program content, and its indented delimiter closes it"
+assert shell_control.out contains "heredoc_strict_counted=no" else "ascii-comment: a plain <<EOF must not close on an indented delimiter, or program content reads as prose"
+assert shell_control.out contains "heredoc_reopen_counted=yes" else "ascii-comment: a heredoc must return the file to prose at its delimiter, never swallow what follows"
+
+# Three shapes that merely look like a heredoc opener, and the one deliberate undercount.
+assert shell_control.out contains "shift_counted=yes" else "ascii-comment: an arithmetic shift is not a heredoc opener"
+assert shell_control.out contains "herestring_counted=yes" else "ascii-comment: a here-string is not a heredoc opener, though it carries << one character in"
+assert shell_control.out contains "comment_opener_counted=yes" else "ascii-comment: a << named inside a comment is prose about a heredoc, never one"
+assert shell_control.out contains "trailing_counted=no" else "ascii-comment: a trailing comment after code is the named undercount, since finding it is parsing"
+
+assert shell_control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
+assert shell_control.out contains "total_is_seven=yes" else "ascii-comment: seven planted prose files carry one character each, and nothing else may be counted"
+
+# The ceiling, from both sides. A refusal proven only in the passing direction cannot be told from a bypass.
+assert shell_control.out contains "clean_pen_under_ceiling=yes" else "ascii-comment: a clean pen must read under the ceiling"
+assert shell_control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the ceiling must refuse, or the ceiling is decoration"
+assert shell_control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the reading to green, or the refusal is a latch"
+
+let shell_living = run ["sh" "tools/fixtures/shell_comment_ascii_scan.sh"]
+assert shell_living.ok else "ascii-comment: the living shell scan must complete"
+say shell_living.out
+assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
+
+say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty readings proven on planted repositories and the shell ceiling proven from both sides. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."

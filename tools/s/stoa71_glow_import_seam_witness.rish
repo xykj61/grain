@@ -1,4 +1,4 @@
-# stoa71_glow_import_seam_witness.rish — NativeActivity-path Glow import seam.
+# stoa71_glow_import_seam_witness.rish -- NativeActivity-path Glow import seam.
 #
 # Proves a linengrow Rye consumer (same @import shape NativeActivity uses)
 # can load Glow-lowered lib_session_root_nest_cue_jam and get session_root()==5.
@@ -29,7 +29,7 @@ assert link.ok else "failed to seat linengrow → glow/.cache import symlink"
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${consumer} -femit-bin=${bin}"]
 assert build.ok else "stoa71_glow_import_seam build failed"
 
-# std.debug.print lands on stderr — merge so GREEN is visible to rish.
+# std.debug.print lands on stderr -- merge so GREEN is visible to rish.
 let run_bin = run ["sh" "-c" "${bin} 2>&1; echo EXIT:$?"]
 assert run_bin.ok else "stoa71_glow_import_seam binary failed to launch"
 assert run_bin.out contains "EXIT:0" else "stoa71_glow_import_seam did not exit 0"

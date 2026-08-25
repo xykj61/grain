@@ -1,5 +1,5 @@
 #!/bin/sh
-# Fascia-health v1 — live surface over total tracked surface, per room.
+# Fascia-health v1 -- live surface over total tracked surface, per room.
 # Exit 0 only when planted controls honor and the ratio is released.
 # Presence: git ls-files only. On-disk is not in-the-tree.
 # No backtick characters in patterns.
@@ -91,7 +91,7 @@ if test "$MODE" = "prove-red"; then
 fi
 
 # --- classify planted controls before library totals (shared dated_classify) ---
-# The classifier now speaks Rishi (Python → Rishi molt 20260809): Rishi owns the
+# The classifier now speaks Rishi (Python -> Rishi molt 20260809): Rishi owns the
 # interface, a POSIX-sh rg seam holds the regex. Output matches the elder Python
 # byte-for-byte; python3 is not on this pier's PATH.
 REPORT=$(rishi/bin/rishi run tools/fixtures/dated_classify.rish health "$LIVE" "$DATED")

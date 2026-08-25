@@ -1,7 +1,7 @@
 #!/bin/sh
-# Equinox e123 — living-pin content guard (ONE roof).
-# Roster as data · C1 emptied · C2 whole · non-empty · header · tracked · bound.
-# Over-bound is advisory by design. No second guard script — two roofs refused.
+# Equinox e123 -- living-pin content guard (ONE roof).
+# Roster as data - C1 emptied - C2 whole - non-empty - header - tracked - bound.
+# Over-bound is advisory by design. No second guard script -- two roofs refused.
 # No backtick characters in patterns. No git history walks.
 #
 #   sh tools/fixtures/equinox_e123_living_pin_guard_scan.sh
@@ -98,7 +98,7 @@ fi
 echo "one_roof=honored"
 echo "duplicate_guard=retired"
 
-# C1 emptied must stay thin — the instrument that would have caught e121.
+# C1 emptied must stay thin -- the instrument that would have caught e121.
 EBYTES=$(wc -c < "$EMPTIED" | tr -d ' ')
 if test "$EBYTES" -ge 200; then
   echo "emptied_control=failed"
@@ -182,7 +182,7 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || test -n "
 
   if test "$BYTES" -gt "$MAX_BYTES"; then
     if test "$bound_mode" = "advisory" || test "$bound_mode" = "hold_over"; then
-      # Over-bound is tidy debt; emptied is loss — different responses (counsel prove).
+      # Over-bound is tidy debt; emptied is loss -- different responses (counsel prove).
       echo "pin_over_bound_advisory=$path"
       echo "pin_over_bound_bytes=$BYTES"
       OVER_HOLD=$((OVER_HOLD + 1))
@@ -212,7 +212,7 @@ echo "over_bound=advisory"
 echo "living_pin_max_bytes=$MAX_BYTES"
 echo "pins=honored"
 
-# e122 kinds stay — approve-all does not re-blur roots and Bench
+# e122 kinds stay -- approve-all does not re-blur roots and Bench
 ROW=$(rg -F '| **roots** |' "$LEXICON" || true)
 echo "$ROW" | rg -q 'Claude web' || { echo "kinds=failed"; echo "verdict=misread"; exit 1; }
 if echo "$ROW" | rg -qi 'Framework itself|counsel container in the cloud'; then
@@ -309,7 +309,7 @@ echo "shelf=honored"
 echo "shelf_end=ep045"
 echo "shred=RED"
 
-# History-walk witnesses stay out of this guard (no rev-list · no habit-count).
+# History-walk witnesses stay out of this guard (no rev-list - no habit-count).
 echo "history_independence=honored"
 echo "history_note=no_git_history_walk"
 

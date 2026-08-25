@@ -1,7 +1,7 @@
-# tools/ca/caravan_glow_tend_limb1_witness.rish — first Caravan Glow Tend limb (e194).
+# tools/ca/caravan_glow_tend_limb1_witness.rish -- first Caravan Glow Tend limb (e194).
 #
 # Proves max_dependents=4 pedestal locks to caravan/capabilities.rye, lowers
-# cleanly, Tally T1–T3 still sit, and Aurora Glow Tend is still absent.
+# cleanly, Tally T1-T3 still sit, and Aurora Glow Tend is still absent.
 #
 #   rishi/bin/rishi run tools/ca/caravan_glow_tend_limb1_witness.rish
 

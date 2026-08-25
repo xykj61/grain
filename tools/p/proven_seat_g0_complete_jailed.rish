@@ -1,4 +1,4 @@
-# proven_seat_g0_complete_jailed.rish — G0-complete under lane_kvm (A-narrow).
+# proven_seat_g0_complete_jailed.rish -- G0-complete under lane_kvm (A-narrow).
 #
 # Counsel 20260712.090512: -accel kvm -cpu host -m 4G -display none + QMP PNG
 # + GRUB serial; -nic none. Requires LANE_KVM=true and /dev/kvm in this enclosure.

@@ -1,4 +1,4 @@
-# rune_not_bad_type.rish — a negation of a non-boolean must refuse.
+# rune_not_bad_type.rish -- a negation of a non-boolean must refuse.
 # tools/r/rish_rune_not_witness.rish runs this child and asserts it exits non-zero:
 # only a boolean can be negated, so `?! 5` refuses rather than coercing an integer.
 let x = ?! 5

@@ -1,4 +1,4 @@
-# comlink_recall_two_way_sync_wire_lab.rish — two-way sync device-wire QEMU lab (spawn / wait-for).
+# comlink_recall_two_way_sync_wire_lab.rish -- two-way sync device-wire QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_recall_two_way_sync_wire_lab.rish

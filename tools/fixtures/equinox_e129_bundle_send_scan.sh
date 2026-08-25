@@ -1,13 +1,13 @@
 #!/bin/sh
-# Equinox e129 — first bundle-send rehearsal (crossing mode · not a seat).
+# Equinox e129 -- first bundle-send rehearsal (crossing mode - not a seat).
 # Exit 0 when the kit lands, a stamped manifest is tracked, and a small-span
 # cut verifies. No backtick characters. No git history walks for presence.
 #
 #   sh tools/fixtures/equinox_e129_bundle_send_scan.sh
 #   sh tools/fixtures/equinox_e129_bundle_send_scan.sh prove-red
 #
-# Law: bundle send is a crossing mode — kg may move it; shred/geode/128 stay gated.
-# Law: cut home-side · verify · stamped manifest · never /tmp.
+# Law: bundle send is a crossing mode -- kg may move it; shred/geode/128 stay gated.
+# Law: cut home-side - verify - stamped manifest - never /tmp.
 set -eu
 
 MODE=${1:-}

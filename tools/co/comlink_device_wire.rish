@@ -1,11 +1,11 @@
-# comlink_device_wire.rish — Comlink device wire witness (sub-lap 2 pattern + sub-lap 3 sealed).
+# comlink_device_wire.rish -- Comlink device wire witness (sub-lap 2 pattern + sub-lap 3 sealed).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_device_wire.rish
 #
 # The freestanding lab below proves the guests cross a real virtio link; it
 # never builds or runs device_wire.rye's own hosted selftest, so a rename
-# that missed this file's one call site could sit unnoticed indefinitely —
+# that missed this file's one call site could sit unnoticed indefinitely --
 # exactly what a prior camelCase pass left behind here. The hosted check
 # below closes that gap: fast, no QEMU, and it is where the layout proof for
 # virtio_net.rye's wire structures lives.

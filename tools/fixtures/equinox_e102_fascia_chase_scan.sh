@@ -1,12 +1,12 @@
 #!/bin/sh
-# Equinox e102 fascia chase scan — control gate, then chase limbs.
+# Equinox e102 fascia chase scan -- control gate, then chase limbs.
 # Exit 0 only when control reads and chase honors without shred.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/equinox_e102_fascia_chase_scan.sh
 #
 # Law: re-cut meters this sitting; Class A paper lean held (u89).
-# Saga seating already on disk (e101) — counsel A consumed.
+# Saga seating already on disk (e101) -- counsel A consumed.
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
@@ -64,7 +64,7 @@ fi
 echo "chase_memcpy=honored"
 
 # --- fresh fascia measure (must not append-only trust; re-run instrument) ---
-# Capture measure output; window will append one row — acceptable for living pin.
+# Capture measure output; window will append one row -- acceptable for living pin.
 FASCIA_OUT=$(sh "$FASCIA_SH" measure)
 echo "$FASCIA_OUT"
 echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
@@ -118,7 +118,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "chase_fork=honored"
 echo "chase_fork_status=not_consumed"
 
-# --- almanac seats 97-105 · ch7 at least 9/16 ---
+# --- almanac seats 97-105 - ch7 at least 9/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*)
@@ -147,7 +147,7 @@ echo "chase_almanac=honored"
 echo "chase_ch7_line=$CH7_LINE"
 echo "chase_seats=97-105"
 
-# --- shelf end · shred ---
+# --- shelf end - shred ---
 EP045=gratitude/ironbeetle/20260712-092212_ironbeetle-ep045-the-whole-machine-in-one-breath.md
 git ls-files --error-unmatch "$EP045" >/dev/null 2>&1 || {
   echo "chase_shelf=failed"

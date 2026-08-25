@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census gratitude IronBeetle lesson shelf — own-voice silos beside tigerbeetle/.
+# Census gratitude IronBeetle lesson shelf -- own-voice silos beside tigerbeetle/.
 # Presence and density only; never copies captions into rye/.
 set -eu
 ROOT="${1:-gratitude/ironbeetle}"

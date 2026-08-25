@@ -1,7 +1,7 @@
 #!/bin/sh
-# markdown_structure_scan.sh — blocking structural integrity for Markdown passes.
-# Seated 20260725.114400 · Quin relay repair.
-# Lesson 20260725.120701 — compare COLUMN counts, not raw pipe counts; mask
+# markdown_structure_scan.sh -- blocking structural integrity for Markdown passes.
+# Seated 20260725.114400 - Quin relay repair.
+# Lesson 20260725.120701 -- compare COLUMN counts, not raw pipe counts; mask
 # inline code and fenced blocks so pipes inside them never split table cells.
 set -eu
 

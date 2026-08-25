@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prin_dual.sh — Matrix Prin + verse ticker side by side (tmux when present).
+# prin_dual.sh -- Matrix Prin + verse ticker side by side (tmux when present).
 
 set -euo pipefail
 

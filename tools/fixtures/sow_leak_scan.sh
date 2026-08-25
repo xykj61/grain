@@ -1,5 +1,5 @@
 #!/bin/sh
-# sow_leak_scan.sh — the negative that matters most: no maintainer identity
+# sow_leak_scan.sh -- the negative that matters most: no maintainer identity
 # string survives into the projected seed. Prints IDENT_CLEAN or IDENT_LEAK.
 # The withheld log naturally names paths, so it is excluded from the scan.
 set -eu

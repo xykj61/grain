@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census Tooling law on held TigerStyle / TAME / clone / Grain.
-# Clean-room study only — prints presence; never copies into rye/.
+# Clean-room study only -- prints presence; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/tigerbeetle}"
 GUIDE=gratitude/TIGER_STYLE.md

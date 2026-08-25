@@ -1,6 +1,6 @@
-# commerce_steward_view.rish — Steward composition: list → settle → Dimeroll on Skate (tip 422).
+# commerce_steward_view.rish -- Steward composition: list -> settle -> Dimeroll on Skate (tip 422).
 #
-# Golden: drawn terminal steward view: listed=25 settled=1 cash=825 conservation=0 memo=mandi:vessel-sale … — GREEN
+# Golden: drawn terminal steward view: listed=25 settled=1 cash=825 conservation=0 memo=mandi:vessel-sale ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/commerce_steward_view.rish
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# cellar_manifest_tilak_witness.sh — I6: Tilak three-field manifest + legacy still reads.
+# cellar_manifest_tilak_witness.sh -- I6: Tilak three-field manifest + legacy still reads.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 LEGACY_GOLDEN=fdca5dfde2bd63212322248a8f95e351c087bd6b0b14016de66a55d69cc090a4
@@ -20,7 +20,7 @@ sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$tmpdir" "$TILAK_GOLDEN"
 sh "$ROOT/tools/fixtures/cellar_ring1_restore.sh" "$tmpdir" "$restore"
 diff -r "$SRC" "$restore" >/dev/null
 
-# Unwelcome — tampered resin refuses whole.
+# Unwelcome -- tampered resin refuses whole.
 first_resin=$(ls "$tmpdir/resins" | head -n1)
 printf 'X' >> "$tmpdir/resins/$first_resin"
 if sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$tmpdir" 2>/dev/null; then
@@ -28,7 +28,7 @@ if sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$tmpdir" 2>/dev/null; then
   exit 1
 fi
 
-# Unwelcome — unknown mark refuses whole.
+# Unwelcome -- unknown mark refuses whole.
 bad=$(mktemp -d)
 cp -r "$tmpdir/resins" "$bad/"
 cp "$tmpdir/manifest.bron" "$bad/manifest.bron"

@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_render.sh — VOLS survey, the census rendered as a Bron ledger.
+# tools/fixtures/vols_survey_render.sh -- VOLS survey, the census rendered as a Bron ledger.
 #
 #   sh tools/fixtures/vols_survey_render.sh <root> <guardlist> <stamp>
 #
 # Renders the classified survey census (vols_classify_scan.sh) to a `format cion-survey-v1`
-# Bron record — a durable artifact the molt (LOWE) reads, rather than a console print that
+# Bron record -- a durable artifact the molt (LOWE) reads, rather than a console print that
 # scrolls away. Bron is plain key-value, one field per line, parsed not evaluated
 # (context/TAME_GUIDANCE.md; the pond apps' format X-v1 records are kin).
 #
@@ -20,7 +20,7 @@
 #
 # Deterministic: the census sorts its files, so the same tree renders the same bytes twice
 # (the round-trip idempotence r3 proves). Output convention: the record IS the payload
-# (context/specs/20260729-215600_scan-seam-convention.md — a rendered artifact, not a scan
+# (context/specs/20260729-215600_scan-seam-convention.md -- a rendered artifact, not a scan
 # verdict; the parser carries the verdict).
 set -eu
 
@@ -50,7 +50,7 @@ echo "handles $handles"
 echo "prose_gaps $prose_gaps"
 echo "guarded_sites $guarded_sites"
 
-# One site line per classified finding — a gap= or handle= line from the classifier.
+# One site line per classified finding -- a gap= or handle= line from the classifier.
 # (A drifted guarded site prints a detail: line, never a site line, so a clean render
 # carries only the two honest kinds.)
 printf '%s\n' "$classified" | while IFS= read -r line; do

@@ -1,4 +1,4 @@
-# lines_startswith.rish — tests for `lines` and `starts-with` builtins.
+# lines_startswith.rish -- tests for `lines` and `starts-with` builtins.
 # Proves: splitting strings by newline, checking string prefixes.
 
 # lines: split a multi-line string (use printf to get newlines)

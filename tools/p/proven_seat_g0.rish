@@ -1,7 +1,7 @@
-# proven_seat_g0.rish — Proven-seat G0: Sculpt image present + GRUB boot milestone.
+# proven_seat_g0.rish -- Proven-seat G0: Sculpt image present + GRUB boot milestone.
 #
 # Teacher image stays under tools/.cache/proven-seat/ (gitignored).
-# TCG cloud path proves SeaBIOS → disk → "GRUB loading." Full Sculpt UI wants KVM.
+# TCG cloud path proves SeaBIOS -> disk -> "GRUB loading." Full Sculpt UI wants KVM.
 #
 #   rishi/bin/rishi run tools/p/proven_seat_g0.rish
 

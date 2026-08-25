@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_recall_batch_wire_lab.sh — NS-L3 batch wire device (request + batch hops).
+# comlink/run_recall_batch_wire_lab.sh -- NS-L3 batch wire device (request + batch hops).
 #
 # Orchestration lives in tools/co/comlink_recall_batch_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

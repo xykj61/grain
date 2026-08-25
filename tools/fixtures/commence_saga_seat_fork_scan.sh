@@ -1,12 +1,12 @@
 #!/bin/sh
-# Commence saga seat + fork scan — control gate, then seating + fork limbs.
+# Commence saga seat + fork scan -- control gate, then seating + fork limbs.
 # Exit 0 only when control reads and seating honors without consuming the fork.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/commence_saga_seat_fork_scan.sh
 #
 # Law: no duty reports a total until its planted control reads correctly.
-# Seating: Keaton's word approve · fork waits · return_surface_p59 not consumed.
+# Seating: Keaton's word approve - fork waits - return_surface_p59 not consumed.
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
@@ -99,7 +99,7 @@ git ls-files --error-unmatch "$M9_WAYMARK" >/dev/null 2>&1 || {
 echo "seat_m9=honored"
 echo "seat_m9_role=measurement_complements_narrative"
 
-# --- fork: nested handback not consumed · geode breach names the choice ---
+# --- fork: nested handback not consumed - geode breach names the choice ---
 rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
   echo "seat_fork=failed"
   echo "verdict=misread"
@@ -143,7 +143,7 @@ echo "seat_fork_nested=return_surface_p59"
 echo "seat_fork_status=not_consumed"
 echo "seat_fork_choices=RETURN|EXTEND_+128"
 
-# --- almanac seats 97-104 · ch7 at least 8/16 ---
+# --- almanac seats 97-104 - ch7 at least 8/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*)
@@ -172,7 +172,7 @@ echo "seat_almanac=honored"
 echo "seat_ch7_line=$CH7_LINE"
 echo "seat_seats=97-104"
 
-# --- shelf end · shred standing ---
+# --- shelf end - shred standing ---
 EP045=gratitude/ironbeetle/20260712-092212_ironbeetle-ep045-the-whole-machine-in-one-breath.md
 git ls-files --error-unmatch "$EP045" >/dev/null 2>&1 || {
   echo "seat_shelf=failed"

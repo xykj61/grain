@@ -1,4 +1,4 @@
-# tame-check.rish — TAME textual lints on authored .rye.
+# tame-check.rish -- TAME textual lints on authored .rye.
 #
 # Rules (context/TAME_GUIDANCE.md): unqualified assert, no Self = @This(),
 # no tabs, no trailing whitespace. TH-2c cleared the hosted corpus; gate is live.

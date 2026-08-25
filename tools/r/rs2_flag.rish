@@ -1,4 +1,4 @@
-# rs2_flag.rish — RS-2 witness: flag args scans for --name value pairs.
+# rs2_flag.rish -- RS-2 witness: flag args scans for --name value pairs.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/rs2_flag.rish

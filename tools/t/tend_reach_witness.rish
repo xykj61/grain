@@ -1,4 +1,4 @@
-# tools/t/tend_reach_witness.rish — Q52: the reach census answers, shape held.
+# tools/t/tend_reach_witness.rish -- Q52: the reach census answers, shape held.
 #
 # Runs the standing census and demands its answer shape: six-or-fewer room
 # lines and one TOTAL line carrying rooms_files and orphans counts.

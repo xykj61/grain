@@ -1,9 +1,9 @@
-# tools/b/buhr_graph_query_witness.rish — BUHR Journey 6, Rung 1: the intelligence reads the surface.
+# tools/b/buhr_graph_query_witness.rish -- BUHR Journey 6, Rung 1: the intelligence reads the surface.
 #
 # The equinox's two halves meet: a Lantern-shaped request whose corpus is the living
 # Mantra graph itself. A bounded request routes by prompt to a real reading of the
-# actual BoltCatalog the browser renders — lane_count, bolt_count, a lane's head
-# revision, a bolts/lanes summary — each metered by the same Lantern contract that
+# actual BoltCatalog the browser renders -- lane_count, bolt_count, a lane's head
+# revision, a bolts/lanes summary -- each metered by the same Lantern contract that
 # governs every other voice. The head the voice reports (r2 on a.txt) is exactly the
 # head the browser paints and the editor continues. A length budget truncates with a
 # length stop; a disallowed model, an unknown op, and a zero budget each refuse (no
@@ -33,7 +33,7 @@ assert selftest.out contains "model not allowed refused" else "buhr6: model allo
 assert selftest.out contains "unknown op refused (no fake answer)" else "buhr6: no-fake-answer refusal missing"
 assert selftest.out contains "zero budget refused by Lantern contract" else "buhr6: Lantern budget gate missing"
 
-# The reading journey the query reads over stays its own green binary — the graph the
+# The reading journey the query reads over stays its own green binary -- the graph the
 # voice counts is the graph the browser renders, proven separately.
 let browser_bin = "pond/bin/mantra-browser"
 let browser_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser.rye -femit-bin=${browser_bin}"]

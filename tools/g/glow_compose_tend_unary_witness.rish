@@ -1,8 +1,8 @@
-# tools/g/glow_compose_tend_unary_witness.rish — STOA339: first Tend unary on the %- allowlist.
+# tools/g/glow_compose_tend_unary_witness.rish -- STOA339: first Tend unary on the %- allowlist.
 #
 #   rishi/bin/rishi run tools/g/glow_compose_tend_unary_witness.rish
 #
-# sumto joins double·inc·dec as a callable unary — the fold as a call, carrying
+# sumto joins double-inc-dec as a callable unary -- the fold as a call, carrying
 # the fold family's own law: beyond max_sumto_call the answer folds to 0.
 
 say "339: fixture — sumto lowers, builds, answers its baked welcome..."

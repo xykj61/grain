@@ -1,9 +1,9 @@
-# tools/am/amphora_restore_negative_witness.rish — Q44: planted restore negatives.
+# tools/am/amphora_restore_negative_witness.rish -- Q44: planted restore negatives.
 #
 # Three plants, each caught at its named wall:
-#   tampered seal_cargo  → seal unopened (walls / open refuse); no out-home
-#   truncated vessel     → stamp unverified; no out-home
-#   forged resin body    → cargo unproven after open; refuse named
+#   tampered seal_cargo  -> seal unopened (walls / open refuse); no out-home
+#   truncated vessel     -> stamp unverified; no out-home
+#   forged resin body    -> cargo unproven after open; refuse named
 #
 #   rishi/bin/rishi run tools/am/amphora_restore_negative_witness.rish
 

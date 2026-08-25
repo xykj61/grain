@@ -1,4 +1,4 @@
-# rune_cast_out_of_range.rish — a value outside a shape's window must refuse.
+# rune_cast_out_of_range.rish -- a value outside a shape's window must refuse.
 # tools/r/rish_rune_cast_witness.rish runs this child and asserts it exits non-zero:
 # -1 is below the 0 .. 2^32-1 window the @u32 shape names.
 let x = ^- @u32 -1
