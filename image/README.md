@@ -4,6 +4,9 @@
 **Last updated:** `20260824.082436` (the front door -- the three arc records and the module roster moved to their own pages)
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- 227 modules in this directory, every one rostered in [`MODULES.md`](MODULES.md), counted `20260824`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **A picture here is bytes you can check, decoded by code small enough to read whole, into a grid of
 pixels you hold. Everything done to it afterward is a pure function that hands back a fresh image
