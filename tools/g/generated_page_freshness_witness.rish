@@ -38,7 +38,7 @@
 #   rishi/bin/rishi run tools/g/generated_page_freshness_witness.rish
 
 say "generated-page-freshness: Language EN -- a generated number is worth more than a typed one only while it is regenerated, so the commit that moves it is the commit that refreshes it."
-say "generated-page-freshness: Style Radiant -- five behaviors proven on a throwaway repository over both generated pages, and the honest silence about fascia named rather than implied."
+say "generated-page-freshness: Style Gauge, Meter -- eight behaviors proven on a throwaway repository over all three generated pages, and the honest silence about fascia named rather than implied."
 say "generated-page-freshness: Lens TAME -- safety first: the hook stages only its own regeneration, and refuses rather than sweep an author's unstaged edits into a commit they never wrote."
 
 let hook = "tools/hooks/pre-commit"
@@ -61,8 +61,11 @@ assert control.out contains "docs_free=yes" else "generated-page-freshness: a do
 assert control.out contains "clean_staged=yes" else "generated-page-freshness: a witness added with the pages clean must refresh and stage both in that commit"
 assert control.out contains "dirty_refused=yes" else "generated-page-freshness: a stale page beside unstaged edits must refuse rather than sweep them in"
 assert control.out contains "fresh_quiet=yes" else "generated-page-freshness: once the page is staged the commit must proceed and add nothing further"
+assert control.out contains "ledger_free=yes" else "generated-page-freshness: a commit that never touches the ledger must leave its headline exactly where it stood"
+assert control.out contains "ledger_staged=yes" else "generated-page-freshness: a REDS row booked with the headline behind must have the headline regenerated and staged into that same commit"
+assert control.out contains "ledger_dirty_refused=yes" else "generated-page-freshness: a ledger carrying the author's own unstaged edits must refuse rather than sweep them in"
 assert control.out contains "no_rishi_free=yes" else "generated-page-freshness: a tree without rishi must commit exactly as before"
 assert control.out contains "control_verdict=ok" else "generated-page-freshness: the control must agree with itself"
-say "RED and GREEN paths proven -- one refusal, three welcomes, and one rest"
+say "RED and GREEN paths proven -- two refusals, four welcomes, and two rests"
 
 say "GREEN: generated-page-freshness -- the commit that moves a generated page's numbers is the commit that refreshes it."

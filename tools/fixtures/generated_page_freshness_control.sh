@@ -10,6 +10,9 @@
 #   a witness added, both pages clean and stale           -> BOTH refreshed AND staged into that commit
 #   a witness added, a page stale with unstaged edits     -> REFUSED, nothing of the author's swept in
 #   a witness added, the pages already fresh              -> commit proceeds, nothing extra staged
+#   a docs-only commit beside a stale ledger              -> the ledger rule rests, the headline stays
+#   a REDS row booked with the headline behind            -> the headline regenerated AND staged
+#   a REDS row booked while the ledger carries edits      -> REFUSED, the author stages it
 #   no rishi on disk at all                               -> the hook rests, the commit proceeds
 #
 # Two pages rather than one, because the tree holds two: README.md and the crushed library index
@@ -21,7 +24,12 @@
 # real tool's business and the hook's own logic is what this proves. The last case is the
 # depersonalized seed, which carries no rishi and must commit exactly as it always has.
 #
-# EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, no_rishi_free=yes.
+# The ledger cases use the REAL writer and the REAL spine scan rather than a stand-in, because the
+# writer's arithmetic is the thing under proof there -- what the hook contributes is only WHEN it
+# runs, and that is what the three cases tell apart.
+#
+# EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, ledger_free=yes,
+#           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes.
 #
 # Driven by tools/g/generated_page_freshness_witness.rish. Run from the repository root.
 
@@ -67,10 +75,29 @@ chmod +x rishi/bin/rishi
 printf '# generator stand-in, read by the hook only for its presence\n' > tools/r/readme_metrics.rish
 printf '# generator stand-in, read by the hook only for its presence\n' > tools/g/geode_libraries.rish
 
-mkdir -p docs-geode/libraries
+mkdir -p docs-geode/libraries tools/fixtures construction
 printf 'witnesses=0\n' > README.md
 printf 'witnesses=0\n' > docs-geode/libraries/README.md
 printf 'a page\n' > NOTES.md
+
+# The ledger rule runs the tree's own writer and its own spine scan, copied in rather than stubbed.
+cp "$root/tools/fixtures/reds_ledger_headline_write.sh" tools/fixtures/reds_ledger_headline_write.sh
+cp "$root/tools/fixtures/reds_ledger_monotone_scan.sh" tools/fixtures/reds_ledger_monotone_scan.sh
+chmod +x tools/fixtures/reds_ledger_headline_write.sh tools/fixtures/reds_ledger_monotone_scan.sh
+
+# A ledger holding rows 1..21, with a headline deliberately left at 1. Twenty-one rather than a
+# handful, so the derived remainder stays a natural number as the real ledger's does.
+book_row() {
+  printf '**REDS %%%s (`20260825.000000`) -- a planted row %s.** *What went wrong:* a thing. *What caught it:* a guard. *What it taught:* a rule. CLOSED.\n' "$1" "$1" >> construction/REDS.md
+}
+{
+  echo "# REDS -- a planted ledger"
+  echo
+  echo "**Rows: 1 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 1** -- counted from the ledger. Every number from 1 to 1 is used."
+  echo
+} > construction/REDS.md
+n=1
+while [ "$n" -le 21 ]; do book_row "$n"; n=$((n + 1)); done
 git add -A
 git commit -qm "seed the fixture" --no-verify
 rm -f .generator-ran
@@ -106,6 +133,35 @@ head_count=$(git show HEAD:README.md | sed -n 's/^witnesses=//p')
 fresh_quiet=$([ "$head_count" = 2 ] && git diff --quiet && echo yes || echo no)
 rm -f .generator-ran
 
+# 6 -- the ledger's headline stands stale and a docs-only commit leaves it exactly there. The
+#      ledger rule's trigger is the ledger being staged, so a commit that never touches it rests.
+printf 'a page, edited again\n' > NOTES.md
+git add NOTES.md
+git commit -qm "docs only, beside a stale ledger" >/dev/null
+ledger_free=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 1 ' && echo yes || echo no)
+
+# 7 -- a row is booked and the headline is left behind, which is REDS %127, %141, and %226 exactly.
+#      The hook regenerates the headline and stages it into the same commit.
+book_row 22
+git add construction/REDS.md
+git commit -qm "book a row and forget the headline" >/dev/null
+booked=$(git show HEAD:construction/REDS.md)
+ledger_staged=$(echo "$booked" | grep -q '^\*\*Rows: 22 ' \
+  && echo "$booked" | grep -q 'reds-first law: 2\*\*' \
+  && echo "$booked" | grep -q 'from 1 to 22 is used' \
+  && git diff --quiet && echo yes || echo no)
+
+# 8 -- a row is staged while the ledger carries a further unstaged edit of the author's own. The
+#      refreshed page is left in the worktree and the commit is refused, so nothing is swept in.
+book_row 23
+git add construction/REDS.md
+book_row 24
+ledger_code=0
+git commit -qm "book a row over unstaged edits" >/dev/null 2>&1 || ledger_code=$?
+ledger_dirty_refused=$([ "$ledger_code" -ne 0 ] && echo yes || echo no)
+git add construction/REDS.md
+git commit -qm "book two rows, staged as asked" >/dev/null
+
 # 5 -- no rishi on disk: the hook rests and the commit proceeds, which is the seed's case.
 rm -rf rishi
 printf '# a third witness\n' > tools/third_witness.rish
@@ -118,10 +174,14 @@ echo "docs_free=$docs_free"
 echo "clean_staged=$clean_staged"
 echo "dirty_refused=$dirty_refused"
 echo "fresh_quiet=$fresh_quiet"
+echo "ledger_free=$ledger_free"
+echo "ledger_staged=$ledger_staged"
+echo "ledger_dirty_refused=$ledger_dirty_refused"
 echo "no_rishi_free=$no_rishi_free"
 
 if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = yes ] \
-  && [ "$fresh_quiet" = yes ] && [ "$no_rishi_free" = yes ]; then
+  && [ "$fresh_quiet" = yes ] && [ "$ledger_free" = yes ] && [ "$ledger_staged" = yes ] \
+  && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"
