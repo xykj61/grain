@@ -24,6 +24,24 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260825.132121` -- the tier round's account condensed off the card
+
+**Walk-back nib:** `c2ea22613d` -- read the whole departing card with
+`git show c2ea22613d:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md` alone. The `Now` block held the roster-tier round's full
+account -- the 20m20s-to-22m19s roster timing, the five-way reach split, and REDS %220's cold
+reading of 60 guards / 57 green / 3 red -- and the card stood at 24,558 bytes against the 24,576 it
+declares, so the ales-choir round had no room to land beside it.
+
+**What waits there, worth recalling:** the roster's own first honestly timed full pass (1,220
+seconds for 60 guards), the argument for why the reach meter splits standing from cadence rather
+than blurring them, and the sentence the tier rests on -- *a close costing twenty-five minutes is a
+close that gets skipped*. Each survives in
+[`../session-logs/20260825-110922_a-tier-is-a-cadence.kyri`](../session-logs/20260825-110922_a-tier-is-a-cadence.kyri)
+and in [`../active-designing/20260825-110922_a-tier-is-a-cadence.md`](../active-designing/20260825-110922_a-tier-is-a-cadence.md).
+
+
 ### `20260825.110922` -- the comment-dial and Region accounts condensed off the card
 
 **Walk-back nib:** `ae54ca5e1e` -- read the whole departing card with
