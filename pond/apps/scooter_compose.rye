@@ -130,6 +130,8 @@ fn write_prompt_row(f: *view.Frame, l: *const line.Line) void {
     // invariant: the prompt row is a real row within the fixed grid.
     assert(prompt_row < view.frame_rows);
     const start: u32 = prompt_row * view.frame_cols;
+    // invariant: the row's span from this start stays inside the cell array, so a frame is
+    // composed within the grid it belongs to
     assert(start + view.frame_cols <= f.cells.len);
 
     // Clear the row to spaces.

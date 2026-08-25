@@ -35,6 +35,8 @@ pub fn customs_admits(mark: []const u8) bool {
     const v = customs.verdict_for_mark(mark);
     // invariant: admission is exactly the place verdict, never a hold or a refuse
     const admitted = v == .place;
+    // invariant: admission and the verdict agree, so a pilot admitted on any verdict but place
+    // would pass customs the rules meant to stop
     assert(admitted == (v == .place));
     return admitted;
 }

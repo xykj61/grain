@@ -216,6 +216,8 @@ pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
         const b = std.fmt.parseInt(u32, b_s, 10) catch return render_error(call.id, "bad_int", out);
         const sum = a + b;
         const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {d}\n", .{ call.id, sum }) catch return error.ResultTooLong;
+        // invariant: bufPrint returns a slice into the buffer it was given, so this states the
+        // write stayed inside it rather than checking beforehand
         assert(s.len <= out.len);
         return s;
     }
@@ -223,6 +225,8 @@ pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
         const a_s = call.arg_val("a") orelse return render_error(call.id, "bad_args", out);
         const b_s = call.arg_val("b") orelse return render_error(call.id, "bad_args", out);
         const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {s} {s}\n", .{ call.id, a_s, b_s }) catch return error.ResultTooLong;
+        // invariant: bufPrint returns a slice into the buffer it was given, so this states the
+        // write stayed inside it rather than checking beforehand
         assert(s.len <= out.len);
         return s;
     }

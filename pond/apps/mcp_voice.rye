@@ -63,6 +63,8 @@ pub fn render_error(id: u32, err_name: []const u8, out: []u8) mcp.McpError![]con
     // invariant: a named error is present, never an empty error line
     assert(err_name.len > 0);
     const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.ResultTooLong;
+    // invariant: bufPrint returns a slice into the buffer it was given, so this states the
+    // write stayed inside it rather than checking beforehand
     assert(s.len <= out.len);
     return s;
 }

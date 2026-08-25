@@ -71,6 +71,8 @@ const RowWriter = struct {
         } else {
             self.overflowed = true;
         }
+        // invariant: the cursor sits inside the cell array it addresses, so a column past the
+        // end would draw outside the view
         assert(self.col <= self.cells.len);
     }
 
@@ -91,6 +93,8 @@ const RowWriter = struct {
             n += 1;
             x = x / 10;
             if (x == 0) break;
+            // invariant: the count is rendered as a single digit, so ten or more would print
+            // one character where the layout reserved one
             assert(n < 10);
         }
         // Emit most-significant first (the scratch filled least-significant first).

@@ -60,6 +60,8 @@ pub const Switchboard = struct {
         // invariant: exactly n piers stand, and every mailbox begins with no mail.
         assert(self.roster.size() == n);
         var i: u32 = 0;
+        // invariant: every box the switchboard reports is available, so an unavailable one in
+        // the list would be offered to a caller that cannot reach it
         while (i < n) : (i += 1) assert(self.boxes[i].available() == 0);
     }
 

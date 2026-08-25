@@ -55,6 +55,8 @@ fn require_lower_hex(value: []const u8, want_len: u32) PassError!void {
 }
 
 fn write_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the hex form is two characters per byte, so a buffer shorter than double the
+    // input would be written past its end
     assert(out.len >= bytes.len * 2);
     var i: u32 = 0;
     while (i < bytes.len) : (i += 1) {

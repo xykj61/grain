@@ -69,6 +69,8 @@ pub fn drive(v: *read.View, ch: *const channel.Channel, bytes: []const u8) u32 {
     var i: u32 = 0;
     while (i < bytes.len) {
         const step = key.decode(bytes[i..]);
+        // invariant: every decode step consumes at least one byte, since a zero would leave the
+        // cursor where it was and the walk would not end
         assert(step.used >= 1);
         _ = apply_key(v, ch, step.key);
         i += step.used;

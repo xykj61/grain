@@ -112,6 +112,8 @@ pub fn fold_journal(entries: []const Entry) error{Unbalanced, BadAmount, SameAcc
     for (entries) |e| {
         try post_entry(&tb, e);
     }
+    // invariant: the trial balance conserves -- debits equal credits -- which is the one
+    // property that makes a book a book rather than a list of numbers
     assert(tb.conservation() == 0);
     return tb;
 }
@@ -136,6 +138,8 @@ pub fn fold_balance_sheet(tb: TrialBalance) BalanceSheet {
         .equity_booked = equity_booked,
         .retained = is.net_income,
     };
+    // invariant: the sheet balances before it is published, since a sheet that does not is a
+    // statement about money nobody holds
     assert(sheet.balances());
     return sheet;
 }

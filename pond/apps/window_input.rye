@@ -111,6 +111,8 @@ pub const LineEditor = struct {
 
 /// Bytes to remove from the end: one UTF-8 codepoint (1–4 bytes).
 fn utf8_delete_len(buf: []const u8) u32 {
+    // invariant: the buffer holds room for at least one byte, since a zero-length one would
+    // read a key into nothing and report it delivered
     assert(buf.len > 0);
     var i: usize = buf.len;
     // Walk back continuation bytes (10xxxxxx).

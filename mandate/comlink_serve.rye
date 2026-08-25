@@ -25,6 +25,8 @@ pub const comlink_serve_version = "20260811.125432";
 // A compile-time proof that both serve messages fit Comlink's sealed-message budget,
 // so a query and its answer each ride in a single datagram — no fragmentation.
 comptime {
+    // invariant: neither the request nor the response may exceed one wire message, since a
+    // longer one would be sent truncated and parsed as a shorter whole
     assert(serve.max_request_bytes <= wf.max_message);
     assert(serve.max_response_bytes <= wf.max_message);
 }

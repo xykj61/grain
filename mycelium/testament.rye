@@ -133,6 +133,8 @@ pub fn seal(c: *const constel.Constel, dag: *const cord.Dag, account_pk: []const
 pub fn boot_roster(t: *const Testament) !constel.Constel {
     // invariant: a meaningful certificate names at least one ship.
     if (t.roster_count == 0) return error.EmptyRoster;
+    // invariant: a testament names at least one roster member, since an empty roster would
+    // leave a will nobody can execute
     assert(t.roster_count >= 1);
     // invariant: the roster honors the certificate's static bound.
     assert(t.roster_count <= testament_max_ships);

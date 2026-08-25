@@ -299,6 +299,8 @@ pub fn committed_batch_log(
     var i: u32 = 0;
     while (i < count) : (i += 1) {
         const idx = order[i];
+        // invariant: the node is read out of the graph by this index with no bounds check of
+        // its own
         assert(idx < dag.len);
         const b = &dag.blocks[idx];
         var f: u32 = 0;

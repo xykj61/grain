@@ -226,6 +226,8 @@ pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflo
 /// A listed line — `manifest` or `cargo` — is a manifest_entry triple under a
 /// bounded count; answers true when the line was of the given kind.
 fn take_listed_line(line: []const u8, kind: []const u8, count: *u32) error{InvalidVessel}!bool {
+    // invariant: a manifest line carries both a kind and a body, so an empty either would
+    // register a vessel nothing can name or fetch
     assert(line.len > 0);
     assert(kind.len > 0);
     if (!std.mem.startsWith(u8, line, kind)) return false;

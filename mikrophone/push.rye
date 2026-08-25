@@ -85,6 +85,8 @@ pub fn push(local: *const catalog.Catalog, remote: *catalog.Catalog) !PushReport
     // invariant: convergence — on success the remote desk holds every address the local advertised.
     var j: u32 = 0;
     while (j < advertised) : (j += 1) {
+        // invariant: the remote holds every address the manifest named after the push, which is
+        // what a push promises -- a miss means a capture was reported sent and is not there
         assert(catalog.holds(remote, manifest.address_in(records, j)));
     }
     return report;

@@ -310,6 +310,8 @@ fn lapse_expired(l: *Ledger, pos: u32) void {
         // A lapse returns the reserve to the pledger's own balance (conserved) — a wrap is
         // impossible (these coins left this balance when the pledge opened), yet named.
         const nb = l.accounts[ki].balance +% pl.amount;
+        // invariant: a lapse never lowers a balance, so a new balance below the old one would
+        // take from an account this pass was only meant to age
         assert(nb >= l.accounts[ki].balance);
         l.accounts[ki].balance = nb;
         pl.state = state_lapsed;

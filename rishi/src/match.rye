@@ -904,6 +904,8 @@ fn compile_pattern(m: *Matcher, pattern: []const u8) MatchError!void {
     if (!m.at_end()) return error.UnbalancedParen;
     try m.compile(root, 0);
     _ = try m.emit(.{ .op = .match });
+    // invariant: the compiled program has at least one instruction and ends in a match op, so
+    // the engine is proven to have somewhere to start and somewhere to stop
     assert(m.prog_count > 0);
     assert(m.prog[@intCast(m.prog_count - 1)].op == .match);
 }

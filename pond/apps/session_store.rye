@@ -87,6 +87,8 @@ pub fn parse_session(text: []const u8, out: *edit_cursor.EditCursor) !void {
     // invariant: a stored cursor never stands past the history it holds — the EditCursor law, enforced on the way in.
     if (position > list.count) return error.BadSession;
     out.* = edit_cursor.EditCursor{ .list = list, .position = position };
+    // invariant: the position addresses an entry of the list or its end, so a position past
+    // that would restore a session pointing at nothing
     assert(out.position <= out.list.count);
 }
 

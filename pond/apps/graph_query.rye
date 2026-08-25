@@ -97,6 +97,8 @@ pub fn compute(op: Op, catalog: *const mn.BoltCatalog, out_buf: []u8) QueryError
             // invariant: a found head is a real revision, counting from one
             assert(h >= 1);
             const piece = std.fmt.bufPrint(out_buf, "{d}", .{h}) catch return error.ResultTooLong;
+            // invariant: bufPrint returns a slice into the buffer it was given, so this states
+            // the write stayed inside it rather than checking beforehand
             assert(piece.len <= out_buf.len);
             written += @intCast(piece.len);
         },
@@ -104,6 +106,8 @@ pub fn compute(op: Op, catalog: *const mn.BoltCatalog, out_buf: []u8) QueryError
             const bolts = mb.bolt_count(catalog);
             const lanes = mb.lane_count(catalog);
             const piece = std.fmt.bufPrint(out_buf, "bolts={d} lanes={d}", .{ bolts, lanes }) catch return error.ResultTooLong;
+            // invariant: bufPrint returns a slice into the buffer it was given, so this states
+            // the write stayed inside it rather than checking beforehand
             assert(piece.len <= out_buf.len);
             written += @intCast(piece.len);
         },

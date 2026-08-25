@@ -103,6 +103,8 @@ fn index_of(self: *const Catalog, address: Address) ?u32 {
 pub fn holds(self: *const Catalog, address: Address) bool {
     // invariant: holding is exactly having an index for the address — one source of truth.
     const found = index_of(self, address) != null;
+    // invariant: the found flag and the index lookup answer the same question two ways, so a
+    // disagreement means one of them read a stale catalog
     assert(found == (index_of(self, address) != null));
     return found;
 }

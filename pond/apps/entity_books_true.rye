@@ -67,6 +67,8 @@ pub fn read_journal(name: []const u8, journal_text: []const u8) (entity.BookErro
     // invariant: real books conserve and balance, exactly as demo books do (the accounting identity).
     assert(tb.conservation() == 0);
     const sheet = try e.balance_sheet();
+    // invariant: the sheet balances before it is published, since a sheet that does not is a
+    // statement about money nobody holds
     assert(sheet.balances());
 
     return .{ .entries = count, .amount_sum = sum, .cash_net = tb.nets[@intFromEnum(gc.Account.cash)] };

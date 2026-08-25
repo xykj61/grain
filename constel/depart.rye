@@ -82,7 +82,9 @@ pub fn mask_of(slots: []const u32) [roster.max_piers]bool {
     var mask = [_]bool{false} ** roster.max_piers;
     var i: u32 = 0;
     while (i < slots.len) : (i += 1) {
-        assert(slots[i] < roster.max_piers); // invariant: every listed slot is a real roster slot
+        // invariant: each slot addresses a pier of the roster directly, so a slot past the
+        // ceiling would depart an entry that does not exist
+        assert(slots[i] < roster.max_piers);
         mask[slots[i]] = true;
     }
     return mask;
