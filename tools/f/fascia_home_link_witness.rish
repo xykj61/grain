@@ -1,0 +1,46 @@
+# fascia_home_link_witness.rish -- a room's README offers a path back home.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fascia_home_link_witness.rish
+#
+# A reader arrives at a room's README from a search engine, a link, or a GitHub file listing, rather
+# than by walking down from the root. If that page names no way back to `README.md`, their only route
+# home is editing the URL, and most will not. Measured `20260825.004500`: 108 of 115 room READMEs
+# offered no path home -- `rye/README.md` and `rishi/README.md` among them until this lap, and those
+# two are exactly where the tree's own first-hour tutorial sends a newcomer.
+
+say "fascia-home-link: Language EN -- a page a reader can arrive at is a page that should say where home is."
+say "fascia-home-link: Style Civic -- name what the tree rewards. It rewarded arriving from the top, and a reader who arrives from the side was on their own."
+say "fascia-home-link: Lens TAME -- safety first: this is a ratchet under a ceiling that only falls, never a wall, because a wall that reds on ordinary work is a wall somebody turns off. Purely local -- no key, no network, no funds, no device."
+
+# The ceiling lives in the scan, so no meter here spells it and none can drift from it.
+
+let control = run ["sh" "tools/fixtures/fascia_home_link_control.sh"]
+assert control.ok else "fascia-home-link: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "fascia-home-link: the control must reach its own verdict"
+
+# The reading is proven from both sides before it is trusted on the real tree.
+assert control.out contains "near_read_as_orphan=no" else "fascia-home-link: a page linking ../README.md has a path home"
+assert control.out contains "deep_read_as_orphan=no" else "fascia-home-link: depth must not fool the reading -- ../../README.md is a path home too"
+assert control.out contains "lone_read_as_orphan=yes" else "fascia-home-link: a page linking nothing must read as an orphan, or the meter reads zero forever"
+assert control.out contains "self_link_read_as_orphan=yes" else "fascia-home-link: a bare README.md link points at the page itself, never home"
+assert control.out contains "vendor_excluded=yes" else "fascia-home-link: vendored pages are not ours to edit and must stay out of the population"
+assert control.out contains "seed_excluded=yes" else "fascia-home-link: the public projection is generated and must stay out of the population"
+assert control.out contains "root_excluded=yes" else "fascia-home-link: the root README is home rather than a page needing a way there"
+
+let living = run ["sh" "tools/fixtures/fascia_home_link_scan.sh"]
+assert living.ok else "fascia-home-link: the living scan must complete"
+say living.out
+
+# The two pages the first hour sends a newcomer to are held at zero, enforced, because those are
+# the ones a reader is most likely to arrive at without ever having seen the root.
+let rye_home = run ["sh" "-c" "grep -qF '](../README.md)' rye/README.md && echo yes || echo no"]
+assert rye_home.out contains "yes" else "fascia-home-link: rye/README.md must offer a path home -- the first hour sends readers there"
+let rishi_home = run ["sh" "-c" "grep -qF '](../README.md)' rishi/README.md && echo yes || echo no"]
+assert rishi_home.out contains "yes" else "fascia-home-link: rishi/README.md must offer a path home -- the first hour sends readers there"
+
+assert living.out contains "under_ceiling=yes" else "fascia-home-link: the orphan count rose above the ceiling -- weave the room home rather than raising it"
+assert control.out contains "ceiling_refuses_from_above=yes" else "fascia-home-link: the ceiling must refuse when planted against, or it is a decoration"
+
+say "GREEN: fascia-home-link -- the orphan count stands under a ceiling that only falls, printed above as the scan's own output rather than recited here, with seven readings proven on planted repositories, the ceiling shown from both sides, and the two pages the first hour names held at zero."
