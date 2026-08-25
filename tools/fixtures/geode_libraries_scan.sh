@@ -41,6 +41,22 @@ witness_count() {
   xargs -a "$witness_roster" -d '\n' grep -lI "\b$1/" 2>/dev/null | wc -l | tr -d ' '
 }
 
+# HOW THE MODULES ARE COUNTED, and it asks git rather than the filesystem for a reason paid for
+# once. A plain `find` reports every `.rye` on disk, and the `glow` room keeps a `.cache` of 108 generated
+# modules the repository deliberately ignores. So the `glow` row published its 130 tracked
+# modules plus whatever the last Glow compile had left behind -- 238 on `20260825` -- a number
+# that moves when somebody builds and drifts with no commit behind it. The pre-commit hook can
+# never catch that one, because it watches STAGED `.rye` changes and an ignored file is never
+# staged, so the drift surfaced only at the next roster pass (REDS %216). `git check-ignore` is
+# the system's own answer to whether this tree keeps a file, so the count asks it rather than
+# guessing from a path. `--non-matching --verbose` prints `::` ahead of every path git does NOT
+# ignore, which is exactly the population this page means by a module.
+module_count() {
+  find "$1" -maxdepth 2 -name '*.rye' -type f 2>/dev/null \
+    | { git check-ignore --stdin --non-matching --verbose 2>/dev/null || true; } \
+    | grep -c '^::' || true
+}
+
 verb="${1:-census}"
 
 # render writes the whole page. The prose lives here rather than in the page, so there is exactly
@@ -73,7 +89,7 @@ HEAD
     room="${dir%/}"
     case "$room" in .*|seed|vendor|gratitude|old) continue ;; esac
     [ -f "$room/README.md" ] || continue
-    n=$(find "$room" -maxdepth 2 -name '*.rye' -type f 2>/dev/null | wc -l | tr -d ' ')
+    n=$(module_count "$room")
     [ "$n" -gt 0 ] || continue
     w=$(witness_count "$room")
     printf '| [`%s/`](../../%s/README.md) | %s | %s |
@@ -95,7 +111,7 @@ for dir in */; do
   room="${dir%/}"
   case "$room" in .*|seed|vendor|gratitude|old) continue ;; esac
   [ -f "$room/README.md" ] || continue
-  n=$(find "$room" -maxdepth 2 -name '*.rye' -type f 2>/dev/null | wc -l | tr -d ' ')
+  n=$(module_count "$room")
   [ "$n" -gt 0 ] || continue
   # A witness BELONGS to a room when it references that room, not when its filename happens to
   # contain the room name. The name-glob reported zero witnesses for `image` (225 modules) and
