@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `2a9ccea972` -- the `Region` body lifted into `caravan/region.rye` where five copies stood, and `rye` given a second reading for its std so a host with no `/proc` can build. Suite 109 green.
+**Git nib:** `4ae9d8dd15` -- the `Region` body lifted where five copies stood, `rye` and `rishi` each taught a second way to be asked, and eight rooms given a way home. Suite 109 green.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
 upward is a school grade -- 20% becomes **80, a B**.

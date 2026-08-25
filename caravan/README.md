@@ -4,6 +4,9 @@
 **Last updated:** `20260824.062207` (the front door -- the rung record and the harness record moved to their own pages)
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- 110 modules in this directory, and 109 witnesses in `../tools/ca/` standing over them, counted `20260824`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Caravan starts the other programs a system needs, watches them while they run, and brings home
 any that stumble -- all inside limits fixed before it begins.**
