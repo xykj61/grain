@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.181028` | [two words granted and routed](20260825-181028_two-words-granted-and-routed.kyri) | seed push routed to the pier; FAST/COLD ruling seated |
 | `20260825.180329` | [the short name and the wall](20260825-180329_the-short-name-and-the-wall.kyri) | REDS %225: bare Siya joins the wall; four basenames withheld; gates green |
 | `20260825.173849` | [fusion research and three bundles placed](20260825-173849_fusion-research-and-three-bundles-placed.kyri) | 18 files seated, reprove design booked, held at the gate |
 | `20260825.172213` | [build-systems-a-la-carte traces read](20260825-172213_build-systems-a-la-carte-traces-read.kyri) | Verifying vs constructive traces; a tiny verdict makes the constructive trace nearly free. |
