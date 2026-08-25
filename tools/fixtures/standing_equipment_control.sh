@@ -213,4 +213,62 @@ out=$( ( cd "$pen" && STANDING_ROSTER=gonepath.kyri STANDING_CARD=absent-run.kyr
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "absent_path_reds_runner=yes" ;; *) echo "absent_path_reds_runner=no" ;; esac
 
+# --- the tree digest, proven from both sides on a REAL git repository ---------------------
+# The runner takes twelve characters of `git rev-parse HEAD` plus `git status --porcelain` before
+# the first guard and again after the last, so a lap that starts editing while the roster runs is
+# told its verdicts describe neither tree (REDS %221). Proving that only in the quiet direction
+# would leave a reading nobody could tell from a stub, so a guard here DIRTIES the tree on purpose
+# and the runner is watched to say so and refuse.
+gitpen="$pen/gitpen"
+mkdir -p "$gitpen/rishi/bin"
+( cd "$gitpen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false && echo seed > kept.txt && git add kept.txt \
+  && git commit -qm "seed" ) >/dev/null 2>&1
+
+cat > "$gitpen/quiet.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260825.000000
+EOF
+: > "$gitpen/guard.sh"
+
+# A stub that changes nothing: the tree stands still and the run answers ok.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"tree_moved=no"*) echo "still_tree_reads_no=yes" ;; *) echo "still_tree_reads_no=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "still_tree_passes=yes" ;; *) echo "still_tree_passes=no" ;; esac
+case "$out" in *"tree_at_open=nogit"*) echo "real_repo_digests=no" ;; *) echo "real_repo_digests=yes" ;; esac
+
+# A stub that writes an untracked file: the tree moves under the run, and the runner refuses.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+: > mid-run.txt
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"tree_moved=yes"*) echo "moved_tree_reads_yes=yes" ;; *) echo "moved_tree_reads_yes=no" ;; esac
+case "$out" in *"run_verdict=tree_moved"*) echo "moved_tree_refuses=yes" ;; *) echo "moved_tree_refuses=no" ;; esac
+# Every guard line still prints above the refusal, so a moved tree loses no reading.
+case "$out" in *"alpha green"*) echo "moved_tree_keeps_lines=yes" ;; *) echo "moved_tree_keeps_lines=no" ;; esac
+
+# A guard red is the louder finding and keeps the verdict even when the tree also moved.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+: > mid-run-two.txt
+exit 1
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"run_verdict=guard_red"*) echo "red_outranks_moved=yes" ;; *) echo "red_outranks_moved=no" ;; esac
+
 echo "control_verdict=ok"
