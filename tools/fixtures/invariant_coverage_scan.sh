@@ -21,8 +21,12 @@
 #
 #   witness   an assert inside a `*_witness.rye` file is proving a claim about the tree, and its
 #             reason is the witness header rather than a line above the call.
-#   selftest  an assert inside a function whose name carries `selftest`, or inside `main`, is a
-#             proof that runs, sitting in the same file as the code it proves. So is EVERY assert
+#   selftest  an assert inside a function whose name carries one of three ROLE WORDS -- `main`,
+#             `selftest`, `witness` -- is a proof that runs, sitting in the same file as the code it
+#             proves. The three are a vocabulary rather than a list patched one name at a time,
+#             which is how `witness` came to be missing: `pond/apps/drawn_terminal.rye` reported 312
+#             uncovered contracts and **255 of them sit in functions named `run_*_witness`**, found
+#             on opening the file to sweep it. So is EVERY assert
 #             in a file whose own `//!` header declares it one -- `lattice/lattice.rye` opens
 #             `Lattice selftest`, builds to `lattice/bin/lattice selftest`, and names its 199
 #             functions `welcome_add`, `welcome_matmul`, `welcome_reshape`. Binning by function
@@ -96,7 +100,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }
-      else if (isself || fn == "main" || fn ~ /selftest/) { s++;  sc += k }
+      else if (isself || fn == "main" || fn ~ /selftest/ || fn ~ /witness/) { s++;  sc += k }
       else                                              { c++;  cc += k }
     }
     printf "%s %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc
