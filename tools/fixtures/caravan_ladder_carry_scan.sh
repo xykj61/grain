@@ -123,8 +123,10 @@
 set -eu
 
 # 58,544 until 20260825.001500, when moving 117 trailing invariant comments above their asserts
-# across the ladder took four carried lines off. A ceiling only falls.
-CEILING=${CARAVAN_CARRY_CEILING:-58540}
+# across the ladder took four carried lines off; 58,540 until 20260825.010500, when the bounded
+# region was lifted out of bounded.rye, chain.rye and twin.rye into caravan/region.rye and took
+# eight more. A ceiling only falls, and this is the fold the meter was asking for.
+CEILING=${CARAVAN_CARRY_CEILING:-58532}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 

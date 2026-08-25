@@ -19,44 +19,18 @@ const print = std.debug.print;
 
 const caravan_twin_version = "20260621.020512";
 
-fn buf_len_u32(buf: []const u8) u32 {
-    assert(buf.len <= std.math.maxInt(u32));
-    return @intCast(buf.len);
-}
-
-const Region = struct {
-    buf: []u8,
-    pos: u32,
-
-    fn init(buf: []u8) Region {
-        assert(buf.len > 0);
-        const r = Region{ .buf = buf, .pos = 0 };
-        assert(r.pos <= buf_len_u32(r.buf));
-        return r;
-    }
-
-    fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
-        const cap = buf_len_u32(self.buf);
-        assert(self.pos <= cap);
-        if (n > cap - self.pos) return error.OutOfBounds;
-        const start: usize = @intCast(self.pos);
-        const end: usize = @intCast(self.pos + n);
-        assert(end <= self.buf.len);
-        const slice = self.buf[start..end];
-        self.pos += n;
-        assert(self.pos <= cap);
-        return slice;
-    }
-
-    fn clear(self: *Region) void {
-        self.pos = 0;
-        assert(self.pos <= buf_len_u32(self.buf));
-    }
-
-    fn remaining(self: *const Region) u32 {
-        return buf_len_u32(self.buf) - self.pos;
-    }
-};
+// =========================================================================
+// § The bounded region -- lifted to caravan/region.rye on 20260825.010500
+// =========================================================================
+//
+// This rung held a byte-for-byte copy of the region, as did `chain.rye` and `twin.rye`. Three
+// copies meant a comment written into it cost three times what it read, so the carry meter refused
+// the invariants the law asks for. The body lives in one module now and this names it.
+// `caravan_region`, never `region`: two of these three rungs already bind a local `var region`
+// to an instance, and an import sharing that name shadows it.
+const caravan_region = @import("region.rye");
+const Region = caravan_region.Region;
+const buf_len_u32 = caravan_region.buf_len_u32;
 
 const DependentId = enum { a, b };
 

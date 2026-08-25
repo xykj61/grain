@@ -1,0 +1,74 @@
+//! caravan/region.rye -- the bounded region, lifted out of three rungs that each held it whole.
+//!
+//! A region hands out slices of one buffer it never grows, moving a cursor forward and refusing by
+//! name when the next request would pass the end. It is the smallest shape Tally's garden is built
+//! from, and three Caravan rungs -- `bounded.rye`, `chain.rye`, `twin.rye` -- each carried a
+//! byte-for-byte copy of it. Their code was identical; only a section banner and one comment line
+//! differed, which is how a carry meter came to count it three times.
+//!
+//! LIFTED `20260825.010500`, and the reason is worth naming beyond tidiness. Documenting a body
+//! that stands in three files costs three times what it reads, so `caravan_ladder_carry` -- which
+//! counts byte-identical bodies and had zero slack -- refused twenty invariant comments the law
+//! asks for. **A duplicated body cannot be explained without first being folded**, and this is that
+//! fold. Each rung now names this module and keeps nothing of its own.
+//!
+//! `tally/seed.rye` and `tally/gardens.rye` hold a larger relative of the same shape. Zig refuses an
+//! import that escapes the root file's directory, so joining them takes a symlink the way
+//! `tally_copy.rye` already does, and it waits for its own word.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+/// A length as the u32 every count in this module is kept in.
+pub fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would wrap
+    // rather than refuse
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+/// The bounded region: one buffer, one cursor, and a refusal by name at the end of it.
+pub const Region = struct {
+    buf: []u8,
+    pos: u32,
+
+    pub fn init(buf: []u8) Region {
+        // invariant: a region opens over real memory, since a zero-length buffer would hand back an
+        // allocator that can never allocate
+        assert(buf.len > 0);
+        const r = Region{ .buf = buf, .pos = 0 };
+        // invariant: a region opens with its cursor inside the buffer it was handed, so the first
+        // allocation measures from a real position rather than past the end
+        assert(r.pos <= buf_len_u32(r.buf));
+        return r;
+    }
+
+    pub fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = buf_len_u32(self.buf);
+        // invariant: the cursor sits inside the capacity before the allocation is measured from it
+        assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        // invariant: the requested end falls inside the buffer, which is the one check standing
+        // between a caller's size and a write past the region
+        assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
+        self.pos += n;
+        // invariant: the allocation has landed when this runs, so it states that the cursor stayed
+        // inside the capacity
+        assert(self.pos <= cap);
+        return slice;
+    }
+
+    pub fn clear(self: *Region) void {
+        self.pos = 0;
+        // invariant: the cursor sits inside the buffer after it is reset, so a clear is proven to
+        // return a real region rather than to repair a broken one
+        assert(self.pos <= buf_len_u32(self.buf));
+    }
+
+    pub fn remaining(self: *const Region) u32 {
+        return buf_len_u32(self.buf) - self.pos;
+    }
+};
