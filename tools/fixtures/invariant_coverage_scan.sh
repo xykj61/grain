@@ -10,7 +10,9 @@
 # THE LABEL, and every spelling of it this tree writes. TAME asks for a `// invariant:` line, and
 # names three moments an assert belongs at -- construction, mutation, postcondition -- so the tree
 # also writes `// invariant (precondition):`, `(postcondition):`, `(bound):`, `(construction):`, and
-# the bare `// precondition:` / `// postcondition:`. **483 lines carried a spelling this scan could
+# the bare `// precondition:` / `// postcondition:`, and `// seam:` where the assert guards the
+# inherited-std boundary TAME names by that word -- 16 such stand above an assert.
+# **483 lines carried a spelling this scan could
 # not read**, all of them the seated label with its TAME category named, which is more faithful to
 # the law rather than less. Found on opening `crypto/mldsa_encode.rye` to sweep it, where FIPS 204
 # primitives carry their reasons under `// invariant (precondition):`.
@@ -101,7 +103,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     j = i - 1
     while (j >= 1 && (lines[j] ~ /^[ \t]*$/ || (lines[j] ~ /(^|[^A-Za-z0-9_])assert\(/ && lines[j] !~ /^[ \t]*\/\//))) j--
     while (j >= 1 && lines[j] ~ /^[ \t]*\/\//) {
-      if (lines[j] ~ /\/\/[ \t]*(invariant|precondition|postcondition)[^:]{0,30}:/) return 1
+      if (lines[j] ~ /\/\/[ \t]*(invariant|precondition|postcondition|seam)[^:]{0,30}:/) return 1
       j--
     }
     return 0

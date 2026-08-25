@@ -58,12 +58,14 @@ comment block, or design four ways. **B stands; below B pushes one molt frame**,
 **4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names, and **853**
 once the label pattern read every spelling. **21 behaviors** prove the bin. **The `caravan`
 falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow`, `mand`, `crypto`, `linengrow`, `rye`, `tally`, `mantra` and `comlink` all reach 100%.**
-glow's reasons were largely there as **trailing** comments (1,144 tree-wide); crypto was never
-57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**). Both crypto
-guards GREEN after, parity byte-for-byte. The bin learned two more shapes: a file under `tests/` is a test, and a `fn assert(` DECLARATION is
-not a call to one. **No room now sits under 92%.** **Open door -- one thin tail everywhere:** `caravan` 217, `image` 57, `lotus` 47, `brushstroke` 41,
-`pond` 39, `mycelium` 20; tree **97%**, gap **468**, of which **456 already carry an unlabelled
-reason** -- label-seating rather than writing.
+glow's reasons were largely there as **trailing** comments; crypto was never 57.5% -- **483 lines
+carry a qualified label** the meter read as absent (**%212**). Both crypto guards GREEN after,
+parity byte-for-byte. **No room now sits under 92%**; tree **97%**, gap **453**, one thin tail
+everywhere (`caravan` 217, `image` 57, `lotus` 47).
+**The unlabelled-456 sweep was refused after reading them: 361 of 377 are
+test-case narration inside `pub fn` proof functions**, and stamping labels would have written 361
+false invariants (**%213**). The `pub` guard from %211 is right for `photos.rye` and wrong here; a
+**cross-file** reachability pass is the honest discriminator and waits for its own round.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 
