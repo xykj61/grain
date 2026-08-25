@@ -29,13 +29,24 @@
 # cadence tier's own history rather than erasing it. The card is untracked by design -- it measures
 # THIS pier's history, and a fresh clone that has run nothing should say so.
 #
-# WHAT IT REPORTS BEFORE IT RUNS. `staged_uncommitted`, the count of paths staged and not yet
-# committed. On a hot run that number is the round's own work and means nothing. On the COLD run
-# that opens a lap it is the signature of REDS %188: a lap that ended at `git add` left this tree's
-# generated pages stale, and the next lap pays the repair. That row fired twice -- 20260824.082144
-# and 20260825.092953 -- and %188 concluded no guard could enforce it, which holds, since such a
-# guard would have to run after a lap ends. A READING is a different thing from a gate, and this one
-# arrives on line one of the lap rather than eleven guards later.
+# WHAT IT REFUSES BEFORE IT RUNS. `staged_uncommitted`, the count of paths staged and not yet
+# committed, and a full-roster pass that opens on a dirty index REFUSES under
+# `run_verdict=lap_unclosed` before a single guard starts. That is the signature of REDS %188: a lap
+# that ended at `git add` left this tree's generated pages stale, and the next lap pays the repair.
+#
+# WHY A REFUSAL RATHER THAN THE READING IT REPLACES. The row fired three times -- 20260824.082144,
+# 20260825.092953, and 20260825.132121, the last one leaving `readme_metrics`, `geode_libraries`,
+# and `nib_honesty` red on the next cold open. %188 concluded no guard could ENFORCE the close,
+# which still holds: such a guard would have to run after a lap ends. %220 answered with a reading
+# on line one, and the class fired again eleven hours later, because a reading persuades and a
+# refusal decides. The ladder a recurring red climbs is rule, then reading, then refusal, and this
+# is the third rung (REDS %223).
+#
+# THE ONE PLACE THE READING IS UNAMBIGUOUS is exactly here. A full-roster pass is how a lap opens,
+# so staged paths at that moment belong to whoever ran last. `--hot` is how a round says the staged
+# paths are its own -- the after-`git add` pass REDS %174 asks for. A guard asked for by name is no
+# lap open at all and passes free. One flag and one structural distinction, rather than a roster of
+# exemptions: a second exemption would be the hiding place this refusal exists to close.
 #
 # WHAT IT REPORTS WHEN IT FINISHES. `tree_at_open`, `tree_at_close`, and `tree_moved` -- a twelve-
 # character digest of `git rev-parse HEAD` plus `git status --porcelain`, taken before the first
@@ -50,10 +61,13 @@
 # both, which never moves, so a control can drive this runner without standing inside git.
 #
 # USAGE
-#   sh tools/fixtures/standing_equipment_run.sh                 # tier lap -- the every-lap set
+#   sh tools/fixtures/standing_equipment_run.sh                 # cold open -- tier lap, dirty index refuses
+#   sh tools/fixtures/standing_equipment_run.sh --hot           # after `git add` -- the staged paths are mine
 #   sh tools/fixtures/standing_equipment_run.sh --all           # every tier, choirs included
 #   sh tools/fixtures/standing_equipment_run.sh --tier cadence  # one tier
 #   sh tools/fixtures/standing_equipment_run.sh banner_room     # one guard by name, whatever its tier
+#
+# The flags compose: `--hot --all` is the cadence lap's own after-`git add` pass.
 #
 # Run from the repository root. Slow by nature -- it runs a roster.
 
@@ -64,14 +78,22 @@ card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
 
 want_tier=lap
 only=""
-case "${1:-}" in
-  "")     ;;
-  --all)  want_tier=all ;;
-  --tier) want_tier="${2:-}"
-          [ -n "$want_tier" ] || { echo "refused: --tier wants a tier name" >&2; exit 1; } ;;
-  --*)    echo "refused: unknown option $1" >&2; exit 1 ;;
-  *)      only="$1"; want_tier=all ;;
-esac
+hot=no
+
+# A loop rather than a single case, so `--hot` composes with `--all` and with `--tier`. A bare word
+# is a guard name and selects every tier, which is what asking for one guard has always meant.
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --hot)  hot=yes ;;
+    --all)  want_tier=all ;;
+    --tier) shift
+            want_tier="${1:-}"
+            [ -n "$want_tier" ] || { echo "refused: --tier wants a tier name" >&2; exit 1; } ;;
+    --*)    echo "refused: unknown option $1" >&2; exit 1 ;;
+    *)      only="$1"; want_tier=all ;;
+  esac
+  shift
+done
 
 [ -f "$roster" ] || { echo "refused: no roster at $roster" >&2; exit 1; }
 
@@ -87,6 +109,16 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   staged=$(git diff --cached --name-only 2>/dev/null | grep -c . || true)
 fi
 echo "staged_uncommitted=$staged"
+
+# A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,
+# %223). It refuses here, ahead of the tree digest and ahead of the first guard, because nothing
+# measured across that tree would answer the question the lap actually has.
+if [ "$staged" -gt 0 ] && [ "$hot" = no ] && [ -z "$only" ]; then
+  echo "run_verdict=lap_unclosed"
+  echo "refused: $staged paths staged and never committed -- a lap ended at 'git add'." >&2
+  echo "         commit them, or pass --hot when they are this round's own work." >&2
+  exit 1
+fi
 
 # The tree this run is about to measure, in twelve characters. `git status --porcelain` covers
 # staged, unstaged, and untracked alike, so an untracked file written mid-run moves the digest --
