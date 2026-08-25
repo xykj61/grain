@@ -49,6 +49,8 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.173849` | [fusion research and three bundles placed](20260825-173849_fusion-research-and-three-bundles-placed.kyri) | 18 files seated, reprove design booked, held at the gate |
+| `20260825.172213` | [build-systems-a-la-carte traces read](20260825-172213_build-systems-a-la-carte-traces-read.kyri) | Verifying vs constructive traces; a tiny verdict makes the constructive trace nearly free. |
 | `20260825.162410` | [The ratchet and the property](20260825-162410_the-ratchet-and-the-property.kyri) | The reach gate moves from `unheard` to `unreached` at 1202; REDS %224. |
 | `20260825.152119` | [the rota index counts commits](20260825-152119_the-rota-index-counts-commits.kyri) | 10 of 19 lap pairs advanced the canon rota by one row; repair proposed. |
 | `20260825.144025` | [rule, then reading, then refusal](20260825-144025_rule-then-reading-then-refusal.kyri) | A cold roster declines to open over a lap that ended at `git add`; %223. |
