@@ -26,6 +26,8 @@ pub const TapResult = union(enum) {
 fn utf8_action(id: u8) dexter.Action {
     const u = emoji.utf8_for(id);
     var ins: dexter.Utf8Insert = .{};
+    // invariant: the insert is copied into a fixed buffer of max_utf8_insert, so an empty one
+    // would paint nothing and a longer one would be written past its end
     assert(u.len > 0);
     assert(u.len <= dexter.max_utf8_insert);
     ins.len = u.len;
@@ -43,6 +45,8 @@ pub fn tap_result(key: layout.Key, shift_on: bool) TapResult {
             var out = ch;
             if (shift_on and ch >= 'a' and ch <= 'z') {
                 out = ch - ('a' - 'A');
+                // invariant: the shift maps a key to an uppercase letter, so anything outside A
+                // to Z means the mapping and the layout disagree about which key was pressed
                 assert(out >= 'A');
                 assert(out <= 'Z');
             }
@@ -90,6 +94,8 @@ pub fn label_char_len(key: layout.Key) u32 {
         .char_, .emoji_face => 1,
         else => blk: {
             const lab = label_for(key);
+            // invariant: the label is what the key paints, so an empty one would draw a key a
+            // finger cannot read
             assert(lab.len > 0);
             break :blk @intCast(lab.len);
         },
@@ -103,6 +109,8 @@ pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len
     assert(row_idx < page.rows.len);
     if (row_idx >= page.rows.len) return 0;
     const keys = page.rows[row_idx].keys;
+    // invariant: the row is painted key by key up to this count, and the ceiling is what the
+    // layout's own row array was sized for
     assert(keys.len <= layout.max_keys_per_row);
     var pos: u32 = 0;
     var i: u32 = 0;
@@ -131,12 +139,16 @@ pub fn format_page_row(page: layout.Page, row_idx: u32, out_line: *[max_line_len
             },
         }
     }
+    // invariant: the caret is placed at this column, so a position past the line's own bound
+    // would draw it outside the field it belongs to
     assert(pos <= max_line_len);
     return pos;
 }
 
 /// Format all four rows of a page. Returns false if any row is empty.
 pub fn format_page(page: layout.Page, out_lines: *[keyboard_rows][max_line_len]u8, out_lens: *[keyboard_rows]u32) bool {
+    // invariant: the page holds exactly keyboard_rows rows, and the paint below indexes it by
+    // row directly
     assert(page.rows.len == keyboard_rows);
     var r: u32 = 0;
     while (r < keyboard_rows) : (r += 1) {
@@ -156,6 +168,8 @@ pub fn format_letters_page(out_lines: *[keyboard_rows][max_line_len]u8, out_lens
 
 /// Apply a sequence of layout keys to an editor (device-free ZETA2 path).
 pub fn drain_layout_keys(editor: *dexter.LineEditor, keys: []const layout.Key) void {
+    // invariant: the editor line is copied into a fixed buffer of max_line_len, so a longer one
+    // would be written past its end
     assert(editor.len <= dexter.max_line_len);
     var shift_on = false;
     for (keys) |key| {
@@ -171,6 +185,8 @@ pub fn drain_layout_keys(editor: *dexter.LineEditor, keys: []const layout.Key) v
             .set_mode, .set_emoji_tab, .none => {},
         }
     }
+    // invariant: the editor line is copied into a fixed buffer of max_line_len, so a longer one
+    // would be written past its end
     assert(editor.len <= dexter.max_line_len);
 }
 
@@ -262,6 +278,8 @@ pub fn zeta6_ret_newline_send_submits() bool {
 pub fn letters_bottom_has_ret_and_send() bool {
     var line: [max_line_len]u8 = undefined;
     const len = format_page_row(layout.letters_page, 3, &line);
+    // invariant: an empty label would paint a key with nothing on it, so the format is proven
+    // to have produced something before it is drawn
     assert(len > 0);
     const shown = line[0..len];
     if (std.mem.indexOf(u8, shown, "ret") == null) return false;
@@ -338,6 +356,8 @@ pub fn build_hit_map(
     var r: u32 = 0;
     while (r < keyboard_rows) : (r += 1) {
         const len = format_page_row(page, r, &line);
+        // invariant: the row was formatted into the grid, so an empty one would paint a blank
+        // row and a longer one would run past the grid's own width
         assert(len > 0);
         assert(len <= grid_cols);
         const start_col: u32 = (grid_cols - len) / 2;
@@ -345,6 +365,8 @@ pub fn build_hit_map(
         var col: u32 = start_col;
         var ki: u32 = 0;
         while (ki < keys.len) : (ki += 1) {
+            // invariant: the hit map is a fixed array of max_hit_keys and the count indexes it,
+            // so a count at the ceiling has no slot left to record the next key
             assert(map.count < max_hit_keys);
             const lab_len = label_char_len(keys[ki]);
             const span_end = if (ki + 1 < keys.len) col + lab_len + 1 else col + lab_len;
@@ -360,6 +382,8 @@ pub fn build_hit_map(
             col = span_end;
         }
     }
+    // invariant: a keyboard that registered no hit regions would swallow every touch, so the
+    // map is proven non-empty before it is handed to the caller
     assert(map.count > 0);
     return map;
 }

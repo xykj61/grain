@@ -58,13 +58,12 @@ comment block, or design four ways. **B stands; below B pushes one molt frame**,
 **4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names (a private
 function called only from a proof entry is proof; a `pub` function never is; a shared helper
 withdraws), and **853** once the label pattern read every spelling. **17 behaviors** prove the bin.
-**The `caravan` falsifier does not fire.** **`drawn_terminal.rye` 0% -> 100%**; `photos.rye` and
-`lattice` needed no sweep. **`glow` 3.4% -> 100%**, 16 files and 139 blocks; its reasons were largely there already as
-**trailing** comments (1,144 tree-wide), each moved above and rewritten. **`mand` 0.0% -> 100%** (61 asserts, 40 blocks, custody code). **`crypto` 89.8% -> 100%** -- and it
-was never 57.5%: **483 lines tree-wide carry a qualified label** (`// invariant (bound):`,
-`(precondition):`) the meter read as absent, which is the seated form with its TAME category stated
-(**%212**). Both crypto guards GREEN after, parity byte-for-byte. **Open door:** `caravan` 217,
-`linengrow` 239; tree **95%**, gap **853**.
+**The `caravan` falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow` 3.4% -> 100%**; its reasons were largely there as **trailing** comments (1,144 tree-wide),
+each moved above and rewritten. **`mand` 0.0% -> 100%** (custody code). **`crypto` 89.8% -> 100%** -- never 57.5%: **483 lines carry
+a qualified label** (`// invariant (bound):`) the meter read as absent, which is the seated form with
+its TAME category stated (**%212**). Both crypto guards GREEN after, parity byte-for-byte. **`linengrow` 41.6% -> 62.6%** on Keaton's word -- a genuine absence, checked with the corrected
+pattern first: 57 blocks over its eight densest files. **Open door:** `linengrow` **153** across 56
+small files, `caravan` 217; tree **95%**, gap **807**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 
