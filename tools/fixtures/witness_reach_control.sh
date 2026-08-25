@@ -7,8 +7,8 @@
 # room asks. Three of the free readings reproduce sources that exist here and would otherwise be
 # read wrong; two reproduce shapes this tree has never written and might tomorrow.
 #
-# WHAT IT PROVES -- twenty-one behaviors: nine calls heard, five mentions refused, four readings
-# kept apart, and the ceiling read from three positions:
+# WHAT IT PROVES -- thirty-one behaviors: nine calls heard, five mentions refused, four readings
+# kept apart, seven band checks, three steps of one promotion, and the ceiling from three positions:
 #
 #   REFUSED (stays unheard)                       HEARD (counts as sung)
 #   1  a path in a # comment                      1  run ["rishi/bin/rishi" "run" "<path>"]
@@ -26,9 +26,28 @@
 #                                                 8  a call after a ; separator
 #                                                 9  a call inside $( ) substitution
 #
-#   AND THE CEILING, from three positions: one unheard past it must read under_ceiling=no, exactly
-#   at it must read yes, and removing one plant must carry a refusing reading back to green. A
-#   refusal proven only in the passing direction cannot be told from a bypass. No override exists.
+#   AND THE BANDS, added 20260825.162410 with REDS %224, because the ceiling moved onto `unreached`.
+#   Seven readings, each naming one thing a band must hold:
+#
+#     a witness sung only by an off-roster choir reads `unclocked`, never `unheard`
+#     the same witness reads `unreached`, so the gate can see it
+#     the off-roster choir itself reads `unreached` -- nothing names it either
+#     a standing witness is never unreached; a cadence witness is never unreached
+#     the bands partition: unreached == unclocked + unheard, counted
+#     the identity holds: unreached == total - standing - cadence, counted
+#
+#   AND THE PROMOTION, in three steps, which is what the gate exists to require. Give the
+#   off-roster choir a roster row, and its member leaves `unclocked` for `standing` while
+#   `unreached` falls by exactly the two files that moved. Writing the choir alone moved nothing;
+#   rostering it moved both. The count is the load-bearing step: the first cut of it read 7 -> 6 for
+#   a promotion of two files, because its `git add -A` tracked the untracked plant sitting one
+#   check above it and raised `total` by one. A control's own plants are state, and a step that
+#   stages everything walks through them.
+#
+#   AND THE CEILING, from three positions, now on `unreached`: one past it must read
+#   under_ceiling=no, exactly at it must read yes, and removing one plant must carry a refusing
+#   reading back to green. A refusal proven only in the passing direction cannot be told from a
+#   bypass. No override exists.
 #
 # USAGE
 #   sh tools/fixtures/witness_reach_control.sh
@@ -130,6 +149,8 @@ sung=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --sung 2>/dev/null | awk '{print $2
 standing=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --standing 2>/dev/null | awk '{print $2}')
 cadence=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --cadence 2>/dev/null | awk '{print $2}')
 unheard=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --list 2>/dev/null | awk '{print $2}')
+unclocked=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --unclocked 2>/dev/null | awk '{print $2}')
+unreached=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --unreached 2>/dev/null | awk '{print $2}')
 
 echo "$out"
 
@@ -165,8 +186,66 @@ else note no "cadence: called_cadence"; fi
 if ! is_in called_cadence "$standing"; then note ok "cadence is not standing: called_cadence"
 else note no "cadence is not standing: called_cadence"; fi
 
-# THE CEILING, FROM BOTH SIDES.
-u=$(read_field "$out" unheard)
+# THE BANDS (REDS %224). The gate moved onto `unreached`, so each band is read for what it holds
+# and the whole set is checked to partition -- a band nobody counts is a band that can drift.
+if is_in choir_only "$unclocked" && ! is_in choir_only "$unheard"; then
+  note ok "unclocked: choir_only is named, and by nobody the roster reaches"
+else note no "unclocked: choir_only is named, and by nobody the roster reaches"; fi
+
+if is_in choir_only "$unreached"; then note ok "unreached: carries choir_only"
+else note no "unreached: carries choir_only"; fi
+
+if echo "$unreached" | grep -qx "tools/w/orphan_choir_witness.rish"; then
+  note ok "unreached: carries the off-roster choir itself"
+else note no "unreached: carries the off-roster choir itself"; fi
+
+if ! is_in called_roster "$unreached"; then note ok "unreached: never a standing witness"
+else note no "unreached: never a standing witness"; fi
+
+if ! is_in called_cadence "$unreached"; then note ok "unreached: never a cadence witness"
+else note no "unreached: never a cadence witness"; fi
+
+# The partition and the identity, counted rather than reasoned about.
+count() { echo "$1" | grep -c . ; }
+if [ "$(read_field "$out" unreached)" -eq $(( $(read_field "$out" unclocked) + $(read_field "$out" unheard) )) ]; then
+  note ok "bands partition: unreached == unclocked + unheard"
+else note no "bands partition: unreached == unclocked + unheard"; fi
+
+if [ "$(read_field "$out" unreached)" -eq $(( $(read_field "$out" total) - $(read_field "$out" standing) - $(read_field "$out" cadence) )) ]; then
+  note ok "identity: unreached == total - standing - cadence"
+else note no "identity: unreached == total - standing - cadence"; fi
+
+# THE PROMOTION. Writing the orphan choir moved nothing; giving it a roster row must move both it
+# and its member out of `unreached` and carry the member into `standing`. This is the whole reason
+# the gate sits where it now sits, so it is proven by doing rather than by argument.
+before_unreached=$(read_field "$out" unreached)
+cat >> construction/standing-equipment.kyri <<'EOF'
+guard orphan_choir
+path tools/w/orphan_choir_witness.rish
+EOF
+# Only the roster moves. `git add -A` here would sweep in tools/w/untracked_two_witness.rish, which
+# is planted after the first commit precisely to stay untracked -- and tracking it raises `total`
+# by one, so this reading came back 7 -> 6 for a promotion that genuinely moved two files.
+git add construction/standing-equipment.kyri >/dev/null 2>&1
+git commit -qm roster-the-orphan >/dev/null 2>&1
+
+after=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" 2>/dev/null)
+after_standing=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --standing 2>/dev/null | awk '{print $2}')
+after_unclocked=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --unclocked 2>/dev/null | awk '{print $2}')
+
+if is_in choir_only "$after_standing"; then note ok "promotion: rostering the choir makes its member standing"
+else note no "promotion: rostering the choir makes its member standing"; fi
+
+if ! is_in choir_only "$after_unclocked"; then note ok "promotion: the member leaves unclocked"
+else note no "promotion: the member leaves unclocked"; fi
+
+after_unreached=$(read_field "$after" unreached)
+if [ "$after_unreached" -eq $((before_unreached - 2)) ]; then
+  note ok "promotion: unreached falls by exactly the two files that moved"
+else note no "promotion: unreached falls by exactly the two files that moved -- ${before_unreached} -> ${after_unreached}"; fi
+
+# THE CEILING, FROM BOTH SIDES, on the gated number as it now stands.
+u=$(read_field "$after" unreached)
 tight=$((u - 1))
 over=$(WITNESS_REACH_CEILING=$tight sh "$SCAN" 2>/dev/null)
 if [ "$(read_field "$over" under_ceiling)" = no ]; then note ok "ceiling: one past it refuses"
@@ -176,7 +255,7 @@ exact=$(WITNESS_REACH_CEILING=$u sh "$SCAN" 2>/dev/null)
 if [ "$(read_field "$exact" under_ceiling)" = yes ]; then note ok "ceiling: exactly at it passes"
 else note no "ceiling: exactly at it passes"; fi
 
-# Remove one unheard plant and the same tight ceiling must return to green -- the other side.
+# Remove one unreached plant and the same tight ceiling must return to green -- the other side.
 git rm -q -f tools/w/mentioned_comment_witness.rish >/dev/null 2>&1
 git commit -qm remove >/dev/null 2>&1
 back=$(WITNESS_REACH_CEILING=$tight sh "$SCAN" 2>/dev/null)
