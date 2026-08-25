@@ -189,6 +189,9 @@
 /crypto/bin/
 /encoding/bin/
 /lotus/bin/
+# The Lotus choir's one-sing-at-a-time lock (tools/fixtures/ales_sing_lock.sh) -- transient,
+# and left behind only by a killed sing, which the next sing clears by dead pid.
+/lotus/.sing.lock/
 /basin/bin/
 /sundial/bin/
 /classical-vedic-astrology/bin/

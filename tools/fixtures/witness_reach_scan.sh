@@ -54,16 +54,21 @@
 
 set -u
 
-# The ceiling only falls, and it carries no slack. Measured 20260825.110922: 1,690 tracked
-# witnesses, 167 sung every lap, 82 heard on the cadence lap, 514 named by some runner on disk,
-# and 1,176 named by nothing at all. Standing read 56 on the morning this meter was written and
+# The ceiling only falls, and it carries no slack. Measured 20260825.132121: 1,692 tracked
+# witnesses, 168 sung every lap, 322 heard on the cadence lap, 755 named by some runner on disk,
+# and 937 named by nothing at all. Standing read 56 on the morning this meter was written and
 # moved to 167 in one roster row, when tools/ca/caravan_suite_witness.rish was seated and carried
 # its 111 rungs with it; the cadence column opened at 82 the same way, when
 # tools/cr/crypto_suite_witness.rish took the first `tier cadence` row and brought its family with
 # it. That choir was itself UNHEARD until that row, which is why unheard fell by exactly one while
 # cadence rose by 82: its rungs were already sung, by a choir nothing ran.
+#
+# Then the largest family moved in one round. tools/al/ales_suite_witness.rish was WRITTEN on
+# 20260825.132121 -- Season C's Lotus suite had 239 witnesses on disk and no choir at all -- and
+# took the second `tier cadence` row, carrying 240 into cadence and dropping unheard by 239 to 937.
+# Its cheap half, tools/al/ales_roster_witness.rish, took a `lap` row and lifted standing by one.
 # Lower the ceiling whenever a choir lands or a roster row is added.
-CEILING=${WITNESS_REACH_CEILING:-1176}
+CEILING=${WITNESS_REACH_CEILING:-937}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri

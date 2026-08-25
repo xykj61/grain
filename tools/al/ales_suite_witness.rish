@@ -1,0 +1,98 @@
+# tools/al/ales_suite_witness.rish -- the choir for Season C's Lotus creative suite, and the guard that keeps it whole.
+#
+# A whole creative suite stood proven only on the laps its rungs were written. REDS %219 traced which witnesses
+# on disk a runner actually runs and found `ales` the largest unheard family in the tree: 239 witnesses, roughly
+# a fifth of the 1,176 named by nothing at all. Every one of them was GREEN the day it landed, and nothing since
+# had asked. This witness closes that door for Lotus, the same way tools/cr/crypto_suite_witness.rish closed it
+# for the crypto library and tools/ca/caravan_suite_witness.rish closed it for Caravan.
+#
+# It does two things, in order. First it proves the roster is whole: every tools/al/ales_*_witness.rish on disk
+# is registered here, and every path registered here exists on disk -- a bijection, not a bare tally, so a rung's
+# witness can never land unheard and a roster line can never point at nothing. Then it sings the whole roster and
+# asserts each one GREEN, naming exactly which rung broke if any does.
+#
+# WHAT IT COSTS, measured rather than extrapolated. Two clean full sings on this pier on 20260825 took 233s and
+# 303s -- roughly four to five minutes for 240 rungs, on a Zig build cache already warm from the lap's earlier
+# guards. A single witness reads 1.27s warm and 7s against a scoped cold cache, the difference being the
+# toolchain's first compile of the standard library, which a session pays once. The cache lives at ~/.cache/zig,
+# outside the tree, and ai-jail resets $HOME, so every session's first Rye build pays that start.
+#
+# WHY IT SITS ON THE CADENCE TIER, and the reason is NOT the cost. At four to five minutes this choir is cheaper
+# than tools/ca/caravan_suite_witness.rish at 8m31s, which stands on the every-lap tier, so cost alone would allow
+# `tier lap`. It takes `tier cadence` because the every-lap roster already measures 20m20s to 22m19s and a lap
+# reads it twice, and because Season C's Lotus rungs are STABLE while Caravan is the arc actually moving: the
+# every-lap budget goes to the family that changes. A tier is a CADENCE rather than an exemption -- the cheap half
+# of this guard, tools/al/ales_roster_witness.rish, asks the bijection question every lap, because it is the asking
+# rather than the singing that catches a witness born unheard. Revisit this row's tier when Lotus reopens.
+#
+# The 5.97s per-witness figure this header first carried was one cold-cache sample multiplied by 239, and it read
+# roughly twenty-four minutes -- six times the truth, on a number the tier decision rested on (REDS %222).
+#
+# WHY THE CHEAP HALF IS SUNG TOO. tools/al/ales_roster_witness.rish is itself an ales witness, and it is
+# registered below like any other rung. Excluding it would be a second exemption, and an exemption is exactly
+# the hiding place this guard exists to close -- the choir's own file is the only name the bijection leaves
+# out, because a choir need not register itself. The first run of that cheap half proved the point by biting
+# its own author: the scan read 240 witnesses on disk against 239 registered and named the new file unheard,
+# on the lap it was written, which is the whole promise working.
+#
+# WHY THE ORDER IS ALPHABETICAL. The crypto choir sings in dependency order, and that order is load-bearing there.
+# Here it is not: every ales witness builds the module it proves before running it, and re-proves by hand whichever
+# earlier rung it accreted on -- ales_gate_witness rebuilds lotus/compress.rye and asserts its GREEN line, for one.
+# So each entry stands alone, and alphabetical order is the one a reader can check against `ls` without trusting a
+# claim about a graph.
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus -- the creative suite) -- waymark ALES.
+# Design read: active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md
+# Kin: tools/cr/crypto_suite_witness.rish and tools/ca/caravan_suite_witness.rish (the elder choirs this is shaped
+# after), tools/fixtures/ales_roster_bijection_scan.sh (the bijection both halves read),
+# tools/al/ales_roster_witness.rish (the every-lap half, which proves the scan's refusals from both sides).
+#
+# This authors no audio -- it builds and runs. Purely local: no key, no signature, no network, no funds, no real
+# device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_suite_witness.rish
+
+say "ales-suite: Language EN -- the Lotus choir: one run that hears every per-rung witness of Season C's creative suite, and a guard proving the roster it sings from is whole."
+say "ales-suite: Style Radiant -- a rung is proven when a witness says so, and an arc is proven when nothing in it is unheard. The roster is checked before it is sung, so the count this witness prints is measured rather than remembered."
+say "ales-suite: Lens TAME -- every tools/al/ales_*_witness.rish on disk is asserted registered here, every registration is asserted to exist on disk, and then each is asserted GREEN. RED names exactly which rung broke the bijection or the run. Purely local -- no key, no network, no funds, no device."
+
+# The choir sings from a cold tree, always (REDS %92). Caravan learned this the hard way: thirty-six rungs ran a
+# shared caravan/bin/read without building it, so that suite had never once proven itself on a clean checkout --
+# it passed on whatever an earlier run had left warm. Every ales witness builds what it runs, which was checked
+# by reading all 239 rather than assumed, so clearing lotus/bin before every sing costs nothing here and makes
+# cold-start self-sufficiency a fact this witness proves rather than a property nobody is measuring.
+# One sing at a time, because the cold clear below is destructive to a run already in flight. Two
+# sings at once delete each other's binaries and the second reports a per-rung RED naming a module
+# that is sound -- measured on `20260825.132121`, when a second timing overlapped a single-witness
+# run and refused at `ales_compress_witness` after 28 seconds. A false RED is worse than a slow
+# guard, since Standfast stops the line for it and the line was never broken. The lock is the shape
+# `tools/fixtures/sow_project.sh` already proved (REDS %193), held in its own file so one body
+# serves both callers rather than two copies drifting (REDS %215).
+let lock = run ["sh" "tools/fixtures/ales_sing_lock.sh" "take"]
+assert lock.ok else "ales-suite: another sing holds lotus/bin -- ${lock.out}"
+
+let mk = run ["sh" "-c" "rm -rf lotus/bin && mkdir -p lotus/bin"]
+assert mk.ok else "ales-suite: could not make a cold lotus/bin -- ${mk.err}"
+
+let witnesses = [ "tools/al/ales_album_diff_sheet_witness.rish" "tools/al/ales_album_diff_witness.rish" "tools/al/ales_album_find_witness.rish" "tools/al/ales_album_manifest_witness.rish" "tools/al/ales_album_merge_sheet_witness.rish" "tools/al/ales_album_merge_witness.rish" "tools/al/ales_album_sheet_witness.rish" "tools/al/ales_allpass_witness.rish" "tools/al/ales_auto_pan_power_witness.rish" "tools/al/ales_auto_pan_witness.rish" "tools/al/ales_band_witness.rish" "tools/al/ales_bell_witness.rish" "tools/al/ales_carried_highpass_witness.rish" "tools/al/ales_catalog_verify_witness.rish" "tools/al/ales_center_clip_witness.rish" "tools/al/ales_chorus_witness.rish" "tools/al/ales_clipboard_witness.rish" "tools/al/ales_clock_witness.rish" "tools/al/ales_collapse_silence_witness.rish" "tools/al/ales_compress_env_hold_witness.rish" "tools/al/ales_compress_env_witness.rish" "tools/al/ales_compress_witness.rish" "tools/al/ales_crop_witness.rish" "tools/al/ales_crossfade_witness.rish" "tools/al/ales_crush_witness.rish" "tools/al/ales_cue_seal_witness.rish" "tools/al/ales_cue_sheet_witness.rish" "tools/al/ales_dc_block_witness.rish" "tools/al/ales_dc_remove_witness.rish" "tools/al/ales_decimate_witness.rish" "tools/al/ales_deess_witness.rish" "tools/al/ales_drive_witness.rish" "tools/al/ales_duplicate_witness.rish" "tools/al/ales_echo_time_witness.rish" "tools/al/ales_echo_witness.rish" "tools/al/ales_envelope_witness.rish" "tools/al/ales_expand_env_hold_witness.rish" "tools/al/ales_expand_env_witness.rish" "tools/al/ales_expand_witness.rish" "tools/al/ales_fader_witness.rish" "tools/al/ales_fade_witness.rish" "tools/al/ales_flanger_witness.rish" "tools/al/ales_fold_witness.rish" "tools/al/ales_gate_env_hold_witness.rish" "tools/al/ales_gate_env_witness.rish" "tools/al/ales_gate_key_witness.rish" "tools/al/ales_gate_witness.rish" "tools/al/ales_glide_witness.rish" "tools/al/ales_graft_witness.rish" "tools/al/ales_halve_neg_witness.rish" "tools/al/ales_halve_witness.rish" "tools/al/ales_hold_env_witness.rish" "tools/al/ales_infinite_clip_witness.rish" "tools/al/ales_insert_join_witness.rish" "tools/al/ales_insert_silence_witness.rish" "tools/al/ales_invert_witness.rish" "tools/al/ales_join_witness.rish" "tools/al/ales_library_diff_sheet_witness.rish" "tools/al/ales_library_diff_witness.rish" "tools/al/ales_library_find_witness.rish" "tools/al/ales_library_manifest_witness.rish" "tools/al/ales_library_merge_sheet_witness.rish" "tools/al/ales_library_merge_witness.rish" "tools/al/ales_library_sheet_witness.rish" "tools/al/ales_limit_env_hold_witness.rish" "tools/al/ales_limit_env_witness.rish" "tools/al/ales_limit_witness.rish" "tools/al/ales_loop_witness.rish" "tools/al/ales_markers_witness.rish" "tools/al/ales_marker_time_witness.rish" "tools/al/ales_meter_witness.rish" "tools/al/ales_mid_side_witness.rish" "tools/al/ales_mix_witness.rish" "tools/al/ales_move_witness.rish" "tools/al/ales_multitap_time_witness.rish" "tools/al/ales_normalize_witness.rish" "tools/al/ales_notch_witness.rish" "tools/al/ales_nyquist_witness.rish" "tools/al/ales_pad_tail_witness.rish" "tools/al/ales_pan_witness.rish" "tools/al/ales_paste_join_witness.rish" "tools/al/ales_paste_over_witness.rish" "tools/al/ales_power_witness.rish" "tools/al/ales_preset_witness.rish" "tools/al/ales_rack_merge_witness.rish" "tools/al/ales_rack_paste_join_witness.rish" "tools/al/ales_rack_rename_witness.rish" "tools/al/ales_rack_seal_witness.rish" "tools/al/ales_rack_sheet_witness.rish" "tools/al/ales_rack_witness.rish" "tools/al/ales_rectify_witness.rish" "tools/al/ales_render_album_witness.rish" "tools/al/ales_render_bundle_witness.rish" "tools/al/ales_render_manifest_witness.rish" "tools/al/ales_render_witness.rish" "tools/al/ales_replace_witness.rish" "tools/al/ales_reverb_console_predelay_witness.rish" "tools/al/ales_reverb_early_late_witness.rish" "tools/al/ales_reverb_freeze_witness.rish" "tools/al/ales_reverb_gate_env_witness.rish" "tools/al/ales_reverb_gate_witness.rish" "tools/al/ales_reverb_mix_witness.rish" "tools/al/ales_reverb_pan_witness.rish" "tools/al/ales_reverb_place_witness.rish" "tools/al/ales_reverb_predelay_witness.rish" "tools/al/ales_reverb_preset_witness.rish" "tools/al/ales_reverb_shelf_witness.rish" "tools/al/ales_reverb_time_witness.rish" "tools/al/ales_reverb_tone_witness.rish" "tools/al/ales_reverb_width_witness.rish" "tools/al/ales_reverb_witness.rish" "tools/al/ales_reverse_witness.rish" "tools/al/ales_ring_mod_witness.rish" "tools/al/ales_roster_witness.rish" "tools/al/ales_rotate_witness.rish" "tools/al/ales_schmitt_witness.rish" "tools/al/ales_scrub_witness.rish" "tools/al/ales_seal_witness.rish" "tools/al/ales_segment_witness.rish" "tools/al/ales_selection_witness.rish" "tools/al/ales_session_witness.rish" "tools/al/ales_shelf_witness.rish" "tools/al/ales_shift_witness.rish" "tools/al/ales_sidechain_witness.rish" "tools/al/ales_silence_span_witness.rish" "tools/al/ales_smooth_runs_witness.rish" "tools/al/ales_smooth_trim_witness.rish" "tools/al/ales_soft_center_clip_witness.rish" "tools/al/ales_soft_drive_witness.rish" "tools/al/ales_split_silence_witness.rish" "tools/al/ales_stack_witness.rish" "tools/al/ales_stereo_allpass_witness.rish" "tools/al/ales_stereo_band_witness.rish" "tools/al/ales_stereo_bell_witness.rish" "tools/al/ales_stereo_center_clip_witness.rish" "tools/al/ales_stereo_chorus_witness.rish" "tools/al/ales_stereo_collapse_silence_witness.rish" "tools/al/ales_stereo_compress_env_hold_witness.rish" "tools/al/ales_stereo_compress_env_witness.rish" "tools/al/ales_stereo_compress_witness.rish" "tools/al/ales_stereo_crop_witness.rish" "tools/al/ales_stereo_crossfade_witness.rish" "tools/al/ales_stereo_crush_witness.rish" "tools/al/ales_stereo_cut_witness.rish" "tools/al/ales_stereo_dc_remove_witness.rish" "tools/al/ales_stereo_decimate_witness.rish" "tools/al/ales_stereo_drive_witness.rish" "tools/al/ales_stereo_duplicate_witness.rish" "tools/al/ales_stereo_echo_time_witness.rish" "tools/al/ales_stereo_echo_witness.rish" "tools/al/ales_stereo_envelope_witness.rish" "tools/al/ales_stereo_expand_env_hold_witness.rish" "tools/al/ales_stereo_expand_env_witness.rish" "tools/al/ales_stereo_expand_witness.rish" "tools/al/ales_stereo_fade_witness.rish" "tools/al/ales_stereo_flanger_witness.rish" "tools/al/ales_stereo_fold_witness.rish" "tools/al/ales_stereo_gate_env_hold_witness.rish" "tools/al/ales_stereo_gate_env_witness.rish" "tools/al/ales_stereo_gate_witness.rish" "tools/al/ales_stereo_halve_neg_witness.rish" "tools/al/ales_stereo_halve_witness.rish" "tools/al/ales_stereo_hold_env_witness.rish" "tools/al/ales_stereo_infinite_clip_witness.rish" "tools/al/ales_stereo_insert_join_witness.rish" "tools/al/ales_stereo_insert_silence_witness.rish" "tools/al/ales_stereo_invert_witness.rish" "tools/al/ales_stereo_join_witness.rish" "tools/al/ales_stereo_limit_env_hold_witness.rish" "tools/al/ales_stereo_limit_env_witness.rish" "tools/al/ales_stereo_limit_witness.rish" "tools/al/ales_stereo_loop_meter_witness.rish" "tools/al/ales_stereo_loop_witness.rish" "tools/al/ales_stereo_meter_witness.rish" "tools/al/ales_stereo_move_witness.rish" "tools/al/ales_stereo_normalize_witness.rish" "tools/al/ales_stereo_notch_witness.rish" "tools/al/ales_stereo_nyquist_witness.rish" "tools/al/ales_stereo_pad_tail_witness.rish" "tools/al/ales_stereo_paste_over_witness.rish" "tools/al/ales_stereo_preset_witness.rish" "tools/al/ales_stereo_rectify_witness.rish" "tools/al/ales_stereo_render_witness.rish" "tools/al/ales_stereo_replace_witness.rish" "tools/al/ales_stereo_reverb_console_predelay_witness.rish" "tools/al/ales_stereo_reverb_early_late_witness.rish" "tools/al/ales_stereo_reverb_freeze_witness.rish" "tools/al/ales_stereo_reverb_gate_env_witness.rish" "tools/al/ales_stereo_reverb_gate_witness.rish" "tools/al/ales_stereo_reverb_mix_witness.rish" "tools/al/ales_stereo_reverb_predelay_witness.rish" "tools/al/ales_stereo_reverb_preset_witness.rish" "tools/al/ales_stereo_reverb_shelf_witness.rish" "tools/al/ales_stereo_reverb_time_witness.rish" "tools/al/ales_stereo_reverb_tone_witness.rish" "tools/al/ales_stereo_reverb_witness.rish" "tools/al/ales_stereo_reverse_witness.rish" "tools/al/ales_stereo_ring_mod_witness.rish" "tools/al/ales_stereo_rotate_witness.rish" "tools/al/ales_stereo_schmitt_witness.rish" "tools/al/ales_stereo_segment_witness.rish" "tools/al/ales_stereo_shelf_witness.rish" "tools/al/ales_stereo_shift_witness.rish" "tools/al/ales_stereo_silence_span_witness.rish" "tools/al/ales_stereo_smooth_runs_witness.rish" "tools/al/ales_stereo_smooth_trim_witness.rish" "tools/al/ales_stereo_soft_center_clip_witness.rish" "tools/al/ales_stereo_soft_drive_witness.rish" "tools/al/ales_stereo_split_silence_witness.rish" "tools/al/ales_stereo_sweep_witness.rish" "tools/al/ales_stereo_taps_witness.rish" "tools/al/ales_stereo_tone_witness.rish" "tools/al/ales_stereo_top_tail_witness.rish" "tools/al/ales_stereo_transport_witness.rish" "tools/al/ales_stereo_tremolo_witness.rish" "tools/al/ales_stereo_trim_silence_witness.rish" "tools/al/ales_stereo_tube_witness.rish" "tools/al/ales_stereo_vibrato_witness.rish" "tools/al/ales_stereo_voiced_witness.rish" "tools/al/ales_stereo_wav_witness.rish" "tools/al/ales_stereo_width_witness.rish" "tools/al/ales_stereo_zero_cross_witness.rish" "tools/al/ales_stream_witness.rish" "tools/al/ales_strip_witness.rish" "tools/al/ales_sweep_witness.rish" "tools/al/ales_taps_witness.rish" "tools/al/ales_timeline_witness.rish" "tools/al/ales_tone_carry_witness.rish" "tools/al/ales_tone_witness.rish" "tools/al/ales_top_tail_witness.rish" "tools/al/ales_track_witness.rish" "tools/al/ales_transport_witness.rish" "tools/al/ales_tremolo_witness.rish" "tools/al/ales_trim_silence_witness.rish" "tools/al/ales_tube_witness.rish" "tools/al/ales_vibrato_witness.rish" "tools/al/ales_voiced_witness.rish" "tools/al/ales_wav_witness.rish" "tools/al/ales_wire_witness.rish" "tools/al/ales_zero_cross_witness.rish" ]
+
+# The bijection, read by the scan this choir and the every-lap meter both pull, so the roster is one question
+# answered in one place (REDS %101). Singing 240 witnesses costs four to five minutes; asking whether the
+# roster is whole costs two greps -- and it is the asking that catches a witness born unheard.
+let roster = run ["sh" "tools/fixtures/ales_roster_bijection_scan.sh"]
+assert roster.ok else "ales-suite: the roster bijection must hold before the choir sings -- ${roster.out}"
+assert roster.out contains "ROSTER_OK" else "ales-suite: want the roster whole in both directions -- ${roster.out}"
+
+let disk_c = run ["sh" "-c" "find tools -maxdepth 2 -name 'ales_*_witness.rish' -type f | grep -v ales_suite_witness | wc -l | tr -d ' \n'"]
+assert disk_c.ok else "ales-suite: could not count the witnesses on disk -- ${disk_c.err}"
+let n_disk = trim disk_c.out
+
+say "ales-suite: roster whole -- ${n_disk} per-rung witnesses on disk, each registered here and each registering a real file. Singing them now."
+
+for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "ales-suite: a per-rung witness went RED -- ${w}"
+
+let unlock = run ["sh" "tools/fixtures/ales_sing_lock.sh" "free"]
+assert unlock.ok else "ales-suite: could not release the sing lock -- ${unlock.out}"
+
+say "GREEN ales-suite -- ${n_disk} Lotus witnesses registered and run, every rung of Season C's creative suite heard in one voice"

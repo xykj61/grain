@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.132121` | [a choir for the largest unheard family](20260825-132121_a-choir-for-the-largest-unheard-family.kyri) | 239 Lotus witnesses heard; unheard 1,176 to 937; %221, %222. |
 | `20260825.110922` | [a tier is a cadence](20260825-110922_a-tier-is-a-cadence.kyri) | The roster names a clock per guard; 82 heard on the fifth lap; REDS %220. |
 | `20260825.092953` | [a witness nobody runs](20260825-092953_a-witness-nobody-runs.kyri) | 1,690 witnesses on disk, 56 sung every lap; REDS %219 closed. |
 | `20260825.085347` | [One law, two comment syntaxes](20260825-085347_a-law-that-governed-three-languages.kyri) | The ASCII meter reaches Rishi and shell; 10,468 to 505. |

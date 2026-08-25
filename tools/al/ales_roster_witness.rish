@@ -1,0 +1,104 @@
+# tools/al/ales_roster_witness.rish -- the cheap half of the ALES choir's guard: ask every lap whether the
+# Lotus roster is whole, and prove the asking refuses in both directions.
+#
+# WHY THE GUARD IS IN TWO HALVES. Singing all 240 Lotus witnesses costs 233s and 303s on two clean measured
+# passes -- four to five minutes -- so tools/al/ales_suite_witness.rish sits on the roster's `cadence` tier and
+# is heard on the fifth round, while the every-lap budget goes to the arc actually moving. Asking whether the
+# roster is whole costs two greps. The expensive half proves the rungs still work;
+# the cheap half catches a witness born unheard on the lap it is born, which is the failure REDS %81, %101,
+# and %219 all wore. So the asking runs every lap and the singing runs on the slower clock, and the two read
+# the same scan -- tools/fixtures/ales_roster_bijection_scan.sh -- so they cannot disagree.
+#
+# WHAT IT PROVES, and from both sides. A refusal proven only in the passing direction cannot be told from a
+# bypass, so every RED path below is planted on real files in a throwaway pen and watched to refuse BY NAME:
+# a witness on disk no roster line names, a roster line with no file behind it, a directory holding no ales
+# witnesses at all, and a roster file that is not there. Beside them two welcomes, because a guard that
+# refuses everything is as useless as one that refuses nothing: the living roster reads ROSTER_OK, and a
+# roster whose COMMENT names a witness absent from disk still passes -- the code is the registration and a
+# comment is a promise (REDS %218).
+#
+# It also proves the SING LOCK, twelve behaviors over
+# tools/fixtures/ales_sing_lock_control.sh. The choir clears `lotus/bin` and rebuilds it in place, so two
+# sings at once delete each other's binaries and the second reports a RED naming a module that is sound.
+# That is a false RED, which costs more than a slow guard, since Standfast stops the line for it. The
+# proof lives here rather than in the choir because a lock is cheap to exercise and a sing is not.
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus -- the creative suite) -- waymark ALES.
+# Design read: active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md
+# Kin: tools/al/ales_suite_witness.rish (the choir this asks after), tools/fixtures/ales_roster_bijection_scan.sh
+# (the scan both halves read), tools/ca/caravan_ladder_copy_witness.rish (the elder every-lap meter this is
+# shaped after).
+#
+# Purely local -- no key, no signature, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_roster_witness.rish
+
+say "ales-roster: Language EN -- the every-lap half of the Lotus choir's guard: is every ales witness on disk registered in the choir, and does every registration name a real file?"
+say "ales-roster: Style Radiant -- the roster is asked on every lap and sung on the fifth, because the asking is what catches a witness born unheard and the asking is the cheap part."
+say "ales-roster: Lens TAME -- the bijection is read from the scan rather than restated here; four refusals are planted on real files and watched to refuse by name, and two welcomes prove the guard still says yes. Purely local -- no key, no network, no funds, no device."
+
+# The living reading. This is the one that matters on an ordinary lap.
+let roster = run ["sh" "tools/fixtures/ales_roster_bijection_scan.sh"]
+assert roster.ok else "ales-roster: the Lotus roster must hear every witness on disk -- ${roster.out}"
+assert roster.out contains "ROSTER_OK" else "ales-roster: want the roster whole in both directions -- ${roster.out}"
+say "ales-roster: the roster -- ${trim roster.out}"
+
+# RED path one -- a witness on disk that no roster line names. This is the exact shape REDS %81, %101, and
+# %219 all wore, planted here so the guard is proven by doing rather than by reasoning.
+let unheard = run ["sh" "-c" "d=$(mktemp -d); for f in $(find tools/al -maxdepth 1 -name 'ales_*_witness.rish' -type f); do : > $d/$(basename $f); done; : > $d/ales_unregistered_witness.rish; ALES_TOOLS_DIR=$d sh tools/fixtures/ales_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (unheard.ok == false) else "ales-roster: a witness no roster names must refuse"
+assert unheard.out contains "reason=unheard" else "ales-roster: want the unheard witness refused by name"
+assert unheard.out contains "ales_unregistered_witness" else "ales-roster: want the unheard witness named, so a red says which one"
+
+# RED path two -- the other direction: a roster naming a witness with no file behind it. A count that
+# describes a tree which no longer exists is the REDS %97 family, and it refuses too.
+let phantom = run ["sh" "-c" "d=$(mktemp -d); for f in $(find tools/al -maxdepth 1 -name 'ales_*_witness.rish' -type f); do : > $d/$(basename $f); done; rm -f $d/ales_gate_witness.rish; ALES_TOOLS_DIR=$d sh tools/fixtures/ales_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (phantom.ok == false) else "ales-roster: a roster line pointing at nothing must refuse"
+assert phantom.out contains "reason=phantom" else "ales-roster: want the phantom registration refused by name"
+assert phantom.out contains "ales_gate_witness" else "ales-roster: want the phantom registration named, so a red says which one"
+
+# RED path three -- a directory holding no ales witnesses at all. The REDS %97 shape once more: a scan
+# reading a real place and answering zero, where the zero is its own blindness rather than the tree's virtue.
+let bare = run ["sh" "-c" "d=$(mktemp -d); ALES_TOOLS_DIR=$d sh tools/fixtures/ales_roster_bijection_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (bare.ok == false) else "ales-roster: a directory holding no witnesses must refuse"
+assert bare.out contains "reason=no_witnesses" else "ales-roster: want the empty witness directory refused by name"
+
+# RED path four -- the roster file itself absent. A scan that cannot find its roster must say so rather than
+# read an empty registration list and call every witness on disk unheard, which would bury the real cause
+# under 239 names.
+let noroster = run ["sh" "-c" "d=$(mktemp -d); ALES_ROSTER_FILE=$d/absent.rish sh tools/fixtures/ales_roster_bijection_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (noroster.ok == false) else "ales-roster: a missing roster file must refuse"
+assert noroster.out contains "reason=no_roster" else "ales-roster: want the missing roster refused by name"
+
+# WELCOME -- a roster whose COMMENT names a witness absent from disk still passes, because the code is the
+# registration. Proving this from the yes side is what tells the comment rule apart from a scan that simply
+# reads less: the pen holds one witness, the roster registers exactly that one in code, and its header names
+# a second that was never written.
+let comment = run ["sh" "-c" "d=$(mktemp -d); : > $d/ales_gate_witness.rish; r=$d/roster.rish; echo '# Kin: ales_never_written_witness.rish -- named in prose, never registered' > $r; echo 'let witnesses = [ tools/al/ales_gate_witness.rish ]' >> $r; ALES_TOOLS_DIR=$d ALES_ROSTER_FILE=$r sh tools/fixtures/ales_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert comment.ok else "ales-roster: a witness named only in a comment must not register -- ${comment.out}"
+assert comment.out contains "ROSTER_OK" else "ales-roster: want the comment-only name read past, leaving the roster whole -- ${comment.out}"
+assert comment.out contains "registered=1" else "ales-roster: want exactly the code registration counted -- ${comment.out}"
+
+# The sing lock, proven both ways on a throwaway lock directory. The choir clears `lotus/bin` and
+# rebuilds it in place, so two sings at once delete each other's binaries and the second reports a
+# RED naming a sound module -- which happened on the lap the choir was written. The proof lives in
+# this cheap half rather than in the expensive one, since a lock is cheap to exercise and the sing
+# is not.
+let lockctl = run ["sh" "tools/fixtures/ales_sing_lock_control.sh"]
+assert lockctl.ok else "ales-roster: the sing-lock control must run -- ${lockctl.out}"
+assert lockctl.out contains "free_lock_taken=yes" else "ales-roster: a free lock must be taken"
+assert lockctl.out contains "take_writes_pid=yes" else "ales-roster: a taken lock must record its holder"
+assert lockctl.out contains "live_holder_refused=yes" else "ales-roster: a lock held by a live process must refuse"
+assert lockctl.out contains "refusal_names_holder=yes" else "ales-roster: a refusal must name the pid holding the lock"
+assert lockctl.out contains "refusal_exits_three=yes" else "ales-roster: a held lock must exit 3"
+assert lockctl.out contains "dead_holder_cleared=yes" else "ales-roster: a lock left by a dead holder must be cleared rather than wedge"
+assert lockctl.out contains "free_releases=yes" else "ales-roster: free must release the lock"
+assert lockctl.out contains "free_removes_dir=yes" else "ales-roster: free must remove the lock directory"
+assert lockctl.out contains "free_is_idempotent=yes" else "ales-roster: freeing an unheld lock must be a no-op"
+assert lockctl.out contains "unknown_word_refused=yes" else "ales-roster: a word the lock does not know must refuse"
+assert lockctl.out contains "unknown_word_exits_two=yes" else "ales-roster: an unknown word must exit 2"
+assert lockctl.out contains "living_lock_untouched=yes" else "ales-roster: no proof may touch the living lock"
+assert lockctl.out contains "control_verdict=ok" else "ales-roster: the sing-lock control must agree with itself"
+
+say "GREEN ales-roster -- the Lotus roster is whole in both directions on this tree, a witness born unheard refuses by name, a registration pointing at nothing refuses by name, an empty witness room and a missing roster each refuse by name, a name written only in a comment registers nothing, and the sing lock refuses a live holder by pid while clearing a dead one"

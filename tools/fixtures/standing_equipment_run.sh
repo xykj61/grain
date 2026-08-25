@@ -37,6 +37,18 @@
 # guard would have to run after a lap ends. A READING is a different thing from a gate, and this one
 # arrives on line one of the lap rather than eleven guards later.
 #
+# WHAT IT REPORTS WHEN IT FINISHES. `tree_at_open`, `tree_at_close`, and `tree_moved` -- a twelve-
+# character digest of `git rev-parse HEAD` plus `git status --porcelain`, taken before the first
+# guard and again after the last. The roster takes twenty minutes and a lap that begins editing
+# while it runs gets verdicts describing neither the tree it started on nor the tree it ended on.
+# REDS %221: this round did exactly that, and the round before it had already learned the lesson by
+# hand -- it stopped a pass at guard fifty for the same reason and wrote down why. A lantern that
+# fires twice becomes a loom, so the runner measures it now instead of a reader remembering to.
+# `tree_moved=yes` exits 1 under `run_verdict=tree_moved`, with every guard line still printed
+# above it, because a run whose verdicts describe no single tree has not answered what it was
+# asked -- and nothing it did learn is thrown away. A pen outside a repository reads `nogit` for
+# both, which never moves, so a control can drive this runner without standing inside git.
+#
 # USAGE
 #   sh tools/fixtures/standing_equipment_run.sh                 # tier lap -- the every-lap set
 #   sh tools/fixtures/standing_equipment_run.sh --all           # every tier, choirs included
@@ -75,6 +87,20 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   staged=$(git diff --cached --name-only 2>/dev/null | grep -c . || true)
 fi
 echo "staged_uncommitted=$staged"
+
+# The tree this run is about to measure, in twelve characters. `git status --porcelain` covers
+# staged, unstaged, and untracked alike, so an untracked file written mid-run moves the digest --
+# which is the case that actually happened (REDS %221).
+tree_digest() {
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    { git rev-parse HEAD 2>/dev/null || echo no_head; git status --porcelain 2>/dev/null; } \
+      | sha256sum | cut -c1-12
+  else
+    echo nogit
+  fi
+}
+tree_open=$(tree_digest)
+echo "tree_at_open=$tree_open"
 
 # Pass one: which guards does this pass run, and what tier does each carry. A guard record is open
 # from its `guard` line until the next one, so the tier is read wherever it sits inside the record.
@@ -132,6 +158,12 @@ while read -r name path tier; do
   ran=$((ran + 1))
 done < "$pen/todo"
 
+# Taken before the runner writes its own card, so the digest describes the tree the GUARDS saw
+# rather than the tree plus this runner's bookkeeping. The card is gitignored here and so invisible
+# to `git status --porcelain` either way; ordering it this way means a clone where it is not yet
+# ignored still reads honestly.
+tree_close=$(tree_digest)
+
 {
   echo "# construction/standing-equipment-runs.kyri -- when each standing guard last ran on THIS pier."
   echo "# Written by tools/fixtures/standing_equipment_run.sh; untracked on purpose, so a fresh"
@@ -140,12 +172,29 @@ done < "$pen/todo"
   sort "$pen/fresh"
 } > "$card"
 
+moved=no
+[ "$tree_open" = "$tree_close" ] || moved=yes
+
 echo "tier_run=$want_tier"
 echo "guards_run=$ran"
 echo "guards_green=$green"
 echo "guards_red=$red"
+echo "tree_at_close=$tree_close"
+echo "tree_moved=$moved"
 
-if [ "$red" -eq 0 ]; then echo "run_verdict=ok"; exit 0; fi
-echo "run_verdict=guard_red"
-echo "refused: a rostered guard answered red -- read its own line" >&2
-exit 1
+if [ "$red" -ne 0 ]; then
+  echo "run_verdict=guard_red"
+  echo "refused: a rostered guard answered red -- read its own line" >&2
+  exit 1
+fi
+
+# A guard red is the louder finding, so it keeps the verdict when both are true. A moved tree comes
+# second and still refuses, since verdicts spread across two trees answer no question about either.
+if [ "$moved" = yes ]; then
+  echo "run_verdict=tree_moved"
+  echo "refused: the tree changed while this ran -- these verdicts describe neither one" >&2
+  exit 1
+fi
+
+echo "run_verdict=ok"
+exit 0

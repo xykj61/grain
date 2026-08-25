@@ -21,9 +21,12 @@
 #   which is REDS %219 wearing a field name.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
-#   Twenty-seven behaviors are proven on throwaway rosters in a temporary pen -- seven refusals
+#   Thirty-four behaviors are proven on throwaway rosters in a temporary pen -- nine refusals
 #   bitten, and the runner itself driven over a planted roster with a stub interpreter, since a
-#   tier is only a cadence if the program that reads it actually selects by it.
+#   tier is only a cadence if the program that reads it actually selects by it. Seven of the
+#   thirty-four are the tree digest, driven inside a real git repository the control creates: a
+#   stub guard that writes nothing leaves the digest still, and a stub guard that writes a file
+#   moves it, so the reading is proven from the side that refuses as well as the side that passes.
 #
 # WHAT IS REPORTED RATHER THAN GATED. How many rostered guards have never run on this pier -- in
 # total and for the cadence tier alone, which is where a guard can go quiet without anyone
@@ -87,7 +90,19 @@ assert control.out contains "all_runs_every_tier=yes" else "standing-equipment: 
 assert control.out contains "name_selects_any_tier=yes" else "standing-equipment: a guard named by hand runs whatever its tier"
 assert control.out contains "name_runs_only_that_guard=yes" else "standing-equipment: a guard named by hand runs alone"
 assert control.out contains "absent_path_reds_runner=yes" else "standing-equipment: a rostered path absent from disk must red the runner"
+
+# The tree digest, both sides, on a real git repository the control builds and throws away. A lap
+# that begins editing while the roster runs gets verdicts spread across two trees, which is REDS
+# %221 -- so the runner measures the tree at the open and again at the close and says when it moved.
+assert control.out contains "real_repo_digests=yes" else "standing-equipment: inside a repository the runner must digest the tree rather than read nogit"
+assert control.out contains "still_tree_reads_no=yes" else "standing-equipment: a tree that stands still must read tree_moved=no"
+assert control.out contains "still_tree_passes=yes" else "standing-equipment: a still tree with green guards must pass"
+assert control.out contains "moved_tree_reads_yes=yes" else "standing-equipment: a tree changed under the run must read tree_moved=yes"
+assert control.out contains "moved_tree_refuses=yes" else "standing-equipment: a moved tree must refuse under run_verdict=tree_moved"
+assert control.out contains "moved_tree_keeps_lines=yes" else "standing-equipment: a moved tree must still print every guard line it learned"
+assert control.out contains "red_outranks_moved=yes" else "standing-equipment: a guard red is the louder finding and keeps the verdict"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- seven refusals bitten, and the runner driven over a planted roster"
+say "RED and GREEN paths proven -- nine refusals bitten, and the runner driven over a planted roster in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."

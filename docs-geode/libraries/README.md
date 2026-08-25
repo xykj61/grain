@@ -21,7 +21,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`amphora/`](../../amphora/README.md) | 7 | 11 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 112 | 114 |
+| [`caravan/`](../../caravan/README.md) | 112 | 115 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 8 |
 | [`constel/`](../../constel/README.md) | 31 | 36 |
@@ -38,7 +38,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`lantern/`](../../lantern/README.md) | 2 | 1 |
 | [`lattice/`](../../lattice/README.md) | 3 | 2 |
 | [`linengrow/`](../../linengrow/README.md) | 155 | 81 |
-| [`lotus/`](../../lotus/README.md) | 238 | 244 |
+| [`lotus/`](../../lotus/README.md) | 238 | 246 |
 | [`mand/`](../../mand/README.md) | 7 | 5 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
@@ -48,7 +48,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mycelium/`](../../mycelium/README.md) | 95 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
 | [`pond/`](../../pond/README.md) | 151 | 154 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1683 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1685 |
 | [`rye/`](../../rye/README.md) | 117 | 1226 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
