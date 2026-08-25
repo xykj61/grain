@@ -58,7 +58,9 @@ trap 'rm -rf "$work"' EXIT INT TERM
 measure() {
   awk '
     BEGIN {
-      neg = "\\<(not|no|never|none|nothing|nobody|cannot|without|fails?|failed|failure|broken|breaks?|broke|wrong|lost|lose|loses|losing|stale|rot|rots|rented|dead|blind|refuses?|refused|refusal|error|bug|stopped|worse|worst|difficult|disappoint|pessimis|problem|risk|danger|threat|lying|lies|merely|nor|neither|hollow|empty|missing|absent|useless|wasted|corrupt)\\>"
+      # POSIX boundary classes, since \< is gawk-only and BSD awk matched nothing
+      # (the control leg caught the zero-read on the first macOS run, 20260825)
+      neg = "(^|[^a-z0-9_])(not|no|never|none|nothing|nobody|cannot|without|fails?|failed|failure|broken|breaks?|broke|wrong|lost|lose|loses|losing|stale|rot|rots|rented|dead|blind|refuses?|refused|refusal|error|bug|stopped|worse|worst|difficult|disappoint|pessimis|problem|risk|danger|threat|lying|lies|merely|nor|neither|hollow|empty|missing|absent|useless|wasted|corrupt)($|[^a-z0-9_])"
       infence = 0
     }
     /^```/ { infence = 1 - infence; next }
