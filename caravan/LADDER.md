@@ -144,6 +144,7 @@ which is why the suite's bijection binds witnesses to its roster rather than mod
 | Helper | File | What it carries |
 |--------|------|-----------------|
 | ladder checks | [`ladder_checks.rye`](ladder_checks.rye) | the shared harness a rung hands itself to -- one check body, run against whichever rung called it |
+| region | [`region.rye`](region.rye) | the bounded arena a rung carves its dependents out of -- one `Region` and one `buf_len_u32` where five byte-identical copies stood |
 | parse int | [`parse_int.rye`](parse_int.rye) | the bounded integer read a dependent uses on its own argv line |
 | tally copy | [`tally_copy.rye`](tally_copy.rye) | the symlink to Tally's `copy_disjoint`, so a rung copies bytes the one way the tree allows |
 | refusal reason test | [`refusal_reason_test.rye`](refusal_reason_test.rye) | the dependent program a refusal witness spawns to earn a real refusal from a real process |

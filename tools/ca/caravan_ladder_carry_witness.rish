@@ -59,15 +59,15 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=58540 ceiling=58540" else "caravan-ladder-carry: want the living carry under its named ceiling"
-assert living.out contains "CARRY_MODULES 110" else "caravan-ladder-carry: want all 109 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18201 distinct=7990 copies=10211 carried_lines=58540" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_OK carried=58532 ceiling=58532" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_MODULES 111" else "caravan-ladder-carry: want all 111 ladder modules read, the rungs and the harness and the lifted region alike"
+assert living.out contains "CARRY_BODIES 18199 distinct=7990 copies=10209 carried_lines=58532" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
-assert living.out contains "CARRY_FAMILIES 700" else "caravan-ladder-carry: want every carrying family counted"
+assert living.out contains "CARRY_FAMILIES 699" else "caravan-ladder-carry: want every carrying family counted -- 699 since the region lifted on 20260825.010500"
 assert living.out contains "CARRY_TOP mend_the_plan: 37 rungs x 19 lines = 684 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
 assert living.out contains "CARRY_TOP fill_table: 43 rungs x 16 lines = 672 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
 assert living.out contains "CARRY_TOP start_one: 42 rungs x 14 lines = 574 carried" else "caravan-ladder-carry: want the family standing third in the queue named beside the two above it"
