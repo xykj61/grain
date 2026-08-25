@@ -132,7 +132,8 @@ pub fn method_name(method: Method) []const u8 {
         .apprise => "apprise",
         .restart => "restart",
     };
-    assert(name.len > 0); // invariant: a named method always carries its name
+    // invariant: a named method always carries its name
+    assert(name.len > 0);
     return name;
 }
 

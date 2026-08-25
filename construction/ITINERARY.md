@@ -54,17 +54,20 @@ upward is a school grade -- 20% becomes **80, a B**.
 [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
 comment block, or design four ways. **B stands; below B pushes one molt frame**, depth 2.
 
-**%205-%206:** the pin bound rose for one page to **57,344**; planted names are discovered. **%207-%213 -- the invariant arc, corrected ten times.** The **13,235** this card carried fell to
-**4,242**, **1,385** once the bin read **reachability**, **853** once the label pattern read every
-spelling, and **400** once reachability crossed files. **The `caravan` falsifier does not fire.** **`glow`, `mand`, `crypto`, `linengrow`, `rye`, `tally`, `mantra` and `comlink` all reach 100%.**
-glow's reasons were largely there as **trailing** comments; crypto was never 57.5% -- **483 lines
-carry a qualified label** the meter read as absent (**%212**), and both crypto guards ran GREEN
-after. **No room now sits under 92%**; tree **97%**, gap **400**.
-**The unlabelled-456 sweep was refused after reading them** -- 361 of 377 were test narration inside
-`pub fn` proof functions, and labelling would have written 361 false invariants (**%213**). **The
-cross-file pass then landed:** the spread reaches a `pub fn` only when no other module
-qualified-calls it **and** it returns `void`, both erring toward contract. **24 behaviors** prove it;
-`caravan` 217 -> 171, `pond` 39 -> 24, and the swept rooms held at 737 of 737.
+**%207-%213 -- the invariant arc, corrected ten times.** The **13,235** this card carried fell to
+**4,242**, **1,385** on **reachability**, **853** on the label pattern, **400** once reachability
+crossed files. **Eight rooms reach 100%** -- glow, mand, crypto, linengrow, rye, tally, mantra, comlink.
+crypto was never 57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**),
+and both crypto guards ran GREEN after.
+**The unlabelled-456 sweep was refused** -- 361 of 377 were test narration inside `pub fn` proof
+functions (**%213**). **The cross-file pass then landed:** the spread reaches a `pub fn` only when no
+other module qualified-calls it **and** it returns `void`, both erring toward contract; **24
+behaviors** prove it. **`caravan` swept to 37:** 117 of its 171 carried a labelled
+reason **trailing** the assert, moved above unchanged; 16 written; 17 are proof the void condition
+safely keeps. **20 stay uncovered on purpose** -- `bounded`, `chain` and `twin` hold a
+**byte-identical** region body, so a comment costs triple and the zero-slack carry ratchet reds.
+**The fold is the answer and wants its own round.** Tree **98%**, gap **266**; carry falls
+**58,544 -> 58,540**; the suite sings **GREEN across 109 rungs**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

@@ -190,7 +190,8 @@ pub fn line_agrees(
     assert(domain.len >= 1);
     var i: u32 = 0;
     while (i < slot.cap_count) : (i += 1) {
-        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_caps_per_dependent);
         const cap = &slot.caps[i];
         const region = cap.name_slice();
         const word = perm_word(cap.rights_mask) orelse return false;
@@ -230,7 +231,8 @@ pub fn line_within(
     assert(domain.len >= 1);
     var i: u32 = 0;
     while (i < slot.cap_count) : (i += 1) {
-        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_caps_per_dependent);
         const cap = &slot.caps[i];
         const region = cap.name_slice();
         const word = perm_word(cap.rights_mask) orelse return false;
@@ -293,7 +295,8 @@ fn supervise_domain(
     argv[3] = "ok";
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         argv[fixed_argv_words + c] = try write_cap_word(&storage[c], &slot.caps[c]);
     }
 
@@ -349,7 +352,8 @@ pub fn boot_system(
     var report_out: BootReport = .{};
     var d: u32 = 0;
     while (d < table.dependent_count) : (d += 1) {
-        assert(d < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(d < capabilities.max_dependents);
         const slot = &table.dependents[d];
         // invariant: startup order is declaration order, dependent by dependent
         assert(std.mem.eql(u8, slot.label_slice(), sys.map.domains[d].name_slice()));
@@ -483,7 +487,8 @@ pub fn check_lines(io: std.Io) u8 {
     };
     var d: u32 = 0;
     while (d < table.dependent_count) : (d += 1) {
-        assert(d < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(d < capabilities.max_dependents);
         // invariant: every line handed out agrees with the map it came from
         assert(line_agrees(&parsed, &table.dependents[d]));
     }
@@ -497,7 +502,8 @@ pub fn check_lines(io: std.Io) u8 {
     var word_buf: [max_cap_word_len]u8 = undefined;
     var i: u32 = 0;
     while (i < client.cap_count) : (i += 1) {
-        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_caps_per_dependent);
         const word = write_cap_word(&word_buf, &client.caps[i]) catch {
             print("  RED: a granted capability had no legal word\n", .{});
             return 1;

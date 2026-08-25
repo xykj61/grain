@@ -110,7 +110,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
 ( cd "$root" && xargs -a "$work/files.txt" grep -HoE '\.[a-z_][A-Za-z0-9_]*[ ]*\(' 2>/dev/null ) \
   | sed 's/:\./\t/; s/[ ]*($//' | sort -u > "$work/qcalls.tsv"
 
-( cd "$root" && xargs -a "$work/files.txt" awk -v QCALLS="$work/qcalls.tsv" '
+( cd "$root" && xargs -a "$work/files.txt" awk -v QCALLS="$work/qcalls.tsv" -v WANT_SITES="${WANT_SITES:-0}" -v SITES="$work/sites.txt" '
   function covered(i,   j, k) {
     # up over blanks and over a run of neighbouring asserts, then through the comment block
     j = i - 1
@@ -219,7 +219,11 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }
       else if (isself || proof_at(i))                   { s++;  sc += k }
-      else                                              { c++;  cc += k }
+      else {
+        c++; cc += k
+        # A sweep must read the same binning the count does, or it is two implementations again.
+        if (WANT_SITES && !k) printf "%s\t%d\t%s\n", name, i, lines[i] >> SITES
+      }
     }
     printf "%s %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc
     n_lines = 0
@@ -228,6 +232,8 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
   { lines[++n_lines] = $0 }
   END { flush() }
 ' ) > "$work/rows.txt" 2>/dev/null
+
+[ "${WANT_SITES:-0}" = 1 ] && [ -f "$work/sites.txt" ] && cat "$work/sites.txt" >&2
 
 if [ "$mode" = modules ]; then
   printf '%-56s %7s %7s %6s\n' module contract covered gap

@@ -162,14 +162,16 @@ pub fn flows_of(sys: *const system.System) ?FlowSet {
     var out: FlowSet = .{};
     var r: u32 = 0;
     while (r < sys.map.region_count) : (r += 1) {
-        assert(r < regions.max_regions); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(r < regions.max_regions);
         var writer: ?u32 = null;
         var reader: ?u32 = null;
         var writers: u32 = 0;
         var readers: u32 = 0;
         var g: u32 = 0;
         while (g < sys.map.grant_count) : (g += 1) {
-            assert(g < regions.max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(g < regions.max_grants);
             const one = &sys.map.grants[g];
             if (one.region != r) continue;
             if (one.perm.write) {
@@ -205,7 +207,8 @@ pub fn peer_span(set: *const FlowSet, domain: u32) u32 {
     var span: u32 = 0;
     var i: u32 = 0;
     while (i < set.count) : (i += 1) {
-        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < regions.max_regions);
         const flow = set.flows[i];
         const other: u32 = if (flow.from == domain)
             flow.to
@@ -213,7 +216,8 @@ pub fn peer_span(set: *const FlowSet, domain: u32) u32 {
             flow.from
         else
             continue;
-        assert(other < regions.max_domains); // invariant: the peer addresses the roster
+        // invariant: the peer addresses the roster
+        assert(other < regions.max_domains);
         if (seen[other]) continue;
         seen[other] = true;
         span += 1;
@@ -234,11 +238,13 @@ pub fn share_a_region(sys: *const system.System, a: u32, b: u32) bool {
     assert(a != b);
     var i: u32 = 0;
     while (i < sys.map.grant_count) : (i += 1) {
-        assert(i < regions.max_grants); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < regions.max_grants);
         if (sys.map.grants[i].domain != a) continue;
         var k: u32 = 0;
         while (k < sys.map.grant_count) : (k += 1) {
-            assert(k < regions.max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(k < regions.max_grants);
             if (sys.map.grants[k].domain != b) continue;
             if (sys.map.grants[k].region == sys.map.grants[i].region) return true;
         }
@@ -1002,7 +1008,8 @@ fn run_assignment(
     argv[4] = count_word;
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
     }
     var q: u32 = 0;
@@ -1159,7 +1166,8 @@ pub fn check_wire() u8 {
         print("  RED: an answer this ring wrote carried no readable author\n", .{});
         return 1;
     };
-    assert(std.mem.eql(u8, author, "backend")); // invariant: the claim reads back whole
+    // invariant: the claim reads back whole
+    assert(std.mem.eql(u8, author, "backend"));
     if (claimed_author(answer, "client", 4) != null) {
         print("  RED: an answer was collected under a sequence it never named\n", .{});
         return 1;
