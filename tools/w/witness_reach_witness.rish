@@ -9,15 +9,24 @@
 # active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md booked the question
 # by name -- tracing reachability rather than comparing counts -- and left it open. This closes it.
 #
-# FOUR READINGS, ONE GATE. total, standing, sung, unheard. The gate is on `unheard`, a witness no
-# runner names anywhere, under a ceiling that only falls. `standing` and `sung` are reported rather
-# than gated, because what belongs on the every-lap roster is a cost decision Keaton owns and a
-# ceiling on it would be this guard deciding it quietly.
+# SEVEN READINGS, ONE GATE. total, standing, cadence, reached, sung, unclocked, unheard, and the
+# gated `unreached`. The gate is on `unreached` -- every witness no roster row reaches on either
+# clock -- under a ceiling that only falls. The rest are reported rather than gated, because what
+# belongs on the every-lap roster is a cost decision Keaton owns and a ceiling on it would be this
+# guard deciding it quietly.
 #
-# WHY A CEILING RATHER THAN ZERO. 1,177 witnesses stand unheard today. A wall at zero would refuse
+# THE GATE MOVED ON 20260825.162410 (REDS %224), and the reason is worth carrying here. It stood on
+# `unheard`, the count of witnesses no file names, and that number falls when a choir is WRITTEN:
+# list a hundred witnesses in a new file, leave it off the roster, and the number drops by a hundred
+# while exactly the same guards run. Measured that day, 265 witnesses stood named by a runner no
+# roster row reaches, so the gate read 937 while 1,202 of 1,692 were carried by no clock. On
+# `unreached` the number falls when a roster row LANDS, which is the lap the rungs begin to run --
+# and it is strictly stronger, since every unheard witness is also unreached.
+#
+# WHY A CEILING RATHER THAN ZERO. 1,202 witnesses stand unreached today. A wall at zero would refuse
 # every ordinary lap, and a wall that refuses ordinary work is a wall somebody turns off. The
-# ceiling falls whenever a choir lands, and a witness born today is born sung, which is the same
-# discipline .claude/rules/exec-bit.md keeps for the mode bit.
+# ceiling falls whenever a choir lands with its roster row, and a witness born today is born
+# reached, which is the same discipline .claude/rules/exec-bit.md keeps for the mode bit.
 
 say "witness-reach: Language EN -- every witness on disk is asked one question: does anything actually run you?"
 say "witness-reach: Style Gauge -- every number below is printed by the scan on this run, never recited here."
@@ -52,9 +61,23 @@ assert control.out contains "ok   standing: called_roster" else "witness-reach: 
 assert control.out contains "ok   cadence: called_cadence" else "witness-reach: a cadence row must be heard on the cadence reading"
 assert control.out contains "ok   cadence is not standing: called_cadence" else "witness-reach: a cadence row must never read as sung every lap"
 
+# The bands the gate now reads, each proven on the planted repository (REDS %224).
+assert control.out contains "ok   unclocked: choir_only is named, and by nobody the roster reaches" else "witness-reach: a witness sung only by an off-roster choir belongs in unclocked"
+assert control.out contains "ok   unreached: carries choir_only" else "witness-reach: the gated set must see a witness no roster row reaches"
+assert control.out contains "ok   unreached: carries the off-roster choir itself" else "witness-reach: the choir nothing names is unreached too"
+assert control.out contains "ok   unreached: never a standing witness" else "witness-reach: a witness on the every-lap clock is never unreached"
+assert control.out contains "ok   unreached: never a cadence witness" else "witness-reach: a witness on the fifth-round clock is never unreached"
+assert control.out contains "ok   bands partition: unreached == unclocked + unheard" else "witness-reach: the two silent bands must sum to the gated one"
+assert control.out contains "ok   identity: unreached == total - standing - cadence" else "witness-reach: the gated number must be total minus what the roster reaches"
+
+# The promotion -- the behavior the gate exists to require, proven by doing it.
+assert control.out contains "ok   promotion: rostering the choir makes its member standing" else "witness-reach: a roster row must carry the choir's rungs onto the clock"
+assert control.out contains "ok   promotion: the member leaves unclocked" else "witness-reach: a promoted rung must leave the unclocked band"
+assert control.out contains "ok   promotion: unreached falls by exactly the two files that moved" else "witness-reach: the gated number must fall by what the roster row actually moved"
+
 # The ceiling, from both sides. A refusal proven only in the passing direction cannot be told from
 # a bypass, so the pen is pushed one past the ceiling and then walked back to green.
-assert control.out contains "ok   ceiling: one past it refuses" else "witness-reach: one unheard past the ceiling must refuse"
+assert control.out contains "ok   ceiling: one past it refuses" else "witness-reach: one unreached past the ceiling must refuse"
 assert control.out contains "ok   ceiling: exactly at it passes" else "witness-reach: exactly at the ceiling must pass"
 assert control.out contains "ok   ceiling: removing the plant returns green" else "witness-reach: removing the plant must return the reading to green"
 
@@ -63,7 +86,7 @@ let living = run ["sh" "tools/fixtures/witness_reach_scan.sh"]
 assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
 say living.out
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
-assert living.out contains "under_ceiling=yes" else "witness-reach: unheard witnesses rose above the ceiling -- register the new one in a choir rather than raising it -- ${living.out}"
+assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out}"
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
 let standing = run ["sh" "-c" "sh tools/fixtures/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
