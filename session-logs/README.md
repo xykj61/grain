@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.193346` | [the window still open](20260825-193346_the-window-still-open.kyri) | Brazos: four readings taken; no NMED ruling as of 20260825; plant unfunded |
 | `20260825.191452` | [the receipt that survived its audit](20260825-191452_the-receipt-that-survived-its-audit.kyri) | Move 1 lands: receipts v2, 15 legs, ~88x on six modules |
 | `20260825.183435` | [the table stops rotting](20260825-183435_the-table-stops-rotting.kyri) | constel_depart_knot proves n=3 f=0 and n=4 f=1 on metal; counts refreshed to 99 |
 | `20260825.183029` | [the narrowest dialect](20260825-183029_the-narrowest-dialect.kyri) | REDS %226: the register meter and parity-selftest made two-host, proven on metal |
