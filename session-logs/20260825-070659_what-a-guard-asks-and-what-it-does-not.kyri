@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260825.070659
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title What a guard asks, and what it does not -- 388 measured down to one deliberate fixture
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, condense ITINERARY and refill Now, send each finished increment
+think Lap index from git log --oneline | wc -l = 3424 at the open, so the council rota reads row 3424 mod 5 = 4 -- Earth and Mercury, the concrete: the one-clock naming law, Two Rooms, the marked value. Two Rooms governed again, and in its harder direction: a number in the checkable room has to mean what it claims, and 388 was going to mean four different things before it was sorted.
+think Opened by pointing the comment-citation reading at documents rather than programs, since REDS %218 had only closed the program half. The card reported 388 unresolved links across 100 living pages, which looks like a season of work and is not.
+think Measured before believing. 375 of the 388 sit in the yonder silos -- the deferred-yet-alive rooms tracked_link already names in its own ratchet and repairs on touch. Sweeping them would have been work the tree has already decided against. That left 13.
+think Checked whether the tools letter-fold rule would recover any: 5 of the 388 named a tools path and all 5 already resolve, so the fold resolver is doing its job and none of the 13 were its business.
+think Verified every one of the 13 targets against the filesystem before editing a line. All ten of the repairable ones named a file that exists at a different depth or under a renamed room: ../foundations/ from .claude/rules/ needing two levels, work-in-progress/ cited long after it became construction/, a .cursor twin cited as .md when its sibling is .mdc, and two folded REDS archives carrying the living pin's old link depth.
+obs Those two archives are REDS %183's own lesson arriving late. That row taught that a fold must move link depth with the text; these were folded before it was learned, so they are residue rather than a recurrence. Worth the distinction: a lesson learned after the damage does not make the damage a second red.
+obs The finding worth carrying is about the guard rather than the links. tracked_link is green and always was, because it asks whether a link ESCAPES the tree -- living_links_outside_tree=0 -- rather than whether it lands on anything. Two guards read links in this tree and neither asked the question a reader asks. That is not a fault in either; it is what happens when nobody states out loud which question a guard is asking.
+obs The thirteenth was a meter artifact, and it settled a question two laps had deferred. The link grep runs straight through a backtick span, so a REDS row explaining a fold -- "a regex rewriting every `](../` also caught the header's `](../REDS.md)`" -- yields a target made of the prose between two spans. One instance in the whole living non-yonder population.
+obs So the fenced-block round I had named twice turned out to be worth one reading, and the right fix was the smallest one: a target carrying a backtick is not a path, and zero tracked paths carry one. A full fenced-block rule would have touched 20+ documents to repair a single artifact. Measuring the blast radius first is what turned a round into a line.
+obs The control plant failed twice before it meant anything, and the second failure was the useful one. My first plant quoted link syntax on its own and the card read it correctly as a citation -- because the real artifact needs TWO spans with prose between them. Reproduced the actual sentence from the REDS row and the reading became true. A plant that does not reproduce the construction it claims to test is a third kind of vacuous.
+obs Proved the refusal beside it: a real broken link on the same page as a quoted one still costs twenty, so quoting is no way for a page to stop being read.
+obs Left context/fixtures/link_witness_broken.md exactly as it stands. Its name says what it is -- a planted broken link the link witness needs -- and the card seeing it is the card being right.
+loom links_living total_unresolved=388 pages=100 yonder=375 living=13 repaired=10 fixture=1 artifact=1
+loom after living_non_yonder_unresolved=1 which_is=deliberate_fixture
+loom control qa_report_card=67 new=4 old_card_refused=3 old_card_passed=1
+file .claude/rules/ascii-first.md the standfast citation reaches two levels up, from a rules room one level down
+file .cursor/rules/checkpoint.mdc work-in-progress repointed to construction; no rule content touched
+file .cursor/rules/waymark-ladders.mdc the sibling twin cited as .mdc rather than .md
+file classical-vedic-astrology/readings/brooke/README.md the template reached from two levels down
+file construction/archive/REDS-headline-and-stub-rows-127-128.md link depth moved, as the fold should have
+file construction/archive/REDS-roster-and-queue-column-rows-129-130.md the same
+file rye-learning-process/archive/ALMANAC.md two paths repointed and a label that still named a retired room
+file tools/fixtures/session_logs_archive/README.md the root ORGANIZING page reached from three levels down
+file tools/fixtures/qa_report_card.sh a target carrying a backtick is not a path
+file tools/fixtures/qa_report_card_control.sh four readings on the real spanning construction, both directions
+file tools/q/qa_report_card_witness.rish 67 behaviors
+file construction/ITINERARY.md Now refilled; one lap row shelved
+recommend keep-going the fourth microkernel rung is the address space -- objects.rye names four mapping objects as one debt wearing four sizes and allowances.rye now names the cspace that holds them, so measure regions.rye and mapping.rye against Microkit's memory-region vocabulary and let the accounting decide whether there is a finding or only a transcription; beside it, name out loud what each link guard asks, since tracked_link asking about escape rather than landing is the kind of thing only a second reader discovers

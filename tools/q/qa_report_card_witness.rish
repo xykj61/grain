@@ -61,7 +61,7 @@
 #   citations on 20260825, and repairing them would have written through the links into six correct
 #   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
 #
-# WHAT IS PROVEN, on metal. Sixty-three behaviors in a throwaway pen. The scale at every one of its
+# WHAT IS PROVEN, on metal. Sixty-seven behaviors in a throwaway pen. The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -171,7 +171,11 @@ assert control.out contains "body_break_seen=yes" else "qa-report-card: resolvin
 assert control.out contains "body_break_seen_through_door=yes" else "qa-report-card: and seen through the door as well, or the resolution is an exemption"
 assert control.out contains "prose_cites_everywhere=yes" else "qa-report-card: a prose file cites everywhere -- the program rule is kept away from prose deliberately"
 assert control.out contains "heading_link_still_counted=yes" else "qa-report-card: a Markdown heading begins with a comment mark, and its link must still count"
+assert control.out contains "quoted_syntax_free=yes" else "qa-report-card: a page quoting link syntax inside backticks cites nothing -- the grep runs straight through a span"
+assert control.out contains "quoted_syntax_not_cited=yes" else "qa-report-card: and the quoted span leaves the denominator rather than resolving inside it"
+assert control.out contains "real_link_beside_quote_counted=yes" else "qa-report-card: a real broken link beside a quoted one still costs twenty -- quoting is no way to stop being read"
+assert control.out contains "real_link_beside_quote_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "sixty-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "sixty-seven behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."
