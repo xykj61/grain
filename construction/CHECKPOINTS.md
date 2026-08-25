@@ -24,6 +24,25 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260825.183336` -- the five-red card condensed and the ledger folded
+
+**Walk-back nib:** `5b94dd2d69` -- read the whole departing card with
+`git show 5b94dd2d69:construction/ITINERARY.md`, and the departing ledger with
+`git show 5b94dd2d69:construction/REDS.md`.
+
+**Swept:** `construction/ITINERARY.md` at **26,469 bytes** against the 24,576 it declares, and
+`construction/REDS.md` at **26,187** against the same number. The card's `Now` block held the reach
+ratchet round's full account; rows %223, %224, and %225 folded off the ledger onto their own
+shelves. Both pins crossed inside the `20260825.180329` lap, which shipped eleven signed commits
+without reading the roster.
+
+**What waits there, worth recalling:** the `Now` block's REDS %224 paragraph in full -- the seven
+readings `reached` 490, `unclocked` 265, `unheard` 937, gated `unreached` 1202, and the promotion
+proven by rostering an off-roster choir. Held whole in
+`session-logs/20260825-162410_the-ratchet-and-the-property.kyri` and in
+`active-designing/20260825-162410_the-ratchet-and-the-property.md`, so the card keeps a pointer
+rather than a second copy.
+
 ### `20260825.144025` -- the ales-choir account condensed off the card
 
 **Walk-back nib:** `a31664d7b6` -- read the whole departing card with

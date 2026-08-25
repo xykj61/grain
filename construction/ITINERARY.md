@@ -9,7 +9,7 @@
 
 *The outer shell loop reads this card first every lap, so a directive here takes effect on the NEXT lap without a restart. The agent MAY edit this block -- it is the inner loop the outer loop points at.*
 
-**Directives only.** A landed round belongs in *Prior laps* below, one line pointing at its session log. This block held 50,477 bytes on `20260824.060012` and the whole card 47,213 on `20260824.130807`, against the 24,576 it now declares in its own header. The settled decisions it released are held word for word at [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md). Walk-back checkpoints `7754ccf272` and `d6c02f92cc`.
+**Directives only.** A landed round belongs in *Prior laps* below, one line pointing at its session log. The settled decisions this block released are held word for word at [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md); walk-back checkpoints `7754ccf272` and `d6c02f92cc`.
 
 ### Standing, every lap
 
@@ -41,48 +41,47 @@ four paragraphs that seated them are held whole at
 [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
 
 **Host:** Framework - EDT (`America/New_York`) - Vultr SEA VPS (**AMD 4vCPU/8GB shared - 180GB
-NVMe** - never EWR) - this session in ai-jail. *Measured on metal `20260821.034037`: 7,937 MB total,
-`nproc` 4, `vda` 193,273,528,320 bytes -- the card had carried a stale `2vCPU/4GB` and a counsel
-essay reasoned from it ([`../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).*
+NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037`: 7,937 MB,
+`nproc` 4, `vda` 193,273,528,320 bytes
+([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `bc5bd1f902` -- the ratchet moves onto the property it stands for.
+**Git nib:** `5b94dd2d69` -- five guards red at the open, five green at the close.
 
-**Now.** **A ratchet gates the property, rather than a proxy for it.**
-The reach meter held its ceiling on `unheard` -- the count of witnesses no file names -- and that
-number falls whenever a choir is *written*. Measured this lap: **265** witnesses stand named by a
-runner no roster row reaches, so the gate read **937** while **1,202** of 1,692 were carried by no
-clock. The ceiling moved to **`unreached`** (`total - standing - cadence`) at **1202** with no
-slack, and it falls when a roster row lands. The move is strictly stronger: every unheard witness
-is also unreached, so nothing formerly caught now passes.
+**Now.** **A derived number is written by the tool that measures it.**
+The cold roster opened on **61 guards, 56 green, 5 red**, and all five trace to the eleven-commit
+send of `20260825.180329`, which ran on the macOS clone and never read the roster. Two living pins
+stood over their declared 24,576 bytes, the headline recited 224 against a measured 225, one index
+row ran 215 bytes against 192, and the Git nib named a hash living in one machine's object store.
 
-**REDS %224 -- gate the property, rather than a proxy that can improve while the property stands
-still.** `witness_reach_scan.sh` prints seven readings now (`reached` 490, `unclocked` 265, `unheard`
-937, gated `unreached` 1202), `--families` follows the gate, and `--unclocked` / `--unreached` list
-either band. Ten behaviors added to
-[`../tools/fixtures/witness_reach_control.sh`](../tools/fixtures/witness_reach_control.sh), **31 in
-all** -- the bands, the partition and the identity counted, and the **promotion** proven by doing
-it: roster the off-roster choir and its member leaves `unclocked` for `standing` while `unreached`
-falls by exactly the two files that moved. That count caught its own author, reading 7 -> 6 for a
-promotion of two, because a `git add -A` had tracked the untracked plant one check above it.
-Argument:
-[`../active-designing/20260825-162410_the-ratchet-and-the-property.md`](../active-designing/20260825-162410_the-ratchet-and-the-property.md).
+**REDS %226, %227, %228.** The umbrella is that a discipline carried by one machine's habit is not
+a discipline the tree holds. Two structural halves landed: `tools/r/remember_git_nib_witness.rish`
+-- the loom booked after the nib class fired twice -- took a roster row after standing in the
+`unreached` band its whole life, which is the first measured cost of the gate seated one lap ago;
+and [`../tools/fixtures/reds_ledger_headline_write.sh`](../tools/fixtures/reds_ledger_headline_write.sh)
+now writes the ledger's three self-recited numbers from the spine it measures, refreshed inside the
+booking commit by a second rule in [`../tools/hooks/pre-commit`](../tools/hooks/pre-commit). Seven
+behaviors proven from both sides on planted ledgers, three more on the hook's own control.
 
-**The next doors.** **`equinox` at 144 unreached** (123 unheard, 21 unclocked) and **`hunk` at 86**
-are the two largest families no clock carries. Eighty of the equinox 123 are themselves choirs that
-nothing sings, so that lap opens with a **stopwatch** -- do those `tools/gen/season/` witnesses
-still pass, and what does a sing cost -- before any roster row is proposed. **A staleness gate on
-the cadence tier**, still wanting a lap count to measure against.
-
+**The next doors.** **The pin's own overhead**, measured this lap: `construction/REDS.md` carried
+**9,540 bytes of fold pointers across 26 lines** against **6,684 bytes of rows**, rising about 370
+bytes a round, so every round had come to need a fold. Twenty-three moved to the recital shelf
+holding their elders and the pin reads **16,693**; whether the pointer belongs in the pin at all is
+the question left standing. **A pre-push reading a second clone would run** -- %226's third half,
+wanting the roster's cost measured against a pre-push budget first. **`equinox` at 144 unreached**
+(123 unheard, 21 unclocked) and **`hunk` at 86** stay the two largest families no clock carries; 80
+of the equinox 123 are choirs nothing sings, so that lap opens with a **stopwatch** -- do those
+`tools/gen/season/` witnesses still pass, and what does a sing cost -- before a roster row is
+proposed.
 ---
 ## Landed arcs
 
-Mandate, the Acme DX season, the CION ratchet, the **AHOY** front-door season beside **WADE**'s
-Bit-Design surface, the Singularity foundation and the Twilight palette, **BUHR**'s MCP surface,
-the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the recursion-prompts cellar, Season A's
-open image module, and the Constel dev-net quorum -- each proven on metal, recorded in
-`session-logs/`, rostered on the shelf. Walk-back `221ebba12a`.
+Mandate, the Acme DX season, the CION ratchet, **AHOY**'s front door beside **WADE**'s Bit-Design
+surface, the Singularity foundation and the Twilight palette, **BUHR**'s MCP surface, the
+1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the recursion-prompts cellar, Season A's open
+image module, and the Constel dev-net quorum -- each proven on metal and recorded in
+`session-logs/`. Walk-back `221ebba12a`.
 
 ## The Compass Season -- OPEN `20260809.021829` (Keaton's word)
 
@@ -95,11 +94,10 @@ open image module, and the Constel dev-net quorum -- each proven on metal, recor
 | **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Bron - Tablecloth |
 | **4 -- word-gated** | The World | **TACT** | Ship-Pilot - publishing - Grainphone - commerce - CONTRIBUTING four-doors - Grain Energy PBC |
 
-**Now at JARL.** Four seats stand, each witnessed GREEN -- identity, network, topology, settlement --
-with all five constellation transitions holding every refusal. The **next-season breach is OPEN
-`20260810`**: Pond seated as the application module with Pool retired into it, and Bron -> Kyri,
-Kyri as the one voice, and the loadable skies still to run, each its own signed round. Full account
-on the shelf; charter at
+**Now at JARL.** Four seats stand witnessed GREEN -- identity, network, topology, settlement -- with
+all five constellation transitions holding every refusal. The **next-season breach is OPEN
+`20260810`**: Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri as
+the one voice, and the loadable skies still to run, each its own signed round. Charter at
 [`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
 
 ---
@@ -114,10 +112,10 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 
 - **Pier path** -- `~/grain` (persists across jail resets) - agent `home-xy-grain` - Cloud on `xykj61/grain`.
 - **Lane** -- every **send** pushes both `origin` (groupproject405) and `xykj61`. ls-remote guard first; `origin` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
-- **Jail authors; host installs** -- agents write inside the project / enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- `gh` as `xykj61`, **agent-jail GREEN** (`./tools/ag/agent-jail.sh` for claude and cursor-agent), tmux `pier` standing.
+- **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
+- **Live state** -- `gh` as `xykj61`, **agent-jail GREEN** (`./tools/ag/agent-jail.sh`), tmux `pier` standing.
 - **Cursor launch** -- `rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-*.AppImage --gpu`.
-- **Outer terminal / phone** -- USB/`adb` and phone look stay on the operator desk; prefer git nib + `prin scope` for season state.
+- **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read season state from the git nib and `prin scope`.
 
 ---
 
@@ -126,9 +124,9 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 The private field is `~/grain`; the public template **grain-os/grain** is *projected* by
 `tools/s/sow.rish` along the boundary in `template-manifest.bron`, proven clean by
 `tools/s/sow_witness.rish` -- no name or key crosses into the seed. The scrub reaches every family
-name, prior name, handle, and contact form, case-insensitively, and a leaking file is withheld
-whole: privacy over completeness, found and closed `20260810`. Raw PII is **not persisted in-tree**
--- it is held for the **Vault**, custody-first. The publish push is Keaton's hand.
+name, prior name, handle, short name, and contact form, case-insensitively, and a leaking file is
+withheld whole: privacy over completeness (%225). Raw PII is **not persisted in-tree** -- it waits
+for the **Vault**, custody-first. The publish push is Keaton's hand.
 
 ## Shred-prep
 
@@ -147,15 +145,16 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 5. **Deep debride / history rewrite + force-push** of the living tree -- named target, Keaton's explicit word.
 6. **Seating a new module in a collaborator's domain** (e.g. DJINN's surface lead) beyond authored implementation-floor code -- the invitation and lead are the collaborator's to accept.
 
-7. **Reconciling the 36 drifted `.claude`/`.cursor` rule pairs** (REDS %194) -- 40 pairs stand, 4 agree, and the drift runs **both ways**, so a bulk merge in either direction silently deletes a live safety rule and each pair is a reading. `sh tools/fixtures/rule_twin_scan.sh diff <name>` shows any one of them; `rule_twin` holds the count under a ceiling that only falls.
+7. **Reconciling the 36 drifted `.claude`/`.cursor` rule pairs** (REDS %194) -- the drift runs **both ways**, so a bulk merge in either direction silently deletes a live safety rule and each pair is its own reading. `sh tools/fixtures/rule_twin_scan.sh diff <name>` shows one; `rule_twin` holds the count under a ceiling that only falls.
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence, standing at the gate.** The projection last ran on lap 3,430 (`20260825.110922`)
-and its four gates held on metal -- 7,051 copied, 1,082 scrubbed, 122 withheld, `IDENT_CLEAN`,
-`NO_PERSONAL`, `seed_link` GREEN. *Read alone* is enforced rather than remembered: `sow_project.sh`
-takes a lock and a second projection exits 3 (REDS %193). Last published projection `fdaf8e3`.
-**The force-push to `grain-os/grain` waits on Keaton's word** -- `bash ~/grain/publish-seed.sh`.
+**Seed cadence, standing at the gate.** The projection last ran on the macOS clone
+(`20260825.180329`) under the wall REDS %225 strengthened: **7,015 copied, 152 withheld**, four
+siya-named basenames in `.sow-withheld.log`, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link` GREEN.
+*Read alone* is enforced rather than remembered: `sow_project.sh` takes a lock and a second
+projection exits 3 (REDS %193). Last published projection `fdaf8e3`. **The force-push to
+`grain-os/grain` waits on Keaton's word** -- `bash ~/grain/publish-seed.sh`.
 
 ---
 
@@ -165,11 +164,10 @@ takes a lock and a second projection exits 3 (REDS %193). Last published project
 |------|------|
 | **Next JARL step** -- **escape** (a child re-parenting, from the sponsor tilak) - shrink the shared surface to a membership commitment - or the scarcity design call | live |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
-| **Session-log fold** -- 192 flat logs across four days hold `session-logs/README.md` at 282,139 bytes against the 24,576 it declares. `rishi/bin/rishi run tools/s/session_logs_archive.rish` folds the closed days and repoints the index in one pass; the rule says run it on Keaton's word | live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
-| **Three real MOX, one Constel** -- a design sibling of the door above: Vultr SEA, Framework, and this Mac as one live three-ship Mycelium constellation, `tenure.rye` arbitrating which outer loop's proposed lap wins each round. Names the `n=3, f=0` quorum arithmetic plainly. [`active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md`](../active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md) - [`external-research/20260825-132951_alpenglow-mysticeti-vsr-read-against-mycelium.md`](../external-research/20260825-132951_alpenglow-mysticeti-vsr-read-against-mycelium.md). Design agent-doable; the Comlink-served gate and Vultr provisioning are not | booked `20260825.133156` |
-| **Reprove only what moved** -- three ranked moves for the forty-minute lap: a content-keyed build skip in `rye build` (agent-doable, skips zero proofs), a whole-roster verdict record at the cold open (waits on a FAST/COLD ruling -- the seated receipts hammock forbids it today -- plus a measured hit rate and the lap-tail reorder), and the receipts hammock itself plus a cadence verify mode (rustc's verify-ich lesson). [`active-designing/20260825-173153_reprove-only-what-moved.md`](../active-designing/20260825-173153_reprove-only-what-moved.md) - [`external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md`](../external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md) | booked `20260825.173153` |
-| **Three corridor bundles placed, held at the gate** -- fiber (KC), headwaters (Gallatin), headwater works (Brazos): 18 files seated at fresh stamps, indexed, six Proposed Lexicon rows; register 18/18 inside ceilings (POSIX re-expression on the macOS bench; Linux pier is the reading of record); Laps 6-9 (log, commits, sow, custody gate 1) await the word. Prompts: `expanding-prompts/20260825-1719{12,18,24}_*.md` | check-in `20260825.171907` |
+| **Three real MOX, one Constel** -- Vultr SEA, Framework, and the Mac as one live three-ship Mycelium constellation, `tenure.rye` arbitrating which outer loop's lap wins, `n=3, f=0` named plainly. Design agent-doable; the Comlink-served gate and Vultr provisioning are not. [`design`](../active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md) - [`read`](../external-research/20260825-132951_alpenglow-mysticeti-vsr-read-against-mycelium.md) | booked `20260825.133156` |
+| **Reprove only what moved** -- three ranked moves for the forty-minute lap; the first is agent-doable and skips zero proofs, the other two wait on a FAST/COLD ruling. [`design`](../active-designing/20260825-173153_reprove-only-what-moved.md) - [`read`](../external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md) | booked `20260825.173153` |
+| **Three corridor bundles placed, held at the gate** -- fiber (KC), headwaters (Gallatin), headwater works (Brazos): 18 files seated and indexed, register inside ceilings, Laps 6-9 awaiting the word. Prompts: `expanding-prompts/20260825-1719{12,18,24}_*.md` | check-in `20260825.171907` |
 | **Kumara seed-key derivation** -- one high-entropy seed in Vault from which the Comlink X25519/Ed25519 and post-quantum SLH-DSA-SHAKE-256s keys derive by domain-separated SHAKE-256, the path carrying a scheme tag and a version. An agent writes and witnesses the derivation against test vectors and fake constel identities and stops there | booked - custody-gated |
 | **Keaton's own Kumara instance** -- generate from his real seed + keeper, by his hand alone | JARL - when ready |
 | **TAME core/shelf** -- lossless-compressed living law over a preserved shelf | proposed |
@@ -199,26 +197,23 @@ Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 **Open, named, and waiting on its own lap.** The **fascia weave** over thirty-nine browsed
 `active-designing/` documents, as a living index page per cluster. **`docs/STOA.md`** at **166 lines
 against the `<=80` its own title declares**. The ten pages duty 4 names as wanting a Status line.
-**1,690 witnesses stand on disk where 167 are sung every lap and 82 more on the cadence lap** -- the
-door this opened. And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
-bytes and `image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
-[`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
+And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389 bytes and
+`image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
+[`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md);
+the witness-reach half of it is the live edge above.
 
-**The comment dial is answered and a ceiling stays Keaton's number** -- 1,891 modules read, door
-coverage 99.6%, `// invariant:` at 99%, every figure in
+**Answered, each pointing at its own numbers.** The comment dial -- 1,891 modules, door coverage
+99.6%, `// invariant:` at 99% --
 [`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
-Beside it, **half of Service may be countable**:
+Half of Service may be countable --
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
-
-**Booked `20260825.000640` -- proving a host we do not have.** Every rostered guard runs on this
-Linux pier, so a claim true only elsewhere waits here; REDS %214 cost a first macOS build. Four
-answers and the measurement that decides:
+Proving a host we do not have, booked `20260825.000640` --
 [`../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../external-research/20260825-000640_proving-a-host-you-do-not-have.md).
 
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
 **`constels/` room** -- Kumara live implementations from **kres** and **brix** templates at
-`constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)), feeding the
-**Growthcircle** integration -- and the **kres / kresfa contract language season**.
+`constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)), feeding
+**Growthcircle** -- and the **kres / kresfa contract language season**.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
@@ -229,9 +224,9 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.183336` | Five reds from one clone; the ledger headline generated, the nib loom rostered; %226-%228 | [log](../session-logs/20260825-183336_the-number-the-tool-writes.kyri) |
+| `20260825.180329` | The seed wall learns the fund's short name; four basenames withheld; REDS %225 | [log](../session-logs/20260825-180329_the-short-name-and-the-wall.kyri) |
 | `20260825.162410` | The ratchet and the property: the reach gate moves to `unreached` 1202; REDS %224 | [log](../session-logs/20260825-162410_the-ratchet-and-the-property.kyri) |
-| `20260825.144025` | Rule, then reading, then refusal: a cold roster refuses to open over an unclosed lap; REDS %223 | [log](../session-logs/20260825-144025_rule-then-reading-then-refusal.kyri) |
-| `20260825.132121` | A choir for the largest unheard family: 239 Lotus witnesses heard, unheard 1,176 -> 937; REDS %221, %222 | [log](../session-logs/20260825-132121_a-choir-for-the-largest-unheard-family.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
@@ -240,20 +235,16 @@ Walk back to any of them with `git log --oneline` and the session log of the sam
 Seated `20260823.111029`. On the lap the council rota closes its cycle (`N mod 5 == 0`), project
 and force-push the public seed with `bash ~/grain/publish-seed.sh`.
 
-**Where it stands.** The projection is current and its four gates hold; the live reading is in
-*Custody gates* above, held once rather than twice. **The force-push waits for Keaton's word**,
-since the same instruction that grants the cadence names the seed force-push among the custody
-gates, and an autonomous lap surfaces that rather than reading it in its own favour. Say **ship the
-seed** and the script carries it. Reds come first: a stopped line stays stopped, and the seed ships
-on the next lap that qualifies. Foundation:
+**Where it stands.** The live reading is in *Custody gates* above, held once rather than twice.
+**The force-push waits for Keaton's word**, since the same instruction that grants the cadence names
+the seed force-push among the custody gates, and an autonomous lap surfaces that rather than reading
+it in its own favour. Say **ship the seed** and the script carries it. Reds come first. Foundation:
 [`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ## The laps
 
-*Fused in from `TASKS.md` and `ROADMAP.md` on `20260823.103804`; both cards are pointers now, and
-their landed rows stay in their own history at the checkpoint nib.*
-
-The live work-front is the **Now** block above. A lap that lands folds into a *Prior lap* line with
-its detail left in the session log that recorded it, so this card stays single-stranded.
+*`TASKS.md` and `ROADMAP.md` fused in here on `20260823.103804` and are pointers now.* The live
+work-front is the **Now** block above. A lap that lands folds into a *Prior lap* line with its
+detail left in the session log that recorded it, so this card stays single-stranded.
 
 ---

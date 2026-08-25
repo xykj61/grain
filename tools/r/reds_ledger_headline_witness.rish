@@ -1,0 +1,47 @@
+# tools/r/reds_ledger_headline_witness.rish -- the ledger's headline is generated, not typed.
+#
+# WHAT THIS GUARDS. construction/REDS.md opens with three numbers about itself, all of them pure
+# functions of the row spine that tools/fixtures/reds_ledger_monotone_scan.sh counts off disk.
+# tools/fixtures/reds_ledger_headline_write.sh writes them. This proves the writer on planted
+# ledgers in a throwaway pen, and then proves the living ledger agrees with its own spine.
+#
+# WHY THE WRITER EXISTS AT ALL, since a reading already stood. REDS %127, %141, and %226 are the
+# same fault three times: a hand books a row and republishes the total, and one of those two acts
+# has no guard on it at the moment it happens. The reading refuses on the NEXT lap's cold roster,
+# twenty minutes into a run, after the wrong number has already shipped. Generating it removes the
+# hand from the arithmetic, which is the only rung of the ladder past refusal.
+#
+# THE SEPARATION THIS KEEPS. tools/gen/season/reds_ledger_monotone_witness.rish owns the SPINE --
+# rows accrete 1..N with no gaps across every fold shelf -- and reads the headline against it.
+# This owns the WRITER. Neither re-implements the other; the spine scan is invoked by name here
+# exactly as it is there.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/reds_ledger_headline_witness.rish
+
+say "reds-ledger-headline: Language EN -- three numbers the ledger recites about itself are counted off disk and written by the tool that counts them."
+say "reds-ledger-headline: Style Gauge, Meter -- a planted pen proves the repair, the refusal, and the two properties the rewrite must leave alone."
+say "reds-ledger-headline: Lens TAME -- bound everything: the writer touches the headline's three numbers and nothing else, and the control proves the rows byte-identical across a repair."
+
+let control = run ["sh" "tools/fixtures/reds_ledger_headline_control.sh"]
+say control.out
+assert control.ok else "reds-ledger-headline: the planted control must pass -- ${control.out}"
+assert control.out contains "repaired=yes" else "reds-ledger-headline: a drifted headline must be repaired to the measured spine"
+assert control.out contains "spans_shelves=yes" else "reds-ledger-headline: the spine spans the fold shelves and the living pin together"
+assert control.out contains "idempotent=yes" else "reds-ledger-headline: a correct headline must be left byte-identical"
+assert control.out contains "check_writes_nothing=yes" else "reds-ledger-headline: check mode must refuse and write nothing -- a writer proven only in the writing direction is a writer that rewrites whatever it is handed"
+assert control.out contains "no_headline_refused=yes" else "reds-ledger-headline: a ledger carrying no headline must be refused by name"
+assert control.out contains "rows_untouched=yes" else "reds-ledger-headline: the ledger's rows must stand byte-identical across a repair"
+assert control.out contains "mode_survives=yes" else "reds-ledger-headline: the rewrite must write through the original inode so the tracked mode survives"
+assert control.out contains "behaviors=7" else "reds-ledger-headline: want all seven behaviors proven"
+assert control.out contains "verdict=ok" else "reds-ledger-headline: want the control green by name"
+
+# The living ledger. `check` mode reads and refuses; it never writes, so this witness stays
+# read-only over the tree it is run against.
+let living = run ["sh" "tools/fixtures/reds_ledger_headline_write.sh"]
+say living.out
+assert living.ok else "reds-ledger-headline: the living ledger's headline disagrees with its own measured spine -- run `sh tools/fixtures/reds_ledger_headline_write.sh write` and commit the page with the row"
+assert living.out contains "changed=no" else "reds-ledger-headline: want the living headline already agreeing, rather than merely repairable"
+assert living.out contains "verdict=ok" else "reds-ledger-headline: want the living ledger green by name"
+
+say "GREEN: reds-ledger-headline -- seven behaviors proven on planted ledgers, refusals bitten, and the living headline agreeing with the spine it recites."

@@ -16,12 +16,25 @@
 # is regenerated in the same commit." A rule living in a comment is a rule no program runs, which is
 # the lesson REDS %150 paid for about a roster in prose. This is that comment, made executable.
 #
-# WHAT IT DOES, in order:
+# A THIRD PAGE JOINED THEM on 20260825: construction/REDS.md opens with three numbers about its own
+# row spine, and REDS %127, %141, and %226 are the same fault three times -- a hand books a row and
+# republishes the total, and one of those two acts carries no guard at the moment it happens. So
+# the ledger's headline is generated here too, by tools/fixtures/reds_ledger_headline_write.sh.
+#
+# TWO RULES, EACH WITH ITS OWN TRIGGER, because the two pages go stale for different reasons and a
+# single trigger would either miss one or fire on everything:
+#
+#   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
+#              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES.
+#   rule two   the ledger's headline -- construction/REDS.md.
+#              Trigger: the ledger or one of its fold shelves is staged at all.
+#
+# WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
-#      shallow checkout -- commits exactly as it always has.
-#   2. Rests unless the staged change ADDS or DELETES a tools/*_witness.rish or a *.rye file.
-#      Nothing else moves the fast numbers, and a ten-second render on every commit is a hook the
-#      bench would learn to route around.
+#      shallow checkout -- commits exactly as it always has. This gate covers both rules, and it
+#      is what keeps the seed's single root commit free of a generator it does not carry.
+#   2. Rests unless its own trigger fired. A ten-second render on every commit is a hook the bench
+#      would learn to route around.
 #   3. For each generated page whose generator and page are both on disk: renders it afresh. When
 #      the page already matched, nothing happens.
 #   4. When a page changed and it held no unstaged edits, stages it -- the regeneration is the only
@@ -34,55 +47,69 @@
 # guards still catch them at a cold start. This closes the fast, frequent half.
 #
 # Proven both ways by tools/g/generated_page_freshness_witness.rish over
-# tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository.
+# tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository; the ledger rule's
+# own writer is proven by tools/r/reds_ledger_headline_witness.rish.
 # Armed by rishi/bin/rishi run tools/i/install_hooks.rish.
 
 set -eu
 
 [ -x rishi/bin/rishi ] || exit 0
 
-# The staged change moves a fast number only when a witness or a module arrives or leaves.
-moved=$(git diff --cached --name-only --diff-filter=AD -- 'tools/*_witness.rish' '*.rye')
-[ -n "$moved" ] || exit 0
-
-# One line per generated page: the generator, then the page it writes.
-pages="tools/r/readme_metrics.rish:README.md
-tools/g/geode_libraries.rish:docs-geode/libraries/README.md"
-
 refused=no
 staged=""
 
-for pair in $pages; do
-  generator=${pair%%:*}
-  page=${pair#*:}
+# One page, one generator, one render. The caller has already decided the trigger fired; this
+# knows only how to refresh a page and how to behave about the author's own unstaged edits.
+refresh_page() {
+  generator=$1
+  page=$2
+  shift 2
 
-  [ -f "$generator" ] || continue
-  [ -f "$page" ] || continue
+  [ -f "$generator" ] || return 0
+  [ -f "$page" ] || return 0
 
   if git diff --quiet -- "$page"; then dirty=no; else dirty=yes; fi
   before=$(git hash-object "$page")
 
-  if ! rishi/bin/rishi run "$generator" write >/dev/null 2>&1; then
+  if ! "$@" >/dev/null 2>&1; then
     echo "pre-commit: $generator is present and failed -- run" >&2
-    echo "  rishi/bin/rishi run $generator write" >&2
+    echo "  $*" >&2
     echo "and read its error before committing." >&2
     exit 1
   fi
 
   after=$(git hash-object "$page")
-  [ "$before" = "$after" ] && continue
+  [ "$before" = "$after" ] && return 0
 
   if [ "$dirty" = yes ]; then
     echo "pre-commit: this commit moves the numbers $page shows, so it was refreshed in the" >&2
     echo "worktree. It carries unstaged edits of your own, so it was left unstaged rather than" >&2
     echo "swept into this commit. Stage $page and commit again." >&2
     refused=yes
-    continue
+    return 0
   fi
 
   git add "$page"
   staged="$staged $page"
-done
+}
+
+# RULE ONE -- the fast front-door numbers. They move only when a witness or a module arrives or
+# leaves, which is precisely what most laps here do.
+moved=$(git diff --cached --name-only --diff-filter=AD -- 'tools/*_witness.rish' '*.rye')
+if [ -n "$moved" ]; then
+  refresh_page tools/r/readme_metrics.rish README.md \
+    rishi/bin/rishi run tools/r/readme_metrics.rish write
+  refresh_page tools/g/geode_libraries.rish docs-geode/libraries/README.md \
+    rishi/bin/rishi run tools/g/geode_libraries.rish write
+fi
+
+# RULE TWO -- the ledger's headline. It moves whenever a row is booked or a fold shelf lands, so
+# the trigger is the ledger itself being staged in any way, rather than a file kind arriving.
+ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'construction/archive/REDS-*.md')
+if [ -n "$ledger_moved" ]; then
+  refresh_page tools/fixtures/reds_ledger_headline_write.sh construction/REDS.md \
+    sh tools/fixtures/reds_ledger_headline_write.sh write
+fi
 
 [ "$refused" = no ] || exit 1
 [ -n "$staged" ] && echo "pre-commit: regenerated and staged with this commit --$staged"
