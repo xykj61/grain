@@ -25,6 +25,8 @@ fn at_word_boundary(text: []const u8, start: usize, end: usize) bool {
 }
 
 fn append_row(rows: *std.ArrayListUnmanaged(AuditRow), a: std.mem.Allocator, r: AuditRow) !void {
+    // invariant: the rows are collected into a fixed array, so a count at its ceiling has no
+    // slot left for the next
     std.debug.assert(rows.items.len < max_audit_rows);
     try rows.append(a, r);
 }

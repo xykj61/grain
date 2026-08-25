@@ -93,6 +93,8 @@ pub const Estate = struct {
     pub fn open(keeper: u32, heir: u32) EstateError!Estate {
         // invariant: an heir distinct from the keeper — succession to oneself carries nothing.
         if (keeper == heir) return error.SelfHeir;
+        // invariant: a keeper and an heir are different parties, since naming one person both
+        // would leave a holding with nobody to pass it to
         assert(keeper != heir);
         return Estate{
             .keeper = keeper,
@@ -158,6 +160,8 @@ pub const Estate = struct {
         // invariant: custody has not already passed — acceptance precedes succession.
         assert(!self.succeeded);
         self.accepted = true;
+        // invariant: the holding was accepted before it is acted on, so an unaccepted one
+        // reaching here would be moved without its holder's word
         assert(self.accepted);
     }
 
@@ -206,6 +210,8 @@ pub const Estate = struct {
 
     /// How many holdings the keeper willed to the heir.
     pub fn bequeathed_count(self: *const Estate) u32 {
+        // invariant: the wills are written into a fixed array, so a count past its ceiling
+        // would write past the end of it
         assert(self.will_count <= max_holdings);
         var count: u32 = 0;
         var i: u32 = 0;
@@ -219,6 +225,8 @@ pub const Estate = struct {
 
     /// How many holdings the keeper let rest — extinguished at succession.
     pub fn rested_count(self: *const Estate) u32 {
+        // invariant: the wills are written into a fixed array, so a count past its ceiling
+        // would write past the end of it
         assert(self.will_count <= max_holdings);
         var count: u32 = 0;
         var i: u32 = 0;
@@ -233,6 +241,8 @@ pub const Estate = struct {
     /// How many holdings resolve to the heir right now — before succession none, after it exactly the
     /// bequeathed set. The rested set never counts here: no rested item is ever the heir's.
     pub fn heir_held_count(self: *const Estate) u32 {
+        // invariant: the wills are written into a fixed array, so a count past its ceiling
+        // would write past the end of it
         assert(self.will_count <= max_holdings);
         var count: u32 = 0;
         var i: u32 = 0;

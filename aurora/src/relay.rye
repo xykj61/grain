@@ -53,6 +53,8 @@ fn stage_prove(machine: Machine) noreturn {
     // The base integer ISA must be present — this very code could not run
     // otherwise. Naming the invariant means an impossible machine would stop
     // loudly, right here, rather than wander on.
+    // invariant: the base integer set is what every instruction this relay stages assumes, so a
+    // machine without it would be handed code it cannot execute
     assert((machine.isa & isa_base_integer) != 0);
 
     write_str("Aurora relay:\n");

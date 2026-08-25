@@ -109,6 +109,8 @@ pub fn encode_response(resp: *const FetchResponse, out: []u8) WireError!u32 {
         tally_copy.copy_disjoint(u8, out[off..][0..resp.bytes_len], resp.bytes[0..resp.bytes_len]);
         off += resp.bytes_len;
     }
+    // invariant: every byte the frame needed was written, so a shortfall would leave a field at
+    // whatever the buffer held before and the reader would parse it as content
     assert(off == need);
     return off;
 }

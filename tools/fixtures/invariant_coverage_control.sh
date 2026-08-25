@@ -141,6 +141,24 @@ check "7b a file under tests/ bins as proof" "1" "$(val "$o" contract_asserts)"
 check "7b and its assert lands in the selftest bin" "1" "$(val "$o" selftest_asserts)"
 rm -rf "$pen/m"; mkdir -p "$pen/m"
 
+# 7c -- a file under fixtures/ is a planted artifact, and an assert named inside a string is prose.
+rm -rf "$pen/m"; mkdir -p "$pen/m/fixtures"
+cat > "$pen/m/fixtures/planted.rye" <<'EOF'
+pub fn demo() void { assert(false); }
+EOF
+cat > "$pen/m/printer.rye" <<'EOF'
+pub fn tell() void {
+    // invariant: the one real call
+    assert(k == 1);
+    print("needs assert(x <= max) before the cast");
+}
+EOF
+( cd "$pen" && git add -A ) >/dev/null 2>&1
+o=$(read_bins)
+check "7c a fixtures/ file is a planted artifact, not a contract" "1" "$(val "$o" contract_asserts)"
+check "7c an assert named inside a string is prose, not a call" "0" "$(val "$o" contract_with_no_reason)"
+rm -rf "$pen/m"; mkdir -p "$pen/m"
+
 # 8 -- a witness FILE is its own bin, separate from selftest.
 rm -f "$pen"/m/*.rye
 put h_witness.rye <<'EOF'

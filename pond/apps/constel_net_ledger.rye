@@ -108,6 +108,8 @@ pub fn open_ledger(
     // invariant: the money's signer is exactly the genesis keeper — the settlement identity and the
     // ledger's sovereign are one key, not two that merely agree by chance.
     const pk = sovereign.public_key.toBytes();
+    // invariant: the ledger's galaxy key matches the one the net reports, so a difference means
+    // the two are describing different constellations
     assert(std.mem.eql(u8, pk[0..], ledger.net.galaxy.keeper[0..]));
     // invariant: a fresh ledger holds no facts.
     assert(ledger.log.len == 0);

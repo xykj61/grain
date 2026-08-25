@@ -172,6 +172,8 @@ pub fn agree_upto(follower: *const TermedLog, leader: *const TermedLog) u32 {
 pub fn repair(follower: *TermedLog, leader: *const TermedLog) RepairError!u32 {
     // invariant: the leader's own log is validly built — terms non-decreasing — so appending its suffix never regresses a term.
     var v: u32 = 1;
+    // invariant: the leader's entries come out ordered, stated after the repair rather than
+    // trusted from the merge that built them
     while (v < leader.len) : (v += 1) assert(leader.entry[v].term >= leader.entry[v - 1].term);
 
     const common = agree_upto(follower, leader);

@@ -629,6 +629,8 @@ pub fn session_lines(
     allocator: std.mem.Allocator,
     rows: u32,
 ) ![][]const u8 {
+    // invariant: the session shows at least one row and no more than the buffer holds, so a
+    // zero would render nothing and a larger one would read past the transcript
     assert(rows > 0);
     assert(rows <= max_session_lines);
     const data_len = transcript.len;

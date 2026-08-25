@@ -131,6 +131,8 @@ pub fn vouch_real(text: []const u8) !Reading {
     voucher.order_head_of(&dag, &head);
     var m: u32 = 0;
     while (m < c.count) : (m += 1) {
+        // invariant: every member carries the same order head, so a difference means one member
+        // is singing from a chorus the others never joined
         assert(std.mem.eql(u8, head[0..], c.members[m].order_head[0..]));
     }
 

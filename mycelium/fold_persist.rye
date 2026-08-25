@@ -67,6 +67,8 @@ pub fn snapshot_state(
         tally_copy.copy_disjoint(u8, out[off..][0..sl], state.stars[i][0..sl]);
         off += sl;
     }
+    // invariant: every byte the frame needed was written, so a shortfall would leave a field at
+    // whatever the buffer held before and the reader would parse it as content
     assert(off == need);
     return off;
 }
@@ -124,6 +126,8 @@ pub fn fold_remainder(
     var i = prefix_len;
     while (i < log.len) : (i += 1) {
         try fold.fold_fact(state, &log.facts[i]);
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(state.supply() == state.issued - state.taxed);
     }
 }

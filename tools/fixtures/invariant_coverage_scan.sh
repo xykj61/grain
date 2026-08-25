@@ -200,6 +200,10 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     isself = 0
     for (i = 1; i <= n_lines && i <= 6; i++) if (lines[i] ~ /^\/\/!/ && tolower(lines[i]) ~ /selftest/) isself = 1
     if (name ~ /(^|\/)tests?\//) isself = 1
+    # A file under a fixtures/ directory is a PLANTED ARTIFACT rather than a module: a deliberate
+    # drift copy a sameness witness compares byte for byte, or an intentional ban violation a style
+    # check must bite. Writing a reason into either changes the thing it was planted to be.
+    if (name ~ /(^|\/)fixtures\//) isself = 1
     mark_proofs()
     c = cc = s = sc = w = wc = 0
     fn = ""
@@ -215,6 +219,9 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       # A function DECLARATION named assert is not a call to one -- comlink/virtio_net.rye declares
       # its own `fn assert(ok: bool)` for a freestanding target with no std behind it.
       if (lines[i] ~ /^[ \t]*(pub[ \t]+)?fn[ \t]+[A-Za-z0-9_]*assert\(/) continue
+      # An assert named inside a STRING is prose the program prints, not a call it makes.
+      # tools/rye/tame_usize_audit.rye prints `needs assert(... <= maxInt(u32)) before cast`.
+      if (lines[i] ~ /"[^"]*assert\(/) continue
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }
