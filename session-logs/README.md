@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.152119` | [the rota index counts commits](20260825-152119_the-rota-index-counts-commits.kyri) | 10 of 19 lap pairs advanced the canon rota by one row; repair proposed. |
 | `20260825.144025` | [rule, then reading, then refusal](20260825-144025_rule-then-reading-then-refusal.kyri) | A cold roster declines to open over a lap that ended at `git add`; %223. |
 | `20260825.132121` | [a choir for the largest unheard family](20260825-132121_a-choir-for-the-largest-unheard-family.kyri) | 239 Lotus witnesses heard; unheard 1,176 to 937; %221, %222. |
 | `20260825.110922` | [a tier is a cadence](20260825-110922_a-tier-is-a-cadence.kyri) | The roster names a clock per guard; 82 heard on the fifth lap; REDS %220. |

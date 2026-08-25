@@ -83,6 +83,27 @@ below per lap -- three documents, cycling by lap index, so **lap N reads row `N 
 cycle takes five laps, so every document returns to living awareness roughly once a working day
 rather than once a fortnight.
 
+**What N is, written down here rather than remembered.** Every lap since the grid was seated has
+read `N` as `git rev-parse` reach -- specifically `git rev-list --count HEAD`, taken at the open.
+That convention lived only inside the session logs that used it, so it is stated here now.
+
+**What that reading actually delivers, measured `20260825.152119` over the 19 consecutive lap pairs
+whose logs record their own N.** Ten advanced the rota by exactly one row. Two repeated the previous
+lap's row, and seven jumped ahead. Excluding one 45-commit gap between recorded sessions, the
+in-session jumps left **11 rows unread** between laps that should have read them in order. The cause
+is plain once named: `N` counts **commits**, and a lap is free to make two of them or none. A lap
+shipping a recovery commit beside its own work advances `N` by two and skips a row; a lap that ends
+at `git add` advances it by zero and reads the same row twice (REDS %223).
+
+**Proposed, and waiting on Keaton's word -- advance by lap rather than by commit.** The newest
+session log already records the row it read, and every lap already reads that log's `recommend`
+line, so the next row costs one grep: read the previous lap's row and add one, modulo five. That
+delivers the promise the grid was drawn for -- five laps, one full cycle, every document back within
+a working day -- where the commit count delivers it on roughly half of transitions. The grid itself,
+seated `20260821.211423`, changes in no way; only how the row is chosen. Until that word comes, `N`
+stays `git rev-list --count HEAD` and a lap that notices a repeat may advance by hand and say so in
+its log, which is what `20260825.144025` did.
+
 **The shape, and why it is this one** (seated `20260821.211423` on Keaton's word, replacing the
 d27 rota). Five elements after the D5, luminaries set aside -- **Jupiter** aether, **Saturn** air,
 **Mars** fire, **Venus** water, **Mercury** earth -- crossed with the three modalities:
