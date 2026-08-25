@@ -4,6 +4,9 @@
 **Last updated:** `20260810.011514` (seated as Grain's full application module -- breach opened, Pool retired in); prior: 2026-07-10 (Radiant pass `182821`; Granary weave view `163557`; customs first policy lap `161125`)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living -- Grain's application module. Charter: [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

@@ -1,5 +1,9 @@
 # Tutorials -- the shipped ones
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`the-first-hour.md`](the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living
 

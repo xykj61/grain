@@ -2,6 +2,10 @@
 
 # Yonder -- Morning-Cast Drafts and Superseded Chapters
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 **Language:** EN
 **Last updated:** 2026-07-05 (Brooke round -- pre-evening-recast chapters retired here)
 

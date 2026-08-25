@@ -1,5 +1,9 @@
 # Study -- how to read this tree
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)

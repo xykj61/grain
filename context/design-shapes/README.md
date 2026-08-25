@@ -1,5 +1,9 @@
 # Design-Shapes Wing
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 **Stamp seated:** `20260730.041319` · Keaton's word — *kg yes to all recommendations for rounds*  
 **Voice:** Kyri · **Status:** Living wing — graduated at second outside consumer  
 **Home:** `context/design-shapes/` · sibling wing to [`../baton-museum/`](../baton-museum/)

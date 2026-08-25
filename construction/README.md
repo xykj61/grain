@@ -5,6 +5,9 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Foundation -- living workbench; prefer **git nib** - see [`ITINERARY.md`](ITINERARY.md) - [`ROADMAP.md`](ROADMAP.md) - [`TASKS.md`](TASKS.md)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Finishing edge now:** Tend T1-T6 - C1-C4 - A1-A4 - M1-M4 GREEN - a1 gated on Keaton's kg - Q58 parked - Cursor-sole.
 **Habit:** full fusion baton each round -> `expanding-prompts/`.

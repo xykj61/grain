@@ -5,6 +5,9 @@
 **Language:** EN - **Style:** Gauge, Door setting - **Voice:** Kyri
 **Written:** `20260821.190149` - **Last updated:** `20260823.061415` (Gauge pass, and all four outputs re-run; two had drifted)
 **Status:** Living - **Kind:** crushed demonstrations
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 **Before you start:** the [first hour](../tutorials/the-first-hour.md) leaves you with a built `rishi`. That is all these want.
 
 ---

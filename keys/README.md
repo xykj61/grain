@@ -1,5 +1,9 @@
 # Keys in This Folder
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 **Language:** EN  
 **Voice:** Kyri  
 **Last updated:** `20260730.153549` (SUNN10 — living identity face)  

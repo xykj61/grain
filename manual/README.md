@@ -6,6 +6,9 @@
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
 **Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Glow OS onboarding under `glow-os/`; Pixel/HAWM/TUBE/JABS path indexed
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

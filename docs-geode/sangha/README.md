@@ -1,5 +1,9 @@
 # Sangha -- Page Zero
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Chartered:** `20260730.021218` (Voice v29 - slot 13 - radiant) -- expanding the `20260730.014817` seat
 **Home:** `docs-geode/sangha/` -- a shelf inside the prod crystal, no new root door

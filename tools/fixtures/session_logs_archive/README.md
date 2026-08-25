@@ -1,5 +1,9 @@
 # Session log fixtures for the fold selftest -- one file per shape the tool must know.
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 | Stamp | Log | Meaning |
 |-------|-----|---------|
 | 20260703.100000 | [alpha](20260703-100000_alpha.md) | prior day, `.md` with a sprig -- should fold |

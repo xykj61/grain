@@ -1,5 +1,9 @@
 # Sundial — the health face
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 A sundial tells the **time** of day by a shadow. This one tells the **health** of the day: point it at a set of module readings — each module and whether its witness stands green — and it shows the tree's state at a glance.
 
 ```

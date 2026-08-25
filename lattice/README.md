@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-10 (minimum tensor set - elu `224805`; parity **371**/**375** -- Inference arc close)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable-room module -- laps 0-31 green (ops through minimum - elu)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

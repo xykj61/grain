@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-10 (filters `230433`; parity **394**)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable-room module -- laps 1-4 green; sight, exception, P&L, BS, TB, journal, chart, cash-account, memo-prefix, cash-flow, and sum-amounts views on Skate
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 
