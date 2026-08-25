@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — the shard · seated `20260810.062047`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Kin:** molt-supersedes elder Urbit **Jael**; design brief `../active-designing/date/20260810/20260810-055147_plan-vault-keeper-of-secrets.md`
 

@@ -2,6 +2,9 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- **87 modules** stand here on `20260824.095920`, and every one carries a row in [`MODULES.md`](MODULES.md).
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 Grain will face a security audit one day. Building our own cryptography in the open -- bounded,
 asserted, and checked byte for byte against published answers -- is how we mean to earn it.

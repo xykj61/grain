@@ -3,6 +3,9 @@
 **Language:** EN  
 **Stamp:** `20260727.221508`  
 **Status:** Checkable — round 0 raised `link_witness` ROUND MODE as the Sound breach instrument  
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
 **Season:** [`../../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md)
 
 ---

@@ -2,6 +2,9 @@
 
 **Stamp:** `20260824.091754` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Living front door -- Season C, the ALES ladder, **240 modules** standing with **239 witnesses**
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Season:** the Six-Season double-seat, Season C thread - **Waymark:** ALES
 **Kin:** [`the Lotus DAW`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) - [`the six-season double-seat`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)
 

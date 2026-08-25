@@ -1,5 +1,9 @@
 # Press -- what has been said publicly, and to whom
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 *Three announcements stand, each written once and kept exactly as filed. This page is their index and their honest scope.*
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)

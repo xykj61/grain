@@ -6,6 +6,9 @@
 **Voice:** Kyri  
 **Kind:** root prod folder — most-inner crystallized canonical docs for live / real-time shipping  
 **Status:** Living crystal -- ten rooms filled `20260821.190149`: six crushed from real sources, three with named entry criteria, one pointer crush
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`tutorials/the-first-hour.md`](tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 *Written together by Keaton and Riyo (charter with Quin; writing voice Riyo).*
 

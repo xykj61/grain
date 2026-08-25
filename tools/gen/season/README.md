@@ -1,5 +1,9 @@
 # tools/gen/season — first Rishi-generator home
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 **Stamp:** `20260728.190251` · Generator Season s4 · Surface p2 hygiene pin `20260728.194738`  
 **Lane:** Rishi generators (distinct from Glow fixture desks — O3 still declaration-gated)
 

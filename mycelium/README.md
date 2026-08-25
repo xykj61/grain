@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living -- the consensus season, whole and witnessed over demo seeds - README seated `20260813`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Kin:** the *why* beneath this directory -- [`../foundations/20260813-142420_mycelium-the-consensus-protocol.md`](../foundations/20260813-142420_mycelium-the-consensus-protocol.md) - the road that opened it -- [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) (Season D)
 

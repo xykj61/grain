@@ -4,6 +4,9 @@
 **Stamp:** `20260728.193914` - Surface Season p0 - furniture `20260728.211321` (p21) - second `20260728.211640` (p22)  
 **Last updated:** 2026-07-28 (Surface p22 -- second pedestal)  
 **Status:** Living -- room open; first resident + second pedestal seated  
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 
 Elder desk letter **sec** -- the security / secrets / policy surface of Glow userland. Opened beside til - sur - app - gen - lib. Furniture arrives by witnessed first-resident only.

@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — settlement constellation seated `20260809.224715`; shared-surface shrink (Deed/Commitment split) `20260810.004547`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Equinox:** JARL (Identity & Network) · Journey 4
 

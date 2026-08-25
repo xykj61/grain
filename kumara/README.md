@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — the identity template, first tilaks seated `20260809.154500`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Equinox:** JARL (Identity & Network) · Journey 1
 

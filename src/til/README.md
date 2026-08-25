@@ -3,6 +3,9 @@
 **Language:** EN  
 **Last updated:** 2026-07-28 (Surface p18 — second pedestal)  
 **Status:** Living — room open; first resident + second pedestal seated · `%tile` still held
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 The tilak is the type-mark: the worn sign every value wears at a seam (seated in [`../../context/LEXICON.md`](../../context/LEXICON.md); design at `foundations/20260703-202312_the-marked-value.md`). Pond customs already admits **per Tilak**; Weave content-addresses them; two roots stand hardcoded (**plain-bytes** · **manifest**). This room gathers tilak definitions written in Glow, one file per mark.
 

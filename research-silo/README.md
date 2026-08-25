@@ -3,6 +3,9 @@
 **Language:** EN
 **Stamp:** `20260811.012115` (EDT) · **Voice:** Kyri, in the **Twilight** register · **Style:** [`../context/TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md)
 **Status:** Living — seated `20260811` on Keaton's word. A **silo**: distilled in our own voice, teachers named with gratitude, code kept clean of copied source.
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

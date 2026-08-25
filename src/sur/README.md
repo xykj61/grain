@@ -3,6 +3,9 @@
 **Language:** EN  
 **Last updated:** `20260802.162841` (Equinox e222 — Comlink R1 pier policy=1 seated · rival withdrawn)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
 

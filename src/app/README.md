@@ -3,6 +3,9 @@
 **Language:** EN  
 **Last updated:** 2026-07-28 (Surface p19 — second pedestal)  
 **Status:** Living — room open; first resident + second pedestal seated
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 Applications are **Pool agents** — Pool is confirmed as Glow's Gall-role host (`20260714.042545`), and the TUBE ladder packages an app to a signed APK. Agents written in Glow live here; today's Rye-authored seeds remain under [`../../pond/apps/`](../../pond/apps/) beside the enclosure until each is revived into Glow **as a new artifact beside its elder** (the reviving-replaces-renaming law).
 

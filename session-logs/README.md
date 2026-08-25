@@ -4,6 +4,9 @@
 **Style:** Gauge, Meter setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Status:** Living pin -- newest-first index of the logs still flat in this room
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Bound:** under `living_pin_max_bytes[session-logs/README.md]` (57344)
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 

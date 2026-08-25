@@ -1,5 +1,9 @@
 # The elder carry meter, kept exactly as it shipped
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 **Stamp:** `20260821.073606` - **Voice:** Kyri - **Status:** Frozen control -- never edited, never repaired
 
 `caravan_ladder_carry_witness.rish` in this directory is a **byte-for-byte copy** of that meter as it stood at commit `b356c54b8e`, the last commit before REDS %110 was closed. Its closing line recites *"137,176 lines across 10,198 copied bodies of the 18,039 standing on it"* -- three numbers the meter's own assert, four lines earlier, contradicted with 137,185, 10,199, and 18,055.

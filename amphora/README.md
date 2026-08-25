@@ -4,6 +4,9 @@
 **Stamp:** `20260710.161358`
 **Last updated:** `20260801.035204` (e148 -- couples - Cellar supersede)
 **Status:** Landed -- laps 1-3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour - **CLI wave e150** Q6 pour parse - Class W parked - couples held (carry/restore wait)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 
 **Amphora** is **vessel software** -- preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.

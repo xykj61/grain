@@ -3,6 +3,9 @@
 **Language:** EN  
 **Seated:** `20260724.143155`  
 **Status:** Dated reply shelf — immutable once filed  
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 **Form:** three sections per reply
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 

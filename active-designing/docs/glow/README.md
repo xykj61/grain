@@ -2,6 +2,9 @@
 
 **Language:** EN  
 **Status:** Living — Design register · pages graduate into [`docs/`](../../../docs/) when witnesses land  
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
 **Voice:** Quin  
 **Ground:** counsel [`../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md`](../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md) · rooms settled after breach T3–T4
 

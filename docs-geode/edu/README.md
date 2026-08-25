@@ -1,5 +1,9 @@
 # Education -- the teaching surfaces, and where each one lives
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 *This room is an index rather than a shelf. The teaching in this tree is already written; it lives where it was written, and this page says which door leads where.*
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)

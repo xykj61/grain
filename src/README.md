@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-29 (Surface p40 -- `sur/` sixth pedestal; `web/` refused)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living -- the accreted home for code *written in Glow*; the Glow implementation itself (tokenizer, runes, lowerers, in Rye) keeps its home at [`../glow/`](../glow/README.md)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

@@ -4,6 +4,9 @@
 **Seated:** `20260724.143155`  
 **Voice:** Quin  
 **Status:** Living home for lap claims (forward-only)  
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Bound:** listings stay sentence-cheap; season shelves hold one-line-per-claim indexes
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 

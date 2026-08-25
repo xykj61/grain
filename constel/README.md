@@ -3,6 +3,9 @@
 **Stamp:** `20260814.105746` - **Split:** `20260824.104946` - **Language:** EN - **Voice:** Kyri
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Living front door -- the Constel test-network journey, **31 modules** proven across **31 witnesses**, FORA0 through FORA30
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Season:** the Six-Season double-seat, Season D/F thread (Kresfa & Mycelium - Surface & Namespace) - **Waymark:** FORA
 
 ---
