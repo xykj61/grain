@@ -4,6 +4,10 @@
 **Last updated:** 2026-07-10 (Radiant Style pass round 2)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- shell, small and growing
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rishi in your hands
+is [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the
+whole path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md) - the sibling
+language that builds this one is [`../rye/README.md`](../rye/README.md)
 
 ---
 
@@ -78,6 +82,17 @@ supporting:
 - **`trim`** -- `trim text` removes leading and trailing whitespace.
 - **`slice`** -- `slice text start end` returns a bounded substring `[start, end)`.
 
+## Two ways to run a script
+
+`rishi run x.rish` and `rishi x.rish` do the same thing and hand the script the same arguments.
+The short form works because every subcommand -- `version`, `repl`, `glow`, `run`, `help` -- is
+tested first and none of them ends in `.rish`, so a script can never shadow one. An argument that
+is neither a subcommand nor a `.rish` path still earns a refusal: `rishi rn x.rish` reads as a typo
+of `run` and is told so, rather than being run. Proven by
+[`../tools/r/rishi_bare_path_witness.rish`](../tools/r/rishi_bare_path_witness.rish) over
+[`../tools/fixtures/rishi_bare_path_control.sh`](../tools/fixtures/rishi_bare_path_control.sh),
+nine behaviors on the built binary.
+
 ## Interactive REPL (`rishi` / `rishi repl`)
 
 Start the loop with bare `rishi` or `rishi repl`. Each ordinary line evaluates
@@ -116,6 +131,7 @@ rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 
 rishi/bin/rishi version
 rishi/bin/rishi run rishi/tests/hello.rish
+rishi/bin/rishi rishi/tests/hello.rish        # the same thing, said the short way
 rishi/bin/rishi run rishi/tests/checks.rish   # booleans, comparison, and assert
 rishi/bin/rishi run rishi/tests/lists.rish    # lists, contains, and equality
 rishi/bin/rishi run rishi/tests/records.rish  # records, field access, and equality

@@ -1,0 +1,39 @@
+# rishi_bare_path_witness.rish -- `rishi <file.rish>` runs it, and no subcommand is shadowed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rishi_bare_path_witness.rish
+#
+# Rishi took `rishi run x.rish` and refused `rishi x.rish` with `unknown command` and exit 2, while
+# sh, python, and node all take the file directly. The tutorials wrote the `run` form correctly, so
+# the documents were right and the tool was the unwelcoming one. `.rish` is what makes the shorthand
+# safe: subcommands are tested first and none ends in `.rish`, so a script cannot shadow one.
+
+say "rishi-bare-path: Language EN -- a tool teaches by what it accepts, so the shorthand is proven rather than assumed."
+say "rishi-bare-path: Style Civic -- name what the tool rewards. It rewarded knowing a subcommand; it now rewards the habit a newcomer arrives with."
+say "rishi-bare-path: Lens TAME -- safety first: the suffix bounds the shorthand, every refusal keeps its name and its exit code, and the control proves both sides. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/rishi_bare_path_control.sh"]
+assert control.ok else "rishi-bare-path: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "rishi-bare-path: the control must reach its own verdict"
+
+# The two welcomes -- the shorthand works, and the elder form is untouched.
+assert control.out contains "bare_path_runs=yes" else "rishi-bare-path: a bare .rish path must run the script"
+assert control.out contains "run_form_still_runs=yes" else "rishi-bare-path: `rishi run x.rish` must keep working, since every doc and tool in this tree writes it"
+
+# The invariant the shared body exists for -- one path index, two ways of asking.
+assert control.out contains "same_script_args=yes" else "rishi-bare-path: both forms must hand the script the same arguments, or the shorthand is a different command wearing the same name"
+
+# The two refusals -- a shorthand that swallows a typo is worse than no shorthand.
+assert control.out contains "typo_still_refuses=yes" else "rishi-bare-path: `rishi rn x.rish` must still refuse with exit 2 rather than being read as a file"
+assert control.out contains "missing_refuses_by_name=yes" else "rishi-bare-path: a .rish path that does not exist must refuse by name, never silently do nothing"
+
+# No subcommand is shadowed -- the dispatch tests them all before the suffix.
+assert control.out contains "subcommand_version_unshadowed=yes" else "rishi-bare-path: `version` must stay a subcommand"
+assert control.out contains "subcommand_repl_unshadowed=yes" else "rishi-bare-path: `repl` must stay a subcommand"
+assert control.out contains "subcommand_glow_unshadowed=yes" else "rishi-bare-path: `glow` must stay a subcommand"
+
+# The tool says what it accepts, which is the whole repair read from the reader's side.
+assert control.out contains "usage_teaches_both=yes" else "rishi-bare-path: the usage text must teach both forms, or the shorthand is a secret"
+
+say "GREEN: rishi-bare-path -- nine behaviors proven on the built binary, five welcomes and two refusals and two forms agreeing on the arguments they pass. The suffix bounds the shorthand, the subcommands are tested ahead of it, and the usage teaches what the tool accepts."

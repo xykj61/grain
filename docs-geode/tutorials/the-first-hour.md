@@ -143,6 +143,7 @@ Run it:
 
 ```sh
 rishi/bin/rishi run first.rish
+rishi/bin/rishi first.rish        # or the short way -- the same thing
 ```
 
 ```
