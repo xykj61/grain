@@ -1,4 +1,4 @@
-//! glow/rune_shape_witness.rye — proves `+$` / `$:` / `$%` mold parse.
+//! glow/rune_shape_witness.rye -- proves `+$` / `$:` / `$%` mold parse.
 //!
 //!   rye build glow/rune_shape_witness.rye -femit-bin=glow/bin/rune_shape_witness
 //!   glow/bin/rune_shape_witness
@@ -76,7 +76,7 @@ fn run_selftest() !u8 {
     assert(!rm.arm_has_payload(&s5, 1));
     print("rune: +$ / $% xfer-mold multi-face payload parses -- GREEN\n", .{});
 
-    // `20260724.205719`: `@u64` admitted — stamp aura's first `$:` consumer.
+    // `20260724.205719`: `@u64` admitted -- stamp aura's first `$:` consumer.
     const stamp_src =
         \\+$  stamp-shape
         \\  $:  stamp=@u64

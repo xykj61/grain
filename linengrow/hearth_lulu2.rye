@@ -1,10 +1,10 @@
-//! linengrow/hearth_lulu2.rye — LULU2: thin Settings face — four-line preset list.
+//! linengrow/hearth_lulu2.rye -- LULU2: thin Settings face -- four-line preset list.
 //!
 //! Affirmed `20260718.125835`: long-press hearth status opens the list; tap a
 //! named preset sets + persists; short tap on status still cycles (LULU1);
 //! no home_id editor this rung. Not a Pool agent yet.
 //! Hold-open `20260718.130251`: list appears when the 450ms timer fires while
-//! the finger is still down — release must not be required.
+//! the finger is still down -- release must not be required.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -40,7 +40,7 @@ pub fn index_of(preset: hearth.DisplayPreset) u32 {
     };
 }
 
-/// `{marker} {name}` — `>` marks the active preset.
+/// `{marker} {name}` -- `>` marks the active preset.
 pub fn format_list_line(
     index: u32,
     active: hearth.DisplayPreset,

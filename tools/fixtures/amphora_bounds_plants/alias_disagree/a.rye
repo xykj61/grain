@@ -1,2 +1,2 @@
-//! Plant — alias cargo_ceiling disagree (positive control).
+//! Plant -- alias cargo_ceiling disagree (positive control).
 pub const max_resin_bytes: u32 = 1024;

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.sliceAsBytes — pass 9926.
+//! Rye test: std.mem.sliceAsBytes -- pass 9926.
 //!
 //! Typed slice to underlying byte view; pairs with asBytes on single items.
 

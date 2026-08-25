@@ -1,10 +1,10 @@
-//! mantra/src/store.rye — the content-addressed blob store.
+//! mantra/src/store.rye -- the content-addressed blob store.
 //!
 //! A blob's identity is its SHA3-256 digest, hex-encoded (64 characters). The
 //! store lives under `.mantra/blobs/` relative to the repository root. Blobs
 //! are write-once: if the name exists, the content is already there.
 //!
-//! HEAD holds the blob name of the current weave state — a single line of 64
+//! HEAD holds the blob name of the current weave state -- a single line of 64
 //! hex characters plus a newline. An absent HEAD means the repository is not
 //! yet initialized.
 //!
@@ -21,7 +21,7 @@ const print = std.debug.print;
 const Dir  = std.Io.Dir;
 const Sha3 = std.crypto.hash.sha3.Sha3_256;
 
-/// A hex encoding of a SHA3-256 digest — the name of every blob.
+/// A hex encoding of a SHA3-256 digest -- the name of every blob.
 pub const BlobName = [Sha3.digest_length * 2]u8;
 
 /// The blob store: a handle to the `.mantra/` directory tree.
@@ -47,7 +47,7 @@ pub const Store = struct {
 
     /// Write `data` as a blob. Returns the blob name (64-char hex string,
     /// allocated from `allocator`). If the blob already exists, a write is
-    /// skipped — content-addressing guarantees the existing content matches.
+    /// skipped -- content-addressing guarantees the existing content matches.
     pub fn write_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, data: []const u8) ![]const u8 {
         // invariant: an empty blob would be written under the digest of nothing, which every
         // empty write would then share
@@ -61,7 +61,7 @@ pub const Store = struct {
         // Write the blob only if the name is new (content-addressing guarantee).
         self.blobs_dir.writeFile(io, .{ .sub_path = name, .data = data }) catch |err| {
             if (err != error.PathAlreadyExists) return err;
-            // Already exists — content is identical by the hash guarantee.
+            // Already exists -- content is identical by the hash guarantee.
         };
 
         return name;

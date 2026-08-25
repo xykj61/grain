@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu4_witness.rye — proves LULU4 wire preference chrome.
+//! linengrow/hearth_lulu4_witness.rye -- proves LULU4 wire preference chrome.
 //!
 //!   rye build linengrow/hearth_lulu4_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu4_witness

@@ -1,4 +1,4 @@
-//! mantra/recall_beaded.rye — local append and recall, transparent to size.
+//! mantra/recall_beaded.rye -- local append and recall, transparent to size.
 //!
 //! recall_lap1 already holds a resin whole, up to max_resin_bytes, in one leaf. Beading
 //! already splits a resin into content-addressed beads and reassembles them whole. This
@@ -7,8 +7,8 @@
 //! caller never needs to know which path a given resin took. Composing rather than
 //! extending: recall_lap1.rye and beading.rye are both imported and left standing.
 //!
-//! The payoff beading brings here is not size — a resin still tops out at
-//! max_resin_bytes, whole or beaded — it is dedup at bead granularity across revisions.
+//! The payoff beading brings here is not size -- a resin still tops out at
+//! max_resin_bytes, whole or beaded -- it is dedup at bead granularity across revisions.
 //! A bolt that carries many similar large resins over its history, one revision editing
 //! the last, deposits only the beads that changed; the beads that stayed the same across
 //! the edit are recognized and moved not at all, the very dividend beading's content-
@@ -17,8 +17,8 @@
 //!
 //! One deliberate scope line: recall_beaded reports the Tilak `bead-index` for a beaded
 //! resin, rather than recovering whatever semantic Tilak the caller first offered. This
-//! keeps Tilak doing the one job resin_batch.rye already asks of it — marking the layout
-//! of the stored bytes, not a deeper content type — and it costs nothing structural: no
+//! keeps Tilak doing the one job resin_batch.rye already asks of it -- marking the layout
+//! of the stored bytes, not a deeper content type -- and it costs nothing structural: no
 //! change to the seated bead-index format, no new field, no new name. A caller wanting
 //! richer Tilak fidelity through beading is a fair ask for its own later round.
 //!
@@ -266,7 +266,7 @@ fn selftest_beaded_revision_dedup(
     const r_v2 = try recall_beaded(cat, beads, n_large_r2, &out_v2);
     assert(std.mem.eql(u8, out_v2[0..r_v2.len], content_v2[0..]));
 
-    // Revision 1 still recalls to its own bytes, untouched by revision 2 — accrete, not
+    // Revision 1 still recalls to its own bytes, untouched by revision 2 -- accrete, not
     // overwrite, holds across the beaded path exactly as it holds across the direct one.
     var out_large: [recall_lap1.max_resin_bytes]u8 = undefined;
     const r_v1_again = try recall_beaded(cat, beads, n_large, &out_large);
@@ -307,7 +307,7 @@ fn selftest_unwelcome_paths(content_v1: *const [400]u8, cat: *recall_lap1.BoltCa
     }
 
     // Unwelcome: a name never appended returns its outcome unchanged, rather than
-    // erroring — recall_beaded changes no outcome semantics recall_lap1 already promised.
+    // erroring -- recall_beaded changes no outcome semantics recall_lap1 already promised.
     {
         const absent = recall_lap1.Name{
             .peer = "local",

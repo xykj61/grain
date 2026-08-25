@@ -1,4 +1,4 @@
-//! linengrow/dexter_seva_append_witness.rye — STOA268 Dexter submit → Seva append.
+//! linengrow/dexter_seva_append_witness.rye -- STOA268 Dexter submit -> Seva append.
 //!
 //!   rye build linengrow/dexter_seva_append_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_seva_append_witness

@@ -1,4 +1,4 @@
-//! Rye test: std.Io.File.writeStreamingAll — pass 9985.
+//! Rye test: std.Io.File.writeStreamingAll -- pass 9985.
 //!
 //! Rishi's `say`, Brushstroke seeds, and value printing all flush stdout
 //! through writeStreamingAll. This test writes to a temp file and reads back.

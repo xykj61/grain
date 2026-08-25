@@ -1,4 +1,4 @@
-//! comlink/guest_murr_mint_rx.rye — MUR M2b (was MALA) mint hop RX (holder).
+//! comlink/guest_murr_mint_rx.rye -- MUR M2b (was MALA) mint hop RX (holder).
 //!
 //! Opens the sealed mint, folds via murr_core, asserts holder balance 1000.
 

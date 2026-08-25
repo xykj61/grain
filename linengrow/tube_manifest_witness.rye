@@ -1,4 +1,4 @@
-//! linengrow/tube_manifest_witness.rye — proves TUBE0: the app-manifest mold.
+//! linengrow/tube_manifest_witness.rye -- proves TUBE0: the app-manifest mold.
 //!
 //!   rye build linengrow/tube_manifest_witness.rye -femit-bin=linengrow/bin/tube_manifest_witness
 //!   linengrow/bin/tube_manifest_witness
@@ -9,20 +9,20 @@
 //!      capability, a real iteration bound) builds cleanly.
 //!   2. `declares` answers true for a capability the manifest actually
 //!      grants, checking the exact right rather than mere resource
-//!      presence — the same discipline Pool's own capability table keeps.
+//!      presence -- the same discipline Pool's own capability table keeps.
 //!   3. `declares` answers false for a right the manifest never granted
 //!      over a resource it does name (read-only declared, write asked).
 //!   4. `declares` answers false for a resource never named at all.
 //!   5. An empty name is refused NameEmpty.
 //!   6. A manifest with zero declared capabilities is refused
-//!      NoDeclaredCapabilities — an app that asks for nothing could never
+//!      NoDeclaredCapabilities -- an app that asks for nothing could never
 //!      be admitted to anything.
 //!   7. A declared capability with a zero rights mask is refused
-//!      CapabilityRightsMaskZero — a capability granting no right is
+//!      CapabilityRightsMaskZero -- a capability granting no right is
 //!      meaningless and would otherwise refuse silently forever at
 //!      admission time instead of loudly at the manifest's own boundary.
 //!   8. A manifest whose iteration bound is zero is refused
-//!      IterationBoundZero — TAME root rule 2's own bounded-loop discipline,
+//!      IterationBoundZero -- TAME root rule 2's own bounded-loop discipline,
 //!      checked at the manifest boundary rather than left to a confusing
 //!      runtime failure later.
 

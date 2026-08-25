@@ -1,4 +1,4 @@
-//! glow/lower_compose_lib_witness.rye — proves `/+` library compose.
+//! glow/lower_compose_lib_witness.rye -- proves `/+` library compose.
 //!
 //!   rye build glow/lower_compose_lib_witness.rye -femit-bin=glow/bin/lower_compose_lib_witness
 

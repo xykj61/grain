@@ -1,16 +1,16 @@
 //! glow-book: runes.md#g-switch
-//! glow/rune_switch.rye — parses Glow's `?-` exhaustive-switch rune head.
+//! glow/rune_switch.rye -- parses Glow's `?-` exhaustive-switch rune head.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject (e.g.
-//! `kind.cur-record`). Arms (`%mint`, `%send`, …) are the whole mold; a later
+//! `kind.cur-record`). Arms (`%mint`, `%send`, ...) are the whole mold; a later
 //! compiler refuses a missing arm. This file is only the front half: extract
 //! the subject wing. Exhaustiveness checking and arm bodies stay later.
 //!
 //! One shape recognized for the subject:
 //!   ?-  kind.cur-record
 //!
-//! Fourth rune-head after `|-`, `^-`, and `?:` — still no general Glow parser.
+//! Fourth rune-head after `|-`, `^-`, and `?:` -- still no general Glow parser.
 
 const std = @import("std");
 

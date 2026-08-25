@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findPos — pass 9971.
+//! Rye test: std.mem.findPos -- pass 9971.
 //!
 //! Offset sub-slice search entry point. Composes findScalarPos, findPosLinear,
 //! and Boyer-Moore-Horspool; find (9993) wraps from start_index zero.

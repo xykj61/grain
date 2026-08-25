@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold0_witness.rye — proves HOLD0 Desk status.
+//! linengrow/setu_desk_hold0_witness.rye -- proves HOLD0 Desk status.
 //!
 //!   rye build linengrow/setu_desk_hold0_witness.rye \
 //!     -femit-bin=linengrow/bin/setu_desk_hold0_witness

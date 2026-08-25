@@ -1,7 +1,7 @@
-//! brushstroke/seed.rye — the first running Brushstroke: a frame drawn from values.
+//! brushstroke/seed.rye -- the first running Brushstroke: a frame drawn from values.
 //!
 //! Brushstroke is the display surface of the Rye family: immediate-mode rendering
-//! where each frame is a pure function of current values — no retained widget
+//! where each frame is a pure function of current values -- no retained widget
 //! tree that can drift from the truth. This seed is the smallest version that
 //! runs on hosted Linux: build a Frame value, redraw it to stdout, assert the
 //! invariants, and exit. Wayland and GPU backends grow from this through the
@@ -56,7 +56,7 @@ pub fn main(init: std.process.Init) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
 
-    // Build frame from values — immediate mode: compute fresh each call.
+    // Build frame from values -- immediate mode: compute fresh each call.
     const lines = try garden.alloc(Line, 3);
     lines[0] = .{ .text = "brushstroke seed" };
     lines[1] = .{ .text = "frame drawn from values" };

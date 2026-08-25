@@ -1,4 +1,4 @@
-//! glow/lower_assert_witness.rye — proves Glow `?>` / `?<` TAME asserts (STOA88).
+//! glow/lower_assert_witness.rye -- proves Glow `?>` / `?<` TAME asserts (STOA88).
 //!
 //!   rye build glow/lower_assert_witness.rye -femit-bin=glow/bin/lower_assert_witness
 //!   glow/bin/lower_assert_witness

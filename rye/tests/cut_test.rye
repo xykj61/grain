@@ -1,4 +1,4 @@
-//! Rye test: std.mem.cut and cutScalar — pass 9959.
+//! Rye test: std.mem.cut and cutScalar -- pass 9959.
 //!
 //! Split once on first needle occurrence; pairs with cutPrefix/cutSuffix (9960).
 

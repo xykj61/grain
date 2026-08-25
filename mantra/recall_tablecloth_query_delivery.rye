@@ -1,4 +1,4 @@
-//! mantra/recall_tablecloth_query_delivery.rye — Tablecloth query over Comlink hosted UDP.
+//! mantra/recall_tablecloth_query_delivery.rye -- Tablecloth query over Comlink hosted UDP.
 //!
 //! Client seals a filter request; host opens, runs query_tablecloth, seals name hits back.
 //! Scope: [`active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md)

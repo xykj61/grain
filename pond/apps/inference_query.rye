@@ -1,9 +1,9 @@
-//! pond/apps/inference_query.rye — BUHR Journey 1, Rung 1.
+//! pond/apps/inference_query.rye -- BUHR Journey 1, Rung 1.
 //!
 //! The Q-vane host pattern, proven small: a bounded Lantern-shaped request is
 //! routed to a voice and returned as a bounded Lantern-shaped response. When the
 //! prompt names an arithmetic operation, Lattice computes a real, deterministic
-//! result and this app wraps it in a Lantern-contract-bounded Response — the same
+//! result and this app wraps it in a Lantern-contract-bounded Response -- the same
 //! validate_request gate, the same allow-list, the same tokens/stopped_reason
 //! metering that governs every Lantern completion.
 //!
@@ -23,7 +23,7 @@ const inference_query_version = "20260812.101000";
 
 // The Q-vane's bounded operand budget: a fixed 2×2 pair, well inside Lattice's
 // own max_dim (8). Deterministic operands mean a deterministic, reproducible
-// result — the request seed pins nothing random because there is nothing random.
+// result -- the request seed pins nothing random because there is nothing random.
 const query_dim: u32 = 2;
 const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
 
@@ -42,7 +42,7 @@ pub const QueryError = error{
 };
 
 /// Recognize the operation named at the head of the prompt.
-/// Returns UnknownOp rather than guessing — the host never invents an answer.
+/// Returns UnknownOp rather than guessing -- the host never invents an answer.
 pub fn route_op(prompt: []const u8) QueryError!Op {
     // invariant: the prompt fits Lantern's own bound before we read it
     assert(prompt.len <= lc.max_prompt_len);
@@ -54,7 +54,7 @@ pub fn route_op(prompt: []const u8) QueryError!Op {
     return error.UnknownOp;
 }
 
-/// Build the fixed left operand — a deterministic 2×2 the whole app agrees on.
+/// Build the fixed left operand -- a deterministic 2×2 the whole app agrees on.
 fn operand_a() tc.TensorError!tc.Matrix {
     var m = try tc.Matrix.init(query_dim, query_dim);
     // invariant: the matrix carries exactly the requested square shape
@@ -67,7 +67,7 @@ fn operand_a() tc.TensorError!tc.Matrix {
     return m;
 }
 
-/// Build the fixed right operand — the second half of the deterministic pair.
+/// Build the fixed right operand -- the second half of the deterministic pair.
 fn operand_b() tc.TensorError!tc.Matrix {
     var m = try tc.Matrix.init(query_dim, query_dim);
     // invariant: the matrix carries exactly the requested square shape
@@ -137,7 +137,7 @@ pub fn compute(op: Op, out_buf: []u8) (tc.TensorError || QueryError || error{NoS
     return out_buf[0..written];
 }
 
-/// Count whitespace-separated words in `text` — the same token sense Lantern's
+/// Count whitespace-separated words in `text` -- the same token sense Lantern's
 /// own length budget uses when it truncates a completion.
 pub fn count_words(text: []const u8) u32 {
     // invariant: the text respects Lantern's completion bound
@@ -184,7 +184,7 @@ pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.Lanter
     var reason: lc.StoppedReason = .eos;
 
     // Honor Lantern's metering: when the real result outruns the budget, truncate
-    // to max_tokens words and mark a length stop — the same discipline Lantern's
+    // to max_tokens words and mark a length stop -- the same discipline Lantern's
     // own complete_fixture applies to a fixture that outruns its budget.
     if (tokens_out > req.max_tokens) {
         var words: u32 = 0;

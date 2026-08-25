@@ -1,4 +1,4 @@
-//! Rye test: backward split factories — pass 9933.
+//! Rye test: backward split factories -- pass 9933.
 //!
 //! splitBackwardsScalar, splitBackwardsAny, and splitBackwardsSequence begin at
 //! index buffer.len with rest() spanning the full buffer (pairs with 9962, 9934).

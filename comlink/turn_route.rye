@@ -1,8 +1,8 @@
-//! comlink/turn_route.rye — routing reads the turn tilak.
+//! comlink/turn_route.rye -- routing reads the turn tilak.
 //!
 //! Comlink carries a sealed datagram, and every seal needs a key. A peer's
 //! networking key is not fixed: it rotates. The key that is live *now* lives in
-//! that peer's **turn** tilak (`kumara/tilak.rye`) — the rotation record with two
+//! that peer's **turn** tilak (`kumara/tilak.rye`) -- the rotation record with two
 //! counters that only ever climb, `key_counter` on an ordinary rotation and
 //! `reset_counter` when continuity must start over. This file is the seam where
 //! identity's rotation meets the network's routing: given a peer's turn, it
@@ -15,7 +15,7 @@
 //!     keeps the last key it trusted rather than following a lie.
 //!   * **Fresher wins, and freshness only climbs.** A reset outranks any key
 //!     rotation (its `reset_counter` is higher); within one reset era, the higher
-//!     `key_counter` wins. A turn that is not strictly newer never supersedes —
+//!     `key_counter` wins. A turn that is not strictly newer never supersedes --
 //!     a replayed old rotation cannot roll a peer's key backward.
 //!
 //!   rye build comlink/turn_route.rye -femit-bin=comlink/bin/turn-route
@@ -40,14 +40,14 @@ pub const RouteDecision = struct {
     reason: Reason,
 };
 
-/// True when `a` is strictly newer than `b` — a later reset era, or the same era
+/// True when `a` is strictly newer than `b` -- a later reset era, or the same era
 /// with a higher key counter. Counters never descend, so newer means larger.
 pub fn turn_newer(a: *const tilak.Turn, b: *const tilak.Turn) bool {
     if (a.reset_counter != b.reset_counter) return a.reset_counter > b.reset_counter;
     return a.key_counter > b.key_counter;
 }
 
-/// The freshest of two turns — `a` on a tie, so a known turn is never displaced
+/// The freshest of two turns -- `a` on a tie, so a known turn is never displaced
 /// by an equal one. The freshness rule is total: (reset_counter, key_counter).
 pub fn freshest(a: *const tilak.Turn, b: *const tilak.Turn) *const tilak.Turn {
     if (turn_newer(b, a)) return b;
@@ -62,7 +62,7 @@ pub fn freshest(a: *const tilak.Turn, b: *const tilak.Turn) *const tilak.Turn {
 ///   * an authentic turn that is not newer is kept out, so no replay rolls back.
 pub fn read_turn(known: ?*const tilak.Turn, incoming: *const tilak.Turn, identity_pubkey: [pubkey_len]u8) RouteDecision {
     if (!tilak.verify_turn(incoming, identity_pubkey)) {
-        // Refused — keep the last trusted key, or zeros when there is none yet.
+        // Refused -- keep the last trusted key, or zeros when there is none yet.
         const kept: [pubkey_len]u8 = if (known) |k| k.net_pubkey else [_]u8{0} ** pubkey_len;
         return .{ .accepted = false, .route_key = kept, .reason = .forged_refused };
     }
@@ -73,7 +73,7 @@ pub fn read_turn(known: ?*const tilak.Turn, incoming: *const tilak.Turn, identit
     if (turn_newer(incoming, prior)) {
         return .{ .accepted = true, .route_key = incoming.net_pubkey, .reason = .verified_fresher };
     }
-    // Authentic yet not newer — a replayed or equal rotation. Keep the known key.
+    // Authentic yet not newer -- a replayed or equal rotation. Keep the known key.
     return .{ .accepted = false, .route_key = prior.net_pubkey, .reason = .stale_kept };
 }
 
@@ -107,12 +107,12 @@ fn run_selftest() !u8 {
     const t_reset = tilak.make_turn(&key_seed, &net_seed_a, 0, 1);
     if (!turn_newer(&t_reset, &t1)) return error.ResetNotNewer;
 
-    // A replayed old turn does not roll the key backward — it is kept out.
+    // A replayed old turn does not roll the key backward -- it is kept out.
     const stale = read_turn(&t1, &t0, identity);
     if (stale.accepted or stale.reason != .stale_kept) return error.StaleTookOver;
     if (!bytes_eq(stale.route_key, t1.net_pubkey)) return error.StaleKeyChanged;
 
-    // A forged turn — one signed by another key, or byte-tampered — is refused.
+    // A forged turn -- one signed by another key, or byte-tampered -- is refused.
     const forged = tilak.make_turn(&other_key_seed, &net_seed_b, 9, 9);
     const refused = read_turn(&t1, &forged, identity);
     if (refused.accepted or refused.reason != .forged_refused) return error.ForgedAccepted;

@@ -1,11 +1,11 @@
-//! brix/infuse.rye — deep merge/override for Brix descriptors (kin to infuse.nix).
+//! brix/infuse.rye -- deep merge/override for Brix descriptors (kin to infuse.nix).
 //!
 //! Brix descriptors are flat Bron: `key value` per line, `#` comments and blank lines
 //! skipped, keys may repeat (e.g. a `field` list). infuse.nix's deep recursive merge
 //! reduces, in a flat namespace, to a **per-key override**: the override's value(s)
 //! for a key replace the base's, base-only keys pass through **in place**, and
 //! override-only keys append after in override order. (A nested-descriptor deep merge
-//! waits on Brix growing nesting — a named horizon, not this lap.)
+//! waits on Brix growing nesting -- a named horizon, not this lap.)
 //!
 //! Studied clean-room from infuse.nix (MIT, `gratitude/`); the code here is our own.
 //! Zero-copy: parsed keys and values are slices into the two source buffers; only the
@@ -28,7 +28,7 @@ pub const max_out: u32 = 8192; // bounded merged output
 
 pub const InfuseError = error{ TooManyPairs, LineTooLong, KeyTooLong, OutTooSmall };
 
-/// One parsed field — key and value as slices into the source (zero-copy).
+/// One parsed field -- key and value as slices into the source (zero-copy).
 const Pair = struct {
     key: []const u8,
     val: []const u8,
@@ -91,7 +91,7 @@ fn emit(out: []u8, pos: u32, key: []const u8, val: []const u8) InfuseError!u32 {
 }
 
 /// Merge `over` onto `base` by per-key override into `out`; return the byte length.
-/// Base keys keep their place — an overridden key's value(s) sit at the base key's
+/// Base keys keep their place -- an overridden key's value(s) sit at the base key's
 /// first slot; override-only keys append after, in override order.
 pub fn infuse(base_src: []const u8, over_src: []const u8, out: []u8) InfuseError!u32 {
     var base: [max_pairs]Pair = undefined;
@@ -163,7 +163,7 @@ fn prove_infuse() !void {
         "kind cell\n" ++
         "field gamma\n" ++
         "carrier relay\n";
-    // kind overridden · name kept in place · field list replaced · carrier appended.
+    // kind overridden - name kept in place - field list replaced - carrier appended.
     const want = "kind cell\nname agent_cover\nfield gamma\ncarrier relay\n";
 
     var out: [max_out]u8 = undefined;

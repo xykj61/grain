@@ -1,4 +1,4 @@
-//! linengrow/tube_manifest_android_permission_witness.rye — proves the
+//! linengrow/tube_manifest_android_permission_witness.rye -- proves the
 //! first real TUBE0.5 claim: a validated manifest emits exactly the
 //! Android permission lines its declared capabilities name, nothing
 //! more, nothing inferred.
@@ -10,17 +10,17 @@
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md's own TUBE0.5 rung. Four claims:
 //!   1. A manifest declaring "network" with right_net emits exactly the
-//!      INTERNET permission line — the welcome path.
+//!      INTERNET permission line -- the welcome path.
 //!   2. A manifest declaring a resource this table has no row for
-//!      (e.g. an internal-only Glow capability) emits nothing for it —
+//!      (e.g. an internal-only Glow capability) emits nothing for it --
 //!      silently, by design, not an error.
 //!   3. A manifest declaring "storage" with both right_read and
-//!      right_write emits both storage permission lines, not just one —
+//!      right_write emits both storage permission lines, not just one --
 //!      each row in the closed table is checked independently.
 //!   4. A too-small output buffer is refused BufferTooSmall rather than
 //!      silently truncating a permission line.
 //!   5. A manifest declaring "sensors" with right_device emits OTHER_SENSORS
-//!      — GrapheneOS Sensors permission toggle (public permission name).
+//!      -- GrapheneOS Sensors permission toggle (public permission name).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -76,7 +76,7 @@ fn run_selftest() !u8 {
     }
     print("tube0.5: a too-small output buffer is refused BufferTooSmall -- GREEN unwelcome path.\n", .{});
 
-    // Claim 5: sensors + right_device → GrapheneOS OTHER_SENSORS.
+    // Claim 5: sensors + right_device -> GrapheneOS OTHER_SENSORS.
     var declared_sensors = [_]tm.DeclaredCapability{
         tm.DeclaredCapability.init("sensors", caps.right_device),
     };

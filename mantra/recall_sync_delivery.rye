@@ -1,4 +1,4 @@
-//! mantra/recall_sync_delivery.rye — NS-L3 wire: hosted sync over Comlink sealed datagrams · 20260713.
+//! mantra/recall_sync_delivery.rye -- NS-L3 wire: hosted sync over Comlink sealed datagrams - 20260713.
 //!
 //!   rye build mantra/recall_sync_delivery.rye -lc -femit-bin=mantra/bin/recall-sync-delivery
 //!   mantra/bin/recall-sync-delivery selftest

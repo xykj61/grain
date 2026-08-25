@@ -1,4 +1,4 @@
-//! comlink/guest_catchup_fetcher_tx_r3.rye — catch-up device wire: fetcher TX (rev 3 ask).
+//! comlink/guest_catchup_fetcher_tx_r3.rye -- catch-up device wire: fetcher TX (rev 3 ask).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

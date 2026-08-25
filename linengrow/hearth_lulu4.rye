@@ -1,8 +1,8 @@
-//! linengrow/hearth_lulu4.rye — LULU4: thin Wired Glass preference on Settings.
+//! linengrow/hearth_lulu4.rye -- LULU4: thin Wired Glass preference on Settings.
 //!
 //! Declares sync lane (`local` | `usb_desk`) in Hearth Bron and paints it on
 //! Settings row 9. Tap cycles the lane and persists. Live USB/Setu sync is a
-//! later check-in — this rung is preference + chrome only.
+//! later check-in -- this rung is preference + chrome only.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -13,7 +13,7 @@ pub const waymark: []const u8 = hearth.waymark;
 pub const wire_row: u32 = 9;
 pub const wire_line_max: u32 = 32;
 
-/// `wire · local` or `wire · usb_desk`.
+/// `wire - local` or `wire - usb_desk`.
 pub fn format_wire_line(lane: hearth.WireLane, out: *[wire_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(out, "wire · {s}", .{lane.name()}) catch return null;
     // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn

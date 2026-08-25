@@ -1,13 +1,13 @@
-//! aurora/src/sealed.rye — a sealed datagram, sealed and opened on the bare hart.
+//! aurora/src/sealed.rye -- a sealed datagram, sealed and opened on the bare hart.
 //!
 //! The named hart proved the hash runs freestanding; this proves the whole
 //! sealed message does. With no operating system beneath it, one bare-metal hart
-//! plays both sides: Alice seals a message to Bob — key agreement (X25519, from
+//! plays both sides: Alice seals a message to Bob -- key agreement (X25519, from
 //! their Kumara identities), the seal (AEAD), the content-name (SHA3-512), the
-//! attestation (identity signature) — and Bob verifies, checks the name, derives the same
+//! attestation (identity signature) -- and Bob verifies, checks the name, derives the same
 //! secret, and opens it. The opened message is spoken over the console. This is
 //! the sealed message of the hosted test (`../../rye/tests/sealed_message_test.rye`),
-//! now running on bare metal — the value the encrypted datagram will one day
+//! now running on bare metal -- the value the encrypted datagram will one day
 //! carry between two harts (active-designing/993; external-research/yonder/20260618-212112_content-centric-messaging.md, /985).
 //!
 //! Build and run with `../run.sh sealed`. QEMU virt; UART 0x1000_0000; finisher 0x10_0000.

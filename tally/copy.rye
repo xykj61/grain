@@ -1,4 +1,4 @@
-//! tally/copy.rye — the disjoint copy, with its preconditions written down.
+//! tally/copy.rye -- the disjoint copy, with its preconditions written down.
 //!
 //! `@memcpy` trusts its caller twice: that the lengths agree, and that the
 //! regions never overlap. TigerBeetle's stdx wraps that trust in assertions
@@ -6,14 +6,14 @@
 //! is the only form. We adopt the same law in Tally, the home of bounds:
 //! one function, both preconditions asserted, then the builtin it guards.
 //!
-//! Elder call sites migrate as they are touched — the ratchet, counted by
-//! `tools/t/tame_style_check.rish` — rather than in one sweep. New code
+//! Elder call sites migrate as they are touched -- the ratchet, counted by
+//! `tools/t/tame_style_check.rish` -- rather than in one sweep. New code
 //! reaches here first.
 //!
 //!   rye build tally/copy.rye -femit-bin=tally/bin/copy
 //!   tally/bin/copy selftest
 //!
-//! Gratitude: gratitude/TIGER_STYLE.md · tigerbeetle src/stdx (study only).
+//! Gratitude: gratitude/TIGER_STYLE.md - tigerbeetle src/stdx (study only).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -59,7 +59,7 @@ fn run_selftest(_: std.Io) !u8 {
     assert(ys[0] == 10);
     assert(ys[3] == 40);
 
-    // The refusing halves — mismatched lengths, overlapping regions — end the
+    // The refusing halves -- mismatched lengths, overlapping regions -- end the
     // process by design; an assertion is a crash-on-corruption, so a witness
     // proves the welcome space and the preconditions stand guard in the text.
     print("tally copy: disjoint copies carried whole, both preconditions asserted\n", .{});

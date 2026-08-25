@@ -1,4 +1,4 @@
-//! Rye test: std.fmt.bufPrint — pass 9986.
+//! Rye test: std.fmt.bufPrint -- pass 9986.
 //!
 //! bufPrint formats into a caller-owned stack buffer. Rishi, Mantra, Skate
 //! selftests, and the rye bridge all lean on it for short, bounded messages.

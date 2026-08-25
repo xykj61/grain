@@ -1,4 +1,4 @@
-//! linengrow/murr_core.rye — shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
+//! linengrow/murr_core.rye -- shared MUR mint/send fold for M1 and M2 (was mala_core / MALA).
 //!
 //! Imported by `murr.rye` (one-node selftest) and `murr_delivery.rye` (Comlink carriage).
 //! Wire memos `murr:*` (was mala:*). `fold_murr_log` LIVE (u51).
@@ -9,7 +9,7 @@ const kumara = @import("kumara.rye");
 const rc = @import("receipt_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// Pinned witness seeds — distinct from SLC-L1 (0x42) and Open Asks (0x51–0x53).
+/// Pinned witness seeds -- distinct from SLC-L1 (0x42) and Open Asks (0x51-0x53).
 pub const issuer_seed = [_]u8{0x61} ** kumara.seed_length;
 pub const holder_seed = [_]u8{0x62} ** kumara.seed_length;
 

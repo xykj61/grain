@@ -1,4 +1,4 @@
-//! comlink/guest_granary_resin_source_rx.rye — Granary lap 4b device: source RX (open digest request).
+//! comlink/guest_granary_resin_source_rx.rye -- Granary lap 4b device: source RX (open digest request).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

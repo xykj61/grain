@@ -1,4 +1,4 @@
-//! manual/tutorials/greet.rye — your first Grain module: a bounded greeting.
+//! manual/tutorials/greet.rye -- your first Grain module: a bounded greeting.
 //!
 //! The first-hour reference (Acme DX design season, Equinox 2 contract
 //! `../../active-designing/date/20260811/20260811-163927_acme-dx-first-hour-witness-contract.md`).
@@ -14,7 +14,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-// The longest name the greeting will hold — a bound named once, enforced at the edge.
+// The longest name the greeting will hold -- a bound named once, enforced at the edge.
 pub const max_name: u32 = 32;
 
 /// Write "hello, <name>!" into `buf`, returning its byte length. The name is bounded,

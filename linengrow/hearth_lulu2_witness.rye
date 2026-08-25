@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu2_witness.rye — proves LULU2 thin preset list.
+//! linengrow/hearth_lulu2_witness.rye -- proves LULU2 thin preset list.
 //!
 //!   rye build linengrow/hearth_lulu2_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu2_witness

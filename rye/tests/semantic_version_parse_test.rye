@@ -1,4 +1,4 @@
-//! Rye test: std.SemanticVersion.parse — pass 9947.
+//! Rye test: std.SemanticVersion.parse -- pass 9947.
 //!
 //! Pairs with SemanticVersion.order (9948); parse feeds capability bounds.
 

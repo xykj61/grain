@@ -1,14 +1,14 @@
-//! Rye test: Mantra weave — pass 9990.
+//! Rye test: Mantra weave -- pass 9990.
 //!
 //! Exercises the pure core of Mantra: the Weave data model and the LCS-based
-//! diff computation. No file I/O — pure inputs, deterministic outputs.
+//! diff computation. No file I/O -- pure inputs, deterministic outputs.
 //!
 //! Scenarios covered:
 //!   1. Empty weave: current() returns zero lines.
 //!   2. apply({inserts: ["a","b","c"], deletes:[]}): 3 lines present.
 //!   3. apply({inserts: ["d"], deletes:[1]}): "b" gone, "d" added.
 //!   4. All invariants: gen >= 1, pos < next_pos, sorted positions.
-//!   5. LCS diff: old=["a","b","c"] new=["a","c","d"] → delete pos 1, insert "d".
+//!   5. LCS diff: old=["a","b","c"] new=["a","c","d"] -> delete pos 1, insert "d".
 //!   6. Idempotent add: diff of unchanged text = empty diff.
 
 const std = @import("std");
@@ -168,7 +168,7 @@ pub fn main() void {
     std.debug.assert(w.next_pos == 4);
 
     // 4. LCS diff: old=["a","b","c"]  new=["a","c","d"]
-    //    LCS = ["a","c"] → delete pos 1 (b), insert "d".
+    //    LCS = ["a","c"] -> delete pos 1 (b), insert "d".
     // Reset to just a, b, c for this scenario.
     var w2 = Weave.empty();
     w2.apply(allocator, .{ .inserts = ins_abc, .deletes = del_none }) catch unreachable;

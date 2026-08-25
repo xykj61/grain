@@ -1,11 +1,11 @@
-//! Rye test: X25519 key agreement — the second crypto primitive our new ideas
+//! Rye test: X25519 key agreement -- the second crypto primitive our new ideas
 //! lean on, after signing. Two identities, each holding only their own secret
 //! and the other's public key, derive the *same* shared secret without ever
 //! sending it. This is how a message is sealed *to an identity* rather than to
 //! a channel (active-designing/993; external-research/yonder/20260618-195512_encrypted-networking-riscv.md, /982), and it is the
 //! next seed on the path to the encrypted, content-named datagram.
 //!
-//! Deterministic throughout — fixed seeds — so the output is identical on every
+//! Deterministic throughout -- fixed seeds -- so the output is identical on every
 //! run and across the baseline and the strengthened std, which lets the parity
 //! gate compare it. The seeds are test fixtures, never real secrets.
 
@@ -31,7 +31,7 @@ pub fn main() void {
         std.debug.print("x25519: ERROR — the shared secrets differ.\n", .{});
     }
 
-    // Render the shared secret as lowercase hex — a stable value for the gate.
+    // Render the shared secret as lowercase hex -- a stable value for the gate.
     std.debug.print("x25519 shared secret = ", .{});
     for (shared_a) |b| std.debug.print("{x:0>2}", .{b});
     std.debug.print("\n", .{});

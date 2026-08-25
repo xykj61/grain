@@ -1,4 +1,4 @@
-//! tally/pedersen.rye — **deprecated re-export shim** for `tally/bud.rye`.
+//! tally/pedersen.rye -- **deprecated re-export shim** for `tally/bud.rye`.
 //!
 //! Warm name **bud** is seated `20260712.061012`. This file keeps the old
 //! import path green (accrete-never-break). Prefer `@import("bud.rye")`.

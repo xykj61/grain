@@ -1,13 +1,13 @@
-//! mand/mand_ring2_witness.rye — Mand ring-2 retention eligibility.
+//! mand/mand_ring2_witness.rye -- Mand ring-2 retention eligibility.
 //!
 //!   rye build mand/mand_ring2_witness.rye -femit-bin=mand/bin/mand_ring2_witness
 //!   mand/bin/mand_ring2_witness
 //!
 //! Claims:
-//!   1. Inside window → KEEP + one audit line.
-//!   2. Past window → ELIGIBLE + one audit line.
-//!   3. Past window WITH hold → HELD (paired: eligibility path + hold path).
-//!   4. One decide → exactly one audit line (present; not doubled in one call).
+//!   1. Inside window -> KEEP + one audit line.
+//!   2. Past window -> ELIGIBLE + one audit line.
+//!   3. Past window WITH hold -> HELD (paired: eligibility path + hold path).
+//!   4. One decide -> exactly one audit line (present; not doubled in one call).
 //!   5. Missing / malformed schedule REFUSES (fail closed).
 
 const std = @import("std");
@@ -30,7 +30,7 @@ fn run_selftest() !u8 {
 
     var audit: mand1.AuditLog = .{};
 
-    // Claim 1: inside window → KEEP.
+    // Claim 1: inside window -> KEEP.
     const d_keep = try mand2.decide_retention(&audit, actor, record_id, &sched, 150, &[_]mand2.Hold{});
     assert(d_keep.standing == .keep);
     assert(d_keep.audit_written);
@@ -39,7 +39,7 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, audit.entries[0].record_id_slice(), record_id));
     print("mand-ring2: inside window reads KEEP, audit written -- GREEN welcome path\n", .{});
 
-    // Claim 2: past window → ELIGIBLE.
+    // Claim 2: past window -> ELIGIBLE.
     const before_elig = audit.count;
     const d_elig = try mand2.decide_retention(&audit, actor, record_id, &sched, 200, &[_]mand2.Hold{});
     assert(d_elig.standing == .eligible);
@@ -48,7 +48,7 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, audit.entries[before_elig].authority_slice(), "ELIGIBLE"));
     print("mand-ring2: past window reads ELIGIBLE, audit written -- GREEN welcome path\n", .{});
 
-    // Claim 3: past window WITH hold → HELD (paired assertion).
+    // Claim 3: past window WITH hold -> HELD (paired assertion).
     var hold: mand2.Hold = .{};
     const hold_id = "hold-subpoena-1";
     hold.id_len = @intCast(hold_id.len);
@@ -59,7 +59,7 @@ fn run_selftest() !u8 {
     // Eligibility path: window alone says ELIGIBLE.
     const by_window = mand2.standing_by_window(&sched, 250);
     assert(by_window == .eligible);
-    // Hold path: ELIGIBLE + hold in force → HELD.
+    // Hold path: ELIGIBLE + hold in force -> HELD.
     const by_hold = try mand2.standing_with_holds(by_window, holds[0..]);
     assert(by_hold == .held);
     assert(by_hold.word().len == 4); // "HELD"
@@ -80,7 +80,7 @@ fn run_selftest() !u8 {
     assert(audit.count != before_one + 2);
     print("mand-ring2: one decision writes exactly one audit line -- GREEN\n", .{});
 
-    // Claim 5a: missing schedule REFUSES (fail closed — never default eligible).
+    // Claim 5a: missing schedule REFUSES (fail closed -- never default eligible).
     const before_miss = audit.count;
     const miss = mand2.decide_retention(&audit, actor, record_id, null, 150, &[_]mand2.Hold{});
     if (miss) |_| {

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.readInt / writeInt — pass 9909.
+//! Rye test: std.mem.readInt / writeInt -- pass 9909.
 //!
 //! Fixed-width integer encode/decode; pairs with readVarInt (9910).
 

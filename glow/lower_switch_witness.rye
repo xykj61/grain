@@ -1,4 +1,4 @@
-//! glow/lower_switch_witness.rye — proves `?-` lowers to runnable `.rye`.
+//! glow/lower_switch_witness.rye -- proves `?-` lowers to runnable `.rye`.
 //!
 //!   rye build glow/lower_switch_witness.rye -femit-bin=glow/bin/lower_switch_witness
 //!   glow/bin/lower_switch_witness

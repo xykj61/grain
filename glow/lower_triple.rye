@@ -1,4 +1,4 @@
-//! glow/lower_triple.rye — lower a parsed `:+` triple cell to runnable `.rye`.
+//! glow/lower_triple.rye -- lower a parsed `:+` triple cell to runnable `.rye`.
 //!
 //! Thin STOA3 face: three demo atoms into a Zig triple struct.
 

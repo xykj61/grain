@@ -1,13 +1,13 @@
-//! pond/apps/constel_net_ledger.rye — Constel dev-net ledger, Rung 1: the fake net's money moves only by the identity that holds its genesis.
+//! pond/apps/constel_net_ledger.rye -- Constel dev-net ledger, Rung 1: the fake net's money moves only by the identity that holds its genesis.
 //!
 //! The Constel dev-net harness proved a fake constellation, quarantined by a law-safe name, running
 //! the real settlement protocol from genesis. This rung gives the tree's real Mycelium supply
-//! primitive (`mycelium/fold.rye` — the myc supply as a pure fold over Kumara-signed facts, supply =
+//! primitive (`mycelium/fold.rye` -- the myc supply as a pure fold over Kumara-signed facts, supply =
 //! Σ issued − Σ taxed, non-negative, an overdraw refusing the whole fold) a network to belong to: the
 //! spun-up dev-net.
 //!
-//! The crux, fused: an economic ledger runs from genesis inside the fake net — its money signed by the
-//! net's own settled identity, refused for anyone else — and it can never run under a name that could be
+//! The crux, fused: an economic ledger runs from genesis inside the fake net -- its money signed by the
+//! net's own settled identity, refused for anyone else -- and it can never run under a name that could be
 //! real. Two promises hold at once:
 //!
 //!   * The quarantine wraps the ledger, not only the net. `open_ledger` opens only through
@@ -17,7 +17,7 @@
 //!     genesis galaxy Deed's `keeper`. `issue`/`tax` mint sovereign-signed facts; `admit` refuses any
 //!     other signer `NotSovereign` before the log. So the settlement identity gates the Mycelium supply.
 //!
-//! Demo keeper seeds only — no real key, no funds, no network, no custody. The Mycelium fold is a supply
+//! Demo keeper seeds only -- no real key, no funds, no network, no custody. The Mycelium fold is a supply
 //! model, not a payment rail (custody gate %3 untouched); the maintainer's own Kumara instance stays gate
 //! #4; a ledger served over the wire reaches the serve gate.
 //!
@@ -65,7 +65,7 @@ pub const NetLedger = struct {
         return self.net.name();
     }
 
-    /// The current myc supply — a fresh fold of the whole log, so the number is never a running
+    /// The current myc supply -- a fresh fold of the whole log, so the number is never a running
     /// guess but the pure fold the Mycelium law defines.
     pub fn supply(self: *const NetLedger) AdmitError!u64 {
         const state = try fold.fold_log(&self.log);
@@ -75,11 +75,11 @@ pub const NetLedger = struct {
     }
 };
 
-/// Whether a fact's signer is the net's sovereign — the one identity that holds the genesis galaxy.
+/// Whether a fact's signer is the net's sovereign -- the one identity that holds the genesis galaxy.
 /// This is the structural authority gate: the fold proves a fact is internally honest; this proves it
 /// was authorized by the fake net's own keeper.
 fn signer_is_sovereign(ledger: *const NetLedger, fact: *const fold.Fact) bool {
-    // invariant: both keys are a fixed 32-byte Ed25519 public key — compared byte for byte.
+    // invariant: both keys are a fixed 32-byte Ed25519 public key -- compared byte for byte.
     assert(fact.signer_pk.len == ledger.net.galaxy.keeper.len);
     return std.mem.eql(u8, fact.signer_pk[0..], ledger.net.galaxy.keeper[0..]);
 }
@@ -87,7 +87,7 @@ fn signer_is_sovereign(ledger: *const NetLedger, fact: *const fold.Fact) bool {
 /// The sovereignty gate, exposed for rungs that mint their own fact kinds (star reservations, r2):
 /// whether a fact was authorized by the identity that holds this net's genesis.
 pub fn signer_is_sovereign_of(ledger: *const NetLedger, fact: *const fold.Fact) bool {
-    // invariant: this public reader is exactly the private gate admit uses — one authority test,
+    // invariant: this public reader is exactly the private gate admit uses -- one authority test,
     // never a second that could drift from it.
     assert(fact.signer_pk.len == ledger.net.galaxy.keeper.len);
     return signer_is_sovereign(ledger, fact);
@@ -105,7 +105,7 @@ pub fn open_ledger(
     const net = try constel_net.spin_up(net_name, key_seed, keeper_seed, galaxy_number);
     const sovereign = kumara.keypair_from_seed(keeper_seed);
     const ledger = NetLedger{ .net = net, .sovereign = sovereign, .log = fold.Log.empty() };
-    // invariant: the money's signer is exactly the genesis keeper — the settlement identity and the
+    // invariant: the money's signer is exactly the genesis keeper -- the settlement identity and the
     // ledger's sovereign are one key, not two that merely agree by chance.
     const pk = sovereign.public_key.toBytes();
     // invariant: the ledger's galaxy key matches the one the net reports, so a difference means
@@ -119,14 +119,14 @@ pub fn open_ledger(
 /// Admit an already-minted fact: refuse any signer but the sovereign before the log, then fold it in
 /// through the real Mycelium law (which itself refuses a bad signature, an overdraw, or a double star).
 pub fn admit(ledger: *NetLedger, fact: fold.Fact) AdmitError!fold.FoldState {
-    // invariant: only the net's sovereign may move its money — a foreign signer is refused before
+    // invariant: only the net's sovereign may move its money -- a foreign signer is refused before
     // any state changes, so the log never carries an unauthorized fact even transiently.
     if (!signer_is_sovereign(ledger, &fact)) return error.NotSovereign;
     const before = ledger.log.len;
     const state = try fold.append_fact(&ledger.log, fact);
     // invariant: an admitted fact grows the log by exactly one.
     assert(ledger.log.len == before + 1);
-    // invariant: the supply stays the pure fold — issued minus taxed.
+    // invariant: the supply stays the pure fold -- issued minus taxed.
     assert(state.supply() == state.issued - state.taxed);
     return state;
 }
@@ -136,13 +136,13 @@ pub fn issue(ledger: *NetLedger, amount: u64) (LedgerError || AdmitError)!fold.F
     const fact = fold.mint_fact(ledger.sovereign, fold.kind_issue, amount, "", "") orelse return error.MintRefused;
     // invariant: a sovereign-minted fact carries the sovereign's key, so admit accepts it as the net's own.
     assert(signer_is_sovereign(ledger, &fact));
-    // invariant: an issue fact carries no star name — Aparigraha, mirrored from the fold's own law.
+    // invariant: an issue fact carries no star name -- Aparigraha, mirrored from the fold's own law.
     assert(fact.star_len == 0);
     return admit(ledger, fact);
 }
 
 /// Tax myc out of the net, signed by the sovereign keeper. A tax beyond the current supply refuses the
-/// whole fold (`Overdraw`) — the Mycelium non-negativity law holds inside the fake net.
+/// whole fold (`Overdraw`) -- the Mycelium non-negativity law holds inside the fake net.
 pub fn tax(ledger: *NetLedger, amount: u64) (LedgerError || AdmitError)!fold.FoldState {
     const fact = fold.mint_fact(ledger.sovereign, fold.kind_tax, amount, "", "") orelse return error.MintRefused;
     // invariant: a sovereign-minted fact carries the sovereign's key.
@@ -154,7 +154,7 @@ pub fn tax(ledger: *NetLedger, amount: u64) (LedgerError || AdmitError)!fold.Fol
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real keeper's key, so no identity is invented and no key is held.
+// Example seeds -- plainly not a real keeper's key, so no identity is invented and no key is held.
 const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const alien_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -194,7 +194,7 @@ fn welcome_supply_folds_the_law() !void {
     print("constel_net_ledger: issue 100, tax 30, issue 20 folded to supply 90 over three sovereign facts.\n", .{});
 }
 
-/// No ledger is ever born under an @p-shaped name — the quarantine wraps the ledger, not only the net.
+/// No ledger is ever born under an @p-shaped name -- the quarantine wraps the ledger, not only the net.
 fn unwelcome_unsafe_name_opens_no_ledger() !void {
     assert(!constel_net.name_safe("sarlev"));
     const opened = open_ledger("sarlev", &demo_key, &demo_keeper, demo_galaxy);
@@ -202,21 +202,21 @@ fn unwelcome_unsafe_name_opens_no_ledger() !void {
     print("constel_net_ledger: an @p-shaped name refused UnsafeName; no ledger was born under it.\n", .{});
 }
 
-/// A tax beyond the current supply refuses the whole fold, and the supply is left unchanged — the
+/// A tax beyond the current supply refuses the whole fold, and the supply is left unchanged -- the
 /// Mycelium non-negativity law holds inside the fake net.
 fn unwelcome_tax_overdraw_refuses_whole() !void {
     var ledger = try open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
     _ = try issue(&ledger, 50);
     const over = tax(&ledger, 80);
     assert(over == error.Overdraw);
-    // the overdraw touched nothing — supply still 50, log still one fact
+    // the overdraw touched nothing -- supply still 50, log still one fact
     const s = try ledger.supply();
     assert(s == 50);
     assert(ledger.log.len == 1);
     print("constel_net_ledger: a tax of 80 over a supply of 50 refused Overdraw; supply held at 50, log untouched.\n", .{});
 }
 
-/// A fact minted by any keypair but the net's sovereign is refused `NotSovereign` before the log —
+/// A fact minted by any keypair but the net's sovereign is refused `NotSovereign` before the log --
 /// to move the fake net's money you must hold the fake net's genesis.
 fn unwelcome_alien_signer_refuses() !void {
     var ledger = try open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);

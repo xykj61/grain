@@ -1,8 +1,8 @@
-//! linengrow/setu1_lane_ping.rye — SETU1: Comlink-shaped lane ping (thin face).
+//! linengrow/setu1_lane_ping.rye -- SETU1: Comlink-shaped lane ping (thin face).
 //!
 //! Approved claim: when Hearth `wire_lane` is `usb_desk`, Desk may seal one
 //! bounded ping datagram (home_id + preset) with Comlink's wire_format and open
-//! it back. `local` refuses — the preference earns meaning. CDC-NCM gadget
+//! it back. `local` refuses -- the preference earns meaning. CDC-NCM gadget
 //! networking stays a later rung (SETU2), not this lap.
 
 const std = @import("std");
@@ -76,7 +76,7 @@ pub fn open_lane_ping(
     return true;
 }
 
-/// Device-free: usb_desk arms, seals, and opens a ping for kd · scaled_540.
+/// Device-free: usb_desk arms, seals, and opens a ping for kd - scaled_540.
 pub fn fixture_usb_desk_ping_round_trips() bool {
     if (!lane_armed(.usb_desk)) return false;
     if (lane_armed(.local)) return false;

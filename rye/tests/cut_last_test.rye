@@ -1,4 +1,4 @@
-//! Rye test: std.mem.cutLast and cutScalarLast — pass 9958.
+//! Rye test: std.mem.cutLast and cutScalarLast -- pass 9958.
 //!
 //! Split once on last needle occurrence; pairs with cut/cutScalar (9959).
 

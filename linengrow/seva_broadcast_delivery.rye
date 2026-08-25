@@ -1,4 +1,4 @@
-//! linengrow/seva_broadcast_delivery.rye — Seva B1: a session carried live over Comlink.
+//! linengrow/seva_broadcast_delivery.rye -- Seva B1: a session carried live over Comlink.
 //!
 //!   rye build linengrow/seva_broadcast_delivery.rye -lc -femit-bin=linengrow/bin/seva-broadcast-delivery
 //!   linengrow/bin/seva-broadcast-delivery selftest
@@ -23,7 +23,7 @@
 //! Two claims this lap proves: a session carried event-by-event, sealed and
 //! opened, replays to the identical session root the source computes
 //! directly (carriage changes nothing about the fold); and order is
-//! preserved — the follower appends events in receipt order and replay
+//! preserved -- the follower appends events in receipt order and replay
 //! enforces the strictly-increasing sequence, so any reordering is caught.
 
 const std = @import("std");
@@ -44,9 +44,9 @@ const SOCK_DGRAM: c_uint = 2;
 const SOL_SOCKET: c_int = 1;
 const SO_REUSEADDR: c_int = 2;
 
-/// Sealed session events → follower.
+/// Sealed session events -> follower.
 const event_port: u16 = 38496;
-/// Follower's resulting session root → source, for its own independent check.
+/// Follower's resulting session root -> source, for its own independent check.
 const root_port: u16 = 38497;
 
 const event_count: u32 = 3;
@@ -90,7 +90,7 @@ fn event_fields(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *co
     return .{ .from = actor_hex[0..], .to = actor_hex[0..], .amount = seq_text, .memo = payload, .stamp = stamp };
 }
 
-/// Sign event #seq and encode it in the compact wire payload — the exact
+/// Sign event #seq and encode it in the compact wire payload -- the exact
 /// bytes seva_session_core.append_event would sign, so the reconstructed
 /// line matches and roots agree.
 fn build_event_payload(seq: i64, stamp: []const u8, payload: []const u8, actor_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair, out: *[rc.slcl2_payload_header + rc.slcl2_max_fact]u8) !u32 {
@@ -125,7 +125,7 @@ fn build_source_session(log: *[rc.max_log_len]u8, actor_hex: *const [mc.pubkey_h
 fn run_selftest(_: std.Io) !u8 {
     const a = actor();
 
-    // The source's own session, direct — the root the carriage must match.
+    // The source's own session, direct -- the root the carriage must match.
     var src_log: [rc.max_log_len]u8 = undefined;
     const src = try build_source_session(&src_log, &a.hex, a.kp);
 

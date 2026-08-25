@@ -1,7 +1,7 @@
-//! Rye test: Tally gardens — pass 9989.
+//! Rye test: Tally gardens -- pass 9989.
 //!
 //! Exercises the Gardens data model: named regions, add/get/clearOne/clearAll,
-//! edge overflow, invariant preservation. Pure stack memory — no file I/O,
+//! edge overflow, invariant preservation. Pure stack memory -- no file I/O,
 //! no Init dependency, parity-gate compatible.
 
 const std = @import("std");

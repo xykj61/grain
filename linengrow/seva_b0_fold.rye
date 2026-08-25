@@ -1,4 +1,4 @@
-//! linengrow/seva_b0_fold.rye — the Seva B0 demo fold as a callable unit.
+//! linengrow/seva_b0_fold.rye -- the Seva B0 demo fold as a callable unit.
 //!
 //! Same three signed, ordered events as seva_session_core_witness.rye Claim 1,
 //! returned as a session root rather than printed from `main`. The NativeActivity

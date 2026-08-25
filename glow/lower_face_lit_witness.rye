@@ -1,4 +1,4 @@
-//! glow/lower_face_lit_witness.rye — proves face=lit lower emit (STOA220).
+//! glow/lower_face_lit_witness.rye -- proves face=lit lower emit (STOA220).
 //!
 //!   rye build glow/lower_face_lit_witness.rye \
 //!     -femit-bin=glow/bin/lower_face_lit_witness

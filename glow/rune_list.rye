@@ -1,8 +1,8 @@
 //! glow-book: runes.md#g-list
-//! glow/rune_list.rye — parses Glow's `:~` list-cell rune head.
+//! glow/rune_list.rye -- parses Glow's `:~` list-cell rune head.
 //!
 //! Per the sameness rune brief `:` category: `:~` builds a list. Twelfth
-//! rune head (STOA5). Shape (1–4 faces, bounded):
+//! rune head (STOA5). Shape (1-4 faces, bounded):
 //!   :~  from  amount  note
 //!
 //! Nested values and longer lists stay later.

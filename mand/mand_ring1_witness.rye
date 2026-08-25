@@ -1,15 +1,15 @@
-//! mand/mand_ring1_witness.rye — Mand ring-1 grant and refuse paths.
+//! mand/mand_ring1_witness.rye -- Mand ring-1 grant and refuse paths.
 //!
 //!   rye build mand/mand_ring1_witness.rye -femit-bin=mand/bin/mand_ring1_witness
 //!   mand/bin/mand_ring1_witness
 //!
 //! Claims:
-//!   1. Granted path — named authority with right_read over record sees the
+//!   1. Granted path -- named authority with right_read over record sees the
 //!      body and writes one audit line (welcome).
-//!   2. Refused path — stranger (no grant) gets Refused; no body; audit
+//!   2. Refused path -- stranger (no grant) gets Refused; no body; audit
 //!      count unchanged (unwelcome).
 //!   3. Reader/authority mismatch refuses even when the authority is granted.
-//!   4. Read-only presence is required — write-only grant does not admit see.
+//!   4. Read-only presence is required -- write-only grant does not admit see.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -32,7 +32,7 @@ fn run_selftest() !u8 {
 
     var audit: mand.AuditLog = .{};
 
-    // Claim 1: grant path — see + audit.
+    // Claim 1: grant path -- see + audit.
     const seen = try mand.see_record(&table, &audit, "steward", "steward", record_id, body);
     assert(seen.audit_written);
     assert(std.mem.eql(u8, seen.body, body));
@@ -42,7 +42,7 @@ fn run_selftest() !u8 {
     assert(std.mem.eql(u8, audit.entries[0].authority_slice(), "steward"));
     print("mand-ring1: granted path -- steward sees record, audit written -- GREEN welcome path\n", .{});
 
-    // Claim 2: refuse path — stranger.
+    // Claim 2: refuse path -- stranger.
     const before = audit.count;
     const refused = mand.see_record(&table, &audit, "stranger", "stranger", record_id, body);
     if (refused) |_| {

@@ -1,4 +1,4 @@
-//! comlink/guest_batch_source_tx.rye — NS-L3 batch wire device: source TX (sealed resin-batch).
+//! comlink/guest_batch_source_tx.rye -- NS-L3 batch wire device: source TX (sealed resin-batch).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

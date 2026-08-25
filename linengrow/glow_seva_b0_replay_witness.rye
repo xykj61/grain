@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_replay_witness.rye — proves Glow replay compose (STOA211).
+//! linengrow/glow_seva_b0_replay_witness.rye -- proves Glow replay compose (STOA211).
 //!
 //!   rye build linengrow/glow_seva_b0_replay_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_replay_witness

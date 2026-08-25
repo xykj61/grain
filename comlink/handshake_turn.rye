@@ -1,9 +1,9 @@
-//! comlink/handshake_turn.rye — the live handshake, with rotation.
+//! comlink/handshake_turn.rye -- the live handshake, with rotation.
 //!
 //! A crossing on Comlink asks two questions of a peer, and this file asks them
-//! in one breath. First, *who are you?* — the existing introduction gate
+//! in one breath. First, *who are you?* -- the existing introduction gate
 //! (`discovery/introduce.rye`): a peer is admitted to the table only by an
-//! introduction its introducer signed. Second, *which key do I seal to?* — the
+//! introduction its introducer signed. Second, *which key do I seal to?* -- the
 //! rotation gate (`turn_route.rye`): the wire is sealed to the networking key in
 //! the peer's freshest verified **turn** tilak, never a forged or replayed one.
 //!
@@ -13,8 +13,8 @@
 //! attacker who replays an old introduction cannot roll a peer's live key
 //! backward, and one who forges a turn cannot borrow a peer's admitted identity.
 //!
-//! A peer's identity is the first 32 bytes of its peer id — its Kumara public
-//! key — which is what verifies the turn it presents.
+//! A peer's identity is the first 32 bytes of its peer id -- its Kumara public
+//! key -- which is what verifies the turn it presents.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye build comlink/handshake_turn.rye -femit-bin=comlink/bin/handshake-turn
 //!   comlink/bin/handshake-turn selftest
@@ -50,7 +50,7 @@ pub fn handshake(
     known_turn: ?*const tilak.Turn,
     now: u64,
 ) !HandshakeOutcome {
-    // Identity gate — the existing introduction accept.
+    // Identity gate -- the existing introduction accept.
     try introduce.accept(table, intro, now);
 
     // The introduced peer's identity is the first 32 bytes of its peer id.
@@ -59,7 +59,7 @@ pub fn handshake(
     var identity: [pubkey_len]u8 = undefined;
     for (0..pubkey_len) |i| identity[i] = id_slice[i];
 
-    // Rotation gate — verify + freshest-wins, from turn_route.
+    // Rotation gate -- verify + freshest-wins, from turn_route.
     const route = turn_route.read_turn(known_turn, incoming_turn, identity);
     // invariant: a handshake that reaches here admitted the peer.
     assert(id_slice.len >= pubkey_len);
@@ -69,7 +69,7 @@ pub fn handshake(
 /// The same handshake, closing the loop: the peer's turn arrives *on the wire*,
 /// carried in the introduction's descriptor bytes rather than passed apart. The
 /// descriptor is a turn's wire form (`kumara/tilak.rye` `turn_to_bytes`); its
-/// integrity is doubly held — the introducer signed the whole introduction over
+/// integrity is doubly held -- the introducer signed the whole introduction over
 /// the descriptor, and the turn inside carries the peer's own signature. A
 /// descriptor too short to hold a turn refuses at the rotation gate.
 pub fn handshake_wire(
@@ -86,7 +86,7 @@ pub fn handshake_wire(
     for (0..pubkey_len) |i| identity[i] = id_slice[i];
 
     // Recover the turn from the descriptor bytes. A malformed descriptor is a
-    // refusal, not a crash — routing keeps the last trusted key.
+    // refusal, not a crash -- routing keeps the last trusted key.
     const parsed = tilak.turn_from_bytes(intro.descriptor.as_slice());
     if (parsed == null) {
         const kept: [pubkey_len]u8 = if (known_turn) |k| k.net_pubkey else [_]u8{0} ** pubkey_len;
@@ -110,7 +110,7 @@ fn bytes_eq(a: [pubkey_len]u8, b: [pubkey_len]u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // The peer's identity — its peer id carries its Kumara public key.
+    // The peer's identity -- its peer id carries its Kumara public key.
     const peer_pub = tilak.pubkey_of(&peer_seed);
     const peer_id = table_mod.PeerId.from_slice(&peer_pub) orelse return error.PeerIdRefused;
 

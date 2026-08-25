@@ -1,4 +1,4 @@
-//! Rye test: std.mem.containsAtLeastScalar — pass 9888.
+//! Rye test: std.mem.containsAtLeastScalar -- pass 9888.
 //!
 //! Deprecated wrapper; postcondition ties to countScalar (9951).
 

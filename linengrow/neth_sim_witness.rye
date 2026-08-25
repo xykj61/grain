@@ -1,4 +1,4 @@
-//! linengrow/neth_sim_witness.rye — proves Neth's deterministic simulation.
+//! linengrow/neth_sim_witness.rye -- proves Neth's deterministic simulation.
 //!
 //!   rye build linengrow/neth_sim_witness.rye -femit-bin=linengrow/bin/neth_sim_witness
 //!   linengrow/bin/neth_sim_witness

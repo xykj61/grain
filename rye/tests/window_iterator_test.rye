@@ -1,4 +1,4 @@
-//! Rye test: WindowIterator via mem.window — pass 9954.
+//! Rye test: WindowIterator via mem.window -- pass 9954.
 //!
 //! Sliding windows back hex dumps and chunked I/O; pairs with split iterators.
 

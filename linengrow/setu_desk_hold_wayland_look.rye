@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold_wayland_look.rye — present HOLD chrome on Wayland.
+//! linengrow/setu_desk_hold_wayland_look.rye -- present HOLD chrome on Wayland.
 //!
 //!   rye build linengrow/setu_desk_hold_wayland_look.rye \
 //!     brushstroke/xdg-shell-protocol.c -Ibrushstroke \

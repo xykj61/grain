@@ -1,4 +1,4 @@
-//! glow/rune_calln_witness.rye — proves the `%*` named-arg call rune head.
+//! glow/rune_calln_witness.rye -- proves the `%*` named-arg call rune head.
 //!
 //!   rye build glow/rune_calln_witness.rye -femit-bin=glow/bin/rune_calln_witness
 

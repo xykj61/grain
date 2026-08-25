@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold_wayland_check.rye — raster hold from station cache.
+//! linengrow/setu_desk_hold_wayland_check.rye -- raster hold from station cache.
 //!
 //! Reads tools/.cache/setu0/station.bron and reports Desk raster lit pixels.
 

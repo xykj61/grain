@@ -1,16 +1,16 @@
-//! linengrow/neth_apply_step.rye — Neth's apply step, distinct from writing.
+//! linengrow/neth_apply_step.rye -- Neth's apply step, distinct from writing.
 //!
 //! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
-//! pattern 3 ("written is not acknowledged — the manifest is the moment of
+//! pattern 3 ("written is not acknowledged -- the manifest is the moment of
 //! truth"): a result can be fully written to real, valid storage and still
 //! count for nothing until a separate, authoritative step formally admits
 //! it into the structure the rest of the system actually consults.
 //!
 //! For Neth specifically: `write_root` lands a new root somewhere real
-//! (in this module, `pending_written_root` — standing in for a disk write
+//! (in this module, `pending_written_root` -- standing in for a disk write
 //! that lives outside this module's own concern, same boundary
 //! neth_serial_core.rye already names for disk persistence). `apply_pending`
-//! is the distinct, later step that admits it into `applied_root` — the
+//! is the distinct, later step that admits it into `applied_root` -- the
 //! one field the rest of the system is ever allowed to consult.
 //!
 //! A crash in the window between the two costs nothing: `recover_after_crash`

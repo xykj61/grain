@@ -1,4 +1,4 @@
-//! Rye test: mem.rotate — pass 9918.
+//! Rye test: mem.rotate -- pass 9918.
 //!
 //! In-place left rotation; pairs with mem.reverse (9921) and mem.swap (9919).
 

@@ -1,5 +1,5 @@
 //! glow-book: runes.md#g-call
-//! glow/rune_call.rye — parses Glow's `%-` one-argument call rune head.
+//! glow/rune_call.rye -- parses Glow's `%-` one-argument call rune head.
 //!
 //! Per the sameness rune brief `%` category: `%-` calls a gate with one
 //! sample. Thirteenth rune head (STOA6). Shape:

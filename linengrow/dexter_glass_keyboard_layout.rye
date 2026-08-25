@@ -1,7 +1,7 @@
-//! linengrow/dexter_glass_keyboard_layout.rye — ZETA0/ZETA4 English layout tables.
+//! linengrow/dexter_glass_keyboard_layout.rye -- ZETA0/ZETA4 English layout tables.
 //!
 //! Glow-owned QWERTY pages for the glass keyboard (waymark ZETA). Device-free
-//! data only — paint and tap hit-testing are ZETA1+. iOS-inspired mode family
+//! data only -- paint and tap hit-testing are ZETA1+. iOS-inspired mode family
 //! from public notes; clean-room (no Apple assets). ZETA4 adds emoji pages.
 //! ZETA6: `ret` = newline; `send` (`^`) = submit.
 
@@ -27,7 +27,7 @@ pub const Key = union(enum) {
     delete,
     space,
     @"return",
-    /// ZETA6 upward send — Dexter `.submit` (label `^`).
+    /// ZETA6 upward send -- Dexter `.submit` (label `^`).
     send,
     to_numbers,
     to_letters,

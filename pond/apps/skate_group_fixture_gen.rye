@@ -1,15 +1,15 @@
-//! pond/apps/skate_group_fixture_gen.rye — generate surf/fixtures/group.bron with real Ed25519 vote signatures.
+//! pond/apps/skate_group_fixture_gen.rye -- generate surf/fixtures/group.bron with real Ed25519 vote signatures.
 //!
 //! DAHL-J10r4 reads a real Skate group record true. This generator produces that fixture reproducibly:
 //! it builds a demo signed group over the demo keeper seeds and renders it through rung three's own
-//! `render`, so the fixture is exactly what `skate_group_bron` reads — a genuine `format skate-group-v1`
+//! `render`, so the fixture is exactly what `skate_group_bron` reads -- a genuine `format skate-group-v1`
 //! record, not a hand-typed shape. The group has three founders (quorum 2); two signed votes admit Bram
 //! (the quorum is met), and one one-sided signed vote for Cate holds (short of quorum), so the record
-//! carries both an admitted candidate and a holding one — real structure a reader and an awk both count.
+//! carries both an admitted candidate and a holding one -- real structure a reader and an awk both count.
 //!
-//! Keeping the generator in-tree makes the fixture reproducible — re-running it reproduces the exact
+//! Keeping the generator in-tree makes the fixture reproducible -- re-running it reproduces the exact
 //! committed bytes. It lives beside its sibling modules so the `@import`s resolve through the same
-//! symlinks the apps use. Demo keeper seeds only — no real key, no identity invented.
+//! symlinks the apps use. Demo keeper seeds only -- no real key, no identity invented.
 //!
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
@@ -24,7 +24,7 @@ const bron = @import("skate_group_bron.rye");
 const signed = @import("skate_group_signed.rye");
 const kumara = @import("kumara.rye");
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented.
+// Demo keeper seeds -- plainly not real keys, so no identity is invented.
 const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -55,7 +55,7 @@ fn build_fixture(ring: *const signed.Keyring) !bron.SignedGroup {
     const wren_votes = signed.sign_vote(&wren_seed, demo_group, wren, bram);
     try sg.record_vote(ring, ivy, bram, &ivy_votes);
     try sg.record_vote(ring, wren, bram, &wren_votes);
-    // One one-sided signed vote for Cate holds — short of quorum, never seated.
+    // One one-sided signed vote for Cate holds -- short of quorum, never seated.
     const flax_votes = signed.sign_vote(&flax_seed, demo_group, flax, cate);
     try sg.record_vote(ring, flax, cate, &flax_votes);
     // invariant: Bram was admitted by quorum; Cate holds short of it.

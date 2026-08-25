@@ -1,4 +1,4 @@
-//! glow/lower_named_cast_witness.rye — proves `$:` · unit `$%` · payload `$%` named-cast.
+//! glow/lower_named_cast_witness.rye -- proves `$:` - unit `$%` - payload `$%` named-cast.
 //!
 //!   rye build glow/lower_named_cast_witness.rye -femit-bin=glow/bin/lower_named_cast_witness
 //!   glow/bin/lower_named_cast_witness

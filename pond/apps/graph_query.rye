@@ -1,16 +1,16 @@
-//! pond/apps/graph_query.rye — BUHR Journey 6, Rung 1: the intelligence reads the surface.
+//! pond/apps/graph_query.rye -- BUHR Journey 6, Rung 1: the intelligence reads the surface.
 //!
 //! BUHR is Surface & Intelligence. Journey 1 raised the intelligence (the Q-vane
-//! voices, each answering over a pinned corpus); Journeys 2–5 raised the surface
-//! (the Realidream Mantra graph — browsed, edited, themed). This rung fuses the two
+//! voices, each answering over a pinned corpus); Journeys 2-5 raised the surface
+//! (the Realidream Mantra graph -- browsed, edited, themed). This rung fuses the two
 //! halves the equinox is named for: a Lantern-shaped request whose *corpus is the
-//! living Mantra graph itself* — the very BoltCatalog the browser renders — answered
+//! living Mantra graph itself* -- the very BoltCatalog the browser renders -- answered
 //! and metered by the same contract that governs every other voice.
 //!
 //! No pinned answer: the number returned is a true reading of the actual catalog
 //! (lanes, bolts, a lane's head revision), read through the Mantra browser's own
 //! public readers. So the intelligence and the surface share one graph, exactly as
-//! editor and view already do — the count the voice reports is the count the painted
+//! editor and view already do -- the count the voice reports is the count the painted
 //! view shows.
 //!
 //! Additive by construction: it imports lantern_core and mantra_browser and calls
@@ -31,7 +31,7 @@ const graph_query_version = "20260812.140058";
 
 const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
 
-// The lane the `head` op reads — the demo catalog's two-revision lane, so the head
+// The lane the `head` op reads -- the demo catalog's two-revision lane, so the head
 // the voice reports (r2) is exactly the head the browser and editor journeys show.
 const head_peer = "local";
 const head_bolt = "notes";
@@ -54,7 +54,7 @@ pub const QueryError = error{
 };
 
 /// Recognize the operation named at the head of the prompt. Returns UnknownOp rather
-/// than guessing — the host never invents an answer over a graph it cannot read.
+/// than guessing -- the host never invents an answer over a graph it cannot read.
 pub fn route_op(prompt: []const u8) QueryError!Op {
     // invariant: the prompt fits Lantern's own bound before we read it
     assert(prompt.len <= lc.max_prompt_len);
@@ -118,7 +118,7 @@ pub fn compute(op: Op, catalog: *const mn.BoltCatalog, out_buf: []u8) QueryError
     return out_buf[0..written];
 }
 
-/// Count whitespace-separated words in `text` — the same token sense Lantern's own
+/// Count whitespace-separated words in `text` -- the same token sense Lantern's own
 /// length budget uses when it truncates a completion.
 pub fn count_words(text: []const u8) u32 {
     // invariant: the text respects Lantern's completion bound
@@ -143,7 +143,7 @@ pub fn count_words(text: []const u8) u32 {
     return words;
 }
 
-/// The Q-vane query over the demo graph — the catalog the reading journeys render.
+/// The Q-vane query over the demo graph -- the catalog the reading journeys render.
 /// A convenience over `answer_over`, so a caller with no catalog of its own still asks
 /// against the same living graph the browser paints.
 pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || QueryError)!lc.Response {
@@ -181,7 +181,7 @@ pub fn answer_over(req: lc.Request, allow_text: []const u8, catalog: *const mn.B
     var reason: lc.StoppedReason = .eos;
 
     // Honor Lantern's metering: when the real reading outruns the budget, truncate to
-    // max_tokens words and mark a length stop — the same discipline every other voice
+    // max_tokens words and mark a length stop -- the same discipline every other voice
     // applies to a reading that outruns its budget.
     if (tokens_out > req.max_tokens) {
         var words: u32 = 0;
@@ -267,7 +267,7 @@ fn welcome_head_query() !void {
         .max_tokens = 64,
     };
     const resp = try answer(req, allow, &buf);
-    // The a.txt lane chains r1 -> r2, so its head revision is 2 — the same head the
+    // The a.txt lane chains r1 -> r2, so its head revision is 2 -- the same head the
     // browser paints and the editor continues.
     assert(std.mem.eql(u8, resp.text, "2"));
     assert(resp.stopped_reason == .eos);

@@ -1,4 +1,4 @@
-//! linengrow/open_asks.rye — OA-L1 closed ask loop: post, apply, accept, complete, verify.
+//! linengrow/open_asks.rye -- OA-L1 closed ask loop: post, apply, accept, complete, verify.
 //!
 //!   rye build linengrow/open_asks.rye -femit-bin=linengrow/bin/open-asks
 //!   linengrow/bin/open-asks selftest
@@ -20,7 +20,7 @@ pub const applicant_seed = [_]u8{0x52} ** kumara.seed_length;
 const oa1_poster_seed = poster_seed;
 const oa1_applicant_seed = applicant_seed;
 
-/// Nyasa — the escrow account (Kaeden's word, 20260706.014512): value held in
+/// Nyasa -- the escrow account (Kaeden's word, 20260706.014512): value held in
 /// trust between poster and applicant, from acceptance until completion. A
 /// reserved deterministic identity, so a hold and a release name it as an
 /// ordinary account without forking the fact shape.
@@ -35,7 +35,7 @@ pub const escrow_release_prefix = "escrow-release request_ref=";
 pub const completion_memo_prefix = "completion request_ref=";
 pub const EscrowRole = enum { hold, release };
 
-/// OA-L4 consent memo values — the applicant names whether this completion may
+/// OA-L4 consent memo values -- the applicant names whether this completion may
 /// count toward a private reputation fold. Withheld consent excludes the bounty
 /// entirely; missing consent after completion excludes it too.
 pub const consent_grant = "grant";
@@ -45,7 +45,7 @@ pub const max_reputation_cycles: u32 = 8;
 
 pub const oa2_payload_header: u32 = kumara.signature_length + 4;
 
-/// Pinned witness request — canonical bytes for `tools/fixtures/open_asks_request.bron`.
+/// Pinned witness request -- canonical bytes for `tools/fixtures/open_asks_request.bron`.
 pub const witness_canonical_request =
     \\poster c050c5637a44fa8629fff3cccce2300cb362a63d99d95fc54145266f4332445a
     \\title animator for researcher interview visuals
@@ -657,7 +657,7 @@ fn fold_escrow_on_completion(
     }
 }
 
-/// OA-L3 escrow fold: post, apply, accept, hold, release — on one log.
+/// OA-L3 escrow fold: post, apply, accept, hold, release -- on one log.
 ///
 /// Invariants (stated first in the session log, enforced here):
 ///   - conservation: the release equals the held amount; the escrow balance
@@ -719,9 +719,9 @@ pub fn fold_escrow_log(
 ///   - `withhold` and missing consent exclude the bounty entirely;
 ///   - consent requires a prior completion for the same `request_ref`;
 ///   - no double consent on one bounty;
-///   - the fold is deterministic — the same log always yields the same view.
+///   - the fold is deterministic -- the same log always yields the same view.
 /// Payment memo for reputation: plain completion, escrow release (delivery), or
-/// escrow hold (skipped — a promise, not a delivery).
+/// escrow hold (skipped -- a promise, not a delivery).
 fn completion_request_ref(memo: []const u8) error{FoldFailed}!?[]const u8 {
     if (std.mem.startsWith(u8, memo, escrow_hold_prefix)) return null;
     if (std.mem.startsWith(u8, memo, completion_memo_prefix)) {
@@ -1068,7 +1068,7 @@ fn run_selftest(io: std.Io) !u8 {
     return 0;
 }
 
-/// Public welcome fold for Skate views — OA-L1 closed loop in-process.
+/// Public welcome fold for Skate views -- OA-L1 closed loop in-process.
 pub fn run_welcome_fold(io: std.Io) !FoldState {
     const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
     const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
@@ -1166,7 +1166,7 @@ pub fn write_escrow_payment_canonical(
     return try rc.write_canonical_fact(fields, out);
 }
 
-/// Public escrow welcome fold for Skate views — OA-L3 hold then release in-process.
+/// Public escrow welcome fold for Skate views -- OA-L3 hold then release in-process.
 pub fn run_escrow_welcome_fold(io: std.Io) !FoldState {
     const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);
     const applicant_kp = kumara.keypair_from_seed(&oa1_applicant_seed);
@@ -1247,7 +1247,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
     request_ref_hex(canonical_req[0..req_len], &ref_hex);
     const stipend_text = req_fields.stipend;
 
-    // Unwelcome path 1 — release with no prior hold.
+    // Unwelcome path 1 -- release with no prior hold.
     {
         var bad: [max_log_len]u8 = undefined;
         var bl: u32 = 0;
@@ -1258,7 +1258,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
         } else |_| print("oal3: release without hold refused — GREEN unwelcome path\n", .{});
     }
 
-    // Unwelcome path 2 — release in the wrong amount.
+    // Unwelcome path 2 -- release in the wrong amount.
     {
         var bad: [max_log_len]u8 = undefined;
         var bl: u32 = 0;
@@ -1270,7 +1270,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
         } else |_| print("oal3: wrong-amount release refused — GREEN unwelcome path\n", .{});
     }
 
-    // Unwelcome path 3 — release to the wrong applicant.
+    // Unwelcome path 3 -- release to the wrong applicant.
     {
         var bad: [max_log_len]u8 = undefined;
         var bl: u32 = 0;
@@ -1282,7 +1282,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
         } else |_| print("oal3: wrong-applicant release refused — GREEN unwelcome path\n", .{});
     }
 
-    // Unwelcome path 4 — a second release on a settled bounty.
+    // Unwelcome path 4 -- a second release on a settled bounty.
     {
         var bad: [max_log_len]u8 = undefined;
         var bl: u32 = 0;
@@ -1295,7 +1295,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
         } else |_| print("oal3: double release refused — GREEN unwelcome path\n", .{});
     }
 
-    // Unwelcome path 5 — a second hold on the same request.
+    // Unwelcome path 5 -- a second hold on the same request.
     {
         var bad: [max_log_len]u8 = undefined;
         var bl: u32 = 0;
@@ -1547,7 +1547,7 @@ fn verify_reputation_welcome_fold(
     return view_a;
 }
 
-/// Public reputation welcome fold for Skate views — OA-L4 consent-before-counting in-process.
+/// Public reputation welcome fold for Skate views -- OA-L4 consent-before-counting in-process.
 pub fn run_reputation_welcome_fold(io: std.Io) !ReputationFoldState {
     _ = io;
     const poster_kp = kumara.keypair_from_seed(&oa1_poster_seed);

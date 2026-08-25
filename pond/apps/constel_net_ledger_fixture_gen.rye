@@ -1,13 +1,13 @@
-//! pond/apps/constel_net_ledger_fixture_gen.rye — reproducibly emit the real constel-ledger fixture record.
+//! pond/apps/constel_net_ledger_fixture_gen.rye -- reproducibly emit the real constel-ledger fixture record.
 //!
 //! Rung four reads a genuine on-disk ledger record and cross-checks the harness's fold against an
 //! independent measure. This generator produces that fixture reproducibly, so the on-disk bytes are
-//! exactly what the ledger renders — a keeper can regenerate `tools/fixtures/constel_net_ledger.bron`
+//! exactly what the ledger renders -- a keeper can regenerate `tools/fixtures/constel_net_ledger.bron`
 //! and get the identical record, never a hand-mocked shape. It opens a demo sovereign ledger (rung
-//! one), issues 100, taxes 30, and reserves the star `vega` for 20 (rung two — supply folds to 50),
+//! one), issues 100, taxes 30, and reserves the star `vega` for 20 (rung two -- supply folds to 50),
 //! builds a portable ledger (rung three), and prints the `format constel-ledger-v1` record.
 //!
-//! Demo keeper seeds only — no real key, no funds, no network, no custody. The record names a fake
+//! Demo keeper seeds only -- no real key, no funds, no network, no custody. The record names a fake
 //! dev-net under a law-safe name; nothing it holds can reach the live network or move a dollar.
 //!
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr:
@@ -40,7 +40,7 @@ fn emit_record() !u8 {
     const pl = try bron.from_ledger(&net_ledger);
     var buf: [bron.max_record]u8 = undefined;
     const n = try bron.render(&pl, &buf);
-    // invariant: the render is bounded and non-empty — a real record always carries its header.
+    // invariant: the render is bounded and non-empty -- a real record always carries its header.
     assert(n > 0);
     assert(n <= bron.max_record);
     print("{s}", .{buf[0..n]});

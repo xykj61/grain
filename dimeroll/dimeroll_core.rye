@@ -1,8 +1,8 @@
-//! dimeroll/dimeroll_core.rye — Dimeroll: chart, journal, trial-balance fold, reports.
+//! dimeroll/dimeroll_core.rye -- Dimeroll: chart, journal, trial-balance fold, reports.
 //!
 //! Centralized books of record. Debit-positive nets; conservation holds when the sum of nets is zero.
-//! Income statement and balance sheet projections from the same fold · 20260713.
-//! Journal filters deepened: account · memo prefix · cash flow · sum amounts · 20260713.
+//! Income statement and balance sheet projections from the same fold - 20260713.
+//! Journal filters deepened: account - memo prefix - cash flow - sum amounts - 20260713.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -63,14 +63,14 @@ pub const TrialBalance = struct {
     }
 };
 
-/// P&L projection — revenue and expense as positive magnitudes; net = revenue − expense.
+/// P&L projection -- revenue and expense as positive magnitudes; net = revenue − expense.
 pub const IncomeStatement = struct {
     revenue: i64,
     expense: i64,
     net_income: i64,
 };
 
-/// Balance-sheet projection — cash asset; booked equity credit; retained from P&L.
+/// Balance-sheet projection -- cash asset; booked equity credit; retained from P&L.
 pub const BalanceSheet = struct {
     cash: i64,
     equity_booked: i64,
@@ -81,7 +81,7 @@ pub const BalanceSheet = struct {
     }
 };
 
-/// Cash movement fold — inflow when cash is debited; outflow when cash is credited.
+/// Cash movement fold -- inflow when cash is debited; outflow when cash is credited.
 pub const CashFlow = struct {
     inflow: i64,
     outflow: i64,
@@ -144,7 +144,7 @@ pub fn fold_balance_sheet(tb: TrialBalance) BalanceSheet {
     return sheet;
 }
 
-/// Entries that debit or credit the named account — indices in held order.
+/// Entries that debit or credit the named account -- indices in held order.
 pub fn filter_by_account(
     entries: []const Entry,
     account: Account,
@@ -162,7 +162,7 @@ pub fn filter_by_account(
     return count;
 }
 
-/// Entries whose memo starts with `prefix` — indices in held order.
+/// Entries whose memo starts with `prefix` -- indices in held order.
 pub fn filter_by_memo_prefix(
     entries: []const Entry,
     prefix: []const u8,
@@ -272,7 +272,7 @@ pub fn collect_exceptions(
         if (parse_entry(draft, &entry)) |_| {
             var tb: TrialBalance = .{};
             if (post_entry(&tb, entry)) |_| {
-                // Welcome draft — not an exception.
+                // Welcome draft -- not an exception.
             } else |err| {
                 const reason: []const u8 = switch (err) {
                     error.BadAmount => "bad amount",

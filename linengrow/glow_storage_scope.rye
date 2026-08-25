@@ -1,9 +1,9 @@
-//! linengrow/glow_storage_scope.rye — Glow Resource Scope mold.
+//! linengrow/glow_storage_scope.rye -- Glow Resource Scope mold.
 //!
 //! One mold for GrapheneOS **Storage Scopes** and **Contact Scopes**
 //! (studied `20260716` in expanding-prompts/yonder/20260716-142818): an app sees
 //! only resources it was granted; access ends when the grant is revoked
-//! (uninstall-shaped). Clean-room Glow parallel — bounded (resource, rights)
+//! (uninstall-shaped). Clean-room Glow parallel -- bounded (resource, rights)
 //! entries, checked at the boundary, never ambient trust. Resource names
 //! choose the domain (`photos` / `drafts` for storage, `contacts` /
 //! `contact-group-*` for contacts); the mold stays one.
@@ -12,7 +12,7 @@
 //! Does not copy GrapheneOS code or docs; gratitude study only.
 //!
 //! Filename keeps `storage_scope` for accrete-never-break; living name is
-//! Resource Scope (Storage · Contact).
+//! Resource Scope (Storage - Contact).
 
 const std = @import("std");
 const assert = std.debug.assert;

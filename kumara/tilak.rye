@@ -1,32 +1,32 @@
-//! kumara/tilak.rye — the Kumara identity template: the point and the bind.
+//! kumara/tilak.rye -- the Kumara identity template: the point and the bind.
 //!
 //! Kumara names the keypair that signs a fact before it enters the log
 //! (`tally/kumara.rye`). A Kumara *identity* is more than a key: it is a small
-//! family of type-marked records — tilaks — that say who a key is, who keeps it,
+//! family of type-marked records -- tilaks -- that say who a key is, who keeps it,
 //! and how it may move. This file seats the two load-bearing tilaks every other
 //! hangs from:
 //!
-//!   * **point** — the deed: a number within a scarcity shape, its keeper, and a
+//!   * **point** -- the deed: a number within a scarcity shape, its keeper, and a
 //!     version that climbs by exactly one on every change.
-//!   * **bind** — the marriage of a keypair to its keeper, signed *both* ways:
+//!   * **bind** -- the marriage of a keypair to its keeper, signed *both* ways:
 //!     the key signs the keeper, and the keeper signs the key. Neither alone is
 //!     the identity; the mutual signature is.
 //!
 //! A "template" is this shape; an "instance" is one filled quintet of tilaks for
 //! a real pilot. This module builds and verifies an instance from two seeds and
-//! serializes it to Bron facts — the first identity template plus a witnessed
+//! serializes it to Bron facts -- the first identity template plus a witnessed
 //! example instance. The pilot's own instance is filled by his hand, from his own
 //! seed kept in his own jail; this file never invents a real pilot's key.
 //!
-//! Scarcity is the d12·d60 fractal (`../comlink/topology.rye`): a point number
-//! decodes to a place — a galaxy, a star within it, a planet within that — and the
-//! place is the tier. The elder Azimuth ranks (2^8 · 2^16 · 2^32) are retired
+//! Scarcity is the d12-d60 fractal (`../comlink/topology.rye`): a point number
+//! decodes to a place -- a galaxy, a star within it, a planet within that -- and the
+//! place is the tier. The elder Azimuth ranks (2^8 - 2^16 - 2^32) are retired
 //! (Keaton's word `20260810`); the tiers stay legible over keypairs that are what
 //! actually trust, rather than a hierarchy of power.
 //!
 //! Settled since (JARL): the ledger is built on Sui (`../settlement/constellation.rye`),
-//! the scarcity is the d12·d60 fractal, and the rotation and capability tilaks
-//! (turn · tend · sow · hand · sponsor) all stand below. Held still: the human-name
+//! the scarcity is the d12-d60 fractal, and the rotation and capability tilaks
+//! (turn - tend - sow - hand - sponsor) all stand below. Held still: the human-name
 //! custody park, and how small the shared surface can shrink.
 //!
 //!   rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
@@ -41,15 +41,15 @@ const topology = @import("topology.rye");
 
 pub const tilak_version = "20260810.002400";
 
-// A point number's tier is its place in the d12·d60 fractal. Topology is the one
+// A point number's tier is its place in the d12-d60 fractal. Topology is the one
 // source of scarcity, so the tilak keeps no ceilings of its own; the elder Azimuth
 // ranks are retired (Keaton's word `20260810`).
 pub const Tier = topology.Tier;
 
-/// The tier a point number falls in — its place in the fractal, address legibility
+/// The tier a point number falls in -- its place in the fractal, address legibility
 /// rather than a rank of power. A number past the universe has no place.
 pub fn tier_of(number: u32) Tier {
-    // invariant: a point number sits inside the d12·d60 universe.
+    // invariant: a point number sits inside the d12-d60 universe.
     assert(number < topology.universe_points);
     return topology.decode(number).?.tier;
 }
@@ -57,7 +57,7 @@ pub fn tier_of(number: u32) Tier {
 const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
 
-/// The public key bytes of the keypair a seed yields — the identity a turn or a
+/// The public key bytes of the keypair a seed yields -- the identity a turn or a
 /// bind is verified against, without exposing the whole keypair.
 pub fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
     return kumara.keypair_from_seed(seed).public_key.bytes;
@@ -73,10 +73,10 @@ pub const Point = struct {
 
     /// A fresh point at version 1, parented to its topology default sponsor.
     pub fn seat(number: u32, keeper: [pubkey_len]u8) Point {
-        // invariant: a point number sits inside the d12·d60 universe.
+        // invariant: a point number sits inside the d12-d60 universe.
         assert(number < topology.universe_points);
-        // invariant: the default parent is the topology sponsor — a planet's star, a
-        // star's galaxy, a galaxy itself — the same parent link the fractal names.
+        // invariant: the default parent is the topology sponsor -- a planet's star, a
+        // star's galaxy, a galaxy itself -- the same parent link the fractal names.
         const default_parent: u32 = topology.encode(topology.decode(number).?.parent());
         const p = Point{ .number = number, .keeper = keeper, .parent = default_parent, .version = 1 };
         // invariant: a seated point begins at version one.
@@ -139,7 +139,7 @@ fn u64_le(out: *[8]u8, v: u64) void {
     std.mem.writeInt(u64, out, v, .little);
 }
 
-/// The rotation record — the networking key Comlink reads on every handshake, with
+/// The rotation record -- the networking key Comlink reads on every handshake, with
 /// two counters that only ever climb: `key_counter` on an ordinary rotation,
 /// `reset_counter` when continuity must start over (which zeroes the key counter).
 /// The identity key signs the record, so a rotation is authentic, not forged.
@@ -206,7 +206,7 @@ pub fn turn_from_bytes(bytes: []const u8) ?Turn {
 // The three lendable powers: management (tend), spawn (sow), transfer (hand).
 pub const Power = enum(u8) { tend = 1, sow = 2, hand = 3 };
 
-/// A capability record — one power over one point, in exactly one holder's hand at a
+/// A capability record -- one power over one point, in exactly one holder's hand at a
 /// time. The keeper signs the grant, so the holder's claim traces back to the keeper;
 /// a capability moves by a fresh signed grant, never by copying an old one.
 pub const Cap = struct {
@@ -242,7 +242,7 @@ pub fn verify_cap(c: *const Cap, keeper_pubkey: [pubkey_len]u8) bool {
     return true;
 }
 
-/// The parent link — sponsorship. Every point has an arithmetic default parent; a
+/// The parent link -- sponsorship. Every point has an arithmetic default parent; a
 /// child may escape to a chosen one, and that escape is the child's word alone, so
 /// the child's identity key signs the chosen parent. `chosen == default` means no
 /// escape yet.
@@ -301,7 +301,7 @@ fn tier_name(t: Tier) []const u8 {
 }
 
 // The Bron facts are data, so they go to stdout (diagnostics use stderr `print`).
-// A line is short — a hex field is at most 128 characters — so a stack buffer holds it.
+// A line is short -- a hex field is at most 128 characters -- so a stack buffer holds it.
 const max_bron_line: u32 = 256;
 
 fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
@@ -311,7 +311,7 @@ fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
     out.writeStreamingAll(io, line) catch {};
 }
 
-/// Emit a point as a Bron fact — one field per line, immutable at the seam.
+/// Emit a point as a Bron fact -- one field per line, immutable at the seam.
 pub fn emit_point(io: std.Io, p: *const Point) void {
     var keeper_hex: [pubkey_len * 2]u8 = undefined;
     to_hex(&p.keeper, &keeper_hex);
@@ -390,14 +390,14 @@ pub fn emit_sponsor(io: std.Io, s: *const Sponsor) void {
 
 // --- selftest and example instance --------------------------------------
 
-// Example seeds — plainly not a real pilot's key, so no identity is invented.
+// Example seeds -- plainly not a real pilot's key, so no identity is invented.
 const example_key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const example_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const example_net_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const example_number: u32 = 27; // a star in the inclusive fractal — of_star(3,2), galaxy 3
 const example_chosen_parent: u32 = 7; // an escape to a different galaxy (default is 3)
 
-// The whole example instance — every tilak, from the example seeds.
+// The whole example instance -- every tilak, from the example seeds.
 const Instance = struct { b: Bind, p: Point, t: Turn, tend: Cap, sow: Cap, hand: Cap, s: Sponsor };
 
 fn example_instance() Instance {

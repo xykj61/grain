@@ -1,4 +1,4 @@
-//! glow/rune_core_witness.rye — proves the thin `|%` core shape.
+//! glow/rune_core_witness.rye -- proves the thin `|%` core shape.
 //!
 //!   rye build glow/rune_core_witness.rye -femit-bin=glow/bin/rune_core_witness
 

@@ -1,10 +1,10 @@
 //! glow-book: runes.md#gd-truth
 //! glow-book: runes.md#gd-entry-shape
-//! glow/truth_semantics.rye — Glow ambient truth vs Nock loobean seam.
+//! glow/truth_semantics.rye -- Glow ambient truth vs Nock loobean seam.
 //!
 //! Per context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md:
 //! Glow ambient truth is Zig/Rye (`bool`, exit 0 = success). Hoon/Nock loobeans
-//! (0 = yes, 1 = no) convert only at an explicit seam — never as ambient Glow.
+//! (0 = yes, 1 = no) convert only at an explicit seam -- never as ambient Glow.
 
 pub const exit_success: u8 = 0;
 pub const exit_failure: u8 = 1;
@@ -25,17 +25,17 @@ pub fn loob_to_bool(loob: u64) TruthError!bool {
     return error.MalformedLoobean;
 }
 
-/// Convert Zig bool to a Nock/Hoon loobean (true → 0, false → 1).
+/// Convert Zig bool to a Nock/Hoon loobean (true -> 0, false -> 1).
 pub fn bool_to_loob(b: bool) u64 {
     return if (b) 0 else 1;
 }
 
-/// Process exit for a welcome generator path — Zig/POSIX success, not loob yes.
+/// Process exit for a welcome generator path -- Zig/POSIX success, not loob yes.
 pub fn welcome_exit() u8 {
     return exit_success;
 }
 
-/// Process exit for an unwelcome generator path — Zig/POSIX failure.
+/// Process exit for an unwelcome generator path -- Zig/POSIX failure.
 pub fn unwelcome_exit() u8 {
     return exit_failure;
 }

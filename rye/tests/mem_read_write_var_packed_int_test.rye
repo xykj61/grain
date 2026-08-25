@@ -1,4 +1,4 @@
-//! Rye test: std.mem.readVarPackedInt / writeVarPackedInt — pass 9906.
+//! Rye test: std.mem.readVarPackedInt / writeVarPackedInt -- pass 9906.
 //!
 //! Variable bit-count load/store at arbitrary offsets; pairs with readPackedInt (9907).
 

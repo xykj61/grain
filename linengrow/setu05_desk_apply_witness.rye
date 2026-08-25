@@ -1,4 +1,4 @@
-//! linengrow/setu05_desk_apply_witness.rye — proves SETU0.5 Desk apply.
+//! linengrow/setu05_desk_apply_witness.rye -- proves SETU0.5 Desk apply.
 //!
 //!   rye build linengrow/setu05_desk_apply_witness.rye \
 //!     -femit-bin=linengrow/bin/setu05_desk_apply_witness

@@ -1,4 +1,4 @@
-//! Rye test: SplitBackwardsIterator via splitBackwardsScalar — pass 9962.
+//! Rye test: SplitBackwardsIterator via splitBackwardsScalar -- pass 9962.
 //!
 //! Backward split walks fields from the tail; next() mirrors forward SplitIterator (9993).
 

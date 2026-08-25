@@ -1,4 +1,4 @@
-//! Rye test: std.mem.eql — pass 9941.
+//! Rye test: std.mem.eql -- pass 9941.
 //!
 //! Slice equality backs Rishi name checks and findDiff (9949) / order (9953).
 

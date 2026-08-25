@@ -1,4 +1,4 @@
-//! mantra/snapshot_export.rye — I2 snapshot export: batch replay + horizon bundles.
+//! mantra/snapshot_export.rye -- I2 snapshot export: batch replay + horizon bundles.
 //!
 //! Snapshot frames reuse `resin_batch.rye` frames under a `0x06` snapshot header.
 //! Horizon bundles add bundle prefixes (`catalog/`, `trust/`), a SHA3-512 head record,
@@ -8,7 +8,7 @@
 //!   mantra/bin/snapshot-export selftest
 //!
 //! Counsel: [`counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md) I2
-//! · ruling [`counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
+//! - ruling [`counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -515,7 +515,7 @@ pub fn export_catalog_horizon(
     return try export_catalog(&staged, signer, out);
 }
 
-/// Import a snapshot into `dest`, replacing nothing — appends via each batch apply.
+/// Import a snapshot into `dest`, replacing nothing -- appends via each batch apply.
 pub fn import_catalog(
     dest: *ns.BoltCatalog,
     snapshot: []const u8,

@@ -1,4 +1,4 @@
-//! linengrow/setu4_framed_lane.rye — SETU4: NCM-framed ping over live UDP.
+//! linengrow/setu4_framed_lane.rye -- SETU4: NCM-framed ping over live UDP.
 //!
 //! Affirmed thin face: the SETU3 NCM-shaped frame carries a SETU1 lane ping
 //! across a real localhost UDP socket (live wire stand-in). Host path may

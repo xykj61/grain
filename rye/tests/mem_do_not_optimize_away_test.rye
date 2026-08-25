@@ -1,4 +1,4 @@
-//! Rye test: std.mem.doNotOptimizeAway — pass 9887.
+//! Rye test: std.mem.doNotOptimizeAway -- pass 9887.
 //!
 //! Compiler barrier; postcondition proves memory and scalars survive the call.
 

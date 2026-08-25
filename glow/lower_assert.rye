@@ -1,8 +1,8 @@
 //! glow-book: runes.md#g-assert
-//! glow/lower_assert.rye — lower Glow `?>` / `?<` to Rye `assert` (STOA88).
+//! glow/lower_assert.rye -- lower Glow `?>` / `?<` to Rye `assert` (STOA88).
 //!
-//! Hoon: `?> p q` → crash unless p; `?< p q` → crash if p.
-//! Glow ambient truth is Zig bool / comparison — not Hoon loobeans.
+//! Hoon: `?> p q` -> crash unless p; `?< p q` -> crash if p.
+//! Glow ambient truth is Zig bool / comparison -- not Hoon loobeans.
 //! Emitted programs use unqualified `assert` (TAME opening triad).
 //!
 //!   ?>  (gth tick 32)  1

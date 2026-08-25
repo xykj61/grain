@@ -1,4 +1,4 @@
-//! glow/rune_cast_witness.rye — proves the `^-` cast rune's front half.
+//! glow/rune_cast_witness.rye -- proves the `^-` cast rune's front half.
 //!
 //!   rye build glow/rune_cast_witness.rye -femit-bin=glow/bin/rune_cast_witness
 //!   glow/bin/rune_cast_witness

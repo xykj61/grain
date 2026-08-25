@@ -1,4 +1,4 @@
-//! comlink/guest_catchup_fetcher_rx_r2.rye — catch-up device wire: fetcher RX (apply rev 2).
+//! comlink/guest_catchup_fetcher_rx_r2.rye -- catch-up device wire: fetcher RX (apply rev 2).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

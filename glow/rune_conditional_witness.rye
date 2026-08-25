@@ -1,10 +1,10 @@
-//! glow/rune_conditional_witness.rye — proves the `?:` if/then/else rune head.
+//! glow/rune_conditional_witness.rye -- proves the `?:` if/then/else rune head.
 //!
 //!   rye build glow/rune_conditional_witness.rye -femit-bin=glow/bin/rune_conditional_witness
 //!   glow/bin/rune_conditional_witness
 //!
 //! Six claims, matching the cast witness's shape for a third category:
-//!   1. Brief example "?:  (gth tick 32)" → test "(gth tick 32)".
+//!   1. Brief example "?:  (gth tick 32)" -> test "(gth tick 32)".
 //!   2. Trailing then/else on the same line do not confuse the test scan.
 //!   3. A bare identifier test still parses ("?:  ready").
 //!   4. A non-if line refuses NotAnIf.

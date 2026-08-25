@@ -1,4 +1,4 @@
-//! linengrow/seva_backchannel_witness.rye — proves Seva B2: audience + back-channel.
+//! linengrow/seva_backchannel_witness.rye -- proves Seva B2: audience + back-channel.
 //!
 //!   rye build linengrow/seva_backchannel_witness.rye -femit-bin=linengrow/bin/seva_backchannel_witness
 //!   linengrow/bin/seva_backchannel_witness
@@ -10,14 +10,14 @@
 //! Five claims:
 //!   1. A mixed session (broadcaster content interleaved with two viewers'
 //!      chat) replays multi-signer, each event verified against the key it
-//!      names — the back-channel folded into the same stream.
+//!      names -- the back-channel folded into the same stream.
 //!   2. VOD: replaying the finished log at rest reproduces the identical
-//!      root — the recording is the log, deterministic on demand.
-//!   3. A chat event from an unadmitted signer is refused UnknownSigner —
+//!      root -- the recording is the log, deterministic on demand.
+//!   3. A chat event from an unadmitted signer is refused UnknownSigner --
 //!      consent-before-counting: only registered voices fold.
-//!   4. A tampered chat line fails replay — a viewer cannot forge another's
+//!   4. A tampered chat line fails replay -- a viewer cannot forge another's
 //!      voice or edit the record.
-//!   5. Audience: two followers replaying the same log agree on the root —
+//!   5. Audience: two followers replaying the same log agree on the root --
 //!      many subscribers see one verified stream.
 
 const std = @import("std");

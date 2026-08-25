@@ -1,13 +1,13 @@
-//! settlement/names.rye — human-name custody, the SuiNS-analog.
+//! settlement/names.rye -- human-name custody, the SuiNS-analog.
 //!
 //! A point number is legible to a machine; a **name** is legible to a person. This
-//! module is how a settled number comes to wear a spoken name — "alice" resolving to
-//! a point, and the point resolving back — the last of JARL's settlement doors.
+//! module is how a settled number comes to wear a spoken name -- "alice" resolving to
+//! a point, and the point resolving back -- the last of JARL's settlement doors.
 //!
 //! Names are the one surface that genuinely needs **consensus**. A point's keys and
 //! custody are its owner's own business, held on the fast path in a `Deed`
 //! (`constellation.rye`); but a *name* must be globally unique, so everyone agrees
-//! who "alice" is — and that agreement is a shared registry the whole network reads
+//! who "alice" is -- and that agreement is a shared registry the whole network reads
 //! together. This module is that registry, kept small and bounded.
 //!
 //! Custody, not mere registration: a name is **claimed** by the point's keeper (who
@@ -36,7 +36,7 @@ pub const names_version = "20260810.005752";
 const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
 
-// A name is a short, lowercase, DNS-like label — letters, digits, and inner hyphens.
+// A name is a short, lowercase, DNS-like label -- letters, digits, and inner hyphens.
 // Bounded so a registry entry is fixed-size and a name is always legible at a glance.
 pub const max_name_len: u32 = 32;
 
@@ -53,7 +53,7 @@ pub const NameError = error{
     NotNamed,
 };
 
-/// A validated human name — bounded bytes and a length. Only `make_name` builds one,
+/// A validated human name -- bounded bytes and a length. Only `make_name` builds one,
 /// so a `Name` in hand is always well-formed.
 pub const Name = struct {
     bytes: [max_name_len]u8,
@@ -103,7 +103,7 @@ fn name_message(out: *[name_msg_len]u8, tag: u8, name: *const Name, point: u32) 
     std.mem.writeInt(u32, out[33..37], point, .little);
 }
 
-/// Sign a name claim or release under a keeper seed — the owner's word that this
+/// Sign a name claim or release under a keeper seed -- the owner's word that this
 /// exact name belongs to (or leaves) this point. `tag_claim` or `tag_release`.
 pub fn sign_name(keeper_seed: *const [kumara.seed_length]u8, tag: u8, name: *const Name, point: u32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
@@ -112,14 +112,14 @@ pub fn sign_name(keeper_seed: *const [kumara.seed_length]u8, tag: u8, name: *con
     return kumara.sign(&msg, kp, null).toBytes();
 }
 
-/// Sign a **claim** — the owner's word that this name belongs to this point. A caller
+/// Sign a **claim** -- the owner's word that this name belongs to this point. A caller
 /// outside this module signs a valid claim through here, without needing the private
 /// claim tag; the signature is exactly what `claim` verifies.
 pub fn sign_claim(keeper_seed: *const [kumara.seed_length]u8, name: *const Name, point: u32) [sig_len]u8 {
     return sign_name(keeper_seed, tag_claim, name, point);
 }
 
-/// Sign a **release** — the owner's word that this name leaves this point. The mirror
+/// Sign a **release** -- the owner's word that this name leaves this point. The mirror
 /// of `sign_claim`, and exactly what `release` verifies.
 pub fn sign_release(keeper_seed: *const [kumara.seed_length]u8, name: *const Name, point: u32) [sig_len]u8 {
     return sign_name(keeper_seed, tag_release, name, point);
@@ -138,7 +138,7 @@ const NameEntry = struct {
     point: u32,
 };
 
-/// The shared name registry — the consensus surface that maps names to points, one
+/// The shared name registry -- the consensus surface that maps names to points, one
 /// name to one point and one point to one name. Bounded, and read both ways.
 pub const NameRegistry = struct {
     entries: [max_names]NameEntry,
@@ -149,7 +149,7 @@ pub const NameRegistry = struct {
         return .{ .entries = undefined, .filled = 0 };
     }
 
-    /// Resolve a name to its point, or null — the forward read the whole world shares.
+    /// Resolve a name to its point, or null -- the forward read the whole world shares.
     pub fn resolve(self: *const NameRegistry, text: []const u8) ?u32 {
         // invariant: the fill count never runs past the bounded entries.
         assert(self.filled <= max_names);
@@ -160,7 +160,7 @@ pub const NameRegistry = struct {
         return null;
     }
 
-    /// Resolve a point back to its name, or null — the reverse read.
+    /// Resolve a point back to its name, or null -- the reverse read.
     pub fn reverse(self: *const NameRegistry, point: u32) ?*const Name {
         // invariant: the fill count never runs past the bounded entries.
         assert(self.filled <= max_names);
@@ -180,8 +180,8 @@ pub const NameRegistry = struct {
     }
 };
 
-/// Claim a name for a settled point. The claimant must own the point — its Deed
-/// verifies against the shared surface — and the point's keeper must sign this exact
+/// Claim a name for a settled point. The claimant must own the point -- its Deed
+/// verifies against the shared surface -- and the point's keeper must sign this exact
 /// name. A name is globally unique (one name, one point), and a point wears at most
 /// one (its primary). This is custody's first half: taking a name into one's hand.
 pub fn claim(
@@ -193,13 +193,13 @@ pub fn claim(
 ) NameError!void {
     // invariant: the bounded registry never overflows.
     if (registry.filled >= max_names) return error.Full;
-    // invariant: the claimant owns the point — its deed is the current member.
+    // invariant: the claimant owns the point -- its deed is the current member.
     if (!settlement.verify(con, deed)) return error.NotOwner;
-    // invariant: the point's keeper signed this exact name — a name is the owner's word.
+    // invariant: the point's keeper signed this exact name -- a name is the owner's word.
     if (!verify_name_sig(deed.keeper, tag_claim, name, deed.point, keeper_sig)) return error.BadClaim;
-    // invariant: a name is globally unique — one name resolves to one point.
+    // invariant: a name is globally unique -- one name resolves to one point.
     if (registry.index_of(name) != null) return error.NameTaken;
-    // invariant: one point wears one name — the primary-name policy for this lap.
+    // invariant: one point wears one name -- the primary-name policy for this lap.
     if (registry.reverse(deed.point) != null) return error.AlreadyNamed;
 
     registry.entries[registry.filled] = .{ .name = name.*, .point = deed.point };
@@ -210,7 +210,7 @@ pub fn claim(
 }
 
 /// Release a name held by a settled point, freeing it for anyone. The same hand that
-/// claimed it must sign the release — custody's second half: letting a name go. The
+/// claimed it must sign the release -- custody's second half: letting a name go. The
 /// name must exist and belong to this very point.
 pub fn release(
     registry: *NameRegistry,
@@ -221,13 +221,13 @@ pub fn release(
 ) NameError!void {
     // invariant: the releaser owns the point.
     if (!settlement.verify(con, deed)) return error.NotOwner;
-    // invariant: the keeper signed this exact release — never a replayed claim.
+    // invariant: the keeper signed this exact release -- never a replayed claim.
     if (!verify_name_sig(deed.keeper, tag_release, name, deed.point, keeper_sig)) return error.BadClaim;
     const idx = registry.index_of(name) orelse return error.NotNamed;
     // invariant: a name is freed only by the point that actually holds it.
     if (registry.entries[idx].point != deed.point) return error.NotOwner;
 
-    // Remove by swapping the last entry into the freed slot — the array stays packed.
+    // Remove by swapping the last entry into the freed slot -- the array stays packed.
     registry.entries[idx] = registry.entries[registry.filled - 1];
     registry.filled -= 1;
     // invariant: the name resolves to nothing now, and the point is unnamed.
@@ -237,7 +237,7 @@ pub fn release(
 
 // --- selftest -----------------------------------------------------------
 
-// Example seeds — plainly not a real pilot's key, so no identity is invented.
+// Example seeds -- plainly not a real pilot's key, so no identity is invented.
 const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
@@ -252,7 +252,7 @@ const star_num: u32 = 27;
 const planet_num: u32 = 267;
 
 // The authority a sow-cap holder signs to spawn a specific child: the child number
-// then the child's identity key — the same 36-byte shape the settlement mint checks.
+// then the child's identity key -- the same 36-byte shape the settlement mint checks.
 fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child_number: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(signer_seed);
     var msg: [4 + pubkey_len]u8 = undefined;
@@ -309,7 +309,7 @@ fn prove_claim_and_release(w: *const World, reg: *NameRegistry) !void {
     if (reg.resolve("bob") != star_num) return error.SecondResolveWrong;
     if (reg.filled != 2) return error.FillWrong;
 
-    // The planet releases "alice" — it resolves to nothing, and the planet is unnamed.
+    // The planet releases "alice" -- it resolves to nothing, and the planet is unnamed.
     const rel = sign_name(&p_keeper, tag_release, &alice, planet_num);
     try release(reg, &w.con, &w.planet, &alice, &rel);
     if (reg.resolve("alice") != null) return error.ReleaseLeftName;
@@ -330,7 +330,7 @@ fn prove_refusals(w: *const World, reg: *NameRegistry) !void {
     if (claim(reg, &w.con, &w.planet, &bob, &sig)) |_| return error.TakenAccepted else |e| {
         if (e != error.NameTaken) return error.TakenWrongError;
     }
-    // The planet claims "alice" first, then a second name — one point, one name.
+    // The planet claims "alice" first, then a second name -- one point, one name.
     const alice = name_of("alice");
     const sig_a = sign_name(&p_keeper, tag_claim, &alice, planet_num);
     try claim(reg, &w.con, &w.planet, &alice, &sig_a);
@@ -339,26 +339,26 @@ fn prove_refusals(w: *const World, reg: *NameRegistry) !void {
     if (claim(reg, &w.con, &w.planet, &carol, &sig_c)) |_| return error.SecondNameAccepted else |e| {
         if (e != error.AlreadyNamed) return error.SecondNameWrongError;
     }
-    // A non-owner cannot claim — a ghost deed for a point that never settled.
+    // A non-owner cannot claim -- a ghost deed for a point that never settled.
     const ghost = unsettled_deed(500);
     const dave = name_of("dave");
     const sig_d = sign_name(&p_keeper, tag_claim, &dave, 500);
     if (claim(reg, &w.con, &ghost, &dave, &sig_d)) |_| return error.GhostClaimed else |e| {
         if (e != error.NotOwner) return error.GhostWrongError;
     }
-    // A forged signature refuses — the keeper never signed this name.
+    // A forged signature refuses -- the keeper never signed this name.
     const erin = name_of("erin");
     if (claim(reg, &w.con, &w.star, &erin, &zero_sig)) |_| return error.ForgedClaimed else |e| {
         if (e != error.BadClaim) return error.ForgedWrongError;
     }
-    // Releasing a name one does not hold refuses — the star cannot free "alice".
+    // Releasing a name one does not hold refuses -- the star cannot free "alice".
     const rel = sign_name(&s_keeper, tag_release, &alice, star_num);
     if (release(reg, &w.con, &w.star, &alice, &rel)) |_| return error.WrongReleaseAccepted else |e| {
         if (e != error.NotOwner) return error.WrongReleaseWrongError;
     }
 }
 
-// A ghost deed for a point that never settled — used to prove the non-owner refusal.
+// A ghost deed for a point that never settled -- used to prove the non-owner refusal.
 fn unsettled_deed(point: u32) settlement.Deed {
     const addr = topology.decode(point).?;
     const zero: [pubkey_len]u8 = .{0} ** pubkey_len;

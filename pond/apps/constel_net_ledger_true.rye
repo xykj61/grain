@@ -1,27 +1,27 @@
-//! pond/apps/constel_net_ledger_true.rye — Constel dev-net ledger, Rung 4: the ledger reads true (the arc closes).
+//! pond/apps/constel_net_ledger_true.rye -- Constel dev-net ledger, Rung 4: the ledger reads true (the arc closes).
 //!
 //! Rungs one through three ran a sovereign ledger over the fake net's money, reserved stars beside its
-//! topology, and let a folded ledger travel as a `format constel-ledger-v1` Bron record — all over
+//! topology, and let a folded ledger travel as a `format constel-ledger-v1` Bron record -- all over
 //! ledgers seated in code. This closing rung carries the reader onto a **real** on-disk ledger record a
 //! keeper can open and add up, and proves the property the whole ledger rests on: what the reader
 //! *reports* about a fake net's supply is true to the bytes.
 //!
 //! The corpus is `tools/fixtures/constel_net_ledger.bron`, a genuine `format constel-ledger-v1` record
-//! produced reproducibly by `pond/apps/constel_net_ledger_fixture_gen.rye` (issue 100 · tax 30 · reserve
+//! produced reproducibly by `pond/apps/constel_net_ledger_fixture_gen.rye` (issue 100 - tax 30 - reserve
 //! vega 20 under the law-safe name `xnqvel34`, supply folding to 50), `@embedFile`-bound at compile time
-//! through a symlink in `pond/apps/corpora/` — no network, the bytes read are the tree's own. Two
+//! through a symlink in `pond/apps/corpora/` -- no network, the bytes read are the tree's own. Two
 //! independent readings must agree: the app parses the record through rung three, **re-folds** it through
 //! the real Mycelium law (so the reported supply is not a hand-count but the law's own fold, its
 //! signatures re-verified against the carried sovereign key), and reports the **fact count**, the
 //! **supply**, and the **reservation count**; the witness cross-checks that triple against
-//! `tools/fixtures/constel_net_ledger_truth.awk`'s reading of the same file — two tools, one answer. And
+//! `tools/fixtures/constel_net_ledger_truth.awk`'s reading of the same file -- two tools, one answer. And
 //! the record is genuinely a ledger record and genuinely quarantined: re-rendering the parsed ledger
 //! reproduces the embedded bytes exactly (the fixture is what the ledger emits, not a hand-mock), and the
 //! recovered name is still law-safe (the quarantine holds on the real bytes).
 //!
-//! Additive — composes rung three over public API (it re-runs GREEN). Demo keeper seeds only, reads no
-//! network, moves no dollar (the fold is a supply model, not a payment rail — gate %3 untouched; a ledger
-//! served over the wire reaches the serve gate — Keaton's hand).
+//! Additive -- composes rung three over public API (it re-runs GREEN). Demo keeper seeds only, reads no
+//! network, moves no dollar (the fold is a supply model, not a payment rail -- gate %3 untouched; a ledger
+//! served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/constel_net_ledger_true.rye -femit-bin=pond/bin/constel-net-ledger-true
 //!   pond/bin/constel-net-ledger-true selftest
@@ -40,7 +40,7 @@ const fold = @import("mycelium_fold.rye");
 
 pub const constel_net_ledger_true_version = "20260813.032037";
 
-/// The real ledger record, bound at compile time — the tree's own bytes, never a drifting copy.
+/// The real ledger record, bound at compile time -- the tree's own bytes, never a drifting copy.
 const real_ledger = @embedFile("corpora/constel_net_ledger.bron");
 
 /// The full error set reading a real ledger can raise: rung three's parse refusals plus the Mycelium
@@ -57,11 +57,11 @@ pub const Reading = struct {
 
 /// Read the real ledger: parse it, re-fold it through the real Mycelium law (verifying every signature
 /// against the carried sovereign key), and count the three facts. The parse refuses a malformed record
-/// by rung three's own reasons; the fold refuses a fact the sovereign did not sign — here the bytes are
+/// by rung three's own reasons; the fold refuses a fact the sovereign did not sign -- here the bytes are
 /// the tree's own, so the reading is honest by construction.
 pub fn read_ledger(text: []const u8) ReadError!Reading {
     const pl = try bron.parse(text);
-    // invariant: a real ledger record carries at least one fact — an empty log is no ledger to read.
+    // invariant: a real ledger record carries at least one fact -- an empty log is no ledger to read.
     if (pl.fact_count == 0) return error.MissingNet;
     const supply = try pl.supply();
     var reservations: u32 = 0;
@@ -76,11 +76,11 @@ pub fn read_ledger(text: []const u8) ReadError!Reading {
 
 const demo_name = "xnqvel34";
 
-/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.
 fn welcome_reading_true_to_bytes() !void {
     const r = try read_ledger(real_ledger);
-    // The fixture holds three facts (issue · tax · reserve), a folded supply of 50, and one reservation.
+    // The fixture holds three facts (issue - tax - reserve), a folded supply of 50, and one reservation.
     assert(r.facts == 3);
     assert(r.supply == 50);
     assert(r.reservations == 1);
@@ -92,10 +92,10 @@ fn welcome_reading_true_to_bytes() !void {
 /// reproduces the embedded bytes exactly, and the recovered name is still law-safe.
 fn welcome_record_is_really_a_ledger() !void {
     const pl = try bron.parse(real_ledger);
-    // the quarantine holds on the real bytes — the recovered name carries a digit
+    // the quarantine holds on the real bytes -- the recovered name carries a digit
     assert(constel_net.name_safe(pl.name()));
     assert(std.mem.eql(u8, pl.name(), demo_name));
-    // re-rendering the parsed ledger reproduces the embedded bytes exactly — a real ledger record
+    // re-rendering the parsed ledger reproduces the embedded bytes exactly -- a real ledger record
     var buf: [bron.max_record]u8 = undefined;
     const n = try bron.render(&pl, &buf);
     assert(n == real_ledger.len);
@@ -103,7 +103,7 @@ fn welcome_record_is_really_a_ledger() !void {
     print("constel-net-ledger-true: the real record re-renders to the embedded bytes exactly, and its recovered name is still law-safe.\n", .{});
 }
 
-/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true.
+/// A tampered copy of the real bytes refuses -- the reader will not read a corrupted record as true.
 fn unwelcome_tampered_record_refuses() !void {
     // Flip a byte inside the header so the record no longer names its format.
     var buf: [real_ledger.len]u8 = undefined;
@@ -125,7 +125,7 @@ fn run_selftest() !u8 {
 }
 
 /// Emit exactly the awk-format triple (`<facts> <supply> <reservations>`), so the witness can compare
-/// the app's reading against `constel_net_ledger_truth.awk` byte for byte — two tools, one answer.
+/// the app's reading against `constel_net_ledger_truth.awk` byte for byte -- two tools, one answer.
 fn run_measure() !u8 {
     const r = try read_ledger(real_ledger);
     print("{d} {d} {d}\n", .{ r.facts, r.supply, r.reservations });

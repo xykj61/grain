@@ -1,5 +1,5 @@
 //! glow-book: runes.md#g-cast
-//! glow/rune_cast.rye — parses Glow's `^-` cast rune, for real.
+//! glow/rune_cast.rye -- parses Glow's `^-` cast rune, for real.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! reading-runes section: `^-  <mold>` casts the following expression's
@@ -12,7 +12,7 @@
 //! One shape recognized, matching the brief's own worked example:
 //!   ^-  @u32
 //!
-//! No general expression parser exists here, and none is claimed — this
+//! No general expression parser exists here, and none is claimed -- this
 //! extracts the mold name only. The expression the cast applies to (the
 //! brief's own next line, "(add issuer-balance holder-balance)") is not
 //! this parser's job, the same "not a step toward a general grammar"

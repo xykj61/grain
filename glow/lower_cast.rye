@@ -1,8 +1,8 @@
-//! glow/lower_cast.rye — lower a parsed `^-` cast to runnable `.rye` text.
+//! glow/lower_cast.rye -- lower a parsed `^-` cast to runnable `.rye` text.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `^-  <mold>` catches a type mismatch at the cast boundary. This hop lowers
-//! unsigned auras `@u8` · `@u16` · `@u32` · `@u64` to checked `std.math.cast`.
+//! unsigned auras `@u8` - `@u16` - `@u32` - `@u64` to checked `std.math.cast`.
 //! Named molds and other auras refuse until a later lap.
 
 const std = @import("std");
@@ -113,7 +113,7 @@ pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
 }
 
 /// Emit a program whose sample is one decimal `@u32` from process argv (G3).
-/// Cast path — not bartis; bartis argv lives in `lower_bartis` (STOA101).
+/// Cast path -- not bartis; bartis argv lives in `lower_bartis` (STOA101).
 fn emit_from_argv_u32(mold: []const u8, out: []u8) LowerError!u32 {
     const written = std.fmt.bufPrint(out,
         \\const std = @import("std");

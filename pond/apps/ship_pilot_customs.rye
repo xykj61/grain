@@ -1,15 +1,15 @@
-//! pond/apps/ship_pilot_customs.rye — TACT Journey 1, Rung 3: the customs step, wired real.
+//! pond/apps/ship_pilot_customs.rye -- TACT Journey 1, Rung 3: the customs step, wired real.
 //!
 //! Rung two wired the first step, identity, to a real Kumara genesis. This rung wires the third
-//! step, customs, to Pond's own first policy — `pond/customs.rye`. When a keeper's first mark
+//! step, customs, to Pond's own first policy -- `pond/customs.rye`. When a keeper's first mark
 //! reaches the pilot, customs reads it and returns one of three verdicts: **place** (the mark is
-//! on Pond's allow-list — the step passes), **hold** (an `await-word` mark — the step holds and
-//! surfaces for a human word, never auto-crossing), or **refuse** (an unknown mark — the step
+//! on Pond's allow-list -- the step passes), **hold** (an `await-word` mark -- the step holds and
+//! surfaces for a human word, never auto-crossing), or **refuse** (an unknown mark -- the step
 //! holds whole). Only a `place` verdict advances the pilot; a hold or a refuse leaves it standing
 //! at customs, so a keeper whose first cargo is not admitted cannot be walked past receipt.
 //!
 //! The hold verdict is the important distinction: an `await-word` mark is not a refusal, it is a
-//! wait for a human word — the pilot surfaces it rather than crossing it silently, exactly the
+//! wait for a human word -- the pilot surfaces it rather than crossing it silently, exactly the
 //! custody-first posture the whole tree keeps. This rung composes over the spine (r1) and the
 //! real identity (r2); the `place` step's own topology wiring lands with the ready report (r4),
 //! supplied here as a proven signal so this rung stays about customs alone. It reads no network.
@@ -30,7 +30,7 @@ const customs = @import("customs.rye");
 pub const ship_pilot_customs_version = "20260812.172129";
 
 /// The keeper's first mark is admitted only when Pond's customs places it. A hold or a refuse
-/// is not admission — the caller reads the full verdict below to tell a wait from a rejection.
+/// is not admission -- the caller reads the full verdict below to tell a wait from a rejection.
 pub fn customs_admits(mark: []const u8) bool {
     const v = customs.verdict_for_mark(mark);
     // invariant: admission is exactly the place verdict, never a hold or a refuse
@@ -42,12 +42,12 @@ pub fn customs_admits(mark: []const u8) bool {
 }
 
 /// Read Pond's customs verdict for a mark, so the pilot can surface a hold distinctly from a
-/// refusal — a wait for a human word is not a rejection.
+/// refusal -- a wait for a human word is not a rejection.
 pub fn customs_verdict(mark: []const u8) customs.Verdict {
     return customs.verdict_for_mark(mark);
 }
 
-/// Walk the pilot through identity (real, r2), place (supplied — its topology wiring lands in
+/// Walk the pilot through identity (real, r2), place (supplied -- its topology wiring lands in
 /// r4), and customs (real, this rung). The customs step advances only when the mark is placed;
 /// a hold or a refuse leaves the pilot standing at customs.
 pub fn pilot_through_customs(id: *const identity.Identity, mark: []const u8) pilot.PilotError!pilot.Pilot {
@@ -96,12 +96,12 @@ fn welcome_placed_mark_advances() !void {
     print("ship_pilot_customs: a placed mark (plain-bytes) advanced the pilot past customs.\n", .{});
 }
 
-/// An `await-word` mark holds the pilot at customs and surfaces for a human word — a wait, not
+/// An `await-word` mark holds the pilot at customs and surfaces for a human word -- a wait, not
 /// a rejection.
 fn unwelcome_await_word_holds_and_surfaces() !void {
     const id = settled_demo();
     var p = try pilot_through_customs(&id, "await-word");
-    // the verdict is a hold, distinct from a refuse — the pilot surfaces it
+    // the verdict is a hold, distinct from a refuse -- the pilot surfaces it
     assert(customs_verdict("await-word") == .hold);
     assert(p.current().? == .customs);
     assert(!p.is_ready());

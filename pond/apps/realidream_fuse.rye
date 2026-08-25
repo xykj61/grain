@@ -1,9 +1,9 @@
-//! pond/apps/realidream_fuse.rye — BUHR Journey 5, Rung 4: two read sources feed one
-//! program node — the fusion whole.
+//! pond/apps/realidream_fuse.rye -- BUHR Journey 5, Rung 4: two read sources feed one
+//! program node -- the fusion whole.
 //!
 //! Rung 3 drew the fused edge with a single upstream: one read node feeding one derived
-//! program node. The Realidream foundation names the motion in the plural — *two sources
-//! can feed one node* (foundations/20260728-220203_realidream.md) — and this rung draws
+//! program node. The Realidream foundation names the motion in the plural -- *two sources
+//! can feed one node* (foundations/20260728-220203_realidream.md) -- and this rung draws
 //! it whole. A program node is derived from *two* `read/` lanes at once, its content a
 //! pure function of both current heads, so the node truly fuses two independent inputs
 //! into one view.
@@ -13,20 +13,20 @@
 //! and the fused node's first component moves; re-read the second and its second component
 //! moves; each earlier fused node still recalls the pair it derived from. Two sources,
 //! one node, every value an append the reader can trace to the exact upstream heads it
-//! read — referential transparency across a two-input edge.
+//! read -- referential transparency across a two-input edge.
 //!
 //! `derive_from_two_reads` reads the head content of two distinct `read/` lanes and
-//! appends a fused summary (`a=<la> b=<lb>` — the two read lengths, a small pure function
+//! appends a fused summary (`a=<la> b=<lb>` -- the two read lengths, a small pure function
 //! of both, standing in for any real two-input consumer) to a program lane, opening the
 //! program lane on the first derive and continuing it on each later one. It refuses a
 //! source path that does not name itself a read (`NotAReadPath`), a destination that is
 //! itself a read path (`NotAProgramPath`), the same lane named as both sources
-//! (`SameSource` — a fusion wants two inputs, not one twice), and lets the recall refuse
+//! (`SameSource` -- a fusion wants two inputs, not one twice), and lets the recall refuse
 //! a read lane that was never pinned (`LaneUnknown`).
 //!
 //! This rung reads no network: both reads' content is supplied in-process, exactly as
 //! rungs one through three supply theirs. A real web fetch is a genuine outward act and
-//! stays a named seam behind a bounded reader — its own later rung, surfacing for
+//! stays a named seam behind a bounded reader -- its own later rung, surfacing for
 //! Keaton's word.
 //!
 //! Additive by construction: it imports realidream_reader, realidream_reread,
@@ -51,7 +51,7 @@ const realidream_fuse_version = "20260812.132000";
 const read_prefix = "read/";
 
 // The fused summary "a=<la> b=<lb>" is at most this many bytes: two labels, two u32
-// widest decimals (ten digits each), and a separating space — bounded, so the fuse
+// widest decimals (ten digits each), and a separating space -- bounded, so the fuse
 // never allocates or overruns.
 const max_summary_bytes: u32 = 32;
 
@@ -60,7 +60,7 @@ pub const FuseError = error{
     SameSource,
 };
 
-/// Read the head content length of a `read/` lane — a small helper the fuse leans on
+/// Read the head content length of a `read/` lane -- a small helper the fuse leans on
 /// twice, once per source. Returns the head revision's byte length; refuses a lane that
 /// was never pinned (`LaneUnknown`).
 fn read_head_len(
@@ -69,7 +69,7 @@ fn read_head_len(
     bolt: []const u8,
     read_path: []const u8,
 ) !u32 {
-    // invariant: the source is a read lane — the edge runs read -> program.
+    // invariant: the source is a read lane -- the edge runs read -> program.
     if (!std.mem.startsWith(u8, read_path, read_prefix)) return error.NotAReadPath;
     const head = mb.head_revision(catalog, peer, bolt, read_path) orelse return error.LaneUnknown;
     // invariant: a pinned read lane has a real head counting from one.
@@ -114,14 +114,14 @@ pub fn derive_from_two_reads(
     const len_a = try read_head_len(catalog, peer, bolt, read_path_a);
     const len_b = try read_head_len(catalog, peer, bolt, read_path_b);
 
-    // Fuse both read lengths into one node's content — a pure function of both heads.
+    // Fuse both read lengths into one node's content -- a pure function of both heads.
     var summary_buf: [max_summary_bytes]u8 = undefined;
     const summary = try std.fmt.bufPrint(&summary_buf, "a={d} b={d}", .{ len_a, len_b });
     // invariant: the fused summary fits its named bound.
     assert(summary.len <= max_summary_bytes);
 
     // Append the fused node: open the program lane on the first derive, continue it on
-    // every later one — so re-deriving after a re-read appends the fresher fused node.
+    // every later one -- so re-deriving after a re-read appends the fresher fused node.
     if (mb.head_revision(catalog, peer, bolt, prog_path)) |_| {
         const rev = try editor.commit(catalog, peer, bolt, prog_path, summary, tilak);
         // invariant: a continued fuse advances the program lane by one revision.
@@ -135,7 +135,7 @@ pub fn derive_from_two_reads(
 }
 
 fn welcome_two_reads_feed_one() !void {
-    // Two independent read lanes feed one program node — its content a pure function of
+    // Two independent read lanes feed one program node -- its content a pure function of
     // both current heads.
     var catalog = try mb.demo_catalog();
     _ = try reader.pin_read(&catalog, "local", "web", "read/left", "abcd", "leaf");
@@ -147,7 +147,7 @@ fn welcome_two_reads_feed_one() !void {
     var buf: [mn.max_resin_bytes]u8 = undefined;
     const got = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 1, .path = "fused" }, &buf);
     assert(got.outcome == .here);
-    // left is four bytes, right is two — the fused node reflects both at once.
+    // left is four bytes, right is two -- the fused node reflects both at once.
     assert(std.mem.eql(u8, buf[0..got.len], "a=4 b=2"));
     print("realidream_fuse: two read lanes fed one program node — a=4 b=2, both sources at once\n", .{});
 }
@@ -160,7 +160,7 @@ fn welcome_either_reread_flows() !void {
     _ = try reader.pin_read(&catalog, "local", "web", "read/right", "xy", "leaf");
     _ = try derive_from_two_reads(&catalog, "local", "web", "read/left", "read/right", "fused", "leaf");
 
-    // Re-read the first source (now eight bytes), fuse again — only the first moves.
+    // Re-read the first source (now eight bytes), fuse again -- only the first moves.
     _ = try reread.refresh_read(&catalog, "local", "web", "read/left", "abcdefgh", "leaf");
     const rev2 = try derive_from_two_reads(&catalog, "local", "web", "read/left", "read/right", "fused", "leaf");
     assert(rev2 == 2);
@@ -169,7 +169,7 @@ fn welcome_either_reread_flows() !void {
     assert(p2.outcome == .here);
     assert(std.mem.eql(u8, buf[0..p2.len], "a=8 b=2"));
 
-    // Re-read the second source (now three bytes), fuse again — only the second moves.
+    // Re-read the second source (now three bytes), fuse again -- only the second moves.
     _ = try reread.refresh_read(&catalog, "local", "web", "read/right", "xyz", "leaf");
     const rev3 = try derive_from_two_reads(&catalog, "local", "web", "read/left", "read/right", "fused", "leaf");
     assert(rev3 == 3);
@@ -178,7 +178,7 @@ fn welcome_either_reread_flows() !void {
     assert(p3.outcome == .here);
     assert(std.mem.eql(u8, buf3[0..p3.len], "a=8 b=3"));
 
-    // The first fused node still recalls the original pair — nothing mutated downstream.
+    // The first fused node still recalls the original pair -- nothing mutated downstream.
     var buf1: [mn.max_resin_bytes]u8 = undefined;
     const p1 = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 1, .path = "fused" }, &buf1);
     assert(p1.outcome == .here);

@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu5_witness.rye — proves LULU5 cellular preference chrome.
+//! linengrow/hearth_lulu5_witness.rye -- proves LULU5 cellular preference chrome.
 //!
 //!   rye build linengrow/hearth_lulu5_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu5_witness

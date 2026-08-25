@@ -1,17 +1,17 @@
-//! mantra/src/weave.rye — the weave: a living history of a text stream.
+//! mantra/src/weave.rye -- the weave: a living history of a text stream.
 //!
 //! A Weave is a list of Lines. Each Line carries its text, a generation count,
 //! and a stable position that never changes once assigned. Generation parity
 //! names presence: odd = present, even = gone. Generations never decrease.
-//! These two facts together mean the weave remembers every line ever seen —
-//! its full history — while current() surfaces only what is present now.
+//! These two facts together mean the weave remembers every line ever seen --
+//! its full history -- while current() surfaces only what is present now.
 //!
 //! Three operations:
-//!   Weave.empty()          — an empty weave, no lines yet
-//!   weave.apply(alloc, d)  — advance the weave by one Diff
-//!   weave.current(alloc)   — the lines present now, in position order
+//!   Weave.empty()          -- an empty weave, no lines yet
+//!   weave.apply(alloc, d)  -- advance the weave by one Diff
+//!   weave.current(alloc)   -- the lines present now, in position order
 //!
-//! Part of Mantra — TAME-first from line one.
+//! Part of Mantra -- TAME-first from line one.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -20,7 +20,7 @@ const print = std.debug.print;
 /// A single line in the weave. Once added, its position is permanent.
 ///
 /// Invariants:
-///   gen >= 1         — zero is reserved; every line starts at generation 1
+///   gen >= 1         -- zero is reserved; every line starts at generation 1
 ///   gen is odd       ⟺  line is currently present
 pub const Line = struct {
     text: []const u8,
@@ -46,7 +46,7 @@ pub const Weave = struct {
     lines: std.ArrayListUnmanaged(Line),
     next_pos: u32,
 
-    /// An empty weave — no history yet.
+    /// An empty weave -- no history yet.
     pub fn empty() Weave {
         return .{ .lines = .{}, .next_pos = 0 };
     }
@@ -57,7 +57,7 @@ pub const Weave = struct {
     /// monotonically and never reused.
     ///
     /// Precondition:  every delete position exists in the weave and is present
-    ///   (odd gen) — asserted individually.
+    ///   (odd gen) -- asserted individually.
     /// Postcondition: all inserted lines carry gen == 1 and odd (present);
     ///   all deleted lines carry gen % 2 == 0 (gone).
     pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
@@ -113,7 +113,7 @@ pub const Weave = struct {
                 try out.append(allocator, line);
             }
         }
-        // Sort by position — inserts append to the backing list in order of
+        // Sort by position -- inserts append to the backing list in order of
         // arrival; a merge may interleave positions from two weave branches.
         const result = try out.toOwnedSlice(allocator);
         std.mem.sort(Line, result, {}, struct {

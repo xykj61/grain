@@ -1,4 +1,4 @@
-//! linengrow/tube3_glass_fetch.rye — TUBE3 sealed-fetch line for NativeActivity glass.
+//! linengrow/tube3_glass_fetch.rye -- TUBE3 sealed-fetch line for NativeActivity glass.
 //!
 //! Runs the demo publish + Comlink-sealed fetch and returns a short Skate
 //! line. Device-free witness owns unwelcome seals; glass presents the welcome

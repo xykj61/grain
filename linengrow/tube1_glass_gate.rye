@@ -1,10 +1,10 @@
-//! linengrow/tube1_glass_gate.rye — TUBE1 door for the NativeActivity present path.
+//! linengrow/tube1_glass_gate.rye -- TUBE1 door for the NativeActivity present path.
 //!
 //! Builds the seva-broadcaster TUBE0 manifest: three R2 state resources,
 //! `photos` + `contacts` (Resource Scopes), and `network` + `sensors`
-//! (Network · Sensors Grants). Caravan grants match; covering scopes and
+//! (Network - Sensors Grants). Caravan grants match; covering scopes and
 //! live toggles are load-bearing. APK permission emission stays on the
-//! separate TUBE0.5 path — glass does not emit Android permissions.
+//! separate TUBE0.5 path -- glass does not emit Android permissions.
 //! Paints R2 only when this door opens.
 
 const std = @import("std");
@@ -19,7 +19,7 @@ const tube1 = @import("tube1_admission.rye");
 
 const rw: u8 = caps.right_read | caps.right_write;
 
-/// True when admitted under covering scopes + live Network · Sensors Grants.
+/// True when admitted under covering scopes + live Network - Sensors Grants.
 pub fn run_demo_admit() bool {
     // invariant: read|write mask is non-zero
     assert(rw != 0);

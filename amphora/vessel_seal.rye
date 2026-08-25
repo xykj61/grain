@@ -1,4 +1,4 @@
-//! amphora/vessel_seal.rye — cellar AEAD seal for Amphora vessel cargo.
+//! amphora/vessel_seal.rye -- cellar AEAD seal for Amphora vessel cargo.
 //!
 //! ChaCha20-Poly1305 over the cargo block; shoulder is associated data
 //! (readable without opening the seal). Rite: seal, then Kumara stamp.
@@ -7,7 +7,7 @@
 //!   amphora/bin/vessel-seal selftest
 //!   amphora/bin/vessel-seal seal <path>
 //!   amphora/bin/vessel-seal open-check <path>
-//!   amphora/bin/vessel-seal open <path> <plain-out>   (Q37 — The Return's door)
+//!   amphora/bin/vessel-seal open <path> <plain-out>   (Q37 -- The Return's door)
 //!
 //! Scope: [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
 
@@ -24,14 +24,14 @@ pub const max_vessel_len: u32 = 8192;
 /// couples: vessel_fetch_wire.max_resin_bytes
 pub const max_seal_plain: u32 = 1024;
 pub const max_cargo: u32 = 16;
-/// Class W wire shoulder — AEAD associated data, not product vocabulary.
+/// Class W wire shoulder -- AEAD associated data, not product vocabulary.
 /// e148 renamed this; counsel parked; e149 restored. Versioned shoulder
-/// (open both · seal new) waits its own instrument before any rename.
+/// (open both - seal new) waits its own instrument before any rename.
 pub const shoulder_ring1_wire = "amber-ring1-season";
 pub const nonce_hex_len: u32 = ChaCha20Poly1305.nonce_length * 2;
 pub const tag_hex_len: u32 = ChaCha20Poly1305.tag_length * 2;
 
-/// Witness seal key — distinct from vessel stamp seed 0x62 and kumara 0x42.
+/// Witness seal key -- distinct from vessel stamp seed 0x62 and kumara 0x42.
 const vessel_seal_seed: [ChaCha20Poly1305.key_length]u8 = .{0x63} ** ChaCha20Poly1305.key_length;
 
 fn trim_line(line: []const u8) []const u8 {
@@ -67,7 +67,7 @@ pub fn seal_key() [ChaCha20Poly1305.key_length]u8 {
     return vessel_seal_seed;
 }
 
-/// Deterministic nonce from stamp + parent — same pour yields the same seal.
+/// Deterministic nonce from stamp + parent -- same pour yields the same seal.
 pub fn nonce_from_stamp_parent(stamp: []const u8, parent: []const u8) [ChaCha20Poly1305.nonce_length]u8 {
     var digest: [Sha3_256.digest_length]u8 = undefined;
     var h = Sha3_256.init(.{});
@@ -255,7 +255,7 @@ pub fn open_cargo_plain(text: []const u8, plain: []u8) error{InvalidVessel, BadH
     return cipher_len;
 }
 
-/// Q37: the spoken open door — decrypt the sealed cargo and write the
+/// Q37: the spoken open door -- decrypt the sealed cargo and write the
 /// plaintext block to a file, so restore reaches it on path C. The
 /// open-check stays the verify-only door; this one yields the bytes.
 fn run_open_file(io: std.Io, path: []const u8, out_path: []const u8) !u8 {

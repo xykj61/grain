@@ -1,4 +1,4 @@
-//! mandi/mandi_core.rye — Mandi — market listing: vessel market listing priced in MALA · 20260728.
+//! mandi/mandi_core.rye -- Mandi -- market listing: vessel market listing priced in MALA - 20260728.
 //!
 //! Distinct from Granary weave listings. Amphora carries; Mandi names the offer.
 //! WOV settlement waits.
@@ -17,7 +17,7 @@ pub const digest_hex_len: u32 = 64;
 pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 pub const max_price_len: u32 = 16;
 
-/// Mandi listing seed — distinct from Granary exchange 0x66 and Amphora delivery 0x64.
+/// Mandi listing seed -- distinct from Granary exchange 0x66 and Amphora delivery 0x64.
 const listing_seed: [kumara.seed_length]u8 = .{0x67} ** kumara.seed_length;
 
 pub const ListingError = error{
@@ -222,7 +222,7 @@ pub fn receipt_digest(text: []const u8, out: *[digest_hex_len]u8) ListingError!v
     write_hex(&digest, out);
 }
 
-/// Witness fixture parent — SHA3 of a fixed vessel shoulder line.
+/// Witness fixture parent -- SHA3 of a fixed vessel shoulder line.
 pub fn witness_vessel_parent(out: *[digest_hex_len]u8) void {
     const shoulder = "mandi-witness-vessel-shoulder\n";
     var digest: [32]u8 = undefined;

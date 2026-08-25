@@ -1,4 +1,4 @@
-//! linengrow/glow_storage_scope_witness.rye — proves Glow Storage Scope.
+//! linengrow/glow_storage_scope_witness.rye -- proves Glow Storage Scope.
 //!
 //!   rye build linengrow/glow_storage_scope_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_storage_scope_witness

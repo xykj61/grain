@@ -1,4 +1,4 @@
-//! comlink/guest_receipt_tx.rye — SLC-L2 device wire TX guest (freestanding RISC-V virt).
+//! comlink/guest_receipt_tx.rye -- SLC-L2 device wire TX guest (freestanding RISC-V virt).
 //!
 //! Signs the pinned SLC-L1 witness fact, seals the compact payload with wire_format,
 //! and sends it across virtio-net to the receipt RX guest.

@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_keyboard_witness.rye — ZETA0–ZETA2 glass keyboard.
+//! linengrow/dexter_glass_keyboard_witness.rye -- ZETA0-ZETA2 glass keyboard.
 //!
 //!   rye build linengrow/dexter_glass_keyboard_witness.rye \
 //!     -femit-bin=linengrow/bin/dexter_glass_keyboard_witness
@@ -89,7 +89,7 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(std.mem.eql(u8, editor.prompt_slice(), "glow 2"));
     print("zeta2: tap drain \"{s}\" -- GREEN\n", .{editor.prompt_slice()});
 
-    // ZETA4: emoji mode — frequent face, UTF-8 insert, tab switch.
+    // ZETA4: emoji mode -- frequent face, UTF-8 insert, tab switch.
     assert(layout.emoji_frequent_top_left_is_face0());
     assert(paint.tap_result(.to_emoji, false) == .set_mode);
     assert(paint.tap_result(.{ .emoji_tab = .hearts }, false) == .set_emoji_tab);
@@ -112,7 +112,7 @@ fn run_selftest(_: std.process.Init) !u8 {
     assert(paint.emoji_abc_hit_is_to_letters());
     print("zeta: mode round-trip letters↔emoji↔numbers + abc hit -- GREEN\n", .{});
 
-    // ZETA6: ret = newline · ^ = send.
+    // ZETA6: ret = newline - ^ = send.
     assert(paint.letters_bottom_has_ret_and_send());
     assert(paint.zeta6_ret_newline_send_submits());
     print("zeta6: ret newline · ^ send -- GREEN\n", .{});

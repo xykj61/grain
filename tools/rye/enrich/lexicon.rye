@@ -139,7 +139,7 @@ pub fn generate_lexicon(a: std.mem.Allocator, io: std.Io, root: []const u8, sour
         \\## Tree by `rye/lib/std` module
         \\
     );
-    // Group by file — simple nested loops (bounded by entry count).
+    // Group by file -- simple nested loops (bounded by entry count).
     var file_i: usize = 0;
     while (file_i < entries.len) : (file_i += 1) {
         const f = entries[file_i].file;

@@ -1,4 +1,4 @@
-//! glow/nest_type_witness.rye — proves nest/type surface (STOA107–110 · STOA119 · STOA122–126).
+//! glow/nest_type_witness.rye -- proves nest/type surface (STOA107-110 - STOA119 - STOA122-126).
 //!
 //!   rye build glow/nest_type_witness.rye -femit-bin=glow/bin/nest_type_witness
 //!   glow/bin/nest_type_witness
@@ -118,7 +118,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("nest: tag under $: tuple shape refused SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA109: named-shape bartis — amount-shape accepts; kind-shape refuses.
+    // STOA109: named-shape bartis -- amount-shape accepts; kind-shape refuses.
     const amount_src = try cwd.readFileAlloc(io, "glow/gen/hoon-study/mold-amount.glow", a, .limited(4096));
     const amount = try rm.parse_source(amount_src);
     try nest_type.assert_named_shape_nests("amount-mold", &amount);

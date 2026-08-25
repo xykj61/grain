@@ -1,20 +1,20 @@
-//! pond/apps/constel_net_ledger_stars.rye — Constel dev-net ledger, Rung 2: star reservations settle beside the topology, draining supply like tax.
+//! pond/apps/constel_net_ledger_stars.rye -- Constel dev-net ledger, Rung 2: star reservations settle beside the topology, draining supply like tax.
 //!
 //! Rung 1 proved the fake net's money folds the real Mycelium supply law and moves only by the identity
 //! that holds its genesis (issue raises supply, tax lowers it, an overdraw refuses whole, an alien
-//! signer refuses before the log). This rung carries the third Mycelium fact kind — `star_reserve` —
+//! signer refuses before the log). This rung carries the third Mycelium fact kind -- `star_reserve` --
 //! into that same sovereign ledger, mirroring the harness's own r2, where a star and a planet settled
 //! beneath the galaxy: here the ledger's *names* grow beside the topology's *points*, and every
 //! reservation is paid for out of the net's own supply.
 //!
 //! The crux: a star name is reserved only by the net's sovereign, is unique (a second reservation of a
-//! held name refuses `StarTaken`), drains the supply exactly as a tax does (the Mycelium law — a
-//! reservation beyond the current supply refuses `Overdraw`, non-negativity holds), and — like every
-//! ledger fact — an alien signer's reservation refuses `NotSovereign` before the log. So the address
+//! held name refuses `StarTaken`), drains the supply exactly as a tax does (the Mycelium law -- a
+//! reservation beyond the current supply refuses `Overdraw`, non-negativity holds), and -- like every
+//! ledger fact -- an alien signer's reservation refuses `NotSovereign` before the log. So the address
 //! space and the money supply grow together inside the quarantined net, under one hand.
 //!
-//! Composes rung one's public API only (`open_ledger` · `admit` · `NetLedger`) over `mycelium/fold`'s
-//! own `mint_fact`; rung one stays its own GREEN binary. Demo keeper seeds only — no real key, no funds,
+//! Composes rung one's public API only (`open_ledger` - `admit` - `NetLedger`) over `mycelium/fold`'s
+//! own `mint_fact`; rung one stays its own GREEN binary. Demo keeper seeds only -- no real key, no funds,
 //! no network, no custody (gate %3 payment rail and gate %4 the maintainer's Kumara untouched).
 //!
 //!   rye build pond/apps/constel_net_ledger_stars.rye -femit-bin=pond/bin/constel-net-ledger-stars
@@ -45,7 +45,7 @@ pub fn reserve_star(
     // invariant: a sovereign-minted reservation carries the sovereign's key, so admit accepts it as
     // the net's own act.
     assert(ledger.signer_is_sovereign_of(net_ledger, &fact));
-    // invariant: a reservation carries its star name — the fold's own law rejects an empty one.
+    // invariant: a reservation carries its star name -- the fold's own law rejects an empty one.
     assert(fact.star_len == star_name.len);
     return ledger.admit(net_ledger, fact);
 }
@@ -76,7 +76,7 @@ fn welcome_reservations_drain_supply() !void {
     print("constel_net_ledger_stars: issue 100 then reserve vega(30) + rigel(20) drained supply to 50 over three sovereign facts.\n", .{});
 }
 
-/// A star name is reserved once — a second reservation of a held name refuses `StarTaken` whole, and
+/// A star name is reserved once -- a second reservation of a held name refuses `StarTaken` whole, and
 /// the supply is left unchanged (uniqueness is the Mycelium law, carried into the fake net).
 fn unwelcome_double_reservation_refuses() !void {
     var net_ledger = try ledger.open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
@@ -84,14 +84,14 @@ fn unwelcome_double_reservation_refuses() !void {
     _ = try reserve_star(&net_ledger, "vega", 30);
     const again = reserve_star(&net_ledger, "vega", 10);
     assert(again == error.StarTaken);
-    // the refused second reservation touched nothing — supply still 70, log still two facts
+    // the refused second reservation touched nothing -- supply still 70, log still two facts
     const s = try net_ledger.supply();
     assert(s == 70);
     assert(net_ledger.log.len == 2);
     print("constel_net_ledger_stars: a second reservation of vega refused StarTaken; supply held at 70, log untouched.\n", .{});
 }
 
-/// A reservation priced beyond the current supply refuses `Overdraw` whole — the Mycelium
+/// A reservation priced beyond the current supply refuses `Overdraw` whole -- the Mycelium
 /// non-negativity law holds for reservations as it does for tax.
 fn unwelcome_overpriced_reservation_refuses() !void {
     var net_ledger = try ledger.open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
@@ -105,7 +105,7 @@ fn unwelcome_overpriced_reservation_refuses() !void {
     print("constel_net_ledger_stars: a reservation priced 999 over a supply of 40 refused Overdraw; supply held at 40, log untouched.\n", .{});
 }
 
-/// A reservation minted by any keypair but the net's sovereign refuses `NotSovereign` before the log —
+/// A reservation minted by any keypair but the net's sovereign refuses `NotSovereign` before the log --
 /// only the hand that holds the genesis may name a star in the net's ledger.
 fn unwelcome_alien_reservation_refuses() !void {
     var net_ledger = try ledger.open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
@@ -115,7 +115,7 @@ fn unwelcome_alien_reservation_refuses() !void {
     assert(!ledger.signer_is_sovereign_of(&net_ledger, &alien_fact));
     const refused = ledger.admit(&net_ledger, alien_fact);
     assert(refused == error.NotSovereign);
-    // the alien reservation never entered the log — only the sovereign's issue stands
+    // the alien reservation never entered the log -- only the sovereign's issue stands
     assert(net_ledger.log.len == 1);
     print("constel_net_ledger_stars: an alien signer's reservation refused NotSovereign before the log; only the sovereign's own facts stand.\n", .{});
 }

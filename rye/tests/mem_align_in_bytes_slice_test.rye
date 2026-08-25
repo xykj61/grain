@@ -1,4 +1,4 @@
-//! Rye test: std.mem.alignInBytes / alignInSlice — pass 9901.
+//! Rye test: std.mem.alignInBytes / alignInSlice -- pass 9901.
 //!
 //! Largest aligned sub-slice inside a buffer; pairs with alignForward (9904).
 

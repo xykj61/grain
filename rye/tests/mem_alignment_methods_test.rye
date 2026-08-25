@@ -1,4 +1,4 @@
-//! Rye test: std.mem.Alignment forward/backward/check — pass 9893.
+//! Rye test: std.mem.Alignment forward/backward/check -- pass 9893.
 //!
 //! Enum alignment helpers; pairs with alignForward/alignBackward (9904).
 

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.readPackedInt / writePackedInt — pass 9907.
+//! Rye test: std.mem.readPackedInt / writePackedInt -- pass 9907.
 //!
 //! Bit-field load/store at arbitrary bit offsets; MMIO-adjacent wire path.
 

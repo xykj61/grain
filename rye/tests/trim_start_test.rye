@@ -1,4 +1,4 @@
-//! Rye test: std.mem.trimStart — pass 9979.
+//! Rye test: std.mem.trimStart -- pass 9979.
 //!
 //! Rishi trims leading whitespace on nearly every parsed line. trimStart
 //! complements trimEnd (9982) and trim (9996). This test exercises the

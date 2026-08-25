@@ -1,4 +1,4 @@
-//! edu/tower/bounded_tower.rye — classic three-peg tower · explicit stack · no recursion.
+//! edu/tower/bounded_tower.rye -- classic three-peg tower - explicit stack - no recursion.
 //!
 //! Bounds named before the machine runs. Uses graduated tally/stack (second consumer).
 //! Tutorial: docs-geode/tutorials/recursion-in-glow.md

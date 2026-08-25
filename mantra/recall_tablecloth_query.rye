@@ -1,8 +1,8 @@
-//! mantra/recall_tablecloth_query.rye — Tablecloth query: optional peer/bolt/revision filter.
+//! mantra/recall_tablecloth_query.rye -- Tablecloth query: optional peer/bolt/revision filter.
 //!
 //! recall_by_mark requires peer, bolt, and revision and refuses ambiguous marks.
 //! This file loosens those fields to optional and returns every matching leaf in
-//! catalog order — a filter walked once over the bounded array, rather than an index.
+//! catalog order -- a filter walked once over the bounded array, rather than an index.
 //! Composing rather than extending: recall_lap1.rye is imported and left standing.
 //!
 //!   rye build mantra/recall_tablecloth_query.rye -femit-bin=mantra/bin/recall-tablecloth-query
@@ -84,20 +84,20 @@ fn run_selftest(_: std.Io) !u8 {
     var names: [recall_lap1.max_bindings]recall_lap1.Name = undefined;
     var buf: [recall_lap1.max_resin_bytes]u8 = undefined;
 
-    // Peer + bolt, revision open — both revisions walk.
+    // Peer + bolt, revision open -- both revisions walk.
     const n_bolt = try query_tablecloth(&cat, .{
         .peer = "peerB",
         .bolt = "b",
     }, &names);
     assert(n_bolt == 4);
 
-    // Tilak alone — crosses revisions; plain-text hits three leaves.
+    // Tilak alone -- crosses revisions; plain-text hits three leaves.
     const n_mark = try query_tablecloth(&cat, .{
         .tilak = "plain-text",
     }, &names);
     assert(n_mark == 3);
 
-    // Absent tilak — empty result, no refusal.
+    // Absent tilak -- empty result, no refusal.
     const n_none = try query_tablecloth(&cat, .{
         .tilak = "bead-index",
     }, &names);

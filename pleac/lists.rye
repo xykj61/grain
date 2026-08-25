@@ -1,14 +1,14 @@
-//! pleac/lists.rye — the list cookbook: chunk, window, flatten (PLEAC stdlib).
+//! pleac/lists.rye -- the list cookbook: chunk, window, flatten (PLEAC stdlib).
 //!
 //! The lists chapter's canonical grouping trio, over a bounded list of `u32`:
 //!
-//!   * **chunk(xs, size)** — cut into consecutive, non-overlapping groups of `size`
+//!   * **chunk(xs, size)** -- cut into consecutive, non-overlapping groups of `size`
 //!     (the last may be shorter). `flatten(chunk(xs, n)) == xs`.
-//!   * **window(xs, size)** — every overlapping run of `size` in order; count is
+//!   * **window(xs, size)** -- every overlapping run of `size` in order; count is
 //!     `len - size + 1`, or none when the list is shorter than a window.
-//!   * **flatten(lists)** — concatenate a list of lists into one.
+//!   * **flatten(lists)** -- concatenate a list of lists into one.
 //!
-//! Zero-copy on the cut — `chunk` and `window` return slices into the source; only
+//! Zero-copy on the cut -- `chunk` and `window` return slices into the source; only
 //! `flatten` writes fresh. Bounded throughout.
 //!
 //!   rye build pleac/lists.rye -femit-bin=tools/.build/pleac_lists
@@ -29,7 +29,7 @@ pub const ListError = error{ ZeroSize, TooManyGroups, OutTooSmall };
 /// Cut `xs` into consecutive groups of `size` (slices into `xs`, zero-copy); the last
 /// group may be shorter. Return the group count. A zero size is refused.
 pub fn chunk(xs: []const u32, size: u32, out: *[max_groups][]const u32) ListError!u32 {
-    // invariant: a zero size would never advance — refuse it.
+    // invariant: a zero size would never advance -- refuse it.
     if (size == 0) return error.ZeroSize;
     const sz: usize = size; // seam: slice arithmetic is usize
     var n: u32 = 0;
@@ -49,10 +49,10 @@ pub fn chunk(xs: []const u32, size: u32, out: *[max_groups][]const u32) ListErro
 }
 
 /// Every overlapping run of `size` in `xs`, in order (slices into `xs`, zero-copy).
-/// Return the window count — `len - size + 1`, or 0 when `xs` is shorter than a
+/// Return the window count -- `len - size + 1`, or 0 when `xs` is shorter than a
 /// window. A zero size is refused.
 pub fn window(xs: []const u32, size: u32, out: *[max_groups][]const u32) ListError!u32 {
-    // invariant: a zero-width window is meaningless — refuse it.
+    // invariant: a zero-width window is meaningless -- refuse it.
     if (size == 0) return error.ZeroSize;
     const sz: usize = size; // seam: slice arithmetic is usize
     if (xs.len < sz) return 0;
@@ -95,18 +95,18 @@ fn prove_lists() !void {
     const xs = [_]u32{ 1, 2, 3, 4, 5 };
     var groups: [max_groups][]const u32 = undefined;
 
-    // chunk into groups of two — {1,2} {3,4} {5}; the last is short.
+    // chunk into groups of two -- {1,2} {3,4} {5}; the last is short.
     const cn = try chunk(&xs, 2, &groups);
     if (cn != 3) return error.ChunkCount;
     if (groups[0].len != 2 or groups[0][0] != 1 or groups[0][1] != 2) return error.ChunkFirst;
     if (groups[2].len != 1 or groups[2][0] != 5) return error.ChunkLastShort;
 
-    // flatten(chunk(xs)) == xs — the grouping is lossless.
+    // flatten(chunk(xs)) == xs -- the grouping is lossless.
     var flat: [max_flat]u32 = undefined;
     const fn_ = try flatten(groups[0..cn], &flat);
     if (!std.mem.eql(u32, flat[0..fn_], &xs)) return error.RoundTripWrong;
 
-    // window of three — {1,2,3} {2,3,4} {3,4,5}; count is len - size + 1 = 3.
+    // window of three -- {1,2,3} {2,3,4} {3,4,5}; count is len - size + 1 = 3.
     const wn = try window(&xs, 3, &groups);
     if (wn != 3) return error.WindowCount;
     if (groups[0][0] != 1 or groups[0][2] != 3) return error.WindowFirst;

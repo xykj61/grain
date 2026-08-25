@@ -1,4 +1,4 @@
-//! glow/lower_multi_typed_witness.rye — proves typed multi-line desks.
+//! glow/lower_multi_typed_witness.rye -- proves typed multi-line desks.
 //!
 //!   rye build glow/lower_multi_typed_witness.rye -femit-bin=glow/bin/lower_multi_typed_witness
 

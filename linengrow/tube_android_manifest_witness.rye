@@ -1,4 +1,4 @@
-//! linengrow/tube_android_manifest_witness.rye — proves TUBE0.5's
+//! linengrow/tube_android_manifest_witness.rye -- proves TUBE0.5's
 //! NativeActivity envelope emission: a validated manifest becomes a
 //! complete AndroidManifest.xml naming Android's own NativeActivity,
 //! the fixed glowapp library, and exactly the permission lines its
@@ -33,7 +33,7 @@ fn run_selftest() !u8 {
     );
     const xml = out[0..n];
 
-    // Claim 1: the fixed NativeActivity class — never a custom Kotlin/Java class.
+    // Claim 1: the fixed NativeActivity class -- never a custom Kotlin/Java class.
     assert(std.mem.indexOf(u8, xml, "android.app.NativeActivity") != null);
     assert(std.mem.indexOf(u8, xml, "android.app.lib_name") != null);
     assert(std.mem.indexOf(u8, xml, "android:value=\"glowapp\"") != null);
@@ -50,7 +50,7 @@ fn run_selftest() !u8 {
     assert(std.mem.count(u8, xml, "uses-permission") == 1);
     print("tube0.5: permission lines match the closed table — INTERNET only -- GREEN.\n", .{});
 
-    // Claim 4: hasCode=false — no DEX, pure native APK envelope.
+    // Claim 4: hasCode=false -- no DEX, pure native APK envelope.
     assert(std.mem.indexOf(u8, xml, "android:hasCode=\"false\"") != null);
     print("tube0.5: hasCode=false — the envelope carries no JVM bytecode -- GREEN.\n", .{});
 

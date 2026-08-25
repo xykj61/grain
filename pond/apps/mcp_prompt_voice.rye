@@ -1,7 +1,7 @@
-//! pond/apps/mcp_prompt_voice.rye — BUHR Journey 11, Rung 3: a filled prompt routes to a voice.
+//! pond/apps/mcp_prompt_voice.rye -- BUHR Journey 11, Rung 3: a filled prompt routes to a voice.
 //!
 //! Journey 9 served the intelligence as MCP tools (a voice a caller invokes); rungs one and two
-//! of Journey 11 served prompts (a template a server offers and fills). This rung joins them —
+//! of Journey 11 served prompts (a template a server offers and fills). This rung joins them --
 //! the equinox's two halves, the intelligence and the protocol, meeting once more. A server's
 //! own prompt template, filled by a caller's arguments (rung one), *is* a prompt a Grain voice
 //! can answer; `answer` fills the template and dispatches the finished text through the gathered
@@ -10,15 +10,15 @@
 //! A `matmul {subject}` template filled with `subject=the pair` becomes `matmul the pair`, which
 //! routes to Lattice and answers `19 22 43 50`; a `lane_count {graph}` template filled with
 //! `graph=the graph` becomes `lane_count the graph`, which routes to the graph voice. The
-//! result crosses back in an owned `format mcp-prompt-run-v1` envelope carrying id · voice ·
+//! result crosses back in an owned `format mcp-prompt-run-v1` envelope carrying id - voice -
 //! result, and a round-trip reader recovers the serving voice and the answer.
 //!
-//! Every refusal crosses the surface as a *named* error, never a fabricated answer — the fill's
-//! own four refusals (`prompt_not_found` · `unknown_argument` · `missing_argument` ·
+//! Every refusal crosses the surface as a *named* error, never a fabricated answer -- the fill's
+//! own four refusals (`prompt_not_found` - `unknown_argument` - `missing_argument` -
 //! `unbound_placeholder`, rung one) cross straight back, and a voice refusal crosses under its
-//! MCP name (`model_not_allowed` · `unknown_op` · … , via `mcp_voice.error_name`). It composes
+//! MCP name (`model_not_allowed` - `unknown_op` - ... , via `mcp_voice.error_name`). It composes
 //! over public API only: rung one fills, the host dispatches; neither is reopened. It reads no
-//! network — the real fetch and the Comlink-served transport stay the held custody/serve gates.
+//! network -- the real fetch and the Comlink-served transport stay the held custody/serve gates.
 //!
 //!   rye build pond/apps/mcp_prompt_voice.rye -femit-bin=pond/bin/mcp-prompt-voice
 //!   pond/bin/mcp-prompt-voice selftest
@@ -74,7 +74,7 @@ fn render_error(id: u32, err_name: []const u8, out: []u8) RunError![]const u8 {
 /// host, rendering the answer into `out`. The fill's own refusals cross straight back under
 /// their names; a voice refusal crosses under its MCP error name; on success the envelope
 /// carries the serving voice and its answer. `model_hash`/`budget` are the server's own, and
-/// `allow_text` its model allow-list — the caller supplies only the prompt name and arguments.
+/// `allow_text` its model allow-list -- the caller supplies only the prompt name and arguments.
 pub fn answer(
     desc: *const mp.PromptDesc,
     req: *const mp.GetRequest,
@@ -89,7 +89,7 @@ pub fn answer(
     assert(model_hash.len > 0);
 
     // Fill the template through rung one. A fill refusal is a rendered MCP-prompt error, not a
-    // Zig error, so parse it back and cross its name straight through — the filled prompt is
+    // Zig error, so parse it back and cross its name straight through -- the filled prompt is
     // never routed to a voice unless every placeholder resolved.
     var fill_buf: [mp.max_env]u8 = undefined;
     const filled_env = mp.get_prompt(desc, req, fill_buf[0..]) catch return error.EnvTooLong;
@@ -114,7 +114,7 @@ pub fn answer(
     }
 }
 
-/// A parsed run result — the id it answers and either a serving voice with its answer, or a
+/// A parsed run result -- the id it answers and either a serving voice with its answer, or a
 /// named error, exactly one of the two.
 pub const RunResult = struct {
     id: u32,
@@ -135,7 +135,7 @@ fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     return .{ .key = key, .val = val };
 }
 
-/// Parse a `format mcp-prompt-run-v1` envelope back into a RunResult — the reading sibling of
+/// Parse a `format mcp-prompt-run-v1` envelope back into a RunResult -- the reading sibling of
 /// `answer`, so a caller recovers the serving voice and the answer. The `result` value is the
 /// rest of its line, so a multi-word answer (`19 22 43 50`) crosses whole.
 pub fn parse_run(src: []const u8, out: *RunResult) RunError!void {
@@ -250,7 +250,7 @@ fn welcome_a_different_fill_routes_to_the_graph() !void {
 }
 
 fn unwelcome_missing_argument_crosses_back() !void {
-    // A fill refusal crosses straight back — the prompt never reaches a voice half-filled.
+    // A fill refusal crosses straight back -- the prompt never reaches a voice half-filled.
     var desc: mp.PromptDesc = undefined;
     try mp.parse_desc(matmul_src, &desc);
     // A request that binds no argument leaves `subject` unbound.
@@ -276,7 +276,7 @@ fn unwelcome_unknown_prompt_crosses_back() !void {
 }
 
 fn unwelcome_unknown_op_crosses_back() !void {
-    // A well-formed fill whose text no voice recognizes crosses back as unknown_op — the bridge
+    // A well-formed fill whose text no voice recognizes crosses back as unknown_op -- the bridge
     // never invents an answer for a prompt no voice knows.
     const src =
         \\format mcp-prompt-v1

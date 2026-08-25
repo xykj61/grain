@@ -1,12 +1,12 @@
-//! pond/apps/mcp_prompt.rye — BUHR Journey 11, Rung 1: the MCP prompts surface.
+//! pond/apps/mcp_prompt.rye -- BUHR Journey 11, Rung 1: the MCP prompts surface.
 //!
 //! The Model Context Protocol names three first-class surfaces. Journey 9 served the verb
-//! half — `tools/call`, a voice a caller invokes. Journey 10 served the noun half —
-//! `resources/read`, an artifact a caller reads. This rung serves the third — `prompts`, a
+//! half -- `tools/call`, a voice a caller invokes. Journey 10 served the noun half --
+//! `resources/read`, an artifact a caller reads. This rung serves the third -- `prompts`, a
 //! named reusable template a server *offers*: a caller names a prompt, supplies its
 //! arguments, and receives finished text (`prompts/get`).
 //!
-//! A `format mcp-prompt-v1` descriptor declares a prompt — a name, a one-line summary, one
+//! A `format mcp-prompt-v1` descriptor declares a prompt -- a name, a one-line summary, one
 //! `arg <name>` line per argument, and a length-delimited `template` body carrying `{name}`
 //! placeholders. A `format mcp-prompt-get-v1` request names the prompt and binds each
 //! argument (`arg <name> <value>`). The fill substitutes every `{name}` with its bound value
@@ -14,8 +14,8 @@
 //! round-trip reader recovers the body.
 //!
 //! The crux: a `prompts/get` returns exactly the template's text with every declared argument
-//! filled and every placeholder resolved — nothing left half-substituted. The result body
-//! holds no `{…}` at all, exactly the declared arguments were supplied, and the envelope
+//! filled and every placeholder resolved -- nothing left half-substituted. The result body
+//! holds no `{...}` at all, exactly the declared arguments were supplied, and the envelope
 //! round-trips byte-for-byte. Every refusal crosses the surface as a *named* MCP error, never
 //! a half-filled body: an unknown prompt name is `prompt_not_found`, an argument the
 //! descriptor never declared is `unknown_argument`, a declared argument left unbound is
@@ -23,7 +23,7 @@
 //!
 //! It invents no storage and no transport: it reads a descriptor and a request in owned Bron
 //! shapes kin to mcp_bron.rye, fills bounded text, and renders an owned result. It reads no
-//! network — the real fetch and the Comlink-served transport stay the held custody/serve
+//! network -- the real fetch and the Comlink-served transport stay the held custody/serve
 //! gates.
 //!
 //!   rye build pond/apps/mcp_prompt.rye -femit-bin=pond/bin/mcp-prompt
@@ -133,7 +133,7 @@ fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
 }
 
 /// Copy a bounded token into an owned buffer, returning its length. Refuses when the token
-/// exceeds the buffer — a name or value is never silently truncated.
+/// exceeds the buffer -- a name or value is never silently truncated.
 fn store_token(dst: []u8, tok: []const u8, comptime cap: u32) PromptError!u32 {
     // invariant: the destination buffer is exactly the declared cap
     assert(dst.len == cap);
@@ -241,7 +241,7 @@ pub fn parse_get(src: []const u8, req: *GetRequest) PromptError!void {
         } else if (std.mem.eql(u8, kv.key, "arg")) {
             if (req.binding_count >= max_args) return error.TooManyArgs;
             // An `arg` line binds a name to a value: the first token is the name, the trimmed
-            // remainder the value (which may be empty — a bound-to-empty argument is honest).
+            // remainder the value (which may be empty -- a bound-to-empty argument is honest).
             const inner = key_val(kv.val);
             if (inner.key.len == 0 or inner.key.len > max_name) return error.NameTooLong;
             if (inner.val.len > max_value) return error.ValueTooLong;
@@ -331,7 +331,7 @@ fn fill_template(desc: *const PromptDesc, req: *const GetRequest, filled: []u8) 
 /// name must match the descriptor (`prompt_not_found`); every binding must name a declared
 /// argument (`unknown_argument`, never dropped); every declared argument must be bound
 /// (`missing_argument`); every `{name}` in the template must resolve (`unbound_placeholder`).
-/// On success the envelope carries prompt · len · the finished body, holding no `{…}`.
+/// On success the envelope carries prompt - len - the finished body, holding no `{...}`.
 pub fn get_prompt(desc: *const PromptDesc, req: *const GetRequest, out: []u8) PromptError![]const u8 {
     // invariant: the caller's buffer respects the envelope bound
     assert(out.len <= max_env);
@@ -375,7 +375,7 @@ pub fn get_prompt(desc: *const PromptDesc, req: *const GetRequest, out: []u8) Pr
     return s;
 }
 
-/// A parsed prompt result — the id it answers and either a filled body or a named error,
+/// A parsed prompt result -- the id it answers and either a filled body or a named error,
 /// exactly one of the two. Proving parse(render(x)) recovers x is the crux property.
 pub const PromptResult = struct {
     id: u32,
@@ -385,7 +385,7 @@ pub const PromptResult = struct {
     is_error: bool,
 };
 
-/// Parse a `format mcp-prompt-result-v1` envelope back into a PromptResult — the reading
+/// Parse a `format mcp-prompt-result-v1` envelope back into a PromptResult -- the reading
 /// sibling of `get_prompt`. The body is length-delimited by the `len` field (a filled body may
 /// hold newlines): the head fields parse line by line and the body is read exactly after the
 /// `body ` marker and checked against the published length.
@@ -438,7 +438,7 @@ pub fn parse_result(src: []const u8, out: *PromptResult) PromptError!void {
 
     if (split) |at| {
         // A fill envelope: the body is exactly the bytes after the marker, and its length must
-        // equal the published len — the fill cannot claim a length it did not produce.
+        // equal the published len -- the fill cannot claim a length it did not produce.
         if (!have_len) return error.MissingField;
         const body = src[at + marker.len ..];
         if (body.len != published_len) return error.BodyLenMismatch;
@@ -452,7 +452,7 @@ pub fn parse_result(src: []const u8, out: *PromptResult) PromptError!void {
     if (!have_body) return error.MissingField;
 }
 
-// A demonstration prompt — a greeting template with two arguments and an interior newline, so
+// A demonstration prompt -- a greeting template with two arguments and an interior newline, so
 // the round-trip proves a multi-line filled body survives the length-delimited crossing.
 const desc_src =
     \\format mcp-prompt-v1
@@ -489,7 +489,7 @@ fn welcome_get_round_trips() !void {
     var buf: [max_env]u8 = undefined;
     const rendered = try get_prompt(&desc, &req, &buf);
 
-    // The crux property — parse the rendered result back and recover the filled body.
+    // The crux property -- parse the rendered result back and recover the filled body.
     var res: PromptResult = undefined;
     try parse_result(rendered, &res);
     assert(res.id == 7);
@@ -607,7 +607,7 @@ fn unwelcome_missing_argument_refuses() !void {
 }
 
 fn unwelcome_unbound_placeholder_refuses() !void {
-    // The crux refusal — a template placeholder naming no declared argument refuses rather
+    // The crux refusal -- a template placeholder naming no declared argument refuses rather
     // than leaving a live brace in the body.
     const src =
         \\format mcp-prompt-v1

@@ -1,12 +1,12 @@
 //! glow-book: runes.md#g-core
-//! glow/rune_core.rye — parses Glow's thin `|%` … `++` … `--` core.
+//! glow/rune_core.rye -- parses Glow's thin `|%` ... `++` ... `--` core.
 //!
 //! STOA14/15: one or two arms. STOA17: optional bare payload face before arms.
-//! STOA20: up to three arms (`double` · `inc` · `dec`).
+//! STOA20: up to three arms (`double` - `inc` - `dec`).
 //! STOA21: optional typed payload `=/  face=@u32  <decimal>`.
-//! STOA25: optional open arm body after the name — nest expr (`sample` /
-//! payload face · literal). STOA27: nest bodies `(mix …)` · `(jam …)` ·
-//! `(lent …)` · `^-` cast. Closed arms keep an empty body.
+//! STOA25: optional open arm body after the name -- nest expr (`sample` /
+//! payload face - literal). STOA27: nest bodies `(mix ...)` - `(jam ...)` -
+//! `(lent ...)` - `^-` cast. Closed arms keep an empty body.
 //!
 //! Other auras and variance stay later.
 

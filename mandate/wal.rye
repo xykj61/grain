@@ -1,8 +1,8 @@
-//! mandate/wal.rye — a write-ahead log for durability between snapshots.
+//! mandate/wal.rye -- a write-ahead log for durability between snapshots.
 //!
 //! A snapshot (`store.rye`) captures the whole store at a moment; a **write-ahead log**
 //! captures every mutation *since* that moment, so a crash between snapshots loses
-//! nothing. Recovery is: restore the last snapshot, then **replay the log in order** —
+//! nothing. Recovery is: restore the last snapshot, then **replay the log in order** --
 //! the store returns to its live state exactly.
 //!
 //! Each entry is one bounded, fixed-width record: a kind (upsert or remove), an id, a
@@ -20,7 +20,7 @@ const store = @import("store.rye");
 
 pub const wal_version = "20260811.123400";
 
-// The most mutations one log holds before it must be folded into a fresh snapshot —
+// The most mutations one log holds before it must be folded into a fresh snapshot --
 // bounded like every Mandate surface.
 pub const max_entries: u32 = 256;
 
@@ -39,7 +39,7 @@ pub const Entry = struct {
     vec: [store.max_dim]f32,
 };
 
-/// The log — a bounded array of entries and how many are filled. Append-only in life;
+/// The log -- a bounded array of entries and how many are filled. Append-only in life;
 /// replayed in order at recovery.
 pub const Wal = struct {
     entries: [max_entries]Entry,
@@ -60,7 +60,7 @@ pub fn record_upsert(wal: *Wal, id: u32, tag: u32, vec: *const [store.max_dim]f3
     wal.count += 1;
 }
 
-/// Record a remove — id alone; tag and vec stay zero.
+/// Record a remove -- id alone; tag and vec stay zero.
 pub fn record_remove(wal: *Wal, id: u32) WalError!void {
     // invariant: the log never runs past its bound.
     assert(wal.count <= max_entries);
@@ -69,7 +69,7 @@ pub fn record_remove(wal: *Wal, id: u32) WalError!void {
     wal.count += 1;
 }
 
-/// Replay the whole log onto `st` in order — the recovery step. Each entry calls the
+/// Replay the whole log onto `st` in order -- the recovery step. Each entry calls the
 /// same store mutation the live path used, so ordering (an upsert then a later remove
 /// of the same id) resolves exactly as it did live.
 pub fn apply(wal: *const Wal, st: *store.Store) !void {
@@ -120,7 +120,7 @@ fn get_f32(bytes: []const u8, off: u32) f32 {
     return @bitCast(get_u32(bytes, off));
 }
 
-/// Serialize the log to `buf` (little-endian: magic · version · count · entries) and
+/// Serialize the log to `buf` (little-endian: magic - version - count - entries) and
 /// return its byte length. A buffer too small is refused before any byte is written.
 pub fn encode(wal: *const Wal, buf: []u8) WalBlobError!u32 {
     // invariant: the log is well-formed before it is written out.

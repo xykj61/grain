@@ -1,14 +1,14 @@
-//! linengrow/glow_sensors_grant.rye — Glow Sensors Grant mold.
+//! linengrow/glow_sensors_grant.rye -- Glow Sensors Grant mold.
 //!
 //! Clean-room Glow parallel of GrapheneOS's **Sensors permission toggle**
 //! (studied in gratitude/grapheneos/features-overview.md): a binary per-app
 //! grant for sensors not covered by Camera / Microphone / Body Sensors /
-//! Activity Recognition (accelerometer, gyroscope, compass, barometer, …).
+//! Activity Recognition (accelerometer, gyroscope, compass, barometer, ...).
 //! Grant admits; revoke (or deny) refuses. When refused, the grant
-//! **appears zeroed** — GrapheneOS returns zeroed sensor values rather than
+//! **appears zeroed** -- GrapheneOS returns zeroed sensor values rather than
 //! surfacing a permission error.
 //!
-//! Distinct from Resource Scope (Storage · Contact) and from Network Grant:
+//! Distinct from Resource Scope (Storage - Contact) and from Network Grant:
 //! same binary shape as Network, different refusal presentation (zeroed vs
 //! down). Manifest may declare `sensors` + `right_device` when a future
 //! TUBE0.5 emission path needs it; this mold is the runtime grant/revoke edge.

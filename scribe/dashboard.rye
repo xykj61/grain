@@ -1,15 +1,15 @@
-//! scribe/dashboard.rye — Scribe's reading room: read a drawer of Kyri documents and
+//! scribe/dashboard.rye -- Scribe's reading room: read a drawer of Kyri documents and
 //! lay them out by format.
 //!
 //! Where `reader.rye` reads ONE document, the dashboard reads MANY: point it at a drawer
 //! of `.kyri` documents, and it parses each, dispatches by its `format` line, and lays it
-//! on the right shelf — session logs on Logs, batons on Batons, inventory on Inventory,
+//! on the right shelf -- session logs on Logs, batons on Batons, inventory on Inventory,
 //! anything unrecognized honestly on Unread. It is a **lens**, never an author: every
 //! field a row shows is the reader's own zero-copy slice into that document's source, so
 //! the dashboard copies nothing and invents nothing.
 //!
 //! Bounded: a drawer holds at most `max_drawer_docs` documents; the count is asserted at
-//! every fill and render. Each document stays within the reader's own bounds — the
+//! every fill and render. Each document stays within the reader's own bounds -- the
 //! dashboard borrows them, adding no new source limit of its own.
 //!
 //! Zero-copy discipline: a Row's `stamp`/`title`/`one_line` are slices into each
@@ -32,7 +32,7 @@ pub const dashboard_version = "20260810.090000";
 pub const max_drawer_docs: u32 = 256;
 
 /// The shelves a document can land on, chosen by its format. Unread is the honest
-/// fall-through — an unrecognized format is shown, never silently dropped.
+/// fall-through -- an unrecognized format is shown, never silently dropped.
 pub const Shelf = enum { logs, batons, inventory, unread };
 
 /// The shelf a document belongs on, by the reader's own format dispatch.
@@ -54,7 +54,7 @@ pub fn shelf_name(s: Shelf) []const u8 {
 }
 
 /// One laid-out document: its shelf, and three fields the reader already returns. Every
-/// slice borrows the document's source — the dashboard copies nothing.
+/// slice borrows the document's source -- the dashboard copies nothing.
 pub const Row = struct {
     shelf: Shelf,
     stamp: []const u8,
@@ -63,7 +63,7 @@ pub const Row = struct {
     archetype: []const u8, // a baton's fleet archetype (galleon/cutter/…), or empty
 };
 
-/// Lay a parsed document into a row — pure lens: the fields are the document's own, and
+/// Lay a parsed document into a row -- pure lens: the fields are the document's own, and
 /// an absent field is an empty slice, never invented text.
 pub fn row_of(doc: *const reader.Document) Row {
     const empty: []const u8 = "";
@@ -88,7 +88,7 @@ pub const Index = struct {
     rows: [max_drawer_docs]Row,
     count: u32,
 
-    /// An empty index — no documents read yet.
+    /// An empty index -- no documents read yet.
     pub fn init() Index {
         return .{ .rows = undefined, .count = 0 };
     }
@@ -170,7 +170,7 @@ fn run_selftest() !u8 {
     idx.add(&odd);
     if (idx.shelf_count(.unread) != 1) return error.OddNotShelved;
 
-    // The lens shows each document's OWN fields — the log's stamp/title/recommend.
+    // The lens shows each document's OWN fields -- the log's stamp/title/recommend.
     const log_row = idx.rows[0];
     if (!std.mem.eql(u8, log_row.stamp, "20260810.041230")) return error.LensStampWrong;
     if (!std.mem.eql(u8, log_row.title, "a scribe reader test")) return error.LensTitleWrong;
@@ -199,7 +199,7 @@ fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
     out.writeStreamingAll(io, line) catch {};
 }
 
-/// Render an index to text — one legible line per document, grouped by shelf.
+/// Render an index to text -- one legible line per document, grouped by shelf.
 fn render(io: std.Io, idx: *const Index) void {
     put_line(io, "format dashboard-v1\n", .{});
     put_line(io, "documents {d}\n", .{idx.count});

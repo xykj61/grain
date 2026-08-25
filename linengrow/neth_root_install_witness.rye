@@ -1,4 +1,4 @@
-//! linengrow/neth_root_install_witness.rye — proves Neth's two-posture root install.
+//! linengrow/neth_root_install_witness.rye -- proves Neth's two-posture root install.
 //!
 //!   rye build linengrow/neth_root_install_witness.rye -femit-bin=linengrow/bin/neth_root_install_witness
 //!   linengrow/bin/neth_root_install_witness

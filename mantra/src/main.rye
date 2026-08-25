@@ -1,7 +1,7 @@
-//! mantra/src/main.rye — Mantra: the living history of a text stream.
+//! mantra/src/main.rye -- Mantra: the living history of a text stream.
 //!
 //! Mantra is the version-control layer of the Rye family. It holds the full
-//! history of a text file as a weave — a list of lines each carrying a stable
+//! history of a text file as a weave -- a list of lines each carrying a stable
 //! position and a generation count that names whether the line is present or
 //! gone. Every state is content-named by its SHA3-256 digest; the store never
 //! loses a blob once written.
@@ -19,10 +19,10 @@
 //!   rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra
 //!
 //! Architecture (three sections, one file for the seed):
-//!   § Weave   — the data model: Line, Diff, Weave
-//!   § Diff    — pure diff computation over line equality (LCS)
-//!   § Store   — SHA3-256 content-addressed blob store under .mantra/
-//!   § Main    — CLI: init / add / status
+//!   § Weave   -- the data model: Line, Diff, Weave
+//!   § Diff    -- pure diff computation over line equality (LCS)
+//!   § Store   -- SHA3-256 content-addressed blob store under .mantra/
+//!   § Main    -- CLI: init / add / status
 
 const std  = @import("std");
 const assert = std.debug.assert;
@@ -34,13 +34,13 @@ const Sha3 = std.crypto.hash.sha3.Sha3_256;
 const mantra_version = "20260619.213800";
 
 // =========================================================================
-// § Weave — the data model
+// § Weave -- the data model
 // =========================================================================
 //
 // A Weave is a list of Lines. Each Line carries its text, a generation count
 // (odd = present, even = gone), and a stable position that never changes once
 // assigned. Generations never decrease. These two facts together mean the weave
-// remembers every line ever seen — its full history.
+// remembers every line ever seen -- its full history.
 //
 // Invariants held by every Weave operation:
 //   line.gen >= 1         (zero is reserved; new lines start at gen 1)
@@ -65,7 +65,7 @@ const Weave = struct {
     lines:    std.ArrayListUnmanaged(Line),
     next_pos: u32,
 
-    /// An empty weave — no history yet.
+    /// An empty weave -- no history yet.
     fn empty() Weave {
         return .{ .lines = std.ArrayListUnmanaged(Line).empty, .next_pos = 0 };
     }
@@ -135,11 +135,11 @@ const Weave = struct {
 };
 
 // =========================================================================
-// § Diff — pure diff computation (LCS over line text equality)
+// § Diff -- pure diff computation (LCS over line text equality)
 // =========================================================================
 
 /// Compute the diff between `old_lines` (the weave's current view) and
-/// `new_text` (the desired lines). Pure: same inputs → same Diff, every time.
+/// `new_text` (the desired lines). Pure: same inputs -> same Diff, every time.
 ///
 /// Postcondition: applying the Diff to a weave whose current() == old_lines
 ///   will produce a weave whose current() == new_text.
@@ -213,7 +213,7 @@ fn compute_diff(
 }
 
 /// Split `text` into lines on '\n'. A trailing newline produces no empty
-/// trailing entry — the common case for text files.
+/// trailing entry -- the common case for text files.
 fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
     var lines = std.ArrayListUnmanaged([]const u8).empty;
     var it = std.mem.splitScalar(u8, text, '\n');
@@ -225,14 +225,14 @@ fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const 
 }
 
 // =========================================================================
-// § Store — SHA3-256 content-addressed blob store
+// § Store -- SHA3-256 content-addressed blob store
 // =========================================================================
 //
 // Layout under the repository root:
 //   .mantra/
-//     HEAD          — 64-char hex blob name of the current weave, + \n
+//     HEAD          -- 64-char hex blob name of the current weave, + \n
 //     blobs/
-//       <64-hex>    — one file per blob, named by its SHA3-256 digest
+//       <64-hex>    -- one file per blob, named by its SHA3-256 digest
 
 const Store = struct {
     root:       Dir,
@@ -301,7 +301,7 @@ const Store = struct {
 };
 
 fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
-    // invariant: input is non-empty — hashing nothing is a caller error
+    // invariant: input is non-empty -- hashing nothing is a caller error
     assert(bytes.len > 0);
     const out = try allocator.alloc(u8, bytes.len * 2);
     // postcondition: output is exactly twice the input length
@@ -323,7 +323,7 @@ fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
 //   Lines 1+: "{gen}\t{pos}\t{text}\n"
 //
 // The seed format uses tab as the field separator. Line text must not contain
-// tabs or embedded newlines — asserted at serialization. A future pass will
+// tabs or embedded newlines -- asserted at serialization. A future pass will
 // lift this with a length-prefix encoding.
 
 fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
@@ -370,7 +370,7 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
 }
 
 // =========================================================================
-// § Commit — the chain link
+// § Commit -- the chain link
 // =========================================================================
 //
 // A commit blob names a weave blob and points to its parent commit.
@@ -380,7 +380,7 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
 //   weave <64-hex>\n
 //
 // HEAD always points to the most recent commit blob.
-// Legacy HEAD values (v0: HEAD → weave blob directly) are handled in
+// Legacy HEAD values (v0: HEAD -> weave blob directly) are handled in
 // load_weave for backwards compatibility.
 
 const CommitRecord = struct {
@@ -440,16 +440,16 @@ fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRec
 }
 
 // =========================================================================
-// § Brix — .brix course descriptor
+// § Brix -- .brix course descriptor
 // =========================================================================
 //
 // A .brix descriptor names a project and the bricks (source files) Mantra
 // tracks. Format: one key-value pair per line, space-separated. Lines
 // starting with '#' are comments; blank lines are ignored.
 //
-//   name     — the project name (one value)
-//   version  — descriptor version (Rye chronological stamp)
-//   file     — one tracked brick/source file (multiple allowed, in order)
+//   name     -- the project name (one value)
+//   version  -- descriptor version (Rye chronological stamp)
+//   file     -- one tracked brick/source file (multiple allowed, in order)
 //
 // Tablecloth (the content-addressed store) holds blobs; Brix (the composing
 // language) describes what the system is made of. A .brix descriptor is
@@ -500,7 +500,7 @@ fn load_weave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !We
     const head_name = try store.read_head(allocator, io);
     if (head_name == null) return Weave.empty();
     const blob = try store.read_blob(allocator, io, head_name.?);
-    // v1: HEAD → commit blob → weave blob. Legacy v0: HEAD → weave blob.
+    // v1: HEAD -> commit blob -> weave blob. Legacy v0: HEAD -> weave blob.
     if (std.mem.startsWith(u8, blob, "mantra-commit-v1")) {
         const commit = try deserialize_commit(allocator, blob);
         const weave_blob = try store.read_blob(allocator, io, commit.weave_name);
@@ -510,7 +510,7 @@ fn load_weave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !We
 }
 
 // =========================================================================
-// § Main — CLI
+// § Main -- CLI
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {

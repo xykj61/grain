@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu1_witness.rye — proves LULU1 preset → Skate metrics.
+//! linengrow/hearth_lulu1_witness.rye -- proves LULU1 preset -> Skate metrics.
 //!
 //!   rye build linengrow/hearth_lulu1_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu1_witness

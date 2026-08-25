@@ -1,4 +1,4 @@
-//! Rye test: std.mem.isAligned / isAlignedGeneric / isAlignedLog2 — pass 9902.
+//! Rye test: std.mem.isAligned / isAlignedGeneric / isAlignedLog2 -- pass 9902.
 //!
 //! Alignment predicates; pairs with alignBackward (9904) and alignPointer (9903).
 

@@ -1,14 +1,14 @@
-//! pond/apps/realidream_view_theme_stack.rye — BUHR Journey 5, Rung 7: two .brush
-//! layers compose the Realidream surface — a mode ground and a read-origin accent.
+//! pond/apps/realidream_view_theme_stack.rye -- BUHR Journey 5, Rung 7: two .brush
+//! layers compose the Realidream surface -- a mode ground and a read-origin accent.
 //!
 //! Rung six proved a single `.brush` theme recolors the read origin. This rung proves
 //! the deeper design-system property on the Realidream view: two *independent* `.brush`
-//! layers — a **mode** layer that sets only the ground (paper/ink) and a **read-source**
-//! accent layer that sets only the `read` origin token — compose cleanly through the
+//! layers -- a **mode** layer that sets only the ground (paper/ink) and a **read-source**
+//! accent layer that sets only the `read` origin token -- compose cleanly through the
 //! WADE1 cascade, the top layer winning per token, the base sheet's untouched tokens
 //! (the living-edge `head`, the edge rule) inheriting beneath both. A person themes the
-//! whole fused scene by stacking small, focused `.brush` files — a dark mode under a
-//! warm read accent — never one monolithic sheet.
+//! whole fused scene by stacking small, focused `.brush` files -- a dark mode under a
+//! warm read accent -- never one monolithic sheet.
 //!
 //! It stays on witnessed ground end to end. Each layer is read through the real
 //! authoring loop (`brush_parse.parse_brush` validates, `collect_brush_style`
@@ -16,7 +16,7 @@
 //! ping-pong per-key `brix/infuse` cascade, already witnessed), and the paint is rung
 //! five's unchanged `paint_origins`. The composition is proven by reading back three
 //! sources at once: the ground from the mode layer, the read origin from the accent
-//! layer, and the living-edge head from the base sheet neither layer named — three
+//! layer, and the living-edge head from the base sheet neither layer named -- three
 //! authors, one resolved surface.
 //!
 //! Additive by construction: it imports realidream_view, mantra_browser,
@@ -38,12 +38,12 @@ const bp = @import("brushstroke/brush_parse.rye");
 
 const realidream_view_theme_stack_version = "20260812.133736";
 
-// The two layer fixtures — real `.brush` authoring files, each focused on one concern:
+// The two layer fixtures -- real `.brush` authoring files, each focused on one concern:
 // the mode sets the ground, the read-source accent sets the read origin.
 const mode_path = "pond/apps/dark-mode.brush";
 const accent_path = "pond/apps/read-source.brush";
 
-// The accent layer's read origin — the warm amber (R204 > G122 > B51), warm/low-blue so
+// The accent layer's read origin -- the warm amber (R204 > G122 > B51), warm/low-blue so
 // it passes the palette law, distinct from the base Madder, so a stacked accent
 // unmistakably wins the top of the cascade.
 const accent_read_argb: u32 = 0xFF_CC_7A_33;
@@ -54,7 +54,7 @@ pub const StackError = error{
 
 /// Read one `.brush` layer's style block into a flat Bron sheet, validated through the
 /// real authoring loop. Returns the collected byte length in `out`. A layer that
-/// declares no style block is refused — a cascade layer must carry tokens.
+/// declares no style block is refused -- a cascade layer must carry tokens.
 fn read_layer(io: std.Io, path: []const u8, out: []u8) !u32 {
     // invariant: a real layer path names a file to read.
     assert(path.len > 0);
@@ -89,7 +89,7 @@ pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
     var accent_buf: [bp.max_style_bytes]u8 = undefined;
     const accent_len = try read_layer(io, accent_path, &accent_buf);
 
-    // Base first, then the mode, then the read accent on top — the cascade order.
+    // Base first, then the mode, then the read accent on top -- the cascade order.
     const layers = [_][]const u8{ tokens.base_sheet, mode_buf[0..mode_len], accent_buf[0..accent_len] };
     var scratch: [tokens.max_sheet_bytes]u8 = undefined;
     const n = try tokens.resolve_stack(&layers, out, &scratch);
@@ -99,7 +99,7 @@ pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
     return n;
 }
 
-/// Count pixels whose visible color exactly matches `c` (ignoring alpha) — a witness
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) -- a witness
 /// helper proving a token color reached (or never reached) the canvas.
 fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
     // invariant: the stride holds a full row of ARGB8888 pixels.
@@ -152,7 +152,7 @@ fn welcome_layers_compose(io: std.Io) !void {
 }
 
 fn welcome_accent_wins_over_base(io: std.Io) !void {
-    // The stacked read origin is the accent's amber, not the base sheet's Madder — the
+    // The stacked read origin is the accent's amber, not the base sheet's Madder -- the
     // top layer wins the token it names.
     var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
     const n = try resolve_stacked(io, &sheet_buf);
@@ -194,15 +194,15 @@ fn welcome_stacked_paint_reaches_canvas(allocator: std.mem.Allocator, io: std.Io
     const h_u: u32 = @intCast(height);
     const read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, read);
     const head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, head);
-    // The stacked accent's amber read origin reached the canvas — the composition
-    // painted — and the base's inherited Ochre head reached it too, beneath both layers.
+    // The stacked accent's amber read origin reached the canvas -- the composition
+    // painted -- and the base's inherited Ochre head reached it too, beneath both layers.
     assert(read_pixels > 0);
     assert(head_pixels > 0);
     print("realidream_view_theme_stack: {d} stacked-accent read pixels and {d} inherited head pixels on the canvas — the cascade painted\n", .{ read_pixels, head_pixels });
 }
 
 fn welcome_stack_refuses_styleless(io: std.Io) !void {
-    // read_layer refuses a `.brush` with no style block — a cascade layer must carry
+    // read_layer refuses a `.brush` with no style block -- a cascade layer must carry
     // tokens. The seed fixture declares none.
     var out: [bp.max_style_bytes]u8 = undefined;
     if (read_layer(io, "brushstroke/seed-frame.brush", &out)) |_| {

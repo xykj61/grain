@@ -1,7 +1,7 @@
-//! glow/text_floor.rye — bounded string buffers and named overflow errors.
+//! glow/text_floor.rye -- bounded string buffers and named overflow errors.
 //!
 //! Smallest complete ring for Glow rung 2: general text handling with explicit
-//! bounds and refuse-by-name overflow — prerequisite for a Glow-written lexer arm.
+//! bounds and refuse-by-name overflow -- prerequisite for a Glow-written lexer arm.
 //!
 //!   rye build glow/text_floor_witness.rye -femit-bin=glow/bin/text_floor_witness
 

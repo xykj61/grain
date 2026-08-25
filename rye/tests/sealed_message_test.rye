@@ -1,4 +1,4 @@
-//! Rye test: a sealed message — the heart of content-centric messaging, shown
+//! Rye test: a sealed message -- the heart of content-centric messaging, shown
 //! working as one value. It composes the three proven primitives with the
 //! strengthened hash: two identities agree a shared secret (X25519, derived from
 //! their Ed25519 identities), seal a payload to it (AEAD), name the sealed bytes
@@ -6,7 +6,7 @@
 //! attestation, checks the content-name, derives the same secret, and opens it.
 //! This is active-designing/993 and external-research/yonder/20260618-212112_content-centric-messaging.md, /985 in miniature.
 //!
-//! Deterministic throughout — fixed seeds and nonce — so the output is identical
+//! Deterministic throughout -- fixed seeds and nonce -- so the output is identical
 //! every run and across both stds, for the parity gate. Fixtures, never secrets.
 
 const std = @import("std");
@@ -16,7 +16,7 @@ const ChaCha20Poly1305 = std.crypto.aead.chacha_poly.ChaCha20Poly1305;
 const Sha3_512 = std.crypto.hash.sha3.Sha3_512;
 
 /// Derive the symmetric seal key from a shared secret, through the strengthened
-/// hash — so the network's keys and Mantra's names rest on the same function.
+/// hash -- so the network's keys and Mantra's names rest on the same function.
 fn seal_key(shared: [32]u8) [ChaCha20Poly1305.key_length]u8 {
     var digest: [Sha3_512.digest_length]u8 = undefined;
     Sha3_512.hash(&shared, &digest, .{});
@@ -69,7 +69,7 @@ pub fn main() void {
     } else {
         std.debug.print("sealed: ERROR — the opened message differs.\n", .{});
     }
-    // The content-name — the message's identity on the network (first 16 bytes).
+    // The content-name -- the message's identity on the network (first 16 bytes).
     std.debug.print("  content-name = ", .{});
     for (name[0..16]) |b| std.debug.print("{x:0>2}", .{b});
     std.debug.print("...\n", .{});

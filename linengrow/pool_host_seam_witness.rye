@@ -1,4 +1,4 @@
-//! linengrow/pool_host_seam_witness.rye — proves Pool P0, the host seam.
+//! linengrow/pool_host_seam_witness.rye -- proves Pool P0, the host seam.
 //!
 //!   rye build linengrow/pool_host_seam_witness.rye -femit-bin=linengrow/bin/pool_host_seam_witness
 //!   linengrow/bin/pool_host_seam_witness
@@ -9,7 +9,7 @@
 //!      and its state folds from the signed log to the expected balances.
 //!   2. An agent with NO grant is refused at the door with NotAdmitted, and
 //!      no fold runs.
-//!   3. An agent granted only READ (not write) over the ledger is refused —
+//!   3. An agent granted only READ (not write) over the ledger is refused --
 //!      admission checks the exact right, not mere presence.
 //!   4. The hosted fold is deterministic: two hostings of the same agent on
 //!      the same log agree bit-for-bit on balances.

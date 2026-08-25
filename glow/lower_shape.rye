@@ -1,20 +1,20 @@
-//! glow/lower_shape.rye — lower a `+$` / `$:` / `$%` shape to runnable `.rye`.
+//! glow/lower_shape.rye -- lower a `+$` / `$:` / `$%` shape to runnable `.rye`.
 //!
-//! STOA74–75: `$:` `@u32` fields → Zig struct + demo main.
-//! STOA76: `$%` cold-atom tags with unit payload → Zig enum + demo main.
-//! STOA78: `$%` arms with one-face `@u32` payload → Zig union(enum).
-//! STOA80: `$%` arms with multi-face `@u32` payload → same union shape.
+//! STOA74-75: `$:` `@u32` fields -> Zig struct + demo main.
+//! STOA76: `$%` cold-atom tags with unit payload -> Zig enum + demo main.
+//! STOA78: `$%` arms with one-face `@u32` payload -> Zig union(enum).
+//! STOA80: `$%` arms with multi-face `@u32` payload -> same union shape.
 //! Named-cast resolve: `lower_named_cast.rye` (STOA77).
 //! Library emit (no main) is STOA79 for `/+` shape import.
 //! STOA95: shape-only dispatch peek delegates to `tokens.looks_like_shape_only`.
-//! STOA96: TAME tidy — assert · u32 · append_print · split emitters.
+//! STOA96: TAME tidy -- assert - u32 - append_print - split emitters.
 //! STOA180: `$:` `@t` faces parse.
 //! STOA181: `$:` `@t` lowers to bounded `[aura_t_max_bytes]u8` + demo main.
 //! STOA183: `$:` `@ux` faces parse.
 //! STOA184: `$:` `@ux` lowers to bounded `[aura_ux_max_bytes]u8` + demo main.
 //! STOA187: `$%` payload `@t`/`@ux` parse.
 //! STOA188: `$%` payload `@t`/`@ux` lowers to bounded bytes + demo main.
-//! STOA189: API rename from lower_mold / MoldSpec → lower_shape / ShapeSpec.
+//! STOA189: API rename from lower_mold / MoldSpec -> lower_shape / ShapeSpec.
 //! `20260724.205719`: `$:` / `$%` `@u64` lowers to Zig `u64` (admitted-aura table).
 
 const std = @import("std");
@@ -24,7 +24,7 @@ const tokens = @import("tokens.rye");
 const nest_type = @import("nest_type.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// True when a multi-line desk is shape-only `+$` … `==` (no trailing `^-`).
+/// True when a multi-line desk is shape-only `+$` ... `==` (no trailing `^-`).
 pub fn looks_like_shape_only(src: []const u8) bool {
     return tokens.looks_like_shape_only(src);
 }
@@ -114,7 +114,7 @@ fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, b
     // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
     // would hand the print a negative span
     assert(used.* <= out.len);
-    // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
+    // Bound-copy loop in emit (no memcpy token in this file -- TAME scan).
     try append_print(out, used,
         \\fn {s}(comptime s: []const u8) [{d}]u8 {{
         \\    var buf = [_]u8{{0}} ** {d};
@@ -493,7 +493,7 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
     };
 }
 
-/// Importable mold — type only, no `main` (STOA79 `$:` · STOA81–82 `$%`).
+/// Importable mold -- type only, no `main` (STOA79 `$:` - STOA81-82 `$%`).
 pub fn lower_source_library(src: []const u8, out: []u8) LowerError!u32 {
     // invariant: the emitter writes its opening bytes without checking, so an empty buffer
     // would be written past rather than refused

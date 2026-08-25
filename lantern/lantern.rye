@@ -1,4 +1,4 @@
-//! lantern/lantern.rye — Lantern selftest (echo · user pins) + RW-5 contract · 20260713.
+//! lantern/lantern.rye -- Lantern selftest (echo - user pins) + RW-5 contract - 20260713.
 //!
 //!   rye build lantern/lantern.rye -femit-bin=lantern/bin/lantern
 //!   lantern/bin/lantern selftest
@@ -543,7 +543,7 @@ fn unwelcome_text_mismatch(io: std.Io) !void {
     const cwd = Dir.cwd();
     var buf: [1024]u8 = undefined;
     const text = try cwd.readFile(io, text_fixture_path, &buf);
-    // Small budget truncates the pinned text → TextMismatch.
+    // Small budget truncates the pinned text -> TextMismatch.
     const req = lc.Request{
         .model_hash = "sha3-256-rye-forge-lap0",
         .prompt = "text pin",
@@ -1096,7 +1096,7 @@ fn unwelcome_bad_user() !void {
 
 
 
-/// RW-5 contract — six welcome / unwelcome probes on the mirrored pair surface.
+/// RW-5 contract -- six welcome / unwelcome probes on the mirrored pair surface.
 fn run_rw5_contract_test(io: std.Io) !u8 {
     try welcome_complete(io);
     try welcome_echo_pin(io);

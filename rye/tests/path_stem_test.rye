@@ -1,4 +1,4 @@
-//! Rye test: std.fs.path.stem — pass 9976.
+//! Rye test: std.fs.path.stem -- pass 9976.
 //!
 //! Stem is basename without extension. Mantra and Brix will name artifacts
 //! from path components; stem names the file without its suffix.

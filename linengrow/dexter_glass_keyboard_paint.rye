@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_keyboard_paint.rye — ZETA1 letters paint + hit boxes.
+//! linengrow/dexter_glass_keyboard_paint.rye -- ZETA1 letters paint + hit boxes.
 //!
 //! Formats a layout Page into Skate text rows and maps window taps onto keys.
 //! Device-free; NativeActivity stores the last HitMap for motion.
@@ -219,7 +219,7 @@ pub fn emoji_abc_hit_is_to_letters() bool {
     return key == .to_letters;
 }
 
-/// Device-free mode round-trip: letters → emoji → letters via tap_result.
+/// Device-free mode round-trip: letters -> emoji -> letters via tap_result.
 pub fn mode_round_trip_letters_emoji() bool {
     switch (tap_result(.to_emoji, false)) {
         .set_mode => |m| {
@@ -233,7 +233,7 @@ pub fn mode_round_trip_letters_emoji() bool {
     };
 }
 
-/// Device-free mode round-trip: letters → numbers → letters via tap_result.
+/// Device-free mode round-trip: letters -> numbers -> letters via tap_result.
 pub fn mode_round_trip_letters_numbers() bool {
     switch (tap_result(.to_numbers, false)) {
         .set_mode => |m| {
@@ -417,7 +417,7 @@ pub fn letters_space_span_matches_paint() bool {
     while (i < map.count) : (i += 1) {
         if (map.keys[i].key == .space) {
             const lab = label_char_len(.space);
-            // Space is not last on row 3 — paint adds one gap cell after the label.
+            // Space is not last on row 3 -- paint adds one gap cell after the label.
             const expect_cells: i32 = @intCast(lab + 1);
             const span = map.keys[i].x1 - map.keys[i].x0;
             const equal = @divTrunc(map.width, @as(i32, @intCast(keys.len)));

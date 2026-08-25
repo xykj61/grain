@@ -1,24 +1,24 @@
-//! pond/apps/mcp_resource.rye — BUHR Journey 10, Rung 1: artifacts served as MCP resources.
+//! pond/apps/mcp_resource.rye -- BUHR Journey 10, Rung 1: artifacts served as MCP resources.
 //!
 //! The Model Context Protocol names two first-class surfaces. Journey 9 served the
-//! intelligence as the verb half — `tools/call` and `tools/list`. This rung serves the
-//! noun half — a resource a caller *reads*. A resource is named content addressed by a
+//! intelligence as the verb half -- `tools/call` and `tools/list`. This rung serves the
+//! noun half -- a resource a caller *reads*. A resource is named content addressed by a
 //! URI; `resources/read` returns its bytes. And the noun already has its module:
 //! Tablecloth (Journey 7) is a store of named, content-addressed artifacts, where a
 //! catalog is a resource list and an artifact is a resource.
 //!
 //! This bridge joins them. A `format mcp-resource-read-v1` request names a
 //! `tablecloth:<name>` URI; the read resolves through Tablecloth's own `fetch_artifact`,
-//! so it inherits the store's guarantee for free — every bead proves itself against its
+//! so it inherits the store's guarantee for free -- every bead proves itself against its
 //! digest and the whole against its recorded content address before a byte is served.
 //! The crux: `resources/read` returns exactly the bytes whose digest the URI pins, and a
 //! tampered store refuses. Every refusal crosses the surface as a *named* MCP error, never
-//! a fabricated body — an unknown name is `resource_not_found`, a non-`tablecloth` URI is
+//! a fabricated body -- an unknown name is `resource_not_found`, a non-`tablecloth` URI is
 //! `bad_uri`, a tampered bead is `resource_tampered`. A `format mcp-resource-v1` result
-//! carries uri · digest · length · content, and a round-trip reader recovers uri and body.
+//! carries uri - digest - length - content, and a round-trip reader recovers uri and body.
 //!
 //! It invents no storage and no transport: it reads a URI, fetches through the verified
-//! path, and renders in an owned Bron shape kin to mcp_bron.rye. It reads no network — the
+//! path, and renders in an owned Bron shape kin to mcp_bron.rye. It reads no network -- the
 //! real network fetch and the Comlink-served transport stay the held custody/serve gates.
 //!
 //!   rye build pond/apps/mcp_resource.rye -femit-bin=pond/bin/mcp-resource
@@ -113,7 +113,7 @@ pub fn parse_read(src: []const u8, req: *ReadRequest) ResourceError!void {
     if (!have_uri) return error.MissingField;
 }
 
-/// A parsed resource result — the id it answers and either a resource body or a named
+/// A parsed resource result -- the id it answers and either a resource body or a named
 /// error, exactly one of the two. Proving parse(render(x)) recovers x is the crux
 /// property: the owned resource shape round-trips, content and all.
 pub const ResourceResult = struct {
@@ -140,8 +140,8 @@ fn render_error(id: u32, err_name: []const u8, out: []u8) ResourceError![]const 
 /// Read a resource by URI from a Tablecloth catalog+store and render the result envelope
 /// into `out`. A `tablecloth:<name>` URI resolves through the verified `fetch_artifact`,
 /// so a tampered bead answers `resource_tampered` (never corruption), an unknown name
-/// `resource_not_found`, and a URI outside the scheme `bad_uri` — each a named error, the
-/// bridge never inventing a body. On success the envelope carries uri · digest · len ·
+/// `resource_not_found`, and a URI outside the scheme `bad_uri` -- each a named error, the
+/// bridge never inventing a body. On success the envelope carries uri - digest - len -
 /// content, the content being exactly the verified bytes the address pins.
 pub fn read_resource(
     cat: *const tc.Catalog,
@@ -181,7 +181,7 @@ pub fn read_resource(
     return s;
 }
 
-/// Parse a `format mcp-resource-v1` envelope back into a ResourceResult — the reading
+/// Parse a `format mcp-resource-v1` envelope back into a ResourceResult -- the reading
 /// sibling of `read_resource`, so a caller recovers uri and body from the wire bytes. The
 /// content is length-delimited by the `len` field (a resource body may hold newlines), so
 /// the head fields parse line by line and the body is read exactly after the `content `
@@ -240,7 +240,7 @@ pub fn parse_result(src: []const u8, out: *ResourceResult) ResourceError!void {
 
     if (split) |at| {
         // A resource envelope: the body is exactly the bytes after the marker, and its
-        // length must equal the published len — the read cannot claim a length it did not
+        // length must equal the published len -- the read cannot claim a length it did not
         // serve, so a truncated or padded body refuses.
         if (!have_len) return error.MissingField;
         const body = src[at + marker.len ..];
@@ -255,7 +255,7 @@ pub fn parse_result(src: []const u8, out: *ResourceResult) ResourceError!void {
     if (!have_body) return error.MissingField;
 }
 
-// Two demonstration artifacts — plain, single-line and multi-line, so the round-trip
+// Two demonstration artifacts -- plain, single-line and multi-line, so the round-trip
 // proves a body with an interior newline survives the length-delimited crossing.
 const doc_one = "linen holds the warp, hemp the weft.";
 const doc_two = "ramie brightens the border\nwhere the light lands.";
@@ -282,7 +282,7 @@ fn welcome_read_round_trips() !void {
     var buf: [max_env]u8 = undefined;
     const rendered = try read_resource(&cat, &store, &req, &buf);
 
-    // The crux property — parse the rendered result back and recover uri and body.
+    // The crux property -- parse the rendered result back and recover uri and body.
     var res: ResourceResult = undefined;
     try parse_result(rendered, &res);
     assert(res.id == 7);
@@ -338,7 +338,7 @@ fn welcome_digest_pins_the_bytes() !void {
 }
 
 fn unwelcome_tampered_store_refuses() !void {
-    // The crux refusal — a tampered bead crosses back as resource_tampered, the read
+    // The crux refusal -- a tampered bead crosses back as resource_tampered, the read
     // answering nothing rather than serving corruption.
     var store: beading.BeadStore = .empty();
     var cat: tc.Catalog = .empty();
@@ -425,7 +425,7 @@ fn unwelcome_bad_format_refuses() !void {
 }
 
 fn unwelcome_body_len_mismatch_refuses() !void {
-    // A result claiming a length its body does not match refuses — the read cannot
+    // A result claiming a length its body does not match refuses -- the read cannot
     // publish a length it did not serve.
     const src = "format mcp-resource-v1\nid 6\nuri tablecloth:x\ndigest ff\nlen 99\ncontent short";
     var res: ResourceResult = undefined;

@@ -1,4 +1,4 @@
-//! comlink/guest_open_asks_rx.rye — OA-L2 device wire RX guest (freestanding RISC-V virt).
+//! comlink/guest_open_asks_rx.rye -- OA-L2 device wire RX guest (freestanding RISC-V virt).
 //!
 //! Receives the sealed request datagram across virtio-net, opens it with wire_format,
 //! and verifies the inner OA-L1 poster signature and request_ref.

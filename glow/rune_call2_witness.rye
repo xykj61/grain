@@ -1,4 +1,4 @@
-//! glow/rune_call2_witness.rye — proves the `%+` two-arg call rune head.
+//! glow/rune_call2_witness.rye -- proves the `%+` two-arg call rune head.
 //!
 //!   rye build glow/rune_call2_witness.rye -femit-bin=glow/bin/rune_call2_witness
 

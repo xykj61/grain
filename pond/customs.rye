@@ -1,6 +1,6 @@
-//! pond/customs.rye — Pond's first policy concept: customs at receipt, per Tilak mark.
+//! pond/customs.rye -- Pond's first policy concept: customs at receipt, per Tilak mark.
 //!
-//! Verdicts: place · hold · refuse. Root allow-list starts with plain-bytes (place);
+//! Verdicts: place - hold - refuse. Root allow-list starts with plain-bytes (place);
 //! await-word holds for a human word; every unknown mark refuses whole.
 //!
 //!   rye build pond/customs.rye -femit-bin=pond/bin/customs
@@ -9,8 +9,8 @@
 //!   pond/bin/customs inspect <manifest.bron>
 //!
 //! Ground: marked value [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md)
-//! · sealed crossing [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
-//! · counsel [`counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md`](../counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md)
+//! - sealed crossing [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
+//! - counsel [`counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md`](../counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md)
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -46,7 +46,7 @@ fn verdict_name(v: Verdict) []const u8 {
     };
 }
 
-/// Pond's first policy table — marks named here are Pond's own allow-list roots.
+/// Pond's first policy table -- marks named here are Pond's own allow-list roots.
 pub fn verdict_for_mark(mark: []const u8) Verdict {
     if (std.mem.eql(u8, mark, "plain-bytes")) return .place;
     if (std.mem.eql(u8, mark, "await-word")) return .hold;

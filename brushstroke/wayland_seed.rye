@@ -1,6 +1,6 @@
-//! brushstroke/wayland_seed.rye — Skate grid on a Wayland surface.
+//! brushstroke/wayland_seed.rye -- Skate grid on a Wayland surface.
 //!
-//! The hosted seed (`seed.rye`) proved Frame → redraw on stdout. This seed
+//! The hosted seed (`seed.rye`) proved Frame -> redraw on stdout. This seed
 //! proves monospace **Skate** cells land on a compositor surface: connect,
 //! create an xdg toplevel, attach one SHM buffer filled from a cell grid,
 //! commit once, wait for the frame callback, exit cleanly.
@@ -16,20 +16,20 @@
 //!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a arbitrary-value witness
 //!   brushstroke/bin/brushstroke-wayland-seed redraw     # SLC-2a redraw metal: A then B
 //!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a redraw headless witness
-//!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49/p52 · glass Frame feed
+//!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49/p52 - glass Frame feed
 //!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
-//!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 · type · :quit headless
-//!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 · hosted type · ceiling · :quit
-//!   brushstroke/bin/brushstroke-wayland-seed idletest [ms]         # p56 · pong idle (needs display)
-//!   brushstroke/bin/brushstroke-wayland-seed ceilingtest           # p57 · transcript ceiling headless
+//!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 - type - :quit headless
+//!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 - hosted type - ceiling - :quit
+//!   brushstroke/bin/brushstroke-wayland-seed idletest [ms]         # p56 - pong idle (needs display)
+//!   brushstroke/bin/brushstroke-wayland-seed ceilingtest           # p57 - transcript ceiling headless
 //!
 //! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode,
 //! `brush <path>`, `live`, and `idletest`. `brushtest`, `livetest`, and `ceilingtest`
 //! are headless.
 //!
 //! Frame tidy (p52): glass `brush.Frame` (= BrushFrame) feeds this host `Frame`
-//! through one named hop — `Frame.from_brush`.
-//! Live-five: type · :quit (p54) · idle pong (p56) · ceiling fill (p57).
+//! through one named hop -- `Frame.from_brush`.
+//! Live-five: type - :quit (p54) - idle pong (p56) - ceiling fill (p57).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -48,12 +48,12 @@ const c = @cImport({
 
 const max_key_actions: u32 = 64;
 const max_prompt_bytes: u32 = 64;
-/// Default automated idle slice — covers a typical compositor ping window (~10–15s).
+/// Default automated idle slice -- covers a typical compositor ping window (~10-15s).
 /// Pond's ~1 minute hand ritual stays affirmable via `idletest 60000`.
 const default_idle_ms: u32 = 20_000;
 const idle_step_ms: u32 = 50;
 const max_idle_ms: u32 = 120_000;
-/// Live transcript ceiling — matches Pond drawn-terminal invent (`max_transcript_bytes`).
+/// Live transcript ceiling -- matches Pond drawn-terminal invent (`max_transcript_bytes`).
 const max_live_transcript_bytes: u32 = 65_536;
 const status_full_text = "transcript full — earlier lines still ran; :quit to close";
 const status_max_len: u32 = 80;
@@ -67,7 +67,7 @@ pub const KeyAction = union(enum) {
     submit,
 };
 
-/// Thin live prompt — KeyAction → one submitted line (no Rishi REPL invent).
+/// Thin live prompt -- KeyAction -> one submitted line (no Rishi REPL invent).
 const Prompt = struct {
     buf: [max_prompt_bytes]u8 = undefined,
     len: u32 = 0,
@@ -112,7 +112,7 @@ const Prompt = struct {
     }
 };
 
-/// Thin live transcript — Pond ceiling invent without pulling Rishi into the seed.
+/// Thin live transcript -- Pond ceiling invent without pulling Rishi into the seed.
 /// `full` latches at the first refused append and stays for the session.
 const LiveTranscript = struct {
     bytes: [max_live_transcript_bytes]u8 = undefined,
@@ -140,7 +140,7 @@ const LiveTranscript = struct {
             self.full = true;
             return;
         }
-        // invariant: whole prompt line fits — appends cannot refuse
+        // invariant: whole prompt line fits -- appends cannot refuse
         assert(self.append(prefix));
         assert(self.append(line));
         assert(self.append("\n"));
@@ -226,7 +226,7 @@ const grid_rows: u32 = @intCast(@divExact(window_height, @as(i32, @intCast(skate
 const skate_bg = skate.Color{ .r = 0x1a, .g = 0x1a, .b = 0x2e };
 const skate_fg = skate.Color{ .r = 0xe0, .g = 0xe0, .b = 0xe0 };
 
-/// Display seam — connect holds the session socket lifecycle (`985`).
+/// Display seam -- connect holds the session socket lifecycle (`985`).
 const Display = struct {
     handle: *c.wl_display,
 
@@ -269,7 +269,7 @@ const Frame = struct {
         return .{ .lines = lines };
     }
 
-    /// Surface p52 — one hop from glass Frame (brush.Frame) into the host Frame.
+    /// Surface p52 -- one hop from glass Frame (brush.Frame) into the host Frame.
     fn from_brush(garden: std.mem.Allocator, glass: brush.Frame) !Frame {
         // invariant: lowered Frame carries at least one line
         assert(glass.lines.len > 0);
@@ -385,7 +385,7 @@ const App = struct {
     key_actions: [max_key_actions]KeyAction = undefined,
     key_actions_head: u32 = 0,
     key_actions_tail: u32 = 0,
-    /// Wayland listeners must outlive create_surface — kept on App, never stack-temps.
+    /// Wayland listeners must outlive create_surface -- kept on App, never stack-temps.
     wm_base_listener: c.xdg_wm_base_listener = .{ .ping = xdg_wm_base_ping },
     xdg_surface_listener_v: c.xdg_surface_listener = .{ .configure = xdg_surface_configure },
     xdg_toplevel_listener_v: c.xdg_toplevel_listener = .{
@@ -985,7 +985,7 @@ pub fn open_surface(garden: std.mem.Allocator, lines: []const Line) !App {
     return present_value(garden, lines);
 }
 
-/// Surface p49/p52 — lower a .brush into Wayland Line text (borrows from `src`).
+/// Surface p49/p52 -- lower a .brush into Wayland Line text (borrows from `src`).
 fn lines_from_brush_src(garden: std.mem.Allocator, src: []const u8) ![]Line {
     // invariant: source fits the brush_parse read budget
     assert(src.len <= brush.max_brush_bytes);
@@ -1005,7 +1005,7 @@ fn load_brush_src(garden: std.mem.Allocator, io: std.Io, path: []const u8) ![]co
     return src;
 }
 
-/// Headless: .brush → glass Frame → host Frame → lit pixels (no compositor).
+/// Headless: .brush -> glass Frame -> host Frame -> lit pixels (no compositor).
 fn run_brush_feed_witness(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
     const src = try load_brush_src(garden, io, path);
     var line_buf: [brush.max_frame_lines][]const u8 = undefined;
@@ -1026,7 +1026,7 @@ fn run_brush_feed_witness(garden: std.mem.Allocator, io: std.Io, path: []const u
     return 0;
 }
 
-/// Hosted: .brush → glass Frame → Wayland surface (needs WAYLAND_DISPLAY).
+/// Hosted: .brush -> glass Frame -> Wayland surface (needs WAYLAND_DISPLAY).
 fn run_brush_present(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
     const src = try load_brush_src(garden, io, path);
     var line_buf: [brush.max_frame_lines][]const u8 = undefined;
@@ -1161,7 +1161,7 @@ fn run_ceiling_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Hosted live-five: keyboard into Prompt · transcript · ceiling status · `:quit`.
+/// Hosted live-five: keyboard into Prompt - transcript - ceiling status - `:quit`.
 /// Needs WAYLAND_DISPLAY.
 fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
     var transcript = LiveTranscript{};

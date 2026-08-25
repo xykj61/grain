@@ -1,20 +1,20 @@
-//! basin/basin.rye — the bounded activity basin: a circular buffer that overflows.
+//! basin/basin.rye -- the bounded activity basin: a circular buffer that overflows.
 //!
 //! Basin is the Scribe×Tally monitor's holding pool (the module once sketched as
-//! "Loom"). Named for a watershed basin: samples — a process event, an activity
-//! tick, a memory reading — flow in, and when the basin is full the OLDEST sample
+//! "Loom"). Named for a watershed basin: samples -- a process event, an activity
+//! tick, a memory reading -- flow in, and when the basin is full the OLDEST sample
 //! overflows the rim. So the basin holds only the most recent `capacity` samples,
 //! at a fixed, bounded cost that never grows no matter how long it runs.
 //!
-//! WORD DISCIPLINE — this is a **circular buffer**, deliberately NOT called a *ring*.
+//! WORD DISCIPLINE -- this is a **circular buffer**, deliberately NOT called a *ring*.
 //! In mathematics a *ring* is a precise algebraic structure (a set with `+` and `×`
 //! obeying the ring axioms); the tree reserves the word for that meaning, where it
-//! is used correctly — `vault/shard.rye` computes over GF(256), a finite *field*,
+//! is used correctly -- `vault/shard.rye` computes over GF(256), a finite *field*,
 //! and every field is a ring. A circular byte pool is a geometric circle, not an
 //! algebraic ring, so it earns a geometric word. See the ring/sheaf study:
 //! `../external-research/20260810-080654_ring-sheaf-and-the-sacred-mathematical-words.md`.
 //!
-//! This first lap is the buffer itself, on SYNTHETIC samples only — reds-first: prove
+//! This first lap is the buffer itself, on SYNTHETIC samples only -- reds-first: prove
 //! the self-stopping line (filled saturates, the head wraps, the sequence stays
 //! monotonic across the wrap, the oldest falls off the tail) before ever pointing
 //! the basin at a real /proc. A later lap fills it from the live system.
@@ -50,13 +50,13 @@ pub const Basin = struct {
     filled: u32,
     next_seq: u64,
 
-    /// An empty basin — no samples, the sequence about to begin at zero.
+    /// An empty basin -- no samples, the sequence about to begin at zero.
     pub fn init() Basin {
         return .{ .slots = undefined, .head = 0, .filled = 0, .next_seq = 0 };
     }
 
-    /// Push a sample. When the basin is full, this overwrites the oldest — it
-    /// overflows the rim — so the cost is fixed forever.
+    /// Push a sample. When the basin is full, this overwrites the oldest -- it
+    /// overflows the rim -- so the cost is fixed forever.
     pub fn push(self: *Basin, kind: u32, value: u64) void {
         // invariant: head is always a valid slot index before a write.
         assert(self.head < capacity);

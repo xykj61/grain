@@ -1,10 +1,10 @@
-//! mand/mand_ring3_witness.rye — Mand ring-3 erasure witness (test-only reach).
+//! mand/mand_ring3_witness.rye -- Mand ring-3 erasure witness (test-only reach).
 //!
 //!   rye build mand/mand_ring3_witness.rye -femit-bin=mand/bin/mand_ring3_witness
 //!   mand/bin/mand_ring3_witness
 //!
 //! Claims (counsel 20260725.001200 § Five):
-//!   1. Key destroyed → ciphertext unreadable.
+//!   1. Key destroyed -> ciphertext unreadable.
 //!   2. Removal fact exists and is well-formed (written before destroy).
 //!   3. HELD standing refuses destruction.
 //!   4. Malformed authority / missing schedule refuses.
@@ -106,7 +106,7 @@ fn run_selftest() !u8 {
     }
     print("mand-ring3: missing schedule REFUSES MalformedAuthority -- GREEN unwelcome path\n", .{});
 
-    // Claim 1 + 2: eligible path — removal fact first, then key gone.
+    // Claim 1 + 2: eligible path -- removal fact first, then key gone.
     const before_facts = removal_log.count;
     try mand3.destroy_key(
         &store,
@@ -126,7 +126,7 @@ fn run_selftest() !u8 {
     assert(!cipher.readable_with(&store.keys[@intCast(idx)], plaintext));
     print("mand-ring3: key destroyed, ciphertext unreadable, removal fact written -- GREEN welcome path\n", .{});
 
-    // Claim 6: digest unchanged — log bytes never moved.
+    // Claim 6: digest unchanged -- log bytes never moved.
     const digest_after = mand3.digest_log_bytes(log_bytes);
     assert(std.mem.eql(u8, &digest_before, &digest_after));
     print("mand-ring3: chain digest unchanged after erasure -- GREEN stance proof\n", .{});

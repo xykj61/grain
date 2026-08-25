@@ -1,7 +1,7 @@
-//! linengrow/seva_b1_carriage_core.rye — in-process Seva B1 welcome path.
+//! linengrow/seva_b1_carriage_core.rye -- in-process Seva B1 welcome path.
 //!
-//! Seal → open → reconstruct → append, then replay: follower root matches
-//! the source's own. No UDP, no process spawn — the glass and device-free
+//! Seal -> open -> reconstruct -> append, then replay: follower root matches
+//! the source's own. No UDP, no process spawn -- the glass and device-free
 //! door. Live hop stays in seva_broadcast_delivery.rye.
 
 const std = @import("std");
