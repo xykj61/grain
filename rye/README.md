@@ -5,6 +5,10 @@
 **Last updated:** 2026-07-10 (Radiant Style pass round 2)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- living language module
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rye in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md) - the sibling shell
+this language builds is [`../rishi/README.md`](../rishi/README.md)
 
 ---
 
