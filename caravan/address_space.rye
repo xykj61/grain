@@ -84,6 +84,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+const study_door = @import("study_door.rye");
+
 const regions = @import("regions.rye");
 const mapping = @import("mapping.rye");
 
@@ -408,7 +410,7 @@ pub fn region_parts_measured() u32 {
 // The table, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     print("address-space: version {s}\n", .{caravan_address_space_version});
     for (all_parts) |part| {
         const holder = holder_of(part);
@@ -431,7 +433,7 @@ fn print_table() u8 {
 // join between the two rings holds at both ends
 // =========================================================================
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     // The list and the enum agree, so the count is read rather than recited.
     assert(all_parts.len == part_count);
     var seen: u32 = 0;
@@ -521,11 +523,5 @@ fn run_self_test() u8 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

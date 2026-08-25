@@ -34,6 +34,7 @@ copy="$build_dir/broken.rye"
 
 mkdir -p "$build_dir"
 cp caravan/refusals.rye "$build_dir/refusals.rye"
+cp caravan/study_door.rye "$build_dir/study_door.rye"
 
 case "$mode" in
     attenuation)

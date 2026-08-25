@@ -50,6 +50,8 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+
+const study_door = @import("study_door.rye");
 const refusals = @import("refusals.rye");
 
 const caravan_derivation_version = "20260821.052104";
@@ -317,7 +319,7 @@ pub const Tree = struct {
 // The worked tree, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     var tree = Tree.init();
 
     _ = tree.seat(0, 77, rights_all) catch return 1;
@@ -458,7 +460,7 @@ fn prove_bounds() void {
     assert(tall.live_count() == 4); // invariant: a refused bound seats nothing
 }
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     prove_lineage();
     prove_revoke();
     prove_bounds();
@@ -493,11 +495,5 @@ fn try_answer(result: DerivationError!refusals.KernelRefusal) refusals.KernelRef
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

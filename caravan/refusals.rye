@@ -40,6 +40,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+const study_door = @import("study_door.rye");
+
 const caravan_refusals_version = "20260821.052104";
 
 /// How many refusals a capability invocation may answer with, seL4's
@@ -262,7 +264,7 @@ pub fn unanswered_count() u32 {
 // The table, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     print("refusals: version {s}\n", .{caravan_refusals_version});
     for (all_kernel_refusals) |refusal| {
         print("refusals: {d:>2} {s} -- {s} [{s}] {s}\n", .{
@@ -280,7 +282,7 @@ fn print_table() u8 {
 // Self-test -- assert the mapping is total, distinct, and honestly counted
 // =========================================================================
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     // The list and the enum agree, so the count is read rather than recited.
     assert(all_kernel_refusals.len == kernel_refusal_count);
     var seen: u32 = 0;
@@ -344,11 +346,5 @@ fn run_self_test() u8 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

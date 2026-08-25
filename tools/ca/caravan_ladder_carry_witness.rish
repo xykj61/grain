@@ -57,11 +57,18 @@ say "caravan-ladder-carry: Language EN -- the whole carry of the ladder is count
 say "caravan-ladder-carry: Style Radiant -- measurement beats memory; a shape three honest meters could not see becomes a fourth meter before it becomes a design call."
 say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the fold queue prints rather than gates, and every refusal has a name."
 
+# THE THREE NUMBERS BELOW ARE SPELLED ON PURPOSE, AND THAT IS WHY THIS GUARD REDDED (REDS %219).
+# `carried=X ceiling=X` asserts the ceiling sits EXACTLY on the measurement, so a fold that wins
+# room has to hand it back in the same commit rather than banking slack for a later lap. The cost
+# is that a lap adding a rung must move these three lines, and two laps did not: the count stood at
+# 111 modules and 58,532 carried while the tree held 113 and 58,550. Nobody heard it, because this
+# witness is reached by tools/ca/caravan_suite_witness.rish and that choir stood off the standing
+# roster until 20260825.092953.
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=58532 ceiling=58532" else "caravan-ladder-carry: want the living carry under its named ceiling"
-assert living.out contains "CARRY_MODULES 111" else "caravan-ladder-carry: want all 111 ladder modules read, the rungs and the harness and the lifted region alike"
-assert living.out contains "CARRY_BODIES 18199 distinct=7990 copies=10209 carried_lines=58532" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_OK carried=58496 ceiling=58496" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_MODULES 114" else "caravan-ladder-carry: want all 114 ladder modules read, the rungs and the harness and the lifted bodies alike"
+assert living.out contains "CARRY_BODIES 18232 distinct=8021 copies=10211 carried_lines=58496" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 

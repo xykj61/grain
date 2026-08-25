@@ -49,7 +49,7 @@ say "caravan-ladder-spine: Lens TAME -- safety first: the ceiling is named, the 
 let living = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert living.ok else "caravan-ladder-spine: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "SPINE_OK carried=0 ceiling=40" else "caravan-ladder-spine: want the living spine under its named ceiling"
-assert living.out contains "SPINE_MODULES 111 holding=1" else "caravan-ladder-spine: want exactly one of the 111 ladder modules holding a spine -- the harness. The denominator moved 110 to 111 when the Region body folded into caravan/region.rye, which holds no spine, so the numerator stood still."
+assert living.out contains "SPINE_MODULES 114 holding=1" else "caravan-ladder-spine: want exactly one of the 114 ladder modules holding a spine -- the harness. The denominator has moved three times without the numerator moving once: 110 to 111 at the Region fold, to 113 as allowances.rye and address_space.rye landed, and to 114 when caravan/study_door.rye lifted the study cohort door. None of the four holds a spine, so only the population grew (REDS %219)."
 assert living.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-spine: want one 19-line spine standing, every line of it distinct and none carried"
 assert living.out contains "SPINE_RATCHET over_bound=0 bound=70 longest=ladder_checks:19" else "caravan-ladder-spine: want no spine past the seventy-line bound, the four the fold answered included"
 

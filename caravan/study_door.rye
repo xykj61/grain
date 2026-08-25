@@ -1,0 +1,45 @@
+//! Caravan study door -- the one entry point every microkernel-study rung answers at.
+//!
+//! WHAT THIS IS FOR. Ten modules of this ladder read a verified kernel's own published header and
+//! hold what they find against what Caravan already declares -- `refusals`, `objects`,
+//! `allowances`, `address_space`, `derivation`, `ipc_buffer`, `untyped`, `edge`, `mapping`, and
+//! `reply`. Each is a standalone program with the same three asks at its door: print the table,
+//! run the self-test, or refuse an argument it does not know. That answer stood **byte for byte in
+//! all ten**, nine lines apiece, and it grew by one copy on each of the two laps that added a rung.
+//!
+//! This holds the answer once. A rung passes `@This()` and reaches its own `print_table` and
+//! `run_self_test` through the type it handed in, so one body runs against whichever rung called
+//! it -- the same shape `ladder_checks.rye` already uses for the supervision cohort's door, at a
+//! tenth of the weight, because a study rung imports what it studies and nothing else.
+//!
+//! WHY A MODULE OF ITS OWN, rather than a row in `ladder_checks.rye`. That harness imports twenty
+//! rungs of the supervision ladder, and a study rung that reached its door through it would pull
+//! the whole ladder into a probe that studies one header. One small body, imported by name, keeps
+//! each study program as standalone as it reads.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Answer the three asks at a study rung's door, against the rung that handed itself in.
+///
+/// `table` prints the rung's table, `selftest` runs its checks, a bare run does the same, and any
+/// other argument is refused with 1 -- a study program answers what it knows and says no plainly
+/// to the rest.
+pub fn answer(comptime rung: type, init: std.process.Init) !u8 {
+    // invariant: the contract is two words, and a rung that cannot answer them is caught at
+    // compile time rather than at the first argument a reader happens to try
+    comptime assert(@hasDecl(rung, "print_table"));
+    comptime assert(@hasDecl(rung, "run_self_test"));
+
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    // invariant: a program always knows its own path, so argv holds at least one word
+    assert(args.len >= 1);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return rung.print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return rung.run_self_test();
+    if (args.len >= 2) return 1;
+    return rung.run_self_test();
+}

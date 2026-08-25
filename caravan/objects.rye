@@ -69,6 +69,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+const study_door = @import("study_door.rye");
+
 const caravan_objects_version = "20260821.220352";
 
 /// How many object types a riscv64 seL4 offers in the configuration this arc
@@ -268,7 +270,7 @@ pub fn owed_count() u32 {
 // The table, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     print("objects: version {s}\n", .{caravan_objects_version});
     for (all_kernel_objects) |object| {
         print("objects: {d:>2} {s} [{s}] -- {s} [{s}] {s}\n", .{
@@ -288,7 +290,7 @@ fn print_table() u8 {
 // agenda is honestly counted
 // =========================================================================
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     // The list and the enum agree, so the count is read rather than recited.
     assert(all_kernel_objects.len == kernel_object_count);
     var seen: u32 = 0;
@@ -364,11 +366,5 @@ fn run_self_test() u8 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

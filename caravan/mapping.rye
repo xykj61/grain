@@ -51,6 +51,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+const study_door = @import("study_door.rye");
+
 const caravan_mapping_version = "20260821.222916";
 
 // =========================================================================
@@ -401,7 +403,7 @@ pub fn plan(placement: Placement) error{
 
 /// Print the geometry and one worked plan, so a reader meets the arithmetic
 /// before meeting the asserts.
-fn print_table() u8 {
+pub fn print_table() u8 {
     print("caravan-mapping {s} -- Sv39 geometry and one worked plan\n\n", .{caravan_mapping_version});
     print("  virtual address bits   {d}\n", .{virtual_address_bits});
     print("  page table levels      {d}\n", .{page_table_levels});
@@ -599,7 +601,7 @@ fn check_geometry_bounds_the_plan() void {
     assert(worst.tables[0] == 1);
 }
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     check_geometry();
     check_single_pages();
     check_cover_is_minimal();
@@ -620,11 +622,5 @@ fn run_self_test() u8 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

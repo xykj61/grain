@@ -39,6 +39,10 @@ src="caravan/reply.rye"
 copy="$build_dir/broken.rye"
 
 mkdir -p "$build_dir"
+
+# The mutated copy is built beside its imports, and caravan/study_door.rye is one of them:
+# every study rung reaches its entry point through that body rather than writing it out.
+cp caravan/study_door.rye "$build_dir/study_door.rye"
 for neighbour in refusals capabilities edge ipc_buffer derivation untyped tally_copy; do
     cp "caravan/$neighbour.rye" "$build_dir/$neighbour.rye"
 done
