@@ -1,6 +1,6 @@
-# granary_steward_sight_view.rish — Granary steward sight: weave + books on Skate (tip 425).
+# granary_steward_sight_view.rish -- Granary steward sight: weave + books on Skate (tip 425).
 #
-# Golden: drawn terminal granary steward sight: listed=100 settled=1 cash=900 conservation=0 pnl=900 journal=3 memo=granary:weave-sale … — GREEN
+# Golden: drawn terminal granary steward sight: listed=100 settled=1 cash=900 conservation=0 pnl=900 journal=3 memo=granary:weave-sale ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/granary_steward_sight_view.rish
 

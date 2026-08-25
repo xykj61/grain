@@ -1,4 +1,4 @@
-# brix_infuse_witness.rish — Brix-infuse, deep merge/override for descriptors.
+# brix_infuse_witness.rish -- Brix-infuse, deep merge/override for descriptors.
 #
 # SOON j2. Proves brix/infuse.rye: a flat-Bron per-key override where the override's
 # value(s) replace the base's for a key, base-only keys pass through in place, and

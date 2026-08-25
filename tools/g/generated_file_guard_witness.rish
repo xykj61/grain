@@ -1,8 +1,8 @@
-# tools/g/generated_file_guard_witness.rish — no generated binaries ride the index.
+# tools/g/generated_file_guard_witness.rish -- no generated binaries ride the index.
 #
 # Outside-eyes round (20260727.083402): an elder-network pilot's review found
 # compiled outputs tracked under tools/bin/ while .gitignore already named the
-# path — ignore rules never untrack. This witness keeps the promise from now on:
+# path -- ignore rules never untrack. This witness keeps the promise from now on:
 # the guarded output homes must be empty in the index.
 
 let guarded = ["tools/bin"]

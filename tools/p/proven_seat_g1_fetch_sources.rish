@@ -1,4 +1,4 @@
-# proven_seat_g1_fetch_sources.rish — ensure Genode 26.05 at vendor/genode.
+# proven_seat_g1_fetch_sources.rish -- ensure Genode 26.05 at vendor/genode.
 #
 # Claude 204549: permanent home is vendor/genode (submodule). Cache stays the
 # workbench for builddirs and port downloads. Fetch = submodule update --init;

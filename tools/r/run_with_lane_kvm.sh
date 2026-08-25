@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# run_with_lane_kvm.sh — authorize a one-shot command under lane_kvm (A-narrow).
+# run_with_lane_kvm.sh -- authorize a one-shot command under lane_kvm (A-narrow).
 #
 # Host-side / in-jail: requires LANE_KVM=true and /dev/kvm. Teacher ai-jail is
 # never modified; this wrapper is our gate. Prefer for proven-seat witnesses.
 # Daily editor sessions keep LANE_KVM=false until Pond customs graduate the lane.
 #
 #   ./tools/r/run_with_lane_kvm.sh -- tools/p/proven_seat_g0c_lane_kvm.sh
-#   ./tools/r/run_with_lane_kvm.sh -- qemu-system-x86_64 …
+#   ./tools/r/run_with_lane_kvm.sh -- qemu-system-x86_64 ...
 
 set -euo pipefail
 

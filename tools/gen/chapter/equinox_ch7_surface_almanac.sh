@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 113 from chapter-seven surface (e109) — opens chapter eight.
+# Append Glow almanac seat 113 from chapter-seven surface (e109) -- opens chapter eight.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 113\.' "$ALMANAC"; then

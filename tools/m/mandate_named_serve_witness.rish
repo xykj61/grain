@@ -1,8 +1,8 @@
-# mandate_named_serve_witness.rish — Mandate matches resolved to spoken names.
+# mandate_named_serve_witness.rish -- Mandate matches resolved to spoken names.
 #
 # Proves the resolution half of "served over Comlink, resolved to a spoken name": a
-# query's matches resolve through the shared name registry to WHO — the spoken name a
-# point wears — via names.rye's public sign_claim (the helper that unblocks claiming a
+# query's matches resolve through the shared name registry to WHO -- the spoken name a
+# point wears -- via names.rye's public sign_claim (the helper that unblocks claiming a
 # name from outside that module). A point with no name resolves named=false, never a
 # fabricated name.
 #

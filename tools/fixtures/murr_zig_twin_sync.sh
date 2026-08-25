@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# murr_zig_twin_sync.sh — MUR module-wave step 7 probe (rye/zig twin discipline).
+# murr_zig_twin_sync.sh -- MUR module-wave step 7 probe (rye/zig twin discipline).
 # Invoke with bash (not dash): rishi run uses bash path below.
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"

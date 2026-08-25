@@ -1,5 +1,5 @@
 #!/bin/sh
-# tame_style_scan_bans_legacy.sh — original grep ban loop (parity diff only).
+# tame_style_scan_bans_legacy.sh -- original grep ban loop (parity diff only).
 set -u
 FILES=$(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src \
     glow/tokens.rye glow/lower_named_cast.rye \

@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_open_asks_lap5_wire_lab.sh — OA-L5 device wire (acceptance + completion + consent hops).
+# comlink/run_open_asks_lap5_wire_lab.sh -- OA-L5 device wire (acceptance + completion + consent hops).
 #
 # Orchestration lives in tools/co/comlink_open_asks_lap5_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

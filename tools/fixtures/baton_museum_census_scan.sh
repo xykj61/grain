@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/baton_museum_census_scan.sh — thirteen halls present; elders named.
+# tools/fixtures/baton_museum_census_scan.sh -- thirteen halls present; elders named.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 set -eu
@@ -18,7 +18,7 @@ for f in $need; do
   fi
 done
 
-# Exact elders the museum itself names — confirm present before claiming the seat.
+# Exact elders the museum itself names -- confirm present before claiming the seat.
 elder_miss=0
 if [ -f expanding-prompts/date/20260730/20260730-021541_build-journey-agent-cover.md ]; then
   echo "detail: ok elder agent_cover"

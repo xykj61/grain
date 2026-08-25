@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 33 from design-shapes choir (e27) — opens chapter three.
+# Append Glow almanac seat 33 from design-shapes choir (e27) -- opens chapter three.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 33\.' "$ALMANAC"; then

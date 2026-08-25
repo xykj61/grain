@@ -1,4 +1,4 @@
-# tame_style_check.rish — TAME textual lint, in tidy.zig's spirit and our own voice.
+# tame_style_check.rish -- TAME textual lint, in tidy.zig's spirit and our own voice.
 #
 # Bans fail the witness; ratchet advisories print their counts and never fail.
 # Bans half: tools/t/tame_style_scan_bans.rish (native). Advise half: tools/t/tame_style_scan_advise.rish (native).

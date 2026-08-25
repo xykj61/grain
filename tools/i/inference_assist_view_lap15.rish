@@ -1,4 +1,4 @@
-# inference_assist_view_lap15.rish — Assist view: fence-rye + blocks on snippets band.
+# inference_assist_view_lap15.rish -- Assist view: fence-rye + blocks on snippets band.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 15 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

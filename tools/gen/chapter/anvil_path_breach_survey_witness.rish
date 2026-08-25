@@ -1,17 +1,17 @@
-# tools/gen/chapter/anvil_path_breach_survey_witness.rish — Surface p38 survey (historical) · o1 cut done.
+# tools/gen/chapter/anvil_path_breach_survey_witness.rish -- Surface p38 survey (historical) - o1 cut done.
 #
 #   rishi/bin/rishi run tools/gen/chapter/anvil_path_breach_survey_witness.rish
 
 say "anvil-path-survey: Language EN — survey seated; path cut landed o1."
 say "anvil-path-survey: Style Radiant — prove the cut; refuse silent rename."
-say "anvil-path-survey: Lens TAME — Kiln Chapter o1."
+say "anvil-path-survey: Lens TAME — Oven Chapter o1."
 
 let counsel = "counsel/date/20260728/20260728-233638_surface-season-p38-anvil-path-breach-survey.md"
 let c = run ["test" "-f" counsel]
 assert c.ok else "anvil-path-survey: counsel missing"
 
-let cut = run ["sh" "-c" "test -d kiln && test -f kiln/oven_core.rye && test ! -d anvil && echo CUT_OK"]
-assert cut.ok else "anvil-path-survey: kiln/ cut missing or anvil/ still present"
+let cut = run ["sh" "-c" "test -d oven && test -f oven/oven_core.rye && test ! -d anvil && echo CUT_OK"]
+assert cut.ok else "anvil-path-survey: oven/ cut missing or anvil/ still present"
 assert cut.out contains "CUT_OK" else "anvil-path-survey: cut not complete"
 
 let views = run ["sh" "-c" "ls tools/inference_oven_corpus_*.rish | wc -l"]
@@ -19,8 +19,8 @@ assert views.ok else "anvil-path-survey: view glob failed"
 let n = trim views.out
 assert n == "14" else "anvil-path-survey: expected 14 inference_oven views"
 
-let gen = run ["test" "-d" "tools/gen/kiln"]
-assert gen.ok else "anvil-path-survey: tools/gen/kiln missing"
+let gen = run ["test" "-d" "tools/gen/oven"]
+assert gen.ok else "anvil-path-survey: tools/gen/oven missing"
 
-say "GREEN: anvil-path-survey — kiln/ LIVE · anvil/ gone · 14 Skate views · Kiln o1"
+say "GREEN: anvil-path-survey — oven/ LIVE · anvil/ gone · 14 Skate views · Oven o1"
 say "GREEN: anvil-path-survey — path cut complete."

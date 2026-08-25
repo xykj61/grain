@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_lap3_witness.sh — pour small season → Comlink fetch resins → cold scrub.
+# amphora_lap3_witness.sh -- pour small season -> Comlink fetch resins -> cold scrub.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 SRC="$ROOT/tools/fixtures/amphora_lap3_tree"
@@ -19,7 +19,7 @@ test -d "$source/resins"
 grep -q '^seal_cargo ' "$source/vessel.bron"
 grep -q '^stamp_sig ' "$source/vessel.bron"
 
-# Far peer receives vessel + manifest only — resins cross by Comlink fetch.
+# Far peer receives vessel + manifest only -- resins cross by Comlink fetch.
 cp "$source/vessel.bron" "$source/manifest.bron" "$far/"
 mkdir -p "$far/resins"
 test ! -f "$far/resins/"* 2>/dev/null || {

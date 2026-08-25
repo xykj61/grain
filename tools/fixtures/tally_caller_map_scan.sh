@@ -1,5 +1,5 @@
 #!/bin/sh
-# Closed sample of the living Tally caller map — paths must exist.
+# Closed sample of the living Tally caller map -- paths must exist.
 set -eu
 cd "$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 

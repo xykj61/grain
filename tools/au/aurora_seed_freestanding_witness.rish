@@ -1,4 +1,4 @@
-# aurora_seed_freestanding_witness.rish — the whole boot floor compiles for metal (no QEMU).
+# aurora_seed_freestanding_witness.rish -- the whole boot floor compiles for metal (no QEMU).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/au/aurora_seed_freestanding_witness.rish
@@ -7,7 +7,7 @@
 # entirely in-sandbox: cross-build each aurora/src/<stage>.rye freestanding for
 # riscv64 via `rye build` (the Rye compiler wrapper the stack actually uses) and
 # confirm every artifact is a RISC-V ELF (ELF header e_machine == 243 == EM_RISCV,
-# byte 18). QEMU is needed only to WAKE a stage, never to build it — so this gate
+# byte 18). QEMU is needed only to WAKE a stage, never to build it -- so this gate
 # is GREEN wherever the toolchain lives, independent of any emulator on the bench.
 #
 # Two hazards this shape avoids:
@@ -15,7 +15,7 @@
 #     .rye extension, so a raw-zig gate would silently no-op and read a stale ELF
 #     (a false green). Each stage is removed (rm -f) before its build, so only a
 #     fresh compile can satisfy the e_machine check.
-#   * Each stage's command is fully literal — no shell $variables — because Rishi
+#   * Each stage's command is fully literal -- no shell $variables -- because Rishi
 #     interpolates `$name`, which would collide with a shell loop variable.
 
 # Every stage: rm the old artifact, cross-build freestanding, print e_machine of the

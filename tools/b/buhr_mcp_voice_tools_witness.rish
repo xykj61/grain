@@ -1,9 +1,9 @@
-# tools/b/buhr_mcp_voice_tools_witness.rish — BUHR Journey 9, Rung 2: the voices as distinct MCP tools.
+# tools/b/buhr_mcp_voice_tools_witness.rish -- BUHR Journey 9, Rung 2: the voices as distinct MCP tools.
 #
 # Rung one made the whole intelligence reachable as one MCP tool (ask). This rung gives
 # each voice its own name at the protocol surface: a caller discovers five typed tools
 # (lattice, scribble, ember, graph, artifact) through Journey 3's own tools/list envelope,
-# and invokes one by name. The tool name is a typed assertion — serve_voice dispatches the
+# and invokes one by name. The tool name is a typed assertion -- serve_voice dispatches the
 # prompt through the gathered host and cross-checks that the voice which actually served
 # equals the voice the tool named, refusing wrong_voice when a prompt routes elsewhere. So
 # the protocol surface can never claim a voice answered that did not. Discovery reuses
@@ -32,8 +32,8 @@ assert selftest.out contains "routing off the named tool -> named MCP error 'wro
 assert selftest.out contains "an unlisted tool -> named MCP error 'unknown_tool'" else "buhr9r2: unknown-tool refusal missing"
 assert selftest.out contains "disallowed model on a voice tool -> named MCP error 'model_not_allowed'" else "buhr9r2: model refusal missing"
 
-# Rung one (the single ask tool) and Journey 3's tools/list envelope — the two halves this
-# rung composes — stay their own green binaries; this rung calls only their public API.
+# Rung one (the single ask tool) and Journey 3's tools/list envelope -- the two halves this
+# rung composes -- stay their own green binaries; this rung calls only their public API.
 let r1_bin = "pond/bin/mcp-voice"
 let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_voice.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr9r2: mcp_voice (J9r1) re-build failed"

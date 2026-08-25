@@ -1,14 +1,14 @@
-# tools/b/buhr_mcp_prompt_list_witness.rish — BUHR Journey 11, Rung 2: the MCP prompt list.
+# tools/b/buhr_mcp_prompt_list_witness.rish -- BUHR Journey 11, Rung 2: the MCP prompt list.
 #
-# Rung one served prompts/get — a caller who knows a prompt names it and fills it. This rung
-# serves prompts/list — a caller discovers every prompt a server offers, and its arity, the
+# Rung one served prompts/get -- a caller who knows a prompt names it and fills it. This rung
+# serves prompts/list -- a caller discovers every prompt a server offers, and its arity, the
 # template half's mirror of Journey 3's tools/list (J9) and Journey 10's resources/list. A
 # bounded prompt book renders to a format mcp-prompt-list-v1 envelope (one `prompt <name> <argc>`
 # line per template) and round-trips. The list is proven an honest index: every listed prompt
-# names a descriptor the book truly holds, at exactly its advertised arity — and a list whose
+# names a descriptor the book truly holds, at exactly its advertised arity -- and a list whose
 # arity disagrees, or names a prompt the book lacks, breaks that honesty (NotHonest) rather than
 # passing silently. Composed over rung one's public API only; rung one stays its own green
-# binary. Reads no network — the Comlink-served transport stays the gate.
+# binary. Reads no network -- the Comlink-served transport stays the gate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_mcp_prompt_list_witness.rish

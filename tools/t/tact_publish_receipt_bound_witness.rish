@@ -1,4 +1,4 @@
-# tools/t/tact_publish_receipt_bound_witness.rish — TACT Journey 2, Rung 2: the receipt bound.
+# tools/t/tact_publish_receipt_bound_witness.rish -- TACT Journey 2, Rung 2: the receipt bound.
 #
 # Rung one proved a receipt's signature offline against a supplied key. This rung binds the
 # receipt to the settled ledger: the publisher's Deed verifies against the constellation

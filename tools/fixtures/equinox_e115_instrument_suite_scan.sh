@@ -1,12 +1,12 @@
 #!/bin/sh
-# Equinox e115 — instrument-season suite seated as findable record.
+# Equinox e115 -- instrument-season suite seated as findable record.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/equinox_e115_instrument_suite_scan.sh
 #
 # Law: seat the suite; do not manufacture meters.
-# Remaining after this seat: Keaton-gated (fork · breach · shred · names).
+# Remaining after this seat: Keaton-gated (fork - breach - shred - names).
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
@@ -93,7 +93,7 @@ echo "$RED_OUT" | rg -q 'RED_manufactured_suite_pass' || {
 }
 echo "suite_prove_red=honored"
 
-# REDS 39 kept (thing-not-name law) — no new red this seat
+# REDS 39 kept (thing-not-name law) -- no new red this seat
 git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "reds_keep=failed"
   echo "verdict=misread"

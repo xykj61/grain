@@ -1,6 +1,6 @@
-# murr_zig_twin_sync_witness.rish — MUR module-wave step 7 · rye/zig twin discipline.
+# murr_zig_twin_sync_witness.rish -- MUR module-wave step 7 - rye/zig twin discipline.
 #
-# Rye is the authored surface. The toolchain bridges `.rye` → adjacent `.zig`
+# Rye is the authored surface. The toolchain bridges `.rye` -> adjacent `.zig`
 # for compile, then clears the bridge (`*.rye.zig` gitignored). Standalone
 # tracked `murr_core.zig` stays ABSENT on purpose. This witness proves the
 # living rename spine does not leave mala_* twin debt.

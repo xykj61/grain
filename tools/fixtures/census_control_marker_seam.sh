@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census control — marker stamp seam (POSIX). One duty body.
+# Census control -- marker stamp seam (POSIX). One duty body.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/census_control_marker_seam.sh

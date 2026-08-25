@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census control — tracked-inventory seam (POSIX). git ls-files, never find.
+# Census control -- tracked-inventory seam (POSIX). git ls-files, never find.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/census_control_tracked_seam.sh

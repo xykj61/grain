@@ -1,6 +1,6 @@
-# granary_steward_view.rish — Granary weave steward: list → settle → Dimeroll (tip 424).
+# granary_steward_view.rish -- Granary weave steward: list -> settle -> Dimeroll (tip 424).
 #
-# Golden: drawn terminal granary steward view: listed=100 settled=1 cash=900 conservation=0 memo=granary:weave-sale … — GREEN
+# Golden: drawn terminal granary steward view: listed=100 settled=1 cash=900 conservation=0 memo=granary:weave-sale ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/granary_steward_view.rish
 

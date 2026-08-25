@@ -1,7 +1,7 @@
-# rw1_history_contract.rish — RW-1 contract: the real history store answers directly.
+# rw1_history_contract.rish -- RW-1 contract: the real history store answers directly.
 #
 # The answerer (mantra) is exercised with no REPL in the room, proving it honors
-# every question the collaboration witness asks — welcome and unwelcome alike.
+# every question the collaboration witness asks -- welcome and unwelcome alike.
 # The contract's "recall exact bytes" is demonstrated at the store's true seam:
 # the blob under .mantra/blobs/ compares byte-identical to the woven text.
 # Run from the repository root:

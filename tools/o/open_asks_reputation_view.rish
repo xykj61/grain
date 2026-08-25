@@ -1,6 +1,6 @@
-# open_asks_reputation_view.rish — Open Asks reputation view: consent-before-counting on Skate (tip 429).
+# open_asks_reputation_view.rish -- Open Asks reputation view: consent-before-counting on Skate (tip 429).
 #
-# Golden: drawn terminal open asks reputation view: consented=3 stipend=300 plain+escrow withheld=excluded … — GREEN
+# Golden: drawn terminal open asks reputation view: consented=3 stipend=300 plain+escrow withheld=excluded ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/o/open_asks_reputation_view.rish
 

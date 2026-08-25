@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census IronBeetle ep002 own-voice lesson — presence only; never copies into rye/.
+# Census IronBeetle ep002 own-voice lesson -- presence only; never copies into rye/.
 # Clean-room study of gratitude/ironbeetle ep002 structure and teach limbs.
 set -eu
 ROOT="${1:-gratitude/ironbeetle}"

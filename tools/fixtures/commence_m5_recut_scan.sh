@@ -1,5 +1,5 @@
 #!/bin/sh
-# Commence M5 re-cut scan — control gate, then advisory-11 + inventory.
+# Commence M5 re-cut scan -- control gate, then advisory-11 + inventory.
 # Exit 0 only when control reads and every re-cut limb honors.
 # No backtick characters in patterns.
 #

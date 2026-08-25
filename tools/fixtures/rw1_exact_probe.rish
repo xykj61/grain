@@ -1,10 +1,10 @@
-# rw1_exact_probe.rish — does any weave blob return the exact prior-line bytes?
+# rw1_exact_probe.rish -- does any weave blob return the exact prior-line bytes?
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/rw1_exact_probe.rish
 #
 # A native repoint of rw1_exact_probe.sh. Line indexing and list indexing both
-# exist in Rishi as general operators — `expr[n]` on any list, confirmed here
+# exist in Rishi as general operators -- `expr[n]` on any list, confirmed here
 # and worth naming beside the language's other idioms, since a search for a
 # named indexing feature earlier in this same sitting had missed it. This
 # script needed exactly that: line two of each blob (index 1), the third

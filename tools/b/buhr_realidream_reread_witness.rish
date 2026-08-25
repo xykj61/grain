@@ -1,15 +1,15 @@
-# tools/b/buhr_realidream_reread_witness.rish — BUHR Journey 5, Rung 2.
+# tools/b/buhr_realidream_reread_witness.rish -- BUHR Journey 5, Rung 2.
 #
 # A re-read is an append, exactly as an edit is. Rung 1 fused a read lane and a program
 # lane on one graph; this rung carries the graph's own law across the read/write seam:
 # when the outside source is read again, the newer content is not an overwrite of the old
-# — it is one more revision appended to the read lane's chain, exactly as a program edit
+# -- it is one more revision appended to the read lane's chain, exactly as a program edit
 # appends. refresh_read continues an existing read/ lane, so the read half inherits
 # accrete-never-break by the same construction the editor did. The proof: pin a read lane
 # at r1 and refresh it, and the read lane chains r1 -> r2 while every program lane stands
 # byte-for-byte unchanged; the earlier read revision still recalls its original bytes
 # after the refresh (the old read stands, never rewritten); a non-read path refuses
-# NotAReadPath, an unpinned read lane refuses LaneUnknown. This rung reads no network —
+# NotAReadPath, an unpinned read lane refuses LaneUnknown. This rung reads no network --
 # the refreshed content is supplied in-process; a real web fetch stays a named seam behind
 # a bounded reader (its own later rung, surfacing for Keaton's word).
 #
@@ -32,7 +32,7 @@ assert selftest.out contains "the read lane grew r1 -> r2, every program lane un
 assert selftest.out contains "the old read stands" else "buhr-j5r2: the earlier-read-still-stands proof is missing"
 assert selftest.out contains "refuses NotAReadPath" else "buhr-j5r2: the non-read-path refuse proof is missing"
 
-# Rung 1 (read fusion) and Journey 4 (editor) stay their own green binaries — additive.
+# Rung 1 (read fusion) and Journey 4 (editor) stay their own green binaries -- additive.
 let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_realidream_reader_witness.rish 2>&1"]
 assert rung1.ok else "buhr-j5r2: the read-fusion (J5r1) witness regressed"
 assert rung1.out contains "GREEN: BUHR-J5r1" else "buhr-j5r2: rung one lost its green"

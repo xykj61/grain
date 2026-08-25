@@ -1,12 +1,12 @@
 #!/bin/sh
-# tools/fixtures/itinerary_compute.sh — deterministic per-round season itinerary.
+# tools/fixtures/itinerary_compute.sh -- deterministic per-round season itinerary.
 #
 # Every field is a pure function of the round index r (0..255):
-#   equinox = r/64 · journey = r/16 · quest = r/4 · round_in_quest = r%4
+#   equinox = r/64 - journey = r/16 - quest = r/4 - round_in_quest = r%4
 #   ranking = rankings[r%27]  (context/rankings.kyri)
 # Modes:
-#   round <r>  — print one round's whole itinerary + verdict
-#   sweep      — check all 256 rounds yield valid coords + a valid ranking
+#   round <r>  -- print one round's whole itinerary + verdict
+#   sweep      -- check all 256 rounds yield valid coords + a valid ranking
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md.
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"

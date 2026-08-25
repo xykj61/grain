@@ -1,29 +1,29 @@
-# rish_rune_connective_witness.rish — the ?& and ?| rune heads (wutpam and wutbar),
+# rish_rune_connective_witness.rish -- the ?& and ?| rune heads (wutpam and wutbar),
 # Rishi's logical-and and logical-or, the third and fourth Glow runes Rishi speaks.
 #
 # Proves Rishi folds a list of booleans: `?&` holds only when every element is true,
 # `?|` when any is. Both evaluate their list body as a full expression, so a
 # parenthesized comparison stays a whole clause, and both refuse a non-boolean element
-# rather than coercing it. Empty folds return their identity — `?& []` true, `?| []`
-# false — so a fold over no clauses never surprises.
+# rather than coercing it. Empty folds return their identity -- `?& []` true, `?| []`
+# false -- so a fold over no clauses never surprises.
 #
 #   rishi/bin/rishi run tools/r/rish_rune_connective_witness.rish
 
-# AND — every element true holds; one false breaks it.
+# AND -- every element true holds; one false breaks it.
 let a = ?& [true true true]
 assert a == true else "?& of all-true should be true"
 
 let b = ?& [true false true]
 assert b == false else "?& with a false element should be false"
 
-# OR — any element true holds; all false breaks it.
+# OR -- any element true holds; all false breaks it.
 let c = ?| [false false true]
 assert c == true else "?| with any true element should be true"
 
 let d = ?| [false false false]
 assert d == false else "?| of all-false should be false"
 
-# The list body evaluates as a full expression — parenthesized comparisons are clauses.
+# The list body evaluates as a full expression -- parenthesized comparisons are clauses.
 let e = ?& [(1 == 1) (2 == 2)]
 assert e == true else "?& should evaluate each parenthesized comparison to a boolean"
 
@@ -41,7 +41,7 @@ assert h == true else "?& [] is the identity of and — true"
 let i = ?| []
 assert i == false else "?| [] is the identity of or — false"
 
-# A non-boolean element refuses — a child that ands an integer exits non-zero.
+# A non-boolean element refuses -- a child that ands an integer exits non-zero.
 let bad_and = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_and_bad_type.rish"]
 assert bad_and.ok == false else "?& over a non-boolean must refuse (child should exit non-zero)"
 

@@ -1,4 +1,4 @@
-# vault_shard_witness.rish — Vault, the keeper of secrets.
+# vault_shard_witness.rish -- Vault, the keeper of secrets.
 #
 # Proves the disaster arithmetic on a FAKE key: a secret splits Shamir-style over
 # GF(256) into five shares at a threshold of three; any three recombine it byte-for-
@@ -21,7 +21,7 @@ assert (st.err contains "a tampered share never verifies") else "a tampered shar
 assert (st.err contains "main key") else "the word is main key"
 assert (st.err contains "custody first") else "only a fake seed lives in the tree"
 
-# (The forbidden word "master" never appears — guaranteed by the source grep and the
+# (The forbidden word "master" never appears -- guaranteed by the source grep and the
 # tame style check; the positive "main key" claim above stands in its place here.)
 
 # The emit prints five signed vault-shard-v1 records, each with a full 128-hex sig.

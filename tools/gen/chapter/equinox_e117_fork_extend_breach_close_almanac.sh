@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 121 from e117 fork EXTEND + breach let-close — ch8 9/16.
+# Append Glow almanac seat 121 from e117 fork EXTEND + breach let-close -- ch8 9/16.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 121\.' "$ALMANAC"; then

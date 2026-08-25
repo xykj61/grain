@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lap_vocabulary_audit.sh — report forward-facing \bring\b still present after sweep.
+# lap_vocabulary_audit.sh -- report forward-facing \bring\b still present after sweep.
 # Frozen witness basenames and session-logs are excluded.
 set -euo pipefail
 

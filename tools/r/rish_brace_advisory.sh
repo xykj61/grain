@@ -1,5 +1,5 @@
 #!/bin/sh
-# rish_brace_advisory — print-only ratchet (never fails), born of the e194 red:
+# rish_brace_advisory -- print-only ratchet (never fails), born of the e194 red:
 # rishi's interpolator owns the dollar-brace shape, so shell parameter
 # expansions like ${var##x} or ${var%y} inside .rish strings become
 # UndefinedName at run time. This advisory names every such line.
@@ -16,7 +16,7 @@ done
 echo "rish_brace_advisory: $count shell-expansion shapes inside rishi strings (advisory only)"
 # Second check (e206, born of the e205 red): backslash escapes nothing in
 # rishi, so a \" inside a run-string reaches sh as a literal backslash-quote.
-# Worse than failing, a guard like: test -n \"$x\" passes VACUOUSLY — the
+# Worse than failing, a guard like: test -n \"$x\" passes VACUOUSLY -- the
 # literal quote makes the string non-empty whatever $x holds. Name every site.
 bs=0
 for f in $(git ls-files '*.rish'); do

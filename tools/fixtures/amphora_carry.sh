@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_carry.sh — copy a poured Amphora bundle to a far dock (fixture crossing).
+# amphora_carry.sh -- copy a poured Amphora bundle to a far dock (fixture crossing).
 #
 # Usage: amphora_carry.sh sourcedir fardir
 set -eu

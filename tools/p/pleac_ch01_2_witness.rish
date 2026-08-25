@@ -1,7 +1,7 @@
-# tools/p/pleac_ch01_2_witness.rish — PLEAC 1.2: the value finally has a voice.
+# tools/p/pleac_ch01_2_witness.rish -- PLEAC 1.2: the value finally has a voice.
 #
 # Positive space: the speaking gate lowers, builds, runs, and its answer
-# reaches stdout — the assert recipe 1.1 could not make now passes. Negative
+# reaches stdout -- the assert recipe 1.1 could not make now passes. Negative
 # space: the runner still refuses a second sample by name.
 
 let zig = "vendor/zig-toolchain/zig"

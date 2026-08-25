@@ -1,7 +1,7 @@
-# tally_caller_map_witness.rish — one seam caller map for Tally marks (Arc IV Unify).
+# tally_caller_map_witness.rish -- one seam caller map for Tally marks (Arc IV Unify).
 #
 # Canon prose: tally/README.md § Who calls Tally. This witness proves a closed
-# set of consumer symlink homes still resolve — drift fails loud.
+# set of consumer symlink homes still resolve -- drift fails loud.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tally_caller_map_witness.rish

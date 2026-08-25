@@ -1,6 +1,6 @@
-# identity_shape.rish — one verdict for the identity witness, three worlds handled.
+# identity_shape.rish -- one verdict for the identity witness, three worlds handled.
 #
-# Native repoint of identity_shape.sh — PGP lines matched by shape (ten
+# Native repoint of identity_shape.sh -- PGP lines matched by shape (ten
 # four-hex groups); SSH lines by starts-with SHA256: at column zero.
 # Reads root PUBKEYS.md when present, else context/PUBKEYS.md (shell cat seam).
 # Run from the repository root:
@@ -46,7 +46,7 @@ let pgp_n = length pgp_rows
 
 # Expected face: two forge SSH + two OpenPGP (master + sandbox/jail), and
 # either the Cursor cloud lane-key (context/PUBKEYS) or the Framework
-# jail-local SSH fingerprints (root PUBKEYS) — three or four SHA256: lines.
+# jail-local SSH fingerprints (root PUBKEYS) -- three or four SHA256: lines.
 # PGP lines must be ten single-spaced four-hex groups (length 49); gpg's
 # double-space middle gap fails the shape on purpose.
 let ssh_ok = false

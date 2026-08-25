@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# hawm0_stop.sh — stop a running hawm0 emulator cleanly.
+# hawm0_stop.sh -- stop a running hawm0 emulator cleanly.
 #
 # A successful tools/h/hawm0_boot_worker.sh run (via tools/h/hawm0_boot_onpath_host.rish)
 # leaves the emulator running on purpose, since a caller like
 # tools/h/hawm1_seva_witness.rish needs it attached a moment later. This is the
-# explicit teardown for when you are actually done with it — run from the
+# explicit teardown for when you are actually done with it -- run from the
 # same plain host terminal, outside any jail.
 #
 #   ./tools/h/hawm0_stop.sh

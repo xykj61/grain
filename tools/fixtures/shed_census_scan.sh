@@ -1,5 +1,5 @@
 #!/bin/sh
-# Shed census scan — orphan floor behind planted C1/C2 controls.
+# Shed census scan -- orphan floor behind planted C1/C2 controls.
 # Exit 0 only when both controls honor and the census is released.
 # No backtick characters in patterns.
 #
@@ -53,7 +53,7 @@ for p in "$CITER" "$CITED" "$ORPHAN"; do
 done
 echo "tracked_controls=honored"
 
-# prove-red: pretend the orphan is referenced by forcing a greedy read —
+# prove-red: pretend the orphan is referenced by forcing a greedy read --
 # require orphan to be ORPHAN but inject a false REFERENCED claim.
 if test "$MODE" = "prove-red"; then
   echo "C1=REFERENCED"
@@ -66,8 +66,8 @@ if test "$MODE" = "prove-red"; then
   exit 1
 fi
 
-# --- census: dated paths · mention floor · C1/C2 (shared dated_classify) ---
-# The classifier now speaks Rishi (Python → Rishi molt 20260809): Rishi owns the
+# --- census: dated paths - mention floor - C1/C2 (shared dated_classify) ---
+# The classifier now speaks Rishi (Python -> Rishi molt 20260809): Rishi owns the
 # interface, a POSIX-sh rg seam holds the regex and mention floor. Output matches the
 # elder Python byte-for-byte; python3 is not on this pier's PATH.
 REPORT=$(rishi/bin/rishi run tools/fixtures/dated_classify.rish shed "$CITED" "$ORPHAN" "$CITER")

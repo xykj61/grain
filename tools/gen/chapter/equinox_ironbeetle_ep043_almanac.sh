@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 96 from IronBeetle ep043 census (e91) — ch6 FULL.
+# Append Glow almanac seat 96 from IronBeetle ep043 census (e91) -- ch6 FULL.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 96\.' "$ALMANAC"; then

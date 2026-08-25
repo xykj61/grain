@@ -1,11 +1,11 @@
 #!/bin/sh
-# Equinox seat map scan — e107 corrected close path after seat 110 spent.
+# Equinox seat map scan -- e107 corrected close path after seat 110 spent.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/equinox_seat_map_scan.sh
 #
 # Law: look at spent seats before naming the remaining map.
-# Propose close choir on 112 as check·test·prepare; do not consume the fork.
+# Propose close choir on 112 as check-test-prepare; do not consume the fork.
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
@@ -108,7 +108,7 @@ echo "seat_map_112=close_choir_proposed"
 echo "seat_map_bundle=crossing_mode"
 echo "seat_map_shred=keaton_gated"
 
-# --- almanac: seat 110 present · ch7 at least 14/16 · not yet 111 ---
+# --- almanac: seat 110 present - ch7 at least 14/16 - not yet 111 ---
 rg -q '^### 110\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

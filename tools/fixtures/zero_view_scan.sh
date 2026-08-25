@@ -1,12 +1,12 @@
 #!/bin/sh
-# Zero-view scan — a zero names the instrument's VIEW, never the world.
+# Zero-view scan -- a zero names the instrument's VIEW, never the world.
 #
 #   sh tools/fixtures/zero_view_scan.sh           # living green
 #   sh tools/fixtures/zero_view_scan.sh prove-red # must exit 1
 #
 # Planted pair:
-#   tools/fixtures/zero_view_control/view.tsv          — empty view (window_n=0)
-#   tools/fixtures/zero_view_control/view.tsv.pre_seed — archived fall (85)
+#   tools/fixtures/zero_view_control/view.tsv          -- empty view (window_n=0)
+#   tools/fixtures/zero_view_control/view.tsv.pre_seed -- archived fall (85)
 #
 # Law: look where the thing would be before calling it gone.
 # No backtick characters in patterns.

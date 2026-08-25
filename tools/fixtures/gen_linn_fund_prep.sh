@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_linn_fund_prep.sh — Linn fund prep (Capricorn earth · seat 10 · Helen)
+# gen_linn_fund_prep.sh -- Linn fund prep (Capricorn earth - seat 10 - Helen)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

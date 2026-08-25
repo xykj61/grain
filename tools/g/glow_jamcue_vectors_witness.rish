@@ -1,4 +1,4 @@
-# glow_jamcue_vectors_witness.rish — Glow cell-pack demo vectors GREEN.
+# glow_jamcue_vectors_witness.rish -- Glow cell-pack demo vectors GREEN.
 #
 # Asserts the seated demo arithmetic against tools/fixtures/glow_jamcue_vectors.txt
 # and reuses glow_expr_witness for the parse/lower face.
@@ -11,7 +11,7 @@ assert (fixture contains "nest-left|(jam (mix from amount) amount)|393219|3|") e
 assert (fixture contains "nest-right|(jam cell (mix from amount))|327686|6|") else "fixture missing nest-right"
 assert (fixture contains "nest-both|(jam (mix from amount) (mix cell gate))|393222|6|") else "fixture missing nest-both"
 
-# Demo arithmetic — same constants as glow/expr.rye (left=5 right=3 mix=6).
+# Demo arithmetic -- same constants as glow/expr.rye (left=5 right=3 mix=6).
 let flat_run = run ["sh" "-c" "echo $(( (5 << 16) | 3 ))"]
 assert flat_run.ok else "flat jam arithmetic failed"
 assert (trim flat_run.out) == "327683" else "flat jam expected 327683"

@@ -1,6 +1,6 @@
-# tame_check_th2b.rish — TH-2b witness: Mantra module clean under tame-check.
+# tame_check_th2b.rish -- TH-2b witness: Mantra module clean under tame-check.
 #
-# Gates mantra/src/* only — global tame-check gates the full corpus after TH-2c.
+# Gates mantra/src/* only -- global tame-check gates the full corpus after TH-2c.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_check_th2b.rish

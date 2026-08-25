@@ -31,7 +31,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- i8 fascia: hold disclosed · window_min kept ---
+# --- i8 fascia: hold disclosed - window_min kept ---
 FASCIA_OUT=$(sh "$FASCIA_SH" measure)
 echo "$FASCIA_OUT"
 echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
@@ -39,7 +39,7 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-# e104 landed i8 hold. Later i9 may carry the window — elder accepts i8 or i9.
+# e104 landed i8 hold. Later i9 may carry the window -- elder accepts i8 or i9.
 if ! echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i8' && ! echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i9'; then
   echo "hold_fascia=failed"
   echo "verdict=misread"
@@ -150,7 +150,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "hold_fork=honored"
 echo "hold_fork_status=not_consumed"
 
-# --- almanac seats 97-107 · ch7 at least 11/16 ---
+# --- almanac seats 97-107 - ch7 at least 11/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*|*"Chapter Seven (10 of 16)"*)

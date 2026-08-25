@@ -1,16 +1,16 @@
 #!/bin/sh
-# Equinox e135 — affordable-witness law (REDS 46).
+# Equinox e135 -- affordable-witness law (REDS 46).
 # Pitch claim rewrite was unlawful on a dated Vision artifact; e136 supersedes.
 # This scan keeps the speed law and leaves MantraPod speech to e136.
 # Exit 0 when REDS 46 seats, Lexicon names the law, e112 stays fast-green.
-# Does NOT run e115 (too slow for a casual seat — that is the law).
+# Does NOT run e115 (too slow for a casual seat -- that is the law).
 # No backtick characters.
 #
 #   sh tools/fixtures/equinox_e135_mantrapod_affordable_scan.sh
 #   sh tools/fixtures/equinox_e135_mantrapod_affordable_scan.sh prove-red
 #
 # Law: a witness nobody can afford to run is a witness that stops being run.
-# Law: foundations first · on-touch never campaign.
+# Law: foundations first - on-touch never campaign.
 set -eu
 
 MODE=${1:-}
@@ -57,7 +57,7 @@ for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" \
 done
 echo "instruments_tracked=honored"
 
-# Elder pitch must remain dated testimony (Reya · Kaeden · Rye OS) — not rewritten
+# Elder pitch must remain dated testimony (Reya - Kaeden - Rye OS) -- not rewritten
 rg -q '^\*\*Voice:\*\* Reya 2' "$ELDER_PITCH" || {
   echo "elder_pitch=failed"
   echo "detail=want_elder_voice_reya_2"

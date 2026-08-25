@@ -1,4 +1,4 @@
-# mantra_recall_subscribe_poll_stop.rish — stop sentinel honored at wire poll boundary.
+# mantra_recall_subscribe_poll_stop.rish -- stop sentinel honored at wire poll boundary.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_recall_subscribe_poll_stop.rish

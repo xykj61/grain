@@ -1,9 +1,9 @@
-# tools/b/buhr_graph_reading_query_witness.rish — BUHR Journey 6, Rung 4: the reading voice folds the graph.
+# tools/b/buhr_graph_reading_query_witness.rish -- BUHR Journey 6, Rung 4: the reading voice folds the graph.
 #
 # Rungs one through three let the graph voice count the surface and gathered it under
 # the host; this rung brings the reading voice to the same surface. Scribble folds a
-# markdown render of the living graph (mantra_browser.render_markdown) — the very bytes
-# the browser shows — so `outline` names the title and every bolt, `bolts` folds to the
+# markdown render of the living graph (mantra_browser.render_markdown) -- the very bytes
+# the browser shows -- so `outline` names the title and every bolt, `bolts` folds to the
 # depth-two bolt headings, and a fork adds a new bolt to the fold (the reading tracks
 # the living surface). A length budget truncates with a length stop; a disallowed
 # model, an unknown op (no fake answer), and a zero budget each refuse. The browser and
@@ -32,7 +32,7 @@ assert selftest.out contains "model not allowed refused" else "buhr6: model allo
 assert selftest.out contains "unknown op refused (no fake answer)" else "buhr6: no-fake-answer refusal missing"
 assert selftest.out contains "zero budget refused by Lantern contract" else "buhr6: Lantern budget gate missing"
 
-# The browser whose markdown render the fold reads stays its own green binary — the
+# The browser whose markdown render the fold reads stays its own green binary -- the
 # render_markdown door was added additively beside render.
 let browser_bin = "pond/bin/mantra-browser"
 let browser_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser.rye -femit-bin=${browser_bin}"]

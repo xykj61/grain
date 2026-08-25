@@ -1,4 +1,4 @@
-# aurora_run.rish — Aurora stage build + QEMU wake (developer utility).
+# aurora_run.rish -- Aurora stage build + QEMU wake (developer utility).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/au/aurora_run.rish              # default stage seed
@@ -6,7 +6,7 @@
 #   RYE_SMP=2 rishi/bin/rishi run tools/au/aurora_run.rish wire
 #
 # Replaces the orchestration half of aurora/run.sh; the shell entry point
-# delegates here so stable paths and citations hold. Not a parity witness —
+# delegates here so stable paths and citations hold. Not a parity witness --
 # each stage prints different console output.
 
 let zig_raw = env "RYE_ZIG"

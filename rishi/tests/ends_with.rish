@@ -1,4 +1,4 @@
-# ends_with.rish — tests for the `ends-with` string builtin.
+# ends_with.rish -- tests for the `ends-with` string builtin.
 # Proves: suffix checks mirror `starts-with`; uses strengthened std.mem.endsWith.
 
 assert "hello world" ends-with "world" else "ends-with: basic failed"

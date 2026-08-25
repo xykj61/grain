@@ -1,4 +1,4 @@
-# scribe_dashboard_witness.rish — Scribe's reading room over the Kyri reader.
+# scribe_dashboard_witness.rish -- Scribe's reading room over the Kyri reader.
 #
 # Proves the dashboard reads a drawer of .kyri documents, dispatches each by its format
 # onto four shelves (Logs, Batons, Inventory, Unread), keeps the Unread fall-through
@@ -10,7 +10,7 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/dashboard.rye -femit-bin=scribe/bin/dashboard
 #   rishi/bin/rishi run tools/s/scribe_dashboard_witness.rish
 
-# The module's own selftest — three shelves fill, Unread is honest, the lens is exact.
+# The module's own selftest -- three shelves fill, Unread is honest, the lens is exact.
 let st = run ["scribe/bin/dashboard" "selftest"]
 assert st.ok else "scribe dashboard selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"

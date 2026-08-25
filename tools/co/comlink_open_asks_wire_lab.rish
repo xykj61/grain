@@ -1,4 +1,4 @@
-# comlink_open_asks_wire_lab.rish — OA-L2 device-wire QEMU lab (spawn / wait-for).
+# comlink_open_asks_wire_lab.rish -- OA-L2 device-wire QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_open_asks_wire_lab.rish

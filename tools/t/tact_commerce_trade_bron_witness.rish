@@ -1,12 +1,12 @@
-# tools/t/tact_commerce_trade_bron_witness.rish — TACT Journey 4, Rung 3: the trade made portable.
+# tools/t/tact_commerce_trade_bron_witness.rish -- TACT Journey 4, Rung 3: the trade made portable.
 #
 # Rungs one and two booked a fair-value trade and proved it one both parties signed. A trade is only
 # useful if both sides can carry the identical fact. This rung renders a signed trade to a
 # `format trade-v1` Bron record and parses it back byte-for-byte: parse(render(signed)) recovers an
 # equal signed trade (points, item, price, stamp, both signatures) that still passes both_agree, so
-# the two-party agreement survived becoming text. The reader is purpose-built and bounded — an
+# the two-party agreement survived becoming text. The reader is purpose-built and bounded -- an
 # unknown field refuses UnknownField (never dropped), a missing field MissingField, a wrong header
-# BadFormat, and malformed hex BadHex. Reads no network — the serve transport stays Keaton's hand.
+# BadFormat, and malformed hex BadHex. Reads no network -- the serve transport stays Keaton's hand.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tact_commerce_trade_bron_witness.rish
@@ -29,7 +29,7 @@ assert selftest.out contains "a missing field refused MissingField" else "tact4:
 assert selftest.out contains "a wrong header and short hex each refused" else "tact4: bad-header/hex refusal missing"
 assert selftest.out contains "a signed trade travels as Bron and returns whole" else "tact4: crux claim missing"
 
-# Rung two — the both-parties-signed agreement this record carries — stays its own green binary.
+# Rung two -- the both-parties-signed agreement this record carries -- stays its own green binary.
 let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed && pond/bin/commerce-trade-signed selftest 2>&1"]
 assert r2.ok else "tact4: rung-two commerce_trade_signed re-run failed"
 assert r2.out contains "GREEN" else "tact4: rung-two selftest did not speak GREEN"

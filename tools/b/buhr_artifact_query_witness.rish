@@ -1,12 +1,12 @@
-# tools/b/buhr_artifact_query_witness.rish — BUHR Journey 8, Rung 1: the intelligence reads the store.
+# tools/b/buhr_artifact_query_witness.rish -- BUHR Journey 8, Rung 1: the intelligence reads the store.
 #
 # Journey 6 let a voice read the living Realidream graph; Journey 7 built Tablecloth, the
 # named artifact store. This rung joins the two: a Lantern-shaped request whose corpus is
-# a named artifact, read only through Tablecloth's fetch_artifact — every bead proven by
+# a named artifact, read only through Tablecloth's fetch_artifact -- every bead proven by
 # digest and the whole against its recorded content address before a byte reaches the
 # voice. The crux, witnessed: a tampered bead refuses the fetch (DigestMismatch) and the
 # voice answers nothing rather than reading corruption; an unknown name refuses too. The
-# Lantern contract holds — bytes/words/line each read the true store, a length budget
+# Lantern contract holds -- bytes/words/line each read the true store, a length budget
 # truncates with a length stop, a disallowed model and a zero budget refuse. Journey 7's
 # store stays its own green binary (this voice composes over its public fetch only).
 #
@@ -35,7 +35,7 @@ assert selftest.out contains "unknown op refused" else "buhr8: unknown-op refusa
 assert selftest.out contains "model not allowed refused" else "buhr8: model-not-allowed refusal missing"
 assert selftest.out contains "zero budget refused" else "buhr8: zero-budget refusal missing"
 
-# Journey 7's named artifact store — the corpus this voice reads — stays its own green
+# Journey 7's named artifact store -- the corpus this voice reads -- stays its own green
 # binary; rung one of Journey 8 composes over its public fetch, additively.
 let store_bin = "pond/bin/tablecloth"
 let store_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${store_bin}"]

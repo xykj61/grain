@@ -1,4 +1,4 @@
-# generate_jail_local_keys_linux.rish — generate dedicated, jail-only SSH
+# generate_jail_local_keys_linux.rish -- generate dedicated, jail-only SSH
 # and GPG signing keys that live only inside this repository (gitignored),
 # giving a Linux ai-jail session (e.g. tools/cu/cursor-jail.sh --private-home)
 # its own working forge identity.

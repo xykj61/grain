@@ -1,5 +1,5 @@
 #!/bin/sh
-# wasmtime_preflight.sh — print ABSENT seating when wasmtime is missing.
+# wasmtime_preflight.sh -- print ABSENT seating when wasmtime is missing.
 # Exit 0 always; presence is silent. Used by parity.rish / parity_ch02.rish.
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

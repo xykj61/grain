@@ -1,10 +1,10 @@
 #!/bin/sh
-# SUPERSEDED 20260711.055800 — WOV TB REPL lab retired from the living suite.
+# SUPERSEDED 20260711.055800 -- WOV TB REPL lab retired from the living suite.
 # Kaeden approved Claude counsel 055112: keep pure-Rye WOV core; retire the optional
 # TigerBeetle cross-check seam to dated record. Kept; never deleted. Not run from parity.
-# Living WOV coverage: tools/w/wov_exit_honesty.rish · tools/w/wov_dual_monarch.rish
+# Living WOV coverage: tools/w/wov_exit_honesty.rish - tools/w/wov_dual_monarch.rish
 #
-# wov_tb_repl_lab.sh — WOV lap 2b seam A: cluster-of-one mint/transfer → projection file.
+# wov_tb_repl_lab.sh -- WOV lap 2b seam A: cluster-of-one mint/transfer -> projection file.
 #
 # Requires io_uring (blocked under ai-jail seccomp). On PermissionDenied, exits 0
 # with WOV-TB-LIVE-SKIP so the projection witness can still GREEN in the enclosure.
@@ -62,7 +62,7 @@ trap cleanup EXIT INT TERM
 sleep 1
 
 # Control accounts: 1=issued, 2=redeemed. Holders: 10=A, 11=B (witness ids).
-# Mint 1000 issued→A; transfer 300 A→B. Nonces tracked WOV-side in projection.
+# Mint 1000 issued->A; transfer 300 A->B. Nonces tracked WOV-side in projection.
 printf '%s\n' \
   'create_accounts id=1 code=10 ledger=700, id=2 code=10 ledger=700, id=10 code=10 ledger=700, id=11 code=10 ledger=700;' \
   'create_transfers id=1 debit_account_id=1 credit_account_id=10 amount=1000 ledger=700 code=10;' \
@@ -70,7 +70,7 @@ printf '%s\n' \
   'lookup_accounts id=1, id=2, id=10, id=11;' \
   | "$tb" repl --cluster="$cluster" --addresses="$port" >"$build/repl.out" 2>&1
 
-# Map TB numeric ids → lap-1 Kumara pubkey hex (same seeds as wov_core).
+# Map TB numeric ids -> lap-1 Kumara pubkey hex (same seeds as wov_core).
 # Balance = credits_posted - debits_posted for holders.
 python3 - <<'PY' "$build/repl.out" "$proj"
 import json, re, sys

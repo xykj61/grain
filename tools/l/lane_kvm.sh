@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# lane_kvm — A-narrow gate for /dev/kvm (counsel 20260712.090512).
+# lane_kvm -- A-narrow gate for /dev/kvm (counsel 20260712.090512).
 #
-# Off by default. When on, authorizes use of exactly /dev/kvm — no D-Bus,
+# Off by default. When on, authorizes use of exactly /dev/kvm -- no D-Bus,
 # no systemd host units, no session buses. Teacher ai-jail stays unmodified;
 # this gate lives in our enclosure.conf + launch wrappers.
 #
@@ -16,7 +16,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 CONF="${ENCLOSURE_CONF:-$REPO_ROOT/tools/e/enclosure.conf}"
 
-# Caller export wins over enclosure.conf — one-shot without editing the file:
+# Caller export wins over enclosure.conf -- one-shot without editing the file:
 #   LANE_KVM=true ./tools/r/run_with_lane_kvm.sh -- ./tools/p/proven_seat_g0c_lane_kvm.sh
 # Daily editors keep LANE_KVM=false in conf; refuse-probe still reads conf when unset.
 _CALLER_LANE_KVM="${LANE_KVM-}"

@@ -1,4 +1,4 @@
-# tame_usize_audit.rish — proves surfaceAuditOk's welcome and unwelcome space.
+# tame_usize_audit.rish -- proves surfaceAuditOk's welcome and unwelcome space.
 #
 # tame_usize_audit.rye is a pure library with no main and no file I/O; this
 # witness builds a small fixture that calls its exported surface directly and
@@ -7,7 +7,7 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_usize_audit.rish
-# Rebuild binary (gitignored under tools/bin/): rye build → tools/bin/tame-usize-audit-test
+# Rebuild binary (gitignored under tools/bin/): rye build -> tools/bin/tame-usize-audit-test
 
 let zig = "vendor/zig-toolchain/zig"
 let zig_ver = run [zig "version"]

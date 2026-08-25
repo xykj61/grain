@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# hawm_log_harvest_worker.sh — STOA275: fold HAWM0 boot meta into a Bron harvest.
+# hawm_log_harvest_worker.sh -- STOA275: fold HAWM0 boot meta into a Bron harvest.
 #
 # Reads tools/.cache/hawm0/hawm0-boot-meta.txt (or --fixture) and writes
 # tools/.cache/hawm0/hawm-harvest.bron with the hawm-harvest-v1 shape.
@@ -51,7 +51,7 @@ if ! grep -q '^device: ' "$META"; then
 fi
 
 device_line="$(grep '^device: ' "$META" | tail -n1)"
-# device: model=… android=… abi=… qemu=… [serial=…]
+# device: model=... android=... abi=... qemu=... [serial=...]
 model="$(printf '%s' "$device_line" | sed -n 's/.*model=\([^ ]*\).*/\1/p')"
 android="$(printf '%s' "$device_line" | sed -n 's/.*android=\([^ ]*\).*/\1/p')"
 abi="$(printf '%s' "$device_line" | sed -n 's/.*abi=\([^ ]*\).*/\1/p')"
@@ -71,7 +71,7 @@ if grep -q '/dev/kvm present' "$META"; then
   kvm=present
 fi
 
-# Optional HAWM1 fold — present after hawm1_seva_witness captures the root.
+# Optional HAWM1 fold -- present after hawm1_seva_witness captures the root.
 SESSION_ROOT_FILE="$CACHE/hawm1-session-root.txt"
 session_root=pending
 if [ -f "$SESSION_ROOT_FILE" ]; then

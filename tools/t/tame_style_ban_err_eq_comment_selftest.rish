@@ -1,8 +1,8 @@
-# tame_style_ban_err_eq_comment_selftest.rish — planted pair for comment-skip bans.
+# tame_style_ban_err_eq_comment_selftest.rish -- planted pair for comment-skip bans.
 #
 # Positive: a real `) == error.` in code MUST fire.
 # Negative: a /// comment naming it MUST NOT fire.
-# Census-control shape — gate the instrument fix before believing it.
+# Census-control shape -- gate the instrument fix before believing it.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_ban_err_eq_comment_selftest.rish
@@ -22,7 +22,7 @@ let neg = run ["sh" helper ") == error." comment]
 assert neg.ok else "noncomment grep failed on comment plant"
 assert neg.out == "" else "NEGATIVE: comment plant must not fire"
 
-# Living brushstroke teaching line still names the ban in /// — must stay silent.
+# Living brushstroke teaching line still names the ban in /// -- must stay silent.
 let brush = run ["sh" helper ") == error." "brushstroke/brush_parse.rye"]
 assert brush.ok else "noncomment grep failed on brush_parse"
 assert brush.out == "" else "brush_parse /// teaching line must not fire"

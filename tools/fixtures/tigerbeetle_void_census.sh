@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census void / !void return braces under gratitude/tigerbeetle/src.
-# Clean-room study only — prints counts; never copies into rye/.
+# Clean-room study only -- prints counts; never copies into rye/.
 set -eu
 ROOT=gratitude/tigerbeetle
 if ! test -d "$ROOT/src"; then

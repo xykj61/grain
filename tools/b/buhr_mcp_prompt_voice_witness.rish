@@ -1,15 +1,15 @@
-# tools/b/buhr_mcp_prompt_voice_witness.rish — BUHR Journey 11, Rung 3: a filled prompt routes to a voice.
+# tools/b/buhr_mcp_prompt_voice_witness.rish -- BUHR Journey 11, Rung 3: a filled prompt routes to a voice.
 #
 # Journey 9 served the intelligence as MCP tools; Journey 11 rungs one and two served prompts (a
 # template a server offers, fills, and lists). This rung joins them: a server's own prompt
 # template, filled by a caller's arguments, IS a prompt a Grain voice can answer. pond/apps/
 # mcp_prompt_voice.rye fills the template (rung one) and dispatches the finished text through the
-# gathered Q-vane host (quin_host_artifact) — so which voice replies is chosen by the filled
+# gathered Q-vane host (quin_host_artifact) -- so which voice replies is chosen by the filled
 # words: `matmul the pair` routes to Lattice (19 22 43 50), `lane_count the graph` to the graph
 # voice. The answer crosses back in an owned format mcp-prompt-run-v1 envelope (id, voice, result)
-# a caller round-trips. Every refusal crosses as a named error, never a fabricated answer — the
+# a caller round-trips. Every refusal crosses as a named error, never a fabricated answer -- the
 # fill's four refusals cross straight back, a voice refusal keeps its MCP name. Composed over
-# public API only; rung one and the host stay their own green binaries. Reads no network — the
+# public API only; rung one and the host stay their own green binaries. Reads no network -- the
 # real fetch and the Comlink-served transport stay the held gates.
 #
 # Run from the repository root:

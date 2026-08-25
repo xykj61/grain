@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# corpus_twin_verbose.sh — twin_one with Matrix-dense live prints for Prin.
+# corpus_twin_verbose.sh -- twin_one with Matrix-dense live prints for Prin.
 # Source from a part-N resume, or:  source tools/co/corpus_twin_verbose.sh
 # Requires T1..Tn E N and append target TSV in env (T_LIVE).
 

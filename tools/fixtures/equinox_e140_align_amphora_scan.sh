@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e140 — align Amphora CLI · new equinox commence gated · Claude package.
+# Equinox e140 -- align Amphora CLI - new equinox commence gated - Claude package.
 # Exit 0 when roadmap/handoff/reply/catalog exist, seat 128 reserved, no CLI claimed landed.
 # No backtick characters.
 #
@@ -66,7 +66,7 @@ rg -q 'aa89d19443' "$COUNSEL" "$CATALOG" "$HANDOFF" "$REPLY" || {
 echo "nib=honored"
 echo "nib_note=aa89d19443"
 
-# Align · Amphora CLI direction
+# Align - Amphora CLI direction
 rg -qi 'Amphora|amphora' "$ROADMAP" "$COUNSEL" || {
   echo "align=failed"
   echo "detail=want_amphora_in_roadmap"
@@ -82,7 +82,7 @@ rg -qi 'CLI|Glow|Tend|TAME' "$ROADMAP" "$COUNSEL" || {
 echo "align=honored"
 echo "direction=amphora_glow_tend_tame_cli"
 
-# Commence gated · not spent
+# Commence gated - not spent
 rg -qi 'GATED|gated commence|commence' "$COUNSEL" "$ITINERARY" "$ROADMAP" || {
   echo "commence=failed"
   echo "detail=want_gated_commence"
@@ -136,7 +136,7 @@ rg -qi 'breach can be withdrawn|withdrawn' "$REDS" "$COUNSEL" || {
 echo "reds=honored"
 echo "reds_note=row_49_breach_can_be_withdrawn"
 
-# TASKS hygiene — not still F COLD as Now
+# TASKS hygiene -- not still F COLD as Now
 if rg -q 'F COLD' "$TASKS"; then
   rg -qi 'Amphora|align|e140|stale' "$TASKS" || {
     echo "tasks=failed"

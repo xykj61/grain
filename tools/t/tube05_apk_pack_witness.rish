@@ -1,4 +1,4 @@
-# tube05_apk_pack_witness.rish — TUBE0.5 packaging witness: a validated
+# tube05_apk_pack_witness.rish -- TUBE0.5 packaging witness: a validated
 # TUBE0 manifest becomes a signed Android APK that names Android's own
 # NativeActivity, carries libglowapp.so (aarch64), and declares exactly
 # the closed-table permissions the manifest's capabilities emit.
@@ -6,7 +6,7 @@
 # Per active-designing/20260717-014522_native-activity-shim-and-slc-
 # packaging.md. Host-side only (needs the HAWM0-staged Android SDK
 # build-tools and JDK under tools/.cache/hawm0/); no device required
-# for this witness — on-device install is the next slice.
+# for this witness -- on-device install is the next slice.
 #
 #   rishi/bin/rishi run tools/t/tube05_apk_pack_witness.rish
 

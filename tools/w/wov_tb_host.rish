@@ -1,9 +1,9 @@
-# SUPERSEDED 20260711.055800 — WOV TB host seam A retired from the living suite.
+# SUPERSEDED 20260711.055800 -- WOV TB host seam A retired from the living suite.
 # Kaeden approved Claude counsel 055112: keep pure-Rye WOV core; retire the optional
 # TigerBeetle cross-check seam to dated record. Kept; never deleted. Not run from parity.
-# Living WOV coverage: tools/w/wov_exit_honesty.rish · tools/w/wov_dual_monarch.rish
+# Living WOV coverage: tools/w/wov_exit_honesty.rish - tools/w/wov_dual_monarch.rish
 #
-# wov_tb_host.rish — WOV lap 2b seam A: TB projection → exit honesty.
+# wov_tb_host.rish -- WOV lap 2b seam A: TB projection -> exit honesty.
 #
 # Run from the repository root (manual / dated record only):
 #   rishi/bin/rishi run tools/w/wov_tb_host.rish

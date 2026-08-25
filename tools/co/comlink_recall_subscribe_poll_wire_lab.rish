@@ -1,4 +1,4 @@
-# comlink_recall_subscribe_poll_wire_lab.rish — poll wire device QEMU lab (spawn / wait-for).
+# comlink_recall_subscribe_poll_wire_lab.rish -- poll wire device QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_recall_subscribe_poll_wire_lab.rish

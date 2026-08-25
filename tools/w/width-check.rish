@@ -1,11 +1,11 @@
-# width-check.rish — seam-aware authored `.rye` width lint (hosted corpus).
+# width-check.rish -- seam-aware authored `.rye` width lint (hosted corpus).
 #
 # TAME Guidance (context/TAME_GUIDANCE.md): prefer fixed widths in authored
 # Rye; at the inherited-std seam assert the bound and `@intCast` or
-# `@as(usize` — correct Tiger code, not debt. This gate flags `usize` only
+# `@as(usize` -- correct Tiger code, not debt. This gate flags `usize` only
 # when its line carries neither seam marker.
 #
-# aurora/* is freestanding: usize is the machine word there — addresses, CSRs,
+# aurora/* is freestanding: usize is the machine word there -- addresses, CSRs,
 # hardware masks. Governed by the freestanding width policy in TAME_GUIDANCE,
 # not this hosted gate.
 #

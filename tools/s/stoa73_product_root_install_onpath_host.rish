@@ -1,10 +1,10 @@
-# stoa73_product_root_install_onpath_host.rish — STOA73 A on-device half:
+# stoa73_product_root_install_onpath_host.rish -- STOA73 A on-device half:
 # install the signed APK, launch NativeActivity, prove onCreate wrote
 # files/glow_product_root.txt with decimal 5 (Glow session_root).
 # Also re-checks Seva B0 seva_root.txt so the product root does not
 # displace the existing install proof.
 #
-# Run OUTSIDE ai-jail, from a plain host terminal — needs adb and either
+# Run OUTSIDE ai-jail, from a plain host terminal -- needs adb and either
 # hawm0 (rishi/bin/rishi run tools/h/hawm0_boot_onpath_host.rish) or Pixel USB.
 # Pack first:
 #   rishi/bin/rishi run tools/s/stoa73_product_root_write_witness.rish

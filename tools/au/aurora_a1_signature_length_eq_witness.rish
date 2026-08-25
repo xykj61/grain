@@ -1,9 +1,9 @@
-# tools/au/aurora_a1_signature_length_eq_witness.rish — Ashvini equality: exact 64 (STOA337).
+# tools/au/aurora_a1_signature_length_eq_witness.rish -- Ashvini equality: exact 64 (STOA337).
 #
 #   rishi/bin/rishi run tools/au/aurora_a1_signature_length_eq_witness.rish
 #
 # gth speaks ceilings. eq speaks exactly. Aurora's signature_length=64 is the
-# second pedestal that could not decide until this rune — 64→1, neighbors→0.
+# second pedestal that could not decide until this rune -- 64->1, neighbors->0.
 
 say "eq-sig: Language EN — the second exact deciding gate (STOA337)."
 say "eq-sig: Lens TAME — exact match; both sides; gth neighbor still stands."

@@ -1,4 +1,4 @@
-# checks.rish — booleans, comparison, and assert as a gate.
+# checks.rish -- booleans, comparison, and assert as a gate.
 # Comments begin with '#'. `let` binds; `say` speaks; `==` and `!=` compare;
 # `assert` makes a fact a gate that stops the script when it does not hold.
 

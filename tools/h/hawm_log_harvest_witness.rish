@@ -1,4 +1,4 @@
-# hawm_log_harvest_witness.rish — STOA275: HAWM log-harvest inventary + Bron shape.
+# hawm_log_harvest_witness.rish -- STOA275: HAWM log-harvest inventary + Bron shape.
 #
 # Device-free: seats inventary claims and proves hawm-harvest-v1 can be written
 # from the fixture (and from on-disk meta when present). Does not require
@@ -26,7 +26,7 @@ let shape = run ["sh" "-c" "grep -q '^format hawm-harvest-v1$' tools/.cache/hawm
 assert shape.ok else "harvest Bron missing required hawm-harvest-v1 fields"
 say "hawm-harvest: fixture harvest shape GREEN"
 
-# When a prior HAWM0 meta exists, also prove live fold from meta → Bron.
+# When a prior HAWM0 meta exists, also prove live fold from meta -> Bron.
 say "hawm-harvest: folding on-disk meta when present…"
 let meta_fold = run ["bash" "-c" "if test -f tools/.cache/hawm0/hawm0-boot-meta.txt && grep -q '^device: ' tools/.cache/hawm0/hawm0-boot-meta.txt; then ./tools/h/hawm_log_harvest_worker.sh && grep -q '^source meta$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^status GREEN$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^model sdk_gphone64_x86_64$' tools/.cache/hawm0/hawm-harvest.bron && grep -q '^serial emulator-' tools/.cache/hawm0/hawm-harvest.bron && echo META_HARVEST_GREEN; else echo META_ABSENT_FIXTURE_ONLY; fi"]
 assert meta_fold.ok else "meta fold shell failed"

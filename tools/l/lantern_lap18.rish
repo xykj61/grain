@@ -1,4 +1,4 @@
-# lantern_lap18.rish — Lantern lap 18: dual-model allow welcome.
+# lantern_lap18.rish -- Lantern lap 18: dual-model allow welcome.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "lantern/bin/lantern"
 let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]

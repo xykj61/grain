@@ -1,13 +1,13 @@
 #!/bin/sh
-# claim_preserve_extract.sh — emit sorted unique claim tokens from a file.
+# claim_preserve_extract.sh -- emit sorted unique claim tokens from a file.
 #
 # Token classes:
-#   NUM     — integers and decimals
-#   HEX     — hex digests (≥8 hex chars, optional 0x)
-#   FP      — OpenPGP-ish fingerprint clumps (4+ hex groups)
-#   PATH    — repo-relative or rooted paths with a slash and extension-ish segment
-#   STAMP   — YYYYMMDD.HHMMSS or YYYYMMDD-HHMMSS
-#   PROPER  — Capitalized proper nouns (ASCII), length ≥2, not all-caps acronyms ≤3
+#   NUM     -- integers and decimals
+#   HEX     -- hex digests (≥8 hex chars, optional 0x)
+#   FP      -- OpenPGP-ish fingerprint clumps (4+ hex groups)
+#   PATH    -- repo-relative or rooted paths with a slash and extension-ish segment
+#   STAMP   -- YYYYMMDD.HHMMSS or YYYYMMDD-HHMMSS
+#   PROPER  -- Capitalized proper nouns (ASCII), length ≥2, not all-caps acronyms ≤3
 #
 # Usage: sh tools/fixtures/claim_preserve_extract.sh <path>
 # stdout: one token per line, sorted unique, prefixed with CLASS:
@@ -16,7 +16,7 @@ set -eu
 path=${1:?"usage: claim_preserve_extract.sh <path>"}
 [ -f "$path" ] || { echo "missing $path" >&2; exit 1; }
 
-# perl, not python — this pier has no python3 on PATH (Python → Rishi molt 20260809).
+# perl, not python -- this pier has no python3 on PATH (Python -> Rishi molt 20260809).
 # Perl's regex engine matches the elder Python `re` semantics token-for-token here.
 perl -CSD -0777 -ne '
     my %t;

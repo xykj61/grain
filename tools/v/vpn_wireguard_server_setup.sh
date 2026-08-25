@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vpn_wireguard_server_setup.sh — the server half of the self-hosted
+# vpn_wireguard_server_setup.sh -- the server half of the self-hosted
 # WireGuard VPN guide (Steps 1-3 of
 # external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md).
 #

@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_home_census — print-only meter for the generators migration (beta leg 2).
+# gen_home_census -- print-only meter for the generators migration (beta leg 2).
 # Counts what lives in each gen/ home and names any generator-shaped file
 # still standing at tools/ top level. Advisory law: prints, never fails.
 cd "$(git rev-parse --show-toplevel)"
@@ -10,7 +10,7 @@ for home in tools/gen/*/; do
   total=$((total+n))
 done
 # A straggler is a top-level gen-named file that is NOT a lawful shim (no
-# gen/ twin named in its body) and not this meter itself — e205: the first
+# gen/ twin named in its body) and not this meter itself -- e205: the first
 # reading counted seven shims and the meter's own file as debt; measured
 # again, the true straggler count is what prints here.
 strag=0

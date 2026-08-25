@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prin_dispatch.sh — single argv router for tools/p/prin.rish
+# prin_dispatch.sh -- single argv router for tools/p/prin.rish
 
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"

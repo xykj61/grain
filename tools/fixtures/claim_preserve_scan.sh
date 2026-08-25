@@ -1,24 +1,24 @@
 #!/bin/sh
-# claim_preserve_scan.sh — before/after claim-token and modality identity for a Radiant pass.
-# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
-# Modality seated 20260725.110354 — counsel the-runway; obligation drift stops the wave.
+# claim_preserve_scan.sh -- before/after claim-token and modality identity for a Radiant pass.
+# Missing Rishi verb: accumulate - filter chained - read bounded -- harvest ledger (counsel 20260725.040247)
+# Modality seated 20260725.110354 -- counsel the-runway; obligation drift stops the wave.
 #
 # Env:
-#   CLAIM_PRESERVE_FILES — newline-separated relative paths (required for a pass)
-#   CLAIM_PRESERVE_BASE  — git ref for BEFORE (default: HEAD)
+#   CLAIM_PRESERVE_FILES -- newline-separated relative paths (required for a pass)
+#   CLAIM_PRESERVE_BASE  -- git ref for BEFORE (default: HEAD)
 #
 # Also asserts pinned digests in known homes are unchanged vs BASE:
 #   tools/w/waymark_derive.rish corpus_digest / corpus_count_pin
 #   linengrow/seva_b0_fold.rye expected_demo_root_hex
 #
-# Exit 1 on any mismatch — STOP the wave; do not resolve.
+# Exit 1 on any mismatch -- STOP the wave; do not resolve.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
 BASE=${CLAIM_PRESERVE_BASE:-HEAD}
-# The extractor now speaks Rishi (Python → perl → Rishi molt 20260809): its own
+# The extractor now speaks Rishi (Python -> perl -> Rishi molt 20260809): its own
 # match/find/sort/unique, no shell or perl. Before and after use the same extractor,
 # so the claim comparison holds regardless of the ASCII/Unicode edge on rare non-ASCII.
 EXTRACT="rishi/bin/rishi run tools/fixtures/claim_preserve_extract.rish"
@@ -36,7 +36,7 @@ reds=0
 # Drop Radiant-pass, Erratum, and Living-pointer lines so recorded Tier-2
 # doors can open without pretending the new stamp or pointer was always there.
 normalize_body() {
-  # stdin → stdout
+  # stdin -> stdout
   grep -viE 'Radiant pass|[Ee]rratum|[Ll]iving pointer' || true
 }
 
@@ -67,8 +67,8 @@ while IFS= read -r path; do
   else
     echo "OK   claim tokens identical: ${path}"
   fi
-  # Modality — per-file obligation counts must hold (recommend→require is red).
-  # The counter now speaks Rishi (Python → Rishi molt 20260809): compare its
+  # Modality -- per-file obligation counts must hold (recommend->require is red).
+  # The counter now speaks Rishi (Python -> Rishi molt 20260809): compare its
   # before/after counts, each file normalized inside the counter.
   git show "${BASE}:${path}" >"$TMP/before_mod_raw"
   rishi/bin/rishi run tools/fixtures/claim_preserve_modality.rish count "$TMP/before_mod_raw" >"$TMP/mod_before" 2>/dev/null
@@ -78,7 +78,7 @@ while IFS= read -r path; do
     diff "$TMP/mod_before" "$TMP/mod_after" | grep '^[<>]' | head
     reds=$((reds + 1))
   fi
-  # Wrong beliefs stay visible — silent five→four rewrites are red.
+  # Wrong beliefs stay visible -- silent five->four rewrites are red.
   if grep -Fq 'five remotes' "$TMP/before_raw"; then
     if ! grep -Fq 'five remotes' "$path"; then
       echo "FAIL ${path}: removed historical 'five remotes' — use an erratum line instead"

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# pond_metal_close_preflight.sh — automated checks before Kaeden's interactive metal close.
+# pond_metal_close_preflight.sh -- automated checks before Kaeden's interactive metal close.
 # Run from the repository root. Interactive steps (type, idle, ceiling, :quit) remain manual on GNOME.
 set -eu
 root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

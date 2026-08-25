@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# cellar_ring1_export.sh — export with three-field Tilak manifest lines (I6).
+# cellar_ring1_export.sh -- export with three-field Tilak manifest lines (I6).
 #     entry plain-bytes <sha3-256-hex> <name>
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)

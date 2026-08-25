@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox ch7 surface scan — e109 · fifteen limbs · itinerary modes.
+# Equinox ch7 surface scan -- e109 - fifteen limbs - itinerary modes.
 # Exit 0 only when control reads and surface limbs honor.
 # No backtick characters in patterns.
 #
@@ -30,7 +30,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- map: close landed · bundle/shred modes · shred not displaced to ch8 ---
+# --- map: close landed - bundle/shred modes - shred not displaced to ch8 ---
 git ls-files --error-unmatch "$MAP" >/dev/null 2>&1 || {
   echo "itinerary=failed"
   echo "verdict=misread"
@@ -88,7 +88,7 @@ echo "itinerary_close=one_seat"
 echo "seat_map_112=close_choir_landed"
 echo "seat_map_113=ch7_surface_this_sitting"
 
-# --- REDS zero-view law kept · rows at least 33 · monotone ---
+# --- REDS zero-view law kept - rows at least 33 - monotone ---
 rg -q '^\| 33 \|' "$REDS" || {
   echo "ledger=failed"
   echo "verdict=misread"
@@ -116,7 +116,7 @@ fi
 echo "ledger=honored"
 echo "reds_rows=${ROWS}"
 
-# --- almanac ch7 FULL · seats 97-112 · ch8 not yet required before append ---
+# --- almanac ch7 FULL - seats 97-112 - ch8 not yet required before append ---
 rg -q '^## Chapter Seven \(16 of 16\)$' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

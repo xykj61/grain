@@ -1,7 +1,7 @@
-# tools/t/tend_lap_witness.rish — Q54's instrument, proven on a fixture.
+# tools/t/tend_lap_witness.rish -- Q54's instrument, proven on a fixture.
 # The quest itself seats only when Keaton's class-and-rooms word runs the
-# real lap; this witness banks the proof-machine: delta named · zero
-# deletions · header-accreted bodies sealed (old bytes remain a suffix).
+# real lap; this witness banks the proof-machine: delta named - zero
+# deletions - header-accreted bodies sealed (old bytes remain a suffix).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tend_lap_witness.rish

@@ -1,7 +1,7 @@
-# proven_seat_g1_crossing_probe.rish — G1 spike: name the Genode crossing path.
+# proven_seat_g1_crossing_probe.rish -- G1 spike: name the Genode crossing path.
 #
 # Answers Claude's first honest question without claiming serial GREEN.
-# Seed stays receipt_core; seat changes — this witness only pins the build path.
+# Seed stays receipt_core; seat changes -- this witness only pins the build path.
 #
 #   rishi/bin/rishi run tools/p/proven_seat_g1_crossing_probe.rish
 

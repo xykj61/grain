@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 64 from chapter-four surface choir (e59) — closes ch4.
+# Append Glow almanac seat 64 from chapter-four surface choir (e59) -- closes ch4.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 64\.' "$ALMANAC"; then

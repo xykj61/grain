@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 99 from census control (e95) — ch7 3/16 · commence arc.
+# Append Glow almanac seat 99 from census control (e95) -- ch7 3/16 - commence arc.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 99\.' "$ALMANAC"; then

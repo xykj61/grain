@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_gren_fund_prep.sh — Gren fund prep (was Djin · was Twah)
+# gen_gren_fund_prep.sh -- Gren fund prep (was Djin - was Twah)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -15,7 +15,7 @@ case "$verb" in
     ;;
 esac
 
-# --- m5 doors: seat · phone book · Comlink · edu page ---
+# --- m5 doors: seat - phone book - Comlink - edu page ---
 test -d comlink && test -f comlink/beading.rye
 test -f "$SPEC"
 test -f "$MOVE"
@@ -36,7 +36,7 @@ grep -q 'gren.fund' "$PAGE"
 grep -q 'no live deploy' "$PAGE"
 test -f context/CIVIC_STYLE.md
 
-# --- m6: witness steps 1–3 ---
+# --- m6: witness steps 1-3 ---
 name=Gren
 len=$(printf '%s' "$name" | wc -c)
 test "$len" -eq 4
@@ -51,7 +51,7 @@ grep -q 'Taurus' "$PAGE"
 grep -q 'witness:step3' "$PAGE"
 grep -q '| \*\*1\*\* |' "$PAGE"
 
-# --- m7: witness steps 4–5 ---
+# --- m7: witness steps 4-5 ---
 grep -q 'witness:step4' "$PAGE"
 grep -q 'phone book' "$PAGE"
 grep -q 'mints nothing' "$PAGE"

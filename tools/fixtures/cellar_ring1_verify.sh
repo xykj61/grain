@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# cellar_ring1_verify.sh — verify resins; legacy and Tilak entry lines; optional golden digest.
+# cellar_ring1_verify.sh -- verify resins; legacy and Tilak entry lines; optional golden digest.
 set -eu
 OUT=${1:?usage: cellar_ring1_verify.sh outdir [golden_manifest_digest]}
 GOLDEN=${2:-}

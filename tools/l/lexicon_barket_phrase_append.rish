@@ -1,4 +1,4 @@
-# lexicon_barket_phrase_append.rish — append a phrase on the LEXICON Barket row
+# lexicon_barket_phrase_append.rish -- append a phrase on the LEXICON Barket row
 #
 # Replaces ephemeral python heredocs used during STOA pin sends. Reads the
 # exact phrase to insert from tools/.cache/lexicon_barket_phrase.txt and

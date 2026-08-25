@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# pond_exit_bron_master_seal.sh — exit bron counts only when master-signed.
+# pond_exit_bron_master_seal.sh -- exit bron counts only when master-signed.
 #
-# Claude 20260712.213600: presence alone is not enough — an agent inside the
+# Claude 20260712.213600: presence alone is not enough -- an agent inside the
 # jail could write and sandbox-sign the sentinel. The season flip is
 # custody-grade: detached pond-supersede-exit.bron.asc must verify against
-# master fingerprint 0646 2132… alone, in a keyring that holds only the
+# master fingerprint 0646 2132... alone, in a keyring that holds only the
 # master's public form (context/keys/gpg_signing_06462132.pub.asc).
 #
 # Modes:
-#   --policy         master pubkey present · host gpg available (default)
-#   --season-closed  bron and .asc absent · policy ready (scorecard sleep)
-#   --require        bron + .asc present · VALIDSIG from master fpr only
+#   --policy         master pubkey present - host gpg available (default)
+#   --season-closed  bron and .asc absent - policy ready (scorecard sleep)
+#   --require        bron + .asc present - VALIDSIG from master fpr only
 #
-# Shared by tools/cu/cursor-jail.sh · tools/l/launch-zed.sh · scorecard witness.
+# Shared by tools/cu/cursor-jail.sh - tools/l/launch-zed.sh - scorecard witness.
 
 set -euo pipefail
 

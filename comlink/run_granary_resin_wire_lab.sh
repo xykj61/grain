@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_granary_resin_wire_lab.sh — Granary resin-serve device wire over virtio-net.
+# comlink/run_granary_resin_wire_lab.sh -- Granary resin-serve device wire over virtio-net.
 set -eu
 
 here="$(cd "$(dirname "$0")" && pwd)"

@@ -1,12 +1,12 @@
 #!/bin/sh
-# Equinox e130 — land counsel's sealed nest jam-cue desk at max_lines ceiling.
+# Equinox e130 -- land counsel's sealed nest jam-cue desk at max_lines ceiling.
 # Exit 0 when the desk is tracked, at six bindings, runs GREEN, and seven refuses.
 # No backtick characters.
 #
 #   sh tools/fixtures/equinox_e130_seal_desk_scan.sh
 #   sh tools/fixtures/equinox_e130_seal_desk_scan.sh prove-red
 #
-# Law: a bound refuses its own author — that is the bound working.
+# Law: a bound refuses its own author -- that is the bound working.
 # Law: glow sits above rish on the build stack; product not only measurement.
 set -eu
 
@@ -54,7 +54,7 @@ for p in "$DESK" "$ELDER" "$LOWER" "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$P
 done
 echo "instruments_tracked=honored"
 
-# Desk shape: exactly six =/ bindings · seal face · jam nest · cue
+# Desk shape: exactly six =/ bindings - seal face - jam nest - cue
 BIND_N=$(rg -c '^=/  ' "$DESK" || true)
 BIND_N=${BIND_N:-0}
 if test "$BIND_N" -ne 6; then
@@ -96,7 +96,7 @@ rg -q 'pub const max_lines: u32 = 6;' "$LOWER" || {
 echo "bound=honored"
 echo "max_lines=6"
 
-# Living run — requires zig + rye (bootstrapped on this Bench when possible)
+# Living run -- requires zig + rye (bootstrapped on this Bench when possible)
 if ! test -x "$ZIG"; then
   echo "glow_run=failed"
   echo "detail=zig_absent"

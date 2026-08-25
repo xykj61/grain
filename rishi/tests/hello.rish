@@ -1,4 +1,4 @@
-# hello.rish — the first Rishi script.
+# hello.rish -- the first Rishi script.
 # Comments begin with '#'. `let` binds a name; `say` speaks a value,
 # interpolating ${name} as it goes.
 

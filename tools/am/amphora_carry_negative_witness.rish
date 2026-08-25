@@ -1,11 +1,11 @@
-# tools/am/amphora_carry_negative_witness.rish — Q27: crossing plants must refuse.
+# tools/am/amphora_carry_negative_witness.rish -- Q27: crossing plants must refuse.
 #
 # Uses the trust-dock witness seam (AMPHORA_CARRY_TRUST_DOCK) so tampered
 # chunks reach the assembly walls instead of being healed by a fresh cut:
-#   missing chunk   → chunk torn
-#   empty chunk     → chunk torn
-#   reordered pair  → crossing unequal
-#   forged bytes    → crossing unequal
+#   missing chunk   -> chunk torn
+#   empty chunk     -> chunk torn
+#   reordered pair  -> crossing unequal
+#   forged bytes    -> crossing unequal
 # and after every refusal, no far vessel stands; a plain carry then heals.
 #
 # Run from the repository root:

@@ -1,4 +1,4 @@
-# tools/b/buhr_mcp_host_witness.rish — BUHR Journey 3, Rung 5.
+# tools/b/buhr_mcp_host_witness.rish -- BUHR Journey 3, Rung 5.
 #
 # The JSON host bridge, proven on metal: a JSON MCP host's whole conversation served
 # over the owned Bron shapes end to end. `serve` reads a JSON-RPC request's method and

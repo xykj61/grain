@@ -1,14 +1,14 @@
-# tools/b/buhr_mantra_browser_full_theme_witness.rish — BUHR Journey 2, Rung 7.
+# tools/b/buhr_mantra_browser_full_theme_witness.rish -- BUHR Journey 2, Rung 7.
 #
-# One .brush file re-skins the whole component — ground and accent at once. Rung four
+# One .brush file re-skins the whole component -- ground and accent at once. Rung four
 # themed the living edge (the head accent); rung six themed the reading ground
 # (paper/ink). Each proved one axis. This rung proves the property a design system
 # actually promises: a single `.brush` file (pond/apps/hot-edge.brush) sets all three
-# tokens — a dark page, a light ink, a terracotta head — and the same paint_heads
+# tokens -- a dark page, a light ink, a terracotta head -- and the same paint_heads
 # lowering re-skins the heads view on both axes together. The two axes are proven by
 # their own honest measures: the ground by role inversion (Flax rules the base canvas,
 # Bark rules the themed one), the accent by a clean zero (terracotta leaves zero
-# pixels on the untouched base canvas — a recolor, not an addition).
+# pixels on the untouched base canvas -- a recolor, not an addition).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_mantra_browser_full_theme_witness.rish
@@ -30,7 +30,7 @@ assert selftest.out contains "the palette law holds across the whole re-skin" el
 assert selftest.out contains "text unchanged by the theme" else "buhr-j2r7: additive-glyphs proof missing"
 assert selftest.out contains "refuses a full re-skin — ThemeIncomplete" else "buhr-j2r7: incomplete-theme refuse proof missing"
 
-# Rung four (accent) and rung six (ground) stay their own green binaries — this rung
+# Rung four (accent) and rung six (ground) stay their own green binaries -- this rung
 # composes both axes without disturbing either.
 let rung4 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_theme_witness.rish 2>&1"]
 assert rung4.ok else "buhr-j2r7: rung four witness regressed"

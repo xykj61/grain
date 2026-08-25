@@ -1,13 +1,13 @@
-# amphora_bounds_agree.rish — shared Amphora bounds agree across module roofs.
+# amphora_bounds_agree.rish -- shared Amphora bounds agree across module roofs.
 #
 # Path C (e146): leave every home as it is; prove agreement with a witness.
-# e147: also alias value groups (1024 under three names · 340 under two widths).
-# e148: declared `/// couples:` markers — coupling named, never inferred.
+# e147: also alias value groups (1024 under three names - 340 under two widths).
+# e148: declared `/// couples:` markers -- coupling named, never inferred.
 #
 # Planted pairs before totals are believed:
-#   same-name disagree MUST fail · same-name agree MUST pass
-#   alias disagree MUST fail · alias agree MUST pass
-#   couples disagree MUST fail · couples agree MUST pass
+#   same-name disagree MUST fail - same-name agree MUST pass
+#   alias disagree MUST fail - alias agree MUST pass
+#   couples disagree MUST fail - couples agree MUST pass
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_bounds_agree.rish

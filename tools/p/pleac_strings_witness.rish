@@ -1,4 +1,4 @@
-# pleac_strings_witness.rish — the PLEAC strings cookbook (join · split).
+# pleac_strings_witness.rish -- the PLEAC strings cookbook (join - split).
 #
 # SOON. Proves pleac/strings.rye: join glues a list with a separator between pieces
 # (never trailing); split cuts a string on a separator into pieces, zero-copy; the pair

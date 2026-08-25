@@ -1,4 +1,4 @@
-# tools/b/buhr_mantra_browser_view_witness.rish — BUHR Journey 2, Rung 2.
+# tools/b/buhr_mantra_browser_view_witness.rish -- BUHR Journey 2, Rung 2.
 #
 # The append-only graph, painted: the first Realidream app carried onto WADE1's
 # styled Skate surface. The same bytes rung one renders as readable text now land
@@ -27,7 +27,7 @@ assert selftest.out contains "ink pixels lit over Flax paper" else "buhr-j2r2: g
 assert selftest.out contains "light and dark sheets paint distinct grounds" else "buhr-j2r2: styling was a no-op"
 assert selftest.out contains "short viewport bounded to 3 rows" else "buhr-j2r2: viewport bound missing (overflow risk)"
 
-# Rung one stays its own green binary — the view is strictly additive.
+# Rung one stays its own green binary -- the view is strictly additive.
 let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_witness.rish 2>&1"]
 assert rung1.ok else "buhr-j2r2: rung one witness regressed"
 assert rung1.out contains "GREEN: BUHR-J2" else "buhr-j2r2: rung one lost its green"

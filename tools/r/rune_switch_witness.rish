@@ -1,6 +1,6 @@
-# rune_switch_witness.rish — the `?-` exhaustive-switch rune head, proves out.
+# rune_switch_witness.rish -- the `?-` exhaustive-switch rune head, proves out.
 #
-# Fourth rune-head after |- , ^- , and ?: . Subject wing only — no arm
+# Fourth rune-head after |- , ^- , and ?: . Subject wing only -- no arm
 # exhaustiveness check yet (that is a later compiler lap).
 #
 #   rishi/bin/rishi run tools/r/rune_switch_witness.rish

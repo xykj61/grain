@@ -1,4 +1,4 @@
-# tools/gen/amphora/amphora_vessel_seal.rish — Amphora cellar AEAD vessel seal (seal_* on cargo).
+# tools/gen/amphora/amphora_vessel_seal.rish -- Amphora cellar AEAD vessel seal (seal_* on cargo).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen/amphora/amphora_vessel_seal.rish

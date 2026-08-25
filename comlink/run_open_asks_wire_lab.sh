@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_open_asks_wire_lab.sh — OA-L2 device wire over virtio-net (request + application hops).
+# comlink/run_open_asks_wire_lab.sh -- OA-L2 device wire over virtio-net (request + application hops).
 #
 # Orchestration lives in tools/co/comlink_open_asks_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

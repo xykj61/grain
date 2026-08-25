@@ -1,6 +1,6 @@
-# proven_seat_g1_prepare_libc.rish — prepare Genode ports under the cache workbench.
+# proven_seat_g1_prepare_libc.rish -- prepare Genode ports under the cache workbench.
 #
-# Claude 201200 unroll step 2 · Claude 204549 vendor home. Sources at
+# Claude 201200 unroll step 2 - Claude 204549 vendor home. Sources at
 # vendor/genode. Ensures host flex/bison/m4, then prepare_port libc (+ nova +
 # grub2 for KERNEL=nova serial). CONTRIB_DIR stays under tools/.cache so the
 # submodule stays byte-pristine. Cache claims no seat.
@@ -45,7 +45,7 @@ assert have_rpcgen.ok else "rpcgen missing on host PATH (/usr/bin/rpcgen)"
 say "proven-seat G1 prepare-libc: running prepare_port libc…"
 let mkdir_contrib = run ["mkdir" "-p" contrib]
 assert mkdir_contrib.ok else "could not create ${contrib}"
-# Prefer already-prepared contrib — skip rebuild when hash dir exists (idempotent GREEN).
+# Prefer already-prepared contrib -- skip rebuild when hash dir exists (idempotent GREEN).
 let already = run ["test" "-f" "${port_dir}/libc.hash"]
 # One-time migrate from the retired cache clone workbench if present.
 let legacy = run ["test" "-d" "${cache}/genode-sources/contrib/libc-${expected_hash}"]

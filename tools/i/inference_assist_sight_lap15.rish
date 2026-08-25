@@ -1,4 +1,4 @@
-# inference_assist_sight_lap15.rish — Assist sight: user pin on carriage — glass composition close.
+# inference_assist_sight_lap15.rish -- Assist sight: user pin on carriage -- glass composition close.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist sight lap 15 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

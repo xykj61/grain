@@ -1,6 +1,6 @@
-# lane_kvm_refuse.rish — Paired refuse witness when lane_kvm is off.
+# lane_kvm_refuse.rish -- Paired refuse witness when lane_kvm is off.
 #
-# Counsel 20260712.090512 A-narrow: off → witness refuses. No D-Bus, no
+# Counsel 20260712.090512 A-narrow: off -> witness refuses. No D-Bus, no
 # systemd host escape, no /dev/kvm grant while LANE_KVM is false/unset.
 #
 #   rishi/bin/rishi run tools/l/lane_kvm_refuse.rish

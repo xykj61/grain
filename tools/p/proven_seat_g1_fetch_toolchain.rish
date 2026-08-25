@@ -1,8 +1,8 @@
-# proven_seat_g1_fetch_toolchain.rish — fetch Genode toolchain into the proven-seat cache.
+# proven_seat_g1_fetch_toolchain.rish -- fetch Genode toolchain into the proven-seat cache.
 #
 # Pins the Ubuntu 24.04 prebuilt from Genode's public download page (sha256 from
 # genode.org/download/tool-chain). Extracts under tools/.cache/proven-seat/
-# without sudo — Genode's default /usr/local path is remapped into the cache so
+# without sudo -- Genode's default /usr/local path is remapped into the cache so
 # CROSS_DEV_PREFIX can point here later. AGPL teacher artifact; never ship-linked.
 #
 # Run from the repository root (Framework host preferred; ~220 MB download):
@@ -61,8 +61,8 @@ if ver.ok then say "proven-seat G1 fetch: ${ver.out}"
 if ver.ok == false then say "proven-seat G1 fetch: --version non-zero (recorded anyway)"
 
 say "proven-seat G1 fetch: writing ${meta}…"
-# META trio (Claude 201200): toolchain 25.05 · sources 25.05 · ground Sculpt 26.04
-# Prefer echo lines — bash -c with escaped quotes trips Rishi UndefinedName.
+# META trio (Claude 201200): toolchain 25.05 - sources 25.05 - ground Sculpt 26.04
+# Prefer echo lines -- bash -c with escaped quotes trips Rishi UndefinedName.
 let clear_meta = run ["rm" "-f" meta]
 assert clear_meta.ok else "could not clear ${meta}"
 let w1 = run ["sh" "-c" "echo toolchain ${stamp} > ${meta}"]

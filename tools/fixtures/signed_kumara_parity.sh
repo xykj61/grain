@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# signed_kumara_parity.sh — parity ch02 tail: fetch gates; build+serial when bench staged.
+# signed_kumara_parity.sh -- parity ch02 tail: fetch gates; build+serial when bench staged.
 # Jail-safe: exits 0 with ADVISE when genode bench absent (fetch still proved).
 set -euo pipefail
 

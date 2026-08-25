@@ -1,8 +1,8 @@
-# waymark_derive_witness.rish — naming-grade sameness across the flw fixture pin.
+# waymark_derive_witness.rish -- naming-grade sameness across the flw fixture pin.
 #
 # Asserts corpus count + SHA3-512 pins, re-derives every corpus-drawn seated
-# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA · SUNN · POLE), and confirms SETU · SEVA ·
-# MAND · MONA on the exclude list. SALA is historical (dropped from exclude).
+# waymark (HAWM - TUBE - ZETA - JABS - LULU - STOA - SUNN - POLE), and confirms SETU - SEVA -
+# MAND - MONA on the exclude list. SALA is historical (dropped from exclude).
 #
 #   rishi/bin/rishi run tools/w/waymark_derive_witness.rish
 
@@ -39,7 +39,7 @@ let setu_in_corpus = run ["sh" "-c" "grep -qx SETU ${corpus_path}"]
 assert (setu_in_corpus.ok == false) else "SETU unexpectedly present in flw corpus"
 let seva_in_corpus = run ["sh" "-c" "grep -qx SEVA ${corpus_path}"]
 assert (seva_in_corpus.ok == false) else "SEVA unexpectedly present in flw corpus"
-# MAND and MONA appear in the flw corpus — exclude membership is the seat.
+# MAND and MONA appear in the flw corpus -- exclude membership is the seat.
 let mand_in_corpus = run ["sh" "-c" "grep -qx MAND ${corpus_path}"]
 assert mand_in_corpus.ok else "MAND must be present in flw corpus"
 let mona_in_corpus = run ["sh" "-c" "grep -qx MONA ${corpus_path}"]

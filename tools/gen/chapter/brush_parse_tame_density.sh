@@ -1,5 +1,5 @@
 #!/bin/sh
-# brush_parse_tame_density.sh — Surface p24 · living floor ≥20 invariant markers
+# brush_parse_tame_density.sh -- Surface p24 - living floor ≥20 invariant markers
 # Kept as a tiny shell hand so rishi need not interpolate $vars inside sh -c.
 set -eu
 c=$(grep -c 'invariant:' brushstroke/brush_parse.rye)

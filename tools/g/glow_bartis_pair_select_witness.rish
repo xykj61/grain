@@ -1,8 +1,8 @@
-# tools/g/glow_bartis_pair_select_witness.rish — STOA341: face-valued arms.
+# tools/g/glow_bartis_pair_select_witness.rish -- STOA341: face-valued arms.
 #
 #   rishi/bin/rishi run tools/g/glow_bartis_pair_select_witness.rish
 #
-# An arm may now answer with a face instead of a literal — min and max become
+# An arm may now answer with a face instead of a literal -- min and max become
 # one desk each, and every vane's clamp is a select away. Strangers still refuse.
 
 say "341: max fixture — the larger of the demo pair answers..."

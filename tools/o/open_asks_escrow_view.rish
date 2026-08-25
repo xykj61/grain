@@ -1,6 +1,6 @@
-# open_asks_escrow_view.rish — Open Asks escrow view: hold/release on Skate (tip 427).
+# open_asks_escrow_view.rish -- Open Asks escrow view: hold/release on Skate (tip 427).
 #
-# Golden: drawn terminal open asks escrow view: ref=9cdb9aaf stipend=100 held=1 released=1 completed=1 escrow=0 … — GREEN
+# Golden: drawn terminal open asks escrow view: ref=9cdb9aaf stipend=100 held=1 released=1 completed=1 escrow=0 ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/o/open_asks_escrow_view.rish
 

@@ -1,10 +1,10 @@
-# pond_enclosure_sixbar.rish — Pond ring-one enclosure baseline vs ai-jail.
+# pond_enclosure_sixbar.rish -- Pond ring-one enclosure baseline vs ai-jail.
 #
-# Counsel 20260712.090512 bar B · Claude 204549 Pond next · Claude 210800
+# Counsel 20260712.090512 bar B - Claude 204549 Pond next - Claude 210800
 # two-column scorecard sharpening. Freezes the six-line minimum as asserts
 # against the living ai-jail enclosure (teacher v1.12.0). Column one GREEN
 # freezes incumbent truth; pond-required (column two) waits supersede.
-# Bar6 records three-door bus measure as a gap row — never forced red on baseline.
+# Bar6 records three-door bus measure as a gap row -- never forced red on baseline.
 #
 #   rishi/bin/rishi run tools/p/pond_enclosure_sixbar.rish
 #
@@ -12,16 +12,16 @@
 #   1 Durable project tree
 #   2 Home and tmp reset
 #   3 Wayland/GPU lane
-#   4 KVM lane (named gate · off by default)
-#   5 Signing-lane separation (sandbox present · master absent · lane absent)
-#   6 Three refusals (kvm-off · no D-Bus KVM path · host home)
+#   4 KVM lane (named gate - off by default)
+#   5 Signing-lane separation (sandbox present - master absent - lane absent)
+#   6 Three refusals (kvm-off - no D-Bus KVM path - host home)
 
 let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/sixbar-baseline-meta.txt"
 let pin = "active-designing/date/20260712/20260712-205600_pond-enclosure-sixbar-baseline.md"
-# Framework jail-local signing (PUBKEYS.md) — not the elder veganreyklah2 sandbox.
+# Framework jail-local signing (PUBKEYS.md) -- not the elder veganreyklah2 sandbox.
 let sandbox_fpr = "CC8BA67125E202E1DB0CBFD70E632656F07DD30B"
-# Elder Kaeden master — must stay out of the jail keyring (public may).
+# Elder Kaeden master -- must stay out of the jail keyring (public may).
 let master_fpr = "06462132D3E63B834F976E03A81D720B9235FA7A"
 let gpg_wrap = ".gnupg-rye/gpg.sh"
 let aijail = "tools/.cache/bin/ai-jail"
@@ -48,7 +48,7 @@ say "GREEN: pond sixbar bar1 — durable project tree"
 say "pond sixbar bar2: home and tmp reset…"
 # Enclosure-neutral Landlock marker. Pond will write /tmp/.enclosure-landlock;
 # teacher ai-jail still bind-mounts its binary at /tmp/.ai-jail-landlock.
-# Either proves private tmp + Landlock present — same bar, either incumbent.
+# Either proves private tmp + Landlock present -- same bar, either incumbent.
 let landlock = run ["sh" "-c" "test -e /tmp/.enclosure-landlock || test -e /tmp/.ai-jail-landlock"]
 assert landlock.ok else "bar2: missing enclosure Landlock marker (/tmp/.enclosure-landlock or /tmp/.ai-jail-landlock)"
 let no_docs = run ["sh" "-c" "test ! -d $HOME/Documents"]
@@ -61,7 +61,7 @@ say "GREEN: pond sixbar bar2 — home and tmp reset (enclosure Landlock marker �
 
 # --- Bar 3: Wayland/GPU lane ---
 say "pond sixbar bar3: Wayland/GPU lane…"
-# e206: backslash escapes nothing in rishi — the elder \" forms reached sh
+# e206: backslash escapes nothing in rishi -- the elder \" forms reached sh
 # as literal quote characters, making every one of these guards vacuous
 # (proven live: the elder shape claims /etc/hostname absent; a planted key
 # under a fake HOME passes the elder guard and bites on this one).
@@ -99,7 +99,7 @@ assert secs.out contains sandbox_fpr else "bar5: sandbox secret ${sandbox_fpr} m
 # Master secret must not sit in the sandbox keyring (public may).
 let master_sec = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons | grep -F ${master_fpr} || true"]
 assert master_sec.out == "" else "bar5: master secret present in sandbox keyring — refuse"
-# Claude 210800: exactly one secret key — nothing strays in beside the sandbox key.
+# Claude 210800: exactly one secret key -- nothing strays in beside the sandbox key.
 let sec_n = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons | grep -c '^sec:' || true"]
 assert sec_n.ok
 let sec_count = trim sec_n.out
@@ -127,7 +127,7 @@ let host_docs = run ["sh" "-c" "test ! -d $HOME/Documents"]
 assert host_docs.ok else "bar6: host Documents reachable — home refuse failed"
 say "pond sixbar bar6: host home refuse OK"
 
-# Claude 210800: three-door bus measure — env · concrete socket · netns (gap row, not forced red).
+# Claude 210800: three-door bus measure -- env - concrete socket - netns (gap row, not forced red).
 say "pond sixbar bar6: three-door bus measure…"
 let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
 assert doors.ok else "bar6: three-door bus probe failed"

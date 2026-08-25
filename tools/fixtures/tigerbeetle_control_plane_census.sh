@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census control-plane / data-plane assertion economy on held TigerStyle + clone.
-# Clean-room study only — prints presence and verify-gate counts; never copies into rye/.
+# Clean-room study only -- prints presence and verify-gate counts; never copies into rye/.
 set -eu
 ROOT=gratitude/tigerbeetle
 GUIDE=gratitude/TIGER_STYLE.md

@@ -1,4 +1,4 @@
-# rune_cast_bad_type.rish — a cast that cannot hold must refuse.
+# rune_cast_bad_type.rish -- a cast that cannot hold must refuse.
 # tools/r/rish_rune_cast_witness.rish runs this child and asserts it exits non-zero:
 # a string cannot be cast to the integer shape @u32.
 let x = ^- @u32 "not-an-int"

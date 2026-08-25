@@ -1,4 +1,4 @@
-# lattice_lap39.rish — Lattice lap 38 hardtanh witness.
+# lattice_lap39.rish -- Lattice lap 38 hardtanh witness.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "lattice/bin/lattice"
 let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]

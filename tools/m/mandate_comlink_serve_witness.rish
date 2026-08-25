@@ -1,7 +1,7 @@
-# mandate_comlink_serve_witness.rish — a Mandate query served over Comlink, sealed.
+# mandate_comlink_serve_witness.rish -- a Mandate query served over Comlink, sealed.
 #
 # Proves the transport half of "served over Comlink": serve.rye's request/response
-# bytes ride Comlink as a sealed datagram (wire_format.seal_message — X25519,
+# bytes ride Comlink as a sealed datagram (wire_format.seal_message -- X25519,
 # ChaCha20-Poly1305, Sha3 name, kumara signature), opened on the far side. A query
 # served over Comlink returns exactly what a direct in-process query would; the request
 # is verified before the store is touched, so a tampered frame is refused.

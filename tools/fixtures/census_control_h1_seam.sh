@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census control — H1 fence-count seam (POSIX). Counts only; orchestration validates.
+# Census control -- H1 fence-count seam (POSIX). Counts only; orchestration validates.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/census_control_h1_seam.sh
@@ -16,7 +16,7 @@ fi
 
 # Count H1 headings (^#\s) two ways: naive over every line, true only outside fenced
 # code blocks. Fence state toggles on a ``` delimiter line, which is itself skipped.
-# awk, not python — this pier has no python3 on PATH (Python → Rishi molt 20260809).
+# awk, not python -- this pier has no python3 on PATH (Python -> Rishi molt 20260809).
 COUNTS=$(awk '
   {
     is_fence = ($0 ~ /^[[:space:]]*```/)

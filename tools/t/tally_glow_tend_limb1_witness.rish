@@ -1,8 +1,8 @@
-# tools/t/tally_glow_tend_limb1_witness.rish — first Tally Glow Tend limb (e191).
+# tools/t/tally_glow_tend_limb1_witness.rish -- first Tally Glow Tend limb (e191).
 #
 # Proves the Glow pedestal names max_gardens in lockstep with tally/gardens.rye,
 # lowers cleanly, and that Caravan/Aurora Glow Tend limbs are still absent
-# (ladder honesty — Tally first).
+# (ladder honesty -- Tally first).
 #
 #   rishi/bin/rishi run tools/t/tally_glow_tend_limb1_witness.rish
 

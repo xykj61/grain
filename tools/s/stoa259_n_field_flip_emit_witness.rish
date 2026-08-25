@@ -1,4 +1,4 @@
-# stoa259_n_field_flip_emit_witness.rish — bartis pair…nona flip via one helper.
+# stoa259_n_field_flip_emit_witness.rish -- bartis pair...nona flip via one helper.
 #
 #   rishi/bin/rishi run tools/s/stoa259_n_field_flip_emit_witness.rish
 
@@ -9,7 +9,7 @@ assert bartis.out contains "STOA259" else "bartis witness missing STOA259"
 let helper = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_bartis.rye"]
 assert helper.ok else "missing emit_n_field_flip_call_body"
 
-# STOA326: thin flip wrappers retired — one welcome call site.
+# STOA326: thin flip wrappers retired -- one welcome call site.
 let one_call = run ["sh" "-c" "test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 1"]
 assert one_call.ok else "expected one welcome flip call through emit_n_field_flip_call_body"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# glow_host_run.sh — run a command with THIS host's pinned toolchain, never
+# glow_host_run.sh -- run a command with THIS host's pinned toolchain, never
 # a silent PATH fallback.
 #
 #   ./tools/g/glow_host_run.sh -- rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
@@ -11,7 +11,7 @@
 # and only then execs the given command.
 #
 # Why this exists: rye's own build command resolves its Zig backend as
-# RYE_ZIG if set, else whatever `zig` happens to be on PATH — which silently
+# RYE_ZIG if set, else whatever `zig` happens to be on PATH -- which silently
 # mismatches the pinned std on any host with a different Zig installed. See
 # external-research/20260714-005658_native-arm64-parity-witness-run.md for
 # the exact failure this caused, once, on this project's own Mac.

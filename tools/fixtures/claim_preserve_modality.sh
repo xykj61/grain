@@ -1,17 +1,17 @@
 #!/bin/sh
-# claim_preserve_modality.sh — per-file modality counts for Radiant passes.
-# Seated 20260725.110354 · counsel the-runway.
+# claim_preserve_modality.sh -- per-file modality counts for Radiant passes.
+# Seated 20260725.110354 - counsel the-runway.
 #
 # Counts (case-insensitive, word-boundary) for:
-#   must not · must · shall · should · may · never · always · all · every · none
-#   require · recommend · propose · seat · seated · hold · held · parked
+#   must not - must - shall - should - may - never - always - all - every - none
+#   require - recommend - propose - seat - seated - hold - held - parked
 #
 # Usage:
 #   sh tools/fixtures/claim_preserve_modality.sh count <file>
 #   sh tools/fixtures/claim_preserve_modality.sh compare <before-file> <after-file>
 #   sh tools/fixtures/claim_preserve_modality.sh selftest
 #
-# compare exit 1 on mismatch — obligation drift stops the wave.
+# compare exit 1 on mismatch -- obligation drift stops the wave.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

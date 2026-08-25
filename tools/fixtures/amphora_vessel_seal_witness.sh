@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_vessel_seal_witness.sh — pour sealed+stamped vessel; scrub opens seal; tamper refuses.
+# amphora_vessel_seal_witness.sh -- pour sealed+stamped vessel; scrub opens seal; tamper refuses.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 SRC="$ROOT/tools/fixtures/amphora_lap3_tree"
@@ -25,7 +25,7 @@ fi
 sh "$ROOT/tools/fixtures/amphora_carry.sh" "$home" "$far"
 sh "$ROOT/tools/fixtures/amphora_scrub_arrival.sh" "$far" "$SRC"
 
-# Unwelcome: flip one seal_cargo hex nibble — open-check must refuse.
+# Unwelcome: flip one seal_cargo hex nibble -- open-check must refuse.
 cargo_line=$(grep '^seal_cargo ' "$far/vessel.bron")
 first=$(printf '%s' "$cargo_line" | awk '{print substr($2,1,1)}')
 rest=$(printf '%s' "$cargo_line" | awk '{print substr($2,2)}')

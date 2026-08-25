@@ -1,4 +1,4 @@
-# tools/t/tact_commerce_trade_witness.rish — TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
+# tools/t/tact_commerce_trade_witness.rish -- TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
 #
 # Journey 1 piloted a keeper to a running Pond; Journey 2 published a signed, offline-verifiable
 # receipt. Journey 4 lets two keepers trade and records the trade honestly. Dimeroll already keeps
@@ -7,7 +7,7 @@
 # agreed price: the seller debits cash and credits revenue, the buyer debits expense and credits
 # cash, each book conserving on its own and the pair conserving across the cash line (seller inflow
 # == buyer outflow == price). A non-positive price, a self-trade, and an overlong item name each
-# refuse. It records the facts only — it holds and moves nothing (custody gate %3 stays the gate).
+# refuse. It records the facts only -- it holds and moves nothing (custody gate %3 stays the gate).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tact_commerce_trade_witness.rish
@@ -31,7 +31,7 @@ assert selftest.out contains "a self-trade (seller == buyer) refused SelfTrade" 
 assert selftest.out contains "an overlong item name refused ItemTooLong" else "tact4: overlong-item refusal missing"
 assert selftest.out contains "a fair-value trade books on both sides at one price" else "tact4: crux claim missing"
 
-# The books of record this trade posts onto compile as the app's own dependency — a green build
+# The books of record this trade posts onto compile as the app's own dependency -- a green build
 # above already proves dimeroll_core stands under it.
 
 say "tact4: GREEN — a fair-value trade booked on both sides at one price; each book conserves, the pair conserves across cash."

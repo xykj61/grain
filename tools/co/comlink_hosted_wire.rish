@@ -1,4 +1,4 @@
-# comlink_hosted_wire.rish — Comlink sealed datagram over localhost UDP witness.
+# comlink_hosted_wire.rish -- Comlink sealed datagram over localhost UDP witness.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_hosted_wire.rish

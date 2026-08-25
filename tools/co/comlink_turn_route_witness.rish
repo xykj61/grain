@@ -1,4 +1,4 @@
-# comlink_turn_route_witness.rish — routing reads the turn tilak.
+# comlink_turn_route_witness.rish -- routing reads the turn tilak.
 #
 # Proves Comlink can read a peer's rotation record (the turn tilak from
 # kumara/tilak.rye) and decide which networking key to seal the wire with:

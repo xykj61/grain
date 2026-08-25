@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# cursor-jail.sh — start Cursor (AppImage) inside ai-jail with project-local state.
+# cursor-jail.sh -- start Cursor (AppImage) inside ai-jail with project-local state.
 #
 # Tracked bash elder. Preferred entry (Rish):
 #   rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
@@ -10,7 +10,7 @@
 #   ./tools/cu/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
 #   ./tools/cu/cursor-jail.sh --gpu
 #
-# Framework host: Ubuntu 26.04 LTS · GNOME Wayland — use --gpu.
+# Framework host: Ubuntu 26.04 LTS - GNOME Wayland -- use --gpu.
 # See: SOURCE.md Step 9 and context/specs/enclosure-editors.md
 
 set -euo pipefail
@@ -118,8 +118,8 @@ AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker}"
 LANE_KVM="${LANE_KVM:-false}"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 
-# Retreat flag (Claude 212412) · master-seal (Claude 213600): pond only after
-# exit bron present AND detached .asc verifies against master 0646 2132… alone.
+# Retreat flag (Claude 212412) - master-seal (Claude 213600): pond only after
+# exit bron present AND detached .asc verifies against master 0646 2132... alone.
 EXIT_BRON="${REPO_ROOT}/bron-resins/pond-supersede-exit.bron"
 if [ "$ENCLOSURE" = "pond" ]; then
   if ! bash "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then

@@ -1,4 +1,4 @@
-# inference_assist_view_lap12.rish — Assist view: exception reason tallies on assist fold.
+# inference_assist_view_lap12.rish -- Assist view: exception reason tallies on assist fold.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 12 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# prin_matrix.sh — Matrix-style live view of Grain loops / parity / twin progress.
-# Worker under tools/p/prin.rish (%prin · Prin). Outer terminal: source tools/p/prin_aliases.sh
+# prin_matrix.sh -- Matrix-style live view of Grain loops / parity / twin progress.
+# Worker under tools/p/prin.rish (%prin - Prin). Outer terminal: source tools/p/prin_aliases.sh
 
 set -euo pipefail
 

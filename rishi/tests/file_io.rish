@@ -1,5 +1,5 @@
-# file_io.rish — file I/O builtins for Rishi.
-# Proves: read-file, write-file, list-dir — each behind the OS boundary.
+# file_io.rish -- file I/O builtins for Rishi.
+# Proves: read-file, write-file, list-dir -- each behind the OS boundary.
 
 # Write a file, then read it back.
 write-file "/tmp/rishi_io_test.txt" "hello from rishi"

@@ -1,6 +1,6 @@
 #!/bin/sh
-# dated_guard_scan.sh — body for dated_guard_scan.rish.
-# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
+# dated_guard_scan.sh -- body for dated_guard_scan.rish.
+# Missing Rishi verb: accumulate - filter chained - read bounded -- harvest ledger (counsel 20260725.040247)
 #
 # Doorway (e236/e237): Tier 1 always refuses. Freeze-class dated paths on main
 # need living ledger, freeze pointer, or Radiant pass. Amendable-roof dated
@@ -31,7 +31,7 @@ is_tier1() {
   return 1
 }
 
-# Amendable roofs — dated seats may change until a superseding seat lands (e237).
+# Amendable roofs -- dated seats may change until a superseding seat lands (e237).
 is_amendable_roof() {
   path=$1
   case "$path" in
@@ -45,7 +45,7 @@ is_amendable_roof() {
   return 1
 }
 
-# Freeze classes — witnesses, goldens, receipts, key material (e237).
+# Freeze classes -- witnesses, goldens, receipts, key material (e237).
 is_freeze_class() {
   path=$1
   case "$path" in
@@ -64,7 +64,7 @@ is_freeze_class() {
 : >"$TMP/out"
 reds=0
 
-# Tier 1 — any staged modification of a proof-sealed path is red.
+# Tier 1 -- any staged modification of a proof-sealed path is red.
 while IFS= read -r path; do
   [ -n "$path" ] || continue
   if is_tier1 "$path"; then
@@ -102,9 +102,9 @@ is_freeze_pointer() {
   printf '%s\n' "$low" | grep -Fq 'immutable after merge'
 }
 
-# Recorded Radiant pass — style-only door (TAME §4 · living-vs-dated).
+# Recorded Radiant pass -- style-only door (TAME §4 - living-vs-dated).
 has_radiant_pass() {
-  # Forms: "Radiant pass 20260724.223233" · "Radiant pass `stamp`" · optional markdown bold/colon
+  # Forms: "Radiant pass 20260724.223233" - "Radiant pass `stamp`" - optional markdown bold/colon
   head -60 "$1" | grep -Eqi 'Radiant pass[:\*[:space:]]+`?[0-9]{8}[.]?[0-9]{6}`?'
 }
 
@@ -129,7 +129,7 @@ if [ -s "$TMP/candidates" ]; then
       echo "OK   ${path} (amendable roof — until superseded)" >>"$TMP/out"
       continue
     fi
-    # Freeze-class, or dated outside amendable roofs — doorway watches.
+    # Freeze-class, or dated outside amendable roofs -- doorway watches.
     if declares_living "$path"; then
       echo "OK   ${path} (living header)" >>"$TMP/out"
     elif is_freeze_pointer "$path"; then
