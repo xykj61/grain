@@ -31,16 +31,22 @@ pub const Descriptor = struct {
         var d = Descriptor{};
         tally_copy.copy_disjoint(u8, d.bytes[0..src.len], src);
         d.len = @intCast(src.len);
+        // invariant: the descriptor is held in a fixed buffer of descriptor_max_bytes, so a
+        // longer one would be stored truncated and read back as a different descriptor
         assert(d.len <= descriptor_max_bytes);
         return d;
     }
 
     pub fn as_slice(d: *const Descriptor) []const u8 {
+        // invariant: the descriptor is held in a fixed buffer of descriptor_max_bytes, so a
+        // longer one would be stored truncated and read back as a different descriptor
         assert(d.len <= descriptor_max_bytes);
         return d.bytes[0..d.len];
     }
 
     pub fn remaining(d: *const Descriptor) u32 {
+        // invariant: the descriptor is held in a fixed buffer of descriptor_max_bytes, so a
+        // longer one would be stored truncated and read back as a different descriptor
         assert(d.len <= descriptor_max_bytes);
         return descriptor_max_bytes - d.len;
     }

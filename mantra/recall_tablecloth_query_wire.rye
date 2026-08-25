@@ -104,6 +104,8 @@ pub fn encode_request(req: QueryWireRequest, out: []u8) WireError!u32 {
         if (path.len > ns.max_path) return error.Overflow;
         try write_len_bytes(out, &off, path);
     }
+    // invariant: the write stopped inside the wire payload the format fixes, so the far side's
+    // parser is never handed more than it allocated for
     assert(off <= max_wire_payload);
     return off;
 }
@@ -168,6 +170,8 @@ pub fn encode_response(resp: QueryWireResponse, out: []u8) WireError!u32 {
         off += 4;
         try write_len_bytes(out, &off, hit.path);
     }
+    // invariant: the write stopped inside the wire payload the format fixes, so the far side's
+    // parser is never handed more than it allocated for
     assert(off <= max_wire_payload);
     return off;
 }

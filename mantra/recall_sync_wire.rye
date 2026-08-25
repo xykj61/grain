@@ -82,6 +82,8 @@ pub fn encode_request(req: SyncRequest, out: []u8) WireError!u32 {
         tally_copy.copy_disjoint(u8, out[off..][0..64], req.held_digests[i][0..64]);
         off += 64;
     }
+    // invariant: the write stopped inside the caller's buffer and inside the wire payload the
+    // format fixes, so neither the local buffer nor the far side's parser is overrun
     assert(off <= out.len);
     assert(off <= max_wire_payload);
     return off;
@@ -112,6 +114,8 @@ pub fn decode_request(payload: []const u8, out: *SyncRequest) WireError!void {
         tally_copy.copy_disjoint(u8, out.held_digests[i][0..64], payload[off..][0..64]);
         off += 64;
     }
+    // invariant: the decoded counts sit inside the arrays they were parsed into, so a request
+    // claiming more than the format allows is bounded here rather than trusted
     assert(out.held_count <= max_held_digests);
     assert(out.peer.len <= 16);
     assert(out.bolt.len <= 32);
@@ -142,6 +146,8 @@ pub fn build_response(src: *const ns.BoltCatalog, req: *const SyncRequest, out: 
         }
         out.entry_count += 1;
     }
+    // invariant: the response carries exactly the entries counted, and never more than the wire
+    // allows -- a mismatch would send a header promising rows that are not there
     assert(out.entry_count == total);
     assert(out.entry_count <= max_wire_entries);
 }
@@ -188,6 +194,8 @@ pub fn encode_response(resp: *const SyncResponse, out: []u8) WireError!u32 {
             off += entry.bytes_len;
         }
     }
+    // invariant: the write stopped inside the caller's buffer and inside the wire payload the
+    // format fixes
     assert(off <= out.len);
     assert(off <= max_wire_payload);
     return off;
@@ -237,6 +245,8 @@ pub fn decode_response(payload: []const u8, out: *SyncResponse) WireError!void {
             off += entry.bytes_len;
         }
     }
+    // invariant: the decoded count sits inside the array it was parsed into, so a response
+    // claiming more entries than the format allows is bounded here rather than trusted
     assert(out.entry_count <= max_wire_entries);
 }
 
@@ -275,6 +285,8 @@ pub fn apply_sync_response(dest: *ns.BoltCatalog, resp: *const SyncResponse) ns.
         }
         try dest.append_leaf(resp.peer, resp.bolt, resp.revision, entry.path, content, entry.tilak);
     }
+    // invariant: the report accounts for every entry the response carried, and the two outcomes
+    // sum to that total -- an entry counted in neither would be silently dropped from the sync
     assert(report.total == resp.entry_count);
     assert(report.had_already + report.needed == report.total);
     return report;

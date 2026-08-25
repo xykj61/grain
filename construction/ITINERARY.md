@@ -54,17 +54,16 @@ upward is a school grade -- 20% becomes **80, a B**.
 [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
 comment block, or design four ways. **B stands; below B pushes one molt frame**, depth 2.
 
-**%205-%206:** the pin bound rose for one page to **57,344**; planted names are discovered. **%207-%212 -- the invariant arc, corrected seven times.** The **13,235** this card carried fell to
-**4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names (a private
-function called only from a proof entry is proof; a `pub` function never is; a shared helper
-withdraws), and **853** once the label pattern read every spelling. **17 behaviors** prove the bin.
-**The `caravan` falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow`, `mand`, `crypto` and `linengrow` all reach 100%.** glow's reasons were largely there as
-**trailing** comments (1,144 tree-wide); crypto was never 57.5% -- **483 lines carry a qualified
-label** the meter read as absent (**%212**). Both crypto guards GREEN after, parity byte-for-byte. **`rye` closed:** 19 of its 21 sit under `tests/`, so the bin reads that **directory** now --
-structural, since adding *test* to the word list would flip any module whose header mentions one.
-**456 uncovered asserts already carry an unlabelled reason**, which is label-seating rather than
-writing. **Open door:** `caravan` 217, `comlink` 45, `mantra` 42, `tally` 35; tree **96%**, gap
-**593**.
+**%205-%206:** the pin bound rose for one page to **57,344**; planted names are discovered. **%207-%212 -- the invariant arc, corrected nine times.** The **13,235** this card carried fell to
+**4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names, and **853**
+once the label pattern read every spelling. **21 behaviors** prove the bin. **The `caravan`
+falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow`, `mand`, `crypto`, `linengrow`, `rye`, `tally`, `mantra` and `comlink` all reach 100%.**
+glow's reasons were largely there as **trailing** comments (1,144 tree-wide); crypto was never
+57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**). Both crypto
+guards GREEN after, parity byte-for-byte. The bin learned two more shapes: a file under `tests/` is a test, and a `fn assert(` DECLARATION is
+not a call to one. **No room now sits under 92%.** **Open door -- one thin tail everywhere:** `caravan` 217, `image` 57, `lotus` 47, `brushstroke` 41,
+`pond` 39, `mycelium` 20; tree **97%**, gap **468**, of which **456 already carry an unlabelled
+reason** -- label-seating rather than writing.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

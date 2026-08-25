@@ -29,6 +29,8 @@ const tally_seed_version = "20260620.211712";
 const BACKING_LEN: u32 = 64;
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -47,7 +49,9 @@ const Region = struct {
     /// the edge; the cursor starts at zero — the beginning of the season.
     fn init(buf: []u8) Region {
         const r = Region{ .buf = buf, .pos = 0 };
-        assert(r.pos <= buf_len_u32(r.buf)); // invariant holds at creation
+        // invariant: a region opens with its cursor inside the buffer it was handed, so the
+        // first allocation measures from a real position
+        assert(r.pos <= buf_len_u32(r.buf));
         return r;
     }
 
@@ -57,14 +61,20 @@ const Region = struct {
     /// no silent wrap into memory that was never ours.
     fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
         const cap = buf_len_u32(self.buf);
-        assert(self.pos <= cap); // invariant: in range before
+        // invariant: the cursor sits inside the capacity before the allocation is measured from
+        // it
+        assert(self.pos <= cap);
         if (n > cap - self.pos) return error.OutOfBounds;
         const start: usize = @intCast(self.pos);
         const end: usize = @intCast(self.pos + n);
+        // invariant: the requested end falls inside the buffer, which is the one check standing
+        // between a caller's size and a write past the region
         assert(end <= self.buf.len);
         const slice = self.buf[start..end];
         self.pos += n;
-        assert(self.pos <= cap); // invariant: in range after
+        // invariant: the allocation has landed when this runs, so it states that the cursor
+        // stayed inside the capacity
+        assert(self.pos <= cap);
         return slice;
     }
 
@@ -73,7 +83,9 @@ const Region = struct {
     /// memory is left as-is — the region guarantees bounds, not erasure.
     fn clear(self: *Region) void {
         self.pos = 0;
-        assert(self.pos <= buf_len_u32(self.buf)); // invariant: reset holds
+        // invariant: the cursor sits inside the buffer before it is reset, so a clear is
+        // returning a real region rather than repairing a broken one
+        assert(self.pos <= buf_len_u32(self.buf));
     }
 
     /// Bytes remaining before the edge.
@@ -139,7 +151,7 @@ pub fn main(init: std.process.Init) !u8 {
     const d = try region.alloc(16);
     assert(d.len == 16);
     assert(region.pos == 16);
-    assert(d.ptr == backing[0..].ptr); // same memory, new season
+    assert(d.ptr == backing[0..].ptr);
 
     // Old and new allocations do not overlap across a clear — the cursor reset.
     assert(region.remaining() == 48);

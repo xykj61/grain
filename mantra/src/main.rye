@@ -80,22 +80,31 @@ const Weave = struct {
             var found = false;
             for (self.lines.items) |*line| {
                 if (line.pos == target_pos) {
-                    assert(line.gen % 2 == 1); // must be present to delete
+                    // invariant: an odd generation means present -- the parity IS the
+                    // tombstone, so an even one reaching here would be a deleted line treated
+                    // as live
+                    assert(line.gen % 2 == 1);
                     line.gen += 1;                        // odd → even: mark gone
                     found = true;
                     break;
                 }
             }
-            assert(found); // deleting an absent position is a caller error
+            // invariant: a delete names a position the weave holds, since deleting one that is
+            // not there would report success for a change that never happened
+            assert(found);
         }
         for (d.inserts) |text| {
             const new_line = Line{ .text = text, .gen = 1, .pos = self.next_pos };
-            assert(new_line.gen % 2 == 1); // new lines always present
+            // invariant: an odd generation means present -- the parity IS the tombstone, so an
+            // even one reaching here would be a deleted line treated as live
+            assert(new_line.gen % 2 == 1);
             try self.lines.append(allocator, new_line);
             self.next_pos += 1;
         }
         // Postcondition: every line has a valid position.
         for (self.lines.items) |line| {
+            // invariant: a line carries a real generation and a position inside the weave's own
+            // counter, so neither ordering nor identity is left to the caller
             assert(line.gen >= 1);
             assert(line.pos < self.next_pos);
         }
@@ -113,8 +122,12 @@ const Weave = struct {
             fn less_than(_: void, a: Line, b: Line) bool { return a.pos < b.pos; }
         }.less_than);
         // Postcondition: sorted, all present.
+        // invariant: an odd generation means present -- the parity IS the tombstone, so an even
+        // one reaching here would be a deleted line treated as live
         for (result) |line| assert(line.gen % 2 == 1);
         for (result, 0..) |_, i| {
+            // invariant: the result comes out ordered by position, which is what makes a weave
+            // readable as a document rather than a bag of lines
             if (i + 1 < result.len) assert(result[i].pos < result[i + 1].pos);
         }
         return result;
@@ -191,6 +204,9 @@ fn compute_diff(
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
     };
+    // invariant: a diff inserts no more than the new document holds and deletes no more than
+    // the old one did, so neither side can be asked to apply a change to a line that never
+    // existed
     assert(result.inserts.len <= n);
     assert(result.deletes.len <= m);
     return result;
@@ -239,6 +255,8 @@ const Store = struct {
     /// Write `data` as a blob. Returns the 64-char hex name. Write-once:
     /// if the blob already exists, the content is identical by hash guarantee.
     fn write_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, data: []const u8) ![]const u8 {
+        // invariant: an empty blob would be written under the digest of nothing, which every
+        // empty write would then share
         assert(data.len > 0);
         var digest: [Sha3.digest_length]u8 = undefined;
         Sha3.hash(data, &digest, .{});
@@ -251,6 +269,8 @@ const Store = struct {
 
     /// Read a blob by its 64-char hex name. Returns the content.
     fn read_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, name: []const u8) ![]u8 {
+        // invariant: a store name is the hex of a digest, exactly two characters per byte, so
+        // any other length would address a blob that was never written
         assert(name.len == Sha3.digest_length * 2);
         const buf = try allocator.alloc(u8, 4 * 1024 * 1024); // 4 MiB ceiling
         const content = try self.blobs_dir.readFile(io, name, buf);
@@ -271,6 +291,8 @@ const Store = struct {
 
     /// Write HEAD, pointing at the given 64-char blob name.
     fn write_head(self: *const Store, io: std.Io, name: []const u8) !void {
+        // invariant: a store name is the hex of a digest, exactly two characters per byte, so
+        // any other length would address a blob that was never written
         assert(name.len == Sha3.digest_length * 2);
         var buf: [66]u8 = undefined;
         const head_content = std.fmt.bufPrint(&buf, "{s}\n", .{name}) catch unreachable;
@@ -308,6 +330,9 @@ fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
     var out = std.ArrayListUnmanaged(u8).empty;
     try out.appendSlice(allocator, "mantra-weave-v1\n");
     for (w.lines.items) |line| {
+        // invariant: a line carries no tab and no newline, since both are the field and record
+        // separators this serialization uses -- one inside a line would split it into two on
+        // the way back
         assert(std.mem.indexOfScalar(u8, line.text, '\t') == null);
         assert(std.mem.indexOfScalar(u8, line.text, '\n') == null);
         var field_buf: [64]u8 = undefined;
@@ -333,6 +358,8 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
         const text_str = fields.rest();
         const gen = try tally_parse_int.parse_int(u32, gen_str, .{});
         const pos = try tally_parse_int.parse_int(u32, pos_str, .{});
+        // invariant: a generation counts from one, so a zero would deserialize a line that
+        // predates the weave
         assert(gen >= 1);
         const text = try allocator.dupe(u8, text_str);
         try w.lines.append(allocator, Line{ .text = text, .gen = gen, .pos = pos });
@@ -365,12 +392,16 @@ fn serialize_commit(allocator: std.mem.Allocator, commit: CommitRecord) ![]const
     var out = std.ArrayListUnmanaged(u8).empty;
     try out.appendSlice(allocator, "mantra-commit-v1\n");
     if (commit.parent) |p| {
+        // invariant: a store name is the hex of a digest, exactly two characters per byte, so
+        // any other length would address a blob that was never written
         assert(p.len == Sha3.digest_length * 2);
         const line = try std.fmt.allocPrint(allocator, "parent {s}\n", .{p});
         try out.appendSlice(allocator, line);
     } else {
         try out.appendSlice(allocator, "parent none\n");
     }
+    // invariant: a store name is the hex of a digest, exactly two characters per byte, so any
+    // other length would address a blob that was never written
     assert(commit.weave_name.len == Sha3.digest_length * 2);
     const line = try std.fmt.allocPrint(allocator, "weave {s}\n", .{commit.weave_name});
     try out.appendSlice(allocator, line);
@@ -452,6 +483,8 @@ fn read_brix(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?BrixConfig {
         } else if (std.mem.eql(u8, key, "version")) {
             version_val = try allocator.dupe(u8, val);
         } else if (std.mem.eql(u8, key, "file")) {
+            // invariant: an empty value would bind a key to nothing, which reads back the same
+            // as a key that was never set
             assert(val.len > 0);
             try files.append(allocator, try allocator.dupe(u8, val));
         }
@@ -562,6 +595,7 @@ fn cmd_brix(allocator: std.mem.Allocator, io: std.Io) !u8 {
 }
 
 fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 {
+    // invariant: an empty path names no file to add
     assert(file_path.len > 0);
     const cwd = Dir.cwd();
     var store = Store.open(io, cwd) catch |err| {
@@ -646,6 +680,7 @@ fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
 }
 
 fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 {
+    // invariant: an empty path names no file to report on
     assert(file_path.len > 0);
     const cwd = Dir.cwd();
     var store = Store.open(io, cwd) catch |err| {

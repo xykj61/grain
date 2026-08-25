@@ -94,6 +94,9 @@ pub fn seal_datagram(buf: *[@intCast(wire_capacity)]u8) u64 {
 }
 
 pub fn open_datagram(buf: []const u8, opened: []u8) !u64 {
+    // invariant: the buffer reaches the cipher offset and stops inside the wire capacity, and
+    // the opened span holds a whole message -- three bounds the parse below reads without
+    // re-checking
     assert(buf.len >= @as(usize, @intCast(off_cipher)));
     assert(buf.len <= @as(usize, @intCast(wire_capacity)));
     assert(opened.len >= @as(usize, @intCast(max_message)));
