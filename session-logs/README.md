@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.070659` | [what a guard asks](20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) | 388 links measured down to 13 to 1; a backtick is not a path. |
 | `20260825.061552` | [bounded for our own reasons](20260825-061552_bounded-for-our-own-reasons.kyri) | Microkit bounds a domain seven ways; Caravan sits inside all four it shares. |
 | `20260825.051936` | [a citation is a promise](20260825-051936_a-citation-is-a-promise-wherever-written.kyri) | A fold repoints what it can see; 11 symlink near-misses (%218). |
 | `20260825.041416` | [a share needs a denominator](20260825-041416_a-share-needs-a-denominator.kyri) | The register floor the scan applies and the card citing it dropped. |
