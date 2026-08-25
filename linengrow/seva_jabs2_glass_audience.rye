@@ -25,15 +25,21 @@ pub fn format_chat_line(prompt: []const u8, out_line: *[audience_line_max]u8, ou
     if (prompt.len == 0) {
         const line = std.fmt.bufPrint(out_line, "chat ·", .{}) catch return false;
         out_len.* = @intCast(line.len);
+        // invariant: the line was formatted into a fixed buffer of audience_line_max, so a
+        // length of zero or past that bound would draw a row the caller cannot trust
         assert(out_len.* > 0);
         assert(out_len.* <= audience_line_max);
         return true;
     }
     var preview: [dexter.max_line_len]u8 = undefined;
     const plen = emoji.skate_preview(prompt, preview[0..]);
+    // invariant: the preview is what the line is built around, so an empty one would format a
+    // chat row with nothing after its separator
     assert(plen > 0);
     const line = std.fmt.bufPrint(out_line, "chat · {s}", .{preview[0..plen]}) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer of audience_line_max, so a length
+    // of zero or past that bound would draw a row the caller cannot trust
     assert(out_len.* > 0);
     assert(out_len.* <= audience_line_max);
     return true;
@@ -60,8 +66,13 @@ pub fn run_demo_audience(
     out_lines: *[audience_rows][audience_line_max]u8,
     out_lens: *[audience_rows]u32,
 ) bool {
+    // invariant: the caller's array holds exactly audience_rows lines, and the writes below
+    // index it by row directly
     assert(out_lines.len == audience_rows);
     const lens = core.run_welcome_audience() catch return false;
+    // invariant: the audience fold returns one length per stream, and each is compared against
+    // the count its own core declares -- a disagreement means the fold and the counter read
+    // different runs
     assert(lens.events == core.event_count);
     assert(lens.voices == core.voice_count);
     assert(lens.chats == core.chat_count);
@@ -80,6 +91,8 @@ pub fn run_demo_audience(
     ) catch return false;
     out_lens[1] = @intCast(b.len);
 
+    // invariant: both rows were formatted into fixed buffers of audience_line_max, so a length
+    // of zero or past that bound would draw a row the caller cannot trust
     assert(out_lens[0] > 0);
     assert(out_lens[1] > 0);
     assert(out_lens[0] <= audience_line_max);
@@ -89,6 +102,8 @@ pub fn run_demo_audience(
 
 comptime {
     _ = print;
+    // invariant: the keyboard starts where the audience ends, so these two are one layout
+    // arithmetic checked at compile time rather than a pair of constants that can drift apart
     assert(keyboard_row0 == skate_row0 + audience_rows);
     assert(grid_rows > keyboard_row0 + 3);
 }

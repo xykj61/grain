@@ -67,6 +67,8 @@ pub fn scale_for_preset(
     preset: hearth.DisplayPreset,
     grid_rows: u32,
 ) u32 {
+    // invariant: the window's two dimensions divide into cells below, so a zero in either would
+    // divide by zero rather than lay out a grid
     assert(window_w > 0);
     assert(window_h > 0);
     if (preset == .mantrapod_floor) {
@@ -78,6 +80,8 @@ pub fn scale_for_preset(
     // Lower logical height → larger glyphs on the physical panel (macOS-shaped).
     const panel_h = hearth.DisplayPreset.panel_max.logical_size().h;
     const logic_h = preset.logical_size().h;
+    // invariant: the logic height is what the rows divide into, so a zero would place every row
+    // at the same pixel
     assert(logic_h > 0);
     const boost: u32 = panel_h / logic_h;
     // invariant: boost at least 1
@@ -93,6 +97,8 @@ pub fn apply_glass(
     preset: hearth.DisplayPreset,
     grid_rows: u32,
 ) AppliedGlass {
+    // invariant: the window and its row count are what the cell size divides from, so a zero in
+    // any of the three would size a cell by dividing by zero
     assert(window_w > 0);
     assert(window_h > 0);
     assert(grid_rows > 0);
@@ -100,6 +106,8 @@ pub fn apply_glass(
     const scale = scale_for_preset(window_w, window_h, preset, grid_rows);
     const cell_pw: i32 = @intCast(skate.cell_w * scale);
     const cell_ph: i32 = @intCast(skate.cell_h * scale);
+    // invariant: the cell has real pixels in both directions, so a zero would paint a grid of
+    // nothing at whatever scale the display asked for
     assert(cell_pw > 0);
     assert(cell_ph > 0);
     // Cols from physical width so the keyboard stays reachable; floor 32.
@@ -197,5 +205,7 @@ pub fn status_follows_preset_next() bool {
 
 comptime {
     _ = print;
+    // invariant: the waymark is the ladder this preset belongs to, and it is compared rather
+    // than assumed, so a preset carried into the wrong ladder names itself here
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

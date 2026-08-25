@@ -34,10 +34,14 @@ pub fn publish_app_manifest(
     assert(log.len > 0);
     var body: [tube.max_canonical_bytes]u8 = undefined;
     const body_len = try tube.write_canonical(manifest, &body);
+    // invariant: the body is what the resin is folded from, so an empty one would publish a
+    // content address for nothing
     assert(body_len > 0);
     const digest = try gc.put_resin(store, body[0..body_len]);
     var fact_buf: [gc.max_fact_len]u8 = undefined;
     const fact_len = try gc.sign_name_fact(gc.granary_version, person, weave, &digest, &fact_buf);
+    // invariant: the fact names the resin in the registry, so an empty one would register an
+    // entry nothing can resolve
     assert(fact_len > 0);
     try gc.publish(reg, log, log_len, fact_buf[0..fact_len]);
     return digest;
@@ -53,11 +57,15 @@ pub fn resolve_and_admit(
     table: *const caps.CapabilityTable,
     agent_label: []const u8,
 ) PublishError!void {
+    // invariant: the path and the label are what the published record is found and attributed
+    // by, so an empty either would publish something nobody can trace back
     assert(path.len > 0);
     assert(agent_label.len > 0);
     const fact = try gc.resolve(reg, path);
     var out: [tube.max_canonical_bytes]u8 = undefined;
     const n = try gc.clone_resin(store, fact.resin_digest, &out);
+    // invariant: the canonical write returns the bytes it laid down, so a zero would publish an
+    // empty manifest as though it were a whole one
     assert(n > 0);
     var check: [gc.digest_hex_len]u8 = undefined;
     gc.digest_hex_of(out[0..n], &check);
@@ -72,10 +80,14 @@ pub fn run_demo_publish(
     log: []u8,
     log_len: *u32,
 ) PublishError!struct { manifest: tube.Manifest, digest: [gc.digest_hex_len]u8 } {
+    // invariant: the log is what the publish is appended to, so an empty one would mean the
+    // record was written nowhere
     assert(log.len > 0);
     const declared = [_]tube.DeclaredCapability{
         tube.DeclaredCapability.init(pool.ledger_resource, caps.right_read | caps.right_write),
     };
+    // invariant: this publish declares exactly one capability, so any other count means the
+    // manifest and the publish disagree about what the app asked for
     assert(declared.len == 1);
     const manifest = try tube.build("seva-broadcaster", "0.1.0", &declared, 1024);
     const digest = try publish_app_manifest(store, reg, log, log_len, "glow", "seva-broadcaster", &manifest);

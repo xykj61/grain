@@ -49,11 +49,15 @@ pub const max_name_len: u32 = 48;
 pub const max_declared_caps: u32 = 8;
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
 
 fn slice_len_u32(comptime T: type, buf: []const T) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -70,18 +74,27 @@ pub const DeclaredCapability = struct {
     rights_mask: u8 = 0,
 
     pub fn init(resource: []const u8, rights_mask: u8) DeclaredCapability {
+        // invariant: the resource is copied into a fixed buffer of max_name_len, so a longer
+        // one would arrive truncated into a capability naming something else -- and a manifest
+        // is what the loader reads to decide what an app may touch
         assert(resource.len <= max_name_len);
         var dc: DeclaredCapability = .{};
         dc.resource_len = buf_len_u32(resource);
         tally_copy.copy_disjoint(u8, dc.resource[0..resource.len], resource);
         dc.rights_mask = rights_mask;
+        // invariant: the copy has landed when this runs, so it states that the stored length
+        // names a span the buffer holds
         assert(dc.resource_len <= max_name_len);
         return dc;
     }
 
     pub fn resource_slice(self: *const DeclaredCapability) []const u8 {
+        // invariant: the slice below is taken from a fixed buffer of max_name_len with no
+        // bounds check of its own
         assert(self.resource_len <= max_name_len);
         const n: usize = @intCast(self.resource_len);
+        // invariant: the read is bounded by the array as well as by the law, since the two are
+        // set apart and only one of them is checked above
         assert(n <= self.resource.len);
         return self.resource[0..n];
     }
@@ -125,21 +138,29 @@ pub const Manifest = struct {
     iteration_bound_max: u32 = 0,
 
     pub fn name_slice(self: *const Manifest) []const u8 {
+        // invariant: the slice below is taken from a fixed buffer of max_name_len with no
+        // bounds check of its own
         assert(self.name_len <= max_name_len);
         const n: usize = @intCast(self.name_len);
         return self.name[0..n];
     }
 
     pub fn version_slice(self: *const Manifest) []const u8 {
+        // invariant: the slice below is taken from a fixed buffer of max_name_len with no
+        // bounds check of its own
         assert(self.version_len <= max_name_len);
         const n: usize = @intCast(self.version_len);
         return self.version[0..n];
     }
 
     pub fn declares(self: *const Manifest, resource: []const u8, need: u8) bool {
+        // invariant: the walk below reads the capability array by index up to this count, so
+        // the count and the array's own length are the same bound
         assert(self.cap_count <= max_declared_caps);
         var i: u32 = 0;
         while (i < self.cap_count) : (i += 1) {
+            // invariant: the read indexes the capability array directly, so the loop's bound
+            // and the array's size are the same number
             assert(i < max_declared_caps);
             const dc = &self.caps[i];
             if (std.mem.eql(u8, dc.resource_slice(), resource)) {
@@ -186,6 +207,8 @@ pub fn build(
     }
     m.iteration_bound_max = iteration_bound_max;
 
+    // invariant: a built manifest carries every field inside the bound its buffer was sized
+    // for, and an iteration bound of zero would describe an app that may never take a step
     assert(m.name_len <= max_name_len);
     assert(m.version_len <= max_name_len);
     assert(m.cap_count <= max_declared_caps);
@@ -205,6 +228,8 @@ fn append_line(out: []u8, off: *u32, line: []const u8) ManifestError!void {
 /// name, version, iteration bound, and every declared capability. Used by
 /// TUBE2 publish so Granary stores the mold, not a free-form bag.
 pub fn write_canonical(m: *const Manifest, out: []u8) ManifestError!u32 {
+    // invariant: the canonical bytes are written for a manifest that declares something, so an
+    // empty one would fold to a resin naming no capability at all
     assert(m.cap_count >= 1);
     assert(m.cap_count <= max_declared_caps);
     var off: u32 = 0;

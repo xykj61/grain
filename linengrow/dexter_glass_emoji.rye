@@ -36,6 +36,9 @@ pub const Face = struct {
 };
 
 fn utf8_from(comptime s: []const u8) Utf8 {
+    // invariant: the atlas entry is copied into a fixed buffer of max_utf8, so an empty face
+    // would paint nothing and a longer one would be written past its end -- checked at compile
+    // time, where the atlas is written
     comptime assert(s.len > 0);
     comptime assert(s.len <= max_utf8);
     var out: Utf8 = .{};
@@ -59,6 +62,8 @@ fn face_at(id: u8) Face {
 
 /// True when every face in [lo, lo+n) has a unique 8×8 glyph (ZETA4 polish).
 pub fn glyphs_distinct_range(lo: u8, n: u8) bool {
+    // invariant: the run spans more than one face and ends inside the atlas, so a tab is proven
+    // to name faces that exist before any of them is drawn
     assert(n > 1);
     assert(lo + n <= face_count);
     var i: u8 = 0;
@@ -138,6 +143,8 @@ pub const glyphs_ext: [128][8]u8 = blk: {
 };
 
 pub fn skate_cell(id: u8) u8 {
+    // invariant: the face is read out of the atlas by this id directly, so an id past the count
+    // would draw whatever follows the table
     assert(id < face_count);
     return skate_base + id;
 }
@@ -153,6 +160,8 @@ pub fn tab_base(tab: Tab) u8 {
 
 /// Second row for smileys uses faces 32..39; other tabs repeat the first eight (SLC density).
 pub fn tab_row1_id(tab: Tab, col: u8) u8 {
+    // invariant: the column indexes one tab's row of faces, so a column past the row's width
+    // would draw a face belonging to the next tab
     assert(col < faces_per_tab);
     if (tab == .smileys) return 32 + col;
     return tab_base(tab) + col;
@@ -185,6 +194,8 @@ pub fn face_id_matching_suffix(buf: []const u8) ?u8 {
 
 /// Skate-safe chrome preview: ASCII kept; curated emoji → atlas cell bytes.
 pub fn skate_preview(prompt: []const u8, out: []u8) u32 {
+    // invariant: the preview is written into the caller's buffer, so an empty one leaves
+    // nothing to draw and the caller cannot tell that from a face
     assert(out.len > 0);
     var pi: usize = 0;
     var oi: u32 = 0;
@@ -231,6 +242,9 @@ pub fn tab_label(tab: Tab) []const u8 {
 
 comptime {
     _ = print;
+    // invariant: the atlas is forty faces with a real codepoint and distinct glyphs, checked
+    // where the table is declared -- a duplicate or empty glyph would paint two keys the same
+    // and give a finger no way to tell them apart
     assert(face_count == 40);
     assert(faces[0].utf8.len >= 3);
     assert(glyphs_ext[0][0] != 0 or glyphs_ext[0][1] != 0);

@@ -37,6 +37,8 @@ pub fn replay(
     actor_pk: kumara.PublicKey,
 ) ReplayError!ReplayResult {
     assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    // invariant: the pubkey is what every event in the log is checked against, so an empty one
+    // would replay a log signed by nobody as though it verified
     assert(mc.pubkey_hex_len > 0);
 
     var count: u32 = 0;
@@ -80,10 +82,14 @@ fn claim_replay_built_log(
 ) ReplayError![32]u8 {
     const r1 = try replay(log_buf[0..len], actor_hex, actor_pk);
     const r2 = try replay(log_buf[0..len], actor_hex, actor_pk);
+    // invariant: the two replays are compared to each other and to the fixture's own counts, so
+    // a divergence names itself here rather than downstream
     assert(r1.events == fixture.event_count);
     assert(r2.events == fixture.event_count);
     assert(r1.last_seq == 3);
     assert(r2.last_seq == 3);
+    // invariant: two replays of one log reach the same root, which is the whole promise a
+    // replay makes -- a differing root means the fold is not deterministic
     assert(std.mem.eql(u8, &r1.root, &r2.root));
     if (!digest.root_matches_fixture(&r1.root)) return error.RootMismatch;
 
