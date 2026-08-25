@@ -191,14 +191,23 @@ fn write_driver_features(features: u64) void {
 }
 
 pub fn negotiate_features(offered: u64) u64 {
-    assert((offered & feat_version_1) != 0); // modern transport must offer VERSION_1
+    // invariant: the modern transport bit is what this driver was written against, so a device
+    // offering only the legacy interface names itself here rather than being driven through a
+    // register map it does not have
+    assert((offered & feat_version_1) != 0);
     return offered & (feat_version_1 | feat_mac);
 }
 
 pub fn init_device() void {
+    // invariant: the device is found and answers with the version and id this driver expects,
+    // and its status carries FEATURES_OK -- each is a step the transport specification fixes in
+    // order, and skipping one leaves the queue set up against a device that never agreed to it
     assert(find_net_device());
     const version = mmio_read(off_version);
-    assert(version == mmio_version); // ruled path: modern only (force-legacy=false)
+    // invariant: the device answers with the version and id this driver was written against, so
+    // a different transport or a different device class names itself here rather than being
+    // driven through a register map it does not have
+    assert(version == mmio_version);
     assert(mmio_read(off_device_id) == device_id_net);
     use_legacy_queues = false;
 
@@ -210,6 +219,9 @@ pub fn init_device() void {
     write_driver_features(negotiate_features(offered));
 
     mmio_write(off_status, status_acknowledge | status_driver | status_features_ok);
+    // invariant: the device has acknowledged the feature set, which the transport specification
+    // fixes as the step before any queue is configured -- setting one up first leaves it agreed
+    // by nobody
     assert((mmio_read(off_status) & status_features_ok) != 0);
 }
 
@@ -271,7 +283,9 @@ fn rx_buf() *[max_frame]u8 {
 fn setup_modern_queue(queue_idx: u32, r: Rings) void {
     mmio_write(off_queue_sel, queue_idx);
     const num_max = mmio_read(off_queue_num_max);
-    assert(num_max >= queue_depth); // bound honored before any ring address lands
+    // invariant: the device's own maximum is at least the depth this driver asks for, so a
+    // queue is never configured deeper than the hardware will serve
+    assert(num_max >= queue_depth);
     mmio_write(off_queue_num, queue_depth);
 
     mmio_write(off_queue_desc_low, @truncate(r.desc));
@@ -287,6 +301,8 @@ fn setup_modern_queue(queue_idx: u32, r: Rings) void {
 fn setup_legacy_queue(queue_idx: u32, vring: *LegacyVring) void {
     mmio_write(off_legacy_queue_sel, queue_idx);
     const num_max = mmio_read(off_legacy_queue_num_max);
+    // invariant: the device's own maximum is at least the depth this driver asks for, so a
+    // queue is never configured deeper than the hardware will serve
     assert(num_max >= queue_depth);
     mmio_write(off_legacy_queue_num, queue_depth);
     mmio_write(off_legacy_queue_align, legacy_page_align);
@@ -313,6 +329,8 @@ pub fn read_mac(mac: *[6]u8) void {
 pub fn fill_pattern_frame(buf: []u8) u32 {
     const payload_off = virtio_net_hdr_len + eth_header_len;
     const total: u32 = payload_off + link_pattern_len;
+    // invariant: the frame is written into the caller's buffer, so a total past its length
+    // would be written past the end
     assert(total <= buf.len);
 
     @memset(buf[0..virtio_net_hdr_len], 0); // no offloads: header stays all-zero
@@ -372,6 +390,8 @@ pub const TxQueue = struct {
 
     /// Send whatever bytes already sit in the TX frame buffer, `total` long.
     pub fn send(self: *TxQueue, total: u32) void {
+        // invariant: the frame fits the link's own maximum, so a longer one would be handed to
+        // the device and truncated on the wire rather than refused here
         assert(total <= max_frame);
         const buf = tx_buf();
         const desc = desc_of(tx_rings);
@@ -391,6 +411,8 @@ pub const TxQueue = struct {
             if (spins > 5_000_000) finish_fail();
         }
         const slot = self.used_tail % queue_depth;
+        // invariant: the used ring returns the descriptor this driver posted, since a different
+        // id would mean the completion belongs to a buffer somebody else owns
         assert(used.ring[slot].id == 0);
         self.used_tail += 1;
     }
@@ -459,6 +481,8 @@ pub const RxQueue = struct {
         const slot = self.used_tail % queue_depth;
         const elem = used.ring[slot];
         self.used_tail += 1;
+        // invariant: the used ring returns the descriptor this driver posted, since a different
+        // id would mean the frame arrived in a buffer somebody else owns
         assert(elem.id == 0);
         return elem.len;
     }

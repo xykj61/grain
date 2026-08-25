@@ -179,6 +179,23 @@ EOF
 o=$(read_bins)
 check "10 a commented assert is not counted" "1" "$(val "$o" contract_asserts)"
 
+# 10b -- a function DECLARATION named assert is not a call to one. comlink/virtio_net.rye declares
+#        its own `fn assert(ok: bool)` for a freestanding target with no std behind it, and six such
+#        declarations stand in this tree.
+rm -f "$pen"/m/*.rye
+put n.rye <<'EOF'
+fn assert(ok: bool) void {
+    _ = ok;
+}
+pub fn api() void {
+    // invariant: the one real call
+    assert(a == 1);
+}
+EOF
+o=$(read_bins)
+check "10b a fn declaration named assert is not counted" "1" "$(val "$o" contract_asserts)"
+check "10b and the real call inside it still is covered" "1" "$(val "$o" contract_with_a_reason)"
+
 # 11 -- a symlink is not a second module.
 rm -f "$pen"/m/*.rye
 put k.rye <<'EOF'

@@ -178,6 +178,9 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       # An assert CALL: not `emit_assert(`, and not a line of a `\\` string holding generated source.
       if (lines[i] !~ /(^|[^A-Za-z0-9_])assert\(/) continue
       if (lines[i] ~ /^[ \t]*\\\\/) continue
+      # A function DECLARATION named assert is not a call to one -- comlink/virtio_net.rye declares
+      # its own `fn assert(ok: bool)` for a freestanding target with no std behind it.
+      if (lines[i] ~ /^[ \t]*(pub[ \t]+)?fn[ \t]+[A-Za-z0-9_]*assert\(/) continue
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }

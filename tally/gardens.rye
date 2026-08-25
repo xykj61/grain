@@ -34,6 +34,8 @@ const print = std.debug.print;
 const tally_gardens_version = "20260620.211712";
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -50,6 +52,8 @@ pub const Region = struct {
 
     pub fn init(buf: []u8) Region {
         const r = Region{ .buf = buf, .pos = 0 };
+        // invariant: a region opens with its cursor inside the buffer it was handed, so the
+        // first allocation measures from a real position rather than past the end
         assert(r.pos <= buf_len_u32(r.buf));
         return r;
     }
@@ -57,13 +61,19 @@ pub const Region = struct {
     /// Bump-allocate n bytes. Fails with OutOfBounds past the edge.
     pub fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
         const cap = buf_len_u32(self.buf);
+        // invariant: the cursor sits inside the capacity before the allocation is measured from
+        // it
         assert(self.pos <= cap);
         if (n > cap - self.pos) return error.OutOfBounds;
         const start: usize = @intCast(self.pos);
         const end: usize = @intCast(self.pos + n);
+        // invariant: the requested end falls inside the buffer, which is the one check standing
+        // between a caller's size and a write past the region
         assert(end <= self.buf.len);
         const slice = self.buf[start..end];
         self.pos += n;
+        // invariant: the allocation has landed when this runs, so it states that the cursor
+        // stayed inside the capacity
         assert(self.pos <= cap);
         return slice;
     }
@@ -77,17 +87,26 @@ pub const Region = struct {
     /// the parent's own `pos`, two divisions can never overlap — the parent's
     /// edge is the only arithmetic anyone has to trust.
     pub fn divide(self: *Region, n: u32) error{OutOfBounds}!Region {
-        assert(self.pos <= buf_len_u32(self.buf)); // invariant: parent within its edge
+        // invariant: the parent's cursor sits inside its own buffer before a child is carved
+        // out of it
+        assert(self.pos <= buf_len_u32(self.buf));
         const slice = try self.alloc(n); // reuses the parent's own bounds check
-        assert(slice.len == @as(usize, @intCast(n))); // postcondition: exact width
+        // invariant: the carved slice is exactly the size asked for, and a fresh division opens
+        // with its own cursor at zero -- a child inheriting a used cursor would allocate from
+        // the middle of itself
+        assert(slice.len == @as(usize, @intCast(n)));
         const child = Region.init(slice);
-        assert(child.pos == 0); // postcondition: a fresh division starts empty
+        // invariant: a fresh division opens with its cursor at zero, since a child inheriting a
+        // used one would allocate from the middle of itself
+        assert(child.pos == 0);
         return child;
     }
 
     /// Clear whole — the season ends; fresh allocations may begin again.
     pub fn clear(self: *Region) void {
         self.pos = 0;
+        // invariant: the cursor sits inside the buffer before it is reset, so a clear is proven
+        // to be returning a real region rather than repairing a broken one
         assert(self.pos <= buf_len_u32(self.buf));
     }
 
@@ -136,15 +155,22 @@ pub const Gardens = struct {
     /// Register a named Region over `buf`. The name must be non-empty,
     /// within max_name_len, and not already present.
     pub fn add(self: *Gardens, name: []const u8, buf: []u8) !void {
+        // invariant: the name is copied into a fixed buffer of max_name_len and the collection
+        // has room, so a garden is never added under a truncated name or into a slot that does
+        // not exist
         assert(name.len > 0);
         assert(name.len <= max_name_len);
         assert(self.count < max_gardens);
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |e| {
+            // invariant: no two gardens share a name, since get would return the first and the
+            // second would be unreachable for the life of the collection
             assert(!std.mem.eql(u8, e.name, name));
         }
         self.entries[n] = .{ .name = name, .region = Region.init(buf) };
         self.count += 1;
+        // invariant: the add has landed when this runs, so it states the collection stayed
+        // inside its own ceiling
         assert(self.count <= max_gardens);
     }
 
@@ -152,16 +178,23 @@ pub const Gardens = struct {
     /// motion, so no caller ever does the offset arithmetic that overlapping
     /// gardens come from.
     pub fn add_division(self: *Gardens, name: []const u8, parent: *Region, n: u32) !void {
-        assert(name.len > 0); // precondition: a division is always named
-        assert(self.count < max_gardens); // precondition: room in the collection
+        // invariant: a division is always named and there is room for it, so it can be found
+        // again and has a slot to live in
+        assert(name.len > 0);
+        assert(self.count < max_gardens);
         const child = try parent.divide(n);
         try self.add(name, child.buf);
+        // invariant: the divisions together never claim more than the parent holds, which is
+        // the whole promise a division makes -- a child past the parent's buffer would allocate
+        // over its sibling
         assert(self.total_capacity() <= buf_len_u32(parent.buf) + parent.pos);
     }
 
     /// Look up a garden by name. Returns a pointer to the Region so the
     /// caller can alloc from it, or null if no such garden exists.
     pub fn get(self: *Gardens, name: []const u8) ?*Region {
+        // invariant: a lookup by an empty name would match a garden that was never added under
+        // one
         assert(name.len > 0);
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |*e| {
@@ -174,6 +207,8 @@ pub const Gardens = struct {
     /// Asserts the garden exists (a caller naming a non-existent garden
     /// is always a mistake).
     pub fn clear_one(self: *Gardens, name: []const u8) void {
+        // invariant: a clear by an empty name would reach for a garden that was never added
+        // under one
         assert(name.len > 0);
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |*e| {
@@ -182,7 +217,9 @@ pub const Gardens = struct {
                 return;
             }
         }
-        assert(false); // name not found — caller error
+        // invariant: the walk found no garden of that name, and clearing one that does not
+        // exist is a caller error rather than a quiet no-op
+        assert(false);
     }
 
     /// Clear all gardens at once — the whole season ends.
@@ -192,6 +229,9 @@ pub const Gardens = struct {
             e.region.clear();
         }
         for (self.entries[0..n]) |e| {
+            // invariant: every region reads as reset when the collection is cleared, so a
+            // garden left with a used cursor would allocate from the middle of itself on the
+            // next pass
             assert(e.region.pos == 0);
         }
     }
@@ -200,13 +240,16 @@ pub const Gardens = struct {
     /// needs to mean anything. Aparigraha asks for named budgets; a budget
     /// whose remainder is visible and whose whole is not is half a budget.
     pub fn total_capacity(self: *const Gardens) u32 {
-        assert(self.count <= max_gardens); // invariant: collection within bound
+        // invariant: the collection sits inside its own ceiling before the walk sums it
+        assert(self.count <= max_gardens);
         var total: u32 = 0;
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |e| {
             total += buf_len_u32(e.region.buf);
         }
-        assert(total >= self.total_remaining()); // postcondition: whole covers remainder
+        // invariant: the total is at least what remains, since remaining is a part of the whole
+        // -- a total below it would mean the sum read a region the collection does not hold
+        assert(total >= self.total_remaining());
         return total;
     }
 
@@ -243,7 +286,7 @@ pub fn main() void {
     assert(blob_r.remaining() == 512);
     assert(g.get("diff")  != null);
     assert(g.get("frame") != null);
-    assert(g.get("nope")  == null); // absent garden returns null
+    assert(g.get("nope")  == null);
 
     // --- alloc within bounds ----------------------------------------------
     const a = blob_r.alloc(100) catch unreachable;
@@ -268,7 +311,7 @@ pub fn main() void {
     g.clear_one("diff");
     assert(diff_r.pos == 0);
     assert(diff_r.remaining() == 256);
-    assert(blob_r.remaining() == 412); // blob unchanged
+    assert(blob_r.remaining() == 412);
 
     // Re-allocate diff after clear — same memory, new season.
     const c = diff_r.alloc(256) catch unreachable;
@@ -288,7 +331,7 @@ pub fn main() void {
     // --- Reuse after clear_all: same pointers, fresh season ---------------
     const d = blob_r.alloc(512) catch unreachable;
     assert(d.len == 512);
-    assert(d.ptr == @as([*]u8, @ptrCast(&blob_buf[0]))); // same backing memory
+    assert(d.ptr == @as([*]u8, @ptrCast(&blob_buf[0])));
 
     // --- Invariants hold across all entries at rest ----------------------
     for (g.entries[0..@intCast(g.count)]) |e| {
