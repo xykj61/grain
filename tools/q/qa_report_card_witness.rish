@@ -10,7 +10,8 @@
 #
 # WHAT A REPORT CARD IS. Four readings of one artifact, each 0 to 100, meaned into one grade.
 #   Register  counted   100 minus the negative-sentence share, the same reading prose_register
-#                       gates, lifted from that scan rather than copied beside it.
+#                       gates, lifted from that scan rather than copied beside it -- floor and all,
+#                       so a page too short to carry a share has it reported rather than scored.
 #   Reach     counted   Flesch-Kincaid grade and cross-references per hundred words, against the
 #                       budget its setting carries -- unless the page declares itself an index AND
 #                       measures like one, where the density is reported rather than scored.
@@ -23,8 +24,8 @@
 # claims have gone false costs a reader more than an absent page. Honesty first, written into the
 # arithmetic rather than left to a habit.
 #
-# TWO READINGS THAT LEARNED A BLESSED CONSTRUCTION, 20260825. A meter that instructs a repair which
-# would make the artifact worse is the thing to fix, and this one did it twice.
+# THREE READINGS THAT LEARNED AN HONEST DENOMINATOR, 20260825. A meter that instructs a repair which
+# would make the artifact worse is the thing to fix, and each of these was one reading short of it.
 #
 #   An INDEX is read as one. A cross-reference budget of one per hundred words is written for prose;
 #   on an index the links ARE the content. docs/README.md carries 10 words and 5 links, read 50 per
@@ -43,7 +44,16 @@
 #   paths in this tree carry either literally. A FABRICATED stamp naming no file still costs twenty,
 #   which is the half that keeps this a reading rather than an escape hatch.
 #
-# WHAT IS PROVEN, on metal. Forty-four behaviors in a throwaway pen. The scale at every one of its
+#   A SHARE NEEDS A DENOMINATOR. The register scan's teaching tier has always skipped a page under
+#   eight sentences -- "too short to read a share from honestly" -- and the card citing that scan
+#   was dropping the floor, so one page could be unmeasurable to one reading and scored 0 by the
+#   other. Measured 20260825: 27 living teaching pages sit under the floor, six of them reading
+#   100% off a SINGLE sentence. The floor is now a named constant in the scan, REGISTER_MIN_SENTENCES,
+#   and the card CITES it the way it already cites measure() -- losing it makes the card refuse.
+#   One condition here rather than two, because a sentence count is measured rather than declared,
+#   so no page can assert its way under it. The 20% wall on the twelve door documents is untouched.
+#
+# WHAT IS PROVEN, on metal. Fifty-four behaviors in a throwaway pen. The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -134,7 +144,17 @@ assert control.out contains "placeholder_not_cited=yes" else "qa-report-card: an
 assert control.out contains "hhmmss_placeholder_free=yes" else "qa-report-card: both runs the naming law spells inside a path shape are illustrations"
 assert control.out contains "fabricated_stamp_still_counted=yes" else "qa-report-card: a real-looking stamp naming no file is still a broken citation -- this is the half that keeps the reading from being an escape"
 assert control.out contains "fabricated_stamp_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
+assert control.out contains "floor_is_cited=yes" else "qa-report-card: the register floor is read out of prose_register_scan.sh, never spelled beside it"
+assert control.out contains "under_floor_reported=yes" else "qa-report-card: a page under the sentence floor has its share reported rather than scored"
+assert control.out contains "under_floor_not_scored=yes" else "qa-report-card: and it must cost nothing -- one negative sentence out of one is a rounding error, not a register"
+assert control.out contains "under_floor_named=yes" else "qa-report-card: the card must say the share was reported, so a reader still sees it"
+assert control.out contains "under_floor_share_still_shown=yes" else "qa-report-card: the denominator stays visible even where the share is unscored"
+assert control.out contains "at_floor_scored=yes" else "qa-report-card: a page AT the floor is scored -- the boundary is read from both sides"
+assert control.out contains "at_floor_scored_low=yes" else "qa-report-card: and refusal-led prose at the floor must still grade low"
+assert control.out contains "at_floor_denominator=yes" else "qa-report-card: the sentence at the floor must reach the denominator"
+assert control.out contains "meter_names_register_mode=yes" else "qa-report-card: Meter names its own register mode rather than borrowing another"
+assert control.out contains "floor_source_load_bearing=yes" else "qa-report-card: the floor is cited, so losing its source must refuse rather than guess"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "forty-four behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "fifty-four behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."

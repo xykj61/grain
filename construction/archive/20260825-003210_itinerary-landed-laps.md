@@ -16,3 +16,4 @@ Immutable once written.*
 | `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
 | `20260824.193815` | Five index rooms carried across and the log fold on Keaton's word; rows bounded at 192 bytes; no living page over its declared bound | [log](../../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
 | `20260825.031428` | Four reds, two roots -- a sweep that edited two mirrors and a declared ceiling; an index counting a build cache (%216, %217) | [log](../../session-logs/20260825-031428_four-reds-from-two-roots.kyri) |
+| `20260825.034444` | The report card reads an index as one and a placeholder as an illustration; door ceiling 1 -> 0 | [log](../../session-logs/20260825-034444_a-declaration-is-not-an-exemption.kyri) |
