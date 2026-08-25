@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260825.031428
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Four reds from two roots, and a meter that cannot read an index page
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, condense ITINERARY and refill Now, send each finished increment
+think Lap index from git log --oneline | wc -l = 3419, so the council rota reads row 3419 mod 5 = 4 -- Earth and Mercury, the concrete: the one-clock naming law, Two Rooms, and the marked value. Two Rooms governed the lap directly. A published number belongs in the checkable room only once something binds it, and this lap found two numbers standing there with nothing behind them.
+think Opened the roster cold and it answered guards_red=4. Standfast, so the microkernel lap I had scoped -- Microkit's protection-domain vocabulary as a third caravan rung after refusals.rye and objects.rye -- was set down unstarted and the line stopped on the reds.
+think Piped the first roster run through tail and lost its head, which cost a second twenty-five-minute run to see all four names. Worth writing down: a roster whose output is truncated is a roster half read.
+think Root one, found by reading the commit rather than the symptom. e9582afd36 added a three-line Where this sits block to 110 room READMEs by walking paths. Two of those paths -- spellbook/README.md and biochemistry/README.md -- are mirrors declared in context/document-mirrors.brix, whose own law says never edit a mirror by hand. A third, docs/README.md, carries a **Ceiling:** <=40 lines header and went to 42.
+think Repaired the mirrors the way the descriptor asks: wrote the same block into context/SPELLBOOK.md and context/CHEMICAL_FORMULAS.md at the positions the sweep had used, then ran document_mirror_scan.sh write. The scan reads links_unresolved_from_a_home=0, so the block's three relative links are proven to resolve from both homes rather than assumed to.
+think For the ceiling I chose unwrapping over raising. The block's text, links, and meaning are unchanged; only its wrapping moved, onto one line matching that page's own header style, and the page holds the 40 it declares. Raising a ceiling to fit new content is what a ceiling exists to refuse.
+think Root two came from asking git rather than guessing. tools/fixtures/geode_libraries_scan.sh counted each room's modules with find "$room" -maxdepth 2 -name '*.rye' -type f, which reads the filesystem. The glow room keeps a .cache of 108 generated .rye files that .gitignore:209 excludes, so the page published 238 where the tree keeps 130.
+think That root also explains the fourth red. generated_page_freshness was red for the same stale page, so four reds stood on two roots.
+think The pre-commit hook could never have caught it. It regenerates the page when a STAGED change adds or deletes a .rye, and an ignored file is never staged, so the hook is structurally blind here rather than merely unlucky.
+think Fixed it by replacing the find with a module_count function that pipes the same find through git check-ignore --stdin --non-matching --verbose and counts the :: lines it prints for paths git does not ignore. Swept every room to check the blast radius: exactly one other room has ignored .rye on disk, seed/, which the census already excludes by name.
+think Wrote tools/fixtures/geode_libraries_control.sh, which builds real git repositories in a throwaway pen and runs the real scan inside them rather than copying the rule -- REDS %215's lesson applied on the lap after it was learned. Four readings: an ignored module stays out, the same files count when nothing ignores them, a module written this minute counts, and a room holding only ignored modules leaves the index.
+think Then proved the control itself bites, which is the half a passing run cannot show. Pointed at a copy carrying the old rule, it refuses three of the four and passes exactly the one that should pass -- the reading where nothing is ignored.
+think Noticed the witness count move 105 to 106 and traced it to my own comment: the by-reference rule counts a witness that writes glow/, and my new prose did. Rewrote it as the `glow` room so the number keeps measuring what it means. Correcting a spurious match is not gaming the meter; leaving it would have published a witness count that included a comment.
+obs Then the QA card found the third red, and it is a meter fault rather than a document fault. docs/README.md reads D+ 69 with Reach 0. The card strips tables and bullets, correctly, then divides links by whatever prose survives -- and on that page one surviving line carrying 5 links and 10 words sets the whole reading. docs-geode/libraries/README.md, generated and proven GREEN by its own witness this same lap, reads F on 13 words.
+obs Measured the class before believing it: of 130 living pages the card reads, 63 carry under 100 words of prose, so half the population has a per-hundred rate extrapolated from under one unit of its own denominator, and 11 score exactly zero -- docs/ZETA.md on 2 words. The door roster's below-B ratchet ceiling of 1 is that artifact and nothing else.
+obs Left it open on purpose rather than patching it. The card is ten corrections deep and REDS %213 already ruled that a meter at that depth takes its own round with the control planted both ways, never a fast fix at the end of a long lap. Named on ITINERARY the way %215 named the Region reading, and it is the next round.
+obs Being honest about the shape of that finding: it surfaced while grading a page I had just edited, which is exactly when a person is most tempted to blame the ruler. So I measured the whole population first and would have accepted the D+ had the class been small. It is not small.
+obs A low grade is not a red, and this is not the low grade -- it is the meter instructing a repair that would make the artifact worse. Adding prose to an index to raise its word count would damage a page whose own closing line asks that these pages stay few.
+loom roster cold_guards=57 cold_red=4 hot_guards=57 roots=2
+loom geode_index glow_published=238 glow_tracked=130 ignored_cache=108 rooms_changed=1 rooms_unchanged=37
+loom control readings=4 old_rule_refused=3 old_rule_passed=1
+loom qa_reach pages_read=130 prose_under_100_words=63 reach_zero=11 min_words=2
+file tools/fixtures/geode_libraries_scan.sh module_count asks git check-ignore instead of trusting find
+file tools/fixtures/geode_libraries_control.sh four readings on real repositories, proven to bite against the old rule
+file tools/g/geode_libraries_witness.rish the control runs before the page is trusted
+file docs-geode/libraries/README.md regenerated; the glow row reads 130
+file context/SPELLBOOK.md the way-home block added to the canonical, so the mirror regenerates rather than drifts
+file context/CHEMICAL_FORMULAS.md the same, at the position the sweep had used
+file docs/README.md the way-home block set on one line; the page holds the 40 it declares
+file construction/REDS.md rows %216 and %217 booked and closed; %215 folded as they carried the pin past its bound
+file construction/archive/REDS-a-body-shared-by-copying-rows-215.md the fold, text unchanged since the row carries no relative links
+file construction/CHECKPOINTS.md walk-back nib 8fe50f50f2 before the card's Now was condensed
+file construction/ITINERARY.md Now refilled with live work; guard count corrected 54 to 57; four prior laps shelved
+file construction/archive/20260825-003210_itinerary-landed-laps.md the four shelved rows, link depth moved with them
+obs Read qa_report_card_control.sh before proposing a fix, and it ruled out the obvious one. Section 4 proves Reach falls on link density using a planted page of 20 words and 10 links, so a bare under-100-words floor would exempt the control's own probe and quietly delete a reading that works.
+obs The better shape, and both failing pages already carry it: they DECLARE what they are. docs/README.md writes **Depth:** routing in its header and docs-geode/libraries/README.md writes **Kind:** crushed index. So the card can read a page's own declaration the way declared_ceiling reads a page's own limit, and grade an index as one -- reporting link density rather than scoring it. Guarded by two conditions rather than one, so the declaration alone is no exit: the page must declare itself an index AND measure as one, under the prose floor. A planted page declaring routing over 3,000 words stays graded, and the control's 20-word probe declares nothing and stays penalized.
+obs Naming the trap in that design before building it: a self-declared exemption is a door, and a door beside a wall makes the wall a habit again. The two-condition form is what keeps it a reading rather than an opt-out, and the control has to plant both halves of it.
+recommend keep-going the report card is the next round -- teach Reach to read a page's own **Depth:**/**Kind:** declaration alongside the prose floor, teach Truth that a placeholder shape is an illustration rather than a broken link, plant both in qa_report_card_control.sh from both sides, and let the door roster's below-B ceiling of 1 fall to 0 by measurement rather than by edit

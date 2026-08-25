@@ -1,5 +1,9 @@
 # The Spellbook -- Grain's Operator Words
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 > **Mirrored at `spellbook/README.md`**, declared in [`../context/document-mirrors.brix`](../context/document-mirrors.brix) and proven byte-identical. Every link here is written `../<room>/<file>` so it resolves from both homes (REDS %176).
 
 **Language:** EN
