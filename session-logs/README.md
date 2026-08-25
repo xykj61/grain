@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.223227` | [the tree answers what a file cannot](20260824-223227_the-tree-answers-what-a-file-cannot.kyri) | Cross-file reachability lands; gap 453 to 400, nothing wrongly moved. |
 | `20260824.221143` | [the sweep that would have done harm](20260824-221143_the-sweep-that-would-have-done-harm.kyri) | 361 of 377 were test narration; nothing was stamped. |
 | `20260824.220320` | [three rooms and the parity tombstone](20260824-220320_three-rooms-and-the-parity-tombstone.kyri) | Three rooms to 100%; no room under 92% now. |
 | `20260824.215225` | [a directory says it and means it](20260824-215225_a-directory-says-it-and-means-it.kyri) | rye closed; 456 reasons sit above an assert unlabelled. |
