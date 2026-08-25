@@ -24,6 +24,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260825.144025` -- the ales-choir account condensed off the card
+
+**Walk-back nib:** `a31664d7b6` -- read the whole departing card with
+`git show a31664d7b6:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md` alone. The `Now` block held the ales-choir round's full
+account in 2,532 bytes -- the 240-rung registration, the three-pass timing, and the REDS %221 and
+%222 paragraphs -- and this round's two directive rewrites pushed the card to 24,869 against the
+24,576 it declares in its own header.
+
+**What waits there, worth recalling:** the reach reading `1,690 / 167 / 82 / 514 / 1,176` before the
+choir and `1,692 / 168 / 322 / 755 / 937` after, side by side in one sentence, and the reason the
+cadence tier was chosen on stability rather than on cost. Both are held whole in
+`session-logs/20260825-132121_a-choir-for-the-largest-unheard-family.kyri` and in
+`active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md`, so the walk-back is a
+courtesy rather than the only copy.
+
 ### `20260825.132121` -- the tier round's account condensed off the card
 
 **Walk-back nib:** `c2ea22613d` -- read the whole departing card with

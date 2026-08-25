@@ -21,6 +21,13 @@
 # of the guards it did not run. The pen is no git repository, which is its own case: the staged
 # reading answers 0 rather than refusing.
 #
+# WHAT THE REAL REPOSITORY PROVES, which a pen outside git cannot. Two refusals live there, and
+# each is shown from the side that bites and the side that passes free. The tree digest: a stub
+# guard writing nothing leaves it still, one writing a file moves it (REDS %221). The unclosed lap:
+# a clean cold open runs its guard, one staged path refuses the same pass under
+# `run_verdict=lap_unclosed` before any guard starts, `--hot` passes that same tree, a guard asked
+# for by name runs free over it, and `--hot --all` still selects every tier (REDS %223).
+#
 # USAGE
 #   sh tools/fixtures/standing_equipment_control.sh
 #
@@ -270,5 +277,60 @@ chmod +x "$gitpen/rishi/bin/rishi"
 out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "red_outranks_moved=yes" ;; *) echo "red_outranks_moved=no" ;; esac
+
+# --- the unclosed lap, proven from both sides on the same real repository -----------------
+# A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,
+# %223). The refusal has to be shown against the case it must NOT bite -- a clean cold open -- or a
+# guard that always refuses cannot be told from one that reads the index at all.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+
+run_gitpen() {
+  ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+
+# The green side: nothing staged, and a bare pass runs its guard and answers ok.
+( cd "$gitpen" && git reset -q ) >/dev/null 2>&1 || true
+rm -f "$gitpen/mid-run.txt" "$gitpen/mid-run-two.txt"
+out=$(run_gitpen)
+case "$out" in *"staged_uncommitted=0"*) echo "clean_cold_reads_zero=yes" ;; *) echo "clean_cold_reads_zero=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "clean_cold_passes=yes" ;; *) echo "clean_cold_passes=no" ;; esac
+
+# The refusing side: one path staged and never committed, and the bare pass refuses.
+( cd "$gitpen" && echo staged > left_behind.txt && git add left_behind.txt ) >/dev/null 2>&1 || true
+out=$(run_gitpen)
+case "$out" in *"run_verdict=lap_unclosed"*) echo "staged_cold_refuses=yes" ;; *) echo "staged_cold_refuses=no" ;; esac
+# It refuses BEFORE the first guard, so no guard line and no tree digest appear above it.
+case "$out" in *"alpha green"*) echo "staged_cold_refuses_early=no" ;; *) echo "staged_cold_refuses_early=yes" ;; esac
+case "$out" in *"tree_at_open="*) echo "staged_cold_skips_digest=no" ;; *) echo "staged_cold_skips_digest=yes" ;; esac
+
+# `--hot` is how a round says the staged paths are its own -- the after-`git add` pass.
+out=$(run_gitpen --hot)
+case "$out" in *"run_verdict=ok"*) echo "staged_hot_passes=yes" ;; *) echo "staged_hot_passes=no" ;; esac
+case "$out" in *"staged_uncommitted=1"*) echo "hot_still_reads_staged=yes" ;; *) echo "hot_still_reads_staged=no" ;; esac
+
+# A guard asked for by name is no lap open, so it runs free over the same dirty index.
+out=$(run_gitpen alpha)
+case "$out" in *"guards_run=1"*) echo "staged_named_guard_free=yes" ;; *) echo "staged_named_guard_free=no" ;; esac
+
+# The flags compose, which is the whole reason the parser became a loop.
+cat > "$gitpen/twotier.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260825.000000
+guard choir
+path guard.sh
+tier cadence
+seated 20260825.000000
+EOF
+out=$( ( cd "$gitpen" && STANDING_ROSTER=twotier.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" --hot --all 2>/dev/null ) || true )
+case "$out" in *"guards_run=2"*) echo "hot_composes_with_all=yes" ;; *) echo "hot_composes_with_all=no" ;; esac
 
 echo "control_verdict=ok"
