@@ -226,21 +226,39 @@ fn bridge_to_zig(
 }
 
 /// Find Rye's standard library directory, so the compiler can be pointed at it.
-/// An explicit RYE_LIB wins, for clarity and for hosts without `/proc`. Failing
-/// that, we read this executable's own path and apply the relative template
-/// beside it — `<exe_dir>/../lib`, the layout the `rye` tree ships in. We
-/// return an error rather than a fallback, so the caller can insist on our std.
+/// An explicit RYE_LIB wins, for clarity and for hosts that name their running
+/// binary some other way. Failing that, we find this executable's own directory
+/// and apply the relative template beside it — `<exe_dir>/../lib`, the layout the
+/// `rye` tree ships in. We return an error rather than a silent fallback, so the
+/// caller can insist on our std.
+///
+/// TWO READINGS, because one of them is Linux-only. `/proc/self/exe` is exact and
+/// is tried first. macOS and the BSDs have no `/proc`, so that read returns
+/// `FileNotFound` and a newcomer following this tree's own onboarding — fetch the
+/// toolchain, bootstrap `rye`, build — met that error with nothing but a hint
+/// (REDS %214). The second reading is `argv[0]`, the path the shell actually
+/// invoked: `rye/bin/rye`, `./rye/bin/rye`, or an absolute path all carry a
+/// separator and resolve against the working directory the same way. A bare `rye`
+/// found on PATH carries none, and that one still errors rather than guessing.
 fn resolve_rye_lib(init: std.process.Init, garden: std.mem.Allocator) ![]const u8 {
-    // An explicit RYE_LIB wins, for clarity and for hosts without `/proc`.
+    // An explicit RYE_LIB wins, for clarity and for a host neither reading suits.
     if (init.environ_map.get("RYE_LIB")) |path| return path;
 
-    // Otherwise, find the library beside this binary. `/proc/self/exe` names
-    // the running executable on Linux, our first-class target.
+    // First reading: the kernel's own answer, on the hosts that publish it.
     var buf: [4096]u8 = undefined;
-    const len = try std.Io.Dir.readLinkAbsolute(init.io, "/proc/self/exe", &buf);
-    const exe_path = buf[0..len];
-    const bin_dir = std.fs.path.dirname(exe_path) orelse return error.NoExecutableDirectory;
-    // Apply the relative template against the binary's own directory.
+    if (std.Io.Dir.readLinkAbsolute(init.io, "/proc/self/exe", &buf)) |len| {
+        const bin_dir = std.fs.path.dirname(buf[0..len]) orelse return error.NoExecutableDirectory;
+        return std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
+    } else |_| {}
+
+    // Second reading: the path the shell invoked, which every host provides.
+    const args = try init.minimal.args.toSlice(garden);
+    defer garden.free(args);
+    // invariant: a program always receives its own name, so argv is never empty here
+    assert(args.len >= 1);
+    const argv0 = std.mem.sliceTo(args[0], 0);
+    // A bare name came off PATH and names no directory, so it cannot locate our std.
+    const bin_dir = std.fs.path.dirname(argv0) orelse return error.NoExecutableDirectory;
     return std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, rye_lib_relative_to_exe });
 }
 

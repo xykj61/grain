@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260824.235724
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title A second reading for a host without /proc, and the region body folded
+prompt Keaton pasted a macOS build failure -- rye build: could not locate Rye's standard library (FileNotFound) -- and said book red fix then kg
+think The message named its own cause. resolve_rye_lib in rye/src/main.rye read /proc/self/exe and nothing else, and macOS publishes no such path, so the read returned FileNotFound exactly as reported.
+think The function's own comment already said for hosts without /proc beside the RYE_LIB override, so the gap was seen at authoring time and answered with a manual step rather than a second reading. That is the part worth booking.
+think No guard could have caught this. Every witness in this tree runs on the Linux pier where /proc is always present, so the reading that fails is the one no local run exercises -- a platform check only the failing platform can run is not a check.
+think The repair is a second reading rather than a wider first one. argv[0] is the path the shell actually invoked and every host provides it. rye/bin/rye, ./rye/bin/rye, and an absolute path all carry a separator and resolve the same way against the working directory.
+think A bare rye found on PATH carries no separator and names no directory, so that case still returns error.NoExecutableDirectory rather than guessing at a lib. Refusing is the honest answer there.
+think Checked the consumer before trusting a relative result -- the resolved path reaches dir.access(io, std_root, .{}), a relative-capable Dir API, so an argv[0]-derived relative path is safe rather than merely convenient.
+think Proved it by doing rather than by reading. Blinded the /proc probe in a copy of the source, built that copy, and ran it from a pen where only argv[0] could answer. It built a byte-identical 12,373,773-byte output.
+think The control's first run read argv0_reading_builds=no and the fix was already proven by hand, so the control was wrong rather than the repair. -femit-bin writes a file and makes no directory; the pen now builds its own tree first.
+think Booking the row pushed the ledger headline out of agreement with its own spine, and reds_ledger_monotone_witness refused it by name. That guard exists because booking a row and republishing the total are two acts and only one was ever guarded (REDS %127). Republished 213 to 214, remainder 193 to 194, span to 214.
+think The caravan suite's earlier RED on caravan_ladder_carry_witness was a stale mid-flight read -- that run started before the fold's pinned strings landed. Re-ran it alone and it stands GREEN at carried=58532 ceiling=58532.
+obs The honest limit is written into the control rather than left for a reader to infer. It blinds a probe rather than changing operating system, which is what a Linux pier can prove, and the header says so in its own What is not proven section.
+obs Two arcs closed in one round and they ship as two commits, since a fold of a duplicated body and a portability repair share no component and a reader following either would have to skip half the diff.
+loom control=rye_lib_resolve proc_reading_builds=yes argv0_reading_builds=yes bare_name_refused=yes wall_s=118
+loom caravan=ladder_carry carried=58532 ceiling=58532 modules=111 bodies=18199 families=699
+loom region_fold copies_removed=5 lines_returned=8 gap_before=37 gap_after=17
+file rye/src/main.rye the second reading -- /proc first, argv[0] when it errors, refusal when neither names a directory
+file tools/fixtures/rye_lib_resolve_control.sh proves all three legs on metal in a throwaway pen, and names what it cannot prove
+file construction/REDS.md REDS %214 booked and the headline republished to agree with its measured spine
+file caravan/region.rye the lifted Region body -- one documented copy with seven invariant blocks where five stood
+file caravan/bounded.rye each of three rungs now delegates through caravan_region, named so it cannot shadow a local var region
+think The ladder roster asserts a bijection between caravan/*.rye and the rows of caravan/LADDER.md, so the new module wanted a row in the shared-bodies table beside ladder_checks. Read the scan before the suite reached it rather than after.
+think Three rung witnesses pinned a module count of 110 and the fold made it 111. Swept for every pinned MODULES string at once instead of discovering them one suite run at a time -- a lantern that fires twice becomes a loom.
+think The itinerary stood at 24,575 bytes of its 24,576 bound, so seating the booking meant making two stale claims true first: the index fold landed this session and the invariant law reads 99% rather than 59.6%. The card now holds 5 bytes of headroom, which says it wants a fold of its own.
+obs Booked one external-research note under the standing permission rather than a list -- the round surfaced exactly one durable question, and it waits on a cheap measurement rather than arguing ahead of it. Graded B+ at Field, above the door.
+file construction/ITINERARY.md two stale claims made true, and the booking seated on the ranked remainder
+file external-research/20260825-000640_proving-a-host-you-do-not-have.md the open question this red surfaced, with four candidate answers and one falsifier
+file caravan/LADDER.md region.rye rostered in the shared-bodies table, so the bijection holds
+recommend keep-going the region fold and the macOS repair both stand green; the tally relatives still want a symlink to join caravan/region.rye, and that is the next mechanical lap

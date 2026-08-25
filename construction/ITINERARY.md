@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `24c3eac172` -- the report card seated, the model returned to Opus 5, and the comment dial booked before it is built. This line names the nib and one sentence; the account of a lap lives in its session log.
+**Git nib:** `2a9ccea972` -- the `Region` body lifted into `caravan/region.rye` where five copies stood, and `rye` given a second reading for its std so a host with no `/proc` can build. Suite 109 green.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
 upward is a school grade -- 20% becomes **80, a B**.
@@ -186,13 +186,10 @@ on Keaton's word** -- one line, `bash ~/grain/publish-seed.sh`, and it ships.
 
 ## Next -- the ranked remainder
 
-The whole outstanding vision is ranked in
-[`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md),
-Lindy-first and crux-first, with costs, gates, and falsifiers.
+Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
+[`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md).
 
-**Open, named, and waiting on its own lap.** The **index fold for four rooms** carrying 317 stale
-rows -- `active-designing` 86, `counsel` 112, `expanding-prompts` 78, `waymarks` 41 -- each its own
-round, since folding a room's index rewrites its front door. The **fascia weave** over the
+**Open, named, and waiting on its own lap.** The **fascia weave** over the
 thirty-nine browsed `active-designing/` documents, shaped as a living index page per cluster.
 **`docs/STOA.md`** at **166 lines against the `<=80` its own title declares**. The ten pages duty 4
 names as wanting a Status line. The doc-comment ASCII sweep at **21 `.rye` files in `image/` and all
@@ -201,18 +198,22 @@ names as wanting a Status line. The doc-comment ASCII sweep at **21 `.rye` files
 reference page a reader reaches on purpose. The class is named in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
-**Measured `20260824.170904` -- the comment dial answered, and it wants a wall Keaton sets.**
+**Measured `20260824.170904` -- the comment dial answered.**
 [`../tools/fixtures/comment_dial_scan.sh`](../tools/fixtures/comment_dial_scan.sh) read all **1,891**
-authored modules. **Door coverage is closed** at 99.6%, so that reading is never built. **The
-setting histogram lives** once `///` declaration docs leave the denominator -- median 14 becomes 53,
-the spread 21 points becomes 42. **And the strongest reading is one nobody proposed:** the seated
-`// invariant:` law runs at **59.6%**, leaving **13,235 asserts with no stated reason** across 485
-modules that say nothing in any contract vocabulary. **Open door -- a wall wants a ceiling, and
-13,235 is Keaton's number to set**, so no ratchet was seated. Verdict:
+authored modules. **Door coverage is closed** at 99.6%. **The setting histogram lives** once `///`
+declaration docs leave the denominator -- median 14 becomes 53. **The `// invariant:` law read 59.6%
+there and reads 99% now (`20260825`)**, gap 17, all `pub fn check_*` proof functions -- the figure
+moved because the meter got honest, ten corrections deep (REDS %207-%213). **A ceiling is Keaton's
+number to set**, so no ratchet is seated. Verdict:
 [`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
 Beside it, **half of Service may be countable** -- named and reached from the citation graph,
 current and carried left judged -- argued with its own trap named at
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
+
+**Booked `20260825.000640` -- proving a host we do not have.** All 54 guards run on this Linux
+pier, so a claim true only elsewhere is unprovable here; REDS %214 cost a first macOS
+build. Four answers, and the measurement that decides:
+[`../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../external-research/20260825-000640_proving-a-host-you-do-not-have.md).
 
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
 **`constels/` room** -- Kumara live implementations from **kres** and **brix** templates, in Kyri
