@@ -1,13 +1,13 @@
-# tools/h/hunk_photo_edits_witness.rish — the Photos app edits non-destructively on metal (HUNK11).
+# tools/h/hunk_photo_edits_witness.rish -- the Photos app edits non-destructively on metal (HUNK11).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK11.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK11.
 # Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md
 # Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos (concept only, siloed).
 #
-# HUNK3–HUNK10 gave the Photos app six pure verbs; this rung records those verbs as data. `image/photo_edits.rye`
+# HUNK3-HUNK10 gave the Photos app six pure verbs; this rung records those verbs as data. `image/photo_edits.rye`
 # holds an `EditList` and one `apply` that replays the whole list over a source image, returning a fresh edited image
-# with the source untouched. Replay is deterministic — the same list over the same source yields the same bytes every
-# time, the content-address guarantee an edited image never needs its pixels stored — and the list travels as a
+# with the source untouched. Replay is deterministic -- the same list over the same source yields the same bytes every
+# time, the content-address guarantee an edited image never needs its pixels stored -- and the list travels as a
 # flat-Bron `format photo-edits-v1` record, so render(parse(render(x))) is a fixed point. The selftest proves replay
 # composes the verbs by hand byte-for-byte, is deterministic and non-destructive (the empty list recovers the source),
 # stays an open image, travels as a fixed point, and refuses a bad header, an unknown verb, a malformed field, and an

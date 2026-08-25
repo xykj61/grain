@@ -1,12 +1,12 @@
-# tools/co/constel_net_bron_witness.rish — Constel dev-net harness, Rung 3: the net travels as text.
+# tools/co/constel_net_bron_witness.rish -- Constel dev-net harness, Rung 3: the net travels as text.
 #
-# Rungs one and two named a fake dev-net's galaxy from a law-safe name and settled a whole d12·d60
+# Rungs one and two named a fake dev-net's galaxy from a law-safe name and settled a whole d12-d60
 # fractal branch beneath it. This rung renders a spun-up constel to a format constel-net-v1 Bron record
 # (the safe name, then one point line per settled member) and parses it back byte-for-byte, so a dev-net's
 # roster crosses as text a person can read. The safe name rides with the record and the quarantine rides
-# with it: parse re-checks the naming law, so a record whose net name carries no digit refuses UnsafeName —
-# a roster can never travel under a name that could parse as a real @p. Unknown field · bad header ·
-# missing net · bad integer each refuse. Demo seeds only — no key, no network, no custody (gate %4 untouched).
+# with it: parse re-checks the naming law, so a record whose net name carries no digit refuses UnsafeName --
+# a roster can never travel under a name that could parse as a real @p. Unknown field - bad header -
+# missing net - bad integer each refuse. Demo seeds only -- no key, no network, no custody (gate %4 untouched).
 #
 # Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
 # Scope: active-designing/date/20260813/20260813-022908_constel-devnet-harness-exploration.md
@@ -35,7 +35,7 @@ assert selftest.out contains "a record with no net line refused MissingNet" else
 assert selftest.out contains "a non-numeric point refused BadInt" else "constel-net-bron: bad-int refusal missing"
 assert selftest.out contains "the quarantine carried in the bytes" else "constel-net-bron: crux claim missing"
 
-# Rung two stays its own GREEN binary — this rung renders the branch it settles, never replaces it, so
+# Rung two stays its own GREEN binary -- this rung renders the branch it settles, never replaces it, so
 # the whole-fractal crux stands at r3's door.
 let r2 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_topology_witness.rish 2>&1"]
 assert r2.ok else "constel-net-bron: rung two (the fractal settles) is not GREEN under the composing rung"

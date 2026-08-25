@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/constel_naming_scan.sh — Constel test-network naming law, the safety scan.
+# tools/fixtures/constel_naming_scan.sh -- Constel test-network naming law, the safety scan.
 #
 #   sh tools/fixtures/constel_naming_scan.sh <names-file>
 #
@@ -7,11 +7,11 @@
 # constellation name carries at least one digit, and so can NEVER parse as a real @p (which
 # after its ~ is lowercase letters + hyphens only, from a fixed 256-syllable table holding
 # no digits). A digit anywhere is a structural proof of non-@p, checkable without the table
-# — the same certainty the placeholder-ship-names law earns from segment length.
+# -- the same certainty the placeholder-ship-names law earns from segment length.
 #
 # Prints one `name=<n> digit=yes|no` line per drawn name, then a `verdict=ok` line when
 # every name carries a digit, or `verdict=unsafe` naming the first that does not. Output
-# convention: context/specs/20260729-215600_scan-seam-convention.md — the scan carries the
+# convention: context/specs/20260729-215600_scan-seam-convention.md -- the scan carries the
 # verdict; a caller checks status before trusting the lines.
 #
 # Law: active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md

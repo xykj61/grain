@@ -1,20 +1,20 @@
-# tools/al/ales_reverb_freeze_witness.rish — the frozen reverb: the held tail, sustained by iterated reverberation (ALES208).
+# tools/al/ales_reverb_freeze_witness.rish -- the frozen reverb: the held tail, sustained by iterated reverberation (ALES208).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES208.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES208.
 # Design read: active-designing/date/20260815/20260815-115209_fill-ales208-lotus-reverb-freeze.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged and composed with itself); lotus/clock.rye (ALES5 —
-# the sample clock the freeze is spoken against); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the span and its saturate the rail each
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged and composed with itself); lotus/clock.rye (ALES5 --
+# the sample clock the freeze is spoken against); lotus/timeline.rye (ALES2 -- the Clip, its max_clip bounding the span and its saturate the rail each
 # preset pass already rides).
 #
-# lotus/reverb_freeze.rye opens a FRESH reverb axis after the early/late axis closed — the FREEZE: a held tail that SUSTAINS and thickens instead of
+# lotus/reverb_freeze.rye opens a FRESH reverb axis after the early/late axis closed -- the FREEZE: a held tail that SUSTAINS and thickens instead of
 # decaying to silence, the held pad, the cinematic swell, the shimmer that hangs. It invents NO new audio arithmetic: the freeze composes ALES190's
-# named-room reverb with ITSELF — pass one is the plain wet, each further pass reverberates the reverberation, smearing the wash into a longer, denser
+# named-room reverb with ITSELF -- pass one is the plain wet, each further pass reverberates the reverberation, smearing the wash into a longer, denser
 # tail (precisely what a feedback-fed freeze IS), each pass saturating once so an iterated pile-up pins never wraps. The freeze depth is validated up
 # front (BadPasses on a zero or over-bound depth), and the FIRST pass prechecks before it writes, so a refusal never half-writes the clip (atomic). The
 # selftest proves: at passes = 1 the span equals reverb_preset over the span byte for byte (one pass is the plain wet); passes = 2 equals reverb_preset
 # applied twice and passes = 3 thrice, byte for byte (the freeze IS iterated reverberation); passes = 2 differs from passes = 1 (the freeze deepens the
 # tail); the rooms differ (room, hall, and plate frozen tails three real washes); silence stays silence; and the faults forward atomic (a bad depth
-# BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local — one clip, a validated clock, a
+# BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local -- one clip, a validated clock, a
 # bounded freeze depth; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -40,7 +40,7 @@ say "ales-reverb-freeze: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-freeze' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-freeze: selftest did not print the GREEN ales-reverb-freeze line"
 
-# This rung composes ALES190's reverb_preset with itself over its public API — re-prove the named-room preset still stands green beside it.
+# This rung composes ALES190's reverb_preset with itself over its public API -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-freeze: the ALES190 named-room preset regressed under its freeze"
 

@@ -1,6 +1,6 @@
-# lane_kvm_onpath_host.rish — Framework host one-shot (A-narrow · Claude 125200/130300).
+# lane_kvm_onpath_host.rish -- Framework host one-shot (A-narrow - Claude 125200/130300).
 #
-# Run OUTSIDE ai-jail on a host with /dev/kvm. Does not edit enclosure.conf —
+# Run OUTSIDE ai-jail on a host with /dev/kvm. Does not edit enclosure.conf --
 # exports LANE_KVM=true for the boot only, then re-proves refuse with lane off.
 #
 #   rishi/bin/rishi run tools/l/lane_kvm_onpath_host.rish

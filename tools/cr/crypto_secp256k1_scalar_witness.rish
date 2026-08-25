@@ -1,21 +1,21 @@
-# tools/cr/crypto_secp256k1_scalar_witness.rish — scalar arithmetic modulo the group order n on secp256k1 authored in pure Rye: the second field
-# ECDSA needs beside the base field, the arithmetic verification runs (s⁻¹ mod n, u1 = z·s⁻¹, u2 = r·s⁻¹) to check u1·G + u2·Q. Proven against
-# algebraic known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+# tools/cr/crypto_secp256k1_scalar_witness.rish -- scalar arithmetic modulo the group order n on secp256k1 authored in pure Rye: the second field
+# ECDSA needs beside the base field, the arithmetic verification runs (s⁻¹ mod n, u1 = z-s⁻¹, u2 = r-s⁻¹) to check u1-G + u2-Q. Proven against
+# algebraic known-answers and byte-for-byte against an independent implementation (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 # Design read: active-designing/date/20260816/20260816-023743_secp256k1-scalar-the-order-field.md (this rung's claim) and
 # active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-# Kin: crypto/secp256k1_scalarmul.rye (the point ladder these scalars multiply, GREEN) · crypto/ed25519_scalar.rye (the sibling scalar field mod
+# Kin: crypto/secp256k1_scalarmul.rye (the point ladder these scalars multiply, GREEN) - crypto/ed25519_scalar.rye (the sibling scalar field mod
 # L). secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference known-answers plus Zig's independent std.crypto are
 # the two witnesses (.claude/rules/gratitude-licenses.md).
 #
 # crypto/secp256k1_scalar.rye builds n = 2^256 − δ (δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf) from its defining form, never a pasted limb
 # pattern. reduce folds a 64-byte little-endian value modulo n by bytewise Horner, keeping the residue below n by a run of subtractions proven
-# fewer than 256 per byte; mul is reduce over a schoolbook 256×256→512 product; invert is a⁻¹ mod n by Fermat's little theorem, a^(n−2) mod n over
+# fewer than 256 per byte; mul is reduce over a schoolbook 256×256->512 product; invert is a⁻¹ mod n by Fermat's little theorem, a^(n−2) mod n over
 # a named 256-round binary exponentiation; is_canonical answers whether an encoding is already below n. The primitive calls no std.crypto. Parity
-# is proven at selftest against algebraic known-answers (0 reduces to 0, n reduces to 0, a·1 = a, a·a⁻¹ = 1) and against Zig's own
-# std.crypto.ecc.Secp256k1.scalar — reduce64, mul, Scalar.invert, rejectNonCanonical — byte-for-byte and verdict-for-verdict across a spread.
-# Purely local — a scalar is an integer, not a secret and not a signature: no real key, no signing (ECDSA signing stays its own gated round), no
+# is proven at selftest against algebraic known-answers (0 reduces to 0, n reduces to 0, a-1 = a, a-a⁻¹ = 1) and against Zig's own
+# std.crypto.ecc.Secp256k1.scalar -- reduce64, mul, Scalar.invert, rejectNonCanonical -- byte-for-byte and verdict-for-verdict across a spread.
+# Purely local -- a scalar is an integer, not a secret and not a signature: no real key, no signing (ECDSA signing stays its own gated round), no
 # network, no funds, no real device.
 #
 # Run from the repository root:

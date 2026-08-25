@@ -1,18 +1,18 @@
-# tools/f/fora_log_witness.rish — a sequence of decrees the whole sky agrees on, in order (FORA12).
+# tools/f/fora_log_witness.rish -- a sequence of decrees the whole sky agrees on, in order (FORA12).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA12. Design read: active-designing/date/20260814/20260814-054414_fora12-constel-replicated-log.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every accept: a decree's replies deframe at the
+# Law kin: .claude/rules/placeholder-ship-names.md -- the border guards every accept: a decree's replies deframe at the
 # naming-law border (wire.deframe), so a real address can never enter a log entry even as an accept.
 #
 # constel/log.rye orders FORA11's decrees into a bounded, append-only replicated log: each entry is one committed decree, and
 # because each index commits at most one value, two logs that replicate the same committed decrees are identical entry for
-# entry — no fork is possible. append grows the log in order (LogFull at the cap, NoEntry past the committed prefix);
+# entry -- no fork is possible. append grows the log in order (LogFull at the cap, NoEntry past the committed prefix);
 # run_and_append runs a decree and appends only on a clean commit, leaving the log unchanged on any failure. The selftest
 # proves: append grows in order and reads back, bounded; run_and_append over a real sky commits a sequence in order; two logs
 # replicating the same sequence match (no fork), and a log one entry short honestly does not; a failed decree does not grow
 # the log; and a full constellation of eight appends bounded.
-# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_log_witness.rish

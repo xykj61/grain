@@ -1,4 +1,4 @@
-# chrono_version_sweep.rish — five-line semver drift sweep on authored .md surfaces.
+# chrono_version_sweep.rish -- five-line semver drift sweep on authored .md surfaces.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ch/chrono_version_sweep.rish

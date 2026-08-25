@@ -1,4 +1,4 @@
-# stoa198_native_fold_wire_witness.rish — NativeActivity calls Glow product fold.
+# stoa198_native_fold_wire_witness.rish -- NativeActivity calls Glow product fold.
 #
 # Proves glow_native_activity imports glow_seva_b0_fold and calls
 # run_demo_fold (STOA198). Claim compose stays underneath. Pack GREEN.

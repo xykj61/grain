@@ -1,8 +1,8 @@
-# tools/h/hunk_edit_filmstrip_scrub_witness.rish — drag the filmstrip, the cursor scrubs the history band by band, on metal (HUNK56).
+# tools/h/hunk_edit_filmstrip_scrub_witness.rish -- drag the filmstrip, the cursor scrubs the history band by band, on metal (HUNK56).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK56.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK56.
 # Design read: active-designing/date/20260813/20260813-213001_hunk-filmstrip-scrub-exploration.md.
-# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses the
+# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) -- a keeper presses the
 # edit-history strip and drags, and the picture scrubs continuously through every step under the finger (concept only,
 # siloed).
 #
@@ -10,7 +10,7 @@
 # one FilmstripJump (its cursor, geometry, paint) and adds only the drag arming (HUNK50's down/move/up law) and a
 # nearest-band clamp: where a tap classified to a band OR NONE, a scrub classifies to the NEAREST valid band, so it
 # follows the finger and pins at the ends (past the right edge on the live edge; off the left on the original). The
-# cursor move is HUNK16's seek — a jump that forgets nothing — so a scrub is a walk, never a push. The selftest proves a
+# cursor move is HUNK16's seek -- a jump that forgets nothing -- so a scrub is a walk, never a push. The selftest proves a
 # drag tracks the finger band by band, a sweep back tracks in reverse, a scrub pins at both edges (unlike a tap), a scrub
 # forgets nothing, a move with no press fires nothing, and a bad thumbnail refuses at open. No network, no key, no funds.
 #
@@ -30,7 +30,7 @@ assert build.ok else "hunk-edit-filmstrip-scrub: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-filmstrip-scrub: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-edit-filmstrip-scrub: ${out}"

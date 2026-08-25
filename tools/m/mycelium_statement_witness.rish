@@ -1,24 +1,24 @@
-# tools/m/mycelium_statement_witness.rish — the Statement: one account's own line, read out of the ledger (r1).
+# tools/m/mycelium_statement_witness.rish -- the Statement: one account's own line, read out of the ledger (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the account-statement voice · rung r1 — the crux.
-# The Mycelium ledger's primitives each decide something about the agreed order — who holds what, which
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the account-statement voice - rung r1 -- the crux.
+# The Mycelium ledger's primitives each decide something about the agreed order -- who holds what, which
 # pledge honored, which the clock let expire. Yet a holder who opens the ledger meets a stream of facts,
 # not an answer to the plainest question they ask: WHERE DO I STAND? The Statement is that answer, read as
-# a pure, bounded projection of one account out of a resolved lapse.Ledger — balance (spendable), reserved
+# a pure, bounded projection of one account out of a resolved lapse.Ledger -- balance (spendable), reserved
 # (held in open pledges), received (cumulative lawful inflow), and a bounded list of pledge lines, each
-# made or received, naming a counterparty, an amount, and a settlement state (open · posted · voided · lapsed).
+# made or received, naming a counterparty, an amount, and a settlement state (open - posted - voided - lapsed).
 #
 # The crux this witness proves is A STATEMENT RECONCILES: an account's reported reserved equals exactly the
 # sum of the amounts of its own still-OPEN outbound pledges, because an open pledge is precisely what holds
-# coins in reserve — a posted, voided, or lapsed pledge has already spent or returned them. Across every
+# coins in reserve -- a posted, voided, or lapsed pledge has already spent or returned them. Across every
 # account the statements CONSERVE: balances + reserved sums to what genesis issued, unwidened from the
 # Pledge's own law. An OPEN scene reserves 100 (Alice's made line to Bob stands open); a POSTED scene returns
 # Alice's reserve to zero and reads Bob's received line posted with 100 spendable; a LAPSED scene brings
 # Alice's coins home and reads her line lapsed; a stranger who never appeared reads a true zero statement,
-# no lines, present=false; and arrival-independence is inherited from the ledger — swapping the two round-2
+# no lines, present=false; and arrival-independence is inherited from the ledger -- swapping the two round-2
 # facts yields a byte-for-byte identical statement, the Statement adding no order of its own. Composes cord +
 # fold + lapse + kumara public API only, editing none; every list bounded by the ledger's own pledge and
-# account ceilings; demo keeper seeds — no key, no funds, no network, no custody.
+# account ceilings; demo keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 #
@@ -44,13 +44,13 @@ assert selftest.out contains "statements conserve to genesis" else "mycelium-sta
 assert selftest.out contains "a stranger reads a true zero" else "mycelium-statement: stranger-zero claim missing"
 assert selftest.out contains "arrival-independence inherited" else "mycelium-statement: arrival-independence claim missing"
 
-# The rendered statement a keeper reads — Alice's open line, the plainest thing the voice does. Bob is the
+# The rendered statement a keeper reads -- Alice's open line, the plainest thing the voice does. Bob is the
 # recipient (fingerprint 55154f42..., the same Bob the Lapse fixture names), the pledge stands open at 100.
 assert selftest.out contains "balance=0 reserved=100 received=100" else "mycelium-statement: rendered open position missing"
 assert selftest.out contains "made-> 55154f42065ea5a1 100 open" else "mycelium-statement: rendered made line missing"
 
 # The Lapse whose resolved ledger the Statement projects, and the Cord + fold whose signed-fact model it
-# reads through, all stand at the door — their own selftests prove the machinery the projection rests on.
+# reads through, all stand at the door -- their own selftests prove the machinery the projection rests on.
 let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
 assert lapse.ok else "mycelium-statement: the Lapse whose ledger the Statement reads is not GREEN"
 assert lapse.out contains "GREEN" else "mycelium-statement: the Lapse did not speak its GREEN"

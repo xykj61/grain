@@ -1,15 +1,15 @@
-# tools/f/fora_switchboard_witness.rish — a switchboard routes a whole local constellation by name (FORA6).
+# tools/f/fora_switchboard_witness.rish -- a switchboard routes a whole local constellation by name (FORA6).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA6.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA6.
 # Design read: active-designing/date/20260814/20260814-045802_fora6-constel-switchboard-multi-pier.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the switchboard routes but never re-checks: a greeting routed through a
+# Law kin: .claude/rules/placeholder-ship-names.md -- the switchboard routes but never re-checks: a greeting routed through a
 # mailbox but carrying a smuggled vowel still refuses VowelPresent at wire.deframe. The FORA3 gates keep the only trust.
 #
-# constel/switchboard.rye stands a bounded set of per-pier byte queues — one channel.Channel mailbox per member of a roster —
+# constel/switchboard.rye stands a bounded set of per-pier byte queues -- one channel.Channel mailbox per member of a roster --
 # the first rung that lets three or more fake piers meet through one shared medium. Its one new concern is routing a frame to
 # the right pier by name. The selftest proves: a constellation of three stands up; two members agree routed through the
 # switchboard; the bystander's mailbox stays silent; a stranger's name refuses NoSuchPier; a pier reads only its own mail; and
-# the naming-law border still guards the medium. Purely local — no socket, no network, no keys, no funds.
+# the naming-law border still guards the medium. Purely local -- no socket, no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_switchboard_witness.rish

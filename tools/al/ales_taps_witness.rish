@@ -1,20 +1,20 @@
-# tools/al/ales_taps_witness.rish — the multi-tap delay: several fixed taps of the dry signal (ALES68).
+# tools/al/ales_taps_witness.rish -- the multi-tap delay: several fixed taps of the dry signal (ALES68).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES68.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES68.
 # Design read: active-designing/date/20260814/20260814-192743_fill-ales68-lotus-multi-tap-delay.md
-# Stands on: lotus/echo.rye (ALES66 — the feedback delay this contrasts); lotus/graft.rye (ALES24 — the dry-span snapshot-before-write
-# idiom reused); lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate); lotus/mix.rye (ALES3 — the same
+# Stands on: lotus/echo.rye (ALES66 -- the feedback delay this contrasts); lotus/graft.rye (ALES24 -- the dry-span snapshot-before-write
+# idiom reused); lotus/timeline.rye (ALES2 -- the Clip, sample_max, max_clip, and the one true saturate); lotus/mix.rye (ALES3 -- the same
 # saturate, re-proven green below).
 #
 # lotus/taps.rye reads a delay line the second way, contrasting ALES66's feedback: several FIXED taps of the DRY signal, each at its own
-# delay and level, summed with the dry — y[i] = saturate(x[i] + Σ_k num_k/den_k·x[i-d_k]). Every tap reads a FROZEN snapshot of the dry
-# prefix (the graft/clipboard snapshot-before-write idiom), so the taps are INDEPENDENT — neither feeds the other, the sharp contrast
+# delay and level, summed with the dry -- y[i] = saturate(x[i] + Σ_k num_k/den_k-x[i-d_k]). Every tap reads a FROZEN snapshot of the dry
+# prefix (the graft/clipboard snapshot-before-write idiom), so the taps are INDEPENDENT -- neither feeds the other, the sharp contrast
 # with the decaying feedback train. The selftest proves: two taps are two independent copies (an impulse's tap-4 copy is 1/4 of the
-# ORIGINAL dry, not the compounded feedback value); a single unity tap lands one full copy of the dry (unity legal here — no loop to run
+# ORIGINAL dry, not the compounded feedback value); a single unity tap lands one full copy of the dry (unity legal here -- no loop to run
 # away); silence stays silence and a zero level is the dry identity; a loud constructive sum saturates to the i16 rail rather than
 # wrapping (ALES3's one true saturation, reused, once over the whole sum); the taps sum order-independently; and zero taps or too many
 # refuse BadTapCount, a zero or too-wide delay BadDelay, a tap above unity or a zero denominator BadLevel, an out-of-range span BadRange.
-# Purely local — no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no sample rate.
+# Purely local -- no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_taps_witness.rish
@@ -39,11 +39,11 @@ say "ales-taps: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-taps' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-taps: selftest did not print the GREEN ales-taps line"
 
-# This rung reuses ALES3's one true saturation over its public API — re-prove the mixer still stands green beside it.
+# This rung reuses ALES3's one true saturation over its public API -- re-prove the mixer still stands green beside it.
 let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/mix.rye -femit-bin=lotus/bin/mix && lotus/bin/mix selftest 2>&1 | grep -q 'GREEN ales-mix' && echo yes"]
 assert (trim mix.out) == "yes" else "ales-taps: the ALES3 mixer regressed under the multi-tap delay"
 
-# And the ALES66 feedback echo this rung contrasts must stand green beside it — the two delay-line readings live side by side.
+# And the ALES66 feedback echo this rung contrasts must stand green beside it -- the two delay-line readings live side by side.
 let echo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=lotus/bin/echo && lotus/bin/echo selftest 2>&1 | grep -q 'GREEN ales-echo' && echo yes"]
 assert (trim echo.out) == "yes" else "ales-taps: the ALES66 feedback echo regressed under the multi-tap delay"
 

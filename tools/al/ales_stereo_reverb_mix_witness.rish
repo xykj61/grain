@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_reverb_mix_witness.rish — the stereo wet/dry mix: the reverb's most-reached-for knob, HOW MUCH reverb, across a stereo master (ALES193).
+# tools/al/ales_stereo_reverb_mix_witness.rish -- the stereo wet/dry mix: the reverb's most-reached-for knob, HOW MUCH reverb, across a stereo master (ALES193).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES193.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES193.
 # Design read: active-designing/date/20260815/20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/reverb_mix.rye (ALES192 —
-# the mono blend this mirrors per ear); lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, run over the master unchanged); lotus/reverb_mix.rye (ALES192 --
+# the mono blend this mirrors per ear); lotus/clock.rye (ALES5 -- the sample clock); lotus/timeline.rye (ALES2 -- the Clip, its max_clip bounding
 # each dry snapshot and its saturate clamping the blend).
 #
-# lotus/stereo_reverb_mix.rye gives the STEREO reverb its most-reached-for knob — HOW MUCH reverb, the wet/dry balance — the thin twin ALES192
+# lotus/stereo_reverb_mix.rye gives the STEREO reverb its most-reached-for knob -- HOW MUCH reverb, the wet/dry balance -- the thin twin ALES192
 # named next. It snapshots each channel's dry span, reverberates the master wet in place through ALES191's stereo_reverb_preset UNCHANGED, then
-# blends each channel independently: out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), the same linear balance ALES192 proved, run per ear
+# blends each channel independently: out[i] = saturate((den-num)-dry[i]/den + num-wet[i]/den), the same linear balance ALES192 proved, run per ear
 # with no cross-channel read, saturated once so a loud blend pins never wraps. The selftest proves: at mix = 0 each channel is restored to the
 # exact dry (the identity); at mix = den it equals stereo_reverb_preset over the span byte for byte on both channels; a half mix differs from both
 # and each sample of each channel is the honest weighted average; the image is held (a centred master stays identical channel-to-channel, a stereo
 # master keeps its channels distinct); the channels leave balanced and silence stays silence; and the faults forward (a bad fraction BadMix, a
-# span past the clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local — one StereoClip, two bounded stack
+# span past the clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local -- one StereoClip, two bounded stack
 # snapshots; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -39,7 +39,7 @@ say "ales-stereo-reverb-mix: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-mix' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-mix: selftest did not print the GREEN ales-stereo-reverb-mix line"
 
-# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the named-room stereo preset still stands green beside it.
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the named-room stereo preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-mix: the ALES191 stereo named-room preset regressed under its wet/dry mix"
 

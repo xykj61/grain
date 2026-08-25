@@ -1,4 +1,4 @@
-# hawm0_emulator_serial_pin_witness.rish — STOA279: pin emulator-* vs Pixel.
+# hawm0_emulator_serial_pin_witness.rish -- STOA279: pin emulator-* vs Pixel.
 #
 # Device-free: proves the boot worker waits for an emulator-* serial and
 # uses adb -s for getprop/shell, so a USB phone on the same adb server

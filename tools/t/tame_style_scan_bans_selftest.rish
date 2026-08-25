@@ -1,4 +1,4 @@
-# tame_style_scan_bans_selftest.rish — proves native ban scan finds violations.
+# tame_style_scan_bans_selftest.rish -- proves native ban scan finds violations.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan_bans_selftest.rish

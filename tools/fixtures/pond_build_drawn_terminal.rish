@@ -1,4 +1,4 @@
-# tools/fixtures/pond_build_drawn_terminal.rish — build pond/bin/drawn-terminal from the repository root.
+# tools/fixtures/pond_build_drawn_terminal.rish -- build pond/bin/drawn-terminal from the repository root.
 #
 # Run from the repository root (canonical entry):
 #   rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish

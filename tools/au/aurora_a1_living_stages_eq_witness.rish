@@ -1,10 +1,10 @@
-# tools/au/aurora_a1_living_stages_eq_witness.rish — Ashvini equality: exact 6 (STOA337).
+# tools/au/aurora_a1_living_stages_eq_witness.rish -- Ashvini equality: exact 6 (STOA337).
 #
 #   rishi/bin/rishi run tools/au/aurora_a1_living_stages_eq_witness.rish
 #
-# gth speaks ceilings. eq speaks exactly. Aurora's six living stages (seed ·
-# relay · named · sealed · wire · posted) are the third pedestal that could
-# not decide until this rune — 6→1, neighbors→0.
+# gth speaks ceilings. eq speaks exactly. Aurora's six living stages (seed -
+# relay - named - sealed - wire - posted) are the third pedestal that could
+# not decide until this rune -- 6->1, neighbors->0.
 
 say "eq-stg: Language EN — the third exact deciding gate (STOA337)."
 say "eq-stg: Lens TAME — exact match; both sides; gth neighbor still stands."

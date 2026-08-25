@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_rectify_witness.rish — stereo_rectify: the full-wave rectifier carried into stereo with ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class, the strongest image-break in
+# tools/al/ales_stereo_rectify_witness.rish -- stereo_rectify: the full-wave rectifier carried into stereo with ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class, the strongest image-break in
 # the class (ALES138).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES138.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES138.
 # Design read: active-designing/date/20260815/20260815-040027_fill-ales138-lotus-stereo-rectify.md
-# Stands on: lotus/rectify.rye (ALES84 — the mono full-wave rectifier run once per channel, |x| pinned to the rail), lotus/stereo_decimate.rye (ALES137 — the image-PRESERVING member whose opposite pole this rung
-# is), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip
-# whose defining invariant is that left and right hold the same length. This rung carries ALES84's full-wave rectifier into stereo — folding the negative half of the wave up onto the positive side in both
+# Stands on: lotus/rectify.rye (ALES84 -- the mono full-wave rectifier run once per channel, |x| pinned to the rail), lotus/stereo_decimate.rye (ALES137 -- the image-PRESERVING member whose opposite pole this rung
+# is), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip
+# whose defining invariant is that left and right hold the same length. This rung carries ALES84's full-wave rectifier into stereo -- folding the negative half of the wave up onto the positive side in both
 # channels so a rectification lands on both speakers together, the even-harmonic voice of the diode bridge. The rectifier is the strongest image-break in the class: an even map lands +a and −a on the same a, so
-# an out-of-phase master (right = −left) comes back with identical channels, the antisymmetry collapsed to mono — the honest opposite of the decimator, which copied an anchor and preserved the image.
+# an out-of-phase master (right = −left) comes back with identical channels, the antisymmetry collapsed to mono -- the honest opposite of the decimator, which copied an anchor and preserved the image.
 #
 # lotus/stereo_rectify.rye validates the span once against the shared length before either channel is mutated (BadRange on a span outside the samples), then rectifies both channels through ALES84's rectify;
 # RectifyError reused whole. The crux is four laws. THE STEREO RECTIFY LAW: each channel equals ALES84's mono rectify over the same span byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after, both

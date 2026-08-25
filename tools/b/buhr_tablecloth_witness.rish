@@ -1,9 +1,9 @@
-# tools/b/buhr_tablecloth_witness.rish — BUHR Journey 7, Rung 1: the named artifact store.
+# tools/b/buhr_tablecloth_witness.rish -- BUHR Journey 7, Rung 1: the named artifact store.
 #
-# Tablecloth is the equinox's last unbuilt module — the Lexicon's "Brix-facing
+# Tablecloth is the equinox's last unbuilt module -- the Lexicon's "Brix-facing
 # application database and artifact store". It invents no storage: it is the naming
 # layer over mantra/beading.rye's content-addressed BeadStore. This rung proves the
-# crux — a human name binds to a content address, and fetch-by-name returns exactly the
+# crux -- a human name binds to a content address, and fetch-by-name returns exactly the
 # bytes whose digest that name pins. The same bytes are stored once and named many times
 # (the dedup dividend), a tampered bead or an unknown name refuses, and the Brix-facing
 # `format tablecloth-v1` manifest round-trips name, address, and length field for field.
@@ -31,7 +31,7 @@ assert selftest.out contains "tampered bead, unknown name, taken name refused wh
 assert selftest.out contains "empty name, overlong name, oversized content refused whole GREEN" else "buhr7: name/size refusals missing"
 assert selftest.out contains "bad manifest header refused GREEN" else "buhr7: bad-manifest refusal missing"
 
-# The content-addressed store Tablecloth names over stays its own green binary — the
+# The content-addressed store Tablecloth names over stays its own green binary -- the
 # naming layer composes over beading's public deposit/reassemble/verify only.
 let beading_bin = "mantra/bin/beading"
 let beading_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/beading.rye -femit-bin=${beading_bin}"]

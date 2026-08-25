@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_shrink_scope_census_witness.rish — e46 Shrink scope / POCPOU.
+# tools/gen/season/tigerbeetle_shrink_scope_census_witness.rish -- e46 Shrink scope / POCPOU.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_shrink_scope_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-shrink-scope: Language EN — shrink scope; keep check close to use."
 say "tb-shrink-scope: Style Radiant — POCPOU stays rare; semantic distance shrinks."

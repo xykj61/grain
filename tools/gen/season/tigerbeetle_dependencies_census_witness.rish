@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_dependencies_census_witness.rish — e52 Dependencies.
+# tools/gen/season/tigerbeetle_dependencies_census_witness.rish -- e52 Dependencies.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_dependencies_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-dependencies: Language EN — zero dependencies beyond Zig."
 say "tb-dependencies: Style Radiant — supply-chain risk stays out of the stack."

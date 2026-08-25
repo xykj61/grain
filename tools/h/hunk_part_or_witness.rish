@@ -1,8 +1,8 @@
-# tools/h/hunk_part_or_witness.rish — an OR of clauses, the dual of HUNK78's AND (HUNK83).
+# tools/h/hunk_part_or_witness.rish -- an OR of clauses, the dual of HUNK78's AND (HUNK83).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK83.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK83.
 # Design read: active-designing/date/20260814/20260814-004500_hunk-part-or-any-of-query-exploration.md
-# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens the wall to
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- checking two values of one facet widens the wall to
 # the union (concept only, siloed).
 #
 # HUNK78 gave the marketplace a conjunction (narrow to the parts matching EVERY clause). A real sidebar also WIDENS:
@@ -25,7 +25,7 @@ let bin = "image/bin/part_or"
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-or: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("AND's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("AND's") that breaks a shell single-quote round-trip.
 let outfile = "image/bin/part_or.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-or: selftest exited non-zero — see ${outfile}"
@@ -36,7 +36,7 @@ say "hunk-part-or: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-or' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-or: selftest did not print the GREEN part-or line"
 
-# HUNK78 stays GREEN — the conjunction this rung duals and is cross-checked against (OR superset of AND).
+# HUNK78 stays GREEN -- the conjunction this rung duals and is cross-checked against (OR superset of AND).
 let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
 assert a.ok else "hunk-part-or: HUNK78 part_and re-run failed — see image/bin/part_and.out"
 let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]

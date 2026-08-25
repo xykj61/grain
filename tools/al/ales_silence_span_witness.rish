@@ -1,14 +1,14 @@
-# tools/al/ales_silence_span_witness.rish — silence_span: write silence over a span in place, the length-preserving third of the trim/open/overwrite trio (ALES110).
+# tools/al/ales_silence_span_witness.rish -- silence_span: write silence over a span in place, the length-preserving third of the trim/open/overwrite trio (ALES110).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES110.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES110.
 # Design read: active-designing/date/20260815/20260815-010618_fill-ales110-lotus-silence-span.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio),
-# lotus/insert_silence.rye (ALES109 — imported by the selftest so the same span is shown growing the clip beside cut shrinking it and silence_span keeping it), lotus/meter.rye
-# (ALES13 — the peak/RMS meter, used only to prove overwriting with silence never raises the peak). ALES2's cut removes a span and SHRINKS the clip; ALES109's insert_silence
-# opens a gap and GROWS the clip; silence_span OVERWRITES a span and leaves the length exactly as it is — the Silence Audio Selection button every editor ships (drop a cough,
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio),
+# lotus/insert_silence.rye (ALES109 -- imported by the selftest so the same span is shown growing the clip beside cut shrinking it and silence_span keeping it), lotus/meter.rye
+# (ALES13 -- the peak/RMS meter, used only to prove overwriting with silence never raises the peak). ALES2's cut removes a span and SHRINKS the clip; ALES109's insert_silence
+# opens a gap and GROWS the clip; silence_span OVERWRITES a span and leaves the length exactly as it is -- the Silence Audio Selection button every editor ships (drop a cough,
 # mute a bleed, clear a region to quiet without moving anything around it). Naming it beside cut and insert_silence completes the trio: remove, open, or overwrite.
 #
-# lotus/silence_span.rye writes zero into the count samples starting at start, refusing BadRange when the span falls outside the current samples before any write — one
+# lotus/silence_span.rye writes zero into the count samples starting at start, refusing BadRange when the span falls outside the current samples before any write -- one
 # bounded pass, no second buffer. The crux is four laws. THE SILENCE LAW: the span goes all zero and the rest stays byte for byte, the length untouched. THE TRIO / LENGTH
 # LAW: the same span keeps the length here, shrinks it through cut, and grows it through insert_silence. THE IDEMPOTENCE / PEAK LAW: silencing twice equals once, and the peak
 # (re-measured through ALES13) is non-increasing. THE DEGENERATE / REFUSAL LAW: count 0 the identity, silence_span(0, len) all silence, the empty clip its own silence, a span

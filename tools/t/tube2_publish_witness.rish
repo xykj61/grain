@@ -1,4 +1,4 @@
-# tube2_publish_witness.rish — TUBE2: signed app+manifest publish into Granary.
+# tube2_publish_witness.rish -- TUBE2: signed app+manifest publish into Granary.
 #
 # Maker publishes a TUBE0 Manifest resin under a signed person/weave name;
 # consumer resolves, clones, and admits (TUBE1) before install. See

@@ -1,20 +1,20 @@
-# tools/al/ales_reverb_witness.rish — the REVERB: Schroeder's reverberator, parallel combs summed then diffused through series allpasses (ALES186).
+# tools/al/ales_reverb_witness.rish -- the REVERB: Schroeder's reverberator, parallel combs summed then diffused through series allpasses (ALES186).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES186.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES186.
 # Design read: active-designing/date/20260815/20260815-093042_fill-ales186-lotus-reverb.md
-# Stands on: lotus/echo.rye (ALES66 — the COMB stage and its precheck, run once per comb on a dry copy); lotus/allpass.rye (ALES184 — the
-# ALLPASS diffusion stage and its precheck, run in series on the comb-bank sum); lotus/timeline.rye (ALES2 — the Clip, max_clip, and the one
-# true saturate reused for the parallel sum); lotus/mix.rye (ALES3 — the same saturate, the summing lesson).
+# Stands on: lotus/echo.rye (ALES66 -- the COMB stage and its precheck, run once per comb on a dry copy); lotus/allpass.rye (ALES184 -- the
+# ALLPASS diffusion stage and its precheck, run in series on the comb-bank sum); lotus/timeline.rye (ALES2 -- the Clip, max_clip, and the one
+# true saturate reused for the parallel sum); lotus/mix.rye (ALES3 -- the same saturate, the summing lesson).
 #
 # lotus/reverb.rye composes the two proven time-based primitives into the wing's keystone: wet = series_allpass(sum of parallel combs(dry)).
-# It invents no new arithmetic — every sample it writes is written by a stage already proven byte for byte; its own work is the SHAPE of the
+# It invents no new arithmetic -- every sample it writes is written by a stage already proven byte for byte; its own work is the SHAPE of the
 # composition. The selftest proves: the composition law (a reverb of two combs and one allpass over an impulse EQUALS echo on two copies
 # summed once through saturate then the allpass on the sum, byte for byte, with a hand-computed value anchoring it); the single-comb
 # degenerate (one comb and no allpass IS ALES66's echo); silence stays silence; the tail decays to silence within the clip (both stages
 # below unity, so their composition settles); the saturation law (two loud in-phase combs sum past the i16 rail and pin to sample_max); and
 # the refusal / atomicity laws (an empty bank NoCombs, an over-long bank TooManyStages, a bad comb or allpass delay BadDelay, a feedback or
-# gain at unity BadGain, an out-of-range span BadRange — including a bad allpass AFTER valid combs, the clip untouched, so the reverb is
-# atomic, every stage validated before any write). Purely local — the delays counted in sample indices not milliseconds, no network, no
+# gain at unity BadGain, an out-of-range span BadRange -- including a bad allpass AFTER valid combs, the clip untouched, so the reverb is
+# atomic, every stage validated before any write). Purely local -- the delays counted in sample indices not milliseconds, no network, no
 # keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:

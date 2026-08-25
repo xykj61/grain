@@ -1,6 +1,6 @@
-# width_check_th6.rish — TH-6 witness: Comlink hosted wire zero authored usize.
+# width_check_th6.rish -- TH-6 witness: Comlink hosted wire zero authored usize.
 #
-# Gates comlink/hosted_wire.rye — wire offsets and capacities use u64 per seam
+# Gates comlink/hosted_wire.rye -- wire offsets and capacities use u64 per seam
 # policy; global width-check stays RED until Aurora freestanding width.
 #
 # Run from the repository root:

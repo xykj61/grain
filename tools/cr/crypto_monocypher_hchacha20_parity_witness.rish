@@ -1,23 +1,23 @@
-# tools/cr/crypto_monocypher_hchacha20_parity_witness.rish — Monocypher-source parity for the standalone HChaCha20 (crypto_chacha20_h) subkey-derivation
-# core, the nonce-extension the whole XChaCha line folds through — the 256-bit subkey every random-nonce sealed message (Vault, Comlink, the Lotus
+# tools/cr/crypto_monocypher_hchacha20_parity_witness.rish -- Monocypher-source parity for the standalone HChaCha20 (crypto_chacha20_h) subkey-derivation
+# core, the nonce-extension the whole XChaCha line folds through -- the 256-bit subkey every random-nonce sealed message (Vault, Comlink, the Lotus
 # signed carry) derives before enciphering. Our authored crypto/xchacha20.rye's hchacha20 and the vendored Monocypher's own C (vendor/monocypher,
 # CC0/BSD-dual), each compiled fresh and asked for the same six subkeys, diffed byte-for-byte. The TWELFTH rung of the real Monocypher-source parity
-# pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · standalone Poly1305 · standalone
-# ChaCha20 · standalone SHA-512 · HMAC-SHA-512 came before). Season G · Cryptography.
+# pattern (BLAKE2b - X25519 - Ed25519 - IETF AEAD - Argon2 - XChaCha20-Poly1305 flagship - Edwards<->Montgomery - standalone Poly1305 - standalone
+# ChaCha20 - standalone SHA-512 - HMAC-SHA-512 came before). Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/xchacha20.rye proved HChaCha20 against the draft §2.2.1 known-answer and inside
-# the AEAD flagship, yet never STANDALONE against Monocypher's own crypto_chacha20_h — so the subkey-derivation core the whole XChaCha nonce-extension
+# the AEAD flagship, yet never STANDALONE against Monocypher's own crypto_chacha20_h -- so the subkey-derivation core the whole XChaCha nonce-extension
 # rests on now stands proven in its own right, the nonce-extension counterpart to the standalone ChaCha20 and Poly1305 rungs that prove the AEAD's other halves.
-# Kin: crypto/xchacha20.rye (our authored HChaCha20 + XChaCha20-Poly1305 AEAD, GREEN against Zig's std.crypto and the draft vector) · tools/rye/monocypher_hchacha20_parity.rye
-# (our printing harness) · tools/fixtures/monocypher_hchacha20_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_chacha20_parity_witness.rish
-# (the standalone ChaCha20 sibling — together they prove the XChaCha construction's cores standalone). Monocypher stays the parity TARGET, vendored and
+# Kin: crypto/xchacha20.rye (our authored HChaCha20 + XChaCha20-Poly1305 AEAD, GREEN against Zig's std.crypto and the draft vector) - tools/rye/monocypher_hchacha20_parity.rye
+# (our printing harness) - tools/fixtures/monocypher_hchacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_chacha20_parity_witness.rish
+# (the standalone ChaCha20 sibling -- together they prove the XChaCha construction's cores standalone). Monocypher stays the parity TARGET, vendored and
 # unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The six lines are anchored to the world: line 1 is the draft-irtf-cfrg-xchacha-03 §2.2.1 published HChaCha20 subkey (the canonical known-answer,
-# 82413b42…d3ecdc); lines 2-6 are subkeys over deterministic (key, input) pairs, where the oracle is a second real implementation agreeing byte-for-byte.
-# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+# 82413b42...d3ecdc); lines 2-6 are subkeys over deterministic (key, input) pairs, where the oracle is a second real implementation agreeing byte-for-byte.
+# Purely local -- no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_monocypher_hchacha20_parity_witness.rish
@@ -35,11 +35,11 @@ let rout = "crypto/bin/rye_hchacha20.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_hchacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-hchacha20-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — six subkey hex lines.
+# 2. Run the Monocypher C harness -- six subkey hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-hchacha20-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — six subkey hex lines over the identical inputs.
+# 3. Run our authored Rye harness -- six subkey hex lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_hchacha20_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-hchacha20-parity: Rye harness exited non-zero — see ${rout}"
 

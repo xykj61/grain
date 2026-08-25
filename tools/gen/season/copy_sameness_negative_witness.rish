@@ -1,15 +1,15 @@
-# tools/gen/season/copy_sameness_negative_witness.rish — the sameness guard bites.
+# tools/gen/season/copy_sameness_negative_witness.rish -- the sameness guard bites.
 #
 #   rishi/bin/rishi run tools/gen/season/copy_sameness_negative_witness.rish
 #
-# Voice Season v3 · slot 3 (emphasis) · happy_zone_witnesses_first.
+# Voice Season v3 - slot 3 (emphasis) - happy_zone_witnesses_first.
 #
 # At e6 I planted a drift by hand, watched the guard fire, and restored the file.
 # That proved the guard once, in one sitting, by an act nobody can repeat from
 # the record. This points the same scan at a fixture built to hold the violation,
 # so the refusal is observed on every run and no live file is ever touched.
 #
-# Fixture: context/fixtures/copy_sameness_drift/tally_copy_drifted.rye —
+# Fixture: context/fixtures/copy_sameness_drift/tally_copy_drifted.rye --
 # standing exempt, per the intentional-violation law. It must stay wrong.
 
 say "copy-sameness-negative: Language EN — the sameness guard is proven to bite."

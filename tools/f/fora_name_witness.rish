@@ -1,8 +1,8 @@
-# tools/f/fora_name_witness.rish — a Constel fake-pier name is provably never a real ship (FORA0).
+# tools/f/fora_name_witness.rish -- a Constel fake-pier name is provably never a real ship (FORA0).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA0.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA0.
 # Design read: active-designing/20260814-fill-constel-naming-law.md
-# Law kin: .claude/rules/placeholder-ship-names.md — Constel names are the runnable fake piers, guaranteed by the missing
+# Law kin: .claude/rules/placeholder-ship-names.md -- Constel names are the runnable fake piers, guaranteed by the missing
 # vowel: every real syllable carries a vowel, so a vowel-free (Hebrew-style abjad) name can never parse as a real @p.
 #
 # constel/name.rye seats the naming law and the name primitive: check_ship / is_valid_ship prove a single fake ship

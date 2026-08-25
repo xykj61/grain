@@ -1,10 +1,10 @@
-# mandate_store_witness.rish — Mandate, Grain's turbopuffer.
+# mandate_store_witness.rish -- Mandate, Grain's turbopuffer.
 #
 # Proves the vector store: upsert normalizes a vector to a unit direction, so a query
 # is a dot product; a query returns the k nearest by cosine similarity, most similar
 # first, bounded and exact; the search is **zero-copy** (each record read in place);
 # a **tag** filters the search; and an upsert on an existing id updates in place. The
-# vectors are synthetic image embeddings — no key, no network — with Unsplash the
+# vectors are synthetic image embeddings -- no key, no network -- with Unsplash the
 # first real data source on the horizon.
 #
 # Build first:  rye build mandate/store.rye -femit-bin=mandate/bin/store

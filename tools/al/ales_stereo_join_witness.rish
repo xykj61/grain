@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_join_witness.rish — the crossfade join carried into stereo, both channels in lockstep (ALES27).
+# tools/al/ales_stereo_join_witness.rish -- the crossfade join carried into stereo, both channels in lockstep (ALES27).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES27.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES27.
 # Design read: active-designing/20260814-fill-ales27-lotus-stereo-crossfade-join.md
-# Stands on: lotus/join.rye (ALES26) — the mono crossfade `join` run once per channel over its public API, so the stereo join
-# inherits the proven seam law rather than re-deriving it; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one
+# Stands on: lotus/join.rye (ALES26) -- the mono crossfade `join` run once per channel over its public API, so the stereo join
+# inherits the proven seam law rather than re-deriving it; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one
 # length, the lockstep this rung keeps.
 #
 # lotus/stereo_join.rye runs ALES26's mono join on each channel with the SAME overlap, so a keeper joins a stereo span and the
 # seam moves through ALES12's equal-power curve in both channels while the stereo image stays aligned. The crux is atomicity:
 # because a StereoClip's channels are one length and a stereo span is one length, ALES26's guards read identically for left and
 # right, so the join is validated once against the shared length BEFORE either channel is touched. The selftest proves: both
-# channels grow by the shared-overlap count (5,5,2 → 8 each) and stay one length; each channel carries its own audio through
-# its own equal-power seam (left 1000→200, right 4000→800); a full overlap is a pure crossfade with nothing appended in both;
+# channels grow by the shared-overlap count (5,5,2 -> 8 each) and stay one length; each channel carries its own audio through
+# its own equal-power seam (left 1000->200, right 4000->800); a full overlap is a pure crossfade with nothing appended in both;
 # and an unequal span, a short overlap, a past-the-tail overlap, and an overflow each refuse by name leaving both channels
-# untouched and aligned. Purely local — no network, no keys, no funds, no real device, no real speaker.
+# untouched and aligned. Purely local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_join_witness.rish

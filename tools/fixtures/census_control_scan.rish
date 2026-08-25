@@ -1,6 +1,6 @@
-# census_control_scan.rish — orchestration for three planted duties.
+# census_control_scan.rish -- orchestration for three planted duties.
 #
-# Duty 1 (H1 fence-count) now speaks native Rishi (Python → awk → Rishi molt 20260809);
+# Duty 1 (H1 fence-count) now speaks native Rishi (Python -> awk -> Rishi molt 20260809);
 # duties 2 and 3 keep their POSIX seams for now. This file sequences them.
 # Entry (thin): tools/fixtures/census_control_scan.sh
 # Cloud / no-rishi drive of the same seams: census_control_scan_drive.sh

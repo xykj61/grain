@@ -1,18 +1,18 @@
-# tools/d/dahl_j11_council_sky_true_witness.rish — Season 3 Journey 11 (Council skies), Rung 4 (Journey 11 closes).
+# tools/d/dahl_j11_council_sky_true_witness.rish -- Season 3 Journey 11 (Council skies), Rung 4 (Journey 11 closes).
 #
 # Rungs one through three fixed the council rule, signed each ballot, and let a signed council travel as
-# Bron — all over councils seated in code. This closing rung carries the reader onto a real council record
+# Bron -- all over councils seated in code. This closing rung carries the reader onto a real council record
 # a keeper can open and count. pond/apps/council_sky_true.rye @embedFile-binds surf/fixtures/council.bron
-# (a genuine format council-sky-v1 record with real Ed25519 ballot signatures — the council sky's triad,
+# (a genuine format council-sky-v1 record with real Ed25519 ballot signatures -- the council sky's triad,
 # size 3, quorum 2; two yes-ballots decide proposal A, one yes-ballot holds proposal B open; produced
 # reproducibly by pond/apps/council_sky_fixture_gen.rye, demo seeds only) through a pond/apps/corpora/
 # symlink, parses it through rung three, and reports the seated size, the ballot count, and the
-# decided-proposal count (distinct proposals whose one-sided tally reaches the quorum — a proposal short
+# decided-proposal count (distinct proposals whose one-sided tally reaches the quorum -- a proposal short
 # of quorum holds open and is not counted). The crux is the cross-check: tools/fixtures/council_sky_truth.awk
 # reads the size and quorum, dedups ballots, and counts decided proposals independently, and the witness
-# asserts the app's triple equals awk's — two tools, one answer (3 3 1). And the record is genuinely
+# asserts the app's triple equals awk's -- two tools, one answer (3 3 1). And the record is genuinely
 # tie-free and quorum-honest: still_quorum_honest re-verifies every ballot signature, and rebuild recovers
-# proposal A's passage and proposal B's open hold exactly. A tampered header refuses BadFormat. Additive —
+# proposal A's passage and proposal B's open hold exactly. A tampered header refuses BadFormat. Additive --
 # composes r1, r2, r3 over public API (all re-run GREEN); reads no network; demo keeper seeds only.
 #
 # Run from the repository root:
@@ -34,7 +34,7 @@ assert selftest.out contains "matches an independent count of the same bytes" el
 assert selftest.out contains "proposal A's passage and proposal B's open hold exactly" else "dahl-j11r4: honest-record crux missing"
 assert selftest.out contains "refused BadFormat" else "dahl-j11r4: tamper refusal missing"
 
-# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "dahl-j11r4: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/council_sky_truth.awk surf/fixtures/council.bron"]
@@ -43,7 +43,7 @@ assert app.out contains "3 3 1" else "dahl-j11r4: app triple not 3 3 1"
 assert awk.out contains "3 3 1" else "dahl-j11r4: awk triple not 3 3 1"
 assert app.out == awk.out else "dahl-j11r4: app and awk disagree — the reading drifted from the bytes"
 
-# r1 and r3 stay their own GREEN binaries — additive.
+# r1 and r3 stay their own GREEN binaries -- additive.
 let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
 assert r1.ok else "dahl-j11r4: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j11r4: r1 GREEN missing"

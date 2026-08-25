@@ -1,16 +1,16 @@
-# tools/g/gism_spool_receipt_witness.rish — GISM red %73 finish: large-artifact portable receipt.
+# tools/g/gism_spool_receipt_witness.rish -- GISM red %73 finish: large-artifact portable receipt.
 #
 # Season 2, Yield. The spool arc closed red %73 and stood on chunking (spool), naming
 # (spool_cloth), and owner-signed (spool_keyed). This is the arc's finishing rung:
 # pond/apps/spool_receipt.rye carries a large owner-signed document's signed word *out of
-# the spool* as a portable receipt — the large-artifact sibling of TACT-J2's
+# the spool* as a portable receipt -- the large-artifact sibling of TACT-J2's
 # publish_receipt / publish_receipt_bron. A real front-door document (SECURITY.md, too
 # large for one resin) winds across resins under an owner's signature, a detached receipt
 # carries the identical signed word, travels as a `format publication-v1` Bron record and
 # returns byte-for-byte, still verifies offline, and the bytes reassembled from the resins
-# match the receipt's SHA-256 — cross-checked here against an independent sha256sum (two
+# match the receipt's SHA-256 -- cross-checked here against an independent sha256sum (two
 # tools, one answer). Every tamper refuses. It re-runs spool_keyed, publish_receipt, and
-# publish_receipt_bron untouched — spool_receipt composes their public API only.
+# publish_receipt_bron untouched -- spool_receipt composes their public API only.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_spool_receipt_witness.rish
@@ -37,14 +37,14 @@ assert selftest.out contains "a wrong keeper key refused" else "gism-red73-recei
 assert selftest.out contains "unknown record field refused" else "gism-red73-receipt: unknown-field refusal missing"
 
 # The digest the receipt bound is cross-checked against an independent sha256sum of the
-# same real file — two tools, one answer, so the signed provenance can never drift from
+# same real file -- two tools, one answer, so the signed provenance can never drift from
 # what a keeper computes by hand.
 let sum = run ["sh" "-c" "sha256sum SECURITY.md | cut -d' ' -f1"]
 assert sum.ok else "gism-red73-receipt: could not sha256sum SECURITY.md"
 assert sum.out contains "5d34cc8b399262cfb12e593ab2ac509afce038ba661cdacab0904736defe571c" else "gism-red73-receipt: SECURITY.md sha256 drifted on disk"
 assert selftest.out contains "5d34cc8b399262cfb12e593ab2ac509afce038ba661cdacab0904736defe571c" else "gism-red73-receipt: receipt digest does not match the file's sha256"
 
-# The owner-signed store and the receipt machinery are re-run untouched — spool_receipt
+# The owner-signed store and the receipt machinery are re-run untouched -- spool_receipt
 # composes their public API only.
 let keyed_bin = "pond/bin/spool-keyed"
 let keyed_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_keyed.rye -femit-bin=${keyed_bin}"]

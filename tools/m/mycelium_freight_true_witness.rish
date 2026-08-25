@@ -1,19 +1,19 @@
-# tools/m/mycelium_freight_true_witness.rish — a real freight manifest reads true, and is the freight of a real
+# tools/m/mycelium_freight_true_witness.rish -- a real freight manifest reads true, and is the freight of a real
 # ledger (r4, the arc closes).
 #
-# Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 — reads true.
+# Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r4 -- reads true.
 # r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
-# state, r3 let a world's freight travel as text — all over ledgers seated in code. r4 carries the reader onto
+# state, r3 let a world's freight travel as text -- all over ledgers seated in code. r4 carries the reader onto
 # a REAL on-disk `format freight-v1` record a keeper can open and read (tools/fixtures/freight_manifest.bron,
 # produced reproducibly by mycelium/freight_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/
 # symlink).
 #
-# Two crux checks: TWO TOOLS, ONE ANSWER — the app's position triple (balance · reserved · received) equals an
-# independent awk reading of the same bytes; and THE RECORD IS THE FREIGHT OF A REAL LEDGER — the app rebuilds
+# Two crux checks: TWO TOOLS, ONE ANSWER -- the app's position triple (balance - reserved - received) equals an
+# independent awk reading of the same bytes; and THE RECORD IS THE FREIGHT OF A REAL LEDGER -- the app rebuilds
 # the world's ledger from the fixture's own seeds and confirms the parsed position and head match, the head
 # accepting the real blocks through receive. Genuineness beyond that: the record is a fixed point and the
 # fixture is reproducible; a tampered header refuses. Composes freight + freight_bron + freight_fixture_gen +
-# cord + kumara public API only; demo seeds — no key, no funds, no network, no world moved.
+# cord + kumara public API only; demo seeds -- no key, no funds, no network, no world moved.
 #
 # Scope: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 #
@@ -39,7 +39,7 @@ assert selftest.out contains "never a hand-mock" else "mycelium-freight-true: fi
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-freight-true: tamper refusal missing"
 assert selftest.out contains "The Freight agent-doable arc closes" else "mycelium-freight-true: arc-close claim missing"
 
-# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-freight-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/freight_manifest_truth.awk tools/fixtures/freight_manifest.bron"]
@@ -47,7 +47,7 @@ assert awk.ok else "mycelium-freight-true: awk truth read failed"
 assert awk.out contains "60 40 100" else "mycelium-freight-true: awk triple not 60 40 100"
 assert app.out == awk.out else "mycelium-freight-true: app and awk disagree — the reading drifted from the bytes"
 
-# The fixture is genuinely reproducible — the generator re-emits byte-identical bytes, so the on-disk record
+# The fixture is genuinely reproducible -- the generator re-emits byte-identical bytes, so the on-disk record
 # is what the Freight renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the
 # committed fixture in a read-only witness).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_fixture_gen.rye -femit-bin=mycelium/bin/freight_fixture_gen"]
@@ -56,7 +56,7 @@ let regen = run ["sh" "-c" "mycelium/bin/freight_fixture_gen 2> /tmp/freight_man
 assert regen.ok else "mycelium-freight-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-freight-true: the regenerated fixture drifted from the committed one"
 
-# r3 stays its own GREEN binary — this rung reads the record r3 renders, never replaces it.
+# r3 stays its own GREEN binary -- this rung reads the record r3 renders, never replaces it.
 let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_freight_bron_witness.rish 2>&1"]
 assert r3.ok else "mycelium-freight-true: rung three (travel) is not GREEN"
 assert r3.out contains "mycelium-freight-bron: GREEN" else "mycelium-freight-true: rung three did not speak its GREEN"

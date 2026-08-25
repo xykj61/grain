@@ -1,15 +1,15 @@
-# tools/al/ales_pad_tail_witness.rish — the padded top-and-tail: trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence at each end (ALES99).
+# tools/al/ales_pad_tail_witness.rish -- the padded top-and-tail: trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence at each end (ALES99).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES99.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES99.
 # Design read: active-designing/date/20260814/20260814-234744_fill-ales99-lotus-padded-top-tail.md
-# Stands on: lotus/top_tail.rye (ALES98 — the flush top-and-tail, the pad-zero twin), lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/timeline.rye
-# (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES98 cuts the dead air flush against the first and last sound; that clips the attack of
-# a spoken take. Every recorder and DAW that trims silence also lets a keeper KEEP A MARGIN — trim the ends, but leave a quarter-second of air so the take breathes.
+# Stands on: lotus/top_tail.rye (ALES98 -- the flush top-and-tail, the pad-zero twin), lotus/segment.rye (ALES95 -- the voice-activity segmenter), lotus/timeline.rye
+# (ALES2 -- the Clip and cut), lotus/voiced.rye (ALES94 -- the .silent verdict). ALES98 cuts the dead air flush against the first and last sound; that clips the attack of
+# a spoken take. Every recorder and DAW that trims silence also lets a keeper KEEP A MARGIN -- trim the ends, but leave a quarter-second of air so the take breathes.
 #
 # lotus/pad_tail.rye segments [0, clip.len) into frames of frame_len samples through ALES95, finds the FIRST and LAST non-silent runs, keeps min(pad, available) of the
 # silence at each end, and cuts only the EXCESS (trailing first, so the leading index stays valid). The crux is two laws. THE PAD-ZERO LAW: top_and_tail_pad(pad=0)
 # equals ALES98's flush top_and_tail byte for byte. THE MARGIN LAW: the result equals the original over [first.start - min(pad, lead_silence), last.end + min(pad,
-# tail_silence)) byte for byte — the kept margin at each end is exactly min(pad, available), a pad past both ends leaves the clip unchanged, monotone in pad. The
+# tail_silence)) byte for byte -- the kept margin at each end is exactly min(pad, available), a pad past both ends leaves the clip unchanged, monotone in pad. The
 # selftest proves both, plus: a known pad keeps exactly the named samples; an all-silent clip trims to empty whatever the pad; a no-silent clip is unchanged; an empty
 # clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.
 #

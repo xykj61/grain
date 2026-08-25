@@ -1,20 +1,20 @@
-# tools/cr/crypto_kumara_attestation_witness.rish — the Kumara attestation, Season G's TWENTIETH composition: the parent→subkey attestation, a
+# tools/cr/crypto_kumara_attestation_witness.rish -- the Kumara attestation, Season G's TWENTIETH composition: the parent->subkey attestation, a
 # signed delegation. ed25519/SLIP-0010 admits only HARDENED derivation, so a subkey's public key cannot be derived from the parent identity's
-# public key alone; this rung closes that boundary the one honest way — the identity SIGNS "the subkey named here, at this record, is mine," and a
-# verifier checks it against the identity's public key (Season G · Cryptography).
+# public key alone; this rung closes that boundary the one honest way -- the identity SIGNS "the subkey named here, at this record, is mine," and a
+# verifier checks it against the identity's public key (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md; crypto/kumara_subkey.rye names this rung outright
 # as "a signed delegation over exactly the door crypto/kumara_carry.rye already opens." The 1,024-round itinerary, Season 2 Journey 6 (Provenance):
 # an attested subkey is how one identity's chain of custody reaches, through many per-record keys, to a record a stranger can trust to the identity.
-# Kin: crypto/kumara_subkey.rye (the subkey this attests, GREEN) · crypto/kumara_identity.rye (the identity that issues the attestation, GREEN) ·
-# crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature over the statement, GREEN) · crypto/kumara_carry.rye (the record-open door
-# this chains to, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our
+# Kin: crypto/kumara_subkey.rye (the subkey this attests, GREEN) - crypto/kumara_identity.rye (the identity that issues the attestation, GREEN) -
+# crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature over the statement, GREEN) - crypto/kumara_carry.rye (the record-open door
+# this chains to, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line -- our
 # own composition, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
-# crypto/kumara_attestation.rye authors NO new cryptography — the signature is ed25519_sign/verify; this module adds the CERTIFICATE (magic 'GKA1'
+# crypto/kumara_attestation.rye authors NO new cryptography -- the signature is ed25519_sign/verify; this module adds the CERTIFICATE (magic 'GKA1'
 # ‖ issuer ‖ record u64 BE ‖ subkey ‖ Ed25519 signature-over-statement) and the binding that refuses any certificate whose issuer is not the
-# identity the reader named, then chains to kumara_carry's open_as. Purely local over TEST identities from published vectors — no real identity key,
+# identity the reader named, then chains to kumara_carry's open_as. Purely local over TEST identities from published vectors -- no real identity key,
 # no network, no funds, no real device; issuing a REAL attestation with the maintainer's own identity stays the custody gate, and constant-time
 # timing-safety stays the named horizon.
 #

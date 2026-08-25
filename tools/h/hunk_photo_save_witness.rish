@@ -1,12 +1,12 @@
-# tools/h/hunk_photo_save_witness.rish — the Photos editor saves into the content-addressed store, on metal (HUNK67).
+# tools/h/hunk_photo_save_witness.rish -- the Photos editor saves into the content-addressed store, on metal (HUNK67).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK67.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK67.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) — an edit becomes a new
+# Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) -- an edit becomes a new
 # image the library holds, the original untouched (concept only, siloed).
 #
 # HUNK66 gave the Photos app one editing surface; HUNK1 gave an image a content-addressed identity. This rung joins them:
-# the editor's current view — the source with every committed crop and filter applied — is saved into the Tablecloth
+# the editor's current view -- the source with every committed crop and filter applied -- is saved into the Tablecloth
 # store, so the edit becomes a durable, integrity-guarded artifact that re-opens as a first-class source. The road runs
 # open -> edit -> save -> re-open with no seam. The source is never mutated; no network, no key, no funds.
 #
@@ -26,7 +26,7 @@ assert build.ok else "hunk-photo-save: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photo-save: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-photo-save: ${out}"

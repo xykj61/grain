@@ -1,23 +1,23 @@
-# tools/cr/crypto_kumara_sealed_witness.rish — the Kumara sealed message, Season G's TWENTY-FIRST composition: a message sealed TO a named Kumara
+# tools/cr/crypto_kumara_sealed_witness.rish -- the Kumara sealed message, Season G's TWENTY-FIRST composition: a message sealed TO a named Kumara
 # identity, and opened AS that identity. Where crypto/kumara_carry.rye answers "did THIS keeper make this record" (provenance), this rung answers
-# the other half of a conversation — "only THIS keeper can read this message" (confidentiality): the Comlink private-message door (Season G ·
+# the other half of a conversation -- "only THIS keeper can read this message" (confidentiality): the Comlink private-message door (Season G -
 # Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md; crypto/kumara_attestation.rye named "a Comlink/Vault
 # composition reaching identity through this door" as the rung to come. The 1,024-round itinerary, Season 1 Journey 2 (Publishing) and the Comlink
 # private-message surface: a sender who knows only a keeper's published Kumara identity seals a message only that keeper can open.
-# Kin: crypto/sealed_session.rye (the sealed-box frame this addresses, GREEN) · crypto/ed25519_to_x25519.rye (the birational map turning the
-# identity's ONE Ed25519 key into the X25519 key agreement wants, both halves GREEN) · crypto/kumara_identity.rye (the phrase→identity front door,
-# GREEN) · crypto/kumara_carry.rye (the provenance sibling — who MADE it, to this rung's who can READ it). Monocypher (vendor/monocypher,
-# CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own composition, studied clean-room
+# Kin: crypto/sealed_session.rye (the sealed-box frame this addresses, GREEN) - crypto/ed25519_to_x25519.rye (the birational map turning the
+# identity's ONE Ed25519 key into the X25519 key agreement wants, both halves GREEN) - crypto/kumara_identity.rye (the phrase->identity front door,
+# GREEN) - crypto/kumara_carry.rye (the provenance sibling -- who MADE it, to this rung's who can READ it). Monocypher (vendor/monocypher,
+# CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line -- our own composition, studied clean-room
 # (.claude/rules/gratitude-licenses.md).
 #
-# crypto/kumara_sealed.rye authors NO new cryptography and adds NO new frame — a Kumara sealed message IS a Grain Sealed Session v1 frame addressed
+# crypto/kumara_sealed.rye authors NO new cryptography and adds NO new frame -- a Kumara sealed message IS a Grain Sealed Session v1 frame addressed
 # through the identity's X25519 keypair. The crux: a Kumara identity signs with Ed25519 yet a sealed box agrees with X25519, so seal_to converts the
 # recipient's Ed25519 PUBLIC key to the X25519 public it seals to (eddsa_to_x25519) and open_as converts the recipient's Ed25519 SEED to the X25519
-# secret it opens with (eddsa_secret_to_x25519) — two halves of ONE identity key, agreeing because x25519_base(secret) = eddsa_to_x25519(public).
-# Purely local over TEST identities from published vectors — no real identity key, no network, no funds, no real device; sealing to or opening as the
+# secret it opens with (eddsa_secret_to_x25519) -- two halves of ONE identity key, agreeing because x25519_base(secret) = eddsa_to_x25519(public).
+# Purely local over TEST identities from published vectors -- no real identity key, no network, no funds, no real device; sealing to or opening as the
 # maintainer's own Kumara identity, grown from a real seed, stays the custody gate, and constant-time timing-safety stays the named horizon.
 #
 # Run from the repository root:

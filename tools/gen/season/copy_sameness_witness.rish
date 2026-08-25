@@ -1,11 +1,11 @@
-# tools/gen/season/copy_sameness_witness.rish — one fold, sixteen copies, no drift.
+# tools/gen/season/copy_sameness_witness.rish -- one fold, sixteen copies, no drift.
 #
 #   rishi/bin/rishi run tools/gen/season/copy_sameness_witness.rish
 #
-# Round e6 · priority slot 6 · galls_law_graduation.
+# Round e6 - priority slot 6 - galls_law_graduation.
 # The graduation audit found copy_disjoint reachable from fifteen module-local
 # paths. Correction to counsel's first reading (20260729.204722): fourteen are
-# SYMLINKS to the one canonical tally/copy.rye — the tree already keeps sameness
+# SYMLINKS to the one canonical tally/copy.rye -- the tree already keeps sameness
 # through the filesystem. Exactly one, mand/tally_copy.rye, is a real file and
 # is therefore the only path that can drift silently. This guard makes it loud.
 

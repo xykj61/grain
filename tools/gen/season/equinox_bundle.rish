@@ -1,13 +1,13 @@
-# tools/gen/season/equinox_bundle.rish — full pair bundle at an equinox close.
+# tools/gen/season/equinox_bundle.rish -- full pair bundle at an equinox close.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_bundle.rish <round>
 #
 # Bounds: equinox_bundle_max_bytes 268435456 (256 MiB)
 #   measured basis 192267970 bytes at 20260729.185725 (cloud bench, --all)
-# Closing rounds only: e63 · e127 · e191 · e255
+# Closing rounds only: e63 - e127 - e191 - e255
 # Law: build inside the project, verify, then copy. Status before any pipe.
 #
-# SAFETY CORRECTION 20260729.210100 (Voice Season v1 · slot 1 · tame_order):
+# SAFETY CORRECTION 20260729.210100 (Voice Season v1 - slot 1 - tame_order):
 # this generator wrote to /tmp, which the enclosure clears on exit -- CLAUDE.md
 # line 22 and context/specs/zig-0.16.0-local-setup.md both say so plainly. A
 # preservation artifact cut into tmpfs is destroyed the moment the session ends,
@@ -59,7 +59,7 @@ let bound = run ["sh" "-c" "test ${bytes} -le 268435456 && echo BOUND_OK || echo
 assert bound.ok else "equinox-bundle: bound check failed"
 assert bound.out contains "BOUND_OK" else "equinox-bundle: bundle exceeds equinox_bundle_max_bytes"
 
-# Stamped manifest beside the bundle (discipline 20260730.041405 · e129)
+# Stamped manifest beside the bundle (discipline 20260730.041405 - e129)
 let man = run ["sh" "-c" "sh tools/gen/season/equinox_bundle_manifest.sh ${path} ${round} $(git remote get-url origin) --all $(git rev-parse HEAD) $(date -u +%Y%m%d.%H%M%S) closing-round-${round}-full-all"]
 say man.out
 assert man.ok else "equinox-bundle: stamped manifest must write"

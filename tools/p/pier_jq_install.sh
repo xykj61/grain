@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/p/pier_jq_install.sh — infuse jq into the SEA pier's system packages.
+# tools/p/pier_jq_install.sh -- infuse jq into the SEA pier's system packages.
 #
 # Run as root, on the pier:   sudo sh tools/p/pier_jq_install.sh
 #
@@ -11,13 +11,13 @@
 # is present on every future boot, not just a throwaway `nix-shell -p jq`.
 #
 # Safe by construction (same discipline as pier_mosh_udp_open.sh):
-#   * ADDITIVE   — it inserts one package line into environment.systemPackages and
+#   * ADDITIVE   -- it inserts one package line into environment.systemPackages and
 #     touches nothing else, so it cannot lock you out or change a service.
-#   * IDEMPOTENT — if jq is already a listed package it skips the edit and just
+#   * IDEMPOTENT -- if jq is already a listed package it skips the edit and just
 #     rebuilds to be sure.
-#   * GUARDED    — it refuses unless this is the SEA pier (hostName pier + the SEA
+#   * GUARDED    -- it refuses unless this is the SEA pier (hostName pier + the SEA
 #     VPS marker), rather than editing an unknown host.
-#   * REVERSIBLE — it backs up configuration.nix first, validates the edited file
+#   * REVERSIBLE -- it backs up configuration.nix first, validates the edited file
 #     with `nix-instantiate --parse` BEFORE moving it into place, and relies on the
 #     atomic `nixos-rebuild switch` (a build failure leaves the running system as-is).
 set -eu
@@ -26,7 +26,7 @@ CFG=/etc/nixos/configuration.nix
 FLAKE=/etc/nixos
 HOST=pier
 
-# --- guards: the pier, SEA — else stop and report ---
+# --- guards: the pier, SEA -- else stop and report ---
 [ -f "$CFG" ] || { echo "REFUSE: $CFG not found — this is not the pier."; exit 2; }
 grep -q 'networking.hostName = "pier"' "$CFG" || { echo "REFUSE: hostName is not \"pier\"."; exit 2; }
 grep -q 'vultr SEA VPS' "$CFG" || { echo "REFUSE: no SEA VPS marker — SEA only, never EWR."; exit 2; }

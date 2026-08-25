@@ -1,13 +1,13 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_parse.sh — VOLS survey, parse a cion-survey-v1 Bron ledger.
+# tools/fixtures/vols_survey_parse.sh -- VOLS survey, parse a cion-survey-v1 Bron ledger.
 #
 #   sh tools/fixtures/vols_survey_parse.sh <record>
 #
-# Reads a `format cion-survey-v1` record (vols_survey_render.sh) back into its totals — the
+# Reads a `format cion-survey-v1` record (vols_survey_render.sh) back into its totals -- the
 # parse-back half of r3's round-trip. Re-emits the totals as key=value AND independently
 # counts the `site ` lines, so a reader can check the declared site count against the
 # lines actually carried (the record proving itself). Refuses a record whose header is
-# wrong or missing (verdict=badformat) — the tamper refusal r3 owes.
+# wrong or missing (verdict=badformat) -- the tamper refusal r3 owes.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md.
 set -eu
@@ -37,7 +37,7 @@ for k in stamp surfaces sites handles prose_gaps guarded_sites; do
   echo "$k=$v"
 done
 
-# Independent check — the site lines actually present must match the declared count.
+# Independent check -- the site lines actually present must match the declared count.
 carried=$(grep -c '^site ' "$record" 2>/dev/null || true)
 echo "site_lines=$carried"
 echo "verdict=ok"

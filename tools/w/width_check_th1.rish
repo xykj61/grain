@@ -1,4 +1,4 @@
-# width_check_th1.rish — TH-1 witness: seam-aware width-check both ways.
+# width_check_th1.rish -- TH-1 witness: seam-aware width-check both ways.
 #
 # Proves tally/seed.rye (seam casts only) passes the refined lint, and an
 # authored `usize` declaration still fails it.

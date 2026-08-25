@@ -1,6 +1,6 @@
-# tools/g/gism_ayre_j8_entity_books_period_witness.rish — Season 2 Journey 8 (Cash-first), Rung 3.
+# tools/g/gism_ayre_j8_entity_books_period_witness.rish -- Season 2 Journey 8 (Cash-first), Rung 3.
 #
-# Season 2, Yield — the accounting spine, never braided. Rungs one and two booked a segregated
+# Season 2, Yield -- the accounting spine, never braided. Rungs one and two booked a segregated
 # inter-entity transfer and proved it one both stewards signed. pond/apps/entity_books_period.rye
 # makes a closed period travel: an entity's period folds to a sealed statement (name, close stamp,
 # trial-balance nets) that renders to a `format entity-period-v1` Bron record and parses back
@@ -19,7 +19,7 @@ say "gism-ayre-j8r3: Lens TAME — the round trip preserves every field; a missi
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one stays GREEN beneath the travel layer — additive.
+# Rung one stays GREEN beneath the travel layer -- additive.
 let bin1 = "pond/bin/entity-books"
 let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
 assert build1.ok else "gism-ayre-j8r3: rung-one entity_books build failed"

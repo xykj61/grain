@@ -1,19 +1,19 @@
-# tools/al/ales_voiced_witness.rish — the voiced/unvoiced/silent classifier: the first Lotus rung to fuse two analysis readers (ALES94).
+# tools/al/ales_voiced_witness.rish -- the voiced/unvoiced/silent classifier: the first Lotus rung to fuse two analysis readers (ALES94).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES94.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES94.
 # Design read: active-designing/date/20260814/20260814-230352_fill-ales94-lotus-voiced-unvoiced-classifier.md
-# Stands on: lotus/zero_cross.rye (ALES93 — the crossing count, one feature) and lotus/meter.rye (ALES13 — the RMS energy, the other feature), the band read
+# Stands on: lotus/zero_cross.rye (ALES93 -- the crossing count, one feature) and lotus/meter.rye (ALES13 -- the RMS energy, the other feature), the band read
 # through lotus/schmitt.rye's precheck (ALES92), over lotus/timeline.rye's Clip (ALES2). ALES93 gave the suite its first analysis reader; ALES13 already carried
-# the other; this rung is the first to FUSE two readers into one verdict — the oldest decision in speech processing, is this frame voiced, unvoiced, or silent?
+# the other; this rung is the first to FUSE two readers into one verdict -- the oldest decision in speech processing, is this frame voiced, unvoiced, or silent?
 #
 # lotus/voiced.rye reads the RMS energy and the genuine crossing count over the SAME span and fuses them by one rule, the energy gate first: rms < silence_floor
-# → silent; else crossings ≥ voice_split → unvoiced; else → voiced. The crux is that it invents no new measurement — its verdict equals a hand-built decision
+# -> silent; else crossings ≥ voice_split -> unvoiced; else -> voiced. The crux is that it invents no new measurement -- its verdict equals a hand-built decision
 # from count_crossings and a Meter's RMS over the same span, so it can never drift from the two readers it composes. The selftest proves it: loud-and-periodic
 # reads voiced; loud-and-noisy reads unvoiced; quiet reads silent whatever the crossing rate; the floor dominates the crossing rate (a quiet many-crossing span
 # is silent, not unvoiced); the verdict is exactly the two readers fused across many floors and splits (the crux); the source clip is byte-for-byte unchanged
 # (read-only); the floor-zero convention holds (floor 0 disables silence, an all-zero span reads voiced); an illegal floor refuses BadFloor, an inverted band
 # refuses BadThreshold, an out-of-range span refuses BadRange, the clip untouched; the span discipline holds (only [start, count) is read into the verdict).
-# Purely local, read-only — a three-valued label over one span, not a phoneme or a transcript; no adaptive floor, no time windowing, no real sample rate.
+# Purely local, read-only -- a three-valued label over one span, not a phoneme or a transcript; no adaptive floor, no time windowing, no real sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_voiced_witness.rish

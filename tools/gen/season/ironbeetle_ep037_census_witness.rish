@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep037_census_witness.rish — e87 IronBeetle ep037½.
+# tools/gen/season/ironbeetle_ep037_census_witness.rish -- e87 IronBeetle ep037½.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep037_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep037: Language EN — garbage collection at the moment of allocation."
 say "iron-ep037: Style Radiant — compaction rides the commit cadence, never a background thread."

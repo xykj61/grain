@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_collapse_silence_witness.rish — stereo_collapse_silence: the interior silence-capper carried into stereo, one joint silence capped in one lockstep, the stripper of ALES148 with its pauses kept (ALES152).
+# tools/al/ales_stereo_collapse_silence_witness.rish -- stereo_collapse_silence: the interior silence-capper carried into stereo, one joint silence capped in one lockstep, the stripper of ALES148 with its pauses kept (ALES152).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES152.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES152.
 # Design read: active-designing/date/20260815/20260815-055202_fill-ales152-lotus-stereo-collapse-silence.md
-# Stands on: lotus/stereo_trim_silence.rye (ALES148 — the stereo silence stripper, the zero-cap twin, imported by the selftest to prove the zero-cap law; its silence intersection is the joint-silence this rung caps),
-# lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, StereoSegments, StereoSegmentError reused whole),
-# lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/collapse_silence.rye (ALES100 — the mono interior capper, imported by the selftest to prove the lockstep law), lotus/pan.rye
-# (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 — the .silent verdict this
+# Stands on: lotus/stereo_trim_silence.rye (ALES148 -- the stereo silence stripper, the zero-cap twin, imported by the selftest to prove the zero-cap law; its silence intersection is the joint-silence this rung caps),
+# lotus/stereo_segment.rye (ALES147 -- the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, StereoSegments, StereoSegmentError reused whole),
+# lotus/segment.rye (ALES95 -- the mono segmenter and max_segments, through ALES147), lotus/collapse_silence.rye (ALES100 -- the mono interior capper, imported by the selftest to prove the lockstep law), lotus/pan.rye
+# (ALES10 -- the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 -- the .silent verdict this
 # intersects). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment independently, so their silences differ in count and boundary, and
 # capping each channel by its own silence would cap different runs to different lengths and tear the stereo image apart.
 #
-# lotus/stereo_collapse_silence.rye decides ONE cap for both channels — the joint-silence cap: read the jointly-silent frames through ALES148's silence intersection (a frame is dead air only where neither speaker carries
+# lotus/stereo_collapse_silence.rye decides ONE cap for both channels -- the joint-silence cap: read the jointly-silent frames through ALES148's silence intersection (a frame is dead air only where neither speaker carries
 # sound), coalesce consecutive jointly-silent frames into runs, and for each run longer than max_silence cut only the excess (keep the run's first min(count, max_silence) samples) from both channels in lockstep, back to front so
 # every earlier run's index stays valid. A frame silent in only one channel is kept whole; only the shared dead air is shortened, and only its excess is cut, so the breath that makes speech legible stays. It validates the shared
 # frame length, band, span, and floor once through ALES147's own up-front checks before any cut (BadThreshold on an illegal band, BadRange on a span past the samples, BadFloor on a floor above the peak ceiling, BadFrame on a
-# zero/oversized/non-dividing length), so a refusal never caps one channel and leaves the other; StereoSegmentError and EditError reused whole. The crux is two laws — the zero-cap law (max=0 equals ALES148's stereo_trim_silence
+# zero/oversized/non-dividing length), so a refusal never caps one channel and leaves the other; StereoSegmentError and EditError reused whole. The crux is two laws -- the zero-cap law (max=0 equals ALES148's stereo_trim_silence
 # byte for byte on both channels) and the cap law (the result equals a by-hand keep where each jointly-silent run keeps min(count, max_silence) samples and every other frame stays whole).
 #
 # Run from the repository root:

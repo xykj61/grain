@@ -1,18 +1,18 @@
-# tools/al/ales_seal_witness.rish — the seal, made general (ALES38).
+# tools/al/ales_seal_witness.rish -- the seal, made general (ALES38).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES38.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES38.
 # Design read: active-designing/date/20260814/20260814-153840_fill-ales38-lotus-seal.md
-# Stands on: lotus/rack_seal.rye (ALES34) and lotus/cue_seal.rye (ALES37) — the two seals whose shared law this module now owns;
+# Stands on: lotus/rack_seal.rye (ALES34) and lotus/cue_seal.rye (ALES37) -- the two seals whose shared law this module now owns;
 # mirrors the Sha256 verify-before-trust of lotus/wire.rye (ALES0).
 #
 # lotus/seal.rye lifts the verify-before-trust frame the rack seal and the cue seal each carried into ONE parser-agnostic primitive:
 # begin writes the sealed header and reserves the 64-hex digest, the caller renders its body in place, finish hashes exactly those
 # bytes and backfills the digest (zero scratch), and open recomputes the digest and returns the body slice ONLY on a match. The crux:
-# one primitive owns the whole frame, parser-agnostic, so both sheets call it and neither drifts — open returns BYTES, not a parsed
+# one primitive owns the whole frame, parser-agnostic, so both sheets call it and neither drifts -- open returns BYTES, not a parsed
 # structure, so any per-format difference (the cue sheet also bounds marker positions against a master) lives in the caller after the
 # gate. The selftest proves: an arbitrary body sealed with begin/finish opens back to exactly the same bytes under its header; a wrong
 # header, a missing / short / non-hex digest line each refuse BadRecord; a flipped body byte and a truncated tail each refuse
-# DigestMismatch; a too-small buffer refuses Overflow. The seal proves a record arrived whole, not who wrote it — no signature, no keys,
+# DigestMismatch; a too-small buffer refuses Overflow. The seal proves a record arrived whole, not who wrote it -- no signature, no keys,
 # no network, no funds.
 #
 # Run from the repository root:

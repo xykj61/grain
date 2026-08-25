@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_gate_witness.rish — stereo_gate: the noise gate carried into stereo, one LINKED DETECTOR, the image the gate refuses to tear (ALES156).
+# tools/al/ales_stereo_gate_witness.rish -- stereo_gate: the noise gate carried into stereo, one LINKED DETECTOR, the image the gate refuses to tear (ALES156).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES156.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES156.
 # Design read: active-designing/date/20260815/20260815-061957_fill-ales156-lotus-stereo-gate.md
-# Stands on: lotus/gate.rye (ALES51 — the mono noise gate, its gate and GateError reused whole for the below-both proof and the fault set), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant),
-# lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129 — the amplitude-class linked lift this rung answers for the dynamics class), lotus/timeline.rye (ALES2 — the Clip, sample_max, and the range-law shape).
+# Stands on: lotus/gate.rye (ALES51 -- the mono noise gate, its gate and GateError reused whole for the below-both proof and the fault set), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant),
+# lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129 -- the amplitude-class linked lift this rung answers for the dynamics class), lotus/timeline.rye (ALES2 -- the Clip, sample_max, and the range-law shape).
 #
-# lotus/stereo_gate.rye opens the whole stereo DYNAMICS family (gate · compressor · limiter · expander) on its simplest member: it gates a span of sample-PAIRS in a master below a magnitude threshold by a ratio, with ONE
+# lotus/stereo_gate.rye opens the whole stereo DYNAMICS family (gate - compressor - limiter - expander) on its simplest member: it gates a span of sample-PAIRS in a master below a magnitude threshold by a ratio, with ONE
 # linked detector across the two channels. The detector key per pair is max(|left|, |right|), the louder of the two: at or above the threshold the gate is open and both samples pass byte for byte (the quiet channel
-# included — the image held whole); below it the gate closes and each channel divides its OWN magnitude by the ratio, exactly as ALES51 would to each. Running the mono gate twice would gate one channel while its partner
-# plays, tearing the image — the dynamics-class twin of the bug ALES129 named for amplitude. GateError (BadThreshold, BadRatio, BadRange) reused whole; the linked lift adds no fault. Values only, never a length.
+# included -- the image held whole); below it the gate closes and each channel divides its OWN magnitude by the ratio, exactly as ALES51 would to each. Running the mono gate twice would gate one channel while its partner
+# plays, tearing the image -- the dynamics-class twin of the bug ALES129 named for amplitude. GateError (BadThreshold, BadRatio, BadRange) reused whole; the linked lift adds no fault. Values only, never a length.
 # The crux is the linked-detector law (a pair is gated iff BOTH channels fall below the threshold), the below-both law (a below-both pair equals the mono gate on each byte for byte), the image/sign law (no magnitude
 # expands, no sign flips, an out-of-phase quiet pair returns still out of phase), and the knob laws (above the identity, unit ratio the identity everywhere, a higher ratio gating at least as hard, a huge ratio silencing).
 #

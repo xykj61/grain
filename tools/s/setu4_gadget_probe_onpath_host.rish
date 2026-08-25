@@ -1,4 +1,4 @@
-# setu4_gadget_probe_onpath_host.rish — SETU4 host: probe USB gadget iface.
+# setu4_gadget_probe_onpath_host.rish -- SETU4 host: probe USB gadget iface.
 #
 # Run on the host (not required for device-free GREEN). Looks for usb0 / ncm*
 # link names that a CDC-NCM gadget would expose. SKIP is honest when absent.

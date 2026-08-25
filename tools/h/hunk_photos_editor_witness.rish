@@ -1,8 +1,8 @@
-# tools/h/hunk_photos_editor_witness.rish — the unified Photos editor, on metal (HUNK66).
+# tools/h/hunk_photos_editor_witness.rish -- the unified Photos editor, on metal (HUNK66).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK66.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK66.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the single editing surface of a photo app (iCloud Photos / Google Photos) — crop and
+# Teacher, thanked clean-room: the single editing surface of a photo app (iCloud Photos / Google Photos) -- crop and
 # filter are two tools over ONE undo stack (concept only, siloed).
 #
 # The crop sub-arc (HUNK60-62) and the filter sub-arc (HUNK63-65) each had their own history. This rung unifies them:
@@ -25,7 +25,7 @@ assert build.ok else "hunk-photos-editor: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-editor: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-photos-editor: ${out}"

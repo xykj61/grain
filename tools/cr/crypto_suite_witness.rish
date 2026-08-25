@@ -1,13 +1,13 @@
-# tools/cr/crypto_suite_witness.rish — the whole Season G crypto library, greened by one command. A choir that runs every per-file crypto
+# tools/cr/crypto_suite_witness.rish -- the whole Season G crypto library, greened by one command. A choir that runs every per-file crypto
 # witness in dependency order and refuses unless each prints its own GREEN line, so a keeper, CI, or the public seed can re-prove the entire
-# Rye-native, parity-checked crypto stack — every primitive and composition in crypto/ — without trusting any commit
-# message (Season G · Cryptography · measurement beats memory). This file NAMES NO COUNT on purpose: tools/cr/crypto_count_guard_witness.rish
+# Rye-native, parity-checked crypto stack -- every primitive and composition in crypto/ -- without trusting any commit
+# message (Season G - Cryptography - measurement beats memory). This file NAMES NO COUNT on purpose: tools/cr/crypto_count_guard_witness.rish
 # computes it, and a number recited here would drift from it -- which it did, three times (REDS %77, %80, %105).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Kin: every tools/crypto_<name>_witness.rish this choir runs; each builds its crypto/<name>.rye and asserts its GREEN crypto-<name> line.
-# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own Rye,
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line -- our own Rye,
 # studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The order below is the dependency order the library was built in: the four hashes first, then the HMAC-SHA-512 and HMAC-SHA-256 keyed hashes and the
@@ -16,7 +16,7 @@
 # then X25519 key agreement, and last the three compositions (the signed carry, the sealed session, and the vault seal) that stand on the
 # primitives above.
 # Running a witness rebuilds its crypto/<name>.rye to the gitignored crypto/bin/ and runs its selftest, so this choir compiles and proves
-# the whole stack fresh. Purely local — TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no real device.
+# the whole stack fresh. Purely local -- TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_suite_witness.rish
@@ -30,7 +30,7 @@ let witnesses = [ "tools/cr/crypto_sha512_witness.rish" "tools/cr/crypto_blake2b
 
 for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "crypto-suite: a per-file witness went RED — ${w}"
 
-# The count-guard loom (REDS %80): assert the choir registers exactly the crypto/*.rye files on disk — a file and its proof can never
+# The count-guard loom (REDS %80): assert the choir registers exactly the crypto/*.rye files on disk -- a file and its proof can never
 # disagree without this going RED, and the computed count it prints is the source of truth for the spelled numbers in the front-door docs.
 assert (run ["rishi/bin/rishi" "run" "tools/cr/crypto_count_guard_witness.rish"]).ok else "crypto-suite: the count guard went RED — a crypto/*.rye file and its suite registration disagree"
 

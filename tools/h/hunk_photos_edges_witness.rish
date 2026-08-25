@@ -1,16 +1,16 @@
-# tools/h/hunk_photos_edges_witness.rish — the Photos app detects edges: Sobel gradient magnitude on metal (HUNK27).
+# tools/h/hunk_photos_edges_witness.rish -- the Photos app detects edges: Sobel gradient magnitude on metal (HUNK27).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK27.
-# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Open Image - rung HUNK27.
+# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A - the open image quest).
 # Teacher, thanked clean-room: the Sobel operator every photo app's edge/outline filter carries (concept only, siloed).
 #
 # HUNK25 gave the module its convolution primitive and named an edge detector the next crux. This rung lands it:
-# `image/photos.rye` `edges` is a pure Sobel gradient magnitude over each pixel's Rec.601 luma — two 3x3 gradient
+# `image/photos.rye` `edges` is a pure Sobel gradient magnitude over each pixel's Rec.601 luma -- two 3x3 gradient
 # kernels (horizontal gx, vertical gy) read the 3x3 luma neighborhood, and the magnitude is the L1 sum |gx|+|gy|
 # clamped into 0..255, so no square root and no float is needed and the arithmetic stays exact (the largest term
 # is 4*255 = 1020 per direction, far inside i32). Edges are extended by clamping so no read wraps; the edge map is
 # a fresh grayscale view (r==g==b), alpha opaque. The selftest proves a sharp luma step [0,0,255,255] Sobels to the
-# magnitudes [0,255,255,0] — the two pixels straddling the step lighting up, the flat ends black — the map grayscale
+# magnitudes [0,255,255,0] -- the two pixels straddling the step lighting up, the flat ends black -- the map grayscale
 # and opaque, a solid color a fixed point at black (no gradient), the source pure, the edge image still re-encoding
 # and round-tripping as an open image, and an empty image refusing by name. No network, no key, no funds.
 #
@@ -49,7 +49,7 @@ assert (trim open.out) == "yes" else "hunk-photos-edges: an edge image did not r
 let refuse = run ["sh" "-c" "grep -q 'an empty image refused by name' ${log} && echo yes"]
 assert (trim refuse.out) == "yes" else "hunk-photos-edges: the EmptyImage refusal was not proven"
 
-# The earlier Photos rungs share the binary — GREEN holds beneath.
+# The earlier Photos rungs share the binary -- GREEN holds beneath.
 let stretch = run ["sh" "-c" "grep -q 'GREEN image-photos-stretch:' ${log} && echo yes"]
 assert (trim stretch.out) == "yes" else "hunk-photos-edges: HUNK26 stretch selftest no longer GREEN beneath"
 let convolve = run ["sh" "-c" "grep -q 'GREEN image-photos-convolve:' ${log} && echo yes"]

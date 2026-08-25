@@ -1,16 +1,16 @@
-# tools/al/ales_stereo_gate_env_hold_witness.rish — stereo_gate_env_hold: the attack/hold/release noise gate carried into stereo, the linked held envelope driving one linked gate over time (ALES167).
+# tools/al/ales_stereo_gate_env_hold_witness.rish -- stereo_gate_env_hold: the attack/hold/release noise gate carried into stereo, the linked held envelope driving one linked gate over time (ALES167).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES167.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES167.
 # Design read: active-designing/date/20260815/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
-# Stands on: lotus/stereo_hold_env.rye (ALES165 — the linked held follower, its stereo_env_step_hold reused whole), lotus/stereo_gate_env.rye (ALES162 — the un-held linked gate this reduces to at a hold of zero),
-# lotus/gate_env_hold.rye (ALES57 — the mono attack/hold/release gate, its GateEnvHoldError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 — the silenced floor), lotus/pan.rye
-# (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).
+# Stands on: lotus/stereo_hold_env.rye (ALES165 -- the linked held follower, its stereo_env_step_hold reused whole), lotus/stereo_gate_env.rye (ALES162 -- the un-held linked gate this reduces to at a hold of zero),
+# lotus/gate_env_hold.rye (ALES57 -- the mono attack/hold/release gate, its GateEnvHoldError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 -- the silenced floor), lotus/pan.rye
+# (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip, sample_max, max_clip).
 #
 # lotus/stereo_gate_env_hold.rye gates a span of sample-PAIRS in a master below a magnitude threshold by a ratio, the one downward push following the shared LINKED HELD envelope over time. Each pair advances one shared
 # envelope with one shared hold countdown toward the linked peak max(|left|, |right|) by ALES165's step (attack while rising and rearming the shared hold, the peak pinned while the countdown lasts, release once it expires):
-# at or above the threshold both pass byte for byte, below it the silenced floor gat = e·den/num (ALES51's floor on the linked held envelope) yields one gain gat/e applied to both raw samples — one detector, one hold, one
+# at or above the threshold both pass byte for byte, below it the silenced floor gat = e-den/num (ALES51's floor on the linked held envelope) yields one gain gat/e applied to both raw samples -- one detector, one hold, one
 # gate, the image held. GateEnvHoldError (BadThreshold, BadRatio, BadCoeff, BadHold, BadRange) reused whole; the fusion adds no fault. Values only, never a length. The crux is the zero-hold law (a hold of zero reducing it to
-# ALES162's stereo_gate_env byte for byte on both — the held rung's no-hold limit exactly the un-held one already proven), the linked-gate-over-time law (a left-always-peak master with left' equal to ALES57's mono
+# ALES162's stereo_gate_env byte for byte on both -- the held rung's no-hold limit exactly the un-held one already proven), the linked-gate-over-time law (a left-always-peak master with left' equal to ALES57's mono
 # gate_env_hold(left), the right scaled by the same fraction, the independent per-channel gate_env_hold differing), the image law (the shared gain preserving the L:R ratio, an out-of-phase pair returning still out of phase),
 # the knob / no-chatter laws (unit ratio the identity, a nonzero hold keeping the gate open across a dip rather than chattering), the carry law (a span in two pieces, the split mid-hold, equal to the whole once on both, env
 # and hold_left carrying), and the above-threshold/silence/balance/atomicity/degenerate law.

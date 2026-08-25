@@ -1,4 +1,4 @@
-# claim_preserve_scan.rish — claim-token identity for Radiant passes.
+# claim_preserve_scan.rish -- claim-token identity for Radiant passes.
 #
 # Body: claim_preserve_scan.sh
 # Requires CLAIM_PRESERVE_FILES in the environment (newline-separated paths).

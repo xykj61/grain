@@ -1,17 +1,17 @@
-# tools/h/hunk_part_facets_header_witness.rish — the faceted query header above the narrowed-and-widened shelf (HUNK87).
+# tools/h/hunk_part_facets_header_witness.rish -- the faceted query header above the narrowed-and-widened shelf (HUNK87).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK87.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK87.
 # Design read: active-designing/date/20260814/20260814-010517_hunk-part-facets-header-typed-groups-and-count-exploration.md
-# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — the chosen facets echoed and a result count over the
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- the chosen facets echoed and a result count over the
 # wall of parts (concept only, siloed).
 #
 # HUNK82 painted a query header over HUNK79's pure-AND shelf, yet reads only the conjunction. HUNK86 drew the whole
 # faceted grammar on glass (OR within a facet, AND across facets). This rung gives that faceted shelf its header:
 # brushstroke/part_facets_header.rye `format_facets_header` echoes the canonical faceted query and its result count,
 # `facets_header_row` draws it, and `facets_search_screen` stacks it over HUNK86's narrowed-and-widened shelf into one
-# grid. The selftest proves no drift — the echo re-parses to the same query (a fixed point of the parser), a |-free line
+# grid. The selftest proves no drift -- the echo re-parses to the same query (a fixed point of the parser), a |-free line
 # renders exactly HUNK82's AND header (a strict superset), the header count equals the shelf's count, and the stacked
-# screen equals facets_header_row and facets_search_shelf cell-for-cell — and the named refusals (a malformed clause, a
+# screen equals facets_header_row and facets_search_shelf cell-for-cell -- and the named refusals (a malformed clause, a
 # zero/over-ceiling header, a bad offset). A price is a fact echoed and compared, never moved.
 #
 # Run from the repository root:
@@ -27,7 +27,7 @@ let bin = "brushstroke/bin/part_facets_header"
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_header.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-header: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "brushstroke/bin/part_facets_header.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-header: selftest exited non-zero — see ${outfile}"
@@ -38,13 +38,13 @@ say "hunk-part-facets-header: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-header' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-header: selftest did not print the GREEN part-facets-header line"
 
-# HUNK86 stays GREEN — the faceted shelf this rung stacks a header above.
+# HUNK86 stays GREEN -- the faceted shelf this rung stacks a header above.
 let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
 assert s.ok else "hunk-part-facets-header: HUNK86 part_facets_search re-run failed — see brushstroke/bin/part_facets_search.out"
 let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin/part_facets_search.out && echo yes"]
 assert (trim s_green.out) == "yes" else "hunk-part-facets-header: HUNK86 part_facets_search did not stay GREEN"
 
-# HUNK85 stays GREEN — the faceted query the header counts and the shelf filters by.
+# HUNK85 stays GREEN -- the faceted query the header counts and the shelf filters by.
 let f = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_facets.rye -femit-bin=image/bin/part_facets && image/bin/part_facets selftest > image/bin/part_facets.out 2>&1"]
 assert f.ok else "hunk-part-facets-header: HUNK85 part_facets re-run failed — see image/bin/part_facets.out"
 let f_green = run ["sh" "-c" "grep -q 'GREEN part-facets' image/bin/part_facets.out && echo yes"]

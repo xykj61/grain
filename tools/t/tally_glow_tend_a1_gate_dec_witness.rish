@@ -1,9 +1,9 @@
-# tools/t/tally_glow_tend_a1_gate_dec_witness.rish — Ashvini a1 first Tend gate (e209).
+# tools/t/tally_glow_tend_a1_gate_dec_witness.rish -- Ashvini a1 first Tend gate (e209).
 #
 #   rishi/bin/rishi run tools/t/tally_glow_tend_a1_gate_dec_witness.rish
 #
 # Bartis argv gates prove the answer by exit code (lower_bartis emit_argv_main):
-# EXIT:0 means bartis_gate(sample) == sample-1. No stdout numeral yet — that is say.
+# EXIT:0 means bartis_gate(sample) == sample-1. No stdout numeral yet -- that is say.
 
 say "tally-a1-dec: Language EN — Ashvini a1 · first Tend gate that does work."
 say "tally-a1-dec: Style Radiant — dec bartis beyond pedestals; Rye still lowers."

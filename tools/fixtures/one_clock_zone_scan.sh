@@ -1,5 +1,5 @@
 #!/bin/sh
-# one_clock_zone_scan.sh — host zone equals declared canonical zone by NAME.
+# one_clock_zone_scan.sh -- host zone equals declared canonical zone by NAME.
 # Compare IANA path names, never numeric offsets (DST-safe).
 set -eu
 want=$(head -1 tools/fixtures/one_clock_canonical_zone.txt)

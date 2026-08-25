@@ -1,13 +1,13 @@
-# tools/h/hunk_preset_store_witness.rish — a curated filter-preset book is content-addressed on metal (HUNK32).
+# tools/h/hunk_preset_store_witness.rish -- a curated filter-preset book is content-addressed on metal (HUNK32).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK32.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK32.
 # Design read: active-designing/date/20260813/20260813-181925_hunk-filter-preset-book-exploration.md (names HUNK32 as a horizon).
-# Teacher, thanked clean-room: the shared filter packs of Instagram / VSCO — a curated set of named looks (concept only, siloed).
+# Teacher, thanked clean-room: the shared filter packs of Instagram / VSCO -- a curated set of named looks (concept only, siloed).
 #
 # HUNK30 gave the Photos app filters by name and HUNK31 let a whole book travel as a format filter-presets-v1 record;
 # this rung banks that record content-addressed. `pond/apps/preset_store.rye` `store_book` beads a preset book's text
-# (HUNK1's Tablecloth store), and `open_book` fetches it back — proving every bead against its digest and the whole
-# against its recorded address BEFORE the text is parsed or a preset defined — then parses it into a fresh book. So a
+# (HUNK1's Tablecloth store), and `open_book` fetches it back -- proving every bead against its digest and the whole
+# against its recorded address BEFORE the text is parsed or a preset defined -- then parses it into a fresh book. So a
 # curated filter set reproduces from cold out of its name alone, the recipes never re-authored. The selftest proves a
 # preset from the reopened book applies to the same bytes byte-for-byte, the dedup dividend (same book, two names,
 # stored once), and a tampered book refusing DigestMismatch and an unknown name refusing UnknownArtifact, each before

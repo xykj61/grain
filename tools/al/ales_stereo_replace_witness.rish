@@ -1,9 +1,9 @@
-# tools/al/ales_stereo_replace_witness.rish — stereo_replace: the general span-edit carried into stereo, both channels in lockstep, validate-both-before-either (ALES116).
+# tools/al/ales_stereo_replace_witness.rish -- stereo_replace: the general span-edit carried into stereo, both channels in lockstep, validate-both-before-either (ALES116).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES116.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES116.
 # Design read: active-designing/date/20260815/20260815-014739_fill-ales116-lotus-stereo-replace.md
-# Stands on: lotus/replace.rye (ALES115 — the mono general span-edit run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance
-# invariant), lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining
+# Stands on: lotus/replace.rye (ALES115 -- the mono general span-edit run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance
+# invariant), lotus/timeline.rye (ALES2 -- the Clip and the EditError reused whole), lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining
 # invariant is that left and right hold the same length so the channels stay aligned in time; a keeper who pastes a corrected take over a selection pastes it into both channels at
 # once. This rung carries ALES115's replace into stereo the way ALES29 carried the insert-join: run the proven mono replace on each channel with the same at and count.
 #
@@ -11,7 +11,7 @@
 # mutated (the payloads must name the same span length, BadRange otherwise; the mono preconditions checked against the shared length up front; ClipFull on an overflow) so a refusal
 # never desynchronises the channels. The crux is four laws. THE STEREO REPLACE LAW: each channel equals ALES115's mono replace on that channel byte for byte. THE BALANCE / INVARIANT
 # LAW: left.len == right.len after the edit. THE ATOMICITY LAW: any refusal leaves both channels byte for byte untouched. THE DEGENERATE / GENERALIZATION LAW: empty payloads count 0
-# the identity on both channels, and per channel it inherits ALES115's three faces (cut · splice · paste_over).
+# the identity on both channels, and per channel it inherits ALES115's three faces (cut - splice - paste_over).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_replace_witness.rish

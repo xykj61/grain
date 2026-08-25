@@ -1,4 +1,4 @@
-# glow_riscv_target_witness.rish — Glow's verified code runs on RISC-V.
+# glow_riscv_target_witness.rish -- Glow's verified code runs on RISC-V.
 #
 # The parity lap for the RISC-V-substrate decision: cross-build Glow witnesses
 # for riscv64 (the open, frozen base ISA that is the permanent hardware

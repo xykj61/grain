@@ -1,4 +1,4 @@
-# tools/b/buhr_tablecloth_brix_witness.rish — BUHR Journey 7, Rung 3: a Brix descriptor declares artifacts.
+# tools/b/buhr_tablecloth_brix_witness.rish -- BUHR Journey 7, Rung 3: a Brix descriptor declares artifacts.
 #
 # Rungs one and two built the artifact store and proved a manifest is an honest index of a
 # live store. This rung makes the Brix-facing half literal: a `format tablecloth-decl-v1`
@@ -6,7 +6,7 @@
 # live store into a `format tablecloth-v1` manifest of exactly those declared artifacts, in
 # declared order. A required name the store cannot satisfy refuses the whole evaluation
 # (Unsatisfied) rather than emitting a manifest naming bytes the store does not hold; the
-# evaluated manifest then verifies against the store by rung two, closing the chain — a
+# evaluated manifest then verifies against the store by rung two, closing the chain -- a
 # system declares what it needs, the store proves it serves it, the manifest is the receipt.
 #
 # Run from the repository root:
@@ -28,8 +28,8 @@ assert selftest.out contains "a declaration of 2 artifacts evaluated to a manife
 assert selftest.out contains "the evaluated manifest verified against the live store (2 artifacts)" else "buhr7: chain-to-verify missing"
 assert selftest.out contains "an unsatisfiable requirement, a bad header, an empty descriptor each refused GREEN" else "buhr7: brix refusals missing"
 
-# Rungs one and two — the naming layer the declaration evaluates over and the reader that
-# verifies its output — stay their own green binaries; rung three composes them additively.
+# Rungs one and two -- the naming layer the declaration evaluates over and the reader that
+# verifies its output -- stay their own green binaries; rung three composes them additively.
 let r1_bin = "pond/bin/tablecloth"
 let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr7: tablecloth (r1) re-build failed"

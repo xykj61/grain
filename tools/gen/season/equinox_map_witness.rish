@@ -1,10 +1,10 @@
-# tools/gen/season/equinox_map_witness.rish — equinox map canon as Brix data (e7).
+# tools/gen/season/equinox_map_witness.rish -- equinox map canon as Brix data (e7).
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_map_witness.rish
 #
-# Six assertions (via scan): 4 blocks · flanks cover 1..12 once · each flank
-# descends angular+1,angular,angular−1 · angular = middle · elements/directions/
-# hours complete · angular set = kendras {1,4,7,10}. Negative fixtures bite.
+# Six assertions (via scan): 4 blocks - flanks cover 1..12 once - each flank
+# descends angular+1,angular,angular−1 - angular = middle - elements/directions/
+# hours complete - angular set = kendras {1,4,7,10}. Negative fixtures bite.
 
 say "equinox-map: Language EN — the four equinoxes as data."
 say "equinox-map: Style Radiant — a descriptor describes; a witness checks."
@@ -19,12 +19,12 @@ assert scan.ok else "equinox-map: canon scan failed"
 assert scan.out contains "verdict=ok" else "equinox-map: canon not ok"
 assert scan.out contains "blocks=4" else "equinox-map: want four blocks"
 
-# Negative space — repeated house FAILS
+# Negative space -- repeated house FAILS
 let bad_rep = run ["sh" "tools/fixtures/equinox_map_scan.sh" "tools/fixtures/equinox_map_bad_repeat.brix"]
 assert bad_rep.ok == false else "equinox-map: repeated-house fixture must fail"
 assert bad_rep.out contains "verdict=map_unlawful" else "equinox-map: repeat fixture wrong verdict"
 
-# Negative space — ascending flank FAILS
+# Negative space -- ascending flank FAILS
 let bad_asc = run ["sh" "tools/fixtures/equinox_map_scan.sh" "tools/fixtures/equinox_map_bad_ascending.brix"]
 assert bad_asc.ok == false else "equinox-map: ascending-flank fixture must fail"
 assert bad_asc.out contains "verdict=map_unlawful" else "equinox-map: ascending fixture wrong verdict"
@@ -34,7 +34,7 @@ let reason = run ["sh" "-c" "grep -q '^h10_north_reason ' context/equinox_map.br
 assert reason.ok else "equinox-map: H10-north reason grep failed"
 assert trim reason.out == "REASON_OK" else "equinox-map: H10-north reason missing"
 
-# Almanac seat 14 — metal writes; helper is idempotent
+# Almanac seat 14 -- metal writes; helper is idempotent
 let almanac = run ["sh" "tools/gen/season/equinox_map_almanac.sh"]
 assert almanac.ok else "equinox-map: almanac append failed"
 say almanac.out

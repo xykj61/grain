@@ -1,15 +1,15 @@
-# tools/al/ales_album_sheet_witness.rish — a whole record's readable table of contents: a `format lotus-album-sheet-v1` page rendered
+# tools/al/ales_album_sheet_witness.rish -- a whole record's readable table of contents: a `format lotus-album-sheet-v1` page rendered
 # from an unpacked ALES223 album, the eye's version of the album frame (ALES225).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES225.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES225.
 # Design read: active-designing/date/20260815/20260815-140635_fill-ales225-lotus-album-sheet.md
-# Idiom kin: lotus/cue_sheet.rye (ALES21, the readable-render idiom) · lotus/render_album.rye (ALES223, the unpacked album this
-# reads). A projection — no new frame, no new hash.
+# Idiom kin: lotus/cue_sheet.rye (ALES21, the readable-render idiom) - lotus/render_album.rye (ALES223, the unpacked album this
+# reads). A projection -- no new frame, no new hash.
 #
 # lotus/album_sheet.rye renders an unpacked album as a human-readable listing. The selftest proves: every track appears in order
 # with its name and manifest fields, the wav_bytes exactly the .wav length (the listing law); the page opens with the format and
 # `album <count>` lines (the header law); a zero-track album renders just the two header lines (the empty law); a too-small buffer
-# refuses Overflow (the atomic law). A text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+# refuses Overflow (the atomic law). A text render only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_album_sheet_witness.rish

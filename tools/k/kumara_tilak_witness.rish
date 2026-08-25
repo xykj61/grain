@@ -1,14 +1,14 @@
-# kumara_tilak_witness.rish — the Kumara identity template: point and bind.
+# kumara_tilak_witness.rish -- the Kumara identity template: point and bind.
 #
 # Proves the first two tilaks of a Kumara identity are made, signed both ways, and
-# verified — the load-bearing pair every other tilak hangs from. The crypto rides on
+# verified -- the load-bearing pair every other tilak hangs from. The crypto rides on
 # tally/kumara.rye (Ed25519 at the seam); this witness drives the built module and
 # checks both the proof and the Bron facts it emits.
 #
 # Build first:  rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 #   rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
 
-# The module's own selftest — every tilak verifies, every tamper refuses.
+# The module's own selftest -- every tilak verifies, every tamper refuses.
 # Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
 let st = run ["kumara/bin/tilak" "selftest"]
 assert st.ok else "kumara tilak selftest must exit 0"
@@ -26,7 +26,7 @@ assert (em.out contains "format kumara-turn-v1") else "emit a rotation fact"
 assert (em.out contains "format kumara-sponsor-v1") else "emit a sponsor fact"
 
 # Every signature is present at full Ed25519 length (64 bytes = 128 hex).
-# The bind has two; turn one; each of three caps one; sponsor one — seven in all.
+# The bind has two; turn one; each of three caps one; sponsor one -- seven in all.
 let all_sigs = find em.out "(sig|sig_by_key|sig_by_keeper) [0-9a-f]{128}"
 assert (length all_sigs) == 7 else "every signed claim carries a full-length Ed25519 signature"
 

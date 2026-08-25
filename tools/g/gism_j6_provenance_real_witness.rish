@@ -1,15 +1,15 @@
-# tools/g/gism_j6_provenance_real_witness.rish — GISM Journey 6 (Provenance), Rung 1.
+# tools/g/gism_j6_provenance_real_witness.rish -- GISM Journey 6 (Provenance), Rung 1.
 #
 # Season 2, Yield: the chain of custody stands on real data. This witness carries
-# Tablecloth's owner-signed catalog onto a real tree document — a compile-time embed
+# Tablecloth's owner-signed catalog onto a real tree document -- a compile-time embed
 # of a living waymark green-claim (symlinked, so the bytes signed are the bytes a
-# keeper reads) — and proves the whole chain of custody runs GREEN over real bytes:
+# keeper reads) -- and proves the whole chain of custody runs GREEN over real bytes:
 # a settled planet identity signs the exact real content, fetch returns it byte-for-
 # byte, owner_of/place_of resolve provenance, and every tamper refuses. It also books
-# Yield red %73 on metal — a real front-door document (SECURITY.md, 2689 B) refuses
+# Yield red %73 on metal -- a real front-door document (SECURITY.md, 2689 B) refuses
 # ContentTooLarge because it does not fit one 512-byte resin (the chunking horizon).
 # The demo keyed catalog over doc_planet/doc_star (tablecloth_keyed) is re-run
-# untouched — the provenance app is additive, composed over its public API.
+# untouched -- the provenance app is additive, composed over its public API.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_j6_provenance_real_witness.rish
@@ -32,7 +32,7 @@ assert selftest.out contains "forged signature refused (BadSignature), nothing s
 assert selftest.out contains "content-mismatched signature refused (BadSignature)" else "gism-j6r1: content-mismatch refusal missing"
 assert selftest.out contains "red %73 — real doc 2689 B > 512 B resin refuses ContentTooLarge" else "gism-j6r1: Yield red %73 proof missing"
 
-# The demo keyed catalog over doc_planet/doc_star must still be GREEN — provenance_real
+# The demo keyed catalog over doc_planet/doc_star must still be GREEN -- provenance_real
 # composes its public API only, retiring nothing.
 let demo_bin = "pond/bin/tablecloth-keyed"
 let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${demo_bin}"]

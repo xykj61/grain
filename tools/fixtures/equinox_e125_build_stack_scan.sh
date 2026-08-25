@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e125 — build stack seated (layer order · foundations first).
+# Equinox e125 -- build stack seated (layer order - foundations first).
 # Exit 0 only when Lexicon carries the stack and hard lines hold.
 # No backtick characters. No git history walks.
 #
@@ -74,7 +74,7 @@ echo "$ROW" | rg -qi 'Distinct from \*\*priority cycle\*\*|Distinct from priorit
   echo "verdict=misread"
   exit 1
 }
-# Order markers in the row — sh before rish before glow (string positions)
+# Order markers in the row -- sh before rish before glow (string positions)
 SH_AT=$(printf '%s' "$ROW" | python3 -c 'import sys; s=sys.stdin.read(); print(s.find("sh"))')
 RISH_AT=$(printf '%s' "$ROW" | python3 -c 'import sys; s=sys.stdin.read(); print(s.find("rish"))')
 GLOW_AT=$(printf '%s' "$ROW" | python3 -c 'import sys; s=sys.stdin.read().lower(); print(s.find("glow"))')

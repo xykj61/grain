@@ -1,10 +1,10 @@
-# tools/d/drey_recorder_witness.rish — the recorder controls: samples land only while recording (DREY2).
+# tools/d/drey_recorder_witness.rish -- the recorder controls: samples land only while recording (DREY2).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY2.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY2.
 # Design read: active-designing/date/20260814/20260814-021722_drey2-recorder-control-state-machine-exploration.md
-# Stands on: mikrophone/session.rye (DREY0) — the memory that forgets.
+# Stands on: mikrophone/session.rye (DREY0) -- the memory that forgets.
 #
-# mikrophone/recorder.rye wraps the session that forgets in a control state machine (idle · recording · paused ·
+# mikrophone/recorder.rye wraps the session that forgets in a control state machine (idle - recording - paused -
 # stopped) whose single invariant is that `feed` reaches `session.capture` ONLY while recording. The selftest proves: a
 # sample lands only during a live recording (a feed in idle, paused, or stopped refuses NotRecording before a byte
 # moves), the transitions are a real state machine (AlreadyRecording, NotPaused, Stopped each refuse by name), pause

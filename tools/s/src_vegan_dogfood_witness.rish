@@ -1,4 +1,4 @@
-# tools/s/src_vegan_dogfood_witness.rish — accrete shim → tools/gen/season/src_vegan_dogfood_witness.rish (Surface p3)
+# tools/s/src_vegan_dogfood_witness.rish -- accrete shim -> tools/gen/season/src_vegan_dogfood_witness.rish (Surface p3)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/src_vegan_dogfood_witness.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/src_vegan_dogfood_witness.rish" args[0]]
 if r.out != "" then say r.out

@@ -1,6 +1,6 @@
-# launch-claude.rish — start Claude Code inside ai-jail from the repository root.
+# launch-claude.rish -- start Claude Code inside ai-jail from the repository root.
 #
-# Primary Rish entry. Bash elder: tools/ag/agent-jail.sh claude …
+# Primary Rish entry. Bash elder: tools/ag/agent-jail.sh claude ...
 # Keeper pier / Linux: --private-home; auth under .claude-state/.
 #
 #   rishi/bin/rishi run tools/l/launch-claude.rish
@@ -13,10 +13,10 @@
 # clearest homes are the elder's help and the season entry:
 #   ./tools/ag/agent-jail.sh --help
 #   rishi/bin/rishi run tools/l/launch-claude-season.rish   # prints the unattended recipe
-# See: nixos-guide CLI-agents note · context/specs/enclosure-editors.md
+# See: nixos-guide CLI-agents note - context/specs/enclosure-editors.md
 
 # invariant: forward every arg the caller passed, so the doc above stays true
-# (docs and implementation stay synced — TAME root rule 9).
+# (docs and implementation stay synced -- TAME root rule 9).
 let result = run (["bash" "tools/ag/agent-jail.sh" "claude"] + args)
 say "launch-claude: agent-jail finished — ok=${result.ok}"
 assert result.ok else "agent-jail failed to start claude"

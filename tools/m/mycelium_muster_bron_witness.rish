@@ -1,18 +1,18 @@
-# tools/m/mycelium_muster_bron_witness.rish — a validator set travels as a readable record (r2).
+# tools/m/mycelium_muster_bron_witness.rish -- a validator set travels as a readable record (r2).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r2 — travel.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r2 -- travel.
 # r1 bound a Chorus to a known validator set (a Muster) and proved a quorum is believed only when its
 # enrolled voices meet the Byzantine threshold read from the roll's size. A roll a holder cannot hand to
-# another is only a local standard, so r2 lets the whole Muster cross as `format muster-v1` bytes — one
+# another is only a local standard, so r2 lets the whole Muster cross as `format muster-v1` bytes -- one
 # validator line per enrolled node, the threshold DERIVED by the reader from the count, never carried, so
 # a roll cannot smuggle a lowered bar across the wire.
 #
 # The crux this witness proves is THE ROLL'S VERDICT SURVIVES THE WIRE: a Chorus judged against a Muster
-# parsed from bytes reaches the identical verdict as against the roll in memory — an enrolled quorum
+# parsed from bytes reaches the identical verdict as against the roll in memory -- an enrolled quorum
 # passes, three fresh keys refuse NotMember. Render writes it, parse reads it back byte-for-byte (fixed
 # point). A purpose-built bounded reader refuses a wrong header (BadFormat), an empty roll (BadFormat), an
 # unknown field (UnknownField), a bad hex key (BadHex), a repeated validator (Duplicate). Composes
-# muster + chorus public API only; demo seeds — no key, no funds, no network, no custody.
+# muster + chorus public API only; demo seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 #

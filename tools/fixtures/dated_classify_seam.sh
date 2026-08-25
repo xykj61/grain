@@ -1,5 +1,5 @@
 #!/bin/sh
-# dated_classify_seam.sh — the regex seam for dated_classify.rish.
+# dated_classify_seam.sh -- the regex seam for dated_classify.rish.
 #
 # Rishi owns the interface (tools/fixtures/dated_classify.rish); this POSIX-sh seam
 # holds the two ripgrep patterns Rishi has no native regex for, exactly as the elder
@@ -27,9 +27,9 @@ is_dated_name() { printf '%s' "$1" | rg -q "$DATED_RE"; }
 is_skip_ext()   { printf '%s' "$1" | rg -q "$SKIP_RE"; }
 has_header()    { head -c 8000 "$1" 2>/dev/null | rg -q "$HDR_RE"; }
 
-# header_files <listfile> — emit the paths in <listfile> that carry a living header in
+# header_files <listfile> -- emit the paths in <listfile> that carry a living header in
 # their first 8000 bytes. A bulk `rg -l` (whole-file) narrows to a handful of candidates,
-# then head -c 8000 confirms the byte bound exactly — fast without loosening the semantics
+# then head -c 8000 confirms the byte bound exactly -- fast without loosening the semantics
 # classify uses. Thousands of per-file spawns collapse to one rg pass plus a few checks.
 header_files() {
   xargs -a "$1" -d '\n' rg -l "$HDR_RE" 2>/dev/null | while IFS= read -r f; do
@@ -66,7 +66,7 @@ census() {
   printf 'verdict=ok\n'
 }
 
-# health <live_ctrl> <dated_ctrl> — the per-room fascia-health report, reproducing the
+# health <live_ctrl> <dated_ctrl> -- the per-room fascia-health report, reproducing the
 # elder fascia_health_scan.sh Python block byte-for-byte: the two control verdicts, the
 # global tally, and every room carrying dated testimony, sorted by live-percentage then
 # room name. dated iff dated-named and not rescued by a living header.
@@ -131,7 +131,7 @@ health() {
   echo "verdict=ok"
 }
 
-# shed <cited> <orphan> <citer> — the orphan-floor census behind the C1/C2 controls,
+# shed <cited> <orphan> <citer> -- the orphan-floor census behind the C1/C2 controls,
 # reproducing the elder shed_census_scan.sh Python block. A dated file is an orphan when
 # its basename is cited in no tracked text file (self-mention counts). The count is a
 # FLOOR that errs toward keeping. Rooms are listed by orphan count, ties by first sight.

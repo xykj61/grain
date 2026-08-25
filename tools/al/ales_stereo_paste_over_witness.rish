@@ -1,15 +1,15 @@
-# tools/al/ales_stereo_paste_over_witness.rish — stereo_paste_over: the overwrite paste carried into stereo, both channels in lockstep, validate-both-before-either (ALES121).
+# tools/al/ales_stereo_paste_over_witness.rish -- stereo_paste_over: the overwrite paste carried into stereo, both channels in lockstep, validate-both-before-either (ALES121).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES121.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES121.
 # Design read: active-designing/date/20260815/20260815-021504_fill-ales121-lotus-stereo-paste-over.md
-# Stands on: lotus/paste_over.rye (ALES114 — the mono overwrite paste run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/stereo_replace.rye (ALES116 — the insert-mode stereo paste used to prove the insert-contrast law), lotus/timeline.rye (ALES2 — the Clip, its max_clip bound, and the EditError
-# reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay
+# Stands on: lotus/paste_over.rye (ALES114 -- the mono overwrite paste run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/stereo_replace.rye (ALES116 -- the insert-mode stereo paste used to prove the insert-contrast law), lotus/timeline.rye (ALES2 -- the Clip, its max_clip bound, and the EditError
+# reused whole), lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay
 # aligned in time; punching a clean take over a flubbed bar lands on both speakers at once. This rung carries ALES114's paste_over into stereo the way ALES116 carried replace and ALES120
 # carried duplicate: run the proven mono paste_over on each channel over the same span. Where stereo_replace inserts a payload and can resize, stereo_paste_over writes ON TOP and keeps the length.
 #
 # lotus/stereo_paste_over.rye writes left_src over [at, at+left_src.len) in the left channel and right_src over the same span in the right, validating BOTH channels before either is
-# mutated (a stereo payload names one span across both channels, so its two sides must be the same length — BadRange otherwise — and the mono preconditions are checked once against the
+# mutated (a stereo payload names one span across both channels, so its two sides must be the same length -- BadRange otherwise -- and the mono preconditions are checked once against the
 # shared length up front) so a refusal never desynchronises the channels. The crux is four laws. THE STEREO OVERWRITE LAW: each channel equals ALES114's mono paste_over on that channel
 # byte for byte, the length held. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE INSERT-CONTRAST LAW: the same payloads keep the length
 # here and grow both channels through ALES116's stereo_replace(count 0). THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, empty payloads the identity,

@@ -1,8 +1,8 @@
-# tube0_manifest_witness.rish — TUBE0: the Glow app-manifest mold.
+# tube0_manifest_witness.rish -- TUBE0: the Glow app-manifest mold.
 #
 # Per expanding-prompts/yonder/20260716-142818_glow-application-framework-and-
 # publishing.md rung TUBE0: an installable Glow application is a Pool
-# agent, and a manifest is a bounded mold naming what it is — name,
+# agent, and a manifest is a bounded mold naming what it is -- name,
 # version, declared capabilities, a real iteration bound. This is the
 # reachable, device-free first rung of the TUBE application-framework
 # ladder, buildable and checkable today with no agent runtime, no

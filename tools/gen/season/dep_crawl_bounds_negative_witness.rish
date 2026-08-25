@@ -1,8 +1,8 @@
-# tools/gen/season/dep_crawl_bounds_negative_witness.rish — the bounds bite.
+# tools/gen/season/dep_crawl_bounds_negative_witness.rish -- the bounds bite.
 #
 #   rishi/bin/rishi run tools/gen/season/dep_crawl_bounds_negative_witness.rish
 #
-# Voice Season v3 · slot 3 (emphasis) · happy_zone_witnesses_first.
+# Voice Season v3 - slot 3 (emphasis) - happy_zone_witnesses_first.
 #
 # Why this exists: dep_crawl named two bounds at e4 -- 256 nodes and 16 depth --
 # and neither refusal path had ever been observed to fire. A bound never seen to

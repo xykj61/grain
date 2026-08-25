@@ -1,4 +1,4 @@
-# tools/gen/season/remember_pin_history_tidy_witness.rish — ITINERARY pin habit tidy
+# tools/gen/season/remember_pin_history_tidy_witness.rish -- ITINERARY pin habit tidy
 #
 #   rishi/bin/rishi run tools/gen/season/remember_pin_history_tidy_witness.rish
 #
@@ -19,7 +19,7 @@ assert rule_z.ok else "pin-tidy: claude remember-git-nib rule missing"
 
 say "pin-tidy: count pure habit follow-ups since first habit base..."
 # Counter lives under expanding-prompts/yonder/ so tools/*.py ratchet stays clear
-# (fascia f1 · 20260730.091805). Habit measure itself is unchanged.
+# (fascia f1 - 20260730.091805). Habit measure itself is unchanged.
 let count = run ["python3" "expanding-prompts/yonder/remember_pin_habit_count.py"]
 assert count.ok else "pin-tidy: habit count failed"
 let n = trim count.out

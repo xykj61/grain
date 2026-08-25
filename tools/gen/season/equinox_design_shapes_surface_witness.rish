@@ -1,15 +1,15 @@
-# tools/gen/season/equinox_design_shapes_surface_witness.rish — e32 design-shapes surface choir.
+# tools/gen/season/equinox_design_shapes_surface_witness.rish -- e32 design-shapes surface choir.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_design_shapes_surface_witness.rish
 #
 # Wing + four halls already GREEN alone must GREEN together. Almanac seat 38.
-# Leaf witnesses only — no nested choirs (avoids elder chains).
+# Leaf witnesses only -- no nested choirs (avoids elder chains).
 
 say "equinox-design-shapes-surface: Language EN — wing and four halls, one choir."
 say "equinox-design-shapes-surface: Style Radiant — the design surface holds as one."
 say "equinox-design-shapes-surface: Lens TAME — e32 · almanac seat 38 · ch3 6/16."
 
-# Limb 0 — wing census (leaf scan)
+# Limb 0 -- wing census (leaf scan)
 let wing = run ["sh" "tools/fixtures/design_shapes_census_scan.sh"]
 say wing.out
 assert wing.ok else "equinox-design-shapes-surface: wing census failed"
@@ -17,21 +17,21 @@ assert wing.out contains "verdict=ok" else "equinox-design-shapes-surface: wing 
 assert wing.out contains "halls_expected=4" else "equinox-design-shapes-surface: want four halls"
 assert wing.out contains "census_breach_count=0" else "equinox-design-shapes-surface: want breach zero"
 
-# Limb 1 — bounds home
+# Limb 1 -- bounds home
 let bounds = run ["rishi/bin/rishi" "run" "tools/gen/season/bounds_home_census_witness.rish"]
 say bounds.out
 assert bounds.ok else "equinox-design-shapes-surface: bounds limb failed"
 assert bounds.out contains "GREEN: bounds-home-census" else "equinox-design-shapes-surface: bounds not GREEN"
 assert bounds.out contains "pairs_matched=10" else "equinox-design-shapes-surface: want ten pairs"
 
-# Limb 2 — relay resin
+# Limb 2 -- relay resin
 let resin = run ["rishi/bin/rishi" "run" "tools/gen/season/relay_resin_census_witness.rish"]
 say resin.out
 assert resin.ok else "equinox-design-shapes-surface: resin limb failed"
 assert resin.out contains "GREEN: relay-resin-census" else "equinox-design-shapes-surface: resin not GREEN"
 assert resin.out contains "max_limb_beads=12" else "equinox-design-shapes-surface: want bound twelve"
 
-# Limb 3 — fact fold
+# Limb 3 -- fact fold
 let fold = run ["rishi/bin/rishi" "run" "tools/gen/season/fact_fold_census_witness.rish"]
 say fold.out
 assert fold.ok else "equinox-design-shapes-surface: fact-fold limb failed"
@@ -39,14 +39,14 @@ assert fold.out contains "GREEN: fact-fold-census" else "equinox-design-shapes-s
 assert fold.out contains "supply=872" else "equinox-design-shapes-surface: want supply=872"
 assert fold.out contains "purity" else "equinox-design-shapes-surface: want purity"
 
-# Limb 4 — tend hygiene
+# Limb 4 -- tend hygiene
 let tend = run ["rishi/bin/rishi" "run" "tools/gen/season/tend_hygiene_census_witness.rish"]
 say tend.out
 assert tend.ok else "equinox-design-shapes-surface: tend limb failed"
 assert tend.out contains "GREEN: tend-hygiene-census" else "equinox-design-shapes-surface: tend not GREEN"
 assert tend.out contains "tend_waymarks=3" else "equinox-design-shapes-surface: want three tend waymarks"
 
-# Refuse — absent wing path
+# Refuse -- absent wing path
 let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-design-shapes-surface: absent wing must fail"

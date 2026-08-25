@@ -1,13 +1,13 @@
-# tools/h/hunk_photo_revert_witness.rish — the Photos app reverts on metal (HUNK14).
+# tools/h/hunk_photo_revert_witness.rish -- the Photos app reverts on metal (HUNK14).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK14.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK14.
 # Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
 # Teacher, thanked clean-room: the "revert to original" of iCloud Photos / Google Photos (concept only, siloed).
 #
 # HUNK11 recorded the six Photos verbs as a bounded edit-list and replayed them over an untouched source. This rung
 # banks that non-destructiveness: because the source is never mutated, a revert is only dropping edits off the end of
 # the list. `image/photo_revert.rye` gives `drop_last` (forget the last k edits), `truncate` (keep the first keep), and
-# `revert_one` — all pure over the count, returning a fresh shorter list and leaving the caller's list whole. The
+# `revert_one` -- all pure over the count, returning a fresh shorter list and leaving the caller's list whole. The
 # earlier image is one `apply` of the shorter list away; the original is one `apply` of the empty list away. The
 # selftest proves a one-step revert equals the earlier verbs by hand byte-for-byte, that dropping zero is identity and
 # dropping all recovers the original, that an over-count drop clamps to empty without underflow, that the source list

@@ -1,4 +1,4 @@
-# tools/b/buhr_realidream_view_theme_witness.rish — BUHR Journey 5, Rung 6.
+# tools/b/buhr_realidream_view_theme_witness.rish -- BUHR Journey 5, Rung 6.
 #
 # A .brush theme recolors the read origin. Rung five painted the read, program, and
 # fused lanes together and marked each read origin in the design system's own read
@@ -7,7 +7,7 @@
 # block overrides the read key is read through the actual authoring loop (parse_brush
 # validates, collect_brush_style reassembles the flat Bron), infused over base_sheet by
 # the WADE1 cascade (tokens.resolve), and painted by rung five's own paint_origins
-# unchanged — so every read origin burns the authored amber while the ink, edge rule,
+# unchanged -- so every read origin burns the authored amber while the ink, edge rule,
 # and living-edge head stand untouched. The recolor is proven two ways: the themed read
 # reaches the canvas (391 amber pixels) and the default Madder leaves zero pixels (a
 # recolor, never an addition); warm/low-blue holds through the theme; glyphs unchanged;
@@ -34,7 +34,7 @@ assert selftest.out contains "the palette law holds through the theme" else "buh
 assert selftest.out contains "text unchanged by the theme" else "buhr-j5r6: the additive-glyphs proof is missing"
 assert selftest.out contains "ThemeMissingRead" else "buhr-j5r6: the style-less refuse proof is missing"
 
-# Rung 5 (the origins view) stays its own green binary — additive.
+# Rung 5 (the origins view) stays its own green binary -- additive.
 let rung5 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_realidream_view_witness.rish 2>&1"]
 assert rung5.ok else "buhr-j5r6: the origins view (J5r5) witness regressed"
 assert rung5.out contains "GREEN: BUHR-J5r5" else "buhr-j5r6: rung five lost its green"

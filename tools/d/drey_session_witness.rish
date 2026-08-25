@@ -1,12 +1,12 @@
-# tools/d/drey_session_witness.rish — the memory that forgets (DREY0).
+# tools/d/drey_session_witness.rish -- the memory that forgets (DREY0).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · founding rung DREY0.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - founding rung DREY0.
 # Design read: active-designing/date/20260814/20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md
-# Vision: foundations/20260801-005853_mantrapod-venture-pitch.md — "What forgets, protects."
+# Vision: foundations/20260801-005853_mantrapod-venture-pitch.md -- "What forgets, protects."
 #
 # The Mantrapod's founding promise is a firmware invariant: working memory holds a keeper's capture while powered and
 # lets it dissolve when the device is set down; what a keeper carries out, they keep on purpose. mikrophone/session.rye
-# proves that shape pure in Rye, long before a board exists. Two buffers, two fates — `work` is the forgetful working
+# proves that shape pure in Rye, long before a board exists. Two buffers, two fates -- `work` is the forgetful working
 # buffer that power_down zeroes whole, `keep` is the one committed payload a deliberate commit copies out and power_down
 # leaves untouched. The selftest proves: a capture holds only while powered (an unpowered capture refuses NotPowered),
 # the buffer is bounded (a capture past max_samples refuses BufferFull), commit is the one deliberate act (empty

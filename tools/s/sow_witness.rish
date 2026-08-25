@@ -1,4 +1,4 @@
-# sow_witness.rish — prove the projected seed is clean before it is ever public.
+# sow_witness.rish -- prove the projected seed is clean before it is ever public.
 #
 # The heart of the two-grain breach: an additive privacy boundary cannot leak
 # what it never received, and this witness proves the seed received nothing
@@ -6,32 +6,32 @@
 # (.claude/rules/reds-first.md).
 #
 # Duties:
-#   1. M1 — the manifest classifies every tracked root path, exactly once.
+#   1. M1 -- the manifest classifies every tracked root path, exactly once.
 #   2. Project the seed fresh from the field.
-#   3. IDENT — no maintainer identity string survives into seed/.
-#   4. NO_PERSONAL — no `personal` path and no key material appears in seed/.
+#   3. IDENT -- no maintainer identity string survives into seed/.
+#   4. NO_PERSONAL -- no `personal` path and no key material appears in seed/.
 #
 #   rishi/bin/rishi run tools/s/sow_witness.rish
 
-# Duty 1 — manifest completeness (M1)
+# Duty 1 -- manifest completeness (M1)
 let cover = run ["sh" "tools/fixtures/sow_manifest_cover.sh"]
 say cover.out
 assert cover.ok else "manifest-cover scan failed to run"
 assert (cover.out contains "M1_OK") else "manifest does not classify every root path exactly once"
 
-# Duty 2 — project fresh
+# Duty 2 -- project fresh
 let proj = run ["sh" "tools/fixtures/sow_project.sh"]
 say proj.out
 assert proj.ok else "sow projection failed to run"
 assert (proj.out contains "SOW_OK") else "sow projection did not complete"
 
-# Duty 3 — the negative that matters most
+# Duty 3 -- the negative that matters most
 let leak = run ["sh" "tools/fixtures/sow_leak_scan.sh"]
 say leak.out
 assert leak.ok else "identity leak scan failed to run"
 assert (leak.out contains "IDENT_CLEAN") else "a maintainer identity string leaked into the seed"
 
-# Duty 4 — no personal path, no key material
+# Duty 4 -- no personal path, no key material
 let pers = run ["sh" "tools/fixtures/sow_personal_scan.sh"]
 say pers.out
 assert pers.ok else "personal-path scan failed to run"

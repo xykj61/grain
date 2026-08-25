@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/p/pier_mosh_udp_open.sh — open mosh's full UDP roam window on the SEA pier.
+# tools/p/pier_mosh_udp_open.sh -- open mosh's full UDP roam window on the SEA pier.
 #
 # Run as root, on the pier:   sudo sh tools/p/pier_mosh_udp_open.sh
 #
@@ -8,13 +8,13 @@
 # so a session dies on the roam. This opens UDP 60000-65535 declaratively and rebuilds.
 #
 # Safe by construction:
-#   * ADDITIVE — it adds one allowedUDPPortRanges block and touches no TCP port and no
+#   * ADDITIVE -- it adds one allowedUDPPortRanges block and touches no TCP port and no
 #     SSH setting, so it cannot lock you out.
-#   * IDEMPOTENT — if the range is already present it skips the edit and just rebuilds.
-#   * GUARDED — it refuses unless this is the SEA pier (hostName pier + the SEA VPS
+#   * IDEMPOTENT -- if the range is already present it skips the edit and just rebuilds.
+#   * GUARDED -- it refuses unless this is the SEA pier (hostName pier + the SEA VPS
 #     key), and refuses on a disabled firewall or a custom nftables roof rather than
 #     guessing (SEA only, never EWR).
-#   * REVERSIBLE — it backs up configuration.nix first; `nixos-rebuild switch` is
+#   * REVERSIBLE -- it backs up configuration.nix first; `nixos-rebuild switch` is
 #     atomic, so a build failure leaves the running system unchanged.
 #
 # The Nix edit was validated (nix-instantiate --parse) on a scratch copy before this
@@ -25,7 +25,7 @@ CFG=/etc/nixos/configuration.nix
 FLAKE=/etc/nixos
 HOST=pier
 
-# --- guards: the pier, SEA, one standard roof — else stop and report ---
+# --- guards: the pier, SEA, one standard roof -- else stop and report ---
 [ -f "$CFG" ] || { echo "REFUSE: $CFG not found — this is not the pier."; exit 2; }
 grep -q 'networking.hostName = "pier"' "$CFG" || { echo "REFUSE: hostName is not \"pier\"."; exit 2; }
 grep -q 'vultr SEA VPS' "$CFG" || { echo "REFUSE: no SEA VPS marker — SEA only, never EWR."; exit 2; }

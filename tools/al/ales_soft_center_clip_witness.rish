@@ -1,19 +1,19 @@
-# tools/al/ales_soft_center_clip_witness.rish — the soft center clipper: silence the quiet middle and subtract the threshold, y = if |x| ≤ t then 0 else
-# x − sign(x)·t (ALES88).
+# tools/al/ales_soft_center_clip_witness.rish -- the soft center clipper: silence the quiet middle and subtract the threshold, y = if |x| ≤ t then 0 else
+# x − sign(x)-t (ALES88).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES88.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES88.
 # Design read: active-designing/date/20260814/20260814-220520_fill-ales88-lotus-soft-center-clipper.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and lotus/center_clip.rye (ALES87 — the hard center clip whose dead zone this rung
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max) and lotus/center_clip.rye (ALES87 -- the hard center clip whose dead zone this rung
 # shares and whose survivors this rung pulls toward zero by t). ALES87 silences the quiet middle and passes the loud UNCHANGED, a JUMP at the boundary;
-# this rung shifts every survivor toward zero by the threshold so it rises CONTINUOUSLY from zero — the floor-side twin of ALES79's soft clip on the ceiling.
+# this rung shifts every survivor toward zero by the threshold so it rises CONTINUOUSLY from zero -- the floor-side twin of ALES79's soft clip on the ceiling.
 #
-# lotus/soft_center_clip.rye maps each sample to 0 when |x| ≤ thresh and to x − sign(x)·thresh otherwise. The crux is EXACT for every i16 with NO rail
+# lotus/soft_center_clip.rye maps each sample to 0 when |x| ≤ thresh and to x − sign(x)-thresh otherwise. The crux is EXACT for every i16 with NO rail
 # edge and NO saturate: a positive survivor lands in [1, sample_max], a negative in [sample_min, −1], the dead zone at 0; the magnitude is taken in i32 so
 # |sample_min| = 32768 is representable. The map is MEMORYLESS, ODD (soft_center_clip(−x) = −soft_center_clip(x)), and NOT idempotent (each pass subtracts
-# t again — a shift, not a mask). The selftest proves it: a zero threshold is the identity; the quiet middle is silenced and the loud shifted inward by t;
-# the boundary is continuous (|x| = t → 0, |x| = t+1 → ±1, no jump); the map is odd; soft and hard center clip silence the same dead zone and
+# t again -- a shift, not a mask). The selftest proves it: a zero threshold is the identity; the quiet middle is silenced and the loud shifted inward by t;
+# the boundary is continuous (|x| = t -> 0, |x| = t+1 -> ±1, no jump); the map is odd; soft and hard center clip silence the same dead zone and
 # |soft| = |hard| − t on every survivor; a rail threshold silences all but the deepest sample (sample_min survives shifted to −1); the span discipline
-# holds; a negative or over-rail threshold refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local — one magnitude,
+# holds; a negative or over-rail threshold refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local -- one magnitude,
 # one compare, one signed subtract per sample; no gain, no ceiling, no saturate, no delay line, no envelope, no anti-aliasing, no network, no keys, no funds.
 #
 # Run from the repository root:

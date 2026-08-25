@@ -1,5 +1,5 @@
 #!/bin/sh
-# Dated-roof divergence scan — both roofs must report the same dated_testimony.
+# Dated-roof divergence scan -- both roofs must report the same dated_testimony.
 # Exit 0 only when shed and standalone agree on the shared definition.
 # Exit 1 while they differ (or on prove-red).
 # No backtick characters in patterns.

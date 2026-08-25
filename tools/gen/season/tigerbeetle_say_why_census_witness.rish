@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_say_why_census_witness.rish — e43 Say why / comments.
+# tools/gen/season/tigerbeetle_say_why_census_witness.rish -- e43 Say why / comments.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_say_why_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-say-why: Language EN — say why; comments are sentences."
 say "tb-say-why: Style Radiant — show your workings; lead with what is."

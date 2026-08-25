@@ -1,10 +1,10 @@
-# tools/al/ales_gate_env_hold_witness.rish — an attack/HOLD/release noise gate: the breathing gate given the stage between its knobs (ALES57).
+# tools/al/ales_gate_env_hold_witness.rish -- an attack/HOLD/release noise gate: the breathing gate given the stage between its knobs (ALES57).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES57.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES57.
 # Design read: active-designing/date/20260814/20260814-180706_fill-ales57-lotus-attack-hold-release-gate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/gate.rye (ALES51 — the
-# silenced floor this drives over time, re-proven below); lotus/hold_env.rye (ALES56 — the HELD time base, re-proven below); lotus/
-# gate_env.rye (ALES54 — the un-held attack/release gate this reduces to at a hold of zero, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/gate.rye (ALES51 -- the
+# silenced floor this drives over time, re-proven below); lotus/hold_env.rye (ALES56 -- the HELD time base, re-proven below); lotus/
+# gate_env.rye (ALES54 -- the un-held attack/release gate this reduces to at a hold of zero, re-proven below).
 #
 # lotus/gate_env_hold.rye drives ALES51's silenced floor from ALES56's HELD follower: each sample advances the held follower one step
 # (attack rising and rearming the hold, the peak pinned while the countdown lasts, the release only once it expires), and when the
@@ -13,7 +13,7 @@
 # running both tools on one signal); unit ratio is the identity everywhere; a quiet signal has its floor pushed down with the sign held
 # and never expanding; a nonzero hold keeps the gate open across a brief dip (it does not chatter, the knob monotone); the state carries
 # so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal
-# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no
+# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no
 # real device, no sample rate.
 #
 # Run from the repository root:
@@ -39,7 +39,7 @@ say "ales-gate-env-hold: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-env-hold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-gate-env-hold: selftest did not print the GREEN ales-gate-env-hold line"
 
-# This rung composes three parents over their public APIs — re-prove ALES56's held follower, ALES51's gate, and ALES54's un-held gate
+# This rung composes three parents over their public APIs -- re-prove ALES56's held follower, ALES51's gate, and ALES54's un-held gate
 # still stand green under it.
 let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-gate-env-hold: the ALES56 held follower regressed under the attack/hold/release gate"

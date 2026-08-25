@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/almanac_breach_scan.sh — the almanac breach, both sides.
+# tools/fixtures/almanac_breach_scan.sh -- the almanac breach, both sides.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 #
-# Voice v11 · breach approved by Keaton 20260729.225900; designed at v7.
+# Voice v11 - breach approved by Keaton 20260729.225900; designed at v7.
 # Promise 4 of six: witnessed both sides -- this instrument exists before the
 # first file moves, is red before, and green after.
 #

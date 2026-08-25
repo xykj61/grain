@@ -1,10 +1,10 @@
-# tools/gen/season/graph_redraw_spine_witness.rish — Surface p17 · graph redraw constructive
+# tools/gen/season/graph_redraw_spine_witness.rish -- Surface p17 - graph redraw constructive
 #
 #   rishi/bin/rishi run tools/gen/season/graph_redraw_spine_witness.rish
 #
 # Constructive fold (not invent stack):
-#   p8 one-graph paper pins · Frame A→B→A redrawtest stand-in · Frame/.brush pins
-# Does not walk Weave edges yet · does not invent a second graph · no live-five.
+#   p8 one-graph paper pins - Frame A->B->A redrawtest stand-in - Frame/.brush pins
+# Does not walk Weave edges yet - does not invent a second graph - no live-five.
 
 say "graph-redraw: Language EN — Weave DAG · Frame fold · redraw along edges."
 say "graph-redraw: Style Radiant — fold paper + living stand-in; refuse invent."

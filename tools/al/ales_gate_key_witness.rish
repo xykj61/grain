@@ -1,20 +1,20 @@
-# tools/al/ales_gate_key_witness.rish — the keyed gate: the door opened by another signal (ALES65).
+# tools/al/ales_gate_key_witness.rish -- the keyed gate: the door opened by another signal (ALES65).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES65.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES65.
 # Design read: active-designing/date/20260814/20260814-190149_fill-ales65-lotus-keyed-gate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/gate.rye (ALES51 —
-# the silenced floor this drives); lotus/hold_env.rye (ALES56 — the HELD time base); lotus/gate_env_hold.rye (ALES57 — the
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/gate.rye (ALES51 --
+# the silenced floor this drives); lotus/hold_env.rye (ALES56 -- the HELD time base); lotus/gate_env_hold.rye (ALES57 -- the
 # attack/hold/release gate this keys, re-proven below, and equalled byte-for-byte by a self-key).
 #
 # lotus/gate_key.rye drives ALES51's silenced floor from ALES56's HELD follower advanced on a KEY clip rather than on the target it
-# processes: the door opens when the key is loud and closes when it falls quiet — the mirror of ALES63's ducking compressor. The
+# processes: the door opens when the key is loud and closes when it falls quiet -- the mirror of ALES63's ducking compressor. The
 # selftest proves: silence stays silence; a self-key reduces to ALES57's attack/hold/release gate byte-for-byte (the grounding law,
 # both tools run); a loud key opens the gate (a quiet target passes whole where the in-line gate would silence it); a silent key
-# closes the gate (a loud target attenuated where the in-line gate would pass it — the e == 0 branch, the case the compressor never
+# closes the gate (a loud target attenuated where the in-line gate would pass it -- the e == 0 branch, the case the compressor never
 # faced, the gate's gain den/num applied directly with no divide by zero); unit ratio is the identity everywhere; a gated target keeps
 # its sign and never expands; the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a
 # sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key
-# BadKey. Purely local — no lookahead, no network, no keys, no funds, no real device, no sample rate.
+# BadKey. Purely local -- no lookahead, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_gate_key_witness.rish
@@ -39,7 +39,7 @@ say "ales-gate-key: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-key' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-gate-key: selftest did not print the GREEN ales-gate-key line"
 
-# This rung keys ALES57 with an ALES56-held detector over their public APIs — re-prove both still stand green under it.
+# This rung keys ALES57 with an ALES56-held detector over their public APIs -- re-prove both still stand green under it.
 let geh = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env_hold.rye -femit-bin=lotus/bin/gate_env_hold && lotus/bin/gate_env_hold selftest 2>&1 | grep -q 'GREEN ales-gate-env-hold' && echo yes"]
 assert (trim geh.out) == "yes" else "ales-gate-key: the ALES57 attack/hold/release gate regressed under the keyed gate"
 

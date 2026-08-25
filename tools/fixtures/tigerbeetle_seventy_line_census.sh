@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census 70-line function bound on held TigerStyle / TAME / TigerBeetle tidy.
-# Clean-room study only — prints presence; never copies into rye/.
+# Clean-room study only -- prints presence; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/tigerbeetle}"
 GUIDE=gratitude/TIGER_STYLE.md
@@ -46,7 +46,7 @@ if test -f "$TIDY_PATH" \
   TIDY=yes
 fi
 
-# Ratchet floor named in tidy — exclusive red zone starts empty at 70.
+# Ratchet floor named in tidy -- exclusive red zone starts empty at 70.
 RATCHET=no
 if test -f "$TIDY_PATH" && rg -q '\.min = 70' "$TIDY_PATH"; then
   RATCHET=yes

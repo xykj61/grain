@@ -1,12 +1,12 @@
-# tools/b/buhr_mantra_browser_theme_stack_witness.rish — BUHR Journey 2, Rung 5.
+# tools/b/buhr_mantra_browser_theme_stack_witness.rish -- BUHR Journey 2, Rung 5.
 #
 # Two .brush layers compose into one themed surface: rung four proved a single
-# .brush theme recolors the living edge; this rung proves the deeper property — an
+# .brush theme recolors the living edge; this rung proves the deeper property -- an
 # independent mode layer (ground only) and accent layer (living edge only) compose
 # through the WADE1 cascade, the top layer winning per token, the base sheet's
 # untouched tokens inheriting beneath both. The proof reads back three sources at
 # once: the ground from the mode layer, the head from the accent layer, and the
-# edge rule from the base sheet neither layer named — three authors, one surface.
+# edge rule from the base sheet neither layer named -- three authors, one surface.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_mantra_browser_theme_stack_witness.rish
@@ -28,7 +28,7 @@ assert selftest.out contains "wins the head at the top of the cascade" else "buh
 assert selftest.out contains "stacked-accent head pixels on the canvas" else "buhr-j2r5: stacked paint did not reach the canvas"
 assert selftest.out contains "a style-less layer refuses — LayerEmpty" else "buhr-j2r5: style-less refuse proof missing"
 
-# Rung four stays its own green binary — the stacked cascade is strictly additive.
+# Rung four stays its own green binary -- the stacked cascade is strictly additive.
 let rung4 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_theme_witness.rish 2>&1"]
 assert rung4.ok else "buhr-j2r5: rung four witness regressed"
 assert rung4.out contains "GREEN: BUHR-J2r4" else "buhr-j2r5: rung four lost its green"

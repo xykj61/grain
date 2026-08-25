@@ -1,9 +1,9 @@
-# tools/am/amphora_pour_negative_witness.rish — Q13: planted negatives must refuse.
+# tools/am/amphora_pour_negative_witness.rish -- Q13: planted negatives must refuse.
 #
 # Three plants, each caught at its named wall:
-#   forged manifest line  → Kumara verify FAILS (stamp wall)
-#   forked-season re-pour → IdentityFork refuses, standing vessel untouched
-#   missing season        → SeasonAbsent refuses
+#   forged manifest line  -> Kumara verify FAILS (stamp wall)
+#   forked-season re-pour -> IdentityFork refuses, standing vessel untouched
+#   missing season        -> SeasonAbsent refuses
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_pour_negative_witness.rish

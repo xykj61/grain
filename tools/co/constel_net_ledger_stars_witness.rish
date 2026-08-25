@@ -1,12 +1,12 @@
-# tools/co/constel_net_ledger_stars_witness.rish — Constel dev-net ledger, Rung 2: star reservations settle beside the topology, draining supply like tax.
+# tools/co/constel_net_ledger_stars_witness.rish -- Constel dev-net ledger, Rung 2: star reservations settle beside the topology, draining supply like tax.
 #
 # Rung 1 proved the fake net's money folds the real Mycelium supply law and moves only by the identity
-# that holds its genesis. This rung carries the third Mycelium fact kind — star_reserve — into that
+# that holds its genesis. This rung carries the third Mycelium fact kind -- star_reserve -- into that
 # same sovereign ledger, mirroring the harness's own r2 (a star and a planet settling beneath the
 # galaxy): the ledger's names grow beside the topology's points, every reservation paid out of the
 # net's own supply. A reservation is signed only by the sovereign (NotSovereign otherwise), is unique
 # (StarTaken), drains supply exactly as tax does (Overdraw beyond it), non-negativity holding. Demo
-# keeper seeds only — no real key, no funds, no network, no custody (gate %3 and gate %4 untouched).
+# keeper seeds only -- no real key, no funds, no network, no custody (gate %3 and gate %4 untouched).
 #
 # Scope: active-designing/date/20260813/20260813-030005_constel-devnet-ledger-exploration.md
 #
@@ -31,7 +31,7 @@ assert selftest.out contains "refused StarTaken; supply held at 70" else "conste
 assert selftest.out contains "refused Overdraw; supply held at 40" else "constel-net-ledger-stars: overpriced-reservation claim missing"
 assert selftest.out contains "refused NotSovereign before the log" else "constel-net-ledger-stars: alien-reservation refusal missing"
 
-# Rung one stands at its door — the sovereign ledger the reservations extend re-runs GREEN, so this
+# Rung one stands at its door -- the sovereign ledger the reservations extend re-runs GREEN, so this
 # rung's reservations rest on a ledger already proven honest.
 let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_ledger_witness.rish 2>&1"]
 assert r1.ok else "constel-net-ledger-stars: rung one (the sovereign ledger) is not GREEN"

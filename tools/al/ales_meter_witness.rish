@@ -1,17 +1,17 @@
-# tools/al/ales_meter_witness.rish — the peak/RMS meter: the same root, now reading the master (ALES13).
+# tools/al/ales_meter_witness.rish -- the peak/RMS meter: the same root, now reading the master (ALES13).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES13.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES13.
 # Design read: active-designing/20260814-fill-ales13-lotus-meter.md
-# Stands on: lotus/power.rye (ALES11) — the proven isqrt, now public and widened to the audio square domain (2³⁰), reused
-# whole; lotus/transport.rye (ALES7) — the read blocks the meter is fed; lotus/timeline.rye (ALES2) and lotus/pan.rye (ALES10)
-# — the mono Clip and stereo StereoClip masters the meter reads.
+# Stands on: lotus/power.rye (ALES11) -- the proven isqrt, now public and widened to the audio square domain (2³⁰), reused
+# whole; lotus/transport.rye (ALES7) -- the read blocks the meter is fed; lotus/timeline.rye (ALES2) and lotus/pan.rye (ALES10)
+# -- the mono Clip and stereo StereoClip masters the meter reads.
 #
 # lotus/meter.rye turns ALES11's square root around: where the equal-power law SHAPED the field, the meter READS the master.
-# An RMS level is isqrt of a mean square, so the meter needs no new arithmetic — one true root, two readers. The selftest
+# An RMS level is isqrt of a mean square, so the meter needs no new arithmetic -- one true root, two readers. The selftest
 # proves: silence reads 0/0; a full-scale constant reads its own magnitude as both peak and RMS (the i16 minimum landing
 # 32768/32768 at the wide domain's ceiling); rms ≤ peak across a sweep (a lone spike strictly below, a square wave equal);
-# BLOCK-INVARIANCE — metering a master in 1-, 2-, and 7-sample blocks off the transport equals one whole measure; a stereo
-# master meters each channel independently; metering never mutates the master; feed refuses MeterFull. Purely local — no
+# BLOCK-INVARIANCE -- metering a master in 1-, 2-, and 7-sample blocks off the transport equals one whole measure; a stereo
+# master meters each channel independently; metering never mutates the master; feed refuses MeterFull. Purely local -- no
 # network, no keys, no funds, no real device, no real meter.
 #
 # Run from the repository root:

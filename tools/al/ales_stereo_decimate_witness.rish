@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_decimate_witness.rish — stereo_decimate: the sample-rate decimator carried into stereo with ONE SHARED RUN GRID, both channels in lockstep, the time corner of the stereo NONLINEAR class
+# tools/al/ales_stereo_decimate_witness.rish -- stereo_decimate: the sample-rate decimator carried into stereo with ONE SHARED RUN GRID, both channels in lockstep, the time corner of the stereo NONLINEAR class
 # (ALES137).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES137.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES137.
 # Design read: active-designing/date/20260815/20260815-035333_fill-ales137-lotus-stereo-decimate.md
-# Stands on: lotus/decimate.rye (ALES83 — the mono zero-order hold run once per channel, each run held to its anchor), lotus/stereo_crush.rye (ALES136 — the resolution-axis twin whose image-breaking this rung
-# reverses), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max, max_clip). A Lotus master
-# is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES83's zero-order hold into stereo — holding one sample across a whole run in both channels so a
+# Stands on: lotus/decimate.rye (ALES83 -- the mono zero-order hold run once per channel, each run held to its anchor), lotus/stereo_crush.rye (ALES136 -- the resolution-axis twin whose image-breaking this rung
+# reverses), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max, max_clip). A Lotus master
+# is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES83's zero-order hold into stereo -- holding one sample across a whole run in both channels so a
 # stream decimated to half or a quarter the rate lands on both speakers together, the stepped sample-and-hold voice of a converter read too slow. The decimator shapes TIME where the crush shapes resolution;
-# and it is the honest reverse of the two not-odd members — it copies an anchor rather than computing a new value, so because both channels share the run grid the stereo image is preserved from the anchor: an
+# and it is the honest reverse of the two not-odd members -- it copies an anchor rather than computing a new value, so because both channels share the run grid the stereo image is preserved from the anchor: an
 # out-of-phase master stays out of phase, a 1:2 master keeps its ratio at each held index.
 #
 # lotus/stereo_decimate.rye validates both channels once against the shared hold and length before either is mutated (BadHold on a hold outside [1, max_clip], BadRange on a span outside the samples), then

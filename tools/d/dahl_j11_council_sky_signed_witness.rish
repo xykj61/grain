@@ -1,15 +1,15 @@
-# tools/d/dahl_j11_council_sky_signed_witness.rish — Season 3 Journey 11 (Council skies), Rung 2.
+# tools/d/dahl_j11_council_sky_signed_witness.rish -- Season 3 Journey 11 (Council skies), Rung 2.
 #
-# Rung one fixed the council rule as a pure state machine — a council loads a sky, seats a body at an odd
+# Rung one fixed the council rule as a pure state machine -- a council loads a sky, seats a body at an odd
 # fractal level, and decides by a majority that never ties. This rung binds each ballot to the voting
 # seat's settled Kumara identity, so a vote a member never cast cannot be counted toward a quorum.
-# pond/apps/council_sky_signed.rye — each ballot is signed by the very seat it speaks for over the exact
+# pond/apps/council_sky_signed.rye -- each ballot is signed by the very seat it speaks for over the exact
 # facts (a tag, the council id, the council size, the seat, the proposal, the yes/no); a Keyring maps a
 # seat to its keeper key; vote_signed verifies the seat's own signature before touching rung one's
 # council, refusing UnknownKeeper (unenrolled) or BadConsent (unverifying). The honesty crux mirrors the
-# group's relabel — flip a ballot's yes to no after signing and reuse the signature, it falls BadConsent.
+# group's relabel -- flip a ballot's yes to no after signing and reuse the signature, it falls BadConsent.
 # The odd-quorum guard carries through r1 (AlreadyVoted, tally unmoved), so signing still cannot fake a
-# majority. A forged ballot (wrong keeper), a cross-council signature each refuse. Additive — composes
+# majority. A forged ballot (wrong keeper), a cross-council signature each refuse. Additive -- composes
 # council_sky (r1) and kumara over public API; r1 re-runs GREEN. Demo keeper seeds only; no real key, no
 # network, no real identity (serve reaches the custody gate).
 #
@@ -33,7 +33,7 @@ assert selftest.out contains "signing cannot fake a majority from one hand" else
 assert selftest.out contains "cannot swap a member's yes for a no" else "dahl-j11r2: flip-choice crux missing"
 assert selftest.out contains "refused UnknownKeeper" else "dahl-j11r2: unknown-keeper refusal missing"
 
-# r1 stays its own GREEN binary — additive.
+# r1 stays its own GREEN binary -- additive.
 let r1bin = "pond/bin/council-sky"
 let r1build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=${r1bin}"]
 assert r1build.ok else "dahl-j11r2: r1 rebuild failed"

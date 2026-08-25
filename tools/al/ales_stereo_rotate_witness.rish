@@ -1,9 +1,9 @@
-# tools/al/ales_stereo_rotate_witness.rish — stereo_rotate: the cyclic turn of a master, both channels in lockstep, total (no refusal) (ALES126).
+# tools/al/ales_stereo_rotate_witness.rish -- stereo_rotate: the cyclic turn of a master, both channels in lockstep, total (no refusal) (ALES126).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES126.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES126.
 # Design read: active-designing/date/20260815/20260815-024103_fill-ales126-lotus-stereo-rotate.md
-# Stands on: lotus/rotate.rye (ALES106 — the mono cyclic left-shift run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold
+# Stands on: lotus/rotate.rye (ALES106 -- the mono cyclic left-shift run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 -- the Clip and its buf/len/samples), lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold
 # the same length so the channels stay aligned in time; rotating the loop to the downbeat swings both speakers by the same amount at once. This rung carries ALES106's rotate into stereo the way
 # ALES125 carried reverse: run the proven mono rotate_left on each channel with the same shift. It is the second lift of the stereo suite's pure rearrangement class (every position changing, no
 # value); like reverse it is total and needs no validation.

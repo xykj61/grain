@@ -1,11 +1,11 @@
 #!/bin/sh
-# tools/fixtures/rune_assert_sweep_scan.sh — audit assert coverage across authored Rye.
+# tools/fixtures/rune_assert_sweep_scan.sh -- audit assert coverage across authored Rye.
 # Orchestrated by tools/r/rune_assert_sweep.rish.
 #
 # For each .rye path given, count its functions, its bare `assert(` calls, and its
 # `// invariant:` comment lines, and emit per-file counts plus a verdict. The floor
 # (verdict=drift when broken): a function-bearing file must carry at least one assert
-# — no zero-assert module. Density (asserts per function) is reported as advisory.
+# -- no zero-assert module. Density (asserts per function) is reported as advisory.
 # A first argument of "advise" runs the wider ratchet sweep: zero-assert files are
 # reported (migrate on touch) rather than failed, matching TAME's gate-vs-ratchet
 # split. Without it, the gate mode fails RED on any zero-assert function-bearing file.

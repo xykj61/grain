@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_segment_witness.rish — stereo_segment: the voice-activity segmenter carried into stereo with ONE SHARED FRAME GRID and TWO INDEPENDENT SEGMENTATIONS, the suite's third stereo analysis rung (ALES147).
+# tools/al/ales_stereo_segment_witness.rish -- stereo_segment: the voice-activity segmenter carried into stereo with ONE SHARED FRAME GRID and TWO INDEPENDENT SEGMENTATIONS, the suite's third stereo analysis rung (ALES147).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES147.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES147.
 # Design read: active-designing/date/20260815/20260815-050741_fill-ales147-lotus-stereo-segment.md
-# Stands on: lotus/segment.rye (ALES95 — the mono voice-activity segmenter run once per channel, its segment, its Segments run list, its Segment run, its SegmentError, all reused whole), lotus/voiced.rye (ALES94 — the
-# per-frame classifier the segmenter sequences), lotus/schmitt.rye (ALES92 — the band's own precheck), lotus/meter.rye (ALES13 — sample_peak_max, the floor ceiling), lotus/stereo_voiced.rye (ALES146 — the stereo analysis shape
-# this mirrors, one shared setting with per-channel independence), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip). A Lotus master is a StereoClip
+# Stands on: lotus/segment.rye (ALES95 -- the mono voice-activity segmenter run once per channel, its segment, its Segments run list, its Segment run, its SegmentError, all reused whole), lotus/voiced.rye (ALES94 -- the
+# per-frame classifier the segmenter sequences), lotus/schmitt.rye (ALES92 -- the band's own precheck), lotus/meter.rye (ALES13 -- sample_peak_max, the floor ceiling), lotus/stereo_voiced.rye (ALES146 -- the stereo analysis shape
+# this mirrors, one shared setting with per-channel independence), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 -- the Clip). A Lotus master is a StereoClip
 # whose defining invariant is that left and right hold the same length. Where ALES146 carried the per-span classifier into stereo, this rung carries the reader that runs that classifier across a whole clip, frame by frame,
 # coalescing neighbouring frames of the same verdict into runs: two segmenters reading two channels, each producing its own run-length label sequence, writing not one sample. Each channel is segmented on its own frames, so the
-# two segmentations are independent in the count and boundaries of their runs — a voiced-then-silent left produces two runs where a uniform right stays one.
+# two segmentations are independent in the count and boundaries of their runs -- a voiced-then-silent left produces two runs where a uniform right stays one.
 #
 # lotus/stereo_segment.rye validates the shared frame length, band, span, and floor once before either channel is read (BadThreshold on an illegal band, BadRange on a span outside the samples, BadFloor on a floor above the peak
 # ceiling, BadFrame on a zero/oversized/non-dividing length), then segments both channels through ALES95's segment into an out-pointer StereoSegments; SegmentError reused whole. The crux is four laws. THE STEREO SEGMENT LAW:

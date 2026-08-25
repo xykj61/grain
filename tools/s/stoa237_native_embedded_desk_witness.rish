@@ -1,4 +1,4 @@
-# stoa237_native_embedded_desk_witness.rish — NativeActivity fold from embedded lit desk.
+# stoa237_native_embedded_desk_witness.rish -- NativeActivity fold from embedded lit desk.
 #
 #   rishi/bin/rishi run tools/s/stoa237_native_embedded_desk_witness.rish
 
@@ -20,7 +20,7 @@ assert pack.ok else "tube05_apk_pack_witness failed after embedded desk wire"
 assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
 
 # Desk bytes ride inside libglowapp.so (APK pack path).
-# Unique hex prefixes from the seated desk — no shell quoting of quotes.
+# Unique hex prefixes from the seated desk -- no shell quoting of quotes.
 let so = "tools/.cache/tube05/staging/lib/arm64-v8a/libglowapp.so"
 let so_ok = run ["test" "-f" so]
 assert so_ok.ok else "missing libglowapp.so after pack"

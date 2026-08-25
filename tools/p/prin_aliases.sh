@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prin_aliases.sh — outer-terminal shortcuts for %prin / Prin.
+# prin_aliases.sh -- outer-terminal shortcuts for %prin / Prin.
 #
 #   cd ~/grain && source tools/p/prin_aliases.sh
 #   p / pm     matrix live view (twin ledgers + rishi workers)
@@ -46,7 +46,7 @@ alias 'p::'='(cd "$GRAIN_ROOT" && bash "$_PRIN_D" matrix)'
 alias 'p.'='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" once)'
 alias px='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" matrix)'
 
-# Rishi entry (non-interactive: help · nib · once)
+# Rishi entry (non-interactive: help - nib - once)
 alias prinr='(cd "$GRAIN_ROOT" && rishi/bin/rishi run tools/gen/season/prin.rish)'
 
 echo "Prin aliases seated from ${GRAIN_ROOT}"

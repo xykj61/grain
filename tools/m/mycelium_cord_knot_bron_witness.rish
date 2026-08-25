@@ -1,16 +1,16 @@
-# tools/m/mycelium_cord_knot_bron_witness.rish — the Knot travels as a format cord-knot-v1 record (r2).
+# tools/m/mycelium_cord_knot_bron_witness.rish -- the Knot travels as a format cord-knot-v1 record (r2).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r2 — the Knot travels.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r2 -- the Knot travels.
 # r1 sealed a committed Cord to a Knot and proved a continuation folds identical to the whole history.
 # A checkpoint a node cannot hand to another node is only a local optimization; this rung lets a Knot
 # cross as readable bytes, so a far node that never held the pruned prefix can trust the sealed supply
-# and continue from it. Grown BESIDE the elder — composes cord_knot.rye + fold.rye public API only.
+# and continue from it. Grown BESIDE the elder -- composes cord_knot.rye + fold.rye public API only.
 #
 # The crux this witness proves: a Knot renders to a format cord-knot-v1 record and parses back, the
 # recovered Knot verifying and carrying the byte-identical sealed supply (700 over one star); it continues
 # to the identical supply as the original (issued 1300), and re-rendering is a fixed point. A tampered star
-# breaks the digest so continue_verified refuses KnotCorrupt — corruption never crosses as a trusted
-# checkpoint; a bad header, an unknown field, and a bad hex star each refuse. Demo keeper seeds only — no
+# breaks the digest so continue_verified refuses KnotCorrupt -- corruption never crosses as a trusted
+# checkpoint; a bad header, an unknown field, and a bad hex star each refuse. Demo keeper seeds only -- no
 # real key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
@@ -35,7 +35,7 @@ assert selftest.out contains "parsed back, verifying and carrying the identical 
 assert selftest.out contains "continues to the identical supply (issued 1300), and re-rendering is a fixed point" else "mycelium-cord-knot-bron: continuation/fixed-point claim missing"
 assert selftest.out contains "a tampered star breaks the digest (KnotCorrupt)" else "mycelium-cord-knot-bron: tamper-refusal claim missing"
 
-# The r1 Knot the record travels stays a green binary — accrete-never-break, proven by re-running its own
+# The r1 Knot the record travels stays a green binary -- accrete-never-break, proven by re-running its own
 # selftest at this door.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert r1.ok else "mycelium-cord-knot-bron: the r1 Knot is not GREEN"

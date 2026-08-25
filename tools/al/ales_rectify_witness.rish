@@ -1,18 +1,18 @@
-# tools/al/ales_rectify_witness.rish — the full-wave rectifier: fold the wave at zero, y = |x|, the plainest even-harmonic generator (ALES84).
+# tools/al/ales_rectify_witness.rish -- the full-wave rectifier: fold the wave at zero, y = |x|, the plainest even-harmonic generator (ALES84).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES84.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES84.
 # Design read: active-designing/date/20260814/20260814-213747_fill-ales84-lotus-full-wave-rectifier.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate). Where the tube drive (ALES82) coaxes even harmonics from an
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate). Where the tube drive (ALES82) coaxes even harmonics from an
 # UNEVEN clip, the rectifier makes them from the purest even map: |−x| = |x|. A keeper who wants a boosted or half-wave rectification composes this
-# with ALES78's drive over the same span — both in-place span maps that compose.
+# with ALES78's drive over the same span -- both in-place span maps that compose.
 #
-# lotus/rectify.rye takes each sample's ABSOLUTE VALUE, folding the negative half of the wave up onto the positive side — a one-sided, DC-heavy signal
+# lotus/rectify.rye takes each sample's ABSOLUTE VALUE, folding the negative half of the wave up onto the positive side -- a one-sided, DC-heavy signal
 # at DOUBLE the frequency, the plainest even-harmonic generator. |x| is exact for every i16 EXCEPT sample_min = −32768, whose magnitude 32768 overflows
 # the positive rail and SATURATES to sample_max. The map is MEMORYLESS, IDEMPOTENT (a non-negative sample rectifies to itself), and always
-# NON-NEGATIVE. The selftest proves it: non-negatives pass unchanged; negatives fold by hand (−1→1, −100→100, −12345→12345, −32767→32767); the rail
+# NON-NEGATIVE. The selftest proves it: non-negatives pass unchanged; negatives fold by hand (−1->1, −100->100, −12345->12345, −32767->32767); the rail
 # edge saturates sample_min to 32767; every output is non-negative and the map is idempotent; the even-harmonic signature folds +a and −a both onto a;
-# the span discipline holds; a span past the end refuses BadRange (the rectifier names no other fault — an absolute value has no illegal parameter),
-# the clip untouched. Purely local — one negate-and-pin per sample; no gain, no ceiling, no delay line, no anti-aliasing, no network, no keys, no
+# the span discipline holds; a span past the end refuses BadRange (the rectifier names no other fault -- an absolute value has no illegal parameter),
+# the clip untouched. Purely local -- one negate-and-pin per sample; no gain, no ceiling, no delay line, no anti-aliasing, no network, no keys, no
 # funds, no real device, no real sample rate.
 #
 # Run from the repository root:

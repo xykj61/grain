@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep004_census_witness.rish — e62 IronBeetle ep004.
+# tools/gen/season/ironbeetle_ep004_census_witness.rish -- e62 IronBeetle ep004.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep004_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep004: Language EN — the ledger refuses to be sharded."
 say "iron-ep004: Style Radiant — one serial core; pipeline the rest."

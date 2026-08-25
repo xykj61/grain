@@ -1,14 +1,14 @@
-# tools/al/ales_limit_witness.rish — a peak limiter: a hard ceiling the signal may touch yet never cross (ALES49).
+# tools/al/ales_limit_witness.rish -- a peak limiter: a hard ceiling the signal may touch yet never cross (ALES49).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES49.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES49.
 # Design read: active-designing/date/20260814/20260814-170815_fill-ales49-lotus-peak-limiter.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); rests beside the whole
-# EQ family (ALES40–48, ALES48's bell re-proven below) without disturbing it.
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, the range law shape); rests beside the whole
+# EQ family (ALES40-48, ALES48's bell re-proven below) without disturbing it.
 #
-# lotus/limit.rye passes a sample within the ceiling byte-for-byte and pins a louder sample to sign(x)·ceil. The selftest proves:
+# lotus/limit.rye passes a sample within the ceiling byte-for-byte and pins a louder sample to sign(x)-ceil. The selftest proves:
 # silence stays silence; below the ceiling is the identity; a signal pinning both rails limits so no output crosses the ceiling and
 # every sign is held; a ceiling at sample_max is the identity for in-range audio; a zero ceiling refuses BadCeiling, an over-rail
-# ceiling BadCeiling, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real device, no sample rate.
+# ceiling BadCeiling, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_limit_witness.rish
@@ -33,7 +33,7 @@ say "ales-limit: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-limit' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-limit: selftest did not print the GREEN ales-limit line"
 
-# The dynamics opener rests beside the finished EQ family — re-prove ALES48's bell still stands green, so nothing regressed.
+# The dynamics opener rests beside the finished EQ family -- re-prove ALES48's bell still stands green, so nothing regressed.
 let bell = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/bell.rye -femit-bin=lotus/bin/bell && lotus/bin/bell selftest 2>&1 | grep -q 'GREEN ales-bell' && echo yes"]
 assert (trim bell.out) == "yes" else "ales-limit: the ALES48 parametric-bell witness regressed under the limiter"
 

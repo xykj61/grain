@@ -1,15 +1,15 @@
-# tools/cr/crypto_verify_witness.rish — constant-time byte-string equality (Monocypher's crypto_verify16/32/64) authored in pure Rye: Season G's
+# tools/cr/crypto_verify_witness.rish -- constant-time byte-string equality (Monocypher's crypto_verify16/32/64) authored in pure Rye: Season G's
 # constant-time comparison primitive, the piece the two HMAC modules each named as an open horizon, proven correct against Zig's independent
-# std.crypto.timing_safe.eql across every single-bit difference at all three Monocypher widths (Season G · Cryptography).
+# std.crypto.timing_safe.eql across every single-bit difference at all three Monocypher widths (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name the primitive,
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name the primitive,
 # the parity witness, and "a constant-time discipline note (timing-safety as a named horizon)." This primitive is the one corner of that
 # horizon correct by STRUCTURE rather than measurement: its control flow visits every byte regardless of contents, so no branch depends on the
 # compared data. crypto/CONSTANT_TIME.md is its natural home in the auditor's reading.
-# Kin: crypto/poly1305.rye (whose tag every AEAD open checks) · crypto/hmac_sha512.rye · crypto/hmac_sha256.rye (which named this horizon:
-# "verifying a MAC wants a constant-time compare, which the composer that uses this primitive supplies") · crypto/aead.rye · crypto/xchacha20.rye.
-# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the
+# Kin: crypto/poly1305.rye (whose tag every AEAD open checks) - crypto/hmac_sha512.rye - crypto/hmac_sha256.rye (which named this horizon:
+# "verifying a MAC wants a constant-time compare, which the composer that uses this primitive supplies") - crypto/aead.rye - crypto/xchacha20.rye.
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own arithmetic, studied clean-room from the
 # public API and Zig's own std.crypto.timing_safe (.claude/rules/gratitude-licenses.md).
 #
 # crypto/verify.rye authors the primitive from the idea, not from a copied line: two byte strings are equal iff the OR of their byte-wise XORs
@@ -18,8 +18,8 @@
 # std.crypto. Correctness is proven at selftest against Zig's independent std.crypto.timing_safe.eql: at all three Monocypher widths (16, 32,
 # 64) an equal span compares equal and flipping EVERY single bit of EVERY byte compares unequal, our answer matching Zig's in every case; the
 # fixed-width doors agree with the generic engine, and the edge refuses a length mismatch and an over-long compare before a byte is folded.
-# Constant-time timing-safety stays a named horizon — the byte loop is data-independent by construction, yet a timing CLAIM wants measurement,
-# so correctness is proven here rather than a timing claim boasted. Purely local — no key, no signature, no network, no funds, no real device.
+# Constant-time timing-safety stays a named horizon -- the byte loop is data-independent by construction, yet a timing CLAIM wants measurement,
+# so correctness is proven here rather than a timing claim boasted. Purely local -- no key, no signature, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_verify_witness.rish

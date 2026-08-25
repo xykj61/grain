@@ -1,22 +1,22 @@
-# tools/cr/crypto_monocypher_aead_parity_witness.rish — Monocypher-source parity for the ChaCha20-Poly1305 AEAD, the authenticated-encryption seal
+# tools/cr/crypto_monocypher_aead_parity_witness.rish -- Monocypher-source parity for the ChaCha20-Poly1305 AEAD, the authenticated-encryption seal
 # Lotus's signed carry, Vault, and Comlink rest on. Our authored crypto/aead.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-
 # dual), each compiled fresh and asked for their AEAD ciphertext and tag over RFC 8439 §2.8.2's own key, nonce, associated data, and plaintext,
-# diffed byte-for-byte. The FOURTH rung of the real Monocypher-source parity pattern — BLAKE2b opened it, X25519 and Ed25519 extended it, this rung
-# closes the ChaCha/Poly line the decision wave named, so all four primitive families now meet the actual audit target. Season G · Cryptography.
+# diffed byte-for-byte. The FOURTH rung of the real Monocypher-source parity pattern -- BLAKE2b opened it, X25519 and Ed25519 extended it, this rung
+# closes the ChaCha/Poly line the decision wave named, so all four primitive families now meet the actual audit target. Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names "the ChaCha/Poly line" among the
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G names "the ChaCha/Poly line" among the
 # four primitives to prove against the vendored Monocypher, and the ChaCha20-Poly1305 AEAD as the composition that unblocks the Lotus signed carry.
-# Kin: crypto/aead.rye (our authored AEAD, GREEN against Zig's std.crypto and the RFC known-answer) · crypto/chacha20.rye · crypto/poly1305.rye
-# (the two halves it composes) · tools/rye/monocypher_aead_parity.rye (our printing harness) · tools/fixtures/monocypher_aead_harness.c (Monocypher's
-# printing harness) · tools/cr/crypto_monocypher_ed25519_parity_witness.rish (the signing sibling). Monocypher stays the parity TARGET, vendored and
-# unmodified, never a copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+# Kin: crypto/aead.rye (our authored AEAD, GREEN against Zig's std.crypto and the RFC known-answer) - crypto/chacha20.rye - crypto/poly1305.rye
+# (the two halves it composes) - tools/rye/monocypher_aead_parity.rye (our printing harness) - tools/fixtures/monocypher_aead_harness.c (Monocypher's
+# printing harness) - tools/cr/crypto_monocypher_ed25519_parity_witness.rish (the signing sibling). Monocypher stays the parity TARGET, vendored and
+# unmodified, never a copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
-# THE PARITY: Monocypher's IETF authenticated stream (crypto_aead_init_ietf + crypto_aead_write) is byte-for-byte RFC 8439 §2.8 — a one-time
+# THE PARITY: Monocypher's IETF authenticated stream (crypto_aead_init_ietf + crypto_aead_write) is byte-for-byte RFC 8439 §2.8 -- a one-time
 # Poly1305 key from ChaCha20 block counter 0, the plaintext enciphered from block counter 1, the tag over ad ‖ pad16(ad) ‖ cipher ‖ pad16(cipher) ‖
-# le64(ad_size) ‖ le64(text_size). That is exactly what crypto/aead.rye composes from its two GREEN halves. Each implementation prints two lines —
-# the ciphertext and the tag — over RFC 8439 §2.8.2's own inputs; the witness diffs the two outputs byte-for-byte AND anchors both to the RFC's
-# published ciphertext and tag, so the oracle is a real second implementation, never a recited constant. Purely local — the key and nonce are the
+# le64(ad_size) ‖ le64(text_size). That is exactly what crypto/aead.rye composes from its two GREEN halves. Each implementation prints two lines --
+# the ciphertext and the tag -- over RFC 8439 §2.8.2's own inputs; the witness diffs the two outputs byte-for-byte AND anchors both to the RFC's
+# published ciphertext and tag, so the oracle is a real second implementation, never a recited constant. Purely local -- the key and nonce are the
 # RFC's public vectors, no key of ours, no signature, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
@@ -35,11 +35,11 @@ let rout = "crypto/bin/rye_aead.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_aead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-aead-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — two AEAD hex lines: ciphertext then tag.
+# 2. Run the Monocypher C harness -- two AEAD hex lines: ciphertext then tag.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-aead-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — the same two AEAD hex lines over the identical inputs.
+# 3. Run our authored Rye harness -- the same two AEAD hex lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_aead_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-aead-parity: Rye harness exited non-zero — see ${rout}"
 

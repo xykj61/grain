@@ -1,18 +1,18 @@
 #!/bin/sh
-# radiant_lint_scan.sh — advisory Radiant surface (body for radiant_lint_scan.rish).
-# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
+# radiant_lint_scan.sh -- advisory Radiant surface (body for radiant_lint_scan.rish).
+# Missing Rishi verb: accumulate - filter chained - read bounded -- harvest ledger (counsel 20260725.040247)
 #
 # Duties:
 #   1. bare " but " (word-adjacent spaces) outside fences
 #   2. emoji (common Unicode emoji blocks)
-#   3. multiple H1 — DEFERRED (TAME check table / tame-check owns one-H1)
-#   4. dated artifacts: three-clause May… benediction
+#   3. multiple H1 -- DEFERRED (TAME check table / tame-check owns one-H1)
+#   4. dated artifacts: three-clause May... benediction
 #   5. dated memos: co-author line present; living docs must NOT carry one
 #   6. living docs: header block (Language or Stamp/Status)
 #
 # Exempt with reasons: RADIANT_STYLE.md (quotes banned forms), gratitude/,
 # old/, vere/, tools/fixtures/.
-# Always exits 0 — ratchet advisory.
+# Always exits 0 -- ratchet advisory.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -33,7 +33,7 @@ add() {
   return 0
 }
 
-# Planted negative space — must be counted.
+# Planted negative space -- must be counted.
 add "context/fixtures/radiant_lint_planted_but.md"
 
 # Living pins and living docs (Tier 3 prose surfaces)
@@ -98,7 +98,7 @@ while IFS= read -r rel; do
   [ -n "$rel" ] && [ -f "$rel" ] || continue
   exempt_path "$rel" && continue
 
-  # duty 1 — bare " but " outside fences
+  # duty 1 -- bare " but " outside fences
   awk '/^```/ { fence = !fence; next } !fence { print NR ":" $0 }' "$rel" \
     | grep -E ' but ' \
     | while IFS= read -r hit; do
@@ -106,7 +106,7 @@ while IFS= read -r rel; do
         echo x >>"$TMP/but_count"
       done >>"$TMP/hits" || true
 
-  # duty 2 — emoji (BMP symbols commonly used as emoji)
+  # duty 2 -- emoji (BMP symbols commonly used as emoji)
   if perl -ne 'BEGIN{$/=undef} print if /[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/' "$rel" >/dev/null 2>&1; then
     if perl -ne 'BEGIN{$/=undef} exit(/[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/ ? 0 : 1)' "$rel" 2>/dev/null; then
       echo "ADVISE emoji ${rel}" >>"$TMP/hits"
@@ -115,13 +115,13 @@ while IFS= read -r rel; do
   fi
 
   if is_dated "$rel"; then
-    # duty 4 — three May clauses in a benediction line/block near the end
+    # duty 4 -- three May clauses in a benediction line/block near the end
     may_n=$(grep -oE '\bMay\b' "$rel" | wc -l | tr -d ' ')
     if [ "$may_n" -lt 3 ]; then
       echo "ADVISE benediction-short ${rel}: May-count=${may_n} (want ≥3 clauses)" >>"$TMP/hits"
       echo x >>"$TMP/ben_count"
     fi
-    # duty 5a — co-author line on dated memos (counsel · foundations)
+    # duty 5a -- co-author line on dated memos (counsel - foundations)
     case "$rel" in
       counsel/*|foundations/*)
         if ! grep -Eiq 'Written together by|co-author' "$rel"; then
@@ -131,12 +131,12 @@ while IFS= read -r rel; do
         ;;
     esac
   elif is_living_doc "$rel"; then
-    # duty 5b — living docs must not carry co-author line
+    # duty 5b -- living docs must not carry co-author line
     if grep -Eiq 'Written together by|^\*\*Co-author' "$rel"; then
       echo "ADVISE co-author-on-living ${rel}" >>"$TMP/hits"
       echo x >>"$TMP/coa_l_count"
     fi
-    # duty 6 — header block
+    # duty 6 -- header block
     if ! head -25 "$rel" | grep -Eqi '^\*\*Language:\*\*|^Language:|^\*\*Stamp:\*\*|^\*\*Status:\*\*|^\*\*Last updated:\*\*'; then
       echo "ADVISE header-missing ${rel}" >>"$TMP/hits"
       echo x >>"$TMP/hdr_count"

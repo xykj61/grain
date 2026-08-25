@@ -1,6 +1,6 @@
-# index_of.rish — tests for the `index-of` string builtin.
+# index_of.rish -- tests for the `index-of` string builtin.
 
-# comparisons without extra parentheses — parser splits == before index-of
+# comparisons without extra parentheses -- parser splits == before index-of
 assert "hello world" index-of "world" == 6 else "index-of: basic failed"
 assert "hello world" index-of "hello" == 0 else "index-of: at start failed"
 assert "abcabc" index-of "bc" == 1 else "index-of: first match failed"

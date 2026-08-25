@@ -1,4 +1,4 @@
-# hawm_harvest_session_root_witness.rish — STOA284: session_root in harvest Bron.
+# hawm_harvest_session_root_witness.rish -- STOA284: session_root in harvest Bron.
 #
 # Proves hawm-harvest-v1 carries session_root (64 hex from HAWM1 capture, or
 # the deterministic fixture). Prefers on-disk hawm1-session-root.txt when

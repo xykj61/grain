@@ -1,14 +1,14 @@
-# tools/al/ales_smooth_runs_witness.rish — the run-length smoother: absorb every run shorter than a minimum into what surrounds it (ALES101).
+# tools/al/ales_smooth_runs_witness.rish -- the run-length smoother: absorb every run shorter than a minimum into what surrounds it (ALES101).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES101.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES101.
 # Design read: active-designing/date/20260815/20260815-000323_fill-ales101-lotus-run-length-smoother.md
-# Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter, whose Segments this reads and rewrites), lotus/voiced.rye (ALES94 — the Verdict the runs carry).
-# ALES95's own scope note named this rung: "a real voice-activity detector adds ... smoothing hysteresis this rung does not — those are later rungs." Raw per-frame
-# segmentation flickers — one loud tick reads as a .voiced blip, one quiet frame as a spurious .silent gap; every VAD fixes it the same way: a region must last a minimum
+# Stands on: lotus/segment.rye (ALES95 -- the voice-activity segmenter, whose Segments this reads and rewrites), lotus/voiced.rye (ALES94 -- the Verdict the runs carry).
+# ALES95's own scope note named this rung: "a real voice-activity detector adds ... smoothing hysteresis this rung does not -- those are later rungs." Raw per-frame
+# segmentation flickers -- one loud tick reads as a .voiced blip, one quiet frame as a spurious .silent gap; every VAD fixes it the same way: a region must last a minimum
 # duration to count, anything shorter absorbed into what surrounds it.
 #
 # lotus/smooth_runs.rye seeds the output with the first run, then for each later run extends the open run (keeping its verdict) when the run is shorter than min_run OR
-# shares the open run's verdict, else pushes it. READ-ONLY over the labels — no PCM touched. The crux is four laws checked as data. COVERAGE: the output tiles the same
+# shares the open run's verdict, else pushes it. READ-ONLY over the labels -- no PCM touched. The crux is four laws checked as data. COVERAGE: the output tiles the same
 # span exactly. COALESCED: no two adjacent output runs share a verdict. HOLD: every run past the first is at least min_run (the opener the honest exception). IDEMPOTENCE
 # + MONOTONICITY: a second pass at the same min_run is a fixed point, a larger min_run yields at most as many runs. The selftest proves all four, plus: a spurious short
 # blip is absorbed and its neighbours re-coalesce; a leading short run survives; min_run = 0 is the identity; a min_run past the span coalesces to one; empty stays empty

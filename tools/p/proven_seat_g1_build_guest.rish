@@ -1,4 +1,4 @@
-# proven_seat_g1_build_guest.rish — build posix receipt-verify guest into the cache.
+# proven_seat_g1_build_guest.rish -- build posix receipt-verify guest into the cache.
 #
 # Tracks sources under tools/proven_seat_g1_guest/ (our code). Builds with the
 # Genode 25.05 toolchain via genode-build-x86_64. Installs executable to

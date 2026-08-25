@@ -1,14 +1,14 @@
-# tools/b/buhr_mcp_prompt_witness.rish — BUHR Journey 11, Rung 1: the MCP prompts surface.
+# tools/b/buhr_mcp_prompt_witness.rish -- BUHR Journey 11, Rung 1: the MCP prompts surface.
 #
 # The Model Context Protocol names three first-class surfaces. Journey 9 served tools (a verb a
 # caller invokes), Journey 10 served resources (a noun a caller reads); this rung serves the
-# third — prompts, a named reusable template a server offers. A format mcp-prompt-v1 descriptor
+# third -- prompts, a named reusable template a server offers. A format mcp-prompt-v1 descriptor
 # declares a prompt (name, summary, arg lines, a {name}-placeholder template body); a
 # format mcp-prompt-get-v1 request binds each argument; the fill answers a
 # format mcp-prompt-result-v1 whose body is the finished text, holding no placeholder. The crux:
 # prompts/get returns the template filled with every declared argument and every placeholder
-# resolved — nothing half-substituted — and every refusal crosses back as a named MCP error
-# (prompt_not_found, unknown_argument, missing_argument, unbound_placeholder). Reads no network —
+# resolved -- nothing half-substituted -- and every refusal crosses back as a named MCP error
+# (prompt_not_found, unknown_argument, missing_argument, unbound_placeholder). Reads no network --
 # the Comlink-served transport stays the held serve gate.
 #
 # Run from the repository root:

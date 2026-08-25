@@ -1,9 +1,9 @@
 #!/bin/bash
-# key_card_audit.sh — audit the key-card inputs and outputs.
+# key_card_audit.sh -- audit the key-card inputs and outputs.
 #
 # POSIX-seam helper for tools/m/make_key_card.rish (orchestration stays in Rish;
 # the shell does the sourcing + ssh-keygen/gpg/magick reads that Rish routes to
-# a seam by design — see context/TAME_GUIDANCE.md on the .sh/.rish boundary).
+# a seam by design -- see context/TAME_GUIDANCE.md on the .sh/.rish boundary).
 #
 #   sh tools/k/key_card_audit.sh pre    # confirm each declared key fingerprint
 #                                      # matches the real key on this host

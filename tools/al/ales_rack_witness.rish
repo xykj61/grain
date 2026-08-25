@@ -1,17 +1,17 @@
-# tools/al/ales_rack_witness.rish — the multi-slot clipboard, a named rack of held spans (ALES30).
+# tools/al/ales_rack_witness.rish -- the multi-slot clipboard, a named rack of held spans (ALES30).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES30.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES30.
 # Design read: active-designing/date/20260814/20260814-144031_fill-ales30-lotus-rack.md
-# Stands on: lotus/clipboard.rye (ALES25) — the single held span (copy_to / cut_to / paste), one per slot, reused whole over its
-# public API; lotus/selection.rye (ALES23) — the validated Selection a slot is filled from; lotus/pan.rye (ALES10) — the StereoClip.
+# Stands on: lotus/clipboard.rye (ALES25) -- the single held span (copy_to / cut_to / paste), one per slot, reused whole over its
+# public API; lotus/selection.rye (ALES23) -- the validated Selection a slot is filled from; lotus/pan.rye (ALES10) -- the StereoClip.
 #
 # lotus/rack.rye holds several NAMED spans and pastes any one by name, anywhere, across masters. The crux: a rack holds several
 # independently named spans; pasting one slot by name is exactly ALES25's paste from that slot's own clipboard, and a slot's held
-# span is never touched by a fill, paste, or drop of any OTHER slot — each slot owns its clipboard (disjoint buffers), and every
+# span is never touched by a fill, paste, or drop of any OTHER slot -- each slot owns its clipboard (disjoint buffers), and every
 # gesture routes to exactly one slot resolved by a unique name. The selftest proves: two named slots hold two different spans, pasting
 # one by name leaves the other intact; a slot pastes twice and cross-master with its held length unchanged; cut_to files a lifted span;
 # drop frees a name for re-use and leaves every survivor untouched; every edge refuses by name (BadName / Duplicate / RackFull / NoSlot
-# and ALES25's Empty / BadRange / ClipFull). Purely local — no network, no keys, no funds.
+# and ALES25's Empty / BadRange / ClipFull). Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_rack_witness.rish

@@ -1,15 +1,15 @@
-# tools/al/ales_split_silence_witness.rish — the silence splitter: segment the clip through ALES95, then cut AT the silence, keeping each non-silent region as its own take (ALES97).
+# tools/al/ales_split_silence_witness.rish -- the silence splitter: segment the clip through ALES95, then cut AT the silence, keeping each non-silent region as its own take (ALES97).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES97.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES97.
 # Design read: active-designing/date/20260814/20260814-232954_fill-ales97-lotus-silence-splitter.md
-# Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/trim_silence.rye (ALES96 — the silence stripper, the join-law twin), lotus/timeline.rye
-# (ALES2 — the Clip and splice), lotus/voiced.rye (ALES94 — the .silent verdict). ALES95's own scope note named three tools its loop enables — every voice-activity
+# Stands on: lotus/segment.rye (ALES95 -- the voice-activity segmenter), lotus/trim_silence.rye (ALES96 -- the silence stripper, the join-law twin), lotus/timeline.rye
+# (ALES2 -- the Clip and splice), lotus/voiced.rye (ALES94 -- the .silent verdict). ALES95's own scope note named three tools its loop enables -- every voice-activity
 # gate, every silence trimmer, every AUTO-SPLITTER. ALES96 built the trimmer; this is the auto-splitter, the twin gesture in every recorder, sampler, and podcast tool.
 #
 # lotus/split_silence.rye segments [0, clip.len) into frames of frame_len samples through ALES95, then coalesces every maximal span of consecutive non-silent runs
-# into one Take (a {start, count} span into the original). It splits AT silence, not at every verdict change — a voiced run directly followed by an unvoiced run (no
+# into one Take (a {start, count} span into the original). It splits AT silence, not at every verdict change -- a voiced run directly followed by an unvoiced run (no
 # pause between) is ONE take. The crux is two laws. THE TAKE LAW: the index-th take clip equals the original's samples over the index-th non-silent region's span, and
-# out.len equals the non-silent-region count. THE JOIN LAW: concatenating every take clip in order equals ALES96's trim_silence on the same signal, byte for byte —
+# out.len equals the non-silent-region count. THE JOIN LAW: concatenating every take clip in order equals ALES96's trim_silence on the same signal, byte for byte --
 # the trimmer joins the non-silent samples, the splitter keeps them apart, and re-joining the splitter's pieces returns exactly the trimmer's clip. The selftest proves
 # both, plus: a mixed clip yields one take per non-silent region with a pause always between; consecutive non-silent runs coalesce; an all-silent clip yields zero
 # takes; a no-silent clip yields one whole-clip take; the source is byte-for-byte unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal

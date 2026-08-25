@@ -1,13 +1,13 @@
-# tools/g/gism_ayre_j8_entity_books_witness.rish — Season 2 Journey 8 (Cash-first), Rung 1.
+# tools/g/gism_ayre_j8_entity_books_witness.rish -- Season 2 Journey 8 (Cash-first), Rung 1.
 #
-# Season 2, Yield — the accounting spine for Linengrow PBC / Siya Fund. Dimeroll keeps one
+# Season 2, Yield -- the accounting spine for Linengrow PBC / Siya Fund. Dimeroll keeps one
 # steward's centralized books; the entity-books design extends that model's scope to two
 # organizations and names the strand this journey turns on: entity separation, never braided.
-# pond/apps/entity_books.rye fixes the crux — two named entities, each folding its own journal to a
+# pond/apps/entity_books.rye fixes the crux -- two named entities, each folding its own journal to a
 # trial balance that conserves and a balance sheet that balances; an inter-entity transfer booked as
 # one fact on both (grantor debits expense / credits cash, grantee debits cash / credits revenue);
 # the pair conserving across the cash line (grantor cash falls by the amount, grantee's rises by it,
-# summing to zero); and segregation — an entry added to one entity's journal never changes the
+# summing to zero); and segregation -- an entry added to one entity's journal never changes the
 # other's fold. A self-transfer (SameEntity), a non-positive amount (BadAmount, no journal touched),
 # and a full journal (JournalFull) each refuse. Composes dimeroll_core over public API. Facts only;
 # no funds move, no key is held (custody gate %3 untouched); demo entities only.
@@ -20,7 +20,7 @@ say "gism-ayre-j8r1: Lens TAME — a self-transfer, a zero amount, and a full jo
 
 let zig = "vendor/zig-toolchain/zig"
 
-# dimeroll_core stays GREEN beneath the entity layer — additive.
+# dimeroll_core stays GREEN beneath the entity layer -- additive.
 let binc = "dimeroll/bin/dimeroll"
 let buildc = run ["sh" "-c" "mkdir -p dimeroll/bin && env RYE_ZIG=${zig} rye/bin/rye build dimeroll/dimeroll.rye -femit-bin=${binc}"]
 assert buildc.ok else "gism-ayre-j8r1: dimeroll build failed"

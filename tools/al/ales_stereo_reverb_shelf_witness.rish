@@ -1,24 +1,24 @@
-# tools/al/ales_stereo_reverb_shelf_witness.rish — the stereo shelf: a two-band tone shelf on the reverberant tail carried across a stereo master (ALES205).
+# tools/al/ales_stereo_reverb_shelf_witness.rish -- the stereo shelf: a two-band tone shelf on the reverberant tail carried across a stereo master (ALES205).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES205.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES205.
 # Design read: active-designing/date/20260815/20260815-112822_fill-ales205-lotus-stereo-reverb-shelf.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/shelf.rye (ALES41 — the
-# two-band tone shelf, its precheck and its BadCoeff / BadGain / BadRange, run per ear); lotus/reverb_shelf.rye (ALES204 — the mono shelf this mirrors
-# per channel); lotus/pan.rye (the StereoClip and its two balanced channels); lotus/clock.rye (ALES5 — the sample clock, converting the span);
-# lotus/timeline.rye (ALES2 — the Clip each channel holds, its max_clip bounding the span and its saturate the shelf's single rail).
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, run over the master unchanged); lotus/shelf.rye (ALES41 -- the
+# two-band tone shelf, its precheck and its BadCoeff / BadGain / BadRange, run per ear); lotus/reverb_shelf.rye (ALES204 -- the mono shelf this mirrors
+# per channel); lotus/pan.rye (the StereoClip and its two balanced channels); lotus/clock.rye (ALES5 -- the sample clock, converting the span);
+# lotus/timeline.rye (ALES2 -- the Clip each channel holds, its max_clip bounding the span and its saturate the shelf's single rail).
 #
-# lotus/stereo_reverb_shelf.rye carries ALES204's two-band reverb EQ across a stereo master — the SAME shelf over BOTH channels of a StereoClip, one
+# lotus/stereo_reverb_shelf.rye carries ALES204's two-band reverb EQ across a stereo master -- the SAME shelf over BOTH channels of a StereoClip, one
 # shared bass, treble, and split, the image held. ALES199 carried only the plain darkness knob across; the full two-band shelf stopped at mono until
 # this rung. It reverberates the master WET in place through ALES191's stereo_reverb_preset UNCHANGED, prechecks the shelf setting (the SAME guards
 # ALES41 raises) BEFORE the wet is written so a bad setting leaves both channels DRY and balanced (the atomicity crux), then tone-shelves EACH channel's
-# wet at the SAME setting with NO cross-channel read — the left ear shelves left, the right ear shelves right, so the image the preset held is held. No
-# new audio arithmetic — every shelved sample is written by a proven stage, each band scaled in the wide i64 domain and saturated ONCE. The selftest
+# wet at the SAME setting with NO cross-channel read -- the left ear shelves left, the right ear shelves right, so the image the preset held is held. No
+# new audio arithmetic -- every shelved sample is written by a proven stage, each band scaled in the wide i64 domain and saturated ONCE. The selftest
 # proves on both channels: at bass == unity AND treble == unity the span equals stereo_reverb_preset byte for byte; for a real shelf each channel equals
 # stereo_reverb_preset then shelf.shelf on that channel byte for byte and each shelved channel differs from its wet; each treble-cut channel's
 # high-frequency roughness is strictly less than its wet's (the treble cut darkens) and each bass-boost channel's total energy is strictly greater than
-# its wet's (the bass boost lifts); the image is held (a centred master identical channel-to-channel, a stereo master distinct — no crossing); the
+# its wet's (the bass boost lifts); the image is held (a centred master identical channel-to-channel, a stereo master distinct -- no crossing); the
 # channels leave balanced and silence stays silence; and the faults forward atomic (an illegal coefficient BadCoeff, a zero band denominator BadGain
-# with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one StereoClip, a validated clock;
+# with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local -- one StereoClip, a validated clock;
 # no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -44,15 +44,15 @@ say "ales-stereo-reverb-shelf: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-shelf' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-shelf: selftest did not print the GREEN ales-stereo-reverb-shelf line"
 
-# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the named-room stereo preset still stands green beside it.
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the named-room stereo preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-shelf: the ALES191 named-room stereo preset regressed under its shelf"
 
-# And re-prove ALES41's two-band tone shelf still stands green — the shelving it applies to each ear.
+# And re-prove ALES41's two-band tone shelf still stands green -- the shelving it applies to each ear.
 let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
 assert (trim shelf.out) == "yes" else "ales-stereo-reverb-shelf: the ALES41 two-band shelf regressed under its stereo reverb shelf"
 
-# And re-prove ALES204's mono reverb shelf still stands green — the mono rung this mirrors per ear.
+# And re-prove ALES204's mono reverb shelf still stands green -- the mono rung this mirrors per ear.
 let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_shelf.rye -femit-bin=lotus/bin/reverb_shelf && lotus/bin/reverb_shelf selftest 2>&1 | grep -q 'GREEN ales-reverb-shelf' && echo yes"]
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-shelf: the ALES204 mono reverb shelf regressed beside its stereo twin"
 

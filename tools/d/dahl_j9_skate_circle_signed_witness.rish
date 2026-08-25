@@ -1,14 +1,14 @@
-# tools/d/dahl_j9_skate_circle_signed_witness.rish — Season 3 Journey 9 (Skate), Rung 2.
+# tools/d/dahl_j9_skate_circle_signed_witness.rish -- Season 3 Journey 9 (Skate), Rung 2.
 #
 # Rung one fixed the consent rule as a pure state machine; a bare state machine trusts whoever calls
 # it. pond/apps/skate_circle_signed.rye binds each consent act to the keeper's settled Kumara identity
-# — a join is signed by the joining point, a link-request by the requesting point, over the exact
+# -- a join is signed by the joining point, a link-request by the requesting point, over the exact
 # facts (a tag so a join can never be replayed as a request, the circle id so it cannot cross circles,
 # the points). join_signed / request_signed verify the acting keeper's own signature against a caller
 # Keyring before touching rung one's circle. The honesty crux mirrors commerce's price-tamper: relabel
 # a request's target after signing and reuse the signature, and it falls (BadConsent). A join signed by
 # the wrong keeper (BadConsent), an unenrolled keeper (UnknownKeeper), and a signature presented to
-# another circle (BadConsent) each refuse. Additive — composes skate_circle (r1) + kumara over public
+# another circle (BadConsent) each refuse. Additive -- composes skate_circle (r1) + kumara over public
 # API (r1 re-runs GREEN); demo keeper seeds only, no real key, no network (serve is the gate).
 #
 # Run from the repository root:
@@ -19,7 +19,7 @@ say "dahl-j9r2: Lens TAME — a relabelled request, a forged join, an unenrolled
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one stays GREEN beneath the signed layer — additive.
+# Rung one stays GREEN beneath the signed layer -- additive.
 let binr1 = "pond/bin/skate-circle"
 let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
 assert buildr1.ok else "dahl-j9r2: skate_circle (r1) build failed"

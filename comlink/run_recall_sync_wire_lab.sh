@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_recall_sync_wire_lab.sh — NS-L3 wire lap 2 device wire over virtio-net.
+# comlink/run_recall_sync_wire_lab.sh -- NS-L3 wire lap 2 device wire over virtio-net.
 #
 # Orchestration lives in tools/co/comlink_recall_sync_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

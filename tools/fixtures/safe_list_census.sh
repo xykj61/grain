@@ -31,10 +31,10 @@ EMPTY_OK=no
 if rg -q 'none yet' "$SAFE" || test "$ROWS" = "0"; then
   EMPTY_OK=yes
 fi
-# living shred refuse still holds (measure only — fascia refuse line).
+# living shred refuse still holds (measure only -- fascia refuse line).
 # fascia_metric_v0 now phrases the held refuse as "no live shred"; the older
 # "no shred" / "shred refuse" / "refuse: shred" phrasings are kept so a bench
-# on either wording still reads the signal (REDS %67 — a witness must follow
+# on either wording still reads the signal (REDS %67 -- a witness must follow
 # the wording of what it reads, or it rots stale the day that wording moves).
 SHRED_RED=no
 if rishi/bin/rishi run tools/gen/season/fascia_metric_v0.rish 2>/dev/null | rg -q 'refuse: shred|no live shred|no shred|shred refuse'; then

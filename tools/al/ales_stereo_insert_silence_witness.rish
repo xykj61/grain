@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_insert_silence_witness.rish — stereo_insert_silence: opening a silent gap carried into stereo, both channels in lockstep, validate-both-before-either (ALES123).
+# tools/al/ales_stereo_insert_silence_witness.rish -- stereo_insert_silence: opening a silent gap carried into stereo, both channels in lockstep, validate-both-before-either (ALES123).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES123.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES123.
 # Design read: active-designing/date/20260815/20260815-022429_fill-ales123-lotus-stereo-insert-silence.md
-# Stands on: lotus/insert_silence.rye (ALES109 — the mono gap-opening gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance
-# invariant), lotus/stereo_cut.rye (ALES117 — the stereo span-remove this rung inverts), lotus/timeline.rye (ALES2 — the Clip, its max_clip bound, and the EditError reused whole), lotus/meter.rye
-# (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; opening a gap for a
+# Stands on: lotus/insert_silence.rye (ALES109 -- the mono gap-opening gesture run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance
+# invariant), lotus/stereo_cut.rye (ALES117 -- the stereo span-remove this rung inverts), lotus/timeline.rye (ALES2 -- the Clip, its max_clip bound, and the EditError reused whole), lotus/meter.rye
+# (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; opening a gap for a
 # downbeat lands it in both speakers at once. This rung carries ALES109's insert_silence into stereo the way ALES120 carried duplicate and ALES122 carried silence_span: run the proven mono
-# insert_silence on each channel over the same span. It is the growth-twin of stereo_silence_span — silence written in place (length holds) versus silence made room for (length grows).
+# insert_silence on each channel over the same span. It is the growth-twin of stereo_silence_span -- silence written in place (length holds) versus silence made room for (length grows).
 #
 # lotus/stereo_insert_silence.rye opens count silent samples at at in both channels, validating BOTH channels before either is mutated (because mono insert_silence can fault only with BadRange
 # or ClipFull and the channels enter equal-length over the same fixed buffer, the two checks are made once against the shared length up front) so a refusal never desynchronises the channels. The

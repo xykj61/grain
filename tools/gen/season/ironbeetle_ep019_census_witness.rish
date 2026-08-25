@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep019_census_witness.rish — e74 IronBeetle ep019.
+# tools/gen/season/ironbeetle_ep019_census_witness.rish -- e74 IronBeetle ep019.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep019_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep019: Language EN — everything is a sorted array."
 say "iron-ep019: Style Radiant — a table is an index block plus value blocks."

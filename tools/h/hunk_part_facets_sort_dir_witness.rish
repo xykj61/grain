@@ -1,6 +1,6 @@
-# tools/h/hunk_part_facets_sort_dir_witness.rish — the sort names which way it turns (HUNK92).
+# tools/h/hunk_part_facets_sort_dir_witness.rish -- the sort names which way it turns (HUNK92).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK92.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK92.
 # Design read: active-designing/date/20260814/20260814-014131_hunk-part-facets-sort-direction-named-exploration.md
 # Teacher, thanked clean-room: a search box whose sort label reads price low-to-high / high-to-low above the parts it ordered (concept only, siloed).
 #
@@ -11,7 +11,7 @@
 # the same direction draws (HUNK89 ascending or HUNK91 descending). The selftest proves the header names the direction,
 # that there is NO DRIFT between the word and the order, that the two directions are exact reverses on a distinct trio,
 # that a zero-result line names neither page nor direction, and that a malformed clause, a bad width, and a bad offset
-# each refuse by name. It is additive — HUNK90 and HUNK91 stay GREEN beside it.
+# each refuse by name. It is additive -- HUNK90 and HUNK91 stay GREEN beside it.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/h/hunk_part_facets_sort_dir_witness.rish
@@ -26,7 +26,7 @@ let bin = "brushstroke/bin/part_facets_sort_dir"
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_dir.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-sort-dir: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "brushstroke/bin/part_facets_sort_dir.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-sort-dir: selftest exited non-zero — see ${outfile}"
@@ -37,13 +37,13 @@ say "hunk-part-facets-sort-dir: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-dir' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-sort-dir: selftest did not print the GREEN part-facets-sort-dir line"
 
-# HUNK90 stays GREEN — the ascending sorted screen this rung generalizes to a direction.
+# HUNK90 stays GREEN -- the ascending sorted screen this rung generalizes to a direction.
 let a = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sorted_screen.rye -femit-bin=brushstroke/bin/part_facets_sorted_screen && brushstroke/bin/part_facets_sorted_screen selftest > brushstroke/bin/part_facets_sorted_screen.out 2>&1"]
 assert a.ok else "hunk-part-facets-sort-dir: HUNK90 part_facets_sorted_screen re-run failed — see brushstroke/bin/part_facets_sorted_screen.out"
 let a_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sorted-screen' brushstroke/bin/part_facets_sorted_screen.out && echo yes"]
 assert (trim a_green.out) == "yes" else "hunk-part-facets-sort-dir: HUNK90 part_facets_sorted_screen did not stay GREEN"
 
-# HUNK91 stays GREEN — the descending shelf this rung crowns with a directional header.
+# HUNK91 stays GREEN -- the descending shelf this rung crowns with a directional header.
 let d = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_desc.rye -femit-bin=brushstroke/bin/part_facets_sort_desc && brushstroke/bin/part_facets_sort_desc selftest > brushstroke/bin/part_facets_sort_desc.out 2>&1"]
 assert d.ok else "hunk-part-facets-sort-dir: HUNK91 part_facets_sort_desc re-run failed — see brushstroke/bin/part_facets_sort_desc.out"
 let d_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-desc' brushstroke/bin/part_facets_sort_desc.out && echo yes"]

@@ -1,16 +1,16 @@
-# tools/al/ales_reverb_preset_witness.rish — named rooms: a reverb a keeper reaches for by name (ALES190).
+# tools/al/ales_reverb_preset_witness.rish -- named rooms: a reverb a keeper reaches for by name (ALES190).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES190.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES190.
 # Design read: active-designing/date/20260815/20260815-095435_fill-ales190-lotus-named-room-reverb-presets.md
-# Stands on: lotus/reverb_time.rye (ALES188 — the timed reverb this delegates to unchanged, its CombSpecMs / AllpassSpecMs the preset banks'
-# element types); lotus/clock.rye (ALES5 — the sample clock the preset is spoken against); lotus/reverb.rye (ALES186 — the max_stages bound).
+# Stands on: lotus/reverb_time.rye (ALES188 -- the timed reverb this delegates to unchanged, its CombSpecMs / AllpassSpecMs the preset banks'
+# element types); lotus/clock.rye (ALES5 -- the sample clock the preset is spoken against); lotus/reverb.rye (ALES186 -- the max_stages bound).
 #
-# lotus/reverb_preset.rye gives the reverb a face a musician reaches for by name — room · hall · plate — each a curated bank of timed comb and
+# lotus/reverb_preset.rye gives the reverb a face a musician reaches for by name -- room - hall - plate -- each a curated bank of timed comb and
 # allpass stages run through ALES188's proven reverb_ms. reverb_preset picks the room's published bank and delegates to reverb_ms UNCHANGED, so
 # a preset invents no new arithmetic and no new fault: a preset IS exactly its named bank. The selftest proves: a preset equals reverb_ms over
 # that room's explicit published bank byte for byte, for all three rooms; the rooms genuinely differ (hall, room, and plate over one impulse are
 # three different washes); each decays to silence within the clip (every stage below unity, so the composition settles); silence stays silence;
-# and the underlying faults forward (a span past the clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local —
+# and the underlying faults forward (a span past the clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local --
 # three fixed banks named in milliseconds so one preset sounds the same room at any rate; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -36,7 +36,7 @@ say "ales-reverb-preset: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-preset' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-preset: selftest did not print the GREEN ales-reverb-preset line"
 
-# This rung delegates to ALES188's reverb_ms over its public API — re-prove the timed reverb still stands green beside it.
+# This rung delegates to ALES188's reverb_ms over its public API -- re-prove the timed reverb still stands green beside it.
 let timed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_time.rye -femit-bin=lotus/bin/reverb_time && lotus/bin/reverb_time selftest 2>&1 | grep -q 'GREEN ales-reverb-time' && echo yes"]
 assert (trim timed.out) == "yes" else "ales-reverb-preset: the ALES188 timed reverb regressed under its preset face"
 

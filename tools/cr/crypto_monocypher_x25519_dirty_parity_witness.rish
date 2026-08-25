@@ -1,28 +1,28 @@
-# tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish — Monocypher-source parity for the dirty X25519 public key
+# tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish -- Monocypher-source parity for the dirty X25519 public key
 # (crypto_x25519_dirty_small / crypto_x25519_dirty_fast), the X25519 key with its cofactor left in so its Elligator representative is uniformly
-# random — the piece that makes crypto/elligator.rye's key-hiding actually indistinguishable from noise. Our authored crypto/x25519_dirty.rye and
+# random -- the piece that makes crypto/elligator.rye's key-hiding actually indistinguishable from noise. Our authored crypto/x25519_dirty.rye and
 # the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the dirty public key of the same sixteen
-# secret keys, diffed byte-for-byte. The EIGHTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD ·
-# Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · Poly1305 · ChaCha20 · SHA-512 · HMAC-SHA-512 · HChaCha20 · variable BLAKE2b ·
-# keyed BLAKE2b · constant-time verify · HKDF-SHA-512 · Elligator 2 came before). Season G · Cryptography.
+# secret keys, diffed byte-for-byte. The EIGHTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b - X25519 - Ed25519 - IETF AEAD -
+# Argon2 - XChaCha20-Poly1305 flagship - Edwards<->Montgomery - Poly1305 - ChaCha20 - SHA-512 - HMAC-SHA-512 - HChaCha20 - variable BLAKE2b -
+# keyed BLAKE2b - constant-time verify - HKDF-SHA-512 - Elligator 2 came before). Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux names "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." Like the Elligator rung this is a primitive Zig's std.crypto does not ship, so
-# there is no independent std.crypto oracle beside the parity — the byte-for-byte agreement with the actual vendored library IS the external
+# there is no independent std.crypto oracle beside the parity -- the byte-for-byte agreement with the actual vendored library IS the external
 # anchor, and here it is DOUBLED: Monocypher itself carries two dirty paths (dirty_small over an order-8L base point, dirty_fast over the Edwards
 # curve) that agree by its own design, so the witness proves both that our Rye equals Monocypher's dirty_small AND that Monocypher's two paths
-# agree — the value we match is the canonical dirty key, not one implementation's quirk.
-# Kin: crypto/x25519_dirty.rye (our authored primitive) · crypto/x25519.rye (the CLEAN ladder whose field composition it reuses) ·
-# crypto/elligator.rye (the map that hides the dirty key) · tools/rye/monocypher_x25519_dirty_parity.rye (our printing harness) ·
-# tools/fixtures/monocypher_x25519_dirty_harness.c (Monocypher's printing harness) · crypto/fe25519.rye (the field both stand on). Monocypher
+# agree -- the value we match is the canonical dirty key, not one implementation's quirk.
+# Kin: crypto/x25519_dirty.rye (our authored primitive) - crypto/x25519.rye (the CLEAN ladder whose field composition it reuses) -
+# crypto/elligator.rye (the map that hides the dirty key) - tools/rye/monocypher_x25519_dirty_parity.rye (our printing harness) -
+# tools/fixtures/monocypher_x25519_dirty_harness.c (Monocypher's printing harness) - crypto/fe25519.rye (the field both stand on). Monocypher
 # stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
-# The thirty-two C lines: sixteen dirty_small answers (secret key sk[j] = (i*7 + j*3 + 1) mod 256 → its 64-hex dirty public key) then sixteen
+# The thirty-two C lines: sixteen dirty_small answers (secret key sk[j] = (i*7 + j*3 + 1) mod 256 -> its 64-hex dirty public key) then sixteen
 # dirty_fast answers over the SAME keys. The sixteen Rye lines are dirty_small over the same keys. The witness asserts (a) our sixteen equal the
-# first sixteen C lines byte-for-byte and (b) the first sixteen C lines equal the last sixteen — Monocypher's two paths agreeing. The low byte of
+# first sixteen C lines byte-for-byte and (b) the first sixteen C lines equal the last sixteen -- Monocypher's two paths agreeing. The low byte of
 # each key (sk[0] = (i*7 + 1) mod 256) sweeps all eight cofactor residues across the sixteen cases, exercising every branch of the add_xl
-# cofactor add. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon (this proves
+# cofactor add. Purely local -- no key, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon (this proves
 # the dirty key's byte-for-byte correctness, not a timing claim).
 #
 # Run from the repository root:
@@ -43,7 +43,7 @@ let rout = "crypto/bin/rye_x25519_dirty.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_x25519_dirty_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-x25519-dirty-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — thirty-two lines (sixteen dirty_small, then sixteen dirty_fast).
+# 2. Run the Monocypher C harness -- thirty-two lines (sixteen dirty_small, then sixteen dirty_fast).
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-x25519-dirty-parity: Monocypher C harness exited non-zero — see ${cout}"
 
@@ -53,7 +53,7 @@ assert split_small.ok else "crypto-monocypher-x25519-dirty-parity: could not spl
 let split_fast = run ["sh" "-c" "tail -16 ${cout} > ${cfast}"]
 assert split_fast.ok else "crypto-monocypher-x25519-dirty-parity: could not split dirty_fast half — ${split_fast.err}"
 
-# 4. Run our authored Rye harness — sixteen dirty_small lines over the identical keys.
+# 4. Run our authored Rye harness -- sixteen dirty_small lines over the identical keys.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_x25519_dirty_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-x25519-dirty-parity: Rye harness exited non-zero — see ${rout}"
 

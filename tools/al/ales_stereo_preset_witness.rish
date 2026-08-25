@@ -1,10 +1,10 @@
-# tools/al/ales_stereo_preset_witness.rish — a keeper loads a named effect chain by name and hears it over BOTH channels of a
+# tools/al/ales_stereo_preset_witness.rish -- a keeper loads a named effect chain by name and hears it over BOTH channels of a
 # stereo master, verify-before-trust (ALES220).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES220.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES220.
 # Design read: active-designing/date/20260815/20260815-133213_fill-ales220-lotus-stereo-preset.md
-# Idiom kin: lotus/preset.rye (ALES219, from_name + build) · lotus/stereo_render.rye (ALES218, the balanced render) · lotus/
-# pan.rye (ALES10, the StereoClip). This rung is the mono→stereo twin of the preset surface: the named preset widened to the
+# Idiom kin: lotus/preset.rye (ALES219, from_name + build) - lotus/stereo_render.rye (ALES218, the balanced render) - lotus/
+# pan.rye (ALES10, the StereoClip). This rung is the mono->stereo twin of the preset surface: the named preset widened to the
 # second channel, inventing no new effect, check, or name.
 #
 # lotus/stereo_preset.rye loads a preset by name and renders it over both channels through the balanced stereo render. The
@@ -12,7 +12,7 @@
 # (the named-stereo law); a named stereo preset is the same preset rendered mono per channel (the independent-channel law); an
 # unknown name refuses UnknownPreset before the master is read, both channels unchanged (the unknown law); every render leaves
 # the two channels equal length (the balance law); a small container refuses OutputTooSmall, both channels untouched (the atomic
-# law) — build is total, so no preset ever refuses for BadRange. A byte container only — no real file opened, no DAC, no
+# law) -- build is total, so no preset ever refuses for BadRange. A byte container only -- no real file opened, no DAC, no
 # network, no keys, no funds, no real device.
 #
 # Run from the repository root:

@@ -1,19 +1,19 @@
-# tools/al/ales_dc_block_witness.rish — the one-pole IIR DC blocker: a drifting-offset remover with carried state, y[n] = x[n] − x[n−1] + R·y[n−1] (ALES91).
+# tools/al/ales_dc_block_witness.rish -- the one-pole IIR DC blocker: a drifting-offset remover with carried state, y[n] = x[n] − x[n−1] + R-y[n−1] (ALES91).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES91.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES91.
 # Design read: active-designing/date/20260814/20260814-223442_fill-ales91-lotus-dc-blocker.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate) and the carried-state idiom of lotus/tone_carry.rye (ALES43 — the
-# filter that spans a re-berthed region without a fresh transient). The sibling of lotus/dc_remove.rye (ALES90 — the block-mean remover): where the block mean
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate) and the carried-state idiom of lotus/tone_carry.rye (ALES43 -- the
+# filter that spans a re-berthed region without a fresh transient). The sibling of lotus/dc_remove.rye (ALES90 -- the block-mean remover): where the block mean
 # is memoryless and subtracts one average (a CONSTANT offset over a bounded region), this rung carries state and FOLLOWS a drifting offset the block mean cannot.
 #
 # lotus/dc_block.rye runs the one-pole difference equation sample by sample, saturating at the rails. The crux is that it CARRIES STATE (the previous input
-# and previous output), so — exactly as ALES43's carried low-pass — a span blocked in two pieces (the second continuing the first's ending state) equals the
+# and previous output), so -- exactly as ALES43's carried low-pass -- a span blocked in two pieces (the second continuing the first's ending state) equals the
 # whole blocked once, byte-for-byte, no re-transient at the seam. The selftest proves it: a fresh blocker equals the from-silence dc_block; a constant offset
 # settles to EXACTLY zero (the feedback truncates to nothing in finite steps); a span blocked in two pieces equals the whole blocked once (the crux); it
 # FOLLOWS a DC step a block mean cannot (each region driven to zero where the block mean leaves ±3000); reset re-opens the from-silence transient; R = 0 is the
 # legal first-difference highpass (num ≥ 0 here, unlike the tone filter's num ≥ 1); saturation at the rail is honest (a sharp edge pins to +32767, never wraps);
 # the span discipline holds; an illegal pole (num = den, num < 0, den = 0, den past the ceiling) refuses BadCoeff with the state untouched; an out-of-range
-# span refuses BadRange with the clip untouched. Purely local — one recursive difference in i64, one saturate per sample; no real device, no real sample rate.
+# span refuses BadRange with the clip untouched. Purely local -- one recursive difference in i64, one saturate per sample; no real device, no real sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_dc_block_witness.rish

@@ -1,6 +1,6 @@
-# tools/h/hunk_sprite_store_witness.rish — the marketplace sheet is a content-addressed artifact (HUNK6).
+# tools/h/hunk_sprite_store_witness.rish -- the marketplace sheet is a content-addressed artifact (HUNK6).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK6.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK6.
 # Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
 # Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 #
@@ -9,7 +9,7 @@
 # the sprite content-addressed (HUNK1's image_artifact.store_image) and open_sheet fetches it back, proving
 # every bead against its digest and the whole against its recorded address BEFORE the codec reads a pixel. So a
 # tampered sheet refuses DigestMismatch and an unknown market refuses UnknownArtifact, each before a SpriteIndex
-# is built or a product rendered — a marketplace can only be served from the exact bytes its name pins. The
+# is built or a product rendered -- a marketplace can only be served from the exact bytes its name pins. The
 # selftest stores a two-tone sheet, opens a market over the verified sheet and renders two products from their
 # own windows, then flips one stored byte and proves the whole market refuses before any product renders. Pure
 # composition over public APIs; no network, no key, no funds.
@@ -39,7 +39,7 @@ assert out contains "opens over the verified sheet" else "hunk-sprite-store: the
 
 assert out contains "refuses DigestMismatch" else "hunk-sprite-store: the selftest did not prove a tampered sheet refuses before a product renders"
 
-# HUNK1 stays GREEN — the store reuses image_artifact; the verified fetch underneath must still hold.
+# HUNK1 stays GREEN -- the store reuses image_artifact; the verified fetch underneath must still hold.
 let artifact = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/image_artifact.rye -femit-bin=pond/apps/bin/image_artifact && pond/apps/bin/image_artifact selftest 2>&1"]
 assert artifact.ok else "hunk-sprite-store: HUNK1 image_artifact re-run failed — ${artifact.out}"
 assert artifact.out contains "GREEN image-artifact" else "hunk-sprite-store: HUNK1 image_artifact selftest did not stay GREEN"

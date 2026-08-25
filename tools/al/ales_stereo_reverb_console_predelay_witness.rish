@@ -1,20 +1,20 @@
-# tools/al/ales_stereo_reverb_console_predelay_witness.rish — the stereo console pre-delay: the dry-composed pre-delay against the dry, across a stereo master (ALES197).
+# tools/al/ales_stereo_reverb_console_predelay_witness.rish -- the stereo console pre-delay: the dry-composed pre-delay against the dry, across a stereo master (ALES197).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES197.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES197.
 # Design read: active-designing/date/20260815/20260815-103451_fill-ales197-lotus-stereo-console-predelay.md
-# Stands on: lotus/stereo_reverb_predelay.rye (ALES195 — the wet-domain stereo pre-delay whose faults this forwards and whose full-wet edge this
-# equals); lotus/stereo_reverb_mix.rye (ALES193 — the per-channel wet/dry blend this reuses and whose no-gap edge this equals);
-# lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet); lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the
-# Clip each channel holds); lotus/pan.rye (ALES — the StereoClip).
+# Stands on: lotus/stereo_reverb_predelay.rye (ALES195 -- the wet-domain stereo pre-delay whose faults this forwards and whose full-wet edge this
+# equals); lotus/stereo_reverb_mix.rye (ALES193 -- the per-channel wet/dry blend this reuses and whose no-gap edge this equals);
+# lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet); lotus/clock.rye (ALES5 -- the sample clock); lotus/timeline.rye (ALES2 -- the
+# Clip each channel holds); lotus/pan.rye (ALES -- the StereoClip).
 #
-# lotus/stereo_reverb_console_predelay.rye gives the stereo reverb its classic console pre-delay, heard against the dry — the thin twin ALES196
+# lotus/stereo_reverb_console_predelay.rye gives the stereo reverb its classic console pre-delay, heard against the dry -- the thin twin ALES196
 # named next. It snapshots each channel's DRY span, reverberates the master wet in place through ALES191's stereo_reverb_preset UNCHANGED, forms
 # each channel's pre-delayed wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blends each sample of each channel out[i] =
-# saturate((den-num)·dry[i]/den + num·pw[i]/den) — ALES193's per-channel balance over ALES195's per-channel reindex, run per ear with no
+# saturate((den-num)-dry[i]/den + num-pw[i]/den) -- ALES193's per-channel balance over ALES195's per-channel reindex, run per ear with no
 # cross-channel read, saturated once, no new audio arithmetic. The selftest proves: at predelay = 0 the span equals stereo_reverb_mix byte for byte
 # on both channels; at mix = 0 each channel the exact dry at any pre-delay; at mix = den it equals stereo_reverb_predelay byte for byte on both; a
 # mid pre-delay and mid mix the weighted average per channel of its own dry and its own pre-delayed wet; the image is held, the channels leave
-# balanced, silence stays silence; and the faults forward (BadMix, BadPredelay, DurationTooLong, BadRange), both channels untouched. Purely local —
+# balanced, silence stays silence; and the faults forward (BadMix, BadPredelay, DurationTooLong, BadRange), both channels untouched. Purely local --
 # one StereoClip, four bounded stack snapshots; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -40,7 +40,7 @@ say "ales-stereo-reverb-console-predelay: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-console-predelay' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-console-predelay: selftest did not print the GREEN ales-stereo-reverb-console-predelay line"
 
-# This rung composes ALES195's stereo pre-delay and ALES193's stereo mix over their public APIs — re-prove both still stand green beside it.
+# This rung composes ALES195's stereo pre-delay and ALES193's stereo mix over their public APIs -- re-prove both still stand green beside it.
 let predelay = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_predelay.rye -femit-bin=lotus/bin/stereo_reverb_predelay && lotus/bin/stereo_reverb_predelay selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-predelay' && echo yes"]
 assert (trim predelay.out) == "yes" else "ales-stereo-reverb-console-predelay: the ALES195 wet-domain stereo pre-delay regressed under its console composition"
 

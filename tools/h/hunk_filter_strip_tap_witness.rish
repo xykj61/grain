@@ -1,8 +1,8 @@
-# tools/h/hunk_filter_strip_tap_witness.rish — the tappable filter strip, on metal (HUNK65).
+# tools/h/hunk_filter_strip_tap_witness.rish -- the tappable filter strip, on metal (HUNK65).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK65.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK65.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the tappable filter row of a photo app (iCloud Photos / Instagram / VSCO) — a keeper taps
+# Teacher, thanked clean-room: the tappable filter row of a photo app (iCloud Photos / Instagram / VSCO) -- a keeper taps
 # the thumbnail they want and the app selects that filter (concept only, siloed).
 #
 # HUNK64 painted the filter strip; this rung makes it tappable. FilterStripTap classifies a pixel tap into a filter band
@@ -25,7 +25,7 @@ assert build.ok else "hunk-filter-strip-tap: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-filter-strip-tap: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-filter-strip-tap: ${out}"

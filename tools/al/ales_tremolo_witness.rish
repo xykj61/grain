@@ -1,19 +1,19 @@
-# tools/al/ales_tremolo_witness.rish — the tremolo: the triangle LFO turned on amplitude, not delay (ALES74).
+# tools/al/ales_tremolo_witness.rish -- the tremolo: the triangle LFO turned on amplitude, not delay (ALES74).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES74.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES74.
 # Design read: active-designing/date/20260814/20260814-201204_fill-ales74-lotus-tremolo-amplitude-modulation.md
-# Stands on: lotus/chorus.rye (ALES71 — the triangle-LFO driver `triangle_delay_at` this reuses, read as a gain); lotus/glide.rye (ALES70 —
-# `glide_scale`, the fixed-point unit, 256 = unity gain); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate).
+# Stands on: lotus/chorus.rye (ALES71 -- the triangle-LFO driver `triangle_delay_at` this reuses, read as a gain); lotus/glide.rye (ALES70 --
+# `glide_scale`, the fixed-point unit, 256 = unity gain); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate).
 #
-# lotus/tremolo.rye points the modulation family's triangle LFO at a NEW target — the sample's own amplitude, not a delay. It invents no new
+# lotus/tremolo.rye points the modulation family's triangle LFO at a NEW target -- the sample's own amplitude, not a delay. It invents no new
 # arithmetic: it reuses ALES71's triangle_delay_at driver verbatim, reading its result as a gain in units of glide_scale, and scales each
-# sample by it — y[i] = saturate(x[i]·g(i)/glide_scale). Because every output depends only on its own input sample, the tremolo writes in
-# place with NO snapshot — the vibrato's frozen-prefix machinery falls away, making this the thinnest rung in the family. The selftest proves
+# sample by it -- y[i] = saturate(x[i]-g(i)/glide_scale). Because every output depends only on its own input sample, the tremolo writes in
+# place with NO snapshot -- the vibrato's frozen-prefix machinery falls away, making this the thinnest rung in the family. The selftest proves
 # the recognition outright: a STEADY SIGNAL TRACES THE TRIANGLE GAIN, matched sample-by-sample against the driver; a hand-computed whole-anchor
-# case (½ → 1 → ½ → 0) matches exactly; a zero-depth tremolo is a constant-gain fader; unity passthrough is exact even at sample_min (so the
+# case (½ -> 1 -> ½ -> 0) matches exactly; a zero-depth tremolo is a constant-gain fader; unity passthrough is exact even at sample_min (so the
 # write's saturate is a proven no-op); the tremolo voice never exceeds the dry rail (an attenuation of an in-range sample is in range); a period
 # not a positive multiple of four refuses BadPeriod, a swing below silence or a negative depth BadDepth, a swing top past unity BadGain, an
-# out-of-range span BadRange — there is no BadDelay and no BadLevel, the tremolo has no delay line and no mix level. Purely local — no delay
+# out-of-range span BadRange -- there is no BadDelay and no BadLevel, the tremolo has no delay line and no mix level. Purely local -- no delay
 # line, no snapshot, no lookahead, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:

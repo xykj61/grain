@@ -1,9 +1,9 @@
-# tools/gen/season/tigerbeetle_assert_census_witness.rish — e19 TB assert census.
+# tools/gen/season/tigerbeetle_assert_census_witness.rish -- e19 TB assert census.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_assert_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present (host clone checkpoint).
-# Clean-room: counts only · never copies into rye/.
+# Clean-room: counts only - never copies into rye/.
 
 say "tb-assert-census: Language EN — assert · maybe · verify speak in counts."
 say "tb-assert-census: Style Radiant — assertion density measured, never assumed."

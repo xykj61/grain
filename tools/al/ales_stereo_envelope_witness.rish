@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_envelope_witness.rish — stereo_envelope: the envelope follower carried into stereo, one linked detector for the time-varying family to come (ALES160).
+# tools/al/ales_stereo_envelope_witness.rish -- stereo_envelope: the envelope follower carried into stereo, one linked detector for the time-varying family to come (ALES160).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES160.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES160.
 # Design read: active-designing/date/20260815/20260815-064459_fill-ales160-lotus-stereo-envelope.md
-# Stands on: lotus/envelope.rye (ALES52 — the mono envelope follower, its env_step, coeff_ok, and EnvelopeError reused whole for the forced-unit-step exact-reach guarantee, the attack/release asymmetry, and the per-sample
-# proof that both channels equal the mono follow of the linked key), lotus/stereo_gate.rye (ALES156 — the linked-decision law whose linked key this shares), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant),
-# lotus/timeline.rye (ALES2 — the Clip, sample_max).
+# Stands on: lotus/envelope.rye (ALES52 -- the mono envelope follower, its env_step, coeff_ok, and EnvelopeError reused whole for the forced-unit-step exact-reach guarantee, the attack/release asymmetry, and the per-sample
+# proof that both channels equal the mono follow of the linked key), lotus/stereo_gate.rye (ALES156 -- the linked-decision law whose linked key this shares), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant),
+# lotus/timeline.rye (ALES2 -- the Clip, sample_max).
 #
 # lotus/stereo_envelope.rye follows a span of sample-PAIRS in a master by an attack and a release fraction, advancing ONE shared envelope toward the linked peak max(|left|, |right|) clamped to the rail and writing the shared
-# value into BOTH channels — one linked detector, the time base the whole stereo time-varying dynamics family waits for. The detector is shared: the louder channel decides the shared loudness (following each channel by its
-# own magnitude would pump the image), and the one curve is written to both so left == right after — the detector aligned across the field. EnvelopeError (BadCoeff, BadRange) reused whole; the linked detector adds no fault.
+# value into BOTH channels -- one linked detector, the time base the whole stereo time-varying dynamics family waits for. The detector is shared: the louder channel decides the shared loudness (following each channel by its
+# own magnitude would pump the image), and the one curve is written to both so left == right after -- the detector aligned across the field. EnvelopeError (BadCoeff, BadRange) reused whole; the linked detector adds no fault.
 # Values only, never a length. The crux is the linked detector law (the shared curve equal to the mono follow of the per-sample linked key byte for byte, both channels equal to it, the independent per-channel follow
 # differing), the balance law (left == right after, length held), the instantaneous law (unit attack and release the linked peak every sample), the convergence laws (a constant reached exactly and monotonically from below
 # and above, a faster attack no slower), the carry law (a span followed in two pieces equal to the whole once on both), and the silence/atomicity/degenerate law.

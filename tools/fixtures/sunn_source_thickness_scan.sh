@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/sunn_source_thickness_scan.sh — refuse a thin SOURCE front door.
+# tools/fixtures/sunn_source_thickness_scan.sh -- refuse a thin SOURCE front door.
 # Orchestrated by tools/gen/season/sunn14_witness_choir.rish.
 #
 # Usage:

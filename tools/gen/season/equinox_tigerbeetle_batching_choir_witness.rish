@@ -1,8 +1,8 @@
-# tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish — e38 → almanac.
+# tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish -- e38 -> almanac.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish
 #
-# Leaf welcome + refuse only — no nested elder choirs.
+# Leaf welcome + refuse only -- no nested elder choirs.
 
 say "equinox-tb-batching-choir: Language EN — amortize by batching; refuse an absent clone."
 say "equinox-tb-batching-choir: Style Radiant — welcome and refuse share one seat."

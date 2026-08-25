@@ -1,18 +1,18 @@
-# tools/al/ales_stereo_reverb_preset_witness.rish — stereo named rooms: the reverb a keeper reaches for by name, across a stereo master (ALES191).
+# tools/al/ales_stereo_reverb_preset_witness.rish -- stereo named rooms: the reverb a keeper reaches for by name, across a stereo master (ALES191).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES191.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES191.
 # Design read: active-designing/date/20260815/20260815-100148_fill-ales191-lotus-stereo-named-room-reverb-presets.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named rooms Room / bank_for / three published banks reused whole, the single source of
-# truth for a room's tuning); lotus/stereo_reverb_time.rye (ALES189 — the timed stereo reverb this delegates to unchanged); lotus/reverb.rye
-# (ALES186 — the max_stages bound).
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named rooms Room / bank_for / three published banks reused whole, the single source of
+# truth for a room's tuning); lotus/stereo_reverb_time.rye (ALES189 -- the timed stereo reverb this delegates to unchanged); lotus/reverb.rye
+# (ALES186 -- the max_stages bound).
 #
-# lotus/stereo_reverb_preset.rye gives the STEREO reverb the same face ALES190 gave the mono reverb — room · hall · plate — each ALES190's OWN
+# lotus/stereo_reverb_preset.rye gives the STEREO reverb the same face ALES190 gave the mono reverb -- room - hall - plate -- each ALES190's OWN
 # curated bank run through ALES189's proven stereo_reverb_ms. stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to
 # stereo_reverb_ms UNCHANGED, so a preset invents no new arithmetic and no new fault: a stereo preset IS exactly its named bank, and the bank is
 # ALES190's own. The selftest proves: a stereo preset equals stereo_reverb_ms over that room's published bank byte for byte on BOTH channels, for
 # all three rooms; the rooms genuinely differ; a centred master stays identical channel-to-channel (one shared bank) while a stereo master keeps
 # its channels distinct (no crossing); the channels leave balanced and silence stays silence; and the underlying faults forward (a span past the
-# clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local — one bank definition, two faces; no network, no
+# clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local -- one bank definition, two faces; no network, no
 # keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -38,7 +38,7 @@ say "ales-stereo-reverb-preset: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-preset' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-preset: selftest did not print the GREEN ales-stereo-reverb-preset line"
 
-# This rung reuses ALES190's banks and delegates to ALES189's stereo_reverb_ms over their public APIs — re-prove both still stand green beside it.
+# This rung reuses ALES190's banks and delegates to ALES189's stereo_reverb_ms over their public APIs -- re-prove both still stand green beside it.
 let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-preset: the ALES190 mono named-room preset regressed under its stereo twin"
 

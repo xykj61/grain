@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_static_alloc_census_witness.rish — e33 static alloc.
+# tools/gen/season/tigerbeetle_static_alloc_census_witness.rish -- e33 static alloc.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_static_alloc_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence + counts only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence + counts only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-static-alloc: Language EN — allocate at startup; nothing dynamic after."
 say "tb-static-alloc: Style Radiant — bounds named upfront; latency stays honest."

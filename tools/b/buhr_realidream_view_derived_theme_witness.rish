@@ -1,18 +1,18 @@
-# tools/b/buhr_realidream_view_derived_theme_witness.rish — BUHR Journey 5, Rung 9.
+# tools/b/buhr_realidream_view_derived_theme_witness.rish -- BUHR Journey 5, Rung 9.
 #
-# A .brush theme recolors the derived node — the downstream end of the fused edge.
+# A .brush theme recolors the derived node -- the downstream end of the fused edge.
 # Rung six closed the authoring loop for the read origin (the upstream end); rung eight
 # lit the derived node in the design system's own new flow (Weld) token. This rung
 # closes the authoring loop that token was named for: a real .brush accent file
 # (pond/apps/flow-source.brush) whose style: block overrides only the flow key is read
 # through the actual authoring loop (parse_brush + collect_brush_style), infused over
 # tokens.base_sheet by the WADE1 cascade (tokens.resolve), and painted by rung eight's
-# own paint_flow unchanged — so every derived node burns the authored honey while the
+# own paint_flow unchanged -- so every derived node burns the authored honey while the
 # ink, the read origin, the edge rule, and the living-edge head stand untouched. The
 # recolor is proven two ways: the authored honey reaches the canvas and the default Weld
-# leaves zero pixels — a recolor, never an addition. Warm/low-blue holds through the
+# leaves zero pixels -- a recolor, never an addition. Warm/low-blue holds through the
 # theme; glyphs byte-unchanged; a style-less .brush refuses ThemeMissingFlow. So the two
-# ends of Realidream's fused edge are now symmetric — each themeable on its own key.
+# ends of Realidream's fused edge are now symmetric -- each themeable on its own key.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_realidream_view_derived_theme_witness.rish
@@ -35,12 +35,12 @@ assert selftest.out contains "text unchanged by the theme" else "buhr-j5r9: the 
 assert selftest.out contains "the override is what recolors" else "buhr-j5r9: the no-style-default proof is missing"
 assert selftest.out contains "ThemeMissingFlow" else "buhr-j5r9: the style-less refusal proof is missing"
 
-# Rung 8 (the derived node painted) stays its own green binary — additive.
+# Rung 8 (the derived node painted) stays its own green binary -- additive.
 let rung8 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_realidream_view_derived_witness.rish 2>&1"]
 assert rung8.ok else "buhr-j5r9: the view-derived (J5r8) witness regressed"
 assert rung8.out contains "GREEN: BUHR-J5r8" else "buhr-j5r9: rung eight lost its green"
 
-# Rung 6 (a .brush theme recolors the read origin) stays green — the symmetric upstream loop.
+# Rung 6 (a .brush theme recolors the read origin) stays green -- the symmetric upstream loop.
 let rung6 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_realidream_view_theme_witness.rish 2>&1"]
 assert rung6.ok else "buhr-j5r9: the read-origin theme (J5r6) witness regressed"
 assert rung6.out contains "GREEN: BUHR-J5r6" else "buhr-j5r9: rung six lost its green"

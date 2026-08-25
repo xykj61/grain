@@ -1,16 +1,16 @@
-# claim_preserve_modality.rish — per-file modality counts for Radiant passes.
+# claim_preserve_modality.rish -- per-file modality counts for Radiant passes.
 #
-# The living mutant of claim_preserve_modality.sh (Python → Rishi molt 20260809):
+# The living mutant of claim_preserve_modality.sh (Python -> Rishi molt 20260809):
 # Rishi's own find/length, no python. Emits `term=count` for each modal term, in a
 # fixed order, over a normalized body (Radiant-pass / erratum / living-pointer header
-# lines dropped). The scan counts before and after and reds on any drift — a Radiant
+# lines dropped). The scan counts before and after and reds on any drift -- a Radiant
 # pass that turned "may" into "must" would show here.
 #
 #   rishi/bin/rishi run tools/fixtures/claim_preserve_modality.rish count <file>
 
 let text = read-file args[1]
 
-# Drop the header lines a Radiant pass adds, then join with a space — a word
+# Drop the header lines a Radiant pass adds, then join with a space -- a word
 # boundary, so every `\bterm\b` count matches a per-line count.
 let kept = where (lines text) as l: (?! (?| [(l matches "(?i)radiant pass") (l matches "(?i)erratum") (l matches "(?i)living pointer")]))
 let norm = join kept " "

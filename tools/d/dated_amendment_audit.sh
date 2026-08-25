@@ -1,11 +1,11 @@
 #!/bin/sh
-# tools/d/dated_amendment_audit.sh — the auditor beside the doorway (e239).
+# tools/d/dated_amendment_audit.sh -- the auditor beside the doorway (e239).
 #
 #   sh tools/d/dated_amendment_audit.sh [roof ...]      # default: counsel active-designing
 #
 # `tools/d/dated_guard.rish` is a DOORWAY: it inspects staged modifications only, so a
 # landed amendment is invisible to it forever after (e236). This is the auditor the
-# doorway cannot be — a REPORT, never a gate. It exits 0 always; nothing here refuses,
+# doorway cannot be -- a REPORT, never a gate. It exits 0 always; nothing here refuses,
 # blocks, or deletes anything.
 #
 # MARK WINDOW (e241): marks are read from the HEAD-40 lines only. A whole-file scan
@@ -16,7 +16,7 @@
 # For every dated artifact (YYYYMMDD-HHMMSS_sprig) that git history shows was MODIFIED
 # after its introducing commit, it asks whether the file carries one of the lawful marks
 # the dated law names: a recorded `Radiant pass <stamp>`, an erratum or named correction,
-# or a living-ledger header. Files with none are listed as UNMARKED — which is a
+# or a living-ledger header. Files with none are listed as UNMARKED -- which is a
 # description of the record, not a task list (e236).
 #
 # Seated by Keaton's word 20260802 ("seat the recommendations").

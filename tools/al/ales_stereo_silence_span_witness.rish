@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_silence_span_witness.rish — stereo_silence_span: silencing a span carried into stereo, both channels in lockstep, validate-both-before-either (ALES122).
+# tools/al/ales_stereo_silence_span_witness.rish -- stereo_silence_span: silencing a span carried into stereo, both channels in lockstep, validate-both-before-either (ALES122).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES122.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES122.
 # Design read: active-designing/date/20260815/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
-# Stands on: lotus/silence_span.rye (ALES110 — the mono span-silence run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/stereo_paste_over.rye (ALES121 — the stereo overwrite this rung specializes with zero paint), lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye
-# (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; muting a bleed
+# Stands on: lotus/silence_span.rye (ALES110 -- the mono span-silence run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/stereo_paste_over.rye (ALES121 -- the stereo overwrite this rung specializes with zero paint), lotus/timeline.rye (ALES2 -- the Clip and the EditError reused whole), lotus/meter.rye
+# (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; muting a bleed
 # clears both speakers at once. This rung carries ALES110's silence_span into stereo the way ALES121 carried paste_over: run the proven mono silence_span on each channel over the same span.
-# It is exactly the zero-paint case of stereo_paste_over — silence is the overwrite whose paint is zero — and the length-preserving third beside stereo_cut (which shrinks).
+# It is exactly the zero-paint case of stereo_paste_over -- silence is the overwrite whose paint is zero -- and the length-preserving third beside stereo_cut (which shrinks).
 #
 # lotus/stereo_silence_span.rye writes silence over [start, start+count) in both channels, validating BOTH channels before either is mutated (because mono silence_span can fault only with
 # BadRange and the channels enter equal-length, the span is checked once against the shared length up front) so a refusal never desynchronises the channels. The crux is four laws. THE

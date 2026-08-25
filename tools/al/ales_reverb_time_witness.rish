@@ -1,9 +1,9 @@
-# tools/al/ales_reverb_time_witness.rish — the reverb in real time: a Schroeder network named in milliseconds (ALES188).
+# tools/al/ales_reverb_time_witness.rish -- the reverb in real time: a Schroeder network named in milliseconds (ALES188).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES188.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES188.
 # Design read: active-designing/date/20260815/20260815-094453_fill-ales188-lotus-reverb-in-real-time.md
-# Stands on: lotus/reverb.rye (ALES186 — the Schroeder network this speaks in real time, delegated unchanged); lotus/clock.rye (ALES5 —
-# the sample clock, its samples_for converting ms to a bounded sample count); lotus/multitap_time.rye (ALES69 — the bank-converting twin
+# Stands on: lotus/reverb.rye (ALES186 -- the Schroeder network this speaks in real time, delegated unchanged); lotus/clock.rye (ALES5 --
+# the sample clock, its samples_for converting ms to a bounded sample count); lotus/multitap_time.rye (ALES69 -- the bank-converting twin
 # this mirrors exactly).
 #
 # lotus/reverb_time.rye gives the ALES186 reverb a face in milliseconds, mirroring multitap_ms over the multi-tap. reverb_ms converts
@@ -13,7 +13,7 @@
 # hand value [-8000,0,10000,-1333,8000,2000,5056,1000]); at 48 kHz 1 ms converts to 48 samples and the first recirculation sits exactly
 # there; a sub-sample comb (0 ms) refuses BadDelay rather than silently doing nothing; a stage delay past the clip refuses
 # DurationTooLong; an empty comb bank refuses NoCombs, an over-long bank TooManyStages, a feedback at unity BadGain, an out-of-range span
-# BadRange. Purely local — the clock a samples-per-second count, no network, no keys, no funds, no real device.
+# BadRange. Purely local -- the clock a samples-per-second count, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_reverb_time_witness.rish
@@ -38,7 +38,7 @@ say "ales-reverb-time: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-time: selftest did not print the GREEN ales-reverb-time line"
 
-# This rung delegates to ALES186's reverb over its public API — re-prove the index-named reverb still stands green beside it.
+# This rung delegates to ALES186's reverb over its public API -- re-prove the index-named reverb still stands green beside it.
 let reverb = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb.rye -femit-bin=lotus/bin/reverb && lotus/bin/reverb selftest 2>&1 | grep -q 'GREEN ales-reverb' && echo yes"]
 assert (trim reverb.out) == "yes" else "ales-reverb-time: the ALES186 reverb regressed under its real-time twin"
 

@@ -1,15 +1,15 @@
-# tools/d/drey_forget_witness.rish — the desk forgets one recording on purpose (DREY13).
+# tools/d/drey_forget_witness.rish -- the desk forgets one recording on purpose (DREY13).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY13.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY13.
 # Design read: active-designing/date/20260814/20260814-071720_drey13-desk-forgets-one-recording-exploration.md
-# Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store this forgetting shapes.
+# Stands on: mikrophone/catalog.rye (DREY7) -- the content-addressed store this forgetting shapes.
 #
-# mikrophone/forget.rye strikes one recording from the desk by its content address and proves it leaves no residue — the
+# mikrophone/forget.rye strikes one recording from the desk by its content address and proves it leaves no residue -- the
 # store closed over the gap, the vacated region zeroed, the distinctive bytes provably nowhere in the store. The selftest
 # proves: forgetting the middle of three leaves the survivors fetchable byte-for-byte with no residue, a miss refuses
 # NotHeld leaving the catalog unchanged, forget releases both the entry bound and the byte budget (a re-deposit lands
 # fresh, a full store admits a new recording once one is forgotten), and the last forget empties the desk to an all-zero
-# store — the device's redact (DREY10), one level up on the content-addressed desk.
+# store -- the device's redact (DREY10), one level up on the content-addressed desk.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/drey_forget_witness.rish

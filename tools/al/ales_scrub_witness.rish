@@ -1,18 +1,18 @@
-# tools/al/ales_scrub_witness.rish — the scrub window, a small movable read dragged across a stereo master (ALES19).
+# tools/al/ales_scrub_witness.rish -- the scrub window, a small movable read dragged across a stereo master (ALES19).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES19.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES19.
 # Design read: active-designing/20260814-fill-ales19-lotus-scrub.md
-# Stands on: lotus/stereo_transport.rye (ALES15) — the read head and read_block reused whole (a scrub read is a seek-then-read off
-# that one head); lotus/stereo_meter.rye (ALES17) — the StereoMeter reused whole for the level under the drag; lotus/pan.rye
-# (ALES10) — the StereoClip whose two channels share one length; lotus/timeline.rye (ALES2) — the Clip and its max_clip bound.
+# Stands on: lotus/stereo_transport.rye (ALES15) -- the read head and read_block reused whole (a scrub read is a seek-then-read off
+# that one head); lotus/stereo_meter.rye (ALES17) -- the StereoMeter reused whole for the level under the drag; lotus/pan.rye
+# (ALES10) -- the StereoClip whose two channels share one length; lotus/timeline.rye (ALES2) -- the Clip and its max_clip bound.
 #
 # lotus/scrub.rye gives a keeper the gesture they edit by most: a short, fixed-length window they slide by hand across a stereo
 # master. The crux: a scrub window read at position p returns EXACTLY the master's samples [p, p+n) in both channels, so dragging a
-# scrub of length L across the master in steps of L TILES it — the windows concatenate back to each channel byte-for-byte, the
+# scrub of length L across the master in steps of L TILES it -- the windows concatenate back to each channel byte-for-byte, the
 # last window honestly short and a window at the end empty. Composing ALES17, metering a scrub window equals metering that master
 # slice directly. The selftest proves: tiling at L of 1, 2, 3, 5; an arbitrary positioned read; meter_window equals a direct read;
 # nudge clamps at both edges; a rendered center pan scrubs 0.707 per side (700); scrubbing and metering mutate neither channel; the
-# edges refuse BadWindow / PastEnd / BadBlock by name. Purely local — no network, no keys, no funds, no real device, no meter.
+# edges refuse BadWindow / PastEnd / BadBlock by name. Purely local -- no network, no keys, no funds, no real device, no meter.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_scrub_witness.rish

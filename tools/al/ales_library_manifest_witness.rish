@@ -1,17 +1,17 @@
-# tools/al/ales_library_manifest_witness.rish — a keeper's whole catalog, content-addressed: a sealed `format lotus-library-v1` record
+# tools/al/ales_library_manifest_witness.rish -- a keeper's whole catalog, content-addressed: a sealed `format lotus-library-v1` record
 # listing each album by name and the Sha256 of its ALES224 album_manifest, one level up from the album manifest (ALES226).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES226.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES226.
 # Design read: active-designing/date/20260815/20260815-141539_fill-ales226-lotus-library-manifest.md
-# Idiom kin: lotus/album_manifest.rye (ALES224, the sealed content-address this mirrors one level up) · lotus/seal.rye (ALES38, the
-# verify-before-trust frame reused whole). Content-addressing composes upward — a library names each album by its manifest digest,
+# Idiom kin: lotus/album_manifest.rye (ALES224, the sealed content-address this mirrors one level up) - lotus/seal.rye (ALES38, the
+# verify-before-trust frame reused whole). Content-addressing composes upward -- a library names each album by its manifest digest,
 # not its bytes, so the record stays kilobytes no matter how large the catalog.
 #
 # lotus/library_manifest.rye seals a keeper's whole catalog. The selftest proves: seal then open recovers the count and every
 # (name, digest) in order and verify_library accepts the exact albums (the content-address law); a flipped album-manifest byte
 # refuses AlbumDigestMismatch, a swapped name AlbumNameMismatch, a dropped album CountMismatch (the tamper law); a tampered body
 # refuses DigestMismatch, a wrong header BadRecord (the seal law); a spaced name refuses NameTooLong, a malformed body
-# BadLibraryManifest (the grammar law); a too-small buffer refuses Overflow (the atomic law). Content-addressing, not a signature —
+# BadLibraryManifest (the grammar law); a too-small buffer refuses Overflow (the atomic law). Content-addressing, not a signature --
 # no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:

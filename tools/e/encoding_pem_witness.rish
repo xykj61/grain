@@ -1,11 +1,11 @@
-# tools/e/encoding_pem_witness.rish — PEM (RFC 7468) authored in pure Rye as a composition: the labelled armor a key, certificate, or signed
+# tools/e/encoding_pem_witness.rish -- PEM (RFC 7468) authored in pure Rye as a composition: the labelled armor a key, certificate, or signed
 # carry wears as text (a -----BEGIN LABEL----- line, the payload in standard Base64 wrapped at 64 characters a line, a -----END LABEL----- line),
-# proven against a reproducible RFC-4648-anchored known-answer with a round-trip and a second independent deframer (encoding · the serialization
-# sibling of Season G · Cryptography).
+# proven against a reproducible RFC-4648-anchored known-answer with a round-trip and a second independent deframer (encoding - the serialization
+# sibling of Season G - Cryptography).
 #
-# Season: encoding — the text-form sibling of the crypto library, beside base64.rye and base58check.rye. This rung authors NO new base
-# conversion: it composes one already-GREEN stone — the standard-Base64 rendering from encoding/base64.rye (RFC 4648, parity-GREEN against
-# std.base64) — and adds only the RFC 7468 label framing and the 64-character line wrap a real key or certificate carries, so a keeper reads
+# Season: encoding -- the text-form sibling of the crypto library, beside base64.rye and base58check.rye. This rung authors NO new base
+# conversion: it composes one already-GREEN stone -- the standard-Base64 rendering from encoding/base64.rye (RFC 4648, parity-GREEN against
+# std.base64) -- and adds only the RFC 7468 label framing and the 64-character line wrap a real key or certificate carries, so a keeper reads
 # what a block holds at a glance and a parser finds exactly the bytes between the markers.
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the -----BEGIN/END LABEL----- framing and the 64-character wrap are RFC 7468's own public convention; the composition is ours,
@@ -14,9 +14,9 @@
 # encoding/pem.rye writes -----BEGIN <label>----- , the Base64 body wrapped at 64 characters a line, and -----END <label>----- ; decode
 # locates the markers for the requested label, gathers the Base64 between them (skipping the wrap whitespace), and Base64-decodes it,
 # refusing BadLabel when the block does not claim the requested label. Parity is proven at selftest against the reproducible known-answer
-# ("foobar" under "GRAIN TEST" → -----BEGIN GRAIN TEST----- ‖ Zm9vYmFy ‖ -----END GRAIN TEST-----, since Zm9vYmFy is RFC 4648 §10's published
+# ("foobar" under "GRAIN TEST" -> -----BEGIN GRAIN TEST----- ‖ Zm9vYmFy ‖ -----END GRAIN TEST-----, since Zm9vYmFy is RFC 4648 §10's published
 # Base64 of "foobar"), a round-trip across payloads 0..96 bytes whose body lines never exceed 64 characters recovered by a second independent
-# deframer, and the guards: a wrong label refuses BadLabel, a bad character BadChar, a too-small destination DestTooSmall. Purely local — no
+# deframer, and the guards: a wrong label refuses BadLabel, a bad character BadChar, a too-small destination DestTooSmall. Purely local -- no
 # key, no network, no funds, no real device.
 #
 # Run from the repository root:

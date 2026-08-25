@@ -1,18 +1,18 @@
-# tools/h/hunk_part_filter_witness.rish — narrow the marketplace to the parts that match a query (HUNK75).
+# tools/h/hunk_part_filter_witness.rish -- narrow the marketplace to the parts that match a query (HUNK75).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK75.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK75.
 # Design read: active-designing/date/20260813/20260813-234337_hunk-part-filter-narrow-the-catalog-exploration.md
-# Teacher, thanked clean-room: McMaster-Carr's narrowing sidebar — a wall of parts becomes the seven you want
+# Teacher, thanked clean-room: McMaster-Carr's narrowing sidebar -- a wall of parts becomes the seven you want
 # (concept only, siloed).
 #
 # HUNK71 bound honest facts beside each window; HUNK73 painted the catalog as a shelf; HUNK74 let it page. This rung
 # lets a keeper NARROW the catalog: image/part_filter.rye `filter_catalog` reads a whole PartCatalog and a Query and
-# builds a fresh sub-catalog holding exactly the matching parts, in held order, over the same shared sheet — so the
+# builds a fresh sub-catalog holding exactly the matching parts, in held order, over the same shared sheet -- so the
 # result is an ordinary PartCatalog that paints, pages, and round-trips by every law already proven. The selftest
 # narrows five parts by material, by part-number prefix, by a price ceiling and floor; proves each result keeps
 # exactly the matches in held order, a match-all query reproduces the catalog byte-for-byte, a match-none query
 # yields a real empty catalog, a filter composes, and an over-long query text refuses by name. Price is a fact
-# compared, never moved — no network, no key, no funds.
+# compared, never moved -- no network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/h/hunk_part_filter_witness.rish
@@ -27,7 +27,7 @@ let bin = "image/bin/part_filter"
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_filter.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-filter: build failed — ${build.err}"
 
-# Write the selftest output to a file and grep the file — the GREEN line carries an apostrophe-free run, yet the
+# Write the selftest output to a file and grep the file -- the GREEN line carries an apostrophe-free run, yet the
 # file round-trip matches the sibling HUNK witnesses' discipline.
 let outfile = "image/bin/part_filter.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
@@ -39,7 +39,7 @@ say "hunk-part-filter: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-filter' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-filter: selftest did not print the GREEN part-filter line"
 
-# HUNK71 stays GREEN — the facts the filter reads (facts_at, entry, part_of, render_part_catalog, parse_part_catalog)
+# HUNK71 stays GREEN -- the facts the filter reads (facts_at, entry, part_of, render_part_catalog, parse_part_catalog)
 # are the ones part_catalog proved. A filtered catalog is only trustworthy because the catalog under it is.
 let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest > image/bin/part_catalog.out 2>&1"]
 assert cat.ok else "hunk-part-filter: HUNK71 part_catalog re-run failed — see image/bin/part_catalog.out"

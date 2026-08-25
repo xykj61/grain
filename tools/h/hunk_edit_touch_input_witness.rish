@@ -1,13 +1,13 @@
-# tools/h/hunk_edit_touch_input_witness.rish — the Photos app finger surface on metal (HUNK50).
+# tools/h/hunk_edit_touch_input_witness.rish -- the Photos app finger surface on metal (HUNK50).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK50.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK50.
 # Design read: active-designing/date/20260813/20260813-204548_hunk-edit-touch-input-exploration.md.
-# Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) — a tap on a tool
-# commits it, a swipe walks the undo/redo history — reduced to a classifier over raw touch coordinates (concept only,
+# Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) -- a tap on a tool
+# commits it, a swipe walks the undo/redo history -- reduced to a classifier over raw touch coordinates (concept only,
 # siloed).
 #
 # HUNK48 gave the edit arc its input seam (a raw gesture becomes one EditCursor move); HUNK49 bound that seam and the
-# preview to one cursor. Both speak gestures — this rung turns a *finger* into one, the exact parallel of HUNK46's
+# preview to one cursor. Both speak gestures -- this rung turns a *finger* into one, the exact parallel of HUNK46's
 # touch-scroll session: a tap on a bounded gesture strip commits that cell's verb, a swipe left is undo, a swipe right
 # is redo, classified from raw down/up coordinates. The selftest drives an EditCursor by finger events and proves a tap
 # commits exactly its strip verb byte-for-byte, a left swipe undoes and a right swipe redoes byte-for-byte, a tap off
@@ -30,7 +30,7 @@ assert build.ok else "hunk-edit-touch-input: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-touch-input: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-edit-touch-input: ${out}"

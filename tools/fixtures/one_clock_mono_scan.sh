@@ -1,9 +1,9 @@
 #!/bin/sh
-# one_clock_mono_scan.sh — false-future gate (monotonic true head).
+# one_clock_mono_scan.sh -- false-future gate (monotonic true head).
 #
 # true_head = max(living stamps not listed in the drift erratum).
 # Any living stamp greater than true_head must be on the erratum list
-# (the four UTC-window files). Unlisted false-futures → MONO_BAD.
+# (the four UTC-window files). Unlisted false-futures -> MONO_BAD.
 set -eu
 erratum=tools/fixtures/one_clock_drift_erratum.txt
 tmp=$(mktemp)
@@ -50,7 +50,7 @@ while IFS= read -r stamp; do
   fi
 done <"$tmp"
 
-# Erratum integrity: each listed stamp must still exist in the tree — as a living
+# Erratum integrity: each listed stamp must still exist in the tree -- as a living
 # file, or (accrete-never-break) as a folded log under session-logs/date/, since a
 # day's logs fold there by stamp and leave the top-level living glob unchanged in name.
 # The fold destination molted archive/ -> date/ on 20260821.161758 with the mark law; the

@@ -1,9 +1,9 @@
-# tools/g/gism_j6_provenance_chain_witness.rish — GISM Journey 6 (Provenance), Rung 3.
+# tools/g/gism_j6_provenance_chain_witness.rish -- GISM Journey 6 (Provenance), Rung 3.
 #
 # Season 2, Yield: custody is a verifiable chain, not a single stamp. This witness proves
 # a real tree document (a compile-time embed of a living waymark green-claim, symlinked)
 # is handed planet -> star -> galaxy, each transfer signed by the current holder, and the
-# whole chain re-verifies from cold against the settled constellation — resolving the head
+# whole chain re-verifies from cold against the settled constellation -- resolving the head
 # holder. Every tamper refuses: a non-holder transfer (NotHolder, nothing appended), a
 # forged link, a swapped artifact digest, and a wrong presented holder Deed (each
 # BadTransfer). Demo keeper seeds only; no custody crosses.
@@ -29,7 +29,7 @@ assert selftest.out contains "forged link refused on re-verification (BadTransfe
 assert selftest.out contains "swapped artifact digest refused (BadTransfer)" else "gism-j6r3: swapped-digest refusal missing"
 assert selftest.out contains "wrong presented holder refused (BadTransfer)" else "gism-j6r3: wrong-holder refusal missing"
 
-# The owner-signed catalog the chain composes over (BUHR-J7r4) must still be GREEN —
+# The owner-signed catalog the chain composes over (BUHR-J7r4) must still be GREEN --
 # provenance_chain reuses its digest/verify primitives, retiring nothing.
 let keyed_bin = "pond/bin/tablecloth-keyed"
 let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${keyed_bin} && ${keyed_bin} selftest 2>&1"]

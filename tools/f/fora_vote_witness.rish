@@ -1,16 +1,16 @@
-# tools/f/fora_vote_witness.rish — a vote goes only to an up-to-date log, the election restriction (FORA21).
+# tools/f/fora_vote_witness.rish -- a vote goes only to an up-to-date log, the election restriction (FORA21).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA21. Design read: active-designing/date/20260814/20260814-084300_fora21-constel-vote-election-restriction.md
 #
-# constel/vote.rye writes the safety rule FORA18 leaned on but had not proven — Raft's §5.4.1 election restriction: a voter
+# constel/vote.rye writes the safety rule FORA18 leaned on but had not proven -- Raft's §5.4.1 election restriction: a voter
 # grants its vote only if the candidate's log is at least as up-to-date as its own (a higher last term wins; at an equal term the
 # longer log wins). Without it, a candidate missing a committed entry could win and fork the ledger; with it, Leader Completeness
-# holds — any majority an incomplete candidate needs intersects the committed majority at a holder that refuses. The selftest
+# holds -- any majority an incomplete candidate needs intersects the committed majority at a holder that refuses. The selftest
 # proves: the up-to-date predicate is exact; a vote is granted to an up-to-date candidate and refused to a stale one; THE
 # ELECTION RESTRICTION keeps an incomplete candidate from winning (its grant count below the threshold, the intersecting holders
 # each refusing); a complete candidate still wins; the dominance is by the entry, not by luck; and the poll runs bounded. Purely
-# local — no socket, no network, no keys, no funds, no real address ever formed.
+# local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_vote_witness.rish

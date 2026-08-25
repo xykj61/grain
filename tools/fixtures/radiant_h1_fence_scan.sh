@@ -1,6 +1,6 @@
 #!/bin/sh
-# Radiant H1 fence scan — M4 home land.
-# Fence-aware ^#-space count. Control true=1 · naive=4 before any total.
+# Radiant H1 fence scan -- M4 home land.
+# Fence-aware ^#-space count. Control true=1 - naive=4 before any total.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/radiant_h1_fence_scan.sh

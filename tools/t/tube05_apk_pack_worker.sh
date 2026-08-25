@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# tube05_apk_pack_worker.sh — package the Glow NativeActivity APK.
+# tube05_apk_pack_worker.sh -- package the Glow NativeActivity APK.
 #
 # Host-side worker for TUBE0.5 packaging. Builds:
 #   1. AndroidManifest.xml via linengrow/tube_android_manifest_emit.rye
 #   2. libglowapp.so for aarch64 (Pixel) and x86_64 (HAWM0 emulator):
-#        rye build-lib -fsingle-threaded → static .a (Seva B0 fold)
-#        NDK clang -shared → real .so with DT_NEEDED libc
+#        rye build-lib -fsingle-threaded -> static .a (Seva B0 fold)
+#        NDK clang -shared -> real .so with DT_NEEDED libc
 #   3. an unsigned-then-debug-signed APK via aapt + apksigner
 #
 # Why this link path: Zig's plain -dynamic android .so has no DT_NEEDED and
@@ -79,7 +79,7 @@ build_android_so() {
     || die "${so_out} missing glow_last_product_session_root (STOA72 Glow import)"
   nm -D "$so_out" | grep -q 'glow_last_live_root_hex' \
     || die "${so_out} missing glow_last_live_root_hex (STOA270 live typed append)"
-  # Binary path check — prefer grep -a over strings (strings may be absent).
+  # Binary path check -- prefer grep -a over strings (strings may be absent).
   grep -aFq 'seva_live_root.txt' "$so_out" \
     || die "${so_out} missing seva_live_root.txt path (STOA270)"
   readelf -d "$so_out" | grep -q 'NEEDED.*libc.so' \

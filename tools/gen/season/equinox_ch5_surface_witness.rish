@@ -1,8 +1,8 @@
-# tools/gen/season/equinox_ch5_surface_witness.rish — chapter-five surface tool.
+# tools/gen/season/equinox_ch5_surface_witness.rish -- chapter-five surface tool.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_ch5_surface_witness.rish
 #
-# Sixteen limbs matching seats 65-80. Leaf witnesses only — no nested surfaces.
+# Sixteen limbs matching seats 65-80. Leaf witnesses only -- no nested surfaces.
 # Twin of equinox_ch7_surface_witness.rish (e109). Claims no almanac seat of its own.
 # Close-seat answer (e119): a surface witness runs over green limbs and lives as a tool.
 
@@ -101,7 +101,7 @@ assert scan.out contains "ch5_surface=ok" else "equinox-ch5-surface: want ch5_su
 assert scan.out contains "no_almanac_seat=honored" else "equinox-ch5-surface: want no almanac seat"
 assert scan.out contains "verdict=ok" else "equinox-ch5-surface: want verdict=ok"
 
-# Refuse — absent iron shelf
+# Refuse -- absent iron shelf
 let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep020_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-ch5-surface: absent iron must fail"

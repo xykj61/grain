@@ -1,13 +1,13 @@
-# tools/g/gism_j5_corpus_real_witness.rish — GISM Journey 5 (Real corpora), Rung 1.
+# tools/g/gism_j5_corpus_real_witness.rish -- GISM Journey 5 (Real corpora), Rung 1.
 #
 # Season 2, Yield: the reading voice stands on real data. This witness carries the
-# Lantern-contracted Scribble reading onto a real tree document — a compile-time
+# Lantern-contracted Scribble reading onto a real tree document -- a compile-time
 # embed of the living context/TAME_CORE.md (symlinked, so the bytes read are the
-# bytes a keeper reads) — and proves it runs GREEN over real bytes, where a demo
+# bytes a keeper reads) -- and proves it runs GREEN over real bytes, where a demo
 # literal never had to. It also proves Yield red %72 was real and its fix holds:
 # a real paragraph exceeds the old 512-byte block bound, yet parses under the
 # raised 2048-byte bound. The demo reading over pinned_doc (reading_query) is
-# re-run untouched — the refactor was additive.
+# re-run untouched -- the refactor was additive.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_j5_corpus_real_witness.rish
@@ -32,7 +32,7 @@ assert selftest.out contains "length budget — tokens 2 length" else "gism-j5r1
 assert selftest.out contains "model not allowed refused" else "gism-j5r1: allow-list gate missing"
 assert selftest.out contains "unknown op refused" else "gism-j5r1: unknown-op refusal missing (would be a fake answer)"
 
-# The demo reading over pinned_doc must still be GREEN — the answer_over refactor is additive.
+# The demo reading over pinned_doc must still be GREEN -- the answer_over refactor is additive.
 let demo_bin = "pond/bin/reading-query"
 let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r1: reading_query (demo) rebuild failed after refactor"

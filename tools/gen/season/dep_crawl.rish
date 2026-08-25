@@ -1,4 +1,4 @@
-# tools/gen/season/dep_crawl.rish — bounded dependency closure, root to leaves.
+# tools/gen/season/dep_crawl.rish -- bounded dependency closure, root to leaves.
 #
 #   rishi/bin/rishi run tools/gen/season/dep_crawl.rish <root.rye|root.rish>
 #
@@ -7,8 +7,8 @@
 # never auto-walk past the stated bounds.
 #
 # Bounds, named before the machine runs:
-#   dep_crawl_max_nodes 256   — the closure may not exceed this many files
-#   dep_crawl_max_depth 16    — one journey deep; deeper wants a word
+#   dep_crawl_max_nodes 256   -- the closure may not exceed this many files
+#   dep_crawl_max_depth 16    -- one journey deep; deeper wants a word
 # A crawl that would exceed either bound stops RED and says which bound bit.
 
 say "dep-crawl: Language EN — bounded dependency closure."
@@ -21,7 +21,7 @@ let root = args[0]
 let have = run ["test" "-f" root]
 assert have.ok else "dep-crawl: root file absent"
 
-# Bounded BFS in a POSIX seam — Rishi holds the asserts, the scan holds the
+# Bounded BFS in a POSIX seam -- Rishi holds the asserts, the scan holds the
 # shell variables. Rishi reads every $name in a string as interpolation, so a
 # shell body cannot live inline; tools/fixtures/*_scan.sh is the seated shape.
 let crawl = run ["sh" "tools/fixtures/dep_crawl_scan.sh" root]

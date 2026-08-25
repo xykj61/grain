@@ -1,21 +1,21 @@
-# tools/m/mycelium_braid_witness.rish — the Braid: a linked chain committed whole or reversed whole (r1).
+# tools/m/mycelium_braid_witness.rish -- the Braid: a linked chain committed whole or reversed whole (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the linked-chain verdict · rung r1 — the crux.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the linked-chain verdict - rung r1 -- the crux.
 # Every Mycelium ledger before this settles the fate of ONE transfer (the Purse a per-account double-spend,
 # the Pledge a single transfer across two phases). The Braid settles a CHAIN of linked transfers as one atom:
-# a payment that routes through a hop, a swap, a three-book settlement — every step lands TOGETHER or not at
+# a payment that routes through a hop, a swap, a three-book settlement -- every step lands TOGETHER or not at
 # all, so no observer ever sees the chain half-applied. That all-or-nothing across several linked moves is
 # TigerBeetle's linked events, read here as the agreed order's own law.
 #
 # The crux this witness proves is ATOMICITY across a chain: a three-link braid routes coins
-# Alice->Bob->Carol->Dave, and when the FINAL step overdraws, the whole braid reverses — not one coin moves,
+# Alice->Bob->Carol->Dave, and when the FINAL step overdraws, the whole braid reverses -- not one coin moves,
 # not even the earlier links that afford on their own. Because the Cord's order is deterministic regardless of
 # arrival, every honest node names the identical commit-or-reject verdict (proven by swapping the two
 # independent genesis roots, a valid arrival permutation, to one identical ledger). Conservation is unwidened:
 # a committed braid moves coins between accounts, a rejected braid moves nothing, so the balances always sum to
 # exactly what genesis issued. A chain whose final link never arrives stays pending; an out-of-sequence link, a
 # malformed body, a star reservation, and a broken signature each refuse whole. Composes cord + fold + kumara
-# public API only; every buffer bounded; demo keeper seeds — no key, no funds, no network, no custody.
+# public API only; every buffer bounded; demo keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
 #
@@ -42,7 +42,7 @@ assert selftest.out contains "stays pending" else "mycelium-braid: open-chain-st
 assert selftest.out contains "refuse whole" else "mycelium-braid: refusal claim missing"
 
 # The Cord whose agreed order the Braid reads, and the Mycelium fold whose signed-fact model and additive
-# verify_fact it reuses, both stand at the door — their own selftests prove the machinery the verdict rests on.
+# verify_fact it reuses, both stand at the door -- their own selftests prove the machinery the verdict rests on.
 let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-braid: the Cord the Braid reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-braid: the Cord did not speak its GREEN"

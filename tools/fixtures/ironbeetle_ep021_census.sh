@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census IronBeetle ep021 own-voice lesson — presence only; never copies into rye/.
+# Census IronBeetle ep021 own-voice lesson -- presence only; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/ironbeetle}"
 EP021_NAME=20260712-092212_ironbeetle-ep021-a-queue-with-no-memory-of-its-own.md

@@ -1,16 +1,16 @@
-# tools/al/ales_stereo_pad_tail_witness.rish — stereo_pad_tail: the padded top-and-tail carried into stereo — trim the leading and trailing joint silence like ALES150, yet keep a chosen margin of joint silence at each end, on both channels in lockstep (ALES151).
+# tools/al/ales_stereo_pad_tail_witness.rish -- stereo_pad_tail: the padded top-and-tail carried into stereo -- trim the leading and trailing joint silence like ALES150, yet keep a chosen margin of joint silence at each end, on both channels in lockstep (ALES151).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES151.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES151.
 # Design read: active-designing/date/20260815/20260815-054529_fill-ales151-lotus-stereo-pad-tail.md
-# Stands on: lotus/stereo_top_tail.rye (ALES150 — the flush stereo top-and-tail, the pad-zero twin, imported by the selftest and its StereoTopTailError reused whole), lotus/stereo_segment.rye (ALES147 — the stereo segmenter, run
-# once over one shared frame grid), lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and
-# its cut), lotus/voiced.rye (ALES94 — the .silent verdict this intersects). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment
+# Stands on: lotus/stereo_top_tail.rye (ALES150 -- the flush stereo top-and-tail, the pad-zero twin, imported by the selftest and its StereoTopTailError reused whole), lotus/stereo_segment.rye (ALES147 -- the stereo segmenter, run
+# once over one shared frame grid), lotus/segment.rye (ALES95 -- the mono segmenter and max_segments, through ALES147), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip and
+# its cut), lotus/voiced.rye (ALES94 -- the .silent verdict this intersects). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment
 # independently, so padding each channel by its own silence would give the two speakers different margins and lengths and tear the stereo image apart.
 #
-# lotus/stereo_pad_tail.rye keeps ONE margin for both channels — the leading and trailing JOINT silence (a run of frames silent in both channels): segment both channels through ALES147, find the first and last frame not
+# lotus/stereo_pad_tail.rye keeps ONE margin for both channels -- the leading and trailing JOINT silence (a run of frames silent in both channels): segment both channels through ALES147, find the first and last frame not
 # jointly-silent (the content bracket, the union of the two speakers' outer content, exactly ALES150's), keep min(pad, available) of the leading and trailing joint silence and cut only the excess from both channels (trailing
 # first, so the leading index stays valid). The flush stereo trim is exactly pad = 0; every interior pause and the kept margin stay untouched on both channels. It validates the shared frame length, band, span, and floor once
-# through ALES147's own up-front checks before any cut, so a refusal never trims one channel and leaves the other; StereoTopTailError (StereoSegmentError and EditError) reused whole. The crux is two laws — the pad-zero law
+# through ALES147's own up-front checks before any cut, so a refusal never trims one channel and leaves the other; StereoTopTailError (StereoSegmentError and EditError) reused whole. The crux is two laws -- the pad-zero law
 # (stereo_top_and_tail_pad(pad=0) equals ALES150's flush stereo_top_and_tail byte for byte on both channels) and the margin law (the kept margin at each end is exactly min(pad, available), the result equal to the original over
 # the padded span per channel, both channels balanced, monotone in pad, a pad past both ends leaving the master unchanged).
 #

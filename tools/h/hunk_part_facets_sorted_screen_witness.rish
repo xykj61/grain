@@ -1,6 +1,6 @@
-# tools/h/hunk_part_facets_sorted_screen_witness.rish — the sorted screen, a header names the sort above the parts (HUNK90).
+# tools/h/hunk_part_facets_sorted_screen_witness.rish -- the sorted screen, a header names the sort above the parts (HUNK90).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK90.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK90.
 # Design read: active-designing/date/20260814/20260814-012818_hunk-part-facets-sorted-screen-exploration.md
 # Teacher, thanked clean-room: a search box that says *sorted by price* above the parts it ordered (concept only, siloed).
 #
@@ -26,7 +26,7 @@ let bin = "brushstroke/bin/part_facets_sorted_screen"
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sorted_screen.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-sorted-screen: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "brushstroke/bin/part_facets_sorted_screen.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-sorted-screen: selftest exited non-zero — see ${outfile}"
@@ -37,13 +37,13 @@ say "hunk-part-facets-sorted-screen: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sorted-screen' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-sorted-screen: selftest did not print the GREEN part-facets-sorted-screen line"
 
-# HUNK89 stays GREEN — the sorted shelf this rung crowns.
+# HUNK89 stays GREEN -- the sorted shelf this rung crowns.
 let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort.rye -femit-bin=brushstroke/bin/part_facets_sort && brushstroke/bin/part_facets_sort selftest > brushstroke/bin/part_facets_sort.out 2>&1"]
 assert s.ok else "hunk-part-facets-sorted-screen: HUNK89 part_facets_sort re-run failed — see brushstroke/bin/part_facets_sort.out"
 let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort' brushstroke/bin/part_facets_sort.out && echo yes"]
 assert (trim s_green.out) == "yes" else "hunk-part-facets-sorted-screen: HUNK89 part_facets_sort did not stay GREEN"
 
-# HUNK88 stays GREEN — the paged header this rung appends a sort note to.
+# HUNK88 stays GREEN -- the paged header this rung appends a sort note to.
 let p = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_paged.rye -femit-bin=brushstroke/bin/part_facets_paged && brushstroke/bin/part_facets_paged selftest > brushstroke/bin/part_facets_paged.out 2>&1"]
 assert p.ok else "hunk-part-facets-sorted-screen: HUNK88 part_facets_paged re-run failed — see brushstroke/bin/part_facets_paged.out"
 let p_green = run ["sh" "-c" "grep -q 'GREEN part-facets-paged' brushstroke/bin/part_facets_paged.out && echo yes"]

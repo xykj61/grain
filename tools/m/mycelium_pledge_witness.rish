@@ -1,19 +1,19 @@
-# tools/m/mycelium_pledge_witness.rish — the Pledge: a two-phase transfer decided by the order (r1).
+# tools/m/mycelium_pledge_witness.rish -- the Pledge: a two-phase transfer decided by the order (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer verdict · rung r1 — the crux.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the two-phase transfer verdict - rung r1 -- the crux.
 # Every Mycelium ledger before this settled a transfer in ONE committed fact. The Pledge settles across TWO:
 # coins are reserved now (a pledge), and THEN either honored (a post) or released (a void), so a real trade
-# either wholly commits or wholly reverses — TigerBeetle's two-phase transfer, read as the agreed order's law.
+# either wholly commits or wholly reverses -- TigerBeetle's two-phase transfer, read as the agreed order's law.
 #
 # The crux this witness proves is EQUIVOCATION: a holder signs BOTH a post and a void for one pledge at the
 # same round. No arrival may leave the pledge both honored and released, and no two honest nodes may disagree
 # on which won. The Cord's total order is deterministic regardless of arrival, so the FIRST resolution the order
-# places decides and the second is a lawful no-op — the same verdict for every honest hand. Conservation is the
+# places decides and the second is a lawful no-op -- the same verdict for every honest hand. Conservation is the
 # Purse's law widened by one column: at every step the sum of spendable BALANCES plus RESERVED holdings equals
 # exactly what genesis issued (a pledge moves coins balance->reserved, a post reserved->recipient, a void
 # reserved->balance). A pledge past current balance yet once affordable is a lawful no-op; a post/void of an
 # unknown or wrong-signed or amount-mismatched pledge, a reused id, a star reservation, and a malformed body each
-# refuse whole. Composes cord + fold + kumara public API only; every buffer bounded; demo keeper seeds — no key,
+# refuse whole. Composes cord + fold + kumara public API only; every buffer bounded; demo keeper seeds -- no key,
 # no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
@@ -40,7 +40,7 @@ assert selftest.out contains "conservation of balance + reserved" else "mycelium
 assert selftest.out contains "refuse whole" else "mycelium-pledge: refusal claim missing"
 
 # The Cord whose agreed order the Pledge reads, and the Mycelium fold whose signed-fact model and additive
-# verify_fact it reuses, both stand at the door — their own selftests prove the machinery the verdict rests on.
+# verify_fact it reuses, both stand at the door -- their own selftests prove the machinery the verdict rests on.
 let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-pledge: the Cord the Pledge reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-pledge: the Cord did not speak its GREEN"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e105 — window carry across revisions + M3/M4 home land.
+# Equinox e105 -- window carry across revisions + M3/M4 home land.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #
@@ -31,7 +31,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- i9 fascia: hold kept · window carry · arc fall restored ---
+# --- i9 fascia: hold kept - window carry - arc fall restored ---
 FASCIA_OUT=$(sh "$FASCIA_SH" measure)
 echo "$FASCIA_OUT"
 echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
@@ -139,7 +139,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "home_fork=honored"
 echo "home_fork_status=not_consumed"
 
-# --- almanac seats 97-108 · ch7 at least 12/16 (elder floor; later seats may grow) ---
+# --- almanac seats 97-108 - ch7 at least 12/16 (elder floor; later seats may grow) ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*|*"Chapter Seven (10 of 16)"*|*"Chapter Seven (11 of 16)"*)

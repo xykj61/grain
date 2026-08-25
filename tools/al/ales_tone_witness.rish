@@ -1,16 +1,16 @@
-# tools/al/ales_tone_witness.rish — a tone control: a one-pole filter that shapes a clip's brightness (ALES40).
+# tools/al/ales_tone_witness.rish -- a tone control: a one-pole filter that shapes a clip's brightness (ALES40).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES40.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES40.
 # Design read: active-designing/date/20260814/20260814-160501_fill-ales40-lotus-tone-control.md
-# Stands on: lotus/timeline.rye (ALES2) — the Clip it filters and the saturation it reuses (timeline.saturate).
+# Stands on: lotus/timeline.rye (ALES2) -- the Clip it filters and the saturation it reuses (timeline.saturate).
 #
 # lotus/tone.rye opens the first frequency-shaping gesture: a one-pole low-pass that softens a harsh take (rolls off treble)
 # and its exact high-pass complement that thins a boomy one (cuts bass). The selftest proves: silence stays silence; the
 # identity coefficient (num = den) passes the low-pass through and high-passes to silence; a constant input low-passes
-# MONOTONICALLY toward the input, never exceeding it, and settles to it EXACTLY (the crux — direct current reached, not merely
+# MONOTONICALLY toward the input, never exceeding it, and settles to it EXACTLY (the crux -- direct current reached, not merely
 # approached); the high-pass reconstructs (low_pass + high_pass = x) and removes direct current; a transient SATURATES rather
 # than wraps; a zero/negative/oversize coefficient refuses BadCoeff; an out-of-range span refuses BadRange leaving the clip
-# untouched. Purely local — no network, no keys, no funds, no real device, no real sample rate.
+# untouched. Purely local -- no network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_tone_witness.rish

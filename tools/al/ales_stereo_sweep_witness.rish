@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_sweep_witness.rish — stereo_sweep: the filter sweep (a moving low-pass) carried into stereo, the same schedule on both channels — the sixth rung of the stereo EQ / filter class (ALES175).
+# tools/al/ales_stereo_sweep_witness.rish -- stereo_sweep: the filter sweep (a moving low-pass) carried into stereo, the same schedule on both channels -- the sixth rung of the stereo EQ / filter class (ALES175).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES175.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES175.
 # Design read: active-designing/date/20260815/20260815-081412_fill-ales175-lotus-stereo-sweep.md
-# Stands on: lotus/sweep.rye (ALES44 — the mono filter sweep run once per channel, its SweepError reused whole and its check_sweep reused for the up-front atomic validation), lotus/tone.rye (ALES40/ALES43 — the fixed and
-# carried-state low-pass the sweep interpolates between, the degenerate-law equality target), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/sweep.rye (ALES44 -- the mono filter sweep run once per channel, its SweepError reused whole and its check_sweep reused for the up-front atomic validation), lotus/tone.rye (ALES40/ALES43 -- the fixed and
+# carried-state low-pass the sweep interpolates between, the degenerate-law equality target), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip).
 #
-# lotus/stereo_sweep.rye moves a low-pass's cutoff across a stereo master: it runs ALES44's proven mono sweep_low_pass on BOTH channels with the SAME schedule — num_from to num_to over den, in blocks blocks — so the moving
+# lotus/stereo_sweep.rye moves a low-pass's cutoff across a stereo master: it runs ALES44's proven mono sweep_low_pass on BOTH channels with the SAME schedule -- num_from to num_to over den, in blocks blocks -- so the moving
 # brightness opens on both speakers together. Each channel opens its OWN i64 filter state and threads it across its OWN blocks, so the two channels never share a filter memory; the shared schedule preserves the stereo image for
 # free, since a sweep's endpoints and block count are values the caller names rather than scalars measured across the field. A degenerate schedule (num_from == num_to) equals ALES40's fixed low_pass on both channels byte for byte
 # (the carried state makes the block partition invisible per channel); a settled constant sweeps to itself on both. It validates the two endpoints, the span, and the block count once against the shared length before either channel

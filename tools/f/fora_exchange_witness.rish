@@ -1,16 +1,16 @@
-# tools/f/fora_exchange_witness.rish — two fake piers reach a COMPLETE Session communicating only through frames (FORA4).
+# tools/f/fora_exchange_witness.rish -- two fake piers reach a COMPLETE Session communicating only through frames (FORA4).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA4.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA4.
 # Design read: active-designing/date/20260814/20260814-044312_fora4-constel-exchange-over-frames.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the naming law's border in wire.rye guards every crossing: a tampered
+# Law kin: .claude/rules/placeholder-ship-names.md -- the naming law's border in wire.rye guards every crossing: a tampered
 # greeting frame with a fixed-up digest still refuses VowelPresent at the responder, so a real-@p-shaped party can never
 # enter the exchange even over the wire.
 #
-# constel/exchange.rye carries FORA2's three handshake steps end to end across FORA3's frames — the real pier boundary,
+# constel/exchange.rye carries FORA2's three handshake steps end to end across FORA3's frames -- the real pier boundary,
 # where the initiator never holds the responder's Ack value and the responder never holds the initiator's Greeting value;
 # only frames cross. The selftest proves: a clean exchange completes across three frames; both sides read back the same
 # sealed session; a mismatched sky refuses ConstellationMismatch; a non-member refuses NotAMember; a self-greet refuses
-# SameParty; and a tampered greeting frame refuses VowelPresent at the border. Purely local — no socket, no network, no keys.
+# SameParty; and a tampered greeting frame refuses VowelPresent at the border. Purely local -- no socket, no network, no keys.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_exchange_witness.rish

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e141 — commence Amphora CLI wave Q1 · relay APPLY 1-5 · seat 128 held.
+# Equinox e141 -- commence Amphora CLI wave Q1 - relay APPLY 1-5 - seat 128 held.
 # Exit 0 when charter/bow/REDS50/wave mode/census land and gates hold.
 # No backtick characters.
 #
@@ -54,7 +54,7 @@ for p in "$COUNSEL" "$BOW" "$SEND" "$LEXICON" "$MAP" "$ITINERARY" \
 done
 echo "instruments_tracked=honored"
 
-# APPLY 1 — REDS 50
+# APPLY 1 -- REDS 50
 rg -q '^\| 50 \|' "$REDS" || {
   echo "reds=failed"
   echo "detail=want_row_50"
@@ -71,7 +71,7 @@ echo "reds=honored"
 echo "reds_note=row_50_timing_figure_is_a_pin"
 echo "apply1=honored"
 
-# APPLY 2 — bench raise
+# APPLY 2 -- bench raise
 rg -qi 'mkdir -p rishi/bin' "$BENCH" || {
   echo "bench=failed"
   echo "detail=want_mkdir_rishi_bin"
@@ -87,7 +87,7 @@ rg -qi 'ripgrep' "$BENCH" || {
 echo "bench=honored"
 echo "apply2=honored"
 
-# APPLY 3 — amphora census 10 tracked · 9 rye
+# APPLY 3 -- amphora census 10 tracked - 9 rye
 CELLAR_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
 RYE_N=$(git ls-files 'amphora/*.rye' | wc -l | tr -d ' ')
 test "$CELLAR_N" = "10" || {
@@ -113,7 +113,7 @@ echo "amphora_tracked=10"
 echo "amphora_rye=9"
 echo "apply3=honored"
 
-# APPLY 4 — charter · name HELD · N=64 · commence
+# APPLY 4 -- charter - name HELD - N=64 - commence
 rg -q '\*\*64\*\*' "$COUNSEL" || {
   echo "charter=failed"
   echo "detail=want_n_64"
@@ -144,7 +144,7 @@ echo "name=held"
 echo "n=64"
 echo "apply4=honored"
 
-# APPLY 5 — wave mode · no hardcoded e129 in new rehearsal paths
+# APPLY 5 -- wave mode - no hardcoded e129 in new rehearsal paths
 rg -Fq 'wave)' "$SEND" || {
   echo "bundle=failed"
   echo "detail=want_wave_mode"

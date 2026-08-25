@@ -1,16 +1,16 @@
-# tools/m/mycelium_warrant_knot_witness.rish — a succession chain survives a checkpoint (r3).
+# tools/m/mycelium_warrant_knot_witness.rish -- a succession chain survives a checkpoint (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r3 — across a Knot.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Warrant - rung r3 -- across a Knot.
 # r1 bound one succession to a quorum of the outgoing roll; r2 let one handoff travel. A network that runs
-# for years rotates its validators again and again — a chain of handoffs, each roll authorized by the
-# previous roll's own quorum — and a party who joins late holds only a CHECKPOINT roll everyone already
+# for years rotates its validators again and again -- a chain of handoffs, each roll authorized by the
+# previous roll's own quorum -- and a party who joins late holds only a CHECKPOINT roll everyone already
 # trusts, the pre-checkpoint handoffs pruned. The crux this witness proves is A SUCCESSION CHAIN SURVIVES A
-# CHECKPOINT: verify_chain walks from a trusted anchor, each Warrant verifying against (the current roll ·
+# CHECKPOINT: verify_chain walks from a trusted anchor, each Warrant verifying against (the current roll -
 # its successor) with strictly increasing epochs, and a party holding only a later checkpoint roll reaches
 # the SAME head (today's validators) as one who walked from genesis. A broken link refuses the whole chain
-# on the Warrant's own terms — a self-crowning roll NotMember, a thin handoff BelowQuorum, a re-pointed link
+# on the Warrant's own terms -- a self-crowning roll NotMember, a thin handoff BelowQuorum, a re-pointed link
 # DigestMismatch, a spliced older handoff StaleEpoch. Composes warrant + muster public API only; demo seeds
-# — no key, no funds, no network, no custody.
+# -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 #
@@ -34,16 +34,16 @@ assert selftest.out contains "a party holding only a later checkpoint roll (the 
 assert selftest.out contains "trust chains forward across epochs without carrying the whole past" else "mycelium-warrant-knot: closing claim missing"
 assert selftest.out contains "Validator-set rotation reads continuous across a checkpoint" else "mycelium-warrant-knot: closing headline missing"
 
-# The broken-link ledger a keeper reads — each refusal on the Warrant's own terms.
+# The broken-link ledger a keeper reads -- each refusal on the Warrant's own terms.
 assert selftest.out contains "a self-crowning roll refuses NotMember" else "mycelium-warrant-knot: self-crowning refusal missing"
 assert selftest.out contains "a thin handoff BelowQuorum" else "mycelium-warrant-knot: thin-handoff refusal missing"
 assert selftest.out contains "a re-pointed link DigestMismatch" else "mycelium-warrant-knot: re-pointed refusal missing"
 assert selftest.out contains "a spliced older handoff StaleEpoch" else "mycelium-warrant-knot: stale-epoch refusal missing"
 
-# The head roll a keeper stands on today — four validators, Byzantine threshold three.
+# The head roll a keeper stands on today -- four validators, Byzantine threshold three.
 assert selftest.out contains "muster validators=4 byzantine_threshold=3" else "mycelium-warrant-knot: rendered head roll (n=4 t=3) missing"
 
-# The Warrant each link is stands at the door — its r1 selftest proves the succession law each step rests on.
+# The Warrant each link is stands at the door -- its r1 selftest proves the succession law each step rests on.
 let warrant = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant.rye -femit-bin=mycelium/bin/warrant && mycelium/bin/warrant 2>&1"]
 assert warrant.ok else "mycelium-warrant-knot: the Warrant each link is is not GREEN"
 assert warrant.out contains "GREEN" else "mycelium-warrant-knot: the Warrant did not speak its GREEN"

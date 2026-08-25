@@ -1,11 +1,11 @@
-# tools/al/ales_replace_witness.rish — replace: the general span-edit — remove `count`, insert `src` — exactly ALES2's cut then splice composed, generalizing cut, splice, and ALES114's paste_over (ALES115).
+# tools/al/ales_replace_witness.rish -- replace: the general span-edit -- remove `count`, insert `src` -- exactly ALES2's cut then splice composed, generalizing cut, splice, and ALES114's paste_over (ALES115).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES115.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES115.
 # Design read: active-designing/date/20260815/20260815-014021_fill-ales115-lotus-replace.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the cut and splice this rung composes, and the EditError reused whole), lotus/paste_over.rye (ALES114 — the
-# length-preserving overwrite this rung generalizes when src.len == count, imported to prove one corner of the generalization law), lotus/meter.rye (ALES13 — the peak/RMS meter).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, the cut and splice this rung composes, and the EditError reused whole), lotus/paste_over.rye (ALES114 -- the
+# length-preserving overwrite this rung generalizes when src.len == count, imported to prove one corner of the generalization law), lotus/meter.rye (ALES13 -- the peak/RMS meter).
 # ALES2's cut REMOVES a span and the clip shrinks; splice INSERTS and it grows; ALES114's paste_over writes ON TOP the same length. replace ties all three together: paste into a
-# selection — circle a span, drop different audio in its place, and the take changes length by however much longer or shorter the new audio is.
+# selection -- circle a span, drop different audio in its place, and the take changes length by however much longer or shorter the new audio is.
 #
 # lotus/replace.rye removes [at, at+count) and inserts src at at, checking ALL bounds before any write (BadRange when the removed span falls outside the samples, ClipFull when the
 # result would run past the buffer) then composing ALES2's cut then splice, each pre-validated to succeed so no refusal lands mid-edit. The crux is four laws. THE REPLACE LAW: the

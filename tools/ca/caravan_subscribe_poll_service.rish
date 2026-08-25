@@ -1,4 +1,4 @@
-# caravan_subscribe_poll_service.rish — production scheduling: Caravan supervises poll wire.
+# caravan_subscribe_poll_service.rish -- production scheduling: Caravan supervises poll wire.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ca/caravan_subscribe_poll_service.rish

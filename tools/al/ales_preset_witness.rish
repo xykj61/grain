@@ -1,18 +1,18 @@
-# tools/al/ales_preset_witness.rish — a keeper loads a named effect chain from a small catalog, and receives a chain already legal
+# tools/al/ales_preset_witness.rish -- a keeper loads a named effect chain from a small catalog, and receives a chain already legal
 # for their clip, verify-before-trust (ALES219).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES219.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES219.
 # Design read: active-designing/date/20260815/20260815-132711_fill-ales219-lotus-preset.md
-# Idiom kin: lotus/render.rye (ALES217, the Step and the render this catalog feeds) · lotus/stereo_render.rye (ALES218). This
-# rung seats the small catalog of named chains a keeper loads by name — the render family's other half, the keeper who does not
+# Idiom kin: lotus/render.rye (ALES217, the Step and the render this catalog feeds) - lotus/stereo_render.rye (ALES218). This
+# rung seats the small catalog of named chains a keeper loads by name -- the render family's other half, the keeper who does not
 # want to hand-assemble a chain of Step records.
 #
 # lotus/preset.rye maps a plain name to a Preset (from_name) and builds a chain already clamped to the clip (build), so render
 # never refuses a preset for BadRange whatever the length. The selftest proves: from_name round-trips every catalog name and
 # refuses a stranger (the name law); every preset builds a chain render accepts at three clip lengths (the legal-chain law); a
 # preset renders byte-for-byte to the same gestures by hand (the hand law); two presets render one clip to two files (the
-# distinct law); no preset exceeds max_preset_steps (the bound law). Only gain · fade · invert composed — no new acoustic fact.
-# A byte container only — no real file opened, no DAC, no network, no keys, no funds, no real device.
+# distinct law); no preset exceeds max_preset_steps (the bound law). Only gain - fade - invert composed -- no new acoustic fact.
+# A byte container only -- no real file opened, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_preset_witness.rish

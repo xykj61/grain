@@ -1,9 +1,9 @@
-# tools/gen/season/counsel_flow_negative_witness.rish — the Brix guard bites.
+# tools/gen/season/counsel_flow_negative_witness.rish -- the Brix guard bites.
 #
 #   rishi/bin/rishi run tools/gen/season/counsel_flow_negative_witness.rish
 #
-# Voice Season v5 · slot 5 · accretion_one_clock.
-# Fixture: context/fixtures/counsel_flow_unlawful/unlawful.brix — standing
+# Voice Season v5 - slot 5 - accretion_one_clock.
+# Fixture: context/fixtures/counsel_flow_unlawful/unlawful.brix -- standing
 # exempt; it holds a CamelCase key, a double space, a condition, and a field
 # without a value, so the guard's four faults are each observed on every run.
 

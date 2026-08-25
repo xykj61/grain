@@ -1,17 +1,17 @@
-# tools/cr/crypto_sha256_witness.rish — SHA-256 authored in pure Rye: Season G's 256-bit hash, the one the tree already content-addresses
-# with, proven against the FIPS 180-4 known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+# tools/cr/crypto_sha256_witness.rish -- SHA-256 authored in pure Rye: Season G's 256-bit hash, the one the tree already content-addresses
+# with, proven against the FIPS 180-4 known-answers and byte-for-byte against an independent implementation (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 # Kin: crypto/sha512.rye (the 64-bit sibling, GREEN), crypto/sha3.rye (the Keccak hash). Monocypher does not itself ship SHA-256, so
 # this hash is authored from FIPS 180-4 directly, our own arithmetic, clean-room (.claude/rules/gratitude-licenses.md).
 #
-# crypto/sha256.rye authors SHA-256 from the standard — the initial hash value, the sixty-four round constants, the Ch/Maj/Sigma
+# crypto/sha256.rye authors SHA-256 from the standard -- the initial hash value, the sixty-four round constants, the Ch/Maj/Sigma
 # functions, the sixty-four-round compression, FIPS 180-4 padding (0x80 marker, zeros, 64-bit big-endian bit length). The primitive
 # calls no std.crypto. Parity is proven at selftest against two references runnable now: the FIPS 180-4 known-answers for "abc" and the
 # empty message (hex for hex), and Zig's own std.crypto SHA-256 as an independent implementation, byte-for-byte over the empty message,
 # "abc", a 55-byte input, a 56-byte input (the edge that forces a second all-padding block), and a 300-byte multi-block input. An
-# over-long message refuses MessageTooLong before a byte is mixed. Purely local arithmetic — no key, no signature, no network, no funds,
+# over-long message refuses MessageTooLong before a byte is mixed. Purely local arithmetic -- no key, no signature, no network, no funds,
 # no real device.
 #
 # Run from the repository root:

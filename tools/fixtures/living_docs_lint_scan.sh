@@ -1,12 +1,12 @@
 #!/bin/sh
-# living_docs_lint_scan.sh — body for living_docs_lint_scan.rish (seven duties).
-# Missing Rishi verb: accumulate · filter chained · read bounded — harvest ledger (counsel 20260725.040247)
+# living_docs_lint_scan.sh -- body for living_docs_lint_scan.rish (seven duties).
+# Missing Rishi verb: accumulate - filter chained - read bounded -- harvest ledger (counsel 20260725.040247)
 #
 # Port of living_docs_lint_scan.py. Size and pattern duties lean on the run seam
-# (wc -c · grep -nE) rather than in-pipeline line maps — Rish's map-transform
+# (wc -c - grep -nE) rather than in-pipeline line maps -- Rish's map-transform
 # ceiling refuses files past 256 lines; roster living docs are larger.
 #
-# Always exits 0 — ratchet advisory.
+# Always exits 0 -- ratchet advisory.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -196,8 +196,8 @@ else
   echo "OK   duty5 docs pins — none outside canon (or absent)"
 fi
 
-# --- duty 6 (wc -c) — past bound + near-bound fold advisory ---
-# Near = 90% of living_pin_max_bytes. Remedy: fold closed season → seasons roster.
+# --- duty 6 (wc -c) -- past bound + near-bound fold advisory ---
+# Near = 90% of living_pin_max_bytes. Remedy: fold closed season -> seasons roster.
 LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))   # the general near line; a page
                                                             # with its own bound is near ITS 90%
 : >"$TMP/d6"
@@ -241,9 +241,9 @@ else
   echo "ADVISE duty7 tools/*.py count=${py_n} above target two: ${names}"
 fi
 
-# --- duty 8 — shell bodies (>40 lines) beneath .rish wrappers (harvest ratchet) ---
+# --- duty 8 -- shell bodies (>40 lines) beneath .rish wrappers (harvest ratchet) ---
 # Count .sh files invoked from tools/**/*.rish that themselves exceed 40 lines.
-# Genuine exemptions (bootstrap · external interpreters · interactive stdin) stay .sh by design
+# Genuine exemptions (bootstrap - external interpreters - interactive stdin) stay .sh by design
 # and are not wrapper bodies. Ratchet should only fall as Rishi earns the missing verbs.
 : >"$TMP/d8"
 SHELL_BODY_LINE_FLOOR=40

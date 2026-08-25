@@ -1,8 +1,8 @@
-# tools/h/hunk_crop_editor_witness.rish — the whole crop tool end to end, on metal (HUNK62).
+# tools/h/hunk_crop_editor_witness.rish -- the whole crop tool end to end, on metal (HUNK62).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK62.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK62.
 # Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the crop tool of a photo app (iCloud Photos / Google Photos) — a keeper drags a frame,
+# Teacher, thanked clean-room: the crop tool of a photo app (iCloud Photos / Google Photos) -- a keeper drags a frame,
 # sees it, commits it, chains another, or undoes (concept only, siloed).
 #
 # HUNK60 turned a drag into a .crop edit; HUNK61 outlined it on glass. This rung ties them to the non-destructive history
@@ -26,7 +26,7 @@ assert build.ok else "hunk-crop-editor: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-crop-editor: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-crop-editor: ${out}"

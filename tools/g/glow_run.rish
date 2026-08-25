@@ -1,4 +1,4 @@
-# glow_run.rish — Rishi hand around the Glow generator hop.
+# glow_run.rish -- Rishi hand around the Glow generator hop.
 #
 # Lower a .glow desk file to .rye, rye-build it, run the binary.
 # Glow owns the language hop; Rishi owns the shell orchestration.
@@ -6,7 +6,7 @@
 # Fixture (baked sample):
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/cast-u32.glow
 #
-# Generator (one sample from argv — G3 cast / STOA101–103 bartis / STOA114 barket):
+# Generator (one sample from argv -- G3 cast / STOA101-103 bartis / STOA114 barket):
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/sample-u32.glow 42
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-sample-u32.glow 7
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-double-u32.glow 7
@@ -16,13 +16,13 @@
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-xfer-tag.glow mint 5 3
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-pair-fields.glow 5 3
 #   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-nona-fields.glow 5 3 1 2 7 4 6 8 9
-#   ($: pair…nona — worker maps stem → N; STOA324)
+#   ($: pair...nona -- worker maps stem -> N; STOA324)
 
 let zig = "vendor/zig-toolchain/zig"
 assert (args.len != 0) else "usage: rishi run tools/g/glow_run.rish <file.glow> [<sample>] [<u32>]..."
 let glow_path = args[0]
 
-# Optional samples — worker enforces stem rules.
+# Optional samples -- worker enforces stem rules.
 # Rishi has no argv splat; bounded forwarder only. Sameness lives in the worker (STOA324).
 if args.len == 1 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" glow_path]
 if args.len == 2 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" glow_path args[1]]

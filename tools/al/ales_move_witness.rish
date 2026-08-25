@@ -1,13 +1,13 @@
-# tools/al/ales_move_witness.rish — move: relocate a span in place, the length unchanged, the relocate-twin of ALES112's duplicate (ALES113).
+# tools/al/ales_move_witness.rish -- move: relocate a span in place, the length unchanged, the relocate-twin of ALES112's duplicate (ALES113).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES113.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES113.
 # Design read: active-designing/date/20260815/20260815-012632_fill-ales113-lotus-move.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut + splice this rung composes), lotus/meter.rye (ALES13 — the
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, the EditError reused whole, and the cut + splice this rung composes), lotus/meter.rye (ALES13 -- the
 # peak/RMS meter, used only to prove that relocating existing samples never moves the peak). ALES112's duplicate COPIES a span (a second copy lands beside the first and the clip
-# GROWS); move CARRIES one span somewhere new (the span leaves its old spot and the clip's length HOLDS) — the drag gesture every editor ships (circle a bar, drag it, and it lifts
+# GROWS); move CARRIES one span somewhere new (the span leaves its old spot and the clip's length HOLDS) -- the drag gesture every editor ships (circle a bar, drag it, and it lifts
 # out of one place and lands at another: the verse pulled ahead of the chorus, the loop nudged whole to a new beat). Naming it beside duplicate completes the copy/relocate pair.
 #
-# lotus/move.rye copies the span into one bounded scratch buffer, then removes it in place through ALES2's cut and reinserts it at dest through ALES2's splice — the net length
+# lotus/move.rye copies the span into one bounded scratch buffer, then removes it in place through ALES2's cut and reinserts it at dest through ALES2's splice -- the net length
 # unchanged, no third primitive invented, refusing BadRange for a start past the samples, a count past the remainder, or a dest past len − count before any write. The crux is four
 # laws. THE MOVE LAW: the clip is the removed timeline with the span reinserted at dest. THE INVERSE LAW: move then move(dest, count, start) returns the original byte for byte.
 # THE PRESERVATION / PEAK LAW: move relocates existing samples and invents none, so the peak (re-measured through ALES13) is unchanged. THE DEGENERATE / REFUSAL LAW: count 0 the

@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_meter_witness.rish — the stereo meter during playback: two meters read both channels live (ALES17).
+# tools/al/ales_stereo_meter_witness.rish -- the stereo meter during playback: two meters read both channels live (ALES17).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES17.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES17.
 # Design read: active-designing/20260814-fill-ales17-lotus-stereo-meter.md
-# Stands on: lotus/meter.rye (ALES13) — the Meter, feed, peak, rms, and measure_stereo reused whole; lotus/stereo_transport.rye
-# (ALES15) — the stereo read blocks the two meters are fed, in lockstep off the one head; lotus/pan.rye (ALES10) — the
+# Stands on: lotus/meter.rye (ALES13) -- the Meter, feed, peak, rms, and measure_stereo reused whole; lotus/stereo_transport.rye
+# (ALES15) -- the stereo read blocks the two meters are fed, in lockstep off the one head; lotus/pan.rye (ALES10) -- the
 # StereoClip whose two channels share one length.
 #
-# lotus/stereo_meter.rye meters a stereo master DURING playback — a live stereo VU fed by the very blocks ALES15's stereo head
+# lotus/stereo_meter.rye meters a stereo master DURING playback -- a live stereo VU fed by the very blocks ALES15's stereo head
 # plays. The crux: two meters read both channels in lockstep off the one head, so block-invariance holds PER CHANNEL over the
-# stereo transport — metering block by block gives the identical per-channel peak/RMS as ALES13's whole-master measure_stereo.
+# stereo transport -- metering block by block gives the identical per-channel peak/RMS as ALES13's whole-master measure_stereo.
 # The selftest proves: a fresh meter reads silence in both channels; block-invariance per channel at 1-, 2-, and 7-sample
 # blocks; a loud left and quiet right report distinct levels; a rendered center pan meters 0.707 per side (700); metering
-# mutates neither channel; feed refuses MeterFull. Purely local — no network, no keys, no funds, no real device, no real meter.
+# mutates neither channel; feed refuses MeterFull. Purely local -- no network, no keys, no funds, no real device, no real meter.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_meter_witness.rish

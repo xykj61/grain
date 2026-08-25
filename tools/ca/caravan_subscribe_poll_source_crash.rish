@@ -1,4 +1,4 @@
-# caravan_subscribe_poll_source_crash.rish — source-loop dies mid-service → named halt.
+# caravan_subscribe_poll_source_crash.rish -- source-loop dies mid-service -> named halt.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ca/caravan_subscribe_poll_source_crash.rish

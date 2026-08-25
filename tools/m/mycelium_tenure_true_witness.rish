@@ -1,18 +1,18 @@
-# tools/m/mycelium_tenure_true_witness.rish — the Tenure reads a real contested fixture true (r4).
+# tools/m/mycelium_tenure_true_witness.rish -- the Tenure reads a real contested fixture true (r4).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the contested-name verdict · rung r4 — the arc closes.
-# r1 fixed the verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in code. This
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the contested-name verdict - rung r4 -- the arc closes.
+# r1 fixed the verdict, r2 let it travel, r3 read it across a Knot -- all over Dags seated in code. This
 # closing rung carries the reader onto a REAL on-disk Cord record carrying a genuine name-contest a keeper
 # can open and walk (tools/fixtures/tenure_dag.bron, produced reproducibly by mycelium/tenure_fixture_gen).
 #
-# The crux this witness proves — two tools, one answer: the app (mycelium/tenure_true) parses the record,
+# The crux this witness proves -- two tools, one answer: the app (mycelium/tenure_true) parses the record,
 # rebuilds the Dag under cord.add (re-verifying every signature), resolves it through the Tenure, and
 # reports the holder of the contested name "bandun", the held count, and the reservation count; an
 # independent awk reading of the same bytes (tools/fixtures/tenure_dag_truth.awk), applying the simplest
-# honest slice of the agreed order — earlier round wins — names the SAME winning signer, the same counts.
+# honest slice of the agreed order -- earlier round wins -- names the SAME winning signer, the same counts.
 # So the winner of a name can never drift from an order a keeper can walk by hand. The fixture is
 # reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses BadFormat.
-# Composes cord_bron + cord + tenure public API only; demo keeper seeds — no key/funds/network/custody.
+# Composes cord_bron + cord + tenure public API only; demo keeper seeds -- no key/funds/network/custody.
 #
 # Scope: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 #
@@ -35,7 +35,7 @@ assert selftest.out contains "GREEN" else "mycelium-tenure-true: selftest did no
 assert selftest.out contains "the winner of the contested name holds it" else "mycelium-tenure-true: winner claim missing"
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-tenure-true: tamper-refusal claim missing"
 
-# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-tenure-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/tenure_dag_truth.awk tools/fixtures/tenure_dag.bron"]
@@ -43,13 +43,13 @@ assert awk.ok else "mycelium-tenure-true: awk truth read failed"
 assert awk.out contains "d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737 2 3" else "mycelium-tenure-true: awk triple not the round-1 winner · held 2 · reservations 3"
 assert app.out == awk.out else "mycelium-tenure-true: app and awk disagree — the winner drifted from the bytes"
 
-# The fixture is genuinely what the Cord emits, not a hand-mock — the generator re-emits byte-identical bytes.
+# The fixture is genuinely what the Cord emits, not a hand-mock -- the generator re-emits byte-identical bytes.
 let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/tenure_fixture_gen.rye 2>/tmp/tenure_regen.bron >/dev/null && diff -q tools/fixtures/tenure_dag.bron /tmp/tenure_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-tenure-true: fixture is not reproducible — the generator drifted"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-tenure-true: fixture regeneration did not match"
 
 # The Tenure whose verdict this rung reads from real bytes, and the cord_bron reader that rebuilds the
-# real Dag, both stand at the door — their own selftests prove the machinery r4 rests on.
+# real Dag, both stand at the door -- their own selftests prove the machinery r4 rests on.
 let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
 assert tenure.ok else "mycelium-tenure-true: the Tenure r1 the reading resolves is not GREEN"
 assert tenure.out contains "GREEN" else "mycelium-tenure-true: the Tenure r1 did not speak its GREEN"

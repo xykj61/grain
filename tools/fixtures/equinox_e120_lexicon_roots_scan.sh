@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e120 — Lexicon roots: client surfaces category.
+# Equinox e120 -- Lexicon roots: client surfaces category.
 # Exit 0 only when control reads and roots limbs honor.
 # No backtick characters in patterns.
 #

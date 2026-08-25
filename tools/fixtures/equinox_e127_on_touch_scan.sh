@@ -1,13 +1,13 @@
 #!/bin/sh
-# Equinox e127 — shell ratchet on-touch, never a campaign.
+# Equinox e127 -- shell ratchet on-touch, never a campaign.
 # Exit 0 only when Lexicon carries the correction and hard lines hold.
 # No backtick characters. No git history walks.
 #
 #   sh tools/fixtures/equinox_e127_on_touch_scan.sh
 #   sh tools/fixtures/equinox_e127_on_touch_scan.sh prove-red
 #
-# Law: foundations first — sh is where work correctly begins.
-# Law: shell ratchet on-touch — never a rish-first campaign.
+# Law: foundations first -- sh is where work correctly begins.
+# Law: shell ratchet on-touch -- never a rish-first campaign.
 # Law: kg / best path name leans; they do not circle shred yes.
 set -eu
 
@@ -147,7 +147,7 @@ echo "almanac=honored"
 echo "seats_through=127"
 echo "no_content_seat_claimed=honored"
 
-# shred still RED — this sitting does not cut
+# shred still RED -- this sitting does not cut
 rg -qi 'shred.*RED|shred \*\*RED\*\*|circled shred yes' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"

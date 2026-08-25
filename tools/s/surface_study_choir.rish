@@ -1,4 +1,4 @@
-# tools/s/surface_study_choir.rish — accrete shim → tools/gen/season/surface_study_choir.rish (Surface p7)
+# tools/s/surface_study_choir.rish -- accrete shim -> tools/gen/season/surface_study_choir.rish (Surface p7)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/surface_study_choir.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/surface_study_choir.rish" args[0]]
 if r.out != "" then say r.out

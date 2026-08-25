@@ -1,21 +1,21 @@
-# tools/cr/crypto_pbkdf2_sha256_witness.rish — PBKDF2-HMAC-SHA-256 authored in pure Rye: Season G's iteration-hard password KDF, the
+# tools/cr/crypto_pbkdf2_sha256_witness.rish -- PBKDF2-HMAC-SHA-256 authored in pure Rye: Season G's iteration-hard password KDF, the
 # password stretch WPA2/WPA3, LUKS, and 1Password actually run, proven against RFC 7914 Section 11's OWN published PBKDF2-HMAC-SHA-256
-# known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+# known-answers and byte-for-byte against an independent implementation (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-# Kin: crypto/hmac_sha256.rye (the keyed hash beneath it, GREEN) · crypto/sha256.rye (the hash beneath that) · crypto/hkdf_sha256.rye
-# (a sibling composing the same HMAC) · crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). Monocypher
-# (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own Rye, studied clean-room from the
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+# Kin: crypto/hmac_sha256.rye (the keyed hash beneath it, GREEN) - crypto/sha256.rye (the hash beneath that) - crypto/hkdf_sha256.rye
+# (a sibling composing the same HMAC) - crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). Monocypher
+# (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line -- our own Rye, studied clean-room from the
 # public standards (.claude/rules/gratitude-licenses.md).
 #
-# crypto/pbkdf2_sha256.rye composes the GREEN crypto/hmac_sha256.rye through RFC 8018 §5.2 — each block T(i) = U(1) XOR … XOR U(c) with
-# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of blocks truncated to length — authoring no new
+# crypto/pbkdf2_sha256.rye composes the GREEN crypto/hmac_sha256.rye through RFC 8018 §5.2 -- each block T(i) = U(1) XOR ... XOR U(c) with
+# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of blocks truncated to length -- authoring no new
 # cryptography. The primitive calls no std.crypto. Parity is proven at selftest against three references runnable now: RFC 7914 Section 11
 # published PBKDF2-HMAC-SHA-256 vectors (c = 1 and the full c = 80000 depth, 64-byte keys) hex for hex; Zig's own std.crypto.pwhash.pbkdf2
 # with HmacSha256 byte-for-byte across single-iteration, high-count, multi-block, and partial-tail shapes; AND the RFC-4231-anchored HMAC
 # beneath it (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). An over-long password, salt, or request, a zero count, and
-# an over-large count each refuse a named error before a byte is mixed. Purely local — TEST inputs, no real identity key, no network, no
+# an over-large count each refuse a named error before a byte is mixed. Purely local -- TEST inputs, no real identity key, no network, no
 # funds, no real device.
 #
 # Run from the repository root:

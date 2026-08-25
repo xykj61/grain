@@ -1,13 +1,13 @@
-# tools/gen/season/vols_survey_bron_witness.rish — CION VOLS Journey 13 r3, the ledger travels.
+# tools/gen/season/vols_survey_bron_witness.rish -- CION VOLS Journey 13 r3, the ledger travels.
 #
 #   rishi/bin/rishi run tools/gen/season/vols_survey_bron_witness.rish
 #
 # r1 made the census complete; r2 classified each site. r3 makes the survey a DURABLE
-# ARTIFACT — a `format cion-survey-v1` Bron ledger the molt (LOWE) reads, rather than a
+# ARTIFACT -- a `format cion-survey-v1` Bron ledger the molt (LOWE) reads, rather than a
 # console print that scrolls away. vols_survey_render.sh renders the classified census to
 # the record; vols_survey_parse.sh reads it back into its totals. The round-trip is
 # proven three ways: the parsed totals equal a fresh classify scan (parse recovers what
-# render wrote), the record is idempotent (the same tree renders identical bytes twice —
+# render wrote), the record is idempotent (the same tree renders identical bytes twice --
 # a determinism the sorted census guarantees), and the parser refuses a tampered header.
 #
 # Fixed stamp (20260101.000000) so the fixture render is deterministic; the live ledger
@@ -30,7 +30,7 @@ say parse.out
 assert parse.out contains "verdict=ok" else "vols-bron: the record did not parse"
 assert parse.ok else "vols-bron: parse verdict and status disagree"
 
-# Parse recovers exactly what render wrote — the same totals a fresh classify scan reports.
+# Parse recovers exactly what render wrote -- the same totals a fresh classify scan reports.
 assert parse.out contains "surfaces=3" else "vols-bron: parsed surfaces do not match the census"
 assert parse.out contains "sites=2" else "vols-bron: parsed sites do not match the classification"
 assert parse.out contains "handles=1" else "vols-bron: parsed handles do not match the classification"
@@ -38,22 +38,22 @@ assert parse.out contains "prose_gaps=1" else "vols-bron: parsed prose_gaps do n
 assert parse.out contains "guarded_sites=0" else "vols-bron: parsed guarded_sites do not match the classification"
 assert parse.out contains "stamp=20260101.000000" else "vols-bron: the stamp did not round-trip"
 
-# The record proves itself — the site lines carried equal the declared site count.
+# The record proves itself -- the site lines carried equal the declared site count.
 assert parse.out contains "site_lines=2" else "vols-bron: the carried site lines disagree with the declared site count"
 
-# Idempotence — the same tree renders identical bytes twice (sorted census, fixed stamp).
+# Idempotence -- the same tree renders identical bytes twice (sorted census, fixed stamp).
 let idem = run ["sh" "-c" "sh tools/fixtures/vols_survey_render.sh tools/fixtures/vols_classify_tree tools/fixtures/vols_classify_guardlist_ok.txt 20260101.000000 > /tmp/vols_rec2.bron; if diff -q /tmp/vols_rec.bron /tmp/vols_rec2.bron >/dev/null; then echo identical; else echo differ; fi"]
 say "vols-bron: idempotence —"
 say idem.out
 assert idem.out contains "identical" else "vols-bron: the render is not deterministic — the same tree produced different bytes"
 
-# Tamper refusal — a wrong header is not a survey ledger.
+# Tamper refusal -- a wrong header is not a survey ledger.
 let bad = run ["sh" "-c" "printf 'format wrong\\nsites 2\\n' > /tmp/vols_bad.bron; sh tools/fixtures/vols_survey_parse.sh /tmp/vols_bad.bron"]
 say bad.out
 assert bad.out contains "verdict=badformat" else "vols-bron: a tampered header was accepted"
 assert (bad.ok == false) else "vols-bron: the badformat verdict and status disagree"
 
-# Live — render the real classified census to a ledger and report its totals informationally.
+# Live -- render the real classified census to a ledger and report its totals informationally.
 let live = run ["sh" "-c" "sh tools/fixtures/vols_guardlist_extract.sh tools/gen/season/cion_module_labeling_witness.rish > /tmp/vols_live_guardlist.txt && sh tools/fixtures/vols_survey_render.sh . /tmp/vols_live_guardlist.txt 20260101.000000 > /tmp/vols_live.bron && sh tools/fixtures/vols_survey_parse.sh /tmp/vols_live.bron | grep -E '^(surfaces|sites|handles|prose_gaps|guarded_sites|site_lines)='"]
 say "vols-bron: live ledger totals —"
 say live.out

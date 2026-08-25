@@ -1,25 +1,25 @@
-# tools/cr/crypto_kumara_identity_witness.rish — the identity arc's FRONT DOOR authored in pure Rye, authoring NO new cryptography. The one
+# tools/cr/crypto_kumara_identity_witness.rish -- the identity arc's FRONT DOOR authored in pure Rye, authoring NO new cryptography. The one
 # composition that ties the whole arc into a single answer: from a backup phrase to a keeper's Kumara signing identity and the signature it makes.
-# Where the rungs beneath authored each piece — crypto/bip39_seed folds a mnemonic to a 512-bit seed, crypto/slip10_ed25519 grows that seed into an
+# Where the rungs beneath authored each piece -- crypto/bip39_seed folds a mnemonic to a 512-bit seed, crypto/slip10_ed25519 grows that seed into an
 # ed25519 HD tree, crypto/kumara_path names the copyable shape m/44'/coin_type'/account'/index', crypto/ed25519_sign makes and derives the
-# signature — this rung COMPOSES them so a caller reaches identity through one door: phrase → seed → path → keypair → signature. It is the
+# signature -- this rung COMPOSES them so a caller reaches identity through one door: phrase -> seed -> path -> keypair -> signature. It is the
 # identity-arc sibling of crypto/eth_address.rye and crypto/bitcoin_address.rye: where those render a key to its human address, this renders a
-# phrase to the identity every Grain module signs and verifies with — Kumara, Vault, Comlink, the Lotus signed carry (crypto · Season G).
+# phrase to the identity every Grain module signs and verifies with -- Kumara, Vault, Comlink, the Lotus signed carry (crypto - Season G).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the wiring plus a two-way public-key check over already-GREEN
+# Season: crypto -- Season G (the Six-Season double-seat). This rung contributes only the wiring plus a two-way public-key check over already-GREEN
 # rungs; every HMAC, clamp, scalar, and signature lives beneath, each proven byte-for-byte on metal. Design read:
-# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library that serves
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave -- the library that serves
 # Kumara identity, Vault, Comlink, and the Lotus signed carry).
 # Clean-room: the path convention, BIP-39, and SLIP-0010's vectors are public standards studied through their specs; no line is copied
 # (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest three replayable ways, no fabricated constant: (1) the bip39 half is anchored to a REAL published answer — BIP-39's
-# own Trezor vector mnemonic "abandon…about" under passphrase "TREZOR" folds to the spec's published 512-bit seed byte-for-byte; (2) the arc has no
-# drift — from_mnemonic equals hand-wiring bip39_seed → kumara_path.derive_identity, from_seed reaches the identical identity, and the identity's
+# Parity is proven at selftest three replayable ways, no fabricated constant: (1) the bip39 half is anchored to a REAL published answer -- BIP-39's
+# own Trezor vector mnemonic "abandon...about" under passphrase "TREZOR" folds to the spec's published 512-bit seed byte-for-byte; (2) the arc has no
+# drift -- from_mnemonic equals hand-wiring bip39_seed -> kumara_path.derive_identity, from_seed reaches the identical identity, and the identity's
 # public key equals both slip10's public form (0x00 tag stripped) and ed25519_sign's independent derive_public, all three agreeing (the ed25519 half
-# proven one rung down against SLIP-0010's own ed25519 vectors); (3) the derived key is a REAL working signing key — it signs a message verify
+# proven one rung down against SLIP-0010's own ed25519 vectors); (3) the derived key is a REAL working signing key -- it signs a message verify
 # accepts, while a flipped message byte, a flipped signature byte, and a different identity's public key each refuse. Determinism and distinctness
-# close the proof. Purely local — TEST identities from published vectors, no network, no funds; growing a real Kumara identity from the maintainer's
+# close the proof. Purely local -- TEST identities from published vectors, no network, no funds; growing a real Kumara identity from the maintainer's
 # own phrase and signing a real record with it stays the custody gate.
 #
 # Run from the repository root:

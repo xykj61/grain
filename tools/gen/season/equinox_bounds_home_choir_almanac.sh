@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 34 from bounds-home choir (e28) — ch3 continues.
+# Append Glow almanac seat 34 from bounds-home choir (e28) -- ch3 continues.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 34\.' "$ALMANAC"; then

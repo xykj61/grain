@@ -1,14 +1,14 @@
-# tools/g/gism_spool_cloth_witness.rish — GISM red %73 follow: naming over the spool.
+# tools/g/gism_spool_cloth_witness.rish -- GISM red %73 follow: naming over the spool.
 #
 # Season 2, Yield. mantra/spool.rye closed red %73 by winding a large artifact across
-# ordered resins; this rung is its naming layer — Tablecloth's sibling for large
+# ordered resins; this rung is its naming layer -- Tablecloth's sibling for large
 # artifacts. pond/apps/spool_cloth.rye binds a human name to a whole spool, so a real
 # front-door document too large for one resin is stored under a name and fetched back
 # byte-for-byte. It is the layer provenance needs to carry a signed real large document.
 # This witness proves it on metal: two real documents named and fetched whole, the
 # dedup dividend across a second name, the format spool-cloth-v1 manifest round-tripped,
 # and every refusal (tampered bead, unknown/taken/empty name, bad manifest header).
-# It re-runs the spool untouched — spool_cloth composes its public API only.
+# It re-runs the spool untouched -- spool_cloth composes its public API only.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_spool_cloth_witness.rish
@@ -31,7 +31,7 @@ assert selftest.out contains "fetch by name returned 2689/2689/6079 real bytes, 
 assert selftest.out contains "format spool-cloth-v1 manifest round-tripped 3 artifacts" else "gism-red73-name: manifest round-trip missing"
 assert selftest.out contains "tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN" else "gism-red73-name: refusals missing"
 
-# Cross-check the real document sizes against the files on disk — two tools, one answer.
+# Cross-check the real document sizes against the files on disk -- two tools, one answer.
 let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
 assert sec_bytes.ok else "gism-red73-name: could not measure SECURITY.md"
 assert sec_bytes.out contains "2689" else "gism-red73-name: SECURITY.md is not 2689 B on disk"
@@ -39,7 +39,7 @@ let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
 assert tr_bytes.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
 assert tr_bytes.out contains "6079" else "gism-red73-name: context/TWO_ROOMS.md is not 6079 B on disk"
 
-# The spool is re-run untouched — the naming layer composes its public API only.
+# The spool is re-run untouched -- the naming layer composes its public API only.
 let spool_bin = "mantra/bin/spool"
 let spool_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/spool.rye -femit-bin=${spool_bin}"]
 assert spool_build.ok else "gism-red73-name: spool rebuild failed"

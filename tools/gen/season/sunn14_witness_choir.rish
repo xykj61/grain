@@ -1,10 +1,10 @@
-# tools/gen/season/sunn14_witness_choir.rish — SUNN14 witness choir.
+# tools/gen/season/sunn14_witness_choir.rish -- SUNN14 witness choir.
 #
 #   rishi/bin/rishi run tools/gen/season/sunn14_witness_choir.rish
 #
 # Leaf witnesses already GREEN alone must GREEN together.
 # Refuse a thin SOURCE stub. Census marked GREEN beside this run.
-# No almanac append — Equinox paused; SUNN owns this choir.
+# No almanac append -- Equinox paused; SUNN owns this choir.
 
 say "sunn14: Language EN — SUNN leaves choir; refuse a thin SOURCE."
 say "sunn14: Style Radiant — welcome and refuse share one seat."

@@ -1,14 +1,14 @@
-# tools/al/ales_fade_witness.rish — a fade envelope: gain that ramps across a span (ALES4).
+# tools/al/ales_fade_witness.rish -- a fade envelope: gain that ramps across a span (ALES4).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES4.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES4.
 # Design read: active-designing/20260814-fill-ales4-lotus-fade-envelope.md
-# Stands on: lotus/timeline.rye (ALES2) — the Clip it fades and the saturation it reuses (timeline.saturate).
+# Stands on: lotus/timeline.rye (ALES2) -- the Clip it fades and the saturation it reuses (timeline.saturate).
 #
-# lotus/fade.rye scales a span by a fraction that ramps linearly from a start level to an end level — the fade-in and
+# lotus/fade.rye scales a span by a fraction that ramps linearly from a start level to an end level -- the fade-in and
 # fade-out every editor owes, so a clip opens from and closes to silence without a click. The selftest proves: a fade-in
-# ramps 0 → full with exact endpoints and a linear middle; a fade-out mirrors it; a ramp past unity SATURATES rather than
+# ramps 0 -> full with exact endpoints and a linear middle; a fade-out mirrors it; a ramp past unity SATURATES rather than
 # wraps; a sub-span fade leaves the rest untouched; a single-sample fade takes the end level; a zero denominator refuses
-# BadGain; an out-of-range span refuses BadRange leaving the clip untouched. Purely local — no network, no keys, no funds,
+# BadGain; an out-of-range span refuses BadRange leaving the clip untouched. Purely local -- no network, no keys, no funds,
 # no real device.
 #
 # Run from the repository root:

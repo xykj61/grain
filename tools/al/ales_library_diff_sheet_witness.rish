@@ -1,15 +1,15 @@
-# tools/al/ales_library_diff_sheet_witness.rish — what changed, as a readable page: a `format lotus-library-diff-sheet-v1` page
+# tools/al/ales_library_diff_sheet_witness.rish -- what changed, as a readable page: a `format lotus-library-diff-sheet-v1` page
 # rendered from an ALES229 Diff (ALES230).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES230.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES230.
 # Design read: active-designing/date/20260815/20260815-143513_fill-ales230-lotus-library-diff-sheet.md
-# Idiom kin: lotus/library_sheet.rye (ALES227, the readable-projection idiom) · lotus/library_diff.rye (ALES229, the classified Diff
-# this draws). A projection — no new frame, no new hash.
+# Idiom kin: lotus/library_sheet.rye (ALES227, the readable-projection idiom) - lotus/library_diff.rye (ALES229, the classified Diff
+# this draws). A projection -- no new frame, no new hash.
 #
 # lotus/library_diff_sheet.rye renders a classified Diff as a human-readable change page. The selftest proves: the page opens with the
 # format line and a `summary <added> <removed> <changed> <same>` line (the summary law); every added / removed / changed album appears
 # in order with its name and full digest(s), a changed line carrying both old and new (the moved law); an unchanged album appears in no
-# album line (the quiet law); a too-small buffer refuses Overflow (the atomic law). A text render only — no real file, no DAC, no
+# album line (the quiet law); a too-small buffer refuses Overflow (the atomic law). A text render only -- no real file, no DAC, no
 # network, no keys, no funds, no real device.
 #
 # Run from the repository root:

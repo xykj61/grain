@@ -1,11 +1,11 @@
-# tools/fixtures/pond_metal_close_preflight.rish — automated checks before Kaeden's interactive metal close.
+# tools/fixtures/pond_metal_close_preflight.rish -- automated checks before Kaeden's interactive metal close.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/pond_metal_close_preflight.rish
 #
 # Written at the bench (20260702.180812), awaiting the host's first green run;
 # the .sh sibling retires to yonder only after this witness passes on metal.
-# The Wayland metalsmoke stays a separate step by design — Rishi keeps no
+# The Wayland metalsmoke stays a separate step by design -- Rishi keeps no
 # conditional yet, and the metalsmoke check belongs on GNOME:
 #   rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 # Interactive remainder (Kaeden): type, idle ~1 min, fill past the ceiling, :quit.

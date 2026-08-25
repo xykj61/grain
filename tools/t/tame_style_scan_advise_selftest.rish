@@ -1,8 +1,8 @@
-# tame_style_scan_advise_selftest.rish — native advise matches legacy shell counts.
+# tame_style_scan_advise_selftest.rish -- native advise matches legacy shell counts.
 #
-# Does not require ratchets at zero — only that native and legacy agree
+# Does not require ratchets at zero -- only that native and legacy agree
 # (false GREEN guard: equal counts, seated 20260717.181715).
-# Counts are read with Rish lines/split — no Python, no Glow.
+# Counts are read with Rish lines/split -- no Python, no Glow.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan_advise_selftest.rish

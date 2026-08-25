@@ -1,4 +1,4 @@
-# stranger_lap_bound_negative_witness.rish — proves the bound comparator is live.
+# stranger_lap_bound_negative_witness.rish -- proves the bound comparator is live.
 #
 # Deliberately sets STRANGER_LAP_WALL_SECONDS=0 so elapsed < bound can never
 # hold for a non-negative wall-clock. Expects the worker to FAIL with

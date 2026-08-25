@@ -1,15 +1,15 @@
-# tools/al/ales_marker_time_witness.rish — markers in real time, a named place set and read in seconds (ALES21).
+# tools/al/ales_marker_time_witness.rish -- markers in real time, a named place set and read in seconds (ALES21).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES21.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES21.
 # Design read: active-designing/20260814-fill-ales21-lotus-marker-time.md
-# Stands on: lotus/markers.rye (ALES20) — the sorted, unique named track and its add reused whole; lotus/clock.rye (ALES5) —
-# samples_for and ms_for, the one proven seconds ↔ samples conversion, exactly as loop.mark_ms uses it; lotus/pan.rye (ALES10).
+# Stands on: lotus/markers.rye (ALES20) -- the sorted, unique named track and its add reused whole; lotus/clock.rye (ALES5) --
+# samples_for and ms_for, the one proven seconds <-> samples conversion, exactly as loop.mark_ms uses it; lotus/pan.rye (ALES10).
 #
-# lotus/marker_time.rye is the twin of ALES14's loop.mark_ms for the markers track — a keeper drops a named place in seconds and
+# lotus/marker_time.rye is the twin of ALES14's loop.mark_ms for the markers track -- a keeper drops a named place in seconds and
 # reads it back in seconds. The crux: a place set in seconds lands at EXACTLY samples_for(ms) and reads back the honestly-lossy
 # same time, the track staying sorted and unique by ALES20's own add invariant. The selftest proves: places set in seconds out of
 # order land ascending and read their ms back (exact at 1 sample/ms); the edges refuse PastEnd / DurationTooLong / Duplicate by
-# name; a marker set in seconds drives a real ALES20 region_between and scrub snap. Purely local — no network, no keys, no funds.
+# name; a marker set in seconds drives a real ALES20 region_between and scrub snap. Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_marker_time_witness.rish

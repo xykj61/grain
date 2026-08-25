@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 107 from equinox e103 Class A + window — ch7 11/16.
+# Append Glow almanac seat 107 from equinox e103 Class A + window -- ch7 11/16.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 107\.' "$ALMANAC"; then

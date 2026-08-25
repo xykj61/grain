@@ -1,8 +1,8 @@
-# tools/h/hunk_crop_gesture_witness.rish — drag a rectangle on the picture, it becomes a crop edit, on metal (HUNK60).
+# tools/h/hunk_crop_gesture_witness.rish -- drag a rectangle on the picture, it becomes a crop edit, on metal (HUNK60).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK60.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK60.
 # Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md.
-# Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) — a keeper drags a
+# Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) -- a keeper drags a
 # rectangle over the picture and the app crops to it (concept only, siloed).
 #
 # HUNK3 gave the Photos app a pure crop verb; the itinerary names cropping the crux gesture of the app. This rung is the
@@ -26,7 +26,7 @@ assert build.ok else "hunk-crop-gesture: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-crop-gesture: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-crop-gesture: ${out}"

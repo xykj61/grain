@@ -1,20 +1,20 @@
-# tools/cr/crypto_bip39_mnemonic_witness.rish — BIP-39 entropy↔mnemonic authored in pure Rye, authoring NO new cryptography. The wallet arc's
+# tools/cr/crypto_bip39_mnemonic_witness.rish -- BIP-39 entropy<->mnemonic authored in pure Rye, authoring NO new cryptography. The wallet arc's
 # OTHER half, the one crypto/bip39_seed.rye explicitly left as "its own separate rung": the birth and the check of the backup phrase itself.
 # from_entropy turns raw entropy into the twelve-to-twenty-four English words a keeper writes down; to_entropy reads a written phrase back to
-# its entropy WHILE verifying the checksum — the guard that catches a mistyped backup word before it grows a wrong wallet (crypto · Season G).
+# its entropy WHILE verifying the checksum -- the guard that catches a mistyped backup word before it grows a wrong wallet (crypto - Season G).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only BIP-39's word encoding — a CS = ENT/32 checksum from the
-# GREEN crypto/sha256.rye and pure 11-bit bit-packing over BIP-39's fixed 2048-word English list — over stones already proven byte-for-byte on
-# metal. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Season: crypto -- Season G (the Six-Season double-seat). This rung contributes only BIP-39's word encoding -- a CS = ENT/32 checksum from the
+# GREEN crypto/sha256.rye and pure 11-bit bit-packing over BIP-39's fixed 2048-word English list -- over stones already proven byte-for-byte on
+# metal. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Clean-room: BIP-39 and its English word list are a public standard; the list is embedded byte-exact and hash-pinned, the assembly is ours,
 # standing on our own parity-GREEN SHA-256, never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest the replayable way the tree favours — the embedded 2048-word list is proven authentic (SHA-256 of the whole
-# embedded table equals the published canonical digest 2f5eed53…3b24dbda, so a one-word tamper goes RED), then against BIP-39's OWN published
+# Parity is proven at selftest the replayable way the tree favours -- the embedded 2048-word list is proven authentic (SHA-256 of the whole
+# embedded table equals the published canonical digest 2f5eed53...3b24dbda, so a one-word tamper goes RED), then against BIP-39's OWN published
 # Trezor vectors (English, fetched byte-exact from the canonical trezor/python-mnemonic vectors, never recited): six entropy values across all
-# three published ENT lengths (128/192/256 bits → 12/18/24 words), both extremes each, encode to EXACTLY their published mnemonics word-for-word
+# three published ENT lengths (128/192/256 bits -> 12/18/24 words), both extremes each, encode to EXACTLY their published mnemonics word-for-word
 # and decode back to EXACTLY their entropy byte-for-byte with the checksum verified. A flipped word is REFUSED InvalidChecksum; bad length,
-# unknown word, and bad count each raise their named error. Purely local — every entropy is TEST entropy from the spec's own vectors, no
+# unknown word, and bad count each raise their named error. Purely local -- every entropy is TEST entropy from the spec's own vectors, no
 # network, no funds; generating real entropy and signing a real wallet stays the custody gate.
 #
 # Run from the repository root:

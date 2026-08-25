@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_taps_witness.rish — stereo_taps: the multi-tap delay carried into stereo, the same tap set on both channels, each channel read off its own frozen dry snapshot — the second rung of the stereo time-based wing, the echo's snapshot sibling (ALES183).
+# tools/al/ales_stereo_taps_witness.rish -- stereo_taps: the multi-tap delay carried into stereo, the same tap set on both channels, each channel read off its own frozen dry snapshot -- the second rung of the stereo time-based wing, the echo's snapshot sibling (ALES183).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES183.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES183.
 # Design read: active-designing/date/20260815/20260815-090818_fill-ales183-lotus-stereo-multi-tap.md
-# Stands on: lotus/taps.rye (ALES68 — the mono multi-tap run once per channel, its TapError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye
-# (ALES2 — the Clip and the one true saturate the mono multi-tap reuses).
+# Stands on: lotus/taps.rye (ALES68 -- the mono multi-tap run once per channel, its TapError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye
+# (ALES2 -- the Clip and the one true saturate the mono multi-tap reuses).
 #
-# lotus/stereo_taps.rye multi-taps a stereo master: it runs ALES68's proven mono multitap on BOTH channels with the SAME tap set — each sample the dry input plus the sum of every tap's attenuated copy of the dry sample its delay earlier, y[i] =
-# saturate(x[i] + sum over k of num_k over den_k times x[i-d_k]). ALES181 opened the stereo time-based wing with the feedback echo (each tap reads the live output, a decaying train); the multi-tap is the wing's other primitive — several fixed taps
+# lotus/stereo_taps.rye multi-taps a stereo master: it runs ALES68's proven mono multitap on BOTH channels with the SAME tap set -- each sample the dry input plus the sum of every tap's attenuated copy of the dry sample its delay earlier, y[i] =
+# saturate(x[i] + sum over k of num_k over den_k times x[i-d_k]). ALES181 opened the stereo time-based wing with the feedback echo (each tap reads the live output, a decaying train); the multi-tap is the wing's other primitive -- several fixed taps
 # of the dry standing at their own chosen levels, the discrete early-reflection pattern a single feeding echo cannot voice. Like the stereo vibrato and chorus and unlike the feedback echo, it carries a snapshot read into stereo, and the snapshot is
 # what lets the panned integer ratio survive exactly. The same tap set on both channels, each read off its own dry snapshot, is the linked stereo multi-tap, both early-reflection patterns landing in lockstep. A tap's delay is a sample count and its
 # level a named fraction the caller names, not scalars measured across the field, so the same tap set on each channel preserves the image for free; mono multitap snapshots the dry prefix of its own clip, so run once per channel the left reads the
-# left's dry and the right the right's, never crossed — no cross-channel snapshot. Because every tap reads the frozen dry and the sum is linear in the input away from saturation, an identical-channel master stays identical AND a panned pair kept off
-# the rail keeps its exact ratio — the stronger both-cases image law the snapshot rungs earn and the feedback echo cannot. The whole sum saturates once per channel; unlike the feedback echo a tap at unity is legal (no loop to run away). It validates
+# left's dry and the right the right's, never crossed -- no cross-channel snapshot. Because every tap reads the frozen dry and the sum is linear in the input away from saturation, an identical-channel master stays identical AND a panned pair kept off
+# the rail keeps its exact ratio -- the stronger both-cases image law the snapshot rungs earn and the feedback echo cannot. The whole sum saturates once per channel; unlike the feedback echo a tap at unity is legal (no loop to run away). It validates
 # the tap set and span once against the shared length before either channel is snapshotted (BadTapCount, BadDelay, BadLevel, BadRange), so a refusal never taps one channel and leaves the other torn; TapError reused whole. Values only, never a
 # length; the two channels leave balanced. The crux is three laws: the stereo multi-tap law (each channel equal to ALES68's mono multitap with the same tap set byte for byte, the channels genuinely differing), the dry-identity law (a zero-level tap
 # set the dry master on both), and the image / balance / silence / atomicity / degenerate law.

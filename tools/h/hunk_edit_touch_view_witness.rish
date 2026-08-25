@@ -1,13 +1,13 @@
-# tools/h/hunk_edit_touch_view_witness.rish — the touchable Photos editor on metal (HUNK49).
+# tools/h/hunk_edit_touch_view_witness.rish -- the touchable Photos editor on metal (HUNK49).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK49.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK49.
 # Design read: active-designing/date/20260813/20260813-203500_hunk-edit-touch-view-exploration.md.
-# Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) — a tap edits, a swipe
+# Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) -- a tap edits, a swipe
 # walks the history, and the picture on glass is always what the gesture just produced (concept only, siloed).
 #
 # HUNK48 gave the input half (a gesture becomes one EditCursor move); HUNK13 gave the render half (an edit-list
 # down-mapped to a Skate grid a keeper sees). This rung binds both to ONE cursor: `EditTouchView` mutates the cursor on
-# a gesture and paints exactly that cursor's applied prefix, so the picture can never drift from the edit history —
+# a gesture and paints exactly that cursor's applied prefix, so the picture can never drift from the edit history --
 # the exact parallel of HUNK47 for scroll. The selftest proves a fresh view paints the source, a commit gesture tracks
 # the flip on glass, undo returns to the source and redo to the flip, paint equals a direct preview of the cursor with
 # no drift and two paints match (pure), a bad grid refuses at open, and a committed out-of-bounds crop refuses through
@@ -29,7 +29,7 @@ assert build.ok else "hunk-edit-touch-view: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-touch-view: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %75).
 let out = trim selftest.out
 say "hunk-edit-touch-view: ${out}"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Instrument-season suite — run every meter the arc identified.
+# Instrument-season suite -- run every meter the arc identified.
 # Exit 0 only when every limb passes. Presence via git ls-files.
 # No backtick characters in patterns.
 #

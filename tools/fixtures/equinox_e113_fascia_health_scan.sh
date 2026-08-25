@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e113 — fascia-health v1 land + REDS 38 on-disk is not in-the-tree.
+# Equinox e113 -- fascia-health v1 land + REDS 38 on-disk is not in-the-tree.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #
@@ -31,7 +31,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- instruments tracked (REDS 38 — never test -f alone) ---
+# --- instruments tracked (REDS 38 -- never test -f alone) ---
 for p in \
   "$HEALTH_SCAN" \
   tools/fixtures/fascia_health_live_control.md \

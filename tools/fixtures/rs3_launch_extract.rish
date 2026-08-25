@@ -1,4 +1,4 @@
-# Mirror launch-cursor extract + cursor + apprun flag resolution — no ai-jail exec.
+# Mirror launch-cursor extract + cursor + apprun flag resolution -- no ai-jail exec.
 let image = ""
 let apprun = "squashfs-root/AppRun"
 let cursor = ""

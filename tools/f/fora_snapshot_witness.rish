@@ -1,18 +1,18 @@
-# tools/f/fora_snapshot_witness.rish — compact the log so it can serve forever (FORA14).
+# tools/f/fora_snapshot_witness.rish -- compact the log so it can serve forever (FORA14).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA14. Design read: active-designing/date/20260814/20260814-060326_fora14-constel-snapshot-log-compaction.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every accept: a decree's replies deframe at the
+# Law kin: .claude/rules/placeholder-ship-names.md -- the border guards every accept: a decree's replies deframe at the
 # naming-law border (wire.deframe), so a real address can never enter a compacted log even as an accept.
 #
 # constel/snapshot.rye lets FORA12's bounded append-only log serve an unbounded history by folding its committed prefix into a
 # compact snapshot and reclaiming the room. The fold is deterministic and order-sensitive, so two piers that committed the same
-# prefix hold identical snapshots — the no-fork guarantee carries into compaction. A CompactLog keeps a snapshot plus a live
+# prefix hold identical snapshots -- the no-fork guarantee carries into compaction. A CompactLog keeps a snapshot plus a live
 # tail; compact folds the tail into the snapshot and empties it, so the effective log grows past the tail bound in bounded
 # memory. The selftest proves: the fold is order-sensitive; append/get/TailFull on the tail; compact preserves total() and
 # effective_state() and turns a folded index into Compacted; no fork across differing compaction schedules; compaction carries
 # the effective log past max_tail; a real sky commits a sequence past the tail cap, a failed decree leaving the log untouched.
-# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_snapshot_witness.rish

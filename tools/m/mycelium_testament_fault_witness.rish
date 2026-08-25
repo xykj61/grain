@@ -1,19 +1,19 @@
-# tools/m/mycelium_testament_fault_witness.rish — a Testament sealed with f ships down still verifies
+# tools/m/mycelium_testament_fault_witness.rish -- a Testament sealed with f ships down still verifies
 # offline (r2, the Testament fault-tolerance rung).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r2.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r2.
 # r1 sealed a reading when EVERY ship of a named constellation vouched, and verified the certificate OFFLINE
 # from its roster names alone. A real dev-net loses nodes at sealing time. The roll's Byzantine arithmetic
 # promises a precise fault tolerance: an n-ship roster believes any quorum of at least n − (n−1)/3 of its own
-# voices, surviving up to f = (n−1)/3 down. r2 carries that promise INTO the certificate — a Testament sealed
+# voices, surviving up to f = (n−1)/3 down. r2 carries that promise INTO the certificate -- a Testament sealed
 # by only n − f of its ships still names the WHOLE roster, and `verify` (booting the full roster, deriving
 # the full threshold, touching no Dag) believes it; sealing with one ship fewer refuses BelowQuorum.
 #
-# The crux this witness proves is FAULT TOLERANCE INSIDE AN OFFLINE CERTIFICATE — a five-ship named
+# The crux this witness proves is FAULT TOLERANCE INSIDE AN OFFLINE CERTIFICATE -- a five-ship named
 # constellation seals a certificate that tolerates one down (four survivors meet threshold four) and honestly
 # refuses BelowQuorum at two down, all verified with no Dag; a permanently smaller roster re-derives its own
 # lower threshold and is believed. Composes testament + constel + muster + voucher public API only, editing
-# none; demo seeds — no key, no funds, no network, no real value.
+# none; demo seeds -- no key, no funds, no network, no real value.
 #
 # Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 #
@@ -38,7 +38,7 @@ assert selftest.out contains "verifies OFFLINE" else "mycelium-testament-fault: 
 assert selftest.out contains "refuses BelowQuorum" else "mycelium-testament-fault: the honest-edge refusal claim missing"
 assert selftest.out contains "re-derives its own lower threshold" else "mycelium-testament-fault: the permanent-departure claim missing"
 
-# The r1 crux stands at the door — a fault-tolerance rung means nothing unless the whole-roster seal still
+# The r1 crux stands at the door -- a fault-tolerance rung means nothing unless the whole-roster seal still
 # verifies offline against the constellation its names define.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament.rye -femit-bin=mycelium/bin/testament && mycelium/bin/testament 2>&1"]
 assert r1.ok else "mycelium-testament-fault: the Testament r1 crux is not GREEN"

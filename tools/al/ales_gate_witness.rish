@@ -1,15 +1,15 @@
-# tools/al/ales_gate_witness.rish — a noise gate: the compressor's threshold turned upside down (ALES51).
+# tools/al/ales_gate_witness.rish -- a noise gate: the compressor's threshold turned upside down (ALES51).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES51.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES51.
 # Design read: active-designing/date/20260814/20260814-171918_fill-ales51-lotus-noise-gate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/compress.rye (ALES50 — the
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, the range law shape); lotus/compress.rye (ALES50 -- the
 # threshold this inverts, re-proven below).
 #
 # lotus/gate.rye passes a sample at or above the threshold byte-for-byte and divides a below-threshold sample's magnitude by the
 # ratio. The selftest proves: silence stays silence; above the threshold is the identity; unit ratio is the identity everywhere;
 # a quiet signal has its floor pushed down with the sign held and the magnitude never expanding; a higher ratio gates at least as
 # hard and a ratio far past the magnitude drives the quiet to silence (the hard gate); a zero threshold refuses BadThreshold, a
-# sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no
+# sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no
 # real device, no sample rate.
 #
 # Run from the repository root:
@@ -35,7 +35,7 @@ say "ales-gate: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-gate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-gate: selftest did not print the GREEN ales-gate line"
 
-# The gate inverts the threshold the compressor leaned on — re-prove ALES50's compressor still stands green, so the two rest together.
+# The gate inverts the threshold the compressor leaned on -- re-prove ALES50's compressor still stands green, so the two rest together.
 let compress = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
 assert (trim compress.out) == "yes" else "ales-gate: the ALES50 compressor witness regressed under the gate"
 

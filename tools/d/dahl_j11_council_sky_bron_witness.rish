@@ -1,4 +1,4 @@
-# tools/d/dahl_j11_council_sky_bron_witness.rish — Season 3 Journey 11 (Council skies), Rung 3.
+# tools/d/dahl_j11_council_sky_bron_witness.rish -- Season 3 Journey 11 (Council skies), Rung 3.
 #
 # Rungs one and two fixed the council rule and bound each ballot to a seat's signature. A council is only
 # useful to a commons if it can be carried and checked with no live council in hand. pond/apps/council_sky_bron.rye
@@ -7,8 +7,8 @@
 # back byte-for-byte. Still tie-free and quorum-honest offline: still_quorum_honest re-verifies every
 # carried ballot signature through rung two's verify_ballot (a flipped signature refuses BadConsent);
 # rebuild reconstructs the sky, re-seats the council through rung one's load (a record naming an even body
-# refuses EvenCouncil — the tie-free law travels with the record), and replays each ballot into an equal
-# live council whose outcome matches. Unknown/missing field, bad header, bad hex each refuse. Additive —
+# refuses EvenCouncil -- the tie-free law travels with the record), and replays each ballot into an equal
+# live council whose outcome matches. Unknown/missing field, bad header, bad hex each refuse. Additive --
 # composes r1 and r2 over public API; both re-run GREEN. Demo keeper seeds only, no network (serve reaches
 # the custody gate).
 #
@@ -32,7 +32,7 @@ assert selftest.out contains "refused BadConsent offline" else "dahl-j11r3: flip
 assert selftest.out contains "refused EvenCouncil on rebuild" else "dahl-j11r3: even-body rebuild refusal missing"
 assert selftest.out contains "refused MissingCouncil" else "dahl-j11r3: missing-council refusal missing"
 
-# r1 and r2 stay their own GREEN binaries — additive.
+# r1 and r2 stay their own GREEN binaries -- additive.
 let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
 assert r1.ok else "dahl-j11r3: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j11r3: r1 GREEN missing"

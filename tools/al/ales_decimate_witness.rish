@@ -1,19 +1,19 @@
-# tools/al/ales_decimate_witness.rish — the sample-rate decimator: hold each sample across a run, crushing time rather than amplitude (ALES83).
+# tools/al/ales_decimate_witness.rish -- the sample-rate decimator: hold each sample across a run, crushing time rather than amplitude (ALES83).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES83.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES83.
 # Design read: active-designing/date/20260814/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
-# Stands on: lotus/crush.rye (ALES81 — the bit-crush this rung mirrors: crush lowers RESOLUTION on the value axis, decimate lowers RATE on the time
-# axis); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, max_clip). A keeper who wants a boosted, clipped, or bit-crushed decimation composes
-# this with ALES78's drive, ALES82's tube, or ALES81's crush over the same span — all in-place span maps that compose.
+# Stands on: lotus/crush.rye (ALES81 -- the bit-crush this rung mirrors: crush lowers RESOLUTION on the value axis, decimate lowers RATE on the time
+# axis); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, max_clip). A keeper who wants a boosted, clipped, or bit-crushed decimation composes
+# this with ALES78's drive, ALES82's tube, or ALES81's crush over the same span -- all in-place span maps that compose.
 #
-# lotus/decimate.rye partitions the span into runs of `hold` samples anchored at start and pins every sample in a run to the run's FIRST (its anchor) —
+# lotus/decimate.rye partitions the span into runs of `hold` samples anchored at start and pins every sample in a run to the run's FIRST (its anchor) --
 # a zero-order hold. hold = 1 is the identity; the last run may be PARTIAL. It is the DRIVE family's FIRST map that is not memoryless PER SAMPLE (an
 # output equals its run's anchor, a neighbor) yet memoryless PER RUN (each run depends only on its own anchor, so a run-aligned block decimation equals
 # the whole), and it is IDEMPOTENT. The selftest proves it: hold = 1 is the identity; the zero-order hold by hand at hold 3 over [10,20,30,40,50,60,70]
 # gives [10,10,10,40,40,40,70] (last run partial); every sample equals its run anchor and the map is idempotent; a hold wider than the span holds the
 # whole span at the first sample; the rail is preserved (a decimation only COPIES existing samples); the span discipline holds; a zero or over-wide
 # hold refuses BadHold, a span past the end BadRange, each leaving the clip untouched. The decimator writes only values that already live in the clip,
-# so no saturate is owed. Purely local — one divide, one copy per sample; no delay line, no interpolation, no anti-aliasing, no network, no keys, no
+# so no saturate is owed. Purely local -- one divide, one copy per sample; no delay line, no interpolation, no anti-aliasing, no network, no keys, no
 # funds, no real device, no real sample rate.
 #
 # Run from the repository root:

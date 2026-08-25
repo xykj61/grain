@@ -1,6 +1,6 @@
-# open_asks_view.rish — Open Asks view: closed ask loop on Skate (tip 426).
+# open_asks_view.rish -- Open Asks view: closed ask loop on Skate (tip 426).
 #
-# Golden: drawn terminal open asks view: ref=9cdb9aaf stipend=100 posted=1 applied=1 accepted=1 completed=1 memo=completion … — GREEN
+# Golden: drawn terminal open asks view: ref=9cdb9aaf stipend=100 posted=1 applied=1 accepted=1 completed=1 memo=completion ... -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/o/open_asks_view.rish
 

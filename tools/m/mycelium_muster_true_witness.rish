@@ -1,8 +1,8 @@
-# tools/m/mycelium_muster_true_witness.rish — a real quorum passes a real roll, true to the bytes (r4).
+# tools/m/mycelium_muster_true_witness.rish -- a real quorum passes a real roll, true to the bytes (r4).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r4 — the arc closes.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r4 -- the arc closes.
 # r1 bound a Chorus to a known validator set (a Muster); r2 let the roll travel; r3 judged a quorum against
-# a roll across a Knot — all over Dags seated in code. This closing rung carries the roll onto a REAL
+# a roll across a Knot -- all over Dags seated in code. This closing rung carries the roll onto a REAL
 # on-disk Cord record a keeper can open and hash, and proves the roll's verdict on a real quorum is TRUE TO
 # THE BYTES.
 #
@@ -14,7 +14,7 @@
 # three voices present, Byzantine threshold three (the enrolled count is exactly the members present), and a
 # roll of three strangers refuses the same real quorum NotMember. A tampered header refuses BadFormat.
 # Composes cord_bron + cord + lapse + statement + voucher + chorus + muster + kumara public API only; demo
-# node and keeper seeds — no key, no funds, no network, no custody.
+# node and keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 #
@@ -40,7 +40,7 @@ assert selftest.out contains "a roll of three strangers refuses the same real qu
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-muster-true: tamper-refusal claim missing"
 assert selftest.out contains "The Mycelium Muster's agent-doable arc closes" else "mycelium-muster-true: arc-close claim missing"
 
-# The crux — two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-muster-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]

@@ -1,17 +1,17 @@
-# tools/al/ales_render_album_witness.rish — a whole record as one saveable artifact: a `LOTUSALB` frame packs an ordered, named
+# tools/al/ales_render_album_witness.rish -- a whole record as one saveable artifact: a `LOTUSALB` frame packs an ordered, named
 # catalog of ALES222 bundles and unpacks it verify-before-trust, needing no new seal (ALES223).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES223.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES223.
 # Design read: active-designing/date/20260815/20260815-135313_fill-ales223-lotus-render-album.md
-# Idiom kin: lotus/render_bundle.rye (ALES222, pack/unpack — the verify-before-trust the album inherits per track) · through it
-# lotus/render_manifest.rye (ALES221, the seal each bundle carries). No new hash, no new grammar — only a catalog frame over frames.
+# Idiom kin: lotus/render_bundle.rye (ALES222, pack/unpack -- the verify-before-trust the album inherits per track) - through it
+# lotus/render_manifest.rye (ALES221, the seal each bundle carries). No new hash, no new grammar -- only a catalog frame over frames.
 #
 # lotus/render_album.rye packs many named bundles into one framed catalog and unpacks it verify-before-trust. The selftest proves:
 # pack then unpack recovers every track name, manifest field, and exact .wav in order (the round-trip law); a single flipped byte in
-# any track's .wav refuses WavDigestMismatch and in any manifest DigestMismatch, so the album needs no new seal — each track binds
+# any track's .wav refuses WavDigestMismatch and in any manifest DigestMismatch, so the album needs no new seal -- each track binds
 # its own whole (the self-binding law); a wrong magic and a bad tile refuse BadAlbum, a count past the bound AlbumFull (the frame
 # law); a too-small buffer refuses Overflow (the atomic law); a zero-track album round-trips to an empty catalog (the empty law). A
-# byte frame only — no real file, no DAC, no network, no keys, no funds, no real device.
+# byte frame only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_render_album_witness.rish

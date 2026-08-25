@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e114 — thing-not-name law + REDS 39.
+# Equinox e114 -- thing-not-name law + REDS 39.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #

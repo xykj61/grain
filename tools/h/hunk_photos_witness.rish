@@ -1,17 +1,17 @@
-# tools/h/hunk_photos_witness.rish — the first Photos verb crops the open grid on metal (HUNK3, quest close).
+# tools/h/hunk_photos_witness.rish -- the first Photos verb crops the open grid on metal (HUNK3, quest close).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK3.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - opening journey Open Image - rung HUNK3.
 # Design read: active-designing/date/20260813/20260813-144218_hunk-season-a-open-image-exploration.md
 # Teacher, thanked clean-room: the common iCloud Photos / Google Photos crop gesture (concept only, siloed).
 #
 # HUNK0 decoded an image, HUNK1 gave it a content address, HUNK2 painted it; this rung closes the opening
-# quest with the first thing a Photos app is for — a crop. `image/photos.rye` `crop` is a pure, bounded
+# quest with the first thing a Photos app is for -- a crop. `image/photos.rye` `crop` is a pure, bounded
 # function over the decoded RGBA grid: it reads a rectangle and returns a fresh smaller image, the source
 # untouched. The selftest crops a position-tagged image and proves every cropped pixel is exactly its source
 # pixel, that the source is unmutated (pure), that the identity crop recovers the whole byte-for-byte, and
-# that a cropped image is still an OPEN image — it re-encodes and round-trips through the codec byte-for-byte.
+# that a cropped image is still an OPEN image -- it re-encodes and round-trips through the codec byte-for-byte.
 # An empty rectangle and rectangles past the right or bottom edge each refuse by name. No network, no key, no
-# funds — the first user-facing verb, built on the open module rather than a proprietary one.
+# funds -- the first user-facing verb, built on the open module rather than a proprietary one.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/h/hunk_photos_witness.rish

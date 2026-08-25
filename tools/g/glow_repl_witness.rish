@@ -2,7 +2,7 @@
 #
 # Drives stdin: one accept per seated single-line head family, one refusal, :quit.
 # Builds a sibling binary so the running rishi witness is never FileBusy.
-# Glow mode uses std.debug.print → stderr; claims read session.err.
+# Glow mode uses std.debug.print -> stderr; claims read session.err.
 #
 #   rishi/bin/rishi run tools/g/glow_repl_witness.rish
 

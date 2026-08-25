@@ -1,4 +1,4 @@
-# session_logs_archive_witness.rish — proves archive fold on fixture sandboxes.
+# session_logs_archive_witness.rish -- proves archive fold on fixture sandboxes.
 #
 # Builds the core, runs selftest (preview, fold, link rewrite, idempotency).
 # Run from the repository root:

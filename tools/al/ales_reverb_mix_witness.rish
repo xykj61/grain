@@ -1,16 +1,16 @@
-# tools/al/ales_reverb_mix_witness.rish — the wet/dry mix: the first reverb knob that is not a bank choice (ALES192).
+# tools/al/ales_reverb_mix_witness.rish -- the wet/dry mix: the first reverb knob that is not a bank choice (ALES192).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES192.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES192.
 # Design read: active-designing/date/20260815/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 — the sample clock);
-# lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the dry snapshot and its saturate clamping the blend).
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 -- the sample clock);
+# lotus/timeline.rye (ALES2 -- the Clip, its max_clip bounding the dry snapshot and its saturate clamping the blend).
 #
-# lotus/reverb_mix.rye gives the reverb its most-reached-for knob — HOW MUCH reverb, the wet/dry balance. It snapshots the dry span, reverberates
-# it wet in place through ALES190's reverb_preset UNCHANGED, then blends: out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), a linear
+# lotus/reverb_mix.rye gives the reverb its most-reached-for knob -- HOW MUCH reverb, the wet/dry balance. It snapshots the dry span, reverberates
+# it wet in place through ALES190's reverb_preset UNCHANGED, then blends: out[i] = saturate((den-num)-dry[i]/den + num-wet[i]/den), a linear
 # balance at the named fraction num/den, saturated once so a loud blend pins never wraps. The selftest proves: at mix = 0 the span is restored to
 # the exact dry (the identity); at mix = den it equals reverb_preset over the span byte for byte; a half mix differs from both and each sample is
 # the honest weighted average of the two, byte for byte; silence stays silence; and the faults forward (a bad fraction BadMix, a span past the
-# clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local — one clip, a bounded stack snapshot; no network, no
+# clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local -- one clip, a bounded stack snapshot; no network, no
 # keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -36,7 +36,7 @@ say "ales-reverb-mix: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-mix' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-mix: selftest did not print the GREEN ales-reverb-mix line"
 
-# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+# This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-mix: the ALES190 named-room preset regressed under its wet/dry mix"
 

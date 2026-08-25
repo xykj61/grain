@@ -1,18 +1,18 @@
-# tools/al/ales_stereo_trim_silence_witness.rish — stereo_trim_silence: the silence stripper carried into stereo, two independent silences cut in one lockstep, the suite's first stereo edit built on the segmenter (ALES148).
+# tools/al/ales_stereo_trim_silence_witness.rish -- stereo_trim_silence: the silence stripper carried into stereo, two independent silences cut in one lockstep, the suite's first stereo edit built on the segmenter (ALES148).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES148.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES148.
 # Design read: active-designing/date/20260815/20260815-051802_fill-ales148-lotus-stereo-trim-silence.md
-# Stands on: lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
-# whole), lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/trim_silence.rye (ALES96 — the mono silence stripper, imported by the selftest to prove the lockstep law), lotus/pan.rye
-# (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 — the .silent verdict this
+# Stands on: lotus/stereo_segment.rye (ALES147 -- the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
+# whole), lotus/segment.rye (ALES95 -- the mono segmenter and max_segments, through ALES147), lotus/trim_silence.rye (ALES96 -- the mono silence stripper, imported by the selftest to prove the lockstep law), lotus/pan.rye
+# (ALES10 -- the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 -- the .silent verdict this
 # intersects). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment independently, so their silences differ in count and boundary, and
 # trimming each channel by its own silence would tear the stereo image apart.
 #
-# lotus/stereo_trim_silence.rye decides ONE cut for both channels — the silence intersection: segment both channels over one shared frame grid, mark a frame jointly-silent only where it is silent in both channels, and cut
-# exactly those frames from both channels in lockstep (back to front, so every earlier frame's index stays valid). A frame silent in only one channel is kept — content in either speaker survives; only a moment where neither
+# lotus/stereo_trim_silence.rye decides ONE cut for both channels -- the silence intersection: segment both channels over one shared frame grid, mark a frame jointly-silent only where it is silent in both channels, and cut
+# exactly those frames from both channels in lockstep (back to front, so every earlier frame's index stays valid). A frame silent in only one channel is kept -- content in either speaker survives; only a moment where neither
 # speaker carries sound is removed. It validates the shared frame length, band, span, and floor once through ALES147's own up-front checks before any cut (BadThreshold on an illegal band, BadRange on a span past the samples,
 # BadFloor on a floor above the peak ceiling, BadFrame on a zero/oversized/non-dividing length), so a refusal never trims one channel and leaves the other; StereoSegmentError and EditError reused whole. The crux is that it
-# invents no new measurement and no new sample — it reads its silences through ALES147 and removes whole frames through ALES2's cut — so it can never drift from the segmenter it composes; what is new is the composition rule,
+# invents no new measurement and no new sample -- it reads its silences through ALES147 and removes whole frames through ALES2's cut -- so it can never drift from the segmenter it composes; what is new is the composition rule,
 # the intersection of two independent silences, whose whole honesty is that running the proven mono trim_silence on each channel apart would desync the pair.
 #
 # Run from the repository root:

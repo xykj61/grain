@@ -1,6 +1,6 @@
-# tools/m/mycelium_cord_bron_witness.rish — the Cord travels as text (r3).
+# tools/m/mycelium_cord_bron_witness.rish -- the Cord travels as text (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r3 — the Cord travels.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - rung r3 -- the Cord travels.
 # r1 fixed the deterministic-commit crux and r2 quarantined the equivocator. A consensus a developer
 # cannot hand to another node is only a sandbox; a mesh becomes a network when one node's agreed order
 # crosses to a second as readable bytes.
@@ -8,10 +8,10 @@
 # The crux this witness proves: the agreed order travels with the bytes. A committed Dag renders to a
 # `format cord-dag-v1` record (one signed `block` line each, parents as following `parent` lines) and
 # parses back; the recovered Dag, re-admitted block by block under r1's own `add`, commits to the
-# byte-identical order and folds the real Mycelium supply law to the identical supply — so two nodes
+# byte-identical order and folds the real Mycelium supply law to the identical supply -- so two nodes
 # agree by exchanging blocks alone. Every signature rides in the record and is re-verified on rebuild:
 # a tampered block refuses BadSignature at add, so corruption can never cross as consensus. A wrong
-# header, an unknown field, and a parent before any block each refuse. Demo keeper seeds only — no real
+# header, an unknown field, and a parent before any block each refuse. Demo keeper seeds only -- no real
 # key, no funds, no network, no custody.
 #
 # Additive: r1 (deterministic commit) and r2 (Byzantine refusal) re-run GREEN under this one.

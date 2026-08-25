@@ -1,12 +1,12 @@
-# tools/b/buhr_tablecloth_keyed_witness.rish — BUHR Journey 7, Rung 4: the owner-signed catalog.
+# tools/b/buhr_tablecloth_keyed_witness.rish -- BUHR Journey 7, Rung 4: the owner-signed catalog.
 #
 # Rung one bound a human name to a content address. This rung adds provenance: a name
-# does not merely pin bytes — a settled Kumara identity vouches for which bytes, and only
+# does not merely pin bytes -- a settled Kumara identity vouches for which bytes, and only
 # that identity may publish under the catalog. The owner presents the point's Deed
-# (verified against the constellation) and signs the exact publication (point · name ·
-# length · content digest), so a stolen id cannot publish for another identity, a forged
+# (verified against the constellation) and signs the exact publication (point - name -
+# length - content digest), so a stolen id cannot publish for another identity, a forged
 # signature cannot publish at all, and a content-mismatched signature refuses before any
-# byte is stored. A publication resolves to whose it is — owner_of returns the point,
+# byte is stored. A publication resolves to whose it is -- owner_of returns the point,
 # place_of resolves it to its galaxy/star/planet. Rung one stays its own green binary
 # (the keyed layer wraps its Catalog unchanged; only an additive pub index_of was added).
 #
@@ -35,7 +35,7 @@ assert selftest.out contains "every refusal holds" else "buhr7: refusal claim mi
 assert selftest.out contains "a non-owner, a forged signature, a content-mismatched signature" else "buhr7: the three publish refusals missing"
 assert selftest.out contains "a taken name refuses, no byte stored" else "buhr7: taken-name refusal missing"
 
-# Rung one — the named artifact store the keyed layer wraps — stays its own green binary;
+# Rung one -- the named artifact store the keyed layer wraps -- stays its own green binary;
 # rung four adds only the signing gate and an additive pub index_of, additively.
 let r1_bin = "pond/bin/tablecloth"
 let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]

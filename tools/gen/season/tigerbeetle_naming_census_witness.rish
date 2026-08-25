@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_naming_census_witness.rish — e41 Naming Things.
+# tools/gen/season/tigerbeetle_naming_census_witness.rish -- e41 Naming Things.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_naming_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-naming: Language EN — nouns and verbs just right; units trail the name."
 say "tb-naming: Style Radiant — write names in full; meaning first."

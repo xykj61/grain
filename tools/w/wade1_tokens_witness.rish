@@ -1,12 +1,12 @@
-# wade1_tokens_witness.rish — WADE1 token sheet: cascade by infuse, lowered to Skate.
+# wade1_tokens_witness.rish -- WADE1 token sheet: cascade by infuse, lowered to Skate.
 #
-# Proves brushstroke/tokens.rye — the `.brush` surface-bridge seam's durable core
+# Proves brushstroke/tokens.rye -- the `.brush` surface-bridge seam's durable core
 # (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md):
 #   (a) infuse resolves a child sheet whose tokens honor the six weave invariants
 #       (warm hue, low blue, gentle lightness spread, paper hierarchy);
 #   (b) base-only tokens are kept, override tokens win, new tokens append;
 #   (c) a resolved sheet dresses/lowers into a renderable Skate grid.
-# The cascade reuses brix/infuse.rye's proven per-key override — no fresh engine.
+# The cascade reuses brix/infuse.rye's proven per-key override -- no fresh engine.
 #
 # Build first:  rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens
 #   rishi/bin/rishi run tools/w/wade1_tokens_witness.rish

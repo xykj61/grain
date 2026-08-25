@@ -1,15 +1,15 @@
-# tools/f/fora_prevote_witness.rish — a partitioned pier cannot disrupt a stable sky, pre-vote (FORA22).
+# tools/f/fora_prevote_witness.rish -- a partitioned pier cannot disrupt a stable sky, pre-vote (FORA22).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA22. Design read: active-designing/date/20260814/20260814-084500_fora22-constel-prevote-no-disruption.md
 #
-# constel/prevote.rye closes the liveness cost of FORA16's terms — Raft's §9.6: a pier partitioned away keeps incrementing its
+# constel/prevote.rye closes the liveness cost of FORA16's terms -- Raft's §9.6: a pier partitioned away keeps incrementing its
 # term, and on rejoining its ballooned term forces a healthy leader to step down, disrupting a stable sky. Pre-vote is the fix: a
 # candidate must win a practice election (no node changing its term) before it may bump its real term. A peer pre-grants only when
 # it has lost the leader AND the candidate is up-to-date (FORA21's rule reused). The selftest proves: a peer pre-grants only when
-# both hold; A STABLE SKY IS NOT DISRUPTED — a majority still hearing a leader make a rejoining high-term candidate's pre-vote
+# both hold; A STABLE SKY IS NOT DISRUPTED -- a majority still hearing a leader make a rejoining high-term candidate's pre-vote
 # fail, its real term unchanged; a genuinely leaderless sky does elect; a behind candidate fails even leaderless; the term bumps
-# exactly once and only on success; bounded. Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# exactly once and only on success; bounded. Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_prevote_witness.rish

@@ -1,5 +1,5 @@
 #!/bin/sh
-# inner_i2_djin_prose.sh — i2 Twah→Djin prose polish (replies · check-ins)
+# inner_i2_djin_prose.sh -- i2 Twah->Djin prose polish (replies - check-ins)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

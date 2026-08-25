@@ -1,4 +1,4 @@
-# tools/g/gism_j5_corpus_set_witness.rish — GISM Journey 5 (Real corpora), Rung 3.
+# tools/g/gism_j5_corpus_set_witness.rish -- GISM Journey 5 (Real corpora), Rung 3.
 #
 # Season 2, Yield: the reading voice stands on a real corpus SET, not one lucky file.
 # Five real front-door / discipline documents (TAME_CORE, TWO_ROOMS, CODE_OF_CONDUCT,
@@ -7,7 +7,7 @@
 # and every Scribble bound is proven against the largest real member of the set.
 #
 # The witness cross-checks the app's reported largest-by-bytes member against an
-# independent `wc -c` over the same real files — two tools, one answer — so the crux
+# independent `wc -c` over the same real files -- two tools, one answer -- so the crux
 # is bound to the tree, not to a literal. The demo reading over pinned_doc
 # (reading_query) is re-run untouched; the corpus_set reader stands beside it.
 #
@@ -37,19 +37,19 @@ assert selftest.out contains "unknown op refused" else "gism-j5r3: unknown-op re
 
 # Independent cross-check: the largest member by bytes, measured directly with `wc -c`
 # over the same real files, must match the path and size the app reports. Two tools,
-# one answer — the crux bound to the tree, not to a literal. (sed backrefs, never awk
+# one answer -- the crux bound to the tree, not to a literal. (sed backrefs, never awk
 # positional vars, so Rishi's ${} interpolation is not tripped.)
 # The app prints a machine line 'largest_wc <bytes> <path>' in wc -c's own native
 # order; an independent wc -c over the same real files reduces to the identical
-# '<bytes> <path>'. Two tools, one answer — the crux bound to the tree, not a literal.
-# (No sed backrefs and no shell vars — Rishi keeps '\\' literal and interpolates $name.)
+# '<bytes> <path>'. Two tools, one answer -- the crux bound to the tree, not a literal.
+# (No sed backrefs and no shell vars -- Rishi keeps '\\' literal and interpolates $name.)
 let wc_largest = run ["sh" "-c" "wc -c context/TAME_CORE.md context/TWO_ROOMS.md CODE_OF_CONDUCT.md SECURITY.md CHANGELOG.md | grep -vE ' total' | sort -n | tail -1 | sed -E 's/^ *//'"]
 assert wc_largest.ok else "gism-j5r3: wc -c largest-member cross-check failed to run"
 let app_largest = run ["sh" "-c" "${bin} selftest 2>&1 | grep -oE 'largest_wc [0-9]+ [^ ]+' | sed 's/largest_wc //'"]
 assert app_largest.ok else "gism-j5r3: could not extract the app's largest bytes+path line"
 assert app_largest.out == wc_largest.out else "gism-j5r3: app's largest-by-bytes member disagrees with wc -c over the real files"
 
-# The demo reading over pinned_doc must still be GREEN — corpus_set is additive.
+# The demo reading over pinned_doc must still be GREEN -- corpus_set is additive.
 let demo_bin = "pond/bin/reading-query"
 let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r3: reading_query (demo) rebuild failed"

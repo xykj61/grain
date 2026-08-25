@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_off_by_one_census_witness.rish — e49 Off-By-One.
+# tools/gen/season/tigerbeetle_off_by_one_census_witness.rish -- e49 Off-By-One.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_off_by_one_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-off-by-one: Language EN — off-by-one; index, count, and size stay distinct."
 say "tb-off-by-one: Style Radiant — division shows its intent; units stay in the name."

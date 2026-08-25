@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_center_clip_witness.rish — stereo_center_clip: the center clipper carried into stereo with ONE SHARED DEAD ZONE, both channels in lockstep, opening the dead-zone corner of the stereo NONLINEAR
+# tools/al/ales_stereo_center_clip_witness.rish -- stereo_center_clip: the center clipper carried into stereo with ONE SHARED DEAD ZONE, both channels in lockstep, opening the dead-zone corner of the stereo NONLINEAR
 # class (ALES141).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES141.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES141.
 # Design read: active-designing/date/20260815/20260815-042021_fill-ales141-lotus-stereo-center-clip.md
-# Stands on: lotus/center_clip.rye (ALES87 — the mono center clipper run once per channel, y = if |x| ≤ t then 0 else x with no rail edge), lotus/stereo_crush.rye (ALES136 — the not-odd sibling whose
-# antisymmetry-break this rung mirrors by HOLDING it), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples,
-# sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES87's dead zone into stereo — silencing the quiet middle and passing the
+# Stands on: lotus/center_clip.rye (ALES87 -- the mono center clipper run once per channel, y = if |x| ≤ t then 0 else x with no rail edge), lotus/stereo_crush.rye (ALES136 -- the not-odd sibling whose
+# antisymmetry-break this rung mirrors by HOLDING it), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples,
+# sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES87's dead zone into stereo -- silencing the quiet middle and passing the
 # loud in both channels, one dead zone landing on both speakers together. Where the hard clip caps the loud extremes, the center clip hollows the quiet middle; run together in stereo they keep only the band between
-# the noise floor and the ceiling. Unlike the crush and tube, the center clipper is odd, so the same dead zone holds the inter-channel antisymmetry — an out-of-phase master comes back still out of phase.
+# the noise floor and the ceiling. Unlike the crush and tube, the center clipper is odd, so the same dead zone holds the inter-channel antisymmetry -- an out-of-phase master comes back still out of phase.
 #
 # lotus/stereo_center_clip.rye validates both channels once against the shared threshold and length before either is mutated (BadThreshold on a threshold outside [0, sample_max], BadRange on a span outside the
 # samples), then center-clips both channels through ALES87's center_clip; CenterClipError reused whole. The crux is four laws. THE STEREO CENTER-CLIP LAW: each channel equals ALES87's mono center_clip with the same

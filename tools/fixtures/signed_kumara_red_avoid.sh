@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# red-avoid scan for signed-Kumara guest — crypto_eddsa_ absent; crypto_ed25519_check ≥ 2
+# red-avoid scan for signed-Kumara guest -- crypto_eddsa_ absent; crypto_ed25519_check ≥ 2
 set -euo pipefail
 g="${1:?guest tree}"
 if [ ! -d "$g" ]; then

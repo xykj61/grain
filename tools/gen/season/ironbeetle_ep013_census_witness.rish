@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep013_census_witness.rish — e70 IronBeetle ep013.
+# tools/gen/season/ironbeetle_ep013_census_witness.rish -- e70 IronBeetle ep013.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep013_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep013: Language EN — three numbers worth memorizing."
 say "iron-ep013: Style Radiant — Op · commit_min · commit_max stay distinct on purpose."

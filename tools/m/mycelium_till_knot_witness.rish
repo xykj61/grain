@@ -1,20 +1,20 @@
-# tools/m/mycelium_till_knot_witness.rish — the treasury verdict reads across a Knot (Till r3).
+# tools/m/mycelium_till_knot_witness.rish -- the treasury verdict reads across a Knot (Till r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Till rung r3 — across a Knot.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Till rung r3 -- across a Knot.
 # r1 resolved a whole Cord Dag into a Till; r2 let it travel. Yet a treasury a family runs for years does
-# not carry its whole past unbroken — the Knot (cord_knot.rye) ties off a committed prefix into a sealed
+# not carry its whole past unbroken -- the Knot (cord_knot.rye) ties off a committed prefix into a sealed
 # FoldState so a bounded Dag runs forever. This rung makes the Till's corpus a Knot plus its live suffix.
 #
 # The crux this witness proves: a draw that won its coins inside a sealed checkpoint stays a winning draw
 # when new facts continue the log, and a suffix draw the checkpointed treasury can no longer pay comes up
-# SHORT across the cut exactly as it would within one unbroken resolution — a lawful no-op. A treasury of
+# SHORT across the cut exactly as it would within one unbroken resolution -- a lawful no-op. A treasury of
 # 1000 pays two prefix draws (100 + 700), sealed to a Knot at supply 200; the suffix draw of 700 finds only
-# 200 yet the sealed issued is 1000, so it once could have been paid — a spent-out loss. The verdict never
+# 200 yet the sealed issued is 1000, so it once could have been paid -- a spent-out loss. The verdict never
 # drifts: verdicts_match proves the full Cord and the Knot-continued resolution name the identical draws,
 # loss, coins, supply, and loser. Integrity holds across the cut: a corrupt Knot refuses KnotCorrupt before
 # a fact is folded, a tampered suffix fact refuses IdentityRefused, a never-could-pay draw (5000 past the
 # sealed issued 1000) refuses Overdraw whole. Composes till + cord_knot + cord + fold public API only; demo
-# keeper seeds — no key held.
+# keeper seeds -- no key held.
 #
 # Scope: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 #

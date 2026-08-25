@@ -1,10 +1,10 @@
-# tools/ad/ad_walk_sample_witness.rish — the sampler's own guard (e231).
+# tools/ad/ad_walk_sample_witness.rish -- the sampler's own guard (e231).
 #
 #   rishi/bin/rishi run tools/ad/ad_walk_sample_witness.rish
 #
 # The walkthrough sampler earned two fixes by luck of the draw: README surfaced
 # at e228, steep.md at e229. Luck is a poor guard. This witness makes the
-# properties deterministic — every drawn line is a dated artifact, and every
+# properties deterministic -- every drawn line is a dated artifact, and every
 # line carries both facts a verdict needs.
 
 say "walk-witness: Language EN — the sampler judged by its own laws."

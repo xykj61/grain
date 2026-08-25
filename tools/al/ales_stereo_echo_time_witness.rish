@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_echo_time_witness.rish — stereo_echo_time: the stereo echo spoken in milliseconds, a thin twin over ALES181 the clock adds only the units to — the first real-time face of the stereo time-based wing (ALES182).
+# tools/al/ales_stereo_echo_time_witness.rish -- stereo_echo_time: the stereo echo spoken in milliseconds, a thin twin over ALES181 the clock adds only the units to -- the first real-time face of the stereo time-based wing (ALES182).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES182.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES182.
 # Design read: active-designing/date/20260815/20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md
-# Stands on: lotus/stereo_echo.rye (ALES181 — the linked stereo feedback delay this speaks in real time, delegated unchanged), lotus/echo.rye (ALES66 — the mono feedback delay, its EchoError the echo half of this face's error set), lotus/clock.rye
-# (ALES5 — the sample clock, its samples_for converting ms to a bounded sample count), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/stereo_echo.rye (ALES181 -- the linked stereo feedback delay this speaks in real time, delegated unchanged), lotus/echo.rye (ALES66 -- the mono feedback delay, its EchoError the echo half of this face's error set), lotus/clock.rye
+# (ALES5 -- the sample clock, its samples_for converting ms to a bounded sample count), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip).
 #
 # lotus/stereo_echo_time.rye echoes a stereo master over a span named in milliseconds: it converts start_ms, count_ms, and delay_ms once through ALES5's proven clock.samples_for (bounded, refusing DurationTooLong past the clip), then delegates
-# to ALES181's stereo_echo unchanged — the same linked feedback delay on both channels, now spoken in real time. ALES181 opened the stereo time-based wing with its primitive; this rung gives it its real-time face exactly as ALES67's echo_ms is
-# over ALES66's echo, and it is the first stereo module to speak in milliseconds — the pattern every later stereo real-time twin (a timed multitap, a timed reverb) will follow. The clock adds only the units, and the same conversion feeds both
-# channels, so a millisecond-named stereo echo lands byte-for-byte the same samples on each channel as the index-named stereo echo over the converted delay and span, the image held. Because samples_for is divTrunc(rate·ms, 1000), a delay too
+# to ALES181's stereo_echo unchanged -- the same linked feedback delay on both channels, now spoken in real time. ALES181 opened the stereo time-based wing with its primitive; this rung gives it its real-time face exactly as ALES67's echo_ms is
+# over ALES66's echo, and it is the first stereo module to speak in milliseconds -- the pattern every later stereo real-time twin (a timed multitap, a timed reverb) will follow. The clock adds only the units, and the same conversion feeds both
+# channels, so a millisecond-named stereo echo lands byte-for-byte the same samples on each channel as the index-named stereo echo over the converted delay and span, the image held. Because samples_for is divTrunc(rate-ms, 1000), a delay too
 # short to be one whole sample converts to zero, which the echo refuses BadDelay on both channels before any write, so a sub-sample echo refuses honestly. StereoEchoTimeError is ALES5's ClockError beside ALES66's EchoError, forwarded whole;
 # values only, never a length; the two channels leave balanced. The crux is four laws: the clock-adds-only-units law (both channels equal to the index-named stereo echo byte for byte), the real-rate law (at 48 kHz 1 ms == 48 samples on both),
 # the dry-identity law (a zero-feedback timed echo the dry master on both), and the forwarding / atomicity / balance law (a sub-sample delay, a long delay, a unity feedback, an out-of-range span each refusing by name with both channels untouched

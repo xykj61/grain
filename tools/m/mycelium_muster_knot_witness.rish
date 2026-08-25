@@ -1,21 +1,21 @@
-# tools/m/mycelium_muster_knot_witness.rish — a roll's verdict on a quorum survives a checkpoint (r3).
+# tools/m/mycelium_muster_knot_witness.rish -- a roll's verdict on a quorum survives a checkpoint (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r3 — across a Knot.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Muster - rung r3 -- across a Knot.
 # r1 bound a Chorus to a known validator set (a Muster); r2 let the whole roll travel. Yet a ledger a
-# family runs for years does not carry its whole past unbroken — the Knot ties off a committed prefix and
+# family runs for years does not carry its whole past unbroken -- the Knot ties off a committed prefix and
 # the Lapse continues its deadline clock across the seal by carrying the epoch base. r3 judges a whole
 # quorum against a Muster over a ledger resolved ACROSS an epoch cut.
 #
 # The crux this witness proves is A ROLL'S VERDICT ON A QUORUM SURVIVES A CHECKPOINT: a mesh of enrolled
 # validators vouches Alice's position against the whole Cord; a counterparty who checkpointed the prefix
 # (sealed it into a Knot, discarded the base blocks, kept only the Knot plus its suffix) applies the same
-# roll and reaches the same verdict — the enrolled quorum passes over the continued position.
+# roll and reaches the same verdict -- the enrolled quorum passes over the continued position.
 # pass_muster_across runs r1's membership-and-quorum law then confirms the agreed position equals the
 # Knot-continued ledger's reading. Proven on a pledge lapsing across the cut (coins home) and a far
 # deadline honored in the suffix (received accumulated, never restarted). An outsider quorum of three fresh
 # keys the Chorus alone believes refuses NotMember across the cut; a thin quorum refuses BelowQuorum; a
 # corrupt Knot yields no continued ledger. Composes muster + chorus + statement + lapse_knot public API
-# only; demo seeds — no key, no funds, no network, no custody.
+# only; demo seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 #

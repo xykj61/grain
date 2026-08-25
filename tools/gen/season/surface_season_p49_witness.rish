@@ -1,9 +1,9 @@
-# tools/gen/season/surface_season_p49_witness.rish — BrushFrame Wayland feed.
+# tools/gen/season/surface_season_p49_witness.rish -- BrushFrame Wayland feed.
 #
 #   rishi/bin/rishi run tools/gen/season/surface_season_p49_witness.rish
 #
 # Headless feed proof (no WAYLAND_DISPLAY required). Rebuild wayland_seed first
-# if brushtest is missing — see counsel p49.
+# if brushtest is missing -- see counsel p49.
 
 say "surface-p49: Language EN — BrushFrame feeds Wayland Frame."
 say "surface-p49: Style Radiant — thin import; refuse live-five invent."

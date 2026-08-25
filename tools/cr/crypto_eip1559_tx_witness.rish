@@ -1,28 +1,28 @@
-# tools/cr/crypto_eip1559_tx_witness.rish — the EIP-1559 typed-transaction (type-2) digest, authored in pure Rye as a composition over five
+# tools/cr/crypto_eip1559_tx_witness.rish -- the EIP-1559 typed-transaction (type-2) digest, authored in pure Rye as a composition over five
 # already-GREEN stones: the Recursive Length Prefix serialization (encoding/rlp.rye), the Keccak-256 (crypto/keccak256.rye), the ECDSA
 # signer over a PUBLIC TEST KEY (crypto/secp256k1_ecdsa_sign.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye), and the
 # address derivation (crypto/eth_address.rye). It is the digest a wallet signs before every modern Ethereum send: prepend the type byte 0x02,
 # lay the fields out as an RLP list, hash that with Keccak-256, and you hold the exact bytes a key signs; recover the signature back and you
-# hold the sender (crypto · Season G · Cryptography).
+# hold the sender (crypto - Season G - Cryptography).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography and NO new serialization: every byte is the
+# Season: crypto -- Season G (the Six-Season double-seat). This rung authors NO new cryptography and NO new serialization: every byte is the
 # GREEN RLP, every hash the GREEN Keccak-256, every signature the GREEN ECDSA signer over a published test key, every recovery the GREEN
-# ecrecover, every address the GREEN eth_address — it contributes only the EIP-1559 / EIP-2718 assembly (the type byte 0x02, the nine-field
+# ecrecover, every address the GREEN eth_address -- it contributes only the EIP-1559 / EIP-2718 assembly (the type byte 0x02, the nine-field
 # signing list [chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList], the sighash over it, and the
 # twelve-field signed form that appends [yParity, r, s]). Where eip155_tx hashes the FLAT legacy nine-field list, eip1559_tx hashes the TYPED,
-# type-prefixed list of the London fork's default transaction — the two on-chain shapes a key is asked to sign, both over the same GREEN tower.
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# type-prefixed list of the London fork's default transaction -- the two on-chain shapes a key is asked to sign, both over the same GREEN tower.
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Clean-room: EIP-1559, EIP-2718, and the Yellow Paper are Ethereum's own public standards; the encoding is ours, standing on our own
 # parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest three ways anyone can replay, WITHOUT a fabricated external constant: (1) a WORLD BINDING — deriving the example
+# Parity is proven at selftest three ways anyone can replay, WITHOUT a fabricated external constant: (1) a WORLD BINDING -- deriving the example
 # test key 0x4646...46 through our GREEN secp256k1 + eth_address yields exactly the address EIP-155 already publishes for that key,
-# 0x9d8a62f6...855a4f; (2) an INDEPENDENT construction — the type-2 sighash built a second time with Zig's own std.crypto Keccak-256 over the
-# identical 0x02 || rlp(...) bytes is byte-for-byte equal to our GREEN path; and (3) a FULL ROUND-TRIP — deterministically signing the sighash
+# 0x9d8a62f6...855a4f; (2) an INDEPENDENT construction -- the type-2 sighash built a second time with Zig's own std.crypto Keccak-256 over the
+# identical 0x02 || rlp(...) bytes is byte-for-byte equal to our GREEN path; and (3) a FULL ROUND-TRIP -- deterministically signing the sighash
 # with that test key (RFC-6979, reproducible) then recovering the sender through our ecrecover returns exactly the derived, published address,
 # so a one-bit error anywhere in the type prefix, the RLP layout, the hash, the signer, or the recovery would break the match. The signed
 # twelve-field transaction assembles, leads with 0x02, and round-trips through the RLP decoder; edge refusals BadFieldCount, BadYParity,
-# BadScalarLength each fire. Purely local — no maintainer key, no network, no funds, no real device: this module builds the public preimage and
+# BadScalarLength each fire. Purely local -- no maintainer key, no network, no funds, no real device: this module builds the public preimage and
 # recovers from a signature over a published test key, never a real identity. Signing with the maintainer's own key stays the custody gate.
 #
 # Run from the repository root:

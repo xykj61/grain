@@ -1,6 +1,6 @@
-# markdown_structure_witness.rish — blocking structural integrity for Radiant passes.
-# Seated 20260725.114400 · Quin relay repair.
-# Lesson 20260725.120701 — every blocking witness earns a known-good PASS
+# markdown_structure_witness.rish -- blocking structural integrity for Radiant passes.
+# Seated 20260725.114400 - Quin relay repair.
+# Lesson 20260725.120701 -- every blocking witness earns a known-good PASS
 # fixture beside its known-bad FAIL fixture; compare table COLUMN counts, not
 # raw pipe counts; mask inline code and fenced blocks before splitting cells.
 #

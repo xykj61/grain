@@ -1,4 +1,4 @@
-# cursor_jail_macos.rish — start Cursor (native macOS .app) inside a
+# cursor_jail_macos.rish -- start Cursor (native macOS .app) inside a
 # sandbox-exec (Seatbelt) enclosure, with project-local state.
 #
 # The Rish-native primary launcher, reviving tools/cu/cursor-jail-macos.sh (its
@@ -14,8 +14,8 @@
 #   rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --private-home
 #   rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --print-profile
 #
-# --cursor PATH  · ends with .app → PATH/Contents/MacOS/Cursor
-#                · otherwise       → PATH is the Cursor binary itself
+# --cursor PATH  - ends with .app -> PATH/Contents/MacOS/Cursor
+#                - otherwise       -> PATH is the Cursor binary itself
 #
 # --private-home is the full private-$HOME this project's own design doc
 # scoped (active-designing/20260714-184500_macos-full-private-home-design.md)

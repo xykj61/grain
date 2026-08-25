@@ -1,6 +1,6 @@
-# brix_alias_resolve.rish — Brix typo resolution: alias from → to.
+# brix_alias_resolve.rish -- Brix typo resolution: alias from -> to.
 #
-# First seat: Prim → Prin. Run from the repository root:
+# First seat: Prim -> Prin. Run from the repository root:
 #   rishi/bin/rishi run tools/b/brix_alias_resolve.rish
 
 let alias_line = run ["sh" "-c" "grep -E '^alias Prim Prin$' .brix"]

@@ -1,13 +1,13 @@
-# tools/b/buhr_quin_host_graph_witness.rish — BUHR Journey 6, Rung 3: the surface voice, gathered.
+# tools/b/buhr_quin_host_graph_witness.rish -- BUHR Journey 6, Rung 3: the surface voice, gathered.
 #
-# The Q-vane host learns a fourth voice — the one whose corpus is the living Mantra
+# The Q-vane host learns a fourth voice -- the one whose corpus is the living Mantra
 # graph. One bounded request routes across four voices: arithmetic still to Lattice,
 # reading still to Scribble, corpus still to Ember, and a graph prompt to the surface
 # voice (lane_count -> 3, head of a.txt -> r2, a summary metered by the same contract).
 # Gathering the graph voice never displaces the three that came before; a disallowed
 # model surfaces at once (no fall-through); a prompt no voice knows is refused rather
 # than answered. The three-voice host and the graph query stay their own green
-# binaries — Surface and Intelligence now answer under one entry.
+# binaries -- Surface and Intelligence now answer under one entry.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_quin_host_graph_witness.rish

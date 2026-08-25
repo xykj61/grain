@@ -1,24 +1,24 @@
-# tools/cr/crypto_monocypher_verify_parity_witness.rish — Monocypher-source parity for constant-time byte-string equality (crypto_verify16/32/64),
+# tools/cr/crypto_monocypher_verify_parity_witness.rish -- Monocypher-source parity for constant-time byte-string equality (crypto_verify16/32/64),
 # the compare every MAC, tag, and signature-equality check rests on. Our authored crypto/verify.rye and the vendored Monocypher's own C
 # (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same fifteen equal / not-equal verdicts, diffed byte-for-byte. The
-# FIFTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship ·
-# Edwards↔Montgomery · Poly1305 · ChaCha20 · SHA-512 · HMAC-SHA-512 · HChaCha20 · variable BLAKE2b · keyed BLAKE2b came before). Season G · Cryptography.
+# FIFTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b - X25519 - Ed25519 - IETF AEAD - Argon2 - XChaCha20-Poly1305 flagship -
+# Edwards<->Montgomery - Poly1305 - ChaCha20 - SHA-512 - HMAC-SHA-512 - HChaCha20 - variable BLAKE2b - keyed BLAKE2b came before). Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte" AND "a constant-time discipline note (timing-safety as a named horizon)." This
 # primitive is the one corner of that horizon correct by STRUCTURE rather than measurement: crypto/hmac_sha512.rye and crypto/hmac_sha256.rye each
 # named "a constant-time compare, which the composer that uses this primitive supplies" as an open horizon; crypto/verify.rye is that supplier,
 # and this rung proves it against the ACTUAL library an auditor names.
-# Kin: crypto/verify.rye (our authored primitive, GREEN against Zig's std.crypto.timing_safe.eql across every single-bit difference) ·
-# tools/rye/monocypher_verify_parity.rye (our printing harness) · tools/fixtures/monocypher_verify_harness.c (Monocypher's printing harness) ·
+# Kin: crypto/verify.rye (our authored primitive, GREEN against Zig's std.crypto.timing_safe.eql across every single-bit difference) -
+# tools/rye/monocypher_verify_parity.rye (our printing harness) - tools/fixtures/monocypher_verify_harness.c (Monocypher's printing harness) -
 # crypto/CONSTANT_TIME.md (the Season's constant-time note this primitive anchors). Monocypher stays the parity TARGET, vendored and unmodified,
 # never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The fifteen lines are anchored to the world by the primitive's own contract: Monocypher's crypto_verify16/32/64 return 0 for equal and -1 for
 # differing, and for each of the three widths {16, 32, 64} the five cases are equal -> 0, one-bit-diff-at-byte-0 -> -1, one-bit-diff-at-last-byte
 # -> -1, all-bytes-differ -> -1, equal-again -> 0. The oracle is a second real implementation agreeing byte-for-byte, and the witness additionally
-# asserts the expected 0/-1 pattern so a regression that inverted the verdict at either implementation goes RED. Purely local — no key, no network,
+# asserts the expected 0/-1 pattern so a regression that inverted the verdict at either implementation goes RED. Purely local -- no key, no network,
 # no funds, no device; constant-time timing-safety stays the Season's named horizon (this proves CORRECTNESS of the verdict, not a timing claim).
 #
 # Run from the repository root:
@@ -37,11 +37,11 @@ let rout = "crypto/bin/rye_verify.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_verify_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-verify-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — fifteen verdict lines.
+# 2. Run the Monocypher C harness -- fifteen verdict lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-verify-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — fifteen verdict lines over the identical inputs.
+# 3. Run our authored Rye harness -- fifteen verdict lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_verify_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-verify-parity: Rye harness exited non-zero — see ${rout}"
 
@@ -49,7 +49,7 @@ assert rrun.ok else "crypto-monocypher-verify-parity: Rye harness exited non-zer
 let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
 assert (trim diff.out) == "same" else "crypto-monocypher-verify-parity: Monocypher and Rye verdicts disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
 
-# 5. Anchor to the world: Monocypher's own contract — 0 for equal, -1 for differing — in the expected pattern per width. Each width's five
+# 5. Anchor to the world: Monocypher's own contract -- 0 for equal, -1 for differing -- in the expected pattern per width. Each width's five
 #    lines run equal, diff, diff, diff, equal; the equal cases (lines 1, 5, 6, 10, 11, 15) must read 0 and the differing cases -1, so a verdict
 #    inverted at either implementation goes RED even though the byte-for-byte diff above would still pass.
 #    Sampled by line: the first equal case of each width (lines 1, 6, 11) must read 0; a differing case of each width (lines 2, 9, 12) must

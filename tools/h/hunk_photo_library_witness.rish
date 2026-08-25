@@ -1,14 +1,14 @@
-# tools/h/hunk_photo_library_witness.rish — the Photos library, the app's home screen over the store, on metal (HUNK68).
+# tools/h/hunk_photo_library_witness.rish -- the Photos library, the app's home screen over the store, on metal (HUNK68).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK68.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK68.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the photo-library grid of iCloud Photos / Google Photos — a wall of thumbnails you
+# Teacher, thanked clean-room: the photo-library grid of iCloud Photos / Google Photos -- a wall of thumbnails you
 # scroll and tap to open (concept only, siloed).
 #
 # HUNK1 gave an image a content-addressed identity; HUNK67 let the editor save an edit as a first-class artifact.
 # Every rung since has stored images the store could not yet SHOW as a set. This rung builds the home screen: it
 # enumerates the catalog and, in held order, fetches each image and down-maps it to a small Skate thumbnail. Because
-# a fetch proves every bead against its digest FIRST, the library shows only images that verified — a tampered image
+# a fetch proves every bead against its digest FIRST, the library shows only images that verified -- a tampered image
 # refuses at build time and is never painted as garbage onto the wall. No network, no key, no funds.
 #
 # Run from the repository root:
@@ -27,7 +27,7 @@ assert build.ok else "hunk-photo-library: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photo-library: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-photo-library: ${out}"

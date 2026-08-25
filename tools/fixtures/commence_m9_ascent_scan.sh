@@ -1,12 +1,12 @@
 #!/bin/sh
-# Commence M9 ascent scan — control gate, then handback ascent + arc close.
+# Commence M9 ascent scan -- control gate, then handback ascent + arc close.
 # Exit 0 only when control reads and every ascent limb honors.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/commence_m9_ascent_scan.sh
 #
 # Law: no duty reports a total until its planted control reads correctly.
-# Ascent: consumed handbacks outward · nested return still waiting · arc closes.
+# Ascent: consumed handbacks outward - nested return still waiting - arc closes.
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
@@ -100,7 +100,7 @@ fi
 echo "ascent_chain=honored"
 echo "ascent_beats=${BEATS_OK}"
 
-# --- handback ascent (consumed outward · nested waiting) ---
+# --- handback ascent (consumed outward - nested waiting) ---
 for needle in \
   'voice_handback_consumed: return_equinox_e7' \
   'fascia_handback_consumed: return_voice_j4_d10' \
@@ -132,7 +132,7 @@ echo "ascent_consumed=voice+fascia+sunn+pole"
 echo "ascent_nested=return_surface_p59"
 echo "ascent_nested_status=not_consumed"
 
-# --- almanac seats 97-103 · ch7 at least 7/16 ---
+# --- almanac seats 97-103 - ch7 at least 7/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*)
@@ -161,7 +161,7 @@ echo "ascent_almanac=honored"
 echo "ascent_ch7_line=$CH7_LINE"
 echo "ascent_seats=97-103"
 
-# --- shelf end · shred standing ---
+# --- shelf end - shred standing ---
 EP045=gratitude/ironbeetle/20260712-092212_ironbeetle-ep045-the-whole-machine-in-one-breath.md
 git ls-files --error-unmatch "$EP045" >/dev/null 2>&1 || {
   echo "ascent_shelf=failed"

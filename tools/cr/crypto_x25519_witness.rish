@@ -1,25 +1,25 @@
-# tools/cr/crypto_x25519_witness.rish — X25519 elliptic-curve Diffie-Hellman (RFC 7748) authored in pure Rye: Season G's fourteenth rung and
+# tools/cr/crypto_x25519_witness.rish -- X25519 elliptic-curve Diffie-Hellman (RFC 7748) authored in pure Rye: Season G's fourteenth rung and
 # the last Monocypher-parity primitive the decision wave named, proven against the RFC 7748 §5.2 known-answer vectors and byte-for-byte
-# against Zig's independent std.crypto.dh.X25519 (Season G · Cryptography).
+# against Zig's independent std.crypto.dh.X25519 (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
 # primitive Comlink session keys, Vault sealed storage, and any two Ponds agreeing a secret over an open channel reach for).
-# Kin: crypto/fe25519.rye (the GREEN base field beneath the ladder) · crypto/ed25519_scalarmul.rye (its Edwards-curve twin) ·
+# Kin: crypto/fe25519.rye (the GREEN base field beneath the ladder) - crypto/ed25519_scalarmul.rye (its Edwards-curve twin) -
 # crypto/sealed_session.rye (the sealed box that composes this key agreement). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity
-# TARGET, never a copied line — our own ladder, studied clean-room from the public RFC and Monocypher's public API
+# TARGET, never a copied line -- our own ladder, studied clean-room from the public RFC and Monocypher's public API
 # (.claude/rules/gratitude-licenses.md).
 #
 # crypto/x25519.rye authors X25519(scalar, u) as a Curve25519 scalar multiplication in the Montgomery model, tracking a point by its
 # projective u-coordinate alone: the scalar is clamped per RFC 7748, then a fixed 255-step ladder runs bit 254 down to 0, each step a
 # branchless conditional swap (driven by the scalar bit through an XOR mask, so the memory pattern never depends on the secret) and one
-# double-and-add built from field add, subtract, square, multiply, and a single multiply by a24 = 121665 — every operation over the GREEN
-# base field crypto/fe25519.rye, adding no new field mathematics. The affine answer is x2 · z2⁻¹, packed to 32 canonical bytes. The
+# double-and-add built from field add, subtract, square, multiply, and a single multiply by a24 = 121665 -- every operation over the GREEN
+# base field crypto/fe25519.rye, adding no new field mathematics. The affine answer is x2 - z2⁻¹, packed to 32 canonical bytes. The
 # primitive calls no std.crypto. Parity is proven at selftest against two references runnable now: the published RFC 7748 §5.2 known-answer
 # vectors (two arbitrary-point cases and the X25519(9,9) base case), and Zig's own std.crypto.dh.X25519 as an independent implementation,
 # byte-for-byte across a deterministic spread of twenty-four scalars and u-coordinates over both arbitrary points and the base point (the
 # public-key case), with a Diffie-Hellman round-trip proving two keepers derive the identical shared secret. The vendored Monocypher source
-# is a held network fetch, so Monocypher-source parity is an honest horizon rung. Purely local arithmetic over TEST scalars — no real
+# is a held network fetch, so Monocypher-source parity is an honest horizon rung. Purely local arithmetic over TEST scalars -- no real
 # private key, no real session, no network, no funds, no real device.
 #
 # Run from the repository root:

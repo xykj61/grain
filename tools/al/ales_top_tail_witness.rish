@@ -1,16 +1,16 @@
-# tools/al/ales_top_tail_witness.rish — the top-and-tail trimmer: segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause (ALES98).
+# tools/al/ales_top_tail_witness.rish -- the top-and-tail trimmer: segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause (ALES98).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES98.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES98.
 # Design read: active-designing/date/20260814/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
-# Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/trim_silence.rye (ALES96 — the full silence stripper, the length-bracket twin), lotus/
-# split_silence.rye (ALES97 — the auto-splitter, the outer-boundary twin), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict).
-# ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between them lives the most-used silence gesture of all —
-# TOP AND TAIL — trim only the dead air at the START and the END, and leave every pause INSIDE the recording exactly where the speaker left it.
+# Stands on: lotus/segment.rye (ALES95 -- the voice-activity segmenter), lotus/trim_silence.rye (ALES96 -- the full silence stripper, the length-bracket twin), lotus/
+# split_silence.rye (ALES97 -- the auto-splitter, the outer-boundary twin), lotus/timeline.rye (ALES2 -- the Clip and cut), lotus/voiced.rye (ALES94 -- the .silent verdict).
+# ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between them lives the most-used silence gesture of all --
+# TOP AND TAIL -- trim only the dead air at the START and the END, and leave every pause INSIDE the recording exactly where the speaker left it.
 #
 # lotus/top_tail.rye segments [0, clip.len) into frames of frame_len samples through ALES95, finds the FIRST and LAST non-silent runs, then cuts the trailing silence
 # (tail first, so the leading index stays valid) and the leading silence through ALES2's cut, leaving every silent run BETWEEN them untouched. The crux is two laws.
-# THE SPAN LAW: the trimmed clip equals the original over [first_nonsilent.start, last_nonsilent.end) byte for byte — the original narrowed to its living span, internal
-# silence kept. THE BRACKET LAW: it equals the original bracketed by ALES97's outer takes byte for byte, and trim_silence.len <= top_and_tail.len <= original.len — top-
+# THE SPAN LAW: the trimmed clip equals the original over [first_nonsilent.start, last_nonsilent.end) byte for byte -- the original narrowed to its living span, internal
+# silence kept. THE BRACKET LAW: it equals the original bracketed by ALES97's outer takes byte for byte, and trim_silence.len <= top_and_tail.len <= original.len -- top-
 # tail keeps every sample ALES96's full trimmer keeps PLUS the internal silences, equal only when there is no interior gap. The selftest proves both, plus: the interior
 # pause is KEPT (strictly longer than the full trim on a gapped clip); an all-silent clip trims to empty; a no-silent clip is unchanged; a head-silent clip loses only its
 # head, a tail-silent clip only its tail; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.

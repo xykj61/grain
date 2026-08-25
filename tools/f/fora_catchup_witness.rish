@@ -1,8 +1,8 @@
-# tools/f/fora_catchup_witness.rish — a lagging pier brought current from a leader's snapshot + tail (FORA15).
+# tools/f/fora_catchup_witness.rish -- a lagging pier brought current from a leader's snapshot + tail (FORA15).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA15. Design read: active-designing/date/20260814/20260814-083100_fora15-constel-catchup-snapshot-install.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the real-sky leader is built by decrees whose replies deframe at the
+# Law kin: .claude/rules/placeholder-ship-names.md -- the real-sky leader is built by decrees whose replies deframe at the
 # naming-law border, so a real address can never enter the history a follower catches up to.
 #
 # constel/catchup.rye spends FORA14's snapshot on the pier that fell behind. A follower lacks the effective entries
@@ -11,7 +11,7 @@
 # real disagreement); SNAPSHOT INSTALL adopts a compacted leader's summary wholesale then takes its tail (Raft's InstallSnapshot,
 # resting on FORA14's snapshot-identity). The selftest proves: tail catch-up appends and reads back; snapshot install reaches a
 # far-behind follower; already-current returns 0 untouched; a divergent overlap refuses Diverged unchanged; a longer follower
-# refuses Ahead; no fork across catch-up; bounded past max_tail; and a real decree-built sky drives it. Purely local — no socket,
+# refuses Ahead; no fork across catch-up; bounded past max_tail; and a real decree-built sky drives it. Purely local -- no socket,
 # no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:

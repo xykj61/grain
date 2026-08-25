@@ -1,13 +1,13 @@
-# tools/h/hunk_edit_screen_view_witness.rish — the whole Photos screen in one call on metal (HUNK53).
+# tools/h/hunk_edit_screen_view_witness.rish -- the whole Photos screen in one call on metal (HUNK53).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK53.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK53.
 # Design read: active-designing/date/20260813/20260813-210626_hunk-screen-view-exploration.md.
-# Teacher, thanked clean-room: the editing screen of a photo app (iCloud Photos / Google Photos) — the tool palette
+# Teacher, thanked clean-room: the editing screen of a photo app (iCloud Photos / Google Photos) -- the tool palette
 # stacked over the picture, one surface a keeper reads top to bottom (concept only, siloed).
 #
-# HUNK52 painted the gesture strip as a chip row and HUNK51 paints the edited picture — two proven surfaces a caller
+# HUNK52 painted the gesture strip as a chip row and HUNK51 paints the edited picture -- two proven surfaces a caller
 # still placed by hand. This rung composes them: paint_screen stacks the chip row over the picture into one Skate grid,
-# so a caller paints the whole editing screen in one call. The composition adds no drift — the screen's top row equals
+# so a caller paints the whole editing screen in one call. The composition adds no drift -- the screen's top row equals
 # paint_strip cell-for-cell and its picture region equals paint cell-for-cell, each sub-surface written into its own
 # place unchanged. The selftest proves the stack, the no-drift, a tap centered on a chip editing the picture region in
 # the composed screen, an unbound screen refusing EmptyStrip, and bad geometry refusing at open. No network, no key,
@@ -29,7 +29,7 @@ assert build.ok else "hunk-edit-screen-view: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-screen-view: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-edit-screen-view: ${out}"

@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_reverb_witness.rish — the REVERB carried into stereo: Schroeder's network on both channels, the same bank each (ALES187).
+# tools/al/ales_stereo_reverb_witness.rish -- the REVERB carried into stereo: Schroeder's network on both channels, the same bank each (ALES187).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES187.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES187.
 # Design read: active-designing/date/20260815/20260815-093859_fill-ales187-lotus-stereo-reverb.md
-# Stands on: lotus/reverb.rye (ALES186 — the mono reverb run once per channel, its ReverbError reused whole and its precheck reused for the
-# up-front atomic validation); lotus/pan.rye (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip the
+# Stands on: lotus/reverb.rye (ALES186 -- the mono reverb run once per channel, its ReverbError reused whole and its precheck reused for the
+# up-front atomic validation); lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 -- the Clip the
 # mono reverb composes over).
 #
-# lotus/stereo_reverb.rye carries ALES186's Schroeder network into stereo — the same comb-and-allpass bank on both channels, each channel
+# lotus/stereo_reverb.rye carries ALES186's Schroeder network into stereo -- the same comb-and-allpass bank on both channels, each channel
 # reverbed through its OWN network, the wing's keystone made stereo. wet = series_allpass(sum of parallel combs(dry)) on each channel. The
 # selftest proves: the stereo reverb law (each channel equal to ALES186's mono reverb with the same bank byte for byte, the channels
-# genuinely differing); the identical-channel image law (a centred master staying identical — an exact panned ratio does NOT survive,
+# genuinely differing); the identical-channel image law (a centred master staying identical -- an exact panned ratio does NOT survive,
 # honestly noted, because the delayed-output @divTrunc recirculation drifts it, like the echo, flanger, and allpass); and the silence /
 # balance / atomicity / degenerate law (silence to silence on both, left.len == right.len after, an empty bank / an over-long bank / a bad
 # delay / a bad gain / an out-of-range span each refusing by name with both channels untouched and balanced, count 0 the identity). Purely
-# local — the delays counted in sample indices not milliseconds, no cross-channel read, no network, no keys, no funds, no real device, no
+# local -- the delays counted in sample indices not milliseconds, no cross-channel read, no network, no keys, no funds, no real device, no
 # sample rate.
 #
 # Run from the repository root:

@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_be_explicit_census_witness.rish — e39 be explicit.
+# tools/gen/season/tigerbeetle_be_explicit_census_witness.rish -- e39 be explicit.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_be_explicit_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-be-explicit: Language EN — be explicit; hot loops stand alone."
 say "tb-be-explicit: Style Radiant — lean lightly on the compiler."

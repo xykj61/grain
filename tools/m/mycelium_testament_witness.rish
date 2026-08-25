@@ -1,22 +1,22 @@
-# tools/m/mycelium_testament_witness.rish — a named constellation's verdict travels as an offline
+# tools/m/mycelium_testament_witness.rish -- a named constellation's verdict travels as an offline
 # certificate (r1, the Testament crux).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r1.
-# The Constel journey gave the dev-net a name and a roster and reached quorum on a real fact — yet that
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r1.
+# The Constel journey gave the dev-net a name and a roster and reached quorum on a real fact -- yet that
 # quorum lived and died in one process. A TESTAMENT is the carried belief: a portable certificate that a
 # NAMED constellation, by Byzantine quorum, certified a reading, verifiable OFFLINE holding only the
 # certificate and the roster NAMES. `chorus_bron` already lets a bare quorum travel and re-verify at a
-# STATED threshold — yet it cannot tell an enrolled ship from a stranger with a valid signature, because it
+# STATED threshold -- yet it cannot tell an enrolled ship from a stranger with a valid signature, because it
 # carries no roster. A Testament closes that gap: it carries the ship names, so a recipient BOOTS the exact
 # roster from the names alone (reproducible, no stored keys), seats the Muster, derives the Byzantine
 # threshold from the roster's size, and confirms the sealing voices are that constellation's own ships.
 #
-# The crux this witness proves is NAMED, OFFLINE-VERIFIABLE QUORUM — a certificate that binds a reading to a
+# The crux this witness proves is NAMED, OFFLINE-VERIFIABLE QUORUM -- a certificate that binds a reading to a
 # constellation a keeper can name and re-boot, made WITH the ledger but verified WITHOUT it, with the teeth
-# that a stranger's valid voice never rides it (NotMember — the binding a bare Chorus cannot enforce), a
-# quorum too thin is not believed (BelowQuorum), and a tampered name refuses (NotMember — bound to the exact
+# that a stranger's valid voice never rides it (NotMember -- the binding a bare Chorus cannot enforce), a
+# quorum too thin is not believed (BelowQuorum), and a tampered name refuses (NotMember -- bound to the exact
 # names, byte for byte). Composes constel + chorus + muster + voucher public API only, editing none; demo
-# ship and keeper seeds — no key, no funds, no network, no real value.
+# ship and keeper seeds -- no key, no funds, no network, no real value.
 #
 # Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 #
@@ -45,13 +45,13 @@ assert selftest.out contains "stranger's valid voice refuses NotMember" else "my
 assert selftest.out contains "thin quorum refuses BelowQuorum" else "mycelium-testament: the thin-quorum tooth missing"
 assert selftest.out contains "tampered name refuses NotMember" else "mycelium-testament: the name-tamper tooth missing"
 
-# The Constel whose named roster a Testament binds to stands at the door — a testament is the carried
+# The Constel whose named roster a Testament binds to stands at the door -- a testament is the carried
 # belief of exactly the reproducible, named constellation the Constel journey seated.
 let constel = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
 assert constel.ok else "mycelium-testament: the Constel roster a Testament binds to is not GREEN"
 assert constel.out contains "GREEN" else "mycelium-testament: the Constel did not speak its GREEN"
 
-# The Chorus whose quorum a Testament seals stands too — the certificate carries exactly the distinct-voice
+# The Chorus whose quorum a Testament seals stands too -- the certificate carries exactly the distinct-voice
 # attestation the Chorus proves, now bound to a named roster.
 let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-testament: the Chorus quorum a Testament seals is not GREEN"

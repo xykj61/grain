@@ -1,13 +1,13 @@
-# tools/b/buhr_mantra_editor_undo_witness.rish — BUHR Journey 4, Rung 4.
+# tools/b/buhr_mantra_editor_undo_witness.rish -- BUHR Journey 4, Rung 4.
 #
-# Undo is reading an earlier revision, then appending it — never a rewrite. Rung one
+# Undo is reading an earlier revision, then appending it -- never a rewrite. Rung one
 # gave the editor commit, rung three gave it open_lane; both add a node to the
 # append-only Mantra catalog. This rung closes the editor's core surface with undo, the
 # one operation a naive editor implements by deletion. In an append-only log there is no
 # node to delete, so revert recalls the bytes bound at an earlier revision and commits
 # them as the lane's next revision: the reverted content returns as a new head while
 # every revision between still stands, readable. The proof: on a lane at r2 ("beta-two"),
-# revert to r1 ("beta") — the new head r3 recalls the r1 bytes, r2 still recalls
+# revert to r1 ("beta") -- the new head r3 recalls the r1 bytes, r2 still recalls
 # "beta-two" untouched, the graph grows r1 -> r2 -> r3, every other lane unchanged; a
 # revert past the head refuses RevisionUnknown, a revert on a lane with no head refuses
 # LaneUnknown.
@@ -31,7 +31,7 @@ assert selftest.out contains "the r1 bytes returned as r3" else "buhr-j4r4: the 
 assert selftest.out contains "still stands — undo appended, never rewrote" else "buhr-j4r4: the append-only (keeps-the-intermediate) proof is missing"
 assert selftest.out contains "refuses RevisionUnknown" else "buhr-j4r4: the unknown-revision refuse proof is missing"
 
-# Rung one (editor) stays its own green binary — revert is additive beside commit.
+# Rung one (editor) stays its own green binary -- revert is additive beside commit.
 let editor = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_editor_witness.rish 2>&1"]
 assert editor.ok else "buhr-j4r4: the editor (rung one) witness regressed"
 assert editor.out contains "GREEN: BUHR-J4r1" else "buhr-j4r4: the editor lost its green"

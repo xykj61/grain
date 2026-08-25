@@ -1,7 +1,7 @@
-# tools/r/retting_timer_witness.rish — the retting timer, ring one, proven whole.
+# tools/r/retting_timer_witness.rish -- the retting timer, ring one, proven whole.
 #
-# Simple Lovable Complete at witness grade: build · start · status · the
-# READY fold on an aged plant · three refusals by name. Home is a /tmp
+# Simple Lovable Complete at witness grade: build - start - status - the
+# READY fold on an aged plant - three refusals by name. Home is a /tmp
 # fixture (witness law); the shipped default is durable linengrow/.retting.
 #
 # Run from the repository root:
@@ -12,7 +12,7 @@ assert build.ok else "retting: build must pass"
 
 # Ring-two build leg (e214): the Wasm target must keep compiling under a
 # named size roof. Running it end-to-end waits on the WASI dir seam (the
-# rye std carries no preopen walk today — measured, zero prestat mentions).
+# rye std carries no preopen walk today -- measured, zero prestat mentions).
 let wasm = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build linengrow/retting_timer.rye -femit-bin=/tmp/retting_probe.wasm -target wasm32-wasi"]
 assert wasm.ok else "retting: wasm target must build"
 let wsize = run ["sh" "-c" "n=$(wc -c < /tmp/retting_probe.wasm); test $n -le 4194304 && echo wasm_bytes=$n"]

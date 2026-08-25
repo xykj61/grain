@@ -1,8 +1,8 @@
-# tools/d/drey_inbox_witness.rish — the far side keeps a carried frame only once it is proven whole (DREY4).
+# tools/d/drey_inbox_witness.rish -- the far side keeps a carried frame only once it is proven whole (DREY4).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY4.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY4.
 # Design read: active-designing/date/20260814/20260814-022831_drey4-inbox-far-side-accepts-verify-before-keep-exploration.md
-# Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole before a byte is yielded.
+# Stands on: mikrophone/wire.rye (DREY1) -- deframe proves a payload whole before a byte is yielded.
 #
 # mikrophone/inbox.rye gives the receiving hand (the SETU Desk side) its firmware discipline: `accept` deframes a
 # carried frame verify-before-trust FIRST and copies the payload into a bounded inbox ONLY on a clean deframe. The

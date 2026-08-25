@@ -1,18 +1,18 @@
-# tools/al/ales_clipboard_witness.rish — the clipboard, a held span pasted anywhere across masters (ALES25).
+# tools/al/ales_clipboard_witness.rish -- the clipboard, a held span pasted anywhere across masters (ALES25).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES25.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES25.
 # Design read: active-designing/20260814-fill-ales25-lotus-clipboard.md
-# Stands on: lotus/selection.rye (ALES23) — the validated Selection a keeper fills the clipboard from, and its cut for lift-and-hold;
-# lotus/timeline.rye (ALES2) — splice, applied to each destination channel; lotus/pan.rye (ALES10) — the StereoClip whose two
+# Stands on: lotus/selection.rye (ALES23) -- the validated Selection a keeper fills the clipboard from, and its cut for lift-and-hold;
+# lotus/timeline.rye (ALES2) -- splice, applied to each destination channel; lotus/pan.rye (ALES10) -- the StereoClip whose two
 # channels share one length.
 #
 # lotus/clipboard.rye holds a stereo span and pastes it anywhere, repeatably, across masters. The crux: a held span pastes
-# byte-for-byte into ANY master, repeatably, keeping both channels in LOCKSTEP — the clipboard holds its own copy (so it survives any
+# byte-for-byte into ANY master, repeatably, keeping both channels in LOCKSTEP -- the clipboard holds its own copy (so it survives any
 # edit to the source), paste is non-consuming and cross-master (a read, never a move out of it), and every paste passes the same
 # (at, span) to each channel with capacity checked first. The selftest proves: copy_to fills the clipboard and leaves the source
 # untouched; paste drops the held span byte-for-byte in both channels; the same clipboard pastes into a second different master and
 # twice into one master, the held length unchanged; cut_to lifts a span for a move across masters; every edge refuses by name
-# (Empty / BadRange / ClipFull). Purely local — no network, no keys, no funds.
+# (Empty / BadRange / ClipFull). Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_clipboard_witness.rish

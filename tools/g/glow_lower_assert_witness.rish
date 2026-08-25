@@ -1,4 +1,4 @@
-# glow_lower_assert_witness.rish — Glow ?> / ?< TAME assertion runes (STOA88).
+# glow_lower_assert_witness.rish -- Glow ?> / ?< TAME assertion runes (STOA88).
 #
 #   rishi/bin/rishi run tools/g/glow_lower_assert_witness.rish
 
@@ -40,7 +40,7 @@ let run_un = run ["sh" "-c" "${un_bin} >/dev/null 2>&1; echo EXIT:$?"]
 assert run_un.out contains "EXIT:" else "assert-true unwelcome produced no exit"
 assert (run_un.out contains "EXIT:0") == false else "assert-true unwelcome must not exit 0"
 
-# TAME surface gates (own witness — global roster at 256 ceiling).
+# TAME surface gates (own witness -- global roster at 256 ceiling).
 let width = run ["sh" "-c" "grep 'usize' glow/lower_assert.rye glow/rune_assert.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
 assert trim width.out == "0" else "assert modules still carry authored usize"
 let assert_import = run ["sh" "-c" "grep -c '^const assert = std.debug.assert;' glow/lower_assert.rye | tr -d ' '"]

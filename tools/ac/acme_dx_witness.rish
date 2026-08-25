@@ -1,13 +1,13 @@
-# acme_dx_witness.rish — the whole Acme developer arc, proven in one command.
+# acme_dx_witness.rish -- the whole Acme developer arc, proven in one command.
 #
 # The Acme DX design season produced four contracts; the development season made each
 # a live gate. This suite runs all four conformance witnesses together, so a single
-# GREEN means a newcomer's whole arc holds — cold clone through operating a module:
+# GREEN means a newcomer's whole arc holds -- cold clone through operating a module:
 #
-#   onboarding   — tools/o/onboarding_path_witness.rish        (cold start + first green line)
-#   first hour   — tools/f/first_hour_witness.rish             (build your own module, witness it)
-#   interfaces   — tools/i/interfaces_conformance_witness.rish (the reference keeps the shape)
-#   operations   — tools/o/operations_conformance_witness.rish (run·serve·persist·recover·observe)
+#   onboarding   -- tools/o/onboarding_path_witness.rish        (cold start + first green line)
+#   first hour   -- tools/f/first_hour_witness.rish             (build your own module, witness it)
+#   interfaces   -- tools/i/interfaces_conformance_witness.rish (the reference keeps the shape)
+#   operations   -- tools/o/operations_conformance_witness.rish (run-serve-persist-recover-observe)
 #
 #   rishi/bin/rishi run tools/ac/acme_dx_witness.rish
 

@@ -1,6 +1,6 @@
-# hawm0_boot_harvest_onpath_host.rish — STOA277: HAWM0 boot then harvest Bron.
+# hawm0_boot_harvest_onpath_host.rish -- STOA277: HAWM0 boot then harvest Bron.
 #
-# Host-onpath only — needs /dev/kvm (same seat as hawm0_boot_onpath_host).
+# Host-onpath only -- needs /dev/kvm (same seat as hawm0_boot_onpath_host).
 # Boots (or reuses) hawm0, then folds hawm0-boot-meta.txt into hawm-harvest.bron.
 #
 #   rishi/bin/rishi run tools/h/hawm0_boot_harvest_onpath_host.rish

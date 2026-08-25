@@ -1,12 +1,12 @@
-# tools/d/drey_catalog_witness.rish — the content-addressed desk catalog: recordings keyed by content (DREY7).
+# tools/d/drey_catalog_witness.rish -- the content-addressed desk catalog: recordings keyed by content (DREY7).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY7.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY7.
 # Design read: active-designing/date/20260814/20260814-064900_drey7-content-addressed-desk-catalog-exploration.md
-# Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole before a byte is yielded; the wire's own
+# Stands on: mikrophone/wire.rye (DREY1) -- deframe proves a payload whole before a byte is yielded; the wire's own
 # Sha256 is the content address this catalog keys by.
 #
 # mikrophone/catalog.rye grows the desk from DREY6's arrival-order log to a content-addressed store: the same bytes key
-# to one address (idempotent — a recording deposited twice is kept once), distinct bytes key distinct addresses (both
+# to one address (idempotent -- a recording deposited twice is kept once), distinct bytes key distinct addresses (both
 # fetch back byte-for-byte), only proven-whole recordings land (a tampered frame refuses DigestMismatch and the catalog
 # stands unchanged), both bounds refuse CatalogFull before a write, a miss returns null rather than a guess, and clear
 # forgets whole.

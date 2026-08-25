@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e110 — e92 surface census finds four · reserve ch8 seat 128.
+# Equinox e110 -- e92 surface census finds four - reserve ch8 seat 128.
 # Exit 0 only when control reads and limbs honor.
 # No backtick characters in patterns.
 #
@@ -71,7 +71,7 @@ echo "surface_census=honored"
 echo "surface_chapters=2,3,4,7"
 echo "surface_law=record_must_be_findable_by_census"
 
-# --- map: ch8 span · seat 128 reserved for close choir ---
+# --- map: ch8 span - seat 128 reserved for close choir ---
 git ls-files --error-unmatch "$MAP" >/dev/null 2>&1 || {
   echo "reserve=failed"
   echo "verdict=misread"
@@ -115,7 +115,7 @@ echo "ch8_span=113-128"
 echo "seat_128=reserved_close_choir"
 echo "ch8_content_seats=114-127"
 
-# --- almanac: ch7 FULL · ch8 open · seat 113 present ---
+# --- almanac: ch7 FULL - ch8 open - seat 113 present ---
 rg -q '^## Chapter Seven \(16 of 16\)$' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

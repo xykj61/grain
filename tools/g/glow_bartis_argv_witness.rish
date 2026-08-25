@@ -1,4 +1,4 @@
-# glow_bartis_argv_witness.rish — bartis identity gate with @u32 sample from argv (STOA101).
+# glow_bartis_argv_witness.rish -- bartis identity gate with @u32 sample from argv (STOA101).
 #
 # Fixture gate-sample stays argv-free; generator gate-sample-u32 reads process argv.
 #
@@ -12,7 +12,7 @@ assert fixture.ok else "fixture gate-sample.glow failed"
 assert fixture.out contains "GREEN" else "fixture gate-sample.glow not GREEN"
 assert fixture.out contains "gate-sample.glow" else "fixture claim missing path"
 
-# 2. Generator welcome — sample 5 (matches fixture baked constant).
+# 2. Generator welcome -- sample 5 (matches fixture baked constant).
 let gen5 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sample-u32.glow" "5"]
 assert gen5.ok else "gate-sample-u32.glow 5 failed"
 assert gen5.out contains "GREEN" else "gate-sample-u32.glow 5 not GREEN"
@@ -23,15 +23,15 @@ let gen7 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-s
 assert gen7.ok else "gate-sample-u32.glow 7 failed"
 assert gen7.out contains "GREEN" else "gate-sample-u32.glow 7 not GREEN"
 
-# 4. Arity refuse — generator desk without sample.
+# 4. Arity refuse -- generator desk without sample.
 let no_sample = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sample-u32.glow"]
 assert (no_sample.ok == false) else "gate-sample-u32.glow without sample must refuse"
 
-# 5. Parse refuse — bad decimal on the built binary.
+# 5. Parse refuse -- bad decimal on the built binary.
 let bad = run ["sh" "-c" "glow/bin/gate-sample-u32 not-a-u32 >/dev/null 2>&1; echo EXIT:$?"]
 assert bad.out contains "EXIT:2" else "gate-sample-u32 bad decimal must exit 2"
 
-# 6. Emit pin — argv path vs baked fixture.
+# 6. Emit pin -- argv path vs baked fixture.
 let emit_argv = run ["sh" "-c" "glow/bin/glow_run --sample-argv glow/gen/gate-sample-u32.glow"]
 assert emit_argv.ok else "bartis argv-sample lower failed"
 let rye_argv = trim emit_argv.out
@@ -54,7 +54,7 @@ assert trim scan_no_argv.out == "0" else "fixture emit must not read argv"
 let cast_gen = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/sample-u32.glow" "42"]
 assert cast_gen.ok else "sample-u32.glow 42 must stay GREEN beside bartis argv"
 
-# 8. STOA103–104 call-body fixtures + argv generators.
+# 8. STOA103-104 call-body fixtures + argv generators.
 let call_fix = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-double.glow"]
 assert call_fix.ok else "fixture gate-double.glow failed"
 assert call_fix.out contains "GREEN" else "fixture gate-double.glow not GREEN"

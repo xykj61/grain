@@ -1,18 +1,18 @@
-# tools/m/mycelium_cord_knot_witness.rish — the Knot: a bounded Cord ties off its committed past (r1).
+# tools/m/mycelium_cord_knot_witness.rish -- the Knot: a bounded Cord ties off its committed past (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r1 — the crux.
-# The Cord's Dag is statically allocated (cord_max_blocks = 256) — a feature, exactly TigerBeetle's
+# Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r1 -- the crux.
+# The Cord's Dag is statically allocated (cord_max_blocks = 256) -- a feature, exactly TigerBeetle's
 # discipline. Yet a bound reached is a mesh that stops. From TigerBeetle comes the checkpointing insight:
 # fold the committed past into a summary, prune it, continue from the summary as if from genesis.
-# Clean-room: studied, never copied. Grown BESIDE the elder — mycelium/cord.rye and mycelium/fold.rye
+# Clean-room: studied, never copied. Grown BESIDE the elder -- mycelium/cord.rye and mycelium/fold.rye
 # stay green binaries; this composes their public API only.
 #
 # The crux this witness proves: folding new facts onto a sealed Knot yields the byte-identical supply
-# (issued 1000 · taxed 300 · supply 700 · one star) as folding the whole history from empty — checkpointing
+# (issued 1000 - taxed 300 - supply 700 - one star) as folding the whole history from empty -- checkpointing
 # is a storage transform, never a semantic one; the supply never notices where the past was tied off. Both
-# boundaries hold (the Knot at genesis · the full-prefix Knot). Every invariant crosses the cut: a corrupted
+# boundaries hold (the Knot at genesis - the full-prefix Knot). Every invariant crosses the cut: a corrupted
 # Knot refuses KnotCorrupt, a suffix tax past the checkpointed supply refuses Overdraw, a suffix star already
-# sealed refuses StarTaken. Demo keeper seeds only — no real key, no funds, no network, no custody.
+# sealed refuses StarTaken. Demo keeper seeds only -- no real key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 #
@@ -36,7 +36,7 @@ assert selftest.out contains "a checkpointed prefix continued onto its Knot fold
 assert selftest.out contains "the Knot at genesis and the full-prefix Knot both reach supply 700, one star" else "mycelium-cord-knot: boundary claim missing"
 assert selftest.out contains "a corrupted Knot, an overdraw past the cut, and a duplicate star each refuse whole" else "mycelium-cord-knot: refusal claim missing"
 
-# The elder Cord the Knot checkpoints stays a green binary — accrete-never-break, proven by re-running its
+# The elder Cord the Knot checkpoints stays a green binary -- accrete-never-break, proven by re-running its
 # own selftest at this door.
 let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert elder.ok else "mycelium-cord-knot: the elder single-fact Cord is not GREEN"

@@ -1,4 +1,4 @@
-# comlink_receipt_wire_lab.rish — SLC-L2 receipt device-wire QEMU lab (spawn / wait-for).
+# comlink_receipt_wire_lab.rish -- SLC-L2 receipt device-wire QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_receipt_wire_lab.rish

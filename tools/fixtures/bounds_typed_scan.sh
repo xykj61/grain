@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/bounds_typed_scan.sh — declared bounds carry their type.
+# tools/fixtures/bounds_typed_scan.sh -- declared bounds carry their type.
 # Orchestrated by tools/gen/season/bounds_typed_witness.rish.
 #
 # Rule (TAME root 2, and "Named constants" in the supplement): a declared bound
@@ -17,7 +17,7 @@
 # Mode: advisory ratchet. It prints the count every run and never fails, per the
 # tree's own law for a new rule with a small standing population.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
 roster="mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke
         rye/src glow lattice dimeroll scribble lantern cellar amphora mand

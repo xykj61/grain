@@ -1,33 +1,33 @@
-# tools/gen/season/equinox_tigerbeetle_safety_surface_witness.rish — e36 TB safety surface.
+# tools/gen/season/equinox_tigerbeetle_safety_surface_witness.rish -- e36 TB safety surface.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_safety_surface_witness.rish
 #
 # Three TB safety leaves already GREEN alone must GREEN together. Almanac seat 42.
-# Leaf witnesses only — no nested choirs (avoids elder chains). Clean-room study.
+# Leaf witnesses only -- no nested choirs (avoids elder chains). Clean-room study.
 
 say "equinox-tb-safety-surface: Language EN — three TB greens, one choir."
 say "equinox-tb-safety-surface: Style Radiant — the safety surface holds as one."
 say "equinox-tb-safety-surface: Lens TAME — e36 · almanac seat 42 · ch3 10/16."
 
-# Limb 0 — static allocation (leaf)
+# Limb 0 -- static allocation (leaf)
 let static = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_static_alloc_census_witness.rish"]
 say static.out
 assert static.ok else "equinox-tb-safety-surface: static limb failed"
 assert static.out contains "GREEN: tb-static-alloc" else "equinox-tb-safety-surface: static not GREEN"
 
-# Limb 1 — seventy-line bound (leaf)
+# Limb 1 -- seventy-line bound (leaf)
 let seventy = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_seventy_line_census_witness.rish"]
 say seventy.out
 assert seventy.ok else "equinox-tb-safety-surface: seventy limb failed"
 assert seventy.out contains "GREEN: tb-seventy-line" else "equinox-tb-safety-surface: seventy not GREEN"
 
-# Limb 2 — control flow / no recursion (leaf)
+# Limb 2 -- control flow / no recursion (leaf)
 let flow = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_control_flow_census_witness.rish"]
 say flow.out
 assert flow.ok else "equinox-tb-safety-surface: flow limb failed"
 assert flow.out contains "GREEN: tb-control-flow" else "equinox-tb-safety-surface: flow not GREEN"
 
-# Refuse — absent clone path (any of the three scans)
+# Refuse -- absent clone path (any of the three scans)
 let refuse = run ["sh" "tools/fixtures/tigerbeetle_static_alloc_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-safety-surface: absent clone must fail"

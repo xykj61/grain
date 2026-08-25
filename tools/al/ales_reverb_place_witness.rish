@@ -1,13 +1,13 @@
-# tools/al/ales_reverb_place_witness.rish — reverb_place: reverberate the master WET, then SEAT the reverberated result in the field — how WIDE it sits and WHERE, in one call (ALES214).
+# tools/al/ales_reverb_place_witness.rish -- reverb_place: reverberate the master WET, then SEAT the reverberated result in the field -- how WIDE it sits and WHERE, in one call (ALES214).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES214.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES214.
 # Design read: active-designing/date/20260815/20260815-125233_fill-ales214-lotus-reverb-place.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, unchanged, its StereoReverbPresetError forwarded whole),
-# lotus/stereo_width.rye (ALES211 — the width control, encode/scale-the-side/decode, run over the wet, its BadWidth reused), lotus/power.rye
-# (ALES11 — the equal-power split split(pos, den), reused verbatim), lotus/timeline.rye (ALES2 — the Clip and its proven gain), lotus/pan.rye
-# (ALES10 — the StereoClip, its balance invariant, the fold bound max_pan_den), lotus/clock.rye (ALES5 — the validated sample clock). ALES212
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, unchanged, its StereoReverbPresetError forwarded whole),
+# lotus/stereo_width.rye (ALES211 -- the width control, encode/scale-the-side/decode, run over the wet, its BadWidth reused), lotus/power.rye
+# (ALES11 -- the equal-power split split(pos, den), reused verbatim), lotus/timeline.rye (ALES2 -- the Clip and its proven gain), lotus/pan.rye
+# (ALES10 -- the StereoClip, its balance invariant, the fold bound max_pan_den), lotus/clock.rye (ALES5 -- the validated sample clock). ALES212
 # answered how wide (reverb_width); ALES213 answered where (reverb_pan); a keeper mixing a stereo master reaches for both at once, and reverb_place
-# is that single seating — reverberate, then set the wet image's width AND position.
+# is that single seating -- reverberate, then set the wet image's width AND position.
 #
 # lotus/reverb_place.rye composes three proven stages with NO new audio arithmetic: validate the width AND the pan first (a bad fraction refuses
 # BadWidth or BadPan before the reverb writes, so the master is left DRY), reverberate wet in place (ALES191's stereo_reverb_preset, unchanged), set

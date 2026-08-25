@@ -1,22 +1,22 @@
-# tools/cr/crypto_kumara_pq_sealed_witness.rish — the POST-QUANTUM sealed-to-identity door: a message sealed TO a named post-quantum identity AND signed
+# tools/cr/crypto_kumara_pq_sealed_witness.rish -- the POST-QUANTUM sealed-to-identity door: a message sealed TO a named post-quantum identity AND signed
 # BY a named post-quantum identity, so one frame carries both confidentiality and provenance, hardened against the quantum day. The post-quantum sibling
 # of crypto/kumara_sealed.rye, double-seated beside it. It composes only GREEN rungs (crypto/mlkem_sealed.rye for the confidentiality,
 # crypto/kumara_pq_identity.rye for the provenance, crypto/blake2b.rye for the signed digest), authoring no new cryptography (Season G).
 #
-# Season: crypto — where the classical door seals to an Ed25519 identity through the Ed25519→X25519 map (one key doing two jobs), this seals to the
-# identity's ML-KEM half and signs with the sender's ML-DSA half — the two lattice keys crypto/kumara_pq_identity.rye carries. Where the classical
+# Season: crypto -- where the classical door seals to an Ed25519 identity through the Ed25519->X25519 map (one key doing two jobs), this seals to the
+# identity's ML-KEM half and signs with the sender's ML-DSA half -- the two lattice keys crypto/kumara_pq_identity.rye carries. Where the classical
 # sealed box is anonymous, this door adds what the dual-key shape makes reachable and one lattice key cannot: a message only the named recipient can
 # read, provably from the named sender. Opened verify-before-trust: the sender's signature over a BLAKE2b-512 digest of the inner sealed frame is
 # checked, and refused unless it is the sender the reader named, before the ciphertext is ever decapsulated.
 # Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md ("the coming kumara_pq_sealed seals to the identity's ML-KEM half,
-# and — where provenance is also wanted — signs the frame with the identity's ML-DSA key"). Clean-room: FIPS 203/204 are public NIST standards; the
+# and -- where provenance is also wanted -- signs the frame with the identity's ML-DSA key"). Clean-room: FIPS 203/204 are public NIST standards; the
 # framing is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #
 # crypto/kumara_pq_sealed.rye is proven at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a
 # confidential-and-authenticated round-trip across five plaintext lengths recovering both the plaintext and the verified sender, the message provably
-# not the plaintext, and four refusals — a wrong recipient (OpenFailed), a wrong expected sender (UnexpectedSigner, before any decapsulation), a
-# tampered inner ciphertext (BadSignature), and a tampered signature (BadSignature) — plus bad magic and truncation. Each composed half is
-# doubly-oracle-proven one rung down. Purely local — no key held, no network, no funds, no real device.
+# not the plaintext, and four refusals -- a wrong recipient (OpenFailed), a wrong expected sender (UnexpectedSigner, before any decapsulation), a
+# tampered inner ciphertext (BadSignature), and a tampered signature (BadSignature) -- plus bad magic and truncation. Each composed half is
+# doubly-oracle-proven one rung down. Purely local -- no key held, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_kumara_pq_sealed_witness.rish

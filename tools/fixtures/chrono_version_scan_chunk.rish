@@ -1,4 +1,4 @@
-# chrono_version_scan_chunk.rish — scan one roster chunk (≤256 paths).
+# chrono_version_scan_chunk.rish -- scan one roster chunk (≤256 paths).
 #
 # Reads tools/.cache/chrono-chunk.txt (one path per line). Driver:
 #   tools/fixtures/chrono_version_scan.rish

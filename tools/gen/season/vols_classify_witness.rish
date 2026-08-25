@@ -1,21 +1,21 @@
-# tools/gen/season/vols_classify_witness.rish — CION VOLS Journey 13 r2, sites classified.
+# tools/gen/season/vols_classify_witness.rish -- CION VOLS Journey 13 r2, sites classified.
 #
 #   rishi/bin/rishi run tools/gen/season/vols_classify_witness.rish
 #
-# r1 proved the census is complete by construction. r2 proves each site is CLASSIFIED —
+# r1 proved the census is complete by construction. r2 proves each site is CLASSIFIED --
 # by kind (prose relabel-target vs kept witness handle) and by guard (already-watched vs
-# gap) — so the molt (LOWE) knows exactly what to touch and the guard knows exactly what
+# gap) -- so the molt (LOWE) knows exactly what to touch and the guard knows exactly what
 # to grow to cover. Two tools compose: vols_guardlist_extract.sh derives the guarded set
 # from the guard witness in force; vols_classify_scan.sh classifies each survey site
 # against it.
 #
 # The crux invariant: because the CION labeling guard passes GREEN, every guarded file
-# carries no bare ordinal, so no site can sit in a guarded file — guarded_sites is 0 by
+# carries no bare ordinal, so no site can sit in a guarded file -- guarded_sites is 0 by
 # construction. The classifier PROVES it (and would report a real fault if a guarded file
-# drifted), rather than assuming it. The gap set — prose sites no guard yet watches — is
+# drifted), rather than assuming it. The gap set -- prose sites no guard yet watches -- is
 # exactly what LOWE grows the guard to cover.
 #
-# Fixture tree: tools/fixtures/vols_classify_tree/ — a prose site (livemod/README.md), a
+# Fixture tree: tools/fixtures/vols_classify_tree/ -- a prose site (livemod/README.md), a
 # clean guarded surface (livemod/core.rye), and a kept witness-handle site whose FILENAME
 # carries the ordinal (tools/thing_lap3.rish).
 #
@@ -26,14 +26,14 @@ say "vols-classify: Language EN — CION VOLS Journey 13 r2, the survey sites cl
 say "vols-classify: Style Radiant — name each site's kind and whether a guard yet watches it."
 say "vols-classify: Lens TAME — guarded is derived from the guard in force; guarded_sites is 0 by construction, and proven so."
 
-# The guarded set derives from the guard witness itself — a known swept file appears,
+# The guarded set derives from the guard witness itself -- a known swept file appears,
 # so the extraction reads the real guard rather than a hand-copy.
 let guardlist = run ["sh" "tools/fixtures/vols_guardlist_extract.sh" "tools/gen/season/cion_module_labeling_witness.rish"]
 assert guardlist.ok else "vols-classify: the guardlist extraction failed to run"
 assert guardlist.out contains "mandate/README.md" else "vols-classify: the derived guardlist is missing a known swept surface"
 assert guardlist.out contains "scribble/scribble.rye" else "vols-classify: the derived guardlist is missing a known swept surface"
 
-# Positive fixture — a clean file is guarded (never a site); the prose README is a gap;
+# Positive fixture -- a clean file is guarded (never a site); the prose README is a gap;
 # the witness-handle file is a kept handle; guarded_sites is 0.
 let ok = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_ok.txt"]
 say ok.out
@@ -46,7 +46,7 @@ assert ok.out contains "guarded_sites=0" else "vols-classify: a site was wrongly
 assert ok.out contains "gap=tools/fixtures/vols_classify_tree/livemod/README.md" else "vols-classify: the prose gap was not named"
 assert ok.out contains "handle=tools/fixtures/vols_classify_tree/tools/thing_lap3.rish" else "vols-classify: the witness handle was not named"
 
-# Negative fixture — put the prose site's own file in the guardlist. A guarded file that
+# Negative fixture -- put the prose site's own file in the guardlist. A guarded file that
 # still carries a bare ordinal is drift; the classifier must bite it (guarded_sites=1).
 let neg = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_neg.txt"]
 say neg.out
@@ -54,7 +54,7 @@ assert neg.out contains "guarded_sites=1" else "vols-classify: the classifier fa
 assert neg.out contains "verdict=drift" else "vols-classify: a drifted guarded file did not raise the verdict"
 assert (neg.ok == false) else "vols-classify: the drift verdict and status disagree"
 
-# Report the LIVE classification informationally — the real map LOWE reads: how many of
+# Report the LIVE classification informationally -- the real map LOWE reads: how many of
 # the survey's sites are kept witness handles, how many are prose gaps to relabel, and
 # the invariant that no guarded file drifted (guarded_sites=0).
 let live_totals = run ["sh" "-c" "sh tools/fixtures/vols_guardlist_extract.sh tools/gen/season/cion_module_labeling_witness.rish > /tmp/vols_live_guardlist.txt && sh tools/fixtures/vols_classify_scan.sh . /tmp/vols_live_guardlist.txt | grep -E '^(sites|handles|prose_gaps|guarded_sites)='"]

@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_duplicate_witness.rish — stereo_duplicate: the growth gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES120).
+# tools/al/ales_stereo_duplicate_witness.rish -- stereo_duplicate: the growth gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES120).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES120.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES120.
 # Design read: active-designing/date/20260815/20260815-020930_fill-ales120-lotus-stereo-duplicate.md
-# Stands on: lotus/duplicate.rye (ALES112 — the mono growth gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/stereo_cut.rye (ALES117 — the stereo span-remove used to prove the inverse law), lotus/timeline.rye (ALES2 — the Clip, its max_clip bound, and the EditError reused whole),
-# lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time;
+# Stands on: lotus/duplicate.rye (ALES112 -- the mono growth gesture run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/stereo_cut.rye (ALES117 -- the stereo span-remove used to prove the inverse law), lotus/timeline.rye (ALES2 -- the Clip, its max_clip bound, and the EditError reused whole),
+# lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time;
 # repeating a bar carries it in both speakers at once. This rung carries ALES112's duplicate into stereo the way ALES117 carried cut, ALES118 crop, and ALES119 move: run the proven mono
-# duplicate on each channel with the same start and count. Where stereo_cut removes a span and stereo_crop keeps only a span, stereo_duplicate repeats one span — the growth side of the family.
+# duplicate on each channel with the same start and count. Where stereo_cut removes a span and stereo_crop keeps only a span, stereo_duplicate repeats one span -- the growth side of the family.
 #
 # lotus/stereo_duplicate.rye inserts a second copy of [start, start+count) immediately after the span in both channels, validating BOTH channels before either is mutated (because mono
 # duplicate can fault only with BadRange or ClipFull and the channels enter equal-length over the same fixed buffer, the three checks are made once against the shared length up front) so

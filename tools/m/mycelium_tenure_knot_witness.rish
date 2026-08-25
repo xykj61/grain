@@ -1,18 +1,18 @@
-# tools/m/mycelium_tenure_knot_witness.rish — the Tenure reads across a Knot (r3).
+# tools/m/mycelium_tenure_knot_witness.rish -- the Tenure reads across a Knot (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the contested-name verdict · rung r3.
-# Rung 1 resolved a whole Cord Dag into a namespace verdict — who holds each name, whom the agreed
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the contested-name verdict - rung r3.
+# Rung 1 resolved a whole Cord Dag into a namespace verdict -- who holds each name, whom the agreed
 # order turned away. Yet a namespace a family runs for years does not carry its whole past unbroken:
 # the Knot ties off a committed prefix into a sealed FoldState so a bounded Dag runs forever, and new
 # facts continue onto that seal. This rung makes the Tenure's corpus a Knot plus its live suffix.
 #
 # The crux this witness proves: a name won inside a sealed checkpoint stays held when new facts
-# continue the log — the holder is the SAME keeper whether the winning reservation lives in a full Cord
+# continue the log -- the holder is the SAME keeper whether the winning reservation lives in a full Cord
 # or a sealed Knot, and a later contestant loses that name across the cut exactly as within one
 # unbroken resolution (a lawful no-op). The integrity gate holds across the cut three ways: a corrupt
 # Knot refuses before a fact is folded, a tampered suffix fact refuses IdentityRefused, and an
 # overdrawing suffix refuses Overdraw against the sealed supply. Composes tenure.rye + cord_knot.rye +
-# cord.rye + fold.rye public API only, editing no elder's behavior. Demo keeper seeds only — no real
+# cord.rye + fold.rye public API only, editing no elder's behavior. Demo keeper seeds only -- no real
 # key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
@@ -39,7 +39,7 @@ assert selftest.out contains "each refuse whole" else "mycelium-tenure-knot: int
 assert selftest.out contains "holder never drifts" else "mycelium-tenure-knot: crux GREEN line missing"
 
 # The Tenure whose verdict this rung carries across a checkpoint, and the Knot that ties off the
-# committed prefix, both stand at the door — their own selftests prove the machinery r3 rests on.
+# committed prefix, both stand at the door -- their own selftests prove the machinery r3 rests on.
 let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
 assert tenure.ok else "mycelium-tenure-knot: the Tenure r1 the checkpoint carries is not GREEN"
 assert tenure.out contains "GREEN" else "mycelium-tenure-knot: the Tenure r1 did not speak its GREEN"

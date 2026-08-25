@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# pond_sixbar_bus_doors.sh — three-door session-bus measure (Claude 210800).
+# pond_sixbar_bus_doors.sh -- three-door session-bus measure (Claude 210800).
 # Usage:
 #   ./tools/fixtures/pond_sixbar_bus_doors.sh
 #   ./tools/fixtures/pond_sixbar_bus_doors.sh --write-dir DIR
-# Prints one line: bus_env=… bus_socket=… bus_netns=…
+# Prints one line: bus_env=... bus_socket=... bus_netns=...
 # With --write-dir, also writes bus_env / bus_socket / bus_netns one-word files.
 set -euo pipefail
 

@@ -1,11 +1,11 @@
-# tools/g/gism_j5_corpus_real_ember_witness.rish — GISM Journey 5 (Real corpora), Rung 2.
+# tools/g/gism_j5_corpus_real_ember_witness.rish -- GISM Journey 5 (Real corpora), Rung 2.
 #
 # Season 2, Yield: the craft voice stands on real data. Ember's demo read a catalog
 # of invented line counts; this rung reads a catalog derived at compile time from
 # three real embedded tree files (greet.rye, tally/stack.rye, one_clock_witness.rish),
 # every count measured from the real bytes. The witness cross-checks Ember's
-# sum_lines against an independent `wc -l` of the same real files — two tools, one
-# answer — so the reading is bound to the tree, not to a literal. The demo reading
+# sum_lines against an independent `wc -l` of the same real files -- two tools, one
+# answer -- so the reading is bound to the tree, not to a literal. The demo reading
 # over pinned_catalog (corpus_query) is re-run untouched; the refactor was additive.
 #
 # Run from the repository root:
@@ -30,7 +30,7 @@ assert selftest.out contains "model not allowed refused" else "gism-j5r2: allow-
 assert selftest.out contains "unknown op refused" else "gism-j5r2: unknown-op refusal missing (would be a fake answer)"
 
 # Independent cross-check: total the real files' lines directly (awk NR across all
-# three) and prove Ember's derived sum_lines matches — the Rye reading bound to the
+# three) and prove Ember's derived sum_lines matches -- the Rye reading bound to the
 # tree by a second tool. Two captured numbers compared as-is, no interpolation.
 let expected = run ["sh" "-c" "awk 'END{print NR}' manual/tutorials/greet.rye tally/stack.rye tools/o/one_clock_witness.rish"]
 assert expected.ok else "gism-j5r2: awk line-total cross-check failed to run"
@@ -38,7 +38,7 @@ let reported = run ["sh" "-c" "${bin} selftest 2>&1 | grep -oE 'truth [0-9]+' | 
 assert reported.ok else "gism-j5r2: could not read Ember's reported sum"
 assert expected.out == reported.out else "gism-j5r2: Ember sum_lines disagrees with awk line-total over the real files"
 
-# The demo reading over pinned_catalog must still be GREEN — the answer_over refactor is additive.
+# The demo reading over pinned_catalog must still be GREEN -- the answer_over refactor is additive.
 let demo_bin = "pond/bin/corpus-query"
 let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r2: corpus_query (demo) rebuild failed after refactor"

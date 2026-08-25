@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_zero_cross_witness.rish — stereo_zero_cross: the zero-crossing counter carried into stereo with ONE SHARED BAND and TWO INDEPENDENT COUNTERS, the suite's first stereo analysis rung over the hysteresis comparator (ALES145).
+# tools/al/ales_stereo_zero_cross_witness.rish -- stereo_zero_cross: the zero-crossing counter carried into stereo with ONE SHARED BAND and TWO INDEPENDENT COUNTERS, the suite's first stereo analysis rung over the hysteresis comparator (ALES145).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES145.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES145.
 # Design read: active-designing/date/20260815/20260815-044940_fill-ales145-lotus-stereo-zero-cross.md
-# Stands on: lotus/zero_cross.rye (ALES93 — the mono zero-crossing counter run once per channel, its from-silence count_crossings, its carried ZeroCounter, its ZeroCrossError, all reused whole), lotus/schmitt.rye (ALES92 —
-# the hysteresis comparator whose flips these count through ALES93, and its precheck band-and-span law), lotus/stereo_meter.rye (ALES17 — the stereo analysis shape this mirrors, two mono readers with per-channel accessors),
-# lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples). A Lotus master is a StereoClip whose defining invariant is that
+# Stands on: lotus/zero_cross.rye (ALES93 -- the mono zero-crossing counter run once per channel, its from-silence count_crossings, its carried ZeroCounter, its ZeroCrossError, all reused whole), lotus/schmitt.rye (ALES92 --
+# the hysteresis comparator whose flips these count through ALES93, and its precheck band-and-span law), lotus/stereo_meter.rye (ALES17 -- the stereo analysis shape this mirrors, two mono readers with per-channel accessors),
+# lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples). A Lotus master is a StereoClip whose defining invariant is that
 # left and right hold the same length. Where ALES144 carried the Schmitt trigger's WRITE into stereo, this rung carries its READ: two counters reading two channels, writing not one sample. A zero crossing in the hysteresis
-# sense is a rail flip, so counting flips reads how many times each channel genuinely crossed past the noise the band suppresses — the oldest activity / pitch estimate there is. Each channel carries its own counter (rail,
-# count, previous-rail memory), so the two counts are independent — an identical-channel master reading equal counts, a busier channel counting more — and a two-piece StereoZeroCounter count equals the whole counted once on
+# sense is a rail flip, so counting flips reads how many times each channel genuinely crossed past the noise the band suppresses -- the oldest activity / pitch estimate there is. Each channel carries its own counter (rail,
+# count, previous-rail memory), so the two counts are independent -- an identical-channel master reading equal counts, a busier channel counting more -- and a two-piece StereoZeroCounter count equals the whole counted once on
 # both channels, each seam flip counted exactly once, ALES93's carried-state crux made stereo.
 #
 # lotus/stereo_zero_cross.rye validates the shared band and length once against ALES93's own precheck before either channel is read (BadThreshold on an illegal band, BadRange on a span outside the samples, CountFull on the

@@ -1,21 +1,21 @@
-# tools/f/fora_reconfig_witness.rish — change the constellation safely, through joint consensus (FORA13).
+# tools/f/fora_reconfig_witness.rish -- change the constellation safely, through joint consensus (FORA13).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA13. Design read: active-designing/date/20260814/20260814-055235_fora13-constel-joint-consensus-reconfig.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every vote: a reconfiguration's replies deframe at the
+# Law kin: .claude/rules/placeholder-ship-names.md -- the border guards every vote: a reconfiguration's replies deframe at the
 # naming-law border (wire.deframe), so a real address can never enter a transition even as a present token.
 #
 # constel/reconfig.rye closes the blind spot FORA12's log left open: the fixed-roster no-fork proof holds only while the
-# membership never changes. Reconfiguration is the single hardest move a consensus protocol makes — during a switch from an old
+# membership never changes. Reconfiguration is the single hardest move a consensus protocol makes -- during a switch from an old
 # config C_old to a new one C_new, two disjoint groups (one under each config) could each form a lawful majority and commit
 # conflicting values, a fork born of the change itself. Joint consensus closes it with one bounded rule that spends the FORA9
 # intersection lemma directly: a transition decision requires a strict majority in BOTH C_old and C_new. Because any two strict
-# majorities of a config intersect, a joint decision overlaps any pure-old and any pure-new decision — so the reconfiguration
+# majorities of a config intersect, a joint decision overlaps any pure-old and any pure-new decision -- so the reconfiguration
 # inherits the whole no-fork guarantee. The selftest proves: a joint majority in both configs commits; an old-only or new-only
 # majority refuses NoJointMajority; NO FORK ACROSS THE SWITCH, enumerated directly (every joint-majority yes-set intersects
 # every pure-old majority inside old and every pure-new majority inside new); DoubleVote, NotInEitherConfig, and EmptyConfig
 # each refuse by name; the border guards every vote (VowelPresent at hear); and a full transition over eight stays bounded.
-# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_reconfig_witness.rish

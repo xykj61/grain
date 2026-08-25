@@ -1,9 +1,9 @@
-# tools/b/buhr_mantra_browser_witness.rish — BUHR Journey 2, Rung 1.
+# tools/b/buhr_mantra_browser_witness.rish -- BUHR Journey 2, Rung 1.
 #
 # The first Realidream-branded Pond app, proven on metal: a Mantra browser reads a
 # BoltCatalog and renders its append-only log as a readable revision graph. The
-# reading is genuine — real peer/bolt grouping, real per-path lanes, real revision
-# chains carrying real content digests — composed over Mantra's public catalog API
+# reading is genuine -- real peer/bolt grouping, real per-path lanes, real revision
+# chains carrying real content digests -- composed over Mantra's public catalog API
 # only. Journey 1 (Quin's voices) is untouched.
 #
 # Run from the repository root:

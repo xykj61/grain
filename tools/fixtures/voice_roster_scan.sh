@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/voice_roster_scan.sh — the standing voice, declared once everywhere.
+# tools/fixtures/voice_roster_scan.sh -- the standing voice, declared once everywhere.
 # Orchestrated by tools/gen/season/voice_roster_witness.rish.
 #
 # First resident: the voice-variant system proven on our own tree before it is
@@ -8,7 +8,7 @@
 # checked here on purpose: those are Tier 2 testimony naming who actually wrote
 # them, and a voice change must never falsify authorship.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
 want="$1"
 fail=0

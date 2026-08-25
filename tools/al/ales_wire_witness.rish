@@ -1,16 +1,16 @@
-# tools/al/ales_wire_witness.rish — a buffer of PCM samples crosses a self-describing local audio frame, verify-before-trust (ALES0).
+# tools/al/ales_wire_witness.rish -- a buffer of PCM samples crosses a self-describing local audio frame, verify-before-trust (ALES0).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES0.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES0.
 # Design read: active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md
-# Idiom kin: constel/wire.rye (FORA3) · mikrophone/wire.rye (DREY1) — the same self-describing, Sha256-sealed frame the tree
-# already trusts, now carrying audio. The cable kind (XLR · USB-C · guitar) is a ROUTING TAG only: this rung asserts no
-# electrical fact — voltage, impedance, pinout, and audio-interface hardware stay a PAUSED hardware-research round.
+# Idiom kin: constel/wire.rye (FORA3) - mikrophone/wire.rye (DREY1) -- the same self-describing, Sha256-sealed frame the tree
+# already trusts, now carrying audio. The cable kind (XLR - USB-C - guitar) is a ROUTING TAG only: this rung asserts no
+# electrical fact -- voltage, impedance, pinout, and audio-interface hardware stay a PAUSED hardware-research round.
 #
-# lotus/wire.rye frames a bounded block of i16 PCM samples into one self-describing layout (magic LOTS · version · cable ·
-# payload_len · Sha256 digest · payload) and deframes verify-before-trust. The selftest proves: the block round-trips
+# lotus/wire.rye frames a bounded block of i16 PCM samples into one self-describing layout (magic LOTS - version - cable -
+# payload_len - Sha256 digest - payload) and deframes verify-before-trust. The selftest proves: the block round-trips
 # byte-for-byte on each cable tag; silence and full-scale i16 min/max samples carry exactly; a torn half-sample refuses
 # PartialSample at the audio border; a flipped byte refuses DigestMismatch; and an unknown cable, overlong, truncated, short,
-# or bad-magic frame each refuses by name. Purely local — no network, no keys, no funds, no real device.
+# or bad-magic frame each refuses by name. Purely local -- no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_wire_witness.rish

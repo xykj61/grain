@@ -1,4 +1,4 @@
-# chrono_version_scan.sh — roster helper for chrono_version_scan.rish (glob expansion).
+# chrono_version_scan.sh -- roster helper for chrono_version_scan.rish (glob expansion).
 #!/usr/bin/env sh
 set -eu
 for f in \

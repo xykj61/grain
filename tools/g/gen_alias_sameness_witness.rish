@@ -1,11 +1,11 @@
-# tools/g/gen_alias_sameness_witness.rish — beta leg 2's proof: aliases proven.
+# tools/g/gen_alias_sameness_witness.rish -- beta leg 2's proof: aliases proven.
 #
 # The Generator Season kept every elder path as an accrete shim relaying its
 # gen/-homed twin. This witness proves the aliases two ways:
-#   shape — every elder that shares a basename with a gen/ file must be a
+#   shape -- every elder that shares a basename with a gen/ file must be a
 #           lawful shim: it names its twin's path and stays small (roof 16
-#           lines — shims run four to eight; the roof leaves accretion room)
-#   sameness — one pure pair runs both ways and the outputs must match
+#           lines -- shims run four to eight; the roof leaves accretion room)
+#   sameness -- one pure pair runs both ways and the outputs must match
 #           byte-for-byte (sundial: read-only meter, safe to run twice)
 #
 # Run from the repository root:
@@ -18,9 +18,9 @@ assert shape.out contains "bad=0" else "gen_alias: zero shim-shape faults"
 
 # Measured finding (e205): the shim's `say r.out` relay appends exactly one
 # trailing newline (39 lines vs 38 on sundial; the diff is one blank line).
-# Sameness is therefore held modulo that one documented relay cost — the
+# Sameness is therefore held modulo that one documented relay cost -- the
 # compare drops trailing blank lines on both sides and nothing else.
-# Second owned red (e205): the first cut used backslash-escaped quotes —
+# Second owned red (e205): the first cut used backslash-escaped quotes --
 # rishi treats backslash as no escape at all (the standing rishi law), so
 # sh received garbage tokens; this cut carries no quotes and no braces.
 let same = run ["sh" "-c" "rishi/bin/rishi run tools/s/sundial.rish 2>/dev/null | awk 'NF{p=NR} {l[NR]=$0} END{for(i=1;i<=p;i++) print l[i]}' > /tmp/gasw_e; rishi/bin/rishi run tools/gen/season/sundial.rish 2>/dev/null | awk 'NF{p=NR} {l[NR]=$0} END{for(i=1;i<=p;i++) print l[i]}' > /tmp/gasw_t; cmp -s /tmp/gasw_e /tmp/gasw_t"]

@@ -1,15 +1,15 @@
-# tame_style_scan_bans.rish — TAME ban patterns over the scan roster (native bans half).
+# tame_style_scan_bans.rish -- TAME ban patterns over the scan roster (native bans half).
 #
 # File enumeration uses find (list-dir does not recurse). Fixed-string and
-# compound-assert bans use grep over the find set — a thin host seam for
+# compound-assert bans use grep over the find set -- a thin host seam for
 # multi-file greps. Advise materializes the roster in-process again under
 # max_list_items=1024 (512 on 20260724 for advise; 1024 on 20260725 for doorway).
-# Mode router: tools/t/tame_style_scan.rish · advise: tools/t/tame_style_scan_advise.rish
+# Mode router: tools/t/tame_style_scan.rish - advise: tools/t/tame_style_scan_advise.rish
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan_bans.rish
 #
-# ) == error. / ) != error. skip // comment lines (e145) — a /// that names the
+# ) == error. / ) != error. skip // comment lines (e145) -- a /// that names the
 # ban is not a violation. Planted pair:
 #   tools/t/tame_style_ban_err_eq_comment_selftest.rish
 
@@ -71,8 +71,8 @@ if compound.out != "" then say "BAN [compound assert — split so the failing ha
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
 
-# Glow TAME overflow seat (STOA96 / STOA105 / STOA117): lower_shape ·
-# lower_bartis · lower_barket ride one-file ban passes beside the shell
+# Glow TAME overflow seat (STOA96 / STOA105 / STOA117): lower_shape -
+# lower_bartis - lower_barket ride one-file ban passes beside the shell
 # roster greps above (files outside the historic find roots).
 let shape_lower = "glow/lower_shape.rye"
 assert ((read-file shape_lower) contains ") == error.") == false else "TAME ban on lower_shape: ) == error."
@@ -116,7 +116,7 @@ assert ((read-file barket) contains "dbg(") == false else "TAME ban on lower_bar
 let barket_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_barket.rye 2>/dev/null | head -8"]
 assert barket_compound.out == "" else "TAME ban on lower_barket: compound assert"
 
-# tools/*.py — blocking at zero (Python-at-seam law). Named exempts live in
+# tools/*.py -- blocking at zero (Python-at-seam law). Named exempts live in
 # tools/fixtures/tools_py_exempt.txt (reason comment per entry). cast_a_chart.py
 # stays outside tools/ and needs no entry. Negative selftest:
 # tools/t/tame_style_tools_py_ban_selftest.rish

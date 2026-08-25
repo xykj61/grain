@@ -1,12 +1,12 @@
-# tools/al/ales_flanger_witness.rish — the flanger: a short modulated delay with a feedback path (ALES73).
+# tools/al/ales_flanger_witness.rish -- the flanger: a short modulated delay with a feedback path (ALES73).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES73.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES73.
 # Design read: active-designing/date/20260814/20260814-200314_fill-ales73-lotus-flanger-feedback-modulated-delay.md
-# Stands on: lotus/chorus.rye (ALES71 — the triangle-LFO driver `triangle_delay_at`); lotus/echo.rye (ALES66 — the feedback delay whose
-# in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte); lotus/glide.rye (ALES70 — the
-# `glide_scale` fixed-point resolution and the interpolation read); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, max_clip, saturate).
+# Stands on: lotus/chorus.rye (ALES71 -- the triangle-LFO driver `triangle_delay_at`); lotus/echo.rye (ALES66 -- the feedback delay whose
+# in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte); lotus/glide.rye (ALES70 -- the
+# `glide_scale` fixed-point resolution and the interpolation read); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, max_clip, saturate).
 #
-# lotus/flanger.rye is where the modulated-delay wing and the feedback wing meet — a short modulated delay whose delayed voice is FED BACK
+# lotus/flanger.rye is where the modulated-delay wing and the feedback wing meet -- a short modulated delay whose delayed voice is FED BACK
 # into itself. It is the family's first rung that adds a genuinely new element (feedback) rather than only changing the mix. It reuses ALES71's
 # triangle_delay_at driver and ALES70's fractional interpolation, yet reads them OFF THE LIVE BUFFER (ALES66's feedback) rather than a frozen
 # snapshot: because the delay is at least one whole sample both neighbours sit strictly before i, so the read hears prior OUTPUT safely in
@@ -14,7 +14,7 @@
 # periodic driver reduces to the fixed one at rest); a hand-computed modulated-feedback read matches exactly (reading the outputs just
 # written); a loud constructive sum saturates rather than wraps; a period not a positive multiple of four refuses BadPeriod, a swing below one
 # whole sample BadDepth, a swing top past max_clip BadDelay, a feedback at unity or a zero denominator BadFeedback, an out-of-range span
-# BadRange. Purely local — no lookahead beyond the in-place feedback read, no network, no keys, no funds, no real device, no sample rate.
+# BadRange. Purely local -- no lookahead beyond the in-place feedback read, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_flanger_witness.rish
@@ -39,7 +39,7 @@ say "ales-flanger: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-flanger' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-flanger: selftest did not print the GREEN ales-flanger line"
 
-# This rung's zero-depth case equals ALES66's echo at its centre delay byte-for-byte over its public API — re-prove the feedback delay still
+# This rung's zero-depth case equals ALES66's echo at its centre delay byte-for-byte over its public API -- re-prove the feedback delay still
 # stands green beside it.
 let echo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=lotus/bin/echo && lotus/bin/echo selftest 2>&1 | grep -q 'GREEN ales-echo' && echo yes"]
 assert (trim echo.out) == "yes" else "ales-flanger: the ALES66 feedback delay regressed under the flanger"

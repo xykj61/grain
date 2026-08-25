@@ -1,14 +1,14 @@
-# tools/al/ales_crop_witness.rish — crop: keep the named span and drop the rest, the exact complement of ALES2's cut (ALES111).
+# tools/al/ales_crop_witness.rish -- crop: keep the named span and drop the rest, the exact complement of ALES2's cut (ALES111).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES111.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES111.
 # Design read: active-designing/date/20260815/20260815-011317_fill-ales111-lotus-crop.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the complement law),
-# lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove that dropping samples never raises the peak). ALES2's cut REMOVES the named span and keeps everything around
-# it (the clip SHRINKS by the span); crop KEEPS the named span and removes everything else (the clip becomes the span) — the Trim to Selection / Crop button every editor ships
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the complement law),
+# lotus/meter.rye (ALES13 -- the peak/RMS meter, used only to prove that dropping samples never raises the peak). ALES2's cut REMOVES the named span and keeps everything around
+# it (the clip SHRINKS by the span); crop KEEPS the named span and removes everything else (the clip becomes the span) -- the Trim to Selection / Crop button every editor ships
 # (circle the one phrase worth keeping, drop the rest). Naming it beside cut completes the pair: remove the span, or keep only it.
 #
 # lotus/crop.rye slides the kept span [start, start+count) to the front in one bounded forward pass and sets the length to count, refusing BadRange when the span falls outside
-# the current samples before any write — no second buffer. The crux is four laws. THE CROP LAW: the clip becomes original[start .. start+count) byte for byte, the length exactly
+# the current samples before any write -- no second buffer. The crux is four laws. THE CROP LAW: the clip becomes original[start .. start+count) byte for byte, the length exactly
 # count. THE COMPLEMENT LAW: crop keeps what cut removes and removes what cut keeps, the crop spliced back into the cut reconstructing the source. THE SUBSET / PEAK LAW: crop
 # only drops, so the peak (re-measured through ALES13) is non-increasing. THE DEGENERATE / REFUSAL LAW: crop(0, len) the identity, crop(start, 0) empty, the empty clip its own
 # crop, a span past the samples BadRange.

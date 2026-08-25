@@ -1,8 +1,8 @@
-# comlink_murr_wire_lab.rish — MUR M2b device-wire QEMU lab (mint + receipt hops; was MALA).
+# comlink_murr_wire_lab.rish -- MUR M2b device-wire QEMU lab (mint + receipt hops; was MALA).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_murr_wire_lab.rish
-# Guests: guest_murr_* · elves murr-*.elf (module step 8).
+# Guests: guest_murr_* - elves murr-*.elf (module step 8).
 
 let zig = "vendor/zig-toolchain/zig"
 let build_dir = "comlink/.build"

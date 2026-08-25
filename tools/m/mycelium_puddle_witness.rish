@@ -1,10 +1,10 @@
-# tools/m/mycelium_puddle_witness.rish — the Puddle: a fleet places each world at exactly one host by a rule
+# tools/m/mycelium_puddle_witness.rish -- the Puddle: a fleet places each world at exactly one host by a rule
 # every node computes alike (r1, the berth crux).
 #
-# Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r1 — the crux.
-# The Mycelium season built how nodes AGREE — the Cord orders a DAG, the fold sums a supply, the Muster
+# Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r1 -- the crux.
+# The Mycelium season built how nodes AGREE -- the Cord orders a DAG, the fold sums a supply, the Muster
 # names a validator roll, the Warrant rotates it. Puddle builds the layer beneath: WHICH host runs WHICH
-# world. Every fleet faces the trap the Warrant faced with authority — WHO decides the placement? A central
+# world. Every fleet faces the trap the Warrant faced with authority -- WHO decides the placement? A central
 # scheduler is a single point of failure and of trust. The leaderless answer this tree keeps: placement is
 # not DECIDED by anyone, it is DERIVED by everyone, to the same answer.
 #
@@ -12,8 +12,8 @@
 # BERTH: the same five worlds over three hosts, built in two different arrival orders, berth to the
 # byte-identical placement (invariant under insertion order); capacity is honored, no world orphaned; an
 # oversubscribed fleet refuses Oversubscribed whole, a fleet with no hosts refuses NoHosts. The method is
-# highest weave-score — SHA-256(domain · world-id · host-pk) — a rendezvous/HRW concept studied clean-room,
-# our own bounded Rye. Composes kumara + tally_copy public API only; demo host and world seeds — no key, no
+# highest weave-score -- SHA-256(domain - world-id - host-pk) -- a rendezvous/HRW concept studied clean-room,
+# our own bounded Rye. Composes kumara + tally_copy public API only; demo host and world seeds -- no key, no
 # funds, no network, no world provisioned.
 #
 # Scope: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
@@ -39,12 +39,12 @@ assert selftest.out contains "berth to a byte-identical placement whatever order
 assert selftest.out contains "placement is derived, never decided" else "mycelium-puddle: crux (derived not decided) claim missing"
 assert selftest.out contains "Fleet placement without a scheduler stands" else "mycelium-puddle: closing claim missing"
 
-# The refusal ledger a keeper reads — the whole-fleet refusals and the build refusals.
+# The refusal ledger a keeper reads -- the whole-fleet refusals and the build refusals.
 assert selftest.out contains "an oversubscribed fleet refuses Oversubscribed whole" else "mycelium-puddle: oversubscribed refusal missing"
 assert selftest.out contains "a fleet with no hosts refuses NoHosts" else "mycelium-puddle: no-hosts refusal missing"
 assert selftest.out contains "a duplicate host or world and a bad capacity or name each refuse" else "mycelium-puddle: build refusals missing"
 
-# The rendered fleet a keeper reads — three hosts, five worlds.
+# The rendered fleet a keeper reads -- three hosts, five worlds.
 assert selftest.out contains "fleet hosts=3 worlds=5" else "mycelium-puddle: rendered fleet (3 hosts, 5 worlds) missing"
 
 say "mycelium-puddle: GREEN — placement is derived, never decided: a world's berth is a pure function of the fleet (highest weave-score over the roster), invariant under arrival order, so no scheduler is trusted; capacity is honored, no world orphaned, an oversubscribed fleet refuses whole. Fleet placement without a scheduler stands."

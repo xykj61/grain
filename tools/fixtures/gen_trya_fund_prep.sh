@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_trya_fund_prep.sh — Trya fund prep grow (Virgo earth · seat 6)
+# gen_trya_fund_prep.sh -- Trya fund prep grow (Virgo earth - seat 6)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

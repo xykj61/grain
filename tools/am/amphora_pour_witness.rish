@@ -1,7 +1,7 @@
-# tools/am/amphora_pour_witness.rish — Q12: the grown pour round path, measured.
+# tools/am/amphora_pour_witness.rish -- Q12: the grown pour round path, measured.
 #
-# Proves on the ring-1 fixture: pour exits ok · manifest listing readable ·
-# Kumara stamp verifies · seal opens after stamp · same-season re-pour welcomes.
+# Proves on the ring-1 fixture: pour exits ok - manifest listing readable -
+# Kumara stamp verifies - seal opens after stamp - same-season re-pour welcomes.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_pour_witness.rish

@@ -1,4 +1,4 @@
-# caravan_restart_on_ok.rish — exit-code ring: restart on cycle_ok, stop on reserved code.
+# caravan_restart_on_ok.rish -- exit-code ring: restart on cycle_ok, stop on reserved code.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ca/caravan_restart_on_ok.rish

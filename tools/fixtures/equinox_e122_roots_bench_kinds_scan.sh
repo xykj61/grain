@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e122 — roots ≠ Bench · name the Bench when a measurement is reported.
+# Equinox e122 -- roots ≠ Bench - name the Bench when a measurement is reported.
 # Exit 0 only when control reads and kinds limbs honor.
 # No backtick characters in patterns.
 #
@@ -101,7 +101,7 @@ if echo "$ROW" | rg -qi 'holds a raise|raised root|is a \*\*Bench\*\*'; then
   echo "detail=roots_must_not_claim_bench_subtype"
   exit 1
 fi
-# Must distinguish Bench · pier · Pond
+# Must distinguish Bench - pier - Pond
 echo "$ROW" | rg -qi 'not the \*\*Bench\*\*|not the Bench' || {
   echo "kinds=failed"
   echo "verdict=misread"

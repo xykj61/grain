@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# forge_view_pour.sh — pour amphora_lap3_tree into a fixed forge-view bundle.
+# forge_view_pour.sh -- pour amphora_lap3_tree into a fixed forge-view bundle.
 #
 # Witnesses call this before forgeviewtest so Skate folds a live pour, not a
 # hand-curated static manifest. Bundle path is gitignored.

@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_transport_witness.rish — the stereo transport: one head reading two channels (ALES15).
+# tools/al/ales_stereo_transport_witness.rish -- the stereo transport: one head reading two channels (ALES15).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES15.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES15.
 # Design read: active-designing/20260814-fill-ales15-lotus-stereo-transport.md
-# Stands on: lotus/transport.rye (ALES7) — the single-position Transport head reused whole; lotus/pan.rye (ALES10) — the
-# StereoClip whose two channels share one length; lotus/clock.rye (ALES5) — seek/elapsed in real time; lotus/timeline.rye
-# (ALES2) — the Clip each channel is. Plays back a master rendered by lotus/power.rye (ALES11).
+# Stands on: lotus/transport.rye (ALES7) -- the single-position Transport head reused whole; lotus/pan.rye (ALES10) -- the
+# StereoClip whose two channels share one length; lotus/clock.rye (ALES5) -- seek/elapsed in real time; lotus/timeline.rye
+# (ALES2) -- the Clip each channel is. Plays back a master rendered by lotus/power.rye (ALES11).
 #
 # lotus/stereo_transport.rye makes the read side genuinely stereo: one head advances through both channels in LOCKSTEP,
 # because a stereo master's two channels share one length (ALES10's StereoClip invariant). The selftest proves: reading fixed
 # blocks concatenates back to EACH channel byte-for-byte, both channels aligned; the last block short and the read past the
 # end empty; at_end exact; mismatched out buffers refuse BadBlock; seek_ms/elapsed_ms round-trip a real moment, a seek past
 # the master refusing PastEnd; a StereoClip rendered by ALES11's power.render_stereo plays back exactly; the transport reads
-# only, never mutating the master. Purely local — no network, no keys, no funds, no real device, no real speaker.
+# only, never mutating the master. Purely local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_transport_witness.rish

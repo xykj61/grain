@@ -1,9 +1,9 @@
-# mandate_wal_witness.rish — Mandate's write-ahead log.
+# mandate_wal_witness.rish -- Mandate's write-ahead log.
 #
-# Proves durability between snapshots: a WAL records every mutation (upsert · remove)
+# Proves durability between snapshots: a WAL records every mutation (upsert - remove)
 # since the last snapshot; recovery restores the snapshot then replays the log in
 # order, yielding a store identical to the one lost in a crash. The log is bounded and
-# serializes to bytes; a full log or corrupt bytes are refused. Proven on metal — base
+# serializes to bytes; a full log or corrupt bytes are refused. Proven on metal -- base
 # snapshot and log written to real files and replayed back.
 #
 # Build first:  rye build mandate/wal.rye -femit-bin=mandate/bin/wal

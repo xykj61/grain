@@ -1,16 +1,16 @@
-# tools/d/dahl_j10_skate_group_witness.rish — Season 3 Journey 10 (Membership), Rung 1.
+# tools/d/dahl_j10_skate_group_witness.rish -- Season 3 Journey 10 (Membership), Rung 1.
 #
-# Season 3, Commons — a community shapes its own membership by consent. Journey 9 (Skate) drew consent at
+# Season 3, Commons -- a community shapes its own membership by consent. Journey 9 (Skate) drew consent at
 # its smallest size: two keepers linked only by mutual request. Journey 10 draws the next size up, the
-# load-bearing one — a group, the one surface settlement/names.rye names in its own header as the surface
+# load-bearing one -- a group, the one surface settlement/names.rye names in its own header as the surface
 # that genuinely needs consensus, proven now at more than two keepers. pond/apps/skate_group.rye fixes
-# the crux — a candidate is seated only when a quorum of distinct members votes. A group opens with a
+# the crux -- a candidate is seated only when a quorum of distinct members votes. A group opens with a
 # founder roster and a fixed quorum t (2 <= t <= roster); a member votes for a candidate; the candidate
 # is admitted only when t distinct members have voted. One keeper voting twice is counted once
 # (AlreadyVoted), so a lone steward can never manufacture a quorum; admission is derived from the
 # distinct-vote count, never written. A non-member vote (NotMember), a re-admit (AlreadyMember), a lone
 # quorum (BadThreshold), an unreachable quorum (TooFewFounders), a doubled founder (DuplicateFounder),
-# and a full roster (GroupFull) each refuse. Pure state machine — no signing yet (r2 binds each vote to a
+# and a full roster (GroupFull) each refuse. Pure state machine -- no signing yet (r2 binds each vote to a
 # settled Kumara identity). Facts only; no network, no key, no real identity (serve reaches the custody
 # gate); demo keeper points only.
 #

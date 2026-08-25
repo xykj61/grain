@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census be-explicit / hot-loop law on held TigerStyle / TAME / clone.
-# Clean-room study only — prints presence; never copies into rye/.
+# Clean-room study only -- prints presence; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/tigerbeetle}"
 GUIDE=gratitude/TIGER_STYLE.md

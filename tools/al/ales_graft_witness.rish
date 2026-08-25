@@ -1,17 +1,17 @@
-# tools/al/ales_graft_witness.rish — the graft, a selected span copied or moved onto a second point (ALES24).
+# tools/al/ales_graft_witness.rish -- the graft, a selected span copied or moved onto a second point (ALES24).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES24.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES24.
 # Design read: active-designing/20260814-fill-ales24-lotus-graft.md
-# Stands on: lotus/selection.rye (ALES23) — the validated Selection this rung relocates; lotus/timeline.rye (ALES2) — splice and cut,
-# applied to each channel; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length.
+# Stands on: lotus/selection.rye (ALES23) -- the validated Selection this rung relocates; lotus/timeline.rye (ALES2) -- splice and cut,
+# applied to each channel; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length.
 #
 # lotus/graft.rye copies and moves a selected span onto a second point. The crux: a grafted span lands byte-for-byte at the
-# destination, keeps the two channels in LOCKSTEP, and never corrupts itself when source and destination overlap — both channels'
+# destination, keeps the two channels in LOCKSTEP, and never corrupts itself when source and destination overlap -- both channels'
 # span samples are snapshotted into a bounded scratch BEFORE any splice or cut, the same (at, span) passed to each channel with
 # capacity checked first, and a move re-bases the destination for the samples the cut removed so the net length is unchanged. The
 # selftest proves: a copy duplicates the span in both channels with the source untouched; a copy before its own source still reads
 # the original span (the self-overlap proof); a move relocates the span with the net length unchanged and re-bases correctly; a move
-# onto its own edge is the identity; every edge refuses by name (BadDest / ClipFull). Purely local — no network, no keys, no funds.
+# onto its own edge is the identity; every edge refuses by name (BadDest / ClipFull). Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_graft_witness.rish

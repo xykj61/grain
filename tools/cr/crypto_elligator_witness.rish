@@ -1,20 +1,20 @@
-# tools/cr/crypto_elligator_witness.rish — Elligator 2 over Curve25519 authored in pure Rye: the map that hides an X25519 public key as a
+# tools/cr/crypto_elligator_witness.rish -- Elligator 2 over Curve25519 authored in pure Rye: the map that hides an X25519 public key as a
 # uniformly random 32-byte string and reads it back, proven against Monocypher's OWN published Elligator vectors and the round-trip identity
-# (Season G · Cryptography).
+# (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
 # primitives in Rye with byte-for-byte parity as the crux).
 # Kin: crypto/fe25519.rye (the base field this stands entirely on) and crypto/x25519.rye (the keys it hides and reveals). Monocypher
-# (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public
+# (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own arithmetic, studied clean-room from the public
 # Elligator 2 mathematics and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 #
-# crypto/elligator.rye authors both maps from the standard — the direct map (representative → Montgomery u-coordinate) and the inverse map
-# (representable u-coordinate → representative under a random tweak) — over one shared invsqrt and the GREEN fe25519 field, calling no
+# crypto/elligator.rye authors both maps from the standard -- the direct map (representative -> Montgomery u-coordinate) and the inverse map
+# (representable u-coordinate -> representative under a random tweak) -- over one shared invsqrt and the GREEN fe25519 field, calling no
 # std.crypto. The selftest anchors on Monocypher's OWN published elligator_dir and elligator_inv vectors quoted byte-for-byte (four direct
 # answers spanning the square and non-square branches; the inverse answers including an unrepresentable point) plus the round-trip identity
 # map(rev(map(h))) = map(h). Zig ships no Elligator, so unlike the hash and cipher rungs there is no std.crypto oracle; the byte-for-byte
-# Monocypher-source parity in tools/cr/crypto_monocypher_elligator_parity_witness.rish is the external anchor beside these vectors. Purely local —
+# Monocypher-source parity in tools/cr/crypto_monocypher_elligator_parity_witness.rish is the external anchor beside these vectors. Purely local --
 # no key, no network, no funds, no real device; the inverse map's one representability test is deliberately variable-time (keys tried at
 # random), and constant-time timing-safety stays the Season's named horizon.
 #

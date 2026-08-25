@@ -1,4 +1,4 @@
-# comlink_device_wire_lab.rish — Comlink device-wire QEMU lab (spawn / wait-for).
+# comlink_device_wire_lab.rish -- Comlink device-wire QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_device_wire_lab.rish

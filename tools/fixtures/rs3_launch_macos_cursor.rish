@@ -1,4 +1,4 @@
-# Mirror cursor_jail_macos --cursor resolution — no sandbox-exec.
+# Mirror cursor_jail_macos --cursor resolution -- no sandbox-exec.
 let app_bin = "/Applications/Cursor.app/Contents/MacOS/Cursor"
 let cursor = ""
 if (args contains "--cursor") then let cursor = flag args "--cursor"

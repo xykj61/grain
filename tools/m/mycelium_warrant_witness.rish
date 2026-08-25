@@ -1,13 +1,13 @@
-# tools/m/mycelium_warrant_witness.rish — the Warrant: a validator set rotates only when the current quorum
+# tools/m/mycelium_warrant_witness.rish -- the Warrant: a validator set rotates only when the current quorum
 # certifies its successor (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r1 — the crux.
-# The Muster named WHICH nodes are the legitimate validators, yet the roll is FROZEN — nothing lets a
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Warrant - rung r1 -- the crux.
+# The Muster named WHICH nodes are the legitimate validators, yet the roll is FROZEN -- nothing lets a
 # validator set change. Real fault-tolerant systems must retire a compromised node, admit a new one, or
 # rotate a whole committee between epochs (TigerBeetle changes its view, Mysticeti reconfigures its
 # committee), and each faces the same trap: WHO authorizes the new roll? If a fresh set of keys could
 # simply declare itself the validators, the Muster's guarantee evaporates. The Warrant fills that blind
-# spot: a validator set rotates only when a QUORUM OF THE CURRENT ROLL certifies its successor — authority
+# spot: a validator set rotates only when a QUORUM OF THE CURRENT ROLL certifies its successor -- authority
 # is handed forward under signature, never seized.
 #
 # The crux this witness proves is ONLY THE OUTGOING QUORUM CAN CROWN THE SUCCESSOR:
@@ -16,9 +16,9 @@
 # endorsers are distinct (else DuplicateSigner), every signature holds over the bound tuple (else
 # BadSignature), and the count meets the previous roll's Byzantine threshold n−(n−1)/3 (else BelowQuorum).
 # The crux demonstration: the successor's OWN fresh keys, signing their own coronation, REFUSE
-# verify_warrant NotMember — a set cannot crown itself; only the roll it succeeds can hand authority
+# verify_warrant NotMember -- a set cannot crown itself; only the roll it succeeds can hand authority
 # forward. Composes muster + muster_bron + kumara public API only, editing none; demo validator and keeper
-# seeds — no key, no funds, no network, no custody.
+# seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 #
@@ -42,7 +42,7 @@ assert selftest.out contains "a validator set rotates only when a Byzantine quor
 assert selftest.out contains "a set cannot crown itself" else "mycelium-warrant: crux (a set cannot crown itself) claim missing"
 assert selftest.out contains "Safe validator-set rotation stands" else "mycelium-warrant: closing claim missing"
 
-# The refusal ledger a keeper reads — the crux (the successor's own keys refuse NotMember), the thin
+# The refusal ledger a keeper reads -- the crux (the successor's own keys refuse NotMember), the thin
 # handoff, the re-pointed certificate, the padded one, the forged endorsement, and the endorse refusals.
 assert selftest.out contains "refuse verify_warrant NotMember" else "mycelium-warrant: the crux refusal (self-coronation NotMember) missing"
 assert selftest.out contains "a thin handoff refuses BelowQuorum" else "mycelium-warrant: thin-handoff refusal missing"
@@ -51,10 +51,10 @@ assert selftest.out contains "a padded one refuses whole" else "mycelium-warrant
 assert selftest.out contains "a forged endorsement refuses BadSignature" else "mycelium-warrant: forged-endorsement refusal missing"
 assert selftest.out contains "endorse refuses DuplicateSigner and WarrantFull" else "mycelium-warrant: endorse refusals missing"
 
-# The rendered warrant a keeper reads — epoch one, a freshly opened certificate with no endorsements yet.
+# The rendered warrant a keeper reads -- epoch one, a freshly opened certificate with no endorsements yet.
 assert selftest.out contains "warrant epoch=1 endorsements=0" else "mycelium-warrant: rendered warrant (epoch 1, empty) missing"
 
-# The Muster the succession rests on stands at the door — its own selftest proves the roll and the
+# The Muster the succession rests on stands at the door -- its own selftest proves the roll and the
 # Byzantine threshold the Warrant reads.
 let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-warrant: the Muster the succession rests on is not GREEN"

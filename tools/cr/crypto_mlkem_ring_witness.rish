@@ -1,9 +1,9 @@
-# tools/cr/crypto_mlkem_ring_witness.rish — the ML-KEM base ring, R_q = Z_q[X]/(X^256 + 1) with q = 3329, authored in pure Rye as Season G's
+# tools/cr/crypto_mlkem_ring_witness.rish -- the ML-KEM base ring, R_q = Z_q[X]/(X^256 + 1) with q = 3329, authored in pure Rye as Season G's
 # first post-quantum rung: modular arithmetic mod 3329, the forward and inverse Number Theoretic Transform (FIPS 203 Algorithms 9 and 10),
 # and the pointwise multiply in the NTT domain (Algorithm 11 over the Algorithm 12 base case). This is the arithmetic every later ML-KEM rung
-# (encode, sample, keygen, encaps/decaps) composes — the post-quantum counterpart to crypto/fe25519.rye (Season G · Cryptography).
+# (encode, sample, keygen, encaps/decaps) composes -- the post-quantum counterpart to crypto/fe25519.rye (Season G - Cryptography).
 #
-# Season: crypto — Season G's first post-quantum stone, opening the ML-KEM/ML-DSA arc the pivot doc seats. This rung authors the ring
+# Season: crypto -- Season G's first post-quantum stone, opening the ML-KEM/ML-DSA arc the pivot doc seats. This rung authors the ring
 # mathematics only; it holds no key and runs no protocol. The whole scheme's speed rests on the NTT, the finite-field FFT cousin that turns a
 # 256-by-256 schoolbook convolution into 128 tiny degree-1 products, and this witness proves that turn correct.
 # Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
@@ -13,12 +13,12 @@
 # Clean-room: q = 3329, zeta = 17, and the FIPS 203 butterfly schedule are the public NIST standard's own; the arithmetic is our own Rye,
 # never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# crypto/mlkem_ring.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/elligator.rye stood on when Zig
+# crypto/mlkem_ring.rye proves itself by SELF-CONSISTENCY with no external dependency -- the pattern crypto/elligator.rye stood on when Zig
 # shipped no primitive to diff: the primitive-root anchors FIPS 203 fixes (zeta^256 = 1, zeta^128 = -1, 128*3303 = 1 mod q), the NTT
 # round-trip inv_ntt(ntt(f)) = f over 64 non-trivial polynomials, and the decisive one, that multiply-in-the-NTT-domain equals schoolbook
-# negacyclic convolution — inv_ntt(ntt(f) o ntt(g)) = f (*) g in R_q — over 64 deterministic pairs. The schoolbook is the definition of the
+# negacyclic convolution -- inv_ntt(ntt(f) o ntt(g)) = f (*) g in R_q -- over 64 deterministic pairs. The schoolbook is the definition of the
 # ring, slow and obviously correct; its agreement with the fast NTT path proves the forward transform, the pointwise multiply and its gammas,
-# and the inverse transform all together. Purely local — no key, no network, no funds, no real device.
+# and the inverse transform all together. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_mlkem_ring_witness.rish

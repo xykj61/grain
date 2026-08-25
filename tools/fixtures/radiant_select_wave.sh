@@ -1,6 +1,6 @@
 #!/bin/sh
-# radiant_select_wave.sh — oldest untouched in-scope paths for the next wave.
-# Seated 20260725.110354 · bound default 50.
+# radiant_select_wave.sh -- oldest untouched in-scope paths for the next wave.
+# Seated 20260725.110354 - bound default 50.
 #
 #   sh tools/fixtures/radiant_select_wave.sh [count]
 set -eu

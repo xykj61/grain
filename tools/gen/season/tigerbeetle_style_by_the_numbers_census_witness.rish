@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish — e51 Style By The Numbers.
+# tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish -- e51 Style By The Numbers.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-style-numbers: Language EN — style by the numbers; measure holds at one hundred."
 say "tb-style-numbers: Style Radiant — zig fmt, four spaces, braced ifs."

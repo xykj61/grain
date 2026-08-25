@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e137 — historical seat; living edge corrected at e138 (accretion).
+# Equinox e137 -- historical seat; living edge corrected at e138 (accretion).
 # Exit 0 when e137 counsel remains as dated testimony, cellar kept,
 # and living pins name e138 breach-withdrawn / accretion.
 # No backtick characters.

@@ -1,13 +1,13 @@
-# tools/al/ales_rotate_witness.rish — rotate: cyclic left-shift the whole clip by k samples, the third pure rearrangement beside reverse and invert (ALES106).
+# tools/al/ales_rotate_witness.rish -- rotate: cyclic left-shift the whole clip by k samples, the third pure rearrangement beside reverse and invert (ALES106).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES106.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES106.
 # Design read: active-designing/date/20260815/20260815-003935_fill-ales106-lotus-rotate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove a permutation moves no
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip and its buf/len/samples), lotus/meter.rye (ALES13 -- the peak/RMS meter, used only to prove a permutation moves no
 # loudness). A cyclic shift is the loop-aligning gesture behind every "rotate the loop to the downbeat", every phase-aligned wavetable, every circular buffer read at an
 # offset. It completes the POSITION family beside ALES104's reverse (end-for-end) and ALES105's invert (the value-mirror); like reverse it invents no sample, drops none,
-# and rounds nothing — a permutation, exact by construction.
+# and rounds nothing -- a permutation, exact by construction.
 #
-# lotus/rotate.rye reduces the shift modulo the length, then rotates in place by the classic three-reversal identity — reverse [0, k), reverse [k, len), reverse [0, len) —
+# lotus/rotate.rye reduces the shift modulo the length, then rotates in place by the classic three-reversal identity -- reverse [0, k), reverse [k, len), reverse [0, len) --
 # standing on the same swap primitive reverse is built from, no second buffer. The crux is four laws. THE SHIFT LAW: rotate_left(k) lands a hand-rotated vector exactly,
 # result[j] = original[(j+k) mod len]. THE MODULAR LAW: rotate by 0, len, or a full turn is the identity, and rotate(k) equals rotate(k mod len), so no over-long shift is
 # out of range. THE COMPOSITION-AND-INVERSE LAW: rotate(k1) then rotate(k2) equals rotate(k1+k2), and rotate(k) then rotate(len-k) returns to the byte. THE PERMUTATION

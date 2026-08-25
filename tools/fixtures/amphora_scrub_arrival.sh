@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_scrub_arrival.sh — cold scrub on arrival: verify vessel parent, Cellar verify, restore.
+# amphora_scrub_arrival.sh -- cold scrub on arrival: verify vessel parent, Cellar verify, restore.
 #
 # Usage: amphora_scrub_arrival.sh bundle_dir [source_tree_for_diff]
 set -eu
@@ -38,7 +38,7 @@ fi
 "$seal_bin" open-check "$VESSEL" >/dev/null
 echo "SEAL ok cellar AEAD cargo opens"
 
-# Pond customs — policy at receipt before Cellar place/restore.
+# Pond customs -- policy at receipt before Cellar place/restore.
 customs_bin="$ROOT/pond/bin/customs"
 if ! test -x "$customs_bin"; then
   mkdir -p "$ROOT/pond/bin"

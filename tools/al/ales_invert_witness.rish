@@ -1,15 +1,15 @@
-# tools/al/ales_invert_witness.rish — invert: flip every sample's sign, the exact VALUE-mirror of reverse (ALES105).
+# tools/al/ales_invert_witness.rish -- invert: flip every sample's sign, the exact VALUE-mirror of reverse (ALES105).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES105.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES105.
 # Design read: active-designing/date/20260815/20260815-003415_fill-ales105-lotus-invert.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples, and `saturate`, reused so the rail lives in one place), lotus/meter.rye (ALES13 — the peak/RMS
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip and its buf/len/samples, and `saturate`, reused so the rail lives in one place), lotus/meter.rye (ALES13 -- the peak/RMS
 # meter, used only to prove a sign flip off the rail moves no loudness). Invert is the "Invert" / "Invert Phase" menu item every editor and DAW ships, and it earns real
-# reach — a phase flip brings two mics on one source into agreement, cancels a difference signal, folds a stereo side. Where ALES104's reverse changes every POSITION and
-# no value, invert changes every VALUE and no position — its exact mirror on the other axis.
+# reach -- a phase flip brings two mics on one source into agreement, cancels a difference signal, folds a stereo side. Where ALES104's reverse changes every POSITION and
+# no value, invert changes every VALUE and no position -- its exact mirror on the other axis.
 #
-# lotus/invert.rye walks the clip once and replaces each sample with saturate(-x) — one in-place pass of len writes, no allocation. The crux is four laws. THE VALUE-MIRROR
+# lotus/invert.rye walks the clip once and replaces each sample with saturate(-x) -- one in-place pass of len writes, no allocation. The crux is four laws. THE VALUE-MIRROR
 # LAW: invert lands a hand-inverted vector exactly, every value flipped and no seat moved. THE INVOLUTION LAW, WITH AN HONEST RAIL: invert twice is the identity off the
-# floor, yet sample_min (-32768) negates to +32768 which saturates to +32767 and round-trips to -32767 — the fixed two's-complement asymmetry, saturated by design not
+# floor, yet sample_min (-32768) negates to +32768 which saturates to +32767 and round-trips to -32767 -- the fixed two's-complement asymmetry, saturated by design not
 # wrapped. THE MAGNITUDE LAW: off the rail the peak magnitude (re-measured through ALES13) is unchanged. THE FIXPOINT LAW: the all-zero and empty clips are each their own
 # invert. The selftest proves all four.
 #

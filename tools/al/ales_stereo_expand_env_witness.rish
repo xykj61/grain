@@ -1,16 +1,16 @@
-# tools/al/ales_stereo_expand_env_witness.rish — stereo_expand_env: the attack/release downward expander carried into stereo, the linked envelope driving one linked widening over time — the stereo time-varying dynamics quartet made whole (ALES164).
+# tools/al/ales_stereo_expand_env_witness.rish -- stereo_expand_env: the attack/release downward expander carried into stereo, the linked envelope driving one linked widening over time -- the stereo time-varying dynamics quartet made whole (ALES164).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES164.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES164.
 # Design read: active-designing/date/20260815/20260815-070944_fill-ales164-lotus-stereo-expand-env.md
-# Stands on: lotus/stereo_envelope.rye (ALES160 — the linked envelope, its stereo_env_step reused whole), lotus/stereo_expand.rye (ALES159 — the linked widening this drives over time, its memoryless form the unit-coefficient
-# limit), lotus/expand_env.rye (ALES61 — the mono attack/release expander, its ExpandEnvError reused whole and its output the left-always-peak comparison), lotus/expand.rye (ALES60 — the deepened floor),
-# lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max).
+# Stands on: lotus/stereo_envelope.rye (ALES160 -- the linked envelope, its stereo_env_step reused whole), lotus/stereo_expand.rye (ALES159 -- the linked widening this drives over time, its memoryless form the unit-coefficient
+# limit), lotus/expand_env.rye (ALES61 -- the mono attack/release expander, its ExpandEnvError reused whole and its output the left-always-peak comparison), lotus/expand.rye (ALES60 -- the deepened floor),
+# lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip, sample_max).
 #
 # lotus/stereo_expand_env.rye expands a span of sample-PAIRS in a master below a magnitude threshold by a ratio, the one downward widening following the shared LINKED envelope over time. Each pair advances one shared
 # envelope toward the linked peak max(|left|, |right|) by ALES160's step (attack while rising, release while falling): at or above the threshold both pass byte for byte (continuous at the threshold), below it the deepened
-# floor exp = max(0, threshold − deficit·num/den) (ALES60's floor on the linked envelope) yields one gain exp/e applied to both raw samples — one detector, one gain, the image held. A shared envelope of exactly zero arises
+# floor exp = max(0, threshold − deficit-num/den) (ALES60's floor on the linked envelope) yields one gain exp/e applied to both raw samples -- one detector, one gain, the image held. A shared envelope of exactly zero arises
 # only when both channels are silent, so no divide by zero. ExpandEnvError (BadThreshold, BadRatio, BadCoeff, BadRange) reused whole; the fusion adds no fault. Values only, never a length. The crux is the instantaneous law
-# (unit attack and release reducing it to ALES159's memoryless stereo_expand byte for byte on both — the time-varying rung's zero-smoothing limit is exactly the memoryless one already proven), the linked-gain-over-time law
+# (unit attack and release reducing it to ALES159's memoryless stereo_expand byte for byte on both -- the time-varying rung's zero-smoothing limit is exactly the memoryless one already proven), the linked-gain-over-time law
 # (a left-always-peak master with left' equal to ALES61's mono expand_env(left), the right scaled by the same fraction, the independent per-channel expand_env differing), the image law (the shared gain preserving the L:R
 # ratio, an out-of-phase pair returning still out of phase), the knob laws (unit ratio the identity, a slower release easing the widening longer), the carry law (a span in two pieces equal to the whole once on both), and the
 # at-threshold/silence/balance/atomicity/degenerate law.

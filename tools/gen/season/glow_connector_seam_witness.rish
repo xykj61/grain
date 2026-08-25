@@ -1,8 +1,8 @@
-# tools/gen/season/glow_connector_seam_witness.rish — Surface p5 sketch · p14 hop pins
+# tools/gen/season/glow_connector_seam_witness.rish -- Surface p5 sketch - p14 hop pins
 #
 #   rishi/bin/rishi run tools/gen/season/glow_connector_seam_witness.rish
 #
-# Orientation only — does not open a Wayland window · does not lower .brush.
+# Orientation only -- does not open a Wayland window - does not lower .brush.
 
 say "glow-connector: Language EN — values · Frame · Wayland hop named."
 say "glow-connector: Style Radiant — harden hop pins; refuse invent stack."

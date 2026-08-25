@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_insert_join_witness.rish — the two-sided insert-join carried into stereo, both channels both seams in lockstep (ALES29).
+# tools/al/ales_stereo_insert_join_witness.rish -- the two-sided insert-join carried into stereo, both channels both seams in lockstep (ALES29).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES29.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES29.
 # Design read: active-designing/20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md
-# Stands on: lotus/insert_join.rye (ALES28) — the mono two-sided `insert_join` run once per channel over its public API, so the
+# Stands on: lotus/insert_join.rye (ALES28) -- the mono two-sided `insert_join` run once per channel over its public API, so the
 # stereo insert inherits the proven trailing-seam law and its scratch-clip atomicity rather than re-deriving either; lotus/pan.rye
-# (ALES10) — the StereoClip whose two channels share one length, the lockstep this rung keeps.
+# (ALES10) -- the StereoClip whose two channels share one length, the lockstep this rung keeps.
 #
 # lotus/stereo_insert_join.rye runs ALES28's mono insert_join on each channel with the SAME at/lead/trail, so a keeper inserts a
 # stereo span into the MIDDLE of a stereo master and the seam moves through ALES12's equal-power curve at BOTH seams of BOTH
 # channels while the stereo image stays aligned. The crux is atomicity: because a StereoClip's channels are one length and a
 # stereo span is one length, every ALES28 guard depends only on the shared dimensions (never a sample's value), so the left
-# insert refuses if and only if the right would — atomically, before the second channel is touched. The selftest proves: both
-# channels grow by the shared count (10,5,2,2 → 11 each) and stay one length; each channel carries its own audio through its own
-# two seams (left 100→200, right 500→600); and an unequal span, a past-the-master position, a lead wider than the head, a trail
-# wider than the following audio, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local —
+# insert refuses if and only if the right would -- atomically, before the second channel is touched. The selftest proves: both
+# channels grow by the shared count (10,5,2,2 -> 11 each) and stay one length; each channel carries its own audio through its own
+# two seams (left 100->200, right 500->600); and an unequal span, a past-the-master position, a lead wider than the head, a trail
+# wider than the following audio, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local --
 # no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:

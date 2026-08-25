@@ -1,14 +1,14 @@
-# tools/f/fora_flexquorum_witness.rish — flexible quorums: every election quorum meets every replication quorum when qe + qr > n (FORA27).
+# tools/f/fora_flexquorum_witness.rish -- flexible quorums: every election quorum meets every replication quorum when qe + qr > n (FORA27).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA27. Design read: active-designing/date/20260814/20260814-075309_fora27-constel-flexible-quorums.md
 #
 # constel/flexquorum.rye proves Flexible Paxos (Howard, Malkhi & Spiegelman 2016): consensus needs only every election quorum to
 # intersect every replication quorum, so any split with qe + qr > n is safe, and FORA9's strict-majority pair is merely the
-# symmetric special case (2·majority > n). The selftest proves: safe_split is qe+qr>n with an exact boundary; the majority-majority
+# symmetric special case (2-majority > n). The selftest proves: safe_split is qe+qr>n with an exact boundary; the majority-majority
 # pair is safe for every n; min_overlap is the pigeonhole strength (qe+qr−n when safe, 0 when not); the crux enumerated over real
-# subset pairs — every election quorum meets every replication quorum precisely when the split is safe, and a disjoint pair exists
-# when it is not; the asymmetric tradeoff; bounded over a full roster of eight. Purely local — no socket, no network, no keys, no
+# subset pairs -- every election quorum meets every replication quorum precisely when the split is safe, and a disjoint pair exists
+# when it is not; the asymmetric tradeoff; bounded over a full roster of eight. Purely local -- no socket, no network, no keys, no
 # funds, no real address.
 #
 # Run from the repository root:

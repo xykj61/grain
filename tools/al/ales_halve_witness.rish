@@ -1,20 +1,20 @@
-# tools/al/ales_halve_witness.rish — the half-wave rectifier: keep the positive half, zero the negative, y = max(x, 0) (ALES85).
+# tools/al/ales_halve_witness.rish -- the half-wave rectifier: keep the positive half, zero the negative, y = max(x, 0) (ALES85).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES85.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES85.
 # Design read: active-designing/date/20260814/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max). The full-wave rectifier (ALES84) folds the negative half UP onto the positive side
-# (y = |x|, pure EVEN harmonics); the half-wave rectifier is its plain sibling — it folds the negative half AWAY to silence. Where a diode BRIDGE makes
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max). The full-wave rectifier (ALES84) folds the negative half UP onto the positive side
+# (y = |x|, pure EVEN harmonics); the half-wave rectifier is its plain sibling -- it folds the negative half AWAY to silence. Where a diode BRIDGE makes
 # full-wave rectification, a SINGLE diode makes half-wave. A keeper who wants a boosted or negatively-clamped half-wave composes this with ALES78's drive
-# over the same span — both in-place span maps that compose.
+# over the same span -- both in-place span maps that compose.
 #
-# lotus/halve.rye maps each sample to max(x, 0) — the positive half kept whole, the negative half silenced. The crux is the complement of ALES84's:
+# lotus/halve.rye maps each sample to max(x, 0) -- the positive half kept whole, the negative half silenced. The crux is the complement of ALES84's:
 # where |x| is exact for every i16 EXCEPT sample_min (which must saturate), max(x, 0) is EXACT for EVERY i16 with NO rail edge at all, so NO saturate is
 # needed. Harmonically it is the even+odd mix: max(x, 0) = (x + |x|) / 2 carries the fundamental (odd) plus even harmonics plus a DC term, half the
 # amplitude of the full-wave's pure-even doubling. The map is MEMORYLESS, IDEMPOTENT (a non-negative sample maps to itself), and always NON-NEGATIVE. The
-# selftest proves it: non-negatives pass unchanged; negatives fold to silence (−1→0, −100→0, −12345→0, sample_min→0); there is no rail edge (sample_min
+# selftest proves it: non-negatives pass unchanged; negatives fold to silence (−1->0, −100->0, −12345->0, sample_min->0); there is no rail edge (sample_min
 # maps to 0, not a saturate); every output is non-negative and the map is idempotent; the half-wave output is the full-wave output MASKED to the
-# positive half (+a,−a → a,0 where full-wave gave a,a); the span discipline holds; a span past the end refuses BadRange (the half-wave rectifier names no
-# other fault — max(x, 0) has no illegal parameter), the clip untouched. Purely local — one compare-and-keep per sample; no gain, no ceiling, no
+# positive half (+a,−a -> a,0 where full-wave gave a,a); the span discipline holds; a span past the end refuses BadRange (the half-wave rectifier names no
+# other fault -- max(x, 0) has no illegal parameter), the clip untouched. Purely local -- one compare-and-keep per sample; no gain, no ceiling, no
 # threshold, no saturate, no delay line, no anti-aliasing, no network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:

@@ -1,16 +1,16 @@
-# tools/h/hunk_photos_orient_witness.rish — Photos gestures past crop turn the open grid on metal (HUNK8).
+# tools/h/hunk_photos_orient_witness.rish -- Photos gestures past crop turn the open grid on metal (HUNK8).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK8 (a fresh quest opens).
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK8 (a fresh quest opens).
 # Design read: active-designing/date/20260813/20260813-153700_hunk-photos-orient-exploration.md
 # Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos rotate + mirror gestures (concept
 # only, siloed).
 #
 # HUNK3 gave the Photos app its first verb, a crop; the sprite-marketplace quest then stood over that open
-# module. This rung gives the app its next everyday gestures — orient the image: rotate it in quarter turns,
+# module. This rung gives the app its next everyday gestures -- orient the image: rotate it in quarter turns,
 # mirror it left-to-right, mirror it top-to-bottom. `image/photos.rye` `flip_h`, `flip_v`, and `rotate_quarter`
 # are pure bounded functions over the decoded RGBA grid, each returning a fresh image and leaving the source
-# untouched. The selftest proves the verbs by the algebra they must obey — rotate_quarter four times is
-# identity, rotate_quarter(2) equals flip_h(flip_v), each mirror is its own inverse — so an index bug is caught
+# untouched. The selftest proves the verbs by the algebra they must obey -- rotate_quarter four times is
+# identity, rotate_quarter(2) equals flip_h(flip_v), each mirror is its own inverse -- so an index bug is caught
 # regardless of the exact arithmetic; a concrete clockwise corner pins the turn's direction, a 90 turn swaps
 # dimensions, a rotated image still re-encodes and round-trips as an open image, and a zero-dimension image
 # refuses by name. No network, no key, no funds.
@@ -43,7 +43,7 @@ assert selftest.out contains "a 90 turn swaps dimensions" else "hunk-photos-orie
 
 assert selftest.out contains "rotated image re-encodes and round-trips" else "hunk-photos-orient: a rotated image did not round-trip as an open image"
 
-# HUNK3's crop selftest still runs in the same binary — its GREEN line must remain, unchanged.
+# HUNK3's crop selftest still runs in the same binary -- its GREEN line must remain, unchanged.
 assert selftest.out contains "GREEN image-photos:" else "hunk-photos-orient: HUNK3 crop selftest no longer GREEN beneath"
 
 say "hunk-photos-orient: GREEN — the Photos app turns and mirrors the open grid; pure, bounded, proven by algebra, refusals named; HUNK3 crop still GREEN beneath."

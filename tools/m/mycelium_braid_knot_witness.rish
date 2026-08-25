@@ -1,9 +1,9 @@
-# tools/m/mycelium_braid_knot_witness.rish — the linked-chain verdict reads across a Knot (r3).
+# tools/m/mycelium_braid_knot_witness.rish -- the linked-chain verdict reads across a Knot (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid across a checkpoint · rung r3.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Braid across a checkpoint - rung r3.
 # r1 resolved a whole Cord Dag into a linked-chain Ledger. Yet a ledger a family runs for years does not carry
 # its whole past unbroken: the Knot (cord_knot.rye) ties off a committed prefix into a sealed FoldState so a
-# bounded Dag runs forever. This rung makes the Braid's corpus a Knot plus its live suffix — the checkpointed
+# bounded Dag runs forever. This rung makes the Braid's corpus a Knot plus its live suffix -- the checkpointed
 # accounts and the braid opened before the cut read through the same verdict, settled by the links that arrived
 # since.
 #
@@ -12,10 +12,10 @@
 # when its final link closes it); the routing tail (Bob->Carol->Dave) arrives in the live suffix, the final link
 # closes the chain, and the whole atom commits at once. The honest seam this rung makes plain: fold's global
 # supply law reads a kind_tax fact as a BURN (taxed <= issued), yet the Braid reuses kind_tax as a CONSERVING
-# transfer, so a routing chain taxes far more than issued — a braid seals only its opening (one link within the
+# transfer, so a routing chain taxes far more than issued -- a braid seals only its opening (one link within the
 # issued bound) and the routing tail rides the suffix, where the Braid's own conserving law governs. A corrupt
 # Knot, a tampered suffix link, and a link continuing a chain the checkpoint never opened each refuse whole;
-# conservation holds past the cut. Composes braid + cord_knot + cord + fold public API only; demo keeper seeds —
+# conservation holds past the cut. Composes braid + cord_knot + cord + fold public API only; demo keeper seeds --
 # no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
@@ -42,7 +42,7 @@ assert selftest.out contains "conservation of balance whole" else "mycelium-brai
 assert selftest.out contains "verdict never drifts" else "mycelium-braid-knot: no-drift claim missing"
 assert selftest.out contains "each refuse whole" else "mycelium-braid-knot: refusal claim missing"
 
-# The Braid whose verdict this continues, and the Knot it reads across, both stand at the door —
+# The Braid whose verdict this continues, and the Knot it reads across, both stand at the door --
 # their own selftests prove the linked-chain law and the checkpoint machinery the verdict rests on.
 let braid = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid.rye -femit-bin=mycelium/bin/braid && mycelium/bin/braid 2>&1"]
 assert braid.ok else "mycelium-braid-knot: the Braid whose verdict continues is not GREEN"

@@ -1,15 +1,15 @@
-# tools/al/ales_stereo_gate_env_witness.rish — stereo_gate_env: the attack/release noise gate carried into stereo, the linked envelope driving one linked gate over time (ALES162).
+# tools/al/ales_stereo_gate_env_witness.rish -- stereo_gate_env: the attack/release noise gate carried into stereo, the linked envelope driving one linked gate over time (ALES162).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES162.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES162.
 # Design read: active-designing/date/20260815/20260815-065745_fill-ales162-lotus-stereo-gate-env.md
-# Stands on: lotus/stereo_envelope.rye (ALES160 — the linked envelope, its stereo_env_step reused whole), lotus/stereo_gate.rye (ALES156 — the linked gate this drives over time, its memoryless form the unit-coefficient
-# limit), lotus/gate_env.rye (ALES54 — the mono attack/release gate, its GateEnvError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 — the silenced floor),
-# lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max).
+# Stands on: lotus/stereo_envelope.rye (ALES160 -- the linked envelope, its stereo_env_step reused whole), lotus/stereo_gate.rye (ALES156 -- the linked gate this drives over time, its memoryless form the unit-coefficient
+# limit), lotus/gate_env.rye (ALES54 -- the mono attack/release gate, its GateEnvError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 -- the silenced floor),
+# lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip, sample_max).
 #
 # lotus/stereo_gate_env.rye gates a span of sample-PAIRS in a master below a magnitude threshold by a ratio, the one downward push following the shared LINKED envelope over time. Each pair advances one shared
-# envelope toward the linked peak max(|left|, |right|) by ALES160's step (attack while rising, release while falling): at or above the threshold both pass byte for byte, below it the silenced floor gat = e·den/num
-# (ALES51's floor on the linked envelope) yields one gain gat/e applied to both raw samples — one detector, one gate, the image held. GateEnvError (BadThreshold, BadRatio, BadCoeff, BadRange) reused whole; the fusion
-# adds no fault. Values only, never a length. The crux is the instantaneous law (unit attack and release reducing it to ALES156's memoryless stereo_gate byte for byte on both — the time-varying rung's zero-smoothing limit
+# envelope toward the linked peak max(|left|, |right|) by ALES160's step (attack while rising, release while falling): at or above the threshold both pass byte for byte, below it the silenced floor gat = e-den/num
+# (ALES51's floor on the linked envelope) yields one gain gat/e applied to both raw samples -- one detector, one gate, the image held. GateEnvError (BadThreshold, BadRatio, BadCoeff, BadRange) reused whole; the fusion
+# adds no fault. Values only, never a length. The crux is the instantaneous law (unit attack and release reducing it to ALES156's memoryless stereo_gate byte for byte on both -- the time-varying rung's zero-smoothing limit
 # is exactly the memoryless one already proven), the linked-gate-over-time law (a left-always-peak master with left' equal to ALES54's mono gate_env(left), the right scaled by the same fraction, the independent per-channel
 # gate_env differing), the image law (the shared gain preserving the L:R ratio, an out-of-phase pair returning still out of phase), the knob laws (unit ratio the identity, a slower release holding the gate open longer), the
 # carry law (a span in two pieces equal to the whole once on both), and the above-threshold/silence/balance/atomicity/degenerate law.

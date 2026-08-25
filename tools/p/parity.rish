@@ -1,8 +1,8 @@
-# parity.rish — behavior regression suite (chaptered under Rishi Env[512]).
+# parity.rish -- behavior regression suite (chaptered under Rishi Env[512]).
 #
 # Each chapter runs in a fresh Rishi process so bindings reset. The former
 # monolith hit TooManyBindings (~330 user lets + exit-* prebinds) at lantern_lap23;
-# Env raised 256 → 512 on 20260725 when parity_ch01 alone reached 302 lets.
+# Env raised 256 -> 512 on 20260725 when parity_ch01 alone reached 302 lets.
 #
 # S0 (counsel 20260726.044729): per-witness wall times via tools/p/parity_time_one.sh;
 # closing cost table (top 20 + chapter totals) via tools/p/parity_cost_table.sh;
@@ -14,7 +14,7 @@
 #
 # Host-tool preflight (counsel 20260725.223409): wasmtime ABSENT surfaces in
 # seconds with the restore line. Suite summary becomes PARTIAL while any ABSENT
-# stands — never suite GREEN, never a false RED for a missing host tool.
+# stands -- never suite GREEN, never a false RED for a missing host tool.
 
 let seat = run ["sh" "tools/p/parity_zig_cache_seat.sh"]
 say seat.out

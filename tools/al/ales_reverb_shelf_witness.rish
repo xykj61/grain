@@ -1,24 +1,24 @@
-# tools/al/ales_reverb_shelf_witness.rish — the shelf: a two-band tone shelf on the reverberant tail, the reverb's EQ (ALES204).
+# tools/al/ales_reverb_shelf_witness.rish -- the shelf: a two-band tone shelf on the reverberant tail, the reverb's EQ (ALES204).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES204.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES204.
 # Design read: active-designing/date/20260815/20260815-112557_fill-ales204-lotus-reverb-shelf.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/shelf.rye (ALES41 — the two-band tone shelf,
-# its precheck and its BadCoeff / BadGain / BadRange, the shelving applied to the wet span); lotus/reverb_tone.rye (ALES198 — the plain high-cut
-# darkness knob this rung generalizes into a full shelving EQ); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye
-# (ALES2 — the Clip, its max_clip bounding the span and its saturate the shelf's single rail).
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged); lotus/shelf.rye (ALES41 -- the two-band tone shelf,
+# its precheck and its BadCoeff / BadGain / BadRange, the shelving applied to the wet span); lotus/reverb_tone.rye (ALES198 -- the plain high-cut
+# darkness knob this rung generalizes into a full shelving EQ); lotus/clock.rye (ALES5 -- the sample clock, converting the span); lotus/timeline.rye
+# (ALES2 -- the Clip, its max_clip bounding the span and its saturate the shelf's single rail).
 #
-# lotus/reverb_shelf.rye gives the reverberant tail a proper SHELVING EQ — two knobs, bass and treble, each boosting OR cutting its own band of the
+# lotus/reverb_shelf.rye gives the reverberant tail a proper SHELVING EQ -- two knobs, bass and treble, each boosting OR cutting its own band of the
 # tail independently, so the wash sits warm and dark, bright and airy, or thinned of mud. ALES198's darkness knob was a plain first-order high-cut,
 # one direction only (the tail could be darkened, never brightened, and the low wash never lifted); this rung is the two-band shelf every real reverb
 # carries. It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, then tone-shelves the wet with ALES41's proven two-band
 # shelf: bass == unity AND treble == unity is the identity, a bass boost lifts the low wash, a treble cut darkens the tail. It invents no new audio
-# arithmetic — every shelved sample is written by a proven stage, each band scaled in the wide i64 domain and saturated ONCE (ALES8's fader lesson) —
+# arithmetic -- every shelved sample is written by a proven stage, each band scaled in the wide i64 domain and saturated ONCE (ALES8's fader lesson) --
 # and it prechecks the shelf setting (the SAME guards ALES41 raises) BEFORE the wet is written, so a bad setting leaves the clip DRY (atomic). The
 # selftest proves: at bass == unity AND treble == unity the span equals reverb_preset byte for byte; for a real shelf reverb_shelf equals reverb_preset
 # then shelf.shelf byte for byte and the shelved tail differs from the un-shelved wet; a treble-cut tail's high-frequency roughness is strictly less
 # than the wet's (the treble cut darkens); a bass-boost tail's total energy is strictly greater than the wet's (the bass boost lifts); silence stays
 # silence; and the faults forward atomic (an illegal coefficient BadCoeff, a zero band denominator BadGain with the clip still dry, a span past the
-# clip DurationTooLong, an out-of-range span BadRange). Purely local — one clip, a validated clock; no network, no keys, no funds, no real device.
+# clip DurationTooLong, an out-of-range span BadRange). Purely local -- one clip, a validated clock; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_reverb_shelf_witness.rish
@@ -43,15 +43,15 @@ say "ales-reverb-shelf: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-shelf' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-shelf: selftest did not print the GREEN ales-reverb-shelf line"
 
-# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+# This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-shelf: the ALES190 named-room preset regressed under its shelf"
 
-# And re-prove ALES41's two-band tone shelf still stands green — the shelving it applies to the wet (its precheck now shared with this rung).
+# And re-prove ALES41's two-band tone shelf still stands green -- the shelving it applies to the wet (its precheck now shared with this rung).
 let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
 assert (trim shelf.out) == "yes" else "ales-reverb-shelf: the ALES41 two-band shelf regressed under its reverb shelf"
 
-# And re-prove ALES198's plain darkness knob still stands green — the one-direction high-cut this rung generalizes into a shelf.
+# And re-prove ALES198's plain darkness knob still stands green -- the one-direction high-cut this rung generalizes into a shelf.
 let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_tone.rye -femit-bin=lotus/bin/reverb_tone && lotus/bin/reverb_tone selftest 2>&1 | grep -q 'GREEN ales-reverb-tone' && echo yes"]
 assert (trim tone.out) == "yes" else "ales-reverb-shelf: the ALES198 darkness knob regressed beside its shelf"
 

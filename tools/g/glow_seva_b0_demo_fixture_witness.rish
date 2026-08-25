@@ -1,4 +1,4 @@
-# glow_seva_b0_demo_fixture_witness.rish — product pin of Seva B0 demo constants (STOA193).
+# glow_seva_b0_demo_fixture_witness.rish -- product pin of Seva B0 demo constants (STOA193).
 #
 #   rishi/bin/rishi run tools/g/glow_seva_b0_demo_fixture_witness.rish
 
@@ -24,7 +24,7 @@ let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-
 assert desk.ok else "shape-demo-fixture-constants.glow failed after fixture pin"
 assert desk.out contains "GREEN" else "shape-demo-fixture-constants.glow missing GREEN"
 
-# Glow face=lit sample desk still GREEN (parse · lower · elder pins).
+# Glow face=lit sample desk still GREEN (parse - lower - elder pins).
 let lits = run ["rishi/bin/rishi" "run" "tools/g/glow_sample_demo_fixture_lits_witness.rish"]
 assert lits.ok else "sample-demo-fixture-lits witness failed after product wire"
 assert lits.out contains "GREEN" else "sample-demo-fixture-lits missing GREEN"

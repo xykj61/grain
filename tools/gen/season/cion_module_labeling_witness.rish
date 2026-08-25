@@ -1,152 +1,152 @@
-# tools/gen/season/cion_module_labeling_witness.rish — CION, the widened labeling guard.
+# tools/gen/season/cion_module_labeling_witness.rish -- CION, the widened labeling guard.
 #
 #   rishi/bin/rishi run tools/gen/season/cion_module_labeling_witness.rish
 #
 # The CION sweep past the three living pins (which grad_seal already guards): module
-# living surfaces — a module's README and its authored .rye doc-comments — carry no
+# living surfaces -- a module's README and its authored .rye doc-comments -- carry no
 # bare "lap N" capability identity. The scanned set grows one module per CION round;
 # swept so far: mandate (20260811.132333), scribe + vault (20260811.133322), pond
-# (20260811.133845), granary's OWN .rye prose (20260811.134946 — filenames kept: the
+# (20260811.133845), granary's OWN .rye prose (20260811.134946 -- filenames kept: the
 # tools/granary_lap*.rish witness handles stay as stable identifiers per Keaton's
 # "prose-only" ruling), and scribble + linengrow prose (20260811.142447), then linengrow's two
-# lap-ordinal PRINT strings (20260811.144935 — neth_sim_witness.rye and
+# lap-ordinal PRINT strings (20260811.144935 -- neth_sim_witness.rye and
 # open_asks_escrow_delivery.rye, rebuilt and their witnesses re-run GREEN; the
 # open-asks device-wire lab is a pre-existing qemu/virtio env limitation, not this
-# change), then amphora prose (20260812.222457 — LOWE-J14r1, the first VOLS-surveyed
+# change), then amphora prose (20260812.222457 -- LOWE-J14r1, the first VOLS-surveyed
 # prose gap relabeled to semantic label + stamp: manifest_entry.rye and
 # vessel_fetch_delivery.rye headers named by capability, README's lap-1/2/3 shorthand
 # reworded to point at the kept amphora_lap1/2/3.rish witness handles), then the comlink
-# device-guest prose (20260812.223000 — LOWE-J14r2: the sixteen guest_*_tx/rx.rye that
+# device-guest prose (20260812.223000 -- LOWE-J14r2: the sixteen guest_*_tx/rx.rye that
 # carried a BARE lap ordinal beside a structured code (OA-L3 lap <N>, I2 snapshot lap <N>,
 # NS-L3 wire lap <N>, Amphora lap <N>) relabeled to structured-code + device role + stamp,
 # and comlink/README.md's three bare-ordinal port-table labels named by device; the
 # guest binaries are unchanged (a doc-comment header is never printed, so the
-# qemu/virtio device-wire witnesses are untouched — only prose moved), then the three
-# Q-vane voice modules (20260812.224144 — LOWE-J14r3: lattice · ember · lantern READMEs
-# and authored .rye/.rish prose relabeled to semantic label + stamp — a version ordinal
+# qemu/virtio device-wire witnesses are untouched -- only prose moved), then the three
+# Q-vane voice modules (20260812.224144 -- LOWE-J14r3: lattice - ember - lantern READMEs
+# and authored .rye/.rish prose relabeled to semantic label + stamp -- a version ordinal
 # like "(lap <N>)" or "Lantern lap <N> selftest" dropped for the capability's name + its
 # git-author stamp, and lantern/README.md's 29-row fixtures table stripped of its "Lap N"
 # provenance prefix, each fixture kept by its own purpose; the voice binaries build and
 # pass GREEN through buhr_inference_query / buhr_reading_query / gism_j5_corpus_real_ember,
-# a comment-only change), then the market + accounting modules (20260812.224144 —
-# LOWE-J14r4a: mandi + dimeroll READMEs and authored .rye prose relabeled — Mandi's
-# lap-1/lap-3 version headers named by capability (market listing · listing settle) and
+# a comment-only change), then the market + accounting modules (20260812.224144 --
+# LOWE-J14r4a: mandi + dimeroll READMEs and authored .rye prose relabeled -- Mandi's
+# lap-1/lap-3 version headers named by capability (market listing - listing settle) and
 # its README section headings named by feature, dimeroll's lap-2/lap-4 feature comments
 # and its README status/design/link labels named by report (the dimeroll_sight_view_lap3.rish
 # tool handle kept, and the dated design-doc filenames left untouched); mandi + dimeroll
 # build GREEN through mandi_listing_settle / mandi_lap1 / dimeroll_lap4 / gism_ayre_j8),
-# then the Nock interop (20260812.224721 — LOWE-J14r4b: glow/nock's phased-plan prose named
-# by phase — "Lap <N> — the primitive core" → "The primitive core", "Lap <N> — the macro layer"
-# → "The macro layer", "Lap <N> — the edit primitive" → "The edit primitive" — across
+# then the Nock interop (20260812.224721 -- LOWE-J14r4b: glow/nock's phased-plan prose named
+# by phase -- "Lap <N> -- the primitive core" -> "The primitive core", "Lap <N> -- the macro layer"
+# -> "The macro layer", "Lap <N> -- the edit primitive" -> "The edit primitive" -- across
 # nock_core.rye, nock_core_witness.rye (its GREEN print string relabeled off "lap <N>", the
 # witness asserting on GREEN/autocons not the ordinal), and README.md; the nock_lap2_witness.rye
 # handle kept in a reworded reference; nock_core_witness GREEN), then the mantra weave
-# (20260812.225213 — LOWE-J14r4c: mantra's snapshot/recall prose named by capability —
-# "NS-L3 wire lap <N>" → "NS-L3 wire", "I2 snapshot export lap <N>" → "I2 snapshot export",
-# "Lap <N> reuses"/"Lap <N> adds" → "Snapshot frames reuse"/"Horizon bundles add" — across
+# (20260812.225213 -- LOWE-J14r4c: mantra's snapshot/recall prose named by capability --
+# "NS-L3 wire lap <N>" -> "NS-L3 wire", "I2 snapshot export lap <N>" -> "I2 snapshot export",
+# "Lap <N> reuses"/"Lap <N> adds" -> "Snapshot frames reuse"/"Horizon bundles add" -- across
 # README.md and the four snapshot/recall .rye (their hosted GREEN print strings relabeled
 # off the ordinal; no witness asserts contains on them, only .ok, verified). The hosted
 # witnesses mantra_snapshot_replay/horizon build snapshot_export.rye GREEN; the recall_sync
 # device-wire lab is a pre-existing qemu/virtio env limit (git-stash A/B: baseline fails
 # identically), not this change).
-# (20260812.230850 — LOWE-J14r4d-i: the witness doc-comment header cluster — thirteen tools/*.rish
+# (20260812.230850 -- LOWE-J14r4d-i: the witness doc-comment header cluster -- thirteen tools/*.rish
 # whose bare "lap N" sat only in a top "#" comment (zero behavior coupling: no say/assert
 # string, no cross-witness contains): the four rishi stdlib witnesses, the three Acme DX
-# conformance witnesses (onboarding · interfaces · operations, named by contract + 20260811),
+# conformance witnesses (onboarding - interfaces - operations, named by contract + 20260811),
 # granary_exchange, the two mantra hosted labs (snapshot_replay/horizon), neth_sim_witness,
-# nock_core_witness, wov_exit_honesty — each relabeled to capability + its own git-author
-# stamp, filename kept as the stable handle. guarded_sites 44 → 57 of 79.)
-# (20260812.231500 — LOWE-J14r4d-ii: four say/assert-coupled tools witnesses whose lap
-# ordinal rode both a header AND a GREEN print string — granary_resin_wire, granary_weave_settle,
+# nock_core_witness, wov_exit_honesty -- each relabeled to capability + its own git-author
+# stamp, filename kept as the stable handle. guarded_sites 44 -> 57 of 79.)
+# (20260812.231500 -- LOWE-J14r4d-ii: four say/assert-coupled tools witnesses whose lap
+# ordinal rode both a header AND a GREEN print string -- granary_resin_wire, granary_weave_settle,
 # mantra_snapshot_wire, mandi_listing_settle. Verified tree-wide first (docs-implementation-sync):
-# no driver asserts "contains" on any of their printer output — every caller (parity_ch01,
-# granary_device_wire) runs the witness and checks .ok only — so relabeling the GREEN string
+# no driver asserts "contains" on any of their printer output -- every caller (parity_ch01,
+# granary_device_wire) runs the witness and checks .ok only -- so relabeling the GREEN string
 # breaks nothing. Each named by capability + stamp 20260713, GREEN kept, re-run on metal.
-# guarded_sites 57 → 61 of 79. The witness-asserted "SLC-2a Lap <N>" scheme (slc2a_ring3_*
-# printers ↔ pond_brushstroke_frame's contains-assert) stays the deferred coupled round below.)
-# (20260812.231900 — LOWE-J14r4d-iii: the witness-asserted "SLC-2a Lap" coupled cluster —
-# the four ring witnesses (slc2a_ring1_arbitrary · slc2a_ring2_redraw · slc2a_ring3_metal ·
+# guarded_sites 57 -> 61 of 79. The witness-asserted "SLC-2a Lap <N>" scheme (slc2a_ring3_*
+# printers <-> pond_brushstroke_frame's contains-assert) stays the deferred coupled round below.)
+# (20260812.231900 -- LOWE-J14r4d-iii: the witness-asserted "SLC-2a Lap" coupled cluster --
+# the four ring witnesses (slc2a_ring1_arbitrary - slc2a_ring2_redraw - slc2a_ring3_metal -
 # slc2a_ring3_session), the wayland_seed.rye usage doc-comments that name the same scheme,
 # and the coupled asserter pond_brushstroke_frame_witness, all relabeled ATOMICALLY. Each
-# "SLC-2a Lap N" named by capability + stamp 20260713 (arbitrary-value viewer · redraw ·
-# Wayland metal smoke · session mirror); the ring3-metal printer's GREEN string and the
+# "SLC-2a Lap N" named by capability + stamp 20260713 (arbitrary-value viewer - redraw -
+# Wayland metal smoke - session mirror); the ring3-metal printer's GREEN string and the
 # pond_brushstroke_frame contains-assert moved together to "GREEN: SLC-2a Wayland metal
-# smoke" so the printer↔asserter coupling stays consistent by construction (substring is
+# smoke" so the printer<->asserter coupling stays consistent by construction (substring is
 # a prefix of the say). SLC-2a is a scheme name kept; only the bare ordinal moved.
 # parity_ch01 runs the ring witnesses but checks only .ok (its own SLC-2a-Lap prose is the
-# separate parity cluster, a later round) — verified tree-wide, no other driver asserts
+# separate parity cluster, a later round) -- verified tree-wide, no other driver asserts
 # contains on these printers. The ring/pond-frame witnesses are Wayland-metal: they need
 # WAYLAND_DISPLAY (unset in this ai-jail bench), so metal GREEN stays the GNOME desk's to
 # confirm; the change is prose + coupled-string only, proven self-consistent and drift-0
-# here. guarded_sites 61 → 67 of 79. comlink's sub-lap is the last deferred coupled round.)
-# (20260812.233600 — LOWE-J14r4d-iv-a: the README + .glow prose cluster — four living
+# here. guarded_sites 61 -> 67 of 79. comlink's sub-lap is the last deferred coupled round.)
+# (20260812.233600 -- LOWE-J14r4d-iv-a: the README + .glow prose cluster -- four living
 # surfaces whose bare lap ordinal named an index reference to a DATED design doc or a Glow
 # invariant. active-designing/README.md + expanding-prompts/README.md index rows point at
 # dated yonder .md files (the dated filename is the kept handle, per the r4d handle-reference
-# ruling): each row's living TITLE TEXT reworded to name the capability (hammock scope ·
-# sight view · reports · books view · TigerBeetle pin · exit honesty · SLC-L4 width/Sigma),
+# ruling): each row's living TITLE TEXT reworded to name the capability (hammock scope -
+# sight view - reports - books view - TigerBeetle pin - exit honesty - SLC-L4 width/Sigma),
 # the dated .md link target untouched; the stamp column already dates each row. ember/README.md's
 # "Corpus lap <N> catalog" cell named by capability (the ember_corpus_lap1.rish filename handle
 # kept). shape-pool-agent-slot.glow's two invariant comments ("Lap <N> shape"/"honest Lap <N> open")
 # named "the first shape"/"honest first open". No witness asserts on these prose/comment strings
 # (READMEs + a Glow shape file, never run as a driver); structured codes SLC-L4/M2b/M2 and the
-# "M1 first lap" prose (no digit) correctly untouched. guarded_sites 67 → 71 of 79. The two
+# "M1 first lap" prose (no digit) correctly untouched. guarded_sites 67 -> 71 of 79. The two
 # parity chapters (parity_ch01/ch02, 178/270 own-prose hits) + the remaining tools witnesses
 # stay their own rounds, then the read-true close.)
-# (20260813 — LOWE-J14r4d-iv-d: glow_riscv_target_witness.rish's "Nock lap <N>/2/3" prose named
-# by capability off the nock_core phases LOWE-J14r4b already relabeled — "Nock lap <N>" → "Nock
-# primitive core", "Nock lap <N>" → "Nock macro layer", "Nock lap <N>" → "Nock edit primitive" —
+# (20260813 -- LOWE-J14r4d-iv-d: glow_riscv_target_witness.rish's "Nock lap <N>/2/3" prose named
+# by capability off the nock_core phases LOWE-J14r4b already relabeled -- "Nock lap <N>" -> "Nock
+# primitive core", "Nock lap <N>" -> "Nock macro layer", "Nock lap <N>" -> "Nock edit primitive" --
 # across the nine-fold doc-comment, the lap-2/lap-3 build sections' assert-else messages, and
 # the two GREEN say strings (redundant "(lap <N>)"/"(lap <N>)" dropped). The kept handles
 # nock_lap2_witness.rye / nock_lap3_witness.rye (filenames, no space) are untouched, and the
 # Nock-core section already used clean "Nock core" prose. No driver asserts contains on this
 # witness's say strings (verified tree-wide); the witness itself is qemu-gated (RISC-V
-# cross-build + QEMU), so metal GREEN stays a qemu-capable bench's — the change is behavior-
-# neutral say/assert/comment prose only. guarded_sites 75 → 76 of 79.)
-# (20260813 — LOWE-J14r4d-iv-e: parity_ch01.rish's 178 own-prose bare lap ordinals relabeled —
-# each witness-suite triple (say "witness suite: …" · assert-else · GREEN say) named by the
+# cross-build + QEMU), so metal GREEN stays a qemu-capable bench's -- the change is behavior-
+# neutral say/assert/comment prose only. guarded_sites 75 -> 76 of 79.)
+# (20260813 -- LOWE-J14r4d-iv-e: parity_ch01.rish's 178 own-prose bare lap ordinals relabeled --
+# each witness-suite triple (say "witness suite: ..." - assert-else - GREEN say) named by the
 # capability the ordinal stood for, drawn from the suite line's own parenthetical or trailing
-# text: simple module labels fold the capability in ("Lattice lap <N> (f32 matmul)" → "Lattice
+# text: simple module labels fold the capability in ("Lattice lap <N> (f32 matmul)" -> "Lattice
 # f32 matmul"), structured codes keep the code and drop only the ordinal ("SLC-2a Lap <N>
-# arbitrary value" → "SLC-2a arbitrary value", "NS-L3 wire lap <N>" → "NS-L3 wire", "I2 snapshot
-# wire lap <N>" → "I2 snapshot wire"), and the three Nock sections match glow_riscv's naming
-# (core · macro layer · edit primitive). The structured codes lap <N>w-4 / lap <N>b (a word char
+# arbitrary value" -> "SLC-2a arbitrary value", "NS-L3 wire lap <N>" -> "NS-L3 wire", "I2 snapshot
+# wire lap <N>" -> "I2 snapshot wire"), and the three Nock sections match glow_riscv's naming
+# (core - macro layer - edit primitive). The structured codes lap <N>w-4 / lap <N>b (a word char
 # after the digit) are correctly untouched, as are every kept handle (nock_lap2_witness.rish,
-# let nock_lap2, tools/lattice_lapN.rish — no space). docs-implementation-sync checked
+# let nock_lap2, tools/lattice_lapN.rish -- no space). docs-implementation-sync checked
 # tree-wide: no driver asserts contains on parity_ch01's say output (parity.rish runs it and
 # reads .ok / the cost log), and parity itself checks .ok only on every sub-witness (never
-# contains on a lap string) — so relabeling its own prose breaks nothing. Applied by a
+# contains on a lap string) -- so relabeling its own prose breaks nothing. Applied by a
 # reviewed two-pass awk transform (tools/.cache/lowe_parity_relabel.awk): 178 say/assert lines
 # changed, zero code/handle lines touched, line count identical, valid UTF-8, zero residual
-# bare ordinals. guarded_sites 76 → 77 of 79.)
-# (20260813 — LOWE-J14r4d-iv-f: parity_ch02.rish's 270 own-prose bare lap ordinals relabeled by
-# the same reviewed awk transform — parity_ch02 is fully uniform (every hit is "<Label> lap N
+# bare ordinals. guarded_sites 76 -> 77 of 79.)
+# (20260813 -- LOWE-J14r4d-iv-f: parity_ch02.rish's 270 own-prose bare lap ordinals relabeled by
+# the same reviewed awk transform -- parity_ch02 is fully uniform (every hit is "<Label> lap N
 # (cap)", all parenthetical, no structured codes, no capital Lap, no Nock specials), so every
-# section folds its parenthetical capability into the name ("Lattice lap <N> (exp)" → "Lattice
-# exp", "Lantern lap <N> (length_stop pin)" → "Lantern length_stop pin"). Same docs-sync check:
+# section folds its parenthetical capability into the name ("Lattice lap <N> (exp)" -> "Lattice
+# exp", "Lantern lap <N> (length_stop pin)" -> "Lantern length_stop pin"). Same docs-sync check:
 # no driver asserts contains on parity_ch02's output; parity checks .ok only. 270 say/assert
 # lines changed, zero code/handle lines touched, line count identical (682), valid UTF-8, zero
-# residual bare ordinals. guarded_sites 77 → 78 of 79. Only vols_survey_witness (survey-of-
+# residual bare ordinals. guarded_sites 77 -> 78 of 79. Only vols_survey_witness (survey-of-
 # itself) remains, closing in the read-true round.)
-# (20260813 — LOWE-J14r4d read-true close: the 79th and last prose gap, vols_survey_witness.rish
-# itself — the survey-of-itself. Its bare "lap <N>"/"lap <N>" sat in pedagogical doc-comments
+# (20260813 -- LOWE-J14r4d read-true close: the 79th and last prose gap, vols_survey_witness.rish
+# itself -- the survey-of-itself. Its bare "lap <N>"/"lap <N>" sat in pedagogical doc-comments
 # teaching what the drift pattern looks like, plus one grep pattern over a testimony fixture.
 # Reworded to keep the teaching without a bare ordinal: the doc-comment examples use a "lap <N>"
 # placeholder (the biting shape shown without a real digit), and the boundary grep now matches
 # 'lap [0-9]' (still counts the fixture's real "lap <N>" testimony, which correctly keeps its
-# ordinal) — the witness re-runs GREEN, its teaching intact. Added to the scan list as the 79th
+# ordinal) -- the witness re-runs GREEN, its teaching intact. Added to the scan list as the 79th
 # guarded surface. REDS %74 CLOSED the same round: vols_guardlist_extract.sh now keeps .rish and
 # .glow (was rye|md|brix only), so the extracted guardlist is a faithful projection of the guard
 # and coverage reads all 79 of 79 prose-gap paths guarded. And the guard now scans ITSELF:
-# re-running the live census surfaced this witness's own before→after changelog as the one
+# re-running the live census surfaced this witness's own before->after changelog as the one
 # remaining site (it quotes retired ordinals to document each relabel), so its quotes were
-# reworded to a "lap <N>" placeholder — the capability names and mappings kept, the biting
-# digit gone — and the file added to its own scan list, so the labeling guard obeys the law
-# it enforces. LOWE Journey 14 (Molt) CLOSES — every one of the 79 living prose gaps VOLS
+# reworded to a "lap <N>" placeholder -- the capability names and mappings kept, the biting
+# digit gone -- and the file added to its own scan list, so the labeling guard obeys the law
+# it enforces. LOWE Journey 14 (Molt) CLOSES -- every one of the 79 living prose gaps VOLS
 # named is relabeled to semantic capability and guarded, the guard finally scanning every
 # surface it claims to govern, including itself.)
 # Still deferred:
-# comlink's sub-lap — a
+# comlink's sub-lap -- a
 # coupled cross-cutting round of its own. Dated
 # session logs and specs keep the ordinals they recorded (testimony is never
 # rewritten). Law addendum 20260811.130827:
@@ -163,13 +163,13 @@ assert scan.out contains "verdict=ok" else "cion-module: a swept-module surface 
 # values_apart: the verdict key and the exit status must agree.
 assert scan.ok else "cion-module: mandate verdict and status disagree"
 
-# The guard bites — a planted bare lap ordinal is caught on every run.
+# The guard bites -- a planted bare lap ordinal is caught on every run.
 let neg = run ["sh" "tools/fixtures/labeling_module_scan.sh" "tools/fixtures/labeling_module_negative.md"]
 say neg.out
 assert neg.out contains "verdict=drift" else "cion-module: planted lap ordinal was not flagged"
 assert (neg.ok == false) else "cion-module: the guard failed to bite the planted negative"
 
-# The guard stays quiet on the meaningful schemes the law permits — a structured code
+# The guard stays quiet on the meaningful schemes the law permits -- a structured code
 # (lap <N>w-3b, lap <N>b, OA-L3, NS-L3) and a sub-lap compound must NOT trip it. A blocking
 # guard earns a known-good fixture beside its known-bad one (refined 20260811.140623).
 let pass = run ["sh" "tools/fixtures/labeling_module_scan.sh" "tools/fixtures/labeling_module_pass.md"]

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_pour.sh — pour a cellar ring-1 season into an Amphora vessel bundle.
+# amphora_pour.sh -- pour a cellar ring-1 season into an Amphora vessel bundle.
 #
 # Layout (cellar + vessel at one dock):
 #   outdir/manifest.bron
@@ -40,7 +40,7 @@ PARENT=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$MANIFEST")
 cargo_count=$(grep -c '^cargo ' "$VESSEL" || true)
 test "$cargo_count" -ge 1 || { echo "FAIL pour produced no cargo"; exit 1; }
 
-# Kumara vessel stamp — Cellar seal first, then sign canonical sealed body.
+# Kumara vessel stamp -- Cellar seal first, then sign canonical sealed body.
 vessel_bin="$ROOT/amphora/bin/vessel-core"
 seal_bin="$ROOT/amphora/bin/vessel-seal"
 if ! test -x "$vessel_bin"; then

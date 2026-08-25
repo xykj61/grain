@@ -1,17 +1,17 @@
-# tools/al/ales_reverb_predelay_witness.rish — the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail (ALES194).
+# tools/al/ales_reverb_predelay_witness.rish -- the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail (ALES194).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES194.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES194.
 # Design read: active-designing/date/20260815/20260815-102052_fill-ales194-lotus-reverb-predelay.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 — the sample clock,
-# converting both the span and the pre-delay); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the wet snapshot).
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 -- the sample clock,
+# converting both the span and the pre-delay); lotus/timeline.rye (ALES2 -- the Clip, its max_clip bounding the wet snapshot).
 #
-# lotus/reverb_predelay.rye gives the reverb its WHEN knob — the short silent gap before the reverberant tail begins, what separates a voice from
+# lotus/reverb_predelay.rye gives the reverb its WHEN knob -- the short silent gap before the reverberant tail begins, what separates a voice from
 # its own reverb. It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, snapshots the wet, then rewrites the span
-# shifted right by predelay samples: out[i] = 0 for i < predelay, else wet[i - predelay] — inventing no new audio arithmetic, only a bounded
+# shifted right by predelay samples: out[i] = 0 for i < predelay, else wet[i - predelay] -- inventing no new audio arithmetic, only a bounded
 # reindex of the proven wet with a true-zero gap. The selftest proves: at predelay = 0 the span equals reverb_preset byte for byte; at predelay =
 # count the span is all zeros; a mid pre-delay puts zeros in front and the wet shifted by exactly predelay after, byte for byte; silence stays
 # silence; and the faults forward (a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange), the
-# clip untouched. Purely local — one clip, a bounded stack snapshot; no network, no keys, no funds, no real device.
+# clip untouched. Purely local -- one clip, a bounded stack snapshot; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_reverb_predelay_witness.rish
@@ -36,7 +36,7 @@ say "ales-reverb-predelay: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-predelay' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-predelay: selftest did not print the GREEN ales-reverb-predelay line"
 
-# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+# This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-predelay: the ALES190 named-room preset regressed under its pre-delay"
 

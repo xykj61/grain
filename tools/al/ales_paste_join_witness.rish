@@ -1,18 +1,18 @@
-# tools/al/ales_paste_join_witness.rish — the paste that joins rather than butts (ALES31).
+# tools/al/ales_paste_join_witness.rish -- the paste that joins rather than butts (ALES31).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES31.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES31.
 # Design read: active-designing/date/20260814/20260814-144834_fill-ales31-lotus-paste-join.md
-# Stands on: lotus/clipboard.rye (ALES25) — the held stereo span, read whole as the span to insert; lotus/stereo_insert_join.rye
-# (ALES29) — insert_join_stereo, the two-sided stereo insert-join reused whole; lotus/pan.rye (ALES10) — the StereoClip.
+# Stands on: lotus/clipboard.rye (ALES25) -- the held stereo span, read whole as the span to insert; lotus/stereo_insert_join.rye
+# (ALES29) -- insert_join_stereo, the two-sided stereo insert-join reused whole; lotus/pan.rye (ALES10) -- the StereoClip.
 #
 # lotus/paste_join.rye drops a held span into the middle of a master crossing BOTH its seams equal-power, where ALES25's plain paste
-# butts. The crux: paste_join is EXACTLY ALES29's stereo two-sided insert-join applied to the clipboard's own held buffers — the held
+# butts. The crux: paste_join is EXACTLY ALES29's stereo two-sided insert-join applied to the clipboard's own held buffers -- the held
 # span (one shared length) handed to insert_join_stereo with the same at/lead/trail, adding only the Empty guard and no new arithmetic,
 # seam law, or bound; so both seams of both channels flow through ALES12's -3 dB curve, the new length shares both overlaps, and the
 # paste stays atomic across the two channels and non-consuming. The selftest proves: a held span joined at a full-swing sign flip lands
 # a seam sample strictly inside the extremes where a butt would step 60000; the new length is master + held - lead - trail; the same
 # clipboard joins into a second master with its held length unchanged; every edge refuses by name (Empty / BadRange / ClipFull).
-# Purely local — no network, no keys, no funds.
+# Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_paste_join_witness.rish

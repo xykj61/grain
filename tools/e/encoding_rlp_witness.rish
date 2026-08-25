@@ -1,10 +1,10 @@
-# tools/e/encoding_rlp_witness.rish — Recursive Length Prefix (RLP · Ethereum Yellow Paper Appendix B) authored in pure Rye: the one
+# tools/e/encoding_rlp_witness.rish -- Recursive Length Prefix (RLP - Ethereum Yellow Paper Appendix B) authored in pure Rye: the one
 # serialization every Ethereum transaction, account, receipt, and trie node stands on, proven against the Yellow Paper's own published
-# known-answers and byte-for-byte through an independent decoder round-trip (encoding · the serialization sibling of Season G · Cryptography).
+# known-answers and byte-for-byte through an independent decoder round-trip (encoding - the serialization sibling of Season G - Cryptography).
 #
-# Season: encoding — the text-and-frame sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, base32.rye, hex.rye,
+# Season: encoding -- the text-and-frame sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, base32.rye, hex.rye,
 # bech32.rye, and pem.rye. Where crypto/ authors the mathematics that produces bytes, encoding/ authors the forms those bytes travel in. RLP
-# is the form the Ethereum-family primitives already GREEN in crypto/ — keccak256, secp256k1 ECDSA sign/recover, eth_address, eip712 — reach
+# is the form the Ethereum-family primitives already GREEN in crypto/ -- keccak256, secp256k1 ECDSA sign/recover, eth_address, eip712 -- reach
 # for next: a signed transaction is the keccak256 of the RLP of its fields, recovered back to its sender's address.
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the rules are the Ethereum Yellow Paper's Appendix B; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
@@ -13,10 +13,10 @@
 # 0x80+len then the bytes (len <= 55) or 0xb7+len_of_len, the minimal big-endian length, then the bytes; a list is 0xc0+payload then the
 # concatenated item encodings (payload <= 55) or 0xf7+len_of_len. Zig ships no RLP codec, so parity is proven the way base58 and bech32 are:
 # against the Yellow Paper's published known-answers (dog -> 83646f67, [cat,dog] -> c88363617483646f67, "" -> 80, [] -> c0, 0x00 -> 00, 1024 ->
-# 820400, the set-theoretic three -> c7c0c1c0c3c0c1c0, the 56-byte Lorem -> b838...) byte-for-byte, AND against a second, independent path — a
+# 820400, the set-theoretic three -> c7c0c1c0c3c0c1c0, the 56-byte Lorem -> b838...) byte-for-byte, AND against a second, independent path -- a
 # decoder that reads the length prefixes back (a genuinely different algorithm from the encoder that writes them), round-tripping every vector
 # and a nine-field transaction-shaped list to exactly its own bytes. Canonical minimality is enforced (a wrapped low byte and an over-long
-# length each refuse NonMinimal). Purely local arithmetic — no key, no network, no funds, no real device.
+# length each refuse NonMinimal). Purely local arithmetic -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/e/encoding_rlp_witness.rish

@@ -1,4 +1,4 @@
-# parse.rish — tests for the `parse` and `str` number-conversion builtins.
+# parse.rish -- tests for the `parse` and `str` number-conversion builtins.
 #
 # Wired from the PLEAC numbers cookbook (spec: pleac/numbers.rye). parse reads a
 # decimal string to an integer; str renders an integer to its decimal string. The

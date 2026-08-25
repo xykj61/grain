@@ -1,5 +1,5 @@
 #!/bin/sh
-# tame_style_scan_advise_legacy.sh — original shell ratchet lines (parity selftest only).
+# tame_style_scan_advise_legacy.sh -- original shell ratchet lines (parity selftest only).
 set -u
 FILES=$(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src \
     glow/tokens.rye glow/lower_named_cast.rye \
@@ -38,7 +38,7 @@ for f in $FILES; do
 done
 echo "ratchet: zero assert( files remaining = ${zero_assert_total} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
 
-# tools/*.py — Python-at-seam law (parity with native advise)
+# tools/*.py -- Python-at-seam law (parity with native advise)
 py_count=$(find tools -name '*.py' -type f 2>/dev/null | wc -l | tr -d ' ')
 echo "ratchet: tools/*.py count = ${py_count} (target zero; migrate-on-touch; ephemeris seam classical-vedic-astrology/cast_a_chart.py exempt by name)"
 "${ROOT}/rishi/bin/rishi" run tools/fixtures/tame_style_long_fn.rish

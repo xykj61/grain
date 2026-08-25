@@ -1,15 +1,15 @@
-# tools/h/hunk_session_store_witness.rish — an editing session is content-addressed on metal (HUNK18).
+# tools/h/hunk_session_store_witness.rish -- an editing session is content-addressed on metal (HUNK18).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK18.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK18.
 # Design read: active-designing/date/20260813/20260813-174500_hunk-session-persist-exploration.md (names HUNK18).
-# Teacher, thanked clean-room: the persistent editing session of iCloud Photos / Google Photos — an edit stays open
+# Teacher, thanked clean-room: the persistent editing session of iCloud Photos / Google Photos -- an edit stays open
 # across a close-and-reopen, undo and redo intact (concept only, siloed).
 #
-# HUNK16 gave the Photos app an EditCursor — the whole reachable history plus a live position — and HUNK12 banked an
+# HUNK16 gave the Photos app an EditCursor -- the whole reachable history plus a live position -- and HUNK12 banked an
 # edit-list content-addressed. This rung stores the whole cursor. `pond/apps/session_store.rye` `store_session`
 # renders the cursor as its `format photo-session-v1` record and beads it content-addressed (HUNK1's Tablecloth
-# store); `open_session` fetches it back — proving every bead against its digest and the whole against its recorded
-# address BEFORE the text is parsed — then rebuilds the cursor. The crux a plain edit-list store could not reach:
+# store); `open_session` fetches it back -- proving every bead against its digest and the whole against its recorded
+# address BEFORE the text is parsed -- then rebuilds the cursor. The crux a plain edit-list store could not reach:
 # a session reopened from cold still can_redo, because the redo tail was stored, not just the applied prefix. The
 # selftest proves undo AND redo both survive a cold restart, the view matches byte-for-byte, the dedup dividend for
 # sessions, and a tampered session refusing DigestMismatch, an unknown name UnknownArtifact, and a session past its

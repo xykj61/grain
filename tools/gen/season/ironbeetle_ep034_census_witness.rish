@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep034_census_witness.rish — e84 IronBeetle ep034.
+# tools/gen/season/ironbeetle_ep034_census_witness.rish -- e84 IronBeetle ep034.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep034_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep034: Language EN — a callback that must never choose."
 say "iron-ep034: Style Radiant — asynchronous means always asynchronous."

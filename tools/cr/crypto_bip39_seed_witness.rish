@@ -1,19 +1,19 @@
-# tools/cr/crypto_bip39_seed_witness.rish — BIP-39 mnemonic→seed authored in pure Rye as a composition over the GREEN PBKDF2-HMAC-SHA-512,
+# tools/cr/crypto_bip39_seed_witness.rish -- BIP-39 mnemonic->seed authored in pure Rye as a composition over the GREEN PBKDF2-HMAC-SHA-512,
 # authoring NO new cryptography. The wallet arc's bridge from a human backup phrase to the 512-bit binary seed crypto/bip32.rye grows a
 # whole hierarchical-deterministic tree from: a keeper writes down twelve or twenty-four words, and this rung folds them (with an optional
-# passphrase) into the 64 bytes the HD wallet stands on (crypto · Season G).
+# passphrase) into the 64 bytes the HD wallet stands on (crypto - Season G).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the BIP-39 seed recipe — the fixed salt "mnemonic" ‖
-# passphrase and the 2048-round PBKDF2-HMAC-SHA-512 — over crypto/pbkdf2_sha512.rye, itself proven byte-for-byte on metal. Design read:
-# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Season: crypto -- Season G (the Six-Season double-seat). This rung contributes only the BIP-39 seed recipe -- the fixed salt "mnemonic" ‖
+# passphrase and the 2048-round PBKDF2-HMAC-SHA-512 -- over crypto/pbkdf2_sha512.rye, itself proven byte-for-byte on metal. Design read:
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave, Rye first).
 # Clean-room: BIP-39 is a public standard; the assembly is ours, standing on our own parity-GREEN stone, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest the replayable way the tree favours — against BIP-39's OWN published Trezor test vectors (English, passphrase
+# Parity is proven at selftest the replayable way the tree favours -- against BIP-39's OWN published Trezor test vectors (English, passphrase
 # "TREZOR"), fetched byte-exact from the canonical trezor/python-mnemonic vectors, never recited from memory: three mnemonics fold to
 # EXACTLY their published 128-hex-char seeds, character for character, so a one-bit error anywhere in the salt assembly, the 2048-round
 # PBKDF2, or the HMAC beneath would break a match; the seed also ties transitively to the GREEN PBKDF2 beneath. Edge refusals MnemonicTooLong
-# and PassphraseTooLong fire. Purely local — every mnemonic is a TEST phrase from the spec's own vectors, no network, no funds; generating a
+# and PassphraseTooLong fire. Purely local -- every mnemonic is a TEST phrase from the spec's own vectors, no network, no funds; generating a
 # real wallet from a real mnemonic and signing with its key stays the custody gate, and NFKD normalization of non-ASCII input is a named
 # horizon.
 #

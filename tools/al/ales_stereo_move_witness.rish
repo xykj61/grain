@@ -1,9 +1,9 @@
-# tools/al/ales_stereo_move_witness.rish — stereo_move: the drag gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES119).
+# tools/al/ales_stereo_move_witness.rish -- stereo_move: the drag gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES119).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES119.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES119.
 # Design read: active-designing/date/20260815/20260815-020325_fill-ales119-lotus-stereo-move.md
-# Stands on: lotus/move.rye (ALES113 — the mono drag gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that
+# Stands on: lotus/move.rye (ALES113 -- the mono drag gesture run once per channel), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 -- the Clip and the EditError reused whole), lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that
 # left and right hold the same length so the channels stay aligned in time; dragging a bar carries it in both speakers at once. This rung carries ALES113's move into stereo the way
 # ALES117 carried cut and ALES118 carried crop: run the proven mono move on each channel with the same start, count, and dest. With cut, crop, and move the stereo edit family stands whole.
 #

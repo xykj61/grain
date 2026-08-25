@@ -1,12 +1,12 @@
-# tools/f/fora_handshake_witness.rish — two fake piers greet only across the same sky, agreement before exchange (FORA2).
+# tools/f/fora_handshake_witness.rish -- two fake piers greet only across the same sky, agreement before exchange (FORA2).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA2.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA2.
 # Design read: active-designing/date/20260814/20260814-042804_fora2-constel-local-handshake.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the naming law's safety reaches into the handshake: a vowel-bearing
+# Law kin: .claude/rules/placeholder-ship-names.md -- the naming law's safety reaches into the handshake: a vowel-bearing
 # (real-@p-shaped) party can never greet, refused VowelPresent at open and at accept.
 #
 # constel/handshake.rye seats the pure protocol: open (the initiator offers name + constellation), accept (the responder
-# confirms same-net membership and answers), finish (the initiator confirms the ack — a Session COMPLETE only when both are
+# confirms same-net membership and answers), finish (the initiator confirms the ack -- a Session COMPLETE only when both are
 # distinct never-a-ship members of the one constellation), plus is_member (an exact segment scan). The selftest proves: a
 # clean handshake completes; cross-constellation refuses ConstellationMismatch; a non-member refuses NotAMember; a self-greet
 # refuses SameParty; a vowel-bearing party refuses VowelPresent; and membership names a whole segment, not a substring.

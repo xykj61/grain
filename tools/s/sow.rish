@@ -1,4 +1,4 @@
-# sow.rish — sow the public seed from the standing field.
+# sow.rish -- sow the public seed from the standing field.
 #
 # Reads template-manifest.bron and writes the identity-clean template subset
 # into seed/ (gitignored; the fresh Option-B public repo that becomes

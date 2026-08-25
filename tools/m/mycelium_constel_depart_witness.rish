@@ -1,19 +1,19 @@
-# tools/m/mycelium_constel_depart_witness.rish — a constellation tolerates f ships down, the (f+1)th
+# tools/m/mycelium_constel_depart_witness.rish -- a constellation tolerates f ships down, the (f+1)th
 # honestly fails (r2, the Constel fault-tolerance rung).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r2.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r2.
 # r1 booted a named constellation and reached quorum when EVERY ship vouched. A real dev-net loses nodes.
 # The roll's Byzantine arithmetic promises a precise fault tolerance: an n-ship roll believes any quorum of
 # at least n − (n−1)/3 enrolled voices, so it survives up to f = (n−1)/3 down. r2 proves that promise: the
 # Muster stays the FULL roster (every ship enrolled whether up or not), only a subset is UP and vouches, and
-# the constellation still believes while the up count meets the threshold — then the (f+1)th departure
+# the constellation still believes while the up count meets the threshold -- then the (f+1)th departure
 # refuses BelowQuorum, the honest edge of the guarantee. A permanently smaller roster re-derives its own
 # lower threshold and still agrees.
 #
-# The crux this witness proves is EXACT FAULT TOLERANCE — a five-ship constellation tolerates one down (four
+# The crux this witness proves is EXACT FAULT TOLERANCE -- a five-ship constellation tolerates one down (four
 # up still meets threshold four) and honestly fails BelowQuorum at two down, the roll keeping exactly the
 # promise its arithmetic makes (n − threshold == f). Composes constel + chorus + muster + voucher public API
-# only, editing none; demo seeds — no key, no funds, no network, no real value.
+# only, editing none; demo seeds -- no key, no funds, no network, no real value.
 #
 # Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 #
@@ -38,7 +38,7 @@ assert selftest.out contains "still meets threshold" else "mycelium-constel-depa
 assert selftest.out contains "honestly fails BelowQuorum" else "mycelium-constel-depart: the honest-edge refusal claim missing"
 assert selftest.out contains "re-derives its own lower threshold" else "mycelium-constel-depart: the permanent-departure claim missing"
 
-# The r1 crux stands at the door — a departure rung means nothing unless the whole roster still reaches
+# The r1 crux stands at the door -- a departure rung means nothing unless the whole roster still reaches
 # quorum reproducibly when every ship is up.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
 assert r1.ok else "mycelium-constel-depart: the Constel r1 crux is not GREEN"

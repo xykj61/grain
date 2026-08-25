@@ -1,7 +1,7 @@
 #!/bin/sh
-# Chapter cost-log boot (S0). Avoids inline ${...} in .rish — Rishi interpolates those.
+# Chapter cost-log boot (S0). Avoids inline ${...} in .rish -- Rishi interpolates those.
 # Usage: sh tools/p/parity_cost_boot.sh <chapter>
-# Env: PARITY_COST_RESET (default 1) · PARITY_COST_LOG (default tools/.cache/parity-cost/current.tsv)
+# Env: PARITY_COST_RESET (default 1) - PARITY_COST_LOG (default tools/.cache/parity-cost/current.tsv)
 set -eu
 chapter=${1:?chapter name required}
 root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)

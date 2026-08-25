@@ -1,23 +1,23 @@
-# tools/cr/crypto_kumara_pq_identity_witness.rish — the POST-QUANTUM identity FRONT DOOR: one backup phrase grown into the TWO lattice keys a
+# tools/cr/crypto_kumara_pq_identity_witness.rish -- the POST-QUANTUM identity FRONT DOOR: one backup phrase grown into the TWO lattice keys a
 # quantum-resistant identity must carry (an ML-DSA signing key AND an ML-KEM key-agreement key), authored in pure Rye. The post-quantum sibling of
-# crypto/kumara_identity.rye, double-seated beside it — the classical Ed25519 identity stays exactly what it is. It composes only GREEN rungs
-# (crypto/mldsa_identity.rye the signing half, crypto/mlkem_sealed.rye the agreement half, crypto/bip39_seed.rye the mnemonic→seed fold, and
+# crypto/kumara_identity.rye, double-seated beside it -- the classical Ed25519 identity stays exactly what it is. It composes only GREEN rungs
+# (crypto/mldsa_identity.rye the signing half, crypto/mlkem_sealed.rye the agreement half, crypto/bip39_seed.rye the mnemonic->seed fold, and
 # crypto/hkdf_sha512.rye the RFC 5869 domain-separated key expansion), authoring no new cryptography (Season G).
 #
-# Season: crypto — the construction of the learned discovery that a post-quantum identity is DUAL-KEY, because the lattice schemes share no curve for
+# Season: crypto -- the construction of the learned discovery that a post-quantum identity is DUAL-KEY, because the lattice schemes share no curve for
 # one key to sign and agree the way Ed25519's edwards and montgomery halves do (active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md).
-# One HKDF extract over the 512-bit BIP-39 seed, three domain-separated expansions carve the ML-DSA seed ξ and the ML-KEM seeds d and z — so a keeper
+# One HKDF extract over the 512-bit BIP-39 seed, three domain-separated expansions carve the ML-DSA seed ξ and the ML-KEM seeds d and z -- so a keeper
 # still remembers ONE phrase yet holds two independent keys. The door holds no key: every mnemonic, seed, and identity is a public test vector.
 # Clean-room: BIP-39, RFC 5869, FIPS 203/204 are public standards studied through their specs; the composition is our own Rye wiring over our own GREEN
 # rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #
 # crypto/kumara_pq_identity.rye is proven at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024):
 # the BIP-39 half anchored to a REAL published answer (the Trezor vector seed byte-for-byte), NO DRIFT (from_mnemonic equals hand-deriving the three
-# seeds then composing the halves, from_seed reaching the identical identity), THE TWO KEYS DISTINCT (ξ, d, z pairwise different — the dual-key point),
+# seeds then composing the halves, from_seed reaching the identical identity), THE TWO KEYS DISTINCT (ξ, d, z pairwise different -- the dual-key point),
 # a REAL WORKING SIGNING HALF (verify accepts a genuine signature, refuses a flipped message, a flipped signature, and a wrong key), a SEALING-READY
 # AGREEMENT HALF (a message sealed to the ML-KEM half opens with its dk, a different identity fails OpenFailed), BOTH HALVES AT ONCE (a frame sealed
 # for confidentiality and signed for provenance, a tamper breaking the signature), plus determinism and distinctness. Each half is doubly-oracle-proven
-# one rung down, so this composition needs no new oracle. Purely local — no key held, no network, no funds, no real device.
+# one rung down, so this composition needs no new oracle. Purely local -- no key held, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_kumara_pq_identity_witness.rish

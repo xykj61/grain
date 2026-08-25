@@ -1,17 +1,17 @@
-# tools/al/ales_echo_time_witness.rish — the echo in real time: a delay named in milliseconds (ALES67).
+# tools/al/ales_echo_time_witness.rish -- the echo in real time: a delay named in milliseconds (ALES67).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES67.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES67.
 # Design read: active-designing/date/20260814/20260814-191951_fill-ales67-lotus-echo-in-real-time.md
-# Stands on: lotus/echo.rye (ALES66 — the feedback delay this speaks in real time, delegated unchanged, re-proven below);
-# lotus/clock.rye (ALES5 — the sample clock, its samples_for converting ms to a bounded sample count).
+# Stands on: lotus/echo.rye (ALES66 -- the feedback delay this speaks in real time, delegated unchanged, re-proven below);
+# lotus/clock.rye (ALES5 -- the sample clock, its samples_for converting ms to a bounded sample count).
 #
-# lotus/echo_time.rye gives ALES66's feedback delay a real time base — echo_ms names the delay in MILLISECONDS, converting start_ms,
+# lotus/echo_time.rye gives ALES66's feedback delay a real time base -- echo_ms names the delay in MILLISECONDS, converting start_ms,
 # count_ms, and delay_ms through ALES5's proven clock.samples_for and delegating to ALES66's echo unchanged, so the clock adds only the
 # units, never the audio. The selftest proves: the millisecond-named echo lands byte-for-byte the same samples as the index-named echo
-# over the converted delay and span (the grounding law, both tools run — the exact 8000 -> 4000 -> 2000 -> 1000 train); at 48 kHz 1 ms
+# over the converted delay and span (the grounding law, both tools run -- the exact 8000 -> 4000 -> 2000 -> 1000 train); at 48 kHz 1 ms
 # converts to 48 samples and the first echo sits exactly there; fb = 0 is the dry identity in real time too; a sub-sample delay (0 ms)
 # refuses BadDelay rather than silently doing nothing; a delay past the clip refuses DurationTooLong; a feedback at unity BadFeedback
-# and an out-of-range span BadRange forward by name. Purely local — the clock a samples-per-second count, no lookahead, no network, no
+# and an out-of-range span BadRange forward by name. Purely local -- the clock a samples-per-second count, no lookahead, no network, no
 # keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -37,7 +37,7 @@ say "ales-echo-time: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-echo-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-echo-time: selftest did not print the GREEN ales-echo-time line"
 
-# This rung delegates to ALES66's echo over its public API — re-prove the feedback delay still stands green beside it.
+# This rung delegates to ALES66's echo over its public API -- re-prove the feedback delay still stands green beside it.
 let e = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=lotus/bin/echo && lotus/bin/echo selftest 2>&1 | grep -q 'GREEN ales-echo' && echo yes"]
 assert (trim e.out) == "yes" else "ales-echo-time: the ALES66 feedback delay regressed under the timed echo"
 

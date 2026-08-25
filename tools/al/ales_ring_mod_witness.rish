@@ -1,20 +1,20 @@
-# tools/al/ales_ring_mod_witness.rish — the ring modulator: the tremolo's triangle carrier let cross zero (ALES75).
+# tools/al/ales_ring_mod_witness.rish -- the ring modulator: the tremolo's triangle carrier let cross zero (ALES75).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES75.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES75.
 # Design read: active-designing/date/20260814/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
-# Stands on: lotus/tremolo.rye (ALES74 — the amplitude write this generalizes by removing the floor); lotus/chorus.rye (ALES71 — the
-# triangle-LFO driver `triangle_delay_at`, now the carrier); lotus/glide.rye (ALES70 — `glide_scale`, 256 = unity); lotus/timeline.rye
-# (ALES2 — the Clip, sample_min/max, the one true saturate).
+# Stands on: lotus/tremolo.rye (ALES74 -- the amplitude write this generalizes by removing the floor); lotus/chorus.rye (ALES71 -- the
+# triangle-LFO driver `triangle_delay_at`, now the carrier); lotus/glide.rye (ALES70 -- `glide_scale`, 256 = unity); lotus/timeline.rye
+# (ALES2 -- the Clip, sample_min/max, the one true saturate).
 #
-# lotus/ring_mod.rye is the tremolo with ONE restriction lifted — the carrier is allowed to cross zero and go bipolar, flipping the sample's
+# lotus/ring_mod.rye is the tremolo with ONE restriction lifted -- the carrier is allowed to cross zero and go bipolar, flipping the sample's
 # sign and scattering the spectrum into the ring modulator's metallic clang. It writes the tremolo's line verbatim,
-# y[i] = saturate(x[i]·c(i)/glide_scale), and only widens the carrier's legal range from a one-sided attenuation (0 ≤ c ≤ scale) to a two-sided
+# y[i] = saturate(x[i]-c(i)/glide_scale), and only widens the carrier's legal range from a one-sided attenuation (0 ≤ c ≤ scale) to a two-sided
 # unit-bounded bipolar carrier (−scale ≤ c ≤ scale). The selftest proves the recognition outright: a NON-NEGATIVE CARRIER IS EXACTLY THE
-# TREMOLO, matched sample-by-sample against the real tremolo; a hand-computed bipolar case (0 → +1 → 0 → −1) shows the sign flip; a constant
+# TREMOLO, matched sample-by-sample against the real tremolo; a hand-computed bipolar case (0 -> +1 -> 0 -> −1) shows the sign flip; a constant
 # −unity carrier inverts; unity passthrough is exact; and the lone two's-complement corner (sample_min under a −unity carrier, −(−32768) =
-# 32768) SATURATES to sample_max rather than wrapping — the one place the ring modulator's saturate does real work the tremolo's never did; a
+# 32768) SATURATES to sample_max rather than wrapping -- the one place the ring modulator's saturate does real work the tremolo's never did; a
 # period not a positive multiple of four refuses BadPeriod, a negative depth BadDepth, a carrier past unity either way BadCarrier, an
-# out-of-range span BadRange. Purely local — no delay line, no snapshot, no lookahead, no network, no keys, no funds, no real device, no sample rate.
+# out-of-range span BadRange. Purely local -- no delay line, no snapshot, no lookahead, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_ring_mod_witness.rish

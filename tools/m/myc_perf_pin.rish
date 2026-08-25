@@ -1,16 +1,16 @@
-# tools/m/myc_perf_pin.rish — door 11 · S0 performance pin (Voice J4 · h4).
+# tools/m/myc_perf_pin.rish -- door 11 - S0 performance pin (Voice J4 - h4).
 #
 # Wall-time baselines for the myc GREEN witness roster.
-# Measure before movement · no tuning · no budget red on elapsed_ms.
+# Measure before movement - no tuning - no budget red on elapsed_ms.
 # Bound myc_perf_baseline_min_rows 5 from tools/gen/season/recursion_block.brix.
 #
 #   rishi/bin/rishi run tools/m/myc_perf_pin.rish
 #
 # Report: work-in-progress/myc-s0-baselines.tsv
-# Note: shell $vars cannot live in rish "sh -c" strings — rish expands $digits.
+# Note: shell $vars cannot live in rish "sh -c" strings -- rish expands $digits.
 #       Row/exit checks therefore live in tools/m/myc_perf_pin.sh.
 
-# cut -f2 — never put shell $N inside rish "sh -c" strings (rish expands them).
+# cut -f2 -- never put shell $N inside rish "sh -c" strings (rish expands them).
 let bound_scan = run ["sh" "-c" "grep -E '^myc_perf_baseline_min_rows ' tools/gen/season/recursion_block.brix | cut -d' ' -f2"]
 assert bound_scan.ok else "myc_perf_pin: bound scan failed"
 let bound = trim bound_scan.out

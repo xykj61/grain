@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 127 from e123 living-pin guard — ch8 15/16.
+# Append Glow almanac seat 127 from e123 living-pin guard -- ch8 15/16.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 127\.' "$ALMANAC"; then

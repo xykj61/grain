@@ -1,10 +1,10 @@
-# tools/h/hunk_part_catalog_witness.rish — the parts marketplace carries honest facts (HUNK71).
+# tools/h/hunk_part_catalog_witness.rish -- the parts marketplace carries honest facts (HUNK71).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK71.
-# Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A — parts marketplace).
-# Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed — a part is a picture PLUS its facts).
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK71.
+# Design read: active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md (Season A -- parts marketplace).
+# Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed -- a part is a picture PLUS its facts).
 #
-# HUNK4–HUNK7 built the visual half of the marketplace (one sheet, each product a window, the index travelling
+# HUNK4-HUNK7 built the visual half of the marketplace (one sheet, each product a window, the index travelling
 # as text). image/part_catalog.rye carries the OTHER half: each product binds its sprite window to a part number,
 # a material, and a price in cents (recorded as a FACT, a u64, never a balance the tree can move). A PartCatalog
 # holds one SpriteIndex (the pictures) and one PartRecord per product (the facts) in the same held order; add_part
@@ -39,7 +39,7 @@ assert selftest.out contains "price in cents survive" else "hunk-part-catalog: t
 
 assert selftest.out contains "no network, no key, no funds" else "hunk-part-catalog: the selftest did not affirm the custody floor (no funds)"
 
-# HUNK4 stays GREEN — the part catalog builds on the sprite index; the index underneath must still hold.
+# HUNK4 stays GREEN -- the part catalog builds on the sprite index; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-part-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-part-catalog: HUNK4 sprite selftest did not stay GREEN"

@@ -1,7 +1,7 @@
-# tools/e/edu_discovery_walk_witness.rish — door 13 edu discovery walk
+# tools/e/edu_discovery_walk_witness.rish -- door 13 edu discovery walk
 #
 # Re-runs the learner walk (discovery quartet + myc fold) and asserts
-# each GREEN line. Invents no wire pier · no sixth primitive.
+# each GREEN line. Invents no wire pier - no sixth primitive.
 #
 #   rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish
 

@@ -1,25 +1,25 @@
-# tools/cr/crypto_monocypher_xaead_parity_witness.rish — Monocypher-source parity for XChaCha20-Poly1305, Monocypher's FLAGSHIP AEAD
-# (crypto_aead_lock) — the 24-byte extended-nonce authenticated encryption Lotus's signed carry, Vault, and Comlink will actually reach for.
+# tools/cr/crypto_monocypher_xaead_parity_witness.rish -- Monocypher-source parity for XChaCha20-Poly1305, Monocypher's FLAGSHIP AEAD
+# (crypto_aead_lock) -- the 24-byte extended-nonce authenticated encryption Lotus's signed carry, Vault, and Comlink will actually reach for.
 # Our authored crypto/xchacha20.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for
 # their XChaCha20-Poly1305 ciphertext and tag over one published known-answer, diffed byte-for-byte. The SIXTH rung of the real Monocypher-
-# source parity pattern — BLAKE2b opened it; X25519, Ed25519, the IETF-nonce AEAD, and Argon2 extended it; this rung closes the extended-nonce
-# path the IETF AEAD rung did not exercise, exercising the HChaCha20 subkey derivation against the actual source. Season G · Cryptography.
+# source parity pattern -- BLAKE2b opened it; X25519, Ed25519, the IETF-nonce AEAD, and Argon2 extended it; this rung closes the extended-nonce
+# path the IETF AEAD rung did not exercise, exercising the HChaCha20 subkey derivation against the actual source. Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names the ChaCha/Poly line among the
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G names the ChaCha/Poly line among the
 # primitives to prove against the vendored Monocypher, and the AEAD as the composition that unblocks the Lotus signed carry. The IETF-nonce AEAD
 # rung (tools/cr/crypto_monocypher_aead_parity_witness.rish) proved the inner RFC 8439 AEAD; this rung proves Monocypher's flagship crypto_aead_lock
-# — the 24-byte-nonce XChaCha20-Poly1305 that HChaCha20-derives its subkey — which is the API a caller actually invokes.
-# Kin: crypto/xchacha20.rye (our authored XChaCha20-Poly1305, GREEN against Zig's std.crypto and the published KAT) · crypto/aead.rye (the RFC
-# 8439 AEAD it runs under the derived subkey) · crypto/chacha20.rye · crypto/poly1305.rye · tools/rye/monocypher_xaead_parity.rye (our printing
-# harness) · tools/fixtures/monocypher_xaead_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_aead_parity_witness.rish (the
+# -- the 24-byte-nonce XChaCha20-Poly1305 that HChaCha20-derives its subkey -- which is the API a caller actually invokes.
+# Kin: crypto/xchacha20.rye (our authored XChaCha20-Poly1305, GREEN against Zig's std.crypto and the published KAT) - crypto/aead.rye (the RFC
+# 8439 AEAD it runs under the derived subkey) - crypto/chacha20.rye - crypto/poly1305.rye - tools/rye/monocypher_xaead_parity.rye (our printing
+# harness) - tools/fixtures/monocypher_xaead_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish (the
 # IETF-nonce sibling). Monocypher stays the parity TARGET, vendored and unmodified, never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# THE PARITY: crypto_aead_lock is XChaCha20-Poly1305 (draft-irtf-cfrg-xchacha §2.3) — subkey = HChaCha20(key, nonce[0..16]); subnonce =
+# THE PARITY: crypto_aead_lock is XChaCha20-Poly1305 (draft-irtf-cfrg-xchacha §2.3) -- subkey = HChaCha20(key, nonce[0..16]); subnonce =
 # 0x00000000 ‖ nonce[16..24]; then the RFC 8439 ChaCha20-Poly1305 AEAD runs under (subkey, subnonce). That is exactly what crypto/xchacha20.rye
-# composes. Each implementation prints two lines — the ciphertext and the tag — over the identical published inputs; the witness diffs the two
+# composes. Each implementation prints two lines -- the ciphertext and the tag -- over the identical published inputs; the witness diffs the two
 # outputs byte-for-byte AND anchors both to the published ciphertext and tag (Zig's std.crypto neutral test vector, mirrored in the xchacha20.rye
-# selftest), so the oracle is a real second implementation, never a recited constant. Purely local — the key and nonce are a published test
+# selftest), so the oracle is a real second implementation, never a recited constant. Purely local -- the key and nonce are a published test
 # vector, no key of ours, no signature, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
@@ -38,11 +38,11 @@ let rout = "crypto/bin/rye_xaead.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_xaead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-xaead-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — two AEAD hex lines: ciphertext then tag.
+# 2. Run the Monocypher C harness -- two AEAD hex lines: ciphertext then tag.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-xaead-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — the same two AEAD hex lines over the identical inputs.
+# 3. Run our authored Rye harness -- the same two AEAD hex lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_xaead_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-xaead-parity: Rye harness exited non-zero — see ${rout}"
 
@@ -50,7 +50,7 @@ assert rrun.ok else "crypto-monocypher-xaead-parity: Rye harness exited non-zero
 let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
 assert (trim diff.out) == "same" else "crypto-monocypher-xaead-parity: Monocypher and Rye XChaCha20-Poly1305 disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
 
-# 5. Anchor to the world: the published ciphertext (line 1) and tag (line 2) — Zig's std.crypto neutral test vector, mirrored in the
+# 5. Anchor to the world: the published ciphertext (line 1) and tag (line 2) -- Zig's std.crypto neutral test vector, mirrored in the
 #    crypto/xchacha20.rye selftest, an independent published anchor for the WHOLE extended-nonce construction, HChaCha20 subkey derivation included.
 let kat_cipher = "994d2dd32333f48e53650c02c7a2abb8e018b0836d7175aec779f52e961780768f815c58f1aa52d211498db89b9216763f569c9433a6bbfcefb4d4a49387a4c5207fbb3b5a92b5941294df30588c6740d39dc16fa1f0e634f7246cf7cdcb978e44347d89381b7a74eb7084f754b90bde9aaf"
 let kat_tag = "5a94b8f2a85efd0b50692ae2d425e234"

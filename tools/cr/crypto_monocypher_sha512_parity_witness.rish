@@ -1,25 +1,25 @@
-# tools/cr/crypto_monocypher_sha512_parity_witness.rish — Monocypher-source parity for standalone SHA-512 (FIPS 180-4 / RFC 6234), the hash Ed25519 signs
+# tools/cr/crypto_monocypher_sha512_parity_witness.rish -- Monocypher-source parity for standalone SHA-512 (FIPS 180-4 / RFC 6234), the hash Ed25519 signs
 # with and the hash every HMAC-SHA512, HKDF-SHA512, and BIP32 seed derivation folds its inputs through. Our authored crypto/sha512.rye and the vendored
 # Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same five digests, diffed byte-for-byte. The TENTH rung of
-# the real Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery ·
-# standalone Poly1305 · standalone ChaCha20 came before). Season G · Cryptography.
+# the real Monocypher-source parity pattern (BLAKE2b - X25519 - Ed25519 - IETF AEAD - Argon2 - XChaCha20-Poly1305 flagship - Edwards<->Montgomery -
+# standalone Poly1305 - standalone ChaCha20 came before). Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/sha512.rye's own selftest named Monocypher-source parity as an honest held horizon
-# ("Monocypher passes the same standard vectors — its vendored source is a held fetch"); this rung closes it. SHA-512 was proven EMBEDDED inside Ed25519
-# signing, yet never STANDALONE against Monocypher's own crypto_sha512 — so the hash the whole signing line, the HMAC/HKDF-SHA512 family, and the BIP32
+# ("Monocypher passes the same standard vectors -- its vendored source is a held fetch"); this rung closes it. SHA-512 was proven EMBEDDED inside Ed25519
+# signing, yet never STANDALONE against Monocypher's own crypto_sha512 -- so the hash the whole signing line, the HMAC/HKDF-SHA512 family, and the BIP32
 # seed all rest on now stands proven in its own right, the hash-cipher counterpart to the standalone ChaCha20 and Poly1305 rungs.
-# Kin: crypto/sha512.rye (our authored hash, GREEN against Zig's std.crypto and the FIPS 180-4 vectors) · tools/rye/monocypher_sha512_parity.rye (our
-# printing harness) · tools/fixtures/monocypher_sha512_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_ed25519_parity_witness.rish
-# (the Ed25519 sibling that hashes THROUGH SHA-512 — this rung proves the hash beneath it standalone). Monocypher's SHA-512 lives in its OPTIONAL module
+# Kin: crypto/sha512.rye (our authored hash, GREEN against Zig's std.crypto and the FIPS 180-4 vectors) - tools/rye/monocypher_sha512_parity.rye (our
+# printing harness) - tools/fixtures/monocypher_sha512_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_ed25519_parity_witness.rish
+# (the Ed25519 sibling that hashes THROUGH SHA-512 -- this rung proves the hash beneath it standalone). Monocypher's SHA-512 lives in its OPTIONAL module
 # (src/optional/monocypher-ed25519.c), linked so like meets like. Monocypher stays the parity TARGET, vendored and unmodified, never a copied line,
 # studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The five lines are anchored to the world twice over: line 1 is the FIPS 180-4 SHA-512 of the empty message (published), line 2 is the FIPS 180-4
-# SHA-512 of "abc" (published); lines 3-5 are digests over deterministic inputs of sizes {111, 112, 300} — the two padding edges (length-fits-block and
-# forces-second-block) and a multi-block input — where the oracle is a second real implementation agreeing byte-for-byte.
-# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+# SHA-512 of "abc" (published); lines 3-5 are digests over deterministic inputs of sizes {111, 112, 300} -- the two padding edges (length-fits-block and
+# forces-second-block) and a multi-block input -- where the oracle is a second real implementation agreeing byte-for-byte.
+# Purely local -- no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_monocypher_sha512_parity_witness.rish
@@ -37,11 +37,11 @@ let rout = "crypto/bin/rye_sha512.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_sha512_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-sha512-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — five SHA-512 hex lines.
+# 2. Run the Monocypher C harness -- five SHA-512 hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-sha512-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — five SHA-512 hex lines over the identical inputs.
+# 3. Run our authored Rye harness -- five SHA-512 hex lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_sha512_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-sha512-parity: Rye harness exited non-zero — see ${rout}"
 

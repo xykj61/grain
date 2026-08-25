@@ -1,6 +1,6 @@
-# tools/gen/fund/gen_gren_fund_prep.rish — Constellation m5–m8 · Gren (was Djin · was Twah): Gren fund prep generator.
+# tools/gen/fund/gen_gren_fund_prep.rish -- Constellation m5-m8 - Gren (was Djin - was Twah): Gren fund prep generator.
 #
-# Affirms Taurus earth seat, edu steps 1–6 witnessed (refuse-walk closes arc),
+# Affirms Taurus earth seat, edu steps 1-6 witnessed (refuse-walk closes arc),
 # post-fold proves deploy exits RED, refuses forbidden verbs by name.
 #   rishi/bin/rishi run tools/gen/fund/gen_gren_fund_prep.rish
 #   rishi/bin/rishi run tools/gen/fund/gen_gren_fund_prep.rish deploy  # RED
@@ -25,7 +25,7 @@ assert prep.out contains "witness:step6 GREEN" else "gen-gren step6 witness miss
 assert prep.out contains "Gren m5–m8 CLOSED" else "gen-gren Gren arc close line missing"
 say prep.out
 
-# m8 — refuse-walk post-fold: deploy must fail
+# m8 -- refuse-walk post-fold: deploy must fail
 let refuse = run ["sh" "tools/fixtures/gen_gren_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-gren refuse-walk broken: deploy must exit RED"
 

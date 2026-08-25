@@ -1,7 +1,7 @@
-# tools/am/amphora_dogfood_witness.rish — Q56: Amphora pours a real counsel season.
+# tools/am/amphora_dogfood_witness.rish -- Q56: Amphora pours a real counsel season.
 #
 # Season source: tools/fixtures/amphora_dogfood_counsel (five J4 counsel seats).
-# Proves: pour · stamp · seal · restore · byte-equal out-home.
+# Proves: pour - stamp - seal - restore - byte-equal out-home.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_dogfood_witness.rish

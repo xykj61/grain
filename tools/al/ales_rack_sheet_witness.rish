@@ -1,18 +1,18 @@
-# tools/al/ales_rack_sheet_witness.rish — the rack travels as text, a slot sheet (ALES33).
+# tools/al/ales_rack_sheet_witness.rish -- the rack travels as text, a slot sheet (ALES33).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES33.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES33.
 # Design read: active-designing/date/20260814/20260814-150213_fill-ales33-lotus-rack-sheet.md
-# Stands on: lotus/rack.rye (ALES30) — copy_to / name_of / paste reused whole; lotus/selection.rye (ALES23) — make; lotus/timeline.rye
-# (ALES2) — splice; lotus/pan.rye (ALES10) — the StereoClip; tally/parse_int.rye — strict decimal. Mirrors lotus/cue_sheet.rye (ALES22).
+# Stands on: lotus/rack.rye (ALES30) -- copy_to / name_of / paste reused whole; lotus/selection.rye (ALES23) -- make; lotus/timeline.rye
+# (ALES2) -- splice; lotus/pan.rye (ALES10) -- the StereoClip; tally/parse_int.rye -- strict decimal. Mirrors lotus/cue_sheet.rye (ALES22).
 #
 # lotus/rack_sheet.rye renders a whole rack of named held spans to a format lotus-rack-sheet-v1 record and parses it back, so a
-# keeper's rack persists across a session close and ports as plain text — the first ALES travels-as-text rung to carry real PCM. The
+# keeper's rack persists across a session close and ports as plain text -- the first ALES travels-as-text rung to carry real PCM. The
 # crux: parse_rack(render_rack(r)) recovers every slot's name and both channels' samples byte-for-byte and render(parse(render(r))) is
 # a fixed point, the render walking the slots in stored order (canonical i16 decimal, no leading zero) and the parse rebuilding each
 # slot through ALES30's own rack.copy_to over a temporary master so every rack bound is enforced at the one place. The selftest proves:
 # a two-slot rack renders to the exact expected text and round-trips both names and both channels; a name with a space round-trips
 # whole; and every corruption refuses by name (BadRecord for a bad header / mis-ordered line / wrong tag / L-R mismatch / bad sample /
-# zero-length slot, Duplicate for a repeated name, RackFull past the ceiling, Overflow into a too-small buffer). Purely local — no
+# zero-length slot, Duplicate for a repeated name, RackFull past the ceiling, Overflow into a too-small buffer). Purely local -- no
 # network, no keys, no funds.
 #
 # Run from the repository root:

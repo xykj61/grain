@@ -1,6 +1,6 @@
-# tube4_market_rail_witness.rish — TUBE4: market acquire of a published app.
+# tube4_market_rail_witness.rish -- TUBE4: market acquire of a published app.
 #
-# TUBE2 publish → Exchange list → Neth pay → weave settle → TUBE3 fetch.
+# TUBE2 publish -> Exchange list -> Neth pay -> weave settle -> TUBE3 fetch.
 # See linengrow/tube4_market_rail.rye.
 #
 # Run from the repository root:

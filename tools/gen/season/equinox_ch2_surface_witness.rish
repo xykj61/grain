@@ -1,22 +1,22 @@
-# tools/gen/season/equinox_ch2_surface_witness.rish — e26 chapter-two surface choir.
+# tools/gen/season/equinox_ch2_surface_witness.rish -- e26 chapter-two surface choir.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish
 #
 # Four living limbs already GREEN alone must GREEN together. Almanac seat 32 closes ch2.
-# Leaf witnesses only — no nested choirs (avoids elder chains).
+# Leaf witnesses only -- no nested choirs (avoids elder chains).
 
 say "equinox-ch2-surface: Language EN — four greens, one choir; chapter two closes."
 say "equinox-ch2-surface: Style Radiant — the living surface holds as one."
 say "equinox-ch2-surface: Lens TAME — e26 · almanac seat 32 · ch2 full."
 
-# Limb 1 — SAFE list (leaf census; shred refuse measured inside)
+# Limb 1 -- SAFE list (leaf census; shred refuse measured inside)
 let safe = run ["sh" "tools/fixtures/safe_list_census.sh"]
 say safe.out
 assert safe.ok else "equinox-ch2-surface: SAFE limb failed"
 assert safe.out contains "verdict=ok" else "equinox-ch2-surface: SAFE not ok"
 assert safe.out contains "SHRED_RED=yes" else "equinox-ch2-surface: shred must stay RED"
 
-# Limb 2 — reds welcome + refuse
+# Limb 2 -- reds welcome + refuse
 let reds = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_witness.rish"]
 say reds.out
 assert reds.ok else "equinox-ch2-surface: reds completeness failed"
@@ -30,7 +30,7 @@ let reds_neg = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_negati
 say reds_neg.out
 assert reds_neg.ok else "equinox-ch2-surface: reds refuse failed"
 
-# Limb 3 — voice roster welcome + refuse
+# Limb 3 -- voice roster welcome + refuse
 let voice = run ["rishi/bin/rishi" "run" "tools/gen/season/voice_roster_witness.rish"]
 say voice.out
 assert voice.ok else "equinox-ch2-surface: voice welcome failed"
@@ -40,7 +40,7 @@ let voice_neg = run ["rishi/bin/rishi" "run" "tools/gen/season/voice_roster_nega
 say voice_neg.out
 assert voice_neg.ok else "equinox-ch2-surface: voice refuse failed"
 
-# Limb 4 — baton museum census welcome + refuse
+# Limb 4 -- baton museum census welcome + refuse
 let baton = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
 say baton.out
 assert baton.ok else "equinox-ch2-surface: baton welcome failed"

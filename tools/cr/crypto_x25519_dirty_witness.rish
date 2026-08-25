@@ -1,26 +1,26 @@
-# tools/cr/crypto_x25519_dirty_witness.rish — the dirty X25519 public key (crypto_x25519_dirty_small / crypto_x25519_dirty_fast) authored in pure
+# tools/cr/crypto_x25519_dirty_witness.rish -- the dirty X25519 public key (crypto_x25519_dirty_small / crypto_x25519_dirty_fast) authored in pure
 # Rye: Season G's rung completing the Elligator key-hiding family. A CLEAN X25519 public key always lands in the prime-order subgroup, so
 # hiding it with Elligator would leak that structure; the DIRTY public key leaves the cofactor component in, ranging over the whole curve, so
-# its Elligator representative is genuinely indistinguishable from random noise — the key crypto_elligator_key_pair and Comlink's obfuscated
-# first packet reach for (Season G · Cryptography).
+# its Elligator representative is genuinely indistinguishable from random noise -- the key crypto_elligator_key_pair and Comlink's obfuscated
+# first packet reach for (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
 # primitives in Rye with byte-for-byte parity as the crux; this completes the key-hiding family beside crypto/elligator.rye).
-# Kin: crypto/x25519.rye (the CLEAN ladder whose field composition this reuses unchanged) · crypto/elligator.rye (the map that hides the dirty
-# key) · crypto/fe25519.rye (the base field both stand on) · crypto/ed25519_scalar.rye (the group order L, whose defining form add_xl derives).
-# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied algorithm — our own arithmetic, studied clean-room from the
+# Kin: crypto/x25519.rye (the CLEAN ladder whose field composition this reuses unchanged) - crypto/elligator.rye (the map that hides the dirty
+# key) - crypto/fe25519.rye (the base field both stand on) - crypto/ed25519_scalar.rye (the group order L, whose defining form add_xl derives).
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied algorithm -- our own arithmetic, studied clean-room from the
 # public Curve25519 mathematics and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 #
 # crypto/x25519_dirty.rye authors dirty_small(secret_key) in three steps over the GREEN Montgomery ladder, adding no new field mathematics:
 # trim the secret scalar the EdDSA way (clear the low three cofactor bits, clear bit 255, set bit 254), add the main factor of those three bits
-# back as (secret_key[0] mod 8)·L modulo 2^256 (the add_xl schoolbook eight-word add over the group order L, derived here from its RFC 8032
-# defining form), then run the FULL 256-bit ladder — unclamped, the one difference from the clean ladder — against a fixed order-8·L base point.
+# back as (secret_key[0] mod 8)-L modulo 2^256 (the add_xl schoolbook eight-word add over the group order L, derived here from its RFC 8032
+# defining form), then run the FULL 256-bit ladder -- unclamped, the one difference from the clean ladder -- against a fixed order-8-L base point.
 # The per-step field arithmetic is byte-identical to crypto/x25519.rye's clean ladder that is already GREEN against Monocypher. The selftest
 # proves three internal invariants: L's derived bytes equal the canonical RFC 8032 group-order encoding, dirty_small produces a non-trivial
 # (never all-zero) key, and the primitive is a pure deterministic function of its input. The byte-for-byte external anchor lives in
 # tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish, which builds the ACTUAL vendored Monocypher and proves our dirty_small equals BOTH
-# its crypto_x25519_dirty_small AND crypto_x25519_dirty_fast over sixteen keys. Purely local — no key, no network, no funds, no device;
+# its crypto_x25519_dirty_small AND crypto_x25519_dirty_fast over sixteen keys. Purely local -- no key, no network, no funds, no device;
 # constant-time timing-safety stays a separate named horizon, and a dirty public key is not itself a secret.
 #
 # Run from the repository root:

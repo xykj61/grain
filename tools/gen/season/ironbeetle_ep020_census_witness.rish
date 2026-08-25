@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep020_census_witness.rish — e75 IronBeetle ep020.
+# tools/gen/season/ironbeetle_ep020_census_witness.rish -- e75 IronBeetle ep020.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep020_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep020: Language EN — a change that never touches what came before."
 say "iron-ep020: Style Radiant — immutable tables stack; compaction keeps the levels honest."

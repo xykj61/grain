@@ -1,9 +1,9 @@
-# tools/s/slc2a_ring3_metal.rish — SLC-2a Wayland metal smoke, automated slice · 20260713.
+# tools/s/slc2a_ring3_metal.rish -- SLC-2a Wayland metal smoke, automated slice - 20260713.
 #
 # Run from the repository root when WAYLAND_DISPLAY is set:
 #   rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 #
-# Manual remainder (Kaeden on GNOME): run `pond/bin/drawn-terminal` interactively —
+# Manual remainder (Kaeden on GNOME): run `pond/bin/drawn-terminal` interactively --
 # type commands, idle one minute (pong), fill past the ceiling (status row), :quit.
 
 let bin = "pond/bin/drawn-terminal"

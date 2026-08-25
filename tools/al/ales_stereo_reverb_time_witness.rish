@@ -1,10 +1,10 @@
-# tools/al/ales_stereo_reverb_time_witness.rish — the stereo reverb in real time: a linked Schroeder network named in milliseconds (ALES189).
+# tools/al/ales_stereo_reverb_time_witness.rish -- the stereo reverb in real time: a linked Schroeder network named in milliseconds (ALES189).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES189.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES189.
 # Design read: active-designing/date/20260815/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
-# Stands on: lotus/stereo_reverb.rye (ALES187 — the linked stereo reverb this speaks in real time, delegated unchanged); lotus/reverb_time.rye
-# (ALES188 — the mono timed twin this mirrors, its CombSpecMs / AllpassSpecMs reused); lotus/clock.rye (ALES5 — the sample clock, its
-# samples_for converting ms to a bounded sample count); lotus/stereo_echo_time.rye (ALES182 — the first stereo real-time face, the pattern).
+# Stands on: lotus/stereo_reverb.rye (ALES187 -- the linked stereo reverb this speaks in real time, delegated unchanged); lotus/reverb_time.rye
+# (ALES188 -- the mono timed twin this mirrors, its CombSpecMs / AllpassSpecMs reused); lotus/clock.rye (ALES5 -- the sample clock, its
+# samples_for converting ms to a bounded sample count); lotus/stereo_echo_time.rye (ALES182 -- the first stereo real-time face, the pattern).
 #
 # lotus/stereo_reverb_time.rye gives the ALES187 stereo reverb a face in milliseconds, mirroring reverb_ms's two-bank conversion and
 # delegating to ALES187 unchanged. stereo_reverb_ms converts start_ms, count_ms, and every comb's and allpass's delay_ms once through ALES5's
@@ -14,7 +14,7 @@
 # 48 kHz 1 ms converts to 48 samples on both and the first recirculation sits exactly there; an identical-channel master stays identical
 # (an exact panned ratio does not survive the @divTrunc recirculation, inherited from ALES187); a sub-sample comb (0 ms) refuses BadDelay;
 # a stage delay past the clip refuses DurationTooLong; an empty comb bank refuses NoCombs, a feedback at unity BadGain, an out-of-range span
-# BadRange, each leaving BOTH channels untouched and balanced; count_ms 0 the identity. Purely local — no cross-channel read, no network,
+# BadRange, each leaving BOTH channels untouched and balanced; count_ms 0 the identity. Purely local -- no cross-channel read, no network,
 # no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -40,7 +40,7 @@ say "ales-stereo-reverb-time: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-time: selftest did not print the GREEN ales-stereo-reverb-time line"
 
-# This rung delegates to ALES187's stereo_reverb over its public API — re-prove the index-named stereo reverb still stands green beside it.
+# This rung delegates to ALES187's stereo_reverb over its public API -- re-prove the index-named stereo reverb still stands green beside it.
 let stereo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb.rye -femit-bin=lotus/bin/stereo_reverb && lotus/bin/stereo_reverb selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb' && echo yes"]
 assert (trim stereo.out) == "yes" else "ales-stereo-reverb-time: the ALES187 stereo reverb regressed under its real-time twin"
 

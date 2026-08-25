@@ -1,8 +1,8 @@
-# seva_view_witness.rish — Seva R1: render what Pool hosts as a bounded frame.
+# seva_view_witness.rish -- Seva R1: render what Pool hosts as a bounded frame.
 #
 # The Landscape-parallel viewer's first rung: Seva (Realidream) renders one
 # Pool-hosted agent's folded state as a pure, bounded, deterministic frame,
-# sourced from Pool rather than a local fixture — Pool hosts, Seva shows. See
+# sourced from Pool rather than a local fixture -- Pool hosts, Seva shows. See
 # external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
 # and linengrow/seva_view.rye.
 #

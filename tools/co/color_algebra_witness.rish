@@ -1,17 +1,17 @@
-# tools/co/color_algebra_witness.rish — the open sRGB color algebra proves itself on metal (Season G crux).
+# tools/co/color_algebra_witness.rish -- the open sRGB color algebra proves itself on metal (Season G crux).
 #
-# Season G (Open Media Primitives) · the color floor beside the open image codec (image/qoi.rye).
+# Season G (Open Media Primitives) - the color floor beside the open image codec (image/qoi.rye).
 # Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md
-# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB — public standards only).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
 #
 # The crux this witness proves is a REAL, BOUNDED, OPEN color model in Rye, floor code that does not wait on
 # DJINN's Bit Design System (only Brushstroke rendering is paused, never color math). A color is four sRGB
 # bytes held exactly: parse #rgb/#rrggbb/#rrggbbaa hex and rgb()/hsl() functional forms, format back to
 # canonical #rrggbbaa, and the round-trip recovers the color byte-for-byte. Five malformed inputs each refuse
-# by their own named error (BadHexLength · BadHexDigit · BadFunctionForm · ChannelOutOfRange · BadLevels). The
-# HSL primaries land exactly; the RGB→HSL→RGB sweep reports its true worst-channel error (5, the honest cost
+# by their own named error (BadHexLength - BadHexDigit - BadFunctionForm - ChannelOutOfRange - BadLevels). The
+# HSL primaries land exactly; the RGB->HSL->RGB sweep reports its true worst-channel error (5, the honest cost
 # of a percent-granular reading, stated rather than claimed exact). Blend and over-compositing endpoints are
-# exact; quantize's 256 levels is the identity and 2 levels snaps to the ends. No network, no key, no funds —
+# exact; quantize's 256 levels is the identity and 2 levels snaps to the ends. No network, no key, no funds --
 # the color Brushstroke and Skate read the day the design system lands.
 #
 # Run from the repository root:

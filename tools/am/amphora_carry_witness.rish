@@ -1,7 +1,7 @@
-# tools/am/amphora_carry_witness.rish — Q26: the round trip, measured whole.
+# tools/am/amphora_carry_witness.rish -- Q26: the round trip, measured whole.
 #
-# pour → carry → far bytes equal near bytes → far walls verify → re-carry
-# welcomes → forked occupant at the dock refuses.
+# pour -> carry -> far bytes equal near bytes -> far walls verify -> re-carry
+# welcomes -> forked occupant at the dock refuses.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_carry_witness.rish

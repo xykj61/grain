@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 49 from TB say-why census (e43) — opens chapter four.
+# Append Glow almanac seat 49 from TB say-why census (e43) -- opens chapter four.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 49\.' "$ALMANAC"; then

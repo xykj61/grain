@@ -1,16 +1,16 @@
-# link_witness.rish — blocking relative-markdown link completeness.
-# Counsel 20260726.020825 · T0 · ROUND MODE 20260726.025120.
+# link_witness.rish -- blocking relative-markdown link completeness.
+# Counsel 20260726.020825 - T0 - ROUND MODE 20260726.025120.
 # Sound Season breach instrument (round 0 raise `20260727.221508`):
-#   tools/fixtures/sound_season/README.md — SNAPSHOT before yonder/re-point,
+#   tools/fixtures/sound_season/README.md -- SNAPSHOT before yonder/re-point,
 #   COMPARE after; no new missing targets.
 #
 # Positive: context/fixtures/link_witness_valid.md must PASS.
 # Negative: context/fixtures/link_witness_broken.md must FAIL.
 # Tree walk: LINK_WITNESS_ALLOW_BASELINE=1 for the first honest count.
 # ROUND MODE (via scan env; used each T3 / Sound breach motion):
-#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt   — capture sorted dangling set
-#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt    — assert AFTER ⊆ BEFORE
-# ALLOW_BASELINE is IGNORED in COMPARE — if it can suppress a red there, STOP.
+#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt   -- capture sorted dangling set
+#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt    -- assert AFTER ⊆ BEFORE
+# ALLOW_BASELINE is IGNORED in COMPARE -- if it can suppress a red there, STOP.
 #
 #   rishi/bin/rishi run tools/l/link_witness.rish
 #   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt sh tools/fixtures/link_witness_scan.sh
@@ -27,7 +27,7 @@ assert fail.ok == false else "link_witness broken fixture passed — witness too
 assert fail.out contains "dangling" else "broken fixture must report dangling"
 
 say "link_witness: tree walk (baseline allow)…"
-# Hardcoded ALLOW_BASELINE=1 — Rishi does not expand shell ${…} in string literals.
+# Hardcoded ALLOW_BASELINE=1 -- Rishi does not expand shell ${...} in string literals.
 let walk = run ["sh" "-c" "LINK_WITNESS_ALLOW_BASELINE=1 sh tools/fixtures/link_witness_scan.sh"]
 say walk.out
 assert walk.ok else "link_witness tree walk RED"

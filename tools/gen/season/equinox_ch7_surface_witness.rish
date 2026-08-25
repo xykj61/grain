@@ -1,8 +1,8 @@
-# tools/gen/season/equinox_ch7_surface_witness.rish — e109 chapter-seven surface.
+# tools/gen/season/equinox_ch7_surface_witness.rish -- e109 chapter-seven surface.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_ch7_surface_witness.rish
 #
-# Fifteen limbs matching seats 97-111. Leaf witnesses only — no nested surfaces.
+# Fifteen limbs matching seats 97-111. Leaf witnesses only -- no nested surfaces.
 # Twin of equinox_ch4_surface_witness.rish (e59). Opens Chapter Eight at seat 113.
 # Itinerary refine: bundle and shred are modes; only the close was a seat.
 
@@ -10,7 +10,7 @@ say "equinox-ch7-surface: Language EN — chapter greens, one choir; fifteen lim
 say "equinox-ch7-surface: Style Radiant — a duty is not a seat unless the almanac says so."
 say "equinox-ch7-surface: Lens TAME — e109 · ch7 surface · almanac seat 113 · ch8 open."
 
-# --- shelf close (97 · 98) ---
+# --- shelf close (97 - 98) ---
 let ep044 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep044_census_witness.rish"]
 say ep044.out
 assert ep044.ok else "equinox-ch7-surface: ep044 limb failed"
@@ -79,7 +79,7 @@ say e105.out
 assert e105.ok else "equinox-ch7-surface: e105 limb failed"
 assert e105.out contains "GREEN: e105-window-m3-m4" else "equinox-ch7-surface: e105 not GREEN"
 
-# --- ledger and map (110 · 111) ---
+# --- ledger and map (110 - 111) ---
 let zero = run ["rishi/bin/rishi" "run" "tools/gen/season/zero_view_witness.rish"]
 say zero.out
 assert zero.ok else "equinox-ch7-surface: zero-view limb failed"
@@ -109,7 +109,7 @@ assert scan.out contains "fork_status=not_consumed" else "equinox-ch7-surface: w
 assert scan.out contains "ch7_surface=ok" else "equinox-ch7-surface: want ch7_surface ok"
 assert scan.out contains "verdict=ok" else "equinox-ch7-surface: want verdict=ok"
 
-# Refuse — absent iron shelf (limb shape from ch4)
+# Refuse -- absent iron shelf (limb shape from ch4)
 let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep045_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-ch7-surface: absent iron must fail"

@@ -1,8 +1,8 @@
-# tools/gen/season/brush_shape_witness.rish — Surface p12 fixture · p23 parser begun
+# tools/gen/season/brush_shape_witness.rish -- Surface p12 fixture - p23 parser begun
 #
 #   rishi/bin/rishi run tools/gen/season/brush_shape_witness.rish
 #
-# Orientation — fixture pins. Parser proof lives in brush_parse_witness.
+# Orientation -- fixture pins. Parser proof lives in brush_parse_witness.
 
 say "brush-shape: Language EN — one fixture describes Frame at a nib."
 say "brush-shape: Style Radiant — prove the file; refuse invent language."

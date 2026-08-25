@@ -1,18 +1,18 @@
-# tools/m/mycelium_cord_witness.rish — the Cord: one agreed order read from a mesh of signed blocks (r1).
+# tools/m/mycelium_cord_witness.rish -- the Cord: one agreed order read from a mesh of signed blocks (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r1 — the deterministic-commit crux.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - rung r1 -- the deterministic-commit crux.
 # The Constel dev-net ledger gave mycelium/fold a network to belong to under one sovereign. The Cord
 # gives the mesh its missing half: when many nodes each hold a set of Kumara-signed fact-blocks that
-# reference one another, every honest node derives the identical total order — without a leader, without
-# a certificate round, every buffer bounded — and fold_log runs over that order unchanged.
+# reference one another, every honest node derives the identical total order -- without a leader, without
+# a certificate round, every buffer bounded -- and fold_log runs over that order unchanged.
 #
 # From TigerBeetle the Cord takes determinism and static allocation; from Mysticeti, order read from an
 # uncertified DAG by a deterministic commit rule. Clean-room: both studied, never copied.
 #
 # The crux this witness proves: the same four blocks, added in three different arrival orders, commit to
-# one identical order and one identical fold state — arrival-order independence — and every Byzantine
+# one identical order and one identical fold state -- arrival-order independence -- and every Byzantine
 # fault a DAG faces at this rung (a tampered block signature, a dangling parent, a duplicate) refuses the
-# block before the Dag grows. Demo keeper seeds only — no real key, no funds, no network, no custody.
+# block before the Dag grows. Demo keeper seeds only -- no real key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 #
@@ -36,7 +36,7 @@ assert selftest.out contains "three arrival permutations commit to one identical
 assert selftest.out contains "folds the real Mycelium law to supply 700 over one star" else "mycelium-cord: fold-over-agreed-order claim missing"
 assert selftest.out contains "a tampered block signature, a dangling parent, and a duplicate each refuse whole" else "mycelium-cord: Byzantine-refusal claim missing"
 
-# The Mycelium supply fold the Cord orders facts for stands at its door — its own selftest proves the
+# The Mycelium supply fold the Cord orders facts for stands at its door -- its own selftest proves the
 # pure-fold law (issued minus taxed, non-negative, overdraw refuses whole) the committed order feeds.
 let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert myc.ok else "mycelium-cord: the Mycelium fold the Cord orders facts for is not GREEN"

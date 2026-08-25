@@ -1,19 +1,19 @@
-# tools/al/ales_power_witness.rish — equal-power pan: the law that keeps POWER constant, not SUM (ALES11).
+# tools/al/ales_power_witness.rish -- equal-power pan: the law that keeps POWER constant, not SUM (ALES11).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES11.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES11.
 # Design read: active-designing/20260814-fill-ales11-lotus-equal-power.md
-# Stands on: lotus/pan.rye (ALES10) — the second channel (StereoClip) and the fold bound (max_pan_den) reused whole;
-# lotus/fader.rye (ALES8) — a panned track is TWO faded contributions, so each channel is fader.render run once over an
-# equal-power-folded effective fader; lotus/track.rye (ALES6) — the Session the pans align with.
+# Stands on: lotus/pan.rye (ALES10) -- the second channel (StereoClip) and the fold bound (max_pan_den) reused whole;
+# lotus/fader.rye (ALES8) -- a panned track is TWO faded contributions, so each channel is fader.render run once over an
+# equal-power-folded effective fader; lotus/track.rye (ALES6) -- the Session the pans align with.
 #
 # lotus/power.rye places each track on the QUARTER CIRCLE rather than the straight line between the speakers, so the two
-# channels' POWERS (their squared amplitudes) sum to a constant. "Equal power" MEANS the two squared weights sum to den² —
-# built exact from that fact (left_power = den·(den−pos), right_power = den·pos), the amplitude weights the floor square root
+# channels' POWERS (their squared amplitudes) sum to a constant. "Equal power" MEANS the two squared weights sum to den² --
+# built exact from that fact (left_power = den-(den−pos), right_power = den-pos), the amplitude weights the floor square root
 # of each. The one genuinely new arithmetic is a bounded integer sqrt, proven to its contract r² ≤ x < (r+1)². The selftest
 # proves: the isqrt contract across a sweep; constant power for every position; a center pan at 0.707 (−3 dB) distinctly
 # louder than ALES10's linear 0.5 (−6 dB); hard left/right route wholly; left²+right² within the proven bound of den²; pan
 # composes with the fader; two tracks panned opposite separate; make refuses BadGain/BadRange; ClipFull forwarded. Purely
-# local — no network, no keys, no funds, no real device, no real speaker.
+# local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_power_witness.rish

@@ -1,21 +1,21 @@
-# tools/m/mycelium_constel_witness.rish — a named, reproducible dev-net constellation reaches quorum
+# tools/m/mycelium_constel_witness.rish -- a named, reproducible dev-net constellation reaches quorum
 # (r1, the Constel crux).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r1.
-# Every consensus witness before this conjured its nodes inline — seeded(0x11), seeded(0x22), anonymous
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r1.
+# Every consensus witness before this conjured its nodes inline -- seeded(0x11), seeded(0x22), anonymous
 # keypairs made up for one proof and forgotten. No round gave the dev-net a NAME and a ROSTER: a stable,
 # reproducible constellation of fake ships a keeper boots to run the whole stack as a network of named
-# nodes. A CONSTEL is that named test constellation — the sovereign-lane echo of elder Urbit's fake-galaxy
+# nodes. A CONSTEL is that named test constellation -- the sovereign-lane echo of elder Urbit's fake-galaxy
 # dev networks, run from inside the jailed pier under quarantined demo identities. A ship's identity is a
-# PURE FUNCTION of its name (seed = SHA-256(name)), so the whole constellation — every key, the Muster it
-# seats, the quorum it reaches — is determined by the list of names alone: boot it twice, read it the same.
+# PURE FUNCTION of its name (seed = SHA-256(name)), so the whole constellation -- every key, the Muster it
+# seats, the quorum it reaches -- is determined by the list of names alone: boot it twice, read it the same.
 #
-# The crux this witness proves is REPRODUCIBLE, NAMED QUORUM — the named roster boots to byte-identical keys,
+# The crux this witness proves is REPRODUCIBLE, NAMED QUORUM -- the named roster boots to byte-identical keys,
 # seats as a Muster, and reaches quorum on the account's TRUE order-head, with the teeth that a stranger ship
 # never counts (NotMember) and a quorum too thin for the Byzantine threshold is not believed (BelowQuorum).
 # Ship names obey the always-on placeholder-ship-names rule (single tokens, no `~`, length != 3/6/12, never a
 # valid @p). Composes kumara + cord + fold + voucher + chorus + muster public API only, editing none; demo
-# ship and keeper seeds — no key, no funds, no network, no real value.
+# ship and keeper seeds -- no key, no funds, no network, no real value.
 #
 # Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 #
@@ -41,13 +41,13 @@ assert selftest.out contains "reaches quorum on the account's true order-head" e
 assert selftest.out contains "NotMember" else "mycelium-constel: the stranger-ship refusal claim missing"
 assert selftest.out contains "BelowQuorum" else "mycelium-constel: the thin-quorum refusal claim missing"
 
-# The Chorus whose quorum a Constel gathers stands at the door — a constellation reaches agreement by the
+# The Chorus whose quorum a Constel gathers stands at the door -- a constellation reaches agreement by the
 # very distinct-voice attestation the Chorus proves.
 let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-constel: the Chorus quorum a Constel gathers is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-constel: the Chorus did not speak its GREEN"
 
-# The Muster whose roll a Constel seats stands too — a named constellation is believed only when its voices
+# The Muster whose roll a Constel seats stands too -- a named constellation is believed only when its voices
 # are all enrolled and their count meets the roll's Byzantine threshold.
 let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-constel: the Muster roll a Constel seats is not GREEN"

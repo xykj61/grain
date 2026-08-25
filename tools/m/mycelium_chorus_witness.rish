@@ -1,6 +1,6 @@
-# tools/m/mycelium_chorus_witness.rish — the Chorus: a quorum of independent Vouchers (r1).
+# tools/m/mycelium_chorus_witness.rish -- the Chorus: a quorum of independent Vouchers (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r1 — the crux.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r1 -- the crux.
 # The Voucher made a holder's position PROVABLE under one node's signature; yet a verifier who does not
 # hold the blocks must simply TRUST that the single signing node read the ledger true. The Chorus fills
 # that blind spot: PROOF OF POSITION BY QUORUM. A bounded set of independent Vouchers for the SAME account
@@ -8,14 +8,14 @@
 #
 # The crux this witness proves is A POSITION IS BELIEVED WHEN A THRESHOLD OF DISTINCT NODES AGREE:
 # verify_chorus(threshold) passes exactly when every member's signature holds offline (else BadSignature),
-# every member names the one claimed order-head · account · position (else Disagreement), the signers are
-# distinct — a repeated node refuses DuplicateNode, so one voice cannot manufacture a quorum — and the
+# every member names the one claimed order-head - account - position (else Disagreement), the signers are
+# distinct -- a repeated node refuses DuplicateNode, so one voice cannot manufacture a quorum -- and the
 # distinct count meets the threshold (else BelowThreshold). check_against(dag), for a verifier who DOES
 # hold the blocks, re-derives the order-head and re-reads the Statement once and confirms the one claim is
 # true. Arrival-independence is inherited from the Voucher: a chorus gathered against one permutation of
 # the round-2 facts verifies and checks against the other, because cord.commit yields one agreed order per
 # arrival. Composes voucher + cord + lapse + statement + kumara public API only, editing none; the quorum
-# law is the Chorus's own bounded fold over its member set; demo node and keeper seeds — no key, no funds,
+# law is the Chorus's own bounded fold over its member set; demo node and keeper seeds -- no key, no funds,
 # no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
@@ -42,12 +42,12 @@ assert selftest.out contains "inherits arrival-independence" else "mycelium-chor
 assert selftest.out contains "refuses tamper (thin quorum · repeated signer · disagreement · forged voice)" else "mycelium-chorus: tamper-refusal claim missing"
 assert selftest.out contains "Proof of position by quorum stands" else "mycelium-chorus: closing claim missing"
 
-# The rendered chorus a keeper reads — a plain open-pledge quorum of three voices naming the order-head,
+# The rendered chorus a keeper reads -- a plain open-pledge quorum of three voices naming the order-head,
 # the account, and the vouched position (balance 0, reserved 100, received 100).
 assert selftest.out contains "chorus head=" else "mycelium-chorus: rendered chorus missing"
 assert selftest.out contains "balance=0 reserved=100 received=100 voices=3" else "mycelium-chorus: rendered open quorum missing"
 
-# The Voucher each member is, and the Statement it signs, stand at the door — their own selftests prove
+# The Voucher each member is, and the Statement it signs, stand at the door -- their own selftests prove
 # the single-node machinery the quorum rests on.
 let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert voucher.ok else "mycelium-chorus: the Voucher each member is is not GREEN"

@@ -1,9 +1,9 @@
 #!/bin/sh
-# tend_reach_census — reach instrument, method v2 (self-mention excluded).
+# tend_reach_census -- reach instrument, method v2 (self-mention excluded).
 # Seated at Q52 (v1); upgraded e198: a file whose only mention is its own
-# body now counts ORPHAN — the stricter subtraction v1 stated as owed.
-# Output shape (held for the witness): method line · one line per room
-# "room tracked=N orphans=M" · one TOTAL line.
+# body now counts ORPHAN -- the stricter subtraction v1 stated as owed.
+# Output shape (held for the witness): method line - one line per room
+# "room tracked=N orphans=M" - one TOTAL line.
 set -e
 cd "$(git rev-parse --show-toplevel)"
 git ls-files > /tmp/trc_all.txt

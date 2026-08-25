@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_soft_center_clip_witness.rish — stereo_soft_center_clip: the soft center clipper carried into stereo with ONE SHARED CONTINUOUS DEAD ZONE, both channels in lockstep, the phase-holding yet
+# tools/al/ales_stereo_soft_center_clip_witness.rish -- stereo_soft_center_clip: the soft center clipper carried into stereo with ONE SHARED CONTINUOUS DEAD ZONE, both channels in lockstep, the phase-holding yet
 # ratio-breaking member of the stereo dead-zone corner (ALES142).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES142.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES142.
 # Design read: active-designing/date/20260815/20260815-042641_fill-ales142-lotus-stereo-soft-center-clip.md
-# Stands on: lotus/soft_center_clip.rye (ALES88 — the mono soft center clipper run once per channel, y = if |x| ≤ t then 0 else x − sign(x)·t with no rail edge), lotus/stereo_center_clip.rye (ALES141 — the hard
-# sibling whose dead zone this shares and whose survivors this pulls toward zero by t, the soft/hard bond), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES88's continuous
-# dead zone into stereo — silencing the quiet middle and shifting every survivor toward zero by the threshold in both channels, the survivor rising continuously from zero, one dead zone landing on both speakers
+# Stands on: lotus/soft_center_clip.rye (ALES88 -- the mono soft center clipper run once per channel, y = if |x| ≤ t then 0 else x − sign(x)-t with no rail edge), lotus/stereo_center_clip.rye (ALES141 -- the hard
+# sibling whose dead zone this shares and whose survivors this pulls toward zero by t, the soft/hard bond), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES88's continuous
+# dead zone into stereo -- silencing the quiet middle and shifting every survivor toward zero by the threshold in both channels, the survivor rising continuously from zero, one dead zone landing on both speakers
 # together. The soft center clip is the continuous twin of ALES141's hard center clip, which jumped at the boundary. It is odd, so it holds the inter-channel antisymmetry (an out-of-phase master staying out of phase),
-# yet it is a shift, so it breaks the inter-channel ratio (a one-to-two master not staying one-to-two) and is not idempotent — the honest middle of the class.
+# yet it is a shift, so it breaks the inter-channel ratio (a one-to-two master not staying one-to-two) and is not idempotent -- the honest middle of the class.
 #
 # lotus/stereo_soft_center_clip.rye validates both channels once against the shared threshold and length before either is mutated (BadThreshold on a threshold outside [0, sample_max], BadRange on a span outside the
 # samples), then soft-center-clips both channels through ALES88's soft_center_clip; SoftCenterClipError reused whole. The crux is four laws. THE STEREO SOFT CENTER-CLIP LAW: each channel equals ALES88's mono

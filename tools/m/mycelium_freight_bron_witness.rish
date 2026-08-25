@@ -1,14 +1,14 @@
-# tools/m/mycelium_freight_bron_witness.rish — a world's freight travels as a readable record, and reads the
+# tools/m/mycelium_freight_bron_witness.rish -- a world's freight travels as a readable record, and reads the
 # same offline (r3).
 #
-# Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r3 — travel.
+# Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r3 -- travel.
 # r1 proved a moved world reads the byte-identical position on its new berth; r2 proved the whole fleet's
-# state is conserved across a healing. r3 lets a world's freight cross as `format freight-v1` bytes — a
-# manifest of id · berth host key · ledger order-head · account position (balance · reserved · received ·
+# state is conserved across a healing. r3 lets a world's freight cross as `format freight-v1` bytes -- a
+# manifest of id - berth host key - ledger order-head - account position (balance - reserved - received -
 # present). The crux: a manifest parsed from bytes reads the byte-identical position offline, its advertised
 # order-head ACCEPTS the world's real ledger blocks through freight.receive, and a head altered in transit
 # makes those same blocks refuse FreightTampered. Render/parse is a fixed point. Composes freight + puddle +
-# cord + lapse + fold + voucher + kumara public API only; demo seeds — no key, no funds, no network, no world
+# cord + lapse + fold + voucher + kumara public API only; demo seeds -- no key, no funds, no network, no world
 # moved.
 #
 # Scope: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
@@ -35,13 +35,13 @@ assert selftest.out contains "refuse FreightTampered" else "mycelium-freight-bro
 assert selftest.out contains "missing field each refuse" else "mycelium-freight-bron: refusal claim missing"
 assert selftest.out contains "The freight carries the position" else "mycelium-freight-bron: closing claim missing"
 
-# The Freight crux r3 travels stands on r1's own migration — its receive path is exactly what the manifest's
+# The Freight crux r3 travels stands on r1's own migration -- its receive path is exactly what the manifest's
 # advertised head is checked against here.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
 assert r1.ok else "mycelium-freight-bron: the Freight r1 crux this round rides is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-freight-bron: the Freight r1 crux did not speak its GREEN"
 
-# The Freight r2 conservation stands too — r3 travels the very position r2 sums across a whole fleet.
+# The Freight r2 conservation stands too -- r3 travels the very position r2 sums across a whole fleet.
 let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_conservation.rye -femit-bin=mycelium/bin/freight_conservation && mycelium/bin/freight_conservation 2>&1"]
 assert r2.ok else "mycelium-freight-bron: the Freight r2 conservation is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-freight-bron: the Freight r2 conservation did not speak its GREEN"

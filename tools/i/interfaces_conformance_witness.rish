@@ -1,10 +1,10 @@
-# interfaces_conformance_witness.rish — the reference module keeps the interface shape.
+# interfaces_conformance_witness.rish -- the reference module keeps the interface shape.
 #
-# Acme DX dev season, interfaces surface · 20260811. The interfaces-surface contract
+# Acme DX dev season, interfaces surface - 20260811. The interfaces-surface contract
 # (active-designing/date/20260811/20260811-170901_acme-dx-interfaces-surface-contract.md) names the
 # shape a Grain module presents: an API (opening triad, a named bound, invariant
 # asserts, a snake_case verb), a CLI (a selftest verb that greens), and a witness. This
-# proves the teaching reference — manual/tutorials/greet.rye — still keeps that shape,
+# proves the teaching reference -- manual/tutorials/greet.rye -- still keeps that shape,
 # so if the reference a newcomer copies ever drifts from the contract, a machine reds,
 # not the newcomer's first day.
 #

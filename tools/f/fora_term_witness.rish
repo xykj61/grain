@@ -1,17 +1,17 @@
-# tools/f/fora_term_witness.rish — leadership made safe across re-election: an old leader can't commit (FORA16).
+# tools/f/fora_term_witness.rish -- leadership made safe across re-election: an old leader can't commit (FORA16).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA16. Design read: active-designing/date/20260814/20260814-083300_fora16-constel-terms-stale-leader.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the real-sky round drives accepts through census respond/hear, which
+# Law kin: .claude/rules/placeholder-ship-names.md -- the real-sky round drives accepts through census respond/hear, which
 # deframe at the naming-law border, so a real address can never enter a termed decree even as an accept.
 #
-# constel/term.rye gives the elect·decree·log stack the one thing it was missing to survive a re-election: a TERM, a monotonic
-# logical clock on leadership. A voter whose current term exceeds a decree's term refuses StaleTerm — it has moved to a newer
+# constel/term.rye gives the elect-decree-log stack the one thing it was missing to survive a re-election: a TERM, a monotonic
+# logical clock on leadership. A voter whose current term exceeds a decree's term refuses StaleTerm -- it has moved to a newer
 # leader. The safety follows from FORA9's intersection lemma: once a strict majority has advanced to term T, any decree in a
 # term < T gathers at most the un-advanced minority and can never commit, so an old leader is out-voted by construction. The
 # selftest proves: the term table is monotonic; a ground decree commits and its accepters adopt the term; a moved-on voter
 # refuses StaleTerm; AN OLD LEADER CAN'T COMMIT at the value level and again over a real sky; a full constellation of eight runs
-# bounded. Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# bounded. Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_term_witness.rish

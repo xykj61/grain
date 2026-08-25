@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_infinite_clip_witness.rish — stereo_infinite_clip: the infinite clipper carried into stereo with ONE SHARED RAIL, both channels in lockstep, CLOSING the dead-zone family in stereo (ALES143).
+# tools/al/ales_stereo_infinite_clip_witness.rish -- stereo_infinite_clip: the infinite clipper carried into stereo with ONE SHARED RAIL, both channels in lockstep, CLOSING the dead-zone family in stereo (ALES143).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES143.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES143.
 # Design read: active-designing/date/20260815/20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md
-# Stands on: lotus/infinite_clip.rye (ALES89 — the mono infinite clipper run once per channel, y = if |x| ≤ t then 0 else sign(x)·sample_max with no rail edge), lotus/stereo_center_clip.rye (ALES141 — the hard sibling
-# whose dead zone this shares, the same samples silenced and the survivors pinned to the rail instead of passed), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
-# lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES89's rail into
-# stereo — silencing the quiet middle and pinning every survivor to plus or minus sample_max in both channels, a sine becoming a square, one rail landing on both speakers together. It is the third and loudest reading
+# Stands on: lotus/infinite_clip.rye (ALES89 -- the mono infinite clipper run once per channel, y = if |x| ≤ t then 0 else sign(x)-sample_max with no rail edge), lotus/stereo_center_clip.rye (ALES141 -- the hard sibling
+# whose dead zone this shares, the same samples silenced and the survivors pinned to the rail instead of passed), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES89's rail into
+# stereo -- silencing the quiet middle and pinning every survivor to plus or minus sample_max in both channels, a sine becoming a square, one rail landing on both speakers together. It is the third and loudest reading
 # of the survivor's fate (the hard center clip passes, the soft shifts, the infinite clip pins), closing the dead-zone family in stereo. It is odd, so it holds the inter-channel antisymmetry (an out-of-phase master
 # staying out of phase), yet it collapses the inter-channel ratio to unity (every survivor slammed to the same magnitude), and thresh zero is the pure comparator rather than the identity.
 #

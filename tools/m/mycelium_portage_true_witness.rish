@@ -1,20 +1,20 @@
-# tools/m/mycelium_portage_true_witness.rish — a real portage record reads true, and is the receipt of a real
+# tools/m/mycelium_portage_true_witness.rish -- a real portage record reads true, and is the receipt of a real
 # crossing (r4, the arc closes).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 — reads true.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r4 -- reads true.
 # r1 proved value crosses two worlds and the pair conserves, r2 made the crossing atomic, r3 let it travel as
-# text — all over worlds seated in code. r4 carries the reader onto a REAL on-disk `format portage-v1` record a
+# text -- all over worlds seated in code. r4 carries the reader onto a REAL on-disk `format portage-v1` record a
 # keeper can open and read (tools/fixtures/portage_record.bron, produced reproducibly by
 # mycelium/portage_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/ symlink).
 #
-# Two crux checks: TWO TOOLS, ONE ANSWER — the app derives the crossing's value and digest INDEPENDENTLY of the
+# Two crux checks: TWO TOOLS, ONE ANSWER -- the app derives the crossing's value and digest INDEPENDENTLY of the
 # record's own fields (the amount by accepting the crossing against both worlds' real ledgers, the digest from
 # the crossing's content seeds) and reports the pair `<amount> <digest8>`, which equals an independent awk
-# reading of the same bytes; and THE RECORD IS THE RECEIPT OF A REAL CROSSING — the app rebuilds World A and
+# reading of the same bytes; and THE RECORD IS THE RECEIPT OF A REAL CROSSING -- the app rebuilds World A and
 # World B from the fixture's own seeds and `accept` ties the parsed record to both real ledgers (self-certifying
 # digest, both heads, matching burn). Genuineness beyond that: the record is a fixed point and the fixture is
 # reproducible; a tampered header refuses. Composes portage + portage_bron + portage_fixture_gen + cord +
-# kumara public API only; demo seeds — no key, no funds, no network, no value crossed.
+# kumara public API only; demo seeds -- no key, no funds, no network, no value crossed.
 #
 # Scope: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 #
@@ -40,7 +40,7 @@ assert selftest.out contains "never a hand-mock" else "mycelium-portage-true: fi
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-portage-true: tamper refusal missing"
 assert selftest.out contains "The Portage agent-doable arc closes" else "mycelium-portage-true: arc-close claim missing"
 
-# The crux — two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-portage-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/portage_record_truth.awk tools/fixtures/portage_record.bron"]
@@ -48,7 +48,7 @@ assert awk.ok else "mycelium-portage-true: awk truth read failed"
 assert awk.out contains "40 d2bafdd4" else "mycelium-portage-true: awk pair not 40 d2bafdd4"
 assert app.out == awk.out else "mycelium-portage-true: app and awk disagree — the reading drifted from the bytes"
 
-# The fixture is genuinely reproducible — the generator re-emits byte-identical bytes, so the on-disk record is
+# The fixture is genuinely reproducible -- the generator re-emits byte-identical bytes, so the on-disk record is
 # what the Portage renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed
 # fixture in a read-only witness).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_fixture_gen.rye -femit-bin=mycelium/bin/portage_fixture_gen"]
@@ -57,7 +57,7 @@ let regen = run ["sh" "-c" "mycelium/bin/portage_fixture_gen 2> /tmp/portage_rec
 assert regen.ok else "mycelium-portage-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-portage-true: the regenerated fixture drifted from the committed one"
 
-# r3 stays its own GREEN binary — this rung reads the record r3 renders, never replaces it.
+# r3 stays its own GREEN binary -- this rung reads the record r3 renders, never replaces it.
 let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_portage_bron_witness.rish 2>&1"]
 assert r3.ok else "mycelium-portage-true: rung three (travel) is not GREEN"
 assert r3.out contains "mycelium-portage-bron: GREEN" else "mycelium-portage-true: rung three did not speak its GREEN"

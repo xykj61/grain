@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# cellar_ring1_export_legacy.sh — ring-1 export with legacy entry lines (relpath + digest).
+# cellar_ring1_export_legacy.sh -- ring-1 export with legacy entry lines (relpath + digest).
 # Preserved for the elder golden at parity 144; new exports use cellar_ring1_export.sh.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)

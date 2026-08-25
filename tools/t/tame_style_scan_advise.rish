@@ -1,17 +1,17 @@
-# tame_style_scan_advise.rish — TAME ratchet advisories over the scan roster.
+# tame_style_scan_advise.rish -- TAME ratchet advisories over the scan roster.
 #
-# Native whole-roster path under max_list_items=1024 (advise crossed 256 → 512
-# on 20260724; doorway crossed 512 → 1024 on 20260725). Counts use map + length
+# Native whole-roster path under max_list_items=1024 (advise crossed 256 -> 512
+# on 20260724; doorway crossed 512 -> 1024 on 20260725). Counts use map + length
 # + join + shell arithmetic (for-each cannot accumulate). camelCase uses grep
 # seam; >70-line ledger via tame_style_long_fn.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan_advise.rish
 
-# tools/*.py count — advisory echo beside the BLOCKING gate in
+# tools/*.py count -- advisory echo beside the BLOCKING gate in
 # tame_style_scan_bans.rish (closed `20260724.212805`). Named exempts:
 # tools/fixtures/tools_py_exempt.txt. cast_a_chart.py stays outside tools/.
-# Prefer ! -path over \( -prune \) — Rishi's run string escapes break find's
+# Prefer ! -path over \( -prune \) -- Rishi's run string escapes break find's
 # paren form (ok=false empty out). Host caches stay gitignored; skip them so a
 # Framework HAWM pack never false-counts NDK *.py under tools/.cache.
 let tools_py_run = run ["sh" "-c" "find tools -name '*.py' -type f ! -path 'tools/.cache/*' ! -path 'tools/.build/*' 2>/dev/null | wc -l | tr -d ' '"]
@@ -55,7 +55,7 @@ say "ratchet: Ed25519 application sites = ${trim ed25519_app} (migrate to tally/
 say "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (intentional inside kumara seam)"
 say "ratchet: functions past 70 lines —"
 
-# Parenthesize every `== false` — bare `f == "path" == false` empties the list
+# Parenthesize every `== false` -- bare `f == "path" == false` empties the list
 # (Rish binds `==` tighter than intended; seated 20260717.181715).
 let za1 = where files as f: ((read-file f) contains "assert(") == false
 let za2 = where za1 as f: (f starts-with "comlink/guest_") == false

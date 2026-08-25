@@ -1,4 +1,4 @@
-# inference_scribble_fence_heading_view.rish — Scribble fence+heading combo → Skate.
+# inference_scribble_fence_heading_view.rish -- Scribble fence+heading combo -> Skate.
 let bin = "pond/bin/drawn-terminal"
 say "build: Scribble fence heading view — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

@@ -1,13 +1,13 @@
-# tools/al/ales_stereo_tremolo_witness.rish — stereo_tremolo: the tremolo (triangle LFO on amplitude) carried into stereo, the same swing on both channels — the rung that OPENS the stereo modulation class (ALES176).
+# tools/al/ales_stereo_tremolo_witness.rish -- stereo_tremolo: the tremolo (triangle LFO on amplitude) carried into stereo, the same swing on both channels -- the rung that OPENS the stereo modulation class (ALES176).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES176.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES176.
 # Design read: active-designing/date/20260815/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
-# Stands on: lotus/tremolo.rye (ALES74 — the mono tremolo run once per channel, its TremoloError reused whole and its precheck reused for the up-front atomic validation), lotus/glide.rye (ALES70 — glide_scale, 256 = unity gain),
-# lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate).
+# Stands on: lotus/tremolo.rye (ALES74 -- the mono tremolo run once per channel, its TremoloError reused whole and its precheck reused for the up-front atomic validation), lotus/glide.rye (ALES70 -- glide_scale, 256 = unity gain),
+# lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip and the one true saturate).
 #
-# lotus/stereo_tremolo.rye pulses a stereo master's loudness: it runs ALES74's proven mono tremolo on BOTH channels with the SAME swing — a triangle LFO of depth round centre over period samples driving the scaled GAIN — the classic
+# lotus/stereo_tremolo.rye pulses a stereo master's loudness: it runs ALES74's proven mono tremolo on BOTH channels with the SAME swing -- a triangle LFO of depth round centre over period samples driving the scaled GAIN -- the classic
 # linked auto-tremolo where both speakers pulse together. A tremolo's swing is scaled units the caller names (256 = unity), not scalars measured across the field, so the same swing on each channel preserves the stereo image for
-# free; because each output is its own input times the shared gain g(k), an identical-channel master stays identical and a panned master keeps its pan exactly (the left:right ratio untouched — the tremolo pulses without wandering the
+# free; because each output is its own input times the shared gain g(k), an identical-channel master stays identical and a panned master keeps its pan exactly (the left:right ratio untouched -- the tremolo pulses without wandering the
 # image; an offset-phase stereo tremolo is a later rung). Like the stateless EQ shelf/notch/bell and unlike the band-pass, there is no carried state to thread. It validates the swing and span once against the shared length before
 # either channel is mutated (BadPeriod on a period not a positive multiple of four or wider than max_clip, BadDepth on a floor below silence, BadGain on a top above unity, BadRange on a span past the samples), so a refusal never
 # tremolos one channel and leaves the other torn; TremoloError reused whole. Values only, never a length; the two channels leave balanced. The crux is four laws: the stereo tremolo law (each channel equal to ALES74's mono tremolo

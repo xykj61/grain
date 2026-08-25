@@ -1,4 +1,4 @@
-# rw2_app_collab.rish — RW-2 collaboration: drawn terminal sessionLines → contentSignature.
+# rw2_app_collab.rish -- RW-2 collaboration: drawn terminal sessionLines -> contentSignature.
 #
 # The asker (pond/apps/drawn_terminal) rebuilds frame lines on each session change;
 # signatures must move when content moves and hold when content holds.

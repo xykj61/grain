@@ -1,8 +1,8 @@
-# tools/b/buhr_quin_host_witness.rish — BUHR Journey 1, Rung 4: the Q-vane host.
+# tools/b/buhr_quin_host_witness.rish -- BUHR Journey 1, Rung 4: the Q-vane host.
 #
 # The three composed voices gathered under one bounded entry, proven end to end: a
 # single Lantern-shaped request is dispatched to whichever voice recognizes the
-# prompt — Lattice for arithmetic, Scribble for reading, Ember for corpus craft —
+# prompt -- Lattice for arithmetic, Scribble for reading, Ember for corpus craft --
 # and the Lantern-contract Response returns tagged with the serving voice. A
 # disallowed model or zero budget surfaces at once (no fall-through); a prompt no
 # voice recognizes is refused rather than answered. Rungs one through three stay

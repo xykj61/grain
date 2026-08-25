@@ -1,4 +1,4 @@
-# generate_jail_local_keys_macos.rish — generate dedicated, jail-only SSH
+# generate_jail_local_keys_macos.rish -- generate dedicated, jail-only SSH
 # and GPG signing keys that live only inside this repository (gitignored),
 # for use with tools/cu/cursor_jail_macos.rish --harden-home.
 #

@@ -1,22 +1,22 @@
-# tools/cr/crypto_hybrid_signed_carry_witness.rish — the hybrid signed carry, the OPEN corner of the hybrid surface: the exact shape of the classical
+# tools/cr/crypto_hybrid_signed_carry_witness.rish -- the hybrid signed carry, the OPEN corner of the hybrid surface: the exact shape of the classical
 # signed carry (a self-describing, content-addressed, signed frame whose payload stays PUBLIC on purpose) with the single Ed25519 signature replaced
 # by a HYBRID signature (Ed25519 beside ML-DSA, genuine only when BOTH verify), so a published record's authorship survives a break in EITHER family
-# (Season G · Cryptography).
+# (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, audit-ready).
 # Design read: active-designing/date/20260816/20260816-201310_the-hybrid-signed-carry-provenance-on-both-worlds.md (the OPEN corner of the hybrid surface, the
 # post-quantum successor of the classical signed carry, the Lotus "who made this record" unblock hardened for the quantum day).
-# Kin: crypto/signed_carry.rye (the classical single-family sibling) · crypto/hybrid_identity.rye (the hybrid signature, GREEN) · crypto/blake2b.rye
-# (the content address, GREEN) · crypto/hybrid_signed_sealed.rye (the sealed sibling this mirrors). This composes GREEN rungs, authoring no new
-# cryptography — studied clean-room, our own Rye wiring over our own proven stones (.claude/rules/gratitude-licenses.md).
+# Kin: crypto/signed_carry.rye (the classical single-family sibling) - crypto/hybrid_identity.rye (the hybrid signature, GREEN) - crypto/blake2b.rye
+# (the content address, GREEN) - crypto/hybrid_signed_sealed.rye (the sealed sibling this mirrors). This composes GREEN rungs, authoring no new
+# cryptography -- studied clean-room, our own Rye wiring over our own proven stones (.claude/rules/gratitude-licenses.md).
 #
 # crypto/hybrid_signed_carry.rye builds a carry frame magic GHC1 ‖ signer Ed25519 public ‖ signer ML-DSA public ‖ paylen (u64 big-endian) ‖ payload ‖
-# BLAKE2b-512 digest ‖ Ed25519 signature ‖ ML-DSA signature — the content address is BLAKE2b-512, the signature is the hybrid identity's own hybrid
+# BLAKE2b-512 digest ‖ Ed25519 signature ‖ ML-DSA signature -- the content address is BLAKE2b-512, the signature is the hybrid identity's own hybrid
 # signature (both families). open() verifies BEFORE trust: magic, then declared length, then a recomputed content address (a byte moved anywhere
-# upstream — payload, either signer key, or length — is refused here, before the signature is consulted), then the hybrid signature; only then does one
+# upstream -- payload, either signer key, or length -- is refused here, before the signature is consulted), then the hybrid signature; only then does one
 # zero-copy payload byte leave the door, alongside both verified signer keys. This round also closes a reds-first find the carry surfaced: the ML-DSA
-# decompose primitive's postcondition admitted only r0 ∈ (−γ₂, γ₂], yet FIPS 204's top-step borrow reaches r0 = −γ₂ exactly at r = q − γ₂ — a residue
-# the random selftest spread missed and this carry's digest found (REDS ledger). Purely local over TEST hybrid identities — no real key, no network, no
+# decompose primitive's postcondition admitted only r0 ∈ (−γ₂, γ₂], yet FIPS 204's top-step borrow reaches r0 = −γ₂ exactly at r = q − γ₂ -- a residue
+# the random selftest spread missed and this carry's digest found (REDS ledger). Purely local over TEST hybrid identities -- no real key, no network, no
 # funds, no real device; signing a record with the maintainer's own hybrid identity stays the custody gate, constant-time timing-safety the named horizon.
 #
 # Run from the repository root:

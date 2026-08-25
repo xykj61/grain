@@ -1,16 +1,16 @@
-# tools/f/fora_depart_witness.rish — the whole remove-a-member lifecycle, closed: a voter is removed by joint consensus, and a leader
+# tools/f/fora_depart_witness.rish -- the whole remove-a-member lifecycle, closed: a voter is removed by joint consensus, and a leader
 # that removes itself steps down (FORA28).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA28. Design read: active-designing/date/20260814/20260814-080327_fora28-constel-depart-remove-member.md
 #
 # constel/depart.rye is the symmetric twin of FORA26 (admit): where admit promoted a caught-up learner through joint consensus,
-# depart removes a voter through the same no-fork switch, and names the one edge that makes removal harder than addition — a LEADER
+# depart removes a voter through the same no-fork switch, and names the one edge that makes removal harder than addition -- a LEADER
 # that removes ITSELF (Raft §4.2.2). The selftest proves: removing a non-voter is refused (NotAVoter); removing the last voter is
-# refused (EmptyConfig); a voter is removed (old 4 → new 3) and the remaining piers carry the switch without the leaver's vote; the
-# leader-removes-itself edge — leader_relinquishes fires, the leader votes in the old side yet the new majority comes from the
-# remaining piers alone; neither an old-only nor a new-only quorum can smuggle the removal (NoJointMajority); bounded eight → seven.
-# Purely local — no socket, no network, no keys, no funds, no real address.
+# refused (EmptyConfig); a voter is removed (old 4 -> new 3) and the remaining piers carry the switch without the leaver's vote; the
+# leader-removes-itself edge -- leader_relinquishes fires, the leader votes in the old side yet the new majority comes from the
+# remaining piers alone; neither an old-only nor a new-only quorum can smuggle the removal (NoJointMajority); bounded eight -> seven.
+# Purely local -- no socket, no network, no keys, no funds, no real address.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_depart_witness.rish

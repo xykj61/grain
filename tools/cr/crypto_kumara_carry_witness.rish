@@ -1,20 +1,20 @@
-# tools/cr/crypto_kumara_carry_witness.rish — the Kumara carry, Season G's EIGHTEENTH composition: a record sealed AS a named Kumara identity,
+# tools/cr/crypto_kumara_carry_witness.rish -- the Kumara carry, Season G's EIGHTEENTH composition: a record sealed AS a named Kumara identity,
 # tying the identity front door (crypto/kumara_identity.rye) to the signed carry frame (crypto/signed_carry.rye) so provenance answers not
-# merely "is this a valid signature from someone" but "did THIS keeper make it" (Season G · Cryptography).
+# merely "is this a valid signature from someone" but "did THIS keeper make it" (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the signed carry as the
 # Lotus "who made this record" unblock; this rung stands the identity end of Season 2 Journey 6's content-addressed chain of custody).
-# Kin: crypto/signed_carry.rye (the frame this seals, GREEN) · crypto/kumara_identity.rye (the identity this seals as, GREEN) ·
-# crypto/bip39_seed.rye · crypto/kumara_path.rye · crypto/slip10_ed25519.rye (the phrase→identity rungs seal_from_mnemonic composes, GREEN).
-# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own composition,
+# Kin: crypto/signed_carry.rye (the frame this seals, GREEN) - crypto/kumara_identity.rye (the identity this seals as, GREEN) -
+# crypto/bip39_seed.rye - crypto/kumara_path.rye - crypto/slip10_ed25519.rye (the phrase->identity rungs seal_from_mnemonic composes, GREEN).
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line -- our own composition,
 # studied clean-room (.claude/rules/gratitude-licenses.md).
 #
-# crypto/kumara_carry.rye authors NO new cryptography and adds NO new frame — a Kumara carry IS a Grain Signed Carry v1 frame, sealed under a
+# crypto/kumara_carry.rye authors NO new cryptography and adds NO new frame -- a Kumara carry IS a Grain Signed Carry v1 frame, sealed under a
 # Kumara identity's own secret seed. Because signed_carry's signer field is derive_public(seed) and a Kumara identity's public key is
 # derive_public(that same seed), the sealed frame carries EXACTLY that identity's public key as its signer; the value this rung adds is the
 # BINDING: open_as runs signed_carry's verify-before-trust and then refuses, with UnexpectedSigner, any frame whose verified signer is not the
-# identity the reader named. Purely local over TEST identities from published vectors — no real identity key, no network, no funds, no real
+# identity the reader named. Purely local over TEST identities from published vectors -- no real identity key, no network, no funds, no real
 # device; sealing a real record with the maintainer's own Kumara identity stays the custody gate, and constant-time timing-safety stays the
 # named horizon.
 #

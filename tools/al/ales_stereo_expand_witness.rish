@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_expand_witness.rish — stereo_expand: the downward expander carried into stereo, the gate's linked decision fused with the compressor's linked gain (ALES159).
+# tools/al/ales_stereo_expand_witness.rish -- stereo_expand: the downward expander carried into stereo, the gate's linked decision fused with the compressor's linked gain (ALES159).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES159.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES159.
 # Design read: active-designing/date/20260815/20260815-063651_fill-ales159-lotus-stereo-expand.md
-# Stands on: lotus/expand.rye (ALES60 — the mono downward expander, its expand and ExpandError reused whole for the louder-quiet-channel proof and the fault set), lotus/stereo_gate.rye (ALES156 — the linked-decision law
-# this fuses), lotus/stereo_compress.rye (ALES157 — the linked-gain law this fuses), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, sample_max).
+# Stands on: lotus/expand.rye (ALES60 -- the mono downward expander, its expand and ExpandError reused whole for the louder-quiet-channel proof and the fault set), lotus/stereo_gate.rye (ALES156 -- the linked-decision law
+# this fuses), lotus/stereo_compress.rye (ALES157 -- the linked-gain law this fuses), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, sample_max).
 #
-# lotus/stereo_expand.rye expands a span of sample-PAIRS in a master below a magnitude threshold by a ratio, fusing a LINKED decision with a LINKED gain — completing the core stereo dynamics quartet (gate · compressor ·
-# limiter · expander). The detector key per pair is max(|left|, |right|): at or above the threshold the pair passes byte for byte (continuous at the threshold); a both-silent pair stays zero; where the pair is below the
-# threshold the widened master new_key = max(0, threshold − (threshold − key)·num/den) is computed once (exactly the mono expand of the louder channel) and BOTH channels are scaled by the single fraction new_key/key. It
+# lotus/stereo_expand.rye expands a span of sample-PAIRS in a master below a magnitude threshold by a ratio, fusing a LINKED decision with a LINKED gain -- completing the core stereo dynamics quartet (gate - compressor -
+# limiter - expander). The detector key per pair is max(|left|, |right|): at or above the threshold the pair passes byte for byte (continuous at the threshold); a both-silent pair stays zero; where the pair is below the
+# threshold the widened master new_key = max(0, threshold − (threshold − key)-num/den) is computed once (exactly the mono expand of the louder channel) and BOTH channels are scaled by the single fraction new_key/key. It
 # links the decision like the gate (a pair is expanded iff both channels are below the threshold) and the gain like the compressor (the widened factor is magnitude-dependent, so one gain from the linked key). ExpandError
 # reused whole; the linked lift adds no fault. Values only, never a length. The crux is the linked decision + gain law (a pair expanded iff both below, the louder-quiet channel equal to the mono expand byte for byte, the
 # quiet channel scaled by the same fraction, the independent lift differing), the image law (the shared gain preserves the L:R ratio, an out-of-phase quiet pair returning still out of phase), the at-threshold law (a pair
-# whose linked key reaches the threshold passing byte for byte), and the knob laws (unit ratio the identity, a higher ratio harder, a huge ratio driving a quiet pair to silence — the gate within).
+# whose linked key reaches the threshold passing byte for byte), and the knob laws (unit ratio the identity, a higher ratio harder, a huge ratio driving a quiet pair to silence -- the gate within).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_expand_witness.rish

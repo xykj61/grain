@@ -1,6 +1,6 @@
 #!/bin/sh
 # Census Naming Things law on held TigerStyle / TAME / supplement / clone / Lexicon.
-# Clean-room study only — prints presence; never copies into rye/.
+# Clean-room study only -- prints presence; never copies into rye/.
 set -eu
 ROOT="${1:-gratitude/tigerbeetle}"
 GUIDE=gratitude/TIGER_STYLE.md

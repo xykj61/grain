@@ -1,8 +1,8 @@
-# tools/b/buhr_graph_query_edit_witness.rish — BUHR Journey 6, Rung 2: the query tracks a live edit.
+# tools/b/buhr_graph_query_edit_witness.rish -- BUHR Journey 6, Rung 2: the query tracks a live edit.
 #
 # Rung one proved a voice reads the living graph; this rung proves the *living* in
 # living graph. Over one catalog, ask the head (r2 on a.txt), commit a new revision
-# through Journey 4's editor, ask again — the reported head advances to r3. A fork
+# through Journey 4's editor, ask again -- the reported head advances to r3. A fork
 # grows the reported lane_count 3 -> 4. And because an edit is an append, the query is
 # read-only: an edited catalog reads r3 while a pristine one reads r2, each its own
 # true head. Rung one (graph_query) and the editor stay their own green binaries.
@@ -27,7 +27,7 @@ assert selftest.out contains "head after edit — a.txt at r3 (advanced by the c
 assert selftest.out contains "lane_count grew 3 -> 4 on a new lane" else "buhr6: fork not visible to the query"
 assert selftest.out contains "edited graph reads r3, pristine reads r2 — the query is read-only" else "buhr6: read-only property missing"
 
-# Rung one stays its own green binary — the query the edit rung composes over.
+# Rung one stays its own green binary -- the query the edit rung composes over.
 let r1_bin = "pond/bin/graph-query"
 let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/graph_query.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr6: graph_query (rung one) re-build failed"

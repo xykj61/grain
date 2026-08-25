@@ -1,16 +1,16 @@
-# tools/al/ales_album_diff_sheet_witness.rish — what changed in a record, as a readable page: render_sheet(diff, out) draws a classified
+# tools/al/ales_album_diff_sheet_witness.rish -- what changed in a record, as a readable page: render_sheet(diff, out) draws a classified
 # ALES232 Diff as its readable change page (ALES233).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES233.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES233.
 # Design read: active-designing/date/20260815/20260815-144829_fill-ales233-lotus-album-diff-sheet.md
-# Idiom kin: lotus/library_diff_sheet.rye (ALES230, the readable-projection idiom one level up) · lotus/album_diff.rye (ALES232, the
-# classified Diff this draws) · lotus/album_sheet.rye (ALES225, the record's own readable page). A projection, not a round-trip — no
+# Idiom kin: lotus/library_diff_sheet.rye (ALES230, the readable-projection idiom one level up) - lotus/album_diff.rye (ALES232, the
+# classified Diff this draws) - lotus/album_sheet.rye (ALES225, the record's own readable page). A projection, not a round-trip -- no
 # new frame, no new hash.
 #
 # lotus/album_diff_sheet.rye renders a classified Diff as a `format lotus-album-diff-sheet-v1` page. The selftest proves: the page
 # opens with the format line and a four-tally summary (the summary law); every added, removed, and changed track appears in order with
 # its name and full digest(s), a changed line carrying both (the moved law); an unchanged track appears in no track line (the quiet
-# law); a too-small buffer refuses Overflow (the atomic law). A pure text render — no real file, no DAC, no network, no keys, no funds,
+# law); a too-small buffer refuses Overflow (the atomic law). A pure text render -- no real file, no DAC, no network, no keys, no funds,
 # no real device.
 #
 # Run from the repository root:

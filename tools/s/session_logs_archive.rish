@@ -14,7 +14,7 @@
 # Read-only count first:
 #   rishi/bin/rishi run tools/s/session_logs_archive_preview.rish
 #
-# Core: tools/rye/session_logs_archive.rye · witness: session_logs_archive_witness.rish
+# Core: tools/rye/session_logs_archive.rye - witness: session_logs_archive_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let rye = "rye/bin/rye"

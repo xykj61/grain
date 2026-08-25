@@ -1,24 +1,24 @@
-# tools/cr/crypto_eip712_witness.rish — the Ethereum EIP-712 typed-structured-data hashing scheme, authored in pure Rye as a composition over three
+# tools/cr/crypto_eip712_witness.rish -- the Ethereum EIP-712 typed-structured-data hashing scheme, authored in pure Rye as a composition over three
 # already-GREEN rungs: the Keccak-256 (crypto/keccak256.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye), and the address
-# derivation (crypto/eth_address.rye). EIP-712 is the digest a wallet shows a human before it signs "typed data" — every EIP-2612 token permit,
+# derivation (crypto/eth_address.rye). EIP-712 is the digest a wallet shows a human before it signs "typed data" -- every EIP-2612 token permit,
 # every DeFi order (0x, Seaport, Permit2), every gasless meta-transaction, and every typed Sign-in-with-Ethereum runs through this exact
 # construction. Where EIP-191 personal_sign frames a flat string, EIP-712 hashes a TREE of typed fields against a domain separator, so a signature
-# for one contract on one chain can never be replayed against another (crypto · Season G · Cryptography).
+# for one contract on one chain can never be replayed against another (crypto - Season G - Cryptography).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: every hash is the GREEN Keccak-256, every recovery
-# the GREEN ecrecover, every address the GREEN eth_address — it contributes only the EIP-712 encoding (type hash, struct hash, domain separator, and
+# Season: crypto -- Season G (the Six-Season double-seat). This rung authors NO new cryptography: every hash is the GREEN Keccak-256, every recovery
+# the GREEN ecrecover, every address the GREEN eth_address -- it contributes only the EIP-712 encoding (type hash, struct hash, domain separator, and
 # the 0x1901 digest framing) over stones already proven on metal beneath it, widening the Kumara-login / Dimeroll-receipt door from flat messages to
-# typed structured data. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto
+# typed structured data. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto
 # parity wave). Clean-room: EIP-712 is Ethereum's own public standard; the encoding is ours, standing on our own parity-GREEN rungs, never a copied
 # line (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest three ways runnable now: (1) a PUBLISHED known-answer bound to the world — the EIP-712 spec's own canonical Ether
+# Parity is proven at selftest three ways runnable now: (1) a PUBLISHED known-answer bound to the world -- the EIP-712 spec's own canonical Ether
 # Mail example (Cow -> Bob), assembled from our building blocks, is recovered by the spec's own published 65-byte signature to exactly Cow's
-# published wallet 0xCD2a...D826 (a one-bit encoding error would break the recovery); (2) an INDEPENDENT construction — our digest equals a second
-# built entirely from Zig's std.crypto Keccak-256, byte-for-byte; and (3) a full ROUND-TRIP — our GREEN prehashed signer signs a typed Permit digest
+# published wallet 0xCD2a...D826 (a one-bit encoding error would break the recovery); (2) an INDEPENDENT construction -- our digest equals a second
+# built entirely from Zig's std.crypto Keccak-256, byte-for-byte; and (3) a full ROUND-TRIP -- our GREEN prehashed signer signs a typed Permit digest
 # with a TEST key across six deterministic keys, the correct v recovers, recover_typed_signer returns exactly that key's own Ethereum address, and a
 # one-byte digest tamper never recovers the true signer. Edge refusals: BadSignatureLength, BadWordLength, BadRecoveryByte, BadAddressLength,
-# TypeStringTooLong. Purely local — no key, no network, no funds, no real device.
+# TypeStringTooLong. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_eip712_witness.rish

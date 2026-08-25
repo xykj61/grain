@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tools/ac/active_designing_cycle_pick.sh — select-only picker for active-designing.
+# tools/ac/active_designing_cycle_pick.sh -- select-only picker for active-designing.
 # Args: optional u64/decimal seed or hex tip digits.
 # Never shreds.
 set -euo pipefail

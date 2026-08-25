@@ -1,16 +1,16 @@
-# tools/al/ales_rack_rename_witness.rish — a slot re-named in place (ALES36).
+# tools/al/ales_rack_rename_witness.rish -- a slot re-named in place (ALES36).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES36.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES36.
 # Design read: active-designing/date/20260814/20260814-152510_fill-ales36-lotus-rack-rename.md
-# Stands on: lotus/rack.rye (ALES30) — the Rack, its named Slots, find / name_of, and the naming invariant, reused whole.
+# Stands on: lotus/rack.rye (ALES30) -- the Rack, its named Slots, find / name_of, and the naming invariant, reused whole.
 #
 # lotus/rack_rename.rye re-names a slot in place: keep the held audio exactly where it is and change only the name. The crux: renaming
-# `from` to `to` re-names exactly one slot in place — the held audio and every OTHER slot untouched — and preserves ALES30's naming
+# `from` to `to` re-names exactly one slot in place -- the held audio and every OTHER slot untouched -- and preserves ALES30's naming
 # invariant that a name names at most one slot. A rack.Slot holds its name and its audio in SEPARATE storage, so overwriting the name
 # buffer cannot touch the held samples; the rename resolves `from` to one index, checks `to` against every OTHER slot for a collision,
 # and rewrites only that slot's name bytes. The selftest proves: a renamed slot answers to its new name with the same audio
 # byte-for-byte and the old name is gone; a same-name rename is a clean no-op; a collision refuses Duplicate; an absent `from` refuses
-# NoSlot; an empty or oversized `to` refuses BadName — the rack untouched in every refusal. Purely local — no signature, no keys, no
+# NoSlot; an empty or oversized `to` refuses BadName -- the rack untouched in every refusal. Purely local -- no signature, no keys, no
 # network, no funds.
 #
 # Run from the repository root:

@@ -1,7 +1,7 @@
-# realidream_query_view.rish — Realidream query view: Tablecloth query-wire hits → Skate.
+# realidream_query_view.rish -- Realidream query view: Tablecloth query-wire hits -> Skate.
 #
 # Folds the hosted filter's answer shape (fixture) through SLC-2a drawn terminal.
-# No new input, no Pond policy, no Dexter graduation — thin-view exception family.
+# No new input, no Pond policy, no Dexter graduation -- thin-view exception family.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/realidream_query_view.rish
 

@@ -1,7 +1,7 @@
-# mandate_keyed_witness.rish — Kumara-keyed vector records.
+# mandate_keyed_witness.rish -- Kumara-keyed vector records.
 #
 # Proves Mandate wired to identity: a record belongs to a settled Kumara point, and
-# only that point's owner may write it — the owner presents the point's Deed (verified
+# only that point's owner may write it -- the owner presents the point's Deed (verified
 # against the constellation) and signs the exact vector. A search returns point
 # numbers, and place_of resolves each to its place in the fractal. Every refusal holds:
 # a non-owner, a forged signature, a tampered vector; and an owner's re-signed upsert

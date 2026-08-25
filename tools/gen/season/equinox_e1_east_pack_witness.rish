@@ -1,18 +1,18 @@
-# tools/gen/season/equinox_e1_east_pack_witness.rish — Equinox e1 East pack.
+# tools/gen/season/equinox_e1_east_pack_witness.rish -- Equinox e1 East pack.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_e1_east_pack_witness.rish
 #
 # Three thin utilities, each beside its own module, welcome and refuse asserted:
-#   lattice.approx_equal    — witness-grade f32 agreement
-#   Grid.row_cells          — reading sibling of put_line
-#   brush.frame_widest_line — grid width needed before truncation bites
-#   CapabilityTable.refusal_reason — a denial that can name its own reason (e2)
-#   Gardens.total_capacity — the whole a remainder is measured against (e3)
-#   collision_guard grep fallback — the guard runs where rg is absent (e3)
-#   dep_crawl — the graph walked to leaves inside named bounds (e4)
-#   Region.divide · Gardens.add_division — divisions inside the whole (e5)
-#   priority_of_slot · priority_of_round — a round names its own priority (e6)
-#   copy_sameness — the one real tally_copy cannot drift silently (e6)
+#   lattice.approx_equal    -- witness-grade f32 agreement
+#   Grid.row_cells          -- reading sibling of put_line
+#   brush.frame_widest_line -- grid width needed before truncation bites
+#   CapabilityTable.refusal_reason -- a denial that can name its own reason (e2)
+#   Gardens.total_capacity -- the whole a remainder is measured against (e3)
+#   collision_guard grep fallback -- the guard runs where rg is absent (e3)
+#   dep_crawl -- the graph walked to leaves inside named bounds (e4)
+#   Region.divide - Gardens.add_division -- divisions inside the whole (e5)
+#   priority_of_slot - priority_of_round -- a round names its own priority (e6)
+#   copy_sameness -- the one real tally_copy cannot drift silently (e6)
 
 say "equinox-e1: Language EN — East equinox, first utilities."
 say "equinox-e1: Style Radiant — welcome and refuse both asserted."
@@ -37,7 +37,7 @@ let tl = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tally/total_capacity
 assert tl.ok else "equinox-e3: tally total_capacity RED"
 assert tl.out contains "GREEN" else "equinox-e3: tally total_capacity not GREEN"
 
-# The guard the e1 collision slipped past — now runnable on a bare cloud raise.
+# The guard the e1 collision slipped past -- now runnable on a bare cloud raise.
 let cg = run ["sh" "-c" "rishi/bin/rishi run tools/co/collision_guard.rish total_capacity 2>&1"]
 assert cg.ok else "equinox-e3: collision_guard RED"
 assert cg.out contains "GREEN" else "equinox-e3: collision_guard not GREEN"
@@ -74,7 +74,7 @@ assert bt.ok else "voice-v2: bounds-typed RED"
 assert bt.out contains "GREEN" else "voice-v2: bounds-typed not GREEN"
 assert bt.out contains "untyped_declared_bounds=0" else "voice-v2: a declared bound lost its type"
 
-# v3 · slot 3 emphasis · happy_zone_witnesses_first: every guard's refusal side
+# v3 - slot 3 emphasis - happy_zone_witnesses_first: every guard's refusal side
 # now fires on every run, from a fixture rather than from a hand.
 let n1 = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/dep_crawl_bounds_negative_witness.rish 2>&1"]
 assert n1.ok else "voice-v3: dep_crawl bounds do not bite"
@@ -88,7 +88,7 @@ let n3 = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/copy_sameness_nega
 assert n3.ok else "voice-v3: sameness guard misses a drifted copy"
 assert n3.out contains "GREEN" else "voice-v3: sameness negative not GREEN"
 
-# v4 · slot 4 · values_apart: every scan speaks one composed convention --
+# v4 - slot 4 - values_apart: every scan speaks one composed convention --
 # key=value lines, detail: prefixed detail, a named verdict= key -- and the two
 # channels are asserted to agree, so a typo'd sentinel cannot pass quietly.
 let dcv = run ["sh" "-c" "sh tools/fixtures/dep_crawl_scan.sh brushstroke/east_pack_test.rye 2>&1"]
@@ -99,7 +99,7 @@ let csv = run ["sh" "-c" "sh tools/fixtures/copy_sameness_scan.sh 2>&1"]
 assert csv.out contains "verdict=ok" else "voice-v4: sameness scan lost its verdict key"
 assert csv.ok else "voice-v4: sameness verdict and status disagree"
 
-# v5 · slot 5 · accretion_one_clock: the communication contract itself is data,
+# v5 - slot 5 - accretion_one_clock: the communication contract itself is data,
 # lawful under the Brix law, with its faults observed from a fixture.
 let cf = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/counsel_flow_witness.rish 2>&1"]
 assert cf.ok else "voice-v5: counsel_flow RED"
@@ -109,7 +109,7 @@ let cfn = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/counsel_flow_nega
 assert cfn.ok else "voice-v5: counsel_flow guard does not bite"
 assert cfn.out contains "GREEN" else "voice-v5: counsel_flow negative not GREEN"
 
-# v6 · slot 6 · galls_law_graduation: the scan-seam convention had five
+# v6 - slot 6 - galls_law_graduation: the scan-seam convention had five
 # consumers and no home. Seated once at context/specs/20260729-215600; every
 # roster scan cites it, elders join on touch as an advisory count.
 let sc = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/scan_convention_witness.rish 2>&1"]
@@ -120,7 +120,7 @@ let scn = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/scan_convention_n
 assert scn.ok else "voice-v6: single-home guard does not bite"
 assert scn.out contains "GREEN" else "voice-v6: scan convention negative not GREEN"
 
-# v9 · slot 9 · happy_zone_witnesses_first (second appearance this journey):
+# v9 - slot 9 - happy_zone_witnesses_first (second appearance this journey):
 # own-reds-immediately said WHEN and never WHERE. Six reds had reached the tree
 # and twenty had been owned aloud, so fourteen lessons lived only in a chat
 # window. work-in-progress/REDS.md is the durable home.
@@ -132,7 +132,7 @@ let rln = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/reds_ledger_negat
 assert rln.ok else "voice-v9: reds ledger guard does not bite"
 assert rln.out contains "GREEN" else "voice-v9: reds ledger negative not GREEN"
 
-# v10 · slot 10 · sameness_as_compression: the reds-first law lives in exactly one
+# v10 - slot 10 - sameness_as_compression: the reds-first law lives in exactly one
 # home with three citers, and the crossing is whole -- named study, teachers in
 # gratitude, siloed law in our own voice.
 let rfw = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/reds_first_witness.rish 2>&1"]
@@ -145,14 +145,14 @@ let ab = run ["sh" "-c" "rishi/bin/rishi run tools/gen/season/almanac_breach_wit
 assert ab.ok else "voice-v11: almanac breach incomplete"
 assert ab.out contains "GREEN" else "voice-v11: almanac breach not GREEN"
 
-# v12 · slot 12 · opening_lines_and_silo: six authored .rye files now sit inside
+# v12 - slot 12 - opening_lines_and_silo: six authored .rye files now sit inside
 # the elder roster, so the canonical head is proven rather than merely kept.
 let ol = run ["sh" "-c" "rishi/bin/rishi run tools/o/opening_lines_witness.rish 2>&1"]
 assert ol.ok else "voice-v12: opening lines RED"
 assert ol.out contains "GREEN" else "voice-v12: opening lines not GREEN"
 assert ol.out contains "all 25 hosted files" else "voice-v12: the roster lost files"
 
-# v23: tally/stack graduated on Keaton's word — its witness rides from day one.
+# v23: tally/stack graduated on Keaton's word -- its witness rides from day one.
 let ts = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tally/stack_test.rye 2>&1"]
 assert ts.ok else "voice-v23: tally stack RED"
 assert ts.out contains "GREEN" else "voice-v23: tally stack not GREEN"

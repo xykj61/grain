@@ -1,19 +1,19 @@
-# tools/e/encoding_hex_witness.rish — Base16 / hexadecimal (RFC 4648) authored in pure Rye: the plainest binary-to-text armor a digest, a key,
-# or a wire frame wears, proven against a set of known-answers and byte-for-byte against Zig's independent std.fmt hex (encoding · the
-# serialization sibling of Season G · Cryptography).
+# tools/e/encoding_hex_witness.rish -- Base16 / hexadecimal (RFC 4648) authored in pure Rye: the plainest binary-to-text armor a digest, a key,
+# or a wire frame wears, proven against a set of known-answers and byte-for-byte against Zig's independent std.fmt hex (encoding - the
+# serialization sibling of Season G - Cryptography).
 #
-# Season: encoding — the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, and base32.rye. Where
+# Season: encoding -- the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, and base32.rye. Where
 # crypto/ authors the mathematics that produces bytes, encoding/ authors the text those bytes travel in, keeping the same parity discipline:
 # authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the alphabet is RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 #
-# encoding/hex.rye authors Base16 from the alphabet directly — two lowercase characters per byte, high nibble first, never padded; decode
+# encoding/hex.rye authors Base16 from the alphabet directly -- two lowercase characters per byte, high nibble first, never padded; decode
 # accepts either case and refuses an odd length or a non-hex character. Unlike base32/base58, Zig's std DOES ship a hex codec, so this rung
-# earns a genuine std cross-check: at selftest a set of known-answers ("" · 00 · ff · deadbeef · 666f6f626172) match text for text and round-
+# earns a genuine std cross-check: at selftest a set of known-answers ("" - 00 - ff - deadbeef - 666f6f626172) match text for text and round-
 # trip, and our authored Rye equals Zig's std.fmt bytesToHex / hexToBytes byte-for-byte across payloads 0..64 bytes both directions, with a
 # mixed-case decode agreeing. A bad character refuses BadChar, an odd length BadLength, a too-small destination DestTooSmall. Purely local
-# arithmetic — no key, no network, no funds, no real device.
+# arithmetic -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/e/encoding_hex_witness.rish

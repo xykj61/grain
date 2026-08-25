@@ -1,5 +1,5 @@
 #!/bin/sh
-# Commence M6 see scan — control gate, then eyes census of the finishing edge.
+# Commence M6 see scan -- control gate, then eyes census of the finishing edge.
 # Exit 0 only when control reads and every see limb honors.
 # No backtick characters in patterns.
 #
@@ -92,7 +92,7 @@ done
 echo "see_waymarks=honored"
 echo "see_waymarks_count=4"
 
-# --- see IronBeetle written shelf end (ep045 present · ep046 invent none) ---
+# --- see IronBeetle written shelf end (ep045 present - ep046 invent none) ---
 EP045=gratitude/ironbeetle/20260712-092212_ironbeetle-ep045-the-whole-machine-in-one-breath.md
 git ls-files --error-unmatch "$EP045" >/dev/null 2>&1 || {
   echo "see_shelf=failed"

@@ -1,20 +1,20 @@
-# tools/al/ales_tube_witness.rish — the asymmetric tube drive: a different ceiling per sign, the DRIVE family's first clip that is not odd (ALES82).
+# tools/al/ales_tube_witness.rish -- the asymmetric tube drive: a different ceiling per sign, the DRIVE family's first clip that is not odd (ALES82).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES82.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES82.
 # Design read: active-designing/date/20260814/20260814-212318_fill-ales82-lotus-tube-drive.md
-# Stands on: lotus/drive.rye (ALES78 — the pre-gain, the gain faults, and the ceiling law, reused with one ceiling per sign); lotus/timeline.rye
-# (ALES2 — the Clip, sample_min/max, the one true saturate). A keeper who wants an asymmetric overdrive composes this with ALES79 over the same span.
+# Stands on: lotus/drive.rye (ALES78 -- the pre-gain, the gain faults, and the ceiling law, reused with one ceiling per sign); lotus/timeline.rye
+# (ALES2 -- the Clip, sample_min/max, the one true saturate). A keeper who wants an asymmetric overdrive composes this with ALES79 over the same span.
 #
 # lotus/tube.rye splits ALES78's single ceiling into ceil_pos for the positive half and ceil_neg for the negative, pinning each half to its own. When
-# ceil_pos == ceil_neg the two branches collapse into ALES78's hard clip byte-for-byte — the family recognition. When they differ the map is NOT odd:
-# tube(1000) = ceil_pos while tube(−1000) = −ceil_neg, a symmetric input driven to an asymmetric output — a DC offset and a full set of EVEN
-# harmonics, the tube's honest even-harmonic signature (the sibling of ALES81's not-odd map — the bit-crush floors downward, the tube clips
+# ceil_pos == ceil_neg the two branches collapse into ALES78's hard clip byte-for-byte -- the family recognition. When they differ the map is NOT odd:
+# tube(1000) = ceil_pos while tube(−1000) = −ceil_neg, a symmetric input driven to an asymmetric output -- a DC offset and a full set of EVEN
+# harmonics, the tube's honest even-harmonic signature (the sibling of ALES81's not-odd map -- the bit-crush floors downward, the tube clips
 # unevenly). The selftest proves it: equal ceilings reproduce ALES78's real hard drive byte-for-byte; a hand-computed asymmetric clip matches exactly
-# (ceil_pos 1500, ceil_neg 800, ×2: 500→1000, 1000→1500, −300→−600, −600→−800, −100→−200); the map is not odd (tube(1000)=1500, tube(−1000)=−800);
+# (ceil_pos 1500, ceil_neg 800, ×2: 500->1000, 1000->1500, −300->−600, −600->−800, −100->−200); the map is not odd (tube(1000)=1500, tube(−1000)=−800);
 # each half stays under its own ceiling and the sign is held under a heavy ×8 drive; a symmetric-ceiling drive stays ODD; the span discipline holds; a
 # zero den / below-unity gain / oversized numerator refuses BadGain, either ceiling zero or over-rail BadCeiling, a span past the end BadRange, each
 # leaving the clip untouched. The asymmetric pin lands every output in [−ceil_neg, ceil_pos] BEFORE the write, so the clip is the pin and the saturate
-# a documented no-op. Purely local — one multiply, one divide, one sign-aware pin per sample; no delay line, no anti-aliasing, no network, no keys, no
+# a documented no-op. Purely local -- one multiply, one divide, one sign-aware pin per sample; no delay line, no anti-aliasing, no network, no keys, no
 # funds, no real device, no real sample rate.
 #
 # Run from the repository root:

@@ -1,19 +1,19 @@
-# tools/al/ales_deess_witness.rish — the de-esser: the first sidechain composition (ALES64).
+# tools/al/ales_deess_witness.rish -- the de-esser: the first sidechain composition (ALES64).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES64.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES64.
 # Design read: active-designing/date/20260814/20260814-185604_fill-ales64-lotus-de-esser.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, samples(), splice, the range law shape); lotus/band.rye (ALES46 — the Bandpass that
-# isolates the sibilant band, re-proven below); lotus/sidechain.rye (ALES63 — the keyed compressor this drives, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, samples(), splice, the range law shape); lotus/band.rye (ALES46 -- the Bandpass that
+# isolates the sibilant band, re-proven below); lotus/sidechain.rye (ALES63 -- the keyed compressor this drives, re-proven below).
 #
 # lotus/deess.rye builds the first tool the sidechain's freedom unlocks: band-pass a copy of the target to isolate the sibilant band,
-# then key ALES63's attack/hold/release compressor on that copy over the target — a de-esser, which tames a vocal's harsh "ess" by
+# then key ALES63's attack/hold/release compressor on that copy over the target -- a de-esser, which tames a vocal's harsh "ess" by
 # ducking the whole voice only when the high band gets loud. The selftest proves: silence stays silence; the de-esser IS the
-# composition {band-pass a copy; sidechain-compress} byte-for-byte (the grounding law, run by hand — no arithmetic added on the audio
+# composition {band-pass a copy; sidechain-compress} byte-for-byte (the grounding law, run by hand -- no arithmetic added on the audio
 # path); the KEY's band-passed level sets the threshold crossing (a threshold just above the band-passed peak is the identity however
-# loud the broadband level, a threshold below it ducks — proven by measuring the copy's peak, so the sibilant band, not the raw level,
+# loud the broadband level, a threshold below it ducks -- proven by measuring the copy's peak, so the sibilant band, not the raw level,
 # drives the gain); a loud in-band signal ducks with the sign held and never expanding; and an illegal band cutoff refuses BadCoeff, a
 # zero threshold BadThreshold, a sub-unity ratio BadRatio, an illegal attack coefficient BadCoeff, a hold past max_clip BadHold, an
-# out-of-range span BadRange. Purely local — no lookahead, no network, no keys, no funds, no real device, no sample rate.
+# out-of-range span BadRange. Purely local -- no lookahead, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_deess_witness.rish
@@ -38,7 +38,7 @@ say "ales-deess: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-deess' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-deess: selftest did not print the GREEN ales-deess line"
 
-# This rung composes ALES46's band-pass and ALES63's keyed compressor over their public APIs — re-prove both still stand green under it.
+# This rung composes ALES46's band-pass and ALES63's keyed compressor over their public APIs -- re-prove both still stand green under it.
 let b = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/band.rye -femit-bin=lotus/bin/band && lotus/bin/band selftest 2>&1 | grep -q 'GREEN ales-band' && echo yes"]
 assert (trim b.out) == "yes" else "ales-deess: the ALES46 band-pass regressed under the de-esser"
 

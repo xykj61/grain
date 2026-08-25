@@ -1,15 +1,15 @@
-# tools/al/ales_notch_witness.rish — a band-reject (notch): keep the edges, drop the middle — the complement of ALES46's band-pass (ALES47).
+# tools/al/ales_notch_witness.rish -- a band-reject (notch): keep the edges, drop the middle -- the complement of ALES46's band-pass (ALES47).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES47.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES47.
 # Design read: active-designing/date/20260814/20260814-165728_fill-ales47-lotus-band-reject.md
-# Stands on: lotus/tone.rye (ALES40 — low_pass, high_pass, precheck) and lotus/timeline.rye (ALES2 — the Clip and saturate); shape from lotus/shelf.rye (ALES41).
+# Stands on: lotus/tone.rye (ALES40 -- low_pass, high_pass, precheck) and lotus/timeline.rye (ALES2 -- the Clip and saturate); shape from lotus/shelf.rye (ALES41).
 #
 # lotus/notch.rye sums a low-pass (keeps the lows) and a high-pass (keeps the highs) in parallel, clamped once, so what neither
-# branch keeps — the middle band between the cutoffs — is rejected. The selftest proves: silence stays silence; equal cutoffs are
-# the identity (the reject band has zero width — low_pass + high_pass = x, the elegant crux); a constant input settles to itself
-# (the notch keeps direct current — the exact contrast to the band-pass); a distinct-cutoff notch equals neither the input nor
+# branch keeps -- the middle band between the cutoffs -- is rejected. The selftest proves: silence stays silence; equal cutoffs are
+# the identity (the reject band has zero width -- low_pass + high_pass = x, the elegant crux); a constant input settles to itself
+# (the notch keeps direct current -- the exact contrast to the band-pass); a distinct-cutoff notch equals neither the input nor
 # either single filter (a real middle band removed); a loud transient stays in range (the single i64 clamp); an illegal cutoff on
-# either edge refuses BadCoeff, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real device, no
+# either edge refuses BadCoeff, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no real device, no
 # real sample rate.
 #
 # Run from the repository root:
@@ -35,7 +35,7 @@ say "ales-notch: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-notch' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-notch: selftest did not print the GREEN ales-notch line"
 
-# The band-pass and the band-reject are the EQ primitive pair — prove ALES46's band-pass still stands by its own green, so the pair is whole.
+# The band-pass and the band-reject are the EQ primitive pair -- prove ALES46's band-pass still stands by its own green, so the pair is whole.
 let band = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/band.rye -femit-bin=lotus/bin/band && lotus/bin/band selftest 2>&1 | grep -q 'GREEN ales-band' && echo yes"]
 assert (trim band.out) == "yes" else "ales-notch: the ALES46 band-pass witness regressed under the band-reject"
 

@@ -1,10 +1,10 @@
-# tools/e/encoding_base58check_witness.rish — Base58Check authored in pure Rye as a composition: the self-verifying envelope a real address
+# tools/e/encoding_base58check_witness.rish -- Base58Check authored in pure Rye as a composition: the self-verifying envelope a real address
 # wears (version ‖ payload ‖ four-byte double-SHA-256 checksum, rendered in Base58), proven against the canonical Bitcoin wiki worked example
-# with a round-trip and a corrupted-character check (encoding · the serialization sibling of Season G · Cryptography).
+# with a round-trip and a corrupted-character check (encoding - the serialization sibling of Season G - Cryptography).
 #
-# Season: encoding — the text-form sibling of the crypto library, beside base64.rye and base58.rye. This rung authors NO new cryptography:
-# it composes two already-GREEN stones — the double SHA-256 from crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto) and the
-# Base58 rendering from encoding/base58.rye (parity-GREEN against the Bitcoin Core known-answers) — into the version-and-checksum envelope a
+# Season: encoding -- the text-form sibling of the crypto library, beside base64.rye and base58.rye. This rung authors NO new cryptography:
+# it composes two already-GREEN stones -- the double SHA-256 from crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto) and the
+# Base58 rendering from encoding/base58.rye (parity-GREEN against the Bitcoin Core known-answers) -- into the version-and-checksum envelope a
 # human-facing address carries, so a mistyped character is caught before a value is ever sent to a wrong destination.
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the version+checksum envelope and double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is ours,
@@ -12,9 +12,9 @@
 #
 # encoding/base58check.rye lays out version ‖ payload ‖ checksum where checksum = SHA-256(SHA-256(version ‖ payload))[0..4], then Base58-
 # encodes the whole; decode inverts it, recomputes the checksum, and refuses BadChecksum on a corrupted address rather than returning wrong
-# bytes. Parity is proven at selftest against the canonical Bitcoin wiki example (version 0x00, payload 010966…273BEE → 16UwLL9Risc3Qf…),
+# bytes. Parity is proven at selftest against the canonical Bitcoin wiki example (version 0x00, payload 010966...273BEE -> 16UwLL9Risc3Qf...),
 # a round-trip across versions and payloads 0..48 bytes, and the guards: a flipped character refuses BadChecksum, a bad character BadChar, a
-# too-small destination DestTooSmall. Purely local — no key, no network, no funds, no real device.
+# too-small destination DestTooSmall. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/e/encoding_base58check_witness.rish

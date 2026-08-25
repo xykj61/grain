@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_recall_catch_up_wire_lab.sh — catch-up device wire over virtio-net.
+# comlink/run_recall_catch_up_wire_lab.sh -- catch-up device wire over virtio-net.
 #
 # Orchestration lives in tools/co/comlink_recall_catch_up_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

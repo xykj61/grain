@@ -1,21 +1,21 @@
-# tools/m/mycelium_freight_witness.rish — a world carries its whole signed ledger to its new berth (r1, the
+# tools/m/mycelium_freight_witness.rish -- a world carries its whole signed ledger to its new berth (r1, the
 # freight crux).
 #
-# Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r1.
+# Season D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r1.
 # Puddle proved WHICH host runs which world, and healed a departure by moving only the failed host's worlds.
-# Yet it named a world by its id alone — it never carried the one thing a world exists to keep: its STATE.
+# Yet it named a world by its id alone -- it never carried the one thing a world exists to keep: its STATE.
 # Freight is what a world carries to its berth: its whole signed Mycelium ledger (a Cord Dag). This rung
-# proves the durability guarantee a fleet is worthless without — when a host departs and the world re-berths,
+# proves the durability guarantee a fleet is worthless without -- when a host departs and the world re-berths,
 # it arrives on its new host reading the BYTE-IDENTICAL account position it held on the old one. Placement
 # moves; state does not.
 #
 # The property is almost given, and that is the point: a world's position is a PURE FUNCTION of its ledger
 # bytes (statement_for(resolve(dag)) takes no host as input), so moving WHERE it runs cannot move WHAT it
 # says. The crux this witness proves is A MOVED WORLD READS THE IDENTICAL POSITION ON ITS NEW BERTH, with the
-# teeth that a freight TAMPERED IN TRANSIT REFUSES — the receiving host recomputes an order-head that
+# teeth that a freight TAMPERED IN TRANSIT REFUSES -- the receiving host recomputes an order-head that
 # disagrees with the advertised head and refuses rather than serving a rewritten position. Composes puddle +
 # cord + lapse + statement + fold + voucher + kumara public API only, editing none; demo host/world/keeper
-# seeds — no key, no funds, no network, no world provisioned or moved.
+# seeds -- no key, no funds, no network, no world provisioned or moved.
 #
 # Scope: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 #
@@ -40,7 +40,7 @@ assert selftest.out contains "a freight tampered in transit refuses" else "mycel
 assert selftest.out contains "no world reads another's freight" else "mycelium-freight: distinctness claim missing"
 assert selftest.out contains "Freight stands" else "mycelium-freight: closing claim missing"
 
-# The Puddle berth and convergence Freight rides both stand at the door — their own selftests prove the
+# The Puddle berth and convergence Freight rides both stand at the door -- their own selftests prove the
 # placement law a migrated world moves along.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle.rye -femit-bin=mycelium/bin/puddle && mycelium/bin/puddle 2>&1"]
 assert r1.ok else "mycelium-freight: the Puddle berth Freight rides is not GREEN"
@@ -50,7 +50,7 @@ let conv = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/r
 assert conv.ok else "mycelium-freight: the Puddle convergence Freight rides is not GREEN"
 assert conv.out contains "GREEN" else "mycelium-freight: the Puddle convergence did not speak its GREEN"
 
-# The Statement voice Freight reads a position through stands too — a world's position is that voice's own
+# The Statement voice Freight reads a position through stands too -- a world's position is that voice's own
 # reading, unmoved by the host it runs on.
 let stmt = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert stmt.ok else "mycelium-freight: the Statement voice Freight reads through is not GREEN"

@@ -1,11 +1,11 @@
-# parity_ch01.rish — witness suite chapter 1 (fresh Env; ≤200 user lets).
+# parity_ch01.rish -- witness suite chapter 1 (fresh Env; ≤200 user lets).
 #
-# Lines 1–987 of the former monolithic parity.rish · 200 lets.
+# Lines 1-987 of the former monolithic parity.rish - 200 lets.
 # Driven by tools/p/parity.rish. Run alone:
 #   rishi/bin/rishi run tools/p/parity_ch01.rish
 
 # S0 cost: each witness run goes through tools/p/parity_time_one.sh
-# (COST_START/FINISH on stderr · TSV at $PARITY_COST_LOG). Closing table via
+# (COST_START/FINISH on stderr - TSV at $PARITY_COST_LOG). Closing table via
 # tools/p/parity_cost_table.sh at chapter end. Zig caches seated under
 # tools/.cache/zig/ when ZIG_* unset (see parity_zig_cache_seat.sh).
 let _parity_seat = run ["sh" "tools/p/parity_zig_cache_seat.sh"]
@@ -375,7 +375,7 @@ say "GREEN: WOV exit-honesty witness passed."
 
 # WOV TigerBeetle pin + host seam A retired from the living suite 20260711.055800
 # (Kaeden approved counsel 055112). Pure-Rye coverage stays via exit honesty + dual monarch.
-# Dated record: tools/w/wov_tb_pin.rish · tools/w/wov_tb_host.rish · linengrow/wov_tb_host.rye
+# Dated record: tools/w/wov_tb_pin.rish - tools/w/wov_tb_host.rish - linengrow/wov_tb_host.rye
 
 say "witness suite: WOV dual monarch D1 (twin log lines)…"
 let wov_dual = run ["sh" "tools/p/parity_time_one.sh" "wov_dual" "--" "rishi/bin/rishi" "run" "tools/w/wov_dual_monarch.rish"]

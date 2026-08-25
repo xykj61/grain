@@ -1,6 +1,6 @@
-# glow_lower_trap_witness.rish — `|-` lowers to Rye; emitted program runs.
+# glow_lower_trap_witness.rish -- `|-` lowers to Rye; emitted program runs.
 #
-# Glow generator hop: parse literal or (lent …) bounds, emit ordinary `.rye`,
+# Glow generator hop: parse literal or (lent ...) bounds, emit ordinary `.rye`,
 # rye-build, prove welcome exit 0 and unwelcome exit 1. Rishi drives the hop.
 #
 #   rishi/bin/rishi run tools/g/glow_lower_trap_witness.rish

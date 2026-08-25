@@ -1,18 +1,18 @@
-# tools/al/ales_render_witness.rish — an ordered chain of real effects over one Clip renders to a canonical RIFF/WAVE .wav,
+# tools/al/ales_render_witness.rish -- an ordered chain of real effects over one Clip renders to a canonical RIFF/WAVE .wav,
 # atomically, verify-before-trust (ALES217).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES217.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES217.
 # Design read: active-designing/date/20260815/20260815-131432_fill-ales217-lotus-render.md
-# Idiom kin: lotus/timeline.rye (ALES2, the Clip and gain) · lotus/fade.rye · lotus/invert.rye (ALES105) · lotus/wav.rye
-# (ALES215, the container). This rung joins the edit half and the container half into one pipeline endpoint: bytes → an
-# ordered chain of the tree's own proven effects → the open .wav another program plays.
+# Idiom kin: lotus/timeline.rye (ALES2, the Clip and gain) - lotus/fade.rye - lotus/invert.rye (ALES105) - lotus/wav.rye
+# (ALES215, the container). This rung joins the edit half and the container half into one pipeline endpoint: bytes -> an
+# ordered chain of the tree's own proven effects -> the open .wav another program plays.
 #
-# lotus/render.rye runs a bounded, ordered chain (gain · fade · invert) over a Clip and encodes the result into the canonical
+# lotus/render.rye runs a bounded, ordered chain (gain - fade - invert) over a Clip and encodes the result into the canonical
 # mono RIFF/WAVE layout. The selftest proves: the render decodes byte-for-byte to the same chain applied by hand (the render
 # law); the same steps reordered render to a different file (the order law); a bare chain renders the clip unchanged; a faulty
-# step — a span past the clip, a zero denominator, an output buffer too small, a chain past max_steps, a wild rate — refuses BY
+# step -- a span past the clip, a zero denominator, an output buffer too small, a chain past max_steps, a wild rate -- refuses BY
 # NAME before a sample moves, leaving the clip byte-for-byte unchanged (the atomic promise); an empty clip renders a valid
-# 44-byte header. A byte container only — no real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no
+# 44-byte header. A byte container only -- no real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no
 # funds, no real device.
 #
 # Run from the repository root:

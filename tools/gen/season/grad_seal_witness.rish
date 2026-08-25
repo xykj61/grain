@@ -1,23 +1,23 @@
-# tools/gen/season/grad_seal_witness.rish — CION Equinox 4 (GRAD · Seal).
+# tools/gen/season/grad_seal_witness.rish -- CION Equinox 4 (GRAD - Seal).
 #
 #   rishi/bin/rishi run tools/gen/season/grad_seal_witness.rish
 #
 # The seal of the chronological-semantic labeling law, in its three living halves:
 #   (1) the living operator PINS carry no bare count-up-from-0 identity (a season ordinal
-#       or a waymark-redundant equinox number) — labeling_law_scan.sh over ITINERARY /
+#       or a waymark-redundant equinox number) -- labeling_law_scan.sh over ITINERARY /
 #       ROADMAP / THREADS;
-#   (2) the living MODULE SURFACES carry no bare "lap N" capability identity — the CION
+#   (2) the living MODULE SURFACES carry no bare "lap N" capability identity -- the CION
 #       module labeling guard (cion_module_labeling_witness), which LOWE Journey 14 grew
 #       to scan every one of the 79 VOLS-surveyed prose gaps, the kept witness handles,
 #       and the guard itself (20260813). Folding it here seats the labeling-law guard in
 #       the standing seal, so the whole LOWE conversion can never silently regress (REDS
 #       #67's lesson: a witness outside the run-suite rots unseen).
-#   (3) the CONVERSION IS COMPLETE — zero unconverted prose gaps remain anywhere in the
+#   (3) the CONVERSION IS COMPLETE -- zero unconverted prose gaps remain anywhere in the
 #       living tree (GRAD-J16r2, 20260813). Half (2) proves guarded files are CLEAN; half
 #       (3) proves the molt is FINISHED: vols_classify_scan.sh classifies every living
 #       count-up site against the guardlist in force, and a prose gap (a bare "lap N" that
 #       is neither guarded nor a kept witness handle) is exactly the drift LOWE relabeled.
-#       Sealing prose_gaps=0 turns the seal into a whole-tree guard — a bare-ordinal prose
+#       Sealing prose_gaps=0 turns the seal into a whole-tree guard -- a bare-ordinal prose
 #       identity born ANYWHERE, not only inside an already-watched file, raises the count
 #       and bites. Honest to handles: a legitimately-named witness handle (its ordinal in
 #       the FILENAME) classifies as a handle, never a gap. Design:
@@ -37,7 +37,7 @@ assert pins.out contains "verdict=ok" else "grad-seal: a living pin carries a ba
 # values_apart: the verdict key and the exit status must agree.
 assert pins.ok else "grad-seal: pin verdict and status disagree"
 
-# The guard bites — a planted count-up identity is caught on every run.
+# The guard bites -- a planted count-up identity is caught on every run.
 let neg = run ["sh" "tools/fixtures/labeling_law_scan.sh" "tools/fixtures/labeling_law_negative.md"]
 say neg.out
 assert neg.out contains "verdict=drift" else "grad-seal: planted count-up identity was not flagged"
@@ -51,7 +51,7 @@ say "grad-seal: CION module labeling guard —"
 assert modguard.ok else "grad-seal: a living module surface names a capability by a bare lap ordinal"
 assert modguard.out contains "GREEN: cion-module" else "grad-seal: the module labeling guard did not seal GREEN"
 
-# The third half: the CONVERSION IS COMPLETE — zero unconverted prose gaps remain anywhere
+# The third half: the CONVERSION IS COMPLETE -- zero unconverted prose gaps remain anywhere
 # in the living tree. Classify every living count-up site against the guardlist in force
 # (derived from the guard witness itself, never hand-copied); a prose gap is a bare lap
 # ordinal that is neither guarded nor a kept witness handle. LOWE relabeled all 79; the seal
@@ -62,7 +62,7 @@ say complete.out
 assert complete.out contains "prose_gaps=0" else "grad-seal: the CION conversion is incomplete — a living surface still names a capability by a bare lap ordinal outside every guard"
 assert complete.out contains "guarded_sites=0" else "grad-seal: a live guarded file drifted — a watched surface carries a bare lap ordinal"
 
-# The completeness half bites — a tree still carrying an unconverted prose gap (the classify
+# The completeness half bites -- a tree still carrying an unconverted prose gap (the classify
 # fixture, whose livemod/README.md holds a bare ordinal outside the guardlist) must report
 # prose_gaps above zero, so the seal cannot pass a molt left unfinished.
 let incomplete = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_ok.txt"]

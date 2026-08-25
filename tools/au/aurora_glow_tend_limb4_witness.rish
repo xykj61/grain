@@ -1,4 +1,4 @@
-# tools/au/aurora_glow_tend_limb4_witness.rish — Aurora A4 in src/sur/ (e208).
+# tools/au/aurora_glow_tend_limb4_witness.rish -- Aurora A4 in src/sur/ (e208).
 #
 #   rishi/bin/rishi run tools/au/aurora_glow_tend_limb4_witness.rish
 
@@ -26,7 +26,7 @@ let rye = run ["sh" "-c" "grep -q 'pub const signature_length' aurora/src/kumara
 assert rye.ok else "aurora-tend-4: pub const signature_length missing in kumara"
 let encoded = run ["sh" "-c" "grep -q 'Signature.encoded_length' aurora/src/kumara.rye"]
 assert encoded.ok else "aurora-tend-4: encoded_length alias missing"
-# Ed25519 signatures are 64 octets — lock via verify_bytes slice comment path
+# Ed25519 signatures are 64 octets -- lock via verify_bytes slice comment path
 let sixtyfour = run ["sh" "-c" "grep -Fq 'sig_bytes[0..signature_length]' aurora/src/kumara.rye"]
 assert sixtyfour.ok else "aurora-tend-4: verify_bytes must still slice by signature_length"
 

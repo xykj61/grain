@@ -1,9 +1,9 @@
-# strings.rish — composing strings by interpolation.
+# strings.rish -- composing strings by interpolation.
 
 let dir = "rye/tests"
 let name = "sha3_512_test"
 
-# A `${…}` hole composes a value into the string, building a real value.
+# A `${...}` hole composes a value into the string, building a real value.
 let path = "${dir}/${name}.rye"
 assert path == "rye/tests/sha3_512_test.rye"
 

@@ -1,11 +1,11 @@
-# tools/g/gism_j6_provenance_true_witness.rish — GISM Journey 6 (Provenance), Rung 4.
+# tools/g/gism_j6_provenance_true_witness.rish -- GISM Journey 6 (Provenance), Rung 4.
 #
 # Season 2, Yield: a signature is only as honest as its tie to the real bytes. This
-# closing witness proves the facts a publication signs — the whole length and the content
-# digest — are true to the real file a keeper can open and hash. The app signs the real
+# closing witness proves the facts a publication signs -- the whole length and the content
+# digest -- are true to the real file a keeper can open and hash. The app signs the real
 # embedded artifact (a living waymark green-claim, symlinked) and prints the signed length
 # and SHA-256; this witness cross-checks both against an independent wc -c and sha256sum of
-# the same file on disk — two tools, one answer — so a signature can never vouch for bytes
+# the same file on disk -- two tools, one answer -- so a signature can never vouch for bytes
 # the corpus does not contain. This closes GISM Journey 6.
 #
 # Run from the repository root:

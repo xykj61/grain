@@ -1,18 +1,18 @@
-# tools/al/ales_render_manifest_witness.rish — a render describes itself, sealed: a `format lotus-render-v1` manifest binds its own
+# tools/al/ales_render_manifest_witness.rish -- a render describes itself, sealed: a `format lotus-render-v1` manifest binds its own
 # .wav bytes by Sha256, verify-before-trust (ALES221).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES221.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES221.
 # Design read: active-designing/date/20260815/20260815-133848_fill-ales221-lotus-render-manifest.md
-# Idiom kin: lotus/seal.rye (ALES38, begin/finish/open — the general verify-before-trust frame reused whole) · lotus/render.rye
+# Idiom kin: lotus/seal.rye (ALES38, begin/finish/open -- the general verify-before-trust frame reused whole) - lotus/render.rye
 # (ALES217) and lotus/stereo_render.rye (ALES218, the renders whose output .wav this manifest describes). Content-addressing,
-# never a signature — it proves the render arrived whole, not who made it.
+# never a signature -- it proves the render arrived whole, not who made it.
 #
-# lotus/render_manifest.rye seals a render's own description — preset · sample_rate · channels · frames · wav_bytes · wav_digest
-# — where wav_digest is the Sha256 of the .wav bytes themselves. The selftest proves: seal then open recovers every field and the
+# lotus/render_manifest.rye seals a render's own description -- preset - sample_rate - channels - frames - wav_bytes - wav_digest
+# -- where wav_digest is the Sha256 of the .wav bytes themselves. The selftest proves: seal then open recovers every field and the
 # digest matches the audio (the self-describing law); verify_wav accepts the exact bytes and refuses a single flipped audio byte
 # (WavDigestMismatch) and a wrong length (WavLenMismatch) (the content-address law); a tampered body refuses DigestMismatch and a
 # wrong header BadRecord, inherited from ALES38 (the seal law); an over-long name refuses NameTooLong, a bad channel or a missing
-# field BadManifest (the grammar law); a small buffer refuses Overflow (the atomic law). A byte record only — no real file, no
+# field BadManifest (the grammar law); a small buffer refuses Overflow (the atomic law). A byte record only -- no real file, no
 # DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:

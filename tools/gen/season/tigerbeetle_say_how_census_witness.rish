@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_say_how_census_witness.rish — e44 Say how.
+# tools/gen/season/tigerbeetle_say_how_census_witness.rish -- e44 Say how.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_say_how_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-say-how: Language EN — say how; name the goal and the method."
 say "tb-say-how: Style Radiant — the reader gets up to speed, or skips ahead."

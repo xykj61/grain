@@ -1,14 +1,14 @@
-# tools/f/fora_tenure_witness.rish — a leader holds tenure only while a majority still answers, CheckQuorum (FORA24).
+# tools/f/fora_tenure_witness.rish -- a leader holds tenure only while a majority still answers, CheckQuorum (FORA24).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA24. Design read: active-designing/date/20260814/20260814-084900_fora24-constel-tenure-checkquorum.md
 #
 # constel/tenure.rye adds CheckQuorum (Raft §6.2/§9.6), the proactive half of FORA20's reactive read guard: each election-timeout
 # window the leader counts how many piers answered its heartbeats (counting itself); if that backing falls below the majority
-# threshold, the leader steps down to follower — so a leader stranded in a minority partition stops believing it leads rather than
+# threshold, the leader steps down to follower -- so a leader stranded in a minority partition stops believing it leads rather than
 # lingering or serving a stale lease-read. The selftest proves: backing counts self plus acks; a leader hearing a majority still
 # commands, one that does not steps down; the minority-partition leader steps down while the majority partition's leader commands;
-# the boundary is exact at the threshold; a lone or fully-connected leader behaves; bounded. Purely local — no socket, no network,
+# the boundary is exact at the threshold; a lone or fully-connected leader behaves; bounded. Purely local -- no socket, no network,
 # no keys, no funds, no real address.
 #
 # Run from the repository root:

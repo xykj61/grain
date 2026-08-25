@@ -1,15 +1,15 @@
-# tools/gen/season/equinox_ch3_surface_witness.rish — e42 chapter-three surface close.
+# tools/gen/season/equinox_ch3_surface_witness.rish -- e42 chapter-three surface close.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish
 #
 # Chapter pillars already GREEN alone must GREEN together. Almanac seat 48 closes ch3.
-# Leaf witnesses only — no nested surfaces (avoids elder chains). Twin of e26.
+# Leaf witnesses only -- no nested surfaces (avoids elder chains). Twin of e26.
 
 say "equinox-ch3-surface: Language EN — chapter greens, one choir; chapter three closes."
 say "equinox-ch3-surface: Style Radiant — the living surface holds as one."
 say "equinox-ch3-surface: Lens TAME — e42 · almanac seat 48 · ch3 full."
 
-# Limb 0 — design-shapes wing (leaf scan)
+# Limb 0 -- design-shapes wing (leaf scan)
 let wing = run ["sh" "tools/fixtures/design_shapes_census_scan.sh"]
 say wing.out
 assert wing.ok else "equinox-ch3-surface: wing census failed"
@@ -17,7 +17,7 @@ assert wing.out contains "verdict=ok" else "equinox-ch3-surface: wing not ok"
 assert wing.out contains "halls_expected=4" else "equinox-ch3-surface: want four halls"
 assert wing.out contains "census_breach_count=0" else "equinox-ch3-surface: want breach zero"
 
-# Limb 1 — TB safety leaves
+# Limb 1 -- TB safety leaves
 let static = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_static_alloc_census_witness.rish"]
 say static.out
 assert static.ok else "equinox-ch3-surface: static limb failed"
@@ -33,7 +33,7 @@ say flow.out
 assert flow.ok else "equinox-ch3-surface: flow limb failed"
 assert flow.out contains "GREEN: tb-control-flow" else "equinox-ch3-surface: flow not GREEN"
 
-# Limb 2 — TB performance leaves
+# Limb 2 -- TB performance leaves
 let sized = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_sized_types_census_witness.rish"]
 say sized.out
 assert sized.ok else "equinox-ch3-surface: sized limb failed"
@@ -49,13 +49,13 @@ say explicit.out
 assert explicit.ok else "equinox-ch3-surface: be-explicit limb failed"
 assert explicit.out contains "GREEN: tb-be-explicit" else "equinox-ch3-surface: be-explicit not GREEN"
 
-# Limb 3 — TB naming leaf
+# Limb 3 -- TB naming leaf
 let naming = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_naming_census_witness.rish"]
 say naming.out
 assert naming.ok else "equinox-ch3-surface: naming limb failed"
 assert naming.out contains "GREEN: tb-naming" else "equinox-ch3-surface: naming not GREEN"
 
-# Refuse — absent design-shapes wing
+# Refuse -- absent design-shapes wing
 let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-ch3-surface: absent wing must fail"

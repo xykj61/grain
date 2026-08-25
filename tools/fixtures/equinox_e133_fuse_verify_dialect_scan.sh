@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e133 — fuse verify dialect already GREEN (e132). No second fix.
+# Equinox e133 -- fuse verify dialect already GREEN (e132). No second fix.
 # Exit 0 when living tree carries the widen, e111 greens, census 10+1, shred held.
 # No backtick characters.
 #
@@ -71,7 +71,7 @@ echo "$E111_OUT" | rg -q '^verdict=ok$' || {
 echo "e111=honored"
 echo "dialect=already_green"
 
-# Law library census: 10 bare · 1 stamp (Lexicon)
+# Law library census: 10 bare - 1 stamp (Lexicon)
 CENSUS=$(python3 - <<'PY'
 import re, subprocess
 from pathlib import Path

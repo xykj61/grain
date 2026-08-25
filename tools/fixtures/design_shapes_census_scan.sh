@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/design_shapes_census_scan.sh — four design halls present; elders named.
+# tools/fixtures/design_shapes_census_scan.sh -- four design halls present; elders named.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 set -eu
@@ -18,7 +18,7 @@ for f in $need; do
   fi
 done
 
-# Elders the wing names — first and second outside consumers.
+# Elders the wing names -- first and second outside consumers.
 elder_miss=0
 if [ -f tools/gen/season/recursion_block.brix ]; then
   echo "detail: ok elder bounds_home_consumer"

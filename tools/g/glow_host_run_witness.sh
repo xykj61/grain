@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# glow_host_run_witness.sh — proves tools/g/glow_host_run.sh actually closes the
+# glow_host_run_witness.sh -- proves tools/g/glow_host_run.sh actually closes the
 # RYE_ZIG/RYE_LIB PATH-fallback footgun, on this host, fresh every run.
 #
 # Permit witness: correct GLOW_HOST.bron builds cleanly with no pre-set env.

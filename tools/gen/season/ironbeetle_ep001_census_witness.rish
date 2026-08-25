@@ -1,10 +1,10 @@
-# tools/gen/season/ironbeetle_ep001_census_witness.rish — e60 IronBeetle ep001.
+# tools/gen/season/ironbeetle_ep001_census_witness.rish -- e60 IronBeetle ep001.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep001_census_witness.rish
 #
 # Requires gratitude/ironbeetle shelf present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep001: Language EN — checksum before size; cast, do not parse."
 say "iron-ep001: Style Radiant — own-voice lesson; clean room holds."

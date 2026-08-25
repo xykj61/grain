@@ -1,8 +1,8 @@
-# pleac_numbers_witness.rish — the PLEAC numbers cookbook (clamp · parse · to_str).
+# pleac_numbers_witness.rish -- the PLEAC numbers cookbook (clamp - parse - to_str).
 #
 # SOON. Proves pleac/numbers.rye: clamp bounds a value to [lo, hi]; parse reads a
 # decimal to u32 and to_str writes one, inverse across the range (parse(to_str(n))==n);
-# every bad input is a named refusal (empty · non-digit · past the u32 ceiling ·
+# every bad input is a named refusal (empty - non-digit - past the u32 ceiling -
 # too-small buffer), never a wrapped or truncated number.
 #
 # Build first:  rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers

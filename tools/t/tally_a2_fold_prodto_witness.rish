@@ -1,12 +1,12 @@
-# tools/t/tally_a2_fold_prodto_witness.rish — Ashvini a2: the fold verb is a name (STOA334).
+# tools/t/tally_a2_fold_prodto_witness.rish -- Ashvini a2: the fold verb is a name (STOA334).
 #
 #   rishi/bin/rishi run tools/t/tally_a2_fold_prodto_witness.rish
 #
 # STOA332 gave the bartis one fold, hardcoded. STOA334 makes the verb a name:
 # sumto folds by addition, prodto by multiplication, and each reduction keeps its
-# own identity — 0 for a sum, 1 for a product. The bound is refused above twelve
+# own identity -- 0 for a sum, 1 for a product. The bound is refused above twelve
 # by name, because 13! leaves u32; a wrap would be a silent lie.
-# (Pier STOA333 is the pair-shape list fold; counsel numbered this lap STOA333 —
+# (Pier STOA333 is the pair-shape list fold; counsel numbered this lap STOA333 --
 # the tree keeps both names honest by seating the verb lap as STOA334.)
 
 say "a2-prodto: Language EN — the second fold verb (product 1..n)."

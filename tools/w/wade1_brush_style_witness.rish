@@ -1,4 +1,4 @@
-# tools/w/wade1_brush_style_witness.rish — WADE1 authoring loop, source → pixels.
+# tools/w/wade1_brush_style_witness.rish -- WADE1 authoring loop, source -> pixels.
 #
 # Closes the seam the WADE1 bridge names
 # (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md): a
@@ -8,11 +8,11 @@
 #
 # Proves the whole path from a file on disk:
 #   (a) brush_parse's `style <path>` reads styled-frame.brush and reassembles its
-#       declared tokens into clean flat Bron (no CSS/JS/JSON — the owned tongue);
+#       declared tokens into clean flat Bron (no CSS/JS/JSON -- the owned tongue);
 #   (b) the end-to-end Rye test resolves that sheet through infuse and dresses a
 #       Skate grid to Bark paper / Flax ink, rendering lit pixels;
 #   (c) the seed fixture (no style block) still parses byte-identically and
-#       reassembles to an empty sheet — the change is additive by default.
+#       reassembles to an empty sheet -- the change is additive by default.
 #
 #   rishi/bin/rishi run tools/w/wade1_brush_style_witness.rish
 
@@ -42,7 +42,7 @@ let clean = run ["sh" "-c" "if brushstroke/bin/brush-parse style brushstroke/sty
 assert clean.ok else "wade1 brush style: tongue scan failed"
 assert clean.out contains "CLEAN" else "wade1 brush style: CSS/JSON punctuation leaked into the sheet"
 
-# --- the end-to-end loop: file → token sheet → infuse → dressed Skate grid ----
+# --- the end-to-end loop: file -> token sheet -> infuse -> dressed Skate grid ----
 
 say "wade1 brush style: source → token sheet → infuse cascade → Skate grid..."
 let loop = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run brushstroke/wade1_brush_style_test.rye 2>&1"]

@@ -1,11 +1,11 @@
-# tools/ay/ayre_j7_fairtrade_cert_signed_witness.rish — AYRE Journey 7 (Fair-trade), Rung 2.
+# tools/ay/ayre_j7_fairtrade_cert_signed_witness.rish -- AYRE Journey 7 (Fair-trade), Rung 2.
 #
-# Season 2, Yield — trades fairly. Rung one fixed a certificate's meaning as a join; a plain
+# Season 2, Yield -- trades fairly. Rung one fixed a certificate's meaning as a join; a plain
 # record proves a name appears, not that a party vouched for it. pond/apps/fairtrade_cert_signed.rye
-# binds each attestation to a settled Kumara identity — the attesting party signs the exact fact
+# binds each attestation to a settled Kumara identity -- the attesting party signs the exact fact
 # (their point, the criterion name), and a satisfied certificate requires every required criterion's
 # signature to verify against the attester's known keeper key. A forged signature, a criterion
-# relabeled after signing, and an attester the keyring does not know each refuse — so a steward
+# relabeled after signing, and an attester the keyring does not know each refuse -- so a steward
 # cannot certify a criterion no party vouched for. Mirrors commerce_trade_signed's signing; composes
 # rung one's certificate parse. Facts only; no funds move, no real key is held (custody gate %3
 # untouched); demo keeper seeds only.
@@ -18,7 +18,7 @@ say "ayre-j7r2: Lens TAME — a forged signature, a relabeled attestation, and a
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one stays GREEN beneath the signing layer — additive.
+# Rung one stays GREEN beneath the signing layer -- additive.
 let bin1 = "pond/bin/fairtrade-cert"
 let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert.rye -femit-bin=${bin1}"]
 assert build1.ok else "ayre-j7r2: rung-one fairtrade_cert build failed"

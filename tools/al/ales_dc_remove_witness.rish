@@ -1,21 +1,21 @@
-# tools/al/ales_dc_remove_witness.rish — the DC-offset remover: subtract the span's mean from every sample, y = saturate(x − mean), a pure translation
+# tools/al/ales_dc_remove_witness.rish -- the DC-offset remover: subtract the span's mean from every sample, y = saturate(x − mean), a pure translation
 # (ALES90).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES90.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES90.
 # Design read: active-designing/date/20260814/20260814-222356_fill-ales90-lotus-dc-offset-remover.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate) and lotus/rectify.rye (ALES84 — the full-wave rectifier whose
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate) and lotus/rectify.rye (ALES84 -- the full-wave rectifier whose
 # introduced DC offset this rung undoes, the composition proof). The DRIVE family's even-harmonic generators (the rectifiers ALES84/85/86, the asymmetric
-# tube drive ALES82, the 1-bit crush ALES81) each shift the signal's mean off zero; nothing yet took that offset back out — this rung does.
+# tube drive ALES82, the 1-bit crush ALES81) each shift the signal's mean off zero; nothing yet took that offset back out -- this rung does.
 #
 # lotus/dc_remove.rye subtracts the span's mean from each sample, saturating at the rails. The crux is that a PURE TRANSLATION preserves every
-# sample-to-sample difference exactly — the same constant leaves every sample, so only the mean moves and the waveform shape (all its AC content) carries
+# sample-to-sample difference exactly -- the same constant leaves every sample, so only the mean moves and the waveform shape (all its AC content) carries
 # through untouched (distinct from ALES2's gain, which scales the differences). The mean is truncated toward zero, so the residual mean magnitude is
 # strictly less than one LSB (|Σ y| < count): a zero-mean signal is unchanged exactly, and the remove is idempotent where nothing saturates. The selftest
-# proves it: it removes a pure DC offset (a constant span → 0); a zero-mean signal is unchanged exactly; the translation preserves every adjacent
+# proves it: it removes a pure DC offset (a constant span -> 0); a zero-mean signal is unchanged exactly; the translation preserves every adjacent
 # difference; the residual mean is bounded below one LSB; it is idempotent where nothing saturates; it undoes the rectifier's offset (rectify a symmetric
-# wave → a large positive DC → dc_remove restores a near-zero mean); saturation at the rail is honest (a max sample under a negative mean pins, never
+# wave -> a large positive DC -> dc_remove restores a near-zero mean); saturation at the rail is honest (a max sample under a negative mean pins, never
 # wraps); the span discipline holds; the empty span is a clean no-op (no divide by zero); a span past the end refuses BadRange, the clip untouched. Purely
-# local — sum then subtract in i64, one saturate per sample; no gain, no coefficient, no delay line, no envelope, no frequency, no network, no keys, no funds.
+# local -- sum then subtract in i64, one saturate per sample; no gain, no coefficient, no delay line, no envelope, no frequency, no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_dc_remove_witness.rish

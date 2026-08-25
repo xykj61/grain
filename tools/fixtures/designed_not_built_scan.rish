@@ -1,6 +1,6 @@
-# designed_not_built_scan.rish — at most one functional spec in designed-not-built flight.
+# designed_not_built_scan.rish -- at most one functional spec in designed-not-built flight.
 #
-# Native repoint of designed_not_built_scan.sh — chained where per line (no inner map).
+# Native repoint of designed_not_built_scan.sh -- chained where per line (no inner map).
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/designed_not_built_scan.rish
 

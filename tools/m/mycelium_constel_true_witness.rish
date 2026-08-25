@@ -1,19 +1,19 @@
-# tools/m/mycelium_constel_true_witness.rish — a real Constel roster reads true, the receipt of the real
+# tools/m/mycelium_constel_true_witness.rish -- a real Constel roster reads true, the receipt of the real
 # constellation (r4, the Constel arc closes).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 — reads true.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r4 -- reads true.
 # r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
-# record — all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
-# record a keeper can open and read — tools/fixtures/constel_roster.bron, produced reproducibly by
+# record -- all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
+# record a keeper can open and read -- tools/fixtures/constel_roster.bron, produced reproducibly by
 # mycelium/constel_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/ symlink (no network).
 #
-# The crux this witness proves is TWO TOOLS, ONE ANSWER — the app derives the roster shape (<count>
+# The crux this witness proves is TWO TOOLS, ONE ANSWER -- the app derives the roster shape (<count>
 # <firstkey8>) INDEPENDENTLY of the record text, by booting the constellation from its ship names (each key a
 # pure function of its name), and that pair equals constel_roster_truth.awk's reading of the same bytes; the
 # record is the receipt of the real constellation (every key self-certifies against its name, and the roster
 # reaches quorum on a real order-head), its record a fixed point, its fixture reproducible, a tampered header
 # refuses. Composes constel + constel_bron + constel_fixture_gen + voucher public API only; siloed dev
-# fixtures — no key, no funds, no network, no real value.
+# fixtures -- no key, no funds, no network, no real value.
 #
 # Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 #
@@ -39,7 +39,7 @@ assert selftest.out contains "never a hand-mock" else "mycelium-constel-true: fi
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-constel-true: tamper refusal missing"
 assert selftest.out contains "The Constel agent-doable arc closes" else "mycelium-constel-true: arc-close claim missing"
 
-# The crux — two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-constel-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_roster_truth.awk tools/fixtures/constel_roster.bron"]
@@ -47,7 +47,7 @@ assert awk.ok else "mycelium-constel-true: awk truth read failed"
 assert awk.out contains "5 97f92882" else "mycelium-constel-true: awk pair not 5 97f92882"
 assert app.out == awk.out else "mycelium-constel-true: app and awk disagree — the reading drifted from the bytes"
 
-# The fixture is reproducible — the generator re-emits byte-identical bytes, so the on-disk roster is what the
+# The fixture is reproducible -- the generator re-emits byte-identical bytes, so the on-disk roster is what the
 # Constel renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed fixture).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_fixture_gen.rye -femit-bin=mycelium/bin/constel_fixture_gen"]
 assert genbuild.ok else "mycelium-constel-true: fixture generator build failed"
@@ -55,7 +55,7 @@ let regen = run ["sh" "-c" "mycelium/bin/constel_fixture_gen 2> /tmp/constel_ros
 assert regen.ok else "mycelium-constel-true: the regenerated fixture drifted from the committed one"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-constel-true: the regenerated fixture drifted from the committed one"
 
-# The Constel r3 travel rung stands at the door — a true reading of a real roster means nothing unless the
+# The Constel r3 travel rung stands at the door -- a true reading of a real roster means nothing unless the
 # record round-trips and boots the identical constellation.
 let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_bron.rye -femit-bin=mycelium/bin/constel_bron && mycelium/bin/constel_bron 2>&1"]
 assert r3.ok else "mycelium-constel-true: the Constel r3 travel rung is not GREEN"

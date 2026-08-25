@@ -1,4 +1,4 @@
-# neth_apply_step_witness.rish — Neth's apply-step crash-safety witness.
+# neth_apply_step_witness.rish -- Neth's apply-step crash-safety witness.
 #
 # The Neth build ladder's third real lap: root application (admit into the
 # consulted structure) is a distinct step from root writing, so a crash in

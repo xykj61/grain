@@ -1,15 +1,15 @@
-# tools/cr/crypto_count_guard_witness.rish — the count-guard loom for the Season G crypto library. The lantern the reds-first law names:
+# tools/cr/crypto_count_guard_witness.rish -- the count-guard loom for the Season G crypto library. The lantern the reds-first law names:
 # a crypto file-count claim drifted from memory twice (REDS %77, then #80 across three living docs at once), so a lantern that fires
 # twice becomes a loom. This witness computes the count rather than trusting a typed word, and asserts the measures agree: every
 # per-file witness the suite registers has its crypto/<name>.rye, every crypto/<name>.rye is registered in the suite, and the two
 # counts match. A file and its proof can never disagree again without this going RED.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Kin: tools/cr/crypto_suite_witness.rish (the choir this guards), crypto/README.md and docs/CRYPTO.md (the front doors whose spelled
 # counts this witness gives an authoritative number to update from). Booked at work-in-progress/REDS.md #80.
 #
-# This authors no cryptography — it counts and compares. Purely local: no key, no signature, no network, no funds, no real device.
+# This authors no cryptography -- it counts and compares. Purely local: no key, no signature, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_count_guard_witness.rish
@@ -23,7 +23,7 @@ assert mk.ok else "crypto-count-guard: could not make crypto/bin — ${mk.err}"
 
 # The crypto/<name>.rye source names, one per line, sorted. Real files only (-type f): a cross-directory composition like
 # crypto/bitcoin_address.rye imports encoding/ modules through flat-named symlink shims that live in crypto/ (rye resolves nested
-# imports relative to the importing path), and those shims are not primitives the suite proves — counting them would break the bijection.
+# imports relative to the importing path), and those shims are not primitives the suite proves -- counting them would break the bijection.
 let list_all = run ["sh" "-c" "find crypto -maxdepth 1 -name '*.rye' -type f | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_all.txt"]
 assert list_all.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_all.err}"
 

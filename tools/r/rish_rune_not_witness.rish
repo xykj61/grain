@@ -1,7 +1,7 @@
-# rish_rune_not_witness.rish — the ?! logical-not rune (wutzap), the second Glow rune Rishi speaks.
+# rish_rune_not_witness.rish -- the ?! logical-not rune (wutzap), the second Glow rune Rishi speaks.
 #
 # Proves Rishi now recognizes `?!` as first-class syntax: it evaluates a body as a full
-# expression, requires a boolean, and hands back its negation — refusing a non-boolean
+# expression, requires a boolean, and hands back its negation -- refusing a non-boolean
 # rather than coercing it. The rune nests, and it composes with the comparison operators
 # the shell already speaks, so a predicate can be inverted inline.
 #
@@ -14,7 +14,7 @@ assert a == false else "?! true should be false"
 let b = ?! false
 assert b == true else "?! false should be true"
 
-# The body is a full expression, evaluated before the negation — the rune nests over
+# The body is a full expression, evaluated before the negation -- the rune nests over
 # a parenthesized comparison without the inner `==` being read as the top-level one.
 let c = ?! (1 == 1)
 assert c == false else "?! (1 == 1) should negate a true comparison to false"
@@ -22,11 +22,11 @@ assert c == false else "?! (1 == 1) should negate a true comparison to false"
 let d = ?! (2 == 3)
 assert d == true else "?! (2 == 3) should negate a false comparison to true"
 
-# Double negation returns the original truth value — the rune composes with itself.
+# Double negation returns the original truth value -- the rune composes with itself.
 let e = ?! (?! true)
 assert e == true else "?! (?! true) should return true"
 
-# A non-boolean body refuses — a child that negates an integer exits non-zero.
+# A non-boolean body refuses -- a child that negates an integer exits non-zero.
 let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_not_bad_type.rish"]
 assert bad_type.ok == false else "?! on a non-boolean must refuse (child should exit non-zero)"
 

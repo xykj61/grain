@@ -1,14 +1,14 @@
-# tools/m/mycelium_chorus_true_witness.rish — a quorum reads a real ledger record true (r4, the arc closes).
+# tools/m/mycelium_chorus_true_witness.rish -- a quorum reads a real ledger record true (r4, the arc closes).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r4.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r4.
 # r1 fixed the crux (a quorum of independent Vouchers is believed only when a threshold of distinct nodes
-# agree), r2 let the whole quorum travel, r3 read it across a Knot — all over Dags seated in code. This
+# agree), r2 let the whole quorum travel, r3 read it across a Knot -- all over Dags seated in code. This
 # closing rung (mycelium/chorus_true.rye, mirroring voucher_true) carries the quorum onto a REAL on-disk
 # Cord record a keeper can open and hash, proving the property the whole Chorus rests on: the agreed
 # position is TRUE TO THE BYTES, the distinct count the threshold reads is the count of members present,
 # and every member's order-head is the order the fixture folds. The corpus reuses the Lapse's own fixture
 # tools/fixtures/lapse_dag.bron (a funder credits Alice 200; a pledge to Bob lapses and comes home; a
-# pledge to Carol stays open), @embedFile-bound through the mycelium/corpora/ symlink — no network.
+# pledge to Carol stays open), @embedFile-bound through the mycelium/corpora/ symlink -- no network.
 #
 # The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses the record through cord_bron,
 # rebuilds the Dag under cord.add (re-verifying every signature), gathers a three-node quorum over the
@@ -17,7 +17,7 @@
 # refused at four (the distinct count the threshold reads is the members present), every member's
 # recomputed order-head matching its signed one, and the quorum checks against the ledger it vouches; a
 # tampered header refuses BadFormat. Composes cord_bron + cord + lapse + statement + voucher + chorus +
-# kumara public API only; demo node/keeper seeds — no key, no funds, no network, no custody.
+# kumara public API only; demo node/keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 #
@@ -43,7 +43,7 @@ assert selftest.out contains "the quorum checks against the real ledger it vouch
 assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-chorus-true: tamper-refusal claim missing"
 assert selftest.out contains "The Mycelium Chorus's agent-doable arc closes" else "mycelium-chorus-true: arc-close claim missing"
 
-# The crux — two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
+# The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-chorus-true: app measure exited non-zero"
 let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
@@ -51,7 +51,7 @@ assert awk.ok else "mycelium-chorus-true: awk truth read failed"
 assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-chorus-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
 assert app.out == awk.out else "mycelium-chorus-true: app and awk disagree — the agreed position drifted from the bytes"
 
-# The Chorus r1 whose quorum this rung reads over a real record stands at the door — its own selftest
+# The Chorus r1 whose quorum this rung reads over a real record stands at the door -- its own selftest
 # proves the machinery the reading rests on.
 let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-chorus-true: the Chorus r1 this rung reads over a real record is not GREEN"

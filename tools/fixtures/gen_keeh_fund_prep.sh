@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_keeh_fund_prep.sh — Keeh fund prep (Aquarius · was Ketu · Kia sponsor)
+# gen_keeh_fund_prep.sh -- Keeh fund prep (Aquarius - was Ketu - Kia sponsor)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

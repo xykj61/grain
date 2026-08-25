@@ -1,4 +1,4 @@
-# tools/gen/season/vols_survey_true_witness.rish — CION VOLS Journey 13 r4, the ledger read true.
+# tools/gen/season/vols_survey_true_witness.rish -- CION VOLS Journey 13 r4, the ledger read true.
 #
 #   rishi/bin/rishi run tools/gen/season/vols_survey_true_witness.rish
 #
@@ -9,7 +9,7 @@
 # Two tools, one answer: vols_survey_render.sh renders the ledger; vols_survey_truth.sh
 # computes the same totals a second way (grep -rl traversal, basename classification).
 # vols_survey_readtrue.sh emits readtrue=agree only when the ledger's sites, handles, and
-# prose_gaps each equal the independent count — free of any hardcoded number, so it stays
+# prose_gaps each equal the independent count -- free of any hardcoded number, so it stays
 # true as the tree grows. The seated pin (work-in-progress/vols-survey-ledger.bron) is
 # proven self-consistent: the site lines it carries equal the site count it declares.
 #
@@ -20,13 +20,13 @@ say "vols-true: Language EN — CION VOLS Journey 13 r4, the survey ledger read 
 say "vols-true: Style Radiant — the map LOWE relabels against agrees with an independent count."
 say "vols-true: Lens TAME — two tools one answer; the seated pin proves itself; no hardcoded number."
 
-# Fixture read-true — the ledger agrees with the independent measure on a controlled tree.
+# Fixture read-true -- the ledger agrees with the independent measure on a controlled tree.
 let fx = run ["sh" "tools/fixtures/vols_survey_readtrue.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_ok.txt"]
 say fx.out
 assert fx.out contains "readtrue=agree" else "vols-true: the fixture ledger disagreed with the independent measure"
 assert fx.ok else "vols-true: fixture read-true verdict and status disagree"
 
-# Live read-true — the ledger and the independent grep -rl measure agree on the real tree.
+# Live read-true -- the ledger and the independent grep -rl measure agree on the real tree.
 let live = run ["sh" "-c" "sh tools/fixtures/vols_guardlist_extract.sh tools/gen/season/cion_module_labeling_witness.rish > /tmp/vols_live_guardlist.txt && sh tools/fixtures/vols_survey_readtrue.sh . /tmp/vols_live_guardlist.txt"]
 say live.out
 assert live.out contains "readtrue=agree" else "vols-true: the live ledger disagreed with the independent measure — the survey does not read true"
@@ -39,7 +39,7 @@ assert pin.out contains "verdict=ok" else "vols-true: the seated survey ledger d
 assert pin.ok else "vols-true: the seated ledger verdict and status disagree"
 assert pin.out contains "guarded_sites=0" else "vols-true: the seated ledger reports a drifted guarded file"
 
-# The pin proves itself — the site lines it carries equal the site count it declares, no
+# The pin proves itself -- the site lines it carries equal the site count it declares, no
 # number hardcoded here (so a future re-seat at a new stamp keeps this witness true).
 let selfcheck = run ["sh" "-c" "p=$(sh tools/fixtures/vols_survey_parse.sh construction/vols-survey-ledger.bron); s=$(printf '%s\\n' \"$p\" | sed -n 's/^sites=//p'); l=$(printf '%s\\n' \"$p\" | sed -n 's/^site_lines=//p'); if [ \"$s\" = \"$l\" ]; then echo consistent=yes; else echo consistent=no; fi"]
 say selfcheck.out

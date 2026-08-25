@@ -1,8 +1,8 @@
 #!/bin/sh
-# sundial.sh — recursion-prompt confidence meter (0–100) with color bands.
+# sundial.sh -- recursion-prompt confidence meter (0-100) with color bands.
 #
 # Checks living checkpoints against the Keeh (or SUNDIAL_PROMPT) recursion
-# printout — a few rounds back of seated truth vs what the prompt still says.
+# printout -- a few rounds back of seated truth vs what the prompt still says.
 # High = green (prompt matches living seats); low = red (prompt drifted).
 #
 #   sh tools/fixtures/sundial.sh
@@ -39,7 +39,7 @@ MISS $1"
   printf 'MISS %s\n' "$1"
 }
 
-# Living door (tree) — always required for a healthy pier
+# Living door (tree) -- always required for a healthy pier
 if test -f counsel/date/20260728/20260728-030310_the-keeh-season-quint-charter.md; then
   ok "live: Keeh quint charter"
 else
@@ -53,7 +53,7 @@ if test -f gratitude/hyundai.md; then ok "live: Hyundai gratitude"; else miss "l
 if test -f gratitude/helen-atthowe.md; then ok "live: Helen Atthowe gratitude"; else miss "live: Helen Atthowe gratitude"; fi
 if test -f docs-geode/README.md; then ok "live: docs-geode root"; else miss "live: docs-geode root"; fi
 
-# Prompt content — recent-round checkpoints the printout must still carry
+# Prompt content -- recent-round checkpoints the printout must still carry
 if grep -Eq 'outer.*paused|OUTER SCOPE \(paused' "$PROMPT"; then ok "prompt: outer paused"; else miss "prompt: outer paused"; fi
 if grep -Eq 'i6 complete / i7 next|inner=paused\(i6/i7\)' "$PROMPT"; then ok "prompt: inner i6/i7"; else miss "prompt: inner i6/i7"; fi
 if grep -Eq 'innermost.*u0|MUR Season held at u0|innermost=paused\(u0\)' "$PROMPT"; then ok "prompt: innermost u0"; else miss "prompt: innermost u0"; fi
@@ -81,7 +81,7 @@ fi
 score=$((pass * 100 / total))
 diff=$((total - pass))
 
-# Bands: low red · orange nearer red · yellow nearer green · high green
+# Bands: low red - orange nearer red - yellow nearer green - high green
 band=red
 if [ "$score" -ge 75 ]; then
   band=green

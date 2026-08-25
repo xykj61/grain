@@ -1,8 +1,8 @@
-# tools/gen/season/wayland_study_ledger_witness.rish — Surface p4 · study pins present
+# tools/gen/season/wayland_study_ledger_witness.rish -- Surface p4 - study pins present
 #
 #   rishi/bin/rishi run tools/gen/season/wayland_study_ledger_witness.rish
 #
-# Orientation only — does not open a Wayland window.
+# Orientation only -- does not open a Wayland window.
 
 say "wayland-study: Language EN — River · zig-wayland · libwayland pins."
 say "wayland-study: Style Radiant — study ledger; refuse vendor/link."

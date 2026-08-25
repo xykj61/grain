@@ -1,18 +1,18 @@
-# tools/al/ales_vibrato_witness.rish — the vibrato: the triangle-LFO modulated delay heard wet-only (ALES72).
+# tools/al/ales_vibrato_witness.rish -- the vibrato: the triangle-LFO modulated delay heard wet-only (ALES72).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES72.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES72.
 # Design read: active-designing/date/20260814/20260814-195637_fill-ales72-lotus-vibrato-wet-only-modulated-delay.md
-# Stands on: lotus/chorus.rye (ALES71 — the triangle-LFO driver `triangle_delay_at` this reuses); lotus/glide.rye (ALES70 — the
-# `glide_scale` fixed-point resolution and the interpolation read); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, max_clip, saturate).
+# Stands on: lotus/chorus.rye (ALES71 -- the triangle-LFO driver `triangle_delay_at` this reuses); lotus/glide.rye (ALES70 -- the
+# `glide_scale` fixed-point resolution and the interpolation read); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, max_clip, saturate).
 #
-# lotus/vibrato.rye is the wet-only sibling of the chorus — the same triangle-LFO modulated delay, heard ALONE. It invents no new arithmetic:
-# it reuses ALES71's triangle_delay_at driver and ALES70's fractional interpolation verbatim, and only changes what reaches the output —
+# lotus/vibrato.rye is the wet-only sibling of the chorus -- the same triangle-LFO modulated delay, heard ALONE. It invents no new arithmetic:
+# it reuses ALES71's triangle_delay_at driver and ALES70's fractional interpolation verbatim, and only changes what reaches the output --
 # where the chorus writes saturate(x[i] + delayed) the vibrato writes `delayed` alone (a pitch wobble, not a widened voice). The selftest
 # proves the family identity outright: the CHORUS IS THE DRY PLUS THE VIBRATO, C[i] == saturate(dry[i] + V[i]) sample-by-sample; a
 # hand-computed wet-only read matches exactly; a zero-depth vibrato is a fixed fractional delay heard alone (a pure echo voice, no dry); the
 # vibrato voice never exceeds the dry rail (a convex combination of two in-range samples is in range, so the write's saturate is a proven
 # no-op); a period not a positive multiple of four refuses BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip
-# BadDelay, an out-of-range span BadRange — there is no BadLevel, the vibrato carries no mix level. Purely local — no lookahead beyond the
+# BadDelay, an out-of-range span BadRange -- there is no BadLevel, the vibrato carries no mix level. Purely local -- no lookahead beyond the
 # snapshot read, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
@@ -38,7 +38,7 @@ say "ales-vibrato: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-vibrato' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-vibrato: selftest did not print the GREEN ales-vibrato line"
 
-# The vibrato's whole identity is that the chorus is the dry plus the vibrato — re-prove the ALES71 chorus still stands green beside it.
+# The vibrato's whole identity is that the chorus is the dry plus the vibrato -- re-prove the ALES71 chorus still stands green beside it.
 let chorus = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/chorus.rye -femit-bin=lotus/bin/chorus && lotus/bin/chorus selftest 2>&1 | grep -q 'GREEN ales-chorus' && echo yes"]
 assert (trim chorus.out) == "yes" else "ales-vibrato: the ALES71 chorus regressed under the vibrato"
 

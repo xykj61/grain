@@ -1,16 +1,16 @@
-# tools/al/ales_album_diff_witness.rish — what changed between two record versions: classify(before, after) sorts every track into
+# tools/al/ales_album_diff_witness.rish -- what changed between two record versions: classify(before, after) sorts every track into
 # added, removed, changed, or same (ALES232).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES232.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES232.
 # Design read: active-designing/date/20260815/20260815-144541_fill-ales232-lotus-album-diff.md
-# Idiom kin: lotus/library_diff.rye (ALES229, the classification one level up) · lotus/album_find.rye (ALES231, the resolve this
-# composes on) · lotus/album_manifest.rye (ALES224, the two opened records this compares). A read — no new frame, no new hash, no
+# Idiom kin: lotus/library_diff.rye (ALES229, the classification one level up) - lotus/album_find.rye (ALES231, the resolve this
+# composes on) - lotus/album_manifest.rye (ALES224, the two opened records this compares). A read -- no new frame, no new hash, no
 # error union.
 #
 # lotus/album_diff.rye classifies two opened album manifests, a before and an after. The selftest proves: an after-only track appears
 # once as added with its digest (the added law); a before-only track appears once as removed with its digest (the removed law); a name
 # in both with a moved digest appears once as changed carrying old and new, an unchanged name in no list and counted same (the changed
-# law); a record against itself yields all zeros and same_count equal to the track count (the identity law). A pure classification —
+# law); a record against itself yields all zeros and same_count equal to the track count (the identity law). A pure classification --
 # no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:

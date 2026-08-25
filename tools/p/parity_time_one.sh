@@ -5,7 +5,7 @@
 # Usage: sh tools/p/parity_time_one.sh <name> -- <command> [args...]
 # Env:   PARITY_COST_LOG (default tools/.cache/parity-cost/current.tsv)
 #        PARITY_COST_CHAPTER (default unknown)
-#        ZIG_* — seated to tools/.cache/zig/{local,global} when unset
+#        ZIG_* -- seated to tools/.cache/zig/{local,global} when unset
 set -eu
 if [ "$#" -lt 3 ]; then
   echo "parity_time_one: usage: $0 <name> -- <command> [args...]" >&2

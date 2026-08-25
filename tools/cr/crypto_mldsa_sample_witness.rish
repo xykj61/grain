@@ -1,20 +1,20 @@
-# tools/cr/crypto_mldsa_sample_witness.rish — the ML-DSA sampling rung: FIPS 204's RejNTTPoly (Algorithm 30, the uniform public matrix A from a
+# tools/cr/crypto_mldsa_sample_witness.rish -- the ML-DSA sampling rung: FIPS 204's RejNTTPoly (Algorithm 30, the uniform public matrix A from a
 # SHAKE128 stream), RejBoundedPoly (Algorithm 31, the small secret s1/s2 in [-eta, eta] from a SHAKE256 stream via CoefFromHalfByte), and
 # SampleInBall (Algorithm 29, the sparse challenge c with exactly tau coefficients of +/-1), authored in pure Rye as Season G's third post-quantum
 # SIGNATURE rung, standing on the GREEN base ring crypto/mldsa_ring.rye and the GREEN XOF crypto/shake.rye. The signature-side counterpart to
 # crypto/mlkem_sample.rye, with one new shape the KEM never needs: the weight-tau ball.
 #
-# Season: crypto — Season G's ML-DSA ladder, rung 3. Turns a seed into ring elements; it holds no key and runs no protocol.
+# Season: crypto -- Season G's ML-DSA ladder, rung 3. Turns a seed into ring elements; it holds no key and runs no protocol.
 # Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder). Rye-first spine:
 # active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the FIPS 204 algorithms and constants (q = 8380417, eta 2/4, tau 39/49/60, CoefFromThreeBytes/CoefFromHalfByte) are the public NIST
 # standard's own; the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# crypto/mldsa_sample.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/mlkem_sample.rye stood on: RejNTTPoly
+# crypto/mldsa_sample.rye proves itself by SELF-CONSISTENCY with no external dependency -- the pattern crypto/mlkem_sample.rye stood on: RejNTTPoly
 # matches a structurally independent 24-bit bit-reader over the same GREEN SHAKE128 stream byte-for-byte across 24 seeds (each draw canonical and
 # spanning a wide slice of [0, q)); RejBoundedPoly carries the CoefFromHalfByte known-answers, the centered range [-eta, eta] at both eta, and
 # determinism; and the decisive one, SampleInBall produces exactly tau nonzero coefficients each +/-1 (Hamming weight tau), deterministic, across
-# all three tau. Purely local — no key, no network, no funds, no real device.
+# all three tau. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_mldsa_sample_witness.rish

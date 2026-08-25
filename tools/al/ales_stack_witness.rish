@@ -1,16 +1,16 @@
-# tools/al/ales_stack_witness.rish — a three-band tone stack: bass, mid, and treble from two one-pole splits (ALES42).
+# tools/al/ales_stack_witness.rish -- a three-band tone stack: bass, mid, and treble from two one-pole splits (ALES42).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES42.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES42.
 # Design read: active-designing/date/20260814/20260814-162200_fill-ales42-lotus-tone-stack.md
-# Stands on: lotus/shelf.rye (ALES41 — the two-band scale-and-clamp), lotus/tone.rye (ALES40 — the low-pass/high-pass split),
-# and lotus/timeline.rye (ALES2 — the Clip and saturate).
+# Stands on: lotus/shelf.rye (ALES41 -- the two-band scale-and-clamp), lotus/tone.rye (ALES40 -- the low-pass/high-pass split),
+# and lotus/timeline.rye (ALES2 -- the Clip and saturate).
 #
-# lotus/stack.rye widens ALES41's two knobs to three — bass, mid, and treble — with the mid band as the exact residual
+# lotus/stack.rye widens ALES41's two knobs to three -- bass, mid, and treble -- with the mid band as the exact residual
 # M = x − L − H, so unity on all three reconstructs the input by construction. The selftest proves: silence stays silence;
 # unity on all three bands is the identity (the bands reconstruct the input); bass scales direct current while mid and treble
 # leave it untouched (the knobs are orthogonal at direct current); a boost SATURATES rather than wraps (scale in the wide
-# domain, clamp once — ALES8's fader lesson via ALES41); an illegal crossover refuses BadCoeff, a zero band denominator
-# BadGain, an out-of-range span BadRange leaving the clip untouched. Purely local — no network, no keys, no funds, no real
+# domain, clamp once -- ALES8's fader lesson via ALES41); an illegal crossover refuses BadCoeff, a zero band denominator
+# BadGain, an out-of-range span BadRange leaving the clip untouched. Purely local -- no network, no keys, no funds, no real
 # device, no real sample rate.
 #
 # Run from the repository root:

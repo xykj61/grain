@@ -1,4 +1,4 @@
-# tube1_admission_witness.rish — TUBE1: admit iff manifest caps match a grant.
+# tube1_admission_witness.rish -- TUBE1: admit iff manifest caps match a grant.
 #
 # Pool's door re-aimed at a TUBE0 Manifest. Device-free; composes landed
 # tube_manifest.rye + pool_host_seam.rye. See linengrow/tube1_admission.rye.

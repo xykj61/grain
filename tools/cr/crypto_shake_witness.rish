@@ -1,11 +1,11 @@
-# tools/cr/crypto_shake_witness.rish — SHAKE128 and SHAKE256, the SHA-3 extendable-output functions, authored in pure Rye as a composition
+# tools/cr/crypto_shake_witness.rish -- SHAKE128 and SHAKE256, the SHA-3 extendable-output functions, authored in pure Rye as a composition
 # over the GREEN Keccak-f[1600] sponge in crypto/sha3.rye: the same permutation and pad10*1 rule, the 0x1f domain delimiter, and a squeeze
 # that walks across as many rate-sized blocks as the output needs, proven against the canonical SHAKE known-answers and Zig's independent
-# std.crypto Shake128/Shake256 across both the absorb and the squeeze block edges (Season G · Cryptography).
+# std.crypto Shake128/Shake256 across both the absorb and the squeeze block edges (Season G - Cryptography).
 #
-# Season: crypto — Season G's extendable-output stone, beside crypto/sha3.rye and crypto/keccak256.rye. This rung authors NO new
-# cryptography: it composes one already-GREEN stone — the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202
-# and std.crypto — passing it the 0x1f SHAKE delimiter and asking for an arbitrary output length. The decisive extension it earns from the
+# Season: crypto -- Season G's extendable-output stone, beside crypto/sha3.rye and crypto/keccak256.rye. This rung authors NO new
+# cryptography: it composes one already-GREEN stone -- the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202
+# and std.crypto -- passing it the 0x1f SHAKE delimiter and asking for an arbitrary output length. The decisive extension it earns from the
 # sibling is the sponge's generality: the squeeze now emits rate bytes, permutes, and reads again, so multi-block output is proven, not just
 # the first block. That generality opens SHA3-224/384, cSHAKE, KMAC, and the post-quantum XOFs (SHAKE256 inside Ed448 and SPHINCS+, SHAKE128
 # seeding ML-KEM and ML-DSA matrices) as later rungs.
@@ -14,10 +14,10 @@
 # sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #
 # crypto/shake.rye calls the proven sponge with rate 168 (SHAKE128) or 136 (SHAKE256) and the 0x1f delimiter, squeezing out.len bytes across
-# as many permute-and-read blocks as the output spans. Parity is proven at selftest against the canonical SHAKE128("")→32B and
-# SHAKE256("")→64B known-answers, and Zig's own std.crypto Shake128/Shake256 byte-for-byte across the absorb padding edges (rate-1, exact-rate,
+# as many permute-and-read blocks as the output spans. Parity is proven at selftest against the canonical SHAKE128("")->32B and
+# SHAKE256("")->64B known-answers, and Zig's own std.crypto Shake128/Shake256 byte-for-byte across the absorb padding edges (rate-1, exact-rate,
 # rate+1) AND the squeeze block edges (outputs of 504 and 408 bytes span three rate blocks). The XOF prefix property holds, and the bounds
-# refuse an over-long message and a zero-or-oversize output before any work. Purely local — no key, no network, no funds, no real device.
+# refuse an over-long message and a zero-or-oversize output before any work. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_shake_witness.rish

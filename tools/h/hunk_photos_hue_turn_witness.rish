@@ -1,13 +1,13 @@
-# tools/h/hunk_photos_hue_turn_witness.rish — the Photos app turns hue on metal (HUNK23).
+# tools/h/hunk_photos_hue_turn_witness.rish -- the Photos app turns hue on metal (HUNK23).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK23.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK23.
 # Design read: active-designing/date/20260813/20260813-172645_hunk-photos-hue-turn-exploration.md (the Photos-app journey).
 # Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos hue slider (concept only, siloed).
 #
-# HUNK21 gave the Photos app its color (saturation) and named a hue rotation the next horizon — harder to bound
+# HUNK21 gave the Photos app its color (saturation) and named a hue rotation the next horizon -- harder to bound
 # cleanly in integer math. This rung lands the color wheel's three exactly-integer stops: `image/photos.rye`
-# `hue_turn` rotates every pixel's hue by exactly 120·thirds degrees as a cyclic permutation of the three color
-# channels — no trig, no rounding, no clamp. The selftest proves a zero turn recovers the source byte-for-byte,
+# `hue_turn` rotates every pixel's hue by exactly 120-thirds degrees as a cyclic permutation of the three color
+# channels -- no trig, no rounding, no clamp. The selftest proves a zero turn recovers the source byte-for-byte,
 # three turns compose to the identity, turn(2) equals two single thirds, a pure red walks red->green->blue->red
 # (the +120 direction), every pixel keeps its max and min channel (HSV value and chroma preserved), an
 # already-gray pixel is a fixed point at every turn, alpha passes through untouched, the hue-turned image still

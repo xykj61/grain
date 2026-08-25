@@ -1,16 +1,16 @@
-# tools/al/ales_smooth_trim_witness.rish — the smoothed silence trim: smooth the runs through ALES101 before stripping the silence (ALES102).
+# tools/al/ales_smooth_trim_witness.rish -- the smoothed silence trim: smooth the runs through ALES101 before stripping the silence (ALES102).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES102.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES102.
 # Design read: active-designing/date/20260815/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
-# Stands on: lotus/trim_silence.rye (ALES96 — the silence stripper, the min-zero twin), lotus/smooth_runs.rye (ALES101 — the run-length smoother), lotus/segment.rye
-# (ALES95 — the segmenter), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES96 strips the RAW segmentation, which
-# flickers — a loud tick in a pause reads voiced and is KEPT, a quiet frame between words reads silent and is CUT; smoothing first relabels the short tick silent
+# Stands on: lotus/trim_silence.rye (ALES96 -- the silence stripper, the min-zero twin), lotus/smooth_runs.rye (ALES101 -- the run-length smoother), lotus/segment.rye
+# (ALES95 -- the segmenter), lotus/timeline.rye (ALES2 -- the Clip and cut), lotus/voiced.rye (ALES94 -- the .silent verdict). ALES96 strips the RAW segmentation, which
+# flickers -- a loud tick in a pause reads voiced and is KEPT, a quiet frame between words reads silent and is CUT; smoothing first relabels the short tick silent
 # (stripped) and the short gap voiced (kept). One knob turns a literal silence remover into a speech-aware one.
 #
 # lotus/smooth_trim.rye segments [0, clip.len), smooths the runs with min_run, then walks the SMOOTHED runs BACK TO FRONT and cuts every .silent run. The crux is four
 # laws. THE MIN-ZERO LAW: smooth_trim(min=0) equals ALES96's trim_silence byte for byte. THE CONCAT LAW: the result equals the hand-built concatenation of the non-silent
-# smoothed runs. THE DECLICK LAW: a short voiced tick buried in silence, at a min_run past the tick, is removed — strictly shorter than the raw trim. THE KEEP-GAP LAW: a
-# short silent gap between two words, at a min_run past the gap, is kept — strictly longer than the raw trim. The selftest proves all four, plus: an all-silent clip
+# smoothed runs. THE DECLICK LAW: a short voiced tick buried in silence, at a min_run past the tick, is removed -- strictly shorter than the raw trim. THE KEEP-GAP LAW: a
+# short silent gap between two words, at a min_run past the gap, is kept -- strictly longer than the raw trim. The selftest proves all four, plus: an all-silent clip
 # empties, a no-silent clip is unchanged, and an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.
 #
 # Run from the repository root:

@@ -1,15 +1,15 @@
-# tools/h/hunk_scroll_view_witness.rish — the scrollable surface: the page a keeper sees, painted beside a live scroll
+# tools/h/hunk_scroll_view_witness.rish -- the scrollable surface: the page a keeper sees, painted beside a live scroll
 # bar, on one glass grid (HUNK42).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK42.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK42.
 # Design read: active-designing/date/20260813/20260813-194607_hunk-scroll-view-exploration.md.
-# Teacher, thanked clean-room: the scrollable list surface of any reader — the visible rows and a scroll thumb beside
+# Teacher, thanked clean-room: the scrollable list surface of any reader -- the visible rows and a scroll thumb beside
 # them, drawn together so a keeper reads their place at a glance (concept only, siloed).
 #
 # HUNK40 gave a keeper a ScrollCursor (a live viewport offset) and HUNK41 a ScrollBar (a pure thumb geometry). This
 # rung paints them on one Skate grid: `pond/apps/preset_scroll_view.rye` `scroll_view` renders the cursor's current
 # page into the left region and paints the scroll bar down a reserved right-hand column, one bar cell per viewport row,
-# so a keeper SEES the books they are on and the thumb marking their place at once. A pure composition — no storage,
+# so a keeper SEES the books they are on and the thumb marking their place at once. A pure composition -- no storage,
 # no new gesture, no new render primitive. The selftest scrolls a two-row viewport through a real five-book library
 # and proves the thumb walks top to bottom beside the page, the bar rasterizes genuinely lit, the view is pure, a
 # fitting library fills the whole bar, and the BadBar / EmptyView refusals fire. No network, no key, no funds.

@@ -1,17 +1,17 @@
-# tools/al/ales_pan_witness.rish — pan: one mono track placed across a stereo field, opening the second channel (ALES10).
+# tools/al/ales_pan_witness.rish -- pan: one mono track placed across a stereo field, opening the second channel (ALES10).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES10.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES10.
 # Design read: active-designing/20260814-fill-ales10-lotus-pan-stereo.md
-# Stands on: lotus/fader.rye (ALES8) — a panned track is TWO faded contributions, so each channel is fader.render run once
-# over a pan-folded effective fader; lotus/track.rye (ALES6) — the Session the pans align with; lotus/timeline.rye (ALES2) —
+# Stands on: lotus/fader.rye (ALES8) -- a panned track is TWO faded contributions, so each channel is fader.render run once
+# over a pan-folded effective fader; lotus/track.rye (ALES6) -- the Session the pans align with; lotus/timeline.rye (ALES2) --
 # the Clip and the one true saturation, reached through ALES8.
 #
-# lotus/pan.rye opens the second channel with the simplest honest law — a LINEAR pan, a track's level split between left and
+# lotus/pan.rye opens the second channel with the simplest honest law -- a LINEAR pan, a track's level split between left and
 # right by weights that sum to one. Pan is a pure fraction fold into the fader, so the only sum in the suite stays ALES8's,
 # run once per channel. Its defining invariant is that adding the two channels reproduces the mono mix EXACTLY, for any pan
 # position. The selftest proves: center pan splits equally; hard left/right route wholly; pan composes with the fader; two
 # tracks panned opposite separate; left + right == the mono mix for any pan (in-range); make refuses BadGain/BadRange; a
-# track past the master bound forwards ClipFull. Purely local — no network, no keys, no funds, no real device.
+# track past the master bound forwards ClipFull. Purely local -- no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_pan_witness.rish

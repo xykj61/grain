@@ -1,20 +1,20 @@
-# tools/cr/crypto_hybrid_identity_witness.rish — the HYBRID identity: one backup phrase grown into all THREE keys the transition years want — the classical
+# tools/cr/crypto_hybrid_identity_witness.rish -- the HYBRID identity: one backup phrase grown into all THREE keys the transition years want -- the classical
 # Ed25519 signing key AND the two lattice keys a post-quantum identity carries (an ML-DSA signing key and an ML-KEM key-agreement key), authored in pure
 # Rye. The safe-by-default identity the dual-key discovery named: during the years between "the curves are fine" and "a quantum computer broke the
 # curves," the strongest identity carries BOTH families, so a break in either one still leaves the identity standing on the other. It composes only GREEN
 # rungs (crypto/kumara_identity.rye the classical half, crypto/kumara_pq_identity.rye the post-quantum half), authoring no new cryptography (Season G).
 #
-# Season: crypto — the same mnemonic grows all three keys by two independent derivations (the classical through BIP-39 + SLIP-0010, the lattice keys
+# Season: crypto -- the same mnemonic grows all three keys by two independent derivations (the classical through BIP-39 + SLIP-0010, the lattice keys
 # through BIP-39 + HKDF domain separation), so a keeper reaches three independent keys with one remembered phrase. The hybrid signature carries both an
 # Ed25519 and an ML-DSA signature and verifies iff BOTH verify, so a forger must break both families, not one.
-# Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md ("hybrid, not either-or, is the safe default … a break in either
+# Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md ("hybrid, not either-or, is the safe default ... a break in either
 # family still leaves the identity standing on the other"). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS 203/204 are public standards; the composition
 # is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #
 # crypto/hybrid_identity.rye is proven at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): no drift
 # (the classical half equals kumara_identity's own from_mnemonic byte-for-byte, the post-quantum half equals kumara_pq_identity's own), three distinct
 # keys (Ed25519 public, ML-DSA public, ML-KEM ek pairwise different), the hybrid signature requiring BOTH halves (a signature with only one family valid
-# is rejected — a forger who breaks one family alone is caught), plus determinism and distinctness. Each half is proven one rung down. Purely local —
+# is rejected -- a forger who breaks one family alone is caught), plus determinism and distinctness. Each half is proven one rung down. Purely local --
 # no key held, no network, no funds, no real device.
 #
 # Run from the repository root:

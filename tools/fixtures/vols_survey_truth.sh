@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_truth.sh — VOLS survey, the independent measure (r4's second tool).
+# tools/fixtures/vols_survey_truth.sh -- VOLS survey, the independent measure (r4's second tool).
 #
 #   sh tools/fixtures/vols_survey_truth.sh <root> <guardlist>
 #
 # Computes the survey totals a SECOND way, so the seated ledger can be cross-checked
-# against a genuinely different traversal — two tools, one answer, the read-true crux of
+# against a genuinely different traversal -- two tools, one answer, the read-true crux of
 # Journey 13's closing round. Where vols_classify_scan.sh walks with a find-loop over the
 # census, this lists the bare-ordinal files with grep -rl (a different traversal) and
 # classifies each by basename, computing prose_gaps as sites minus handles minus guarded.
@@ -26,7 +26,7 @@ if [ ! -f "$guardlist" ]; then echo "detail: absent guardlist ($guardlist)"; ech
 
 ordinal='(?<![-\w])lap [0-9]+(?![-\w])'
 
-# grep -rl: list the files carrying a bare ordinal — a different traversal from the census.
+# grep -rl: list the files carrying a bare ordinal -- a different traversal from the census.
 site_files=$(grep -rlPi \
     --include='*.rye' --include='*.rish' --include='*.glow' --include='README.md' \
     --exclude-dir=session-logs --exclude-dir=archive --exclude-dir=counsel \

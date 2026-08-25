@@ -1,18 +1,18 @@
-# tools/al/ales_album_manifest_witness.rish — a whole record's own content address, sealed: a `format lotus-album-v1` record lists a
-# collection's track count and per-track (name · bundle Sha256), sealed verify-before-trust, one level up from the render manifest
+# tools/al/ales_album_manifest_witness.rish -- a whole record's own content address, sealed: a `format lotus-album-v1` record lists a
+# collection's track count and per-track (name - bundle Sha256), sealed verify-before-trust, one level up from the render manifest
 # (ALES224).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES224.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES224.
 # Design read: active-designing/date/20260815/20260815-140211_fill-ales224-lotus-album-manifest.md
-# Idiom kin: lotus/render_manifest.rye (ALES221, the per-render manifest this is one level up from) · lotus/render_album.rye
-# (ALES223, the TrackIn catalog this names) · lotus/seal.rye (ALES38, the verify-before-trust frame reused whole). No new hash.
+# Idiom kin: lotus/render_manifest.rye (ALES221, the per-render manifest this is one level up from) - lotus/render_album.rye
+# (ALES223, the TrackIn catalog this names) - lotus/seal.rye (ALES38, the verify-before-trust frame reused whole). No new hash.
 #
 # lotus/album_manifest.rye seals an album's content address and confirms a collection in hand against it. The selftest proves:
 # seal then open recovers the count and every (name, digest) in order and verify_album accepts the exact tracks (the content-address
 # law); a flipped bundle byte refuses TrackDigestMismatch, a swapped name TrackNameMismatch, a dropped track CountMismatch (the
 # tamper law); a tampered body refuses DigestMismatch and a wrong header BadRecord (the seal law); a spaced name refuses NameTooLong
 # and a malformed body BadAlbumManifest (the grammar law); a too-small buffer refuses Overflow (the atomic law). Content-addressing,
-# not a signature — no real file, no DAC, no network, no keys, no funds, no real device.
+# not a signature -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_album_manifest_witness.rish

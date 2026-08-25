@@ -1,16 +1,16 @@
-# tools/d/dahl_j11_council_sky_witness.rish — Season 3 Journey 11 (Council skies), Rung 1.
+# tools/d/dahl_j11_council_sky_witness.rish -- Season 3 Journey 11 (Council skies), Rung 1.
 #
-# Season 3, Commons — a community shapes its own deliberation. Journey 10 (Membership) drew quorum at a
+# Season 3, Commons -- a community shapes its own deliberation. Journey 10 (Membership) drew quorum at a
 # threshold a caller chooses, over a flat roster. Journey 11 draws the load-bearing move the
-# loadable-topologies brief named: a council does not merely pick a threshold, it loads a whole shape — a
-# sky — the way a console loads a game, and the sky's own odd fractal gives the council its tie-free
-# quorum and its roles. pond/apps/council_sky.rye fixes the crux — an odd sky gives a tie-free quorum and
+# loadable-topologies brief named: a council does not merely pick a threshold, it loads a whole shape -- a
+# sky -- the way a console loads a game, and the sky's own odd fractal gives the council its tie-free
+# quorum and its roles. pond/apps/council_sky.rye fixes the crux -- an odd sky gives a tie-free quorum and
 # a complete triad. A Council loads a Sky (comlink/topology.rye) and seats a body at one of the sky's own
 # fractal levels; the council sky's four counts are 3 * 9 * 15 * 27, every one odd, so the majority quorum
 # can never tie. The compass sky's even d60 refuses (EvenCouncil). Each seat wears a modality role
 # (initiator, sustainer, adapter) by seat mod 3, so a triad is complete. A non-seat vote (NotSeated), a
 # doubled ballot (AlreadyVoted), and a size the sky does not name (NotAFractalLevel) each refuse. Pure
-# state machine — no signing yet (r2 binds each vote to a settled Kumara identity). Facts only; no
+# state machine -- no signing yet (r2 binds each vote to a settled Kumara identity). Facts only; no
 # network, no key, no real identity (serve reaches the custody gate); demo seats only.
 #
 # Run from the repository root:

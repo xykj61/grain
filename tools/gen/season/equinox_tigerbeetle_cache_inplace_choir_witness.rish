@@ -1,8 +1,8 @@
-# tools/gen/season/equinox_tigerbeetle_cache_inplace_choir_witness.rish — e45 → almanac.
+# tools/gen/season/equinox_tigerbeetle_cache_inplace_choir_witness.rish -- e45 -> almanac.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_cache_inplace_choir_witness.rish
 #
-# Leaf welcome + refuse only — no nested elder choirs.
+# Leaf welcome + refuse only -- no nested elder choirs.
 
 say "equinox-tb-cache-inplace-choir: Language EN — cache invalidation; refuse an absent clone."
 say "equinox-tb-cache-inplace-choir: Style Radiant — welcome and refuse share one seat."

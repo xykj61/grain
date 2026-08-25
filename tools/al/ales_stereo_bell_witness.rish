@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_bell_witness.rish — stereo_bell: the parametric bell (peaking EQ) carried into stereo, the same two cutoffs and one gain on both channels — the fifth rung of the stereo EQ / filter class (ALES174).
+# tools/al/ales_stereo_bell_witness.rish -- stereo_bell: the parametric bell (peaking EQ) carried into stereo, the same two cutoffs and one gain on both channels -- the fifth rung of the stereo EQ / filter class (ALES174).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES174.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES174.
 # Design read: active-designing/date/20260815/20260815-080752_fill-ales174-lotus-stereo-bell.md
-# Stands on: lotus/bell.rye (ALES48 — the mono parametric bell run once per channel, its BellError reused whole), lotus/notch.rye (ALES47 — the zero-gain equality target, carried into stereo at ALES173), lotus/tone.rye (ALES40 —
-# the low-pass/high-pass edges and the precheck sharing one validation), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate the bell's sum reuses).
+# Stands on: lotus/bell.rye (ALES48 -- the mono parametric bell run once per channel, its BellError reused whole), lotus/notch.rye (ALES47 -- the zero-gain equality target, carried into stereo at ALES173), lotus/tone.rye (ALES40 --
+# the low-pass/high-pass edges and the precheck sharing one validation), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip and the one true saturate the bell's sum reuses).
 #
-# lotus/stereo_bell.rye turns a named band on a stereo master: it runs ALES48's proven mono bell on BOTH channels with the SAME two cutoffs and gain — keep the low and high bands at unity and scale the mid band, the exact
+# lotus/stereo_bell.rye turns a named band on a stereo master: it runs ALES48's proven mono bell on BOTH channels with the SAME two cutoffs and gain -- keep the low and high bands at unity and scale the mid band, the exact
 # residual M = x − L − H, by the gain, writing the sum saturated once. Unity gain reconstructs the input on both; zero gain is exactly the stereo notch on both; a settled constant survives on both (the mid band is zero at direct
 # current, so the bell turns only the middle). A bell's cutoffs and gain are fractions the caller names, not scalars measured across the field, so the same parameters on each channel preserve the stereo image for free; each
 # channel bells its own content, and like the shelf and notch and unlike the band-pass there is no carried state to thread. It validates the two cutoffs, the gain denominator, and the span once against the shared length before

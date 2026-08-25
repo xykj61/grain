@@ -1,4 +1,4 @@
-# inference_assist_view_lap8.rish — Assist view: BS equity on the assist fold.
+# inference_assist_view_lap8.rish -- Assist view: BS equity on the assist fold.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 8 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

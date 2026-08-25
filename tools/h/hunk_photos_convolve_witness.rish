@@ -1,11 +1,11 @@
-# tools/h/hunk_photos_convolve_witness.rish — the Photos app convolves: blur and sharpen on metal (HUNK25).
+# tools/h/hunk_photos_convolve_witness.rish -- the Photos app convolves: blur and sharpen on metal (HUNK25).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK25.
-# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Open Image - rung HUNK25.
+# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A - the open image quest).
 # Teacher, thanked clean-room: the 3x3 convolution kernel every photo app carries for blur and sharpen (concept only, siloed).
 #
 # HUNK9/22/24 gave the module its resamplers; HUNK21/23 its color turns. This rung lands the FILTER primitive the
-# whole family stands on: `image/photos.rye` `convolve` is a pure bounded 3x3 kernel over the decoded RGBA grid —
+# whole family stands on: `image/photos.rye` `convolve` is a pure bounded 3x3 kernel over the decoded RGBA grid --
 # each output color channel the kernel-weighted sum of the pixel's 3x3 neighborhood over a divisor plus a bias,
 # clamped into 0..255, edges extended by clamping so no read wraps. `blur` (nine ones over nine) and `sharpen`
 # (a five-neighborhood high-pass) are each one kernel over it. The selftest proves the identity kernel is the
@@ -46,7 +46,7 @@ assert selftest.out contains "blurred image re-encodes and round-trips" else "hu
 
 assert selftest.out contains "an empty image, a zero divisor, and an over-ceiling weight refused by name" else "hunk-photos-convolve: the EmptyImage and BadKernel refusals were not proven"
 
-# The earlier Photos rungs share the binary — GREEN holds beneath.
+# The earlier Photos rungs share the binary -- GREEN holds beneath.
 assert selftest.out contains "GREEN image-photos:" else "hunk-photos-convolve: HUNK3 crop selftest no longer GREEN beneath"
 assert selftest.out contains "GREEN image-photos-bilinear:" else "hunk-photos-convolve: HUNK24 bilinear selftest no longer GREEN beneath"
 assert selftest.out contains "GREEN image-photos-hue-turn:" else "hunk-photos-convolve: HUNK23 hue-turn selftest no longer GREEN beneath"

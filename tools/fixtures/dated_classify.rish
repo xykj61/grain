@@ -1,7 +1,7 @@
-# dated_classify.rish — shared dated/live classifier, one definition for every roof.
+# dated_classify.rish -- shared dated/live classifier, one definition for every roof.
 #
-# The living mutant of the elder tools/fixtures/dated_classify.py (Python → Rishi molt,
-# seated 20260809.030635). Rishi owns the interface — arg dispatch and output — over a
+# The living mutant of the elder tools/fixtures/dated_classify.py (Python -> Rishi molt,
+# seated 20260809.030635). Rishi owns the interface -- arg dispatch and output -- over a
 # POSIX-sh regex seam (dated_classify_seam.sh) that holds the two ripgrep patterns Rishi
 # has no native regex for, exactly as the Python delegated to `re`. One definition, one
 # caller, so no two roofs drift (REDS 40). Removing Python matters here: python3 is not
@@ -21,15 +21,15 @@ assert argc >= 1 else "usage: dated_classify.rish classify <path> | census"
 
 let cmd = args[0]
 
-# `classify <path>` — print 'dated' or 'live' for one tracked path. The seam prints a
+# `classify <path>` -- print 'dated' or 'live' for one tracked path. The seam prints a
 # usage error and exits non-zero when the path is missing, so no nested guard is needed.
 if cmd == "classify" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "classify" args[1]]).out
 
-# `census` — print the tree-wide tally and the definition, matching the elder .py lines.
+# `census` -- print the tree-wide tally and the definition, matching the elder .py lines.
 if cmd == "census" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "census"]).out
 
-# `health <live> <dated>` — the per-room fascia-health report over the two planted controls.
+# `health <live> <dated>` -- the per-room fascia-health report over the two planted controls.
 if cmd == "health" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "health" args[1] args[2]]).out
 
-# `shed <cited> <orphan> <citer>` — the orphan-floor census behind the C1/C2 controls.
+# `shed <cited> <orphan> <citer>` -- the orphan-floor census behind the C1/C2 controls.
 if cmd == "shed" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "shed" args[1] args[2] args[3]]).out

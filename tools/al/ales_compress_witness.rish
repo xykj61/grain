@@ -1,15 +1,15 @@
-# tools/al/ales_compress_witness.rish — a compressor: the limiter's ceiling made gentle (ALES50).
+# tools/al/ales_compress_witness.rish -- a compressor: the limiter's ceiling made gentle (ALES50).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES50.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES50.
 # Design read: active-designing/date/20260814/20260814-171338_fill-ales50-lotus-compressor.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/limit.rye (ALES49 — the
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, the range law shape); lotus/limit.rye (ALES49 -- the
 # brickwall this softens, re-proven below).
 #
 # lotus/compress.rye passes a sample within the threshold byte-for-byte and divides an above-threshold sample's excess by the
 # ratio. The selftest proves: silence stays silence; below the threshold is the identity; unit ratio is the identity everywhere;
 # a loud signal has its peaks reduced with the sign held and the magnitude never expanding; a higher ratio compresses at least as
 # hard and a ratio far past the excess seats a peak at the threshold (the limiter within); a zero threshold refuses BadThreshold,
-# a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange. Purely local — no network, no keys, no funds,
+# a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange. Purely local -- no network, no keys, no funds,
 # no real device, no sample rate.
 #
 # Run from the repository root:
@@ -35,7 +35,7 @@ say "ales-compress: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-compress' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-compress: selftest did not print the GREEN ales-compress line"
 
-# The compressor softens the ceiling the limiter proved — re-prove ALES49's limiter still stands green, so the two rest together.
+# The compressor softens the ceiling the limiter proved -- re-prove ALES49's limiter still stands green, so the two rest together.
 let limit = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
 assert (trim limit.out) == "yes" else "ales-compress: the ALES49 peak-limiter witness regressed under the compressor"
 

@@ -1,19 +1,19 @@
-# tools/al/ales_reverb_tone_witness.rish — the tone: the reverb's DARKNESS knob, the high-cut on the reverberant tail (ALES198).
+# tools/al/ales_reverb_tone_witness.rish -- the tone: the reverb's DARKNESS knob, the high-cut on the reverberant tail (ALES198).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES198.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES198.
 # Design read: active-designing/date/20260815/20260815-104206_fill-ales198-lotus-reverb-tone.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/tone.rye (ALES40 — the one-pole low-pass and
-# its precheck, the darkening applied to the wet span); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 —
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged); lotus/tone.rye (ALES40 -- the one-pole low-pass and
+# its precheck, the darkening applied to the wet span); lotus/clock.rye (ALES5 -- the sample clock, converting the span); lotus/timeline.rye (ALES2 --
 # the Clip, its max_clip bounding the span).
 #
-# lotus/reverb_tone.rye gives the reverb its DARKNESS knob — the high-cut on the reverberant tail, what makes the room absorb highs the way a real
+# lotus/reverb_tone.rye gives the reverb its DARKNESS knob -- the high-cut on the reverberant tail, what makes the room absorb highs the way a real
 # space does (the highs die first, the low wash lingers). It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, then rolls
 # the treble off the wet with ALES40's proven one-pole low-pass: tone_num == tone_den is the identity (a full-open tone), a smaller fraction darker.
-# It invents no new audio arithmetic — every darkened sample is written by a proven stage — and it prechecks the tone coefficient BEFORE the wet is
+# It invents no new audio arithmetic -- every darkened sample is written by a proven stage -- and it prechecks the tone coefficient BEFORE the wet is
 # written, so a bad tone leaves the clip DRY (atomic). The selftest proves: at tone_num == tone_den the span equals reverb_preset byte for byte; for
 # a sub-unity coefficient reverb_tone equals reverb_preset then tone.low_pass byte for byte and the darkened tail differs from the un-darkened wet;
 # the darkened tail's high-frequency roughness is strictly less than the wet's; silence stays silence; and the faults forward atomic (an illegal
-# tone coefficient BadTone with the clip still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one clip, a
+# tone coefficient BadTone with the clip still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local -- one clip, a
 # validated clock; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -39,11 +39,11 @@ say "ales-reverb-tone: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-tone' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-tone: selftest did not print the GREEN ales-reverb-tone line"
 
-# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+# This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-tone: the ALES190 named-room preset regressed under its tone"
 
-# And re-prove ALES40's one-pole low-pass still stands green — the darkening it applies to the wet.
+# And re-prove ALES40's one-pole low-pass still stands green -- the darkening it applies to the wet.
 let toneg = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone.rye -femit-bin=lotus/bin/tone && lotus/bin/tone selftest 2>&1 | grep -q 'GREEN ales-tone' && echo yes"]
 assert (trim toneg.out) == "yes" else "ales-reverb-tone: the ALES40 one-pole low-pass regressed under its reverb tone"
 

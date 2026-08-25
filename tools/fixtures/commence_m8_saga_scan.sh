@@ -1,5 +1,5 @@
 #!/bin/sh
-# Commence M8 saga scan — control gate, then measured commence-arc saga.
+# Commence M8 saga scan -- control gate, then measured commence-arc saga.
 # Exit 0 only when control reads and every saga limb honors.
 # No backtick characters in patterns.
 #
@@ -51,7 +51,7 @@ rg -q 'Season Close Narratives' "$SAGA_HOME" || {
 echo "saga_home=honored"
 
 # --- commence arc waymark chain (ordered saga beats) ---
-# beat label · waymark path
+# beat label - waymark path
 BEATS_OK=0
 BEATS_WANT=8
 while IFS='|' read -r label path; do
@@ -86,7 +86,7 @@ fi
 echo "saga_chain=honored"
 echo "saga_beats=${BEATS_OK}"
 
-# --- almanac seats 97-102 · ch7 at least 6/16 ---
+# --- almanac seats 97-102 - ch7 at least 6/16 ---
 if ! test -f "$ALMANAC"; then
   echo "saga_almanac=failed"
   echo "verdict=absent"
@@ -153,7 +153,7 @@ if test "$CACHE" -ne 0 || test "$MD" -lt 1; then
 fi
 echo "inventory=honored"
 
-# Ordered saga line (measured presence only — not invention)
+# Ordered saga line (measured presence only -- not invention)
 echo "saga_story=M1-census>M2-rune>e93-ep044>e94-ep045>M4b-control>M5-run>M6-see>M7-weave"
 echo "m8_saga=ok"
 echo "verdict=ok"

@@ -1,15 +1,15 @@
-# tools/al/ales_stereo_hold_env_witness.rish — stereo_hold_env: the held envelope follower carried into stereo, one linked detector given the hold stage (ALES165).
+# tools/al/ales_stereo_hold_env_witness.rish -- stereo_hold_env: the held envelope follower carried into stereo, one linked detector given the hold stage (ALES165).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES165.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES165.
 # Design read: active-designing/date/20260815/20260815-071625_fill-ales165-lotus-stereo-hold-env.md
-# Stands on: lotus/stereo_envelope.rye (ALES160 — the linked follower, its plain form the zero-hold limit re-proven beside it, its linked-peak key shared whole), lotus/hold_env.rye (ALES56 — the mono held follower, its
-# env_step_hold reasoning carried over the linked key, its HoldEnvError reused whole and its output the left-always-peak comparison), lotus/envelope.rye (ALES52 — the proven env_step and coeff_ok every held move delegates to),
-# lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).
+# Stands on: lotus/stereo_envelope.rye (ALES160 -- the linked follower, its plain form the zero-hold limit re-proven beside it, its linked-peak key shared whole), lotus/hold_env.rye (ALES56 -- the mono held follower, its
+# env_step_hold reasoning carried over the linked key, its HoldEnvError reused whole and its output the left-always-peak comparison), lotus/envelope.rye (ALES52 -- the proven env_step and coeff_ok every held move delegates to),
+# lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip, sample_max, max_clip).
 #
 # lotus/stereo_hold_env.rye follows a span of sample-PAIRS in a master by an attack, a release, and a hold, advancing one shared envelope with one shared hold countdown toward the linked peak max(|left|, |right|) clamped to the
-# rail: attack while rising and rearming the shared hold, the linked peak pinned while the countdown lasts, the release only once it expires — the one held value written into both channels so the detector is aligned across the
+# rail: attack while rising and rearming the shared hold, the linked peak pinned while the countdown lasts, the release only once it expires -- the one held value written into both channels so the detector is aligned across the
 # field. HoldEnvError (BadCoeff, BadHold, BadRange) reused whole; the fusion adds no fault. Values only, never a length. The crux is the linked held detector law (the shared held curve equal to ALES56's mono hold_follow of the
-# per-sample linked key byte for byte, both channels equal, the independent per-channel held follow differing), the zero-hold law (a hold of zero reducing to ALES160's plain linked follower byte for byte on both — the held
+# per-sample linked key byte for byte, both channels equal, the independent per-channel held follow differing), the zero-hold law (a hold of zero reducing to ALES160's plain linked follower byte for byte on both -- the held
 # rung's no-hold limit exactly the plain linked rung already proven), the hold-delays-release law (a larger shared hold pinning the linked peak longer), the hold-exact law (a linked peak pinned for precisely the hold then
 # released), the carry law (a span in two pieces, the split mid-hold, equal to the whole once on both, env and hold_left carrying), and the balance/silence/atomicity/degenerate law.
 #

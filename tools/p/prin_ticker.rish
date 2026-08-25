@@ -1,4 +1,4 @@
-# tools/p/prin_ticker.rish — accrete shim → tools/gen/season/prin_ticker.rish (Generator Season s4)
+# tools/p/prin_ticker.rish -- accrete shim -> tools/gen/season/prin_ticker.rish (Generator Season s4)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_ticker.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_ticker.rish" args[0]]
 if r.out != "" then say r.out

@@ -1,21 +1,21 @@
-# tools/cr/crypto_mlkem_sample_witness.rish — the ML-KEM sampling rung: FIPS 203 SampleNTT (the uniform rejection-sampler that draws a key's public
+# tools/cr/crypto_mlkem_sample_witness.rish -- the ML-KEM sampling rung: FIPS 203 SampleNTT (the uniform rejection-sampler that draws a key's public
 # matrix A from a SHAKE128 stream) and SamplePolyCBD (the centered-binomial sampler that draws the secret and error noise). This is the post-quantum
-# arc's third rung, standing on the GREEN base ring (crypto/mlkem_ring.rye) and the GREEN extendable-output function (crypto/shake.rye) — the step
-# that turns a short seed into ring elements, authored in pure Rye (Season G · Cryptography).
+# arc's third rung, standing on the GREEN base ring (crypto/mlkem_ring.rye) and the GREEN extendable-output function (crypto/shake.rye) -- the step
+# that turns a short seed into ring elements, authored in pure Rye (Season G - Cryptography).
 #
-# Season: crypto — Season G's third post-quantum stone, rung 3 of the ML-KEM ladder the pivot doc seats. This rung authors sampling only; it holds
+# Season: crypto -- Season G's third post-quantum stone, rung 3 of the ML-KEM ladder the pivot doc seats. This rung authors sampling only; it holds
 # no key and runs no protocol. Every ML-KEM key's matrix and every ciphertext's noise flow through exactly these two draws, and this witness proves
 # that flow correct and deterministic.
-# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 3 — SampleNTT and SamplePolyCBD driven by the GREEN
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 3 -- SampleNTT and SamplePolyCBD driven by the GREEN
 # shake.rye; the byte parity against Zig std.crypto arrives at the keygen rung that composes these draws).
 # Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the 12-bit rejection rule, the centered-binomial sums, and the eta parameters are the public NIST standard's own; the arithmetic is our
 # own Rye over our own GREEN SHAKE, never a copied line (.claude/rules/gratitude-licenses.md).
 #
-# crypto/mlkem_sample.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/mlkem_ring.rye and crypto/mlkem_encode.rye
+# crypto/mlkem_sample.rye proves itself by SELF-CONSISTENCY with no external dependency -- the pattern crypto/mlkem_ring.rye and crypto/mlkem_encode.rye
 # stood on: SampleNTT matches a structurally independent 12-bit bit-reader over the same GREEN SHAKE128 stream byte-for-byte, each draw canonical and
 # spanning a wide slice of [0, q); SamplePolyCBD carries the all-zeros and all-ones known-answers (both the zero polynomial), the decisive
-# bit-complement identity SampleCBD(~B) = -SampleCBD(B) over eta 2 and 3, and the centered range [-eta, eta] on every coefficient. Purely local — no
+# bit-complement identity SampleCBD(~B) = -SampleCBD(B) over eta 2 and 3, and the centered range [-eta, eta] on every coefficient. Purely local -- no
 # key, no network, no funds, no real device.
 #
 # Run from the repository root:

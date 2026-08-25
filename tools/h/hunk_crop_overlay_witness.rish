@@ -1,12 +1,12 @@
-# tools/h/hunk_crop_overlay_witness.rish — outline the crop rectangle on the picture, on metal (HUNK61).
+# tools/h/hunk_crop_overlay_witness.rish -- outline the crop rectangle on the picture, on metal (HUNK61).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK61.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK61.
 # Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the crop overlay of a photo app (iCloud Photos / Google Photos) — the picture stays
+# Teacher, thanked clean-room: the crop overlay of a photo app (iCloud Photos / Google Photos) -- the picture stays
 # visible and a bright rectangle frames the region a keeper will keep as they drag (concept only, siloed).
 #
 # HUNK60 turned a drag into a .crop edit that lived only in numbers; this rung paints it. crop_overlay down-maps the
-# source into a Skate grid (HUNK2) and draws the rectangle's OUTLINE over it — border cells wear a bright slot, the
+# source into a Skate grid (HUNK2) and draws the rectangle's OUTLINE over it -- border cells wear a bright slot, the
 # interior keeps showing the picture. A pure read over HUNK2 down_map and HUNK60 CropGesture.rect; a degenerate
 # rectangle refuses NoRect. No network, no key, no funds.
 #
@@ -26,7 +26,7 @@ assert build.ok else "hunk-crop-overlay: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-crop-overlay: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-crop-overlay: ${out}"

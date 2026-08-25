@@ -1,19 +1,19 @@
-# tools/cr/crypto_eth_address_witness.rish — the Ethereum address and its EIP-55 mixed-case checksum, authored in pure Rye as a composition over
+# tools/cr/crypto_eth_address_witness.rish -- the Ethereum address and its EIP-55 mixed-case checksum, authored in pure Rye as a composition over
 # the GREEN Keccak-256 in crypto/keccak256.rye. An account address is the low twenty bytes of the Keccak-256 of an uncompressed public key; the
 # human-facing form is EIP-55, the same forty hex characters cased by a bit of the Keccak-256 of the lowercase address string, so a corrupted
-# address almost always fails the case pattern before a value is sent to a wrong destination (crypto · Season G · Cryptography).
+# address almost always fails the case pattern before a value is sent to a wrong destination (crypto - Season G - Cryptography).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: it composes one already-GREEN stone — the
-# Keccak-256 proven in crypto/keccak256.rye against the canonical known-answers and Zig's independent std.crypto — into the address derivation
+# Season: crypto -- Season G (the Six-Season double-seat). This rung authors NO new cryptography: it composes one already-GREEN stone -- the
+# Keccak-256 proven in crypto/keccak256.rye against the canonical known-answers and Zig's independent std.crypto -- into the address derivation
 # and the EIP-55 checksum, the natural next rung crypto/keccak256.rye's own note named. It is the Ethereum sibling of encoding/base58check.rye.
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Clean-room: the address rule and the EIP-55 algorithm are Ethereum's own public standard; the composition is ours, standing on our own
 # parity-GREEN Keccak-256, never a copied line (.claude/rules/gratitude-licenses.md).
 #
 # crypto/eth_address.rye derives the twenty-byte address from the sixty-four-byte public key (Keccak-256, low twenty bytes) and renders EIP-55
 # mixed case. Parity is proven at selftest against the four canonical EIP-55 reference addresses from the standard AND the end-to-end Mastering
-# Ethereum worked example (public key 6e145c…32ccd0 → address 001d3f…ba0f9 → 0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9), plus the guards: a
-# short public key refuses BadPubkeyLength, a wrong-length address BadAddressLength, a too-small destination OutTooSmall. Purely local — no key,
+# Ethereum worked example (public key 6e145c...32ccd0 -> address 001d3f...ba0f9 -> 0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9), plus the guards: a
+# short public key refuses BadPubkeyLength, a wrong-length address BadAddressLength, a too-small destination OutTooSmall. Purely local -- no key,
 # no network, no funds, no real device.
 #
 # Run from the repository root:

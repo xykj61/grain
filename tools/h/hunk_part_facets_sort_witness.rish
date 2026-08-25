@@ -1,13 +1,13 @@
-# tools/h/hunk_part_facets_sort_witness.rish — the faceted result, sorted cheapest-first (HUNK89).
+# tools/h/hunk_part_facets_sort_witness.rish -- the faceted result, sorted cheapest-first (HUNK89).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK89.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK89.
 # Design read: active-designing/date/20260814/20260814-012339_hunk-part-facets-sort-by-price-exploration.md
 # Teacher, thanked clean-room: McMaster-Carr's *sort by price* control over a faceted result (concept only, siloed).
 #
-# HUNK86 drew the faceted grammar to glass and HUNK87–HUNK88 crowned it with a header, yet the result drew in HELD
-# ORDER — no order a shopper wants. This rung sorts it: brushstroke/part_facets_sort.rye `sort_by_price` reorders a
+# HUNK86 drew the faceted grammar to glass and HUNK87-HUNK88 crowned it with a header, yet the result drew in HELD
+# ORDER -- no order a shopper wants. This rung sorts it: brushstroke/part_facets_sort.rye `sort_by_price` reorders a
 # catalog by its recorded cent count, ascending, ties keeping held order (STABLE), and `facets_sorted_shelf` composes
-# it after the faceted filter (parse → filter → sort → window), so the drawn page reads least dear at the top. The
+# it after the faceted filter (parse -> filter -> sort -> window), so the drawn page reads least dear at the top. The
 # selftest proves cheapest-first, stability on a tie, that the sort is a permutation (same parts as a set, only
 # reordered), that the sorted page equals a hand-sorted window, and that a malformed clause and a bad offset each
 # refuse by name. A price is a fact compared and reordered by, never moved.
@@ -25,7 +25,7 @@ let bin = "brushstroke/bin/part_facets_sort"
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-sort: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "brushstroke/bin/part_facets_sort.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-sort: selftest exited non-zero — see ${outfile}"
@@ -36,7 +36,7 @@ say "hunk-part-facets-sort: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-sort: selftest did not print the GREEN part-facets-sort line"
 
-# HUNK86 stays GREEN — the faceted shelf this rung sorts.
+# HUNK86 stays GREEN -- the faceted shelf this rung sorts.
 let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
 assert s.ok else "hunk-part-facets-sort: HUNK86 part_facets_search re-run failed — see brushstroke/bin/part_facets_search.out"
 let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin/part_facets_search.out && echo yes"]

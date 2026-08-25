@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e134 — surface census six through the elder chain.
+# Equinox e134 -- surface census six through the elder chain.
 # Exit 0 when living scans emit six, e113 witness path clears, suite 10/10.
 # No backtick characters.
 #

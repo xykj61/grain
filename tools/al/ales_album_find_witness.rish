@@ -1,16 +1,16 @@
-# tools/al/ales_album_find_witness.rish — resolve a track by name in a record: find(am, name) returns the track's index or null,
+# tools/al/ales_album_find_witness.rish -- resolve a track by name in a record: find(am, name) returns the track's index or null,
 # name_of / digest_of read its name and its content-address handle by index (ALES231).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES231.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES231.
 # Design read: active-designing/date/20260815/20260815-144122_fill-ales231-lotus-album-find.md
-# Idiom kin: lotus/library_find.rye (ALES228, the find / name_of resolve idiom one level up) · lotus/album_manifest.rye (ALES224, the
-# opened record this searches) · lotus/album_sheet.rye (ALES225, the readable page this makes usable). A read — no new frame, no new
+# Idiom kin: lotus/library_find.rye (ALES228, the find / name_of resolve idiom one level up) - lotus/album_manifest.rye (ALES224, the
+# opened record this searches) - lotus/album_sheet.rye (ALES225, the readable page this makes usable). A read -- no new frame, no new
 # hash, no error union.
 #
 # lotus/album_find.rye resolves a track by name in an opened album manifest. The selftest proves: a present name resolves to its index
 # in order and digest_of hands back the exact digest the manifest holds (the resolve law); a name the record lacks returns null, and a
 # prefix of a name still misses (the absence law); a null answer means every track was compared (the first-match law); a search over a
-# zero-track record returns null (the empty law). A pure lookup only — no real file, no DAC, no network, no keys, no funds, no real
+# zero-track record returns null (the empty law). A pure lookup only -- no real file, no DAC, no network, no keys, no funds, no real
 # device.
 #
 # Run from the repository root:

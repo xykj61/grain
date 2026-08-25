@@ -1,4 +1,4 @@
-# tools/gen/season/sundial.rish — sundial · recursion-prompt confidence 0–100.
+# tools/gen/season/sundial.rish -- sundial - recursion-prompt confidence 0-100.
 # NAME NOTE (`20260821.175633`). This meter is named **Plumb** -- a plumb line tells you whether a
 # thing is true, which is what this reads of a recursion prompt. It wore the word `sundial` until
 # the vocabulary pruning found two live meters under one name, told apart only by a capital
@@ -8,7 +8,7 @@
 # its name when its destination molted.
 #
 # Lexicon shortcut: measure how well the session recursion printout still
-# carries checkpoints from recent rounds. High green · low red.
+# carries checkpoints from recent rounds. High green - low red.
 #   rishi/bin/rishi run tools/gen/season/sundial.rish
 #   rishi/bin/rishi run tools/s/sundial.rish            # accrete shim
 #   prin sundial

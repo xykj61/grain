@@ -1,18 +1,18 @@
-# tools/al/ales_library_merge_witness.rish — two independent sets of catalog changes reconciled: merge(base, ours, theirs) sorts every
+# tools/al/ales_library_merge_witness.rish -- two independent sets of catalog changes reconciled: merge(base, ours, theirs) sorts every
 # album into resolved, dropped, or a named conflict (ALES234).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES234.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES234.
 # Design read: active-designing/date/20260815/20260815-145638_fill-ales234-lotus-library-merge.md
-# Idiom kin: lotus/library_find.rye (ALES228, the find / digest_of resolve this composes on) · lotus/library_diff.rye (ALES229, the
-# sibling second-order primitive this stands beside) · lotus/library_manifest.rye (ALES226, the three opened catalogs this reconciles).
-# A merge is two diffs reconciled against one base — no new hash, no new frame.
+# Idiom kin: lotus/library_find.rye (ALES228, the find / digest_of resolve this composes on) - lotus/library_diff.rye (ALES229, the
+# sibling second-order primitive this stands beside) - lotus/library_manifest.rye (ALES226, the three opened catalogs this reconciles).
+# A merge is two diffs reconciled against one base -- no new hash, no new frame.
 #
 # lotus/library_merge.rye reconciles three opened library manifests by the canonical three-way rule. The selftest proves: a one-sided
 # change is taken and names its hand, a one-sided removal drops cleanly, with zero conflicts (the clean law); both sides making the
-# same change reads agreed (the agreement law); both sides changing an album differently — or change-vs-remove — is named a conflict
+# same change reads agreed (the agreement law); both sides changing an album differently -- or change-vs-remove -- is named a conflict
 # carrying base, our, and their digests (the conflict law); an album neither side touched resolves unchanged with its base digest (the
 # untouched law); a catalog merged with itself on both sides resolves every album unchanged with zero drops and zero conflicts (the
-# identity law). A pure classification only — no real file, no DAC, no network, no keys, no funds, no real device.
+# identity law). A pure classification only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_library_merge_witness.rish

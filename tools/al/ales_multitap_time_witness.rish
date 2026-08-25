@@ -1,9 +1,9 @@
-# tools/al/ales_multitap_time_witness.rish — the multi-tap delay in real time: taps named in milliseconds (ALES69).
+# tools/al/ales_multitap_time_witness.rish -- the multi-tap delay in real time: taps named in milliseconds (ALES69).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES69.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES69.
 # Design read: active-designing/date/20260814/20260814-193359_fill-ales69-lotus-multi-tap-delay-in-real-time.md
-# Stands on: lotus/taps.rye (ALES68 — the multi-tap delay this speaks in real time, delegated unchanged); lotus/clock.rye (ALES5 — the
-# sample clock, its samples_for converting ms to a bounded sample count); lotus/echo_time.rye (ALES67 — the timed twin this mirrors).
+# Stands on: lotus/taps.rye (ALES68 -- the multi-tap delay this speaks in real time, delegated unchanged); lotus/clock.rye (ALES5 -- the
+# sample clock, its samples_for converting ms to a bounded sample count); lotus/echo_time.rye (ALES67 -- the timed twin this mirrors).
 #
 # lotus/multitap_time.rye gives the ALES68 multi-tap a face in milliseconds, mirroring echo_ms over the feedback echo. multitap_ms
 # converts start_ms, count_ms, and each tap's delay_ms through ALES5's proven clock.samples_for into an index-named Tap set and delegates
@@ -12,7 +12,7 @@
 # 8000 dry / 4000 at 2 / 2000 at 4); at 48 kHz 1 ms converts to 48 samples and the copy sits exactly there; the two timed taps stay
 # independent (the 4 ms copy 1/4 of the ORIGINAL dry, not a copy-of-a-copy); a sub-sample tap (0 ms) refuses BadDelay rather than silently
 # doing nothing; a delay past the clip refuses DurationTooLong; zero taps refuse BadTapCount, a tap above unity BadLevel, an out-of-range
-# span BadRange. Purely local — the clock a samples-per-second count, no lookahead, no network, no keys, no funds, no real device.
+# span BadRange. Purely local -- the clock a samples-per-second count, no lookahead, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_multitap_time_witness.rish
@@ -37,7 +37,7 @@ say "ales-multitap-time: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-multitap-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-multitap-time: selftest did not print the GREEN ales-multitap-time line"
 
-# This rung delegates to ALES68's multitap over its public API — re-prove the index-named multi-tap still stands green beside it.
+# This rung delegates to ALES68's multitap over its public API -- re-prove the index-named multi-tap still stands green beside it.
 let taps = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/taps.rye -femit-bin=lotus/bin/taps && lotus/bin/taps selftest 2>&1 | grep -q 'GREEN ales-taps' && echo yes"]
 assert (trim taps.out) == "yes" else "ales-multitap-time: the ALES68 multi-tap delay regressed under its real-time twin"
 

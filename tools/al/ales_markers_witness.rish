@@ -1,17 +1,17 @@
-# tools/al/ales_markers_witness.rish — the markers track, named positions a keeper navigates and snaps to (ALES20).
+# tools/al/ales_markers_witness.rish -- the markers track, named positions a keeper navigates and snaps to (ALES20).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES20.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES20.
 # Design read: active-designing/20260814-fill-ales20-lotus-markers.md
-# Stands on: lotus/scrub.rye (ALES19) — the scrub's move_to reused whole for snap; lotus/loop.rye (ALES14) — loop.make reused whole
-# for the region between two markers; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length.
+# Stands on: lotus/scrub.rye (ALES19) -- the scrub's move_to reused whole for snap; lotus/loop.rye (ALES14) -- loop.make reused whole
+# for the region between two markers; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length.
 #
-# lotus/markers.rye turns a raw sample index into a named place — the verse, the chorus, the edit point. The crux: a markers track
+# lotus/markers.rye turns a raw sample index into a named place -- the verse, the chorus, the edit point. The crux: a markers track
 # keeps its named positions SORTED and UNIQUE, so the nearest-marker query returns the true nearest named place in one ordered
 # pass, and a scrub SNAPPED to it lands exactly there. Composing ALES14, the region between two markers is exactly the loop
 # [pos_i, pos_j). The selftest proves: markers added out of order stay strictly ascending and unique; nearest returns the true
 # nearest with ties to the lower position; a scrub snaps exactly onto the nearest marker; a marker carries its name back byte-for-
 # byte; region_between drives a real armed loop; every edge refuses Duplicate / PastEnd / BadName / MarkersFull / NoMarkers /
-# BadPair by name. Purely local — no network, no keys, no funds, no real device, no real meter.
+# BadPair by name. Purely local -- no network, no keys, no funds, no real device, no real meter.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_markers_witness.rish

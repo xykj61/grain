@@ -1,14 +1,14 @@
-# tools/al/ales_shelf_witness.rish — a two-band tone shelf: bass and treble from the one-pole split (ALES41).
+# tools/al/ales_shelf_witness.rish -- a two-band tone shelf: bass and treble from the one-pole split (ALES41).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES41.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES41.
 # Design read: active-designing/date/20260814/20260814-161231_fill-ales41-lotus-tone-shelf.md
-# Stands on: lotus/tone.rye (ALES40 — the low-pass/high-pass split) and lotus/timeline.rye (ALES2 — the Clip and saturate).
+# Stands on: lotus/tone.rye (ALES40 -- the low-pass/high-pass split) and lotus/timeline.rye (ALES2 -- the Clip and saturate).
 #
-# lotus/shelf.rye scales ALES40's low band and high band independently and sums them — the everyday bass/treble equalizer.
+# lotus/shelf.rye scales ALES40's low band and high band independently and sums them -- the everyday bass/treble equalizer.
 # The selftest proves: silence stays silence; unity on both bands is the identity (the bands reconstruct the input); bass
 # scales direct current while treble leaves it untouched (the knobs are orthogonal at direct current); a boost SATURATES
-# rather than wraps (scale in the wide domain, clamp once — ALES8's fader lesson); a zero/above-one coefficient refuses
-# BadCoeff, a zero band denominator BadGain, an out-of-range span BadRange leaving the clip untouched. Purely local — no
+# rather than wraps (scale in the wide domain, clamp once -- ALES8's fader lesson); a zero/above-one coefficient refuses
+# BadCoeff, a zero band denominator BadGain, an out-of-range span BadRange leaving the clip untouched. Purely local -- no
 # network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:

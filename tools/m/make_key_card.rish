@@ -1,8 +1,8 @@
-# make_key_card.rish — orchestrate key-card generation with audits, in Rish.
+# make_key_card.rish -- orchestrate key-card generation with audits, in Rish.
 #
 # The Rish hand over the macOS card generator: it audits the declared
 # fingerprints against the real keys on this host, generates the cards, then
-# audits the output PNGs — so a green run is proof the card shows the true
+# audits the output PNGs -- so a green run is proof the card shows the true
 # fingerprints and the images came out well-formed, not merely that a command
 # ran. The ssh-keygen/gpg/magick reads and the config sourcing live behind a
 # .sh seam (tools/k/key_card_audit.sh), per this project's own .sh/.rish boundary;

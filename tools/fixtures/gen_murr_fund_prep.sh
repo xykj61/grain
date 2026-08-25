@@ -1,5 +1,5 @@
 #!/bin/sh
-# gen_murr_fund_prep.sh — Murr / MUR fund prep (Aries · was Mala / MALA)
+# gen_murr_fund_prep.sh -- Murr / MUR fund prep (Aries - was Mala / MALA)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

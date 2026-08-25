@@ -1,4 +1,4 @@
-# hawm3_seva_device_witness.rish — HAWM3: Glow's own verified code runs
+# hawm3_seva_device_witness.rish -- HAWM3: Glow's own verified code runs
 # inside the real, physical Pixel 10a's own GrapheneOS userland
 # (context/specs/two-dev-environments-and-mobile-emulation.md).
 #
@@ -12,15 +12,15 @@
 # The one real difference from HAWM1, worth naming plainly: the Pixel
 # 10a's own Tensor G4 is **aarch64**, not the emulator's x86_64. This
 # witness cross-builds for `aarch64-linux-android` (bionic libc, ARM64),
-# not `x86_64-linux-android` — a different Zig target, not a copy-paste
+# not `x86_64-linux-android` -- a different Zig target, not a copy-paste
 # of HAWM1's own build line.
 #
-# Run OUTSIDE ai-jail, from a plain host terminal — needs `adb` from
+# Run OUTSIDE ai-jail, from a plain host terminal -- needs `adb` from
 # tools/.cache/hawm0/android-sdk/platform-tools/ and the physical Pixel
 # 10a connected by USB with:
-#   - Settings → About phone → tap "Build number" 7x → Developer options
+#   - Settings -> About phone -> tap "Build number" 7x -> Developer options
 #     unlocked
-#   - Settings → System → Developer options → USB debugging: on
+#   - Settings -> System -> Developer options -> USB debugging: on
 #   - the on-device "Allow USB debugging?" dialog accepted (once per host)
 #
 #   rishi/bin/rishi run tools/h/hawm3_seva_device_witness.rish

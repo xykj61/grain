@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep009_census_witness.rish — e66 IronBeetle ep009.
+# tools/gen/season/ironbeetle_ep009_census_witness.rish -- e66 IronBeetle ep009.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep009_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep009: Language EN — a ledger that remembers its own parent."
 say "iron-ep009: Style Radiant — hash-chained prepares; views ratchet forward."

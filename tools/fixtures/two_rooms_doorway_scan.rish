@@ -1,6 +1,6 @@
-# two_rooms_doorway_scan.rish — forward-facing pages name their room at the door.
+# two_rooms_doorway_scan.rish -- forward-facing pages name their room at the door.
 #
-# Native orchestration — per-file verdict in two_rooms_doorway_scan_one.sh
+# Native orchestration -- per-file verdict in two_rooms_doorway_scan_one.sh
 # (stamp compare, head-25 Status, case-insensitive room register).
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/two_rooms_doorway_scan.rish

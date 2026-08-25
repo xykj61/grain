@@ -1,17 +1,17 @@
-# tools/al/ales_library_merge_sheet_witness.rish — the merge verdict as a readable page: render_sheet(merge, out) draws a
+# tools/al/ales_library_merge_sheet_witness.rish -- the merge verdict as a readable page: render_sheet(merge, out) draws a
 # `format lotus-library-merge-sheet-v1` page from an ALES234 Merge (ALES236).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES236.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES236.
 # Design read: active-designing/date/20260815/20260815-150804_fill-ales236-lotus-library-merge-sheet.md
-# Idiom kin: lotus/library_merge.rye (ALES234, the Merge this reads) · lotus/library_diff_sheet.rye (ALES230, the readable-projection
-# idiom this mirrors) · lotus/library_manifest.rye (ALES226, the catalogs the merge reconciled). A projection, not a round-trip — no
+# Idiom kin: lotus/library_merge.rye (ALES234, the Merge this reads) - lotus/library_diff_sheet.rye (ALES230, the readable-projection
+# idiom this mirrors) - lotus/library_manifest.rye (ALES226, the catalogs the merge reconciled). A projection, not a round-trip -- no
 # new frame, no new hash.
 #
 # lotus/library_merge_sheet.rye renders a Merge as a readable page. The selftest proves: the page opens with the format line and a
 # summary line carrying the three tallies (the summary law); every resolved album appears with its source word and digest (the
 # resolved law); every dropped album appears with the source that removed it (the dropped law); every conflict appears with its name
 # and three digest fields, an absent side printed `-` (the conflict law); a too-small buffer refuses Overflow (the atomic law). A pure
-# text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+# text render only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_library_merge_sheet_witness.rish

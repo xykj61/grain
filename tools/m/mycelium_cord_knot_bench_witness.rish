@@ -1,16 +1,16 @@
-# tools/m/mycelium_cord_knot_bench_witness.rish — checkpointing is a genuine bound win, measured (r3).
+# tools/m/mycelium_cord_knot_bench_witness.rish -- checkpointing is a genuine bound win, measured (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r3 — the measured bound win.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - checkpointing - rung r3 -- the measured bound win.
 # r1 proved a checkpoint folds identical to the whole history; r2 let it travel. r3 measures what the Knot
 # buys: the Cord's Dag is statically allocated (cord_max_blocks 256), so a history longer than that ceiling
-# cannot live in one Dag at all — and this rung proves it (a fresh Dag filled to the ceiling refuses the
+# cannot live in one Dag at all -- and this rung proves it (a fresh Dag filled to the ceiling refuses the
 # next block DagFull). Yet checkpoint-and-prune folds a history past the ceiling while the LIVE Dag never
 # exceeds one bounded window, reaching the byte-identical supply as folding the whole history from empty.
 #
 # Two Rooms honesty: the module asserts only what it proves exactly (the ceiling refuses, the final supply
 # equals the whole-history fold, the live Dag stays at the window) and reports the amortization as a measured
 # loom observation, never an asserted invariant. This witness checks the exact claims and confirms the loom
-# line rides in the binary's own output. Demo keeper seeds only — no real key, no funds, no network, no custody.
+# line rides in the binary's own output. Demo keeper seeds only -- no real key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 #
@@ -35,7 +35,7 @@ assert selftest.out contains "folds 320 facts to the whole-history supply while 
 assert selftest.out contains "loom bench=cord_knot total_facts=320 dag_ceiling=256 max_live_blocks=64 windows=5" else "mycelium-cord-knot-bench: loom line missing or drifted"
 assert selftest.out contains "would_overflow=yes" else "mycelium-cord-knot-bench: overflow observation missing"
 
-# The r1 Knot and r2 travel both stay green binaries — accrete-never-break, proven at this door.
+# The r1 Knot and r2 travel both stay green binaries -- accrete-never-break, proven at this door.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert r1.ok else "mycelium-cord-knot-bench: the r1 Knot is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-knot-bench: the r1 Knot did not speak its GREEN"

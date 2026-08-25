@@ -1,24 +1,24 @@
-# tools/cr/crypto_monocypher_ed25519_parity_witness.rish — Monocypher-source parity for Ed25519, the SIGNING primitive the Lotus signed carry and every
+# tools/cr/crypto_monocypher_ed25519_parity_witness.rish -- Monocypher-source parity for Ed25519, the SIGNING primitive the Lotus signed carry and every
 # Kumara-signed record rest on. Our authored crypto/ed25519_sign.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each
 # compiled fresh and asked for their Ed25519 public key and signatures over RFC 8032 §7.1 TEST 2's seed and message plus one longer message, diffed
 # byte-for-byte. The third rung of the real Monocypher-source parity pattern (tools/cr/crypto_monocypher_parity_witness.rish opened it on BLAKE2b,
-# tools/cr/crypto_monocypher_x25519_parity_witness.rish carried it to X25519). Season G · Cryptography.
+# tools/cr/crypto_monocypher_x25519_parity_witness.rish carried it to X25519). Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte," and "once a Rye signing primitive is parity-GREEN, Lotus's signed carry becomes
-# buildable — the library is engineering." The Ed25519 sign witness (tools/cr/crypto_ed25519_sign_witness.rish) already proved RFC 8032 parity against
+# buildable -- the library is engineering." The Ed25519 sign witness (tools/cr/crypto_ed25519_sign_witness.rish) already proved RFC 8032 parity against
 # Zig's std.crypto and named Monocypher-SOURCE parity an honest horizon behind a held vendor fetch; the vendored source is now present, so this rung
 # closes that horizon against the very library Grain's audit names.
-# Kin: crypto/ed25519_sign.rye (our authored signer, GREEN against Zig's std.crypto) · tools/rye/monocypher_ed25519_parity.rye (our printing harness) ·
-# tools/fixtures/monocypher_ed25519_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_x25519_parity_witness.rish (the X25519
-# sibling) · tools/cr/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling). Monocypher stays the parity TARGET, vendored and unmodified, never a
-# copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+# Kin: crypto/ed25519_sign.rye (our authored signer, GREEN against Zig's std.crypto) - tools/rye/monocypher_ed25519_parity.rye (our printing harness) -
+# tools/fixtures/monocypher_ed25519_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_x25519_parity_witness.rish (the X25519
+# sibling) - tools/cr/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling). Monocypher stays the parity TARGET, vendored and unmodified, never a
+# copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The RFC 8032 Ed25519 (SHA-512) variant is Monocypher's OPTIONAL crypto_ed25519_* module (src/optional/monocypher-ed25519.c); the core crypto_eddsa_*
 # uses BLAKE2b, a different, non-RFC EdDSA. The harness links the optional SHA-512 module so like meets like. The three lines are the public key
 # derived from the seed, the signature over message 0x72 (RFC 8032 §7.1 TEST 2), and the signature over a longer deterministic message ("grain crypto
-# parity"). Purely local — it signs only a TEST seed: no key of ours, no network, no funds, no device; signing with the maintainer's own identity key
+# parity"). Purely local -- it signs only a TEST seed: no key of ours, no network, no funds, no device; signing with the maintainer's own identity key
 # stays its own gated round, and constant-time signing stays the Season's named timing horizon.
 #
 # Run from the repository root:
@@ -37,11 +37,11 @@ let rout = "crypto/bin/rye_ed25519.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_ed25519_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — three Ed25519 hex lines.
+# 2. Run the Monocypher C harness -- three Ed25519 hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — three Ed25519 hex lines over the identical seed and messages.
+# 3. Run our authored Rye harness -- three Ed25519 hex lines over the identical seed and messages.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_ed25519_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-ed25519-parity: Rye harness exited non-zero — see ${rout}"
 

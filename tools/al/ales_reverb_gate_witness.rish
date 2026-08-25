@@ -1,20 +1,20 @@
-# tools/al/ales_reverb_gate_witness.rish — the gate: the reverb's GATED TAIL, the classic gated-reverb sound (ALES200).
+# tools/al/ales_reverb_gate_witness.rish -- the gate: the reverb's GATED TAIL, the classic gated-reverb sound (ALES200).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES200.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES200.
 # Design read: active-designing/date/20260815/20260815-105453_fill-ales200-lotus-reverb-gate.md
-# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/gate.rye (ALES49 — the downward gate and its
-# guards, the gating applied to the wet span); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 — the Clip,
+# Stands on: lotus/reverb_preset.rye (ALES190 -- the named-room wet, run over the span unchanged); lotus/gate.rye (ALES49 -- the downward gate and its
+# guards, the gating applied to the wet span); lotus/clock.rye (ALES5 -- the sample clock, converting the span); lotus/timeline.rye (ALES2 -- the Clip,
 # its max_clip bounding the span and its sample_max the gate's rail).
 #
-# lotus/reverb_gate.rye gives the reverb its GATED TAIL — the classic gated-reverb sound: reverberate a source into a big room, then slam a noise
+# lotus/reverb_gate.rye gives the reverb its GATED TAIL -- the classic gated-reverb sound: reverberate a source into a big room, then slam a noise
 # gate across the reverberant tail so the quiet decay below a chosen threshold is pushed toward silence, leaving only the loud early wash (the
 # eighties drum snare). It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, then gates the wet with ALES49's proven
 # downward gate: ratio_num == ratio_den is the identity (a unit-ratio gate), a larger ratio cuts the quiet tail harder. It invents no new audio
-# arithmetic — every gated sample is written by a proven stage — and it prechecks the gate's threshold and ratio (the SAME guards ALES49 raises)
+# arithmetic -- every gated sample is written by a proven stage -- and it prechecks the gate's threshold and ratio (the SAME guards ALES49 raises)
 # BEFORE the wet is written, so a bad gate leaves the clip DRY (atomic). The selftest proves: at ratio_num == ratio_den the span equals reverb_preset
 # byte for byte; for a firm ratio reverb_gate equals reverb_preset then gate byte for byte and the gated tail differs from the un-gated wet; the
 # gated tail's total energy is strictly less than the wet's; silence stays silence; and the faults forward atomic (a bad threshold BadThreshold and
-# a bad ratio BadRatio with the clip still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one clip, a
+# a bad ratio BadRatio with the clip still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local -- one clip, a
 # validated clock; no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -40,11 +40,11 @@ say "ales-reverb-gate: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-gate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-gate: selftest did not print the GREEN ales-reverb-gate line"
 
-# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+# This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-gate: the ALES190 named-room preset regressed under its gate"
 
-# And re-prove ALES49's downward gate still stands green — the gating it applies to the wet.
+# And re-prove ALES49's downward gate still stands green -- the gating it applies to the wet.
 let gateg = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
 assert (trim gateg.out) == "yes" else "ales-reverb-gate: the ALES49 downward gate regressed under its reverb gate"
 

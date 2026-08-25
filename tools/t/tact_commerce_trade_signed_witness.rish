@@ -1,12 +1,12 @@
-# tools/t/tact_commerce_trade_signed_witness.rish — TACT Journey 4, Rung 2: a trade both parties signed.
+# tools/t/tact_commerce_trade_signed_witness.rish -- TACT Journey 4, Rung 2: a trade both parties signed.
 #
 # Rung one booked a fair-value trade on both parties' books at one agreed price. A booking alone
 # does not prove agreement, so this rung binds the trade to two settled Kumara identities: the
 # seller and the buyer each sign the exact facts (their two points, the item, the one price), and a
 # trade books only when both signatures verify over the identical facts. The honesty crux: change
-# the price after signing and both signatures fall — the agreement was to the signed price. A forged
+# the price after signing and both signatures fall -- the agreement was to the signed price. A forged
 # seller signature, a forged buyer signature, a wrong keeper key, and a price tampered after signing
-# each refuse NotAgreed. Demo keeper seeds only — no real key, no funds, no custody.
+# each refuse NotAgreed. Demo keeper seeds only -- no real key, no funds, no custody.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tact_commerce_trade_signed_witness.rish
@@ -30,7 +30,7 @@ assert selftest.out contains "a wrong keeper key refused" else "tact4: wrong-key
 assert selftest.out contains "a price changed after signing refused NotAgreed" else "tact4: price-tamper refusal missing"
 assert selftest.out contains "a trade books only when both parties signed the identical facts" else "tact4: crux claim missing"
 
-# Rung one — the fair-value booking this rung gates behind agreement — stays its own green binary.
+# Rung one -- the fair-value booking this rung gates behind agreement -- stays its own green binary.
 let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade && pond/bin/commerce-trade selftest 2>&1"]
 assert r1.ok else "tact4: rung-one commerce_trade re-run failed"
 assert r1.out contains "GREEN" else "tact4: rung-one selftest did not speak GREEN"

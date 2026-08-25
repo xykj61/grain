@@ -1,8 +1,8 @@
 #!/bin/sh
-# tools/fixtures/relay_resin_census.sh — twelve-bead limb bound · design-shapes.
+# tools/fixtures/relay_resin_census.sh -- twelve-bead limb bound - design-shapes.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-# Args: [limb_fixture] — counts named bead lines; over bound without manifest refuses.
+# Args: [limb_fixture] -- counts named bead lines; over bound without manifest refuses.
 set -eu
 shape="${1:-context/design-shapes/relay_resin.brix}"
 limb="${2:-tools/fixtures/relay_resin_limb_ok.txt}"

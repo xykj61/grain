@@ -1,9 +1,9 @@
-# tools/gen/season/tigerbeetle_golden_rule_census_witness.rish — e21 golden rule.
+# tools/gen/season/tigerbeetle_golden_rule_census_witness.rish -- e21 golden rule.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_golden_rule_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence + counts only · never copies into rye/.
+# Clean-room: presence + counts only - never copies into rye/.
 
 say "tb-golden-rule: Language EN — positive space · negative space · maybe."
 say "tb-golden-rule: Style Radiant — the boundary is where bugs gather."

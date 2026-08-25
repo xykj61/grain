@@ -1,8 +1,8 @@
-# tools/h/hunk_filmstrip_track_scrub_witness.rish — drag a windowed filmstrip; a too-long history finally scrubs, on metal (HUNK59).
+# tools/h/hunk_filmstrip_track_scrub_witness.rish -- drag a windowed filmstrip; a too-long history finally scrubs, on metal (HUNK59).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK59.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK59.
 # Design read: active-designing/date/20260813/20260813-215013_hunk-filmstrip-track-exploration.md (the HUNK59 fork named there).
-# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses
+# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) -- a keeper presses
 # the visible slice of a long edit strip and drags, scrubbing band by band within the shown window (concept only, siloed).
 #
 # HUNK56 scrubs the WHOLE strip, which refuses FilmstripTooWide once a history outgrows the map ceiling; HUNK58 gave the
@@ -27,7 +27,7 @@ assert build.ok else "hunk-filmstrip-track-scrub: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-filmstrip-track-scrub: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-filmstrip-track-scrub: ${out}"

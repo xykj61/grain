@@ -1,17 +1,17 @@
-# tools/al/ales_rack_paste_join_witness.rish — the rack's paste, joined (ALES32).
+# tools/al/ales_rack_paste_join_witness.rish -- the rack's paste, joined (ALES32).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES32.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES32.
 # Design read: active-designing/date/20260814/20260814-145422_fill-ales32-lotus-rack-paste-join.md
-# Stands on: lotus/rack.rye (ALES30) — the named slots and find; lotus/paste_join.rye (ALES31) — the joined paste (ALES29's stereo
-# two-sided insert-join over a held span); lotus/pan.rye (ALES10) — the StereoClip.
+# Stands on: lotus/rack.rye (ALES30) -- the named slots and find; lotus/paste_join.rye (ALES31) -- the joined paste (ALES29's stereo
+# two-sided insert-join over a held span); lotus/pan.rye (ALES10) -- the StereoClip.
 #
 # lotus/rack_paste_join.rye drops a NAMED slot into the middle of a master crossing BOTH its seams equal-power, where ALES30's rack
-# paste butts. The crux: rack_paste_join is EXACTLY ALES31's paste_join on the slot resolved by name — find resolves the unique name to
+# paste butts. The crux: rack_paste_join is EXACTLY ALES31's paste_join on the slot resolved by name -- find resolves the unique name to
 # a single slot (ALES30's invariant) and hands its held board whole to paste_join, itself ALES29's proven two-sided stereo insert-join,
 # so the rack's joined paste adds only the name resolution and no new arithmetic, seam law, or bound. The selftest proves: a filed span
 # joined at a full-swing sign flip lands a seam sample strictly inside the extremes; the new length shares both overlaps; a slot joins
 # twice and cross-master with its held length unchanged and a second slot untouched; every edge refuses by name (NoSlot / Empty /
-# BadRange / ClipFull). Purely local — no network, no keys, no funds.
+# BadRange / ClipFull). Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_rack_paste_join_witness.rish

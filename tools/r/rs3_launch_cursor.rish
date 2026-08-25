@@ -1,4 +1,4 @@
-# rs3_launch_cursor.rish — RS-3 witness: launch-cursor reads flags from args.
+# rs3_launch_cursor.rish -- RS-3 witness: launch-cursor reads flags from args.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/rs3_launch_cursor.rish
@@ -31,7 +31,7 @@ let cursor_run = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract
 assert cursor_run.ok else "--cursor AppRun must resolve"
 assert cursor_run.out contains "apprun:custom/AppRun" else "--cursor AppRun path"
 
-# macOS twin: --cursor .app → Contents/MacOS/Cursor; bare path stays bare.
+# macOS twin: --cursor .app -> Contents/MacOS/Cursor; bare path stays bare.
 let mac_app = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_macos_cursor.rish" "--cursor" "/Applications/Cursor.app"]
 assert mac_app.ok else "macOS --cursor .app must resolve"
 assert mac_app.out contains "app_bin:/Applications/Cursor.app/Contents/MacOS/Cursor" else "macOS .app → binary"

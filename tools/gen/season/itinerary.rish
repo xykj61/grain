@@ -1,9 +1,9 @@
-# tools/gen/season/itinerary.rish — print a round's deterministic itinerary.
+# tools/gen/season/itinerary.rish -- print a round's deterministic itinerary.
 #
 #   rishi/bin/rishi run tools/gen/season/itinerary.rish 137
 #
-# A round's whole day from its number alone: coords (season · equinox · journey ·
-# quest · round-in-quest), the equinox theme, the ranking it tends (rankings[r%27],
+# A round's whole day from its number alone: coords (season - equinox - journey -
+# quest - round-in-quest), the equinox theme, the ranking it tends (rankings[r%27],
 # context/rankings.kyri), and the carry-over from the round before. Arithmetic lives
 # in tools/fixtures/itinerary_compute.sh; this prints it and gates the bound.
 # Plan: expanding-prompts/date/20260810/20260810-213133_rankings-and-the-season-itinerary-plan.md.

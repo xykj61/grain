@@ -1,18 +1,18 @@
-# tools/al/ales_crossfade_witness.rish — the equal-power crossfade: ALES11's pan law swept over time (ALES12).
+# tools/al/ales_crossfade_witness.rish -- the equal-power crossfade: ALES11's pan law swept over time (ALES12).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES12.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES12.
 # Design read: active-designing/20260814-fill-ales12-lotus-equal-power-crossfade.md
-# Stands on: lotus/power.rye (ALES11) — the equal-power `split` read at each sample of the overlap, so the crossfade reuses
-# the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) — the Clip it crosses and the one true saturation
+# Stands on: lotus/power.rye (ALES11) -- the equal-power `split` read at each sample of the overlap, so the crossfade reuses
+# the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the Clip it crosses and the one true saturation
 # (timeline.saturate) reused whole, exactly as ALES3's mix.
 #
 # lotus/crossfade.rye carries equal power from the stereo FIELD (pan) into TIME: a crossfade IS the pan swept across an
-# overlap, its outgoing and incoming weights power.split read at each sample. So the overlap holds constant power for free —
-# it begins as pure outgoing and ends as pure incoming (a seamless splice), its center holds 0.707·den (−3 dB) where a linear
-# crossfade dips to 0.5·den (−6 dB), and crossing a flat clip with itself lifts the middle above the endpoints rather than
+# overlap, its outgoing and incoming weights power.split read at each sample. So the overlap holds constant power for free --
+# it begins as pure outgoing and ends as pure incoming (a seamless splice), its center holds 0.707-den (−3 dB) where a linear
+# crossfade dips to 0.5-den (−6 dB), and crossing a flat clip with itself lifts the middle above the endpoints rather than
 # below. The selftest proves: pure-out head / pure-in tail; the −3 dB center vs linear; no mid-overlap dip; saturation on a
 # loud overlap; the weights match the pan split across a sweep; a length mismatch and a too-short overlap refuse BadRange.
-# Purely local — no network, no keys, no funds, no real device, no real speaker.
+# Purely local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_crossfade_witness.rish

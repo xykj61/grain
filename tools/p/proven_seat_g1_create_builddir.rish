@@ -1,8 +1,8 @@
-# proven_seat_g1_create_builddir.rish — Genode x86_64 builddir beside the cache tree.
+# proven_seat_g1_create_builddir.rish -- Genode x86_64 builddir beside the cache tree.
 #
-# Claude 201200 unroll step 3 · Claude 204549 vendor home. Pins GENODE_DIR to
+# Claude 201200 unroll step 3 - Claude 204549 vendor home. Pins GENODE_DIR to
 # vendor/genode, CONTRIB_DIR to the cache workbench, CROSS_DEV_PREFIX to the
-# cached 25.05 toolchain (absolute path · genode-x86- suffix), and enables
+# cached 25.05 toolchain (absolute path - genode-x86- suffix), and enables
 # repos/libports for the posix/libc guest. Cache claims no seat.
 #
 #   rishi/bin/rishi run tools/p/proven_seat_g1_create_builddir.rish

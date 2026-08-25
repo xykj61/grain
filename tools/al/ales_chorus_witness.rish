@@ -1,18 +1,18 @@
-# tools/al/ales_chorus_witness.rish — the chorus: a triangle-LFO modulated delay round a centre (ALES71).
+# tools/al/ales_chorus_witness.rish -- the chorus: a triangle-LFO modulated delay round a centre (ALES71).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES71.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES71.
 # Design read: active-designing/date/20260814/20260814-194730_fill-ales71-lotus-chorus-triangle-lfo-modulated-delay.md
-# Stands on: lotus/glide.rye (ALES70 — the fractional interpolation this drives with a periodic LFO instead of a one-way ramp, whose
-# zero-depth case this equals byte-for-byte); lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate).
+# Stands on: lotus/glide.rye (ALES70 -- the fractional interpolation this drives with a periodic LFO instead of a one-way ramp, whose
+# zero-depth case this equals byte-for-byte); lotus/timeline.rye (ALES2 -- the Clip, sample_max, max_clip, and the one true saturate).
 #
 # lotus/chorus.rye is the first PERIODIC modulated delay. The interpolation read is ALES70's, verbatim; the new thing is how the scaled
-# delay moves — a symmetric triangle round centre_scaled with EXACT anchors at the quarter points (centre at k≡0 and k≡period/2, +depth at
-# period/4, −depth at 3·period/4), honestly quantized between, off a frozen dry snapshot, mixed dry at num/den and saturated once. The
+# delay moves -- a symmetric triangle round centre_scaled with EXACT anchors at the quarter points (centre at k≡0 and k≡period/2, +depth at
+# period/4, −depth at 3-period/4), honestly quantized between, off a frozen dry snapshot, mixed dry at num/den and saturated once. The
 # selftest proves: level = 0 is the dry identity; a ZERO-DEPTH chorus is exactly ALES70's glide at its centre byte-for-byte (the periodic
 # driver reduces to the one-way one at rest); the triangle honors its four quarter anchors and repeats one period later; a hand-computed
 # modulated read matches exactly; a loud wet+dry sum saturates rather than wraps; a period not a positive multiple of four refuses
 # BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip BadDelay, a wet above unity or a zero denominator BadLevel,
-# an out-of-range span BadRange. Purely local — no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no
+# an out-of-range span BadRange. Purely local -- no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no
 # sample rate.
 #
 # Run from the repository root:
@@ -38,7 +38,7 @@ say "ales-chorus: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-chorus' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-chorus: selftest did not print the GREEN ales-chorus line"
 
-# This rung's zero-depth case equals ALES70's glide at its centre byte-for-byte over its public API — re-prove the gliding delay still
+# This rung's zero-depth case equals ALES70's glide at its centre byte-for-byte over its public API -- re-prove the gliding delay still
 # stands green beside it.
 let glide = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/glide.rye -femit-bin=lotus/bin/glide && lotus/bin/glide selftest 2>&1 | grep -q 'GREEN ales-glide' && echo yes"]
 assert (trim glide.out) == "yes" else "ales-chorus: the ALES70 gliding delay regressed under the chorus"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e112 — planted date-dialect witness on already-compact tree.
+# Equinox e112 -- planted date-dialect witness on already-compact tree.
 # Exit 0 only when standing dialect instrument + keep limbs honor.
 # No backtick characters in patterns.
 #
@@ -82,7 +82,7 @@ rg -q 'equinox_e111_date_dialect_scan' "$ELDER" || {
 echo "elder=honored"
 echo "elder_seat=e111"
 
-# --- seat 128 still reserved · not spent ---
+# --- seat 128 still reserved - not spent ---
 rg -q 'RESERVED' "$MAP" || {
   echo "reserve_keep=failed"
   echo "verdict=misread"
@@ -114,7 +114,7 @@ fi
 echo "surface_keep=honored"
 echo "surface_count=6"
 
-# --- almanac: seat 115 present · ch8 heading ---
+# --- almanac: seat 115 present - ch8 heading ---
 rg -q '^### 115\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

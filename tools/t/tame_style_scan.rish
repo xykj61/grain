@@ -1,6 +1,6 @@
-# tame_style_scan.rish — TAME textual lint mode router.
+# tame_style_scan.rish -- TAME textual lint mode router.
 #
-# Modes: bans (default) · advise · bans-legacy · advise-legacy
+# Modes: bans (default) - advise - bans-legacy - advise-legacy
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan.rish [mode]
 #

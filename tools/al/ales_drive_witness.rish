@@ -1,21 +1,21 @@
-# tools/al/ales_drive_witness.rish — the hard-clip drive: a pre-gain into ALES49's ceiling, opening the DRIVE family (ALES78).
+# tools/al/ales_drive_witness.rish -- the hard-clip drive: a pre-gain into ALES49's ceiling, opening the DRIVE family (ALES78).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES78.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES78.
 # Design read: active-designing/date/20260814/20260814-204949_fill-ales78-lotus-hard-clip-drive.md
-# Stands on: lotus/limit.rye (ALES49 — the ceiling law `pin to sign(x)·ceil`, reused over the BOOSTED sample rather than the dry one);
-# lotus/fader.rye (ALES6/ALES8 — the num/den gain in the i64 accumulator, the drive's pre-gain); lotus/tremolo.rye (ALES74 — the amplitude kin
-# whose unity boundary this rung reads in reverse); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate).
+# Stands on: lotus/limit.rye (ALES49 -- the ceiling law `pin to sign(x)-ceil`, reused over the BOOSTED sample rather than the dry one);
+# lotus/fader.rye (ALES6/ALES8 -- the num/den gain in the i64 accumulator, the drive's pre-gain); lotus/tremolo.rye (ALES74 -- the amplitude kin
+# whose unity boundary this rung reads in reverse); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate).
 #
 # lotus/drive.rye opens the DRIVE family beside the EQ, dynamics, and modulation families. DRIVE IS PRE-GAIN INTO ALES49's CEILING: it is
-# ALES74's tremolo read in reverse — where the tremolo FORBIDS the gain past unity so its saturate stays a no-op, the drive INVITES the gain
-# past unity and lets the ceiling catch the overflow, and that caught overflow IS the harmonic voice (y[i] = pin(x[i]·num/den, ±ceil), ALES6's
+# ALES74's tremolo read in reverse -- where the tremolo FORBIDS the gain past unity so its saturate stays a no-op, the drive INVITES the gain
+# past unity and lets the ceiling catch the overflow, and that caught overflow IS the harmonic voice (y[i] = pin(x[i]-num/den, ±ceil), ALES6's
 # i64 gain into ALES49's pin). The selftest proves it: a unity drive at the rail is the identity; a ×4 drive into a low ceiling clips so the
-# ceiling is never crossed and every sign is held (the flat top where harmonics are born — the crux); a hand-computed ×3/2 drive matches
+# ceiling is never crossed and every sign is held (the flat top where harmonics are born -- the crux); a hand-computed ×3/2 drive matches
 # exactly; the clipper is ODD, drive(−x) = −drive(x), so a symmetric input yields odd harmonics; an EXTREME drive squares the wave (every
 # non-zero sample pins, zeros stay silent); the span discipline holds (only [start, count) changes); a zero denominator / below-unity gain /
 # oversized numerator refuses BadGain, a zero or over-rail ceiling BadCeiling, a span past the end BadRange, each leaving the clip untouched.
 # The pin lands every output in [−ceil, ceil] ⊆ the i16 rail BEFORE the write, so the clip is the pin and the saturate a documented no-op.
-# Purely local — one multiply, one divide, one sign-carried pin per sample; no delay line, no anti-aliasing, no network, no keys, no funds,
+# Purely local -- one multiply, one divide, one sign-carried pin per sample; no delay line, no anti-aliasing, no network, no keys, no funds,
 # no real device, no real sample rate.
 #
 # Run from the repository root:

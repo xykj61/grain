@@ -1,10 +1,10 @@
-# tools/t/tact_publish_receipt_bron_witness.rish — TACT Journey 2, Rung 3: the receipt made portable.
+# tools/t/tact_publish_receipt_bron_witness.rish -- TACT Journey 2, Rung 3: the receipt made portable.
 #
 # Rungs one and two proved a receipt verifies offline and binds to a settled, current keeper. A
 # receipt is only useful if it can travel. This rung renders a Publication to a
 # `format publication-v1` Bron record and parses it back byte-for-byte: parse(render(receipt))
 # recovers an equal receipt, and the recovered receipt still verifies offline against the
-# publisher's key. The reader is bounded and purpose-built — an unknown field, a missing field, a
+# publisher's key. The reader is bounded and purpose-built -- an unknown field, a missing field, a
 # wrong header, and malformed hex each refuse.
 #
 # Run from the repository root:

@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep040_census_witness.rish — e89 IronBeetle ep040.
+# tools/gen/season/ironbeetle_ep040_census_witness.rish -- e89 IronBeetle ep040.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep040_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep040: Language EN — three stages, offset by one."
 say "iron-ep040: Style Radiant — read, merge, write overlap inside one thread."

@@ -1,10 +1,10 @@
-# tools/t/tally_a2_list_reducer_witness.rish — Ashvini a2: the reducer is chosen (e248/e249).
+# tools/t/tally_a2_list_reducer_witness.rish -- Ashvini a2: the reducer is chosen (e248/e249).
 #
 #   rishi/bin/rishi run tools/t/tally_a2_list_reducer_witness.rish
 #
 # The list fold folds any closed tuple. STOA336 makes its REDUCER a choice at the
 # call: `|+ sum <face>` and `|+ prod <face>` fold the same fields of the same shape
-# and differ only in operator and identity — the sum of no fields is zero, the
+# and differ only in operator and identity -- the sum of no fields is zero, the
 # product of none is one. Both wrap on purpose, as the seated sum does.
 
 say "a2-reducer: Language EN — sum and prod over one shape, chosen at the call."

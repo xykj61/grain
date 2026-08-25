@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e136 — supersede MantraPod pitch; restore dated elder; seat REDS 47.
+# Equinox e136 -- supersede MantraPod pitch; restore dated elder; seat REDS 47.
 # Exit 0 when elder is whole testimony, new dated pitch names Grain, dated_guard clean.
 # No backtick characters.
 #
@@ -7,7 +7,7 @@
 #   sh tools/fixtures/equinox_e136_mantrapod_supersede_scan.sh prove-red
 #
 # Law: a dated artifact is immutable unless it declares living or freezes.
-# Law: accrete-never-break — supersede rather than silent claim rewrite.
+# Law: accrete-never-break -- supersede rather than silent claim rewrite.
 set -eu
 
 MODE=${1:-}
@@ -57,7 +57,7 @@ for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$README" \
 done
 echo "instruments_tracked=honored"
 
-# Elder pitch — dated testimony restored
+# Elder pitch -- dated testimony restored
 rg -q '^\*\*Stamp:\*\* `20260629.020012`' "$ELDER" || {
   echo "elder=failed"
   echo "detail=want_stamp_20260629"
@@ -119,7 +119,7 @@ rg -q '20260629-020012_mantrapod-venture-pitch' "$KIN" || {
 echo "kin=honored"
 echo "kin_note=dated_essay_kept_whole"
 
-# New dated pitch — living speech of Grain
+# New dated pitch -- living speech of Grain
 rg -q '^\*\*Stamp:\*\* `20260801.005853`' "$NEW" || {
   echo "new_pitch=failed"
   echo "detail=want_stamp_20260801_005853"
@@ -195,7 +195,7 @@ rg -qi 'supersede|accrete-never-break' "$LEXICON" "$COUNSEL" || {
 }
 echo "lexicon=honored"
 
-# REDS 47 — in-place dated claim rewrite
+# REDS 47 -- in-place dated claim rewrite
 rg -q '^\| 47 \|' "$REDS" || {
   echo "reds=failed"
   echo "detail=want_row_47"
@@ -227,7 +227,7 @@ echo "$E135_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "e135=honored"
 
-# dated_guard — with elders restored and no unlawful claim rewrite staged as living speech
+# dated_guard -- with elders restored and no unlawful claim rewrite staged as living speech
 GUARD_OUT=$(sh "$DATED_GUARD")
 echo "$GUARD_OUT" | sed 's/^/dated_guard_/'
 echo "$GUARD_OUT" | rg -q 'OK   dated-guard clean|OK   no staged MODIFIED dated paths' || {

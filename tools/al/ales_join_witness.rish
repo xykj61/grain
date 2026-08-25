@@ -1,19 +1,19 @@
-# tools/al/ales_join_witness.rish — the crossfade join: the choice of law where an inserted span meets its neighbour (ALES26).
+# tools/al/ales_join_witness.rish -- the crossfade join: the choice of law where an inserted span meets its neighbour (ALES26).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES26.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES26.
 # Design read: active-designing/20260814-fill-ales26-lotus-crossfade-join.md
-# Stands on: lotus/crossfade.rye (ALES12) — the equal-power `crossfade` read at the seam, reused whole over its public API, so
-# the join inherits the proven −3 dB law rather than re-deriving it; lotus/timeline.rye (ALES2) — the `Clip` it edits, `splice`
+# Stands on: lotus/crossfade.rye (ALES12) -- the equal-power `crossfade` read at the seam, reused whole over its public API, so
+# the join inherits the proven −3 dB law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the `Clip` it edits, `splice`
 # reused to fill the overlap windows and append the span's tail, and `max_clip` as the one shared bound.
 #
 # lotus/join.rye gives an inserted span the choice of law where it meets its neighbour: instead of butting its head hard against
 # the outgoing tail (a step in the waveform, a click a keeper hears), it OVERLAPS the two and crosses them equal-power, so the
 # seam flows through ALES12's curve. The neighbours share the overlap in time, so the new length is clip + span − overlap. The
-# selftest proves: the join shares the overlap (5,5,2 → 8, not 10); the seam head still continues the clip (pure outgoing) and
+# selftest proves: the join shares the overlap (5,5,2 -> 8, not 10); the seam head still continues the clip (pure outgoing) and
 # its tail still continues the span (pure incoming); a hard butt splice steps the full 60000 swing where the join's seam sample
 # sits strictly inside it; a full overlap is a pure crossfade with nothing appended; a self-join never dips below the level; and
 # an overlap under two, past the tail, past the head, or an overflow each refuses by name leaving the clip untouched. Purely
-# local — no network, no keys, no funds, no real device, no real speaker.
+# local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_join_witness.rish

@@ -1,4 +1,4 @@
-# glow_mobile_target_witness.rish — Glow's verified code runs on the phone's architecture.
+# glow_mobile_target_witness.rish -- Glow's verified code runs on the phone's architecture.
 #
 # The first real lap of preparing for the Glow mobile platform: cross-build a
 # Glow witness for aarch64 (the Glowphone's CPU architecture, per the Fairphone

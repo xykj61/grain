@@ -1,16 +1,16 @@
-# tools/al/ales_selection_witness.rish — the selection, a marked span a keeper edits as one across both channels (ALES23).
+# tools/al/ales_selection_witness.rish -- the selection, a marked span a keeper edits as one across both channels (ALES23).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES23.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES23.
 # Design read: active-designing/20260814-fill-ales23-lotus-selection.md
-# Stands on: lotus/timeline.rye (ALES2) — cut and gain, applied to each channel; lotus/pan.rye (ALES10) — the StereoClip whose two
-# channels share one length; lotus/markers.rye (ALES20) — region_between, so a selection is grabbed between two named marks.
+# Stands on: lotus/timeline.rye (ALES2) -- cut and gain, applied to each channel; lotus/pan.rye (ALES10) -- the StereoClip whose two
+# channels share one length; lotus/markers.rye (ALES20) -- region_between, so a selection is grabbed between two named marks.
 #
 # lotus/selection.rye grabs the span [start, end) between two marks and edits it whole. The crux: an edit keeps the two channels in
-# LOCKSTEP and operates exactly the marked span — the same (start, span) passed to each channel, checked against the shared length
+# LOCKSTEP and operates exactly the marked span -- the same (start, span) passed to each channel, checked against the shared length
 # first, so a cut shrinks both equally (left.len == right.len after) and the edit is atomic. The selftest proves: a selection cut
 # equals cutting each channel by hand, the stereo staying aligned; a gain scales the span in both channels and leaves the rest and
 # the lengths untouched; silence zeroes the span in both; a selection grabbed between two markers drives a real cut; every edge
-# refuses by name (BadSelection / BadGain / BadPair / BadRange). Purely local — no network, no keys, no funds.
+# refuses by name (BadSelection / BadGain / BadPair / BadRange). Purely local -- no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_selection_witness.rish

@@ -1,24 +1,24 @@
-# tools/cr/crypto_monocypher_chacha20_parity_witness.rish — Monocypher-source parity for the standalone ChaCha20 (IETF, RFC 8439) stream cipher, the
+# tools/cr/crypto_monocypher_chacha20_parity_witness.rish -- Monocypher-source parity for the standalone ChaCha20 (IETF, RFC 8439) stream cipher, the
 # keystream the whole ChaCha/Poly line is built on. Our authored crypto/chacha20.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual),
 # each compiled fresh and asked for the same six keystream/ciphertext lines, diffed byte-for-byte. The NINTH rung of the real Monocypher-source parity
-# pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · standalone Poly1305 came before).
-# Season G · Cryptography.
+# pattern (BLAKE2b - X25519 - Ed25519 - IETF AEAD - Argon2 - XChaCha20-Poly1305 flagship - Edwards<->Montgomery - standalone Poly1305 came before).
+# Season G - Cryptography.
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/chacha20.rye's own selftest named Monocypher-source parity as an honest held horizon
 # ("its vendored source is a held fetch"); this rung closes it. ChaCha20 was proven inside the AEAD flagship, yet never STANDALONE against Monocypher's
-# own crypto_chacha20_ietf — so the stream cipher every AEAD, Vault seal, and Comlink session enciphers against now stands proven in its own right, the
+# own crypto_chacha20_ietf -- so the stream cipher every AEAD, Vault seal, and Comlink session enciphers against now stands proven in its own right, the
 # stream-cipher counterpart to the standalone Poly1305 rung before it.
-# Kin: crypto/chacha20.rye (our authored stream cipher, GREEN against Zig's std.crypto and the RFC vectors) · tools/rye/monocypher_chacha20_parity.rye (our
-# printing harness) · tools/fixtures/monocypher_chacha20_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_poly1305_parity_witness.rish
-# (the Poly1305 sibling — together they prove both AEAD halves standalone). Monocypher stays the parity TARGET, vendored and unmodified, never a copied
+# Kin: crypto/chacha20.rye (our authored stream cipher, GREEN against Zig's std.crypto and the RFC vectors) - tools/rye/monocypher_chacha20_parity.rye (our
+# printing harness) - tools/fixtures/monocypher_chacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_poly1305_parity_witness.rish
+# (the Poly1305 sibling -- together they prove both AEAD halves standalone). Monocypher stays the parity TARGET, vendored and unmodified, never a copied
 # line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The six lines are anchored to the world twice over: line 1 is the RFC 8439 §2.3.2 keystream block for counter 1 (published), line 2 is the RFC 8439
 # §2.4.2 ciphertext of the standard's own 114-byte plaintext (published); lines 3-6 are keystream over deterministic messages of sizes {0, 5, 64, 200}
-# at raised counters (empty · sub-block · exact 64-byte boundary · multi-block), where the oracle is a second real implementation agreeing byte-for-byte.
-# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+# at raised counters (empty - sub-block - exact 64-byte boundary - multi-block), where the oracle is a second real implementation agreeing byte-for-byte.
+# Purely local -- no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_monocypher_chacha20_parity_witness.rish
@@ -36,11 +36,11 @@ let rout = "crypto/bin/rye_chacha20.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_chacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-chacha20-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — six keystream/ciphertext hex lines.
+# 2. Run the Monocypher C harness -- six keystream/ciphertext hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-chacha20-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — six keystream/ciphertext hex lines over the identical inputs.
+# 3. Run our authored Rye harness -- six keystream/ciphertext hex lines over the identical inputs.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_chacha20_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-chacha20-parity: Rye harness exited non-zero — see ${rout}"
 

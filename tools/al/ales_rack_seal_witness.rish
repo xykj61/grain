@@ -1,18 +1,18 @@
-# tools/al/ales_rack_seal_witness.rish — the slot sheet, sealed (ALES34).
+# tools/al/ales_rack_seal_witness.rish -- the slot sheet, sealed (ALES34).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES34.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES34.
 # Design read: active-designing/date/20260814/20260814-151050_fill-ales34-lotus-rack-seal.md
-# Stands on: lotus/rack_sheet.rye (ALES33) — render_rack / parse_rack reused whole as the sealed body; lotus/rack.rye (ALES30) — the
+# Stands on: lotus/rack_sheet.rye (ALES33) -- render_rack / parse_rack reused whole as the sealed body; lotus/rack.rye (ALES30) -- the
 # Rack sealed and rebuilt. Mirrors the Sha256 verify-before-trust of lotus/wire.rye (ALES0).
 #
 # lotus/rack_seal.rye seals an ALES33 slot sheet with a Sha256 content digest and refuses to parse a record whose digest does not
-# match its body — the wire's verify-before-trust handed to the saveable sheet. The crux: a sealed slot sheet parses back to exactly
-# the same rack ONLY when its digest matches its body — seal_rack renders the plain ALES33 record as the body and writes a Sha256 over
+# match its body -- the wire's verify-before-trust handed to the saveable sheet. The crux: a sealed slot sheet parses back to exactly
+# the same rack ONLY when its digest matches its body -- seal_rack renders the plain ALES33 record as the body and writes a Sha256 over
 # exactly those bytes, and verify_and_parse recomputes the digest and hands the body to rack_sheet.parse_rack only on a match, so a
 # flipped sample, a truncated tail, or a hand-edited name is caught at the gate before a single slot is trusted. The selftest proves:
 # a sealed two-slot rack round-trips whole; a flipped body byte and a truncated tail refuse DigestMismatch; a plain record, a missing,
 # short, or non-hex digest line refuses BadRecord; a seal into a too-small buffer refuses Overflow. The seal proves a sheet arrived
-# whole, not who wrote it — no signature, no keys, no network, no funds.
+# whole, not who wrote it -- no signature, no keys, no network, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_rack_seal_witness.rish

@@ -56,7 +56,7 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-# e103 landed window_min. e104 may HOLD Class A again (i8) — elder floor stays.
+# e103 landed window_min. e104 may HOLD Class A again (i8) -- elder floor stays.
 echo "$FASCIA_OUT" | rg -q -F 'baseline_kind=window_min' || {
   echo "refine_fascia=failed"
   echo "verdict=misread"
@@ -97,7 +97,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "refine_fork=honored"
 echo "refine_fork_status=not_consumed"
 
-# --- almanac seats 97-106 · ch7 at least 10/16 ---
+# --- almanac seats 97-106 - ch7 at least 10/16 ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*)

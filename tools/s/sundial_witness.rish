@@ -1,8 +1,8 @@
-# sundial_witness.rish — the health face: the tree's health at a glance.
+# sundial_witness.rish -- the health face: the tree's health at a glance.
 #
 # Proves the sundial counts green modules, computes the health percent (never dividing
 # by zero on an empty face), reads all-green honestly, and emits its roll-up as a valid
-# Ledgerworks baton — a format baton-v1 · archetype ledgerworks document the Scribe
+# Ledgerworks baton -- a format baton-v1 - archetype ledgerworks document the Scribe
 # reader validates (member+, roll, stamp, next), carrying the health line the recursion
 # batons can hold.
 #
@@ -11,7 +11,7 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build sundial/sundial.rye -femit-bin=sundial/bin/sundial
 #   rishi/bin/rishi run tools/s/sundial_witness.rish
 
-# The module's own selftest — counts, percent, all-green, empty-safe.
+# The module's own selftest -- counts, percent, all-green, empty-safe.
 let st = run ["sundial/bin/sundial" "selftest"]
 assert st.ok else "sundial selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"

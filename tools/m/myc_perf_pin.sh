@@ -1,6 +1,6 @@
 #!/bin/sh
-# tools/m/myc_perf_pin.sh — S0 wall-time baselines for myc GREEN mains (door 11).
-# Measure only · no tuning · no budget red on elapsed_ms.
+# tools/m/myc_perf_pin.sh -- S0 wall-time baselines for myc GREEN mains (door 11).
+# Measure only - no tuning - no budget red on elapsed_ms.
 #
 # Invoked by tools/m/myc_perf_pin.rish.
 # Writes work-in-progress/myc-s0-baselines.tsv (rewrite whole table each run).
@@ -17,7 +17,7 @@ mkdir -p "$ZIG_LOCAL_CACHE_DIR" "$ZIG_GLOBAL_CACHE_DIR"
 report=$root/work-in-progress/myc-s0-baselines.tsv
 min_rows=${MYC_PERF_BASELINE_MIN_ROWS:-5}
 
-# Roster — Build myc surface after door 10 (charter 20260730.101101).
+# Roster -- Build myc surface after door 10 (charter 20260730.101101).
 set -- \
   fold:mycelium/fold.rye \
   fold_persist:mycelium/fold_persist.rye \

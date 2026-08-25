@@ -1,17 +1,17 @@
-# tools/al/ales_fader_witness.rish — the per-track fader column: each track's level scales its contribution before the sum (ALES8).
+# tools/al/ales_fader_witness.rish -- the per-track fader column: each track's level scales its contribution before the sum (ALES8).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES8.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES8.
 # Design read: active-designing/20260814-fill-ales8-lotus-fader-column.md
-# Stands on: lotus/track.rye (ALES6) — the Session table this rung renders, its bound and offset alignment reused whole;
-# lotus/timeline.rye (ALES2) — the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
-# lotus/clock.rye (ALES5) — each track's real offset converts through samples_for.
+# Stands on: lotus/track.rye (ALES6) -- the Session table this rung renders, its bound and offset alignment reused whole;
+# lotus/timeline.rye (ALES2) -- the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
+# lotus/clock.rye (ALES5) -- each track's real offset converts through samples_for.
 #
-# lotus/fader.rye seats the mixing-desk channel strip's one essential control — a per-track fader applied to each track BEFORE
+# lotus/fader.rye seats the mixing-desk channel strip's one essential control -- a per-track fader applied to each track BEFORE
 # it joins the sum, the fader multiply inside the wide accumulator so the master saturates ONCE over the true faded sum. The
 # selftest proves: a unity column reproduces ALES6's master exactly (the mixer generalizes the table); a 1/2 fader halves a
 # track; a 0/1 fader mutes one; two loud boosted tracks saturate once over the true faded sum; a -1/1 fader nulls a track
 # against its copy to exact silence (the wide-domain phase-cancel); a zero denominator refuses BadGain; a track past the
-# master bound forwards ClipFull. Purely local — no network, no keys, no funds, no real device.
+# master bound forwards ClipFull. Purely local -- no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_fader_witness.rish

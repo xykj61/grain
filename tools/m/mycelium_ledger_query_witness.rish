@@ -1,17 +1,17 @@
-# tools/m/mycelium_ledger_query_witness.rish — the Ledger Voice (r1): the intelligence reads the ledger.
+# tools/m/mycelium_ledger_query_witness.rish -- the Ledger Voice (r1): the intelligence reads the ledger.
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the reading half. The Cord commits, gossip
-# converges, batching amortizes, and the Knot checkpoints — four ways to write and agree the ledger, yet
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the reading half. The Cord commits, gossip
+# converges, batching amortizes, and the Knot checkpoints -- four ways to write and agree the ledger, yet
 # no rung had let a person read it. This rung carries the same Lantern-shaped voice every other module
 # earned (graph_query reads the living Mantra graph, artifact_query reads verified bytes) to the consensus
-# ledger's folded supply: supply · issued · taxed · the count of reserved stars · whether a named star is
-# held · the fact count · a one-line summary, each metered by the Lantern contract.
+# ledger's folded supply: supply - issued - taxed - the count of reserved stars - whether a named star is
+# held - the fact count - a one-line summary, each metered by the Lantern contract.
 #
-# The crux is the integrity gate, the twin of artifact_query's own — the voice folds the whole log lawful
+# The crux is the integrity gate, the twin of artifact_query's own -- the voice folds the whole log lawful
 # (fold.fold_log) *before* it reports a single grain, so a log carrying one tampered fact refuses the
 # whole fold and the voice reports nothing rather than read an illegal supply. It can only ever see a
 # supply the fold law already blessed. A disallowed model, an unknown op, and a zero budget each refuse;
-# a summary that outruns the budget truncates with a length stop. Demo keeper seeds only — no real key,
+# a summary that outruns the budget truncates with a length stop. Demo keeper seeds only -- no real key,
 # no funds, no network, no custody: a node reads its own lawful fold.
 #
 # Additive: composes lantern_core and mycelium's fold public API only; the fold stays its own GREEN binary
@@ -46,7 +46,7 @@ assert selftest.out contains "model not allowed refused" else "mycelium-ledger-q
 assert selftest.out contains "unknown op refused (no fake answer)" else "mycelium-ledger-query: no-fake-answer refusal missing"
 assert selftest.out contains "zero budget refused by Lantern contract" else "mycelium-ledger-query: Lantern budget gate missing"
 
-# The fold the voice reads over stays its own green binary — the supply the voice reports is the supply
+# The fold the voice reads over stays its own green binary -- the supply the voice reports is the supply
 # the fold law computes, proven separately. Two tools, one law.
 let fold_bin = "mycelium/bin/fold"
 let fold_build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=${fold_bin}"]

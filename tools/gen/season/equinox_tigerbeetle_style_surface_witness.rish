@@ -1,39 +1,39 @@
-# tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish — e55 TB style surface.
+# tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish -- e55 TB style surface.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish
 #
 # Four TB style leaves already GREEN alone must GREEN together. Almanac seat 60.
-# Leaf witnesses only — no nested choirs (avoids elder chains). Clean-room study.
+# Leaf witnesses only -- no nested choirs (avoids elder chains). Clean-room study.
 
 say "equinox-tb-style-surface: Language EN — four TB greens, one choir."
 say "equinox-tb-style-surface: Style Radiant — the style surface holds as one."
 say "equinox-tb-style-surface: Lens TAME — e55 · almanac seat 60 · ch4 12/16."
 
-# Limb 0 — Style By The Numbers (leaf)
+# Limb 0 -- Style By The Numbers (leaf)
 let style = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish"]
 say style.out
 assert style.ok else "equinox-tb-style-surface: style limb failed"
 assert style.out contains "GREEN: tb-style-numbers" else "equinox-tb-style-surface: style not GREEN"
 
-# Limb 1 — Dependencies (leaf)
+# Limb 1 -- Dependencies (leaf)
 let deps = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_dependencies_census_witness.rish"]
 say deps.out
 assert deps.ok else "equinox-tb-style-surface: deps limb failed"
 assert deps.out contains "GREEN: tb-dependencies" else "equinox-tb-style-surface: deps not GREEN"
 
-# Limb 2 — Tooling (leaf)
+# Limb 2 -- Tooling (leaf)
 let tooling = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_tooling_census_witness.rish"]
 say tooling.out
 assert tooling.ok else "equinox-tb-style-surface: tooling limb failed"
 assert tooling.out contains "GREEN: tb-tooling" else "equinox-tb-style-surface: tooling not GREEN"
 
-# Limb 3 — The Last Stage (leaf)
+# Limb 3 -- The Last Stage (leaf)
 let last = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_last_stage_census_witness.rish"]
 say last.out
 assert last.ok else "equinox-tb-style-surface: last-stage limb failed"
 assert last.out contains "GREEN: tb-last-stage" else "equinox-tb-style-surface: last-stage not GREEN"
 
-# Refuse — absent clone path (any of the leaf scans)
+# Refuse -- absent clone path (any of the leaf scans)
 let refuse = run ["sh" "tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-style-surface: absent clone must fail"

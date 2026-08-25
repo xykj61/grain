@@ -1,19 +1,19 @@
-# tools/cr/crypto_sha512_witness.rish — SHA-512 authored in pure Rye: Season G's second crypto primitive, the hash Ed25519 signs with,
-# proven against the FIPS 180-4 known-answer and byte-for-byte against an independent implementation (Season G · Cryptography).
+# tools/cr/crypto_sha512_witness.rish -- SHA-512 authored in pure Rye: Season G's second crypto primitive, the hash Ed25519 signs with,
+# proven against the FIPS 180-4 known-answer and byte-for-byte against an independent implementation (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names SHA-512 as following
 # the hash foundation).
 # Kin: crypto/blake2b.rye (the first primitive, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a
-# copied line — our own arithmetic, studied clean-room from the public standard (.claude/rules/gratitude-licenses.md).
+# copied line -- our own arithmetic, studied clean-room from the public standard (.claude/rules/gratitude-licenses.md).
 #
-# crypto/sha512.rye authors SHA-512 from the standard — the initial hash value, the eighty round constants, the Ch/Maj/Sigma
+# crypto/sha512.rye authors SHA-512 from the standard -- the initial hash value, the eighty round constants, the Ch/Maj/Sigma
 # functions, the eighty-round compression, FIPS 180-4 padding (0x80 marker, zeros, 128-bit big-endian bit length). The primitive calls
 # no std.crypto. Parity is proven at selftest against two references runnable now: the FIPS 180-4 known-answer for "abc" and the empty
 # message (hex for hex), and Zig's own std.crypto SHA-512 as an independent implementation, byte-for-byte over the empty message,
 # "abc", a 111-byte input, a 112-byte input (the edge that forces a second all-padding block), and a 300-byte multi-block input. The
 # vendored Monocypher source is a held network fetch, so Monocypher-source parity is an honest horizon rung. An over-long message
-# refuses MessageTooLong before a byte is mixed. Purely local arithmetic — no key, no signature, no network, no funds, no real device.
+# refuses MessageTooLong before a byte is mixed. Purely local arithmetic -- no key, no signature, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_sha512_witness.rish

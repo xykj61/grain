@@ -1,6 +1,6 @@
-# width_check_th5.rish — TH-5 witness: Rishi module zero authored usize.
+# width_check_th5.rish -- TH-5 witness: Rishi module zero authored usize.
 #
-# Gates rishi/src/main.rye only — Comlink wire widths gated by TH-6.
+# Gates rishi/src/main.rye only -- Comlink wire widths gated by TH-6.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/width_check_th5.rish

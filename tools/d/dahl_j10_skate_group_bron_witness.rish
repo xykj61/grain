@@ -1,7 +1,7 @@
-# tools/d/dahl_j10_skate_group_bron_witness.rish — Season 3 Journey 10 (Membership), Rung 3.
+# tools/d/dahl_j10_skate_group_bron_witness.rish -- Season 3 Journey 10 (Membership), Rung 3.
 #
 # Rungs one and two fixed the quorum rule and bound each vote to a member's signature. A group is only
-# useful to a commons if it can be carried — handed to another keeper, checked with no live group in hand.
+# useful to a commons if it can be carried -- handed to another keeper, checked with no live group in hand.
 # pond/apps/skate_group_bron.rye renders a signed group to a format skate-group-v1 Bron record (a group
 # line with id and quorum, one founder line per founder, one vote line per signed vote) and parses it back
 # byte-for-byte, still quorum-honest offline: still_quorum_honest re-verifies every carried vote signature
@@ -9,7 +9,7 @@
 # votes through rung one's open and rung two's vote_signed into an equal live group whose admission
 # matches. A vote signature flipped after the crossing refuses BadConsent offline; an unknown field
 # (UnknownField, never dropped), a wrong header (BadFormat), a missing group line (MissingGroup), and
-# malformed hex (BadHex) each refuse. Additive — composes rungs one and two over public API; both re-run
+# malformed hex (BadHex) each refuse. Additive -- composes rungs one and two over public API; both re-run
 # GREEN. Demo keeper seeds only, no network (serve reaches the custody gate).
 #
 # Run from the repository root:
@@ -20,7 +20,7 @@ say "dahl-j10r3: Lens TAME — a flipped vote signature, an unknown field, a wro
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rungs one and two re-run GREEN — the travel layer is additive over them.
+# Rungs one and two re-run GREEN -- the travel layer is additive over them.
 let r1_bin = "pond/bin/skate-group"
 let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "dahl-j10r3: rung-one skate_group build failed"

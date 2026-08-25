@@ -1,16 +1,16 @@
-# tools/m/mycelium_cord_byzantine_witness.rish — the Cord survives equivocation (r2).
+# tools/m/mycelium_cord_byzantine_witness.rish -- the Cord survives equivocation (r2).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r2 — Byzantine refusal.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - rung r2 -- Byzantine refusal.
 # r1 fixed the deterministic-commit crux over an honest mesh. r2 wires onto that spine the adversary a
-# leaderless DAG must survive: equivocation — one author publishing two distinct blocks at the same round,
+# leaderless DAG must survive: equivocation -- one author publishing two distinct blocks at the same round,
 # hoping to split honest nodes' view of history.
 #
-# The crux this witness proves: the Cord quarantines the equivocator by admission control — an author
-# speaks at most once per round — so the commit over the honest sub-DAG is byte-identical whether or not
+# The crux this witness proves: the Cord quarantines the equivocator by admission control -- an author
+# speaks at most once per round -- so the commit over the honest sub-DAG is byte-identical whether or not
 # an equivocator tried. A second distinct block at a seen round refuses Equivocation (the Dag unchanged);
 # the same author at a later round is honest progress, admitted; a forward reference refuses DanglingParent
-# (so a block points only backward — no cycle can form); a forgery refuses BadSignature, never mislabeled.
-# Demo keeper seeds only — no real key, no funds, no network, no custody.
+# (so a block points only backward -- no cycle can form); a forgery refuses BadSignature, never mislabeled.
+# Demo keeper seeds only -- no real key, no funds, no network, no custody.
 #
 # Additive: the r1 deterministic-commit witness re-runs GREEN under this one.
 #
@@ -38,7 +38,7 @@ assert selftest.out contains "a block points only backward (no cycle)" else "myc
 assert selftest.out contains "a forged block refuses BadSignature, never mislabeled" else "mycelium-cord-bft: forgery-not-equivocation claim missing"
 assert selftest.out contains "honest commit order and fold state are byte-identical with a quarantined equivocator" else "mycelium-cord-bft: honest-order-unchanged crux missing"
 
-# Additive: r1's deterministic-commit crux still stands under the Byzantine round — the spine r2 wired onto.
+# Additive: r1's deterministic-commit crux still stands under the Byzantine round -- the spine r2 wired onto.
 let r1bin = "mycelium/bin/cord"
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=${r1bin} && ${r1bin} 2>&1"]
 assert r1.ok else "mycelium-cord-bft: r1 deterministic-commit witness is not GREEN"

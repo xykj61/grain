@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_tone_witness.rish — stereo_tone: the one-pole tone control carried into stereo, the same coefficient shaping both channels — the rung that opens the stereo EQ / filter class (ALES170).
+# tools/al/ales_stereo_tone_witness.rish -- stereo_tone: the one-pole tone control carried into stereo, the same coefficient shaping both channels -- the rung that opens the stereo EQ / filter class (ALES170).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES170.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES170.
 # Design read: active-designing/date/20260815/20260815-074743_fill-ales170-lotus-stereo-tone.md
-# Stands on: lotus/tone.rye (ALES40 — the mono one-pole low-pass and high-pass run once per channel, its ToneError reused whole and its precheck sharing one coefficient-and-span validation), lotus/pan.rye (ALES10 — the
-# StereoClip), lotus/timeline.rye (ALES2 — the Clip and the saturate the high-pass complement reuses).
+# Stands on: lotus/tone.rye (ALES40 -- the mono one-pole low-pass and high-pass run once per channel, its ToneError reused whole and its precheck sharing one coefficient-and-span validation), lotus/pan.rye (ALES10 -- the
+# StereoClip), lotus/timeline.rye (ALES2 -- the Clip and the saturate the high-pass complement reuses).
 #
 # lotus/stereo_tone.rye shapes a stereo master's brightness: it runs ALES40's proven mono one-pole low-pass (and its exact high-pass complement) on BOTH channels with the SAME coefficient, each channel carrying its OWN i64
-# state. A tone control is parametric — its coefficient is a smoothing fraction the caller names, not a measured scalar — so the same coefficient on each channel preserves the stereo image for free, while the independent
+# state. A tone control is parametric -- its coefficient is a smoothing fraction the caller names, not a measured scalar -- so the same coefficient on each channel preserves the stereo image for free, while the independent
 # per-channel state lets each side filter its own content (linking the state across channels would be a bug, bleeding one channel's transients into the other's brightness). It validates the coefficient and span once against
 # the shared length before either channel is mutated (BadCoeff on a coefficient outside zero-to-one, BadRange on a span past the samples), so a refusal never filters one channel and leaves the other torn; ToneError reused
 # whole. Values only, never a length; the two channels leave balanced. The crux is five laws: the stereo low-pass law (each channel equal to ALES40's mono low_pass with the same coefficient byte for byte, the channels

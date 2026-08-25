@@ -1,8 +1,8 @@
-# tools/b/buhr_mantra_editor_view_witness.rish — BUHR Journey 4, Rung 2.
+# tools/b/buhr_mantra_editor_view_witness.rish -- BUHR Journey 4, Rung 2.
 #
 # An edit moves the living edge forward, visibly. Rung one proved an edit is an append
 # the browser graph already knows how to show; this rung carries that growth onto the
-# styled Skate surface. Rung three (Journey 2) lit each lane's head — the newest node —
+# styled Skate surface. Rung three (Journey 2) lit each lane's head -- the newest node --
 # in the design system's head token; an edit adds a newer node, so the living edge on
 # the edited lane advances to it. The proof is at the grid-cell level, deterministic:
 # on the edited lane's row the head-token cells sit further to the right after the edit

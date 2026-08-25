@@ -1,12 +1,12 @@
-# tools/co/constel_net_witness.rish — Constel dev-net harness, Rung 1: a named fake dev-net, quarantined by its name.
+# tools/co/constel_net_witness.rish -- Constel dev-net harness, Rung 1: a named fake dev-net, quarantined by its name.
 #
 # A constel is a fake, self-invented constellation for a sandbox / testnet / localhost Comlink p2p
 # network run inside the jailed pier. This rung fixes the crux: a fake dev-net can only be born from
 # a provably-non-@p name (a digit anywhere, the one promise the Constel naming law guards), and under
 # that name it runs the real settlement protocol from a genuine genesis. The name carries the safety,
-# not a flag — an @p-shaped name refuses UnsafeName before any genesis opens, so no fake net is ever
+# not a flag -- an @p-shaped name refuses UnsafeName before any genesis opens, so no fake net is ever
 # born un-quarantined. A forged bind and a non-galaxy number each refuse, so the fake net is the
-# genuine protocol. Demo keeper seeds only — no real key, no network, no custody (gate %4 untouched).
+# genuine protocol. Demo keeper seeds only -- no real key, no network, no custody (gate %4 untouched).
 #
 # Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
 # Scope: active-designing/date/20260813/20260813-022908_constel-devnet-harness-exploration.md
@@ -34,7 +34,7 @@ assert selftest.out contains "a non-galaxy number refused NotGenesis behind a sa
 assert selftest.out contains "an empty name and an overlong name each refuse" else "constel-net: bounded-handle claim missing"
 assert selftest.out contains "a fake dev-net is born only from a law-safe name" else "constel-net: crux claim missing"
 
-# The Constel naming law this harness draws from stands at its door — the same scan the harness
+# The Constel naming law this harness draws from stands at its door -- the same scan the harness
 # mirrors in Rye stays GREEN, so the harness and the law agree on the one safety promise.
 let law = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_naming_witness.rish 2>&1"]
 assert law.ok else "constel-net: the Constel naming law witness the harness draws from is not GREEN"

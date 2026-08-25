@@ -1,6 +1,6 @@
-# tame_check_scan.rish — scan authored .rye for TH-2 textual rules.
+# tame_check_scan.rish -- scan authored .rye for TH-2 textual rules.
 #
-# Native repoint of tame_check_scan.sh — map + where per opening_lines_scan.rish.
+# Native repoint of tame_check_scan.sh -- map + where per opening_lines_scan.rish.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/tame_check_scan.rish
 

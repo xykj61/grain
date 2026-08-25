@@ -1,6 +1,6 @@
-# tools/h/hunk_sprite_shelf_witness.rish — the marketplace catalog is browsed as a paged shelf (HUNK38, sprite quest).
+# tools/h/hunk_sprite_shelf_witness.rish -- the marketplace catalog is browsed as a paged shelf (HUNK38, sprite quest).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK38.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK38.
 # Design read: active-designing/date/20260813/20260813-203000_hunk-sprite-catalog-shelf-exploration.md
 # Teacher, thanked clean-room: McMaster-Carr's fast one-sprite-sheet index page (concept only, siloed).
 #
@@ -11,7 +11,7 @@
 # own down-mapped slot; `catalog_window` pages a catalog larger than the screen. The selftest indexes four
 # solid-color products (red/green/blue/yellow bands) into one 16x8 sheet and proves each row's swatch carries its
 # product's color slot (3,4,5,6), each row names its product, paging covers every product once in held order, the
-# shelf is pure and deterministic, and the five named refusals fire. Pure composition over public APIs — no new
+# shelf is pure and deterministic, and the five named refusals fire. Pure composition over public APIs -- no new
 # storage, codec, or palette. No network, no key, no funds.
 #
 # Run from the repository root:
@@ -27,7 +27,7 @@ let bin = "brushstroke/bin/sprite_shelf"
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_shelf.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-sprite-shelf: build failed — ${build.err}"
 
-# Write the selftest output to a file and grep the file — the GREEN line carries apostrophes ("product's",
+# Write the selftest output to a file and grep the file -- the GREEN line carries apostrophes ("product's",
 # "window's") that break a shell single-quoted round-trip, so read it from disk instead.
 let outfile = "brushstroke/bin/sprite_shelf.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
@@ -48,12 +48,12 @@ assert (trim swatch.out) == "yes" else "hunk-sprite-shelf: the selftest did not 
 let shape = run ["sh" "-c" "grep -q 'carries the window' ${outfile} && echo yes"]
 assert (trim shape.out) == "yes" else "hunk-sprite-shelf: the selftest did not prove the strip carries the window's shape"
 
-# HUNK5 stays GREEN — the shelf reuses sprite.render and image_skate.down_map that the product page proved.
+# HUNK5 stays GREEN -- the shelf reuses sprite.render and image_skate.down_map that the product page proved.
 let page = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_page.rye -femit-bin=brushstroke/bin/sprite_page && brushstroke/bin/sprite_page selftest 2>&1"]
 assert page.ok else "hunk-sprite-shelf: HUNK5 sprite_page re-run failed — ${page.out}"
 assert page.out contains "GREEN sprite-page" else "hunk-sprite-shelf: HUNK5 sprite_page did not stay GREEN"
 
-# HUNK2 stays GREEN — the down-map the swatch stands on, and the set_anchor_palette refactor beneath it, must hold.
+# HUNK2 stays GREEN -- the down-map the swatch stands on, and the set_anchor_palette refactor beneath it, must hold.
 let skate = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/image_skate.rye -femit-bin=brushstroke/bin/image_skate && brushstroke/bin/image_skate selftest 2>&1"]
 assert skate.ok else "hunk-sprite-shelf: HUNK2 image_skate re-run failed — ${skate.out}"
 assert skate.out contains "GREEN image-skate" else "hunk-sprite-shelf: HUNK2 image_skate did not stay GREEN after the set_anchor_palette refactor"

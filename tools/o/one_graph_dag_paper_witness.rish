@@ -1,4 +1,4 @@
-# tools/o/one_graph_dag_paper_witness.rish — accrete shim → tools/gen/season/one_graph_dag_paper_witness.rish (Surface p8)
+# tools/o/one_graph_dag_paper_witness.rish -- accrete shim -> tools/gen/season/one_graph_dag_paper_witness.rish (Surface p8)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/one_graph_dag_paper_witness.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/one_graph_dag_paper_witness.rish" args[0]]
 if r.out != "" then say r.out

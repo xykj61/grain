@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_seventy_line_census_witness.rish — e34 seventy-line bound.
+# tools/gen/season/tigerbeetle_seventy_line_census_witness.rish -- e34 seventy-line bound.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_seventy_line_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-seventy-line: Language EN — seventy lines; the screen is the bound."
 say "tb-seventy-line: Style Radiant — art is born of constraints."

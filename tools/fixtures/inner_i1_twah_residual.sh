@@ -1,5 +1,5 @@
 #!/bin/sh
-# inner_i1_twah_residual.sh — i1 Twah residual sweep (living tree)
+# inner_i1_twah_residual.sh -- i1 Twah residual sweep (living tree)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"

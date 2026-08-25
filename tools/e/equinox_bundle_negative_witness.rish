@@ -1,13 +1,13 @@
-# tools/e/equinox_bundle_negative_witness.rish — Q61: bundle plants must refuse.
+# tools/e/equinox_bundle_negative_witness.rish -- Q61: bundle plants must refuse.
 #
-# Finding this witness encodes (e191–e194): `git bundle verify` reads the
-# header, never the whole pack — a torn bundle can pass verify. The manifest's
+# Finding this witness encodes (e191-e194): `git bundle verify` reads the
+# header, never the whole pack -- a torn bundle can pass verify. The manifest's
 # content address (bundle_sha3 + bytes) is therefore the load-bearing wall,
 # with clone/unbundle as the second: both are planted here.
-#   torn bundle    → sha3 mismatch vs manifest · clone refuses
-#   missing basis  → verify refuses in a repo without the prerequisites
-#   healthy span   → clones tip-equal (the affirmative face, e203)
-# Rishi note: shell brace expansions never appear inside strings here — the
+#   torn bundle    -> sha3 mismatch vs manifest - clone refuses
+#   missing basis  -> verify refuses in a repo without the prerequisites
+#   healthy span   -> clones tip-equal (the affirmative face, e203)
+# Rishi note: shell brace expansions never appear inside strings here -- the
 # rishi interpolator owns the dollar-brace shape (e194 red, owned and recut).
 #
 # Run from the repository root:

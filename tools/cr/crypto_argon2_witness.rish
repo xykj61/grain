@@ -1,21 +1,21 @@
-# tools/cr/crypto_argon2_witness.rish — Argon2 authored in pure Rye: Season G's memory-hard password rung, the KDF that turns a keeper's
-# remembered password into a strong key at a deliberately large RAM cost — the stone Vault stands on so a key need never live on the
-# device — proven byte-for-byte against RFC 9106's own published known-answers for all three modes (Season G · Cryptography).
+# tools/cr/crypto_argon2_witness.rish -- Argon2 authored in pure Rye: Season G's memory-hard password rung, the KDF that turns a keeper's
+# remembered password into a strong key at a deliberately large RAM cost -- the stone Vault stands on so a key need never live on the
+# device -- proven byte-for-byte against RFC 9106's own published known-answers for all three modes (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-# Kin: crypto/blake2b.rye (the hash beneath it — Argon2's whole diffusion is BLAKE2b's, GREEN, with a variable-length hash accreted this
-# round). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own Rye, studied
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+# Kin: crypto/blake2b.rye (the hash beneath it -- Argon2's whole diffusion is BLAKE2b's, GREEN, with a variable-length hash accreted this
+# round). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line -- our own Rye, studied
 # clean-room from the public standard RFC 9106 and Zig's own MIT reference (.claude/rules/gratitude-licenses.md).
 #
 # crypto/argon2.rye fills a memory of 1024-byte blocks and stirs each from two earlier blocks through the BlaMka permutation (BLAKE2b's
 # round function plus the 64-bit multiply that forbids a lane-only shortcut), over t passes, then blake2b_long-derives the key from the
-# folded final block — authoring no new cryptography, the whole diffusion is the GREEN crypto/blake2b.rye's. The primitive calls no
+# folded final block -- authoring no new cryptography, the whole diffusion is the GREEN crypto/blake2b.rye's. The primitive calls no
 # std.crypto. It is proven at selftest byte-for-byte against RFC 9106's own published known-answers: all three modes' primary p=4 vectors
 # (password 0x01*32, salt 0x02*16, secret 0x03*8, ad 0x04*12, t=3 m=32, 32-byte output, secret and ad folded) AND the reference argon2
-# p=1 24-byte vectors (single lane, sub-digest variable output) — the same answers Zig's independent std.crypto argon2 checks itself
+# p=1 24-byte vectors (single lane, sub-digest variable output) -- the same answers Zig's independent std.crypto argon2 checks itself
 # against. A salt below eight bytes, a memory too small for the parallelism, or a zero time cost each refuses its named error before a byte
-# is mixed. Purely local — TEST inputs, no real password, no identity key, no network, no funds, no real device.
+# is mixed. Purely local -- TEST inputs, no real password, no identity key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_argon2_witness.rish

@@ -1,4 +1,4 @@
-# run.rish — running commands, and reading the result as a record.
+# run.rish -- running commands, and reading the result as a record.
 
 let greet = run ["echo" "rishi runs"]
 say "echo said: ${greet.out}"

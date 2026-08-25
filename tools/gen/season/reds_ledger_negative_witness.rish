@@ -1,9 +1,9 @@
-# tools/gen/season/reds_ledger_negative_witness.rish — the ledger guard bites.
+# tools/gen/season/reds_ledger_negative_witness.rish -- the ledger guard bites.
 #
 #   rishi/bin/rishi run tools/gen/season/reds_ledger_negative_witness.rish
 #
-# Voice Season v9 · slot 9 · happy_zone_witnesses_first.
-# Fixture: context/fixtures/reds_ledger_incomplete/REDS.md — standing exempt; it
+# Voice Season v9 - slot 9 - happy_zone_witnesses_first.
+# Fixture: context/fixtures/reds_ledger_incomplete/REDS.md -- standing exempt; it
 # holds a row missing its taught field and a caught column reading "I noticed",
 # so both faults are observed every run rather than remembered from one sitting.
 

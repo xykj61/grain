@@ -1,33 +1,33 @@
-# tools/gen/season/equinox_tigerbeetle_surfaces_hold_witness.rish — e58 surfaces hold.
+# tools/gen/season/equinox_tigerbeetle_surfaces_hold_witness.rish -- e58 surfaces hold.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_surfaces_hold_witness.rish
 #
-# DX · mid · style leaf greens + IronBeetle shelf. Almanac seat 63.
-# Leaf witnesses only — no nested surface choirs. Clean-room study.
+# DX - mid - style leaf greens + IronBeetle shelf. Almanac seat 63.
+# Leaf witnesses only -- no nested surface choirs. Clean-room study.
 
 say "equinox-tb-surfaces-hold: Language EN — three surfaces hold; IronBeetle stands beside."
 say "equinox-tb-surfaces-hold: Style Radiant — lessons help the metal without nesting choirs."
 say "equinox-tb-surfaces-hold: Lens TAME — e58 · almanac seat 63 · ch4 15/16."
 
-# Limb 0 — DX surface leaf (say-why)
+# Limb 0 -- DX surface leaf (say-why)
 let dx = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_say_why_census_witness.rish"]
 say dx.out
 assert dx.ok else "equinox-tb-surfaces-hold: dx limb failed"
 assert dx.out contains "GREEN: tb-say-why" else "equinox-tb-surfaces-hold: dx not GREEN"
 
-# Limb 1 — mid surface leaf (off-by-one join)
+# Limb 1 -- mid surface leaf (off-by-one join)
 let mid = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_off_by_one_census_witness.rish"]
 say mid.out
 assert mid.ok else "equinox-tb-surfaces-hold: mid limb failed"
 assert mid.out contains "GREEN: tb-off-by-one" else "equinox-tb-surfaces-hold: mid not GREEN"
 
-# Limb 2 — style surface leaf (style by the numbers)
+# Limb 2 -- style surface leaf (style by the numbers)
 let style = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish"]
 say style.out
 assert style.ok else "equinox-tb-surfaces-hold: style limb failed"
 assert style.out contains "GREEN: tb-style-numbers" else "equinox-tb-surfaces-hold: style not GREEN"
 
-# Limb 3 — IronBeetle lesson shelf
+# Limb 3 -- IronBeetle lesson shelf
 let iron = run ["sh" "tools/fixtures/ironbeetle_shelf_census.sh"]
 say iron.out
 assert iron.ok else "equinox-tb-surfaces-hold: ironbeetle shelf failed or thin"
@@ -36,14 +36,14 @@ assert iron.out contains "verdict=ok" else "equinox-tb-surfaces-hold: want iron 
 assert iron.out contains "EP001=yes" else "equinox-tb-surfaces-hold: want ep001"
 assert iron.out contains "EP045=yes" else "equinox-tb-surfaces-hold: want ep045"
 
-# Refuse — absent iron shelf
+# Refuse -- absent iron shelf
 let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_shelf_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-tb-surfaces-hold: absent iron must fail"
 assert refuse_iron.out contains "IRON=ABSENT" else "equinox-tb-surfaces-hold: want IRON=ABSENT"
 assert refuse_iron.out contains "verdict=absent" else "equinox-tb-surfaces-hold: want iron verdict=absent"
 
-# Refuse — absent tigerbeetle clone (DX scan)
+# Refuse -- absent tigerbeetle clone (DX scan)
 let refuse_clone = run ["sh" "tools/fixtures/tigerbeetle_say_why_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse_clone.out
 assert refuse_clone.ok == false else "equinox-tb-surfaces-hold: absent clone must fail"

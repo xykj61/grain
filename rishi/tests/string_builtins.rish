@@ -1,4 +1,4 @@
-# string_builtins.rish — length, trim, and slice.
+# string_builtins.rish -- length, trim, and slice.
 
 assert length "hello" == 5 else "length: string failed"
 assert length "" == 0 else "length: empty string failed"

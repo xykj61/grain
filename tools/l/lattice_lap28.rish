@@ -1,4 +1,4 @@
-# lattice_lap28.rish — Lattice lap 27 leaky_relu witness.
+# lattice_lap28.rish -- Lattice lap 27 leaky_relu witness.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "lattice/bin/lattice"
 let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]

@@ -1,8 +1,8 @@
-# tools/gen/season/personalize_template_witness.rish — SUNN5 personalize brix family.
+# tools/gen/season/personalize_template_witness.rish -- SUNN5 personalize brix family.
 #
 #   rishi/bin/rishi run tools/gen/season/personalize_template_witness.rish
 #
-# Presence census on committed templates and sequencing — never reads PERSONALIZE.brix.
+# Presence census on committed templates and sequencing -- never reads PERSONALIZE.brix.
 
 say "personalize-brix: Language EN — template family for a new Grain season."
 say "personalize-brix: Style Radiant — Acme steward inherits, then replaces."
@@ -42,13 +42,13 @@ assert questions contains "question_count 16" else "personalize-brix: want 16 qu
 assert questions contains "q_00_id compass-return" else "personalize-brix: want q_00"
 assert questions contains "q_15_id joy-and-next" else "personalize-brix: want q_15"
 
-# Root deny-all (`/*`) must ignore filled instances — even when absent.
+# Root deny-all (`/*`) must ignore filled instances -- even when absent.
 let ign_p = run ["git" "check-ignore" "-q" "PERSONALIZE.brix"]
 assert ign_p.ok else "personalize-brix: PERSONALIZE.brix must be gitignored by root deny-all"
 let ign_a = run ["git" "check-ignore" "-q" "first_season_answers.brix"]
 assert ign_a.ok else "personalize-brix: first_season_answers.brix must be gitignored by root deny-all"
 
-# Refuse — personal fill must not be tracked if somehow present
+# Refuse -- personal fill must not be tracked if somehow present
 let tracked = run ["sh" "-c" "git ls-files --error-unmatch PERSONALIZE.brix 2>/dev/null"]
 assert tracked.ok == false else "personalize-brix: PERSONALIZE.brix must not be tracked"
 let tracked_a = run ["sh" "-c" "git ls-files --error-unmatch first_season_answers.brix 2>/dev/null"]

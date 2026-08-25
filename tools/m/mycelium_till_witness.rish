@@ -1,18 +1,18 @@
-# tools/m/mycelium_till_witness.rish — the Till: a contested draw decided by the agreed order (r1).
+# tools/m/mycelium_till_witness.rish -- the Till: a contested draw decided by the agreed order (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r1 — the crux.
-# The Tenure decided a contested NAME (one holder); the Till decides a contested DRAW (one hand of coins) —
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the double-spend verdict - rung r1 -- the crux.
+# The Tenure decided a contested NAME (one holder); the Till decides a contested DRAW (one hand of coins) --
 # the double-spend, the oldest reason a value ledger wants consensus. Two keepers each reach into a treasury
 # of 1000 for 700; each is affordable alone, together they are not. The Cord's agreed order already weaves
 # one sequence through the mesh regardless of arrival, and the Till reads it as the treasury's verdict: the
-# first draw takes the coins, the second comes up short — and comes up short as a LAWFUL NO-OP, never a poison.
+# first draw takes the coins, the second comes up short -- and comes up short as a LAWFUL NO-OP, never a poison.
 #
 # The honest distinction this witness proves is the whole crux: a draw that overdraws yet asked for no more
 # than the treasury EVER ISSUED by its turn (amount <= issued-so-far) lost a race and is a lawful no-op the
 # verdict records; a draw that asked for more than the treasury ever issued NEVER COULD PAY and refuses the
-# whole resolution; a broken-fact signature refuses whole. The verdict is deterministic — the same keeper
+# whole resolution; a broken-fact signature refuses whole. The verdict is deterministic -- the same keeper
 # comes up short across three arrival permutations. Composes cord + fold public API only; every buffer
-# bounded; demo keeper seeds — no key, no funds, no network, no custody.
+# bounded; demo keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 #
@@ -38,7 +38,7 @@ assert selftest.out contains "the loser is a lawful no-op" else "mycelium-till: 
 assert selftest.out contains "refuse the whole resolution" else "mycelium-till: never-could-pay/corruption claim missing"
 
 # The Cord whose agreed order the Till reads, and the Mycelium fold whose per-fact law it applies, both
-# stand at the door — their own selftests prove the machinery the verdict rests on.
+# stand at the door -- their own selftests prove the machinery the verdict rests on.
 let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-till: the Cord the Till reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-till: the Cord did not speak its GREEN"

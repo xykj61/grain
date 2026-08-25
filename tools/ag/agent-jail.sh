@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# agent-jail.sh — run cursor-agent or claude inside ai-jail for this repo.
+# agent-jail.sh -- run cursor-agent or claude inside ai-jail for this repo.
 #
 # Tracked bash elder. Preferred entries (Rish):
 #   rishi/bin/rishi run tools/l/launch-claude.rish
 #   rishi/bin/rishi run tools/l/launch-cursor-agent.rish
 #
 #   ./tools/ag/agent-jail.sh claude
-#   ./tools/ag/agent-jail.sh cursor-agent -p "…"
-#   ./tools/ag/agent-jail.sh agent --help          # alias → cursor-agent
+#   ./tools/ag/agent-jail.sh cursor-agent -p "..."
+#   ./tools/ag/agent-jail.sh agent --help          # alias -> cursor-agent
 #   ./tools/ag/agent-jail.sh agent --resume=CHAT_ID
 #   ./tools/ag/agent-jail.sh --resume=CHAT_ID agent
 #   ./tools/ag/agent-jail.sh --continue agent
 #   ./tools/ag/agent-jail.sh --dry-run claude --version
 #
 # Keeper pier / Linux: ai-jail --private-home; auth under project-local state
-# (.claude-state · .cursor-agent-state · .gh). See nixos-guide CLI-agents note
+# (.claude-state - .cursor-agent-state - .gh). See nixos-guide CLI-agents note
 # and context/specs/enclosure-editors.md.
 
 set -euo pipefail
@@ -270,7 +270,7 @@ if [ -f "${CLAUDE_STATE}/dot-claude.json" ]; then
   MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
 fi
 
-# NixOS: ai-jail tmpfs-replaces /run — re-map the system profile so PATH tools resolve.
+# NixOS: ai-jail tmpfs-replaces /run -- re-map the system profile so PATH tools resolve.
 if [ -e /run/current-system/sw ]; then
   MAP_ARGS+=(--map /run/current-system)
 fi

@@ -1,16 +1,16 @@
-# tools/h/hunk_edit_input_witness.rish — the Photos app edit input seam on metal (HUNK48).
+# tools/h/hunk_edit_input_witness.rish -- the Photos app edit input seam on metal (HUNK48).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK48.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK48.
 # Design read: active-designing/date/20260813/20260813-202710_hunk-edit-input-seam-exploration.md.
-# Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) — a tap commits a
-# gesture, a swipe walks the undo/redo history — reduced to one move over a recorded edit-list (concept only, siloed).
+# Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) -- a tap commits a
+# gesture, a swipe walks the undo/redo history -- reduced to one move over a recorded edit-list (concept only, siloed).
 #
 # HUNK16 gave a pure EditCursor whose undo and redo clamp at both ends and whose fresh push forgets the redo tail;
 # HUNK43 gave the scroll arc its own input seam. This rung is the same boundary above the EditCursor: `apply(cursor,
-# gesture)` maps one raw editing gesture — commit this verb, undo, redo — to exactly one history move, preserving every
+# gesture)` maps one raw editing gesture -- commit this verb, undo, redo -- to exactly one history move, preserving every
 # clamp the cursor holds. The selftest proves a committed verb advances the depth and the viewed image is exactly that
 # verb byte-for-byte, undo/redo walk reversibly, both edges clamp as no-ops, a commit while rewound forgets the redo
-# tail, and the list ceiling still refuses TooManyEdits through the seam — no new error invented. No network, no key,
+# tail, and the list ceiling still refuses TooManyEdits through the seam -- no new error invented. No network, no key,
 # no funds.
 #
 # Run from the repository root:
@@ -29,7 +29,7 @@ assert build.ok else "hunk-edit-input: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-input: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %75).
 let out = trim selftest.out
 say "hunk-edit-input: ${out}"

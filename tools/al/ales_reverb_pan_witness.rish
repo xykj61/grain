@@ -1,21 +1,21 @@
-# tools/al/ales_reverb_pan_witness.rish — reverb_pan: reverberate the master WET, then place the reverberated result WHERE it sits in the field, the next rung after ALES212 closed HOW WIDE (ALES213).
+# tools/al/ales_reverb_pan_witness.rish -- reverb_pan: reverberate the master WET, then place the reverberated result WHERE it sits in the field, the next rung after ALES212 closed HOW WIDE (ALES213).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES213.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES213.
 # Design read: active-designing/date/20260815/20260815-123603_fill-ales213-lotus-reverb-pan.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError forwarded
-# whole), lotus/power.rye (ALES11 — the equal-power split split(pos, den) = [isqrt(den·(den−pos)), isqrt(den·pos)], the two amplitude weights on the
-# quarter circle, reused verbatim), lotus/timeline.rye (ALES2 — the Clip and its proven gain, each wet channel scaled by a fraction, saturated once),
-# lotus/pan.rye (ALES10 — the StereoClip, its balance invariant, and the fold bound max_pan_den), lotus/clock.rye (ALES5 — the validated sample
-# clock). A keeper wants the reverb return pushed toward one side while the dry mix holds centre — a wash panned left or right — and that is exactly
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError forwarded
+# whole), lotus/power.rye (ALES11 -- the equal-power split split(pos, den) = [isqrt(den-(den−pos)), isqrt(den-pos)], the two amplitude weights on the
+# quarter circle, reused verbatim), lotus/timeline.rye (ALES2 -- the Clip and its proven gain, each wet channel scaled by a fraction, saturated once),
+# lotus/pan.rye (ALES10 -- the StereoClip, its balance invariant, and the fold bound max_pan_den), lotus/clock.rye (ALES5 -- the validated sample
+# clock). A keeper wants the reverb return pushed toward one side while the dry mix holds centre -- a wash panned left or right -- and that is exactly
 # "reverberate, then pan the wet image".
 #
 # lotus/reverb_pan.rye composes three proven stages with NO new audio arithmetic: validate the pan fraction FIRST (a bad fraction refuses BadPan
 # before the reverb writes, so the master is left dry), reverberate wet in place (ALES191's stereo_reverb_preset, unchanged), place the wet image
 # (ALES11's equal-power split feeding ALES2's proven gain on each channel, the pan already proven legal so neither gain can fault). THE HARD-LEFT
-# LAW: pan == 0 gives weights [den, 0], so the left channel is byte-exact the pure wet left and the right is silenced — the whole wash routes left.
+# LAW: pan == 0 gives weights [den, 0], so the left channel is byte-exact the pure wet left and the right is silenced -- the whole wash routes left.
 # THE HARD-RIGHT LAW: pan == den mirrors it, the wash routing wholly right. THE COMPOSITION LAW: an off-centre pan equals the reverb then the two
 # equal-power gains byte for byte, each channel an attenuation of the pure wet. THE CENTRE-SYMMETRY LAW: a centred master reverberates to a centred
-# wet, and the equal-power centre gives equal weights (isqrt(den²/2), ≈ 0.707·den, −3 dB per channel), so panning it to centre keeps left == right,
+# wet, and the equal-power centre gives equal weights (isqrt(den²/2), ≈ 0.707-den, −3 dB per channel), so panning it to centre keeps left == right,
 # each attenuated below the wet. THE FAULT LAW: a bad pan refuses BadPan, a span past the clip DurationTooLong, an out-of-range span BadRange, each
 # leaving the master DRY and untouched.
 #

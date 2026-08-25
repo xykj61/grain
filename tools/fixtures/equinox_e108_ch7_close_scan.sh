@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e108 — Chapter Seven close choir (check · test · prepare).
+# Equinox e108 -- Chapter Seven close choir (check - test - prepare).
 # Exit 0 only when control reads and all close limbs honor.
 # No backtick characters in patterns.
 #
@@ -34,7 +34,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-# --- seat map: 112 close choir this sitting · shred opens Chapter Eight ---
+# --- seat map: 112 close choir this sitting - shred opens Chapter Eight ---
 git ls-files --error-unmatch "$MAP" >/dev/null 2>&1 || {
   echo "seat_map=failed"
   echo "verdict=misread"
@@ -122,7 +122,7 @@ echo "seat_map_bundle=crossing_mode"
 echo "seat_map_shred=${SHRED_MODE}"
 echo "seat_map_shred_gate=keaton_word"
 
-# --- REDS 34-37 · container renumbered into tree ---
+# --- REDS 34-37 - container renumbered into tree ---
 git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "reds_cross=failed"
   echo "verdict=misread"
@@ -260,7 +260,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "fork=honored"
 echo "fork_status=not_consumed"
 
-# --- almanac: seats 97-111 present · ch7 at 15/16 before this choir appends 112 ---
+# --- almanac: seats 97-111 present - ch7 at 15/16 before this choir appends 112 ---
 rg -q '^### 111\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"

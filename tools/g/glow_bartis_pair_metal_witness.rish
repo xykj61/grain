@@ -1,8 +1,8 @@
-# tools/g/glow_bartis_pair_metal_witness.rish — STOA338b: pair-faces on metal.
+# tools/g/glow_bartis_pair_metal_witness.rish -- STOA338b: pair-faces on metal.
 #
 #   rishi/bin/rishi run tools/g/glow_bartis_pair_metal_witness.rish
 #
-# 338a parsed; 338b emits. Two runtime faces meet in one desk — eq and gth,
+# 338a parsed; 338b emits. Two runtime faces meet in one desk -- eq and gth,
 # welcome fixtures and argv pairs, with arity refusing loudly at one sample.
 
 say "338b: eq fixture — demo pair 5,3 answers its baked welcome..."

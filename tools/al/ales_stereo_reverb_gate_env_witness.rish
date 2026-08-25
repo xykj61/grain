@@ -1,23 +1,23 @@
-# tools/al/ales_stereo_reverb_gate_env_witness.rish — the stereo envelope gate: the reverb's GATED TAIL given a shaped edge, across a stereo master (ALES203).
+# tools/al/ales_stereo_reverb_gate_env_witness.rish -- the stereo envelope gate: the reverb's GATED TAIL given a shaped edge, across a stereo master (ALES203).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES203.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES203.
 # Design read: active-designing/date/20260815/20260815-111333_fill-ales203-lotus-stereo-reverb-gate-env.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/gate_env.rye (ALES54 — the
-# attack/release envelope gate and its guards, run per channel); lotus/reverb_gate_env.rye (ALES202 — the mono envelope gate this mirrors per ear);
-# lotus/stereo_reverb_gate.rye (ALES201 — the static stereo gate this contains as its instantaneous limit); lotus/pan.rye (the StereoClip);
-# lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the Clip each channel holds, its sample_max the gate's rail).
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, run over the master unchanged); lotus/gate_env.rye (ALES54 -- the
+# attack/release envelope gate and its guards, run per channel); lotus/reverb_gate_env.rye (ALES202 -- the mono envelope gate this mirrors per ear);
+# lotus/stereo_reverb_gate.rye (ALES201 -- the static stereo gate this contains as its instantaneous limit); lotus/pan.rye (the StereoClip);
+# lotus/clock.rye (ALES5 -- the sample clock); lotus/timeline.rye (ALES2 -- the Clip each channel holds, its sample_max the gate's rail).
 #
-# lotus/stereo_reverb_gate_env.rye carries ALES202's shaped-edge gated tail across a stereo master — the SAME time-following envelope gate over BOTH
+# lotus/stereo_reverb_gate_env.rye carries ALES202's shaped-edge gated tail across a stereo master -- the SAME time-following envelope gate over BOTH
 # channels of a StereoClip, one shared threshold, ratio, and attack/release, the image held. It reverberates the master wet in place through ALES191's
 # stereo_reverb_preset UNCHANGED, prechecks the threshold, ratio, and both coefficients (the SAME guards ALES54 raises) BEFORE the wet is written so a
-# bad gate leaves both channels DRY and balanced (atomic), then follow-gates each channel's wet with a fresh envelope and no cross-channel read — the
+# bad gate leaves both channels DRY and balanced (atomic), then follow-gates each channel's wet with a fresh envelope and no cross-channel read -- the
 # left ear follow-gates left, the right ear follow-gates right, so the image the preset held is held. It invents no new audio arithmetic. The selftest
 # proves on both channels: at ratio_num == ratio_den the span equals stereo_reverb_preset byte for byte; for a firm ratio each channel equals
 # stereo_reverb_preset then gate_follow on that channel byte for byte and each shaped-gated channel differs from its wet; with unit attack and unit
 # release it equals ALES201's static stereo_reverb_gate byte for byte (the static gate is its zero-smoothing limit); each gated channel's total energy
 # is strictly less than its wet's; the image is held (a centred master identical channel-to-channel, a stereo master distinct); the channels leave
 # balanced and silence stays silence; and the faults forward atomic (a bad threshold BadThreshold, a bad ratio BadRatio, an illegal coefficient
-# BadCoeff with both channels still dry, DurationTooLong, BadRange). Purely local — one StereoClip, a validated clock; no network, no keys, no funds,
+# BadCoeff with both channels still dry, DurationTooLong, BadRange). Purely local -- one StereoClip, a validated clock; no network, no keys, no funds,
 # no real device.
 #
 # Run from the repository root:
@@ -43,15 +43,15 @@ say "ales-stereo-reverb-gate-env: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-gate-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-gate-env: selftest did not print the GREEN ales-stereo-reverb-gate-env line"
 
-# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the stereo named-room preset still stands green beside it.
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the stereo named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-gate-env: the ALES191 stereo named-room preset regressed under its envelope gate"
 
-# And re-prove ALES202's mono envelope gate still stands green — the rung this mirrors per ear.
+# And re-prove ALES202's mono envelope gate still stands green -- the rung this mirrors per ear.
 let monoenv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_gate_env.rye -femit-bin=lotus/bin/reverb_gate_env && lotus/bin/reverb_gate_env selftest 2>&1 | grep -q 'GREEN ales-reverb-gate-env' && echo yes"]
 assert (trim monoenv.out) == "yes" else "ales-stereo-reverb-gate-env: the ALES202 mono envelope gate regressed beside its stereo twin"
 
-# And re-prove ALES201's static stereo gate still stands green — the instantaneous limit this rung equals.
+# And re-prove ALES201's static stereo gate still stands green -- the instantaneous limit this rung equals.
 let staticgate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_gate.rye -femit-bin=lotus/bin/stereo_reverb_gate && lotus/bin/stereo_reverb_gate selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-gate' && echo yes"]
 assert (trim staticgate.out) == "yes" else "ales-stereo-reverb-gate-env: the ALES201 static stereo gate regressed beside its envelope gate"
 

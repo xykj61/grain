@@ -1,6 +1,6 @@
-# tools/co/constel_consensus_true_witness.rish — the converged mesh reads true (gossip-convergence r4, the arc closes).
+# tools/co/constel_consensus_true_witness.rish -- the converged mesh reads true (gossip-convergence r4, the arc closes).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r4.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - gossip-convergence rung r4.
 # r1 converged two nodes over gossip; r2 healed a partition; r3 carried the agreed order out as a
 # format cord-dag-v1 record so a far node could rebuild from bytes alone. This closing rung binds
 # convergence to a real on-disk record a keeper can open and count, and proves the property the whole
@@ -8,11 +8,11 @@
 #
 # The crux this witness proves: the app parses the canonical committed record (tools/fixtures/cord_dag.bron),
 # rebuilds the Dag under r1's own add (re-verifying every signature), commits it, folds the real Mycelium
-# law, and reports blocks·supply·stars; this witness cross-checks that triple against
-# tools/fixtures/cord_dag_truth.awk's reading of the same bytes — two tools, one answer (4 700 1). And the
+# law, and reports blocks-supply-stars; this witness cross-checks that triple against
+# tools/fixtures/cord_dag_truth.awk's reading of the same bytes -- two tools, one answer (4 700 1). And the
 # converged mesh is genuine: two nodes begun from their own separate genesis gossip to convergence and the
 # converged Dag renders byte-identically to the on-disk record, so the network agrees on exactly the bytes a
-# keeper can count. A tampered header refuses BadFormat. Demo keeper seeds only — no real key, no funds, no
+# keeper can count. A tampered header refuses BadFormat. Demo keeper seeds only -- no real key, no funds, no
 # network, no custody.
 #
 # Additive: r1 (constel_consensus) and r3 (constel_consensus_travels) re-run GREEN at this round's door.
@@ -47,7 +47,7 @@ let truth = run ["sh" "-c" "awk -f tools/fixtures/cord_dag_truth.awk tools/fixtu
 assert truth.ok else "constel-true: awk truth measurement failed"
 assert reading.out == truth.out else "constel-true: the reading disagrees with the independent awk count of the same bytes"
 
-# r1 and r3 stay their own GREEN binaries — this rung composes r3's converge helper and the Cord's reader.
+# r1 and r3 stay their own GREEN binaries -- this rung composes r3's converge helper and the Cord's reader.
 let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_consensus_witness.rish 2>&1"]
 assert r1.ok else "constel-true: rung one (two-node convergence) is not GREEN"
 assert r1.out contains "constel-consensus: GREEN" else "constel-true: rung one did not speak its GREEN"

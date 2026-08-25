@@ -1,15 +1,15 @@
-# tools/co/constel_consensus_partition_witness.rish — a partition heals (gossip-convergence r2).
+# tools/co/constel_consensus_partition_witness.rish -- a partition heals (gossip-convergence r2).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r2.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - gossip-convergence rung r2.
 # r1 proved two nodes begun from their own genesis converge once they gossip. This round proves
 # convergence is content-dependent, not timing-dependent: a node partitioned away while the other two
-# advance catches up to the identical agreed order the moment it rejoins and gossips — no leader replays
+# advance catches up to the identical agreed order the moment it rejoins and gossips -- no leader replays
 # it a log, no round number gates its return.
 #
 # The crux this witness proves: node C holds a stale partial view (one genesis block) while A and B
 # advance to the full four-block mesh and converge; on rejoin, one gossip drains the whole mesh into C
 # (it gains the three blocks it lacked, keeping the one it held), and C arrives at the byte-identical
-# committed order folding to the identical supply (700 over one star). Demo keeper seeds only — no real
+# committed order folding to the identical supply (700 over one star). Demo keeper seeds only -- no real
 # key, no funds, no network, no custody.
 #
 # Additive: r1 (constel_consensus) re-runs GREEN at this round's door.
@@ -37,7 +37,7 @@ assert selftest.out contains "one gossip drains the whole mesh into the late joi
 assert selftest.out contains "convergence is content-dependent, not timing-dependent" else "constel-partition: content-not-timing claim missing"
 assert selftest.out contains "a healed partition converges" else "constel-partition: heal-converge claim missing"
 
-# r1 stays its own GREEN binary — this rung composes r1's public gossip fixpoint and commit helpers.
+# r1 stays its own GREEN binary -- this rung composes r1's public gossip fixpoint and commit helpers.
 let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_consensus_witness.rish 2>&1"]
 assert r1.ok else "constel-partition: rung one (two-node convergence) is not GREEN"
 assert r1.out contains "constel-consensus: GREEN" else "constel-partition: rung one did not speak its GREEN"

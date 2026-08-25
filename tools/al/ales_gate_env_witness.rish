@@ -1,9 +1,9 @@
-# tools/al/ales_gate_env_witness.rish — an attack/release noise gate: the silenced floor given a patient sense of time (ALES54).
+# tools/al/ales_gate_env_witness.rish -- an attack/release noise gate: the silenced floor given a patient sense of time (ALES54).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES54.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES54.
 # Design read: active-designing/date/20260814/20260814-174600_fill-ales54-lotus-attack-release-gate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/gate.rye (ALES51 — the
-# silenced floor this drives over time, re-proven below); lotus/envelope.rye (ALES52 — the proven time base, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, the range law shape); lotus/gate.rye (ALES51 -- the
+# silenced floor this drives over time, re-proven below); lotus/envelope.rye (ALES52 -- the proven time base, re-proven below).
 #
 # lotus/gate_env.rye drives ALES51's gate from ALES52's envelope: each sample advances the proven follower one step (the attack
 # fraction rising, the release falling), and when the smoothed envelope falls below the threshold its whole magnitude is divided by
@@ -11,7 +11,7 @@
 # to the plain ALES51 gate byte-for-byte (proven by running both tools on one signal); unit ratio is the identity everywhere; a
 # quiet signal has its floor pushed down with the sign held and never expanding; a slower release holds the gate open longer (the
 # note's tail survives, the knob monotone); the state carries so a span in two pieces equals the whole once; a bad threshold refuses
-# BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange. Purely local — no
+# BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange. Purely local -- no
 # network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
@@ -37,7 +37,7 @@ say "ales-gate-env: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-gate-env: selftest did not print the GREEN ales-gate-env line"
 
-# This rung composes both parents over their public APIs — re-prove ALES52's follower and ALES51's gate still stand green.
+# This rung composes both parents over their public APIs -- re-prove ALES52's follower and ALES51's gate still stand green.
 let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
 assert (trim env.out) == "yes" else "ales-gate-env: the ALES52 envelope follower regressed under the attack/release gate"
 

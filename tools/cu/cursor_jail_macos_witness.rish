@@ -1,4 +1,4 @@
-# cursor_jail_macos_witness.rish — proves the sandbox-exec profile emitted
+# cursor_jail_macos_witness.rish -- proves the sandbox-exec profile emitted
 # by tools/cu/cursor_jail_macos.rish actually fences writes to the project
 # directory, on this host.
 #

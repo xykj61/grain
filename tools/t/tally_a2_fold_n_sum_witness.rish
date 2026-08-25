@@ -1,9 +1,9 @@
-# tools/t/tally_a2_fold_n_sum_witness.rish — Ashvini a2: list fold widens (STOA335).
+# tools/t/tally_a2_fold_n_sum_witness.rish -- Ashvini a2: list fold widens (STOA335).
 #
 #   rishi/bin/rishi run tools/t/tally_a2_fold_n_sum_witness.rish
 #
 # Pair (STOA333) stays green. Triple is the first widen. Quad proves emit is N-wide
-# across the closed `$:` allowlist — Mantra's Weave shape, not a third verb.
+# across the closed `$:` allowlist -- Mantra's Weave shape, not a third verb.
 
 say "a2-n-sum: Language EN — list fold past two fields (STOA335)."
 say "a2-n-sum: Lens TAME — triple · quad; pair neighbor; wrong nest refuses."

@@ -1,11 +1,11 @@
-# tools/t/tact_ship_pilot_ready_witness.rish — TACT Journey 1, Rung 4: the ready-to-run report.
+# tools/t/tact_ship_pilot_ready_witness.rish -- TACT Journey 1, Rung 4: the ready-to-run report.
 #
 # Rungs one through three fixed the arc and wired its identity and customs steps to real modules.
-# This rung closes Ship-Pilot's agent-doable crux — the whole first-run walked end to end, every
+# This rung closes Ship-Pilot's agent-doable crux -- the whole first-run walked end to end, every
 # step wired real. The place step decodes the settled point to a real topology galaxy; the app
 # step names a runnable Pond app off an allow-list of what pond/bin truly builds. With every step
 # proven the pilot reaches PILOT READY and the report names the concrete facts (point, place,
-# mark, app); any unmet step holds the pilot there and the report says where — the first-run never
+# mark, app); any unmet step holds the pilot there and the report says where -- the first-run never
 # claims ready on a step it did not prove.
 #
 # Run from the repository root:

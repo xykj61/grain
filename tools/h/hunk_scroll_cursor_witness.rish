@@ -1,15 +1,15 @@
-# tools/h/hunk_scroll_cursor_witness.rish — the scroll cursor: a live viewport offset from a keeper's gesture (HUNK40).
+# tools/h/hunk_scroll_cursor_witness.rish -- the scroll cursor: a live viewport offset from a keeper's gesture (HUNK40).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK40.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK40.
 # Design read: active-designing/date/20260813/20260813-192957_hunk-scroll-cursor-exploration.md.
-# Teacher, thanked clean-room: the scroll viewport of any list surface — a position walks up and down over a library
+# Teacher, thanked clean-room: the scroll viewport of any list surface -- a position walks up and down over a library
 # taller than the screen, pinned at both ends (concept only, siloed).
 #
 # HUNK37 gave the installed-book shelf a pager; this rung holds where a keeper's viewport sits. `pond/apps/
 # preset_scroll.rye` `ScrollCursor` holds { count, rows, offset } and moves the offset by gestures (line_down,
 # page_up, to_top, to_bottom), clamping at both edges so it can never fall off the ends. The one law: a viewport is
-# bottom-pinned — the last book reaches the bottom row, never below — so the surface never shows a blank row past the
-# end. The reward the pager could not claim: a scroll cursor's window NEVER refuses BadOffset — every reachable
+# bottom-pinned -- the last book reaches the bottom row, never below -- so the surface never shows a blank row past the
+# end. The reward the pager could not claim: a scroll cursor's window NEVER refuses BadOffset -- every reachable
 # offset is a real page. The selftest builds a real five-book library, scrolls a two-row viewport through it, and
 # proves the top seat, reversible line walks, the bottom pin, clamp-without-under/overflow, every-offset-a-real-page,
 # top-to-bottom coverage, a fitting library that never scrolls, and the EmptyViewport refusal. No network, no key,

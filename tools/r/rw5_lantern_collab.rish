@@ -1,6 +1,6 @@
-# rw5_lantern_collab.rish — RW-5 collaboration: Drawn Terminal asks Lantern (tip 420).
+# rw5_lantern_collab.rish -- RW-5 collaboration: Drawn Terminal asks Lantern (tip 420).
 #
-# Golden: drawn terminal rw5 collaboration: tokens=24/12 echo=1 user=steward-rio refused=3 — GREEN
+# Golden: drawn terminal rw5 collaboration: tokens=24/12 echo=1 user=steward-rio refused=3 -- GREEN
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/rw5_lantern_collab.rish
 

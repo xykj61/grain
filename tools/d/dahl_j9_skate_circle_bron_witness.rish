@@ -1,4 +1,4 @@
-# tools/d/dahl_j9_skate_circle_bron_witness.rish — Season 3 Journey 9 (Skate), Rung 3.
+# tools/d/dahl_j9_skate_circle_bron_witness.rish -- Season 3 Journey 9 (Skate), Rung 3.
 #
 # Rungs one and two fixed the consent rule and bound each act to a keeper's signature. A circle is
 # only useful to a commons if it can be carried and checked with no live circle in hand.
@@ -8,7 +8,7 @@
 # keyring through rung two's verify_join / verify_request, and rebuild replays the acts into an equal
 # live circle whose verdicts match. A signature flipped after the crossing refuses BadConsent offline;
 # an unknown field (UnknownField), a wrong header (BadFormat), a missing circle id (MissingCircle),
-# and malformed hex (BadHex) each refuse. Additive — composes rungs one and two over public API (both
+# and malformed hex (BadHex) each refuse. Additive -- composes rungs one and two over public API (both
 # re-run GREEN); demo keeper seeds only, no network (serve reaches the custody gate).
 #
 # Run from the repository root:
@@ -19,7 +19,7 @@ say "dahl-j9r3: Lens TAME — a flipped signature, an unknown field, a bad heade
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rungs one and two stay GREEN beneath the travel layer — additive.
+# Rungs one and two stay GREEN beneath the travel layer -- additive.
 let binr1 = "pond/bin/skate-circle"
 let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
 assert buildr1.ok else "dahl-j9r3: skate_circle (r1) build failed"

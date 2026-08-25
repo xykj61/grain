@@ -1,6 +1,6 @@
-# onboarding_path_witness.rish — enforce the Acme DX onboarding-path acceptance line.
+# onboarding_path_witness.rish -- enforce the Acme DX onboarding-path acceptance line.
 #
-# Acme DX dev season, onboarding path · 20260811. The onboarding-path contract
+# Acme DX dev season, onboarding path - 20260811. The onboarding-path contract
 # (active-designing/date/20260811/20260811-150221_acme-dx-onboarding-path-contract.md) says the path
 # is done when a cold-clone newcomer reaches their first green witness, on the exact
 # acceptance line below. This witness proves that anchor is real and unchanged: the
@@ -10,11 +10,11 @@
 #
 #   rishi/bin/rishi run tools/o/onboarding_path_witness.rish
 
-# Step 1 of the path — the cold start — is present.
+# Step 1 of the path -- the cold start -- is present.
 let boot = run ["sh" "-c" "test -f rye/bootstrap.sh"]
 assert boot.ok else "onboarding: rye/bootstrap.sh (the cold-start step) is missing"
 
-# The path's end — the first green witness — greens on the contract's exact line.
+# The path's end -- the first green witness -- greens on the contract's exact line.
 let first = run ["rishi/bin/rishi" "run" "tools/r/run_record_witness.rish"]
 assert first.ok else "onboarding: the first-green witness did not exit 0"
 assert (first.out contains "GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes.") else "onboarding: the first-green line no longer matches the contract's acceptance line"

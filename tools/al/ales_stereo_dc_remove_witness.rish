@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_dc_remove_witness.rish — stereo_dc_remove: the DC-offset remover carried into stereo, two independent means taken back out, a per-channel pure translation that PRESERVES the stereo image (ALES155).
+# tools/al/ales_stereo_dc_remove_witness.rish -- stereo_dc_remove: the DC-offset remover carried into stereo, two independent means taken back out, a per-channel pure translation that PRESERVES the stereo image (ALES155).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES155.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES155.
 # Design read: active-designing/date/20260815/20260815-060518_fill-ales155-lotus-stereo-dc-remove.md
-# Stands on: lotus/dc_remove.rye (ALES90 — the mono block-mean DC remover run once per channel, its dc_remove and DcError reused whole), lotus/stereo_rectify.rye (ALES138 — the EVEN map whose per-channel DC offset this rung undoes, the composition proof, and
-# whose image-COLLAPSE this rung's image-PRESERVE answers), lotus/rectify.rye (ALES84 — the mono rectifier underneath ALES138), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, sample_min/max, and the one true saturate reused through ALES90).
+# Stands on: lotus/dc_remove.rye (ALES90 -- the mono block-mean DC remover run once per channel, its dc_remove and DcError reused whole), lotus/stereo_rectify.rye (ALES138 -- the EVEN map whose per-channel DC offset this rung undoes, the composition proof, and
+# whose image-COLLAPSE this rung's image-PRESERVE answers), lotus/rectify.rye (ALES84 -- the mono rectifier underneath ALES138), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, and the one true saturate reused through ALES90).
 #
-# lotus/stereo_dc_remove.rye removes the DC offset from a span in both channels of a master, running ALES90's proven mono dc_remove on each — each channel's OWN mean subtracted, the left correcting the left's offset and the right the right's. It validates the span once
-# against the shared length before either channel is mutated (BadRange), so a refusal never DC-removes one channel and leaves the other biased; DcError reused whole. The lift is length-preserving, so it meets no desync wall — the two channels simply run their own removal.
+# lotus/stereo_dc_remove.rye removes the DC offset from a span in both channels of a master, running ALES90's proven mono dc_remove on each -- each channel's OWN mean subtracted, the left correcting the left's offset and the right the right's. It validates the span once
+# against the shared length before either channel is mutated (BadRange), so a refusal never DC-removes one channel and leaves the other biased; DcError reused whole. The lift is length-preserving, so it meets no desync wall -- the two channels simply run their own removal.
 # The crux is the stereo DC-remove law (each channel equals ALES90's mono dc_remove byte for byte), the independent-offset law (two different offsets each land under one LSB independently), the image-preserve law (an out-of-phase master riding a common offset returns still out
-# of phase — the honest opposite of the rectifier's collapse), and the composition law (it undoes the stereo rectifier's per-channel offset).
+# of phase -- the honest opposite of the rectifier's collapse), and the composition law (it undoes the stereo rectifier's per-channel offset).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_dc_remove_witness.rish

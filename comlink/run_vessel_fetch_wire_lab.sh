@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_vessel_fetch_wire_lab.sh — Amphora vessel-fetch device wire over virtio-net.
+# comlink/run_vessel_fetch_wire_lab.sh -- Amphora vessel-fetch device wire over virtio-net.
 set -eu
 
 here="$(cd "$(dirname "$0")" && pwd)"

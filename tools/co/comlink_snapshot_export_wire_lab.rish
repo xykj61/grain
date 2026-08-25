@@ -1,4 +1,4 @@
-# comlink_snapshot_export_wire_lab.rish — I2 snapshot device-wire QEMU lab (spawn / wait-for).
+# comlink_snapshot_export_wire_lab.rish -- I2 snapshot device-wire QEMU lab (spawn / wait-for).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/comlink_snapshot_export_wire_lab.rish

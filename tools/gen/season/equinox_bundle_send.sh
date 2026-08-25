@@ -1,6 +1,6 @@
 #!/bin/sh
-# Equinox bundle send — cut · verify · stamped manifest (shell; no rishi required).
-# Crossing MODE — not an almanac seat. Never writes under /tmp.
+# Equinox bundle send -- cut - verify - stamped manifest (shell; no rishi required).
+# Crossing MODE -- not an almanac seat. Never writes under /tmp.
 #
 #   sh tools/gen/season/equinox_bundle_send.sh rehearsal
 #   sh tools/gen/season/equinox_bundle_send.sh rehearsal --span HEAD~20..HEAD
@@ -9,14 +9,14 @@
 #   sh tools/gen/season/equinox_bundle_send.sh prove-red
 #
 # Law: cut home-side, verify, write stamped manifest beside the bundle.
-# Law: kg does not open shred · geode · seat 128 — this is a crossing mode only.
+# Law: kg does not open shred - geode - seat 128 -- this is a crossing mode only.
 # Law (e141): closing's four rounds stay verbatim; wave carries the round name
 #   into the path; rehearsal no longer hardcodes e129 (instrument count ages).
 set -eu
 
 MODE=${1:-rehearsal}
 # Guard (e199): the bundle home lives under the root ignore; a tracked file
-# beneath it means a forced add slipped past — refuse before any cut.
+# beneath it means a forced add slipped past -- refuse before any cut.
 TRACKED_BUNDLES=$(git ls-files bundles/ | head -1)
 if test -n "$TRACKED_BUNDLES"; then
   echo "verdict=refused"
@@ -25,7 +25,7 @@ if test -n "$TRACKED_BUNDLES"; then
   exit 1
 fi
 ARG2=${2:-}
-# couples: equinox_bundle_manifest.sh bound_bytes (one number, two speakers — keep in step)
+# couples: equinox_bundle_manifest.sh bound_bytes (one number, two speakers -- keep in step)
 BOUND=268435456
 STAMP=$(date -u +%Y%m%d.%H%M%S)
 PIER=$(git remote get-url origin 2>/dev/null || echo unknown)
@@ -56,7 +56,7 @@ case "$MODE" in
       # Name the tip as a ref so git bundle create accepts the thin span.
       git bundle create "$OUT" "$END_REF" "^${START_REF}"
     else
-      # Full --all rehearsal — the overdue crossing rehearsal
+      # Full --all rehearsal -- the overdue crossing rehearsal
       START=--all
       OUT="bundles/rehearsal/rehearsal-all-${END10}.bundle"
       BASIS="full --all cut at tip ${END}"
@@ -82,7 +82,7 @@ case "$MODE" in
     git bundle create "$OUT" --all
     ;;
   wave)
-    # Nested-wave / quest cut — round name travels in the path (e141 accretion).
+    # Nested-wave / quest cut -- round name travels in the path (e141 accretion).
     # Closing's four rounds stay untouched. Full-history root for --all bytes.
     ROUND=${ARG2:?wave needs round label e.g. q64}
     case "$ROUND" in

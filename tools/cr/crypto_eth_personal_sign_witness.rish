@@ -1,14 +1,14 @@
-# tools/cr/crypto_eth_personal_sign_witness.rish — the Ethereum EIP-191 personal_sign digest and its signer recovery, authored in pure Rye as a
+# tools/cr/crypto_eth_personal_sign_witness.rish -- the Ethereum EIP-191 personal_sign digest and its signer recovery, authored in pure Rye as a
 # composition over three already-GREEN rungs: the Keccak-256 (crypto/keccak256.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye),
-# and the address derivation (crypto/eth_address.rye). This is "Sign in with Ethereum" — a wallet signs the Keccak-256 of
+# and the address derivation (crypto/eth_address.rye). This is "Sign in with Ethereum" -- a wallet signs the Keccak-256 of
 # "\x19Ethereum Signed Message:\n" ++ decimal(len) ++ message (the EIP-191 0x45 framing whose leading 0x19 can never begin a valid RLP
-# transaction), and recover_signer reads the twenty-byte SENDER address back out of a 65-byte r‖s‖v signature (crypto · Season G · Cryptography).
+# transaction), and recover_signer reads the twenty-byte SENDER address back out of a 65-byte r‖s‖v signature (crypto - Season G - Cryptography).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: it frames a message with the EIP-191 prefix,
-# hashes it with the GREEN Keccak-256, recovers the public key with the GREEN ecrecover, and resolves it to an address with the GREEN eth_address —
+# Season: crypto -- Season G (the Six-Season double-seat). This rung authors NO new cryptography: it frames a message with the EIP-191 prefix,
+# hashes it with the GREEN Keccak-256, recovers the public key with the GREEN ecrecover, and resolves it to an address with the GREEN eth_address --
 # the composition crypto/secp256k1_ecrecover.rye's own note named next, unblocking a Kumara login against an Ethereum key (the Dimeroll receipt).
 # Design read: active-designing/date/20260816/20260816-042627_eth-personal-sign.md (this rung's claim) and
-# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Clean-room: EIP-191 is Ethereum's own public standard; the composition is ours, standing on our own parity-GREEN rungs, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #
@@ -17,7 +17,7 @@
 # Zig's std.fmt + std.crypto Keccak-256 construction byte-for-byte across message lengths 0, 5, 11, 100, 9001) AND a full round-trip (our GREEN
 # prehashed signer signs the personal digest with a TEST key, the correct v recovers, recover_signer returns exactly that key's own Ethereum
 # address, and a one-byte message tamper never recovers the true signer). A short signature refuses BadSignatureLength, a bad recovery byte
-# BadRecoveryByte. Purely local — no key, no network, no funds, no real device.
+# BadRecoveryByte. Purely local -- no key, no network, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_eth_personal_sign_witness.rish

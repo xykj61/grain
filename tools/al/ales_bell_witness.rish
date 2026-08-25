@@ -1,15 +1,15 @@
-# tools/al/ales_bell_witness.rish — a parametric bell (peaking EQ): turn the middle band, hold the edges (ALES48).
+# tools/al/ales_bell_witness.rish -- a parametric bell (peaking EQ): turn the middle band, hold the edges (ALES48).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES48.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES48.
 # Design read: active-designing/date/20260814/20260814-170143_fill-ales48-lotus-parametric-bell.md
-# Stands on: lotus/tone.rye (ALES40 — low_pass, high_pass, precheck), lotus/notch.rye (ALES47 — the zero-gain equality target),
-# lotus/timeline.rye (ALES2 — the Clip and saturate); residual shape from lotus/stack.rye (ALES42).
+# Stands on: lotus/tone.rye (ALES40 -- low_pass, high_pass, precheck), lotus/notch.rye (ALES47 -- the zero-gain equality target),
+# lotus/timeline.rye (ALES2 -- the Clip and saturate); residual shape from lotus/stack.rye (ALES42).
 #
-# lotus/bell.rye keeps the low and high edges at unity and scales the mid band — the exact residual M = x − L − H — by a gain,
+# lotus/bell.rye keeps the low and high edges at unity and scales the mid band -- the exact residual M = x − L − H -- by a gain,
 # summed and clamped once. The selftest proves: silence stays silence; unity gain is the identity (low + high + M = x); zero gain
 # IS ALES47's band-reject byte-for-byte (proven against notch.notch); a constant settles to itself at any gain (the mid is zero at
 # direct current, so the edges never move); a heavy boost saturates rather than wraps; an illegal cutoff on either edge refuses
-# BadCoeff, a zero gain denominator BadGain, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real
+# BadCoeff, a zero gain denominator BadGain, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no real
 # device, no real sample rate.
 #
 # Run from the repository root:
@@ -35,7 +35,7 @@ say "ales-bell: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-bell' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-bell: selftest did not print the GREEN ales-bell line"
 
-# The bell at zero gain IS the notch — prove ALES47's band-reject still stands by its own green, so the identity is honest.
+# The bell at zero gain IS the notch -- prove ALES47's band-reject still stands by its own green, so the identity is honest.
 let notch = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/notch.rye -femit-bin=lotus/bin/notch && lotus/bin/notch selftest 2>&1 | grep -q 'GREEN ales-notch' && echo yes"]
 assert (trim notch.out) == "yes" else "ales-bell: the ALES47 band-reject witness regressed under the bell"
 

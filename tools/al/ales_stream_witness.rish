@@ -1,15 +1,15 @@
-# tools/al/ales_stream_witness.rish — a bounded byte stream carries many audio frames one at a time, reassembled gapless (ALES1).
+# tools/al/ales_stream_witness.rish -- a bounded byte stream carries many audio frames one at a time, reassembled gapless (ALES1).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES1.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES1.
 # Design read: active-designing/20260814-fill-ales1-lotus-audio-stream.md
-# Idiom kin: constel/channel.rye (FORA5) — the byte-stream delimiter, now carrying audio and reassembling a sample timeline.
-# Stands on: lotus/wire.rye (ALES0) — the frame the stream delimits and the audio border it keeps per frame.
+# Idiom kin: constel/channel.rye (FORA5) -- the byte-stream delimiter, now carrying audio and reassembling a sample timeline.
+# Stands on: lotus/wire.rye (ALES0) -- the frame the stream delimits and the audio border it keeps per frame.
 #
 # lotus/stream.rye delimits many LOTS frames out of one continuous byte queue and reassembles their samples into one gapless,
 # in-order timeline. The selftest proves: three frames back to back reassemble into b0 ++ b1 ++ b2 with no gap or reorder; a
 # split frame refuses NeedMoreBytes without moving the cursor and completes on its last byte with no torn sample; a wild
 # length refuses BadFrame; an overfull stream refuses StreamFull; and a torn-sample frame read cleanly by the delimiter still
-# refuses PartialSample at the audio border during reassembly. Purely local — no network, no keys, no funds, no real device.
+# refuses PartialSample at the audio border during reassembly. Purely local -- no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stream_witness.rish

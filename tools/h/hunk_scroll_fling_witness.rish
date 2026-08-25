@@ -1,15 +1,15 @@
-# tools/h/hunk_scroll_fling_witness.rish — the fling: momentum decay after the finger lifts (HUNK45).
+# tools/h/hunk_scroll_fling_witness.rish -- the fling: momentum decay after the finger lifts (HUNK45).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK45.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK45.
 # Design read: active-designing/date/20260813/20260813-200615_hunk-scroll-fling-exploration.md.
-# Teacher, thanked clean-room: the momentum layer of any touch scroll surface — after the finger lifts a flick keeps
+# Teacher, thanked clean-room: the momentum layer of any touch scroll surface -- after the finger lifts a flick keeps
 # coasting, its velocity decaying under friction until it settles to rest (concept only, siloed).
 #
 # HUNK43 routed a raw event; HUNK44 quantized a pixel drag with a carried remainder. This rung is the gesture after the
 # finger lifts: `pond/apps/preset_scroll_fling.rye` `Fling` is a signed pixels-per-tick velocity that strictly decreases
 # in magnitude every tick and settles to rest, each tick's delta fed through HUNK44's `drag` so the cursor's clamps are
 # inherited (a hard fling lands bottom-pinned, never past) and the sign never flips. The friction and velocity bounds
-# let the tick count be asserted — a fling always settles within a small ceiling. The selftest flings a two-row viewport
+# let the tick count be asserted -- a fling always settles within a small ceiling. The selftest flings a two-row viewport
 # over a real five-book library and proves the monotone settle, the sign stability, the no-overshoot clamp, the
 # immediate-done zero fling, and the friction/velocity refusals. No network, no key, no funds.
 #

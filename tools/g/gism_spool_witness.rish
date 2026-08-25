@@ -1,13 +1,13 @@
-# tools/g/gism_spool_witness.rish — GISM red %73: the spool (chunking storage).
+# tools/g/gism_spool_witness.rish -- GISM red %73: the spool (chunking storage).
 #
-# Season 2, Yield: every module stands on real bytes. GISM Journey 6 booked red %73 —
+# Season 2, Yield: every module stands on real bytes. GISM Journey 6 booked red %73 --
 # a real front-door document (SECURITY.md 2689 B; context/TWO_ROOMS.md 6079 B) refuses
 # ContentTooLarge because it does not fit one 512-byte resin, and the fix is not a
 # bound-bump (max_resin_bytes is structurally capped) but a storage layer above beading.
 # This witness proves the spool closes that red on metal: a real document winds across
 # ordered resins and unwinds byte-for-byte, the honest 32 KB ceiling is reachable in
 # full, and every tamper (a flipped bead, a corrupted resin index, a truncated spool)
-# refuses the whole reassembly. It also re-runs beading untouched — the store's bead
+# refuses the whole reassembly. It also re-runs beading untouched -- the store's bead
 # capacity rose 64 -> 256 additively, so beading stays its own GREEN binary.
 #
 # Run from the repository root:
@@ -33,7 +33,7 @@ assert selftest.out contains "dedup dividend" else "gism-red73: dedup dividend m
 assert selftest.out contains "tampered bead, tampered resin index, truncated spool refused whole GREEN" else "gism-red73: tamper refusals missing"
 assert selftest.out contains "refused ContentTooLarge (the honest ceiling)" else "gism-red73: over-ceiling refusal missing"
 
-# Cross-check the real document sizes the spool wound against the files on disk — two
+# Cross-check the real document sizes the spool wound against the files on disk -- two
 # tools, one answer (the honest-adversary discipline Yield lives by).
 let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
 assert sec_bytes.ok else "gism-red73: could not measure SECURITY.md"
@@ -42,7 +42,7 @@ let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
 assert tr_bytes.ok else "gism-red73: could not measure context/TWO_ROOMS.md"
 assert tr_bytes.out contains "6079" else "gism-red73: context/TWO_ROOMS.md is not 6079 B on disk"
 
-# Beading is re-run untouched — the store capacity rose additively; the primitive the
+# Beading is re-run untouched -- the store capacity rose additively; the primitive the
 # spool stands on stays its own GREEN binary.
 let beading_bin = "mantra/bin/beading"
 let beading_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/beading.rye -femit-bin=${beading_bin}"]

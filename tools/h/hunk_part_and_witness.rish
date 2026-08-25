@@ -1,8 +1,8 @@
-# tools/h/hunk_part_and_witness.rish — an AND of clauses: narrow on several facets at once (HUNK78).
+# tools/h/hunk_part_and_witness.rish -- an AND of clauses: narrow on several facets at once (HUNK78).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK78.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK78.
 # Design read: active-designing/date/20260814/20260814-000136_hunk-part-and-compound-query-exploration.md
-# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — several checks narrow the wall to the handful that
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar -- several checks narrow the wall to the handful that
 # satisfy all of them (concept only, siloed).
 #
 # HUNK75 narrowed by one Query, HUNK76 parsed one clause, HUNK77 drew the result on glass. This rung is the
@@ -26,7 +26,7 @@ let bin = "image/bin/part_and"
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-and: build failed — ${build.err}"
 
-# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+# Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "image/bin/part_and.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-and: selftest exited non-zero — see ${outfile}"
@@ -37,13 +37,13 @@ say "hunk-part-and: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-and' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-and: selftest did not print the GREEN part-and line"
 
-# HUNK75 stays GREEN — the matches the conjunction asks of every clause are the ones part_filter proved.
+# HUNK75 stays GREEN -- the matches the conjunction asks of every clause are the ones part_filter proved.
 let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
 assert filt.ok else "hunk-part-and: HUNK75 part_filter re-run failed — see image/bin/part_filter.out"
 let filt_green = run ["sh" "-c" "grep -q 'GREEN part-filter' image/bin/part_filter.out && echo yes"]
 assert (trim filt_green.out) == "yes" else "hunk-part-and: HUNK75 part_filter did not stay GREEN"
 
-# HUNK76 stays GREEN — each clause is parsed by the parser part_query proved.
+# HUNK76 stays GREEN -- each clause is parsed by the parser part_query proved.
 let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
 assert q.ok else "hunk-part-and: HUNK76 part_query re-run failed — see image/bin/part_query.out"
 let q_green = run ["sh" "-c" "grep -q 'GREEN part-query' image/bin/part_query.out && echo yes"]

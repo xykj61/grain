@@ -1,13 +1,13 @@
-# tools/d/drey_verify_witness.rish — the desk fsck: prove the integrity of everything it holds (DREY16).
+# tools/d/drey_verify_witness.rish -- the desk fsck: prove the integrity of everything it holds (DREY16).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY16.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY16.
 # Design read: active-designing/date/20260814/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
-# Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store and the one address_of rule.
+# Stands on: mikrophone/catalog.rye (DREY7) -- the content-addressed store and the one address_of rule.
 #
 # mikrophone/verify.rye is the desk's fsck: verify walks every held recording, re-derives its content address from the
-# bytes the store holds now, and asserts it still equals the address it was keyed under — refusing IntegrityFault by name
+# bytes the store holds now, and asserts it still equals the address it was keyed under -- refusing IntegrityFault by name
 # the moment a stored byte has drifted. The selftest proves: a whole desk verifies sound (read-only, count untouched), an
-# empty desk verifies trivially, a re-deposit stays sound, and a single flipped store byte refuses IntegrityFault — then
+# empty desk verifies trivially, a re-deposit stays sound, and a single flipped store byte refuses IntegrityFault -- then
 # flips back to sound, proof the check tracks the bytes and not a latched flag.
 #
 # Run from the repository root:

@@ -1,11 +1,11 @@
-# rs1_args_max.rish — more than max_args (64) must fail friendly, native.
+# rs1_args_max.rish -- more than max_args (64) must fail friendly, native.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/rs1_args_max.rish
 #
 # A native repoint of rs1_args_max.sh. The original built its 65 arguments with
 # a shell while-loop; Rishi has no loop that accumulates, so this writes the
-# 65 arguments literally rather than force an accumulation Rishi cannot do —
+# 65 arguments literally rather than force an accumulation Rishi cannot do --
 # verbose, and entirely within proven grammar, which this bench prefers over
 # a clever trick that might not hold.
 

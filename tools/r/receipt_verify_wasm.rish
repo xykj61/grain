@@ -1,14 +1,14 @@
-# receipt_verify_wasm.rish — Seam component compile lap: receipt-verify under Wasmtime.
+# receipt_verify_wasm.rish -- Seam component compile lap: receipt-verify under Wasmtime.
 #
-# Builds linengrow/receipt_verify_guest.rye → wasm32-freestanding, then invokes
+# Builds linengrow/receipt_verify_guest.rye -> wasm32-freestanding, then invokes
 # verify_witness and refuse_tampered via Wasmtime (core ABI isomorphic to WIT).
 #
 #   rishi/bin/rishi run tools/r/receipt_verify_wasm.rish
 #
-# Requires: vendor/zig-toolchain (or RYE_ZIG), rye/bin/rye, and wasmtime —
+# Requires: vendor/zig-toolchain (or RYE_ZIG), rye/bin/rye, and wasmtime --
 # PATH first, else tools/.cache/wasmtime/wasmtime (gitignored pin; bench: 31.0.0).
 #
-# Third word (counsel 20260725.223409): ABSENT when wasmtime is missing — exit 0
+# Third word (counsel 20260725.223409): ABSENT when wasmtime is missing -- exit 0
 # with the restore line; never a false RED. True RED only when wasmtime is present
 # and build/invoke fails. Suite summary becomes PARTIAL while any ABSENT stands.
 

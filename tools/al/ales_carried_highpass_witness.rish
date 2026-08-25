@@ -1,16 +1,16 @@
-# tools/al/ales_carried_highpass_witness.rish — a carried-state high-pass: the complement gains a memory too (ALES45).
+# tools/al/ales_carried_highpass_witness.rish -- a carried-state high-pass: the complement gains a memory too (ALES45).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES45.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES45.
 # Design read: active-designing/date/20260814/20260814-164244_fill-ales45-lotus-carried-highpass.md
-# Stands on: lotus/tone.rye (ALES40, accreted with high_pass_carry) · lotus/tone_carry.rye (ALES43 Lowpass, accreted with
-# Highpass) · lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/tone.rye (ALES40, accreted with high_pass_carry) - lotus/tone_carry.rye (ALES43 Lowpass, accreted with
+# Highpass) - lotus/timeline.rye (ALES2 -- the Clip).
 #
 # ALES45 gives ALES40's high-pass a carried state, symmetric to ALES43's low-pass, so the whole split (and the shelf and stack
 # built on it) can span a re-berthed region and be swept without a click. The tone_carry selftest proves, beside the Lowpass:
 # a fresh Highpass (state = 0) equals ALES40's from-silence high_pass byte-for-byte; a span high-passed in two pieces with a
 # carried state equals the whole high-passed once (the complement crux); a Lowpass and a Highpass at one coefficient sum back to
 # the input where the difference fits (low + high = x); reset re-opens the high-pass transient; an illegal coefficient refuses
-# BadCoeff leaving the state untouched, an out-of-range span BadRange leaving the clip untouched. Purely local — no network, no
+# BadCoeff leaving the state untouched, an out-of-range span BadRange leaving the clip untouched. Purely local -- no network, no
 # keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:
@@ -36,11 +36,11 @@ say "ales-carried-highpass: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-tone-carry' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-carried-highpass: selftest did not print the GREEN ales-tone-carry line"
 
-# The ALES45 high-pass proof must be present in the combined GREEN line — assert its own clause, not merely the low-pass line.
+# The ALES45 high-pass proof must be present in the combined GREEN line -- assert its own clause, not merely the low-pass line.
 let hp = run ["sh" "-c" "grep -q 'carried-state HIGH-pass' ${outfile} && echo yes"]
 assert (trim hp.out) == "yes" else "ales-carried-highpass: the GREEN line did not carry the ALES45 high-pass proof clause"
 
-# The high_pass_carry refactor must leave ALES40's tone selftest and ALES44's sweep GREEN — prove it by their green, not by claim.
+# The high_pass_carry refactor must leave ALES40's tone selftest and ALES44's sweep GREEN -- prove it by their green, not by claim.
 let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone.rye -femit-bin=lotus/bin/tone && lotus/bin/tone selftest 2>&1 | grep -q 'GREEN ales-tone' && echo yes"]
 assert (trim tone.out) == "yes" else "ales-carried-highpass: the ALES40 tone witness regressed after the high_pass_carry refactor"
 

@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_buffer_bleeds_census_witness.rish — e47 Buffer bleeds.
+# tools/gen/season/tigerbeetle_buffer_bleeds_census_witness.rish -- e47 Buffer bleeds.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_buffer_bleeds_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-buffer-bleeds: Language EN — buffer bleeds; alloc meets defer."
 say "tb-buffer-bleeds: Style Radiant — padding stays zeroed; leaks show."

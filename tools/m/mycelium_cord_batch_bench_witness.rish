@@ -1,16 +1,16 @@
-# tools/m/mycelium_cord_batch_bench_witness.rish — batching is a pure throughput win (fact batching r3).
+# tools/m/mycelium_cord_batch_bench_witness.rish -- batching is a pure throughput win (fact batching r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r3.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - fact batching - rung r3.
 # r1 proved a batched history folds to the byte-identical supply as the same facts one-per-block; r2
 # let it travel. This rung measures what batching bought, honestly: a fixed corpus of 32 facts is
 # arranged one-per-block (32 blocks) and packed into full batches of 16 (2 blocks), both folding to the
-# identical supply (320). The win is a STRUCTURAL count — a block's fixed cost (one author signature,
+# identical supply (320). The win is a STRUCTURAL count -- a block's fixed cost (one author signature,
 # one node in the agreed order, one round of admission) is paid once per block, so 32 blocks fall to 2,
 # a 16x amortization for the same facts. Each fact still signs once in both.
 #
 # Two Rooms: the module asserts only what it proves exactly (identical supply, exact block counts) and
 # REPORTS the ratio as a measured observation, never an asserted invariant; a real wall-time benchmark
-# stays a named later loom round. This witness records the measured loom line. Demo seeds only — no key,
+# stays a named later loom round. This witness records the measured loom line. Demo seeds only -- no key,
 # funds, network, or custody.
 #
 # Scope: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
@@ -37,7 +37,7 @@ assert selftest.out contains "per-block cost amortized 16.0x" else "mycelium-cor
 # The measured loom line rides in the output so a Loom-aware reader can trend it.
 assert selftest.out contains "loom cord_batch_bench facts=32 blocks_single=32 blocks_batched=2 block_sigs_saved=30 block_ratio_x10=160" else "mycelium-cord-batch-bench: loom metric line missing"
 
-# r1 and r2 stay green binaries at this door — accrete-never-break.
+# r1 and r2 stay green binaries at this door -- accrete-never-break.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch.rye -femit-bin=mycelium/bin/cord_batch && mycelium/bin/cord_batch 2>&1"]
 assert r1.ok else "mycelium-cord-batch-bench: fact-batching r1 is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-batch-bench: fact-batching r1 did not speak its GREEN"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e138 — Cellar retire by accretion · e137 breach withdrawn.
+# Equinox e138 -- Cellar retire by accretion - e137 breach withdrawn.
 # Exit 0 when Lexicon keeps cellar/vessel complements, cellar witness greens,
 # breach withdrawn, no shred plan for cellar, shred RED, 128 reserved.
 # No backtick characters.
@@ -7,7 +7,7 @@
 #   sh tools/fixtures/equinox_e138_cellar_accretion_scan.sh
 #   sh tools/fixtures/equinox_e138_cellar_accretion_scan.sh prove-red
 #
-# Law: retire by accretion · breach after consumers is owed · build nothing that destroys.
+# Law: retire by accretion - breach after consumers is owed - build nothing that destroys.
 set -eu
 
 MODE=${1:-}
@@ -57,7 +57,7 @@ for p in "$COUNSEL" "$ELDER" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$SHRED" \
 done
 echo "instruments_tracked=honored"
 
-# Counsel — accretion · breach withdrawn
+# Counsel -- accretion - breach withdrawn
 rg -qi 'retire by accretion|retired by accretion' "$COUNSEL" || {
   echo "counsel=failed"
   echo "detail=want_accretion"
@@ -80,7 +80,7 @@ echo "counsel=honored"
 echo "breach=withdrawn_to_accretion"
 echo "retirement=by_accretion"
 
-# Lexicon — Cellar accretion · Amphora vessel (not cellar absorb)
+# Lexicon -- Cellar accretion - Amphora vessel (not cellar absorb)
 rg -qi 'accretion|Retired by accretion|retire by accretion' "$LEXICON" || {
   echo "lexicon=failed"
   echo "detail=want_accretion_in_lexicon"
@@ -123,7 +123,7 @@ rg -qi 'accretion|outside consumer|complements' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_48_retire_by_accretion"
 
-# SHRED_PREP — Cellar shred plan refused
+# SHRED_PREP -- Cellar shred plan refused
 rg -qi 'refused|accretion|no shred of Cellar|Cellar kept whole' "$SHRED" || {
   echo "shred_prep=failed"
   echo "detail=want_cellar_shred_refused"

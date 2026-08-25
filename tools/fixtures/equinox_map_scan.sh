@@ -1,9 +1,9 @@
 #!/bin/sh
-# tools/fixtures/equinox_map_scan.sh — equinox map canon is lawful and complete.
+# tools/fixtures/equinox_map_scan.sh -- equinox map canon is lawful and complete.
 # Orchestrated by tools/gen/season/equinox_map_witness.rish.
 #
-# Output: key=value · detail: · verdict= · status agrees with exit.
-# Readable by splitLines + first-space split — no grammar.
+# Output: key=value - detail: - verdict= - status agrees with exit.
+# Readable by splitLines + first-space split -- no grammar.
 set -eu
 f="${1:-context/equinox_map.brix}"
 [ -f "$f" ] || { echo "verdict=missing_descriptor"; exit 2; }
@@ -24,7 +24,7 @@ flush_block() {
     faults=$((faults + 1))
     return
   fi
-  # flank: three space-separated houses · middle equals angular
+  # flank: three space-separated houses - middle equals angular
   set -- $cur_flank
   if [ "$#" -ne 3 ]; then
     echo "detail: flank must be three houses -> $cur_flank"
@@ -92,7 +92,7 @@ if [ "$blocks" -ne 4 ]; then
   faults=$((faults + 1))
 fi
 
-# 2) flanks cover 1..12 exactly once — sort and compare
+# 2) flanks cover 1..12 exactly once -- sort and compare
 sorted=$(printf '%s\n' $flanks | sort -n | tr '\n' ' ' | sed 's/ *$//')
 want="1 2 3 4 5 6 7 8 9 10 11 12"
 if [ "$sorted" != "$want" ]; then
@@ -100,7 +100,7 @@ if [ "$sorted" != "$want" ]; then
   faults=$((faults + 1))
 fi
 
-# 3–5) elements, directions, hours each complete (sort compare)
+# 3-5) elements, directions, hours each complete (sort compare)
 es=$(printf '%s\n' $elements | sort | tr '\n' ' ' | sed 's/ *$//')
 if [ "$es" != "air earth fire water" ]; then
   echo "detail: elements incomplete -> [$es]"

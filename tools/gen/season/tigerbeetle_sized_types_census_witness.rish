@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_sized_types_census_witness.rish — e37 sized types.
+# tools/gen/season/tigerbeetle_sized_types_census_witness.rish -- e37 sized types.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_sized_types_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-sized-types: Language EN — exact widths; usize stays at the seam."
 say "tb-sized-types: Style Radiant — exact sizes keep behavior exact."

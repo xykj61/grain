@@ -1,12 +1,12 @@
-# tools/h/hunk_part_query_witness.rish — a typed search box: parse a keeper's query text into a filter (HUNK76).
+# tools/h/hunk_part_query_witness.rish -- a typed search box: parse a keeper's query text into a filter (HUNK76).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK76.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - parts-marketplace journey - rung HUNK76.
 # Design read: active-designing/date/20260813/20260813-234932_hunk-part-query-typed-search-box-exploration.md
-# Teacher, thanked clean-room: McMaster-Carr's search box — a typed line reaches the narrowing sidebar (concept only, siloed).
+# Teacher, thanked clean-room: McMaster-Carr's search box -- a typed line reaches the narrowing sidebar (concept only, siloed).
 #
 # HUNK75 built the narrowing (filter_catalog turns a catalog and a Query into the sub-catalog of matches). This rung
-# lets a keeper reach it by TYPING: image/part_query.rye `parse_query` reads one `key:value` line (material · prefix ·
-# max · min) and returns the Query it means, so filter_catalog(cat, parse_query(text)) narrows identically to the
+# lets a keeper reach it by TYPING: image/part_query.rye `parse_query` reads one `key:value` line (material - prefix -
+# max - min) and returns the Query it means, so filter_catalog(cat, parse_query(text)) narrows identically to the
 # hand-built query. The selftest proves parse-then-filter narrows the SAME parts in the same held order for each key,
 # min:0 matches every part, and a missing colon / empty key / empty value / unknown key / non-numeric price /
 # over-ceiling price / over-long token each refuse by name. A price is a fact parsed to compare, never moved.
@@ -34,7 +34,7 @@ say "hunk-part-query: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN part-query' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-query: selftest did not print the GREEN part-query line"
 
-# HUNK75 stays GREEN — the filter the parser drives (filter_catalog, Query, max_query_text) is the one part_filter
+# HUNK75 stays GREEN -- the filter the parser drives (filter_catalog, Query, max_query_text) is the one part_filter
 # proved. A search box is only trustworthy because the filter under it is.
 let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
 assert filt.ok else "hunk-part-query: HUNK75 part_filter re-run failed — see image/bin/part_filter.out"

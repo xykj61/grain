@@ -1,23 +1,23 @@
-# tools/m/mycelium_pledge_knot_witness.rish — the two-phase verdict reads across a Knot (r3).
+# tools/m/mycelium_pledge_knot_witness.rish -- the two-phase verdict reads across a Knot (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r3.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the two-phase transfer - rung r3.
 # r1 resolved a whole Cord Dag into a two-phase Ledger; r2 let the verdict travel. A ledger a family runs for
 # years does not carry its whole past unbroken, so r3 makes the Pledge's corpus a KNOT plus its live suffix
 # (mirroring purse_knot, carried from a single balance to balance + reserved and open pledges). A `PledgeKnot`
 # pairs the integrity-sealed global supply (`cord_knot.seal_dag`, whose `issued` equals the prefix's
-# `total_issued` — both count only genesis credits) with the prefix's accounts and OPEN pledges the FoldState
+# `total_issued` -- both count only genesis credits) with the prefix's accounts and OPEN pledges the FoldState
 # omits; `continue_pledge` verifies the Knot, seeds a Ledger with the prefix map, and walks the live suffix
 # through the shared `pledge.fold_pledge` step.
 #
 # The crux is what two-phase transfer exists FOR: a pledge and its resolution can stand far apart in time, even
 # across a pruning checkpoint. Alice PLEDGES 100 to Bob inside the SEALED prefix (coins reserved, not moved),
-# then POSTS it in the live suffix — a promise made before the cut, kept after it, the reserved hundred reaching
+# then POSTS it in the live suffix -- a promise made before the cut, kept after it, the reserved hundred reaching
 # Bob; a VOID in the suffix would instead return it to Alice. `pledges_match` proves the full Cord and the
-# Knot-continued verdict never drift (pledges · settlements · balances · reserves). Conservation of balance +
+# Knot-continued verdict never drift (pledges - settlements - balances - reserves). Conservation of balance +
 # reserved holds past the cut. A corrupt Knot refuses `KnotCorrupt` before a fact is folded, a tampered suffix
 # fact `IdentityRefused`, a resolution of a pledge the checkpoint never opened `UnknownPledge`. A pledge stays
 # ONE kind_tax fact in the sealed prefix so fold's global taxed never double-counts a reserve-and-resolve pair.
-# Composes pledge + cord_knot + cord + fold public API only; demo keeper seeds — no key, no funds, no network,
+# Composes pledge + cord_knot + cord + fold public API only; demo keeper seeds -- no key, no funds, no network,
 # no custody.
 #
 # Scope: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
@@ -44,7 +44,7 @@ assert selftest.out contains "verdict never drifts" else "mycelium-pledge-knot: 
 assert selftest.out contains "each refuse whole" else "mycelium-pledge-knot: refusal claim missing"
 
 # The Pledge whose verdict this reads across a checkpoint, and the Knot whose seal it continues onto, both stand
-# at the door — their own selftests prove the machinery the crossing rests on.
+# at the door -- their own selftests prove the machinery the crossing rests on.
 let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
 assert pledge.ok else "mycelium-pledge-knot: the Pledge whose verdict reads across is not GREEN"
 assert pledge.out contains "GREEN" else "mycelium-pledge-knot: the Pledge did not speak its GREEN"

@@ -1,4 +1,4 @@
-# mantra_recall_tablecloth_query_device.rish — Tablecloth query over Comlink device wire (virtio).
+# mantra_recall_tablecloth_query_device.rish -- Tablecloth query over Comlink device wire (virtio).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_recall_tablecloth_query_device.rish

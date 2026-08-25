@@ -1,8 +1,8 @@
-# tools/gen/season/shed_census_witness.rish — commence M7 weave / e98 shed census.
+# tools/gen/season/shed_census_witness.rish -- commence M7 weave / e98 shed census.
 #
 #   rishi/bin/rishi run tools/gen/season/shed_census_witness.rish
 #
-# Proves green (C1 REFERENCED · C2 ORPHAN · census released) and proves red
+# Proves green (C1 REFERENCED - C2 ORPHAN - census released) and proves red
 # (prove-red greedy index must refuse). Leaf only. Almanac via equinox choir.
 
 say "shed-census: Language EN — planted controls before orphan totals."

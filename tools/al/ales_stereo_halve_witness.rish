@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_halve_witness.rish — stereo_halve: the half-wave rectifier carried into stereo with ONE SHARED THRESHOLD AT ZERO, both channels in lockstep, the EVEN+ODD member of the stereo NONLINEAR class's
+# tools/al/ales_stereo_halve_witness.rish -- stereo_halve: the half-wave rectifier carried into stereo with ONE SHARED THRESHOLD AT ZERO, both channels in lockstep, the EVEN+ODD member of the stereo NONLINEAR class's
 # even corner (ALES139).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES139.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES139.
 # Design read: active-designing/date/20260815/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
-# Stands on: lotus/halve.rye (ALES85 — the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge), lotus/stereo_rectify.rye (ALES138 — the pure-even full-wave sibling this rung partitions where
-# that one collapsed), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
-# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES85's half-wave rectifier into stereo — keeping the positive half of the wave whole and folding the negative
+# Stands on: lotus/halve.rye (ALES85 -- the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge), lotus/stereo_rectify.rye (ALES138 -- the pure-even full-wave sibling this rung partitions where
+# that one collapsed), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
+# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES85's half-wave rectifier into stereo -- keeping the positive half of the wave whole and folding the negative
 # half away to silence in both channels so a half-wave rectification lands on both speakers together, the single-diode voice. The half-wave partitions where the full-wave collapsed: it keeps only the positive half,
-# so an out-of-phase master (right = −left) returns partitioned — at each index exactly one channel survives, left · right = 0 and left + right = |left|, the two half-waves splitting the antisymmetric pair.
+# so an out-of-phase master (right = −left) returns partitioned -- at each index exactly one channel survives, left - right = 0 and left + right = |left|, the two half-waves splitting the antisymmetric pair.
 #
 # lotus/stereo_halve.rye validates the span once against the shared length before either channel is mutated (BadRange on a span outside the samples), then halves both channels through ALES85's halve; HalveError
 # reused whole (max(x, 0) has no illegal parameter and no rail edge, so no saturate is owed). The crux is four laws. THE STEREO HALVE LAW: each channel equals ALES85's mono halve over the same span byte for byte.
-# THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE IMAGE-PARTITION LAW: an out-of-phase master returns partitioned (left · right = 0 and left + right = |left|), the ratio
+# THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE IMAGE-PARTITION LAW: an out-of-phase master returns partitioned (left - right = 0 and left + right = |left|), the ratio
 # held on the kept samples, an identical-channel master staying identical, every output non-negative on both, the map idempotent. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and
 # balanced, count 0 the identity.
 #

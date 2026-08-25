@@ -1,16 +1,16 @@
-# tools/d/drey_push_witness.rish — the desk push loop: give a far hand the whole of what it lacks, the pull's mirror (DREY14).
+# tools/d/drey_push_witness.rish -- the desk push loop: give a far hand the whole of what it lacks, the pull's mirror (DREY14).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY14.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY14.
 # Design read: active-designing/date/20260814/20260814-072200_drey14-desk-push-loop-give-the-far-hand-its-lack-exploration.md
 # Stands on: mikrophone/sync.rye (DREY12), mikrophone/manifest.rye (DREY8), mikrophone/serve.rye (DREY9), mikrophone/catalog.rye (DREY7).
 #
 # mikrophone/push.rye is the exact mirror of the pull: push reads the LOCAL desk's manifest verify-before-trust, then for
 # each advertised address the REMOTE desk lacks, serves it from local and deposits it into remote, ending with the remote
-# holding every address the local advertised. Where pull TAKES what this hand lacks, push GIVES what the far hand lacks —
+# holding every address the local advertised. Where pull TAKES what this hand lacks, push GIVES what the far hand lacks --
 # the more natural Mikrophone direction (a device gives its committed recording up to the desk). The selftest proves: a
 # fresh remote receives the whole (the local keeps its own), a partial remote receives only its lack, a second push is
 # idempotent, a tampered advertisement refuses DigestMismatch before any frame crosses, a remote at its entry bound refuses
-# CatalogFull by name, and push(a,b) converges b the same as pull(b,a) — one negotiation seen from two hands.
+# CatalogFull by name, and push(a,b) converges b the same as pull(b,a) -- one negotiation seen from two hands.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/drey_push_witness.rish

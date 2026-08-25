@@ -1,14 +1,14 @@
-# tools/al/ales_duplicate_witness.rish — duplicate: repeat a span in place, growing the clip, the growth-twin of ALES111's crop (ALES112).
+# tools/al/ales_duplicate_witness.rish -- duplicate: repeat a span in place, growing the clip, the growth-twin of ALES111's crop (ALES112).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES112.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES112.
 # Design read: active-designing/date/20260815/20260815-011901_fill-ales112-lotus-duplicate.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law),
-# lotus/insert_silence.rye (ALES109 — opens the count-sample gap at the span's end without a caller slice), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove that
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law),
+# lotus/insert_silence.rye (ALES109 -- opens the count-sample gap at the span's end without a caller slice), lotus/meter.rye (ALES13 -- the peak/RMS meter, used only to prove that
 # copying existing samples never moves the peak). ALES111's crop KEEPS a span and drops the rest (the clip SHRINKS to the selection); duplicate REPEATS one span in place (the
-# clip grows by the span) — the Duplicate button every editor ships (circle a bar and a second copy lands immediately after the first: the doubled loop, the repeated chorus).
+# clip grows by the span) -- the Duplicate button every editor ships (circle a bar and a second copy lands immediately after the first: the doubled loop, the repeated chorus).
 # Naming it beside crop completes the shrink/grow pair on a selection: keep only it, or repeat it.
 #
-# lotus/duplicate.rye opens count silent seats at the span's end through insert_silence, then copies the original span forward into the disjoint gap — no temporary buffer,
+# lotus/duplicate.rye opens count silent seats at the span's end through insert_silence, then copies the original span forward into the disjoint gap -- no temporary buffer,
 # refusing BadRange when the span falls outside the samples and ClipFull past the fixed buffer before any write. The crux is four laws. THE DUPLICATE LAW: the clip becomes
 # original[0..end] ++ original[start..end] ++ original[end..len), the length grown by count. THE INVERSE LAW: duplicate then ALES2's cut(end, count) returns the original byte
 # for byte. THE COPY / PEAK LAW: duplicate copies existing samples and invents none, so the peak (re-measured through ALES13) is unchanged. THE DEGENERATE / REFUSAL LAW: count 0

@@ -1,10 +1,10 @@
-# tools/r/rune_assert_sweep.rish — the rune assert sweep audit.
+# tools/r/rune_assert_sweep.rish -- the rune assert sweep audit.
 #
 #   rishi/bin/rishi run tools/r/rune_assert_sweep.rish
 #
-# Sweeps authored Rye for assert coverage — the TAME "say your invariants" floor.
+# Sweeps authored Rye for assert coverage -- the TAME "say your invariants" floor.
 # Two tiers, matching TAME's own gate-vs-ratchet split:
-#   * GATE (fails RED): core module files that carry asserts must keep them — a
+#   * GATE (fails RED): core module files that carry asserts must keep them -- a
 #     regression guard. A gated file dropping to zero asserts fails the audit.
 #   * ADVISE (prints, never fails): the wider sweep names zero-assert modules as
 #     migrate-on-touch candidates, without gating.
@@ -21,7 +21,7 @@ say gate.out
 assert gate.out contains "verdict=ok" else "rune-assert-sweep: a gated core module dropped to zero asserts"
 assert gate.ok else "rune-assert-sweep: the verdict reads ok while the status fails — they must agree"
 
-# The advise tier is empty for now — every surveyed module carries asserts and is
+# The advise tier is empty for now -- every surveyed module carries asserts and is
 # gated. The scan keeps its `advise` mode for the next module that opts in before it
 # has earned its asserts.
 

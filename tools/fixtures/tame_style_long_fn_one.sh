@@ -1,5 +1,5 @@
 #!/bin/sh
-# tame_style_long_fn_one.sh — >70-line fn ledger for one .rye file (awk seam).
+# tame_style_long_fn_one.sh -- >70-line fn ledger for one .rye file (awk seam).
 f="$1"
 awk -v F="$f" '
     /^( *)?(pub )?fn /{ if (infn && n > 70) printf "  %s: %s = %d lines\n", F, name, n;

@@ -1,16 +1,16 @@
-# tools/f/fora_commit_witness.rish — a leader commits an old-term entry only through a current-term one (FORA18).
+# tools/f/fora_commit_witness.rish -- a leader commits an old-term entry only through a current-term one (FORA18).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA18. Design read: active-designing/date/20260814/20260814-083700_fora18-constel-commit-rule-current-term.md
 #
-# constel/commit.rye states the one safety rule a multi-term log requires — Raft's §5.4.2, the scenario its paper draws as
+# constel/commit.rye states the one safety rule a multi-term log requires -- Raft's §5.4.2, the scenario its paper draws as
 # Figure 8: a leader may NOT conclude that an entry from a previous term is committed merely because it is stored on a majority.
 # The safe rule is narrow: advance the commit index over an entry only once a CURRENT-term entry has reached a majority; that
 # commits the older entries beneath it transitively by the Log Matching Property (FORA17). The selftest proves: MatchView counts
-# replicas; a single-term log commits by majority (no regression from FORA11); THE FIGURE 8 REFUSAL — an old-term majority entry
+# replicas; a single-term log commits by majority (no regression from FORA11); THE FIGURE 8 REFUSAL -- an old-term majority entry
 # is not committed while the naive term-blind rule would commit it; the transitive commit once a current-term entry reaches a
-# majority; the danger made real — the entry the naive rule would have committed is overwritten by FORA17 repair under a new
-# leader whose log lacked it, the exact fork the safe rule prevents; and the rule runs bounded. Purely local — no socket, no
+# majority; the danger made real -- the entry the naive rule would have committed is overwritten by FORA17 repair under a new
+# leader whose log lacked it, the exact fork the safe rule prevents; and the rule runs bounded. Purely local -- no socket, no
 # network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:

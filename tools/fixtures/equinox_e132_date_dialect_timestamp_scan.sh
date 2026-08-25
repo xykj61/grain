@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e132 — compact Last updated accepts full stamps · suite green · shred held.
+# Equinox e132 -- compact Last updated accepts full stamps - suite green - shred held.
 # Exit 0 when dialect pattern widened, suite 10/10, REDS 44, 128 reserved.
 # No backtick characters.
 #

@@ -1,17 +1,17 @@
-# tools/al/ales_timeline_witness.rish — the three edit gestures transform a sample timeline exactly and in order (ALES2).
+# tools/al/ales_timeline_witness.rish -- the three edit gestures transform a sample timeline exactly and in order (ALES2).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES2.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES2.
 # Design read: active-designing/20260814-fill-ales2-lotus-timeline-edits.md
-# Stands on: lotus/stream.rye (ALES1) — the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
-# sample width. The full road reads: bytes → frames → gapless timeline → editable clip.
+# Stands on: lotus/stream.rye (ALES1) -- the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
+# sample width. The full road reads: bytes -> frames -> gapless timeline -> editable clip.
 #
 # lotus/timeline.rye opens the first real DAW gesture: an editable Clip of i16 PCM samples and the three edits every timeline
-# owes — cut (remove a span, close the gap), gain (scale a span, saturating so loud never wraps), splice (insert a span, shift
+# owes -- cut (remove a span, close the gap), gain (scale a span, saturating so loud never wraps), splice (insert a span, shift
 # the tail right). The selftest proves: cut removes a span exactly; gain saturates rather than wraps (20000×2 pins to +32767)
 # and a negative num inverts phase clamping i16-min's negation; splice inserts in order; splice then cut the same span
 # round-trips to the original (exact inverses); an out-of-range cut refuses BadRange leaving the clip untouched, a zero
-# denominator refuses BadGain, an overflowing splice refuses ClipFull; and the rung composes on ALES1 — a byte stream
-# reassembles into a gapless Timeline, a Clip loads it, and an edit lands on the reassembled audio. Purely local — no network,
+# denominator refuses BadGain, an overflowing splice refuses ClipFull; and the rung composes on ALES1 -- a byte stream
+# reassembles into a gapless Timeline, a Clip loads it, and an edit lands on the reassembled audio. Purely local -- no network,
 # no keys, no funds, no real device.
 #
 # Run from the repository root:

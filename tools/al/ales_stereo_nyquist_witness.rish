@@ -1,16 +1,16 @@
-# tools/al/ales_stereo_nyquist_witness.rish — stereo_nyquist_flip: the Nyquist flip of a master, both channels in lockstep, total (no refusal), completing the stereo pure-rearrangement class (ALES128).
+# tools/al/ales_stereo_nyquist_witness.rish -- stereo_nyquist_flip: the Nyquist flip of a master, both channels in lockstep, total (no refusal), completing the stereo pure-rearrangement class (ALES128).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES128.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES128.
 # Design read: active-designing/date/20260815/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
-# Stands on: lotus/nyquist.rye (ALES107 — the mono parity sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips
-# left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose
+# Stands on: lotus/nyquist.rye (ALES107 -- the mono parity sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips
+# left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip and its buf/len/samples), lotus/meter.rye (ALES13 -- the peak/RMS meter). A Lotus master is a StereoClip whose
 # defining invariant is that left and right hold the same length so the channels stay aligned in time; because both channels hold the same length the parity pattern is identical in each, so
 # modulating a master by the Nyquist frequency lands in both speakers at once. This rung carries ALES107's nyquist_flip into stereo the way ALES127 carried invert: run the proven mono nyquist_flip
 # on each channel. With reverse, rotate, invert, and now the parity flip lifted, the pure-rearrangement class stands whole; like the other three it is total.
 #
 # lotus/stereo_nyquist.rye flips the odd-indexed samples of both channels, reusing ALES107's mono nyquist_flip per channel; because mono nyquist_flip is total and holds each channel's length, the
 # balance invariant is preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO ALTERNATING-SIGN LAW: each channel equals ALES107's mono nyquist_flip on that
-# channel byte for byte, sample i holding saturate((-1)^i · x), even seats held and odd seats negated. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length.
+# channel byte for byte, sample i holding saturate((-1)^i - x), even seats held and odd seats negated. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length.
 # THE INVOLUTION LAW WITH AN HONEST RAIL: twice the identity off the floor, an odd-indexed sample_min (-32768) seat pinning to -32767 on both channels while even seats always round-trip. THE
 # MAGNITUDE / PARITY LAW: each channel's peak unchanged off the rail, every even seat a fixed point, an all-zero pair and an empty pair their own flip.
 #

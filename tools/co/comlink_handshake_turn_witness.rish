@@ -1,9 +1,9 @@
-# comlink_handshake_turn_witness.rish — the live handshake, with rotation.
+# comlink_handshake_turn_witness.rish -- the live handshake, with rotation.
 #
 # Proves Comlink's handshake asks two questions in one breath: who are you (the
 # signed introduction admits the peer to the table) and which key do I seal to
 # (the peer's freshest verified turn tilak names the networking key). The two
-# gates are independent — a peer admitted by a valid introduction still routes
+# gates are independent -- a peer admitted by a valid introduction still routes
 # only to a verified, freshest key, and a forged turn is refused while the peer
 # stays known.
 #

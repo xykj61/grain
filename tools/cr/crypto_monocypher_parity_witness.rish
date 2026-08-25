@@ -1,18 +1,18 @@
-# tools/cr/crypto_monocypher_parity_witness.rish — the FIRST real Monocypher-source parity witness: our authored crypto/blake2b.rye and the vendored
+# tools/cr/crypto_monocypher_parity_witness.rish -- the FIRST real Monocypher-source parity witness: our authored crypto/blake2b.rye and the vendored
 # Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for their BLAKE2b-512 over four identical canonical messages,
-# diffed byte-for-byte. Season G named this rung outright — crypto/blake2b.rye's own selftest calls Monocypher-source parity "an honest horizon
-# rung, added later without changing a byte here." The vendored fetch is no longer held; this closes that horizon (Season G · Cryptography).
+# diffed byte-for-byte. Season G named this rung outright -- crypto/blake2b.rye's own selftest calls Monocypher-source parity "an honest horizon
+# rung, added later without changing a byte here." The vendored fetch is no longer held; this closes that horizon (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." Grain will face a security audit; parity against the ACTUAL library an auditor names,
 # not merely a recited constant, is the honest way to earn it.
-# Kin: crypto/blake2b.rye (our authored primitive, GREEN against Zig's std.crypto) · tools/rye/monocypher_blake2b_parity.rye (our printing harness) ·
+# Kin: crypto/blake2b.rye (our authored primitive, GREEN against Zig's std.crypto) - tools/rye/monocypher_blake2b_parity.rye (our printing harness) -
 # tools/fixtures/monocypher_blake2b_harness.c (Monocypher's printing harness). Monocypher stays the parity TARGET, vendored and unmodified, never a
-# copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+# copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The four messages are EXACTLY the four crypto/blake2b.rye's selftest proves our Rye against Zig over: the empty message, "abc" (RFC 7693 Appendix
-# A), one full 128-byte block, and a 200-byte multi-block input. The two harnesses print like against like. Purely local — no key, no network, no
+# A), one full 128-byte block, and a 200-byte multi-block input. The two harnesses print like against like. Purely local -- no key, no network, no
 # funds, no device; constant-time timing-safety stays the Season's named horizon.
 #
 # Run from the repository root:
@@ -31,11 +31,11 @@ let rout = "crypto/bin/rye_blake2b.out"
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-parity: Monocypher C harness build failed — ${cbuild.err}"
 
-# 2. Run the Monocypher C harness — four BLAKE2b-512 hex lines.
+# 2. Run the Monocypher C harness -- four BLAKE2b-512 hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-monocypher-parity: Monocypher C harness exited non-zero — see ${cout}"
 
-# 3. Run our authored Rye harness — four BLAKE2b-512 hex lines over the identical messages.
+# 3. Run our authored Rye harness -- four BLAKE2b-512 hex lines over the identical messages.
 let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_blake2b_parity.rye > ${rout} 2>&1"]
 assert rrun.ok else "crypto-monocypher-parity: Rye harness exited non-zero — see ${rout}"
 

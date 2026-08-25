@@ -1,21 +1,21 @@
-# tools/al/ales_insert_join_witness.rish — the two-sided insert-join, the trailing-seam law (ALES28).
+# tools/al/ales_insert_join_witness.rish -- the two-sided insert-join, the trailing-seam law (ALES28).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES28.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES28.
 # Design read: active-designing/20260814-fill-ales28-lotus-two-sided-insert-join.md
-# Stands on: lotus/join.rye (ALES26) — the one-sided crossfade `join` run once per seam over its public API, so both seams
-# inherit the proven equal-power law rather than re-deriving it; lotus/timeline.rye (ALES2) — the Clip it edits and max_clip as
+# Stands on: lotus/join.rye (ALES26) -- the one-sided crossfade `join` run once per seam over its public API, so both seams
+# inherit the proven equal-power law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the Clip it edits and max_clip as
 # the one shared bound.
 #
 # lotus/insert_join.rye names the trailing-seam law: ALES26's join crosses only the LEADING seam (it appends a span to the end,
 # where there is no audio after). A keeper drops a span into the MIDDLE, and a second seam appears where the span's tail meets
-# the audio that follows. This rung applies ALES26's join TWICE — once at each seam — so a span inserted mid-clip flows through
+# the audio that follows. This rung applies ALES26's join TWICE -- once at each seam -- so a span inserted mid-clip flows through
 # ALES12's equal-power curve at BOTH edges rather than butting into a click. The crux beyond calling join twice is ATOMICITY:
 # the whole result is built in a private scratch Clip and copied back only on full success, so any refusal leaves the clip
-# exactly as it was. The selftest proves: the new length shares both overlaps (10,5,2,2 → 11, not summed to 15); both seam
+# exactly as it was. The selftest proves: the new length shares both overlaps (10,5,2,2 -> 11, not summed to 15); both seam
 # samples sit strictly inside their raw 60000 steps where a butt insert leaves both adjacent and unblended; the leading seam
 # still continues the clip before it and the trailing seam still continues the audio after it; and a past-the-master position, a
 # lead wider than the head, a trail wider than the following audio, a short lead, and an overflow each refuse by name leaving the
-# clip untouched. Purely local — no network, no keys, no funds, no real device, no real speaker.
+# clip untouched. Purely local -- no network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_insert_join_witness.rish

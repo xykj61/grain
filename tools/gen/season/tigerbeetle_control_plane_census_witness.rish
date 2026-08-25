@@ -1,9 +1,9 @@
-# tools/gen/season/tigerbeetle_control_plane_census_witness.rish — e20 control/data plane.
+# tools/gen/season/tigerbeetle_control_plane_census_witness.rish -- e20 control/data plane.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_control_plane_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence + counts only · never copies into rye/.
+# Clean-room: presence + counts only - never copies into rye/.
 
 say "tb-control-plane: Language EN — control plane and data plane name the assert budget."
 say "tb-control-plane: Style Radiant — spend asserts where free; gate where dear."

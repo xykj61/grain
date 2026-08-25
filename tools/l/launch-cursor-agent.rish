@@ -1,6 +1,6 @@
-# launch-cursor-agent.rish — start Cursor Agent CLI inside ai-jail from the repository root.
+# launch-cursor-agent.rish -- start Cursor Agent CLI inside ai-jail from the repository root.
 #
-# Primary Rish entry. Bash elder: tools/ag/agent-jail.sh cursor-agent …
+# Primary Rish entry. Bash elder: tools/ag/agent-jail.sh cursor-agent ...
 # Keeper pier / Linux: --private-home; auth under .cursor-agent-state/.
 #
 #   rishi/bin/rishi run tools/l/launch-cursor-agent.rish
@@ -12,8 +12,8 @@
 #   ./tools/ag/agent-jail.sh --continue agent
 #   ./tools/ag/agent-jail.sh cursor-agent -p "what is the hostname"
 #
-# Shell equivalent: ./tools/ag/agent-jail.sh cursor-agent …
-# See: nixos-guide CLI-agents note · context/specs/enclosure-editors.md
+# Shell equivalent: ./tools/ag/agent-jail.sh cursor-agent ...
+# See: nixos-guide CLI-agents note - context/specs/enclosure-editors.md
 
 let result = run ["bash" "tools/ag/agent-jail.sh" "cursor-agent"]
 say "launch-cursor-agent: agent-jail finished — ok=${result.ok}"

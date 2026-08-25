@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_open_asks_escrow_wire_lab.sh — OA-L3 lap 2 device wire (hold + release hops).
+# comlink/run_open_asks_escrow_wire_lab.sh -- OA-L3 lap 2 device wire (hold + release hops).
 #
 # Orchestration lives in tools/co/comlink_open_asks_escrow_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

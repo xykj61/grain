@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# cursor_jail_macos_witness.sh — proves tools/cu/cursor-jail-macos.sh's SBPL
+# cursor_jail_macos_witness.sh -- proves tools/cu/cursor-jail-macos.sh's SBPL
 # profile actually fences writes to the project directory, on this host.
 #
 # Refuse witness: a write outside the project must be denied.

@@ -1,5 +1,5 @@
 #!/bin/bash
-# make-key-card.sh — render Fira Code identity "key cards" (landscape + portrait).
+# make-key-card.sh -- render Fira Code identity "key cards" (landscape + portrait).
 #
 # All content sits in a centered 1024x1024 square; that square is then padded to
 # 4:3 (1365x1024 landscape, 1024x1365 portrait) in the configured palette, so the
@@ -17,8 +17,8 @@
 # and the Fira Code font. QR codes come from libqrencode, vendored at
 # gratitude/libqrencode and built here with gcc into tools/.build (gitignored).
 #
-# TAME Rye horizon: both halves of this tool — the QR encoding (libqrencode) and
-# the card composition (ImageMagick) — are marked for reimplementation in Rye.
+# TAME Rye horizon: both halves of this tool -- the QR encoding (libqrencode) and
+# the card composition (ImageMagick) -- are marked for reimplementation in Rye.
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

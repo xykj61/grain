@@ -1,8 +1,8 @@
-# tools/h/hunk_filter_strip_witness.rish — the filter strip, on metal (HUNK64).
+# tools/h/hunk_filter_strip_witness.rish -- the filter strip, on metal (HUNK64).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK64.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK64.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
-# Teacher, thanked clean-room: the filter strip of a photo app (iCloud Photos / Instagram / VSCO) — a row of the same
+# Teacher, thanked clean-room: the filter strip of a photo app (iCloud Photos / Instagram / VSCO) -- a row of the same
 # photo under each named filter, the chosen one framed (concept only, siloed).
 #
 # HUNK63 gave a keeper the filter tool; this rung paints the whole carousel. paint_strip previews every filter in the
@@ -25,7 +25,7 @@ assert build.ok else "hunk-filter-strip: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-filter-strip: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-filter-strip: ${out}"

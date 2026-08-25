@@ -1,9 +1,9 @@
-# tools/g/glow_tend_a1_suite.rish — one lap proves the whole a1 era (e216).
+# tools/g/glow_tend_a1_suite.rish -- one lap proves the whole a1 era (e216).
 #
 #   rishi/bin/rishi run tools/g/glow_tend_a1_suite.rish
 #
 # Runs every a1 deciding-gate witness in one bounded pass: the pier's dec,
-# the four family firsts, and the two second walls — seven gates, both
+# the four family firsts, and the two second walls -- seven gates, both
 # sides each, the malformed plant guarding the grammar inside the tally
 # witness. One green line at the end means the era stands whole.
 

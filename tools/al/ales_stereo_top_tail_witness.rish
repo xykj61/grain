@@ -1,20 +1,20 @@
-# tools/al/ales_stereo_top_tail_witness.rish — stereo_top_tail: the top-and-tail trimmer carried into stereo, one bracket for both channels — cut only the leading and trailing joint silence, keep every interior pause on both channels in lockstep (ALES150).
+# tools/al/ales_stereo_top_tail_witness.rish -- stereo_top_tail: the top-and-tail trimmer carried into stereo, one bracket for both channels -- cut only the leading and trailing joint silence, keep every interior pause on both channels in lockstep (ALES150).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES150.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES150.
 # Design read: active-designing/date/20260815/20260815-053823_fill-ales150-lotus-stereo-top-tail.md
-# Stands on: lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
-# whole), lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/stereo_trim_silence.rye (ALES148 — the stereo silence stripper, imported by the selftest to prove the length-bracket law),
-# lotus/stereo_split_silence.rye (ALES149 — the stereo auto-splitter, imported by the selftest to prove the outer-take bracket law), lotus/top_tail.rye (ALES98 — the mono top-and-tail, imported by the selftest to prove the
-# lockstep law), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 —
+# Stands on: lotus/stereo_segment.rye (ALES147 -- the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
+# whole), lotus/segment.rye (ALES95 -- the mono segmenter and max_segments, through ALES147), lotus/stereo_trim_silence.rye (ALES148 -- the stereo silence stripper, imported by the selftest to prove the length-bracket law),
+# lotus/stereo_split_silence.rye (ALES149 -- the stereo auto-splitter, imported by the selftest to prove the outer-take bracket law), lotus/top_tail.rye (ALES98 -- the mono top-and-tail, imported by the selftest to prove the
+# lockstep law), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its cut, its max_clip, the EditError reused whole), lotus/voiced.rye (ALES94 --
 # the .silent verdict this intersects). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment independently, so their silences differ in
 # count and boundary, and top-and-tailing each channel by its own silence would tear the stereo image apart.
 #
-# lotus/stereo_top_tail.rye decides ONE bracket for both channels — the silence intersection at the ends: segment both channels over one shared frame grid, mark a frame jointly-silent only where it is silent in both channels,
+# lotus/stereo_top_tail.rye decides ONE bracket for both channels -- the silence intersection at the ends: segment both channels over one shared frame grid, mark a frame jointly-silent only where it is silent in both channels,
 # keep the span from the first frame either speaker fills to the last, and cut the leading and trailing jointly-silent runs from both channels in lockstep (tail first, so the leading index stays valid). A frame silent in only
 # one channel bounds the kept span; every interior pause, jointly-silent or not, is kept where it lies; only dead air at the two ends is removed. It validates the shared frame length, band, span, and floor once through ALES147's
 # own up-front checks before any cut (BadThreshold on an illegal band, BadRange on a span past the samples, BadFloor on a floor above the peak ceiling, BadFrame on a zero/oversized/non-dividing length), so a refusal never trims
-# one channel and leaves the other; StereoSegmentError and EditError reused whole. The crux is that it invents no new measurement and no new sample — it reads its silences through ALES147 and removes whole frames through ALES2's
-# cut — so it can never drift from the segmenter it composes; what is new is the composition rule, the outer bracket of two independent silences, whose whole honesty is that running the proven mono top_tail on each channel apart
+# one channel and leaves the other; StereoSegmentError and EditError reused whole. The crux is that it invents no new measurement and no new sample -- it reads its silences through ALES147 and removes whole frames through ALES2's
+# cut -- so it can never drift from the segmenter it composes; what is new is the composition rule, the outer bracket of two independent silences, whose whole honesty is that running the proven mono top_tail on each channel apart
 # would desync the pair.
 #
 # Run from the repository root:

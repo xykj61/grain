@@ -1,12 +1,12 @@
-# tools/h/hunk_photos_stretch_witness.rish — the Photos app auto-levels: contrast stretch on metal (HUNK26).
+# tools/h/hunk_photos_stretch_witness.rish -- the Photos app auto-levels: contrast stretch on metal (HUNK26).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK26.
-# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Open Image - rung HUNK26.
+# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A - the open image quest).
 # Teacher, thanked clean-room: the auto-levels / normalize gesture every photo app carries (concept only, siloed).
 #
 # HUNK25 gave the module its convolution filter primitive (blur, sharpen). This rung lands the ANALYTICAL filter
 # the levels and curves tools stand on: `image/photos.rye` `stretch` is a pure two-pass auto-levels over the
-# decoded RGBA grid — a first scan finds each color channel's darkest and brightest value, then a second pass
+# decoded RGBA grid -- a first scan finds each color channel's darkest and brightest value, then a second pass
 # linearly maps that range onto the whole 0..255 byte range, alpha untouched. A flat channel (range zero) passes
 # through rather than dividing by nothing; a full-range channel is a fixed point; the map is monotone. The selftest
 # proves a dim red ramp [40,60,80,100] stretches to the exact rounded [0,85,170,255], the flat green and blue
@@ -46,7 +46,7 @@ assert selftest.out contains "stretched image re-encodes and round-trips" else "
 
 assert selftest.out contains "an empty image refused by name" else "hunk-photos-stretch: the EmptyImage refusal was not proven"
 
-# The earlier Photos rungs share the binary — GREEN holds beneath.
+# The earlier Photos rungs share the binary -- GREEN holds beneath.
 assert selftest.out contains "GREEN image-photos-convolve:" else "hunk-photos-stretch: HUNK25 convolve selftest no longer GREEN beneath"
 assert selftest.out contains "GREEN image-photos:" else "hunk-photos-stretch: HUNK3 crop selftest no longer GREEN beneath"
 

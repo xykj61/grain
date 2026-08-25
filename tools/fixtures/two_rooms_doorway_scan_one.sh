@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# two_rooms_doorway_scan_one.sh — per-file doorway verdict for native orchestrator.
+# two_rooms_doorway_scan_one.sh -- per-file doorway verdict for native orchestrator.
 set -eu
 f="$1"
 seating="$2"

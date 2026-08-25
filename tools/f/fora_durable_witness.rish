@@ -1,14 +1,14 @@
-# tools/f/fora_durable_witness.rish — durable state: a pier survives a restart without ever forgetting its vote (FORA30).
+# tools/f/fora_durable_witness.rish -- durable state: a pier survives a restart without ever forgetting its vote (FORA30).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA30. Design read: active-designing/date/20260814/20260814-105746_fora30-constel-durable-state.md
 #
-# constel/durable.rye persists the exact triple Raft's Figure 2 requires on stable storage — (term, voted_for, TermedLog) — into a
+# constel/durable.rye persists the exact triple Raft's Figure 2 requires on stable storage -- (term, voted_for, TermedLog) -- into a
 # self-describing, Sha256-sealed byte image, read verify-before-trust on load (FORA3's discipline). `record_vote` is the vote-record
 # decision whose durability is the point; `save`/`load` round-trip it through bytes. The selftest proves: round-trip identity; the
-# crux — a pier that voted A in term 5, crashed, and restored refuses to vote B in term 5 (no second leader in one term); a new term
+# crux -- a pier that voted A in term 5, crashed, and restored refuses to vote B in term 5 (no second leader in one term); a new term
 # clears the vote across the restart; the committed log survives whole; a corrupt image (flipped digest, wild log_len, short buffer,
-# bad magic) fails closed; term never regresses; bounded to a full log. Purely local — no real fd, no socket, no network, no funds.
+# bad magic) fails closed; term never regresses; bounded to a full log. Purely local -- no real fd, no socket, no network, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_durable_witness.rish

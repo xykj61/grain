@@ -1,5 +1,5 @@
 #!/bin/sh
-# aurora/run.sh — build an Aurora stage with Rye, and wake it in an emulator.
+# aurora/run.sh -- build an Aurora stage with Rye, and wake it in an emulator.
 #
 # Usage: aurora/run.sh [stage]     (stage defaults to "seed")
 #

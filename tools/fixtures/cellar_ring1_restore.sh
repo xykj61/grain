@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# cellar_ring1_restore.sh — restore manifest + resins (legacy or Tilak entry lines).
+# cellar_ring1_restore.sh -- restore manifest + resins (legacy or Tilak entry lines).
 set -eu
 OUT=${1:?usage: cellar_ring1_restore.sh outdir targetdir}
 TARGET=${2:?usage: cellar_ring1_restore.sh outdir targetdir}

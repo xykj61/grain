@@ -1,24 +1,24 @@
-# tools/cr/crypto_ed25519_sign_witness.rish — Ed25519 SIGNING authored in pure Rye: Season G's thirteenth rung, the near side of the Lotus signed
+# tools/cr/crypto_ed25519_sign_witness.rish -- Ed25519 SIGNING authored in pure Rye: Season G's thirteenth rung, the near side of the Lotus signed
 # carry and the mirror of the verifier. Given a 32-byte secret seed and a message, sign produces the 64-byte signature R ‖ S the verifier accepts,
 # by the RFC 8032 §5.1.6 procedure, composing every GREEN arithmetic rung. Proven byte-for-byte against an independent implementation and round-
-# tripped through our own GREEN verifier (Season G · Cryptography).
+# tripped through our own GREEN verifier (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G: "once a Rye signing primitive is
-# parity-GREEN, Lotus's signed carry becomes buildable — the library is engineering; signing with the maintainer's own identity key stays the gate").
-# Kin: crypto/ed25519_muladd.rye · crypto/ed25519_scalar.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_decode.rye ·
-# crypto/sha512.rye · crypto/ed25519_verify.rye (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line
-# — our own composition, studied clean-room from RFC 8032 (.claude/rules/gratitude-licenses.md).
+# parity-GREEN, Lotus's signed carry becomes buildable -- the library is engineering; signing with the maintainer's own identity key stays the gate").
+# Kin: crypto/ed25519_muladd.rye - crypto/ed25519_scalar.rye - crypto/ed25519_scalarmul.rye - crypto/ed25519_group.rye - crypto/ed25519_decode.rye -
+# crypto/sha512.rye - crypto/ed25519_verify.rye (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line
+# -- our own composition, studied clean-room from RFC 8032 (.claude/rules/gratitude-licenses.md).
 #
 # crypto/ed25519_sign.rye expands the seed through SHA-512 into the clamped secret scalar a and the prefix, publishes A = compress([a]B), derives
-# the nonce r = SHA-512(prefix ‖ M) mod L, forms R = compress([r]B), derives the challenge k = SHA-512(R ‖ A ‖ M) mod L, and sets S = (r + k·a) mod L
-# over the GREEN multiply-add — the signature is R ‖ S. The base point B is DERIVED (decode of y = 4/5), never a pasted literal. Signing is
+# the nonce r = SHA-512(prefix ‖ M) mod L, forms R = compress([r]B), derives the challenge k = SHA-512(R ‖ A ‖ M) mod L, and sets S = (r + k-a) mod L
+# over the GREEN multiply-add -- the signature is R ‖ S. The base point B is DERIVED (decode of y = 4/5), never a pasted literal. Signing is
 # deterministic. The primitive calls no std.crypto. Parity is proven at selftest against Zig's own std.crypto.sign.Ed25519 as an independent RFC 8032
-# implementation — across a spread of deterministic seeds and messages, our derived public key equals Zig's byte-for-byte and our signature equals
-# Zig's byte-for-byte — and by round-tripping every signature through our own GREEN verifier (genuine accepts, a one-byte tamper refused), and by
+# implementation -- across a spread of deterministic seeds and messages, our derived public key equals Zig's byte-for-byte and our signature equals
+# Zig's byte-for-byte -- and by round-tripping every signature through our own GREEN verifier (genuine accepts, a one-byte tamper refused), and by
 # confirming determinism and the named message bound. The vendored Monocypher source is a held network fetch, so Monocypher-source parity is an
 # honest horizon rung. This rung holds a secret scalar and signs, so a constant-time signing path is the Season's named timing HORIZON. Purely local
-# — it signs only TEST seeds: no real key, no network, no funds, no real device; signing with the maintainer's own identity key stays its own gated
+# -- it signs only TEST seeds: no real key, no network, no funds, no real device; signing with the maintainer's own identity key stays its own gated
 # round.
 #
 # Run from the repository root:

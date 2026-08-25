@@ -1,15 +1,15 @@
-# tools/h/hunk_touch_scroll_witness.rish — the touch session: finger down · move · up become a live cursor (HUNK46).
+# tools/h/hunk_touch_scroll_witness.rish -- the touch session: finger down - move - up become a live cursor (HUNK46).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK46.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK46.
 # Design read: active-designing/date/20260813/20260813-201244_hunk-touch-session-exploration.md.
-# Teacher, thanked clean-room: the event-loop face of any touch scroll surface — a touchscreen reports finger down, a
+# Teacher, thanked clean-room: the event-loop face of any touch scroll surface -- a touchscreen reports finger down, a
 # stream of finger move, then finger up, and ticks between frames; the surface scrolls, drags under the finger, and
 # coasts when released (concept only, siloed).
 #
-# HUNK40–45 grew the touch-scroll journey in six clean pieces, each called separately. This rung is the driver a real
+# HUNK40-45 grew the touch-scroll journey in six clean pieces, each called separately. This rung is the driver a real
 # device event loop hands raw finger events to: `pond/apps/preset_touch_scroll.rye` `TouchScroll` is a small three-phase
 # state machine (idle, dragging, flinging) routing finger_down/move/up and a per-frame tick through HUNK44's pixel drag
-# and HUNK45's fling — inventing no arithmetic and no new clamp. The one behaviour it adds is grab-to-stop: a fresh
+# and HUNK45's fling -- inventing no arithmetic and no new clamp. The one behaviour it adds is grab-to-stop: a fresh
 # finger_down during a coast cancels the fling. The selftest drives a two-row viewport over a real five-book library by
 # whole touch gestures and proves a pure drag with no fling, a flick that coasts, grab-to-stop, the inherited clamps,
 # and the open-time refusals. No network, no key, no funds.

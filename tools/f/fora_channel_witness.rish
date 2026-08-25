@@ -1,15 +1,15 @@
-# tools/f/fora_channel_witness.rish — a bounded byte channel carries the handshake one frame at a time (FORA5).
+# tools/f/fora_channel_witness.rish -- a bounded byte channel carries the handshake one frame at a time (FORA5).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA5.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA5.
 # Design read: active-designing/date/20260814/20260814-044915_fora5-constel-channel-byte-stream.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the channel delimits but never re-checks: a frame read cleanly off the
+# Law kin: .claude/rules/placeholder-ship-names.md -- the channel delimits but never re-checks: a frame read cleanly off the
 # stream but carrying a smuggled vowel still refuses VowelPresent at wire.deframe. The FORA3 gates keep the only trust.
 #
-# constel/channel.rye stands a bounded in-process byte FIFO — the loopback that models the Comlink seam without a socket. Its
+# constel/channel.rye stands a bounded in-process byte FIFO -- the loopback that models the Comlink seam without a socket. Its
 # one new concern is stream framing: read exactly one whole frame out of a continuous byte queue, waiting on a partial frame,
 # reading two back-to-back frames one at a time. The selftest proves: a whole exchange runs over two channels; a partial
 # frame waits then completes; two frames read one at a time; a wild length refuses BadFrame; an overfull channel refuses
-# ChannelFull; and the naming-law border still guards a stream. Purely local — no socket, no network, no keys, no funds.
+# ChannelFull; and the naming-law border still guards a stream. Purely local -- no socket, no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_channel_witness.rish

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# pond_build_drawn_terminal.sh — build pond/bin/drawn-terminal from repo root.
+# pond_build_drawn_terminal.sh -- build pond/bin/drawn-terminal from repo root.
 set -eu
 root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$root"

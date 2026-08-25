@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_vessel_stamp_witness.sh — pour signed vessel, scrub verifies, tamper refuses.
+# amphora_vessel_stamp_witness.sh -- pour signed vessel, scrub verifies, tamper refuses.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 SRC="$ROOT/tools/fixtures/amphora_lap3_tree"
@@ -16,7 +16,7 @@ grep -q '^stamp_sig ' "$home/vessel.bron"
 sh "$ROOT/tools/fixtures/amphora_carry.sh" "$home" "$far"
 sh "$ROOT/tools/fixtures/amphora_scrub_arrival.sh" "$far" "$SRC"
 
-# Unwelcome: flip one stamp_sig hex nibble — scrub/verify must refuse.
+# Unwelcome: flip one stamp_sig hex nibble -- scrub/verify must refuse.
 sig_line=$(grep '^stamp_sig ' "$far/vessel.bron")
 # rewrite stamp_sig with a flipped first hex digit
 first=$(printf '%s' "$sig_line" | awk '{print substr($2,1,1)}')

@@ -1,15 +1,15 @@
-# tools/al/ales_stereo_vibrato_witness.rish — stereo_vibrato: the wet-only triangle-LFO modulated delay carried into stereo, the same LFO on both channels, each channel read off its own frozen snapshot — the third rung of the stereo modulation class and the first that snapshots (ALES178).
+# tools/al/ales_stereo_vibrato_witness.rish -- stereo_vibrato: the wet-only triangle-LFO modulated delay carried into stereo, the same LFO on both channels, each channel read off its own frozen snapshot -- the third rung of the stereo modulation class and the first that snapshots (ALES178).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES178.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES178.
 # Design read: active-designing/date/20260815/20260815-083330_fill-ales178-lotus-stereo-vibrato.md
-# Stands on: lotus/vibrato.rye (ALES72 — the mono wet-only vibrato run once per channel, its VibratoError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/chorus.rye (ALES71 — the
-# full-wet chorus that is the dry plus this vibrato, the chorus-family equality target), lotus/glide.rye (ALES70 — glide_scale, 256 = unity), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate).
+# Stands on: lotus/vibrato.rye (ALES72 -- the mono wet-only vibrato run once per channel, its VibratoError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/chorus.rye (ALES71 -- the
+# full-wet chorus that is the dry plus this vibrato, the chorus-family equality target), lotus/glide.rye (ALES70 -- glide_scale, 256 = unity), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip and the one true saturate).
 #
-# lotus/stereo_vibrato.rye wobbles a stereo master: it runs ALES72's proven mono wet-only vibrato on BOTH channels with the SAME LFO — a triangle of depth round centre over period samples driving a wet-only modulated fractional
+# lotus/stereo_vibrato.rye wobbles a stereo master: it runs ALES72's proven mono wet-only vibrato on BOTH channels with the SAME LFO -- a triangle of depth round centre over period samples driving a wet-only modulated fractional
 # delay, the delayed voice heard alone with no dry mixed under it. ALES176 (tremolo) and ALES177 (ring modulator) opened the stereo modulation class with the two thin per-sample modulations that write in place with no snapshot; the
 # vibrato is the thinnest delay-line modulation and so the honest first delay-line stereo lift, the crux the snapshot discipline rather than the arithmetic. The same LFO on both channels, each on its own snapshot, is the linked stereo
 # vibrato, both voices wobbling in lockstep. An LFO is scaled units the caller names (256 = unity), not scalars measured across the field, so the same LFO on each channel preserves the image for free; mono vibrato snapshots the dry
-# prefix of its own clip, so run once per channel the left reads the left's dry and the right the right's, never crossed — no cross-channel snapshot, the mono discipline twice. Because the interpolation read is a convex combination
+# prefix of its own clip, so run once per channel the left reads the left's dry and the right the right's, never crossed -- no cross-channel snapshot, the mono discipline twice. Because the interpolation read is a convex combination
 # linear in the input, an identical-channel master stays identical and a panned master keeps its pan exactly, the left:right ratio untouched (the wet voice off the rail, so no saturation breaks it). It validates the LFO and span once
 # against the shared length before either channel is snapshotted (BadPeriod, BadDepth, BadDelay, BadRange), so a refusal never wobbles one channel and leaves the other torn; VibratoError reused whole, no BadLevel (wet-only carries no
 # mix). Values only, never a length; the two channels leave balanced. The crux is four laws: the stereo vibrato law (each channel equal to ALES72's mono vibrato with the same LFO byte for byte, the channels genuinely differing), the

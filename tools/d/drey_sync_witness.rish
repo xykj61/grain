@@ -1,6 +1,6 @@
-# tools/d/drey_sync_witness.rish — the desk pull loop: fetch the whole of what a far hand holds in one bounded op (DREY12).
+# tools/d/drey_sync_witness.rish -- the desk pull loop: fetch the whole of what a far hand holds in one bounded op (DREY12).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY12.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - rung DREY12.
 # Design read: active-designing/date/20260814/20260814-071500_drey12-desk-sync-pull-loop-exploration.md
 # Stands on: mikrophone/manifest.rye (DREY8), mikrophone/serve.rye (DREY9), mikrophone/catalog.rye (DREY7).
 #

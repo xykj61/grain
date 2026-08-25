@@ -1,12 +1,12 @@
 #!/bin/sh
-# tools/fixtures/dep_crawl_scan.sh — bounded dependency BFS body.
+# tools/fixtures/dep_crawl_scan.sh -- bounded dependency BFS body.
 # Orchestrated by tools/gen/season/dep_crawl.rish (tame_style_scan shape:
 # Rishi holds the asserts, this seam holds the shell variables).
 #
 # Bounds, named before the walk:
-#   MAXN 256 nodes · MAXD 16 depth — one journey deep.
+#   MAXN 256 nodes - MAXD 16 depth -- one journey deep.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
 root="$1"
 # Bounds default to the named values and may be overridden ONLY by the negative

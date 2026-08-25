@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_recall_subscribe_poll_wire_lab.sh — poll wire device: one cycle body = catch-up rev 2.
+# comlink/run_recall_subscribe_poll_wire_lab.sh -- poll wire device: one cycle body = catch-up rev 2.
 #
 # Orchestration lives in tools/co/comlink_recall_subscribe_poll_wire_lab.rish (spawn / wait-for).
 # This entry point keeps the stable path named in design docs and guest headers.

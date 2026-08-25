@@ -1,15 +1,15 @@
-# tools/al/ales_sweep_witness.rish — a filter sweep: a low-pass whose cutoff moves across a span, seamless because state carries (ALES44).
+# tools/al/ales_sweep_witness.rish -- a filter sweep: a low-pass whose cutoff moves across a span, seamless because state carries (ALES44).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES44.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES44.
 # Design read: active-designing/date/20260814/20260814-163647_fill-ales44-lotus-filter-sweep.md
-# Stands on: lotus/tone_carry.rye (ALES43) and lotus/tone.rye (ALES40 — low_pass_carry) and lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/tone_carry.rye (ALES43) and lotus/tone.rye (ALES40 -- low_pass_carry) and lotus/timeline.rye (ALES2 -- the Clip).
 #
 # lotus/sweep.rye gives ALES40's one-pole low-pass a moving coefficient: it partitions a span into blocks, filters each with a
 # coefficient interpolated from num_from to num_to, and carries ONE state across every block. The selftest proves: a degenerate
 # sweep (num_from == num_to) equals ALES40's fixed low_pass over the whole span byte-for-byte (the crux); the schedule's
 # endpoints are exact and its interior monotone and legal within [1, den]; a distinct-endpoint sweep is genuinely time-varying
 # (equal to neither endpoint's fixed filter); a constant input swept settles exactly and never dips at a seam (no re-transient);
-# an illegal endpoint refuses BadCoeff, an out-of-range span BadRange, an illegal block count BadBlocks. Purely local — no
+# an illegal endpoint refuses BadCoeff, an out-of-range span BadRange, an illegal block count BadBlocks. Purely local -- no
 # network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:
@@ -35,7 +35,7 @@ say "ales-sweep: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-sweep' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-sweep: selftest did not print the GREEN ales-sweep line"
 
-# The sweep reuses ALES43's carried low-pass and ALES40's stepping whole — prove they still stand by their own green, not by claim.
+# The sweep reuses ALES43's carried low-pass and ALES40's stepping whole -- prove they still stand by their own green, not by claim.
 let carry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone_carry.rye -femit-bin=lotus/bin/tone_carry && lotus/bin/tone_carry selftest 2>&1 | grep -q 'GREEN ales-tone-carry' && echo yes"]
 assert (trim carry.out) == "yes" else "ales-sweep: the ALES43 carried-filter witness regressed under the sweep"
 

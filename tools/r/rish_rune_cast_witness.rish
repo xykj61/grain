@@ -1,4 +1,4 @@
-# rish_rune_cast_witness.rish — the ^- cast rune, the first Glow rune Rishi speaks.
+# rish_rune_cast_witness.rish -- the ^- cast rune, the first Glow rune Rishi speaks.
 #
 # Proves Rishi now recognizes `^-` (kethep) as first-class syntax: it evaluates a body
 # as a full expression, gates the value against the named **shape** (this tree's word,
@@ -11,7 +11,7 @@
 let a = ^- @u32 42
 assert a == 42 else "^- @u32 42 should pass through as 42"
 
-# The body is a full expression, evaluated before the cast — the rune nests.
+# The body is a full expression, evaluated before the cast -- the rune nests.
 let b = ^- @u32 (length "abc")
 assert b == 3 else "^- @u32 (length ...) should evaluate the body, then cast to 3"
 
@@ -27,7 +27,7 @@ assert d == -5 else "^- @i64 should accept a negative int"
 let e = ^- @ud 7
 assert e == 7 else "^- @ud should accept a non-negative int"
 
-# A value that cannot hold refuses — a child whose cast fails exits non-zero.
+# A value that cannot hold refuses -- a child whose cast fails exits non-zero.
 let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_cast_bad_type.rish"]
 assert bad_type.ok == false else "^- @u32 on a string must refuse (child should exit non-zero)"
 

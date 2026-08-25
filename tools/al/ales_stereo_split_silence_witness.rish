@@ -1,18 +1,18 @@
-# tools/al/ales_stereo_split_silence_witness.rish — stereo_split_silence: the auto-splitter carried into stereo, one cut line for both channels, the stereo twin of the silence stripper (ALES149).
+# tools/al/ales_stereo_split_silence_witness.rish -- stereo_split_silence: the auto-splitter carried into stereo, one cut line for both channels, the stereo twin of the silence stripper (ALES149).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES149.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES149.
 # Design read: active-designing/date/20260815/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
-# Stands on: lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
-# whole), lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/stereo_trim_silence.rye (ALES148 — the stereo silence stripper, the join-law twin, imported by the selftest), lotus/split_silence.rye
-# (ALES97 — the mono auto-splitter, the shape carried up), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its splice, its max_clip, the EditError reused
-# whole), lotus/voiced.rye (ALES94 — the .silent verdict). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment independently, so their
+# Stands on: lotus/stereo_segment.rye (ALES147 -- the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
+# whole), lotus/segment.rye (ALES95 -- the mono segmenter and max_segments, through ALES147), lotus/stereo_trim_silence.rye (ALES148 -- the stereo silence stripper, the join-law twin, imported by the selftest), lotus/split_silence.rye
+# (ALES97 -- the mono auto-splitter, the shape carried up), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its splice, its max_clip, the EditError reused
+# whole), lotus/voiced.rye (ALES94 -- the .silent verdict). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length; ALES147 proved the two channels segment independently, so their
 # silences differ in count and boundary, and splitting each channel by its own silence would cut the two speakers at different positions and tear every take apart.
 #
-# lotus/stereo_split_silence.rye decides ONE cut line for both channels — the silence intersection: segment both channels over one shared frame grid, decide a frame jointly-silent only where it is silent in both channels, and split
-# only at jointly-silent frames. A stereo take is a maximal span of frames that is NOT jointly-silent — a region either speaker fills — cut identically from both channels, so every take is a balanced StereoClip; a frame silent in only
+# lotus/stereo_split_silence.rye decides ONE cut line for both channels -- the silence intersection: segment both channels over one shared frame grid, decide a frame jointly-silent only where it is silent in both channels, and split
+# only at jointly-silent frames. A stereo take is a maximal span of frames that is NOT jointly-silent -- a region either speaker fills -- cut identically from both channels, so every take is a balanced StereoClip; a frame silent in only
 # one channel keeps the open take running, because a sound panned hard left is real audio the right's silence must never split away. It validates the shared frame length, band, span, and floor once through ALES147's own up-front checks
 # before any take is written (BadThreshold on an illegal band, BadRange on a span past the samples, BadFloor on a floor above the peak ceiling, BadFrame on a zero/oversized/non-dividing length), so a refusal leaves out empty and both
-# channels untouched; StereoSegmentError and EditError reused whole. The crux is that it invents no new measurement and no new sample — it reads its silences through ALES147 and copies whole samples through ALES2's splice — so it can
+# channels untouched; StereoSegmentError and EditError reused whole. The crux is that it invents no new measurement and no new sample -- it reads its silences through ALES147 and copies whole samples through ALES2's splice -- so it can
 # never drift from the segmenter it composes; what is new is the composition rule, the intersection of two independent silences read as one cut line, whose whole honesty is that re-joining the splitter's pieces returns exactly ALES148's trimmed master.
 #
 # Run from the repository root:

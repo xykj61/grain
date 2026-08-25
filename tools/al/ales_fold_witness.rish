@@ -1,19 +1,19 @@
-# tools/al/ales_fold_witness.rish — the wavefolder: the excess past the ceiling reflects back, a mirror not a wall (ALES80).
+# tools/al/ales_fold_witness.rish -- the wavefolder: the excess past the ceiling reflects back, a mirror not a wall (ALES80).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES80.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES80.
 # Design read: active-designing/date/20260814/20260814-210615_fill-ales80-lotus-wavefolder.md
-# Stands on: lotus/drive.rye (ALES78 — the pre-gain reused verbatim, and the ceiling the fold reflects at rather than pins to); lotus/fader.rye
-# (ALES6 — the num/den gain in i64); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate).
+# Stands on: lotus/drive.rye (ALES78 -- the pre-gain reused verbatim, and the ceiling the fold reflects at rather than pins to); lotus/fader.rye
+# (ALES6 -- the num/den gain in i64); lotus/timeline.rye (ALES2 -- the Clip, sample_min/max, the one true saturate).
 #
 # lotus/fold.rye mirrors ALES78's clipping ceiling. A HARD CLIP IS A WALL, A WAVEFOLDER IS A MIRROR: the two rungs agree exactly below the ceiling
-# (a wavefolder IS the hard clip until the signal first touches the ceiling) and diverge above it — the clip PINS the excess, the fold REFLECTS it
-# back down (p = m mod 2·ceil; folded = p if p ≤ ceil else 2·ceil − p), a triangle wave that reaches SILENCE at 2·ceil and folds back to the
-# ceiling at 3·ceil. The selftest proves it: below the ceiling the fold reproduces ALES78's hard drive byte-for-byte (against the real hard clip);
-# the single fold reflects by hand (1200→800, 1500→500, 2000→0); the double fold continues the triangle (2500→500, 3000→1000, 4000→0); the fold
+# (a wavefolder IS the hard clip until the signal first touches the ceiling) and diverge above it -- the clip PINS the excess, the fold REFLECTS it
+# back down (p = m mod 2-ceil; folded = p if p ≤ ceil else 2-ceil − p), a triangle wave that reaches SILENCE at 2-ceil and folds back to the
+# ceiling at 3-ceil. The selftest proves it: below the ceiling the fold reproduces ALES78's hard drive byte-for-byte (against the real hard clip);
+# the single fold reflects by hand (1200->800, 1500->500, 2000->0); the double fold continues the triangle (2500->500, 3000->1000, 4000->0); the fold
 # NULLS at every even multiple of the ceiling (the voice a clip can never make); the output never leaves [−ceil, ceil] under a heavy ×8 drive; the
 # shape is ODD, wavefold(−x) = −wavefold(x); the span discipline holds; a zero den / below-unity gain / oversized numerator refuses BadGain, a zero
 # or over-rail ceiling BadCeiling, a span past the end BadRange, each leaving the clip untouched. The triangle lands every output in [−ceil, ceil] ⊆
-# the i16 rail BEFORE the write, so the shape does the bounding and the saturate is a documented no-op. Purely local — one multiply, one divide, one
+# the i16 rail BEFORE the write, so the shape does the bounding and the saturate is a documented no-op. Purely local -- one multiply, one divide, one
 # modulo and one compare per sample; no delay line, no anti-aliasing, no network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:

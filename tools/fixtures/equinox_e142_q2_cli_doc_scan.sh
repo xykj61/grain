@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e142 — Q2 CLI doc comment · R51 · Crossing lean · zero code.
+# Equinox e142 -- Q2 CLI doc comment - R51 - Crossing lean - zero code.
 # Exit 0 when duty file, lean, handback slot, README CLI surface, and gates hold.
 # No backtick characters.
 #
@@ -67,7 +67,7 @@ rg -qi 'leans on a name|Crossing Season|working lean' "$REDS" "$COUNSEL" "$DUTY"
 echo "reds=honored"
 echo "reds_note=row_51_counsel_leans_never_seats"
 
-# Crossing lean · not seated as sole living name claim
+# Crossing lean - not seated as sole living name claim
 rg -qi 'Crossing Season' "$DUTY" "$COUNSEL" "$ITINERARY" "$README" || {
   echo "lean=failed"
   echo "detail=want_crossing_lean"
@@ -93,7 +93,7 @@ rg -q 'return_deca_128' "$DUTY" "$COUNSEL" "$ELDER" "$ITINERARY" || {
 echo "handback=honored"
 echo "handback_slot=return_deca_128"
 
-# Q2 doc surface · amphora version/pour/carry/restore named
+# Q2 doc surface - amphora version/pour/carry/restore named
 rg -qi 'amphora version|amphora pour|amphora carry|amphora restore' "$README" || {
   echo "q2=failed"
   echo "detail=want_cli_commands_in_readme"
@@ -109,7 +109,7 @@ rg -qi 'doc comment|Q2|zero code' "$COUNSEL" "$README" || {
 echo "q2=honored"
 echo "q2_note=cli_doc_comment_only"
 
-# Zero new rye · still 10 tracked · 9 rye
+# Zero new rye - still 10 tracked - 9 rye
 AMPH_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
 RYE_N=$(git ls-files 'amphora/*.rye' | wc -l | tr -d ' ')
 test "$AMPH_N" = "10" || {

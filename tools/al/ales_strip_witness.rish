@@ -1,17 +1,17 @@
-# tools/al/ales_strip_witness.rish — mute and solo: the channel strip's two switches, resolved to an effective fader column (ALES9).
+# tools/al/ales_strip_witness.rish -- mute and solo: the channel strip's two switches, resolved to an effective fader column (ALES9).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES9.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES9.
 # Design read: active-designing/20260814-fill-ales9-lotus-mute-solo.md
-# Stands on: lotus/fader.rye (ALES8) — a Strip carries a Fader, and render resolves mute/solo to an effective fader column
-# then delegates to fader.render whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) — the Session
-# table the strips align with; lotus/timeline.rye (ALES2) — the Clip and the one true saturation, reached through ALES8.
+# Stands on: lotus/fader.rye (ALES8) -- a Strip carries a Fader, and render resolves mute/solo to an effective fader column
+# then delegates to fader.render whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) -- the Session
+# table the strips align with; lotus/timeline.rye (ALES2) -- the Clip and the one true saturation, reached through ALES8.
 #
-# lotus/strip.rye seats mute and solo as first-class session state, resolved the way every desk does — solo, when any track
+# lotus/strip.rye seats mute and solo as first-class session state, resolved the way every desk does -- solo, when any track
 # holds it, wins (only soloed heard), otherwise every un-muted track is heard. Mute/solo is a pure map from switches to
 # levels, so the only sum in the suite stays ALES8's. The selftest proves: no mute/no solo reproduces the fader mix
 # byte-for-byte; a muted track goes silent; a soloed track silences every other; two solos heard together; a muted-and-soloed
 # track still heard (solo-in-place); a zero denominator on an audible strip forwards BadGain; a track past the master bound
-# forwards ClipFull. Purely local — no network, no keys, no funds, no real device.
+# forwards ClipFull. Purely local -- no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_strip_witness.rish

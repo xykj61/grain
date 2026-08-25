@@ -1,4 +1,4 @@
-# inference_assist_view_lap16.rish — Assist view: echo pin on lantern band.
+# inference_assist_view_lap16.rish -- Assist view: echo pin on lantern band.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 16 — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]

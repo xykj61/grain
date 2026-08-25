@@ -1,10 +1,10 @@
-# tools/al/ales_stereo_loop_witness.rish — the stereo loop: one marked region cycled through two channels (ALES16).
+# tools/al/ales_stereo_loop_witness.rish -- the stereo loop: one marked region cycled through two channels (ALES16).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES16.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES16.
 # Design read: active-designing/20260814-fill-ales16-lotus-stereo-loop.md
-# Stands on: lotus/loop.rye (ALES14) — the Loop region and make/mark_ms/enter reused whole; lotus/stereo_transport.rye (ALES15)
-# — the stereo forward read a loop OFF delegates to whole, and the BadBlock it shares; lotus/pan.rye (ALES10) — the StereoClip
-# whose two channels share one length; lotus/clock.rye (ALES5) — mark_ms sets the region in real time.
+# Stands on: lotus/loop.rye (ALES14) -- the Loop region and make/mark_ms/enter reused whole; lotus/stereo_transport.rye (ALES15)
+# -- the stereo forward read a loop OFF delegates to whole, and the BadBlock it shares; lotus/pan.rye (ALES10) -- the StereoClip
+# whose two channels share one length; lotus/clock.rye (ALES5) -- mark_ms sets the region in real time.
 #
 # lotus/stereo_loop.rye carries ALES14's transport loop to two channels: one marked region [start, end) and one wrapping head
 # cycle BOTH channels in lockstep, because a stereo master's two channels share one length. A loop OFF is ALES15's stereo
@@ -12,7 +12,7 @@
 # right never drift. The selftest proves: a loop off matches the stereo forward read; a region [1,4) cycles both channels
 # exactly; the head stays within the region at any block size; a whole-master loop replays both channels continuously; a
 # single-sample region repeats per channel; mismatched out buffers refuse BadBlock; mark_ms places the region in real time; a
-# rendered StereoClip loops back its two channels exactly; the loop reads only, mutating neither channel. Purely local — no
+# rendered StereoClip loops back its two channels exactly; the loop reads only, mutating neither channel. Purely local -- no
 # network, no keys, no funds, no real device, no real speaker.
 #
 # Run from the repository root:

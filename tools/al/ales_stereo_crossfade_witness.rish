@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_crossfade_witness.rish — stereo_crossfade: the equal-power crossfade carried into stereo with ONE SHARED LAW, both channels in lockstep, validated once before either mutates (ALES131).
+# tools/al/ales_stereo_crossfade_witness.rish -- stereo_crossfade: the equal-power crossfade carried into stereo with ONE SHARED LAW, both channels in lockstep, validated once before either mutates (ALES131).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES131.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES131.
 # Design read: active-designing/date/20260815/20260815-031427_fill-ales131-lotus-stereo-crossfade.md
-# Stands on: lotus/crossfade.rye (ALES12 — the mono equal-power crossfade run once per channel, itself reusing ALES11's split and ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two
-# mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, and the EditError reused whole). A Lotus master is a StereoClip whose defining invariant
+# Stands on: lotus/crossfade.rye (ALES12 -- the mono equal-power crossfade run once per channel, itself reusing ALES11's split and ALES2's one true saturate), lotus/pan.rye (ALES10 -- the StereoClip, two
+# mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, and the EditError reused whole). A Lotus master is a StereoClip whose defining invariant
 # is that left and right hold the same length. ALES130's fade closed on the recognition that a stereo fade-out laid under a stereo fade-in IS a stereo crossfade; this rung makes that gesture its own
-# primitive: run ALES12's proven mono crossfade on each channel with the SAME equal-power weights. Those weights are positional (identical at each seat regardless of channel), so — exactly as ALES130's
-# shared ramp — the shared law preserves the stereo image for free (no measurement, no linking needed).
+# primitive: run ALES12's proven mono crossfade on each channel with the SAME equal-power weights. Those weights are positional (identical at each seat regardless of channel), so -- exactly as ALES130's
+# shared ramp -- the shared law preserves the stereo image for free (no measurement, no linking needed).
 #
 # lotus/stereo_crossfade.rye validates the overlap once against the shared length before either output channel is written (BadRange on a length mismatch between the two masters or an overlap shorter than
 # two samples), then crosses both channels through ALES12's crossfade; EditError reused whole. The crux is four laws. THE STEREO CROSSFADE LAW: each channel equals ALES12's mono crossfade byte for byte,

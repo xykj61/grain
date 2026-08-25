@@ -1,19 +1,19 @@
-# tools/al/ales_segment_witness.rish — the voice-activity segmenter: ALES94's classifier read across a whole clip, frame by frame, coalesced into runs (ALES95).
+# tools/al/ales_segment_witness.rish -- the voice-activity segmenter: ALES94's classifier read across a whole clip, frame by frame, coalesced into runs (ALES95).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES95.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES95.
 # Design read: active-designing/date/20260814/20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md
-# Stands on: lotus/voiced.rye (ALES94 — the per-frame voiced/unvoiced/silent classifier), the band read through lotus/schmitt.rye's precheck (ALES92), the floor
+# Stands on: lotus/voiced.rye (ALES94 -- the per-frame voiced/unvoiced/silent classifier), the band read through lotus/schmitt.rye's precheck (ALES92), the floor
 # ceiling from lotus/meter.rye (ALES13), over lotus/timeline.rye's Clip (ALES2). ALES94 answered the oldest question in speech processing over ONE span; its own
-# scope note named this rung — a real voice-activity detector adds hysteresis over TIME. A classifier reads one window; a segmenter reads a whole clip as a
+# scope note named this rung -- a real voice-activity detector adds hysteresis over TIME. A classifier reads one window; a segmenter reads a whole clip as a
 # sequence of windows and reports where each kind of sound begins and ends.
 #
 # lotus/segment.rye splits [start, count) into consecutive frames of frame_len samples, classifies each frame through ALES94, and coalesces neighbouring frames
-# of the same verdict into a run-length label sequence. The crux is that it invents no new measurement — its segmentation equals a hand-built loop of classify
+# of the same verdict into a run-length label sequence. The crux is that it invents no new measurement -- its segmentation equals a hand-built loop of classify
 # calls coalesced, so it can never drift from the classifier it sequences. The selftest proves it: a uniform clip reads as one run; a two-region clip as two
 # coalesced runs whose boundary sits where the sound changes; the segments tile the span exactly (coverage) with no two adjacent runs sharing a verdict
 # (coalescing); the segmentation equals the classifier sequenced across many frame lengths, floors, and splits (the crux); the source clip is byte-for-byte
 # unchanged (read-only); a single frame yields one segment equal to classify; a sub-span honours its offset; a zero, ragged, or oversized frame length refuses
-# BadFrame, an inverted band BadThreshold, an out-of-range span BadRange, an illegal floor BadFloor — the clip untouched. Purely local, read-only.
+# BadFrame, an inverted band BadThreshold, an out-of-range span BadRange, an illegal floor BadFloor -- the clip untouched. Purely local, read-only.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_segment_witness.rish

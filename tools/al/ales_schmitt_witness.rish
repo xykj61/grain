@@ -1,19 +1,19 @@
-# tools/al/ales_schmitt_witness.rish — the Schmitt trigger: a hysteresis comparator that gives ALES89's square a memory against chatter (ALES92).
+# tools/al/ales_schmitt_witness.rish -- the Schmitt trigger: a hysteresis comparator that gives ALES89's square a memory against chatter (ALES92).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES92.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES92.
 # Design read: active-designing/date/20260814/20260814-224452_fill-ales92-lotus-schmitt-trigger.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and the carried-state idiom of lotus/dc_block.rye (ALES91 — one carried implementation, the
-# from-silence form the default case). The sibling of lotus/infinite_clip.rye (ALES89 — the memoryless comparator): where the infinite clipper judges each
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max) and the carried-state idiom of lotus/dc_block.rye (ALES91 -- one carried implementation, the
+# from-silence form the default case). The sibling of lotus/infinite_clip.rye (ALES89 -- the memoryless comparator): where the infinite clipper judges each
 # sample against one threshold on its own and chatters on a signal riding near the level, this rung carries one bit (which rail) and holds inside the band.
 #
 # lotus/schmitt.rye runs the two-threshold comparison sample by sample, flipping high on a rise past t_high and low on a fall past t_low, holding between. The
-# crux is that it CARRIES STATE (one bit, the rail), so — exactly as ALES91's carried DC blocker — a span compared in two pieces (the second continuing the
+# crux is that it CARRIES STATE (one bit, the rail), so -- exactly as ALES91's carried DC blocker -- a span compared in two pieces (the second continuing the
 # first's ending rail) equals the whole compared once, byte-for-byte, no spurious flip at the seam. The selftest proves it: a fresh trigger equals the
 # from-silence schmitt (rail low by convention); HYSTERESIS resists chatter a single-threshold comparator cannot (zero flips across a dither the comparator
-# chatters on); a span compared in two pieces equals the whole compared once (the crux); it flips exactly at the band edges (x ≥ t_high → high, x ≤ t_low →
-# low, between → hold); reset re-opens the low rail; the zero-width band (t_low = t_high) is the legal plain comparator; only two values ever appear
+# chatters on); a span compared in two pieces equals the whole compared once (the crux); it flips exactly at the band edges (x ≥ t_high -> high, x ≤ t_low ->
+# low, between -> hold); reset re-opens the low rail; the zero-width band (t_low = t_high) is the legal plain comparator; only two values ever appear
 # (±sample_max, odd about the band); the span discipline holds; an inverted band (t_low > t_high), a low below the floor, or a high above the ceiling refuses
-# BadThreshold with the rail untouched; an out-of-range span refuses BadRange with the clip untouched. Purely local — one two-threshold compare in i32, one bit
+# BadThreshold with the rail untouched; an out-of-range span refuses BadRange with the clip untouched. Purely local -- one two-threshold compare in i32, one bit
 # of state, one rail per sample; no saturate, no time constant, no real device, no real sample rate.
 #
 # Run from the repository root:

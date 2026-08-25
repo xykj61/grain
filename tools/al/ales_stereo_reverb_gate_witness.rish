@@ -1,21 +1,21 @@
-# tools/al/ales_stereo_reverb_gate_witness.rish — the stereo gate: the reverb's GATED TAIL carried across a stereo master (ALES201).
+# tools/al/ales_stereo_reverb_gate_witness.rish -- the stereo gate: the reverb's GATED TAIL carried across a stereo master (ALES201).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES201.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES201.
 # Design read: active-designing/date/20260815/20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md
-# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/gate.rye (ALES49 — the
-# downward gate and its guards, run per channel); lotus/pan.rye (the StereoClip); lotus/clock.rye (ALES5 — the sample clock, converting the span);
-# lotus/timeline.rye (ALES2 — the Clip each channel holds, its sample_max the gate's rail); lotus/reverb_gate.rye (ALES200 — the mono gate mirrored).
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 -- the named-room stereo wet, run over the master unchanged); lotus/gate.rye (ALES49 -- the
+# downward gate and its guards, run per channel); lotus/pan.rye (the StereoClip); lotus/clock.rye (ALES5 -- the sample clock, converting the span);
+# lotus/timeline.rye (ALES2 -- the Clip each channel holds, its sample_max the gate's rail); lotus/reverb_gate.rye (ALES200 -- the mono gate mirrored).
 #
-# lotus/stereo_reverb_gate.rye carries the mono gated reverb across a stereo master — the same downward gate over BOTH channels of a StereoClip, one
+# lotus/stereo_reverb_gate.rye carries the mono gated reverb across a stereo master -- the same downward gate over BOTH channels of a StereoClip, one
 # shared threshold and ratio, the image held. It reverberates the master wet in place through ALES191's stereo_reverb_preset UNCHANGED, then gates
 # each channel's wet with ALES49's proven downward gate at the same threshold and ratio, no cross-channel read: ratio_num == ratio_den is the identity
-# (a unit-ratio gate), a larger ratio cuts the quiet tail harder. It invents no new audio arithmetic — every gated sample is written by a proven stage
-# — and it prechecks the gate's threshold and ratio (the same guards ALES49 raises) BEFORE the wet is written, so a bad gate leaves both channels DRY
+# (a unit-ratio gate), a larger ratio cuts the quiet tail harder. It invents no new audio arithmetic -- every gated sample is written by a proven stage
+# -- and it prechecks the gate's threshold and ratio (the same guards ALES49 raises) BEFORE the wet is written, so a bad gate leaves both channels DRY
 # and balanced (atomic). The selftest proves on both channels: at ratio_num == ratio_den the span equals stereo_reverb_preset byte for byte; for a
 # firm ratio each channel equals stereo_reverb_preset then gate on that channel byte for byte and each gated channel differs from its wet; each gated
 # channel's total energy is strictly less than its wet's; the image is held (a centred master identical channel-to-channel, a stereo master distinct);
 # the channels leave balanced and silence stays silence; and the faults forward atomic (a bad threshold BadThreshold and a bad ratio BadRatio with
-# both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one StereoClip, a validated clock; no
+# both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local -- one StereoClip, a validated clock; no
 # network, no keys, no funds, no real device.
 #
 # Run from the repository root:
@@ -41,11 +41,11 @@ say "ales-stereo-reverb-gate: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-gate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-reverb-gate: selftest did not print the GREEN ales-stereo-reverb-gate line"
 
-# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the stereo named-room preset still stands green beside it.
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the stereo named-room preset still stands green beside it.
 let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-gate: the ALES191 stereo named-room preset regressed under its gate"
 
-# And re-prove ALES200's mono reverb gate still stands green — the mono gate this rung mirrors per ear.
+# And re-prove ALES200's mono reverb gate still stands green -- the mono gate this rung mirrors per ear.
 let monog = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_gate.rye -femit-bin=lotus/bin/reverb_gate && lotus/bin/reverb_gate selftest 2>&1 | grep -q 'GREEN ales-reverb-gate' && echo yes"]
 assert (trim monog.out) == "yes" else "ales-stereo-reverb-gate: the ALES200 mono reverb gate regressed under its stereo twin"
 

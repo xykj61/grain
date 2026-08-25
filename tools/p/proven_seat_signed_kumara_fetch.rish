@@ -1,9 +1,9 @@
-# proven_seat_signed_kumara_fetch.rish — Monocypher pin + three-assert shape.
+# proven_seat_signed_kumara_fetch.rish -- Monocypher pin + three-assert shape.
 #
-# Claude 214900 · 215400 open: vendor/monocypher @ 4.0.3 / ab2b16d…
-#   1. pin — HEAD equals ab2b16d…
-#   2. red-avoid — guest: crypto_eddsa_ nowhere; crypto_ed25519_check ≥ 2 (the pair)
-#   3. fixture — regenerate into cache; byte-diff against committed header
+# Claude 214900 - 215400 open: vendor/monocypher @ 4.0.3 / ab2b16d...
+#   1. pin -- HEAD equals ab2b16d...
+#   2. red-avoid -- guest: crypto_eddsa_ nowhere; crypto_ed25519_check ≥ 2 (the pair)
+#   3. fixture -- regenerate into cache; byte-diff against committed header
 #
 #   rishi/bin/rishi run tools/p/proven_seat_signed_kumara_fetch.rish
 

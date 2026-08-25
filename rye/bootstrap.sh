@@ -1,10 +1,10 @@
 #!/bin/sh
-# rye/bootstrap.sh — build the `rye` command for the first time, from Rye source.
+# rye/bootstrap.sh -- build the `rye` command for the first time, from Rye source.
 #
 # Rye is written in Rye (`src/main.rye`). Once any `rye` binary exists, Rye builds
 # itself with `rye build`; this script is the cold start, for when none does yet.
-# It bridges the `.rye` source to `.zig` exactly as `rye build` does — because the
-# toolchain's front-end reads only the `.zig` extension — and hands that to the
+# It bridges the `.rye` source to `.zig` exactly as `rye build` does -- because the
+# toolchain's front-end reads only the `.zig` extension -- and hands that to the
 # pinned toolchain, pointed at Rye's own standard library with --zig-lib-dir.
 set -eu
 

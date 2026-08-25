@@ -1,19 +1,19 @@
-# tools/al/ales_stereo_echo_witness.rish — stereo_echo: the feedback delay carried into stereo, the same delay and feedback on both channels, each channel reading and feeding back through its own live buffer — the first rung of the stereo time-based wing (ALES181).
+# tools/al/ales_stereo_echo_witness.rish -- stereo_echo: the feedback delay carried into stereo, the same delay and feedback on both channels, each channel reading and feeding back through its own live buffer -- the first rung of the stereo time-based wing (ALES181).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES181.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES181.
 # Design read: active-designing/date/20260815/20260815-085411_fill-ales181-lotus-stereo-echo.md
-# Stands on: lotus/echo.rye (ALES66 — the mono feedback delay run once per channel, its EchoError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 — the StereoClip),
-# lotus/timeline.rye (ALES2 — the Clip and the one true saturate the mono echo reuses).
+# Stands on: lotus/echo.rye (ALES66 -- the mono feedback delay run once per channel, its EchoError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 -- the StereoClip),
+# lotus/timeline.rye (ALES2 -- the Clip and the one true saturate the mono echo reuses).
 #
-# lotus/stereo_echo.rye echoes a stereo master: it runs ALES66's proven mono echo on BOTH channels with the SAME delay and feedback — each sample the dry input plus a fraction fb_num/fb_den of the output one delay earlier, y[i] =
-# saturate(x[i] + fb·y[i-delay]). The stereo modulation class is whole (ALES176–180: the amplitude pair — tremolo, ring modulator — beside the delay-line trio — vibrato, chorus, flanger); this rung opens the stereo time-based wing with
-# its primitive exactly as ALES66 opened the mono one — one primitive, then compositions. It is the natural crux next: the flanger (ALES180) already reads its own live output through a feedback path, and the echo is the plain longer
+# lotus/stereo_echo.rye echoes a stereo master: it runs ALES66's proven mono echo on BOTH channels with the SAME delay and feedback -- each sample the dry input plus a fraction fb_num/fb_den of the output one delay earlier, y[i] =
+# saturate(x[i] + fb-y[i-delay]). The stereo modulation class is whole (ALES176-180: the amplitude pair -- tremolo, ring modulator -- beside the delay-line trio -- vibrato, chorus, flanger); this rung opens the stereo time-based wing with
+# its primitive exactly as ALES66 opened the mono one -- one primitive, then compositions. It is the natural crux next: the flanger (ALES180) already reads its own live output through a feedback path, and the echo is the plain longer
 # feedback delay that whole wing stands on, the simpler live-feedback carry (a fixed whole delay, no LFO). The same delay and feedback on both channels, each on its own live buffer, is the linked stereo echo, both trains decaying in
 # lockstep. The delay is a sample count and the feedback a named fraction the caller names, not scalars measured across the field, so the same parameters on each channel preserve the image for free; mono echo reads the delayed output off
-# the clip buffer itself, so run once per channel the left feeds back through the left's buffer and the right the right's, never crossed — no cross-channel feedback, and because the delay is at least one whole sample buf[i-delay] sits
+# the clip buffer itself, so run once per channel the left feeds back through the left's buffer and the right the right's, never crossed -- no cross-channel feedback, and because the delay is at least one whole sample buf[i-delay] sits
 # strictly before the write index (an already-written output, the dry audio, or silence), so an echo needs no carried state. Feedback below unity decays and a constructive sum past the rail saturates once per channel; because each
 # channel's feedback loop stays wholly within its own buffer, an identical-channel master stays identical. Honestly noted: like the flanger and unlike the snapshot rungs, the echo does not preserve an exact panned integer ratio, the
-# feedback's @divTrunc truncation drifting it by ones — expected of an accumulating feedback delay, so the image law proven is the identical-channel one, the sense a mix cares about most. It validates the delay, feedback, and span once
+# feedback's @divTrunc truncation drifting it by ones -- expected of an accumulating feedback delay, so the image law proven is the identical-channel one, the sense a mix cares about most. It validates the delay, feedback, and span once
 # against the shared length before either channel is mutated (BadDelay, BadFeedback, BadRange), so a refusal never echoes one channel and leaves the other torn; EchoError reused whole. Values only, never a length; the two channels leave
 # balanced. The crux is three laws: the stereo echo law (each channel equal to ALES66's mono echo with the same delay and feedback byte for byte, the channels genuinely differing), the dry-identity law (a zero-feedback echo the dry
 # master on both), and the image / balance / silence / atomicity / degenerate law.

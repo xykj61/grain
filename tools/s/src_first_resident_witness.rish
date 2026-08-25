@@ -1,4 +1,4 @@
-# tools/s/src_first_resident_witness.rish — accrete shim → tools/gen/season/src_first_resident_witness.rish
+# tools/s/src_first_resident_witness.rish -- accrete shim -> tools/gen/season/src_first_resident_witness.rish
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/src_first_resident_witness.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/src_first_resident_witness.rish" args[0]]
 if r.out != "" then say r.out

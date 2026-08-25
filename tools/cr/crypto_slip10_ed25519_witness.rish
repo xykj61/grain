@@ -1,21 +1,21 @@
-# tools/cr/crypto_slip10_ed25519_witness.rish — SLIP-0010 hierarchical-deterministic ed25519 keys authored in pure Rye, authoring NO new
+# tools/cr/crypto_slip10_ed25519_witness.rish -- SLIP-0010 hierarchical-deterministic ed25519 keys authored in pure Rye, authoring NO new
 # cryptography. The identity arc's HD rung: where crypto/bip32.rye grows a secp256k1 wallet tree by an additive child law, SLIP-0010 grows an
-# ed25519 tree by taking the child key as I_L DIRECTLY and deriving hardened-only — the bridge from a BIP-39 wallet seed to a whole tree of
+# ed25519 tree by taking the child key as I_L DIRECTLY and deriving hardened-only -- the bridge from a BIP-39 wallet seed to a whole tree of
 # Grain's OWN ed25519 identity keys (Kumara signs with ed25519). master_from_seed runs the fixed "ed25519 seed" HMAC; ckd_priv derives a hardened
-# child; public_key emits the 33-byte 0x00-prefixed compressed key (crypto · Season G).
+# child; public_key emits the 33-byte 0x00-prefixed compressed key (crypto - Season G).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the tree grammar — the master and hardened-child HMAC data
-# forms and the ser32 index encoding — over crypto/hmac_sha512.rye and crypto/ed25519_sign.rye, both already proven byte-for-byte on metal. Design
-# read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Season: crypto -- Season G (the Six-Season double-seat). This rung contributes only the tree grammar -- the master and hardened-child HMAC data
+# forms and the ser32 index encoding -- over crypto/hmac_sha512.rye and crypto/ed25519_sign.rye, both already proven byte-for-byte on metal. Design
+# read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
 # Clean-room: SLIP-0010 and its ed25519 test vectors are a public standard; the derivation is ours, standing on our own parity-GREEN HMAC-SHA-512
 # and ed25519 public derivation, never a copied line (.claude/rules/gratitude-licenses.md).
 #
 # Parity is proven at selftest the replayable way the tree favours, against SLIP-0010's OWN published ed25519 test vectors (the spec's own
 # known-answers, quoted character for character from the canonical satoshilabs/slips slip-0010.md, never fabricated): both Test Vector 1 (seed
-# 000102…0f) and Test Vector 2 (the 64-byte seed) walk EVERY chain node hardened, and at each node the private key I_L, the chain code I_R, AND the
-# 33-byte public key 0x00 ‖ ed25519_public(I_L) reproduce EXACTLY the spec's published bytes — proving the master HMAC, the hardened child HMAC,
+# 000102...0f) and Test Vector 2 (the 64-byte seed) walk EVERY chain node hardened, and at each node the private key I_L, the chain code I_R, AND the
+# 33-byte public key 0x00 ‖ ed25519_public(I_L) reproduce EXACTLY the spec's published bytes -- proving the master HMAC, the hardened child HMAC,
 # the ser32 index encoding, and the ed25519 public derivation together against a real standard answer. A non-hardened index raises NotHardened and
-# an over-deep path raises DepthTooDeep. Purely local — every key is a TEST key from the spec's own seeds, no network, no funds; growing a real
+# an over-deep path raises DepthTooDeep. Purely local -- every key is a TEST key from the spec's own seeds, no network, no funds; growing a real
 # Kumara identity tree and signing with its key stays the custody gate.
 #
 # Run from the repository root:

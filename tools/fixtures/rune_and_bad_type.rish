@@ -1,4 +1,4 @@
-# rune_and_bad_type.rish — a logical-and over a non-boolean must refuse.
+# rune_and_bad_type.rish -- a logical-and over a non-boolean must refuse.
 # tools/r/rish_rune_connective_witness.rish runs this child and asserts it exits non-zero:
 # only booleans fold under `?&`, so an integer element refuses rather than coercing.
 let x = ?& [true 5]

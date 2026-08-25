@@ -1,5 +1,5 @@
 #!/bin/sh
-# comlink/run_tablecloth_query_wire_lab.sh — Tablecloth query device wire over virtio-net.
+# comlink/run_tablecloth_query_wire_lab.sh -- Tablecloth query device wire over virtio-net.
 set -eu
 
 here="$(cd "$(dirname "$0")" && pwd)"

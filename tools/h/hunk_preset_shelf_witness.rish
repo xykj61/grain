@@ -1,13 +1,13 @@
-# tools/h/hunk_preset_shelf_witness.rish — a keeper reads their installed library as a shelf on glass (HUNK36).
+# tools/h/hunk_preset_shelf_witness.rish -- a keeper reads their installed library as a shelf on glass (HUNK36).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK36.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK36.
 # Design read: active-designing/date/20260813/20260813-185517_hunk-preset-shelf-exploration.md.
 # Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO (concept only, siloed).
 #
 # HUNK35 detailed a keeper's installed books honestly; this rung paints that detailing on glass. `pond/apps/
 # preset_shelf.rye` `shelf_grid` renders a DetailListing onto a Skate grid, one row per book reading
-# `<name>  <preset…>`, the book name wearing a color chip. The shelf is a PURE view of an already-honest detailing
-# and refuses ShelfTooSmall rather than silently drop a book past the last row — a rendered shelf shows every book
+# `<name>  <preset...>`, the book name wearing a color chip. The shelf is a PURE view of an already-honest detailing
+# and refuses ShelfTooSmall rather than silently drop a book past the last row -- a rendered shelf shows every book
 # or none. The selftest builds a real catalog of two books, details it, renders the shelf, and proves one row per
 # book with names and presets shown, the name a distinct chip, the shelf pure/deterministic and genuinely lit, and
 # the never-hide-a-book refusals (ShelfTooSmall / EmptyShelf / ShelfTooLarge) fire. No network, no key, no funds.

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Census control — shell drive of shared seams (Cloud / no-rishi benches).
+# Census control -- shell drive of shared seams (Cloud / no-rishi benches).
 # Preferred orchestration lives in census_control_scan.rish.
 # Entry: tools/fixtures/census_control_scan.sh
 #

@@ -1,15 +1,15 @@
-# tools/al/ales_library_sheet_witness.rish — a keeper's whole catalog as a readable page: a `format lotus-library-sheet-v1` page
+# tools/al/ales_library_sheet_witness.rish -- a keeper's whole catalog as a readable page: a `format lotus-library-sheet-v1` page
 # rendered from an opened ALES226 library manifest, the eye's version of the library's content address (ALES227).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES227.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES227.
 # Design read: active-designing/date/20260815/20260815-142207_fill-ales227-lotus-library-sheet.md
-# Idiom kin: lotus/album_sheet.rye (ALES225, the readable-projection idiom one level down) · lotus/library_manifest.rye (ALES226,
-# the opened content-address this reads). A projection — no new frame, no new hash.
+# Idiom kin: lotus/album_sheet.rye (ALES225, the readable-projection idiom one level down) - lotus/library_manifest.rye (ALES226,
+# the opened content-address this reads). A projection -- no new frame, no new hash.
 #
 # lotus/library_sheet.rye renders an opened library manifest as a human-readable page. The selftest proves: every album appears in
 # order with its name and its full content-address digest (the listing law); the page opens with the format and `library <count>`
 # lines (the header law); a zero-album library renders just the two header lines (the empty law); a too-small buffer refuses
-# Overflow (the atomic law). A text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+# Overflow (the atomic law). A text render only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_library_sheet_witness.rish

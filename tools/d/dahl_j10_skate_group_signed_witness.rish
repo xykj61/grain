@@ -1,15 +1,15 @@
-# tools/d/dahl_j10_skate_group_signed_witness.rish — Season 3 Journey 10 (Membership), Rung 2.
+# tools/d/dahl_j10_skate_group_signed_witness.rish -- Season 3 Journey 10 (Membership), Rung 2.
 #
-# Rung one fixed the quorum rule as a pure state machine — a candidate is seated only when a quorum of
+# Rung one fixed the quorum rule as a pure state machine -- a candidate is seated only when a quorum of
 # distinct members votes. Yet a bare state machine trusts whoever calls it: a steward could cast a vote in
 # a member's name. pond/apps/skate_group_signed.rye binds each vote to the voting member's settled Kumara
-# identity — a vote is signed by the very member it speaks for, over the exact facts (a tag so a vote is
+# identity -- a vote is signed by the very member it speaks for, over the exact facts (a tag so a vote is
 # never replayed as another act, the group id so a vote cannot cross groups, the voter, the candidate). A
 # Keyring maps a point to its keeper key; vote_signed verifies the voter's own signature before touching
 # rung one's group, refusing UnknownKeeper (unenrolled) or BadConsent (unverifying). The honesty crux
-# mirrors the circle's relabel — change the candidate after signing and reuse the signature, it falls; and
+# mirrors the circle's relabel -- change the candidate after signing and reuse the signature, it falls; and
 # the lone-steward guard carries through r1 unchanged (a signed vote still counts once, never twice, so
-# signing cannot fake a quorum from one hand). Additive — composes skate_group + kumara over public API;
+# signing cannot fake a quorum from one hand). Additive -- composes skate_group + kumara over public API;
 # rung one re-runs GREEN. Demo keeper seeds only, no real key, no network (serve reaches the custody gate).
 #
 # Run from the repository root:
@@ -20,7 +20,7 @@ say "dahl-j10r2: Lens TAME — a relabelled candidate, a forged vote, an unenrol
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one re-runs GREEN — the signed layer is additive over it.
+# Rung one re-runs GREEN -- the signed layer is additive over it.
 let r1_bin = "pond/bin/skate-group"
 let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "dahl-j10r2: rung-one skate_group build failed"

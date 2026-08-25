@@ -1,7 +1,7 @@
 #!/bin/sh
-# one_clock_provenance_scan.sh — duty 4: stamp not ahead of live host clock.
+# one_clock_provenance_scan.sh -- duty 4: stamp not ahead of live host clock.
 #
-# Monotonicity can never catch a forward jump — every zone we might drift into
+# Monotonicity can never catch a forward jump -- every zone we might drift into
 # runs ahead of ours. Only a comparison against the live clock can.
 #
 # ONE_CLOCK_PROVENANCE_TOLERANCE_SECONDS (default 900): fifteen minutes covers

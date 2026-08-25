@@ -1,12 +1,12 @@
-# tools/g/gism_ayre_j8_entity_books_true_witness.rish — Season 2 Journey 8 (Cash-first), Rung 4 (closes Journey 8).
+# tools/g/gism_ayre_j8_entity_books_true_witness.rish -- Season 2 Journey 8 (Cash-first), Rung 4 (closes Journey 8).
 #
-# Season 2, Yield — the accounting spine, never braided. Rungs one through three booked a segregated
-# inter-entity transfer, signed it, and let a closed period travel and re-verify offline — all on demo
+# Season 2, Yield -- the accounting spine, never braided. Rungs one through three booked a segregated
+# inter-entity transfer, signed it, and let a closed period travel and re-verify offline -- all on demo
 # journals. This closing rung carries the entity's books onto a real Dimeroll journal fixture
 # (dimeroll/fixtures/journal.bron, @embedFile-bound through a symlink) and proves the property the
 # spine rests on: what the fold reports is true to the bytes a keeper can add up by hand. The app
 # reports three auditor facts (entry count, amount total, cash net); this witness measures the same
-# file independently with tools/fixtures/entity_journal_truth.awk and asserts field for field — two
+# file independently with tools/fixtures/entity_journal_truth.awk and asserts field for field -- two
 # tools, one answer. A malformed journal refuses (UnknownAccount). Composes rung one's Entity and
 # dimeroll_core; facts only; demo entities only (gate %3 untouched).
 #
@@ -18,7 +18,7 @@ say "gism-ayre-j8r4: Lens TAME — two tools one answer; a malformed real journa
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one stays GREEN beneath the real-corpus layer — additive.
+# Rung one stays GREEN beneath the real-corpus layer -- additive.
 let bin1 = "pond/bin/entity-books"
 let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
 assert build1.ok else "gism-ayre-j8r4: rung-one entity_books build failed"

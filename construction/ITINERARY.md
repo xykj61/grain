@@ -47,36 +47,34 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ca1a20c84a` -- the fourth microkernel rung; the address space stated part by part.
+**Git nib:** `0f8515c5cd` -- one law, two comment syntaxes; the ASCII meter reaches Rishi and shell.
 
-**Now.** **The fourth microkernel rung -- what an address space is made of.** `objects.rye` found
-Caravan holding five of nine seL4 object types and owing the four that build an address space;
-`allowances.rye` found it inside all four Microkit bounds it shares. Both left the same question, and
-[`../caravan/address_space.rye`](../caravan/address_space.rye) answers it: Microkit describes an
-address space with two values, and their **twelve parts** -- eight in the memory region, four in the
-map -- are read from `tool/microkit/src/sdf/memory_region.rs` in **order** as well as by name.
-**Caravan holds seven**, split **four to `regions.rye` and three to `mapping.rye`** -- the framework's
-own line between a declaration and its lowering, arrived at independently. **The five owed are one
-debt wearing five names**: physical address, region kind, two prefill sources, caching attribute,
-every one about a physical world Caravan has yet to place anything in.
+**Now.** **A law that governed three languages, and a meter that read one.**
+`.claude/rules/ascii-first.md` reaches every document, code comment, and commit message; the guard
+holding it, [`../tools/as/ascii_comment_witness.rish`](../tools/as/ascii_comment_witness.rish), read
+`*.rye` alone for its first day. **2,243 tracked Rishi sources and 580 shell sources** stood outside a
+law that governs them, carrying **10,468** non-ASCII characters in their comments.
+[`../tools/fixtures/shell_comment_ascii_scan.sh`](../tools/fixtures/shell_comment_ascii_scan.sh) is the
+second meter -- `#` comments in `.rish` and `.sh`, heredoc bodies excluded, under a ceiling that only
+falls. One law, two comment syntaxes, **one guard** over both, so the roster keeps 58 rows.
 
-**The finding the accounting produced, and its repair.** The two rings had never been introduced.
-Measured: of the 8,192 sizes from one byte to 8,192, `regions.rye` accepts every one and
-`mapping.rye` plans **two**; two of the four regions `regions.rye`'s own self-test declares miss a
-page boundary. Microkit meets the same case -- a region sized by a file's length, which four Caravan
-callers already take -- and **rounds up** rather than refusing. `page_extent` is that answer, and the
-join is asserted at both ends: 16 MiB declarable rounds to itself and plans to **8 pages at best,
-519 at worst, inside 2,556**. Eight refusals proven on metal, the welcome first, and the join proven
-load-bearing twice -- a bound widened, and a page narrowed.
+**The sweep.** Converting the six forms the rule's own table names -- em dash, en dash, middle dot,
+two arrows, ellipsis -- moved **2,163 files** and brought 10,468 to **505**. The diff runs 7,180 lines
+in and 7,180 out, **zero** outside a comment and **zero** mode changes, every rewrite through the
+original inode. What remains is notation the table leaves to a reader: 169 typographic minus, 73
+double vertical, 71 section, 52 superscripts, 15 Greek.
 
-**The next doors.** The address space's **five owed parts** want a booted kernel rather than more
-accounting. Beside them: `.rish` and `.sh` **comments sit outside the ASCII guard**, which reads
-`*.rye` alone, and `rye-learning-process/archive/ALMANAC.md` carries **63** non-ASCII lines.
+**What the control found that this tree could never have shown.** A here-string `<<<"x"` carries
+`<<"x"` one character in, so the opener matched and swallowed the file. The plant caught it; the tree
+holds **zero** here-strings, so no sample of real content could have. Thirteen behaviors stand on
+planted repositories, and the ceiling is proven from both sides -- 513 refuses, removing it returns green.
 
-**Still open:** **`caravan_suite_witness` stands off the standing roster**, so its bijection -- which
-is correct, and fires -- caught `caravan_allowances_witness` unheard a lap after it landed: the
-already-named class (**1,683 witnesses, 56 gated**) in one more room rather than a new red. **20
-caravan blocks stay uncovered on purpose**, as `bounded`, `chain` and `twin` share one region body. The invariant arc walks back at checkpoint `20260825.031305`.
+**The next doors.** **`caravan_suite_witness` stands off the standing roster**, so its bijection --
+correct, and firing -- caught `caravan_allowances_witness` unheard: the already-named class
+(**1,683 witnesses, 56 gated**) in one more room. Beside it, `rye-learning-process/archive/ALMANAC.md`
+carries **63** non-ASCII lines, and the address space's **five owed parts** want a booted kernel rather
+than more accounting. **20 caravan blocks stay uncovered on purpose**, as `bounded`, `chain` and `twin`
+share one region body; that arc walks back at checkpoint `20260825.031305`.
 
 ---
 ## Landed arcs
@@ -241,6 +239,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.085347` | One law, two comment syntaxes: the ASCII meter reaches Rishi and shell | [log](../session-logs/20260825-085347_a-law-that-governed-three-languages.kyri) |
 | `20260825.081302` | The fourth microkernel rung: twelve parts of an address space, seven held, and the join supplied | [log](../session-logs/20260825-081302_what-an-address-space-is-made-of.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.

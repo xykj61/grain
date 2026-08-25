@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# proven_seat_g0c_lane_kvm.sh — in-lane G0-complete (counsel 20260712.090512).
+# proven_seat_g0c_lane_kvm.sh -- in-lane G0-complete (counsel 20260712.090512).
 #
 # Requires lane_kvm on + /dev/kvm. Two phases (same sitting):
-#   A) Serial floor — -nographic; poll until GRUB loading (grep -aF — portable;
+#   A) Serial floor -- -nographic; poll until GRUB loading (grep -aF -- portable;
 #      Rishi's PATH often lacks rg).
-#   B) Glass — -display none (VGA kept) + QMP screendump PNG.
+#   B) Glass -- -display none (VGA kept) + QMP screendump PNG.
 # Both keep -nic none until a worded networking need.
 #
 #   ./tools/r/run_with_lane_kvm.sh -- ./tools/p/proven_seat_g0c_lane_kvm.sh

@@ -1,4 +1,4 @@
-# additive-gate.rish — the structural gate, in Rishi.
+# additive-gate.rish -- the structural gate, in Rishi.
 #
 # Checks whether the most recent commit's changes to rye/lib/ are purely
 # invariant-stating: only assertions, maybe markers, and comments. Rishi
@@ -7,8 +7,8 @@
 # The parity gate (parity.rish) remains the deeper backstop: it proves
 # behavior is identical. This gate adds a second, structural assurance.
 #
-#   GREEN  — the pass is purely additive; safe by shape and by behavior.
-#   REVIEW — the pass touches code beyond assertions and words.
+#   GREEN  -- the pass is purely additive; safe by shape and by behavior.
+#   REVIEW -- the pass touches code beyond assertions and words.
 #
 # Usage: rishi run tools/ad/additive-gate.rish
 
@@ -22,7 +22,7 @@ assert has_diff else "no std changes in HEAD — nothing to weigh."
 # Step 3: write diff to a temp file for awk to read.
 write-file "/tmp/rishi-additive-diff.txt" diff.out
 
-# Step 4: classify — awk prints only lines that are NOT purely additive.
+# Step 4: classify -- awk prints only lines that are NOT purely additive.
 let flagged = run ["awk" "-f" "tools/ad/additive-classify.awk" "/tmp/rishi-additive-diff.txt"]
 
 # Step 5: report.

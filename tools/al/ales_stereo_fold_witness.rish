@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_fold_witness.rish — stereo_fold: the wavefolder carried into stereo with ONE SHARED TRIANGLE, both channels in lockstep, the reflecting corner of the stereo NONLINEAR class (ALES134).
+# tools/al/ales_stereo_fold_witness.rish -- stereo_fold: the wavefolder carried into stereo with ONE SHARED TRIANGLE, both channels in lockstep, the reflecting corner of the stereo NONLINEAR class (ALES134).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES134.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES134.
 # Design read: active-designing/date/20260815/20260815-033358_fill-ales134-lotus-stereo-fold.md
-# Stands on: lotus/fold.rye (ALES80 — the mono wavefolder run once per channel, itself ALES78's pre-gain reflected off ALES49's ceiling), lotus/stereo_drive.rye (ALES132 — the hard-drive sibling this
-# mirrors), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
-# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES80's fold into stereo — a boosted sample below the ceiling passes clean, the excess above reflects
-# back down a triangle of period 2·ceil, the West-Coast fold that turns a plain tone into a bright metallic swarm; where the hard clip builds a wall, the fold builds a mirror. It holds the nonlinear lesson
+# Stands on: lotus/fold.rye (ALES80 -- the mono wavefolder run once per channel, itself ALES78's pre-gain reflected off ALES49's ceiling), lotus/stereo_drive.rye (ALES132 -- the hard-drive sibling this
+# mirrors), lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
+# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES80's fold into stereo -- a boosted sample below the ceiling passes clean, the excess above reflects
+# back down a triangle of period 2-ceil, the West-Coast fold that turns a plain tone into a bright metallic swarm; where the hard clip builds a wall, the fold builds a mirror. It holds the nonlinear lesson
 # as ALES132 stated it, honestly: a fold is not linear, so the same triangle does not hold the inter-channel ratio; a 1:2 master folded through a ceiling can land both channels on one value, the ratio
 # collapsing by reflection. What the shared map keeps, per channel, is the ceiling and sign discipline, an identical-channel master stays identical, and where the hard drive pins the excess the fold reflects
 # it.

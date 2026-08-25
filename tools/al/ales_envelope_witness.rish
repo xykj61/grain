@@ -1,9 +1,9 @@
-# tools/al/ales_envelope_witness.rish — an envelope follower: the time base the dynamics family waits for (ALES52).
+# tools/al/ales_envelope_witness.rish -- an envelope follower: the time base the dynamics family waits for (ALES52).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES52.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES52.
 # Design read: active-designing/date/20260814/20260814-172539_fill-ales52-lotus-envelope-follower.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/tone.rye (ALES40/43 — the
-# forced-unit-step exact-reach guarantee and the carried-state lesson); lotus/gate.rye (ALES51 — the dynamics rung this time base
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, the range law shape); lotus/tone.rye (ALES40/43 -- the
+# forced-unit-step exact-reach guarantee and the carried-state lesson); lotus/gate.rye (ALES51 -- the dynamics rung this time base
 # will later drive, re-proven below).
 #
 # lotus/envelope.rye renders a running magnitude estimate: the target min(|x|, sample_max), the envelope stepping a fraction of
@@ -11,7 +11,7 @@
 # reachable exactly. The selftest proves: silence stays silence; unit attack and release are the instantaneous magnitude; a
 # constant input is reached exactly from below and from above, monotonically and without overshoot; the envelope stays in
 # [0, sample_max]; a faster attack rises at least as fast; the state carries so a span in two pieces equals the whole once; an
-# illegal coefficient refuses BadCoeff, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real
+# illegal coefficient refuses BadCoeff, an out-of-range span BadRange. Purely local -- no network, no keys, no funds, no real
 # device, no sample rate.
 #
 # Run from the repository root:
@@ -37,7 +37,7 @@ say "ales-envelope: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-envelope' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-envelope: selftest did not print the GREEN ales-envelope line"
 
-# The follower is the time base the gate will later read — re-prove ALES51's gate still stands green, so the two rest together.
+# The follower is the time base the gate will later read -- re-prove ALES51's gate still stands green, so the two rest together.
 let gate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
 assert (trim gate.out) == "yes" else "ales-envelope: the ALES51 noise-gate witness regressed under the envelope follower"
 

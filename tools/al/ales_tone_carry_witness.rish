@@ -1,15 +1,15 @@
-# tools/al/ales_tone_carry_witness.rish — a carried-state low-pass: a filter that spans a re-berthed region seamlessly (ALES43).
+# tools/al/ales_tone_carry_witness.rish -- a carried-state low-pass: a filter that spans a re-berthed region seamlessly (ALES43).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES43.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES43.
 # Design read: active-designing/date/20260814/20260814-163000_fill-ales43-lotus-carried-filter.md
-# Stands on: lotus/tone.rye (ALES40, accreted with low_pass_carry) and lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/tone.rye (ALES40, accreted with low_pass_carry) and lotus/timeline.rye (ALES2 -- the Clip).
 #
 # lotus/tone_carry.rye gives ALES40's one-pole low-pass a carried state, so a span filtered piece by piece has no fresh
 # transient (no click) at each seam. The selftest proves: a fresh filter (state = 0) equals ALES40's from-silence low_pass;
 # a span filtered in two pieces with a carried state equals the whole filtered once, byte-for-byte (the crux); the seam is
 # seamless on a constant (the second piece continues, it does not re-transient); reset re-opens the from-silence transient;
 # an illegal coefficient refuses BadCoeff leaving the state untouched, an out-of-range span BadRange leaving the clip
-# untouched. Purely local — no network, no keys, no funds, no real device, no real sample rate.
+# untouched. Purely local -- no network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_tone_carry_witness.rish
@@ -34,7 +34,7 @@ say "ales-tone-carry: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-tone-carry' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-tone-carry: selftest did not print the GREEN ales-tone-carry line"
 
-# The refactor that exposed low_pass_carry must leave the shipped filter rungs GREEN — prove it by their green, not by claim.
+# The refactor that exposed low_pass_carry must leave the shipped filter rungs GREEN -- prove it by their green, not by claim.
 let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone.rye -femit-bin=lotus/bin/tone && lotus/bin/tone selftest 2>&1 | grep -q 'GREEN ales-tone' && echo yes"]
 assert (trim tone.out) == "yes" else "ales-tone-carry: the ALES40 tone witness regressed after the low_pass_carry refactor"
 

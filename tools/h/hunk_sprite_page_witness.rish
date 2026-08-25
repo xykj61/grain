@@ -1,6 +1,6 @@
-# tools/h/hunk_sprite_page_witness.rish — a marketplace product page is seen on the canvas (HUNK5, sprite quest).
+# tools/h/hunk_sprite_page_witness.rish -- a marketplace product page is seen on the canvas (HUNK5, sprite quest).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK5.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - Open Image journey - rung HUNK5.
 # Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
 # Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 #
@@ -9,10 +9,10 @@
 # renders a product's window (HUNK4's sprite.render, reusing HUNK3's crop) and down-maps that window to a Skate
 # grid (HUNK2's image_skate.down_map), so a catalog entry is not only stored and windowed but SEEN. The
 # selftest indexes two products into one two-tone sheet (red left, blue right) and proves each page carries its
-# own window's color (red → slot 3, blue → slot 5), that the two pages differ (a page is seen as its own
+# own window's color (red -> slot 3, blue -> slot 5), that the two pages differ (a page is seen as its own
 # product, never a neighbor's), that the page equals a direct down-map of the window cell for cell (no drift
 # between index and page), that lit pixels reach a real canvas, and that an unknown product refuses by name
-# through the whole composition. Pure composition over public APIs — no new storage, codec, or palette. No
+# through the whole composition. Pure composition over public APIs -- no new storage, codec, or palette. No
 # network, no key, no funds.
 #
 # Run from the repository root:
@@ -40,7 +40,7 @@ assert selftest.out contains "pages differ" else "hunk-sprite-page: the selftest
 
 assert selftest.out contains "equals a direct down-map cell for cell" else "hunk-sprite-page: the selftest did not prove the page equals a direct down-map"
 
-# HUNK4 stays GREEN — the page reuses sprite.render; the index underneath must still hold.
+# HUNK4 stays GREEN -- the page reuses sprite.render; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-sprite-page: HUNK4 sprite re-run failed — ${sprite.out}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-page: HUNK4 sprite selftest did not stay GREEN"

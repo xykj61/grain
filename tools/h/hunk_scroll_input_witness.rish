@@ -1,13 +1,13 @@
-# tools/h/hunk_scroll_input_witness.rish — the input seam: a keeper's raw gesture drives the cursor (HUNK43).
+# tools/h/hunk_scroll_input_witness.rish -- the input seam: a keeper's raw gesture drives the cursor (HUNK43).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK43.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - marketplace / Photos-app surface - rung HUNK43.
 # Design read: active-designing/date/20260813/20260813-195500_hunk-scroll-input-exploration.md.
-# Teacher, thanked clean-room: the input layer of any scroll surface — a wheel notch, a drag delta, a Page-Down key
+# Teacher, thanked clean-room: the input layer of any scroll surface -- a wheel notch, a drag delta, a Page-Down key
 # become one move over a list (concept only, siloed).
 #
 # HUNK40 gave a pure ScrollCursor whose gestures each clamp at both ends; HUNK42 painted its page beside a live scroll
 # bar. This rung is the boundary above the cursor: `pond/apps/preset_scroll_input.rye` `apply(cursor, input)` maps one
-# raw event — a signed scroll delta, a page key, a home/end key — into exactly one HUNK40 gesture, so a fling of ten
+# raw event -- a signed scroll delta, a page key, a home/end key -- into exactly one HUNK40 gesture, so a fling of ten
 # thousand lines past the end still lands on the bottom-pinned page and a delta at the i32 extremes never
 # under/overflows before the clamp. The selftest drives a two-row viewport over a real five-book library by raw input
 # and proves the reversible walk, the extreme-delta clamp without wrap, the page/edge kinds matching the cursor, and a

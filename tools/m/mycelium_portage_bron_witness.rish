@@ -1,19 +1,19 @@
-# tools/m/mycelium_portage_bron_witness.rish — a crossing travels as a readable record, accepted by that alone
+# tools/m/mycelium_portage_bron_witness.rish -- a crossing travels as a readable record, accepted by that alone
 # (r3, travel).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r3.
-# r1 proved value crosses two worlds and the pair conserves; r2 made the crossing atomic — it lands on both
+# Season D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r3.
+# r1 proved value crosses two worlds and the pair conserves; r2 made the crossing atomic -- it lands on both
 # ledgers or neither. Both read the two worlds' ledger blocks in hand. Yet the correspondent a portage means
 # to replace is exactly the party a receiving world would otherwise trust for word of the far shore. r3 lets
-# the crossing cross as a RECORD: a `format portage-v1` receipt carrying id · from · to-world · to-account ·
-# amount · digest · out-head · in-head. Render writes it, parse reads it back byte-for-byte — a fixed point.
+# the crossing cross as a RECORD: a `format portage-v1` receipt carrying id - from - to-world - to-account -
+# amount - digest - out-head - in-head. Render writes it, parse reads it back byte-for-byte -- a fixed point.
 #
 # The crux this witness proves is that the record is SELF-CERTIFYING and TIED TO BOTH LEDGERS: the carried
 # digest is a pure function of the record's own bound fields, so a tampered field breaks self-certification;
 # the out-head must be World A's real order-head with a matching burn, and the in-head must be World B's real
-# order-head that credits the recipient under this digest — so a world accepts a cross-world transfer by
+# order-head that credits the recipient under this digest -- so a world accepts a cross-world transfer by
 # reading its record alone, yet still catches a record whose fields or heads do not match the ledgers it
-# names. Composes portage + cord + voucher + kumara public API only, editing none; demo world/keeper seeds —
+# names. Composes portage + cord + voucher + kumara public API only, editing none; demo world/keeper seeds --
 # no key, no funds, no network, no value crossed.
 #
 # Scope: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
@@ -40,12 +40,12 @@ assert selftest.out contains "40 left A == 40 reached B" else "mycelium-portage-
 assert selftest.out contains "tampered out-head" else "mycelium-portage-bron: the tampered-head refusal claim missing"
 assert selftest.out contains "missing field each refuse" else "mycelium-portage-bron: the reader-refusal claim missing"
 
-# The Portage r1 crux this rung carries as a record stands at the door — the one-shot crossing and conservation.
+# The Portage r1 crux this rung carries as a record stands at the door -- the one-shot crossing and conservation.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
 assert r1.ok else "mycelium-portage-bron: the Portage r1 crux is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-portage-bron: the Portage r1 did not speak its GREEN"
 
-# The Portage r2 atomic law this rung's record advertises stands too — a crossing lands on both or neither.
+# The Portage r2 atomic law this rung's record advertises stands too -- a crossing lands on both or neither.
 let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_atomic.rye -femit-bin=mycelium/bin/portage_atomic && mycelium/bin/portage_atomic 2>&1"]
 assert r2.ok else "mycelium-portage-bron: the Portage r2 atomic law is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-portage-bron: the Portage r2 did not speak its GREEN"

@@ -1,16 +1,16 @@
-# tools/f/fora_gossip_witness.rish — one frame reaches the whole constellation at once (FORA7).
+# tools/f/fora_gossip_witness.rish -- one frame reaches the whole constellation at once (FORA7).
 #
-# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA7.
+# Season: the Six-Season double-seat, Season D/F thread - waymark FORA - Constel test-network naming - rung FORA7.
 # Design read: active-designing/date/20260814/20260814-050539_fora7-constel-gossip-broadcast.md
-# Law kin: .claude/rules/placeholder-ship-names.md — a broadcast is many honest deliveries, never a shortcut around the
+# Law kin: .claude/rules/placeholder-ship-names.md -- a broadcast is many honest deliveries, never a shortcut around the
 # border: a frame carrying a smuggled vowel is delivered to every mailbox yet each recipient's wire.deframe still refuses
 # VowelPresent. The FORA3 gates keep the only trust, per recipient.
 #
-# constel/gossip.rye adds one function over the FORA6 switchboard — broadcast — that fans a single frame out to every member
+# constel/gossip.rye adds one function over the FORA6 switchboard -- broadcast -- that fans a single frame out to every member
 # of the constellation except the announcer. It is the primitive every gossip and flood protocol stands on. The selftest
 # proves: a broadcast reaches every other member exactly once and never the announcer's own; each recipient reads its own
 # whole copy; a broadcast of two degenerates to a single delivery; a stranger cannot broadcast (no partial fan-out); and the
-# naming-law border still guards every copy. Purely local — no socket, no network, no keys, no funds.
+# naming-law border still guards every copy. Purely local -- no socket, no network, no keys, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_gossip_witness.rish

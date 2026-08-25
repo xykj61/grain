@@ -1,4 +1,4 @@
-# tools/i/inference_anvil_corpus_tools_prefix_view.rish — accrete shim → tools/i/inference_ember_corpus_tools_prefix_view.rish (Kiln Season o1)
+# tools/i/inference_anvil_corpus_tools_prefix_view.rish -- accrete shim -> tools/i/inference_ember_corpus_tools_prefix_view.rish (Kiln Season o1)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/i/inference_ember_corpus_tools_prefix_view.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/i/inference_ember_corpus_tools_prefix_view.rish" args[0]]
 if r.out != "" then say r.out

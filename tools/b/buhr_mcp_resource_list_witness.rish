@@ -1,13 +1,13 @@
-# tools/b/buhr_mcp_resource_list_witness.rish — BUHR Journey 10, Rung 2: the MCP resource list.
+# tools/b/buhr_mcp_resource_list_witness.rish -- BUHR Journey 10, Rung 2: the MCP resource list.
 #
-# Rung one served resources/read — a caller who knows a URI reads its bytes. This rung serves
-# resources/list — a caller discovers every readable artifact by URI, the noun half's mirror of
+# Rung one served resources/read -- a caller who knows a URI reads its bytes. This rung serves
+# resources/list -- a caller discovers every readable artifact by URI, the noun half's mirror of
 # Journey 3's tools/list. A Tablecloth catalog renders to a bounded format mcp-resource-list-v1
 # envelope (one `resource <uri> <len>` line per artifact) and round-trips. The list is proven an
 # honest index: for every listed resource, rung one's read_resource returns exactly the published
-# length of verified bytes — and a store tampered after the list is published breaks that honesty
+# length of verified bytes -- and a store tampered after the list is published breaks that honesty
 # (NotHonest) rather than passing silently. Composed over public API only; rung one and Tablecloth
-# stay their own green binaries. Reads no network — the Comlink-served transport stays the gate.
+# stay their own green binaries. Reads no network -- the Comlink-served transport stays the gate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_mcp_resource_list_witness.rish

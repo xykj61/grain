@@ -1,9 +1,9 @@
-# tools/gen/season/tigerbeetle_void_census_witness.rish — e18 TB src void census.
+# tools/gen/season/tigerbeetle_void_census_witness.rish -- e18 TB src void census.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_void_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present (host clone checkpoint).
-# Clean-room: counts only · never copies into rye/.
+# Clean-room: counts only - never copies into rye/.
 
 say "tb-void-census: Language EN — the held clone speaks in counts."
 say "tb-void-census: Style Radiant — void density measured, never assumed."

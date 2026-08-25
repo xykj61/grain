@@ -1,15 +1,15 @@
-# tools/f/fora_lease_witness.rish — a lease read, safe under a bounded clock: the fast alternative to the read-index, and its exact
+# tools/f/fora_lease_witness.rish -- a lease read, safe under a bounded clock: the fast alternative to the read-index, and its exact
 # soundness price (FORA29).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA29. Design read: active-designing/date/20260814/20260814-081032_fora29-constel-lease-read.md
 #
-# constel/lease.rye composes FORA24 (tenure — still_commands) as the grant gate and shortcuts FORA20 (read — the read-index) as the
+# constel/lease.rye composes FORA24 (tenure -- still_commands) as the grant gate and shortcuts FORA20 (read -- the read-index) as the
 # fallback. `grant` gives a lease only to a leader commanding a majority (else NoMajority); `lease_sound` is the §6.4.1 inequality
 # (span < election timeout); `serve_on_lease` serves only a sound, unexpired lease. The selftest proves: a minority leader gets no
-# lease; the soundness inequality is exact; the crux — an unsound lease is never served even unexpired; a sound unexpired lease
+# lease; the soundness inequality is exact; the crux -- an unsound lease is never served even unexpired; a sound unexpired lease
 # serves while an expired one falls back, the boundary exact; monotonic u64 ticks never underflow; bounded over a full roster.
-# Purely local — no socket, no network, no keys, no funds, no real address.
+# Purely local -- no socket, no network, no keys, no funds, no real address.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_lease_witness.rish

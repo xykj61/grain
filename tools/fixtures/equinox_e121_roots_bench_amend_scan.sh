@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e121 — roots amended · bench = raised root.
+# Equinox e121 -- roots amended - bench = raised root.
 # Exit 0 only when control reads and amend limbs honor.
 # No backtick characters in patterns.
 #

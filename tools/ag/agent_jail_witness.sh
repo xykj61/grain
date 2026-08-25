@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# agent_jail_witness.sh — prove tools/ag/agent-jail.sh on Linux (keeper pier).
+# agent_jail_witness.sh -- prove tools/ag/agent-jail.sh on Linux (keeper pier).
 # Run from an ordinary host shell at the repo root, not from inside a jail.
 set -euo pipefail
 

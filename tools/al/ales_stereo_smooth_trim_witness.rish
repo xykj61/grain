@@ -1,14 +1,14 @@
-# tools/al/ales_stereo_smooth_trim_witness.rish — stereo_smooth_trim: the smoothed silence trim carried into stereo, smooth each channel's runs before intersecting the two silences, so the joint strip declicks the pause and keeps the breath while the stereo image stays whole (ALES154).
+# tools/al/ales_stereo_smooth_trim_witness.rish -- stereo_smooth_trim: the smoothed silence trim carried into stereo, smooth each channel's runs before intersecting the two silences, so the joint strip declicks the pause and keeps the breath while the stereo image stays whole (ALES154).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES154.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES154.
 # Design read: active-designing/date/20260815/20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md
-# Stands on: lotus/stereo_trim_silence.rye (ALES148 — the RAW stereo silence trim, the SILENCE INTERSECTION and lockstep cut, the min-zero twin, imported to prove the min-zero law), lotus/stereo_smooth_runs.rye (ALES153 — the stereo run-length
-# smoother, its smooth_runs_stereo run once to smooth BOTH channels' runs, StereoSmoothError reused whole), lotus/stereo_segment.rye (ALES147 — the stereo segmenter over one shared frame grid, segment_stereo/StereoSegments/StereoSegmentError
-# reused whole), lotus/smooth_trim.rye (ALES102 — the mono smoothed trim, imported to prove the LOCKSTEP law that running it per channel would desync the pair), lotus/segment.rye (ALES95 — the mono Segments and max_segments), lotus/pan.rye
-# (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its cut, max_clip, EditError reused whole), lotus/voiced.rye (ALES94 — the .silent verdict smoothed and intersected).
+# Stands on: lotus/stereo_trim_silence.rye (ALES148 -- the RAW stereo silence trim, the SILENCE INTERSECTION and lockstep cut, the min-zero twin, imported to prove the min-zero law), lotus/stereo_smooth_runs.rye (ALES153 -- the stereo run-length
+# smoother, its smooth_runs_stereo run once to smooth BOTH channels' runs, StereoSmoothError reused whole), lotus/stereo_segment.rye (ALES147 -- the stereo segmenter over one shared frame grid, segment_stereo/StereoSegments/StereoSegmentError
+# reused whole), lotus/smooth_trim.rye (ALES102 -- the mono smoothed trim, imported to prove the LOCKSTEP law that running it per channel would desync the pair), lotus/segment.rye (ALES95 -- the mono Segments and max_segments), lotus/pan.rye
+# (ALES10 -- the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip, its cut, max_clip, EditError reused whole), lotus/voiced.rye (ALES94 -- the .silent verdict smoothed and intersected).
 #
 # lotus/stereo_smooth_trim.rye segments both channels through ALES147, smooths EACH channel's runs through ALES153 with one shared min_run (read-only over the labels, the two channels smoothing apart), marks a frame jointly-silent only where it
-# is silent in BOTH SMOOTHED channels, and cuts exactly those frames from both channels in lockstep, walking back to front. It is ALES148 reading ALES153's SMOOTHED labels instead of the raw ones — inventing no new measurement and no new sample.
+# is silent in BOTH SMOOTHED channels, and cuts exactly those frames from both channels in lockstep, walking back to front. It is ALES148 reading ALES153's SMOOTHED labels instead of the raw ones -- inventing no new measurement and no new sample.
 # The crux is the stereo smooth-trim law: the result equals a by-hand keep of the frames NOT jointly-SMOOTHED-silent, per channel, across many frame lengths, floors, splits, and min_run values, both channels leaving equal length. Two seams give it
 # its honesty: min_run 0 equals ALES148's stereo_trim_silence byte for byte on both, and running the mono smooth_trim per channel would DESYNC the pair (left to 8, right to 12) where this holds both at 12.
 #

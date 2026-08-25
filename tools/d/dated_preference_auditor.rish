@@ -1,4 +1,4 @@
-# dated_preference_auditor.rish — wrapper → dated_amendment_audit.sh (e239).
+# dated_preference_auditor.rish -- wrapper -> dated_amendment_audit.sh (e239).
 # Canonical: sh tools/d/dated_amendment_audit.sh
 
 say "dated-preference-auditor: forwarding to dated_amendment_audit (canonical e239)."

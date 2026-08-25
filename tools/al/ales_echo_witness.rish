@@ -1,18 +1,18 @@
-# tools/al/ales_echo_witness.rish — the feedback delay: the echo that decays (ALES66).
+# tools/al/ales_echo_witness.rish -- the feedback delay: the echo that decays (ALES66).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES66.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES66.
 # Design read: active-designing/date/20260814/20260814-191111_fill-ales66-lotus-feedback-delay.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate this reuses); lotus/mix.rye
-# (ALES3 — the same saturate reused for a constructive sum, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_max, max_clip, and the one true saturate this reuses); lotus/mix.rye
+# (ALES3 -- the same saturate reused for a constructive sum, re-proven below).
 #
-# lotus/echo.rye opens the time-based-effects wing with its primitive, a FEEDBACK delay: y[i] = saturate(x[i] + fb·y[i-delay]), each
+# lotus/echo.rye opens the time-based-effects wing with its primitive, a FEEDBACK delay: y[i] = saturate(x[i] + fb-y[i-delay]), each
 # sample the dry input plus a fraction fb = num/den of the OUTPUT one delay earlier, so each echo feeds the next and the train decays.
-# The delay line is the clip buffer itself (applied in place, left to right), so an echo needs no carried state — a span split in two
+# The delay line is the clip buffer itself (applied in place, left to right), so an echo needs no carried state -- a span split in two
 # equals the whole once. The selftest proves: silence stays silence; fb = 0 is the dry identity; a single impulse yields an exact
 # decaying echo train (8000 -> 4000 -> 2000 -> 1000 at delay 2, fb 1/2, computed by hand byte-for-byte); the echoes decay and reach
 # silence within the clip, never growing; a loud constructive sum saturates to the i16 rail rather than wrapping (ALES3's one true
 # saturation, reused); split equals whole byte-for-byte with no carried state; a zero delay refuses BadDelay, a delay past max_clip
-# BadDelay, a feedback at unity BadFeedback, a zero denominator BadFeedback, an out-of-range span BadRange. Purely local — no lookahead
+# BadDelay, a feedback at unity BadFeedback, a zero denominator BadFeedback, an out-of-range span BadRange. Purely local -- no lookahead
 # beyond the in-place delay read, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
@@ -38,7 +38,7 @@ say "ales-echo: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-echo' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-echo: selftest did not print the GREEN ales-echo line"
 
-# This rung reuses ALES3's one true saturation over its public API — re-prove the mixer still stands green beside it.
+# This rung reuses ALES3's one true saturation over its public API -- re-prove the mixer still stands green beside it.
 let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/mix.rye -femit-bin=lotus/bin/mix && lotus/bin/mix selftest 2>&1 | grep -q 'GREEN ales-mix' && echo yes"]
 assert (trim mix.out) == "yes" else "ales-echo: the ALES3 mixer regressed under the feedback delay"
 

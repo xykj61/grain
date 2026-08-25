@@ -1,20 +1,20 @@
-# tools/al/ales_mid_side_witness.rish — mid/side: the stereo master read as its sum and its difference, the reversible primitive the width family spends (ALES210).
+# tools/al/ales_mid_side_witness.rish -- mid/side: the stereo master read as its sum and its difference, the reversible primitive the width family spends (ALES210).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES210.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES210.
 # Design read: active-designing/date/20260815/20260815-120505_fill-ales210-lotus-mid-side.md
-# Stands on: lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its
-# buf/len/samples, and `saturate`, the one true clamp). Every stereo edit so far has spoken in LEFT and RIGHT — the two speakers; the deepest stereo tools
+# Stands on: lotus/pan.rye (ALES10 -- the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 -- the Clip and its
+# buf/len/samples, and `saturate`, the one true clamp). Every stereo edit so far has spoken in LEFT and RIGHT -- the two speakers; the deepest stereo tools
 # speak a second language, MID (what the channels share, the mono centre) and SIDE (what they differ by, the stereo width). Mid/side is the change of basis
-# between them, and it is the handle a keeper reaches for to widen or narrow an image, to EQ the centre without the sides, to check mono compatibility — the
+# between them, and it is the handle a keeper reaches for to widen or narrow an image, to EQ the centre without the sides, to check mono compatibility -- the
 # reverb WIDTH knob ALES209 named next is exactly "scale the side, recombine". This rung opens no width control yet; it lays the reversible primitive proven
 # whole first.
 #
 # lotus/mid_side.rye folds LEFT/RIGHT into MID = (l+r)/2 and SIDE = (l-r)/2 with encode, and back with decode (l = saturate(mid+side), r = saturate(mid-side)).
-# Both provably sit on the i16 rail — encode never clips (asserted in place, still routed through ALES2's one true saturate so the rail lives in one place),
+# Both provably sit on the i16 rail -- encode never clips (asserted in place, still routed through ALES2's one true saturate so the rail lives in one place),
 # decode's sum pinned once where it overflows. Both are total, hold each channel's length, and keep the balance invariant, so neither raises a fault (void, no
 # EditError), exactly as ALES127's stereo_invert. The crux is five laws. THE ENCODE LAW: left holds (l+r)/2 and right holds (l-r)/2 per seat, byte for byte.
 # THE MONO-COMPATIBILITY LAW: a centred master (l == r) encodes to an all-zero side and a mid equal to the shared channel. THE RECONSTRUCTION LAW:
-# decode(encode) is EXACT where l+r is even and off by at most one LSB otherwise (the halved side cannot carry the last bit — the honest cost of a 16-bit
+# decode(encode) is EXACT where l+r is even and off by at most one LSB otherwise (the halved side cannot carry the last bit -- the honest cost of a 16-bit
 # mid/side), and always exact for a centred master. THE BALANCE / LENGTH LAW: both ops hold left.len == right.len and each channel's length. THE EMPTY /
 # DECODE-SHAPE LAW: an empty pair is unchanged and decode is the honest inverse fold with the rail pinned once.
 #

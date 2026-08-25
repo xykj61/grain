@@ -1,9 +1,9 @@
-# first_hour_witness.rish — proves the first-hour reference module (greet.rye).
+# first_hour_witness.rish -- proves the first-hour reference module (greet.rye).
 #
 # The Acme DX first hour ends when a newcomer's own module builds and their own
 # witness goes GREEN. This is that witness for the reference module: it builds
 # manual/tutorials/greet.rye to a gitignored bin, runs its selftest, and asserts the
-# GREEN line and one named claim — so a fact is proven, not merely that a program ran.
+# GREEN line and one named claim -- so a fact is proven, not merely that a program ran.
 #
 # Contract: active-designing/date/20260811/20260811-163927_acme-dx-first-hour-witness-contract.md
 #

@@ -1,16 +1,16 @@
-# tools/f/fora_quorum_witness.rish — from a census, decide whether a majority may act (FORA9).
+# tools/f/fora_quorum_witness.rish -- from a census, decide whether a majority may act (FORA9).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA9. Design read: active-designing/date/20260814/20260814-052238_fora9-constel-quorum-majority-decision.md
-# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every vote: a member replying with a vowel-bearing
+# Law kin: .claude/rules/placeholder-ship-names.md -- the border guards every vote: a member replying with a vowel-bearing
 # greeting is refused at the caller's hear (wire.deframe). A real address can never enter a quorum even as a present token.
 #
-# constel/quorum.rye turns FORA8's census tally into a decision: majority_of is the strict-majority threshold (2·t > n, so
+# constel/quorum.rye turns FORA8's census tally into a decision: majority_of is the strict-majority threshold (2-t > n, so
 # any two quorums intersect), a Quorum records each heard reply and seals into live/threshold/reached, require refuses
 # NoQuorum below a majority, and in_quorum names the deciding set. The selftest proves: a full sky is quorate; one absence
 # still holds a majority (silent slot outside the set); two absences lose it; two of three is a majority yet a lone pier is
 # not; a stranger cannot open a quorum; the border guards every vote; and a full constellation of eight stays bounded.
-# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+# Purely local -- no socket, no network, no keys, no funds, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_quorum_witness.rish

@@ -1,10 +1,10 @@
-# tools/b/buhr_mantra_editor_fork_witness.rish — BUHR Journey 4, Rung 3.
+# tools/b/buhr_mantra_editor_fork_witness.rish -- BUHR Journey 4, Rung 3.
 #
 # An edit can fork a new lane, not only continue an old one. Rung one gave the editor
-# commit — continue an existing lane. This rung gives it open_lane — fork a new lane by
+# commit -- continue an existing lane. This rung gives it open_lane -- fork a new lane by
 # appending the first revision on a fresh path. Together they are the editor's "new
 # file" and "edit file", both appends to the same append-only Mantra catalog. The proof:
-# opening a lane grows the rendered graph by exactly one new lane line (c.txt: r1[…]),
+# opening a lane grows the rendered graph by exactly one new lane line (c.txt: r1[...]),
 # its lane count up by one, every existing lane byte-for-byte unchanged; the forked lane
 # is then a lane like any other (a commit chains r1 -> r2); opening a path that already
 # carries a leaf refuses LaneExists.
@@ -28,7 +28,7 @@ assert selftest.out contains "the graph gained one lane, every existing lane unc
 assert selftest.out contains "the forked lane is a lane like any other" else "buhr-j4r3: the forked-lane-is-a-lane proof is missing"
 assert selftest.out contains "opening an existing lane refuses — LaneExists" else "buhr-j4r3: the duplicate-open refuse proof is missing"
 
-# Rung one (editor) stays its own green binary — open_lane is additive beside commit.
+# Rung one (editor) stays its own green binary -- open_lane is additive beside commit.
 let editor = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_editor_witness.rish 2>&1"]
 assert editor.ok else "buhr-j4r3: the editor (rung one) witness regressed"
 assert editor.out contains "GREEN: BUHR-J4r1" else "buhr-j4r3: the editor lost its green"

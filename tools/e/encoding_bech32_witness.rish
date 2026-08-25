@@ -1,22 +1,22 @@
-# tools/e/encoding_bech32_witness.rish — Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye: the checksummed binary-to-text form a
-# modern address wears — a human-readable prefix, a '1' separator, the payload in the case-safe 32-symbol alphabet, and a six-symbol BCH
-# checksum — proven against the BIP valid checksums, the canonical segwit example, and an independent table-driven polymod (encoding · the
-# serialization sibling of Season G · Cryptography).
+# tools/e/encoding_bech32_witness.rish -- Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye: the checksummed binary-to-text form a
+# modern address wears -- a human-readable prefix, a '1' separator, the payload in the case-safe 32-symbol alphabet, and a six-symbol BCH
+# checksum -- proven against the BIP valid checksums, the canonical segwit example, and an independent table-driven polymod (encoding - the
+# serialization sibling of Season G - Cryptography).
 #
-# Season: encoding — the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, base32.rye, and hex.rye.
+# Season: encoding -- the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, base32.rye, and hex.rye.
 # Where crypto/ authors the mathematics that produces bytes, encoding/ authors the text those bytes travel in, keeping the same parity
 # discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the alphabet, generator, and checksum law are BIP-173 and BIP-350's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 #
-# encoding/bech32.rye authors Bech32 and Bech32m from BIP-173 and BIP-350 — the "qpzry9x8gf2tvdw0s3jn54khce6mua7l" alphabet, the BCH polymod
+# encoding/bech32.rye authors Bech32 and Bech32m from BIP-173 and BIP-350 -- the "qpzry9x8gf2tvdw0s3jn54khce6mua7l" alphabet, the BCH polymod
 # over GF(32) with its five-term generator, the two spec constants (1 for Bech32, 0x2bc830a3 for Bech32m) that version-bind a v0 segwit output
 # apart from a BIP-350 payload, the hrp expansion, and convertbits regrouping. The primitive calls no std bech32 (Zig ships none). Parity is
 # proven at selftest against three references runnable now: the BIP valid checksums (round-tripped to themselves lowercased and cross-refused
 # across specs), the canonical segwit example bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 decoding to witness v0 and the 20-byte program
 # 751e76e8199196d454941c45d1b3a323f1433bd6, and a second, INDEPENDENT table-driven polymod matching the per-bit residue byte-for-byte. Raw
 # bytes round-trip through encode_bytes / decode_bytes. A flipped checksum refuses BadChecksum, mixed case MixedCase, a missing separator
-# BadLength, an out-of-alphabet symbol BadChar, an empty hrp HrpEmpty, a too-small destination DestTooSmall. Purely local — no key, no network,
+# BadLength, an out-of-alphabet symbol BadChar, an empty hrp HrpEmpty, a too-small destination DestTooSmall. Purely local -- no key, no network,
 # no funds, no real device.
 #
 # Run from the repository root:

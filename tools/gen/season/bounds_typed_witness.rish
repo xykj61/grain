@@ -1,8 +1,8 @@
-# tools/gen/season/bounds_typed_witness.rish — declared bounds carry their type.
+# tools/gen/season/bounds_typed_witness.rish -- declared bounds carry their type.
 #
 #   rishi/bin/rishi run tools/gen/season/bounds_typed_witness.rish
 #
-# Voice Season v2 · slot 2 · explicit_bounds.
+# Voice Season v2 - slot 2 - explicit_bounds.
 #
 # Why this exists: TAME root rule 2 is this tree's most-cited discipline -- every
 # allocation, collection, and pipeline names its maximum size -- and the enforced

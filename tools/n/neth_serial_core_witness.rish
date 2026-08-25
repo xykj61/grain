@@ -1,4 +1,4 @@
-# neth_serial_core_witness.rish — proves Neth's small serial core.
+# neth_serial_core_witness.rish -- proves Neth's small serial core.
 #
 # The Neth build ladder's first real lap after the deterministic-root
 # witness: append+fold is bounded and asserted, and the pipelined stages

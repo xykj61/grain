@@ -1,12 +1,12 @@
-# tools/al/ales_stereo_limit_witness.rish — stereo_limit: the brickwall limiter carried into stereo, the ratio→∞ corner of the linked gain — both a true ceiling and an image held whole (ALES158).
+# tools/al/ales_stereo_limit_witness.rish -- stereo_limit: the brickwall limiter carried into stereo, the ratio->∞ corner of the linked gain -- both a true ceiling and an image held whole (ALES158).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES158.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES158.
 # Design read: active-designing/date/20260815/20260815-063222_fill-ales158-lotus-stereo-limit.md
-# Stands on: lotus/limit.rye (ALES49 — the mono brickwall limiter, its limit and LimitError reused whole for the peak-channel proof and the fault set), lotus/stereo_compress.rye (ALES157 — the linked-gain sibling whose
-# ratio→∞ corner this rung is), lotus/stereo_gate.rye (ALES156 — the rung that opened the stereo dynamics family with the linked detector), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye
-# (ALES2 — the Clip, sample_max).
+# Stands on: lotus/limit.rye (ALES49 -- the mono brickwall limiter, its limit and LimitError reused whole for the peak-channel proof and the fault set), lotus/stereo_compress.rye (ALES157 -- the linked-gain sibling whose
+# ratio->∞ corner this rung is), lotus/stereo_gate.rye (ALES156 -- the rung that opened the stereo dynamics family with the linked detector), lotus/pan.rye (ALES10 -- the StereoClip and its balance invariant), lotus/timeline.rye
+# (ALES2 -- the Clip, sample_max).
 #
-# lotus/stereo_limit.rye limits a span of sample-PAIRS in a master to a magnitude ceiling, with ONE linked gain across the two channels — the ratio→∞ corner of ALES157's compressor. The detector key per pair is
+# lotus/stereo_limit.rye limits a span of sample-PAIRS in a master to a magnitude ceiling, with ONE linked gain across the two channels -- the ratio->∞ corner of ALES157's compressor. The detector key per pair is
 # max(|left|, |right|): within the ceiling the pair passes byte for byte; above it BOTH channels are scaled by the single fraction ceil/key, so the peak-holding channel lands exactly on ceil and the quieter one is scaled by
 # the identical fraction. The linked form is simultaneously a true brickwall (no written sample exceeds the ceiling) AND image-preserving (both channels share one gain), where the independent mono lift gives only the first.
 # LimitError reused whole; the linked lift adds no fault. Values only, never a length. The crux is the brickwall + linked-gain law (no sample exceeds ceil, the peak channel equals the mono limit byte for byte, the quiet

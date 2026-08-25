@@ -1,12 +1,12 @@
-# tools/gen/season/pond_brushstroke_frame_witness.rish — Surface p6 · Pond-framed frame
+# tools/gen/season/pond_brushstroke_frame_witness.rish -- Surface p6 - Pond-framed frame
 #
 #   rishi/bin/rishi run tools/gen/season/pond_brushstroke_frame_witness.rish
 #
 # Two proofs from values:
-#   1) Brushstroke wayland_seed redrawtest — Frame A→B→A signatures (headless)
-#   2) Pond drawn-terminal metalsmoke — Wayland host hop (needs WAYLAND_DISPLAY)
+#   1) Brushstroke wayland_seed redrawtest -- Frame A->B->A signatures (headless)
+#   2) Pond drawn-terminal metalsmoke -- Wayland host hop (needs WAYLAND_DISPLAY)
 #
-# Live-five (type · idle · ceiling · :quit) stays hand — not claimed here.
+# Live-five (type - idle - ceiling - :quit) stays hand -- not claimed here.
 
 say "pond-frame: Language EN — Frame from values · Pond metalsmoke."
 say "pond-frame: Style Radiant — reuse seed; refuse invent stack."

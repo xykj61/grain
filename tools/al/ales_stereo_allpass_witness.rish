@@ -1,18 +1,18 @@
-# tools/al/ales_stereo_allpass_witness.rish — the allpass filter carried into stereo: Schroeder's diffusion stage on both channels (ALES185).
+# tools/al/ales_stereo_allpass_witness.rish -- the allpass filter carried into stereo: Schroeder's diffusion stage on both channels (ALES185).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES185.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES185.
 # Design read: active-designing/date/20260815/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry).
-# Stands on: lotus/allpass.rye (ALES184 — the mono allpass run once per channel, its AllpassError and precheck reused); lotus/pan.rye
-# (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip and the one true saturate the mono allpass reuses).
+# Stands on: lotus/allpass.rye (ALES184 -- the mono allpass run once per channel, its AllpassError and precheck reused); lotus/pan.rye
+# (ALES10 -- the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 -- the Clip and the one true saturate the mono allpass reuses).
 #
-# lotus/stereo_allpass.rye carries ALES184's Schroeder diffusion stage into stereo — the same delay and gain on both channels, each read
-# through its own buffer, the diffusion primitive the stereo reverb stands on. y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]) on each
+# lotus/stereo_allpass.rye carries ALES184's Schroeder diffusion stage into stereo -- the same delay and gain on both channels, each read
+# through its own buffer, the diffusion primitive the stereo reverb stands on. y[n] = saturate(-g-x[n] + x[n-delay] + g-y[n-delay]) on each
 # channel. The selftest proves: the stereo allpass law (each channel equal to ALES184's mono allpass with the same delay and gain byte for
-# byte, the channels genuinely differing); the identical-channel image law (a centred master staying identical — an exact panned ratio does
+# byte, the channels genuinely differing); the identical-channel image law (a centred master staying identical -- an exact panned ratio does
 # NOT survive, honestly noted, because the delayed-output @divTrunc drifts it, like the echo and flanger); and the pure-delay / silence /
 # balance / atomicity / degenerate law (a zero-gain allpass a pure delay of each channel's own dry not the identity, silence to silence on
 # both, left.len == right.len after, a bad delay / a bad gain / an out-of-range span each refusing by name with both channels untouched and
-# balanced, count 0 the identity). Purely local — the delay counted in sample indices not milliseconds, no cross-channel read, no network,
+# balanced, count 0 the identity). Purely local -- the delay counted in sample indices not milliseconds, no cross-channel read, no network,
 # no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:

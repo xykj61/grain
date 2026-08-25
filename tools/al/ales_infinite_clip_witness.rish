@@ -1,20 +1,20 @@
-# tools/al/ales_infinite_clip_witness.rish — the infinite clipper: silence the quiet middle and pin the loud to the rail, y = if |x| ≤ t then 0 else
-# sign(x)·sample_max (ALES89).
+# tools/al/ales_infinite_clip_witness.rish -- the infinite clipper: silence the quiet middle and pin the loud to the rail, y = if |x| ≤ t then 0 else
+# sign(x)-sample_max (ALES89).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES89.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES89.
 # Design read: active-designing/date/20260814/20260814-221404_fill-ales89-lotus-infinite-clipper.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and lotus/soft_center_clip.rye (ALES88 — the soft center clip whose dead zone this rung
-# shares and whose survivors this rung pins to the rail instead of shifting toward zero). The two center clippers read the survivor's fate two ways — pass
-# (ALES87) and shift (ALES88); this rung reads it the third and loudest way — pin to ±sample_max, the infinite-gain limit that keeps only the sign.
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/max) and lotus/soft_center_clip.rye (ALES88 -- the soft center clip whose dead zone this rung
+# shares and whose survivors this rung pins to the rail instead of shifting toward zero). The two center clippers read the survivor's fate two ways -- pass
+# (ALES87) and shift (ALES88); this rung reads it the third and loudest way -- pin to ±sample_max, the infinite-gain limit that keeps only the sign.
 #
-# lotus/infinite_clip.rye maps each sample to 0 when |x| ≤ thresh and to sign(x)·sample_max otherwise. The crux is EXACT for every i16 with NO rail edge
+# lotus/infinite_clip.rye maps each sample to 0 when |x| ≤ thresh and to sign(x)-sample_max otherwise. The crux is EXACT for every i16 with NO rail edge
 # and NO saturate: only −sample_max, 0, or sample_max is ever written; the negative survivor pins to −sample_max (not sample_min) so the map is EXACTLY ODD,
 # the deepest sample included; the magnitude is taken in i32 so |sample_min| = 32768 is representable. The map is MEMORYLESS, ODD, and IDEMPOTENT below the
 # rail (a pinned rail survives its own dead zone for every t ≤ sample_max − 1). The selftest proves it: the pure comparator (t = 0) pins every nonzero
-# sample to the rail; the dead-band comparator silences the quiet middle and rails the loud; the boundary is the infinite-gain jump (|x| = t → 0, |x| = t+1
-# → ±sample_max, against ALES88's continuous ±1); the map is odd; it is idempotent below the rail; only three values ever appear; it silences the same dead
+# sample to the rail; the dead-band comparator silences the quiet middle and rails the loud; the boundary is the infinite-gain jump (|x| = t -> 0, |x| = t+1
+# -> ±sample_max, against ALES88's continuous ±1); the map is odd; it is idempotent below the rail; only three values ever appear; it silences the same dead
 # zone as ALES88, yet its odd rail pair is not the 1-bit crush's floored 0/sample_min pair; the span discipline holds; a negative or over-rail threshold
-# refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local — one magnitude, one compare, one signed constant per
+# refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local -- one magnitude, one compare, one signed constant per
 # sample; no gain, no ceiling, no saturate, no delay line, no envelope, no hysteresis, no anti-aliasing, no network, no keys, no funds.
 #
 # Run from the repository root:

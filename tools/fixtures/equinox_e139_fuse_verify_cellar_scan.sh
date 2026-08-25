@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e139 — fuse verify Cellar accretion already GREEN (e138). No second retirement.
+# Equinox e139 -- fuse verify Cellar accretion already GREEN (e138). No second retirement.
 # Exit 0 when living tree carries e138 accretion, Silo template is named, shred held,
 # seat 128 reserved, and kg did not open the close.
 # No backtick characters.
@@ -105,7 +105,7 @@ test "$CELLAR_N" = "2" || {
 echo "cellar_kept=honored"
 echo "cellar_tracked=2"
 
-# Silo template present · named in this counsel
+# Silo template present - named in this counsel
 rg -qi 'Silo.*as a Rye OS module name' "$LEXICON" || {
   echo "silo_template=failed"
   echo "detail=want_silo_retirement_row"
@@ -133,7 +133,7 @@ rg -q '174500' "$LEXICON" || {
 echo "silo_template=honored"
 echo "template=silo_174500"
 
-# Living pins — fuse verify · no second retirement
+# Living pins -- fuse verify - no second retirement
 rg -qi 'fuse verify|already GREEN|already green|Silo template' "$COUNSEL" "$ITINERARY" || {
   echo "living=failed"
   echo "verdict=misread"

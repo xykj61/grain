@@ -1,4 +1,4 @@
-# pleac_lists_witness.rish — the PLEAC lists cookbook (chunk · window · flatten).
+# pleac_lists_witness.rish -- the PLEAC lists cookbook (chunk - window - flatten).
 #
 # SOON. Proves pleac/lists.rye: chunk cuts a list into consecutive groups of a size
 # (last may be shorter); window yields every overlapping run of a size, in order; both

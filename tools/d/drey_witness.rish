@@ -1,14 +1,14 @@
-# tools/d/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY16).
+# tools/d/drey_witness.rish -- the whole Mikrophone firmware journey, proven in one command (DREY0-DREY16).
 #
-# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · aggregate witness.
+# Season A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - aggregate witness.
 # Front door: mikrophone/README.md.
 #
-# The Mikrophone firmware journey grew from one crux — a session that forgets — to eleven proven rungs: the memory that
+# The Mikrophone firmware journey grew from one crux -- a session that forgets -- to eleven proven rungs: the memory that
 # forgets, the wire that carries only the committed, the record button, the whole loop, the far side's verify-before-keep
 # discipline, the carry meeting, the bounded archive, the content-addressed catalog, the manifest of holdings, the
 # want-response that closes a local content-addressed sync, and the redaction that lets a keeper forget one span on
 # purpose. Each rung has its own witness; this one runs all eleven in rung order and asserts each GREEN, so the whole
-# journey proves from cold in a single command — the reference weave the front door names.
+# journey proves from cold in a single command -- the reference weave the front door names.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/drey_witness.rish

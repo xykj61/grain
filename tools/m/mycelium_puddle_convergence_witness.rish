@@ -1,17 +1,17 @@
-# tools/m/mycelium_puddle_convergence_witness.rish — the Puddle heals: a host departs, and only its worlds
+# tools/m/mycelium_puddle_convergence_witness.rish -- the Puddle heals: a host departs, and only its worlds
 # re-berth (r2, convergence with minimal disruption).
 #
-# Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r2 — the fleet heals.
+# Season D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r2 -- the fleet heals.
 # r1 fixed the berth (placement a pure function of the fleet, derived by highest weave-score, invariant
-# under arrival order). r2 proves the property that method was CHOSEN for over hash-mod-count — MINIMAL
+# under arrival order). r2 proves the property that method was CHOSEN for over hash-mod-count -- MINIMAL
 # DISRUPTION. When a host departs, a fleet must re-place the worlds it carried without reshuffling everyone;
 # a mass migration is its own outage. Under generous capacity the berth is exactly pure HRW, so removing one
 # host moves ONLY the worlds that had berthed there (their next-highest-score host receives them) and leaves
-# every world on a surviving host exactly where it was. The symmetric join is minimal too — a newcomer only
+# every world on a surviving host exactly where it was. The symmetric join is minimal too -- a newcomer only
 # pulls the worlds it now wins, never reshuffling the hosts already there.
 #
 # The crux this witness proves is A HOST DEPARTS AND ONLY ITS WORLDS RE-BERTH: composes r1's public API
-# only, editing r1 nothing (the r1 berth re-runs GREEN at the door); demo host and world seeds — no key, no
+# only, editing r1 nothing (the r1 berth re-runs GREEN at the door); demo host and world seeds -- no key, no
 # funds, no network, no world provisioned.
 #
 # Scope: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
@@ -37,7 +37,7 @@ assert selftest.out contains "every world on a surviving host stays byte-identic
 assert selftest.out contains "the symmetric join is minimal too" else "mycelium-puddle-convergence: join claim missing"
 assert selftest.out contains "Convergence stands" else "mycelium-puddle-convergence: closing claim missing"
 
-# The r1 berth the healing rests on stands at the door — its own selftest proves the derived placement.
+# The r1 berth the healing rests on stands at the door -- its own selftest proves the derived placement.
 let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle.rye -femit-bin=mycelium/bin/puddle && mycelium/bin/puddle 2>&1"]
 assert r1.ok else "mycelium-puddle-convergence: the r1 berth the healing rests on is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-puddle-convergence: the r1 berth did not speak its GREEN"

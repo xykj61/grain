@@ -1,12 +1,12 @@
 #!/bin/sh
-# glow_run_worker.sh — lower · build · run one Glow desk (fixture or argv sample).
+# glow_run_worker.sh -- lower - build - run one Glow desk (fixture or argv sample).
 # Invoked by tools/g/glow_run.rish.
 #
 #   tools/g/glow_run_worker.sh <file.glow>                           # fixture path
 #   tools/g/glow_run_worker.sh <file.glow> <sample>                  # u32 or kind tag
 #   tools/g/glow_run_worker.sh <file.glow> mint <amount-u32>         # xact payload tag
 #   tools/g/glow_run_worker.sh <file.glow> mint <from> <amount>      # xfer payload tag
-#   tools/g/glow_run_worker.sh <file.glow> <u32>...                  # $: N-field (pair…nona)
+#   tools/g/glow_run_worker.sh <file.glow> <u32>...                  # $: N-field (pair...nona)
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -100,7 +100,7 @@ gate-xfer-tag|gate-barket-xfer-tag)
   fi
   ;;
 *)
-  # STOA324: closed $: pair…nona fields — one path (stem → N → exact count).
+  # STOA324: closed $: pair...nona fields -- one path (stem -> N -> exact count).
   if [ "$NEED_FIELDS" -ge 2 ]; then
     test "$NARGS" -eq "$NEED_FIELDS" || {
       echo "FAIL: ${STEM}.glow needs exactly ${NEED_FIELDS} field decimals"
@@ -155,7 +155,7 @@ build_atomic() {
   mv -f "$_dst.$TMP_TAG" "$_dst"
 }
 
-# STOA344 · O3: same-dir alias so plants import the vane inside the module path (one source, compiler-followed).
+# STOA344 - O3: same-dir alias so plants import the vane inside the module path (one source, compiler-followed).
 ln -sf ../../tally/gardens.rye glow/.cache/tally_gardens.rye
 ln -sfn ../../caravan glow/.cache/caravan
 build_atomic glow/glow_run.rye glow/bin/glow_run

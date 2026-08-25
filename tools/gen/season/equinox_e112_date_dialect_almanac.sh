@@ -1,5 +1,5 @@
 #!/bin/sh
-# Append Glow almanac seat 116 from e112 planted date-dialect witness — ch8 4/16.
+# Append Glow almanac seat 116 from e112 planted date-dialect witness -- ch8 4/16.
 set -eu
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 if grep -q '^### 116\.' "$ALMANAC"; then

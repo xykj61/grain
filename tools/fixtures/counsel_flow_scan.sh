@@ -1,9 +1,9 @@
 #!/bin/sh
-# tools/fixtures/counsel_flow_scan.sh — the counsel-flow descriptor is lawful Brix.
+# tools/fixtures/counsel_flow_scan.sh -- the counsel-flow descriptor is lawful Brix.
 # Orchestrated by tools/gen/season/counsel_flow_witness.rish.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 #
 # Brix law checked here (TAME Brix Supplement): declarative only -- no commands,
 # no conditions, no loops, no expressions; plain key-value, one field per line,

@@ -1,17 +1,17 @@
-# tools/f/fora_apply_witness.rish — the committed log drives a state machine, each request applied exactly once (FORA19).
+# tools/f/fora_apply_witness.rish -- the committed log drives a state machine, each request applied exactly once (FORA19).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA19. Design read: active-designing/date/20260814/20260814-083900_fora19-constel-apply-linearizable-sessions.md
 #
-# constel/apply.rye turns FORA18's committed prefix into applied state, with linearizable client sessions — the guarantee Raft
+# constel/apply.rye turns FORA18's committed prefix into applied state, with linearizable client sessions -- the guarantee Raft
 # §8 names: an agreed log is not a service until each REQUEST runs exactly once. A leader can commit a request, crash before
-# answering, and let the client's resend be committed too — the command lands in the log twice. A naive machine applies it twice
+# answering, and let the client's resend be committed too -- the command lands in the log twice. A naive machine applies it twice
 # (a transfer of 40 becomes 80); the safe rule remembers, per client, the highest seq it applied and the result, so a retry
 # returns the cached answer and mutates nothing. The selftest proves: the machine applies a committed prefix in order; two
-# machines fed the same prefix reach a byte-identical state (the replicated-state-machine guarantee); THE §8 REFUSAL — a
+# machines fed the same prefix reach a byte-identical state (the replicated-state-machine guarantee); THE §8 REFUSAL -- a
 # duplicated request applies once; the answer is stable across a retry; only the committed prefix drives the machine and apply is
 # incremental; the session table and register are bounded, an unknown client and a register overflow each refusing by name.
-# Purely local — no socket, no network, no keys, no funds, no real client, no real address ever formed.
+# Purely local -- no socket, no network, no keys, no funds, no real client, no real address ever formed.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_apply_witness.rish

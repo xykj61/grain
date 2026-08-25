@@ -1,4 +1,4 @@
-# split.rish — tests for the `split` string builtin.
+# split.rish -- tests for the `split` string builtin.
 
 let path = "home/xy/veganreyklah2"
 let segs = split path "/"

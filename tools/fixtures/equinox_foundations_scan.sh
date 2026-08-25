@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/equinox_foundations_scan.sh — foundations join the equinox map.
+# tools/fixtures/equinox_foundations_scan.sh -- foundations join the equinox map.
 # Orchestrated by tools/gen/season/equinox_foundations_witness.rish.
 set -eu
 f="${1:-context/equinox_foundations.brix}"
@@ -100,7 +100,7 @@ if [ "$as" != "1 4 7 10" ]; then
   faults=$((faults + 1))
 fi
 
-# 5) join map flanks — sorted equality (order in foundations file is flank order, but compare as sets via sort)
+# 5) join map flanks -- sorted equality (order in foundations file is flank order, but compare as sets via sort)
 map_flank() {
   # extract "flank X Y Z" for equinox $1 from map file
   awk -v eq="$1" '

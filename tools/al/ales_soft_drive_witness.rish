@@ -1,20 +1,20 @@
-# tools/al/ales_soft_drive_witness.rish — the soft-clip overdrive: ALES78's hard clip with its corner rounded (ALES79).
+# tools/al/ales_soft_drive_witness.rish -- the soft-clip overdrive: ALES78's hard clip with its corner rounded (ALES79).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES79.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES79.
 # Design read: active-designing/date/20260814/20260814-205812_fill-ales79-lotus-soft-clip-overdrive.md
-# Stands on: lotus/drive.rye (ALES78 — the pre-gain and the ceiling pin, reused with a knee opened below the ceiling); lotus/fader.rye (ALES6 —
-# the num/den gain in i64); lotus/limit.rye (ALES49 — the ceiling law the shoulder's top reuses); lotus/timeline.rye (ALES2 — the Clip,
+# Stands on: lotus/drive.rye (ALES78 -- the pre-gain and the ceiling pin, reused with a knee opened below the ceiling); lotus/fader.rye (ALES6 --
+# the num/den gain in i64); lotus/limit.rye (ALES49 -- the ceiling law the shoulder's top reuses); lotus/timeline.rye (ALES2 -- the Clip,
 # sample_min/max, the one true saturate).
 #
 # lotus/soft_drive.rye rounds ALES78's sharp clipping corner. SOFT-CLIP DRIVE IS ALES78's HARD CLIP WITH ITS CORNER ROUNDED, and a hard clip is
 # the soft clip whose KNEE sits AT the ceiling: below the knee the boosted signal passes clean, between knee and ceiling the slope HALVES
-# (knee + (m − knee)/2), and once that shoulder reaches the ceiling (m ≥ 2·ceil − knee) it pins — three straight segments, slope one, one-half,
+# (knee + (m − knee)/2), and once that shoulder reaches the ceiling (m ≥ 2-ceil − knee) it pins -- three straight segments, slope one, one-half,
 # zero, each exact in integers. The selftest proves it: a knee AT the ceiling reproduces ALES78's hard drive byte-for-byte (against the real hard
 # clip); a hand-computed half-slope shoulder matches exactly; a wide-knee overdrive is GENTLER than the hard clip at the same gain (the shoulder
 # never louder than the pin); the shape is ODD, soft_drive(−x) = −soft_drive(x); the output never exceeds the ceiling under a heavy ×8 drive; the
 # span discipline holds; a zero den / below-unity gain / oversized numerator refuses BadGain, a knee below 1 or above the ceiling BadKnee, a zero
 # or over-rail ceiling BadCeiling, a span past the end BadRange, each leaving the clip untouched. The shape lands every output in [−ceil, ceil] ⊆
-# the i16 rail BEFORE the write, so the shape does the clipping and the saturate is a documented no-op. Purely local — one multiply, one divide,
+# the i16 rail BEFORE the write, so the shape does the clipping and the saturate is a documented no-op. Purely local -- one multiply, one divide,
 # one bounded piecewise map per sample; no delay line, no anti-aliasing, no network, no keys, no funds, no real device, no real sample rate.
 #
 # Run from the repository root:

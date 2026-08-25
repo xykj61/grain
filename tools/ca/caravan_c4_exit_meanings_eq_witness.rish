@@ -1,10 +1,10 @@
-# tools/ca/caravan_c4_exit_meanings_eq_witness.rish — Ashvini equality: exact 3 (STOA337).
+# tools/ca/caravan_c4_exit_meanings_eq_witness.rish -- Ashvini equality: exact 3 (STOA337).
 #
 #   rishi/bin/rishi run tools/ca/caravan_c4_exit_meanings_eq_witness.rish
 #
 # gth speaks ceilings. eq speaks exactly. Caravan's three exit meanings
-# (cycle_ok=0 · stop_requested=8 · fall) are the fourth pedestal that could
-# not decide until this rune — 3→1, neighbors→0. First eq gate outside Aurora.
+# (cycle_ok=0 - stop_requested=8 - fall) are the fourth pedestal that could
+# not decide until this rune -- 3->1, neighbors->0. First eq gate outside Aurora.
 
 say "eq-exit: Language EN — the fourth exact deciding gate (STOA337)."
 say "eq-exit: Lens TAME — exact match; both sides; gth neighbor still stands."

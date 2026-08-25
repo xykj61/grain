@@ -1,9 +1,9 @@
-# tools/al/ales_expand_env_hold_witness.rish — an attack/hold/release downward expander: the held quartet made whole (ALES62).
+# tools/al/ales_expand_env_hold_witness.rish -- an attack/hold/release downward expander: the held quartet made whole (ALES62).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES62.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES62.
 # Design read: active-designing/date/20260814/20260814-184011_fill-ales62-lotus-attack-hold-release-expander.md
-# Stands on: lotus/timeline.rye (ALES2); lotus/expand.rye (ALES60 — the deepened floor); lotus/hold_env.rye (ALES56 — the HELD time
-# base); lotus/expand_env.rye (ALES61 — the un-held attack/release expander this reduces to at a hold of zero, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2); lotus/expand.rye (ALES60 -- the deepened floor); lotus/hold_env.rye (ALES56 -- the HELD time
+# base); lotus/expand_env.rye (ALES61 -- the un-held attack/release expander this reduces to at a hold of zero, re-proven below).
 #
 # lotus/expand_env_hold.rye advances the ALES56 HELD follower one step per sample and, when the held envelope falls below the
 # threshold, widens its deficit by the ratio (ALES60's law) and applies that gain to the raw sample. The selftest proves: silence
@@ -11,7 +11,7 @@
 # signal's floor deepens with the sign held and the magnitude never expanding; a nonzero hold keeps the expander idle across a brief
 # dip (it does not pump, the knob monotone); the state carries (env and hold_left both) so a span in two pieces equals the whole
 # once; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, a
-# hold past max_clip BadHold, an out-of-range span BadRange. Purely local — no lookahead, no network, no keys, no funds, no device.
+# hold past max_clip BadHold, an out-of-range span BadRange. Purely local -- no lookahead, no network, no keys, no funds, no device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_expand_env_hold_witness.rish
@@ -36,11 +36,11 @@ say "ales-expand-env-hold: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-expand-env-hold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-expand-env-hold: selftest did not print the GREEN ales-expand-env-hold line"
 
-# The held expander reduces to the un-held ALES61 expander at a hold of zero — re-prove ALES61 still stands green beneath the new rung.
+# The held expander reduces to the un-held ALES61 expander at a hold of zero -- re-prove ALES61 still stands green beneath the new rung.
 let unheld = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/expand_env.rye -femit-bin=lotus/bin/expand_env && lotus/bin/expand_env selftest 2>&1 | grep -q 'GREEN ales-expand-env' && echo yes"]
 assert (trim unheld.out) == "yes" else "ales-expand-env-hold: the ALES61 attack/release expander witness regressed under the held expander"
 
-# The held time base is ALES56's proven follower — re-prove it too, so the rung rests on both parents.
+# The held time base is ALES56's proven follower -- re-prove it too, so the rung rests on both parents.
 let held = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim held.out) == "yes" else "ales-expand-env-hold: the ALES56 held follower witness regressed under the held expander"
 

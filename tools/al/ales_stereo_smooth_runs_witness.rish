@@ -1,15 +1,15 @@
-# tools/al/ales_stereo_smooth_runs_witness.rish — stereo_smooth_runs: the run-length smoother carried into stereo, two independent hysteresis holds, the smoothing ALES95 named as a later rung read across both speakers (ALES153).
+# tools/al/ales_stereo_smooth_runs_witness.rish -- stereo_smooth_runs: the run-length smoother carried into stereo, two independent hysteresis holds, the smoothing ALES95 named as a later rung read across both speakers (ALES153).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES153.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES153.
 # Design read: active-designing/date/20260815/20260815-055925_fill-ales153-lotus-stereo-smooth-runs.md
-# Stands on: lotus/smooth_runs.rye (ALES101 — the mono run-length smoother, run once per channel, its smooth_runs and SmoothError reused whole), lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, whose
-# StereoSegments{left, right} this reads and rewrites, the two channels' runs kept apart), lotus/segment.rye (ALES95 — the mono Segments and max_segments), lotus/voiced.rye (ALES94 — the Verdict the runs carry). Unlike the
-# silence edits (ALES148–152) this meets no desync wall: smooth_runs is read-only over the labels, rewriting a run-length sequence and touching no PCM, so its honest stereo shape is the analysis-corner one ALES146/147 took —
+# Stands on: lotus/smooth_runs.rye (ALES101 -- the mono run-length smoother, run once per channel, its smooth_runs and SmoothError reused whole), lotus/stereo_segment.rye (ALES147 -- the stereo voice-activity segmenter, whose
+# StereoSegments{left, right} this reads and rewrites, the two channels' runs kept apart), lotus/segment.rye (ALES95 -- the mono Segments and max_segments), lotus/voiced.rye (ALES94 -- the Verdict the runs carry). Unlike the
+# silence edits (ALES148-152) this meets no desync wall: smooth_runs is read-only over the labels, rewriting a run-length sequence and touching no PCM, so its honest stereo shape is the analysis-corner one ALES146/147 took --
 # run the proven mono smoother on each channel independently.
 #
 # lotus/stereo_smooth_runs.rye smooths in.left into out.left and in.right into out.right through ALES101's proven mono smooth_runs with the one shared min_run, keeping the two channels apart: a tick on the left is absorbed by
-# the left's neighbours, never the right's. Each channel inherits every one of ALES101's laws (coverage, coalesced, hold, idempotence, monotonicity) because each channel is a mono smooth. The crux is the stereo smooth law — each
-# channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run — proven against the mono smoother directly across a grid of min_run values and several per-channel input shapes; StereoSmoothError reused
+# the left's neighbours, never the right's. Each channel inherits every one of ALES101's laws (coverage, coalesced, hold, idempotence, monotonicity) because each channel is a mono smooth. The crux is the stereo smooth law -- each
+# channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run -- proven against the mono smoother directly across a grid of min_run values and several per-channel input shapes; StereoSmoothError reused
 # whole (the honest unreachable SegmentsFull, since smoothing only merges).
 #
 # Run from the repository root:

@@ -1,20 +1,20 @@
-# tools/al/ales_sidechain_witness.rish — the sidechain compressor: the gain that follows another signal (ALES63).
+# tools/al/ales_sidechain_witness.rish -- the sidechain compressor: the gain that follows another signal (ALES63).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES63.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES63.
 # Design read: active-designing/date/20260814/20260814-184728_fill-ales63-lotus-sidechain-compressor.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/compress.rye (ALES50 —
-# the softened ceiling this drives); lotus/hold_env.rye (ALES56 — the HELD time base, re-proven below); lotus/compress_env_hold.rye
-# (ALES58 — the attack/hold/release compressor this keys, re-proven below, and equalled byte-for-byte by a self-key).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/compress.rye (ALES50 --
+# the softened ceiling this drives); lotus/hold_env.rye (ALES56 -- the HELD time base, re-proven below); lotus/compress_env_hold.rye
+# (ALES58 -- the attack/hold/release compressor this keys, re-proven below, and equalled byte-for-byte by a self-key).
 #
 # lotus/sidechain.rye drives ALES50's softened ceiling from ALES56's HELD follower advanced on a KEY clip rather than on the target
 # it processes: the detector listens to the key while the gain lands on the target. When the held KEY envelope crosses the threshold
 # its excess is divided by the ratio and that gain applied to the raw TARGET sample. The selftest proves: silence stays silence; a
 # self-key (the key holding the target's own samples) reduces to ALES58's attack/hold/release compressor byte-for-byte (the grounding
-# law, proven by running both tools); a silent key never reduces (the target passes whole however loud — the gain follows the key, not
-# the signal); a loud key ducks a quiet target (a target below the threshold turned down where the in-line compressor leaves it alone —
+# law, proven by running both tools); a silent key never reduces (the target passes whole however loud -- the gain follows the key, not
+# the signal); a loud key ducks a quiet target (a target below the threshold turned down where the in-line compressor leaves it alone --
 # ducking); unit ratio is the identity everywhere; a loud target's magnitude reduces with the sign held and never expanding; the state
 # carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal
-# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey. Purely local — no network, no
+# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey. Purely local -- no network, no
 # keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
@@ -40,7 +40,7 @@ say "ales-sidechain: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-sidechain' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-sidechain: selftest did not print the GREEN ales-sidechain line"
 
-# This rung keys ALES58 with an ALES56-held detector over their public APIs — re-prove both still stand green under it.
+# This rung keys ALES58 with an ALES56-held detector over their public APIs -- re-prove both still stand green under it.
 let ceh = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env_hold.rye -femit-bin=lotus/bin/compress_env_hold && lotus/bin/compress_env_hold selftest 2>&1 | grep -q 'GREEN ales-compress-env-hold' && echo yes"]
 assert (trim ceh.out) == "yes" else "ales-sidechain: the ALES58 attack/hold/release compressor regressed under the sidechain compressor"
 

@@ -1,10 +1,10 @@
-# tools/al/ales_limit_env_hold_witness.rish — an attack/HOLD/release limiter: the held dynamics trio made whole (ALES59).
+# tools/al/ales_limit_env_hold_witness.rish -- an attack/HOLD/release limiter: the held dynamics trio made whole (ALES59).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES59.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES59.
 # Design read: active-designing/date/20260814/20260814-182307_fill-ales59-lotus-attack-hold-release-limiter.md
-# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/limit.rye (ALES49 —
-# the hard ceiling this drives over time, re-proven below); lotus/hold_env.rye (ALES56 — the HELD time base, re-proven below); lotus/
-# limit_env.rye (ALES55 — the un-held attack/release limiter this reduces to at a hold of zero, re-proven below).
+# Stands on: lotus/timeline.rye (ALES2 -- the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/limit.rye (ALES49 --
+# the hard ceiling this drives over time, re-proven below); lotus/hold_env.rye (ALES56 -- the HELD time base, re-proven below); lotus/
+# limit_env.rye (ALES55 -- the un-held attack/release limiter this reduces to at a hold of zero, re-proven below).
 #
 # lotus/limit_env_hold.rye drives ALES49's hard ceiling from ALES56's HELD follower: each sample advances the held follower one step
 # (attack rising and rearming the hold, the peak pinned while the countdown lasts, the release only once it expires), and when the held
@@ -13,7 +13,7 @@
 # ceiling is the identity; a loud signal has its magnitude reduced with the sign held and never expanding; a nonzero hold keeps the
 # gain reduction engaged across a brief duck (it does not pump, the knob monotone); the state carries so a span in two pieces equals the
 # whole once; a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span
-# BadRange. Purely local — no lookahead, no network, no keys, no funds, no real device, no sample rate.
+# BadRange. Purely local -- no lookahead, no network, no keys, no funds, no real device, no sample rate.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_limit_env_hold_witness.rish
@@ -38,7 +38,7 @@ say "ales-limit-env-hold: ${shown.out}"
 let green = run ["sh" "-c" "grep -q 'GREEN ales-limit-env-hold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-limit-env-hold: selftest did not print the GREEN ales-limit-env-hold line"
 
-# This rung composes three parents over their public APIs — re-prove ALES56's held follower, ALES49's limiter, and ALES55's un-held
+# This rung composes three parents over their public APIs -- re-prove ALES56's held follower, ALES49's limiter, and ALES55's un-held
 # limiter still stand green under it.
 let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-limit-env-hold: the ALES56 held follower regressed under the attack/hold/release limiter"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# glow_rune_alphabet_worker.sh — device-free G1 gate for STOA90+.
+# glow_rune_alphabet_worker.sh -- device-free G1 gate for STOA90+.
 # Invoked by tools/g/glow_rune_alphabet_witness.rish.
 
 set -e

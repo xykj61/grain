@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep006_census_witness.rish — e64 IronBeetle ep006.
+# tools/gen/season/ironbeetle_ep006_census_witness.rish -- e64 IronBeetle ep006.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep006_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep006: Language EN — memory safety for code that never frees."
 say "iron-ep006: Style Radiant — fit over rank; Zig where static holds."

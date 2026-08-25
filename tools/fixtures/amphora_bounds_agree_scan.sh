@@ -1,24 +1,24 @@
 #!/bin/sh
-# amphora_bounds_agree_scan.sh — shared Amphora bounds must agree across roofs.
+# amphora_bounds_agree_scan.sh -- shared Amphora bounds must agree across roofs.
 #
 # (1) Same-name roofs: every `pub const <name>` / `const <name>` for
-#     max_vessel_len · max_cargo · digest_hex_len must share one type=value.
+#     max_vessel_len - max_cargo - digest_hex_len must share one type=value.
 # (2) Alias value groups (e147): differently named ceilings that mean one
 #     quantity must share one numeric value (width may differ):
-#       cargo_ceiling  — max_resin_bytes · max_seal_plain · max_cargo_bytes
-#       datagram       — max_wire_payload · max_chunk_datagram
+#       cargo_ceiling  -- max_resin_bytes - max_seal_plain - max_cargo_bytes
+#       datagram       -- max_wire_payload - max_chunk_datagram
 # (3) Declared couples (e148): `/// couples: <module>.<name>` above a const
 #     must match the partner's VALUE (width free; report widths). Coupling is
-#     declared, never inferred — coincidences carry no marker.
+#     declared, never inferred -- coincidences carry no marker.
 #
 # Hardcodes no declaration count. Discovers under AMPHORA_BOUNDS_ROOT
 # (default: amphora).
 #
 #   sh tools/fixtures/amphora_bounds_agree_scan.sh
-#   AMPHORA_BOUNDS_ROOT=tools/fixtures/amphora_bounds_plants/agree sh …
+#   AMPHORA_BOUNDS_ROOT=tools/fixtures/amphora_bounds_plants/agree sh ...
 #
 # Law: when two roofs carry one name, either they agree or the name is doing
-# two jobs (REDS 40). Three roofs — and three names for one number — louder.
+# two jobs (REDS 40). Three roofs -- and three names for one number -- louder.
 # Coupling must be declared (REDS 56 lean): the number finds coincidences.
 set -eu
 
@@ -45,8 +45,8 @@ collect_name() {
     >"$out" || true
 }
 
-# Resolve partner module.NAME → first matching const value under ROOT.
-# Tries: ROOT/module.rye · ROOT/src/module.rye · ROOT/src/main.rye (module=main).
+# Resolve partner module.NAME -> first matching const value under ROOT.
+# Tries: ROOT/module.rye - ROOT/src/module.rye - ROOT/src/main.rye (module=main).
 partner_value() {
   mod=$1
   name=$2
@@ -103,7 +103,7 @@ for name in $NAMES; do
   rm -f "$TMP"
 done
 
-# Alias value groups — same number under different names (width free).
+# Alias value groups -- same number under different names (width free).
 # Format: group_label:name1,name2,name3
 ALIAS_GROUPS="cargo_ceiling:max_resin_bytes,max_seal_plain,max_cargo_bytes datagram:max_wire_payload,max_chunk_datagram"
 
@@ -135,7 +135,7 @@ for group in $ALIAS_GROUPS; do
   fi
   if [ "$FOUND" -lt 2 ]; then
     # A single declaration cannot diverge with itself; living amphora should
-    # eventually carry the full group — require >=2 when ROOT is amphora.
+    # eventually carry the full group -- require >=2 when ROOT is amphora.
     if [ "$ROOT" = "amphora" ]; then
       echo "alias_${label}_status=thin"
       FAIL=1
@@ -158,7 +158,7 @@ for group in $ALIAS_GROUPS; do
   rm -f "$VALS"
 done
 
-# Declared couples — parse `/// couples: module.name` then the next const.
+# Declared couples -- parse `/// couples: module.name` then the next const.
 # Discovers marker count; does not hardcode how many couplings exist.
 COUPLE_HITS=$(mktemp)
 rg -n --no-heading -g '*.rye' '/// couples: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \

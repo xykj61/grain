@@ -1,9 +1,9 @@
-# tools/m/mycelium_chorus_knot_witness.rish — a quorum's position survives a checkpoint (r3).
+# tools/m/mycelium_chorus_knot_witness.rish -- a quorum's position survives a checkpoint (r3).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r3 — across a Knot.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the Chorus - rung r3 -- across a Knot.
 # r1 gathered a Chorus (a bounded quorum of independent Vouchers for one account position at one
 # order-head) believed only when a threshold of distinct nodes agree; r2 let the whole quorum travel. Yet
-# a ledger a family runs for years does not carry its whole past unbroken — the Knot ties off a committed
+# a ledger a family runs for years does not carry its whole past unbroken -- the Knot ties off a committed
 # prefix into a sealed supply, and the Lapse continues its deadline clock across the seal by carrying the
 # epoch base. r3 (mycelium/chorus_knot.rye, mirroring voucher_knot) reads a whole quorum over a ledger
 # resolved ACROSS an epoch cut.
@@ -19,7 +19,7 @@
 # node can silently name a shorter order; a party that pruned the base checks the position, not the head. A
 # forged member and a thin threshold each fail the quorum law and match no checkpoint; a corrupt Knot
 # refuses whole. Composes chorus + voucher + statement + lapse_knot + lapse + cord + fold + kumara public
-# API only; demo seeds — no key, no funds, no network, no custody.
+# API only; demo seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 #
@@ -45,7 +45,7 @@ assert selftest.out contains "the order-head is the whole-history fingerprint, b
 assert selftest.out contains "a forged member and a thin threshold each fail the quorum law and match no checkpoint" else "mycelium-chorus-knot: tamper-refusal claim missing"
 assert selftest.out contains "a quorum's agreed position survives a checkpoint" else "mycelium-chorus-knot: closing claim missing"
 
-# The rendered quorum a keeper reads — Alice's lapsed position across the cut, vouched by three voices.
+# The rendered quorum a keeper reads -- Alice's lapsed position across the cut, vouched by three voices.
 assert selftest.out contains "chorus head=" else "mycelium-chorus-knot: rendered quorum missing"
 assert selftest.out contains "balance=100 reserved=0 received=100 voices=3" else "mycelium-chorus-knot: rendered lapsed quorum missing"
 

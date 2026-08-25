@@ -1,6 +1,6 @@
-# glow_barket_lower_witness.rish — `|^` barket lowers to Rye; emitted program runs.
+# glow_barket_lower_witness.rish -- `|^` barket lowers to Rye; emitted program runs.
 #
-# Proves identity (STOA113), argv (STOA114), call-body trio (STOA115–116),
+# Proves identity (STOA113), argv (STOA114), call-body trio (STOA115-116),
 # TAME tidy (STOA117), named-shape (STOA118/122), nesting-through-nests (STOA121/130): barket_gate emit,
 # fixtures/generators, welcome exit 0, argv exit 0, ban overflow seat.
 #
@@ -456,11 +456,11 @@ let run_nnf = run ["sh" "-c" "${nona_flip_bin}; echo EXIT:$?"]
 assert run_nnf.ok else "barket nona-shape flip welcome binary failed to launch"
 assert run_nnf.out contains "EXIT:0" else "barket nona-shape flip welcome binary did not exit 0"
 
-# STOA255 / STOA326: pair…nona identity through emit_n_field_identity (one welcome call).
+# STOA255 / STOA326: pair...nona identity through emit_n_field_identity (one welcome call).
 let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_barket.rye) = 1"]
 assert n_field.ok else "STOA255/326 missing emit_n_field_identity or one welcome identity call"
 
-# STOA261 / STOA326: pair…nona flip through emit_n_field_flip_call_body (one welcome call).
+# STOA261 / STOA326: pair...nona flip through emit_n_field_flip_call_body (one welcome call).
 let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_barket.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_barket.rye) = 1"]
 assert n_flip.ok else "STOA261/326 missing emit_n_field_flip_call_body or one welcome flip call"
 

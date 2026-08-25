@@ -1,6 +1,6 @@
-# tools/m/mycelium_statement_bron_witness.rish — an account statement travels as a record (r2).
+# tools/m/mycelium_statement_bron_witness.rish -- an account statement travels as a record (r2).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · the account-statement voice · rung r2 — travel.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - the account-statement voice - rung r2 -- travel.
 # r1 read one account's line out of a resolved ledger and proved it RECONCILES (reserved equals the sum
 # of its own still-open outbound pledges). A statement a holder cannot hand to another is only a local
 # reading, so r2 lets it cross as `format statement-v1` bytes: an `account <pk> <balance> <reserved>
@@ -9,14 +9,14 @@
 # statement is byte-for-byte the same line.
 #
 # The crux this witness proves is RECONCILIATION SURVIVES THE WIRE: the record carries its own
-# reconciliation as a law — a parsed present statement whose reserved does not equal the sum of its own
+# reconciliation as a law -- a parsed present statement whose reserved does not equal the sum of its own
 # still-open made lines refuses BadReconcile before it is trusted, so a statement cannot make or drop a
 # reserve in the crossing; a holder who receives the bytes checks the same arithmetic r1 asserted, needing
 # no ledger of their own. Alice reserves 200 across two open made lines; the record carries the line whole
 # and the recovered statement reconciles, re-renders byte-identical (fixed point), and a stranger's true
-# zero statement travels too (present=0, no lines). A bad header · unknown field · bad hex key · missing
-# account · unknown direction · unknown state · broken reconciliation each refuse. Composes statement +
-# lapse + cord + fold public API only; demo keeper seeds — no key, no funds, no network, no custody.
+# zero statement travels too (present=0, no lines). A bad header - unknown field - bad hex key - missing
+# account - unknown direction - unknown state - broken reconciliation each refuse. Composes statement +
+# lapse + cord + fold public API only; demo keeper seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 #
@@ -43,7 +43,7 @@ assert selftest.out contains "an unknown direction, an unknown state, a broken r
 assert selftest.out contains "a statement travels as readable text and still reconciles" else "mycelium-statement-bron: GREEN summary missing"
 
 # The Statement r1 whose line this rung travels, and the Lapse whose ledger it reads through, both stand at
-# the door — their own selftests prove the machinery the record rests on.
+# the door -- their own selftests prove the machinery the record rests on.
 let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert statement.ok else "mycelium-statement-bron: the Statement r1 whose line this rung travels is not GREEN"
 assert statement.out contains "GREEN" else "mycelium-statement-bron: the Statement r1 did not speak its GREEN"

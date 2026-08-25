@@ -1,4 +1,4 @@
-# make_key_qr_svg.rish — render the three key-card QR codes as standalone,
+# make_key_qr_svg.rish -- render the three key-card QR codes as standalone,
 # fully textual SVG files, alongside the existing raster card.
 #
 # The composited landscape/portrait cards (tools/m/make_key_card_macos.sh)

@@ -1,9 +1,9 @@
-# stoa72_glow_apk_import_witness.rish — NativeActivity APK Glow import wire.
+# stoa72_glow_apk_import_witness.rish -- NativeActivity APK Glow import wire.
 #
 # Proves glow_native_activity imports Glow-lowered lib_session_root_nest_cue_jam,
 # calls session_root() (expect 5), exports glow_last_product_session_root, and
 # packs into libglowapp.so. Device-free pack path. Seva B0 hex fold stays the
-# painted / file-proof root — this does not rewrite Seva B0 in Glow.
+# painted / file-proof root -- this does not rewrite Seva B0 in Glow.
 #
 #   rishi/bin/rishi run tools/s/stoa72_glow_apk_import_witness.rish
 

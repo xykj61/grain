@@ -1,10 +1,10 @@
-# tools/gen/season/tigerbeetle_batching_census_witness.rish — e38 amortize by batching.
+# tools/gen/season/tigerbeetle_batching_census_witness.rish -- e38 amortize by batching.
 #
 #   rishi/bin/rishi run tools/gen/season/tigerbeetle_batching_census_witness.rish
 #
 # Requires gratitude/tigerbeetle submodule present.
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "tb-batching: Language EN — amortize by batching; the CPU sprints."
 say "tb-batching: Style Radiant — large enough chunks; costs share one bound."

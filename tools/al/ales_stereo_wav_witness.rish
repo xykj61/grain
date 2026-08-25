@@ -1,17 +1,17 @@
-# tools/al/ales_stereo_wav_witness.rish — two bounded i16 channel buffers round-trip through the canonical interleaved RIFF/WAVE
+# tools/al/ales_stereo_wav_witness.rish -- two bounded i16 channel buffers round-trip through the canonical interleaved RIFF/WAVE
 # stereo container, verify-before-trust (ALES216).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES216.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES216.
 # Design read: active-designing/date/20260815/20260815-130649_fill-ales216-lotus-stereo-wav.md
-# Idiom kin: lotus/wav.rye (ALES215) — the same canonical header and two-gate verify-before-trust decode, widened to two
-# channels (channels 2 · block align 4 · byte rate rate*4) with samples stored interleaved L R L R, and one widened border:
+# Idiom kin: lotus/wav.rye (ALES215) -- the same canonical header and two-gate verify-before-trust decode, widened to two
+# channels (channels 2 - block align 4 - byte rate rate*4) with samples stored interleaved L R L R, and one widened border:
 # the data chunk must be a whole number of two-sample FRAMES, so neither channel ever receives a lone unpaired sample.
 #
 # lotus/stereo_wav.rye encodes two equal-length mono i16 buffers into the interleaved stereo RIFF/WAVE layout and decodes it
 # verify-before-trust. The selftest proves: both channels round-trip byte-for-byte with the sample-rate field preserved; the
 # payload is exactly L R L R; an empty pair yields a valid 44-byte header; a torn frame refuses PartialFrame at the frame
-# border; and every header corruption — including a MONO container offered to the stereo decoder — refuses by name. A byte
-# container only — no real file, no DAC, no acoustic or electrical fact asserted, no network, no keys, no funds, no real device.
+# border; and every header corruption -- including a MONO container offered to the stereo decoder -- refuses by name. A byte
+# container only -- no real file, no DAC, no acoustic or electrical fact asserted, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_stereo_wav_witness.rish

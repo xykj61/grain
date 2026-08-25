@@ -1,9 +1,9 @@
-# tube05_install_proof_onpath_host.rish — TUBE0.5 on-device slice:
+# tube05_install_proof_onpath_host.rish -- TUBE0.5 on-device slice:
 # install the signed Glow NativeActivity APK, launch it, and prove
 # ANativeActivity_onCreate wrote the Seva B0 demo root to the app's
 # private files dir (same hex HAWM1 already proved bit-identical).
 #
-# Run OUTSIDE ai-jail, from a plain host terminal — needs adb from
+# Run OUTSIDE ai-jail, from a plain host terminal -- needs adb from
 # tools/.cache/hawm0/android-sdk/platform-tools/ and either:
 #   - a booted hawm0 emulator (rishi/bin/rishi run tools/h/hawm0_boot_onpath_host.rish), or
 #   - the physical Pixel 10a with USB debugging authorized

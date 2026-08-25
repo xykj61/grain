@@ -1,6 +1,6 @@
-# tools/h/hunk_photos_bilinear_witness.rish — the Photos app resamples smoothly on metal (HUNK24).
+# tools/h/hunk_photos_bilinear_witness.rish -- the Photos app resamples smoothly on metal (HUNK24).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK24.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Open Image - rung HUNK24.
 # Design read: active-designing/date/20260813/20260813-173146_hunk-photos-bilinear-exploration.md (the bilinear round).
 # Teacher, thanked clean-room: the bilinear filter every photo app and thumbnailer carries (concept only, siloed).
 #
@@ -46,7 +46,7 @@ assert selftest.out contains "resized image re-encodes and round-trips" else "hu
 
 assert selftest.out contains "a zero target and an over-ceiling target refused by name" else "hunk-photos-bilinear: the EmptyImage and OutOfBounds refusals were not proven"
 
-# HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK22 area, HUNK21 saturate, and HUNK23 hue-turn share the binary — GREEN holds.
+# HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK22 area, HUNK21 saturate, and HUNK23 hue-turn share the binary -- GREEN holds.
 assert selftest.out contains "GREEN image-photos:" else "hunk-photos-bilinear: HUNK3 crop selftest no longer GREEN beneath"
 assert selftest.out contains "GREEN image-photos-scale:" else "hunk-photos-bilinear: HUNK9 scale selftest no longer GREEN beneath"
 assert selftest.out contains "GREEN image-photos-scale-area" else "hunk-photos-bilinear: HUNK22 area selftest no longer GREEN beneath"

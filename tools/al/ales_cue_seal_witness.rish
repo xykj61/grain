@@ -1,18 +1,18 @@
-# tools/al/ales_cue_seal_witness.rish — the cue sheet, sealed (ALES37).
+# tools/al/ales_cue_seal_witness.rish -- the cue sheet, sealed (ALES37).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES37.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES37.
 # Design read: active-designing/date/20260814/20260814-153033_fill-ales37-lotus-cue-seal.md
-# Stands on: lotus/cue_sheet.rye (ALES22) — render_sheet / parse_sheet reused whole as the sealed body; lotus/markers.rye (ALES20) —
+# Stands on: lotus/cue_sheet.rye (ALES22) -- render_sheet / parse_sheet reused whole as the sealed body; lotus/markers.rye (ALES20) --
 # the Markers track sealed and rebuilt. Mirrors lotus/rack_seal.rye (ALES34) and the Sha256 verify-before-trust of lotus/wire.rye (ALES0).
 #
 # lotus/cue_seal.rye seals an ALES22 cue sheet with a Sha256 content digest and refuses to parse a record whose digest does not match
-# its body — the wire's verify-before-trust (and the ALES34 rack seal) handed to the saveable arrangement map. The crux: a sealed cue
-# sheet parses back to exactly the same markers track ONLY when its digest matches its body — seal_sheet renders the plain ALES22
+# its body -- the wire's verify-before-trust (and the ALES34 rack seal) handed to the saveable arrangement map. The crux: a sealed cue
+# sheet parses back to exactly the same markers track ONLY when its digest matches its body -- seal_sheet renders the plain ALES22
 # record as the body and writes a Sha256 over exactly those bytes, and verify_and_parse recomputes the digest and hands the body to
 # cue_sheet.parse_sheet only on a match (which then bounds each position against the master), so a hand-edited position, a truncated
 # tail, or a changed name is caught at the gate before a single marker is trusted. The selftest proves: a sealed four-marker track
 # round-trips whole; a flipped body byte and a truncated tail refuse DigestMismatch; a plain record, a missing, short, or non-hex digest
-# line refuses BadRecord; a seal into a too-small buffer refuses Overflow. The seal proves a sheet arrived whole, not who wrote it — no
+# line refuses BadRecord; a seal into a too-small buffer refuses Overflow. The seal proves a sheet arrived whole, not who wrote it -- no
 # signature, no keys, no network, no funds.
 #
 # Run from the repository root:

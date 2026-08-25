@@ -1,13 +1,13 @@
-# tools/d/dahl_j12_data_dignity_bron_witness.rish — Season 3 Journey 12 (Data-dignity), Rung 3.
+# tools/d/dahl_j12_data_dignity_bron_witness.rish -- Season 3 Journey 12 (Data-dignity), Rung 3.
 #
 # Rungs one and two fixed the succession rule and bound each of its two proofs to a settled identity. A
-# succession is only useful past a keeper's lifetime if it can be carried — handed to an executor, a kin,
+# succession is only useful past a keeper's lifetime if it can be carried -- handed to an executor, a kin,
 # or a court, and checked with no live estate in hand. pond/apps/data_dignity_bron.rye renders a signed
 # estate to a format data-dignity-v1 Bron record and parses it back byte-for-byte, still dignity-honest
 # offline. still_dignity_honest re-verifies both carried proofs; rebuild replays the succession, the rested
 # set still extinguished. A directive signature flipped or a hold mark tampered after the crossing refuses
 # BadConsent (the marks travel under the keeper's signature). Unknown field, bad header, missing estate,
-# missing proof, bad disposition, and bad hex each refuse. Additive — composes rungs one and two over
+# missing proof, bad disposition, and bad hex each refuse. Additive -- composes rungs one and two over
 # public API (both re-run GREEN); demo keeper and heir seeds only, no network (serve reaches the custody
 # gate).
 #
@@ -19,7 +19,7 @@ say "dahl-j12r3: Lens TAME — a flipped directive and a tampered mark each refu
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rungs one and two re-run GREEN — Bron travel is additive over the signed rule.
+# Rungs one and two re-run GREEN -- Bron travel is additive over the signed rule.
 let bin1 = "pond/bin/data-dignity"
 let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity.rye -femit-bin=${bin1}"]
 assert build1.ok else "dahl-j12r3: rung-one build failed"

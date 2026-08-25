@@ -1,21 +1,21 @@
-# one_clock_witness.rish — one-clock naming law ratchet.
+# one_clock_witness.rish -- one-clock naming law ratchet.
 #
 # Ceiling retired: the host-zone fix removes the UTC-drift cause, so a
 # maintained human ceiling would add only upkeep and a back door.
 #
 # Duties:
-#   1. shape — every living dated filename matches ^\d{8}-\d{6}_
-#   2. monotonicity — no living stamp > true_head unless listed in
+#   1. shape -- every living dated filename matches ^\d{8}-\d{6}_
+#   2. monotonicity -- no living stamp > true_head unless listed in
 #      tools/fixtures/one_clock_drift_erratum.txt (the four UTC files)
-#   3. zone — host zone equals America/New_York by NAME (not offset)
-#   4. provenance — new stamps not more than ONE_CLOCK_PROVENANCE_TOLERANCE_SECONDS
+#   3. zone -- host zone equals America/New_York by NAME (not offset)
+#   4. provenance -- new stamps not more than ONE_CLOCK_PROVENANCE_TOLERANCE_SECONDS
 #      ahead of the live host clock (duty 3 checks the host; duty 4 checks the stamp)
 #   5. head -- the newest LIVING stamp is at or behind the live clock, within
 #      ONE_CLOCK_HEAD_TOLERANCE_SECONDS. Duty 4 weighs only artifacts new
 #      against origin/main, so a lap that merges is never weighed again; duty 5
 #      weighs the head itself, every run, forever (REDS %96)
 #
-# Mode: tools/fixtures/one_clock_mode.txt — blocking (seated 20260724.204741).
+# Mode: tools/fixtures/one_clock_mode.txt -- blocking (seated 20260724.204741).
 #
 #   rishi/bin/rishi run tools/o/one_clock_witness.rish
 
@@ -41,7 +41,7 @@ say zone.out
 assert (zone.out contains "ZONE_OK") else "one-clock host zone is not America/New_York by name"
 assert ((zone.out contains "ZONE_BAD") == false) else "one-clock ZONE_BAD present"
 
-# Duty 4 — provenance fixtures (PASS: live clock stamp; FAIL: four hours ahead)
+# Duty 4 -- provenance fixtures (PASS: live clock stamp; FAIL: four hours ahead)
 let host_run = run ["sh" "-c" "TZ=America/New_York date +%Y%m%d.%H%M%S"]
 let host_dot = trim host_run.out
 assert host_run.ok else "host clock read failed"

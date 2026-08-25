@@ -1,15 +1,15 @@
-# tools/al/ales_transport_witness.rish — the transport play head: read a rendered master forward, stopping at the end (ALES7).
+# tools/al/ales_transport_witness.rish -- the transport play head: read a rendered master forward, stopping at the end (ALES7).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES7.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES7.
 # Design read: active-designing/20260814-fill-ales7-lotus-transport.md
-# Stands on: lotus/track.rye (ALES6) — the master a transport reads; lotus/clock.rye (ALES5) — seek and elapsed speak real
-# time; lotus/timeline.rye (ALES2) — the Clip the master is.
+# Stands on: lotus/track.rye (ALES6) -- the master a transport reads; lotus/clock.rye (ALES5) -- seek and elapsed speak real
+# time; lotus/timeline.rye (ALES2) -- the Clip the master is.
 #
-# lotus/transport.rye is the read side of the suite — a play head that begins at a position, reads the master forward in
+# lotus/transport.rye is the read side of the suite -- a play head that begins at a position, reads the master forward in
 # bounded blocks, and stops exactly at the end. The selftest proves: reading fixed blocks from the start concatenates back
 # to the exact master (no sample skipped or repeated); the last block is honestly short and the read past the end is empty;
 # at_end is exact at pos == len; seek_ms places the head at a real moment and elapsed_ms reports it back; a seek past the
-# master refuses PastEnd; the transport never mutates the master (a replay reads the same bytes). Purely local — no audio
+# master refuses PastEnd; the transport never mutates the master (a replay reads the same bytes). Purely local -- no audio
 # leaves the process, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:

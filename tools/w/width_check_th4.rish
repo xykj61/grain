@@ -1,4 +1,4 @@
-# width_check_th4.rish — TH-4 witness: .brix tracks living ROADMAP and TASKS.
+# width_check_th4.rish -- TH-4 witness: .brix tracks living ROADMAP and TASKS.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/width_check_th4.rish
@@ -18,7 +18,7 @@ assert trim stale.out == "" else ".brix must not reference retired WIP paths"
 let version = run ["sh" "-c" "grep -q '^version 20260810.145743$' .brix"]
 assert version.ok else ".brix version must be 20260810.145743"
 
-# Typo resolution — one canon hand (do not duplicate Prim→Prin greps here)
+# Typo resolution -- one canon hand (do not duplicate Prim->Prin greps here)
 let alias = run ["rishi/bin/rishi" "run" "tools/b/brix_alias_resolve.rish"]
 assert alias.ok else "brix_alias_resolve failed"
 assert alias.out contains "GREEN" else "brix_alias_resolve not GREEN"

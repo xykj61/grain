@@ -1,16 +1,16 @@
-# tools/al/ales_library_diff_witness.rish — what changed between two catalog versions: classify(before, after) sorts every album into
+# tools/al/ales_library_diff_witness.rish -- what changed between two catalog versions: classify(before, after) sorts every album into
 # added, removed, changed, or same (ALES229).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES229.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES229.
 # Design read: active-designing/date/20260815/20260815-143152_fill-ales229-lotus-library-diff.md
-# Idiom kin: lotus/library_find.rye (ALES228, the find / digest_of resolve this composes on) · lotus/library_manifest.rye (ALES226,
-# the two opened catalogs this compares). The first Lotus rung to stand ON another catalog primitive — no new hash, no new frame.
+# Idiom kin: lotus/library_find.rye (ALES228, the find / digest_of resolve this composes on) - lotus/library_manifest.rye (ALES226,
+# the two opened catalogs this compares). The first Lotus rung to stand ON another catalog primitive -- no new hash, no new frame.
 #
 # lotus/library_diff.rye classifies two opened library manifests into added / removed / changed / same. The selftest proves: an
 # after-only album appears once as added with its digest (the added law); a before-only album appears once as removed with its digest
 # (the removed law); a name in both with a moved digest appears once carrying old and new, an unchanged name is counted same and in no
 # list (the changed law); a catalog against itself yields all zeros with same_count equal to the album count (the identity law). A
-# pure classification only — no real file, no DAC, no network, no keys, no funds, no real device.
+# pure classification only -- no real file, no DAC, no network, no keys, no funds, no real device.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/al/ales_library_diff_witness.rish

@@ -1,10 +1,10 @@
-# identity_check.rish — the repository's public identity, checked in shape.
+# identity_check.rish -- the repository's public identity, checked in shape.
 #
 # Canonical fingerprints live in context/PUBKEYS.md (committed); a keeper may
 # override with PUBKEYS.md at the repository root. A fork writes its own from
 # PUBKEYS.template.md. The verdict script handles all three worlds: template-only
 # checkouts pass kindly; when either pubkey file is present it must carry two
-# OpenPGP lines and three or four SSH fingerprints (Codeberg · GitHub · plus
+# OpenPGP lines and three or four SSH fingerprints (Codeberg - GitHub - plus
 # either Cursor cloud lane-key or Framework jail-local SSH lines), printed for
 # eyes-on comparison with `ssh-keygen -lf <pub>` and `gpg --fingerprint`.
 # Run from the repository root:

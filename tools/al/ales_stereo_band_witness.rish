@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_band_witness.rish — stereo_band: the band-pass carried into stereo, the same two cutoffs on both channels, each channel carrying its own cascade state — the third rung of the stereo EQ / filter class (ALES172).
+# tools/al/ales_stereo_band_witness.rish -- stereo_band: the band-pass carried into stereo, the same two cutoffs on both channels, each channel carrying its own cascade state -- the third rung of the stereo EQ / filter class (ALES172).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES172.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES172.
 # Design read: active-designing/date/20260815/20260815-075923_fill-ales172-lotus-stereo-band.md
-# Stands on: lotus/band.rye (ALES46 — the mono two-stage band-pass Bandpass run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40, ALES45 — the high-pass and low-pass stages and the precheck sharing one
-# coefficient-and-span validation), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip).
+# Stands on: lotus/band.rye (ALES46 -- the mono two-stage band-pass Bandpass run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40, ALES45 -- the high-pass and low-pass stages and the precheck sharing one
+# coefficient-and-span validation), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip).
 #
-# lotus/stereo_band.rye isolates a band on a stereo master: it runs ALES46's proven mono band-pass on BOTH channels with the SAME two cutoffs — a high-pass at the low cutoff drops the lows, then a low-pass at the high cutoff
+# lotus/stereo_band.rye isolates a band on a stereo master: it runs ALES46's proven mono band-pass on BOTH channels with the SAME two cutoffs -- a high-pass at the low cutoff drops the lows, then a low-pass at the high cutoff
 # drops the highs, keeping only the band between. A band-pass's cutoffs are fractions the caller names, not scalars measured across the field, so the same two cutoffs on each channel preserve the stereo image for free; each
 # channel band-passes its own content and, like the tone control and unlike the stateless shelf, keeps its own cascade state so the two channels never cross. It validates both cutoffs and the span once against the shared
 # length before either channel is mutated (BadCoeff on an illegal cutoff, BadRange on a span past the samples), so a refusal never band-passes one channel and leaves the other torn and no legal low cutoff advances a state before

@@ -1,13 +1,13 @@
-# tools/d/dahl_j9_skate_circle_witness.rish — Season 3 Journey 9 (Skate), Rung 1.
+# tools/d/dahl_j9_skate_circle_witness.rish -- Season 3 Journey 9 (Skate), Rung 1.
 #
-# Season 3, Commons — keepers meet each other with consent. Skate is the social layer over Pond
+# Season 3, Commons -- keepers meet each other with consent. Skate is the social layer over Pond
 # identities; Journey 9 draws its first, load-bearing half: how two keepers come to see each other at
-# all. pond/apps/skate_circle.rye fixes the crux — a Circle a keeper joins only by their own act, and
+# all. pond/apps/skate_circle.rye fixes the crux -- a Circle a keeper joins only by their own act, and
 # a link between two members that exists only when both have requested it. A one-sided request holds
 # (a standing offer, never a connection); the mutual pair places (links); a member is visible to
 # another only when linked, so presence is never default. A link touching a non-member (NotMember), a
 # self-link (SelfLink), a taken seat (AlreadyMember), a repeated offer (AlreadyRequested), and a full
-# circle (CircleFull) each refuse. Pure state machine — no signing yet (r2 binds each act to a settled
+# circle (CircleFull) each refuse. Pure state machine -- no signing yet (r2 binds each act to a settled
 # Kumara identity). Facts only; no network, no key, no real identity (serve reaches the custody gate);
 # demo keeper points only.
 #

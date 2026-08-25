@@ -1,5 +1,5 @@
 #!/bin/sh
-# Equinox e119 — close-seat answered · ch5+ch6 surfaces as tools · park lifted.
+# Equinox e119 -- close-seat answered - ch5+ch6 surfaces as tools - park lifted.
 # Exit 0 only when control reads and close-seat limbs honor.
 # No backtick characters in patterns.
 #

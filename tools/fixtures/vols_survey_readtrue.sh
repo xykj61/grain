@@ -1,10 +1,10 @@
 #!/bin/sh
-# tools/fixtures/vols_survey_readtrue.sh — VOLS survey, the ledger read true (r4's crux).
+# tools/fixtures/vols_survey_readtrue.sh -- VOLS survey, the ledger read true (r4's crux).
 #
 #   sh tools/fixtures/vols_survey_readtrue.sh <root> <guardlist>
 #
 # Renders the survey ledger and cross-checks its declared totals against the independent
-# measure (vols_survey_truth.sh, a grep -rl traversal classified by basename) — two tools,
+# measure (vols_survey_truth.sh, a grep -rl traversal classified by basename) -- two tools,
 # one answer. Emits readtrue=agree only when the ledger's sites, handles, and prose_gaps
 # each equal the independent count; readtrue=disagree (verdict=drift) otherwise. Free of
 # any hardcoded number, so it stays true as the tree grows. Uses a fixed stamp for the

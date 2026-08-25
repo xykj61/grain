@@ -1,8 +1,8 @@
-# tools/gen/season/brush_parse_witness.rish — p23–p27 · p28 BrushFrame→skate_grid
+# tools/gen/season/brush_parse_witness.rish -- p23-p27 - p28 BrushFrame->skate_grid
 #
 #   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
 #
-# Builds brush_parse · selftest · parse/lower/redraw/grid paths · TAME density.
+# Builds brush_parse - selftest - parse/lower/redraw/grid paths - TAME density.
 # Skate lean = stdout + headless skate_grid; no Wayland window yet.
 
 say "brush-parse: Language EN — .brush pins read as Frame at a nib."

@@ -1,15 +1,15 @@
-# tools/f/fora_transfer_witness.rish — leadership transfers only to a caught-up successor, TimeoutNow (FORA23).
+# tools/f/fora_transfer_witness.rish -- leadership transfers only to a caught-up successor, TimeoutNow (FORA23).
 #
-# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium -- the tree's own consensus) - waymark FORA - rung
 # FORA23. Design read: active-designing/date/20260814/20260814-084700_fora23-constel-transfer-leadership.md
 #
 # constel/transfer.rye gives the sky an orderly HANDOFF (Raft §3.10): the prior leader stops taking entries, brings a chosen
-# target fully up to date (FORA17), then sends TimeoutNow so the target campaigns immediately — skipping the election timeout. The
+# target fully up to date (FORA17), then sends TimeoutNow so the target campaigns immediately -- skipping the election timeout. The
 # crux is safety through the handoff: a transfer is authorized ONLY to a caught-up target, so the successor holds every committed
 # entry and Leader Completeness (FORA21) is preserved, not bypassed. The selftest proves: is_caught_up is an exact head match;
 # may_transfer / timeout_now authorize only a caught-up in-roster target and refuse the rest (TargetNotCaughtUp, TargetOutOfRoster)
 # by name; the campaign term is exactly one bump; a caught-up target wins its immediate election over vote.poll; the old leader
-# steps down only on a strictly higher term; bounded. Purely local — no socket, no network, no keys, no funds, no real address.
+# steps down only on a strictly higher term; bounded. Purely local -- no socket, no network, no keys, no funds, no real address.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/f/fora_transfer_witness.rish

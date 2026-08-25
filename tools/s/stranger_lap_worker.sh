@@ -1,5 +1,5 @@
 #!/bin/sh
-# stranger_lap_worker.sh — body of the stranger's lap (OPEN_QUESTIONS #4).
+# stranger_lap_worker.sh -- body of the stranger's lap (OPEN_QUESTIONS #4).
 #
 # Invoked by tools/s/stranger_lap_witness.rish (and the bound-negative fixture).
 # Avoids Rish dollar-interpolation: all shell vars live here.
@@ -9,39 +9,39 @@
 # ---------------------------------------------------------------------------
 # Today's seated path is mode=warm. That configuration is the FASTEST that can
 # exist for this witness:
-#   · clone source = LOCAL pier path (file:// / path clone), not a network fetch
-#   · git clone --depth 1 (shallow tip only)
-#   · pre-warmed toolchain (ziglang already on the host; linked, not freshly
+#   - clone source = LOCAL pier path (file:// / path clone), not a network fetch
+#   - git clone --depth 1 (shallow tip only)
+#   - pre-warmed toolchain (ziglang already on the host; linked, not freshly
 #     installed)
 #
 # Therefore a warm GREEN does NOT yet prove:
-#   · a network clone from a remote URL
-#   · a full-history clone (no --depth)
-#   · a cold toolchain install (pip/fetch when nothing is cached)
+#   - a network clone from a remote URL
+#   - a full-history clone (no --depth)
+#   - a cold toolchain install (pip/fetch when nothing is cached)
 #
 # Mode=cold asks for those three. Framework cold REPORT 20260725.174428 printed
-# elapsed=29s under the 1800s claim ceiling (remote origin · full history ·
+# elapsed=29s under the 1800s claim ceiling (remote origin - full history -
 # force-reinstall ziglang). Seat stays REPORT; tighten the bound only when the
 # range of real reports across hosts justifies it. Cold SSH clones need the
 # origin host key already trusted (BatchMode; no ssh-askpass in jail).
 # ---------------------------------------------------------------------------
 set -eu
 
-# Mode switch — warm (today's seat) · cold (network · full history · forced install).
+# Mode switch -- warm (today's seat) - cold (network - full history - forced install).
 # Override: STRANGER_LAP_MODE=cold
 MODE=${STRANGER_LAP_MODE:-warm}
 
 # Bound (seconds). Default is the OPEN_QUESTIONS #4 claim ceiling: thirty minutes.
-# Reason: until cold · networked · full-clone reports exist, do not tighten from
+# Reason: until cold - networked - full-clone reports exist, do not tighten from
 # the warm-path best case. Override only for fixtures (e.g. bound-negative).
 STRANGER_LAP_WALL_SECONDS=${STRANGER_LAP_WALL_SECONDS:-1800}
 
-# Posture: report (default seat) — comparison still runs and can FAIL; the
+# Posture: report (default seat) -- comparison still runs and can FAIL; the
 # seated bound stays at the claim ceiling so warm does not pretend to gate cold.
 # Override STRANGER_LAP_POSTURE only in fixtures that exercise the comparator.
 POSTURE=${STRANGER_LAP_POSTURE:-report}
 
-# ONE named witness — small, self-contained, already on the pier.
+# ONE named witness -- small, self-contained, already on the pier.
 STRANGER_NAMED_WITNESS="tools/cr/crockford_stamp_witness.rish"
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -67,7 +67,7 @@ echo "stranger-lap: bound_seconds=${STRANGER_LAP_WALL_SECONDS}"
 START=$(date +%s)
 
 if [ "$MODE" = "warm" ]; then
-  # Fastest credible seat: local file:// clone · shallow · reuse prewarmed zig.
+  # Fastest credible seat: local file:// clone - shallow - reuse prewarmed zig.
   # file:// is required for --depth on a local pier (path clones ignore --depth
   # and can hardlink-fail against a dirty worktree).
   echo "STRANGER_CONFIG=local-path depth=1 toolchain=prewarmed"
@@ -87,7 +87,7 @@ if [ "$MODE" = "warm" ]; then
     ln -sfn "$(python3 -c 'import ziglang,os;print(os.path.dirname(ziglang.__file__))')" vendor/zig-toolchain
   fi
 else
-  # Cold path: remote URL · full history · forced toolchain reinstall.
+  # Cold path: remote URL - full history - forced toolchain reinstall.
   echo "STRANGER_CONFIG=remote-url depth=full toolchain=cold-install"
   git clone "$ORIGIN" "$TMP/pier"
   cd "$TMP/pier"
@@ -121,7 +121,7 @@ if [ "$WITNESS_RC" -ne 0 ]; then
   exit 1
 fi
 
-# Live comparator — elapsed must be strictly under the named bound.
+# Live comparator -- elapsed must be strictly under the named bound.
 if [ "$ELAPSED" -lt "$STRANGER_LAP_WALL_SECONDS" ]; then
   echo "STRANGER_BOUND_OK=1"
   echo "REPORT: stranger lap mode=${MODE} posture=${POSTURE} elapsed=${ELAPSED}s bound=${STRANGER_LAP_WALL_SECONDS}s — under bound"

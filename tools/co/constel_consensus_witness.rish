@@ -1,17 +1,17 @@
-# tools/co/constel_consensus_witness.rish — two Constel nodes reach one agreed order (gossip-convergence r1).
+# tools/co/constel_consensus_witness.rish -- two Constel nodes reach one agreed order (gossip-convergence r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r1.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - gossip-convergence rung r1.
 # The Cord (mycelium/cord.rye) proved a total order can be read out of one node's Dag, independent of the
 # order blocks arrived. This carries that primitive onto the Constel dev-net bench and proves what a
 # network actually promises: two nodes, each begun from its own genesis and each minting its own
-# Kumara-signed blocks, converge on the byte-identical history once they gossip — no leader, no round of
+# Kumara-signed blocks, converge on the byte-identical history once they gossip -- no leader, no round of
 # certificates, every buffer bounded.
 #
 # The crux this witness proves: node A and node B, from their own separate genesis issues, gossip both
 # ways and both commit to one identical agreed order folding to the identical supply (700 over one star).
-# The one new piece — gossip_merge — is a bounded fixpoint that tolerates out-of-order delivery: a source
+# The one new piece -- gossip_merge -- is a bounded fixpoint that tolerates out-of-order delivery: a source
 # Dag listing children before parents still drains to the identical order. A forged block in the gossip
-# stream refuses whole, the converged Dag unchanged. Demo keeper seeds only — no real key, no funds, no
+# stream refuses whole, the converged Dag unchanged. Demo keeper seeds only -- no real key, no funds, no
 # network, no custody.
 #
 # Additive: the Cord's own r1 arrival-order-independence witness re-runs GREEN under this one.
@@ -39,7 +39,7 @@ assert selftest.out contains "an out-of-order gossip stream drains to the identi
 assert selftest.out contains "folds the real Mycelium law to supply 700 over one star" else "constel-consensus: fold-over-agreed-order claim missing"
 assert selftest.out contains "a forged block in the gossip stream refuses whole" else "constel-consensus: forgery-refusal claim missing"
 
-# The Cord primitive this round composes stands at its door — its own r1 witness proves the deterministic
+# The Cord primitive this round composes stands at its door -- its own r1 witness proves the deterministic
 # commit (arrival-order independence over one Dag) that gossip convergence extends across two nodes.
 let cord = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_cord_witness.rish 2>&1"]
 assert cord.ok else "constel-consensus: the Cord primitive (r1) is not GREEN"

@@ -1,8 +1,8 @@
-# tools/g/gism_ayre_j8_entity_books_signed_witness.rish — Season 2 Journey 8 (Cash-first), Rung 2.
+# tools/g/gism_ayre_j8_entity_books_signed_witness.rish -- Season 2 Journey 8 (Cash-first), Rung 2.
 #
-# Season 2, Yield — the accounting spine, never braided. Rung one booked a segregated inter-entity
+# Season 2, Yield -- the accounting spine, never braided. Rung one booked a segregated inter-entity
 # transfer at one agreed amount; a booking alone does not prove agreement. pond/apps/entity_books_signed.rye
-# binds the transfer to two settled Kumara identities — each entity's steward signs the exact fact
+# binds the transfer to two settled Kumara identities -- each entity's steward signs the exact fact
 # (the two entity names, the amount, the memo), and the transfer books on both books only when both
 # signatures verify over the identical facts. The honesty crux mirrors commerce_trade_signed: change
 # the amount after both signed and both signatures fall (NotAgreed, no journal touched). A forged
@@ -18,7 +18,7 @@ say "gism-ayre-j8r2: Lens TAME — a forged signature, an amount changed after s
 
 let zig = "vendor/zig-toolchain/zig"
 
-# Rung one stays GREEN beneath the signing layer — additive.
+# Rung one stays GREEN beneath the signing layer -- additive.
 let bin1 = "pond/bin/entity-books"
 let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
 assert build1.ok else "gism-ayre-j8r2: rung-one entity_books build failed"

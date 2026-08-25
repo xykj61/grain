@@ -1,21 +1,21 @@
-# tools/cr/crypto_pbkdf2_sha512_witness.rish — PBKDF2-HMAC-SHA-512 authored in pure Rye: Season G's iteration-hard password KDF run with
-# SHA-512 as its PRF — the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds), and the KDF
+# tools/cr/crypto_pbkdf2_sha512_witness.rish -- PBKDF2-HMAC-SHA-512 authored in pure Rye: Season G's iteration-hard password KDF run with
+# SHA-512 as its PRF -- the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds), and the KDF
 # several LUKS and PGP deployments run. Proven byte-for-byte against an independent implementation and transitively against the HMAC
-# beneath, the no-fabricated-constant way crypto/secp256k1_pubkey.rye favours (crypto · Season G).
+# beneath, the no-fabricated-constant way crypto/secp256k1_pubkey.rye favours (crypto - Season G).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
-# Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN) · crypto/sha512.rye (the hash beneath that) · crypto/pbkdf2_sha256.rye
-# (the SHA-256 sibling of this construction) · crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). The coming
-# BIP-39 mnemonic→seed rung stands on this one. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a
-# copied line — our own Rye, studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave).
+# Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN) - crypto/sha512.rye (the hash beneath that) - crypto/pbkdf2_sha256.rye
+# (the SHA-256 sibling of this construction) - crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). The coming
+# BIP-39 mnemonic->seed rung stands on this one. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a
+# copied line -- our own Rye, studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
 #
-# crypto/pbkdf2_sha512.rye composes the GREEN crypto/hmac_sha512.rye through RFC 8018 §5.2 — each block T(i) = U(1) XOR … XOR U(c) with
-# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of 64-byte blocks truncated to length — authoring
+# crypto/pbkdf2_sha512.rye composes the GREEN crypto/hmac_sha512.rye through RFC 8018 §5.2 -- each block T(i) = U(1) XOR ... XOR U(c) with
+# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of 64-byte blocks truncated to length -- authoring
 # no new cryptography. The primitive calls no std.crypto. Parity is proven at selftest byte-for-byte against Zig's own std.crypto.pwhash
 # .pbkdf2 with HmacSha512 across single-iteration, the BIP-39 2048-round depth, multi-block, and partial-tail shapes, AND transitively
 # against the RFC-4231-anchored HMAC beneath (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). An over-long password, salt,
-# or request, a zero count, and an over-large count each refuse a named error before a byte is mixed. Purely local — TEST inputs, no real
+# or request, a zero count, and an over-large count each refuse a named error before a byte is mixed. Purely local -- TEST inputs, no real
 # identity key, no network, no funds, no real device.
 #
 # Run from the repository root:

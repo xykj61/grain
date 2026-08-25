@@ -1,7 +1,7 @@
-# pond_enclosure_col2_probes.rish — column-two probes (refuse-until-candidate).
+# pond_enclosure_col2_probes.rish -- column-two probes (refuse-until-candidate).
 #
 # Claude 212412 ask three: land probes before any build word. Pattern follows
-# G1 crossing spike — print measured truth against pond-required cells, claim
+# G1 crossing spike -- print measured truth against pond-required cells, claim
 # nothing, open no season. Candidate Pond enclosure does not exist yet.
 #
 #   rishi/bin/rishi run tools/p/pond_enclosure_col2_probes.rish

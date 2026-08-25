@@ -1,9 +1,9 @@
-# tools/t/tact_ship_pilot_witness.rish — TACT Journey 1, Rung 1: the pilot spine.
+# tools/t/tact_ship_pilot_witness.rish -- TACT Journey 1, Rung 1: the pilot spine.
 #
 # Season 1 of the 1,024-round itinerary (The World, TACT) carries one durable promise: a
 # stranger reaches a working, signed, publishable instance without the maintainer's hand on
-# each step. Ship-Pilot is the guided first-run that keeps it. This rung fixes the crux — the
-# ordered, enforced arc a keeper walks (identity, place, customs, app) — before any module is
+# each step. Ship-Pilot is the guided first-run that keeps it. This rung fixes the crux -- the
+# ordered, enforced arc a keeper walks (identity, place, customs, app) -- before any module is
 # wired, so the enforcement is proven pure: a step out of order refuses, a step whose
 # precondition is unmet holds without advancing, and the pilot reports READY only when every
 # step has passed in order.

@@ -1,9 +1,9 @@
-# tools/r/rishi_a1_gate_walls_witness.rish — Ashvini a1: the shell's own walls (e243).
+# tools/r/rishi_a1_gate_walls_witness.rish -- Ashvini a1: the shell's own walls (e243).
 #
 #   rishi/bin/rishi run tools/r/rishi_a1_gate_walls_witness.rish
 #
 # Pure by construction: no socket, no network, no host state. Two walls that
-# rishi/src/main.rye already names in Rye — env bindings and kept history —
+# rishi/src/main.rye already names in Rye -- env bindings and kept history --
 # made answerable in Glow under the STOA331 grammar. Each leg checks the elder
 # still carries the number, so a moved constant reds here rather than drifting.
 

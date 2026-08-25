@@ -1,13 +1,13 @@
-# tools/cr/crypto_ed25519_verify_witness.rish — Ed25519 signature verification authored in pure Rye: Season G's eleventh rung, the composition of
+# tools/cr/crypto_ed25519_verify_witness.rish -- Ed25519 signature verification authored in pure Rye: Season G's eleventh rung, the composition of
 # every prior curve rung. Given a public key A, a message M, and a 64-byte signature R ‖ S, verify recomputes k = SHA-512(R ‖ A ‖ M) mod L and
 # confirms the cofactorless group equation [S]B = R + [k]A. Proven against RFC 8032 §7.1 known-answers and byte-for-byte-verdict against an
-# independent implementation (Season G · Cryptography).
+# independent implementation (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
 # verify is the composition every prior rung was building toward).
-# Kin: crypto/ed25519_decode.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_scalar.rye · crypto/sha512.rye (all
-# GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from
+# Kin: crypto/ed25519_decode.rye - crypto/ed25519_scalarmul.rye - crypto/ed25519_group.rye - crypto/ed25519_scalar.rye - crypto/sha512.rye (all
+# GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own composition, studied clean-room from
 # RFC 8032 (.claude/rules/gratitude-licenses.md).
 #
 # crypto/ed25519_verify.rye reads S from the signature's high 32 bytes and refuses it unless it is the canonical scalar below L, decodes the
@@ -15,9 +15,9 @@
 # group law, and accepts only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED (decode of the canonical
 # encoding of y = 4/5), never a pasted literal, and matches the standard base point byte-for-byte. The primitive calls no std.crypto. Parity is
 # proven at selftest against RFC 8032 §7.1 known-answers (TEST 1 and TEST 2 accept, a one-bit tamper of each refused) and Zig's own
-# std.crypto.sign.Ed25519 as an independent implementation — signatures it produces over a spread of messages all accept, a one-byte tamper of
+# std.crypto.sign.Ed25519 as an independent implementation -- signatures it produces over a spread of messages all accept, a one-byte tamper of
 # each is refused, our wrong-message check refuses, and our accept/reject verdict matches its verifyStrict. The vendored Monocypher source is a
-# held network fetch, so Monocypher-source parity is an honest horizon rung. Purely local — verification reads only public values (public key,
+# held network fetch, so Monocypher-source parity is an honest horizon rung. Purely local -- verification reads only public values (public key,
 # message, signature), so it holds no secret and SIGNS NOTHING: no real key, no signing (signing with the maintainer's own identity key stays its
 # own gated round), no network, no funds, no real device.
 #

@@ -1,13 +1,13 @@
-# tools/h/hunk_library_tap_witness.rish — tap a picture on the wall to open it in the editor, on metal (HUNK70).
+# tools/h/hunk_library_tap_witness.rish -- tap a picture on the wall to open it in the editor, on metal (HUNK70).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK70.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK70.
 # Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
 # Teacher, thanked clean-room: tapping a thumbnail in iCloud Photos / Google Photos to open the full picture
 # (concept only, siloed).
 #
 # HUNK69 painted the library as one wall, every tile at a fixed origin. This rung reads that geometry backward: a
 # tap in wall cells resolves to the library index under the finger (or nothing, on a gap or past the last tile),
-# and open_tapped fetches that image and opens the Photos editor over it — closing the loop the journey built:
+# and open_tapped fetches that image and opens the Photos editor over it -- closing the loop the journey built:
 # library -> tap -> open -> edit -> save -> library. The fetch proves every bead first, so a tapped tile opens only
 # a verified picture. No network, no key, no funds.
 #
@@ -27,7 +27,7 @@ assert build.ok else "hunk-library-tap: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-library-tap: selftest exited non-zero — ${selftest.out}"
 
-# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# The claim checks use Rishi's native `contains` -- the output is a Rishi value, never interpolated into a shell
 # single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-library-tap: ${out}"

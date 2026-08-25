@@ -1,21 +1,21 @@
-# tools/cr/crypto_signed_carry_witness.rish — the signed carry, Season G's FIRST composition over the GREEN Monocypher-parity primitives: a
+# tools/cr/crypto_signed_carry_witness.rish -- the signed carry, Season G's FIRST composition over the GREEN Monocypher-parity primitives: a
 # self-describing, content-addressed, Ed25519-signed carry frame built purely from BLAKE2b-512 (the content address) and Ed25519 sign/verify
-# (the seal), authoring no new cryptography (Season G · Cryptography).
+# (the seal), authoring no new cryptography (Season G - Cryptography).
 #
-# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Season: the Six-Season double-seat, Season G thread (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the signed carry as the
 # Lotus "who made this record" unblock, and Season 2 Journey 6's content-addressed chain of custody).
-# Kin: crypto/blake2b.rye · crypto/ed25519_sign.rye · crypto/ed25519_verify.rye (the GREEN primitives this composes) ·
+# Kin: crypto/blake2b.rye - crypto/ed25519_sign.rye - crypto/ed25519_verify.rye (the GREEN primitives this composes) -
 # crypto/sealed_session.rye (the confidentiality twin). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives
-# beneath, never a copied line — our own composition, studied clean-room (.claude/rules/gratitude-licenses.md).
+# beneath, never a copied line -- our own composition, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # crypto/signed_carry.rye builds a carry frame magic GSC1 ‖ signer pubkey ‖ paylen (u64 big-endian) ‖ payload ‖ BLAKE2b-512 digest ‖
 # Ed25519 signature-over-digest, authoring no new cryptography: it composes the GREEN BLAKE2b-512 (the content address) and the GREEN
 # Ed25519 sign/verify (the seal). Signing the digest makes it do double duty as both the content address a keeper cites and the value the
 # signature commits to. open() verifies BEFORE trust: magic, then declared length, then a recomputed digest (a byte moved anywhere upstream
-# is refused here, before the signature is consulted), then the signature — only then does one zero-copy payload byte leave the door,
+# is refused here, before the signature is consulted), then the signature -- only then does one zero-copy payload byte leave the door,
 # alongside the verified signer key. Parity holds at selftest against an independent BLAKE2b digest and the primitive verify path.
-# Purely local over a TEST seed — no real identity key, no network, no funds, no real device; sealing a record with the maintainer's own
+# Purely local over a TEST seed -- no real identity key, no network, no funds, no real device; sealing a record with the maintainer's own
 # identity key stays the custody gate, and constant-time timing-safety stays the named horizon.
 #
 # Run from the repository root:

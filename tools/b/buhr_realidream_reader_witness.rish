@@ -1,15 +1,15 @@
-# tools/b/buhr_realidream_reader_witness.rish — BUHR Journey 5, Rung 1.
+# tools/b/buhr_realidream_reader_witness.rish -- BUHR Journey 5, Rung 1.
 #
 # A read source and a written program are two lanes on one graph. Journey 2 built the
 # reading of the Mantra log, Journey 4 built the writing of the program; Realidream
-# promises both at once, on one graph, and its foundation names the motion — two sources
+# promises both at once, on one graph, and its foundation names the motion -- two sources
 # can feed one node, so separate inputs fuse into a single view. This rung opens that
 # fusion: pin_read appends a read source's content under a read/ path, so a read lane is
 # a lane like any other and the very same mantra_browser.render paints it beside the
 # program lanes. The proof: render the shared graph and it carries both the read lane
 # and the program lanes (grouped by bolt); commit an edit to a program lane and it grows
 # by one node while the read lane stands byte-for-byte unchanged; a non-read path refuses
-# NotAReadPath, a duplicate pin refuses LaneExists. This rung reads no network — the read
+# NotAReadPath, a duplicate pin refuses LaneExists. This rung reads no network -- the read
 # content is supplied in-process; a real web fetch stays a named seam behind a bounded
 # reader (its own later rung, surfacing for Keaton's word).
 #
@@ -32,7 +32,7 @@ assert selftest.out contains "one render shows both origins on one graph" else "
 assert selftest.out contains "the read lane stood byte-for-byte unchanged" else "buhr-j5r1: the edit-leaves-read-untouched proof is missing"
 assert selftest.out contains "refuses NotAReadPath" else "buhr-j5r1: the non-read-path refuse proof is missing"
 
-# Journey 4 (editor) and Journey 2 (browser) stay their own green binaries — additive.
+# Journey 4 (editor) and Journey 2 (browser) stay their own green binaries -- additive.
 let editor = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_editor_witness.rish 2>&1"]
 assert editor.ok else "buhr-j5r1: the editor (J4) witness regressed"
 assert editor.out contains "GREEN: BUHR-J4r1" else "buhr-j5r1: the editor lost its green"

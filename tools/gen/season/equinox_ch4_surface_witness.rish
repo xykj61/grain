@@ -1,15 +1,15 @@
-# tools/gen/season/equinox_ch4_surface_witness.rish — e59 chapter-four surface close.
+# tools/gen/season/equinox_ch4_surface_witness.rish -- e59 chapter-four surface close.
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_ch4_surface_witness.rish
 #
 # Chapter pillars already GREEN alone must GREEN together. Almanac seat 64 closes ch4.
-# Leaf witnesses only — no nested surfaces (avoids elder chains). Twin of e42.
+# Leaf witnesses only -- no nested surfaces (avoids elder chains). Twin of e42.
 
 say "equinox-ch4-surface: Language EN — chapter greens, one choir; chapter four closes."
 say "equinox-ch4-surface: Style Radiant — DX · mid · style · IronBeetle hold as one."
 say "equinox-ch4-surface: Lens TAME — e59 · almanac seat 64 · ch4 full."
 
-# Limb 0 — DX leaves
+# Limb 0 -- DX leaves
 let why = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_say_why_census_witness.rish"]
 say why.out
 assert why.ok else "equinox-ch4-surface: say-why limb failed"
@@ -20,7 +20,7 @@ say how.out
 assert how.ok else "equinox-ch4-surface: say-how limb failed"
 assert how.out contains "GREEN: tb-say-how" else "equinox-ch4-surface: say-how not GREEN"
 
-# Limb 1 — mid / cache leaves + off-by-one
+# Limb 1 -- mid / cache leaves + off-by-one
 let inplace = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_cache_inplace_census_witness.rish"]
 say inplace.out
 assert inplace.ok else "equinox-ch4-surface: inplace limb failed"
@@ -41,7 +41,7 @@ say obo.out
 assert obo.ok else "equinox-ch4-surface: off-by-one limb failed"
 assert obo.out contains "GREEN: tb-off-by-one" else "equinox-ch4-surface: off-by-one not GREEN"
 
-# Limb 2 — style leaves
+# Limb 2 -- style leaves
 let style = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish"]
 say style.out
 assert style.ok else "equinox-ch4-surface: style limb failed"
@@ -62,21 +62,21 @@ say last.out
 assert last.ok else "equinox-ch4-surface: last-stage limb failed"
 assert last.out contains "GREEN: tb-last-stage" else "equinox-ch4-surface: last-stage not GREEN"
 
-# Limb 3 — IronBeetle lesson shelf
+# Limb 3 -- IronBeetle lesson shelf
 let iron = run ["sh" "tools/fixtures/ironbeetle_shelf_census.sh"]
 say iron.out
 assert iron.ok else "equinox-ch4-surface: ironbeetle shelf failed or thin"
 assert iron.out contains "IRON=present" else "equinox-ch4-surface: want IRON=present"
 assert iron.out contains "verdict=ok" else "equinox-ch4-surface: want iron verdict=ok"
 
-# Refuse — absent clone
+# Refuse -- absent clone
 let refuse_clone = run ["sh" "tools/fixtures/tigerbeetle_say_why_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse_clone.out
 assert refuse_clone.ok == false else "equinox-ch4-surface: absent clone must fail"
 assert refuse_clone.out contains "CLONE=ABSENT" else "equinox-ch4-surface: want CLONE=ABSENT"
 assert refuse_clone.out contains "verdict=absent" else "equinox-ch4-surface: want verdict=absent"
 
-# Refuse — absent iron shelf
+# Refuse -- absent iron shelf
 let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_shelf_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-ch4-surface: absent iron must fail"

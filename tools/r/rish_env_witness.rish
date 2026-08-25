@@ -1,4 +1,4 @@
-# rish_env_witness.rish — Rishi environment builtin witness.
+# rish_env_witness.rish -- Rishi environment builtin witness.
 #
 # Run from the repository root with a pinned test variable:
 #   RISHI_ENV_WITNESS_TEST=pinned rishi/bin/rishi run tools/r/rish_env_witness.rish

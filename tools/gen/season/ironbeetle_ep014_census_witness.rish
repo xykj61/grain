@@ -1,9 +1,9 @@
-# tools/gen/season/ironbeetle_ep014_census_witness.rish — e71 IronBeetle ep014.
+# tools/gen/season/ironbeetle_ep014_census_witness.rish -- e71 IronBeetle ep014.
 #
 #   rishi/bin/rishi run tools/gen/season/ironbeetle_ep014_census_witness.rish
 #
-# Clean-room: presence only · never copies into rye/.
-# Leaf only — no nested elder choirs.
+# Clean-room: presence only - never copies into rye/.
+# Leaf only -- no nested elder choirs.
 
 say "iron-ep014: Language EN — trust the primary, verify everyone else."
 say "iron-ep014: Style Radiant — repair_header chains; on_start_view trusts the view."

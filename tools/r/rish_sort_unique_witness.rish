@@ -1,19 +1,19 @@
-# rish_sort_unique_witness.rish — the sort, unique, and upper primitives.
+# rish_sort_unique_witness.rish -- the sort, unique, and upper primitives.
 #
 # Proves Rishi can order a list, remove duplicates keeping first-seen order, and
-# ASCII-uppercase a string — the pieces (with find) that let claim_preserve emit
+# ASCII-uppercase a string -- the pieces (with find) that let claim_preserve emit
 # sorted-unique tokens natively, no perl.
 #
 #   rishi/bin/rishi run tools/r/rish_sort_unique_witness.rish
 
-# sort — strings lexicographic, integers numeric.
+# sort -- strings lexicographic, integers numeric.
 let s = sort ["banana" "apple" "cherry" "apple"]
 assert (s[0]) == "apple" else "sort orders strings ascending"
 assert (s[3]) == "cherry" else "sort keeps duplicates (sort is not unique)"
 let ints = sort [3 1 2 10]
 assert (join (map ints as n: "${n}") ",") == "1,2,3,10" else "sort orders integers by value, not lexically"
 
-# unique — first-seen order, any element kind.
+# unique -- first-seen order, any element kind.
 let u = unique ["a" "b" "a" "c" "b"]
 assert (join u ",") == "a,b,c" else "unique keeps the first of each distinct value in order"
 
@@ -21,7 +21,7 @@ assert (join u ",") == "a,b,c" else "unique keeps the first of each distinct val
 let sd = unique (sort ["x" "a" "x" "m" "a"])
 assert (join sd ",") == "a,m,x" else "unique of sort is sorted distinct"
 
-# upper — the mirror of lower.
+# upper -- the mirror of lower.
 assert (upper "Stamp-2026: ok!") == "STAMP-2026: OK!" else "upper shifts only a-z"
 assert (upper (lower "MixedCase")) == "MIXEDCASE" else "upper and lower compose"
 

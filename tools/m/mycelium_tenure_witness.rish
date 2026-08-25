@@ -1,18 +1,18 @@
-# tools/m/mycelium_tenure_witness.rish — the Tenure: a contested name decided by the agreed order (r1).
+# tools/m/mycelium_tenure_witness.rish -- the Tenure: a contested name decided by the agreed order (r1).
 #
-# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r1 — the contested-name crux.
+# Season D (Kresfa & Mycelium) - Mycelium consensus - rung r1 -- the contested-name crux.
 # The Cord derives one total order from a mesh of Kumara-signed blocks regardless of arrival; the Ledger
 # Voice reads a lawful fold. Neither asked the question a namespace exists to answer: when two honest
 # keepers reach for the same name at once, who holds it? The Tenure reads the Cord's agreed order as the
-# namespace's verdict — the first reservation of a name in that order holds it, every later one loses,
+# namespace's verdict -- the first reservation of a name in that order holds it, every later one loses,
 # and the same keeper wins on every honest node.
 #
 # The crux this witness proves: two distinct keepers reserve "bandun" at one round; the agreed order grants
 # it to exactly one, the SAME one across three arrival permutations (deterministic verdict); the loser is a
-# lawful no-op (the uncontested "vega" still holds, the supply still folds, the loss recorded) — never a
+# lawful no-op (the uncontested "vega" still holds, the supply still folds, the loss recorded) -- never a
 # poison; and genuine corruption (a block carrying a broken-signature fact, and a free-name overdraw) each
 # refuses the WHOLE resolution. Composes cord.rye + fold.rye public API only, editing no elder. Demo keeper
-# seeds only — no real key, no funds, no network, no custody.
+# seeds only -- no real key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 #
@@ -38,7 +38,7 @@ assert selftest.out contains "the loser is a lawful no-op" else "mycelium-tenure
 assert selftest.out contains "refuse the whole resolution" else "mycelium-tenure: corruption-poisons claim missing"
 
 # The Cord whose agreed order the Tenure reads, and the Mycelium fold whose per-fact law it applies, both
-# stand at the door — their own selftests prove the machinery the verdict rests on.
+# stand at the door -- their own selftests prove the machinery the verdict rests on.
 let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-tenure: the Cord the Tenure reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-tenure: the Cord did not speak its GREEN"

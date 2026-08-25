@@ -1,13 +1,13 @@
-# tools/h/hunk_edit_store_witness.rish — a non-destructive edit-list is content-addressed on metal (HUNK12).
+# tools/h/hunk_edit_store_witness.rish -- a non-destructive edit-list is content-addressed on metal (HUNK12).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK12.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK12.
 # Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (names HUNK12).
 # Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos (concept only, siloed).
 #
 # HUNK11 recorded the Photos verbs as data and proved replay is deterministic; this rung banks that determinism.
 # `pond/apps/edit_store.rye` `store_edits` beads an edit-list's `format photo-edits-v1` text content-addressed
-# (HUNK1's Tablecloth store), and `reproduce` fetches it back — proving every bead against its digest and the whole
-# against its recorded address BEFORE the text is parsed or a verb replayed — then parses and applies it over a source
+# (HUNK1's Tablecloth store), and `reproduce` fetches it back -- proving every bead against its digest and the whole
+# against its recorded address BEFORE the text is parsed or a verb replayed -- then parses and applies it over a source
 # image. So an edited image reproduces from cold out of the pair (source, edit-list address): its pixels never need
 # storing, only the small recipe that makes them. The selftest proves the reproduced image equals a direct apply
 # byte-for-byte, the dedup dividend for recipes (same list, two names, stored once), and a tampered recipe refusing

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Thing-not-name scan — find values by emission, not by filename.
+# Thing-not-name scan -- find values by emission, not by filename.
 # Exit 0 only when the planted emitter's value is found while its name is absent
 # from tracked paths, and both living fascia-health roofs emit their keys.
 # No backtick characters in patterns.
@@ -8,7 +8,7 @@
 #   sh tools/fixtures/thing_not_name_scan.sh prove-red  # must exit 1
 #
 # Law: look for the thing, not for the name of the thing.
-# Faces: wrong set (REDS 34) · wrong place (REDS 38) · wrong key (REDS 39).
+# Faces: wrong set (REDS 34) - wrong place (REDS 38) - wrong key (REDS 39).
 set -eu
 
 MODE=${1:-}

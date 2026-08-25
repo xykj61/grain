@@ -1,11 +1,11 @@
-# tools/al/ales_stereo_notch_witness.rish — stereo_notch: the band-reject carried into stereo, the same two cutoffs on both channels, each channel a stateless parallel sum — the fourth rung of the stereo EQ / filter class (ALES173).
+# tools/al/ales_stereo_notch_witness.rish -- stereo_notch: the band-reject carried into stereo, the same two cutoffs on both channels, each channel a stateless parallel sum -- the fourth rung of the stereo EQ / filter class (ALES173).
 #
-# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES173.
+# Season: the Six-Season double-seat, Season C thread (Lotus - the creative suite) - waymark ALES - rung ALES173.
 # Design read: active-designing/date/20260815/20260815-080408_fill-ales173-lotus-stereo-notch.md
-# Stands on: lotus/notch.rye (ALES47 — the mono band-reject run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40 — the low-pass and high-pass the notch sums and the precheck sharing one validation),
-# lotus/band.rye (ALES46 — the band-pass this notch complements), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate the notch's sum reuses).
+# Stands on: lotus/notch.rye (ALES47 -- the mono band-reject run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40 -- the low-pass and high-pass the notch sums and the precheck sharing one validation),
+# lotus/band.rye (ALES46 -- the band-pass this notch complements), lotus/pan.rye (ALES10 -- the StereoClip), lotus/timeline.rye (ALES2 -- the Clip and the one true saturate the notch's sum reuses).
 #
-# lotus/stereo_notch.rye lifts a reject band from a stereo master: it runs ALES47's proven mono band-reject on BOTH channels with the SAME two cutoffs — keep the low band (a low-pass at the low cutoff) and the high band (a
+# lotus/stereo_notch.rye lifts a reject band from a stereo master: it runs ALES47's proven mono band-reject on BOTH channels with the SAME two cutoffs -- keep the low band (a low-pass at the low cutoff) and the high band (a
 # high-pass at the high cutoff), and write their sum saturated once; what neither branch keeps, the middle band between the cutoffs, is rejected. A notch's cutoffs are fractions the caller names, not scalars measured across the
 # field, so the same two cutoffs on each channel preserve the stereo image for free; each channel notches its own content, and like the shelf and unlike the band-pass there is no carried state to thread. It validates both
 # cutoffs and the span once against the shared length before either channel is mutated (BadCoeff on an illegal cutoff, BadRange on a span past the samples), so a refusal never notches one channel and leaves the other torn;

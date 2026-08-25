@@ -1,21 +1,21 @@
-# tools/cr/crypto_secp256k1_pubkey_witness.rish — SEC1 public-key serialization for secp256k1, authored in pure Rye as a composition over two
-# already-GREEN stones: the public-key derivation d·G (crypto/secp256k1_ecdsa_sign.rye · derive_public) and the point decompression that lifts a
-# compressed x back to its y (crypto/secp256k1_ecrecover.rye · decompress). It is the rung every address, every wallet import, and the coming
+# tools/cr/crypto_secp256k1_pubkey_witness.rish -- SEC1 public-key serialization for secp256k1, authored in pure Rye as a composition over two
+# already-GREEN stones: the public-key derivation d-G (crypto/secp256k1_ecdsa_sign.rye - derive_public) and the point decompression that lifts a
+# compressed x back to its y (crypto/secp256k1_ecrecover.rye - decompress). It is the rung every address, every wallet import, and the coming
 # BIP-32 hierarchical-deterministic keys reach for: hand a public key as the 33-byte compressed (0x02/0x03‖x) or 65-byte uncompressed (0x04‖x‖y)
-# bytes the ecosystem passes around, and read either one back to its affine coordinates (crypto · Season G · Cryptography).
+# bytes the ecosystem passes around, and read either one back to its affine coordinates (crypto - Season G - Cryptography).
 #
-# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: q = d·G is the GREEN derive_public, a compressed
+# Season: crypto -- Season G (the Six-Season double-seat). This rung authors NO new cryptography: q = d-G is the GREEN derive_public, a compressed
 # key's y is recovered by the GREEN ecrecover.decompress, and it contributes only the SEC 2 tag-and-coordinates envelope (SEC 1 §2.3.3). Where
 # eth_address and bitcoin_address derive a HASHED address from a key, this serializes the key ITSELF in its two canonical dresses.
-# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G - the crypto parity wave, Rye first).
 # Clean-room: the SEC 2 convention is a public standard; the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #
-# Parity is proven at selftest the self-contained way the tree favours — against Zig's own std.crypto.ecc.Secp256k1 as an independent oracle: for
+# Parity is proven at selftest the self-contained way the tree favours -- against Zig's own std.crypto.ecc.Secp256k1 as an independent oracle: for
 # eight deterministic test scalars, our compressed and uncompressed encodings equal Zig's toCompressedSec1 and toUncompressedSec1 byte-for-byte,
-# our parse of each recovers exactly Zig's affine coordinates, and our parse of Zig's OWN compressed bytes recovers the same y — so a one-bit error
+# our parse of each recovers exactly Zig's affine coordinates, and our parse of Zig's OWN compressed bytes recovers the same y -- so a one-bit error
 # in the tag, coordinate order, or parity would break the match. No published constant is trusted; the oracle is a second implementation. Edge
-# refusals BadLength and BadTag each fire. Purely local — serializing a public key touches no secret; the private scalar is a TEST key, and signing
+# refusals BadLength and BadTag each fire. Purely local -- serializing a public key touches no secret; the private scalar is a TEST key, and signing
 # with a real identity key stays the custody gate.
 #
 # Run from the repository root:

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# prin_ticker.sh — foundations + edu closing lines as a stock-ticker / slideshow.
-# Companion side panel for %prin. Matches edu: learn · build · gather · rest.
+# prin_ticker.sh -- foundations + edu closing lines as a stock-ticker / slideshow.
+# Companion side panel for %prin. Matches edu: learn - build - gather - rest.
 
 set -euo pipefail
 

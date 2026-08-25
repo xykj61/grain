@@ -1,4 +1,4 @@
-# tools/b/buhr_mcp_manifest_witness.rish — BUHR Journey 3, Rung 3.
+# tools/b/buhr_mcp_manifest_witness.rish -- BUHR Journey 3, Rung 3.
 #
 # The manifest tile, proven on metal: a JSON MCP host can discover a Grain tool.
 # A Bron `format mcp-tool-v1` manifest renders to the JSON tool descriptor a

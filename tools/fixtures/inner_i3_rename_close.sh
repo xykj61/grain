@@ -1,5 +1,5 @@
 #!/bin/sh
-# inner_i3_rename_close.sh — i3 close rename-polish block (i1–i3)
+# inner_i3_rename_close.sh -- i3 close rename-polish block (i1-i3)
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -20,7 +20,7 @@ grep -q 'Djin (fund) (retired name)' context/LEXICON.md
 grep -q 'Twah (fund) (retired name)' context/LEXICON.md
 grep -q 'rumi-hafez-kabir-ibn-arabi' gratitude/README.md
 
-# Fascia machinery not yet on main — i3 closes polish; i4 opens tools.
+# Fascia machinery not yet on main -- i3 closes polish; i4 opens tools.
 # Honesty: refuse if someone pretends fascia* already landed without i4.
 if ls tools/fascia* >/dev/null 2>&1; then
   echo "inner-i3 NOTE: tools/fascia* present — i4 machinery may have begun early" >&2

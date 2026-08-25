@@ -1,6 +1,6 @@
-# tame_style_long_fn.rish — >70-line function ledger for tame_style_scan advise.
+# tame_style_long_fn.rish -- >70-line function ledger for tame_style_scan advise.
 #
-# Native orchestration — per-file awk in tame_style_long_fn_one.sh; rank via sort.
+# Native orchestration -- per-file awk in tame_style_long_fn_one.sh; rank via sort.
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/tame_style_long_fn.rish
 

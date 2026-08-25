@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/copy_sameness_scan.sh — every tally_copy.rye against the canon.
+# tools/fixtures/copy_sameness_scan.sh -- every tally_copy.rye against the canon.
 # Orchestrated by tools/gen/season/copy_sameness_witness.rish.
 #
 # Why this exists: the toolchain refuses cross-directory relative imports, so
@@ -10,7 +10,7 @@
 # can silently drift from the canon. This guard makes that drift loud, and
 # reports the symlink/real split so the asymmetry stays visible.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
-#   values key=value · detail: prefixed · verdict= its own key · status agrees.
+#   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
 canon="tally/copy.rye"
 # Optional second argument names one extra path to compare, used only by the

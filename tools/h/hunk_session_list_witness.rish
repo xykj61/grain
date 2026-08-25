@@ -1,12 +1,12 @@
-# tools/h/hunk_session_list_witness.rish — a keeper lists their saved editing sessions on metal (HUNK19).
+# tools/h/hunk_session_list_witness.rish -- a keeper lists their saved editing sessions on metal (HUNK19).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK19.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK19.
 # Design read: active-designing/date/20260813/20260813-175000_hunk-session-list-exploration.md (names HUNK19).
 # Teacher, thanked clean-room: the "recent edits" surface of iCloud Photos / Google Photos (concept only, siloed).
 #
 # HUNK18 made an editing session a content-addressed artifact; this rung surfaces the list. `pond/apps/session_list.rye`
 # `list_sessions` walks the catalog, selects every `.session` artifact, and open_session each (HUNK18, every bead
-# proven against its digest before parse), recording a bounded summary — name, edit-count, live position. The honesty
+# proven against its digest before parse), recording a bounded summary -- name, edit-count, live position. The honesty
 # guarantee (borrowed from mcp_resource_list): a listing never names a session it cannot honestly reopen, so a tampered
 # session refuses DigestMismatch through the open and the whole listing refuses with it. The selftest proves the
 # listing names exactly the saved sessions in held order (a non-session skipped), true summaries (a rewound session

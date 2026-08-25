@@ -1,13 +1,13 @@
-# tools/h/hunk_revert_preview_witness.rish — the Skate view of a revert on metal (HUNK15).
+# tools/h/hunk_revert_preview_witness.rish -- the Skate view of a revert on metal (HUNK15).
 #
-# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK15.
+# Season A (Hardware & Right-to-Repair) - waymark HUNK - journey Photos app - rung HUNK15.
 # Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (revert horizon).
-# Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the "revert to original" of iCloud Photos /
+# Teachers, thanked clean-room: gratitude/qoi.md (the open codec) - the "revert to original" of iCloud Photos /
 # Google Photos (concept only, siloed).
 #
 # HUNK13 let a keeper see a pending edit; HUNK14 let a keeper revert by dropping edits off the end of the list. This
 # rung joins them: `brushstroke/revert_preview.rye` `preview_revert` drops the last k edits (photo_revert.drop_last,
-# pure) and hands the shorter list to edit_preview.preview, returning the Skate grid of the earlier image — so a keeper
+# pure) and hands the shorter list to edit_preview.preview, returning the Skate grid of the earlier image -- so a keeper
 # sees exactly what a revert will restore before committing it. Reverting all the way previews the original (a look,
 # not a reconstruction). The selftest proves the restored view equals the source's own down-map cell-for-cell, that a
 # revert of zero is the full view and reverting past the count clamps to the original, that the caller's list is

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_chunk_witness.sh — pour season with 400 B resin → Comlink chunked fetch → scrub.
+# amphora_chunk_witness.sh -- pour season with 400 B resin -> Comlink chunked fetch -> scrub.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 SRC="$ROOT/tools/fixtures/amphora_chunk_tree"

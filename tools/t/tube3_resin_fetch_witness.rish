@@ -1,6 +1,6 @@
-# tube3_resin_fetch_witness.rish — TUBE3: sealed Manifest resin fetch.
+# tube3_resin_fetch_witness.rish -- TUBE3: sealed Manifest resin fetch.
 #
-# TUBE2 publish → Amphora digest wire → Comlink seal → verify before admit.
+# TUBE2 publish -> Amphora digest wire -> Comlink seal -> verify before admit.
 # See linengrow/tube3_resin_fetch.rye.
 #
 # Run from the repository root:
