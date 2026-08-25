@@ -118,6 +118,8 @@ pub fn derive_public(seed: *const [32]u8) [32]u8 {
     // compresses to y = 1, the encoding 01 00…00).
     var ident = [_]u8{0} ** 32;
     ident[0] = 1;
+    // invariant: a public key equal to the identity point signs nothing anyone can verify, and
+    // it is the one derived value this must never publish
     assert(!bytes_eq(&a_bytes, &ident));
     return a_bytes;
 }

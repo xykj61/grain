@@ -135,6 +135,8 @@ pub fn derive_subkey(id: *const identity.Identity, record: u32) slip10.Slip10Err
     // invariant: the parent sits at the Kumara identity depth, so its hardened child sits at depth five, well under slip10's ceiling.
     assert(parent.depth == identity_depth);
     const child = try slip10.ckd_priv(&parent, record + bip32.hardened_offset);
+    // invariant: a derived child sits exactly one level below its parent, and the depth is what
+    // a serialized key publishes -- a wrong one names a different position in the tree
     assert(child.depth == identity_depth + 1);
 
     const slip_public = slip10.public_key(&child);
@@ -142,6 +144,8 @@ pub fn derive_subkey(id: *const identity.Identity, record: u32) slip10.Slip10Err
     const direct = signer.derive_public(&child.key);
     // invariant: the two independent public derivations agree byte-for-byte — the subkey's public key is unambiguous, exactly as the identity's is.
     var k: u32 = 0;
+    // invariant: the derived key is compared byte for byte against the one computed directly,
+    // so the two paths are proven to agree rather than assumed to
     while (k < public_len) : (k += 1) assert(public_key[k] == direct[k]);
 
     return Subkey{
@@ -187,6 +191,8 @@ pub fn seal_as(subkey: *const Subkey, payload: []const u8, out: []u8) carry.Sign
     // invariant: the frame's embedded signer is exactly this subkey's public key — the carry and subkey rungs agree by construction.
     const embedded_signer = out[carry.magic_len..][0..carry.signer_len];
     var k: u32 = 0;
+    // invariant: the derived key is compared byte for byte against the one computed directly,
+    // so the two paths are proven to agree rather than assumed to
     while (k < public_len) : (k += 1) assert(embedded_signer[k] == subkey.public_key[k]);
     return frame_len;
 }

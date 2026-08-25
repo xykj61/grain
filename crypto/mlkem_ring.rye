@@ -112,6 +112,8 @@ fn pow_mod(base: u32, exp: u32) u32 {
     // invariant (bound): the exponent halves each turn, so the loop runs at most 32 times (u32 has 32 bits) — never unbounded.
     var guard: u32 = 0;
     while (e > 0) : (guard += 1) {
+        // invariant: the exponent is at most 32 bits, so a square-and-multiply walking its bits
+        // ends inside this count rather than looping on a value it cannot reach
         assert(guard < 32);
         if ((e & 1) == 1) result = mul_mod(result, b);
         b = mul_mod(b, b);

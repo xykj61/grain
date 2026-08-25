@@ -52,6 +52,8 @@ pub const max_passphrase_bytes: u32 = 1024;
 // invariant: the assembled salt fits the KDF's salt bound, so the composition never overruns the stone beneath it. Checked at compile time
 // so a future bound change that broke the composition would fail to build rather than fault at runtime.
 comptime {
+    // invariant: the salt is the prefix and the passphrase laid end to end, so the two together
+    // are what the KDF's own ceiling has to hold
     assert(salt_prefix_len + max_passphrase_bytes <= pbkdf2.max_salt_bytes);
 }
 

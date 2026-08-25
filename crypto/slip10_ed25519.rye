@@ -103,6 +103,8 @@ pub fn master_from_seed(seed: []const u8) hmac.HmacError!Node {
     const i = try hmac.mac(seed, ed25519_seed_key);
     // invariant: the master sits at depth zero — the root every child counts down from.
     const node = node_from_i(&i, 0);
+    // invariant: a master node is the root of the tree, so a depth of anything else would
+    // serialize a child as if it had no parent
     assert(node.depth == 0);
     return node;
 }
@@ -128,6 +130,8 @@ pub fn ckd_priv(parent: *const Node, index: u32) Slip10Error!Node {
     data[0] = 0x00;
     var k: u32 = 0;
     while (k < key_len) : (k += 1) {
+        // invariant: both writes below index fixed arrays, so each bound and the array it
+        // addresses are the same number
         assert(k < key_len and (1 + k) < ckd_data_len);
         data[1 + k] = parent.key[k];
     }
@@ -135,6 +139,8 @@ pub fn ckd_priv(parent: *const Node, index: u32) Slip10Error!Node {
     ser32(&idx_be, index);
     k = 0;
     while (k < 4) : (k += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert((1 + key_len + k) < ckd_data_len);
         data[1 + key_len + k] = idx_be[k];
     }
@@ -143,6 +149,8 @@ pub fn ckd_priv(parent: *const Node, index: u32) Slip10Error!Node {
     const i = hmac.mac(data[0..], parent.chain_code[0..]) catch unreachable;
     // invariant: the child sits exactly one level below its parent.
     const child = node_from_i(&i, parent.depth + 1);
+    // invariant: a derived child sits exactly one level below its parent, and the depth is what
+    // a serialized key publishes -- a wrong one names a different position in the tree
     assert(child.depth == parent.depth + 1);
     return child;
 }

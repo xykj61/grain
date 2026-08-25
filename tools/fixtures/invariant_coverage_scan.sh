@@ -7,6 +7,14 @@
 # 20260824.170904 counted it in passing and read 59.6%, which is a large enough gap to be worth a
 # proper reading rather than a footnote.
 #
+# THE LABEL, and every spelling of it this tree writes. TAME asks for a `// invariant:` line, and
+# names three moments an assert belongs at -- construction, mutation, postcondition -- so the tree
+# also writes `// invariant (precondition):`, `(postcondition):`, `(bound):`, `(construction):`, and
+# the bare `// precondition:` / `// postcondition:`. **483 lines carried a spelling this scan could
+# not read**, all of them the seated label with its TAME category named, which is more faithful to
+# the law rather than less. Found on opening `crypto/mldsa_encode.rye` to sweep it, where FIPS 204
+# primitives carry their reasons under `// invariant (precondition):`.
+#
 # WHAT IT READS. Every authored `.rye` file outside vendor, gratitude, and old. For each assert
 # standing in CODE -- a comment quoting an assert is prose, a line of a `\\` multiline string is
 # generated source rather than this file's own, and `emit_assert(` is a function name that merely
@@ -88,7 +96,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     j = i - 1
     while (j >= 1 && (lines[j] ~ /^[ \t]*$/ || (lines[j] ~ /(^|[^A-Za-z0-9_])assert\(/ && lines[j] !~ /^[ \t]*\/\//))) j--
     while (j >= 1 && lines[j] ~ /^[ \t]*\/\//) {
-      if (lines[j] ~ /\/\/[ \t]*invariant:/) return 1
+      if (lines[j] ~ /\/\/[ \t]*(invariant|precondition|postcondition)[^:]{0,30}:/) return 1
       j--
     }
     return 0

@@ -125,6 +125,8 @@ fn take32(source: []const u8, offset: u32) [field_bytes]u8 {
     var out: [field_bytes]u8 = undefined;
     var i: u32 = 0;
     while (i < field_bytes) : (i += 1) {
+        // invariant: the write below indexes a fixed array of that length, so the loop's bound
+        // and the array's own size are the same number
         assert(i < field_bytes);
         out[i] = source[offset + i];
     }

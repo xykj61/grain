@@ -86,6 +86,8 @@ pub fn dbl(p: Point) Point {
     x3 = fe_dbl(x3);
     // invariant: the doubled point's coordinates are canonical field elements (every limb below 2^32), ready for further group operations.
     const r = Point{ .x = x3, .y = y3, .z = z3 };
+    // invariant: the limbs stay inside the field mask, so a doubling that left a limb wide
+    // would carry into the next on the following add rather than reduce
     assert(r.x.l[0] <= fe_mask and r.z.l[7] <= fe_mask);
     return r;
 }
@@ -130,6 +132,8 @@ pub fn add(p: Point, q: Point) Point {
     z3 = fe.add(z3, t0);
     // invariant: the sum's coordinates are canonical field elements; a sum that is the identity carries Z = 0, which packs to all-zero bytes.
     const r = Point{ .x = x3, .y = y3, .z = z3 };
+    // invariant: the limbs stay inside the field mask, so an addition that left a limb wide
+    // would carry into the next on the following operation rather than reduce
     assert(r.y.l[0] <= fe_mask and r.z.l[7] <= fe_mask);
     return r;
 }
