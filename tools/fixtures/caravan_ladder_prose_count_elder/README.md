@@ -1,5 +1,9 @@
 # The elder spine meter, kept exactly as it shipped
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 **Stamp:** `20260821.060758` · **Voice:** Kyri · **Status:** Frozen control -- never edited, never repaired
 
 `caravan_ladder_spine_witness.rish` in this directory is a **byte-for-byte copy** of that meter as it stood at commit `45e5303292`, the last commit before REDS %108 was closed. Its line 106 is the sentence that actually drifted -- a closing `say` reciting *"across 102 modules"* while the scan the meter had just asserted printed 104, and then 105.

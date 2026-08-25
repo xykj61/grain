@@ -1,5 +1,9 @@
 # The Baton Museum
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 **Stamp:** `20260730.022147` — carried from Cursor apply, nib `b530e8308d`; restamp parked.
 **Seated:** `20260730.030553` · path **`context/baton-museum/`** (counsel proposal affirmed by the bench)
 **Living refresh:** `20260801.033305` — hall 13 **cell** held · tip→nib vocabulary · e149 hygiene

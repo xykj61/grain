@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — the Kyri reader · seated `20260810.041230`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri (Kyri, coming)
 **Kin:** counsel [`../active-designing/date/20260810/20260810-035305_scribe-shape-and-the-structure-mapping.md`](../active-designing/date/20260810/20260810-035305_scribe-shape-and-the-structure-mapping.md)
 

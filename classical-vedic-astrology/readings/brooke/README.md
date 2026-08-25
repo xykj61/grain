@@ -2,6 +2,10 @@
 
 # Brooke -- A Complete Two-Wheel Reading
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 **Stamp:** `20260705.031812 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
 
 This shelf holds a complete classical reading and its fifteen chapters -- anonymized to **Brooke** by consent, corrected for the evening birth (20:13), cast in tropical signs and sidereal nakshatras with D1 and D9 together. Read in order below; the silo map lives in [`../templates/reading-template.md`](../templates/reading-template.md).

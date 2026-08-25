@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — strings `20260811.190026` · lists `20260811.190458` · numbers `20260811.190916` (SOON)
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 
 PLEAC ("programming-language examples alike cookbook") is the standard library grown by the **common tasks every language owes** — strings, lists, numbers — each a bounded, witnessed primitive. This home holds Grain's cookbook, in Rye (the implementation layer); wiring the primitives into the Rishi interpreter as builtins beside `sort` / `unique` / `upper` is the follow-on.

@@ -1,5 +1,9 @@
 # The NixOS Guides -- Standing and Keeping a Declared Pier
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 *A home for the cloud pier's documentation, seated by Keaton's word. Each guide is one witnessed road, numbered in walking order and stamped like every dated artifact. The pier these guides stand is the horizon home for Comlink, Tablecloth, Murr Mycelium, and whatever networked craft follows -- so the series begins with the machine itself and hardens it before anything listens on it.*
 
 **Language:** EN - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)

@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-10 (h1+blocks view `224805`; parity **372** -- Inference close)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable-room module -- laps 0-7 green (parse - rye/rish/plain snippets - headings - depth filter - paragraphs - fence kinds); rye/rish/plain/fence/paragraph/outline/h1/h2/h3/depth-tally/tally/blocks/fence+heading/tally+blocks/para+blocks/h1+blocks views on Skate
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 

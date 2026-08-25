@@ -2,6 +2,9 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- compression shelf routing - **Depth:** routing
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Ceiling:** <=40 lines
 **Last updated:** `20260824.121500` -- `STOA.md` listed, the recited grade column retired in favour of each page's own declaration, plain ASCII
 **Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)

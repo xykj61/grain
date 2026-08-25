@@ -3,6 +3,9 @@
 **Language:** EN  
 **Last updated:** `20260802.223739` (Equinox e259 — equality arc closes 8/8 · Rye tend)
 **Status:** Living — room open; a1 ×9 · a2 whole · equality 8/8 closed · Comlink R1
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 

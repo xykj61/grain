@@ -4,6 +4,9 @@
 **Last updated:** 2026-08-02 (SSH - Mosh - IPv6 secure transport `161500`)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 Radiant pass `20260727.231750` -- path re-point only; claims unchanged
 

@@ -43,4 +43,4 @@ assert rishi_home.out contains "yes" else "fascia-home-link: rishi/README.md mus
 assert living.out contains "under_ceiling=yes" else "fascia-home-link: the orphan count rose above the ceiling -- weave the room home rather than raising it"
 assert control.out contains "ceiling_refuses_from_above=yes" else "fascia-home-link: the ceiling must refuse when planted against, or it is a decoration"
 
-say "GREEN: fascia-home-link -- the orphan count stands under a ceiling that only falls, printed above as the scan's own output rather than recited here, with seven readings proven on planted repositories, the ceiling shown from both sides, and the two pages the first hour names held at zero."
+say "GREEN: fascia-home-link -- every room README in this tree offers a path home, gated at zero rather than ratcheted, printed above as the scan's own output rather than recited here, with seven readings proven on planted repositories and the ceiling shown from both sides. It read 108 of 115 orphaned on the lap it was seated; the population is closed and small enough that zero is a gate a lap can keep rather than a wall it would turn off."

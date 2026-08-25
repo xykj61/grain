@@ -1,5 +1,9 @@
 # The `bat/` Fleet — baton archetypes
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 A **baton** is a carry between hands: a `.kyri` document (`format baton-v1`) that holds *state · gaps · next* so a context reset, a break, or a fresh turn loses nothing. The Scribe reader already recognizes one (`is_baton`). What the fleet adds is **shape** — a named set of expected fields for a *kind* of carry, so a reader can say not just "this is a baton" but "this is a **Galleon**, and its cargo is all here."
 
 Each archetype is still `format baton-v1`; it adds one head field, `archetype <name>`, that the reader validates and the dashboard reads. No new format tag, no new extension — one notation, many shapes.

@@ -3,6 +3,9 @@
 **Language:** EN  
 **Last updated:** 2026-07-25  
 **Status:** Seated -- ring-1 - ring-2 - ring-3 GREEN (test-only reach)  
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Graduation:** Early vane-home ruling `20260725.120701` -- kernel concern out of product host  
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 

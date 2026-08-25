@@ -38,10 +38,18 @@ for f in $(git ls-files "*/README.md" 2>/dev/null | grep -vE "^(vendor|gratitude
   fi
 done
 
-# The ceiling only falls. Lower it whenever a lap weaves a room home; never raise it.
-# 108 measured `20260825.004500`, after rye/ and rishi/ were woven in the same lap.
-# 100 measured `20260825.005400`, after caravan, glow, tally, mantra, comlink, image, brix, context.
-CEILING=100
+# The ceiling only falls, and it has reached the floor. Lower it whenever a lap weaves a room home;
+# never raise it. The arc, each figure measured rather than recalled:
+#   108  `20260825.004500`  after rye/ and rishi/ -- the two pages the first hour names
+#   100  `20260825.005400`  after caravan, glow, tally, mantra, comlink, image, brix, context
+#     0  `20260825.010200`  after every remaining room, and the generated library index taught at
+#                           its generator rather than by hand, since a hand-edit there is overwritten
+#
+# ZERO IS ENFORCED NOW, and what makes that safe is that the population is closed and small: a room
+# README is written rarely, and the repair is one line in the page already open. A ceiling that reds
+# on ordinary work is a ceiling somebody turns off; this one cannot, because weaving a new room home
+# is part of writing it.
+CEILING=0
 if [ "$orphan" -le "$CEILING" ]; then under=yes; else under=no; fi
 
 echo "FASCIA_HOME total=$total with_path_home=$((total - orphan)) no_path_home=$orphan ceiling=$CEILING under_ceiling=$under"

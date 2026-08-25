@@ -1,5 +1,9 @@
 # Classical Vedic Astrology -- The Reading Craft
 
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+
 **Language:** EN
 **Last updated:** 2026-08-24 (Gauge molt -- studies depersonalized, style updated)
 **Style:** Gauge Field (see `../context/GAUGE_STYLE.md`), gentle register

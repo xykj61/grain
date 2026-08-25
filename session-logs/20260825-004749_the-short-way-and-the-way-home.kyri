@@ -30,4 +30,12 @@ think Weaving eight more rooms in the same round rather than only measuring them
 obs The eight are caravan, glow, tally, mantra, comlink, image, brix, context -- placed under each page's Status line where one exists, and under the title where context/README.md has none. The ceiling fell 108 to 100 with the lap, which is how a ratchet is meant to move.
 loom guard=fascia_home_link no_path_home=100 ceiling=100 woven_this_lap=10
 file construction/ITINERARY.md the round's git nib, carried by real work rather than a pin-only commit
+think Finished the weave in the same session rather than leaving 100 rooms measured and untouched, because a home link carries no claim that could turn out false -- unlike the 361 comment labels of REDS %213, where stamping a shape would have written a meaning nobody checked. The two cases look alike and are not, and the difference is whether the added line asserts anything.
+think Read the pre-commit hook before editing anything, and it named two generated pages. docs-geode/libraries/README.md is rendered whole from tools/fixtures/geode_libraries_scan.sh, so a hand-edit there is overwritten on the next run. Taught the generator instead, regenerated, and its own witness stands GREEN.
+think Computed each relative path with relpath per room rather than assuming ../ everywhere, so docs-geode/README.md links tutorials/the-first-hour.md while session-logs/README.md links ../docs-geode/tutorials/the-first-hour.md. Spot-checked three on disk and then let tracked_link prove all of them.
+think Two pages carried no Status line and one opened with a --- front-matter fence before its title, so the block seated under the title in those. cellar/README.md was the fence; it was skipped by the first pass rather than mangled, then handled on its own.
+obs Gated at zero rather than left as a ratchet. The justification is that the population is closed and small -- a room README is written rarely and the repair is one line in a page already open -- so zero is a gate a lap can keep rather than a wall it would turn off.
+loom guard=fascia_home_link total=115 with_path_home=115 no_path_home=0 ceiling=0 arc=108-100-0
+file tools/fixtures/fascia_home_link_scan.sh the ceiling at zero and enforced, with all three measurements recorded beside it
+file tools/fixtures/geode_libraries_scan.sh the generated library index taught the way home at its source
 recommend keep-going the 108 rooms with no path home are measured and under a ceiling; weaving them is mechanical, a few rooms per lap, and the meter falls with each

@@ -3,6 +3,9 @@
 **Language:** EN  
 **Index note seated:** `20260724.143155`  
 **Status:** Reference / study shelf (AI-index ignored via `.cursorignore`)
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
 
 Numbered notes live here as a lexicon-shaped catalog. This README is the living index pin; the notes themselves stay dated study.
 

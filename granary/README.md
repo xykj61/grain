@@ -4,6 +4,9 @@
 **Stamp:** `20260710.173353`
 **Last updated:** 2026-07-10 (Radiant pass `182821`)
 **Status:** Landed -- four doors open; Sharing on hosted + device wire; Exchange listing + view + in-process settle + settle view; Mandi holds the vessel floor; live TigerBeetle rests until its brief
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 
 **Granary** is the place where signed weaves are named, shared, mirrored, and optionally sold -- every artist a node.

@@ -1,5 +1,9 @@
 # The Wiki -- how the shelf connects, both ways
 
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
 *A wiki is not a pile of pages; it is the links between them. This is the geode's own crosslink map -- every shipped page, what it leads to, and what leads back.*
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)

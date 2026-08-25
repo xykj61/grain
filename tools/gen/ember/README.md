@@ -1,8 +1,12 @@
-# tools/gen/ember — Ember family home (born Kiln Chapter o1)
+# tools/gen/ember — Ember family home (born Oven Chapter o1)
+
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
 
 **Stamp:** `20260728.235520` · **Round:** o1 · **Voice:** Quin · **Renamed to Ember:** `20260808.220423`
 
-Five Ember corpus Rishi scripts live here (lineage `tools/gen/anvil/` → `tools/gen/kiln/` → here). Old `tools/anvil_corpus_lap*.rish` paths remain accrete shims; the rested **Kiln Chapter** keeps its name as history.
+Five Ember corpus Rishi scripts live here (lineage `tools/gen/anvil/` → `tools/gen/oven/` → here). Old `tools/anvil_corpus_lap*.rish` paths remain accrete shims; the rested **Oven Chapter** keeps its name as history.
 
 | Script | Role |
 |--------|------|

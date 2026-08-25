@@ -2,6 +2,9 @@
 
 **Language:** EN
 **Status:** Living — the vector store · seated `20260810.031234` · **remove — full CRUD** `20260810` · **profile-loaded dim** `20260810` · **dim from a real Bron profile** `20260810` · **approximate index** `20260810` · **object-storage backing** `20260811` · **named-object bucket** `20260811` · **write-ahead log** `20260811` · **serve protocol** `20260811` · **named serve — matches resolved to spoken names** `20260811` · **served over Comlink, sealed** `20260811`
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 

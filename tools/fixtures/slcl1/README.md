@@ -1,5 +1,9 @@
 # SLC-L1 witness fixtures
 
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
+[`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
+
 **Stamp:** `20260702.200109`
 
 Deterministic inputs for `tools/s/slcl1_receipt.rish` — witness **GREEN** at parity **152** (`20260704.021800`).
