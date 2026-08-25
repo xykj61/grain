@@ -69,6 +69,8 @@ pub const Address = struct {
     }
 
     pub fn of_star(g: u8, s: u8) Address {
+        // invariant: the galaxy index addresses the universe's own table directly, so an index
+        // past it would name a galaxy that does not exist
         assert(g < galaxies_per_universe);
         // invariant: a star index sits inside the five of its galaxy.
         assert(s < stars_per_galaxy);
@@ -76,6 +78,8 @@ pub const Address = struct {
     }
 
     pub fn of_planet(g: u8, s: u8, p: u8) Address {
+        // invariant: the galaxy and the star index address their tables directly, so either
+        // past its own bound would name a point in a topology nobody minted
         assert(g < galaxies_per_universe);
         assert(s < stars_per_galaxy);
         // invariant: a planet index sits inside the twelve of its star.

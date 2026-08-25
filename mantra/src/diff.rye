@@ -100,8 +100,11 @@ pub fn diff(
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
     };
-    assert(result.inserts.len <= n); // can't insert more than the new text has
-    assert(result.deletes.len <= m); // can't delete more than the old text had
+    // invariant: a diff inserts no more than the new document holds and deletes no more than
+    // the old one did, so neither side can be asked to apply a change to a line that never
+    // existed
+    assert(result.inserts.len <= n);
+    assert(result.deletes.len <= m);
     return result;
 }
 

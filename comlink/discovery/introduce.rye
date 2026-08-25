@@ -70,6 +70,8 @@ pub const Introduction = struct {
 };
 
 fn canonical_message(intro: *const Introduction, out: []u8) usize {
+    // invariant: the canonical message is the introduced id and its descriptor laid end to end
+    // after one tag byte, so a buffer shorter than that sum would be written past
     assert(out.len >= 1 + intro.introduced.len + intro.descriptor.len);
     out[0] = @intCast(intro.hop);
     var off: usize = 1;

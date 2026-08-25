@@ -34,6 +34,8 @@ pub const GossipOffer = struct {
     }
 
     pub fn as_len(offer: *const GossipOffer) u32 {
+        // invariant: the offer never carries more peers than the gossip fanout, since the array
+        // it is packed into is sized by that constant
         assert(offer.len <= gossip_fanout);
         return offer.len;
     }
@@ -71,6 +73,8 @@ pub fn select_fanout(table: *const table_mod.PeerTable) GossipOffer {
         offer.descriptors[o] = table.slots[idx].descriptor;
     }
     offer.len = picked_n;
+    // invariant: the offer never carries more peers than the gossip fanout, since the array it
+    // is packed into is sized by that constant
     assert(offer.len <= gossip_fanout);
     return offer;
 }
@@ -91,6 +95,8 @@ pub const Travel = struct {
 
 /// Append one travel value to an offer. Refuse whole — never trim to fit.
 pub fn offer_append(offer: *GossipOffer, travel: Travel) error{FanoutFull, Malformed}!void {
+    // invariant: the offer never carries more peers than the gossip fanout, since the array it
+    // is packed into is sized by that constant
     assert(offer.len <= gossip_fanout);
     if (offer.len >= gossip_fanout) return error.FanoutFull;
     // Re-check shape at the append seam — a bad value is refused, not shortened.
@@ -98,6 +104,8 @@ pub fn offer_append(offer: *GossipOffer, travel: Travel) error{FanoutFull, Malfo
     offer.ids[offer.len] = checked.id;
     offer.descriptors[offer.len] = checked.descriptor;
     offer.len += 1;
+    // invariant: the offer never carries more peers than the gossip fanout, since the array it
+    // is packed into is sized by that constant
     assert(offer.len <= gossip_fanout);
 }
 

@@ -15,13 +15,19 @@ pub fn StackType(comptime T: type, comptime max: u32) type {
         top: u32 = 0,
 
         pub fn push(stack: *Stack, item: T) void {
-            assert(stack.top < max); // the bound, biting where it must
+            // invariant: the push writes at the top index, so a top already at the ceiling has
+            // no slot left and would write past the array
+            assert(stack.top < max);
             stack.items[@intCast(stack.top)] = item;
             stack.top += 1;
-            assert(stack.top <= max); // postcondition: still within the bound
+            // invariant: the push has landed when this runs, so it states the stack stayed
+            // inside its own bound
+            assert(stack.top <= max);
         }
         pub fn pop(stack: *Stack) ?T {
-            assert(stack.top <= max); // invariant on the second path
+            // invariant: the pop reads below the top, and this holds on the path where nothing
+            // was pushed as well as the one where something was
+            assert(stack.top <= max);
             if (stack.top == 0) return null; // negative space: empty is a value
             stack.top -= 1;
             return stack.items[@intCast(stack.top)];

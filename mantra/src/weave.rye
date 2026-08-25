@@ -66,13 +66,18 @@ pub const Weave = struct {
             var found = false;
             for (self.lines.items) |*line| {
                 if (line.pos == target_pos) {
-                    assert(line.gen % 2 == 1); // must be present to delete
+                    // invariant: an odd generation means present -- the parity IS the
+                    // tombstone, so an even one reaching here would be a deleted line treated
+                    // as live
+                    assert(line.gen % 2 == 1);
                     line.gen += 1;                       // odd → even: mark gone
                     found = true;
                     break;
                 }
             }
-            assert(found); // deleting a position that does not exist is a caller error
+            // invariant: a delete names a position the weave holds, since deleting one that is
+            // not there would report success for a change that never happened
+            assert(found);
         }
 
         // Process inserts: each new line enters at generation 1 (first appearance,
@@ -83,13 +88,17 @@ pub const Weave = struct {
                 .gen   = 1,
                 .pos   = self.next_pos,
             };
-            assert(line.gen % 2 == 1); // new lines are always present
+            // invariant: an odd generation means present -- the parity IS the tombstone, so an
+            // even one reaching here would be a deleted line treated as live
+            assert(line.gen % 2 == 1);
             try self.lines.append(allocator, line);
             self.next_pos += 1;
         }
 
         // Postcondition: every line in the weave has a valid, assigned position.
         for (self.lines.items) |line| {
+            // invariant: a line carries a real generation and a position inside the weave's own
+            // counter, so neither ordering nor identity is left to the caller
             assert(line.gen >= 1);
             assert(line.pos < self.next_pos);
         }
@@ -115,10 +124,14 @@ pub const Weave = struct {
 
         // Postcondition: result is sorted and all entries are present.
         for (result) |line| {
+            // invariant: an odd generation means present -- the parity IS the tombstone, so an
+            // even one reaching here would be a deleted line treated as live
             assert(line.gen % 2 == 1);
         }
         for (result, 0..) |line, i| {
             if (i + 1 < result.len) {
+                // invariant: the result comes out ordered by position, which is what makes a
+                // weave readable as a document rather than a bag of lines
                 assert(result[i].pos < result[i + 1].pos);
             }
             _ = line;

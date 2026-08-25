@@ -40,11 +40,15 @@ pub const PeerId = struct {
         var id = PeerId{};
         tally_copy.copy_disjoint(u8, id.bytes[0..src.len], src);
         id.len = @intCast(src.len);
+        // invariant: the id is copied into a fixed buffer of peer_id_max_bytes, so a longer one
+        // would arrive truncated into an id naming a different peer
         assert(id.len <= peer_id_max_bytes);
         return id;
     }
 
     pub fn as_slice(id: *const PeerId) []const u8 {
+        // invariant: the slice is taken from a fixed buffer of peer_id_max_bytes with no bounds
+        // check of its own
         assert(id.len <= peer_id_max_bytes);
         return id.bytes[0..id.len];
     }
@@ -86,23 +90,30 @@ pub const PeerTable = struct {
             table.slots[i] = .{};
             table.free.push(i);
         }
+        // invariant: a fresh table has every slot on the free list and no peer live, so a table
+        // opened over used memory names itself here rather than handing out a slot that is
+        // already someone's
         assert(table.free.top == max_peers);
         assert(table.live_count == 0);
         return table;
     }
 
     pub fn count(table: *const PeerTable) u32 {
+        // invariant: the live count never passes the slot array it counts
         assert(table.live_count <= max_peers);
         return table.live_count;
     }
 
     pub fn remaining(table: *const PeerTable) u32 {
+        // invariant: the live count never passes the slot array it counts
         assert(table.live_count <= max_peers);
         return max_peers - table.live_count;
     }
 
     /// Welcome a peer. Refresh when the id is already live; refuse when full.
     pub fn upsert(table: *PeerTable, id: PeerId, descriptor: desc.Descriptor, seen_at: u64) error{Full}!void {
+        // invariant: the id names a peer and fits its buffer, and the descriptor fits its own
+        // -- an empty id would upsert a peer nobody can look up
         assert(id.len > 0);
         assert(id.len <= peer_id_max_bytes);
         assert(descriptor.len <= desc.descriptor_max_bytes);
@@ -110,11 +121,15 @@ pub const PeerTable = struct {
         if (table.find_slot(id)) |idx| {
             table.slots[idx].descriptor = descriptor;
             table.slots[idx].seen_at = seen_at;
+            // invariant: the slot found by id is live, since upserting into a free slot would
+            // overwrite a peer the table still counts
             assert(table.slots[idx].live);
             return;
         }
 
         const idx = table.free.pop() orelse return error.Full;
+        // invariant: the free list handed back an index inside the slot array, and the slot it
+        // names is free -- a live one would be overwritten and its peer lost
         assert(idx < max_peers);
         assert(!table.slots[idx].live);
         table.slots[idx] = .{
@@ -124,11 +139,15 @@ pub const PeerTable = struct {
             .live = true,
         };
         table.live_count += 1;
+        // invariant: the upsert has landed when this runs, so it states the table stayed inside
+        // its own ceiling
         assert(table.live_count <= max_peers);
     }
 
     pub fn get(table: *const PeerTable, id: PeerId) ?*const PeerRecord {
         if (table.find_slot(id)) |idx| {
+            // invariant: a get returns only a live slot, since a freed one still holds the
+            // bytes of whoever had it last
             assert(table.slots[idx].live);
             return &table.slots[idx];
         }
@@ -162,10 +181,15 @@ pub const PeerTable = struct {
             const body = table.slots[i].descriptor.as_slice();
             const n: u32 = @intCast(body.len);
             const dest = try table.garden.alloc(n);
+            // invariant: the destination is exactly the body's length, so a packer writing into
+            // any other size would run past it or leave a tail the reader parses as a
+            // descriptor
             assert(dest.len == body.len);
             tally_copy.copy_disjoint(u8, dest, body);
             n_packed += 1;
         }
+        // invariant: every live peer was packed, so a shortfall means a descriptor was dropped
+        // and the reader would see fewer peers than the table holds
         assert(n_packed == table.live_count);
         return n_packed;
     }
@@ -180,6 +204,8 @@ pub const PeerTable = struct {
     }
 
     fn release_slot(table: *PeerTable, idx: u32) void {
+        // invariant: the index falls inside the slot array and names a live slot with a live
+        // count to decrement -- releasing a free slot would push it onto the free list twice
         assert(idx < max_peers);
         assert(table.slots[idx].live);
         assert(table.live_count > 0);
