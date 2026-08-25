@@ -242,3 +242,11 @@ seated 20260824.183000
 guard log_has_a_row
 path tools/l/log_has_a_row_witness.rish
 seated 20260824.201500
+
+guard rishi_bare_path
+path tools/r/rishi_bare_path_witness.rish
+seated 20260825.004500
+
+guard fascia_home_link
+path tools/f/fascia_home_link_witness.rish
+seated 20260825.004500
