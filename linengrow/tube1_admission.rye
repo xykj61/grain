@@ -47,6 +47,8 @@ pub fn admit_manifest(
     agent_label: []const u8,
     manifest: *const tube.Manifest,
 ) bool {
+    // invariant: the walk reads the capability array by index up to this count, so the count
+    // and the array's own length are the same bound
     assert(manifest.cap_count <= tube.max_declared_caps);
     if (manifest.cap_count == 0) return false;
     var i: u32 = 0;

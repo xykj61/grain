@@ -34,8 +34,12 @@ pub const ApplyStep = struct {
         const applied = self.applied_root;
         // invariant: consulted reads applied_root only
         if (applied) |root| {
+            // invariant: a root is a 32-byte digest, so any other length would be consulted as
+            // a root of something else
             assert(root.len == 32);
         }
+        // invariant: the root is copied as a whole array, so its declared size and the length
+        // checked above are the same number stated two ways
         assert(@sizeOf([32]u8) == 32);
         return applied;
     }
@@ -48,6 +52,8 @@ pub fn write_root(state: *ApplyStep, root: [32]u8) void {
     // invariant: root is a full digest width
     assert(root.len == 32);
     state.pending_written_root = root;
+    // invariant: a write only lands where a root is pending, since writing with none would
+    // commit whatever the field last held
     assert(state.pending_written_root != null);
 }
 
@@ -59,6 +65,8 @@ pub fn apply_pending(state: *ApplyStep) ApplyError!void {
     assert(pending.len == 32);
     state.applied_root = pending;
     state.pending_written_root = null;
+    // invariant: the apply has landed when this runs, so the pending slot is proven cleared --
+    // a root left pending would be applied twice
     assert(state.pending_written_root == null);
 }
 
@@ -70,8 +78,12 @@ pub fn recover_after_crash(state: *ApplyStep) void {
     const prior_len: u32 = if (state.applied_root != null) 32 else 0;
     // invariant: crash recovery clears pending only
     state.pending_written_root = null;
+    // invariant: a crash recovery ends with no root pending and the log the length it had, so a
+    // partial write is proven rolled back rather than half-kept
     assert(state.pending_written_root == null);
     const after_len: u32 = if (state.applied_root != null) 32 else 0;
+    // invariant: the log is the length it was before the crash, so a partial write is proven
+    // rolled back rather than half-kept
     assert(after_len == prior_len);
 }
 

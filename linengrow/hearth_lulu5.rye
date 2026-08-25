@@ -16,6 +16,8 @@ pub const cell_line_max: u32 = 32;
 /// `cell · off` or `cell · optional`.
 pub fn format_cell_line(c: hearth.Cellular, out: *[cell_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(out, "cell · {s}", .{c.name()}) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= cell_line_max);
     return line;
 }
@@ -34,6 +36,8 @@ pub fn cell_next_toggles() bool {
 
 comptime {
     _ = print;
+    // invariant: the preset pins the row it draws on and the ladder it belongs to, so a layout
+    // change surfaces here rather than as a cell drawn over its neighbour
     assert(cell_row == 10);
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

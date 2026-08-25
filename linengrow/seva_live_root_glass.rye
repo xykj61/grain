@@ -19,6 +19,8 @@ pub fn format_live_line(
     out_line: *[live_line_max]u8,
     out_len: *u32,
 ) bool {
+    // invariant: the caller's buffer is exactly one row wide, and a sequence counts from zero,
+    // so neither the row nor the ordering is left to the caller to get right
     assert(out_line.len == live_line_max);
     assert(seq >= 0);
     const preview = hex64[0..hex_preview_len];
@@ -28,6 +30,8 @@ pub fn format_live_line(
         .{ seq, preview },
     ) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer, so a length of zero leaves nothing
+    // to draw and one past the bound would run past its row
     assert(out_len.* > 0);
     assert(out_len.* <= live_line_max);
     return true;

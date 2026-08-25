@@ -32,6 +32,8 @@ pub const ClaimError = replay.ReplayError || error{DeskReadFailed};
 pub fn claim_demo_fold() ClaimError![32]u8 {
     var log_buf: [rc.max_log_len]u8 = undefined;
     const root = try replay.claim_replay_demo_root(&log_buf);
+    // invariant: the fold reaches the root this claim is named for, which is what the claim
+    // asserts about the world -- a differing root means the claim is about a different log
     assert(root_matches_expected(&root)); // product claim: Glow owns this pin
     return root;
 }
@@ -40,6 +42,8 @@ pub fn claim_demo_fold() ClaimError![32]u8 {
 pub fn claim_demo_fold_from_desk(desk_src: []const u8) ClaimError![32]u8 {
     var log_buf: [rc.max_log_len]u8 = undefined;
     const root = try replay.claim_replay_demo_root_from_desk(desk_src, &log_buf);
+    // invariant: the desk path reaches the same root as the direct one, so the two ways in are
+    // proven to agree rather than assumed to
     assert(root_matches_expected(&root));
     return root;
 }

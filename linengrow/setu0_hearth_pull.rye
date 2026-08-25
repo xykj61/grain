@@ -88,6 +88,9 @@ pub fn mismatch_refused() bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names the ladder it belongs to, so one carried into another
+    // ladder's suite names itself here rather than passing as though it had proved something
+    // about that ladder
     assert(std.mem.eql(u8, waymark, "SETU"));
     assert(std.mem.eql(u8, rel_pointer, "hearth_home"));
 }

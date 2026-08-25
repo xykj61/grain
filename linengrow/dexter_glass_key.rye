@@ -74,12 +74,16 @@ pub fn action_from_key_down(k: KeyDown) ?dexter.Action {
 
 /// Apply a key-down sequence to a live editor (same path NativeActivity drains).
 pub fn drain_key_downs(editor: *dexter.LineEditor, keys: []const KeyDown) void {
+    // invariant: the editor line is copied into a fixed buffer of max_line_len, so a longer one
+    // would be written past its end
     assert(editor.len <= dexter.max_line_len);
     for (keys) |k| {
         if (action_from_key_down(k)) |action| {
             editor.apply_action(action);
         }
     }
+    // invariant: the editor line is copied into a fixed buffer of max_line_len, so a longer one
+    // would be written past its end
     assert(editor.len <= dexter.max_line_len);
 }
 

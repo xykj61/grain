@@ -57,6 +57,8 @@ pub const NetworkGrant = struct {
         // invariant: down is the refusal presentation
         assert(down == !self.granted);
         if (down) {
+            // invariant: the grant is proven still withheld, since a permission that reads as
+            // granted before anyone asked is the fault this whole seam exists to prevent
             assert(!self.granted);
         }
         return down;

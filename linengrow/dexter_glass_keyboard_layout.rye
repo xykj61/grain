@@ -57,6 +57,8 @@ fn c(ch: u8) Key {
 }
 
 fn face(id: u8) Key {
+    // invariant: the face is read out of the emoji atlas by this id directly, so an id past the
+    // count would return whatever follows the table
     assert(id < emoji.face_count);
     return .{ .emoji_face = id };
 }
@@ -196,19 +198,27 @@ pub fn page_for_tab(mode: Mode, tab: emoji.Tab) Page {
 }
 
 pub fn row_count(page: Page) u32 {
+    // invariant: the page holds at most max_rows rows and at least one, since a keyboard of no
+    // rows would swallow every touch
     assert(page.rows.len <= max_rows);
     const n: u32 = @intCast(page.rows.len);
+    // invariant: a page of no rows would draw a keyboard nothing can be typed on
     assert(n > 0);
     return n;
 }
 
 pub fn key_count(page: Page) u32 {
+    // invariant: the page holds at least one row of at most max_keys_per_row keys, and a key
+    // count of zero would draw a keyboard nothing can be typed on
     assert(page.rows.len > 0);
     var n: u32 = 0;
     for (page.rows) |row| {
+        // invariant: each row holds at most max_keys_per_row keys, and the walk below reads the
+        // row array by index up to that bound
         assert(row.keys.len <= max_keys_per_row);
         n += @intCast(row.keys.len);
     }
+    // invariant: a page of no keys would draw a keyboard nothing can be typed on
     assert(n > 0);
     return n;
 }

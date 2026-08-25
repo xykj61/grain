@@ -15,6 +15,8 @@ pub const market_line_max: u32 = 48;
 
 /// Acquire via market rail; write a status line. Returns false on any refuse.
 pub fn run_demo_market_line(out_line: *[market_line_max]u8, out_len: *u32) bool {
+    // invariant: the caller's buffer is exactly one row wide, so any other size would be
+    // written past or leave a tail the glass draws as noise
     assert(out_line.len == market_line_max);
     var store = gc.ResinStore.empty();
     var reg = gc.Registry.empty();
@@ -29,6 +31,8 @@ pub fn run_demo_market_line(out_line: *[market_line_max]u8, out_len: *u32) bool 
 
     const line = std.fmt.bufPrint(out_line, "TUBE4 market · acquired", .{}) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer, so a length of zero leaves nothing
+    // to draw and one past the bound would run past its row
     assert(out_len.* > 0);
     assert(out_len.* <= market_line_max);
     return true;

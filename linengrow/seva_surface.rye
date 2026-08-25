@@ -51,6 +51,8 @@ pub const Surface = struct {
     }
 
     pub fn panel(self: *const Surface, i: u32) *const Panel {
+        // invariant: the read indexes a fixed array directly, so this bound and the array's own
+        // length are the same number
         assert(i < self.count);
         return &self.panels[i];
     }
