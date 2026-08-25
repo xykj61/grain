@@ -40,7 +40,8 @@ done
 
 # The ceiling only falls. Lower it whenever a lap weaves a room home; never raise it.
 # 108 measured `20260825.004500`, after rye/ and rishi/ were woven in the same lap.
-CEILING=108
+# 100 measured `20260825.005400`, after caravan, glow, tally, mantra, comlink, image, brix, context.
+CEILING=100
 if [ "$orphan" -le "$CEILING" ]; then under=yes; else under=no; fi
 
 echo "FASCIA_HOME total=$total with_path_home=$((total - orphan)) no_path_home=$orphan ceiling=$CEILING under_ceiling=$under"

@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-10 (Tablecloth query device **15575**/**15576**; Granary device **15573**/**15574**; hosted resin **38496**/**38497**)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- sealed datagram wire
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Comlink carries a sealed datagram, and the format never forks.** `wire_format.rye` defines one offset layout and one seal/open pair, and every rung above it -- a hosted UDP socket on localhost, or a real virtio-net link between two freestanding guests on QEMU virt -- reads and writes exactly the same bytes. A fact that crosses this wire arrives whole or not at all; nothing here retries a partial frame.
 

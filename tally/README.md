@@ -4,6 +4,9 @@
 **Last updated:** 2026-07-28 (Tensegral Arc IV r11 -- canon Who calls Tally map - `tally_caller_map_witness`)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- bounded garden allocator - small marks - Kumara - Bud
+**Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
+[`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Tally is where bounds live.** A garden is a region of memory with a stated start, length, and end -- bump allocation lands inside it or fails cleanly, and clearing it releases everything at once. Every hosted seed and tool in this tree reaches for a Tally garden rather than `std.heap.ArenaAllocator` directly, so the one owned name carries the one law: bounded, named, and cleared whole.
 
