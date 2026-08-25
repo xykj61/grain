@@ -47,34 +47,36 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `f250841304` -- the seed projection refreshed on the cadence lap; the force-push waits at the gate.
+**Git nib:** `ca1a20c84a` -- the fourth microkernel rung; the address space stated part by part.
 
-**Now.** **The document half of REDS %218, measured and closed.** Having taught the card to read a
-program's comments, the same reading was pointed at documents: **388 unresolved links across 100
-living pages** -- and the measurement is what made it a small round rather than a large one.
-**375 sit in the `yonder/` silos** `tracked_link` already ratchets by name and repairs on touch.
-That left **13**, and every target existed: `../foundations/` from `.claude/rules/` needing one more
-level, `work-in-progress/` cited two years after it became `construction/`, a `.mdc` twin cited as
-`.md`, and two folded REDS archives carrying the pin's old depth -- REDS %183's own lesson, in files
-folded before it was learned. **Ten repaired**; one is a deliberately planted fixture and correct.
-**The standing guard could never have seen them:** `tracked_link` asks whether a link escapes the
-tree (`living_links_outside_tree=0`), rather than whether it lands.
-**The thirteenth was a meter artifact** and it settles the fenced-block question the last two laps
-deferred: the link grep runs straight through a backtick span, so a REDS row explaining a fold
-yielded a target made of the prose between two spans. **A target carrying a backtick is not a path**
--- zero tracked paths carry one -- which repairs that one reading where a full fenced-block rule
-would have touched 20+ documents to do it. The card's control now proves **67** behaviors; the four
-new ones refuse three ways against this morning's card and pass the one that must not change.
+**Now.** **The fourth microkernel rung -- what an address space is made of.** `objects.rye` found
+Caravan holding five of nine seL4 object types and owing the four that build an address space;
+`allowances.rye` found it inside all four Microkit bounds it shares. Both left the same question, and
+[`../caravan/address_space.rye`](../caravan/address_space.rye) answers it: Microkit describes an
+address space with two values, and their **twelve parts** -- eight in the memory region, four in the
+map -- are read from `tool/microkit/src/sdf/memory_region.rs` in **order** as well as by name.
+**Caravan holds seven**, split **four to `regions.rye` and three to `mapping.rye`** -- the framework's
+own line between a declaration and its lowering, arrived at independently. **The five owed are one
+debt wearing five names**: physical address, region kind, two prefill sources, caching attribute,
+every one about a physical world Caravan has yet to place anything in.
 
-**The next doors.** The **fourth microkernel rung** -- `objects.rye` names four mapping objects as
-one debt wearing four sizes and `allowances.rye` now names the cspace that holds them, so the
-address space is the rung that follows. `.rish` and `.sh` **comments sit outside the ASCII
-guard**, which reads `*.rye` alone, and `rye-learning-process/archive/ALMANAC.md` carries **63**
-non-ASCII lines that predate this round and want a sweep of their own.
+**The finding the accounting produced, and its repair.** The two rings had never been introduced.
+Measured: of the 8,192 sizes from one byte to 8,192, `regions.rye` accepts every one and
+`mapping.rye` plans **two**; two of the four regions `regions.rye`'s own self-test declares miss a
+page boundary. Microkit meets the same case -- a region sized by a file's length, which four Caravan
+callers already take -- and **rounds up** rather than refusing. `page_extent` is that answer, and the
+join is asserted at both ends: 16 MiB declarable rounds to itself and plans to **8 pages at best,
+519 at worst, inside 2,556**. Eight refusals proven on metal, the welcome first, and the join proven
+load-bearing twice -- a bound widened, and a page narrowed.
 
-**Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
-share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
-fold wants its own round. The invariant arc walks back at checkpoint `20260825.031305`.
+**The next doors.** The address space's **five owed parts** want a booted kernel rather than more
+accounting. Beside them: `.rish` and `.sh` **comments sit outside the ASCII guard**, which reads
+`*.rye` alone, and `rye-learning-process/archive/ALMANAC.md` carries **63** non-ASCII lines.
+
+**Still open:** **`caravan_suite_witness` stands off the standing roster**, so its bijection -- which
+is correct, and fires -- caught `caravan_allowances_witness` unheard a lap after it landed: the
+already-named class (**1,683 witnesses, 56 gated**) in one more room rather than a new red. **20
+caravan blocks stay uncovered on purpose**, as `bounded`, `chain` and `twin` share one region body. The invariant arc walks back at checkpoint `20260825.031305`.
 
 ---
 ## Landed arcs
@@ -239,7 +241,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.070659` | Ten stale citations repaired; 388 measured down to 13 to 1, and a backtick is not a path | [log](../session-logs/20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) |
+| `20260825.081302` | The fourth microkernel rung: twelve parts of an address space, seven held, and the join supplied | [log](../session-logs/20260825-081302_what-an-address-space-is-made-of.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
