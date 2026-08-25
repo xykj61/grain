@@ -62,6 +62,16 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260825.173153` | [Reprove only what moved](20260825-173153_reprove-only-what-moved.md) | three ranked moves: build skip, restart skip behind a ruling, receipts + verify |
+| `20260825.171923` | [Gleaner's Second Watch](20260825-171923_gleaner-second-watch-the-doors.md) | the doors of a basin, sourced in and offered out; accretes to Gleaner |
+| `20260825.171922` | [The Headwater Sleeve](20260825-171922_the-headwater-sleeve-siya.md) | the sleeve read against a works campus; withheld from the seed |
+| `20260825.171920` | [Headwater Works Shapes](20260825-171920_headwater-works-shapes.md) | four forms for a basin whose river begins at a plant |
+| `20260825.171917` | [Gleaner, the Gauge Source Family](20260825-171917_gleaner-the-gauge-source-family.md) | public water readings alongside public spending |
+| `20260825.171916` | [The Water Sleeve](20260825-171916_the-water-sleeve-siya.md) | the sleeve read against a headwaters basin; withheld from the seed |
+| `20260825.171914` | [Headwaters Water Shapes](20260825-171914_headwaters-water-shapes.md) | six fill-in forms for any basin, any town at the top |
+| `20260825.171911` | [Gleaner](20260825-171911_gleaner-the-public-signal-fetcher.md) | a bounded fetcher of what the public field leaves in the open |
+| `20260825.171910` | [The Fiber Sleeve](20260825-171910_the-fiber-sleeve-siya.md) | the sleeve read against the corridor; withheld from the seed |
+| `20260825.171908` | [Fiber Corridor Shapes](20260825-171908_fiber-corridor-shapes.md) | seven fill-in forms for any region, with the receipts shape underneath |
 | `20260824.052950` | [`20260824-052950_two-surfaces-one-set-one-rule.md`](20260824-052950_two-surfaces-one-set-one-rule.md) | **Two surfaces describing one set want one rule.** The room bound and the index bound were separate numbers, so the room passed every lap while the index it indexes ran 117.8x over. The repair is not a second ceiling: a day's rows fold when its logs do, and the byte bound becomes a consequence. Why the ordering is files-first, why the gate is a row rule rather than a byte ceiling, and the day-room alternative given its best case. |
 | `20260824.041200` | [The remainder a sentence cannot hold](20260824-041200_the-remainder-a-sentence-cannot-hold.md) | a partly-closed fix records what is left, and a sentence holds a list where a script holds a class -- the tell is the word *more*; with the companion finding that two constraints can hide each other, so the rows a widened filter newly matches are read individually rather than only counted |
 | living | [Proven-seat guest -- hammock](proven-seat-guest-hammock.md) | Kaeden word - G0 GRUB milestone GREEN - G1-G3 ahead |
