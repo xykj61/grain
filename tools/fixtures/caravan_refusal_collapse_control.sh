@@ -19,6 +19,10 @@ copy="$build_dir/collapsed.rye"
 
 mkdir -p "$build_dir"
 
+# The mutated copy is built beside its imports, and caravan/study_door.rye is one of them:
+# every study rung reaches its entry point through that body rather than writing it out.
+cp caravan/study_door.rye "$build_dir/study_door.rye"
+
 # Collapse two distinct answers into one: an ungranted resource stops being an invalid capability and
 # becomes the same failed lookup an unknown dependent already is. The module's own self-test asserts
 # those three stay distinct, so a healthy module must refuse this copy.

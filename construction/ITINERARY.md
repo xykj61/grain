@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **58 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **60 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -49,32 +49,32 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 **Git nib:** `0f8515c5cd` -- one law, two comment syntaxes; the ASCII meter reaches Rishi and shell.
 
-**Now.** **A law that governed three languages, and a meter that read one.**
-`.claude/rules/ascii-first.md` reaches every document, code comment, and commit message; the guard
-holding it, [`../tools/as/ascii_comment_witness.rish`](../tools/as/ascii_comment_witness.rish), read
-`*.rye` alone for its first day. **2,243 tracked Rishi sources and 580 shell sources** stood outside a
-law that governs them, carrying **10,468** non-ASCII characters in their comments.
-[`../tools/fixtures/shell_comment_ascii_scan.sh`](../tools/fixtures/shell_comment_ascii_scan.sh) is the
-second meter -- `#` comments in `.rish` and `.sh`, heredoc bodies excluded, under a ceiling that only
-falls. One law, two comment syntaxes, **one guard** over both, so the roster keeps 58 rows.
+**Now.** **A witness nobody runs guards nothing, and the tree counted them.**
+`construction/standing-equipment.kyri` has always opened on that sentence and never measured it.
+[`../tools/w/witness_reach_witness.rish`](../tools/w/witness_reach_witness.rish) over
+[`../tools/fixtures/witness_reach_scan.sh`](../tools/fixtures/witness_reach_scan.sh) traces
+reachability rather than comparing counts, and reads four numbers: **1,690** tracked witnesses,
+**56** sung every lap by the roster, **512** named in an invocation position by any runner, **1,178**
+named by nothing. Seating `caravan_suite_witness` carried 111 rungs with it, so the tree now reads
+**167 / 513 / 1,177**. The gate is on the last, under a ceiling that only falls.
 
-**The sweep.** Converting the six forms the rule's own table names -- em dash, en dash, middle dot,
-two arrows, ellipsis -- moved **2,163 files** and brought 10,468 to **505**. The diff runs 7,180 lines
-in and 7,180 out, **zero** outside a comment and **zero** mode changes, every rewrite through the
-original inode. What remains is notation the table leaves to a reader: 169 typographic minus, 73
-double vertical, 71 section, 52 superscripts, 15 Greek.
+**The line it rests on.** A path NAMED is not a path RUN. Three shapes here look like calls -- a
+`grep` argument, a string a script prints, a comment's usage line -- so the rule is command position,
+with a `-c` payload unwrapped and read the same way. Eighteen behaviors on planted git repositories:
+eight call shapes heard, five mention shapes refused, the ceiling read from three positions.
 
-**What the control found that this tree could never have shown.** A here-string `<<<"x"` carries
-`<<"x"` one character in, so the opener matched and swallowed the file. The plant caught it; the tree
-holds **zero** here-strings, so no sample of real content could have. Thirteen behaviors stand on
-planted repositories, and the ceiling is proven from both sides -- 513 refuses, removing it returns green.
+**REDS %219 -- what it found on its first run.** The Caravan carry ceiling stood **crossed for two
+laps**, 58,532 -> 58,541 -> 58,550, as two study rungs each wrote out the same nine-line door. Both
+laps' cold rosters were green and honest: the carry meter is reached by `caravan_suite_witness`
+alone, and that choir stood off the roster. Closed root-first -- the door lifted into
+[`../caravan/study_door.rye`](../caravan/study_door.rye), carry **58,496**, the ceiling fell with it,
+and the choir took a roster row at a measured **8m31s** for 111 rungs.
 
-**The next doors.** **`caravan_suite_witness` stands off the standing roster**, so its bijection --
-correct, and firing -- caught `caravan_allowances_witness` unheard: the already-named class
-(**1,683 witnesses, 56 gated**) in one more room. Beside it, `rye-learning-process/archive/ALMANAC.md`
-carries **63** non-ASCII lines, and the address space's **five owed parts** want a booted kernel rather
-than more accounting. **20 caravan blocks stay uncovered on purpose**, as `bounded`, `chain` and `twin`
-share one region body; that arc walks back at checkpoint `20260825.031305`.
+**The next doors.** **A second roster tier**, so a choir either runs every lap or waits for a hand.
+**A choir for `ales`** -- 239 unheard witnesses, a fifth of the whole. Beside them
+`rye-learning-process/archive/ALMANAC.md` carries **63** non-ASCII lines, and the address space's
+**five owed parts** want a booted kernel rather than more accounting. Argument:
+[`../active-designing/20260825-092953_what-a-roster-owes-a-run.md`](../active-designing/20260825-092953_what-a-roster-owes-a-run.md).
 
 ---
 ## Landed arcs
@@ -239,8 +239,8 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.092953` | Which witnesses a runner actually runs: 1,690 on disk, 56 sung every lap; REDS %219 closed | [log](../session-logs/20260825-092953_a-witness-nobody-runs.kyri) |
 | `20260825.085347` | One law, two comment syntaxes: the ASCII meter reaches Rishi and shell | [log](../session-logs/20260825-085347_a-law-that-governed-three-languages.kyri) |
-| `20260825.081302` | The fourth microkernel rung: twelve parts of an address space, seven held, and the join supplied | [log](../session-logs/20260825-081302_what-an-address-space-is-made-of.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

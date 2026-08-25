@@ -22,6 +22,10 @@ copy="$build_dir/gapped.rye"
 
 mkdir -p "$build_dir"
 
+# The mutated copy is built beside its imports, and caravan/study_door.rye is one of them:
+# every study rung reaches its entry point through that body rather than writing it out.
+cp caravan/study_door.rye "$build_dir/study_door.rye"
+
 # Move the mode tier's floor up by one, so the giga page falls back into the portable tier and the
 # widths stop summing to nine. The module's own self-test asserts both, so a healthy module refuses it.
 sed 's/^pub const non_arch_object_type_count: u32 = 5;/pub const non_arch_object_type_count: u32 = 6;/' "$src" > "$copy"

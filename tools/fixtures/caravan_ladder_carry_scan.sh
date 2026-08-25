@@ -125,8 +125,16 @@ set -eu
 # 58,544 until 20260825.001500, when moving 117 trailing invariant comments above their asserts
 # across the ladder took four carried lines off; 58,540 until 20260825.010500, when the bounded
 # region was lifted out of bounded.rye, chain.rye and twin.rye into caravan/region.rye and took
-# eight more. A ceiling only falls, and this is the fold the meter was asking for.
-CEILING=${CARAVAN_CARRY_CEILING:-58532}
+# eight more. 58,532 until 20260825.092953, when the nine-line door ten study rungs each wrote out
+# byte for byte lifted into caravan/study_door.rye and each rung kept a three-line stub, taking
+# fifty-four off. A ceiling only falls, and this is the fold the meter was asking for.
+#
+# That last fold was a repair rather than a tidy. The ceiling stood CROSSED for two laps -- 58,541
+# from `caravan: the seven bounds a protection domain runs under` and 58,550 from `caravan: twelve
+# parts of an address space`, each rung adding one more copy of the same nine lines -- and nothing
+# said so, because this meter is reached only by tools/ca/caravan_suite_witness.rish and that choir
+# stood off the standing roster. REDS %219.
+CEILING=${CARAVAN_CARRY_CEILING:-58496}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 

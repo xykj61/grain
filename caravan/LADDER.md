@@ -145,6 +145,7 @@ which is why the suite's bijection binds witnesses to its roster rather than mod
 
 | Helper | File | What it carries |
 |--------|------|-----------------|
+| study door | [`study_door.rye`](study_door.rye) | the one entry point the ten microkernel-study rungs answer at -- one body reached through the rung that handed itself in, where nine lines stood in all ten |
 | ladder checks | [`ladder_checks.rye`](ladder_checks.rye) | the shared harness a rung hands itself to -- one check body, run against whichever rung called it |
 | region | [`region.rye`](region.rye) | the symlink to Tally's `Region` -- one bounded arena, one `buf_len_u32`, and one `divide` where five copies stood across two module roots |
 | parse int | [`parse_int.rye`](parse_int.rye) | the bounded integer read a dependent uses on its own argv line |

@@ -59,6 +59,8 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+
+const study_door = @import("study_door.rye");
 const refusals = @import("refusals.rye");
 const capabilities = @import("capabilities.rye");
 const edge = @import("edge.rye");
@@ -471,7 +473,7 @@ pub fn reach_count() ReplyError!u32 {
 // The stages and the reach, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     print("reply: version {s}\n", .{caravan_reply_version});
     for (all_stages, 0..) |stage, position| {
         print("reply: stage {d} {s} -- {s}\n", .{ position + 1, stage_name(stage), order_reason(stage) });
@@ -515,7 +517,7 @@ fn print_table() u8 {
 // Self-test -- assert the order, the reach, and the honesty of the echo
 // =========================================================================
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     // ---- The roster is read rather than recited, and the order lives in one list.
     assert(all_stages.len == 4);
     for (all_stages, 0..) |stage, position| {
@@ -767,11 +769,5 @@ fn run_self_test() u8 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

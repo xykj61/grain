@@ -41,7 +41,7 @@ fail_out() {
 
 rm -rf "$pen"
 mkdir -p "$pen/caravan" "$pen/tally"
-cp caravan/address_space.rye caravan/regions.rye caravan/mapping.rye "$pen/caravan/" 2>/dev/null || fail_out
+cp caravan/address_space.rye caravan/regions.rye caravan/mapping.rye caravan/study_door.rye "$pen/caravan/" 2>/dev/null || fail_out
 cp tally/copy.rye "$pen/tally/copy.rye" 2>/dev/null || fail_out
 ( cd "$pen/caravan" && ln -sf ../tally/copy.rye tally_copy.rye ) || fail_out
 

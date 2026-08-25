@@ -58,6 +58,8 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+
+const study_door = @import("study_door.rye");
 const refusals = @import("refusals.rye");
 
 const caravan_ipc_buffer_version = "20260821.053811";
@@ -255,7 +257,7 @@ pub const Buffer = struct {
 // The methods and a worked send, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     var buffer = Buffer.init();
     // Two words on purpose: it satisfies three of the four methods and falls
     // short of the fourth, so the table shows both answers rather than one.
@@ -407,7 +409,7 @@ fn prove_bounds() void {
     assert(buffer.whole());
 }
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     prove_declared_length();
     prove_truncation();
     prove_no_residue();
@@ -450,11 +452,5 @@ fn try_word(result: IpcError!u64) u64 {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }

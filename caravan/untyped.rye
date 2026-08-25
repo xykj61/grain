@@ -91,6 +91,8 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+
+const study_door = @import("study_door.rye");
 const refusals = @import("refusals.rye");
 
 const caravan_untyped_version = "20260821.060758";
@@ -349,7 +351,7 @@ pub const Region = struct {
 // The kinds and a worked carve, printed
 // =========================================================================
 
-fn print_table() u8 {
+pub fn print_table() u8 {
     // A region one page wide, opened at a page boundary. The carve below spends
     // a single endpoint first, which leaves the watermark sixteen bytes in --
     // far short of a page boundary, so the page that follows it is refused even
@@ -602,7 +604,7 @@ fn prove_bounds() void {
     assert(region.whole());
 }
 
-fn run_self_test() u8 {
+pub fn run_self_test() u8 {
     prove_opening();
     prove_alignment_floor();
     prove_alignment_holds();
@@ -650,11 +652,5 @@ fn try_region(result: UntypedError!Region) Region {
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
-    if (args.len >= 2) return 1;
-    return run_self_test();
+    return study_door.answer(@This(), init);
 }
