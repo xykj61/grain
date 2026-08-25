@@ -40,6 +40,11 @@
 #             and no vocabulary would ever have reached them, yet **200 of its 244 asserts** sit in
 #             14 functions the selftest alone calls. A helper called from a `pub` function as well
 #             stays a contract, which is what keeps reachability from swallowing real code.
+#             So is every assert in a file under a `tests/` directory -- a STRUCTURAL reading rather
+#             than a lexical one, the same shape as reading `date/` for a folded room. `rye/tests/`
+#             holds 116 such files, and the two carrying asserts declare themselves `Rye test:` in a
+#             header the selftest rule cannot see. Adding "test" to the word list would flip any
+#             module whose header merely mentioned one; a directory says it and means it.
 #             So is EVERY assert
 #             in a file whose own `//!` header declares it one -- `lattice/lattice.rye` opens
 #             `Lattice selftest`, builds to `lattice/bin/lattice selftest`, and names its 199
@@ -160,6 +165,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     # named. Read the head only, so a mention deep in the body cannot reclassify a real module.
     isself = 0
     for (i = 1; i <= n_lines && i <= 6; i++) if (lines[i] ~ /^\/\/!/ && tolower(lines[i]) ~ /selftest/) isself = 1
+    if (name ~ /(^|\/)tests?\//) isself = 1
     mark_proofs()
     c = cc = s = sc = w = wc = 0
     fn = ""

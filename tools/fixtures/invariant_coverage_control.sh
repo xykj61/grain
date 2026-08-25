@@ -99,6 +99,22 @@ EOF
 o=$(read_bins)
 check "7 a file declaring itself a selftest bins whole, pub fns included" "0" "$(val "$o" contract_asserts)"
 
+# 7b -- a file under a tests/ directory is a test, whatever its header says or its functions are
+#       named. Structural rather than lexical: `rye/tests/` holds 116 files declaring themselves
+#       `Rye test:`, a phrase the selftest header rule cannot see.
+rm -rf "$pen/m"; mkdir -p "$pen/m/tests"
+cat > "$pen/m/tests/a_test.rye" <<'EOF'
+pub fn check() void { assert(t == 1); }
+EOF
+cat > "$pen/m/ordinary.rye" <<'EOF'
+pub fn api() void { assert(o == 1); }
+EOF
+( cd "$pen" && git add -A ) >/dev/null 2>&1
+o=$(read_bins)
+check "7b a file under tests/ bins as proof" "1" "$(val "$o" contract_asserts)"
+check "7b and its assert lands in the selftest bin" "1" "$(val "$o" selftest_asserts)"
+rm -rf "$pen/m"; mkdir -p "$pen/m"
+
 # 8 -- a witness FILE is its own bin, separate from selftest.
 rm -f "$pen"/m/*.rye
 put h_witness.rye <<'EOF'

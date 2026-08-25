@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.215225` | [a directory says it and means it](20260824-215225_a-directory-says-it-and-means-it.kyri) | rye closed; 456 reasons sit above an assert unlabelled. |
 | `20260824.214523` | [the tail read not generated](20260824-214523_the-tail-read-not-generated.kyri) | linengrow closes at 100%; the tail was read rather than class-generated. |
 | `20260824.213203` | [a room that really was empty](20260824-213203_a-room-that-really-was-empty.kyri) | linengrow 41.6% to 62.6% -- the first room in eight whose number held. |
 | `20260824.211134` | [a check that shared the bug](20260824-211134_a-check-that-shared-the-bug.kyri) | crypto was 89.8%, not 57.5%; 483 lines carried a label the meter could not read. |
