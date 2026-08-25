@@ -18,7 +18,7 @@
 | [`amphora/`](../../amphora/README.md) | 7 | 11 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 110 | 112 |
+| [`caravan/`](../../caravan/README.md) | 111 | 112 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 8 |
 | [`constel/`](../../constel/README.md) | 31 | 36 |
