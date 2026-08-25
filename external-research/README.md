@@ -50,6 +50,10 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260825.173153` | [Dependency-tracked proving](20260825-173153_dependency-tracked-proving-the-worlds-answers.md) | rustc, Salsa, Bazel, Zig, Unison read against the roster's own digests |
+| `20260825.171921` | [A Works at the Top of the Brazos](20260825-171921_brazos-headwaters-works-and-fiber.md) | the plant at the river's source, and a fibre read on a high plain |
+| `20260825.171915` | [The Missouri's First Rung](20260825-171915_gallatin-headwaters-water-and-fiber.md) | Bozeman, the three forks, where a water works earns its keep |
+| `20260825.171909` | [A Fiber Corridor for the Kansas City Metro](20260825-171909_kansas-city-fiber-corridor.md) | hemp, the river counties, a mill at its first lap |
 | `20260802.161500` | [SSH - Mosh - IPv6 secure transport](20260802-161500_ssh-mosh-ipv6-secure-transport.md) | Three SSH layers - Mosh screen-as-value - Weave already holds sync - carrier only - silo Comlink IPv6+roam |
 | `20260802.154516` | [OpenSSH - Mosh - IPv6 beside Comlink](20260802-154516_openssh-mosh-ipv6-beside-comlink.md) | Dual-stack - bootstrap!=carriage - Mosh GPL study-only - gratitude clones - pier remoting silo companion |
 | `20260801.132929` | [Clean-energy NixOS pier -- Vultr Seattle / Mosh / Cursor CLI](20260801-132929_nixos-vps-clean-energy-mosh-cursor.md) | Vultr SEA = Sabey SDC Columbia (East Wenatchee) hydro - 2 GB nixos-anywhere - cursor-cli + nix-ld - DC-1 Termux/Termius; research only -- purchase by Keaton's hands |
