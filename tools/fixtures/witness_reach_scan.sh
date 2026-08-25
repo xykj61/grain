@@ -94,7 +94,15 @@ set -u
 # Both of those falls were real, because each choir took a roster row in the same lap it was
 # written. The gate now REQUIRES that pairing rather than trusting it: `unreached` moves only when
 # a row lands. Lower the ceiling whenever a choir lands WITH its roster row.
-CEILING=${WITNESS_REACH_CEILING:-1202}
+#
+# 1202 -> 1201 on 20260825.183336, and the single step is the point. tools/r/remember_git_nib_witness.rish
+# had stood in the `unclocked` band its whole life -- the loom booked after the nib class fired
+# twice, named by files no roster row reaches -- and the lap that needed it found the card carrying
+# a hash that resolved nowhere (REDS %227). One roster row moved it to `standing`. A second row
+# seated tools/r/reds_ledger_headline_witness.rish, born rostered, which raises `total` and
+# `standing` together and leaves `unreached` where it stood. So the number fell by exactly the one
+# file that changed clocks, which is what this gate was rewritten to mean.
+CEILING=${WITNESS_REACH_CEILING:-1201}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri

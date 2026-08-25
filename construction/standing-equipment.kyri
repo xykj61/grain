@@ -44,7 +44,7 @@
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
 
 format standing-equipment-v1
-stamp 20260825.132121
+stamp 20260825.183336
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
 card construction/standing-equipment-runs.kyri
@@ -302,3 +302,11 @@ guard ales_suite
 path tools/al/ales_suite_witness.rish
 tier cadence
 seated 20260825.132121
+
+guard remember_git_nib
+path tools/r/remember_git_nib_witness.rish
+seated 20260825.183336
+
+guard reds_ledger_headline
+path tools/r/reds_ledger_headline_witness.rish
+seated 20260825.183336
