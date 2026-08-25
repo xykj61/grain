@@ -1,0 +1,455 @@
+//! Caravan allowances -- the bounds a protection domain runs under, held beside
+//! the bounds Caravan's own supervision declares for itself.
+//!
+//! WHY THIS MODULE EXISTS. TAME's first rule is bound everything: name the max
+//! at construction, check it at the edge, fail with a named error. Caravan has
+//! kept that rule for its whole life, choosing each number for its own reasons
+//! and writing down why. seL4 Microkit is a formally verified framework that
+//! keeps the same rule, and it publishes **seven** numbers bounding a single
+//! protection domain -- read out of the vendored BSD-2-Clause header, never
+//! recited.
+//!
+//! So this module does one thing, completely: it states the seven in their own
+//! interface names, says which are independent and which are derived, gives
+//! each a plain sentence, and holds Caravan's own counterpart against it where
+//! one exists. The reading is policy -- pure Rye, hosted, no kernel beneath it
+//! -- and it is asserted rather than described, so the compiler and a witness
+//! both hold it.
+//!
+//! THE FIRST FINDING, WHICH THE ACCOUNTING FOUND RATHER THAN SOUGHT. Four of
+//! the seven have a Caravan counterpart today, and **every one of the four sits
+//! inside the framework's number**: a cspace of 32 slots inside a root cspace
+//! of 64, 32 capabilities inside 128, 16 channels inside 62, a 48-byte name
+//! inside 64. Caravan chose all four before anyone here had read this header --
+//! `derivation.rye` bounded a cspace because a supervisor's allotment is fixed,
+//! `channels.rye` bounded a roster because a run schedules what it can hold.
+//! Bounding for one's own reasons landed inside the bounds a verified framework
+//! enforces, in four places out of four.
+//!
+//! That is asserted below rather than admired, and the assert is **load-bearing
+//! rather than decorative**: this module imports the three Caravan modules and
+//! compares their actual constants, so raising `channels.max_channels` past 62
+//! on some future lap reds here, on that lap, rather than on the day of a port.
+//!
+//! THE SECOND FINDING, ABOUT HOW THE SEVEN ARE WRITTEN. Only **four** of the
+//! seven are independent numbers. The root cspace size is the root cspace bits
+//! shifted; the highest channel id is the channel count less one; the highest
+//! ioport id is the channel count itself. A verified framework spells each
+//! governing number once and derives the rest from it -- which is the same law
+//! this tree booked the hard way as REDS %199 and %201, a number spelled twice
+//! being a number two readings may come to disagree about. The derivations are
+//! recomputed below from their sources rather than listed, so this module
+//! cannot hold a derived value that disagrees with the number it comes from.
+//!
+//! WHAT THE THREE WITHOUT A COUNTERPART ARE. The root cspace bits is an
+//! exponent rather than a bound in its own right. The highest channel id is a
+//! ceiling Caravan gets for free from its own channel count. And **ioports are
+//! an x86 concept**, absent on the riscv64 this arc brings up first -- named so
+//! their absence is a measured fact rather than an oversight, the same way
+//! `objects.rye` names its configuration-guarded three.
+//!
+//! TWO ROOMS. The seven names and their values are checkable, and
+//! `tools/ca/caravan_allowances_witness.rish` binds them against the vendored
+//! header on metal. Which Caravan constant *should* correspond to each remains
+//! a design judgement, named as one below, earning its proof the day a
+//! protection domain is actually built.
+//!
+//! CLEAN ROOM. No Microkit line is reproduced here. The identifiers below are
+//! interface names, written so a later binding can be diffed against the header
+//! we are licensed to include.
+//!
+//! Usage:
+//!   allowances          Run the self-test (default)
+//!   allowances selftest Same as default
+//!   allowances table    Print the seven with their standings
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const derivation = @import("derivation.rye");
+
+const caravan_allowances_version = "20260825.061500";
+
+// =========================================================================
+// The seven, as the framework declares them
+// =========================================================================
+
+/// How many numbers bound one protection domain. Counted from the list below
+/// rather than recited, so this constant and the table can never disagree.
+pub const allowance_count: u32 = 7;
+
+/// How many of the seven are chosen rather than computed. The other three are
+/// recomputed from these below, so a derived value cannot drift from its source.
+pub const independent_count: u32 = 4;
+
+/// The exponent giving the size of a protection domain's root capability space,
+/// Microkit's `PD_ROOT_CAP_BITS`. An exponent rather than a bound of its own.
+pub const pd_root_cap_bits: u32 = 6;
+
+/// How many capabilities a protection domain's root capability space holds,
+/// Microkit's `PD_ROOT_CAP_SIZE`. Derived: two to the power of the bits above.
+pub const pd_root_cap_size: u32 = @as(u32, 1) << @as(u5, @intCast(pd_root_cap_bits));
+
+/// How many capabilities a protection domain may be handed beyond the ones the
+/// framework seats for it, Microkit's `MICROKIT_MAX_USER_CAPS`.
+pub const max_user_caps: u32 = 128;
+
+/// How many channels one protection domain may hold, Microkit's
+/// `MICROKIT_MAX_CHANNELS`. A channel is one declared way to reach a peer.
+pub const max_channels: u32 = 62;
+
+/// The highest channel number a protection domain may name, Microkit's
+/// `MICROKIT_MAX_CHANNEL_ID`. Derived: the count less one, since ids start at
+/// zero.
+pub const max_channel_id: u32 = max_channels - 1;
+
+/// The highest ioport number a protection domain may name, Microkit's
+/// `MICROKIT_MAX_IOPORT_ID`. Derived: the channel count itself, since the two
+/// share a numbering. Ioports are an x86 concept and are absent on riscv64.
+pub const max_ioport_id: u32 = max_channels;
+
+/// How many bytes a protection domain's name may run to, Microkit's
+/// `MICROKIT_PD_NAME_LENGTH`.
+pub const pd_name_length: u32 = 64;
+
+// =========================================================================
+// The vocabulary
+// =========================================================================
+
+/// One bound a protection domain runs under. Value order matches the order the
+/// header declares them, so a witness may walk both in step.
+pub const Allowance = enum(u8) {
+    root_cap_bits = 0,
+    root_cap_size = 1,
+    user_caps = 2,
+    channels_held = 3,
+    highest_channel_id = 4,
+    highest_ioport_id = 5,
+    name_length = 6,
+};
+
+/// The interface symbol each bound carries, so a witness can diff this module
+/// against the header rather than against a memory of it.
+pub fn interface_symbol(allowance: Allowance) []const u8 {
+    // invariant: every arm returns a non-empty symbol -- the switch is total.
+    const symbol: []const u8 = switch (allowance) {
+        .root_cap_bits => "PD_ROOT_CAP_BITS",
+        .root_cap_size => "PD_ROOT_CAP_SIZE",
+        .user_caps => "MICROKIT_MAX_USER_CAPS",
+        .channels_held => "MICROKIT_MAX_CHANNELS",
+        .highest_channel_id => "MICROKIT_MAX_CHANNEL_ID",
+        .highest_ioport_id => "MICROKIT_MAX_IOPORT_ID",
+        .name_length => "MICROKIT_PD_NAME_LENGTH",
+    };
+    // invariant: a named bound always carries its name
+    assert(symbol.len > 0);
+    return symbol;
+}
+
+/// The value the framework declares for the bound.
+pub fn declared_value(allowance: Allowance) u32 {
+    // invariant: every arm returns a value -- the switch is total.
+    const value: u32 = switch (allowance) {
+        .root_cap_bits => pd_root_cap_bits,
+        .root_cap_size => pd_root_cap_size,
+        .user_caps => max_user_caps,
+        .channels_held => max_channels,
+        .highest_channel_id => max_channel_id,
+        .highest_ioport_id => max_ioport_id,
+        .name_length => pd_name_length,
+    };
+    // invariant: a bound is a positive quantity
+    assert(value > 0);
+    return value;
+}
+
+/// Plain English for the bound, in Caravan's own words.
+pub fn declared_meaning(allowance: Allowance) []const u8 {
+    const meaning: []const u8 = switch (allowance) {
+        .root_cap_bits => "the exponent giving how large a domain's root capability space is",
+        .root_cap_size => "how many capabilities that root space holds",
+        .user_caps => "how many capabilities a domain may be handed beyond the seated ones",
+        .channels_held => "how many declared ways to reach a peer one domain may hold",
+        .highest_channel_id => "the highest channel number a domain may name, ids counting from zero",
+        .highest_ioport_id => "the highest ioport number a domain may name, on an architecture that has them",
+        .name_length => "how many bytes a domain's own name may run to",
+    };
+    // invariant: every bound explains itself
+    assert(meaning.len > 0);
+    return meaning;
+}
+
+// =========================================================================
+// Independent or derived
+// =========================================================================
+
+/// Whether the framework chose a number or computed it from another.
+pub const Source = enum(u8) {
+    independent = 0,
+    derived = 1,
+};
+
+/// Where a bound's value comes from.
+pub fn source_of(allowance: Allowance) Source {
+    // invariant: the switch is total over the seven.
+    const source: Source = switch (allowance) {
+        .root_cap_bits, .user_caps, .channels_held, .name_length => .independent,
+        .root_cap_size, .highest_channel_id, .highest_ioport_id => .derived,
+    };
+    return source;
+}
+
+/// The bound a derived value is computed from. A bound that stands on its own
+/// answers with itself, so every arm returns a real allowance and no caller has
+/// to hold an absence.
+pub fn source_allowance(allowance: Allowance) Allowance {
+    // invariant: the switch is total over the seven.
+    const from: Allowance = switch (allowance) {
+        .root_cap_size => .root_cap_bits,
+        .highest_channel_id, .highest_ioport_id => .channels_held,
+        .root_cap_bits, .user_caps, .channels_held, .name_length => allowance,
+    };
+    // invariant: an independent bound is its own source, and only that one
+    assert((from == allowance) == (source_of(allowance) == .independent));
+    return from;
+}
+
+/// Recompute a derived bound from its source, so this module can never hold a
+/// derived value that disagrees with the number it comes from. An independent
+/// bound answers with its own declared value.
+pub fn recomputed_value(allowance: Allowance) u32 {
+    // invariant: the switch is total over the seven.
+    const value: u32 = switch (allowance) {
+        .root_cap_size => @as(u32, 1) << @as(u5, @intCast(pd_root_cap_bits)),
+        .highest_channel_id => max_channels - 1,
+        .highest_ioport_id => max_channels,
+        .root_cap_bits, .user_caps, .channels_held, .name_length => declared_value(allowance),
+    };
+    // invariant: a recomputation lands on the declared number
+    assert(value == declared_value(allowance));
+    return value;
+}
+
+// =========================================================================
+// Caravan's own bound, held against the framework's
+// =========================================================================
+
+/// Whether Caravan declares a bound of its own for this allowance, and if not,
+/// why the absence is honest.
+pub const Standing = enum(u8) {
+    held = 0,
+    an_exponent_rather_than_a_bound = 1,
+    free_from_the_count = 2,
+    absent_on_this_architecture = 3,
+};
+
+/// Which Caravan concept bounds each allowance today, or why none does.
+///
+/// DESIGN JUDGEMENT, named as one. Each of the four holdings is a constant this
+/// module imports and compares, read off disk rather than remembered. The three
+/// standings without a counterpart are each a different kind of absence, so they
+/// are named apart rather than lumped as "owed".
+pub fn standing_of(allowance: Allowance) Standing {
+    // invariant: the switch is total over the seven.
+    const standing: Standing = switch (allowance) {
+        .root_cap_size, .user_caps, .channels_held, .name_length => .held,
+        .root_cap_bits => .an_exponent_rather_than_a_bound,
+        .highest_channel_id => .free_from_the_count,
+        .highest_ioport_id => .absent_on_this_architecture,
+    };
+    return standing;
+}
+
+/// Caravan's own number for the allowance. A standing without a counterpart
+/// answers zero, which `held_count` and the self-test both read as "none".
+pub fn caravan_value(allowance: Allowance) u32 {
+    // invariant: the switch is total over the seven.
+    const value: u32 = switch (allowance) {
+        .root_cap_size => derivation.max_slots,
+        .user_caps => capabilities.max_dependents * capabilities.max_caps_per_dependent,
+        .channels_held => channels.max_channels,
+        .name_length => channels.max_name_len,
+        .root_cap_bits, .highest_channel_id, .highest_ioport_id => 0,
+    };
+    // invariant: a counterpart exists exactly where a standing is held
+    assert((value > 0) == (standing_of(allowance) == .held));
+    return value;
+}
+
+/// One line naming the Caravan constant that stands for the bound, or why none
+/// does, so the accounting reads as design rather than as a list.
+pub fn standing_reason(allowance: Allowance) []const u8 {
+    const reason: []const u8 = switch (allowance) {
+        .root_cap_size => "derivation.max_slots bounds a supervisor's cspace, because an allotment is fixed rather than growing",
+        .user_caps => "capabilities.max_dependents times max_caps_per_dependent is every right the table can hand out",
+        .channels_held => "channels.max_channels rosters the declared ways one run may reach its peers",
+        .name_length => "channels.max_name_len bounds every name the roster carries",
+        .root_cap_bits => "an exponent, so the bound it gives rise to is the one worth holding",
+        .highest_channel_id => "a ceiling Caravan gets for free from its own channel count",
+        .highest_ioport_id => "ioports are an x86 concept, and this arc brings up riscv64 first",
+    };
+    // invariant: every standing names its reason
+    assert(reason.len > 0);
+    return reason;
+}
+
+// =========================================================================
+// Counting the accounting
+// =========================================================================
+
+/// The seven, in interface order. One list, so no count is ever recited.
+pub const all_allowances = [_]Allowance{
+    .root_cap_bits,      .root_cap_size,      .user_caps,
+    .channels_held,      .highest_channel_id, .highest_ioport_id,
+    .name_length,
+};
+
+/// How many of the seven Caravan bounds today. Counted from the standing of
+/// each rather than recited, so the number and the table agree.
+pub fn held_count() u32 {
+    var count: u32 = 0;
+    for (all_allowances) |allowance| {
+        if (standing_of(allowance) == .held) count += 1;
+    }
+    // invariant: holdings never exceed the vocabulary
+    assert(count <= allowance_count);
+    return count;
+}
+
+/// How many of the seven are chosen rather than computed. Counted the same way.
+pub fn independent_measured() u32 {
+    var count: u32 = 0;
+    for (all_allowances) |allowance| {
+        if (source_of(allowance) == .independent) count += 1;
+    }
+    // invariant: independents never exceed the vocabulary
+    assert(count <= allowance_count);
+    return count;
+}
+
+/// Whether every Caravan counterpart sits at or inside the framework's number.
+/// This is the finding, computed rather than claimed.
+pub fn every_holding_inside() bool {
+    var inside = true;
+    for (all_allowances) |allowance| {
+        if (standing_of(allowance) != .held) continue;
+        // invariant: a held standing always carries a real counterpart
+        assert(caravan_value(allowance) > 0);
+        if (caravan_value(allowance) > declared_value(allowance)) inside = false;
+    }
+    // invariant: the reading is settled either way before it is returned
+    assert(inside or !inside);
+    return inside;
+}
+
+// =========================================================================
+// The table, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("allowances: version {s}\n", .{caravan_allowances_version});
+    for (all_allowances) |allowance| {
+        print("allowances: {d} {s} = {d} [{s} from {s}] -- {s} [{s}] ours {d}: {s}\n", .{
+            @intFromEnum(allowance),
+            interface_symbol(allowance),
+            declared_value(allowance),
+            @tagName(source_of(allowance)),
+            interface_symbol(source_allowance(allowance)),
+            declared_meaning(allowance),
+            @tagName(standing_of(allowance)),
+            caravan_value(allowance),
+            standing_reason(allowance),
+        });
+    }
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- assert the derivations recompute, the standings partition, and
+// every Caravan bound sits inside the framework's
+// =========================================================================
+
+fn run_self_test() u8 {
+    // The list and the enum agree, so the count is read rather than recited.
+    assert(all_allowances.len == allowance_count);
+    var seen: u32 = 0;
+    for (all_allowances, 0..) |allowance, index| {
+        assert(@intFromEnum(allowance) == index);
+        seen += 1;
+    }
+    assert(seen == allowance_count);
+
+    // Four of the seven are chosen; the other three are computed from them.
+    assert(independent_measured() == independent_count);
+    assert(independent_count < allowance_count);
+
+    // Every derived value recomputes to exactly the number declared for it, so
+    // this module cannot hold a derived value that has drifted from its source.
+    for (all_allowances) |allowance| {
+        assert(recomputed_value(allowance) == declared_value(allowance));
+    }
+    assert(source_allowance(.root_cap_size) == .root_cap_bits);
+    assert(source_allowance(.highest_channel_id) == .channels_held);
+    assert(source_allowance(.highest_ioport_id) == .channels_held);
+    assert(source_allowance(.channels_held) == .channels_held);
+
+    // The two ceilings the channel count gives rise to sit either side of it.
+    assert(max_channel_id < max_channels);
+    assert(max_ioport_id == max_channels);
+
+    // Every allowance names a real standing and a real reason.
+    for (all_allowances) |allowance| {
+        assert(interface_symbol(allowance).len > 0);
+        assert(declared_meaning(allowance).len > 0);
+        assert(standing_reason(allowance).len > 0);
+        assert(declared_value(allowance) > 0);
+    }
+
+    // Four are held, and a counterpart exists exactly where one is.
+    const held = held_count();
+    assert(held == 4);
+    assert(held < allowance_count);
+    for (all_allowances) |allowance| {
+        const has_value = caravan_value(allowance) > 0;
+        assert(has_value == (standing_of(allowance) == .held));
+    }
+
+    // THE FINDING, asserted at both ends. Every Caravan bound with a framework
+    // counterpart sits inside it, and each of the four is named so a later
+    // widening reds here rather than on the day of a port.
+    assert(every_holding_inside());
+    assert(derivation.max_slots <= pd_root_cap_size);
+    assert(capabilities.max_dependents * capabilities.max_caps_per_dependent <= max_user_caps);
+    assert(channels.max_channels <= max_channels);
+    assert(channels.max_name_len <= pd_name_length);
+
+    // The other two rooms that carry a name are bounded the same way, so the
+    // reading holds across every Caravan module that names a protection domain.
+    assert(capabilities.max_name_len <= pd_name_length);
+
+    print("allowances: version {s}\n", .{caravan_allowances_version});
+    print("allowances: the framework bounds one protection domain with {d} numbers, of which {d} are chosen and {d} are derived.\n", .{ allowance_count, independent_count, allowance_count - independent_count });
+    print("allowances: Caravan bounds {d} of the {d}, and every one of the {d} sits inside the framework's number.\n", .{ held, allowance_count, held });
+    print("allowances: cspace {d} inside {d}; rights {d} inside {d}; channels {d} inside {d}; name {d} inside {d}.\n", .{
+        derivation.max_slots,                                            pd_root_cap_size,
+        capabilities.max_dependents * capabilities.max_caps_per_dependent, max_user_caps,
+        channels.max_channels,                                           max_channels,
+        channels.max_name_len,                                           pd_name_length,
+    });
+    print("allowances: the three without a counterpart are an exponent, a ceiling free from the count, and a bound absent on riscv64.\n", .{});
+    print("allowances: derivations recomputed, standings partitioned, every holding inside -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

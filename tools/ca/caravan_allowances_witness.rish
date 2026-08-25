@@ -1,0 +1,135 @@
+# tools/ca/caravan_allowances_witness.rish -- the bounds a protection domain runs under, and the four
+# Caravan already sits inside.
+#
+# WHY THIS RUNG. TAME's first rule is bound everything, and Caravan has kept it for its whole life,
+# choosing each maximum for its own reasons and writing down why. seL4 Microkit is a formally verified
+# framework that keeps the same rule and publishes SEVEN numbers bounding one protection domain. This
+# rung states the seven, says which are chosen and which are computed, and holds Caravan's own
+# constant against each where one exists.
+#
+# THE FINDING, which the accounting found rather than sought. Four of the seven have a Caravan
+# counterpart, and every one of the four sits INSIDE the framework's number: a cspace of 32 slots
+# inside a root cspace of 64, 32 rights inside 128, 16 channels inside 62, a 48-byte name inside 64.
+# All four were chosen before anyone here had read this header. Bounding for one's own reasons landed
+# inside the bounds a verified framework enforces, four times out of four.
+#
+# The assert is load-bearing rather than decorative: caravan/allowances.rye IMPORTS channels.rye,
+# capabilities.rye and derivation.rye and compares their actual constants, so widening one past the
+# framework's number reds on the lap that widens it rather than on the day of a port.
+#
+# THE SECOND FINDING, about how the seven are written. Only four are independent. The root cspace
+# size is the bits shifted, the highest channel id is the count less one, the highest ioport id is
+# the count itself -- a verified framework spelling each governing number once and deriving the rest,
+# which is the law this tree booked the hard way as REDS %199 and %201.
+#
+# WHAT IS PROVEN, on metal, and every RED path with it:
+#
+#   the module builds and its own asserts pass          the asserts ARE the specification
+#   all seven names and values match the header         read at run time, never recited
+#   all three derived values resolve from their SOURCE  a re-sourced derivation is drift, not agreement
+#   a value moved by one is refused                     and moves the two derived from it, so three mismatch
+#   a symbol renamed is refused                         the header count falls short of seven
+#   a derivation re-sourced is refused                  derived_resolved falls to two
+#   an absent header is refused                         rather than read as zero agreement
+#   a Caravan bound widened past the framework's        fails the module's own self-test
+#
+# WHAT IS NOT PROVEN. That the mapping from each Microkit bound to a Caravan constant is the RIGHT
+# one. That is a design judgement, named as one in the module, and it earns its proof the day a
+# protection domain is actually built.
+#
+# CLEAN ROOM. No Microkit line is reproduced. The identifiers are interface names, and the header is
+# read from the vendored BSD-2-Clause gitlink we are licensed to include.
+#
+# Style: context/GAUGE_STYLE.md - Lens: context/TAME_CORE.md - Kin: tools/ca/caravan_objects_witness.rish
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_allowances_witness.rish
+
+say "caravan-allowances: Language EN -- a verified framework bounds one protection domain with seven numbers, and Caravan already sits inside four of them."
+say "caravan-allowances: Style Gauge -- three claims in order. The seven are read from the header rather than recited. Four are chosen and three are derived from them. And every Caravan bound with a counterpart sits inside the framework's number."
+say "caravan-allowances: Lens TAME -- bound everything, say why; the module's asserts are the specification, and four RED paths are proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/allowances"
+let header = "vendor/microkit/libmicrokit/include/microkit.h"
+let scan = "tools/fixtures/caravan_allowance_symbol_scan.sh"
+let build_dir = "tools/.build/caravan_allowances"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-allowances: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out.
+let checked_out = run ["sh" "-c" "test -f ${header} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-allowances: vendor/microkit is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO READ, re-checked at the file level. Intent is not a licence.
+let bsd = run ["sh" "-c" "grep -c 'SPDX-License-Identifier: BSD-2-Clause' ${header} | tr -d ' \n'"]
+assert (trim bsd.out) == "1" else "caravan-allowances: the Microkit interface header no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
+
+# 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/allowances.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-allowances: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-allowances: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-allowances: the self-test is not GREEN"
+assert test.out contains "bounds one protection domain with 7 numbers, of which 4 are chosen and 3 are derived" else "caravan-allowances: the seven did not partition four-and-three"
+assert test.out contains "Caravan bounds 4 of the 7, and every one of the 4 sits inside" else "caravan-allowances: the finding did not hold"
+assert test.out contains "cspace 32 inside 64; rights 32 inside 128; channels 16 inside 62; name 48 inside 64" else "caravan-allowances: the four holdings did not read as measured"
+say test.out
+
+# 3. THE SEVEN ARE READ FROM THE HEADER, names and values alike, never recited.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert table.ok else "caravan-allowances: could not print the table"
+
+let parity = run ["sh" "-c" "sh ${scan} ${header} ${build_dir}/table.txt"]
+assert parity.ok else "caravan-allowances: the symbol scan did not run"
+say parity.out
+assert parity.out contains "header_count=7" else "caravan-allowances: the header no longer declares all seven bounds"
+assert parity.out contains "table_count=7" else "caravan-allowances: the module no longer prints all seven"
+assert parity.out contains "name_mismatch=0" else "caravan-allowances: a bound's interface name has drifted from the header"
+assert parity.out contains "value_mismatch=0" else "caravan-allowances: a bound's value has drifted from the header"
+assert parity.out contains "derived_resolved=3" else "caravan-allowances: a derived bound no longer resolves from the source the header names"
+assert parity.out contains "verdict=ok" else "caravan-allowances: the header and the module disagree"
+
+# 4. THE RED PATHS, on metal. A guard that cannot red guards nothing (REDS row 59).
+let pen = run ["sh" "-c" "mktemp -d"]
+assert pen.ok else "caravan-allowances: could not open a pen for the refusals"
+let cell = trim pen.out
+
+# 4a. A value moved by one is refused -- and moves the two derived from it, so three mismatch.
+let moved = run ["sh" "-c" "sed 's|^#define MICROKIT_MAX_CHANNELS 62|#define MICROKIT_MAX_CHANNELS 63|' ${header} > ${cell}/moved.h && sh ${scan} ${cell}/moved.h ${build_dir}/table.txt"]
+assert moved.out contains "verdict=drift" else "caravan-allowances: a moved value must be refused"
+assert moved.out contains "value_mismatch=3" else "caravan-allowances: moving the channel count must move the two bounds derived from it"
+
+# 4b. A renamed symbol is refused: the header no longer declares seven.
+let renamed = run ["sh" "-c" "sed 's|^#define MICROKIT_PD_NAME_LENGTH|#define MICROKIT_PD_LABEL_LENGTH|' ${header} > ${cell}/renamed.h && sh ${scan} ${cell}/renamed.h ${build_dir}/table.txt"]
+assert renamed.out contains "verdict=drift" else "caravan-allowances: a renamed symbol must be refused"
+assert renamed.out contains "header_count=6" else "caravan-allowances: a renamed symbol must leave the header short of seven"
+
+# 4c. A derivation re-sourced is refused. This is the reading a value-only check cannot make: the
+# number may still be right while what it is derived FROM has changed underneath it.
+let resourced = run ["sh" "-c" "sed 's|^#define MICROKIT_MAX_CHANNEL_ID (MICROKIT_MAX_CHANNELS - 1)|#define MICROKIT_MAX_CHANNEL_ID (MICROKIT_MAX_USER_CAPS - 1)|' ${header} > ${cell}/resourced.h && sh ${scan} ${cell}/resourced.h ${build_dir}/table.txt"]
+assert resourced.out contains "verdict=drift" else "caravan-allowances: a re-sourced derivation must be refused"
+assert resourced.out contains "derived_resolved=2" else "caravan-allowances: a re-sourced derivation must leave one of the three unresolved"
+
+# 4d. An absent header is refused rather than read as zero disagreement.
+let gone = run ["sh" "-c" "sh ${scan} ${cell}/never-existed.h ${build_dir}/table.txt"]
+assert gone.out contains "verdict=missing-header" else "caravan-allowances: an absent header must refuse rather than read as agreement"
+
+# 4e. THE FINDING IS LOAD-BEARING, proven by widening a bound until the module refuses. An assert
+# nobody has ever seen fail is a sentence rather than a check, and this is the whole reason the
+# module IMPORTS those three Caravan constants instead of copying their values.
+let widen = run ["sh" "-c" "sh tools/fixtures/caravan_allowance_widen_control.sh ${zig} ${build_dir}/pen"]
+assert widen.ok else "caravan-allowances: the widen control did not run"
+say widen.out
+assert widen.out contains "baseline=ok" else "caravan-allowances: the pen must build and pass with every bound as the tree keeps it, or a broken pen would read as a proof"
+assert widen.out contains "widened=refused" else "caravan-allowances: widening a Caravan bound past the framework's must fail the module's own self-test"
+assert widen.out contains "assertion_named=yes" else "caravan-allowances: the refusal must be an assertion failure, rather than a build that fell over for some other reason"
+assert widen.out contains "verdict=ok" else "caravan-allowances: the widen control must agree with itself"
+
+let sweep = run ["sh" "-c" "rm -rf ${cell} ${build_dir}/pen"]
+assert sweep.ok else "caravan-allowances: could not sweep the pen"
+
+say "four RED paths proven on metal, and the finding proven load-bearing by widening a bound until it refuses"
+say "GREEN: caravan-allowances -- seven bounds read from the header, four chosen and three derived, and every Caravan bound with a counterpart sits inside."
