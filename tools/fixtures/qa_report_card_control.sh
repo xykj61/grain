@@ -269,4 +269,39 @@ grep -v '^REGISTER_MIN_SENTENCES=' "$pen/keep2.sh" > "$pen/tools/fixtures/prose_
 run warm.md >/dev/null 2>&1 && echo "floor_source_load_bearing=no" || echo "floor_source_load_bearing=yes"
 cp "$pen/keep2.sh" "$pen/tools/fixtures/prose_register_scan.sh"
 
+# 16 -- Truth in a program reads comment lines, and a symlink's citations belong to its body.
+mkdir -p "$pen/lib" "$pen/apps/one" "$pen/spec"
+printf 'a spec\n' > "$pen/spec/a.md"
+# The planted comment lines are written through printf rather than sat in a heredoc, because
+# a heredoc line beginning `//!` IS a comment line in this file too, and its relative target
+# resolves from the pen rather than from tools/fixtures. The guard was right to say so.
+{ printf '%s\n' "//! Ground: [\`spec/a.md\`](../spec/a.md)"
+  printf '%s\n' 'const row = "| [`x`](../../nowhere/at/all.md) |";'
+  printf '%s\n' '//    y[2] = x[1](32000) + 3/4-y[1](-32768) = 7424.'
+} > "$pen/lib/body.rye"
+o=$(run lib/body.rye --setting meter)
+[ "$(val "$o" truth_source)" = "comments" ] && echo "program_cites_in_comments=yes" || echo "program_cites_in_comments=no ($(val "$o" truth_source))"
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "program_body_truth_clean=yes" || echo "program_body_truth_clean=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q 'of 1 cited paths' && echo "code_and_math_left_out=yes" || echo "code_and_math_left_out=no"
+
+# The same body reached through a second door. Read at the link's own path `../spec/a.md` lands in
+# apps/spec and is broken; the card resolves the link and reads the citation from where it was
+# written, which is what kept six correct files from being repaired into breakage on 20260825.
+( cd "$pen/apps/one" && ln -sf ../../lib/body.rye body.rye )
+o=$(run apps/one/body.rye --setting meter)
+[ "$(val "$o" path_kind)" = "symlink" ] && echo "symlink_named=yes" || echo "symlink_named=no ($(val "$o" path_kind))"
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "symlink_reads_the_body=yes" || echo "symlink_reads_the_body=no ($(val "$o" truth_counted))"
+
+# And resolving the link is a correction rather than an exemption: break the body and both doors say so.
+printf '%s\n' "//! Ground: [\`spec/a.md\`](../../spec/a.md)" > "$pen/lib/body.rye"
+[ "$(val "$(run lib/body.rye --setting meter)" truth_counted)" -eq 80 ] && echo "body_break_seen=yes" || echo "body_break_seen=no"
+[ "$(val "$(run apps/one/body.rye --setting meter)" truth_counted)" -eq 80 ] && echo "body_break_seen_through_door=yes" || echo "body_break_seen_through_door=no"
+
+# A prose file cites everywhere, headings and code lines alike -- a Markdown heading begins with `#`
+# and would read as a comment mark, so the program rule is kept away from prose deliberately.
+printf '# [a heading link](gone.md)\n\nAnd a plain sentence with four words.\n' > "$pen/heading.md"
+o=$(run heading.md)
+[ "$(val "$o" truth_source)" = "prose" ] && echo "prose_cites_everywhere=yes" || echo "prose_cites_everywhere=no"
+[ "$(val "$o" truth_counted)" -eq 80 ] && echo "heading_link_still_counted=yes" || echo "heading_link_still_counted=no ($(val "$o" truth_counted))"
+
 echo "control_verdict=ok"

@@ -1,0 +1,77 @@
+# tools/co/comment_citation_witness.rish -- a path a program cites in a comment still resolves.
+#
+# WHY THIS RUNG. This tree keeps a promise for documents and had never kept it for programs.
+# tools/t/tracked_link_witness.rish reads relative links inside `.md` and refuses a broken one; a
+# `.rye` module makes the same promise in its doc comments -- `//! Ground: [`spec`](../x.md)` -- and
+# nothing read those at all.
+#
+# So when the `tools/` fold of 20260823.144100 carried 1,917 entries into 35 rooms,
+# tools/rye/session_logs_archive.rye moved one directory deeper and its two comment citations kept
+# the depth they were written at, pointing at `tools/ORGANIZING.md` and `tools/.claude/`, which have
+# never existed. Two repointers ran that day and one link guard stands, and a Markdown link inside a
+# `.rye` comment falls between all three. Two more broke when a design note folded into
+# `active-designing/yonder/`. Four in all, found on 20260825 by a meter looking at something else.
+#
+# WHAT IS CHECKED, and gated at ZERO. Every tracked non-prose file carrying `](`, read through
+# tools/fixtures/qa_report_card.sh -- the reading is CITED rather than copied, so what counts as a
+# citation is decided in one place. Measured at seating: 85 programs scanned, 0 broken. The
+# population is small and closed, so a ratchet would be the wrong shape; there is nothing to migrate.
+#
+# WHAT THE READING ALREADY KNOWS, each learned from a real case rather than imagined:
+#
+#   a placeholder shape is an illustration    `](date/YYYYMMDD/name)`, `](date/<day>/name)`
+#   a backticked span illustrates syntax      `](./x)` inside backticks in exec_bit_scan.sh
+#   a target must look like a path            `x[1](32000)` is index-then-value arithmetic
+#   link syntax in CODE is emitted data       a row a tool prints into a page two directories away
+#   a symlink's citations belong to its body  pond/apps/granary/wov_core.rye is mode 120000
+#
+# The last one is the one that would have done damage. Six symlinked doors read as eleven broken
+# citations, and repairing them would have written through the links into six correct bodies and
+# broken all six at their real homes. git lists the body alone, so each is read exactly once.
+#
+# WHAT IS PROVEN, on metal. Fourteen behaviors on a real git repository in a throwaway pen -- a
+# broken citation bitten, named, and counted; each of the five blessed shapes above left free; a
+# symlinked door adding nothing and a body's break reported once against the body rather than a
+# door; prose left to its own guard; and the card proven load-bearing, since losing it makes the
+# scan refuse rather than report zero.
+#
+# WHAT IS NOT CHECKED. Whether the cited document still SAYS what the comment claims. That is
+# .claude/rules/docs-implementation-sync.md's job, and only a reader can do it.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/docs-implementation-sync.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comment_citation_witness.rish
+
+say "comment-citation: Language EN -- a citation is a promise, and a program makes them in its comments."
+say "comment-citation: Style Gauge -- one reading, cited from the report card rather than spelled again beside it."
+say "comment-citation: Lens TAME -- references are promises; a path that moved is repointed rather than left to a reader to discover."
+
+let scan = run ["sh" "tools/fixtures/comment_citation_scan.sh"]
+assert scan.ok else "comment-citation: a program cites a path that does not resolve -- read its own line"
+say scan.out
+assert scan.out contains "broken_citations=0" else "comment-citation: this reading is gated at zero, because the population is small and closed"
+assert scan.out contains "verdict=ok" else "comment-citation: the scan must agree with itself before it is believed"
+say "field GREEN -- every path a program cites in a comment resolves on this tree"
+
+let control = run ["sh" "tools/fixtures/comment_citation_control.sh"]
+assert control.ok else "comment-citation: the control must complete"
+say control.out
+assert control.out contains "resolving_citation_free=yes" else "comment-citation: a citation that lands must cost nothing"
+assert control.out contains "broken_citation_bitten=yes" else "comment-citation: a citation that lands nowhere must refuse -- a guard that cannot red guards nothing"
+assert control.out contains "broken_citation_named=yes" else "comment-citation: a broken citation must be named, so it can be repaired"
+assert control.out contains "broken_citation_counted=yes" else "comment-citation: and counted, so the reading can be trusted"
+assert control.out contains "code_line_free=yes" else "comment-citation: link syntax in code is data the program emits, relative to where that output lands"
+assert control.out contains "placeholder_free=yes" else "comment-citation: a placeholder shape illustrates a path rather than citing one"
+assert control.out contains "backticked_syntax_free=yes" else "comment-citation: a backticked span illustrates syntax"
+assert control.out contains "math_notation_free=yes" else "comment-citation: array-index-then-value arithmetic is not a citation"
+assert control.out contains "body_listed_once=yes" else "comment-citation: git lists the body alone, so a body is read once rather than once per door"
+assert control.out contains "symlink_door_adds_nothing=yes" else "comment-citation: a second door onto one body must add no reading"
+assert control.out contains "body_break_reported_once=yes" else "comment-citation: a body's break is reported once"
+assert control.out contains "body_named_not_door=yes" else "comment-citation: and names the body, which is where the repair belongs"
+assert control.out contains "prose_left_to_its_own_guard=yes" else "comment-citation: prose has its own link guard; this one reads programs"
+assert control.out contains "card_load_bearing=yes" else "comment-citation: the reading is cited, so losing the card must refuse rather than report zero"
+assert control.out contains "control_verdict=ok" else "comment-citation: the control must agree with itself"
+say "fourteen behaviors proven on a real git repository, the refusal shown as hard as the welcome"
+
+say "GREEN: comment-citation -- every path a program cites in a comment resolves."

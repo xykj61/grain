@@ -240,13 +240,65 @@ fi
 [ "$setting" = "meter" ] && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
-dir=$(dirname "$path")
+# A relative citation belongs to the BODY that wrote it, and a symlink is a second door onto one
+# body rather than a second copy of it. `pond/apps/granary/wov_core.rye` is mode 120000 pointing at
+# `granary/wov_core.rye`; read at the link's own path its `](../context/specs/...)` lands in
+# `pond/apps/context/`, and read at the body's path it lands exactly right. Six such doors read as
+# eleven broken citations on 20260825, and repairing them would have written through the links into
+# six correct bodies and broken all six at their real homes.
+#
+# So Truth resolves the link and reads the citation from where it was written. The card names that
+# it did, because a reader deserves to know which of two doors was measured.
+dir=$(cd "$root/$(dirname "$path")" 2>/dev/null && pwd)
+[ -n "$dir" ] || dir=$root/$(dirname "$path")
+path_kind=file
+if [ -L "$root/$path" ]; then
+  path_kind=symlink
+  link=$(readlink "$root/$path")
+  case "$link" in
+    /*) linkdir=$(dirname "$link") ;;
+    *)  linkdir=$(cd "$dir" 2>/dev/null && cd "$(dirname "$link")" 2>/dev/null && pwd) ;;
+  esac
+  [ -n "$linkdir" ] && dir=$linkdir
+fi
 cited=0
 unresolved=0
 illustrations=0
 : > "$work/unresolved.txt"
 : > "$work/illustrations.txt"
-grep -o '](\([^)]*\))' "$root/$path" 2>/dev/null | sed 's/^](//; s/)$//' | sed 's/#.*$//' > "$work/links.txt" || :
+# A citation is a promise the FILE makes, and a program mostly makes none. In a prose file every
+# link is a citation and is read as one. In a program, link syntax is almost always something else:
+# a fixture the file plants in a throwaway pen, or a fragment of a page the file EMITS -- and a path
+# in emitted output is relative to wherever that output lands rather than to the file that wrote it.
+# tools/fixtures/geode_libraries_scan.sh writes `](../../README.md)` into a page that lives two
+# directories away, and reading it from the scan's own directory lands outside the repository.
+#
+# So outside a prose file, a link counts only where the file is SPEAKING -- on a comment line, whose
+# first non-whitespace is `//` or `#`, the two comment marks this tree's languages use.
+#
+# Measured 20260825, and the rule discriminates rather than merely quieting things down:
+# pond/customs.rye keeps 3 of 3 and caravan/subscribe_poll_service.rye keeps 3 of 3, all genuine
+# `//!` doc-comment citations; tools/rye/session_logs_archive.rye keeps its 2 real ones and drops 28
+# fragments of the index rows it writes; six control scripts drop every planted fixture and keep
+# nothing, which is right, because they cite nothing.
+#
+# A BROKEN link in a comment still counts. That is the half that keeps this a reading rather than a
+# way for a program to stop being checked, and the control plants it.
+#
+# Prose files are untouched, deliberately. A Markdown heading begins with `#` and would read as a
+# comment under this rule, so applying it there would count only the headings -- and the separate
+# question of a link inside a fenced block or a backtick span reaches 20+ documents and wants its
+# own round with its own measurement, rather than riding along on this one.
+case "$path" in
+  *.md|*.mdc|*.markdown) truth_source=prose ;;
+  *)                     truth_source=comments ;;
+esac
+
+if [ "$truth_source" = prose ]; then
+  cat "$root/$path" 2>/dev/null
+else
+  awk '/^[ \t]*(\/\/|#)/ { line = $0; gsub(/`[^`]*`/, " code ", line); print line }' "$root/$path" 2>/dev/null
+fi | grep -o '](\([^)]*\))' | sed 's/^](//; s/)$//' | sed 's/#.*$//' > "$work/links.txt" || :
 while IFS= read -r target; do
   [ -n "$target" ] || continue
   case "$target" in http*|mailto:*|'<'*) continue ;; esac
@@ -262,13 +314,26 @@ while IFS= read -r target; do
   # FABRICATED stamp -- digits naming no file -- still counts against Truth, which is the half that
   # keeps this a reading rather than an escape hatch, and the control plants both halves.
   case "$target" in
-    *YYYYMMDD*|*HHMMSS*)
+    *YYYYMMDD*|*HHMMSS*|*"<"*">"*|*...*)
       illustrations=$((illustrations + 1))
       printf 'illustration: %s\n' "$target" >> "$work/illustrations.txt"
       continue ;;
   esac
+  # In a program, a citation names a path, and `](` occurs in prose that means something else.
+  # lotus/allpass.rye works an example through in a comment -- `x[1](32000) + 3/4-y[1](-32768)` --
+  # where the brackets are array indices and the parentheses are values, and three "targets" of
+  # 32000, -32768 and 7424 fall straight out of the pattern. So a target counts only where it looks
+  # like a path: a slash, or a short trailing extension. `linengrow/murr.rye` cites its sibling as
+  # `](murr_core.rye)` with no slash at all and that citation is real, which is why the extension
+  # half is here rather than a plainer slash-only rule.
+  if [ "$truth_source" = comments ]; then
+    case "$target" in
+      */*|*.??|*.???|*.????|*.?????) ;;
+      *) continue ;;
+    esac
+  fi
   cited=$((cited + 1))
-  [ -e "$root/$dir/$target" ] && continue
+  [ -e "$dir/$target" ] && continue
   [ -e "$root/$target" ] && continue
   base=$(basename "$target")
   day=$(echo "$base" | sed -n 's/^\([0-9]\{8\}\)-[0-9]\{6\}[_.].*/\1/p')
@@ -310,6 +375,8 @@ else
 fi
 echo "reach_mode=$reach_mode (declares_index=$declares_index; prose floor $index_floor words)"
 echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"
+echo "truth_source=$truth_source (a program cites in its comments; a prose file cites everywhere)"
+[ "$path_kind" = symlink ] && echo "path_kind=symlink (citations read from the body at $dir)"
 [ -s "$work/unresolved.txt" ] && cat "$work/unresolved.txt"
 [ -s "$work/illustrations.txt" ] && cat "$work/illustrations.txt"
 echo "service_inputs living_citers=$citers named_by_card=$named_by_card in_seed=$in_seed"

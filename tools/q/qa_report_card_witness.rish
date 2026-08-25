@@ -24,7 +24,7 @@
 # claims have gone false costs a reader more than an absent page. Honesty first, written into the
 # arithmetic rather than left to a habit.
 #
-# THREE READINGS THAT LEARNED AN HONEST DENOMINATOR, 20260825. A meter that instructs a repair which
+# FOUR READINGS THAT LEARNED AN HONEST DENOMINATOR, 20260825. A meter that instructs a repair which
 # would make the artifact worse is the thing to fix, and each of these was one reading short of it.
 #
 #   An INDEX is read as one. A cross-reference budget of one per hundred words is written for prose;
@@ -53,7 +53,15 @@
 #   One condition here rather than two, because a sentence count is measured rather than declared,
 #   so no page can assert its way under it. The 20% wall on the twelve door documents is untouched.
 #
-# WHAT IS PROVEN, on metal. Fifty-four behaviors in a throwaway pen. The scale at every one of its
+#   A PROGRAM CITES IN ITS COMMENTS. Truth read every `](` in a file, and outside prose that pattern
+#   is mostly something else: a fixture planted in a pen, a fragment of a page the file emits (whose
+#   paths are relative to where the OUTPUT lands), or `x[1](32000)` arithmetic. So in a program a
+#   citation is a path named on a comment line, outside backticks, that looks like a path -- and a
+#   SYMLINK's citations belong to the body that wrote them. Six symlinked doors read as eleven broken
+#   citations on 20260825, and repairing them would have written through the links into six correct
+#   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
+#
+# WHAT IS PROVEN, on metal. Sixty-three behaviors in a throwaway pen. The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -154,7 +162,16 @@ assert control.out contains "at_floor_scored_low=yes" else "qa-report-card: and 
 assert control.out contains "at_floor_denominator=yes" else "qa-report-card: the sentence at the floor must reach the denominator"
 assert control.out contains "meter_names_register_mode=yes" else "qa-report-card: Meter names its own register mode rather than borrowing another"
 assert control.out contains "floor_source_load_bearing=yes" else "qa-report-card: the floor is cited, so losing its source must refuse rather than guess"
+assert control.out contains "program_cites_in_comments=yes" else "qa-report-card: in a program a citation is a path named in a comment, never a fragment of what the program emits"
+assert control.out contains "program_body_truth_clean=yes" else "qa-report-card: a program whose comment citations resolve must read clean"
+assert control.out contains "code_and_math_left_out=yes" else "qa-report-card: an emitted row and array-index arithmetic must both stay out of the denominator"
+assert control.out contains "symlink_named=yes" else "qa-report-card: a symlink must be named, so a reader knows which of two doors was measured"
+assert control.out contains "symlink_reads_the_body=yes" else "qa-report-card: a relative citation belongs to the body that wrote it, never to the door it was reached through"
+assert control.out contains "body_break_seen=yes" else "qa-report-card: resolving a link is a correction, so a real break in the body must still be seen"
+assert control.out contains "body_break_seen_through_door=yes" else "qa-report-card: and seen through the door as well, or the resolution is an exemption"
+assert control.out contains "prose_cites_everywhere=yes" else "qa-report-card: a prose file cites everywhere -- the program rule is kept away from prose deliberately"
+assert control.out contains "heading_link_still_counted=yes" else "qa-report-card: a Markdown heading begins with a comment mark, and its link must still count"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "fifty-four behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "sixty-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."
