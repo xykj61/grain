@@ -1,0 +1,70 @@
+# tools/w/witness_reach_witness.rish -- a witness nobody runs guards nothing, and now the tree counts them.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/w/witness_reach_witness.rish
+#
+# construction/standing-equipment.kyri opens on the sentence this guard measures: a guard that is
+# never run guards nothing either. The roster named 58 guards and the tree holds 1,690 tracked
+# *_witness.rish files, and until 20260825 nothing asked what the other 1,632 are reached by.
+# active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md booked the question
+# by name -- tracing reachability rather than comparing counts -- and left it open. This closes it.
+#
+# FOUR READINGS, ONE GATE. total, standing, sung, unheard. The gate is on `unheard`, a witness no
+# runner names anywhere, under a ceiling that only falls. `standing` and `sung` are reported rather
+# than gated, because what belongs on the every-lap roster is a cost decision Keaton owns and a
+# ceiling on it would be this guard deciding it quietly.
+#
+# WHY A CEILING RATHER THAN ZERO. 1,177 witnesses stand unheard today. A wall at zero would refuse
+# every ordinary lap, and a wall that refuses ordinary work is a wall somebody turns off. The
+# ceiling falls whenever a choir lands, and a witness born today is born sung, which is the same
+# discipline .claude/rules/exec-bit.md keeps for the mode bit.
+
+say "witness-reach: Language EN -- every witness on disk is asked one question: does anything actually run you?"
+say "witness-reach: Style Gauge -- every number below is printed by the scan on this run, never recited here."
+say "witness-reach: Lens TAME -- safety first: a MENTION is refused and only a CALL is heard, because counting a grep argument as a call would report a guard as covered when nothing runs it. Purely local -- no key, no network, no funds, no device."
+
+# The control first. The call/mention line is this meter's whole difficulty, and the tree cannot
+# show it every shape it must judge, so the shapes are planted in throwaway git repositories.
+let control = run ["sh" "tools/fixtures/witness_reach_control.sh"]
+assert control.ok else "witness-reach: the control must complete -- ${control.err}"
+say control.out
+assert control.out contains "control_verdict=ok" else "witness-reach: the control must reach its own verdict -- ${control.out}"
+
+# A call is heard, in every shape this tree writes one.
+assert control.out contains "ok   heard: called_direct" else "witness-reach: run [rishi run <path>] is a call"
+assert control.out contains "ok   heard: called_dashc" else "witness-reach: a -c payload is shell text and its command position is a call"
+assert control.out contains "ok   heard: called_choir" else "witness-reach: a choir's list literal is sung"
+assert control.out contains "ok   heard: called_shell" else "witness-reach: sh <path> in command position is a call"
+assert control.out contains "ok   heard: after_semi" else "witness-reach: a call after a separator is still a call"
+assert control.out contains "ok   heard: in_subst" else "witness-reach: a call inside a substitution is still a call"
+
+# A mention is refused. Each of these four was found in a real source while the meter was written.
+assert control.out contains "ok   refused: mentioned_comment" else "witness-reach: a path in a comment is a citation, never a call"
+assert control.out contains "ok   refused: mentioned_grep" else "witness-reach: a path read as data is never a call"
+assert control.out contains "ok   refused: mentioned_string" else "witness-reach: a path a script PRINTS is never a call"
+assert control.out contains "ok   refused: mentioned_usage" else "witness-reach: a comment's own usage line is never a call"
+assert control.out contains "ok   refused: untracked_two never counted" else "witness-reach: the meter reads the tracked tree, so an untracked file is in neither column"
+
+# The distinction the whole meter exists for: a choir may sing a witness the roster never reaches.
+assert control.out contains "ok   sung yet not standing: choir_only" else "witness-reach: sung and standing are two readings and must stay two"
+assert control.out contains "ok   standing: called_roster" else "witness-reach: a roster row makes its witness standing"
+
+# The ceiling, from both sides. A refusal proven only in the passing direction cannot be told from
+# a bypass, so the pen is pushed one past the ceiling and then walked back to green.
+assert control.out contains "ok   ceiling: one past it refuses" else "witness-reach: one unheard past the ceiling must refuse"
+assert control.out contains "ok   ceiling: exactly at it passes" else "witness-reach: exactly at the ceiling must pass"
+assert control.out contains "ok   ceiling: removing the plant returns green" else "witness-reach: removing the plant must return the reading to green"
+
+# Now the living tree.
+let living = run ["sh" "tools/fixtures/witness_reach_scan.sh"]
+assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
+say living.out
+assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
+assert living.out contains "under_ceiling=yes" else "witness-reach: unheard witnesses rose above the ceiling -- register the new one in a choir rather than raising it -- ${living.out}"
+
+# The standing reading is read from the roster, so it can never be zero while the roster has rows.
+let standing = run ["sh" "-c" "sh tools/fixtures/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
+assert standing.ok else "witness-reach: could not count the standing set -- ${standing.err}"
+assert (trim standing.out) != "0" else "witness-reach: the roster has rows, so the standing set must not be empty"
+
+say "witness-reach: GREEN -- the call/mention line is proven on planted repositories from both sides, and the living tree reads under its ceiling."

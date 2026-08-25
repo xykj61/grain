@@ -7,6 +7,7 @@ Immutable once written.*
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.081302` | The fourth microkernel rung: twelve parts of an address space, seven held, and the join supplied | [log](../../session-logs/20260825-081302_what-an-address-space-is-made-of.kyri) |
 | `20260824.121445` | A declared bound becomes a measured one -- 13 pages, none both readable and honoured | REDS %195, %196 |
 | `20260824.130807` | A bound with two meters and no wall -- the card 47,213 -> 22,647 and moved to enforce | REDS %197, %198 |
 | `20260824.140523` | The number with six homes -- one script reads the law, five meters stop spelling it | REDS %199 |

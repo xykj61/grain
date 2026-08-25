@@ -27,7 +27,7 @@ pen="$2"
 rm -rf "$pen"
 mkdir -p "$pen/caravan" "$pen/tally"
 cp caravan/allowances.rye caravan/channels.rye caravan/capabilities.rye \
-   caravan/derivation.rye caravan/refusals.rye "$pen/caravan/" 2>/dev/null || {
+   caravan/derivation.rye caravan/refusals.rye caravan/study_door.rye "$pen/caravan/" 2>/dev/null || {
   echo "baseline=failed widened=build_failed assertion_named=no verdict=drift"; exit 0; }
 cp tally/copy.rye "$pen/tally/copy.rye" 2>/dev/null || {
   echo "baseline=failed widened=build_failed assertion_named=no verdict=drift"; exit 0; }
