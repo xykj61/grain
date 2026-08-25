@@ -24,13 +24,18 @@ pub const tally_copy_version = "20260707.053212";
 /// Copy `source` into `target`. The regions must be the same length and must
 /// not overlap; both facts are asserted here so no caller carries them alone.
 pub fn copy_disjoint(comptime T: type, target: []T, source: []const T) void {
-    assert(target.len == source.len); // precondition: lengths agree exactly
+    // invariant: the copy walks both spans to one length, so a target shorter than the source
+    // would be written past its end
+    assert(target.len == source.len);
 
     const t_lo = @as(usize, @intFromPtr(target.ptr));
     const t_hi = t_lo + target.len * @sizeOf(T);
     const s_lo = @as(usize, @intFromPtr(source.ptr));
     const s_hi = s_lo + source.len * @sizeOf(T);
-    assert(t_hi <= s_lo or s_hi <= t_lo); // precondition: regions are disjoint
+    // invariant: the regions may not touch, since a forward copy over an overlap would read
+    // bytes it has already written -- this is the whole reason this function exists rather than
+    // a bare memcpy
+    assert(t_hi <= s_lo or s_hi <= t_lo);
 
     @memcpy(target, source);
 }
@@ -40,7 +45,7 @@ fn run_selftest(_: std.Io) !u8 {
     var a: [8]u8 = .{ 1, 2, 3, 4, 5, 6, 7, 8 };
     var b: [8]u8 = undefined;
     copy_disjoint(u8, b[0..], a[0..]);
-    assert(std.mem.eql(u8, b[0..], a[0..])); // postcondition: bytes carried whole
+    assert(std.mem.eql(u8, b[0..], a[0..]));
 
     // Adjacent halves of one buffer are disjoint; the law welcomes them.
     var one: [8]u8 = .{ 9, 9, 9, 9, 0, 0, 0, 0 };
