@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.020027` | [which witnesses actually run](20260825-020027_which-witnesses-actually-run.kyri) | 261 of 1,684 gated; 61 sampled, 6 red, and not all reds are defects. |
 | `20260825.014325` | [a loom for a lantern](20260825-014325_the-loom-for-a-lantern-that-fired-twice.kyri) | Rye comments 32,064 to 4,338 non-ASCII; strings untouched, suite green. |
 | `20260825.010420` | [one region, two roots](20260825-010420_one-region-two-roots.kyri) | Region folded into tally; a symlinked body's imports travel with it. |
 | `20260825.004749` | [the short way and the way home](20260825-004749_the-short-way-and-the-way-home.kyri) | rishi takes a bare .rish path; 108 room READMEs measured with no way home. |
