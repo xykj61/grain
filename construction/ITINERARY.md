@@ -47,31 +47,33 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `c5aadbbcfb` -- rule, then reading, then refusal; a cold roster declines to open over an unclosed lap.
+**Git nib:** `bc95aad7ee` -- the ratchet moves onto the property it stands for.
 
-**Now.** **A lap that will not open over an unclosed one.**
-The round of `20260825.132121` staged 19 paths and stopped before `git commit`. This lap's cold
-roster read **61 guards, 58 green, 3 red** -- `readme_metrics` and `geode_libraries` stale because
-[`../tools/hooks/pre-commit`](../tools/hooks/pre-commit) regenerates both at commit time, and
-`nib_honesty` refusing the `NIB_HERE` the card carries until a commit exists to name. All three
-closed by shipping the staged round as `a31664d7b6` and filling the nib with one amend.
+**Now.** **A ratchet gates the property, rather than a proxy for it.**
+The reach meter held its ceiling on `unheard` -- the count of witnesses no file names -- and that
+number falls whenever a choir is *written*. Measured this lap: **265** witnesses stand named by a
+runner no roster row reaches, so the gate read **937** while **1,202** of 1,692 were carried by no
+clock. The ceiling moved to **`unreached`** (`total - standing - cadence`) at **1202** with no
+slack, and it falls when a roster row lands. The move is strictly stronger: every unheard witness
+is also unreached, so nothing formerly caught now passes.
 
-**REDS %223 -- a reading persuades and a refusal decides.** The class has fired three times, and
-%220 answered it eleven hours earlier with a reading on line one of the lap. The ladder a recurring
-red climbs is **rule, then reading, then refusal**: %188 wrote the rule and proved no guard can
-*enforce* a close, which holds -- such a guard would have to run after a lap ends. What a guard can
-do is refuse to **open** the next lap over the wreckage.
-[`../tools/fixtures/standing_equipment_run.sh`](../tools/fixtures/standing_equipment_run.sh) takes
-`--hot`, and a full-roster pass meeting a dirty index without it exits 1 under
-`run_verdict=lap_unclosed`, ahead of the tree digest and ahead of the first guard. Nine behaviors
-added, **43** in all, ten refusals bitten. Argument:
-[`../active-designing/20260825-144025_rule-then-reading-then-refusal.md`](../active-designing/20260825-144025_rule-then-reading-then-refusal.md).
+**REDS %224 -- gate the property, rather than a proxy that can improve while the property stands
+still.** `witness_reach_scan.sh` prints seven readings now (`reached` 490, `unclocked` 265, `unheard`
+937, gated `unreached` 1202), `--families` follows the gate, and `--unclocked` / `--unreached` list
+either band. Ten behaviors added to
+[`../tools/fixtures/witness_reach_control.sh`](../tools/fixtures/witness_reach_control.sh), **31 in
+all** -- the bands, the partition and the identity counted, and the **promotion** proven by doing
+it: roster the off-roster choir and its member leaves `unclocked` for `standing` while `unreached`
+falls by exactly the two files that moved. That count caught its own author, reading 7 -> 6 for a
+promotion of two, because a `git add -A` had tracked the untracked plant one check above it.
+Argument:
+[`../active-designing/20260825-162410_the-ratchet-and-the-property.md`](../active-designing/20260825-162410_the-ratchet-and-the-property.md).
 
-**The next doors.** **`equinox` at 123 and `hunk` at 86** are the next two unheard families. The
-equinox family is season-ceremony witnesses under `tools/gen/season/`, each named only inside an
-almanac string its own writer prints, so that lap opens by measuring whether they still pass and
-what a sing costs. **A staleness gate on the cadence tier**, still wanting a lap count to measure
-against.
+**The next doors.** **`equinox` at 144 unreached** (123 unheard, 21 unclocked) and **`hunk` at 86**
+are the two largest families no clock carries. Eighty of the equinox 123 are themselves choirs that
+nothing sings, so that lap opens with a **stopwatch** -- do those `tools/gen/season/` witnesses
+still pass, and what does a sing cost -- before any roster row is proposed. **A staleness gate on
+the cadence tier**, still wanting a lap count to measure against.
 
 ---
 ## Landed arcs
@@ -224,9 +226,9 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.162410` | The ratchet and the property: the reach gate moves to `unreached` 1202; REDS %224 | [log](../session-logs/20260825-162410_the-ratchet-and-the-property.kyri) |
 | `20260825.144025` | Rule, then reading, then refusal: a cold roster refuses to open over an unclosed lap; REDS %223 | [log](../session-logs/20260825-144025_rule-then-reading-then-refusal.kyri) |
 | `20260825.132121` | A choir for the largest unheard family: 239 Lotus witnesses heard, unheard 1,176 -> 937; REDS %221, %222 | [log](../session-logs/20260825-132121_a-choir-for-the-largest-unheard-family.kyri) |
-| `20260825.110922` | A tier is a cadence: the roster's every-lap set stays affordable and the choirs stay heard; REDS %220 | [log](../session-logs/20260825-110922_a-tier-is-a-cadence.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

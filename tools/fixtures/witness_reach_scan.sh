@@ -9,7 +9,8 @@
 # This is that round. It traces reachability.
 #
 # WHAT IT READS. Every tracked *.rish and *.sh source plus tools/hooks/*, for paths in INVOCATION
-# position, and follows them from the roster outward. Four readings come out:
+# position, and follows them from the roster outward. Seven readings come out, and the last is the
+# gated one:
 #
 #   total     every tracked *_witness.rish on disk
 #   standing  reachable from the roster's EVERY-LAP rows, transitively -- sung on every lap
@@ -17,8 +18,23 @@
 #             the fifth round, which is a slower promise and so a separate number. Reading the two
 #             as one would report 75 crypto witnesses as sung every lap on the strength of a row
 #             that runs once in five, which is a truer-SOUNDING number than the one before it.
-#   sung      named in an invocation position by any runner on disk, roster or choir
-#   unheard   named by no runner at all -- these guard nothing, and this is the gated number
+#   reached   standing + cadence -- the witnesses a clock actually carries
+#   sung      named in an invocation position by any runner on disk, roster or choir. A NAME is all
+#             this reading takes. Whether anything runs the file doing the naming is the separate
+#             question the two bands below answer.
+#   unclocked named by some runner, and no roster row reaches that runner -- a promise with nobody
+#             to keep it
+#   unheard   named by no runner at all
+#   unreached unclocked + unheard, which is total - standing - cadence. THIS IS THE GATED NUMBER.
+#
+# WHY THE GATE SITS ON `unreached` RATHER THAN ON `unheard` (REDS %224, 20260825.162410). A ratchet
+# is worth its authority when the number stands for the property. A ceiling on `unheard` falls when
+# a choir is WRITTEN: list a hundred witnesses in a new file, leave it off the roster, and the
+# number drops by a hundred while exactly the same guards run as the day before. A ceiling on
+# `unreached` falls when a choir is ROSTERED, which is the lap its rungs begin to run. The move is
+# strictly stronger, since every unheard witness is also unreached -- nothing formerly caught now
+# passes. Measured the day the gate moved: 265 witnesses stood named by a runner no roster row
+# reaches, so the old gate read 937 while 1,202 of 1,692 were carried by no clock.
 #
 # WHAT COUNTS AS AN INVOCATION, and why the distinction is the whole difficulty. A path NAMED is not
 # a path RUN. REDS %218 taught the same line one direction over: a citation in a comment is a promise
@@ -38,37 +54,47 @@
 #
 # THE HONEST LIMIT, named rather than hidden. An invocation through a variable the meter cannot
 # resolve (`rishi/bin/rishi run "$generator"` in tools/hooks/pre-commit) is invisible to it, so
-# `unheard` is an UPPER bound on what is truly unrun and every name in it is worth reading before
-# it is believed. The meter proves a witness is named by a runner; whether that runner ever runs is
-# the reading beside it, `standing`, and only the roster answers that one.
+# `unheard` and `unreached` are UPPER bounds on what is truly unrun, and every name in either is
+# worth reading before it is believed. The meter proves a witness is reachable from a roster row;
+# whether that row's guard asserts anything worth asserting is the reading beside it, taken by a
+# person.
 #
 # USAGE
-#   sh tools/fixtures/witness_reach_scan.sh              # the four readings
+#   sh tools/fixtures/witness_reach_scan.sh              # the seven readings
 #   sh tools/fixtures/witness_reach_scan.sh --list       # the unheard, one per line
+#   sh tools/fixtures/witness_reach_scan.sh --unclocked  # named by a runner nothing runs
+#   sh tools/fixtures/witness_reach_scan.sh --unreached  # the gated set: unclocked + unheard
 #   sh tools/fixtures/witness_reach_scan.sh --sung       # the sung, one per line
 #   sh tools/fixtures/witness_reach_scan.sh --standing   # the every-lap set, one per line
 #   sh tools/fixtures/witness_reach_scan.sh --cadence    # the every-fifth-lap set, one per line
-#   sh tools/fixtures/witness_reach_scan.sh --families   # the unheard, grouped by name prefix
+#   sh tools/fixtures/witness_reach_scan.sh --families   # the UNREACHED, grouped by name prefix --
+#                                                        # the census follows the gate, so a family
+#                                                        # count and the ceiling mean one thing
+#   sh tools/fixtures/witness_reach_scan.sh --families-unheard   # the older reading, kept, since it
+#                                                        # answers "has the choir been written yet"
 #
 # Run from the repository root. WITNESS_REACH_CEILING overrides the ceiling, for the control alone.
 
 set -u
 
-# The ceiling only falls, and it carries no slack. Measured 20260825.132121: 1,692 tracked
-# witnesses, 168 sung every lap, 322 heard on the cadence lap, 755 named by some runner on disk,
-# and 937 named by nothing at all. Standing read 56 on the morning this meter was written and
-# moved to 167 in one roster row, when tools/ca/caravan_suite_witness.rish was seated and carried
-# its 111 rungs with it; the cadence column opened at 82 the same way, when
-# tools/cr/crypto_suite_witness.rish took the first `tier cadence` row and brought its family with
-# it. That choir was itself UNHEARD until that row, which is why unheard fell by exactly one while
-# cadence rose by 82: its rungs were already sung, by a choir nothing ran.
+# The ceiling holds `unreached`, only falls, and carries no slack. Measured 20260825.162410 on this
+# pier: 1,692 tracked witnesses, 168 standing, 322 cadence, 490 reached, 755 sung, 265 unclocked,
+# 937 unheard, 1,202 unreached.
 #
-# Then the largest family moved in one round. tools/al/ales_suite_witness.rish was WRITTEN on
-# 20260825.132121 -- Season C's Lotus suite had 239 witnesses on disk and no choir at all -- and
-# took the second `tier cadence` row, carrying 240 into cadence and dropping unheard by 239 to 937.
-# Its cheap half, tools/al/ales_roster_witness.rish, took a `lap` row and lifted standing by one.
-# Lower the ceiling whenever a choir lands or a roster row is added.
-CEILING=${WITNESS_REACH_CEILING:-937}
+# HOW THE READINGS MOVED, so a later lap can tell a real fall from a bookkeeping one. Standing read
+# 56 on the morning this meter was written and moved to 167 in one roster row, when
+# tools/ca/caravan_suite_witness.rish was seated and carried its 111 rungs with it; the cadence
+# column opened at 82 the same way, when tools/cr/crypto_suite_witness.rish took the first
+# `tier cadence` row and brought its family with it. That choir was itself UNHEARD until that row,
+# which is why unheard fell by exactly one while cadence rose by 82: its rungs were already sung,
+# by a choir nothing ran. Then the largest family moved in one round -- tools/al/ales_suite_witness.rish
+# was WRITTEN on 20260825.132121, took the second `tier cadence` row, and carried 240 into cadence
+# while unheard fell 1,176 to 937.
+#
+# Both of those falls were real, because each choir took a roster row in the same lap it was
+# written. The gate now REQUIRES that pairing rather than trusting it: `unreached` moves only when
+# a row lands. Lower the ceiling whenever a choir lands WITH its roster row.
+CEILING=${WITNESS_REACH_CEILING:-1202}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri
@@ -193,20 +219,37 @@ closure "$pen/roots_cadence" "$pen/seen_cadence"
 comm -12 "$pen/all" "$pen/seen_cadence" > "$pen/cadence_all"
 comm -23 "$pen/cadence_all" "$pen/standing" > "$pen/cadence"
 
+# The roster's whole reach, on both its clocks. What falls outside it is what no clock carries, and
+# that set is the one the ceiling holds (REDS %224). The two closures above already did the walking;
+# these three lines only read their answers, so the third band costs no second traversal.
+cat "$pen/standing" "$pen/cadence" | sort -u > "$pen/reached"
+comm -23 "$pen/all" "$pen/reached" > "$pen/unreached"
+comm -12 "$pen/sung" "$pen/unreached" > "$pen/unclocked"
+
 total=$(wc -l < "$pen/all" | tr -d ' ')
 standing=$(wc -l < "$pen/standing" | tr -d ' ')
 cadence=$(wc -l < "$pen/cadence" | tr -d ' ')
+reached=$(wc -l < "$pen/reached" | tr -d ' ')
 sung=$(wc -l < "$pen/sung" | tr -d ' ')
+unclocked=$(wc -l < "$pen/unclocked" | tr -d ' ')
 unheard=$(wc -l < "$pen/unheard" | tr -d ' ')
+unreached=$(wc -l < "$pen/unreached" | tr -d ' ')
+
+# A family census, grouped by the first word of a basename. It reads the GATED set by default,
+# because a family count and a ceiling that disagree about which set they cover is how a lap comes
+# to believe a family is closer to done than it is.
+families() { sed -E 's|^tools/[^/]+/||; s|^.*/||' "$1" | cut -d_ -f1 | sort | uniq -c | sort -rn | head -20; }
 
 case "$mode" in
-  --list)     sed 's/^/unheard /' "$pen/unheard" ;;
-  --sung)     sed 's/^/sung /' "$pen/sung" ;;
-  --standing) sed 's/^/standing /' "$pen/standing" ;;
-  --cadence)  sed 's/^/cadence /' "$pen/cadence" ;;
-  --families) sed -E 's|^tools/[^/]+/||; s|^.*/||' "$pen/unheard" | cut -d_ -f1 \
-                | sort | uniq -c | sort -rn | head -20 ;;
+  --list)      sed 's/^/unheard /'   "$pen/unheard" ;;
+  --unclocked) sed 's/^/unclocked /' "$pen/unclocked" ;;
+  --unreached) sed 's/^/unreached /' "$pen/unreached" ;;
+  --sung)      sed 's/^/sung /'      "$pen/sung" ;;
+  --standing)  sed 's/^/standing /'  "$pen/standing" ;;
+  --cadence)   sed 's/^/cadence /'   "$pen/cadence" ;;
+  --families)         families "$pen/unreached" ;;
+  --families-unheard) families "$pen/unheard" ;;
 esac
 
-if [ "$unheard" -le "$CEILING" ]; then under=yes; else under=no; fi
-echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence sung=$sung unheard=$unheard ceiling=$CEILING under_ceiling=$under"
+if [ "$unreached" -le "$CEILING" ]; then under=yes; else under=no; fi
+echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under"

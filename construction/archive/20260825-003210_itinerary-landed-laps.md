@@ -23,3 +23,4 @@ Immutable once written.*
 | `20260825.061552` | Caravan allowances -- Microkit's seven bounds for one protection domain, and Caravan inside all four it shares | [log](../../session-logs/20260825-061552_bounded-for-our-own-reasons.kyri) |
 | `20260825.070659` | Ten stale citations repaired; 388 unresolved links measured down to 13 to 1, and a backtick is not a path | [log](../../session-logs/20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) |
 | `20260825.073555` | The seed projection refreshed on the cadence lap -- four gates hold; the force-push waits at the custody gate | [log](../../session-logs/20260825-073555_the-projection-fresh-and-the-push-at-the-gate.kyri) |
+| `20260825.110922` | A tier is a cadence: the roster's every-lap set stays affordable and the choirs stay heard; REDS %220 | [log](../../session-logs/20260825-110922_a-tier-is-a-cadence.kyri) |
