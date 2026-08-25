@@ -37,6 +37,7 @@ assert control.out contains "ok   heard: called_choir" else "witness-reach: a ch
 assert control.out contains "ok   heard: called_shell" else "witness-reach: sh <path> in command position is a call"
 assert control.out contains "ok   heard: after_semi" else "witness-reach: a call after a separator is still a call"
 assert control.out contains "ok   heard: in_subst" else "witness-reach: a call inside a substitution is still a call"
+assert control.out contains "ok   heard: called_cadence" else "witness-reach: a roster row at tier cadence is a call"
 
 # A mention is refused. Each of these four was found in a real source while the meter was written.
 assert control.out contains "ok   refused: mentioned_comment" else "witness-reach: a path in a comment is a citation, never a call"
@@ -48,6 +49,8 @@ assert control.out contains "ok   refused: untracked_two never counted" else "wi
 # The distinction the whole meter exists for: a choir may sing a witness the roster never reaches.
 assert control.out contains "ok   sung yet not standing: choir_only" else "witness-reach: sung and standing are two readings and must stay two"
 assert control.out contains "ok   standing: called_roster" else "witness-reach: a roster row makes its witness standing"
+assert control.out contains "ok   cadence: called_cadence" else "witness-reach: a cadence row must be heard on the cadence reading"
+assert control.out contains "ok   cadence is not standing: called_cadence" else "witness-reach: a cadence row must never read as sung every lap"
 
 # The ceiling, from both sides. A refusal proven only in the passing direction cannot be told from
 # a bypass, so the pen is pushed one past the ceiling and then walked back to green.

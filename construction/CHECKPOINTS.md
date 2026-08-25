@@ -24,6 +24,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260825.110922` -- the comment-dial and Region accounts condensed off the card
+
+**Walk-back nib:** `ae54ca5e1e` -- read the whole departing card with
+`git show ae54ca5e1e:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md` alone, roughly 1.2 KB out of *Next -- the ranked remainder*.
+The `Now` block was replaced with the roster-tier round, which carried the card 939 bytes past the
+24,576 it declares in its own header.
+
+**What waits there, worth recalling:** the comment-dial paragraph's full arithmetic -- 1,891 authored
+modules, door coverage 99.6%, the median moving 14 to 53 once `///` docs leave the denominator, and
+the `// invariant:` law reading 59.6% then 99% across REDS %207-%213 -- every figure of which also
+stands in
+`active-development/20260824-170904_the-denominator-was-the-whole-question.md`, which the condensed
+line still names. Beside it the `Region` fold's one-line account of `20260825.010420`, whose detail
+is in its own session log.
+
 ### `20260825.031305` -- the invariant arc condensed off the card, ten corrections deep
 
 **Walk-back nib:** `8fe50f50f2` -- read the whole departing card with

@@ -18,8 +18,8 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **60 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
-- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **61 guards** stand -- **60 on the every-lap tier, 1 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188, then %220 when it fired again). No guard can *enforce* it, since one would have to run after the lap ends -- so the roster runner **reads** it instead, printing `staged_uncommitted` before the first guard. On a cold open that number is this failure's signature; on a hot run it is the round's own work.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
@@ -47,34 +47,37 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `0f8515c5cd` -- one law, two comment syntaxes; the ASCII meter reaches Rishi and shell.
+**Git nib:** `ae54ca5e1e` -- a tier is a cadence; the roster's every-lap set stays affordable and the choirs are still heard.
 
-**Now.** **A witness nobody runs guards nothing, and the tree counted them.**
-`construction/standing-equipment.kyri` has always opened on that sentence and never measured it.
-[`../tools/w/witness_reach_witness.rish`](../tools/w/witness_reach_witness.rish) over
-[`../tools/fixtures/witness_reach_scan.sh`](../tools/fixtures/witness_reach_scan.sh) traces
-reachability rather than comparing counts, and reads four numbers: **1,690** tracked witnesses,
-**56** sung every lap by the roster, **512** named in an invocation position by any runner, **1,178**
-named by nothing. Seating `caravan_suite_witness` carried 111 rungs with it, so the tree now reads
-**167 / 513 / 1,177**. The gate is on the last, under a ceiling that only falls.
+**Now.** **A tier is a cadence rather than an exemption.**
+`construction/standing-equipment.kyri` grew a `tier` field, so a guard names the clock it runs on:
+**`lap`** every roster run -- what a record naming no tier means, so all sixty existing rows stayed
+byte for byte -- and **`cadence`** the fifth round, where the rota closes its cycle and the seed
+ships. The runner honors it (`--all`, `--tier <name>`, or a guard by name), the scan counts each tier
+and refuses any third word at zero, and
+[`../tools/s/standing_equipment_witness.rish`](../tools/s/standing_equipment_witness.rish) proves
+**twenty-seven behaviors** on planted rosters -- seven refusals bitten, and the runner itself driven
+over a stub interpreter, since a tier is only a cadence if the program selecting by it actually does.
 
-**The line it rests on.** A path NAMED is not a path RUN. Three shapes here look like calls -- a
-`grep` argument, a string a script prints, a comment's usage line -- so the rule is command position,
-with a `-c` payload unwrapped and read the same way. Eighteen behaviors on planted git repositories:
-eight call shapes heard, five mention shapes refused, the ceiling read from three positions.
+**The first cadence row** is `tools/cr/crypto_suite_witness.rish`, which stood **unheard** until this
+lap. The reach meter splits its reading rather than blurring it -- **1,690** tracked witnesses,
+**167** sung every lap, **82** heard on the cadence lap, **514** named by some runner, **1,176** named
+by nothing, ceiling lowered to 1,176 with no slack. Read as one tier it would have claimed 82 more
+witnesses as *sung every lap* on a row that runs once in five.
 
-**REDS %219 -- what it found on its first run.** The Caravan carry ceiling stood **crossed for two
-laps**, 58,532 -> 58,541 -> 58,550, as two study rungs each wrote out the same nine-line door. Both
-laps' cold rosters were green and honest: the carry meter is reached by `caravan_suite_witness`
-alone, and that choir stood off the roster. Closed root-first -- the door lifted into
-[`../caravan/study_door.rye`](../caravan/study_door.rye), carry **58,496**, the ceiling fell with it,
-and the choir took a roster row at a measured **8m31s** for 111 rungs.
+**Why now, rather than as tidiness.** The every-lap roster measures **20m20s** to **22m19s** here and
+a lap reads it twice. Both tiers ran this lap: 60 green on the lap tier, and `crypto_suite` green in
+**8m40s** on the cadence tier, carrying `cadence_never_run_here` to 0. **REDS %220** is what that
+price bought -- this lap's cold roster opened **60 guards, 57 green, 3 red**, every one from the
+previous lap ending at `git add`. REDS %188 firing a second time, so the runner now prints
+`staged_uncommitted` first. A close costing twenty-five minutes is a close that gets skipped.
+Argument: [`../active-designing/20260825-110922_a-tier-is-a-cadence.md`](../active-designing/20260825-110922_a-tier-is-a-cadence.md).
 
-**The next doors.** **A second roster tier**, so a choir either runs every lap or waits for a hand.
-**A choir for `ales`** -- 239 unheard witnesses, a fifth of the whole. Beside them
-`rye-learning-process/archive/ALMANAC.md` carries **63** non-ASCII lines, and the address space's
-**five owed parts** want a booted kernel rather than more accounting. Argument:
-[`../active-designing/20260825-092953_what-a-roster-owes-a-run.md`](../active-designing/20260825-092953_what-a-roster-owes-a-run.md).
+**The next doors.** **A choir for `ales`** -- 239 unheard witnesses, a fifth of the whole, and the
+first row the cadence tier was built to hold. **A staleness gate on the cadence tier**, wanting a lap
+count to measure against and an answer for the untracked run card. And `construction/REDS.md`'s
+headline carries a fold recital grown to one 6,000-byte sentence; it wants folding the way the rows
+it describes already do.
 
 ---
 ## Landed arcs
@@ -199,36 +202,26 @@ Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 **Open, named, and waiting on its own lap.** The **fascia weave** over thirty-nine browsed
 `active-designing/` documents, as a living index page per cluster. **`docs/STOA.md`** at **166 lines
 against the `<=80` its own title declares**. The ten pages duty 4 names as wanting a Status line.
-*The comment ASCII sweep landed `20260825.014325`* -- the real population was **1,507 of 1,894
-files**, not two rooms; comments fell **32,064 -> 4,338** and the remainder is notation rather than
-punctuation. **1,683 witnesses stand on disk where 56 are gated** -- the door this opened. And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
+**1,690 witnesses stand on disk where 167 are sung every lap and 82 more on the cadence lap** -- the
+door this opened. And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
 bytes and `image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
-**Measured `20260824.170904` -- the comment dial answered.**
-[`../tools/fixtures/comment_dial_scan.sh`](../tools/fixtures/comment_dial_scan.sh) read all **1,891**
-authored modules; door coverage is closed at 99.6%, and the histogram lives once `///` docs leave
-the denominator (median 14 -> 53). **The `// invariant:` law read 59.6% there and reads 99% now
-(`20260825`)**, gap 17, all `pub fn check_*` proofs -- it moved because the meter got honest, ten
-corrections deep (REDS %207-%213). **A ceiling is Keaton's number**, so none is seated. Verdict:
+**The comment dial is answered and a ceiling stays Keaton's number** -- 1,891 modules read, door
+coverage 99.6%, `// invariant:` at 99%, every figure in
 [`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
-Beside it, **half of Service may be countable** -- named and reached counted, current and carried
-judged -- with its own trap named at
+Beside it, **half of Service may be countable**:
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
 
-**The `Region` fold landed `20260825.010420`** -- one body in `tally/region.rye`, reached by symlink
-from `caravan/` and `comlink/discovery/`, the stricter `init` kept and `divide` moved whole.
-
-**Booked `20260825.000640` -- proving a host we do not have.** All 54 guards run on this Linux
-pier, so a claim true only elsewhere is unprovable here; REDS %214 cost a first macOS build. Four
-answers, and the measurement that decides:
+**Booked `20260825.000640` -- proving a host we do not have.** Every rostered guard runs on this
+Linux pier, so a claim true only elsewhere waits here; REDS %214 cost a first macOS build. Four
+answers and the measurement that decides:
 [`../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../external-research/20260825-000640_proving-a-host-you-do-not-have.md).
 
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
-**`constels/` room** -- Kumara live implementations from **kres** and **brix** templates, in Kyri
-and Bron, at `constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)),
-feeding the **Growthcircle** integration -- and the **kres / kresfa contract language season**, the
-`.{extension}` macro languages fusing Glow runes with Lisp macros.
+**`constels/` room** -- Kumara live implementations from **kres** and **brix** templates at
+`constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)), feeding the
+**Growthcircle** integration -- and the **kres / kresfa contract language season**.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
@@ -239,6 +232,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.110922` | A tier is a cadence: the roster's every-lap set stays affordable and the choirs stay heard; REDS %220 | [log](../session-logs/20260825-110922_a-tier-is-a-cadence.kyri) |
 | `20260825.092953` | Which witnesses a runner actually runs: 1,690 on disk, 56 sung every lap; REDS %219 closed | [log](../session-logs/20260825-092953_a-witness-nobody-runs.kyri) |
 | `20260825.085347` | One law, two comment syntaxes: the ASCII meter reaches Rishi and shell | [log](../session-logs/20260825-085347_a-law-that-governed-three-languages.kyri) |
 

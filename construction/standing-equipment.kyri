@@ -12,7 +12,24 @@
 # beside it, learned the hard way twice: a guard that is never run guards nothing either.
 #
 # WHAT A ROW MEANS. One `guard` record per standing check, each naming the path a runner
-# invokes and the stamp the guard was seated. The roster is the authority for what stands;
+# invokes, the tier it runs on, and the stamp the guard was seated.
+#
+# WHAT A TIER MEANS. Guards cost wildly different amounts of time. A choir -- one witness that
+# sings a whole family of rungs -- takes minutes: `caravan_suite` runs 111 rungs in 8m31s and
+# `crypto_suite` runs 74 in 9m06s, both measured on this pier on 20260825, and this whole roster
+# measured 20m20s with one of them seated. A lap reads the roster twice, cold at the open and hot
+# after `git add`, so every choir on one tier would cost more than half an hour a lap. So a guard
+# names its own clock:
+#
+#   tier lap       every roster run. What a record naming no tier means, which is why none of the
+#                  rows below had to be edited when the field arrived.
+#   tier cadence   the cadence lap -- the fifth round, where the council rota closes its cycle and
+#                  the seed ships -- and any lap where a hand asks for the guard by name.
+#
+# A tier is a CADENCE rather than an exemption. REDS %219 was a choir standing off this roster
+# altogether, which is a refusal nobody receives; a cadence guard is still heard, on a slower
+# clock, and the run card records which clock heard it. A tier word the runner does not know is
+# refused at zero, because a guard seated on one would run on no lap at all, in silence. The roster is the authority for what stands;
 # construction/standing-equipment-runs.kyri records when each last ran ON THIS PIER, and that card
 # is deliberately untracked, so a fresh clone reads `never run here` rather than inheriting
 # another machine's memory.
@@ -22,7 +39,7 @@
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
 
 format standing-equipment-v1
-stamp 20260825.092953
+stamp 20260825.110922
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
 card construction/standing-equipment-runs.kyri
@@ -266,3 +283,8 @@ seated 20260825.092953
 guard caravan_suite
 path tools/ca/caravan_suite_witness.rish
 seated 20260825.092953
+
+guard crypto_suite
+path tools/cr/crypto_suite_witness.rish
+tier cadence
+seated 20260825.110922
