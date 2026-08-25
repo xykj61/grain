@@ -104,6 +104,8 @@ pub fn keygen(comptime k: u32, comptime eta1: u32, d: *const [seed_half_bytes]u8
     assert(eta1 == sample.eta_min or eta1 == sample.eta_max);
     const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
     const dk_len: u32 = 2 * poly_encoded_bytes * k + 2 * seed_half_bytes + seed_half_bytes;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(ek_out.len == ek_len);
     assert(dk_out.len == dk_len);
 

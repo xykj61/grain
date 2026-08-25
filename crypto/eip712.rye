@@ -97,6 +97,8 @@ pub const Eip712Error = error{
 pub fn type_hash(encode_type: []const u8) Eip712Error![word_bytes]u8 {
     // invariant: the type string stays within the named cap, so it lands wholly inside the hash's own bound.
     if (encode_type.len > max_encode_type_bytes) return error.TypeStringTooLong;
+    // invariant: the encoded type is hashed in one call, so this is checked at compile time
+    // where a later overflow could not be caught at all
     comptime assert(max_encode_type_bytes <= keccak.max_message_bytes);
     return keccak.hash256(encode_type);
 }
@@ -117,6 +119,8 @@ pub fn word_from_address(addr: []const u8) Eip712Error![word_bytes]u8 {
     comptime assert(word_bytes - address_bytes == 12);
     var i: u32 = 0;
     while (i < address_bytes) : (i += 1) {
+        // invariant: the address is right-aligned into a 32-byte word, so the offset is what
+        // keeps the write inside the word rather than before it
         assert(word_bytes - address_bytes + i < word_bytes);
         out[word_bytes - address_bytes + i] = addr[i];
     }

@@ -115,6 +115,8 @@ pub fn rej_ntt_poly(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
     var guard: u32 = 0;
     // invariant (bound): each turn consumes three stream bytes; the buffer holds ntt_xof_bytes, so the loop runs at most ntt_xof_bytes/3 times.
     while (j < n) : (guard += 1) {
+        // invariant: the rejection sampler squeezes the XOF until it has enough coefficients,
+        // and this bound is what makes that loop end on adversarial output rather than run on
         assert(guard <= ntt_xof_bytes / 3);
         // invariant: never read past the squeezed prefix — raise rather than run off the end.
         if (pos + 3 > ntt_xof_bytes) return error.SampleExhausted;
@@ -156,6 +158,8 @@ pub fn rej_bounded_poly(rho_prime: *const [64]u8, nonce: u16, eta: u32) SampleEr
     var guard: u32 = 0;
     // invariant (bound): each turn consumes one byte (two nibbles); the loop runs at most bounded_xof_bytes times.
     while (i < n) : (guard += 1) {
+        // invariant: the rejection sampler squeezes the XOF until it has enough coefficients,
+        // and this bound is what makes that loop end on adversarial output rather than run on
         assert(guard <= bounded_xof_bytes);
         if (pos >= bounded_xof_bytes) return error.SampleExhausted;
         const byte: u32 = xof[pos];
@@ -222,6 +226,9 @@ pub fn sample_in_ball(seed: []const u8, tau: u32) SampleError!ring.Poly {
         var inner: u32 = 0;
         // rejection-sample a position b ≤ i.
         while (true) : (inner += 1) {
+            // invariant: the rejection sampler squeezes the XOF until it has enough
+            // coefficients, and this bound is what makes that loop end on adversarial output
+            // rather than run on
             assert(inner <= ball_xof_bytes);
             if (pos >= ball_xof_bytes) return error.SampleExhausted;
             b = xof[pos];
@@ -264,6 +271,8 @@ fn poly_eq(a: *const ring.Poly, b: *const ring.Poly) bool {
 
 /// bit_at — read bit k of a byte slice, LSB-first within each byte, the shared primitive the independent RejNTTPoly re-reader uses.
 fn bit_at(bytes: []const u8, k: u32) u32 {
+    // invariant: the byte holding this bit is read below, so the bit index and the buffer's
+    // length are the same bound expressed three bits apart
     assert((k >> 3) < bytes.len);
     const byte: u32 = bytes[k >> 3];
     return (byte >> @as(u3, @intCast(k & 7))) & 1;
@@ -286,6 +295,8 @@ fn rej_ntt_bitreader_reference(rho: *const [32]u8, b0: u8, b1: u8) SampleError!r
     var j: u32 = 0;
     var guard: u32 = 0;
     while (j < n) : (guard += 1) {
+        // invariant: the rejection sampler squeezes the XOF until it has enough coefficients,
+        // and this bound is what makes that loop end on adversarial output rather than run on
         assert(guard <= (ntt_xof_bytes * 8) / 24);
         if (bitpos + 24 > ntt_xof_bytes * 8) return error.SampleExhausted;
         var v: u32 = 0;

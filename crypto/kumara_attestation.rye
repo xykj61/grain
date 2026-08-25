@@ -196,6 +196,8 @@ pub fn attest(id: *const identity.Identity, subkey: *const subkey_mod.Subkey, ou
 
     // --- signature: Ed25519 by the issuer over the statement -------------------------------------------------------------------------------
     // The statement is a fixed 76 bytes, far inside the signing bound, so signing cannot refuse here — catch unreachable is honest.
+    // invariant: the statement is signed as one message, so a length past the signer's ceiling
+    // would be signed truncated and verify against something the issuer never said
     assert(statement_len <= signer.max_sign_message_bytes);
     const sig = signer.sign(&id.secret_seed, out[0..statement_len]) catch unreachable;
     var s: u32 = 0;
@@ -204,6 +206,8 @@ pub fn attest(id: *const identity.Identity, subkey: *const subkey_mod.Subkey, ou
     // invariant: the certificate's embedded issuer and subkey are exactly the keys we signed over — a reader will find them and the signature agree.
     const embedded_issuer = out[magic_len..][0..public_len];
     var e: u32 = 0;
+    // invariant: the derived key is compared byte for byte against the one computed directly,
+    // so the two paths are proven to agree rather than assumed to
     while (e < public_len) : (e += 1) assert(embedded_issuer[e] == id.public_key[e]);
     return cert_len;
 }

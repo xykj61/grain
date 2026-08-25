@@ -181,6 +181,8 @@ pub fn bit_pack(w: *const [n]i32, a: u32, b: u32) Packed {
 /// inverse of bit_pack.
 pub fn bit_unpack(bytes: *const Packed, a: u32, b: u32) [n]i32 {
     const b_bits = bitlen(a + b);
+    // invariant: one to max_bits is the whole range the packing can address, since the shift
+    // below is by this width and a wider one would shift past the word
     assert(b_bits >= 1 and b_bits <= max_bits);
     const z = simple_bit_unpack(bytes, b_bits);
     var out: [n]i32 = [_]i32{0} ** n;
@@ -237,6 +239,8 @@ pub fn decompose(r: u32, gamma2: u32) Split {
     // top-step borrow above produces r0 = −γ₂ exactly at r = q − γ₂, a value FIPS admits and a signer rejects on its norm bound.
     assert(r0 >= -@as(i32, @intCast(gamma2)) and r0 <= @as(i32, @intCast(gamma2)));
     const recon: i64 = @mod(@as(i64, @intCast(r1)) * @as(i64, @intCast(two_g)) + @as(i64, r0), @as(i64, @intCast(q)));
+    // invariant: the reconstruction is checked modulo q rather than exactly, because the
+    // top-step borrow above moves r0 out of the plain identity while keeping the congruence
     assert(recon == @as(i64, @intCast(r)));
     return .{ .r1 = r1, .r0 = r0 };
 }

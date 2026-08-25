@@ -122,6 +122,35 @@ o=$(read_bins)
 check "9 three asserts under one block read as three covered" "3" "$(val "$o" contract_with_a_reason)"
 check "9 and the gap is zero" "0" "$(val "$o" contract_with_no_reason)"
 
+# 9b -- every spelling of the label this tree writes is read, and prose that merely says the word
+#       is not. 483 lines carried a qualified spelling the first pattern could not see.
+rm -f "$pen"/m/*.rye
+put l.rye <<'EOF'
+pub fn a() void {
+    // invariant (precondition): the qualified form TAME's own three moments produce
+    assert(a == 1);
+}
+pub fn b() void {
+    // invariant (bound): why this number is this number
+    assert(b == 2);
+}
+pub fn c() void {
+    // postcondition: the bare category word
+    assert(c == 3);
+}
+pub fn d() void {
+    // precondition: the other bare category word
+    assert(d == 4);
+}
+pub fn e() void {
+    // this comment merely mentions an invariant in passing with no colon
+    assert(e == 5);
+}
+EOF
+o=$(read_bins)
+check "9b four label spellings all read as covered" "4" "$(val "$o" contract_with_a_reason)"
+check "9b and prose naming the word without a colon does not" "1" "$(val "$o" contract_with_no_reason)"
+
 # 10 -- a comment quoting an assert is prose, never a call site.
 rm -f "$pen"/m/*.rye
 put j.rye <<'EOF'

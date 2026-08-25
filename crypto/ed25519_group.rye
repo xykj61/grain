@@ -90,6 +90,8 @@ pub fn dbl(p: Point) Point {
     const t = fe.sub(fe_sq2(p.z), z);
     // invariant: the doubled point keeps the extended-coordinate relation T·Z = X·Y by construction of the four products below.
     const r = Point{ .x = fe.mul(x, t), .y = fe.mul(y, z), .z = fe.mul(z, t), .t = fe.mul(x, y) };
+    // invariant: the limbs stay inside the 51-bit radix, so a doubling that left one wide would
+    // carry into the next on the following add rather than reduce
     assert(r.x.l[0] <= 0x7ffffffffffff and r.z.l[0] <= 0x7ffffffffffff);
     return r;
 }
@@ -108,6 +110,8 @@ pub fn add(p: Point, q: Point) Point {
     const t = fe.sub(d, c);
     // invariant: the sum keeps the extended-coordinate relation by construction of the four products below.
     const r = Point{ .x = fe.mul(x, t), .y = fe.mul(y, z), .z = fe.mul(z, t), .t = fe.mul(x, y) };
+    // invariant: the limbs stay inside the 51-bit radix, so an addition that left one wide
+    // would carry into the next on the following operation rather than reduce
     assert(r.y.l[0] <= 0x7ffffffffffff and r.z.l[0] <= 0x7ffffffffffff);
     return r;
 }

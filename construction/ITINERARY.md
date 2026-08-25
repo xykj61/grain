@@ -54,18 +54,17 @@ upward is a school grade -- 20% becomes **80, a B**.
 [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
 comment block, or design four ways. **B stands; below B pushes one molt frame**, depth 2.
 
-**%205-%206:** the pin bound rose for one page to **57,344**; planted names are discovered rather
-than listed. **%207-%211 -- the invariant arc, corrected four times.** The figure this card carried, **13,235**,
-fell to **4,242**, then **3,978**, then **1,385** once the bin read **reachability** rather than
-names: a private function called only from a proof entry is proof whatever it is called, while a
-`pub` function never is and a shared helper withdraws to contract. **The law reads 92%**, proven by
-15 behaviors in a throwaway pen. **The `caravan` falsifier does not fire.**
-**`pond/apps/drawn_terminal.rye` swept 0% -> 100%** -- 57 asserts, 22 blocks, wrapped at 96 to match
-caravan's median of 73. **`image/photos.rye` needed no sweep.** **`glow` finished on Keaton's word: 3.4% -> 100%**, 16 files and 139 blocks. Its reasons were largely
-there already as **trailing** comments -- a placement rather than an absence (1,144 tree-wide) -- and
-each moved above and was rewritten. **`mand` followed: 0.0% -> 100%**, 61 asserts in 40 blocks across the capability table and the three
-rings -- custody code, where a reason is worth most. **Open door:** `crypto` 271, `linengrow` 239;
-tree **93%**, gap **1,124**.
+**%205-%206:** the pin bound rose for one page to **57,344**; planted names are discovered. **%207-%212 -- the invariant arc, corrected seven times.** The **13,235** this card carried fell to
+**4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names (a private
+function called only from a proof entry is proof; a `pub` function never is; a shared helper
+withdraws), and **853** once the label pattern read every spelling. **17 behaviors** prove the bin.
+**The `caravan` falsifier does not fire.** **`drawn_terminal.rye` 0% -> 100%**; `photos.rye` and
+`lattice` needed no sweep. **`glow` 3.4% -> 100%**, 16 files and 139 blocks; its reasons were largely there already as
+**trailing** comments (1,144 tree-wide), each moved above and rewritten. **`mand` 0.0% -> 100%** (61 asserts, 40 blocks, custody code). **`crypto` 89.8% -> 100%** -- and it
+was never 57.5%: **483 lines tree-wide carry a qualified label** (`// invariant (bound):`,
+`(precondition):`) the meter read as absent, which is the seated form with its TAME category stated
+(**%212**). Both crypto guards GREEN after, parity byte-for-byte. **Open door:** `caravan` 217,
+`linengrow` 239; tree **95%**, gap **853**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

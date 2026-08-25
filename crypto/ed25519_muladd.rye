@@ -102,6 +102,8 @@ pub fn mul_add(a: *const [32]u8, b: *const [32]u8, c: *const [32]u8) [32]u8 {
     var ext = [_]u8{0} ** 64;
     var i: u32 = 0;
     while (i < scalar_bytes) : (i += 1) ext[i] = out[i];
+    // invariant: the result is checked against a second reduction of the same value, so the
+    // fast path is proven to agree with the plain one rather than trusted
     assert(bytes_eq(&sc.reduce(&ext), &out));
     return out;
 }

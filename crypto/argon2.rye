@@ -478,6 +478,8 @@ pub fn kdf(garden: std.mem.Allocator, out: []u8, password: []const u8, salt: []c
     const memory = @max(params.m / grid * grid, 2 * grid);
     // invariant: the rounded memory is a real, bounded block count that divides evenly across lanes and slices.
     if (memory > max_memory_blocks) return error.BadMemoryCost;
+    // invariant: the memory is divided into a whole number of lanes and each needs at least two
+    // blocks, so any other size would leave a lane short or a remainder unaddressed
     assert(memory >= 2 * grid and memory % grid == 0);
 
     const lanes = memory / params.p;

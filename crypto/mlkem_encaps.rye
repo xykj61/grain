@@ -142,6 +142,8 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
     assert(du >= 1 and du <= max_du and dv >= 1 and dv <= max_dv);
     const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
     const ct_len: u32 = 32 * du * k + 32 * dv;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(ek.len == ek_len);
     assert(c_out.len == ct_len);
 
@@ -214,6 +216,8 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
         var c2: u32 = 0;
         // invariant (bound): add the standard-domain blind e1[i], one coefficient per turn.
         while (c2 < n) : (c2 += 1) {
+            // invariant: the modular arithmetic below adds without reducing first, so a
+            // coefficient already at or past q would carry rather than wrap
             assert(iu.cs[c2] < q and e1[i].cs[c2] < q);
             iu.cs[c2] = (iu.cs[c2] + e1[i].cs[c2]) % q;
         }
@@ -230,6 +234,8 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
     var mc: u32 = 0;
     // invariant (bound): exactly n = 256 message bits decompressed.
     while (mc < n) : (mc += 1) {
+        // invariant: the message bit steers a conditional add below, so a value past one would
+        // select neither branch it was written for
         assert(m_bits[mc] < 2);
         mu.cs[mc] = encode.decompress(m_bits[mc], 1);
     }
@@ -243,6 +249,8 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
         var c: u32 = 0;
         // invariant (bound): exactly n = 256 coefficients folded in.
         while (c < n) : (c += 1) {
+            // invariant: the modular arithmetic below adds without reducing first, so a
+            // coefficient already at or past q would carry rather than wrap
             assert(vacc.cs[c] < q and prod.cs[c] < q);
             vacc.cs[c] = (vacc.cs[c] + prod.cs[c]) % q;
         }
@@ -251,6 +259,8 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
     var vc: u32 = 0;
     // invariant (bound): add e2 then mu, one coefficient per turn, one reduction each.
     while (vc < n) : (vc += 1) {
+        // invariant: the modular arithmetic below adds without reducing first, so a coefficient
+        // already at or past q would carry rather than wrap
         assert(v_poly.cs[vc] < q and e2.cs[vc] < q and mu.cs[vc] < q);
         v_poly.cs[vc] = (((v_poly.cs[vc] + e2.cs[vc]) % q) + mu.cs[vc]) % q;
     }
@@ -271,6 +281,8 @@ pub fn encaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv
     // invariant (precondition): the parameter set is one ML-KEM names and ek/c_out hold exactly the FIPS sizes.
     assert(k >= 2 and k <= max_k);
     const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    // invariant: the layout is written at the fixed offsets the standard pins, so a buffer of
+    // any other length would be written past its end or leave a tail the reader trusts unset
     assert(ek.len == ek_len);
     assert(c_out.len == 32 * du * k + 32 * dv);
 
