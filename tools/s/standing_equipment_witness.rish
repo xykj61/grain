@@ -16,12 +16,18 @@
 #   can never name equipment the tree has moved or renamed away from underneath it.
 #   Every `guard` record carries exactly one `path`, so a half-written row is refused rather than
 #   silently skipped by a runner reading the same file.
+#   Every `tier` names a cadence the runner honors -- `lap` or `cadence`, with an absent field
+#   meaning `lap`. A guard seated on a tier no runner knows would run on no lap at all, in silence,
+#   which is REDS %219 wearing a field name.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
-#   All five refusals, and two free passes, are proven on throwaway rosters in a temporary pen.
+#   Twenty-seven behaviors are proven on throwaway rosters in a temporary pen -- seven refusals
+#   bitten, and the runner itself driven over a planted roster with a stub interpreter, since a
+#   tier is only a cadence if the program that reads it actually selects by it.
 #
-# WHAT IS REPORTED RATHER THAN GATED. How many rostered guards have never run on this pier, and
-# the oldest recorded run. A fresh clone has genuinely run nothing, so `never run here` is an
+# WHAT IS REPORTED RATHER THAN GATED. How many rostered guards have never run on this pier -- in
+# total and for the cadence tier alone, which is where a guard can go quiet without anyone
+# noticing -- and the oldest recorded run. A fresh clone has genuinely run nothing, so `never run here` is an
 # honest reading rather than a defect, and gating it would red every clone on the day it lands.
 # The number is printed because a lap can act on a number it can see; the roster in prose offered
 # no number at all.
@@ -33,7 +39,8 @@
 #   rishi/bin/rishi run tools/s/standing_equipment_witness.rish
 #
 # To refresh the run card, which is untracked by design:
-#   sh tools/fixtures/standing_equipment_run.sh
+#   sh tools/fixtures/standing_equipment_run.sh              # the every-lap tier
+#   sh tools/fixtures/standing_equipment_run.sh --all        # every tier, choirs included
 
 say "standing-equipment: Language EN -- the roster of what guards this tree stood in a paragraph, so nothing could run it, count it, or say when each guard last answered."
 say "standing-equipment: Style Radiant -- the roster is a file now, every path in it is real, and running it leaves a record on disk rather than in the memory of a round."
@@ -44,6 +51,7 @@ assert scan.ok else "standing-equipment: the roster names something the tree can
 say scan.out
 assert scan.out contains "guards_path_missing=0" else "standing-equipment: every rostered path must name a file that exists"
 assert scan.out contains "guards_half_written=0" else "standing-equipment: every guard record must carry exactly one path"
+assert scan.out contains "guards_unknown_tier=0" else "standing-equipment: every tier must name a cadence the runner honors"
 assert scan.out contains "runs_unrostered=0" else "standing-equipment: a run card may only name guards the roster seats"
 assert scan.out contains "runs_red=0" else "standing-equipment: a recorded red is a stopped line, never a passing roster"
 assert scan.out contains "verdict=ok" else "standing-equipment: the scan must balance before it is believed"
@@ -60,7 +68,26 @@ assert control.out contains "recorded_red_refused=yes" else "standing-equipment:
 assert control.out contains "absent_card_free=yes" else "standing-equipment: a pier that has run nothing yet is honest, never broken"
 assert control.out contains "never_run_counted=yes" else "standing-equipment: the never-run count must read what the card omits"
 assert control.out contains "recorded_run_counted=yes" else "standing-equipment: a recorded run must lower the never-run count"
+assert control.out contains "two_path_row_refused=yes" else "standing-equipment: a guard record carrying two paths must be refused"
+assert control.out contains "known_tier_free=yes" else "standing-equipment: a roster naming a tier the runner knows must pass free"
+assert control.out contains "lap_counted=yes" else "standing-equipment: the every-lap tier must be counted on its own line"
+assert control.out contains "cadence_counted=yes" else "standing-equipment: the cadence tier must be counted on its own line"
+assert control.out contains "cadence_never_run_counted=yes" else "standing-equipment: a cadence guard the card never names must be counted"
+assert control.out contains "cadence_run_lowers_count=yes" else "standing-equipment: a recorded cadence run must lower that count"
+assert control.out contains "tiered_card_free=yes" else "standing-equipment: a card carrying tiers must pass free"
+assert control.out contains "unknown_tier_refused=yes" else "standing-equipment: a tier no runner honors must be refused"
+assert control.out contains "unknown_tier_counted=yes" else "standing-equipment: an unknown tier must be counted as well as refused"
+assert control.out contains "default_is_lap=yes" else "standing-equipment: a bare run must select the every-lap tier"
+assert control.out contains "default_runs_lap_only=yes" else "standing-equipment: a bare run must leave the cadence tier alone"
+assert control.out contains "default_card_lap_only=yes" else "standing-equipment: a bare run must record only what it ran"
+assert control.out contains "no_git_reads_zero=yes" else "standing-equipment: a pen outside a repository must read zero staged rather than refuse"
+assert control.out contains "tier_selects_one=yes" else "standing-equipment: --tier must select exactly that tier"
+assert control.out contains "card_keeps_untouched=yes" else "standing-equipment: a pass must keep the card lines of guards it did not run"
+assert control.out contains "all_runs_every_tier=yes" else "standing-equipment: --all must run every tier"
+assert control.out contains "name_selects_any_tier=yes" else "standing-equipment: a guard named by hand runs whatever its tier"
+assert control.out contains "name_runs_only_that_guard=yes" else "standing-equipment: a guard named by hand runs alone"
+assert control.out contains "absent_path_reds_runner=yes" else "standing-equipment: a rostered path absent from disk must red the runner"
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- five refusals bitten, two honest readings left free"
+say "RED and GREEN paths proven -- seven refusals bitten, and the runner driven over a planted roster"
 
-say "GREEN: standing-equipment -- the roster is a list a program reads, and running it writes down when."
+say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."

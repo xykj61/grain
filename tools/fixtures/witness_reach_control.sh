@@ -7,8 +7,8 @@
 # room asks. Three of the free readings reproduce sources that exist here and would otherwise be
 # read wrong; two reproduce shapes this tree has never written and might tomorrow.
 #
-# WHAT IT PROVES -- eighteen behaviors: eight calls heard, five mentions refused, two readings kept
-# apart, and the ceiling read from three positions:
+# WHAT IT PROVES -- twenty-one behaviors: nine calls heard, five mentions refused, four readings
+# kept apart, and the ceiling read from three positions:
 #
 #   REFUSED (stays unheard)                       HEARD (counts as sung)
 #   1  a path in a # comment                      1  run ["rishi/bin/rishi" "run" "<path>"]
@@ -18,8 +18,13 @@
 #   5  an untracked file, never counted           5  a roster row, which also makes it standing
 #                                                 6  a witness sung by a choir that is itself
 #                                                    off the roster: sung yes, standing no
-#                                                 7  a call after a ; separator
-#                                                 8  a call inside $( ) substitution
+#                                                 7  a roster row at `tier cadence`, which is heard
+#                                                    on the fifth lap: cadence yes, standing NO --
+#                                                    proven both ways, since a cadence row read as
+#                                                    standing would claim an every-lap promise the
+#                                                    runner never makes
+#                                                 8  a call after a ; separator
+#                                                 9  a call inside $( ) substitution
 #
 #   AND THE CEILING, from three positions: one unheard past it must read under_ceiling=no, exactly
 #   at it must read yes, and removing one plant must carry a refusing reading back to green. A
@@ -56,7 +61,7 @@ mkdir -p tools/fixtures tools/w construction
 # --- the plants -------------------------------------------------------------------------------
 # Each witness below is named exactly once, in exactly one shape, so a reading names its own cause.
 
-for n in called_direct called_dashc called_choir called_shell called_roster \
+for n in called_direct called_dashc called_choir called_shell called_roster called_cadence \
          choir_only after_semi in_subst \
          mentioned_comment mentioned_grep mentioned_string mentioned_usage named_by_nobody; do
   echo "say \"$n\"" > "tools/w/${n}_witness.rish"
@@ -106,6 +111,10 @@ guard mentions
 path tools/fixtures/mentions_scan.sh
 guard called_roster
 path tools/w/called_roster_witness.rish
+tier lap
+guard called_cadence
+path tools/w/called_cadence_witness.rish
+tier cadence
 EOF
 
 git add -A >/dev/null 2>&1
@@ -119,6 +128,7 @@ read_field() { echo "$1" | sed -n "s/.*[[:space:]]$2=\([^[:space:]]*\).*/\1/p"; 
 out=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" 2>/dev/null)
 sung=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --sung 2>/dev/null | awk '{print $2}')
 standing=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --standing 2>/dev/null | awk '{print $2}')
+cadence=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --cadence 2>/dev/null | awk '{print $2}')
 unheard=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --list 2>/dev/null | awk '{print $2}')
 
 echo "$out"
@@ -126,7 +136,7 @@ echo "$out"
 is_in() { echo "$2" | grep -qx "tools/w/$1_witness.rish"; }
 
 # HEARD -- eight call shapes
-for n in called_direct called_dashc called_choir called_shell called_roster choir_only after_semi in_subst; do
+for n in called_direct called_dashc called_choir called_shell called_roster called_cadence choir_only after_semi in_subst; do
   if is_in "$n" "$sung"; then note ok "heard: $n"; else note no "heard: $n"; fi
 done
 
@@ -147,6 +157,13 @@ else note no "sung yet not standing: choir_only"; fi
 # A roster row makes its witness standing.
 if is_in called_roster "$standing"; then note ok "standing: called_roster"
 else note no "standing: called_roster"; fi
+
+# A cadence row is heard, and is NOT standing. Both halves, because a tier read as an every-lap
+# promise would report a guard as sung each lap on the strength of a row that runs once in five.
+if is_in called_cadence "$cadence"; then note ok "cadence: called_cadence"
+else note no "cadence: called_cadence"; fi
+if ! is_in called_cadence "$standing"; then note ok "cadence is not standing: called_cadence"
+else note no "cadence is not standing: called_cadence"; fi
 
 # THE CEILING, FROM BOTH SIDES.
 u=$(read_field "$out" unheard)
