@@ -112,8 +112,10 @@ pub const NestError = error{
 /// `@t` nests under `@t`; bound is `aura_t_max_bytes` (STOA180).
 /// `@ux` nests under `@ux`; bound is `aura_ux_max_bytes` (STOA183).
 pub fn assert_aura_nests(sample_aura: []const u8, stated_aura: []const u8) NestError!void {
-    assert(sample_aura.len > 0); // precondition: sample aura non-empty
-    assert(stated_aura.len > 0); // precondition: stated aura non-empty
+    // invariant: the nest test compares the two auras byte by byte, so an empty one would nest
+    // against anything it met
+    assert(sample_aura.len > 0);
+    assert(stated_aura.len > 0);
     if (!std.mem.eql(u8, sample_aura, stated_aura)) return error.SampleDoesNotNest;
 }
 
@@ -136,9 +138,13 @@ fn tag_name(tag: []const u8) []const u8 {
 /// Assert `tag` nests under a `$%` ShapeSpec (unit membership).
 /// `tag` may be bare (`mint`) or percent-spelled (`%mint`).
 pub fn assert_tag_nests(tag: []const u8, spec: *const rune_shape.ShapeSpec) NestError!void {
-    assert(tag.len > 0); // precondition: tag token non-empty
+    // invariant: the tag is stripped of its leading sigil just below, so a token with nothing
+    // in it would leave no name
+    assert(tag.len > 0);
     const name = tag_name(tag);
-    assert(name.len > 0); // precondition: bare tag non-empty after strip
+    // invariant: a bare tag with nothing after the sigil would nest against every tag rather
+    // than its own
+    assert(name.len > 0);
     if (spec.body != .tagged) return error.SampleDoesNotNest;
     var i: usize = 0;
     while (i < spec.field_count) : (i += 1) {
@@ -149,7 +155,9 @@ pub fn assert_tag_nests(tag: []const u8, spec: *const rune_shape.ShapeSpec) Nest
 
 /// Assert `shape_name` is on the closed gate-sample allowlist (STOA109 · STOA122–160 · STOA328).
 pub fn assert_bartis_named_shape(shape_name: []const u8) NestError!void {
-    assert(shape_name.len > 0); // precondition: shape name non-empty
+    // invariant: the shape name is matched against the stated one, so an empty name would
+    // report a mismatch it did not cause
+    assert(shape_name.len > 0);
     for (closed_named_allowlist) |row| {
         if (alias_matches(shape_name, row)) return;
     }
@@ -330,8 +338,10 @@ pub fn assert_sample_not_nesting(is_nesting: bool) NestError!void {
 /// equality (`@…`) or the closed named-shape allowlist.
 pub fn assert_sample_nesting_nests(is_nesting: bool, sample: []const u8, stated_shape: []const u8) NestError!void {
     if (!is_nesting) return;
-    assert(sample.len > 0); // precondition: nesting sample non-empty
-    assert(stated_shape.len > 0); // precondition: stated shape non-empty
+    // invariant: the nest test compares the two texts byte by byte, so an empty one would nest
+    // against anything it met
+    assert(sample.len > 0);
+    assert(stated_shape.len > 0);
     if (sample[0] == '@' or stated_shape[0] == '@') {
         try assert_aura_nests(sample, stated_shape);
         return;

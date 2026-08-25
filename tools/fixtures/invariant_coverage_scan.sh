@@ -8,7 +8,9 @@
 # proper reading rather than a footnote.
 #
 # WHAT IT READS. Every authored `.rye` file outside vendor, gratitude, and old. For each assert
-# standing in CODE -- a comment quoting an assert is prose -- it walks up over blank lines and over
+# standing in CODE -- a comment quoting an assert is prose, a line of a `\\` multiline string is
+# generated source rather than this file's own, and `emit_assert(` is a function name that merely
+# ends in one (8 such lines across 29,685, found while sweeping `glow/lower_assert.rye`) -- it walks up over blank lines and over
 # a run of neighbouring asserts, then through the contiguous comment block above, and asks whether
 # any line of that block says `invariant:`. A run of asserts under one invariant block is covered
 # by it, which is how the law is actually written and how this tree actually spells it.
@@ -84,7 +86,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
   function covered(i,   j, k) {
     # up over blanks and over a run of neighbouring asserts, then through the comment block
     j = i - 1
-    while (j >= 1 && (lines[j] ~ /^[ \t]*$/ || (lines[j] ~ /assert\(/ && lines[j] !~ /^[ \t]*\/\//))) j--
+    while (j >= 1 && (lines[j] ~ /^[ \t]*$/ || (lines[j] ~ /(^|[^A-Za-z0-9_])assert\(/ && lines[j] !~ /^[ \t]*\/\//))) j--
     while (j >= 1 && lines[j] ~ /^[ \t]*\/\//) {
       if (lines[j] ~ /\/\/[ \t]*invariant:/) return 1
       j--
@@ -159,7 +161,9 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
         sub(/^[ \t]*(pub[ \t]+)?(export[ \t]+)?fn[ \t]+/, "", fn)
         sub(/[ \t(].*$/, "", fn)
       }
-      if (lines[i] !~ /assert\(/) continue
+      # An assert CALL: not `emit_assert(`, and not a line of a `\\` string holding generated source.
+      if (lines[i] !~ /(^|[^A-Za-z0-9_])assert\(/) continue
+      if (lines[i] ~ /^[ \t]*\\\\/) continue
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }

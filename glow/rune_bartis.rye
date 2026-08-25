@@ -131,22 +131,30 @@ pub const GateSpec = struct {
 };
 
 pub fn face_slice(spec: *const GateSpec) []const u8 {
-    assert(spec.face_len <= max_face_len); // invariant: face fits in buffer
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.face_len <= max_face_len);
     return spec.face[0..spec.face_len];
 }
 
 pub fn face2_slice(spec: *const GateSpec) []const u8 {
-    assert(spec.face2_len <= max_face_len); // invariant: face2 fits in buffer
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.face2_len <= max_face_len);
     return spec.face2[0..spec.face2_len];
 }
 
 pub fn shape_name_slice(spec: *const GateSpec) []const u8 {
-    assert(spec.shape_name_len <= max_shape_len); // invariant: shape name fits
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.shape_name_len <= max_shape_len);
     return spec.shape_name[0..spec.shape_name_len];
 }
 
 pub fn gate_slice(spec: *const GateSpec) []const u8 {
-    assert(spec.gate_len <= max_gate_len); // invariant: gate fits in buffer
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.gate_len <= max_gate_len);
     return spec.gate[0..spec.gate_len];
 }
 
@@ -329,7 +337,9 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         error.BadToken => return error.BadToken,
         error.EmptySource => return error.EmptySource,
     };
-    assert(n <= tokens.max_tokens); // postcondition: tokenize bound
+    // invariant: tokenize returns a count it has already bounded, and the walk below indexes
+    // the token buffer by it
+    assert(n <= tokens.max_tokens);
     const toks = buf[0..n];
     var i: u32 = 0;
 
@@ -422,7 +432,9 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
         while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
 
-        assert(face_text.len <= max_face_len); // precondition held by check above
+        // invariant: the length check just above is what makes this true, and the copy below is
+        // sized by the same bound
+        assert(face_text.len <= max_face_len);
         tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
         spec.face_len = @intCast(face_text.len);
         if (named_shape) |sn| {

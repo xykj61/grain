@@ -57,7 +57,9 @@ pub const CrossDeskSpec = struct {
 };
 
 fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    assert(face.len <= rm.max_name_len); // precondition: face within name budget
+    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
+    // would arrive truncated into a different one rather than refused
+    assert(face.len <= rm.max_name_len);
     if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
     const n: u32 = @intCast(face.len);
     var i: u32 = 0;
@@ -77,7 +79,9 @@ fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
 }
 
 fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    assert(name.len <= rm.max_name_len); // precondition
+    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
+    // would arrive truncated into a different one rather than refused
+    assert(name.len <= rm.max_name_len);
     if (name.len == 0 or name.len > rm.max_name_len) return error.BadIdent;
     // STOA190: study `-mold` names emit the same Zig stem as `-shape` (AmountShape).
     var name_norm_buf: [rm.max_name_len]u8 = undefined;
@@ -113,12 +117,16 @@ fn zig_type_name(name: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
 }
 
 pub fn stem_slice(spec: *const CrossDeskSpec) []const u8 {
-    assert(spec.stem_len <= max_stem_len); // invariant
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.stem_len <= max_stem_len);
     return spec.stem[0..@as(usize, @intCast(spec.stem_len))];
 }
 
 pub fn cast_mold_slice(spec: *const CrossDeskSpec) []const u8 {
-    assert(spec.cast_mold_len <= rm.max_name_len); // invariant
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.cast_mold_len <= rm.max_name_len);
     return spec.cast_mold[0..@as(usize, @intCast(spec.cast_mold_len))];
 }
 
@@ -140,7 +148,9 @@ pub fn parse_cross_desk(src: []const u8) LowerError!CrossDeskSpec {
     const parts = tokens.cross_desk_parts(src) orelse return error.NotACrossDesk;
     var spec: CrossDeskSpec = .{};
     const stem = tokens.slice_of(src, parts.stem);
-    assert(stem.len <= max_stem_len); // postcondition: lexer ident within stem budget
+    // invariant: the stem is copied into a buffer of max_stem_len, and the lexer's own ident
+    // bound is what makes that copy fit
+    assert(stem.len <= max_stem_len);
     if (stem.len == 0 or stem.len > max_stem_len) return error.BadIdent;
     if (stem[0] >= '0' and stem[0] <= '9') return error.BadIdent;
     tally_copy.copy_disjoint(u8, spec.stem[0..stem.len], stem);
@@ -169,16 +179,22 @@ pub fn bind_cross_desk(spec: *const CrossDeskSpec, lib_src: []const u8) LowerErr
 }
 
 fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) LowerError!void {
-    assert(used.* <= out.len); // invariant: cursor inside buffer
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     const slice = out[@as(usize, @intCast(used.*))..];
     const written = std.fmt.bufPrint(slice, fmt, args) catch return error.Overflow;
     const n: u32 = @intCast(written.len);
-    assert(used.* + n <= out.len); // postcondition: write fits
+    // invariant: the print has already landed when this runs, so it states that the write
+    // stayed inside the buffer rather than checking beforehand
+    assert(used.* + n <= out.len);
     used.* += n;
 }
 
 fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, bound: u32) LowerError!void {
-    assert(used.* <= out.len); // invariant
+    // invariant: the cursor addresses the remaining buffer below, so a cursor past the end
+    // would hand the print a negative span
+    assert(used.* <= out.len);
     // Bound-copy loop in emit (no memcpy token in this file — TAME scan).
     try append_print(out, used,
         \\fn {s}(comptime s: []const u8) [{d}]u8 {{
@@ -196,8 +212,10 @@ fn emit_bytes_demo_helper(out: []u8, used: *u32, comptime fn_name: []const u8, b
 fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(spec);
     const n: u32 = @intCast(spec.field_count);
-    assert(n >= 1); // precondition: at least one `$:` face
-    assert(n <= rm.max_fields); // precondition: closed `$:` capacity
+    // invariant: the tuple type is emitted with one field per face and the mold budget is what
+    // the buffer below is sized for, while one face is where a tuple starts at all
+    assert(n >= 1);
+    assert(n <= rm.max_fields);
     const has_cord = rm.any_cord_field(spec);
     const has_hex = rm.any_hex_field(spec);
     const cord_bound = nest_type.aura_t_max_bytes;
@@ -426,8 +444,10 @@ fn emit_tagged_payload_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, ou
     const tn = try zig_type_name(mold_name, &zt);
     const tlen = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(demo_i))), &ztag);
     const face_count: u32 = @intCast(rm.payload_count(spec, @as(usize, @intCast(demo_i))));
-    assert(face_count >= 1); // precondition: payload arm
-    assert(face_count <= rm.max_payload_faces); // invariant: mold budget
+    // invariant: a payload arm carries at least one face, and the mold budget is what the
+    // emitted struct is sized for
+    assert(face_count >= 1);
+    assert(face_count <= rm.max_payload_faces);
     const has_cord = rm.any_payload_cord_field(spec);
     const has_hex = rm.any_payload_hex_field(spec);
 
@@ -465,10 +485,14 @@ fn emit_tagged_payload_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, ou
 }
 
 pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition: emit buffer present
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     if (src.len == 0) return error.EmptySource;
     const parts = tokens.named_cast_parts(src) orelse return error.NotANamedCast;
-    assert(parts.mold_start + parts.mold_len <= src.len); // invariant: mold span in src
+    // invariant: the mold is sliced out of src by this span, so an end past the source would
+    // hand back bytes it never held
+    assert(parts.mold_start + parts.mold_len <= src.len);
     const mold_lo: usize = @as(usize, @intCast(parts.mold_start));
     const mold_hi: usize = @as(usize, @intCast(parts.mold_start + parts.mold_len));
     const mold_spec = try rm.parse_source(src[mold_lo..mold_hi]);
@@ -494,8 +518,10 @@ pub fn lower_source_welcome(src: []const u8, out: []u8) LowerError!u32 {
 fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.ShapeSpec, out: []u8) LowerError!u32 {
     const mold_name = rm.name_slice(mold_spec);
     const n: u32 = @intCast(mold_spec.field_count);
-    assert(n >= 1); // precondition: at least one `$:` face
-    assert(n <= rm.max_fields); // precondition: closed `$:` capacity
+    // invariant: the tuple type is emitted with one field per face and the mold budget is what
+    // the buffer below is sized for, while one face is where a tuple starts at all
+    assert(n >= 1);
+    assert(n <= rm.max_fields);
     const has_cord = rm.any_cord_field(mold_spec);
     const has_hex = rm.any_hex_field(mold_spec);
     var zs: [max_stem_len]u8 = undefined;
@@ -607,8 +633,10 @@ fn emit_cross_tagged_payload(spec: *const CrossDeskSpec, mold_spec: *const rm.Sh
     const tn = try zig_type_name(mold_name, &zt);
     const tlen = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(demo_i))), &ztag);
     const face_count: u32 = @intCast(rm.payload_count(mold_spec, @as(usize, @intCast(demo_i))));
-    assert(face_count >= 1); // precondition
-    assert(face_count <= rm.max_payload_faces); // invariant
+    // invariant: a payload arm carries at least one face, and the mold budget is what the
+    // emitted struct is sized for
+    assert(face_count >= 1);
+    assert(face_count <= rm.max_payload_faces);
     const has_cord = rm.any_payload_cord_field(mold_spec);
     const has_hex = rm.any_payload_hex_field(mold_spec);
     const at = "@";
@@ -659,7 +687,9 @@ fn emit_cross_tagged(spec: *const CrossDeskSpec, mold_spec: *const rm.ShapeSpec,
 }
 
 pub fn lower_cross_desk_welcome(src: []const u8, lib_src: []const u8, out: []u8) LowerError!u32 {
-    assert(out.len >= 1); // precondition
+    // invariant: the emitter writes its opening bytes without checking, so an empty buffer
+    // would be written past rather than refused
+    assert(out.len >= 1);
     if (src.len == 0) return error.EmptySource;
     const spec = try parse_cross_desk(src);
     const mold_spec = try bind_cross_desk(&spec, lib_src);
