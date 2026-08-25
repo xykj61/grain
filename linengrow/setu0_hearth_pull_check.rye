@@ -1,4 +1,4 @@
-//! linengrow/setu0_hearth_pull_check.rye — Desk-side agree check for SETU0 host pull.
+//! linengrow/setu0_hearth_pull_check.rye -- Desk-side agree check for SETU0 host pull.
 //!
 //! Reads tools/.cache/setu0/hearth_home and hearth.bron (written by the host
 //! rish after adb run-as cat). Exits 0 and prints GREEN when they agree.

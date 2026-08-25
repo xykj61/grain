@@ -1,4 +1,4 @@
-//! nock/nock_lap2_witness.rye — proves the Nock macro layer reduces to lap 1.
+//! nock/nock_lap2_witness.rye -- proves the Nock macro layer reduces to lap 1.
 //!
 //!   rye build nock/nock_lap2_witness.rye -femit-bin=nock/bin/nock_lap2_witness
 //!   nock/bin/nock_lap2_witness

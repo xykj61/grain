@@ -1,19 +1,19 @@
-//! pond/apps/mcp_manifest.rye — BUHR Journey 3, Rung 3: the manifest tile.
+//! pond/apps/mcp_manifest.rye -- BUHR Journey 3, Rung 3: the manifest tile.
 //!
 //! The call tile (rung two) let a Grain tool *answer* a JSON MCP host. This rung lets
 //! a JSON host *discover* one: it tiles a Bron `format mcp-tool-v1` manifest to the
-//! JSON tool descriptor a `tools/list` response carries — a name, a description, an
+//! JSON tool descriptor a `tools/list` response carries -- a name, a description, an
 //! `inputSchema` (an object of typed properties with a required list), and an
-//! `outputSchema` — and reads that descriptor back into the same manifest. Discovery
+//! `outputSchema` -- and reads that descriptor back into the same manifest. Discovery
 //! and call together complete the interop story: a JSON host can find a Grain tool
 //! and then invoke it, both crossings faithful.
 //!
 //! The crux property carries again: parse(render(x)) recovers x. A Bron manifest
 //! renders to a JSON descriptor and reads back into an equal manifest, the value
-//! model mapped honestly across the border — Grain's `int`/`str`/`bool` to JSON
+//! model mapped honestly across the border -- Grain's `int`/`str`/`bool` to JSON
 //! Schema's `integer`/`string`/`boolean` and back, an unknown type refused rather
 //! than guessed. It reuses rung two's JSON writer and reader (`mcp_json.rye`) and
-//! rung one's argument bound (`mcp_bron.rye`) — additive, no new transport.
+//! rung one's argument bound (`mcp_bron.rye`) -- additive, no new transport.
 //!
 //!   rye build pond/apps/mcp_manifest.rye -femit-bin=pond/bin/mcp-manifest
 //!   pond/bin/mcp-manifest selftest
@@ -31,13 +31,13 @@ pub const max_line: u32 = 128; // longest manifest line
 
 pub const ManifestError = mj.JsonError || error{ BadType, MissingField, BadFormat };
 
-/// One declared argument in a tool manifest — its name and its Grain value type.
+/// One declared argument in a tool manifest -- its name and its Grain value type.
 pub const ToolArg = struct {
     name: []const u8,
     ty: []const u8, // one of "int", "str", "bool"
 };
 
-/// A parsed `format mcp-tool-v1` manifest — how a tool describes itself.
+/// A parsed `format mcp-tool-v1` manifest -- how a tool describes itself.
 pub const Manifest = struct {
     tool: []const u8,
     summary: []const u8,
@@ -166,7 +166,7 @@ pub fn manifest_to_json(m: *const Manifest, out: []u8) ManifestError![]const u8 
     return out[0..n];
 }
 
-/// Parse the `properties` object — each member a named typed argument — into the
+/// Parse the `properties` object -- each member a named typed argument -- into the
 /// Manifest, mapping each JSON type back to its Grain value type.
 fn parse_properties(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!void {
     // invariant: the cursor sits within the source
@@ -207,7 +207,7 @@ fn parse_properties(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!
 }
 
 /// Read and consume a JSON string array (the `required` list this tile does not
-/// re-derive — every argument is required by construction).
+/// re-derive -- every argument is required by construction).
 fn skip_string_array(p: *mj.Parser) ManifestError!void {
     // invariant: the cursor sits within the source
     assert(p.pos <= p.src.len);
@@ -233,7 +233,7 @@ fn skip_string_array(p: *mj.Parser) ManifestError!void {
     assert(p.pos <= p.src.len);
 }
 
-/// Parse the `inputSchema` object — its type, properties, and required list.
+/// Parse the `inputSchema` object -- its type, properties, and required list.
 fn parse_input_schema(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!void {
     // invariant: the cursor sits within the source
     assert(p.pos <= p.src.len);
@@ -268,7 +268,7 @@ fn parse_input_schema(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestErro
     assert(p.pos <= p.src.len);
 }
 
-/// Parse the `outputSchema` object — its single type — returning the Grain type.
+/// Parse the `outputSchema` object -- its single type -- returning the Grain type.
 fn parse_output_schema(p: *mj.Parser) ManifestError![]const u8 {
     // invariant: the cursor sits within the source
     assert(p.pos <= p.src.len);

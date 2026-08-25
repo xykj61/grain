@@ -1,12 +1,12 @@
-//! pond/apps/constel_net_fixture_gen.rye — reproducibly emit the real constel-net fixture record.
+//! pond/apps/constel_net_fixture_gen.rye -- reproducibly emit the real constel-net fixture record.
 //!
 //! Rung four reads a genuine on-disk constel record and cross-checks the harness's reading against an
 //! independent measure. This generator produces that fixture reproducibly, so the on-disk bytes are
-//! exactly what the harness renders — a keeper can regenerate `tools/fixtures/constel_net.bron` and get
-//! the identical record, never a hand-mocked shape. It settles the demo d12·d60 branch (rung two),
+//! exactly what the harness renders -- a keeper can regenerate `tools/fixtures/constel_net.bron` and get
+//! the identical record, never a hand-mocked shape. It settles the demo d12-d60 branch (rung two),
 //! builds a portable roster (rung three), and prints the `format constel-net-v1` record to stdout.
 //!
-//! Demo seeds only — no real key, no network, no custody. The record names a fake dev-net under a
+//! Demo seeds only -- no real key, no network, no custody. The record names a fake dev-net under a
 //! law-safe name; nothing it holds can reach the live network.
 //!
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr:
@@ -24,7 +24,7 @@ const kumara = @import("kumara.rye");
 
 pub const constel_net_fixture_gen_version = "20260813.024836";
 
-// The same demo branch the harness rungs settle: galaxy 3 · star 27 · planet 267, one law-safe name.
+// The same demo branch the harness rungs settle: galaxy 3 - star 27 - planet 267, one law-safe name.
 const demo_g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const demo_s_key: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -53,7 +53,7 @@ fn emit_record() !u8 {
     const pc = bron.from_settled(&net);
     var buf: [bron.max_record]u8 = undefined;
     const n = try bron.render(&pc, &buf);
-    // invariant: the render is bounded and non-empty — a real record always carries its header.
+    // invariant: the render is bounded and non-empty -- a real record always carries its header.
     assert(n > 0);
     assert(n <= bron.max_record);
     print("{s}", .{buf[0..n]});

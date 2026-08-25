@@ -1,4 +1,4 @@
-//! comlink/guest_tablecloth_query_client_rx.rye — Tablecloth query device: client RX (verify hits).
+//! comlink/guest_tablecloth_query_client_rx.rye -- Tablecloth query device: client RX (verify hits).
 
 const std = @import("std");
 const vn = @import("virtio_net.rye");

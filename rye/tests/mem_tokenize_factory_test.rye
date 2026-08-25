@@ -1,7 +1,7 @@
-//! Rye test: tokenize factories — pass 9932.
+//! Rye test: tokenize factories -- pass 9932.
 //!
 //! tokenizeScalar, tokenizeAny, and tokenizeSequence begin at index zero
-//! (pairs with TokenIterator 9956–9957 and split factories 9934).
+//! (pairs with TokenIterator 9956-9957 and split factories 9934).
 
 const std = @import("std");
 const mem = std.mem;

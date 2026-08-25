@@ -1,4 +1,4 @@
-//! linengrow/seva_r1_frame.rye — Seva R1 demo frame as a callable unit.
+//! linengrow/seva_r1_frame.rye -- Seva R1 demo frame as a callable unit.
 //!
 //! Same Pool-hosted ledger path as seva_view_witness.rye Claim 1, returned as
 //! a thin-view Frame for the NativeActivity present seam. B0 still owns the

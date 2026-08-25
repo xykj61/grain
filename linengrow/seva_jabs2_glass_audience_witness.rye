@@ -1,4 +1,4 @@
-//! linengrow/seva_jabs2_glass_audience_witness.rye — proves JABS2 glass audience lines.
+//! linengrow/seva_jabs2_glass_audience_witness.rye -- proves JABS2 glass audience lines.
 //!
 //!   rye build linengrow/seva_jabs2_glass_audience_witness.rye \
 //!     -femit-bin=linengrow/bin/seva_jabs2_glass_audience_witness

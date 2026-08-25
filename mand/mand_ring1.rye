@@ -1,9 +1,9 @@
-//! mand/mand_ring1.rye — Mand ring-1: one capability check at one seam.
+//! mand/mand_ring1.rye -- Mand ring-1: one capability check at one seam.
 //!
 //! Seam (SLC): may this reader see this record, under this named authority,
 //! written to the audit log?
 //!
-//! Mand owns authority · scope · audit · retention. Ring-1 proves the thin
+//! Mand owns authority - scope - audit - retention. Ring-1 proves the thin
 //! door only: Caravan's capability table grants `right_read` over the
 //! `record` resource to a named authority (the reader label). A grant
 //! discloses the record body and appends one audit line. A refuse returns
@@ -101,7 +101,7 @@ pub fn may_see(table: *const caps.CapabilityTable, authority: []const u8) bool {
 
 /// May this reader see this record, under this named authority, written to audit?
 ///
-/// Ring-1: the reader label and the named authority are the same string — one
+/// Ring-1: the reader label and the named authority are the same string -- one
 /// identity at the door. A later ring may split reader from authorizing role.
 pub fn see_record(
     table: *const caps.CapabilityTable,

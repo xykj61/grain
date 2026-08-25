@@ -1,9 +1,9 @@
-//! tools/rye/mantra_a1_store_dirs_eq_witness.rye — Ashvini equality: exact 3 (STOA337).
+//! tools/rye/mantra_a1_store_dirs_eq_witness.rye -- Ashvini equality: exact 3 (STOA337).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/mantra_a1_store_dirs_eq_witness.rye
 //!
 //! gth speaks ceilings. eq speaks exactly. A Store holds exactly three
-//! directory handles (root · mantra · blobs) — the eighth pedestal, the last
+//! directory handles (root - mantra - blobs) -- the eighth pedestal, the last
 //! that could not decide until this rune. The arc closes here in Rye.
 
 const std = @import("std");

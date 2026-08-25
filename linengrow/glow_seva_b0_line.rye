@@ -1,21 +1,21 @@
-//! linengrow/glow_seva_b0_line.rye — Glow product log-line surface over elder receipt_core.
+//! linengrow/glow_seva_b0_line.rye -- Glow product log-line surface over elder receipt_core.
 //!
 //! STOA202 (B2): owns format_log_line + parse_log_line while calling elder
 //! bodies. Wires with STOA201 sign for a demo round-trip.
 //! STOA203: append composes through this surface + sign.
 //! STOA225: demo sig/fact hex pins + Glow face=lit desk bind
 //! (`glow/gen/sample-demo-fact-line-lits.glow`). Pins match
-//! `claim_demo_line` under issuer seed · fixture stamp1/memo1.
+//! `claim_demo_line` under issuer seed - fixture stamp1/memo1.
 //! STOA227: `format_demo_line_from_pins` emits the elder line from those
 //! seated pins (desk-bound). Does not read the `.glow` file at runtime.
-//! STOA231: event 2–3 sig/fact pins · emit · desk bind (stamp2/memo2 ·
+//! STOA231: event 2-3 sig/fact pins - emit - desk bind (stamp2/memo2 -
 //! stamp3/memo3). Same recipe as event 1.
-//! STOA233: runtime desk emit — product extracts face='…' cords from desk
+//! STOA233: runtime desk emit -- product extracts face='...' cords from desk
 //! text and formats lines byte-identical to pin emit.
-//! STOA241: product face_lit stand-in — `extract_face_lit_cord` (same body as
+//! STOA241: product face_lit stand-in -- `extract_face_lit_cord` (same body as
 //! extract_desk_cord). Module path blocks `@import` of glow/face_lit; dual
 //! witness proves product extract ≡ Glow face_lit on the fact-line desk.
-//! STOA243: product-authored format/parse log-line body — hex·space·hex·newline
+//! STOA243: product-authored format/parse log-line body -- hex-space-hex-newline
 //! lives in this module; elder receipt_core stays peer baseline for agree.
 //!
 //!   rye build linengrow/glow_seva_b0_line_witness.rye \
@@ -33,7 +33,7 @@ const tally_parse_int = @import("parse_int.rye");
 
 pub const line_version = "20260722.140957";
 
-/// Glow face=lit sample desk for demo line halves (STOA225 · STOA231).
+/// Glow face=lit sample desk for demo line halves (STOA225 - STOA231).
 pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
 
 /// Desk bytes packed into the product binary / APK `.so` (STOA237).
@@ -50,7 +50,7 @@ pub const demo_sig_hex =
 pub const demo_fact_hex =
     "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420310a6d656d6f2073616c613a6f70656e2072697368692073657373696f6e0a7374616d702032303236303731352e3139303030310a";
 
-/// Event 2 sig hex (issuer seed · stamp2/memo2 · amount 2).
+/// Event 2 sig hex (issuer seed - stamp2/memo2 - amount 2).
 pub const demo_sig2_hex =
     "cbff6d796bfc1880950a31752483526f394fcf7f5a5d31267289735637ec9b7a02b2a8d92b8edcdcac77cf30a44f973225356043c6777a67c0ad99e8df34bf0f";
 
@@ -58,7 +58,7 @@ pub const demo_sig2_hex =
 pub const demo_fact2_hex =
     "66726f6d20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a746f20616630366133653332393137313465346633353663313963396231356364313935316563366536363632616137376265303735343766323839333833333431640a616d6f756e7420320a6d656d6f2073616c613a74797065206c65742078203d2034320a7374616d702032303236303731352e3139303030320a";
 
-/// Event 3 sig hex (issuer seed · stamp3/memo3 · amount 3).
+/// Event 3 sig hex (issuer seed - stamp3/memo3 - amount 3).
 pub const demo_sig3_hex =
     "33e4b1c91aa10787dec97f3db5e0f661d816eacdf97bfd28f24f38a7d23048ec7858fddc2259a2ff78bfe4e900e689b5a9612270ad365ab2ffa527bb44fd1f0e";
 
@@ -111,7 +111,7 @@ fn decode_hex_lower(hex: []const u8, out: []u8) LineError!u32 {
     return nbytes;
 }
 
-/// Format sig + fact as one log line (hex · space · hex · newline) — product body (STOA243).
+/// Format sig + fact as one log line (hex - space - hex - newline) -- product body (STOA243).
 pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineError!u32 {
     const sig_bytes = sig.toBytes();
     var pos: u32 = 0;
@@ -124,7 +124,7 @@ pub fn format_log_line(sig: kumara.Signature, fact: []const u8, out: []u8) LineE
     return pos + 1;
 }
 
-/// Parse one log line into sig bytes and fact bytes — product body (STOA243).
+/// Parse one log line into sig bytes and fact bytes -- product body (STOA243).
 pub fn parse_log_line(line_text: []const u8, sig_out: []u8, fact_out: []u8) LineError!ParsedLine {
     const trimmed = trim_line(line_text);
     if (trimmed.len < rc.sig_hex_len + 2) return error.InvalidLine;
@@ -164,7 +164,7 @@ pub fn claim_demo_line(line_out: *[rc.max_line_len]u8) LineError!u32 {
     return claim_demo_line_seq(1, fixture.stamp1, fixture.memo1, line_out);
 }
 
-/// Sign one demo event (seq · stamp · memo), format line, parse/verify round-trip.
+/// Sign one demo event (seq - stamp - memo), format line, parse/verify round-trip.
 pub fn claim_demo_line_seq(
     seq: i64,
     stamp: []const u8,
@@ -259,7 +259,7 @@ fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []co
     return std.mem.indexOf(u8, src, needle) != null;
 }
 
-/// True when Glow lit-desk text carries demo event 1–3 sig/fact as face=lit clauses.
+/// True when Glow lit-desk text carries demo event 1-3 sig/fact as face=lit clauses.
 pub fn lit_desk_binds_pins(src: []const u8) bool {
     // invariant: the source is what the pins are read out of, so an empty one would bind every
     // pin to nothing
@@ -305,8 +305,8 @@ pub fn format_demo_line3_from_pins(out: []u8) LineError!u32 {
     return format_line_from_hex(demo_sig3_hex, demo_fact3_hex, out);
 }
 
-/// Extract cord interior from a `face='…'` clause in desk source (STOA233/241).
-/// Skips `::` comment lines. Product face_lit stand-in — does not import
+/// Extract cord interior from a `face='...'` clause in desk source (STOA233/241).
+/// Skips `::` comment lines. Product face_lit stand-in -- does not import
 /// glow/face_lit (module path seam); dual witness proves agree.
 pub fn extract_face_lit_cord(src: []const u8, face: []const u8) LineError![]const u8 {
     return extract_desk_cord(src, face);
@@ -362,8 +362,8 @@ pub fn format_demo_line3_from_desk(src: []const u8, out: []u8) LineError!u32 {
     return format_line_from_hex(sig, fact, out);
 }
 
-/// True when product face_lit extract matches seated pins for events 1–3 (STOA241).
-/// Glow face_lit witness matches the same pins — transitive agree across the seam.
+/// True when product face_lit extract matches seated pins for events 1-3 (STOA241).
+/// Glow face_lit witness matches the same pins -- transitive agree across the seam.
 pub fn face_lit_product_agrees_pins(src: []const u8) LineError!bool {
     const pairs = [_]struct { face: []const u8, pin: []const u8 }{
         .{ .face = "sig", .pin = demo_sig_hex },
@@ -380,7 +380,7 @@ pub fn face_lit_product_agrees_pins(src: []const u8) LineError!bool {
     return true;
 }
 
-/// True when desk emit for events 1–3 matches seated pin emit.
+/// True when desk emit for events 1-3 matches seated pin emit.
 pub fn demo_desk_emit_agrees_pins(src: []const u8) LineError!bool {
     var from_desk: [rc.max_line_len]u8 = undefined;
     var from_pins: [rc.max_line_len]u8 = undefined;

@@ -1,6 +1,6 @@
-//! lantern/lantern_core.rye — bounded request/response inference contract · 20260713.
+//! lantern/lantern_core.rye -- bounded request/response inference contract - 20260713.
 //!
-//! Weights live in Tablecloth by hash. Laps deepen through echo · user pins.
+//! Weights live in Tablecloth by hash. Laps deepen through echo - user pins.
 
 const std = @import("std");
 const assert = std.debug.assert;

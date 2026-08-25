@@ -1,14 +1,14 @@
-//! pond/apps/fairtrade_cert_bron.rye — AYRE Journey 7 (Fair-trade), Rung 3: the certificate travels.
+//! pond/apps/fairtrade_cert_bron.rye -- AYRE Journey 7 (Fair-trade), Rung 3: the certificate travels.
 //!
 //! Rung one fixed a fair-trade certificate's meaning as a join; rung two bound each attestation to a
 //! settled Kumara identity so a satisfied certificate carries every party's verifying signature. A
-//! certificate is only useful, though, if a recipient can carry the identical proof — written to a
-//! file, pinned in Tablecloth, or handed to a buyer — and check it **offline**, with no store and no
+//! certificate is only useful, though, if a recipient can carry the identical proof -- written to a
+//! file, pinned in Tablecloth, or handed to a buyer -- and check it **offline**, with no store and no
 //! network. This rung renders the certified, signed attestations to a `format fairtrade-signed-v1`
 //! Bron record and parses them back byte-for-byte, so the proof survives becoming text.
 //!
 //! The crux is preservation: `parse(render(record, certified))` recovers an equal bundle of
-//! attestations — each criterion's name, attester point, and signature — and the recovered bundle is
+//! attestations -- each criterion's name, attester point, and signature -- and the recovered bundle is
 //! **still satisfied**: every traveled attestation re-verifies against the recipient's keyring
 //! through rung two's own `verify_held`, and re-running rung two's `evaluate_signed` over the
 //! traveled bundle yields the identical `Certified`. Nothing about the signed certification was lost
@@ -16,8 +16,8 @@
 //! idiom), never a general parser: an unknown field refuses (never dropped), a malformed line
 //! refuses, a wrong header refuses, and bad hex refuses rather than decode to garbage.
 //!
-//! It composes rungs one and two — a recovered bundle rebuilds a `SignedRecord` re-checked by
-//! `verify_held` / `evaluate_signed` — inventing no new signing and no new join. It reads no network:
+//! It composes rungs one and two -- a recovered bundle rebuilds a `SignedRecord` re-checked by
+//! `verify_held` / `evaluate_signed` -- inventing no new signing and no new join. It reads no network:
 //! the serve transport that would carry this record across the wire is the Comlink-served custody
 //! gate (Keaton's hand). Demo keeper seeds only; facts only (custody gate %3 untouched).
 //!
@@ -39,7 +39,7 @@ pub const fairtrade_cert_bron_version = "20260812.194901";
 
 pub const sig_len: u32 = 64;
 
-/// Up to this many certified criteria travel in one bundle — the certificate's own bound.
+/// Up to this many certified criteria travel in one bundle -- the certificate's own bound.
 pub const max_certified: u32 = cert.max_criteria;
 
 /// The rendered record: a header plus one `attest` line per criterion, the widest field a
@@ -255,7 +255,7 @@ fn certs_equal(a: *const cert.Certified, b: *const cert.Certified) bool {
 }
 
 /// A satisfied signed certificate renders to Bron and parses back byte-for-byte, and the recovered
-/// bundle is still satisfied — every traveled attestation re-verifies, and re-running rung two's
+/// bundle is still satisfied -- every traveled attestation re-verifies, and re-running rung two's
 /// evaluate_signed over the traveled bundle yields the identical Certified.
 fn welcome_round_trip_preserves() !void {
     const record = try seat_signed_record();
@@ -278,7 +278,7 @@ fn welcome_round_trip_preserves() !void {
     print("fairtrade_cert_bron: a satisfied signed certificate round-tripped through Bron byte-for-byte and stayed satisfied.\n", .{});
 }
 
-/// A tampered traveled signature refuses offline (BadAttestation) — the crossing preserves the
+/// A tampered traveled signature refuses offline (BadAttestation) -- the crossing preserves the
 /// signature exactly, so a flipped byte breaks the party's promise on the far side too.
 fn unwelcome_tampered_signature_refuses() !void {
     const record = try seat_signed_record();
@@ -296,7 +296,7 @@ fn unwelcome_tampered_signature_refuses() !void {
     print("fairtrade_cert_bron: a traveled signature flipped after the crossing refused BadAttestation offline.\n", .{});
 }
 
-/// An unknown field, a wrong header, a malformed attest line, and bad hex each refuse — the reader
+/// An unknown field, a wrong header, a malformed attest line, and bad hex each refuse -- the reader
 /// never drops a field or decodes garbage.
 fn unwelcome_malformed_refuses() !void {
     const good_sig = "0" ** 128;

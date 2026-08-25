@@ -1,4 +1,4 @@
-//! caravan/supervisor_signal.rye — atomic stop flag + SIGTERM/SIGINT handlers.
+//! caravan/supervisor_signal.rye -- atomic stop flag + SIGTERM/SIGINT handlers.
 //!
 //! The handler's whole job is one atomic store; ordinary code at the supervisor
 //! loop top creates the sentinel file. Counsel:

@@ -1,4 +1,4 @@
-//! linengrow/setu6_device_lab_check.rye — write lab.bron from iface arg or none.
+//! linengrow/setu6_device_lab_check.rye -- write lab.bron from iface arg or none.
 //!
 //!   linengrow/bin/setu6_device_lab_check           # stand-in (no iface)
 //!   linengrow/bin/setu6_device_lab_check usb0      # armed

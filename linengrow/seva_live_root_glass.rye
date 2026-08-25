@@ -1,18 +1,18 @@
-//! linengrow/seva_live_root_glass.rye — Skate line for live typed-append root (STOA272).
+//! linengrow/seva_live_root_glass.rye -- Skate line for live typed-append root (STOA272).
 //!
 //! Short face: event count + first eight hex digits of seva_live_root.
-//! HAWM1 hex stays on rows 6–7; this line paints on the tip strip (row 5).
+//! HAWM1 hex stays on rows 6-7; this line paints on the tip strip (row 5).
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
 pub const live_line_max: u32 = 48;
-/// Skate row shared with TUBE5 tip — live line wins when present.
+/// Skate row shared with TUBE5 tip -- live line wins when present.
 pub const skate_row: u32 = 5;
 pub const hex_preview_len: u32 = 8;
 
-/// Format `LIVE · {seq} · {hex[0..8]}`. Returns false if it will not fit.
+/// Format `LIVE - {seq} - {hex[0..8]}`. Returns false if it will not fit.
 pub fn format_live_line(
     seq: i64,
     hex64: *const [64]u8,

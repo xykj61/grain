@@ -1,4 +1,4 @@
-//! glow/rune_call3_witness.rye — proves the `%^` three-arg call rune head.
+//! glow/rune_call3_witness.rye -- proves the `%^` three-arg call rune head.
 //!
 //!   rye build glow/rune_call3_witness.rye -femit-bin=glow/bin/rune_call3_witness
 

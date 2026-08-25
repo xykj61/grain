@@ -1,4 +1,4 @@
-//! glow/truth_semantics_witness.rye — proves Glow ambient truth vs loobean seam.
+//! glow/truth_semantics_witness.rye -- proves Glow ambient truth vs loobean seam.
 //!
 //!   rye build glow/truth_semantics_witness.rye -femit-bin=glow/bin/truth_semantics_witness
 //!   glow/bin/truth_semantics_witness

@@ -1,8 +1,8 @@
-//! tally/kumara.rye — Kumara identity at the seam: deterministic keypair, sign, verify.
+//! tally/kumara.rye -- Kumara identity at the seam: deterministic keypair, sign, verify.
 //!
 //! Kumara names the keypair that signs a fact before it enters the log.
 //! This file centralizes the scattered `Ed25519` calls so every module
-//! reaches identity through one home — extraction, rather than a new capability.
+//! reaches identity through one home -- extraction, rather than a new capability.
 //!
 //!   rye build tally/kumara.rye -femit-bin=tally/bin/kumara
 //!   tally/bin/kumara selftest
@@ -22,9 +22,9 @@ pub const Signature = Ed25519.Signature;
 pub const seed_length = Ed25519.KeyPair.seed_length;
 pub const signature_length = Ed25519.Signature.encoded_length;
 
-/// Deterministic keypair from a 32-byte seed — the same seed yields the same keys.
+/// Deterministic keypair from a 32-byte seed -- the same seed yields the same keys.
 pub fn keypair_from_seed(seed: *const [seed_length]u8) KeyPair {
-    // invariant: an Ed25519 seed is thirty-two bytes — the format this seam assumes.
+    // invariant: an Ed25519 seed is thirty-two bytes -- the format this seam assumes.
     assert(seed_length == 32);
     return KeyPair.generateDeterministic(seed.*) catch unreachable;
 }

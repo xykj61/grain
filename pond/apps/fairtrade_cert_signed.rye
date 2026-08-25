@@ -1,12 +1,12 @@
-//! pond/apps/fairtrade_cert_signed.rye — AYRE Journey 7 (Fair-trade), Rung 2: a certificate the parties signed.
+//! pond/apps/fairtrade_cert_signed.rye -- AYRE Journey 7 (Fair-trade), Rung 2: a certificate the parties signed.
 //!
-//! Rung one fixed a fair-trade certificate's honest meaning as a join — a declaration of what
+//! Rung one fixed a fair-trade certificate's honest meaning as a join -- a declaration of what
 //! fair trade requires, evaluated against a cooperative record of held attestations, refusing the
 //! whole certification (Unsatisfied) on the first unmet criterion. Yet a plain record proves only
 //! that a name *appears*; it does not prove a party *vouched* for it. A steward could add a
 //! criterion to the record no producer ever attested.
 //!
-//! This rung binds each attestation to a settled Kumara identity — the attesting party signs the
+//! This rung binds each attestation to a settled Kumara identity -- the attesting party signs the
 //! exact fact (their point, the criterion name), and a satisfied certificate requires *every*
 //! required criterion's signature to verify against the attester's known keeper key. So a steward
 //! cannot certify a criterion no party vouched for: an unsigned or forged attestation refuses
@@ -14,10 +14,10 @@
 //!
 //! The crux mirrors commerce_trade_signed: a signature is a promise about an exact fact. Where a
 //! trade's signature covers the two points and the one price, an attestation's signature covers the
-//! attester's point and the criterion name — change the claimed criterion after signing and the
+//! attester's point and the criterion name -- change the claimed criterion after signing and the
 //! signature falls, because the promise was to the old fact, not the new one. It composes rung
 //! one's certificate parse (`fairtrade_cert`) over the Kumara signing the settlement already
-//! witnessed (`kumara.rye`, the same layout commerce_trade_signed signs trades with) — inventing no
+//! witnessed (`kumara.rye`, the same layout commerce_trade_signed signs trades with) -- inventing no
 //! new signing and no new join. Demo keeper seeds only; no real key, no funds, no custody (gate %3
 //! untouched).
 //!
@@ -45,7 +45,7 @@ pub const SignError = error{
     NameTooLong, // a criterion name exceeds max_criterion_len
 };
 
-/// The exact bytes an attester signs: their point, the criterion name's length, and the name — so
+/// The exact bytes an attester signs: their point, the criterion name's length, and the name -- so
 /// no two criteria collide by padding, and a signature names exactly which criterion it vouches for.
 pub const max_attest_msg_len: u32 = 4 + 4 + cert.max_criterion_len; // point(u32), name_len(u32), name
 
@@ -65,7 +65,7 @@ fn attest_message(out: *[max_attest_msg_len]u8, point: u32, name: []const u8) u3
     return off;
 }
 
-/// One party's signature over the exact attestation fact — the attester's word that the criterion
+/// One party's signature over the exact attestation fact -- the attester's word that the criterion
 /// named is one they, at their point, honestly hold.
 pub fn sign_attestation(keeper_seed: *const [kumara.seed_length]u8, point: u32, name: []const u8) [sig_len]u8 {
     // invariant: an attestation name honors the criterion width before it is signed.
@@ -90,7 +90,7 @@ pub fn verify_attestation(keeper: [pubkey_len]u8, point: u32, name: []const u8, 
     return true;
 }
 
-/// The known attesting parties — a bounded roster of point → keeper public key. It is the caller's
+/// The known attesting parties -- a bounded roster of point -> keeper public key. It is the caller's
 /// statement of whose word to trust, exactly as commerce_trade_signed passes the seller and buyer
 /// keys the trade's signatures must check against. A signature by a point absent here is unknown.
 // Invariant: count <= max_attestations; each point maps to one 32-byte keeper key.
@@ -129,7 +129,7 @@ pub const Keyring = struct {
 };
 
 /// A cooperative record whose every held criterion carries the attesting party's point and their
-/// signature over the exact fact — the signed store side of the join. Where rung one's Record proves
+/// signature over the exact fact -- the signed store side of the join. Where rung one's Record proves
 /// a name appears, this proves a party vouched for it.
 // Invariant: count <= max_attestations; every held name honors max_criterion_len.
 pub const SignedRecord = struct {
@@ -170,7 +170,7 @@ pub const SignedRecord = struct {
     /// held, its attester point is enrolled in the keyring, and the stored signature verifies over
     /// the exact fact. A name the record lacks refuses Unsatisfied; a held name whose attester the
     /// keyring does not know refuses UnknownAttester; a held name whose signature does not verify
-    /// refuses BadAttestation — never certifying a criterion no party actually signed.
+    /// refuses BadAttestation -- never certifying a criterion no party actually signed.
     pub fn verify_held(
         self: *const SignedRecord,
         name: []const u8,
@@ -191,7 +191,7 @@ pub const SignedRecord = struct {
 };
 
 /// Evaluate a `format fairtrade-cert-v1` certificate against a signed cooperative record. A record
-/// holding every required criterion — each vouched for by a known party's verifying signature —
+/// holding every required criterion -- each vouched for by a known party's verifying signature --
 /// yields a Certified naming exactly those criteria in declared order. The first criterion the
 /// record cannot honestly bear refuses the whole certification: unheld (Unsatisfied), attested by an
 /// unknown party (UnknownAttester), or carrying an unverifying signature (BadAttestation). A
@@ -219,7 +219,7 @@ pub fn evaluate_signed(
         if (name.len > cert.max_criterion_len) return error.NameTooLong;
 
         // The signed join: the criterion must be held *and* vouched for by a known party's
-        // verifying signature — else the whole certification refuses by the exact reason.
+        // verifying signature -- else the whole certification refuses by the exact reason.
         try record.verify_held(name, keyring);
 
         const i = out.count;
@@ -237,7 +237,7 @@ pub fn evaluate_signed(
 
 // --- selftest -----------------------------------------------------------
 
-// Demo keeper seeds — plainly not real keys, so no identity is invented. The producer at point 7
+// Demo keeper seeds -- plainly not real keys, so no identity is invented. The producer at point 7
 // and the steward at point 12 each vouch for the criteria that are honestly theirs to attest.
 const producer_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const steward_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
@@ -267,8 +267,8 @@ fn seat_keyring() !Keyring {
     return kr;
 }
 
-/// A certificate whose every criterion the record holds — each vouched for by a known party's
-/// verifying signature — is satisfied, naming exactly those criteria in declared order.
+/// A certificate whose every criterion the record holds -- each vouched for by a known party's
+/// verifying signature -- is satisfied, naming exactly those criteria in declared order.
 fn welcome_signed_certificate_satisfied() !void {
     const record = try seat_signed_record();
     const keyring = try seat_keyring();
@@ -281,7 +281,7 @@ fn welcome_signed_certificate_satisfied() !void {
     print("fairtrade_cert_signed: a certificate of 3 criteria, each signed by a known party, is satisfied in declared order.\n", .{});
 }
 
-/// A required criterion the record does not hold refuses the whole certification (Unsatisfied) —
+/// A required criterion the record does not hold refuses the whole certification (Unsatisfied) --
 /// exactly as rung one, the signing layer never loosens the join.
 fn unwelcome_unheld_refuses() !void {
     const record = try seat_signed_record();
@@ -333,7 +333,7 @@ fn unwelcome_relabeled_attestation_refuses() !void {
     print("fairtrade_cert_signed: a criterion relabeled after signing refused BadAttestation — the promise was to the signed fact.\n", .{});
 }
 
-/// A criterion attested by a party the keyring does not know refuses UnknownAttester — the record
+/// A criterion attested by a party the keyring does not know refuses UnknownAttester -- the record
 /// names whose word to check, and an unenrolled party's word is not trusted.
 fn unwelcome_unknown_attester_refuses() !void {
     var record = try seat_signed_record();
@@ -349,7 +349,7 @@ fn unwelcome_unknown_attester_refuses() !void {
     print("fairtrade_cert_signed: a criterion attested by an unenrolled party refused UnknownAttester.\n", .{});
 }
 
-/// A malformed certificate refuses (BadCertificate) — the signing layer keeps rung one's parse.
+/// A malformed certificate refuses (BadCertificate) -- the signing layer keeps rung one's parse.
 fn unwelcome_malformed_refuses() !void {
     const record = try seat_signed_record();
     const keyring = try seat_keyring();

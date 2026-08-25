@@ -1,6 +1,6 @@
-//! comlink/guest_sealed_tx.rye — sub-lap 3 TX guest (freestanding RISC-V virt).
+//! comlink/guest_sealed_tx.rye -- sub-lap 3 TX guest (freestanding RISC-V virt).
 //!
-//! Seals the shared datagram with wire_format (unchanged — no format fork), frames
+//! Seals the shared datagram with wire_format (unchanged -- no format fork), frames
 //! it as the ethernet payload, and sends it across virtio-net to the sealed RX guest.
 
 const vn = @import("virtio_net.rye");

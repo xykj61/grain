@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu0_witness.rye — proves LULU0 Hearth Bron mold.
+//! linengrow/hearth_lulu0_witness.rye -- proves LULU0 Hearth Bron mold.
 //!
 //!   rye build linengrow/hearth_lulu0_witness.rye \
 //!     -femit-bin=linengrow/bin/hearth_lulu0_witness

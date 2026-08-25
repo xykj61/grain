@@ -1,4 +1,4 @@
-//! linengrow/stoa71_glow_import_seam.rye — STOA71 A
+//! linengrow/stoa71_glow_import_seam.rye -- STOA71 A
 //!
 //! NativeActivity-path import of a Glow-lowered session-root module.
 //! Honest Two Rooms: imports lowered Rye from glow/.cache (via symlink),

@@ -1,4 +1,4 @@
-//! Rye test: std.crypto.secureZero — pass 9929.
+//! Rye test: std.crypto.secureZero -- pass 9929.
 //!
 //! Volatile zeroing backs key wipe on crypto decrypt paths and bcrypt cleanup.
 

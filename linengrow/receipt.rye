@@ -1,4 +1,4 @@
-//! linengrow/receipt.rye — SLC-L1 verifiable receipt: sign, append, fold, verify.
+//! linengrow/receipt.rye -- SLC-L1 verifiable receipt: sign, append, fold, verify.
 //!
 //!   rye build linengrow/receipt.rye -femit-bin=linengrow/bin/receipt
 //!   linengrow/bin/receipt selftest

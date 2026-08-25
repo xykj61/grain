@@ -1,13 +1,13 @@
-//! linengrow/glow_network_grant.rye — Glow Network Grant mold.
+//! linengrow/glow_network_grant.rye -- Glow Network Grant mold.
 //!
 //! Clean-room Glow parallel of GrapheneOS's **Network permission toggle**
-//! (studied in gratitude/grapheneos/features-overview.md · named next in
+//! (studied in gratitude/grapheneos/features-overview.md - named next in
 //! expanding-prompts/yonder/20260716-142818): a binary per-app grant for network
 //! access. Grant admits; revoke (or deny) refuses. When refused, the grant
-//! **appears down** — GrapheneOS pretends the network is unavailable rather
+//! **appears down** -- GrapheneOS pretends the network is unavailable rather
 //! than surfacing a permission error.
 //!
-//! Distinct from Resource Scope (Storage · Contact): those name resources;
+//! Distinct from Resource Scope (Storage - Contact): those name resources;
 //! this is one on/off toggle. Manifest may still declare `network` +
 //! `right_net` for TUBE0.5 INTERNET emission; this mold is the runtime
 //! grant/revoke edge.

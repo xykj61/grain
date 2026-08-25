@@ -1,4 +1,4 @@
-//! Rye test: std.mem.byteSwapAllElements — pass 9908.
+//! Rye test: std.mem.byteSwapAllElements -- pass 9908.
 //!
 //! In-place endian swap on scalar slices; pairs with readInt/writeInt (9909).
 

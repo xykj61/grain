@@ -12,7 +12,7 @@ pub fn resolve_root(a: std.mem.Allocator, io: std.Io, init: std.process.Init) ![
     const cwd = std.Io.Dir.cwd();
     var depth: u32 = 0;
     while (depth < max_walk_depth) : (depth += 1) {
-        // Sound Arc II `20260727.224156` — chronicle yondered; root marker follows.
+        // Sound Arc II `20260727.224156` -- chronicle yondered; root marker follows.
         const sc = try std.fs.path.join(a, &.{ cur, "external-research", "yonder", "strengthening-compiler" });
         defer a.free(sc);
         const lib = try std.fs.path.join(a, &.{ cur, "rye", "lib", "std" });

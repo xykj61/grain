@@ -1,4 +1,4 @@
-//! tally/divisions_test.rye — Equinox e5 · divisions within the outermost allocation.
+//! tally/divisions_test.rye -- Equinox e5 - divisions within the outermost allocation.
 //!
 //!   rye/bin/rye run tally/divisions_test.rye
 
@@ -14,14 +14,14 @@ pub fn main() void {
     var parent = tally.Region.init(outer[0..]);
     var g = tally.Gardens.init();
 
-    // Divide the whole into named divisions — no caller arithmetic anywhere.
+    // Divide the whole into named divisions -- no caller arithmetic anywhere.
     g.add_division("blob", &parent, 512) catch unreachable;
     g.add_division("diff", &parent, 256) catch unreachable;
     assert(g.total_capacity() == 768); // welcome: the divisions sum to what was carved
     assert(parent.remaining() == 256); // the whole keeps the rest, unclaimed
     assert(g.total_capacity() <= outer_bytes); // invariant: divisions never exceed the whole
 
-    // Two divisions cannot reach each other — the proof that matters.
+    // Two divisions cannot reach each other -- the proof that matters.
     const blob = g.get("blob") orelse unreachable;
     const diff = g.get("diff") orelse unreachable;
     const b = blob.alloc(4) catch unreachable;

@@ -1,9 +1,9 @@
-//! Rye test: Dir.iterate — pass 9991.
+//! Rye test: Dir.iterate -- pass 9991.
 //!
 //! Iterator.next now carries three postcondition assertions:
-//!   entry.name.len > 0              — every directory entry has a name
-//!   entry.name.len <= max_name_bytes — the name fits the OS limit
-//!   it.reader.state == .finished    — null means iteration is complete
+//!   entry.name.len > 0              -- every directory entry has a name
+//!   entry.name.len <= max_name_bytes -- the name fits the OS limit
+//!   it.reader.state == .finished    -- null means iteration is complete
 //!
 //! This test creates a directory with exactly one known file, iterates
 //! it, asserts the entry invariants hold, and confirms the exhaustion
@@ -39,7 +39,7 @@ pub fn main(init: std.process.Init) !u8 {
     std.debug.assert(entry.name.len <= Dir.max_name_bytes);
     std.debug.assert(std.mem.eql(u8, entry.name, tmp_file));
 
-    // Second call: directory exhausted — null returned, state asserted .finished.
+    // Second call: directory exhausted -- null returned, state asserted .finished.
     const done = try it.next(io);
     std.debug.assert(done == null);
     std.debug.assert(it.reader.state == .finished);

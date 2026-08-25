@@ -1,4 +1,4 @@
-//! comlink/guest_sync_source_tx.rye — NS-L3 wire: source TX (sync response under Comlink seal) · 20260713.
+//! comlink/guest_sync_source_tx.rye -- NS-L3 wire: source TX (sync response under Comlink seal) - 20260713.
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

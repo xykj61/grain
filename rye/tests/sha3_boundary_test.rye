@@ -1,15 +1,15 @@
-//! Rye test: SHA3-512 across the block boundary — a guard for our strengthening.
+//! Rye test: SHA3-512 across the block boundary -- a guard for our strengthening.
 //!
 //! Our first divergence in substance (external-research/yonder/strengthening-compiler/9998_sha3_512.md) added TAME
 //! assertions to SHA3-512 in Rye's own `std`, stating the sponge's invariant
 //! that its cursor stays within one block: `offset <= rate`. The interesting
-//! case is the one that rests the cursor *exactly* on the boundary —
-//! `offset == rate` — which a single full block produces. That is precisely
+//! case is the one that rests the cursor *exactly* on the boundary --
+//! `offset == rate` -- which a single full block produces. That is precisely
 //! where a too-strict `offset < rate` would have been wrong.
 //!
 //! So this test sweeps input lengths around the rate (72 bytes for Sha3_512),
 //! including its exact multiples, with the assertions live. It passes when no
-//! invariant fires and the empty-string known answer holds — proving the bound
+//! invariant fires and the empty-string known answer holds -- proving the bound
 //! is right and the strengthening is sound for inputs the parity test (three
 //! bytes) never reaches.
 

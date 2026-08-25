@@ -1,4 +1,4 @@
-//! linengrow/open_asks_delivery.rye — OA-L2 cross-party delivery: request + application under Comlink seal.
+//! linengrow/open_asks_delivery.rye -- OA-L2 cross-party delivery: request + application under Comlink seal.
 //!
 //!   rye build linengrow/open_asks_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-delivery
 //!   linengrow/bin/open-asks-delivery selftest

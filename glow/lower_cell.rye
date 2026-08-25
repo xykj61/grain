@@ -1,7 +1,7 @@
-//! glow/lower_cell.rye — lower a parsed `:-` pair cell to runnable `.rye`.
+//! glow/lower_cell.rye -- lower a parsed `:-` pair cell to runnable `.rye`.
 //!
 //! Thin STOA2 face: two demo atoms into a Zig pair struct (same demo values
-//! as `(jam …)`). Not a full noun cell / jam bit layout.
+//! as `(jam ...)`). Not a full noun cell / jam bit layout.
 
 const std = @import("std");
 const rc = @import("rune_cell.rye");

@@ -1,4 +1,4 @@
-//! comlink/guest_batch_source_rx.rye — NS-L3 batch wire device: source RX (verify batch request).
+//! comlink/guest_batch_source_rx.rye -- NS-L3 batch wire device: source RX (verify batch request).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

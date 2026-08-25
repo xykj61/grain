@@ -1,4 +1,4 @@
-//! Rye test: std.mem.join — pass 9961.
+//! Rye test: std.mem.join -- pass 9961.
 //!
 //! Rishi's join builtin and path-like composition lean on joinMaybeZ.
 //! Pairs with path.join (9983) for separator joining of slices.

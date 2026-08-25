@@ -1,4 +1,4 @@
-//! Rye test: std.fmt.allocPrint and std.mem.trimEnd — pass 9988.
+//! Rye test: std.fmt.allocPrint and std.mem.trimEnd -- pass 9988.
 //!
 //! allocPrint produces a sentinel-terminated formatted string. trimEnd
 //! removes trailing characters from a slice. Both are used by the Rishi

@@ -1,15 +1,15 @@
-//! mantra/src/diff.rye — pure diff: old weave state → new text → Diff.
+//! mantra/src/diff.rye -- pure diff: old weave state -> new text -> Diff.
 //!
 //! A Diff names exactly what changed between the weave's current view and a
 //! new version of the text. It is pure: same inputs produce the same Diff,
 //! every time. The algorithm is a simple LCS (longest common subsequence) over
-//! line text equality — small, correct, and determinable.
+//! line text equality -- small, correct, and determinable.
 //!
 //! Public surface:
 //!   diff(allocator, old_lines, new_text) !Diff
 //!
 //! The resulting Diff may be applied to the weave with Weave.apply.
-//! Pure functions — no file I/O, no side effects.
+//! Pure functions -- no file I/O, no side effects.
 
 const std   = @import("std");
 const assert = std.debug.assert;
@@ -25,7 +25,7 @@ const Diff  = @import("weave.rye").Diff;
 /// Postcondition: applying the returned Diff to a weave whose current() equals
 ///   old_lines will produce a weave whose current() equals new_text.
 ///
-/// The returned Diff borrows its insert strings from `new_text` — the caller
+/// The returned Diff borrows its insert strings from `new_text` -- the caller
 /// must ensure `new_text` outlives the Diff, or copy as needed.
 pub fn diff(
     allocator: std.mem.Allocator,
@@ -94,7 +94,7 @@ pub fn diff(
         }
     }
 
-    // Postcondition: applying the diff is a net transformation — not necessarily
+    // Postcondition: applying the diff is a net transformation -- not necessarily
     // fewer lines, yet never a negative-length insert or delete.
     const result = Diff{
         .inserts = try inserts.toOwnedSlice(allocator),
@@ -110,7 +110,7 @@ pub fn diff(
 
 /// Split `text` into lines on `\n`, returning a slice of string slices. The
 /// returned slice and all strings within it are allocated from `allocator`.
-/// A trailing newline produces no empty string at the end — the common case
+/// A trailing newline produces no empty string at the end -- the common case
 /// for text files.
 pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
     maybe(text.len == 0); // empty text is valid; yields zero lines
@@ -125,7 +125,7 @@ pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []co
 }
 
 /// maybe: a named acknowledgement of legitimately variable input. Compiles to
-/// nothing in release builds — same weight as assert.
+/// nothing in release builds -- same weight as assert.
 inline fn maybe(condition: bool) void {
     _ = condition;
 }

@@ -1,4 +1,4 @@
-//! mantra/recall_sync_wire.rye — NS-L3 wire payloads for bolt-revision sync (hosted) · 20260713.
+//! mantra/recall_sync_wire.rye -- NS-L3 wire payloads for bolt-revision sync (hosted) - 20260713.
 //!
 //! Compact request/response bodies that fit one sealed datagram (max_message 340).
 //! Scope: [`active-designing/date/20260706/20260706-023912_the-referential-namespace.md`](../active-designing/date/20260706/20260706-023912_the-referential-namespace.md)
@@ -261,7 +261,7 @@ fn resin_bytes_for_entry(dest: *const ns.BoltCatalog, entry: *const WireEntry) n
     return held;
 }
 
-/// Apply a wire response into a destination catalog — same invariants as `syncRevision`.
+/// Apply a wire response into a destination catalog -- same invariants as `syncRevision`.
 pub fn apply_sync_response(dest: *ns.BoltCatalog, resp: *const SyncResponse) ns.RecallError!ns.SyncReport {
     // Pass one: verify every entry; refuse whole on any mismatch.
     var e: u32 = 0;

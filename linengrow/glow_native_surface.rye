@@ -1,18 +1,18 @@
-//! linengrow/glow_native_surface.rye — Skate grid presented on Android glass.
+//! linengrow/glow_native_surface.rye -- Skate grid presented on Android glass.
 //!
 //! Builds a small Brushstroke Skate text grid (title, Seva R2 panel lines,
 //! session-root hex, tap hint), rasterizes it with skate_grid.rye, and copies
-//! pixels into the locked ANativeWindow. No EGL, no Kotlin — Skate stays
+//! pixels into the locked ANativeWindow. No EGL, no Kotlin -- Skate stays
 //! OS-free; this file is only the Android present seam (same role Wayland seed
 //! plays on desktop).
 //!
-//! Skate writes B/G/R/A; Android WINDOW_FORMAT_RGBA_8888 wants R/G/B/A — colors
+//! Skate writes B/G/R/A; Android WINDOW_FORMAT_RGBA_8888 wants R/G/B/A -- colors
 //! are swapped at the Color{} literals so the buffer lands correctly.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-// Symlinked beside this file (linengrow/skate_grid.rye → brushstroke/) so Zig's
+// Symlinked beside this file (linengrow/skate_grid.rye -> brushstroke/) so Zig's
 // module root stays inside linengrow while Skate remains the one Brushstroke source.
 const skate = @import("skate_grid.rye");
 const seva_surf = @import("seva_surface.rye");
@@ -44,7 +44,7 @@ extern fn ANativeWindow_unlockAndPost(window: ?*anyopaque) callconv(.c) i32;
 
 const format_rgba8888: i32 = 1;
 
-/// Swapped for Skate's BGRA write order → Android RGBA memory.
+/// Swapped for Skate's BGRA write order -> Android RGBA memory.
 fn rgba(r: u8, g: u8, b: u8) skate.Color {
     return .{ .r = b, .g = g, .b = r };
 }
@@ -87,21 +87,21 @@ pub const CloseHit = struct {
     }
 };
 pub var last_close_hit: CloseHit = .{};
-/// Hearth status row (Skate row 1) — tap cycles display_preset.
+/// Hearth status row (Skate row 1) -- tap cycles display_preset.
 pub var last_hearth_hit: CloseHit = .{};
 /// Current ZETA page (letters / numbers / symbols / emoji). Activity may change this.
 pub var keyboard_mode: kb_layout.Mode = .letters;
 /// Active emoji category tab (ZETA4).
 pub var keyboard_emoji_tab: kb_emoji.Tab = .smileys;
-/// LULU1: active display preset (default scaled_540 — denser glyphs than panel_max).
+/// LULU1: active display preset (default scaled_540 -- denser glyphs than panel_max).
 pub var active_preset: hearth.DisplayPreset = .scaled_540;
 /// LULU1: short home from Hearth Bron (default kd).
 pub var active_home_id: [hearth.home_id_len]u8 = .{ 'k', 'd' };
 /// LULU4: Wired Glass sync-lane preference (default local).
 pub var active_wire: hearth.WireLane = .local;
-/// LULU5: cellular preference (default off — used-Pixel SLC).
+/// LULU5: cellular preference (default off -- used-Pixel SLC).
 pub var active_cellular: hearth.Cellular = .off;
-/// LULU2: thin Settings list open (rows 2–5).
+/// LULU2: thin Settings list open (rows 2-5).
 pub var settings_open: bool = false;
 /// LULU2: hit boxes for the four preset lines (valid when settings_open).
 pub var last_preset_hits: [lulu2.preset_count]CloseHit = [_]CloseHit{.{}} ** lulu2.preset_count;
@@ -182,7 +182,7 @@ fn fill_admitted_rows(
     }
     if (carriage_line) |carriage| put_line_centered(grid, 11, carriage);
     if (dexter_line) |dex| put_line_centered(grid, 12, dex);
-    // Layout word: JABS2 audience on 14–15; ZETA keyboard on 16–19.
+    // Layout word: JABS2 audience on 14-15; ZETA keyboard on 16-19.
     if (jabs2_line0) |a| put_line_centered(grid, jabs2_glass.skate_row0, a);
     if (jabs2_line1) |b| put_line_centered(grid, jabs2_glass.skate_row0 + 1, b);
     const page = kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab);
@@ -366,7 +366,7 @@ fn refresh_touch_hits(
         jabs2_glass.keyboard_row0,
         kb_layout.page_for_tab(keyboard_mode, keyboard_emoji_tab),
     );
-    // Hearth status on Skate row 1 — short tap cycles; long-press opens LULU2.
+    // Hearth status on Skate row 1 -- short tap cycles; long-press opens LULU2.
     last_hearth_hit = row_hit(origin_x, origin_y, cell_ph, grid_w, 1);
     if (settings_open) {
         refresh_settings_hits(origin_x, origin_y, cell_ph, grid_w);

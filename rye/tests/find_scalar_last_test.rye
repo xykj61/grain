@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findScalarLast — pass 9975.
+//! Rye test: std.mem.findScalarLast -- pass 9975.
 //!
 //! Last-index scalar search backs path.extension and path.stem; Rishi splits
 //! on '=' and newline boundaries with the forward sibling findScalar.

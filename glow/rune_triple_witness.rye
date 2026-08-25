@@ -1,4 +1,4 @@
-//! glow/rune_triple_witness.rye — proves the `:+` triple-cell rune head.
+//! glow/rune_triple_witness.rye -- proves the `:+` triple-cell rune head.
 //!
 //!   rye build glow/rune_triple_witness.rye -femit-bin=glow/bin/rune_triple_witness
 

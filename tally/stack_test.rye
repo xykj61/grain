@@ -1,4 +1,4 @@
-//! tally/stack_test.rye — welcome, refuse-shape, and order.
+//! tally/stack_test.rye -- welcome, refuse-shape, and order.
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;

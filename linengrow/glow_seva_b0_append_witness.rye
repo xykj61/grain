@@ -1,4 +1,4 @@
-//! linengrow/glow_seva_b0_append_witness.rye — proves Glow append via pin emit.
+//! linengrow/glow_seva_b0_append_witness.rye -- proves Glow append via pin emit.
 //!
 //!   rye build linengrow/glow_seva_b0_append_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_seva_b0_append_witness

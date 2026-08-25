@@ -1,4 +1,4 @@
-//! linengrow/tube3_resin_fetch_witness.rye — proves TUBE3 sealed resin fetch.
+//! linengrow/tube3_resin_fetch_witness.rye -- proves TUBE3 sealed resin fetch.
 //!
 //!   rye build linengrow/tube3_resin_fetch_witness.rye -femit-bin=linengrow/bin/tube3_resin_fetch_witness
 //!   linengrow/bin/tube3_resin_fetch_witness

@@ -1,5 +1,5 @@
-//! tally/stack.rye — a bounded frame stack, generic over its element.
-//! Graduated at its second consumer (TAME worked example · Hanoi tutorial),
+//! tally/stack.rye -- a bounded frame stack, generic over its element.
+//! Graduated at its second consumer (TAME worked example - Hanoi tutorial),
 //! approved on Keaton's word. The bound is named at construction; push asserts
 //! it; pop returns the empty as a value rather than a fault.
 

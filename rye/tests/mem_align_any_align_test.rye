@@ -1,4 +1,4 @@
-//! Rye test: std.mem.alignForwardAnyAlign / alignBackwardAnyAlign — pass 9900.
+//! Rye test: std.mem.alignForwardAnyAlign / alignBackwardAnyAlign -- pass 9900.
 //!
 //! Non-power-of-2 alignment rounding; power-of-2 delegates to alignForward (9904).
 

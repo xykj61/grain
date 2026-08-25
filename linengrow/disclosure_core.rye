@@ -1,9 +1,9 @@
-//! linengrow/disclosure_core.rye — SLC-L4 — fixed-tier mudra (inherited name: Sigma protocol).
+//! linengrow/disclosure_core.rye -- SLC-L4 -- fixed-tier mudra (inherited name: Sigma protocol).
 //!
 //!   rye build linengrow/disclosure_core.rye -femit-bin=linengrow/bin/disclosure
 //!   linengrow/bin/disclosure selftest
 //!
-//! Proves knowledge of dew for C = tier·G + r·H where tier is public.
+//! Proves knowledge of dew for C = tier-G + r-H where tier is public.
 //! The tier mudra vouches the bud's tier without blooming it.
 //! Scope: [`expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md)
 
@@ -56,7 +56,7 @@ fn challenge(
     return Edwards25519.scalar.reduce(digest);
 }
 
-/// Prove knowledge of dew for C = tier·G + r·H (tier public).
+/// Prove knowledge of dew for C = tier-G + r-H (tier public).
 /// Callers outside the witness must supply fresh dew and nonce scalars.
 pub fn prove_tier(
     tier: u64,
@@ -73,7 +73,7 @@ pub fn prove_tier(
     const a_point = try h_gen.mulPublic(nonce.*);
     const a_bytes = a_point.toBytes();
     const e = challenge(commitment_out, &a_bytes, tier);
-    // z = e·r + k
+    // z = e-r + k
     const z = Edwards25519.scalar.mulAdd(e, dew.*, nonce.*);
 
     tally_copy.copy_disjoint(u8, proof_out[0..bud.point_len], &a_bytes);
@@ -163,14 +163,14 @@ fn run_selftest(io: std.Io) !u8 {
     const receipt_len = try write_proof_receipt(&commitment, &proof, 1000, &receipt);
     try check_fixture_receipt(io, receipt[0..receipt_len]);
 
-    // Unwelcome — forged proof (flip a byte)
+    // Unwelcome -- forged proof (flip a byte)
     var forged = proof;
     forged[0] +%= 1;
     if (verify_tier(&commitment, &forged, 1000)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("slcl4: forged proof refused — GREEN unwelcome path\n", .{});
 
-    // Unwelcome — wrong tier claim against true commitment
+    // Unwelcome -- wrong tier claim against true commitment
     if (verify_tier(&commitment, &proof, 5000)) |_| {
         return error.UnwelcomePassed;
     } else |_| print("slcl4: wrong tier claim refused — GREEN unwelcome path\n", .{});

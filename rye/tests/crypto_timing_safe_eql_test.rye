@@ -1,4 +1,4 @@
-//! Rye test: std.crypto.timing_safe.eql — pass 9937.
+//! Rye test: std.crypto.timing_safe.eql -- pass 9937.
 //!
 //! Constant-time equality backs AEAD tag verify on Aurora's metal path.
 

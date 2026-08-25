@@ -1,4 +1,4 @@
-//! glow/lower_multi_typed.rye — multi-line typed `=/` desks to one `.rye`.
+//! glow/lower_multi_typed.rye -- multi-line typed `=/` desks to one `.rye`.
 //!
 //! Thin STOA13 face: two to four `=/  <face>=@u32  <decimal>` lines share
 //! one welcome/unwelcome program. Bare faces stay on `lower_multi` (STOA10).

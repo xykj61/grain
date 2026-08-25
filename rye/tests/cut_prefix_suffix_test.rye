@@ -1,4 +1,4 @@
-//! Rye test: std.mem.cutPrefix and cutSuffix — pass 9960.
+//! Rye test: std.mem.cutPrefix and cutSuffix -- pass 9960.
 //!
 //! Prefix/suffix stripping after startsWith/endsWith (9993).
 //! CLI-style flag parsing and path-like chops lean on these.

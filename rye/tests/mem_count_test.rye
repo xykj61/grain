@@ -1,4 +1,4 @@
-//! Rye test: std.mem.count and countScalar — pass 9951.
+//! Rye test: std.mem.count and countScalar -- pass 9951.
 //!
 //! Non-overlapping needle tally; scalar element count for single-byte needles.
 

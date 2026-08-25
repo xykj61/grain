@@ -1,4 +1,4 @@
-//! Rye test: std.mem host endian conversions — pass 9889.
+//! Rye test: std.mem host endian conversions -- pass 9889.
 //!
 //! littleToNative / bigToNative / toNative / nativeTo round-trips; pairs with readInt (9909).
 

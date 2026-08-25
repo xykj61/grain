@@ -1,10 +1,10 @@
-//! linengrow/tube_manifest_android_permission.rye — TUBE0.5's first real
+//! linengrow/tube_manifest_android_permission.rye -- TUBE0.5's first real
 //! code: turning a validated TUBE0 manifest into AndroidManifest.xml
 //! permission lines.
 //!
 //! Per active-designing/20260717-014522_native-activity-shim-and-slc-
 //! packaging.md: "TUBE's manifest mold ... becomes the deterministic
-//! source for AndroidManifest.xml permission declarations — an
+//! source for AndroidManifest.xml permission declarations -- an
 //! assertable emission, not a transpilation." This module is exactly
 //! that emission, and only that: it walks a Manifest's own declared
 //! capabilities (tube_manifest.rye), matches each against a small,
@@ -15,12 +15,12 @@
 //!
 //! What makes this an emission and not a transpilation, named plainly:
 //! no logic crosses this seam. The table below is the entire mapping,
-//! closed and hand-authored — Glow capability rights_masks never
+//! closed and hand-authored -- Glow capability rights_masks never
 //! generate arbitrary Android API surface, only ever one of the named
 //! permission strings this file itself lists. A resource this table
 //! does not recognize contributes no permission line at all (it is an
 //! internal Glow-only capability, not an Android-facing one) rather
-//! than failing the whole manifest — TUBE0's own `build()` already
+//! than failing the whole manifest -- TUBE0's own `build()` already
 //! refused every malformed manifest shape before this module ever
 //! runs; this module only asks a narrower question of an
 //! already-well-formed value.
@@ -35,7 +35,7 @@ const tube_manifest_android_permission_version = "20260717.161448";
 /// One row of the closed resource -> Android permission table. `right`
 /// is the exact bit the manifest's own DeclaredCapability must carry
 /// over `resource` (case-sensitive, exact match) for `permission` to be
-/// emitted — the same "check the exact right, not mere resource
+/// emitted -- the same "check the exact right, not mere resource
 /// presence" discipline `Manifest.declares` already keeps.
 const PermissionRow = struct {
     resource: []const u8,
@@ -58,7 +58,7 @@ const permission_table = [_]PermissionRow{
     .{ .resource = "storage", .right = caps.right_write, .permission = "android.permission.WRITE_EXTERNAL_STORAGE" },
 };
 
-/// Bounded ceiling on how many permission lines one manifest may emit —
+/// Bounded ceiling on how many permission lines one manifest may emit --
 /// mirrors tube_manifest.rye's own max_declared_caps, since at most one
 /// permission is ever emitted per declared capability today (a
 /// capability with both right_read and right_write over "storage" would
@@ -73,7 +73,7 @@ pub const EmitError = error{
 /// table above and writes each matched permission as its own
 /// `<uses-permission android:name="..."/>` line into `out`. Returns
 /// the number of bytes written. A capability matching no table row
-/// contributes nothing — silently, by design, since an unmatched
+/// contributes nothing -- silently, by design, since an unmatched
 /// resource is an internal Glow capability with no Android-facing
 /// permission to declare, not an error.
 pub fn render_permission_lines(manifest: *const tm.Manifest, out: []u8) EmitError!u32 {

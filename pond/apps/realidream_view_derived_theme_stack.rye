@@ -1,17 +1,17 @@
-//! pond/apps/realidream_view_derived_theme_stack.rye — BUHR Journey 5, Rung 10: two
+//! pond/apps/realidream_view_derived_theme_stack.rye -- BUHR Journey 5, Rung 10: two
 //! .brush accent layers compose both ends of the fused edge at once.
 //!
-//! Rung seven proved two `.brush` layers compose the Realidream surface — a mode ground
+//! Rung seven proved two `.brush` layers compose the Realidream surface -- a mode ground
 //! under a read-origin accent. Rung nine made the derived node (the downstream end of
 //! the fused edge) themeable on its own `flow` key, mirroring rung six's read origin
 //! (the upstream end). This rung joins the two accents: two *independent* `.brush`
-//! layers — a **read-source** accent that sets only the `read` origin token and a
-//! **flow-source** accent that sets only the `flow` derived-node token — compose cleanly
+//! layers -- a **read-source** accent that sets only the `read` origin token and a
+//! **flow-source** accent that sets only the `flow` derived-node token -- compose cleanly
 //! through the WADE1 cascade, each winning the one token it names, the base sheet's
 //! untouched tokens (the living-edge `head`, the ground, the edge rule) inheriting
 //! beneath both. So a person themes *both ends of the fused edge at once* by stacking
-//! two small, focused `.brush` files — a warm amber read origin over a deep honey
-//! derived node — never one monolithic sheet.
+//! two small, focused `.brush` files -- a warm amber read origin over a deep honey
+//! derived node -- never one monolithic sheet.
 //!
 //! It stays on witnessed ground end to end. Each layer is read through the real
 //! authoring loop (`brush_parse.parse_brush` validates, `collect_brush_style`
@@ -19,7 +19,7 @@
 //! ping-pong per-key `brix/infuse` cascade, already witnessed), and the paint is rung
 //! eight's unchanged `paint_flow`. The composition is proven by reading back three
 //! sources at once: the read origin from the read accent, the derived node from the flow
-//! accent, and the living-edge head from the base sheet neither accent named — three
+//! accent, and the living-edge head from the base sheet neither accent named -- three
 //! authors, one resolved surface, both fused-edge ends lit in their authored colors.
 //!
 //! Additive by construction: it imports realidream_view_derived, mantra_browser,
@@ -41,14 +41,14 @@ const bp = @import("brushstroke/brush_parse.rye");
 
 const realidream_view_derived_theme_stack_version = "20260812.140000";
 
-// The two accent fixtures — real `.brush` authoring files, each focused on one end of
+// The two accent fixtures -- real `.brush` authoring files, each focused on one end of
 // the fused edge: the read-source sets the upstream read origin, the flow-source sets
 // the downstream derived node.
 const read_accent_path = "pond/apps/read-source.brush";
 const flow_accent_path = "pond/apps/flow-source.brush";
 
 // The read accent's amber (R204 > G122 > B51) and the flow accent's honey
-// (R210 > G136 > B42) — each warm/low-blue so it passes the palette law, each distinct
+// (R210 > G136 > B42) -- each warm/low-blue so it passes the palette law, each distinct
 // from its base token, so a stacked accent unmistakably wins the top of the cascade.
 const accent_read_argb: u32 = 0xFF_CC_7A_33;
 const accent_flow_argb: u32 = 0xFF_D2_88_2A;
@@ -59,7 +59,7 @@ pub const StackError = error{
 
 /// Read one `.brush` layer's style block into a flat Bron sheet, validated through the
 /// real authoring loop. Returns the collected byte length in `out`. A layer that
-/// declares no style block is refused — a cascade layer must carry tokens.
+/// declares no style block is refused -- a cascade layer must carry tokens.
 fn read_layer(io: std.Io, path: []const u8, out: []u8) !u32 {
     // invariant: a real layer path names a file to read.
     assert(path.len > 0);
@@ -94,7 +94,7 @@ pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
     var flow_buf: [bp.max_style_bytes]u8 = undefined;
     const flow_len = try read_layer(io, flow_accent_path, &flow_buf);
 
-    // Base first, then the read accent, then the flow accent on top — the cascade order.
+    // Base first, then the read accent, then the flow accent on top -- the cascade order.
     // The two accents name disjoint tokens, so each simply wins the one it declares.
     const layers = [_][]const u8{ tokens.base_sheet, read_buf[0..read_len], flow_buf[0..flow_len] };
     var scratch: [tokens.max_sheet_bytes]u8 = undefined;
@@ -105,7 +105,7 @@ pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
     return n;
 }
 
-/// Count pixels whose visible color exactly matches `c` (ignoring alpha) — a witness
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) -- a witness
 /// helper proving a token color reached (or never reached) the canvas.
 fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
     // invariant: the stride holds a full row of ARGB8888 pixels.
@@ -148,7 +148,7 @@ fn welcome_both_accents_compose(io: std.Io) !void {
     assert(flow.g == 0x88);
     assert(flow.b == 0x2A);
 
-    // The two accents are genuinely distinct marks — both ends lit, never one color.
+    // The two accents are genuinely distinct marks -- both ends lit, never one color.
     assert(read.r != flow.r or read.g != flow.g or read.b != flow.b);
 
     // The living-edge head, the ground, and the edge rule inherited from the base sheet,
@@ -163,7 +163,7 @@ fn welcome_both_accents_compose(io: std.Io) !void {
 }
 
 fn welcome_accents_win_over_base(io: std.Io) !void {
-    // Each stacked accent is its own authored color, not the base sheet's default — each
+    // Each stacked accent is its own authored color, not the base sheet's default -- each
     // accent wins the one token it names at the top of the cascade.
     var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
     const n = try resolve_stacked(io, &sheet_buf);
@@ -221,8 +221,8 @@ fn welcome_stacked_paint_reaches_canvas(allocator: std.mem.Allocator, io: std.Io
     const read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, read);
     const flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, flow);
     const head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, head);
-    // Both stacked accents reached the canvas — the amber read origin (upstream) and the
-    // honey derived node (downstream) — and the base's inherited Ochre head too.
+    // Both stacked accents reached the canvas -- the amber read origin (upstream) and the
+    // honey derived node (downstream) -- and the base's inherited Ochre head too.
     assert(read_pixels > 0);
     assert(flow_pixels > 0);
     assert(head_pixels > 0);
@@ -230,7 +230,7 @@ fn welcome_stacked_paint_reaches_canvas(allocator: std.mem.Allocator, io: std.Io
 }
 
 fn welcome_stack_refuses_styleless(io: std.Io) !void {
-    // read_layer refuses a `.brush` with no style block — a cascade layer must carry
+    // read_layer refuses a `.brush` with no style block -- a cascade layer must carry
     // tokens. The seed fixture declares none.
     var out: [bp.max_style_bytes]u8 = undefined;
     if (read_layer(io, "brushstroke/seed-frame.brush", &out)) |_| {

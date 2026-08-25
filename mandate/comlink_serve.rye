@@ -1,8 +1,8 @@
-//! mandate/comlink_serve.rye — serve a Mandate query over Comlink, sealed.
+//! mandate/comlink_serve.rye -- serve a Mandate query over Comlink, sealed.
 //!
 //! The serve protocol gave the wire *shape* of a query (`serve.rye`); this rides it on Comlink's
 //! actual transport. A `QueryRequest`'s bytes become the plaintext of a **sealed
-//! datagram** (`wire_format.seal_message` — X25519 key agreement, ChaCha20-Poly1305,
+//! datagram** (`wire_format.seal_message` -- X25519 key agreement, ChaCha20-Poly1305,
 //! a Sha3 name, a kumara signature), opened on the far side by `open_datagram`. So a
 //! query crosses Comlink **encrypted, signed, and name-checked end to end**, and the
 //! answer returns the same way.
@@ -23,7 +23,7 @@ const wf = @import("wire_format.rye");
 pub const comlink_serve_version = "20260811.125432";
 
 // A compile-time proof that both serve messages fit Comlink's sealed-message budget,
-// so a query and its answer each ride in a single datagram — no fragmentation.
+// so a query and its answer each ride in a single datagram -- no fragmentation.
 comptime {
     // invariant: neither the request nor the response may exceed one wire message, since a
     // longer one would be sent truncated and parsed as a shorter whole
@@ -34,7 +34,7 @@ comptime {
 /// The host side: open a sealed datagram carrying a serve request, answer it against
 /// the store, and seal the response into `response_frame`, returning its length. The
 /// request is decrypted and its signature and name verified before the store is
-/// touched — a forged or tampered datagram never reaches the query.
+/// touched -- a forged or tampered datagram never reaches the query.
 pub fn serve_sealed(st: *const store.Store, request_frame: []const u8, response_frame: *[@intCast(wf.wire_capacity)]u8) !u64 {
     var opened: [wf.max_message]u8 = undefined;
     const req_len = try wf.open_datagram(request_frame, &opened);
@@ -83,7 +83,7 @@ fn prove_comlink_serve() !void {
     if (wire.matches[0].id != direct.matches[0].id) return error.NearestDrift;
     if (wire.matches[1].id != direct.matches[1].id) return error.SecondDrift;
 
-    // A tampered datagram is refused — a single flipped ciphertext byte fails to open,
+    // A tampered datagram is refused -- a single flipped ciphertext byte fails to open,
     // so a query never rides a forged frame into the store.
     var tampered = req_frame;
     const ci: usize = @intCast(wf.off_cipher);

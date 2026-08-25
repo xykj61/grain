@@ -1,17 +1,17 @@
-//! rishi/src/match.rye — a bounded, linear-time pattern matcher for Rishi.
+//! rishi/src/match.rye -- a bounded, linear-time pattern matcher for Rishi.
 //!
 //! This is the primitive that lets a Rishi script test a string against a
-//! pattern the way a shell reaches for `grep -qE` or `rg -q` — the seam that
-//! the Python → Rishi molt keeps delegating to outside tools. It answers one
+//! pattern the way a shell reaches for `grep -qE` or `rg -q` -- the seam that
+//! the Python -> Rishi molt keeps delegating to outside tools. It answers one
 //! question: does `pattern` match anywhere in `input`? It returns a boolean,
 //! nothing more, and it never captures, backtracks, or explores a second path
 //! twice.
 //!
 //! Discipline (TAME / Tiger Style). A backtracking regex engine has no bound
-//! on its worst case — one adversarial pattern can burn a machine. This engine
+//! on its worst case -- one adversarial pattern can burn a machine. This engine
 //! refuses that shape by construction: it compiles the pattern to a small NFA
 //! program and simulates every live thread in lockstep (Thompson / Pike), so a
-//! match over an input of length n and a program of size m costs O(n · m) and
+//! match over an input of length n and a program of size m costs O(n - m) and
 //! not one step more. Every buffer is a fixed stack array with a named ceiling;
 //! a pattern that would overflow a ceiling earns a clear error rather than a
 //! crash or a silent truncation. Nothing is allocated per call, so a match in a
@@ -19,20 +19,20 @@
 //!
 //! Supported syntax: literals; `.` (any byte but newline); the shorthand
 //! classes `\d \D \s \S \w \W`; bracket classes `[abc]`, ranges `[a-z]`,
-//! negation `[^…]`; anchors `^` and `$` (start and end of the whole input); the
+//! negation `[^...]`; anchors `^` and `$` (start and end of the whole input); the
 //! word boundaries `\b` and `\B`; the quantifiers `*` `+` `?`; counted
 //! repetition `{n}` `{n,}` `{n,m}` (expanded inline, `m` bounded); alternation
-//! `|`; grouping `(…)` / `(?:…)`; and a **single-character-class lookbehind**
-//! `(?<!X)` / `(?<=X)`, where `X` is one char, shorthand, or bracket class — a
+//! `|`; grouping `(...)` / `(?:...)`; and a **single-character-class lookbehind**
+//! `(?<!X)` / `(?<=X)`, where `X` is one char, shorthand, or bracket class -- a
 //! zero-width look at the one prior byte, which stays regular (unlike general
-//! lookaround, which is never added). Search is unanchored — the pattern may
-//! match anywhere — unless `^`/`$` pin it. Backreferences and variable-width
+//! lookaround, which is never added). Search is unanchored -- the pattern may
+//! match anywhere -- unless `^`/`$` pin it. Backreferences and variable-width
 //! lookaround are outside the regular languages this engine promises.
 //!
 //! Two primitives: `matches(pattern, input)` answers yes/no; `find` returns
 //! every non-overlapping match as spans. Both are **leftmost-longest** (POSIX),
 //! which a finite automaton gives for free. For yes/no this is identical to
-//! Perl/Python semantics. For `find`, the two agree on every greedy pattern —
+//! Perl/Python semantics. For `find`, the two agree on every greedy pattern --
 //! the only visible difference is order-sensitive alternation: `find` returns
 //! `abc` for `ab|abc` where Python's leftmost-first returns `ab`. The seam
 //! patterns are all greedy, so they agree; validated against Python's `re`
@@ -47,7 +47,7 @@ const print = std.debug.print;
 
 pub const rishi_match_version = "20260809.153000";
 
-// Named ceilings — every one is a wall a pattern meets with a clear error, not
+// Named ceilings -- every one is a wall a pattern meets with a clear error, not
 // a crash. Real seam patterns compile well inside these; the bounds exist so an
 // adversarial pattern cannot grow the work without limit.
 pub const max_pattern: u32 = 1024; // pattern byte length
@@ -95,7 +95,7 @@ fn class_has(set: *const Class, byte: u8) bool {
 
 const NodeKind = enum(u8) { empty, lit, any, class, bol, eol, wordb, nwordb, lb_neg, lb_pos, concat, alt, star, plus, quest };
 
-// A parse-tree node. `concat` and `alt` are binary — `a` is the left child node
+// A parse-tree node. `concat` and `alt` are binary -- `a` is the left child node
 // index, `b` the right; `star`/`plus`/`quest` name one child in `a`. Binary
 // children (rather than a shared pool) keep nesting honest: a group's own
 // concatenation never interleaves with the alternation that encloses it.
@@ -121,7 +121,7 @@ const Inst = struct {
     b: u32 = 0,
 };
 
-// The whole matcher lives on the stack — bounded arrays, no allocation, so a
+// The whole matcher lives on the stack -- bounded arrays, no allocation, so a
 // per-call match frees itself the instant it returns.
 const Matcher = struct {
     pat: []const u8,
@@ -192,7 +192,7 @@ const Matcher = struct {
             'r' => return self.new_node(.{ .kind = .lit, .ch = '\r' }),
             'b' => return self.new_node(.{ .kind = .wordb }),
             'B' => return self.new_node(.{ .kind = .nwordb }),
-            // Every other escape is a literal of the escaped byte: \. \* \\ \/ …
+            // Every other escape is a literal of the escaped byte: \. \* \\ \/ ...
             else => return self.new_node(.{ .kind = .lit, .ch = e }),
         }
     }
@@ -263,7 +263,7 @@ const Matcher = struct {
     }
 
     // One character class for a lookbehind: a bracket class, a shorthand, or a
-    // single (possibly escaped) literal — reduced to a positive-membership set,
+    // single (possibly escaped) literal -- reduced to a positive-membership set,
     // negations folded in, so the VM asks a plain "is the prior byte in this set".
     fn parse_single_class(self: *Matcher) MatchError!u32 {
         const c = self.peek();
@@ -392,7 +392,7 @@ const Matcher = struct {
         return node;
     }
 
-    // `{n}`, `{n,}`, `{n,m}` — expanded inline into required and optional copies
+    // `{n}`, `{n,}`, `{n,m}` -- expanded inline into required and optional copies
     // (or a trailing star for the open form), so the NFA stays a plain program
     // with no counting state. `m` is bounded so a huge count meets a clear error.
     fn parse_count(self: *Matcher, atom: u32) MatchError!u32 {
@@ -504,7 +504,7 @@ const Matcher = struct {
             },
             .concat => {
                 // Walk the left-leaning concat spine into a stack, then compile
-                // leftmost-first — iterative, so a thousand-atom literal compiles
+                // leftmost-first -- iterative, so a thousand-atom literal compiles
                 // without a thousand-deep call chain.
                 var chain: [max_nodes]u32 = undefined;
                 var top: u32 = 0;
@@ -642,7 +642,7 @@ const Matcher = struct {
                     }
                 },
                 else => {
-                    // char / any / class / match — a real stop; record it.
+                    // char / any / class / match -- a real stop; record it.
                     list[@intCast(list_len.*)] = pc;
                     list_len.* += 1;
                 },
@@ -661,7 +661,7 @@ const Matcher = struct {
     fn run(self: *Matcher, input: []const u8) bool {
         const input_len: u32 = @intCast(input.len);
         // Two thread lists, a per-step seen-generation table, and a closure
-        // stack — all bounded by the program size.
+        // stack -- all bounded by the program size.
         var list_a: [max_prog]u32 = undefined;
         var list_b: [max_prog]u32 = undefined;
         var seen: [max_prog]u32 = undefined;
@@ -719,7 +719,7 @@ const Matcher = struct {
 
     // The end of the longest match that starts exactly at `start`, or null when
     // nothing matches there. Seeded only at `start` (no unanchored re-seeding),
-    // so a non-matching position fails as soon as its threads die — the property
+    // so a non-matching position fails as soon as its threads die -- the property
     // that keeps `find_all` linear rather than quadratic.
     fn search_anchored(self: *Matcher, input: []const u8, start: u32) ?u32 {
         const input_len: u32 = @intCast(input.len);
@@ -892,7 +892,7 @@ pub fn matches(pattern: []const u8, input: []const u8) MatchError!bool {
     return m.run(input);
 }
 
-// Compile `pattern`, then leave the caller a compiled matcher on the stack —
+// Compile `pattern`, then leave the caller a compiled matcher on the stack --
 // shared by matches() and find() so the parse/compile lives in one place.
 fn compile_pattern(m: *Matcher, pattern: []const u8) MatchError!void {
     if (pattern.len > max_pattern) return error.PatternTooLong;
@@ -911,7 +911,7 @@ fn compile_pattern(m: *Matcher, pattern: []const u8) MatchError!void {
 }
 
 /// Every non-overlapping leftmost-longest match of `pattern` in `input`, in
-/// order, as an allocated slice of [start,end) spans — the caller slices the
+/// order, as an allocated slice of [start,end) spans -- the caller slices the
 /// matched substrings out of `input`. Two passes: count, then fill exactly, so
 /// nothing is over-allocated. The `matches` boolean is `find(...).len > 0`, yet
 /// `matches` keeps its own single-pass path for the common yes/no question.

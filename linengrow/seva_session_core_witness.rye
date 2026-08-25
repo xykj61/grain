@@ -1,4 +1,4 @@
-//! linengrow/seva_session_core_witness.rye — proves Seva B0: a session replays.
+//! linengrow/seva_session_core_witness.rye -- proves Seva B0: a session replays.
 //!
 //!   rye build linengrow/seva_session_core_witness.rye -femit-bin=linengrow/bin/seva_session_core_witness
 //!   linengrow/bin/seva_session_core_witness
@@ -6,7 +6,7 @@
 //! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B0 and linengrow/seva_session_core.rye. Four claims:
 //!   1. A session of three signed, ordered events replays to a deterministic
-//!      root twice, agreeing bit-for-bit on root, count, and last sequence —
+//!      root twice, agreeing bit-for-bit on root, count, and last sequence --
 //!      the whole B0 claim (a broadcast is a fold over an ordered log).
 //!   2. A tampered event line fails replay (signature no longer verifies).
 //!   3. An out-of-order sequence is refused at append-time reasoning and, if

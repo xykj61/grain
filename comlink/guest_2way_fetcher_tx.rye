@@ -1,4 +1,4 @@
-//! comlink/guest_2way_fetcher_tx.rye — two-way sync device wire: fetcher TX (peerA request).
+//! comlink/guest_2way_fetcher_tx.rye -- two-way sync device wire: fetcher TX (peerA request).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

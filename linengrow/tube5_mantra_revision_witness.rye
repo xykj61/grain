@@ -1,4 +1,4 @@
-//! linengrow/tube5_mantra_revision_witness.rye — proves TUBE5 Mantra revisions.
+//! linengrow/tube5_mantra_revision_witness.rye -- proves TUBE5 Mantra revisions.
 //!
 //!   rye build linengrow/tube5_mantra_revision_witness.rye -femit-bin=linengrow/bin/tube5_mantra_revision_witness
 //!   linengrow/bin/tube5_mantra_revision_witness
@@ -30,7 +30,7 @@ fn run_selftest() !u8 {
     print("tube5: landed rev1 (0.1.0) and rev2 (0.2.0) under glow/seva-broadcaster/manifest\n", .{});
     print("tube5: welcome update path -- GREEN\n", .{});
 
-    // Claim 2: rollback — rev1 still holds 0.1.0 after rev2.
+    // Claim 2: rollback -- rev1 still holds 0.1.0 after rev2.
     var out1: [mantra.max_resin_bytes]u8 = undefined;
     const n1 = try tube5.recall_app_revision(&catalog, 1, &out1);
     assert(n1 == lens.rev1_len);

@@ -1,4 +1,4 @@
-//! linengrow/tube2_publish_witness.rye — proves TUBE2 signed publish.
+//! linengrow/tube2_publish_witness.rye -- proves TUBE2 signed publish.
 //!
 //!   rye build linengrow/tube2_publish_witness.rye -femit-bin=linengrow/bin/tube2_publish_witness
 //!   linengrow/bin/tube2_publish_witness
@@ -6,9 +6,9 @@
 //! Four claims:
 //!   1. Maker publishes a TUBE0 Manifest resin under glow/seva-broadcaster;
 //!      resolve returns the matching resin digest.
-//!   2. Consumer resolves, clones, and admits (TUBE1) — install after verify.
+//!   2. Consumer resolves, clones, and admits (TUBE1) -- install after verify.
 //!   3. A lying signature is refused at the publish write gate.
-//!   4. An unknown name refuses resolve — no install path.
+//!   4. An unknown name refuses resolve -- no install path.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -64,7 +64,7 @@ fn run_selftest() !u8 {
     }
     print("tube2: lying signature refused at publish write gate -- GREEN unwelcome path\n", .{});
 
-    // Claim 4: unknown name — no install.
+    // Claim 4: unknown name -- no install.
     const unknown = gc.resolve(&reg, "glow/unknown-app");
     if (unknown) |_| {
         return error.UnknownResolved;

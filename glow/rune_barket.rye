@@ -1,26 +1,26 @@
 //! glow-book: runes.md#g-barket
-//! glow/rune_barket.rye — parses Glow's `|^` barket (STOA112–120).
+//! glow/rune_barket.rye -- parses Glow's `|^` barket (STOA112-120).
 //!
 //! Stated-sample demo: `|^  sample=@u32` or `|^  sample=amount-shape` header, then either:
 //!   - header-only (STOA112)
 //!   - identity body face (STOA113)
-//!   - call body: `%-  <gate>  <sample-face>` (STOA115–116)
-//! Closed demo gates: `double` · `inc` · `dec` (`@u32`) · `flip` (kind · xact · xfer · pair · triple · quad · penta · hexa · hepta · octa · nona · STOA127–131/136–139/141/143/145/147).
-//! STOA117: TAME tidy — copy_disjoint · parse_body split.
+//!   - call body: `%-  <gate>  <sample-face>` (STOA115-116)
+//! Closed demo gates: `double` - `inc` - `dec` (`@u32`) - `flip` (kind - xact - xfer - pair - triple - quad - penta - hexa - hepta - octa - nona - STOA127-131/136-139/141/143/145/147).
+//! STOA117: TAME tidy -- copy_disjoint - parse_body split.
 //! STOA118: closed named mold `amount-mold` (one-field `$:` ≡ `@u32` lower).
 //! STOA148: closed allowlist alias `amount-shape` ≡ `amount-mold` (Glow OS shape word).
 //! STOA149: closed allowlist alias `count-shape` ≡ `count-mold` (Glow OS shape word).
-//! STOA150: closed allowlist alias `pair-shape` ≡ `pair-mold` (Glow OS shape word · PairShape).
-//! STOA151: closed allowlist alias `kind-shape` ≡ `kind-mold` (Glow OS shape word · KindShape).
-//! STOA152: closed allowlist alias `xact-shape` ≡ `xact-mold` (Glow OS shape word · XactShape).
-//! STOA153: closed allowlist alias `xfer-shape` ≡ `xfer-mold` (Glow OS shape word · XferShape).
-//! STOA154: closed allowlist alias `triple-shape` ≡ `triple-mold` (Glow OS shape word · TripleShape).
-//! STOA155: closed allowlist alias `quad-shape` ≡ `quad-mold` (Glow OS shape word · QuadShape).
-//! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word · PentaShape).
-//! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word · HexaShape).
-//! STOA158: closed allowlist alias `hepta-shape` ≡ `hepta-mold` (Glow OS shape word · HeptaShape).
-//! STOA159: closed allowlist alias `octa-shape` ≡ `octa-mold` (Glow OS shape word · OctaShape).
-//! STOA160: closed allowlist alias `nona-shape` ≡ `nona-mold` (Glow OS shape word · NonaShape).
+//! STOA150: closed allowlist alias `pair-shape` ≡ `pair-mold` (Glow OS shape word - PairShape).
+//! STOA151: closed allowlist alias `kind-shape` ≡ `kind-mold` (Glow OS shape word - KindShape).
+//! STOA152: closed allowlist alias `xact-shape` ≡ `xact-mold` (Glow OS shape word - XactShape).
+//! STOA153: closed allowlist alias `xfer-shape` ≡ `xfer-mold` (Glow OS shape word - XferShape).
+//! STOA154: closed allowlist alias `triple-shape` ≡ `triple-mold` (Glow OS shape word - TripleShape).
+//! STOA155: closed allowlist alias `quad-shape` ≡ `quad-mold` (Glow OS shape word - QuadShape).
+//! STOA156: closed allowlist alias `penta-shape` ≡ `penta-mold` (Glow OS shape word - PentaShape).
+//! STOA157: closed allowlist alias `hexa-shape` ≡ `hexa-mold` (Glow OS shape word - HexaShape).
+//! STOA158: closed allowlist alias `hepta-shape` ≡ `hepta-mold` (Glow OS shape word - HeptaShape).
+//! STOA159: closed allowlist alias `octa-shape` ≡ `octa-mold` (Glow OS shape word - OctaShape).
+//! STOA160: closed allowlist alias `nona-shape` ≡ `nona-mold` (Glow OS shape word - NonaShape).
 //! STOA120: expansion calls `assert_sample_nesting_nests` at the mold seam.
 //! STOA121 / STOA130: barket passes `is_nesting=true` through nesting-nests under stated molds.
 //! STOA122: closed allowlist adds `count-mold` beside `amount-mold`.
@@ -28,25 +28,25 @@
 //! STOA124: closed allowlist adds payload `$%` `xact-mold` (identity lower).
 //! STOA125: closed allowlist adds multi-face payload `$%` `xfer-mold` (identity lower).
 //! STOA126: closed allowlist adds multi-field `$:` `pair-mold` (identity lower).
-//! STOA127: closed call-body under kind-mold — `flip` (mint↔send).
-//! STOA128: closed call-body under xact-mold — `flip` (mint↔send).
-//! STOA129: closed call-body under xfer-mold — `flip` (mint↔send).
-//! STOA131: closed call-body under pair-mold — `flip` (from↔amount).
+//! STOA127: closed call-body under kind-mold -- `flip` (mint<->send).
+//! STOA128: closed call-body under xact-mold -- `flip` (mint<->send).
+//! STOA129: closed call-body under xfer-mold -- `flip` (mint<->send).
+//! STOA131: closed call-body under pair-mold -- `flip` (from<->amount).
 //! STOA134: closed allowlist adds three-field `$:` `triple-mold` (identity lower).
 //! STOA135: closed allowlist adds four-field `$:` `quad-mold` (identity lower).
-//! STOA136: closed call-body under triple-mold — `flip` (from↔amount · fee stays).
-//! STOA137: closed call-body under quad-mold — `flip` (from↔amount · fee/nonce stay).
+//! STOA136: closed call-body under triple-mold -- `flip` (from<->amount - fee stays).
+//! STOA137: closed call-body under quad-mold -- `flip` (from<->amount - fee/nonce stay).
 //! STOA138: closed allowlist adds five-field `$:` `penta-mold` (identity lower).
-//! STOA139: closed call-body under penta-mold — `flip` (from↔amount · fee/nonce/memo stay).
+//! STOA139: closed call-body under penta-mold -- `flip` (from<->amount - fee/nonce/memo stay).
 //! STOA140: closed allowlist adds six-field `$:` `hexa-mold` (identity lower).
-//! STOA141: closed call-body under hexa-mold — `flip` (from↔amount · fee/nonce/memo/tag stay).
+//! STOA141: closed call-body under hexa-mold -- `flip` (from<->amount - fee/nonce/memo/tag stay).
 //! STOA142: closed allowlist adds seven-field `$:` `hepta-mold` (identity lower).
-//! STOA143: closed call-body under hepta-mold — `flip` (from↔amount · fee/nonce/memo/tag/to stay).
+//! STOA143: closed call-body under hepta-mold -- `flip` (from<->amount - fee/nonce/memo/tag/to stay).
 //! STOA144: closed allowlist adds eight-field `$:` `octa-mold` (identity lower).
-//! STOA145: closed call-body under octa-mold — `flip` (from↔amount · fee/nonce/memo/tag/to/via stay).
+//! STOA145: closed call-body under octa-mold -- `flip` (from<->amount - fee/nonce/memo/tag/to/via stay).
 //! STOA146: closed allowlist adds nine-field `$:` `nona-mold` (identity lower).
-//! STOA147: closed call-body under nona-mold — `flip` (from↔amount · fee/nonce/memo/tag/to/via/ref stay).
-//! STOA330: BarketSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
+//! STOA147: closed call-body under nona-mold -- `flip` (from<->amount - fee/nonce/memo/tag/to/via/ref stay).
+//! STOA330: BarketSpec fields -- `shape_name` - `shape_name_len` - `shape_name_slice` - `max_shape_len`.
 //! Sample nests under `@u32` / named allowlist via nest_type; ambient gold held.
 //! Token-driven via tokens.rye. Open `$:` beyond nona barket samples held.
 
@@ -135,7 +135,7 @@ pub fn is_xfer_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
-/// STOA326: closed call-body gate under pair…nona `$:` — `flip` only today.
+/// STOA326: closed call-body gate under pair...nona `$:` -- `flip` only today.
 pub fn is_n_field_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
@@ -159,7 +159,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const gate_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
         if (gate_text.len == 0 or gate_text.len > max_gate_len) return error.MalformedBody;
-        // Closed demo gates — double (STOA115) · inc · dec (STOA116).
+        // Closed demo gates -- double (STOA115) - inc - dec (STOA116).
         if (!is_closed_call_gate(gate_text)) return error.BodyGateNotYetLowered;
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
@@ -205,7 +205,7 @@ pub fn parse_source(src: []const u8) ParseError!BarketSpec {
     if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
     i += 1;
 
-    // Sample shape — aura `@u32` or closed named living `-shape` / study `-mold`.
+    // Sample shape -- aura `@u32` or closed named living `-shape` / study `-mold`.
     if (i >= n) return error.MissingAura;
     const shape_tok = toks[@as(usize, @intCast(i))];
     var named_shape: ?[]const u8 = null;

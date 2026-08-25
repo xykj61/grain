@@ -1,4 +1,4 @@
-//! linengrow/seva_jabs2_audience_core.rye — in-process JABS2 welcome path.
+//! linengrow/seva_jabs2_audience_core.rye -- in-process JABS2 welcome path.
 //!
 //! Mixed multi-signer session (broadcaster + two viewers' chat). Device-free
 //! and glass-safe. Full five-claim witness stays in seva_backchannel_witness.

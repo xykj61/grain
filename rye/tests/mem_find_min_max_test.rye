@@ -1,4 +1,4 @@
-//! Rye test: std.mem min/max and findMin/findMax/findMinMax — pass 9912.
+//! Rye test: std.mem min/max and findMin/findMax/findMinMax -- pass 9912.
 
 const std = @import("std");
 const mem = std.mem;

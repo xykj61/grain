@@ -1,4 +1,4 @@
-//! Rye test: std.mem.bytesAsValue — pass 9922.
+//! Rye test: std.mem.bytesAsValue -- pass 9922.
 //!
 //! Byte buffer to typed pointer; pairs with asBytes (9925) and toBytes (9923).
 

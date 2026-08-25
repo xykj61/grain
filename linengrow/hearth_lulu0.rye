@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu0.rye — LULU0: Hearth Bron mold (short home + display preset).
+//! linengrow/hearth_lulu0.rye -- LULU0: Hearth Bron mold (short home + display preset).
 //!
 //! Waymark LULU. A Hearth record carries `home_id` (exactly two lowercase
 //! letters) and a closed `display_preset` enum. Bron text at the seam;
@@ -14,7 +14,7 @@ pub const format_tag: []const u8 = "hearth-lulu0-v1";
 pub const home_id_len: u32 = 2;
 pub const max_bron_len: u32 = 512;
 pub const max_path_len: u32 = 32;
-/// Absolute path under an Android/app files root (`…/kd/hearth.bron`).
+/// Absolute path under an Android/app files root (`.../kd/hearth.bron`).
 pub const max_abs_path_len: u32 = 160;
 
 /// Closed Glass phone presets (20:9 Pixel-class ladder + Mantrapod content floor).
@@ -60,7 +60,7 @@ pub const DisplayPreset = enum {
         return sz.w * ref.h == ref.w * sz.h;
     }
 
-    /// Closed N-cycle (N=4) — tap hearth chrome advances; Settings list is LULU2.
+    /// Closed N-cycle (N=4) -- tap hearth chrome advances; Settings list is LULU2.
     pub fn next(self: DisplayPreset) DisplayPreset {
         return switch (self) {
             .panel_max => .scaled_720,
@@ -71,7 +71,7 @@ pub const DisplayPreset = enum {
     }
 };
 
-/// Wired Glass preference — where sync is meant to travel (live USB is later).
+/// Wired Glass preference -- where sync is meant to travel (live USB is later).
 pub const WireLane = enum {
     local,
     usb_desk,
@@ -262,7 +262,7 @@ fn trim(s: []const u8) []const u8 {
 }
 
 /// Parse a hearth-lulu0-v1 Bron document into a validated Hearth.
-/// `wire_lane` / `cellular` optional — missing means `.local` / `.off`.
+/// `wire_lane` / `cellular` optional -- missing means `.local` / `.off`.
 pub fn parse_bron(src: []const u8) HearthError!Hearth {
     if (src.len > max_bron_len) return error.BronTooLong;
     var saw_format = false;
@@ -386,7 +386,7 @@ pub fn kd_hearth_path_is_short() bool {
     return std.mem.eql(u8, path[0..n], "kd/hearth.bron");
 }
 
-/// Device-free: files-root join lands on `…/kd/hearth.bron`.
+/// Device-free: files-root join lands on `.../kd/hearth.bron`.
 pub fn kd_files_join_is_honest() bool {
     const root = "/data/user/0/org.glow.app.seva_broadcaster/files";
     var path: [max_abs_path_len]u8 = undefined;

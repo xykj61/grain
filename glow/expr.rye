@@ -1,13 +1,13 @@
-//! glow/expr.rye — shared nest-expression surface for Glow lowers.
+//! glow/expr.rye -- shared nest-expression surface for Glow lowers.
 //!
-//! Nest forms: decimal · nested `^-  @uN  <decimal>` · bare face ·
-//! `(lent <face>)` · `(mix <face> <face>)` · `(jam <face> <face>)` ·
-//! `(jam (mix <face> <face>) <face>)` — one-deep nest left under jam ·
-//! `(jam <face> (mix <face> <face>))` — one-deep nest right under jam ·
-//! `(jam (mix …) (mix …))` — one-deep nest both under jam ·
-//! `(cue <face>)` — thin unpack of a jam cell-pack (low 16 bits) ·
-//! `(cue (jam <face> <face>))` — one-deep cue-of-jam round-trip ·
-//! `(cue (jam (mix …) <face>))` — cue of nest jam left.
+//! Nest forms: decimal - nested `^-  @uN  <decimal>` - bare face -
+//! `(lent <face>)` - `(mix <face> <face>)` - `(jam <face> <face>)` -
+//! `(jam (mix <face> <face>) <face>)` -- one-deep nest left under jam -
+//! `(jam <face> (mix <face> <face>))` -- one-deep nest right under jam -
+//! `(jam (mix ...) (mix ...))` -- one-deep nest both under jam -
+//! `(cue <face>)` -- thin unpack of a jam cell-pack (low 16 bits) -
+//! `(cue (jam <face> <face>))` -- one-deep cue-of-jam round-trip -
+//! `(cue (jam (mix ...) <face>))` -- cue of nest jam left.
 //! Other parenthesized forms refuse. Full desk token stream: `tokens.rye` (STOA83).
 
 const std = @import("std");
@@ -16,15 +16,15 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const max_name_len: u32 = 64;
 
-/// Demo subject length when a lower emits `(lent …)` as a value — matches
+/// Demo subject length when a lower emits `(lent ...)` as a value -- matches
 /// lower_trap.lent_demo_len so trap and face share one ceiling.
 pub const lent_demo_len: u32 = 5;
 
-/// Demo atoms for `(mix a b)` → `a ^ b` (Hoon +mix parallel).
+/// Demo atoms for `(mix a b)` -> `a ^ b` (Hoon +mix parallel).
 pub const mix_demo_left: u32 = 5;
 pub const mix_demo_right: u32 = 3;
 
-/// Demo atoms for `(jam a b)` → `(a << 16) | b` — thin cell-pack face
+/// Demo atoms for `(jam a b)` -> `(a << 16) | b` -- thin cell-pack face
 /// (Hoon +jam of a two-atom cell; not Vere jam/cue bit layout).
 pub const jam_demo_left: u32 = 5;
 pub const jam_demo_right: u32 = 3;
@@ -40,10 +40,10 @@ pub const ParseError = error{
 
 pub const Kind = enum { face, literal, cast_literal, lent_of, mix_of, jam_of, cue_of };
 
-/// One-deep nest arg under `(jam …)` — face, or `(mix a b)` as left.
+/// One-deep nest arg under `(jam ...)` -- face, or `(mix a b)` as left.
 pub const ArgKind = enum { face, mix_of };
 
-/// Subject under `(cue …)` — face, or flat `(jam a b)`.
+/// Subject under `(cue ...)` -- face, or flat `(jam a b)`.
 pub const CueArg = enum { face, jam_of };
 
 pub const Expr = struct {
@@ -110,17 +110,17 @@ pub fn jam_demo_result() u32 {
     return (jam_demo_left << 16) | jam_demo_right;
 }
 
-/// `(jam (mix a b) c)` demo — mix result packed with right atom.
+/// `(jam (mix a b) c)` demo -- mix result packed with right atom.
 pub fn jam_nest_demo_result() u32 {
     return (mix_demo_result() << 16) | jam_demo_right;
 }
 
-/// `(jam a (mix b c))` demo — left atom packed with mix result.
+/// `(jam a (mix b c))` demo -- left atom packed with mix result.
 pub fn jam_nest_right_demo_result() u32 {
     return (jam_demo_left << 16) | mix_demo_result();
 }
 
-/// `(jam (mix a b) (mix c d))` demo — mix packed with mix (both demo 5^3).
+/// `(jam (mix a b) (mix c d))` demo -- mix packed with mix (both demo 5^3).
 pub fn jam_nest_both_demo_result() u32 {
     return (mix_demo_result() << 16) | mix_demo_result();
 }
@@ -129,7 +129,7 @@ pub fn jam_is_both_mix(e: *const Expr) bool {
     return e.kind == .jam_of and e.left_arg == .mix_of and e.right_arg == .mix_of;
 }
 
-/// Demo expect for any thin jam form (flat · left · right · both mix).
+/// Demo expect for any thin jam form (flat - left - right - both mix).
 pub fn jam_expect(e: *const Expr) u32 {
     if (e.kind != .jam_of) return jam_demo_result();
     if (jam_is_both_mix(e)) return jam_nest_both_demo_result();
@@ -138,7 +138,7 @@ pub fn jam_expect(e: *const Expr) u32 {
     return jam_demo_result();
 }
 
-/// Thin `(cue cell)` / `(cue (jam …))` — low 16 bits of a jam cell-pack.
+/// Thin `(cue cell)` / `(cue (jam ...))` -- low 16 bits of a jam cell-pack.
 pub fn cue_demo_result() u32 {
     return jam_demo_right;
 }
@@ -159,7 +159,7 @@ pub fn cue_jam_is_nest_both(e: *const Expr) bool {
     return cue_is_jam(e) and e.left_arg == .mix_of and e.right_arg == .mix_of;
 }
 
-/// Demo expect for cue — low 16 of the subject cell-pack.
+/// Demo expect for cue -- low 16 of the subject cell-pack.
 pub fn cue_expect(e: *const Expr) u32 {
     if (!cue_is_jam(e)) return cue_demo_result();
     if (cue_jam_is_nest_left(e)) return jam_demo_right;
@@ -217,7 +217,7 @@ const NestArg = struct {
     rest: []const u8,
 };
 
-/// Face, or one-deep `(mix a b)` — other nest args stay later.
+/// Face, or one-deep `(mix a b)` -- other nest args stay later.
 fn parse_nest_arg(rest_in: []const u8) ParseError!NestArg {
     const rest = std.mem.trimStart(u8, rest_in, " \t");
     if (rest.len == 0) return error.MalformedExpr;
@@ -274,7 +274,7 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         if (mid.len == 0) return error.MalformedExpr;
         const right = try parse_nest_arg(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
-        // One-deep: both mix · left mix · right mix · flat faces.
+        // One-deep: both mix - left mix - right mix - flat faces.
         if (left.kind == .mix_of and right.kind == .mix_of) {
             var e: Expr = .{
                 .kind = .jam_of,
@@ -339,7 +339,7 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
             if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
             const after_jam = std.mem.trimStart(u8, right.rest[1..], " \t");
             if (after_jam.len == 0 or after_jam[0] != ')') return error.MalformedExpr;
-            // Flat jam · nest-left · nest-right · nest-both under cue.
+            // Flat jam - nest-left - nest-right - nest-both under cue.
             if (left.kind == .mix_of and right.kind == .mix_of) {
                 var e: Expr = .{
                     .kind = .cue_of,

@@ -1,4 +1,4 @@
-//! glow/face_lit_witness.rye — proves face=lit sample parse (STOA219).
+//! glow/face_lit_witness.rye -- proves face=lit sample parse (STOA219).
 //!
 //!   rye build glow/face_lit_witness.rye -femit-bin=glow/bin/face_lit_witness
 //!   glow/bin/face_lit_witness

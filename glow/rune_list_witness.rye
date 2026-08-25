@@ -1,4 +1,4 @@
-//! glow/rune_list_witness.rye — proves the `:~` list-cell rune head.
+//! glow/rune_list_witness.rye -- proves the `:~` list-cell rune head.
 //!
 //!   rye build glow/rune_list_witness.rye -femit-bin=glow/bin/rune_list_witness
 

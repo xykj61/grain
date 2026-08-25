@@ -1,4 +1,4 @@
-//! comlink/guest_2way_source_tx.rye — two-way sync device wire: source TX (peerA response).
+//! comlink/guest_2way_source_tx.rye -- two-way sync device wire: source TX (peerA response).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

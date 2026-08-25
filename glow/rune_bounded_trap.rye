@@ -1,5 +1,5 @@
 //! glow-book: runes.md#g-trap
-//! glow/rune_bounded_trap.rye — parses Glow's bounded `|-` rune, for real.
+//! glow/rune_bounded_trap.rye -- parses Glow's bounded `|-` rune, for real.
 //!
 //! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! central resolution: Hoon's own `|-` (barhep) trap opens unbounded

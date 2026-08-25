@@ -1,4 +1,4 @@
-//! linengrow/seva_view_witness.rye — proves Seva R1: rendering what Pool hosts.
+//! linengrow/seva_view_witness.rye -- proves Seva R1: rendering what Pool hosts.
 //!
 //!   rye build linengrow/seva_view_witness.rye -femit-bin=linengrow/bin/seva_view_witness
 //!   linengrow/bin/seva_view_witness
@@ -7,11 +7,11 @@
 //! rung R1 and linengrow/seva_view.rye. Four claims:
 //!   1. Seva renders a Pool-hosted agent's folded state to a bounded frame,
 //!      and the frame's content reflects the fold (the real balances appear).
-//!   2. The render is deterministic — the same hosted state yields a
+//!   2. The render is deterministic -- the same hosted state yields a
 //!      byte-identical frame twice.
-//!   3. The frame is bounded — line count and line width within the stated
+//!   3. The frame is bounded -- line count and line width within the stated
 //!      limits (the thin-view discipline).
-//!   4. It renders only what Pool hosts — the input is a real Pool
+//!   4. It renders only what Pool hosts -- the input is a real Pool
 //!      AgentResult from an admitted agent, not a local fixture, so a
 //!      refused agent (no capability) leaves nothing to render.
 

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findLast — pass 9970.
+//! Rye test: std.mem.findLast -- pass 9970.
 //!
 //! Backward sub-slice search entry point. Pairs with find (9993) and findPos
 //! (9971); delegates to findLastLinear on small inputs.

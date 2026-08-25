@@ -1,4 +1,4 @@
-//! Rye test: Keccak sponge @memcpy boundaries — pass 9936.
+//! Rye test: Keccak sponge @memcpy boundaries -- pass 9936.
 //!
 //! Absorb and squeeze across block boundaries; every Aurora hash walks this path.
 

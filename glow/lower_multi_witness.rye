@@ -1,4 +1,4 @@
-//! glow/lower_multi_witness.rye — proves multi-line Glow desks lower to Rye.
+//! glow/lower_multi_witness.rye -- proves multi-line Glow desks lower to Rye.
 //!
 //!   rye build glow/lower_multi_witness.rye -femit-bin=glow/bin/lower_multi_witness
 

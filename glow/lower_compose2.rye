@@ -1,4 +1,4 @@
-//! glow/lower_compose2.rye — lower face→face→`%+` compose to one `.rye`.
+//! glow/lower_compose2.rye -- lower face->face->`%+` compose to one `.rye`.
 //!
 //! Thin STOA12 face (exactly three lines):
 //!   =/  from  5

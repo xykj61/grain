@@ -1,4 +1,4 @@
-//! linengrow/tube1_glass_gate_witness.rye — proves glass covers scopes + toggles.
+//! linengrow/tube1_glass_gate_witness.rye -- proves glass covers scopes + toggles.
 //!
 //!   rye build linengrow/tube1_glass_gate_witness.rye \
 //!     -femit-bin=linengrow/bin/tube1_glass_gate_witness

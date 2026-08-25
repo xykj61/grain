@@ -1,4 +1,4 @@
-// font8x8_basic — public domain, dhepper/font8x8 (brushstroke/font8x8_data.rye)
+// font8x8_basic -- public domain, dhepper/font8x8 (brushstroke/font8x8_data.rye)
 pub const font8x8_basic: [128][8]u8 = .{
     .{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // control 0
     .{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, // control 1

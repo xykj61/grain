@@ -1,6 +1,6 @@
-//! Rye test: mem.replaceScalar — pass 9914.
+//! Rye test: mem.replaceScalar -- pass 9914.
 //!
-//! In-place scalar replacement; pairs with replace family (9915–9917).
+//! In-place scalar replacement; pairs with replace family (9915-9917).
 
 const std = @import("std");
 const mem = std.mem;

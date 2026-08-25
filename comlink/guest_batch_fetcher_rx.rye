@@ -1,4 +1,4 @@
-//! comlink/guest_batch_fetcher_rx.rye — NS-L3 batch wire device: fetcher RX (apply beaded batch).
+//! comlink/guest_batch_fetcher_rx.rye -- NS-L3 batch wire device: fetcher RX (apply beaded batch).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

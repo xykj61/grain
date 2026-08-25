@@ -1,4 +1,4 @@
-//! brushstroke/skate_grid.rye — Skate: monospace cell grid → ARGB8888 buffer.
+//! brushstroke/skate_grid.rye -- Skate: monospace cell grid -> ARGB8888 buffer.
 //!
 //! font8x8_basic is public domain (dhepper/font8x8). Grid mutations copy
 //! through Tally's `copy_disjoint`, both preconditions asserted; allocation
@@ -28,7 +28,7 @@ pub const cell_h: u32 = 16;
 
 /// Bound on the styled-run palette a grid may carry. Slot 0 is the sentinel
 /// "use the fg passed to rasterize"; slots 1..max_palette-1 hold real colors.
-/// Named small on purpose — a token sheet paints a handful of runs, not a rainbow.
+/// Named small on purpose -- a token sheet paints a handful of runs, not a rainbow.
 pub const max_palette: u32 = 8;
 
 /// The palette slot that means "wear the fg argument rasterize is given." A cell
@@ -68,7 +68,7 @@ pub const Grid = struct {
         // invariant: one fg index per cell, exactly parallel to `cells`.
         assert(fg_index.len == cells.len);
         @memset(fg_index, fg_default_index);
-        // invariant: every cell starts on the sentinel — no run painted yet.
+        // invariant: every cell starts on the sentinel -- no run painted yet.
         assert(fg_index[0] == fg_default_index);
         return .{
             .cols = cols,
@@ -80,7 +80,7 @@ pub const Grid = struct {
     }
 
     /// Set one palette slot to a color. Slot 0 is the reserved sentinel and is
-    /// refused — a run painted with index 0 would be indistinguishable from the
+    /// refused -- a run painted with index 0 would be indistinguishable from the
     /// default, so a caller must pick a real slot to change a cell's color.
     pub fn set_palette(self: *Grid, index: u8, color: Color) void {
         // invariant: slot 0 stays the "use fg argument" sentinel, never a color.
@@ -107,7 +107,7 @@ pub const Grid = struct {
         // invariant: the run's last cell sits inside the fg-index buffer.
         assert(base + @as(usize, @intCast(end)) <= self.fg_index.len);
         var col: u32 = col_start;
-        // Bounded by `end`, itself bounded by `self.cols` — a named grid width.
+        // Bounded by `end`, itself bounded by `self.cols` -- a named grid width.
         while (col < end) : (col += 1) {
             self.fg_index[base + @as(usize, @intCast(col))] = palette_index;
         }
@@ -124,7 +124,7 @@ pub const Grid = struct {
         tally_copy.copy_disjoint(u8, self.cells[base..][0..n_usize], text[0..n_usize]);
     }
 
-    /// The row's cells, read back whole — the reading sibling of `put_line`.
+    /// The row's cells, read back whole -- the reading sibling of `put_line`.
     /// Named `row_cells` rather than `grid_row`: `rasterize` already binds a
     /// local `grid_row`, and a shadowed name is a name not yet free.
     /// Grid witnesses otherwise index `cells` by hand, which is exactly the
@@ -217,7 +217,7 @@ pub const Grid = struct {
             while (col < self.cols) : (col += 1) {
                 const cell_i: usize = @intCast(grid_row * self.cols + col);
                 const ch = self.cells[cell_i];
-                // Slot 0 (the default) wears the fg argument exactly — so a grid
+                // Slot 0 (the default) wears the fg argument exactly -- so a grid
                 // with no runs painted rasterizes byte-identically to before the
                 // palette existed. Only a non-zero index picks a palette color.
                 const idx = self.fg_index[cell_i];

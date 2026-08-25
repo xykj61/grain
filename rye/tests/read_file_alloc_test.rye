@@ -1,4 +1,4 @@
-//! Rye test: std.Io.Dir.readFileAlloc — pass 9984.
+//! Rye test: std.Io.Dir.readFileAlloc -- pass 9984.
 //!
 //! The rye bridge and Rishi `read-file` path allocate file contents through
 //! readFileAlloc. This test writes a temp file, reads it back, and checks

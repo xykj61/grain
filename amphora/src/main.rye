@@ -1,7 +1,7 @@
-//! amphora/src/main.rye — Amphora: vessel software for a sealed crossing.
+//! amphora/src/main.rye -- Amphora: vessel software for a sealed crossing.
 //!
 //! Amphora is preservation in motion. It carries sealed resins across a
-//! crossing — wire, dock, or pocket — under the same resins law and Kumara
+//! crossing -- wire, dock, or pocket -- under the same resins law and Kumara
 //! stamp as the cellar. Seal and stamp live inside pour; chunk lives
 //! inside carry. The shoulder stays clear. Tamper must fail. Round-trip with
 //! pour and carry must close equal.
@@ -20,52 +20,52 @@
 //!   rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora
 //!   rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal
 //!
-//! Bounds (named constants — Q4; CLI owns only what it uses):
-//!   stamp_len · stamp_dot_index · version_line_max · max_words
-//!   max_vessel_path_len · max_cargo_bytes · max_chunk_datagram
-//!   max_season_files · digest_hex_len · max_season_name_len
-//!   max_season_file_bytes · max_vessel_len
-//!   max_manifest_bytes (= max_cargo_bytes by formula · Q45)
-//!   max_seal_plain_mirror (couples vessel_seal.max_seal_plain · Q47)
-//!   max_carry_chunks (vessel roof / datagram · Q28)
-//!   exit_ok · exit_misread
+//! Bounds (named constants -- Q4; CLI owns only what it uses):
+//!   stamp_len - stamp_dot_index - version_line_max - max_words
+//!   max_vessel_path_len - max_cargo_bytes - max_chunk_datagram
+//!   max_season_files - digest_hex_len - max_season_name_len
+//!   max_season_file_bytes - max_vessel_len
+//!   max_manifest_bytes (= max_cargo_bytes by formula - Q45)
+//!   max_seal_plain_mirror (couples vessel_seal.max_seal_plain - Q47)
+//!   max_carry_chunks (vessel roof / datagram - Q28)
+//!   exit_ok - exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
-//!   tools/am/amphora_bounds_agree.rish (path C · alias groups · couples markers).
+//!   tools/am/amphora_bounds_agree.rish (path C - alias groups - couples markers).
 //!
-//! Errors (named for the fault — Q5–Q11 · Q20 · Q23–Q24 · Q46):
-//!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
-//!   CommandNotGrown · ResultUnwritable
-//!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
-//!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
-//!   StampToolAbsent · StampFailed · IdentityFork · ManifestOverflow
-//!   StampUnverified · SealUnopened (Q20 carry walls)
-//!   DockUnwritable · ChunkTorn · CrossingUnequal (Q23–Q24 crossing)
-//!   ResinAbsent · CargoUnproven · RestoreUnwritable (Q46 return)
+//! Errors (named for the fault -- Q5-Q11 - Q20 - Q23-Q24 - Q46):
+//!   UnknownCommand - TooManyWords - MissingOperand - PathTooLong
+//!   CommandNotGrown - ResultUnwritable
+//!   SeasonAbsent - SeasonEmpty - SeasonOverflow - SeasonUnreadable
+//!   CargoTooLarge - VesselUnwritable - SealToolAbsent - SealFailed
+//!   StampToolAbsent - StampFailed - IdentityFork - ManifestOverflow
+//!   StampUnverified - SealUnopened (Q20 carry walls)
+//!   DockUnwritable - ChunkTorn - CrossingUnequal (Q23-Q24 crossing)
+//!   ResinAbsent - CargoUnproven - RestoreUnwritable (Q46 return)
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown; witnesses wait Q12
-//!   § Carry   — J2: parse (Q19) · walls (Q20) · guard (Q21) · chunks (Q22+);
-//!               kind 0x33 frames · far dock verifies · fork law travels
-//!   § Restore — J3: parse (Q35) · walls (Q36) · open (Q37+) · files
-//!               re-proven · re-pour equals parent · fork law at the out-home
-//!   § Main    — CLI: pour / carry / restore / version
+//!   § Pour    -- parse (Q6) - read (Q7) - seal (Q8) - stamp (Q9) - guard (Q10) - manifest (Q11): pour grown; witnesses wait Q12
+//!   § Carry   -- J2: parse (Q19) - walls (Q20) - guard (Q21) - chunks (Q22+);
+//!               kind 0x33 frames - far dock verifies - fork law travels
+//!   § Restore -- J3: parse (Q35) - walls (Q36) - open (Q37+) - files
+//!               re-proven - re-pour equals parent - fork law at the out-home
+//!   § Main    -- CLI: pour / carry / restore / version
 //!
-//! One loop · one crossing. Identity refuses a second pour that would fork.
+//! One loop - one crossing. Identity refuses a second pour that would fork.
 //! Far side verifies stamp and seal before cargo is trusted again.
-//! Result on stdout; diagnostics on stderr — a result no caller can read
+//! Result on stdout; diagnostics on stderr -- a result no caller can read
 //! is not a result (Amphora's half; family law awaits Keaton's word).
 //!
-//! Class W wire shoulder stays amber-ring1-season (e149 park) — not renamed here.
+//! Class W wire shoulder stays amber-ring1-season (e149 park) -- not renamed here.
 //! Path C: this file does not import amphora/vessel_*.rye.
 //! Q8 seals by writing an unsealed vessel then running amphora/bin/vessel-seal
-//! (subprocess · same AEAD roof · import wall held).
+//! (subprocess - same AEAD roof - import wall held).
 //! Q9 stamps by running amphora/bin/vessel-core sign after the seal
-//! (subprocess · stamp_sig outside the sealed head · rite: seal, then stamp).
+//! (subprocess - stamp_sig outside the sealed head - rite: seal, then stamp).
 //! Q10 guards the write: a second pour may repeat an identity, never fork
-//! it — an occupant with the same parent re-pours; any other occupant refuses.
-//! Q11 writes readable manifest lines into the head — every enclosed thing
-//! named with its type-mark and digest (resins law) — stamp-covered, so the
+//! it -- an occupant with the same parent re-pours; any other occupant refuses.
+//! Q11 writes readable manifest lines into the head -- every enclosed thing
+//! named with its type-mark and digest (resins law) -- stamp-covered, so the
 //! listing reads without opening and tampers fail Kumara verify (measured);
 //! the seal keeps guarding the cargo, and restore's law checks both walls.
 //! With the manifest, pour is grown: the round path exits ok; the stdout
@@ -77,11 +77,11 @@ const print = std.debug.print;
 const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
-/// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
+/// Amphora CLI version -- YYYYMMDD.HHMMSS, America/New_York, later is larger.
 const amphora_version = "20260801.135514";
 
 // -------------------------------------------------------------------------
-// § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
+// § Bounds -- named with their why (Q4 - Q7 - Q8 - Q9)
 // -------------------------------------------------------------------------
 
 /// A compact stamp is eight date digits, one dot, six time digits.
@@ -90,13 +90,13 @@ const stamp_len: u32 = 15;
 /// Index of the dot; the date half runs before it.
 const stamp_dot_index: u32 = 8;
 
-/// Buffer for "amphora " + stamp + newline — was a bare [48]u8.
+/// Buffer for "amphora " + stamp + newline -- was a bare [48]u8.
 const version_line_max: u32 = 48;
 
-/// At most four argv words: program · command · two operands (pour/carry).
+/// At most four argv words: program - command - two operands (pour/carry).
 const max_words: u32 = 4;
 
-/// Path text ceiling for season · vessel · dock args (POSIX PATH_MAX lean).
+/// Path text ceiling for season - vessel - dock args (POSIX PATH_MAX lean).
 const max_vessel_path_len: u16 = 4096;
 
 /// Sealed cargo / assembled resin ceiling in bytes.
@@ -108,7 +108,7 @@ const max_cargo_bytes: u32 = 1024;
 /// couples: vessel_fetch_wire.max_wire_payload
 const max_chunk_datagram: u16 = 340;
 
-/// How many files one season may pour — matches vessel cargo slots.
+/// How many files one season may pour -- matches vessel cargo slots.
 /// couples: vessel_seal.max_cargo
 const max_season_files: u32 = 16;
 
@@ -120,73 +120,73 @@ const digest_hex_len: u32 = 64;
 const max_season_name_len: u16 = 512;
 
 /// One source file ceiling while reading a season (ring-1 fixture holds 64 KiB).
-/// Distinct from max_cargo_bytes — that is assembled sealed cargo, not source size.
+/// Distinct from max_cargo_bytes -- that is assembled sealed cargo, not source size.
 const max_season_file_bytes: u32 = 128 * 1024;
 
-/// On-disk vessel text ceiling — same roof as vessel_seal / vessel_core.
+/// On-disk vessel text ceiling -- same roof as vessel_seal / vessel_core.
 /// couples: vessel_seal.max_vessel_len
 /// couples: vessel_core.max_vessel_len
 const max_vessel_len: u32 = 8192;
 
-/// Class W AEAD associated data — format, not product vocabulary (e149 park).
+/// Class W AEAD associated data -- format, not product vocabulary (e149 park).
 const shoulder_ring1_wire = "amber-ring1-season";
 
-/// Vessel format line value — amphora-v1 until a later format word.
+/// Vessel format line value -- amphora-v1 until a later format word.
 const vessel_format = "amphora-v1";
 
 /// Default seal tool path when AMPHORA_VESSEL_SEAL is unset (repo layout).
 const default_seal_bin = "amphora/bin/vessel-seal";
 
-/// Cargo type-mark for season source files — one mark, both listings.
+/// Cargo type-mark for season source files -- one mark, both listings.
 const mark_plain_bytes = "plain-bytes";
 
-/// Manifest listing ceiling — same quantity as sealed cargo, joined by
+/// Manifest listing ceiling -- same quantity as sealed cargo, joined by
 /// formula (Q45). Never a second home for 1024; the Return's plain-open
 /// buffer and the pour listing share one roof.
 const max_manifest_bytes: u32 = max_cargo_bytes;
 
-/// One manifest name ceiling — a listed name must fit the entry contract.
+/// One manifest name ceiling -- a listed name must fit the entry contract.
 /// couples: manifest_entry.max_name_len
 const max_manifest_name_len: u32 = 200;
 
-/// Most chunks one crossing may cut — the vessel roof over the datagram
+/// Most chunks one crossing may cut -- the vessel roof over the datagram
 /// ceiling, rounded up. 8192 / 340 rounds to 25; the bound is exact.
 const max_carry_chunks: u32 = (max_vessel_len + max_chunk_datagram - 1) / max_chunk_datagram;
 
-/// Opened-cargo ceiling this side of the seam — the seal module's own roof.
+/// Opened-cargo ceiling this side of the seam -- the seal module's own roof.
 /// couples: vessel_seal.max_seal_plain
-/// (Q47 width fix — cargo-walk indices assert under this mirror.)
+/// (Q47 width fix -- cargo-walk indices assert under this mirror.)
 const max_seal_plain_mirror: u32 = 1024;
 
 /// Restored season out-home, derived beside the vessel: `<vessel>.season`.
-/// Format vocabulary, not product vocabulary (Q35 lean; Class W precedent —
+/// Format vocabulary, not product vocabulary (Q35 lean; Class W precedent --
 /// Keaton's rename word replaces it whole, accrete-migrate on rename).
 const restore_out_suffix = ".season";
 
-/// Resins dock beside a vessel's parent directory — `{dirname}/resins/<digest>`.
-/// Listing-only sealed cargo needs these bodies for the Return (Q38–Q42).
+/// Resins dock beside a vessel's parent directory -- `{dirname}/resins/<digest>`.
+/// Listing-only sealed cargo needs these bodies for the Return (Q38-Q42).
 const resins_dir_name = "resins";
 
 /// Assembled far-side vessel name inside a dock directory.
-/// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent —
+/// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent --
 /// Keaton's rename word replaces it whole, accrete-migrate on rename).
 const dock_vessel_name = "vessel.bron";
 
 /// Default stamp tool path when AMPHORA_VESSEL_CORE is unset (repo layout).
 const default_core_bin = "amphora/bin/vessel-core";
 
-/// Success exit — was a bare return 0.
+/// Success exit -- was a bare return 0.
 const exit_ok: u8 = 0;
 
-/// Misread / usage / unknown / waits — was bare return 2.
+/// Misread / usage / unknown / waits -- was bare return 2.
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5–Q11 · Q20 · Q23–Q24 · Q46)
+// § Errors -- named for the fault (Q5-Q11 - Q20 - Q23-Q24 - Q46)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
-/// Twenty-six doors — each fault has its own refuse arm; none swept.
+/// Twenty-six doors -- each fault has its own refuse arm; none swept.
 const CliError = error{
     UnknownCommand,
     TooManyWords,
@@ -216,7 +216,7 @@ const CliError = error{
     RestoreUnwritable,
 };
 
-/// One door for every CLI fault — switch on the name, never compare.
+/// One door for every CLI fault -- switch on the name, never compare.
 fn refuse(fault: CliError, detail: []const u8) u8 {
     switch (fault) {
         error.UnknownCommand => {
@@ -253,7 +253,7 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
 }
 
 // -------------------------------------------------------------------------
-// § Pour — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown
+// § Pour -- parse (Q6) - read (Q7) - seal (Q8) - stamp (Q9) - guard (Q10) - manifest (Q11): pour grown
 // -------------------------------------------------------------------------
 
 /// Operands for `pour <season> <vessel>` after a successful parse.
@@ -262,7 +262,7 @@ const PourArgs = struct {
     vessel: []const u8,
 };
 
-/// One season file after read — relative name + SHA3-256 hex + byte length.
+/// One season file after read -- relative name + SHA3-256 hex + byte length.
 const SeasonEntry = struct {
     name_len: u16,
     name: [max_season_name_len]u8,
@@ -278,7 +278,7 @@ const SeasonCatalog = struct {
 };
 
 /// Parse pour operands. Does not open the season or write a vessel.
-/// Path C: no vessel-module import — only argv shape and named ceilings.
+/// Path C: no vessel-module import -- only argv shape and named ceilings.
 fn parse_pour_args(args: []const []const u8) CliError!PourArgs {
     assert(args.len >= 2);
     assert(std.mem.eql(u8, args[1], "pour"));
@@ -302,7 +302,7 @@ fn write_hex_lower(bytes: []const u8, out: []u8) void {
     }
 }
 
-/// Parent directory of a path — `.` when the path has no slash.
+/// Parent directory of a path -- `.` when the path has no slash.
 fn path_dirname(path: []const u8) []const u8 {
     assert(path.len > 0);
     if (std.mem.lastIndexOfScalar(u8, path, '/')) |i| {
@@ -312,7 +312,7 @@ fn path_dirname(path: []const u8) []const u8 {
     return ".";
 }
 
-/// `{dirname(vessel)}/resins` — bodies ride beside the sealed listing.
+/// `{dirname(vessel)}/resins` -- bodies ride beside the sealed listing.
 fn resins_dir_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
     assert(vessel.len > 0);
     const dir = path_dirname(vessel);
@@ -330,7 +330,7 @@ fn resin_file_path(vessel: []const u8, digest_hex: []const u8, buf: []u8) CliErr
     };
 }
 
-/// Walk a season directory; hash each file; fill catalog. Path C — std only.
+/// Walk a season directory; hash each file; fill catalog. Path C -- std only.
 fn read_season(
     allocator: std.mem.Allocator,
     io: std.Io,
@@ -372,7 +372,7 @@ fn read_season(
 
         const slot = &catalog.entries[catalog.file_count];
         slot.name_len = @intCast(entry.path.len);
-        // No tally_copy import from amphora/src (path C) — bounded byte copy.
+        // No tally_copy import from amphora/src (path C) -- bounded byte copy.
         var ni: u32 = 0;
         while (ni < entry.path.len) : (ni += 1) {
             slot.name[ni] = entry.path[ni];
@@ -387,7 +387,7 @@ fn read_season(
     assert(catalog.file_count <= max_season_files);
 }
 
-/// Stable cargo order — parent / nonce must not depend on walk order.
+/// Stable cargo order -- parent / nonce must not depend on walk order.
 fn sort_season_by_name(catalog: *SeasonCatalog) void {
     var i: u32 = 1;
     while (i < catalog.file_count) : (i += 1) {
@@ -423,9 +423,9 @@ fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
     return off;
 }
 
-/// Q11: readable manifest lines — every enclosed thing, mark · digest · name.
+/// Q11: readable manifest lines -- every enclosed thing, mark - digest - name.
 /// Lives in the head, so the seal covers it (tamper-evident) yet it reads
-/// without opening — the resins-law listing the sealed-crossing anatomy names.
+/// without opening -- the resins-law listing the sealed-crossing anatomy names.
 fn build_manifest_lines(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
     assert(catalog.file_count >= 1);
     var off: u32 = 0;
@@ -445,7 +445,7 @@ fn build_manifest_lines(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
     return off;
 }
 
-/// Write unsealed vessel text: format · stamp · shoulder · parent · manifest · cargo.
+/// Write unsealed vessel text: format - stamp - shoulder - parent - manifest - cargo.
 fn write_unsealed_vessel(
     io: std.Io,
     vessel_path: []const u8,
@@ -482,7 +482,7 @@ fn write_unsealed_vessel(
     };
 }
 
-/// Resolve vessel-seal binary: env · sibling of argv0 · repo default.
+/// Resolve vessel-seal binary: env - sibling of argv0 - repo default.
 fn resolve_seal_bin(
     init: std.process.Init,
     io: std.Io,
@@ -514,7 +514,7 @@ fn resolve_seal_bin(
     }
 }
 
-/// Path C: seal via vessel-seal subprocess — no comptime vessel import.
+/// Path C: seal via vessel-seal subprocess -- no comptime vessel import.
 fn run_vessel_seal(
     allocator: std.mem.Allocator,
     io: std.Io,
@@ -534,7 +534,7 @@ fn run_vessel_seal(
     if (code != 0) return error.SealFailed;
 }
 
-/// Confirm seal fields landed — nonce and cargo hex must both be present.
+/// Confirm seal fields landed -- nonce and cargo hex must both be present.
 fn verify_seal_fields(io: std.Io, vessel_path: []const u8) CliError!void {
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
@@ -545,7 +545,7 @@ fn verify_seal_fields(io: std.Io, vessel_path: []const u8) CliError!void {
     if (!has_nonce or !has_cargo) return error.SealFailed;
 }
 
-/// Resolve vessel-core binary: env · sibling of argv0 · repo default.
+/// Resolve vessel-core binary: env - sibling of argv0 - repo default.
 fn resolve_core_bin(
     init: std.process.Init,
     io: std.Io,
@@ -579,7 +579,7 @@ fn resolve_core_bin(
     }
 }
 
-/// Path C: stamp via vessel-core sign subprocess — no comptime vessel import.
+/// Path C: stamp via vessel-core sign subprocess -- no comptime vessel import.
 fn run_vessel_core_sign(
     allocator: std.mem.Allocator,
     io: std.Io,
@@ -599,7 +599,7 @@ fn run_vessel_core_sign(
     if (code != 0) return error.StampFailed;
 }
 
-/// Confirm the stamp landed — a stamp_sig field must be present after sign.
+/// Confirm the stamp landed -- a stamp_sig field must be present after sign.
 fn verify_stamp_field(io: std.Io, vessel_path: []const u8) CliError!void {
     assert(vessel_path.len > 0);
     var buf: [max_vessel_len]u8 = undefined;
@@ -611,7 +611,7 @@ fn verify_stamp_field(io: std.Io, vessel_path: []const u8) CliError!void {
 }
 
 /// Q9: resolve vessel-core, sign the sealed vessel, confirm stamp_sig landed.
-/// Rite: seal, then stamp — stamp_sig stays outside the sealed head.
+/// Rite: seal, then stamp -- stamp_sig stays outside the sealed head.
 fn stamp_sealed_vessel(
     init: std.process.Init,
     allocator: std.mem.Allocator,
@@ -638,7 +638,7 @@ fn parent_of_cargo(cargo: []const u8, parent_hex: *[digest_hex_len]u8) void {
 }
 
 /// Q10 write-guard: a second pour may repeat an identity, never fork it.
-/// An occupant with the same parent is the same pour said again — welcome.
+/// An occupant with the same parent is the same pour said again -- welcome.
 /// Any other occupant (different parent, no parent, unreadable) refuses,
 /// so the path's identity stays single across every pour.
 fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const u8) CliError!void {
@@ -661,7 +661,7 @@ fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const 
     return error.IdentityFork; // occupant carries no parent — continuity unconfirmed
 }
 
-/// Filled front half of a pour — names into argv, lengths into caller buffers.
+/// Filled front half of a pour -- names into argv, lengths into caller buffers.
 const PourFilled = struct {
     season: []const u8,
     vessel: []const u8,
@@ -669,7 +669,7 @@ const PourFilled = struct {
     manifest_len: u32,
 };
 
-/// Pour front: parse · read · sort · cargo · manifest · parent · guard.
+/// Pour front: parse - read - sort - cargo - manifest - parent - guard.
 /// Returns an exit code when a door refused, null when the fill is whole.
 fn pour_fill(
     init: std.process.Init,
@@ -731,7 +731,7 @@ fn pour_fill(
     return null;
 }
 
-/// Pour ship: write manifest+cargo · seal · stamp — the grown round path.
+/// Pour ship: write manifest+cargo - seal - stamp -- the grown round path.
 fn pour_ship(
     init: std.process.Init,
     args: []const []const u8,
@@ -834,7 +834,7 @@ fn write_season_resins(
     print("amphora: resins written count={d} dir={s}\n", .{ wrote, rdir });
 }
 
-/// Q11 door: parse · read · guard · write(manifest) · seal · stamp — pour
+/// Q11 door: parse - read - guard - write(manifest) - seal - stamp -- pour
 /// grown; the round path exits ok. Witnesses wait Q12; stdout family waits
 /// Keaton's word, so success speaks on stderr only.
 fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
@@ -849,7 +849,7 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // =========================================================================
-// § Carry — J2 The Crossing (doc seed, Q18 — code grows Q19+)
+// § Carry -- J2 The Crossing (doc seed, Q18 -- code grows Q19+)
 // -------------------------------------------------------------------------
 //
 // Carry moves a poured vessel to a far dock without ever trusting motion:
@@ -861,13 +861,13 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
 // readable at the dock before any seal is touched. Effects come last:
 // nothing lands at the dock until every check on the near side has passed.
 
-/// One carry's names — vessel to move, dock to receive it.
+/// One carry's names -- vessel to move, dock to receive it.
 const CarryArgs = struct {
     vessel: []const u8,
     dock: []const u8,
 };
 
-/// Q19: carry argument parse — `carry <vessel> <dock>`, bounds named.
+/// Q19: carry argument parse -- `carry <vessel> <dock>`, bounds named.
 fn parse_carry_args(args: []const []const u8) CliError!CarryArgs {
     assert(args.len >= 2);
     assert(std.mem.eql(u8, args[1], "carry"));
@@ -922,7 +922,7 @@ fn run_vessel_seal_open(
     if (code != 0) return error.SealUnopened;
 }
 
-/// Q20: both walls verify before the first byte travels — stamp, then seal.
+/// Q20: both walls verify before the first byte travels -- stamp, then seal.
 fn carry_verify_walls(
     init: std.process.Init,
     allocator: std.mem.Allocator,
@@ -942,7 +942,7 @@ fn carry_verify_walls(
     print("amphora: carry walls verified rite=stamp-then-seal\n", .{});
 }
 
-/// Read the source vessel's parent field — the identity that travels.
+/// Read the source vessel's parent field -- the identity that travels.
 /// Light line scan, path C: no vessel module import.
 fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len]u8) CliError!void {
     assert(vessel_path.len > 0);
@@ -955,7 +955,7 @@ fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len
         if (!std.mem.startsWith(u8, raw, "parent ")) continue;
         const value = raw["parent ".len..];
         if (value.len != digest_hex_len) return error.StampUnverified;
-        // No tally_copy import from amphora/src (path C) — bounded byte copy.
+        // No tally_copy import from amphora/src (path C) -- bounded byte copy.
         var ci: u32 = 0;
         while (ci < digest_hex_len) : (ci += 1) {
             out[ci] = value[ci];
@@ -965,7 +965,7 @@ fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len
     return error.StampUnverified;
 }
 
-/// Build `<dock>/vessel.bron` — the far-side path the fork law guards.
+/// Build `<dock>/vessel.bron` -- the far-side path the fork law guards.
 fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
     assert(dock.len > 0);
     assert(buf.len >= max_vessel_path_len);
@@ -974,7 +974,7 @@ fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
     };
 }
 
-/// Q22: the chunk plan — how many kind-0x33 sized pieces this vessel cuts.
+/// Q22: the chunk plan -- how many kind-0x33 sized pieces this vessel cuts.
 /// Postcondition: 1 <= count <= max_carry_chunks.
 fn plan_chunks(vessel_bytes: u32) u32 {
     assert(vessel_bytes > 0);
@@ -1017,7 +1017,7 @@ fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chun
 }
 
 /// Q24: reassemble the chunks in order and demand byte-equality with the
-/// source — a crossing is only believed when the far bytes are the near bytes.
+/// source -- a crossing is only believed when the far bytes are the near bytes.
 fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, source_text: []const u8, chunk_count: u32) CliError!void {
     assert(source_text.len > 0);
     assert(chunk_count >= 1);
@@ -1045,7 +1045,7 @@ fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, so
     };
 }
 
-/// Q25: the manifest crossed whole — the far vessel must list its cargo
+/// Q25: the manifest crossed whole -- the far vessel must list its cargo
 /// readably before anyone touches a seal. Byte-equality already implies it;
 /// this door says it aloud, so a dock reader's first promise is checked.
 fn verify_far_manifest(io: std.Io, far_vessel: []const u8) CliError!void {
@@ -1064,7 +1064,7 @@ const CarryFilled = struct {
     far_vessel: []const u8,
 };
 
-/// Carry front: parse · walls · traveling parent · far path · dock guard.
+/// Carry front: parse - walls - traveling parent - far path - dock guard.
 /// Returns an exit code when a door refused, null when the check is whole.
 fn carry_check(
     init: std.process.Init,
@@ -1112,8 +1112,8 @@ fn carry_check(
     return null;
 }
 
-/// Carry cross: plan · chunks (unless the witness seam trusts the dock) ·
-/// assemble byte-equal · far walls · far manifest — completion spoken last.
+/// Carry cross: plan - chunks (unless the witness seam trusts the dock) -
+/// assemble byte-equal - far walls - far manifest -- completion spoken last.
 fn carry_cross(
     init: std.process.Init,
     allocator: std.mem.Allocator,
@@ -1128,7 +1128,7 @@ fn carry_cross(
     print("amphora: carry plan chunks={d} ceiling={d} bytes={d}\n", .{ chunk_count, max_chunk_datagram, vtext.len });
 
     // Witness seam (Q27): with AMPHORA_CARRY_TRUST_DOCK set, assemble from
-    // the chunks already standing at the dock rather than cutting fresh —
+    // the chunks already standing at the dock rather than cutting fresh --
     // this is how planted torn / reordered / forged chunks become testable,
     // since a production carry lawfully heals a dock by re-cutting. The env
     // gate mirrors AMPHORA_VESSEL_SEAL / _CORE; production carries never set it.
@@ -1213,8 +1213,8 @@ fn ferry_resins(
     print("amphora: resins ferried count={d}\n", .{n});
 }
 
-/// Q27 door: check (parse · walls · guard) then cross (plan · chunks ·
-/// byte-equal · far walls · manifest) — sequencer, the pour split's mirror.
+/// Q27 door: check (parse - walls - guard) then cross (plan - chunks -
+/// byte-equal - far walls - manifest) -- sequencer, the pour split's mirror.
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const allocator = init.arena.allocator();
     var far_path_buf: [max_vessel_path_len]u8 = undefined;
@@ -1226,7 +1226,7 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // -------------------------------------------------------------------------
-// § Restore — J3 The Return (doctrine seed, Q34 — code grows Q35+)
+// § Restore -- J3 The Return (doctrine seed, Q34 -- code grows Q35+)
 // -------------------------------------------------------------------------
 //
 // Restore walks the cargo home without ever trusting the walk: both walls
@@ -1234,11 +1234,11 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
 // module's own open door yields the plaintext cargo, every restored file is
 // re-proven against the digest it rode in on, and the whole return is only
 // believed when the restored season re-pours to the very same parent. The
-// out-home takes a derived name — format vocabulary, park open — and the
+// out-home takes a derived name -- format vocabulary, park open -- and the
 // fork law guards it exactly as it guards every other landing. Effects
 // come last; belief comes last of all.
 
-/// Build `<vessel>.season` — the out-home the fork law will guard.
+/// Build `<vessel>.season` -- the out-home the fork law will guard.
 fn restore_out_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
     assert(vessel.len > 0);
     assert(buf.len >= max_vessel_path_len);
@@ -1247,7 +1247,7 @@ fn restore_out_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
     };
 }
 
-/// Q35: restore argument parse — `restore <vessel>`, bounds named.
+/// Q35: restore argument parse -- `restore <vessel>`, bounds named.
 fn parse_restore_args(args: []const []const u8) CliError![]const u8 {
     assert(args.len >= 2);
     assert(std.mem.eql(u8, args[1], "restore"));
@@ -1331,7 +1331,7 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     catalog.file_count += 1;
 }
 
-/// Q39: fork law at `<vessel>.season` — absent welcomes; same parent re-restores.
+/// Q39: fork law at `<vessel>.season` -- absent welcomes; same parent re-restores.
 fn restore_guard_out(io: std.Io, allocator: std.mem.Allocator, vessel: []const u8, out_home: []const u8) CliError!void {
     var parent_hex: [digest_hex_len]u8 = undefined;
     read_vessel_parent(io, vessel, &parent_hex) catch return error.StampUnverified;
@@ -1409,7 +1409,7 @@ fn restore_same_parent(
     print("amphora: restore same-parent ok\n", .{});
 }
 
-/// Q37–Q38: open the sealed cargo and parse the listing into a catalog.
+/// Q37-Q38: open the sealed cargo and parse the listing into a catalog.
 fn restore_open_catalog(
     init: std.process.Init,
     allocator: std.mem.Allocator,
@@ -1440,7 +1440,7 @@ fn restore_open_catalog(
     return null;
 }
 
-/// Q36–Q42: walls · open · catalog · guard · write/prove · same-parent · exit ok.
+/// Q36-Q42: walls - open - catalog - guard - write/prove - same-parent - exit ok.
 fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
     const vessel = parse_restore_args(args) catch |fault| {
         return switch (fault) {
@@ -1500,7 +1500,7 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // -------------------------------------------------------------------------
-// § Main — CLI (Q3–Q11 · carry Q19+ · restore Q35+ · version)
+// § Main -- CLI (Q3-Q11 - carry Q19+ - restore Q35+ - version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -1509,7 +1509,7 @@ pub fn main(init: std.process.Init) !u8 {
     const args = try init.minimal.args.toSlice(allocator);
 
     assert(args.len >= 1);
-    // Invariants that can fail if bounds move wrongly — not const == literal.
+    // Invariants that can fail if bounds move wrongly -- not const == literal.
     assert(max_words >= 2);
     assert(max_chunk_datagram <= max_cargo_bytes);
     assert(max_vessel_path_len > max_words);
@@ -1543,7 +1543,7 @@ pub fn main(init: std.process.Init) !u8 {
     }
 }
 
-/// Print the free version string on stdout — the seam `say` already uses.
+/// Print the free version string on stdout -- the seam `say` already uses.
 fn cmd_version(io: std.Io) u8 {
     assert(amphora_version.len == stamp_len);
     assert(amphora_version[stamp_dot_index] == '.');

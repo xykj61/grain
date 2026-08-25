@@ -1,10 +1,10 @@
-//! tools/rye/mantra_a1_diff_fields_eq_witness.rye — Ashvini equality: exact 2 (STOA337).
+//! tools/rye/mantra_a1_diff_fields_eq_witness.rye -- Ashvini equality: exact 2 (STOA337).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/mantra_a1_diff_fields_eq_witness.rye
 //!
 //! gth speaks ceilings. eq speaks exactly. A Diff carries exactly two
-//! fields (inserts · deletes) — the seventh pedestal that could not decide until
-//! this rune. The tending speaks Rye by Keaton's word: Glow · Tend · Rye.
+//! fields (inserts - deletes) -- the seventh pedestal that could not decide until
+//! this rune. The tending speaks Rye by Keaton's word: Glow - Tend - Rye.
 
 const std = @import("std");
 const assert = std.debug.assert;

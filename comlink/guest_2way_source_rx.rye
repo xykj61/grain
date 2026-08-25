@@ -1,4 +1,4 @@
-//! comlink/guest_2way_source_rx.rye — two-way sync device wire: source RX (peerA request verify).
+//! comlink/guest_2way_source_rx.rye -- two-way sync device wire: source RX (peerA request verify).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

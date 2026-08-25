@@ -1,4 +1,4 @@
-//! glow/rune_switch_witness.rye — proves the `?-` exhaustive-switch rune head.
+//! glow/rune_switch_witness.rye -- proves the `?-` exhaustive-switch rune head.
 //!
 //!   rye build glow/rune_switch_witness.rye -femit-bin=glow/bin/rune_switch_witness
 //!   glow/bin/rune_switch_witness

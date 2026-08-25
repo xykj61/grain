@@ -1,15 +1,15 @@
-//! pond/apps/ship_pilot_identity.rye — TACT Journey 1, Rung 2: the identity step, wired real.
+//! pond/apps/ship_pilot_identity.rye -- TACT Journey 1, Rung 2: the identity step, wired real.
 //!
-//! Rung one fixed the pilot spine — the ordered, enforced first-run arc — with each step's
+//! Rung one fixed the pilot spine -- the ordered, enforced first-run arc -- with each step's
 //! precondition supplied as a signal, so the enforcement was proven pure. This rung wires the
 //! first step, `identity`, to a real settlement: the step passes only when a genuine Kumara
-//! genesis opens and its Deed verifies against the fresh constellation. From zero — a forged
-//! bind that never married its keys — no identity settles, so the pilot holds at `identity`
+//! genesis opens and its Deed verifies against the fresh constellation. From zero -- a forged
+//! bind that never married its keys -- no identity settles, so the pilot holds at `identity`
 //! and never advances. Onboarding cannot walk past a keeper who has no real identity.
 //!
 //! It generates only a *demo* keeper from example seeds (plainly not a real pilot's key, so no
 //! identity is invented and no key is held). Generating the maintainer's own Kumara instance
-//! from a real seed stays custody gate %4 — the maintainer's hand alone. This rung reads no
+//! from a real seed stays custody gate %4 -- the maintainer's hand alone. This rung reads no
 //! network and holds no key beyond an in-process demo seed.
 //!
 //!   rye build pond/apps/ship_pilot_identity.rye -femit-bin=pond/bin/ship-pilot-identity
@@ -36,7 +36,7 @@ pub const Identity = struct {
 
 /// Attempt a real genesis on a galaxy from a keeper's seeds. The bind must truly marry its
 /// keys, the number must decode to a galaxy, and the opened Deed must verify against the fresh
-/// constellation — only then does the identity settle. Any failure returns an unsettled
+/// constellation -- only then does the identity settle. Any failure returns an unsettled
 /// identity, so the pilot holds at the identity step rather than advancing on a forgery.
 pub fn settle_identity(
     key_seed: *const [kumara.seed_length]u8,
@@ -47,7 +47,7 @@ pub fn settle_identity(
     const opened = settlement.open(galaxy_number, &bind) catch {
         return Identity{ .settled = false, .point = 0 };
     };
-    // The opened Deed must verify against its own constellation — the identity is proven,
+    // The opened Deed must verify against its own constellation -- the identity is proven,
     // not merely returned.
     const ok = settlement.verify(&opened.con, &opened.deed);
     // invariant: a genesis seats its galaxy at the number it was opened on
@@ -56,7 +56,7 @@ pub fn settle_identity(
 }
 
 /// Walk the pilot's first step against a real settlement. Returns the pilot after the identity
-/// step has been attempted with the true settled/unsettled signal — advanced when the identity
+/// step has been attempted with the true settled/unsettled signal -- advanced when the identity
 /// is real, held when it is not.
 pub fn pilot_with_identity(id: *const Identity) pilot.PilotError!pilot.Pilot {
     var p = pilot.Pilot.begin();
@@ -77,7 +77,7 @@ pub fn pilot_with_identity(id: *const Identity) pilot.PilotError!pilot.Pilot {
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real pilot's key, so no identity is invented.
+// Example seeds -- plainly not a real pilot's key, so no identity is invented.
 const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const demo_galaxy: u32 = 3; // a number that decodes to a galaxy under the compass sky
@@ -93,7 +93,7 @@ fn welcome_real_genesis_advances() !void {
     print("ship_pilot_identity: a real demo genesis settled and the pilot advanced past identity.\n", .{});
 }
 
-/// A forged bind never settles, so the pilot holds at the identity step — onboarding cannot
+/// A forged bind never settles, so the pilot holds at the identity step -- onboarding cannot
 /// walk past a keeper with no real identity.
 fn unwelcome_forged_bind_holds() !void {
     var bind = tilak.make_bind(&demo_key, &demo_keeper);
@@ -110,9 +110,9 @@ fn unwelcome_forged_bind_holds() !void {
 }
 
 /// A number that decodes to no galaxy (a star or a planet) refuses genesis, so no identity
-/// settles — the root of a constellation is a galaxy or it is nothing.
+/// settles -- the root of a constellation is a galaxy or it is nothing.
 fn unwelcome_non_galaxy_number_refuses() !void {
-    // point 27 decodes to a star, not a galaxy — genesis refuses NotGenesis.
+    // point 27 decodes to a star, not a galaxy -- genesis refuses NotGenesis.
     const id = settle_identity(&demo_key, &demo_keeper, 27);
     assert(!id.settled);
     var p = try pilot_with_identity(&id);

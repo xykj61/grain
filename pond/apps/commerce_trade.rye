@@ -1,25 +1,25 @@
-//! pond/apps/commerce_trade.rye — TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
+//! pond/apps/commerce_trade.rye -- TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
 //!
 //! Journey 1 piloted a keeper to a running Pond; Journey 2 let that keeper publish a signed,
-//! offline-verifiable receipt. Journey 4 lets two keepers trade — and records the trade honestly.
+//! offline-verifiable receipt. Journey 4 lets two keepers trade -- and records the trade honestly.
 //!
 //! Dimeroll already keeps books of record: journal entries as append-only facts, a trial-balance
 //! fold whose conservation holds when the sum of debit-positive nets is zero (`dimeroll_core`).
-//! The entity-books design names the strand this rung needs — a value crosses between parties only
+//! The entity-books design names the strand this rung needs -- a value crosses between parties only
 //! as an explicit fact recorded on both sides, never a silent shared balance.
 //!
 //! The crux: a fair-value trade is *one* agreed price booked identically on both parties' books.
-//! Fair value is the structure, not a claim over it — a Trade carries a single price, and that one
+//! Fair value is the structure, not a claim over it -- a Trade carries a single price, and that one
 //! price becomes the seller's cash inflow and the buyer's cash outflow at once, so the value the
 //! buyer parts with equals the value the seller receives by construction. Two conservation laws
 //! hold together: each book nets to zero (Dimeroll's own law), and the pair conserves across the
-//! cash line (the buyer's cash falls by the price, the seller's rises by it, summing to zero) — the
+//! cash line (the buyer's cash falls by the price, the seller's rises by it, summing to zero) -- the
 //! trade creates and destroys no value.
 //!
 //! Boundary (custody-first): this records the *facts* of a trade; it holds and moves nothing. A
-//! Booked pair is a pure fold of facts — recording the same trade twice yields identical books, so
+//! Booked pair is a pure fold of facts -- recording the same trade twice yields identical books, so
 //! there is no hidden cash state to disburse. Actually settling a trade reaches custody gate %3
-//! (moving funds / a payment rail) and waits on licensed counsel — surfaced there, never crossed.
+//! (moving funds / a payment rail) and waits on licensed counsel -- surfaced there, never crossed.
 //!
 //!   rye build pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade
 //!   pond/bin/commerce-trade selftest
@@ -42,11 +42,11 @@ const cash_ix: u32 = @intFromEnum(gc.Account.cash);
 
 pub const TradeError = error{ SelfTrade, ItemTooLong };
 
-/// Every way a trade can fail to book — its own refusals plus the core posting laws it inherits.
+/// Every way a trade can fail to book -- its own refusals plus the core posting laws it inherits.
 pub const BookError = TradeError || error{ Unbalanced, BadAmount, SameAccount };
 
 /// A fair-value trade: two parties, one item, one agreed price. The single `price` is what makes
-/// the trade fair by construction — it becomes both parties' cash movement, so neither side can
+/// the trade fair by construction -- it becomes both parties' cash movement, so neither side can
 /// book a number the other did not agree to.
 pub const Trade = struct {
     seller: u32,
@@ -56,7 +56,7 @@ pub const Trade = struct {
     stamp: []const u8,
 };
 
-/// The trade booked — each party's own trial-balance fold, kept apart, never braided.
+/// The trade booked -- each party's own trial-balance fold, kept apart, never braided.
 pub const Booked = struct {
     seller_book: gc.TrialBalance,
     buyer_book: gc.TrialBalance,
@@ -103,7 +103,7 @@ pub fn validate(trade: *const Trade) TradeError!void {
 
 /// Book a fair-value trade onto both parties' books. Each side posts its own single entry to its
 /// own fresh trial balance, so the two books are kept apart; the one price feeds both, so the
-/// seller's inflow and the buyer's outflow are the same number by construction. Records only —
+/// seller's inflow and the buyer's outflow are the same number by construction. Records only --
 /// holds and moves nothing.
 pub fn record_trade(trade: *const Trade) BookError!Booked {
     try validate(trade);
@@ -113,13 +113,13 @@ pub fn record_trade(trade: *const Trade) BookError!Booked {
     // invariant: each party's book conserves on its own (Dimeroll's own law).
     assert(booked.seller_book.conservation() == 0);
     assert(booked.buyer_book.conservation() == 0);
-    // invariant: the pair conserves across the cash line — no value created or destroyed.
+    // invariant: the pair conserves across the cash line -- no value created or destroyed.
     assert(booked.seller_cash_in() + (-booked.buyer_cash_out()) == 0);
     return booked;
 }
 
 /// The crux property, made a single checkable answer: each book conserves, and the one agreed price
-/// is exactly what the seller received and the buyer parted with — fair value proven, not asserted.
+/// is exactly what the seller received and the buyer parted with -- fair value proven, not asserted.
 pub fn fair_value_holds(booked: *const Booked, price: i64) bool {
     if (booked.seller_book.conservation() != 0) return false;
     if (booked.buyer_book.conservation() != 0) return false;
@@ -131,7 +131,7 @@ pub fn fair_value_holds(booked: *const Booked, price: i64) bool {
 
 // ---- witnesses ----
 
-// Demo party numbers — plainly stand-ins, no real settled keeper.
+// Demo party numbers -- plainly stand-ins, no real settled keeper.
 const demo_seller: u32 = 7;
 const demo_buyer: u32 = 12;
 
@@ -147,7 +147,7 @@ fn demo_trade(price: i64) Trade {
 
 /// A real trade books on both sides at one price: each book conserves, the seller's cash inflow and
 /// the buyer's cash outflow are the identical agreed price, and the pair conserves across the cash
-/// line — fair value by construction.
+/// line -- fair value by construction.
 fn welcome_trade_books_both_sides() !void {
     const trade = demo_trade(1000);
     const booked = try record_trade(&trade);
@@ -160,7 +160,7 @@ fn welcome_trade_books_both_sides() !void {
     print("commerce_trade: a trade booked on both sides at one price; seller in == buyer out == 1000, each book conserves.\n", .{});
 }
 
-/// Recording is a pure fold of the facts — the same trade booked twice yields identical books, so
+/// Recording is a pure fold of the facts -- the same trade booked twice yields identical books, so
 /// there is no hidden cash state held between recordings. Facts only.
 fn welcome_recording_is_pure() !void {
     const trade = demo_trade(250);
@@ -174,7 +174,7 @@ fn welcome_recording_is_pure() !void {
     print("commerce_trade: recording the same trade twice yielded identical books — a pure fold, nothing held.\n", .{});
 }
 
-/// A non-positive price refuses at posting — a trade with no agreed value is not a fair trade.
+/// A non-positive price refuses at posting -- a trade with no agreed value is not a fair trade.
 fn unwelcome_nonpositive_price_refuses() !void {
     const trade = demo_trade(0);
     const booked = record_trade(&trade);
@@ -182,7 +182,7 @@ fn unwelcome_nonpositive_price_refuses() !void {
     print("commerce_trade: a zero price refused BadAmount — no fair value, no booking.\n", .{});
 }
 
-/// A party trading with itself refuses — commerce is between two hands, and self-dealing at "fair
+/// A party trading with itself refuses -- commerce is between two hands, and self-dealing at "fair
 /// value" is not a trade the books will pretend to.
 fn unwelcome_self_trade_refuses() !void {
     var trade = demo_trade(500);

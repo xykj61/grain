@@ -1,10 +1,10 @@
-//! linengrow/tube4_market_rail_witness.rye — proves TUBE4 market acquire.
+//! linengrow/tube4_market_rail_witness.rye -- proves TUBE4 market acquire.
 //!
 //!   rye build linengrow/tube4_market_rail_witness.rye -femit-bin=linengrow/bin/tube4_market_rail_witness
 //!   linengrow/bin/tube4_market_rail_witness
 //!
 //! Four claims:
-//!   1. Welcome: TUBE2 publish → Exchange list → Neth pay → settle → TUBE3 fetch.
+//!   1. Welcome: TUBE2 publish -> Exchange list -> Neth pay -> settle -> TUBE3 fetch.
 //!   2. Zero price refused (BadPrice).
 //!   3. Listing digest mismatch against registry refused.
 //!   4. Double settle of the same listing receipt refused.

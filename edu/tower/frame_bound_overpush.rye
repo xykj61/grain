@@ -1,11 +1,11 @@
-//! edu/tower/frame_bound_overpush.rye — intentional over-push · expected to abort.
+//! edu/tower/frame_bound_overpush.rye -- intentional over-push - expected to abort.
 //!
 //! Fixture for tools/e/edu_tower_frame_bite_witness.rish (e15).
 //! A capacity-one stack accepts one push; the second push asserts.
-//! Do not "fix" this file to print GREEN — its job is to refuse.
+//! Do not "fix" this file to print GREEN -- its job is to refuse.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/frame_bound_overpush.rye
-//!   → non-zero exit (assert on second push)
+//!   -> non-zero exit (assert on second push)
 
 const std = @import("std");
 const tally_stack = @import("tally_stack.rye");

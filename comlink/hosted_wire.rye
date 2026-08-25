@@ -1,8 +1,8 @@
-//! comlink/hosted_wire.rye — a sealed datagram over a real localhost socket.
+//! comlink/hosted_wire.rye -- a sealed datagram over a real localhost socket.
 //!
 //! Aurora's posted.rye proved a sealed value on shared memory between harts.
-//! This seed proves the same datagram shape crosses a **hosted wire** — UDP
-//! on 127.0.0.1 — between two processes. One process sends; one receives,
+//! This seed proves the same datagram shape crosses a **hosted wire** -- UDP
+//! on 127.0.0.1 -- between two processes. One process sends; one receives,
 //! shape-casts, verifies, and opens. Comlink's next rung before virtio-net.
 //!
 //! Usage:

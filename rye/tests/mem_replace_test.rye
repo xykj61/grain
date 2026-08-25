@@ -1,4 +1,4 @@
-//! Rye test: mem.replace — pass 9917.
+//! Rye test: mem.replace -- pass 9917.
 //!
 //! Needle replacement into a caller buffer; pairs with startsWith (9939).
 

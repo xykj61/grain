@@ -1,6 +1,6 @@
-//! amphora/vessel_fetch_delivery.rye — Amphora — vessel cargo fetch: hosted Comlink fetch-by-digest for vessel cargo · 20260713.
+//! amphora/vessel_fetch_delivery.rye -- Amphora -- vessel cargo fetch: hosted Comlink fetch-by-digest for vessel cargo - 20260713.
 //!
-//! Ports: fetcher 38494 · source 38495.
+//! Ports: fetcher 38494 - source 38495.
 //! Scope: [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
 //!
 //!   rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery

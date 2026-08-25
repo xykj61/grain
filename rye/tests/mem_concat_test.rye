@@ -1,4 +1,4 @@
-//! Rye test: std.mem concat — pass 9911.
+//! Rye test: std.mem concat -- pass 9911.
 //!
 //! Concatenates slices without a separator; pairs with mem.join (9961).
 

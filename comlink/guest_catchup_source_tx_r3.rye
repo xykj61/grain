@@ -1,4 +1,4 @@
-//! comlink/guest_catchup_source_tx_r3.rye — catch-up device wire: source TX (rev 3 response).
+//! comlink/guest_catchup_source_tx_r3.rye -- catch-up device wire: source TX (rev 3 response).
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

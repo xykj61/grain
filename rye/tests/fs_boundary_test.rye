@@ -1,4 +1,4 @@
-//! Rye test: std.Io.Dir fs boundary assertions — pass 9992.
+//! Rye test: std.Io.Dir fs boundary assertions -- pass 9992.
 //!
 //! openFile, createFile, readFile, and writeFile each now carry two
 //! assertions at their door: sub_path.len > 0 (empty path is always a

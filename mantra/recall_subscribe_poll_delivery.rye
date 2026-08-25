@@ -1,6 +1,6 @@
-//! mantra/recall_subscribe_poll_delivery.rye — outer subscribe poll over Comlink sealed datagrams.
+//! mantra/recall_subscribe_poll_delivery.rye -- outer subscribe poll over Comlink sealed datagrams.
 //!
-//! Bounded poll cycles over catch-up wire exchanges — composes recall_subscribe_poll
+//! Bounded poll cycles over catch-up wire exchanges -- composes recall_subscribe_poll
 //! and the catch-up wire path, editing nothing beneath them.
 //!
 //!   rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=mantra/bin/recall-subscribe-poll-delivery
@@ -23,7 +23,7 @@ const tally_parse_int = @import("parse_int.rye");
 
 const npw_version = "20260707.052012";
 
-/// Matches `caravan/supervisor_exit.rye` — deliberate stop at a cycle boundary.
+/// Matches `caravan/supervisor_exit.rye` -- deliberate stop at a cycle boundary.
 const stop_requested: u8 = 8;
 
 const AF_INET: c_uint = 2;

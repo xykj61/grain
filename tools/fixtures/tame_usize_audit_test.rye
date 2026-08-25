@@ -1,6 +1,6 @@
-//! tools/fixtures/tame_usize_audit_test.rye — proves surface_audit_ok's three welcome cases.
+//! tools/fixtures/tame_usize_audit_test.rye -- proves surface_audit_ok's three welcome cases.
 //!
-//! tame_usize_audit.rye exports pure functions with no file I/O at all — this
+//! tame_usize_audit.rye exports pure functions with no file I/O at all -- this
 //! witness calls the exported surface directly, rather than reaching for a
 //! fixture tree the way align_session_logs' witness must. No repo state is
 //! ever at risk here; there is none to risk.

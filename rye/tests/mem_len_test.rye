@@ -1,4 +1,4 @@
-//! Rye test: std.mem.len — pass 9942.
+//! Rye test: std.mem.len -- pass 9942.
 //!
 //! Sentinel-terminated length; pairs with sliceTo (9945) and findSentinel (9952).
 

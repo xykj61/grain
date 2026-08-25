@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold1_witness.rye — proves HOLD1 Desk Skate hold chrome.
+//! linengrow/setu_desk_hold1_witness.rye -- proves HOLD1 Desk Skate hold chrome.
 //!
 //!   rye build linengrow/setu_desk_hold1_witness.rye \
 //!     -femit-bin=linengrow/bin/setu_desk_hold1_witness

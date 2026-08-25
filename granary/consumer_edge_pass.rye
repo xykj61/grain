@@ -1,4 +1,4 @@
-//! granary/consumer_edge_pass.rye — Seam Door 3: consumer-edge pass (access vs truth).
+//! granary/consumer_edge_pass.rye -- Seam Door 3: consumer-edge pass (access vs truth).
 //!
 //! Pass = door (access). Record = room (truth). First green is in-process only.
 //! Reuses Granary published-set gate and name-fact verify; does not replace them.

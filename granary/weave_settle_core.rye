@@ -1,7 +1,7 @@
-//! granary/weave_settle_core.rye — Granary — settle a weave listing (in-process).
+//! granary/weave_settle_core.rye -- Granary -- settle a weave listing (in-process).
 //!
 //! Binds listing_receipt + payment digest under Kumara seed 0x69.
-//! Payment digests MUR send + WOV transfer proofs — no buyer/seller identities.
+//! Payment digests MUR send + WOV transfer proofs -- no buyer/seller identities.
 //! Live TB waits; Mandi vessel settle is the sibling pattern.
 //!
 //! Ground: [`../context/specs/20260710-172625_granary-weave-settle-seated.md`](../context/specs/20260710-172625_granary-weave-settle-seated.md)
@@ -20,7 +20,7 @@ pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 pub const max_price_len: u32 = 16;
 pub const max_settled: u32 = 8;
 
-/// Settle seed — distinct from Mandi settle 0x68, Exchange 0x66, Mandi listing 0x67.
+/// Settle seed -- distinct from Mandi settle 0x68, Exchange 0x66, Mandi listing 0x67.
 const settle_seed: [kumara.seed_length]u8 = .{0x69} ** kumara.seed_length;
 
 pub const SettleError = error{

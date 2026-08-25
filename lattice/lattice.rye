@@ -1,4 +1,4 @@
-//! lattice/lattice.rye — Lattice selftest (ops through hard_sigmoid · rsqrt · hardtanh · cube) · 20260713.
+//! lattice/lattice.rye -- Lattice selftest (ops through hard_sigmoid - rsqrt - hardtanh - cube) - 20260713.
 //!
 //!   rye build lattice/lattice.rye -femit-bin=lattice/bin/lattice
 //!   lattice/bin/lattice selftest

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.findLastAny — pass 9966.
+//! Rye test: std.mem.findLastAny -- pass 9966.
 //!
 //! Backward any-of-scalars search backs splitAny backwards scans.
 //! Pairs with findAnyPos (9967) and findScalarLast (9975).

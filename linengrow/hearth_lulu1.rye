@@ -1,4 +1,4 @@
-//! linengrow/hearth_lulu1.rye — LULU1: apply Hearth display preset to Skate metrics.
+//! linengrow/hearth_lulu1.rye -- LULU1: apply Hearth display preset to Skate metrics.
 //!
 //! Pure viewport + cell-scale from window size and a closed DisplayPreset.
 //! NativeActivity paint calls `apply_glass`; device-free witnesses replay the
@@ -77,7 +77,7 @@ pub fn scale_for_preset(
     }
     const base = fill_scale(window_w, window_h, grid_rows);
     if (preset == .panel_max) return base;
-    // Lower logical height → larger glyphs on the physical panel (macOS-shaped).
+    // Lower logical height -> larger glyphs on the physical panel (macOS-shaped).
     const panel_h = hearth.DisplayPreset.panel_max.logical_size().h;
     const logic_h = preset.logical_size().h;
     // invariant: the logic height is what the rows divide into, so a zero would place every row
@@ -174,7 +174,7 @@ pub fn mantrapod_floor_scale_two() bool {
 
 pub const status_line_max: u32 = 32;
 
-/// Glass chrome: `{home_id} · {preset}` — proves which Hearth is applied.
+/// Glass chrome: `{home_id} - {preset}` -- proves which Hearth is applied.
 pub fn format_status(
     home_id: []const u8,
     preset: hearth.DisplayPreset,

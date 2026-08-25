@@ -1,7 +1,7 @@
-//! linengrow/setu_desk_hold_wayland.rye — HOLD Wayland eyes: Desk raster of hold.
+//! linengrow/setu_desk_hold_wayland.rye -- HOLD Wayland eyes: Desk raster of hold.
 //!
 //! Device-free: HOLD1 chrome on a Desk-sized Skate grid, rasterized under
-//! SETU0.5 window metrics — proves glyphs that a Wayland present would show.
+//! SETU0.5 window metrics -- proves glyphs that a Wayland present would show.
 //! Live look: setu_desk_hold_wayland_look.rye (Wayland compositor).
 
 const std = @import("std");

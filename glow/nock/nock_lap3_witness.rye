@@ -1,4 +1,4 @@
-//! nock/nock_lap3_witness.rye — proves the edit primitive and opcode 10.
+//! nock/nock_lap3_witness.rye -- proves the edit primitive and opcode 10.
 //!
 //!   rye build nock/nock_lap3_witness.rye -femit-bin=nock/bin/nock_lap3_witness
 //!   nock/bin/nock_lap3_witness

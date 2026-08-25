@@ -1,4 +1,4 @@
-//! linengrow/glow_network_grant_witness.rye — proves Glow Network Grant.
+//! linengrow/glow_network_grant_witness.rye -- proves Glow Network Grant.
 //!
 //!   rye build linengrow/glow_network_grant_witness.rye \
 //!     -femit-bin=linengrow/bin/glow_network_grant_witness

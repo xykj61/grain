@@ -1,7 +1,7 @@
-//! glow/lower_multi.rye — lower a multi-line Glow desk to one `.rye` main.
+//! glow/lower_multi.rye -- lower a multi-line Glow desk to one `.rye` main.
 //!
 //! Thin STOA10 face: two to four bare `=/  <face>  <decimal>` lines share
-//! one welcome/unwelcome program. Collect allows six lines so face→three-arm
+//! one welcome/unwelcome program. Collect allows six lines so face->three-arm
 //! compose fits (STOA22); bare multi still caps at 4.
 
 const std = @import("std");
@@ -72,7 +72,7 @@ fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
     return v;
 }
 
-/// Collect non-comment Glow lines from a desk source (1–4).
+/// Collect non-comment Glow lines from a desk source (1-4).
 pub fn collect_lines(src: []const u8, out_lines: *[max_lines][]const u8) LowerError!usize {
     var count: usize = 0;
     var it = std.mem.splitScalar(u8, src, '\n');

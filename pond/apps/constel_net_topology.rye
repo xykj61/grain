@@ -1,19 +1,19 @@
-//! pond/apps/constel_net_topology.rye — Constel dev-net harness, Rung 2: the whole fractal settles inside the fake net.
+//! pond/apps/constel_net_topology.rye -- Constel dev-net harness, Rung 2: the whole fractal settles inside the fake net.
 //!
 //! Rung 1 opened a fake dev-net's galaxy from genesis under a law-safe name. This rung grows the net
-//! downward — a star beneath the galaxy, a planet beneath the star — each seated by `settlement.mint`
-//! under its rightful d12·d60 topology sponsor, so the whole fractal address space settles inside the
+//! downward -- a star beneath the galaxy, a planet beneath the star -- each seated by `settlement.mint`
+//! under its rightful d12-d60 topology sponsor, so the whole fractal address space settles inside the
 //! quarantined net. The safe name still crowns everything: the topology is minted into the very
 //! constellation `spin_up` opened, so every point in the tree lives under a name that can never be a
 //! real @p. The fake net is not a lone galaxy but the whole protocol running where nothing escapes.
 //!
 //! The sponsorship is the crux, and it is enforced, not claimed: `settlement.mint` refuses a child
 //! whose topology parent is not the presented Deed (`WrongSponsor`), so a planet cannot be minted
-//! directly under the galaxy — it must climb through its real star. The harness proves that refusal
+//! directly under the galaxy -- it must climb through its real star. The harness proves that refusal
 //! stands inside the fake net, so the fractal address space the tree settles on real ground settles
 //! identically on the dev bench.
 //!
-//! Demo keeper seeds only — no real key, no network, no custody. Generating the maintainer's own
+//! Demo keeper seeds only -- no real key, no network, no custody. Generating the maintainer's own
 //! Kumara instance stays custody gate %4; a constel served over the wire reaches the serve gate.
 //!
 //!   rye build pond/apps/constel_net_topology.rye -femit-bin=pond/bin/constel-net-topology
@@ -38,7 +38,7 @@ const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
 
 /// The authority a sow-cap holder signs to spawn a specific child: the child number then the child's
-/// identity key — the same 36-byte shape `settlement.mint` verifies (`authority_message`). The harness
+/// identity key -- the same 36-byte shape `settlement.mint` verifies (`authority_message`). The harness
 /// signs it exactly as `settlement/names.rye` seats its own world, so the fake net's births are the
 /// genuine protocol, not a shortcut.
 fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child_number: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
@@ -59,7 +59,7 @@ pub const SettledNet = struct {
     star: settlement.Deed,
     planet: settlement.Deed,
 
-    /// The dev-net's law-safe name, carried up from rung one — the quarantine crowns the whole tree.
+    /// The dev-net's law-safe name, carried up from rung one -- the quarantine crowns the whole tree.
     pub fn name(self: *const SettledNet) []const u8 {
         return self.c.name();
     }
@@ -78,7 +78,7 @@ pub const SettledNet = struct {
 
 /// Grow a full fractal branch inside a fake dev-net: spin up the galaxy under a law-safe name (rung
 /// one), then mint a star beneath it and a planet beneath the star, each under its rightful topology
-/// sponsor. The galaxy keeper sows the star; the star keeper sows the planet — the same authority
+/// sponsor. The galaxy keeper sows the star; the star keeper sows the planet -- the same authority
 /// chain the settlement ledger enforces on real ground. Any name, bind, sponsor, or authority failure
 /// propagates, so the whole branch settles honestly or not at all.
 pub fn settle_topology(
@@ -93,7 +93,7 @@ pub fn settle_topology(
     p_keeper: *const [kumara.seed_length]u8,
     planet_number: u32,
 ) (constel_net.ConstelError || settlement.SettleError)!SettledNet {
-    // invariant: the galaxy is born through rung one's own gate — the name quarantine stands first,
+    // invariant: the galaxy is born through rung one's own gate -- the name quarantine stands first,
     // so the whole branch that grows from here lives under a provably-non-@p name.
     var c = try constel_net.spin_up(net_name, g_key, g_keeper, galaxy_number);
 
@@ -120,7 +120,7 @@ pub fn settle_topology(
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real keeper's key, so no identity is invented and no key is held.
+// Example seeds -- plainly not a real keeper's key, so no identity is invented and no key is held.
 const demo_g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const demo_s_key: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -129,7 +129,7 @@ const demo_p_key: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
 const demo_p_keeper: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 
 // Topology numbers, inclusive fractal under the compass sky: galaxy 3, its star (3,2) = 27, its
-// planet (3,2,4) = 267. Sponsorship by modulus (267 mod 60 = 27, 27 mod 12 = 3) — the same branch
+// planet (3,2,4) = 267. Sponsorship by modulus (267 mod 60 = 27, 27 mod 12 = 3) -- the same branch
 // `settlement/names.rye` seats on real ground, proven here inside the fake net.
 const galaxy_num: u32 = 3;
 const star_num: u32 = 27;
@@ -150,7 +150,7 @@ fn seat_branch() !SettledNet {
     );
 }
 
-/// The whole d12·d60 fractal branch settles inside the fake net: a star under the galaxy and a planet
+/// The whole d12-d60 fractal branch settles inside the fake net: a star under the galaxy and a planet
 /// under the star, each verified, all three crowned by the same law-safe name.
 fn welcome_full_branch_settles() !void {
     const net = try seat_branch();
@@ -168,7 +168,7 @@ fn welcome_full_branch_settles() !void {
 }
 
 /// Sponsorship is enforced, not claimed: the planet's real topology parent is the star, so minting it
-/// directly under the galaxy refuses `WrongSponsor` — the fractal address space the tree settles on
+/// directly under the galaxy refuses `WrongSponsor` -- the fractal address space the tree settles on
 /// real ground settles identically on the dev bench.
 fn unwelcome_wrong_sponsor_refuses() !void {
     var c = try constel_net.spin_up("xnqvel34", &demo_g_key, &demo_g_keeper, galaxy_num);
@@ -181,18 +181,18 @@ fn unwelcome_wrong_sponsor_refuses() !void {
     const spawn_planet = spawn_authority(&demo_g_key, planet_num, &p_bind.kumara_pubkey);
     const minted = settlement.mint(&c.con, &c.galaxy, planet_num, &p_bind, &g_sow, &spawn_planet);
     assert(minted == error.WrongSponsor);
-    // invariant: the refused planet never settled — the ledger accretes only real branches.
+    // invariant: the refused planet never settled -- the ledger accretes only real branches.
     assert(!c.con.is_settled(planet_num));
     print("constel-net-topology: a planet minted directly under the galaxy refused WrongSponsor; topology is enforced inside the fake net.\n", .{});
 }
 
-/// A forged spawn authority — a galaxy that never granted the sow — cannot seat a star, even under a
+/// A forged spawn authority -- a galaxy that never granted the sow -- cannot seat a star, even under a
 /// perfectly law-safe name: the real authority chain runs behind the name gate.
 fn unwelcome_forged_authority_refuses() !void {
     var c = try constel_net.spin_up("xzkerith58", &demo_g_key, &demo_g_keeper, galaxy_num);
     const s_bind = tilak.make_bind(&demo_s_key, &demo_s_keeper);
     const g_sow = tilak.make_cap(&demo_g_keeper, galaxy_num, .sow, c.galaxy.identity_key);
-    // sign the spawn with the WRONG key (the star's own key, not the galaxy's) — no real grant
+    // sign the spawn with the WRONG key (the star's own key, not the galaxy's) -- no real grant
     const forged = spawn_authority(&demo_s_key, star_num, &s_bind.kumara_pubkey);
     const minted = settlement.mint(&c.con, &c.galaxy, star_num, &s_bind, &g_sow, &forged);
     assert(minted == error.BadAuthority);

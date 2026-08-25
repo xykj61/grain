@@ -1,4 +1,4 @@
-//! glow/rune_bounded_trap_witness.rye — proves the bounded `|-` rune's front half.
+//! glow/rune_bounded_trap_witness.rye -- proves the bounded `|-` rune's front half.
 //!
 //!   rye build glow/rune_bounded_trap_witness.rye -femit-bin=glow/bin/rune_bounded_trap_witness
 //!   glow/bin/rune_bounded_trap_witness

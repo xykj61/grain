@@ -1,4 +1,4 @@
-//! nock/nock_core_witness.rye — proves the Nock primitive core, opcode by opcode.
+//! nock/nock_core_witness.rye -- proves the Nock primitive core, opcode by opcode.
 //!
 //!   rye build nock/nock_core_witness.rye -femit-bin=nock/bin/nock_core_witness
 //!   nock/bin/nock_core_witness

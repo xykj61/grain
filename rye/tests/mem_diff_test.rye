@@ -1,11 +1,11 @@
-//! Rye test: mem diff primitives — copyForwards, startsWith, endsWith, indexOf, splitScalar.
+//! Rye test: mem diff primitives -- copyForwards, startsWith, endsWith, indexOf, splitScalar.
 //!
 //! These five functions are the ones Mantra's weave logic depends on:
-//!   copyForwards  — move bytes from one buffer to another
-//!   startsWith    — does this slice begin with this prefix?
-//!   endsWith      — does this slice end with this suffix?
-//!   indexOf/find  — find the first occurrence of a sub-slice
-//!   splitScalar   — split a slice on a scalar delimiter
+//!   copyForwards  -- move bytes from one buffer to another
+//!   startsWith    -- does this slice begin with this prefix?
+//!   endsWith      -- does this slice end with this suffix?
+//!   indexOf/find  -- find the first occurrence of a sub-slice
+//!   splitScalar   -- split a slice on a scalar delimiter
 //!
 //! Pass 9993 strengthened each in rye/lib/std/mem.zig. This test
 //! exercises the interesting cases for all five, with the live assertions
@@ -23,7 +23,7 @@ pub fn main() void {
     std.debug.assert(dest[0] == 'R' and dest[1] == 'y' and dest[2] == 'e');
     std.debug.assert(dest[3] == 0); // bytes beyond source are untouched
 
-    // Copy empty source — no-op, dest unchanged.
+    // Copy empty source -- no-op, dest unchanged.
     var dest2: [4]u8 = .{'x'} ** 4;
     mem.copyForwards(u8, &dest2, "");
     std.debug.assert(dest2[0] == 'x');

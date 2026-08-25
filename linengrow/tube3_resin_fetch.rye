@@ -1,4 +1,4 @@
-//! linengrow/tube3_resin_fetch.rye — TUBE3: fetch a published Manifest resin over Comlink.
+//! linengrow/tube3_resin_fetch.rye -- TUBE3: fetch a published Manifest resin over Comlink.
 //!
 //! Per expanding-prompts/yonder/20260716-142818 rung TUBE3: the app's bytes (here the
 //! TUBE0 Manifest resin from TUBE2) cross as Amphora fetch-by-digest frames
@@ -34,8 +34,8 @@ fn build_response_bytes(digest_hex: []const u8, bytes: []const u8, out: *vfw.Fet
     try vfw.verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
 }
 
-/// Sealed in-process fetch of a published digest: encode request → seal →
-/// open → serve_resin_published → encode response → seal → open → verify.
+/// Sealed in-process fetch of a published digest: encode request -> seal ->
+/// open -> serve_resin_published -> encode response -> seal -> open -> verify.
 /// Returns the arrived resin length in `out_bytes`.
 pub fn fetch_published_sealed(
     store: *const gc.ResinStore,
@@ -80,7 +80,7 @@ pub fn fetch_published_sealed(
     return len;
 }
 
-/// TUBE2 publish then sealed fetch of that digest — the TUBE3 welcome path.
+/// TUBE2 publish then sealed fetch of that digest -- the TUBE3 welcome path.
 pub fn run_demo_fetch(
     store: *gc.ResinStore,
     reg: *gc.Registry,

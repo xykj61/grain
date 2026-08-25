@@ -1,20 +1,20 @@
-//! vault/shard.rye — Vault, the keeper of secrets: Shamir sharding, custody first.
+//! vault/shard.rye -- Vault, the keeper of secrets: Shamir sharding, custody first.
 //!
 //! Kumara names *who* a key is; Vault names *how* a person keeps the secret behind it
-//! alive — through fire, hurricane, tsunami, a decade, and a forgetting mind. It
+//! alive -- through fire, hurricane, tsunami, a decade, and a forgetting mind. It
 //! molt-supersedes the elder Urbit Jael on our own ground.
 //!
 //! This first lap is the disaster arithmetic: a secret splits **Shamir-style** over
 //! GF(256) into `n` shares such that any `t` recombine it exactly, yet any `t-1`
 //! reveal nothing. Each share is a signed **shard tilak** carrying a **location-class**
-//! — a home air-gapped machine, kin on other continents, cold paper or steel, a relic
-//! hardware wallet, and one **brain** share a pilot carries in his own head — so a
+//! -- a home air-gapped machine, kin on other continents, cold paper or steel, a relic
+//! hardware wallet, and one **brain** share a pilot carries in his own head -- so a
 //! keeping survives the loss of any single place, and the pilot who loses every object
 //! still walks one share out of the fire.
 //!
-//! Custody first, structurally: the tree holds only a **fake** seed (`0x11…`); a real
+//! Custody first, structurally: the tree holds only a **fake** seed (`0x11...`); a real
 //! key, share, or brain phrase never enters it, and a real keeping is filled by a
-//! pilot's own hand in his own jail. And the word is **main key** — as git chose
+//! pilot's own hand in his own jail. And the word is **main key** -- as git chose
 //! main over the older default word, we choose main over it too.
 //!
 //!   rye build vault/shard.rye -femit-bin=vault/bin/shard
@@ -48,7 +48,7 @@ pub const VaultError = error{
 
 // --- GF(256), the field the sharing lives in --------------------------------
 // Addition is XOR; multiplication is the AES field (reducing polynomial 0x11b).
-// Pure functions, no tables, no state — the field is arithmetic, not memory.
+// Pure functions, no tables, no state -- the field is arithmetic, not memory.
 
 fn gf_add(a: u8, b: u8) u8 {
     return a ^ b;
@@ -113,7 +113,7 @@ pub const Shares = struct {
 };
 
 // One polynomial coefficient for byte `b`, degree `k`, derived from the coefficient
-// seed — deterministic (so a witness reproduces it) yet varied per position. A real
+// seed -- deterministic (so a witness reproduces it) yet varied per position. A real
 // split passes a cryptographically random seed; the witness passes a fixed one.
 fn coeff(coeff_seed: *const [32]u8, b: u32, k: u32) u8 {
     var msg: [40]u8 = undefined;
@@ -193,11 +193,11 @@ pub fn join(xs: []const u8, ys: []const [max_secret_len]u8, len: u32, out: []u8)
 
 // --- the shard tilak: a share, in a location, signed by the keeper -----------
 
-/// Where a share lives — the location-class that makes a keeping survive a disaster.
+/// Where a share lives -- the location-class that makes a keeping survive a disaster.
 pub const Location = enum(u8) { home = 1, kin = 2, cold = 3, relic = 4, brain = 5 };
 
 /// A signed share: its x-coordinate, its location, its bytes, and the keeper's
-/// signature over all of it — so a tampered share never verifies, and a share traces
+/// signature over all of it -- so a tampered share never verifies, and a share traces
 /// to the hand that made the keeping.
 pub const Shard = struct {
     x: u8,
@@ -281,7 +281,7 @@ fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
     std.Io.File.stdout().writeStreamingAll(io, line) catch {};
 }
 
-/// Emit a shard as a Bron fact — one field per line, immutable at the seam.
+/// Emit a shard as a Bron fact -- one field per line, immutable at the seam.
 pub fn emit_shard(io: std.Io, shard: *const Shard) void {
     var byte_hex: [max_secret_len * 2]u8 = undefined;
     var sig_hex: [sig_len * 2]u8 = undefined;
@@ -298,7 +298,7 @@ pub fn emit_shard(io: std.Io, shard: *const Shard) void {
 
 // --- selftest ---------------------------------------------------------------
 
-// A fake secret and a fake keeper — plainly not a real key, so no keeping is invented.
+// A fake secret and a fake keeper -- plainly not a real key, so no keeping is invented.
 const fake_secret: [32]u8 = .{0x11} ** 32;
 const demo_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const demo_coeff_seed: [32]u8 = .{0x33} ** 32;
@@ -347,7 +347,7 @@ fn prove_shards() !void {
     var shard1 = make_shard(&demo_keeper_seed, 1, locations[0], shares.y[0][0..shares.len]);
     // A real shard verifies under the keeper.
     if (!verify_shard(&shard1, keeper)) return error.ShardDidNotVerify;
-    // A tampered share refuses — flip one byte and the signature no longer holds.
+    // A tampered share refuses -- flip one byte and the signature no longer holds.
     shard1.bytes[0] ^= 0x01;
     if (verify_shard(&shard1, keeper)) return error.TamperedShardVerified;
     // A shard from a share still recombines when gathered with its kin.

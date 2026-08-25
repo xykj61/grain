@@ -1,8 +1,8 @@
-//! glow/rune_assert.rye — parses Glow `?>` / `?<` assertion rune heads (STOA88).
+//! glow/rune_assert.rye -- parses Glow `?>` / `?<` assertion rune heads (STOA88).
 //!
 //! Hoon parallels (docs.urbit.org/hoon/rune/wut):
-//!   `?>` wutgar — positive assertion; expands to `?.(p !! q)`
-//!   `?<` wutgal — negative assertion; expands to `?:(p !! q)`
+//!   `?>` wutgar -- positive assertion; expands to `?.(p !! q)`
+//!   `?<` wutgal -- negative assertion; expands to `?:(p !! q)`
 //!
 //! Thin Glow shape this lap (one line):
 //!   ?>  (gth tick 32)  1

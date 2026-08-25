@@ -1,8 +1,8 @@
-//! linengrow/crockford_stamp.rye — Hands We Grow Decision 6: stamp aura faces.
+//! linengrow/crockford_stamp.rye -- Hands We Grow Decision 6: stamp aura faces.
 //!
 //! Two canonical faces of one chronological stamp, bijection both ways:
-//!   · inward  — u64, fixed eight bytes, little-endian (zero-copy wire)
-//!   · outward — Crockford base32, exactly thirteen characters
+//!   - inward  -- u64, fixed eight bytes, little-endian (zero-copy wire)
+//!   - outward -- Crockford base32, exactly thirteen characters
 //!
 //! Alphabet excludes I, L, O, U (case-insensitive decode). Width law: u64 for
 //! the wire-persistent value; u32 for bounded counts; no authored usize.
@@ -16,7 +16,7 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const crockford_stamp_version = "20260724.205009";
 
-/// Crockford base32 — digits then letters, skipping I L O U.
+/// Crockford base32 -- digits then letters, skipping I L O U.
 pub const alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 
 pub const encoded_len: u32 = 13;
@@ -34,8 +34,8 @@ fn alphabet_index(c: u8) ?u8 {
 }
 
 fn normalize_char(c: u8) DecodeError!u8 {
-    // Case-insensitive; map i/l → 1, o → 0 is NOT Crockford's optional
-    // mistype fold here — we reject I/L/O/U outright per Decision 6.
+    // Case-insensitive; map i/l -> 1, o -> 0 is NOT Crockford's optional
+    // mistype fold here -- we reject I/L/O/U outright per Decision 6.
     const up: u8 = if (c >= 'a' and c <= 'z') c - ('a' - 'A') else c;
     if (up == 'I' or up == 'L' or up == 'O' or up == 'U') return error.BadChar;
     return up;
@@ -62,7 +62,7 @@ pub fn from_wire_le(bytes: *const [wire_bytes]u8) u64 {
     return v;
 }
 
-/// Encode u64 → 13 Crockford chars (most-significant symbol first).
+/// Encode u64 -> 13 Crockford chars (most-significant symbol first).
 pub fn encode(value: u64, out: *[encoded_len]u8) void {
     var v = value;
     var i: u32 = encoded_len;
@@ -77,8 +77,8 @@ pub fn encode(value: u64, out: *[encoded_len]u8) void {
     assert(v == 0);
 }
 
-/// Decode 13 Crockford chars → u64. Rejects wrong length, I/L/O/U, and
-/// symbols outside the alphabet. Case-insensitive for A–Z.
+/// Decode 13 Crockford chars -> u64. Rejects wrong length, I/L/O/U, and
+/// symbols outside the alphabet. Case-insensitive for A-Z.
 pub fn decode(text: []const u8) DecodeError!u64 {
     const n: u32 = @intCast(text.len);
     if (n != encoded_len) return error.BadLength;
@@ -89,7 +89,7 @@ pub fn decode(text: []const u8) DecodeError!u64 {
         const idx = alphabet_index(up) orelse return error.BadChar;
         // 13×5 = 65 bits of symbol space; values that would shift past u64
         // are impossible for a well-formed 13-char Crockford of a u64 encode
-        // path — still guard the high bits on the first symbol.
+        // path -- still guard the high bits on the first symbol.
         if (i == 0 and idx > 15) return error.Overflow; // top symbol only 4 bits of u64
         const shifted = @as(u64, idx);
         v = (v << 5) | shifted;

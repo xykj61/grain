@@ -1,4 +1,4 @@
-//! linengrow/setu6_device_lab_witness.rye — proves SETU6 lab harness.
+//! linengrow/setu6_device_lab_witness.rye -- proves SETU6 lab harness.
 //!
 //!   rye build linengrow/setu6_device_lab_witness.rye \
 //!     -femit-bin=linengrow/bin/setu6_device_lab_witness

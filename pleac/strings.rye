@@ -1,13 +1,13 @@
-//! pleac/strings.rye — the string cookbook: join and split (PLEAC stdlib).
+//! pleac/strings.rye -- the string cookbook: join and split (PLEAC stdlib).
 //!
 //! PLEAC ("programming-language examples alike cookbook") is the stdlib grown by the
 //! common tasks every language owes. This is the strings chapter's canonical pair:
 //!
-//!   * **join(parts, sep)** — glue a list of pieces into one string with a separator.
-//!   * **split(src, sep)** — cut a string on a separator into a list of pieces.
+//!   * **join(parts, sep)** -- glue a list of pieces into one string with a separator.
+//!   * **split(src, sep)** -- cut a string on a separator into a list of pieces.
 //!
 //! They are inverses when no piece contains the separator: `split(join(xs, s), s) == xs`.
-//! Zero-copy on the way in — `split`'s pieces are slices into the source; only `join`
+//! Zero-copy on the way in -- `split`'s pieces are slices into the source; only `join`
 //! writes a fresh string. Bounded throughout.
 //!
 //! A first cookbook module in Rye, the implementation layer; wiring these into the
@@ -91,7 +91,7 @@ fn prove_strings() !void {
     if (!std.mem.eql(u8, parts[0], "a")) return error.SplitFirst;
     if (!std.mem.eql(u8, parts[2], "c")) return error.SplitLast;
 
-    // no separator → one piece (the whole source).
+    // no separator -> one piece (the whole source).
     const one = try split("whole", ",", &parts);
     if (one != 1 or !std.mem.eql(u8, parts[0], "whole")) return error.SplitWhole;
 

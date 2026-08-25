@@ -1,4 +1,4 @@
-//! comlink/guest_catchup_source_rx.rye — catch-up device wire: source RX (verify catch-up ask).
+//! comlink/guest_catchup_source_rx.rye -- catch-up device wire: source RX (verify catch-up ask).
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

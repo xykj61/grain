@@ -1,4 +1,4 @@
-//! linengrow/neth_serial_core.rye — Neth's small serial core.
+//! linengrow/neth_serial_core.rye -- Neth's small serial core.
 //!
 //! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 1 ("the small serial core, everything else pipelined"): a
@@ -12,18 +12,18 @@
 //! deliberately, so the boundary stays honest rather than assumed:
 //!
 //!   - Comlink carriage (getting a record here from a peer) happens
-//!     *before* this call — a pipelined stage, never inside the core.
-//!   - Disk persistence of the log happens *after* this call returns —
+//!     *before* this call -- a pipelined stage, never inside the core.
+//!   - Disk persistence of the log happens *after* this call returns --
 //!     the core only ever touches the in-memory buffer it is given.
 //!   - The signature on the record is produced *before* this call, by
-//!     murr_core.sign_fact — the core does not sign. It does re-verify
+//!     murr_core.sign_fact -- the core does not sign. It does re-verify
 //!     while folding (murr_core.fold_murr_log's own contract), because
 //!     that verification is inseparable from deciding whether the record
-//!     may be admitted at all — the ordering decision itself, not a
+//!     may be admitted at all -- the ordering decision itself, not a
 //!     separable pipeline stage.
 //!
 //! Bounded, asserted size: a single call may never append more than
-//! `max_append_bytes` — small enough to eyeball, far under
+//! `max_append_bytes` -- small enough to eyeball, far under
 //! receipt_core.max_log_len (4096). This is Neth's own stated promise
 //! that the ordered step stays brief; `StepTooLarge` is the witness that
 //! the promise is enforced, not merely written down.

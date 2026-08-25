@@ -1,15 +1,15 @@
-//! pond/apps/data_dignity_fixture_gen.rye — generate surf/fixtures/estate.bron with real Ed25519 succession proofs.
+//! pond/apps/data_dignity_fixture_gen.rye -- generate surf/fixtures/estate.bron with real Ed25519 succession proofs.
 //!
 //! DAHL-J12r4 reads a real succession record true. This generator produces that fixture reproducibly: it
 //! builds a demo signed estate over the demo keeper and heir seeds and renders it through rung three's own
-//! `render`, so the fixture is exactly what `data_dignity_bron` reads — a genuine `format data-dignity-v1`
+//! `render`, so the fixture is exactly what `data_dignity_bron` reads -- a genuine `format data-dignity-v1`
 //! record, not a hand-typed shape. The keeper wills two holdings to the heir (items 1 and 2) and rests one
-//! (item 3), seals the directive, and the heir accepts — so the record carries a real will (two bequeathed,
+//! (item 3), seals the directive, and the heir accepts -- so the record carries a real will (two bequeathed,
 //! one rested) and both real signatures, real structure a reader and an awk both count.
 //!
-//! Keeping the generator in-tree makes the fixture reproducible — re-running it reproduces the exact
+//! Keeping the generator in-tree makes the fixture reproducible -- re-running it reproduces the exact
 //! committed bytes. It lives beside its sibling modules so the `@import`s resolve through the same symlinks
-//! the apps use. Demo keeper and heir seeds only — no real key, no identity invented.
+//! the apps use. Demo keeper and heir seeds only -- no real key, no identity invented.
 //!
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
@@ -25,7 +25,7 @@ const signed = @import("data_dignity_signed.rye");
 const bron = @import("data_dignity_bron.rye");
 const kumara = @import("kumara.rye");
 
-// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+// Demo keeper and heir seeds -- plainly not real keys, so no identity is invented.
 const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 

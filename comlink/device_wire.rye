@@ -1,7 +1,7 @@
-//! comlink/device_wire.rye — sealed datagram over virtio-net between guests.
+//! comlink/device_wire.rye -- sealed datagram over virtio-net between guests.
 //!
 //! Sub-lap 1 (hosted selftest): virtio descriptor algebra on fixtures plus the
-//! shared wire format seal/open — no live link yet. Sub-lap 2 runs freestanding
+//! shared wire format seal/open -- no live link yet. Sub-lap 2 runs freestanding
 //! guests via comlink/run_device_wire_lab.sh. Sub-lap 3 carries the sealed
 //! datagram across the same link.
 //!
@@ -18,7 +18,7 @@ const wf = @import("wire_format.rye");
 const vn = @import("virtio_net.rye");
 const no_padding = @import("tally_no_padding.rye").no_padding;
 
-/// Explicit subject — every queue depth and buffer bound stated up front.
+/// Explicit subject -- every queue depth and buffer bound stated up front.
 pub const WireSubject = struct {
     mmio_base: u64,
     queue_depth: u32,
@@ -94,7 +94,7 @@ fn selftest_wire_format_round_trip() !void {
     if (!std.mem.eql(u8, opened[0..@intCast(msg_len)], wf.expected_message)) return error.MessageWrong;
 }
 
-/// Every hand-designed virtio structure lays out exactly as written — no
+/// Every hand-designed virtio structure lays out exactly as written -- no
 /// compiler-inserted gap between fields, none after the last one. The virtio
 /// device on the other end of this wire reads these bytes literally; a hidden
 /// padding byte here is not a style question, it is a guest that cannot speak

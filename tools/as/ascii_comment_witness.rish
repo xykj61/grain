@@ -1,0 +1,38 @@
+# ascii_comment_witness.rish -- authored Rye comments are plain ASCII, under a ceiling that only falls.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/as/ascii_comment_witness.rish
+#
+# `.claude/rules/ascii-first.md` asks that prose be plain 7-bit ASCII and that the habit migrate on
+# touch. On `20260825` two modules were converted by hand, and both times the violation had been
+# written that same day -- copied from the surrounding style rather than read. A lantern that fires
+# twice becomes a loom.
+
+say "ascii-comment: Language EN -- plain ASCII survives every tool, terminal, diff, and re-encoding intact."
+say "ascii-comment: Style Gauge -- the number is measured on every run and printed as the scan's own output, never recited here."
+say "ascii-comment: Lens TAME -- safety first: the meter counts COMMENTS and never a string, because converting a string changes what a program prints. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/rye_comment_ascii_control.sh"]
+assert control.ok else "ascii-comment: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "ascii-comment: the control must reach its own verdict"
+
+# Prose is counted, in all three comment forms and behind indentation.
+assert control.out contains "line_comment_counted=yes" else "ascii-comment: a // comment is prose and must be counted"
+assert control.out contains "doc_comment_counted=yes" else "ascii-comment: a /// declaration comment is prose and must be counted"
+assert control.out contains "module_comment_counted=yes" else "ascii-comment: a //! module comment is prose and must be counted"
+assert control.out contains "indented_counted=yes" else "ascii-comment: leading whitespace must not hide prose from the meter"
+
+# Program output is never counted. This is the reading that keeps a sweep safe.
+assert control.out contains "multiline_string_counted=no" else "ascii-comment: a multiline string is what a program prints, never prose"
+assert control.out contains "string_literal_counted=no" else "ascii-comment: a string literal is what a program prints, never prose"
+
+assert control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
+assert control.out contains "total_is_four=yes" else "ascii-comment: four planted prose files carry one character each, and nothing else may be counted"
+
+let living = run ["sh" "tools/fixtures/rye_comment_ascii_scan.sh"]
+assert living.ok else "ascii-comment: the living scan must complete"
+say living.out
+assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
+
+say "GREEN: ascii-comment -- authored Rye comments stand under a ceiling that only falls, printed above as the scan's own output rather than recited here, with seven readings proven on a planted repository. It counts comments and refuses to count strings, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."

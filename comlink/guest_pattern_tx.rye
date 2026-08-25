@@ -1,4 +1,4 @@
-//! comlink/guest_pattern_tx.rye — sub-lap 2 TX guest (freestanding RISC-V virt).
+//! comlink/guest_pattern_tx.rye -- sub-lap 2 TX guest (freestanding RISC-V virt).
 //!
 //! Posts the fixed link pattern across virtio-net to a peer RX guest on the
 //! QEMU socket netdev lab. Build and run via comlink/run_device_wire_lab.sh.

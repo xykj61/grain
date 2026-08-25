@@ -1,18 +1,18 @@
-//! pond/apps/mcp_resource_list.rye — BUHR Journey 10, Rung 2: the resource list.
+//! pond/apps/mcp_resource_list.rye -- BUHR Journey 10, Rung 2: the resource list.
 //!
-//! Rung one served `resources/read` — a caller who already knows a URI reads its bytes.
-//! This rung serves `resources/list` — a caller *discovers* every readable artifact by
+//! Rung one served `resources/read` -- a caller who already knows a URI reads its bytes.
+//! This rung serves `resources/list` -- a caller *discovers* every readable artifact by
 //! URI, the noun half's mirror of Journey 3's `tools/list`. A Tablecloth catalog projects
 //! to a bounded `format mcp-resource-list-v1` envelope, one `resource <uri> <len>` line
 //! per artifact, in held order; a reader parses it back, uri and length for each.
 //!
 //! The list is more than a printout: it is proven an *honest index* of the store it names.
 //! For every listed resource, rung one's `read_resource` returns exactly the published
-//! length of verified bytes — so a caller handed the list can trust that every URI it
+//! length of verified bytes -- so a caller handed the list can trust that every URI it
 //! advertises truly reads, and reads the size it promised. It composes over public API
 //! only: it walks the catalog through Tablecloth's `artifact_name` accessor, renders its
 //! own envelope, and reads each resource through rung one, which stays its own green
-//! binary. It reads no network — the Comlink-served transport stays the held serve gate.
+//! binary. It reads no network -- the Comlink-served transport stays the held serve gate.
 //!
 //!   rye build pond/apps/mcp_resource_list.rye -femit-bin=pond/bin/mcp-resource-list
 //!   pond/bin/mcp-resource-list selftest
@@ -54,7 +54,7 @@ pub const ResourceEntry = struct {
     len: u32,
 };
 
-/// A parsed resource list — the resources a store advertises, in held order.
+/// A parsed resource list -- the resources a store advertises, in held order.
 // Invariant: count <= max_resources.
 pub const ResourceList = struct {
     entries: [max_resources]ResourceEntry,
@@ -137,7 +137,7 @@ pub fn parse_list(src: []const u8, list: *ResourceList) ListError!void {
 /// Prove a parsed list is an honest index of a live store: for every listed resource,
 /// rung one's `read_resource` returns a resource envelope (not an error) whose body length
 /// equals the published length. A URI the store cannot read, or a length that disagrees,
-/// refuses `NotHonest` — so a caller can trust the list before spending a read.
+/// refuses `NotHonest` -- so a caller can trust the list before spending a read.
 pub fn verify_list(
     list: *const ResourceList,
     cat: *const tc.Catalog,
@@ -204,7 +204,7 @@ fn welcome_list_is_honest_index() !void {
 }
 
 fn unwelcome_tampered_store_breaks_honesty() !void {
-    // If the store is tampered after the list is published, verify catches it — a URI that
+    // If the store is tampered after the list is published, verify catches it -- a URI that
     // no longer reads breaks the list's honesty rather than passing silently.
     var store: beading.BeadStore = .empty();
     var cat: tc.Catalog = .empty();

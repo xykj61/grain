@@ -1,22 +1,22 @@
-//! tally/parse_int.rye — strict-by-default integer parsing.
+//! tally/parse_int.rye -- strict-by-default integer parsing.
 //!
-//! `std.fmt.parseInt` accepts a leading zero silently — `"007"` parses as
+//! `std.fmt.parseInt` accepts a leading zero silently -- `"007"` parses as
 //! `7`, the same shape of trust a leading zero would betray in almost any
 //! other context: truncation, a copy-paste seam, an attempt to look like a
 //! different number than the one actually meant. `parse_int` refuses a
 //! leading zero by default, validates every character before parsing at
-//! all, and only widens on request — explicit options at the call site,
+//! all, and only widens on request -- explicit options at the call site,
 //! rather than a default silently trusted everywhere.
 //!
 //! Not every honest use wants the strict default, and this file does not
-//! pretend otherwise. A two-digit hex byte pair — `"0a"`, `"0f"`, `"09"` —
+//! pretend otherwise. A two-digit hex byte pair -- `"0a"`, `"0f"`, `"09"` --
 //! carries a leading zero as an entirely ordinary, correct byte, not a
 //! warning sign; that shape of call passes `.allow_leading_zero = true`
 //! explicitly, saying so in the text rather than leaning on a default that
 //! would wrongly refuse a valid byte.
 //!
 //! Gratitude: TigerBeetle's `stdx.parse_int`, ported at the letter. The
-//! `@field` indirection below is not cleverness for its own sake — it is
+//! `@field` indirection below is not cleverness for its own sake -- it is
 //! how the one function whose entire job is calling the banned form can
 //! exist at all without the ban seeing it, the same shape TigerBeetle's own
 //! source already uses for its own wrapper.
@@ -73,7 +73,7 @@ fn run_selftest(_: std.Io) !u8 {
     const bad_char = parse_int(u32, "12x4", .{});
     assert(bad_char == error.InvalidCharacter);
 
-    // Hex byte pairs: a leading zero is an ordinary, correct byte here — the
+    // Hex byte pairs: a leading zero is an ordinary, correct byte here -- the
     // explicit option says so, rather than the strict default wrongly refusing it.
     const hex_zero = try parse_int(u8, "0a", .{ .base = 16, .allow_leading_zero = true });
     assert(hex_zero == 0x0a);

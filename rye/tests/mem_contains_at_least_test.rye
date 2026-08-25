@@ -1,4 +1,4 @@
-//! Rye test: std.mem.containsAtLeast — pass 9950.
+//! Rye test: std.mem.containsAtLeast -- pass 9950.
 //!
 //! Threshold search pairs with mem.count (9951); backs "at least N occurrences".
 

@@ -1,9 +1,9 @@
-//! Caravan capabilities — a bounded table naming what each dependent may do.
+//! Caravan capabilities -- a bounded table naming what each dependent may do.
 //!
 //! Chain proved startup as ordered stages. This program proves the next
 //! accretion step toward the microkernel: a small Rye data structure that
 //! names each supervised dependent's rights over named resources. The table is
-//! pure policy — hosted ground, no kernel yet — asserted and witnessed.
+//! pure policy -- hosted ground, no kernel yet -- asserted and witnessed.
 //!
 //! Usage:
 //!   capabilities          Run the self-test (default)
@@ -33,7 +33,7 @@ fn buf_len_u32(buf: []const u8) u32 {
 }
 
 // =========================================================================
-// § Rights — what a capability grants
+// § Rights -- what a capability grants
 // =========================================================================
 
 pub const right_read: u8 = 1 << 0;
@@ -49,7 +49,7 @@ pub const Rights = struct {
 };
 
 // =========================================================================
-// § Capability — one resource and the rights to it
+// § Capability -- one resource and the rights to it
 // =========================================================================
 
 // Invariant: name_len <= max_name_len; rights_mask uses only known bits.
@@ -87,7 +87,7 @@ pub const Capability = struct {
 };
 
 // =========================================================================
-// § Dependent slot — one supervised process and its capability list
+// § Dependent slot -- one supervised process and its capability list
 // =========================================================================
 
 // Invariant: cap_count <= max_caps_per_dependent when active.
@@ -135,7 +135,7 @@ pub const DependentSlot = struct {
 };
 
 // =========================================================================
-// § Capability table — names what each dependent may do
+// § Capability table -- names what each dependent may do
 // =========================================================================
 
 // Invariant: dependent_count <= max_dependents.
@@ -191,7 +191,7 @@ pub const CapabilityTable = struct {
 };
 
 // =========================================================================
-// § Demo table — mirrors the microkernel brief's example services
+// § Demo table -- mirrors the microkernel brief's example services
 // =========================================================================
 
 fn demo_table() !CapabilityTable {
@@ -213,7 +213,7 @@ fn demo_table() !CapabilityTable {
 }
 
 // =========================================================================
-// § Self-test — assert the table enforces named boundaries
+// § Self-test -- assert the table enforces named boundaries
 // =========================================================================
 
 fn run_self_test() u8 {

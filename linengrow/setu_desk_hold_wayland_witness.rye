@@ -1,4 +1,4 @@
-//! linengrow/setu_desk_hold_wayland_witness.rye — HOLD Wayland eyes (headless).
+//! linengrow/setu_desk_hold_wayland_witness.rye -- HOLD Wayland eyes (headless).
 //!
 //!   rye build linengrow/setu_desk_hold_wayland_witness.rye \
 //!     -femit-bin=linengrow/bin/setu_desk_hold_wayland_witness

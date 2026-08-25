@@ -1,22 +1,22 @@
-//! pond/apps/constel_net_bron.rye — Constel dev-net harness, Rung 3: the net travels as text.
+//! pond/apps/constel_net_bron.rye -- Constel dev-net harness, Rung 3: the net travels as text.
 //!
-//! Rungs one and two named a fake dev-net's galaxy from a law-safe name and settled a whole d12·d60
-//! fractal branch beneath it. A dev-net is only useful to a developer who can *hand it to another* —
+//! Rungs one and two named a fake dev-net's galaxy from a law-safe name and settled a whole d12-d60
+//! fractal branch beneath it. A dev-net is only useful to a developer who can *hand it to another* --
 //! a roster read on a second bench, a testnet named in a shared fixture. This rung renders a spun-up
 //! constel to a `format constel-net-v1` Bron record (the safe name, then one `point` line per settled
 //! member) and parses it back byte-for-byte, so the roster crosses as text a person can read.
 //!
 //! The safe name rides with the record, and the quarantine rides with it: `parse` re-checks the one
-//! promise the naming law guards — a record whose net name carries no digit refuses `UnsafeName`, so a
+//! promise the naming law guards -- a record whose net name carries no digit refuses `UnsafeName`, so a
 //! roster cannot travel under a name that could parse as a real @p, exactly as `spin_up` refuses one at
 //! genesis. The quarantine is not a property of the live harness alone; it is a property of the bytes.
 //!
 //! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
 //! general parser: an unknown field refuses `UnknownField` (never dropped), a wrong header `BadFormat`,
 //! a missing net line `MissingNet`, a name past its bound `NameTooLong`, an unsafe name `UnsafeName`, a
-//! bad integer `BadInt`, a malformed line `BadLine`, a roster past its bound `TooManyPoints`. Additive —
+//! bad integer `BadInt`, a malformed line `BadLine`, a roster past its bound `TooManyPoints`. Additive --
 //! composes rungs one and two over public API; both re-run GREEN. Demo seeds only, no network (a constel
-//! served over the wire reaches the serve gate — Keaton's hand).
+//! served over the wire reaches the serve gate -- Keaton's hand).
 //!
 //!   rye build pond/apps/constel_net_bron.rye -femit-bin=pond/bin/constel-net-bron
 //!   pond/bin/constel-net-bron selftest
@@ -35,11 +35,11 @@ const parse_int = @import("parse_int.rye");
 
 pub const constel_net_bron_version = "20260813.024226";
 
-// A roster is small — the compass sky's constellation seats at most 66 members (galaxy + its d60), so
+// A roster is small -- the compass sky's constellation seats at most 66 members (galaxy + its d60), so
 // a dev-net branch never exceeds that bound. Named here so the reader is bounded at the edge.
 pub const max_points: u32 = 66;
 
-// The rendered record is a short header, a `net <name>` line, and one `point <number>` line each — a
+// The rendered record is a short header, a `net <name>` line, and one `point <number>` line each -- a
 // generous bound over the worst case (66 points, a 32-char name).
 pub const max_record: u32 = 4096;
 
@@ -80,11 +80,11 @@ pub const PortableConstel = struct {
     }
 };
 
-/// Build a portable roster from a settled branch (rung two): the safe name, then galaxy · star · planet
+/// Build a portable roster from a settled branch (rung two): the safe name, then galaxy - star - planet
 /// in settle order. The name is copied into the record's own storage, so it travels without borrowing.
 pub fn from_settled(net: *const topology_net.SettledNet) PortableConstel {
     const nm = net.name();
-    // invariant: a settled net's name is already law-safe and bounded — rung one proved it at genesis.
+    // invariant: a settled net's name is already law-safe and bounded -- rung one proved it at genesis.
     assert(nm.len <= constel_net.max_name_len);
     assert(constel_net.name_safe(nm));
     var pc = PortableConstel{
@@ -135,7 +135,7 @@ fn tokens(line: []const u8, out: *[3][]const u8) u32 {
 
 /// Parse a `format constel-net-v1` record into a PortableConstel, refusing an unknown or malformed
 /// field, a bad header, a missing net line, an overlong or unsafe name, an overlong roster, or a bad
-/// integer. The safe-name check travels with the record — an unsafe name refuses `UnsafeName`.
+/// integer. The safe-name check travels with the record -- an unsafe name refuses `UnsafeName`.
 pub fn parse(text: []const u8) BronError!PortableConstel {
     var lines = std.mem.splitScalar(u8, text, '\n');
     const header = lines.next() orelse return error.BadFormat;
@@ -158,7 +158,7 @@ pub fn parse(text: []const u8) BronError!PortableConstel {
             if (n != 2) return error.BadLine;
             const nm = tok[1];
             if (nm.len > constel_net.max_name_len) return error.NameTooLong;
-            // invariant: the quarantine travels with the record — a name that could parse as a real
+            // invariant: the quarantine travels with the record -- a name that could parse as a real
             // @p refuses here, exactly as `spin_up` refuses it at genesis.
             if (!constel_net.name_safe(nm)) return error.UnsafeName;
             pc.name_len = @intCast(nm.len);
@@ -183,7 +183,7 @@ pub fn parse(text: []const u8) BronError!PortableConstel {
 
 // ---- witnesses ----
 
-// Example seeds — plainly not a real keeper's key, so no identity is invented and no key is held.
+// Example seeds -- plainly not a real keeper's key, so no identity is invented and no key is held.
 const demo_g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const demo_s_key: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
@@ -191,7 +191,7 @@ const demo_s_keeper: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
 const demo_p_key: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
 const demo_p_keeper: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 
-// The same d12·d60 branch rung two settles: galaxy 3 · star 27 · planet 267, under one law-safe name.
+// The same d12-d60 branch rung two settles: galaxy 3 - star 27 - planet 267, under one law-safe name.
 const galaxy_num: u32 = 3;
 const star_num: u32 = 27;
 const planet_num: u32 = 267;
@@ -212,7 +212,7 @@ fn seat_demo_net() !topology_net.SettledNet {
     );
 }
 
-/// A settled net renders to Bron and parses back byte-for-byte: the roster (galaxy · star · planet) and
+/// A settled net renders to Bron and parses back byte-for-byte: the roster (galaxy - star - planet) and
 /// the safe name are recovered exactly, and re-rendering the parsed record reproduces the identical bytes.
 fn welcome_round_trip_recovers_roster() !void {
     const net = try seat_demo_net();
@@ -228,7 +228,7 @@ fn welcome_round_trip_recovers_roster() !void {
     assert(back.point_at(0) == galaxy_num);
     assert(back.point_at(1) == star_num);
     assert(back.point_at(2) == planet_num);
-    // the recovered name is still law-safe — the quarantine survived the crossing
+    // the recovered name is still law-safe -- the quarantine survived the crossing
     assert(constel_net.name_safe(back.name()));
 
     // Byte-for-byte: re-rendering the parsed record reproduces the exact bytes (a fixed point).
@@ -239,7 +239,7 @@ fn welcome_round_trip_recovers_roster() !void {
     print("constel-net-bron: a settled net rendered to Bron, parsed back byte-for-byte, and recovered its safe name and galaxy·star·planet roster.\n", .{});
 }
 
-/// A record whose net name carries no digit refuses `UnsafeName` on parse — the quarantine travels with
+/// A record whose net name carries no digit refuses `UnsafeName` on parse -- the quarantine travels with
 /// the bytes, so a roster can never be read under a name that could parse as a real @p.
 fn unwelcome_unsafe_name_refuses() !void {
     // a hand-authored record naming an @p-shaped net (letters only, no digit)
@@ -249,7 +249,7 @@ fn unwelcome_unsafe_name_refuses() !void {
     print("constel-net-bron: a record naming an @p-shaped net refused UnsafeName — the quarantine travels with the bytes.\n", .{});
 }
 
-/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+/// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
     const text = "format constel-net-v1\nnet xnqvel34\npoint 3\nghost 5\n";
     const bad = parse(text);
@@ -257,21 +257,21 @@ fn unwelcome_unknown_field_refuses() !void {
     print("constel-net-bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
 }
 
-/// A wrong header refuses — the record must name its own format.
+/// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
     const bad = parse("format other-v1\nnet xnqvel34\npoint 3\n");
     assert(bad == error.BadFormat);
     print("constel-net-bron: a wrong header refused BadFormat.\n", .{});
 }
 
-/// A record that never names its net line refuses — the safe name is required.
+/// A record that never names its net line refuses -- the safe name is required.
 fn unwelcome_missing_net_refuses() !void {
     const bad = parse("format constel-net-v1\npoint 3\npoint 27\n");
     assert(bad == error.MissingNet);
     print("constel-net-bron: a record with no net line refused MissingNet.\n", .{});
 }
 
-/// A malformed point line (a non-numeric point) refuses — the reader will not accept a corrupt roster.
+/// A malformed point line (a non-numeric point) refuses -- the reader will not accept a corrupt roster.
 fn unwelcome_bad_int_refuses() !void {
     const bad = parse("format constel-net-v1\nnet xnqvel34\npoint xx\n");
     assert(bad == error.BadInt);

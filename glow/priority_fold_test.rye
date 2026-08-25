@@ -1,4 +1,4 @@
-//! glow/priority_fold_test.rye — Equinox e6 · the cycle learns to turn.
+//! glow/priority_fold_test.rye -- Equinox e6 - the cycle learns to turn.
 //!
 //!   rye/bin/rye run glow/priority_fold_test.rye
 
@@ -60,7 +60,7 @@ pub fn main() void {
     assert(clock.priority_of_slot(4) == .values_apart);
     assert(clock.priority_of_slot(14) == .single_stranded);
 
-    // A round names its own priority — and a journey wraps to the same order.
+    // A round names its own priority -- and a journey wraps to the same order.
     assert(clock.priority_of_round(6) == .galls_law_graduation);
     assert(clock.priority_of_round(11) == .explicit_bounds); // v11, under the corrected order
     assert(clock.priority_of_round(22) == clock.priority_of_round(6)); // 22 = 6 + 16

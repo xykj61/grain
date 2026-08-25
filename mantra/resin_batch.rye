@@ -1,4 +1,4 @@
-//! mantra/resin_batch.rye — NS-L3 lap 3w-3a: the resin-batch frame (amphora_comlink_resin_batch).
+//! mantra/resin_batch.rye -- NS-L3 lap 3w-3a: the resin-batch frame (amphora_comlink_resin_batch).
 //!
 //! One frame shape for sync cargo: a signed header and manifest (control plane) and a
 //! payload section of resin bytes (data plane). The signature covers header and manifest

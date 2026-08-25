@@ -1,11 +1,11 @@
 //! glow-book: runes.md#g-quad
-//! glow/rune_quad.rye — parses Glow's `:^` quad-cell rune head.
+//! glow/rune_quad.rye -- parses Glow's `:^` quad-cell rune head.
 //!
 //! Per the sameness rune brief `:` category: `:^` builds a quad. Eleventh
 //! rune head (STOA4). Shape:
 //!   :^  from  amount  note  tag
 //!
-//! Faces only — nested values stay later. List cell `:~` is STOA5
+//! Faces only -- nested values stay later. List cell `:~` is STOA5
 //! (`rune_list.rye`).
 
 const std = @import("std");

@@ -1,4 +1,4 @@
-//! Rye test: std.mem.zeroInit — pass 9894.
+//! Rye test: std.mem.zeroInit -- pass 9894.
 //!
 //! Struct default/zero initialization with overrides; pairs with zeroes (9895).
 

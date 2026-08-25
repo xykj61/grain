@@ -1,4 +1,4 @@
-//! glow/lower_barket_witness.rye — proves `|^` barket lowers to runnable `.rye` (STOA113–118).
+//! glow/lower_barket_witness.rye -- proves `|^` barket lowers to runnable `.rye` (STOA113-118).
 //!
 //!   rye build glow/lower_barket_witness.rye -femit-bin=glow/bin/lower_barket_witness
 //!   glow/bin/lower_barket_witness
@@ -233,7 +233,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_cnt_u32.body == .identity);
     print("lower: glow/gen/gate-barket-count-u32.glow carries count-shape argv -- GREEN\n", .{});
 
-    // STOA300: kind-shape argv identity — unit tag reader (not parseInt).
+    // STOA300: kind-shape argv identity -- unit tag reader (not parseInt).
     const kind_argv_src = "|^  sample=kind-shape\nsample\n";
     const n_kind_argv = try lower.lower_source_argv_sample(kind_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_kind_argv], "KindShape") != null);
@@ -250,7 +250,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_kind_tag.body == .identity);
     print("lower: glow/gen/gate-barket-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
 
-    // STOA303: xact-shape argv identity — payload tag + amount.
+    // STOA303: xact-shape argv identity -- payload tag + amount.
     const xact_argv_src = "|^  sample=xact-shape\nsample\n";
     const n_xact_argv = try lower.lower_source_argv_sample(xact_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xact_argv], "XactShape") != null);
@@ -267,7 +267,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_xact_tag.body == .identity);
     print("lower: glow/gen/gate-barket-xact-tag.glow carries xact-shape argv -- GREEN\n", .{});
 
-    // STOA305: xfer-shape argv identity — payload tag + from/amount.
+    // STOA305: xfer-shape argv identity -- payload tag + from/amount.
     const xfer_argv_src = "|^  sample=xfer-shape\nsample\n";
     const n_xfer_argv = try lower.lower_source_argv_sample(xfer_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xfer_argv], "XferShape") != null);
@@ -286,7 +286,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_xfer_tag.body == .identity);
     print("lower: glow/gen/gate-barket-xfer-tag.glow carries xfer-shape argv -- GREEN\n", .{});
 
-    // STOA307: pair-shape argv identity — two field decimals.
+    // STOA307: pair-shape argv identity -- two field decimals.
     const pair_argv_src = "|^  sample=pair-shape\nsample\n";
     const n_pair_argv = try lower.lower_source_argv_sample(pair_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_pair_argv], "PairShape") != null);
@@ -305,7 +305,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_pair_fields.body == .identity);
     print("lower: glow/gen/gate-barket-pair-fields.glow carries pair-shape argv -- GREEN\n", .{});
 
-    // STOA309: triple-shape argv identity — three field decimals.
+    // STOA309: triple-shape argv identity -- three field decimals.
     const triple_argv_src = "|^  sample=triple-shape\nsample\n";
     const n_triple_argv = try lower.lower_source_argv_sample(triple_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_triple_argv], "TripleShape") != null);
@@ -324,7 +324,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_triple_fields.body == .identity);
     print("lower: glow/gen/gate-barket-triple-fields.glow carries triple-shape argv -- GREEN\n", .{});
 
-    // STOA311: quad-shape argv identity — four field decimals.
+    // STOA311: quad-shape argv identity -- four field decimals.
     const quad_argv_src = "|^  sample=quad-shape\nsample\n";
     const n_quad_argv = try lower.lower_source_argv_sample(quad_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_quad_argv], "QuadShape") != null);
@@ -342,7 +342,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_quad_fields.body == .identity);
     print("lower: glow/gen/gate-barket-quad-fields.glow carries quad-shape argv -- GREEN\n", .{});
 
-    // STOA313: penta-shape argv identity — five field decimals.
+    // STOA313: penta-shape argv identity -- five field decimals.
     const penta_argv_src = "|^  sample=penta-shape\nsample\n";
     const n_penta_argv = try lower.lower_source_argv_sample(penta_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_penta_argv], "PentaShape") != null);
@@ -360,7 +360,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_penta_fields.body == .identity);
     print("lower: glow/gen/gate-barket-penta-fields.glow carries penta-shape argv -- GREEN\n", .{});
 
-    // STOA315: hexa-shape argv identity — six field decimals.
+    // STOA315: hexa-shape argv identity -- six field decimals.
     const hexa_argv_src = "|^  sample=hexa-shape\nsample\n";
     const n_hexa_argv = try lower.lower_source_argv_sample(hexa_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_hexa_argv], "HexaShape") != null);
@@ -378,7 +378,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_hexa_fields.body == .identity);
     print("lower: glow/gen/gate-barket-hexa-fields.glow carries hexa-shape argv -- GREEN\n", .{});
 
-    // STOA317: hepta-shape argv identity — seven field decimals.
+    // STOA317: hepta-shape argv identity -- seven field decimals.
     const hepta_argv_src = "|^  sample=hepta-shape\nsample\n";
     const n_hepta_argv = try lower.lower_source_argv_sample(hepta_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_hepta_argv], "HeptaShape") != null);
@@ -396,7 +396,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_hepta_fields.body == .identity);
     print("lower: glow/gen/gate-barket-hepta-fields.glow carries hepta-shape argv -- GREEN\n", .{});
 
-    // STOA319: octa-shape argv identity — eight field decimals.
+    // STOA319: octa-shape argv identity -- eight field decimals.
     const octa_argv_src = "|^  sample=octa-shape\nsample\n";
     const n_octa_argv = try lower.lower_source_argv_sample(octa_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_octa_argv], "OctaShape") != null);
@@ -414,7 +414,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_octa_fields.body == .identity);
     print("lower: glow/gen/gate-barket-octa-fields.glow carries octa-shape argv -- GREEN\n", .{});
 
-    // STOA321: nona-shape argv identity — nine field decimals.
+    // STOA321: nona-shape argv identity -- nine field decimals.
     const nona_argv_src = "|^  sample=nona-shape\nsample\n";
     const n_nona_argv = try lower.lower_source_argv_sample(nona_argv_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_nona_argv], "NonaShape") != null);
@@ -609,7 +609,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: glow/gen/gate-barket-kind-refuse.glow (deca-shape) refuses SampleDoesNotNest -- GREEN\n", .{});
 
-    // STOA143: hepta-shape flip call-body lowers as HeptaShape swap · baked 3/5/1/2/7/4/6.
+    // STOA143: hepta-shape flip call-body lowers as HeptaShape swap - baked 3/5/1/2/7/4/6.
     const hepta_flip_src = "|^  sample=hepta-shape\n%-  flip  sample\n";
     const n_htf = try lower.lower_source_welcome(hepta_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_htf], "HeptaShape") != null);
@@ -633,7 +633,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: hepta-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA145: octa-shape flip call-body lowers as OctaShape swap · baked 3/5/1/2/7/4/6/8.
+    // STOA145: octa-shape flip call-body lowers as OctaShape swap - baked 3/5/1/2/7/4/6/8.
     const octa_flip_src = "|^  sample=octa-shape\n%-  flip  sample\n";
     const n_otf = try lower.lower_source_welcome(octa_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_otf], "OctaShape") != null);
@@ -657,7 +657,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: octa-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA147: nona-shape flip call-body lowers as NonaShape swap · baked 3/5/1/2/7/4/6/8/9.
+    // STOA147: nona-shape flip call-body lowers as NonaShape swap - baked 3/5/1/2/7/4/6/8/9.
     const nona_flip_src = "|^  sample=nona-shape\n%-  flip  sample\n";
     const n_nnf = try lower.lower_source_welcome(nona_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_nnf], "NonaShape") != null);
@@ -681,7 +681,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: nona-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA141: hexa-shape flip call-body lowers as HexaShape swap · baked 3/5/1/2/7/4.
+    // STOA141: hexa-shape flip call-body lowers as HexaShape swap - baked 3/5/1/2/7/4.
     const hexa_flip_src = "|^  sample=hexa-shape\n%-  flip  sample\n";
     const n_hxf = try lower.lower_source_welcome(hexa_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_hxf], "HexaShape") != null);
@@ -705,7 +705,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: hexa-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA136: triple-shape flip call-body lowers as TripleShape swap · baked 3/5/1.
+    // STOA136: triple-shape flip call-body lowers as TripleShape swap - baked 3/5/1.
     const triple_flip_src = "|^  sample=triple-shape\n%-  flip  sample\n";
     const n_tf = try lower.lower_source_welcome(triple_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_tf], "TripleShape") != null);
@@ -729,7 +729,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: triple-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA137: quad-shape flip call-body lowers as QuadShape swap · baked 3/5/1/2.
+    // STOA137: quad-shape flip call-body lowers as QuadShape swap - baked 3/5/1/2.
     const quad_flip_src = "|^  sample=quad-shape\n%-  flip  sample\n";
     const n_qf = try lower.lower_source_welcome(quad_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_qf], "QuadShape") != null);
@@ -753,7 +753,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: quad-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA139: penta-shape flip call-body lowers as PentaShape swap · baked 3/5/1/2/7.
+    // STOA139: penta-shape flip call-body lowers as PentaShape swap - baked 3/5/1/2/7.
     const penta_flip_src = "|^  sample=penta-shape\n%-  flip  sample\n";
     const n_pnf = try lower.lower_source_welcome(penta_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_pnf], "PentaShape") != null);
@@ -777,7 +777,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: penta-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA127: kind-shape flip call-body lowers as KindShape switch · baked .send.
+    // STOA127: kind-shape flip call-body lowers as KindShape switch - baked .send.
     const kind_flip_src = "|^  sample=kind-shape\n%-  flip  sample\n";
     const n_kf = try lower.lower_source_welcome(kind_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_kf], "KindShape") != null);
@@ -807,7 +807,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: @u32 flip call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA128: xact-shape flip call-body lowers as XactShape switch · baked .send.
+    // STOA128: xact-shape flip call-body lowers as XactShape switch - baked .send.
     const xact_flip_src = "|^  sample=xact-shape\n%-  flip  sample\n";
     const n_xf = try lower.lower_source_welcome(xact_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xf], "XactShape") != null);
@@ -830,7 +830,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: xact-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA129: xfer-shape flip call-body lowers as XferShape switch · baked .send.
+    // STOA129: xfer-shape flip call-body lowers as XferShape switch - baked .send.
     const xfer_flip_src = "|^  sample=xfer-shape\n%-  flip  sample\n";
     const n_xff = try lower.lower_source_welcome(xfer_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_xff], "XferShape") != null);
@@ -860,7 +860,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: pair-shape double call-body refused BodyGateNotYetLowered -- GREEN\n", .{});
 
-    // STOA131: pair-shape flip call-body lowers as PairShape field swap · baked 3/5.
+    // STOA131: pair-shape flip call-body lowers as PairShape field swap - baked 3/5.
     const pair_flip_src = "|^  sample=pair-shape\n%-  flip  sample\n";
     const n_pf = try lower.lower_source_welcome(pair_flip_src, &buf);
     assert(std.mem.indexOf(u8, buf[0..n_pf], "PairShape") != null);

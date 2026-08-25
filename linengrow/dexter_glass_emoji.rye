@@ -1,4 +1,4 @@
-//! linengrow/dexter_glass_emoji.rye — ZETA4 bounded emoji atlas + UTF-8 faces.
+//! linengrow/dexter_glass_emoji.rye -- ZETA4 bounded emoji atlas + UTF-8 faces.
 //!
 //! iOS-inspired organization (public notes): frequent strip + four category tabs.
 //! Clean-room monochrome 8×8 glyphs; real UTF-8 inserted into Dexter. Not Apple art.
@@ -43,7 +43,7 @@ fn utf8_from(comptime s: []const u8) Utf8 {
     comptime assert(s.len <= max_utf8);
     var out: Utf8 = .{};
     out.len = s.len;
-    // Comptime face seeds — byte loop (tally copy_disjoint is runtime-asserted).
+    // Comptime face seeds -- byte loop (tally copy_disjoint is runtime-asserted).
     for (s, 0..) |c, i| {
         out.data[i] = c;
     }
@@ -86,7 +86,7 @@ pub fn atlas_glyphs_are_distinct() bool {
 
 /// Curated UTF-8 + hand-distinct clean-room 8×8 glyphs (not Apple art).
 pub const faces: [face_count]Face = .{
-    // Smileys 0..7 (also frequent) — mouth / eyes / brows differ
+    // Smileys 0..7 (also frequent) -- mouth / eyes / brows differ
     .{ .utf8 = utf8_from("😀"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // grin
     .{ .utf8 = utf8_from("😊"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x81, 0xA5, 0x5A, 0x3C }) }, // blush smile
     .{ .utf8 = utf8_from("😂"), .glyph = g(.{ 0x3C, 0x42, 0xE7, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // tears high
@@ -95,7 +95,7 @@ pub const faces: [face_count]Face = .{
     .{ .utf8 = utf8_from("😢"), .glyph = g(.{ 0x3C, 0x42, 0xA5, 0x81, 0x99, 0xA5, 0x42, 0x3C }) }, // frown + tear
     .{ .utf8 = utf8_from("🤔"), .glyph = g(.{ 0x3C, 0x4A, 0xA5, 0x81, 0x81, 0x91, 0x4A, 0x3C }) }, // raised brow
     .{ .utf8 = utf8_from("🥰"), .glyph = g(.{ 0x3C, 0x66, 0xA5, 0x81, 0xA5, 0x99, 0x42, 0x3C }) }, // love face
-    // Gestures 8..15 — silhouette per gesture
+    // Gestures 8..15 -- silhouette per gesture
     .{ .utf8 = utf8_from("👍"), .glyph = g(.{ 0x08, 0x0C, 0x0E, 0x3F, 0x3F, 0x0E, 0x0C, 0x08 }) }, // thumb up
     .{ .utf8 = utf8_from("👎"), .glyph = g(.{ 0x10, 0x30, 0x70, 0xFC, 0xFC, 0x70, 0x30, 0x10 }) }, // thumb down
     .{ .utf8 = utf8_from("👏"), .glyph = g(.{ 0x66, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // clap
@@ -104,7 +104,7 @@ pub const faces: [face_count]Face = .{
     .{ .utf8 = utf8_from("🤝"), .glyph = g(.{ 0x00, 0x42, 0xE7, 0xFF, 0x7E, 0x3C, 0x00, 0x00 }) }, // handshake
     .{ .utf8 = utf8_from("👋"), .glyph = g(.{ 0x08, 0x1C, 0x3E, 0x1C, 0x08, 0x1C, 0x3E, 0x1C }) }, // wave
     .{ .utf8 = utf8_from("✋"), .glyph = g(.{ 0x24, 0x24, 0x3C, 0x3C, 0x3C, 0x3C, 0x18, 0x18 }) }, // open palm
-    // Hearts 16..23 — shape variants (mono can't carry hue)
+    // Hearts 16..23 -- shape variants (mono can't carry hue)
     .{ .utf8 = utf8_from("❤"), .glyph = g(.{ 0x00, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00 }) }, // solid
     .{ .utf8 = utf8_from("🧡"), .glyph = g(.{ 0x00, 0x66, 0x99, 0x81, 0x42, 0x24, 0x18, 0x00 }) }, // outline
     .{ .utf8 = utf8_from("💛"), .glyph = g(.{ 0x00, 0x24, 0x7E, 0x7E, 0x3C, 0x18, 0x00, 0x00 }) }, // small
@@ -192,7 +192,7 @@ pub fn face_id_matching_suffix(buf: []const u8) ?u8 {
     return best;
 }
 
-/// Skate-safe chrome preview: ASCII kept; curated emoji → atlas cell bytes.
+/// Skate-safe chrome preview: ASCII kept; curated emoji -> atlas cell bytes.
 pub fn skate_preview(prompt: []const u8, out: []u8) u32 {
     // invariant: the preview is written into the caller's buffer, so an empty one leaves
     // nothing to draw and the caller cannot tell that from a face

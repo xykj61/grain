@@ -35,7 +35,7 @@
 //! Commands:
 //!   rishi                  Start the interactive REPL (same as `rishi repl`).
 //!   rishi repl               Interactive loop -- type, run, with bindings carried forward.
-//!   rishi glow               Glow mode -- tokenize · lower · run · print; `:quit` exits.
+//!   rishi glow               Glow mode -- tokenize - lower - run - print; `:quit` exits.
 //!   rishi version            Print the Rishi version.
 //!   rishi run <file.rish>    Read and run a single .rish script.
 
@@ -385,7 +385,7 @@ fn glow_run_line(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, 
     return std.process.run(garden, io, .{ .argv = &real_argv });
 }
 
-/// Glow-speaking shell aspect -- SLC stub (counsel 20260724.143155 · Keaton word 144740).
+/// Glow-speaking shell aspect -- SLC stub (counsel 20260724.143155 - Keaton word 144740).
 fn run_glow_repl(init: std.process.Init) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
@@ -995,7 +995,7 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (std.mem.startsWith(u8, trimmed, "?: ")) {
         return do_cond(allocator, io, env, trimmed[3..]);
     }
-    // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
+    // `map <list> as <name>: <expr>` transforms each element; `where ... ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
     // comparison in the body stays part of the body.
     if (std.mem.startsWith(u8, trimmed, "map ")) {
@@ -1161,7 +1161,7 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (std.mem.startsWith(u8, trimmed, "find ")) {
         return do_find(allocator, io, env, trimmed[5..]);
     }
-    // A user-function call `name arg…` -- recognised only when no top-level
+    // A user-function call `name arg...` -- recognised only when no top-level
     // arithmetic operator is present, so a call inside arithmetic wears
     // parentheses and is reached through eval_operand's grouping instead.
     if (find_last_arith_add(text) == null and find_last_arith_mul(text) == null) {
@@ -1684,7 +1684,7 @@ fn do_trim(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8)
 }
 
 /// `lower <text>` -- ASCII-lowercase a string, so a case-insensitive compare is a plain
-/// `lower a == lower b`. Only A–Z shift; every other byte passes through untouched, so
+/// `lower a == lower b`. Only A-Z shift; every other byte passes through untouched, so
 /// the length is preserved and no multi-byte sequence is mangled.
 fn do_lower(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
     const value = try eval_expr(allocator, io, env, arg);
@@ -1707,7 +1707,7 @@ fn do_lower(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8
     return .{ .string = out };
 }
 
-/// `upper <text>` -- ASCII-uppercase a string; the mirror of `lower`. Only a–z
+/// `upper <text>` -- ASCII-uppercase a string; the mirror of `lower`. Only a-z
 /// shift; every other byte passes through, so length is preserved.
 fn do_upper(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
     const value = try eval_expr(allocator, io, env, arg);
@@ -2393,7 +2393,7 @@ fn do_cond(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8
     return eval_operand(allocator, io, env, else_token);
 }
 
-/// `fn <name> <p1> <p2> …: <body>` -- define a user function whose body is one
+/// `fn <name> <p1> <p2> ...: <body>` -- define a user function whose body is one
 /// expression. Its name, parameter names, and body point into the script source,
 /// which outlives the run, so only the small Func record is allocated.
 fn do_define_fn(allocator: std.mem.Allocator, env: *Env, rest: []const u8) EvalError!void {
@@ -2462,7 +2462,7 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (s.len >= 2 and s[0] == '"' and s[s.len - 1] == '"') {
         const inner = s[1 .. s.len - 1];
-        // A string with a `${…}` hole composes a new value; a plain one is itself.
+        // A string with a `${...}` hole composes a new value; a plain one is itself.
         if (std.mem.indexOf(u8, inner, "${")) |_| return interpolate(allocator, io, env, inner);
         return .{ .string = inner };
     }
@@ -2563,7 +2563,7 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
             return items[@intCast(uidx)];
         }
     }
-    // `base.field.field…` reads a field from a record, or `.len` on a list/string.
+    // `base.field.field...` reads a field from a record, or `.len` on a list/string.
     if (find_top_level(s, '.')) |dot| {
         var value = try eval_operand(allocator, io, env, s[0..@intCast(dot)]);
         var rest = s[@intCast(dot + 1)..];

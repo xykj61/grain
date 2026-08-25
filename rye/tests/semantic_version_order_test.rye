@@ -1,4 +1,4 @@
-//! Rye test: std.SemanticVersion.order — pass 9948.
+//! Rye test: std.SemanticVersion.order -- pass 9948.
 //!
 //! Semver ordering backs capability bounds and RyeVersion horizon work.
 
