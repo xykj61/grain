@@ -62,8 +62,11 @@ pub const ParseError = error{
 
 /// True when `aura` is on the admitted-shape list.
 pub fn shape_aura_admitted(aura: []const u8) bool {
-    assert(aura.len >= 2); // precondition: aura token starts with @
-    assert(admitted_shape_aura_count == admitted_shape_auras.len); // invariant: bound matches table
+    // invariant: the byte after the @ is read directly, and the declared count is what the
+    // search below trusts -- a table grown past its constant would be walked only as far as the
+    // old number
+    assert(aura.len >= 2);
+    assert(admitted_shape_aura_count == admitted_shape_auras.len);
     var i: u32 = 0;
     while (i < admitted_shape_aura_count) : (i += 1) {
         if (std.mem.eql(u8, aura, admitted_shape_auras[i])) return true;
@@ -73,14 +76,18 @@ pub fn shape_aura_admitted(aura: []const u8) bool {
 
 /// Classify an admitted aura, or refuse UnsupportedShapeAura.
 pub fn classify_shape_aura(aura: []const u8) ParseError!ShapeAuraFlags {
-    assert(aura.len >= 2); // precondition: aura token
+    // invariant: the classifier reads the byte after the @ to tell the kinds apart, so a
+    // one-byte token would be classified on its sigil alone
+    assert(aura.len >= 2);
     if (!shape_aura_admitted(aura)) return error.UnsupportedShapeAura;
     const is_cord = std.mem.eql(u8, aura, "@t");
     const is_hex = std.mem.eql(u8, aura, "@ux");
     const is_u64 = std.mem.eql(u8, aura, "@u64");
-    if (is_cord) assert(!is_hex and !is_u64); // invariant: exclusive kinds
-    if (is_hex) assert(!is_cord and !is_u64); // invariant: exclusive kinds
-    if (is_u64) assert(!is_cord and !is_hex); // invariant: exclusive kinds
+    // invariant: an aura is exactly one kind, and the three flags are read independently
+    // downstream, so two of them true would take two branches for one token
+    if (is_cord) assert(!is_hex and !is_u64);
+    if (is_hex) assert(!is_cord and !is_u64);
+    if (is_u64) assert(!is_cord and !is_hex);
     return .{ .is_cord = is_cord, .is_hex = is_hex, .is_u64 = is_u64 };
 }
 
@@ -157,7 +164,9 @@ pub fn any_payload(spec: *const ShapeSpec) bool {
 }
 
 fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
-    assert(tok.kind == .rune2); // precondition: caller checked kind
+    // invariant: this returns the token's two bytes without re-measuring, so any other kind
+    // would hand back a span of the wrong width
+    assert(tok.kind == .rune2);
     return std.mem.eql(u8, tokens.slice_of(src, tok), lit);
 }
 
@@ -169,11 +178,14 @@ fn push_name(spec: *ShapeSpec, face: []const u8) ParseError!void {
 
 /// `$:` face with aura kind — cord `@t` · hex `@ux` · `@u64` · else `@u32`.
 fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseError!void {
-    assert(face.len >= 1); // precondition: ident spans at least one byte
-    assert(face.len <= max_name_len); // precondition: lexer bounded ident
-    if (flags.is_cord) assert(!flags.is_hex and !flags.is_u64); // invariant: exclusive
-    if (flags.is_hex) assert(!flags.is_cord and !flags.is_u64); // invariant: exclusive
-    if (flags.is_u64) assert(!flags.is_cord and !flags.is_hex); // invariant: exclusive
+    // invariant: the face is copied into a fixed buffer of max_name_len, and its three aura
+    // flags are read independently downstream, so one kind per face is what keeps a field from
+    // taking two branches
+    assert(face.len >= 1);
+    assert(face.len <= max_name_len);
+    if (flags.is_cord) assert(!flags.is_hex and !flags.is_u64);
+    if (flags.is_hex) assert(!flags.is_cord and !flags.is_u64);
+    if (flags.is_u64) assert(!flags.is_cord and !flags.is_hex);
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
@@ -213,8 +225,10 @@ pub fn any_u64_field(spec: *const ShapeSpec) bool {
 
 /// Record a unit `$%` arm (payload 0 faces) into `spec`.
 fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
-    assert(tag.len >= 1); // precondition: tag name non-empty
-    assert(tag.len <= max_name_len); // precondition: lexer bounded ident
+    // invariant: the tag is copied into a fixed buffer of max_name_len, so a longer name would
+    // arrive truncated into a different tag rather than refused
+    assert(tag.len >= 1);
+    assert(tag.len <= max_name_len);
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
@@ -233,13 +247,16 @@ fn push_tag_faces(
     is_hex: []const bool,
     is_u64: []const bool,
 ) ParseError!void {
-    assert(tag.len >= 1); // precondition: tag name non-empty
-    assert(tag.len <= max_name_len); // precondition: lexer bounded ident
-    assert(faces.len >= 1); // precondition: at least one face
-    assert(faces.len <= max_payload_faces); // precondition: within payload budget
-    assert(is_cord.len == faces.len); // precondition: aura flags match faces
-    assert(is_hex.len == faces.len); // precondition: aura flags match faces
-    assert(is_u64.len == faces.len); // precondition: aura flags match faces
+    // invariant: the three flag arrays are indexed by face position, so any disagreement in
+    // length would read one face's kind from its neighbour, and the payload budget is what
+    // bounds the copy below
+    assert(tag.len >= 1);
+    assert(tag.len <= max_name_len);
+    assert(faces.len >= 1);
+    assert(faces.len <= max_payload_faces);
+    assert(is_cord.len == faces.len);
+    assert(is_hex.len == faces.len);
+    assert(is_u64.len == faces.len);
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
@@ -252,11 +269,13 @@ fn push_tag_faces(
         const cord = is_cord[@as(usize, @intCast(fi))];
         const hex = is_hex[@as(usize, @intCast(fi))];
         const wide = is_u64[@as(usize, @intCast(fi))];
-        if (cord) assert(!hex and !wide); // invariant: exclusive
-        if (hex) assert(!cord and !wide); // invariant: exclusive
-        if (wide) assert(!cord and !hex); // invariant: exclusive
-        assert(face.len >= 1); // precondition: face name non-empty
-        assert(face.len <= max_name_len); // precondition: lexer bounded ident
+        // invariant: each face carries exactly one aura kind and a name the lexer already
+        // bounded, so the copy below fits and no face takes two branches
+        if (cord) assert(!hex and !wide);
+        if (hex) assert(!cord and !wide);
+        if (wide) assert(!cord and !hex);
+        assert(face.len >= 1);
+        assert(face.len <= max_name_len);
         tally_copy.copy_disjoint(u8, spec.payloads[i][@as(usize, @intCast(fi))][0..face.len], face);
         spec.payload_face_lens[i][@as(usize, @intCast(fi))] = face.len;
         spec.payload_face_is_cord[i][@as(usize, @intCast(fi))] = cord;
@@ -310,7 +329,9 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
         error.TooManyTokens => return error.NotAMold,
         error.BadToken => return error.NotAMold,
     };
-    assert(n <= tokens.max_tokens); // postcondition: tokenize budget
+    // invariant: tokenize returns a count it has already bounded, and the walk below indexes
+    // the token buffer by it
+    assert(n <= tokens.max_tokens);
 
     const toks = buf[0..n];
     var i: u32 = 0;
@@ -335,8 +356,10 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
     if (i >= n) return error.MissingTuple;
 
     const name = tokens.slice_of(src, name_tok);
-    assert(name.len >= 1); // lexer guarantees ident non-empty
-    assert(name.len <= max_name_len); // lexer bounded by tokens.max_name_len == 64
+    // invariant: the name is copied into a fixed buffer of max_name_len, which the lexer's own
+    // ident bound already guarantees -- this states the promise the copy leans on
+    assert(name.len >= 1);
+    assert(name.len <= max_name_len);
 
     var spec: ShapeSpec = .{};
     tally_copy.copy_disjoint(u8, spec.name[0..name.len], name);
@@ -389,9 +412,12 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
             const ptag_tok = toks[@as(usize, @intCast(i))];
             i += 1;
             const ptag_full = tokens.slice_of(src, ptag_tok);
-            assert(ptag_full.len >= 2); // lexer: '%' + ident start
+            // invariant: the tag name is taken by stripping the leading percent sigil, so a
+            // token of one byte would leave nothing to name
+            assert(ptag_full.len >= 2);
             const tag_name = ptag_full[1..]; // drop leading '%'
-            assert(tag_name.len >= 1); // ident non-empty after '%'
+            // invariant: an empty tag name would be pushed as a tag that nothing can ever match
+            assert(tag_name.len >= 1);
 
             if (i >= n) return error.MalformedTag;
             if (toks[@as(usize, @intCast(i))].kind == .tilde) {
