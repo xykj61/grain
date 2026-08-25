@@ -235,3 +235,9 @@ s/Smart Access/a company/g
 s/0646 2132/[redacted-keyid]/g
 s/DBF8 5343/[redacted-keyid]/g
 s/maicmalamurr/a council galaxy/g
+# A reference to a withheld siya-named file is dropped whole from the seed copy:
+# the target is held out by the *siya* basename guard, so the line would dangle
+# (REDS %225). The bare-name sweep runs last, after the two-word forms above.
+/sleeve-siya/d
+/siya-and-linengrow/d
+s/Siya/the fund/g
