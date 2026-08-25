@@ -47,30 +47,31 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `d1ee9ff914` -- the report card learns two blessed constructions; the door roster's below-B ceiling falls to zero by measurement.
+**Git nib:** `de54c09376` -- the register floor the card was dropping; one number, cited once, two readings.
 
-**Now.** **The report card's two misreadings, both closed on metal.** A meter that instructs a
-repair which would make the artifact worse is the thing to fix, and this one did it twice.
-**Reach** scored an index's link density against a budget written for prose, so `docs/README.md` --
-10 words, 5 links -- floored at zero and the only repair on offer was padding an index with prose.
-The card now reads a page's own declaration under **two conditions**: declared in its header
-(`**Depth:** routing`, `**Kind:** ... index`) **and** under 100 words of prose, one full unit of the
-denominator the rate is expressed in. Measured before writing a line: four living pages declare, three
-carry 13, 13, and 10 words, and `docs-geode/edu/README.md` carries 193 and **stays graded at an A**.
-**Truth** charged `construction/CHECKPOINTS.md` forty points for two placeholder shapes
-(`date/YYYYMMDD/name`) the stamp-and-name law seats and asks for by name; only `YYYYMMDD` and
-`HHMMSS` count, zero tracked paths carry either literally, and a **fabricated** stamp still costs
-twenty. The door roster reads **12 of 12 at B or better, ceiling 0**, with no page rewritten.
-Forty-four behaviors in the control; pointed at the old rule it refuses **13 of the 17** new
-readings and passes exactly the 4 that describe behavior which must not change. Argument:
+**Now.** **Three report-card readings learned an honest denominator, all on metal.** One finding
+wearing three faces: *a meter that instructs a repair which would make the artifact worse is the
+thing to fix.* **Reach** scored an index's link density against a budget written for prose, so the
+card now reads a page's own header declaration under **two conditions** -- declared **and** under
+100 words. **Truth** charged forty points for the placeholder shape (`date/YYYYMMDD/name`) the
+stamp-and-name law seats; only `YYYYMMDD` and `HHMMSS` count and a **fabricated** stamp still costs
+twenty. **Register** dropped a floor its own source has always applied: `prose_register_scan.sh`
+skips a page under **8 sentences** as *too short to read a share from honestly*, and the card citing
+it scored `docs-geode/libraries/README.md` **0** off one sentence. The floor is a named constant now,
+`REGISTER_MIN_SENTENCES`, **cited** the way `measure()` already is, so removing it makes the card
+refuse. Measured: **27 living teaching pages** sit under it, six reading 100% off one sentence.
+**One condition here rather than two, and the difference is the point** -- a page *declares* itself
+an index, so that reading needs a guard; a sentence count is *measured*, so none can assert its way
+under. The **20% door wall is untouched**. Door roster **12 of 12 at B or better, ceiling 0**, no
+page rewritten. **54 behaviors** in the control; the 10 new floor readings refuse **6** against
+the card as it stood this morning and pass exactly the 4 that must not change. Argument:
 [the two-condition form](../active-designing/20260825-034444_a-declaration-is-not-an-exemption.md).
 
-**The next doors, measured this lap rather than guessed.** **Register carries the same denominator
-fault one reading over** -- `docs-geode/libraries/README.md` reads Register **0** off a single
-surviving sentence, which is why both `crushed index` pages sit at C+. **The card is a document
-meter and says so nowhere**: pointed at `qa_report_card_control.sh` it reads F on 30 of 30 paths
-that are planted heredoc fixtures. Beside it, a real but tiny asymmetry -- Reach skips fenced code
-blocks and Truth does not, worth **5 links across 4 unrostered files**.
+**The next door, measured rather than guessed.** **The card is a document meter and says so
+nowhere**: pointed at `qa_report_card_control.sh` it reads F on 30 of 30 paths that are planted
+heredoc fixtures. Beside it a real, tiny asymmetry -- Reach skips fenced code blocks and Truth does
+not, worth **5 links across 4 unrostered files**. One round, a `--kind` the card can be told, or an
+honest refusal on a non-document.
 
 **Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
 share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
@@ -239,7 +240,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.034444` | The report card reads an index as one and a placeholder as an illustration; door ceiling 1 -> 0 | [log](../session-logs/20260825-034444_a-declaration-is-not-an-exemption.kyri) |
+| `20260825.041416` | The register floor the card was dropping -- one number cited once; 27 pages under it, six reading 100% off one sentence | [log](../session-logs/20260825-041416_a-share-needs-a-denominator.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

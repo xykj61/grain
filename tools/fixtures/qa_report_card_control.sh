@@ -44,17 +44,26 @@ done
 [ "$minus" = no ] && echo "no_minus_grades=yes" || echo "no_minus_grades=no"
 
 # 2 -- Register is the register scan's own reading, flipped. Warm prose high, refusal-led prose low.
+# Both plants carry at least REGISTER_MIN_SENTENCES sentences, so the register reading SCORES
+# them rather than reporting them. A plant under the floor would read 100 whatever it said,
+# and this whole section would pass while testing nothing.
 cat > "$pen/warm.md" <<'EOF'
 Grain gives you a computer that answers to you. Your words stay on your machine.
 Every promise here is one a program has already checked. The system names each bound
 before it starts, and it can show you it stayed inside. A witness prints green when a
 promise holds. Every name we choose stays clear on the first day and the ten thousandth.
+The tree keeps its own record of every round it runs. A reader arriving today finds the
+same doors a reader found last season. Each guard proves both directions of the
+promise it makes. The work belongs to whoever runs it, and it stays that way.
 EOF
 cat > "$pen/cold.md" <<'EOF'
 A check that cannot fail is not a check. Nothing here is trusted until it refuses a
 broken input. The guard was blind to an entire class and no meter caught the failure.
 A stale claim is worse than a missing one, and a broken reference never resolves.
 Nothing grows until something breaks, and no page may lie about what it cannot prove.
+No roster is trusted while it cannot refuse a wrong entry. A number nobody measured is
+worse than no number at all. Nothing stops a stale page from lying about a dead path.
+A wall with a door beside it is never a wall. No claim survives without a witness.
 EOF
 w=$(val "$(run warm.md --setting field)" register)
 c=$(val "$(run cold.md --setting field)" register)
@@ -215,5 +224,49 @@ printf 'A page citing [a log](session-logs/20260101-090000_nothing.kyri) and not
 o=$(run fabricated.md)
 [ "$(val "$o" truth_counted)" -eq 80 ] && echo "fabricated_stamp_still_counted=yes" || echo "fabricated_stamp_still_counted=no ($(val "$o" truth_counted))"
 echo "$o" | grep -q 'unresolved: session-logs/20260101-090000_nothing.kyri' && echo "fabricated_stamp_named=yes" || echo "fabricated_stamp_named=no"
+
+# 15 -- the register floor, read from both sides at its own boundary. A share needs a denominator
+# big enough to mean something, and the number is CITED from prose_register_scan.sh rather than
+# spelled here, so one floor governs both readings and neither can drift.
+floor=$(sed -n 's/^REGISTER_MIN_SENTENCES=\([0-9]*\)$/\1/p' "$pen/tools/fixtures/prose_register_scan.sh" | head -1)
+[ "$floor" = "8" ] && echo "floor_is_cited=yes" || echo "floor_is_cited=no ($floor)"
+
+# Seven refusal-led sentences, one under the floor: reported, never scored.
+cat > "$pen/under_floor.md" <<'EOF'
+A check that cannot fail is not a check. Nothing here is trusted until it refuses.
+The guard was blind to a class and no meter caught the failure. A stale claim is
+worse than a missing one. Nothing grows until something breaks. No roster is
+trusted while it cannot refuse a wrong entry. A number nobody measured is worse
+than no number at all.
+EOF
+o=$(run under_floor.md --setting field)
+[ "$(val "$o" register_mode)" = "reported" ] && echo "under_floor_reported=yes" || echo "under_floor_reported=no ($(val "$o" register_mode))"
+[ "$(val "$o" register)" -eq 100 ] && echo "under_floor_not_scored=yes" || echo "under_floor_not_scored=no ($(val "$o" register))"
+echo "$o" | grep -q 'reported, not scored' && echo "under_floor_named=yes" || echo "under_floor_named=no"
+echo "$o" | grep -q 'of 7 sentences' && echo "under_floor_share_still_shown=yes" || echo "under_floor_share_still_shown=no"
+
+# The same prose with one more sentence, AT the floor: scored, and scored low. The boundary is read
+# from both sides, so no page can sit at the floor and be treated as if it were under it.
+cat > "$pen/at_floor.md" <<'EOF'
+A check that cannot fail is not a check. Nothing here is trusted until it refuses.
+The guard was blind to a class and no meter caught the failure. A stale claim is
+worse than a missing one. Nothing grows until something breaks. No roster is
+trusted while it cannot refuse a wrong entry. A number nobody measured is worse
+than no number at all. No claim survives without a witness to bind it.
+EOF
+o=$(run at_floor.md --setting field)
+[ "$(val "$o" register_mode)" = "scored" ] && echo "at_floor_scored=yes" || echo "at_floor_scored=no ($(val "$o" register_mode))"
+[ "$(val "$o" register)" -le 40 ] && echo "at_floor_scored_low=yes" || echo "at_floor_scored_low=no ($(val "$o" register))"
+echo "$o" | grep -q 'of 8 sentences' && echo "at_floor_denominator=yes" || echo "at_floor_denominator=no"
+
+# Meter names its own register mode rather than borrowing either of the other two.
+[ "$(val "$(run cold.md --setting meter)" register_mode)" = "meter" ] && echo "meter_names_register_mode=yes" || echo "meter_names_register_mode=no"
+
+# The floor is CITED, so losing it from the source makes the card refuse rather than guess -- the
+# same proof measure() already carries in section 12.
+cp "$pen/tools/fixtures/prose_register_scan.sh" "$pen/keep2.sh"
+grep -v '^REGISTER_MIN_SENTENCES=' "$pen/keep2.sh" > "$pen/tools/fixtures/prose_register_scan.sh"
+run warm.md >/dev/null 2>&1 && echo "floor_source_load_bearing=no" || echo "floor_source_load_bearing=yes"
+cp "$pen/keep2.sh" "$pen/tools/fixtures/prose_register_scan.sh"
 
 echo "control_verdict=ok"

@@ -337,7 +337,7 @@ document, a module's comments, or a design, and it answers one question in a for
 
 | Reading | Asks | How it is taken |
 |---|---|---|
-| **Register** | Does it lead with what is? | **Counted.** 100 minus the share of sentences carrying a negative -- the same reading the register meter gates, lifted from that scan rather than spelled beside it. |
+| **Register** | Does it lead with what is? | **Counted.** 100 minus the share of sentences carrying a negative -- the same reading the register meter gates, lifted from that scan rather than spelled beside it, **floor and all**. |
 | **Reach** | Can the intended reader follow it? | **Counted.** Flesch-Kincaid grade and cross-references per hundred words, against the budget the setting carries. Ten points per whole unit over. An **index** is read as one -- see below. |
 | **Truth** | Are its claims still honestly true? | **Half counted.** Counted: every relative path it cites, resolved as written, root-relative, or by the fold rule. A **placeholder shape** is an illustration -- see below. Judged: whether a behavioral claim still holds, which only reading or running can say. |
 | **Service** | Does it help the work in front of us? | **Judged.** Read against the live card, `construction/ITINERARY.md`. The tool prints the inputs and stops there. |
@@ -362,10 +362,10 @@ working one, and an artifact that serves neither is the one worth finding. An em
 Corporation reading this substitutes *the shipped product* for the first and *the working
 repository* for the second, and the question is the same question.
 
-### Two shapes the card reads rather than penalizes
+### Three shapes the card reads rather than penalizes
 
-Both were added on `20260825`, and both come from one finding: **a meter that instructs a repair
-which would make the artifact worse is the thing to fix.** That sentence is the test to apply the
+All three were added on `20260825`, and each comes from one finding: **a meter that instructs a
+repair which would make the artifact worse is the thing to fix.** That is the test to apply the
 next time a reading looks wrong -- ask what the number is telling a writer to do, and whether doing
 it would help anyone.
 
@@ -397,6 +397,21 @@ tracked paths in this tree carry either literally, so the reading can never swal
 other half is what keeps it a reading rather than an escape: **a fabricated stamp -- digits naming
 no file -- still costs twenty points**, which is exactly the failure the same law warns about. The
 control plants both halves, and pointed at the old rule it refuses 13 of its 17 new readings.
+
+**A share needs a denominator.** The register scan's teaching tier has always skipped a page under
+**eight sentences** -- *"too short to read a share from honestly"* -- and the card citing that scan
+was dropping the floor. So the same page could be unmeasurable to one reading and scored **0** by
+the other. Measured `20260825`: 27 living teaching pages sit under the floor, six of them reading
+100% off a **single** sentence.
+
+The floor is a named constant in the scan now, `REGISTER_MIN_SENTENCES`, and the card **cites** it
+the way it already cites `measure()` -- removing it from the scan makes the card refuse rather than
+guess. Below the floor the share is reported, with its denominator still shown.
+
+**One condition here rather than two**, and the difference is the point: a page *declares* itself an
+index, so that reading needs a second condition to stay honest. A sentence count is *measured*, so
+no page can assert its way under this floor. The 20% wall on the twelve door documents is untouched,
+because a gate that grows an exemption stops being a gate.
 
 ### The scale
 

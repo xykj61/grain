@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.041416` | [a share needs a denominator](20260825-041416_a-share-needs-a-denominator.kyri) | The register floor the scan applies and the card citing it dropped. |
 | `20260825.034444` | [a declaration is not an exemption](20260825-034444_a-declaration-is-not-an-exemption.kyri) | An index is read as one; a placeholder shape is an illustration. |
 | `20260825.031428` | [four reds from two roots](20260825-031428_four-reds-from-two-roots.kyri) | A sweep edited two mirrors; an index counted a build cache as 108 modules. |
 | `20260825.020027` | [which witnesses actually run](20260825-020027_which-witnesses-actually-run.kyri) | 261 of 1,684 gated; 61 sampled, 6 red, and not all reds are defects. |

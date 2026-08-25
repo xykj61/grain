@@ -41,6 +41,13 @@ set -u
 DOOR="README.md docs/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
+# A share needs a denominator big enough to mean something. Below this many sentences the reading is
+# arithmetic on a rounding error: one negative sentence out of one reads 100%, and one out of two
+# reads 50%, neither of which says anything about how a page is written. The teaching tier has
+# applied this floor since it was written; naming it here rather than spelling it inside the loop is
+# what lets tools/fixtures/qa_report_card.sh CITE the number instead of copying it, the same way it
+# already cites measure(). One floor, two readings, and no way for them to drift apart.
+REGISTER_MIN_SENTENCES=8
 # The ratchet's ceiling only ever falls. Measured 20260823 across the teaching tier.
 ceiling=0    # 16 at seating; the whole teaching tier swept 20260823.070754 -- it only falls
 
@@ -104,7 +111,7 @@ teaching_over=0
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   set -- $(measure "$f")
-  [ "$1" -ge 8 ] || continue     # too short to read a share from honestly
+  [ "$1" -ge "$REGISTER_MIN_SENTENCES" ] || continue   # too short to read a share from honestly
   if [ "$3" -gt "$FIELD_MAX" ]; then
     teaching_over=$((teaching_over + 1))
     printf 'teaching: %s %s%%\n' "$f" "$3" >> "$work/teaching_over.txt"
