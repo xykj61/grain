@@ -15,3 +15,4 @@ Immutable once written.*
 | `20260824.162940` | Model back to Opus 5, one reading over three sites (%201); commit-msg gains a fourth wall (%202); census 191 -> 186 (%203) | [log](../../session-logs/20260824-162940_one-model-named-once.kyri) |
 | `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
 | `20260824.193815` | Five index rooms carried across and the log fold on Keaton's word; rows bounded at 192 bytes; no living page over its declared bound | [log](../../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
+| `20260825.031428` | Four reds, two roots -- a sweep that edited two mirrors and a declared ceiling; an index counting a build cache (%216, %217) | [log](../../session-logs/20260825-031428_four-reds-from-two-roots.kyri) |

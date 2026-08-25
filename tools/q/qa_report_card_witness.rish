@@ -12,7 +12,8 @@
 #   Register  counted   100 minus the negative-sentence share, the same reading prose_register
 #                       gates, lifted from that scan rather than copied beside it.
 #   Reach     counted   Flesch-Kincaid grade and cross-references per hundred words, against the
-#                       budget its setting carries.
+#                       budget its setting carries -- unless the page declares itself an index AND
+#                       measures like one, where the density is reported rather than scored.
 #   Truth     half      counted: every relative link resolved as written, root-relative, or by the
 #                       fold rule. Judged: whether a behavioral claim is still honestly true.
 #   Service   judged    whether the artifact helps the work actually in front of us, read against
@@ -22,7 +23,27 @@
 # claims have gone false costs a reader more than an absent page. Honesty first, written into the
 # arithmetic rather than left to a habit.
 #
-# WHAT IS PROVEN, on metal. Twenty-seven behaviors in a throwaway pen. The scale at every one of its
+# TWO READINGS THAT LEARNED A BLESSED CONSTRUCTION, 20260825. A meter that instructs a repair which
+# would make the artifact worse is the thing to fix, and this one did it twice.
+#
+#   An INDEX is read as one. A cross-reference budget of one per hundred words is written for prose;
+#   on an index the links ARE the content. docs/README.md carries 10 words and 5 links, read 50 per
+#   100w, and floored Reach at zero -- instructing a writer to pad an index with prose. The card now
+#   reads the page's own declaration the way declared_ceiling reads its own limit, under TWO
+#   conditions, because a self-declared exemption is a door and a door beside a wall makes the wall a
+#   habit: the page must DECLARE itself an index in its header (`**Depth:** routing`, `**Kind:** ...
+#   index`) AND MEASURE as one, under 100 words of prose -- one full unit of the denominator the rate
+#   is expressed in. Measured over every living page: four declare, three carry 13, 13, and 10 words,
+#   and the fourth carries 193 and stays graded at an A.
+#
+#   A PLACEHOLDER SHAPE is an illustration. `date/YYYYMMDD/name` is a shape with letters standing
+#   where digits go, and .claude/rules/stamp-and-name.md seats that spelling and asks for it by name.
+#   construction/CHECKPOINTS.md sat at Truth 60, one point off the F gate, for writing two of them.
+#   Only YYYYMMDD and HHMMSS count, the two runs that law spells inside a path shape; zero tracked
+#   paths in this tree carry either literally. A FABRICATED stamp naming no file still costs twenty,
+#   which is the half that keeps this a reading rather than an escape hatch.
+#
+# WHAT IS PROVEN, on metal. Forty-four behaviors in a throwaway pen. The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -32,11 +53,17 @@
 # composite as the mean of four, and the truth gate held at 60 and bitten at 59. The card refusing
 # to invent a Service it did not measure, refusing an absent path, and refusing an unknown setting.
 #
+# And the two new readings proven from BOTH sides. A declaring short page read as an index; a
+# declaring LONG page still graded and still penalized; a short page declaring nothing still graded
+# and still penalized; a declaration in the body reaching nothing. A placeholder costing nothing and
+# named; a fabricated stamp still costing twenty and still named. Pointed at a copy of the card
+# carrying the old rule, the control refuses 13 of those 17 and passes exactly the 4 that describe
+# behavior which must NOT change -- so it is proven to bite rather than assumed to.
+#
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
 # roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
-# seating: docs/README.md, two sentences of prose carrying eleven links, which is an index page
-# rather than a fault -- reported rather than exempted, because a reader deciding that is worth more
-# than a rule guessing it.
+# seating, docs/README.md, and the ceiling fell to ZERO on 20260825 when the index reading landed --
+# by measurement rather than by editing the page, which is the whole point of fixing the meter.
 #
 # WHAT IS NOT GATED, and why. A grade is not a gate. The register share already has its wall at
 # tools/p/prose_register_witness.rish, and a second hard ceiling on the same pages would red the
@@ -90,7 +117,24 @@ assert control.out contains "composite_left_judged=yes" else "qa-report-card: an
 assert control.out contains "service_inputs_reported=yes" else "qa-report-card: the tool must hand the judge the inputs it counted"
 assert control.out contains "absent_path_refused=yes" else "qa-report-card: an absent artifact must refuse rather than read zero"
 assert control.out contains "unknown_setting_refused=yes" else "qa-report-card: an unknown setting must refuse rather than default"
+assert control.out contains "declared_and_short_reads_index=yes" else "qa-report-card: a page that declares an index in its header and measures under the prose floor must be read as one"
+assert control.out contains "index_density_reported=yes" else "qa-report-card: an index's link density is reported rather than scored -- the links ARE its content"
+assert control.out contains "index_density_named=yes" else "qa-report-card: the card must say the density was reported, so a reader sees what was read past"
+assert control.out contains "declared_but_long_stays_graded=yes" else "qa-report-card: a declaring page carrying real prose stays graded -- the floor is what keeps the declaration from being an exemption"
+assert control.out contains "declared_but_long_penalized=yes" else "qa-report-card: and it must actually lose reach, or the floor proves nothing"
+assert control.out contains "undeclared_short_stays_graded=yes" else "qa-report-card: a short page that declares nothing stays graded -- the word count alone is no exit either"
+assert control.out contains "undeclared_short_penalized=yes" else "qa-report-card: and it must actually lose reach, or the declaration proves nothing"
+assert control.out contains "body_declaration_ignored=yes" else "qa-report-card: the declaration is read in the header alone, so a body discussing indexes declares nothing"
+assert control.out contains "body_declaration_stays_graded=yes" else "qa-report-card: a body declaration must not reach the grade"
+assert control.out contains "meter_names_its_mode=yes" else "qa-report-card: Meter names its own mode rather than borrowing either of the other two"
+assert control.out contains "placeholder_costs_nothing=yes" else "qa-report-card: a placeholder shape is an illustration of a path, never a citation of one"
+assert control.out contains "placeholder_named=yes" else "qa-report-card: an illustration must be named, so a reader sees what the card read past"
+assert control.out contains "placeholder_counted=yes" else "qa-report-card: the card must count the illustrations it read past"
+assert control.out contains "placeholder_not_cited=yes" else "qa-report-card: an illustration leaves the cited denominator, rather than resolving inside it"
+assert control.out contains "hhmmss_placeholder_free=yes" else "qa-report-card: both runs the naming law spells inside a path shape are illustrations"
+assert control.out contains "fabricated_stamp_still_counted=yes" else "qa-report-card: a real-looking stamp naming no file is still a broken citation -- this is the half that keeps the reading from being an escape"
+assert control.out contains "fabricated_stamp_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "twenty-seven behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "forty-four behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."

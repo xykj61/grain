@@ -17,13 +17,22 @@
 #                       is lifted verbatim from tools/fixtures/prose_register_scan.sh, so the flip
 #                       and the ceiling are one reading rather than two that can disagree (REDS %201).
 #   Reach     counted   whether the intended reader can follow it: Flesch-Kincaid grade and
-#                       cross-references per hundred words, against the setting's own budget.
+#                       cross-references per hundred words, against the setting's own budget --
+#                       unless the page declares itself an index AND measures like one, where the
+#                       density is reported rather than scored. Two conditions, never one.
 #   Truth     half      counted: every relative link the page makes, resolved as written, root-
-#                       relative, or by the fold rule. Judged: whether a behavioral claim is still
-#                       true, which only reading or running can say.
+#                       relative, or by the fold rule. A placeholder shape -- `date/YYYYMMDD/name`
+#                       -- is an illustration of a path rather than a citation of one, and a
+#                       fabricated stamp naming no file still counts. Judged: whether a behavioral
+#                       claim is still true, which only reading or running can say.
 #   Service   judged    whether the artifact helps the work actually in front of us. The tool prints
 #                       the inputs a reader needs and stops there, because a number nobody measured
 #                       is worse than a blank.
+#
+# BOTH OF THOSE READINGS ARGUED IN FULL beside the code that carries them, further down this file.
+# The short of it: a meter that instructs a repair which would make the artifact worse is the thing
+# to fix, and this one did it twice -- telling an index to pad itself with prose, and telling a page
+# that its blessed placeholder shape was a broken link. Neither page changed a word.
 #
 # THE COMPOSITE arrives once the judged readings are handed in with --service and --truth. Without
 # them the card prints what it counted and says `composite=judged`, which is the honest output.
@@ -144,7 +153,7 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
         syllables += syl
       }
     }
-    if (sent == 0 || words == 0) { print "0 0 0 0 0"; exit }
+    if (sent == 0 || words == 0) { print "0 0 0 0 0 0"; exit }
     grade = 0.39 * (words / sent) + 11.8 * (syllables / words) - 15.59
     if (grade < 0) grade = 0
     per100 = links * 100 / words
@@ -152,28 +161,85 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     xo = per100 - xc;  if (xo < 0) xo = 0
     reach = 100 - 10 * int(go + 0.5) - 10 * int(xo + 0.5)
     if (reach < 0) reach = 0
-    printf "%d %d %d %d %d\n", reach, int(grade + 0.5), int(per100 + 0.5), words, links
+    # The same reading with the cross-reference term dropped, for a page whose links ARE its
+    # content. Computed here so one arithmetic answers both readings rather than two that can drift.
+    reach_prose = 100 - 10 * int(go + 0.5)
+    if (reach_prose < 0) reach_prose = 0
+    printf "%d %d %d %d %d %d\n", reach, reach_prose, int(grade + 0.5), int(per100 + 0.5), words, links
   }
 ' "$root/$path")
 set -- $reach_raw
 reach=$1
-grade=$2
-xrefs=$3
-words=$4
-links=$5
+reach_prose=$2
+grade=$3
+xrefs=$4
+words=$5
+links=$6
+
+# --- The page's own declaration: an index says so, and then measures like one ---------------------
+# A cross-reference budget of one per hundred words is written for prose. On an index the links ARE
+# the content, so the budget measures the page against a standard it was never built to meet:
+# docs/README.md carries 10 words of prose and 5 links, which reads 50 per 100w against a budget of
+# 1 and floors Reach at zero. That is a meter instructing a repair -- pad the page with prose --
+# which would make the artifact worse, and a meter that does that is the thing to fix.
+#
+# So the card reads a page's own declaration, the way declared_ceiling reads a page's own limit.
+# TWO conditions, never one, because a self-declared exemption is a door, and a door beside a wall
+# makes the wall a habit again:
+#
+#   1. The page DECLARES itself an index, in its HEADER -- `**Depth:** routing` or `**Kind:** ...
+#      index`. Header only, meaning the block above the first `---` rule, so a body that merely
+#      discusses indexes declares nothing.
+#   2. The page MEASURES as one -- under 100 words of prose. A rate expressed per hundred words is
+#      extrapolation below one full unit of its own denominator, and that is the whole fault here.
+#
+# Measured 20260825 over every living page: four declare an index in their header, and three of them
+# carry 13, 13, and 10 words. The fourth, docs-geode/edu/README.md, carries 193 and already reads A
+# at 3 xrefs per 100w -- so the floor keeps a readable index graded and lifts only the pages whose
+# denominator cannot carry the rate. That the pair discriminates on real data, before a line of this
+# was written, is what makes it a reading rather than an opt-out.
+index_floor=100
+declares_index=no
+awk 'NR <= 40 { if ($0 ~ /^---[ \t]*$/) exit; print }' "$root/$path" \
+  | grep -qE '[*][*]Depth:[*][*][^|]*routing|[*][*]Kind:[*][*][^|]*index' && declares_index=yes
+
+reach_mode=graded
+if [ "$declares_index" = yes ] && [ "$words" -lt "$index_floor" ]; then
+  reach_mode=index
+  reach=$reach_prose
+fi
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
-[ "$setting" = "meter" ] && { register=100; reach=100; }
+[ "$setting" = "meter" ] && { register=100; reach=100; reach_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
 dir=$(dirname "$path")
 cited=0
 unresolved=0
+illustrations=0
 : > "$work/unresolved.txt"
+: > "$work/illustrations.txt"
 grep -o '](\([^)]*\))' "$root/$path" 2>/dev/null | sed 's/^](//; s/)$//' | sed 's/#.*$//' > "$work/links.txt" || :
 while IFS= read -r target; do
   [ -n "$target" ] || continue
   case "$target" in http*|mailto:*|'<'*) continue ;; esac
+  # An example path in prose is a SHAPE -- `date/YYYYMMDD/name` -- with letter placeholders standing
+  # where the digits would go. `.claude/rules/stamp-and-name.md` seats that spelling and asks for it
+  # by name: build an illustration from placeholders and it stays honest; build one from a real-
+  # looking stamp and a sprig naming no file, and it reads as a real citation to every reader and
+  # every tool. So a placeholder run is an illustration rather than a citation.
+  #
+  # Only the two runs that law spells inside a path shape count, YYYYMMDD and HHMMSS. Measured
+  # 20260825: zero of this tree's tracked paths carry either run literally, so the reading can never
+  # swallow a real path, and exactly 8 links across all living Markdown match, in 4 files. A
+  # FABRICATED stamp -- digits naming no file -- still counts against Truth, which is the half that
+  # keeps this a reading rather than an escape hatch, and the control plants both halves.
+  case "$target" in
+    *YYYYMMDD*|*HHMMSS*)
+      illustrations=$((illustrations + 1))
+      printf 'illustration: %s\n' "$target" >> "$work/illustrations.txt"
+      continue ;;
+  esac
   cited=$((cited + 1))
   [ -e "$root/$dir/$target" ] && continue
   [ -e "$root/$target" ] && continue
@@ -205,9 +271,15 @@ fi
 echo "qa_path=$path"
 echo "qa_setting=$setting"
 echo "register=$register (negative $neg_pct% of $sentences sentences)"
-echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w against $xref_ceiling; $words words, $links links)"
-echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved)"
+if [ "$reach_mode" = index ]; then
+  echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w reported, not scored; $words words, $links links)"
+else
+  echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w against $xref_ceiling; $words words, $links links)"
+fi
+echo "reach_mode=$reach_mode (declares_index=$declares_index; prose floor $index_floor words)"
+echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"
 [ -s "$work/unresolved.txt" ] && cat "$work/unresolved.txt"
+[ -s "$work/illustrations.txt" ] && cat "$work/illustrations.txt"
 echo "service_inputs living_citers=$citers named_by_card=$named_by_card in_seed=$in_seed"
 
 truth=$truth_given
