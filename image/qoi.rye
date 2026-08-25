@@ -70,6 +70,8 @@ const Rgba = struct {
 fn index_slot(p: Rgba) u32 {
     // invariant: the slot is one of the 64 the format defines.
     const h = (@as(u32, p.r) * 3 + @as(u32, p.g) * 5 + @as(u32, p.b) * 7 + @as(u32, p.a) * 11) % 64;
+    // invariant: the hash indexes a fixed table of sixty-four entries, which is the running
+    // array the format's own encoder and decoder must agree on
     assert(h < 64);
     return h;
 }
@@ -100,6 +102,8 @@ pub const Pixmap = struct {
     pub fn pixel_count(self: *const Pixmap) u32 {
         // invariant: a pixmap's pixel count is its two dimensions multiplied, within the named ceiling.
         const n = @as(u64, self.width) * @as(u64, self.height);
+        // invariant: the pixel count is what every buffer here is sized from, and the format's
+        // own ceiling is what keeps that multiplication inside a u64
         assert(n <= qoi_max_pixels);
         return @intCast(n);
     }

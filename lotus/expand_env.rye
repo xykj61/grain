@@ -97,6 +97,9 @@ pub fn expand_follow_carry(
             if (e == 0) {
                 // The smoothed detector reads exact silence. env_step forces at least a unit step toward any nonzero target, so a
                 // zero envelope can only arise when this sample's own magnitude is zero — nothing to expand, and no divide by zero.
+                // invariant: the tail is fully attenuated when this runs, which is what the
+                // envelope exists to reach -- a residue here means the release never completed
+                // and the next clip would open over it
                 assert(x == 0);
             } else {
                 // The expanded envelope target — ALES60's deepened floor, computed on the ENVELOPE not the bare sample: the deficit

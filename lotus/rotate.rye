@@ -42,6 +42,8 @@ fn reverse_range(clip: *timeline.Clip, lo: u32, hi: u32) void {
     var b: u32 = hi - 1;
     // invariant: a and b close in from the two ends and never cross — every swap moves a still-unvisited pair, the loop stopping the instant they meet.
     while (a < b) : (a += 1) {
+        // invariant: both ends of the swap sit inside the clip, so the rotation moves samples
+        // within it rather than past either end
         assert(a < clip.len and b < clip.len);
         const tmp = clip.buf[a];
         clip.buf[a] = clip.buf[b];

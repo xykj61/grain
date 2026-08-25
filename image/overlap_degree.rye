@@ -95,6 +95,8 @@ pub fn total_overlap_edges(graph: scene_graph.SceneGraph) u32 {
     }
     // invariant: the edge count cannot exceed the count of unordered pairs, n*(n-1)/2.
     const n: u64 = graph.components;
+    // invariant: a simple graph holds at most one edge per pair, so a count past n choose two
+    // means an edge was recorded twice
     assert(@as(u64, edges) <= n * (n - 1) / 2);
     return edges;
 }

@@ -247,6 +247,9 @@ pub fn line_raycast(garden: std.mem.Allocator, clustering: overlap_clusters.Clus
 
     // invariant: the result is a strict total order by (entry parameter, label) -- no adjacent pair out of order, so no label repeats.
     var v: usize = 1;
+    // invariant: the sort has finished when this runs, so it states the order it produced
+    // rather than checking one it was handed -- a comparator that is not a total order leaves
+    // pairs out of place and this is where that shows
     while (v < n) : (v += 1) assert(cast_less(num[v - 1], den[v - 1], cast[v - 1], num[v], den[v], cast[v]));
     return cast;
 }

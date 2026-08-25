@@ -67,6 +67,8 @@ pub fn markers_of_field(allocator: std.mem.Allocator, dm: *const distance.Distan
     assert(markers.width == dm.width);
     assert(markers.height == dm.height);
     const npix: u64 = @as(u64, dm.width) * @as(u64, dm.height);
+    // invariant: the markers never outnumber the pixels they mark, so a count past the image
+    // means a pixel was marked twice
     assert(@as(u64, markers.count) <= npix);
     return markers;
 }

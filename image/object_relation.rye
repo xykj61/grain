@@ -181,6 +181,8 @@ pub fn object_relation(allocator: std.mem.Allocator, manifest: scene_manifest.Ma
 
     // invariant: box overlap and strict side-separation are mutually exclusive -- an overlapping box cannot also sit wholly to a side.
     if (overlap) {
+        // invariant: none of the four directions holds when the objects do not touch, so a
+        // relation reading true here would report a neighbour that is not there
         assert(!left);
         assert(!right);
         assert(!above);

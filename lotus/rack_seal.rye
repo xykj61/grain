@@ -69,6 +69,8 @@ pub fn seal_rack(r: *const rack.Rack, out: []u8) RackSealError!u32 {
 pub fn verify_and_parse(text: []const u8, out: *rack.Rack) RackSealError!void {
     // invariant: verification starts from an empty rack — a refused record leaves nothing half-parsed.
     out.* = rack.Rack{};
+    // invariant: the sink is empty when this runs, so a leftover count means a prior render was
+    // never drained and its samples would be mixed into this one
     assert(out.count == 0);
 
     // The integrity gate: seal.open returns the verified body BYTES, or refuses before any slot is trusted.

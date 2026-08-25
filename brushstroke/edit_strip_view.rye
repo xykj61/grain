@@ -41,6 +41,8 @@ pub fn chip_slot(e: edits.Edit) u8 {
     const ord: u32 = @intFromEnum(std.meta.activeTag(e));
     // invariant: the fold lands on a real anchor slot, never the sentinel and never past the palette.
     const slot: u8 = @intCast(ord % image_skate.anchor_count + 1);
+    // invariant: the slot addresses one of the strip's anchors directly, so a slot outside that
+    // range would read past the anchor table
     assert(slot >= 1);
     assert(slot <= image_skate.anchor_count);
     return slot;

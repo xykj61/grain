@@ -270,6 +270,8 @@ fn decode_coverage(bytes: []const u8, start: u32, out: []u8) !u32 {
     }
     // invariant: coverage decoded to exactly the cell area -- no more, no less.
     if (o != need) return error.CoverageShort;
+    // invariant: every byte the glyph needed was written, so a shortfall would leave part of a
+    // character at whatever the buffer held before
     assert(o == need);
     return p;
 }

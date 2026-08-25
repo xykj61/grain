@@ -64,6 +64,8 @@ pub const HmaximaError = error{
 fn sub_clamp(d: u32, h: u32) u32 {
     // invariant: the result never rises above the input, so the marker sits at or below the mask everywhere.
     const out: u32 = if (d > h) d - h else 0;
+    // invariant: the reconstruction never rises above the mask, which is what makes h-maxima a
+    // reconstruction rather than a repaint
     assert(out <= d);
     return out;
 }
@@ -74,6 +76,8 @@ fn sub_clamp(d: u32, h: u32) u32 {
 fn relax_dilate(j: []const u32, mask_val: u32, w: u32, h: u32, x: u32, y: u32, dxs: [4]i32, dys: [4]i32) u32 {
     // invariant: the pixel's own marker never exceeds its mask, so the cap can only hold or lower the grown value.
     const self_i: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+    // invariant: the reconstruction never rises above the mask, which is what makes h-maxima a
+    // reconstruction rather than a repaint
     assert(j[self_i] <= mask_val);
     var m: u32 = j[self_i];
     var k: usize = 0;

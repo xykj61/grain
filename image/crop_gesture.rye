@@ -61,6 +61,8 @@ pub const CropGesture = struct {
     pub fn open(width: u32, height: u32) CropGestureError!CropGesture {
         // invariant: an image has real area, so a corner has somewhere to clamp into.
         if (width == 0 or height == 0) return error.BadImage;
+        // invariant: a crop of no width or no height would return an image with nothing in it,
+        // which the caller cannot tell from a crop that failed
         assert(width >= 1);
         assert(height >= 1);
         return CropGesture{ .width = width, .height = height };

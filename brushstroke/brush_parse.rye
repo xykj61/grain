@@ -416,15 +416,21 @@ fn emit_style_line(out: []u8, pos: u32, text: []const u8) ParseError!u32 {
 /// `Grid.put_line` clips silently at `cols`, so a caller sizing a grid asks
 /// here first and learns the requirement before the machine runs.
 pub fn frame_widest_line(frame: BrushFrame) u32 {
-    assert(frame.lines.len <= max_frame_lines); // invariant: frame within its bound
-    assert(frame.max_lines <= max_frame_lines); // invariant: stated bound honest
+    // invariant: the frame holds no more lines than the parser was sized for, and its own
+    // declared maximum agrees -- two numbers that must not drift apart
+    assert(frame.lines.len <= max_frame_lines);
+    assert(frame.max_lines <= max_frame_lines);
     var widest: u32 = 0;
     for (frame.lines) |line| {
-        assert(line.len <= std.math.maxInt(u32)); // seam: std length into u32
+        // invariant: the length casts to u32 for the frame's own counts, so a line past that
+        // ceiling would wrap rather than refuse
+        assert(line.len <= std.math.maxInt(u32));
         const width: u32 = @intCast(line.len);
         if (width > widest) widest = width;
     }
-    assert(widest <= max_brush_bytes); // postcondition: width inside the byte bound
+    // invariant: the widest line fits the brush byte bound, so the frame can be painted without
+    // measuring it again
+    assert(widest <= max_brush_bytes);
     return widest;
 }
 

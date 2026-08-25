@@ -62,6 +62,9 @@ pub fn limit(clip: *timeline.Clip, start: u32, count: u32, ceil: i32) LimitError
         }
         // invariant: the written sample never exceeds the ceiling in magnitude, and its sign matches the input's.
         const y: i16 = clip.buf[start + i];
+        // invariant: the output sits inside the ceiling and keeps the sign it came in with,
+        // which is what makes this a limiter rather than a fold -- a sign flip would invert the
+        // waveform at the peak
         assert(y <= ceiling and y >= -ceiling);
         assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
     }

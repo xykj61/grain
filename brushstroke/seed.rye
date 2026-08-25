@@ -33,6 +33,8 @@ const Frame = struct {
     lines: []const Line,
 
     fn init(lines: []const Line) Frame {
+        // invariant: the lines are copied into a fixed array of max_lines, so a longer seed
+        // would be written past its end
         assert(lines.len <= max_lines);
         return .{ .lines = lines };
     }

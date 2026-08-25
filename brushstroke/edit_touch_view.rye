@@ -48,6 +48,8 @@ pub const EditTouchView = struct {
         if (cols == 0 or rows == 0) return error.BadView;
         // invariant: the grid fits the down-map's own ceiling, so paint never refuses on dimension.
         if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.BadView;
+        // invariant: the map has real columns and rows and neither passes the ceiling its array
+        // was sized for, so a touch lands on a cell that exists
         assert(cols >= 1);
         assert(rows >= 1);
         assert(cols <= image_skate.max_map_cols);

@@ -57,17 +57,15 @@ comment block, or design four ways. **B stands; below B pushes one molt frame**,
 **%207-%213 -- the invariant arc, corrected ten times.** The **13,235** this card carried fell to
 **4,242**, **1,385** on **reachability**, **853** on the label pattern, **400** once reachability
 crossed files. **Eight rooms reach 100%** -- glow, mand, crypto, linengrow, rye, tally, mantra, comlink.
-crypto was never 57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**),
-and both crypto guards ran GREEN after.
+crypto was never 57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**).
 **The unlabelled-456 sweep was refused** -- 361 of 377 were test narration inside `pub fn` proof
-functions (**%213**). **The cross-file pass then landed:** the spread reaches a `pub fn` only when no
-other module qualified-calls it **and** it returns `void`, both erring toward contract; **24
-behaviors** prove it. **`caravan` swept to 37:** 117 of its 171 carried a labelled
-reason **trailing** the assert, moved above unchanged; 16 written; 17 are proof the void condition
-safely keeps. **20 stay uncovered on purpose** -- `bounded`, `chain` and `twin` hold a
-**byte-identical** region body, so a comment costs triple and the zero-slack carry ratchet reds.
-**The fold is the answer and wants its own round.** Tree **98%**, gap **266**; carry falls
-**58,544 -> 58,540**; the suite sings **GREEN across 109 rungs**.
+functions (**%213**). **Cross-file reachability then landed:** the spread reaches a `pub fn` only
+when no other module qualified-calls it **and** it returns `void`; **24 behaviors** prove it. **`caravan` swept to 37**, 117 of its 171 carrying a labelled
+reason **trailing** the assert. **20 stay uncovered on purpose** -- `bounded`, `chain` and `twin`
+hold a **byte-identical** region body, so a comment costs triple and the zero-slack carry ratchet
+reds. **The fold is the answer and wants its own round.** Carry falls **58,544 -> 58,540** and the suite sings
+**GREEN across 109 rungs**. **`image`, `lotus` and `brushstroke` closed** -- 121 blocks. **Tree 99%,
+gap 121:** `caravan` 37 (20 fold-blocked), `pond` 24, `mycelium` 20, then singles.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 
