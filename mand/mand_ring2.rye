@@ -88,7 +88,9 @@ pub const Decision = struct {
 
 /// Build a schedule or refuse MalformedSchedule / MissingSchedule (fail closed).
 pub fn make_schedule(class: []const u8, keep_from: u64, keep_until: u64) RetentionError!Schedule {
-    assert(class.len <= max_class_name_len); // precondition: class within name budget
+    // invariant: the class name is copied into a fixed buffer of max_class_name_len, so a
+    // longer one would schedule a different class than the caller named
+    assert(class.len <= max_class_name_len);
     if (class.len == 0) return error.MissingSchedule;
     if (keep_until < keep_from) return error.MalformedSchedule;
     const span: u64 = keep_until - keep_from;
@@ -98,14 +100,18 @@ pub fn make_schedule(class: []const u8, keep_from: u64, keep_until: u64) Retenti
     tally_copy.copy_disjoint(u8, s.class[0..class.len], class);
     s.keep_from = keep_from;
     s.keep_until = keep_until;
-    assert(s.class_len > 0); // postcondition: class present
-    assert(s.keep_until >= s.keep_from); // postcondition: ordered window
+    // invariant: a schedule with no class and no ordered window decides nothing, so both are
+    // stated here where the schedule is built rather than where it is read
+    assert(s.class_len > 0);
+    assert(s.keep_until >= s.keep_from);
     return s;
 }
 
 /// True when any hold in the slice is in force.
 pub fn hold_in_force(holds: []const Hold) bool {
-    assert(holds.len <= max_holds_per_record); // precondition: within named bound
+    // invariant: the holds are walked up to this count, and the ceiling is what the record's
+    // own array was sized for
+    assert(holds.len <= max_holds_per_record);
     var i: u32 = 0;
     const n: u32 = @intCast(holds.len);
     while (i < n) : (i += 1) {
@@ -116,18 +122,24 @@ pub fn hold_in_force(holds: []const Hold) bool {
 
 /// Eligibility path only — window vs now. Does not consult holds.
 pub fn standing_by_window(schedule: *const Schedule, now: u64) Standing {
-    assert(schedule.class_len > 0); // precondition: schedule declared
-    assert(schedule.keep_until >= schedule.keep_from); // precondition: ordered
+    // invariant: the window is compared as a range, so an unordered one would place every date
+    // outside it and read as eligible
+    assert(schedule.class_len > 0);
+    assert(schedule.keep_until >= schedule.keep_from);
     if (now < schedule.keep_until) return .keep;
     return .eligible;
 }
 
 /// Hold path — past-window standing becomes HELD when any hold is in force.
 pub fn standing_with_holds(window_standing: Standing, holds: []const Hold) RetentionError!Standing {
-    assert(holds.len <= max_holds_per_record); // precondition: within named bound
+    // invariant: the holds are walked up to this count, and the ceiling is what the record's
+    // own array was sized for
+    assert(holds.len <= max_holds_per_record);
     if (holds.len > max_holds_per_record) return error.TooManyHolds;
     if (window_standing == .keep) return .keep;
-    assert(window_standing == .eligible); // invariant: only eligible can become held
+    // invariant: a hold can only be placed on something already eligible, so reaching here from
+    // any other standing means a hold is being read as an override rather than a pause
+    assert(window_standing == .eligible);
     if (hold_in_force(holds)) return .held;
     return .eligible;
 }
@@ -138,7 +150,9 @@ pub fn retention_standing(
     now: u64,
     holds: []const Hold,
 ) RetentionError!Standing {
-    assert(holds.len <= max_holds_per_record); // precondition
+    // invariant: the holds are walked up to this count, and the ceiling is what the record's
+    // own array was sized for
+    assert(holds.len <= max_holds_per_record);
     const sched = schedule orelse return error.MissingSchedule;
     if (sched.class_len == 0) return error.MissingSchedule;
     if (sched.keep_until < sched.keep_from) return error.MalformedSchedule;
@@ -156,14 +170,19 @@ pub fn decide_retention(
     now: u64,
     holds: []const Hold,
 ) RetentionError!Decision {
-    assert(actor.len > 0); // precondition: actor named
-    assert(actor.len <= mand1.max_audit_name_len); // precondition: actor within bound
-    assert(record_id.len > 0); // precondition: record named
-    assert(record_id.len <= mand1.max_audit_name_len); // precondition: record within bound
-    assert(holds.len <= max_holds_per_record); // precondition: holds within bound
+    // invariant: the decision is written into the audit trail below, and every name it records
+    // is copied into a fixed buffer -- an unnamed or over-long actor would leave a retention
+    // decision nobody can trace
+    assert(actor.len > 0);
+    assert(actor.len <= mand1.max_audit_name_len);
+    assert(record_id.len > 0);
+    assert(record_id.len <= mand1.max_audit_name_len);
+    assert(holds.len <= max_holds_per_record);
     const standing = try retention_standing(schedule, now, holds);
     const word = standing.word();
-    assert(word.len > 0); // invariant: every standing has a plain word
+    // invariant: every standing carries a plain word for the trail, so an empty one would
+    // record a decision the audit cannot read back
+    assert(word.len > 0);
     audit.append(actor, record_id, word) catch return error.AuditFull;
     return .{ .standing = standing, .audit_written = true };
 }

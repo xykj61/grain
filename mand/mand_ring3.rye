@@ -66,6 +66,9 @@ pub const KeyStore = struct {
     count: u32 = 0,
 
     pub fn insert(self: *KeyStore, subject: []const u8, material: *const [max_key_bytes]u8) ErasureError!void {
+        // invariant: the subject is copied into a fixed buffer of max_subject_len, so a longer
+        // one would arrive truncated into a different subject -- and this ring destroys keys by
+        // subject, so the wrong name here destroys the wrong key
         assert(subject.len > 0);
         assert(subject.len <= max_subject_len);
         if (self.count >= max_keys) return error.KeyStoreFull;
@@ -87,6 +90,8 @@ pub const KeyStore = struct {
     }
 
     pub fn zeroize_at(self: *KeyStore, index: u32) void {
+        // invariant: the key is zeroized in place by this index, so an index past the count
+        // would clear a slot that belongs to nobody, or none at all
         assert(index < self.count);
         @memset(self.keys[@intCast(index)].material[0..], 0);
         self.keys[@intCast(index)].present = false;
@@ -98,6 +103,9 @@ pub const Ciphertext = struct {
     len: u32 = 0,
 
     pub fn seal(subject_key: *const SubjectKey, plaintext: []const u8) ErasureError!Ciphertext {
+        // invariant: the plaintext is sealed into a buffer of max_cipher_len and a key must be
+        // present to seal with, so an absent key would return a cipher that is merely the
+        // plaintext moved
         assert(plaintext.len > 0);
         assert(plaintext.len <= max_cipher_len);
         assert(subject_key.present);
@@ -112,6 +120,8 @@ pub const Ciphertext = struct {
     }
 
     pub fn open(subject_key: *const SubjectKey, cipher: *const Ciphertext) ErasureError![max_cipher_len]u8 {
+        // invariant: a key must be present to open with, and an empty cipher would return an
+        // empty plaintext that reads like a successful open of nothing
         assert(subject_key.present);
         assert(cipher.len > 0);
         var out: [max_cipher_len]u8 = undefined;
@@ -160,10 +170,14 @@ pub const RemovalLog = struct {
         key_material: *const [max_key_bytes]u8,
         stamp: u64,
     ) ErasureError!void {
+        // invariant: the subject is copied into a fixed buffer of max_subject_len, so a longer
+        // one would append under a different subject than the caller named
         assert(subject.len > 0);
         assert(subject.len <= max_subject_len);
         if (self.count >= max_removal_facts) return error.RemovalLogFull;
         const tag = authority.tag();
+        // invariant: the tag is copied into a fixed buffer of max_authority_len, so a longer
+        // authority would be recorded as a shorter one it does not equal
         assert(tag.len <= max_authority_len);
         var f: RemovalFact = .{};
         f.subject_len = @intCast(subject.len);
@@ -201,17 +215,25 @@ pub fn destroy_key(
     witness_mode: bool,
     stamp: u64,
 ) ErasureError!void {
+    // invariant: the holds are walked up to this count, and the ceiling is what the record's
+    // own array was sized for
     assert(holds.len <= mand2.max_holds_per_record);
     if (!witness_mode_allowed(witness_mode)) return error.WitnessModeRequired;
     if (subject.len == 0 or subject.len > max_subject_len) return error.MissingKeyRef;
     const idx = store.find_index(subject) orelse return error.MissingKeyRef;
+    // invariant: the key store is read by this index, so an index past the count would name a
+    // slot the store never held
     assert(idx < store.count);
     const standing = mand2.retention_standing(schedule, now, holds) catch return error.MalformedAuthority;
     if (standing == .held) return error.HeldRefused;
     if (standing == .keep) return error.NotEligible;
+    // invariant: a key is destroyed only from the eligible standing, so any other standing
+    // reaching here means ring 2's decision was read wrong or skipped
     assert(standing == .eligible);
     const key_ref = store.keys[@intCast(idx)].material;
     try removal_log.append(subject, authority, &key_ref, stamp);
     store.zeroize_at(idx);
+    // invariant: the destroy has landed when this runs, and this is what the whole ring exists
+    // to be able to say: the key is gone rather than merely marked
     assert(!store.keys[@intCast(idx)].present);
 }

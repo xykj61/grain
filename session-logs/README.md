@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.205510` | [the ring that destroys by name](20260824-205510_the-ring-that-destroys-by-name.kyri) | mand 0% to 100% -- custody code, where a reason is worth most. |
 | `20260824.205156` | [glow reads its own reasons](20260824-205156_glow-reads-its-own-reasons.kyri) | glow 3.4% to 100%, and a sixth measurement fault owned. |
 | `20260824.203812` | [the reasons were on the wrong line](20260824-203812_the-reasons-were-on-the-wrong-line.kyri) | glow 3.4% to 48%; its reasons were trailing comments all along. |
 | `20260824.202727` | [the role is in the call graph](20260824-202727_the-role-is-in-the-call-graph.kyri) | photos.rye needed no sweep; the bin reads reachability and the law reads 92%. |

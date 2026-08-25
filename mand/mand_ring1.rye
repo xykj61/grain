@@ -61,12 +61,15 @@ pub const AuditLog = struct {
         record_id: []const u8,
         authority: []const u8,
     ) error{AuditFull}!void {
-        assert(reader.len > 0); // precondition: reader named
-        assert(reader.len <= max_audit_name_len); // precondition: reader within bound
-        assert(record_id.len > 0); // precondition: record named
-        assert(record_id.len <= max_audit_name_len); // precondition: record within bound
-        assert(authority.len > 0); // precondition: authority named
-        assert(authority.len <= max_audit_name_len); // precondition: authority within bound
+        // invariant: each of the three names is copied into a fixed buffer of
+        // max_audit_name_len, so an empty or over-long one would leave an audit line naming
+        // somebody other than who acted
+        assert(reader.len > 0);
+        assert(reader.len <= max_audit_name_len);
+        assert(record_id.len > 0);
+        assert(record_id.len <= max_audit_name_len);
+        assert(authority.len > 0);
+        assert(authority.len <= max_audit_name_len);
         if (self.count >= max_audit_entries) return error.AuditFull;
         var e: AuditEntry = .{};
         e.reader_len = @intCast(reader.len);
@@ -77,6 +80,8 @@ pub const AuditLog = struct {
         tally_copy.copy_disjoint(u8, e.authority[0..authority.len], authority);
         self.entries[self.count] = e;
         self.count += 1;
+        // invariant: the append has landed when this runs, so it states that the trail stayed
+        // inside the ceiling its array was sized for
         assert(self.count <= max_audit_entries);
     }
 };
@@ -88,6 +93,8 @@ pub const SeeResult = struct {
 
 /// True when the named authority holds read over the record resource.
 pub fn may_see(table: *const caps.CapabilityTable, authority: []const u8) bool {
+    // invariant: an unnamed authority would be compared against every capability and match
+    // none, which reads as a refusal the caller never earned
     assert(authority.len > 0);
     return table.allows(authority, record_resource, caps.right_read);
 }
@@ -104,11 +111,13 @@ pub fn see_record(
     record_id: []const u8,
     body: []const u8,
 ) SeeError!SeeResult {
+    // invariant: a see is the seam this whole ring exists to guard, so reader, authority,
+    // record and body are each named and bounded before any of them reaches the trail
     assert(reader.len > 0);
     assert(authority.len > 0);
     assert(record_id.len > 0);
-    assert(body.len > 0); // precondition: body present
-    assert(body.len <= max_record_body_len); // precondition: body within bound
+    assert(body.len > 0);
+    assert(body.len <= max_record_body_len);
     // Ring-1: reader and authority are one named identity at the seam.
     if (!std.mem.eql(u8, reader, authority)) return error.Refused;
     if (!may_see(table, authority)) return error.Refused;
