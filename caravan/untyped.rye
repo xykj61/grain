@@ -171,7 +171,8 @@ pub fn kind_name(kind: ObjectKind) []const u8 {
         .endpoint => "endpoint",
         .page => "page",
     };
-    assert(name.len > 0); // invariant: a named kind always carries its name
+    // invariant: a named kind always carries its name
+    assert(name.len > 0);
     return name;
 }
 
@@ -197,7 +198,8 @@ pub fn align_up(value: u64, bits: u32) u64 {
 
 /// Whether `value` already stands on a boundary of two raised to `bits`.
 pub fn aligned_to(value: u64, bits: u32) bool {
-    assert(bits <= max_untyped_bits); // invariant: the alignment is one this module can name
+    // invariant: the alignment is one this module can name
+    assert(bits <= max_untyped_bits);
     const step: u64 = @as(u64, 1) << @intCast(bits);
     return value % step == 0;
 }
@@ -239,9 +241,11 @@ pub const Region = struct {
 
     /// How many bytes the region holds in all.
     pub fn bytes(self: *const Region) u64 {
-        assert(self.size_bits <= max_untyped_bits); // invariant: the width is one this module can name
+        // invariant: the width is one this module can name
+        assert(self.size_bits <= max_untyped_bits);
         const total: u64 = @as(u64, 1) << @intCast(self.size_bits);
-        assert(total >= 1); // invariant: a region always holds at least one byte
+        // invariant: a region always holds at least one byte
+        assert(total >= 1);
         return total;
     }
 
@@ -250,7 +254,8 @@ pub const Region = struct {
     /// which is exactly what `room_for` measures and a bare remainder does not.
     pub fn free_bytes(self: *const Region) u64 {
         const total = self.bytes();
-        assert(self.watermark <= total); // invariant: nothing was spent that was never there
+        // invariant: nothing was spent that was never there
+        assert(self.watermark <= total);
         return total - self.watermark;
     }
 
@@ -318,7 +323,8 @@ pub const Region = struct {
     /// boundary of its own size, since the first does and each is exactly one
     /// object wide.
     pub fn object_address(self: *const Region, kind: ObjectKind, start: u64, index: u32) u64 {
-        assert(index < max_objects); // invariant: the index stands inside one carve's bound
+        // invariant: the index stands inside one carve's bound
+        assert(index < max_objects);
         const each = object_bytes(kind);
         const address = self.origin + start + each * @as(u64, index);
         // invariant: every object of a carve stands on a boundary of its own size.

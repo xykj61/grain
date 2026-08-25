@@ -135,7 +135,8 @@ pub fn has_flow(set: *const relay.FlowSet, from: u32, to: u32) bool {
     assert(from != to);
     var i: u32 = 0;
     while (i < set.count) : (i += 1) {
-        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < regions.max_regions);
         const flow = set.flows[i];
         if (flow.from == from and flow.to == to) return true;
     }
@@ -188,7 +189,8 @@ pub fn ring_order(set: *const relay.FlowSet, domain_count: u32) ?RingOrder {
     // Each level advances its candidate or falls back one, so the walk
     // spends at most domain_count steps per level and always terminates.
     while (depth >= 1) {
-        assert(depth <= domain_count); // invariant: the walk stays inside the roster
+        // invariant: the walk stays inside the roster
+        assert(depth <= domain_count);
         if (next[depth] >= domain_count) {
             depth -= 1;
             if (depth == 0) break;
@@ -238,10 +240,12 @@ pub fn reach_of(sys: *const system.System, domain: u32) u32 {
     var held: u32 = 0;
     var i: u32 = 0;
     while (i < sys.map.grant_count) : (i += 1) {
-        assert(i < regions.max_grants); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < regions.max_grants);
         const one = sys.map.grants[i];
         if (one.domain != domain) continue;
-        assert(one.region < regions.max_regions); // invariant: the grant addresses the roster
+        // invariant: the grant addresses the roster
+        assert(one.region < regions.max_regions);
         if (seen[one.region]) continue;
         seen[one.region] = true;
         held += 1;
@@ -558,7 +562,8 @@ fn do_stand(
     var stood: [max_hops]u32 = @splat(0);
     var i: u32 = 0;
     while (i < task.hops.count) : (i += 1) {
-        assert(i < max_hops); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < max_hops);
         stood[i] = queue.read_index(io, slot, task.hops.name_at(i)) catch |err|
             return serve.reach_code(err);
     }
@@ -765,7 +770,8 @@ fn run_assignment(
     argv[4] = count_word;
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
     }
     var q: u32 = 0;
@@ -924,7 +930,8 @@ pub fn check_wire() u8 {
         print("  RED: an ask this ring wrote carried no readable origin\n", .{});
         return 1;
     };
-    assert(std.mem.eql(u8, origin, "alder")); // invariant: the origin reads back whole
+    // invariant: the origin reads back whole
+    assert(std.mem.eql(u8, origin, "alder"));
     print("  the wire holds every step to its verb's own shape, {d} regions and {d} neighbors here\n", .{
         back.hops.count, back.peers.count,
     });

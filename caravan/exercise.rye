@@ -160,7 +160,8 @@ pub fn provision(io: std.Io, sys: *const system.System) ProvisionError!u32 {
     Dir.cwd().createDirPath(io, scratch_dir) catch return error.StoreUnwritable;
     var i: u32 = 0;
     while (i < sys.map.region_count) : (i += 1) {
-        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < regions.max_regions);
         try provision_region(io, &sys.map.regions[i]);
     }
     // invariant: every declared region was provisioned, none invented
@@ -184,7 +185,8 @@ pub fn held_mask(slot: *const capabilities.DependentSlot, region_name: []const u
     assert(region_name.len >= 1);
     var i: u32 = 0;
     while (i < slot.cap_count) : (i += 1) {
-        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_caps_per_dependent);
         const cap = &slot.caps[i];
         if (std.mem.eql(u8, cap.name_slice(), region_name)) return cap.rights_mask;
     }
@@ -309,7 +311,8 @@ fn region_of(sys: *const system.System, name: []const u8) *const regions.Region 
     // invariant: a lookup always names a region
     assert(name.len >= 1);
     const index = sys.map.find_region(name).?;
-    assert(index < regions.max_regions); // invariant: the index addresses the roster
+    // invariant: the index addresses the roster
+    assert(index < regions.max_regions);
     return &sys.map.regions[index];
 }
 

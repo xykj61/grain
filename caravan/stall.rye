@@ -762,7 +762,8 @@ fn run_assignment(
     argv[4] = count_word;
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
     }
     var q: u32 = 0;

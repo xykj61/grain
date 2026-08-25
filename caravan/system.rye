@@ -225,7 +225,8 @@ pub const System = struct {
         var total: u64 = 0;
         var i: u32 = 0;
         while (i < self.map.region_count) : (i += 1) {
-            assert(i < regions.max_regions); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < regions.max_regions);
             total += self.map.regions[i].size_bytes;
         }
         // invariant: the sum stays within what the whole map could declare
@@ -242,7 +243,8 @@ pub const System = struct {
         assert(domain < regions.max_domains);
         var i: u32 = 0;
         while (i < self.map.grant_count) : (i += 1) {
-            assert(i < regions.max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < regions.max_grants);
             if (self.map.grants[i].domain == domain) return true;
         }
         return false;
@@ -265,7 +267,8 @@ pub const System = struct {
         if (self.graph.domain_count != self.map.domain_count) return .rosters_disagree;
         var d: u32 = 0;
         while (d < self.graph.domain_count) : (d += 1) {
-            assert(d < channels.max_domains); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(d < channels.max_domains);
             const label = self.graph.domains[d].name_slice();
             const mirrored = self.map.find_domain(label) orelse return .rosters_disagree;
             if (mirrored != d) return .rosters_disagree;
@@ -273,14 +276,16 @@ pub const System = struct {
         if (!self.map.write_xor_execute()) return .write_and_execute;
         var r: u32 = 0;
         while (r < self.map.region_count) : (r += 1) {
-            assert(r < regions.max_regions); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(r < regions.max_regions);
             const label = self.map.regions[r].slot.name_slice();
             if (self.map.holders(label) == 0) return .unheld_region;
         }
         if (self.graph.domain_count >= 2) {
             var i: u32 = 0;
             while (i < self.graph.domain_count) : (i += 1) {
-                assert(i < channels.max_domains); // invariant: the walk stays in the array
+                // invariant: the walk stays in the array
+                assert(i < channels.max_domains);
                 const label = self.graph.domains[i].name_slice();
                 if (self.graph.degree(label) >= 1) continue;
                 if (self.holds_memory(i)) continue;
@@ -312,7 +317,8 @@ fn take_name(system: *System, text: []const u8) ParseError!void {
     if (text.len > max_name_len) return error.NameTooLong;
     var i: u32 = 0;
     while (i < text.len) : (i += 1) {
-        assert(i < max_name_len); // invariant: the copy stays in the array
+        // invariant: the copy stays in the array
+        assert(i < max_name_len);
         system.name[i] = text[i];
     }
     system.name_len = @intCast(text.len); // seam: a bounded length published as u32
