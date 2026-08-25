@@ -63,8 +63,9 @@ names: a private function called only from a proof entry is proof whatever it is
 **`pond/apps/drawn_terminal.rye` swept 0% -> 100%** -- 57 asserts, 22 blocks, wrapped at 96 to match
 caravan's median of 73. **`image/photos.rye` needed no sweep.** **`glow` finished on Keaton's word: 3.4% -> 100%**, 16 files and 139 blocks. Its reasons were largely
 there already as **trailing** comments -- a placement rather than an absence (1,144 tree-wide) -- and
-each moved above and was rewritten. **Open door:** `crypto` 271, `linengrow` 239, `mand` 61 at 0.0%;
-tree **93%**, gap **1,187**.
+each moved above and was rewritten. **`mand` followed: 0.0% -> 100%**, 61 asserts in 40 blocks across the capability table and the three
+rings -- custody code, where a reason is worth most. **Open door:** `crypto` 271, `linengrow` 239;
+tree **93%**, gap **1,124**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

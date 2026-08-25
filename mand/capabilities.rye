@@ -26,6 +26,8 @@ pub const max_caps_per_dependent: u32 = 8;
 pub const max_name_len: u32 = 48;
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 for every count this table keeps, so a buffer past
+    // that ceiling would wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -57,18 +59,28 @@ pub const Capability = struct {
     rights_mask: u8 = 0,
 
     pub fn init(name: []const u8, rights_mask: u8) Capability {
+        // invariant: the name is copied into a fixed buffer of max_name_len, so a longer one
+        // would arrive truncated into a different capability rather than refused -- and a
+        // capability answering to the wrong name is the fault this whole table exists to
+        // prevent
         assert(name.len <= max_name_len);
         var cap: Capability = .{};
         cap.name_len = buf_len_u32(name);
         tally_copy.copy_disjoint(u8, cap.name[0..name.len], name);
         cap.rights_mask = rights_mask;
+        // invariant: the stored length is what name_slice reads back by, so it names a span the
+        // buffer actually holds
         assert(cap.name_len <= max_name_len);
         return cap;
     }
 
     fn name_slice(self: *const Capability) []const u8 {
+        // invariant: the slice below is taken from a fixed buffer of max_name_len with no
+        // bounds check of its own
         assert(self.name_len <= max_name_len);
         const n: usize = @intCast(self.name_len);
+        // invariant: the read is bounded by the buffer as well as by the law, since the two are
+        // set apart and only one of them is checked above
         assert(n <= self.name.len);
         return self.name[0..n];
     }
@@ -87,27 +99,37 @@ pub const DependentSlot = struct {
     active: bool = false,
 
     pub fn init(label: []const u8) DependentSlot {
+        // invariant: the label is copied into a fixed buffer of max_name_len, so a longer one
+        // would name a different dependent than the caller asked for
         assert(label.len <= max_name_len);
         var slot: DependentSlot = .{};
         slot.label_len = buf_len_u32(label);
         tally_copy.copy_disjoint(u8, slot.label[0..label.len], label);
         slot.active = true;
+        // invariant: a dependent arrives holding no capabilities, so a slot carrying any at
+        // init would be one this table is re-using without clearing
         assert(slot.cap_count == 0);
         return slot;
     }
 
     fn label_slice(self: *const DependentSlot) []const u8 {
+        // invariant: the slice below is taken from a fixed buffer of max_name_len with no
+        // bounds check of its own
         assert(self.label_len <= max_name_len);
         const n: usize = @intCast(self.label_len);
         return self.label[0..n];
     }
 
     pub fn grant(self: *DependentSlot, cap: Capability) error{TableFull}!void {
+        // invariant: a grant onto an inactive slot would hand a capability to a dependent that
+        // is not there to receive it, and the count below would still rise
         assert(self.active);
         assert(self.cap_count <= max_caps_per_dependent);
         if (self.cap_count >= max_caps_per_dependent) return error.TableFull;
         self.caps[self.cap_count] = cap;
         self.cap_count += 1;
+        // invariant: the append has landed when this runs, so it states that the grant stayed
+        // inside the per-dependent ceiling rather than checking beforehand
         assert(self.cap_count <= max_caps_per_dependent);
     }
 };
@@ -122,11 +144,15 @@ pub const CapabilityTable = struct {
     dependent_count: u32 = 0,
 
     pub fn add_dependent(self: *CapabilityTable, label: []const u8) error{TableFull}!*DependentSlot {
+        // invariant: the array is fixed at max_dependents and the count indexes it, so a count
+        // at the ceiling has no slot left to write into
         assert(self.dependent_count <= max_dependents);
         if (self.dependent_count >= max_dependents) return error.TableFull;
         self.dependents[self.dependent_count] = DependentSlot.init(label);
         const slot = &self.dependents[self.dependent_count];
         self.dependent_count += 1;
+        // invariant: the append has landed when this runs, so it states that the table stayed
+        // inside its own ceiling
         assert(self.dependent_count <= max_dependents);
         return slot;
     }
@@ -134,6 +160,8 @@ pub const CapabilityTable = struct {
     pub fn find_dependent(self: *const CapabilityTable, label: []const u8) ?*const DependentSlot {
         var i: u32 = 0;
         while (i < self.dependent_count) : (i += 1) {
+            // invariant: the search reads the dependent array by this index, so the loop's
+            // bound and the array's length are the same number
             assert(i < max_dependents);
             const slot = &self.dependents[i];
             if (slot.active and std.mem.eql(u8, slot.label_slice(), label)) return slot;
@@ -145,9 +173,13 @@ pub const CapabilityTable = struct {
     /// that includes every requested right bit.
     pub fn allows(self: *const CapabilityTable, dependent_label: []const u8, resource: []const u8, need: u8) bool {
         const slot = self.find_dependent(dependent_label) orelse return false;
+        // invariant: the capability array is fixed at max_caps_per_dependent, and the walk
+        // below reads it by index up to this count
         assert(slot.cap_count <= max_caps_per_dependent);
         var i: u32 = 0;
         while (i < slot.cap_count) : (i += 1) {
+            // invariant: the walk reads the capability array by this index, so its bound and
+            // the array's length are the same number
             assert(i < max_caps_per_dependent);
             const cap = &slot.caps[i];
             if (std.mem.eql(u8, cap.name_slice(), resource)) {
