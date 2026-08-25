@@ -263,7 +263,8 @@ pub const Map = struct {
         assert(name.len <= max_name_len);
         var i: u32 = 0;
         while (i < self.domain_count) : (i += 1) {
-            assert(i < max_domains); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_domains);
             const slot = &self.domains[i];
             if (slot.live and std.mem.eql(u8, slot.name_slice(), name)) return i;
         }
@@ -278,7 +279,8 @@ pub const Map = struct {
         assert(name.len <= max_name_len);
         var i: u32 = 0;
         while (i < self.region_count) : (i += 1) {
-            assert(i < max_regions); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_regions);
             const slot = &self.regions[i].slot;
             if (slot.live and std.mem.eql(u8, slot.name_slice(), name)) return i;
         }
@@ -327,7 +329,8 @@ pub const Map = struct {
         assert(domain < max_domains);
         var i: u32 = 0;
         while (i < self.grant_count) : (i += 1) {
-            assert(i < max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_grants);
             if (self.grants[i].maps(region, domain)) return i;
         }
         return null;
@@ -405,7 +408,8 @@ pub const Map = struct {
         var count: u32 = 0;
         var i: u32 = 0;
         while (i < self.grant_count) : (i += 1) {
-            assert(i < max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_grants);
             if (self.grants[i].region == r) count += 1;
         }
         // invariant: a region reaches at most every grant once
@@ -425,10 +429,12 @@ pub const Map = struct {
         var total: u64 = 0;
         var i: u32 = 0;
         while (i < self.grant_count) : (i += 1) {
-            assert(i < max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_grants);
             const g = &self.grants[i];
             if (g.domain != d) continue;
-            assert(g.region < max_regions); // invariant: the region index is addressable
+            // invariant: the region index is addressable
+            assert(g.region < max_regions);
             total += self.regions[g.region].size_bytes;
         }
         // invariant: a footprint stays within what the whole map could declare
@@ -443,7 +449,8 @@ pub const Map = struct {
         assert(self.grant_count <= max_grants);
         var i: u32 = 0;
         while (i < self.grant_count) : (i += 1) {
-            assert(i < max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_grants);
             const p = self.grants[i].perm;
             if (p.write and p.execute) return false;
         }

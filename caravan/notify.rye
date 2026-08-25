@@ -186,7 +186,8 @@ pub fn provision_bells(io: std.Io, sys: *const system.System) BellError!u32 {
     Dir.cwd().createDirPath(io, bell_dir) catch return error.BellUnavailable;
     var i: u32 = 0;
     while (i < sys.graph.channel_count) : (i += 1) {
-        assert(i < channels.max_channels); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < channels.max_channels);
         const link = &sys.graph.channels[i];
         // invariant: both endpoints address the bounded domain roster
         assert(link.low < channels.max_domains);
@@ -575,11 +576,13 @@ pub fn peers_of(sys: *const system.System, domain: []const u8, out: *PeerList) v
     const self_index = sys.graph.find_domain(domain) orelse return;
     var i: u32 = 0;
     while (i < sys.graph.channel_count) : (i += 1) {
-        assert(i < channels.max_channels); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < channels.max_channels);
         const link = &sys.graph.channels[i];
         if (!link.touches(self_index)) continue;
         const other = if (link.low == self_index) link.high else link.low;
-        assert(other < channels.max_domains); // invariant: the index addresses the roster
+        // invariant: the index addresses the roster
+        assert(other < channels.max_domains);
         out.add(sys.graph.domains[other].name_slice()) catch return;
     }
     // invariant: a domain's peer list matches the degree the graph reports
@@ -626,7 +629,8 @@ fn run_assignment(
     argv[4] = count_word;
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
     }
     var q: u32 = 0;

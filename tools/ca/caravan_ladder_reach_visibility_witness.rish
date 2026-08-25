@@ -255,7 +255,7 @@ assert fourth.ok else "reach-visibility: the widest remaining family must read c
 # before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=63655 below_fold_line=1140 above_fold_line=62515" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_OK total=63651 below_fold_line=1136 above_fold_line=62515" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=38" else "reach-visibility: want the serve module's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3677" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"

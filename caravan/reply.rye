@@ -100,7 +100,8 @@ pub fn stage_name(stage: Stage) []const u8 {
         .table => "table",
         .deed => "deed",
     };
-    assert(name.len > 0); // invariant: a named stage always carries its name
+    // invariant: a named stage always carries its name
+    assert(name.len > 0);
     return name;
 }
 
@@ -113,7 +114,8 @@ pub fn order_reason(stage: Stage) []const u8 {
         .table => "third, because whom and what are legible by now, and permission is settled before anything is acted upon",
         .deed => "last, because acting is the one stage that spends something, and only a well-formed, legible, permitted ask reaches it",
     };
-    assert(reason.len > 0); // invariant: every position in the order names its reason
+    // invariant: every position in the order names its reason
+    assert(reason.len > 0);
     return reason;
 }
 
@@ -215,7 +217,8 @@ pub fn deed_name(deed: Deed) []const u8 {
         .release => "release",
         .carve => "carve",
     };
-    assert(name.len > 0); // invariant: a named deed always carries its name
+    // invariant: a named deed always carries its name
+    assert(name.len > 0);
     return name;
 }
 
@@ -350,9 +353,11 @@ pub fn demo_bench() ReplyError!Bench {
 
     const both = capabilities.right_read | capabilities.right_write;
     const seated = try bench.tree.seat(0, 7, both);
-    assert(seated == .no_error); // invariant: an empty tree always seats its first root
+    // invariant: an empty tree always seats its first root
+    assert(seated == .no_error);
     const handed = try bench.tree.derive(0, 1, capabilities.right_read);
-    assert(handed == .no_error); // invariant: narrowing rights along a fresh lineage always carries
+    // invariant: narrowing rights along a fresh lineage always carries
+    assert(handed == .no_error);
 
     // invariant: the bench the corpus runs against is a whole one, every part.
     assert(bench.tree.whole());

@@ -393,7 +393,8 @@ fn spawn_one(
     argv[6] = count_word;
     var c: u32 = 0;
     while (c < slot.cap_count) : (c += 1) {
-        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(c < capabilities.max_caps_per_dependent);
         const word = allocator.alloc(u8, boot.max_cap_word_len) catch return error.SpawnFailed;
         argv[fixed_argv_words + c] = try boot.write_cap_word(word, &slot.caps[c]);
     }

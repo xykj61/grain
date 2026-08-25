@@ -122,7 +122,9 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-58544}
+# 58,544 until 20260825.001500, when moving 117 trailing invariant comments above their asserts
+# across the ladder took four carried lines off. A ceiling only falls.
+CEILING=${CARAVAN_CARRY_CEILING:-58540}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 

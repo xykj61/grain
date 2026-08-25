@@ -154,7 +154,8 @@ pub fn refusal_meaning(refusal: Refusal) []const u8 {
         .unaligned_length => "the length is not a whole number of pages",
         .beyond_address_space => "the placement reaches past the last address Sv39 can express",
     };
-    assert(meaning.len > 0); // invariant: every refusal is legible
+    // invariant: every refusal is legible
+    assert(meaning.len > 0);
     return meaning;
 }
 
@@ -180,14 +181,16 @@ pub fn size_bits(size: PageSize) u6 {
         .mega => large_page_bits,
         .four_k => page_bits,
     };
-    assert(bits >= page_bits); // invariant: no page is smaller than the smallest page
+    // invariant: no page is smaller than the smallest page
+    assert(bits >= page_bits);
     return bits;
 }
 
 /// How many bytes one page of this size covers.
 pub fn size_bytes(size: PageSize) u64 {
     const bytes = @as(u64, 1) << size_bits(size);
-    assert(bytes >= @as(u64, 1) << page_bits); // invariant: a page always covers at least a page
+    // invariant: a page always covers at least a page
+    assert(bytes >= @as(u64, 1) << page_bits);
     return bytes;
 }
 
@@ -199,7 +202,8 @@ pub fn kernel_symbol(size: PageSize) []const u8 {
         .mega => "seL4_RISCV_Mega_Page",
         .four_k => "seL4_RISCV_4K_Page",
     };
-    assert(symbol.len > 0); // invariant: every page size carries its name
+    // invariant: every page size carries its name
+    assert(symbol.len > 0);
     return symbol;
 }
 
@@ -212,7 +216,8 @@ pub fn entry_level(size: PageSize) u32 {
         .mega => 1,
         .four_k => 2,
     };
-    assert(level < page_table_levels); // invariant: every page is entered inside the tree
+    // invariant: every page is entered inside the tree
+    assert(level < page_table_levels);
     return level;
 }
 
@@ -234,7 +239,8 @@ pub const Placement = struct {
     /// The first address past the placement. Held as a function rather than a
     /// field so the two can never disagree.
     pub fn end(self: Placement) u64 {
-        assert(self.base <= virtual_address_limit); // invariant: the base is expressible
+        // invariant: the base is expressible
+        assert(self.base <= virtual_address_limit);
         return self.base + self.length;
     }
 
@@ -267,7 +273,8 @@ pub const Plan = struct {
     pub fn page_count(self: *const Plan) u32 {
         var total: u32 = 0;
         for (self.pages) |count| total += count;
-        assert(total <= max_plan_pages); // invariant: the plan stays inside its bound
+        // invariant: the plan stays inside its bound
+        assert(total <= max_plan_pages);
         return total;
     }
 
@@ -275,8 +282,10 @@ pub const Plan = struct {
     pub fn table_count(self: *const Plan) u32 {
         var total: u32 = 0;
         for (self.tables) |count| total += count;
-        assert(total >= 1); // invariant: every address space holds at least a root
-        assert(total <= max_plan_tables); // invariant: the tables stay inside their bound
+        // invariant: every address space holds at least a root
+        assert(total >= 1);
+        // invariant: the tables stay inside their bound
+        assert(total <= max_plan_tables);
         return total;
     }
 

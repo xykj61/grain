@@ -85,7 +85,8 @@ pub fn kernel_symbol(refusal: KernelRefusal) []const u8 {
         .revoke_first => "seL4_RevokeFirst",
         .not_enough_memory => "seL4_NotEnoughMemory",
     };
-    assert(symbol.len > 0); // invariant: a named answer always carries its name
+    // invariant: a named answer always carries its name
+    assert(symbol.len > 0);
     return symbol;
 }
 
@@ -104,7 +105,8 @@ pub fn kernel_meaning(refusal: KernelRefusal) []const u8 {
         .revoke_first => "capabilities stand derived from this one, so it cannot be derived further",
         .not_enough_memory => "the untyped region holds too little to retype",
     };
-    assert(meaning.len > 0); // invariant: every answer is legible
+    // invariant: every answer is legible
+    assert(meaning.len > 0);
     return meaning;
 }
 
@@ -215,7 +217,8 @@ pub fn debt_reason(owner: Owed) []const u8 {
         .derivation_tree => "a granted capability may be handed on, so grants form a tree Caravan must keep",
         .untyped_retyping => "memory a dependent receives is carved from an untyped region with a real floor",
     };
-    assert(reason.len > 0); // invariant: every debt names its reason
+    // invariant: every debt names its reason
+    assert(reason.len > 0);
     return reason;
 }
 
@@ -237,17 +240,21 @@ pub fn answered_count() u32 {
     for (all_kernel_refusals) |refusal| {
         if (answered_today(refusal)) count += 1;
     }
-    assert(count <= kernel_refusal_count); // invariant: answers never exceed the vocabulary
-    assert(count >= 1); // invariant: success is always answered
+    // invariant: answers never exceed the vocabulary
+    assert(count <= kernel_refusal_count);
+    // invariant: success is always answered
+    assert(count >= 1);
     return count;
 }
 
 /// How many of the eleven remain as design debt.
 pub fn unanswered_count() u32 {
     const answered = answered_count();
-    assert(answered <= kernel_refusal_count); // invariant: the subtraction stays in range
+    // invariant: the subtraction stays in range
+    assert(answered <= kernel_refusal_count);
     const remaining = kernel_refusal_count - answered;
-    assert(answered + remaining == kernel_refusal_count); // invariant: the two partition the vocabulary
+    // invariant: the two partition the vocabulary
+    assert(answered + remaining == kernel_refusal_count);
     return remaining;
 }
 

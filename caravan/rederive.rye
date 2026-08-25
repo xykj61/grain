@@ -143,7 +143,8 @@ pub fn slots_agree(
     if (!std.mem.eql(u8, a.label_slice(), b.label_slice())) return false;
     var i: u32 = 0;
     while (i < a.cap_count) : (i += 1) {
-        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_caps_per_dependent);
         if (!caps_agree(&a.caps[i], &b.caps[i])) return false;
     }
     return true;
@@ -161,7 +162,8 @@ pub fn tables_agree(
     if (a.dependent_count != b.dependent_count) return false;
     var i: u32 = 0;
     while (i < a.dependent_count) : (i += 1) {
-        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_dependents);
         if (!slots_agree(&a.dependents[i], &b.dependents[i])) return false;
     }
     return true;
@@ -177,7 +179,8 @@ pub fn first_drifted_dependent(
     assert(fresh.dependent_count <= capabilities.max_dependents);
     var i: u32 = 0;
     while (i < fresh.dependent_count) : (i += 1) {
-        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_dependents);
         const label = fresh.dependents[i].label_slice();
         const mine = remembered.find_dependent(label) orelse return label;
         if (!slots_agree(mine, &fresh.dependents[i])) return label;
@@ -250,11 +253,13 @@ pub fn drift_memory(table: *capabilities.CapabilityTable, d: Drift) ?Widened {
     if (d == .none) return null;
     var i: u32 = 0;
     while (i < table.dependent_count) : (i += 1) {
-        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_dependents);
         const slot = &table.dependents[i];
         var c: u32 = 0;
         while (c < slot.cap_count) : (c += 1) {
-            assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(c < capabilities.max_caps_per_dependent);
             const cap = &slot.caps[c];
             if ((cap.rights_mask & capabilities.right_write) == 0) {
                 cap.rights_mask |= capabilities.right_write;

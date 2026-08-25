@@ -126,7 +126,8 @@ pub fn kernel_symbol(object: KernelObject) []const u8 {
         .mega_page => "seL4_RISCV_Mega_Page",
         .page_table => "seL4_RISCV_PageTableObject",
     };
-    assert(symbol.len > 0); // invariant: a named object always carries its name
+    // invariant: a named object always carries its name
+    assert(symbol.len > 0);
     return symbol;
 }
 
@@ -143,7 +144,8 @@ pub fn kernel_meaning(object: KernelObject) []const u8 {
         .mega_page => "two megabytes of memory mapped as one page",
         .page_table => "one level of the tree that turns a virtual address into a real one",
     };
-    assert(meaning.len > 0); // invariant: every object is legible
+    // invariant: every object is legible
+    assert(meaning.len > 0);
     return meaning;
 }
 
@@ -164,7 +166,8 @@ pub const Tier = enum(u8) {
 /// listed, so the tier and the numbering can never disagree.
 pub fn tier_of(object: KernelObject) Tier {
     const value: u32 = @intFromEnum(object);
-    assert(value < kernel_object_count); // invariant: every object sits inside the vocabulary
+    // invariant: every object sits inside the vocabulary
+    assert(value < kernel_object_count);
     if (value < non_arch_object_type_count) return .portable;
     if (value < mode_object_type_count) return .mode;
     return .architecture;
@@ -177,7 +180,8 @@ pub fn tier_width(tier: Tier) u32 {
         .mode => mode_object_type_count - non_arch_object_type_count,
         .architecture => kernel_object_count - mode_object_type_count,
     };
-    assert(width >= 1); // invariant: a declared tier holds at least one object
+    // invariant: a declared tier holds at least one object
+    assert(width >= 1);
     return width;
 }
 
@@ -221,7 +225,8 @@ pub fn standing_reason(object: KernelObject) []const u8 {
         .cap_table => "capabilities.rye keeps a bounded table of dependents and their rights",
         .giga_page, .four_k_page, .mega_page, .page_table => "regions.rye declares the memory, mapping.rye plans the pages exactly; the retype itself wants a kernel",
     };
-    assert(reason.len > 0); // invariant: every standing names its reason
+    // invariant: every standing names its reason
+    assert(reason.len > 0);
     return reason;
 }
 
@@ -243,16 +248,19 @@ pub fn held_count() u32 {
     for (all_kernel_objects) |object| {
         if (standing_of(object) == .held) count += 1;
     }
-    assert(count <= kernel_object_count); // invariant: holdings never exceed the vocabulary
+    // invariant: holdings never exceed the vocabulary
+    assert(count <= kernel_object_count);
     return count;
 }
 
 /// How many of the nine remain as design debt.
 pub fn owed_count() u32 {
     const held = held_count();
-    assert(held <= kernel_object_count); // invariant: the subtraction stays in range
+    // invariant: the subtraction stays in range
+    assert(held <= kernel_object_count);
     const remaining = kernel_object_count - held;
-    assert(held + remaining == kernel_object_count); // invariant: the two partition the vocabulary
+    // invariant: the two partition the vocabulary
+    assert(held + remaining == kernel_object_count);
     return remaining;
 }
 

@@ -145,7 +145,8 @@ pub fn check_name(check: Check) []const u8 {
         .range => "range",
         .alignment => "alignment",
     };
-    assert(name.len > 0); // invariant: a named check always carries its name
+    // invariant: a named check always carries its name
+    assert(name.len > 0);
     return name;
 }
 
@@ -159,7 +160,8 @@ pub fn order_reason(check: Check) []const u8 {
         .range => "second, because a count is answerable the moment the kind is known and needs no address at all",
         .alignment => "last, because it is the only question needing both the kind's size and an address the caller supplies",
     };
-    assert(reason.len > 0); // invariant: every position in the order names its reason
+    // invariant: every position in the order names its reason
+    assert(reason.len > 0);
     return reason;
 }
 

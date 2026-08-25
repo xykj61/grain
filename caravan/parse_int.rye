@@ -41,7 +41,8 @@ pub const ParseIntOptions = struct {
 /// character outside the requested base's digit set, before ever handing the
 /// text to the underlying parser.
 pub fn parse_int(comptime T: type, text: []const u8, comptime options: ParseIntOptions) !T {
-    comptime assert(options.base == 10 or options.base == 16); // precondition: a base this file actually proves
+    // invariant: a base this file actually proves
+    comptime assert(options.base == 10 or options.base == 16);
     if (!options.allow_leading_zero) {
         if (text.len > 1 and text[0] == '0') return error.LeadingZero;
     }

@@ -110,7 +110,8 @@ pub fn grants_for(sys: *const system.System, domain: u32) u32 {
     var held: u32 = 0;
     var g: u32 = 0;
     while (g < sys.map.grant_count) : (g += 1) {
-        assert(g < regions.max_grants); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(g < regions.max_grants);
         if (sys.map.grants[g].domain == domain) held += 1;
     }
     // invariant: a domain holds no more grants than the whole map declares
@@ -131,7 +132,8 @@ pub fn fits(sys: *const system.System) bool {
     if (sys.map.domain_count > capabilities.max_dependents) return false;
     var d: u32 = 0;
     while (d < sys.map.domain_count) : (d += 1) {
-        assert(d < regions.max_domains); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(d < regions.max_domains);
         if (grants_for(sys, d) > capabilities.max_caps_per_dependent) return false;
     }
     return true;
@@ -159,15 +161,18 @@ pub fn from_system(sys: *const system.System) RosterError!capabilities.Capabilit
     var table: capabilities.CapabilityTable = .{};
     var d: u32 = 0;
     while (d < sys.map.domain_count) : (d += 1) {
-        assert(d < regions.max_domains); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(d < regions.max_domains);
         const label = sys.map.domains[d].name_slice();
         const slot = table.add_dependent(label) catch return error.TooManyDomains;
         var g: u32 = 0;
         while (g < sys.map.grant_count) : (g += 1) {
-            assert(g < regions.max_grants); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(g < regions.max_grants);
             const held = &sys.map.grants[g];
             if (held.domain != d) continue;
-            assert(held.region < regions.max_regions); // invariant: in bound
+            // invariant: in bound
+            assert(held.region < regions.max_regions);
             const region_name = sys.map.regions[held.region].slot.name_slice();
             const cap = capabilities.Capability.init(region_name, rights_of(held.perm));
             slot.grant(cap) catch return error.TooManyGrants;
@@ -208,9 +213,11 @@ pub fn capability_count(table: *const capabilities.CapabilityTable) u32 {
     var total: u32 = 0;
     var i: u32 = 0;
     while (i < table.dependent_count) : (i += 1) {
-        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_dependents);
         const slot = &table.dependents[i];
-        assert(slot.cap_count <= capabilities.max_caps_per_dependent); // invariant: in bound
+        // invariant: in bound
+        assert(slot.cap_count <= capabilities.max_caps_per_dependent);
         total += slot.cap_count;
     }
     // invariant: the total stays within what the whole table could seat
@@ -259,11 +266,13 @@ pub fn agrees(
     assert(table.dependent_count <= capabilities.max_dependents);
     var r: u32 = 0;
     while (r < sys.map.region_count) : (r += 1) {
-        assert(r < regions.max_regions); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(r < regions.max_regions);
         const region_name = sys.map.regions[r].slot.name_slice();
         var d: u32 = 0;
         while (d < sys.map.domain_count) : (d += 1) {
-            assert(d < regions.max_domains); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(d < regions.max_domains);
             const domain_name = sys.map.domains[d].name_slice();
             if (!pair_agrees(sys, table, region_name, domain_name)) return false;
         }
@@ -289,7 +298,8 @@ pub fn report(
     });
     var i: u32 = 0;
     while (i < table.dependent_count) : (i += 1) {
-        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: the walk stays in the array
+        assert(i < capabilities.max_dependents);
         const label = sys.map.domains[i].name_slice();
         print("      {s} holds {d}\n", .{ label, table.dependents[i].cap_count });
     }

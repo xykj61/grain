@@ -175,7 +175,8 @@ pub const Graph = struct {
         assert(name.len <= max_name_len);
         var i: u32 = 0;
         while (i < self.domain_count) : (i += 1) {
-            assert(i < max_domains); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_domains);
             const domain = &self.domains[i];
             if (domain.live and std.mem.eql(u8, domain.name_slice(), name)) return i;
         }
@@ -222,7 +223,8 @@ pub const Graph = struct {
         if (a == b) return null;
         var i: u32 = 0;
         while (i < self.channel_count) : (i += 1) {
-            assert(i < max_channels); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_channels);
             if (self.channels[i].joins(a, b)) return i;
         }
         return null;
@@ -264,7 +266,8 @@ pub const Graph = struct {
         var count: u32 = 0;
         var i: u32 = 0;
         while (i < self.channel_count) : (i += 1) {
-            assert(i < max_channels); // invariant: the walk stays in the array
+            // invariant: the walk stays in the array
+            assert(i < max_channels);
             if (self.channels[i].touches(d)) count += 1;
         }
         // invariant: a domain touches at most every channel once
