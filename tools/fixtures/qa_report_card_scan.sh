@@ -60,12 +60,21 @@ for f in $DOOR; do
   [ "$comp" -ge 80 ] || { below=$((below + 1)); printf 'under: %s reads %s on its counted half alone\n' "$f" "$lett"; }
 done
 
-# The ceiling only ever falls. Measured 20260824.161948 over the twelve-document door roster: one
-# document below B on its counted half, `docs/README.md`, which is two sentences of prose carrying
-# eleven links. That is an INDEX page, and the Door cross-reference budget of one per hundred words
-# is written for prose, so the reading is honest and the shape is arguably correct. It is reported
-# rather than exempted, because a reader deciding that is worth more than a rule guessing it.
-ceiling=1
+# The ceiling only ever falls, and this one fell to ZERO by measurement rather than by edit.
+#
+# Measured 20260824.161948 over the twelve-document door roster: one document below B on its counted
+# half, `docs/README.md`, two sentences of prose carrying eleven links. That reading was reported
+# rather than exempted, because a reader deciding it is worth more than a rule guessing it -- and
+# the reader's verdict, on 20260825, was that the METER was wrong. A cross-reference budget of one
+# per hundred words is written for prose; on an index the links are the content, and the card was
+# instructing a writer to pad an index until its denominator carried its own rate. Padding the page
+# would have raised the number and damaged the artifact, which is the signature of a meter to fix.
+#
+# So `qa_report_card.sh` now reads a page's own declaration under two conditions -- declared in the
+# header AND under 100 words of prose -- and reports an index's density rather than scoring it.
+# `docs/README.md` reads A+ on its counted half with no word of it rewritten, and the ceiling is 0.
+# It only ever falls from here.
+ceiling=0
 
 echo "card_documents=$total"
 echo "card_below_b=$below"
