@@ -98,6 +98,8 @@ pub fn euler_number(map: *const label.LabelMap, want: u32) !Topology {
     const h: u32 = map.height;
     // invariant: the window sweep stays far under the i32 ceiling, so every u32 tally and the signed numerator are safe.
     const windows: u64 = (@as(u64, w) + 1) * (@as(u64, h) + 1);
+    // invariant: the windows are counted into a fixed array, so a count past its ceiling would
+    // tally past the end of it
     assert(windows <= euler_max_windows);
 
     var q1: u32 = 0;

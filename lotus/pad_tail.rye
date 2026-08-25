@@ -82,6 +82,8 @@ pub fn top_and_tail_pad(
         // ALL-SILENT: no content to keep a margin around — the whole clip is dead air, so it trims to empty regardless of pad (a margin needs a sound to sit beside).
         // invariant: cutting the whole span leaves the clip empty; the span is exactly the clip.
         try timeline.cut(clip, 0, original_len);
+        // invariant: the clip is empty when this runs, so the padding is proven to be all that
+        // follows rather than laid over samples still there
         assert(clip.len == 0);
         return;
     }

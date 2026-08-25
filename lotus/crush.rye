@@ -67,6 +67,9 @@ pub fn crush(clip: *timeline.Clip, start: u32, count: u32, bits: u32) CrushError
     // invariant: the grid step is a positive power of two no wider than 2^15, so sample_min = −2^15 is one of its multiples and the floor below
     // never drops a legal sample past the rail.
     const step: i64 = @as(i64, 1) << shift;
+    // invariant: the step is at least one sample and no more than the quantiser's own ceiling,
+    // since a zero would divide by zero and a larger one would hold a level past what the
+    // format carries
     assert(step >= 1 and step <= 32768);
     var k: u32 = 0;
     while (k < count) : (k += 1) {

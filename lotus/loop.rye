@@ -105,6 +105,8 @@ pub fn read_block(t: *transport.Transport, master: *const timeline.Clip, lp: *co
     while (i < want) : (i += 1) {
         // invariant: the head is within the region at the top of each copy — wrap the instant it reaches the end.
         if (t.pos >= lp.end) t.pos = lp.start;
+        // invariant: the playhead stays inside the loop it is looping, so a position outside
+        // would read samples from beyond the region and call them the loop
         assert(t.pos >= lp.start and t.pos < lp.end);
         out[i] = master.buf[t.pos];
         t.pos += 1;

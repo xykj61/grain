@@ -373,6 +373,8 @@ fn mix_channel(a: u8, b: u8, t: u8) u8 {
     const bv: u32 = b;
     const tv: u32 = t;
     const v: u32 = (av * (255 - tv) + bv * tv + 127) / 255;
+    // invariant: the value is written into a u8 channel below, so anything past 255 would wrap
+    // to a dark pixel rather than clamp to a bright one
     assert(v <= 255);
     return @intCast(v);
 }
@@ -416,8 +418,12 @@ fn quantize_channel(v: u8, levels: u32) u8 {
     assert(levels <= quantize_max_levels);
     const steps = levels - 1;
     const idx: u32 = (@as(u32, v) * steps + 127) / 255; // nearest level 0..steps
+    // invariant: the step index stays inside the ramp it addresses, so a step past the end
+    // would read the colour after the last stop
     assert(idx <= steps);
     const out: u32 = (idx * 255 + steps / 2) / steps; // back to a 0..255 byte, rounded
+    // invariant: the value is written into a u8 channel below, so anything past 255 would wrap
+    // to a dark pixel rather than clamp to a bright one
     assert(out <= 255);
     return @intCast(out);
 }

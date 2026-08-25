@@ -90,6 +90,8 @@ pub fn scene_euler(map: *const label.LabelMap) i32 {
     // invariant: the whole-foreground sweep obeys image/euler_number.rye's own window ceiling, so every tally and the signed
     // numerator stay far under the i32/i64 limits.
     const windows: u64 = (@as(u64, w) + 1) * (@as(u64, h) + 1);
+    // invariant: the windows are counted into a fixed array, so a count past its ceiling would
+    // tally past the end of it
     assert(windows <= euler_number.euler_max_windows);
 
     var q1: u32 = 0;

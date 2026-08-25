@@ -132,6 +132,8 @@ pub fn elapsed_width(inner_w: u32, k: u32, frame_count: u32) u32 {
 pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
     // invariant: the block's travel window has room, so the clamp below never underflows.
     const last_bx: u32 = scrubber_frame_w - block_w;
+    // invariant: the blocks are laid left to right and this one starts at or after the last, so
+    // a row is proven to advance rather than paint over itself
     assert(block_x0 <= last_bx);
     // invariant: the block sits above the scrubber, wholly within the live part of the frame.
     assert(block_y + block_h <= scrubber_frame_h);

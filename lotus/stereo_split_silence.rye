@@ -152,6 +152,8 @@ pub fn split_stereo_on_silence(
     // invariant: takes are in strict order and each lies wholly inside the master on both channels — the frame walk's own ordering carried through the coalesce.
     assert(out.len <= max_stereo_takes);
     if (out.len > 0) {
+        // invariant: the first split starts at or after the beginning and the last ends at or
+        // before the end, so the pieces together sit inside the clip they came from
         assert(out.items[0].start >= 0);
         assert(out.items[out.len - 1].start + out.items[out.len - 1].count <= total_len);
     }

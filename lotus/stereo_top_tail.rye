@@ -118,6 +118,8 @@ pub fn stereo_top_and_tail(
         // invariant: cutting the whole span leaves each channel empty; the span is legal since it is exactly the clip, and the two cuts are identical, so balance holds.
         try timeline.cut(&sc.left, 0, original_len);
         try timeline.cut(&sc.right, 0, original_len);
+        // invariant: both channels are empty when this runs, so the trim is proven to have
+        // taken everything rather than left a head or a tail behind
         assert(sc.left.len == 0 and sc.right.len == 0);
         return;
     }

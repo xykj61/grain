@@ -17,6 +17,8 @@ pub var extended_glyphs: ?*const [128][8]u8 = null;
 const tally_copy = @import("tally_copy.rye");
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -51,10 +53,15 @@ pub const Grid = struct {
     palette: [max_palette]Color,
 
     pub fn init(allocator: std.mem.Allocator, cols: u32, rows: u32) !Grid {
+        // invariant: the grid has real columns and rows, and its cell array is exactly their
+        // product -- three numbers that must agree or the walk below addresses a cell nobody
+        // allocated
         assert(cols > 0);
         assert(rows > 0);
         const cell_count: usize = @intCast(cols * rows);
         const cells = try allocator.alloc(u8, cell_count);
+        // invariant: the cell array is exactly rows times columns, so any other length means
+        // the grid and its backing store disagree about how many cells exist
         assert(cells.len == cell_count);
         @memset(cells, ' ');
         const fg_index = try allocator.alloc(u8, cell_count);
@@ -109,6 +116,8 @@ pub const Grid = struct {
     pub fn put_line(self: *Grid, row: u32, text: []const u8) void {
         if (row >= self.rows) return;
         const base: usize = @intCast(row * self.cols);
+        // invariant: the cell is read out of the array by this base index with no bounds check
+        // of its own
         assert(base < self.cells.len);
         const n: u32 = @min(buf_len_u32(text), self.cols);
         const n_usize: usize = @intCast(n);
@@ -121,18 +130,26 @@ pub const Grid = struct {
     /// Grid witnesses otherwise index `cells` by hand, which is exactly the
     /// seam an off-by-one lands in.
     pub fn row_cells(self: *const Grid, row: u32) []const u8 {
-        assert(row < self.rows); // precondition: caller checked the bound
+        // invariant: the row is the caller's to have checked, and the span from this base stays
+        // inside the array, so a run is painted within the row it belongs to
+        assert(row < self.rows);
         const base: usize = @intCast(row * self.cols);
         const span: usize = @intCast(self.cols);
-        assert(base + span <= self.cells.len); // invariant: row sits inside cells
+        // invariant: the span from this base stays inside the cell array, so a run is painted
+        // within the row it belongs to
+        assert(base + span <= self.cells.len);
         return self.cells[base .. base + span];
     }
 
     pub fn lit_pixel_count(_: Grid, pixels: []const u8, stride: u32, width: i32, height: i32, bg: Color) u32 {
+        // invariant: the surface has real pixels in both directions, so a zero would paint
+        // nothing at whatever scale the display asked for
         assert(width > 0);
         assert(height > 0);
         const width_u: u32 = @intCast(width);
         const height_u: u32 = @intCast(height);
+        // invariant: the stride reaches a whole row of RGBA, so a shorter one would read the
+        // next row's pixels as this row's tail
         assert(stride >= width_u * 4);
         const stride_usize: usize = @intCast(stride);
         var count: u32 = 0;
@@ -161,13 +178,19 @@ pub const Grid = struct {
         fg: Color,
         scale: u32,
     ) void {
+        // invariant: the scale is at least one and the surface has real pixels, so a zero in
+        // any of the three would divide by zero rather than blit
         assert(scale > 0);
         const cell_pw = cell_w * scale;
         const cell_ph = cell_h * scale;
+        // invariant: the surface has real pixels in both directions, so a zero would paint
+        // nothing at whatever scale the display asked for
         assert(width > 0);
         assert(height > 0);
         const width_u: u32 = @intCast(width);
         const height_u: u32 = @intCast(height);
+        // invariant: the stride reaches a whole row of RGBA and the cell array is exactly rows
+        // by columns, so neither the read nor the write leaves the grid it was measured for
         assert(stride >= width_u * 4);
         assert(self.cells.len == @as(usize, @intCast(self.cols * self.rows)));
         // invariant: the fg-index buffer stays exactly parallel to the cells.
@@ -226,10 +249,14 @@ fn draw_glyph(
     fg: Color,
     scale: u32,
 ) void {
+    // invariant: the scale is at least one and the surface has real pixels, so a zero in any of
+    // the three would divide by zero rather than blit
     assert(scale > 0);
     assert(width > 0);
     assert(height > 0);
     const width_u: u32 = @intCast(width);
+    // invariant: the stride reaches a whole row of RGBA, so a shorter one would read the next
+    // row's pixels as this row's tail
     assert(stride >= width_u * 4);
 
     const glyph = if (ch < 128)

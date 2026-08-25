@@ -96,6 +96,9 @@ pub fn gate_follow_carry(
             if (e == 0) {
                 // The smoothed detector reads exact silence. env_step forces at least a unit step toward any nonzero target, so a
                 // zero envelope can only arise when this sample's own magnitude is zero — nothing to gate, and no divide by zero.
+                // invariant: the tail is fully attenuated when this runs, which is what the
+                // envelope exists to reach -- a residue here means the release never completed
+                // and the next clip would open over it
                 assert(x == 0);
             } else {
                 // The gated envelope target — ALES51's silenced floor, computed on the ENVELOPE not the bare sample. Divided by the

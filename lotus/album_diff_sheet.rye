@@ -71,6 +71,8 @@ pub fn render_sheet(diff: *const album_diff.Diff, out: []u8) SheetError!u32 {
     var r: u32 = 0;
     while (r < diff.removed_count) : (r += 1) {
         const e = diff.removed[r];
+        // invariant: a digest is the hex of a fixed-width hash, so any other length names an
+        // entry the manifest never wrote
         assert(e.digest.len == album_manifest.digest_hex_len);
         const line = std.fmt.bufPrint(out[off..], "removed {s} {s}\n", .{ e.name, e.digest }) catch return error.Overflow;
         off += @intCast(line.len);

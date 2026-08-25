@@ -141,6 +141,8 @@ pub fn chain_to_points(allocator: std.mem.Allocator, ch: *const ChainCode) ![]co
         pts[k + 1] = contour.Point{ .x = @intCast(cx), .y = @intCast(cy) };
     }
     const last: usize = ch.codes[el - 1];
+    // invariant: a chain direction is one of the eight neighbours, so a code past seven would
+    // step off the compass this walk is written against
     assert(last < 8);
     cx += dir_dx[last];
     cy += dir_dy[last];
@@ -165,6 +167,8 @@ pub fn code_histogram(ch: *const ChainCode) [8]u32 {
     var total: u32 = 0;
     var b: usize = 0;
     while (b < 8) : (b += 1) total += hist[b];
+    // invariant: every code the walk emitted is accounted for, so a shortfall means the chain
+    // closed early and traced a shape smaller than the region
     assert(total == ch.codes.len);
     return hist;
 }

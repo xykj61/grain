@@ -47,6 +47,8 @@ pub const FilterStripTap = struct {
     pub fn open(source: *const qoi.Pixmap, tcols: u32, trows: u32) !FilterStripTap {
         // invariant: a thumbnail has both dimensions, so a band has real pixel width and each filter down-maps a real block.
         if (tcols == 0 or trows == 0) return error.BadThumb;
+        // invariant: a grid of no columns or no rows would divide a touch position by zero
+        // rather than place it on the surface
         assert(tcols >= 1);
         assert(trows >= 1);
         const picker = try filter_picker.FilterPicker.open(source, tcols, trows);

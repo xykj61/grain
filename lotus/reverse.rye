@@ -50,6 +50,8 @@ pub fn reverse(clip: *timeline.Clip) void {
     var hi: u32 = original_len - 1;
     // invariant: lo and hi close in from the two ends and never cross — every swap moves a still-unvisited pair, and the loop stops the instant they meet.
     while (lo < hi) : (lo += 1) {
+        // invariant: both ends of the swap sit inside the clip, so the walk meets in the middle
+        // rather than reaching past either end
         assert(lo < original_len and hi < original_len);
         const tmp = clip.buf[lo];
         clip.buf[lo] = clip.buf[hi];

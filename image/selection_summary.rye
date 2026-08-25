@@ -216,6 +216,8 @@ pub fn sort_selection_by_area(allocator: std.mem.Allocator, manifest: scene_mani
     while (v < out.len) : (v += 1) {
         const a = (try scene_manifest.object_of(manifest, out[v - 1])).area;
         const b = (try scene_manifest.object_of(manifest, out[v])).area;
+        // invariant: the summary is ordered largest first, so a pair out of order means the
+        // sort and the report disagree about which selection leads
         assert(a >= b);
     }
     return out;

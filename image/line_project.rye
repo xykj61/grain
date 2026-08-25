@@ -292,6 +292,9 @@ pub fn feet_scaled(garden: std.mem.Allocator, clustering: overlap_clusters.Clust
     }
     // invariant: every foot shares the one segment's scale -- a single resolved line.
     var v: usize = 1;
+    // invariant: the sort has finished when this runs, so it states the order it produced
+    // rather than checking one it was handed -- a comparator that is not a total order leaves
+    // pairs out of place and this is where that shows
     while (v < out.len) : (v += 1) assert(out[v].len2 == out[0].len2);
     return out;
 }

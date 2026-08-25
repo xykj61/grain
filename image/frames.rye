@@ -81,6 +81,8 @@ pub const Video = struct {
     pub fn frame_pixels(self: *const Video) u32 {
         // invariant: a clip's frame dimensions stay within the image ceiling.
         const n = @as(u64, self.width) * @as(u64, self.height);
+        // invariant: the pixel count is what every buffer here is sized from, and the format's
+        // own ceiling is what keeps that multiplication inside a u64
         assert(n <= qoi.qoi_max_pixels);
         return @intCast(n);
     }

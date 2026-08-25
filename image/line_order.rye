@@ -180,6 +180,9 @@ pub fn line_order(garden: std.mem.Allocator, clustering: overlap_clusters.Cluste
 
     // invariant: the result is a strict total order by (projection, label) -- no adjacent pair out of order, so no label repeats.
     var v: usize = 1;
+    // invariant: the sort has finished when this runs, so it states the order it produced
+    // rather than checking one it was handed -- a comparator that is not a total order leaves
+    // pairs out of place and this is where that shows
     while (v < n) : (v += 1) assert(order_less(proj[v - 1], order[v - 1], proj[v], order[v]));
     return order;
 }

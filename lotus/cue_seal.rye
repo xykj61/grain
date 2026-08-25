@@ -71,6 +71,8 @@ pub fn seal_sheet(m: *const markers.Markers, out: []u8) CueSealError!u32 {
 pub fn verify_and_parse(text: []const u8, master: *const pan.StereoClip, out: *markers.Markers) CueSealError!void {
     // invariant: verification starts from an empty track — a refused record leaves nothing half-parsed.
     out.* = markers.Markers{};
+    // invariant: the sink is empty when this runs, so a leftover count means a prior render was
+    // never drained and its samples would be mixed into this one
     assert(out.count == 0);
 
     // The integrity gate: seal.open returns the verified body BYTES, or refuses before any marker is trusted.

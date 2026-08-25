@@ -42,6 +42,8 @@ pub fn invert(clip: *timeline.Clip) void {
     var i: u32 = 0;
     // invariant: i walks every seat from 0 to len once and flips it in place — no seat is skipped and none past len is touched.
     while (i < original_len) : (i += 1) {
+        // invariant: the sample is read out of the clip by this index with no bounds check of
+        // its own
         assert(i < original_len);
         // The negation runs in i64 so it never overflows before the clamp; saturate pins +32768 (sample_min's true negation) to sample_max, the rail handled once.
         clip.buf[i] = timeline.saturate(-@as(i64, clip.buf[i]));

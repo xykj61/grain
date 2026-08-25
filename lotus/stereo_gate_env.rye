@@ -101,6 +101,9 @@ pub fn stereo_gate_follow_carry(
             if (e == 0) {
                 // The smoothed linked detector reads exact silence. stereo_env_step forces at least a unit step toward any nonzero linked peak, so a zero envelope can only arise when the peak is zero — both channels are
                 // silent this sample, nothing to gate, and no divide by zero.
+                // invariant: the tail is fully attenuated when this runs, which is what the
+                // envelope exists to reach -- a residue here means the release never completed
+                // and the next clip would open over it
                 assert(xl == 0 and xr == 0);
             } else {
                 // The gated envelope target — ALES51's silenced floor computed on the LINKED envelope, not the bare sample. Divided by the ratio (den/num <= 1), so gat sits in [0, e]; the gain gat/e is in [0, 1]. e·den fits

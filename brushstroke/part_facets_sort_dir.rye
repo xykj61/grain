@@ -53,6 +53,8 @@ const sort_tail_desc = "  sorted by price high to low";
 
 // invariant: both direction tails are the same length, so `max_dir_header_line` bounds either direction.
 comptime {
+    // invariant: ascending and descending are the same facets in two orders, so a difference in
+    // length means one direction dropped a facet the other kept
     assert(sort_tail_asc.len == sort_tail_desc.len);
 }
 

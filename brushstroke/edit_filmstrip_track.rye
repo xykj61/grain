@@ -60,6 +60,8 @@ pub const FilmstripTrack = struct {
         // invariant: the owned jump opens valid, so band geometry and paint are well-formed (a valid tcols also keeps the
         // ceiling division below well-defined).
         const jump = try edit_filmstrip_jump.FilmstripJump.open(tcols, trows);
+        // invariant: a grid of no columns or no rows would divide a touch position by zero
+        // rather than place it on the surface
         assert(jump.tcols >= 1);
         assert(jump.trows >= 1);
         // A window wider than the map ceiling could never paint — refuse at construction rather than at every paint.

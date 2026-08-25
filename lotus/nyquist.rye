@@ -48,6 +48,8 @@ pub fn nyquist_flip(clip: *timeline.Clip) void {
     var i: u32 = 1;
     // invariant: i visits every odd seat in [1, len) once and flips it in place — no odd seat is skipped, no even seat is touched, and none past len is read or written.
     while (i < original_len) : (i += 2) {
+        // invariant: the sample is read out of the clip by this index with no bounds check of
+        // its own
         assert(i < original_len);
         // invariant: i is odd, so only the (-1)^n = -1 seats are negated; the even seats keep the (-1)^n = +1 identity.
         assert(i % 2 == 1);

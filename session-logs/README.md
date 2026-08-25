@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.232726` | [three rooms to ninety nine](20260824-232726_three-rooms-to-ninety-nine.kyri) | image, lotus and brushstroke to 100%; the tree reads 99%. |
 | `20260824.225806` | [documenting what is carried](20260824-225806_documenting-what-is-carried.kyri) | caravan to 37, and 20 left undocumented because the carry ratchet is right. |
 | `20260824.223227` | [the tree answers what a file cannot](20260824-223227_the-tree-answers-what-a-file-cannot.kyri) | Cross-file reachability lands; gap 453 to 400, nothing wrongly moved. |
 | `20260824.221143` | [the sweep that would have done harm](20260824-221143_the-sweep-that-would-have-done-harm.kyri) | 361 of 377 were test narration; nothing was stamped. |

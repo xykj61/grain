@@ -127,6 +127,8 @@ fn distance_key(line: LineD, center: click_collinear.CenterD) i64 {
     const cross: i64 = abx * acy - aby * acx;
     // invariant: distance is the magnitude of the signed cross -- side stripped away, never negative.
     const mag: i64 = if (cross < 0) -cross else cross;
+    // invariant: a squared magnitude is never negative, so a negative here means the
+    // accumulation overflowed rather than measured
     assert(mag >= 0);
     return mag;
 }
@@ -195,6 +197,9 @@ pub fn line_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clu
 
     // invariant: the result is a strict total order by (distance, label) -- no adjacent pair out of order, so no label repeats.
     var v: usize = 1;
+    // invariant: the sort has finished when this runs, so it states the order it produced
+    // rather than checking one it was handed -- a comparator that is not a total order leaves
+    // pairs out of place and this is where that shows
     while (v < n) : (v += 1) assert(order_less(dist[v - 1], order[v - 1], dist[v], order[v]));
     return order;
 }

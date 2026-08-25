@@ -61,6 +61,8 @@ pub fn shift(clip: *timeline.Clip, by: i32) void {
         var j: u32 = len;
         while (j > k) {
             j -= 1;
+            // invariant: the source and destination both sit inside the clip, so a shift moves
+            // samples within it rather than past either end
             assert(j >= k and j < len);
             clip.buf[j] = clip.buf[j - k];
         }
@@ -71,6 +73,8 @@ pub fn shift(clip: *timeline.Clip, by: i32) void {
         // Shift LEFT by k: sample j gets original[j+k]. Copy FRONT TO BACK so a source is read before its destination overwrites it, then silence the trailing k.
         var j: u32 = 0;
         while (j + k < len) : (j += 1) {
+            // invariant: the source and destination both sit inside the clip, so a shift moves
+            // samples within it rather than past either end
             assert(j < len and j + k < len);
             clip.buf[j] = clip.buf[j + k];
         }

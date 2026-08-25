@@ -201,6 +201,8 @@ pub fn paint_contour(allocator: std.mem.Allocator, c: *const Contour, dst_w: u32
     // invariant: a real canvas has extent within the image module's named pixel ceiling.
     if (dst_w == 0 or dst_h == 0) return error.EmptySource;
     const n: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    // invariant: the pixel count is what every buffer here is sized from, and the format's own
+    // ceiling is what keeps that multiplication inside a u64
     assert(n <= @as(u64, qoi.qoi_max_pixels));
     // invariant: a contour to paint has at least its start pixel.
     assert(c.points.len >= 1);

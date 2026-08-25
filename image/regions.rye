@@ -121,6 +121,8 @@ pub fn measure_regions(allocator: std.mem.Allocator, map: *const label.LabelMap)
     // invariant: a dense labeling uses every label in 1..count, so every region met at least one pixel.
     r = 0;
     while (r < regions.len) : (r += 1) {
+        // invariant: a labelled region holds at least one pixel, since an empty one would be
+        // reported as a shape with no extent
         assert(regions[r].area >= 1);
     }
     return regions;

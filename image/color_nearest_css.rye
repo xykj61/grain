@@ -46,6 +46,8 @@ fn rgb_dist_sq(x: color.Rgba, y: color.Rgba) u32 {
     const dr: u32 = if (x.r >= y.r) x.r - y.r else y.r - x.r;
     const dg: u32 = if (x.g >= y.g) x.g - y.g else y.g - x.g;
     const db: u32 = if (x.b >= y.b) x.b - y.b else y.b - x.b;
+    // invariant: the per-channel distances are each within a byte before they are squared and
+    // summed, so the sum stays inside the width the search compares in
     assert(dr <= 255);
     assert(dg <= 255);
     const sum = dr * dr + dg * dg + db * db;
@@ -86,6 +88,8 @@ pub fn nearest(c: color.Rgba) Match {
 pub fn nearest_name(c: color.Rgba) []const u8 {
     // invariant: nearest always returns a real table entry, so its name is a real keyword.
     const m = nearest(c);
+    // invariant: a palette entry carries a name, since a nameless nearest match would be
+    // returned as an answer nobody can print
     assert(m.name.len >= 1);
     return m.name;
 }

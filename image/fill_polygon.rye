@@ -104,6 +104,8 @@ pub fn fill_polygon(allocator: std.mem.Allocator, poly: *const polygon.Polygon, 
     // invariant: a real canvas has extent within the image module's named pixel ceiling.
     if (dst_w == 0 or dst_h == 0) return error.EmptySource;
     const n: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    // invariant: the pixel count is what every buffer here is sized from, and the format's own
+    // ceiling is what keeps that multiplication inside a u64
     assert(n <= @as(u64, qoi.qoi_max_pixels));
     // invariant: a polygon to fill has at least its start vertex, and never more than the pixel ceiling holds.
     assert(poly.vertices.len >= 1);
