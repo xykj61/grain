@@ -13,9 +13,9 @@
 # WHAT IT READS, and what it refuses to invent. Four readings, and the tool counts two and a half of
 # them:
 #
-#   Register  counted   100 minus the share of sentences carrying a negative. The measure() function
-#                       is lifted verbatim from tools/fixtures/prose_register_scan.sh, so the flip
-#                       and the ceiling are one reading rather than two that can disagree (REDS %201).
+#   Register  counted   100 minus the share of sentences carrying a negative, floor and all. The
+#                       measure() function and the REGISTER_MIN_SENTENCES floor are both lifted from
+#                       prose_register_scan.sh, so no number here can drift from it (REDS %201).
 #   Reach     counted   whether the intended reader can follow it: Flesch-Kincaid grade and
 #                       cross-references per hundred words, against the setting's own budget --
 #                       unless the page declares itself an index AND measures like one, where the
@@ -29,10 +29,10 @@
 #                       the inputs a reader needs and stops there, because a number nobody measured
 #                       is worse than a blank.
 #
-# BOTH OF THOSE READINGS ARGUED IN FULL beside the code that carries them, further down this file.
+# ALL THREE OF THOSE READINGS ARGUED IN FULL beside the code that carries them, further down.
 # The short of it: a meter that instructs a repair which would make the artifact worse is the thing
-# to fix, and this one did it twice -- telling an index to pad itself with prose, and telling a page
-# that its blessed placeholder shape was a broken link. Neither page changed a word.
+# to fix -- telling an index to pad itself with prose, telling a page that its blessed placeholder
+# shape was a broken link, and reading a share off one sentence. No page changed a word.
 #
 # THE COMPOSITE arrives once the judged readings are handed in with --service and --truth. Without
 # them the card prints what it counted and says `composite=judged`, which is the honest output.
@@ -115,6 +115,33 @@ sentences=$1
 negatives=$2
 neg_pct=$3
 register=$((100 - neg_pct))
+
+# The floor the register scan already applies, CITED rather than copied -- the same discipline that
+# governs measure() above. A share needs a denominator big enough to mean something: one negative
+# sentence out of one reads 100%, which is arithmetic on a rounding error rather than a fact about
+# how a page is written. The teaching tier in prose_register_scan.sh has held this floor since it
+# was written, and the card citing that scan had been dropping it, so the same page could be
+# unmeasurable to one reading and scored 0 by the other.
+#
+# Measured 20260825: 27 living teaching pages sit under the floor, and six of them read 100% from a
+# SINGLE sentence -- docs-geode/libraries/README.md among them, which is generated and proven green
+# by its own witness. Below the floor the share is REPORTED rather than scored, and named on the
+# card, so a reader still sees it.
+#
+# One condition here rather than two, and the difference is worth saying: the index reading needs a
+# second condition because a page DECLARES itself an index, and a self-declared exemption is a door.
+# A sentence count is measured rather than declared, so no page can assert its way under this floor.
+#
+# The wall is untouched. tools/p/prose_register_witness.rish still gates the twelve door documents at
+# 20% with no floor, and nothing here reaches it. A gate that grows an exemption stops being a gate.
+register_floor=$(sed -n 's/^REGISTER_MIN_SENTENCES=\([0-9]*\)$/\1/p' "$reg_scan" | head -1)
+[ -n "$register_floor" ] || { echo "qa: prose_register_scan.sh no longer publishes REGISTER_MIN_SENTENCES" >&2; exit 1; }
+
+register_mode=scored
+if [ "$sentences" -lt "$register_floor" ]; then
+  register_mode=reported
+  register=100
+fi
 
 # --- Reach: can the intended reader follow it ----------------------------------------------------
 # Flesch-Kincaid over the same prose the register reading sees, plus link density. Syllables are
@@ -210,7 +237,7 @@ if [ "$declares_index" = yes ] && [ "$words" -lt "$index_floor" ]; then
 fi
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
-[ "$setting" = "meter" ] && { register=100; reach=100; reach_mode=meter; }
+[ "$setting" = "meter" ] && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
 dir=$(dirname "$path")
@@ -270,7 +297,12 @@ fi
 # --- The card ------------------------------------------------------------------------------------
 echo "qa_path=$path"
 echo "qa_setting=$setting"
-echo "register=$register (negative $neg_pct% of $sentences sentences)"
+if [ "$register_mode" = scored ]; then
+  echo "register=$register (negative $neg_pct% of $sentences sentences)"
+else
+  echo "register=$register (negative $neg_pct% of $sentences sentences reported, not scored)"
+fi
+echo "register_mode=$register_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
 if [ "$reach_mode" = index ]; then
   echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w reported, not scored; $words words, $links links)"
 else
