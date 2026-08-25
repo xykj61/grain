@@ -52,19 +52,19 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
 upward is a school grade -- 20% becomes **80, a B**.
 [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
-comment block, or design four ways: Register and Reach counted, Truth half counted and gating below
-60, Service judged against this card. **B stands; below B pushes one molt frame**, depth 2.
+comment block, or design four ways. **B stands; below B pushes one molt frame**, depth 2.
 
-**%205-%206 closed:** the pin bound rose for one page to **57,344**, read per page; the planted-name
-roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207-%210 -- the invariant arc.** The figure this card carried, **13,235**, was three promises in
-one denominator, 211 symlinks read as modules, and asserts in files and functions whose ROLE is
-proof. The bin reads a role vocabulary now -- `main`, `selftest`, `witness`, plus a file declaring
-itself one. **The law reads 82%**, gap **3,921**. **The `caravan` falsifier was read and does not
-fire:** 16 or 17 of 20 sampled lines name a reason, though in Caravan's coined vocabulary.
-**`pond/apps/drawn_terminal.rye` swept 0% -> 100%** on Keaton's word -- 57 asserts, 22 blocks, lines
-wrapped at 96 to match caravan's median of 73. **Open door -- the sweep continues where Keaton
-says:** `pond` still holds **1,508** (50.4%), `image/photos.rye` **185**, `amphora` 0.0% of 93,
-`glow` 3.4% of 205.
+**%205-%206:** the pin bound rose for one page to **57,344**, read per page; planted names are
+discovered rather than listed (census 186 -> 177). **%207-%211 -- the invariant arc, corrected four times.** The figure this card carried, **13,235**,
+fell to **4,242** (three promises in one denominator, 211 symlinks), then **3,978** (a third role
+word), then **1,385** once the bin read **reachability** rather than names: a private function called
+only from a proof entry is proof whatever it is called, while a `pub` function never is and a shared
+helper withdraws to contract. **The law reads 92%.** Proven by 15 behaviors in a throwaway pen, both
+failed drafts among them. **The `caravan` falsifier was read and does not fire.**
+**`pond/apps/drawn_terminal.rye` swept 0% -> 100%** -- 57 asserts, 22 blocks, wrapped at 96 to match
+caravan's median of 73. **`image/photos.rye` needed no sweep:** its gap was 185 proofs and 0
+contracts. **Open door -- four rooms hold the 1,385:** `crypto` 271, `linengrow` 239, **`glow` 198 at
+3.4%**, `mand` 61 at 0.0%; densest files `caravan/regions.rye` 48, `glow/tokens.rye` 36.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 
