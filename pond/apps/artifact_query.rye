@@ -118,6 +118,8 @@ pub fn compute(r: Routed, cat: *const tc.Catalog, store: *const beading.BeadStor
             assert(n <= tc.max_content_bytes);
             const words = count_words(scratch[0..n]);
             const piece = std.fmt.bufPrint(out_buf, "{d}", .{words}) catch return error.ResultTooLong;
+            // invariant: bufPrint returns a slice into the buffer it was given, so this states
+            // the write stayed inside it rather than checking beforehand
             assert(piece.len <= out_buf.len);
             return out_buf[0..piece.len];
         },
@@ -173,6 +175,8 @@ pub fn answer_over(
         var cut: u32 = 0;
         var i: u32 = 0;
         var in_word = false;
+        // invariant: the result text fits the field it is placed in, so a longer one would be
+        // written past the end of it
         assert(text.len <= max_result_text);
         while (i < text.len) : (i += 1) {
             const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';

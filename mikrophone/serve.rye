@@ -49,6 +49,8 @@ pub fn serve(cat: *const catalog.Catalog, address: catalog.Address, out: *wire.F
 
     // invariant: the served frame carries exactly the held payload — content-preserving, verifiable by the far hand.
     const carried = try wire.deframe(out.bytes());
+    // invariant: the payload carried across arrives byte for byte, so a difference means the
+    // wire changed a capture rather than moved it
     assert(std.mem.eql(u8, carried, payload));
     // invariant: the served frame's content address equals the address asked for — the sync converges.
     assert(std.mem.eql(u8, &catalog.address_of(carried), &address));

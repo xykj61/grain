@@ -47,6 +47,8 @@ export fn kmain() callconv(.c) noreturn {
     // The seed exists to be heard — a silent hart would prove nothing. State the
     // one fact the rest depends on, so an empty line would stop loudly here
     // rather than slip by in silence.
+    // invariant: an empty line would seed a stage with nothing in it, which reads downstream as
+    // a stage that ran and produced no output
     assert(line.len != 0);
     for (line) |byte| uart_tx.* = byte;
 

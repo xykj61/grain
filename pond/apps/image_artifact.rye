@@ -52,6 +52,8 @@ pub fn store_image(
     const stream = scratch[0..res.len];
     // invariant: only a stream the fetch buffer can hold is ever stored.
     if (stream.len > max_stream_bytes) return error.StreamTooLarge;
+    // invariant: the stream is held in a fixed buffer, so a longer one would be stored
+    // truncated and decode to a different image
     assert(stream.len <= max_stream_bytes);
     return tablecloth.store_artifact(cat, store, name, stream);
 }

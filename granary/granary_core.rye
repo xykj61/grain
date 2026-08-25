@@ -137,6 +137,8 @@ fn require_lower_hex(value: []const u8, want_len: u32) NameFactError!void {
 }
 
 fn write_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the hex form is two characters per byte, so a buffer shorter than double the
+    // input would be written past its end
     assert(out.len >= bytes.len * 2);
     var i: u32 = 0;
     while (i < bytes.len) : (i += 1) {
@@ -408,6 +410,8 @@ pub fn serve_resin(host: *const ResinStore, digest_hex: []const u8, out: []u8) N
 /// A digest is published when some verified name-fact in the registry names it.
 /// Precondition: digest_hex.len == digest_hex_len (asserted).
 pub fn digest_is_published(reg: *const Registry, digest_hex: []const u8) bool {
+    // invariant: a digest is the hex of a fixed-width hash, so any other length addresses a
+    // resin that was never stored
     assert(digest_hex.len == digest_hex_len);
     var i: u32 = 0;
     while (i < reg.fact_count) : (i += 1) {

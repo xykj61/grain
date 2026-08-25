@@ -64,10 +64,14 @@ pub fn reconcile(a: *catalog.Catalog, b: *catalog.Catalog) !ReconcileReport {
     // invariant: convergence both ways — every address a holds, b holds, and every address b holds, a holds.
     var i: u32 = 0;
     while (i < catalog.count_of(a)) : (i += 1) {
+        // invariant: each side holds every address the other does once reconciliation finishes,
+        // which is the whole of what reconcile means
         assert(catalog.holds(b, catalog.address_at(a, i)));
     }
     var j: u32 = 0;
     while (j < catalog.count_of(b)) : (j += 1) {
+        // invariant: each side holds every address the other does once reconciliation finishes,
+        // which is the whole of what reconcile means
         assert(catalog.holds(a, catalog.address_at(b, j)));
     }
     report.union_count = catalog.count_of(a);

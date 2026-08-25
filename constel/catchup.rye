@@ -112,6 +112,8 @@ pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u
         // SNAPSHOT INSTALL — the lacked entries are already compacted on the leader. Adopt its snapshot wholesale, then take its
         // whole live tail. The follower is strictly behind the snapshot boundary (f_total < snap.count), so it overwrites no
         // committed entry it had already verified.
+        // invariant: the follower is behind the leader by construction, so a total at or past
+        // the leader's count means catchup was asked to fetch entries that do not exist yet
         assert(f_total < leader.snap.count);
         follower.snap = leader.snap; // install the one true summary of the committed prefix
         follower.tail_len = 0;

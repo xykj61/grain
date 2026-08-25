@@ -20,6 +20,8 @@ pub fn load_zig_sources(a: std.mem.Allocator, io: std.Io, root: []const u8) !Zig
     while (try walker.next(io)) |entry| {
         if (entry.kind != .file) continue;
         if (!std.mem.endsWith(u8, entry.basename, ".zig")) continue;
+        // invariant: the files are collected into a fixed array, so a count at its ceiling has
+        // no slot left for the next
         std.debug.assert(count < max_zig_files);
         count += 1;
         const content = entry.dir.readFileAlloc(io, entry.basename, a, .limited(max_file_bytes)) catch continue;

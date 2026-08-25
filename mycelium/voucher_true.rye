@@ -118,6 +118,8 @@ pub fn vouch_real(text: []const u8) !Reading {
     // invariant: the order the node signed is the fixture's own agreed order — the recomputed head matches.
     var head: [voucher.order_head_len]u8 = undefined;
     voucher.order_head_of(&dag, &head);
+    // invariant: the voucher carries the same order head as the order it vouches for, so a
+    // difference means it is vouching for something else
     assert(std.mem.eql(u8, head[0..], v.order_head[0..]));
 
     var r = Reading{ .balance = v.balance, .reserved = v.reserved, .received = v.received };

@@ -133,6 +133,8 @@ pub fn boot(names: []const []const u8) ConstelError!Constel {
 pub fn into_muster(c: *const Constel) !muster.Muster {
     // invariant: a meaningful constellation seats at least one ship.
     if (c.count == 0) return error.EmptyConstel;
+    // invariant: a constellation holds at least one member, since an empty one would be counted
+    // as a peer group nobody is in
     assert(c.count >= 1);
     // invariant: the roster honors its bound before enrolling.
     assert(c.count <= constel_max_ships);

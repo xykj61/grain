@@ -31,11 +31,15 @@ pub const SolProof = struct {
     sig: [kumara.signature_length]u8 = undefined,
 
     pub fn name_slice(p: *const SolProof) []const u8 {
+        // invariant: the name is copied into a fixed buffer, so a longer one would arrive
+        // truncated and ship under a name that is not the one given
         assert(p.name_len <= sol_name_max_bytes);
         return p.name[0..p.name_len];
     }
 
     pub fn body_slice(p: *const SolProof) []const u8 {
+        // invariant: the proof is copied into a fixed buffer, so a longer one would be stored
+        // truncated and verify against something it is not
         assert(p.body_len <= ship_sol_proof_max_bytes);
         return p.body[0..p.body_len];
     }
@@ -64,6 +68,8 @@ fn pack_body(name: []const u8, observed_at: u64, out: []u8) ?usize {
         obs >>= 8;
         off += 1;
     }
+    // invariant: every byte the frame needed was written, so a shortfall would leave a field at
+    // whatever the buffer held before and the reader would parse it as content
     assert(off == need);
     return off;
 }

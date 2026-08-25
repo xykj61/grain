@@ -162,6 +162,8 @@ pub const Session = struct {
     pub fn caret_col(self: *const Session) u32 {
         // invariant: the caret column comes straight from the compose half's own proven bound.
         const c = self.writer.caret_col();
+        // invariant: the column addresses one of the frame's own, so a column past the width
+        // would write into the next row
         assert(c < view.frame_cols);
         return c;
     }

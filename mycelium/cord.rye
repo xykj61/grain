@@ -264,6 +264,8 @@ pub fn committed_log(dag: *const Dag, order: []const u32, count: u32, log_out: *
     var i: u32 = 0;
     while (i < count) : (i += 1) {
         const idx = order[i];
+        // invariant: the node is read out of the graph by this index with no bounds check of
+        // its own
         assert(idx < dag.len);
         log_out.facts[i] = dag.blocks[idx].fact;
         log_out.len += 1;

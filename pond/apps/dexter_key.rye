@@ -215,6 +215,8 @@ pub fn drive(l: *line.Line, bytes: []const u8) Drive {
     // Each step consumes >= 1 byte, so this loop advances every pass and terminates within bytes.len passes.
     while (i < bytes.len) {
         const step = decode(bytes[i..]);
+        // invariant: every decode step consumes at least one byte, since a zero would leave the
+        // cursor where it was and the drain would not end
         assert(step.used >= 1);
         const kind = apply(l, step.key);
         i += step.used;

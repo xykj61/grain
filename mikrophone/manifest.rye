@@ -150,6 +150,8 @@ pub fn count_in(records: []const u8) u32 {
     // invariant: a verified region is a whole number of records within the entry bound.
     assert(records.len % record_len == 0);
     const count: u32 = @intCast(records.len / record_len);
+    // invariant: the entries are written into a fixed catalog array, so a count past its
+    // ceiling would write past the end of it
     assert(count <= catalog.max_entries);
     return count;
 }

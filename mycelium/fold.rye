@@ -45,11 +45,15 @@ pub const Fact = struct {
     sig: [kumara.signature_length]u8 = undefined,
 
     pub fn star_slice(f: *const Fact) []const u8 {
+        // invariant: the star name is copied into a fixed buffer, so a longer one would arrive
+        // truncated and fold under a star that is not the one named
         assert(f.star_len <= star_name_max_bytes);
         return f.star[0..f.star_len];
     }
 
     pub fn body_slice(f: *const Fact) []const u8 {
+        // invariant: the fact body is copied into a fixed buffer, so a longer one would be
+        // stored truncated and digest to something the caller never wrote
         assert(f.body_len <= myc_fact_max_bytes);
         return f.body[0..f.body_len];
     }
@@ -64,6 +68,8 @@ pub const FoldState = struct {
     star_count: u32 = 0,
 
     pub fn supply(s: *const FoldState) u64 {
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(s.taxed <= s.issued);
         return s.issued - s.taxed;
     }
@@ -80,6 +86,8 @@ pub const Log = struct {
 
 fn canonical_bytes(f: *const Fact, out: []u8) usize {
     // kind · amount(le8) · star · body — bound bitten before copy.
+    // invariant: the frame is the tag, the eight-byte header, the star name and the body laid
+    // end to end, so a buffer shorter than that sum would be written past
     assert(out.len >= 1 + 8 + f.star_len + f.body_len);
     out[0] = f.kind;
     var off: usize = 1;
@@ -183,10 +191,14 @@ pub fn fold_fact(state: *FoldState, fact: *const Fact) error{
         const next = state.issued +% fact.amount;
         if (next < state.issued) return error.Overdraw; // wrap refuse
         state.issued = next;
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(state.taxed <= state.issued);
     } else if (fact.kind == kind_tax) {
         if (fact.amount > state.supply()) return error.Overdraw;
         state.taxed += fact.amount;
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(state.taxed <= state.issued);
     } else if (fact.kind == kind_star_reserve) {
         if (fact.star_len == 0) return error.UnknownKind;
@@ -195,6 +207,8 @@ pub fn fold_fact(state: *FoldState, fact: *const Fact) error{
         if (fact.amount > state.supply()) return error.Overdraw;
         // Reservation pays tax into the twelve — same drain as tax.
         state.taxed += fact.amount;
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(state.taxed <= state.issued);
         if (state.star_count >= myc_log_max_facts) return error.LogFull;
         const at = state.star_count;
@@ -219,6 +233,8 @@ pub fn fold_log(log: *const Log) error{
     var i: u32 = 0;
     while (i < log.len) : (i += 1) {
         try fold_fact(&state, &log.facts[i]);
+        // invariant: supply is issued less taxed by definition, so a disagreement here means
+        // one of the two moved without the other and the ledger no longer adds up
         assert(state.supply() == state.issued - state.taxed);
     }
     return state;
