@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `706463468c` -- the `Region` body lifted where five copies stood, `rye` and `rishi` each taught a second way to be asked, and every room given a way home. Suite 109 green.
+**Git nib:** `e9582afd36` -- `Region` folded into `tally/`, `rye` and `rishi` each taught a second way to be asked, and every room given a way home. Suite 109 green.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
 upward is a school grade -- 20% becomes **80, a B**.
@@ -208,8 +208,8 @@ Beside it, **half of Service may be countable** -- named and reached counted, cu
 judged -- with its own trap named at
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
 
-**Three `Region` bodies** stand in `caravan/region.rye`, `tally/seed.rye` and `tally/gardens.rye`,
-one assert and one `divide` apart, so a symlink cannot fold them (REDS %215).
+**The `Region` fold landed `20260825.010420`** -- one body in `tally/region.rye`, reached by symlink
+from `caravan/` and `comlink/discovery/`, the stricter `init` kept and `divide` moved whole.
 
 **Booked `20260825.000640` -- proving a host we do not have.** All 54 guards run on this Linux
 pier, so a claim true only elsewhere is unprovable here; REDS %214 cost a first macOS build. Four

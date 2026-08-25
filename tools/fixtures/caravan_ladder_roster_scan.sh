@@ -45,7 +45,11 @@ trap 'rm -rf "$TMP"' EXIT INT TERM
 
 # The modules on disk. `ls` over a glob that matches nothing would print the glob itself, so the
 # list is built with find, which prints nothing when there is nothing.
-find "$DIR" -maxdepth 1 -name '*.rye' -type f 2>/dev/null \
+# `-type f -o -type l`, because a shared body reached by symlink is still a module of this room:
+# `tally_copy.rye` and `region.rye` both point into `tally/` and both carry a row in the table, and
+# a reader listing the directory sees them. The carry meter beside this one globs `"$DIR"/*.rye`,
+# which follows symlinks, so a bare `-type f` here made the two meters of one room disagree by two.
+find "$DIR" -maxdepth 1 -name '*.rye' \( -type f -o -type l \) 2>/dev/null \
   | sed 's|.*/||; s|\.rye$||' | sort > "$TMP/modules"
 
 # The rows. One row is one module; the ring name in the first column is free prose and is read

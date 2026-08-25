@@ -21,7 +21,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`amphora/`](../../amphora/README.md) | 7 | 11 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 110 | 112 |
+| [`caravan/`](../../caravan/README.md) | 109 | 112 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 8 |
 | [`constel/`](../../constel/README.md) | 31 | 36 |
@@ -31,7 +31,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 2 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 174 | 105 |
+| [`glow/`](../../glow/README.md) | 180 | 105 |
 | [`granary/`](../../granary/README.md) | 7 | 1 |
 | [`image/`](../../image/README.md) | 225 | 251 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
@@ -54,7 +54,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 13 | 20 |
+| [`tally/`](../../tally/README.md) | 14 | 20 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---

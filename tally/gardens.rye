@@ -33,88 +33,20 @@ const print = std.debug.print;
 
 const tally_gardens_version = "20260620.211712";
 
-fn buf_len_u32(buf: []const u8) u32 {
-    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
-    // wrap rather than refuse
-    assert(buf.len <= std.math.maxInt(u32));
-    return @intCast(buf.len);
-}
-
 // =========================================================================
-// § Region — the bounded garden (from tally/seed.rye, inline for rye build)
+// § Region -- reached, no longer inlined
 // =========================================================================
+//
+// `Region` and `buf_len_u32` stood here as a copy of `tally/seed.rye`'s, kept inline because an
+// early `rye build` could not follow the import. It can, and the copy had already drifted from
+// its source by one assert -- Caravan's third copy checked `buf.len > 0` at `init` and these two
+// did not. One body now, in `region.rye` beside this file, with the stricter reading kept and
+// `divide` moved there whole. Re-exported below, since `comlink/discovery/table.rye` names
+// `tally_gardens.Region` and a fold owes its callers their name back.
 
-/// A Tally region: a bounded garden with a stated edge.
-/// Invariant: pos <= buf.len — asserted at every mutation.
-pub const Region = struct {
-    buf: []u8,
-    pos: u32,
-
-    pub fn init(buf: []u8) Region {
-        const r = Region{ .buf = buf, .pos = 0 };
-        // invariant: a region opens with its cursor inside the buffer it was handed, so the
-        // first allocation measures from a real position rather than past the end
-        assert(r.pos <= buf_len_u32(r.buf));
-        return r;
-    }
-
-    /// Bump-allocate n bytes. Fails with OutOfBounds past the edge.
-    pub fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
-        const cap = buf_len_u32(self.buf);
-        // invariant: the cursor sits inside the capacity before the allocation is measured from
-        // it
-        assert(self.pos <= cap);
-        if (n > cap - self.pos) return error.OutOfBounds;
-        const start: usize = @intCast(self.pos);
-        const end: usize = @intCast(self.pos + n);
-        // invariant: the requested end falls inside the buffer, which is the one check standing
-        // between a caller's size and a write past the region
-        assert(end <= self.buf.len);
-        const slice = self.buf[start..end];
-        self.pos += n;
-        // invariant: the allocation has landed when this runs, so it states that the cursor
-        // stayed inside the capacity
-        assert(self.pos <= cap);
-        return slice;
-    }
-
-    /// Carve a named division out of this region — a sub-garden whose bytes
-    /// are provably inside the parent's, and which no sibling can reach.
-    ///
-    /// This is the memory shape of the season's own nesting: the outermost
-    /// allocation is the whole, and every division is bounded by its parent
-    /// rather than by a number a caller remembered. Because the carve advances
-    /// the parent's own `pos`, two divisions can never overlap — the parent's
-    /// edge is the only arithmetic anyone has to trust.
-    pub fn divide(self: *Region, n: u32) error{OutOfBounds}!Region {
-        // invariant: the parent's cursor sits inside its own buffer before a child is carved
-        // out of it
-        assert(self.pos <= buf_len_u32(self.buf));
-        const slice = try self.alloc(n); // reuses the parent's own bounds check
-        // invariant: the carved slice is exactly the size asked for, and a fresh division opens
-        // with its own cursor at zero -- a child inheriting a used cursor would allocate from
-        // the middle of itself
-        assert(slice.len == @as(usize, @intCast(n)));
-        const child = Region.init(slice);
-        // invariant: a fresh division opens with its cursor at zero, since a child inheriting a
-        // used one would allocate from the middle of itself
-        assert(child.pos == 0);
-        return child;
-    }
-
-    /// Clear whole — the season ends; fresh allocations may begin again.
-    pub fn clear(self: *Region) void {
-        self.pos = 0;
-        // invariant: the cursor sits inside the buffer before it is reset, so a clear is proven
-        // to be returning a real region rather than repairing a broken one
-        assert(self.pos <= buf_len_u32(self.buf));
-    }
-
-    /// Bytes remaining before the edge.
-    pub fn remaining(self: *const Region) u32 {
-        return buf_len_u32(self.buf) - self.pos;
-    }
-};
+const region_mod = @import("region.rye");
+const buf_len_u32 = region_mod.buf_len_u32;
+pub const Region = region_mod.Region;
 
 // =========================================================================
 // § Gardens — a named collection of Regions
