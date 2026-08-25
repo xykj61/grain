@@ -89,6 +89,8 @@ fn demo_murr_neth_pay(
         issuer_kp.public_key,
         holder_kp.public_key,
     );
+    // invariant: the two sides of the payment are pinned to what the demo transfers, so a rail
+    // that moved a different amount names itself rather than settling quietly
     assert(neth_result.balances.issuer == 50);
     assert(neth_result.balances.holder == 950);
     settle.digest_bytes(signed.canonical[0..signed.canonical_len], murr_digest);

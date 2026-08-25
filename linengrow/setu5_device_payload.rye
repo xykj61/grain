@@ -61,7 +61,12 @@ pub fn fixture_local_blocked() bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names the ladder it belongs to, so one carried into another
+    // ladder's suite names itself here rather than passing as though it had proved something
+    // about that ladder
     assert(std.mem.eql(u8, waymark, "SETU"));
+    // invariant: the fixture pins the constant it was written against, so a change to that
+    // constant surfaces here rather than as a frame the far side cannot parse
     assert(device_max_frame == 554);
     assert(setu3.max_frame >= device_max_frame);
 }

@@ -58,12 +58,12 @@ comment block, or design four ways. **B stands; below B pushes one molt frame**,
 **4,242**, **3,978**, **1,385** once the bin read **reachability** rather than names (a private
 function called only from a proof entry is proof; a `pub` function never is; a shared helper
 withdraws), and **853** once the label pattern read every spelling. **17 behaviors** prove the bin.
-**The `caravan` falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow` 3.4% -> 100%**; its reasons were largely there as **trailing** comments (1,144 tree-wide),
-each moved above and rewritten. **`mand` 0.0% -> 100%** (custody code). **`crypto` 89.8% -> 100%** -- never 57.5%: **483 lines carry
-a qualified label** (`// invariant (bound):`) the meter read as absent, which is the seated form with
-its TAME category stated (**%212**). Both crypto guards GREEN after, parity byte-for-byte. **`linengrow` 41.6% -> 62.6%** on Keaton's word -- a genuine absence, checked with the corrected
-pattern first: 57 blocks over its eight densest files. **Open door:** `linengrow` **153** across 56
-small files, `caravan` 217; tree **95%**, gap **807**.
+**The `caravan` falsifier does not fire.** `photos.rye` and `lattice` needed no sweep. **`glow`, `mand` and `crypto` all reach 100%.** glow's reasons were largely there as **trailing**
+comments (1,144 tree-wide); crypto was never 57.5% -- **483 lines carry a qualified label** the meter
+read as absent, the seated form with its TAME category stated (**%212**). Both crypto guards GREEN
+after, parity byte-for-byte. **`linengrow` 41.6% -> 100%** -- the one room in eight whose number held, and **175 blocks across 64
+files**, the tail read rather than class-generated. **Open door:** `caravan` 217 (a thin tail
+at 97.6%), `comlink` 45, `mantra` 42, `rye` **21 at 0.0%**; tree **96%**, gap **614**.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 

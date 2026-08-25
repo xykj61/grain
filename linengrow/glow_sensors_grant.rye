@@ -58,6 +58,8 @@ pub const SensorsGrant = struct {
         // invariant: zeroed is the refusal presentation
         assert(zeroed == !self.granted);
         if (zeroed) {
+            // invariant: the grant is proven still withheld, since a permission that reads as
+            // granted before anyone asked is the fault this whole seam exists to prevent
             assert(!self.granted);
         }
         return zeroed;

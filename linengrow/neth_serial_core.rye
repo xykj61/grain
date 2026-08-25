@@ -70,6 +70,9 @@ pub fn append_and_reroot(
 
     var root: [32]u8 = undefined;
     rc.digest_log(log[0..new_len], &root);
+    // invariant: the line is appended into a fixed buffer of max_append_bytes and the result
+    // must still sit inside the log, so neither the write nor the reroot runs past what was
+    // allocated
     assert(line.len <= max_append_bytes);
     assert(new_len <= log.len);
 

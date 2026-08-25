@@ -16,6 +16,8 @@ pub const wire_line_max: u32 = 32;
 /// `wire · local` or `wire · usb_desk`.
 pub fn format_wire_line(lane: hearth.WireLane, out: *[wire_line_max]u8) ?[]const u8 {
     const line = std.fmt.bufPrint(out, "wire · {s}", .{lane.name()}) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= wire_line_max);
     return line;
 }
@@ -36,6 +38,8 @@ pub fn wire_next_toggles() bool {
 
 comptime {
     _ = print;
+    // invariant: the preset pins the row it draws on and the ladder it belongs to, so a layout
+    // change surfaces here rather than as a wire line drawn over its neighbour
     assert(wire_row == 9);
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

@@ -72,6 +72,8 @@ pub fn encode(value: u64, out: *[encoded_len]u8) void {
         out[i] = alphabet[idx];
         v >>= 5;
     }
+    // invariant: the loop divides the value down to nothing, so a remainder here would mean
+    // digits were dropped off the front of the stamp
     assert(v == 0);
 }
 

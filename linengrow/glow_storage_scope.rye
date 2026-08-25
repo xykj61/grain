@@ -26,6 +26,8 @@ pub const max_name_len: u32 = 48;
 pub const max_entries: u32 = 8;
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -36,6 +38,9 @@ pub const ScopeEntry = struct {
     rights_mask: u8 = 0,
 
     pub fn init(resource: []const u8, rights_mask: u8) ScopeEntry {
+        // invariant: the resource is copied into a fixed buffer of max_name_len, so a longer
+        // one would arrive truncated into a scope naming something else -- and a scope is what
+        // decides which storage an app may reach
         assert(resource.len <= max_name_len);
         var e: ScopeEntry = .{};
         e.resource_len = buf_len_u32(resource);

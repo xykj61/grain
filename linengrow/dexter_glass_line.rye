@@ -73,6 +73,8 @@ pub fn format_dexter_line_live(
         break :blk std.fmt.bufPrint(out_line, "DEXTER line · {s}", .{shown}) catch return false;
     };
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer, so a length of zero leaves nothing
+    // to draw and one past the bound would run past its row
     assert(out_len.* > 0);
     assert(out_len.* <= dexter_line_max);
     if (caret_on) {

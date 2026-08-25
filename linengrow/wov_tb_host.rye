@@ -32,6 +32,8 @@ pub const witness_stamp = wov.witness_stamp;
 const max_projection_len: u32 = 4096;
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -121,6 +123,8 @@ fn run_from_book(io: std.Io, book: *wov.Book) !u8 {
     var log_len: u32 = 0;
     var published: wov.PublishedRoot = .{};
     try wov.publish_root(book, monarch, &monarch_hex, witness_stamp, &log, &log_len, &published);
+    // invariant: the published and the latest revision are the same one, and the proof carries
+    // the balance the book expects, so a host reading a stale revision names itself here
     assert(published.seq == 1);
 
     var instance_hex: [wov.instance_hex_len]u8 = undefined;
@@ -130,6 +134,8 @@ fn run_from_book(io: std.Io, book: *wov.Book) !u8 {
 
     try wov.verify_bundle_matches_root(published.bundle[0..published.bundle_len], &published.state_root_hex, monarch.public_key);
     const proof_a = try wov.prove_balance(published.bundle[0..published.bundle_len], &holder_a_hex);
+    // invariant: the proof carries the balance the book expects, so a host reading a stale
+    // revision names itself here
     assert(proof_a.balance == 700);
     print("wov-tb-host: holder A balance {d} proven from TB projection — GREEN welcome\n", .{proof_a.balance});
 

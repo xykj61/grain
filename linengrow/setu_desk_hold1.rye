@@ -73,6 +73,8 @@ pub fn format_hold_chrome(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]con
         "hold · {s} · {s} · {s}",
         .{ s.home_id_slice(), s.preset.name(), s.wire.name() },
     ) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= chrome_line_max);
     return line;
 }
@@ -85,6 +87,8 @@ pub fn format_hold_detail(s: hold0.HoldStatus, out: *[chrome_line_max]u8) ?[]con
         "ping {s} · frame {d}",
         .{ ping, s.frame_len },
     ) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= chrome_line_max);
     return line;
 }
@@ -121,6 +125,8 @@ pub fn fixture_hold_line_on_desk_skate(allocator: std.mem.Allocator) bool {
         \\
     ;
     const cols = station_cols(station);
+    // invariant: the fixture pins the constant it was written against, so a change to that
+    // constant surfaces here rather than as a frame the far side cannot parse
     assert(cols == 48);
     var grid = skate.Grid.init(allocator, cols, desk_rows()) catch return false;
     defer allocator.free(grid.cells);
@@ -150,6 +156,9 @@ pub fn fixture_local_hold_on_desk_skate(allocator: std.mem.Allocator) bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names the ladder it belongs to, so one carried into another
+    // ladder's suite names itself here rather than passing as though it had proved something
+    // about that ladder
     assert(std.mem.eql(u8, waymark, "SETU"));
     assert(desk_rows() == 20);
     assert(setu05.desk_window_w == 1920);

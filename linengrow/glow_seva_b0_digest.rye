@@ -22,6 +22,8 @@ pub const DigestError = error{RootMismatch};
 
 /// Digest bounded session-log bytes — product body: Sha3_256.hash (STOA247).
 pub fn digest_log_bytes(log: []const u8) [32]u8 {
+    // invariant: the log is digested whole, and the elder format fixes the ceiling, so a longer
+    // one would be digested truncated and agree with a log it is not
     assert(log.len <= rc.max_log_len); // precondition: elder log bound
     var root: [Sha3_256.digest_length]u8 = undefined;
     Sha3_256.hash(log[0..log.len], &root, .{});
@@ -49,6 +51,8 @@ pub fn claim_digest_log(log: []const u8) DigestError![32]u8 {
 
 /// True when product digest body matches elder receipt_core peer (STOA247).
 pub fn digest_body_agrees_elder(log: []const u8) bool {
+    // invariant: the body is digested against the elder bound as well, so both readings are
+    // taken over the same span
     assert(log.len <= rc.max_log_len);
     const product = digest_log_bytes(log);
     var elder: [32]u8 = undefined;

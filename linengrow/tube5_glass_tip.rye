@@ -14,6 +14,8 @@ pub const tip_line_max: u32 = 48;
 
 /// Land rev1+rev2 and write a tip line. Returns false if update or recall fails.
 pub fn run_demo_tip(out_line: *[tip_line_max]u8, out_len: *u32) bool {
+    // invariant: the caller's buffer is exactly one row wide, so any other size would be
+    // written past or leave a tail the glass draws as noise
     assert(out_line.len == tip_line_max);
     var catalog = mantra.BoltCatalog.empty();
     const lens = tube5.run_demo_update(&catalog) catch return false;
@@ -28,11 +30,15 @@ pub fn run_demo_tip(out_line: *[tip_line_max]u8, out_len: *u32) bool {
     var rev2: [mantra.max_resin_bytes]u8 = undefined;
     const n2 = tube5.recall_app_revision(&catalog, 2, &rev2) catch return false;
     if (n2 != lens.rev2_len) return false;
+    // invariant: the second revision's length is compared against what the lens reports, so a
+    // disagreement means the demo and the lens read different revisions
     assert(n2 == lens.rev2_len);
     if (std.mem.indexOf(u8, rev2[0..n2], "version 0.2.0") == null) return false;
 
     const line = std.fmt.bufPrint(out_line, "TUBE5 tip rev2 · 0.2.0", .{}) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer, so a length of zero leaves nothing
+    // to draw and one past the bound would run past its row
     assert(out_len.* > 0);
     assert(out_len.* <= tip_line_max);
     return true;

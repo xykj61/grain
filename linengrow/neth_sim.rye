@@ -52,6 +52,8 @@ fn dropped_this_tick(rand: std.Random, drop_pct: u8) bool {
     // invariant: drop percentage stays a valid percent
     assert(drop_pct <= 100);
     const roll_ceiling: u32 = 100;
+    // invariant: the drop roll is taken against this ceiling, so any other value would change
+    // the simulated loss rate without the test that reads it noticing
     assert(roll_ceiling == 100);
     return rand.intRangeLessThan(u32, 0, roll_ceiling) < drop_pct;
 }
@@ -99,6 +101,8 @@ pub fn run_replica_delivery(
         replica.final_root = result.root;
         replica.records_applied += 1;
     }
+    // invariant: every record handed to the replica is applied, so a shortfall means delivery
+    // dropped one and reported success
     assert(replica.records_applied == records.len);
 }
 

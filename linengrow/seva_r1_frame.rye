@@ -43,6 +43,8 @@ pub fn run_demo_frame() FrameError!view.Frame {
         issuer_kp.public_key,
         holder_kp.public_key,
     );
+    // invariant: the frame is drawn only for an admitted host, so an unadmitted one reaching
+    // here would draw a session nobody was let into
     assert(hosted.admitted);
     return try view.render_ledger("ledger-agent", hosted);
 }

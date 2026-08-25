@@ -50,6 +50,8 @@ pub fn format_list_line(
     const p = preset_at(index);
     const mark: u8 = if (p == active) '>' else ' ';
     const line = std.fmt.bufPrint(out, "{c} {s}", .{ mark, p.name() }) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= list_line_max);
     return line;
 }
@@ -86,6 +88,8 @@ pub fn release_after_hold_skips_cycle(long_fired: bool) bool {
 
 comptime {
     _ = print;
+    // invariant: the cycle steps through exactly this many presets and belongs to this ladder,
+    // both pinned so a preset added without touching the cycle names itself here
     assert(preset_count == 4);
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

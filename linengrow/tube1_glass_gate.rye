@@ -53,6 +53,8 @@ pub fn run_demo_admit() bool {
         scope_mod.ScopeEntry.init("contacts", caps.right_read),
     }) catch return false;
     const scopes = [_]*const scope_mod.Scope{ &storage, &contacts };
+    // invariant: the demo admits exactly two scopes, pinned so a manifest that grew a
+    // capability without the gate noticing names itself here
     assert(scopes.len == 2);
     const network = net_mod.NetworkGrant.grant();
     const sensors = sens_mod.SensorsGrant.grant();

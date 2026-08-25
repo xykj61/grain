@@ -77,16 +77,22 @@ pub const EmitError = error{
 /// resource is an internal Glow capability with no Android-facing
 /// permission to declare, not an error.
 pub fn render_permission_lines(manifest: *const tm.Manifest, out: []u8) EmitError!u32 {
+    // invariant: the walk reads the capability array by index up to this count, so the count
+    // and the array's own length are the same bound
     assert(manifest.cap_count <= tm.max_declared_caps);
     var written: u32 = 0;
     var emitted: u32 = 0;
     var i: u32 = 0;
     while (i < manifest.cap_count) : (i += 1) {
+        // invariant: the read indexes a fixed array directly, so this bound and the array's own
+        // length are the same number
         assert(i < tm.max_declared_caps);
         const dc = &manifest.caps[i];
         for (permission_table) |row| {
             if (!std.mem.eql(u8, dc.resource_slice(), row.resource)) continue;
             if (!caps.Rights.contains(dc.rights_mask, row.right)) continue;
+            // invariant: each emitted permission takes a slot in a fixed array, so a count at
+            // the ceiling has none left for the next
             assert(emitted < max_emitted_permissions);
             const line = std.fmt.bufPrint(
                 out[written..],
@@ -97,6 +103,8 @@ pub fn render_permission_lines(manifest: *const tm.Manifest, out: []u8) EmitErro
             emitted += 1;
         }
     }
+    // invariant: the emit has landed when this runs, so it states that the render stayed inside
+    // the array it was given
     assert(emitted <= max_emitted_permissions);
     return written;
 }

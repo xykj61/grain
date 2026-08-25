@@ -78,6 +78,8 @@ pub fn render_android_manifest(
     out: []u8,
 ) ManifestXmlError!u32 {
     try validate_package(package_name);
+    // invariant: the library name is written into the manifest XML, so an empty one would name
+    // no library and a longer one would be written past the buffer
     assert(lib_name.len > 0);
     assert(lib_name.len <= tm.max_name_len);
     assert(manifest.cap_count <= tm.max_declared_caps);
@@ -130,6 +132,8 @@ pub fn render_android_manifest(
         },
     ) catch return error.BufferTooSmall;
 
+    // invariant: the XML is written into a fixed buffer of max_manifest_xml_bytes, so a longer
+    // render would be truncated into a manifest Android reads as malformed
     assert(written.len <= max_manifest_xml_bytes);
     return @intCast(written.len);
 }

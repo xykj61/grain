@@ -36,7 +36,9 @@ pub fn replay(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     actor_pk: kumara.PublicKey,
 ) ReplayError!ReplayResult {
-    assert(log.len <= rc.max_log_len); // precondition: elder log bound
+    // invariant: the log is replayed whole and the elder format fixes the ceiling, so a longer
+    // one would be replayed truncated and reach a root it does not have
+    assert(log.len <= rc.max_log_len);
     // invariant: the pubkey is what every event in the log is checked against, so an empty one
     // would replay a log signed by nobody as though it verified
     assert(mc.pubkey_hex_len > 0);

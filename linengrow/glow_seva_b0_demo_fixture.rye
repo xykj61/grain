@@ -57,6 +57,8 @@ fn hex_clause_present(src: []const u8, comptime face: []const u8, comptime digit
 /// True when Glow lit-desk text carries every product pin as a face=lit clause.
 /// Does not parse via glow/face_lit (module path seam); Glow witness covers parse.
 pub fn lit_desk_binds_pins(src: []const u8) bool {
+    // invariant: the source is what the pins are bound out of, so an empty one would bind every
+    // pin to nothing
     assert(src.len >= 1);
     if (!clause_present(src, "stamp1", stamp1)) return false;
     if (!clause_present(src, "stamp2", stamp2)) return false;

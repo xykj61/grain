@@ -40,6 +40,8 @@ pub fn format_ping_plain(
     ,
         .{ ping_format, home_id, preset.name(), waymark },
     ) catch return null;
+    // invariant: the text is formatted into a fixed buffer of max_ping_plain, so a longer one
+    // would be written past its end
     assert(text.len <= max_ping_plain);
     return @intCast(text.len);
 }
@@ -121,6 +123,8 @@ pub fn fixture_sealed_bytes_reopen() bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names its ladder and pins which lane is armed, so a local lane
+    // reading as armed would let a fixture reach hardware it was written never to touch
     assert(std.mem.eql(u8, waymark, "SETU"));
     assert(lane_armed(.usb_desk));
     assert(!lane_armed(.local));

@@ -41,6 +41,8 @@ pub const RootLog = struct {
         // invariant: last_root reads only committed slots
         assert(self.committed_len <= max_committed_roots);
         if (self.committed_len == 0) return null;
+        // invariant: the last root is read out of the committed array, so an empty one would
+        // read a root that was never installed
         assert(self.committed_len > 0);
         return self.roots[self.committed_len - 1];
     }
@@ -53,12 +55,16 @@ fn admit_next(state: *RootLog, seq: u32, new_root: [32]u8) RootError!void {
     // behind what is already committed is refused as RootTruncated; so is
     // a seq that jumps ahead of the next expected slot -- Neth admits
     // roots strictly one seq at a time.
+    // invariant: a root is a 32-byte digest and the committed array is fixed, so a count at the
+    // ceiling has no slot left for the next root
     assert(new_root.len == 32);
     assert(state.committed_len <= max_committed_roots);
     if (seq != state.committed_len) return error.RootTruncated;
     if (state.committed_len >= max_committed_roots) return error.Overflow;
     state.roots[state.committed_len] = new_root;
     state.committed_len += 1;
+    // invariant: the admit has landed when this runs, so it states that the install stayed
+    // inside the array it was given
     assert(state.committed_len <= max_committed_roots);
 }
 
