@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `9ec8fc657f` -- ten stale citations repaired in living documents, and the class measured down to one deliberate fixture.
+**Git nib:** `f250841304` -- the seed projection refreshed on the cadence lap; the force-push waits at the gate.
 
 **Now.** **The document half of REDS %218, measured and closed.** Having taught the card to read a
 program's comments, the same reading was pointed at documents: **388 unresolved links across 100
@@ -152,9 +152,9 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence, standing at the gate `20260824.112806`.** The projection is current and its four
+**Seed cadence, standing at the gate `20260825.073555`.** The projection is current and its four
 gates hold on metal, each read alone rather than beside a running roster: `sow_project.sh` copied
-**6,961** files, scrubbed **1,066**, withheld **122**; `sow_leak_scan.sh` reads **IDENT_CLEAN**;
+**7,038** files, scrubbed **1,080**, withheld **122**; `sow_leak_scan.sh` reads **IDENT_CLEAN**;
 `tools/s/sow_witness.rish` reads **NO_PERSONAL**; `tools/s/seed_link_witness.rish` is GREEN. *Read
 alone* is enforced rather than remembered -- `sow_project.sh` takes a lock and a second projection
 exits 3 (REDS %193). Last published projection `fdaf8e3`. **The force-push to `grain-os/grain` waits
