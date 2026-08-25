@@ -18,8 +18,8 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **63 guards** stand -- **61 on the every-lap tier, 2 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
-- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188, then %220 when it fired again). No guard can *enforce* it, since one would have to run after the lap ends -- so the roster runner **reads** it instead, printing `staged_uncommitted` before the first guard. On a cold open that number is this failure's signature; on a hot run it is the round's own work.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **63 guards** stand -- **61 on the every-lap tier, 2 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it -- three times now (REDS %188, %220, %223). No guard can *enforce* the close, since one would have to run after the lap ends. What a guard **can** do is refuse to open the next lap over the wreckage, and that is where the runner now stands: `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
@@ -47,40 +47,31 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `c304d404f2` -- a choir for the largest unheard family; 239 Lotus witnesses heard, unheard down to 937.
+**Git nib:** `c5aadbbcfb` -- rule, then reading, then refusal; a cold roster declines to open over an unclosed lap.
 
-**Now.** **The largest unheard family joined the roster.**
-Season C's Lotus suite had **239** witnesses on disk and no runner naming one, a fifth of the 1,176
-counted as unheard. [`../tools/al/ales_suite_witness.rish`](../tools/al/ales_suite_witness.rish)
-registers all 240, clears `lotus/bin` so each sing proves cold-start self-sufficiency, and asserts
-each GREEN by name.
+**Now.** **A lap that will not open over an unclosed one.**
+The round of `20260825.132121` staged 19 paths and stopped before `git commit`. This lap's cold
+roster read **61 guards, 58 green, 3 red** -- `readme_metrics` and `geode_libraries` stale because
+[`../tools/hooks/pre-commit`](../tools/hooks/pre-commit) regenerates both at commit time, and
+`nib_honesty` refusing the `NIB_HERE` the card carries until a commit exists to name. All three
+closed by shipping the staged round as `a31664d7b6` and filling the nib with one amend.
 
-**Two halves, two clocks.** Singing costs **233s, 303s, 233s** over three clean passes -- `tier
-cadence`. Asking whether the roster is whole costs two greps, so
-[`../tools/al/ales_roster_witness.rish`](../tools/al/ales_roster_witness.rish) takes `tier lap`:
-singing proves the rungs work, asking catches a witness **born unheard**, and its first run bit its
-own author. Reach moved **1,690 / 167 / 82 / 514 / 1,176** to **1,692 / 168 / 322 / 755 / 937**,
-ceiling at 937 with no slack. Argument:
-[`../active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md`](../active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md).
+**REDS %223 -- a reading persuades and a refusal decides.** The class has fired three times, and
+%220 answered it eleven hours earlier with a reading on line one of the lap. The ladder a recurring
+red climbs is **rule, then reading, then refusal**: %188 wrote the rule and proved no guard can
+*enforce* a close, which holds -- such a guard would have to run after a lap ends. What a guard can
+do is refuse to **open** the next lap over the wreckage.
+[`../tools/fixtures/standing_equipment_run.sh`](../tools/fixtures/standing_equipment_run.sh) takes
+`--hot`, and a full-roster pass meeting a dirty index without it exits 1 under
+`run_verdict=lap_unclosed`, ahead of the tree digest and ahead of the first guard. Nine behaviors
+added, **43** in all, ten refusals bitten. Argument:
+[`../active-designing/20260825-144025_rule-then-reading-then-refusal.md`](../active-designing/20260825-144025_rule-then-reading-then-refusal.md).
 
-**REDS %222 -- a measurement carries the conditions it was taken under.** The tier was first chosen
-on `5.97s` times 239, read as twenty-four minutes: one sample on a cold Zig cache, six times the
-truth. Corrected in five places, and the tier restated on its real reason -- this choir is
-**cheaper** than `caravan_suite` at 8m31s on the lap tier, so it sits on `cadence` because Lotus is
-stable while Caravan is the arc that moves. A second timing read a false RED, since two sings share
-`lotus/bin`; [`../tools/fixtures/ales_sing_lock.sh`](../tools/fixtures/ales_sing_lock.sh) holds one
-at a time, twelve behaviors proven both ways.
-
-**REDS %221 -- a cold reading stays cold only while the round holds still.** This lap opened the
-roster cold, then edited from guard twelve on. All sixty answered green and the shell died on a
-syntax error at its last line, because `sh` reads a script by byte offset and the round had
-rewritten the runner underneath it: **the runner is part of the tree its own run measures.** It
-digests HEAD plus `git status --porcelain` at open and close and exits 1 under `tree_moved=yes`.
-
-**The next doors.** **`equinox` at 123 and `hunk` at 86** are the next two unheard families, each
-wanting its own cost measurement before its tier. **A staleness gate on the cadence tier**, still
-wanting a lap count to measure against. The REDS headline's 5,999-byte fold recital shelved this lap
-to [`archive/REDS-fold-recital.md`](archive/REDS-fold-recital.md).
+**The next doors.** **`equinox` at 123 and `hunk` at 86** are the next two unheard families. The
+equinox family is season-ceremony witnesses under `tools/gen/season/`, each named only inside an
+almanac string its own writer prints, so that lap opens by measuring whether they still pass and
+what a sing costs. **A staleness gate on the cadence tier**, still wanting a lap count to measure
+against.
 
 ---
 ## Landed arcs
@@ -233,6 +224,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260825.144025` | Rule, then reading, then refusal: a cold roster refuses to open over an unclosed lap; REDS %223 | [log](../session-logs/20260825-144025_rule-then-reading-then-refusal.kyri) |
 | `20260825.132121` | A choir for the largest unheard family: 239 Lotus witnesses heard, unheard 1,176 -> 937; REDS %221, %222 | [log](../session-logs/20260825-132121_a-choir-for-the-largest-unheard-family.kyri) |
 | `20260825.110922` | A tier is a cadence: the roster's every-lap set stays affordable and the choirs stay heard; REDS %220 | [log](../session-logs/20260825-110922_a-tier-is-a-cadence.kyri) |
 

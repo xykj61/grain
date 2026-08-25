@@ -195,7 +195,10 @@ rather than as history.
   nothing about the commit.
 - **Open a session by running the roster cold**, rather than trusting a staged tree or a previous
   lap's word: `sh tools/fixtures/standing_equipment_run.sh`. Its first honest run found three reds
-  nobody knew about (`%151`), and later runs have opened two more laps the same way.
+  nobody knew about (`%151`), and later runs have opened two more laps the same way. A cold open
+  over a dirty index **refuses** under `run_verdict=lap_unclosed`, because staged paths at that
+  moment belong to whoever ran last (`%223`). The after-`git add` pass says the staged paths are
+  its own: `sh tools/fixtures/standing_equipment_run.sh --hot`, and `--hot --all` on the cadence lap.
 - **Ask the system; never guess at it.** A scan guessing which rooms are generated reddened on a
   sound tree until it asked `git check-ignore` (`%172`); a build guessing "assuming host link seams
   on metal" discovered the truth at link time until it asked the linker's own search path (`%173`).

@@ -21,12 +21,20 @@
 #   which is REDS %219 wearing a field name.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
-#   Thirty-four behaviors are proven on throwaway rosters in a temporary pen -- nine refusals
+#   Forty-three behaviors are proven on throwaway rosters in a temporary pen -- ten refusals
 #   bitten, and the runner itself driven over a planted roster with a stub interpreter, since a
-#   tier is only a cadence if the program that reads it actually selects by it. Seven of the
-#   thirty-four are the tree digest, driven inside a real git repository the control creates: a
-#   stub guard that writes nothing leaves the digest still, and a stub guard that writes a file
-#   moves it, so the reading is proven from the side that refuses as well as the side that passes.
+#   tier is only a cadence if the program that reads it actually selects by it. Sixteen of the
+#   forty-three run inside a real git repository the control creates and throws away, because two
+#   of the runner's refusals are about the repository rather than the roster. Seven are the tree
+#   digest: a stub guard that writes nothing leaves it still, one that writes a file moves it.
+#   Nine are the unclosed lap: a clean cold open runs its guard, one staged path refuses the same
+#   pass before any guard starts, `--hot` passes that same tree, a guard asked for by name runs
+#   free over it, and `--hot --all` still selects every tier.
+#
+#   A full-roster pass opening on a dirty index means a lap ended at `git add`, which left this
+#   tree's generated pages stale three times (REDS %188, %220, %223). The runner refuses it under
+#   `run_verdict=lap_unclosed`. The refusal is proven beside the case it must NOT bite, since a
+#   guard that always refuses cannot be told from one that reads the index at all.
 #
 # WHAT IS REPORTED RATHER THAN GATED. How many rostered guards have never run on this pier -- in
 # total and for the cadence tier alone, which is where a guard can go quiet without anyone
@@ -42,7 +50,8 @@
 #   rishi/bin/rishi run tools/s/standing_equipment_witness.rish
 #
 # To refresh the run card, which is untracked by design:
-#   sh tools/fixtures/standing_equipment_run.sh              # the every-lap tier
+#   sh tools/fixtures/standing_equipment_run.sh              # cold open -- the every-lap tier
+#   sh tools/fixtures/standing_equipment_run.sh --hot        # after `git add` -- staged paths are mine
 #   sh tools/fixtures/standing_equipment_run.sh --all        # every tier, choirs included
 
 say "standing-equipment: Language EN -- the roster of what guards this tree stood in a paragraph, so nothing could run it, count it, or say when each guard last answered."
@@ -102,7 +111,20 @@ assert control.out contains "moved_tree_refuses=yes" else "standing-equipment: a
 assert control.out contains "moved_tree_keeps_lines=yes" else "standing-equipment: a moved tree must still print every guard line it learned"
 assert control.out contains "red_outranks_moved=yes" else "standing-equipment: a guard red is the louder finding and keeps the verdict"
 
+# The unclosed lap, both sides, on the same real repository. A reading on line one persuaded and the
+# class fired again eleven hours later (REDS %223), so the runner refuses rather than reports -- and
+# the refusal is proven against a clean cold open, which it must leave entirely alone.
+assert control.out contains "clean_cold_reads_zero=yes" else "standing-equipment: a clean cold open must read zero staged"
+assert control.out contains "clean_cold_passes=yes" else "standing-equipment: a clean cold open must run its guards and pass"
+assert control.out contains "staged_cold_refuses=yes" else "standing-equipment: a full-roster pass over a dirty index must refuse under run_verdict=lap_unclosed"
+assert control.out contains "staged_cold_refuses_early=yes" else "standing-equipment: the unclosed lap must refuse before the first guard runs"
+assert control.out contains "staged_cold_skips_digest=yes" else "standing-equipment: a refused pass measured nothing, so it prints no tree digest"
+assert control.out contains "staged_hot_passes=yes" else "standing-equipment: --hot must pass the same tree, since the staged paths are the round's own"
+assert control.out contains "hot_still_reads_staged=yes" else "standing-equipment: --hot must still report the staged count it declines to refuse over"
+assert control.out contains "staged_named_guard_free=yes" else "standing-equipment: a guard asked for by name is no lap open and runs free"
+assert control.out contains "hot_composes_with_all=yes" else "standing-equipment: --hot must compose with --all"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- nine refusals bitten, and the runner driven over a planted roster in and out of a real repository"
+say "RED and GREEN paths proven -- ten refusals bitten across forty-three behaviors, and the runner driven over a planted roster in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."
