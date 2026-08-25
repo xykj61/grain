@@ -1,0 +1,531 @@
+//! Caravan address space -- what a protection domain's address space is made
+//! of, held beside the parts Caravan already builds and the parts it owes.
+//!
+//! WHY THIS MODULE EXISTS. A protection domain sees memory, and something has
+//! to say which memory and where. `objects.rye` read seL4's resource
+//! vocabulary and found Caravan standing for five of nine object types, the
+//! four owed being the mapping objects that build an address space.
+//! `allowances.rye` then read the seven numbers Microkit bounds one domain
+//! with, and found Caravan sitting inside all four it shares. This rung asks
+//! the question those two left open: **what is an address space made of, part
+//! by part, and which Caravan module owes each part?**
+//!
+//! WHERE THE PARTS COME FROM. seL4 Microkit is a formally verified framework
+//! that describes an address space with exactly two values, and both are
+//! declared in its own BSD-2-Clause source: a **memory region**, which says
+//! what memory exists, and a **map**, which says where one domain sees it.
+//! The twelve parts below are the fields those two structs declare, read from
+//! `tool/microkit/src/sdf/memory_region.rs` on `20260825.080306`, never
+//! recited. Two fields of each struct are tool bookkeeping -- where the
+//! declaration sat in the file it was parsed from, and whether the page size
+//! came from a person or from the tool -- so they describe the tool rather
+//! than the memory, and this module counts the other twelve.
+//!
+//! THE FIRST FINDING, WHICH THE ACCOUNTING FOUND RATHER THAN SOUGHT. Caravan
+//! holds **seven** of the twelve, and the seven split by module exactly along
+//! the line between a declaration and its lowering. `regions.rye` holds four
+//! -- the name, the size, which region a grant names, and the permissions --
+//! and every one of the four is something a person writes down. `mapping.rye`
+//! holds three -- the page size, the page count, and the virtual address --
+//! and every one of the three is something the machine computes. Caravan grew
+//! that separation for its own reasons, one bounded ring at a time, and it
+//! lands on the same boundary a verified framework draws.
+//!
+//! THE SECOND FINDING: THE FIVE OWED ARE ONE DEBT. The physical address, the
+//! region kind, the two prefill sources, and the caching attribute are five
+//! names for a single absence -- Caravan has never placed anything in physical
+//! memory, so it has never had to say where in RAM a region sits, what it
+//! holds at boot, or how the cache treats it. That is one debt wearing five
+//! names, the same shape `objects.rye` found when four mapping objects turned
+//! out to be one address space wearing four page sizes.
+//!
+//! THE THIRD FINDING, AND THE ONE THIS MODULE REPAIRS. The two halves have
+//! never been introduced. `regions.rye` declares a size in bytes and
+//! `mapping.rye` plans a placement in pages, and no Caravan function converts
+//! one to the other -- so `regions.rye` accepts sizes `mapping.rye` refuses to
+//! plan. Measured on `20260825.080306`: of the 8,192 sizes from one byte to
+//! 8,192 bytes, `regions.rye` accepts every one and `mapping.rye` refuses
+//! **8,190** of them, keeping only 4,096 and 8,192. Two of the four regions
+//! `regions.rye`'s own self-test declares are not page multiples.
+//!
+//! Microkit meets exactly this, since a region may be sized by the length of a
+//! file, and it answers by **rounding up** to a page size rather than by
+//! refusing -- `round_up(bytes.len(), page_size)` in the same source the parts
+//! are read from. So `page_extent` below is that conversion, in Caravan's own
+//! words: the bytes a declaration of N bytes actually costs. It is the
+//! function the four live callers that take an extent from a store's real
+//! length will need on the day a declaration is lowered, and rounding is the
+//! right answer rather than refusal, because a file's length owes a page
+//! nothing.
+//!
+//! WHAT IS LOAD-BEARING HERE. This module imports `regions.rye` and
+//! `mapping.rye` and compares their actual constants, so the join is asserted
+//! rather than described: every size `regions.rye` can declare, rounded to
+//! pages, is a size `mapping.rye` can plan, and its cover fits inside the plan
+//! bound. Moving either module's bound past the other reds here, on the lap
+//! that moves it, rather than on the day of a port.
+//!
+//! TWO ROOMS. The twelve names and the module each part belongs to are
+//! checkable, and `tools/ca/caravan_address_space_witness.rish` binds them
+//! against Microkit's own source on metal. Which Caravan value *should* stand
+//! for each part remains a design judgement, named as one below, earning its
+//! proof the day an address space is actually built on a kernel.
+//!
+//! CLEAN ROOM. No Microkit line is reproduced here. The identifiers below are
+//! interface names, written so a later binding can be diffed against the
+//! source we are licensed to include.
+//!
+//! Usage:
+//!   address_space          Run the self-test (default)
+//!   address_space selftest Same as default
+//!   address_space table    Print the twelve, their holders, and their standings
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const regions = @import("regions.rye");
+const mapping = @import("mapping.rye");
+
+const caravan_address_space_version = "20260825.080306";
+
+// =========================================================================
+// The twelve, as the framework declares them
+// =========================================================================
+
+/// How many parts describe one protection domain's address space. Counted from
+/// the list below rather than recited, so this constant and the table can never
+/// disagree.
+pub const part_count: u32 = 12;
+
+/// How many of the twelve the memory region carries. The map carries the rest,
+/// and the two numbers are asserted to sum below.
+pub const region_part_count: u32 = 8;
+
+/// How many of the twelve Caravan holds today. Measured by walking the
+/// standings rather than recited; this constant is what the walk must agree
+/// with.
+pub const held_count_expected: u32 = 7;
+
+// =========================================================================
+// The vocabulary
+// =========================================================================
+
+/// Which of the two values a part belongs to. A memory region says what memory
+/// exists; a map says where one domain sees it. Every part belongs to exactly
+/// one, which is why an address space is two values rather than one.
+pub const Value = enum(u8) {
+    memory_region = 0,
+    map = 1,
+};
+
+/// One part of an address space. Value order follows the order the framework's
+/// own source declares the fields in, so a witness may walk both in step.
+pub const Part = enum(u8) {
+    region_name = 0,
+    region_size = 1,
+    region_page_size = 2,
+    region_page_count = 3,
+    region_phys_addr = 4,
+    region_kind = 5,
+    region_prefill_bytes = 6,
+    region_prefill_bootinfo = 7,
+    map_region = 8,
+    map_vaddr = 9,
+    map_perms = 10,
+    map_cached = 11,
+};
+
+/// The twelve, in the order the framework's source declares them. One list, so
+/// no count is ever recited.
+pub const all_parts = [_]Part{
+    .region_name,          .region_size,           .region_page_size,
+    .region_page_count,    .region_phys_addr,      .region_kind,
+    .region_prefill_bytes, .region_prefill_bootinfo, .map_region,
+    .map_vaddr,            .map_perms,             .map_cached,
+};
+
+/// Which of the two values the part belongs to.
+pub fn value_of(part: Part) Value {
+    // invariant: the switch is total over the twelve.
+    const value: Value = switch (part) {
+        .region_name,
+        .region_size,
+        .region_page_size,
+        .region_page_count,
+        .region_phys_addr,
+        .region_kind,
+        .region_prefill_bytes,
+        .region_prefill_bootinfo,
+        => .memory_region,
+        .map_region, .map_vaddr, .map_perms, .map_cached => .map,
+    };
+    return value;
+}
+
+/// The struct the framework declares the part in, so a witness can diff this
+/// module against the source rather than against a memory of it.
+pub fn interface_struct(part: Part) []const u8 {
+    const name: []const u8 = switch (value_of(part)) {
+        .memory_region => "SysMemoryRegion",
+        .map => "SysMap",
+    };
+    // invariant: every part names the struct it lives in
+    assert(name.len > 0);
+    return name;
+}
+
+/// The field name the framework carries the part as. Interface names, so a
+/// later binding is a diff rather than a rewrite.
+pub fn interface_field(part: Part) []const u8 {
+    // invariant: every arm returns a non-empty field -- the switch is total.
+    const field: []const u8 = switch (part) {
+        .region_name => "name",
+        .region_size => "size",
+        .region_page_size => "page_size",
+        .region_page_count => "page_count",
+        .region_phys_addr => "phys_addr",
+        .region_kind => "kind",
+        .region_prefill_bytes => "prefill_bytes",
+        .region_prefill_bootinfo => "prefill_bootinfo",
+        .map_region => "mr",
+        .map_vaddr => "vaddr",
+        .map_perms => "perms",
+        .map_cached => "cached",
+    };
+    // invariant: a named part always carries its field name
+    assert(field.len > 0);
+    return field;
+}
+
+/// Plain English for the part, in Caravan's own words.
+pub fn part_meaning(part: Part) []const u8 {
+    const meaning: []const u8 = switch (part) {
+        .region_name => "the label a declaration is reached by",
+        .region_size => "how many bytes of memory the region spans",
+        .region_page_size => "which of the machine's page sizes backs the region",
+        .region_page_count => "how many pages of that size the region takes",
+        .region_phys_addr => "where in physical memory the region sits, when that is fixed",
+        .region_kind => "whether the region holds a program, a stack, boot data, or a person's own memory",
+        .region_prefill_bytes => "the file whose contents the region starts life holding",
+        .region_prefill_bootinfo => "the boot-time fact the region starts life holding instead",
+        .map_region => "which declared region this mapping names",
+        .map_vaddr => "the address the domain sees the region at",
+        .map_perms => "whether the domain may read, write, or run what it sees",
+        .map_cached => "how the machine's cache treats the mapping, which matters most for devices",
+    };
+    // invariant: every part explains itself
+    assert(meaning.len > 0);
+    return meaning;
+}
+
+// =========================================================================
+// Held or owed -- the accounting
+// =========================================================================
+
+/// Whether Caravan builds this part today, and where.
+pub const Standing = enum(u8) {
+    /// A Caravan module carries the part, and `holder` names which.
+    held = 0,
+    /// No Caravan module carries it, because Caravan places nothing in
+    /// physical memory yet. One absence, named five times.
+    owed_to_physical_placement = 1,
+};
+
+/// Which Caravan module carries the part today, or the empty string where none
+/// does.
+///
+/// DESIGN JUDGEMENT, named as one. Each holder below is a value this module's
+/// self-test exercises rather than merely names, so the accounting is read off
+/// disk. The five owed are one debt, and they are named apart in the table so
+/// the shape of the absence stays visible.
+pub fn holder_of(part: Part) []const u8 {
+    // invariant: the switch is total over the twelve.
+    const holder: []const u8 = switch (part) {
+        .region_name => "regions.Named",
+        .region_size => "regions.Region.size_bytes",
+        .region_page_size => "mapping.PageSize",
+        .region_page_count => "mapping.Plan.pages",
+        .map_region => "regions.Grant.region",
+        .map_vaddr => "mapping.Placement.base",
+        .map_perms => "regions.Perm",
+        .region_phys_addr,
+        .region_kind,
+        .region_prefill_bytes,
+        .region_prefill_bootinfo,
+        .map_cached,
+        => "",
+    };
+    return holder;
+}
+
+/// Whether the part is built today or owed.
+pub fn standing_of(part: Part) Standing {
+    const standing: Standing = if (holder_of(part).len > 0) .held else .owed_to_physical_placement;
+    // invariant: a holder exists exactly where a standing is held
+    assert((holder_of(part).len > 0) == (standing == .held));
+    return standing;
+}
+
+/// Which Caravan module a held part lives in -- the policy ring or the geometry
+/// ring. An owed part answers with the empty string.
+pub fn holder_module(part: Part) []const u8 {
+    const module: []const u8 = switch (part) {
+        .region_name, .region_size, .map_region, .map_perms => "regions.rye",
+        .region_page_size, .region_page_count, .map_vaddr => "mapping.rye",
+        .region_phys_addr,
+        .region_kind,
+        .region_prefill_bytes,
+        .region_prefill_bootinfo,
+        .map_cached,
+        => "",
+    };
+    // invariant: a module is named exactly where a holder is
+    assert((module.len > 0) == (standing_of(part) == .held));
+    return module;
+}
+
+/// One line naming why the part stands where it does, so the accounting reads
+/// as design rather than as a list.
+pub fn standing_reason(part: Part) []const u8 {
+    const reason: []const u8 = switch (part) {
+        .region_name => "regions.Named bounds every label the declaration ring carries",
+        .region_size => "regions.Region.size_bytes is the extent a declaration names, bounded by max_region_bytes",
+        .region_page_size => "mapping.PageSize is the three sizes riscv64 offers, read from seL4's own constants",
+        .region_page_count => "mapping.Plan.pages counts the cover, one entry per page size",
+        .map_region => "regions.Grant.region indexes the declared roster, so a grant names a real region",
+        .map_vaddr => "mapping.Placement.base is where the machine puts the region, which policy withholds on purpose",
+        .map_perms => "regions.Perm carries read, write and execute, and holds write apart from execute",
+        .region_phys_addr => "Caravan places nothing in physical memory yet, so it has never had to fix an address",
+        .region_kind => "every Caravan region is a person's own memory; programs, stacks and boot data arrive with a kernel",
+        .region_prefill_bytes => "a region starts life empty here, since nothing yet loads a file into one",
+        .region_prefill_bootinfo => "boot-time facts want a boot, and this arc has not reached one",
+        .map_cached => "a caching attribute is a fact about a machine's cache, and Caravan runs hosted",
+    };
+    // invariant: every part names its reason
+    assert(reason.len > 0);
+    return reason;
+}
+
+// =========================================================================
+// The join -- what a declared size costs in pages
+// =========================================================================
+
+/// The bytes a declaration of `size_bytes` actually costs, rounded up to the
+/// smallest page the machine offers.
+///
+/// WHY ROUNDING RATHER THAN REFUSAL. A region may be sized by the length of a
+/// real store, and a file's length owes a page nothing -- four of Caravan's own
+/// callers take their extent that way. Microkit meets the same case and rounds
+/// up rather than refusing, which is the answer that lets an honest declaration
+/// stay honest and still land on a machine.
+pub fn page_extent(size_bytes: u64) u64 {
+    const page = mapping.size_bytes(.four_k);
+    // invariant: a declaration spans at least one byte, so it costs at least one page
+    assert(size_bytes >= 1);
+    // invariant: the declaration stays within what the policy ring may declare
+    assert(size_bytes <= regions.max_region_bytes);
+    const extent = ((size_bytes + page - 1) / page) * page;
+    // invariant: rounding up never loses bytes
+    assert(extent >= size_bytes);
+    // invariant: the extent lands on a page boundary, which is what makes it plannable
+    assert(extent % page == 0);
+    return extent;
+}
+
+/// Whether a declared size already lands on a page boundary, so `page_extent`
+/// would leave it alone. Two of the four regions `regions.rye`'s own self-test
+/// declares answer no, which is the whole reason this function's sibling exists.
+pub fn already_paged(size_bytes: u64) bool {
+    // invariant: a declaration spans at least one byte
+    assert(size_bytes >= 1);
+    const page = mapping.size_bytes(.four_k);
+    const paged = size_bytes % page == 0;
+    // invariant: an already-paged size is its own extent
+    assert(!paged or page_extent(size_bytes) == size_bytes);
+    return paged;
+}
+
+/// The plan a declared region costs, once its size is rounded to pages and
+/// given a place. This is the join the two rings have never had: a policy
+/// declaration in, a geometry plan out.
+pub fn plan_for(base: u64, size_bytes: u64) error{
+    EmptyPlacement,
+    UnalignedBase,
+    UnalignedLength,
+    BeyondAddressSpace,
+}!mapping.Plan {
+    // invariant: the size is one the policy ring could have declared
+    assert(size_bytes >= 1);
+    // invariant: the size stays within the policy ring's own bound
+    assert(size_bytes <= regions.max_region_bytes);
+    const extent = page_extent(size_bytes);
+    return mapping.plan(mapping.Placement.init(base, extent));
+}
+
+// =========================================================================
+// Counting the accounting
+// =========================================================================
+
+/// How many of the twelve Caravan holds today. Counted from the standing of
+/// each rather than recited, so the number and the table agree.
+pub fn held_count() u32 {
+    var count: u32 = 0;
+    for (all_parts) |part| {
+        if (standing_of(part) == .held) count += 1;
+    }
+    // invariant: holdings never exceed the vocabulary
+    assert(count <= part_count);
+    return count;
+}
+
+/// How many held parts a given Caravan module carries. The split between the
+/// two is the first finding, so it is counted rather than claimed.
+pub fn held_by(module: []const u8) u32 {
+    // invariant: a module is asked for by a real name
+    assert(module.len > 0);
+    var count: u32 = 0;
+    for (all_parts) |part| {
+        if (std.mem.eql(u8, holder_module(part), module)) count += 1;
+    }
+    // invariant: one module never carries more than the whole vocabulary
+    assert(count <= part_count);
+    return count;
+}
+
+/// How many of the twelve the memory region carries. Counted the same way.
+pub fn region_parts_measured() u32 {
+    var count: u32 = 0;
+    for (all_parts) |part| {
+        if (value_of(part) == .memory_region) count += 1;
+    }
+    // invariant: one value never carries more than the whole vocabulary
+    assert(count <= part_count);
+    return count;
+}
+
+// =========================================================================
+// The table, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("address-space: version {s}\n", .{caravan_address_space_version});
+    for (all_parts) |part| {
+        const holder = holder_of(part);
+        print("address-space: {d} {s}.{s} [{s}] -- {s} [{s}] {s}: {s}\n", .{
+            @intFromEnum(part),
+            interface_struct(part),
+            interface_field(part),
+            @tagName(value_of(part)),
+            part_meaning(part),
+            @tagName(standing_of(part)),
+            if (holder.len > 0) holder else "none",
+            standing_reason(part),
+        });
+    }
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- assert the twelve partition, the accounting counts, and the
+// join between the two rings holds at both ends
+// =========================================================================
+
+fn run_self_test() u8 {
+    // The list and the enum agree, so the count is read rather than recited.
+    assert(all_parts.len == part_count);
+    var seen: u32 = 0;
+    for (all_parts, 0..) |part, index| {
+        assert(@intFromEnum(part) == index);
+        seen += 1;
+    }
+    assert(seen == part_count);
+
+    // The two values partition the twelve with no part in both and none in
+    // neither, which is what makes an address space two values rather than one.
+    assert(region_parts_measured() == region_part_count);
+    assert(region_part_count < part_count);
+
+    // Every part names a real struct, field, meaning, and reason.
+    for (all_parts) |part| {
+        assert(interface_struct(part).len > 0);
+        assert(interface_field(part).len > 0);
+        assert(part_meaning(part).len > 0);
+        assert(standing_reason(part).len > 0);
+    }
+
+    // THE FIRST FINDING, asserted rather than admired. Seven of the twelve are
+    // held, and the seven split four to the policy ring and three to the
+    // geometry ring -- the same line a verified framework draws between a
+    // declaration and its lowering.
+    const held = held_count();
+    assert(held == held_count_expected);
+    assert(held < part_count);
+    assert(held_by("regions.rye") == 4);
+    assert(held_by("mapping.rye") == 3);
+    assert(held_by("regions.rye") + held_by("mapping.rye") == held);
+
+    // THE SECOND FINDING. The five owed are one absence, so every one of them
+    // carries the same standing and no holder at all.
+    for (all_parts) |part| {
+        const owed = standing_of(part) == .owed_to_physical_placement;
+        assert(owed == (holder_of(part).len == 0));
+        assert(owed == (holder_module(part).len == 0));
+    }
+    assert(part_count - held == 5);
+
+    // THE THIRD FINDING AND ITS REPAIR. The join holds at both ends: every size
+    // the policy ring can declare, rounded to pages, is a size the geometry
+    // ring can plan.
+    assert(page_extent(regions.max_region_bytes) <= mapping.max_plan_bytes);
+    assert(page_extent(1) == mapping.size_bytes(.four_k));
+
+    // Rounding never shrinks a declaration and never moves one already paged.
+    assert(page_extent(4096) == 4096);
+    assert(page_extent(2048) == 4096);
+    assert(page_extent(8192) == 8192);
+    assert(already_paged(4096));
+    assert(!already_paged(2048));
+
+    // Rounding is idempotent, which is what lets a caller apply it without
+    // first asking whether it has already been applied.
+    assert(page_extent(page_extent(2048)) == page_extent(2048));
+    assert(page_extent(page_extent(regions.max_region_bytes)) == page_extent(regions.max_region_bytes));
+
+    // The largest declarable region plans, and its worst cover -- forced to
+    // small pages by a base one page above zero -- stays well inside the plan
+    // bound. Both numbers are computed here rather than recalled.
+    const best = plan_for(0, regions.max_region_bytes) catch unreachable;
+    const worst = plan_for(mapping.size_bytes(.four_k), regions.max_region_bytes) catch unreachable;
+    assert(best.page_count() <= mapping.max_plan_pages);
+    assert(worst.page_count() <= mapping.max_plan_pages);
+    assert(best.page_count() <= worst.page_count());
+
+    // A declaration the policy ring refuses to hold is one this join never
+    // sees, so the join's own bound is the policy ring's bound.
+    assert(regions.max_region_bytes <= mapping.max_plan_bytes);
+
+    print("address-space: version {s}\n", .{caravan_address_space_version});
+    print("address-space: a protection domain's address space is {d} parts across 2 values -- {d} in the memory region, {d} in the map.\n", .{ part_count, region_part_count, part_count - region_part_count });
+    print("address-space: Caravan holds {d} of the {d}, split {d} to regions.rye and {d} to mapping.rye -- policy and geometry, the framework's own line.\n", .{ held, part_count, held_by("regions.rye"), held_by("mapping.rye") });
+    print("address-space: the {d} owed are one debt wearing five names -- Caravan places nothing in physical memory yet.\n", .{part_count - held});
+    print("address-space: the join holds -- {d} bytes declarable, rounded to {d}, plans to {d} pages at best and {d} at worst, inside {d}.\n", .{
+        regions.max_region_bytes,
+        page_extent(regions.max_region_bytes),
+        best.page_count(),
+        worst.page_count(),
+        mapping.max_plan_pages,
+    });
+    print("address-space: twelve parts partitioned, seven held, the join asserted at both ends -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.081302` | [what an address space is made of](20260825-081302_what-an-address-space-is-made-of.kyri) | Twelve parts, seven held; the join the two rings never had. |
 | `20260825.073555` | [the projection, and the gate](20260825-073555_the-projection-fresh-and-the-push-at-the-gate.kyri) | Seed projected: 7,038 copied, 1,080 scrubbed; four gates hold. |
 | `20260825.070659` | [what a guard asks](20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) | 388 links measured down to 13 to 1; a backtick is not a path. |
 | `20260825.061552` | [bounded for our own reasons](20260825-061552_bounded-for-our-own-reasons.kyri) | Microkit bounds a domain seven ways; Caravan sits inside all four it shares. |

@@ -130,6 +130,7 @@ disk (REDS %184).
 | refusals | [`refusals.rye`](refusals.rye) | the vocabulary a verified kernel answers with, mapped onto the vocabulary Caravan's own supervision speaks today |
 | objects | [`objects.rye`](objects.rye) | the resource kinds a verified kernel offers, held beside the resource Caravan's supervision names today |
 | allowances | [`allowances.rye`](allowances.rye) | the bounds a protection domain runs under, held beside the bounds Caravan declares for itself -- and Caravan sits inside all four it shares |
+| address space | [`address_space.rye`](address_space.rye) | what a protection domain's address space is made of, part by part -- Caravan holds seven of the twelve, split four to policy and three to geometry, and the join between those two rings is supplied here |
 | derivation | [`derivation.rye`](derivation.rye) | the tree a granted capability makes when it is handed on, and the two kernel refusals only a tree can answer |
 | ipc buffer | [`ipc_buffer.rye`](ipc_buffer.rye) | the bounded message a dependent sends, and the one kernel refusal only a message with a declared length can answer |
 | untyped | [`untyped.rye`](untyped.rye) | the memory a dependent receives, carved from a region with a real floor, and the one kernel refusal only a floor can answer |

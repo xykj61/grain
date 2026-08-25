@@ -1,0 +1,143 @@
+# tools/ca/caravan_address_space_witness.rish -- what a protection domain's address space is made of,
+# and which Caravan module owes each part.
+#
+# WHY THIS RUNG. `objects.rye` read seL4's riscv64 resource vocabulary and found Caravan standing for
+# five of nine object types, the four owed being the mapping objects that build an address space.
+# `allowances.rye` then read the seven numbers Microkit bounds one protection domain with, and found
+# Caravan sitting inside all four it shares. Both left the same question open: what IS an address
+# space, part by part? Microkit answers with exactly two values -- a memory region saying what memory
+# exists, and a map saying where one domain sees it -- and this rung states their twelve parts, names
+# the Caravan module that carries each, and supplies the one conversion neither module had.
+#
+# THE FIRST FINDING, which the accounting found rather than sought. Caravan holds SEVEN of the twelve,
+# and the seven split by module exactly along the framework's own line between a declaration and its
+# lowering: four in regions.rye, every one of them something a person writes down, and three in
+# mapping.rye, every one of them something the machine computes.
+#
+# THE SECOND FINDING. The five owed are one debt wearing five names -- physical address, region kind,
+# two prefill sources, caching attribute -- and each is about the physical world a region lives in,
+# which Caravan has never had to name because it places nothing in physical memory yet.
+#
+# THE THIRD FINDING, and the one the module repairs. The two halves had never been introduced:
+# regions.rye declares a size in bytes and mapping.rye plans a placement in pages, and no Caravan
+# function converted one to the other. Measured 20260825: of the 8,192 sizes from one byte to 8,192,
+# regions.rye accepts every one and mapping.rye refuses 8,190, keeping only 4,096 and 8,192. Two of
+# the four regions regions.rye's own self-test declares are not page multiples. Microkit meets exactly
+# this case -- a region sized by a file's length -- and answers by rounding up rather than refusing,
+# so `page_extent` is that answer in Caravan's own words.
+#
+# WHAT IS PROVEN, on metal, and every RED path with it:
+#
+#   the module builds and its own asserts pass       the asserts ARE the specification
+#   twelve field names match the source              read at run time, never recited
+#   twelve field ORDER matches the source            a claim about order needs a check about order
+#   a renamed field is refused                       membership parts both ways
+#   a MOVED field is refused                         field_mismatch stays 0 and order_mismatch rises
+#   a removed field is refused                       the source falls short of twelve
+#   a THIRD bookkeeping field is refused             an exclusion list that grows on its own excludes anything
+#   an absent source is refused                      rather than read as zero disagreement
+#   an absent table is refused                       likewise
+#   the join refuses a widened policy bound          16 MiB to 1 TiB, against an Sv39 512 GiB
+#   the join refuses a narrowed page                 so rounding is proven as well as the bound
+#
+# WHY THE MOVED-FIELD READING IS THE ONE THAT EARNS THE SCAN. A check that compares membership alone
+# passes a struct whose fields have been reordered, and the module claims to list the parts in the
+# order the source declares them. `refusals.rye` once carried the right eleven names with two meanings
+# swapped, inside a rung whose parity check looked only at names (REDS %107). This scan walks both
+# lists position by position so the same fault cannot stand here.
+#
+# WHAT IS NOT PROVEN. That the Caravan value named for each held part is the RIGHT one. That is a
+# design judgement, named as one in the module, and it earns its proof the day an address space is
+# actually built on a kernel. Nor that a rounded declaration is the right POLICY -- rounding is what a
+# verified framework does with the same case, which is evidence rather than proof.
+#
+# CLEAN ROOM. No Microkit line is reproduced. The identifiers are interface names, and the source is
+# read from the vendored BSD-2-Clause gitlink we are licensed to include.
+#
+# Style: context/GAUGE_STYLE.md - Lens: context/TAME_CORE.md - Kin: tools/ca/caravan_allowances_witness.rish
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_address_space_witness.rish
+
+say "caravan-address-space: Language EN -- a protection domain's address space is twelve parts across two values, and Caravan already builds seven of them."
+say "caravan-address-space: Style Gauge -- three claims in order. The twelve are read from the source rather than recited, names and order alike. The seven held split four to policy and three to geometry. And the join between those two halves is supplied and asserted at both ends."
+say "caravan-address-space: Lens TAME -- bound everything, say why; the module's asserts are the specification, and eight RED paths are proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/address_space"
+let source = "vendor/microkit/tool/microkit/src/sdf/memory_region.rs"
+let scan = "tools/fixtures/caravan_address_space_symbol_scan.sh"
+let control = "tools/fixtures/caravan_address_space_join_control.sh"
+let build_dir = "tools/.build/caravan_address_space"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-address-space: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out.
+let checked_out = run ["sh" "-c" "test -f ${source} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-address-space: vendor/microkit is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO READ, re-checked at the file level. Intent is not a licence, and this tree's own
+#    licence read found Microkit carrying two GPL files among three hundred BSD ones.
+let bsd = run ["sh" "-c" "grep -c 'SPDX-License-Identifier: BSD-2-Clause' ${source} | tr -d ' \n'"]
+assert (trim bsd.out) == "1" else "caravan-address-space: the Microkit memory-region source no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
+
+# 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/address_space.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-address-space: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-address-space: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-address-space: the self-test is not GREEN"
+assert test.out contains "address space is 12 parts across 2 values -- 8 in the memory region, 4 in the map" else "caravan-address-space: the twelve did not partition eight-and-four"
+assert test.out contains "Caravan holds 7 of the 12, split 4 to regions.rye and 3 to mapping.rye" else "caravan-address-space: the policy-and-geometry split did not hold"
+assert test.out contains "the 5 owed are one debt wearing five names" else "caravan-address-space: the owed did not read as one debt"
+assert test.out contains "the join holds" else "caravan-address-space: the join between the two rings did not hold"
+say test.out
+
+# 3. THE TWELVE ARE READ FROM THE SOURCE, names and ORDER alike, never recited.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert table.ok else "caravan-address-space: could not print the table"
+
+let parity = run ["sh" "-c" "sh ${scan} ${source} ${build_dir}/table.txt"]
+assert parity.ok else "caravan-address-space: the symbol scan did not run"
+say parity.out
+assert parity.out contains "source_count=12" else "caravan-address-space: the source no longer declares all twelve parts"
+assert parity.out contains "table_count=12" else "caravan-address-space: the module no longer prints all twelve"
+assert parity.out contains "field_mismatch=0" else "caravan-address-space: a part's field name has drifted from the source"
+assert parity.out contains "order_mismatch=0" else "caravan-address-space: a part has moved in the source, and the module claims to list them in source order"
+assert parity.out contains "excluded=3" else "caravan-address-space: the tool-bookkeeping fields are no longer the three this scan names, so the exclusion wants re-reading"
+assert parity.out contains "verdict=ok" else "caravan-address-space: the source and the module disagree"
+
+# 4. THE RED PATHS, on metal. A guard that cannot red guards nothing (REDS row 59). Six plants and
+#    one welcome, run on real files in a throwaway pen by the control, which reads a small integer
+#    report back rather than interpolating a quoted awk program into a shell word (REDS %85).
+let plants = run ["sh" "-c" "sh tools/fixtures/caravan_address_space_scan_control.sh ${source} ${build_dir}/table.txt"]
+assert plants.ok else "caravan-address-space: the scan control did not run"
+say plants.out
+assert plants.out contains "welcome=ok" else "caravan-address-space: the unedited source must read ok in the same pen, or every refusal below measures a broken pen"
+assert plants.out contains "renamed=1" else "caravan-address-space: a renamed field must be refused, and must part membership both ways"
+assert plants.out contains "moved=1" else "caravan-address-space: two fields swapped must keep membership clean and refuse on ORDER -- the reading a membership-only check cannot make"
+assert plants.out contains "removed=1" else "caravan-address-space: a removed field must leave the source short of twelve"
+assert plants.out contains "added=1" else "caravan-address-space: a new field must be refused rather than absorbed -- an exclusion list that grows on its own excludes anything"
+assert plants.out contains "no_source=1" else "caravan-address-space: an absent source must refuse rather than read as agreement"
+assert plants.out contains "no_table=1" else "caravan-address-space: an absent table must refuse rather than read as agreement"
+assert plants.out contains "bitten=6" else "caravan-address-space: every one of the six plants must bite"
+assert plants.out contains "verdict=ok" else "caravan-address-space: the scan control must agree with itself"
+
+# 5. THE JOIN IS LOAD-BEARING, proven by moving a bound until the module refuses. This is the whole
+#    reason the module IMPORTS regions.rye and mapping.rye rather than copying their numbers.
+let join = run ["sh" "-c" "sh ${control} ${zig} ${build_dir}/pen"]
+assert join.ok else "caravan-address-space: the join control did not run"
+say join.out
+assert join.out contains "baseline=ok" else "caravan-address-space: the pen must build and pass with every bound as the tree keeps it, or a broken pen would read as a proof"
+assert join.out contains "widened=refused" else "caravan-address-space: widening the policy bound past what the geometry ring can plan must fail the module's own self-test"
+assert join.out contains "rounding=refused" else "caravan-address-space: narrowing the page a declaration rounds to must fail the module's own self-test"
+assert join.out contains "assertion_named=yes" else "caravan-address-space: the refusal must be an assertion failure, rather than a build that fell over for some other reason"
+assert join.out contains "verdict=ok" else "caravan-address-space: the join control must agree with itself"
+
+let sweep = run ["sh" "-c" "rm -rf ${build_dir}/pen"]
+assert sweep.ok else "caravan-address-space: could not sweep the pen"
+
+say "eight RED paths proven on metal, and the join proven load-bearing from both ends -- a bound moved and a page narrowed"
+say "GREEN: caravan-address-space -- twelve parts read from the source in order, seven held across two rings, and the join between them supplied and asserted."
