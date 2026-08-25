@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260825.073555
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The projection refreshed on the cadence lap, and the push left at the gate
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, condense ITINERARY and refill Now, send each finished increment, seed cadence on the closing lap
+think Commit count reached 3425, so this is the lap the council rota closes its cycle -- 3425 mod 5 = 0 -- and the seed cadence falls due.
+think The cadence grant and custody gate %1 point opposite ways on the same line, and ITINERARY settles it for itself rather than leaving it to the lap: the projection and its four gates are agent-doable, the force-push is Keaton's hand, and an autonomous lap surfaces that rather than reading the grant in its own favour. Precedents 20260823.142302 and 20260824.
+think So I ran the half that is mine. sow_project.sh copied 7,038 files, scrubbed 1,080 and withheld 122 -- up from 6,961 and 1,066 at the last reading, which is five rounds of new work reaching the projection.
+obs All four gates hold on the fresh projection, each read alone: IDENT_CLEAN from the leak scan, NO_PERSONAL from sow_witness, GREEN from seed_link_witness, and the projection itself SOW_OK. The card's reading was fifteen days stale in its counts and is measured now.
+obs The force-push is left where it belongs. One line ships it -- bash ~/grain/publish-seed.sh -- and it waits on Keaton's word.
+obs Own red, caught by the tooling and repaired without a force-push. I chained the ITINERARY nib sed and a `git commit --amend` behind the commit in one shell line, and the commit-msg hook refused the body for carrying two mechanism words where three are wanted. The amend fired anyway, on the commit BEFORE it -- the docs round already pushed as c21e4633b5 -- swallowing this lap's three files into a published commit and making the push a non-fast-forward.
+obs The remotes were the record that saved it: they still held c21e4633b5, so `git reset --soft` back to it left this lap's work staged and cost nothing. No force-push, no history rewrite, no reclone for anyone.
+obs What it taught, and it is the same shape as the mechanism-sentence law itself: a refusal is only a refusal if what follows it stops. `cmd && amend` would have stopped; `cmd; sed; amend` does not, and I wrote the second because the first four rounds had all succeeded. A step that rewrites a published commit belongs on its own line, after a verdict has been read by eyes.
+loom seed copied=7038 scrubbed=1080 withheld=122 leak=IDENT_CLEAN sow=NO_PERSONAL seed_link=GREEN
+file construction/ITINERARY.md the seed cadence reading refreshed from a projection run this minute
+recommend check-in (Keaton) the seed force-push is the one door open and it is a custody gate -- say ship the seed and bash ~/grain/publish-seed.sh carries it; everything else on the card is agent-doable and the next crux is the fourth microkernel rung, the address space
