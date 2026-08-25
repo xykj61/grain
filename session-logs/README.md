@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.183029` | [the narrowest dialect](20260825-183029_the-narrowest-dialect.kyri) | REDS %226: the register meter and parity-selftest made two-host, proven on metal |
 | `20260825.181028` | [two words granted and routed](20260825-181028_two-words-granted-and-routed.kyri) | seed push routed to the pier; FAST/COLD ruling seated |
 | `20260825.180329` | [the short name and the wall](20260825-180329_the-short-name-and-the-wall.kyri) | REDS %225: bare Siya joins the wall; four basenames withheld; gates green |
 | `20260825.173849` | [fusion research and three bundles placed](20260825-173849_fusion-research-and-three-bundles-placed.kyri) | 18 files seated, reprove design booked, held at the gate |
