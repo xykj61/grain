@@ -34,12 +34,18 @@ pub const Matrix = struct {
     }
 
     pub fn at(self: *const Matrix, row: u32, col: u32) f32 {
+        // invariant: the element is read out of the backing array at row times cols plus col,
+        // so either index past its own dimension would read a neighbour's cell or run off the
+        // matrix entirely
         assert(row < self.rows);
         assert(col < self.cols);
         return self.data[row * self.cols + col];
     }
 
     pub fn set(self: *Matrix, row: u32, col: u32, value: f32) void {
+        // invariant: the element is written into the backing array at row times cols plus col,
+        // so either index past its own dimension would overwrite a neighbour's cell or run off
+        // the matrix entirely
         assert(row < self.rows);
         assert(col < self.cols);
         self.data[row * self.cols + col] = value;
@@ -57,8 +63,10 @@ pub const Matrix = struct {
 pub fn approx_equal(a: *const Matrix, b: *const Matrix, epsilon: f32) TensorError!bool {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (epsilon < 0) return error.NegativeInput;
-    assert(a.len() <= max_elements); // invariant: shape stays inside the garden
-    assert(b.len() == a.len()); // invariant: shapes agreed above
+    // invariant: the comparison walks both matrices to one length, so a shape past the element
+    // ceiling or two shapes that disagree would read past whichever ran out first
+    assert(a.len() <= max_elements);
+    assert(b.len() == a.len());
     var r: u32 = 0;
     while (r < a.rows) : (r += 1) {
         var c: u32 = 0;

@@ -44,11 +44,37 @@ check "1 and it lands in the selftest bin" "1" "$(val "$o" selftest_asserts)"
 #      is what a selftest is FOR, and the first draft of this rule swallowed the API because of it.
 rm -f "$pen"/m/*.rye
 put b.rye <<'EOF'
-pub fn crop() void { assert(w > 0); }
-fn run_selftest() void { crop(); }
+pub fn crop() u32 { assert(w > 0); return 1; }
+fn run_selftest() void { _ = crop(); }
 EOF
 o=$(read_bins)
 check "2 a pub fn called from a selftest stays a contract" "1" "$(val "$o" contract_asserts)"
+
+# 2b -- a `pub fn` returning void that NO other module calls is a proof harness; one another module
+#       calls, or one that returns a value, stays a contract. Both conditions err toward contract.
+rm -f "$pen"/m/*.rye
+put p1.rye <<'EOF'
+pub fn check_reads() void { assert(r == 1); }
+fn run_selftest() void { check_reads(); }
+EOF
+o=$(read_bins)
+check "2b a void pub fn no other module calls bins as proof" "0" "$(val "$o" contract_asserts)"
+
+put p2.rye <<'EOF'
+const other = @import("p1.rye");
+pub fn use_it() void { other.check_reads(); }
+EOF
+o=$(read_bins)
+check "2b the same fn, once another module calls it, stays a contract" "1" "$(val "$o" contract_asserts)"
+
+rm -f "$pen"/m/*.rye
+put p3.rye <<'EOF'
+pub fn measure() u32 { assert(m == 1); return 1; }
+fn run_selftest() void { _ = measure(); }
+EOF
+o=$(read_bins)
+check "2b a pub fn returning a value stays a contract, uncalled or not" "1" "$(val "$o" contract_asserts)"
+rm -f "$pen"/m/*.rye
 
 # 3 -- a private helper a pub function ALSO calls is shared code, so it withdraws to contract.
 rm -f "$pen"/m/*.rye

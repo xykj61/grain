@@ -97,7 +97,20 @@ trap 'rm -rf "$work"' EXIT INT TERM
 count=$(wc -l < "$work/files.txt" | tr -d ' ')
 [ "$count" -gt 0 ] || { echo "verdict=no_modules"; exit 1; }
 
-( cd "$root" && xargs -a "$work/files.txt" awk '
+# CROSS-FILE CALLS, gathered once. A `pub fn` is exported for callers this file cannot see, so the
+# proof spread may not reach into one -- REDS %211. Yet `caravan/regions.rye` exports
+# `check_declared_access`, `check_reads` and `check_refusals` for a WITNESS to call, and its own
+# selftest calls them too: 361 asserts that are proof by role and contract by export (REDS %213).
+#
+# The two are told apart by asking the tree rather than the file. A qualified call `.name(` from
+# some OTHER authored module means a real caller exists; none means the export is for a proof
+# harness. Paired with a `void` return -- a proof gives its caller nothing -- both conditions must
+# hold before the spread reaches a `pub fn`, and each errs toward CONTRACT when it is unsure, since
+# a contract read as proof hides a real gap while a proof read as contract merely inflates one.
+( cd "$root" && xargs -a "$work/files.txt" grep -HoE '\.[a-z_][A-Za-z0-9_]*[ ]*\(' 2>/dev/null ) \
+  | sed 's/:\./\t/; s/[ ]*($//' | sort -u > "$work/qcalls.tsv"
+
+( cd "$root" && xargs -a "$work/files.txt" awk -v QCALLS="$work/qcalls.tsv" '
   function covered(i,   j, k) {
     # up over blanks and over a run of neighbouring asserts, then through the comment block
     j = i - 1
@@ -109,14 +122,29 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     return 0
   }
   # Which functions are proofs? Name says one thing, the call graph says the rest.
+  BEGIN {
+    while ((getline ln < QCALLS) > 0) {
+      t = index(ln, "\t"); if (t == 0) continue
+      cf = substr(ln, 1, t - 1); cn = substr(ln, t + 1)
+      qn[cn]++; qwhere[cn] = cf
+    }
+    close(QCALLS)
+  }
+  # Called with a qualifier from some file other than this one?
+  function called_outside(nm, me) {
+    if (!(nm in qn)) return 0
+    if (qn[nm] >= 2) return 1
+    return (qwhere[nm] != me)
+  }
   function mark_proofs(   i, j, fname, ispub, a, b, body, n2, moved, pass) {
     nf = 0
-    delete fstart; delete fend; delete fname_of; delete fpub; delete isproof; delete outside
+    delete fstart; delete fend; delete fname_of; delete fpub; delete fvoid; delete isproof; delete outside
     for (i = 1; i <= n_lines; i++) {
       if (lines[i] ~ /^(pub[ \t]+)?(export[ \t]+)?fn[ \t]+[A-Za-z_]/) {
         if (nf > 0) fend[nf] = i - 1
         nf++
         fpub[nf] = (lines[i] ~ /^pub[ \t]/)
+        fvoid[nf] = (lines[i] ~ /\)[ \t]*void[ \t]*\{/)
         fname = lines[i]
         sub(/^(pub[ \t]+)?(export[ \t]+)?fn[ \t]+/, "", fname); sub(/[ \t(].*$/, "", fname)
         fname_of[nf] = fname; fstart[nf] = i
@@ -135,11 +163,15 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
         for (j = fstart[i]; j <= fend[i]; j++) body = body "\n" lines[j]
         for (j = 1; j <= nf; j++) {
           if (j == i || isproof[j]) continue
-          # A `pub` function is NEVER reached into as a proof, whatever calls it: it is exported for
-          # callers this file cannot see, and a selftest calling the real API is exactly what a
-          # selftest is for. Without this the spread swallowed the API it was written to exercise --
-          # 22,017 contract asserts read as 10,285 on the first run of this rule.
-          if (fpub[j]) continue
+          # A `pub` function is reached into only when the TREE says nobody else calls it and its
+          # own signature says it gives nothing back. Without the first guard the spread swallowed
+          # the API it was written to exercise -- 22,017 contract asserts read as 10,285 on the
+          # first run of this rule. Without the second, an exported verb nobody has called yet
+          # would read as proof; `image/photos.rye` publishes `scale_bilinear` with no caller in
+          # the tree, and it returns a pixmap, so it stays a contract.
+          # `name`, never FILENAME: flush() processes the file that just ENDED, and FILENAME already
+          # holds the next one by then.
+          if (fpub[j] && (called_outside(fname_of[j], name) || !fvoid[j])) continue
           if (body ~ ("[^A-Za-z0-9_]" fname_of[j] "[ \t]*\\(")) { isproof[j] = 1; moved = 1 }
         }
       }
