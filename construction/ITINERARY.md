@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **57 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **58 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -47,31 +47,30 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `de54c09376` -- the register floor the card was dropping; one number, cited once, two readings.
+**Git nib:** `7730ae2e2f` -- a fold repoints the paths it can see, and a citation in a comment was not one (REDS %218).
 
-**Now.** **Three report-card readings learned an honest denominator, all on metal.** One finding
-wearing three faces: *a meter that instructs a repair which would make the artifact worse is the
-thing to fix.* **Reach** scored an index's link density against a budget written for prose, so the
-card now reads a page's own header declaration under **two conditions** -- declared **and** under
-100 words. **Truth** charged forty points for the placeholder shape (`date/YYYYMMDD/name`) the
-stamp-and-name law seats; only `YYYYMMDD` and `HHMMSS` count and a **fabricated** stamp still costs
-twenty. **Register** dropped a floor its own source has always applied: `prose_register_scan.sh`
-skips a page under **8 sentences** as *too short to read a share from honestly*, and the card citing
-it scored `docs-geode/libraries/README.md` **0** off one sentence. The floor is a named constant now,
-`REGISTER_MIN_SENTENCES`, **cited** the way `measure()` already is, so removing it makes the card
-refuse. Measured: **27 living teaching pages** sit under it, six reading 100% off one sentence.
-**One condition here rather than two, and the difference is the point** -- a page *declares* itself
-an index, so that reading needs a guard; a sentence count is *measured*, so none can assert its way
-under. The **20% door wall is untouched**. Door roster **12 of 12 at B or better, ceiling 0**, no
-page rewritten. **54 behaviors** in the control; the 10 new floor readings refuse **6** against
-the card as it stood this morning and pass exactly the 4 that must not change. Argument:
-[the two-condition form](../active-designing/20260825-034444_a-declaration-is-not-an-exemption.md).
+**Now.** **A red the meter found while being repaired, closed on metal (REDS %218).** Teaching the
+report card that **a program cites in its comments** turned it on the tree and it found **four
+relative citations naming paths that have never existed**. `tools/rye/session_logs_archive.rye` went
+one directory deeper in the `tools/` fold of `20260823.144100` and kept the depth its citations were
+written at; two more broke when a design note folded into `active-designing/yonder/`. Nothing
+standing could have caught them: two repointers move **path literals in code**, one link guard reads
+links inside **`.md`**, and a Markdown link inside a `.rye` comment falls between all three.
+**The near-miss is the larger half.** The first reading said **15 broken across 11 files**, and
+eleven were `pond/apps/**` at mode `120000` -- symlinks onto bodies whose citations resolve exactly
+right **at the body**. Repairing them would have written through the links and broken six correct
+files at their real homes. The card resolves a link now and reads the citation from where it was
+written, naming that it did. **New standing guard, gated at zero:**
+[`../tools/co/comment_citation_witness.rish`](../tools/co/comment_citation_witness.rish) over
+[`../tools/fixtures/comment_citation_scan.sh`](../tools/fixtures/comment_citation_scan.sh) -- **89
+programs, 0 broken**, in 15 seconds, reading **through** the card rather than spelling the rule
+again. **58 guards** stand. The control proves **14 behaviors** on real git repositories, five
+blessed shapes left free and the refusal bitten; the card's own control now proves **63**.
 
-**The next door, measured rather than guessed.** **The card is a document meter and says so
-nowhere**: pointed at `qa_report_card_control.sh` it reads F on 30 of 30 paths that are planted
-heredoc fixtures. Beside it a real, tiny asymmetry -- Reach skips fenced code blocks and Truth does
-not, worth **5 links across 4 unrostered files**. One round, a `--kind` the card can be told, or an
-honest refusal on a non-document.
+**The next doors.** A **fenced-block asymmetry in prose Truth** -- Reach skips fenced code and
+backtick spans where Truth does not -- reaches **20+ documents** and wants its own measurement round
+rather than riding along. `.rish` and `.sh` **comments sit outside the ASCII guard**, which reads
+`*.rye` alone; `session_logs_index_prepend.rish` was swept on touch and the rest are unswept.
 
 **Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
 share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
@@ -240,7 +239,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.041416` | The register floor the card was dropping -- one number cited once; 27 pages under it, six reading 100% off one sentence | [log](../session-logs/20260825-041416_a-share-needs-a-denominator.kyri) |
+| `20260825.051936` | A fold repoints what it can see -- 4 broken comment citations, 11 symlink near-misses, a new guard at zero (%218) | [log](../session-logs/20260825-051936_a-citation-is-a-promise-wherever-written.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

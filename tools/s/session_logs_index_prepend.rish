@@ -1,11 +1,11 @@
-# session_logs_index_prepend.rish — prepend newest-first rows to session-logs/README.md
+# session_logs_index_prepend.rish -- prepend newest-first rows to session-logs/README.md
 #
 # Replaces ephemeral python heredocs used during STOA pin sends. Reads markdown
 # bullet lines from tools/.cache/session_logs_index_rows.txt and inserts them
 # immediately before the first living index row (`- \`YYYYMMDD.`).
 #
 #   mkdir -p tools/.cache
-#   printf '%s\n' '- `20260720.192038` — [title](file.bron) — meaning' \
+#   printf '%s\n' '- `20260720.192038` -- [title](YYYYMMDD-HHMMSS_sprig.kyri) -- meaning' \
 #     > tools/.cache/session_logs_index_rows.txt
 #   rishi/bin/rishi run tools/s/session_logs_index_prepend.rish
 

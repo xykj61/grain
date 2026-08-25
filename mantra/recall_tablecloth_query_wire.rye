@@ -1,7 +1,7 @@
 //! mantra/recall_tablecloth_query_wire.rye -- Tablecloth query over one sealed datagram.
 //!
 //! Compact filter request + name-list response (no resin bytes). Fits max_message 340.
-//! Scope: [`active-designing/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/20260710-140500_comlink-view-filter-not-graphql.md)
+//! Scope: [`active-designing/yonder/20260710-140500_comlink-view-filter-not-graphql.md`](../active-designing/yonder/20260710-140500_comlink-view-filter-not-graphql.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

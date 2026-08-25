@@ -1,10 +1,10 @@
 //! Session-log fold -- tidy prior days beneath `session-logs/date/YYYYMMDD/`.
 //!
-//! Convention ([`ORGANIZING.md`](../ORGANIZING.md)): today's logs stay flat; earlier days
+//! Convention ([`ORGANIZING.md`](../../ORGANIZING.md)): today's logs stay flat; earlier days
 //! fold under `date/<day>/`. README links rewrite in place when `fold` runs.
 //!
 //! The destination molted `archive/` -> `date/` on `20260821.161758` with the mark law
-//! ([`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md)): ORGANIZING
+//! ([`.claude/rules/stamp-and-name.md`](../../.claude/rules/stamp-and-name.md)): ORGANIZING
 //! defines archive as backward-pointing and finished, while a log from nine days ago is the
 //! live record, so `date/` claims only *when* -- the one thing true of every file in it. The
 //! FILE keeps its elder name, because 137 references across the tree name it and a promise
