@@ -56,15 +56,15 @@ comment block, or design four ways: Register and Reach counted, Truth half count
 60, Service judged against this card. **B stands; below B pushes one molt frame**, depth 2.
 
 **%205-%206 closed:** the pin bound rose for one page to **57,344**, read per page; the planted-name
-roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207-%208:** the invariant figure this card carried, **13,235**, was **3.1x** the truth -- three
-promises sharing one denominator, 211 symlinks counted as modules, and 289 asserts in two files that
-declare themselves selftests in their own first lines. **The law runs at 80%**, gap **4,242** across
-546 modules, **median 3**, half of it in 50 files. **The `caravan` falsifier was read and does not
-fire** -- 16 or 17 of 20 sampled invariant lines name a reason the assert does not carry, though all
-of them in Caravan's own coined vocabulary. **Coverage is a room property:** seven rooms above 87%;
-**`pond` holds 1,820 of the gap -- 43% in one room** -- led by `pond/apps/drawn_terminal.rye` at
-**312, none covered**. `glow` 3.4% of 205, `amphora` 0.0% of 93. **Open door -- a per-room sweep,
-starting where Keaton says.**
+roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207-%210 -- the invariant arc.** The figure this card carried, **13,235**, was three promises in
+one denominator, 211 symlinks read as modules, and asserts in files and functions whose ROLE is
+proof. The bin reads a role vocabulary now -- `main`, `selftest`, `witness`, plus a file declaring
+itself one. **The law reads 82%**, gap **3,921**. **The `caravan` falsifier was read and does not
+fire:** 16 or 17 of 20 sampled lines name a reason, though in Caravan's coined vocabulary.
+**`pond/apps/drawn_terminal.rye` swept 0% -> 100%** on Keaton's word -- 57 asserts, 22 blocks, lines
+wrapped at 96 to match caravan's median of 73. **Open door -- the sweep continues where Keaton
+says:** `pond` still holds **1,508** (50.4%), `image/photos.rye` **185**, `amphora` 0.0% of 93,
+`glow` 3.4% of 205.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 

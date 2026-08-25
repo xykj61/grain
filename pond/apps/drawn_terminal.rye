@@ -239,11 +239,15 @@ fn compose_frame_lines(
     status: []const u8,
 ) ![]surface.SkateLine {
     const body_rows = surface.viewer_max_lines - 1;
+    // invariant: the status line takes one row of the surface, so a glass of a single row would
+    // leave the session none to draw into
     assert(body_rows > 0);
     const session = try rishi.session_lines(transcript, garden, body_rows);
     defer garden.free(session);
     const status_line = try bound_status(garden, status);
     const total: u32 = @intCast(session.len + 1);
+    // invariant: the session was already bounded to body_rows, so it plus the one status line
+    // lands exactly at the surface ceiling rather than past the glass
     assert(total <= surface.viewer_max_lines);
     const lines = try garden.alloc(surface.SkateLine, total);
     var i: u32 = 0;
@@ -449,6 +453,8 @@ fn compose_books_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
     try fold_dimeroll_fixture(text, &nets);
     const pl = income_from_nets(&nets);
     const bs = balance_from_nets(&nets);
+    // invariant: the sheet balances before it is drawn, since a view renders what it is handed
+    // and cannot tell an unbalanced one apart
     assert(bs.cash == bs.equity + bs.retained);
 
     const lines = try garden.alloc(surface.SkateLine, books_view_max_lines);
@@ -525,6 +531,8 @@ fn compose_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
     try fold_dimeroll_fixture(journal, &nets);
     const pl = income_from_nets(&nets);
     const bs = balance_from_nets(&nets);
+    // invariant: the sheet balances before it is drawn, since a view renders what it is handed
+    // and cannot tell an unbalanced one apart
     assert(bs.cash == bs.equity + bs.retained);
 
     var entries: [dimeroll.max_entries]dimeroll.Entry = undefined;
@@ -649,6 +657,9 @@ fn ask_lantern_assist_band(garden: std.mem.Allocator, io: std.Io) !LanternAssist
         .prompt = "init.garden for args",
         .max_tokens = 64,
     }, completion_text);
+    // invariant: the assist band draws a golden completion, so its token counts and stop reason
+    // are pinned where a drifting fixture reds here rather than reaching the glass as a wrong
+    // number
     assert(resp.tokens_in == 24);
     assert(resp.tokens_out == 12);
     assert(resp.stopped_reason == .eos);
@@ -689,17 +700,21 @@ const AssistFenceBand = struct {
 /// Scribble fence tally shared by assist view and assist sight.
 fn count_assist_fence_band(snippets: []const u8, fence_kinds_text: []const u8) !AssistFenceBand {
     const fences = count_scribble_fence_kinds(snippets);
-    // why: assist golden locks snippet fence rye/rish
+    // invariant: the assist golden locks the snippet fence counts, so a scribble parse that
+    // drifts reds here rather than drawing a wrong tally
     assert(fences.rye == 2);
     assert(fences.rish == 1);
     var fence_blocks: [scribble.max_blocks]scribble.Block = undefined;
     const fence_n = try scribble.parse_markdown(fence_kinds_text, &fence_blocks);
     const plain_kinds = scribble.count_fence_kinds(fence_blocks[0..fence_n]);
-    // why: fence_kinds fixture carries one plain + four blocks + one rye snip
+    // invariant: the fence-kinds fixture carries one plain block, four blocks in all, and one
+    // rye snip, so a parser that regroups them is caught before the tally is drawn
     assert(plain_kinds.plain == 1);
     assert(fence_n == 4);
     var rye_snips: [scribble.max_snippets]scribble.Snippet = undefined;
     const fence_rye = try scribble.extract_rye_snippets(fence_blocks[0..fence_n], &rye_snips);
+    // invariant: the fence fixture holds exactly one rye snippet, so an extractor that begins
+    // finding more is caught before its tally is drawn
     assert(fence_rye == 1);
     return .{
         .snippet_rye = fences.rye,
@@ -753,6 +768,8 @@ fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.S
 
     const kinds = count_corpus_kinds(corpus);
     // why: assist golden locks corpus rye/rish
+    // invariant: the assist golden locks these fence counts, so a scribble parse that drifts
+    // reds here rather than drawing a wrong tally
     assert(kinds.rye == 2);
     assert(kinds.rish == 1);
     const fences = try count_assist_fence_band(snippets, fence_kinds);
@@ -829,6 +846,8 @@ fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]sur
     const seq = field_value(wov, "seq") orelse return error.BadWovFixture;
     const kinds = count_corpus_kinds(corpus);
     // why: assist golden locks corpus rye/rish
+    // invariant: the assist sight draws the same golden as the assist view, so both reds
+    // together when the fixture moves rather than disagreeing on the glass
     assert(kinds.rye == 2);
     assert(kinds.rish == 1);
     const fences = try count_assist_fence_band(snippets, fence_kinds);
@@ -1590,6 +1609,8 @@ fn compose_bs_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Skate
     var nets: [4]i64 = undefined;
     try fold_dimeroll_fixture(text, &nets);
     const bs = balance_from_nets(&nets);
+    // invariant: the sheet balances before it is drawn, since a view renders what it is handed
+    // and cannot tell an unbalanced one apart
     assert(bs.cash == bs.equity + bs.retained);
 
     const lines = try garden.alloc(surface.SkateLine, bs_view_max_lines);
@@ -1757,6 +1778,8 @@ fn compose_scribble_rye_view_lines(garden: std.mem.Allocator, io: std.Io) ![]sur
     var snippets: [scribble.max_snippets]scribble.Snippet = undefined;
     const sn = try scribble.extract_rye_snippets(blocks[0..n], &snippets);
     if (sn != 2) return error.BadScribbleFixture;
+    // invariant: the golden rye snippets are matched by content rather than by index, so a
+    // reordered extractor reds here instead of drawing the wrong two
     assert(std.mem.indexOf(u8, snippets[0].text_slice(), "init.minimal.args") != null);
     assert(std.mem.indexOf(u8, snippets[1].text_slice(), "lc.matmul") != null);
 
@@ -1813,6 +1836,8 @@ fn compose_scribble_rish_view_lines(garden: std.mem.Allocator, io: std.Io) ![]su
     var snippets: [scribble.max_snippets]scribble.Snippet = undefined;
     const sn = try scribble.extract_rish_snippets(blocks[0..n], &snippets);
     if (sn != 2) return error.BadScribbleFixture;
+    // invariant: the golden rish snippets are matched by content rather than by index, so a
+    // reordered extractor reds here instead of drawing the wrong two
     assert(std.mem.indexOf(u8, snippets[0].text_slice(), "lantern lap") != null);
     assert(std.mem.indexOf(u8, snippets[1].text_slice(), "GREEN") != null);
 
@@ -4060,15 +4085,21 @@ fn compose_granary_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.
     var reg = granary.Registry.empty();
     try granary.append_fact(&reg, fact_buf[0..fact_len]);
     const resolved = try granary.resolve(&reg, "rio/greeting");
+    // invariant: a resolve returns the resin the fact named, or the view would draw a page
+    // addressed to something else
     assert(std.mem.eql(u8, resolved.resin_digest, &digest));
 
     var clone: [granary.max_resin_bytes]u8 = undefined;
     const clone_len = try granary.clone_resin(&store, resolved.resin_digest, &clone);
+    // invariant: a resin read back out of the store is byte-identical to what went in, since a
+    // clone that drifts would be drawn as the original
     assert(std.mem.eql(u8, clone[0..clone_len], markdown));
 
     var frame: granary.Frame = .{};
     try granary.render_front_page(clone[0..clone_len], &frame);
-    // Frame: border, heading, paragraph, rye fence, border — need middle three.
+    // invariant: a front page renders border, heading, paragraph, rye fence, border -- the
+    // middle three are what this view draws, so fewer than five lines means there is nothing to
+    // take
     assert(frame.line_count >= 5);
     const heading = frame.lines[1].slice();
     const paragraph = frame.lines[2].slice();
@@ -4963,6 +4994,9 @@ fn run_granary_steward_sight_view_witness(garden: std.mem.Allocator, io: std.Io)
 /// Open Asks view — OA-L1 closed ask loop on one Skate frame.
 fn compose_open_asks_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_welcome_fold(io);
+    // invariant: the open-asks view exists to show a CLOSED loop, so the whole lifecycle is
+    // proven before any of it is drawn -- a half-finished ask rendered as finished is the one
+    // wrong thing this view could say
     assert(state.posted);
     assert(state.applied);
     assert(state.accepted);
@@ -5023,6 +5057,8 @@ fn run_open_asks_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 /// Open Asks escrow view — OA-L3 hold then release on one Skate frame.
 fn compose_open_asks_escrow_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_escrow_welcome_fold(io);
+    // invariant: the escrow view shows a loop that both closed and settled, so a
+    // held-and-released balance returning to zero is proven before the frame is composed
     assert(state.posted);
     assert(state.applied);
     assert(state.accepted);
@@ -5086,6 +5122,8 @@ fn run_open_asks_escrow_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
 /// Open Asks reputation view — OA-L4 consent-before-counting on one Skate frame.
 fn compose_open_asks_reputation_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const state = try open_asks.run_reputation_welcome_fold(io);
+    // invariant: the reputation view draws consented totals only, so both are proven to be the
+    // consented three and their stipend before either reaches the glass
     assert(state.consented_completions == 3);
     assert(state.consented_stipend == 300);
 
@@ -5141,6 +5179,8 @@ fn run_open_asks_reputation_view_witness(garden: std.mem.Allocator, io: std.Io) 
 /// Open Asks civic sight — OA-L1 · OA-L3 · OA-L4 seated folds on one Skate frame.
 fn compose_open_asks_civic_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const life = try open_asks.run_welcome_fold(io);
+    // invariant: the civic sight draws three folds at once, and each is proven whole before
+    // composing, so one unfinished fold cannot borrow the credibility of the other two
     assert(life.posted);
     assert(life.applied);
     assert(life.accepted);
@@ -5150,6 +5190,8 @@ fn compose_open_asks_civic_sight_view_lines(garden: std.mem.Allocator, io: std.I
     assert(std.mem.eql(u8, life.request_ref[0..life.request_ref_len], open_asks.witness_request_ref));
 
     const escrow = try open_asks.run_escrow_welcome_fold(io);
+    // invariant: the escrow fold is proven closed and balanced beside the life fold, since a
+    // sight showing both must not draw a settled escrow that still holds a balance
     assert(escrow.held);
     assert(escrow.released);
     assert(escrow.completed);
@@ -5157,6 +5199,8 @@ fn compose_open_asks_civic_sight_view_lines(garden: std.mem.Allocator, io: std.I
     assert(escrow.stipend == 100);
 
     const rep = try open_asks.run_reputation_welcome_fold(io);
+    // invariant: the reputation fold is proven last, so the three totals the sight draws
+    // together were each true when it read them
     assert(rep.consented_completions == 3);
     assert(rep.consented_stipend == 300);
 
