@@ -14,7 +14,11 @@ assert green.out contains "apply5=honored" else "e141-commence: want APPLY 5"
 assert green.out contains "commence=open" else "e141-commence: want commence open"
 assert green.out contains "name=held" else "e141-commence: want name held"
 assert green.out contains "n=64" else "e141-commence: want N 64"
-assert green.out contains "amphora_tracked=10" else "e141-commence: want amphora 10"
+# THE FLOOR, READ FROM THE WITNESS SIDE (REDS %235). The scan prints what it measured and
+# the floor beside it, so this reads the floor. The room grew to 11 tracked when e143
+# seated amphora/src/main.rye, and this rung's claim was always about its OWN lap.
+assert green.out contains "amphora_floor=10" else "e141-commence: want the amphora floor held"
+assert green.out contains "census=honored" else "e141-commence: want the census honored"
 assert green.out contains "wave_mode=honored" else "e141-commence: want wave mode"
 assert green.out contains "shred=RED" else "e141-commence: want shred RED"
 assert green.out contains "seat_128=reserved_close_choir" else "e141-commence: want 128 reserved"

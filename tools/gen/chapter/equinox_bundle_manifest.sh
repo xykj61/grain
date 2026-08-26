@@ -92,10 +92,16 @@ SEAT_MAP_BYTES=$(wc -c < construction/EQUINOX_SEAT_MAP.md | tr -d '[:space:]')
   # openssl the host may or may not carry. Same algorithm, so every bundle address already written
   # still matches. The "unavailable" branch is kept: a manifest that cannot address its bundle
   # should say so plainly rather than print a digest of nothing.
-  SHA3_ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
-  SHA3_RAW=$(sh "$SHA3_ROOT/tools/fixtures/sha3.sh" 256 "$BUNDLE" 2>/dev/null)
-  RC=$?
-  if test "$RC" -eq 0 && test -n "$SHA3_RAW"; then
+  # THREE DIRECTORIES UP, NOT TWO (REDS %234). This file sits at tools/gen/chapter/, so
+  # dirname/../.. lands on tools/ and the old line asked for tools/tools/fixtures/sha3.sh --
+  # a path that has never existed. Reach the repository root and name the helper from there.
+  SHA3_ROOT=$(CDPATH= cd "$(dirname "$0")/../../.." && pwd)
+  # AND THE FALLBACK HAS TO BE REACHABLE. `X=$(cmd)` under `set -e` takes the assignment's own
+  # status, so a failing command substitution exits the shell before `RC=$?` is ever read --
+  # which is how a branch written to say `unavailable` plainly instead killed the script with
+  # exit 127 and no reason printed. `|| true` keeps the substitution honest and the branch live.
+  SHA3_RAW=$(sh "$SHA3_ROOT/tools/fixtures/sha3.sh" 256 "$BUNDLE" 2>/dev/null || true)
+  if test -n "$SHA3_RAW"; then
     echo "bundle_sha3 ${SHA3_RAW}"
   else
     echo "bundle_sha3 unavailable"

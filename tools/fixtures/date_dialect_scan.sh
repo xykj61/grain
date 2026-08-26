@@ -137,13 +137,19 @@ HYPH=$(printf '%s\n' "$REPORT" | sed -n 's/^hyphenated=//p' | head -1)
 COMP=$(printf '%s\n' "$REPORT" | sed -n 's/^compact=//p' | head -1)
 VERDICT=$(printf '%s\n' "$REPORT" | sed -n 's/^verdict=//p' | head -1)
 
-if test "${DATED:-0}" -ne 17; then
+# A FLOOR RATHER THAN A PIN (REDS %235). This read 17 when it was written and 25 on
+# 20260825; context/ gains documents and each correctly carries a date label, so an exact
+# count was a refusal scheduled for whichever lap added the eighteenth. The floor keeps the
+# property the pin was standing for -- coverage never shrinks -- and the dialect check below
+# carries the proof that actually matters, which is that every one of them is compact.
+if test "${DATED:-0}" -lt 17; then
   echo "roster=failed"
-  echo "detail=want_dated_17_got_${DATED}"
+  echo "detail=want_dated_at_least_17_got_${DATED}"
   echo "date_dialect=failed"
   exit 1
 fi
 echo "roster=honored"
+echo "law_library_floor=17"
 
 if test "$VERDICT" != "one_dialect" || test "${HYPH:-1}" -ne 0; then
   echo "date_dialect=failed"
@@ -153,7 +159,7 @@ if test "$VERDICT" != "one_dialect" || test "${HYPH:-1}" -ne 0; then
 fi
 
 echo "date_dialect=honored"
-echo "dialect_status=17_of_17_compact"
+echo "dialect_status=${COMP}_of_${DATED}_compact"
 echo "shred=RED"
 echo "story=planted_C1_C2>one_dialect>compact_library"
 echo "date_dialect_scan=ok"

@@ -70,44 +70,76 @@ echo "$ROW" | rg -q 'Claude web' || { echo "roots=failed"; echo "verdict=misread
 echo "$ROW" | rg -q 'Claude iOS' || { echo "roots=failed"; echo "verdict=misread"; echo "detail=want_claude_ios"; exit 1; }
 echo "$ROW" | rg -q 'Cursor AppImage desktop' || { echo "roots=failed"; echo "verdict=misread"; echo "detail=want_cursor_appimage"; exit 1; }
 echo "$ROW" | rg -q 'Cursor iOS' || { echo "roots=failed"; echo "verdict=misread"; echo "detail=want_cursor_ios"; exit 1; }
-echo "$ROW" | rg -qi 'Framework' || { echo "roots=failed"; echo "verdict=misread"; echo "detail=want_framework"; exit 1; }
-echo "$ROW" | rg -qi 'counsel container' || { echo "roots=failed"; echo "verdict=misread"; echo "detail=want_counsel_container"; exit 1; }
+# WHAT e122 CORRECTED, AND WHY THIS READS THE CORRECTION (REDS %233). This rung once required
+# the roots row to name `the Framework itself` and `a counsel container in the cloud`. e121 had
+# blurred root and Bench, e122 was seated the same evening to sharpen them, and
+# equinox_e122_roots_bench_kinds_scan.sh REFUSES on exactly those two phrases. The two guards
+# demanded opposite things for twenty-five days and neither could ever be green, because no
+# roster clock reached either of them. This rung now reads what its own successor seated: the
+# Framework is a Bench, so it belongs outside the roots row, and the row says so.
+if echo "$ROW" | rg -qi 'Framework itself|counsel container in the cloud'; then
+  echo "roots=failed"
+  echo "verdict=misread"
+  echo "detail=e122_removed_these_from_roots"
+  exit 1
+fi
+echo "$ROW" | rg -qi 'not the \*\*Bench\*\*|not the Bench' || {
+  echo "roots=failed"
+  echo "verdict=misread"
+  echo "detail=want_bench_distinguished"
+  exit 1
+}
+echo "roots_amend=corrected_by_e122"
 echo "$ROW" | rg -qi 'work reaches the tree|client surface' || {
   echo "roots=failed"
   echo "verdict=misread"
   echo "detail=want_tree_touch_category"
   exit 1
 }
-# Load-bearing: bench is a raised root; only a bench runs witnesses
-echo "$ROW" | rg -qi 'holds a raise|raised' || {
+# THE SECOND HALF OF THE SAME CONTRADICTION (REDS %233). e121 required the roots row to call
+# the Bench `a raised root`; equinox_e122_roots_bench_kinds_scan.sh REFUSES on `holds a raise`
+# and `raised root`, because the raise metaphor is exactly the blur that made a Bench look like
+# a kind of root. e122 seated the sharper reading -- they are different kinds, and the row says
+# which -- and the Bench's own row carries what only a Bench does. That is where this reads it.
+if echo "$ROW" | rg -qi 'holds a raise|raised root'; then
   echo "bench_kinship=failed"
   echo "verdict=misread"
-  echo "detail=want_raise_in_roots_row"
+  echo "detail=e122_removed_the_raise_metaphor"
   exit 1
-}
-echo "$ROW" | rg -qi 'only a bench runs witnesses|only a Bench runs witnesses' || {
+fi
+BENCH_ROW=$(rg -F '| **Bench** |' "$LEXICON" || true)
+echo "$BENCH_ROW" | rg -qi 'claims become evidence' || {
   echo "bench_kinship=failed"
   echo "verdict=misread"
-  echo "detail=want_only_bench_runs_witnesses"
+  echo "detail=want_bench_row_naming_evidence"
   exit 1
 }
-echo "$ROW" | rg -qi 'Name the root when a measurement' || {
+echo "$BENCH_ROW" | rg -qi 'different kind|a different kind from' || {
   echo "bench_kinship=failed"
   echo "verdict=misread"
-  echo "detail=want_name_the_root_law"
+  echo "detail=want_bench_named_a_different_kind"
   exit 1
 }
-BENCH=$(rg -F '| **Bench** |' "$LEXICON" || true)
-echo "$BENCH" | rg -qi 'root that holds a raise|Narrower than \*\*roots\*\*' || {
+echo "bench_kinship=kinds_kept_apart"
+# THE THIRD, AND THE ONE THAT INVERTS (REDS %233). e121 required `Name the root when a
+# measurement is reported`. e122 seated the opposite and put it in the Bench's own row: a
+# measurement comes from a Bench, never from a root. Two guards holding a law and its inverse
+# is what twenty-five unheard days buys, and it is why this family now sings on a clock.
+echo "$BENCH_ROW" | rg -qi 'Name the \*\*Bench\*\* when a measurement|never from a root' || {
   echo "bench_kinship=failed"
   echo "verdict=misread"
-  echo "detail=want_bench_row_kinship"
+  echo "detail=want_measurement_comes_from_a_bench"
   exit 1
 }
+# THE FOURTH AND LAST OF THE PAIR (REDS %233). `a root that holds a raise` and `narrower than
+# roots` both said a Bench is a species of root, which is the blur itself. The kinship reading
+# that survives is the one above -- the Bench row names a DIFFERENT kind -- so this rung stops
+# asking the retired phrasing and the roster line below reports what the row actually holds.
 echo "roots=honored"
 echo "bench_kinship=honored"
-echo "roots_members=claude_web·claude_ios·cursor_appimage_desktop·cursor_ios·framework·counsel_container"
-echo "law=name_the_root_when_a_measurement_is_reported"
+echo "roots_members=claude_web-claude_ios-cursor_appimage_desktop-cursor_ios"
+echo "roots_members_note=framework_and_counsel_container_are_benches_not_roots_e122"
+echo "law=a_measurement_comes_from_a_bench_never_from_a_root"
 
 rg -qi 'bench|raised root|roots amend' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
@@ -197,5 +229,5 @@ else
 fi
 echo "tool_presence=per_bench_recut"
 
-echo "story=roots_amended>bench_raised_root>six_members>128_reserved"
+echo "story=roots_amended>kinds_kept_apart_by_e122>four_members>128_reserved"
 echo "verdict=ok"

@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **63 guards** stand -- **61 on the every-lap tier, 2 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **67 guards** stand -- **64 on the every-lap tier, 3 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it -- three times now (REDS %188, %220, %223). No guard can *enforce* the close, since one would have to run after the lap ends. What a guard **can** do is refuse to open the next lap over the wreckage, and that is where the runner now stands: `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -55,32 +55,32 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `8ff043b02e` -- thirty cubist twins; the air row enters.
 
-**Now.** **A fold repoints documents and leaves guards standing.**
-`tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
-**295 stand unheard -- 24.6% of the tree's whole 1,201-strong unreached population, in one
-directory.** The stopwatch this card asked for before proposing a roster row ran them: of 33 leaf
-witnesses **17 refused**, and a sequential sing of 47 of the 144 `equinox_*` rungs cost **1,117
-seconds** -- **178 ms to 204,250 ms** per rung, because **111 of 144 chain an elder** and each
-re-runs the chain beneath it. Rung by rung this family is quadratic; the leaves are the cheap
-reading, **33 in 96 seconds**.
+**Now.** **The season room's leaves sing on a clock, and twelve roots closed to get them there.**
+Twelve refusals resolved to **eight roots**; only two were the stale-citation shape expected.
+**e121 and e122** demanded **opposite** things for twenty-five days -- e121 required the Lexicon's
+roots row to name `the Framework itself`, which e122 was seated the same evening to remove -- and
+the pair was unsatisfiable in three readings, one a law and its exact inverse (%233).
+`equinox_bundle_manifest.sh` reached `sha3.sh` through `tools/tools/`, and its `bundle_sha3
+unavailable` branch was **unreachable** under `set -e`, so it died at exit 127 printing nothing
+(%234). Three guards pinned an exact count of a growing population -- 17 date labels against 25,
+ten amphora files against eleven -- and fascia health **refused an improvement**, 44 against a pin
+of 41-or-42 (%235). The bare default of `reds_ledger_monotone_scan.sh` read the living pin alone,
+so **fourteen** callers read a folded ledger as `not_monotone`: %231's repair aimed at nineteen
+sites and left the sibling function untouched (%237).
 
-**REDS %231 and %232, both closed on metal.** Forty call sites across seventeen
-`equinox_*_scan.sh` files asked the living pin for an elder row, and for its lesson's own words,
-after both had folded to `construction/archive/` -- refusing in silence, since nothing runs them.
-Three fixtures answer over the pin **and** every shelf now, and
-[`../tools/r/reds_row_present_witness.rish`](../tools/r/reds_row_present_witness.rish) proves they
-agree by asking for all **232** counted rows plus the one past the end. It earned itself the same
-lap: rows %226-%229 folded to a shelf, and the reading found %226 at its new home with no edit. %232 is the second half -- a six-commit fast-forward from `xykj61` arrived
-carrying **three** refusals nothing on that clone had run: two pins over the 24,576 each declares,
-and three lone apostrophes in the loop's own printed launch line, which would not have started. A
-fast-forward is a tree change, so a lap that merges mid-round runs hot over the merged tree.
+**All 33 leaves are GREEN**, and `tools/gen/chapter/season_leaf_choir_witness.rish` holds them on
+the **cadence** tier -- discovered rather than listed, so a leaf born tomorrow sings on the lap it
+lands. **436 s** for the room, e134 alone 118. `witness_reach` fell **1,201 -> 1,154** (the
+33 sung plus the 14 they reach), and the choir **declares** that set with a `# reach-list:`
+enumerator the meter runs: inferring it from the glob would have claimed 144 and overstated the
+fall by 111 (%238).
 
-**The next doors.** **The family's own reds**, each its own lap: the deepest wants
-`fascia_metric_v0` reading **51** against a chapter-era floor of **92**. **A roster row for the room
-waits on them** -- rostering 295 witnesses a majority of which refuse would red the roster every
-cadence lap, which is the guard nobody keeps. **`hunk` at 86** is the next largest family no clock
-carries. **The hot pass reads a generated page before the hook renders it**, so a lap adding a
-witness pre-renders by hand or pays a second pass.
+**The next doors.** **The 111 chained rungs stay unheard** -- rung by rung is quadratic (1,117 s
+for 47 of 144, one at 204 s), so hearing them wants a shape rather than a roster row, and the leaf
+choir is the evidence a shape exists. **`hunk` at 86** is the next largest family no clock carries.
+**`# reach-list:` is one line and proven** -- any discovering choir can claim exact reach with it.
+And **a pen is motion**: this lap starved its own cold roster by copying the repository into
+`${TMPDIR}` mid-run, and four guards answered ENOSPC wearing a tree red's clothes (%239).
 ---
 ## Landed arcs
 
@@ -225,7 +225,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826` | The bit chapter opened; DJINN debride; panchanga seated; 24 pages filed | [log](../session-logs/20260826-002952_the-djinn-debride-and-the-bit-season.kyri) |
+| `20260825.235254` | Twelve leaf roots closed across eight causes; 33 leaves GREEN and rostered; reach 1,201 -> 1,154; %233-%239 booked | [log](../session-logs/20260825-235254_the-leaves-that-sing.kyri) |
 
 **One row, on purpose.** The index is `session-logs/README.md`; this is the card. A landed lap keeps
 one line here until the next replaces it.

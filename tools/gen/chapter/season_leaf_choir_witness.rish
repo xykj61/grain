@@ -1,0 +1,41 @@
+# tools/gen/chapter/season_leaf_choir_witness.rish -- the season room's leaves, heard on a clock.
+#   rishi/bin/rishi run tools/gen/chapter/season_leaf_choir_witness.rish
+#
+# The room this sings held 298 tracked witnesses and 3 reached by a roster clock (REDS %231).
+# It sings the LEAVES -- the rungs that call scans and chain nobody -- because 111 of the 144
+# equinox rungs chain an elder and each re-runs the chain beneath it, which makes a rung-by-rung
+# sing quadratic. Every chained failure in the 20260825 census resolved to a leaf, so the leaves
+# are where a root lives. Cadence tier, and the cost is measured rather than recalled: 33 rungs
+# in 436 seconds on this pier (20260825), of which e134 alone is 118 -- it reads no witness
+# by name yet reaches ten through instrument_suite_scan.sh, which is the one hole in the
+# discovery rule and is named here rather than left for a reader to find in a stopwatch.
+say "season-leaf-choir: Language EN -- a room nobody hears keeps a green that is only a memory."
+say "season-leaf-choir: Style Gauge Meter -- discovered, sung, and proven from both sides."
+say "season-leaf-choir: Lens TAME -- safety first; a refusal proven only one way is not proven."
+
+let green = run ["sh" "tools/fixtures/season_leaf_choir_scan.sh"]
+say green.out
+assert green.ok else "season-leaf-choir: the live sing must exit 0"
+assert green.out contains "choir=honored" else "season-leaf-choir: want choir honored"
+assert green.out contains "red=0" else "season-leaf-choir: want zero leaf refusals"
+assert green.out contains "verdict=ok" else "season-leaf-choir: want verdict ok"
+
+# A floor, never a pin (REDS %235). The scan holds it, because the shell already has the count
+# and Rishi compares strings; asking the witness to cast one would be the clever answer rather
+# than the plain one. A discovery rule that quietly stops matching reads exactly like a healthy
+# room, so the floor is the reading that tells them apart.
+assert green.out contains "leaf_floor=honored" else "season-leaf-choir: want at least the floor of leaves discovered"
+
+let low = run ["sh" "-c" "SEASON_LEAF_FLOOR=99999 sh tools/fixtures/season_leaf_choir_scan.sh"]
+assert (low.ok == false) else "season-leaf-choir: an unreachable floor must refuse"
+assert low.out contains "want_at_least_99999_leaves_got_" else "season-leaf-choir: want the floor named in its refusal"
+
+# The other side. A choir that only ever passes cannot be told from a choir singing nothing at
+# all, so one rung that refuses is planted and the choir must name it and refuse.
+let red = run ["sh" "tools/fixtures/season_leaf_choir_scan.sh" "prove-red"]
+assert (red.ok == false) else "season-leaf-choir: prove-red must refuse"
+assert red.out contains "RED_planted_refusal_caught" else "season-leaf-choir: want the plant caught"
+assert red.out contains "equinox_planted_refusal_witness" else "season-leaf-choir: want the plant named"
+assert red.out contains "choir=refused_as_it_should" else "season-leaf-choir: want the honest refusal line"
+
+say "GREEN: season-leaf-choir -- every discovered leaf of tools/gen/season sung, a planted refusal caught, the count held at a floor rather than a pin"
