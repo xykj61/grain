@@ -22,6 +22,19 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260826.001630` -- the two-dialect condense (walk-back `11b9e87321`)
+
+**Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the twelve leaf roots
+to the two-pier dialect round, and the *Prior laps* table refreshed to its one row. The card
+arrived from `xykj61` at **24,933 bytes** against the **24,576** it declares and the rebase carried
+it to **24,952** (REDS %242), so the condense repairs a bound as well as refilling the edge.
+
+**What waits there, worth recalling:** the whole account of the twelve leaf refusals and their
+eight roots -- the e121/e122 contradiction, the doubled `tools` segment, the census pins that
+refused an improvement, and the fourteen bare callers of the ledger scan -- with the measured
+sing cost of 436 s for 33 leaves and the reach fall from 1,201 to 1,154. All of it stands at the
+walk-back nib, and the rows themselves are shelved at
+[`archive/REDS-the-leaves-that-sing-rows-233-236.md`](archive/REDS-the-leaves-that-sing-rows-233-236.md).
 ## 20260825.234631 -- walk-back `0a1d3e51ef` -- the DJINN deep debride
 
 Keaton's word: the collaborator's name leaves the tree, the session logs, two filenames, and the

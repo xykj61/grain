@@ -47,34 +47,31 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `aaaadef708` -- the bit season opened, the DJINN debride landed, thirteen silo pages filed.
+**Git nib:** `11b9e87321` -- twelve leaf roots landed, the two-pier dialect caught and gated.
 
-**Now.** **The season room's leaves sing on a clock, and twelve roots closed to get them there.**
-Twelve refusals resolved to **eight roots**; only two were the stale-citation shape expected.
-**e121 and e122** demanded **opposite** things for twenty-five days -- e121 required the Lexicon's
-roots row to name `the Framework itself`, which e122 was seated the same evening to remove -- and
-the pair was unsatisfiable in three readings, one a law and its exact inverse (%233).
-`equinox_bundle_manifest.sh` reached `sha3.sh` through `tools/tools/`, and its `bundle_sha3
-unavailable` branch was **unreachable** under `set -e`, so it died at exit 127 printing nothing
-(%234). Three guards pinned an exact count of a growing population -- 17 date labels against 25,
-ten amphora files against eleven -- and fascia health **refused an improvement**, 44 against a pin
-of 41-or-42 (%235). The bare default of `reds_ledger_monotone_scan.sh` read the living pin alone,
-so **fourteen** callers read a folded ledger as `not_monotone`: %231's repair aimed at nineteen
-sites and left the sibling function untouched (%237).
+**Now.** **Two piers, one dialect -- and a page that shipped thirty-eight zeros.**
+`docs-geode/libraries/README.md` reached `xykj61` with its witness column at **0 for all 38 rooms**.
+`geode_libraries_scan.sh` counts through `xargs -a FILE -d '\n'`; BSD xargs carries neither flag, so
+on the macOS bench the pipeline yields nothing and `wc -l` answers 0 -- and that page's own guard was
+GREEN there, because it renders through the function it checks (%240). A rebase conflict showed both
+columns side by side.
 
-**All 33 leaves are GREEN**, and `tools/gen/season/season_leaf_choir_witness.rish` holds them on
-the **cadence** tier -- discovered rather than listed, so a leaf born tomorrow sings on the lap it
-lands. **436 s** for the room, e134 alone 118. `witness_reach` fell **1,201 -> 1,154** (the
-33 sung plus the 14 they reach), and the choir **declares** that set with a `# reach-list:`
-enumerator the meter runs: inferring it from the glob would have claimed 144 and overstated the
-fall by 111 (%238).
+**The class is measured now.** `shell_dialect_scan.sh` and `tools/s/shell_dialect_witness.rish` hold
+**12 gated sites across 7 files** under a ceiling that only falls, count four more GNU-only families
+without gating, and **reproduce the mechanism on metal**: a two-line `xargs` refusing `-a` and `-d`
+as BSD does, under which the elder form answers 0 and the portable form 1. Every-lap tier, 1,178 ms.
+Third firing: %169 a glob, %226 an awk dialect.
 
-**The next doors.** **The 111 chained rungs stay unheard** -- rung by rung is quadratic (1,117 s
-for 47 of 144, one at 204 s), so hearing them wants a shape rather than a roster row, and the leaf
-choir is the evidence a shape exists. **`hunk` at 86** is the next largest family no clock carries.
-**`# reach-list:` is one line and proven** -- any discovering choir can claim exact reach with it.
-And **a pen is motion**: this lap starved its own cold roster by copying the repository into
-`${TMPDIR}` mid-run, and four guards answered ENOSPC wearing a tree red's clothes (%239).
+**Two roots in how a round moves.** `git rebase --continue` makes a commit and `pre-commit` never
+fires, so the rebase carried `1898` Rye modules where the tree holds **1900**; the render that looked
+like a repair only printed, since both generators write only when handed `write` (%241). And this
+card arrived from `xykj61` at **24,933 bytes** against the **24,576** it declares -- the fourth send
+from that clone carrying a refusal nobody ran (%242).
+
+**The next doors.** **A pre-push refusal** is the rung the fourth firing asks for: the pin bound read
+at `git push` rather than at a lap's open. It changes how both piers send, so it waits for a word.
+**The 111 chained rungs stay unheard** and rung-by-rung is quadratic; the leaf choir is the evidence
+a shape exists. **`hunk` at 86** is the next family with no clock.
 ---
 ## Landed arcs
 
@@ -149,17 +146,13 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- the granted publish is SPENT.** The projection last ran on the macOS clone
-(`20260825.180329`) under the wall REDS %225 strengthened: **7,015 copied, 152 withheld**, four
-siya-named basenames in `.sow-withheld.log`, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link` GREEN.
-*Read alone* is enforced: `sow_project.sh` takes a lock and a second projection exits 3 (%193). Last
-published projection `fdaf8e3`. **The force-push word was SPENT** (`20260825.212214`,
-Keaton's word *send both seed and xy*): the seed published from the macOS bench over HTTPS as
-`fdaf8e3...f7a1f2d`, all four gates green under the %225 wall, the works-town sleeve withheld with
-its three siblings. The gate closes again until the next word. One wart surfaced for a small red:
-`sow_project.sh`'s sed-copy drops the exec bit on the seed's `tools/hooks/commit-msg`, so the
-armed-wall promise rides on the publisher rather than the projection -- the exec-bit trap class,
-inside the projector.
+**Seed cadence -- the granted publish is SPENT.** The word was spent `20260825.212214` (*send both
+seed and xy*); the seed published from the macOS bench as `fdaf8e3...f7a1f2d`, all four gates green
+under the %225 wall -- **7,015 copied, 152 withheld**, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link`
+GREEN. Last published projection `fdaf8e3`. *Read alone* is enforced (%193). The gate closes again
+until the next word. **One wart, small and open:** `sow_project.sh`'s sed-copy drops the exec bit on
+the seed's `tools/hooks/commit-msg`, so the armed-wall promise rides on the publisher rather than
+the projection -- the exec-bit trap class, inside the projector.
 
 ---
 
@@ -222,7 +215,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.235254` | Twelve leaf roots closed across eight causes; 33 leaves GREEN and rostered; reach 1,201 -> 1,154; %233-%239 booked | [log](../session-logs/20260825-235254_the-leaves-that-sing.kyri) |
+| `20260826.001630` | The two-pier shell dialect gated at 12 sites across 7 files; %240-%242 booked; the card and two generated pages repaired | [log](../session-logs/20260826-001630_two-piers-one-dialect.kyri) |
 
 **One row, on purpose.** The index is `session-logs/README.md`; this is the card. A landed lap keeps
 one line here until the next replaces it.
