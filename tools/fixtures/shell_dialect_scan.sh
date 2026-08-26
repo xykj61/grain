@@ -250,10 +250,28 @@ SHIM
   fi
   # A PLANT THAT READS NOTHING IS NOT A PLANT. The elder copy must first prove it WORKS on GNU,
   # reading exactly what the living subject reads, before its silence under the shim means anything.
-  if [ "${plant_gnu:-none}" != "$live_gnu" ]; then
-    echo "verdict=plant_is_not_a_working_copy"
-    echo "refused: the planted copy read '${plant_gnu:-none}' on GNU where the living subject reads $live_gnu."
-    exit 1
+  # THE CLOSURE FOLLOWS THE HOST, probed rather than assumed: BSD grep has no -P, so on a BSD host
+  # the elder plant breaks natively and the closure that remains is the spelling proven landed --
+  # the GNU behaviour half belongs to the pier whose grep carries PCRE.
+  if printf 'x' | grep -oP 'x' >/dev/null 2>&1; then pcre_host=gnu; else pcre_host=bsd; fi
+  echo "pcre_host=$pcre_host"
+  if [ "$pcre_host" = gnu ]; then
+    if [ "${plant_gnu:-none}" != "$live_gnu" ]; then
+      echo "verdict=plant_is_not_a_working_copy"
+      echo "refused: the planted copy read '${plant_gnu:-none}' on GNU where the living subject reads $live_gnu."
+      exit 1
+    fi
+  else
+    if ! grep -q 'grep -rIoP' "$pen/tools/fixtures/planted_dated_path_scan.sh"; then
+      echo "verdict=plant_sed_missed"
+      echo "refused: the planted copy does not carry the elder -P spelling -- the sed missed its line."
+      exit 1
+    fi
+    if [ "${plant_gnu:-0}" != "0" ] && [ -n "${plant_gnu:-}" ]; then
+      echo "verdict=plant_survived_bsd"
+      echo "refused: the elder -P spelling read ${plant_gnu} natively on a BSD host -- the probe or the spelling is wrong."
+      exit 1
+    fi
   fi
   if [ "${plant_bsd:-0}" -ne 0 ]; then
     echo "verdict=plant_did_not_bite"
@@ -290,7 +308,10 @@ if [ "$mode" = prove-stat ]; then
 case "\${1:-}" in
   -c|-c*) echo "stat: illegal option -- c" >&2; exit 1 ;;
   -f) [ "\${2:-}" = "%Fm" ] || { echo "stat: unsupported format \${2:-}" >&2; exit 1; }
-      shift 2; exec $real_stat -c %.Y "\$@" ;;
+      shift 2
+      # The delegate speaks whichever dialect the real stat beneath answers -- probed, never
+      # assumed, so this shim is a faithful BSD stat on a GNU host AND on a BSD one.
+      if $real_stat -c %.Y /dev/null >/dev/null 2>&1; then exec $real_stat -c %.Y "\$@"; else exec $real_stat -f %Fm "\$@"; fi ;;
 esac
 exec $real_stat "\$@"
 SHIM
@@ -305,10 +326,23 @@ SHIM
   echo "elder_bsd_first_lines_on_gnu=$elder_lines"
   echo "repaired_lines_on_gnu=$repaired_gnu"
   echo "repaired_lines_under_bsd_shaped=$repaired_bsd"
-  if [ "$elder_lines" -le 1 ]; then
-    echo "verdict=elder_order_did_not_bite"
-    echo "refused: the elder BSD-first order answered $elder_lines line(s) on GNU -- this host does not show the fault, so the proof is not a proof."
-    exit 1
+  # THE FAULT IS GNU'S TO SHOW, and the host is probed rather than assumed: on a BSD host the
+  # elder BSD-first order answers exactly one line -- correct here by its own construction -- so
+  # the bite half belongs to the pier, and this bench proves the repair's two readings instead.
+  if stat -c %s /dev/null >/dev/null 2>&1; then stat_host=gnu; else stat_host=bsd; fi
+  echo "stat_host=$stat_host"
+  if [ "$stat_host" = gnu ]; then
+    if [ "$elder_lines" -le 1 ]; then
+      echo "verdict=elder_order_did_not_bite"
+      echo "refused: the elder BSD-first order answered $elder_lines line(s) on GNU -- this host does not show the fault, so the proof is not a proof."
+      exit 1
+    fi
+  else
+    if [ "$elder_lines" -ne 1 ]; then
+      echo "verdict=elder_order_misread_bsd"
+      echo "refused: the elder BSD-first order answered $elder_lines lines on a BSD host where one is its own correct reading."
+      exit 1
+    fi
   fi
   if [ "$repaired_gnu" -ne 1 ]; then
     echo "verdict=repair_is_not_one_line"
@@ -383,8 +417,19 @@ case "\${1:-}" in
       y=\${str%??????????}; rest=\${str#????}; mo=\${rest%????????}
       d=\${rest#??}; d=\${d%??????}; hms=\${str#????????}
       h=\${hms%????}; mi=\${hms#??}; mi=\${mi%??}; s=\${hms#????}
-      exec $real_date -d "\${y}-\${mo}-\${d} \${h}:\${mi}:\${s}" "\$@" ;;
-  -r) ep=\$2; shift 2; exec $real_date -d "@\${ep}" "\$@" ;;
+      # The delegate speaks whichever dialect the real date beneath answers -- probed, never
+      # assumed, so this shim is a faithful BSD date on a GNU host AND on a BSD one.
+      if $real_date -d @0 +%s >/dev/null 2>&1; then
+        exec $real_date -d "\${y}-\${mo}-\${d} \${h}:\${mi}:\${s}" "\$@"
+      else
+        exec $real_date -j -f '%Y%m%d%H%M%S' "\$str" "\$@"
+      fi ;;
+  -r) ep=\$2; shift 2
+      if $real_date -d @0 +%s >/dev/null 2>&1; then
+        exec $real_date -d "@\${ep}" "\$@"
+      else
+        exec $real_date -r "\$ep" "\$@"
+      fi ;;
 esac
 exec $real_date "\$@"
 SHIM
@@ -437,7 +482,23 @@ ELDER
     echo "refused: the subject read $live_gnu on GNU and $live_bsd under a BSD-shaped date."
     exit 1
   fi
-  if [ "$plant_gnu" != "$live_gnu" ]; then
+  # THE CLOSURE FOLLOWS THE HOST, probed rather than assumed: BSD date has no -d, so on a BSD
+  # host the elder plant breaks natively and the closure that remains is the spelling proven
+  # landed -- the GNU behaviour half belongs to the pier whose date carries -d.
+  if date -d @0 +%s >/dev/null 2>&1; then date_host=gnu; else date_host=bsd; fi
+  echo "date_host=$date_host"
+  if [ "$date_host" = bsd ]; then
+    if ! grep -q 'date -d' "$pen/elder.sh"; then
+      echo "verdict=plant_sed_missed"
+      echo "refused: the planted elder body does not carry the -d spelling."
+      exit 1
+    fi
+    if [ "$plant_gnu" -ne 0 ]; then
+      echo "verdict=plant_survived_bsd"
+      echo "refused: the elder -d spelling read $plant_gnu natively on a BSD host -- the probe or the spelling is wrong."
+      exit 1
+    fi
+  elif [ "$plant_gnu" != "$live_gnu" ]; then
     echo "verdict=plant_is_not_a_working_copy"
     echo "refused: the planted copy read $plant_gnu on GNU where the living subject reads $live_gnu."
     exit 1
@@ -504,10 +565,31 @@ if [ "$mode" = prove-portable ]; then
   # exactly what the living subject reads, before its silence under the shim is allowed to mean
   # anything. This is the vacuum the tree already paid for once: five custody bars of the enclosure
   # witness passed for their whole lives on literal quote characters (grain strand, REDS row 59).
-  if [ "${plant_gnu:-none}" != "$live_gnu" ]; then
-    echo "verdict=plant_is_not_a_working_copy"
-    echo "refused: the planted copy read '${plant_gnu:-none}' on GNU where the living subject reads $live_gnu -- its silence under the shim would prove nothing."
-    exit 1
+  #
+  # THE CLOSURE FOLLOWS THE HOST, probed rather than assumed -- this family's own first lesson,
+  # applied to the guard that teaches it. On a BSD host -- macOS is one -- the elder spelling
+  # breaks natively too, so no bench-local run can show the plant working; the closure that
+  # remains is the spelling itself (the sed proven landed), and the GNU behaviour half belongs to
+  # the pier that has a GNU xargs. The two benches together prove both directions.
+  if printf '' | xargs -a /dev/null true 2>/dev/null; then host_dialect=gnu; else host_dialect=bsd; fi
+  echo "host_dialect=$host_dialect"
+  if [ "$host_dialect" = gnu ]; then
+    if [ "${plant_gnu:-none}" != "$live_gnu" ]; then
+      echo "verdict=plant_is_not_a_working_copy"
+      echo "refused: the planted copy read '${plant_gnu:-none}' on GNU where the living subject reads $live_gnu -- its silence under the shim would prove nothing."
+      exit 1
+    fi
+  else
+    if ! grep -q 'xargs -a "\$work/living.txt" -d' "$pen/tools/fixtures/planted_exec_bit_scan.sh"; then
+      echo "verdict=plant_sed_missed"
+      echo "refused: the planted copy does not carry the elder spelling -- the sed missed its line."
+      exit 1
+    fi
+    if [ "${plant_gnu:-0}" != "0" ] && [ -n "${plant_gnu:-}" ]; then
+      echo "verdict=plant_survived_bsd"
+      echo "refused: the elder spelling read ${plant_gnu} natively on a BSD host -- the probe or the spelling is wrong."
+      exit 1
+    fi
   fi
   if [ "${plant_bsd:-0}" -ne 0 ]; then
     echo "verdict=plant_did_not_bite"
