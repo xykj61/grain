@@ -62,6 +62,8 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260825.200049` | [The Works-Town Sleeve](20260825-200049_the-works-town-sleeve-siya.md) | the sleeve read against a works town; withheld from the seed |
+| `20260825.200048` | [The Works-Town Shape](20260825-200048_the-works-town-shape.md) | thirteen fill-in fields; one town per block; commons standing/seed/gap |
 | `20260825.173153` | [Reprove only what moved](20260825-173153_reprove-only-what-moved.md) | three ranked moves: build skip, restart skip behind a ruling, receipts + verify |
 | `20260825.171923` | [Gleaner's Second Watch](20260825-171923_gleaner-second-watch-the-doors.md) | the doors of a basin, sourced in and offered out; accretes to Gleaner |
 | `20260825.171922` | [The Headwater Sleeve](20260825-171922_the-headwater-sleeve-siya.md) | the sleeve read against a works campus; withheld from the seed |
