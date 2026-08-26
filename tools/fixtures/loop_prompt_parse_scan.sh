@@ -40,16 +40,34 @@ if [ -n "$src" ]; then
   fi
   cp "$src" "$work/recipe.txt"
 else
-  if [ ! -f tools/l/launch-claude-chapter.rish ]; then
+  # EVERY LAUNCHER, DISCOVERED RATHER THAN NAMED. This scan read `launch-claude-chapter.rish` alone
+  # for its whole life. On 20260826 the tree grew three more -- one per running star -- and none was
+  # measured, so a lone apostrophe planted in the Dream launcher's prompt left this scan reading
+  # `lines_that_do_not_parse=0` while the printed line died on its first later parenthesis. That is
+  # REDS %232's own fault standing in a file REDS %232's own guard could not see (REDS %277). A
+  # roster discovered from the tree grows when the tree does; a roster typed by hand grows when
+  # somebody remembers, and this file is the proof that nobody does.
+  # The `-chapter` suffix is the tree's own line between a printer and a runner, and the line is
+  # load-bearing rather than cosmetic: `launch-claude.rish` and the two `launch-cursor*` tools START
+  # an agent through agent-jail, so running one inside a scan would launch a session rather than
+  # measure a string. The four `launch-*-chapter.rish` tools only print. Checked when this was
+  # written: `launch-claude.rish` exits non-zero here precisely because it tried to start claude.
+  set -- tools/l/launch-*-chapter.rish
+  if [ ! -f "$1" ]; then
     echo "verdict=no_recipe_tool"
-    echo "refused: tools/l/launch-claude-chapter.rish is the tool this scan reads, and it is absent" >&2
+    echo "refused: no tools/l/launch-*-chapter.rish exists, and those are the tools this scan reads" >&2
     exit 1
   fi
-  rishi/bin/rishi run tools/l/launch-claude-chapter.rish > "$work/recipe.txt" 2>/dev/null || {
-    echo "verdict=recipe_tool_failed"
-    echo "refused: the recipe tool exited non-zero, so there is no printout to measure" >&2
-    exit 2
-  }
+  : > "$work/recipe.txt"
+  for _lp_tool in "$@"; do
+    [ -f "$_lp_tool" ] || continue
+    rishi/bin/rishi run "$_lp_tool" >> "$work/recipe.txt" 2>/dev/null || {
+      echo "verdict=recipe_tool_failed"
+      echo "refused: $_lp_tool exited non-zero, so there is no printout to measure" >&2
+      exit 2
+    }
+    echo "launcher_read=$_lp_tool"
+  done
 fi
 
 runnable=0

@@ -166,4 +166,15 @@ assert date_planted.out contains "verdict=over_date_ceiling" else "shell-dialect
 let date_admits = run ["sh" "-c" "SHELL_DIALECT_DATE_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-date-red"]
 assert date_admits.ok else "shell-dialect: the same planted date site must pass at a ceiling of one"
 
+# The two newest helpers, proven by DOING rather than by counting. A call-site count says a spelling
+# changed; only behaviour says the spelling still works. `resolve_path` is compared against this
+# host's own `readlink -f` on six real paths including a symlink and a name carrying a space, and
+# `sed_inplace` is read back for its bytes AND its mode -- the mode being the half `mv` would lose
+# and the exec-bit law would then book (REDS %159).
+let portable = run ["sh" "tools/fixtures/shell_portable_control.sh"]
+say portable.out
+assert portable.ok else "shell-dialect: the portable-helper control must exit 0"
+assert portable.out contains "fail=0" else "shell-dialect: no helper behaviour may miss"
+assert portable.out contains "pass=14" else "shell-dialect: want fourteen helper behaviours proven"
+
 say "GREEN: shell-dialect -- four gated families stand at zero under ceilings of zero, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every ceiling is proven from both sides on one planted tree"

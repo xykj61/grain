@@ -26,6 +26,10 @@
 #         assertion_named=<yes|no> verdict=ok|drift
 
 set -u
+# `sed_inplace` rather than `sed -i`: GNU takes no argument after -i and BSD requires a backup
+# suffix, so the two spellings have no overlap and this control would edit nothing on a BSD
+# bench -- a plant that does not plant reads exactly like a guard that does not bite.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
 
 zig="$1"
 pen="$2"
@@ -72,7 +76,7 @@ run_refusal() {
 
 # 1. THE BOUND. The policy ring widened past what the geometry ring can plan: 16 MiB to 1 TiB,
 #    against an Sv39 address space of 512 GiB.
-sed -i 's|^pub const max_region_bytes: u64 = 16 \* 1024 \* 1024;|pub const max_region_bytes: u64 = 1024 * 1024 * 1024 * 1024;|' "$pen/caravan/regions.rye"
+sed_inplace 's|^pub const max_region_bytes: u64 = 16 \* 1024 \* 1024;|pub const max_region_bytes: u64 = 1024 * 1024 * 1024 * 1024;|' "$pen/caravan/regions.rye"
 widened=$(run_refusal widened out_widened.txt)
 
 assertion_named=no
@@ -81,7 +85,7 @@ assertion_named=no
 # 2. THE ROUNDING. Restore the bound, then narrow the page a declaration rounds to, so a size already
 #    on a page no longer is and the idempotence assert reds.
 cp "$pen/regions.clean" "$pen/caravan/regions.rye"
-sed -i 's|^pub const page_bits: u6 = 12;|pub const page_bits: u6 = 13;|' "$pen/caravan/mapping.rye"
+sed_inplace 's|^pub const page_bits: u6 = 12;|pub const page_bits: u6 = 13;|' "$pen/caravan/mapping.rye"
 rounding=$(run_refusal rounding out_rounding.txt)
 cp "$pen/mapping.clean" "$pen/caravan/mapping.rye"
 

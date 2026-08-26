@@ -50,56 +50,61 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `afffaca3f2` -- a lantern twice becomes a loom.
+**Git nib:** `c29e99d47a` -- one dialect, and a guard that sees four.
 
-**Now.** **Two piers merged, remotes renamed, Dream's lane open.**
+**Now.** **Two piers merged, remotes renamed, Dream at work.**
 
-**Landed, shelved** (%268-%270) under [`archive/`](archive/); `dexter` still waits. The habit --
-**run the roster after a pull that moved** -- earned itself twice more today.
+**Landed, shelved** (%268-%270). `dexter` waits.
 
 **The two piers reconciled.** Both clones took `%233`-`%237` -- `%230` and `%252` again -- so
-upstream's five are **re-seated at `%271`-`%275`** on his word. **The three remotes are `xy`,
-`debrided`, `seed`;** the rename broke every guard reading `origin/main` and every loop line spelling
-`xykj61`, all repointed. `debrided` shared **zero** commits -- repointed `20260823` onto a repo that
-never took the `20260817` lineage drop -- and was force-matched on his word.
+upstream's five are **re-seated at `%271`-`%275`**. **The remotes are `xy`, `debrided`, `seed`;** the
+rename broke every guard reading `origin/main` and every loop line spelling `xykj61`, all repointed.
+`debrided` shared zero commits, force-matched.
 
-**Dream's first lane work: the rune says its own name.** Eight plain category words for Glow's closed
-rune set (*shop, fit, bind, ask, call, build, shape, aside*), glyph unchanged and lowering
-byte-identical. It ratifies: **30 of 32 `lower_*.rye` modules already carry a plain functional
-name**, and the two syllable-named ones are the whole cut surface, prepped Class M. Three siloed
-writings, all **A**; **ten teaching surfaces measured, none needing a molt**.
+**Dream's lane: the rune says its own name.** Eight plain words for Glow's closed rune set (*shop,
+fit, bind, ask, call, build, shape, aside*), glyph unchanged, lowering byte-identical. It ratifies --
+**30 of 32 `lower_*.rye` modules already carry a plain name** -- and the two syllable ones are the
+cut surface, prepped Class M.
 
-**Three writers, one order** -- the loops as a consensus rehearsal on real traffic: 25 conflicts
-across two merges, 20 resolved by reading, one structural class left. The derived-spine key is
-**proposed, awaiting a seat**.
+**Three writers, one order** -- 25 conflicts, 20 resolved by reading, one structural class; the
+derived-spine key **proposed**.
 
-**Seed published** `20260826.174615` -- gate %1 spent on his word. Four gates green on one tree
-(`M1_OK`, `SOW_OK` 7,168 / 1,117 scrubbed / 134 withheld, `IDENT_CLEAN`, `NO_PERSONAL`), seed nib
-`d983995`, anonymous and unsigned. **`arbor` ships scrubbed.** Killing
-a `rishi` wrapper orphans its `sh` child, which holds the projection lock -- **reap the child.**
+**Seed published** `20260826.174615`, gate %1 spent: four gates green, nib `d983995`, anonymous and
+unsigned, **`arbor` scrubbed**. Killing a `rishi` wrapper orphans its `sh` child, which holds the
+projection lock -- **reap the child.**
 
 
 **The fold loom stands** (%270's next lap). `tools/fixtures/reds_fold.sh` moves closed rows onto a
-shelf through `reds_fold_reanchor.sh`, re-anchoring both link classes and holding `](../REDS.md)` as
-written; five named refusals, a twelve-row bound, 23 behaviors both ways. Grading it opened
-**%276**: the card skipped every `#` line, right for a Markdown heading and inverted for a program,
-so Reach graded shell code at grade **86** against a ceiling of 9. Repaired the same lap -- **a meter
-pointed at a class it was never shaped for reports a fault in the artifact**, twice today.
+shelf through `reds_fold_reanchor.sh`, re-anchoring both link classes; five named refusals, a
+twelve-row bound, 23 behaviors both ways. Grading it opened **%276**: the card graded shell code
+at **86** against a ceiling of 9. Repaired.
 
-**The next doors.** `readlink -f` **4** sites and
-`sed -i` **4**, each wanting a helper in
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh); `readlink` wants a
-ruling first, two of its four Linux-only. His: **row-number allocation** (%230, %252) and the
-derived-spine key that answers it, a **molt-aware resolver**, a **pre-push refusal** (%255), a
-**debride announcing itself**, and the **rune renames** prepped Class M.
+**The dialect families close.** `resolve_path` and `sed_inplace` join
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh), 14 behaviours proven,
+parity skipped **out loud** where a bench cannot. `sed -i` **3 -> 0**; `readlink -f`
+**4 -> 2**, survivors host-bound. **%277:** the loop-parse guard read one launcher while four
+existed, so a planted apostrophe in Dream's prompt read clean -- discovered now, proven both ways.
+Counsel `20260826.181924`: **a meter pointed at a class it was never shaped for reports a fault
+it created.**
+
+**Dream's loop, his word `20260826`:** the **seed cadence is CUT** -- the fifth-round projection
+leaves the loop, so the star names the moment and stops; gate %1 stays his to spend. A
+**standing adaptation grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python
+into **Glow**, each born beside its elder, which stands until the newborn is GREEN and is then a
+fossil. The `20260826.151528` charter keeps *cadence rides with Dream alone* as
+testimony; the launcher is living and now says otherwise.
+
+**The next doors.** His: **row-number allocation** (%230, %252) and the derived-spine key that
+answers it, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride announcing
+itself**, and the **rune renames**, Class M.
 
 ---
 ## Landed arcs
 
 Mandate, the Acme DX chapter, the CION ratchet, **AHOY** beside **WADE**, the Singularity
 foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the
-recursion-prompts cellar, Chapter A's open image module, and the Constel dev-net quorum -- each
-proven on metal, each recorded in `session-logs/`. Walk-back `221ebba12a`.
+recursion-prompts cellar, Chapter A's open image module, the Constel dev-net quorum, and the rune
+naming -- each proven on metal and recorded in `session-logs/`. Walk-back `221ebba12a`.
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
@@ -112,10 +117,10 @@ proven on metal, each recorded in `session-logs/`. Walk-back `221ebba12a`.
 | **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Bron - Tablecloth |
 | **4 -- word-gated** | The World | **TACT** | Ship-Pilot - publishing - Grainphone - commerce - CONTRIBUTING four-doors - Grain Energy PBC |
 
-**Now at JARL.** Four seats stand witnessed GREEN -- identity, network, topology, settlement -- with
-all five constellation transitions holding every refusal. The **next-chapter breach is OPEN
-`20260810`**: Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri as
-the one voice, and the loadable skies still to run, each its own signed round. Charter at
+**Now at JARL.** Four seats witnessed GREEN -- identity, network, topology, settlement -- all five
+constellation transitions holding every refusal. The **next-chapter breach is OPEN `20260810`**:
+Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri the one voice,
+and the loadable skies still to run, each its own signed round. Charter at
 [`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
 
 ---

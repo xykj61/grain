@@ -124,6 +124,60 @@ file_mtime() {
   return 1
 }
 
+# THE FOURTH DIALECT QUESTION: how a path is made absolute with its symlinks resolved. GNU spells it
+# `readlink -f PATH`, and it succeeds on a path whose last component does not yet exist. BSD readlink
+# carried no `-f` at all for most of its life; macOS gained one in a recent release, so a tree that
+# reaches for it is betting on the age of the second bench rather than on a spelling both accept.
+# The bet is avoidable for one function's worth of shell.
+#
+# The portable answer asks the shell instead of the tool: `cd` into the directory and let `pwd -P`
+# resolve the symlinks, which every POSIX shell does. The last component is appended by hand rather
+# than walked, because the callers here resolve a FILE whose directory is the part that may be a
+# link -- `/etc/localtime` on a host that symlinks its zoneinfo, a `rye/lib` entry, a binary on
+# PATH. A last component that is itself a symlink to elsewhere is followed one hop, which covers
+# every caller in this tree and stops short of a general link walker nobody has needed.
+#
+# WHY NOT A LOOP TO A FIXED POINT. A full resolver has to bound its own recursion or hang on a
+# symlink cycle, and bounding it means naming a maximum depth nobody here can justify from
+# measurement. One hop is what the callers need, so one hop is what this promises, and the promise
+# is the whole of it.
+resolve_path() {
+  _sp_target=$1
+  [ -n "$_sp_target" ] || return 1
+  # A symlink is followed one hop, so a link into another directory resolves against that directory.
+  if [ -L "$_sp_target" ]; then
+    _sp_hop=$(readlink "$_sp_target" 2>/dev/null) || return 1
+    case "$_sp_hop" in
+      /*) _sp_target=$_sp_hop ;;
+      *)  _sp_target=$(dirname "$_sp_target")/$_sp_hop ;;
+    esac
+  fi
+  _sp_dir=$(dirname "$_sp_target")
+  _sp_base=$(basename "$_sp_target")
+  _sp_dir=$(CDPATH= cd "$_sp_dir" 2>/dev/null && pwd -P) || return 1
+  case "$_sp_dir" in
+    /) printf '%s\n' "/$_sp_base" ;;
+    *) printf '%s\n' "$_sp_dir/$_sp_base" ;;
+  esac
+}
+
+# THE FIFTH: editing a file in place. GNU `sed -i` takes no argument; BSD `sed -i` REQUIRES a backup
+# suffix and reads the next word as one, so `sed -i 's|a|b|' f` on BSD tries to use the script as a
+# suffix and then finds no file to edit. The two spellings have no overlap, which is why the tree
+# writes neither: a temporary file and a copy back through the original inode is a spelling every
+# host runs, and it preserves the mode the repository tracks (the exec-bit law) where `mv` would not.
+#
+# The caller passes the script and the file, exactly as `sed -i` would take them.
+sed_inplace() {
+  _sp_script=$1
+  _sp_file=$2
+  [ -f "$_sp_file" ] || return 1
+  _sp_tmp="$_sp_file.sp.$$"
+  sed "$_sp_script" "$_sp_file" > "$_sp_tmp" || { rm -f "$_sp_tmp"; return 1; }
+  cat "$_sp_tmp" > "$_sp_file" || { rm -f "$_sp_tmp"; return 1; }
+  rm -f "$_sp_tmp"
+}
+
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three
 # processes. The probe asks the one question that matters -- does a newline-delimited list survive
 # the round trip whole -- and a path carrying a space is the sharpest way to ask it: `tr` must emit

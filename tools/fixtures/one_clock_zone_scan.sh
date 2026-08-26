@@ -2,11 +2,17 @@
 # one_clock_zone_scan.sh -- host zone equals declared canonical zone by NAME.
 # Compare IANA path names, never numeric offsets (DST-safe).
 set -eu
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 want=$(head -1 tools/fixtures/one_clock_canonical_zone.txt)
 test -n "$want"
 
-# Prefer /etc/localtime target; also accept TZ env when it names the zone.
-link=$(readlink -f /etc/localtime 2>/dev/null || true)
+# Prefer /etc/localtime target; also accept TZ env when it names the zone. The target is resolved
+# through `resolve_path` rather than `readlink -f`, because this guard stands on both piers and BSD
+# readlink carried no `-f` for most of its life -- an unresolved link reads as an empty zone, and an
+# empty zone compares unequal to every real one, so the guard would refuse on the second bench for a
+# reason having nothing to do with the clock (the family REDS %234 and %250 booked).
+link=$(resolve_path /etc/localtime 2>/dev/null || true)
 tz_env=${TZ:-}
 
 echo "ZONE_WANT $want"
