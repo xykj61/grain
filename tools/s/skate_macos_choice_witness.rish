@@ -1,0 +1,48 @@
+# tools/s/skate_macos_choice_witness.rish -- the native Skate shell is decided, and its limits stay named.
+#
+# The living record chooses Swift 6.2 or newer with AppKit over a best-possible constrained
+# Objective-C and C application. The choice keeps one measured C seam available while placing new
+# owned state behind InlineArray, Span, value types, strict memory safety, and explicit capacities.
+# It also keeps the claim honest: AppKit and either language runtime may allocate, the profile is
+# inspired by Holzmann's Power of Ten rather than certified by NASA or JPL, Caravan's proven ring
+# is not a two-dimensional torus, and aether remains a design register rather than executable law.
+#
+# The scan binds the choice, confidence, allocation boundary, ten-rule profile, concrete storage,
+# phases, revisit triggers, primary sources, gratitude pair, pinned study gitlink, index row, and
+# ASCII register. The control plants five faults: a reversed choice, false certification, a missing
+# primary source, executable aether, and a false sketchbook pin.
+# Each must red before the living decision may answer green.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/skate_macos_choice_witness.rish
+
+say "skate-macos-choice: Language EN -- one native shell, one bounded owned core, and one unsafe seam only when measurement earns it."
+say "skate-macos-choice: Style Gauge Field -- the comparison gives both candidates their strongest form, then chooses on checkable language and repository ground."
+say "skate-macos-choice: Lens TAME -- platform allocation is named outside the owned-state promise; capacity, wrap, inputs, histories, and failures are named inside it."
+
+let scan = run ["sh" "tools/fixtures/skate_macos_choice_scan.sh"]
+assert scan.ok else "skate-macos-choice: the living decision drifted from its sources, boundary, or index"
+say scan.out
+assert scan.out contains "required_claims=25" else "skate-macos-choice: the scan's required contract changed without this witness changing with it"
+assert scan.out contains "missing_or_overclaimed=0" else "skate-macos-choice: every required claim must stand and every overclaim stay absent"
+assert scan.out contains "non_ascii_bytes=0" else "skate-macos-choice: the decision tablecloth stays ASCII-clean"
+assert scan.out contains "index_rows=1" else "skate-macos-choice: the exploration index must point here exactly once"
+assert scan.out contains "gitlink_pin=99b87f20f1fdbd2fc216cb13c07bdd0531916d27" else "skate-macos-choice: the old sketchbook must remain one exact gitlink pin"
+assert scan.out contains "gitlink_entries=1" else "skate-macos-choice: no sketchbook source file may be staged as ordinary Grain source"
+assert scan.out contains "sketchbook_receipt=yes" else "skate-macos-choice: the sketchbook provenance and clean-room boundary must stay named"
+assert scan.out contains "swift_gratitude=yes" else "skate-macos-choice: Swift's gratitude must keep the Objective-C lineage and no-endorsement boundary"
+assert scan.out contains "verdict=ok" else "skate-macos-choice: the live scan must balance before it is believed"
+
+let control = run ["sh" "tools/fixtures/skate_macos_choice_control.sh"]
+assert control.ok else "skate-macos-choice: the planted RED paths did not all refuse"
+say control.out
+assert control.out contains "reversed_choice_refused=yes" else "skate-macos-choice: a reversed architecture choice must red"
+assert control.out contains "false_certification_refused=yes" else "skate-macos-choice: NASA or JPL certification must never be inferred"
+assert control.out contains "missing_primary_source_refused=yes" else "skate-macos-choice: a decision without its Power of Ten source must red"
+assert control.out contains "executable_aether_refused=yes" else "skate-macos-choice: aether imagery must never become an executable claim by drift"
+assert control.out contains "false_sketchbook_pin_refused=yes" else "skate-macos-choice: the decision must red when its old-source pin drifts"
+assert control.out contains "living_decision_accepted=yes" else "skate-macos-choice: the living tablecloth must pass the same scan"
+assert control.out contains "control_verdict=ok" else "skate-macos-choice: the control must agree with itself"
+
+say "RED and GREEN paths proven -- five planted drifts refused, and the living Swift-AppKit decision held."
+say "GREEN: skate-macos-choice -- Swift 6.2+ and AppKit outside, bounded Grain-owned state inside, C only at a measured seam."

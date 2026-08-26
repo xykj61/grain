@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-08-19 (seL4 + Microkit microkernel study for Caravan, clean-room)
+**Last updated:** 2026-08-26 (Swift lineage gratitude + grain-sketchbook pinned study shelf)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -101,12 +101,13 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 - **`genesis-daw.md`** — Andrew Kelley's **Genesis** DAW (GPL-3, gitlink distance) — the hot loop that birthed Zig; honored in `../gratitude/genesis-daw.md`; **Lotus** is our own studio name.
 - **`reaper.md`** + **`reaper/docs/`** — Cockos REAPER public web documentation (proprietary; study copies parsed 2026-06-30). Workflow lodestar for **Lotus**. Refresh: `tools/f/fetch_gratitude_web.sh reaper`.
 - **`ap-mastering.md`** — Alain Paul / AP Mastering plugin design (Curvature, Versatile Compressor, etc.) — surface craft inspiration for Lotus plugin faces; public pages and YouTube only.
+- **`Swift.md`** — gratitude for Swift and the Objective-C, Cocoa, AppKit, and C lineage it carries forward; official sources, no endorsement claim, joined to Skate's bounded native-shell decision.
 
 ### The Realidream lane (`174500` — Kaeden affirms)
 
 - **`hyperfiddle.md`** — Dustin Getz's *UIs are streaming DAGs* (Hytradboi 2022) — the vision the grain-sketchbook credited for its unified DAG backend; Rye OS carries it as Weave + fold + Tilak. Study the talk; never copy Electric source.
 - **`matklad.md`** — Alex Kladov (matklad) — project-wide semantic understanding via rust-analyzer's resolved workspace model; Aurora's editor head in the sketchbook reached toward the same ground.
-- **`grain-sketchbook.md`** — Kaeden's own archived Zig prototype (*Aurora + Skate + Realidream*); shelf note only — archive stays outside the tree (Kaeden `222852`). Mining study: `../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`.
+- **`grain-sketchbook.md`** + **`grain-sketchbook/`** — Kaeden's own archived Zig prototype (*Aurora + Skate + Realidream*), now held as an unmodified gitlink at `99b87f20f`; the note records the missing root license, macOS case-collision boundary, clean-room lessons, and the native-Skate reread. Mining study: `../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`.
 - **`noah-b-realidream.md`** — Noah B. — artistic source for the *Reality* and *Dream* pairing in the Realidream name.
 - **`rumi-hafez-kabir-ibn-arabi.md`** — historical naming gratitude for the **Djin** hour (was Twah; now retired forward to **Gren**): Rumi · Hafez · Kabir · Ibn Arabi thanked by name only; no verse copied (`20260728.015541` · note `20260728.025634`).
 - **`kamala-harris.md`** — **historical** honor gratitude for the **Mala** fund dedication to Kamala Harris (living Aries seat is **Murr** / Kyler); no speeches copied (`20260728.020607`) · foundations companion [`../foundations/yonder/20260728-020607_mala-and-kamala-harris.md`](../foundations/yonder/20260728-020607_mala-and-kamala-harris.md) (Reya variant).
