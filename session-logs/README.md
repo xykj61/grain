@@ -61,7 +61,9 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260826.033242` | [the clock and the dialect](20260826-033242_the-clock-and-the-dialect.kyri) | macOS refused the parser, rather than the time |
 | `20260826.031657` | [the name waits beside the headwaters](20260826-031657_the-name-waits-beside-the-headwaters.kyri) | Arbor-ready Twilight naming; the token waits at the spring |
 | `20260826.025139` | [the chapter rewrite lands](20260826-025139_the-chapter-rewrite-lands.kyri) | 3,471 re-signed and pushed; three rooms seat; six foundations molt; seed follows |
+| `20260826.022833` | [one tree, one number](20260826-022833_one-tree-one-number.kyri) | the census read a comment as a planting; parked at the row-number gate; %246-%248 |
 | `20260826.021754` | [the panchanga and the chapter](20260826-021754_the-panchanga-and-the-chapter.kyri) | rings of five seated; Chapter->Chapter debride; Kyri 6 palettes; 14 pages |
+| `20260826.010645` | [the debride's wake](20260826-010645_the-debrides-wake.kyri) | seven guards red on the receiving pier; rewritten-upstream shape gated; %243-%245 |
 | `20260826.002952` | [the DJINN debride, the bit chapter](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
 | `20260826.001630` | [two piers, one dialect](20260826-001630_two-piers-one-dialect.kyri) | a generated page shipped 38 zeros; the xargs dialect gated; %240-%242 |
 | `20260825.235254` | [the leaves that sing](20260825-235254_the-leaves-that-sing.kyri) | twelve leaf roots closed across eight causes; 33 leaves rostered; reach 1,201 -> 1,154 |
