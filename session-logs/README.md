@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.182253` | [the instrument and the artifact](20260826-182253_the-instrument-and-the-artifact.kyri) | readlink 4->2, sed 3->0; a meter on the wrong class |
 | `20260826.180052` | [a lantern twice becomes a loom](20260826-180052_a-lantern-twice-becomes-a-loom.kyri) | the fold loom stands; %276, the card read a program's code |
 | `20260826.172320` | [the rune says its own name](20260826-172320_the-rune-says-its-own-name.kyri) | eight plain words for Glow's runes; ten surfaces measured, none molted |
 | `20260826.165823` | [the drain is a fold](20260826-165823_the-drain-is-a-fold.kyri) | move three on metal: two cold runs, four stores byte-identical; choir at 113 |

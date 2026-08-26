@@ -20,6 +20,10 @@
 # Prints: baseline=<ok|failed> widened=<refused|passed|build_failed> assertion_named=<yes|no> verdict=ok|drift
 
 set -u
+# `sed_inplace` rather than `sed -i`: GNU takes no argument after -i and BSD requires a backup
+# suffix, so the two spellings have no overlap and this control would edit nothing on a BSD
+# bench -- a plant that does not plant reads exactly like a guard that does not bite.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
 
 zig="$1"
 pen="$2"
@@ -40,7 +44,7 @@ if env RYE_ZIG="$zig" rye/bin/rye build "$pen/caravan/allowances.rye" -femit-bin
 fi
 
 # The refusal: one Caravan bound widened past its Microkit counterpart, 16 channels to 64 against 62.
-sed -i 's|^pub const max_channels: u32 = 16;|pub const max_channels: u32 = 64;|' "$pen/caravan/channels.rye"
+sed_inplace 's|^pub const max_channels: u32 = 16;|pub const max_channels: u32 = 64;|' "$pen/caravan/channels.rye"
 
 widened=build_failed
 assertion_named=no

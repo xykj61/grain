@@ -135,7 +135,7 @@ k6=$(stamp)
 mkdir "$PEN/lib2"
 for entry in "$REPO/rye/lib"/*; do
     name=$(basename "$entry")
-    tgt=$(readlink -f "$entry") || fail "could not resolve rye/lib/$name"
+    tgt=$(resolve_path "$entry") || fail "could not resolve rye/lib/$name"
     ln -s "$tgt" "$PEN/lib2/$name"
 done
 env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
