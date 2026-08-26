@@ -1,14 +1,15 @@
 format waymark-registry-v1
-stamp 20260821.023219
+stamp 20260825.234631
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal b9f77066d65053ab81d5ee61cf5dfe9996fd3a5530900a906299295c15f6d1fda42cd3395758bf88eb8d05748abe2755d297ea1ffcce059a895f7450f162de8b
+seal fdbb1a8ba96c57e2c3e22a6e5f4763c4be539b8b741c5de9dd75726576984fe57c58ba610fec909fe64f619113d9578348e3db5edd227083770cd25e58a44bf4
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
 # Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
+# Re-sealed 20260825.234631: POLE input debrided to hand-seated under the DJINN pseudonym word; the mark keeps its seat.
 # Re-sealed 20260821.023219: DISC seated for the Season G SLH-DSA ladder (Keaton's word -- name the arc and start it).
 # ---- sealed body ----
 mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
@@ -32,7 +33,7 @@ mark LOWE | input cion-molt-living-mutants-and-fossils | index 2813 | status liv
 mark LULU | input glow-glass-hearth-display-and-wired-sync | index 2833 | status living | note seated
 mark MAIR | input glow-language-rune-heads-nest-and-lowering | index 2885 | status abandoned | note superseded same-day by STOA
 mark OFFY | input cion-meta-season-equinox-3-debride | index 3372 | status living | note seated
-mark POLE | input djinn-bozo-exec-keaton-murr-hats | index 3700 | status living | note seated
+mark POLE | input (debrided 20260825) | index 0 | status hand-seated | note exec hats quest; input carried a name, debrided under the DJINN pseudonym word
 mark QUIZ | input source-identity-breach-onboarding-refresh | index 3856 | status abandoned | note redraw, never seated; Keaton chose SUNN
 mark SOON | input glow-language-runes-stdlib-and-pipeline | index 4452 | status living | note seated
 mark STOA | input glow-language-rune-heads-nest-and-lowering-2 | index 4532 | status living | note seated
