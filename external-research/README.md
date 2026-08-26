@@ -50,6 +50,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260825.230422` | [The isolation reading](20260825-230422_the-isolation-reading-from-the-wells-own-record.md) | the Garrett No. 1 sworn tops; separation shown, salinity owed |
+| `20260825.230421` | [What residue leads means](20260825-230421_what-residue-leads-means.md) | the Brazos fiber ranking, told plain at a grade-6 read |
 | `20260825.210819` | [Four protocols, distilled to a git rota](20260825-210819_four-protocols-distilled-to-a-git-rota.md) | one lesson per family for the twice-pulled round |
 | `20260825.205011` | [HotStuff and Hashgraph, for the piers](20260825-205011_hotstuff-and-hashgraph-read-for-the-piers.md) | the pen handed on cheaply; the order derived, never claimed |
 | `20260825.200047` | [The First Works Town on the Brazos](20260825-200047_the-first-works-town-on-the-brazos.md) | eleven towns read; Plainview leads on headwater, polis, commons |
