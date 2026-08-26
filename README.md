@@ -130,7 +130,7 @@ goal itself here, rather than a compromise on the way to one.
 |---|---|
 | **[Caravan](caravan/)** | A group that travels together and arrives together. It starts every other part in the right order, watches each one, and brings back anything that stumbles, all inside limits fixed before it begins. |
 | **[Tally](tally/)** | Keeps the books on memory. Every allocation is counted against a declared ceiling, so the system can show you it stayed inside its promise. |
-| **[Mantra](mantra/)** | Names things so a name stays true. Ask for a name and you get exactly the bytes you got last time, forever. That is what makes a build reproducible. [Beginner door](foundations/20260823-222018_what-mantra-is.md). |
+| **[Mantra](mantra/)** | Names things so a name stays true. Ask for a name and you get exactly the bytes you got last time, forever. That is what makes a build reproducible. [Beginner door](foundations/20260825-211056_what-mantra-is.md). |
 | **[Comlink](comlink/)** | Carries sealed messages between machines. It moves bytes without reading them, and what arrives is bit-for-bit what left. |
 | **[Pond](pond/)** | A fence around a running program: this much memory, these files, this network. A program works inside exactly the boundary it was handed. |
 | **[Amphora](amphora/)** | A sealed vessel for something crossing a boundary, opened by whoever it was addressed to. |
@@ -160,7 +160,7 @@ request returns the same bytes from any room, and *sameness* becomes something a
 rather than something a person promises.
 
 Each of the three has a page written for someone meeting it for the first time --
-[Mantra](foundations/20260823-222018_what-mantra-is.md),
+[Mantra](foundations/20260825-211056_what-mantra-is.md),
 [Brix infuse](foundations/20260823-222019_what-brix-infuse-is.md), and
 [Tablecloth](foundations/20260823-222020_what-tablecloth-is.md) -- and each of those carries the
 operation written as a **chemical formula**: what goes in, what comes out, and what stays conserved.

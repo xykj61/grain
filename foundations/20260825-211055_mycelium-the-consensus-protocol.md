@@ -1,10 +1,10 @@
 # Mycelium -- the Consensus Protocol
 
-**Stamp:** `20260813.142420`
+**Stamp:** `20260825.211055` -- the living mutant, molted on Keaton's word from the `20260813-142420` fossil (accretion: the interim carriage)
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Fossil `20260825.211055` -- the living mutant is [`20260825-211055_mycelium-the-consensus-protocol.md`](20260825-211055_mycelium-the-consensus-protocol.md) (accretes the interim carriage); this dated body stays whole. Was: Living foundation -- the *why* beneath the tree's own consensus season, and the map through its parts.
+**Status:** Living foundation -- the *why* beneath the tree's own consensus season, and the map through its parts.
 **Season:** D -- Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md).
 **First design read:** [`../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md`](../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md).
 
@@ -98,13 +98,28 @@ Everything above **runs green today** over demo seeds -- no real key, no funds, 
 
 This is the honest shape of the season: a consensus protocol whole and witnessed in the sandbox, its every real-world crossing marked and waiting -- custody first, always.
 
+## The interim carriage -- git as the first Cord
+
+Mycelium's blocks wait on a real wire, and the tree already runs on one carriage today: git. Until Comlink crosses a real network -- the Comlink-served custody gate the two rooms name -- the shared repository is the constellation's transport, and it is worth saying plainly how much of the protocol it already carries.
+
+The proof arrived on schedule. Two piers ran one tree on `20260825` and collided exactly where the theory says concurrent writers collide: both clones read the ledger's spine, each internally perfect, and both booked REDS row %226 -- the macOS bench at `20260825.183029`, this pier at `20260825.183336`, from trees that agreed at `5b94dd2d69` (REDS %230, [`../construction/REDS.md`](../construction/REDS.md)). Each remote then carried a different ledger wearing the same number. The repair was a derived-order algorithm run by hand: keep the earlier-stamped row at %226, shift the later three to %227 through %229, sweep every living citation, and the spine reads 1..230 whole on both remotes.
+
+Git carries more of Mycelium than a stopgap would. A commit hashes its parents, so the shared history is already gossip-about-gossip -- each new vertex attests to every vertex beneath it, which is the Cord's own DAG shape wearing another name. And the portable proof-of-agreement the pen handoff needs already exists as this tree's same-commit discipline: a signed commit, a GREEN witness line, and the living-card update, landing together in one commit. A fresh hand takes the round with one fetch and one read ([the pen, the gossip, and the derived spine](../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md)).
+
+The rota that keeps two writers lawful is seated: **pull at round start, package the round, pull again, re-integrate if the tree moved, push when it stands still.** The push's fast-forward refusal is the allocation check -- the same compare-and-set a sequencer would run, served by the remote for free. That fast-forward answer is what caught %230.
+
+One collision class remains structural: a number allocated by reading a tree is allocated per tree. The recommended repair is the derived spine -- a row's immutable key is its one-clock stamp, and the %N becomes a view computed at merge, the earlier stamp taking the lower number. That recommendation awaits its seat ([Move 1 of the derived-spine design](../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md)), beside the wiring that would give each machine its own live instance ([three real MOX and the outer loop](../active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md)).
+
+And the honest sentence, said once: this carriage is ergonomics for conflict-free concurrency between machines one person keys. The Byzantine arithmetic stays where value moves -- the till, the purse, the pledge -- and the pen rides lighter on purpose.
+
 ## Kin
 
 - The road that opened it: the double-seat expansion ([`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)) names Season D as *the language and the consensus*.
 - The discipline it keeps: [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
 - The gratitude it holds: [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) - [`../.claude/rules/urbit-reframe.md`](../.claude/rules/urbit-reframe.md) -- TigerBeetle and Mysticeti thanked, studied clean-room, never copied.
 - The order it climbs by: [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) - the return habit [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md).
-- The source itself: [`../mycelium/`](../mycelium/) -- ninety-eight modules, eighty witnesses.
+- The source itself: [`../mycelium/`](../mycelium/) -- ninety-nine modules, eighty witnesses.
+- The carriage and the rota: [`../active-designing/20260825-210819_the-round-that-pulls-twice.md`](../active-designing/20260825-210819_the-round-that-pulls-twice.md) - [`../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md`](../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md).
 
 ---
 
