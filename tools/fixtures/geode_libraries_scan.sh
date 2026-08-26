@@ -38,7 +38,14 @@ if [ ! -s "$witness_roster" ]; then
 fi
 
 witness_count() {
-  xargs -a "$witness_roster" -d '\n' grep -lI "\b$1/" 2>/dev/null | wc -l | tr -d ' '
+  # PORTABLE ON PURPOSE, and paid for twice. `xargs -a FILE` and `-d` are GNU-only -- BSD xargs
+  # rejects both, the pipeline yields nothing, `wc -l` answers 0, and every room on this page
+  # reads zero witnesses. That is REDS %169's "confident wrong zero" arriving through a second
+  # door, and the guard agrees with it perfectly on the host where it breaks, because the guard
+  # renders through this same function. `-0` is in both dialects. `\b` is not, so the word
+  # boundary is spelled as an ERE alternation rather than assumed (REDS %240).
+  tr '\n' '\0' < "$witness_roster" \
+    | xargs -0 grep -lIE "(^|[^A-Za-z0-9_])$1/" 2>/dev/null | wc -l | tr -d ' '
 }
 
 # HOW THE MODULES ARE COUNTED, and it asks git rather than the filesystem for a reason paid for
