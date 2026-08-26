@@ -62,6 +62,11 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260826.001748` | [The languages an open model owes](20260826-001748_the-languages-an-open-model-owes.md) | corpus shares published; the tokenizer seam gets a witness |
+| `20260826.001747` | [The wafer rehearsed in software](20260826-001747_the-wafer-rehearsed-in-software.md) | the wafer abstraction provable now on ordinary metal |
+| `20260826.001746` | [The swarm that feeds the kiln](20260826-001746_the-swarm-that-feeds-the-kiln.md) | cohort training as a Mycelium cousin; the signed-fact repair |
+| `20260826.001745` | [One lowering, two engines](20260826-001745_one-lowering-two-engines.md) | three op families and a fuser; the three-seam GPU ladder |
+| `20260826.001744` | [The bound in the shape](20260826-001744_the-bound-in-the-shape.md) | bounds by construction; wrap is a meaning, never a net |
 | `20260825.235725` | [The ASCII cloth front door](20260825-235725_the-ascii-cloth-front-door.md) | character-grid weave for the Grain site; the mark reborn in ASCII; DJINN's seat |
 | `20260825.234156` | [Linengrow First Cloth, Gauge pass](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) | Stone & Hearth measured; the codex law; the trio and sixteen names |
 | `20260825.233309` | [The Bit Design System season opens](20260825-233309_the-bit-design-system-season-opens.md) | DJINN is ready; Linengrow the inspiration; gate %6 stands |

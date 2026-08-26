@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.002952` | [the DJINN debride, the bit season](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
 | `20260825.231648` | [a letter held for the word](20260825-231648_a-letter-held-for-the-word.kyri) | the Hale County draft: three steps, no money, withheld from the seed |
 | `20260825.231037` | [the well's own record](20260825-231037_the-wells-own-record.kyri) | isolation reading drafted from sworn 1962 tops; residue-leads told plain |
 | `20260825.225051` | [the constellation rehearsal](20260825-225051_the-constellation-rehearsal.kyri) | the paper stack runs: one pen, three processes, every voice verified |
