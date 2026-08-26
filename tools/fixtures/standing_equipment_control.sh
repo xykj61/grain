@@ -2,7 +2,7 @@
 # tools/fixtures/standing_equipment_control.sh -- prove the roster meter and its runner, both ways.
 #
 # WHY. A guard that cannot red guards nothing -- the grain seats that strand
-# (foundations/20260702-184312_the-grain-and-the-crossing.md, REDS row 59). This builds
+# (foundations/20260826-024942_the-grain-and-the-crossing.md, REDS row 59). This builds
 # throwaway rosters and run cards in a temporary directory and proves each refusal the
 # scan claims, beside rosters that pass free so every gate is known to have a green side.
 #

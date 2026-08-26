@@ -2,7 +2,7 @@
 # tools/fixtures/tracked_link_control.sh -- prove the tracked-link meter can red, and where it stays free.
 #
 # WHY. A guard that cannot red guards nothing -- the grain seats that strand
-# (foundations/20260702-184312_the-grain-and-the-crossing.md, REDS row 59). And a guard that reds
+# (foundations/20260826-024942_the-grain-and-the-crossing.md, REDS row 59). And a guard that reds
 # on honest input teaches the bench to route around it, which is worse than no guard, so every
 # refusal here is proven beside the free passes that bound it.
 #

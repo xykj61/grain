@@ -75,9 +75,9 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | Fossil (old stamp) | Living mutant | Seated | Notes |
 | --- | --- | --- | --- |
 | `foundations/20260629-063512_realidream.md` | `foundations/20260728-220203_realidream.md` | p29 `20260728.220203` | invent held |
-| `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260728-221253_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
-| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
-| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
+| `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
+| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
+| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
 | `counsel/date/20260728/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
 | `counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Chapter charter · chapter keeps its name as history · Ember is the living module |
@@ -154,6 +154,30 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 2. **Living citers are repointed** at the mutant; dated testimony keeps every word it wrote.
 3. **The fossil wears a banner** at the top naming the living page and what changed.
 4. **The row is written here**, with the measurement, so a later pass reads rather than re-walks.
+
+### M-cal-a -- `foundations/20260728-221253_the-graph-beneath-the-surface.md` (`20260826.024939`)
+
+Living mutant `foundations/20260826-024939_the-graph-beneath-the-surface.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
+
+### M-cal-b -- `foundations/20260628-124512_anywhere-we-are-found.md` (`20260826.024940`)
+
+Living mutant `foundations/20260826-024940_anywhere-we-are-found.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
+
+### M-cal-c -- `foundations/20260628-133212_a-home-in-plain-text.md` (`20260826.024941`)
+
+Living mutant `foundations/20260826-024941_a-home-in-plain-text.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
+
+### M-cal-d -- `foundations/20260702-184312_the-grain-and-the-crossing.md` (`20260826.024942`)
+
+Living mutant `foundations/20260826-024942_the-grain-and-the-crossing.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
+
+### M-cal-e -- `foundations/20260706-185112_follow-our-compass.md` (`20260826.024943`)
+
+Living mutant `foundations/20260826-024943_follow-our-compass.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
+
+### M-cal-f -- `foundations/20260728-232511_lantern-lattice-kiln.md` (`20260826.024944`)
+
+Living mutant `foundations/20260826-024944_lantern-lattice-kiln.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
 
 ### M-bit-a -- `foundations/20260728-220203_realidream.md` (`20260825.233310`)
 

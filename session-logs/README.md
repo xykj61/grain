@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.025139` | [the chapter rewrite lands](20260826-025139_the-chapter-rewrite-lands.kyri) | 3,471 re-signed and pushed; three rooms seat; six foundations molt; seed follows |
 | `20260826.021754` | [the panchanga and the chapter](20260826-021754_the-panchanga-and-the-chapter.kyri) | rings of five seated; Chapter->Chapter debride; Kyri 6 palettes; 14 pages |
 | `20260826.002952` | [the DJINN debride, the bit chapter](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
 | `20260825.231648` | [a letter held for the word](20260825-231648_a-letter-held-for-the-word.kyri) | the Hale County draft: three steps, no money, withheld from the seed |

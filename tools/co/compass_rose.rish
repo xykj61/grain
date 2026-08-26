@@ -4,15 +4,15 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/compass_rose.rish
 #
-# Ground: foundations/20260706-185112_follow-our-compass.md
+# Ground: foundations/20260826-024943_follow-our-compass.md
 
 say "compass rose: foundations…"
-let f = run ["sh" "-c" "test -f foundations/20260706-185112_follow-our-compass.md && test -f foundations/README.md && echo FOUNDATIONS_OK"]
+let f = run ["sh" "-c" "test -f foundations/20260826-024943_follow-our-compass.md && test -f foundations/README.md && echo FOUNDATIONS_OK"]
 assert f.ok else "foundations missing"
 assert f.out contains "FOUNDATIONS_OK" else "foundations check failed"
 
 say "compass rose: grain index…"
-let g = run ["sh" "-c" "test -f foundations/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
+let g = run ["sh" "-c" "test -f foundations/20260826-024942_the-grain-and-the-crossing.md && echo GRAIN_OK"]
 assert g.ok else "grain index missing"
 assert g.out contains "GRAIN_OK" else "grain check failed"
 

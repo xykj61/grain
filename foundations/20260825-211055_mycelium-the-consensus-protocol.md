@@ -117,7 +117,7 @@ And the honest sentence, said once: this carriage is ergonomics for conflict-fre
 - The road that opened it: the double-seat expansion ([`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)) names Chapter D as *the language and the consensus*.
 - The discipline it keeps: [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
 - The gratitude it holds: [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) - [`../.claude/rules/urbit-reframe.md`](../.claude/rules/urbit-reframe.md) -- TigerBeetle and Mysticeti thanked, studied clean-room, never copied.
-- The order it climbs by: [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) - the return habit [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md).
+- The order it climbs by: [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) - the return habit [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md).
 - The source itself: [`../mycelium/`](../mycelium/) -- ninety-nine modules, eighty witnesses.
 - The carriage and the rota: [`../active-designing/20260825-210819_the-round-that-pulls-twice.md`](../active-designing/20260825-210819_the-round-that-pulls-twice.md) - [`../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md`](../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md).
 

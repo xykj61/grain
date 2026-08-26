@@ -1,6 +1,6 @@
 # Anywhere We Go, We're Found
 
-> **Fossil `20260826.024940`** -- the living mutant is [`20260826-024940_anywhere-we-are-found.md`](20260826-024940_anywhere-we-are-found.md); this dated body stays whole.
+*Living mutant, re-seated `20260826.024940` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
 
 *A vision for joyful, open, and regenerative technology, and for the communities it serves. These notes began as a scribble months ago. This is their revival -- the same direction, drawn out clearly, in our own voice, and deepened by the fuller vision it was always reaching toward.*
 

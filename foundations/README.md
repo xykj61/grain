@@ -6,7 +6,7 @@
 
 ---
 
-This folder holds the why beneath the work -- the reasons the building means something, at two scales. The foundation briefs name why the daily craft is an offering and a service. The vision documents name the larger civic horizon the work ultimately serves. The front door that opens onto all of it is the root [`../README.md`](../README.md); the habit that returns you here is [**follow our compass**](20260706-185112_follow-our-compass.md).
+This folder holds the why beneath the work -- the reasons the building means something, at two scales. The foundation briefs name why the daily craft is an offering and a service. The vision documents name the larger civic horizon the work ultimately serves. The front door that opens onto all of it is the root [`../README.md`](../README.md); the habit that returns you here is [**follow our compass**](20260826-024943_follow-our-compass.md).
 
 These rest beneath the specifications. The specs say what to build and how; these say what it is for.
 
@@ -36,9 +36,9 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **The long return** -- the [Lindy foundation](20260811-211431_the-lindy-effect-and-the-long-return.md) names why front doors and foundations are the highest-leverage prose we own, and it grounds the standing order [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): do the longest-lived work first, and within a tier take the *crux* -- the hardest solvable problem. The **AHOY** front-door chapter ([`../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md`](../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md)) runs this room's weave.
 
-**The grain** -- ten standing strands and the crossing test live in [`../foundations/20260702-184312_the-grain-and-the-crossing.md`](../foundations/20260702-184312_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
+**The grain** -- ten standing strands and the crossing test live in [`../foundations/20260826-024942_the-grain-and-the-crossing.md`](../foundations/20260826-024942_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
 
-**The compass** -- the return habit (foundations -> grain -> active-designing -> TASKS -> witnesses) lives in [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md) - **landed** `20260706.185512 UDT`. Say **follow our compass** for navigation; keep **grain strand** for structural fit.
+**The compass** -- the return habit (foundations -> grain -> active-designing -> TASKS -> witnesses) lives in [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) - **landed** `20260706.185512 UDT`. Say **follow our compass** for navigation; keep **grain strand** for structural fit.
 
 **Seam chapter (`20260712.052806`)** -- nib-430 horizon door: universality through the application seam. Wire serves the fold and sameness stay the why; studies 1-4 landed; CapTP-as-fold **declined** [`../context/specs/20260712-054650_captp-as-fold-carriage-declined.md`](../context/specs/20260712-054650_captp-as-fold-carriage-declined.md); giving-lane T0 in [`20260629-014512_money-that-stays-close-to-home.md`](20260629-014512_money-that-stays-close-to-home.md). Living hammock [`../active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) - counsel [`../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md).
 
@@ -63,7 +63,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **Vision documents** -- the larger civic horizon, adaptable to any community:
 
-- `20260628-124512_anywhere-we-are-found.md` -- the unifying vision above both tracks: a free open-source OS given away, open hardware, regenerative communities, a decentralized ledger with USDsui, and the creator tools and access passes that Linengrow carries forward.
+- `20260826-024940_anywhere-we-are-found.md` -- the unifying vision above both tracks: a free open-source OS given away, open hardware, regenerative communities, a decentralized ledger with USDsui, and the creator tools and access passes that Linengrow carries forward.
 - `20260629-014512_money-that-stays-close-to-home.md` -- sovereign money for the public good, and a lawful complementary local currency beside it that circulates close to home, settling on the same decentralized ledger with USDsui.
 - `20260801-005853_mantrapod-venture-pitch.md` -- **living speech** of the Mantrapod venture pitch (Riyo - Keaton - Grain): reflective screen, no radios, memory that forgets, a held key, screwdriver repair, local currency on the shared ledger. June fossil kept whole: `20260629-020012_mantrapod-venture-pitch.md` (Reya 2 - Kaeden - Rye OS).
 - `the-aspiring-radiance-universal.md` -- a regenerative policy design framework for every climate and community. **Reviewed and kept** `2026-07-10`.
@@ -72,9 +72,9 @@ These rest beneath the specifications. The specs say what to build and how; thes
 **The far horizon** -- four visions that compose one layered stack the project grows toward, distinct from the active laps (SLC-1 done; TAME hardening now). Read top to bottom: surface -> graph -> hardware -> model. Gall's Law holds -- complex systems grow from working simple ones; these name aspiration, not near-term build order.
 
 - `20260825-233310_realidream.md` -- **living** Realidream vision (Surface p29 mutant): editor-and-browser branded Pond/Pool face over one graph; Skate as paint target; invent held. June fossil: `20260629-063512_realidream.md`.
-- `20260728-221253_the-graph-beneath-the-surface.md` -- **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally - Tablecloth. June fossil: `20260629-063512_the-graph-beneath-the-surface.md`.
+- `20260826-024939_the-graph-beneath-the-surface.md` -- **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally - Tablecloth. June fossil: `20260629-063512_the-graph-beneath-the-surface.md`.
 - `20260728-225239_the-wafer-and-the-sovereign-coin.md` -- **living** wafer + sovereign coin (Surface p33 thin): memory beside cores - open public infrastructure. June fossil: `20260629-063512_the-wafer-and-the-sovereign-coin.md`.
-- `20260728-232511_lantern-lattice-kiln.md` -- **living** open model layer (Ember seat, was Kiln): Ember - Lattice - Lantern. Fossils: `20260728-221253_lantern-lattice-anvil.md` - `20260629-063512_lantern-lattice-anvil.md`.
+- `20260826-024944_lantern-lattice-kiln.md` -- **living** open model layer (Ember seat, was Kiln): Ember - Lattice - Lantern. Fossils: `20260728-221253_lantern-lattice-anvil.md` - `20260629-063512_lantern-lattice-anvil.md`.
 
 **How the bench walks** -- workflow law for nested chapters (Nona n1):
 
@@ -83,7 +83,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 **Distilled essays** -- single-stranded meditations drawn from a year of notes, each self-contained and composable:
 
 - `20260628-133212_the-key-you-hold.md` -- identity that grows from one root you keep yourself (the keypair primitive).
-- `20260628-133212_a-home-in-plain-text.md` -- the terminal as a calm, portable, lasting place to work (Rishi, SLC-1).
+- `20260826-024941_a-home-in-plain-text.md` -- the terminal as a calm, portable, lasting place to work (Rishi, SLC-1).
 - `20260628-133212_four-promises-a-tool-can-keep.md` -- do no harm, tell the truth, hold lightly, be kind (the ethic of both tracks).
 - `20260628-133212_a-free-and-open-room.md` -- the library as the oldest knowledge commons (the open core).
 - `20260628-133212_an-open-way-to-learn.md` -- learning as a path you lay yourself, in the open (the learning record).

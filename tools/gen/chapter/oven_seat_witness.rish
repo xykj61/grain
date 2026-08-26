@@ -1,26 +1,26 @@
-# tools/gen/chapter/oven_seat_witness.rish -- Surface p36 - Kiln seated
+# tools/gen/chapter/oven_seat_witness.rish -- Surface p36 - Oven seated
 #
 #   rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish
 
-say "kiln-seat: Language EN — Kiln living forge; Anvil tribute held."
-say "kiln-seat: Style Radiant — bread not blades."
-say "kiln-seat: Lens TAME — Kiln Chapter o1."
+say "oven-seat: Language EN — Oven living forge; Anvil tribute held."
+say "oven-seat: Style Radiant — bread not blades."
+say "oven-seat: Lens TAME — Oven Chapter o1."
 
-let seat = run ["test" "-f" "counsel/date/20260728/20260728-232511_surface-season-p36-kiln-seated.md"]
-assert seat.ok else "kiln-seat: p36 counsel missing"
-let living = run ["test" "-f" "foundations/20260728-232511_lantern-lattice-kiln.md"]
-assert living.ok else "kiln-seat: living Kiln foundation missing"
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-232511_surface-season-p36-oven-seated.md"]
+assert seat.ok else "oven-seat: p36 counsel missing"
+let living = run ["test" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
+assert living.ok else "oven-seat: living Oven foundation missing"
 let mid = run ["test" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
-assert mid.ok else "kiln-seat: Anvil mid-fossil missing"
+assert mid.ok else "oven-seat: Anvil mid-fossil missing"
 
-let kiln = run ["sh" "-c" "grep -q 'Kiln — Where the Model Is Baked' foundations/20260728-232511_lantern-lattice-kiln.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-232511_lantern-lattice-kiln.md && echo OVEN_OK"]
-assert kiln.ok else "kiln-seat: Kiln body scan failed"
-assert kiln.out contains "OVEN_OK" else "kiln-seat: Kiln section missing"
-let lex = run ["sh" "-c" "grep -q 'Living name for the local forge' context/LEXICON.md && grep -q 'Retired living forge name' context/LEXICON.md && grep -q 'Kiln was Anvil' context/LEXICON.md && echo LEX_OK"]
-assert lex.ok else "kiln-seat: lexicon scan failed"
-assert lex.out contains "LEX_OK" else "kiln-seat: Kiln · Anvil rename-forward missing"
-let held = run ["sh" "-c" "test -d kiln && test ! -d anvil && echo PATH_OVEN"]
-assert held.ok else "kiln-seat: kiln/ directory should exist after o1 cut"
-assert held.out contains "PATH_OVEN" else "kiln-seat: anvil/ must be gone after o1 cut"
+let oven = run ["sh" "-c" "grep -q 'Oven — Where the Model Is Baked' foundations/20260826-024944_lantern-lattice-oven.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260826-024944_lantern-lattice-oven.md && echo OVEN_OK"]
+assert oven.ok else "oven-seat: Oven body scan failed"
+assert oven.out contains "OVEN_OK" else "oven-seat: Oven section missing"
+let lex = run ["sh" "-c" "grep -q 'Living name for the local forge' context/LEXICON.md && grep -q 'Retired living forge name' context/LEXICON.md && grep -q 'Oven was Anvil' context/LEXICON.md && echo LEX_OK"]
+assert lex.ok else "oven-seat: lexicon scan failed"
+assert lex.out contains "LEX_OK" else "oven-seat: Oven · Anvil rename-forward missing"
+let held = run ["sh" "-c" "test -d oven && test ! -d anvil && echo PATH_OVEN"]
+assert held.ok else "oven-seat: oven/ directory should exist after o1 cut"
+assert held.out contains "PATH_OVEN" else "oven-seat: anvil/ must be gone after o1 cut"
 
-say "GREEN: kiln-seat — Kiln living · Anvil fossils · lexicon · kiln/ path LIVE · Kiln Chapter o1"
+say "GREEN: oven-seat — Oven living · Anvil fossils · lexicon · oven/ path LIVE · Oven Chapter o1"

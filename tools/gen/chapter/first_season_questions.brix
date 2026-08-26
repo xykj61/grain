@@ -20,15 +20,15 @@ one_question_max_per_response 1
 q_00_id compass-return
 q_00_cluster compass
 q_00_prompt When direction frays, where do you already return — people, texts, places, or practices — before you decide the next step?
-q_00_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_00_inspired_by foundations/20260826-024943_follow-our-compass.md
 q_01_id compass-rose
 q_01_cluster compass
 q_01_prompt After reading the compass rose (foundations → grain → two rooms → active-designing → TASKS → ROADMAP), which step feels most natural to you, and which feels hardest?
-q_01_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_01_inspired_by foundations/20260826-024943_follow-our-compass.md
 q_02_id grain-fit
 q_02_cluster compass
 q_02_prompt Name one project you have known that *did not* cut with the grain — what felt forced?
-q_02_inspired_by foundations/20260702-184312_the-grain-and-the-crossing.md
+q_02_inspired_by foundations/20260826-024942_the-grain-and-the-crossing.md
 q_03_id two-rooms
 q_03_cluster compass
 q_03_prompt Do you prefer studying others' work first, or designing in your own names first — and why?
@@ -46,7 +46,7 @@ q_05_inspired_by foundations/the-regenerative-experiment-universal.md
 q_06_id goals-year
 q_06_cluster goals
 q_06_prompt In the next year, what is one concrete good you want Grain (or your fork of it) to help you ship or learn?
-q_06_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_06_inspired_by foundations/20260826-024943_follow-our-compass.md
 q_07_id goals-non-goal
 q_07_cluster goals
 q_07_prompt What is one tempting goal you choose *not* to chase this season — and what does that refusal protect?

@@ -22,11 +22,11 @@ Place the writing as a vision document (it carries its own `20260628.124512` sta
 
 | File | First line |
 |------|-----------|
-| `foundations/20260628-124512_anywhere-we-are-found.md` | `# Anywhere We Go, We're Found` |
+| `foundations/20260826-024940_anywhere-we-are-found.md` | `# Anywhere We Go, We're Found` |
 
 Then **propose** adding it to the "Vision documents" group in `foundations/README.md`, in the surrounding shape, bumping "Last updated" to `2026-06-28`:
 
-- `20260628-124512_anywhere-we-are-found.md` — the unifying vision above both tracks: a free open-source OS given away, open hardware, regenerative communities, a decentralized ledger with USDsui, and the creator tools and access passes that Linengrow carries forward.
+- `20260826-024940_anywhere-we-are-found.md` — the unifying vision above both tracks: a free open-source OS given away, open hardware, regenerative communities, a decentralized ledger with USDsui, and the creator tools and access passes that Linengrow carries forward.
 
 Show the diff, confirm, then commit:
 
@@ -71,7 +71,7 @@ Add the Privacy and Disclosure principle (transparent mechanism,
 private individual; private-by-default with zero-knowledge selective
 disclosure; opt-in encouraged by culture and economics, never coerced)
 and the creator's fable and tools surface, drawn from
-foundations/20260628-124512_anywhere-we-are-found.md.
+foundations/20260826-024940_anywhere-we-are-found.md.
 
 Written together by Kaeden and Reya 2.
 ```

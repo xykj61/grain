@@ -1,6 +1,6 @@
 # A Home in Plain Text
 
-> **Fossil `20260826.024941`** -- the living mutant is [`20260826-024941_a-home-in-plain-text.md`](20260826-024941_a-home-in-plain-text.md); this dated body stays whole.
+*Living mutant, re-seated `20260826.024941` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
 
 *The terminal as a calm, portable, lasting place to work.*
 

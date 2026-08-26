@@ -26,6 +26,9 @@
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`, Keaton's word): planning rings in fives over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375 rounds; *chapter* replaces the unit word *season*. Charter: the panchanga foundations essay; words in `context/LEXICON.md`.
+- **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; every Dexter source reborn in `dexter/` on the new model, elders standing until successors are GREEN. Door: `dexter/README.md`.
+- **STANDFAST -- the cubist sweep** (`20260826`): five rounds; the classical room reimagined through Kyri 6, Twilight. Door: `cubist-bhakti-astrology/README.md`.
+- **Linengrow Design Theme seated** (`20260826`): rounded shape law, tileable brushstroke, five rota encapsulations; gate %6. Silo: `active-designing/20260826-022443_the-linengrow-design-theme.md`.
 - **The WADE journey double-seated** (`20260826`): 5 quests, 25 orbits, 375 rounds -- tokens, Skate floor, skate-ww.com lane, Dimeroll entities, Surf Social SLC + close. Plan: `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`; DJINN's lead stays gate %6.
 - **Seated names (`20260816`):** **Scooter** = the CLI chat app (Talk reimplementation on Pond); **Dexter** = the terminal module (our Dill parallel, affirmed); **Lumen** = the inference vane (renames Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/date/20260816/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
 - **Seated breaches (checkpoint-first when executed):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
@@ -49,7 +52,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `aaaadef708` -- the bit chapter opened, the DJINN debride landed, thirteen silo pages filed.
+**Git nib:** `a89d0f0157` -- the chapter rewrite ashore; three rooms and six molts seated.
 
 **Now.** **A fold repoints documents and leaves guards standing.**
 `tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
@@ -169,19 +172,16 @@ inside the projector.
 
 | Door | Kind |
 |------|------|
-| **Next JARL step** -- **escape** (a child re-parenting, from the sponsor tilak) - shrink the shared surface to a membership commitment - or the scarcity design call | live |
+| **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |
 | **Three real MOX, one Constel** -- the rehearsal RUNS (`20260825`): in-process and three-process localhost pens both GREEN; the one ungated seam is a real address. Comlink-served gate and Vultr provisioning stay gates; design at `active-designing/20260825-133156` | booked, rehearsal `20260825` |
-| **Reprove only what moved** -- the **FAST/COLD ruling is GRANTED** (`20260825.181028`): a cold open may consult a digest-keyed verdict record once its two engineering gates land -- a measured hit rate and the lap-tail reorder -- with always-run rows still running and the MISS-side controls the door. [`design`](../active-designing/20260825-173153_reprove-only-what-moved.md) - [`read`](../external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md) | granted `20260825.181028` |
+| **Reprove only what moved** -- FAST/COLD ruling GRANTED (`20260825.181028`); the two engineering gates (hit rate, lap-tail reorder) are the door. Design: `active-designing/20260825-173153` | granted |
 | **Three corridor bundles placed, held at the gate** -- fiber (KC), headwaters (Gallatin), works (Brazos); Laps 6-9 await the word. Prompts: `expanding-prompts/20260825-1719{12,18,24}_*.md` | check-in `20260825.171907` |
 | **Kumara seed-key derivation** -- one high-entropy seed in Vault from which the Comlink X25519/Ed25519 and post-quantum SLH-DSA-SHAKE-256s keys derive by domain-separated SHAKE-256, the path carrying a scheme tag and a version. An agent writes and witnesses the derivation against test vectors and fake constel identities and stops there | booked - custody-gated |
 | **Keaton's own Kumara instance** -- generate from his real seed + keeper, by his hand alone | JARL - when ready |
-| **TAME core/shelf** -- lossless-compressed living law over a preserved shelf | proposed |
-| **Identity Remake / Kumara** -- the first identity template + Keaton's instance | JARL |
-| **Geode / Genode-on-NixOS** -- proven-seat parallel | GATED |
-| **Grainphone - Realidream - Pond seven - data-dignity - succession - Mand ring-3 - O3 gen-home** | awaiting Keaton |
+| **Held doors** -- TAME core/shelf - Identity Remake/Kumara - Geode - Grainphone - Realidream - Pond seven - data-dignity - succession - Mand ring-3 - O3 gen-home | awaiting Keaton |
 
 *Four resolved rows read whole on the shelf.*
 ---

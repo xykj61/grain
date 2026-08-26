@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the aether row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
-**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md) -- [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) -- [`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md)
+**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) -- [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) -- [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md)
 
 Aether is the Jupiter row, and its question is the first question: why does the work
 exist? The other four rows ask what the work touches, sees, tastes, and carries; this
@@ -51,7 +51,7 @@ tangent uses hush.
 
 ## Cardinal: Follow Our Compass
 
-`foundations/20260706-185112_follow-our-compass.md` (seated 20260706, reviewed and kept
+`foundations/20260826-024943_follow-our-compass.md` (seated 20260706, reviewed and kept
 20260710) is the return habit: when direction frays, walk the rose in order -- foundations,
 the grain index, the two rooms, the active-designing ladder, the now of TASKS, the order
 of the ROADMAP -- six stations, oldest conviction to newest lap. Its one law of precedence
@@ -84,7 +84,7 @@ asserted one fades into the silence the lap is trained to notice.
 
 ## Dual: The Grain and the Crossing
 
-`foundations/20260702-184312_the-grain-and-the-crossing.md` (canon since 20260702, last
+`foundations/20260826-024942_the-grain-and-the-crossing.md` (canon since 20260702, last
 updated 20260802) defines the grain -- ten named strands, from the five primitives and
 the TAME order through bounded everything, seam honesty, and sameness as compression --
 and the crossing: the two-room passage an outside idea makes from the named world of

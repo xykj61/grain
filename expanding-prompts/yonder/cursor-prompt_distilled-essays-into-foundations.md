@@ -23,7 +23,7 @@ Each essay is a dated artifact carrying its `20260628.133212` stamp; keep names 
 | File | First line |
 |------|-----------|
 | `foundations/20260628-133212_a-free-and-open-room.md` | `# A Free and Open Room` |
-| `foundations/20260628-133212_a-home-in-plain-text.md` | `# A Home in Plain Text` |
+| `foundations/20260826-024941_a-home-in-plain-text.md` | `# A Home in Plain Text` |
 | `foundations/20260628-133212_an-open-way-to-learn.md` | `# An Open Way to Learn` |
 | `foundations/20260628-133212_four-promises-a-tool-can-keep.md` | `# Four Promises a Tool Can Keep` |
 | `foundations/20260628-133212_the-device-that-forgets.md` | `# The Device That Forgets` |
@@ -52,7 +52,7 @@ Suggested text for the new section (adjust to match the README's surrounding sha
 **Distilled essays** — single-stranded meditations drawn from a year of notes, each self-contained and composable:
 
 - `20260628-133212_the-key-you-hold.md` — identity that grows from one root you keep yourself (the keypair primitive).
-- `20260628-133212_a-home-in-plain-text.md` — the terminal as a calm, portable, lasting place to work (Rishi, SLC-1).
+- `20260826-024941_a-home-in-plain-text.md` — the terminal as a calm, portable, lasting place to work (Rishi, SLC-1).
 - `20260628-133212_four-promises-a-tool-can-keep.md` — do no harm, tell the truth, hold lightly, be kind (the ethic of both tracks).
 - `20260628-133212_a-free-and-open-room.md` — the library as the oldest knowledge commons (the open core).
 - `20260628-133212_an-open-way-to-learn.md` — learning as a path you lay yourself, in the open (the learning record).

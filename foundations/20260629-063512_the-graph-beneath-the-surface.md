@@ -7,7 +7,7 @@
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision -- **far horizon** - **fossil** -- living path [`20260728-221253_the-graph-beneath-the-surface.md`](20260728-221253_the-graph-beneath-the-surface.md) - Surface p31 thin seat yes `20260728.221253`
+**Status:** Vision -- **far horizon** - **fossil** -- living path [`20260826-024939_the-graph-beneath-the-surface.md`](20260826-024939_the-graph-beneath-the-surface.md) - Surface p31 thin seat yes `20260728.221253`
 
 *Written together by Kaeden and Reya 2. Body held; living stack words live in the mutant.*
 Radiant pass `20260725.035453`
