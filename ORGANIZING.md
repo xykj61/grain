@@ -15,17 +15,17 @@
 
 This repository holds an operating system, a civic application built upon it, the research and design that feed both, and the disciplines that govern how we write code, prose, product, and public benefit. The tree is large on purpose. This guide names its shape so a person or an agent arriving fresh can orient in one calm read -- without memorizing countdown conventions, count-up exceptions, or season-specific snapshots that go stale the moment they are written.
 
-Read the sections below whenever you wonder where a new file belongs. When a season's placements settle, record them in `session-logs/`; this guide stays evergreen.
+Read the sections below whenever you wonder where a new file belongs. When a chapter's placements settle, record them in `session-logs/`; this guide stays evergreen.
 
 ---
 
 ## The Shape of the Tree
 
-**`context/`** -- memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`KYRI.md`, the standing writing voice, molted from Riyo `20260810`; `QUIN.md` for the fifth OS variant beside Reya - Riyo - Trey - Triz - Trya and the inference Q-vane; Reya 2, Rio 3, and the Riyo writing seasons rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
+**`context/`** -- memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`KYRI.md`, the standing writing voice, molted from Riyo `20260810`; `QUIN.md` for the fifth OS variant beside Reya - Riyo - Trey - Triz - Trya and the inference Q-vane; Reya 2, Rio 3, and the Riyo writing chapters rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
 **`foundations/`** -- the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
-**`saga/`** -- season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Chapter (`counsel/date/20260727/20260727-234617_the-tensegral-season.md`).
+**`saga/`** -- chapter close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a chapter names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living chapter: The Tensegral Chapter (`counsel/date/20260727/20260727-234617_the-tensegral-season.md`).
 
 **`classical-vedic-astrology/`** -- the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 
@@ -45,9 +45,9 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`docs/`** -- compression layer at the repo root (TigerBeetle `docs/` precedent). Living guides that compress many dated sources in `active-designing/`, counsel, and witnesses. Pages compress the record; they never replace it. Pin-strings point at witnesses -- docs carry no load-bearing pins. Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
 
-**`external-research/`** -- study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding -- advice stays elsewhere:** surveys and memos here frame understanding only -- they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own season. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
+**`external-research/`** -- study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding -- advice stays elsewhere:** surveys and memos here frame understanding only -- they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own chapter. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
 
-**`counsel/`** -- the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked -- propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md). **`counsel/replies/`** holds dated bench replies (What landed - What resisted - What the bench asks) so future counsel reads a short measured note rather than a season of logs.
+**`counsel/`** -- the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked -- propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md). **`counsel/replies/`** holds dated bench replies (What landed - What resisted - What the bench asks) so future counsel reads a short measured note rather than a chapter of logs.
 
 **`expanding-prompts/`** -- intent expanded into runnable plans. Counts upward from `10000`; each prompt is a dated artifact that agents can execute.
 
@@ -106,7 +106,7 @@ If two folders seem right, choose the one whose README you would update first. I
 
 ## Chapter placements and the log
 
-The placements for any given season are recorded in `session-logs/` -- what moved, what stayed, what was confirmed without churn. The durable test above outlives any snapshot list. When this season placed the seven distilled essays, the weave, the foundation briefs, and the civic visions in `foundations/`, and the Linengrow pieces in `linengrow/`, that record lives in the logs, not here, so this guide does not pretend to be a catalog that expires.
+The placements for any given chapter are recorded in `session-logs/` -- what moved, what stayed, what was confirmed without churn. The durable test above outlives any snapshot list. When this chapter placed the seven distilled essays, the weave, the foundation briefs, and the civic visions in `foundations/`, and the Linengrow pieces in `linengrow/`, that record lives in the logs, not here, so this guide does not pretend to be a catalog that expires.
 
 ---
 

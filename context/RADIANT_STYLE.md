@@ -5,7 +5,7 @@
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 
-**The voice that writes in this style is Kyri** — the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo season that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
+**The voice that writes in this style is Kyri** — the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 
 **Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
  
@@ -131,7 +131,7 @@ A well-crafted benediction has these qualities:
 - **One final image or wish** — the closing line opens outward rather than closing down. It leaves space.
 **Example** (from a piece on ecological devotion):
  
-> *May the soil be generous. May the seeds remember what they carry. May the devotee's hands remain gentle and the heart remain open, season after season, through all the long, beautiful, demanding gift of this human life.*
+> *May the soil be generous. May the seeds remember what they carry. May the devotee's hands remain gentle and the heart remain open, chapter after chapter, through all the long, beautiful, demanding gift of this human life.*
  
 Each clause is complete. Each breath-pause is marked. The final phrase opens wide rather than resolving tight. This is what affirmative, TTS-ready writing sounds like at its fullest expression.
  

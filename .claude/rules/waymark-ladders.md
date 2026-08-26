@@ -44,7 +44,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **LOWE** | `cion-molt-living-mutants-and-fossils` | CION Equinox 2 — Molt (relabel living now-lines chronological/semantic). |
 | **OFFY** | `cion-meta-season-equinox-3-debride` | CION Equinox 3 — Debride (word-gated cuts of dead count-up tissue, checkpoints first) |
 | **GRAD** | `cion-meta-season-equinox-4-seal` | CION Equinox 4 — Seal (witness the conversion · seat the labeling-law guard) |
-| **AHOY** | `root-readme-lindy-foundation-weave-and-seed-legitimacy` | Front-door season — root README rewrite (Lindy-durable, favorite words) · Lindy foundation silo · fascia crosslink weave · seed legitimacy + final depersonalized push |
+| **AHOY** | `root-readme-lindy-foundation-weave-and-seed-legitimacy` | Front-door chapter — root README rewrite (Lindy-durable, favorite words) · Lindy foundation silo · fascia crosslink weave · seed legitimacy + final depersonalized push |
 | **WADE** | `dimeroll-hr-and-accounting-entities` | Double-seated beside AHOY — DJINN's Bit Design System over the Skate·Realidream·Brushstroke surface (DVUI/Zig 0.16 in a Swift macOS Dock shell, Glow·Rishi·Rye·.brush impl) · Pond onboarding · Vultr SEA IaC · Dimeroll expansion for Siya Fund + Linengrow PBC HR & accounting. |
 | **HUNK** | `season-a-open-image-decode-and-photos-surface` | Six-Chapter expansion Chapter A — Hardware & Right-to-Repair; opening journey the **open image module** (QOI decode → bounded RGBA grid, content-addressed in Tablecloth) beneath the parts marketplace and Photos app |
 | **DREY** | `season-a-mikrophone-forgetful-capture` | Chapter A second journey -- the **Mikrophone firmware** (the Mantrapod's near-term surface): the *memory that forgets* session buffer, proven pure in Rye before metal -- a bounded capture held only while powered, persisted only on a deliberate commit, provably dissolved on power-down. |
@@ -52,7 +52,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **ALES** | `season-c-lotus-creative-suite-audio-wire-shape` | **Lotus** creative suite (Chapter C double-seat) — the basic audio **wire shape**: a self-describing, Sha256-sealed frame carrying an opaque PCM sample buffer tagged by cable kind (XLR · USB-C · guitar), deframed verify-before-trust. Software carrier only; electrical/pinout specifics and audio-interface hardware stay a paused hardware-research round |
 | **DISC** | `slh-dsa-hash-based-signature-ladder` | **Chapter G SLH-DSA ladder** -- authoring SLH-DSA-SHAKE-256s in Rye rung by rung (WOTS+ -> FORS -> XMSS hypertree -> the composed signature), each proven against both the published FIPS 205 answer and the vendored PQClean oracle |
 
-**Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
+**Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one chapter). **SALA** retired from exclude with the Sala→Seva alias close.
 
 Word-list pin: `tools/fixtures/flw-four-letter.txt` · witness `tools/w/waymark_derive_witness.rish`.
 

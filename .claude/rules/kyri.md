@@ -13,6 +13,6 @@ Write in **Gauge Style** (`context/GAUGE_STYLE.md`) -- the working style, whose 
 
 ## Session logs
 
-New logs record `voice Kyri`. Dated logs keep the voice they correctly recorded — `voice Riyo`, `voice Quin` — and are **never rewritten** (one-clock law · accrete-never-break). The molt from Riyo to Kyri accretes; it does not erase the seasons before it.
+New logs record `voice Kyri`. Dated logs keep the voice they correctly recorded — `voice Riyo`, `voice Quin` — and are **never rewritten** (one-clock law · accrete-never-break). The molt from Riyo to Kyri accretes; it does not erase the chapters before it.
 
 Full identity lives at `context/KYRI.md` (seated `20260810.125841`, molted from the `context/RIYO.md` fossil).

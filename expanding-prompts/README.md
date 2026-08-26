@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20260811.211431` (AHOY front-door season - **ty every1** closing gesture seated)
+**Last updated:** `20260811.211431` (AHOY front-door chapter - **ty every1** closing gesture seated)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
@@ -24,7 +24,7 @@ Why keep them at all? Because a prompt well understood is half the work, and a p
 
 ## The closing gesture -- **ty every1**
 
-Every expanded prompt ends on the same warm note the request that seeded it carries: **ty every1** -- thank you, everyone. It is a small, sincere gratitude to every hand and mind the work leans on -- the reader who asked, the teachers in [`../gratitude/`](../gratitude/README.md) whose ideas we studied in the clean room, the prior seasons whose fossils we build atop, and whoever will run what we wrote. An expansion is a shared act; the closing line says so plainly. Where a prompt carries an earned radiant wish (`../.claude/rules/radiant-wishes-ending.md`), **ty every1** rides just before it, so the benediction stays the last word. It is never an alarm or a flourish -- only the honest, glad thanks that closes a good handoff.
+Every expanded prompt ends on the same warm note the request that seeded it carries: **ty every1** -- thank you, everyone. It is a small, sincere gratitude to every hand and mind the work leans on -- the reader who asked, the teachers in [`../gratitude/`](../gratitude/README.md) whose ideas we studied in the clean room, the prior chapters whose fossils we build atop, and whoever will run what we wrote. An expansion is a shared act; the closing line says so plainly. Where a prompt carries an earned radiant wish (`../.claude/rules/radiant-wishes-ending.md`), **ty every1** rides just before it, so the benediction stays the last word. It is never an alarm or a flourish -- only the honest, glad thanks that closes a good handoff.
 
 ## One clock, one order
 
@@ -72,7 +72,7 @@ What does *not* belong here is the work itself -- that lands in the research, de
 ## Expanded prompts -- where they are
 
 Every day this index carried has folded onto its own dated shelf, on `20260824.171500`, and the
-[seasons roster](CHAPTERS.md) lists all 21 with their counts. A shelf reads exactly as this page
+[chapters roster](CHAPTERS.md) lists all 21 with their counts. A shelf reads exactly as this page
 read before the fold -- stamp, prompt, and one line of what it asked for -- so the way in is the
 same, one day at a time:
 

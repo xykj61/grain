@@ -26,7 +26,7 @@ It lets ideas stand on their merit. Stripped of the authority of a famous name, 
 
 It keeps the work portable and clean. An idea re-expressed in your own words travels into any context without dragging its origin's baggage, and it carries no copied text with it. When the source is a recording or a transcript, this matters doubly: siloing produces your own expression of what was said, rather than a reproduction of the saying -- so the work stays both genuinely yours and clean of anyone else's words.
 
-And for tender or sacred material, siloing becomes a form of devotion. To take a teaching and hold it in your own heart's vocabulary, rather than only repeating its received phrases, is to digest it -- to let it become part of how you actually see, season after season. The understanding deepens precisely because you had to make it your own.
+And for tender or sacred material, siloing becomes a form of devotion. To take a teaching and hold it in your own heart's vocabulary, rather than only repeating its received phrases, is to digest it -- to let it become part of how you actually see, chapter after chapter. The understanding deepens precisely because you had to make it your own.
 
 ## How To Silo
 
@@ -60,4 +60,4 @@ The technique fits wherever ideas come in from outside. A recorded talk or a tra
 
 ---
 
-*May every idea we welcome become truly our own through understanding. May our work speak in one clear voice, owing nothing it has not digested and hiding nothing it owes. And may the teachers who lit the way be named with warmth in the place we keep for thanks, season after season, through all the long and grateful work of learning.*
+*May every idea we welcome become truly our own through understanding. May our work speak in one clear voice, owing nothing it has not digested and hiding nothing it owes. And may the teachers who lit the way be named with warmth in the place we keep for thanks, chapter after chapter, through all the long and grateful work of learning.*

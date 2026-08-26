@@ -24,9 +24,9 @@
 
 **Workshop, daily.** Small curated contexts — the pin, the bench card, the lane — budget named before the lap.
 
-**Warehouse, on schedule.** Wide-window audit at season close or monthly — instrument, not daily driver.
+**Warehouse, on schedule.** Wide-window audit at chapter close or monthly — instrument, not daily driver.
 
-**Pin and ledger.** A living document keeps the current season only; closed seasons roll to dated `archive/` shelves. Bound: `living_pin_max_bytes = 24576` ([spec](specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)).
+**Pin and ledger.** A living document keeps the current chapter only; closed chapters roll to dated `archive/` shelves. Bound: `living_pin_max_bytes = 24576` ([spec](specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md)).
 
 **Rules routing.** Small always-on core; the rest attaches by glob or description.
 

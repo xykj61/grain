@@ -3,11 +3,11 @@
 **Language:** EN
 **Last refreshed:** `20260809.024320` · voice Riyo · **The Compass Chapter OPEN** · pier `~/grain` · guides 0–2 CLOSED · agent-jail GREEN
 **Companion (orient pin):** [`ITINERARY.md`](ITINERARY.md) · [`../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md)
-**Law:** closes are append-only — living *Now* lines sweep, dated counsel and session logs never do · one named rung per fuse · name/keys/history seasons are word-only · RESTED reopens by fresh charter only. Debrided to the Compass Chapter `20260809.024320` — the twelve old nested seasons' e-number ledger is gone from this living card; every green it tracked lives on in the code and in the dated counsel.
+**Law:** closes are append-only — living *Now* lines sweep, dated counsel and session logs never do · one named rung per fuse · name/keys/history chapters are word-only · RESTED reopens by fresh charter only. Debrided to the Compass Chapter `20260809.024320` — the twelve old nested chapters' e-number ledger is gone from this living card; every green it tracked lives on in the code and in the dated counsel.
 
 ---
 
-## How the season nests
+## How the chapter nests
 
 **The Compass Chapter** is open on Keaton's word (`20260809.021829`). Coords **Compass Chapter · SOON · j1 · q1 · r1**. 256 rounds; four equinoxes = four compass directions; nesting **Round · Quest 4 · Journey 16 · Equinox 64 · Chapter 256**. Finishing edge: **SOON q1** — the language, where Rishi's `^-` cast rune already landed GREEN.
 
@@ -28,8 +28,8 @@
 
 ## Closed and safe
 
-The elder nested seasons — Equinox · Fascia · Voice · Nona · Kiln (now Ember) · Surface · Generator · MUR · Inner Scope · Constellation · Keeh — all **RESTED**, their greens standing in the code and their record in the dated counsel and session logs. Guides 0–2 walked · steward `keeper` · root SSH refused · `gh` as `xykj61` · Claude on pier · agent-jail GREEN. The Haunted Mound tribute is **debrided** from history (deep, on Keaton's word). Geode prep untouched · word-gated doors wait for Keaton.
+The elder nested chapters — Equinox · Fascia · Voice · Nona · Oven (now Ember) · Surface · Generator · MUR · Inner Scope · Constellation · Keeh — all **RESTED**, their greens standing in the code and their record in the dated counsel and session logs. Guides 0–2 walked · steward `keeper` · root SSH refused · `gh` as `xykj61` · Claude on pier · agent-jail GREEN. The Haunted Mound tribute is **debrided** from history (deep, on Keaton's word). Geode prep untouched · word-gated doors wait for Keaton.
 
 ---
 
-*May home hold every bookmark. May the season stay clean, and the fascia hold.*
+*May home hold every bookmark. May the chapter stay clean, and the fascia hold.*

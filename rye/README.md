@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260620.033912` (Rye chronological stamp)
-**Last updated:** 2026-07-10 (Radiant Style pass round 2)
+**Last updated:** 2026-08-26 (Gauge pass -- register and reach; every command, path, and claim held exactly)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- living language module
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rye in your hands is
@@ -14,7 +14,7 @@ this language builds is [`../rishi/README.md`](../rishi/README.md)
 
 ## What Rye Is
 
-Rye is the systems language we are growing from Zig 0.16.0. This first version is honest about what it is: a careful front-end that runs `.rye` source through the Zig 0.16.0 toolchain, on a standard library that is now Rye's own. A `.rye` file is Zig source at heart for now, so every capability the toolchain offers -- including SHA3-512 in the standard crypto library -- is Rye's too, by construction. Yet Rye has begun to diverge: it carries its own copy of the standard library, and it counts its versions in its own way. Over time, it grows further into its own shape.
+Rye is the systems language we are growing from Zig 0.16.0. This first version is honest about what it is: a careful front-end that runs `.rye` source through the Zig 0.16.0 toolchain, on a standard library that is now Rye's own. A `.rye` file is Zig source at heart for now. Every capability the toolchain offers -- SHA3-512 in the standard crypto library included -- is therefore Rye's too, by construction. And Rye has begun to diverge: it carries its own copy of the standard library, and it counts its versions in its own way. Over time, it grows further into its own shape.
 
 The `rye` command speaks four verbs:
 
@@ -55,11 +55,11 @@ Sibling modules built with `rye build` include **Rishi** (`../rishi/`), **Carava
 
 ## Owning the Standard Library
 
-A language is not wholly its own until it owns its standard library. Rye does. The folder `lib/` is Rye's library directory: its `std/` began as a **bit-for-bit copy of Zig 0.16.0's** standard library, now under our care to tend and grow; the rest of the directory links back to the pinned toolchain, unchanged. The `rye` command points the compiler at this library with `--zig-lib-dir`, so `@import("std")` in a `.rye` program means *Rye's* std.
+A language becomes wholly its own when it owns its standard library. Rye does. The folder `lib/` is Rye's library directory. Its `std/` began as a **bit-for-bit copy of Zig 0.16.0's** standard library, now under our care to tend and grow. The rest of the directory links back to the pinned toolchain, unchanged. The `rye` command points the compiler at this library with `--zig-lib-dir`, so `@import("std")` in a `.rye` program means *Rye's* std.
 
-The command **insists** on it. Before compiling, it confirms our library sits at the expected path and refuses to run against anything else, so a successful `rye run` is, by construction, a run against Rye's own standard library. The assurance lives in the path, not in any marker written into the code -- which lets `std` stay a faithful copy that we diverge from deliberately, a clean diff at a time.
+The command **insists** on it. Before compiling, it confirms our library sits at the expected path and refuses to run against anything else. A successful `rye run` is therefore, by construction, a run against Rye's own standard library. The assurance lives in the path rather than in any marker written into the code. That choice lets `std` stay a faithful copy we diverge from deliberately, a clean diff at a time.
 
-A note on names, while we are here. The programs we author carry the `.rye` extension -- `src/main.rye`, the tests, Aurora's seed. The standard library under `lib/std` keeps the `.zig` extension, because that is the name the compiler looks for when we point it at the library; it is the toolchain's layout, not our prose. So the line stays clean: `.rye` is what we write, `.zig` is the library the toolchain reads.
+A note on names, while we are here. The programs we author carry the `.rye` extension -- `src/main.rye`, the tests, Aurora's seed. The standard library under `lib/std` keeps the `.zig` extension, because that is the name the compiler looks for when we point it at the library. The layout there belongs to the toolchain. So the line stays clean: `.rye` is what we write, and `.zig` is the library the toolchain reads.
 
 ---
 
@@ -73,13 +73,13 @@ Rye carries this all the way down. The backend keeps its own honest semantic ver
 
 ## Building and Running
 
-Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it. That fetch is one command now, and it runs before anything in this tree is built -- plain `sh`, since Rishi is itself a Rye program and cannot exist yet:
+Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it. That fetch is one command now, and it runs before anything in this tree is built -- plain `sh`, since Rishi is itself a Rye program and arrives only after this step:
 
 ```sh
 sh tools/f/fetch-toolchain.sh
 ```
 
-Nothing is extracted unless the download matches a checksum pinned in this repository rather than fetched beside the file. Four platforms are pinned; the refusal is proven on metal by `tools/f/fetch_toolchain_witness.rish`.
+The archive extracts only when the download matches a checksum pinned in this repository rather than fetched beside the file. Four platforms are pinned; the refusal is proven on metal by `tools/f/fetch_toolchain_witness.rish`.
 
 Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds itself. The first build is the cold start, before any `rye` binary exists -- `bootstrap.sh` bridges the source the way `rye build` does and hands it to the toolchain, pointed at Rye's own `std`:
 
@@ -87,7 +87,7 @@ Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds i
 ./bootstrap.sh
 ```
 
-From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and dogfooding the `std` it ships. We write the new binary beside the old one and move it into place -- a running program keeps its open file, so the move swaps the directory entry while the process finishes on the prior copy:
+From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and dogfooding the `std` it ships. We write the new binary beside the old one and move it into place. A running program keeps its open file, so the move swaps the directory entry while the process finishes on the prior copy:
 
 ```sh
 export RYE_ZIG="$PWD/../vendor/zig-toolchain/zig"
@@ -114,7 +114,7 @@ rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c 
 
 ## Strengthening and the Gate Trio
 
-Rye's `std` grows by **strengthening** -- assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../external-research/yonder/strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
+Rye's `std` grows by **strengthening** -- assertions and `maybe` markers that state what the code already does, while behavior stays exactly as it was. Each pass is recorded in `../external-research/yonder/strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
 
 ```sh
 rishi/bin/rishi run tools/p/parity.rish          # witness regression suite (116 programs)
@@ -122,13 +122,13 @@ rishi/bin/rishi run tools/p/parity-selftest.rish # std must stay symlinked; tamp
 rishi/bin/rishi run tools/ad/additive-gate.rish   # shape of std changes only (if any local patches)
 ```
 
-`rye/lib/std` is a **symlink** to the pinned toolchain -- pristine overlay, not a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/archive/ALMANAC.md` under *The Gate Trio in Rishi*.
+`rye/lib/std` is a **symlink** to the pinned toolchain -- a pristine overlay rather than a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/archive/ALMANAC.md` under *The Gate Trio in Rishi*.
 
 ---
 
 ## A Note on Memory
 
-The `rye` command allocates from `init.garden` -- the process season allocator the runtime clears whole on exit -- so a short-lived command needs no finer bookkeeping and leaves nothing behind. This is the region model our designs name Tally, lived in the smallest place.
+The `rye` command allocates from `init.garden` -- the process season allocator the runtime clears whole on exit -- so a short-lived command skips finer bookkeeping and leaves the tree clean. This is the region model our designs name Tally, lived in the smallest place.
 
 ---
 

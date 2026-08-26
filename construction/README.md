@@ -61,7 +61,7 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 | `20260711.010030` | [Steward composition glass hammock](../active-designing/date/20260711/20260711-010030_steward-composition-glass-hammock.md) | Tip **422** -- livelihood loop on one Skate frame |
 | `20260711.005028` | [RW-5 mirrored pair contract](archive/20260711-005028_rw5-mirrored-pair-contract.md) | Tips **420**/**421** + assist integration **428** -- Drawn Terminal <-> Lantern |
 | `20260711.004652` | [Commerce citizen steward demo hammock](../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md) | Tip **419** -- list -> settle -> Dimeroll; live TB held |
-| `20260711.001225` | [Testing audit -- second pass (Inference)](yonder/20260711-001225_testing-audit-second-pass-inference.md) | Happy-zone census tip **418**; RW-5 next season |
+| `20260711.001225` | [Testing audit -- second pass (Inference)](yonder/20260711-001225_testing-audit-second-pass-inference.md) | Happy-zone census tip **418**; RW-5 next chapter |
 | `20260710.220706` | [SLC and inference progress](archive/20260710-220706_slc-and-inference-progress.md) | How tip **354** serves the SLCs; track snapshot; Rest-until / horizon |
 | `20260702.200109` | [RW-1 mirrored-pair contract](archive/20260702-200109_rw1-mirrored-pair-contract.md) | Happy-zone prep -- shell<->Mantra seam; build after SLC-2b |
 | `20260702.195426` | [SLC-L1 scope note](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md) | Linengrow hammock -- verifiable receipt; Open Asks gated |

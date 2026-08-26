@@ -16,7 +16,7 @@ Uniform length is **not** a test. The four-letter-vane scheme — borrowed from 
 
 ## Boundaries — what this does not touch
 
-- **Waymark ladders keep their own law.** `waymark-ladders.md` still governs **ladder rung names** (a season or initiative's `X0`/`X1` rungs), drawn four-letter by SHA3. The Comlink tendency governs **module / aspect / concept names**, not ladder rungs. Two domains, two disciplines.
+- **Waymark ladders keep their own law.** `waymark-ladders.md` still governs **ladder rung names** (a chapter or initiative's `X0`/`X1` rungs), drawn four-letter by SHA3. The Comlink tendency governs **module / aspect / concept names**, not ladder rungs. Two domains, two disciplines.
 - **Nib and the seated vocabulary stand.** `vocabulary-nib.md`, `vocabulary-survey.md`, and every seated term keep their words; this rule names how the *next* thing is named.
 - **Reviving still replaces renaming.** A module earns a new name by being re-grown beside its elder, born-named (`active-reviving/`), not by a mass rename. The Comlink tendency chooses *what* the born name is; it does not license churn.
 

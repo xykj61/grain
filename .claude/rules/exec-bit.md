@@ -26,7 +26,7 @@ clean repoint. Every standing guard stayed green, because every standing guard r
 
 One of the thirty-nine was `tools/ag/agent-jail.sh`, which the unattended loop invokes as
 `./tools/ag/agent-jail.sh`. The loop answered `Permission denied` once every twenty seconds through
-the night, and the season it was running stopped there until a hand ran `chmod +x`.
+the night, and the chapter it was running stopped there until a hand ran `chmod +x`.
 
 ## What stands, and how it is measured
 

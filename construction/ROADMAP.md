@@ -8,7 +8,7 @@
 
 ---
 
-The season and equinox order lives in **[`ITINERARY.md`](ITINERARY.md)**, under *The order*, where
+The chapter and equinox order lives in **[`ITINERARY.md`](ITINERARY.md)**, under *The order*, where
 it sits beside the live work-front it serves. Reading the plan and reading what is happening now
 wanted one card rather than two.
 

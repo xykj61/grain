@@ -22,6 +22,13 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## 20260826.021017 -- walk-back `0118579172` -- GAUGE_STYLE re-voiced in the terra palette
+
+Keaton's word: the style guide molts in place into the light register of Kyri 6 -- the terra
+palette woven through its imagery -- with every ceiling, table, number, and rule held exactly.
+What waits at the walk-back: the prior phrasing of a guide whose rules do not move.
+
+
 ## 20260825.234631 -- walk-back `0a1d3e51ef` -- the DJINN deep debride
 
 Keaton's word: the collaborator's name leaves the tree, the session logs, two filenames, and the
@@ -34,16 +41,16 @@ this debride removes, and after the force-push the nib survives only as this row
 the line was drawn.
 
 
-## `20260825.233029` -- the Bit Design System season opens (walk-back `0a1d3e51ef`)
+## `20260825.233029` -- the Bit Design System chapter opens (walk-back `0a1d3e51ef`)
 
 **Swept:** the standing pause -- "Brushstroke development is paused pending DJINN's Bit Design System" -- lifted from both heredoc prompts in `tools/l/launch-claude-chapter.rish` on Keaton's word (DJINN ready, Linengrow the starting inspiration). Custody gate %6 (DJINN's design lead) stands unchanged.
 
-**What waits there, worth recalling:** the exact pause wording, and the season's held posture, both whole at the walk-back nib.
+**What waits there, worth recalling:** the exact pause wording, and the chapter's held posture, both whole at the walk-back nib.
 
 ## `20260825.213128` -- the season-room stopwatch condense (walk-back `c1b2f33422`)
 
 **Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the two-pier row-number
-collision to the season room measured, and the *Prior laps* table refreshed. The card arrived from
+collision to the chapter room measured, and the *Prior laps* table refreshed. The card arrived from
 `xykj61` at **25,554 bytes** against the **24,576** it declares (REDS %232), so the condense is a
 repair as well as a refill.
 
@@ -315,7 +322,7 @@ argument is carried whole into the fusion; what is left behind is only its separ
 **Walk-back nib:** `300d7f5b22` -- pier and both remotes. A **breach**, so nothing is rewritten and
 `git show 300d7f5b22:construction/ITINERARY.md` reads the departing card whole.
 
-**Swept:** `construction/ITINERARY.md` becomes `construction/ITINERARY.md`. The season order from
+**Swept:** `construction/ITINERARY.md` becomes `construction/ITINERARY.md`. The chapter order from
 `ROADMAP.md` and the live lap edge from `TASKS.md` fuse into it, and both elder cards stay as
 **pointer stubs** rather than being removed.
 
@@ -528,7 +535,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `2e4fe784eb` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the ten-fold arc stands whole at this nib: the per-fold live-edge rows for `press_path`, `bearing_published`, `appraisal_published`, `recant_published`, the roster round, and the laps between them, each in the words its own round wrote.
 
-**Swept:** six live-edge rows fold into one. The INNER LOOP directives, the guard roster, every seated law, and the season table stay untouched.
+**Swept:** six live-edge rows fold into one. The INNER LOOP directives, the guard roster, every seated law, and the chapter table stay untouched.
 
 **What waits there, worth recalling:** the arithmetic each fold published as it landed -- the predicted fall, the realized fall, the delegate count, and the widening cost it believed it was paying. That last number is the one worth walking back for, because this lap proved it was measured against the wrong thing for four laps running (REDS %130), and the departing rows are the record of exactly what was believed and when.
 
@@ -975,7 +982,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `44aa8418cd` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
 **Swept:** the three accreted run-on lines that had survived every prior condense -- the current **Live edge** chronicle (line 16, ~64 KB: every scene-read module named inline with its stamp and GREEN status, a second copy of the log index), the stale **Latest lap `20260813`** Chapter-A/HUNK snapshot (line 38, ~56 KB), and the **BUHR OPENED `20260812`** exploration bullet that had drifted *into* the custody-gates numbered list (line 99, ~47 KB). Folded to short pointers naming only the live edge and the next crux, directing to `session-logs/` and `image/README.md` for per-rung detail. The card fell from ~197 KB to under its advisory bound.
-**What waits there, worth recalling:** at nib `44aa8418cd` the departing card holds the complete inline prose for the whole Chapter G scene-read line and cluster family (line_distance through line_corridor_summary, the selection ladder, object_relation, scene_graph), the full HUNK Chapter-A opening account, and the whole BUHR intelligence-equinox exploration -- `git show 44aa8418cd:construction/ITINERARY.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account lives verbatim in its dated `.kyri` session log, `image/README.md` carries the durable per-module entries, and the season table plus the double-seat itineraries hold the arc-level record. The condense keeps the operator card the live card of what is next, never a second copy of the log index.
+**What waits there, worth recalling:** at nib `44aa8418cd` the departing card holds the complete inline prose for the whole Chapter G scene-read line and cluster family (line_distance through line_corridor_summary, the selection ladder, object_relation, scene_graph), the full HUNK Chapter-A opening account, and the whole BUHR intelligence-equinox exploration -- `git show 44aa8418cd:construction/ITINERARY.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account lives verbatim in its dated `.kyri` session log, `image/README.md` carries the durable per-module entries, and the chapter table plus the double-seat itineraries hold the arc-level record. The condense keeps the operator card the live card of what is next, never a second copy of the log index.
 
 ### `20260818.225452` -- ITINERARY prior-nib comment wall folded to a pointer; Now reaimed at the roundness + Chapter G completion boundary
 
@@ -1030,7 +1037,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `221ebba12a`
 **Swept:** the `## Today 20260811 -- a full arc` section of `construction/ITINERARY.md` (lines 228-306), a wall of ~160 dated done-work bullets -- 116 `LANDED`, 24 `OPENED`, 17 `COMPLETE`, 7 `CLOSED`, 5 `SEATED` -- condensed to a single lean pointer that names the big landed arcs and defers every detail to the session logs and git history. Done on Keaton's word so the operator card stays single-stranded: the live work-front, never a second copy of the log index. No other section touched; the INNER LOOP directives, the Compass Chapter table, Waymarks, gates, and open doors all stand.
-**What waits there, worth recalling:** at nib `221ebba12a` and every commit before it, the full arc reads whole -- `git show 221ebba12a:construction/ITINERARY.md`. Every bullet it held (Mandate, the Acme DX season, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Chapter A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
+**What waits there, worth recalling:** at nib `221ebba12a` and every commit before it, the full arc reads whole -- `git show 221ebba12a:construction/ITINERARY.md`. Every bullet it held (Mandate, the Acme DX chapter, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Chapter A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
 
 ### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 checkpoint pre-planted)
 
@@ -1060,11 +1067,11 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `bc90f7fdb0`
 **Swept:** `construction/ITINERARY.md` (471 -> ~75 lines), `THREADS.md`, `TASKS.md`, `ROADMAP.md` -- all rewritten from the elder Equinox-season e-number ladder to the four-equinox Compass Chapter.
-**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested seasons with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this checkpoint is the fast path to the *shape* of the old cards.
+**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested chapters with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this checkpoint is the fast path to the *shape* of the old cards.
 
 ### The Haunted Mound deep debride (recorded after the fact)
 
-**Walk-back nib:** *not preserved on the branch* -- this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the checkpoint pattern:** a deep debride that rewrites history must drop a checkpoint *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future checkpoint would have preserved is the surrounding season's card state, now readable only from local reflog if it survived (`git reflog` - dangling commits), not from the shared remotes.
+**Walk-back nib:** *not preserved on the branch* -- this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the checkpoint pattern:** a deep debride that rewrites history must drop a checkpoint *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future checkpoint would have preserved is the surrounding chapter's card state, now readable only from local reflog if it survived (`git reflog` - dangling commits), not from the shared remotes.
 
 ---
 
