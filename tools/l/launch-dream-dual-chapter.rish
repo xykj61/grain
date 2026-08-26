@@ -1,0 +1,31 @@
+# launch-dream-dual-chapter.rish -- print the loop for DREAM, the dual star of the aether row.
+#
+# Dream (night twin Hush) is the Vultr SEA pier in ai-jail -- aether at the dual seat, the word
+# that dissolves: the star that carries the highest language down into the language that runs.
+# Its lane: the higher Glow rune ports, written high and lowered to our best Rye on green
+# witnesses. The seed cadence rides here, one hand for the fifth-round projection. Charter:
+# active-designing/20260826-151528_the-three-stars-of-the-aether-row.md. Jail mechanics (bypass
+# setup, smoke test, streaming, jq) live with the elder, tools/l/launch-claude-chapter.rish;
+# this mutant prints only this star's own loop. Siblings:
+# launch-mind-cardinal-chapter.rish (Arbor, macOS) - launch-sound-fixed-chapter.rish (Claude Desktop).
+#
+#   rishi/bin/rishi run tools/l/launch-dream-dual-chapter.rish
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the standing entry the recipe wraps must exist.
+let elder = run ["test" "-f" "tools/ag/agent-jail.sh"]
+assert elder.ok else "tools/ag/agent-jail.sh (the jail elder) is missing"
+
+say "DREAM -- the dual star of the aether row (night twin Hush)"
+say "=========================================================="
+say ""
+say "Host: the Vultr SEA pier, inside ai-jail, launched from the outer terminal."
+say "The shared discipline lives on the living card, so the prompt stays thin and"
+say "the card stays the one source. Outer loop, one line, copy whole:"
+say ""
+say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; git pull --rebase xy main || git rebase --abort; ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p 'First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (roster cold then hot, reds first as standfast, QA on touch, the council rota row N mod 5, prose witnesses on prose sends, stamp-and-name, ASCII-first); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are DREAM, the dual star of the aether row, night twin Hush, on the pier: your lane is the higher Glow rune ports, written high and lowered to our best Rye on green witnesses -- Rye is the prioritized language and Glow is implemented on green-witnessed Rye; take the next agent-doable lap there Lindy-first crux-first. Brushstroke and Surf belong to Mind (cardinal, Arbor macOS) and the Caravan-Tally-Scribe seams to Sound (fixed, Claude Desktop); a find in a sibling lane becomes a line in ITINERARY rather than your lap, and everything in the DJINN design lead stays custody gate %6. Send the twice-pulled way with the remote named xy on this pier -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force; on the third fast-forward refusal park the package on refs/heads/pier/dream. Every fifth round, the lap the rota closes its cycle, also project and force-push the public seed with  bash ~/grain/publish-seed.sh  -- its four gates hold, reds still come first, and this cadence rides with Dream alone. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur' | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo loop ended at $(TZ=America/New_York date)"
+say ""
+say "GREEN: Dream recipe printed -- the dual star lowers the high word into the running one."

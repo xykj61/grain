@@ -12,7 +12,7 @@
 #      ahead of the live host clock (duty 3 checks the host; duty 4 checks the stamp)
 #   5. head -- the newest LIVING stamp is at or behind the live clock, within
 #      ONE_CLOCK_HEAD_TOLERANCE_SECONDS. Duty 4 weighs only artifacts new
-#      against origin/main, so a lap that merges is never weighed again; duty 5
+#      against debrided/main, so a lap that merges is never weighed again; duty 5
 #      weighs the head itself, every run, forever (REDS %96)
 #
 # Mode: tools/fixtures/one_clock_mode.txt -- blocking (seated 20260724.204741).
@@ -63,14 +63,14 @@ let fail_prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_STAMPS='${ahead_dot}' sh to
 assert fail_prov.ok == false else "provenance FAIL fixture passed — four-hours-ahead stamp must fail"
 assert fail_prov.out contains "PROV_BAD" else "provenance FAIL fixture must emit PROV_BAD"
 
-let prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_BASE=origin/main sh tools/fixtures/one_clock_provenance_scan.sh"]
+let prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_BASE=debrided/main sh tools/fixtures/one_clock_provenance_scan.sh"]
 say prov.out
 assert prov.ok else "one_clock provenance scan failed on branch artifacts"
 
 
 # Duty 5 -- the living head never stands ahead of the clock (REDS %96)
 #
-# Duty 4's base is `origin/main`, so it weighs a dated artifact for exactly as
+# Duty 4's base is `debrided/main`, so it weighs a dated artifact for exactly as
 # long as that artifact stays unmerged. Every lap that lands and merges retires
 # its own stamps from that diff, which is why a head written 22 minutes into the
 # future stood here through a GREEN run. This duty asks the one question that

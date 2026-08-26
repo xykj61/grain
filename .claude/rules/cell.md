@@ -19,7 +19,7 @@ A cell is one counsel printout unit. It carries shapes and rulings for the bench
 - **Accrete, never break.** Dated artifacts stay; living pins move forward.
 - **Narrow-scope** when fascia < 80 — one keystone per round unless the cell's own shape bounds the round (e.g. tend: zero new `.rye`, one waymark).
 - **Dual editors.** Mirror any new cell rule under `.cursor/rules/cell.mdc` when seating or refreshing this law.
-- **Option 2** still governs piers: Cloud FF-merges `xykj61`; origin auth-refused is named; home syncs waters.
+- **Option 2** still governs piers: Cloud FF-merges `xy`; a `debrided` auth-refusal is named; home syncs waters.
 
 ## Why
 

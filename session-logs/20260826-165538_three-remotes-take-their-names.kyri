@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260826.165538
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, a configured default rather than runtime telemetry
+voice Kyri
+host Framework / cloud bench -- Eastern (EDT) one-clock
+title three remotes take their names, and the two piers become one tree
+prompt Keaton asked to rename the remotes -- xykj61 to xy, debrided to debrided, later grain-os to seed -- then to resolve the Mantra weave conflicts so the new tools/l/launch-dream-dual-chapter.rish could run, and to send once upstream reconciled.
+think A rebase was the rota's word and the wrong tool here: all twelve local commits touch the same four living ledgers, so pull --rebase meant twelve rounds of one conflict against three upstream commits. One merge resolves it once, and the tree already carries the shape -- construction: merge two piers, reconcile %226.
+think Eleven of the twenty-one conflicts were both piers repairing the SAME BSD-dialect red two ways. This pier had factored the repair into tools/fixtures/shell_portable.sh (xargs_lines, stamp_epoch, stamp_ahead, DP_REF_RE); upstream had inlined tr '\n' '\0' | xargs -0 at each site. Ours held because it subsumes theirs and adds the empty-list guard, and DP_REF_RE was checked character-for-character against the pattern upstream inlined rather than assumed equal.
+think dated_path_exclusions.sh wanted a union rather than a side: this pier's pole debride plus upstream's mitra shed, twenty-four LISTED basenames, each of the three contested names checked absent from git ls-files and still referenced before it was written down.
+think The crux was the ledger. Both clones had allocated %233-%237 for entirely different reds -- %230 and %252 arriving a third time, and the card's own standing answer was aborted rather than renumbered. Keaton ruled renumber, so upstream's five re-seated at %271-%275 with their four intra-row citations repointed, and the citations outside the ledger followed: the mitra block in dated_path_exclusions.sh and the index row for log 20260826-141312.
+think Rows %231-%232 had been folded twice, once per pier, onto two shelves holding the same two rows. A duplicate reds the monotone spine, so the duplicate went; the shelves differ only in the season-to-chapter wording, so no row lost a word.
+obs The merge carried four reds of its own, none of them anybody's mistake and all of them the shape of two trees meeting. The REDS headline span still recited 1 to 270. template-manifest.bron classified arbor twice -- personal from this pier, scrub from upstream -- and personal held, because scrubbing would have shipped arbor/ to the public seed before its contents were cleared file by file. seed/arbor stood as a stale projection from when scrub was the verdict. And skate_macos_choice_witness.rish arrived from upstream on no roster at all, carrying witness_reach one past its ceiling; the ceiling only falls, so the witness was seated rather than the ceiling raised.
+obs The rename broke more than it looked like it would, and the breakage was invisible until measured. git remote rename moves refs/remotes/origin/* , so every guard reading refs/remotes/origin/main lost its base: one_clock_provenance_scan.sh, dated_guard_scan.sh, and one_clock_witness.rish duty 4. The first sweep also repointed upstream_shape_scan.sh and had to be reverted whole -- every origin in that file names a throwaway pen clone, where git clone itself chose the name.
+obs Every loop recipe spelled git pull --rebase xykj61 main, so the dream launcher would have refused on its first line. launch-sound-fixed-chapter.rish already said the remote named xy, which is upstream having anticipated exactly this rename.
+obs The provenance base is now debrided/main by pure rename, preserving what it measured. Whether it should read xy/main -- the anointed ordering remote, which debrided mirrors after -- is a real question this round declined to answer silently; a lagging base weighs more artifacts, which is conservative rather than unsafe.
+file construction/REDS.md upstream's five re-seated at %271-%275; the headline span repaired to 275
+file construction/archive/REDS-two-piers-and-the-dialect-family-rows-269-275.md six closed rows folded to bring the pin under bound
+file construction/archive/REDS-fold-recital.md the fold recorded; the duplicate %231-%232 line dropped with its shelf
+file construction/ITINERARY.md the parked paragraph retired, the reconciliation seated, condensed to exactly 24,576
+file context/REMOTE_ROSTER.md the three rows renamed and the rename recorded with what it broke
+file tools/l/launch-dream-dual-chapter.rish the pull line repointed; the loop can now start
+file tools/fixtures/dated_path_exclusions.sh the union, twenty-four LISTED basenames
+file tools/fixtures/one_clock_provenance_scan.sh the provenance base follows the renamed remote
+file construction/standing-equipment.kyri the arriving skate witness seated
+file template-manifest.bron arbor classified once, personal
+recommend check-in (Keaton) -- the dream outer loop is ready to run and the seed cadence inside it force-pushes the public seed every fifth round, which is custody gate %1; POLE's replacement RAMI is drawn and its debride measured, awaiting the circled word.

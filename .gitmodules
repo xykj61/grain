@@ -54,3 +54,6 @@
 [submodule "vendor/microkit"]
 	path = vendor/microkit
 	url = https://github.com/seL4/microkit
+[submodule "gratitude/grain-sketchbook"]
+	path = gratitude/grain-sketchbook
+	url = https://github.com/xwb122m/grain-sketchbook

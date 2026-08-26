@@ -2,7 +2,7 @@
 # one_clock_head_scan.sh -- duty 5: the living head never stands ahead of the clock.
 #
 # Duty 4 weighs dated artifacts that are new against a base, and its base is
-# `origin/main`. A lap that lands and merges puts its artifacts on main, where
+# `debrided/main`. A lap that lands and merges puts its artifacts on main, where
 # the diff never names them again -- so a stamp written ahead of the clock is
 # weighed for exactly as long as it stays unmerged, and never afterward. The one
 # number the whole law rests on, the living head, was the number nobody checked.
