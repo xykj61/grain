@@ -56,7 +56,11 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
 
 # One awk over every file. Lines are held per file and classified when the file closes, because
 # a comment's setting is decided by the line of CODE that follows it.
-( cd "$root" && xargs -a "$work/files.txt" awk '
+# `xargs -a FILE` is GNU-only -- BSD xargs (macOS) refuses `-a` outright, and the refusal hid
+# beneath this pipeline's own 2>/dev/null, so every row vanished and the reading passed
+# vacuously. NUL-delimit the lines and feed stdin instead: `-0` is a spelling both dialects
+# run, and each line stays exactly one argument.
+( cd "$root" && tr '\n' '\0' < "$work/files.txt" | xargs -0 awk '
   function flush(   i, j, nxt, kind, n) {
     if (name == "") return
     door = 0; decl = 0; meter = 0; loose = 0; trail = 0

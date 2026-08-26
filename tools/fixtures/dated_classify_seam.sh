@@ -32,7 +32,7 @@ has_header()    { head -c 8000 "$1" 2>/dev/null | rg -q "$HDR_RE"; }
 # then head -c 8000 confirms the byte bound exactly -- fast without loosening the semantics
 # classify uses. Thousands of per-file spawns collapse to one rg pass plus a few checks.
 header_files() {
-  xargs -a "$1" -d '\n' rg -l "$HDR_RE" 2>/dev/null | while IFS= read -r f; do
+  tr '\n' '\0' < "$1" | xargs -0 rg -l "$HDR_RE" 2>/dev/null | while IFS= read -r f; do
     head -c 8000 "$f" 2>/dev/null | rg -q "$HDR_RE" && printf '%s\n' "$f"
   done
 }
@@ -151,7 +151,7 @@ shed() {
   # mention floor: which dated basenames appear anywhere in tracked text content
   sed 's#.*/##' "$dtr" | sort -u > "$dbn"
   rg -v "$SKIP_RE" "$all" > "$tf" || true
-  xargs -a "$tf" -d '\n' rg -F -o -I -N --no-filename -f "$dbn" 2>/dev/null | sort -u > "$ment"
+  tr '\n' '\0' < "$tf" | xargs -0 rg -F -o -I -N --no-filename -f "$dbn" 2>/dev/null | sort -u > "$ment"
   awk -F/ 'NR==FNR{m[$0]=1;next}{b=$0;sub(/.*\//,"",b); if(!(b in m)) print $0}' "$ment" "$dtr" > "$orph"
   orph_ct=$(grep -c '' "$orph")
 

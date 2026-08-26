@@ -111,22 +111,30 @@ git ls-files > "$work/all.txt"
 # lost references, every one of them inside a longer name that resolves perfectly well. The old
 # pattern hid this by requiring an underscore after the stamp -- the elder names put theirs
 # BEFORE it -- so widening the right side is what surfaced a looseness on the left.
+#
+# The boundary is spelled as a MATCHED leading character rather than a lookbehind, because the
+# lookbehind is PCRE and this tree runs on both userlands -- BSD grep has no -P, and a grep that
+# refuses the pattern left this census reading zero (REDS %234). The ERE alternative
+# (^|[^A-Za-z0-9_.-]) says the same thing by consuming the boundary character into the match,
+# and the sed leg strips exactly that character back off: a reference itself always begins with
+# a class character (a digit, a letter, or the dot of ../), so the strip can never eat into one.
+# Same census either way, proven against GNU -P on the day of the rewrite.
 set -f
-grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoE '(^|[^A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
-  . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
+  . 2>/dev/null | sed 's|^\./||; s|^\([^:]*:\)[^A-Za-z0-9_.-]|\1|' > "$work/pairs.txt"
 
 # The re-admit pass. grep prunes `seed` by NAME, which also prunes recursion-prompts/seed -- the
 # loop's own room, and nothing to do with the projection. Scanned here in its own pass and folded
 # back in, so the corpus holds the room rather than silently omitting it (REDS %122).
 for _rd in $(dp_readmit_dirs); do
   [ -d "$_rd" ] || continue
-  grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+  grep -rIoE '(^|[^A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
     --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
     --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
-    "$_rd" 2>/dev/null | sed 's|^\./||' >> "$work/pairs.txt"
+    "$_rd" 2>/dev/null | sed 's|^\./||; s|^\([^:]*:\)[^A-Za-z0-9_.-]|\1|' >> "$work/pairs.txt"
 done
 set +f
 
@@ -150,8 +158,12 @@ fi
 # The match is anchored on the negation so it can never swallow an ordinary citation: only a path
 # standing immediately after `! -f` or `! -e`, with or without the leading `test`, is subtracted,
 # and it is subtracted for the citing file that wrote it rather than everywhere it appears.
+#
+# No boundary spelling is needed here: the PCRE form carried a lookbehind after `! -[fe] +`, and
+# the mandatory space that precedes the path satisfied it on every match, so the ERE form simply
+# omits it -- same matches, and BSD grep can run it (REDS %234).
 set -f
-grep -rIoP '! -[fe] +(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoE '! -[fe] +(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \

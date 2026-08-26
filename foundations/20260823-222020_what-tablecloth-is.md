@@ -6,7 +6,7 @@
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
 **Status:** Living -- a foundation, written for a complete beginner
-**Kin:** [`../README.md`](../README.md) - [Mantra](20260823-222018_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
+**Kin:** [`../README.md`](../README.md) - [Mantra](20260825-211056_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
 
 ---
 
@@ -71,6 +71,6 @@ discover.
 
 ## Where to read next
 
-The naming layer is [Mantra](20260823-222018_what-mantra-is.md); the declaring language is
+The naming layer is [Mantra](20260825-211056_what-mantra-is.md); the declaring language is
 [Brix infuse](20260823-222019_what-brix-infuse-is.md). The receipt that carries a resin is
 `kyri/receipt.rye`.

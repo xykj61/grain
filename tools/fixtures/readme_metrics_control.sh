@@ -21,7 +21,10 @@ trap 'rm -rf "$work"' EXIT
 cp README.md "$work/README.md"
 
 # A number no measurement will ever produce, so the drift is unmistakable rather than a near-miss.
-sed -i 's/| \*\*Witnesses\*\* running on metal | \*\*[0-9][0-9]*\*\* |/| **Witnesses** running on metal | **999999** |/' "$work/README.md"
+# The rewrite goes through a temp file and back through the original name: GNU sed accepts a
+# bare -i while BSD sed reads the script as -i's suffix argument and dies on the filename, so
+# the planted drift never landed on a BSD host and the control could not complete (REDS %237).
+sed 's/| \*\*Witnesses\*\* running on metal | \*\*[0-9][0-9]*\*\* |/| **Witnesses** running on metal | **999999** |/' "$work/README.md" > "$work/README.md.tmp" && cat "$work/README.md.tmp" > "$work/README.md" && rm -f "$work/README.md.tmp"
 
 grep -qF '**999999**' "$work/README.md" || { echo "control: the planted drift did not land" >&2; exit 1; }
 echo "planted=yes"

@@ -71,7 +71,12 @@ grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' "$work/tracked.txt" > "$work/living.txt"
 # settles it: an interpreter named ahead of the path -- `sh ./x`, `bash ./x`, `rishi run ./x` --
 # needs no exec bit, and a Markdown link `](./x)` invokes nothing at all.
 : > "$work/invoked.txt"
-xargs -a "$work/living.txt" -d '\n' -n 400 \
+# `xargs -a FILE -d '\n'` is GNU-only -- BSD xargs (macOS) refuses `-a` outright, and the
+# refusal hid beneath this pipeline's own 2>/dev/null, so the reading found no caller at all
+# and the gate passed vacuously. NUL-delimit the lines and feed stdin instead: `-0` and `-n`
+# are spellings both dialects run, and each line stays exactly one argument as `-d '\n'` said.
+tr '\n' '\0' < "$work/living.txt" \
+  | xargs -0 -n 400 \
   grep -hoE '(^|[]| 	`|;&(])[^ 	`|;&()]* *\./[A-Za-z0-9_][A-Za-z0-9_./-]*' 2>/dev/null \
   | awk '
       {

@@ -24,7 +24,13 @@ stamp_to_epoch() {
   hh=${hms%????}
   mi=${hms#??}; mi=${mi%??}
   ss=${hms#????}
-  TZ="$ZONE" date -d "${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}" +%s 2>/dev/null || return 1
+  # GNU date parses with -d; BSD date has no -d parse and takes -j -f instead.
+  # Probe at runtime -- try the GNU form, fall back to the BSD form -- so the
+  # same stamp reads as the same epoch seconds on both userlands. BSD's failing
+  # -d prints nothing to stdout, so the fallback never doubles the output.
+  TZ="$ZONE" date -d "${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}" +%s 2>/dev/null \
+    || TZ="$ZONE" date -j -f '%Y-%m-%d %H:%M:%S' "${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}" +%s 2>/dev/null \
+    || return 1
 }
 
 check_stamp() {
