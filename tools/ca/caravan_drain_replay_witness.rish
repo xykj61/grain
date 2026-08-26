@@ -1,0 +1,84 @@
+# tools/ca/caravan_drain_replay_witness.rish -- the same submissions twice leave the same state.
+#
+# The optimization spine's move three (design:
+# active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md; reading:
+# external-research/20260826-021135_caravan-read-against-the-optimization-spine.md). The room
+# proves each rung's property in isolation; this witness states the whole-drain property: the
+# same submissions in the same order leave the same dependents in the same state -- the
+# pure-fold discipline Mycelium proved one room over, applied to supervision.
+#
+# The planted sequence is the queue rung's own selftest -- seven asks on three rings across
+# three drains, with the forgery walls, the empty nudge, and the capacity refusal all exercised
+# -- run twice from cleared ground. State is what the run leaves in caravan/.regions: head and
+# tail indices plus every slot's addressed, sequence-numbered bytes. The comparator is one
+# fixture body (tools/fixtures/caravan_drain_replay_compare.sh), so the honest pass and the
+# tampered refusal read the same code.
+#
+# The falsifier, answered by naming: no stamp, no process id, and no allocator address enters a
+# region -- indices are u32 counters and slot bytes are ask_text output, deterministic in the
+# sequence number -- and the ground is seeded by clearing caravan/.regions and caravan/.channels
+# before each run, so run two starts where run one started rather than where it ended. A source
+# of nondeterminism arriving later lands as a byte difference this witness names, which is the
+# point of stating the property.
+#
+# Purely local: no key, no network, no funds, no device. Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_drain_replay_witness.rish
+
+say "caravan-drain-replay: Language EN -- a drain is a fold: the same submissions in the same order leave the same state, proven by running it twice and comparing every byte."
+say "caravan-drain-replay: Style Gauge -- two cold runs, one comparator, and a tampered byte proving the refusal in the same body."
+say "caravan-drain-replay: Lens TAME -- state read whole off disk rather than narrated; the comparison refuses an empty set, a missing file, and a single flipped byte."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/drain_replay_queue"
+
+# The binary this witness runs is built here, to its own name (REDS %92, %133).
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/queue.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-drain-replay: the queue build must stand -- ${build.err}"
+
+let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/a $d/b && printf '%s' $d"]
+assert pen_mk.ok else "caravan-drain-replay: could not build the pen -- ${pen_mk.err}"
+let pen = trim pen_mk.out
+
+# Run one, from cleared ground, and the snapshot of what it left.
+let clear_one = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clear_one.ok else "caravan-drain-replay: could not clear the ground before run one"
+let one = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert one.ok else "caravan-drain-replay: run one exited non-zero"
+assert one.out contains "GREEN" else "caravan-drain-replay: run one must be GREEN before its state means anything"
+let snap_one = run ["sh" "-c" "cp caravan/.regions/* ${pen}/a/"]
+assert snap_one.ok else "caravan-drain-replay: run one left no region state to snapshot"
+
+# Run two, from the same cleared ground -- the seeding that makes the fold a fold.
+let clear_two = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clear_two.ok else "caravan-drain-replay: could not clear the ground before run two"
+let two = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert two.ok else "caravan-drain-replay: run two exited non-zero"
+assert two.out contains "GREEN" else "caravan-drain-replay: run two must be GREEN"
+let snap_two = run ["sh" "-c" "cp caravan/.regions/* ${pen}/b/"]
+assert snap_two.ok else "caravan-drain-replay: run two left no region state to snapshot"
+
+# The claim: every byte of state identical across the two runs.
+let same = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+assert same.ok else "caravan-drain-replay: the two runs left different state -- ${same.out}"
+assert same.out contains "verdict=identical" else "caravan-drain-replay: the comparator must say identical -- ${same.out}"
+assert same.out contains "regions_compared=4" else "caravan-drain-replay: the two-client system leaves four region stores, and the comparison must see all four -- ${same.out}"
+
+# The refusal, proven from the failing side: one flipped byte in one store is caught by name.
+let tamper = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && printf 'X' | dd of=${pen}/b/$f bs=1 count=1 conv=notrunc 2>/dev/null && printf '%s' $f"]
+assert tamper.ok else "caravan-drain-replay: could not tamper the snapshot"
+let bitten = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+assert bitten.ok == false else "caravan-drain-replay: a flipped byte must refuse -- it read identical instead"
+assert bitten.out contains "verdict=differs" else "caravan-drain-replay: the refusal names its verdict -- ${bitten.out}"
+assert bitten.out contains "differs between the two runs" else "caravan-drain-replay: the refusal names the differing store -- ${bitten.out}"
+
+# A missing state file is a difference before any byte is read.
+let drop = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && rm ${pen}/b/$f"]
+assert drop.ok else "caravan-drain-replay: could not drop a snapshot file"
+let unequal_sets = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+assert unequal_sets.ok == false else "caravan-drain-replay: a missing state file must refuse"
+assert unequal_sets.out contains "different state-file sets" else "caravan-drain-replay: the set refusal says why -- ${unequal_sets.out}"
+
+let pen_rm = run ["sh" "-c" "rm -rf ${pen} && rm -rf caravan/.regions caravan/.channels"]
+assert pen_rm.ok else "caravan-drain-replay: could not sweep the pen and the ground"
+
+say "GREEN: caravan-drain-replay -- seven asks on three rings, drained twice from cleared ground, four region stores byte-identical; the flipped byte and the missing file both refused by name."

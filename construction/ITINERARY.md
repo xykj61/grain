@@ -27,7 +27,7 @@
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor -- Brushstroke - Surf), **Sound** fixed (this bench -- Caravan - Tally - toroidal - Scribe), **Dream** dual (pier -- Glow to Rye; seed cadence). Charter: `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md`.
-- **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide (`tools/ca/caravan_wrap_class_witness.rish`), the queue bound word-wide in its own name, Caravan the wafer rehearsal's first consumer; moves three and four next. Design: `active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`.
+- **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide, the bound word-wide in its own name, the drain replay proven (`tools/ca/caravan_{wrap_class,drain_replay}_witness.rish`), Caravan the wafer's first consumer; move four next. Design: `active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **STANDFAST -- the cubist sweep** (`20260826`): five rounds. Door: `cubist-bhakti-astrology/README.md`.
@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `1344d620c3` -- the spine opens; every wrap says its name.
+**Git nib:** `d57e991a53` -- the drain is a fold, proven twice over.
 
 **Now.** **A fold repoints documents and leaves guards standing.**
 `tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
