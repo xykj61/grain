@@ -49,6 +49,9 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.044254` | [five twins on one canvas](20260826-044254_five-twins-on-one-canvas.kyri) | the cubist sweep opens: five classical pages twinned, all A, the door rostered |
+| `20260826.034722` | [the voice door is ready](20260826-034722_voice-door-is-ready.kyri) | this task is text; an active voice conversation opens spoken questions |
+| `20260826.034454` | [the Arbor-ready first-user invitation](20260826-034454_arbor-ready-first-user-invitation.kyri) | one voice prompt; token, workspace, profile, and approval choices |
 | `20260826.033417` | [the zone was already home](20260826-033417_the-zone-was-already-home.kyri) | America/New_York is already GREEN |
 | `20260826.033247` | [the circle and the enclosure](20260826-033247_the-circle-and-the-enclosure.kyri) | mitra shed complete, twelve fossils cut; Pond's 75-round quest seated |
 | `20260826.033242` | [the clock and the dialect](20260826-033242_the-clock-and-the-dialect.kyri) | macOS refused the parser, rather than the time |

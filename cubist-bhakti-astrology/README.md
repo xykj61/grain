@@ -25,6 +25,16 @@ fifteen-seat palette grid and its tanmatra senses are this room's own working vo
 The classical pages stay where they stand. Personal readings stay withheld from the seed,
 exactly as the classical room already keeps them.
 
+## The pages so far
+
+| Stamp | Twin |
+|---|---|
+| `20260826.044212` | [Ashvini -- the Opening Star](20260826-044212_asvini-the-opening-star.md) |
+| `20260826.044213` | [Chitra -- The Jewel Turned in the Dark](20260826-044213_chitra-the-architects-star.md) |
+| `20260826.044214` | [Ardra -- the Storm in Four Faces](20260826-044214_ardra-the-star-of-rudra.md) |
+| `20260826.044215` | [Capricorn -- the Grain and the Mist](20260826-044215_capricorn-the-sign-nature.md) |
+| `20260826.044216` | [Taurus, the Ground That Holds the Moon](20260826-044216_moon-in-taurus-exalted.md) |
+
 ## The standfast
 
 The sweep is standfasted on the living card (`../construction/ITINERARY.md`) as its own
