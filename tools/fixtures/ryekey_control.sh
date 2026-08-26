@@ -21,6 +21,9 @@
 # failed. Nothing outside the pen is written; the pen is removed on exit.
 
 set -u
+
+# The dialect answers live in one place, so this control reads the same mtime on both piers.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
 REPO=$(pwd)
 RYE_BIN="${1:-$REPO/rye/bin/rye}"
 # A relative binary path breaks the moment a leg changes directory; seat it absolute once.
@@ -28,6 +31,35 @@ case "$RYE_BIN" in /*) ;; *) RYE_BIN="$REPO/$RYE_BIN" ;; esac
 ZIG="$REPO/vendor/zig-toolchain/zig"
 [ -x "$RYE_BIN" ] || { echo "ryekey-control: no rye binary at $RYE_BIN"; exit 1; }
 [ -x "$ZIG" ] || { echo "ryekey-control: no toolchain at $ZIG"; exit 1; }
+
+# THE BINARY IS THIS PIER'S, AND IT CAN BE OLDER THAN THE SOURCE IT CAME FROM. `rye/bin/rye` is
+# untracked and gitignored, so a fresh clone has none and a working pier has whichever one it last
+# built. Measured `20260826.090745`: this pier's binary was built `20260821` and the receipt
+# feature landed in `rye/src/main.rye` on `20260825`, so every leg below reported RED -- and RED
+# read exactly like "the receipt is broken" when the truth was "your binary predates it."
+#
+# So the version is asked at the door rather than inferred from a failure four legs later. Rye
+# stamps its version on the one clock (`YYYYMMDD.HHMMSS`, later is larger), which string-compares
+# correctly, so the running binary must declare at least what its own source declares. A binary
+# that does not is a MACHINE FACT, named and skipped at exit 0 -- never a red, because nothing in
+# the tree is wrong. `sh rye/bootstrap.sh` builds it in about a second.
+src_version=$(sed -n 's/^const rye_version = "\([0-9.]*\)";$/\1/p' "$REPO/rye/src/main.rye" | head -1)
+# `rye version` reports through std.debug.print, which is stderr -- the opening-triad idiom this
+# tree writes everywhere -- so the read follows the stream the tool actually uses rather than the
+# one a reader would assume.
+bin_version=$("$RYE_BIN" version 2>&1 >/dev/null | sed -n 's/^rye \([0-9][0-9.]*\).*$/\1/p' | head -1)
+if [ -z "$src_version" ] || [ -z "$bin_version" ]; then
+    echo "ryekey-control SKIPPED: could not read a version from the source (${src_version:-none}) or the binary (${bin_version:-none})"
+    echo "ryekey_verdict=machine_fact"
+    exit 0
+fi
+if [ "$bin_version" \< "$src_version" ]; then
+    echo "ryekey-control SKIPPED: machine fact -- the binary declares $bin_version and its source declares $src_version."
+    echo "ryekey-control SKIPPED: rebuild with 'sh rye/bootstrap.sh' and run this again; nothing in the tree is wrong."
+    echo "ryekey_verdict=machine_fact"
+    exit 0
+fi
+echo "ryekey-control: binary $bin_version stands at or past its source $src_version"
 
 PEN=$(mktemp -d) || exit 1
 trap 'rm -rf "$PEN"' EXIT INT TERM
@@ -56,7 +88,9 @@ build() { # build [extra-env ...]; returns rye's own exit code
     env RYE_ZIG="$ZIG" "$@" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN"
 }
 stamp() { cat "$KEY" 2>/dev/null || echo absent; }
-btime() { stat -f %Fm "$BIN" 2>/dev/null || stat -c %.Y "$BIN" 2>/dev/null; }
+# A file's mtime is a dialect question, and the BSD-first spelling this line once carried
+# concatenated a five-line filesystem report onto every GNU reading (REDS %260). One call now.
+btime() { file_mtime "$BIN"; }
 
 # --- leg 1: a fresh build writes a receipt ---------------------------------------------------
 build || fail "fresh build failed"
@@ -181,3 +215,4 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
 
 echo "legs=15 all proven -- six flips missed, the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
+echo "ryekey_verdict=green"

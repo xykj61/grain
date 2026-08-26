@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **70 guards** stand -- **67 on the every-lap tier, 3 on the cadence tier** -- counted from the roster's own scan rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **71 guards** stand -- **68 on the every-lap tier, 3 on the cadence tier** -- counted from the roster's own scan rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it -- three times now (REDS %188, %220, %223). No guard can *enforce* the close, since one would have to run after the lap ends. What a guard **can** do is refuse to open the next lap over the wreckage, and that is where the runner now stands: `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -53,39 +53,42 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `62165a40ba` -- one dialect for twelve sites; %255 booked, %249 shelved.
+**Git nib:** `3d1e601e59` -- PCRE and stat gated at zero; roster 70 -> 71.
 
-**Now.** **The clock spoke one dialect, and the guard that would have said so ran on no lap.**
-`date -d` is a GNU extension BSD spells `-j -f`, `-r`, and `-v+4H`. Seven tracked lines carried it
-and moved to three functions in
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) -- `stamp_epoch`,
-`epoch_stamp`, `stamp_ahead` -- each trying GNU's spelling and falling back to BSD's, **GNU first
-because `-r` names an epoch on BSD and a FILE's mtime on GNU.** The family is **gated at zero**
-now rather than advisory: it earned the gate by costing a real reading.
+**Now.** **Four dialect families gated, and one guard found standing off every clock.** `grep -P` is
+PCRE and BSD grep refuses it, so the two guards this tree leans on hardest read **nothing** on the
+macOS bench: [`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh), whose
+lost count gates every room fold with no slack, and
+[`../tools/fixtures/living_card_ascii_scan.sh`](../tools/fixtures/living_card_ascii_scan.sh), which
+holds the card at zero non-ASCII bytes. Both speak ERE now, keeping the rule by **consuming the
+boundary and stripping it** rather than looking behind. Proven equal
+under GNU grep across the whole tree: **35,642** references, sorted byte-identical.
 
-**What the repair found is worse than the count, again.**
-`tools/fixtures/one_clock_provenance_scan.sh` read `PROV_OK` twice on GNU and **zero** under a
-BSD-shaped `date`, calling every stamp in the tree unparsable -- and
-`tools/o/one_clock_witness.rish`, which the one-clock law itself calls **blocking**, stood on
-**none** of the sixty-nine roster rows. So the tree's most-cited law had a guard that was wrong on
-one pier and scheduled on neither. Both closed: the witness is GREEN under the shim, and
-`one_clock` is seated on the every-lap tier (roster **69 -> 70**).
+**Four roots booked, all closed.** **%260** -- `stat -f` before
+`stat -c` is `date -r`'s trap in another flag: GNU reads `-f` as `--file-system`, the first leg
+half-worked, the `||` fired anyway, and `btime` returned **six lines where one was meant**.
+**%261** -- the PCRE family counted `pgrep -P` as a site; its pattern begins at a boundary now.
+**%262**, mine -- this bench's shell defines `grep` as a **ugrep** function while a guard run as
+`sh tools/...` gets GNU grep 3.12, so a parity check read 26,817 where GNU reads 35,642. Measure
+through the shell the subject runs in. **%264** -- the headline writer
+refreshed the numbers and left the date they were counted on.
 
-**Four roots booked, %250 CLOSED.** **%256** -- a shelf moves a file's depth and strands the links
-written *inside* it, which is %253's molt lesson turned the other way up; caught by `readme_reach`.
-**%257** -- a tracked symlink put one file on the roster twice, so the family read **nine** where
-seven lines carry it. **%258** -- the off-roster clock witness. **%259**, mine: the new proof leg
-pinned `living_bsd_shaped=2` one paragraph after quoting the rule against pinning constants, and
-the count moved to 3 when this round staged its own log. **Only the hot roster could catch it** --
-the fault exists only over a dirty index, which is the state `--hot` was built to measure (%174).
-The spine reads **1..259**, no gaps; %250, %253, %256 and %257 rest on shelves.
+**%263 is the one worth carrying.**
+[`../tools/fixtures/ryekey_control.sh`](../tools/fixtures/ryekey_control.sh) proves rye's build
+receipt across fifteen legs, landed `20260825` reading CONTROL_GREEN, stood on **no roster row**,
+and had been **RED for a day**. Nothing in the tree was wrong: `rye/bin/rye`
+is untracked, this pier's copy was built `20260821`, four days before the receipt landed in
+`rye/src/main.rye`. The **second** off-roster guard this month after %258. Rebuilt in a second,
+fifteen legs green in nineteen; a binary behind its own source now **skips as a machine fact**, and
+[`../tools/r/ryekey_witness.rish`](../tools/r/ryekey_witness.rish) puts it on the every-lap tier.
+**Roster 70 -> 71.**
 
-**The next doors.** **`main` stays unpushed and the integration is still Keaton's word** -- %248
-reserved it and nothing since overturned it; three packages now park additively behind it.
-Agent-doable next, a measured list the same meter already prints: `grep -P` **6**, `readlink -f`
-**5**, `sed -i` **5**, `stat -c` **2**. Also his, unchanged: the **row-number allocation** (%230,
-%252), a **molt-aware resolver** (%253), a **pre-push refusal** and the send-order guard (%255),
-and a **debride announcing itself**.
+**The next doors.** **`main` stays unpushed -- the integration is Keaton's word** (%248).
+Agent-doable next: `readlink -f` **4** sites and `sed -i` **4**, each wanting one helper in
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) -- `readlink` wants a
+ruling first: two of its four sites are Linux-only. Also his: the **row-number allocation** (%230,
+%252), a **molt-aware resolver**, a **pre-push refusal** and the send-order guard (%255), and a
+**debride announcing itself**.
 
 ---
 ## Landed arcs
