@@ -33,7 +33,8 @@ assert control.out contains "check_writes_nothing=yes" else "reds-ledger-headlin
 assert control.out contains "no_headline_refused=yes" else "reds-ledger-headline: a ledger carrying no headline must be refused by name"
 assert control.out contains "rows_untouched=yes" else "reds-ledger-headline: the ledger's rows must stand byte-identical across a repair"
 assert control.out contains "mode_survives=yes" else "reds-ledger-headline: the rewrite must write through the original inode so the tracked mode survives"
-assert control.out contains "behaviors=7" else "reds-ledger-headline: want all seven behaviors proven"
+assert control.out contains "behaviors=8" else "reds-ledger-headline: want all eight behaviors proven"
+assert control.out contains "stamp_moves=yes" else "reds-ledger-headline: a headline whose numbers moved must say when they were counted -- the third thing a figure carries (REDS %264)"
 assert control.out contains "verdict=ok" else "reds-ledger-headline: want the control green by name"
 
 # The living ledger. `check` mode reads and refuses; it never writes, so this witness stays
@@ -44,4 +45,4 @@ assert living.ok else "reds-ledger-headline: the living ledger's headline disagr
 assert living.out contains "changed=no" else "reds-ledger-headline: want the living headline already agreeing, rather than merely repairable"
 assert living.out contains "verdict=ok" else "reds-ledger-headline: want the living ledger green by name"
 
-say "GREEN: reds-ledger-headline -- seven behaviors proven on planted ledgers, refusals bitten, and the living headline agreeing with the spine it recites."
+say "GREEN: reds-ledger-headline -- eight behaviors proven on planted ledgers, refusals bitten, and the living headline agreeing with the spine it recites."

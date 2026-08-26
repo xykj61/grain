@@ -2,9 +2,15 @@
 #   rishi/bin/rishi run tools/s/shell_dialect_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/shell_dialect_scan.sh, which counts GNU-only shell idioms in
-# tracked guards and holds two families -- xargs -a / -d, and date -d -- each under a ceiling that
-# only falls. A family earns its gate by costing a real reading on a real host; the rest are
-# reported as advisories until they do.
+# tracked guards and holds FOUR families -- the GNU-only xargs flags, the GNU-only date parse, PCRE,
+# and the GNU-only stat field flag -- each under a ceiling that only falls. A family earns its gate
+# by costing a real reading on a real host; the two still advisory are reported until they do.
+#
+# WHAT IT STANDS ON. The scan reads every tracked shell source once, past comment lines, past its
+# own two files that spell the idioms on purpose, and past tracked symlinks, which name one source
+# twice. Every gated family is proven from both sides on a planted tree, and three of the four are
+# proven again by BEHAVIOUR -- a real guard of this tree reading the same number under both
+# dialects while a planted elder copy still breaks.
 #
 # WHERE IT STANDS. The twelve gated sites moved to tools/fixtures/shell_portable.sh on
 # 20260826.062128, so the ceiling is ZERO and the family is a ratchet: the next GNU-only xargs reds
@@ -62,12 +68,63 @@ assert admits.ok else "shell-dialect: the same planted site must pass at a ceili
 
 assert green.out contains "gated_ceiling=0" else "shell-dialect: the ceiling stands at zero -- a ceiling only falls"
 
-# The advisory families are reported rather than gated, and the witness proves they are REPORTED --
-# a number printed is a number the next round can act on, where a silent family is one nobody sees.
-assert green.out contains "advisory_grep_perl=" else "shell-dialect: want the grep -P advisory printed"
-assert green.out contains "advisory_readlink_f=" else "shell-dialect: want the readlink -f advisory printed"
-assert green.out contains "advisory_stat_c=" else "shell-dialect: want the stat -c advisory printed"
-assert green.out contains "advisory_sed_i_bare=" else "shell-dialect: want the sed -i advisory printed"
+# The two families still advisory are reported rather than gated, and the witness proves they are
+# REPORTED -- a number printed is a number the next round can act on, where a silent family is one
+# nobody sees. Each is named WITHOUT its flag on purpose: the scan reads prose inside a string as a
+# site, so a guard spelling the idiom it hunts would count itself forever.
+assert green.out contains "advisory_readlink_f=" else "shell-dialect: want the GNU-only readlink advisory printed"
+assert green.out contains "advisory_sed_i_bare=" else "shell-dialect: want the GNU-only in-place sed advisory printed"
+
+# THE THIRD AND FOURTH GATED FAMILIES, promoted from advisory on 20260826.090745. PCRE stood in the
+# two guards this tree leans on hardest -- the dated-path census, whose lost count gates every room
+# fold with no slack, and the living-card scan that holds the operator card at zero non-ASCII bytes
+# -- and BSD grep refuses that flag outright, so both read nothing at all on the macOS bench. The
+# stat family carried the elder trap in full: written BSD-first, its GNU leg answered for a file
+# named %Fm and for the binary both, printing five lines of filesystem counts before exiting 1, so
+# the fallback fired and appended the mtime underneath (REDS %260).
+assert green.out contains "gated_grep_p_family=grep_pcre" else "shell-dialect: want the gated PCRE family named"
+assert green.out contains "gated_grep_p_sites=0" else "shell-dialect: the PCRE family stands at zero"
+assert green.out contains "gated_grep_p_ceiling=0" else "shell-dialect: the PCRE ceiling stands at zero -- a ceiling only falls"
+assert green.out contains "gated_stat_c_family=stat_field_format" else "shell-dialect: want the gated stat family named"
+assert green.out contains "gated_stat_c_sites=0" else "shell-dialect: the stat family stands at zero"
+assert green.out contains "gated_stat_c_ceiling=0" else "shell-dialect: the stat ceiling stands at zero -- a ceiling only falls"
+
+# THE PCRE REPAIR, PROVEN BY BEHAVIOUR on the guard the fault would have cost most. The pen holds
+# two references, a retired countdown-prefix name that must NOT read as one, and a path asserted
+# absent that must be subtracted -- so the right answer is exactly two, and the leg refuses if the
+# corpus answer moves. Borrowed from dated_path_control.sh's throwaway tree, which runs the same
+# scan in about a second where the field takes forty-five.
+let pcre = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-pcre"]
+say pcre.out
+assert pcre.ok else "shell-dialect: the PCRE behaviour proof must exit 0 -- both dialects must read one number"
+assert pcre.out contains "corpus_answer_wanted=2" else "shell-dialect: want the pen's own answer named"
+assert pcre.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder PCRE spelling still zeroed"
+assert pcre.out contains "verdict=ok" else "shell-dialect: want the PCRE behaviour proof green"
+
+let pcre_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-pcre-red"]
+assert (pcre_planted.ok == false) else "shell-dialect: a planted PCRE site past the ceiling must refuse"
+assert pcre_planted.out contains "verdict=over_grep_p_ceiling" else "shell-dialect: want the PCRE refusal named"
+
+let pcre_admits = run ["sh" "-c" "SHELL_DIALECT_GREP_P_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-pcre-red"]
+assert pcre_admits.ok else "shell-dialect: the same planted PCRE site must pass at a ceiling of one"
+
+# THE STAT REPAIR, and this one needs no shim to show the fault -- the fault is what a GNU host
+# does today, so the leg reproduces it directly and then proves the repaired order survives a stat
+# with no field flag at all. An order proven only on the host it was written for is an order
+# nobody checked.
+let statp = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-stat"]
+say statp.out
+assert statp.ok else "shell-dialect: the stat behaviour proof must exit 0"
+assert statp.out contains "repaired_lines_on_gnu=1" else "shell-dialect: want the repair answering exactly one line on GNU"
+assert statp.out contains "repaired_lines_under_bsd_shaped=1" else "shell-dialect: want the repair answering under a stat that refuses the GNU flag"
+assert statp.out contains "verdict=ok" else "shell-dialect: want the stat behaviour proof green"
+
+let stat_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-stat-red"]
+assert (stat_planted.ok == false) else "shell-dialect: a planted stat site past the ceiling must refuse"
+assert stat_planted.out contains "verdict=over_stat_c_ceiling" else "shell-dialect: want the stat refusal named"
+
+let stat_admits = run ["sh" "-c" "SHELL_DIALECT_STAT_C_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-stat-red"]
+assert stat_admits.ok else "shell-dialect: the same planted stat site must pass at a ceiling of one"
 
 # THE SECOND GATED FAMILY, held at zero the same way. `date -d` cost this tree a real reading before
 # it was gated: tools/fixtures/one_clock_provenance_scan.sh called every stamp in the tree
@@ -109,4 +166,4 @@ assert date_planted.out contains "verdict=over_date_ceiling" else "shell-dialect
 let date_admits = run ["sh" "-c" "SHELL_DIALECT_DATE_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-date-red"]
 assert date_admits.ok else "shell-dialect: the same planted date site must pass at a ceiling of one"
 
-say "GREEN: shell-dialect -- both gated families stand at zero under ceilings of zero, two real guards read the same on both dialects while planted elder copies still break, and each ceiling is proven from both sides on one planted tree"
+say "GREEN: shell-dialect -- four gated families stand at zero under ceilings of zero, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every ceiling is proven from both sides on one planted tree"

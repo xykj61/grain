@@ -331,3 +331,7 @@ seated 20260826.075023
 guard upstream_shape
 path tools/u/upstream_shape_witness.rish
 seated 20260826.010645
+
+guard ryekey
+path tools/r/ryekey_witness.rish
+seated 20260826.092732
