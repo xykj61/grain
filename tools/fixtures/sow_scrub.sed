@@ -64,9 +64,9 @@ s/bitscape/acme-co/g
 s/xy96gen-z/acme-owner/g
 s/xykld2/acme-owner/g
 s/xnkg3/acme-owner/g
-s/DJINN/a friend/g
-s/DJINN/a friend/g
-s/DJINN/a friend/g
+s/S[a]bin H[e]rtz/a friend/g
+s/S[a]bin/a friend/g
+s/H[e]rtz/a friend/g
 
 # ============================================================
 # Name-audit remediation (20260810) — the 8-agent seed audit
@@ -210,7 +210,7 @@ s/keaton/the-maintainer/g
 s/kaeden/the-maintainer/g
 s/livermore/the-maintainer/g
 s/dunsford/the-maintainer/g
-s/\bsabin\b/a-friend/g
+s/\bs[a]bin\b/a-friend/g
 s/\bsealy\b/the-maintainer/g
 s/\bzendex\b/a-family-enterprise/g
 s/mayacama/a-club/g
