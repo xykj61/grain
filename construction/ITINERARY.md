@@ -27,7 +27,7 @@
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor -- Brushstroke - Surf), **Sound** fixed (this bench -- Caravan - Tally - toroidal - Scribe), **Dream** dual (pier -- Glow to Rye; seed cadence). Charter: `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md`.
-- **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide (`tools/ca/caravan_wrap_class_witness.rish`), the queue bound word-wide in its own name, Caravan the wafer rehearsal's first consumer; moves three and four next. Design: `active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`.
+- **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide, the bound word-wide in its own name, the drain replay proven (`tools/ca/caravan_{wrap_class,drain_replay}_witness.rish`), Caravan the wafer's first consumer; move four next. Design: `active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds, `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`).
@@ -50,14 +50,13 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `fa9ee2128b` -- three remotes named; two piers one tree.
+**Git nib:** `d6a0ab6cd3` -- the runes say their own names.
 
 **Now.** **Two piers merged, three remotes renamed, Dream's lane open.**
 
-**Landed and shelved** (%268, %269, %270): a molt rewrote a path literal whose dated basename kept
+**Landed, shelved** (%268, %269, %270): a molt rewrote a path literal whose dated basename kept
 the elder word, three guards reached the break and each subtracted it by its own rule, and a replay
-fires no `pre-commit`, so the roster read **11 reds across 68 guards** on a tree green two hours
-before. All repaired; `arbor` **ships scrubbed** on his word `20260826`,
+fires no `pre-commit`, so the roster read **11 reds across 68 guards** on a tree green two hours on. All repaired; `arbor` **ships scrubbed** on his word `20260826`,
 the row that had withheld it retired, while `dexter` waits. The habit -- **run the roster after a pull that moved** --
 earned itself twice more today.
 
