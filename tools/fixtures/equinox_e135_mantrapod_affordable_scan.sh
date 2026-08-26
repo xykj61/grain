@@ -95,13 +95,13 @@ rg -qi 'affordable witness' "$LEXICON" || {
 echo "lexicon=honored"
 
 # REDS 46
-rg -q '^\| 46 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 46 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_46"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'afford to run|stops being run' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'afford to run|stops being run' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_affordable_law"
   echo "verdict=misread"

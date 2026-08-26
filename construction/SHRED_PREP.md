@@ -133,7 +133,7 @@ Grep helpers: `living mutant` · `fossil — living path` · paths in this table
 
 ## Elder sections, folded
 
-*The seam fossils (`20260809`), the Python-to-Rishi molt (`20260809.030635`), the habit checklist, and the wafer closure (`20260728.225638`) folded to [`archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md) on `20260823.234815`, when the class-Q close-out carried this pin past its 24,576-byte bound. All four are closed records awaiting no decision.*
+*Four closed sections, awaiting no decision, stand whole at [`archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md) -- folded `20260823.234815`, and the recital of what moved rides on the shelf rather than on this pin (REDS %232).*
 
 ## Hard lines
 

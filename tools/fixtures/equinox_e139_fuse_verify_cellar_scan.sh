@@ -149,7 +149,7 @@ echo "living=honored"
 echo "no_second_retirement=honored"
 
 # REDS 48 still present
-rg -q '^\| 48 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 48 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_48"
   echo "verdict=misread"

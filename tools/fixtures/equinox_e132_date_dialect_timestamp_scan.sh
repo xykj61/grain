@@ -111,13 +111,13 @@ echo "suite_pass=10"
 echo "suite_fail=0"
 
 # REDS 44
-rg -q '^\| 44 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 44 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_44"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'compact|timestamp|instrument|format' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'compact|timestamp|instrument|format' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_instrument_lesson"
   echo "verdict=misread"

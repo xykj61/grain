@@ -76,3 +76,16 @@ living Realidream also reaches:
 | `active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md` | money |
 
 ---
+
+---
+
+## What moved here, and when
+
+Recorded on the shelf rather than on the living pin, on `20260825.213128`, because a fold pointer
+that stays on the pin makes the pin grow by exactly what folding was meant to shrink -- the same
+overhead the REDS ledger moved to its own recital shelf.
+
+The seam fossils (`20260809`), the Python-to-Rishi molt (`20260809.030635`), the habit checklist,
+and the wafer closure (`20260728.225638`) folded here on `20260823.234815`, when the class-Q
+close-out carried `construction/SHRED_PREP.md` past its 24,576-byte bound. All four are closed
+records awaiting no decision.

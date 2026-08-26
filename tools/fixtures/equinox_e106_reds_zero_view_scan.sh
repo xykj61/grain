@@ -39,19 +39,19 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\| 33 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 33 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_33"
   exit 1
 }
-rg -q 'A zero in a report is a claim about the instrument' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'A zero in a report is a claim about the instrument' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_zero_view_taught_law"
   exit 1
 }
-rg -q 'Look where the thing would be before calling it gone' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'Look where the thing would be before calling it gone' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_look_before_gone"
