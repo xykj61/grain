@@ -22,6 +22,12 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260825.210819` -- the sync-rota breach (walk-back `28b1695752`)
+
+**Swept:** the loop's constitution -- `recursion-prompts/seed/autonomous-loop.seed.md` (the short prompt and the Remotes/Cadence bullets) and both heredoc prompts plus the while-loop body in `tools/l/launch-claude-season.rish` -- rewritten in place on Keaton's word to seat the twice-pulled round: pull the anointed ordering remote (xykj61) before context, package locally, fetch again, re-integrate bounded at three with jittered backoff, push as the compare-and-set, mirror after, never mirror-first, never force. `tools/s/stream_render.jq` rewritten the same round for a narrated livefeed.
+
+**What waits there, worth recalling:** the prior single-writer rota (push-often with no pull anywhere), and the sparse `[tool: name]` livefeed. Both live whole at the walk-back nib.
+
 ## The ledger (newest first)
 
 ### `20260825.183336` -- the five-red card condensed and the ledger folded

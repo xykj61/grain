@@ -62,6 +62,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260825.210819` | [The round that pulls twice](20260825-210819_the-round-that-pulls-twice.md) | the sync rota SEATED: fifteen sentences, three residuals |
 | `20260825.205011` | [The pen, the gossip, the derived spine](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) | seven moves; %230 answered: stamp-keyed, derived at merge |
 | `20260825.200049` | [The Works-Town Sleeve](20260825-200049_the-works-town-sleeve-siya.md) | the sleeve read against a works town; withheld from the seed |
 | `20260825.200048` | [The Works-Town Shape](20260825-200048_the-works-town-shape.md) | thirteen fill-in fields; one town per block; commons standing/seed/gap |
