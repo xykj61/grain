@@ -11,6 +11,13 @@
 #
 # EXPECTED: private_copy_refused=yes, real_tools_accepted=yes.
 #
+# DISCOVERY IS PROVEN FROM BOTH SIDES HERE TOO, amended 20260826.052117. A name an instrument
+# PLANTS in code must be found; a name a comment merely WRITES ABOUT must be read past. Those two
+# look identical to a grep over whole files, which is how a comment explaining a debrided page came
+# to subtract that page's five references from the census without anyone deciding it (REDS %246).
+# The trailing-comment leg holds the line where it was drawn: the strip reads the first non-blank
+# character of a line and stops, rather than hunting a hash through code.
+#
 # Driven by tools/d/dated_path_witness.rish. Run from the repository root.
 
 set -eu
@@ -59,6 +66,14 @@ printf 'echo 20260101-000000_ghost.md\n' > "$dpen/tools/fixtures/planter_scan.sh
 printf 'gone: 20260101-000000_deleted-page.md\n' > "$dpen/A-DOC.md"
 # a vendored mention is somebody else's fixture
 printf 'echo 20260101-000000_vendored.md\n' > "$dpen/vendor/x/v_scan.sh"
+# a page a round WROTE ABOUT rather than planted: named only on a full-line comment, sprig absent.
+# This is the shape that cost REDS %246 -- a scan's own comment explaining a debrided page made the
+# census stop counting that page's five surviving references, in silence.
+printf '# the debride removed 20260101-000000_written-about.md\n' > "$dpen/tools/fixtures/writer_scan.sh"
+printf '// and so did this one, 20260101-000000_rye-written-about.md\n' > "$dpen/tools/fixtures/writer.rye"
+# the other side of that line: a code line carrying a trailing comment still plants what it names,
+# because the strip is anchored to the FIRST non-blank character rather than hunting for a hash.
+printf 'echo 20260101-000000_trailing.md  # a note beside the plant\n' > "$dpen/tools/fixtures/trailer_scan.sh"
 
 ( cd "$dpen" && git init -q . && git add -A \
   && git -c user.email=p@p -c user.name=p commit -qm pen ) >/dev/null 2>&1
@@ -70,6 +85,9 @@ has 20260101-000000_ghost.md && echo "discovers_a_planting=yes" || echo "discove
 has 20260401-090000_a-real-page.md && echo "moved_doc_free=no" || echo "moved_doc_free=yes"
 has 20260101-000000_deleted-page.md && echo "deleted_doc_free=no" || echo "deleted_doc_free=yes"
 has 20260101-000000_vendored.md && echo "vendored_free=no" || echo "vendored_free=yes"
+has 20260101-000000_written-about.md && echo "commented_page_free=no" || echo "commented_page_free=yes"
+has 20260101-000000_rye-written-about.md && echo "commented_rye_free=no" || echo "commented_rye_free=yes"
+has 20260101-000000_trailing.md && echo "trailing_comment_still_plants=yes" || echo "trailing_comment_still_plants=no"
 
 # the roster reading itself would discover everything it lists, so it is out of its own corpus
 printf 'DP_X="20260101-000000_listed-only.md"\n' >> "$dpen/tools/fixtures/dated_path_exclusions.sh"

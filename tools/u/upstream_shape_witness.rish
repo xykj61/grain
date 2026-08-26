@@ -1,0 +1,86 @@
+# tools/u/upstream_shape_witness.rish -- read the ordering remote's shape before rebasing onto it.
+#   rishi/bin/rishi run tools/u/upstream_shape_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/upstream_shape_scan.sh, which reads HEAD against the anointed
+# ordering remote and names the shape it finds: up_to_date, fast_forward, ahead, diverged, or the
+# one that refuses -- rewritten, meaning the two share no common ancestor at all.
+#
+# WHY THIS EXISTS. The sync rota seated on 20260825.210819 opens every round with
+# `git pull --rebase xykj61 main`, and all fifteen of its sentences assume the piers share a
+# history. On 20260825 the macOS bench spent the banked deep debride -- a collaborator's name out
+# of the tree, the logs, and every commit -- and force-pushed the rewritten history to the
+# ordering remote. The next round on this pier met an upstream with 3,469 commits, a local HEAD
+# with 3,467, and no merge base between them. That is REDS %243, and the rota had no reading for it.
+#
+# WHAT THE PROOF LEGS SHOW, and why there are three. Against a rewritten upstream `git pull
+# --rebase` behaves two entirely different ways, and the difference is a reflog rather than
+# anything visible in the tree. The same pen, the same rewrite, the same command:
+#
+#   reflog present -> --fork-point finds the pre-rewrite position, 7 owned commits replay, tree clean
+#   reflog absent  -> no fork point, all 15 local commits replay, the debrided name back on disk
+#
+# A fifth leg proves the refusal does not fire where it must not: a shallow clone outrun by its
+# upstream also has an empty merge base, and reads as `shallow_repository` rather than a rewrite.
+#
+# A reflog is not a durable thing. Git expires it at ninety days by default, and a fresh clone has
+# none at all, so the quiet path is the one that cannot be relied on.
+say "upstream-shape: Language EN -- the shape of the remote, read before a rebase acts on it."
+say "upstream-shape: Style Gauge Meter -- every verdict named, every count measured."
+say "upstream-shape: Lens TAME -- safety first; a refusal proven only one way is not proven."
+
+# THE LIVE READING. This pier's own shape against its ordering remote. It passes on every ordinary
+# shape and on a pier that has not fetched; it refuses only on `rewritten`, which is the one
+# reading a rebase must never act on unexamined.
+let live = run ["sh" "tools/fixtures/upstream_shape_scan.sh"]
+say live.out
+assert live.ok else "upstream-shape: this pier shares no ancestor with its ordering remote -- rebase --onto before working"
+assert live.out contains "verdict=" else "upstream-shape: want a verdict named"
+
+# THE CRUX, reproduced on metal rather than argued. Two real repositories, a real filter-branch
+# rewrite, the reflog removed the way ninety days removes it -- then the pull itself, and the
+# debrided name measured back in the working tree.
+let gone = run ["sh" "tools/fixtures/upstream_shape_scan.sh" "prove-rewritten"]
+say gone.out
+assert gone.ok else "upstream-shape: the reflog-absent proof must exit 0"
+assert gone.out contains "reflog_entries=0" else "upstream-shape: want the reflog actually gone"
+assert gone.out contains "fork_point=absent" else "upstream-shape: want no fork point computable"
+assert gone.out contains "replay_count=15" else "upstream-shape: want all fifteen local commits queued for replay"
+assert gone.out contains "verdict=rewritten" else "upstream-shape: want the refusal named"
+assert gone.out contains "name_residue_after_pull=1" else "upstream-shape: want the debrided name proven back on disk"
+
+# THE QUIET PATH, proven beside it. Same pen, same rewrite, reflog intact: seven owned commits
+# replay and nothing comes back. Without this leg the fault above could be read as a property of
+# rewriting rather than of the reflog, and the repair would aim at the wrong thing.
+let kept = run ["sh" "tools/fixtures/upstream_shape_scan.sh" "prove-forkpoint"]
+say kept.out
+assert kept.ok else "upstream-shape: the reflog-present proof must exit 0"
+assert kept.out contains "reflog_entries=1" else "upstream-shape: want the reflog present"
+assert kept.out contains "replay_count=7" else "upstream-shape: want only this pier's own commits replayed"
+assert kept.out contains "name_residue_after_pull=0" else "upstream-shape: want a clean tree on the fork-point path"
+
+# THE OTHER SIDE OF THE REFUSAL. A wall that fires on ordinary work is a wall somebody turns off,
+# so an ordinary shared divergence is proven to pass as hard as a rewrite is proven to refuse.
+let ord = run ["sh" "tools/fixtures/upstream_shape_scan.sh" "prove-ordinary"]
+say ord.out
+assert ord.ok else "upstream-shape: an ordinary divergence must pass"
+assert ord.out contains "verdict=diverged" else "upstream-shape: want an ordinary divergence named as such"
+
+# THE FALSE POSITIVE, proven not to fire. A shallow clone outrun by its upstream also has no merge
+# base, and without a reading of its own it would be told its remote had been rewritten -- a
+# refusal on ordinary work, which is the shape of a wall people disable. A depth-1 clone that has
+# NOT been outrun still finds its base, so the pen walks the upstream past the boundary first;
+# that was measured before it was written down.
+let shallow = run ["sh" "tools/fixtures/upstream_shape_scan.sh" "prove-shallow"]
+say shallow.out
+assert shallow.ok else "upstream-shape: a shallow clone must not read as rewritten"
+assert shallow.out contains "is_shallow=true" else "upstream-shape: want the pen actually shallow"
+assert shallow.out contains "merge_base_found=0" else "upstream-shape: want the empty merge base reproduced"
+assert shallow.out contains "verdict=shallow_repository" else "upstream-shape: want the shallow shape named apart from a rewrite"
+
+# A PIER THAT HAS NOT FETCHED reports a machine fact and passes. A guard that reds on a missing
+# network stops a line for something no tree could repair.
+let unfetched = run ["sh" "-c" "UPSTREAM_SHAPE_REMOTE=no-such-remote sh tools/fixtures/upstream_shape_scan.sh"]
+assert unfetched.ok else "upstream-shape: an unfetched remote is a machine fact, never a tree red"
+assert unfetched.out contains "verdict=no_remote_ref" else "upstream-shape: want the unfetched shape named"
+
+say "GREEN: upstream-shape -- the live shape read, the reflog-absent replay of all fifteen commits reproduced with the debrided name back on disk, the fork-point path proven clean at seven, an ordinary divergence and an outrun shallow clone both proven to pass, and an unfetched remote read as a machine fact"
