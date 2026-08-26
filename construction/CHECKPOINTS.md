@@ -22,6 +22,20 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260826.044827` -- the two piers integrate, ten reds close (walk-back `3d050c7cf4`)
+
+**Swept:** `construction/ITINERARY.md` -- the whole **Now** block, roughly 1,900 bytes describing
+the parked package and the census trace, replaced by the integration's own reading; the landed row
+replaced. `construction/REDS.md` folded rows %242, %245-%248, %251 and %254 onto
+[`archive/REDS-the-integration-and-its-wake-rows-242-254.md`](archive/REDS-the-integration-and-its-wake-rows-242-254.md),
+carrying the pin from 35,380 bytes to 21,593.
+
+**What waits there, worth recalling:** the departing Now held the parked-package reading in full --
+`merge_base=none`, the 5,092-file rewrite, and the proposed numbering that put the bench's rows at
+%248-%250 before this pier's own spine reached %248 and moved them to %249-%251. Row %252 carries
+the corrected arithmetic and row %248 stands whole on its shelf, so only the card's phrasing
+departs. The seven folded rows stand whole on their shelf rather than at the nib.
+
 ## 20260826.021017 -- walk-back `0118579172` -- GAUGE_STYLE re-voiced in the terra palette
 
 Keaton's word: the style guide molts in place into the light register of Kyri 6 -- the terra

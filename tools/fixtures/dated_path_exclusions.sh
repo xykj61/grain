@@ -178,11 +178,64 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 # The LISTED half only. The two planted names that stood here -- `20260101-000000_a-dated-note.md`
 # and `20260101-010101_never-written.kyri` -- are found by discovery now, along with 45 more, so
 # listing them would be the duplication this round exists to end.
+#
+#   THE TWELVE BELOW ARE ONE EVENT, and it is a shape this list had not met before. The chapter
+#   molt of 20260826 re-seated eleven foundations at fresh one-clock stamps and the deep debride
+#   that carried the word "season" to "chapter" removed the elder stamps from every commit. A FOLD
+#   keeps a basename and only moves it, which is why the resolver recovers a folded reference from
+#   the basename alone; a MOLT changes the stamp, so every reference to the elder names a string
+#   that exists nowhere and never will again. The census read 390 lost where its ceiling stood at
+#   178, and 197 of those sit in session logs -- dated testimony, which accrete-never-break keeps
+#   word for word. So the references are permanent by law, and counting them as breakage forever
+#   would make the ceiling a monument to a decision the tree made on purpose.
+#
+#   Each name carries its forwarding address, which is the part a reader actually needs: an old
+#   log naming `20260706-185112_follow-our-compass.md` is naming the page that lives at
+#   `foundations/20260826-024943_follow-our-compass.md` today. Every pair below was checked both
+#   ways on the lap it was written -- the elder absent from `git ls-files`, the successor present
+#   on disk.
+#
+#     20260702-184312_the-grain-and-the-crossing.md      -> foundations/20260826-024942_...
+#     20260706-185112_follow-our-compass.md              -> foundations/20260826-024943_...
+#     20260618-182412_single-stranded.md                 -> foundations/20260823-204456_...
+#     20260728-220203_realidream.md                      -> foundations/20260825-233310_...
+#     20260628-124512_anywhere-we-are-found.md           -> foundations/20260826-024940_...
+#     20260728-232511_lantern-lattice-kiln.md            -> foundations/20260826-024944_...
+#     20260728-221253_the-graph-beneath-the-surface.md   -> foundations/20260826-024939_...
+#     20260628-133212_a-home-in-plain-text.md            -> foundations/20260826-024941_...
+#     20260823-222018_what-mantra-is.md                  -> foundations/20260825-211056_...
+#     20260821-035846_every-climate-has-a-fiber.md       -> foundations/20260824-003828_...
+#     20260813-142420_mycelium-the-consensus-protocol.md -> foundations/20260825-211055_...
+#
+#   The twelfth is DELETED rather than molted, and it carries no forwarding address:
+#   `20260703-235912_diet-and-the-crossing-manifest.md` left the live tree on the round that
+#   retired the diet framing. Thirteen references name it, and the two living ones are the rows in
+#   `construction/ready-to-ask-claude.md` that RECORD the deletion -- a ledger saying "deleted from
+#   live tree" beside the path it means. That is REDS %246's lesson at table scale: a line
+#   explaining why a page is gone looks exactly like a line citing it.
+#
+#   WHAT STAYS COUNTED, on purpose. Names whose successor this round could not prove stay in the
+#   census where a later lap can see them -- `20260629-031512_slc1-lap-closed-handoff.md` (renamed
+#   in place, lap -> ring, same stamp), and the basenames sitting at two paths at once, which are
+#   the AMBIGUOUS class rather than this one. Listing a name nobody has traced would convert an
+#   open question into a silent decision, which is the accident REDS %245 and %246 were booked for.
 DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
 20260821-211423_conways-law-and-the-organization-that-forgets.md \
-20260730-150702_pole-bozo-djinn-murr-keaton.md"
+20260730-150702_pole-bozo-djinn-murr-keaton.md \
+20260702-184312_the-grain-and-the-crossing.md \
+20260706-185112_follow-our-compass.md \
+20260618-182412_single-stranded.md \
+20260728-220203_realidream.md \
+20260628-124512_anywhere-we-are-found.md \
+20260728-232511_lantern-lattice-kiln.md \
+20260728-221253_the-graph-beneath-the-surface.md \
+20260628-133212_a-home-in-plain-text.md \
+20260823-222018_what-mantra-is.md \
+20260821-035846_every-climate-has-a-fiber.md \
+20260813-142420_mycelium-the-consensus-protocol.md \
+20260703-235912_diet-and-the-crossing-manifest.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for

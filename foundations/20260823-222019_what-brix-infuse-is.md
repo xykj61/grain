@@ -6,7 +6,7 @@
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
 **Status:** Living -- a foundation, written for a complete beginner
-**Kin:** [`../README.md`](../README.md) - [Mantra](20260823-222018_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
+**Kin:** [`../README.md`](../README.md) - [Mantra](20260825-211056_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
 
 ---
 
@@ -57,6 +57,6 @@ outlasts a log of commands somebody once typed.
 
 ## Where to read next
 
-The naming layer underneath is [Mantra](20260823-222018_what-mantra-is.md); the store is
+The naming layer underneath is [Mantra](20260825-211056_what-mantra-is.md); the store is
 [Tablecloth](20260823-222020_what-tablecloth-is.md). The module itself is
 [`../brix/README.md`](../brix/README.md).

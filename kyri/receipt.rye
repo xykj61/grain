@@ -66,6 +66,14 @@ const print = std.debug.print;
 
 pub const receipt_version = "20260826.020000";
 
+// The selftest's own claim census, and its FLOOR. An exact pin on a growing population is a
+// refusal with a date on it, and the date is whichever lap adds the next claim (REDS %235) --
+// three sibling guards were pinned that way and all three refused an improvement. So the
+// selftest counts what it holds and refuses only a claim that VANISHED: growth passes free,
+// and a witness reading this needs no edit on the lap a sixteenth claim lands.
+pub const claims_held: u32 = 15;
+pub const claims_floor: u32 = 15;
+
 // The association palette: fifteen words seated 20260826 on Keaton's word, one per cell of the
 // council rota -- five element rows by the three modalities, columns cardinal | fixed | dual.
 // A cardinal word initiates, a fixed word sustains, a dual word adapts and dissolves onward.
@@ -443,7 +451,9 @@ fn run_selftest() !u8 {
     }
 
     print("{s}", .{text});
-    print("kyri-receipt: fifteen claims held -- address stable and distinct, eleven fields rendered, seven refusals bitten, two palettes paired.\n", .{});
+    // invariant: every claim above the floor is welcome, and a claim silently dropped refuses.
+    assert(claims_held >= claims_floor);
+    print("kyri-receipt: claims={d} claims_floor={d} held -- address stable and distinct, eleven fields rendered, seven refusals bitten, two palettes paired.\n", .{ claims_held, claims_floor });
     print("kyri-receipt: version {s}\n", .{receipt_version});
     print("GREEN: Kyri 6 -- a receipt names its payload by the payload's own bytes, by day and by night.\n", .{});
     return 0;

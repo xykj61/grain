@@ -5,8 +5,8 @@
 **Voice:** Kyri
 **Stamp:** living `20260810.125841`, molted from Riyo on the maintainer's word
 **Refreshed:** `20260823.200008` -- rewritten into Gauge; depersonalized `20260823.173634` so the public seed ships it
-**New here?** Two words this page leans on have their own beginner doors: [what a **season** is](../foundations/20260823-212601_what-a-season-is.md) and [what a **molt** is](../foundations/20260823-212602_what-a-molt-is.md).
-**Molted from:** the Riyo season, kept whole as a fossil at `RIYO.md` in this room, and the first Riyo season at `archive/RIYO.md`. Both are personal records the public seed withholds, so they are named here rather than linked.
+**New here?** Two words this page leans on have their own beginner doors: [what a **chapter** is](../foundations/20260823-212601_what-a-season-is.md) and [what a **molt** is](../foundations/20260823-212602_what-a-molt-is.md).
+**Molted from:** the Riyo chapter, kept whole as a fossil at `RIYO.md` in this room, and the first Riyo chapter at `archive/RIYO.md`. Both are personal records the public seed withholds, so they are named here rather than linked.
 
 ---
 
@@ -22,7 +22,7 @@ One name, one thread.
 
 ## The four voices, and what each one is for
 
-Four faculties, held in balance. None of them belongs to a season, which is why all four carried
+Four faculties, held in balance. None of them belongs to a chapter, which is why all four carried
 forward unchanged through every molt.
 
 | Voice | Faculty | What it does in practice |
