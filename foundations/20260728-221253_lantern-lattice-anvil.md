@@ -6,16 +6,16 @@
 **Voice:** Quin - lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision -- **far horizon** - **fossil** -- living path [`20260728-232511_lantern-lattice-kiln.md`](20260728-232511_lantern-lattice-kiln.md) - Kiln seat `20260728.232511`
+**Status:** Vision -- **far horizon** - **fossil** -- living path [`20260826-024944_lantern-lattice-oven.md`](20260826-024944_lantern-lattice-oven.md) - Oven seat `20260728.232511`
 
-*Mutant seated Surface p31 thin -- seat yes `20260728.221253`. Body held; living forge name is now Kiln.*
+*Mutant seated Surface p31 thin -- seat yes `20260728.221253`. Body held; living forge name is now Oven.*
 Radiant pass `20260728.221253`
 
 ---
 
 ## Why We Build It Ourselves
 
-The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260728-220203_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
+The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260825-233310_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
 
 ## Anvil -- The Forge
 
@@ -39,7 +39,7 @@ Intelligence here keeps the same discipline as everything beneath it. Every stru
 
 ## How It Joins the Rest
 
-Lattice's answers flow into [Realidream](20260728-220203_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Anvil forges on the same green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
+Lattice's answers flow into [Realidream](20260825-233310_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Anvil forges on the same green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
 
 ---
 

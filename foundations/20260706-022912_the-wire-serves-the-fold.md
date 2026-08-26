@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Register:** foundations -- the why beneath the work, on our own roots; owned vocabulary, teachers named in gratitude
-**Ground:** siloed from [`../external-research/20260706-022912_ames-vere-libuv-content-carriage.md`](../external-research/20260706-022912_ames-vere-libuv-content-carriage.md); companion to the grain index [`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md) and [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md)
+**Ground:** siloed from [`../external-research/20260706-022912_ames-vere-libuv-content-carriage.md`](../external-research/20260706-022912_ames-vere-libuv-content-carriage.md); companion to the grain index [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md) and [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md)
 **Status:** Landed -- affirmed as written at Claude ruling `20260706.232812` (zip 58 sitting); description, not aspiration, after parity 166 wire ladder.
 
 *Written together by Kaeden and Rio 3.*
@@ -56,7 +56,7 @@ Carriage serves the record; naming this brief's neighbours keeps that truth reac
 
 - **The front door** -- the root [`../README.md`](../README.md) names **Comlink** as the device wire that moves sealed octets with meaning kept whole.
 - **The room** -- indexed in [`foundations/README.md`](README.md).
-- **The hubs** -- the *append-only log of signed facts* and *bounded everything* strands live in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) is the return habit. This brief is why the wire stays humble beneath them.
+- **The hubs** -- the *append-only log of signed facts* and *bounded everything* strands live in [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md); [Follow Our Compass](20260826-024943_follow-our-compass.md) is the return habit. This brief is why the wire stays humble beneath them.
 - **The module** -- [`comlink/README.md`](../comlink/README.md), the carriage this principle governs.
 
 ---

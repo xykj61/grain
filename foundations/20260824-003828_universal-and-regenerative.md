@@ -106,7 +106,7 @@ them be five things.
 
 ## Where to read next
 
-[`20260821-035846_every-climate-has-a-fiber.md`](20260821-035846_every-climate-has-a-fiber.md) -
+[`20260824-003828_every-climate-has-a-fiber.md`](20260824-003828_every-climate-has-a-fiber.md) -
 [`20260629-014512_money-that-stays-close-to-home.md`](20260629-014512_money-that-stays-close-to-home.md) -
 [`20260823-232125_the-computer-that-forgets-and-opens.md`](20260823-232125_the-computer-that-forgets-and-opens.md) -
 [`20260823-034321_the-return-that-feeds-everyone.md`](20260823-034321_the-return-that-feeds-everyone.md) -

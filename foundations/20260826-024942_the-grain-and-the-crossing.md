@@ -84,7 +84,7 @@ The grain is one of two canonical hubs every leaf foundation routes through; nam
 
 - **The front door** -- the root [`../README.md`](../README.md) opens onto the tree and names this brief as the first *why* to read.
 - **The room of reasons** -- [`foundations/README.md`](../foundations/README.md) indexes the *why*; the strands here are what those reasons cut with.
-- **The sibling hub** -- [Follow Our Compass](../foundations/20260706-185112_follow-our-compass.md) is the *return habit* that brings a reader back to these strands: the grain answers *does this cut clean?*, the compass answers *where do I look to remember what we decided?*
+- **The sibling hub** -- [Follow Our Compass](../foundations/20260826-024943_follow-our-compass.md) is the *return habit* that brings a reader back to these strands: the grain answers *does this cut clean?*, the compass answers *where do I look to remember what we decided?*
 - **The long return** -- why the strands and this index are written to last is [the Lindy effect](../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md); the order we cut and build by is [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md).
 
 ---
