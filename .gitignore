@@ -346,6 +346,8 @@ nixos/*.bak-*
 /caravan/.forbears/
 /caravan/.minds/
 construction/standing-equipment-runs.kyri
+# The evidence a red guard leaves behind (REDS %266) -- this pier's failures, not the tree's.
+construction/standing-equipment-reds/
 
 # Personal material, debrided from all history 20260823.072824 (REDS %162, third
 # resolution; checkpoint 20260823.072824). These live on disk for their author and stay

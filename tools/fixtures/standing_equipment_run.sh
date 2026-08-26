@@ -171,16 +171,36 @@ ran=0
 green=0
 red=0
 
+# A RED THAT KEEPS NO WORDS CANNOT BE ROOTED. This loop discarded every guard's output, so a red
+# printed one word -- the guard's name -- and whoever read it later had to reproduce the failure to
+# learn anything. On `20260826.114500` `caravan_suite` read red here and GREEN when run alone
+# minutes afterward, on a tree that had not moved, and the run's own record held nothing to tell
+# those two cases apart (REDS %266). So a red keeps its guard's stdout and stderr beside the run
+# card, in a room this file's sibling gitignores, and the printed line names the file.
+#
+# BOUNDED, because an unbounded log is the next thing to fill a tmpfs: the last 200 lines of each
+# red, which is the tail a witness fails in, and only reds are kept -- a green that wrote a
+# thousand lines is a green nobody needs to read.
+# EVIDENCE IS GATHERED IN THE PEN AND LANDS AFTER THE CLOSE DIGEST, for the same reason the run
+# card does: a file written into the working tree DURING the run moves the tree under the runner's
+# own `tree_moved` reading. In this repository the room is gitignored and so invisible to
+# `git status --porcelain` either way; in a clone where it is not yet ignored -- or a pen a control
+# drives -- writing it mid-run would turn every red into a `tree_moved` refusal as well.
+red_room="construction/standing-equipment-reds"
+
 while read -r name path tier; do
   [ -n "$name" ] || continue
   if [ "$path" != "-" ] && [ -f "$path" ]; then
-    if rishi/bin/rishi run "$path" >/dev/null 2>&1; then
+    if rishi/bin/rishi run "$path" > "$pen/out.$$" 2>&1; then
       verdict=green
       green=$((green + 1))
     else
       verdict=red
       red=$((red + 1))
+      tail -n 200 "$pen/out.$$" > "$pen/evidence.$name.txt"
+      echo "  evidence $red_room/$name.txt"
     fi
+    rm -f "$pen/out.$$"
   else
     verdict=absent
     red=$((red + 1))
@@ -195,6 +215,17 @@ done < "$pen/todo"
 # to `git status --porcelain` either way; ordering it this way means a clone where it is not yet
 # ignored still reads honestly.
 tree_close=$(tree_digest)
+
+# The evidence lands now, after the digest and beside the card, for the reason written above the
+# room's name. The old room is cleared first so a stale file can never be read as this run's
+# verdict, and a run with no reds leaves no room at all.
+rm -rf "$red_room"
+for _ev in "$pen"/evidence.*.txt; do
+  [ -f "$_ev" ] || continue
+  mkdir -p "$red_room"
+  _nm=${_ev##*/evidence.}
+  cat "$_ev" > "$red_room/$_nm"
+done
 
 {
   echo "# construction/standing-equipment-runs.kyri -- when each standing guard last ran on THIS pier."

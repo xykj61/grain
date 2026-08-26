@@ -55,40 +55,40 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `3d1e601e59` -- PCRE and stat gated at zero; roster 70 -> 71.
 
-**Now.** **Four dialect families gated, and one guard found standing off every clock.** `grep -P` is
-PCRE and BSD grep refuses it, so the two guards this tree leans on hardest read **nothing** on the
-macOS bench: [`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh), whose
-lost count gates every room fold with no slack, and
-[`../tools/fixtures/living_card_ascii_scan.sh`](../tools/fixtures/living_card_ascii_scan.sh), which
-holds the card at zero non-ASCII bytes. Both speak ERE now, keeping the rule by **consuming the
-boundary and stripping it** rather than looking behind. Proven equal
-under GNU grep across the whole tree: **35,642** references, sorted byte-identical.
+**Now.** **Four dialect families gated at zero, two guards found off every clock.**
+`grep -P` is PCRE and BSD grep refuses it, so the two guards this tree leans on hardest read
+**nothing** on the macOS bench:
+[`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh), whose lost count
+gates every room fold with no slack, and `living_card_ascii_scan.sh`, which holds this card at zero
+non-ASCII bytes. Both speak ERE, keeping the rule by **consuming the boundary and stripping it**
+rather than looking behind -- proven equal under GNU grep at **35,642** references, byte-identical. `stat -f` before `stat -c` joined them: GNU reads `-f` as `--file-system`, so the
+first leg half-worked, the `||` fired anyway, and `btime` returned **six lines where one was
+meant**. One `file_mtime` call, GNU first.
 
-**Four roots booked, all closed.** **%260** -- `stat -f` before
-`stat -c` is `date -r`'s trap in another flag: GNU reads `-f` as `--file-system`, the first leg
-half-worked, the `||` fired anyway, and `btime` returned **six lines where one was meant**.
-**%261** -- the PCRE family counted `pgrep -P` as a site; its pattern begins at a boundary now.
-**%262**, mine -- this bench's shell defines `grep` as a **ugrep** function while a guard run as
-`sh tools/...` gets GNU grep 3.12, so a parity check read 26,817 where GNU reads 35,642. Measure
-through the shell the subject runs in. **%264** -- the headline writer
-refreshed the numbers and left the date they were counted on.
+**Eight roots booked and closed** -- %260 to %267 in [`REDS.md`](REDS.md); two carry past it.
 
-**%263 is the one worth carrying.**
+**A control reading CONTROL_GREEN stood on no roster, RED for a day** (%263).
 [`../tools/fixtures/ryekey_control.sh`](../tools/fixtures/ryekey_control.sh) proves rye's build
-receipt across fifteen legs, landed `20260825` reading CONTROL_GREEN, stood on **no roster row**,
-and had been **RED for a day**. Nothing in the tree was wrong: `rye/bin/rye`
-is untracked, this pier's copy was built `20260821`, four days before the receipt landed in
-`rye/src/main.rye`. The **second** off-roster guard this month after %258. Rebuilt in a second,
-fifteen legs green in nineteen; a binary behind its own source now **skips as a machine fact**, and
-[`../tools/r/ryekey_witness.rish`](../tools/r/ryekey_witness.rish) puts it on the every-lap tier.
+receipt across fifteen legs, and nothing in the tree was wrong: `rye/bin/rye` is untracked and this
+pier's copy predated its own source by four days. Rebuilt in a second, fifteen legs green in
+nineteen; a binary behind its source now **skips as a machine fact**, and
+[`../tools/r/ryekey_witness.rish`](../tools/r/ryekey_witness.rish) puts it on the lap tier.
 **Roster 70 -> 71.**
+**A red that keeps no words cannot be rooted** (%266). This lap closed a rota cycle, so the roster
+sang `--all`. `caravan_suite` read **red** under it and **GREEN alone** three times after, on an
+unmoved tree, and the record held nothing to tell them apart: the runner discarded every guard's
+output. A red keeps its words at `construction/standing-equipment-reds/<name>.txt` now, bounded to
+200 lines, gitignored, cleared each run, landing **after** the close digest since a file written
+mid-run moves the tree under the run's own reading (%267). Proven in a pen, 43 -> 46. **The flake
+is unrooted**: the next occurrence carries its words.
 
-**The next doors.** **`main` stays unpushed -- the integration is Keaton's word** (%248).
-Agent-doable next: `readlink -f` **4** sites and `sed -i` **4**, each wanting one helper in
+**The next doors.** **`main` stays unpushed -- the integration is Keaton's word** (%248); each
+package parks on its own `pier/` branch, both remotes. Next: `readlink -f` **4** sites and
+`sed -i` **4**, each wanting a helper in
 [`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) -- `readlink` wants a
-ruling first: two of its four sites are Linux-only. Also his: the **row-number allocation** (%230,
-%252), a **molt-aware resolver**, a **pre-push refusal** and the send-order guard (%255), and a
-**debride announcing itself**.
+ruling first: two of its four are Linux-only. Also his: the **row-number allocation** (%230, %252),
+a **molt-aware resolver**, a **pre-push refusal** and the send-order guard (%255), and a **debride
+announcing itself**.
 
 ---
 ## Landed arcs

@@ -333,4 +333,45 @@ out=$( ( cd "$gitpen" && STANDING_ROSTER=twotier.kyri STANDING_CARD=run-card.kyr
         sh "$runner" --hot --all 2>/dev/null ) || true )
 case "$out" in *"guards_run=2"*) echo "hot_composes_with_all=yes" ;; *) echo "hot_composes_with_all=no" ;; esac
 
+
+# THE EVIDENCE A RED LEAVES (REDS %266). A verdict with no words behind it cannot be rooted, and
+# this tree paid for that when caravan_suite read red under the roster and GREEN alone with the
+# record holding nothing to tell the two apart. So a red keeps its guard's own stdout and stderr,
+# and a green keeps nothing -- both halves proven here, in a pen, because a proof that plants a row
+# in the LIVING roster leaves the run card naming a guard that no longer exists.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+echo "planted guard speaking on stdout"
+echo "planted guard speaking on stderr" >&2
+exit 1
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+rm -rf "$gitpen/construction/standing-equipment-reds"
+# `--hot` because an earlier behaviour above left this pen's index dirty, and a cold full-roster
+# pass over a dirty index refuses before a single guard runs -- which is the runner working.
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" --hot 2>/dev/null ) || true )
+ev="$gitpen/construction/standing-equipment-reds/alpha.txt"
+if [ -f "$ev" ] && grep -q "speaking on stdout" "$ev" && grep -q "speaking on stderr" "$ev"; then
+  echo "red_keeps_both_streams=yes"
+else
+  echo "red_keeps_both_streams=no"
+fi
+case "$out" in *"evidence construction/standing-equipment-reds/alpha.txt"*) echo "red_names_its_evidence=yes" ;; *) echo "red_names_its_evidence=no" ;; esac
+
+# A green leaves no room at all, and the next run clears whatever the last one left -- so a stale
+# file can never be read as this run's verdict.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" --hot 2>/dev/null ) || true )
+if [ -e "$gitpen/construction/standing-equipment-reds" ]; then
+  echo "green_leaves_no_evidence=no"
+else
+  echo "green_leaves_no_evidence=yes"
+fi
+
 echo "control_verdict=ok"

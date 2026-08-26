@@ -17,11 +17,14 @@ assert counsel contains "return_surface_p59" else "e50: counsel want nested hand
 
 let lex = read-file "context/LEXICON.md"
 assert lex contains "| **geode** |" else "e50: LEXICON want geode row"
-# THE SEPARATOR THE ASCII-FIRST SWEEP LEFT (REDS %236). This line once cited the umbrella
-# senses with middots, and the ascii-first law converted every one of them to a hyphen.
-# The claim is the five senses in order; the separator is register, so read the register
-# the tree now writes -- and this file is ASCII from here, which is the same law.
-assert lex contains "round - quest - journey - equinox - season" else "e50: LEXICON want umbrella senses"
+# THE SEPARATOR THE ASCII-FIRST SWEEP LEFT (REDS %236), AND THE WORD THE PANCHANGA MOLTED
+# (REDS %265). This line has now been broken twice by a living law rewriting the prose it
+# quotes: first the ascii-first sweep turned its middots into hyphens, then the panchanga of
+# `20260826` replaced the outermost sense `season` with `chapter`. The claim is the five senses
+# in order; the separator is register and the fifth word is seated vocabulary, so both follow
+# the tree rather than the day this line was typed. A guard quoting a living page owns the
+# repair on the lap that page moves, which is docs-implementation-sync said as a cost.
+assert lex contains "round - quest - journey - equinox - chapter" else "e50: LEXICON want umbrella senses"
 assert lex contains "docs-geode" else "e50: LEXICON want docs-geode distinction"
 
 let rb = read-file "tools/gen/chapter/recursion_block.brix"
