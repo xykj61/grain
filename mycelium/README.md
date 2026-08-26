@@ -112,7 +112,7 @@ The witness names its Language - Style - Lens, then prints one `GREEN` line stat
 
 | What | Count |
 |------|-------|
-| Rye modules | 98 |
+| Rye modules | 99 |
 | `mycelium_*_witness.rish` witnesses | 80 |
 | Reproducible fixture generators | 14 |
 | On-disk Bron fixtures ([`corpora/`](corpora/), `@embedFile`-bound) | 14 |

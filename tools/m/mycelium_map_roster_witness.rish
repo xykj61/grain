@@ -38,7 +38,7 @@
 # is read from the README rather than recited in the scan; and a two-suffix name over an unnamed
 # middle must bite, which is what proves derivation stays one deep. Run from the repository root.
 
-say "mycelium-map-roster: Language EN -- the map a reader enters Mycelium by reaches all 98 modules, by name or by the rule the page itself publishes."
+say "mycelium-map-roster: Language EN -- the map a reader enters Mycelium by reaches all 99 modules, by name or by the rule the page itself publishes."
 say "mycelium-map-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "mycelium-map-roster: Lens TAME -- the rule is read from the README, so the guard cannot drift from the page it guards; corpus size published beside the verdict."
 
@@ -79,4 +79,4 @@ assert control.out contains "13 free: a symlinked module named in the map reads 
 assert control.out contains "15 free: a seated suffix no module wears is reported and left free" else "mycelium-map-roster: a rule ahead of its first companion is reported, never gated"
 
 say ""
-say "GREEN: mycelium-map-roster -- the nine-family map and its suffix rule reach all 98 modules, gated at zero in four readings and proven both ways over fifteen planted behaviors."
+say "GREEN: mycelium-map-roster -- the nine-family map and its suffix rule reach all 99 modules, gated at zero in four readings and proven both ways over fifteen planted behaviors."

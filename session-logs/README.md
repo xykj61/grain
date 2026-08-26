@@ -49,7 +49,13 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.195437` | [two piers took the same number](20260825-195437_two-piers-took-the-same-number.kyri) | REDS %230 OPEN: both clones booked %226 |
+| `20260825.193346` | [the window still open](20260825-193346_the-window-still-open.kyri) | Brazos: four readings taken; no NMED ruling as of 20260825; plant unfunded |
+| `20260825.191452` | [the receipt that survived its audit](20260825-191452_the-receipt-that-survived-its-audit.kyri) | Move 1 lands: receipts v2, 15 legs, ~88x on six modules |
+| `20260825.183435` | [the table stops rotting](20260825-183435_the-table-stops-rotting.kyri) | constel_depart_knot proves n=3 f=0 and n=4 f=1 on metal; counts refreshed to 99 |
 | `20260825.183336` | [the number the tool writes](20260825-183336_the-number-the-tool-writes.kyri) | Five reds from one clone; %226-%228; the ledger headline generated |
+| `20260825.183029` | [the narrowest dialect](20260825-183029_the-narrowest-dialect.kyri) | REDS %226: the register meter and parity-selftest made two-host, proven on metal |
+| `20260825.181028` | [two words granted and routed](20260825-181028_two-words-granted-and-routed.kyri) | seed push routed to the pier; FAST/COLD ruling seated |
 | `20260825.180329` | [the short name and the wall](20260825-180329_the-short-name-and-the-wall.kyri) | REDS %225: bare Siya joins the wall; four basenames withheld; gates green |
 | `20260825.173849` | [fusion research and three bundles placed](20260825-173849_fusion-research-and-three-bundles-placed.kyri) | 18 files seated, reprove design booked, held at the gate |
 | `20260825.172213` | [build-systems-a-la-carte traces read](20260825-172213_build-systems-a-la-carte-traces-read.kyri) | A tiny verdict makes a constructive trace nearly free. |

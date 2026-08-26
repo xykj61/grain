@@ -31,7 +31,9 @@ assert clean.ok else "could not remove old shadow"
 let copy = run ["cp" "-r" baseline shadow]
 assert copy.ok else "could not copy vendor lib to shadow"
 
-let tamper = run ["sed" "-i" "s/0x06, 24/0x07, 24/g" "${shadow}/std/crypto/sha3.zig"]
+# write-through, never sed -i: GNU sed edits in place and BSD sed reads the script as a
+# backup suffix, so the portable shape is the exec-bit rule's own -- through the inode.
+let tamper = run ["sh" "-c" "sed 's/0x06, 24/0x07, 24/g' '${shadow}/std/crypto/sha3.zig' > '${shadow}/std/crypto/sha3.zig.tmp' && cat '${shadow}/std/crypto/sha3.zig.tmp' > '${shadow}/std/crypto/sha3.zig' && rm -f '${shadow}/std/crypto/sha3.zig.tmp'"]
 assert tamper.ok else "could not tamper sha3.zig in shadow"
 
 let same_check = run ["cmp" "-s" "${baseline}/std/crypto/sha3.zig" "${shadow}/std/crypto/sha3.zig"]

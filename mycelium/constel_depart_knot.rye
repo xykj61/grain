@@ -1,0 +1,96 @@
+//! mycelium/constel_depart_knot.rye -- the three-ship and four-ship rows of the roll's arithmetic, on metal.
+//!
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - Constel - the depart knot.
+//! Three real machines stand behind this composition: a cloud pier, a laptop, and a desk bench,
+//! wanting to run as one live constellation. The design that reads them
+//! (active-designing/20260825-173153_reprove-only-what-moved.md's sibling,
+//! active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md) leans on one table:
+//! at n=3 the Byzantine threshold tolerates zero ships down, and at n=4 it tolerates one. That
+//! table was derived from muster.rye's formula and stated in prose; a stated number starts
+//! rotting the moment it is typed, so this knot pins both rows by running them.
+//!
+//! Composes constel + constel_depart + muster + voucher public API only, editing none. The
+//! roster is the r1 dev-net's own five seated names, sliced to three and to four -- no new name,
+//! no new identity, the naming law honored by reuse. Demo seeds only: no key held, no funds, no
+//! network, no real value.
+//!
+//! Scope: active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_depart_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const muster = @import("muster.rye");
+const voucher = @import("voucher.rye");
+const constel = @import("constel.rye");
+const depart = @import("constel_depart.rye");
+
+pub const pk_len: u32 = constel.pk_len;
+pub const head_len: u32 = constel.head_len;
+
+// The r1 dev-net roster, verbatim from constel_depart.rye -- reused rather than reinvented, so
+// this knot adds proofs and zero names (see constel.rye for the naming law the five obey).
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+/// One row of the table, proven whole: boot the first `n` ships, assert the threshold and fault
+/// count the formula promises, believe every quorum down to the threshold, and refuse one below it.
+fn prove_row(n: u32, want_threshold: u32, want_f: u32, dag: anytype, account_pk: []const u8, expected_head: *const [head_len]u8) !void {
+    // invariant: a row is a genuine slice of the seated roster.
+    assert(n >= 1);
+    assert(n <= roster.len);
+
+    var c = try constel.boot(roster[0..n]);
+    const m = try constel.into_muster(&c);
+    const threshold = muster.byzantine_threshold(&m);
+    const f = (n - 1) / 3;
+
+    // invariant: the row reads exactly what the table stated in prose.
+    assert(threshold == want_threshold);
+    assert(f == want_f);
+    // invariant: the formula's own identity -- the most a roll can lose is its fault count.
+    assert(n - threshold == f);
+
+    var head: [head_len]u8 = undefined;
+
+    // Every believed width, from the full roster down to the threshold exactly.
+    var up: u32 = n;
+    while (up >= threshold) : (up -= 1) {
+        try depart.reach_quorum_up(&c, up, dag, account_pk, &head);
+        // invariant: a believed quorum agrees on the one true head.
+        assert(std.mem.eql(u8, head[0..], expected_head[0..]));
+    }
+
+    // One voice below the threshold: the honest edge, refused by name.
+    if (threshold >= 1) {
+        const r = depart.reach_quorum_up(&c, threshold - 1, dag, account_pk, &head);
+        // invariant: the refusal is BelowQuorum, never a wrong head.
+        assert(r == error.BelowQuorum);
+    }
+}
+
+pub fn main() !void {
+    const issuer = constel.seeded(0xF0);
+    const account = constel.seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    var dag = try constel.demo_genesis(issuer, account_pk[0..]);
+
+    var expected_head: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &expected_head);
+
+    // The table's first row: three ships, threshold three, zero may be down.
+    try prove_row(3, 3, 0, &dag, account_pk[0..], &expected_head);
+
+    // The table's second row: four ships, threshold three, one may be down --
+    // the passive fourth voice the design names, bought with a key rather than a machine.
+    try prove_row(4, 3, 1, &dag, account_pk[0..], &expected_head);
+
+    print("constel-depart-knot: the trio and quartet rows hold on metal -- n=3 tolerates zero down, n=4 tolerates one\n", .{});
+}
