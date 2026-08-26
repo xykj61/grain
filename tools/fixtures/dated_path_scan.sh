@@ -76,7 +76,36 @@ verb="${1:-census}"
 # the stamp sitting inside a longer filename rather than a reference at all. What remains is
 # **239 genuine references** the census had never counted, every one of them landing. The number
 # a wider and tighter meter reports is the same number, which is the most one can ask of a repair.
-LOST_CEILING=177   # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
+# THE CEILING ROSE ONCE, ON 20260826, AND ONLY A DEBRIDE CAN DO THAT. A ceiling that only falls is
+# a discipline against drift, and a custody-gated deep debride is the one act that is not drift: on
+# 20260825 the macOS bench removed counsel/date/20260730/20260730-150702_pole-bozo-djinn-murr-keaton.md
+# from the tree and from every commit, on Keaton's word. Three living files still cited it and were
+# repointed the next round; references in DATED TESTIMONY cite it still and always will, since
+# accrete-never-break holds their text and the page they name is gone by design. REDS %245.
+#
+# THE TWO NUMBERS WERE TRACED THE NEXT ROUND, and the answer was in the paragraph above this one.
+# Six runs across that round gave 178, then 182 three times, then 178 twice, and the round recorded
+# the shift as untraced. It reads two ways and both are measured (REDS %246):
+#
+#   182 -> 178, the LAST transition, is this comment block. Naming the removed page's full path
+#     here put a dated basename into authored code whose sprig names no file, so BOTH conjuncts of
+#     `dp_discovered_fixture_basenames` held and the census read the page as an instrument's
+#     planting. Five surviving references -- one in construction/REDS.md, three in
+#     expanding-prompts/date/20260730/, one in a session log -- stopped being counted, silently, on
+#     the same lap the ceiling rose to make room for them.
+#
+#   the FIRST transition is context/LEXICON.md, which carried exactly FOUR occurrences of that page
+#     at 7837b1d237 and carries none now. Repairing them lowered the count by four, which the round
+#     recorded as a rise because it read the direction from a story rather than from the diff.
+#
+# The census itself was never unstable: four consecutive runs on this tree, one of them beside a
+# live roster, produced byte-identical output at 178. It reported a tree that was being repaired
+# between readings. Discovery skips full-line comments now, and the page is LISTED in
+# dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
+# free to name it. Proven both ways: remove the listing and the same tree reads 183.
+LOST_CEILING=178   # 177 until 20260826.010645, when a deep debride removed a cited counsel page
+                   # that dated testimony still names;
+                   # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
                    # until 20260824.174500, when a citation swept by the Sala -> Seva rename was
                    # repointed at the dated filename that correctly never followed it; 186 until
                    # 20260824.193000, when planted fixture names began being DISCOVERED rather than

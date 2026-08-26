@@ -22,7 +22,6 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
-<<<<<<< HEAD
 ## 20260826.021017 -- walk-back `0118579172` -- GAUGE_STYLE re-voiced in the terra palette
 
 Keaton's word: the style guide molts in place into the light register of Kyri 6 -- the terra
@@ -30,7 +29,36 @@ palette woven through its imagery -- with every ceiling, table, number, and rule
 What waits at the walk-back: the prior phrasing of a guide whose rules do not move.
 
 
-=======
+## `20260826.022833` -- one tree, one number (walk-back `7837b1d237`)
+
+**Swept:** `construction/ITINERARY.md` -- the whole **Now** block, roughly 2,100 bytes describing
+the debride's wake, replaced by the census trace; the card reads **24,552** of 24,576.
+`construction/REDS.md` folded rows %243 and %244 onto
+[`archive/REDS-the-debrides-blast-radius-rows-243-244.md`](archive/REDS-the-debrides-blast-radius-rows-243-244.md),
+carrying the pin from 22,667 bytes to **19,923** so row %246 had somewhere to land.
+
+**What waits there, worth recalling:** the departing Now block held the pen-measured reflog readings
+of the rewritten-upstream rebase -- 7 replays with the reflog, 15 without -- which now live in row
+%243 on its shelf and in `tools/u/upstream_shape_witness.rish`. Nothing in the block was unique to
+it. Both folded rows stand whole on their shelf rather than at the nib, so the walk-back holds only
+their position on the pin.
+
+
+## `20260826.010645` -- the debride's wake (walk-back `7837b1d237`)
+
+**Swept:** `construction/SHRED_PREP.md` -- four closed sections (Pool to Pond, Riyo to Kyri, the
+root `.brix` descriptor, and the old-waymark shed) folded whole to
+[`archive/SHRED_PREP-four-seated-molts-20260810-20260818.md`](archive/SHRED_PREP-four-seated-molts-20260810-20260818.md),
+carrying the pin from **25,594 bytes to 22,250** against the 24,576 it declares. `construction/REDS.md`
+folded rows %237 through %241 onto their own shelf. `context/LEXICON.md` lost four citations of a
+counsel page the `20260825` deep debride removed, replaced by the seat named in prose.
+
+**What waits there, worth recalling:** the four molt sections stand whole on their shelf rather than
+at the nib, so the walk-back holds only their position on the pin. The LEXICON citations are the one
+thing genuinely departing -- four links to a counsel page removed on Keaton's word, whose seat is
+still recorded by stamp in the rows that replaced them.
+
+
 ## `20260826.001630` -- the two-dialect condense (walk-back `11b9e87321`)
 
 **Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the twelve leaf roots
@@ -44,7 +72,6 @@ refused an improvement, and the fourteen bare callers of the ledger scan -- with
 sing cost of 436 s for 33 leaves and the reach fall from 1,201 to 1,154. All of it stands at the
 walk-back nib, and the rows themselves are shelved at
 [`archive/REDS-the-leaves-that-sing-rows-233-236.md`](archive/REDS-the-leaves-that-sing-rows-233-236.md).
->>>>>>> bfcb7c8d7f (tools: one shell dialect, twelve sites gated)
 ## 20260825.234631 -- walk-back `0a1d3e51ef` -- the DJINN deep debride
 
 Keaton's word: the collaborator's name leaves the tree, the session logs, two filenames, and the
