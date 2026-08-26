@@ -90,6 +90,7 @@ allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residual
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
 allow cubist-bhakti-astrology      # the classical room reimagined; no personal readings live here
 allow arbor                        # spoken tiles for a voice reader; local authoring only, no service reached
+allow mitra                        # the shed discipline's door; documentation-first, no personal content
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
@@ -261,6 +262,7 @@ personal  counsel                         # decision records — "on the maintai
 personal  bron-resins                     # compressed personal reasoning trails
 personal  dexter                          # the terminal rebirth room; fills on the orbit, joins the seed when its first successor is GREEN
 scrub arbor                           # the spoken-tile room; ships depersonalized like every projected room on Keaton's word 20260826
+scrub mitra                           # the shed door; depersonalized like every projected room
 scrub cubist-bhakti-astrology         # the classical room reimagined through Kyri 6; no personal readings
 personal  construction                    # the live operator cards of one maintainer (renamed work-in-progress -> crux 20260816, crux -> construction 20260823.082418)
 personal  nixos                           # the pier host NixOS config (hostname, disk, packages) -- host-specific, never public
