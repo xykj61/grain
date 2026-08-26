@@ -50,7 +50,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `83a96c91c6` -- the fascia named, the friend seated, every host probed.
+**Git nib:** `038ee2329e` -- the friend's gate opens; the links stay inside the seed.
 
 **Now.** **Two piers merged, remotes renamed, Dream at work.**
 
