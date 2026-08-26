@@ -142,94 +142,7 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 
 ---
 
-## Class M -- mitra shed prep
-
-*Mitra is the deity of Anuradha in the roster this tree keeps time by, and the gloss is **the friendship kept in order**. A mitra shed prep treats a fossil as a friend being seen off rather than a weed being pulled: the living mutant seats first, the living citers repoint, the fossil gets a banner naming where the reading moved, and **the fossil stays on disk unchanged**. The cut stays RED until Keaton circles it, and it may never come -- a well-prepped fossil costs a directory entry and keeps a chapter readable.*
-
-*From `20260824.161948`, Class M rows also arrive by **grade**. The QA stack reads every artifact a sweep touches, and a report card below **B** pushes a molt frame; when the artifact is a dated writing, the frame lands here as a Class M row carrying the grade before and after. Rule: [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md) - scale and readings: [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md).*
-
-**The four things a mitra prep completes**, all before any cut is discussed:
-
-1. **The mutant is seated** at a fresh one-clock stamp and reads as the living page.
-2. **Living citers are repointed** at the mutant; dated testimony keeps every word it wrote.
-3. **The fossil wears a banner** at the top naming the living page and what changed.
-4. **The row is written here**, with the measurement, so a later pass reads rather than re-walks.
-
-### M-cal-a -- `foundations/20260728-221253_the-graph-beneath-the-surface.md` (`20260826.024939`)
-
-Living mutant `foundations/20260826-024939_the-graph-beneath-the-surface.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-cal-b -- `foundations/20260628-124512_anywhere-we-are-found.md` (`20260826.024940`)
-
-Living mutant `foundations/20260826-024940_anywhere-we-are-found.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-cal-c -- `foundations/20260628-133212_a-home-in-plain-text.md` (`20260826.024941`)
-
-Living mutant `foundations/20260826-024941_a-home-in-plain-text.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-cal-d -- `foundations/20260702-184312_the-grain-and-the-crossing.md` (`20260826.024942`)
-
-Living mutant `foundations/20260826-024942_the-grain-and-the-crossing.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-cal-e -- `foundations/20260706-185112_follow-our-compass.md` (`20260826.024943`)
-
-Living mutant `foundations/20260826-024943_follow-our-compass.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-cal-f -- `foundations/20260728-232511_lantern-lattice-kiln.md` (`20260826.024944`)
-
-Living mutant `foundations/20260826-024944_lantern-lattice-kiln.md`; the standfast molt of the chapter era, living citers repointed, fossil bannered whole; cut RED until circled.
-
-### M-bit-a -- `foundations/20260728-220203_realidream.md` (`20260825.233310`)
-
-| Reading | Value |
-| --- | --- |
-| Living mutant | [`../foundations/20260825-233310_realidream.md`](../foundations/20260825-233310_realidream.md) |
-| What accreted | one section, *the chapter opens -- DJINN is ready* (the pause lifted, gate %6 standing) |
-| Living citers repointed | LEXICON, foundations/README, the gratitude note, four chapter witnesses |
-| Fossil | bannered on its face, body whole; cut RED until circled |
-
-### M-bit-b -- `expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md` (`20260825.233311`)
-
-| Reading | Value |
-| --- | --- |
-| Living mutant | `expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md` |
-| What accreted | one section, *the word arrives -- 20260825* (WADE0 door, WADE1 bridge, WADE3 IaC named live) |
-| Living citers repointed | none stood |
-| Fossil | bannered on its face, body whole; cut RED until circled |
-
-### M-sync-a -- `foundations/20260813-142420_mycelium-the-consensus-protocol.md` (`20260825.211055`)
-
-| Reading | Value |
-| --- | --- |
-| Living mutant | [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md) |
-| What accreted | one section, *the interim carriage -- git as the first Cord* (REDS %230, the sync rota, the derived spine) |
-| Living citers repointed | foundations/README.md, mycelium/README.md (session-log shelves stay immutable) |
-| Fossil | bannered on its face, body whole; cut RED until circled |
-
-### M-sync-b -- `foundations/20260823-222018_what-mantra-is.md` (`20260825.211056`)
-
-| Reading | Value |
-| --- | --- |
-| Living mutant | [`../foundations/20260825-211056_what-mantra-is.md`](../foundations/20260825-211056_what-mantra-is.md) |
-| What accreted | one section, *two writers, one promise* (per-writer names, the derived row number, the package at a send) |
-| Living citers repointed | README.md, docs-geode/tutorials/the-first-hour.md |
-| Fossil | bannered on its face, body whole; cut RED until circled |
-
-### M1 -- `foundations/20260618-182412_single-stranded.md` (`20260823.204456`)
-
-| Reading | Value |
-| --- | --- |
-| Living mutant | [`../foundations/20260823-204456_single-stranded.md`](../foundations/20260823-204456_single-stranded.md) |
-| Register | Radiant **23%** negative sentences -> Gauge Door **9%** |
-| Citing files, total | 29 |
-| Living citers repointed | **6** |
-| Dated citers left as written | 23 |
-| Fossil banner | seated |
-| Cut | **RED** -- awaiting Keaton's word |
-
-Every claim, module name, and argument carries over. The elder is the record of how the finding read in Radiant on `20260618.182412`; the mutant is how it reads now.
-
-**One red rode along and is worth reading beside this row.** Repointing the living citers by hand used the pattern `^\d{8}-\d{6}_` to tell testimony from living prose, which requires a sprig the session-logs law makes optional -- so two dated logs were rewritten and reverted. The tree's own canonical seam carried the same error, leaving 237 logs classified as living and open to the dated-path repointer. **REDS %175.**
+## The molt queue -- candidates, not yet prepped
 
 ### Q -- the molt queue, added `20260823.223157`
 
@@ -257,19 +170,15 @@ Every claim, module name, and argument carries over. The elder is the record of 
 
 **None of the four is a candidate for a cut**, and two different molts are named here. The three living paths molt *in place under a checkpoint* -- the W2 rule above -- because a living path with inbound references keeps its name. The dated foundation molts the other way: a mutant seats at a fresh stamp, the fossil stays banner-marked, and living citers repoint, which is the M1 shape. The queue row exists so each molt is remembered rather than rediscovered, and so the right one is used.
 
-### M2 -- `foundations/20260821-035846_every-climate-has-a-fiber.md` (`20260824.003828`)
+## Shed complete -- the mitra shed, circled `20260826.032839`
 
-| Reading | Value |
-| --- | --- |
-| Living mutant | [`../foundations/20260824-003828_every-climate-has-a-fiber.md`](../foundations/20260824-003828_every-climate-has-a-fiber.md) |
-| Register | Radiant **40%** negative sentences -> Gauge Door **17%** |
-| Length | 2,441 words, unchanged in substance |
-| Living citers repointed | **1** |
-| Fossil banner | seated |
-| Cut | **RED** -- awaiting Keaton's word |
+Keaton circled the prepped mitra shed on `20260826` to complete fascia restoration. Twelve
+fossils cut, every one with its living mutant standing GREEN and its living citers repointed
+before the cut: the six chapter-era calendar molts (graph-beneath, anywhere-we-are-found,
+a-home-in-plain-text, the-grain-and-the-crossing, follow-our-compass, lantern-lattice-kiln),
+the two bit-chapter molts (realidream `20260728-220203`, the WADE plan `20260811-220402`), the
+two sync molts (mycelium `20260813-142420`, what-mantra-is `20260823-222018`), single-stranded
+`20260618-182412`, and every-climate `20260821-035846`. Six pond sources repointed to the living
+realidream in the same pass; shelf indexes and the radiant pass ledger keep their rows as
+records. The full prep detail rests in this file's own history at the walk-back of the cut.
 
-**The three water refusals become the three practices they are** -- plant-raised fertility, field retting, closed-loop finishing -- with each refusal named once inside its practice rather than standing as the heading. That is the *state what holds, then name the exception once* move, applied to the section that carried most of the elder's negation.
-
-**Claim preservation was checked rather than assumed**, and the check caught a real loss. Diffing the crop set between fossil and mutant showed **cotton had gone**: the elder names it explicitly among the fibres this project declines, and a rewrite that merely listed the three it prefers dropped a load-bearing exclusion. Restored, stated positively, with cotton and the synthetics named. The climate table's seven rows, every number, and the four limits carry over intact.
-
-*A register pass is proven by diffing the sets it must not change -- numbers, paths, and here the crops. The one it dropped is the one no reader would have missed until the policy mattered.*

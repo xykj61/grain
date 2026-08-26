@@ -4,7 +4,7 @@
 //! Journey 2 built the reading of the Mantra log; Journey 4 built the writing of the
 //! program. Realidream promises both at once, on one graph -- and its foundation names
 //! the motion exactly: two sources can feed one node, so separate inputs fuse cleanly
-//! into a single view (foundations/20260728-220203_realidream.md). This rung opens that
+//! into a single view (foundations/20260825-233310_realidream.md). This rung opens that
 //! fusion: a *read lane* -- a fetched or pinned fragment of an outside source, held as
 //! revision content under its own `read/` path -- is a lane like any other, and the very
 //! same `mantra_browser.render` paints it beside the program lanes.

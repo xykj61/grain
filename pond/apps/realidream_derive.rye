@@ -5,7 +5,7 @@
 //! append, exactly as an edit is. Both left the two lanes independent -- a read and a
 //! program sharing a graph, yet neither feeding the other. This rung draws the edge the
 //! Realidream foundation names most directly: two sources can feed one node
-//! (foundations/20260728-220203_realidream.md). Here a *program* node is derived from a
+//! (foundations/20260825-233310_realidream.md). Here a *program* node is derived from a
 //! *read* node -- its content is a pure function of the read lane's current head -- so the
 //! read is no longer beside the program but *upstream* of it.
 //!

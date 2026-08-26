@@ -4,7 +4,7 @@
 //! Journey 2 built the reading half of Realidream's promise -- the append-only log
 //! rendered as a readable, themeable revision graph. This rung opens the writing
 //! half. Realidream promises reading the web and writing the program on *one* graph
-//! (foundations/20260728-220203_realidream.md); the crux of the editor is that an
+//! (foundations/20260825-233310_realidream.md); the crux of the editor is that an
 //! edit is not a buffer beside the log to be reconciled -- an edit *is* a new
 //! revision appended to the Mantra catalog, and the very same `mantra_browser.render`
 //! paints the grown graph. The surface holds no state the history does not: that is
