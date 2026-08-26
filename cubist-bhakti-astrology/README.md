@@ -29,6 +29,16 @@ exactly as the classical room already keeps them.
 
 | Stamp | Twin |
 |---|---|
+| `20260826.052941` | [Moon in the Twelfth House -- the Dream and the Hush](20260826-052941_moon-in-the-12th-house.md) |
+| `20260826.052942` | [The Moon in the Sixth House -- the Water That Wears the Stone](20260826-052942_moon-in-the-6th-house.md) |
+| `20260826.052943` | [The Sun in the Twelfth House -- the Lamp in the Hush](20260826-052943_sun-in-the-12th-house.md) |
+| `20260826.052944` | [The Sun in the Seventh House -- the Setting Light](20260826-052944_sun-in-the-7th-house.md) |
+| `20260826.052945` | [Jupiter in Virgo in the Eleventh House -- the Mind Among Friends](20260826-052945_jupiter-in-virgo-in-the-11th.md) |
+| `20260826.052946` | [Mercury in Virgo in the Eleventh House -- the Mind Among Friends](20260826-052946_mercury-in-virgo-in-the-11th.md) |
+| `20260826.052947` | [Saturn in the Ninth House -- the Pilgrim and the Shrine](20260826-052947_saturn-in-the-9th-house.md) |
+| `20260826.052948` | [The Undivided Heart -- Promise, Patience, and the Two Doors](20260826-052948_devotion-patience-and-partnership.md) |
+| `20260826.052949` | [A Planet's Passage -- the Arc and the Spiral](20260826-052949_a-planets-passage-as-maturation.md) |
+| `20260826.052950` | [The Hinge of the Lights -- One Turning, Both Skies](20260826-052950_the-hinge-of-the-lights.md) |
 | `20260826.051929` | [Moon in Libra -- the Scale That Feels](20260826-051929_moon-in-libra.md) |
 | `20260826.051930` | [Moon in Capricorn -- the Heart That Climbs](20260826-051930_moon-in-capricorn.md) |
 | `20260826.051931` | [Moon in Leo -- the Lamp and the Mirror](20260826-051931_moon-in-leo.md) |
