@@ -9,6 +9,12 @@ say "e102-fascia-chase: Language EN — control first; then re-cut the connectiv
 say "e102-fascia-chase: Style Radiant — pins reform when a round re-cuts; window catches falls."
 say "e102-fascia-chase: Lens TAME — e102 · fascia chase · almanac seat 106 · ch7 10/16."
 
+let fascia_control = run ["sh" "tools/fixtures/equinox_e102_fascia_chase_control.sh"]
+say fascia_control.out
+assert fascia_control.ok else "e102-fascia-chase: current/history seam control RED"
+assert fascia_control.out contains "current 51 welcomed" else "e102-fascia-chase: want later living grade welcomed"
+assert fascia_control.out contains "current 101 and missing seated 92 refused" else "e102-fascia-chase: want both planted refusals"
+
 let control = run ["rishi/bin/rishi" "run" "tools/gen/chapter/census_control_witness.rish"]
 say control.out
 assert control.ok else "e102-fascia-chase: census control must GREEN before chase"
@@ -31,12 +37,14 @@ assert scan.out contains "control_gate=honored" else "e102-fascia-chase: want co
 assert scan.out contains "chase_saga=honored" else "e102-fascia-chase: want saga seated"
 assert scan.out contains "chase_memcpy=honored" else "e102-fascia-chase: want memcpy chase"
 assert scan.out contains "chase_fascia=honored" else "e102-fascia-chase: want fascia chase"
-assert scan.out contains "chase_fascia_grade=" else "e102-fascia-chase: want fascia grade line"
-assert scan.out contains "chase_class_a_floor=" else "e102-fascia-chase: want class A floor line"
+assert scan.out contains "chase_fascia_grade_current=" else "e102-fascia-chase: want current fascia grade"
+assert scan.out contains "chase_fascia_grade_seated=92" else "e102-fascia-chase: want seated fascia grade"
+assert scan.out contains "chase_fascia_history=honored" else "e102-fascia-chase: want fascia history"
+assert scan.out contains "chase_class_a_seated=4" else "e102-fascia-chase: want seated Class A reading"
 assert scan.out contains "chase_fork_status=not_consumed" else "e102-fascia-chase: want fork waiting"
 assert scan.out contains "chase_almanac=honored" else "e102-fascia-chase: want almanac"
 assert scan.out contains "chase_shelf_end=ep045" else "e102-fascia-chase: want shelf end"
 assert scan.out contains "e102_fascia_chase=ok" else "e102-fascia-chase: want e102 ok"
 assert scan.out contains "verdict=ok" else "e102-fascia-chase: want verdict=ok"
 
-say "GREEN: e102-fascia-chase — control proven · saga SEATED · memcpy 0 · signal1 0 · class A paper 4 · fascia 92 · fork waiting · museum"
+say "GREEN: e102-fascia-chase -- control proven; saga SEATED; memcpy cleared; seated Class A 4 and fascia 92; current fascia reported; fork waiting; museum"

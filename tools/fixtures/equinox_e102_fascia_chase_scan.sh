@@ -5,16 +5,17 @@
 #
 #   sh tools/fixtures/equinox_e102_fascia_chase_scan.sh
 #
-# Law: re-cut meters this sitting; Class A paper lean held (u89).
+# Law: the living meter reports this sitting; the almanac preserves the seated
+# 85-to-92 event. Later tree growth cannot rewrite either reading into the other.
 # Saga seating already on disk (e101) -- counsel A consumed.
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-ALMANAC=rye-learning-process/GLOW_ALMANAC.md
+ALMANAC="${ALMANAC:-rye-learning-process/GLOW_ALMANAC.md}"
 SAGA_PROSE=saga/20260731-130200_saga-of-the-commence-arc.md
 PRIN=tools/gen/chapter/prin_scope.rish
 WIRE=comlink/discovery/round_trip_wire.rye
-FASCIA_SH=tools/fixtures/fascia_metric_v0.sh
+FASCIA_SH="${FASCIA_SH:-tools/fixtures/fascia_metric_v0.sh}"
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"
@@ -63,7 +64,7 @@ if rg -q '@memcpy\(' "$WIRE"; then
 fi
 echo "chase_memcpy=honored"
 
-# --- fresh fascia measure (must not append-only trust; re-run instrument) ---
+# --- fresh fascia measure beside the seated historical reading ---
 # Capture measure output; window will append one row -- acceptable for living pin.
 FASCIA_OUT=$(sh "$FASCIA_SH" measure)
 echo "$FASCIA_OUT"
@@ -72,35 +73,55 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'memcpy_app=0' || {
+echo "$FASCIA_OUT" | rg -q '^metric_rev=i9$' || {
   echo "chase_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_memcpy_app_0"
+  echo "detail=want_metric_rev_i9"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'signal:superseded=0' || {
+for signal in superseded ratchet_outstanding target_class_a over70; do
+  echo "$FASCIA_OUT" | rg -q "^signal:${signal}=" || {
+    echo "chase_fascia=failed"
+    echo "verdict=misread"
+    echo "detail=want_live_signal_${signal}"
+    exit 1
+  }
+done
+echo "$FASCIA_OUT" | rg -q '^window_carry=honored ' || {
   echo "chase_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_signal1_zero"
+  echo "detail=want_window_carry"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'signal:ratchet_outstanding=0' || {
+FASCIA_GRADES=$(echo "$FASCIA_OUT" | sed -n 's/^fascia=\([0-9][0-9]*\)$/\1/p')
+FASCIA_COUNT=$(printf '%s\n' "$FASCIA_GRADES" | sed '/^$/d' | wc -l | tr -d ' ')
+FASCIA_GRADE=$(printf '%s\n' "$FASCIA_GRADES" | head -n1)
+if test "$FASCIA_COUNT" -ne 1 || test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -gt 100; then
   echo "chase_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_ratchet_zero"
-  exit 1
-}
-# e102 chase floor: fascia >= 92. Later i7 may raise grade further (elder stays green).
-FASCIA_GRADE=$(echo "$FASCIA_OUT" | rg -o 'fascia=[0-9]+' | head -n1 | cut -d= -f2)
-if test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -lt 92; then
-  echo "chase_fascia=failed"
-  echo "verdict=misread"
-  echo "detail=want_fascia_at_least_92"
+  echo "detail=want_one_fascia_in_range_0_100"
   exit 1
 fi
+
+# E102's 92 is a fact about the seated event, not a floor on every later tree.
+# Read it from the tracked almanac while the living meter reports today's grade.
+rg -q '^### 106[.] Equinox e102 fascia chase:.*fascia 85.*92[.]$' "$ALMANAC" || {
+  echo "chase_fascia_history=failed"
+  echo "verdict=misread"
+  echo "detail=want_e102_fascia_85_to_92_seat"
+  exit 1
+}
+rg -q '^Expected .*chase_fascia_grade=92 .*Metal answered GREEN[.]' "$ALMANAC" || {
+  echo "chase_fascia_history=failed"
+  echo "verdict=misread"
+  echo "detail=want_e102_fascia_92_metal_receipt"
+  exit 1
+}
 echo "chase_fascia=honored"
-echo "chase_fascia_grade=${FASCIA_GRADE}"
-echo "chase_class_a_floor=held_or_refined"
+echo "chase_fascia_grade_current=${FASCIA_GRADE}"
+echo "chase_fascia_grade_seated=92"
+echo "chase_fascia_history=honored"
+echo "chase_class_a_seated=4"
 echo "chase_class_a_law=u89_paper_then_hold_or_refine"
 
 # --- fork still unconsumed ---
