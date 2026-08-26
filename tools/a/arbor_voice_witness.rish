@@ -1,0 +1,20 @@
+# arbor_voice_witness.rish -- Arbor Brix authoring and spoken-value boundary.
+#
+# Proves the Brix declaration renders byte for byte to the metadata-free Arbor
+# value, the live Scribble/Lattice/Lantern/Ember seams still exist, and metadata
+# is refused. Preservation of the elder launcher is checked in the change itself.
+#
+#   rishi/bin/rishi run tools/a/arbor_voice_witness.rish
+
+let verify = run ["sh" "arbor/author.sh" "verify" "arbor/launch-chatgpt-chapter.brix"]
+assert verify.ok else "Arbor descriptor and readable value disagree"
+assert verify.out contains "tiles=8" else "Arbor must hold the eight-tile Lattice shape"
+
+let read = run ["sh" "arbor/author.sh" "check" "arbor/launch-chatgpt-chapter.arbor"]
+assert read.ok else "Arbor readable value failed its spoken boundary"
+assert read.out contains "GREEN" else "Arbor readable value did not report GREEN"
+
+let metadata_refusal = run ["sh" "-c" "d=$(mktemp -d arbor/.refusal.XXXXXX); printf 'title Hidden metadata.\n' > $d/bad.arbor; sh arbor/author.sh check $d/bad.arbor >/dev/null 2>&1; s=$?; rm -f $d/bad.arbor; rmdir $d; test $s -ne 0"]
+assert metadata_refusal.ok else "Arbor accepted metadata as spoken prose"
+
+say "GREEN: Arbor voice -- Brix authors eight ordered tiles; Scribble, Lattice, Lantern, and Ember bounds hold; metadata stays outside."

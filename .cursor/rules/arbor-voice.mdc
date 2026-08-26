@@ -1,0 +1,23 @@
+---
+description: Arbor voice tiles are metadata-free spoken prose for New Gauge TTS reading
+globs: "**/*.arbor"
+alwaysApply: false
+---
+
+# Arbor voice tiles
+
+An `.arbor` file is the readable artifact. Write only words that should be spoken aloud.
+
+- Use New Gauge Style in its Door setting: warm, plain, affirmative, and easy to follow by ear.
+- Keep one paragraph tile on one physical line, with one blank line between tiles.
+- Keep the whole file within Scribble's document bound, at most eight tiles for Lattice's shape,
+  and each tile within Lantern's local prompt bound.
+- Put titles, voice names, versions, paths, catalogs, and tile ordering in a neighboring `.brix`
+  or `.bron` sidecar. The `.arbor` file carries none of them.
+- Write numbers as words. Expand abbreviations and symbolic instructions into natural speech.
+- Leave out headings, front matter, lists, links, code fences, stage directions, SSML, commands,
+  paths, flags, sentinels, and other operational syntax.
+- End each tile as a complete spoken thought. Read the whole file aloud before it stands.
+
+Validate with `sh arbor/author.sh check <path>.arbor`. When a Brix source exists, also run
+`sh arbor/author.sh verify <path>.brix` so the readable tile and its external declaration agree.
