@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.075023` | [the clock that spoke one dialect](20260826-075023_the-clock-that-spoke-one-dialect.kyri) | the date family to zero; the clock witness joins the roster |
 | `20260826.063705` | [one dialect, twelve sites](20260826-063705_one-dialect-twelve-sites.kyri) | the xargs family to zero; the exec-bit gate was reading nothing on the second pier |
 | `20260826.053017` | [forty twins, the grid dressed](20260826-053017_forty-twins-the-grid-dressed.kyri) | pass five: the house family whole, every palette pair worn, the seed on cadence |
 | `20260826.052004` | [thirty twins, the air enters](20260826-052004_thirty-twins-the-air-enters.kyri) | pass four: moons, Venus, the shadow pairs, first houses; roster at thirty |

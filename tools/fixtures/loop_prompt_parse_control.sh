@@ -53,9 +53,12 @@ PEN
 out=$($scan "$pen/prose.txt" 2>&1)
 case "$out" in *"verdict=every_printed_line_parses"*) report prose_apostrophe_free ok ;; *) report prose_apostrophe_free red ;; esac
 
-# The outer loop's own opening assignment is measured too, not only the jail elder.
+# The outer loop's own opening assignment is measured too, not only the jail elder. The plant is
+# a byte-faithful copy of what tools/l/launch-claude-chapter.rish actually prints, so it moves
+# when the recipe moves -- a fixture that has drifted from its subject measures a line nobody
+# runs. The unbalanced `do echo (` at the end is the deliberate break this case asks about.
 cat > "$pen/loop.txt" <<'PEN'
-   D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s); while [ $(date +%s) -lt $D ]; do echo (
+   D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do echo (
 PEN
 out=$($scan "$pen/loop.txt" 2>&1); rc=$?
 case "$out" in *"verdict=printed_line_does_not_parse"*) [ $rc -eq 4 ] && report outer_loop_measured ok || report outer_loop_measured red ;; *) report outer_loop_measured red ;; esac

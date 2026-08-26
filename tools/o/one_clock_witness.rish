@@ -51,7 +51,12 @@ let pass_prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_STAMPS='${host_dot}' sh too
 say pass_prov.out
 assert pass_prov.ok else "provenance PASS fixture failed — live clock stamp must pass"
 
-let ahead = run ["sh" "-c" "TZ=America/New_York date -d '+4 hours' +%Y%m%d.%H%M%S"]
+# THE SHIFT NEEDS NO EXTENSION; THE FORMATTING DOES. `date -d '+4 hours'` is GNU-only and comes
+# back empty under the BSD `date` macOS ships, so this fixture built an EMPTY stamp and the FAIL
+# leg passed for the wrong reason -- the scan called an empty string unparsable rather than four
+# hours ahead (REDS %250). Adding seconds to `date +%s` is arithmetic every host spells alike;
+# only turning that epoch back into a stamp wanted a dialect answer, and stamp_ahead holds it.
+let ahead = run ["sh" "-c" "export TZ=America/New_York; . tools/fixtures/shell_portable.sh; stamp_ahead 14400"]
 assert ahead.ok else "could not compute four-hours-ahead stamp"
 let ahead_dot = trim ahead.out
 let fail_prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_STAMPS='${ahead_dot}' sh tools/fixtures/one_clock_provenance_scan.sh"]
@@ -78,7 +83,7 @@ say head_pass.out
 assert head_pass.ok else "head PASS fixture failed -- a stamp read from the live clock must pass"
 assert head_pass.out contains "HEAD_OK" else "head PASS fixture must emit HEAD_OK"
 
-let head_ahead = run ["sh" "-c" "TZ=America/New_York date -d '+4 hours' +%Y%m%d.%H%M%S"]
+let head_ahead = run ["sh" "-c" "export TZ=America/New_York; . tools/fixtures/shell_portable.sh; stamp_ahead 14400"]
 assert head_ahead.ok else "could not compute a four-hours-ahead head stamp"
 let head_ahead_dot = trim head_ahead.out
 let head_fail = run ["sh" "-c" "ONE_CLOCK_HEAD_STAMPS='${head_ahead_dot}' sh tools/fixtures/one_clock_head_scan.sh"]

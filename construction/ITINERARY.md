@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **67 guards** stand -- **64 on the every-lap tier, 3 on the cadence tier** -- counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `sh tools/fixtures/standing_equipment_run.sh --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index **refuses** under `run_verdict=lap_unclosed` before the first guard, because staged paths at a lap's open belong to whoever ran last; `--hot` is how a round says they are its own, and the flags compose (REDS %223). The runner digests the tree at the open and again at the close and refuses under `run_verdict=tree_moved` when they differ, because a run spread across two trees answers nothing -- and editing the runner itself mid-run kills the shell outright (REDS %221). **70 guards** stand -- **67 on the every-lap tier, 3 on the cadence tier** -- counted from the roster's own scan rather than recited; the roster is `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` means every run, `cadence` means the fifth round. **On the cadence lap run `sh tools/fixtures/standing_equipment_run.sh --all`**, which sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it -- three times now (REDS %188, %220, %223). No guard can *enforce* the close, since one would have to run after the lap ends. What a guard **can** do is refuse to open the next lap over the wreckage, and that is where the runner now stands: `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -55,37 +55,37 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `62165a40ba` -- one dialect for twelve sites; %255 booked, %249 shelved.
 
-**Now.** **One dialect for twelve sites, and a gate that had been guarding nothing.**
-Twelve `xargs -a` / `-d '\n'` sites across seven guards moved to two functions in
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) --
-`xargs_lines` and `xargs_lines_batched`, which carry a newline-delimited path list through
-`tr '\n' '\0' | xargs -0` in a spelling GNU and BSD userland both accept. The gated family reads
-**0 of 0** and its ceiling fell **12 -> 0**, so the next GNU-only `xargs` reds on the lap it arrives.
+**Now.** **The clock spoke one dialect, and the guard that would have said so ran on no lap.**
+`date -d` is a GNU extension BSD spells `-j -f`, `-r`, and `-v+4H`. Seven tracked lines carried it
+and moved to three functions in
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) -- `stamp_epoch`,
+`epoch_stamp`, `stamp_ahead` -- each trying GNU's spelling and falling back to BSD's, **GNU first
+because `-r` names an epoch on BSD and a FILE's mtime on GNU.** The family is **gated at zero**
+now rather than advisory: it earned the gate by costing a real reading.
 
-**What the repair found is worse than the count.** `tools/fixtures/exec_bit_scan.sh` reads
-`directly_invoked=18` on GNU and **0** under an `xargs` that refuses those flags as BSD's does --
-and prints `verdict=ok` both times. So on the macOS bench the exec-bit gate held at zero, enforced,
-over a population it could not see. **REDS %249 is CLOSED, proven from both sides on metal:**
-`tools/e/exec_bit_witness.rish` fails at its line 53 on `invoked_seen=yes` with the elder spelling
-under the shim, and reads GREEN with the repair. The guard now proves this by behaviour every run --
-`shell_dialect_scan.sh prove-portable` reads a real guard on both dialects, keeps a planted elder
-copy that must still zero, and refuses a plant that reads nothing on GNU, since a plant that cannot
-speak proves nothing by its silence.
+**What the repair found is worse than the count, again.**
+`tools/fixtures/one_clock_provenance_scan.sh` read `PROV_OK` twice on GNU and **zero** under a
+BSD-shaped `date`, calling every stamp in the tree unparsable -- and
+`tools/o/one_clock_witness.rish`, which the one-clock law itself calls **blocking**, stood on
+**none** of the sixty-nine roster rows. So the tree's most-cited law had a guard that was wrong on
+one pier and scheduled on neither. Both closed: the witness is GREEN under the shim, and
+`one_clock` is seated on the every-lap tier (roster **69 -> 70**).
 
-**%250 narrowed to one family, by widening the meter.** The dated-path census half was the same
-`xargs` family and moved with it. The clock half has a different root: `date -d` is a GNU extension
-BSD spells `-v+4H`, and it sits in `one_clock_provenance_scan.sh:27`, `one_clock_head_scan.sh:45`
-and `tools/o/one_clock_witness.rish:54,81`. The scan counts it now -- **advisory_date_d=9** -- so
-the next lap converts a measured list rather than a remembered one.
+**Four roots booked, %250 CLOSED.** **%256** -- a shelf moves a file's depth and strands the links
+written *inside* it, which is %253's molt lesson turned the other way up; caught by `readme_reach`.
+**%257** -- a tracked symlink put one file on the roster twice, so the family read **nine** where
+seven lines carry it. **%258** -- the off-roster clock witness. **%259**, mine: the new proof leg
+pinned `living_bsd_shaped=2` one paragraph after quoting the rule against pinning constants, and
+the count moved to 3 when this round staged its own log. **Only the hot roster could catch it** --
+the fault exists only over a dirty index, which is the state `--hot` was built to measure (%174).
+The spine reads **1..259**, no gaps; %250, %253, %256 and %257 rest on shelves.
 
-**The next doors.** **`main` stays unpushed and the integration is still Keaton's word** -- REDS
-%248 reserved it, and this round did not overturn it either. This package is parked additively
-beside the last one; `git merge --ff-only` lands whichever he chooses, and the elder parks are
-untouched, so nothing is lost either way. Agent-doable next: the **nine `date -d` sites** (%250's
-remaining half, a measured list), then the four advisory families the same meter already counts --
-`grep -P` 6, `readlink -f` 5, `sed -i` 5, `stat -c` 2. Also his, unchanged: the **row-number
-allocation** (%230, %252), a **molt-aware resolver** (%253), a **pre-push refusal**, and a
-**debride announcing itself**.
+**The next doors.** **`main` stays unpushed and the integration is still Keaton's word** -- %248
+reserved it and nothing since overturned it; three packages now park additively behind it.
+Agent-doable next, a measured list the same meter already prints: `grep -P` **6**, `readlink -f`
+**5**, `sed -i` **5**, `stat -c` **2**. Also his, unchanged: the **row-number allocation** (%230,
+%252), a **molt-aware resolver** (%253), a **pre-push refusal** and the send-order guard (%255),
+and a **debride announcing itself**.
 
 ---
 ## Landed arcs
@@ -224,7 +224,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.063705` | Twelve xargs sites to one portable helper; %249 CLOSED both sides on metal; %250 narrowed to `date -d` | [log](../session-logs/20260826-063705_one-dialect-twelve-sites.kyri) |
+| `20260826.075023` | Seven `date -d` lines to three portable functions; %250 CLOSED both sides on metal; %256, %257, %258 booked; `one_clock` seated on the roster | [log](../session-logs/20260826-075023_the-clock-that-spoke-one-dialect.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

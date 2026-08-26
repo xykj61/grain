@@ -1,0 +1,21 @@
+# REDS -- references the machinery could not see (rows %256, %257)
+
+**Language:** EN
+**Status:** Shelf -- immutable once written
+**Voice:** Kyri
+**Folded:** `20260826.083012` from [`../REDS.md`](../REDS.md), both **CLOSED**.
+
+Two rows from one lap, and one sentence holds them: this tree's reference machinery reads
+**basenames**, and both of these are references a basename cannot describe. A shelf moves a file's
+depth, so the relative links written *inside* the moved text point one directory short -- and the
+repointer, which matches basenames in living files, has nothing to say about a `../` that changed
+meaning. A tracked symlink gives one source a second name, so a roster built from `git ls-files`
+lists it twice and every line in it counts twice -- and again, both names have the same basename
+only by accident of the link.
+
+Read them beside [`REDS-the-molt-that-stranded-its-own-name-rows-253.md`](REDS-the-molt-that-stranded-its-own-name-rows-253.md),
+which is the third face of the same shape: a molt moves the name and strands the references *to* it.
+
+**REDS %256 (`20260826.074535`) -- a row shelved one directory deeper kept the relative link it wrote at the old depth.** *What went wrong:* the previous lap lifted REDS row %249 from `construction/REDS.md` onto `construction/archive/REDS-the-gate-that-guarded-nothing-rows-249.md`. The row's body cited `[../tools/fixtures/shell_portable.sh]`, which was correct from `construction/` and names `construction/tools/...` from `construction/archive/`. The shelf's own prose, written fresh in the same commit, spelled the same file `../../tools/...` correctly -- so the file disagreed with itself, one link right and one link one hop short. *What caught it:* the round-open cold roster, `readme_reach` red at `verdict=living_link_broken`, naming the file and the link on its own line. *What it taught:* **a fold keeps a file's depth and a shelf changes it, so a shelf owes every relative link inside the moved text a repoint.** This is REDS %253's molt lesson turned the other way up: %253 found that a molt moves the *name* and strands references *to* it, and this row finds that a shelf moves the *depth* and strands references *from* it. The tree's repointing machinery reads links in living files by basename and had nothing to say about either. A shelf is written once and immutable, which makes the link inside it permanent too -- so the pass that writes it is the only pass that can get it right. *Repaired:* one link, `../tools/` to `../../tools/`, and `tools/r/readme_reach_witness.rish` is GREEN with its control proving both directions -- a living break bitten and named, testimony reported and never gated. **CLOSED.**
+
+**REDS %257 (`20260826.075023`) -- a tracked symlink put one file on the roster twice, and the meter counted its lines twice.** *What went wrong:* `tools/fixtures/shell_dialect_scan.sh` builds its roster with `git ls-files -- '*.sh' '*.rish' 'tools/hooks/*'`, which names `pond/apps/corpora/one_clock.rish` -- a tracked symlink, mode `120000`, pointing at `tools/o/one_clock_witness.rish`, which is already on the roster. `grep` follows the link, so every line of that witness was read and counted twice. The `date -d` family read **nine** sites across the tree where **seven** lines carry it, and the previous lap's card, log, and REDS row all carried the nine. *What caught it:* reading the meter's own site list file by file before repairing it, and noticing two entries naming the same two line numbers under two paths. *What it taught:* **a roster built from `git ls-files` names sources, and a symlink is a second name for a source already named.** In the advisory tier the cost is a number that overstates the work; in the gated tier it would be worse, naming a size no edit can reach -- a ceiling of zero met by a file that must be edited twice to fall once. Git already answers which entries these are, in the mode column, so the roster asks rather than guesses. *Repaired:* the roster reads `git ls-files -s`, drops mode `120000`, and prints `roster_symlinks_skipped=1` -- because a number skipped in silence is a number nobody can check. *The limit, named:* a symlink pointing OUT of the roster's own globs would go unmeasured, and the one tracked symlink among this tree's shell sources targets a file already on the roster. **CLOSED.**

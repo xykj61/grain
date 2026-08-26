@@ -30,6 +30,11 @@
 # past KEEP should ever rest on a low count without its age standing next to it.
 
 set -e
+
+# `date -d` is a GNU extension. Read under a BSD `date` the parse fails, the fallback answers
+# "now", and every artifact prints age=0d -- a wrong age that looks exactly like a young one. The
+# portable parse lives beside this tree's other dialect answers.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/../fixtures/shell_portable.sh"
 COUNT="${1:-4}"
 cd "$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 
@@ -49,6 +54,6 @@ ls active-designing/*.md \
              | grep -v "^$f\$" \
              | wc -l | tr -d ' ')
       stamp_day=$(echo "$base" | cut -c1-8)
-      age_days=$(( ( $(date +%s) - $(date -d "$stamp_day" +%s 2>/dev/null || echo "$(date +%s)") ) / 86400 ))
+      age_days=$(( ( $(date +%s) - $(stamp_epoch "$stamp_day" 2>/dev/null || date +%s) ) / 86400 ))
       printf '%s\tinbound=%s\tage=%sd\n' "$base" "$refs" "$age_days"
     done

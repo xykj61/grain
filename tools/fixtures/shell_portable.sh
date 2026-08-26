@@ -1,13 +1,17 @@
 # tools/fixtures/shell_portable.sh -- one shell dialect for the guards, on both piers.
 #
-# WHAT THIS IS FOR. A scan usually gathers a list of paths into a file and then runs one command
-# over all of them. This file answers that single question -- how do the paths reach the command --
-# once, in a spelling every host accepts, so a guard measures the tree rather than the machine it
-# happens to be running on. Source it and call `xargs_lines`; nothing else here is needed.
+# WHAT THIS IS FOR. A guard asks the host a small number of questions, and two of them have a
+# different answer on each pier. This file answers both once, in a spelling every host accepts, so
+# a guard measures the tree rather than the machine it happens to be running on. Source it and call
+# the function that names your question:
 #
 #   . "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
-#   xargs_lines "$work/files.txt" grep -lE "$pattern"
-#   xargs_lines_batched 400 "$work/files.txt" awk -v map="$m" "$program"
+#
+#   xargs_lines "$work/files.txt" grep -lE "$pattern"          # a path list reaches a command
+#   xargs_lines_batched 400 "$work/files.txt" awk -f "$prog"    # ... in bounded batches
+#   stamp_epoch 20260826.063705                                # a stamp becomes epoch seconds
+#   epoch_stamp 1787740625                                     # ... and back again
+#   stamp_ahead 14400                                          # the stamp four hours from now
 #
 # WHY IT EXISTS. `xargs -a FILE` and `xargs -d '\n'` are GNU extensions. BSD xargs, which is what
 # macOS ships, has neither, so on that bench the whole pipeline fails and the count taken from its
@@ -41,6 +45,58 @@ xargs_lines_batched() {
   shift 2
   [ -s "$_sp_list" ] || return 0
   tr '\n' '\0' < "$_sp_list" | xargs -0 -n "$_sp_n" "$@"
+}
+
+
+# THE SECOND DIALECT QUESTION: how does a date reach and leave the `date` command. GNU spells the
+# parse `-d STRING` and the format-an-epoch `-d @EPOCH`; BSD, which is what macOS ships, spells
+# them `-j -f INFMT STRING` and `-r EPOCH` and refuses `-d` outright. Measured `20260826.015353`:
+# `tools/o/one_clock_witness.rish` fails its own PASS fixture on the macOS bench, because the
+# four-hours-ahead stamp it builds with `date -d '+4 hours'` comes back empty and an empty stamp is
+# unparsable (REDS %250). This family earned its gate the way the `xargs` one did -- by costing a
+# real reading on a real host -- so it is counted at zero rather than left advisory.
+#
+# ORDER MATTERS, and only in one direction. GNU rejects `-j` and `-v` cleanly, so trying BSD first
+# on a GNU host is safe. `-r` is the trap: BSD reads it as an epoch and GNU reads it as a FILE whose
+# mtime to report, so `date -r 1787742895` on GNU searches for a file of that name. It fails today
+# and would answer a wrong time the day such a file exists. GNU therefore goes first in both
+# functions, and the BSD leg is only ever reached once the GNU leg has already refused.
+
+# stamp_epoch <YYYYmmdd.HHMMSS | YYYYmmdd> -> epoch seconds on stdout.
+# A bare day means midnight local, which is what `date -d 20260826` already meant.
+# The caller sets TZ; this function reads whatever zone it is handed.
+stamp_epoch() {
+  _sp_ymd=${1%%.*}
+  case $1 in *.*) _sp_hms=${1#*.} ;; *) _sp_hms=000000 ;; esac
+  # invariant: fifteen digits in two runs, because a stamp this tree writes is exactly that shape
+  # and a half-read stamp must refuse rather than answer some other moment.
+  case ${_sp_ymd}${_sp_hms} in ''|*[!0-9]*) return 1 ;; esac
+  [ ${#_sp_ymd} -eq 8 ] && [ ${#_sp_hms} -eq 6 ] || return 1
+  _sp_y=${_sp_ymd%????}
+  _sp_mo=${_sp_ymd#????}; _sp_mo=${_sp_mo%??}
+  _sp_d=${_sp_ymd#??????}
+  _sp_h=${_sp_hms%????}
+  _sp_mi=${_sp_hms#??}; _sp_mi=${_sp_mi%??}
+  _sp_s=${_sp_hms#????}
+  date -d "${_sp_y}-${_sp_mo}-${_sp_d} ${_sp_h}:${_sp_mi}:${_sp_s}" +%s 2>/dev/null && return 0
+  date -j -f '%Y%m%d%H%M%S' "${_sp_ymd}${_sp_hms}" +%s 2>/dev/null && return 0
+  return 1
+}
+
+# epoch_stamp <epoch seconds> -> YYYYmmdd.HHMMSS on stdout. The inverse of stamp_epoch, and the
+# only part of "what time will it be in four hours" that needs a date extension at all.
+epoch_stamp() {
+  case $1 in ''|*[!0-9]*) return 1 ;; esac
+  date -d "@$1" +%Y%m%d.%H%M%S 2>/dev/null && return 0
+  date -r "$1" +%Y%m%d.%H%M%S 2>/dev/null && return 0
+  return 1
+}
+
+# stamp_ahead <seconds> -> the one-clock stamp that many seconds from now.
+# The shift itself is plain arithmetic on `date +%s`, which every host spells the same way; only
+# the formatting needed a dialect. Naming the question keeps the caller reading as the question.
+stamp_ahead() {
+  epoch_stamp "$(( $(date +%s) + $1 ))"
 }
 
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three

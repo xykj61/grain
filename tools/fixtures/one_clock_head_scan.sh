@@ -25,6 +25,8 @@
 # keep their names, the erratum records the fault, and the guard catches the next.
 set -eu
 
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 TOLERANCE=${ONE_CLOCK_HEAD_TOLERANCE_SECONDS:-120}
 ZONE=${ONE_CLOCK_CANONICAL_ZONE:-America/New_York}
 erratum=tools/fixtures/one_clock_head_erratum.txt
@@ -32,17 +34,11 @@ erratum=tools/fixtures/one_clock_head_erratum.txt
 host_dot=$(TZ="$ZONE" date +%Y%m%d.%H%M%S)
 host_epoch=$(TZ="$ZONE" date +%s)
 
+# The parse itself lives in tools/fixtures/shell_portable.sh, because this body stood byte for byte
+# in two scans and `date -d` is a GNU extension BSD spells `-j -f` -- one rule two files could come
+# to disagree about, in the one place where disagreeing means calling every stamp unparsable.
 stamp_to_epoch() {
-  dot=$1
-  ymd=${dot%%.*}
-  hms=${dot#*.}
-  yyyy=${ymd%????}
-  mm=${ymd#????}; mm=${mm%??}
-  dd=${ymd#??????}
-  hh=${hms%????}
-  mi=${hms#??}; mi=${mi%??}
-  ss=${hms#????}
-  TZ="$ZONE" date -d "${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}" +%s 2>/dev/null || return 1
+  TZ="$ZONE" stamp_epoch "$1"
 }
 
 bad=0
