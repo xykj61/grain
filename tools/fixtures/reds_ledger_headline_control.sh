@@ -31,7 +31,7 @@ plant_ledger() {
   {
     echo "# REDS -- a planted ledger"
     echo
-    echo "**Rows: $total - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: $remainder** -- counted from the ledger. Every number from 1 to $span is used."
+    echo "**Rows: $total - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: $remainder** -- counted from the ledger and its archives on \`20260101.000000\` by a witness. Every number from 1 to $span is used."
     echo
     n=$first
     while [ "$n" -le "$last" ]; do
@@ -150,6 +150,24 @@ else
   mode_survives=no
 fi
 
+
+# 8 -- THE DATE MOVES WITH THE NUMBERS. A figure carries a unit, a date, and a source, and this
+# writer refreshed two of the three: the living headline read 259 -> 263 while still claiming it
+# was counted two hours and four rows earlier (REDS %264). The plant carries a stamp from the far
+# past, so a stamp left alone is unmistakable.
+plant_ledger "$pen/h.md" 22 2 22 1 23
+out=$(run_writer "$pen/h.md" write) || true
+planted_stamp_left=$(grep -c 'archives on `20260101.000000`' "$pen/h.md" || true)
+fresh_stamp=$(sed -n 's/.*archives on `\([0-9]\{8\}\.[0-9]\{6\}\)`.*/\1/p' "$pen/h.md" | head -1)
+today=$(TZ=America/New_York date +%Y%m%d)
+if [ "$planted_stamp_left" -eq 0 ] && [ "${fresh_stamp%%.*}" = "$today" ]; then
+  echo "OK  stamp_moves         the counted-on date left 20260101 and reads $fresh_stamp"
+  stamp_moves=yes
+else
+  echo "RED stamp_moves         the headline still claims it was counted on '${fresh_stamp:-none}'"
+  stamp_moves=no
+fi
+
 echo "repaired=$repaired"
 echo "spans_shelves=$spans_shelves"
 echo "idempotent=$idempotent"
@@ -157,10 +175,11 @@ echo "check_writes_nothing=$check_writes_nothing"
 echo "no_headline_refused=$no_headline_refused"
 echo "rows_untouched=$rows_untouched"
 echo "mode_survives=$mode_survives"
-echo "behaviors=7"
+echo "stamp_moves=$stamp_moves"
+echo "behaviors=8"
 
 for v in "$repaired" "$spans_shelves" "$idempotent" "$check_writes_nothing" \
-         "$no_headline_refused" "$rows_untouched" "$mode_survives"; do
+         "$no_headline_refused" "$rows_untouched" "$mode_survives" "$stamp_moves"; do
   [ "$v" = yes ] || { echo "verdict=control_red"; exit 1; }
 done
 echo "verdict=ok"

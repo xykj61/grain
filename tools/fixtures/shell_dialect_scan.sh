@@ -77,6 +77,39 @@ DATE_CEILING=${SHELL_DIALECT_DATE_CEILING:-0}
 # reader to delete the answer, which is the test this meter applies to every number it prints.
 DATE_BSD_RE='date[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-(j|r|v[+-])'
 
+# THE THIRD AND FOURTH GATED FAMILIES, promoted from advisory on `20260826.090745`. Each earned it
+# the way the first two did -- by costing a real reading on a real host -- and the readings are
+# named here so a reader can check them rather than take the promotion on trust.
+#
+# `grep -P` is PCRE, a GNU extension BSD grep refuses outright. Two guards carried it, and both are
+# ones this tree leans on hardest: `tools/fixtures/dated_path_scan.sh`, whose lost-reference count
+# gates every room fold with no slack, and `tools/fixtures/living_card_ascii_scan.sh`, which holds
+# the operator card at zero non-ASCII bytes. On the macOS bench both would have read nothing at all.
+# The repair kept the same rule in ERE: the boundary is CONSUMED and then stripped, rather than
+# looked behind. Proven equal on the whole tree the same day -- the census reads the same ten
+# numbers, and the card scan the same nineteen lines, under either spelling.
+#
+# A FLAG INSIDE A LONGER WORD IS NOT THE FLAG. The advisory reading of this family stood at six
+# where four lines carried it, and one of the two extra was `pgrep -P`, which names a parent
+# process id and is spelled the same way on both piers. So the pattern begins at a boundary now --
+# the same sentence `dated_path_scan.sh` learned about references, one layer down (REDS %261).
+# THE LIMIT, named: `zgrep -P` and `xzgrep -P` would also be read past. Nothing in this tree writes
+# either, and a family that swallows `pgrep` is wrong today where those are wrong on the day they
+# arrive.
+GREP_P_RE='(^|[^A-Za-z0-9_.-])grep[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-[a-zA-Z]*P([^a-zA-Z]|$)'
+GREP_P_CEILING=${SHELL_DIALECT_GREP_P_CEILING:-0}
+
+# `stat -c` is the GNU spelling of "tell me one field of this file"; BSD spells it `stat -f FORMAT`
+# and has no `-c` at all. One site carried it, in `tools/fixtures/ryekey_control.sh`, and it carried
+# the elder trap in full: written BSD-first as `stat -f %Fm "$BIN" || stat -c %.Y "$BIN"`, where GNU
+# reads `-f` as `--file-system` and answers for BOTH a file named `%Fm`, which fails, and `$BIN`,
+# which succeeds -- five lines of block and inode counts on stdout, then exit 1, so the `||` fired
+# and appended the mtime underneath. Six lines where one was meant, on every GNU run (REDS %260).
+# It moved to `file_mtime` in `shell_portable.sh`, GNU first for the same reason `date -r` goes
+# second: the first leg must be the one whose refusal is clean.
+STAT_C_RE='stat[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-c([^a-zA-Z]|$)'
+STAT_C_CEILING=${SHELL_DIALECT_STAT_C_CEILING:-0}
+
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT
 roster="$pen/roster"
@@ -116,6 +149,179 @@ if [ "$mode" = prove-date-red ]; then
   # from a bypass.
   printf 'stamp=$(date -d "2026-08-26 06:37:05" +%%s)\n' > "$pen/planted_date_scan.sh"
   echo "$pen/planted_date_scan.sh" >> "$roster"
+fi
+
+if [ "$mode" = prove-pcre-red ]; then
+  # The PCRE ceiling stands at zero, so the tree holds no site one under the reading. The plant
+  # supplies it: one bare `grep -P` with no partner, which must refuse at a ceiling of zero and
+  # pass at a ceiling of one. A ceiling proven only in the passing direction cannot be told from a
+  # bypass. The plant is deliberately spelled with a word boundary in front, since the whole point
+  # of this family's pattern change was that `pgrep -P` is NOT this idiom.
+  printf 'hits=$(grep -oP "(?<=x)y" "$f" | wc -l)\n' > "$pen/planted_pcre_scan.sh"
+  echo "$pen/planted_pcre_scan.sh" >> "$roster"
+fi
+
+if [ "$mode" = prove-stat-red ]; then
+  # The same shape for the stat family, and the plant carries the elder trap exactly as
+  # ryekey_control.sh carried it -- BSD spelling first, GNU spelling behind an `||`.
+  printf 'btime() { stat -f %%Fm "$BIN" 2>/dev/null || stat -c %%.Y "$BIN" 2>/dev/null; }\n' > "$pen/planted_stat_scan.sh"
+  echo "$pen/planted_stat_scan.sh" >> "$roster"
+fi
+
+
+if [ "$mode" = prove-pcre ]; then
+  # THE THIRD DIALECT, PROVEN ON A REAL GUARD. `grep -P` is PCRE, and BSD grep -- what macOS ships
+  # -- refuses it, so `tools/fixtures/dated_path_scan.sh` produced no pairs at all on that pier and
+  # reported `refs_total=0` with `verdict=ok`. A census reading zero is the same confident wrong
+  # zero the xargs family cost, over the number that gates every room fold with no slack.
+  #
+  # THE CORPUS IS A PEN, and small on purpose. `tools/fixtures/dated_path_control.sh` already runs
+  # this same scan over a throwaway tree with a known answer, in about a second, where the field
+  # takes forty-five. This leg borrows that shape and adds the two shapes the boundary rule exists
+  # for: a retired countdown-prefix name, which must NOT be read as a reference, and a path
+  # asserted absent, which must be subtracted rather than counted as lost.
+  real_grep=$(command -v grep) || { echo "refused: no grep on PATH" >&2; exit 1; }
+  mkdir -p "$pen/bin" "$pen/tools/fixtures" "$pen/corpus/room"
+
+  # The shim refuses `-P` in any bundle and leaves every long option alone, so `--include=*.md` and
+  # an exclude path carrying a capital P both pass through untouched.
+  cat > "$pen/bin/grep" <<SHIM
+#!/bin/sh
+for a in "\$@"; do
+  case "\$a" in
+    --*) ;;
+    -*P*) echo "grep: invalid option -- P" >&2; exit 2 ;;
+  esac
+done
+exec $real_grep "\$@"
+SHIM
+  chmod +x "$pen/bin/grep"
+
+  : > "$pen/corpus/room/20260101-000000_real.md"
+  {
+    printf 'cites room/20260101-000000_real.md and room/20260101-000000_ghost.md\n'
+    printf 'the retired name 99991_20260619-090912.md is NOT a reference\n'
+    printf 'test ! -f room/20260101-000000_shed.md\n'
+  } > "$pen/corpus/room/citer.md"
+  ( cd "$pen/corpus" && git init -q && git add -A ) || { echo "refused: could not build the corpus" >&2; exit 1; }
+
+  # The plant restores the elder spelling in the one place it lived: the pattern, and the flag that
+  # reads it. Every other line of the guard is untouched, so a difference in the reading is the
+  # spelling's own.
+  sed -e 's/grep -rIoE/grep -rIoP/g' \
+      -e 's|^DP_REF_RE=.*|DP_REF_RE="(?<!\[A-Za-z0-9_.-\])($DP_REF_BODY)"|' \
+      tools/fixtures/dated_path_scan.sh > "$pen/tools/fixtures/planted_dated_path_scan.sh"
+  cp tools/fixtures/dated_path_exclusions.sh "$pen/tools/fixtures/"
+
+  # THE CORPUS ANSWER IS WANTED, not merely observed. Two references stand -- `_real.md`, which is
+  # there, and `_ghost.md`, which is not. The retired countdown name `99991_20260619-090912.md`
+  # must NOT be read, since its stamp begins mid-word, and `room/20260101-000000_shed.md` must be
+  # subtracted because it is asserted absent. So the right answer is exactly TWO, and a boundary
+  # rule that quietly stopped working would read three here rather than passing in silence.
+  want=2
+
+  read_total() { ( cd "$pen/corpus" && sh "$1" 2>/dev/null ) | sed -n 's/^refs_total=\([0-9][0-9]*\)$/\1/p' | head -1; }
+  live_gnu=$(read_total "$root/tools/fixtures/dated_path_scan.sh")
+  live_bsd=$(PATH="$pen/bin:$PATH" read_total "$root/tools/fixtures/dated_path_scan.sh")
+  plant_gnu=$(read_total "$pen/tools/fixtures/planted_dated_path_scan.sh")
+  plant_bsd=$(PATH="$pen/bin:$PATH" read_total "$pen/tools/fixtures/planted_dated_path_scan.sh")
+
+  echo "shell-dialect: the dated-path census, read on both dialects, and a plant that must still break."
+  echo "subject=tools/fixtures/dated_path_scan.sh:refs_total"
+  echo "living_gnu=${live_gnu:-none}"
+  echo "living_bsd_shaped=${live_bsd:-none}"
+  echo "planted_elder_gnu=${plant_gnu:-none}"
+  echo "planted_elder_bsd_shaped=${plant_bsd:-none}"
+  echo "corpus_answer_wanted=$want"
+  if [ "${live_gnu:-none}" != "$want" ]; then
+    echo "verdict=corpus_answer_moved"
+    echo "refused: the pen holds two references and the subject read '${live_gnu:-none}' -- the boundary rule has moved."
+    exit 1
+  fi
+  if [ -z "$live_gnu" ] || [ "$live_gnu" -eq 0 ]; then
+    echo "verdict=subject_reads_nothing"
+    echo "refused: the subject answered '${live_gnu:-none}' on GNU -- a comparison against zero proves nothing."
+    exit 1
+  fi
+  if [ "$live_bsd" != "$live_gnu" ]; then
+    echo "verdict=host_changed_the_reading"
+    echo "refused: the subject read $live_gnu on GNU and ${live_bsd:-none} under a grep that refuses PCRE."
+    exit 1
+  fi
+  # A PLANT THAT READS NOTHING IS NOT A PLANT. The elder copy must first prove it WORKS on GNU,
+  # reading exactly what the living subject reads, before its silence under the shim means anything.
+  if [ "${plant_gnu:-none}" != "$live_gnu" ]; then
+    echo "verdict=plant_is_not_a_working_copy"
+    echo "refused: the planted copy read '${plant_gnu:-none}' on GNU where the living subject reads $live_gnu."
+    exit 1
+  fi
+  if [ "${plant_bsd:-0}" -ne 0 ]; then
+    echo "verdict=plant_did_not_bite"
+    echo "refused: the planted elder spelling still read ${plant_bsd} under the shim."
+    exit 1
+  fi
+  echo "verdict=ok"
+  exit 0
+fi
+
+
+if [ "$mode" = prove-stat ]; then
+  # THE FOURTH DIALECT, PROVEN ON METAL, and this one needs no shim to show the fault -- the fault
+  # is what a GNU host does today. `stat -f` means `--file-system` to GNU and FORMAT to BSD, so the
+  # elder BSD-first line `stat -f %Fm "$BIN" || stat -c %.Y "$BIN"` asks GNU for the filesystem
+  # holding a file named `%Fm`, which fails, AND the one holding the binary, which succeeds. Five
+  # lines of block and inode counts reach stdout, the exit status is 1, and the `||` then appends
+  # the mtime underneath: six lines where one was meant, on every GNU run (REDS %260).
+  #
+  # THE SHIM IS FOR THE OTHER HALF -- that the repaired order still answers on a host with no `-c`
+  # at all, which is what BSD stat is. Both halves in one leg, because an order proven only on the
+  # host it was written for is an order nobody checked.
+  real_stat=$(command -v stat) || { echo "refused: no stat on PATH" >&2; exit 1; }
+  mkdir -p "$pen/bin"
+  subject="$pen/subject.txt"
+  printf 'a file with an mtime\n' > "$subject"
+
+  elder_lines=$( { stat -f %Fm "$subject" 2>/dev/null || stat -c %.Y "$subject" 2>/dev/null; } | grep -c . || true )
+
+  # A BSD-shaped stat: `-c` refused outright, `-f FORMAT` answered. Only the one format this tree
+  # asks for is honored, because a shim that guesses at the rest would be proving its own guesses.
+  cat > "$pen/bin/stat" <<SHIM
+#!/bin/sh
+case "\${1:-}" in
+  -c|-c*) echo "stat: illegal option -- c" >&2; exit 1 ;;
+  -f) [ "\${2:-}" = "%Fm" ] || { echo "stat: unsupported format \${2:-}" >&2; exit 1; }
+      shift 2; exec $real_stat -c %.Y "\$@" ;;
+esac
+exec $real_stat "\$@"
+SHIM
+  chmod +x "$pen/bin/stat"
+
+  . "$root/tools/fixtures/shell_portable.sh"
+  repaired_gnu=$(file_mtime "$subject" | grep -c . || true)
+  repaired_bsd=$(PATH="$pen/bin:$PATH" sh -c ". '$root/tools/fixtures/shell_portable.sh'; file_mtime '$subject'" 2>/dev/null | grep -c . || true)
+
+  echo "shell-dialect: the elder stat order reproduced on this host, and the repair read on both."
+  echo "subject=$subject"
+  echo "elder_bsd_first_lines_on_gnu=$elder_lines"
+  echo "repaired_lines_on_gnu=$repaired_gnu"
+  echo "repaired_lines_under_bsd_shaped=$repaired_bsd"
+  if [ "$elder_lines" -le 1 ]; then
+    echo "verdict=elder_order_did_not_bite"
+    echo "refused: the elder BSD-first order answered $elder_lines line(s) on GNU -- this host does not show the fault, so the proof is not a proof."
+    exit 1
+  fi
+  if [ "$repaired_gnu" -ne 1 ]; then
+    echo "verdict=repair_is_not_one_line"
+    echo "refused: file_mtime answered $repaired_gnu lines on GNU where exactly one is the whole point."
+    exit 1
+  fi
+  if [ "$repaired_bsd" -ne 1 ]; then
+    echo "verdict=repair_broke_under_bsd_shaped_stat"
+    echo "refused: file_mtime answered $repaired_bsd lines under a stat that refuses -c."
+    exit 1
+  fi
+  echo "verdict=ok"
+  exit 0
 fi
 
 if [ "$mode" = prove-dialect ]; then
@@ -346,12 +552,21 @@ echo "gated_date_sites=$date_sites"
 echo "gated_date_ceiling=$DATE_CEILING"
 echo "roster_symlinks_skipped=$roster_links"
 
-# Advisory, and honest about it: counted this round, gated by nothing. Each is GNU-only, and none
-# has yet been proven on metal to have cost this tree a wrong number, so none of them spends a
-# ceiling it has not earned.
-echo "advisory_grep_perl=$(count_family 'grep[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-[a-zA-Z]*P([^a-zA-Z]|$)')"
+grep_p_sites=$(count_family "$GREP_P_RE")
+stat_c_sites=$(count_family "$STAT_C_RE")
+echo "gated_grep_p_family=grep_pcre"
+echo "gated_grep_p_sites=$grep_p_sites"
+echo "gated_grep_p_ceiling=$GREP_P_CEILING"
+echo "gated_stat_c_family=stat_field_format"
+echo "gated_stat_c_sites=$stat_c_sites"
+echo "gated_stat_c_ceiling=$STAT_C_CEILING"
+
+# Advisory, and honest about it: counted this round, gated by nothing. Each is GNU-only, and
+# neither has yet been proven on metal to have cost this tree a wrong number, so neither spends a
+# ceiling it has not earned. Measured `20260826.090745`: `readlink -f` stands at five counted lines
+# over four real sites, and `sed -i` at five over four, each family's fifth being this guard's own
+# witness naming it in prose.
 echo "advisory_readlink_f=$(count_family 'readlink[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*f([^a-zA-Z]|$)')"
-echo "advisory_stat_c=$(count_family 'stat[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-c([^a-zA-Z]|$)')"
 echo "advisory_sed_i_bare=$(count_family 'sed[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-i([[:space:]]|$)')"
 
 if [ "$sites" -gt "$CEILING" ]; then
@@ -363,6 +578,18 @@ fi
 if [ "$date_sites" -gt "$DATE_CEILING" ]; then
   echo "verdict=over_date_ceiling"
   echo "refused: $date_sites gated date sites against a ceiling of $DATE_CEILING -- a ceiling only falls."
+  exit 1
+fi
+
+if [ "$grep_p_sites" -gt "$GREP_P_CEILING" ]; then
+  echo "verdict=over_grep_p_ceiling"
+  echo "refused: $grep_p_sites gated PCRE sites against a ceiling of $GREP_P_CEILING -- a ceiling only falls."
+  exit 1
+fi
+
+if [ "$stat_c_sites" -gt "$STAT_C_CEILING" ]; then
+  echo "verdict=over_stat_c_ceiling"
+  echo "refused: $stat_c_sites gated stat-field sites against a ceiling of $STAT_C_CEILING -- a ceiling only falls."
   exit 1
 fi
 

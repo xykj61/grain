@@ -96,11 +96,20 @@ if [ "$MODE" != write ]; then
   exit 1
 fi
 
+# THE DATE IS THE THIRD THING A FIGURE CARRIES. Gauge asks every number for a unit, a date, and a
+# source, and this headline names all three -- yet the writer refreshed only the numbers, leaving
+# the sentence claiming they were counted on whatever day someone last typed the stamp by hand.
+# Measured `20260826.093500`: the numbers moved 259 -> 263 and the date stayed on `20260826.070513`,
+# a reading taken two hours and four rows earlier (REDS %264). One clock, read here the way every
+# other writer in this room reads it.
+counted=$(TZ=America/New_York date +%Y%m%d.%H%M%S)
+
 tmp="$LEDGER.headline.tmp"
 sed \
   -e "s/^\*\*Rows: [0-9][0-9]* /**Rows: $measured /" \
   -e "s/added under the reds-first law: [0-9][0-9]*\*\*/added under the reds-first law: $remainder**/" \
   -e "s/Every number from 1 to [0-9][0-9]* is used/Every number from 1 to $measured is used/" \
+  -e "s/counted from the ledger and its archives on \`[0-9]\{8\}\.[0-9]\{6\}\`/counted from the ledger and its archives on \`$counted\`/" \
   "$LEDGER" > "$tmp"
 cat "$tmp" > "$LEDGER"
 rm -f "$tmp"

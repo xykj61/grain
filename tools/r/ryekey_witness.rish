@@ -1,0 +1,36 @@
+# tools/r/ryekey_witness.rish -- the build receipt's control, on a clock.
+#   rishi/bin/rishi run tools/r/ryekey_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/ryekey_control.sh, which proves rye's build receipt from both
+# sides in a throwaway pen: fifteen legs, six flipped inputs that must each rebuild, one hit that
+# must skip, the RYE_BUILD_FRESH bypass, the run and no-emit exemptions, and two builds that must
+# agree byte for byte. Roughly nineteen seconds on this pier, measured 20260826.090745.
+#
+# WHY IT EXISTS. The control was written on 20260825.191452 reading CONTROL_GREEN and stood on no
+# roster row at all. On 20260826 it read RED -- and had been red for a day -- because this pier's
+# rye/bin/rye was built on 20260821, four days before the receipt feature landed in rye/src/main.rye.
+# Nothing in the tree was wrong and nothing would have said so, which is REDS %219's own class and
+# the second time this month a real guard stood off every clock (REDS %258). A guard that is never
+# run guards nothing.
+#
+# THE MACHINE FACT IS NOT A RED. rye/bin/rye is untracked and gitignored, so a fresh clone has none
+# and a working pier has whichever it last built. The control asks the binary its version at the
+# door and compares it against what rye/src/main.rye declares -- one-clock stamps, which
+# string-compare correctly -- and a binary standing behind its own source SKIPS at exit 0, naming
+# the rebuild that fixes it. A skip nobody hears is the silence the roster exists to end, so the
+# control names its answer in one token either way and this witness reads that token out loud.
+#
+# WHERE THE STRICTNESS LIVES. In the control, which exits 1 on any failed leg. This witness proves
+# the control ANSWERED -- exit 0 and a named verdict -- rather than restating fifteen assertions a
+# second time in a second language.
+say "ryekey: Language EN -- a receipt proven from both sides, on a clock that runs it."
+say "ryekey: Style Gauge Meter -- fifteen legs counted, the stale binary named rather than reddened."
+say "ryekey: Lens TAME -- safety first; a control proven only in the hit direction cannot be told from a bypass."
+
+let control = run ["sh" "tools/fixtures/ryekey_control.sh"]
+say control.out
+assert control.ok else "ryekey: the control must exit 0 -- either fifteen legs green or an honest machine-fact skip"
+assert control.out contains "ryekey_verdict=" else "ryekey: a control that named no verdict has answered nothing"
+
+if (control.out contains "ryekey_verdict=machine_fact") then say "MACHINE FACT: ryekey -- this pier's rye binary stands behind its own source; run sh rye/bootstrap.sh to prove the receipt here."
+if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- fifteen legs proven in a throwaway pen; every flipped input rebuilt, the hit skipped, the bypass forced a rebuild, and two fresh builds agreed byte for byte"

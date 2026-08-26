@@ -38,13 +38,21 @@ CONTROL=tools/fixtures/living_card_ascii_control/mojibake_control.md
 TMPLIST=$(mktemp "${TMPDIR:-/tmp}/ascii-list.XXXXXX")
 trap 'rm -f "$TMPLIST"' EXIT INT TERM
 
+# THE BYTE RANGE IS SPELLED IN THE C LOCALE, not in PCRE. `grep -P` is a GNU extension and BSD
+# grep, which is what macOS ships, refuses it -- so a card checked on that pier would be checked
+# by nothing. Under `LC_ALL=C` a bracket range is plain byte order, and `[\200-\377]` names bytes
+# 0x80 through 0xFF exactly as `[^\x00-\x7F]` did. Built by `printf` because a literal high byte in
+# a source file is the very thing this guard exists to catch. Proven equal on this pier
+# `20260826.090745` across the enforce roster, the advisory roster, and the mojibake control.
+_lca_high_byte=$(printf '[\200-\377]')
+
 # Count lines carrying any byte above 0x7F. grep -c exits 1 on zero matches, so guard it.
 # The -a costs nothing and makes the read tool-independent. GNU grep 3.12, which every script here
 # runs, classifies a file binary only on a NUL byte and reads an orphan UTF-8 lead byte fine; ugrep,
 # which a hand at this bench runs interactively, classifies it binary and returns nothing with
 # exit 1 -- which reads exactly like a clean file. Measured 20260824.130807, both ways.
 count_non_ascii() {
-  LC_ALL=C grep -a -c -P '[^\x00-\x7F]' "$1" 2>/dev/null || true
+  LC_ALL=C grep -a -c "$_lca_high_byte" "$1" 2>/dev/null || true
 }
 
 # Is the file a valid UTF-8 byte sequence? This measures the DEFECT rather than any one tool's

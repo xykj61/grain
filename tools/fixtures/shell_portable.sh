@@ -1,7 +1,7 @@
 # tools/fixtures/shell_portable.sh -- one shell dialect for the guards, on both piers.
 #
-# WHAT THIS IS FOR. A guard asks the host a small number of questions, and two of them have a
-# different answer on each pier. This file answers both once, in a spelling every host accepts, so
+# WHAT THIS IS FOR. A guard asks the host a small number of questions, and three of them have a
+# different answer on each pier. This file answers each once, in a spelling every host accepts, so
 # a guard measures the tree rather than the machine it happens to be running on. Source it and call
 # the function that names your question:
 #
@@ -12,6 +12,7 @@
 #   stamp_epoch 20260826.063705                                # a stamp becomes epoch seconds
 #   epoch_stamp 1787740625                                     # ... and back again
 #   stamp_ahead 14400                                          # the stamp four hours from now
+#   file_mtime "$BIN"                                          # a file's mtime, fractional seconds
 #
 # WHY IT EXISTS. `xargs -a FILE` and `xargs -d '\n'` are GNU extensions. BSD xargs, which is what
 # macOS ships, has neither, so on that bench the whole pipeline fails and the count taken from its
@@ -97,6 +98,30 @@ epoch_stamp() {
 # the formatting needed a dialect. Naming the question keeps the caller reading as the question.
 stamp_ahead() {
   epoch_stamp "$(( $(date +%s) + $1 ))"
+}
+
+# THE THIRD DIALECT QUESTION: how a file's modification time reaches the shell. GNU spells it
+# `stat -c %.Y FILE` and BSD, which is what macOS ships, spells it `stat -f %Fm FILE`. Both answer
+# in fractional seconds, which is what a caller asking "did this get rebuilt?" needs -- two builds
+# inside one second are ordinary, and whole seconds would call them the same moment.
+#
+# THE SAME ORDER, AND THE SAME REASON AS THE CLOCK ABOVE. `stat -f` is the `date -r` trap wearing
+# another flag: BSD reads it as the format string and GNU reads it as `--file-system`. So
+# `stat -f %Fm out` on a GNU host asks for the filesystem holding a file named `%Fm`, which fails,
+# AND the one holding `out`, which succeeds -- printing five lines of block and inode counts to
+# stdout before exiting 1. A caller spelling it BSD-first therefore gets both answers concatenated
+# on every GNU host, and its `||` fires on a command that partly worked. Measured on this pier
+# `20260826.090745` in `tools/fixtures/ryekey_control.sh`, where `btime` returned six lines where
+# it meant one (REDS %260). GNU goes first because GNU is the dialect whose refusal is clean: BSD
+# `stat` has no `-c` at all, so the fallback is only ever reached once the first leg truly refused.
+#
+# THE LIMIT, named rather than hidden: the BSD leg would still print that five-line report if the
+# GNU leg ever failed on a file that exists. Order is what prevents it, so order is what the
+# gate in `tools/fixtures/shell_dialect_scan.sh` holds at zero.
+file_mtime() {
+  stat -c %.Y "$1" 2>/dev/null && return 0
+  stat -f %Fm "$1" 2>/dev/null && return 0
+  return 1
 }
 
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three

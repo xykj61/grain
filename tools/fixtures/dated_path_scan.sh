@@ -135,6 +135,41 @@ DP_GREP_EXCLUDES="$(dp_grep_excludes | tr '\n' ' ')"
 DP_PATHS_ROSTER="$(dp_paths_roster)"
 set +f
 
+# THE REFERENCE PATTERN, WRITTEN ONCE. The same shape is read three times below -- the main sweep,
+# the re-admit pass, and the asserted-absent subtraction -- and it stood spelled out at all three.
+# That is one rule three copies could come to disagree about, in the one place where disagreeing
+# means miscounting every dated reference in the tree.
+#
+# A REFERENCE BEGINS AT A BOUNDARY, which the leading group is here to say. Without it the stamp
+# may start in the middle of a longer filename, and the retired countdown-prefix names are exactly
+# that shape: `99991_20260619-090912.md` contains `20260619-090912.md`, and the rename mapping
+# that records those names quotes 251 of them. Measured `20260824`: 24 such substrings read as
+# lost references, every one of them inside a longer name that resolves perfectly well. The old
+# pattern hid this by requiring an underscore after the stamp -- the elder names put theirs
+# BEFORE it -- so widening the right side is what surfaced a looseness on the left.
+#
+# WHY THE BOUNDARY IS CONSUMED RATHER THAN LOOKED BEHIND. `grep -P` is a GNU extension and BSD
+# grep, which is what macOS ships, refuses it outright -- so this census read what it read because
+# of the pier it ran on. PCRE's `(?<![A-Za-z0-9_.-])` has no ERE spelling, and the same rule does:
+# match the boundary character too, then drop it. Under `-o` the two are identical, because a
+# match may begin only where the character before it sits outside the class, which is precisely
+# what the lookbehind asked. Proven on the whole tree `20260826.090745` under GNU grep 3.12:
+# 35,642 references, sorted byte-identical between the two spellings. The family is gated at zero
+# in `tools/fixtures/shell_dialect_scan.sh`.
+#
+# THE STRIP, and its one subtlety. The consumed character can itself be a colon -- `see:20260101-
+# 000000.md` is an ordinary way to write one -- so the strip removes exactly ONE character after
+# the FIRST colon rather than matching a class of separators, and a match that began at line start
+# consumed nothing and is left alone.
+#
+# ORDER IS NOT A PROPERTY OF THIS OUTPUT. `grep -r` walks directories in readdir order, which is
+# not stable between two invocations on this pier -- measured by running one pattern twice and
+# diffing. Every reader below is order-independent (`grep -v`, `grep -vxF -f`, an awk classifier),
+# so this is recorded to save the next reader a phantom diff rather than to warn of a fault.
+DP_REF_BODY='(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)'
+DP_REF_RE="(^|[^A-Za-z0-9_.-])($DP_REF_BODY)"
+DP_REF_STRIP='s|^\([^:]*\):[^A-Za-z0-9_.-]|\1:|'
+
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
@@ -145,29 +180,22 @@ git ls-files > "$work/all.txt"
 # Globbing stays off across the whole invocation: the exclusion words carry patterns meant for
 # grep -- `dated_path_*` above all -- and the shell must hand them over rather than resolve them.
 #
-# A REFERENCE BEGINS AT A BOUNDARY, which the lookbehind is here to say. Without it the stamp may
-# start in the middle of a longer filename, and the retired countdown-prefix names are exactly
-# that shape: `99991_20260619-090912.md` contains `20260619-090912.md`, and the rename mapping
-# that records those names quotes 251 of them. Measured `20260824`: 24 such substrings read as
-# lost references, every one of them inside a longer name that resolves perfectly well. The old
-# pattern hid this by requiring an underscore after the stamp -- the elder names put theirs
-# BEFORE it -- so widening the right side is what surfaced a looseness on the left.
 set -f
-grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoE "$DP_REF_RE" \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
-  . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
+  . 2>/dev/null | sed "s|^\./||; $DP_REF_STRIP" > "$work/pairs.txt"
 
 # The re-admit pass. grep prunes `seed` by NAME, which also prunes recursion-prompts/seed -- the
 # loop's own room, and nothing to do with the projection. Scanned here in its own pass and folded
 # back in, so the corpus holds the room rather than silently omitting it (REDS %122).
 for _rd in $(dp_readmit_dirs); do
   [ -d "$_rd" ] || continue
-  grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+  grep -rIoE "$DP_REF_RE" \
     --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
     --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
-    "$_rd" 2>/dev/null | sed 's|^\./||' >> "$work/pairs.txt"
+    "$_rd" 2>/dev/null | sed "s|^\./||; $DP_REF_STRIP" >> "$work/pairs.txt"
 done
 set +f
 
@@ -191,8 +219,13 @@ fi
 # The match is anchored on the negation so it can never swallow an ordinary citation: only a path
 # standing immediately after `! -f` or `! -e`, with or without the leading `test`, is subtracted,
 # and it is subtracted for the citing file that wrote it rather than everywhere it appears.
+
+# HERE THE BOUNDARY IS ALREADY SPOKEN FOR, so this pattern reaches for the body alone. `! -[fe] +`
+# ends on one or more spaces, and a space sits outside the boundary class, so the lookbehind this
+# line once carried could never refuse anything. Dropping it changes no reading and removes the
+# last `grep -P` from the file.
 set -f
-grep -rIoP '! -[fe] +(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoE "! -[fe] +$DP_REF_BODY" \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
