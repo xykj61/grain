@@ -21,7 +21,9 @@ abs=$(CDPATH= cd -- "$(dirname -- "$scan")" && pwd)/$(basename "$scan")
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
 mkdir -p "$pen/tools/fixtures" "$pen/m"
-cp "$abs" "$pen/tools/fixtures/"
+# The scan sources shell_portable.sh beside it, so the helper travels into the pen with it --
+# a copied guard that cannot find its own dialect helper refuses before it reads a line.
+cp "$abs" "$(dirname "$abs")/shell_portable.sh" "$pen/tools/fixtures/"
 ( cd "$pen" && git init -q . ) >/dev/null 2>&1
 
 put() { cat > "$pen/m/$1"; ( cd "$pen" && git add -A ) >/dev/null 2>&1; }

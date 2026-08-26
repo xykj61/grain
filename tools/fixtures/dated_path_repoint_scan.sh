@@ -41,6 +41,10 @@
 
 set -eu
 
+# One dialect for both piers: xargs_lines / xargs_lines_batched run a command over a
+# newline-delimited path list in a spelling GNU and BSD userland both accept.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 mode="${1:-dry}"
 # What is not the field -- read from ONE list that this tool and the census both source. The two
 # kept private copies for a day, diverged twice, and the second divergence let this tool rewrite
@@ -101,7 +105,7 @@ set +f
 
 echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
 
-xargs -a "$work/living.txt" -d '\n' grep -lIE '[0-9]{8}-[0-9]{6}[_.]' 2>/dev/null \
+xargs_lines "$work/living.txt" grep -lIE '[0-9]{8}-[0-9]{6}[_.]' 2>/dev/null \
   > "$work/candidates.txt" || true
 echo "candidates_holding_a_dated_path=$(wc -l < "$work/candidates.txt" | tr -d ' ')"
 
@@ -110,7 +114,7 @@ echo "candidates_holding_a_dated_path=$(wc -l < "$work/candidates.txt" | tr -d '
 # lookup table is paid once or it is paid forever.
 : > "$work/hits.tsv"
 if [ -s "$work/candidates.txt" ]; then
-  xargs -a "$work/candidates.txt" -d '\n' -n 400 \
+  xargs_lines_batched 400 "$work/candidates.txt" \
     awk -v mapfile="$work/map.tsv" -v mode="$mode" '
       BEGIN {
         while ((getline line < mapfile) > 0) { split(line, p, "\t"); map[p[1]] = p[2] }

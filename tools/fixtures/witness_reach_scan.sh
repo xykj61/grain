@@ -77,6 +77,10 @@
 
 set -u
 
+# One dialect for both piers: xargs_lines / xargs_lines_batched run a command over a
+# newline-delimited path list in a spelling GNU and BSD userland both accept.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 # The ceiling holds `unreached`, only falls, and carries no slack. Measured 20260825.162410 on this
 # pier: 1,692 tracked witnesses, 168 standing, 322 cadence, 490 reached, 755 sung, 265 unclocked,
 # 937 unheard, 1,202 unreached. Measured again 20260825.234902 after the season leaf choir was
@@ -122,7 +126,7 @@ git ls-files '*_witness.rish' | sort -u > "$pen/all"
 git ls-files '*.rish' '*.sh' 'tools/hooks/*' | sort -u > "$pen/sources"
 
 # One awk pass over every source, emitting "<caller>TAB<callee>" for each invocation it can see.
-xargs -a "$pen/sources" awk '
+xargs_lines "$pen/sources" awk '
   function emit(p) { if (p ~ /\.(rish|sh)$/) print FILENAME "\t" p }
 
   # Command position, applied to one stretch of shell text.
@@ -176,7 +180,7 @@ xargs -a "$pen/sources" awk '
 ' > "$pen/e_call" 2>/dev/null
 
 # A choir hands a VARIABLE to `rishi run`, so every witness in its list literals is sung by it.
-xargs -a "$pen/sources" grep -lE 'run \[[[:space:]]*"rishi/bin/rishi"[[:space:]]+"run"[[:space:]]+[A-Za-z_]' 2>/dev/null \
+xargs_lines "$pen/sources" grep -lE 'run \[[[:space:]]*"rishi/bin/rishi"[[:space:]]+"run"[[:space:]]+[A-Za-z_]' 2>/dev/null \
   | sort -u > "$pen/choirs"
 : > "$pen/e_choir"
 while IFS= read -r c; do
