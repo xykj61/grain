@@ -29,6 +29,11 @@ exactly as the classical room already keeps them.
 
 | Stamp | Twin |
 |---|---|
+| `20260826.045035` | [Bharani -- the Bearing Star](20260826-045035_bharani-the-bearing-star.md) |
+| `20260826.045036` | [Ashlesha -- the Clinging Star](20260826-045036_ashlesha-the-clinging-star.md) |
+| `20260826.045037` | [The Sun in Leo -- the Flame at Home](20260826-045037_sun-in-leo.md) |
+| `20260826.045038` | [Venus in Virgo -- Love in the Winnowing](20260826-045038_venus-in-virgo-debilitated.md) |
+| `20260826.045039` | [Capricorn Rising -- the Crocodile at the Eastern Door](20260826-045039_capricorn-rising.md) |
 | `20260826.044212` | [Ashvini -- the Opening Star](20260826-044212_asvini-the-opening-star.md) |
 | `20260826.044213` | [Chitra -- The Jewel Turned in the Dark](20260826-044213_chitra-the-architects-star.md) |
 | `20260826.044214` | [Ardra -- the Storm in Four Faces](20260826-044214_ardra-the-star-of-rudra.md) |
