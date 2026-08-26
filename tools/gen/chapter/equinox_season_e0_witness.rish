@@ -33,9 +33,17 @@ assert prompt_n == "8" else "equinox-e0: need exactly eight prompts"
 let clock = run ["test" "-f" "glow/mod_clock.rye"]
 assert clock.ok else "equinox-e0: mod_clock.rye missing"
 
+# BUILD WHAT YOU MEAN TO RUN (REDS %236). glow/bin/ is gitignored -- git check-ignore names
+# .gitignore line 211 -- so this rung asserted the existence of a file a fresh clone can never
+# have, and refused for every hand that had not built it by chance. Its siblings already build
+# what they run (tools/h/hunk_part_catalog_witness.rish), and the toolchain is vendored in this
+# tree, so the rung builds its own binary the same way and keeps the reading it always wanted.
 let bin = "glow/bin/mod-clock"
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/mod_clock.rye -femit-bin=${bin} 2>&1"]
+assert build.ok else "equinox-e0: mod_clock.rye must build"
 let have = run ["test" "-x" bin]
-assert have.ok else "equinox-e0: build glow/mod_clock.rye first"
+assert have.ok else "equinox-e0: the build must leave an executable"
 let run_clock = run ["sh" "-c" "${bin} 2>&1"]
 assert run_clock.ok else "equinox-e0: mod-clock failed"
 assert run_clock.out contains "GREEN" else "equinox-e0: mod-clock not GREEN"

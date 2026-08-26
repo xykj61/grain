@@ -79,7 +79,9 @@ set -u
 
 # The ceiling holds `unreached`, only falls, and carries no slack. Measured 20260825.162410 on this
 # pier: 1,692 tracked witnesses, 168 standing, 322 cadence, 490 reached, 755 sung, 265 unclocked,
-# 937 unheard, 1,202 unreached.
+# 937 unheard, 1,202 unreached. Measured again 20260825.234902 after the season leaf choir was
+# rostered: 1,695 tracked, 171 standing, 370 cadence, 541 reached, 787 sung, 246 unclocked,
+# 908 unheard, 1,154 unreached.
 #
 # HOW THE READINGS MOVED, so a later lap can tell a real fall from a bookkeeping one. Standing read
 # 56 on the morning this meter was written and moved to 167 in one roster row, when
@@ -95,6 +97,12 @@ set -u
 # written. The gate now REQUIRES that pairing rather than trusting it: `unreached` moves only when
 # a row lands. Lower the ceiling whenever a choir lands WITH its roster row.
 #
+# 1201 -> 1154 on 20260825.234902, a fall of 47: the season leaf choir took a `tier cadence` row
+# and carried the 33 leaves it sings plus the 14 more those leaves reach. The choir DECLARES its
+# 33 with a `# reach-list:` enumerator rather than leaving this meter to read its glob, which
+# selects 144 and would have overstated the fall by 111 (REDS %238). A ceiling falls by what a
+# row carries, and what a row carries is a thing to ask rather than infer.
+#
 # 1202 -> 1201 on 20260825.183336, and the single step is the point. tools/r/remember_git_nib_witness.rish
 # had stood in the `unclocked` band its whole life -- the loom booked after the nib class fired
 # twice, named by files no roster row reaches -- and the lap that needed it found the card carrying
@@ -102,7 +110,7 @@ set -u
 # seated tools/r/reds_ledger_headline_witness.rish, born rostered, which raises `total` and
 # `standing` together and leaves `unreached` where it stood. So the number fell by exactly the one
 # file that changed clocks, which is what this gate was rewritten to mean.
-CEILING=${WITNESS_REACH_CEILING:-1201}
+CEILING=${WITNESS_REACH_CEILING:-1154}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri
@@ -176,6 +184,38 @@ while IFS= read -r c; do
     | grep -oE '[A-Za-z0-9_./-]+_witness\.rish' | sort -u | sed "s|^|$c	|" >> "$pen/e_choir"
 done < "$pen/choirs"
 
+# A DISCOVERING CHOIR reaches what its own rule selects (REDS %238). The shape above reads a
+# Rishi choir that LISTS its members in a `let ... = [ ... ]` literal. A choir may instead
+# DISCOVER them -- `git ls-files <pattern>` into a loop that hands each result to `rishi run` --
+# which is the same discipline tools/r/room_bound_witness.rish already keeps for rooms, and it
+# is strictly better: a witness born tomorrow is sung on the lap it lands rather than on the lap
+# somebody remembers to edit a list. Invisible to the literal reading, such a choir sang 33
+# witnesses while this meter reported every one of them unreached.
+#
+# THE CHOIR IS ASKED RATHER THAN INFERRED, and that distinction is the whole of it. Inferring
+# reach from the choir's glob was tried first and overstated by 111: the season choir's pattern
+# selects 144 equinox witnesses and it sings the 33 that chain nobody, so a meter reading the
+# glob would have called 111 refusing-or-unrun witnesses reached. A number that says more than
+# it measured is worse than a number that admits a blind spot.
+#
+# So a discovering choir DECLARES an enumerator, on one line, and this meter runs it:
+#
+#   # reach-list: sh tools/fixtures/season_leaf_choir_scan.sh --list
+#
+# The command prints one witness path per line and runs none of them. It is opt-in, bounded, and
+# exact -- a choir that changes what it sings changes what it reports in the same edit, because
+# the enumerator and the sing read one list. A source declaring nothing is read exactly as before.
+: > "$pen/e_discover"
+grep -l '^# reach-list: ' $(cat "$pen/sources") 2>/dev/null | sort -u > "$pen/declared" || true
+while IFS= read -r c; do
+  [ -n "$c" ] || continue
+  cmd=$(sed -n 's/^# reach-list: //p' "$c" | head -1)
+  [ -n "$cmd" ] || continue
+  sh -c "$cmd" 2>/dev/null | grep -E '_witness\.rish$' | sort -u | sed "s|^|$c\t|" >> "$pen/e_discover"
+done < "$pen/declared"
+sort -u -o "$pen/e_discover" "$pen/e_discover"
+echo "declared_enumerators=$(wc -l < "$pen/declared" | tr -d ' ')"
+
 # The roster's own rows are the runner's calls, read from the roster rather than spelled here --
 # and each row's TIER decides which reading it feeds. A record naming no tier means `lap`, which is
 # what every row meant before the field existed.
@@ -196,7 +236,7 @@ if [ -f "$roster" ]; then
   awk -F'\t' '$2 == "cadence" { print $1 }' "$pen/roster_rows" | sort -u > "$pen/roots_cadence"
 fi
 
-cat "$pen/e_call" "$pen/e_choir" "$pen/e_roster" | sort -u > "$pen/edges"
+cat "$pen/e_call" "$pen/e_choir" "$pen/e_discover" "$pen/e_roster" | sort -u > "$pen/edges"
 
 cut -f2 "$pen/edges" | sort -u > "$pen/invoked"
 comm -12 "$pen/all" "$pen/invoked" > "$pen/sung"

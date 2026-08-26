@@ -81,17 +81,22 @@ fi
 echo "dialect_zero=honored"
 echo "hyphenated_last_updated=0"
 
-# --- seventeen context files carry Last updated / Seated / Stamp ---
+# --- at least seventeen context files carry Last updated / Seated / Stamp ---
+# A FLOOR RATHER THAN A PIN (REDS %235), for the reason its sibling
+# tools/fixtures/date_dialect_scan.sh carries in full: the room grows, a label is what a new
+# document correctly brings with it, and an exact count turns that growth into a refusal. The
+# hyphen check above is the reading with the stake in it, and it is exact at zero.
 LABEL_N=$(rg -l '^\*\*(Last updated|Seated|Stamp):\*\*' context/*.md | wc -l | tr -d ' ')
-if test "$LABEL_N" -ne 17; then
+if test "$LABEL_N" -lt 17; then
   echo "dialect_roster=failed"
   echo "verdict=misread"
-  echo "detail=want_17_got_${LABEL_N}"
+  echo "detail=want_at_least_17_got_${LABEL_N}"
   exit 1
 fi
 echo "dialect_roster=honored"
-echo "context_date_label_files=17"
-echo "dialect_status=17_of_17_compact"
+echo "context_date_label_files=${LABEL_N}"
+echo "context_date_label_floor=17"
+echo "dialect_status=${LABEL_N}_of_${LABEL_N}_compact"
 
 # --- radiant_lint dependency: label only, not value shape ---
 rg -q 'Last updated' tools/fixtures/radiant_lint_scan.sh || {
@@ -186,6 +191,6 @@ echo "shelf=honored"
 echo "shelf_end=ep045"
 echo "shred=RED"
 
-echo "story=date_dialect_compact>17_of_17>128_reserved_kept>census_six_kept>fork_waiting"
+echo "story=date_dialect_compact>at_least_17_all_compact>128_reserved_kept>census_six_kept>fork_waiting"
 echo "e111_date_dialect=ok"
 echo "verdict=ok"
