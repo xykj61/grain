@@ -55,13 +55,13 @@ done
 echo "instruments_tracked=honored"
 
 # APPLY 1 -- REDS 50
-rg -q '^\| 50 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 50 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_50"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'timing figure is a pin|amphora_resin_chunk' "$REDS" "$COUNSEL" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'timing figure is a pin|amphora_resin_chunk' >/dev/null "$COUNSEL" || {
   echo "reds=failed"
   echo "detail=want_timing_pin_law"
   echo "verdict=misread"

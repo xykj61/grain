@@ -52,13 +52,13 @@ done
 echo "instruments_tracked=honored"
 
 # R51
-rg -q '^\| 51 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 51 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_51"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'leans on a name|Crossing Season|working lean' "$REDS" "$COUNSEL" "$DUTY" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'leans on a name|Crossing Season|working lean' >/dev/null "$COUNSEL" "$DUTY" || {
   echo "reds=failed"
   echo "detail=want_name_lean_law"
   echo "verdict=misread"

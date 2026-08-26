@@ -133,19 +133,19 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\| 40 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 40 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_40"
   exit 1
 }
-rg -qi 'when two roofs carry one name' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'when two roofs carry one name' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_two_roofs_law"
   exit 1
 }
-rg -q '^\| 39 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 39 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_39_kept"

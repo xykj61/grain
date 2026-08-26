@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260825.213128
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The room nobody heard, put on a stopwatch
+prompt Take the next agent-doable lap Lindy-first crux-first; the card named the equinox family and named its first move -- a stopwatch before a roster row
+think Cold roster opened 63 of 63 green in about fifty minutes, tree at 153a7fc22b21. Rota row by hand was 2 (Fire/Mars -- standfast, reds-first, the three depths of removal); after the fast-forward N read 3462, so N mod 5 confirmed row 2 by arithmetic.
+think Read the reach scan by family rather than by count. The `equinox` prefix reads 144, and the ROOM reads better: tools/gen/season/ holds 298 tracked witnesses and 3 are reached, so 295 stand unheard -- 24.6% of the tree's whole 1,201 unreached, in one directory.
+think Ran the sequential sing and stopped it at a clean denominator. 47 of 144 cost 1,117,243 ms, per witness 178 ms to 204,250 ms, because 111 of 144 chain an elder and each rung re-runs the chain beneath it. A sing rung by rung is quadratic, so the sequential reading was never the one to finish.
+think Switched to the leaves -- 33 witnesses that call scans and chain nobody. Two minutes for all of them, and every chained failure resolves to a leaf or a scan, so that is where a root lives. 16 green, 17 red at the open.
+think Bisected the reds to one root wearing two coats. construction/REDS.md folds; row 42 has lived at archive/REDS-voice-season-rows-25-57.md since its fold; 19 sites across 17 scans grep the LIVING PIN for a numbered elder row, and 21 sites across 15 scans grep it for that row's lesson text on the line below.
+think Fetched xykj61 before booking a row, which is the mitigation REDS %230 names. It had moved 6 commits ahead; their spine also ended at 230, so no collision, and the fast-forward was clean.
+obs The fast-forward carried a red in with it. construction/ITINERARY.md arrived at 25,554 bytes and construction/SHRED_PREP.md at 24,620, both over the 24,576 each declares. Three leaves fell together -- e123 directly, then e125 and e126 whose scans call it as elder under `set -eu` and so died before printing a reason. My cold roster had read 63 green twenty minutes earlier against the tree before the merge. Booked as %232: a fast-forward is a tree change, and the green that opened the lap measured a different tree than the one it ships.
+obs The merge carried a third refusal, and it is the sharpest: tools/l/launch-claude-season.rish prints the unattended recipe as a single-quoted prompt, and the new sync-rota clause added three lone apostrophes -- the round's own, upstream's, a module's witness map -- on both printed lines. A lone quote flips everything after it out of quoting, so both launch lines died on the next parenthesis. Six doubled; the scan reads 6 runnable lines, 0 that do not parse. REDS %211's fault, in the file that guard was written for, a day later.
+obs My own hand-fold of rows %226-%229 moved ten relative links one directory deeper without deepening them -- REDS %183 exactly, in the room whose repair note says the REDS shelf holds no generator and its links are deepened by hand. readme_reach caught it on the hot pass, naming each broken link and its file. The loom fired, which is the system working.
+obs Owned in my own hand: the first repoint pass read as a regression, 16 green to 14, and I checked before claiming. The three that moved were the merge's, not mine -- my repoint turned one leaf green and broke nothing.
+obs Booking %231 and %232 pushed the living pin past its own bound, so rows %226-%229 folded to a shelf. The new spine reading then found %226 at its new home with no edit -- the guard earning itself on the lap it was written.
+obs A witness must cite text that exists. My first spine-grep assertion quoted a lesson phrase from memory; the archive holds a shorter form, and the witness reds until the citation is real. Fixed before it left the working tree.
+loom equinox_sing witnesses=47 of=144 wall_ms=1117243 min_ms=178 max_ms=204250 chaining=111 leaf=33
+loom equinox_leaves n=33 open_green=16 open_red=17 close_green=21 close_red=12 open_ms=129383 close_ms=145024
+loom witness_reach total=1693 standing=170 cadence=322 reached=492 unreached=1201 room_unreached=295 room_total=298
+file tools/l/launch-claude-season.rish six apostrophes doubled; every printed line parses again
+file construction/archive/REDS-two-piers-and-the-five-that-shipped-rows-226-229.md rows %226-%229 shelved, ten links deepened
+file tools/fixtures/reds_spine_files.sh the ledger's spine spelled once -- shelves first, living pin last
+file tools/fixtures/reds_row_present.sh does the spine hold row N, in either row shape the ledger has written
+file tools/fixtures/reds_spine_grep.sh does the spine record this text, case folded on request
+file tools/fixtures/reds_row_present_control.sh 13 cases on a pen -- 7 welcomes beside 6 refusals
+file tools/r/reds_row_present_witness.rish proves agreement by asking for all 232 counted rows plus the one past the end
+file construction/standing-equipment.kyri the guard seated on the every-lap tier
+file construction/REDS.md %231 and %232 booked; rows %226-%229 folded to their shelf
+file construction/ITINERARY.md Now refilled with the room measured; card back under bound at 24,502
+file construction/SHRED_PREP.md its own fold recital moved onto the shelf it points at
+file construction/CHECKPOINTS.md walk-back c1b2f33422 before the card was condensed
+file active-development/20260825-213128_the-room-nobody-heard.md the finding, graded A at 92
+recommend keep-going close the family's remaining twelve leaf roots -- the deepest is fascia_metric_v0 at 51 against a season-era floor of 92 -- then roster the room and lower the witness_reach ceiling by what the row carries

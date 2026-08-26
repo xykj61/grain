@@ -107,13 +107,13 @@ echo "bundle_tree=honored"
 echo "bundles_tracked=0"
 
 # REDS row 43
-rg -q '^\| 43 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 43 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_43"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'timing|desk.tier|stopwatch|cache warmth' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'timing|desk.tier|stopwatch|cache warmth' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_timing_lesson_in_43"
   echo "verdict=misread"

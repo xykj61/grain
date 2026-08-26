@@ -91,20 +91,20 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\| 38 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 38 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_38"
   exit 1
 }
 # Case-insensitive: ledger taught-column may capitalize the law sentence.
-rg -qi 'on-disk is not in-the-tree' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'on-disk is not in-the-tree' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_on_disk_law"
   exit 1
 }
-rg -q 'git ls-files' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'git ls-files' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_git_ls_files_taught"

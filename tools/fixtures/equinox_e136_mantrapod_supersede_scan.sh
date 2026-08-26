@@ -196,13 +196,13 @@ rg -qi 'supersede|accrete-never-break' "$LEXICON" "$COUNSEL" || {
 echo "lexicon=honored"
 
 # REDS 47 -- in-place dated claim rewrite
-rg -q '^\| 47 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 47 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_47"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'dated|immutable|supersede' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'dated|immutable|supersede' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_dated_breach_law"
   echo "verdict=misread"

@@ -90,13 +90,13 @@ rg -qi 'on-touch|never a campaign|sh is where work correctly begins|circled shre
 echo "living=honored"
 
 # REDS row 42 owns the backwards reading
-rg -q '^\| 42 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 42 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_42"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'on-touch|campaign|ladder|foundations first' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'on-touch|campaign|ladder|foundations first' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_42_lesson"
   echo "verdict=misread"

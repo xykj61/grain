@@ -99,7 +99,7 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\| 39 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 39 >/dev/null || {
   echo "reds_keep=failed"
   echo "verdict=misread"
   exit 1

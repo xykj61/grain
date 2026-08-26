@@ -22,6 +22,19 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260825.213128` -- the season-room stopwatch condense (walk-back `c1b2f33422`)
+
+**Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the two-pier row-number
+collision to the season room measured, and the *Prior laps* table refreshed. The card arrived from
+`xykj61` at **25,554 bytes** against the **24,576** it declares (REDS %232), so the condense is a
+repair as well as a refill.
+
+**What waits there, worth recalling:** the full account of the `%226` collision merge -- five reds
+closed, three rows renumbered, six citations swept -- and the *next doors* paragraph naming the
+pin's fold-pointer overhead and the hot-pass generated-page ordering. Both stand whole at the
+walk-back nib, and the collision's own rows are shelved at
+[`archive/REDS-two-piers-and-the-five-that-shipped-rows-226-229.md`](archive/REDS-two-piers-and-the-five-that-shipped-rows-226-229.md).
+
 ## `20260825.210819` -- the sync-rota breach (walk-back `28b1695752`)
 
 **Swept:** the loop's constitution -- `recursion-prompts/seed/autonomous-loop.seed.md` (the short prompt and the Remotes/Cadence bullets) and both heredoc prompts plus the while-loop body in `tools/l/launch-claude-season.rish` -- rewritten in place on Keaton's word to seat the twice-pulled round: pull the anointed ordering remote (xykj61) before context, package locally, fetch again, re-integrate bounded at three with jittered backoff, push as the compare-and-set, mirror after, never mirror-first, never force. `tools/s/stream_render.jq` rewritten the same round for a narrated livefeed.

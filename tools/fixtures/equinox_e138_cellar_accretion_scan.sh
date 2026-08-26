@@ -108,13 +108,13 @@ rg -qi 'complements|in place|in motion' "$LEXICON" || {
 echo "lexicon=honored"
 
 # REDS 48
-rg -q '^\| 48 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 48 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_48"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'accretion|outside consumer|complements' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'accretion|outside consumer|complements' >/dev/null || {
   echo "reds=failed"
   echo "detail=want_accretion_law"
   echo "verdict=misread"

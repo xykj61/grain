@@ -24,3 +24,15 @@ Immutable once written.*
 | `20260825.070659` | Ten stale citations repaired; 388 unresolved links measured down to 13 to 1, and a backtick is not a path | [log](../../session-logs/20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) |
 | `20260825.073555` | The seed projection refreshed on the cadence lap -- four gates hold; the force-push waits at the custody gate | [log](../../session-logs/20260825-073555_the-projection-fresh-and-the-push-at-the-gate.kyri) |
 | `20260825.110922` | A tier is a cadence: the roster's every-lap set stays affordable and the choirs stay heard; REDS %220 | [log](../../session-logs/20260825-110922_a-tier-is-a-cadence.kyri) |
+
+## Answered questions, shelved off the card `20260825.213128`
+
+Three readings the card carried as *answered*, each pointing at its own numbers. They left the live
+edge once they had stopped naming a next step; the documents keep every figure.
+
+- **The comment dial** -- 1,891 modules at 99.6% door coverage and 99% `// invariant:` --
+  [`../../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
+- **Half of Service may be countable** --
+  [`../../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
+- **Proving a host we do not have**, booked `20260825.000640` --
+  [`../../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../../external-research/20260825-000640_proving-a-host-you-do-not-have.md).

@@ -121,13 +121,13 @@ echo "cli_claim=honored"
 echo "amphora_cli=horizon"
 
 # REDS 49
-rg -q '^\| 49 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 49 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_49"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'breach can be withdrawn|withdrawn' "$REDS" "$COUNSEL" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'breach can be withdrawn|withdrawn' >/dev/null "$COUNSEL" || {
   echo "reds=failed"
   echo "detail=want_breach_withdrawn_law"
   echo "verdict=misread"

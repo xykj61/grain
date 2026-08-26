@@ -47,42 +47,41 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `dcef21f03a` -- five guards red at the open, five green at the close, two branches merged.
+**Git nib:** `c1b2f33422` -- the season room measured, two reds closed, one guard seated.
 
-**Now.** **A number allocated by reading a tree is allocated per tree.**
-The cold roster opened on **61 guards, 56 green, 5 red**, all five tracing to the eleven-commit send
-of `20260825.180329`, which ran on the macOS clone and never read the roster: two pins over their
-declared 24,576 bytes, the headline reciting 224 against a measured 225, an index row at 215 bytes
-against 192, and a Git nib naming a hash that lives in one machine's object store. All five closed,
-**63 guards green** hot over the shipping tree.
+**Now.** **A fold repoints documents and leaves guards standing.**
+`tools/gen/season/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
+**295 stand unheard -- 24.6% of the tree's whole 1,201-strong unreached population, in one
+directory.** The stopwatch this card asked for before proposing a roster row ran them: of 33 leaf
+witnesses **17 refused**, and a sequential sing of 47 of the 144 `equinox_*` rungs cost **1,117
+seconds** -- **178 ms to 204,250 ms** per rung, because **111 of 144 chain an elder** and each
+re-runs the chain beneath it. Rung by rung this family is quadratic; the leaves are the cheap
+reading, **33 in 96 seconds**.
 
-**REDS %227, %228, %229 -- and %230, which the send itself found.** The two structural halves are
-`tools/r/remember_git_nib_witness.rish`, the loom booked after the nib class fired twice, taking a
-roster row after a whole life in the `unreached` band; and
-[`../tools/fixtures/reds_ledger_headline_write.sh`](../tools/fixtures/reds_ledger_headline_write.sh),
-which writes the ledger's three self-recited numbers from the spine it measures, refreshed inside
-the booking commit by a second rule in [`../tools/hooks/pre-commit`](../tools/hooks/pre-commit).
-Then `git push xykj61` refused the fast-forward: the macOS bench had booked its **own `%226`** five
-minutes earlier, both trees perfect, both spine guards green, no tree holding both. The merge keeps
-the earlier-stamped row at %226 and shifts this pier's three up. **%230 is OPEN as a gate** -- how
-two piers allocate the next number wants Keaton's word, beside the three-real-MOX design.
+**REDS %231 and %232, both closed on metal.** Forty call sites across seventeen
+`equinox_*_scan.sh` files asked the living pin for an elder row, and for its lesson's own words,
+after both had folded to `construction/archive/` -- refusing in silence, since nothing runs them.
+Three fixtures answer over the pin **and** every shelf now, and
+[`../tools/r/reds_row_present_witness.rish`](../tools/r/reds_row_present_witness.rish) proves they
+agree by asking for all **232** counted rows plus the one past the end. It earned itself the same
+lap: rows %226-%229 folded to a shelf, and the reading found %226 at its new home with no edit. %232 is the second half -- a six-commit fast-forward from `xykj61` arrived
+carrying **three** refusals nothing on that clone had run: two pins over the 24,576 each declares,
+and three lone apostrophes in the loop's own printed launch line, which would not have started. A
+fast-forward is a tree change, so a lap that merges mid-round runs hot over the merged tree.
 
-**The next doors.** **The pin's own overhead** -- `construction/REDS.md` carried **9,540 bytes of
-fold pointers across 26 lines** against **6,684 bytes of rows**, rising ~370 a round; 23 moved to
-the recital shelf and the pin reads **16,693**. **The hot pass reads a generated page before the
-hook renders it**, so a lap adding a witness pre-renders by hand or pays a second roster pass. **`equinox` at
-144 unreached** (123 unheard, 21 unclocked) and **`hunk` at 86** stay the two largest families no
-clock carries; 80 of the equinox 123 are choirs nothing sings, so that lap opens with a
-**stopwatch** -- do those `tools/gen/season/` witnesses still pass, and what does a sing cost --
-before a roster row is proposed.
-
+**The next doors.** **The family's own reds**, each its own lap: the deepest wants
+`fascia_metric_v0` reading **51** against a season-era floor of **92**. **A roster row for the room
+waits on them** -- rostering 295 witnesses a majority of which refuse would red the roster every
+cadence lap, which is the guard nobody keeps. **`hunk` at 86** is the next largest family no clock
+carries. **The hot pass reads a generated page before the hook renders it**, so a lap adding a
+witness pre-renders by hand or pays a second pass.
 ---
 ## Landed arcs
 
-Mandate, the Acme DX season, the CION ratchet, **AHOY**'s front door beside **WADE**'s Bit-Design
-surface, the Singularity foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT**
-Journeys 1, 2 and 4, the recursion-prompts cellar, Season A's open image module, and the Constel
-dev-net quorum -- each proven on metal and recorded in `session-logs/`. Walk-back `221ebba12a`.
+Mandate, the Acme DX season, the CION ratchet, **AHOY** beside **WADE**, the Singularity
+foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the
+recursion-prompts cellar, Season A's open image module, and the Constel dev-net quorum -- each
+proven on metal, each recorded in `session-logs/`. Walk-back `221ebba12a`.
 
 ## The Compass Season -- OPEN `20260809.021829` (Keaton's word)
 
@@ -150,7 +149,7 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- ONE publish GRANTED.** The projection last ran on the macOS clone
+**Seed cadence -- the granted publish is SPENT.** The projection last ran on the macOS clone
 (`20260825.180329`) under the wall REDS %225 strengthened: **7,015 copied, 152 withheld**, four
 siya-named basenames in `.sow-withheld.log`, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link` GREEN.
 *Read alone* is enforced: `sow_project.sh` takes a lock and a second projection exits 3 (%193). Last
@@ -209,14 +208,6 @@ And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,3
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md);
 the witness-reach half of it is the live edge above.
 
-**Answered, each pointing at its own numbers.** The comment dial, 1,891 modules at 99.6% door
-coverage and 99% `// invariant:` --
-[`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
-Half of Service may be countable --
-[`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
-Proving a host we do not have, booked `20260825.000640` --
-[`../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../external-research/20260825-000640_proving-a-host-you-do-not-have.md).
-
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
 **`constels/` room** -- Kumara live implementations from **kres** and **brix** templates at
 `constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)), feeding
@@ -231,11 +222,10 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.183336` | Five reds from one clone closed; headline generated; two branches merged; %227-%230 | [log](../session-logs/20260825-183336_the-number-the-tool-writes.kyri) |
-| `20260825.193346` | Brazos window; the receipt that survived its audit; the table stops rotting | [log](../session-logs/20260825-193346_the-window-still-open.kyri) |
-| `20260825.183029` | Two guards spoke one host's awk dialect; POSIX classes; REDS %226 | [log](../session-logs/20260825-183029_the-narrowest-dialect.kyri) |
+| `20260825.213128` | The season room measured: 295 of 298 unheard, 17 leaves red; %231 and %232 closed | [log](../session-logs/20260825-213128_the-room-nobody-heard.kyri) |
 
-Walk back to any of them with `git log --oneline` and the session log of the same stamp.
+**One row, on purpose.** The index is `session-logs/README.md`; this is the card. A landed lap keeps
+one line here until the next replaces it.
 
 ## The cadence -- the seed ships every fifth round
 
