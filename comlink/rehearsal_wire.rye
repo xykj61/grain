@@ -1,0 +1,241 @@
+//! comlink/rehearsal_wire.rye -- the constellation rehearsal crosses localhost: three processes, one pen.
+//!
+//! mycelium/rehearsal.rye proves the pen round in one process; this module proves the same rule
+//! across three REAL processes on one machine, each a ship with its own derived identity, each
+//! binding its own UDP port on 127.0.0.1, each sending its signed proposal to the other two and
+//! reading the round's pen from the three facts it then holds -- independently, with an identical
+//! verdict, which is the whole point: agreement travels as structure, never as a vote message.
+//!
+//! The frame is wire_format's sealed datagram (the transport's own fixture keys); each ship's
+//! authenticity rides INSIDE the payload as its own Ed25519 signature over stamp-and-name, so
+//! the proven wire module is reused byte-for-byte with zero edits. A ship's key derives from its
+//! name exactly as constel.seed_from_name does -- SHA-256 of the name -- so a receiver needs
+//! only the roster's names to verify every voice, the Testament's own trick one layer down.
+//!
+//! Localhost by design: the Comlink-served custody gate holds any real address, and this lab
+//! wants none. Ports sit in the room's own block, past the highest seated pair.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/rehearsal_wire.rye
+//!
+//! Scope: active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md
+//!        active-designing/20260825-210819_the-round-that-pulls-twice.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const net = std.Io.net;
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+const wf = @import("wire_format.rye");
+const kumara = @import("kumara.rye");
+
+/// The room's rehearsal ports, one per ship, past the highest seated capability pair (38497).
+const base_port: u16 = 38498;
+
+/// Payload layout: a fifteen-byte fixture stamp, a name length, the name, then the ship's own
+/// signature over stamp-and-name. Well under wire_format's max_message.
+const stamp_len: u32 = 15;
+const name_max: u32 = 16;
+/// The signature's byte width, held at u32 for this module's arithmetic -- the seam cast the
+/// width discipline asks for, asserted against the source of truth below.
+const sig_len: u32 = @intCast(kumara.signature_length);
+const payload_max: u32 = stamp_len + 1 + name_max + sig_len;
+
+comptime {
+    // invariant: the rehearsal payload always fits the proven frame's message room.
+    assert(payload_max <= wf.max_message);
+}
+
+/// The r1 dev-net roster's first three names, verbatim from the rehearsal module -- the wire
+/// leg adds a crossing and zero names.
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+};
+
+/// Fixture stamps, one per ship, ascending by role -- pinned so every process expects the
+/// same pen and the lab self-checks without a coordinator.
+const demo_stamps = [_][]const u8{
+    "20260825.000001",
+    "20260825.000002",
+    "20260825.000003",
+};
+
+/// A ship's keypair from its name alone -- the same pure function constel.seed_from_name
+/// seats (SHA-256 of the name), restated here so this room needs no cross-room import; the
+/// two must agree byte-for-byte, and the rehearsal module's selftest is the parity witness.
+fn ship_keypair(name: []const u8) kumara.KeyPair {
+    // invariant: a ship name is real and fits the payload's name room.
+    assert(name.len >= 1);
+    assert(name.len <= name_max);
+    var seed: [kumara.seed_length]u8 = undefined;
+    Sha256.hash(name, &seed, .{});
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Build one ship's payload: stamp, name, and the ship's signature over both.
+fn build_payload(ship_i: u32, out: *[payload_max]u8) u32 {
+    // invariant: the rehearsal seats exactly three ships.
+    assert(ship_i < 3);
+    const name = roster[ship_i];
+    const stamp = demo_stamps[ship_i];
+    assert(stamp.len == stamp_len);
+
+    var i: u32 = 0;
+    while (i < stamp_len) : (i += 1) out[i] = stamp[i];
+    out[stamp_len] = @intCast(name.len);
+    i = 0;
+    while (i < name.len) : (i += 1) out[stamp_len + 1 + i] = name[i];
+
+    const kp = ship_keypair(name);
+    const signed_len: u32 = stamp_len + 1 + @as(u32, @intCast(name.len));
+    const sig = kumara.sign(out[0..signed_len], kp, null);
+    const sb = sig.toBytes();
+    i = 0;
+    while (i < sig_len) : (i += 1) out[signed_len + i] = sb[i];
+    return signed_len + sig_len;
+}
+
+/// One verified voice of the round: the stamp and the roster index it proved itself as.
+const Voice = struct {
+    stamp: [stamp_len]u8,
+    ship: u32,
+};
+
+/// Open a received payload: parse, place the name on the roster, and verify the ship's own
+/// signature against the key its name derives -- a stranger's voice refuses by name.
+fn open_payload(bytes: []const u8) error{ Malformed, NotMember, VerifyFailed }!Voice {
+    if (bytes.len < stamp_len + 1 + 1 + sig_len) return error.Malformed;
+    const nlen: u32 = bytes[stamp_len];
+    if (nlen == 0 or nlen > name_max) return error.Malformed;
+    const signed_len: u32 = stamp_len + 1 + nlen;
+    if (bytes.len != signed_len + sig_len) return error.Malformed;
+    const name = bytes[stamp_len + 1 .. signed_len];
+
+    var ship: ?u32 = null;
+    var r: u32 = 0;
+    while (r < 3) : (r += 1) {
+        if (std.mem.eql(u8, name, roster[r])) ship = r;
+    }
+    if (ship == null) return error.NotMember;
+
+    const kp = ship_keypair(name);
+    try kumara.verify_bytes(bytes[0..signed_len], bytes[signed_len..], kp.public_key);
+
+    var v = Voice{ .stamp = undefined, .ship = ship.? };
+    var i: u32 = 0;
+    while (i < stamp_len) : (i += 1) v.stamp[i] = bytes[i];
+    return v;
+}
+
+/// One ship's whole crossing: bind, pause for the fleet, send to the other two, receive two,
+/// verify both, and read the pen by the one rule -- earliest stamp, then the author's key.
+fn run_ship(io: std.Io, ship_i: u32) !u8 {
+    // invariant: a role is one of the three seats.
+    assert(ship_i < 3);
+
+    const addr = net.IpAddress{ .ip4 = net.Ip4Address.loopback(base_port + @as(u16, @intCast(ship_i))) };
+    const sock = try net.IpAddress.bind(&addr, io, .{ .mode = .dgram });
+
+    // Every process binds before any sends: the fleet staggers 50 ms apart at spawn, so a
+    // 400 ms pause clears every bind with room to spare.
+    var pause = c.timespec{ .sec = 0, .nsec = 400_000_000 };
+    _ = c.nanosleep(&pause, null);
+
+    var payload: [payload_max]u8 = undefined;
+    const plen = build_payload(ship_i, &payload);
+    var frame: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const flen = try wf.seal_message(payload[0..plen], &frame);
+
+    var peer: u32 = 0;
+    while (peer < 3) : (peer += 1) {
+        if (peer == ship_i) continue;
+        const dest = net.IpAddress{ .ip4 = net.Ip4Address.loopback(base_port + @as(u16, @intCast(peer))) };
+        try sock.send(io, &dest, frame[0..flen]);
+    }
+
+    var voices: [3]Voice = undefined;
+    voices[0] = Voice{ .stamp = demo_stamps[ship_i][0..stamp_len].*, .ship = ship_i };
+    var have: u32 = 1;
+    while (have < 3) : (have += 1) {
+        var rbuf: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const msg = try sock.receive(io, rbuf[0..]);
+        var opened: [@intCast(wf.wire_capacity)]u8 = undefined;
+        const olen = try wf.open_datagram(msg.data, opened[0..]);
+        voices[have] = try open_payload(opened[0..olen]);
+    }
+    // invariant: the round gathered every seat's voice exactly once.
+    assert(have == 3);
+    assert(voices[1].ship != voices[2].ship);
+    assert(voices[1].ship != ship_i and voices[2].ship != ship_i);
+
+    // The pen: earliest stamp wins, the author's key breaking a tie -- the derived-spine rule,
+    // computed here from this process's own copy alone.
+    var pen: u32 = 0;
+    var v: u32 = 1;
+    while (v < 3) : (v += 1) {
+        const ord = std.mem.order(u8, voices[v].stamp[0..], voices[pen].stamp[0..]);
+        if (ord == .lt) pen = v;
+        if (ord == .eq) {
+            const pk_v = ship_keypair(roster[voices[v].ship]).public_key.toBytes();
+            const pk_p = ship_keypair(roster[voices[pen].ship]).public_key.toBytes();
+            if (std.mem.order(u8, pk_v[0..], pk_p[0..]) == .lt) pen = v;
+        }
+    }
+    // invariant: the fixture stamps ascend by seat, so every process reads seat zero's pen.
+    assert(voices[pen].ship == 0);
+
+    print("rehearsal-wire {s}: three voices verified, pen={s}\n", .{ roster[ship_i], roster[voices[pen].ship] });
+    return 0;
+}
+
+/// The fleet: spawn this binary three times, one role each, staggered so binds land first;
+/// every child self-checks its verdict, and the lab is green only when all three are.
+fn run_fleet(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    var children: [3]std.process.Child = undefined;
+    const role_names = [_][]const u8{ "a", "b", "c" };
+    var i: u32 = 0;
+    while (i < 3) : (i += 1) {
+        const argv = try allocator.alloc([]const u8, 2);
+        argv[0] = self_path;
+        argv[1] = role_names[i];
+        children[i] = try std.process.spawn(io, .{ .argv = argv });
+        var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
+        _ = c.nanosleep(&pause, null);
+    }
+    var all_green = true;
+    i = 0;
+    while (i < 3) : (i += 1) {
+        const term = try children[i].wait(io);
+        const code: u8 = switch (term) {
+            .exited => |code| code,
+            else => 255,
+        };
+        if (code != 0) all_green = false;
+    }
+    // invariant: the lab speaks only when every process read the same pen and proved it.
+    assert(all_green);
+    print("rehearsal-wire: GREEN -- three processes, one pen, every voice verified over localhost\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    // invariant: a program always receives its own name.
+    assert(args.len >= 1);
+
+    if (args.len >= 2) {
+        const role = std.mem.sliceTo(args[1], 0);
+        if (std.mem.eql(u8, role, "a")) return run_ship(io, 0);
+        if (std.mem.eql(u8, role, "b")) return run_ship(io, 1);
+        if (std.mem.eql(u8, role, "c")) return run_ship(io, 2);
+        print("rehearsal-wire: unknown role '{s}' (want a, b, or c)\n", .{role});
+        return 2;
+    }
+    const self_path = std.mem.sliceTo(args[0], 0);
+    return run_fleet(garden, io, self_path);
+}

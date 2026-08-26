@@ -87,6 +87,7 @@ The one law applied where two moves reach for the same thing.
 ### 9 - Dev-net -- a constellation you can boot by name
 - [`constel.rye`](constel.rye) -- a named, reproducible test constellation whose every ship identity is a **pure function of its name** (`seed = SHA-256(name)`), so the whole network is determined by a list of names alone; names obey the [placeholder-ship-names law](../.claude/rules/placeholder-ship-names.md) and can never parse as a live `@p`.
 - [`constel_depart.rye`](constel_depart.rye) -- a constellation tolerates `f` ships down and honestly fails `BelowQuorum` at the `(f+1)`th.
+- [`rehearsal.rye`](rehearsal.rye) -- the constellation rehearsal: three ships practice the pen rounds on one machine -- one pen and one derived spine from any arrival order, a sleeper caught up by replay, a full-voice Testament closing the round; the wire crossing lives in [`../comlink/rehearsal_wire.rye`](../comlink/rehearsal_wire.rye).
 - [`testament.rye`](testament.rye) -- a named constellation's verdict travels as an **offline certificate**, verifiable holding only the roster *names*: a keeper a world away boots the exact roster, derives the threshold, and confirms the sealed voices are the constellation's own -- no Dag needed. A stranger's valid voice refuses `NotMember`.
 - [`testament_fault.rye`](testament_fault.rye) -- a Testament sealed with `f` ships down still names the whole roster, so the verifier measures survivors against the full threshold.
 
@@ -112,7 +113,7 @@ The witness names its Language - Style - Lens, then prints one `GREEN` line stat
 
 | What | Count |
 |------|-------|
-| Rye modules | 99 |
+| Rye modules | 100 |
 | `mycelium_*_witness.rish` witnesses | 80 |
 | Reproducible fixture generators | 14 |
 | On-disk Bron fixtures ([`corpora/`](corpora/), `@embedFile`-bound) | 14 |

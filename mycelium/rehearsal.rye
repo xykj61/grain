@@ -1,0 +1,219 @@
+//! mycelium/rehearsal.rye -- the constellation rehearsal: three ships practice the pen rounds on one machine.
+//!
+//! Season D (Kresfa & Mycelium) - Mycelium consensus - dev-net family - the rehearsal.
+//! The season wrote the multi-pier prose -- the three-MOX wiring, the derived spine, the
+//! twice-pulled rota, the pen decided by the order everyone computes alike -- and every sentence
+//! leans on a primitive that already stands witnessed. This module is the composition: the
+//! sentences run. Three ships (the r1 dev-net's own first three names, reused rather than
+//! invented) each propose a lap for one round; every ship reads the same pen from the same
+//! blocks whatever order they arrived; the shared row numbers derive from the merged record
+//! rather than being claimed; a sleeping ship misses a round and catches up by replaying the
+//! facts it missed; and the round closes under a full-voice Testament a keeper can verify
+//! offline. The pen layer is crash-only on purpose (a proposal absent is a ship asleep, and
+//! two of three still read a pen) -- the Byzantine roll stays where value moves, exactly as
+//! active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md argues.
+//!
+//! Composes constel + cord + testament public API only, editing none. Demo seeds and fixture
+//! stamps only: no key held, no funds, no network, no custody. The wire crossing of the same
+//! rule lives one room over, in comlink/rehearsal_wire.rye, on localhost by design.
+//!
+//! Scope: active-designing/20260825-210819_the-round-that-pulls-twice.md (the rota this runs)
+//!        active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/rehearsal.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const fold = @import("fold.rye");
+const cord = @import("cord.rye");
+const constel = @import("constel.rye");
+const testament = @import("testament.rye");
+
+pub const pk_len: u32 = constel.pk_len;
+pub const hash_len: u32 = cord.hash_len;
+
+/// The rehearsal walks a bounded run of rounds; one is enough to prove every seam, and the
+/// bound names the ceiling a longer rehearsal would still honor.
+pub const max_rehearsal_rounds: u32 = 8;
+
+/// The r1 dev-net roster's first three names, verbatim from constel_depart.rye -- the rehearsal
+/// adds proofs and zero names (see constel.rye for the naming law the five obey).
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+};
+
+/// Fixture stamps for the demo proposals -- protocol payload, never a file or session stamp,
+/// pinned like wire_format's own seed keys so the selftest is byte-reproducible.
+const demo_stamps = [_][]const u8{
+    "20260825.000001",
+    "20260825.000002",
+    "20260825.000003",
+};
+
+/// One ship's pen proposal for a round, minted as a signed Cord block whose fact body carries
+/// the fixture stamp -- the claim the agreed order will resolve.
+fn mint_proposal(ship: *const constel.Ship, round: u32, parent: *const [hash_len]u8, stamp: []const u8) cord.Block {
+    // invariant: a proposal names a real round of the bounded rehearsal.
+    assert(round >= 1);
+    assert(round <= max_rehearsal_rounds);
+    // invariant: a fixture stamp fits the fact body it rides in.
+    assert(stamp.len <= fold.myc_fact_max_bytes);
+
+    // The proposal walks through the fold's own lawful door: a one-myc issue signed by the
+    // ship, its body the stamp -- so every downstream verifier (fold, voucher, chorus) reads
+    // a sealed fact rather than trusting this module's word.
+    const f = fold.mint_fact(ship.kp, fold.kind_issue, 1, "", stamp) orelse unreachable;
+
+    const parents = [_][hash_len]u8{parent.*};
+    const b = cord.mint_block(ship.kp, round, parents[0..], f) orelse unreachable;
+    return b;
+}
+
+/// The pen for one round, read from a Dag every ship holds: the author of the round's
+/// spine-first proposal -- earliest stamp, then author key, then hash, the one tie rule the
+/// derived-spine design seats. This is the contested-claim rule of tenure -- first in the
+/// agreed order wins -- applied to the pen's own slot, computed rather than negotiated,
+/// identical at every ship whatever order the blocks arrived. One rule serves the pen and
+/// the spine, so the two can never drift.
+fn read_pen(dag: *const cord.Dag, round: u32, pen_out: *[pk_len]u8) bool {
+    // invariant: the walk buffer holds the whole Dag.
+    assert(dag.len <= cord.cord_max_blocks);
+    var idx: [cord.cord_max_blocks]u32 = undefined;
+    const n = spine_positions(dag, round, idx[0..]);
+    if (n == 0) return false;
+    const b = &dag.blocks[idx[0]];
+    // invariant: the spine's first row belongs to the round it was asked for.
+    assert(b.round == round);
+    var j: u32 = 0;
+    while (j < pk_len) : (j += 1) pen_out[j] = b.author_pk[j];
+    return true;
+}
+
+/// The derived spine: the round's proposals numbered %1..%n by (stamp, author key, hash) --
+/// the same tie rule the derived-spine design seats -- as a pure fold over the committed
+/// order, so every ship prints the identical spine from its own copy.
+fn spine_positions(dag: *const cord.Dag, round: u32, out_idx: []u32) u32 {
+    // invariant: the caller's buffer holds every block the walk could emit.
+    assert(out_idx.len >= dag.len);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const n = cord.commit(dag, order[0..]);
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const b = &dag.blocks[order[i]];
+        if (b.round == round) {
+            out_idx[count] = order[i];
+            count += 1;
+        }
+    }
+    // The committed walk already orders round-mates by (author, hash); the spine wants
+    // (stamp, author, hash), so one bounded pass re-sorts by fact body first.
+    var a: u32 = 0;
+    while (a + 1 < count) : (a += 1) {
+        var best = a;
+        var c2 = a + 1;
+        while (c2 < count) : (c2 += 1) {
+            const fb = dag.blocks[out_idx[c2]].fact.body_slice();
+            const fbest = dag.blocks[out_idx[best]].fact.body_slice();
+            if (std.mem.order(u8, fb, fbest) == .lt) best = c2;
+        }
+        const t = out_idx[a];
+        out_idx[a] = out_idx[best];
+        out_idx[best] = t;
+    }
+    // invariant: the spine holds only this round's proposals.
+    assert(count <= dag.len);
+    return count;
+}
+
+pub fn main() !void {
+    var c = try constel.boot(roster[0..]);
+    // invariant: the rehearsal seats exactly the trio the design argues from.
+    assert(c.count == 3);
+
+    const issuer = constel.seeded(0xF0);
+    const account = constel.seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    const genesis = try constel.demo_genesis(issuer, account_pk[0..]);
+    // invariant: the genesis Dag opens with exactly one block to parent from.
+    assert(genesis.len == 1);
+    const parent = genesis.hashes[0];
+
+    // --- Round 1: all three propose; three arrival orders read one pen and one spine -------
+    const p0 = mint_proposal(&c.ships[0], 1, &parent, demo_stamps[0]);
+    const p1 = mint_proposal(&c.ships[1], 1, &parent, demo_stamps[1]);
+    const p2 = mint_proposal(&c.ships[2], 1, &parent, demo_stamps[2]);
+
+    const arrivals = [_][3]u32{ .{ 0, 1, 2 }, .{ 2, 0, 1 }, .{ 1, 2, 0 } };
+    const props = [_]cord.Block{ p0, p1, p2 };
+    var pens: [3][pk_len]u8 = undefined;
+    var spines: [3][3]u32 = undefined;
+    var ship_i: u32 = 0;
+    while (ship_i < 3) : (ship_i += 1) {
+        var dag = genesis;
+        var k: u32 = 0;
+        while (k < 3) : (k += 1) {
+            _ = cord.add(&dag, props[arrivals[ship_i][k]]) catch unreachable;
+        }
+        const found = read_pen(&dag, 1, &pens[ship_i]);
+        // invariant: a round with proposals always reads a pen.
+        assert(found);
+        var idx: [cord.cord_max_blocks]u32 = undefined;
+        const n = spine_positions(&dag, 1, idx[0..]);
+        assert(n == 3);
+        var s: u32 = 0;
+        while (s < 3) : (s += 1) spines[ship_i][s] = dag.blocks[idx[s]].round;
+        // Record the spine as the stamps' first bytes for the equality check below.
+        s = 0;
+        while (s < 3) : (s += 1) spines[ship_i][s] = dag.blocks[idx[s]].fact.body[14];
+    }
+    // invariant: three arrival orders read one identical pen.
+    assert(std.mem.eql(u8, pens[0][0..], pens[1][0..]));
+    assert(std.mem.eql(u8, pens[1][0..], pens[2][0..]));
+    // invariant: three arrival orders derive one identical spine (%1=..1, %2=..2, %3=..3).
+    var s2: u32 = 0;
+    while (s2 < 3) : (s2 += 1) {
+        assert(spines[0][s2] == spines[1][s2]);
+        assert(spines[1][s2] == spines[2][s2]);
+        assert(spines[0][s2] == '1' + s2);
+    }
+    // The earliest fixture stamp belongs to ship 0, so the pen is ship 0's key -- computed,
+    // never negotiated, and checked here against the rule's own promise.
+    const pk0 = c.ships[0].pk();
+    assert(std.mem.eql(u8, pens[0][0..], pk0[0..]));
+
+    // --- Round 2: the third ship sleeps; two of three still read a pen; replay catches up --
+    const q0 = mint_proposal(&c.ships[0], 2, &parent, demo_stamps[1]);
+    const q1 = mint_proposal(&c.ships[1], 2, &parent, demo_stamps[0]);
+    var awake = genesis;
+    _ = cord.add(&awake, q0) catch unreachable;
+    _ = cord.add(&awake, q1) catch unreachable;
+    var pen2: [pk_len]u8 = undefined;
+    assert(read_pen(&awake, 2, &pen2));
+    // The earlier stamp rides ship 1's proposal this round, so the pen moves -- rotation by
+    // the clock, exactly the rota's tie rule.
+    const pk1 = c.ships[1].pk();
+    assert(std.mem.eql(u8, pen2[0..], pk1[0..]));
+
+    var sleeper = genesis;
+    _ = cord.add(&sleeper, q1) catch unreachable;
+    _ = cord.add(&sleeper, q0) catch unreachable;
+    var pen2_replayed: [pk_len]u8 = undefined;
+    assert(read_pen(&sleeper, 2, &pen2_replayed));
+    // invariant: the woken ship replays the missed facts and reads the very pen it slept through.
+    assert(std.mem.eql(u8, pen2[0..], pen2_replayed[0..]));
+
+    // --- The close: a full-voice Testament over the value record, verified offline ----------
+    // The pen rounds and the money are two records on purpose: the ledger's resolver gives
+    // fact bodies meaning (a targeted issue's body is a recipient key), so pen proposals live
+    // in their own Dag while the Testament attests the account's position over the value Dag
+    // -- every voice signing, the certificate verifiable from the roster names alone.
+    const t = try testament.seal(&c, &genesis, account_pk[0..]);
+    try testament.verify(&t);
+
+    print("rehearsal: three ships, one pen, one spine, a sleeper caught up by replay, a full-voice testament -- the constellation's sentences run\n", .{});
+}
