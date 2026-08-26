@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.052004` | [thirty twins, the air enters](20260826-052004_thirty-twins-the-air-enters.kyri) | pass four: moons, Venus, the shadow pairs, first houses; roster at thirty |
 | `20260826.050835` | [twenty twins, one fifth](20260826-050835_twenty-twins-one-fifth.kyri) | the third cubist pass: ten twinned at once, seven pairs worn, roster at twenty |
 | `20260826.045101` | [ten twins and turning](20260826-045101_ten-twins-and-turning.kyri) | the second cubist pass: five more twins, the roster at ten, sharing earned |
 | `20260826.044254` | [five twins on one canvas](20260826-044254_five-twins-on-one-canvas.kyri) | the cubist sweep opens: five classical pages twinned, all A, the door rostered |
