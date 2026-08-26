@@ -89,19 +89,19 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\| 39 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 39 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_39"
   exit 1
 }
-rg -qi 'look for the thing, not for the name' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh -i 'look for the thing, not for the name' >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_thing_not_name_law"
   exit 1
 }
-rg -q '^\| 38 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 38 >/dev/null || {
   echo "reds_row=failed"
   echo "verdict=misread"
   echo "detail=want_row_38_kept"

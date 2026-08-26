@@ -1,0 +1,60 @@
+# tools/r/reds_row_present_witness.rish -- the ledger's spine answers for every row it holds.
+#
+#   rishi/bin/rishi run tools/r/reds_row_present_witness.rish
+#
+# WHAT THIS GUARDS. The REDS ledger folds: the living pin construction/REDS.md keeps the rows still
+# flat, and every elder row moves onto a shelf under construction/archive/. Seventeen season scans
+# asked the PIN for a numbered elder row and began refusing, in silence, on the lap that row folded
+# -- nothing in the tree ran them, so nobody heard (REDS %231). tools/fixtures/reds_row_present.sh
+# is where that question lives now, and this witness proves the answer three ways.
+#
+# THE AGREEMENT IS PROVEN, NEVER PROMISED. The row-shape rules in reds_row_present.sh are the same
+# two the sibling tools/fixtures/reds_ledger_monotone_scan.sh uses, and a rule written twice is a
+# rule two files may come to disagree about. So rather than a comment asking a later hand to keep
+# them together, this witness asks the spine reading for EVERY row the monotone scan counts, and for
+# the one past the end. The two readings agree on metal or this reds.
+#
+# Purely local -- no key, no network, no funds, no device. It reads two markdown files and a pen.
+
+say "reds-row-present: Language EN -- one place answers whether the ledger holds a given row, across the pin and every fold shelf."
+say "reds-row-present: Style Gauge, Meter -- three readings: the control on a pen, the whole spine row by row, and the row past the end."
+say "reds-row-present: Lens TAME -- the refusal is proven beside the welcome, and a misuse exits differently from an absence."
+
+# 1 -- the control, which builds a throwaway ledger and proves four welcomes and four refusals.
+let control = run ["sh" "tools/fixtures/reds_row_present_control.sh"]
+say control.out
+assert control.ok else "reds-row-present: control must exit 0"
+assert control.out contains "CONTROL_OK cases=13 refusals=6 welcomes=7" else "reds-row-present: want thirteen cases, both sides"
+
+# 2 -- the living spine, counted by the sibling scan rather than by this file.
+let spine = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md"]
+say spine.out
+assert spine.ok else "reds-row-present: the ledger spine must read whole"
+assert spine.out contains "gaps_or_dupes=0" else "reds-row-present: want a gapless spine"
+
+# 3 -- agreement, row by row. Every row the spine counts is a row this reading finds. A single
+# missed row here means the two extraction rules have drifted, which is the whole failure this
+# guard exists to catch before a caller inherits it.
+let agree = run ["sh" "-c" "n=$(sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); i=1; miss=0; while [ $i -le $n ]; do sh tools/fixtures/reds_row_present.sh $i >/dev/null 2>&1 || miss=$((miss+1)); i=$((i+1)); done; echo rows=$n missing=$miss; test $miss -eq 0"]
+say agree.out
+assert agree.ok else "reds-row-present: every counted row must be found by the spine reading"
+assert agree.out contains "missing=0" else "reds-row-present: want no row the two readings disagree on"
+
+# 4 -- the refusal on the living tree, not only on the pen. One past the last row is absent, and
+# absent exits 1 rather than 0.
+let past = run ["sh" "-c" "n=$(sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); sh tools/fixtures/reds_row_present.sh $((n+1)); s=$?; echo past_end_exit=$s; test $s -eq 1"]
+say past.out
+assert past.ok else "reds-row-present: the row past the end must refuse"
+assert past.out contains "past_end_exit=1" else "reds-row-present: want exit 1 for an absent row"
+
+# 5 -- the text reading over the living ledger: a lesson that has folded onto a shelf is still
+# recorded, which is the half that sent fifteen more season scans red one line below the row check.
+let lesson = run ["sh" "-c" "sh tools/fixtures/reds_spine_grep.sh -i 'citation in a comment' --say"]
+say lesson.out
+assert lesson.ok else "reds-row-present: a folded lesson must still be found"
+assert lesson.out contains "verdict=present" else "reds-row-present: want the folded lesson present"
+
+let nothing = run ["sh" "tools/fixtures/reds_spine_grep.sh" "a lesson this ledger has never recorded zzq"]
+assert (nothing.ok == false) else "reds-row-present: an unrecorded lesson must refuse"
+
+say "GREEN: reds-row-present -- control 13/13 - every spine row found - a folded lesson found - both absences refuse"

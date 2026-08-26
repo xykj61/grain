@@ -89,12 +89,12 @@ echo "seat_map_112=close_choir_landed"
 echo "seat_map_113=ch7_surface_this_sitting"
 
 # --- REDS zero-view law kept - rows at least 33 - monotone ---
-rg -q '^\| 33 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 33 >/dev/null || {
   echo "ledger=failed"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'A zero in a report is a claim about the instrument' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'A zero in a report is a claim about the instrument' >/dev/null || {
   echo "ledger=failed"
   echo "verdict=misread"
   exit 1

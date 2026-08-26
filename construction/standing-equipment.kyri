@@ -310,3 +310,7 @@ seated 20260825.183336
 guard reds_ledger_headline
 path tools/r/reds_ledger_headline_witness.rish
 seated 20260825.183336
+
+guard reds_row_present
+path tools/r/reds_row_present_witness.rish
+seated 20260825.213128

@@ -137,7 +137,7 @@ echo "suite=honored"
 echo "suite_pass=10"
 echo "suite_fail=0"
 
-rg -q '^\| 45 \|' "$REDS" || {
+sh tools/fixtures/reds_row_present.sh 45 >/dev/null || {
   echo "reds=failed"
   echo "detail=want_row_45"
   echo "verdict=misread"

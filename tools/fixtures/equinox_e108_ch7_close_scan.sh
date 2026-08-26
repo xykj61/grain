@@ -129,32 +129,32 @@ git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
   exit 1
 }
 for n in 34 35 36 37; do
-  rg -q "^\\| ${n} \\|" "$REDS" || {
+  sh tools/fixtures/reds_spine_grep.sh "^\\| ${n} \\|" >/dev/null || {
     echo "reds_cross=failed"
     echo "verdict=misread"
     echo "detail=want_row_${n}"
     exit 1
   }
 done
-rg -q 'git ls-files' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'git ls-files' >/dev/null || {
   echo "reds_cross=failed"
   echo "verdict=misread"
   echo "detail=want_row_34_git_ls_files"
   exit 1
 }
-rg -q 'Verify a zero' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'Verify a zero' >/dev/null || {
   echo "reds_cross=failed"
   echo "verdict=misread"
   echo "detail=want_row_35_verify_zero"
   exit 1
 }
-rg -q 'Fence-aware' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'Fence-aware' >/dev/null || {
   echo "reds_cross=failed"
   echo "verdict=misread"
   echo "detail=want_row_36_fence_aware"
   exit 1
 }
-rg -q 'No backtick' "$REDS" || {
+sh tools/fixtures/reds_spine_grep.sh 'No backtick' >/dev/null || {
   echo "reds_cross=failed"
   echo "verdict=misread"
   echo "detail=want_row_37_no_backtick"
