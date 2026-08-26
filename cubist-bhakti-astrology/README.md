@@ -6,7 +6,7 @@
 **Status:** Living -- the room is seated `20260826` on Keaton's word; pages arrive as the sweep reimagines them
 **Where this sits:** home is [`../README.md`](../README.md) - the classical room this one
 reimagines is [`../classical-vedic-astrology/README.md`](../classical-vedic-astrology/README.md)
-**Gratitude:** [`../gratitude/pablo-picasso.md`](../gratitude/pablo-picasso.md) -- the method and the nerve
+**Gratitude:** `gratitude/pablo-picasso.md` -- the method and the nerve
 
 ---
 
