@@ -199,6 +199,24 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 3. **The fossil wears a banner** at the top naming the living page and what changed.
 4. **The row is written here**, with the measurement, so a later pass reads rather than re-walks.
 
+### M-sync-a -- `foundations/20260813-142420_mycelium-the-consensus-protocol.md` (`20260825.211055`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md) |
+| What accreted | one section, *the interim carriage -- git as the first Cord* (REDS %230, the sync rota, the derived spine) |
+| Living citers repointed | foundations/README.md, mycelium/README.md (session-log shelves stay immutable) |
+| Fossil | bannered on its face, body whole; cut RED until circled |
+
+### M-sync-b -- `foundations/20260823-222018_what-mantra-is.md` (`20260825.211056`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../foundations/20260825-211056_what-mantra-is.md`](../foundations/20260825-211056_what-mantra-is.md) |
+| What accreted | one section, *two writers, one promise* (per-writer names, the derived row number, the package at a send) |
+| Living citers repointed | README.md, docs-geode/tutorials/the-first-hour.md |
+| Fossil | bannered on its face, body whole; cut RED until circled |
+
 ### M1 -- `foundations/20260618-182412_single-stranded.md` (`20260823.204456`)
 
 | Reading | Value |
