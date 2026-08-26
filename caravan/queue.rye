@@ -217,6 +217,10 @@ pub fn write_index(
 
 /// Byte offset of the slot one sequence number lands in.
 fn slot_offset(seq: u32) u64 {
+    // invariant: wrap-as-periodic -- the queue is a ring, so a linear sequence
+    // number landing back on an early slot is the meaning of the modulo rather
+    // than an overflow; a slot is reused only after its ask is retired, which
+    // the in-flight bound above this rung holds (the optimization spine, move one).
     const ring: u32 = seq % max_outstanding;
     // invariant: the slot chosen addresses the declared ring
     assert(ring < max_outstanding);

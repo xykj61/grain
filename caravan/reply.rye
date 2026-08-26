@@ -716,6 +716,10 @@ pub fn run_self_test() u8 {
                     for (needs) |need| {
                         for (deeds) |deed| {
                             for (ipc_buffer.all_methods) |method| {
+                                // invariant: wrap-as-periodic -- a method's ordinal cycles the
+                                // small fixture table on purpose, so every method draws a varied
+                                // yet deterministic word count; nothing linear is folded away
+                                // (the optimization spine, move one).
                                 const length = lengths[@intCast(@intFromEnum(method) % lengths.len)];
                                 const ask: Ask = .{
                                     .request = .{ .kind = kind, .size_bits = width, .count = 1, .address = 0 },
