@@ -1,0 +1,44 @@
+# tools/r/reds_fold_witness.rish -- the fold loom re-anchors what it moves, and refuses what it must.
+#
+# WHY THIS EXISTS. A REDS row folds from `construction/REDS.md` onto a shelf in
+# `construction/archive/`, one directory deeper, and its relative links stop being true on the way.
+# A hand forgot that at REDS %247 and again at REDS %270. The second row named the pattern out loud:
+# a fix that ends in "someone remembers" has forecast its own second firing, and this ledger's own
+# law answers it -- a lantern that fires twice becomes a loom. `tools/fixtures/reds_fold.sh` is the
+# loom; this witness is what keeps it honest.
+#
+# THREE READINGS. The control on planted trees, the living shelves read for the fault the loom
+# exists to prevent, and the standing catch that bit the fault both times it happened.
+#
+# Purely local -- no key, no network, no funds, no device. It reads markdown and builds a pen.
+
+say "reds-fold: Language EN -- a row that moves keeps its links true."
+say "reds-fold: Style Gauge, Meter -- the loom is proven doing, not describing."
+say "reds-fold: Lens TAME -- every refusal is named, the row count is bounded, and both directions are shown."
+
+# 1 -- the control. Real pins and real shelves in a throwaway pen: the welcome, the two link
+# classes, the exception, the five named refusals, and the bound from both sides.
+let control = run ["sh" "tools/fixtures/reds_fold_control.sh"]
+say control.out
+assert control.ok else "reds-fold: the control must exit 0"
+assert control.out contains "pass=23" else "reds-fold: want twenty-three behaviors proven"
+assert control.out contains "fail=0" else "reds-fold: no behavior may miss"
+
+# 2 -- the living shelves, read for the fault itself. A shelf holds rows that already moved, so a
+# `](../` inside one is a link one level short -- except `](../REDS.md)`, which is a shelf header
+# pointing at the pin and is correct exactly as written. Counted here rather than recited, because a
+# count carried in a comment is a memory (REDS %108).
+let short = run ["sh" "-c" "grep -o '](\\.\\./[^)]*)' construction/archive/REDS-*rows-*.md 2>/dev/null | grep -v '](\\.\\./REDS\\.md)' | grep -c . || true"]
+say "shelf_links_one_level_short=${short.out}"
+assert (trim short.out) == "0" else "reds-fold: a shelf carries a link one level short -- run the loom, or re-anchor by hand"
+
+# 3 -- the standing catch, which found this fault within the round both times it happened. It reads
+# every living document rather than the shelves alone, so it answers a wider question than duty 2
+# and is the reason the loom is prevention rather than repair.
+let reach = run ["sh" "tools/fixtures/readme_reach_scan.sh"]
+assert reach.ok else "reds-fold: the reach scan must run"
+assert reach.out contains "broken_in_living=0" else "reds-fold: a living document holds a broken link"
+say "readme_reach: broken_in_living=0"
+
+say ""
+say "GREEN: reds-fold -- the loom moves a row and re-anchors both link classes, leaves the pin's own pointer and unlinked prose byte-identical, refuses an OPEN row, an absent row, an unnamed shelf, a missing shelf and a fold past its bound, and every living shelf reads clean"

@@ -13,14 +13,14 @@
 
 ### Standing, every lap
 
-- **ASCII-first.** Write every new document, comment, and commit message in plain ASCII -- `--`, `-`, `'`, `"`, `->`, `<=`, `gamma_2` rather than em-dashes, middots, curly quotes, arrows, or non-ASCII math. The one exception is an explicitly-named set of work rounds (a Unicode-handling module's own fixtures). This card was corrupted to mojibake once (REDS %83). Rule: `.claude/rules/ascii-first.md`.
-- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (they are names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]`. No fold ships without `tools/d/dated_path_witness.rish` GREEN. Rule: `.claude/rules/stamp-and-name.md`.
+- **ASCII-first.** Write every new document, comment, and commit message in plain ASCII -- `--`, `-`, `'`, `"`, `->`, `<=`, `gamma_2` rather than em-dashes, middots, curly quotes, arrows, or non-ASCII math. The one exception is a named set of work rounds (a Unicode module's own fixtures). This card was corrupted to mojibake once (REDS %83). Rule: `.claude/rules/ascii-first.md`.
+- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/reds_fold.sh`. Rule: `.claude/rules/stamp-and-name.md`.
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
 - **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **71 guards** stand -- **68 every-lap, 3 cadence** -- counted from the roster's own scan, at `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
-- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it -- three times now (REDS %188, %220, %223). No guard can *enforce* the close, since one would have to run after the lap ends. What a guard **can** do is refuse to open the next lap over the wreckage, and that is where the runner now stands: `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
-- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
+- **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
+- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
 ### Seated, and still live
@@ -50,43 +50,43 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `5605016d10` -- the seed ships; the runes say their names.
+**Git nib:** `afffaca3f2` -- a lantern twice becomes a loom.
 
-**Now.** **Two piers merged, three remotes renamed, Dream's lane open.**
+**Now.** **Two piers merged, remotes renamed, Dream's lane open.**
 
-**Landed, shelved** (%268, %269, %270) to
-[`archive/REDS-two-piers-and-the-dialect-family-rows-269-275.md`](archive/REDS-two-piers-and-the-dialect-family-rows-269-275.md)
-and its siblings; `dexter` still waits. The habit -- **run the roster after a pull that moved** --
-earned itself twice more today.
+**Landed, shelved** (%268-%270) under [`archive/`](archive/); `dexter` still waits. The habit --
+**run the roster after a pull that moved** -- earned itself twice more today.
 
-**The two piers reconciled, and the collision was paid.** Both clones took `%233`-`%237` -- `%230`
-and `%252` again -- so upstream's five are **re-seated at `%271`-`%275`** on his word, citations
-repointed. **The three remotes are `xy`, `debrided`, `seed`;** the rename broke every guard reading
-`origin/main` and every loop line spelling `xykj61`, all repointed. `debrided` shared **zero** commits
--- repointed `20260823` onto a repo that never took the `20260817` lineage drop -- and was
-force-matched on his word.
+**The two piers reconciled.** Both clones took `%233`-`%237` -- `%230` and `%252` again -- so
+upstream's five are **re-seated at `%271`-`%275`** on his word. **The three remotes are `xy`,
+`debrided`, `seed`;** the rename broke every guard reading `origin/main` and every loop line spelling
+`xykj61`, all repointed. `debrided` shared **zero** commits -- repointed `20260823` onto a repo that
+never took the `20260817` lineage drop -- and was force-matched on his word.
 
 **Dream's first lane work: the rune says its own name.** Eight plain category words for Glow's closed
 rune set (*shop, fit, bind, ask, call, build, shape, aside*), glyph unchanged and lowering
 byte-identical. It ratifies: **30 of 32 `lower_*.rye` modules already carry a plain functional
 name**, and the two syllable-named ones are the whole cut surface, prepped Class M. Three siloed
-writings, all **A**. **Ten teaching surfaces measured, none needing a molt** -- the third queue to
-that result. One instrument lesson: a pointer card grades at **meter**, and `docs/COMPASS.md` at
-door manufactured a C it never earned.
+writings, all **A**; **ten teaching surfaces measured, none needing a molt**.
 
-**Three writers, one order** -- the parallel loops as a consensus rehearsal on real traffic: 25
-conflicts across two merges, 20 resolved by reading, one structural class left. The derived-spine
-key (a row keyed by its stamp, added rather than renamed) is **proposed, awaiting a seat**.
+**Three writers, one order** -- the loops as a consensus rehearsal on real traffic: 25 conflicts
+across two merges, 20 resolved by reading, one structural class left. The derived-spine key is
+**proposed, awaiting a seat**.
 
 **Seed published** `20260826.174615` -- gate %1 spent on his word. Four gates green on one tree
 (`M1_OK`, `SOW_OK` 7,168 / 1,117 scrubbed / 134 withheld, `IDENT_CLEAN`, `NO_PERSONAL`), seed nib
-`d983995`, anonymous and unsigned by design. **`arbor` ships scrubbed** on his word, its withholding
-row retired. One lesson: killing a `rishi` wrapper orphans its `sh` child, which keeps the
-projection lock, so two later projections disagreed until the orphan was reaped -- **reap the child,
-never only the wrapper.**
+`d983995`, anonymous and unsigned. **`arbor` ships scrubbed.** Killing
+a `rishi` wrapper orphans its `sh` child, which holds the projection lock -- **reap the child.**
 
 
-**The next doors.** The **fold loom** %270 names needs no word. Then `readlink -f` **4** sites and
+**The fold loom stands** (%270's next lap). `tools/fixtures/reds_fold.sh` moves closed rows onto a
+shelf through `reds_fold_reanchor.sh`, re-anchoring both link classes and holding `](../REDS.md)` as
+written; five named refusals, a twelve-row bound, 23 behaviors both ways. Grading it opened
+**%276**: the card skipped every `#` line, right for a Markdown heading and inverted for a program,
+so Reach graded shell code at grade **86** against a ceiling of 9. Repaired the same lap -- **a meter
+pointed at a class it was never shaped for reports a fault in the artifact**, twice today.
+
+**The next doors.** `readlink -f` **4** sites and
 `sed -i` **4**, each wanting a helper in
 [`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh); `readlink` wants a
 ruling first, two of its four Linux-only. His: **row-number allocation** (%230, %252) and the

@@ -110,7 +110,39 @@ sed -n '/^measure() {/,/^}/p' "$reg_scan" > "$work/measure.sh"
 [ -s "$work/measure.sh" ] || { echo "qa: prose_register_scan.sh no longer publishes measure()" >&2; exit 1; }
 . "$work/measure.sh"
 
-set -- $(measure "$root/$path")
+# WHAT COUNTS AS A PAGE'S PROSE, and the fault that made this explicit. Both readings below --
+# Register and Reach -- skip a line whose first non-whitespace is `#`, which is right for Markdown,
+# where `#` opens a heading. In a shell, Rishi, or Rye source `#` and `//` open the ONLY prose the
+# file has, and every other line is code. Applied to a program the rule therefore inverted: it threw
+# away the comments and graded the code. Measured `20260826` on `tools/fixtures/reds_fold.sh`, whose
+# comment head is 700 words of plain English -- Reach read 209 "words" of `[ -f "$PIN" ] || fail ...`
+# and returned a reading grade of 86 against a ceiling of 9, flooring Reach at 0 and the card at C.
+# The page was fine; the instrument was reading the wrong half of it (REDS %276).
+#
+# So the artifact is classified once, here, and both readings feed on the answer. This is the same
+# `truth_source` split the citation reading already makes further down, hoisted so that one
+# classification serves all three rather than two that can come to disagree.
+case "$path" in
+  *.md|*.mdc|*.markdown) artifact_kind=prose ;;
+  *)                     artifact_kind=program ;;
+esac
+
+if [ "$artifact_kind" = prose ]; then
+  prose_path="$root/$path"
+else
+  # The marker comes off so each line reads as the sentence it is; leaving `# ` on would send every
+  # line straight back into the heading rule this repair exists to escape. A shebang is an
+  # instruction to the kernel rather than a word to a reader, so it is dropped.
+  awk 'NR == 1 && /^#!/ { next }
+       /^[ \t]*(\/\/|#)/ {
+         line = $0
+         sub(/^[ \t]*(\/\/[\/!]?|#)[ ]?/, "", line)
+         print line
+       }' "$root/$path" > "$work/prose.txt"
+  prose_path="$work/prose.txt"
+fi
+
+set -- $(measure "$prose_path")
 sentences=$1
 negatives=$2
 neg_pct=$3
@@ -194,7 +226,7 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     if (reach_prose < 0) reach_prose = 0
     printf "%d %d %d %d %d %d\n", reach, reach_prose, int(grade + 0.5), int(per100 + 0.5), words, links
   }
-' "$root/$path")
+' "$prose_path")
 set -- $reach_raw
 reach=$1
 reach_prose=$2
