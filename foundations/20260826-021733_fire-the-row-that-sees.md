@@ -7,7 +7,8 @@
 **Status:** Living -- the fire row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260816-214652_standfast-the-stopped-line.md`](20260816-214652_standfast-the-stopped-line.md) -- [`20260729-224828_reds-first-and-the-allocation.md`](20260729-224828_reds-first-and-the-allocation.md) -- [`20260818-081438_the-three-depths-of-removal.md`](20260818-081438_the-three-depths-of-removal.md)
 
-Fire is the row of Mars, and its work is to cut and to stop. Every tree that grows
+Fire is the row of Mars, and its question is the unflinching one: what must stop,
+and what must be cut? Every tree that grows
 fast accumulates two kinds of trouble: the defect it is tempted to build over, and
 the dead tissue it is tempted to keep. Fire's lap exists for both. Where the other
 rows listen, feel, taste, and smell their way through the tree, this row looks --
@@ -35,18 +36,23 @@ vision is the sense, risk adapts. The dark twins at the same three seats are
 paired seat for seat under "dark euphoria, light terra"). Read them as one
 vocabulary with a day side and a night side:
 
-- **rockstar / hermit** -- the ignition and its balance. The rockstar starts the
+- **rockstar / hermit** -- the cardinal pair. The rockstar starts the
   fire in front of everyone; the hermit tends it alone, holding a stopped line
   in place while the root is found. A Standfast is hermit work with rockstar
   stakes: the whole line waits on one patient watcher.
-- **vision / night** -- the sense and its field. Vision needs night to matter;
+- **vision / night** -- the fixed pair, and the row's own sense. Vision needs night to matter;
   a defect is easiest to see against the dark, and the honest lap looks into
   the night of the tree -- the ledger of what went wrong -- before the daylight
   of what might go right.
-- **risk / surrender** -- the adaptive seat. Risk is the willingness to cut;
-  surrender is the willingness to let the cut thing go. The three depths of
-  removal are exactly this pair walked downward: risk chooses the depth, and
-  surrender releases what the depth removes.
+- **risk / surrender** -- the dual pair, the seat that dissolves onward. Risk is
+  the willingness to cut; surrender is the willingness to let the cut thing go.
+  The three depths of removal are exactly this pair walked downward: risk
+  chooses the depth, and surrender releases what the depth removes.
+
+A lap tags its receipts from these six. A reading that pulls the cord uses
+rockstar; a patient watch over a stopped line uses hermit; a fault seen whole
+uses vision, and the ledger it was seen against uses night; a cut chosen uses
+risk, and the dead tissue released uses surrender.
 
 ## Cardinal: Standfast -- the stopped line
 

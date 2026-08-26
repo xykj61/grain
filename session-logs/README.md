@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.195658` | [the horizon arrives as measurement](20260826-195658_the-horizon-arrives-as-measurement.kyri) | the happy zone molts; five thresholds, one shape |
 | `20260826.192711` | [the sweep that found nothing](20260826-192711_the-sweep-that-found-nothing.kyri) | %277 stands unique; two detectors thrown away |
 | `20260826.182901` | [the fascia, the friend, and the grant](20260826-182901_the-fascia-the-friend-and-the-grant.kyri) | two foundations, the mitra door, four dialect legs host-probed |
 | `20260826.182253` | [the instrument and the artifact](20260826-182253_the-instrument-and-the-artifact.kyri) | readlink 4->2, sed 3->0; a meter on the wrong class |

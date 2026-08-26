@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the water row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
-**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`](20260823-105651_the-shape-you-grew-and-the-shape-you-are.md) -- [`20260702-165412_the-happy-zone-and-the-thin-edge.md`](20260702-165412_the-happy-zone-and-the-thin-edge.md) -- [`20260618-184912_growing-a-language.md`](20260618-184912_growing-a-language.md)
+**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`](20260823-105651_the-shape-you-grew-and-the-shape-you-are.md) -- [`20260826-194850_the-happy-zone-and-the-thin-edge.md`](20260826-194850_the-happy-zone-and-the-thin-edge.md) -- [`20260618-184912_growing-a-language.md`](20260618-184912_growing-a-language.md)
 
 Water is the Venus row: care and flow. The other rows ask whether a thing stands, moves,
 or burns bright; this row asks whether it is cared for, and whether the work moves the way
@@ -29,24 +29,29 @@ actual code.
 
 ## The working vocabulary
 
-The row's words come from the two fifteen-seat palettes in `kyri/receipt.rye`, paired
-seat for seat under "dark euphoria, light terra" (Keaton's word, 20260826).
+The row speaks in six words, three light and three dark, drawn from the two fifteen-seat
+palettes in kyri/receipt.rye (seated 20260826, paired seat for seat under "dark euphoria,
+light terra"). The light triad reads as one line -- the river cuts, taste is its sense,
+love flows onward -- and each seat carries its night twin:
 
-The light triad -- **river, taste, love**: the river cuts, taste is its sense, love flows
-onward. The river is the cardinal word, the initiating cut that carves a channel where
-none was. Taste is the fixed word, the discerning middle that holds the standard. Love is
-the dual word, the current that carries the work past the row's own edge.
+- **river / tide** -- the cardinal pair. The river initiates: the cut that carves a
+  channel where none was. The tide is its night side: the cut that returns on its own
+  rhythm, pull as well as push.
+- **taste / nectar** -- the fixed pair, and the row's own sense. Taste is the discerning
+  middle that holds the standard up close. Nectar is taste sweetened: discernment
+  resting in what is already good.
+- **love / longing** -- the dual pair. Love dissolves the lap onward: the current that
+  carries the work past the row's own edge. Longing is love deepened -- the flow that
+  continues toward what it has not yet reached, naming what the next chapter owes.
 
-The dark twins -- **tide, nectar, longing** -- are the same three seats at night. The
-river's twin is the tide: the cut that returns on its own rhythm, pull as well as push.
-Taste sweetens to nectar: discernment resting in what is already good. Love deepens to
-longing: the flow that continues toward what it has not yet reached. A water lap speaks
-both registers. By day it cuts, tastes, and carries; by night it feels the tide, savors
-the nectar, and lets longing name what the next chapter owes.
+A lap tags its receipts from these six, and speaks both registers. A reading that opens
+a new channel uses river; one that returns to a seam on its own rhythm uses tide; a seam
+proven sweet uses nectar, and a horizon named without rushing a single step uses longing.
 
-## Cardinal: the shape you grew and the shape you are
+## Cardinal: The Shape You Grew and the Shape You Are
 
-`foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` fuses two laws:
+`foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` (seated
+20260823, fusing two elders written 20260821) fuses two laws:
 Gall's (1975) -- a working complex system is invariably grown from a working simple one --
 and Conway's (1968) -- a system copies the communication structure of whoever builds it.
 Together they say the shape you get is the shape you grew and the shape you are, and the
@@ -61,9 +66,10 @@ this grow from it? A design whose answer tastes thin, that assumes a memory nobo
 organization has, is the off note the cardinal cut exists to catch early, while the
 channel is still soft.
 
-## Fixed: the happy zone and the thin edge
+## Fixed: The Happy Zone and the Thin Edge
 
-`foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` distills a testing
+`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` (molted 20260826 on
+Keaton's word from the 20260702 elder, which stands bannered beside it) distills a testing
 teaching (J.B. Rainsberger, thanked in gratitude): integrated tests multiply -- five paths
 through one piece and seven through its neighbor make thirty-five through the pair --
 while mirrored collaboration and contract checks at each seam turn the multiplication into
@@ -78,9 +84,10 @@ two small answers at every seam, the asker proven against the contract, the answ
 proven to keep it. Nectar, the seat's dark twin, is the reward: a suite this shape stays
 sweet on every push, and the design feels the gentle pressure and grows clearer for it.
 
-## Dual: growing a language
+## Dual: Growing a Language
 
-`foundations/20260618-184912_growing-a-language.md` draws the method out of Rye's own
+`foundations/20260618-184912_growing-a-language.md` (written 20260618, reviewed and kept
+20260629, graduated to foundations) draws the method out of Rye's own
 raising and hands it to Rishi: stand on proven ground, wear a thin costume first, own the
 core by path, diverge by strengthening, dogfood and gate. Rishi stands on Rye the way Rye
 stands on its foundation, sharing one value model so the seam between shell and language

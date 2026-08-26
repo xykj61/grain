@@ -7,13 +7,15 @@
 **Status:** Living -- the air row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`../context/TAME_CORE.md`](../context/TAME_CORE.md) -- [`20260823-204456_single-stranded.md`](20260823-204456_single-stranded.md) -- [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 
-Air is the Saturn row: law and boundary. Every rule this tree keeps is a line drawn
-somewhere -- a maximum named at construction, a module kept to one thing, a ceiling on how
-negative a page may run. The air lap reads the three documents that draw those lines. Saturn
-gets a cold reputation, and the row corrects it: a boundary is what lets a thing have a shape
+Air is the Saturn row -- law and boundary -- and its question is the second question:
+where does each thing end? Every rule this tree keeps is a line drawn somewhere -- a
+maximum named at construction, a module kept to one thing, a ceiling on how negative a
+page may run. The air lap reads the three documents that draw those lines. Saturn gets a
+cold reputation, and the row corrects it: a boundary is what lets a thing have a shape
 at all. A bounded buffer can be trusted. A module with a clean edge can be lifted out and
-held. A page with a ceiling stays readable. The law is the kindness here, and the lap's work
-is to walk the fence line and feel that every post still stands.
+held. A page with a ceiling stays readable. The law is the kindness here, and it is what
+the row teaches its lap, once per orbit: walk the fence line and feel that every post
+still stands.
 
 ## The sense: touch
 
@@ -30,22 +32,28 @@ a wish, and the lap writes that down.
 
 ## The working vocabulary
 
-The row's six words come from the two fifteen-seat palettes in `kyri/receipt.rye`, paired
-"dark euphoria, light terra" (seated `20260826`). Air's light triad is **arc, touch,
-senses**: the arc moves, touch is its sense, the senses play. Its dark twins are **spiral,
-presence, trance**: the arc lets go into the spiral, touch becomes presence, and the play of
-the senses settles into trance.
+The row speaks in six words, three light and three dark, drawn from the two fifteen-seat
+palettes in `kyri/receipt.rye` (seated `20260826`, paired seat for seat under "dark
+euphoria, light terra"). Air's light triad is **arc, touch, senses** -- the arc moves,
+touch is its sense, the senses play -- and its dark twins are **spiral, presence, trance**:
 
-Read as working words, they name the two ways a lap meets a boundary. By day the lap traces
-the **arc** -- the deliberate curve of a rule from its reason to its check -- **touches**
-each edge, and keeps all the **senses** engaged so a drifted line is felt early. By night the
-same motion loosens: the arc becomes a **spiral**, returning to the same fences one turn
-deeper each pass; touch deepens into **presence**, simply staying with a file long enough to
-notice what a quick pass misses; and the steady round of checking becomes **trance**, the
-calm rhythm an unattended loop actually runs in. Both registers are legitimate. The light
-words drive a lap; the dark words describe what a long one feels like from inside.
+- **arc / spiral** -- the cardinal pair. Arc initiates: the deliberate curve of a rule
+  from its reason to its check, traced by day. Spiral is its night side -- the arc lets
+  go, returning to the same fences one turn deeper each pass.
+- **touch / presence** -- the fixed pair, and the row's own sense. Touch is the hand on
+  each edge, meeting a thing where it ends. Presence is touch deepened: simply staying
+  with a file long enough to notice what a quick pass misses.
+- **senses / trance** -- the dual pair. The senses dissolve the walk outward across every
+  channel at once, all of them kept engaged so a drifted line is felt early. Trance is
+  their night side -- the steady round of checking settled into the calm rhythm an
+  unattended loop actually runs in.
 
-## TAME_CORE.md -- the cardinal seat: the law in reflex form
+A lap tags its receipts from these six, and both registers are legitimate: the light
+words drive a lap, and the dark words describe what a long one feels like from inside. A
+reading that opens a fence walk uses arc; one that stays with a single file uses
+presence; one that closes a long, even pass uses trance.
+
+## Cardinal: TAME Core
 
 `context/TAME_CORE.md` (stamp `20260811.200854`) is the compressed core of the TAME pair --
 the smallest form that still holds the highest points, kept token-dense on purpose so it
@@ -62,7 +70,7 @@ before writing a line of Rye -- the reflexes live here, and the lap presses each
 confirm it still matches what the witnesses check. A reflex that has drifted from its
 witness is a fence post rotted at the base, firm to the eye and loose to the hand.
 
-## Single-Stranded -- the fixed seat: the boundary between parts
+## Fixed: Single-Stranded
 
 `foundations/20260823-204456_single-stranded.md` is the Gauge reimagining of the `20260618`
 elder, rewritten at Door setting with every claim carried over. Its whole argument rests on
@@ -81,7 +89,7 @@ braid is a boundary that exists on the diagram and nowhere under the hand. The d
 holds the row's center because it names what all the row's law is *for*: parts with real
 edges, each holdable in a single quiet mind.
 
-## GAUGE_STYLE.md -- the dual seat: the boundary with a dial
+## Dual: Gauge Style
 
 `context/GAUGE_STYLE.md` (seated `20260823.045448`) governs the prose the way TAME governs
 the code, and its first rule comes before the rest: don't be too smart about it. It sets one

@@ -87,7 +87,7 @@ assert rs.ok else "resins pair missing"
 assert rs.out contains "RESIN_OK" else "resins pair check failed"
 
 say "compass rose: thin-edge path (not thin-ring)…"
-let e = run ["sh" "-c" "test -f foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md && ! grep -q 'the-happy-zone-and-the-thin-ring' gratitude/README.md gratitude/IntegratedTestsAreAScam.md && echo EDGE_OK"]
+let e = run ["sh" "-c" "test -f foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md && ! grep -q 'the-happy-zone-and-the-thin-ring' gratitude/README.md gratitude/IntegratedTestsAreAScam.md && echo EDGE_OK"]
 assert e.ok else "thin-edge path check failed"
 assert e.out contains "EDGE_OK" else "thin-ring stale pointer still present"
 

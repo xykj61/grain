@@ -74,6 +74,7 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 
 | Fossil (old stamp) | Living mutant | Seated | Notes |
 | --- | --- | --- | --- |
+| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | molt `20260826.194850`, Keaton's word | the elder's horizon retold as arrived: the mirror is house law, the drain replays, the choir counts, the thin edge includes the host; eleven living citers repointed in the round |
 | `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | p29 `20260728.220203`, re-seated `20260825.233310` | invent held; molted twice, the `20260728` stamp debrided |
 | `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
 | `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
