@@ -125,6 +125,9 @@ for p in $PATHS; do
     if grep -Iqi -E "$IDENT" "$f" 2>/dev/null; then
       mkdir -p "$(dirname "$dest")"
       sed -f "$SCRUB" "$f" > "$dest"
+      # invariant: a scrubbed copy keeps the mode the tree tracks -- the seed's own
+      # commit-msg hook is one of these files, and a dropped exec bit disarms it.
+      [ -x "$f" ] && chmod +x "$dest"
       if grep -Iqi -E "$IDENT" "$dest" 2>/dev/null; then
         rm -f "$dest"
         printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"
