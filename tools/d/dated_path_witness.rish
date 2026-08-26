@@ -246,6 +246,14 @@ assert one_list.out contains "vendored_free=yes" else "dated-path: a vendored me
 assert one_list.out contains "commented_page_free=yes" else "dated-path: a dated name written only on a full-line comment is a page a round WROTE ABOUT rather than one an instrument planted -- discovery must read past it, or a comment explaining a removal silently subtracts that page's surviving references (REDS %246)"
 assert one_list.out contains "commented_rye_free=yes" else "dated-path: the same must hold for a Rye // comment, since discovery reads .rye beside .sh"
 assert one_list.out contains "trailing_comment_still_plants=yes" else "dated-path: a code line carrying a trailing comment must still plant what it names -- the strip is anchored to a line's first non-blank character rather than hunting a hash through code"
+
+# A PLANT IS PLANTED BY AN INSTRUMENT (REDS %268). Discovery emits a basename whose sprig names no
+# tracked file, which is also the definition of a wound, so it reads only files this tree already
+# calls instruments -- `_control`, `_witness`, `_scan`. An ordinary source carrying a broken dated
+# path is breakage and must reach the census. The chapter molt broke exactly such a path inside
+# `tools/l/launch-claude-chapter.rish`, discovery took it for a fixture, and the subtraction -- which
+# works by basename across every file -- erased the identical break in the loop's own seed as well.
+assert one_list.out contains "ordinary_source_free=yes" else "dated-path: a broken dated path in an ordinary source is a wound rather than a planting, and must reach the census"
 assert one_list.out contains "roster_reads_itself=no" else "dated-path: the roster must stay out of its own corpus, or it discovers everything it lists"
 assert one_list.out contains "discovery_leaves_scratch=no" else "dated-path: discovery must leave no scratch file in the tree it read"
 assert one_list.out contains "control_verdict=ok" else "dated-path: the single-list control must agree with itself"

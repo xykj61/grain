@@ -53,34 +53,35 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `3d1e601e59` -- PCRE and stat gated at zero; roster 70 -> 71.
+**Git nib:** `51bfae9fa9` -- the census read past its own wound; instruments only.
 
-**Now.** **Four dialect families gated at zero, two guards found off every clock.**
-`grep -P` is PCRE and BSD grep refuses it, so the two guards this tree leans on hardest read
-**nothing** on the macOS bench:
-[`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh), whose lost count
-gates every room fold with no slack, and `living_card_ascii_scan.sh`, which holds this card at zero
-non-ASCII bytes. Both speak ERE, keeping the rule by **consuming the boundary and stripping it**
-rather than looking behind -- proven equal under GNU grep at **35,642** references, byte-identical. `stat -f` before `stat -c` joined them: GNU reads `-f` as `--file-system`, so the
-first leg half-worked, the `||` fired anyway, and `btime` returned **six lines where one was
-meant**. One `file_mtime` call, GNU first.
+**Now.** **Two piers merged, and two guards were reading past their own subject.**
+Pulled `xykj61`, rebased **ten** commits onto it; one conflict, the shared nib line.
 
-**Eight roots booked and closed** -- %260 to %267 in [`REDS.md`](REDS.md); two carry past it.
+**The chapter molt broke the loop's own recipe** (%268). Sweeping *season* to *chapter* rewrote a
+**path literal** whose dated basename correctly kept the elder word, so
+[`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish) and
+[`../recursion-prompts/seed/autonomous-loop.seed.md`](../recursion-prompts/seed/autonomous-loop.seed.md)
+both named a document that exists nowhere. Every lap since was told to read it. Found by following
+the recipe.
 
-**A control reading CONTROL_GREEN stood on no roster, RED for a day** (%263).
-[`../tools/fixtures/ryekey_control.sh`](../tools/fixtures/ryekey_control.sh) proves rye's build
-receipt across fifteen legs, and nothing in the tree was wrong: `rye/bin/rye` is untracked and this
-pier's copy predated its own source by four days. Rebuilt in a second, fifteen legs green in
-nineteen; a binary behind its source now **skips as a machine fact**, and
-[`../tools/r/ryekey_witness.rish`](../tools/r/ryekey_witness.rish) puts it on the lap tier.
-**Roster 70 -> 71.**
-**A red that keeps no words cannot be rooted** (%266). This lap closed a rota cycle, so the roster
-sang `--all`. `caravan_suite` read **red** under it and **GREEN alone** three times after, on an
-unmoved tree, and the record held nothing to tell them apart: the runner discarded every guard's
-output. A red keeps its words at `construction/standing-equipment-reds/<name>.txt` now, bounded to
-200 lines, gitignored, cleared each run, landing **after** the close digest since a file written
-mid-run moves the tree under the run's own reading (%267). Proven in a pen, 43 -> 46. **The flake
-is unrooted**: the next occurrence carries its words.
+**Three guards reached it and none counted it.** `tracked_link_scan.sh` reads `](...)` syntax;
+`phantom_path_scan.sh` passes "resolves nowhere" free by named rule; and the census **subtracted**
+it -- `dp_discovered_fixture_basenames` emitted any dated basename **whose sprig names no tracked
+file**, which is the definition of a wound, and it subtracts by basename across every file, so one
+bad path in one `.rish` erased the identical break in the `.md` beside it. Discovery reads
+`_control`, `_witness`, `_scan` now: **2,097** files where it read **4,784**, five names declared by
+hand, fixture list **77** either way, healthy census **byte-identical**, and the same break now
+reads `under_ceiling=no`. Proven both sides; one control leg repaired rather than added, 14 -> 15.
+
+**A pull is an arrival, and an arrival is not a commit** (%269). Git fires no `pre-commit` during a
+replay and no roster runs on arrival, so the closing `--hot` roster read **11 reds across 68
+guards** on a tree that read 68 green two hours before. Seven came in with the pull: a new root room
+`arbor/` with no verdict in `template-manifest.bron`, its `author.sh` at `100644` taking the
+exec-bit ratchet 57 -> 58, its `README.md` with no path home, a log with no index row, both
+generated pages stale. All repaired; `arbor` is **personal** under the manifest's own fail-safe
+until cleared file by file, as `dexter` waits. The habit -- **run the roster after a pull that
+moved** -- is named rather than seated; the sync rota is Keaton's.
 
 **The next doors.** **`main` stays unpushed -- the integration is Keaton's word** (%248); each
 package parks on its own `pier/` branch, both remotes. Next: `readlink -f` **4** sites and
@@ -227,7 +228,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.075023` | Seven `date -d` lines to three portable functions; %250 CLOSED both sides on metal; %256, %257, %258 booked; `one_clock` seated on the roster | [log](../session-logs/20260826-075023_the-clock-that-spoke-one-dialect.kyri) |
+| `20260826.093717` | PCRE and `stat` gated at zero; %260-%267 booked; a red keeps its own words; roster 70 -> 71 | [log](../session-logs/20260826-093717_the-flag-inside-a-longer-word.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

@@ -70,10 +70,21 @@ printf 'echo 20260101-000000_vendored.md\n' > "$dpen/vendor/x/v_scan.sh"
 # This is the shape that cost REDS %246 -- a scan's own comment explaining a debrided page made the
 # census stop counting that page's five surviving references, in silence.
 printf '# the debride removed 20260101-000000_written-about.md\n' > "$dpen/tools/fixtures/writer_scan.sh"
-printf '// and so did this one, 20260101-000000_rye-written-about.md\n' > "$dpen/tools/fixtures/writer.rye"
+# NAMED `_witness.rye` RATHER THAN `writer.rye` SINCE REDS %268. Discovery reads instruments only
+# now, so an ordinary `.rye` is never scanned and this leg would pass for the wrong reason -- a leg
+# that cannot red is the vacuum this tree already booked once. An instrument in Rye keeps the `//`
+# strip genuinely under test.
+printf '// and so did this one, 20260101-000000_rye-written-about.md\n' > "$dpen/tools/fixtures/writer_witness.rye"
 # the other side of that line: a code line carrying a trailing comment still plants what it names,
 # because the strip is anchored to the FIRST non-blank character rather than hunting for a hash.
 printf 'echo 20260101-000000_trailing.md  # a note beside the plant\n' > "$dpen/tools/fixtures/trailer_scan.sh"
+# AN ORDINARY SOURCE IS NOT AN INSTRUMENT, so a dated name it carries whose sprig resolves nowhere
+# is a WOUND and must reach the census (REDS %268). `tools/l/launch-claude-chapter.rish` is exactly
+# this shape -- a launcher, not a control, witness, or scan -- and the chapter molt broke a path
+# inside it. Discovery emitted that break as a fixture and the subtraction erased it from every
+# file that carried it. The pen plants the same shape at the same path.
+mkdir -p "$dpen/tools/l"
+printf 'say 20260101-000000_a-broken-citation.md\n' > "$dpen/tools/l/launch-claude-chapter.rish"
 
 ( cd "$dpen" && git init -q . && git add -A \
   && git -c user.email=p@p -c user.name=p commit -qm pen ) >/dev/null 2>&1
@@ -88,6 +99,7 @@ has 20260101-000000_vendored.md && echo "vendored_free=no" || echo "vendored_fre
 has 20260101-000000_written-about.md && echo "commented_page_free=no" || echo "commented_page_free=yes"
 has 20260101-000000_rye-written-about.md && echo "commented_rye_free=no" || echo "commented_rye_free=yes"
 has 20260101-000000_trailing.md && echo "trailing_comment_still_plants=yes" || echo "trailing_comment_still_plants=no"
+has 20260101-000000_a-broken-citation.md && echo "ordinary_source_free=no" || echo "ordinary_source_free=yes"
 
 # the roster reading itself would discover everything it lists, so it is out of its own corpus
 printf 'DP_X="20260101-000000_listed-only.md"\n' >> "$dpen/tools/fixtures/dated_path_exclusions.sh"

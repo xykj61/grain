@@ -219,6 +219,26 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   in place, lap -> ring, same stamp), and the basenames sitting at two paths at once, which are
 #   the AMBIGUOUS class rather than this one. Listing a name nobody has traced would convert an
 #   open question into a silent decision, which is the accident REDS %245 and %246 were booked for.
+#   FIVE MORE, DECLARED WHEN DISCOVERY NARROWED TO INSTRUMENTS (REDS %268). Each is a string
+#   inside a module's own test body rather than a citation of anything, and each was found by
+#   discovery until its source stopped being read for plants. Listed here once, which is what this
+#   file asks for, so a healthy tree reads exactly what it read before the narrowing:
+#
+#     20260702-090000_theta.md      -> tools/rye/session_logs_archive.rye, a fold test's fixture path
+#     20260716-145955_rune.bron     -> tools/rye/session_logs_archive.rye, should_fold_flat input
+#     20260717-125858_skate.bron    -> tools/rye/session_logs_archive.rye, should_fold_flat input
+#     20260713-201910_old.bron      -> scribe/reader.rye, is_scribe_extension input
+#     20260810-113354_a-log.kyri    -> scribe/reader.rye, is_scribe_extension input
+#
+#   AND ONE NAME NO FILE EVER WORE. `20260816-205859_double-seat-expansion-eight-chapters.md` was
+#   invented by the chapter molt of 20260826, which swept `season` to `chapter` through a path
+#   literal whose dated basename correctly kept the elder word. Its forwarding address is
+#   `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`, which
+#   stands and always did. The rows and logs that book REDS %268 must quote the broken form to
+#   explain it, and a row naming a lost reference is itself one -- the cost of saying so, paid once
+#   and visible, exactly as REDS %245, %246 and %253 already record. Listed rather than paid for by
+#   a rising ceiling, because a ceiling only falls.
+#
 DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
@@ -235,7 +255,13 @@ DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260823-222018_what-mantra-is.md \
 20260821-035846_every-climate-has-a-fiber.md \
 20260813-142420_mycelium-the-consensus-protocol.md \
-20260703-235912_diet-and-the-crossing-manifest.md"
+20260703-235912_diet-and-the-crossing-manifest.md \
+20260702-090000_theta.md \
+20260716-145955_rune.bron \
+20260717-125858_skate.bron \
+20260713-201910_old.bron \
+20260810-113354_a-log.kyri \
+20260816-205859_double-seat-expansion-eight-chapters.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
@@ -337,6 +363,33 @@ dp_fixture_basenames() {
 # fixture into the census, and a false positive hides real breakage. Between those two the census
 # takes the one that shows too much.
 #
+# A PLANT IS PLANTED BY AN INSTRUMENT, and only an instrument is read for one (REDS %268).
+#
+# This discovery emits a dated basename whose SPRIG names no tracked file -- which is exactly the
+# definition of a broken reference, so for one day the test could not tell a plant from a wound.
+# The chapter molt of 20260826 rewrote a path literal whose dated basename correctly kept the elder
+# word, leaving `tools/l/launch-claude-chapter.rish` -- the script that starts every unattended lap
+# -- naming `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-chapters.md`
+# where the file on disk is `..._eight-seasons.md`. The launcher is a `.rish`, so the wound was
+# discovered here, emitted as a fixture, and subtracted from the corpus. Worse, the subtraction is
+# BY BASENAME and reaches every file: the identical break in
+# `recursion-prompts/seed/autonomous-loop.seed.md` was erased along with it. Measured on this tree:
+# with both broken the census read `broken_gone=151`, `refs_lost=168`, `under_ceiling=yes`; with
+# only the Markdown one broken it read 152, 169, and `under_ceiling=no`. One bad path in one shell
+# script blinded the whole census to that name.
+#
+# So the source set is the three names this tree already calls instruments -- `_control`,
+# `_witness`, `_scan` -- in any of the four languages it reads. Measured `20260826.124500`: it takes
+# 2,097 files where it took 4,784, so 2,687 ordinary sources can no longer erase their own
+# breakage, and a launcher is an ordinary source. Anything a module's own test body plants is
+# DECLARED above instead, once and on the record, which is the shape this file already asks for.
+# Measured cost of the narrowing: five names, all of them test inputs inside `.rye` bodies, now
+# listed by hand -- so the fixture list reads 77 either way and a healthy tree reads what it read.
+#
+# The residual is named rather than hidden: a genuine wound inside a control, witness, or scan is
+# still subtracted here. Those are the files whose job is to plant names, so that is where the
+# ambiguity honestly lives, and it is 2,097 files rather than the whole tree.
+#
 # Takes the repository root, so a caller that has cd'd into a pen still reads the tree it means to.
 dp_discovered_fixture_basenames() {
   _dp_root=${1:-.}
@@ -348,6 +401,7 @@ dp_discovered_fixture_basenames() {
     git ls-files '*.rye' '*.rish' '*.sh' '*.brix' 2>/dev/null \
       | grep -vE '^(vendor|gratitude|old)/' \
       | grep -v '^tools/fixtures/dated_path_exclusions.sh$' \
+      | grep -E '_(control|witness|scan)\.(rye|rish|sh|brix)$' \
       | xargs sed -e 's/^[[:space:]]*#.*$//' -e 's|^[[:space:]]*//.*$||' 2>/dev/null \
       | grep -oE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
       | sort -u \
