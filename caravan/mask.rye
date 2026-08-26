@@ -121,6 +121,12 @@ comptime {
     assert(max_turns >= max_queue_len);
     // invariant: a whole turn fits in the one word a mask is kept in
     assert(max_turn_steps <= 32);
+    // invariant: the queue bound holds the word-wide law in its own name --
+    // max_turn_steps aliases it today, and a law that rides only an alias
+    // vanishes the day the alias is retired. Raising this bound past 32 is
+    // a design conversation the compiler convenes here, rather than a shape
+    // quietly outgrowing its word (the optimization spine, move two).
+    assert(max_queue_len <= 32);
 }
 
 /// Renders one outcome code as the words an operator reads.

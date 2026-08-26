@@ -1,0 +1,66 @@
+# tools/ca/caravan_wrap_class_witness.rish -- every wrap site in the caravan room says which wrap it is.
+#
+# The optimization spine's move one, held as a room law (design:
+# active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md; reading:
+# external-research/20260826-021135_caravan-read-against-the-optimization-spine.md). A ring
+# buffer's wrap is semantics and a linear count's wrap is aliasing, so a modulo whose result
+# becomes a value owes one `// invariant:` line naming `wrap-as-periodic` or `wrap-as-linear`.
+# A modulo feeding a comparison with zero is a divisibility predicate -- nothing wraps, nothing
+# owed. The room seated the law with two classified sites (caravan/queue.rye slot_offset,
+# caravan/reply.rye fixture lengths) over eight free predicates, measured 20260826.
+#
+# Three claims, in order:
+#   * the live room reads whole -- every wrap site classified, and the scan SEES the two seated
+#     sites, since a meter that finds nothing cannot be told from a meter reading nothing;
+#   * a planted unclassified wrap REFUSES by name, in a pen this witness builds and removes --
+#     a refusal proven only in the passing direction cannot be told from a bypass;
+#   * a classified wrap and a divisibility predicate in the same pen stay FREE, so the law
+#     bites only what it names.
+#
+# Purely local: no key, no network, no funds, no device. Falsifier standing (the design's own):
+# a wrap site the scan cannot classify is a design question, and making it loud is the point.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_wrap_class_witness.rish
+
+say "caravan-wrap-class: Language EN -- a wrap is a meaning, never a net; every wrap site in the room says which meaning it carries."
+say "caravan-wrap-class: Style Gauge -- one scan, three claims: the room whole, the refusal bitten, the honest shapes free."
+say "caravan-wrap-class: Lens TAME -- bound in the shape, said why at the site; the meter counts what the law names and leaves the rest free."
+
+# Claim one: the live room, whole and seen.
+let live = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh"]
+assert live.ok else "caravan-wrap-class: the room must read whole -- ${live.out}"
+# invariant: the meter sees the seated sites -- a scan reading zero sites reads nothing at all
+assert live.out contains "unclassified=0" else "caravan-wrap-class: every wrap site carries its classification -- ${live.out}"
+assert live.out contains "classified=2" else "caravan-wrap-class: the two seated sites must be seen (queue slot_offset, reply lengths) -- a meter that finds nothing proves nothing: ${live.out}"
+
+# The pen: a throwaway room this witness builds, reads, and removes.
+let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/caravan && printf '%s' $d"]
+assert pen_mk.ok else "caravan-wrap-class: could not build the pen -- ${pen_mk.err}"
+let pen = trim pen_mk.out
+
+# Claim two: an unclassified wrap refuses by name.
+let plant_bad = run ["sh" "-c" "printf '%s\n' 'fn slot(seq: u32) u32 {' '    const ring: u32 = seq % cap;' '    return ring;' '}' > ${pen}/caravan/unclassified.rye"]
+assert plant_bad.ok else "caravan-wrap-class: could not plant the unclassified wrap"
+let red = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh" "${pen}"]
+# invariant: the refusal is proven from the failing side, on metal, in this run
+assert red.ok == false else "caravan-wrap-class: a planted unclassified wrap must refuse -- it passed instead"
+assert red.out contains "unclassified=1" else "caravan-wrap-class: the refusal counts the planted site -- ${red.out}"
+assert red.out contains "unclassified.rye" else "caravan-wrap-class: the refusal names the file that owes its comment -- ${red.out}"
+
+# Claim three: the honest shapes stay free.
+let clear_bad = run ["sh" "-c" "rm ${pen}/caravan/unclassified.rye"]
+assert clear_bad.ok else "caravan-wrap-class: could not clear the planted wrap"
+let plant_good = run ["sh" "-c" "printf '%s\n' '// invariant: wrap-as-periodic -- the pen ring lands on purpose' 'fn slot(seq: u32) u32 {' '    const ring: u32 = seq % cap;' '    return ring;' '}' > ${pen}/caravan/classified.rye"]
+assert plant_good.ok else "caravan-wrap-class: could not plant the classified wrap"
+let plant_pred = run ["sh" "-c" "printf '%s\n' 'fn aligned(x: u64, page: u64) bool {' '    return x % page == 0;' '}' > ${pen}/caravan/predicate.rye"]
+assert plant_pred.ok else "caravan-wrap-class: could not plant the predicate"
+let free = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh" "${pen}"]
+assert free.ok else "caravan-wrap-class: a classified wrap and a predicate must both stay free -- ${free.out}"
+assert free.out contains "classified=1" else "caravan-wrap-class: the classified plant is read as classified -- ${free.out}"
+assert free.out contains "predicates_free=1" else "caravan-wrap-class: the predicate plant stays free -- ${free.out}"
+
+let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
+assert pen_rm.ok else "caravan-wrap-class: could not remove the pen"
+
+say "GREEN: caravan-wrap-class -- the room reads whole at two classified over eight free predicates, the planted wrap refused by name, and the honest shapes passed free."
