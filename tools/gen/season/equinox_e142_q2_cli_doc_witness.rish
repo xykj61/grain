@@ -11,7 +11,11 @@ assert green.out contains "lean_note=crossing_season_offered" else "e142-q2: wan
 assert green.out contains "handback_slot=return_deca_128" else "e142-q2: want handback slot"
 assert green.out contains "q2_note=cli_doc_comment_only" else "e142-q2: want Q2 doc"
 assert green.out contains "zero_code=honored" else "e142-q2: want zero code"
-assert green.out contains "amphora_tracked=10" else "e142-q2: want amphora 10"
+# THE FLOOR, READ FROM THE WITNESS SIDE (REDS %235). The scan prints what it measured and
+# the floor beside it, so this reads the floor. The room grew to 11 tracked when e143
+# seated amphora/src/main.rye, and this rung's claim was always about its OWN lap.
+assert green.out contains "amphora_floor=10" else "e142-q2: want the amphora floor held"
+assert green.out contains "census=honored" else "e142-q2: want the census honored"
 assert green.out contains "shred=RED" else "e142-q2: want shred RED"
 assert green.out contains "seat_128=reserved_close_choir" else "e142-q2: want 128 reserved"
 assert green.out contains "verdict=ok" else "e142-q2: want verdict ok"

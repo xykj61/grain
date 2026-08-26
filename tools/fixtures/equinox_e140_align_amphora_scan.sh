@@ -145,9 +145,13 @@ if rg -q 'F COLD' "$TASKS"; then
     exit 1
   }
 fi
-rg -qi 'Amphora|e140|CLI' "$TASKS" || {
+# THE LIVE EDGE MOVED, SO THE READING FOLLOWS IT (REDS %236). construction/TASKS.md fused
+# into construction/ITINERARY.md on 20260823.103804 and is a pointer now, 1,220 bytes that
+# name where the work went. This rung asks whether the live lap edge is written down
+# somewhere a hand can find it, so it reads the pointer OR the card the pointer names.
+rg -qi 'Amphora|e140|CLI|ITINERARY' "$TASKS" || rg -qi 'Amphora|e140|CLI' "$ITINERARY" || {
   echo "tasks=failed"
-  echo "detail=want_tasks_now_amphora"
+  echo "detail=want_live_edge_named_in_tasks_or_itinerary"
   echo "verdict=misread"
   exit 1
 }

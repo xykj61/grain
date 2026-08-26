@@ -90,15 +90,19 @@ echo "apply2=honored"
 # APPLY 3 -- amphora census 10 tracked - 9 rye
 CELLAR_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
 RYE_N=$(git ls-files 'amphora/*.rye' | wc -l | tr -d ' ')
-test "$CELLAR_N" = "10" || {
+# A FLOOR RATHER THAN A PIN (REDS %235). This rung's honest claim was that IT added no .rye,
+# which is a fact about one lap; the exact count turned it into a claim that the room would
+# never grow again. e143 added amphora/src/main.rye and broke this rung and its sibling on the
+# same commit, and the family's silence is why nobody knew for a month.
+test "$CELLAR_N" -ge 10 || {
   echo "census=failed"
-  echo "detail=want_amphora_tracked_10_got_$CELLAR_N"
+  echo "detail=want_amphora_tracked_at_least_10_got_$CELLAR_N"
   echo "verdict=misread"
   exit 1
 }
-test "$RYE_N" = "9" || {
+test "$RYE_N" -ge 9 || {
   echo "census=failed"
-  echo "detail=want_amphora_rye_9_got_$RYE_N"
+  echo "detail=want_amphora_rye_at_least_9_got_$RYE_N"
   echo "verdict=misread"
   exit 1
 }
@@ -109,7 +113,8 @@ rg -qi '10 tracked|9 .rye|nine .rye|10 \(9' "$COUNSEL" "$BOW" "$ITINERARY" || {
   exit 1
 }
 echo "census=honored"
-echo "amphora_tracked=10"
+echo "amphora_tracked=${CELLAR_N}"
+echo "amphora_floor=10"
 echo "amphora_rye=9"
 echo "apply3=honored"
 

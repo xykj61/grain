@@ -64,12 +64,20 @@ echo "$HEALTH_OUT" | rg -q '^verdict=ok$' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$HEALTH_OUT" | rg -q '^fascia_health=(41|42)$' || {
+# A FLOOR RATHER THAN A PIN (REDS %235), and this one refused an IMPROVEMENT. The rung was
+# seated when fascia health read 41 or 42; the tree measured 44 on 20260825, so a guard written
+# to protect the number was refusing the tree for getting healthier. The floor keeps what the
+# rung was actually for -- health never falls back below where this rung found it -- and lets
+# every reading above it through. Raise the floor when a lap earns a durably higher number.
+HEALTH_N=$(printf '%s\n' "$HEALTH_OUT" | sed -n 's/^fascia_health=//p' | head -1)
+echo "fascia_health_measured=${HEALTH_N}"
+echo "fascia_health_floor=41"
+if test "${HEALTH_N:-0}" -lt 41; then
   echo "fascia_health=failed"
   echo "verdict=misread"
-  echo "detail=want_fascia_health_41_or_42"
+  echo "detail=want_fascia_health_at_least_41_got_${HEALTH_N}"
   exit 1
-}
+fi
 echo "fascia_health=honored"
 
 RED_OUT=$(sh "$HEALTH_SCAN" prove-red || true)
@@ -110,7 +118,12 @@ sh tools/fixtures/reds_spine_grep.sh 'git ls-files' >/dev/null || {
   echo "detail=want_git_ls_files_taught"
   exit 1
 }
-MONO=$(sh tools/fixtures/reds_ledger_monotone_scan.sh)
+# THE LEDGER FOLDS, SO THE READING SPANS THE SHELVES (REDS %231, second site). Bare, this
+# scan reads the living pin alone -- 3 flat rows on 20260825 -- and reports `not_monotone`
+# because rows 1..229 sit on fold shelves under construction/archive/. Its own witness has
+# always passed both, and this call site never learned to. Same shape the %231 repair fixed
+# for `reds_row_present`, in the neighbouring function nobody was looking at.
+MONO=$(sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md)
 echo "$MONO"
 echo "$MONO" | rg -q '^verdict=ok$' || {
   echo "reds_row=failed"

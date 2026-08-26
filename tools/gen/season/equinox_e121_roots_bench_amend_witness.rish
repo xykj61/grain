@@ -1,7 +1,7 @@
 # tools/gen/season/equinox_e121_roots_bench_amend_witness.rish -- e121 seat.
 #   rishi/bin/rishi run tools/gen/season/equinox_e121_roots_bench_amend_witness.rish
 say "e121-roots-bench-amend: Language EN — roots touch the tree; a bench is a raised root."
-say "e121-roots-bench-amend: Style Radiant — only a bench runs witnesses; name the root."
+say "e121-roots-bench-amend: Style Gauge Meter -- only a Bench runs witnesses; name the Bench."
 say "e121-roots-bench-amend: Lens TAME — e121 · Lexicon amend · almanac 125 · ch8 13/16."
 
 let green = run ["sh" "tools/fixtures/equinox_e121_roots_bench_amend_scan.sh"]
@@ -16,4 +16,4 @@ let red = run ["sh" "tools/fixtures/equinox_e121_roots_bench_amend_scan.sh" "pro
 assert (red.ok == false) else "e121-roots-bench-amend: prove-red must refuse"
 assert red.out contains "RED_claimed_bench_not_raised_root" else "e121-roots-bench-amend: prove-red want kinship refuse"
 
-say "GREEN: e121-roots-bench-amend — roots amended · bench = raised root · shred RED"
+say "GREEN: e121-roots-bench-amend -- roots amended, and the Bench kept a DIFFERENT kind from a root (e122, REDS %233) -- shred RED"
