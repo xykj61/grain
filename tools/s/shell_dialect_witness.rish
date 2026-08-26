@@ -2,7 +2,9 @@
 #   rishi/bin/rishi run tools/s/shell_dialect_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/shell_dialect_scan.sh, which counts GNU-only shell idioms in
-# tracked guards and holds one family -- xargs -a / -d -- under a ceiling that only falls.
+# tracked guards and holds two families -- xargs -a / -d, and date -d -- each under a ceiling that
+# only falls. A family earns its gate by costing a real reading on a real host; the rest are
+# reported as advisories until they do.
 #
 # WHERE IT STANDS. The twelve gated sites moved to tools/fixtures/shell_portable.sh on
 # 20260826.062128, so the ceiling is ZERO and the family is a ratchet: the next GNU-only xargs reds
@@ -66,6 +68,45 @@ assert green.out contains "advisory_grep_perl=" else "shell-dialect: want the gr
 assert green.out contains "advisory_readlink_f=" else "shell-dialect: want the readlink -f advisory printed"
 assert green.out contains "advisory_stat_c=" else "shell-dialect: want the stat -c advisory printed"
 assert green.out contains "advisory_sed_i_bare=" else "shell-dialect: want the sed -i advisory printed"
-assert green.out contains "advisory_date_d=" else "shell-dialect: want the GNU-only date advisory printed"
 
-say "GREEN: shell-dialect -- the gated family stands at zero under a ceiling of zero, a real guard reads the same on both dialects while a planted elder copy still zeroes, and the ceiling is proven from both sides on one planted tree"
+# THE SECOND GATED FAMILY, held at zero the same way. `date -d` cost this tree a real reading before
+# it was gated: tools/fixtures/one_clock_provenance_scan.sh called every stamp in the tree
+# unparsable under a BSD date, and tools/o/one_clock_witness.rish refused on its own PASS fixture
+# (REDS %250). Seven lines moved to stamp_epoch, epoch_stamp and stamp_ahead in shell_portable.sh.
+assert green.out contains "gated_date_family=date_parse_or_relative" else "shell-dialect: want the gated date family named"
+assert green.out contains "gated_date_sites=0" else "shell-dialect: the date family stands at zero"
+assert green.out contains "gated_date_ceiling=0" else "shell-dialect: the date ceiling stands at zero -- a ceiling only falls"
+
+# A TRACKED SYMLINK IS THE SAME SOURCE TWICE. pond/apps/corpora/one_clock.rish points at
+# tools/o/one_clock_witness.rish, so the date family read NINE across the tree where seven lines
+# carry it. The roster asks git for mode 120000 rather than guessing, and reports what it skipped --
+# a number skipped in silence is a number nobody can check.
+assert green.out contains "roster_symlinks_skipped=" else "shell-dialect: want the skipped symlink count printed"
+
+# THE DATE MECHANISM, PROVEN BY BEHAVIOUR on the guard the fault was found in. The living scan must
+# read the same number on both dialects, AND a planted copy carrying the elder GNU-only body must
+# still break -- after first proving it reads correctly on GNU, so its silence under the shim means
+# something. Measured before the repair: two PROV_OK on GNU and zero under a BSD-shaped date.
+#
+# THE COMPARISON IS THE ASSERTION, and a constant here would be a second fault of the class this
+# guard exists to catch. The leg's own reading counts PROV_OK lines, and the provenance scan weighs
+# every dated artifact the working tree and index hold -- so the number rises the moment a round
+# stages its own session log. Pinning `=2` passed on a clean tree and reddened on the staged one,
+# in the same round that wrote it (REDS %259). The scan refuses under `host_changed_the_reading`
+# when the two dialects disagree, so exit status carries the equality and the witness reads the
+# properties instead: the plant broke, and the leg is green.
+let dated = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-date"]
+say dated.out
+assert dated.ok else "shell-dialect: the date behaviour proof must exit 0 -- the two dialects must read one number"
+assert dated.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder date spelling still broken"
+assert dated.out contains "verdict=ok" else "shell-dialect: want the date behaviour proof green"
+
+# The date ceiling from both sides, on one planted tree, exactly as the xargs ceiling is proven.
+let date_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-date-red"]
+assert (date_planted.ok == false) else "shell-dialect: a planted date site past the ceiling must refuse"
+assert date_planted.out contains "verdict=over_date_ceiling" else "shell-dialect: want the date refusal named"
+
+let date_admits = run ["sh" "-c" "SHELL_DIALECT_DATE_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-date-red"]
+assert date_admits.ok else "shell-dialect: the same planted date site must pass at a ceiling of one"
+
+say "GREEN: shell-dialect -- both gated families stand at zero under ceilings of zero, two real guards read the same on both dialects while planted elder copies still break, and each ceiling is proven from both sides on one planted tree"
