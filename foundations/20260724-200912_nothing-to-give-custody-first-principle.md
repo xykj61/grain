@@ -66,7 +66,7 @@ Custody-first is the ethical spine every other foundation leans on; the referenc
 
 - **The front door** -- the root [`../README.md`](../README.md) states this promise plainly (*keeps your words in your own hands*).
 - **The room** -- indexed in [`foundations/README.md`](README.md); the reasons the building means something.
-- **The hubs** -- cut by [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md) (the *values apart, bounded* strands custody rests on), returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The hubs** -- cut by [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md) (the *values apart, bounded* strands custody rests on), returned to by [Follow Our Compass](20260826-024943_follow-our-compass.md).
 - **In practice** -- the [Dimeroll entity-books design](../active-designing/date/20260811/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) keeps this boundary: the books record, they never disburse or hold keys.
 
 ---

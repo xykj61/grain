@@ -1,6 +1,6 @@
 # Weave -- The Graph Beneath the Surface
 
-*The substrate under [Realidream](20260728-220203_realidream.md), set down on our own roots: **Weave** is the append-only DAG of immutable signed facts -- the streaming graph that unifies program, page, and interface when the far horizon arrives. Mantra is the version-control **projection** over Weave. Bounded, deterministic, recomputable from a faithful history.*
+*The substrate under [Realidream](20260825-233310_realidream.md), set down on our own roots: **Weave** is the append-only DAG of immutable signed facts -- the streaming graph that unifies program, page, and interface when the far horizon arrives. Mantra is the version-control **projection** over Weave. Bounded, deterministic, recomputable from a faithful history.*
 
 **Stamp:** `20260629.063512` (affirmed `2026-06-30`)
 **Last updated:** 2026-06-30
@@ -40,7 +40,7 @@ For a great graph to feel instant, its working set must live in fast memory held
 
 ## Why It Holds
 
-The result is faster, because only what changed recomputes. It is more correct, because the same events always reach the same state. It is more unified, because code, content, and screen share one model. And it is more honest, because the state is explicit and the history is a chain of signed facts anyone can replay. This is the shape we keep everywhere -- a key in a hand, a signed event, an append-only log, a pure fold into a view -- carried now into the surface a person looks at all day. [Realidream](20260728-220203_realidream.md) stands on this graph, and Skate and the rest draw from it too.
+The result is faster, because only what changed recomputes. It is more correct, because the same events always reach the same state. It is more unified, because code, content, and screen share one model. And it is more honest, because the state is explicit and the history is a chain of signed facts anyone can replay. This is the shape we keep everywhere -- a key in a hand, a signed event, an append-only log, a pure fold into a view -- carried now into the surface a person looks at all day. [Realidream](20260825-233310_realidream.md) stands on this graph, and Skate and the rest draw from it too.
 
 ---
 

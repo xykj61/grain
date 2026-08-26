@@ -90,13 +90,13 @@ an edit of one, which is what makes it safe to do early and often.
 ## Growing and grouping
 
 ```
-seed + seasons          ->  tree                    the long form, and the only one that keeps
-round + round + round   ->  season                  bounded work, closed on its crux
+seed + chapters          ->  tree                    the long form, and the only one that keeps
+round + round + round   ->  chapter                  bounded work, closed on its crux
 lap                     ->  lap                     complete in itself, owing the last one nothing
 ```
 
-**Conserved:** the crux. A season closes when its hardest solvable problem is solved, rather than
-when a checklist empties. The cycle the season names are drawn from has its method at
+**Conserved:** the crux. A chapter closes when its hardest solvable problem is solved, rather than
+when a checklist empties. The cycle the chapter names are drawn from has its method at
 [`../classical-vedic-astrology/README.md`](../classical-vedic-astrology/README.md).
 
 ## Why write them this way at all

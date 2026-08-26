@@ -53,6 +53,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260826.052004` | [thirty twins, the air enters](20260826-052004_thirty-twins-the-air-enters.kyri) | pass four: moons, Venus, the shadow pairs, first houses; roster at thirty |
 | `20260826.050835` | [twenty twins, one fifth](20260826-050835_twenty-twins-one-fifth.kyri) | the third cubist pass: ten twinned at once, seven pairs worn, roster at twenty |
 | `20260826.045101` | [ten twins and turning](20260826-045101_ten-twins-and-turning.kyri) | the second cubist pass: five more twins, the roster at ten, sharing earned |
+| `20260826.044827` | [the two piers and the nine reds](20260826-044827_the-two-piers-and-the-nine-reds.kyri) | spine 1..254; nine reds closed; molt strands what a fold recovers |
 | `20260826.044254` | [five twins on one canvas](20260826-044254_five-twins-on-one-canvas.kyri) | the cubist sweep opens: five classical pages twinned, all A, the door rostered |
 | `20260826.034722` | [the voice door is ready](20260826-034722_voice-door-is-ready.kyri) | this task is text; an active voice conversation opens spoken questions |
 | `20260826.034454` | [the Arbor-ready first-user invitation](20260826-034454_arbor-ready-first-user-invitation.kyri) | one voice prompt; token, workspace, profile, and approval choices |

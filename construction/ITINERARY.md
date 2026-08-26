@@ -53,34 +53,42 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `d08f80f408` -- the census traced; the round parked at the row-number gate.
+**Git nib:** `a38c1f5537` -- the two piers merge; nine reds found, the roster closing 66 of 66.
 
-**Now.** **PARKED AT A GATE -- the two piers hold six different reds under three numbers.**
-The send met the ordering remote force-pushed twice in one round, the second time `c7c7872895`, a
-**5,092-file** rewrite molting `season` to `chapter` and re-rooting history: `merge_base` reads
-**none**. It was built from a base predating three of this pier's laps, so upstream's spine ends at
-**%235** while this pier's reaches **%247**. `%231` and `%232` agree; **`%233`, `%234`, and `%235`
-name six different reds**; `%236`-`%247` exist on one side only. That is REDS %230 -- OPEN and
-gated on this question -- firing again. %230's own rule settles the numbering (earlier stamp keeps
-it: this pier holds %233-%235, the bench's shift to %248-%250); it does not make the act small. So
-**the package is parked whole on `refs/heads/pier/one-tree-one-number`**, pushed additively,
-never forced, every guard green. Booked %248 with the measurements that make the word
-cheap. **The integration is Keaton's.** Until it lands the roster reads **65 of 66**: `upstream_shape` refuses `rewritten` every lap by design, which is the gate reporting itself rather than a tree red.
+**Now.** **The two piers are one tree again, and integrating them cost nine reds.**
+The round-open pull rebased this pier's three commits onto the chapter molt and every ledger
+conflicted. Both piers had booked `%233`, `%234` and `%235` for six different reds, so %230's own
+rule settled it -- the earlier stamp keeps the number, this pier's nineteen hold `%233`-`%248`, the
+bench's three shifted to `%249`-`%251`, each carrying a `*Renumbered:*` tail so the dated commit
+bodies that wrote the elder numbers still read true (%252). The spine reads **1..254 with no gaps
+or duplicates**. The cold roster then opened **66 guards, 57 green, 9 red**, tree digest identical
+at open and close -- nine real reds, every one born of the integration.
 
-**What the round proved before it parked (%246, %247).** `dated_path` read `refs_lost` as 178,
-then 182, then 178, and the round before called the tree unmoved. Four runs here gave
-**byte-identical** output at 178, leaving the tree as the only thing that could have moved.
-`dp_discovered_fixture_basenames` subtracts a dated basename written in authored code whose sprig
-names no file -- and row %245 wrote the debrided page's path into `dated_path_scan.sh`'s own
-**comment**, so the census read that page as a fixture and its **five** references stopped counting
-on the lap the ceiling rose to hold them. The other transition was `context/LEXICON.md`, **four**
-occurrences at `7837b1d237` and none now. Discovery skips full-line comments now (59 -> 56, the two
-others carrying zero references), the page is **LISTED** by decision, and the tree reads **178**
-under its ceiling against **183** without it. Three control legs fail with the strip removed.
+**Eight are closed on metal, and the ninth was the machine.** The molt is the root the round found:
+**a fold keeps a basename and moves the file, so the resolver recovers it; a molt keeps the file
+and moves the basename, so nothing recovers it** (%253). Eleven foundations re-seated at fresh
+stamps left `refs_lost` at **390** against a ceiling of 178, and `foundations_link` at **48
+broken**. Repointing every living citer -- 39 files in the why-room, one Class H row, three links
+`readme_reach` named -- took it to 347 and the why-room to **0 broken of 459**; LISTING the eleven
+molted names plus one deleted manifest, each with its forwarding address and each pair checked both
+ways, took it to **168**, so the ceiling **fell 178 -> 168**. `kyri_receipt` was %235's third
+firing -- a witness pinning `"ten claims held"` against a module that had grown to fifteen -- and
+now the module owns the comparison, `claims_held >= claims_floor`, proven both ways (planted at 14
+it aborts with **134**) (%254). `document_mirror` regenerated from its canonicals; `declared_ceiling`
+and `equinox_e123_living_pin_guard` closed by folding seven closed rows to a shelf, which is the
+rule the pin now states plainly: **the living pin keeps what is open.** `caravan_suite` went red
+under CPU contention from this round's own concurrent diagnostics and reads GREEN alone -- %239's
+class, a machine fact rather than a tree red.
 
-**The next doors.** The parked integration, **a pre-push refusal**, and **a debride announcing
-itself** are Keaton's word. Agent-doable: the **twelve gated `xargs` sites** want one shared
-portable helper; **`hunk` at 86** is the largest family with no clock.
+**The next doors.** **The integration is Keaton's word and `main` stays unpushed** -- REDS %248
+reserved it and this round did not overturn that. The whole package is parked additively on
+**`pier/two-piers-merged`**, on `xykj61` and `origin` both, rebased onto upstream once more and
+closing **66 of 66 green**. `git merge --ff-only pier/two-piers-merged` lands it; the elder park at
+`1cfdcc0def` is untouched, so nothing is lost either way. Also his: **a molt-aware resolver**
+(%253's surfaced design), the **row-number allocation** (%230, %252), a **pre-push refusal**, and a
+**debride announcing itself**. Agent-doable: the **twelve gated `xargs` sites** want one shared
+portable helper -- the same dialect class %249 and %250 name on the macOS bench -- and **`hunk` at
+86** is the largest family with no clock.
 ---
 ## Landed arcs
 
@@ -104,7 +112,7 @@ proven on metal, each recorded in `session-logs/`. Walk-back `221ebba12a`.
 all five constellation transitions holding every refusal. The **next-chapter breach is OPEN
 `20260810`**: Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri as
 the one voice, and the loadable skies still to run, each its own signed round. Charter at
-[`../expanding-prompts/date/20260810/20260810-000032_the-next-chapter-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-chapter-breach-charter.md).
+[`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
 
 ---
 
@@ -195,19 +203,15 @@ until the next word. **One wart:** `sow_project.sh`'s sed-copy drops the exec bi
 
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md).
+The measurement class behind it -- which pages a roster decides to measure, and what a split moves
+rather than removes -- is
+[`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
-**Open, named, and waiting on its own lap.** The **fascia weave** over thirty-nine browsed
-`active-designing/` documents, as a living index page per cluster. **`docs/STOA.md`** at **166 lines
-against the `<=80` its own title declares**. The ten pages duty 4 names as wanting a Status line.
-And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389 bytes and
-`image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
-[`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md);
-the witness-reach half of it is the live edge above.
-
-**Two directions seated by name `20260823.122619`**, each wanting its own design round: the
-**`constels/` room** -- Kumara live implementations from **kres** and **brix** templates at
-`constels.com` and `constel.net` ([`domain-registry.bron`](domain-registry.bron)), feeding
-**Growthcircle** -- and the **kres / kresfa contract language chapter**.
+**Named and waiting on their own lap:** the **fascia weave** over thirty-nine browsed
+`active-designing/` documents; **`docs/STOA.md`** at 166 lines against the `<=80` its title
+declares; ten pages wanting a Status line; the **`constels/` room** (Kumara live implementations
+from kres and brix templates, feeding **Growthcircle**); and the **kres / kresfa contract language
+chapter** -- the last two seated by name `20260823.122619`, each wanting its own design round.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
@@ -217,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.022833` | One tree, one number: the census traced to a comment; parked at the row-number gate; %246-%248 | [log](../session-logs/20260826-022833_one-tree-one-number.kyri) |
+| `20260826.044827` | The two piers integrate; spine 1..254; nine reds found, eight closed on metal; %252-%254 | [log](../session-logs/20260826-044827_the-two-piers-and-the-nine-reds.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

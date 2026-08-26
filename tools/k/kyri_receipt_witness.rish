@@ -42,7 +42,9 @@ assert out.ok else "kyri-receipt: the selftest must exit zero"
 say out.out
 
 assert out.out contains "GREEN: Kyri 6" else "kyri-receipt: the selftest must reach GREEN"
-assert out.out contains "ten claims held" else "kyri-receipt: all ten claims must hold"
+# The FLOOR, never the count. The module counts its own claims and refuses one that vanished;
+# reading the floor here means a lap adding a sixteenth claim edits no guard (REDS %235).
+assert out.out contains "claims_floor=15" else "kyri-receipt: the selftest must hold its claim floor -- a claim vanished, or the floor was lowered"
 assert out.out contains "format kyri-receipt-v6" else "kyri-receipt: the rendered receipt must open with its format line"
 assert out.out contains "store MOX" else "kyri-receipt: the store tag names which Mycelium instantiation holds the payload"
 assert out.out contains "codec raw" else "kyri-receipt: the codec says whether the payload travels compressed"

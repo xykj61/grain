@@ -57,8 +57,8 @@ Money that stays close to home is the economic strand of the civic vision; the w
 
 - **The front door** -- the root [`../README.md`](../README.md) names the promise that your words, and your value, stay in your own hands.
 - **The room** -- indexed in [`foundations/README.md`](README.md).
-- **The hubs** -- cut by the *values apart* and *bounded* strands in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
-- **Kin vision** -- the wider horizon is [anywhere we are found](20260628-124512_anywhere-we-are-found.md); its ethical floor is [custody-first](20260724-200912_nothing-to-give-custody-first-principle.md).
+- **The hubs** -- cut by the *values apart* and *bounded* strands in [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260826-024943_follow-our-compass.md).
+- **Kin vision** -- the wider horizon is [anywhere we are found](20260826-024940_anywhere-we-are-found.md); its ethical floor is [custody-first](20260724-200912_nothing-to-give-custody-first-principle.md).
 - **In practice** -- [Dimeroll](../dimeroll/README.md) keeps the books ([entity-books design](../active-designing/date/20260811/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md)): it records value honestly and, per custody-first, never disburses or holds keys until a rail is safe and lawful.
 
 ---

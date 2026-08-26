@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME - SLC - one value model
-**Status:** Foundation brief -- **grain strand seated** `20260704.023400 UDT` ([`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md))
+**Status:** Foundation brief -- **grain strand seated** `20260704.023400 UDT` ([`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md))
 
 *Written together by Kaeden and Rio 3.*
 Radiant pass `20260728.003317` -- Tensegral Arc II fold `tools/t/tensegral_arc_ii_witness.rish` (path cite only; claims unchanged)
@@ -34,7 +34,7 @@ Sameness is why the tree stays small enough to last; naming its neighbours keeps
 
 - **The front door** -- the root [`../README.md`](../README.md) leans on plain, durable words for exactly this reason.
 - **The room** -- indexed in [`foundations/README.md`](README.md).
-- **The hubs** -- a seated grain strand in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The hubs** -- a seated grain strand in [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260826-024943_follow-our-compass.md).
 - **The long return** -- sameness and [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md) are one argument seen twice: what is plain and public ages well, what is clever and private ages badly. Both ground [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md).
 
 ---
