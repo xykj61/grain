@@ -29,6 +29,16 @@ exactly as the classical room already keeps them.
 
 | Stamp | Twin |
 |---|---|
+| `20260826.051929` | [Moon in Libra -- the Scale That Feels](20260826-051929_moon-in-libra.md) |
+| `20260826.051930` | [Moon in Capricorn -- the Heart That Climbs](20260826-051930_moon-in-capricorn.md) |
+| `20260826.051931` | [Moon in Leo -- the Lamp and the Mirror](20260826-051931_moon-in-leo.md) |
+| `20260826.051932` | [Moon in Aquarius -- the Loom and the Thread](20260826-051932_moon-in-aquarius.md) |
+| `20260826.051933` | [Venus in Gemini -- Love in the Weave](20260826-051933_venus-in-gemini.md) |
+| `20260826.051934` | [Venus in Aries -- the Heart That Rides Ahead](20260826-051934_venus-in-aries.md) |
+| `20260826.051935` | [Rahu and Ketu in Cancer and Capricorn -- the Shape and the Soul](20260826-051935_rahu-ketu-cancer-capricorn.md) |
+| `20260826.051936` | [The Nodes in Taurus and Scorpio -- the Flood and the Ebb](20260826-051936_rahu-ketu-taurus-scorpio.md) |
+| `20260826.051937` | [The Sun in the Tenth House -- the Highest Window](20260826-051937_sun-in-the-10th-house.md) |
+| `20260826.051938` | [Venus in the Eighth House -- the Taste of the Deep](20260826-051938_venus-in-the-8th-house.md) |
 | `20260826.050757` | [Purva Phalguni -- the Promise Before the Fruit](20260826-050757_purva-phalguni.md) |
 | `20260826.050758` | [The Twins and the Judge -- Two Brothers of the Sun](20260826-050758_the-asvins-and-yama.md) |
 | `20260826.050759` | [Rudra and Shiva -- One Seat, Two Names](20260826-050759_rudra-and-shiva.md) |
