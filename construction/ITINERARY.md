@@ -53,42 +53,40 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `a38c1f5537` -- the two piers merge; nine reds found, the roster closing 66 of 66.
+**Git nib:** `75d7bb2eaf` -- one dialect for twelve sites; the exec-bit gate given something to see.
 
-**Now.** **The two piers are one tree again, and integrating them cost nine reds.**
-The round-open pull rebased this pier's three commits onto the chapter molt and every ledger
-conflicted. Both piers had booked `%233`, `%234` and `%235` for six different reds, so %230's own
-rule settled it -- the earlier stamp keeps the number, this pier's nineteen hold `%233`-`%248`, the
-bench's three shifted to `%249`-`%251`, each carrying a `*Renumbered:*` tail so the dated commit
-bodies that wrote the elder numbers still read true (%252). The spine reads **1..254 with no gaps
-or duplicates**. The cold roster then opened **66 guards, 57 green, 9 red**, tree digest identical
-at open and close -- nine real reds, every one born of the integration.
+**Now.** **One dialect for twelve sites, and a gate that had been guarding nothing.**
+Twelve `xargs -a` / `-d '\n'` sites across seven guards moved to two functions in
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) --
+`xargs_lines` and `xargs_lines_batched`, which carry a newline-delimited path list through
+`tr '\n' '\0' | xargs -0` in a spelling GNU and BSD userland both accept. The gated family reads
+**0 of 0** and its ceiling fell **12 -> 0**, so the next GNU-only `xargs` reds on the lap it arrives.
 
-**Eight are closed on metal, and the ninth was the machine.** The molt is the root the round found:
-**a fold keeps a basename and moves the file, so the resolver recovers it; a molt keeps the file
-and moves the basename, so nothing recovers it** (%253). Eleven foundations re-seated at fresh
-stamps left `refs_lost` at **390** against a ceiling of 178, and `foundations_link` at **48
-broken**. Repointing every living citer -- 39 files in the why-room, one Class H row, three links
-`readme_reach` named -- took it to 347 and the why-room to **0 broken of 459**; LISTING the eleven
-molted names plus one deleted manifest, each with its forwarding address and each pair checked both
-ways, took it to **168**, so the ceiling **fell 178 -> 168**. `kyri_receipt` was %235's third
-firing -- a witness pinning `"ten claims held"` against a module that had grown to fifteen -- and
-now the module owns the comparison, `claims_held >= claims_floor`, proven both ways (planted at 14
-it aborts with **134**) (%254). `document_mirror` regenerated from its canonicals; `declared_ceiling`
-and `equinox_e123_living_pin_guard` closed by folding seven closed rows to a shelf, which is the
-rule the pin now states plainly: **the living pin keeps what is open.** `caravan_suite` went red
-under CPU contention from this round's own concurrent diagnostics and reads GREEN alone -- %239's
-class, a machine fact rather than a tree red.
+**What the repair found is worse than the count.** `tools/fixtures/exec_bit_scan.sh` reads
+`directly_invoked=18` on GNU and **0** under an `xargs` that refuses those flags as BSD's does --
+and prints `verdict=ok` both times. So on the macOS bench the exec-bit gate held at zero, enforced,
+over a population it could not see. **REDS %249 is CLOSED, proven from both sides on metal:**
+`tools/e/exec_bit_witness.rish` fails at its line 53 on `invoked_seen=yes` with the elder spelling
+under the shim, and reads GREEN with the repair. The guard now proves this by behaviour every run --
+`shell_dialect_scan.sh prove-portable` reads a real guard on both dialects, keeps a planted elder
+copy that must still zero, and refuses a plant that reads nothing on GNU, since a plant that cannot
+speak proves nothing by its silence.
 
-**The next doors.** **The integration is Keaton's word and `main` stays unpushed** -- REDS %248
-reserved it and this round did not overturn that. The whole package is parked additively on
-**`pier/two-piers-merged`**, on `xykj61` and `origin` both, rebased onto upstream once more and
-closing **66 of 66 green**. `git merge --ff-only pier/two-piers-merged` lands it; the elder park at
-`1cfdcc0def` is untouched, so nothing is lost either way. Also his: **a molt-aware resolver**
-(%253's surfaced design), the **row-number allocation** (%230, %252), a **pre-push refusal**, and a
-**debride announcing itself**. Agent-doable: the **twelve gated `xargs` sites** want one shared
-portable helper -- the same dialect class %249 and %250 name on the macOS bench -- and **`hunk` at
-86** is the largest family with no clock.
+**%250 narrowed to one family, by widening the meter.** The dated-path census half was the same
+`xargs` family and moved with it. The clock half has a different root: `date -d` is a GNU extension
+BSD spells `-v+4H`, and it sits in `one_clock_provenance_scan.sh:27`, `one_clock_head_scan.sh:45`
+and `tools/o/one_clock_witness.rish:54,81`. The scan counts it now -- **advisory_date_d=9** -- so
+the next lap converts a measured list rather than a remembered one.
+
+**The next doors.** **`main` stays unpushed and the integration is still Keaton's word** -- REDS
+%248 reserved it, and this round did not overturn it either. This package is parked additively
+beside the last one; `git merge --ff-only` lands whichever he chooses, and the elder parks are
+untouched, so nothing is lost either way. Agent-doable next: the **nine `date -d` sites** (%250's
+remaining half, a measured list), then the four advisory families the same meter already counts --
+`grep -P` 6, `readlink -f` 5, `sed -i` 5, `stat -c` 2. Also his, unchanged: the **row-number
+allocation** (%230, %252), a **molt-aware resolver** (%253), a **pre-push refusal**, and a
+**debride announcing itself**.
+
 ---
 ## Landed arcs
 
@@ -221,7 +219,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.044827` | The two piers integrate; spine 1..254; nine reds found, eight closed on metal; %252-%254 | [log](../session-logs/20260826-044827_the-two-piers-and-the-nine-reds.kyri) |
+| `20260826.063705` | Twelve xargs sites to one portable helper; %249 CLOSED both sides on metal; %250 narrowed to `date -d` | [log](../session-logs/20260826-063705_one-dialect-twelve-sites.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
