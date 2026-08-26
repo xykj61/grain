@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Mixed -- design, proposal; no code written this round, no ruling assumed, no custody gate crossed
+**Status:** Mixed -- design, proposal; the FAST/COLD ruling for Move 2 was GRANTED on Keaton's word `20260825.181028`; the hit-rate instrumentation and lap-tail reorder remain its engineering gates
 **Kin:** [`../external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md`](../external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md) -- the Mantra witness-receipts hammock (`counsel/date/20260726/20260726-050047`) -- [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md)
 
 ## The costs, named first

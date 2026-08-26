@@ -140,7 +140,7 @@ git add NOTES.md
 git commit -qm "docs only, beside a stale ledger" >/dev/null
 ledger_free=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 1 ' && echo yes || echo no)
 
-# 7 -- a row is booked and the headline is left behind, which is REDS %127, %141, and %226 exactly.
+# 7 -- a row is booked and the headline is left behind, which is REDS %127, %141, and %229 exactly.
 #      The hook regenerates the headline and stages it into the same commit.
 book_row 22
 git add construction/REDS.md

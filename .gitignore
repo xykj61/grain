@@ -352,3 +352,6 @@ construction/standing-equipment-runs.kyri
 /foundations/20260730-022147_personal-ontology.md
 /foundations/20260730-022147_cover-letter-co-authored.md
 /.debride-safe/
+
+# Build receipts -- a .ryekey stamp beside an emitted binary is local state, never content
+*.ryekey
