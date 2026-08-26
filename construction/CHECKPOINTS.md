@@ -22,6 +22,20 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260826.063635` -- one dialect for twelve sites (walk-back `06b9ba6623`)
+
+**Swept:** `construction/ITINERARY.md` -- the **Now** block, roughly 2,100 bytes describing the
+two-pier integration and its nine reds, replaced by this round's reading; the landed row replaced.
+No ledger rows folded.
+
+**What waits there, worth recalling:** the departing Now held the integration's own account in
+full -- the spine reading 1..254, the eleven molted foundations and the `refs_lost` ceiling falling
+178 -> 168, the `kyri_receipt` claims-floor repair, and the reasoning for parking the package on
+`pier/two-piers-merged` rather than pushing `main`. Every one of those facts also stands in
+`session-logs/20260826-044827_the-two-piers-and-the-nine-reds.kyri` and in rows %252-%254, so only
+the card's phrasing departs. **The parked-package gate does not depart with it** -- it is carried
+forward onto the new card, because it still wants Keaton's word.
+
 ## `20260826.044827` -- the two piers integrate, ten reds close (walk-back `3d050c7cf4`)
 
 **Swept:** `construction/ITINERARY.md` -- the whole **Now** block, roughly 1,900 bytes describing

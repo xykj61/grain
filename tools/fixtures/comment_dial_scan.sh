@@ -41,6 +41,10 @@
 
 set -u
 
+# One dialect for both piers: xargs_lines / xargs_lines_batched run a command over a
+# newline-delimited path list in a spelling GNU and BSD userland both accept.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 mode=${1:-tree}
 root=${COMMENT_DIAL_ROOT:-.}
 
@@ -56,7 +60,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
 
 # One awk over every file. Lines are held per file and classified when the file closes, because
 # a comment's setting is decided by the line of CODE that follows it.
-( cd "$root" && xargs -a "$work/files.txt" awk '
+( cd "$root" && xargs_lines "$work/files.txt" awk '
   function flush(   i, j, nxt, kind, n) {
     if (name == "") return
     door = 0; decl = 0; meter = 0; loose = 0; trail = 0

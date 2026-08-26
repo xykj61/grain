@@ -33,6 +33,10 @@
 
 set -u
 
+# One dialect for both piers: xargs_lines / xargs_lines_batched run a command over a
+# newline-delimited path list in a spelling GNU and BSD userland both accept.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+
 # The ratchet's ceiling only ever falls. Measured 20260823: 58 tracked shebang files sat at
 # 100644 with nothing invoking any of them directly. Lowered to 57 on 20260824.112806, when a
 # round touching sow_project.sh gave it and its new control the bit -- which is what "they fall
@@ -71,7 +75,7 @@ grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' "$work/tracked.txt" > "$work/living.txt"
 # settles it: an interpreter named ahead of the path -- `sh ./x`, `bash ./x`, `rishi run ./x` --
 # needs no exec bit, and a Markdown link `](./x)` invokes nothing at all.
 : > "$work/invoked.txt"
-xargs -a "$work/living.txt" -d '\n' -n 400 \
+xargs_lines_batched 400 "$work/living.txt" \
   grep -hoE '(^|[]| 	`|;&(])[^ 	`|;&()]* *\./[A-Za-z0-9_][A-Za-z0-9_./-]*' 2>/dev/null \
   | awk '
       {

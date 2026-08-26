@@ -4,6 +4,12 @@
 # WHAT IT STANDS OVER. tools/fixtures/shell_dialect_scan.sh, which counts GNU-only shell idioms in
 # tracked guards and holds one family -- xargs -a / -d -- under a ceiling that only falls.
 #
+# WHERE IT STANDS. The twelve gated sites moved to tools/fixtures/shell_portable.sh on
+# 20260826.062128, so the ceiling is ZERO and the family is a ratchet: the next GNU-only xargs reds
+# on the lap it arrives. The repair is proven by BEHAVIOUR as well as by spelling -- exec_bit_scan.sh
+# read directly_invoked=18 on GNU and 0 under a BSD-shaped xargs before it, printing verdict=ok both
+# times, and reads 18 on both dialects after (REDS %249).
+#
 # WHY THIS EXISTS. On 20260825 the macOS bench regenerated docs-geode/libraries/README.md through
 # a counting function built on GNU-only xargs flags, and shipped a page reading 0 witnesses for
 # all 38 rooms to the anointed remote. The page's own guard was green there, because it renders
@@ -30,17 +36,29 @@ assert mech.ok else "shell-dialect: the mechanism proof must exit 0"
 assert mech.out contains "gnu_form_under_bsd=0" else "shell-dialect: want the GNU form zeroed under a BSD xargs"
 assert mech.out contains "portable_form_under_bsd=1" else "shell-dialect: want the portable form surviving"
 
-# The ceiling read from both sides. One site past it must refuse, and the same tree one site under
-# it must pass -- a ceiling proven only in the passing direction cannot be told from a bypass.
+# THE REPAIR, PROVEN BY BEHAVIOUR. A ceiling that falls to zero proves a spelling changed. This leg
+# proves the changed spelling actually measures the same tree on both dialects -- and, in the same
+# run, that a planted copy carrying the elder spelling still breaks, so the leg cannot pass a
+# subject that is quietly broken. Its own vacuum is closed too: the plant must first read correctly
+# on GNU before its silence under the shim is allowed to mean anything.
+let port = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-portable"]
+say port.out
+assert port.ok else "shell-dialect: the behaviour proof must exit 0"
+assert port.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder spelling still zeroed"
+assert port.out contains "verdict=ok" else "shell-dialect: want the behaviour proof green"
+
+# The ceiling read from both sides, on ONE planted tree so the two readings differ only in the
+# ceiling. At zero there is no tree one site under the reading, so the plant supplies it: the same
+# single planted site passes at a ceiling of 1 and refuses at 0. A ceiling proven only in the
+# passing direction cannot be told from a bypass.
 let planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-red"]
 assert (planted.ok == false) else "shell-dialect: a planted site past the ceiling must refuse"
 assert planted.out contains "verdict=over_ceiling" else "shell-dialect: want the refusal named"
 
-let tight = run ["sh" "-c" "SHELL_DIALECT_CEILING=11 sh tools/fixtures/shell_dialect_scan.sh"]
-assert (tight.ok == false) else "shell-dialect: a ceiling one below the reading must refuse"
+let admits = run ["sh" "-c" "SHELL_DIALECT_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-red"]
+assert admits.ok else "shell-dialect: the same planted site must pass at a ceiling of one"
 
-let loose = run ["sh" "-c" "SHELL_DIALECT_CEILING=13 sh tools/fixtures/shell_dialect_scan.sh"]
-assert loose.ok else "shell-dialect: a ceiling one above the reading must pass"
+assert green.out contains "gated_ceiling=0" else "shell-dialect: the ceiling stands at zero -- a ceiling only falls"
 
 # The advisory families are reported rather than gated, and the witness proves they are REPORTED --
 # a number printed is a number the next round can act on, where a silent family is one nobody sees.
@@ -48,5 +66,6 @@ assert green.out contains "advisory_grep_perl=" else "shell-dialect: want the gr
 assert green.out contains "advisory_readlink_f=" else "shell-dialect: want the readlink -f advisory printed"
 assert green.out contains "advisory_stat_c=" else "shell-dialect: want the stat -c advisory printed"
 assert green.out contains "advisory_sed_i_bare=" else "shell-dialect: want the sed -i advisory printed"
+assert green.out contains "advisory_date_d=" else "shell-dialect: want the GNU-only date advisory printed"
 
-say "GREEN: shell-dialect -- 12 gated sites under a ceiling of 12, the wrong zero reproduced under a BSD xargs and survived by the portable form, the ceiling proven from both sides"
+say "GREEN: shell-dialect -- the gated family stands at zero under a ceiling of zero, a real guard reads the same on both dialects while a planted elder copy still zeroes, and the ceiling is proven from both sides on one planted tree"
