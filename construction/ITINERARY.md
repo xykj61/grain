@@ -53,7 +53,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `30400ca867` -- one dialect for twelve sites; the cadence read two ways.
+**Git nib:** `62165a40ba` -- one dialect for twelve sites; %255 booked, %249 shelved.
 
 **Now.** **One dialect for twelve sites, and a gate that had been guarding nothing.**
 Twelve `xargs -a` / `-d '\n'` sites across seven guards moved to two functions in
