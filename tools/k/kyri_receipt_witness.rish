@@ -47,7 +47,11 @@ assert out.ok else "kyri-receipt: the selftest must exit zero"
 say out.out
 
 assert out.out contains "GREEN: Kyri 6" else "kyri-receipt: the selftest must reach GREEN"
-assert out.out contains "fifteen claims held" else "kyri-receipt: all fifteen claims must hold"
+# The FLOOR, never the count. The module counts its own claims and refuses one that vanished;
+# reading the floor here means a lap adding a sixteenth claim edits no guard (REDS %235). Resolved
+# as a UNION on `20260826.144500`: the far pier's exact-count line `fifteen claims held` names a
+# string `kyri/receipt.rye` no longer prints, while its other two claims are live and kept.
+assert out.out contains "claims_floor=15" else "kyri-receipt: the selftest must hold its claim floor -- a claim vanished, or the floor was lowered"
 assert out.out contains "seven refusals bitten" else "kyri-receipt: all seven refusal paths must hold"
 assert out.out contains "two palettes paired" else "kyri-receipt: the light and dark palettes must remain paired"
 assert out.out contains "format kyri-receipt-v6" else "kyri-receipt: the rendered receipt must open with its format line"

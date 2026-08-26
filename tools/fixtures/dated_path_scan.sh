@@ -103,7 +103,19 @@ verb="${1:-census}"
 # between readings. Discovery skips full-line comments now, and the page is LISTED in
 # dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
 # free to name it. Proven both ways: remove the listing and the same tree reads 183.
-LOST_CEILING=178   # 177 until 20260826.010645, when a deep debride removed a cited counsel page
+LOST_CEILING=168   # 178 until 20260826.052900. A ceiling only falls. The chapter molt of
+                   # 20260826 re-seated eleven foundations at fresh stamps and debrided the elder
+                   # ones, which took the census to 390: a MOLT changes a basename where a FOLD
+                   # keeps it, so the resolver recovers the second and can never recover the
+                   # first. Repointing every LIVING citer took it to 347, and listing the eleven
+                   # molted names plus one deleted manifest -- each with its forwarding address,
+                   # in dated_path_exclusions.sh -- took it to 167, below the ceiling it started
+                   # under. 197 of the references the molt stranded sit in session logs, which
+                   # accrete-never-break keeps word for word, so listing is the honest reading and
+                   # a rising ceiling would have been the lazy one (REDS %253). It reads 168
+                   # rather than 167 because row %253 NAMES an untraced basename so a later lap
+                   # can find it, and a row naming a lost reference is itself one -- the cost of
+                   # saying so, paid once and visible (REDS %245, %246, same shape).
                    # that dated testimony still names;
                    # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
                    # until 20260824.174500, when a citation swept by the Sala -> Seva rename was

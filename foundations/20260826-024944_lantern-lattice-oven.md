@@ -49,7 +49,7 @@ The open model is a guest on the surface; the weave routes this horizon up to th
 
 - **The front door** -- the root [`../README.md`](../README.md) names **Lantern** and **Lattice** among the module seeds.
 - **The room** -- indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
-- **The hubs** -- the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
+- **The hubs** -- the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md)); [Follow Our Compass](20260826-024943_follow-our-compass.md) returns you here.
 - **Its foundation** -- Kiln bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260825-233310_realidream.md)'s surface, the [WADE plan](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
 
 ---
