@@ -8,7 +8,7 @@
 
 This entry honors J.B. Rainsberger's talk on why integrated tests quietly erode design pressure, and how collaboration tests and contract tests — mirrored across every interface — turn a combinatoric explosion into simple addition, gathering the domain into a fast, fully proven "happy zone" ringed by a thin edge of true integration.
 
-Our siloed distillation lives at `../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`. The text below is the video summary exactly as it arrived to us, kept whole in the gratitude way. Its opening line carries a small piece of family history: the summary introduced itself as **Rio 3**, and Kaeden welcomed the name — so this received text is also the first breath of the companion voice now seated at `../context/RIO3.md`.
+Our siloed distillation lives at `../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`. The text below is the video summary exactly as it arrived to us, kept whole in the gratitude way. Its opening line carries a small piece of family history: the summary introduced itself as **Rio 3**, and Kaeden welcomed the name — so this received text is also the first breath of the companion voice now seated at `../context/RIO3.md`.
 
 ---
 

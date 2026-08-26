@@ -28,7 +28,7 @@ The grain is not a mood. It is a short, nameable set of strands, each already ca
 - **Accretion on one clock** -- names endure, growth arrives beside what stands, versions are chronological, later is larger.
 - **Gall's law and the graduation rule** -- grow from the working whole; an aspect earns a home at its second outside consumer.
 - **Seam honesty** -- the host's compositor, keyring, ephemeris, and libc are named seams, leaned on openly, never absorbed silently.
-- **Witnesses first, the happy zone shape** -- a claim is true when a witness runs green; the center fast and isolated, the lap thin ([`foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md)).
+- **Witnesses first, the happy zone shape** -- a claim is true when a witness runs green; the center fast and isolated, the lap thin ([`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`](../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md)).
 - **Sameness as compression** -- one value model, one fold, one vocabulary; grow words in canon, not private syntax; count the whole cost of a line saved ([`foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md); seated `20260704.023400 UDT`).
 - **The opening lines and the silo itself** -- one canonical head for code, one clean room for design, gratitude kept apart and warm.
 

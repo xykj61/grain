@@ -3,6 +3,7 @@
 *A siloed distillation of a testing teaching we are grateful for: why big all-at-once tests quietly lead a project away from craft, how two small checks at every seam turn a multiplication into an addition, and where our own witnesses already stand on this map. The teacher is thanked by name in `../gratitude/README.md`; here the ideas stand on their own merit, in our own voice.*
 
 **Stamp:** `20260702.165412`
+**Status banner:** FOSSIL -- molted `20260826` on Keaton's word; the living telling is [`20260826-194850_the-happy-zone-and-the-thin-edge.md`](20260826-194850_the-happy-zone-and-the-thin-edge.md), which carries the horizon this page named as arrived and proven. This page keeps every word it wrote (accrete-never-break); read it as the record of the teaching's first landing.
 **Last updated:** 2026-07-10
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)

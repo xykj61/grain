@@ -32,7 +32,7 @@ Foundations name this the **happy zone** (teacher: J.B. Rainsberger). In Acme-fa
 
 > The fast, isolated suite of checks that prove pure folds and seam contracts; devices and hosts stay on a **thin edge** with a few **metalsmoke** proofs.
 
-Canon: [`../../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) - naming study [`../../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).
+Canon: [`../../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`](../../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md) - naming study [`../../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).
 
 ## 4. How Cursor Behaves Here
 

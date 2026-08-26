@@ -34,7 +34,7 @@ Human orientation stays at [`MAP.md`](MAP.md). Filing law stays at [`ORGANIZING.
 
 **The Toyota Production System** -- entered by Keaton's word the same day ([`gratitude/toyota-production-system.md`](gratitude/toyota-production-system.md)). Jidoka, andon, poka-yoke, kaizen, and the three M -- muda, mura, muri -- govern the reds law and the Act quest's waste scan.
 
-**J.B. Rainsberger** -- integrated tests as a scam ([`gratitude/IntegratedTestsAreAScam.md`](gratitude/IntegratedTestsAreAScam.md)); our happy-zone / thin-edge fold at [`foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md).
+**J.B. Rainsberger** -- integrated tests as a scam ([`gratitude/IntegratedTestsAreAScam.md`](gratitude/IntegratedTestsAreAScam.md)); our happy-zone / thin-edge fold at [`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`](foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md).
 
 **casync** -- the content-addressed synchronization study behind the bead vocabulary. Per the silo rule, casync keeps its own words -- "chunk store" -- inside its study, while our tree speaks resin and bead.
 
