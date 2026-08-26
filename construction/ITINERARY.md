@@ -53,43 +53,44 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `51bfae9fa9` -- the census read past its own wound; instruments only.
+**Git nib:** `0902e6e049` -- the census read past its own wound; instruments only.
 
-**Now.** **Two piers merged, and two guards were reading past their own subject.**
-Pulled `xykj61`, rebased **ten** commits onto it; one conflict, the shared nib line.
+**Now.** **Two piers merged, and two guards read past their own subject.**
 
 **The chapter molt broke the loop's own recipe** (%268). Sweeping *season* to *chapter* rewrote a
 **path literal** whose dated basename correctly kept the elder word, so
-[`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish) and
-[`../recursion-prompts/seed/autonomous-loop.seed.md`](../recursion-prompts/seed/autonomous-loop.seed.md)
-both named a document that exists nowhere. Every lap since was told to read it. Found by following
-the recipe.
+[`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish) and the loop's seed
+both named a document that exists nowhere, so every lap since was told to read it. Found by
+following the recipe.
 
 **Three guards reached it and none counted it.** `tracked_link_scan.sh` reads `](...)` syntax;
 `phantom_path_scan.sh` passes "resolves nowhere" free by named rule; and the census **subtracted**
 it -- `dp_discovered_fixture_basenames` emitted any dated basename **whose sprig names no tracked
-file**, which is the definition of a wound, and it subtracts by basename across every file, so one
-bad path in one `.rish` erased the identical break in the `.md` beside it. Discovery reads
-`_control`, `_witness`, `_scan` now: **2,097** files where it read **4,784**, five names declared by
-hand, fixture list **77** either way, healthy census **byte-identical**, and the same break now
-reads `under_ceiling=no`. Proven both sides; one control leg repaired rather than added, 14 -> 15.
+file**, which is the definition of a wound, subtracting by basename across every file, so one bad
+path in one `.rish` erased the identical break in the `.md` beside it. Discovery reads `_control`,
+`_witness`, `_scan` now: **2,097** files where it read **4,784**, five names declared by hand,
+fixture list **77** either way, healthy census **byte-identical**, the break now
+`under_ceiling=no`. Both sides proven; a control leg repaired rather than added, 14 -> 15.
 
 **A pull is an arrival, and an arrival is not a commit** (%269). Git fires no `pre-commit` during a
-replay and no roster runs on arrival, so the closing `--hot` roster read **11 reds across 68
-guards** on a tree that read 68 green two hours before. Seven came in with the pull: a new root room
-`arbor/` with no verdict in `template-manifest.bron`, its `author.sh` at `100644` taking the
-exec-bit ratchet 57 -> 58, its `README.md` with no path home, a log with no index row, both
-generated pages stale. All repaired; `arbor` is **personal** under the manifest's own fail-safe
-until cleared file by file, as `dexter` waits. The habit -- **run the roster after a pull that
-moved** -- is named rather than seated; the sync rota is Keaton's.
+replay and no roster runs on arrival, so the closing roster read **11 reds across 68 guards** on a
+tree that read 68 green two hours before -- seven arriving with the pull, led by `arbor/` carrying
+no verdict in `template-manifest.bron`. All repaired; `arbor` is **personal** under that file's own
+fail-safe until cleared file by file, as `dexter` waits. **%270:** the fold left two links one level
+short, which %247 predicted in words. The habit -- **run the roster after a pull that moved** --
+is named rather than seated.
 
-**The next doors.** **`main` stays unpushed -- the integration is Keaton's word** (%248); each
-package parks on its own `pier/` branch, both remotes. Next: `readlink -f` **4** sites and
-`sed -i` **4**, each wanting a helper in
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) -- `readlink` wants a
-ruling first: two of its four are Linux-only. Also his: the **row-number allocation** (%230, %252),
-a **molt-aware resolver**, a **pre-push refusal** and the send-order guard (%255), and a **debride
-announcing itself**.
+**PARKED, and the gate fired a third time.** This round stands whole on
+`refs/heads/pier/a-plant-and-a-wound`, both remotes, additive and never forced, 68 of 68 green cold.
+`xykj61` refused the fast-forward and the third re-integration met **%230's collision**: the ledgers
+disagree from `%233` on -- upstream to `%237`, this pier to `%243`. Aborted rather than renumbered:
+**`main` stays unpushed** (%248).
+
+**The next doors.** The **fold loom** %270 names is a lap's work needing no word. Then `readlink -f`
+**4** sites and `sed -i` **4**, each wanting a helper in
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh); `readlink` wants a
+ruling first, two of its four being Linux-only. Also his: **row-number allocation** (%230, %252), a
+**molt-aware resolver**, a **pre-push refusal** (%255), a **debride announcing itself**.
 
 ---
 ## Landed arcs
