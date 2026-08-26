@@ -2,6 +2,8 @@
 
 At the end of **every** response -- before finishing the turn -- write a session log to `session-logs/`. The log captures the step-by-step reasoning followed before and during any prose writing, repository update, or code implementation, together with the changes made. It is a record kept for years.
 
+Provider, product, model, and joint-session attribution follow [`session-log-provenance.md`](session-log-provenance.md). Configuration describes a default; only runtime evidence identifies the model that produced a log.
+
 ## Format -- Kyri (living law; molted from Bron `20260810`)
 
 **New logs are `.kyri`** -- the notation formerly named **Bron**, molted to Kyri on Keaton's word (`20260810`): the same immutable-value format (key-value, one field per line, `#` comments, no quotes, no braces), a warmer name from the favorites list. Spec: `active-designing/yonder/20260621-063912_bron-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`. The **2,163 existing `.bron` logs are never renamed** -- the one-clock law and accrete-never-break protect every dated artifact, and tools read both extensions. A full sweep of the remaining living Bron references to Kyri, and teaching the fold/align tools `.kyri`, follow as their own rounds.
@@ -35,17 +37,22 @@ rye run tools/rye/session_logs_archive.rye index-fold      # shelve the closed d
 
 Batch hygiene for **archived Markdown** only: `rye run tools/rye/align_session_logs.rye`. Living Kyri logs are indexed by hand (or a future Kyri-aware aligner).
 
-## Contents (Bron fields)
+## Contents (Kyri fields)
 
 Minimum shape (`format session-log-v1`):
 
 ```kyri
 format session-log-v1
 stamp YYYYMMDD.HHMMSS
-editor Claude Code
-model claude-opus-5
+editor product interface
+provider model provider
+product product name
+role repository role
+modality text-or-voice
+model verified-active-id-or-unverified
+model_status evidence status
 voice Kyri
-host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+host anonymized host and one-clock zone
 title short title
 prompt what Keaton asked
 think step of reasoning
@@ -56,7 +63,7 @@ file path why-one-line
 recommend keep-going|check-in what and why
 ```
 
-- **editor** / **model** / **voice** -- which editor and model produced this log. The standing writing voice is **Kyri** (molted from Riyo `20260810` -- Keaton's word; Riyo had been seated `20260729.205200`; full identity `context/KYRI.md`); record `voice Kyri` on new logs, and never rewrite the voice on earlier dated logs (including logs that correctly recorded `voice Riyo` or `voice Quin` while each held the writing seat). **Quin** keeps the fifth OS variant and the inference Q-vane (`context/QUIN.md`). **Per host:** the macOS clone's recent arc was Fable 5 1M Max -> Opus 4.8 1M Max -> Sonnet 5 1M Medium; **this pier host, from `20260823.064454` on Keaton's word, is Claude Code (`claude-opus-5`) at **max** effort on the Vultr SEA NixOS VPS ai-jail, with the Daylight DC-1 as the hand device** (it ran `claude-opus-4-8` from `20260815.191048` until that word) (the earlier Framework 16 / Cursor Grok 4.5 note is retired for this clone). Record the model that actually produced each log, verbatim. Do not rewrite correctly attributed dated logs. When a `model` field was recorded wrong, Keaton may ask to correct those specific lines to the truth -- that is a factual fix, not a style rewrite. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
+- **editor** / **model** / **voice** -- the interface, verified active model identity, and standing writing voice. Record `voice Kyri` on new logs. Record the active model verbatim only when runtime evidence proves it; otherwise write `model unverified` and carry configured defaults separately under the provenance rule. `GLOW_PROFILE.bron` describes clone defaults, while `.claude/settings.json` currently configures Claude Code to `claude-opus-5` at `max`; neither file is runtime telemetry. Dated logs keep the voice and model they recorded unless Keaton asks for a factual correction.
 - **host** -- optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username -- see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** -- repeatable; step-by-step reasoning.
 - **obs** -- decisions and trade-offs.
@@ -72,7 +79,7 @@ Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the de
 
 **The room is bounded at 256 flat files**, enforced by `rishi/bin/rishi run tools/r/room_bound_witness.rish` -- because at roughly a hundred and eight logs a day an emptied room refills past GitHub's 1,000-entry listing cap in nine days, so the bound is the fix and the fold is only how it is met. **A stale reference is resolved, never rewritten:** `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]`.
 
-Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over legacy `tip` fields.
+Kyri session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over legacy `tip` fields.
 
 ## Spirit
 
