@@ -12,7 +12,9 @@ let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/equinox_e103_class
 say welcome.out
 assert welcome.ok else "equinox-e103-choir: welcome RED"
 assert welcome.out contains "GREEN: e103-class-a-window" else "equinox-e103-choir: want GREEN"
-assert welcome.out contains "refine_fascia_grade=" else "equinox-e103-choir: want fascia grade"
+assert welcome.out contains "refine_fascia_grade_current=" else "equinox-e103-choir: want current fascia grade"
+assert welcome.out contains "refine_fascia_grade_seated=100" else "equinox-e103-choir: want seated fascia grade"
+assert welcome.out contains "refine_fascia_history=honored" else "equinox-e103-choir: want fascia history"
 assert welcome.out contains "census_breach_count=0" else "equinox-e103-choir: want breach 0"
 assert welcome.out contains "refine_fork_status=not_consumed" else "equinox-e103-choir: want fork waiting"
 
@@ -20,4 +22,4 @@ let almanac = run ["sh" "tools/gen/chapter/equinox_e103_class_a_window_almanac.s
 assert almanac.ok else "equinox-e103-choir: almanac append failed"
 say almanac.out
 
-say "GREEN: equinox-e103-choir — Class A refine GREEN · almanac seat 107 · ch7 11/16"
+say "GREEN: equinox-e103-choir -- historical Class A refine GREEN; living fascia reported; almanac seat 107; ch7 11/16"
