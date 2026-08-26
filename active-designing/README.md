@@ -70,7 +70,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 | `20260825.235725` | [The ASCII cloth front door](20260825-235725_the-ascii-cloth-front-door.md) | character-grid weave for the Grain site; the mark reborn in ASCII; DJINN's seat |
 | `20260825.234156` | [Linengrow First Cloth, Gauge pass](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) | Stone & Hearth measured; the codex law; the trio and sixteen names |
 | `20260825.233309` | [The Bit Design System season opens](20260825-233309_the-bit-design-system-season-opens.md) | DJINN is ready; Linengrow the inspiration; gate %6 stands |
-| `20260825.231201` | [A letter to Hale County](20260825-231201_a-letter-to-hale-county.md) | drafted for Keaton's hand alone; withheld from the seed until sent |
+| `20260825.231201` | A letter to Hale County -- `20260825-231201_a-letter-to-hale-county.md`, withheld from the seed | drafted for Keaton's hand alone; withheld from the seed until sent |
 | `20260825.210819` | [The round that pulls twice](20260825-210819_the-round-that-pulls-twice.md) | the sync rota SEATED: fifteen sentences, three residuals |
 | `20260825.205011` | [The pen, the gossip, the derived spine](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) | seven moves; %230 answered: stamp-keyed, derived at merge |
 | `20260825.200049` | [The Works-Town Sleeve](20260825-200049_the-works-town-sleeve-siya.md) | the sleeve read against a works town; withheld from the seed |

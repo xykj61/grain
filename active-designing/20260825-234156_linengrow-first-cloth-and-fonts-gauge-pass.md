@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; first-cloth palette and type proposals for the Linengrow website. Stone & Hearth stand as the working direction chosen in session; every other seat awaits Keaton's word
-**Kin:** [`20260825-233309_the-bit-design-system-season-opens.md`](20260825-233309_the-bit-design-system-season-opens.md) -- [`20260825-235725_the-ascii-cloth-front-door.md`](20260825-235725_the-ascii-cloth-front-door.md) -- [`../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md`](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md)
+**Kin:** [`20260825-233309_the-bit-design-system-season-opens.md`](20260825-233309_the-bit-design-system-season-opens.md) -- [`20260825-235725_the-ascii-cloth-front-door.md`](20260825-235725_the-ascii-cloth-front-door.md) -- `expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md`
 **Lineage:** accretes on the first-cloth sitting of `20260521` (Riyo, Radiant) -- a page that predates this tree's own root and travels outside it; this page adds the codex law and carries the Gauge pass
 **Written together by Keaton and Kyri.**
 

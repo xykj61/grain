@@ -212,7 +212,7 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 
 | Reading | Value |
 | --- | --- |
-| Living mutant | [`../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md`](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md) |
+| Living mutant | `expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md` |
 | What accreted | one section, *the word arrives -- 20260825* (WADE0 door, WADE1 bridge, WADE3 IaC named live) |
 | Living citers repointed | none stood |
 | Fossil | bannered on its face, body whole; cut RED until circled |

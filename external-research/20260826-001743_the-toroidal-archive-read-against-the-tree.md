@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- research for understanding; the toroidal archive (13 unique pre-repo writings, 2025-11 through 2026-07) read against the living tree on Keaton's word, with a figure-by-figure check; the archive itself stays outside the repo
-**Kin:** [`grain-lineage-silo/silicon-torus-hardware.md`](grain-lineage-silo/silicon-torus-hardware.md) -- [`../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`](../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md)
+**Kin:** [`grain-lineage-silo/silicon-torus-hardware.md`](grain-lineage-silo/silicon-torus-hardware.md) -- `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`
 
 **What this is.** A full read of the 27 Markdown files in the toroidal archive -- 13
 unique documents once duplicates are set aside -- compared against the living tree at

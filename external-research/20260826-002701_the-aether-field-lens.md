@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- research for understanding; a lens studied rather than a doctrine adopted, each claim's standing named plainly, read 2026-08-26
-**Kin:** [`../gratitude/grain-lineage/topos-aether-agni-geometry.md`](../gratitude/grain-lineage/topos-aether-agni-geometry.md) -- [`20260826-002700_photonic-and-thermodynamic-compute-through-the-field-lens.md`](20260826-002700_photonic-and-thermodynamic-compute-through-the-field-lens.md)
+**Kin:** `gratitude/grain-lineage/topos-aether-agni-geometry.md` -- [`20260826-002700_photonic-and-thermodynamic-compute-through-the-field-lens.md`](20260826-002700_photonic-and-thermodynamic-compute-through-the-field-lens.md)
 
 This piece studies a lens rather than adopting a doctrine. Four electrical figures held or hold
 that the field is the primary reality, with the particle a derived appearance: Tesla, Steinmetz,
@@ -101,7 +101,7 @@ resonant paradigm. The engineering translation is modest and real. Gains come fr
 fields well, through resonance, impedance match, and interference, rather than from moving more
 charge. That is also the survey draft's finding about compute, stated as physics.
 
-**The Kiln and the wafer.** The wafer foundation holds compute close to the work. The lens adds
+**The Oven and the wafer.** The wafer foundation holds compute close to the work. The lens adds
 the reason in field language: carrying charge across distance is the cost, and a field shaped in
 place is the saving. Photonic interconnect and on-wafer memory are two engineering forms of one
 monist sentence.
