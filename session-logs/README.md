@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.211331` | [the twice-pulled round](20260825-211331_the-twice-pulled-round.kyri) | the sync rota seated; livefeed narrates; mycelium and mantra molt |
 | `20260825.205409` | [the derived spine](20260825-205409_the-derived-spine.kyri) | HotStuff+Hashgraph infused; %230 answered: stamp-keyed, derived at merge |
 | `20260825.202950` | [the works-town placed](20260825-202950_the-works-town-placed.kyri) | Plainview leads; permit current to 2030, no 210 yet; residual home answered |
 | `20260825.195437` | [two piers took the same number](20260825-195437_two-piers-took-the-same-number.kyri) | REDS %230 OPEN: both clones booked %226 |
