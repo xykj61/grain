@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.033417` | [the zone was already home](20260826-033417_the-zone-was-already-home.kyri) | America/New_York is already GREEN |
 | `20260826.033247` | [the circle and the enclosure](20260826-033247_the-circle-and-the-enclosure.kyri) | mitra shed complete, twelve fossils cut; Pond's 75-round quest seated |
 | `20260826.033242` | [the clock and the dialect](20260826-033242_the-clock-and-the-dialect.kyri) | macOS refused the parser, rather than the time |
 | `20260826.031657` | [the name waits beside the headwaters](20260826-031657_the-name-waits-beside-the-headwaters.kyri) | Arbor-ready Twilight naming; the token waits at the spring |
