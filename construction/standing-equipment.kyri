@@ -324,6 +324,10 @@ guard shell_dialect
 path tools/s/shell_dialect_witness.rish
 seated 20260826.001630
 
+guard one_clock
+path tools/o/one_clock_witness.rish
+seated 20260826.075023
+
 guard upstream_shape
 path tools/u/upstream_shape_witness.rish
 seated 20260826.010645

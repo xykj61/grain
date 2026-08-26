@@ -46,16 +46,55 @@ cd "$root"
 
 SELF='tools/fixtures/shell_dialect_scan.sh'
 
+# TWO FILES HOLD THE ELDER SPELLINGS ON PURPOSE, and both are read past. This scan spells every
+# pattern it hunts for, and `shell_portable.sh` spells the GNU leg of each fallback chain -- that
+# leg IS the repair on a GNU host, and the BSD leg beside it is what makes the pair portable.
+# Counting either would tell a reader to delete the answer.
+HELPER='tools/fixtures/shell_portable.sh'
+
 # The chain between `xargs` and the flag must be dash-options only, so `xargs grep -d` -- where
 # `-d` belongs to grep -- is read past rather than counted. The trailing class rejects `-delimiter`
 # spelled as a longer word while accepting `-d'\n'` written with no space.
 GATED_RE='xargs[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*(-(a|d)([^a-zA-Z0-9-]|$)|--(arg-file|delimiter|null))'
 
+# THE SECOND GATED FAMILY. `date -d` is a GNU extension; BSD, which is what macOS ships, spells the
+# parse `-j -f INFMT STRING`, the format-an-epoch `-r EPOCH`, and the relative shift `-v+4H`, and
+# refuses `-d` outright. It earned its gate the way the xargs family did -- by costing a real
+# reading on a real host. Measured `20260826.015353` on the macOS bench and reproduced here
+# `20260826.072239` under a BSD-shaped date: tools/fixtures/one_clock_provenance_scan.sh read two
+# PROV_OK lines on GNU and ZERO under the shim, calling every stamp in the tree unparsable, and
+# tools/o/one_clock_witness.rish refused on its own PASS fixture (REDS %250). The seven lines that
+# carried it moved to stamp_epoch, epoch_stamp and stamp_ahead in shell_portable.sh.
+DATE_RE='date[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-d([^a-zA-Z0-9-]|$)'
+DATE_CEILING=${SHELL_DIALECT_DATE_CEILING:-0}
+
+# A GNU SPELLING STANDING BESIDE ITS BSD PARTNER IS THE REPAIR, not a site. That pairing takes two
+# shapes in this tree and the scan reads past both. On ONE LINE it is a fallback chain, and this
+# pattern finds the partner: `date -d 'tomorrow 15:00' +%s 2>/dev/null || date -v+1d -v15H ... +%s`,
+# which was read on metal `20260826.075023` and answered the same second on both dialects. Across
+# TWO LINES it is a function whose legs each end in `&& return 0`, which is how shell_portable.sh
+# writes them -- so that file is named above and read past whole. Counting either would tell a
+# reader to delete the answer, which is the test this meter applies to every number it prints.
+DATE_BSD_RE='date[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-(j|r|v[+-])'
+
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT
 roster="$pen/roster"
 
-git ls-files -- '*.sh' '*.rish' 'tools/hooks/*' | grep -v "^${SELF}\$" > "$roster" || true
+# A TRACKED SYMLINK IS THE SAME SOURCE UNDER A SECOND NAME. `pond/apps/corpora/one_clock.rish`
+# points at `tools/o/one_clock_witness.rish`, so `git ls-files` names one file twice and grep,
+# following the link, counts every line in it twice. The date family read NINE across the tree where
+# seven lines carry it -- a count that overstates the repair a reader is about to make and, in the
+# gated tier, would name a size no edit can reach. Mode 120000 is git's own answer to which entries
+# those are, so the roster asks git rather than guessing. THE LIMIT, named: a symlink pointing OUT
+# of the roster's own globs would go unmeasured here, and nothing in this tree does that today --
+# the one tracked symlink among the shell sources targets a file already on the roster.
+roster_links=$(git ls-files -s -- '*.sh' '*.rish' 'tools/hooks/*' | grep -c '^120000 ' || true)
+git ls-files -s -- '*.sh' '*.rish' 'tools/hooks/*' \
+  | grep -v '^120000 ' \
+  | cut -f2- \
+  | grep -v "^${SELF}\$" \
+  | grep -v "^${HELPER}\$" > "$roster" || true
 
 if [ ! -s "$roster" ]; then
   echo "refused: no tracked shell sources found -- the roster this guard reads is empty" >&2
@@ -69,6 +108,15 @@ if [ "$mode" = prove-red ]; then
   echo "$pen/planted_dialect_scan.sh" >> "$roster"
 fi
 
+
+if [ "$mode" = prove-date-red ]; then
+  # The date ceiling stands at zero, so there is no tree one site under the reading. The plant
+  # supplies it: one bare `date -d` with no BSD partner beside it, which must refuse at a ceiling of
+  # zero and pass at a ceiling of one. A ceiling proven only in the passing direction cannot be told
+  # from a bypass.
+  printf 'stamp=$(date -d "2026-08-26 06:37:05" +%%s)\n' > "$pen/planted_date_scan.sh"
+  echo "$pen/planted_date_scan.sh" >> "$roster"
+fi
 
 if [ "$mode" = prove-dialect ]; then
   # THE MECHANISM, PROVEN ON METAL rather than asserted. A counter that falls proves a spelling
@@ -96,6 +144,101 @@ if [ "$mode" = prove-dialect ]; then
   if [ "$por" -ne 1 ]; then
     echo "verdict=portable_form_broke_too"
     echo "refused: the portable form answered $por where 1 was planted."
+    exit 1
+  fi
+  echo "verdict=ok"
+  exit 0
+fi
+
+if [ "$mode" = prove-date ]; then
+  # THE SECOND DIALECT, PROVEN THE SAME WAY. `prove-portable` above shows a real guard reading one
+  # number under two `xargs`. This leg does it for `date`, over the guard the fault was actually
+  # found in: tools/fixtures/one_clock_provenance_scan.sh, which parses every dated stamp it weighs.
+  #
+  # Measured on this pier `20260826.072239`, before the repair: the scan read two PROV_OK lines on
+  # GNU and ZERO under a BSD-shaped `date`, calling every stamp in the tree unparsable. That is the
+  # macOS bench's `PROV_FAIL count=1` (REDS %250), reproduced here without a Mac.
+  #
+  # The base is pinned to HEAD and the stamp list is one explicit stamp, so the branch's own merged
+  # history stays out of the reading. It does NOT make the number constant: the provenance scan
+  # weighs every dated artifact the working tree and index hold, so a round staging its own session
+  # log adds one. That is why this leg compares the two dialects against each other and refuses
+  # when they differ, rather than pinning a count anyone would have to edit each round (REDS %259).
+  real_date=$(command -v date) || { echo "refused: no date on PATH" >&2; exit 1; }
+  mkdir -p "$pen/bin" "$pen/tools/fixtures"
+  cat > "$pen/bin/date" <<SHIM
+#!/bin/sh
+case "\${1:-}" in
+  -d|-d*) echo "date: illegal option -- d" >&2; exit 1 ;;
+  -j) shift
+      [ "\${1:-}" = "-f" ] || { echo "date: illegal time format" >&2; exit 1; }
+      infmt=\$2; str=\$3; shift 3
+      [ "\$infmt" = '%Y%m%d%H%M%S' ] || { echo "date: unsupported input format \$infmt" >&2; exit 1; }
+      y=\${str%??????????}; rest=\${str#????}; mo=\${rest%????????}
+      d=\${rest#??}; d=\${d%??????}; hms=\${str#????????}
+      h=\${hms%????}; mi=\${hms#??}; mi=\${mi%??}; s=\${hms#????}
+      exec $real_date -d "\${y}-\${mo}-\${d} \${h}:\${mi}:\${s}" "\$@" ;;
+  -r) ep=\$2; shift 2; exec $real_date -d "@\${ep}" "\$@" ;;
+esac
+exec $real_date "\$@"
+SHIM
+  chmod +x "$pen/bin/date"
+
+  # The plant restores the elder body byte for byte, sourced after the helper so it wins. A plant
+  # that merely deleted the call would answer empty on both dialects and prove nothing.
+  cat > "$pen/elder.sh" <<'ELDER'
+stamp_epoch() {
+  dot=$1
+  ymd=${dot%%.*}
+  hms=${dot#*.}
+  yyyy=${ymd%????}
+  mm=${ymd#????}; mm=${mm%??}
+  dd=${ymd#??????}
+  hh=${hms%????}
+  mi=${hms#??}; mi=${mi%??}
+  ss=${hms#????}
+  TZ="$ZONE" date -d "${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}" +%s 2>/dev/null || return 1
+}
+ELDER
+  awk -v elder="$pen/elder.sh" '
+    { print }
+    /shell_portable\.sh"$/ && !seen { print ". \"" elder "\""; seen = 1 }
+  ' tools/fixtures/one_clock_provenance_scan.sh > "$pen/tools/fixtures/planted_one_clock_provenance_scan.sh"
+  cp tools/fixtures/shell_portable.sh "$pen/tools/fixtures/"
+
+  read_ok() {
+    ONE_CLOCK_PROVENANCE_BASE=HEAD ONE_CLOCK_PROVENANCE_STAMPS=20260101.120000 \
+      sh "$1" 2>/dev/null | grep -c '^PROV_OK' || true
+  }
+  live_gnu=$(read_ok tools/fixtures/one_clock_provenance_scan.sh)
+  live_bsd=$(PATH="$pen/bin:$PATH" read_ok tools/fixtures/one_clock_provenance_scan.sh)
+  plant_gnu=$(read_ok "$pen/tools/fixtures/planted_one_clock_provenance_scan.sh")
+  plant_bsd=$(PATH="$pen/bin:$PATH" read_ok "$pen/tools/fixtures/planted_one_clock_provenance_scan.sh")
+
+  echo "shell-dialect: a real clock guard, read on both dialects, and a plant that must still break."
+  echo "subject=tools/fixtures/one_clock_provenance_scan.sh:PROV_OK"
+  echo "living_gnu=$live_gnu"
+  echo "living_bsd_shaped=$live_bsd"
+  echo "planted_elder_gnu=$plant_gnu"
+  echo "planted_elder_bsd_shaped=$plant_bsd"
+  if [ "$live_gnu" -eq 0 ]; then
+    echo "verdict=subject_reads_nothing"
+    echo "refused: the subject answered 0 on GNU -- a comparison against zero proves nothing."
+    exit 1
+  fi
+  if [ "$live_bsd" != "$live_gnu" ]; then
+    echo "verdict=host_changed_the_reading"
+    echo "refused: the subject read $live_gnu on GNU and $live_bsd under a BSD-shaped date."
+    exit 1
+  fi
+  if [ "$plant_gnu" != "$live_gnu" ]; then
+    echo "verdict=plant_is_not_a_working_copy"
+    echo "refused: the planted copy read $plant_gnu on GNU where the living subject reads $live_gnu."
+    exit 1
+  fi
+  if [ "$plant_bsd" -ne 0 ]; then
+    echo "verdict=plant_did_not_bite"
+    echo "refused: the planted elder spelling still read $plant_bsd under the shim."
     exit 1
   fi
   echo "verdict=ok"
@@ -185,6 +328,8 @@ count_family() {
 }
 
 sites=$(count_family "$GATED_RE")
+date_sites=$(tr '\n' '\0' < "$roster" | xargs -0 grep -nHE "$DATE_RE" 2>/dev/null \
+  | grep -vE "$comment_line" | grep -vE "$DATE_BSD_RE" | grep -c . || true)
 files=$(tr "\n" "\0" < "$roster" | xargs -0 grep -nHE "$GATED_RE" 2>/dev/null | grep -vE "$comment_line" | cut -d: -f1 | sort -u | grep -c . || true)
 
 if [ "$mode" = list ]; then
@@ -196,6 +341,10 @@ echo "gated_family=xargs_arg_file_or_delimiter"
 echo "gated_sites=$sites"
 echo "gated_files=$files"
 echo "gated_ceiling=$CEILING"
+echo "gated_date_family=date_parse_or_relative"
+echo "gated_date_sites=$date_sites"
+echo "gated_date_ceiling=$DATE_CEILING"
+echo "roster_symlinks_skipped=$roster_links"
 
 # Advisory, and honest about it: counted this round, gated by nothing. Each is GNU-only, and none
 # has yet been proven on metal to have cost this tree a wrong number, so none of them spends a
@@ -204,11 +353,16 @@ echo "advisory_grep_perl=$(count_family 'grep[[:space:]]+(-[a-zA-Z0-9]+[[:space:
 echo "advisory_readlink_f=$(count_family 'readlink[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*f([^a-zA-Z]|$)')"
 echo "advisory_stat_c=$(count_family 'stat[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-c([^a-zA-Z]|$)')"
 echo "advisory_sed_i_bare=$(count_family 'sed[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-i([[:space:]]|$)')"
-echo "advisory_date_d=$(count_family 'date[[:space:]]+(-[a-zA-Z0-9]+[[:space:]]+)*-d([^a-zA-Z0-9-]|$)')"
 
 if [ "$sites" -gt "$CEILING" ]; then
   echo "verdict=over_ceiling"
   echo "refused: $sites gated sites against a ceiling of $CEILING -- a ceiling only falls."
+  exit 1
+fi
+
+if [ "$date_sites" -gt "$DATE_CEILING" ]; then
+  echo "verdict=over_date_ceiling"
+  echo "refused: $date_sites gated date sites against a ceiling of $DATE_CEILING -- a ceiling only falls."
   exit 1
 fi
 
