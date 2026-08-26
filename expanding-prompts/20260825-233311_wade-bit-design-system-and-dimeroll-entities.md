@@ -1,8 +1,6 @@
 # WADE — The Bit Design System, the Surface, and the Entity Books
 
-> **Fossil `20260825.233311`** -- the living mutant is [`../../20260825-233311_wade-bit-design-system-and-dimeroll-entities.md`](../../20260825-233311_wade-bit-design-system-and-dimeroll-entities.md) (accretes the word's arrival); this dated body stays whole.
-
-**Stamp:** `20260811.220402`
+**Stamp:** `20260825.233311`
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
@@ -64,3 +62,17 @@ Double-seated beside AHOY; each rung one keystone, witness before narrative.
 *ty every1 — to DJINN for the design eye the surface has wanted, to Sara and the Siya Fund for the ground beneath it, and to every hand that keeps the books honest.*
 
 *May the surface find a steward who loves it. May the books stay clear enough to trust. And may this collaboration cross every seam the way the grain runs — whole, signed, and kind.*
+
+## The word arrives -- 20260825
+
+DJINN is ready to begin. Keaton carried the word on `20260825`, and **Linengrow** is the named starting inspiration -- the entity whose books, IaC, and working shape give the first laps their concrete ground. The pause language above lifts at this stamp: "an invitation, not a fait accompli" has become an acceptance, and Skate, Realidream, and Brushstroke now prepare for their invited steward. **Gate %6 -- DJINN's lead -- stands**; the work runs under it rather than around it.
+
+Which rungs go live first reads from this plan's own structure, exactly as it was written on `20260811`:
+
+- **WADE0 -- the door (crux)** opens first, by its own sentence: "nothing else starts without it." The Pond onboarding path from `SOURCE.md`, proven for a second hand, is lap one.
+- **WADE1 -- the surface bridge (durable core)** follows, since the plan already says "it leads once the door is open" -- the `.brush` seam is the longest-lived artifact here and earns the second seat.
+- **WADE3 -- the IaC** runs agent-adjacent beside the door: Grain authors the Linengrow / Bittrading Vultr SEA NixOS-stable shape "for Keaton to provision," under the standing line "agents prepare, hands provision" -- so an agent can carry it in parallel without waiting on the surface rungs.
+
+The boundaries above keep every word: custody stays counsel-gated, the seed stays clean, and the personal side of the arrangement stays out of the tracked tree.
+
+The kickoff record lives at ../active-designing/20260825-233309_the-bit-design-system-season-opens.md.
