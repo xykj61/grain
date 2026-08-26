@@ -50,6 +50,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260825.200047` | [The First Works Town on the Brazos](20260825-200047_the-first-works-town-on-the-brazos.md) | eleven towns read; Plainview leads on headwater, polis, commons |
 | `20260825.193122` | [The four readings, taken](20260825-193122_the-four-readings-taken.md) | the Brazos study's four gaps filled from public record; the NMED window still open |
 | `20260825.173153` | [Dependency-tracked proving](20260825-173153_dependency-tracked-proving-the-worlds-answers.md) | rustc, Salsa, Bazel, Zig, Unison read against the roster's own digests |
 | `20260825.171921` | [A Works at the Top of the Brazos](20260825-171921_brazos-headwaters-works-and-fiber.md) | the plant at the river's source, and a fibre read on a high plain |
