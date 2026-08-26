@@ -43,7 +43,7 @@ say "horizon-thin: living pointers..."
 let readme = run ["sh" "-c" "grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/README.md && grep -q '20260728-232511_lantern-lattice-kiln.md' foundations/README.md && echo README_OK"]
 assert readme.ok else "horizon-thin: README scan failed"
 assert readme.out contains "README_OK" else "horizon-thin: README must cite living graph and Kiln"
-let dream = run ["sh" "-c" "grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/20260728-220203_realidream.md && grep -q '20260728-232511_lantern-lattice-kiln.md' foundations/20260728-220203_realidream.md && echo DREAM_OK"]
+let dream = run ["sh" "-c" "grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/20260825-233310_realidream.md && grep -q '20260728-232511_lantern-lattice-kiln.md' foundations/20260825-233310_realidream.md && echo DREAM_OK"]
 assert dream.ok else "horizon-thin: living Realidream outbound scan failed"
 assert dream.out contains "DREAM_OK" else "horizon-thin: Realidream must cite living graph and Kiln"
 let wafer = run ["sh" "-c" "grep -q '20260728-232511_lantern-lattice-kiln.md' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo WAFER_OK"]

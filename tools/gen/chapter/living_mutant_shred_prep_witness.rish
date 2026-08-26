@@ -19,7 +19,7 @@ say "shred-prep: lexicon..."
 let lex = run ["sh" "-c" "grep -q 'living mutant' context/LEXICON.md && grep -q 'writing fossil' context/LEXICON.md && grep -q 'shred-prep list' context/LEXICON.md && grep -q 'transitive writing crawl' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "shred-prep: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "shred-prep: living mutant · writing fossil · shred-prep · transitive crawl missing"
-let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' construction/SHRED_PREP.md && grep -q 'Wafer closure' construction/SHRED_PREP.md && grep -q '9 nodes' construction/SHRED_PREP.md && echo CRAWL_OK"]
+let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q 'Wafer closure' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q '9 nodes' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && echo CRAWL_OK"]
 assert crawl.ok else "shred-prep: wafer closure scan failed"
 assert crawl.out contains "CRAWL_OK" else "shred-prep: SHRED_PREP must carry wafer closure"
 
@@ -29,10 +29,10 @@ assert rows.ok else "shred-prep: Class H scan failed"
 assert rows.out contains "CLASS_H" else "shred-prep: Class H must list Kiln living + Anvil fossils"
 
 say "shred-prep: living Status bare phrase..."
-let bare = run ["sh" "-c" "grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-220203_realidream.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-221253_the-graph-beneath-the-surface.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-232511_lantern-lattice-kiln.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo BARE"]
+let bare = run ["sh" "-c" "grep -q '\\*\\*living mutant\\*\\*' foundations/20260825-233310_realidream.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-221253_the-graph-beneath-the-surface.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-232511_lantern-lattice-kiln.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo BARE"]
 assert bare.ok else "shred-prep: bare living mutant scan failed"
 assert bare.out contains "BARE" else "shred-prep: living essays must mark living mutant"
-let noback = run ["sh" "-c" "if grep -F 'living mutant of [' foundations/20260728-220203_realidream.md foundations/20260728-221253_the-graph-beneath-the-surface.md foundations/20260728-232511_lantern-lattice-kiln.md foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md >/dev/null 2>&1; then echo HIT; else echo CLEAN; fi"]
+let noback = run ["sh" "-c" "if grep -F 'living mutant of [' foundations/20260825-233310_realidream.md foundations/20260728-221253_the-graph-beneath-the-surface.md foundations/20260728-232511_lantern-lattice-kiln.md foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md >/dev/null 2>&1; then echo HIT; else echo CLEAN; fi"]
 assert noback.ok else "shred-prep: backlink ban scan failed"
 assert noback.out contains "CLEAN" else "shred-prep: living Status must not link back to fossil"
 
