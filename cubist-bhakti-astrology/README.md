@@ -29,6 +29,16 @@ exactly as the classical room already keeps them.
 
 | Stamp | Twin |
 |---|---|
+| `20260826.050757` | [Purva Phalguni -- the Promise Before the Fruit](20260826-050757_purva-phalguni.md) |
+| `20260826.050758` | [The Twins and the Judge -- Two Brothers of the Sun](20260826-050758_the-asvins-and-yama.md) |
+| `20260826.050759` | [Rudra and Shiva -- One Seat, Two Names](20260826-050759_rudra-and-shiva.md) |
+| `20260826.050800` | [Dharma -- the Wetness of Water](20260826-050800_dharma-the-essence.md) |
+| `20260826.050801` | [The Four Chapters of a Life -- the Harvest and the Fallow](20260826-050801_four-asramas-and-goals.md) |
+| `20260826.050802` | [The Two-Star Day -- the Baton Between Stars](20260826-050802_lunar-day-and-birth-star.md) |
+| `20260826.050803` | [Saturn in Cancer -- the River and Its Banks](20260826-050803_saturn-in-cancer.md) |
+| `20260826.050804` | [Mars in Leo -- the Fire That Serves the Crown](20260826-050804_mars-in-leo.md) |
+| `20260826.050805` | [Anger and Sadness -- the River and the Tide](20260826-050805_anger-and-sadness.md) |
+| `20260826.050806` | [The Maker's Gathering -- One Workshop, Four Faces](20260826-050806_the-makers-gathering.md) |
 | `20260826.045035` | [Bharani -- the Bearing Star](20260826-045035_bharani-the-bearing-star.md) |
 | `20260826.045036` | [Ashlesha -- the Clinging Star](20260826-045036_ashlesha-the-clinging-star.md) |
 | `20260826.045037` | [The Sun in Leo -- the Flame at Home](20260826-045037_sun-in-leo.md) |
