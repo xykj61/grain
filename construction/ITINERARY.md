@@ -50,11 +50,11 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `c29e99d47a` -- one dialect, and a guard that sees four.
+**Git nib:** `84da3ab25e` -- the sweep that found nothing.
 
 **Now.** **Two piers merged, remotes renamed, Dream at work.**
 
-**Landed, shelved** (%268-%270). `dexter` waits.
+**Landed, shelved** (%268-%270); `dexter` waits.
 
 **The two piers reconciled.** Both clones took `%233`-`%237` -- `%230` and `%252` again -- so
 upstream's five are **re-seated at `%271`-`%275`**. **The remotes are `xy`, `debrided`, `seed`;** the
@@ -63,36 +63,35 @@ rename broke every guard reading `origin/main` and every loop line spelling `xyk
 
 **Dream's lane: the rune says its own name.** Eight plain words for Glow's closed rune set (*shop,
 fit, bind, ask, call, build, shape, aside*), glyph unchanged, lowering byte-identical. It ratifies --
-**30 of 32 `lower_*.rye` modules already carry a plain name** -- and the two syllable ones are the
-cut surface, prepped Class M.
+**30 of 32 `lower_*.rye` modules already carry a plain name** -- the two syllable ones being the cut
+surface, prepped Class M.
 
-**Three writers, one order** -- 25 conflicts, 20 resolved by reading, one structural class; the
-derived-spine key **proposed**.
+**Three writers, one order** -- 25 conflicts, 20 resolved by reading; the derived-spine key
+**proposed**.
 
-**Seed published** `20260826.174615`, gate %1 spent: four gates green, nib `d983995`, anonymous and
-unsigned, **`arbor` scrubbed**. Killing a `rishi` wrapper orphans its `sh` child, which holds the
-projection lock -- **reap the child.**
+**Seed published** `20260826.174615`, gate %1 spent: four gates green, nib `d983995`, anonymous,
+**`arbor` scrubbed**. Killing a `rishi` wrapper orphans its `sh` child, which holds the projection
+lock -- **reap the child.**
 
 
-**The fold loom stands** (%270's next lap). `tools/fixtures/reds_fold.sh` moves closed rows onto a
-shelf through `reds_fold_reanchor.sh`, re-anchoring both link classes; five named refusals, a
-twelve-row bound, 23 behaviors both ways. Grading it opened **%276**: the card graded shell code
-at **86** against a ceiling of 9. Repaired.
-
-**The dialect families close.** `resolve_path` and `sed_inplace` join
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh), 14 behaviours proven,
-parity skipped **out loud** where a bench cannot. `sed -i` **3 -> 0**; `readlink -f`
-**4 -> 2**, survivors host-bound. **%277:** the loop-parse guard read one launcher while four
-existed, so a planted apostrophe in Dream's prompt read clean -- discovered now, proven both ways.
-Counsel `20260826.181924`: **a meter pointed at a class it was never shaped for reports a fault
-it created.**
+**Three looms, two reds.** `tools/fixtures/reds_fold.sh` re-anchors a folded row's links (five named
+refusals, 23 behaviors both ways); `resolve_path` and `sed_inplace` join
+[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) with 14 behaviours --
+`sed -i` **3 -> 0**, `readlink -f` **4 -> 2**, survivors host-bound. Grading the first opened
+**%276** (the card graded shell code at **86** against a ceiling of 9); the adaptation word opened
+**%277** (the loop-parse guard read one launcher while four existed). Both repaired that lap.
+Counsel `20260826.181924`: **a meter pointed at a class it was never shaped for reports a fault it
+created.**
 
 **Dream's loop, his word `20260826`:** the **seed cadence is CUT** -- the fifth-round projection
-leaves the loop, so the star names the moment and stops; gate %1 stays his to spend. A
-**standing adaptation grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python
-into **Glow**, each born beside its elder, which stands until the newborn is GREEN and is then a
-fossil. The `20260826.151528` charter keeps *cadence rides with Dream alone* as
-testimony; the launcher is living and now says otherwise.
+leaves the loop, so the star names the moment and stops; gate %1 stays his. A **standing adaptation
+grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python into **Glow**, each born
+beside its elder, which stands until the newborn is GREEN and is then a fossil. The `20260826.151528`
+charter keeps *cadence rides with Dream alone* as testimony; the launcher now says otherwise.
+
+**The %277 sweep closes with no repair.** Across 179 scans and 1,701 witnesses that shape appears
+**nowhere else**, and every reader of a growing family already globs it. Two broader detectors were
+built and discarded as noise (log `20260826-192711`).
 
 **The next doors.** His: **row-number allocation** (%230, %252) and the derived-spine key that
 answers it, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride announcing
