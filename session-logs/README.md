@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.202950` | [the works-town placed](20260825-202950_the-works-town-placed.kyri) | Plainview leads; permit current to 2030, no 210 yet; residual home answered |
 | `20260825.195437` | [two piers took the same number](20260825-195437_two-piers-took-the-same-number.kyri) | REDS %230 OPEN: both clones booked %226 |
 | `20260825.193346` | [the window still open](20260825-193346_the-window-still-open.kyri) | Brazos: four readings taken; no NMED ruling as of 20260825; plant unfunded |
 | `20260825.191452` | [the receipt that survived its audit](20260825-191452_the-receipt-that-survived-its-audit.kyri) | Move 1 lands: receipts v2, 15 legs, ~88x on six modules |
