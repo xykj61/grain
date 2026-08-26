@@ -8,7 +8,7 @@
 //! content is not an overwrite of the old -- it is one more revision appended to the read
 //! lane's chain. A program edit and a re-read are the same motion -- an append the graph
 //! already knows how to show -- so the read half inherits accrete-never-break by the same
-//! construction the editor did (foundations/20260728-220203_realidream.md).
+//! construction the editor did (foundations/20260825-233310_realidream.md).
 //!
 //! `refresh_read` continues a read lane: it appends the next revision to an existing
 //! `read/` lane, carrying the freshly-read content. It refuses a path that does not name

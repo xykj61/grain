@@ -25,14 +25,15 @@
 
 ### Seated, and still live
 
-- **The panchanga** (seated `20260826`, Keaton's word): planning rings in fives over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375 rounds; *chapter* replaces the unit word *season*. Charter: the panchanga foundations essay; words in `context/LEXICON.md`.
-- **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; every Dexter source reborn in `dexter/` on the new model, elders standing until successors are GREEN. Door: `dexter/README.md`.
-- **STANDFAST -- the cubist sweep** (`20260826`): five rounds; the classical room reimagined through Kyri 6, Twilight. Door: `cubist-bhakti-astrology/README.md`.
+- **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
+- **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
+- **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
+- **STANDFAST -- the cubist sweep** (`20260826`): five rounds. Door: `cubist-bhakti-astrology/README.md`.
 - **Linengrow Design Theme seated** (`20260826`): rounded shape law, tileable brushstroke, five rota encapsulations; gate %6. Silo: `active-designing/20260826-022443_the-linengrow-design-theme.md`.
-- **The WADE journey double-seated** (`20260826`): 5 quests, 25 orbits, 375 rounds -- tokens, Skate floor, skate-ww.com lane, Dimeroll entities, Surf Social SLC + close. Plan: `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`; DJINN's lead stays gate %6.
+- **The WADE journey double-seated** (`20260826`): 5 quests, 25 orbits, 375 rounds. Plan: `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`; DJINN's lead stays gate %6.
 - **Seated names (`20260816`):** **Scooter** = the CLI chat app (Talk reimplementation on Pond); **Dexter** = the terminal module (our Dill parallel, affirmed); **Lumen** = the inference vane (renames Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/date/20260816/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
 - **Seated breaches (checkpoint-first when executed):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
-- **Deep debride SPENT twice** (`20260825` the DJINN pseudonym; `20260826` Chapter -> Chapter titles): tree, logs, filenames, full history; re-signed; force-pushed; every clone re-clones or hard-resets. Keaton granted a deep molt, breach, and debride `20260823.045448` -- renames, reference repointing, commit-message rewriting, force push, reclone accepted. Spent once at the **close** of the sweep it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a filename that misleads, or a commit message now known to be untrue.
+- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` the season word to chapter): full history, re-signed, force-pushed; every clone hard-resets once. Keaton granted a deep molt, breach, and debride `20260823.045448` -- renames, reference repointing, commit-message rewriting, force push, reclone accepted. Spent once at the **close** of the sweep it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a filename that misleads, or a commit message now known to be untrue.
 - **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
 
 ### The crypto spine, seated `20260815` -- the pointer
@@ -52,7 +53,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `a89d0f0157` -- the chapter rewrite ashore; three rooms and six molts seated.
+**Git nib:** `8f3f84bed1` -- the mitra shed complete; Pond's enclosure quest seated.
 
 **Now.** **A fold repoints documents and leaves guards standing.**
 `tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so

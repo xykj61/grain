@@ -3,7 +3,7 @@
 //!
 //! Rung 3 drew the fused edge with a single upstream: one read node feeding one derived
 //! program node. The Realidream foundation names the motion in the plural -- *two sources
-//! can feed one node* (foundations/20260728-220203_realidream.md) -- and this rung draws
+//! can feed one node* (foundations/20260825-233310_realidream.md) -- and this rung draws
 //! it whole. A program node is derived from *two* `read/` lanes at once, its content a
 //! pure function of both current heads, so the node truly fuses two independent inputs
 //! into one view.

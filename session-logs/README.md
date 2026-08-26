@@ -49,6 +49,8 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.033247` | [the circle and the enclosure](20260826-033247_the-circle-and-the-enclosure.kyri) | mitra shed complete, twelve fossils cut; Pond's 75-round quest seated |
+| `20260826.031657` | [the name waits beside the headwaters](20260826-031657_the-name-waits-beside-the-headwaters.kyri) | Arbor-ready Twilight naming; the token waits at the spring |
 | `20260826.025139` | [the chapter rewrite lands](20260826-025139_the-chapter-rewrite-lands.kyri) | 3,471 re-signed and pushed; three rooms seat; six foundations molt; seed follows |
 | `20260826.021754` | [the panchanga and the chapter](20260826-021754_the-panchanga-and-the-chapter.kyri) | rings of five seated; Chapter->Chapter debride; Kyri 6 palettes; 14 pages |
 | `20260826.002952` | [the DJINN debride, the bit chapter](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
@@ -146,4 +148,3 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260824.015422` | [front doors gauge molt](20260824-015422_front-doors-gauge-molt.kyri) | Front doors and context home molt to Gauge. |
 | `20260824.014209` | [source md gauge molt](20260824-014209_source-md-gauge-molt.kyri) | SOURCE.md molts to Gauge. |
 | `20260824.012716` | [studies gauge molt](20260824-012716_studies-gauge-molt.kyri) | The studies room molts to Gauge. |
-
