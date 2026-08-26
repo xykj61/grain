@@ -22,6 +22,36 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260826.022833` -- one tree, one number (walk-back `7837b1d237`)
+
+**Swept:** `construction/ITINERARY.md` -- the whole **Now** block, roughly 2,100 bytes describing
+the debride's wake, replaced by the census trace; the card reads **24,552** of 24,576.
+`construction/REDS.md` folded rows %243 and %244 onto
+[`archive/REDS-the-debrides-blast-radius-rows-243-244.md`](archive/REDS-the-debrides-blast-radius-rows-243-244.md),
+carrying the pin from 22,667 bytes to **19,923** so row %246 had somewhere to land.
+
+**What waits there, worth recalling:** the departing Now block held the pen-measured reflog readings
+of the rewritten-upstream rebase -- 7 replays with the reflog, 15 without -- which now live in row
+%243 on its shelf and in `tools/u/upstream_shape_witness.rish`. Nothing in the block was unique to
+it. Both folded rows stand whole on their shelf rather than at the nib, so the walk-back holds only
+their position on the pin.
+
+
+## `20260826.010645` -- the debride's wake (walk-back `7837b1d237`)
+
+**Swept:** `construction/SHRED_PREP.md` -- four closed sections (Pool to Pond, Riyo to Kyri, the
+root `.brix` descriptor, and the old-waymark shed) folded whole to
+[`archive/SHRED_PREP-four-seated-molts-20260810-20260818.md`](archive/SHRED_PREP-four-seated-molts-20260810-20260818.md),
+carrying the pin from **25,594 bytes to 22,250** against the 24,576 it declares. `construction/REDS.md`
+folded rows %237 through %241 onto their own shelf. `context/LEXICON.md` lost four citations of a
+counsel page the `20260825` deep debride removed, replaced by the seat named in prose.
+
+**What waits there, worth recalling:** the four molt sections stand whole on their shelf rather than
+at the nib, so the walk-back holds only their position on the pin. The LEXICON citations are the one
+thing genuinely departing -- four links to a counsel page removed on Keaton's word, whose seat is
+still recorded by stamp in the rows that replaced them.
+
+
 ## `20260826.001630` -- the two-dialect condense (walk-back `11b9e87321`)
 
 **Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the twelve leaf roots

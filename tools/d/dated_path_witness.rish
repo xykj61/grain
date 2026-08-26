@@ -243,9 +243,12 @@ assert one_list.out contains "discovers_a_planting=yes" else "dated-path: a name
 assert one_list.out contains "moved_doc_free=yes" else "dated-path: a document that merely MOVED must never read as a planting -- its sprig is on disk"
 assert one_list.out contains "deleted_doc_free=yes" else "dated-path: a document that was DELETED must never read as a planting -- no instrument names it"
 assert one_list.out contains "vendored_free=yes" else "dated-path: a vendored mention is somebody else's fixture"
+assert one_list.out contains "commented_page_free=yes" else "dated-path: a dated name written only on a full-line comment is a page a round WROTE ABOUT rather than one an instrument planted -- discovery must read past it, or a comment explaining a removal silently subtracts that page's surviving references (REDS %246)"
+assert one_list.out contains "commented_rye_free=yes" else "dated-path: the same must hold for a Rye // comment, since discovery reads .rye beside .sh"
+assert one_list.out contains "trailing_comment_still_plants=yes" else "dated-path: a code line carrying a trailing comment must still plant what it names -- the strip is anchored to a line's first non-blank character rather than hunting a hash through code"
 assert one_list.out contains "roster_reads_itself=no" else "dated-path: the roster must stay out of its own corpus, or it discovers everything it lists"
 assert one_list.out contains "discovery_leaves_scratch=no" else "dated-path: discovery must leave no scratch file in the tree it read"
 assert one_list.out contains "control_verdict=ok" else "dated-path: the single-list control must agree with itself"
-say "one list GREEN -- census and repointer read the same exclusions, a private copy is refused, and a planted name is discovered rather than remembered"
+say "one list GREEN -- census and repointer read the same exclusions, a private copy is refused, a planted name is discovered rather than remembered, and a name a comment merely writes about is read past"
 
 say "GREEN: dated-path -- seven verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."

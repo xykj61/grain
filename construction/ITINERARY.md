@@ -47,31 +47,34 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `11b9e87321` -- twelve leaf roots landed, the two-pier dialect caught and gated.
+**Git nib:** `d08f80f408` -- the census traced; the round parked at the row-number gate.
 
-**Now.** **Two piers, one dialect -- and a page that shipped thirty-eight zeros.**
-`docs-geode/libraries/README.md` reached `xykj61` with its witness column at **0 for all 38 rooms**.
-`geode_libraries_scan.sh` counts through `xargs -a FILE -d '\n'`; BSD xargs carries neither flag, so
-on the macOS bench the pipeline yields nothing and `wc -l` answers 0 -- and that page's own guard was
-GREEN there, because it renders through the function it checks (%240). A rebase conflict showed both
-columns side by side.
+**Now.** **PARKED AT A GATE -- the two piers hold six different reds under three numbers.**
+The send met the ordering remote force-pushed twice in one round, the second time `c7c7872895`, a
+**5,092-file** rewrite molting `season` to `chapter` and re-rooting history: `merge_base` reads
+**none**. It was built from a base predating three of this pier's laps, so upstream's spine ends at
+**%235** while this pier's reaches **%247**. `%231` and `%232` agree; **`%233`, `%234`, and `%235`
+name six different reds**; `%236`-`%247` exist on one side only. That is REDS %230 -- OPEN and
+gated on this question -- firing again. %230's own rule settles the numbering (earlier stamp keeps
+it: this pier holds %233-%235, the bench's shift to %248-%250); it does not make the act small. So
+**the package is parked whole on `refs/heads/pier/one-tree-one-number`**, pushed additively,
+never forced, every guard green. Booked %248 with the measurements that make the word
+cheap. **The integration is Keaton's.** Until it lands the roster reads **65 of 66**: `upstream_shape` refuses `rewritten` every lap by design, which is the gate reporting itself rather than a tree red.
 
-**The class is measured now.** `shell_dialect_scan.sh` and `tools/s/shell_dialect_witness.rish` hold
-**12 gated sites across 7 files** under a ceiling that only falls, count four more GNU-only families
-without gating, and **reproduce the mechanism on metal**: a two-line `xargs` refusing `-a` and `-d`
-as BSD does, under which the elder form answers 0 and the portable form 1. Every-lap tier, 1,178 ms.
-Third firing: %169 a glob, %226 an awk dialect.
+**What the round proved before it parked (%246, %247).** `dated_path` read `refs_lost` as 178,
+then 182, then 178, and the round before called the tree unmoved. Four runs here gave
+**byte-identical** output at 178, leaving the tree as the only thing that could have moved.
+`dp_discovered_fixture_basenames` subtracts a dated basename written in authored code whose sprig
+names no file -- and row %245 wrote the debrided page's path into `dated_path_scan.sh`'s own
+**comment**, so the census read that page as a fixture and its **five** references stopped counting
+on the lap the ceiling rose to hold them. The other transition was `context/LEXICON.md`, **four**
+occurrences at `7837b1d237` and none now. Discovery skips full-line comments now (59 -> 56, the two
+others carrying zero references), the page is **LISTED** by decision, and the tree reads **178**
+under its ceiling against **183** without it. Three control legs fail with the strip removed.
 
-**Two roots in how a round moves.** `git rebase --continue` makes a commit and `pre-commit` never
-fires, so the rebase carried `1898` Rye modules where the tree holds **1900**; the render that looked
-like a repair only printed, since both generators write only when handed `write` (%241). And this
-card arrived from `xykj61` at **24,933 bytes** against the **24,576** it declares -- the fourth send
-from that clone carrying a refusal nobody ran (%242).
-
-**The next doors.** **A pre-push refusal** is the rung the fourth firing asks for: the pin bound read
-at `git push` rather than at a lap's open. It changes how both piers send, so it waits for a word.
-**The 111 chained rungs stay unheard** and rung-by-rung is quadratic; the leaf choir is the evidence
-a shape exists. **`hunk` at 86** is the next family with no clock.
+**The next doors.** The parked integration, **a pre-push refusal**, and **a debride announcing
+itself** are Keaton's word. Agent-doable: the **twelve gated `xargs` sites** want one shared
+portable helper; **`hunk` at 86** is the largest family with no clock.
 ---
 ## Landed arcs
 
@@ -146,13 +149,10 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- the granted publish is SPENT.** The word was spent `20260825.212214` (*send both
-seed and xy*); the seed published from the macOS bench as `fdaf8e3...f7a1f2d`, all four gates green
-under the %225 wall -- **7,015 copied, 152 withheld**, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link`
-GREEN. Last published projection `fdaf8e3`. *Read alone* is enforced (%193). The gate closes again
-until the next word. **One wart, small and open:** `sow_project.sh`'s sed-copy drops the exec bit on
-the seed's `tools/hooks/commit-msg`, so the armed-wall promise rides on the publisher rather than
-the projection -- the exec-bit trap class, inside the projector.
+**Seed cadence -- the granted publish is SPENT** (`20260825.212214`, from the macOS bench,
+`fdaf8e3`: 7,015 copied, 152 withheld, all four gates green under the %225 wall). The gate closes
+until the next word. **One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's
+`tools/hooks/commit-msg`, so the armed-wall promise rides on the publisher.
 
 ---
 
@@ -208,17 +208,15 @@ the witness-reach half of it is the live edge above.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
-Each line names a round and where its numbers live. This card keeps the live edge; the logs keep the
-account. Earlier rows are shelved at
+This card keeps the live edge; the logs keep the account. Earlier rows are shelved at
 [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md)
 and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210_itinerary-landed-laps.md).
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.001630` | The two-pier shell dialect gated at 12 sites across 7 files; %240-%242 booked; the card and two generated pages repaired | [log](../session-logs/20260826-001630_two-piers-one-dialect.kyri) |
+| `20260826.022833` | One tree, one number: the census traced to a comment; parked at the row-number gate; %246-%248 | [log](../session-logs/20260826-022833_one-tree-one-number.kyri) |
 
-**One row, on purpose.** The index is `session-logs/README.md`; this is the card. A landed lap keeps
-one line here until the next replaces it.
+**One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
 ## The cadence -- the seed ships every fifth round
 

@@ -158,13 +158,31 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   commit-msg hook refuses a body citing a path the tree does not hold (REDS %202). A stamp of
 #   20260101-010101 names no lap this tree ever ran, so the name matches nothing by construction --
 #   the same reasoning as the first entry, one control later.
+#
+#   The fifth LISTED name is DEBRIDED like the three above it, and it is here because the
+#   subtraction was happening anyway by accident. The deep debride of 20260825 removed
+#   `counsel/date/20260730/...pole-bozo-djinn-murr-keaton.md` from the tree and from every commit on
+#   Keaton's word. Five references still name it -- one in `construction/REDS.md`, three in
+#   `expanding-prompts/date/20260730/`, one in a session log -- and every one of them is dated
+#   testimony or a ledger row explaining the removal, so the honest reading is a path asserted
+#   absent rather than a reference gone stale. That is the same verdict the three names above
+#   carry, reached the same way.
+#
+#   WHY IT IS WRITTEN HERE RATHER THAN LEFT TO DISCOVERY. The round that raised the ceiling for
+#   this page wrote its full path into `dated_path_scan.sh`'s own comment to explain the rise, and
+#   `dp_discovered_fixture_basenames` read that comment: the basename appears in authored code and
+#   its sprig names no file, so both conjuncts held and all five references were subtracted in
+#   silence. The census then read 178 where it had read 182, and the round recorded the shift as
+#   untraced (REDS %245). Discovery skips full-line comments now, so the accident cannot recur --
+#   which means the subtraction has to be a decision, and this is where decisions live.
 # The LISTED half only. The two planted names that stood here -- `20260101-000000_a-dated-note.md`
 # and `20260101-010101_never-written.kyri` -- are found by discovery now, along with 45 more, so
 # listing them would be the duplication this round exists to end.
 DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
-20260821-211423_conways-law-and-the-organization-that-forgets.md"
+20260821-211423_conways-law-and-the-organization-that-forgets.md \
+20260730-150702_pole-bozo-djinn-murr-keaton.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
@@ -248,6 +266,24 @@ dp_fixture_basenames() {
 # what keeps a deleted one from being read as a planting. Neither conjunct is safe alone, which is
 # why the first attempt at this count was wrong and why both are spelled out here.
 #
+# CONJUNCT 1 READS CODE AND SKIPS FULL-LINE COMMENTS -- amended 20260826.052117, and the reason is
+# that the two say different things. Code that names a dated basename PLANTS it; a comment that
+# names one WRITES ABOUT it, and a round explaining why a page is gone is doing the second while
+# looking exactly like the first. `dated_path_scan.sh` gained a comment naming a debrided counsel
+# page, both conjuncts held, and the census silently stopped counting that page's five surviving
+# references -- the untraced 182-to-178 shift REDS %245 recorded and %246 traced.
+#
+# The strip costs nothing, which was measured rather than assumed. Three basenames leave discovery
+# under it: `20260104-000000_x.md` and `20260729-134259_x.md`, each named only in a control's or a
+# scan's prose, carry ZERO references anywhere in the corpus -- so subtracting them subtracted
+# nothing -- and the third is the debrided page, which is LISTED above by decision now. Fifty-six
+# discovered names are unchanged.
+#
+# Only a line whose FIRST non-blank character opens the comment is dropped. A trailing comment on a
+# code line still reads, which errs toward keeping a planting: a false negative here re-admits a
+# fixture into the census, and a false positive hides real breakage. Between those two the census
+# takes the one that shows too much.
+#
 # Takes the repository root, so a caller that has cd'd into a pen still reads the tree it means to.
 dp_discovered_fixture_basenames() {
   _dp_root=${1:-.}
@@ -259,7 +295,8 @@ dp_discovered_fixture_basenames() {
     git ls-files '*.rye' '*.rish' '*.sh' '*.brix' 2>/dev/null \
       | grep -vE '^(vendor|gratitude|old)/' \
       | grep -v '^tools/fixtures/dated_path_exclusions.sh$' \
-      | xargs grep -hoE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' 2>/dev/null \
+      | xargs sed -e 's/^[[:space:]]*#.*$//' -e 's|^[[:space:]]*//.*$||' 2>/dev/null \
+      | grep -oE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
       | sort -u \
       | while IFS= read -r _b; do
           _sp=$(printf '%s' "$_b" | sed -n 's/^[0-9]\{8\}-[0-9]\{6\}[_.]//p')
