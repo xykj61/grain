@@ -1,4 +1,4 @@
-//! caravan/supervisor_exit.rye -- three-way exit vocabulary for supervised services.
+//! Caravan supervisor-exit -- the three words a finished dependent can say, and what each one makes the supervisor do.
 //!
 //! Ordinary cycle success is **cycle_ok** (0): the supervisor spawns again.
 //! **stop_requested** is the reserved deliberate stop -- the supervisor exits its loop.

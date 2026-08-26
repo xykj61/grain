@@ -1,4 +1,4 @@
-//! caravan/refusal_reason_test.rye -- Equinox e2 East pack - legible refusals.
+//! Caravan refusal-reason test -- a supervisor that says no says why, in words an operator can read (Equinox e2 East pack).
 //!
 //!   rye/bin/rye run caravan/refusal_reason_test.rye
 
