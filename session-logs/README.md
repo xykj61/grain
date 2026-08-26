@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.165823` | [the drain is a fold](20260826-165823_the-drain-is-a-fold.kyri) | move three on metal: two cold runs, four stores byte-identical; choir at 113 |
 | `20260826.161127` | [the spine opens, wrap named](20260826-161127_the-spine-opens-wrap-named.kyri) | Sound's first lap: moves one, two, five on metal; six Doors; choir at 112 |
 | `20260826.152336` | [three stars of the aether row](20260826-152336_three-stars-of-the-aether-row.kyri) | Mind, Sound, Dream seated; three launchers; lanes are the collision law |
 | `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
