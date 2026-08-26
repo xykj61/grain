@@ -76,7 +76,7 @@ to wait.
 
 **The living tree already covers:** the wafer's why in
 `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`; the hot/cold seam and
-recomputable cache in `foundations/20260728-221253_the-graph-beneath-the-surface.md`; the
+recomputable cache in `foundations/20260826-024939_the-graph-beneath-the-surface.md`; the
 geometry's honest appraisal in
 `external-research/grain-lineage-silo/silicon-torus-hardware.md`; the
 prove-pure-before-metal habit in

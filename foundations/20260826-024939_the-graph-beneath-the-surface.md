@@ -1,6 +1,6 @@
 # Weave -- The Graph Beneath the Surface
 
-> **Fossil `20260826.024939`** -- the living mutant is [`20260826-024939_the-graph-beneath-the-surface.md`](20260826-024939_the-graph-beneath-the-surface.md); this dated body stays whole.
+*Living mutant, re-seated `20260826.024939` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
 
 *The substrate under [Realidream](20260825-233310_realidream.md), set down on our own roots: **Weave** is the append-only DAG of immutable signed facts -- the streaming graph that unifies program, page, and interface when the far horizon arrives. Mantra is the version-control **projection** over Weave. Bounded, deterministic, recomputable from a faithful history.*
 
@@ -49,7 +49,7 @@ The graph is the model beneath the surface; the weave routes it up to the hubs t
 
 - **The front door** -- the root [`../README.md`](../README.md) names the kernel spine this generalizes: *state as a pure fold over an append-only log of signed facts*.
 - **The room** -- indexed in [`foundations/README.md`](README.md).
-- **The hubs** -- that spine is the first grain strand in [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md); [Follow Our Compass](20260826-024943_follow-our-compass.md) returns you to it.
+- **The hubs** -- that spine is the first grain strand in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you to it.
 - **In build** -- the surface this graph feeds (Skate - Realidream) is the [WADE plan](../expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
 
 ---

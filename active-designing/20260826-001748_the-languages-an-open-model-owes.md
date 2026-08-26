@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; the language row of Ember's materials honesty, with the tokenizer seam and its witness; proposals only
-**Kin:** [`../foundations/20260728-232511_lantern-lattice-kiln.md`](../foundations/20260728-232511_lantern-lattice-kiln.md)
+**Kin:** [`../foundations/20260826-024944_lantern-lattice-kiln.md`](../foundations/20260826-024944_lantern-lattice-kiln.md)
 
 The open model layer's foundation makes a promise: the kiln is honest about its
 materials -- the data it learns from, the energy it spends, the bounds it keeps. One
@@ -65,7 +65,7 @@ draft wrapped around it stays with the old draft; the pattern stands without it.
 **Drawn from:** `2026-02-01-123000-pst-hafez-persian-ai-sovereignty-cursor-prompt.md`.
 
 **The living tree already covers:** the open model layer and its honesty promise in
-`foundations/20260728-232511_lantern-lattice-kiln.md`; self-hosted intelligence as
+`foundations/20260826-024944_lantern-lattice-kiln.md`; self-hosted intelligence as
 custody in `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` and the
 surrounding stack; the reader-neutral voice this draft keeps, per the tree's standing
 documentation rules.

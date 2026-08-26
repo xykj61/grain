@@ -1,6 +1,6 @@
 # The Grain and the Crossing -- What "Siloed Into Our Grain" Means
 
-> **Fossil `20260826.024942`** -- the living mutant is [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md); this dated body stays whole.
+*Living mutant, re-seated `20260826.024942` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
 
 *Two phrases have carried this tree's method for weeks -- "researched with sources" and "siloed into our grain" -- and tonight they receive their definitions. The grain is the set of standing commitments that give our wood its direction; the crossing is the disciplined passage an outside idea makes from the named world into the clean room. This brief accretes beside `../context/SILO_TECHNIQUE.md` and this stack's own foundation resin, saying what they left implicit: the grain itself, strand by strand, and the test every crossing must pass.*
 

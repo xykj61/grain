@@ -29,7 +29,7 @@ Linengrow shares Rye OS's architectural spine exactly: state as a pure fold over
 
 Correctness by construction in the kernel becomes trust by construction in the platform. The same discipline that makes a kernel safe makes a marketplace honest.
 
-The unifying civic vision -- open OS, open hardware, regenerative land, the ledger, creator tools -- lives in [`../foundations/20260628-124512_anywhere-we-are-found.md`](../foundations/20260628-124512_anywhere-we-are-found.md). The currency that keeps value circulating close to home is drawn out fully in [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md). Linengrow carries forward its creator-facing gifts: the fable, the tools surface, and the privacy-by-disclosure model, below.
+The unifying civic vision -- open OS, open hardware, regenerative land, the ledger, creator tools -- lives in [`../foundations/20260826-024940_anywhere-we-are-found.md`](../foundations/20260826-024940_anywhere-we-are-found.md). The currency that keeps value circulating close to home is drawn out fully in [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md). Linengrow carries forward its creator-facing gifts: the fable, the tools surface, and the privacy-by-disclosure model, below.
 
 ---
 

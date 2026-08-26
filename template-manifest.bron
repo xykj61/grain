@@ -88,6 +88,7 @@ allow nixos-guide
 allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
 # -- the disciplines (context, granular — identity/specs/keys withheld) --
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
+allow cubist-bhakti-astrology      # the classical room reimagined; no personal readings live here
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md

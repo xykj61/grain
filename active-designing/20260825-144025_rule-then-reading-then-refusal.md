@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Voice:** Kyri
 **Status:** Living -- the argument behind [REDS %223](../construction/REDS.md)
-**Kin:** [`reds-first`](../.claude/rules/reds-first.md) - [`standfast`](../foundations/20260816-214652_standfast-the-stopped-line.md) - [`the grain and the crossing`](../foundations/20260702-184312_the-grain-and-the-crossing.md) (*a guard that cannot red guards nothing*)
+**Kin:** [`reds-first`](../.claude/rules/reds-first.md) - [`standfast`](../foundations/20260816-214652_standfast-the-stopped-line.md) - [`the grain and the crossing`](../foundations/20260826-024942_the-grain-and-the-crossing.md) (*a guard that cannot red guards nothing*)
 **Measured:** on this pier, `20260825`, one Vultr SEA VPS -- AMD 4 vCPU, 8 GB, 180 GB NVMe
 
 ---

@@ -35,7 +35,7 @@ A tree this size is unreadable front to back and perfectly readable by question.
 
 ## The compass, when you are lost
 
-[`foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md) is the return habit: foundations, then the grain, then the two rooms, then what is being designed, then what is being done now. Walking it in order is how this tree re-finds its own direction, and it works just as well for a reader.
+[`foundations/20260826-024943_follow-our-compass.md`](../../foundations/20260826-024943_follow-our-compass.md) is the return habit: foundations, then the grain, then the two rooms, then what is being designed, then what is being done now. Walking it in order is how this tree re-finds its own direction, and it works just as well for a reader.
 
 ---
 

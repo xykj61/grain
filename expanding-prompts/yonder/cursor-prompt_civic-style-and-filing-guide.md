@@ -12,7 +12,7 @@ Confirm, then stop:
 
 - Current branch and its cleanliness; whether it is level with its GitHub remote.
 - `context/`, `foundations/`, and `linengrow/` all exist.
-- These already-placed items are present (we will confirm, not move them): the seven `20260628-133212_*` essays and `20260628-140812_the-roots-beneath-the-work.md` in `foundations/`; the three civic visions (`*aspiring-radiance*`, `*regenerative-experiment*`, `20260628-124512_anywhere-we-are-found.md`) in `foundations/`; the two foundation briefs in `foundations/`; the Linengrow README, business model, and venture pitch in `linengrow/`.
+- These already-placed items are present (we will confirm, not move them): the seven `20260628-133212_*` essays and `20260628-140812_the-roots-beneath-the-work.md` in `foundations/`; the three civic visions (`*aspiring-radiance*`, `*regenerative-experiment*`, `20260826-024940_anywhere-we-are-found.md`) in `foundations/`; the two foundation briefs in `foundations/`; the Linengrow README, business model, and venture pitch in `linengrow/`.
 - Neither `context/CIVIC_STYLE.md` nor a root `ORGANIZING.md` exists yet.
 
 Report what you find. If any of the already-placed items are missing or sit elsewhere, name that and pause — do not relocate anything before we talk.

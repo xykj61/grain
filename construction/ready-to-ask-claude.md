@@ -159,7 +159,7 @@
 
 ## Fresh sitting -- morning cup (`20260713`)
 
-**Compass:** [`foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) - product **430** - suite **433** - chapter **held**.
+**Compass:** [`foundations/20260826-024943_follow-our-compass.md`](../foundations/20260826-024943_follow-our-compass.md) - product **430** - suite **433** - chapter **held**.
 
 | # | Lap | Status |
 |---|-----|--------|

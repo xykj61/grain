@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; an exploration for the Bit Design System season, every seat DJINN's to accept (custody gate %6) and Keaton's to word
-**Kin:** [`20260825-233309_the-bit-design-system-season-opens.md`](20260825-233309_the-bit-design-system-season-opens.md) -- [`20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md`](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) -- [`../external-research/20260825-235138_djinn-public-repositories-read-against-grain.md`](../external-research/20260825-235138_djinn-public-repositories-read-against-grain.md) -- [`../foundations/20260702-184312_the-grain-and-the-crossing.md`](../foundations/20260702-184312_the-grain-and-the-crossing.md) -- [`../foundations/20260824-003828_every-climate-has-a-fiber.md`](../foundations/20260824-003828_every-climate-has-a-fiber.md)
+**Kin:** [`20260825-233309_the-bit-design-system-season-opens.md`](20260825-233309_the-bit-design-system-season-opens.md) -- [`20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md`](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) -- [`../external-research/20260825-235138_djinn-public-repositories-read-against-grain.md`](../external-research/20260825-235138_djinn-public-repositories-read-against-grain.md) -- [`../foundations/20260826-024942_the-grain-and-the-crossing.md`](../foundations/20260826-024942_the-grain-and-the-crossing.md) -- [`../foundations/20260824-003828_every-climate-has-a-fiber.md`](../foundations/20260824-003828_every-climate-has-a-fiber.md)
 
 ## What this explores
 

@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** <=120 lines
 **Last updated:** 2026-07-27 (Voice / **Radiant** on the rose · check-in loop words)
-**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
+**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
 
 ---
 
@@ -19,8 +19,8 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | Step | Open | One line |
 |------|------|----------|
 | 1 | [`foundations/README.md`](../foundations/README.md) | Why beneath the work |
-| 2 | [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) | Return habit |
-| 3 | [`the-grain-and-the-crossing`](../foundations/20260702-184312_the-grain-and-the-crossing.md) | Ten strands |
+| 2 | [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) | Return habit |
+| 3 | [`the-grain-and-the-crossing`](../foundations/20260826-024942_the-grain-and-the-crossing.md) | Ten strands |
 | 4 | [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) | Compression without magic |
 | 5 | [`happy-zone` / **witness habitat**](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) | Fast folds inside; thin edge outside |
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |

@@ -15,13 +15,13 @@ One reading order carries the whole first day: foundations -> rules -> first wit
 
 ## 1. Why We Build
 
-Start with the compressor when context is short: [`../../docs/COMPASS.md`](../../docs/COMPASS.md) - Bron cold-start card [`../../docs/compass_card.bron`](../../docs/compass_card.bron). Then the raw shelf: [`../../foundations/README.md`](../../foundations/README.md) -- sovereignty, calm, the person owns the device. Compass habit: [`../../foundations/20260706-185112_follow-our-compass.md`](../../foundations/20260706-185112_follow-our-compass.md).
+Start with the compressor when context is short: [`../../docs/COMPASS.md`](../../docs/COMPASS.md) - Bron cold-start card [`../../docs/compass_card.bron`](../../docs/compass_card.bron). Then the raw shelf: [`../../foundations/README.md`](../../foundations/README.md) -- sovereignty, calm, the person owns the device. Compass habit: [`../../foundations/20260826-024943_follow-our-compass.md`](../../foundations/20260826-024943_follow-our-compass.md).
 
 ## 2. How Work Is Shaped
 
 | Idea | Where |
 |---|---|
-| Grain (ten strands) | [`../../foundations/20260702-184312_the-grain-and-the-crossing.md`](../../foundations/20260702-184312_the-grain-and-the-crossing.md) |
+| Grain (ten strands) | [`../../foundations/20260826-024942_the-grain-and-the-crossing.md`](../../foundations/20260826-024942_the-grain-and-the-crossing.md) |
 | Sameness | [`../../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) |
 | Two Rooms | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) |
 | Single-stranded modules | [`../../foundations/20260823-204456_single-stranded.md`](../../foundations/20260823-204456_single-stranded.md) |

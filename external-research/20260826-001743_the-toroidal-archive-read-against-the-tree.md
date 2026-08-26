@@ -37,9 +37,9 @@ diffed and found to differ only in sweep; the substance is identical.
 | `toroidal-bounded-optimization.md` (silo) | already-covered-by `external-research/grain-lineage-silo/toroidal-bounded-optimization.md` |
 | `20260703-071712_the-second-harvest.md` | already-covered-by `external-research/20260703-071712_the-second-harvest.md` (in the tree; archive copies differ only in name-register); its "let the shape carry the bound" queue item extracted-into `draft-the-bound-in-the-shape.md` |
 | `20260725-112715_radiant-wave37.md` | already-covered-by `waymarks/date/20260725/20260725-112715_radiant-wave37.md` (in the tree) |
-| `zyxsql-2025-11-23--034749-pst-grain-skate-toroid-silo-coordination.md` | mostly dead-let-rest (a 2025 agent coordination memo; its module names and layering are superseded); the hot/cold storage seam already-covered-by `foundations/20260728-221253_the-graph-beneath-the-surface.md`; the field-module intent extracted-into `draft-the-wafer-rehearsed-in-software.md` |
+| `zyxsql-2025-11-23--034749-pst-grain-skate-toroid-silo-coordination.md` | mostly dead-let-rest (a 2025 agent coordination memo; its module names and layering are superseded); the hot/cold storage seam already-covered-by `foundations/20260826-024939_the-graph-beneath-the-surface.md`; the field-module intent extracted-into `draft-the-wafer-rehearsed-in-software.md` |
 | `0016-grain-field-wse-compute.md` | extracted-into `draft-the-wafer-rehearsed-in-software.md` (the bounded field module, its bug included); its tutorial scaffolding dead-let-rest |
-| `2026-04-18-023802-pdt-two-boxes-one-ring-v5.md` | extracted-into `draft-one-lowering-two-engines.md` and `draft-the-swarm-that-feeds-the-kiln.md`; hardware shopping already-covered-by `external-research/20260703-013412_home-server-purchase-guide.md`; procurement maxims already-covered-by the second harvest |
+| `2026-04-18-023802-pdt-two-boxes-one-ring-v5.md` | extracted-into `draft-one-lowering-two-engines.md` and `draft-the-swarm-that-feeds-the-oven.md`; hardware shopping already-covered-by `external-research/20260703-013412_home-server-purchase-guide.md`; procurement maxims already-covered-by the second harvest |
 | `2026-04-18-031102-pdt-the-open-spine-v4.md` | extracted-into `draft-one-lowering-two-engines.md` (seam ladder, zero-dollar rung, open-ISA artifact); the six named pitches dead-let-rest (outreach method already-covered-by the second harvest's "letter to the open door") |
 | `2026-02-01-123000-pst-hafez-persian-ai-sovereignty-cursor-prompt.md` | extracted-into `draft-the-languages-an-open-model-owes.md`; the campaign apparatus dead-let-rest |
 
@@ -234,7 +234,7 @@ claim remains **wrong as stated** for volatile SRAM, as the tree's silo already 
 `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` (memory beside the
 cores; greener because nothing travels far; the leading version closed and owned by one
 firm; an open wafer fundable as public infrastructure, bounded by what is real). Beside
-it stands `foundations/20260728-221253_the-graph-beneath-the-surface.md` (the hot graph
+it stands `foundations/20260826-024939_the-graph-beneath-the-surface.md` (the hot graph
 held close; the cold rest recomputable from the log). No newer Cerebras study exists in
 `external-research/`, so the WSE-3 figures above (March 2024 vendor announcement) stand
 as the latest known. They are the ones the wafer draft carries. The old whitepapers'
@@ -290,6 +290,6 @@ economics loop between bake and meter find their first tree home in these drafts
 Persian prompt contributes one durable duty -- the languages an open model owes -- once
 its campaign clothing is left at the door. Five drafts carry everything found alive:
 `draft-the-bound-in-the-shape.md`, `draft-one-lowering-two-engines.md`,
-`draft-the-swarm-that-feeds-the-kiln.md`, `draft-the-wafer-rehearsed-in-software.md`,
+`draft-the-swarm-that-feeds-the-oven.md`, `draft-the-wafer-rehearsed-in-software.md`,
 `draft-the-languages-an-open-model-owes.md`. Stamps are assigned at filing, and the
 tree stays untouched by this pass.

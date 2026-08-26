@@ -5,7 +5,7 @@
 # a restated positive over a prohibition. The habit drifts, and it drifts hardest in LAW-SHAPED
 # prose, because the easiest form a rule can take is a ban. Measured `20260821.211423`:
 #
-#   foundations/20260706-185112_follow-our-compass.md   0.4   <- the register to aim at
+#   foundations/20260826-024943_follow-our-compass.md   0.4   <- the register to aim at
 #   context/RADIANT_STYLE.md                            1.3
 #   .claude/rules/design-rooms.md                       1.9   } all three written
 #   .claude/rules/ascii-first.md                        2.1   } the same day, by
