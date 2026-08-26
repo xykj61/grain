@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- research for understanding; twelve companies and one thermodynamic-compute thread surveyed 2026-08-26, read through the field-monist grammar the tree already carries
-**Kin:** [`../gratitude/grain-lineage/topos-aether-agni-geometry.md`](../gratitude/grain-lineage/topos-aether-agni-geometry.md) -- [`../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`](../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md)
+**Kin:** `gratitude/grain-lineage/topos-aether-agni-geometry.md` -- `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`
 
 The machines below share one direction of travel. They move away from charge switched through
 wires, toward computation done by shaping a continuous physical field: light in a waveguide,

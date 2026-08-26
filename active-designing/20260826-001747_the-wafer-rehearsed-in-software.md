@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; the wafer abstraction as a bounded module provable on ordinary metal now; the build is a future season's
-**Kin:** [`../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`](../foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md) -- [`../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md`](../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md)
+**Kin:** `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` -- [`../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md`](../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md)
 
 The tree holds the why of wafer-scale compute -- memory beside the cores, greener because
 nothing travels far, funded openly as public infrastructure -- and the where -- the hot

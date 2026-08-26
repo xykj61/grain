@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; extracted from the toroidal archive through the New Gauge lens; the TAME passage it proposes awaits Keaton's word
-**Kin:** [`../context/TAME_CORE.md`](../context/TAME_CORE.md) -- [`../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md`](../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md)
+**Kin:** `context/TAME_CORE.md` -- [`../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md`](../external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md)
 
 A bound can live in a structure's coordinates rather than in a runtime check. That is the
 one engineering idea the toroidal research pair keeps giving, and it deserves a worked
