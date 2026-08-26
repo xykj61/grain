@@ -53,7 +53,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `75d7bb2eaf` -- one dialect for twelve sites; the exec-bit gate given something to see.
+**Git nib:** `30400ca867` -- one dialect for twelve sites; the cadence read two ways.
 
 **Now.** **One dialect for twelve sites, and a gate that had been guarding nothing.**
 Twelve `xargs -a` / `-d '\n'` sites across seven guards moved to two functions in
@@ -161,9 +161,14 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- the granted publish is SPENT** (`20260825.212214`, from the macOS bench,
-`fdaf8e3`: 7,015 copied, 152 withheld, all four gates green under the %225 wall). The gate closes
-until the next word. **One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's
+**Seed cadence -- and two piers reading one rule two ways.** The granted publish was SPENT
+`20260825.212214` from the macOS bench (`fdaf8e3`: 7,015 copied, 152 withheld, all four gates green
+under the %225 wall). The bench **shipped again `20260826.053017`** on the cadence law, by its own
+log. This pier held at the gate on the same day, because gate %1 says each refresh takes its own
+word while the cadence law says the seed ships every fifth round -- and `3485 mod 5 == 0` made
+`20260826.063705` a cadence lap here. **Both readings are defensible and they disagree**, which is
+the two-pier family one layer up from the shell dialect. Keaton's word settles which governs; until
+then this pier holds. **One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's
 `tools/hooks/commit-msg`, so the armed-wall promise rides on the publisher.
 
 ---
