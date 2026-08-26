@@ -170,6 +170,63 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 
 **None of the four is a candidate for a cut**, and two different molts are named here. The three living paths molt *in place under a checkpoint* -- the W2 rule above -- because a living path with inbound references keeps its name. The dated foundation molts the other way: a mutant seats at a fresh stamp, the fossil stays banner-marked, and living citers repoint, which is the M1 shape. The queue row exists so each molt is remembered rather than rediscovered, and so the right one is used.
 
+## Q2 -- the rune-naming molt queue, added `20260826.170617`
+
+*Keaton named the Glow teaching surface for a molt through the Dream lane's lens -- the higher rune
+ports, lowered to Rye. The reimagining is seated in three siloed documents; this row records what the
+measurement said about the surfaces themselves. Queue rule unchanged: **the reading is taken at molt
+time**, and it is allowed to close the frame.*
+
+**The lens, seated `20260826.170617`, all three graded A:**
+
+| Document | Room | Reading |
+| --- | --- | --- |
+| [`../external-research/20260826-170617_the-syllable-that-taught-nothing.md`](../external-research/20260826-170617_the-syllable-that-taught-nothing.md) | the ancestor studied, with attribution | A (field, register 85) |
+| [`../active-designing/20260826-170617_the-rune-says-its-own-name.md`](../active-designing/20260826-170617_the-rune-says-its-own-name.md) | the plain-name design, siloed | A (field, register 94) |
+| [`../foundations/20260826-170617_a-name-is-the-first-thing-taught.md`](../foundations/20260826-170617_a-name-is-the-first-thing-taught.md) | the durable statement | A (door, register 98) |
+
+**And the surfaces themselves needed nothing.** Ten living pages measured `20260826.170617`:
+
+| Page | Setting | Letter |
+| --- | --- | --- |
+| `docs-geode/README.md` | door | B |
+| `docs-geode/api/rishi-language-reference.md` | field | B |
+| `manual/README.md` | door | B+ |
+| `manual/20260810-065116_your-first-hour-with-grain.md` | door | B |
+| `manual/tutorials/first-witness.md` | door | B+ |
+| `manual/tutorials/run-record-and-failures.md` | door | B+ |
+| `docs/COMPASS.md` | **meter** | A |
+| `docs/HAWM.md` | **meter** | A |
+| `docs/TUBE.md` | **meter** | A |
+| `docs/STOA.md` | **meter** | A |
+
+**Zero molt frames opened.** Every page stands at B or better, so the queue closes the way the
+`20260823.223157` queue closed -- by measuring rather than by rewriting. That is three queues running,
+and in all three the reading spared most of the work.
+
+**One lesson was bought here, and it is about the instrument.** `docs/COMPASS.md` first read **C**
+at the **door** setting -- reach 30, from 8 cross-references per 100 words against a Door budget of 1
+over 49 words of prose. COMPASS is a **compressor**: a pointer card whose whole job is
+cross-references. Graded at **meter**, where cross-references are uncapped because refusal is the
+subject, it reads **A**. The document was always fine; **the setting was wrong, and a wrong setting
+manufactures a fault that then invites a rewrite**. The four `docs/` waymark cards are all
+compressors and all read Meter. Recorded so the next hand grading a pointer card starts at the right
+door.
+
+### Class M -- the two syllable-named modules, prepped
+
+*A fossil here is a **module name**, so the mutant is a rename rather than a fresh stamp. Prep only;
+the cut is RED until Keaton circles it, and the design carries the full argument.*
+
+| Fossil | Living mutant proposed | Condition before any cut |
+| --- | --- | --- |
+| `glow/lower_bartis.rye` (+ its witness) | `glow/lower_shop_gate.rye` | inbound references counted and repointed in the same round; every `glow/` witness proves the emitted code byte-identical across the rename |
+| `glow/lower_barket.rye` (+ its witness) | `glow/lower_shop_nest.rye` | same |
+
+**These two are the whole cut surface**, which is the measurement that matters: of 32 `lower_*.rye`
+modules, 30 already carry a plain functional name. The Lexicon's *Rune alphabet* and *Barket* rows are
+living rows and may sweep on touch; dated testimony keeps every syllable it ever wrote.
+
 ## Shed complete -- the mitra shed, circled `20260826.032839`
 
 Keaton circled the prepped mitra shed on `20260826` to complete fascia restoration. Twelve

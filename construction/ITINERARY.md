@@ -30,55 +30,55 @@
 - **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide (`tools/ca/caravan_wrap_class_witness.rish`), the queue bound word-wide in its own name, Caravan the wafer rehearsal's first consumer; moves three and four next. Design: `active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
-- **STANDFAST -- the cubist sweep** (`20260826`): five rounds. Door: `cubist-bhakti-astrology/README.md`.
-- **Linengrow Design Theme seated** (`20260826`): rounded shape law, tileable brushstroke, five rota encapsulations; gate %6. Silo: `active-designing/20260826-022443_the-linengrow-design-theme.md`.
-- **The WADE journey double-seated** (`20260826`): 5 quests, 25 orbits, 375 rounds. Plan: `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`; DJINN's lead stays gate %6.
-- **Seated names (`20260816`):** **Scooter** = the CLI chat app (Talk reimplementation on Pond); **Dexter** = the terminal module (our Dill parallel, affirmed); **Lumen** = the inference vane (renames Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/date/20260816/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
-- **Seated breaches (checkpoint-first when executed):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
-- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` the season word to chapter): full history, re-signed, force-pushed; every clone hard-resets once. Keaton granted a deep molt, breach, and debride `20260823.045448` -- renames, reference repointing, commit-message rewriting, force push, reclone accepted. Spent once at the **close** of the sweep it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a filename that misleads, or a commit message now known to be untrue.
+- **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds, `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`).
+- **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Lumen** = the inference vane (renaming Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/date/20260816/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
+- **Seated breaches (checkpoint first):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
+- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter): full history, re-signed, force-pushed; every clone hard-resets once. The standing grant (`20260823.045448`) covers renames, repointing, commit-message rewriting, force push, reclone. Spent at a sweep's **close** it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a misleading filename, or a commit message now known untrue.
 - **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
 
 ### The crypto spine, seated `20260815` -- the pointer
 
-Four decisions stand and are proven: **Rye first, Glow on green-witnessed Rye**; **Chapter G
-Cryptography** double-seated, Monocypher-parity in Rye; **SHA-3/SHAKE preferred** over SHA-2 for new
-designs; and **Kumara signs post-quantum with SLH-DSA-SHAKE-256s**, both legs kept after
-`vendor/pqclean` was vendored and `tools/cr/crypto_slhdsa_oracle_witness.rish` went GREEN on metal.
-Signing with the maintainer's identity key stays the custody gate; the library is agent-doable. The
-four paragraphs that seated them are held whole at
-[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
+Four decisions stand, proven, and held whole at
+[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md):
+**Rye first, Glow on green-witnessed Rye**; **Chapter G Cryptography** double-seated; **SHA-3/SHAKE
+preferred** for new designs; **Kumara signs with SLH-DSA-SHAKE-256s**, oracle GREEN on metal.
+Signing with the maintainer's identity key stays the custody gate; the library is agent-doable.
 
 **Host:** Framework - EDT (`America/New_York`) - Vultr SEA VPS (**AMD 4vCPU/8GB shared - 180GB
-NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037`: 7,937 MB,
-`nproc` 4, `vda` 193,273,528,320 bytes
+NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037` and held at
 ([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
 **Git nib:** `fa9ee2128b` -- three remotes named; two piers one tree.
 
-**Now.** **Two piers merged, and two guards read past their own subject.**
+**Now.** **Two piers merged, three remotes renamed, Dream's lane open.**
 
-**The chapter molt broke the loop's own recipe** (%268). Sweeping *season* to *chapter* rewrote a
-**path literal** whose dated basename correctly kept the elder word, so
-[`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish) and the loop's seed
-both named a document that exists nowhere. Found by following the recipe.
+**Landed and shelved** (%268, %269, %270): a molt rewrote a path literal whose dated basename kept
+the elder word, three guards reached the break and each subtracted it by its own rule, and a replay
+fires no `pre-commit`, so the roster read **11 reds across 68 guards** on a tree green two hours
+before. All repaired; `arbor` **ships scrubbed** on his word `20260826`,
+the row that had withheld it retired, while `dexter` waits. The habit -- **run the roster after a pull that moved** --
+earned itself twice more today.
 
-**Three guards reached it and none counted it** -- two pass "resolves nowhere" by rule, and the
-census subtracted it, so one bad path in a `.rish` erased the break beside it. Discovery reads
-`_control`, `_witness`, `_scan` now: **2,097** files where it read **4,784**; control 14 -> 15.
+**The two piers reconciled, and the collision was paid.** Both clones took `%233`-`%237` -- `%230`
+and `%252` again -- so upstream's five are **re-seated at `%271`-`%275`** on his word, citations
+repointed. **Row-number allocation stays his door.** **The three remotes are `xy`, `debrided`,
+`seed`;** the rename broke every guard reading `origin/main` and every loop line spelling `xykj61`,
+all repointed. `debrided` shared **zero** commits -- repointed `20260823` onto a repo that never took
+the `20260817` lineage drop -- and was force-matched on his word.
 
-**A pull is an arrival, and an arrival is not a commit** (%269). Git fires no `pre-commit` on a
-replay, so the closing roster read **11 reds across 68 guards** on a tree green two hours before.
-All repaired; `arbor` stays **personal** under `template-manifest.bron`'s own fail-safe until
-cleared file by file, as `dexter` waits. **%270:** the fold left two links one level short, which
-%247 predicted. The habit -- **run the roster after a pull that moved** -- is named, not seated.
+**Dream's first lane work: the rune says its own name.** Eight plain category words for Glow's closed
+rune set (*shop, fit, bind, ask, call, build, shape, aside*) and thirty rune names, glyph unchanged
+and lowering byte-identical. It ratifies rather than proposes: **30 of 32 `lower_*.rye` modules
+already carry a plain functional name**, and the two syllable-named ones are the whole cut surface,
+prepped Class M. Three siloed writings, all **A**. **Ten teaching surfaces measured, none needing a
+molt** -- the third queue to that result. One instrument lesson: a pointer card grades at **meter**,
+and `docs/COMPASS.md` at door manufactured a C it never earned.
 
-**The two piers reconciled, and the collision was paid.** Both clones had allocated
-`%233`-`%237` -- `%230` and `%252` again -- so upstream's five are **re-seated at
-`%271`-`%275`** on his word, citations repointed. **Row-number allocation stays his door.**
-**The three remotes are `xy`, `debrided`, `seed`;** the rename broke every guard reading
-`origin/main` and every loop line spelling `xykj61`, all repointed.
+**Three writers, one order** -- the parallel loops as a consensus rehearsal on real traffic: 25
+conflicts across two merges, 20 resolved by reading, one structural class left. The derived-spine
+key (a row keyed by its stamp, added rather than renamed) is **proposed, awaiting a seat**.
 
 
 **The next doors.** The **fold loom** %270 names is a lap's work needing no word. Then `readlink -f`
