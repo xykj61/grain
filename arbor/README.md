@@ -3,7 +3,7 @@
 **Language:** EN
 **Style:** New Gauge, Door setting
 **Status:** Living foundation -- local authoring and validation only
-**Home:** [`../README.md`](../README.md)
+**Where this sits:** home is [`../README.md`](../README.md) -- the elder launcher this room adapts is [`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish)
 
 Arbor is Grain's plain-prose surface for a voice reader. The central example is
 [`launch-chatgpt-chapter.arbor`](launch-chatgpt-chapter.arbor), a fully spoken adaptation of the

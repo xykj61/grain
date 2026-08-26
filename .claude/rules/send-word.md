@@ -5,8 +5,8 @@ When Keaton says **"send"** (from any client — the Cursor iOS app, a desktop, 
 ## What "send" does, in order
 
 1. **Commit** in CONTRIBUTING style — component-prefixed subject under 50 characters, a Gauge **Meter** body naming what changed and why, a `Related` section. One commit per logical change.
-2. **Push** the working branch: `git push -u origin <branch>` (retry on network error, exponential backoff).
-3. **Merge to `main`**: fast-forward when clean (`git checkout main` · `git merge --ff-only <branch>` · `git push origin main`), preserving every signed commit. Never force-push or amend unless Keaton says so explicitly.
+2. **Push** the working branch: `git push -u xy <branch>`, then mirror to `debrided` (retry on network error, exponential backoff).
+3. **Merge to `main`**: fast-forward when clean (`git checkout main` · `git merge --ff-only <branch>` · `git push xy main` · then `git push debrided main`), preserving every signed commit. Never force-push or amend unless Keaton says so explicitly.
 
 ## Discipline "send" always keeps
 

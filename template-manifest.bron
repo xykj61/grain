@@ -89,6 +89,7 @@ allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residual
 # -- the disciplines (context, granular — identity/specs/keys withheld) --
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
 allow cubist-bhakti-astrology      # the classical room reimagined; no personal readings live here
+allow arbor                        # spoken tiles for a voice reader; local authoring only, no service reached
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
@@ -378,7 +379,8 @@ sub_exclude context/specs/20260713-201910_pacific-time-local-clone-convention.md
 
 # design/waymark clearance (20260810 . wnlsgtnxe) — 19 files agent-flagged for personal content
 sub_exclude waymarks/date/20260725/20260725-112615_radiant-wave36.md
-sub_exclude active-designing/date/20260730/20260730-072710_weave-dependencies-djinn-bitscape-murr.md
+# one of the 19 retired 20260826: the DJINN pseudonym pass (1a75eaf67) removed the weave-dependencies
+# file from tree and history, so there is nothing left for its exclusion row to match
 sub_exclude active-designing/date/20260810/20260810-055147_plan-3x39-kumara-passports-divider-grammar.md
 sub_exclude active-designing/yonder/20260715-194500_the-slc-product-glow-on-capable-hardware.md
 sub_exclude active-designing/date/20260810/20260810-055147_plan-name-consolidation-debride.md

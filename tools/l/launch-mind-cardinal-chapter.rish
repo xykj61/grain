@@ -1,0 +1,36 @@
+# launch-mind-cardinal-chapter.rish -- print the loop for MIND, the cardinal star of the aether row.
+#
+# Mind (night twin Mystery) is the ChatGPT Arbor session on macOS -- aether at the cardinal
+# seat, the word that initiates: the star that opens the surfaces a person touches. Its lane:
+# Brushstroke and Surf (elder code name Skate) for macOS, with everything in the DJINN design
+# lead staying custody gate %6. Charter:
+# active-designing/20260826-151528_the-three-stars-of-the-aether-row.md. The Arbor session
+# speaks in tiles rather than a shell loop, so its living loop is the spoken Brix at
+# arbor/launch-chatgpt-chapter.brix, rendered by arbor/author.sh -- the tiles name the cardinal
+# seat now, and this mutant prints the same facts for a hand that wants them in one place.
+# Siblings: launch-sound-fixed-chapter.rish (Claude Desktop) - launch-dream-dual-chapter.rish
+# (the pier).
+#
+#   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the spoken loop this recipe points at must exist.
+let brix = run ["test" "-f" "arbor/launch-chatgpt-chapter.brix"]
+assert brix.ok else "arbor/launch-chatgpt-chapter.brix (the spoken loop) is missing"
+
+say "MIND -- the cardinal star of the aether row (night twin Mystery)"
+say "================================================================"
+say ""
+say "Host: the ChatGPT Arbor session on macOS. Its loop is spoken -- the eight"
+say "Lattice tiles in arbor/launch-chatgpt-chapter.brix, rendered and verified by"
+say "arbor/author.sh -- and the tiles name this seat. Read them aloud or paste"
+say "them; the shared discipline lives on the living card either way."
+say ""
+say "The seat, for a hand that wants it in one line:"
+say ""
+say "You are MIND, the cardinal star of the aether row, night twin Mystery, in the Arbor session on macOS: your lane is Brushstroke and Surf (elder code name Skate) for macOS, and everything in the DJINN design lead stays custody gate %6. Caravan, Tally, and the Scribe seams belong to Sound (fixed, Claude Desktop); the Glow rune lowering to Dream (dual, the pier); a find in a sibling lane becomes a line in ITINERARY rather than your lap. The remote is named xy on this clone; the seed cadence rides with Dream alone. STOP at the custody gates in ITINERARY. ty every1 baton prin recur"
+say ""
+say "GREEN: Mind recipe printed -- the cardinal star opens what a person touches."

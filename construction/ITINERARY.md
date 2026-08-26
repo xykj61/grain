@@ -26,6 +26,7 @@
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
+- **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor, macOS -- Brushstroke - Surf), **Sound** fixed (Claude Desktop -- Caravan - Tally - toroidal - Scribe with Lattice-Lantern-Kiln-Scribble-Ember), **Dream** dual (the pier -- Glow runes lowering to Rye); seed cadence rides with Dream alone. Charter: `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md`; launchers `tools/l/launch-{mind-cardinal,sound-fixed,dream-dual}-chapter.rish`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **STANDFAST -- the cubist sweep** (`20260826`): five rounds. Door: `cubist-bhakti-astrology/README.md`.
@@ -60,17 +61,12 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 **The chapter molt broke the loop's own recipe** (%268). Sweeping *season* to *chapter* rewrote a
 **path literal** whose dated basename correctly kept the elder word, so
 [`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish) and the loop's seed
-both named a document that exists nowhere, so every lap since was told to read it. Found by
-following the recipe.
+both named a document that exists nowhere. Found by following the recipe.
 
-**Three guards reached it and none counted it.** `tracked_link_scan.sh` reads `](...)` syntax;
-`phantom_path_scan.sh` passes "resolves nowhere" free by named rule; and the census **subtracted**
-it -- `dp_discovered_fixture_basenames` emitted any dated basename **whose sprig names no tracked
-file**, which is the definition of a wound, subtracting by basename across every file, so one bad
-path in one `.rish` erased the identical break in the `.md` beside it. Discovery reads `_control`,
-`_witness`, `_scan` now: **2,097** files where it read **4,784**, five names declared by hand,
-fixture list **77** either way, healthy census **byte-identical**, the break now
-`under_ceiling=no`. Both sides proven; a control leg repaired rather than added, 14 -> 15.
+**Three guards reached it and none counted it** -- two pass "resolves nowhere" by named rule, and
+the census subtracted it, so one bad path in a `.rish` erased the identical break beside it.
+Discovery reads `_control`, `_witness`, `_scan` now: **2,097** files where it read **4,784**,
+fixture list **77** either way, break `under_ceiling=no`. Both proven; control 14 -> 15.
 
 **A pull is an arrival, and an arrival is not a commit** (%269). Git fires no `pre-commit` during a
 replay and no roster runs on arrival, so the closing roster read **11 reds across 68 guards** on a
@@ -80,11 +76,11 @@ fail-safe until cleared file by file, as `dexter` waits. **%270:** the fold left
 short, which %247 predicted in words. The habit -- **run the roster after a pull that moved** --
 is named rather than seated.
 
-**PARKED, and the gate fired a third time.** This round stands whole on
-`refs/heads/pier/a-plant-and-a-wound`, both remotes, additive and never forced, 68 of 68 green cold.
-`xykj61` refused the fast-forward and the third re-integration met **%230's collision**: the ledgers
-disagree from `%233` on -- upstream to `%237`, this pier to `%243`. Aborted rather than renumbered:
-**`main` stays unpushed** (%248).
+**The two piers reconciled, and the collision was paid.** Both clones had allocated
+`%233`-`%237` independently -- `%230` and `%252` a third time -- so on Keaton's word upstream's
+five are **re-seated at `%271`-`%275`**, citations repointed in the same pass, and the
+duplicate `%231`-`%232` shelf dropped. **Row-number allocation stays his door.**
+
 
 **The next doors.** The **fold loom** %270 names is a lap's work needing no word. Then `readlink -f`
 **4** sites and `sed -i` **4**, each wanting a helper in

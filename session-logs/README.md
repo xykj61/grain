@@ -49,7 +49,10 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.165538` | [three remotes take their names](20260826-165538_three-remotes-take-their-names.kyri) | xy, debrided, seed seated; two piers merged, upstream's five re-seated %271-%275 |
+| `20260826.152336` | [three stars of the aether row](20260826-152336_three-stars-of-the-aether-row.kyri) | Mind, Sound, Dream seated; three launchers; lanes are the collision law |
 | `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
+| `20260826.141312` | [the dialect family closes](20260826-141312_the-dialect-family-closes.kyri) | %271-%275 closed on metal; the bench speaks both dialects; census at 177 |
 | `20260826.134505` | [the wound the census took for a plant](20260826-134505_the-wound-the-census-took-for-a-plant.kyri) | the guard that counts broken paths was erasing them; %268 |
 | `20260826.115944` | [fifty twins, the teaching family whole](20260826-115944_fifty-twins-the-teaching-whole.kyri) | the sixth cubist pass; fifty twins stand, eleven pages remain |
 | `20260826.093717` | [the flag inside a longer word](20260826-093717_the-flag-inside-a-longer-word.kyri) | PCRE and stat gated at zero; a receipt control off every roster, red for a day |

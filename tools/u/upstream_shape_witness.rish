@@ -6,7 +6,7 @@
 # one that refuses -- rewritten, meaning the two share no common ancestor at all.
 #
 # WHY THIS EXISTS. The sync rota seated on 20260825.210819 opens every round with
-# `git pull --rebase xykj61 main`, and all fifteen of its sentences assume the piers share a
+# `git pull --rebase xy main`, and all fifteen of its sentences assume the piers share a
 # history. On 20260825 the macOS bench spent the banked deep debride -- a collaborator's name out
 # of the tree, the logs, and every commit -- and force-pushed the rewritten history to the
 # ordering remote. The next round on this pier met an upstream with 3,469 commits, a local HEAD
