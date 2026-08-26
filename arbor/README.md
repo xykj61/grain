@@ -9,6 +9,14 @@ Arbor is Grain's plain-prose surface for a voice reader. The central example is
 outer and inner recursion ideas in `tools/l/launch-claude-chapter.rish`. The elder launcher remains
 unchanged. Arbor configures no service, chooses no model, and makes no network request.
 
+The central example remains the canonical practical reading. Its companion,
+[`launch-chatgpt-chapter-dark-euphoria-light-terra.arbor`](launch-chatgpt-chapter-dark-euphoria-light-terra.arbor),
+speaks the same mechanism in Gauge's newer paired register. The name follows the two palettes in
+`kyri/receipt.rye`: light terra gives the lap its grounded motion, while dark euphoria gives that
+motion a calm inner feel. The five row pages seated on the same day confirm that both registers are
+legitimate. This is the current meaning of the companion sometimes called Radiant Twilight; it is
+more specific than a mechanical blend of the older Radiant and Twilight guides.
+
 ## The readable form
 
 An `.arbor` file contains only words meant to reach the listener. One paragraph tile occupies one
@@ -32,6 +40,10 @@ sh arbor/author.sh verify arbor/launch-chatgpt-chapter.brix
 sh arbor/author.sh build arbor/launch-chatgpt-chapter.brix
 sh arbor/author.sh render arbor/launch-chatgpt-chapter.brix
 ```
+
+Use the companion's matching Brix path in the same commands to check, verify, build, or render its
+reading. The practical and companion forms each have their own descriptor and corpus sidecar, so
+their spoken files remain free of labels and style declarations.
 
 `check` and `verify` are read-only. `build` replaces only the two paths declared by the descriptor.
 `render` prints the spoken result. Every command is repository-local and invokes no model or voice
@@ -64,3 +76,7 @@ The adaptation leaves service launch, authentication, model selection, audio gen
 continuation, remote synchronization, and a first-class Ember `arbor` kind for later decisions.
 Those choices need a real local adapter or a user's explicit setting; this foundation stays a
 readable, checkable value in the tree.
+
+Both readings keep those same boundaries and the same eight-step order. The companion changes only
+the register: earth and sky, light and dark, sound and silence, vision and night, and harvest and
+fallow hold the instructions together while every operation and stop remains exactly the same.

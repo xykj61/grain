@@ -14,7 +14,15 @@ let read = run ["sh" "arbor/author.sh" "check" "arbor/launch-chatgpt-chapter.arb
 assert read.ok else "Arbor readable value failed its spoken boundary"
 assert read.out contains "GREEN" else "Arbor readable value did not report GREEN"
 
+let companion_verify = run ["sh" "arbor/author.sh" "verify" "arbor/launch-chatgpt-chapter-dark-euphoria-light-terra.brix"]
+assert companion_verify.ok else "Arbor paired-register descriptor and readable value disagree"
+assert companion_verify.out contains "tiles=8" else "Arbor paired-register reading must hold the eight-tile Lattice shape"
+
+let companion_read = run ["sh" "arbor/author.sh" "check" "arbor/launch-chatgpt-chapter-dark-euphoria-light-terra.arbor"]
+assert companion_read.ok else "Arbor paired-register readable value failed its spoken boundary"
+assert companion_read.out contains "GREEN" else "Arbor paired-register readable value did not report GREEN"
+
 let metadata_refusal = run ["sh" "-c" "d=$(mktemp -d arbor/.refusal.XXXXXX); printf 'title Hidden metadata.\n' > $d/bad.arbor; sh arbor/author.sh check $d/bad.arbor >/dev/null 2>&1; s=$?; rm -f $d/bad.arbor; rmdir $d; test $s -ne 0"]
 assert metadata_refusal.ok else "Arbor accepted metadata as spoken prose"
 
-say "GREEN: Arbor voice -- Brix authors eight ordered tiles; Scribble, Lattice, Lantern, and Ember bounds hold; metadata stays outside."
+say "GREEN: Arbor voice -- Brix authors both eight-tile readings; Scribble, Lattice, Lantern, and Ember bounds hold; metadata stays outside."
