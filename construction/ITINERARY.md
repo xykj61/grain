@@ -154,10 +154,13 @@ Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not
 (`20260825.180329`) under the wall REDS %225 strengthened: **7,015 copied, 152 withheld**, four
 siya-named basenames in `.sow-withheld.log`, `IDENT_CLEAN` - `NO_PERSONAL` - `seed_link` GREEN.
 *Read alone* is enforced: `sow_project.sh` takes a lock and a second projection exits 3 (%193). Last
-published projection `fdaf8e3`. **The force-push word is GRANTED for ONE publish**
-(`20260825.181028`, Keaton's word on the macOS bench): on the next cadence lap whose four gates read
-green under the %225 wall, run `bash ~/grain/publish-seed.sh` once **from this pier**, where the
-script and its credential live; the gate then closes until the next word.
+published projection `fdaf8e3`. **The force-push word was SPENT** (`20260825.212214`,
+Keaton's word *send both seed and xy*): the seed published from the macOS bench over HTTPS as
+`fdaf8e3...f7a1f2d`, all four gates green under the %225 wall, the works-town sleeve withheld with
+its three siblings. The gate closes again until the next word. One wart surfaced for a small red:
+`sow_project.sh`'s sed-copy drops the exec bit on the seed's `tools/hooks/commit-msg`, so the
+armed-wall promise rides on the publisher rather than the projection -- the exec-bit trap class,
+inside the projector.
 
 ---
 
