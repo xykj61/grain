@@ -26,6 +26,7 @@
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
+- **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor, macOS -- Brushstroke - Surf), **Sound** fixed (Claude Desktop -- Caravan - Tally - toroidal - Scribe with Lattice-Lantern-Kiln-Scribble-Ember), **Dream** dual (the pier -- Glow runes lowering to Rye); seed cadence rides with Dream alone. Charter: `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md`; launchers `tools/l/launch-{mind-cardinal,sound-fixed,dream-dual}-chapter.rish`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail; the jail's deep debride PLANNED, gated on Keaton's later word. Mitra shed COMPLETE -- twelve fossils cut, fascia whole. Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **STANDFAST -- the cubist sweep** (`20260826`): five rounds. Door: `cubist-bhakti-astrology/README.md`.
@@ -53,7 +54,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `f10fbcf11d` -- the BSD dialect family closes; the census reads whole.
+**Git nib:** `8298046bda` -- the aether stars seated; three launchers printed.
 
 **Now.** **A fold repoints documents and leaves guards standing.**
 `tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
@@ -64,16 +65,7 @@ seconds** -- **178 ms to 204,250 ms** per rung, because **111 of 144 chain an el
 re-runs the chain beneath it. Rung by rung this family is quadratic; the leaves are the cheap
 reading, **33 in 96 seconds**.
 
-**REDS %231 and %232, both closed on metal.** Forty call sites across seventeen
-`equinox_*_scan.sh` files asked the living pin for an elder row, and for its lesson's own words,
-after both had folded to `construction/archive/` -- refusing in silence, since nothing runs them.
-Three fixtures answer over the pin **and** every shelf now, and
-[`../tools/r/reds_row_present_witness.rish`](../tools/r/reds_row_present_witness.rish) proves they
-agree by asking for all **232** counted rows plus the one past the end. It earned itself the same
-lap: rows %226-%229 folded to a shelf, and the reading found %226 at its new home with no edit. %232 is the second half -- a six-commit fast-forward from `xykj61` arrived
-carrying **three** refusals nothing on that clone had run: two pins over the 24,576 each declares,
-and three lone apostrophes in the loop's own printed launch line, which would not have started. A
-fast-forward is a tree change, so a lap that merges mid-round runs hot over the merged tree.
+**REDS %231-%232 closed and folded** to [`archive/REDS-the-fold-and-the-fast-forward-rows-231-232.md`](archive/REDS-the-fold-and-the-fast-forward-rows-231-232.md); the BSD dialect family **%233-%237 closed on the Mac bench** (log `20260826-141312`). The standing lesson: a fast-forward is a tree change -- a lap that merges mid-round runs hot over the merged tree.
 
 **The next doors.** **The family's own reds**, each its own lap: the deepest wants
 `fascia_metric_v0` reading **51** against a chapter-era floor of **92**. **A roster row for the room

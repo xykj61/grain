@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.152336` | [three stars of the aether row](20260826-152336_three-stars-of-the-aether-row.kyri) | Mind, Sound, Dream seated; three launchers; lanes are the collision law |
 | `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
 | `20260826.141312` | [the dialect family closes](20260826-141312_the-dialect-family-closes.kyri) | %233-%237 closed on metal; the bench speaks both dialects; census at 177 |
 | `20260826.115944` | [fifty twins, the teaching whole](20260826-115944_fifty-twins-the-teaching-whole.kyri) | pass six: the teaching family entire; eleven pages remain |
