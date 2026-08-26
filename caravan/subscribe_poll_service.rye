@@ -1,4 +1,4 @@
-//! caravan/subscribe_poll_service.rye -- production scheduling: supervise poll wire work.
+//! Caravan subscribe-poll service (ring C) -- the production poll wire runs under supervision, and its exit codes steer the loop.
 //!
 //! Ring C supervises Mantra's subscribe-poll delivery with the exit-code convention
 //! from `supervisor_exit.rye`: **cycle_ok** (0) spawns again; **stop_requested** (8)

@@ -40,6 +40,17 @@ describes. The day an open wafer exists -- the day the sovereign-coin foundation
 for -- the abstraction is already proven, and the public-funding case lands harder beside
 a runnable design than beside a rendering.
 
+**Caravan is this module's first consumer** (the optimization spine, move five, seated
+`20260826.151528` from the sibling design's own falsifier). A supervisor over a
+thousand-core field is a drain over a bigger ring, so the field's interface grows toward
+what a supervisor can drive: submissions in, a deterministic sweep, a readable final
+state -- the same laws Caravan already holds one room over, where wrap is named at every
+site (`tools/ca/caravan_wrap_class_witness.rish`), the dependency set is word-wide by a
+comptime assert in `caravan/mask.rye`, and the drain's replay property is the next move
+on the spine. Naming the consumer now is the falsifier working on paper: if this module
+seats with an interface no supervisor can drive, the mismatch is caught in this
+paragraph rather than in a port.
+
 ## What the old sketch teaches by its own bug
 
 The sketch computed a core's four neighbors into a stack-local array, then stored a slice

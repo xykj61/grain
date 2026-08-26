@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.161127` | [the spine opens, wrap named](20260826-161127_the-spine-opens-wrap-named.kyri) | Sound's first lap: moves one, two, five on metal; six Doors; choir at 112 |
 | `20260826.152336` | [three stars of the aether row](20260826-152336_three-stars-of-the-aether-row.kyri) | Mind, Sound, Dream seated; three launchers; lanes are the collision law |
 | `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
 | `20260826.141312` | [the dialect family closes](20260826-141312_the-dialect-family-closes.kyri) | %233-%237 closed on metal; the bench speaks both dialects; census at 177 |
