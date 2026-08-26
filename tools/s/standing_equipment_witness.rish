@@ -124,7 +124,15 @@ assert control.out contains "hot_still_reads_staged=yes" else "standing-equipmen
 assert control.out contains "staged_named_guard_free=yes" else "standing-equipment: a guard asked for by name is no lap open and runs free"
 assert control.out contains "hot_composes_with_all=yes" else "standing-equipment: --hot must compose with --all"
 
+# THE EVIDENCE A RED LEAVES (REDS %266). A verdict with no words behind it cannot be rooted, which
+# this tree learned when caravan_suite read red under the roster and GREEN alone with the record
+# holding nothing to tell the two apart. Both halves are proven: a red keeps its guard's stdout AND
+# stderr and the printed line names the file, and a green leaves no room at all.
+assert control.out contains "red_keeps_both_streams=yes" else "standing-equipment: a red must keep its guard's own stdout and stderr"
+assert control.out contains "red_names_its_evidence=yes" else "standing-equipment: the printed red line must name the file its words landed in"
+assert control.out contains "green_leaves_no_evidence=yes" else "standing-equipment: a green leaves no room, so a stale file can never read as this run's verdict"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- ten refusals bitten across forty-three behaviors, and the runner driven over a planted roster in and out of a real repository"
+say "RED and GREEN paths proven -- ten refusals bitten across forty-six behaviors, and the runner driven over a planted roster in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."
