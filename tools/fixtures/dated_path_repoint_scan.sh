@@ -101,7 +101,7 @@ set +f
 
 echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
 
-xargs -a "$work/living.txt" -d '\n' grep -lIE '[0-9]{8}-[0-9]{6}[_.]' 2>/dev/null \
+tr '\n' '\0' < "$work/living.txt" | xargs -0 grep -lIE '[0-9]{8}-[0-9]{6}[_.]' 2>/dev/null \
   > "$work/candidates.txt" || true
 echo "candidates_holding_a_dated_path=$(wc -l < "$work/candidates.txt" | tr -d ' ')"
 
@@ -110,7 +110,7 @@ echo "candidates_holding_a_dated_path=$(wc -l < "$work/candidates.txt" | tr -d '
 # lookup table is paid once or it is paid forever.
 : > "$work/hits.tsv"
 if [ -s "$work/candidates.txt" ]; then
-  xargs -a "$work/candidates.txt" -d '\n' -n 400 \
+  tr '\n' '\0' < "$work/candidates.txt" | xargs -0 -n 400 \
     awk -v mapfile="$work/map.tsv" -v mode="$mode" '
       BEGIN {
         while ((getline line < mapfile) > 0) { split(line, p, "\t"); map[p[1]] = p[2] }

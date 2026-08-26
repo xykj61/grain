@@ -14,7 +14,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What a spell is
 
-A spell is a single word that names a whole, repeatable gesture. Where ordinary prose would spend a paragraph, a spell spends a syllable -- and every spell here already has a home rule that governs it exactly. This page is the index; the rule is the law. Where a spell links `[[nothing]]` yet, it is emerging and earns its own rule when the season wants it.
+A spell is a single word that names a whole, repeatable gesture. Where ordinary prose would spend a paragraph, a spell spends a syllable -- and every spell here already has a home rule that governs it exactly. This page is the index; the rule is the law. Where a spell links `[[nothing]]` yet, it is emerging and earns its own rule when the chapter wants it.
 
 ## The command words -- verbs that act
 

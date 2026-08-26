@@ -50,6 +50,8 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
+| `20260826.141312` | [the dialect family closes](20260826-141312_the-dialect-family-closes.kyri) | %233-%237 closed on metal; the bench speaks both dialects; census at 177 |
+| `20260826.115944` | [fifty twins, the teaching whole](20260826-115944_fifty-twins-the-teaching-whole.kyri) | pass six: the teaching family entire; eleven pages remain |
 | `20260826.053017` | [forty twins, the grid dressed](20260826-053017_forty-twins-the-grid-dressed.kyri) | pass five: the house family whole, every palette pair worn, the seed on cadence |
 | `20260826.052004` | [thirty twins, the air enters](20260826-052004_thirty-twins-the-air-enters.kyri) | pass four: moons, Venus, the shadow pairs, first houses; roster at thirty |
 | `20260826.050835` | [twenty twins, one fifth](20260826-050835_twenty-twins-one-fifth.kyri) | the third cubist pass: ten twinned at once, seven pairs worn, roster at twenty |

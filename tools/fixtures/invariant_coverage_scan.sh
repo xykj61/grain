@@ -107,10 +107,10 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
 # harness. Paired with a `void` return -- a proof gives its caller nothing -- both conditions must
 # hold before the spread reaches a `pub fn`, and each errs toward CONTRACT when it is unsure, since
 # a contract read as proof hides a real gap while a proof read as contract merely inflates one.
-( cd "$root" && xargs -a "$work/files.txt" grep -HoE '\.[a-z_][A-Za-z0-9_]*[ ]*\(' 2>/dev/null ) \
+( cd "$root" && tr '\n' '\0' < "$work/files.txt" | xargs -0 grep -HoE '\.[a-z_][A-Za-z0-9_]*[ ]*\(' 2>/dev/null ) \
   | sed 's/:\./\t/; s/[ ]*($//' | sort -u > "$work/qcalls.tsv"
 
-( cd "$root" && xargs -a "$work/files.txt" awk -v QCALLS="$work/qcalls.tsv" -v WANT_SITES="${WANT_SITES:-0}" -v SITES="$work/sites.txt" '
+( cd "$root" && tr '\n' '\0' < "$work/files.txt" | xargs -0 awk -v QCALLS="$work/qcalls.tsv" -v WANT_SITES="${WANT_SITES:-0}" -v SITES="$work/sites.txt" '
   function covered(i,   j, k) {
     # up over blanks and over a run of neighbouring asserts, then through the comment block
     j = i - 1

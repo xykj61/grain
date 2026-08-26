@@ -52,7 +52,16 @@ count_non_ascii() {
 # against a tool would move when the tool moved. An empty file holds no sequence to be invalid.
 utf8_valid() {
   test -s "$1" || return 0
-  iconv -f UTF-8 -t UTF-8 "$1" >/dev/null 2>&1
+  # The conversion lands in a regular file rather than /dev/null: Apple's iconv reports a
+  # spurious "Inappropriate ioctl for device" and exits 1 when its output is a device or a
+  # pipe on some valid multibyte inputs, so the exit code would measure the destination
+  # rather than the bytes. A regular file reads the same on both dialects, and an orphan
+  # lead byte still refuses through it -- proven both ways on metal (REDS %237).
+  _uv_tmp=$(mktemp "${TMPDIR:-/tmp}/utf8v.XXXXXX") || return 1
+  iconv -f UTF-8 -t UTF-8 "$1" > "$_uv_tmp" 2>/dev/null
+  _uv_rc=$?
+  rm -f "$_uv_tmp"
+  return $_uv_rc
 }
 
 if test "$MODE" = "prove-red"; then

@@ -140,7 +140,7 @@ echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
 # demanded that `tools/` open a word, which declined every `../tools/x.rish` in the tree -- 204 of
 # them, including the two foundations links that reddened the room's own guard. Correctness lives
 # in the awk below, which rewrites only a basename the map holds.
-xargs -a "$work/living.txt" -d '\n' grep -lIF "$room/" 2>/dev/null \
+tr '\n' '\0' < "$work/living.txt" | xargs -0 grep -lIF "$room/" 2>/dev/null \
   > "$work/candidates.txt" || true
 echo "candidates_holding_a_tools_path=$(wc -l < "$work/candidates.txt" | tr -d ' ')"
 
@@ -148,7 +148,7 @@ echo "candidates_holding_a_tools_path=$(wc -l < "$work/candidates.txt" | tr -d '
 # is paid forever (REDS %113).
 : > "$work/hits.tsv"
 if [ -s "$work/candidates.txt" ]; then
-  xargs -a "$work/candidates.txt" -d '\n' -n 400 \
+  tr '\n' '\0' < "$work/candidates.txt" | xargs -0 -n 400 \
     awk -v mapfile="$work/map.tsv" -v mode="$mode" -v room="$room" '
       BEGIN {
         while ((getline line < mapfile) > 0) { split(line, p, "\t"); map[p[1]] = p[2] }

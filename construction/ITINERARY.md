@@ -53,7 +53,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `c48db93d22` -- fifty cubist twins; the teaching family whole.
+**Git nib:** `f10fbcf11d` -- the BSD dialect family closes; the census reads whole.
 
 **Now.** **A fold repoints documents and leaves guards standing.**
 `tools/gen/chapter/` holds **298 tracked witnesses and exactly 3 are reached by a roster clock**, so
@@ -104,7 +104,7 @@ proven on metal, each recorded in `session-logs/`. Walk-back `221ebba12a`.
 all five constellation transitions holding every refusal. The **next-chapter breach is OPEN
 `20260810`**: Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri as
 the one voice, and the loadable skies still to run, each its own signed round. Charter at
-[`../expanding-prompts/date/20260810/20260810-000032_the-next-chapter-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-chapter-breach-charter.md).
+[`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
 
 ---
 

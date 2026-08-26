@@ -38,7 +38,7 @@ if [ ! -s "$witness_roster" ]; then
 fi
 
 witness_count() {
-  xargs -a "$witness_roster" -d '\n' grep -lI "\b$1/" 2>/dev/null | wc -l | tr -d ' '
+  tr '\n' '\0' < "$witness_roster" | xargs -0 grep -lI "\b$1/" 2>/dev/null | wc -l | tr -d ' '
 }
 
 # HOW THE MODULES ARE COUNTED, and it asks git rather than the filesystem for a reason paid for

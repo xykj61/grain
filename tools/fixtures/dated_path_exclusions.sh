@@ -158,13 +158,34 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   commit-msg hook refuses a body citing a path the tree does not hold (REDS %202). A stamp of
 #   20260101-010101 names no lap this tree ever ran, so the name matches nothing by construction --
 #   the same reasoning as the first entry, one control later.
+#
+#   The last twelve are SHED. The mitra shed, circled on Keaton's word (SHRED_PREP shed-complete
+#   record, stamp 20260826.032839; commit e82040c5a), cut eleven foundations elders and one
+#   expanding-prompts fossil whose living mutants stand at fresh stamps and whose living citers
+#   were repointed in the cut's own round. The 211 references that still name them live in dated
+#   testimony, which keeps every word it wrote, so the census reads each as intent rather than
+#   breakage -- the same LISTED shape %157 seated and %162 extended. The cut crossed this census
+#   while the census stood dark on the cutting host (the BSD dialect fault, REDS %234), which is
+#   how the crossing went unmeasured; REDS %236 records that lesson.
 # The LISTED half only. The two planted names that stood here -- `20260101-000000_a-dated-note.md`
 # and `20260101-010101_never-written.kyri` -- are found by discovery now, along with 45 more, so
 # listing them would be the duplication this round exists to end.
 DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
-20260821-211423_conways-law-and-the-organization-that-forgets.md"
+20260821-211423_conways-law-and-the-organization-that-forgets.md \
+20260811-220402_wade-bit-design-system-and-dimeroll-entities.md \
+20260618-182412_single-stranded.md \
+20260628-124512_anywhere-we-are-found.md \
+20260628-133212_a-home-in-plain-text.md \
+20260702-184312_the-grain-and-the-crossing.md \
+20260706-185112_follow-our-compass.md \
+20260728-220203_realidream.md \
+20260728-221253_the-graph-beneath-the-surface.md \
+20260728-232511_lantern-lattice-kiln.md \
+20260813-142420_mycelium-the-consensus-protocol.md \
+20260821-035846_every-climate-has-a-fiber.md \
+20260823-222018_what-mantra-is.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
