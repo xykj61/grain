@@ -62,6 +62,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260825.231201` | [A letter to Hale County](20260825-231201_a-letter-to-hale-county.md) | drafted for Keaton's hand alone; withheld from the seed until sent |
 | `20260825.210819` | [The round that pulls twice](20260825-210819_the-round-that-pulls-twice.md) | the sync rota SEATED: fifteen sentences, three residuals |
 | `20260825.205011` | [The pen, the gossip, the derived spine](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) | seven moves; %230 answered: stamp-keyed, derived at merge |
 | `20260825.200049` | [The Works-Town Sleeve](20260825-200049_the-works-town-sleeve-siya.md) | the sleeve read against a works town; withheld from the seed |

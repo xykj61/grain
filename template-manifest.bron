@@ -287,6 +287,7 @@ personal  research-silo                   # research trails, name-bearing — wi
 sub_exclude linengrow     # civic-app venture/treasury specifics tied to one person
 
 # foundations biography (file-granular) — the doctrine beside these ships:
+sub_exclude active-designing/20260825-231201_a-letter-to-hale-county.md   # a drafted letter to real county officials; the town hears nothing until Keaton sends it
 sub_exclude foundations/20260730-022147_keaton-livermore-resume-draft.md   # a resume; debrided 20260823.072824, row kept as defence in depth
 sub_exclude foundations/20260730-022147_personal-ontology.md               # personal ontology; debrided 20260823.072824, row kept
 sub_exclude foundations/20260730-022147_cover-letter-co-authored.md        # a cover letter; debrided 20260823.072824, row kept
