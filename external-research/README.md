@@ -50,6 +50,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260826.145514` | [Skate on macOS -- native-shell decision tablecloth](20260826-145514_skate-native-macos-decision-tablecloth.md) | Swift 6.2+ AppKit shell; bounded Grain core; a C seam only when proof earns it |
 | `20260825.230422` | [The isolation reading](20260825-230422_the-isolation-reading-from-the-wells-own-record.md) | the Garrett No. 1 sworn tops; separation shown, salinity owed |
 | `20260825.230421` | [What residue leads means](20260825-230421_what-residue-leads-means.md) | the Brazos fiber ranking, told plain at a grade-6 read |
 | `20260825.210819` | [Four protocols, distilled to a git rota](20260825-210819_four-protocols-distilled-to-a-git-rota.md) | one lesson per family for the twice-pulled round |
