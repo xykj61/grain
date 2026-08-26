@@ -17,7 +17,11 @@ assert counsel contains "return_surface_p59" else "e50: counsel want nested hand
 
 let lex = read-file "context/LEXICON.md"
 assert lex contains "| **geode** |" else "e50: LEXICON want geode row"
-assert lex contains "round · quest · journey · equinox · season" else "e50: LEXICON want umbrella senses"
+# THE SEPARATOR THE ASCII-FIRST SWEEP LEFT (REDS %236). This line once cited the umbrella
+# senses with middots, and the ascii-first law converted every one of them to a hyphen.
+# The claim is the five senses in order; the separator is register, so read the register
+# the tree now writes -- and this file is ASCII from here, which is the same law.
+assert lex contains "round - quest - journey - equinox - season" else "e50: LEXICON want umbrella senses"
 assert lex contains "docs-geode" else "e50: LEXICON want docs-geode distinction"
 
 let rb = read-file "tools/gen/chapter/recursion_block.brix"
@@ -25,9 +29,14 @@ assert rb contains "coords_e50 geode_expedition_breach GREEN 20260730.162222" el
 assert rb contains "extend_lean +128" else "e50: recursion want extend_lean +128"
 assert rb contains "geode_expedition_breach APPROVED_GATED" else "e50: recursion want breach pin"
 
-let rem = read-file "construction/ITINERARY.md"
-assert rem contains "e50 GREEN" else "e50: ITINERARY want e50 GREEN"
-assert rem contains "geode expedition" else "e50: ITINERARY want expedition"
-assert rem contains "APPROVED · GATED" else "e50: ITINERARY want APPROVED GATED"
+# A LIVING CARD HOLDS THE LIVE EDGE; TESTIMONY HOLDS THE RECORD (REDS %236). This read
+# construction/ITINERARY.md for the string `e50 GREEN`. The card was debrided to the Compass
+# Season on 20260809.024320 and says so on its own face -- the old season marks are gone by
+# design, because a live card that never forgets stops being a live card. A rung's green is
+# recorded in its waymark, which is dated testimony and keeps every word it wrote.
+let mark = read-file "waymarks/date/20260730/20260730-162222_e50-dual-equinox-geode-expedition-seated.md"
+assert mark contains "e50 GREEN" else "e50: the waymark must record e50 GREEN"
+assert mark contains "Expedition" else "e50: the waymark must name the expedition"
+assert mark contains "approved · seated · gated" else "e50: the waymark must record the breach approved, seated, and gated"
 
-say "GREEN: e50 — dual-equinox geode expedition breach APPROVED GATED · Lexicon geode · extend +128"
+say "GREEN: e50 -- dual-equinox geode expedition breach approved, seated, gated, recorded in its own waymark -- Lexicon geode -- extend +128"

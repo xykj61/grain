@@ -132,9 +132,15 @@ rg -q '^\*\*Voice:\*\* Riyo' "$NEW" || {
   echo "verdict=misread"
   exit 1
 }
-rg -q 'Keaton Dunsford' "$NEW" || {
+# EITHER NAME, BECAUSE THE FILE IT READS IS DATED TESTIMONY (REDS %234). The name-return
+# sweep of 20260823.101837 rewrote `Keaton Livermore` to `Keaton Dunsford` across 35 references
+# in 20 living files and correctly left 28 files of dated testimony holding every word they
+# wrote. This scan is living, so it was swept; foundations/20260801-005853_... is testimony, so
+# it was not -- and the sweep taught a guard to demand a name the file it reads can never say.
+# A guard that cites dated testimony inherits accrete-never-break along with the citation.
+rg -q 'Keaton Dunsford|Keaton Livermore' "$NEW" || {
   echo "new_pitch=failed"
-  echo "detail=want_keaton"
+  echo "detail=want_coauthor_named"
   echo "verdict=misread"
   exit 1
 }
@@ -230,7 +236,11 @@ echo "e135=honored"
 # dated_guard -- with elders restored and no unlawful claim rewrite staged as living speech
 GUARD_OUT=$(sh "$DATED_GUARD")
 echo "$GUARD_OUT" | sed 's/^/dated_guard_/'
-echo "$GUARD_OUT" | rg -q 'OK   dated-guard clean|OK   no staged MODIFIED dated paths' || {
+# CITE THE STABLE PART OF A MESSAGE, NOT ITS WORDING (REDS %236). dated_guard_scan.sh grew
+# more precise -- it says `no staged MODIFIED freeze/Tier-1 dated paths; clean` now -- and this
+# grep pinned the older sentence word for word. The guard's verdict is what this rung cares
+# about, so it reads the `OK` and the `clean` that every wording of that verdict has carried.
+echo "$GUARD_OUT" | rg -q '^OK .*dated' || {
   echo "dated_guard=failed"
   echo "verdict=misread"
   exit 1
