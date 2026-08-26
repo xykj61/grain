@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.225051` | [the constellation rehearsal](20260825-225051_the-constellation-rehearsal.kyri) | the paper stack runs: one pen, three processes, every voice verified |
 | `20260825.213128` | [the room nobody heard](20260825-213128_the-room-nobody-heard.kyri) | 295 of 298 season witnesses unheard; 17 leaf reds; %231, %232 closed |
 | `20260825.211331` | [the twice-pulled round](20260825-211331_the-twice-pulled-round.kyri) | the sync rota seated; livefeed narrates; mycelium and mantra molt |
 | `20260825.205409` | [the derived spine](20260825-205409_the-derived-spine.kyri) | HotStuff+Hashgraph infused; %230 answered: stamp-keyed, derived at merge |
