@@ -29,7 +29,22 @@
 # so the spine is proven over every row the ledger actually holds.
 
 set -eu
-if [ "$#" -eq 0 ]; then set -- construction/REDS.md; fi
+# THE DEFAULT SPANS THE SHELVES (REDS %237). Called with no arguments this once read
+# construction/REDS.md alone, which since the first fold holds a SUFFIX of the spine -- three
+# rows on 20260825 against 232 -- so every bare caller got `verdict=not_monotone` from a ledger
+# that was perfectly whole. Fourteen scans in tools/fixtures/ call it bare, and the comment
+# above them has said `pass every file that holds rows` the whole time. A default that
+# contradicts its own documentation is a trap rather than a convenience, so the default now
+# does what the witness beside it does. A caller naming its own files still overrides, which is
+# what the planted single-file pens in the witness rely on.
+if [ "$#" -eq 0 ]; then
+  set -- construction/REDS.md
+  for shelf in construction/archive/REDS-*rows-*.md; do
+    # An unmatched glob stays literal in POSIX sh, so a tree that has never folded is read
+    # exactly as it was before -- the living pin alone, and honestly.
+    [ -f "$shelf" ] && set -- "$shelf" "$@"
+  done
+fi
 for f in "$@"; do
   [ -f "$f" ] || { echo "detail: absent ($f)"; echo "verdict=missing_ledger"; exit 2; }
 done
