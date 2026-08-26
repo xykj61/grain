@@ -225,7 +225,7 @@ one reason: **thinking and building are filed separately, so each has space to b
 - **[`tools/`](tools/)** -- every witness. The proof, rather than the prose.
 - **[`waymarks/`](waymarks/)** and **[`context/specs/`](context/specs/)** -- the named plans and
   the settled rules.
-- **[`classical-vedic-astrology/`](classical-vedic-astrology/)** -- the calendar the seasons are
+- **[`classical-vedic-astrology/`](classical-vedic-astrology/)** -- the calendar the chapters are
   named from. This tree marks its rounds against a **rota** of element by modality, and the room
   holds the method behind that: how a chart is cast
   ([`cast_a_chart.rish`](classical-vedic-astrology/cast_a_chart.rish)), the 27 nakshatra seats

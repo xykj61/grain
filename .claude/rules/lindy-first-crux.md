@@ -2,7 +2,7 @@
 
 **Seated:** `20260811.214023` on Keaton's word · **Status:** Living · **Kin:** [`the Lindy effect`](../../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) · [`reds-first`](reds-first.md) · [`align`](align.md) · Lexicon **crux** · **Lindy-first, crux-first**
 
-When ordering any allocation — a **season**, **equinox**, **journey**, **quest**, or a single **round** — order it by two fused priorities, in this order:
+When ordering any allocation — a **chapter**, **equinox**, **journey**, **quest**, or a single **round** — order it by two fused priorities, in this order:
 
 1. **Lindy-first.** Do the **Lindy-boosting** work first: what will still matter and still read true on the **long return** — the front doors (READMEs), the foundations, the invariants and names, the witnesses, the reference weave. A README, a foundation, a well-named invariant is read thousands of times over years; a one-off fix is read once. Effort spent on the long-lived compounds; effort spent on the ephemeral evaporates. (`../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`)
 2. **Crux-first, within a tier.** Among work of equal Lindy weight, take the **crux** — the *hardest solvable problem* — first. Not the easy lap that pads the count, and not the impossible dream that never closes; the one decisive, still-tractable move that, once made, opens the rest. (Lexicon: **crux**, chosen over *edge* because *edge* is already the landed edge and the thin/finishing/consumer edges.)
@@ -13,7 +13,7 @@ When ordering any allocation — a **season**, **equinox**, **journey**, **quest
 - **The finishing edge still holds.** Lindy-first is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Crux-first picks *which* one.
 - **Narrow scope still holds.** One keystone per round unless the round's own shape bounds it (`collaboration.md`). This rule chooses the keystone; it does not widen the round.
 - **`align` reads by this order.** When Keaton says **align**, the reconcile pass reorders the plan Lindy-first, crux-first, brief and green witnesses winning (`align.md`).
-- **Power-of-two divisions inherit it.** A season's four equinoxes, an equinox's four journeys, a journey's four quests — each division leads with its own highest-Lindy crux, so the ordering is self-similar at every scale.
+- **The panchanga rings inherit it.** A chapter's five equinoxes, an equinox's five journeys, a journey's five quests, a quest's five orbits — each division leads with its own highest-Lindy crux, so the ordering is self-similar at every scale.
 
 ## Why the rule exists
 

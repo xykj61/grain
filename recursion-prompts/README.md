@@ -16,7 +16,7 @@ A **recursion prompt** is the single artifact an autonomous agent reads once and
 
 Where the **baton museum** holds the *shape* of a recursion prompt (`recursion_prompt.brix`, its fields named), and **bron-resins** holds *filled handoff instances* preserved for the record, this cellar sits between them: it holds the **living, fillable templates** and their **dated filled versions**, so the next run is a form to fill rather than a page to invent.
 
-The name **resin** is the image: sap that hardens around what it carries and preserves it whole across a long season. A recursion prompt is resin for a whole autonomous run -- it hardens the laws, the route, and the gates around the work so the far side opens intact.
+The name **resin** is the image: sap that hardens around what it carries and preserves it whole across a long chapter. A recursion prompt is resin for a whole autonomous run -- it hardens the laws, the route, and the gates around the work so the far side opens intact.
 
 ## The balance compass -- harmony of all our styles
 

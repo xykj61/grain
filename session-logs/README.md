@@ -28,7 +28,7 @@ shelved rows keep every byte they wrote.
 
 **This index holds exactly the logs still flat in this room.** A log folds by day into
 `date/YYYYMMDD/`, and its row folds with it, onto `date/README-index-YYYYMMDD.md` -- one shelf per
-closed day, listed in the [seasons roster](CHAPTERS.md). So the index and the room always describe
+closed day, listed in the [chapters roster](CHAPTERS.md). So the index and the room always describe
 the same set, and neither can grow while the other shrinks. That pairing is what keeps this file
 under the bound its header declares; it stood at 2,895,849 bytes before the rows learned to fold
 (REDS %182).
@@ -49,11 +49,12 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260826.002952` | [the DJINN debride, the bit season](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
+| `20260826.021754` | [the panchanga and the chapter](20260826-021754_the-panchanga-and-the-chapter.kyri) | rings of five seated; Chapter->Chapter debride; Kyri 6 palettes; 14 pages |
+| `20260826.002952` | [the DJINN debride, the bit chapter](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
 | `20260825.231648` | [a letter held for the word](20260825-231648_a-letter-held-for-the-word.kyri) | the Hale County draft: three steps, no money, withheld from the seed |
 | `20260825.231037` | [the well's own record](20260825-231037_the-wells-own-record.kyri) | isolation reading drafted from sworn 1962 tops; residue-leads told plain |
 | `20260825.225051` | [the constellation rehearsal](20260825-225051_the-constellation-rehearsal.kyri) | the paper stack runs: one pen, three processes, every voice verified |
-| `20260825.213128` | [the room nobody heard](20260825-213128_the-room-nobody-heard.kyri) | 295 of 298 season witnesses unheard; 17 leaf reds; %231, %232 closed |
+| `20260825.213128` | [the room nobody heard](20260825-213128_the-room-nobody-heard.kyri) | 295 of 298 chapter witnesses unheard; 17 leaf reds; %231, %232 closed |
 | `20260825.211331` | [the twice-pulled round](20260825-211331_the-twice-pulled-round.kyri) | the sync rota seated; livefeed narrates; mycelium and mantra molt |
 | `20260825.205409` | [the derived spine](20260825-205409_the-derived-spine.kyri) | HotStuff+Hashgraph infused; %230 answered: stamp-keyed, derived at merge |
 | `20260825.202950` | [the works-town placed](20260825-202950_the-works-town-placed.kyri) | Plainview leads; permit current to 2030, no 210 yet; residual home answered |
@@ -112,7 +113,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260824.173816` | [the ratchet reaches its floor](20260824-173816_the-ratchet-reaches-its-floor.kyri) | 41 rows across; every folding room enforced, ceiling zero. |
 | `20260824.173245` | [the prompts room carried across](20260824-173245_the-prompts-room-carried-across.kyri) | 78 rows onto 21 shelves, 120 links landing, pin under bound. |
 | `20260824.170955` | [the denominator was the whole question](20260824-170955_the-denominator-was-the-whole-question.kyri) | Two denominators, opposite verdicts; a seated law at 59.6%. |
-| `20260824.165609` | [the live prompt carries it too](20260824-165609_the-live-prompt-carries-it-too.kyri) | Both printed season prompts now carry the QA read. |
+| `20260824.165609` | [the live prompt carries it too](20260824-165609_the-live-prompt-carries-it-too.kyri) | Both printed chapter prompts now carry the QA read. |
 | `20260824.165456` | [the dial booked before it is built](20260824-165456_the-dial-booked-before-it-is-built.kyri) | Two gaps booked, each with its falsifier named. |
 | `20260824.164836` | [a cited path exists](20260824-164836_a-cited-path-exists.kyri) | A recalled stamp shipped a citation resolving nowhere; the hook gains a fourth wall. |
 | `20260824.164559` | [the grade a writer can aim at](20260824-164559_the-grade-a-writer-can-aim-at.kyri) | The negative ceiling read upward is a school grade; below B pushes a frame. |

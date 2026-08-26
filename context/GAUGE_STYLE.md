@@ -143,7 +143,8 @@ trustworthy.
 - **State invariants before you lean on them.** Put your assumptions above the argument that
   rests on them, so a reader can check the footing before following you up.
 - **Explicit widths.** Every figure carries its unit, its date, and where it came from. A number
-  without those three is a rumour with a decimal point.
+  without those three is a rumour with a decimal point. A figure with all three is a harvest
+  carried home, its field named.
 - **A share carries a fourth thing: its denominator.** *Forty percent of what?* is the question a
   reader cannot ask of a percentage, because the denominator is the one part a share does not
   show. Name it in the sentence. Measured `20260824.170904`: one reading of the same 1,891 modules
@@ -159,8 +160,8 @@ trustworthy.
 
 ## The three settings
 
-One style, one dial. The setting follows the reader, and every setting keeps every inheritance
-above.
+One style, one dial. The setting is the cloth the prose is cut from: it follows the reader, and
+every setting keeps every inheritance above.
 
 **Door** -- READMEs, foundations, onboarding, anything a stranger meets first. Warmest and
 plainest. Lead with what the reader gets. At most one cross-reference per paragraph, and every
@@ -214,7 +215,7 @@ together, and a reader trusts a writer who supplies both.
 Give the ordinary rate of the thing before the story about this instance. A sector's typical
 margin, a category's usual timeline, the share of ventures in this shape that reach the outcome
 being described. The narrative then does its proper work, which is explaining a departure from
-the base rate rather than standing in for one.
+the base rate rather than standing in for one. The base rate is the earth the story grows from.
 
 ### Magnitudes, with their dates
 
@@ -239,7 +240,8 @@ under.
 
 ## Describing an ecosystem
 
-A sector, a movement, a supply chain, a standards body, a set of institutions.
+A sector, a movement, a supply chain, a standards body, a set of institutions. Read one the way
+you read a landscape -- the ground, the water, and who tends which field.
 
 - **Describe by role first, name second.** *A certification body that verifies growing practice*
   reads clearly to everyone; the acronym reads clearly to insiders. Give the role, then the name
@@ -257,7 +259,7 @@ A sector, a movement, a supply chain, a standards body, a set of institutions.
 
 ## Writing a design essay
 
-The room for reasoning that outlives its code.
+The room for reasoning that outlives its code, and a journey worth walking on its own.
 
 - **The durability test, applied before filing:** *would this still be worth reading if the code
   it describes were deleted?* Yes belongs in the essay room; no belongs in the round notes
@@ -353,7 +355,7 @@ Four questions, twenty-five points each, so the judgement is repeatable rather t
 
 1. **Named.** Does a live line on the card, a standing law, or a roster reach this artifact?
 2. **Reached.** Does someone arriving at the live work actually pass through it, rather than around it?
-3. **Current.** Does it describe the tree as it stands today, rather than a season that has closed?
+3. **Current.** Does it describe the tree as it stands today, rather than a chapter that has closed?
 4. **Carried.** Which side does it serve -- the public projection `grain-os/grain`, the working
    repository `xy`, or both -- and is that the right side for what it holds?
 
@@ -473,7 +475,8 @@ counted, and the second thing to read is always the artifact itself.
 ## Softening -- reach for the warmer word
 
 Softening is the small, repeatable craft of the style: keep the meaning whole and let the sentence
-land gently. It is the difference between a page a reader finishes and a page a reader survives.
+land gently. The claim stays a grain in the hand -- small, whole, exact -- and the sentence warms
+around it. It is the difference between a page a reader finishes and a page a reader survives.
 
 **Softening keeps the claim exactly.** *"Sixteen documents read above target"* softens to *"sixteen
 documents have room to come down."* Same sixteen, same target, warmer landing. A softening that
@@ -654,5 +657,7 @@ from it, which is the point. This writing measures and reports
 exactly, and that is worth keeping. Giving it its own name lets Radiant mean what it says again,
 and lets a gauge be excellent at what a gauge is for -- in the hands of someone glad you came to
 read it.
+
+May the page you write next read like daylight on good ground.
 
 Canonical rule: [`../.claude/rules/gauge-style.md`](../.claude/rules/gauge-style.md) - Cursor twin: [`../.cursor/rules/gauge-style.mdc`](../.cursor/rules/gauge-style.mdc)

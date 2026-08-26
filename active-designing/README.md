@@ -7,7 +7,7 @@
 
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.083402` -- the workshop era named; roster refreshed; the Book and the season lanes mapped)
+**Last updated:** 2026-07-27 (`20260727.083402` -- the workshop era named; roster refreshed; the Book and the chapter lanes mapped)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
@@ -40,7 +40,7 @@ The discipline is simple to check: read any line aloud, and if it names somethin
 
 ## The Workshop Era (accreted 2026-07-27)
 
-Three residents joined this folder after the foundation above was laid, and each keeps the silo law whole. **`docs/glow/`** is the Glow Book -- the language's six anchored pages with their gate witness, landed by the first workshop's C2 create. **`quin-workshop/`** is a season lane: a workshop branch's working home, holding its charter's creates, the newborn shell and driver under proof, and **`creates/for-main/`**, the mirror of every path a paste will land on main -- files travel from there by copy, gated by the manifests, seated only by Keaton's paste. **`yonder/`** holds designs resting beyond the current horizon. A season closes; its lane remains as record; the next season opens its own round counter on the same branch. The verse of this folder is therefore layered on purpose: foundations at the bottom, living design in the middle, season lanes alongside -- one clean room, several benches.
+Three residents joined this folder after the foundation above was laid, and each keeps the silo law whole. **`docs/glow/`** is the Glow Book -- the language's six anchored pages with their gate witness, landed by the first workshop's C2 create. **`quin-workshop/`** is a chapter lane: a workshop branch's working home, holding its charter's creates, the newborn shell and driver under proof, and **`creates/for-main/`**, the mirror of every path a paste will land on main -- files travel from there by copy, gated by the manifests, seated only by Keaton's paste. **`yonder/`** holds designs resting beyond the current horizon. A chapter closes; its lane remains as record; the next chapter opens its own round counter on the same branch. The verse of this folder is therefore layered on purpose: foundations at the bottom, living design in the middle, chapter lanes alongside -- one clean room, several benches.
 
 ## Two Folders, Two Purposes
 
@@ -62,6 +62,9 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260826.021136` | [Caravan rearchitected](20260826-021136_caravan-rearchitected-the-optimization-spine.md) | five bounded moves; wrap named, set word-wide, drain replayable |
+| `20260826.014903` | [Skate returns, the DAG platform](20260826-014903_skate-returns-the-dag-rendering-platform.md) | DVUI read MIT; hot reload with witnesses; sameness macro; gate %6 |
+| `20260826.014902` | [Eight modules through the spine](20260826-014902_eight-modules-through-the-optimization-spine.md) | one bounded move per module, stretches named plainly |
 | `20260826.001748` | [The languages an open model owes](20260826-001748_the-languages-an-open-model-owes.md) | corpus shares published; the tokenizer seam gets a witness |
 | `20260826.001747` | [The wafer rehearsed in software](20260826-001747_the-wafer-rehearsed-in-software.md) | the wafer abstraction provable now on ordinary metal |
 | `20260826.001746` | [The swarm that feeds the kiln](20260826-001746_the-swarm-that-feeds-the-kiln.md) | cohort training as a Mycelium cousin; the signed-fact repair |
@@ -69,7 +72,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 | `20260826.001744` | [The bound in the shape](20260826-001744_the-bound-in-the-shape.md) | bounds by construction; wrap is a meaning, never a net |
 | `20260825.235725` | [The ASCII cloth front door](20260825-235725_the-ascii-cloth-front-door.md) | character-grid weave for the Grain site; the mark reborn in ASCII; DJINN's seat |
 | `20260825.234156` | [Linengrow First Cloth, Gauge pass](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) | Stone & Hearth measured; the codex law; the trio and sixteen names |
-| `20260825.233309` | [The Bit Design System season opens](20260825-233309_the-bit-design-system-season-opens.md) | DJINN is ready; Linengrow the inspiration; gate %6 stands |
+| `20260825.233309` | [The Bit Design System chapter opens](20260825-233309_the-bit-design-system-season-opens.md) | DJINN is ready; Linengrow the inspiration; gate %6 stands |
 | `20260825.231201` | A letter to Hale County -- `20260825-231201_a-letter-to-hale-county.md`, withheld from the seed | drafted for Keaton's hand alone; withheld from the seed until sent |
 | `20260825.210819` | [The round that pulls twice](20260825-210819_the-round-that-pulls-twice.md) | the sync rota SEATED: fifteen sentences, three residuals |
 | `20260825.205011` | [The pen, the gossip, the derived spine](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) | seven moves; %230 answered: stamp-keyed, derived at merge |
@@ -90,7 +93,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 | living | [Proven-seat guest -- hammock](proven-seat-guest-hammock.md) | Kaeden word - G0 GRUB milestone GREEN - G1-G3 ahead |
 | living | [Giving-lane T2 courtesy wire](yonder/giving-lane-t2-courtesy-wire.md) | Word seated - wire opened - composition witness ahead |
 | living | [Steep -- peer file sharing](steep.md) | Living twin - published-set / peer-offer precedent seated |
-| living | [Seam season -- hammock](seam-season-hammock.md) | Living twin -- product nib **430** - suite nib **432**; edit here |
+| living | [Seam chapter -- hammock](seam-season-hammock.md) | Living twin -- product nib **430** - suite nib **432**; edit here |
 
 ## Redirect stubs
 

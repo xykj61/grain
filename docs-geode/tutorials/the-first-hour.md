@@ -7,6 +7,8 @@ is a map you will want **after** this hour.*
 **Written:** `20260821.180613` - **Last updated:** `20260823.061415` (Gauge pass -- register only; every command, count, and path held exactly)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
+**Where this sits:** home is [`../../README.md`](../../README.md) - the whole path from nothing to a
+signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 > Three names appear in this hour and each has a page for someone meeting it for the first time:
 > [Mantra](../../foundations/20260825-211056_what-mantra-is.md) hands out names that stay true,

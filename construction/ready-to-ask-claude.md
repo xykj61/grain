@@ -93,7 +93,7 @@
 
 **Disposition:** **A-narrow interim -> B supersede-by-witness** -- `lane_kvm` (off by default, `/dev/kvm` only, no sessions) as wall-repair; Pond earns the daily seat by refusal-parity, never by feature list.
 
-**Counsel:** [`../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) (addendum: red-team escapes->asserts - `-nic none` - two-lane exit criteria before season - lane->customs graduation)
+**Counsel:** [`../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) (addendum: red-team escapes->asserts - `-nic none` - two-lane exit criteria before chapter - lane->customs graduation)
 
 **Ask closed:** [`../session-logs/archive/20260712/20260712-004012_framework-metal-g0c-pond-ask.md`](../session-logs/date/20260712/20260712-004012_framework-metal-g0c-pond-ask.md)
 
@@ -137,7 +137,7 @@
 
 **Claude `211400` N:** **six consecutive green sittings spanning at least seven calendar days** -- breadth (editor - parity - QEMU - cold-start-after-reboot) - soak clock on frozen candidate (enclosure-enforcing edits reset) - red law (one red resets; two on one witness parks). Softening hinge (wrappers free) available if solo bench bites. Exit card complete; Claude second walk next (tip `40673e0`).
 
-**Kg `211900`:** living two-column witness `tools/p/pond_enclosure_scorecard.rish` -- column one GREEN - column two gaps named - supersede season closed.
+**Kg `211900`:** living two-column witness `tools/p/pond_enclosure_scorecard.rish` -- column one GREEN - column two gaps named - supersede chapter closed.
 
 **Claude `212412` second walk:** **freeze-worthy** affirmed. Four accretions landed -- enforcing seam - `ENCLOSURE=ai-jail` retreat flag - exit bron path `bron-resins/pond-supersede-exit.bron` (absent measured) - `soak_start_nib`. Ask two: keep enforcing-code-resets until bite. Ask three: col2 probes landed refuse-until-candidate. Counsel [`../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
@@ -159,7 +159,7 @@
 
 ## Fresh sitting -- morning cup (`20260713`)
 
-**Compass:** [`foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) - product **430** - suite **433** - season **held**.
+**Compass:** [`foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) - product **430** - suite **433** - chapter **held**.
 
 | # | Lap | Status |
 |---|-----|--------|
@@ -188,9 +188,9 @@
 
 ---
 
-## Seam season -- **prioritized** (`20260712.052806`)
+## Seam chapter -- **prioritized** (`20260712.052806`)
 
-**Tip-430 door named:** Horizon brief -> Seam season. Kaeden affirmed Claude Fable 5's disposition: four studies file now; CapTP-as-fold and Spritely-ally park; green stays green.
+**Tip-430 door named:** Horizon brief -> Seam chapter. Kaeden affirmed Claude Fable 5's disposition: four studies file now; CapTP-as-fold and Spritely-ally park; green stays green.
 
 | Item | Path |
 |------|------|
@@ -200,7 +200,7 @@
 
 ### Four RTAC studies (smallest-first)
 
-| # | Study | Ask when season opens | Output shape | Status |
+| # | Study | Ask when chapter opens | Output shape | Status |
 |---|-------|----------------------|--------------|--------|
 | **1** | OCapN idiom beside Comlink sealed datagram | How does CapTP's session idiom compose with a record fold without becoming it? What is the smallest consumer-edge pass shape (access vs truth)? | ER note + design conclusion; Door 3 test plan | **Landed** [`053324`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
 | **2** | Component-model target for one existing seed | Which one seed is the honest first portable ABI target? What stays identical across browser / host / later Caravan host? | ER note + one-seed pick | **Landed** [`054135`](../external-research/20260712-054135_component-model-one-seed.md) -- pick **`receipt_core`** |
@@ -587,20 +587,20 @@ Prior tip: `999359e`
 
 **Brief:** [`20260703-041850_claude-strategy-roadmap-counsel.md`](archive/20260703-041850_claude-strategy-roadmap-counsel.md)
 
-**Medium-long strategy (seven questions):** cascade order after Amber **144** - Linengrow vs Rye next product lap - MUR M0 / WOV timing (was MALA) - doc lane vs metal lane after Edit 5 - Open Asks first lap when paste lands - hardware procurement season - ratifications bundle order.
+**Medium-long strategy (seven questions):** cascade order after Amber **144** - Linengrow vs Rye next product lap - MUR M0 / WOV timing (was MALA) - doc lane vs metal lane after Edit 5 - Open Asks first lap when paste lands - hardware procurement chapter - ratifications bundle order.
 
 **Guidance request:** granular refresh plan for `ROADMAP.md`, `TASKS.md`, decoder living doc, RTAC itinerary -- structure and deltas only; Cursor applies on Kaeden approval after counsel lands.
 
 **Counsel bounds:** propose and argue; no implementation, no new module names, do not reopen Doors 1-3 or Edit 5.
 
-## Landed `20260703.071212` -- Amber season note + placement counsel (Claude Fable 5 - Cursor verified)
+## Landed `20260703.071212` -- Amber chapter note + placement counsel (Claude Fable 5 - Cursor verified)
 
 | Item | Path |
 |------|------|
 | Chapter vocabulary | [`active-designing/date/20260703/20260703-071212_cellar-seasons.md`](../active-designing/date/20260703/20260703-071212_cellar-seasons.md) |
 | Placement counsel | [`session-logs/archive/20260703/20260703-071212_placement-counsel.md`](../session-logs/date/20260703/20260703-071212_placement-counsel.md) -- recommends `pond/apps` + Dexter graduation trigger; ratifications order; not-advice in ORGANIZING |
 
-**Cursor metal:** parity **144 GREEN** - chrono **148** after seat - Amber lap 1 held from tip `7395bd1`. LEXICON season/lap/green rows + spec scrub companion line seated with intake.
+**Cursor metal:** parity **144 GREEN** - chrono **148** after seat - Amber lap 1 held from tip `7395bd1`. LEXICON chapter/lap/green rows + spec scrub companion line seated with intake.
 
 Prior tip: `7395bd1`
 
@@ -702,7 +702,7 @@ Repo intaken at `cbb2b96`; all six Kaeden asks served in one proposal zip.
 
 **Doors 1-3 closed -> Amber lap 1 green -> SLC-2b green -> RW-1 green**
 
-Parity **147** GREEN - next on open itinerary: chrono sweep wire - RW-2 season
+Parity **147** GREEN - next on open itinerary: chrono sweep wire - RW-2 chapter
 
 ---
 

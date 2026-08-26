@@ -8,7 +8,7 @@ Ledger: `construction/REDS.md` · Gratitude: `gratitude/toyota-production-system
 When a red is found: name it, record it in the ledger with all three fields
 (what went wrong · what caught it · what it taught), and **book the remainder of
 the journey to reds before opening new work.** Cascade across journey, equinox,
-and season boundaries, naming each crossing in the waymark.
+and chapter boundaries, naming each crossing in the waymark.
 
 - A **red** is something wrong. It books the allocation. Cite a row as **`REDS %89`** -- the percent sigil, never `#`,
   which GitHub's commit renderer would turn into a link to an unrelated pull request (`git-signing.md`).

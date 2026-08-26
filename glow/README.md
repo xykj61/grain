@@ -1,9 +1,9 @@
 # Glow -- Language Tooling, Grown from Real Design
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Tensegral Arc II r5 -- text floor - digraph twin - truth reaffirmed GREEN)
+**Last updated:** 2026-08-26 (fascia touch; voice carried to Kyri; every claim held exactly)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Voice:** Quin
+**Voice:** Kyri (carried from Quin on touch, 20260826)
 **Audience:** Acme Corporation employees reading the working Glow pin
 **Status:** Checkable -- **STOA0-31** sixteen heads - `/+` - `|%` - compose - nests - cells - `%` calls - truth - **STOA100-189** bartis - barket - nest/type - citizen **\*-shape** (study `\*-mold` twins in `gen/hoon-study/`) - ShapeSpec API - **STOA324-327** `$:` argv/welcome sameness - **STOA328-330** nest tables - `shape_name` on GateSpec/BarketSpec - **STOA332** glow mode SLC - **STOA333** digraph twin GREEN - **`text_floor`** bounded text GREEN (rung-2 lexer prerequisite). Living law leads with **shape**; mold stays study/Hoon. Rune-module header drift (`*-mold` leading) is **on-touch** -- advisory count **11** on `glow/*.rye` (`20260725.170344` - re-touched commence M2 `20260731.020306`, still **11**); not a campaign.
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is

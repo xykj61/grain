@@ -1,13 +1,13 @@
 # Rishi -- the shell of the Rye ecosystem
 
 **Version:** `20260620.153812` (Rye chronological stamp)
-**Last updated:** 2026-07-10 (Radiant Style pass round 2)
+**Last updated:** 2026-08-26 (fascia touch -- leaves to root; every claim held exactly)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- shell, small and growing
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rishi in your hands
 is [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the
 whole path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md) - the sibling
-language that builds this one is [`../rye/README.md`](../rye/README.md)
+language that builds this one is [`../rye/README.md`](../rye/README.md) - the language study beside it is [`../glow/README.md`](../glow/README.md)
 
 ---
 

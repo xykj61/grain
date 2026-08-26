@@ -1,5 +1,5 @@
 ---
-description: Order any allocation (season, equinox, journey, quest, round) Lindy-first (longest-lived work leads) then crux-first (hardest solvable problem within a tier). Reds still preempt.
+description: Order any allocation (chapter, equinox, journey, quest, round) Lindy-first (longest-lived work leads) then crux-first (hardest solvable problem within a tier). Reds still preempt.
 globs:
 alwaysApply: true
 ---
@@ -8,7 +8,7 @@ alwaysApply: true
 
 **Seated:** `20260811.214023` on Keaton's word · **Status:** Living · Canonical twin: `.claude/rules/lindy-first-crux.md`. Kin: the Lindy foundation (`foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`) · `reds-first.mdc` · `align.mdc` · Lexicon **crux**.
 
-Order any allocation — season, equinox, journey, quest, or a single round — by two fused priorities:
+Order any allocation — chapter, equinox, journey, quest, or a single round — by two fused priorities:
 
 1. **Lindy-first.** Do the **Lindy-boosting** work first: what still matters and still reads true on the **long return** — READMEs and front doors, foundations, invariants and names, witnesses, the reference weave. The long-lived compounds; the ephemeral evaporates.
 2. **Crux-first, within a tier.** Among work of equal Lindy weight, take the **crux** — the *hardest solvable problem* — first. Not the easy lap that pads the count, not the impossible dream that never closes; the one decisive, still-tractable move that opens the rest.

@@ -1,13 +1,14 @@
 format waymark-registry-v1
-stamp 20260825.234631
+stamp 20260826.013711
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal fdbb1a8ba96c57e2c3e22a6e5f4763c4be539b8b741c5de9dd75726576984fe57c58ba610fec909fe64f619113d9578348e3db5edd227083770cd25e58a44bf4
+seal 2e0f6d79834837bf461d34d199c53a5fcd4c349625584eb2fec8774ae3970ae8de40b119e0535623cddf735e2826b44c2edf1f532d635454943229ad9e63f1b3
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
 # Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
+# Re-sealed 20260826.013711: the unit word season molted to chapter in row notes (panchanga seating); body re-sealed.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
 # Re-sealed 20260825.234631: POLE input debrided to hand-seated under the DJINN pseudonym word; the mark keeps its seat.
 # Re-sealed 20260821.023219: DISC seated for the Chapter G SLH-DSA ladder (Keaton's word -- name the arc and start it).

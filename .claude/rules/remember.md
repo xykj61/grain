@@ -1,6 +1,6 @@
 # "remember" — the standing card for hands, pier, and waymarks
 
-When Keaton says **"remember"** (or **"remember for us"**), restates the living operator card so the next hand — phone, outer host terminal, or a fresh agent turn — can continue without rediscovering the season. Where **"align"** reconciles plan with reality and **"kg"** means keep going on the next mechanical lap, **remember** is the *carry card*: what to run outside the jail, what to tap on the phone, and which waymarks name the ladders in play.
+When Keaton says **"remember"** (or **"remember for us"**), restates the living operator card so the next hand — phone, outer host terminal, or a fresh agent turn — can continue without rediscovering the chapter. Where **"align"** reconciles plan with reality and **"kg"** means keep going on the next mechanical lap, **remember** is the *carry card*: what to run outside the jail, what to tap on the phone, and which waymarks name the ladders in play.
 
 ## What "remember" does, in order
 
@@ -20,4 +20,4 @@ When Keaton says **"remember"** (or **"remember for us"**), restates the living 
 
 ## Why the word exists
 
-A glass season spans three places at once: the agent in the jail, the outer terminal that owns USB, and the phone in a hand. “Remember” is one syllable that reprints that map — waymarks, install lines, look checklist, open doors — so a break, a BRB, or a new chat never loses the thread.
+A glass chapter spans three places at once: the agent in the jail, the outer terminal that owns USB, and the phone in a hand. “Remember” is one syllable that reprints that map — waymarks, install lines, look checklist, open doors — so a break, a BRB, or a new chat never loses the thread.

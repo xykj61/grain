@@ -11,7 +11,7 @@
 ## 0 -- Max mode, the default for an unattended run
 
 **Run the loop at `--effort max`.** Claude Code takes `--effort low|medium|high|xhigh|max`, and an
-unattended season takes the top of that scale by default. The reasoning is plain: a lap that runs
+unattended chapter takes the top of that scale by default. The reasoning is plain: a lap that runs
 while nobody watches has no one to catch a shortcut, so the run buys back with thinking what it
 gives up in supervision. A hurried lap that lands a wrong repoint costs more hours than every lap
 of the day it saved.
@@ -79,7 +79,7 @@ behind. Foundation:
 ### The council rota -- one element's triad deep-read per lap (5 x 3)
 
 The lenses above load every lap. The **rota** is the supplement: deep-read **one row** of the grid
-below per lap -- three documents, cycling by lap index, so **lap N reads row `N mod 5`**. A full
+below per lap -- the row's threshold page first, then its three documents, cycling by lap index, so **lap N reads row `N mod 5`**. A full
 cycle takes five laps, so every document returns to living awareness roughly once a working day
 rather than once a fortnight.
 
@@ -112,13 +112,22 @@ three angles rather than one document in isolation, and the modality axis carrie
 polarity the shape was drawn from: cardinal and fixed genuinely pull against each other -- begin
 the new thing, hold the line -- with dual as the mediator between them.
 
+**Each element row carries its own sense** (the tanmatra mapping, seated `20260826` on Keaton's
+word): **aether hears** (sound), **air feels** (touch), **fire sees** (vision), **water tastes**,
+and **earth smells** (aroma). Read the row through its sense: an aether lap listens for what the
+work is saying, an air lap feels for the boundary under the hand, a fire lap looks hard at what
+must be seen and cut, a water lap tastes whether the flow is sweet or off, and an earth lap
+smells the ground -- the concrete fact before it is argued with. The same mapping seats the
+fixed column of the Kyri 6 receipt palettes (`kyri/receipt.rye`), so the rota, the receipts,
+and the front door speak one sensory grammar.
+
 | | **Cardinal** -- opens | **Fixed** -- holds | **Dual** -- adapts |
 |---|---|---|---|
-| **Aether - Jupiter** *why the work exists* | `foundations/20260706-185112_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260702-184312_the-grain-and-the-crossing.md` |
-| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260823-204456_single-stranded.md` | `context/GAUGE_STYLE.md` |
-| **Fire - Mars** *cut and stop* | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
-| **Water - Venus** *care and flow* | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
-| **Earth - Mercury** *the concrete* | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
+| **Aether - Jupiter** *why the work exists* -- threshold [`foundations/20260826-021731_aether-the-row-that-hears.md`](../../foundations/20260826-021731_aether-the-row-that-hears.md) | `foundations/20260706-185112_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260702-184312_the-grain-and-the-crossing.md` |
+| **Air - Saturn** *law and boundary* -- threshold [`foundations/20260826-021732_air-the-row-that-feels.md`](../../foundations/20260826-021732_air-the-row-that-feels.md) | `context/TAME_CORE.md` | `foundations/20260823-204456_single-stranded.md` | `context/GAUGE_STYLE.md` |
+| **Fire - Mars** *cut and stop* -- threshold [`foundations/20260826-021733_fire-the-row-that-sees.md`](../../foundations/20260826-021733_fire-the-row-that-sees.md) | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
+| **Water - Venus** *care and flow* -- threshold [`foundations/20260826-021734_water-the-row-that-tastes.md`](../../foundations/20260826-021734_water-the-row-that-tastes.md) | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
+| **Earth - Mercury** *the concrete* -- threshold [`foundations/20260826-021735_earth-the-row-that-smells.md`](../../foundations/20260826-021735_earth-the-row-that-smells.md) | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
 
 **What the grid retired, and why each was a real cut.** The d27 rota mixed a 4 KB essay with a
 164 KB dictionary and called both one lap's reading, which schedules a filename rather than
@@ -130,7 +139,7 @@ the route**, where the loop already reads them. Four domain visions -- hardware,
 singularity, Pond -- and three indexes left the rota and stayed in the tree; a lap rarely writes
 different code for having re-read a vision, and the compass walks the indexes already.
 
-**The bench.** Five documents rotate in when a season's work calls for them, and each is already
+**The bench.** Five documents rotate in when a chapter's work calls for them, and each is already
 **cited by a rota document**, so a lap reading the principle is pointed at the practice:
 `context/SILO_TECHNIQUE.md` (cited by Conway), `context/SIMPLE_LOVABLE_COMPLETE.md` (cited by
 Gall), `foundations/20260703-200712_what-needs-ordering.md`,
@@ -163,9 +172,9 @@ Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not
 
 ## 3 -- The route (Lindy-first, crux-first)
 
-The itinerary is ITINERARY's season table and open doors. Each round: read the compass, pick the highest-Lindy crux among agent-doable work, land it, prove it, send it. Named route, never an open field.
+The itinerary is ITINERARY's chapter table and open doors. Each round: read the compass, pick the highest-Lindy crux among agent-doable work, land it, prove it, send it. Named route, never an open field.
 
-**Lindy-priority double-seat (seated `20260817`): the Microkernel Target** -- Caravan on seL4/Genode (clean-room study; both copyleft), Tally on s6/skalibs (ISC), a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, closed by the parity-witness happy-zone suite running GREEN on the new target. It is ordered ahead of Chapters A-H by Lindy-first crux-first, yet **most of its rungs are gates** (a fetch approval, a per-component license read, buying hardware). The loop advances only its **agent-doable** rungs -- external-research answers (can Zig target seL4/Genode today?), clean-room design briefs, the parity-suite scaffolding -- and **surfaces, never crosses**, every fetch/license/hardware gate. Direction and clean-room boundary: `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` and `external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`.
+**Lindy-priority double-seat (seated `20260817`): the Microkernel Target** -- Caravan on seL4/Genode (clean-room study; both copyleft), Tally on s6/skalibs (ISC), a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, closed by the parity-witness happy-zone suite running GREEN on the new target. It is ordered ahead of Chapters A-H by Lindy-first crux-first, yet **most of its rungs are gates** (a fetch approval, a per-component license read, buying hardware). The loop advances only its **agent-doable** rungs -- external-research answers (can Zig target seL4/Genode today?), clean-room design briefs, the parity-suite scaffolding -- and **surfaces, never crosses**, every fetch/license/hardware gate. Direction and clean-room boundary: `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-chapters.md` and `external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`.
 
 - **Next lap:** {{the next agent-doable rung -- file - what it composes - what it proves}}
 - **Then:** {{the rung after, if pre-decidable}}
@@ -277,9 +286,9 @@ A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in
 
 **Single strand each.** The **logs are the record of what was done**; **ITINERARY is the live card of what is next**. Keep them single-stranded (`foundations/20260823-204456_single-stranded.md`) -- never let ITINERARY swell into a second copy of the log index. A round refreshes ITINERARY's *Now* to point at live work; it does not re-list into ITINERARY the finished laps the logs already hold.
 
-**Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
+**Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or chapter -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
 
-- **Deep-read for the next crux**, past ITINERARY's top rows: the recent logs' `recommend` lines, the crux to-do ledgers (`construction/TASKS.md`, `construction/ROADMAP.md`, `construction/THREADS.md`, `construction/REDS.md`), and the itineraries (`active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md`, `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`).
+- **Deep-read for the next crux**, past ITINERARY's top rows: the recent logs' `recommend` lines, the crux to-do ledgers (`construction/TASKS.md`, `construction/ROADMAP.md`, `construction/THREADS.md`, `construction/REDS.md`), and the itineraries (`active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md`, `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-chapters.md`).
 - **Condense the done work out of ITINERARY** -- strike the completed *Now*/arc lines the logs already record, so the card shrinks as work lands. Record a **checkpoint** (`construction/CHECKPOINTS.md`, `.claude/rules/checkpoint.md` names ITINERARY by name) first when the condense rewrites more than a line or two of the living card. Accrete-never-break holds by tier: ITINERARY's *Now* is Tier 3 and may sweep, the logs are Tier 2 and are never rewritten, so nothing done is ever lost.
 - **Refill *Now* and *next*** with the crux the deep read surfaced, so ITINERARY always carries live love-tasks -- a living work-front that evolves as work completes, never a redundant session-log index.
 

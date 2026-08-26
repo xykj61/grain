@@ -1,16 +1,21 @@
 //! kyri/receipt.rye -- the Kyri 6 receipt: one immutable, content-addressed record of anything.
 //!
-//! WHAT IT IS. A receipt says *this happened, here is exactly what, and here is the name of the bytes.* Kyri has carried session logs
-//! since `format session-log-v1`, and a session is only one kind of thing worth receipting. Kyri 6 generalizes the notation to any
-//! subject -- a build, a fetch, a reading, a payment, a signature, a lap of an unattended loop -- while keeping the one property the
-//! notation was made for: a human reads it without a tool, and a program parses it without a grammar.
+//! WHAT IT IS. Night falls on a working day, and what remains is what was written. A receipt is
+//! the small stone a day leaves on the sill: *this happened, here is exactly what, and here is
+//! the name of the bytes.* Kyri has carried session logs since `format session-log-v1`, and a
+//! session is one kind of thing worth remembering among many. Kyri 6 opens the notation to any
+//! subject -- a build, a fetch, a reading, a payment, a signature, a lap of an unattended loop --
+//! and keeps the one property the notation was born under: a human reads it by lantern light
+//! without a tool, and a program parses it without a grammar.
 //!
-//! WHY "6". The voice this tree writes in is the sixth: Reya, Reya 2, Rio 3, Quin, Riyo, Kyri. The number counts a lineage that already
-//! happened rather than forecasting a schema revision -- the census reading of `.claude/rules/stamp-and-name.md`, where a number that
-//! counts is a fact about the past and a number that predicts is a plan wearing a name's clothes.
+//! WHY "6". The voice this tree writes in is the sixth: Reya, Reya 2, Rio 3, Quin, Riyo, Kyri.
+//! The number counts a lineage already lived rather than forecasting a schema revision -- the
+//! census reading of `.claude/rules/stamp-and-name.md`, where a number that counts is a fact
+//! about the past, and a number that predicts is a plan wearing a name's clothes.
 //!
-//! THE SHAPE, and why each field is there. One field per line, a first word naming the field and the rest its value, `#` for a comment,
-//! no quotes and no braces -- the notation unchanged, so every tool that reads a session log reads a receipt.
+//! THE SHAPE, and why each field is there. One field per line, a first word naming the field and
+//! the rest its value, `#` for a comment, no quotes and no braces -- the notation unchanged, so
+//! every tool that reads a session log reads a receipt.
 //!
 //!   format kyri-receipt-v6
 //!   stamp   YYYYMMDD.HHMMSS      the one clock, never fabricated
@@ -22,23 +27,109 @@
 //!   store   <mycelium tag>       which Mycelium instantiation holds it -- MOX, EBB, EBBB, and the rest
 //!   signer  <kumara tag>         optional: whose key stands behind it
 //!   sig     <hex>                optional: the signature over the resin
+//!   tag     <word>               optional, repeatable: one categorizing word, up to fifteen
+//!   assoc   <word> <weight>      optional, repeatable: a weighted association, weight 1..100
 //!
-//! THE PROPERTY THAT MAKES IT USEFUL. The receipt names its payload by the payload's own bytes, so the same bytes always produce the same
-//! name, from any room and any machine. That is Tablecloth's idea and Mantra's promise stated in one line, and it is what lets a receipt
-//! be copied freely without becoming a second source of truth: two receipts for one payload are the same receipt.
+//! THE TWO PALETTES (accreted 20260826 on Keaton's word). The `tag` and `assoc` fields let a
+//! receipt say what a thing is about, and how strongly -- the vocal tagging and categorizing
+//! weight the front door speaks in. Two palettes stand below, fifteen seats each -- one per
+//! cell of the council rota, five elements by three modalities -- paired seat for seat under
+//! one theme: **dark euphoria, light terra**. The terra palette is drawn
+//! from the landing copy held in the WADE journey plan -- a grain is a piece you hold; the
+//! forest and the senses; rivers and health; chapters with loved ones; harvest and blossom;
+//! heavy gems become precious cloths. The twilight palette is each word's night-side balance:
+//! the harvest rests as fallow, the gem lightens to a feather, the river opens into the tide,
+//! and health's own dark twin is euphoria itself. Day aims; night dissolves; the pairing holds
+//! them level. Both palettes are warm defaults rather than walls -- any word may tag a receipt,
+//! and `palette_holds`, `twilight_of`, and `terra_of` answer which voice a word belongs to.
 //!
-//! HONEST SCOPE, stated before anything else claims otherwise. This module builds, renders, and parses the receipt, and computes its
-//! content address with the tree's own SHA3-512. It signs nothing and verifies nothing: `signer` and `sig` are carried as opaque text so
-//! a receipt can hold them, and the Kumara key that would fill them is a custody gate a hand opens (`construction/ITINERARY.md`). It
-//! reaches no network and no store; `store` names where a payload lives without going there.
+//! THE PROPERTY THAT MAKES IT USEFUL. The receipt names its payload by the payload's own bytes,
+//! so the same bytes always produce the same name, from any room, any machine, any hour of the
+//! night. That is Tablecloth's idea and Mantra's promise said in one line, and it is what lets
+//! a receipt be copied freely without becoming a second source of truth: two receipts for one
+//! payload are the same receipt.
 //!
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run kyri/receipt.rye selftest
+//! HONEST SCOPE, stated before anything else claims otherwise. This module builds, renders, and
+//! parses the receipt, and computes its content address with the tree's own SHA3-512. It signs
+//! nothing and verifies nothing: `signer` and `sig` travel as opaque text so a receipt can hold
+//! them, and the Kumara key that would fill them waits behind a custody gate a hand opens
+//! (`construction/ITINERARY.md`). It reaches no network and no store; `store` names where a
+//! payload rests without going there.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run kyri/receipt.rye
+//!
+//! May every day leave its stone, and every stone name its day truly.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const receipt_version = "20260823.212046";
+pub const receipt_version = "20260826.020000";
+
+// The association palette: fifteen words seated 20260826 on Keaton's word, one per cell of the
+// council rota -- five element rows by the three modalities, columns cardinal | fixed | dual.
+// A cardinal word initiates, a fixed word sustains, a dual word adapts and dissolves onward.
+// The FIXED column carries each element's own sense, the tanmatra mapping Keaton named: aether
+// hears (sound), air feels (touch), fire sees (vision), water tastes, earth smells (aroma).
+// The cardinal and dual seats draw from the landing copy the WADE journey holds. Fifteen on
+// purpose: the palette is exactly one orbit wide, the same grid an orbit reads whole.
+pub const grain_palette = [_][]const u8{
+    "mind",     "sound", "dream", // aether: mind initiates, sound is its sense, dream dissolves
+    "arc",      "touch", "senses", // air: the arc moves, touch is its sense, the senses play
+    "rockstar", "vision", "risk", // fire: the rockstar ignites, vision is its sense, risk adapts
+    "river",    "taste", "love", // water: the river cuts, taste is its sense, love flows onward
+    "grain",    "aroma", "harvest", // earth: the grain seeds, aroma is its sense, harvest turns
+};
+
+// The twilight palette: the same fifteen seats, each word the night-side balance of its light
+// twin at the same index, under the theme "dark euphoria, light terra" (Keaton's word,
+// 20260826). The light word stands grounded -- terra -- and its dark twin carries the calm
+// euphoric register of Twilight Style: never gloom, always the affirmative dark. The senses
+// keep the pairing honest at the fixed seat: sound rests in silence, touch becomes presence,
+// vision opens into night, taste sweetens to nectar, and aroma rises as incense. Around them
+// the harvest rests as fallow, the arc lets go into the spiral, and love deepens to longing.
+// Position is the pairing: grain_palette[i] balances twilight_palette[i], and the two lists
+// share no word.
+pub const twilight_palette = [_][]const u8{
+    "mystery", "silence",  "hush", // aether at night
+    "spiral",  "presence", "trance", // air at night
+    "hermit",  "night",    "surrender", // fire at night
+    "tide",    "nectar",   "longing", // water at night
+    "mist",    "incense",  "fallow", // earth at night
+};
+
+/// Answer whether a word belongs to the seated front-door palette. Free tags stay welcome;
+/// this only says whether the word speaks in the landing copy's own voice.
+pub fn palette_holds(word: []const u8) bool {
+    // invariant: the palette is bounded at construction, so this walk is bounded too.
+    assert(grain_palette.len == 15);
+    for (grain_palette) |p| {
+        if (std.mem.eql(u8, p, word)) return true;
+    }
+    return false;
+}
+
+/// The dark twin of a light word -- twilight_of("harvest") is "fallow" -- or null when the
+/// word stands outside the terra palette. The reverse walk is terra_of.
+pub fn twilight_of(word: []const u8) ?[]const u8 {
+    // invariant: the two palettes pair seat for seat.
+    assert(grain_palette.len == twilight_palette.len);
+    for (grain_palette, 0..) |p, i| {
+        if (std.mem.eql(u8, p, word)) return twilight_palette[i];
+    }
+    return null;
+}
+
+/// The light twin of a dark word -- terra_of("fallow") is "harvest" -- or null outside the
+/// twilight palette.
+pub fn terra_of(word: []const u8) ?[]const u8 {
+    // invariant: the two palettes pair seat for seat.
+    assert(grain_palette.len == twilight_palette.len);
+    for (twilight_palette, 0..) |p, i| {
+        if (std.mem.eql(u8, p, word)) return grain_palette[i];
+    }
+    return null;
+}
 
 // Bounds, named at construction and checked at every edge. Each number is a choice with a reason.
 // A receipt is a HEADER, so these are generous for a header and refuse a document: a subject that
@@ -49,6 +140,10 @@ pub const max_tag_len: u32 = 64; // a store or signer tag; MOX is 3, a Kumara ta
 pub const max_hex_len: u32 = 256; // SHA3-512 is 128 hex characters; a signature may run longer
 pub const max_render_len: u32 = 2048; // the whole rendered receipt, bounded so a caller can stack it
 pub const resin_hex_len: u32 = 128; // SHA3-512 in hex, the tree's naming-grade width
+pub const max_tags: u32 = 15; // one per rota cell: a receipt tagged past the whole grid is a document
+pub const max_assocs: u32 = 15; // the same bound, for the same reason
+pub const max_assoc_word_len: u32 = 32; // one word, the kind bound again
+pub const max_weight: u8 = 100; // a weight reads as a share of one hundred, at a glance
 
 pub const ReceiptError = error{
     KindTooLong,
@@ -60,6 +155,11 @@ pub const ReceiptError = error{
     RenderTooLong,
     CodecUnknown,
     StampMalformed,
+    TagWordEmpty,
+    TagWordTooLong,
+    TooManyTags,
+    TooManyAssocs,
+    WeightOutOfRange,
 };
 
 pub const Codec = enum {
@@ -81,6 +181,11 @@ pub const Codec = enum {
     }
 };
 
+pub const Assoc = struct {
+    word: []const u8,
+    weight: u8, // 1..max_weight; zero is refused, since a weightless association is a tag
+};
+
 pub const Receipt = struct {
     stamp: []const u8,
     kind: []const u8,
@@ -91,6 +196,8 @@ pub const Receipt = struct {
     store: []const u8,
     signer: []const u8, // empty means unsigned, which is the honest default
     sig: []const u8,
+    tags: []const []const u8 = &.{}, // categorizing words, the palette the warm default
+    assocs: []const Assoc = &.{}, // weighted associations, strongest voice first by convention
 
     /// Refuse a receipt whose fields exceed their named bounds, before it is rendered or stored.
     pub fn check(self: *const Receipt) ReceiptError!void {
@@ -106,6 +213,19 @@ pub const Receipt = struct {
         if (self.resin.len != resin_hex_len) return ReceiptError.ResinWidthWrong;
         // invariant: the stamp is the one clock's dot form, YYYYMMDD.HHMMSS -- 15 characters.
         if (self.stamp.len != 15 or self.stamp[8] != '.') return ReceiptError.StampMalformed;
+        // invariant: the tag and association rooms are bounded at one rota grid each.
+        if (self.tags.len > max_tags) return ReceiptError.TooManyTags;
+        if (self.assocs.len > max_assocs) return ReceiptError.TooManyAssocs;
+        for (self.tags) |t| {
+            if (t.len == 0) return ReceiptError.TagWordEmpty;
+            if (t.len > max_assoc_word_len) return ReceiptError.TagWordTooLong;
+        }
+        for (self.assocs) |a| {
+            if (a.word.len == 0) return ReceiptError.TagWordEmpty;
+            if (a.word.len > max_assoc_word_len) return ReceiptError.TagWordTooLong;
+            // invariant: a weight lives in 1..max_weight -- zero is a tag wearing a number.
+            if (a.weight == 0 or a.weight > max_weight) return ReceiptError.WeightOutOfRange;
+        }
     }
 
     /// Write the receipt into `out` in Kyri notation, returning the slice written.
@@ -124,6 +244,12 @@ pub const Receipt = struct {
         w = put_field(out, w, "store", self.store) orelse return ReceiptError.RenderTooLong;
         if (self.signer.len != 0) w = put_field(out, w, "signer", self.signer) orelse return ReceiptError.RenderTooLong;
         if (self.sig.len != 0) w = put_field(out, w, "sig", self.sig) orelse return ReceiptError.RenderTooLong;
+        for (self.tags) |t| w = put_field(out, w, "tag", t) orelse return ReceiptError.RenderTooLong;
+        for (self.assocs) |a| {
+            var pair: [max_assoc_word_len + 4]u8 = undefined;
+            const text = std.fmt.bufPrint(&pair, "{s} {d}", .{ a.word, a.weight }) catch return ReceiptError.RenderTooLong;
+            w = put_field(out, w, "assoc", text) orelse return ReceiptError.RenderTooLong;
+        }
         // invariant: a rendered receipt always opens with its format line, so a reader knows the shape.
         assert(w > 0);
         assert(std.mem.startsWith(u8, out[0..w], "format kyri-receipt-v6"));
@@ -278,10 +404,48 @@ fn run_selftest() !u8 {
         if (e != ReceiptError.CodecUnknown) return e;
     }
 
+    // Claim 11: tags and weighted associations render, one field per line, in the notation.
+    var tagged = r;
+    tagged.tags = &.{ "harvest", "chapter" };
+    tagged.assocs = &.{ .{ .word = "love", .weight = 88 }, .{ .word = "journey", .weight = 40 } };
+    const tagged_text = try tagged.render(&buf);
+    if (std.mem.indexOf(u8, tagged_text, "\ntag harvest\n") == null) return error.TagMissing;
+    if (std.mem.indexOf(u8, tagged_text, "\nassoc love 88\n") == null) return error.AssocMissing;
+
+    // Claim 12: the terra palette knows its own voice, and only its own.
+    if (!palette_holds("harvest")) return error.PaletteRefusedOwnWord;
+    if (palette_holds("blockchain")) return error.PaletteAdmittedStranger;
+
+    // Claim 13: every light word has its dark twin, the pairing runs both ways, and no word serves both palettes.
+    if (twilight_of("harvest")) |dark| {
+        if (!std.mem.eql(u8, dark, "fallow")) return error.PairingWrong;
+        if (!std.mem.eql(u8, terra_of(dark).?, "harvest")) return error.PairingNotMutual;
+    } else return error.TwinMissing;
+    for (grain_palette) |light| {
+        if (terra_of(light) != null) return error.PalettesOverlap;
+        if (twilight_of(light) == null) return error.TwinMissing;
+    }
+
+    // Claim 14: a weight of zero is a tag wearing a number, and is refused.
+    var weightless = r;
+    weightless.assocs = &.{.{ .word = "love", .weight = 0 }};
+    if (weightless.check()) |_| return error.ZeroWeightAdmitted else |e| {
+        if (e != ReceiptError.WeightOutOfRange) return e;
+    }
+
+    // Claim 15: a sixteenth tag is a document, and is refused.
+    var crowded = r;
+    var many: [max_tags + 1][]const u8 = undefined;
+    for (&many) |*t| t.* = "grain";
+    crowded.tags = &many;
+    if (crowded.check()) |_| return error.TagFloodAdmitted else |e| {
+        if (e != ReceiptError.TooManyTags) return e;
+    }
+
     print("{s}", .{text});
-    print("kyri-receipt: ten claims held -- address stable, address distinct, nine fields rendered, five refusals bitten.\n", .{});
+    print("kyri-receipt: fifteen claims held -- address stable and distinct, eleven fields rendered, seven refusals bitten, two palettes paired.\n", .{});
     print("kyri-receipt: version {s}\n", .{receipt_version});
-    print("GREEN: Kyri 6 -- a receipt names its payload by the payload's own bytes.\n", .{});
+    print("GREEN: Kyri 6 -- a receipt names its payload by the payload's own bytes, by day and by night.\n", .{});
     return 0;
 }
 
