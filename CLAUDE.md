@@ -19,7 +19,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 - `active-designing/` — design in motion: **essays**, design that outlives the code.
 - `active-development/` — where a **round** thinks out loud: lap plans, scoping, survey ledgers. One question files a piece — *would this still be worth reading if the code it describes were deleted?* Yes → designing, no → development (`.claude/rules/design-rooms.md`).
 - `expanding-prompts/` — intent expanded into runnable plans.
-- `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/r/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/d/dated_path_resolve.rish`).
+- `session-logs/` — reasoning traces as **Kyri** (`.kyri`, with elder `.bron` logs preserved); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/r/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/d/dated_path_resolve.rish`).
 
 ## Working conventions
 
@@ -38,7 +38,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.bron`, **no countdown prefix**), Bron fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/rye/align_session_logs.rye`.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.kyri`, **no countdown prefix**), Kyri fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Provider, product, configured defaults, verified active identity, and joint-session evidence follow `.claude/rules/session-log-provenance.md`. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/rye/align_session_logs.rye`.
 
 ## Enclosure
 

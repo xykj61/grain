@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260826.143837
+editor Codex desktop
+provider OpenAI
+product ChatGPT Codex desktop
+role repository agent
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-5.6-sol
+configured_reasoning ultra
+configured_service_tier priority
+configured_service_name Fast
+configured_status verified future default on this host; not active runtime evidence
+evidence user-confirmed Codex CLI 0.150.0-alpha.8 strict config and bundled model catalog on this host
+evidence official OpenAI model documentation establishes gpt-5.6-sol and API reasoning through max; the host catalog establishes Codex ultra separately
+evidence_source https://developers.openai.com/api/docs/models/gpt-5.6-sol canonical model and supported API reasoning levels
+evidence_source https://developers.openai.com/api/docs/guides/latest-model gpt-5.6 alias routing
+voice Kyri
+host macOS local clone -- Eastern (EDT) one-clock
+coordination user coordinated separate sessions
+collaborator_provider Anthropic
+collaborator_product Claude Code
+collaborator_role parallel repository agent
+collaborator_modality separate text sessions
+collaborator_model unverified
+collaborator_model_status active runtime unverified
+collaborator_configured_model claude-opus-5
+collaborator_configured_reasoning max
+collaborator_configured_status repository default verified; external active sessions unverified
+collaborator_evidence .claude/settings.json proves the repository default; explicit user summaries report the concurrent work
+collaborator_scope dated-path fixture narrowing and the macOS and BSD shell-dialect family
+collaborator_status user-reported contributions; no attributable local commit in this checkout at the recorded stamp
+scope Codex authored and verified the Kyri receipt alignment, Equinox e102 through e104, and this provenance foundation
+status local Git evidence names Codex-scope commits; joint attribution remains separated by source
+title two hands, one truthful record
+prompt Synchronize and send the signed Equinox repairs, then adapt Grain's Claude and Cursor session-log law so ChatGPT and Codex can write truthful Glow-profiled Kyri records for user-coordinated work across separate sessions.
+think Fetched xy and compared the signed e103 and e104 commits against its unchanged main tip at both file and contract seams.
+think Ran each Equinox control, witness, and choir before publishing; the e105 boundary remained in the excluded macOS shell-dialect family.
+think Read the Kyri notation, Glow profile, Claude and Cursor rules, tracked Claude settings, model scanners, recent Codex logs, and index witnesses before changing the authoring law.
+think Separated configured defaults from active runtime identity, and separated each provider's contribution from the user's coordination layer.
+obs xy/main accepted e103 and e104 as a fast-forward and matched local HEAD at 98e4a74a06738f177a2c4bdb7e44f0c6d6316fea before this local logging lap opened.
+obs OpenAI and Anthropic share no claimed runtime, partnership, endorsement, or direct exchange here; the user coordinates distinct sessions and each contribution keeps its own evidence.
+obs Rule-twin, declared-model, Scribe, index-row-bound, frontmatter, provenance-field, and Gauge checks passed; both touched rule pairs normalize to the same law.
+obs The full log-row witness still names one earlier landed record, 20260826-115944, without an index row; this lap leaves that parallel-session record for its owning hand.
+obs The one-clock witness confirmed monotonic order and America/New_York, then hit its known GNU date parsing mismatch on macOS; BSD date parsed this stamp 218 seconds behind the live clock, inside the 900-second bound.
+file .claude/rules/session-log-provenance.md provider-neutral provenance law for Claude-facing agents
+file .cursor/rules/session-log-provenance.mdc scoped Cursor and Codex-facing twin with valid frontmatter
+file .claude/rules/session-logs.md living Kyri format points at the provenance law
+file .cursor/rules/session-logs.mdc living Kyri twin aligned with the Claude rule
+file GLOW_PROFILE.template.bron clone defaults now declare configuration rather than active telemetry
+file CLAUDE.md top-level session-log door now names Kyri and the provenance seam
+file session-logs/README.md newest-first way into this record
+recommend check-in the next Equinox crux enters the excluded shell-dialect family, while this signed logging lap waits locally for a separate send
