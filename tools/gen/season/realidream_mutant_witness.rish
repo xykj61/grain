@@ -8,7 +8,7 @@ say "realidream-mutant: Language EN — living vision over June fossil."
 say "realidream-mutant: Style Radiant — poetics held · stack words sharpened."
 say "realidream-mutant: Lens TAME — Surface Season p29."
 
-let living = run ["test" "-f" "foundations/20260728-220203_realidream.md"]
+let living = run ["test" "-f" "foundations/20260825-233310_realidream.md"]
 assert living.ok else "realidream-mutant: living foundation missing"
 
 let fossil = run ["test" "-f" "foundations/20260629-063512_realidream.md"]
@@ -18,26 +18,26 @@ let seat = run ["test" "-f" "counsel/date/20260728/20260728-220203_surface-seaso
 assert seat.ok else "realidream-mutant: p29 counsel seat missing"
 
 say "realidream-mutant: lean words in living essay..."
-let lean = run ["sh" "-c" "grep -q 'GUI target framework' foundations/20260728-220203_realidream.md && grep -q 'not an instance of Skate' foundations/20260728-220203_realidream.md && grep -q 'branded Pond/Pool' foundations/20260728-220203_realidream.md && grep -q 'invent held' foundations/20260728-220203_realidream.md && echo LEAN_OK"]
+let lean = run ["sh" "-c" "grep -q 'GUI target framework' foundations/20260825-233310_realidream.md && grep -q 'not an instance of Skate' foundations/20260825-233310_realidream.md && grep -q 'branded Pond/Pool' foundations/20260825-233310_realidream.md && grep -q 'invent held' foundations/20260825-233310_realidream.md && echo LEAN_OK"]
 assert lean.ok else "realidream-mutant: lean scan failed"
 assert lean.out contains "LEAN_OK" else "realidream-mutant: Skate/Pond lean words missing"
 
 say "realidream-mutant: fossil banner..."
-let banner = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_realidream.md && grep -q '20260728-220203_realidream.md' foundations/20260629-063512_realidream.md && echo FOSSIL_OK"]
+let banner = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_realidream.md && grep -q '20260825-233310_realidream.md' foundations/20260629-063512_realidream.md && echo FOSSIL_OK"]
 assert banner.ok else "realidream-mutant: fossil banner scan failed"
 assert banner.out contains "FOSSIL_OK" else "realidream-mutant: fossil must point at living path"
 
 say "realidream-mutant: living pointers..."
-let lex = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' context/LEXICON.md && echo LEX_OK"]
+let lex = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "realidream-mutant: LEXICON scan failed"
 assert lex.out contains "LEX_OK" else "realidream-mutant: LEXICON must cite living path"
-let readme = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' foundations/README.md && echo README_OK"]
+let readme = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' foundations/README.md && echo README_OK"]
 assert readme.ok else "realidream-mutant: foundations README scan failed"
 assert readme.out contains "README_OK" else "realidream-mutant: README must cite living path"
-let gratitude = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' gratitude/noah-b-realidream.md && echo GRAT_OK"]
+let gratitude = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' gratitude/noah-b-realidream.md && echo GRAT_OK"]
 assert gratitude.ok else "realidream-mutant: gratitude scan failed"
 assert gratitude.out contains "GRAT_OK" else "realidream-mutant: gratitude must cite living path"
-let graph = run ["sh" "-c" "grep -q '20260728-220203_realidream.md' foundations/20260728-221253_the-graph-beneath-the-surface.md && echo GRAPH_OK"]
+let graph = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' foundations/20260728-221253_the-graph-beneath-the-surface.md && echo GRAPH_OK"]
 assert graph.ok else "realidream-mutant: graph sibling scan failed"
 assert graph.out contains "GRAPH_OK" else "realidream-mutant: living graph sibling must cite living Realidream"
 

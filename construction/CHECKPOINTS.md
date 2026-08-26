@@ -22,6 +22,24 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## 20260825.234631 -- walk-back `0a1d3e51ef` -- the DJINN deep debride
+
+Keaton's word: the collaborator's name leaves the tree, the session logs, two filenames, and the
+whole git history, replaced by the pseudonym **DJINN** (GitHub `bit-trading-company-administrator`);
+every rewritten commit re-signed and the remote force-pushed. Swept: 443 capitalized and 22
+lowercase occurrences across 239 tracked files, the POLE waymark input debrided to hand-seated in
+the re-sealed registry, and the sow wall re-spelled with bracketed patterns so the guard outlives
+the name. What waits at the walk-back: nothing to recall -- the departing content is exactly what
+this debride removes, and after the force-push the nib survives only as this row's record of when
+the line was drawn.
+
+
+## `20260825.233029` -- the Bit Design System season opens (walk-back `0a1d3e51ef`)
+
+**Swept:** the standing pause -- "Brushstroke development is paused pending DJINN's Bit Design System" -- lifted from both heredoc prompts in `tools/l/launch-claude-season.rish` on Keaton's word (DJINN ready, Linengrow the starting inspiration). Custody gate %6 (DJINN's design lead) stands unchanged.
+
+**What waits there, worth recalling:** the exact pause wording, and the season's held posture, both whole at the walk-back nib.
+
 ## `20260825.213128` -- the season-room stopwatch condense (walk-back `c1b2f33422`)
 
 **Swept:** `construction/ITINERARY.md` -- the **Now** block rewritten from the two-pier row-number

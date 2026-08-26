@@ -16,7 +16,7 @@ assert graph.ok else "one-graph: living graph-beneath-surface foundation missing
 let graph_fossil = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
 assert graph_fossil.ok else "one-graph: June graph-beneath fossil missing"
 
-let dream = run ["test" "-f" "foundations/20260728-220203_realidream.md"]
+let dream = run ["test" "-f" "foundations/20260825-233310_realidream.md"]
 assert dream.ok else "one-graph: living realidream foundation missing"
 let dream_fossil = run ["test" "-f" "foundations/20260629-063512_realidream.md"]
 assert dream_fossil.ok else "one-graph: June realidream fossil missing"

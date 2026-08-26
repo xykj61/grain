@@ -199,6 +199,24 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 3. **The fossil wears a banner** at the top naming the living page and what changed.
 4. **The row is written here**, with the measurement, so a later pass reads rather than re-walks.
 
+### M-bit-a -- `foundations/20260728-220203_realidream.md` (`20260825.233310`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../foundations/20260825-233310_realidream.md`](../foundations/20260825-233310_realidream.md) |
+| What accreted | one section, *the season opens -- DJINN is ready* (the pause lifted, gate %6 standing) |
+| Living citers repointed | LEXICON, foundations/README, the gratitude note, four season witnesses |
+| Fossil | bannered on its face, body whole; cut RED until circled |
+
+### M-bit-b -- `expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md` (`20260825.233311`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md`](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md) |
+| What accreted | one section, *the word arrives -- 20260825* (WADE0 door, WADE1 bridge, WADE3 IaC named live) |
+| Living citers repointed | none stood |
+| Fossil | bannered on its face, body whole; cut RED until circled |
+
 ### M-sync-a -- `foundations/20260813-142420_mycelium-the-consensus-protocol.md` (`20260825.211055`)
 
 | Reading | Value |
