@@ -169,7 +169,10 @@ fn run_ship(io: std.Io, ship_i: u32) !u8 {
     // invariant: the round gathered every seat's voice exactly once.
     assert(have == 3);
     assert(voices[1].ship != voices[2].ship);
-    assert(voices[1].ship != ship_i and voices[2].ship != ship_i);
+    // invariant: neither gathered voice is this process's own -- split from one compound assert
+    // so a failure names which of the two seats collided rather than only that one did.
+    assert(voices[1].ship != ship_i);
+    assert(voices[2].ship != ship_i);
 
     // The pen: earliest stamp wins, the author's key breaking a tie -- the derived-spine rule,
     // computed here from this process's own copy alone.

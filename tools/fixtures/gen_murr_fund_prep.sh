@@ -36,7 +36,7 @@ test -f gratitude/kyler-murray.md
 test -f gratitude/mur-movement-aesthetics.md
 test -f foundations/yonder/20260728-025220_murr-and-kyler-murray.md
 test -f counsel/date/20260728/20260728-025220_the-mur-season-innermost-charter.md
-test -f counsel/date/20260730/20260730-150702_pole-bozo-djinn-murr-keaton.md
+grep -q '20260730.150702' "$PAGE"
 
 name=Murr
 len=$(printf '%s' "$name" | wc -c)
