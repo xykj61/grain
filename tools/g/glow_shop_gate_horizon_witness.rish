@@ -1,14 +1,17 @@
-# glow_bartis_horizon_witness.rish -- bartis implement witness (STOA100 GREEN).
+# glow_shop_gate_horizon_witness.rish -- bartis implement witness (STOA100 GREEN).
 #
 # Proves |= bartis is tokenized, the thin identity gate lowers, and the welcome
 # binary exits 0. Replaces the STOA99 horizon check now that STOA100 is GREEN.
 #
-#   rishi/bin/rishi run tools/g/glow_bartis_horizon_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_gate_horizon_witness.rish
 
 let tame = "context/TAME_GUIDANCE.md"
 let tokens = "glow/tokens.rye"
 let g1_brief = "active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md"
-let horizon_brief = "active-designing/20260720-033340_stoa99-bartis-horizon-wording.md"
+# The brief moved into yonder/ and this citation did not follow, so the witness refused on a file
+# that stands perfectly well one directory over -- REDS %231 again, a guard citing in code where a
+# fold repoints links. Resolved with tools/d/dated_path_resolve.rish rather than guessed.
+let horizon_brief = "active-designing/yonder/20260720-033340_stoa99-bartis-horizon-wording.md"
 let readme = "glow/README.md"
 
 # TAME now carries STOA100 implement note.
@@ -41,14 +44,14 @@ assert alpha.ok else "glow_rune_alphabet_witness failed under bartis implement"
 assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
 
 # Bartis lower witness GREEN.
-let lower = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
-assert lower.ok else "glow_lower_bartis_witness failed"
-assert lower.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+let lower = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish"]
+assert lower.ok else "glow_lower_shop_gate_witness failed"
+assert lower.out contains "GREEN" else "glow_lower_shop_gate_witness not GREEN"
 
 # STOA101 argv deepen stays GREEN beside the identity fixture.
-let argv = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_bartis_argv_witness.rish"]
-assert argv.ok else "glow_bartis_argv_witness failed under bartis deepen"
-assert argv.out contains "GREEN" else "glow_bartis_argv_witness not GREEN"
-assert argv.out contains "STOA101" else "glow_bartis_argv_witness missing STOA101"
+let argv = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_shop_gate_argv_witness.rish"]
+assert argv.ok else "glow_shop_gate_argv_witness failed under bartis deepen"
+assert argv.out contains "GREEN" else "glow_shop_gate_argv_witness not GREEN"
+assert argv.out contains "STOA101" else "glow_shop_gate_argv_witness missing STOA101"
 
 say "GREEN: Glow bartis implement — |= tokenized, identity + argv sample; STOA100–101."

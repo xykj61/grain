@@ -55,6 +55,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260826.221834` | [the meter before the ruling](20260826-221834_the-meter-before-the-ruling.kyri) | Move 1 alive, 3.5x on the hit; the hit-rate meter seated, skip nothing |
 | `20260826.211951` | [the bench that spoke another dialect](20260826-211951_the-bench-that-spoke-another-dialect.kyri) | flock, the awk hex class, three dead nibs; %281 open |
 | `20260826.205753` | [Saturn enters the nocturne](20260826-205753_saturn-enters-the-nocturne.kyri) | two studies molt in place to Twilight; claims held; A and A+ |
+| `20260826.202104` | [the lap that ended at git add](20260826-202104_the-lap-that-ended-at-git-add.kyri) | rune rename closed; %284, %285 -- a lint with no body |
 | `20260826.195658` | [the horizon arrives as measurement](20260826-195658_the-horizon-arrives-as-measurement.kyri) | the happy zone molts; five thresholds, one shape |
 | `20260826.192711` | [the sweep that found nothing](20260826-192711_the-sweep-that-found-nothing.kyri) | %277 stands unique; two detectors thrown away |
 | `20260826.182901` | [the fascia, the friend, and the grant](20260826-182901_the-fascia-the-friend-and-the-grant.kyri) | two foundations, the mitra door, four dialect legs host-probed |

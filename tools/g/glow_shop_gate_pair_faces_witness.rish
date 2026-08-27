@@ -1,16 +1,16 @@
-# glow_bartis_pair_faces_witness.rish -- STOA338 pair-faces (parse + metal after 338b).
+# glow_shop_gate_pair_faces_witness.rish -- STOA338 pair-faces (parse + metal after 338b).
 #
-#   rishi/bin/rishi run tools/g/glow_bartis_pair_faces_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_gate_pair_faces_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "glow/bin/lower_bartis_witness"
+let bin = "glow/bin/lower_shop_gate_witness"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_bartis_witness.rye -femit-bin=${bin}"]
-assert build.ok else "lower_bartis_witness build failed: ${build.err}${build.out}"
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_shop_gate_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_shop_gate_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
-assert selftest.ok else "lower_bartis_witness exited non-zero"
-assert selftest.out contains "GREEN" else "lower_bartis_witness not GREEN"
+assert selftest.ok else "lower_shop_gate_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_shop_gate_witness not GREEN"
 assert selftest.out contains "bartis_pair" else "STOA338 missing bartis_pair emit"
 assert selftest.out contains "pair-faces eq" else "STOA338 missing pair-faces eq claim"
 assert selftest.out contains "pair-faces gth" else "STOA338 missing pair-faces gth claim"
@@ -20,8 +20,8 @@ assert selftest.out contains "gate-pair-eq-faces.glow" else "STOA338 missing eq 
 assert selftest.out contains "gate-pair-gth-faces.glow" else "STOA338 missing gth fixture claim"
 
 # Standing laps stay warm beside the relational gate.
-let argv = run ["rishi/bin/rishi" "run" "tools/g/glow_bartis_argv_witness.rish"]
-assert argv.ok else "glow_bartis_argv_witness must stay GREEN beside STOA338"
+let argv = run ["rishi/bin/rishi" "run" "tools/g/glow_shop_gate_argv_witness.rish"]
+assert argv.ok else "glow_shop_gate_argv_witness must stay GREEN beside STOA338"
 
 let a2 = run ["rishi/bin/rishi" "run" "tools/g/glow_tend_a2_suite.rish"]
 assert a2.ok else "glow_tend_a2_suite must stay GREEN beside STOA338"

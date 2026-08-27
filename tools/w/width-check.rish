@@ -9,6 +9,50 @@
 # hardware masks. Governed by the freestanding width policy in TAME_GUIDANCE,
 # not this hosted gate.
 #
+# THIS FILE HAD NO BODY UNTIL 20260826 (REDS %285). It was fourteen lines from
+# the root commit onward -- this header and the roster below -- so it exited 0
+# in silence every lap while `.claude/rules/tame-guidance.md`, `CLAUDE.md`, the
+# standing roster, and the unattended loop's own seed all named it the live
+# width lint. The roster grew one TAME-tidy round at a time and nothing ever
+# opened one of its files.
+#
+# The roster STAYS HERE, because naming these forty-five modules is the promise
+# this file makes: they are held at zero authored `usize`. What changed is that
+# `tools/fixtures/width_check_scan.sh` now reads the line below and measures it,
+# and measures the whole discovered corpus beside it as a ratchet -- so the
+# reading grows when the tree does rather than when somebody remembers
+# (REDS %277's lesson, applied to the roster that taught it).
+#
 # Usage: rishi run tools/w/width-check.rish
 
-let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/service.rye" "caravan/supervisor_exit.rye" "caravan/supervisor_signal.rye" "caravan/restart_on_ok.rye" "caravan/subscribe_poll_service.rye" "caravan/capabilities.rye" "mantra/src/diff.rye" "mantra/src/main.rye" "mantra/recall_lap1.rye" "mantra/recall_sync_wire.rye" "mantra/recall_sync_delivery.rye" "mantra/recall_two_way_sync.rye" "mantra/recall_two_way_sync_delivery.rye" "mantra/recall_catch_up.rye" "mantra/recall_catch_up_delivery.rye" "mantra/recall_subscribe_poll.rye" "mantra/recall_subscribe_poll_delivery.rye" "mantra/recall_tablecloth_query.rye" "mantra/resin_batch.rye" "mantra/snapshot_export.rye" "mantra/beading.rye" "mantra/recall_beaded.rye" "mantra/recall_batch_wire.rye" "mantra/recall_batch_delivery.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "linengrow/receipt_core.rye" "linengrow/receipt.rye" "linengrow/delivery.rye" "linengrow/open_asks.rye" "linengrow/open_asks_delivery.rye" "glow/tokens.rye" "glow/lower_named_cast.rye" "glow/lower_shape.rye" "glow/lower_bartis.rye" "glow/lower_barket.rye"]
+let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/service.rye" "caravan/supervisor_exit.rye" "caravan/supervisor_signal.rye" "caravan/restart_on_ok.rye" "caravan/subscribe_poll_service.rye" "caravan/capabilities.rye" "mantra/src/diff.rye" "mantra/src/main.rye" "mantra/recall_lap1.rye" "mantra/recall_sync_wire.rye" "mantra/recall_sync_delivery.rye" "mantra/recall_two_way_sync.rye" "mantra/recall_two_way_sync_delivery.rye" "mantra/recall_catch_up.rye" "mantra/recall_catch_up_delivery.rye" "mantra/recall_subscribe_poll.rye" "mantra/recall_subscribe_poll_delivery.rye" "mantra/recall_tablecloth_query.rye" "mantra/resin_batch.rye" "mantra/snapshot_export.rye" "mantra/beading.rye" "mantra/recall_beaded.rye" "mantra/recall_batch_wire.rye" "mantra/recall_batch_delivery.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "linengrow/receipt_core.rye" "linengrow/receipt.rye" "linengrow/delivery.rye" "linengrow/open_asks.rye" "linengrow/open_asks_delivery.rye" "glow/tokens.rye" "glow/lower_named_cast.rye" "glow/lower_shape.rye" "glow/lower_shop_gate.rye" "glow/lower_shop_nest.rye"]
+
+say "width-check: Language EN -- a fixed width says what a value can hold; usize says only what this machine happens to be."
+say "width-check: Style Gauge at Meter -- every number below is read by the scan on this run and printed as its own output, never recited here."
+say "width-check: Lens TAME -- safety first: usize is a boundary type, not a design type. A line carrying a seam cast passes free, because a seam cast is correct Tiger code rather than debt."
+
+let control = run ["sh" "tools/fixtures/width_check_control.sh"]
+assert control.ok else "width-check: the control must complete on its planted repositories"
+say control.out
+assert control.out contains "control_verdict=ok" else "width-check: the control must reach its own verdict"
+assert control.out contains "roster_clean_and_seam_pass=yes" else "width-check: a seam cast must pass free, or the gate refuses correct Tiger code"
+assert control.out contains "roster_authored_usize_refused=yes" else "width-check: authored usize on a rostered module must refuse -- this is the reading that was never taken"
+assert control.out contains "roster_flag_named=yes" else "width-check: a refusal must name the file it read, or nobody can repair it"
+assert control.out contains "roster_missing_file_refused=yes" else "width-check: a roster naming a file that is gone must refuse rather than skip it silently"
+assert control.out contains "exempt_at_pin_passes=yes" else "width-check: the named seam exemption must stand at its pinned count"
+assert control.out contains "exempt_sixth_refused=yes" else "width-check: one past the pin must refuse -- an exemption that can grow is a waiver"
+assert control.out contains "excluded_rooms_pass=yes" else "width-check: aurora, vendor, gratitude and dated testimony are outside this hosted gate"
+assert control.out contains "corpus_discovers_stranger=yes" else "width-check: the corpus reading must reach a file no roster names, or discovery is a claim"
+assert control.out contains "corpus_at_files_ceiling_passes=yes" else "width-check: the ratchet must pass at its ceiling"
+assert control.out contains "corpus_over_files_ceiling_refused=yes" else "width-check: one file past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "corpus_over_lines_ceiling_refused=yes" else "width-check: one line past the ceiling must refuse"
+assert control.out contains "no_roster_refused=yes" else "width-check: a tree with no roster must refuse rather than read zero and call it clean"
+
+let scan = run ["sh" "tools/fixtures/width_check_scan.sh"]
+say scan.out
+assert scan.ok else "width-check: authored usize stands where the tree promised a fixed width -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "width-check: the living scan must reach its own verdict"
+assert scan.out contains "declared_roster_flagged=0" else "width-check: the declared roster is gated at zero"
+assert scan.out contains "exempt_declared=yes" else "width-check: the named exemption must still be a rostered module, or the pin guards nothing"
+
+say "GREEN: width-check -- the declared roster reads zero authored usize, the one named seam exemption stands at its pin, the discovered corpus holds under a ceiling that only falls, and thirteen behaviors are proven on planted repositories in both directions."

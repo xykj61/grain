@@ -37,7 +37,7 @@ The shape is rigid on purpose -- `glow-book: <file>#<anchor>` -- so a single gre
 Every Book entry closes its header with a **Source** line naming its files and, where one symbol is the door, `path:symbol`:
 
 ```markdown
-**Source:** [`glow/rune_bartis.rye`](../../../glow/rune_bartis.rye):`parse` - [`glow/lower_bartis.rye`](../../../glow/lower_bartis.rye) - witness [`tools/g/glow_lower_bartis_witness.rish`](../../../tools/g/glow_lower_bartis_witness.rish)
+**Source:** [`glow/rune_shop_gate.rye`](../../../glow/rune_shop_gate.rye):`parse` - [`glow/lower_shop_gate.rye`](../../../glow/lower_shop_gate.rye) - witness [`tools/g/glow_lower_shop_gate_witness.rish`](../../../tools/g/glow_lower_shop_gate_witness.rish)
 ```
 
 ## The Witness -- Both Directions, One Gate

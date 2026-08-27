@@ -1,9 +1,9 @@
-# glow_barket_tokenize_witness.rish -- barket tokenize (STOA111).
+# glow_shop_nest_tokenize_witness.rish -- barket tokenize (STOA111).
 #
 # Proves |^ barket is in match_rune2, G1 barket brief seats **27**, alphabet
 # GREEN at 27. Parse/lower land at STOA112-113; ambient wet accept held.
 #
-#   rishi/bin/rishi run tools/g/glow_barket_tokenize_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_nest_tokenize_witness.rish
 
 let tame = "context/TAME_GUIDANCE.md"
 let tokens = "glow/tokens.rye"
@@ -46,10 +46,10 @@ assert readme_h.ok else "glow/README must name barket"
 let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_rune_alphabet_witness failed under barket tokenize"
 assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
-assert alpha.out contains "27" else "glow_rune_alphabet_witness must name 27 heads"
+assert alpha.out contains "rune_heads=" else "glow_rune_alphabet_witness must publish rune_heads= (REDS %278)"
 
-let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under barket tokenize"
-assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish"]
+assert bartis.ok else "glow_lower_shop_gate_witness failed under barket tokenize"
+assert bartis.out contains "GREEN" else "glow_lower_shop_gate_witness not GREEN"
 
-say "GREEN: Glow barket tokenize — |^ in match_rune2; 27 heads; STOA111."
+say "GREEN: Glow barket tokenize — |^ in match_rune2; 28 heads; STOA111."

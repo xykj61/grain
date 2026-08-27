@@ -1,8 +1,8 @@
-# glow_bartis_argv_witness.rish -- bartis identity gate with @u32 sample from argv (STOA101).
+# glow_shop_gate_argv_witness.rish -- bartis identity gate with @u32 sample from argv (STOA101).
 #
 # Fixture gate-sample stays argv-free; generator gate-sample-u32 reads process argv.
 #
-#   rishi/bin/rishi run tools/g/glow_bartis_argv_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_gate_argv_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 

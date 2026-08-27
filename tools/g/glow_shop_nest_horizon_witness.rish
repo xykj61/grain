@@ -1,9 +1,9 @@
-# glow_barket_horizon_witness.rish -- barket horizon wording artifact (STOA102).
+# glow_shop_nest_horizon_witness.rish -- barket horizon wording artifact (STOA102).
 #
 # Proves the STOA102 wording brief and living barket name still exist, and that
 # tokenize (STOA111) is GREEN. Untokenized claim retired when STOA111 landed.
 #
-#   rishi/bin/rishi run tools/g/glow_barket_horizon_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_nest_horizon_witness.rish
 
 let tame = "context/TAME_GUIDANCE.md"
 let brief = "active-designing/date/20260720/20260720-040700_stoa102-barket-horizon-wording.md"
@@ -29,8 +29,8 @@ let readme_h = run ["sh" "-c" "grep -F 'barket' ${readme}"]
 assert readme_h.ok else "glow/README must name barket"
 
 # Lower lap GREEN (sibling-binds parse + tokenize); wet accept held.
-let lower = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_barket_lower_witness.rish"]
-assert lower.ok else "glow_barket_lower_witness failed under horizon artifact check"
-assert lower.out contains "GREEN" else "glow_barket_lower_witness not GREEN"
+let lower = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_shop_nest_lower_witness.rish"]
+assert lower.ok else "glow_shop_nest_lower_witness failed under horizon artifact check"
+assert lower.out contains "GREEN" else "glow_shop_nest_lower_witness not GREEN"
 
 say "GREEN: Glow barket horizon wording artifact — STOA102 brief held; lower GREEN (STOA111–113)."

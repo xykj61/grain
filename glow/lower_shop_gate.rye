@@ -1,4 +1,4 @@
-//! glow/lower_bartis.rye -- lower a thin `|=` bartis gate to runnable `.rye` (STOA100-107).
+//! glow/lower_shop_gate.rye -- lower a thin `|=` bartis gate to runnable `.rye` (STOA100-107).
 //!
 //! Identity gate: `|=  sample=@u32` / `sample` -- takes u32 and returns it.
 //! Call body: `|=  sample=@u32` / `%-  <gate>  sample` -- closed demos:
@@ -51,7 +51,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
-const rb = @import("rune_bartis.rye");
+const rb = @import("rune_shop_gate.rye");
 const nest_type = @import("nest_type.rye");
 
 pub const LowerError = rb.ParseError || error{Overflow};

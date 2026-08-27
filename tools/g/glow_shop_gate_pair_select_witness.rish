@@ -1,6 +1,6 @@
-# tools/g/glow_bartis_pair_select_witness.rish -- STOA341: face-valued arms.
+# tools/g/glow_shop_gate_pair_select_witness.rish -- STOA341: face-valued arms.
 #
-#   rishi/bin/rishi run tools/g/glow_bartis_pair_select_witness.rish
+#   rishi/bin/rishi run tools/g/glow_shop_gate_pair_select_witness.rish
 #
 # An arm may now answer with a face instead of a literal -- min and max become
 # one desk each, and every vane's clamp is a select away. Strangers still refuse.

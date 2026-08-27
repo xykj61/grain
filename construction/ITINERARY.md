@@ -52,46 +52,47 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ad855c838b` -- the fence around the garden.
+**Git nib:** `705be63d6c` -- a lint with no body.
 
-**Now.** **Two piers merged, remotes renamed, Dream at work.**
+**Now.** **Two piers, three rows re-seated, Dream at work.**
 
-**The two piers reconciled** -- upstream's five re-seated at `%271`-`%275`; **the remotes are `xy`,
-`debrided`, `seed`**, every guard reading `origin/main` repointed.
+**Earlier reconcile:** five re-seated `%271`-`%275`; remotes `xy`, `debrided`, `seed`.
 
-**Dream's lane: the rune says its own name.** Eight plain words for Glow's closed rune set, glyph
-unchanged, lowering byte-identical; **30 of 32 `lower_*.rye` modules already carry a plain name**,
-the two syllable ones prepped Class M.
+**Dream's lane: the rune renames CUT** (his word). `bartis -> shop_gate`, `barket -> shop_nest`:
+**19 renamed**, 46 touched, **538 substitutions**, **273 spoken names standing**. 21 GREEN. The **59
+`gen/gate-barket-*.glow` fixtures and 2 lexicon tools await their word.**
+
+**The row-number door fired three times in one evening, and the seated rule closed it each time.**
+Both piers booked three reds as `%278`-`%280` on `20260826`; **the push to `xy` is the allocation**,
+so Sound's stand and Dream's re-seated -- to `%282`-`%284`, then to **`%283`-`%285`** when `xy` took
+`%282` before the round could land. Spine reads **1..285 gapless**. **That is the argument for the
+derived-spine key**, in one evening's data: a number allocated at write time costs a renumber per
+fetch, and the loser is whoever integrates. **Also seen:** `xy`'s card named `%278`-`%280` closed
+while its own ledger read `Rows: 277`, citing a log neither pier held; both arrived two commits on.
 
 **Seed published** `20260826.174615`, gate %1 spent: four gates green, anonymous, **`arbor`
-scrubbed**. Killing a `rishi` wrapper orphans its `sh` child -- **reap the child.**
+scrubbed**. A killed `rishi` wrapper orphans its `sh` child -- reap it.
 
-**Three looms, two reds** (%276, %277) -- `reds_fold.sh` re-anchors a folded row's links, and
-`resolve_path` and `sed_inplace` joined [`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh).
-Counsel `20260826.181924`: **a meter pointed at a class it was never shaped for reports a fault it
-created.**
+**Two reds shelved** (%276, %277) -- **a meter pointed at a class it was never shaped for reports
+a fault it created** (counsel `20260826.181924`).
 
-**Sound's macOS bench opened, and every red was a seam rather than a fault.** `flock(1)` is
-util-linux, so all **44** witnesses reaching `tools/g/glow_run_worker.sh` refused there (**%279**) --
-`lock_acquire` on atomic `mkdir` is `shell_portable.sh`'s sixth dialect answer. The ASCII meter read
-the other way: `\x` is GNU awk, so BWK awk matched **every** character and the living reading came
-back **16,131,707 against a ceiling of 4,338** (**%278**); repaired in POSIX octal, both meters now
-read **4,338** and **505**, the Linux pier's own numbers character for character. The card
-advertised three walk-back nibs the debride had rewritten away (**%280**). **A control that asks
-whether a reading fired cannot see one that fires too often.**
+**Sound's macOS bench opened, every red a seam rather than a fault** -- `flock(1)` is util-linux;
+`\x` is GNU awk, so BWK matched every character and read **16,131,707 against a ceiling of 4,338**,
+repaired in POSIX octal to this pier's **4,338** and **505**. **A control that asks whether a
+reading fired cannot see one that fires too often.**
 
-**%281, OPEN and his:** two sessions share this checkout, and `rye build` writes `.zig` shadows
-beside the sources with no lock, so each build deletes the other's mid-compile and the loser reports
-RED about correct code. A lock in `bridge_to_zig`, or one tree per star -- both his word.
+**Sound's open row (its `%281`):** two sessions share this checkout and `rye build` writes `.zig`
+shadows with no lock, so each build deletes the other's mid-compile and the loser reports RED about
+correct code. A lock in `bridge_to_zig`, or one tree per star -- his word.
 
 **Dream's loop, his word `20260826`:** the **seed cadence is CUT** -- the star names the moment and
 stops; gate %1 stays his. A **standing adaptation grant** replaces it: bash and sh into **Rishi**,
-HTML into **Brush**, Python into **Glow**, each born beside its elder, which stands until the newborn
-is GREEN and is then a fossil.
+HTML into **Brush**, Python into **Glow**, each born beside its elder, which stands until the
+newborn is GREEN and then is a fossil.
 
-**The next doors.** His: **row-number allocation** (%230, %252) and the derived-spine key that
-answers it, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride announcing
-itself**, and the **rune renames**, Class M.
+**The next doors.** His: **row-number allocation** (%230, %252, third firing above) and the
+derived-spine key, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride
+announcing itself**. Mine: the width ratchet.
 
 ---
 ## Landed arcs
@@ -224,7 +225,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.211951` | macOS bench opened: flock, the awk hex class, three floating nibs; %278-%280 closed, %281 open | [log](../session-logs/20260826-211951_the-bench-that-spoke-another-dialect.kyri) |
+| `20260826.202104` | rune rename CUT and closed; %279 a swept fossil column; %280 a width lint with no body | [log](../session-logs/20260826-202104_the-lap-that-ended-at-git-add.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
