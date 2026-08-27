@@ -34,7 +34,6 @@ const witness_mirror_env = "CARAVAN_WITNESS_MIRROR";
 /// Supervisor halts when the long-lived source dependent dies unexpectedly.
 const source_lost_exit: u8 = 3;
 
-const linux = std.os.linux;
 
 fn witness_mode_allowed(environ: *const std.process.Environ.Map) bool {
     const v = environ.get(witness_mode_env) orelse return false;
@@ -47,21 +46,22 @@ fn witness_mirror_enabled(environ: *const std.process.Environ.Map) bool {
 }
 
 /// Non-blocking reap; returns the source exit code when the dependent has exited.
+///
+/// THROUGH LIBC, NEVER THROUGH A KERNEL BY NAME. All three no-hang waits in this
+/// module read `std.os.linux.waitpid`, and Caravan is proven on two piers. On the
+/// macOS bench that raw syscall returns a constant 9 whatever the child is doing,
+/// and `linux.errno` reads 9 as SUCCESS -- so this poll answered "the source died"
+/// on a source that was perfectly alive, and the supervisor halted itself on the
+/// first turn (REDS %282). `std.c.waitpid` is POSIX and `std.c.W` already
+/// dispatches on the host, so each pier answers from its own kernel.
 fn poll_source_exit(source_dependent: *std.process.Child) ?u8 {
     const pid = source_dependent.id orelse return 0;
-    var status: u32 = 0;
-    const rc = linux.waitpid(@intCast(pid), &status, linux.W.NOHANG);
-    switch (linux.errno(rc)) {
-        .SUCCESS => {
-            if (rc == 0) return null;
-            source_dependent.id = null;
-            if (linux.W.IFEXITED(status)) {
-                return linux.W.EXITSTATUS(status);
-            }
-            return 255;
-        },
-        else => return null,
-    }
+    var status: c_int = 0;
+    const rc = c.waitpid(@intCast(pid), &status, c.W.NOHANG);
+    // invariant: a poll that read nothing leaves the source standing, never buries it
+    if (rc <= 0) return null;
+    source_dependent.id = null;
+    return status_to_exit_code(@bitCast(status));
 }
 
 fn halt_if_source_died(source_dependent: *std.process.Child) ?u8 {
@@ -77,8 +77,8 @@ const source_ready_ns: u64 = 50_000_000;
 const dependent_poll_ns: u64 = 20_000_000;
 
 fn status_to_exit_code(status: u32) u8 {
-    if (linux.W.IFEXITED(status)) {
-        return linux.W.EXITSTATUS(status);
+    if (c.W.IFEXITED(status)) {
+        return c.W.EXITSTATUS(status);
     }
     return 255;
 }
@@ -93,17 +93,13 @@ fn wait_fetcher_or_source_lost(
             fetcher_dependent.kill(io);
             return .{ .source_lost = lost };
         }
-        var status: u32 = 0;
+        var status: c_int = 0;
         const fpid = fetcher_dependent.id.?;
-        const rc = linux.waitpid(@intCast(fpid), &status, linux.W.NOHANG);
-        switch (linux.errno(rc)) {
-            .SUCCESS => {
-                if (rc != 0) {
-                    fetcher_dependent.id = null;
-                    return .{ .fetcher_done = status_to_exit_code(status) };
-                }
-            },
-            else => {},
+        const rc = c.waitpid(@intCast(fpid), &status, c.W.NOHANG);
+        // invariant: a poll that read nothing leaves the fetcher running, never reaps it
+        if (rc > 0) {
+            fetcher_dependent.id = null;
+            return .{ .fetcher_done = status_to_exit_code(@bitCast(status)) };
         }
         var slice = c.timespec{ .sec = 0, .nsec = @intCast(dependent_poll_ns) };
         _ = c.nanosleep(&slice, null);

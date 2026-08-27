@@ -37,15 +37,23 @@ const source_port: u16 = 38487;
 
 const witness_path = "bolt.txt";
 
-const sockaddr_in = extern struct {
-    sin_family: c_ushort = AF_INET,
-    sin_port: c_ushort,
-    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
-    sin_zero: [8]u8 = .{0} ** 8,
-};
+// THE KERNEL LAYS THIS OUT, NEVER THIS FILE. A hand-rolled `sockaddr_in` stood here
+// with a two-byte family and no length byte, which is the Linux layout, and this
+// module is proven on two piers. BSD kernels -- macOS among them -- open the same
+// structure with a one-byte `sin_len` ahead of a one-byte family, so writing AF_INET
+// as a `c_ushort` landed 2 in the length and 0 in the family: every `bind` refused
+// with an unsupported family, the fetcher fell five times, and the supervisor never
+// reached its own GREEN (REDS %282). `std.c.sockaddr.in` already dispatches on the
+// host and both branches carry a defaulted family, so one literal is correct on
+// each pier and neither spells the other`s layout.
+const sockaddr_in = c.sockaddr.in;
 
+/// The loopback address in network byte order, laid out by whichever kernel is here.
 fn localhost_addr(port: u16) sockaddr_in {
-    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+    return .{
+        .port = std.mem.nativeToBig(u16, port),
+        .addr = @bitCast([4]u8{ 127, 0, 0, 1 }),
+    };
 }
 
 fn open_socket() !c.fd_t {

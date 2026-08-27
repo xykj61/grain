@@ -72,7 +72,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const linux = std.os.linux;
+const c = std.c;
 const system = @import("system.rye");
 const capabilities = @import("capabilities.rye");
 const roster = @import("roster.rye");
@@ -209,16 +209,25 @@ const Slot = struct {
 /// The no-hang wait is the one act that makes readiness knowable on this
 /// ground. It consumes the status it finds, so the dependent's own handle is
 /// closed here and the code kept in the slot for whichever turn spends it.
+///
+/// THROUGH LIBC, NEVER THROUGH A KERNEL BY NAME. This read `std.os.linux.waitpid`,
+/// which is a raw Linux syscall, and Caravan is proven on two piers. On the macOS
+/// bench that call returns a constant 9 whatever the child is doing, and
+/// `linux.errno` reads 9 as SUCCESS -- so the sweep took an arbitrary number for a
+/// child's exit status and answered `ready` for a dependent still running (REDS %282).
+/// `std.c.waitpid` is POSIX and `std.c.W` already dispatches on the host, so both
+/// piers answer their own kernel: 0 while the child lives, its pid once it has gone.
 fn sweep_one(dependent: *cohort.Running, slot: *Slot) bool {
     if (slot.exited != null) return true;
     const pid = dependent.proc.id orelse return false;
-    var status: u32 = 0;
-    const rc = linux.waitpid(@intCast(pid), &status, linux.W.NOHANG);
-    if (linux.errno(rc) != .SUCCESS) return false;
-    if (rc == 0) return false;
+    var status: c_int = 0;
+    const rc = c.waitpid(@intCast(pid), &status, c.W.NOHANG);
+    // invariant: a sweep that could not read the ground leaves the slot as it found it
+    if (rc <= 0) return false;
     dependent.proc.id = null;
-    slot.exited = if (linux.W.IFEXITED(status))
-        linux.W.EXITSTATUS(status)
+    const raw: u32 = @bitCast(status);
+    slot.exited = if (c.W.IFEXITED(raw))
+        c.W.EXITSTATUS(raw)
     else
         restart.fell;
     // invariant: a swept dependent always leaves a code behind it
