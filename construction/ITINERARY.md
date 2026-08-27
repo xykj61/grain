@@ -15,6 +15,8 @@
 
 - **ASCII-first.** Write every new document, comment, and commit message in plain ASCII -- `--`, `-`, `'`, `"`, `->`, `<=`, `gamma_2` rather than em-dashes, middots, curly quotes, arrows, or non-ASCII math. The one exception is a named set of work rounds (a Unicode module's own fixtures). This card was corrupted to mojibake once (REDS %83). Rule: `.claude/rules/ascii-first.md`.
 - **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/reds_fold.sh`. Rule: `.claude/rules/stamp-and-name.md`.
+- **The amend behind the empty-index check** (`20260827`, %255 closed): between commit and nib amend run `test -z "$(git diff --cached --stat)"` -- an occupied index refuses the amend.
+- **Fetch-before-book** (`20260827`, %230/%252 closed): read a REDS row number only after `git fetch xy`; a collision renumbers to the fetched head.
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
@@ -35,7 +37,7 @@
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds; plan in `expanding-prompts/`).
 - **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Lumen** = the inference vane (renaming Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble); plans in the LEXICON rows.
 - **Seated breaches (checkpoint first):** **Quin's Q-vane -> Lumen**; **Bron -> Kyri** and **Quin voice -> Kyri**; **Kiln -> Kiln through history** (bake-seat rename granted `20260827.025117`, working-tree half landed, checkpoint `78c8c1c3e0`; rewrite word-bounded, loop paused, re-signed, force-pushed, benches reclone). Each its own signed round; only Kiln's tree half cut yet.
-- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, repointing, message rewrites, force push, reclone; re-signing proven (`20260817`). Spent at a sweep's close it costs one reclone; called in early by a misleading filename or an untrue message.
+- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; re-signing proven (`20260817`).
 - **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
 
 ### The crypto spine, seated `20260815` -- the pointer
@@ -88,9 +90,8 @@ correct code. A lock in `bridge_to_zig`, or one tree per star -- his word.
 adaptation grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python into
 **Glow**, each born beside its elder, which stands until the newborn is GREEN and then a fossil.
 
-**The next doors.** His: the **derived-spine key** (`%230`, `%252`, `%287`), a **pre-push refusal**
-(`%255`), a **debride announcing itself**. **The REDS pin has three bytes of room.** Mine: the width
-ratchet, above.
+**The next doors.** `%230`/`%252`/`%255`/`%281` closed `20260827` on seated conventions; the pin
+holds half its room. Mine: the width ratchet; the socket-table fold, granted.
 
 ---
 ## Landed arcs
