@@ -347,6 +347,9 @@ nixos/*.bak-*
 /caravan/.forbears/
 /caravan/.minds/
 construction/standing-equipment-runs.kyri
+# The hit-rate meter's shelves (fusion build, measurement only) -- this pier's record, never the tree's.
+construction/standing-equipment-receipt.kyri
+construction/standing-equipment-hitrate.kyri
 # The evidence a red guard leaves behind (REDS %266) -- this pier's failures, not the tree's.
 construction/standing-equipment-reds/
 

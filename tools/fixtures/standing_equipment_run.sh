@@ -75,16 +75,23 @@ set -eu
 
 roster="${STANDING_ROSTER:-construction/standing-equipment.kyri}"
 card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
+# The hit-rate meter's two untracked shelves (the fusion build, design 20260825-173153): the
+# receipt is the last fully green close's digest, the ledger is every open's match-or-miss row.
+# Measurement only -- nothing consults these to skip a guard; that ruling stays Keaton's.
+receipt="${STANDING_RECEIPT:-construction/standing-equipment-receipt.kyri}"
+hitledger="${STANDING_HITRATE:-construction/standing-equipment-hitrate.kyri}"
 
 want_tier=lap
 only=""
 hot=no
+probe=no
 
 # A loop rather than a single case, so `--hot` composes with `--all` and with `--tier`. A bare word
 # is a guard name and selects every tier, which is what asking for one guard has always meant.
 while [ $# -gt 0 ]; do
   case "$1" in
     --hot)  hot=yes ;;
+    --receipt-probe) probe=yes ;;
     --all)  want_tier=all ;;
     --tier) shift
             want_tier="${1:-}"
@@ -133,6 +140,25 @@ tree_digest() {
 }
 tree_open=$(tree_digest)
 echo "tree_at_open=$tree_open"
+
+# THE HIT-RATE METER (the fusion build's Move 2 gate, measurement only -- design
+# active-designing/20260825-173153_reprove-only-what-moved.md; the FAST/COLD ruling stays
+# Keaton's). At a fully green close the runner records the digest it proved; this compare says
+# whether that record would have answered the present open -- and every guard still runs,
+# because a skip that consults a cache is a ruling this tree has not made. The rolling ledger
+# is where the week's hit rate is read from, one row per open. `--receipt-probe` stops here,
+# runs zero guards, and says so in its own verdict -- a probe never wears the roster's green.
+receipt_state=none
+if [ -f "$receipt" ]; then
+  rec=$(sed -n 's/^digest //p' "$receipt" | head -1)
+  if [ "$rec" = "$tree_open" ]; then receipt_state=match; else receipt_state=miss; fi
+fi
+echo "roster_receipt=$receipt_state"
+printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
+if [ "$probe" = yes ]; then
+  echo "run_verdict=receipt_probe"
+  exit 0
+fi
 
 # Pass one: which guards does this pass run, and what tier does each carry. A guard record is open
 # from its `guard` line until the next one, so the tier is read wherever it sits inside the record.
@@ -258,6 +284,17 @@ if [ "$moved" = yes ]; then
   echo "refused: the tree changed while this ran -- these verdicts describe neither one" >&2
   exit 1
 fi
+
+# The record a future open compares against, written only at a fully green, unmoved close --
+# so the receipt can never speak a green the roster did not prove on this exact tree.
+{
+  echo "# construction/standing-equipment-receipt.kyri -- the last fully green close on THIS pier."
+  echo "# The hit-rate meter's record (fusion build, measurement only); skipped by nothing."
+  echo "format standing-equipment-receipt-v1"
+  echo "digest $tree_close"
+  echo "guards $ran"
+  echo "stamp $stamp"
+} > "$receipt"
 
 echo "run_verdict=ok"
 exit 0
