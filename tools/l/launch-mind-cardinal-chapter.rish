@@ -17,7 +17,7 @@ say "These lines only print. Copy one whole line at a time from anywhere inside 
 say "Every live step stays in tools/l/chatgpt-mind.rish; the shell elder is only a witness."
 say ""
 say "Prerequisites, only when rishi/bin/rishi is absent. The first line downloads the pinned toolchain:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/fetch-toolchain.sh")'
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/f/fetch-toolchain.sh")'
 say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/rye/bootstrap.sh")'
 say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && mkdir -p "$GRAIN_ROOT/rishi/bin" && env RYE_ZIG="$GRAIN_ROOT/vendor/zig-toolchain/zig" "$GRAIN_ROOT/rye/bin/rye" build "$GRAIN_ROOT/rishi/src/main.rye" "-femit-bin=$GRAIN_ROOT/rishi/bin/rishi")'
 say ""

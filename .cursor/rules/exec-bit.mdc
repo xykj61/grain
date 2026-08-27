@@ -19,7 +19,21 @@ awk '...' "$f" > "$f.tmp" && mv "$f.tmp" "$f"                        # mode is t
 ```
 
 `sed -i`, `perl -i`, and truncate-and-write all preserve the mode. `mv` and `cp` carry the
-source's mode instead, and that is the whole of the trap.
+source's mode instead, and that is the whole of the trap on disk.
+
+**Adopting a file out of another history is the same loss by a shorter road**, because **a blob
+carries no mode -- the tree object does.** Reach for the blob and the one thing only the tree knew
+stays behind:
+
+```sh
+git checkout <ref> -- <path>          # the tree is read: 100755 arrives 100755
+git show <ref>:<path> > <path>        # the blob is read: 100755 arrives 100644
+```
+
+`git cat-file -p <ref>:<path> >` loses it the same way, for the same reason. Proven on metal
+`20260827` in a throwaway pen -- one blob, `4163036efa`, two spellings, two modes. This is how a
+thirty-file adoption landed every file at `100644` in one commit, four of them carrying a shebang,
+and how the ratchet rose 57 to 61 on the next lap (REDS %292).
 
 ## Why the rule exists
 

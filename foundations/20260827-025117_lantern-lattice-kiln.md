@@ -8,7 +8,7 @@
 **Voice:** Quin - lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision -- **far horizon**; **living mutant**; invent held - bake-seat name **Kiln** `20260827.025117` (was Oven `20260728.232511`, was Anvil; the `20260808.220423` fold into Ember unbraids here -- Ember keeps the corpus forge, Kiln takes the bake)
+**Status:** Vision -- **far horizon**; **living mutant**; invent held - bake-seat name **Kiln** `20260827.025117` (was Oven `20260728.232511`, was Anvil; the `20260808.220423` fold into Ember unbraids here -- Ember keeps the training forge, Kiln takes the bake)
 
 *Mutant seated Surface p36 -- seat Oven `20260728.232511`, renamed Kiln `20260827.025117`. Poetics held; bread not blades.*
 Radiant pass `20260728.232511`
