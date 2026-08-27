@@ -365,6 +365,30 @@ pub fn plan_for(base: u64, size_bytes: u64) error{
     return mapping.plan(mapping.Placement.init(base, extent));
 }
 
+/// Where the first declared region lands in a domain's window, and the stride
+/// each later region steps by. The stride is the policy ring's own declarable
+/// ceiling, so every region fits its slot by construction -- the bound lives
+/// in the shape rather than in a check -- and the first slot starts one full
+/// stride up, so the zero page and everything beneath it stays unmapped and a
+/// null dereference can never land in region memory.
+pub const region_stride: u64 = regions.max_region_bytes;
+pub const first_region_base: u64 = region_stride;
+
+/// The base a region's index earns -- a pure function of the index and the
+/// named stride, so no table of addresses exists to drift from the roster
+/// (the optimization spine, move four: what is derived from the declaration
+/// can never disagree with it). mapping.Placement.base stays the carrier of
+/// a chosen base; this is the join's own answer for WHICH base a system
+/// hands it.
+pub fn region_base(index: u32) u64 {
+    // invariant: the index is one the policy ring could have declared
+    assert(index < regions.max_regions);
+    const base = first_region_base + @as(u64, index) * region_stride;
+    // invariant: the derived window ends inside the address space
+    assert(base + region_stride <= mapping.virtual_address_limit);
+    return base;
+}
+
 // =========================================================================
 // Counting the accounting
 // =========================================================================
@@ -507,6 +531,24 @@ pub fn run_self_test() u8 {
     // sees, so the join's own bound is the policy ring's bound.
     assert(regions.max_region_bytes <= mapping.max_plan_bytes);
 
+    // THE FOURTH FINDING. A region's base derives from its index: adjacent
+    // windows exactly abut, every derived base is mega-aligned and plans
+    // clean at the largest declarable size, and the whole roster's windows
+    // end far inside the address space. Derived, so no table can drift.
+    var di: u32 = 0;
+    while (di < regions.max_regions) : (di += 1) {
+        const dbase = region_base(di);
+        // invariant: a derived base sits on a megabyte-page boundary
+        assert(dbase % mapping.size_bytes(.mega) == 0);
+        // invariant: adjacent windows abut exactly, leaving no gap to argue over
+        if (di + 1 < regions.max_regions) assert(region_base(di + 1) - dbase == region_stride);
+        const derived = plan_for(dbase, regions.max_region_bytes) catch unreachable;
+        // invariant: every derived placement plans inside the geometry bound
+        assert(derived.page_count() <= mapping.max_plan_pages);
+    }
+    // invariant: the whole derived roster ends inside the address space
+    assert(region_base(regions.max_regions - 1) + region_stride <= mapping.virtual_address_limit);
+
     print("address-space: version {s}\n", .{caravan_address_space_version});
     print("address-space: a protection domain's address space is {d} parts across 2 values -- {d} in the memory region, {d} in the map.\n", .{ part_count, region_part_count, part_count - region_part_count });
     print("address-space: Caravan holds {d} of the {d}, split {d} to regions.rye and {d} to mapping.rye -- policy and geometry, the framework's own line.\n", .{ held, part_count, held_by("regions.rye"), held_by("mapping.rye") });
@@ -517,6 +559,12 @@ pub fn run_self_test() u8 {
         best.page_count(),
         worst.page_count(),
         mapping.max_plan_pages,
+    });
+    print("address-space: a region's base derives from its index -- {d} windows of {d} bytes, exactly abutting, ending at {d} inside {d}.\n", .{
+        regions.max_regions,
+        region_stride,
+        region_base(regions.max_regions - 1) + region_stride,
+        mapping.virtual_address_limit,
     });
     print("address-space: twelve parts partitioned, seven held, the join asserted at both ends -- GREEN.\n", .{});
     return 0;
