@@ -71,10 +71,9 @@ Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26**
 ## Class H -- SHED COMPLETE `20260827.162143`, and the record of what was cut
 
 *Keaton circled the second mitra shed on `20260827`. Ten prepped fossils were cut in one pass,
-every one with its living mutant standing and every living citer repointed first. The rows stay
-here as the record: a shed names what it cut, so a reader meeting a reference in dated testimony
-learns the elder left on purpose rather than by breakage. Class H itself stays open for the next
-fossil a molt seats, and the shred word stays **shred RED** until Keaton circles the next one.*
+every one with its mutant standing and every living citer repointed first. The rows stay as the
+record: a shed names what it cut, so a reference met in testimony reads as intent. Class H stays
+open for the next fossil a molt seats, and the word stays **shred RED** until the next circle.*
 
 | Elder cut | Living mutant | Where its references went |
 | --- | --- | --- |
@@ -84,15 +83,14 @@ fossil a molt seats, and the shred word stays **shred RED** until Keaton circles
 | `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
 | `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
 | `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md`, and four chapter witnesses |
-| `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | `foundations/README.md`, and a dead `template-manifest.bron` exclusion retired |
+| `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | `foundations/README.md`; a dead manifest exclusion retired |
 | `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | the LEXICON **Ember** row | none -- zero living citers at the cut |
 | `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
-| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | LEXICON's HUNK row, four module front doors, two design pages, four source headers |
+| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | the HUNK row, four front doors, two designs, four headers |
 
 **Every cut basename is seated as a LISTED deliberate absence** in
 [`../tools/fixtures/dated_path_exclusions.sh`](../tools/fixtures/dated_path_exclusions.sh), so the
-dated-path census reads a surviving reference in testimony as intent rather than as a lost
-reference. Walk-back: checkpoint `20260827.162143`, nib `5707335d0f`.
+census reads a surviving reference as intent. Walk-back: checkpoint `20260827.162143`.
 
 **And the shed proved eight chapter witnesses rather than one.** Each had been written to prove a
 molt by testing that its fossil sat on disk carrying a banner. That proof cannot survive the cut it
@@ -108,13 +106,12 @@ attached to the Anvil name is **debrided** `20260809.012200`.
 
 ### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
 
-Three documents carrying elder banners were measured against the shed conditions in the same pass
-and **held**, because the condition a mitra shed asks -- *the mutant carries the elder's content* --
-does not hold for them:
+Three documents carrying elder banners were measured in the same pass and **held**, because the
+condition a mitra shed asks -- *the mutant carries the elder's content* -- fails for each:
 
 | Held | Why the cut was refused |
 | --- | --- |
-| `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | Its named mutant is the LEXICON's Ember row, which carries the **naming** and not the chapter's own seat table. Three witnesses (`oven_season_o0`, `nona_season_n2`) grep that table, and `tools/gen/chapter/prin_scope.rish` prints the charter's path as a live scope pointer. Cutting it would break working guards to tidy one file. |
+| `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | Its named mutant is the LEXICON's Ember row, which carries the **naming** and not the chapter's seat table. `oven_season_o0` and `nona_season_n2` grep that table, and `prin_scope.rish` prints its path. Cutting it would break working guards to tidy one file. |
 | `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md` | Measured at the cut: the naming derivation -- the twilight palette, the night twins, the aether row's own seats -- appears **six times** in the elder and **once** in the living charter, which references it rather than retelling it. An elder holding content its mutant only cites is not superseded. |
 | `active-designing/20260827-144712_the-three-stars-and-their-planets.md` | Ninety minutes old at the cut, and the middle link of a three-charter provenance chain a versioned recursion prompt still reads. The cut buys a directory entry and costs the record of how the constellation grew in three days. |
 
