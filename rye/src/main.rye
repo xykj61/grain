@@ -61,6 +61,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const c = std.c;
 const Sha256 = std.crypto.hash.sha2.Sha256;
 
 /// Rye's version, stamped chronologically -- YYYYMMDD.HHMMSS, where later is
@@ -76,7 +77,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// Accretions in *capability* grow the tool itself: the `build` command, and
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
 /// The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260825.190018";
+const rye_version = "20260827.023156";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -87,6 +88,24 @@ const zig_backend_version = "0.16.0";
 /// never overwrite that truth; this simply reads the same pinned snapshot the
 /// Rye way, so even the ground we stand on carries a chronological name.
 const zig_backend_version_chrono = "20260413.181917";
+
+/// One tree, one toolchain spawn (REDS %281). The bridge writes `.zig` shadows
+/// beside the sources and clears them on the way out, so two builds sharing a
+/// tree delete each other's shadows mid-compile and the loser reports RED
+/// about correct code. The lock is a directory, because mkdir is atomic on
+/// both kernels this tree runs on; the pid inside lets a waiter tell a live
+/// holder from a corpse and clear only the corpse.
+const build_lock_dir = ".rye-build.lock";
+const build_lock_pid_file = ".rye-build.lock/pid";
+
+/// A waiter outlasts the longest honest build with room to spare; past this it
+/// names the holder and refuses, because a build held this long is its own
+/// question rather than a queue.
+const build_lock_max_wait_ms: u64 = 600_000;
+
+/// The poll between looks at a held lock -- short enough that a one-second
+/// build costs a waiter little, long enough to stay off the scheduler's toes.
+const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
 /// never collide with this one's stamps.
@@ -184,6 +203,65 @@ fn print_version() void {
 /// the bridge away. `run` and `build` share this one path; only the toolchain
 /// verb and the spoken label differ. Flags after the file pass straight through,
 /// so a caller can aim a build at any target the toolchain supports.
+/// Take the tree's one build lock, or say plainly why not. True means held.
+/// A dead holder's lock is cleared once and retried; a live holder is waited
+/// on up to the named bound; a lock with no readable pid is given one poll of
+/// grace (the maker may sit in the gap between mkdir and write) and then
+/// treated as a corpse, which costs one wrong clear only when a maker hangs
+/// inside a two-line window.
+fn build_lock_acquire(io: std.Io, dir: std.Io.Dir, garden: std.mem.Allocator, label: []const u8) !bool {
+    var waited_ms: u64 = 0;
+    var unreadable_looks: u32 = 0;
+    while (true) {
+        if (dir.createDir(io, build_lock_dir, .default_dir)) |_| {
+            var pidbuf: [32]u8 = undefined;
+            const pid_text = std.fmt.bufPrint(&pidbuf, "{d}\n", .{c.getpid()}) catch "0\n";
+            // invariant: a held lock names its holder, or a waiter treats it as young.
+            dir.writeFile(io, .{ .sub_path = build_lock_pid_file, .data = pid_text }) catch {};
+            return true;
+        } else |err| switch (err) {
+            error.PathAlreadyExists => {},
+            else => return err,
+        }
+        const holder_alive = blk: {
+            const raw = dir.readFileAlloc(io, build_lock_pid_file, garden, .limited64(64)) catch {
+                unreadable_looks += 1;
+                if (unreadable_looks >= 2) break :blk false;
+                break :blk true;
+            };
+            unreadable_looks = 0;
+            const trimmed = std.mem.trim(u8, raw, " \n\r\t");
+            const pid = std.fmt.parseInt(c.pid_t, trimmed, 10) catch break :blk false;
+            break :blk c.kill(pid, @enumFromInt(0)) == 0;
+        };
+        if (!holder_alive) {
+            // The corpse is cleared once; a racing waiter losing this clear
+            // simply meets a fresh lock on the next look.
+            dir.deleteFile(io, build_lock_pid_file) catch {};
+            dir.deleteDir(io, build_lock_dir) catch {};
+            continue;
+        }
+        if (waited_ms >= build_lock_max_wait_ms) {
+            std.debug.print(
+                "rye {s}: the build lock at {s} has been held past {d}s by a live process -- a build this long is its own question. Remove the lock only if you know that process is not building.\n",
+                .{ label, build_lock_dir, build_lock_max_wait_ms / 1000 },
+            );
+            return false;
+        }
+        var ts = c.timespec{ .sec = 0, .nsec = @intCast(build_lock_poll_ms * 1_000_000) };
+        _ = c.nanosleep(&ts, null);
+        waited_ms += build_lock_poll_ms;
+    }
+}
+
+/// Release the tree's build lock. Refusals are swallowed on purpose: the lock
+/// dir and pid file may already be gone if a racing waiter cleared a corpse,
+/// and the worst outcome of a leftover is one dead-pid clear on the next build.
+fn build_lock_release(io: std.Io, dir: std.Io.Dir) void {
+    dir.deleteFile(io, build_lock_pid_file) catch {};
+    dir.deleteDir(io, build_lock_dir) catch {};
+}
+
 fn bridge_to_zig(
     init: std.process.Init,
     args: []const [:0]const u8,
@@ -274,6 +352,13 @@ fn bridge_to_zig(
         hasher.update(flag);
         hasher.update("\x00");
     }
+
+    // One tree, one toolchain spawn (REDS %281): held from the first shadow
+    // write to the last delete, hit path included, since the bridge stages
+    // shadows before any receipt is consulted. Declared ahead of the shadow
+    // defers below, so LIFO order releases the lock after their cleanup.
+    if (!(try build_lock_acquire(io, dir, garden, label))) return 1;
+    defer build_lock_release(io, dir);
 
     // Bridge the root `.rye` file and every local `.rye` module dependency to
     // ephemeral `.zig` files the toolchain can read, then clear them all away.
@@ -370,7 +455,7 @@ fn bridge_to_zig(
     };
     const term = try child.wait(io);
     const code: u8 = switch (term) {
-        .exited => |c| c,
+        .exited => |exit_code| exit_code,
         else => 1,
     };
 
