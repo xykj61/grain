@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `b7b1e5e7e5` -- the parent, which every clone resolves.
+**Git nib:** `df8a4a109e` -- the parent, which every clone resolves.
 
 **Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
