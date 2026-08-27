@@ -7,12 +7,12 @@
 # stranger still refuses; 339 unary witness stays warm.
 
 say "339b: surface-inc 3 — the first half of the compose..."
-let inc = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/lib/gate-surface-inc-u32.glow" "3"]
+let inc = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-surface-inc-u32.glow" "3"]
 assert inc.ok else "339b: surface-inc 3 failed"
 assert inc.out contains "GREEN" else "339b: surface-inc not GREEN"
 
 say "339b: compose-sumto argv 4 — after that inc..."
-let a4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/lib/gate-compose-sumto-u32.glow" "4"]
+let a4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-compose-sumto-u32.glow" "4"]
 assert a4.ok else "339b: compose-sumto argv 4 failed"
 assert a4.out contains "GREEN" else "339b: compose-sumto argv not GREEN"
 

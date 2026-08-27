@@ -33,7 +33,7 @@ const receipt_message =
 /// Named tamper: flip this signature octet so the guest stays two dumb checks.
 const tamper_sig_byte_index: usize = 7;
 
-const default_out = "tools/proven_seat_signed_kumara_guest/src/app/signed-kumara-verify/fixture_receipt.h";
+const default_out = "tools/proven_seat_signed_kumara_guest/src/shape/signed-kumara-verify/fixture_receipt.h";
 
 fn append_hex_bytes(a: std.mem.Allocator, out: *std.ArrayListUnmanaged(u8), bytes: []const u8) !void {
     var i: usize = 0;

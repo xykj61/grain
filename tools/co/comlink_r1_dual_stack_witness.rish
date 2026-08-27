@@ -11,24 +11,24 @@ say "r1: Language EN — pier dual-stack policy seated whole (Ashvini R1 · e222
 say "r1: Lens TAME — leg A pure · leg B metal · rival pedestal withdrawn."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
-let policy = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
-let width = "src/lib/gate-comlink-addr-width-u32.glow"
+let desk = "src/shape/shape-comlink-ipv6-dual-stack.glow"
+let policy = "src/gate/gate-comlink-dual-stack-bind-u32.glow"
+let width = "src/gate/gate-comlink-addr-width-u32.glow"
 
 say "r1 leg A: placard and pier example (policy=1)..."
-let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let placard = run ["sh" "-c" "head -n 7 src/shape/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "r1: placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "r1: placard missing six lines"
-let ex = run ["sh" "-c" "grep -q 'example    1' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let ex = run ["sh" "-c" "grep -q 'example    1' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert ex.ok else "r1: example 1 missing (pier policy)"
-let elder = run ["sh" "-c" "grep -q 'comlink/hosted_wire.rye' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let elder = run ["sh" "-c" "grep -q 'comlink/hosted_wire.rye' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert elder.ok else "r1: elder citation missing"
-let walls = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv4_addr_len=4' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv6_addr_len=16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let walls = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/shape/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv4_addr_len=4' src/shape/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv6_addr_len=16' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert walls.ok else "r1: three-wall names missing (wait · v4 len · v6 len)"
 
 say "r1 leg A: width face still tracks the pedestal's sixteen-byte sibling..."
-let track = run ["sh" "-c" "grep -q 'ipv6_addr_len=16' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'gth sample 16' src/lib/gate-comlink-addr-width-u32.glow"]
+let track = run ["sh" "-c" "grep -q 'ipv6_addr_len=16' src/shape/shape-comlink-ipv6-dual-stack.glow && grep -q 'gth sample 16' src/gate/gate-comlink-addr-width-u32.glow"]
 assert track.ok else "r1: width face drifted from pedestal ipv6_addr_len=16"
 
 say "r1 leg A: elder wire semantics unchanged..."

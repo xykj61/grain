@@ -6,7 +6,7 @@ say "a1-mantra: Language EN — the gen floor of one, decided in Glow (STOA331).
 say "a1-mantra: Lens TAME — both sides; the four family walls stand together."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-mantra-gen-floor-u32.glow"
+let desk = "src/gate/gate-mantra-gen-floor-u32.glow"
 
 let alive = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "1"]
 assert alive.ok else "a1-mantra: alive side failed"
@@ -21,7 +21,7 @@ assert reserved.out contains "0" else "a1-mantra: reserved did not speak 0"
 let elder = run ["sh" "-c" "grep -q 'gen >= 1' mantra/src/weave.rye"]
 assert elder.ok else "a1-mantra: the invariant left weave.rye"
 
-let walls = run ["sh" "-c" "test -f src/lib/gate-tally-garden-bound-u32.glow -a -f src/lib/gate-caravan-dependents-bound-u32.glow -a -f src/lib/gate-aurora-wire-bound-u32.glow"]
+let walls = run ["sh" "-c" "test -f src/gate/gate-tally-garden-bound-u32.glow -a -f src/gate/gate-caravan-dependents-bound-u32.glow -a -f src/gate/gate-aurora-wire-bound-u32.glow"]
 assert walls.ok else "a1-mantra: a family wall is missing"
 
 say "GREEN: a1 mantra gen floor — decides on both sides; four families now speak."

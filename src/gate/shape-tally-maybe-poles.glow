@@ -5,7 +5,7 @@
 ::  readers    Tally · Glow Tend · Caravan · Ashvini nest-only
 ::  nib        equinox-e199-tally-tend-v0
 ::
-::  Equinox e199 · Tally T5 — maybe as the dual of assert, in src/lib/.
+::  Equinox e199 · Tally T5 — maybe as the dual of assert, in src/gate/.
 ::  Names the two poles from tally/maybe.rye. Pedestal only; Rye still marks.
 +$  tally-maybe-poles-shape
   $:  poles=@u32

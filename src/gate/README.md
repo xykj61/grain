@@ -1,4 +1,4 @@
-# lib — Libraries
+# gate — Shared gates
 
 **Language:** EN  
 **Last updated:** `20260802.223739` (Equinox e259 — equality arc closes 8/8 · Rye tend)

@@ -7,7 +7,7 @@ say "a2-fold: Style Radiant — sumto within the garden wall of eight."
 say "a2-fold: Lens TAME — empty · within · past-wall · malformed plant."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-tally-fold-sumto-u32.glow"
+let desk = "src/gate/gate-tally-fold-sumto-u32.glow"
 
 say "a2-fold: empty (0) answers 0..."
 let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0"]
@@ -38,7 +38,7 @@ let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools
 assert plant.err contains "MalformedBody" else "a2-fold: malformed plant was accepted — the grammar wall fell"
 
 say "a2-fold: a1 garden neighbor still green..."
-let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-garden-bound-u32.glow" "3"]
+let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-garden-bound-u32.glow" "3"]
 assert a1.ok else "a2-fold: a1 regression failed"
 assert a1.out contains "EXIT:0" else "a2-fold: a1 did not exit 0"
 

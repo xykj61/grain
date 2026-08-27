@@ -9,8 +9,8 @@ say "a2-n-sum: Language EN — list fold past two fields (STOA335)."
 say "a2-n-sum: Lens TAME — triple · quad; pair neighbor; wrong nest refuses."
 
 let zig = "vendor/zig-toolchain/zig"
-let triple = "src/lib/gate-tally-fold-triple-sum.glow"
-let quad = "src/lib/gate-tally-fold-quad-sum.glow"
+let triple = "src/gate/gate-tally-fold-triple-sum.glow"
+let quad = "src/gate/gate-tally-fold-quad-sum.glow"
 
 say "a2-n-sum: empty triple (0 0 0) answers 0..."
 let t0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "0" "0" "0"]
@@ -41,7 +41,7 @@ let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools
 assert plant.err contains "SampleDoesNotNest" else "a2-n-sum: wrong-nest plant was accepted"
 
 say "a2-n-sum: pair neighbor still green (3 5 → 8)..."
-let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-pair-sum.glow" "3" "5"]
+let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-pair-sum.glow" "3" "5"]
 assert pair.ok else "a2-n-sum: pair regression failed"
 assert pair.out contains "8" else "a2-n-sum: pair did not speak 8"
 

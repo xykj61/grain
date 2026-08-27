@@ -1,4 +1,4 @@
-# sur — Structures
+# shape — Structures
 
 **Language:** EN  
 **Last updated:** `20260802.162841` (Equinox e222 — Comlink R1 pier policy=1 seated · rival withdrawn)  
@@ -7,7 +7,7 @@
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
+The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../gate/`](../gate/README.md).
 
 ## Pedestals
 
@@ -50,3 +50,33 @@ rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish
 ```
 
 Tend pedestal tier COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated · Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
+
+
+---
+
+## The three rooms carried in here, `20260827`
+
+`app/`, `sec/`, and `til/` each held `shape-*.glow` files -- one kind of thing, split by a subject
+every filename already carried. Their pedestals moved here and their doors keep their READMEs as
+pointers. What each room *taught* is worth keeping, so it is kept:
+
+**Pond agents** (the elder `app/`). Applications are **Pond agents** -- Pond is Glow's Gall-role
+host, confirmed `20260714.042545`, and the TUBE ladder packages an app to a signed APK. Agents
+written in Glow belong here; today's Rye-authored seeds stay under
+[`../../pond/apps/`](../../pond/apps/) beside the enclosure until each is revived into Glow **as a
+new artifact beside its elder**, under the reviving-replaces-renaming law. The pedestals name shapes
+only -- packaging and APK stay on the TUBE ladder witnesses.
+
+**Security and policy** (the elder `sec/`). The grants, secrets, and policy surface of Glow
+userland. Kin: Pond customs, Kumara, the Tilak seams, Mand policy, TUBE1 grants. Mand's own code
+stays under `mand/`; the pedestals here only name living counts. **Not this room, and still
+refused:** browser stacks, HTML, CSS, JavaScript, JSON-as-home-tongue, and any `web/` userland
+folder. `src/web` will not open.
+
+**Tilaks** (the elder `til/`). The tilak is the **type-mark**: the worn sign every value carries at
+a seam, seated in [`../../context/LEXICON.md`](../../context/LEXICON.md) and designed at
+`foundations/20260703-202312_the-marked-value.md`. Pond customs already admits per Tilak, Weave
+content-addresses them, and two roots stand hardcoded -- **plain-bytes** and **manifest**. A short
+atom form, `%tile`, is proposed and **held for Keaton's word**; the long word serves everywhere
+until then, and no pedestal here seats it. `tilak-root-count.glow` keeps its name: it is a shape by
+its own `+$` declaration, and the room it now stands in says so.

@@ -15,7 +15,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const nock = @import("nock_core.rye");
 
-const desk = "src/lib/gate-aurora-seed-length-eq-u32.glow";
+const desk = "src/gate/gate-aurora-seed-length-eq-u32.glow";
 const exact: u64 = 32; // the arc's firstborn — Ed25519 seed length
 const max_worker_out_bytes: u32 = 4096; // one small answer plus an EXIT marker
 

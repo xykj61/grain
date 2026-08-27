@@ -7,7 +7,7 @@ say "a1-bound: Style Radiant — the garden wall of eight, decided in Glow."
 say "a1-bound: Lens TAME — both sides witnessed; the malformed plant must refuse."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-tally-garden-bound-u32.glow"
+let desk = "src/gate/gate-tally-garden-bound-u32.glow"
 
 say "a1-bound: within the wall (3) answers 1..."
 let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "3"]
@@ -26,7 +26,7 @@ let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools
 assert plant.err contains "MalformedBody" else "a1-bound: malformed plant was accepted — the grammar wall fell"
 
 say "a1-bound: dec neighbor still green..."
-let dec = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-dec-u32.glow" "21"]
+let dec = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-dec-u32.glow" "21"]
 assert dec.ok else "a1-bound: dec regression failed"
 assert dec.out contains "EXIT:0" else "a1-bound: dec did not exit 0"
 

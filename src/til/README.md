@@ -1,25 +1,13 @@
-# til — Tilaks
+# til -- carried into `shape/`
 
-**Language:** EN  
-**Last updated:** 2026-07-28 (Surface p18 — second pedestal)  
-**Status:** Living — room open; first resident + second pedestal seated · `%tile` still held
-**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
-[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
-path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+**Language:** EN
+**Status:** Pointer -- this room's pedestals moved to [`../shape/`](../shape/README.md) on `20260827.184500`
+**Molted:** `20260827.184500` -- on Keaton's word, `approve all doors`
 
-The tilak is the type-mark: the worn sign every value wears at a seam (seated in [`../../context/LEXICON.md`](../../context/LEXICON.md); design at `foundations/20260703-202312_the-marked-value.md`). Pond customs already admits **per Tilak**; Weave content-addresses them; two roots stand hardcoded (**plain-bytes** · **manifest**). This room gathers tilak definitions written in Glow, one file per mark.
+Every file this room held was a `shape-*.glow` desk, so it held the same kind of thing
+[`../shape/`](../shape/README.md) holds, split by a subject each filename already carried. The
+pedestals moved; **what this room taught about tilaks is carried whole** into
+[`../shape/README.md`](../shape/README.md), under *The three rooms carried in here*.
 
-A short atom form (`%tile`) is proposed and **held for Keaton's word**; until then the long word serves everywhere. Pedestals here do not seat `%tile` — they name living counts from the marked-value brief.
-
-## Pedestals
-
-| Pedestal | Role | Witness |
-| --- | --- | --- |
-| [`tilak-root-count.glow`](tilak-root-count.glow) | First resident · two engine roots | `tools/gen/chapter/src_first_resident_witness.rish` |
-| [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Three-field manifest line | same |
-
-```
-rishi/bin/rishi run tools/g/glow_run.rish src/til/tilak-root-count.glow
-rishi/bin/rishi run tools/g/glow_run.rish src/til/shape-manifest-field-count.glow
-rishi/bin/rishi run tools/gen/chapter/src_first_resident_witness.rish
-```
+The door keeps its path so every reference that ever pointed here still lands. Charter:
+[`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).

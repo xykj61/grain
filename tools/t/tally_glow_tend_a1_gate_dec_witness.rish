@@ -10,7 +10,7 @@ say "tally-a1-dec: Style Radiant — dec bartis beyond pedestals; Rye still lowe
 say "tally-a1-dec: Lens TAME — Equinox e209 · Ashvini a1 OPEN · Equinox B."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-tally-dec-u32.glow"
+let desk = "src/gate/gate-tally-dec-u32.glow"
 
 say "tally-a1-dec: lower and run sample 21 (EXIT:0 proves predecessor)..."
 let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "21"]
@@ -26,7 +26,7 @@ let bad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "21
 assert bad.out contains "FAIL" else "tally-a1-dec: must refuse second sample"
 
 say "tally-a1-dec: Tend pedestals still present..."
-let prior = run ["sh" "-c" "test -f src/sur/shape-aurora-signature-length.glow -a -f src/sur/shape-mantra-store-dir-count.glow -a -f src/lib/shape-tally-maybe-poles.glow"]
+let prior = run ["sh" "-c" "test -f src/shape/shape-aurora-signature-length.glow -a -f src/shape/shape-mantra-store-dir-count.glow -a -f src/gate/shape-tally-maybe-poles.glow"]
 assert prior.ok else "tally-a1-dec: A4, M4, or T5 missing"
 
-say "GREEN: Ashvini a1 — gate-tally-dec-u32 does work in src/lib/; pedestals kept."
+say "GREEN: Ashvini a1 — gate-tally-dec-u32 does work in src/gate/; pedestals kept."
