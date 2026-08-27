@@ -1,15 +1,16 @@
 # launch-mind-cardinal-chapter.rish -- print the loop for MIND, the cardinal star of the aether row.
 #
-# Mind (night twin Mystery) is the ChatGPT Arbor session on macOS -- aether at the cardinal
-# seat, the word that initiates: the star that opens the surfaces a person touches. Its lane:
-# Brushstroke and Surf (elder code name Skate) for macOS, with everything in the DJINN design
-# lead staying custody gate %6. Charter:
+# Mind (night twin Mystery) is CHATGPT ON MACOS -- the Arbor session in the ChatGPT desktop app,
+# aether at the cardinal seat, the word that initiates: the star that opens the surfaces a
+# person touches. Its lane: Brushstroke and Surf (elder code name Skate) for macOS, with
+# everything in the DJINN design lead staying custody gate %6. Charter:
 # active-designing/20260826-151528_the-three-stars-of-the-aether-row.md. The Arbor session
 # speaks in tiles rather than a shell loop, so its living loop is the spoken Brix at
-# arbor/launch-chatgpt-chapter.brix, rendered by arbor/author.sh -- the tiles name the cardinal
-# seat now, and this mutant prints the same facts for a hand that wants them in one place.
-# Siblings: launch-sound-fixed-chapter.rish (Claude Desktop) - launch-dream-dual-chapter.rish
-# (the pier).
+# arbor/launch-chatgpt-chapter.brix, rendered and verified by arbor/author.sh -- this script
+# carries the elder recipe's shape (preconditions, the spoken flow, the seat, custody) the way
+# tools/l/launch-claude-chapter.rish does for a shell bench. Siblings:
+# launch-sound-fixed-chapter.rish (Claude Code, macOS) - launch-dream-dual-chapter.rish (Claude
+# Code in ai-jail, the Vultr pier).
 #
 #   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
 
@@ -24,13 +25,28 @@ assert brix.ok else "arbor/launch-chatgpt-chapter.brix (the spoken loop) is miss
 say "MIND -- the cardinal star of the aether row (night twin Mystery)"
 say "================================================================"
 say ""
-say "Host: the ChatGPT Arbor session on macOS. Its loop is spoken -- the eight"
-say "Lattice tiles in arbor/launch-chatgpt-chapter.brix, rendered and verified by"
-say "arbor/author.sh -- and the tiles name this seat. Read them aloud or paste"
-say "them; the shared discipline lives on the living card either way."
+say "Host: CHATGPT ON MACOS -- the Arbor session in the desktop app. Its loop is"
+say "spoken rather than shelled: the Lattice tiles in"
+say "arbor/launch-chatgpt-chapter.brix, rendered and verified by arbor/author.sh,"
+say "name this seat. The shared discipline lives on the living card either way."
 say ""
-say "The seat, for a hand that wants it in one line:"
+say "0) PRECONDITIONS, once per machine: the ChatGPT desktop app signed in on the"
+say "   Mac; this repo cloned where the session can read it; the tiles current --"
+say "   render and verify them with:  sh arbor/author.sh"
+say ""
+say "1) THE SPOKEN FLOW: read the rendered tiles aloud into the Arbor session, or"
+say "   paste them -- each tile is at or under the 256-byte tile bound and carries"
+say "   no digits, per Lattice's own rules. The tiles point the session at the"
+say "   living card and the charter, so a directive seated there reaches the next"
+say "   spoken lap with no tile edit."
+say ""
+say "2) THE SEAT, for a hand that wants it in one line:"
 say ""
 say "You are MIND, the cardinal star of the aether row, night twin Mystery, in the Arbor session on macOS: your lane is Brushstroke and Surf (elder code name Skate) for macOS, and everything in the DJINN design lead stays custody gate %6. Caravan, Tally, and the Scribe seams belong to Sound (fixed, Claude Desktop); the Glow rune lowering to Dream (dual, the pier); a find in a sibling lane becomes a line in ITINERARY rather than your lap. The remote is named xy on this clone; the seed cadence rides with Dream alone. STOP at the custody gates in ITINERARY. ty every1 baton prin recur"
+say ""
+say "3) CUSTODY: the gates in ITINERARY stay MANUAL -- and everything in the"
+say "   DJINN design lead stays custody gate %6, the invitation and every seat in"
+say "   that domain the collaborator's to accept. A find in a sibling lane"
+say "   becomes a line on the card rather than this star's lap."
 say ""
 say "GREEN: Mind recipe printed -- the cardinal star opens what a person touches."

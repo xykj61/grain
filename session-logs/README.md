@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.044747` | [the Kiln through history](20260827-044747_the-kiln-through-history.kyri) | the deep debride runs scoped and re-signed; the stars get elder recipes |
 | `20260827.035519` | [the nib that named its own parent](20260827-035519_the-nib-that-named-its-own-parent.kyri) | the card pin closed without an amend; the page had four bytes of room |
 | `20260827.034026` | [the exemption that named its own witnesses](20260827-034026_the-exemption-that-named-its-own-witnesses.kyri) | six exempt modules are witnessed on disk |
 | `20260827.032847` | [the eight the choir cannot hear](20260827-032847_the-eight-the-choir-cannot-hear.kyri) | eight caravan witnesses outside the glob; 42 asserts on no standing row |
