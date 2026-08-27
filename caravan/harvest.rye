@@ -217,6 +217,12 @@ const Slot = struct {
 /// child's exit status and answered `ready` for a dependent still running (REDS %282).
 /// `std.c.waitpid` is POSIX and `std.c.W` already dispatches on the host, so both
 /// piers answer their own kernel: 0 while the child lives, its pid once it has gone.
+///
+/// AND SO THIS MODULE MUST BE BUILT WITH `-lc` (REDS %286). `std.c.waitpid` is an
+/// `extern "c"` declaration rather than a syscall, so a build that links no libc refuses
+/// to resolve it. macOS links libc for every binary, which is why the pier that made this
+/// change saw a clean build and this pier saw none at all. Every `rye build` that reaches
+/// `sweep_one` passes `-lc`; `tools/ca/caravan_harvest_witness.rish` is the one that does.
 fn sweep_one(dependent: *cohort.Running, slot: *Slot) bool {
     if (slot.exited != null) return true;
     const pid = dependent.proc.id orelse return false;

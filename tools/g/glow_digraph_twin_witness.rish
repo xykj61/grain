@@ -57,6 +57,6 @@ assert check.out contains "OK digraph_twin_check 28" else "digraph_twin_check mi
 # Alphabet gate still GREEN, at 28 now that barlus is named.
 let alpha = run ["rishi/bin/rishi" "run" "tools/g/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_rune_alphabet_witness failed under digraph twin"
-assert alpha.out contains "rune_heads=28" else "alphabet witness must publish rune_heads=28 (REDS %278)"
+assert alpha.out contains "rune_heads=28" else "alphabet witness must publish rune_heads=28 (REDS %283)"
 
 say "GREEN: STOA333 digraph-table twin rung 1a — desk ≡ fixture ≡ Rye · wrong-order fails · tokenize rune2"

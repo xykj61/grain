@@ -10,7 +10,7 @@ assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err}${gate.out}"
 assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 
 # The worker publishes rune_heads=N; it is echoed here so a downstream witness reads a field
-# rather than grepping the sentence below for a bare number (REDS %278).
+# rather than grepping the sentence below for a bare number (REDS %283).
 say gate.out
 
 say "GREEN: Glow rune alphabet G1+G2 — 28 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100 · barket STOA111."

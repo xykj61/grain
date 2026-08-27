@@ -72,6 +72,31 @@ let note = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '*
 assert note.ok else "reds-monotone: a row and its own closure note must read as one row -- ${note.out}"
 assert note.out contains "mentions=3" else "reds-monotone: want all three mentions counted"
 assert note.out contains "rows=2" else "reds-monotone: want the closure note read as the row it speaks about"
+assert note.out contains "duplicate_headlines=0" else "reds-monotone: a row and its own closure note share one number, so they are one row rather than a double-book"
+
+# The distinct-headline reading, from both sides (REDS %287). The spine above proves the row
+# NUMBERS run 1..N; this proves the tree is told when one incident stands under two of them.
+# Three such pairs stand today -- %249/%271, %250/%272, %251/%273 -- each a macOS-bench red
+# booked there, shifted here by %252's merge repair, then re-seated a second time when it
+# arrived again from upstream. The ceiling holds that line and only ever falls; the pairs
+# themselves live on dated shelves, so resolving them is Keaton's word under `debride`.
+let atceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert atceil.ok else "reds-monotone: three duplicate headlines is the line as it stands and must pass -- ${atceil.out}"
+assert atceil.out contains "duplicate_headlines=3" else "reds-monotone: want all three duplicate headlines counted"
+
+# RED path seven -- one past the ceiling. A gate proven only in the passing direction cannot be
+# told from a bypass, so the refusal is planted and watched to refuse, and it names the pair.
+let overceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; echo '**REDS %7 -- d.** x'; echo '**REDS %8 -- d.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert (overceil.ok == false) else "reds-monotone: a fourth incident standing under two numbers must refuse"
+assert overceil.out contains "verdict=duplicate_rows" else "reds-monotone: want the double-book refused by name"
+assert overceil.out contains "duplicate_headlines=4" else "reds-monotone: want the fourth duplicate counted"
+assert overceil.out contains "one headline under %7 %8" else "reds-monotone: a refusal must name the two numbers, or nobody can read which incident stands twice"
+
+# The welcome beside it -- distinct headlines read zero, so the reading is measuring rather than
+# matching anything that rhymes.
+let distinct = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- b.** x'; echo '**REDS %3 -- c.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert distinct.ok else "reds-monotone: a ledger of distinct headlines must pass -- ${distinct.out}"
+assert distinct.out contains "duplicate_headlines=0" else "reds-monotone: want distinct headlines read as zero"
 
 # RED path four -- a file holding no rows at all, the REDS %97 shape: a scan reading a real
 # file and answering zero, where the zero is its own blindness rather than the ledger's virtue.
@@ -109,4 +134,4 @@ let bare = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger that publishes no to
 assert (bare.ok == false) else "reds-monotone: a ledger publishing no total must refuse"
 assert bare.out contains "verdict=no_headline" else "reds-monotone: want the missing headline refused by name"
 
-say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, the headline reciting the three numbers the spine measures, and every refusal named"
+say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, one headline under two row numbers counted and held under a ceiling that only falls (REDS %287), the headline reciting the three numbers the spine measures, and every refusal named"
