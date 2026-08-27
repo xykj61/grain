@@ -21,7 +21,7 @@ AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by 
 | Word | Job |
 |------|-----|
 | **Grain** | The **standing strands** -- primitives, TAME order, bounds, silo, witnesses, sameness, and the rest indexed in the grain brief. A pattern *fits the grain* when every sentence leans on a named strand. |
-| **Compass** | The **return habit** -- when direction frays, read foundations -> grain index -> active-designing newest-first -> `work-in-progress/TASKS.md` now -> run the witness before claiming green. |
+| **Compass** | The **return habit** -- when direction frays, read foundations -> grain index -> active-designing newest-first -> `construction/TASKS.md` now -> run the witness before claiming green. |
 
 **Grain** answers *does this cut clean?* **Compass** answers *where do I look to remember what we already decided?*
 
@@ -35,8 +35,8 @@ When refreshing before a lap or a roadmap edit, walk this rose **oldest convicti
 2. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): ten strands + crossing test.
 3. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
 4. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
-5. **Now** -- [`work-in-progress/TASKS.md`](../construction/TASKS.md): checked when landed; horizon explicit.
-6. **Order** -- [`work-in-progress/ROADMAP.md`](../construction/ROADMAP.md): why and season; parity count as ground truth.
+5. **Now** -- [`construction/TASKS.md`](../construction/TASKS.md): checked when landed; horizon explicit.
+6. **Order** -- [`construction/ROADMAP.md`](../construction/ROADMAP.md): why and season; parity count as ground truth.
 
 If TASKS and ROADMAP disagree with a seated brief, **the brief and green witnesses win**; hygiene fixes the plan.
 

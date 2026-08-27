@@ -37,7 +37,7 @@ say s9.out
 assert s9.ok else "sunn14: sunn9 limb RED"
 assert s9.out contains "GREEN: sunn9" else "sunn14: sunn9 missing GREEN"
 
-let s10 = run ["rishi/bin/rishi" "run" "tools/gen/chapter/sunn10_keys_glow_os_witness.rish"]
+let s10 = run ["rishi/bin/rishi" "run" "tools/gen/chapter/sunn10_keys_grain_os_witness.rish"]
 say s10.out
 assert s10.ok else "sunn14: sunn10 limb RED"
 assert s10.out contains "GREEN: sunn10" else "sunn14: sunn10 missing GREEN"

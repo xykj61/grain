@@ -4,10 +4,18 @@
 > groups thirty-nine of this room's documents by what they are about -- Open Asks, Steward, the SLC
 > ladder, Dimeroll, the language, the inference voices, and the singles that hold the rest up -- so a
 > reader has somewhere to begin other than a directory listing.
+>
+> **The room holds 94 flat documents** (measured `20260827`), so the walking index is a way in
+> rather than a census: it carries the thirty-nine a reader most often wants, and the rest are
+> found by name. Every one of the 94 folds to `date/YYYYMMDD/` on the same rule, and a stale
+> reference to any of them is **resolved** rather than hunted --
+> `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.083402` -- the workshop era named; roster refreshed; the Book and the chapter lanes mapped)
+**Last updated:** 2026-08-27 (`20260827.173952` -- coverage stated honestly against a 94-document room; the resolver named as the way to a file the index does not carry)
+**Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
+**Kin:** [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) (which shelf a piece belongs on) - [`../active-development/README.md`](../active-development/README.md) (its sibling room) - [`../construction/CHECKPOINTS.md`](../construction/CHECKPOINTS.md) (the walk-back) - home is [`../README.md`](../README.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is

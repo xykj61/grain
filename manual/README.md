@@ -5,7 +5,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
-**Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Glow OS onboarding under `glow-os/`; Pixel/HAWM/TUBE/JABS path indexed
+**Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Grain OS onboarding under `grain-os/`; Pixel/HAWM/TUBE/JABS path indexed
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -47,7 +47,7 @@ A beginner Glow-language textbook waits on a general parser. Until then, learn R
 | [`../docs/TUBE.md`](../docs/TUBE.md) | App-manifest + NativeActivity APK compressor | Checkable compress |
 | [`../docs/STOA.md`](../docs/STOA.md) | Glow language SLC compressor (STOA0-3) | Checkable compress |
 | [`../gratitude/grapheneos/`](../gratitude/grapheneos/) | Upstream GrapheneOS docs (MIT mirror) | Study library |
-| [`glow-os/`](grain-os/) | Glow OS onboarding hub (variants still scaffold) | Mixed -- see Get Started for real vs proposed |
+| [`grain-os/`](grain-os/) | Grain OS onboarding hub (variants still scaffold) | Mixed -- see Get Started for real vs proposed |
 
 Living ledger (full register): [`../context/specs/two-dev-environments-and-mobile-emulation.md`](../context/specs/two-dev-environments-and-mobile-emulation.md).
 
@@ -55,7 +55,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 
 ## What Lives Here
 
-- **`glow-os/`** -- Glow OS onboarding hub ([`glow-os/README.md`](grain-os/README.md)): overview, get-started, four-variant scaffold.
+- **`grain-os/`** -- Grain OS onboarding hub ([`grain-os/README.md`](grain-os/README.md)): overview, get-started, four-variant scaffold.
 - **`reference/rishi-language.md`** -- the Rishi language and command-line reference (version `20260702.184312`, parity **142**); section8 conditionals witnessed `20260702.205630`.
 - **`reference/caravan-capabilities.md`** -- hosted capability table (witnessed behavior only).
 - **`reference/tally-gardens.md`** -- named bounded memory regions (witnessed behavior only).

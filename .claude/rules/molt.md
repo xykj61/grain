@@ -8,7 +8,7 @@ The vocabulary this rides on is already seated in `context/LEXICON.md`:
 
 - **living mutant** — an accrete copy of a dated writing at a **new one-clock stamp** that becomes the living path; the prior file stays a **writing fossil**.
 - **writing fossil** — the dated original kept on disk after a living mutant seats (accrete-never-break); its Status banner points to the living path.
-- **shred-prep list** — the living pin `work-in-progress/SHRED_PREP.md`, Classes A · H · O.
+- **shred-prep list** — the living pin `construction/SHRED_PREP.md`, Classes A · H · O.
 - **shred / shed** — the eventual Amphora cut, which stays **RED** until Keaton circles it.
 
 ## What "molt" does, in order

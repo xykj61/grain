@@ -27,8 +27,8 @@ When many seasons nest: call the depth stack **Nest-Chapter Development**. Livin
 | Bench answer to a asked question | `counsel/` |
 | Runnable plan / season open paste | `expanding-prompts/` |
 | Round claim / GREEN edge | `waymarks/` (when claim-shaped) - session-logs Bron |
-| Living operator carry | `work-in-progress/REMEMBER.md` - `prin scope` |
-| Roadmap tasks | `work-in-progress/ROADMAP.md` - `TASKS.md` -- seasons **consume**, do not replace |
+| Living operator carry | `construction/ITINERARY.md` - `prin scope` |
+| Roadmap tasks | `construction/ROADMAP.md` - `TASKS.md` -- seasons **consume**, do not replace |
 
 ## Nest depth law (living)
 

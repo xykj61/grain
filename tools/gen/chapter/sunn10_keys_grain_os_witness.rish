@@ -1,10 +1,10 @@
-# tools/gen/chapter/sunn10_keys_glow_os_witness.rish -- SUNN10 keys - glow-os overview.
+# tools/gen/chapter/sunn10_keys_grain_os_witness.rish -- SUNN10 keys - grain-os overview.
 #
-#   rishi/bin/rishi run tools/gen/chapter/sunn10_keys_glow_os_witness.rish
+#   rishi/bin/rishi run tools/gen/chapter/sunn10_keys_grain_os_witness.rish
 
 say "sunn10: Language EN — custody and overview name the living hand."
 say "sunn10: Style Radiant — Livermore · Riyo · xykj61 · dated Dunsford stays."
-say "sunn10: Lens TAME — SUNN10 · keys/README · glow-os/overview."
+say "sunn10: Lens TAME — SUNN10 · keys/README · grain-os/overview."
 
 let k = read-file "keys/README.md"
 assert k contains "Voice:** Kyri" else "sunn10: keys want Voice Riyo"
@@ -24,4 +24,4 @@ assert o contains "context/KYRI.md" else "sunn10: overview want RIYO.md"
 assert o contains "context/QUIN.md" else "sunn10: overview want QUIN.md"
 assert o contains "Dunsford" else "sunn10: overview want dated Dunsford note"
 
-say "GREEN: sunn10 — keys/README · glow-os/overview · Livermore living · Dunsford dated"
+say "GREEN: sunn10 — keys/README · grain-os/overview · Livermore living · Dunsford dated"

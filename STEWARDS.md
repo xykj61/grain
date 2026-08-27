@@ -18,7 +18,7 @@
 |---|---|---|
 | `context/` · `foundations/` · `APARIGRAHA.md` · `OPEN_QUESTIONS.md` · `REMOTE_ROSTER.md` | Compass | everyone; `living_docs_lint` · `dated_guard` · `radiant_lint` |
 | `README` · `ORGANIZING` · `CONTRIBUTING` · `SOURCE` · `PUBKEYS` · licenses · `CLAUDE.md` · `llms.txt` · this file | Pier papers | the pier itself |
-| `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `bron-resins/` · host/profile cards | Relay genres | counsel↔bench relay |
+| `counsel/` · `expanding-prompts/` · `session-logs/` · `construction/` · `bron-resins/` · host/profile cards | Relay genres | counsel↔bench relay |
 | `active-designing/` · `active-reviving/` · `waymarks/` | Design · revival · claims | Maze-adjacent; claims forward-only in `waymarks/` |
 | `external-research/` · `gratitude/` · `external-research/yonder/strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders honored |
 | `glow/` · `rye/` · `rishi/` · `tools/` | Languages and bench | instruments; Ojjo consumes parity |
