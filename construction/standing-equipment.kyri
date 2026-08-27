@@ -359,3 +359,40 @@ seated 20260827.004535
 guard rish_join_split
 path tools/r/rish_join_split_witness.rish
 seated 20260827.140328
+
+# The six Glow witnesses nothing reached, seated 20260827.183635 on Keaton's word.
+# All 89 glow_*_witness.rish stood off this roster; these six were reached by no runner,
+# roster, or suite at all, and they carry the newest rungs. One of the six was RED and had
+# been since 20260804 (REDS %299). They run on `cadence` rather than `lap`: each builds real
+# plants through the Zig toolchain, and glow_shop_gate_horizon and _pair_faces each take
+# minutes. Revisit the tier when the Glow ladder reopens.
+
+guard glow_shop_gate_pair_faces
+path tools/g/glow_shop_gate_pair_faces_witness.rish
+tier cadence
+seated 20260827.183635
+
+guard glow_shop_gate_pair_select
+path tools/g/glow_shop_gate_pair_select_witness.rish
+tier cadence
+seated 20260827.183635
+
+guard glow_shop_gate_horizon
+path tools/g/glow_shop_gate_horizon_witness.rish
+tier cadence
+seated 20260827.183635
+
+guard glow_tally_pair_bound
+path tools/g/glow_tally_pair_bound_witness.rish
+tier cadence
+seated 20260827.183635
+
+guard glow_vane_pair_mirrors
+path tools/g/glow_vane_pair_mirrors_witness.rish
+tier cadence
+seated 20260827.183635
+
+guard glow_compose_after_inc
+path tools/g/glow_compose_after_inc_witness.rish
+tier cadence
+seated 20260827.183635

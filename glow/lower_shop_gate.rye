@@ -203,7 +203,7 @@ fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]c
 
 /// STOA345: the import each vane-decide plant carries; null for every other gate.
 fn vane_decide_import(gate: []const u8) ?[]const u8 {
-    if (std.mem.eql(u8, gate, "gardens_lawful")) return "const gardens = @import(\"tally_gardens.rye\");\n\n";
+    if (std.mem.eql(u8, gate, "gardens_lawful")) return "const gardens = @import(\"tally/gardens.rye\");\n\n";
     if (std.mem.eql(u8, gate, "caps_lawful") or std.mem.eql(u8, gate, "dependents_lawful")) return "const caravan = @import(\"caravan/capabilities.rye\");\n\n";
     return null;
 }

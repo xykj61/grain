@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `50ffef60d8` -- the parent, which every clone resolves.
+**Git nib:** `b3db2357f6` -- the parent, which every clone resolves.
 
 **Now.** **The derived spine is seated: row numbers stop colliding.**
 
@@ -168,6 +168,8 @@ so the armed-wall promise rides on the publisher.
 | Door | Kind |
 |------|------|
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
+| **The Glow tree** -- `src/lib/`->`gate/`, `sur/`->`shape/`, `app/ sec/ til/` folded in (205 refs); `loops/<body>/` for six dotted roots (54); `glow/gen/` folds by letter (340 flat vs 256). Charter `active-designing/20260827-174816` | **GRANTED** `20260827` |
+| **FORA31, the socket** -- `constel/` runs a full Raft in memory (31 modules, 31 witnesses, no syscall); `comlink/` crosses localhost UDP (23). The rung joining them. The **deep debride** follows it, held on its own precondition | **GRANTED** `20260827` |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |
@@ -213,7 +215,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260827.123054` | two hands took one booked lap; six lines dedented, %291 booked, the card back under its declared bound | [log](../session-logs/20260827-123054_two-hands-one-checkout.kyri) |
+| `20260827.123054` | two hands took one booked lap; six lines dedented, %291 booked, the card back under its declared bound | [log](../session-logs/date/20260827/20260827-123054_two-hands-one-checkout.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
