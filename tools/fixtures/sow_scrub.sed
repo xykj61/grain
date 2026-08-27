@@ -85,9 +85,14 @@ s/Grain Energy PBC/a public benefit company/g
 s/Grain_Energy_PBC/a_public_benefit_company/g
 s/Grain Energy/a civic venture/g
 s/grain\.energy/acme.example/g
+s/grain-ww\.com/acme.example/g
+s/grainos\.org/acme.example/g
 s/grain_energy/acme-owner/g
 s/groupproject36/acme-owner/g
 s/Siya Fund PBC/a fund/g
+s/Siya Fund LLC/a fund/g
+s/siya-ww\.com/acme-fund.example/g
+s/siya\.fund/acme-fund.example/g
 s/Siya Fund/a fund/g
 s/Facebook Marketplace/an online marketplace/g
 s/Tlon Corporation/a real workplace/g

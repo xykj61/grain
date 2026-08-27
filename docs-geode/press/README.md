@@ -14,7 +14,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | Stamp | Announcement | What it says |
 |---|---|---|
 | `20260301.000000` | [The Aspiring Oregon Radiance](../../press/20260301-000000_aspiring-oregon-radiance-statewide-press-release.md) | a vision for regeneration offered to a whole state -- the civic half of this project, written for people who will never read a line of its code |
-| `20260727.135351` | [Siya Fund PBC founding](../../press/20260727-135351_seva-fund-founding-announcement.md) | the founding of the public-benefit fund, in its own words |
+| `20260727.135351` | [Siya Fund LLC founding](../../press/20260827-165527_siya-fund-llc-founding-announcement.md) | the founding of the public-benefit fund, in its own words |
 | `20260727.141213` | [The Livermore name](../../press/20260727-141213_the-livermore-name-announcement.md) | a name announced in gentle form |
 
 ## The scope, stated plainly

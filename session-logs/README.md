@@ -3,35 +3,33 @@
 **Language:** EN
 **Style:** Gauge, Meter setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living pin -- newest-first index of the logs still flat in this room
+**Status:** Living pin -- the way in: one row per day shelf, newest first
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Bound:** under `living_pin_max_bytes[session-logs/README.md]` (57344)
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
 
-Every session in this tree leaves a log, and this table is the way in. It reads **newest first**,
-and one row is one lap: when it happened, what it is called, and what it found.
+Every session in this tree leaves a log, and this page is the way in. It reads **newest first**,
+and one row is one **day**: which shelf holds it, how many laps rest there, and where to open it.
 
 **This page carries its own byte bound** -- `living_pin_max_bytes[session-logs/README.md]` = **57,344**,
-which is `256 x 192` rows plus 8,192 for prose, so the index can hold a full room of 256 flat logs.
-Every other living pin keeps 24,576; the two serve different readings, since that number bounds a
-page an agent reads *whole* and this one is read from the *top* (REDS %205, Keaton's word `20260824`).
+seated when the pin held a row per lap. Since `20260827.171500` it holds a row per **day**, so the
+bound is loose by design and the page is small: one row per shelf, a few hundred bytes a year.
 
-**A row points; it does not summarise.** The log is the record, and the index is the way in, so a
-row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. The number is the
-pin's own arithmetic rather than a preference: a row costs about 123 bytes before it says anything,
-the prose above takes about 2,100, and 192 leaves room for roughly 116 rows inside the 24,576 this
-page declares. Rows once ran to 2,223 bytes apiece, which made this page a second copy of the logs
-(REDS %204). Held by [`../tools/in/index_row_bound_witness.rish`](../tools/in/index_row_bound_witness.rish);
-shelved rows keep every byte they wrote.
+**A row points; it does not summarise.** The log is the record and the index is the way in, so a
+shelf row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. The number is
+arithmetic rather than taste: a row costs about 123 bytes before it says anything, and 192 leaves a
+clause of roughly 69 characters. Rows once ran to 2,223 bytes apiece, which made the index a second
+copy of the logs (REDS %204). Held by
+[`../tools/in/index_row_bound_witness.rish`](../tools/in/index_row_bound_witness.rish); shelved rows
+keep every byte they wrote.
 
-**This index holds exactly the logs still flat in this room.** A log folds by day into
-`date/YYYYMMDD/`, and its row folds with it, onto `date/README-index-YYYYMMDD.md` -- one shelf per
-closed day, listed in the [chapters roster](CHAPTERS.md). So the index and the room always describe
-the same set, and neither can grow while the other shrinks. That pairing is what keeps this file
-under the bound its header declares; it stood at 2,895,849 bytes before the rows learned to fold
-(REDS %182).
+**A log is born on its day's shelf.** From `20260827.171500` a session log is written straight to
+`date/YYYYMMDD/` and its row is prepended to `date/README-index-YYYYMMDD.md` in the same breath, so
+this room holds no flat logs and this pin holds no laps. Nothing folds afterward, because nothing
+arrives loose -- and the page a reader opens first can no longer grow with the room. It stood at
+2,895,849 bytes when rows outlived their logs here (REDS %182).
 
 **A day's own order is this table, rather than filename sort.** One-clock stamps sort ascending on
 disk; within a day, trust the rows. Naming law:
@@ -47,168 +45,52 @@ disk; within a day, trust the rows. Naming law:
 order rather than by stamp; they rest on the `20260724` and `20260725` shelves. The host zone is
 `America/New_York`, and from `20260724.205009` the one-clock witness is **blocking**.
 
-| Stamp | Log | What it recorded |
+## The shelves, newest first
+
+A log is **born on its day's shelf** from `20260827.171500`: it is written to
+`session-logs/date/YYYYMMDD/` and its row is prepended to `date/README-index-YYYYMMDD.md` in the
+same breath. So this pin holds no rows of its own -- it holds the way in, and it cannot grow with
+the room. The newest day's shelf is the one to open; it stays open while its day runs and freezes
+when the day closes.
+
+| Day | Rows | Shelf |
 |---|---|---|
-| `20260827.164655` | [the jail had no word for codex](20260827-164655_the-jail-had-no-word-for-codex.kyri) | %295: Dream's seat could not start; codex declared and the jail taught |
-| `20260827.164635` | [the second mitra shed](20260827-164635_the-second-mitra-shed.kyri) | ten elders cut, three held; %292, the witnesses that guarded them |
-| `20260827.161243` | [the six bodies swap and the closed stacks](20260827-161243_the-six-bodies-swap-and-the-closed-stacks.kyri) | the lanes swap; Dream goes Codex; the closed stacks seat |
-| `20260827.145605` | [the stars gain their planets](20260827-145605_the-stars-gain-their-planets.kyri) | Mystery, Silence, Hush seated -- each star's night twin made a hand |
-| `20260827.144029` | [a blob carries no mode](20260827-144029_a-blob-carries-no-mode.kyri) | eight guards red at one cold open; five closed, two gated as %293 |
-| `20260827.142357` | [the sixty-fifth record refuses](20260827-142357_the-sixty-fifth-record-refuses.kyri) | Mandate audit: Full proven at the ceiling; the door reopens |
-| `20260827.140904` | [the empty separator dies named](20260827-140904_the-empty-separator-dies-with-its-name-spoken.kyri) | the Pleac row closes; guard 76; the RED leg watched dying |
-| `20260827.135641` | [the adoption completes](20260827-135641_the-adoption-completes-and-the-stars-run-once.kyri) | run-bounded lands; Surf / Skate peers; run-once on any power |
-| `20260827.123054` | [two hands, one checkout](20260827-123054_two-hands-one-checkout.kyri) | %291: two sessions took one booked lap; six lines dedented, the card back under bound |
-| `20260827.121909` | [the kernel lays this out](20260827-121909_the-kernel-lays-this-out.kyri) | nineteen sockaddr folds; %282 closed on this bench; twenty-one witnesses green |
-| `20260827.082724` | [reset, never merge](20260827-082724_reset-never-merge.kyri) | %290: the loops learn the divergence word; Mind adopted whole onto main |
-| `20260827.052431` | [seven refs, one history](20260827-052431_seven-refs-one-history.kyri) | the debride's last branch lands; every ref on xy carries the Kiln history |
-| `20260827.044747` | [the Kiln through history](20260827-044747_the-kiln-through-history.kyri) | the deep debride runs scoped and re-signed; the stars get elder recipes |
-| `20260827.035519` | [the nib that named its own parent](20260827-035519_the-nib-that-named-its-own-parent.kyri) | the card pin closed without an amend; the page had four bytes of room |
-| `20260827.034026` | [the exemption that named its own witnesses](20260827-034026_the-exemption-that-named-its-own-witnesses.kyri) | six exempt modules are witnessed on disk |
-| `20260827.032847` | [the eight the choir cannot hear](20260827-032847_the-eight-the-choir-cannot-hear.kyri) | eight caravan witnesses outside the glob; 42 asserts on no standing row |
-| `20260827.031800` | [the region answers for itself](20260827-031800_the-region-answers-for-itself.kyri) | region covered, roster ratchet six to five; carry pin moved with the touch |
-| `20260827.030726` | [the fence walked in a tree of my own](20260827-030726_the-fence-walked-in-a-tree-of-my-own.kyri) | nineteen modules stop naming one kernel; the ceiling is now a wall |
-| `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Oven from Ember; REDS %289, the sed tamper red |
-| `20260827.024712` | [the lock proven from the other side](20260827-024712_the-lock-proven-from-the-other-side.kyri) | the sibling proves the lock; %281 narrows |
-| `20260827.023827` | [the bench that was already occupied](20260827-023827_the-bench-that-was-already-occupied.kyri) | %281 third firing; socket fold surveyed |
-| `20260827.023757` | [one tree, one toolchain spawn](20260827-023757_one-tree-one-toolchain-spawn.kyri) | the build lock lands in rye; %281 shadows closed; three legs on metal |
-| `20260827.004535` | [the repair that reached one caller](20260827-004535_the-repair-that-reached-one-caller.kyri) | %288: one module of twenty repaired, the class now metered |
-| `20260827.000338` | [the flag one host cannot test](20260827-000338_the-flag-one-host-cannot-test.kyri) | libc where macOS links it free; nine stale citations, three reds booked twice |
-| `20260826.235304` | [the return nobody read](20260826-235304_the-return-nobody-read.kyri) | %282 closes: the socket trio named one arch, the return was discarded, the kill hit a subshell |
-| `20260826.224930` | [the syscall that named one kernel](20260826-224930_the-syscall-that-named-one-kernel.kyri) | rc=9 believed; libc across seven sites, two of three reds false |
-| `20260826.224743` | [the fence around the garden](20260826-224743_the-fence-around-the-garden.kyri) | tally answers to its witnesses: 5 covered, 6 counted, the newborn refused |
-| `20260826.222813` | [the spine closes five for five](20260826-222813_the-spine-closes-five-for-five.kyri) | region_base derived, twelve windows abut; the machine fact falls |
-| `20260826.221834` | [the meter before the ruling](20260826-221834_the-meter-before-the-ruling.kyri) | Move 1 alive, 3.5x on the hit; the hit-rate meter seated, skip nothing |
-| `20260826.211951` | [the bench that spoke another dialect](20260826-211951_the-bench-that-spoke-another-dialect.kyri) | flock, the awk hex class, three dead nibs; %281 open |
-| `20260826.205753` | [Saturn enters the nocturne](20260826-205753_saturn-enters-the-nocturne.kyri) | two studies molt in place to Twilight; claims held; A and A+ |
-| `20260826.202104` | [the lap that ended at git add](20260826-202104_the-lap-that-ended-at-git-add.kyri) | rune rename closed; %284, %285 -- a lint with no body |
-| `20260826.195658` | [the horizon arrives as measurement](20260826-195658_the-horizon-arrives-as-measurement.kyri) | the happy zone molts; five thresholds, one shape |
-| `20260826.192711` | [the sweep that found nothing](20260826-192711_the-sweep-that-found-nothing.kyri) | %277 stands unique; two detectors thrown away |
-| `20260826.182901` | [the fascia, the friend, and the grant](20260826-182901_the-fascia-the-friend-and-the-grant.kyri) | two foundations, the mitra door, four dialect legs host-probed |
-| `20260826.182253` | [the instrument and the artifact](20260826-182253_the-instrument-and-the-artifact.kyri) | readlink 4->2, sed 3->0; a meter on the wrong class |
-| `20260826.180052` | [a lantern twice becomes a loom](20260826-180052_a-lantern-twice-becomes-a-loom.kyri) | the fold loom stands; %276, the card read a program's code |
-| `20260826.175003` | [the constellation widens the calling](20260826-175003_the-constellation-widens-the-calling.kyri) | thirty seats chartered; 24/7 Mac loop; Pond accrete-only |
-| `20260826.172320` | [the rune says its own name](20260826-172320_the-rune-says-its-own-name.kyri) | eight plain words for Glow's runes; ten surfaces measured, none molted |
-| `20260826.165823` | [the drain is a fold](20260826-165823_the-drain-is-a-fold.kyri) | move three on metal: two cold runs, four stores byte-identical; choir at 113 |
-| `20260826.165538` | [three remotes take their names](20260826-165538_three-remotes-take-their-names.kyri) | xy, debrided, seed seated; two piers merged, upstream's five re-seated %271-%275 |
-| `20260826.161127` | [the spine opens, wrap named](20260826-161127_the-spine-opens-wrap-named.kyri) | Sound's first lap: moves one, two, five on metal; six Doors; choir at 112 |
-| `20260826.152336` | [three stars of the aether row](20260826-152336_three-stars-of-the-aether-row.kyri) | Mind, Sound, Dream seated; three launchers; lanes are the collision law |
-| `20260826.143837` | [two hands, one truthful record](20260826-143837_two-hands-one-truthful-record.kyri) | configured and active identity part; separate sessions keep evidence |
-| `20260826.141312` | [the dialect family closes](20260826-141312_the-dialect-family-closes.kyri) | %271-%275 closed on metal; the bench speaks both dialects; census at 177 |
-| `20260826.134505` | [the wound the census took for a plant](20260826-134505_the-wound-the-census-took-for-a-plant.kyri) | the guard that counts broken paths was erasing them; %268 |
-| `20260826.115944` | [fifty twins, the teaching family whole](20260826-115944_fifty-twins-the-teaching-whole.kyri) | the sixth cubist pass; fifty twins stand, eleven pages remain |
-| `20260826.093717` | [the flag inside a longer word](20260826-093717_the-flag-inside-a-longer-word.kyri) | PCRE and stat gated at zero; a receipt control off every roster, red for a day |
-| `20260826.075023` | [the clock that spoke one dialect](20260826-075023_the-clock-that-spoke-one-dialect.kyri) | the date family to zero; the clock witness joins the roster |
-| `20260826.063705` | [one dialect, twelve sites](20260826-063705_one-dialect-twelve-sites.kyri) | the xargs family to zero; the exec-bit gate was reading nothing on the second pier |
-| `20260826.053017` | [forty twins, the grid dressed](20260826-053017_forty-twins-the-grid-dressed.kyri) | pass five: the house family whole, every palette pair worn, the seed on cadence |
-| `20260826.052004` | [thirty twins, the air enters](20260826-052004_thirty-twins-the-air-enters.kyri) | pass four: moons, Venus, the shadow pairs, first houses; roster at thirty |
-| `20260826.050835` | [twenty twins, one fifth](20260826-050835_twenty-twins-one-fifth.kyri) | the third cubist pass: ten twinned at once, seven pairs worn, roster at twenty |
-| `20260826.045101` | [ten twins and turning](20260826-045101_ten-twins-and-turning.kyri) | the second cubist pass: five more twins, the roster at ten, sharing earned |
-| `20260826.044827` | [the two piers and the nine reds](20260826-044827_the-two-piers-and-the-nine-reds.kyri) | spine 1..254; nine reds closed; molt strands what a fold recovers |
-| `20260826.044254` | [five twins on one canvas](20260826-044254_five-twins-on-one-canvas.kyri) | the cubist sweep opens: five classical pages twinned, all A, the door rostered |
-| `20260826.034722` | [the voice door is ready](20260826-034722_voice-door-is-ready.kyri) | this task is text; an active voice conversation opens spoken questions |
-| `20260826.034454` | [the Arbor-ready first-user invitation](20260826-034454_arbor-ready-first-user-invitation.kyri) | one voice prompt; token, workspace, profile, and approval choices |
-| `20260826.033417` | [the zone was already home](20260826-033417_the-zone-was-already-home.kyri) | America/New_York is already GREEN |
-| `20260826.033247` | [the circle and the enclosure](20260826-033247_the-circle-and-the-enclosure.kyri) | mitra shed complete, twelve fossils cut; Pond's 75-round quest seated |
-| `20260826.033242` | [the clock and the dialect](20260826-033242_the-clock-and-the-dialect.kyri) | macOS refused the parser, rather than the time |
-| `20260826.031657` | [the name waits beside the headwaters](20260826-031657_the-name-waits-beside-the-headwaters.kyri) | Arbor-ready Twilight naming; the token waits at the spring |
-| `20260826.025139` | [the chapter rewrite lands](20260826-025139_the-chapter-rewrite-lands.kyri) | 3,471 re-signed and pushed; three rooms seat; six foundations molt; seed follows |
-| `20260826.022833` | [one tree, one number](20260826-022833_one-tree-one-number.kyri) | the census read a comment as a planting; parked at the row-number gate; %246-%248 |
-| `20260826.021754` | [the panchanga and the chapter](20260826-021754_the-panchanga-and-the-chapter.kyri) | rings of five seated; Chapter->Chapter debride; Kyri 6 palettes; 14 pages |
-| `20260826.010645` | [the debride's wake](20260826-010645_the-debrides-wake.kyri) | seven guards red on the receiving pier; rewritten-upstream shape gated; %243-%245 |
-| `20260826.002952` | [the DJINN debride, the bit chapter](20260826-002952_the-djinn-debride-and-the-bit-season.kyri) | the name leaves tree and history, re-signed; WADE opens; 13 pages |
-| `20260826.001630` | [two piers, one dialect](20260826-001630_two-piers-one-dialect.kyri) | a generated page shipped 38 zeros; the xargs dialect gated; %240-%242 |
-| `20260825.235254` | [the leaves that sing](20260825-235254_the-leaves-that-sing.kyri) | twelve leaf roots closed across eight causes; 33 leaves rostered; reach 1,201 -> 1,154 |
-| `20260825.231648` | [a letter held for the word](20260825-231648_a-letter-held-for-the-word.kyri) | the Hale County draft: three steps, no money, withheld from the seed |
-| `20260825.231037` | [the well's own record](20260825-231037_the-wells-own-record.kyri) | isolation reading drafted from sworn 1962 tops; residue-leads told plain |
-| `20260825.225051` | [the constellation rehearsal](20260825-225051_the-constellation-rehearsal.kyri) | the paper stack runs: one pen, three processes, every voice verified |
-| `20260825.213128` | [the room nobody heard](20260825-213128_the-room-nobody-heard.kyri) | 295 of 298 chapter witnesses unheard; 17 leaf reds; %231, %232 closed |
-| `20260825.211331` | [the twice-pulled round](20260825-211331_the-twice-pulled-round.kyri) | the sync rota seated; livefeed narrates; mycelium and mantra molt |
-| `20260825.205409` | [the derived spine](20260825-205409_the-derived-spine.kyri) | HotStuff+Hashgraph infused; %230 answered: stamp-keyed, derived at merge |
-| `20260825.202950` | [the works-town placed](20260825-202950_the-works-town-placed.kyri) | Plainview leads; permit current to 2030, no 210 yet; residual home answered |
-| `20260825.195437` | [two piers took the same number](20260825-195437_two-piers-took-the-same-number.kyri) | REDS %230 OPEN: both clones booked %226 |
-| `20260825.193346` | [the window still open](20260825-193346_the-window-still-open.kyri) | Brazos: four readings taken; no NMED ruling as of 20260825; plant unfunded |
-| `20260825.191452` | [the receipt that survived its audit](20260825-191452_the-receipt-that-survived-its-audit.kyri) | Move 1 lands: receipts v2, 15 legs, ~88x on six modules |
-| `20260825.183435` | [the table stops rotting](20260825-183435_the-table-stops-rotting.kyri) | constel_depart_knot proves n=3 f=0 and n=4 f=1 on metal; counts refreshed to 99 |
-| `20260825.183336` | [the number the tool writes](20260825-183336_the-number-the-tool-writes.kyri) | Five reds from one clone; %226-%228; the ledger headline generated |
-| `20260825.183029` | [the narrowest dialect](20260825-183029_the-narrowest-dialect.kyri) | REDS %226: the register meter and parity-selftest made two-host, proven on metal |
-| `20260825.181028` | [two words granted and routed](20260825-181028_two-words-granted-and-routed.kyri) | seed push routed to the pier; FAST/COLD ruling seated |
-| `20260825.180329` | [the short name and the wall](20260825-180329_the-short-name-and-the-wall.kyri) | REDS %225: bare Siya joins the wall; four basenames withheld; gates green |
-| `20260825.173849` | [fusion research and three bundles placed](20260825-173849_fusion-research-and-three-bundles-placed.kyri) | 18 files seated, reprove design booked, held at the gate |
-| `20260825.172213` | [build-systems-a-la-carte traces read](20260825-172213_build-systems-a-la-carte-traces-read.kyri) | A tiny verdict makes a constructive trace nearly free. |
-| `20260825.162410` | [The ratchet and the property](20260825-162410_the-ratchet-and-the-property.kyri) | The reach gate moves from `unheard` to `unreached` at 1202; REDS %224. |
-| `20260825.152119` | [the rota index counts commits](20260825-152119_the-rota-index-counts-commits.kyri) | 10 of 19 lap pairs advanced the canon rota by one row; repair proposed. |
-| `20260825.144025` | [rule, then reading, then refusal](20260825-144025_rule-then-reading-then-refusal.kyri) | A cold roster declines to open over a lap that ended at `git add`; %223. |
-| `20260825.132121` | [a choir for the largest unheard family](20260825-132121_a-choir-for-the-largest-unheard-family.kyri) | 239 Lotus witnesses heard; unheard 1,176 to 937; %221, %222. |
-| `20260825.110922` | [a tier is a cadence](20260825-110922_a-tier-is-a-cadence.kyri) | The roster names a clock per guard; 82 heard on the fifth lap; REDS %220. |
-| `20260825.092953` | [a witness nobody runs](20260825-092953_a-witness-nobody-runs.kyri) | 1,690 witnesses on disk, 56 sung every lap; REDS %219 closed. |
-| `20260825.085347` | [One law, two comment syntaxes](20260825-085347_a-law-that-governed-three-languages.kyri) | The ASCII meter reaches Rishi and shell; 10,468 to 505. |
-| `20260825.081302` | [what an address space is made of](20260825-081302_what-an-address-space-is-made-of.kyri) | Twelve parts, seven held; the join the two rings never had. |
-| `20260825.073555` | [the projection, and the gate](20260825-073555_the-projection-fresh-and-the-push-at-the-gate.kyri) | Seed projected: 7,038 copied, 1,080 scrubbed; four gates hold. |
-| `20260825.070659` | [what a guard asks](20260825-070659_what-a-guard-asks-and-what-it-does-not.kyri) | 388 links measured down to 13 to 1; a backtick is not a path. |
-| `20260825.061552` | [bounded for our own reasons](20260825-061552_bounded-for-our-own-reasons.kyri) | Microkit bounds a domain seven ways; Caravan sits inside all four it shares. |
-| `20260825.051936` | [a citation is a promise](20260825-051936_a-citation-is-a-promise-wherever-written.kyri) | A fold repoints what it can see; 11 symlink near-misses (%218). |
-| `20260825.041416` | [a share needs a denominator](20260825-041416_a-share-needs-a-denominator.kyri) | The register floor the scan applies and the card citing it dropped. |
-| `20260825.034444` | [a declaration is not an exemption](20260825-034444_a-declaration-is-not-an-exemption.kyri) | An index is read as one; a placeholder shape is an illustration. |
-| `20260825.031428` | [four reds from two roots](20260825-031428_four-reds-from-two-roots.kyri) | A sweep edited two mirrors; an index counted a build cache as 108 modules. |
-| `20260825.020027` | [which witnesses actually run](20260825-020027_which-witnesses-actually-run.kyri) | 261 of 1,684 gated; 61 sampled, 6 red, and not all reds are defects. |
-| `20260825.014325` | [a loom for a lantern](20260825-014325_the-loom-for-a-lantern-that-fired-twice.kyri) | Rye comments 32,064 to 4,338 non-ASCII; strings untouched, suite green. |
-| `20260825.010420` | [one region, two roots](20260825-010420_one-region-two-roots.kyri) | Region folded into tally; a symlinked body's imports travel with it. |
-| `20260825.004749` | [the short way and the way home](20260825-004749_the-short-way-and-the-way-home.kyri) | rishi takes a bare .rish path; 108 room READMEs measured with no way home. |
-| `20260824.235724` | [a second reading](20260824-235724_a-second-reading.kyri) | rye finds its std by argv[0] where /proc is absent; the region body folded. |
-| `20260824.233615` | [the last hundred and twenty one](20260824-233615_the-last-hundred-and-twenty-one.kyri) | Every room but caravan reads 100%; the last 37 are blocked or proof. |
-| `20260824.232726` | [three rooms to ninety nine](20260824-232726_three-rooms-to-ninety-nine.kyri) | image, lotus and brushstroke to 100%; the tree reads 99%. |
-| `20260824.225806` | [documenting what is carried](20260824-225806_documenting-what-is-carried.kyri) | caravan to 37, and 20 left undocumented because the carry ratchet is right. |
-| `20260824.223227` | [the tree answers what a file cannot](20260824-223227_the-tree-answers-what-a-file-cannot.kyri) | Cross-file reachability lands; gap 453 to 400, nothing wrongly moved. |
-| `20260824.221143` | [the sweep that would have done harm](20260824-221143_the-sweep-that-would-have-done-harm.kyri) | 361 of 377 were test narration; nothing was stamped. |
-| `20260824.220320` | [three rooms and the parity tombstone](20260824-220320_three-rooms-and-the-parity-tombstone.kyri) | Three rooms to 100%; no room under 92% now. |
-| `20260824.215225` | [a directory says it and means it](20260824-215225_a-directory-says-it-and-means-it.kyri) | rye closed; 456 reasons sit above an assert unlabelled. |
-| `20260824.214523` | [the tail read not generated](20260824-214523_the-tail-read-not-generated.kyri) | linengrow closes at 100%; the tail was read rather than class-generated. |
-| `20260824.213203` | [a room that really was empty](20260824-213203_a-room-that-really-was-empty.kyri) | linengrow 41.6% to 62.6% -- the first room in eight whose number held. |
-| `20260824.211134` | [a check that shared the bug](20260824-211134_a-check-that-shared-the-bug.kyri) | crypto was 89.8%, not 57.5%; 483 lines carried a label the meter could not read. |
-| `20260824.205510` | [the ring that destroys by name](20260824-205510_the-ring-that-destroys-by-name.kyri) | mand 0% to 100% -- custody code, where a reason is worth most. |
-| `20260824.205156` | [glow reads its own reasons](20260824-205156_glow-reads-its-own-reasons.kyri) | glow 3.4% to 100%, and a sixth measurement fault owned. |
-| `20260824.203812` | [the reasons were on the wrong line](20260824-203812_the-reasons-were-on-the-wrong-line.kyri) | glow 3.4% to 48%; its reasons were trailing comments all along. |
-| `20260824.202727` | [the role is in the call graph](20260824-202727_the-role-is-in-the-call-graph.kyri) | photos.rye needed no sweep; the bin reads reachability and the law reads 92%. |
-| `20260824.201311` | [the first room swept](20260824-201311_the-first-room-swept.kyri) | drawn_terminal swept 0% to 100%; the bin missed a third role word. |
-| `20260824.195807` | [a refusal that must stop the lap](20260824-195807_a-refusal-that-must-stop-the-lap.kyri) | Refused three times; twice the commit shipped anyway. Now a guard. |
-| `20260824.195429` | [the sweep target that was a test](20260824-195429_the-sweep-target-that-was-a-test.kyri) | The caravan falsifier does not fire; lattice was a selftest. |
-| `20260824.194605` | [a number without its bins](20260824-194605_a-number-without-its-bins.kyri) | The figure was 2.8x the truth; the law runs at 79%, and coverage is a room property. |
-| `20260824.192810` | [two weak tests one strong one](20260824-192810_two-weak-tests-one-strong-one.kyri) | The planted-name roster held 2 and the tree held 47; census 186 -> 177. |
-| `20260824.183958` | [one reading two numbers](20260824-183958_one-reading-two-numbers.kyri) | The pin bound rises to 57,344 for one page, and the one reading answers per page. |
-| `20260824.182308` | [a row points](20260824-182308_a-row-points.kyri) | 36 rows rewritten as pointers, the pin 291,781 -> 7,563, and two seated bounds found incompatible. |
-| `20260824.180216` | [the room folds and two numbers meet](20260824-180216_the-room-folds-and-two-numbers-meet.kyri) | 169 logs and their rows carried across, the census unmoved. |
-| `20260824.173816` | [the ratchet reaches its floor](20260824-173816_the-ratchet-reaches-its-floor.kyri) | 41 rows across; every folding room enforced, ceiling zero. |
-| `20260824.173245` | [the prompts room carried across](20260824-173245_the-prompts-room-carried-across.kyri) | 78 rows onto 21 shelves, 120 links landing, pin under bound. |
-| `20260824.170955` | [the denominator was the whole question](20260824-170955_the-denominator-was-the-whole-question.kyri) | Two denominators, opposite verdicts; a seated law at 59.6%. |
-| `20260824.165609` | [the live prompt carries it too](20260824-165609_the-live-prompt-carries-it-too.kyri) | Both printed chapter prompts now carry the QA read. |
-| `20260824.165456` | [the dial booked before it is built](20260824-165456_the-dial-booked-before-it-is-built.kyri) | Two gaps booked, each with its falsifier named. |
-| `20260824.164836` | [a cited path exists](20260824-164836_a-cited-path-exists.kyri) | A recalled stamp shipped a citation resolving nowhere; the hook gains a fourth wall. |
-| `20260824.164559` | [the grade a writer can aim at](20260824-164559_the-grade-a-writer-can-aim-at.kyri) | The negative ceiling read upward is a school grade; below B pushes a frame. |
-| `20260824.162940` | [one model named once](20260824-162940_one-model-named-once.kyri) | A model id written four ways; one reading answers it now. |
-| `20260824.154722` | [the closed rooms way in](20260824-154722_the-closed-rooms-way-in.kyri) | The closed room's way in. |
-| `20260824.145109` | [a tool proven on one shape](20260824-145109_a-tool-proven-on-one-shape.kyri) | A tool proven on one shape. |
-| `20260824.142925` | [the number with six homes](20260824-142925_the-number-with-six-homes.kyri) | The number with six homes. |
-| `20260824.133802` | [the bound with two meters and no wall](20260824-133802_the-bound-with-two-meters-and-no-wall.kyri) | The bound with two meters and no wall. |
-| `20260824.121445` | [the promise no tool could read](20260824-121445_the-promise-no-tool-could-read.kyri) | The promise no tool could read. |
-| `20260824.112806` | [the number that looked like a fault](20260824-112806_the-number-that-looked-like-a-fault.kyri) | The number that looked like a fault. |
-| `20260824.104946` | [the door that was already right](20260824-104946_the-door-that-was-already-right.kyri) | The door that was already right. |
-| `20260824.095920` | [the guard that was right and unheard](20260824-095920_the-guard-that-was-right-and-unheard.kyri) | The guard that was right and unheard. |
-| `20260824.091754` | [the glob that was not a path](20260824-091754_the-glob-that-was-not-a-path.kyri) | The glob that was not a path. |
-| `20260824.084007` | [the page that named half its directory](20260824-084007_the-page-that-named-half-its-directory.kyri) | The page that named half its directory. |
-| `20260824.082436` | [staging is not shipping](20260824-082436_staging-is-not-shipping.kyri) | Staging is not shipping. |
-| `20260824.075640` | [the meter that read six of thirty four](20260824-075640_the-meter-that-read-six-of-thirty-four.kyri) | The meter that read six of thirty-four. |
-| `20260824.071500` | [the rule that reached 95 of 98](20260824-071500_the-rule-that-reached-95-of-98.kyri) | The rule that reached 95 of 98, and the door nobody measured. |
-| `20260824.062207` | [the ladder that named 73 of 110](20260824-062207_the-ladder-that-named-73-of-110.kyri) | The ladder table that named 73 of 110. |
-| `20260824.060012` | [the card that narrated itself](20260824-060012_the-card-that-narrated-itself.kyri) | The card that narrated itself. |
-| `20260824.052950` | [the index that outgrew its room](20260824-052950_the-index-that-outgrew-its-room.kyri) | The index that outgrew its room, and the depth a patch forgot. |
-| `20260824.043930` | [the rule written as arithmetic](20260824-043930_the-rule-written-as-arithmetic.kyri) | The rule written as arithmetic, and the citation that named nothing. |
-| `20260824.040212` | [one shape for a dated name](20260824-040212_one-shape-for-a-dated-name.kyri) | One shape for a dated name. |
-| `20260824.030821` | [the recipe that would not parse](20260824-030821_the-recipe-that-would-not-parse.kyri) | The recipe that would not parse. |
-| `20260824.023652` | [recursion loops gauge complete](20260824-023652_recursion-loops-gauge-complete.kyri) | Recursion loops updated for Gauge. |
-| `20260824.021623` | [standfast complete gauge molt](20260824-021623_standfast-complete-gauge-molt.kyri) | The Gauge standfast completes. |
-| `20260824.021344` | [design research gauge molt](20260824-021344_design-research-gauge-molt.kyri) | Design and research rooms molt to Gauge. |
-| `20260824.021019` | [specs foundations gauge molt](20260824-021019_specs-foundations-gauge-molt.kyri) | Specs, context root, and foundations molt to Gauge. |
-| `20260824.020306` | [readme sweep gauge molt](20260824-020306_readme-sweep-gauge-molt.kyri) | Every README front door molts to Gauge. |
-| `20260824.015422` | [front doors gauge molt](20260824-015422_front-doors-gauge-molt.kyri) | Front doors and context home molt to Gauge. |
-| `20260824.014209` | [source md gauge molt](20260824-014209_source-md-gauge-molt.kyri) | SOURCE.md molts to Gauge. |
-| `20260824.012716` | [studies gauge molt](20260824-012716_studies-gauge-molt.kyri) | The studies room molts to Gauge. |
+| `through-20260721` | 0 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
+| `20260827` **open** | 25 | [`date/README-index-20260827.md`](date/README-index-20260827.md) |
+| `20260826` | 44 | [`date/README-index-20260826.md`](date/README-index-20260826.md) |
+| `20260825` | 37 | [`date/README-index-20260825.md`](date/README-index-20260825.md) |
+| `20260824` | 58 | [`date/README-index-20260824.md`](date/README-index-20260824.md) |
+| `20260823` | 28 | [`date/README-index-20260823.md`](date/README-index-20260823.md) |
+| `20260822` | 61 | [`date/README-index-20260822.md`](date/README-index-20260822.md) |
+| `20260821` | 80 | [`date/README-index-20260821.md`](date/README-index-20260821.md) |
+| `20260820` | 64 | [`date/README-index-20260820.md`](date/README-index-20260820.md) |
+| `20260819` | 106 | [`date/README-index-20260819.md`](date/README-index-20260819.md) |
+| `20260818` | 68 | [`date/README-index-20260818.md`](date/README-index-20260818.md) |
+| `20260817` | 149 | [`date/README-index-20260817.md`](date/README-index-20260817.md) |
+| `20260816` | 107 | [`date/README-index-20260816.md`](date/README-index-20260816.md) |
+| `20260815` | 183 | [`date/README-index-20260815.md`](date/README-index-20260815.md) |
+| `20260814` | 120 | [`date/README-index-20260814.md`](date/README-index-20260814.md) |
+| `20260813` | 187 | [`date/README-index-20260813.md`](date/README-index-20260813.md) |
+| `20260812` | 117 | [`date/README-index-20260812.md`](date/README-index-20260812.md) |
+| `20260811` | 64 | [`date/README-index-20260811.md`](date/README-index-20260811.md) |
+| `20260810` | 80 | [`date/README-index-20260810.md`](date/README-index-20260810.md) |
+| `20260809` | 28 | [`date/README-index-20260809.md`](date/README-index-20260809.md) |
+| `20260808` | 54 | [`date/README-index-20260808.md`](date/README-index-20260808.md) |
+| `20260807` | 1 | [`date/README-index-20260807.md`](date/README-index-20260807.md) |
+| `20260805` | 1 | [`date/README-index-20260805.md`](date/README-index-20260805.md) |
+| `20260804` | 21 | [`date/README-index-20260804.md`](date/README-index-20260804.md) |
+| `20260803` | 13 | [`date/README-index-20260803.md`](date/README-index-20260803.md) |
+| `20260802` | 75 | [`date/README-index-20260802.md`](date/README-index-20260802.md) |
+| `20260801` | 41 | [`date/README-index-20260801.md`](date/README-index-20260801.md) |
+| `20260731` | 0 | [`date/README-index-20260731.md`](date/README-index-20260731.md) |
+| `20260730` | 0 | [`date/README-index-20260730.md`](date/README-index-20260730.md) |
+| `20260729` | 0 | [`date/README-index-20260729.md`](date/README-index-20260729.md) |
+| `20260728` | 0 | [`date/README-index-20260728.md`](date/README-index-20260728.md) |
+| `20260727` | 0 | [`date/README-index-20260727.md`](date/README-index-20260727.md) |
+| `20260726` | 0 | [`date/README-index-20260726.md`](date/README-index-20260726.md) |
+| `20260725` | 0 | [`date/README-index-20260725.md`](date/README-index-20260725.md) |
+| `20260724` | 0 | [`date/README-index-20260724.md`](date/README-index-20260724.md) |
+| `20260722` | 0 | [`date/README-index-20260722.md`](date/README-index-20260722.md) |
+| `20260722-shelf` | 0 | [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) |
+
+Full roster with counts: [`CHAPTERS.md`](CHAPTERS.md).
