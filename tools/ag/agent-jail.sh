@@ -163,17 +163,46 @@ if [ -f "$CONF" ]; then
 fi
 
 REPO="${REPO:-$REPO_ROOT}"
-CLAUDE_STATE="${CLAUDE_STATE:-$REPO/.claude-state}"
-CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$REPO/.cursor-agent-state}"
+
+# ONE ROOM FOR LOOP STATE (seated 20260827 on Keaton's word, `approve all doors`).
+# Six gitignored directories used to sit at the tree root -- .claude-state,
+# .cursor-agent-state, .dream-state, .mind-state, .cursor-state, .zed-state -- six of
+# the 97 doors that face a lap opening the root, each named for the tool that filled
+# it rather than for what it is. They are one room now, `loops/`, and each
+# subdirectory is named plainly for what it holds. read-scope.md seats `loops/` as a
+# closed stack: a lap fetches its own file by path and leaves the other five alone.
+#
+# adopt_state_dir <elder-path> <new-path> -- move an elder directory into the new room
+# once, and only when the new one is absent. Auth lives in these directories: the pier
+# holds a codex login that took a hand at a keyboard, so a rename that simply changed
+# the default would ask for that login again on every machine that had one. This
+# migrates instead, so a clone heals itself on its next launch and the login is done
+# once per pier, as it always was. `mv` is deliberate over `cp` -- two copies of a
+# credential is one more than anyone wants.
+adopt_state_dir() {
+  _elder=$1
+  _new=$2
+  if [ -d "$_elder" ] && [ ! -e "$_new" ]; then
+    mkdir -p "$(dirname "$_new")"
+    mv "$_elder" "$_new" && echo "agent-jail: adopted $_elder -> $_new" >&2
+  fi
+}
+
+LOOPS="${LOOPS:-$REPO/loops}"
+adopt_state_dir "$REPO/.claude-state"        "$LOOPS/claude"
+adopt_state_dir "$REPO/.cursor-agent-state"  "$LOOPS/cursor"
+adopt_state_dir "$REPO/.dream-state/codex-home" "$LOOPS/codex"
+
+CLAUDE_STATE="${CLAUDE_STATE:-$LOOPS/claude}"
+CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$LOOPS/cursor}"
 # cursor-agent writes OAuth to ~/.config/cursor/auth.json (not ~/.cursor/).
 CURSOR_CONFIG_STATE="${CURSOR_CONFIG_STATE:-$CURSOR_AGENT_STATE/xdg-config}"
 GH_STATE="${GH_STATE:-$REPO/.gh}"
 # codex reads its auth and config from $CODEX_HOME, defaulting to ~/.codex. The
 # jail runs --private-home, so that directory is a tmpfs the exit discards --
-# hence a repo-local durable dir, mapped onto ~/.codex below. The path is the one
-# DREAM's launcher and .gitignore already name (.dream-state/), so login is done
+# hence a repo-local durable dir, mapped onto ~/.codex below, so login is done
 # once per pier rather than once per lap.
-CODEX_STATE="${CODEX_STATE:-$REPO/.dream-state/codex-home}"
+CODEX_STATE="${CODEX_STATE:-$LOOPS/codex}"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 

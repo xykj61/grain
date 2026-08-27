@@ -279,6 +279,14 @@ launch-zed.sh
 /tools/bin/
 
 # --- Editor state inside the project (ai-jail durable ground) ---------------
+# ONE ROOM FOR LOOP STATE (20260827). The six dotted state directories below were six
+# of the 97 doors facing a lap that opened the root. They are `loops/` now, each
+# subdirectory named for what it holds, and `read-scope.md` seats the room as a closed
+# stack. The elder names stay ignored: a clone adopts its elder directory on the next
+# launch (agent-jail.sh, cursor_jail_macos.rish), and an un-adopted one must never be
+# committed in the meantime. `.mind-state/` is NOT adopted -- the byte-pinned
+# `tools/l/chatgpt-mind.sh` names it and its SHA-256 is the MIND adaptation receipt.
+/loops/
 /.cursor-state/
 /.zed-state/
 /.claude-state/                              # Claude Code CLI auth under agent-jail
