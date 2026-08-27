@@ -52,7 +52,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `b05afd0207` -- Saturn enters the nocturne.
+**Git nib:** `ad6629e02c` -- the guards learn the second host's dialect.
 
 **Now.** **Two piers merged, remotes renamed, Dream at work.**
 

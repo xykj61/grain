@@ -13,6 +13,7 @@
 #   epoch_stamp 1787740625                                     # ... and back again
 #   stamp_ahead 14400                                          # the stamp four hours from now
 #   file_mtime "$BIN"                                          # a file's mtime, fractional seconds
+#   lock_acquire glow/.cache/.build.lock 1800                  # one writer at a time, bounded wait
 #
 # WHY IT EXISTS. `xargs -a FILE` and `xargs -d '\n'` are GNU extensions. BSD xargs, which is what
 # macOS ships, has neither, so on that bench the whole pipeline fails and the count taken from its
@@ -176,6 +177,55 @@ sed_inplace() {
   sed "$_sp_script" "$_sp_file" > "$_sp_tmp" || { rm -f "$_sp_tmp"; return 1; }
   cat "$_sp_tmp" > "$_sp_file" || { rm -f "$_sp_tmp"; return 1; }
   rm -f "$_sp_tmp"
+}
+
+# THE SIXTH: one writer at a time. `flock(1)` is util-linux, and macOS ships none at all, so a
+# guard that serializes its builds behind `flock -w` dies on `flock: command not found` before it
+# does any work. Measured on the macOS bench `20260826.212000`: every one of the 44 witnesses that
+# reach `tools/g/glow_run_worker.sh` refused there, seven of them Caravan rungs, so the Caravan
+# choir could not go green on that pier for a reason that had nothing to do with Caravan (REDS
+# %279). `mkdir` is atomic on every POSIX filesystem -- it either creates the directory or reports
+# that it exists, with no window between the two -- so a lock directory is the same mutual
+# exclusion in a spelling every host runs.
+#
+# THE ONE PROPERTY A DIRECTORY DOES NOT INHERIT, and why the pid file is here rather than tidy.
+# A `flock` on an open descriptor is released by the kernel when the process ends, however it
+# ends. A directory outlives its owner, so a build killed mid-run would leave a lock nobody
+# releases and every later run would wait out its whole bound and refuse. The owner's pid is
+# written inside the lock, and a waiter that finds an owner no longer running reaps the lock and
+# takes it. That check is what keeps a crash costing one retry rather than a bounded hang.
+#
+# The wait is bounded and refuses by name, exactly as `flock -w` did: a deadlock reports itself
+# rather than hanging forever.
+#
+#   lock_acquire glow/.cache/.build.lock 1800 || { echo "FAIL: ..."; exit 3; }
+#   trap 'lock_release glow/.cache/.build.lock' EXIT INT TERM
+lock_acquire() {
+  _sp_lock=$1
+  _sp_wait=${2:-1800}
+  _sp_waited=0
+  while ! mkdir "$_sp_lock" 2>/dev/null; do
+    # A lock whose owner has gone is a lock nobody will ever release, so it is reaped rather than
+    # waited out. An unreadable or empty pid file means a lock caught mid-creation: wait, never reap.
+    if [ -s "$_sp_lock/pid" ]; then
+      _sp_owner=$(cat "$_sp_lock/pid" 2>/dev/null || printf '')
+      case "$_sp_owner" in
+        ''|*[!0-9]*) : ;;
+        *) kill -0 "$_sp_owner" 2>/dev/null || { rm -rf "$_sp_lock"; continue; } ;;
+      esac
+    fi
+    [ "$_sp_waited" -ge "$_sp_wait" ] && return 1
+    sleep 1
+    _sp_waited=$((_sp_waited + 1))
+  done
+  printf '%s\n' "$$" > "$_sp_lock/pid"
+  return 0
+}
+
+# Releasing is unconditional: a caller that holds the lock is the only one that calls this, and a
+# caller that never acquired it removes a directory that is not there, which costs nothing.
+lock_release() {
+  rm -rf "$1"
 }
 
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three
