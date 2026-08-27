@@ -1,5 +1,7 @@
 # The Three Stars of the Aether Row -- Mind, Sound, and Dream
 
+> **Elder.** The three stars gained their planets on Keaton's word `20260827.144712` -- the living charter is [`20260827-144712_the-three-stars-and-their-planets.md`](20260827-144712_the-three-stars-and-their-planets.md).
+
 **Stamp:** `20260826.151528`
 **Language:** EN
 **Style:** Gauge, Field setting, with Twilight at the close

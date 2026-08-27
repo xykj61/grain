@@ -1,0 +1,61 @@
+# launch-hush-planet-chapter.rish -- print the loop for HUSH, Dream's planet.
+#
+# Hush is Dream's own night twin made a working hand: the star lowers the interface half of
+# Grain in Glow on the pier, and its planet runs CLAUDE CODE ON THE FRAMEWORK LAPTOP, lowering
+# the INFRASTRUCTURE half beside it -- the vanes and services written high and brought to
+# green-witnessed Rye. The two halves share one language and never one file, and language
+# custody stays the star's. A planet defers to its star where lanes brush. Charter:
+# active-designing/20260827-144712_the-three-stars-and-their-planets.md.
+#
+#   rishi/bin/rishi run tools/l/launch-hush-planet-chapter.rish
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the planets charter this seat lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-144712_the-three-stars-and-their-planets.md"]
+assert charter.ok else "the planets charter is missing"
+
+say "HUSH -- Dream's planet (the star's own night twin, made a hand)"
+say "==============================================================="
+say ""
+say "Host: CLAUDE CODE ON THE FRAMEWORK LAPTOP, a terminal loop. The shared"
+say "discipline lives on the living card; the lane lives in the planets charter;"
+say "both are read fresh every lap."
+say ""
+say "0) PRECONDITIONS, once per machine: this repo cloned with the xy remote;"
+say "   git submodule update --init --recursive; jq for the readable stream"
+say "   (the distribution package, or drop the jq tail and raw NDJSON scrolls)."
+say "   Power is a preference, never a gate: the repo is the durable memory, a"
+say "   cut lap costs only its uncommitted work, the next round-open pull"
+say "   resumes the thread."
+say ""
+say "1) BYPASS STANDING (once, gitignored): in .claude/settings.local.json set"
+say "   permissions.defaultMode = bypassPermissions -- or keep the flag below."
+say "   Claude refuses the flag as root; run as a plain user."
+say ""
+say "2) SMOKE TEST:"
+say "   claude --dangerously-skip-permissions --effort max -p 'reply with exactly: pong'"
+say ""
+let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (roster cold then hot, reds first as standfast, QA on touch, the council rota row N mod 5 advancing by hand past a repeat, prose witnesses on prose sends, stamp-and-name, ASCII-first); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are HUSH, Dreams own planet -- the stars night twin made a working hand -- Claude Code on the Framework laptop. Your lane (Keatons word 20260827) is the INFRASTRUCTURE half of Grain in Glow: the vanes and services -- Mantra, Comlink, Tablecloth, the Caravan seams -- written high in Glow runes and lowered to our best Rye on green witnesses; Rye is the prioritized language and Glow is implemented on green-witnessed Rye. The INTERFACE half -- Realidream, the Lantern faces, the Skate bindings -- belongs to Dream on the pier; a planet defers to its star where lanes brush, the two halves share one language and never one file, and a rune the language itself wants is an ITINERARY line where Dreams language custody answers. Open every lap with ListAgents and name any peer before a file moves -- the charter law from REDS %291; commits stay path-limited and the amend stands behind the empty-index check. A sibling-body find becomes a line in ITINERARY rather than your lap: Sound holds Caravan-Tally and the constellation with its planet Silence on Ponds enclosure and the adaptations, Mind holds Brushstroke-Surf design with its planet Mystery on the Android and AppImage surface; everything in the DJINN design lead stays custody gate %6. The charter is active-designing/20260827-144712_the-three-stars-and-their-planets.md. Send the twice-pulled way with the remote named xy on this clone -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force -- and the public seed cadence rides with Dream alone: surface it, never run publish-seed.sh from this bench. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur"
+
+say "3) ONE ROUND, ONCE -- one lap, the same seat and renderer, no loop, no sentinel:"
+say ""
+say "git pull --rebase xy main || git rebase --abort; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq"
+say ""
+say "4) THE LOOP -- one line, copy whole (GNU date first, BSD spelling as the fallback):"
+say ""
+say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; git pull --rebase xy main || { git rebase --abort 2>/dev/null; echo 'PULL DIVERGED: upstream history was rewritten. Run:  git branch keep-old && git reset --hard xy/main  then re-paste this loop.'; break; }; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo Hush loop ended at $(TZ=America/New_York date)"
+say ""
+say "5) STREAMING: the tee-then-jq tail IS the readable terminal -- one line per"
+say "   tool call, a dot per silent half-minute, text as it lands."
+say ""
+say "6) WHY A FILE SENTINEL: stream-json echoes the prompt, which contains the"
+say "   words GATES-ONLY, so a grep on the stream would false-stop after one lap."
+say ""
+say "7) CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys, provisioning"
+say "   and paying, the maintainer's own identity, and the public seed, whose"
+say "   cadence rides with Dream alone."
+say ""
+say "GREEN: Hush recipe printed -- the star lowers the surfaces, and its planet the deep services."

@@ -29,7 +29,7 @@
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
-- **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (ChatGPT on macOS -- Brushstroke - Surf), **Sound** fixed (Claude Code on macOS -- the constellation: `active-designing/20260826-174418_the-constellation-and-the-callings.md`), **Dream** dual (Claude Code in ai-jail, the pier -- Glow to Rye; seed cadence).
+- **Stars and planets** (`20260827.144712`): **Mind** (ChatGPT macOS -- Brushstroke-Surf) + **Mystery** (Framework Desktop -- Android/AppImage Skate); **Sound** (Claude Desktop macOS -- Caravan-Tally-constellation) + **Silence** (macOS Terminal -- Pond, adaptations); **Dream** (pier -- interface Glow, seed cadence) + **Hush** (Framework terminal -- infrastructure Glow). Charter: the planets page, `20260827.144712`, in `active-designing/`
 - **STANDFAST -- the fusion build** (`20260826`, Keaton's word): build the granted reprove-only-what-moved ruling (`20260825.181028`) before other Sound work -- a derived file-to-witness map, hit-rate and lap-tail gates proven both ways; scoped runs each lap, the full choir on cadence laps. Confidence per minute is the reward.
 - **The optimization spine CLOSES, five of five** (`20260826`, Sound): wrap named room-wide, the bound in its own name, the drain a replayable fold, the region base derived from its index (twelve windows abutting), the wafer's first consumer named. Witnesses in `tools/ca/`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail -- CLI and callings finishing under Sound; **ai-jail docs stay accrete-only until the replacement is tested and audited**; the switchover and the jail's deep debride stay gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
@@ -54,7 +54,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a2c6180d0a` -- the sixty-fifth record refuses.
+**Git nib:** `dab83c1baa` -- the stars gain their planets.
 
 **Now.** **Two hands took one booked lap, and the checkout could not say so.**
 

@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.145605` | [the stars gain their planets](20260827-145605_the-stars-gain-their-planets.kyri) | Mystery, Silence, Hush seated -- each star's night twin made a hand |
 | `20260827.142357` | [the sixty-fifth record refuses](20260827-142357_the-sixty-fifth-record-refuses.kyri) | Mandate audit: Full proven at the ceiling; the door reopens |
 | `20260827.140904` | [the empty separator dies named](20260827-140904_the-empty-separator-dies-with-its-name-spoken.kyri) | the Pleac row closes; guard 76; the RED leg watched dying |
 | `20260827.135641` | [the adoption completes](20260827-135641_the-adoption-completes-and-the-stars-run-once.kyri) | run-bounded lands; Surf / Skate peers; run-once on any power |
