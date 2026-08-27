@@ -1,0 +1,35 @@
+# tools/r/rish_join_split_witness.rish -- the join/split builtin pair answers for itself.
+#
+# The Pleac seat's constellation row asked for join and split wired as Rishi builtins with the
+# round-trip proven and the empty separator refused. The wiring and the tests stood; what no
+# roster heard was a witness running them, and the refusal had never been proven from the RED
+# side -- a refusal proven only in the passing direction cannot be told from a bypass. This
+# witness is that ear: both test scripts run GREEN (the string-direction round-trips, and the
+# exact list-direction inverse split(join(xs, sep), sep) == xs), and a planted fixture whose
+# only act is  split "a,b" ""  dies with SplitEmptySeparator named in its refusal, because an
+# empty separator names no cut. The Rye-side pair in pleac/strings.rye keeps its own witness,
+# tools/p/pleac_strings_witness.rish; this one hears the interpreter's.
+#
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rish_join_split_witness.rish
+
+say "rish-join-split: Language EN -- the builtin pair proven as inverses, and the empty separator refused by name."
+say "rish-join-split: Style Radiant -- the tests already sang; this witness is the roster's ear for them."
+say "rish-join-split: Lens TAME -- the refusal is watched dying, never believed from its comment."
+
+let join_test = run ["rishi/bin/rishi" "run" "rishi/tests/join.rish"]
+assert join_test.ok else "rish-join-split: join.rish must run GREEN -- ${join_test.err}"
+assert join_test.out contains "join held" else "rish-join-split: join's own claim line is missing"
+
+let split_test = run ["rishi/bin/rishi" "run" "rishi/tests/split.rish"]
+assert split_test.ok else "rish-join-split: split.rish must run GREEN -- ${split_test.err}"
+assert split_test.out contains "split round-trip held" else "rish-join-split: the list-direction inverse claim is missing"
+
+# RED leg -- the planted empty separator dies at the builtin's own edge, the error named.
+let refuse = run ["rishi/bin/rishi" "run" "rishi/tests/fixtures/split_empty_sep.rish"]
+assert (refuse.ok == false) else "rish-join-split: an empty separator must refuse"
+assert refuse.err contains "SplitEmptySeparator" else "rish-join-split: the refusal must carry its name -- ${refuse.err}"
+
+say "GREEN: rish-join-split -- both tests sang, the exact list inverse held, and the empty separator died at the edge with its name spoken."

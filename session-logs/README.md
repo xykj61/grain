@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.140904` | [the empty separator dies named](20260827-140904_the-empty-separator-dies-with-its-name-spoken.kyri) | the Pleac row closes; guard 76; the RED leg watched dying |
 | `20260827.135641` | [the adoption completes](20260827-135641_the-adoption-completes-and-the-stars-run-once.kyri) | run-bounded lands; Surf / Skate peers; run-once on any power |
 | `20260827.123054` | [two hands, one checkout](20260827-123054_two-hands-one-checkout.kyri) | %291: two sessions took one booked lap; six lines dedented, the card back under bound |
 | `20260827.121909` | [the kernel lays this out](20260827-121909_the-kernel-lays-this-out.kyri) | nineteen sockaddr folds; %282 closed on this bench; twenty-one witnesses green |
