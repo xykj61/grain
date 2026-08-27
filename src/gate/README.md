@@ -77,7 +77,7 @@ rishi/bin/rishi run tools/g/glow_tend_a1_suite.rish    # a1 alone
 
 Witness: `rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish` — **leg A** pure · **leg B** metal (Framework GREEN; counsel RED without IPv6) · no wire-semantics change. Rival `families=2` pedestal withdrawn e222.
 
-Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
+Structure museum pieces for Tend live under [`../shape/`](../shape/README.md).
 
 ## First residents
 
