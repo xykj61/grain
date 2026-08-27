@@ -42,10 +42,14 @@ for the tools letter rooms.
 room, cite into one, and fetch any named file from one -- what it never does is browse, `ls`,
 or sweep a closed stack uninvited.
 
-**The loops' own state is a closed stack, by shape and by body.** Every agent loop keeps runtime
-state -- today in six gitignored root directories (`.mind-state/`, `.dream-state/`, `.cursor-state/`,
-`.zed-state/`, `.claude-state/`, `.cursor-agent-state/`), proposed to become one `loops/` room with a
-subdirectory per body in
+**The loops' own state is a closed stack.** Seated `20260827` on Keaton's word: the runtime state
+of every agent loop lives in one gitignored **`loops/`** room, each subdirectory named plainly for
+what it holds -- `loops/claude`, `loops/cursor`, `loops/codex`, `loops/editor-cursor`. It was six
+dotted directories at the tree root, six of the 97 doors a lap faces when it opens the root.
+`tools/ag/agent-jail.sh` and `tools/cu/cursor_jail_macos.rish` **adopt** an elder directory on the
+next launch rather than abandoning it, because these hold auth a hand typed once.
+**`.mind-state/` stays where it is**: the byte-pinned `tools/l/chatgpt-mind.sh` names it, and its
+SHA-256 is the MIND adaptation receipt. Charter:
 [`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
 A lap reads **its own body's** files there by named path, and leaves every other body's alone. This
 holds for outer-loop information (the launcher's transcript, lap counters, the seat prompt it was

@@ -70,7 +70,7 @@
 #   - First launch opens signed out: your normal login lives in the
 #     default profile (~/Library/Application Support/Cursor), outside this
 #     fence. Sign in once inside the jail; that state persists in
-#     .cursor-state/ (gitignored), inside the fence.
+#     loops/editor-cursor/ (gitignored), inside the fence.
 #
 # See: manual/guides/macos-ai-jail-setup.md, SOURCE.md Step 6/9.
 
@@ -90,8 +90,20 @@ assert app_check.ok else "Cursor binary not found at ${app_bin} — install Curs
 let pwd_run = run ["pwd"]
 let repo = trim pwd_run.out
 
-let state_mk = run ["mkdir" "-p" "${repo}/.cursor-state/user-data" "${repo}/.cursor-state/extensions" "${repo}/tools/.build"]
-assert state_mk.ok else "could not create .cursor-state/ or tools/.build/"
+# ONE ROOM FOR LOOP STATE (seated 20260827, Keaton's word `approve all doors`). The
+# editor's jailed state used to sit at the tree root as .cursor-state/, one of six
+# such directories facing every lap that opened the root. It lives in `loops/` now,
+# named for what it is. A sign-in persists in here, so an elder directory is adopted
+# once rather than abandoned -- move it only when the new room is absent, so a clone
+# heals itself on its next launch and nobody signs in twice.
+let new_state = "${repo}/loops/editor-cursor"
+# One `run` rather than a Rishi if-block: Rishi's `if` is single-line, and this is one
+# indivisible act -- make the room, and adopt the elder only when the new seat is empty.
+let adopt = run ["sh" "-c" "set -eu; mkdir -p '${repo}/loops'; if [ -d '${repo}/.cursor-state' ] && [ ! -e '${repo}/loops/editor-cursor' ]; then mv '${repo}/.cursor-state' '${repo}/loops/editor-cursor'; echo adopted; fi"]
+assert adopt.ok else "could not adopt .cursor-state into loops/editor-cursor"
+
+let state_mk = run ["mkdir" "-p" "${new_state}/user-data" "${new_state}/extensions" "${repo}/tools/.build"]
+assert state_mk.ok else "could not create loops/editor-cursor/ or tools/.build/"
 
 let print_only = args contains "--print-profile"
 let no_network = args contains "--no-network"
@@ -240,11 +252,11 @@ write-file profile_path profile
 # seconds in and dies (observed on this host: alive at 12s, gone by 20s).
 # exec + /dev/null redirects + nohup make the jailed app independent of
 # both this script's lifetime and the launching terminal's.
-let launch = spawn ["sh" "-c" "exec nohup sandbox-exec -f ${profile_path} -- ${app_bin} --no-sandbox --user-data-dir=${repo}/.cursor-state/user-data --extensions-dir=${repo}/.cursor-state/extensions --new-window ${repo} >/dev/null 2>&1 </dev/null"]
+let launch = spawn ["sh" "-c" "exec nohup sandbox-exec -f ${profile_path} -- ${app_bin} --no-sandbox --user-data-dir=${repo}/loops/editor-cursor/user-data --extensions-dir=${repo}/loops/editor-cursor/extensions --new-window ${repo} >/dev/null 2>&1 </dev/null"]
 
 say "cursor-jail-macos: launched inside the sandbox-exec enclosure."
 say "  project: ${repo}"
-say "  state:   ${repo}/.cursor-state/"
+say "  state:   ${repo}/loops/editor-cursor/"
 if no_network then say "  network: denied" else say "  network: allowed"
 if harden_home then say "  home:    hardened -- real ~/.ssh, ~/.gnupg, ~/.aws, and the other"
 if harden_home then say "           named credential stores are unreadable inside this window"
@@ -252,5 +264,5 @@ if private_home then say "  home:    private -- every real $HOME entry except th
 if private_home then say "           unreadable inside this window (symlinked entries may still"
 if private_home then say "           leak through to a target outside $HOME -- named, not fixed)"
 say "First run opens signed out (your normal login lives outside the fence);"
-say "sign in once inside the jail and it persists in .cursor-state/."
+say "sign in once inside the jail and it persists in loops/editor-cursor/."
 say "This script returns immediately; Cursor keeps running on its own."

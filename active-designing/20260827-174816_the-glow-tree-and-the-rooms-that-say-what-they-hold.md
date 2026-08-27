@@ -9,7 +9,7 @@ the closed-stack paths for loop information. It proposes; it cuts nothing.*
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`), Field setting
 **Voice:** Kyri
-**Status:** Proposed -- the naming and the layout await Keaton's word; the measurements stand as taken
+**Status:** GRANTED `20260827` (`approve all doors`) -- the `src/` rooms and the `loops/` room have landed; `glow/gen/` and FORA31 are open. What landed differs from what was proposed in two places, both recorded below.
 **Molted:** born at this stamp
 **Kin:** [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md) (the naming law this applies) -
 [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) (the room bound and the fold rule) -
@@ -172,7 +172,33 @@ body's file by path and leaves the room unwalked, since another body's loop stat
 lap does best to leave alone.
 
 `loops/` is runtime state, so the tracked tree stands untouched and every reference promise holds;
-the 54 citers are launcher scripts and prompts naming the old paths, repointed in the same motion. It is one round, and it is **proposed**.
+the 54 citers are launcher scripts and prompts naming the old paths, repointed in the same motion.
+
+**What landed, `20260827`, and where it departs from the proposal above.** Two facts the proposal
+had not measured changed the shape, and both are worth keeping.
+
+*The subdirectories are named for the tool, rather than for the body.* The proposal wrote
+`loops/<body>/`. On reading them, these directories hold two different things: **auth** for a
+particular CLI (`.claude-state` is Claude Code's, `.cursor-agent-state` is Cursor's,
+`.dream-state/codex-home` is Codex's) and **loop state** for a particular body (`.mind-state`).
+Naming an auth directory after whichever body happened to use that CLI would have been a name that
+goes stale the first time two bodies share a tool. So the room reads `loops/claude`, `loops/cursor`,
+`loops/codex`, `loops/editor-cursor` -- each named for what it holds, which is the same rule the
+`src/` rooms just took.
+
+*An elder directory is adopted, never abandoned.* These hold credentials a hand typed once -- the
+pier's `codex login` among them. A rename that only changed a default would have asked for every one
+of those logins again, on every machine. So `tools/ag/agent-jail.sh` gained `adopt_state_dir`, and
+`tools/cu/cursor_jail_macos.rish` gained the same act in one `run`: move the elder into the new room
+**only when the new seat is empty**, so a clone heals itself on its next launch and no one signs in
+twice. `mv` rather than `cp`, because two copies of a credential is one more than anyone wants.
+
+*And one directory stays exactly where it is.* **`.mind-state/` is not adopted.** The byte-pinned
+`tools/l/chatgpt-mind.sh` names it at its line 13, and that file's SHA-256
+(`ee508804d2...`) is the compatibility receipt the whole MIND adaptation grant rests on. One edited
+byte breaks the receipt. So five directories become one room and the sixth keeps its name for a
+reason worth more than the tidiness -- which is what a bound looks like when it is honest rather
+than convenient. It is one round, and it is **proposed**.
 
 ---
 
