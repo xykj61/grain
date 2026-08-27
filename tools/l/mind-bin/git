@@ -1,0 +1,36 @@
+#!/bin/sh
+# mind-bin/git -- restore the exact Homebrew Git closure after a macOS shell.
+
+set -eu
+
+git_exec=/opt/homebrew/Cellar/git/2.53.0_1/bin/git
+git_dyld=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib
+git_path=${GRAIN_MIND_ROOT:?}/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+git_home=${GRAIN_MIND_ROOT}/.mind-state/codex-home
+
+if [ "${GRAIN_MIND_GIT_RAW:-}" != "$git_exec" ]; then
+  echo "REFUSE mind-git: canonical Git identity is absent or drifted" >&2
+  exit 78
+fi
+
+for mind_git_arg do
+  case $mind_git_arg in
+    --ignore-submodules=none)
+      echo "REFUSE mind-git: exact submodule dirt belongs to the outer supervisor" >&2
+      exit 78
+      ;;
+  esac
+done
+
+exec /usr/bin/env -i \
+  "HOME=$git_home" \
+  "TMPDIR=/private/tmp" \
+  "PATH=$git_path" \
+  "GRAIN_MIND_GIT=$GRAIN_MIND_ROOT/tools/l/mind-bin/git" \
+  "GRAIN_MIND_GIT_RAW=$git_exec" \
+  "GRAIN_MIND_ROOT=$GRAIN_MIND_ROOT" \
+  "ZDOTDIR=$GRAIN_MIND_ROOT/tools/l/mind-shell" \
+  "DYLD_LIBRARY_PATH=$git_dyld" \
+  "GIT_CONFIG_NOSYSTEM=1" \
+  "GIT_CONFIG_GLOBAL=/dev/null" \
+  "$git_exec" -c diff.ignoreSubmodules=all "$@"

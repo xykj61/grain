@@ -30,8 +30,10 @@ gates, single-instance ownership, clean-tree and `xy` divergence checks,
 gitlink preservation, the outer `ai-jail` plan and live write fence, and the
 inner `codex exec --sandbox danger-full-access` call. It keeps user and project
 rules while model selection and publication remain operator actions. It accepts
-a completed lap only when exactly one descendant commit is clean and its
-signature reads good or valid-but-untrusted.
+a completed lap only when the inner Codex process leaves one bounded staged
+candidate and a bounded commit message, then the outer Rishi supervisor turns
+that candidate into exactly one clean descendant commit whose signature names
+the configured primary fingerprint.
 
 The launcher canonically resolves the standalone installer's complete Codex
 symlink chain before either planning or execution. The same absolute regular
@@ -73,6 +75,63 @@ read-write mappings do not satisfy the boundary. The project-local non-secret
 Codex config is a regular mode-0600 file; authentication remains a separate
 operator act.
 
+Shell startup keeps the same Git identity. The tracked
+[`mind-bin/git`](mind-bin/git) doorway requires the canonical raw Homebrew Git
+identity, restores its exact runtime-library closure, disables system and
+global Git configuration, rebuilds a finite child environment, and forwards
+the original argv without a shell string. Caller-supplied Git directories,
+indexes, object stores, config parameters, author identities, and agent
+variables therefore do not reach Git through a nested shell. The tracked
+[`mind-shell/.zshenv`](mind-shell/.zshenv) and
+[`mind-shell/.zprofile`](mind-shell/.zprofile) prepend that doorway after zsh
+and macOS path setup. A child shell therefore reaches the same controlled Git
+as a direct command, while Apple Git and the developer selector stay outside.
+The child doorway fixes `diff.ignoreSubmodules=all` and refuses an inner
+`--ignore-submodules=none`; exact submodule dirt and the pinned gitlink remain
+outer-supervisor proofs. This avoids opening Tahoe's selectable shell path just
+to summarize an initialized submodule.
+
+Commit signing crosses a smaller boundary than Codex. The jailed process may
+stage exactly one candidate. Its ceiling is sixty-four paths. The message sits
+at `.mind-state/signing/commit-message.txt`, with a 4,096-byte ceiling. It is a
+regular, nonsymlink, mode-0600 file. Codex authority ends at that staged shape.
+GPG, signing keys, and agent sockets remain with the host. After Codex exits
+successfully with custody open, the outer Rishi supervisor proves HEAD stayed
+fixed and validates the staged shape and message. It runs the two tracked hooks
+inside the same jail, then revalidates the candidate. The machine lane admits
+only regular additions or modifications below `brushstroke/` and `surf/`.
+Symlinks, gitlinks, generated Wayland protocol files, deletion, rename,
+control-plane paths, and sibling roots refuse. A new product root requires a
+separate user-owned signed supervisor update; the loop cannot grant itself one.
+Canonical host GPG creates
+one signed commit object away from every ref. The supervisor verifies its tree,
+single parent, and configured primary fingerprint before one compare-and-swap
+moves the local branch from the prior HEAD. Hook, signer, object, or verification
+failure leaves the prior HEAD authoritative. A power loss after the final ref
+move but before its receipt leaves the mode-0700 `TRANSACTION` marker for an
+audit of the verified signed HEAD. The outer `ai-jail` plan retains its
+`.gnupg` denial and keeps GPG
+programs, private-key directories, and agent sockets outside the map. Private
+key material remains outside the repository.
+
+One exact receipt forms the public phase boundary. Each internal lap writes one
+mode-0600 line to `.mind-state/logs/lap.phase`. The line belongs to the
+launcher's finite phase-and-reason allowlist. The vocabulary separates lap
+preflight, Codex output, Codex exit, custody, staged-candidate and Git
+postconditions, signing, verification, and
+`complete reason=signed-commit`. A regular single line inside the byte ceiling
+earns its reading. Every other shape reads
+`supervisor reason=unclassified`. Detailed stderr remains private evidence;
+the receipt alone labels the phase.
+
+Power is an observation rather than an authority source. The launcher reports
+AC or battery and both sleep readings. It admits the same bounded `once` or
+`loop` modes on either source. The host keeps its existing power settings.
+Sleep, battery exhaustion, or abrupt process loss ends this clone fail-closed.
+Another agent may continue from its own independent clean clone and proved
+remote view. Each invocation honors an existing lock. Uncertain ownership is a
+custody stop.
+
 The implementation differs only where the language makes the boundary more
 explicit. The shell elder renders Arbor through its Brix descriptor; the pure
 Rishi printer reads the descriptor's canonical `.arbor` tile directly. Their
@@ -104,9 +163,11 @@ printer by the launcher, and the emitted handoff under both macOS shells and a
 checkout path containing spaces. It also proves command and dry-run parity,
 the jail option, named denials for malformed plans or incomplete arming and
 config, isolated login, status overflow, held lock, STOP, and the bounded
-circuit breaker. It proves that failed authentication reaches no fake model
-command and that Codex, output-wall, and Git-postcondition failures retain their
-typed phase at the public boundary. It plants independent
+circuit breaker. It proves that authentication opens ahead of every fake model
+command. Codex, output-wall, and Git-postcondition outcomes retain their typed
+phase at the public boundary. The fixture also proves that one exact mode-0600
+line from the finite vocabulary earns a phase reading. Transcript phrases and
+all other receipt shapes read `supervisor reason=unclassified`. It plants independent
 path, quoting, arm, ceiling, shell-relay, printer-authority, launcher, and shell
 drift and requires every drift to be caught. It models `ai-jail` 1.13.0's
 canonical SBPL serialization, including an intermediate installer symlink, and
@@ -116,8 +177,13 @@ noncanonical-source, and omitted mapping decoys. It also reproduces the absolute
 paths to carry the exact repository-relative spelling. The optional no-call
 [`../fixtures/chatgpt_mind_real_plan_control.sh`](../fixtures/chatgpt_mind_real_plan_control.sh)
 checks the installed macOS `ai-jail` executable plan when its tools are
-available and skips honestly elsewhere. The Rishi runtime fixtures separately
-prove the stream ceilings and owned cleanup on metal.
+available and skips honestly elsewhere. The candidate controls welcome one
+bounded staged change and its bounded message. Their planted legs exercise an
+inner commit, zero and over-ceiling path sets, worktree residue, unsafe message
+shapes, caller Git poisoning, a Sound-owned path, alternate host signers and
+fingerprints, and GPG or agent mappings into the jail. Each plant returns
+custody with the prior HEAD. The Rishi runtime
+fixtures separately prove the stream ceilings and owned cleanup on metal.
 
 The shell file remains a compatibility witness; deletion stays outside this
 handover. The Rishi entry point now keeps a live bounded terminal lane as well
