@@ -54,44 +54,42 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `1ca19833c1` -- the kernel lays out the sockaddr, never the file.
+**Git nib:** `4454c3d5d5` -- two hands took one booked lap, %291.
 
-**Now.** **A platform repair that reached one caller, and the class nobody had counted.**
+**Now.** **Two hands took one booked lap, and the checkout could not say so.**
 
-**Dream's lap `20260827.004535` -- `%288` CLOSED on a shelf; `%282` stays OPEN, root named.**
-`%282` moved one module's `sockaddr_in` to `std.c.sockaddr.in` and left `BindFailed` at rebind open.
-The root sat under the struct and wider than the module: that file still spelled its socket OPTION
-numbers in Linux's dialect, **and so did nineteen others** -- **20 modules, 46 literal
-declarations**, beside **19** carrying the Linux-layout `sockaddr_in` against **1** dispatched. BSD
-reads `SOL_SOCKET` 0xffff not 1, so `setsockopt` there fails and its discarded return leaves the
-option unset -- a rebind that refuses.
+**The socket-table fold LANDED (`5a500864c`).** The nineteen remaining modules drop the hand-rolled
+Linux-layout `sockaddr_in` for `const sockaddr_in = c.sockaddr.in;`, write `.port` and `.addr` on
+std's own type, and check every `SO_REUSEADDR` and `SO_RCVTIMEO` return by named error.
+`linux_layout_files_ceiling` falls **19 to 0**, `dispatched_files` reads **20**; `%282`'s shelf
+takes its closure clause.
 
-**A meter rather than a sweep:** nineteen cannot be proven on this pier, where these numbers read
-correct either way, and a fix closes on a witness. The named module reaches `c.SOL.SOCKET`,
-`c.SO.REUSEADDR` and `c.SO.RCVTIMEO`, both calls refusing by name, and
-`tools/fixtures/socket_dialect_scan.sh` counts the class under ceilings that only fall -- proven
-both ways across **18 behaviors**, gated by the roster's **75th** guard. The rest turn on touch.
+**REDS %291 -- OPEN, gated.** Two Claude Code sessions ran this checkout at once, both seated as
+SOUND, both reading this block, both taking this lap. One opened a cold roster at `12:10:13`; the
+other rewrote the nineteen at `12:14:06` and pushed. `git status` names paths and never who wrote
+them, and `tree_moved` reads twenty-two minutes late, at the close of a run already spent. This is
+the **source-file half of `%281`**, and the quieter half: a shadow race makes a correct module
+report RED, a source race makes two hands do one lap, which looks like work. **The answer is
+unchanged and is his: one tree per star, or a lock in `bridge_to_zig`.** Until then, run
+`ListAgents` at lap open and name any peer in the log before touching a file.
 
-**Measured:** cold roster **1,676s**, 70 of 71 green; its one red was the card's stale nib from a
-lap that ended at `git add`, a fourth firing booking no row.
-**`caravan_subscribe_poll_signal` is RED here** at its SIGTERM assertion, identical under A/B, and
-**outside `caravan_suite`**. Its own lap.
+**What the duplication bought:** a second reader before that commit, three faults, all shipped. Two
+are repaired here -- `mantra/recall_batch_delivery.rye:209-211` and
+`mantra/snapshot_export_delivery.rye:143-145` sat at eight spaces inside four-space bodies, proven
+by `zig fmt` on a copy rather than by eye; both wire witnesses, `tame_style_check`, `width-check`
+and `socket_dialect_witness` GREEN after. The third is **an erratum for his word**, read whole at
+`%291`: a shelf paragraph stamped two hours thirty-three minutes behind the one clock.
 
-**Dream's lane, still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in
-**5 fields and 5 accessors**, while `lower_shape.rye` and `lower_named_cast.rye` sit on the
-45-module roster gated at zero authored `usize` and pay a cast at **16 and 17** call sites into it,
-so moving it REMOVES casts. The **59 gate fixtures await his word**.
+**Also closed:** this card stood at **24,586 bytes against the 24,576 it declares**, so
+`declared_ceiling_witness` was RED on a tree already pushed -- a one-line nib amend carried it over.
+This rewrite brings it under.
 
-**Sound's open row (its `%281`):** two sessions share this checkout and `rye build` writes `.zig`
-shadows with no lock, so each deletes the other's mid-compile and the loser reports RED about
-correct code. A lock in `bridge_to_zig`, or one tree per star -- his word.
+**Still open, unclaimed:** Dream's **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in
+5 fields and 5 accessors, and moving it REMOVES casts at 16 and 17 sites; the 59 gate fixtures await
+his word. And `caravan_subscribe_poll_signal`, RED at its SIGTERM assertion outside `caravan_suite`.
 
-**Dream's loop, his word `20260826`:** the seed cadence is CUT (see *Custody gates*). A **standing
-adaptation grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python into
-**Glow**, each born beside its elder, which stands until the newborn is GREEN and then a fossil.
-
-**The next doors.** `%230`/`%252`/`%255`/`%281` closed `20260827` on seated conventions; the pin
-holds half its room. Mine: the width ratchet; the socket-table fold, granted.
+**The next doors.** Sound's core-first read -- Caravan and Tally green, the choir whole -- then the
+constellation table, Lindy-first crux-first.
 
 ---
 ## Landed arcs
@@ -223,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260827.034026` | eight witnesses outside the glob; six modules the header exempts are witnessed | [log](../session-logs/20260827-034026_the-exemption-that-named-its-own-witnesses.kyri) |
+| `20260827.123054` | two hands took one booked lap; six lines dedented, %291 booked, the card back under its declared bound | [log](../session-logs/20260827-123054_two-hands-one-checkout.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
