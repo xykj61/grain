@@ -96,12 +96,14 @@ pub fn gate_prepare(mode: setu6.LabMode, iface: []const u8, out: *[setu3.max_fra
     return report;
 }
 
-const sockaddr_in = extern struct {
-    sin_family: c_ushort = AF_INET,
-    sin_port: c_ushort,
-    sin_addr: [4]u8 = .{ 255, 255, 255, 255 },
-    sin_zero: [8]u8 = .{0} ** 8,
-};
+// THE KERNEL LAYS THIS OUT, NEVER THIS FILE. A hand-rolled `sockaddr_in` stood here in the
+// Linux layout -- a two-byte family and no length byte -- and BSD kernels open the same
+// structure with a one-byte `sin_len` ahead of a one-byte family, so writing `AF_INET` as a
+// `c_ushort` lands 2 in the length and 0 in the family and every `bind` refuses (REDS %282,
+// repaired first in mantra/recall_subscribe_poll_delivery.rye). `std.c.sockaddr.in` dispatches
+// on the host and both branches carry a defaulted family, so neither pier spells the other's
+// layout.
+const sockaddr_in = c.sockaddr.in;
 
 const SO_BROADCAST: c_int = c.SO.BROADCAST;
 
@@ -129,7 +131,16 @@ pub fn attempt_iface_tx_to(mode: setu6.LabMode, iface: []const u8, dest: [4]u8) 
     defer _ = c.close(fd);
 
     const yes: c_int = 1;
-    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    // invariant: SO_REUSEADDR is what lets a bounded run rebind its own port, so a setsockopt
+    // that fails reports send_failed in this module's own report shape rather than handing back
+    // a socket whose next bind will refuse for a reason nothing recorded -- a discarded return
+    // is how REDS %282's open leg hid for a lap. The defer above closes fd on this path.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+        report.result = .send_failed;
+        return report;
+    }
+    // SO_BROADCAST's return is discarded on purpose: the directed send this module makes needs
+    // no broadcast bit, and the limited-broadcast fallback names its own failure at sendto.
     _ = c.setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &yes, @sizeOf(c_int));
     var ifname: [setu6.iface_name_max + 1]u8 = .{0} ** (setu6.iface_name_max + 1);
     tally_copy.copy_disjoint(u8, ifname[0..iface.len], iface);
@@ -139,8 +150,8 @@ pub fn attempt_iface_tx_to(mode: setu6.LabMode, iface: []const u8, dest: [4]u8) 
     }
 
     var addr = sockaddr_in{
-        .sin_port = std.mem.nativeToBig(u16, lab_tx_port),
-        .sin_addr = dest,
+        .port = std.mem.nativeToBig(u16, lab_tx_port),
+        .addr = @bitCast(dest),
     };
     const sent = c.sendto(
         fd,

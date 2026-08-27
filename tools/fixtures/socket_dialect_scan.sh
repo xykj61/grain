@@ -70,7 +70,7 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # unrepaired: 19 modules still hand-roll `sockaddr_in` in the Linux layout.
 option_files_ceiling=0
 option_lines_ceiling=0
-linux_layout_files_ceiling=19
+linux_layout_files_ceiling=0
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
