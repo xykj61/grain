@@ -22,6 +22,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260826.205521` -- the Saturn pages enter the nocturne (walk-back `b05afd0207`)
+
+**Swept:** the two living Saturn studies molted in place, register only --
+`classical-vedic-astrology/studies/planets-in-signs/saturn-in-cancer.md` and
+`classical-vedic-astrology/studies/planet-in-house/saturn-in-the-9th-house.md`, each rewritten
+from Gauge Field into New Gauge Twilight on Keaton's word. Every claim, placement, count, season,
+and gratitude name held exactly; the elder Gauge-Field tellings stand whole at this walk-back.
+
 ## `20260826.063635` -- one dialect for twelve sites (walk-back `06b9ba6623`)
 
 **Swept:** `construction/ITINERARY.md` -- the **Now** block, roughly 2,100 bytes describing the
