@@ -6,7 +6,7 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Chapter:** A -- Hardware & Right-to-Repair - **Waymark:** DREY - second journey **Mikrophone firmware**
-**Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) - [`../construction/ITINERARY.md`](../construction/ITINERARY.md) - [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) - [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) - [`../construction/ITINERARY.md`](../construction/ITINERARY.md) - [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---
 

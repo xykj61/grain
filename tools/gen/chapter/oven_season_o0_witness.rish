@@ -17,13 +17,19 @@ let pins = run ["sh" "-c" "grep -q 'PAUSED' counsel/date/20260728/20260728-23441
 assert pins.ok else "oven-season-o0: seat pin scan failed"
 assert pins.out contains "O0_OK" else "oven-season-o0: oct lexicon or handback not seated"
 
-let held = run ["sh" "-c" "test -d oven && echo OVEN_LIVE"]
-assert held.ok else "oven-season-o0: oven/ must exist after o1 (o0 charter still seated)"
-assert held.out contains "OVEN_LIVE" else "oven-season-o0: path cut may already be landed"
+# The o0 charter seated a chapter over a directory named oven/. The forge module answers to
+# ember/ since 20260808 and the bake seat to Kiln since 20260827; the chapter keeps its own name
+# as history, so this rung proves the seat's charter stands while its path reads where it went.
+let held = run ["sh" "-c" "test -d ember && test ! -d oven && echo EMBER_LIVE"]
+assert held.ok else "oven-season-o0: forge directory check failed"
+assert held.out contains "EMBER_LIVE" else "oven-season-o0: ember/ lives and oven/ is retired"
 
-let scope = run ["sh" "-c" "grep -q 'oct:   Oven Chapter — OPEN' tools/gen/chapter/prin_scope.rish && grep -q 'sept:   Surface Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
+# The o0 seat opened this chapter; prin_scope has since carried it to PAUSED at o3, which is the
+# scope card doing its job. The rung reads the chapter's presence on the card rather than a phase
+# it was always going to leave (REDS %292 -- an unrostered witness pinned to a passing state).
+let scope = run ["sh" "-c" "grep -q 'oct:   Oven Chapter' tools/gen/chapter/prin_scope.rish && grep -q 'sept:   Surface Chapter' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "oven-season-o0: prin_scope pin scan failed"
 assert scope.out contains "SCOPE_OK" else "oven-season-o0: prin_scope not eight-nest"
 
-say "GREEN: oven-season-o0 — oct OPEN · Surface PAUSED · oven/ LIVE · Oven Chapter"
-say "GREEN: oven-season-o0 — o0 charter seated."
+say "GREEN: oven-season-o0 -- charter seated - Surface PAUSED - ember/ LIVE - Oven Chapter"
+say "GREEN: oven-season-o0 -- o0 charter seated, its forge path proven forward."

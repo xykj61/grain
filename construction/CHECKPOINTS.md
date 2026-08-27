@@ -22,6 +22,22 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260827.162143` -- the second mitra shed, circled: all prepped fossils cut (walk-back `5707335d0f`)
+
+**Swept:** the prepped fossils of the shred-prep pin -- the Class H horizon writing fossils
+whose living mutants stand, the two counsel naming fossils superseded by the LEXICON's Ember
+row, and the two freshly bannered charter elders (the three-stars page and the planets page,
+both superseded by the six-bodies charter) -- cut on Keaton's circled word with every living
+citer repointed first and every cut basename seated as a LISTED deliberate absence in
+`tools/fixtures/dated_path_exclusions.sh`. The pin's Class H table becomes a shed-complete
+record; Classes O, A, and W stand untouched, since a mitra shed cuts only the friend-shape:
+a fossil whose mutant lives.
+
+**What waits there, worth recalling:** every cut fossil, whole, at this nib and every commit
+before it -- the June elders' first tellings of the happy zone, realidream, the graph beneath,
+the wafer, and the lantern-lattice triad; the anvil-to-oven naming counsel; the six-season
+double-seat; and the two charter elders' own phrasings of the stars and their planets.
+
 ## `20260827.155213` -- the role swap breach: Sound and Dream exchange lanes, the closed stacks seat (walk-back `44cc6a40b8`)
 
 **Swept:** the six-body living surfaces, rewritten in place on Keaton's word -- the star and

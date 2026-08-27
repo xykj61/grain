@@ -11,8 +11,11 @@ say "realidream-mutant: Lens TAME — Surface Chapter p29."
 let living = run ["test" "-f" "foundations/20260825-233310_realidream.md"]
 assert living.ok else "realidream-mutant: living foundation missing"
 
-let fossil = run ["test" "-f" "foundations/20260629-063512_realidream.md"]
-assert fossil.ok else "realidream-mutant: June fossil missing"
+# The June elder was SHED 20260827.162143 on Keaton's circled word. What a molt once proved by
+# the fossil's own banner, the shed proves by its record: the elder is gone, and the shed-complete
+# row in the prep pin names the basename it cut.
+let fossil = run ["test" "!" "-f" "foundations/20260629-063512_realidream.md"]
+assert fossil.ok else "realidream-mutant: the shed June elder must be gone"
 
 let seat = run ["test" "-f" "counsel/date/20260728/20260728-220203_surface-season-p29-realidream-mutant.md"]
 assert seat.ok else "realidream-mutant: p29 counsel seat missing"
@@ -22,10 +25,10 @@ let lean = run ["sh" "-c" "grep -q 'GUI target framework' foundations/20260825-2
 assert lean.ok else "realidream-mutant: lean scan failed"
 assert lean.out contains "LEAN_OK" else "realidream-mutant: Skate/Pond lean words missing"
 
-say "realidream-mutant: fossil banner..."
-let banner = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_realidream.md && grep -q '20260825-233310_realidream.md' foundations/20260629-063512_realidream.md && echo FOSSIL_OK"]
-assert banner.ok else "realidream-mutant: fossil banner scan failed"
-assert banner.out contains "FOSSIL_OK" else "realidream-mutant: fossil must point at living path"
+say "realidream-mutant: shed record..."
+let shed = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md && echo SHED_OK"]
+assert shed.ok else "realidream-mutant: shed record scan failed"
+assert shed.out contains "SHED_OK" else "realidream-mutant: the prep pin must name the shed elder"
 
 say "realidream-mutant: living pointers..."
 let lex = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' context/LEXICON.md && echo LEX_OK"]
@@ -41,5 +44,5 @@ let graph = run ["sh" "-c" "grep -q '20260825-233310_realidream.md' foundations/
 assert graph.ok else "realidream-mutant: graph sibling scan failed"
 assert graph.out contains "GRAPH_OK" else "realidream-mutant: living graph sibling must cite living Realidream"
 
-say "GREEN: realidream-mutant — living · fossil · lean · breach pointers · Surface p29"
+say "GREEN: realidream-mutant -- living - elder shed and recorded - lean - pointers - Surface p29"
 say "GREEN: realidream-mutant — invent still held; no src/web home tongue."

@@ -185,6 +185,14 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   as intent rather than breakage -- the same LISTED shape %157 seated and %162 extended. The cut
 #   crossed this census while the census stood dark on the cutting host (the BSD dialect fault,
 #   REDS %272), which is how the crossing went unmeasured; REDS %274 records that lesson.
+#   THE TEN BELOW ARE ONE EVENT, the SECOND mitra shed, circled on Keaton's word 20260827.162143
+#   (SHRED_PREP shed-complete record). Each was a prepped fossil whose living mutant stands and
+#   whose living citers were repointed in the cut's own round: six June and p31 foundations
+#   elders, the Oven bake-seat elder its Kiln mutant replaced, the anvil-to-oven naming counsel
+#   the LEXICON's Ember row carries, the swarm-that-feeds elder, and the six-chapter double-seat
+#   whose eight-chapter mutant accretes all six whole. Their remaining references live in dated
+#   testimony and in the chapter witnesses that now read the shed RECORD rather than the file --
+#   so the census reads each as intent rather than breakage, the same LISTED shape %157 seated.
 # The LISTED half only. The two planted names that stood here -- `20260101-000000_a-dated-note.md`
 # and `20260101-010101_never-written.kyri` -- are found by discovery now, along with 45 more, so
 # listing them would be the duplication this round exists to end.
@@ -272,7 +280,17 @@ DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260717-125858_skate.bron \
 20260713-201910_old.bron \
 20260810-113354_a-log.kyri \
-20260816-205859_double-seat-expansion-eight-chapters.md"
+20260816-205859_double-seat-expansion-eight-chapters.md \
+20260702-165412_the-happy-zone-and-the-thin-edge.md \
+20260629-063512_realidream.md \
+20260629-063512_the-graph-beneath-the-surface.md \
+20260629-063512_lantern-lattice-anvil.md \
+20260728-221253_lantern-lattice-anvil.md \
+20260629-063512_the-wafer-and-the-sovereign-coin.md \
+20260826-024944_lantern-lattice-oven.md \
+20260728-232415_anvil-forge-to-oven-name-lean.md \
+20260826-001746_the-swarm-that-feeds-the-oven.md \
+20260813-020035_double-seat-expansion-six-seasons.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for

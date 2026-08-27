@@ -2,25 +2,35 @@
 #
 #   rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish
 
-say "oven-seat: Language EN — Oven living forge; Anvil tribute held."
-say "oven-seat: Style Radiant — bread not blades."
-say "oven-seat: Lens TAME — Oven Chapter o1."
+# The Oven Chapter seated a bake seat named Oven over a directory named oven/. Both names have
+# moved since: the forge module became ember/ (20260808) and the bake seat became Kiln
+# (20260827.025117), and the Oven and Anvil elders were SHED 20260827.162143 on Keaton's circled
+# word. The chapter keeps its name as history; this rung proves what its seat became.
+say "oven-seat: Language EN -- the bake seat, read where it stands today: Kiln."
+say "oven-seat: Style Gauge at Meter -- bread not blades; the name moved, the seat held."
+say "oven-seat: Lens TAME -- Oven Chapter o1, proven forward."
 
 let seat = run ["test" "-f" "counsel/date/20260728/20260728-232511_surface-season-p36-oven-seated.md"]
 assert seat.ok else "oven-seat: p36 counsel missing"
-let living = run ["test" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
-assert living.ok else "oven-seat: living Oven foundation missing"
-let mid = run ["test" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
-assert mid.ok else "oven-seat: Anvil mid-fossil missing"
+let living = run ["test" "-f" "foundations/20260827-025117_lantern-lattice-kiln.md"]
+assert living.ok else "oven-seat: living Kiln foundation missing"
+let mid = run ["test" "!" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
+assert mid.ok else "oven-seat: the shed Anvil elder must be gone"
+let oven_elder = run ["test" "!" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
+assert oven_elder.ok else "oven-seat: the shed Oven elder must be gone"
+let recorded = run ["sh" "-c" "grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md && echo SHED_OK"]
+assert recorded.ok else "oven-seat: shed record scan failed"
+assert recorded.out contains "SHED_OK" else "oven-seat: the prep pin must name both shed elders"
 
-let oven = run ["sh" "-c" "grep -q 'Oven — Where the Model Is Baked' foundations/20260826-024944_lantern-lattice-oven.md && grep -q '\\*\\*living mutant\\*\\*' foundations/20260826-024944_lantern-lattice-oven.md && echo OVEN_OK"]
-assert oven.ok else "oven-seat: Oven body scan failed"
-assert oven.out contains "OVEN_OK" else "oven-seat: Oven section missing"
-let lex = run ["sh" "-c" "grep -q 'Living name for the local forge' context/LEXICON.md && grep -q 'Retired living forge name' context/LEXICON.md && grep -q 'Oven was Anvil' context/LEXICON.md && echo LEX_OK"]
+let oven = run ["sh" "-c" "grep -q 'Kiln -- Where the Model Is Baked' foundations/20260827-025117_lantern-lattice-kiln.md && echo OVEN_OK"]
+assert oven.ok else "oven-seat: Kiln body scan failed"
+assert oven.out contains "OVEN_OK" else "oven-seat: the bake section must stand under its living name"
+let lex = run ["sh" "-c" "grep -q 'Kiln' context/LEXICON.md && grep -q 'Retired living forge name' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "oven-seat: lexicon scan failed"
-assert lex.out contains "LEX_OK" else "oven-seat: Oven · Anvil rename-forward missing"
-let held = run ["sh" "-c" "test -d oven && test ! -d anvil && echo PATH_OVEN"]
-assert held.ok else "oven-seat: oven/ directory should exist after o1 cut"
-assert held.out contains "PATH_OVEN" else "oven-seat: anvil/ must be gone after o1 cut"
+assert lex.out contains "LEX_OK" else "oven-seat: the Kiln row and the retired-name row must both stand"
+# The forge module answers to ember/ since 20260808; oven/ and anvil/ are both retired paths.
+let held = run ["sh" "-c" "test -d ember && test ! -d oven && test ! -d anvil && echo PATH_EMBER"]
+assert held.ok else "oven-seat: forge directory check failed"
+assert held.out contains "PATH_EMBER" else "oven-seat: ember/ lives; oven/ and anvil/ are retired"
 
-say "GREEN: oven-seat — Oven living · Anvil fossils · lexicon · oven/ path LIVE · Oven Chapter o1"
+say "GREEN: oven-seat -- Kiln living - Oven and Anvil elders shed - lexicon - ember/ path LIVE"
