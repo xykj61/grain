@@ -1,5 +1,5 @@
 #!/bin/sh
-# Source-loop crash probe for caravan_subscribe_poll_source_crash.rish
+# Source-loop crash probe for caravan_subscribe_poll_source_crash_witness.rish
 set -eu
 service="$1"
 delivery="$2"

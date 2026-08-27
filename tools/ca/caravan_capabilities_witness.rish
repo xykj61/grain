@@ -1,7 +1,7 @@
-# caravan_capabilities.rish -- Caravan capability table self-test witness.
+# caravan_capabilities_witness.rish -- Caravan capability table self-test witness.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/ca/caravan_capabilities.rish
+#   rishi/bin/rishi run tools/ca/caravan_capabilities_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/capabilities"

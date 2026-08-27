@@ -1,0 +1,29 @@
+# caravan_subscribe_poll_signal_witness.rish -- ring 4: real SIGTERM -> sentinel -> graceful stop.
+#
+# The probe lives in tools/fixtures/caravan_subscribe_poll_signal.sh, beside its sibling
+# ring's probe, because the shell it runs must background a process and signal it by pid --
+# and because the one-line form of it hid a precedence fault for as long as it stood (REDS %297).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_subscribe_poll_signal_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let delivery = "mantra/bin/recall-subscribe-poll-delivery"
+let service = "caravan/bin/subscribe-poll-service"
+let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+let out = "/tmp/veganreyklah2-poll-svc.out"
+let probe_sh = "tools/fixtures/caravan_subscribe_poll_signal.sh"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
+assert build.ok else "subscribe poll signal build failed"
+
+let probe = run ["sh" probe_sh service delivery sentinel out]
+assert probe.ok else "subscribe poll signal witness shell failed"
+assert probe.out contains "GREEN" else "subscribe poll service not GREEN after SIGTERM"
+assert probe.out contains "exit:0" else "supervisor wrong exit after SIGTERM"
+assert probe.out contains "stop_requested" else "SIGTERM did not reach sentinel stop path"
+
+let cleanup = run ["sh" "-c" "rm -f ${sentinel} ${out}"]
+assert cleanup.ok else "signal witness cleanup failed"
+
+say "GREEN: Caravan subscribe poll SIGTERM witness passed (real signal, graceful stop)."

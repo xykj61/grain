@@ -1,7 +1,7 @@
-# caravan_seeds.rish -- Caravan seed -> bounded -> twin -> chain supervision witnesses.
+# caravan_seeds_witness.rish -- Caravan seed -> bounded -> twin -> chain supervision witnesses.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/ca/caravan_seeds.rish
+#   rishi/bin/rishi run tools/ca/caravan_seeds_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let bin_dir = "caravan/bin"

@@ -67,37 +67,37 @@ assert slc2r3.ok else "SLC-2a session mirror witness failed"
 say "GREEN: SLC-2a session mirror witness passed."
 
 say "witness suite: Caravan capability table…"
-let caravan_caps = run ["sh" "tools/p/parity_time_one.sh" "caravan_caps" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_capabilities.rish"]
+let caravan_caps = run ["sh" "tools/p/parity_time_one.sh" "caravan_caps" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_capabilities_witness.rish"]
 assert caravan_caps.ok else "Caravan capability table witness failed"
 say "GREEN: Caravan capability table witness passed."
 
 say "witness suite: Caravan supervision seeds…"
-let caravan_seeds = run ["sh" "tools/p/parity_time_one.sh" "caravan_seeds" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_seeds.rish"]
+let caravan_seeds = run ["sh" "tools/p/parity_time_one.sh" "caravan_seeds" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_seeds_witness.rish"]
 assert caravan_seeds.ok else "Caravan supervision seeds witness failed"
 say "GREEN: Caravan supervision seeds witness passed."
 
 say "witness suite: Caravan subscribe poll service (production scheduling)…"
-let caravan_pollsvc = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollsvc" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_service.rish"]
+let caravan_pollsvc = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollsvc" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_service_witness.rish"]
 assert caravan_pollsvc.ok else "Caravan subscribe poll service witness failed"
 say "GREEN: Caravan subscribe poll service witness passed."
 
 say "witness suite: Caravan witness-stop-after footgun…"
-let caravan_footgun = run ["sh" "tools/p/parity_time_one.sh" "caravan_footgun" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_witness_stop_footgun.rish"]
+let caravan_footgun = run ["sh" "tools/p/parity_time_one.sh" "caravan_footgun" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_witness_stop_footgun_witness.rish"]
 assert caravan_footgun.ok else "Caravan witness-stop footgun witness failed"
 say "GREEN: Caravan witness-stop-after footgun witness passed."
 
 say "witness suite: Caravan source-loop crash recovery…"
-let caravan_srccrash = run ["sh" "tools/p/parity_time_one.sh" "caravan_srccrash" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_source_crash.rish"]
+let caravan_srccrash = run ["sh" "tools/p/parity_time_one.sh" "caravan_srccrash" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_source_crash_witness.rish"]
 assert caravan_srccrash.ok else "Caravan source-crash recovery witness failed"
 say "GREEN: Caravan source-loop crash recovery witness passed."
 
 say "witness suite: Caravan host mirror under supervision…"
-let caravan_pollmirror = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollmirror" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_mirror_service.rish"]
+let caravan_pollmirror = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollmirror" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_mirror_service_witness.rish"]
 assert caravan_pollmirror.ok else "Caravan host mirror supervision witness failed"
 say "GREEN: Caravan host mirror under supervision witness passed."
 
 say "witness suite: Caravan subscribe poll SIGTERM (ring 4)…"
-let caravan_pollsig = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollsig" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_signal.rish"]
+let caravan_pollsig = run ["sh" "tools/p/parity_time_one.sh" "caravan_pollsig" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_subscribe_poll_signal_witness.rish"]
 assert caravan_pollsig.ok else "Caravan subscribe poll SIGTERM witness failed"
 say "GREEN: Caravan subscribe poll SIGTERM witness passed."
 
@@ -107,7 +107,7 @@ assert mantra_pollstop.ok else "Mantra subscribe poll stop sentinel witness fail
 say "GREEN: Mantra subscribe poll stop sentinel witness passed."
 
 say "witness suite: Caravan restart on cycle_ok (exit-code ring)…"
-let caravan_reok = run ["sh" "tools/p/parity_time_one.sh" "caravan_reok" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_restart_on_ok.rish"]
+let caravan_reok = run ["sh" "tools/p/parity_time_one.sh" "caravan_reok" "--" "rishi/bin/rishi" "run" "tools/ca/caravan_restart_on_ok_witness.rish"]
 assert caravan_reok.ok else "Caravan restart-on-ok witness failed"
 say "GREEN: Caravan restart-on-ok witness passed."
 
