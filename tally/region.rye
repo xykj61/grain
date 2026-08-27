@@ -33,6 +33,9 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
+
+const region_version = "20260827.031249";
 
 /// A length as the u32 every count in this module is kept in.
 pub fn buf_len_u32(buf: []const u8) u32 {
@@ -105,3 +108,81 @@ pub const Region = struct {
         return buf_len_u32(self.buf) - self.pos;
     }
 };
+
+// The selftest below covers what tally/seed.rye does not: seed already proves init, alloc to the
+// edge, the OutOfBounds refusal, the zero-byte welcome, and clear-then-reuse in twenty-two
+// asserts, so repeating them here would be a carried copy of the kind the ladder fold retired.
+// This body proves the one public method seed never touches -- divide -- and hands the witness
+// two refuse modes so the construction asserts are proven to fire rather than believed to.
+
+/// The divide selftest: a child region is bounded, starts empty, shares no byte with what the
+/// parent hands out afterward, and a division past the remainder refuses by name.
+fn run_selftest() u8 {
+    var backing: [64]u8 = undefined;
+    var parent = Region.init(&backing);
+
+    // A child of sixteen: exactly what was asked, cursor at its own beginning.
+    var child = parent.divide(16) catch return 1;
+    // invariant: the child opens empty over exactly the sixteen bytes the caller reasoned about
+    assert(child.pos == 0);
+    assert(child.remaining() == 16);
+    // invariant: the parent's cursor moved past the child, so the two can never handle one byte
+    assert(parent.pos == 16);
+    assert(parent.remaining() == 48);
+
+    // The child fills to its own edge and refuses one byte more, while the parent still has room
+    // -- the child's bound is its slice, never the backing buffer.
+    const c1 = child.alloc(16) catch return 1;
+    assert(c1.len == 16);
+    {
+        const over = child.alloc(1);
+        // invariant: the child's refusal is the named error, arriving while the parent holds 48
+        if (over) |_| unreachable else |err| assert(err == error.OutOfBounds);
+    }
+
+    // The parent's next allocation lands directly after the child's slice -- adjacency proven on
+    // the pointers, so no byte is shared and none is skipped.
+    const p1 = parent.alloc(8) catch return 1;
+    // invariant: the parent resumes exactly where the child's sixteen bytes end
+    assert(p1.ptr == c1.ptr + 16);
+
+    // A division past the remainder refuses by the same name alloc refuses by.
+    {
+        const over = parent.divide(41);
+        // invariant: divide reuses alloc's bounds check, so the refusal is one error, not two
+        if (over) |_| unreachable else |err| assert(err == error.OutOfBounds);
+    }
+
+    print("GREEN: tally region -- divide bounded, child edged, bytes adjacent, refusals named. version {s}\n", .{region_version});
+    return 0;
+}
+
+/// Refuse modes for the witness: each trips one construction assert on purpose, so the witness
+/// can watch the process die rather than trust the comment that says it would.
+fn run_refuse(mode: []const u8) u8 {
+    if (std.mem.eql(u8, mode, "refuse-init-empty")) {
+        var empty: [1]u8 = undefined;
+        // invariant: a zero-length slice of real storage reaches init, which must refuse a region
+        // over nothing at construction rather than hand back an allocator that can never allocate
+        var r = Region.init(empty[0..0]);
+        _ = &r;
+        return 0; // unreachable when the assert holds; reaching it is the witness's RED
+    }
+    if (std.mem.eql(u8, mode, "refuse-divide-zero")) {
+        var backing: [8]u8 = undefined;
+        var r = Region.init(&backing);
+        // invariant: a division of nothing must refuse at the divide assert before alloc is asked
+        _ = r.divide(0) catch return 1;
+        return 0; // unreachable when the assert holds
+    }
+    return 2;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+        return run_refuse(args[1]);
+    }
+    return run_selftest();
+}

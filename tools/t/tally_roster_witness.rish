@@ -2,7 +2,7 @@
 #
 # The choir-and-bijection calling reaching the allocator room (the constellation charter's own
 # tally row): coverage is a reading taken off disk by tools/fixtures/tally_roster_scan.sh --
-# 14 modules, 5 covered by anchored name, 3 test-program exceptions, 6 uncovered under a
+# 14 modules, 6 covered by anchored name, 3 test-program exceptions, 5 uncovered under a
 # ceiling of 6 that only falls (measured 20260826 at seating). Three claims, in order: the live
 # room reads whole and SEEN; a planted newborn module with no witness refuses past the ceiling
 # in a pen, and removing it passes at the same ceiling -- the fence pressed from both sides;
@@ -21,8 +21,8 @@ let live = run ["sh" "tools/fixtures/tally_roster_scan.sh"]
 assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
 assert live.out contains "verdict=ok" else "tally-roster: want the live verdict ok -- ${live.out}"
 assert live.out contains "modules_total=14" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
-assert live.out contains "covered=5" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
-assert live.out contains "uncovered=6" else "tally-roster: the ratchet moved -- if it fell, lower the ceiling with it: ${live.out}"
+assert live.out contains "covered=6" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
+assert live.out contains "uncovered=5" else "tally-roster: the ratchet moved -- if it fell, lower the ceiling with it: ${live.out}"
 
 # The pen: a throwaway room with one covered module, its check, and room to plant.
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally $d/tools/t && printf '%s' $d"]
@@ -59,4 +59,4 @@ assert green.ok else "tally-roster: a healed pen must pass at zero -- covering i
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
 assert pen_rm.ok else "tally-roster: could not remove the pen"
 
-say "GREEN: tally-roster -- fourteen modules read, five covered and six counted under a falling ceiling; the newborn refused by name, the longer word credited nothing, and the healed pen passed at zero."
+say "GREEN: tally-roster -- fourteen modules read, the covered and uncovered counts pinned above under a falling ceiling; the newborn refused by name, the longer word credited nothing, and the healed pen passed at zero."

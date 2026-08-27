@@ -21,6 +21,8 @@
 # Measured 20260826 at seating: 14 modules -- 5 covered (copy, gardens, maybe, no_padding,
 # parse_int), 3 test-program exceptions, 6 uncovered (bud, kumara, pedersen, region, seed,
 # stack). The ceiling seats at 6 and only falls: cover one and the ceiling follows it down.
+# 20260827: region covered (tools/t/tally_region_witness.rish -- divide, the watched refusals,
+# the symlink fold, seed re-proven); the ceiling falls 6 -> 5.
 # pedersen is a deprecated one-line shim to bud and stays IN the ratchet on purpose -- a shim to
 # an uncovered module is not covered by pointing at it.
 #
@@ -37,7 +39,7 @@
 # module; verdict=ok exits 0, verdict=over_ceiling exits 1, no room exits 2.
 
 root=${1:-.}
-CEILING="${TALLY_ROSTER_CEILING:-6}"
+CEILING="${TALLY_ROSTER_CEILING:-5}"
 
 if [ ! -d "$root/tally" ] || [ ! -d "$root/tools/t" ]; then
   echo "verdict=no_room"
