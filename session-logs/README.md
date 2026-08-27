@@ -51,6 +51,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 |---|---|---|
 | `20260827.004535` | [the repair that reached one caller](20260827-004535_the-repair-that-reached-one-caller.kyri) | %288: one module of twenty repaired, the class now metered |
 | `20260827.000338` | [the flag one host cannot test](20260827-000338_the-flag-one-host-cannot-test.kyri) | libc where macOS links it free; nine stale citations, three reds booked twice |
+| `20260826.235304` | [the return nobody read](20260826-235304_the-return-nobody-read.kyri) | %282 closes: the socket trio named one arch, the return was discarded, the kill hit a subshell |
 | `20260826.224930` | [the syscall that named one kernel](20260826-224930_the-syscall-that-named-one-kernel.kyri) | rc=9 believed; libc across seven sites, two of three reds false |
 | `20260826.224743` | [the fence around the garden](20260826-224743_the-fence-around-the-garden.kyri) | tally answers to its witnesses: 5 covered, 6 counted, the newborn refused |
 | `20260826.222813` | [the spine closes five for five](20260826-222813_the-spine-closes-five-for-five.kyri) | region_base derived, twelve windows abut; the machine fact falls |
