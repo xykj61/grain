@@ -92,14 +92,14 @@ let surface = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_nest_type_surface
 assert surface.ok else "glow_nest_type_surface_witness failed under nest implement"
 assert surface.out contains "GREEN" else "glow_nest_type_surface_witness not GREEN"
 
-let barket = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_barket_horizon_witness.rish"]
-assert barket.ok else "glow_barket_horizon_witness failed under nest implement"
-assert barket.out contains "GREEN" else "glow_barket_horizon_witness not GREEN"
+let barket = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_shop_nest_horizon_witness.rish"]
+assert barket.ok else "glow_shop_nest_horizon_witness failed under nest implement"
+assert barket.out contains "GREEN" else "glow_shop_nest_horizon_witness not GREEN"
 
-let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under nest implement"
-assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
-assert bartis.out contains "SampleDoesNotNest" else "glow_lower_bartis_witness missing nest refuse"
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish"]
+assert bartis.ok else "glow_lower_shop_gate_witness failed under nest implement"
+assert bartis.out contains "GREEN" else "glow_lower_shop_gate_witness not GREEN"
+assert bartis.out contains "SampleDoesNotNest" else "glow_lower_shop_gate_witness missing nest refuse"
 
 assert selftest.out contains "study alias" else "nest_type_witness missing study alias pin"
 assert selftest.out contains "STOA257" else "nest_type_witness missing STOA257"
@@ -112,7 +112,7 @@ let shape_params = run ["sh" "-c" "grep -q 'fn assert_bartis_named_shape(shape_n
 assert shape_params.ok else "STOA328 nest_type living params must say shape_name"
 
 # STOA330: gate specs carry shape_name (not mold_name).
-let gate_shape = run ["sh" "-c" "grep -q 'shape_name:' glow/rune_bartis.rye && grep -q 'fn shape_name_slice' glow/rune_bartis.rye && grep -q 'fn shape_name_slice' glow/rune_barket.rye && ! grep -q 'mold_name:' glow/rune_bartis.rye && ! grep -q 'fn mold_name_slice' glow/rune_bartis.rye"]
+let gate_shape = run ["sh" "-c" "grep -q 'shape_name:' glow/rune_shop_gate.rye && grep -q 'fn shape_name_slice' glow/rune_shop_gate.rye && grep -q 'fn shape_name_slice' glow/rune_shop_nest.rye && ! grep -q 'mold_name:' glow/rune_shop_gate.rye && ! grep -q 'fn mold_name_slice' glow/rune_shop_gate.rye"]
 assert gate_shape.ok else "STOA330 gate specs must say shape_name / shape_name_slice"
 
 say "GREEN: Glow nest/type — named-shape · amount-shape … nona-shape · study alias amount-mold · nesting-nests; STOA107–160 · STOA257 · STOA328 · STOA330."

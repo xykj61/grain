@@ -1,4 +1,4 @@
-//! glow/lower_barket.rye -- lower a thin `|^` barket to runnable `.rye` (STOA113-118).
+//! glow/lower_shop_nest.rye -- lower a thin `|^` barket to runnable `.rye` (STOA113-118).
 //!
 //! Identity: `|^  sample=@u32` / `sample` -- returns sample (STOA113).
 //! Argv identity: reads one `@u32` from process argv (STOA114).
@@ -48,7 +48,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
-const rb = @import("rune_barket.rye");
+const rb = @import("rune_shop_nest.rye");
 const nest_type = @import("nest_type.rye");
 
 pub const LowerError = rb.ParseError || error{Overflow};

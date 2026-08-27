@@ -47,7 +47,7 @@ superseded="${superseded:-0}"
 
 # --- signal 2: outstanding ratchet advisories (nonzero cheap categories) ---
 ROSTER="mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src"
-ROSTER_GLOW="glow/tokens.rye glow/lower_named_cast.rye glow/lower_shape.rye glow/lower_bartis.rye glow/lower_barket.rye"
+ROSTER_GLOW="glow/tokens.rye glow/lower_named_cast.rye glow/lower_shape.rye glow/lower_shop_gate.rye glow/lower_shop_nest.rye"
 tools_py="$(find tools -name '*.py' -type f ! -path 'tools/.cache/*' ! -path 'tools/.build/*' 2>/dev/null | wc -l | tr -d ' ')"
 tools_py="${tools_py:-0}"
 memcpy_app="$(rg -n --no-heading '@memcpy\(' $ROSTER $ROSTER_GLOW \
@@ -73,7 +73,7 @@ fi
 # Glow lower emit strings print Zig source containing parseInt -- not app call
 # sites (door named u72; exclusion seated u74). Matches advise roster lean.
 parseint_emit="$(rg -n --no-heading 'parseInt\(' \
-  glow/lower_bartis.rye glow/lower_barket.rye 2>/dev/null | wc -l | tr -d ' ')"
+  glow/lower_shop_gate.rye glow/lower_shop_nest.rye 2>/dev/null | wc -l | tr -d ' ')"
 parseint_emit="${parseint_emit:-0}"
 parseint=$((parseint - parseint_emit))
 [ "$parseint" -lt 0 ] && parseint=0

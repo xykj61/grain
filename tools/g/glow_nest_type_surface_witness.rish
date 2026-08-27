@@ -43,12 +43,12 @@ let readme_h = run ["sh" "-c" "grep -F 'nest/type surface' ${readme}"]
 assert readme_h.ok else "glow/README must name nest/type surface"
 
 # Sibling horizons stay GREEN.
-let barket = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_barket_horizon_witness.rish"]
-assert barket.ok else "glow_barket_horizon_witness failed under nest/type wording"
-assert barket.out contains "GREEN" else "glow_barket_horizon_witness not GREEN"
+let barket = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_shop_nest_horizon_witness.rish"]
+assert barket.ok else "glow_shop_nest_horizon_witness failed under nest/type wording"
+assert barket.out contains "GREEN" else "glow_shop_nest_horizon_witness not GREEN"
 
-let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
-assert bartis.ok else "glow_lower_bartis_witness failed under nest/type wording"
-assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish"]
+assert bartis.ok else "glow_lower_shop_gate_witness failed under nest/type wording"
+assert bartis.out contains "GREEN" else "glow_lower_shop_gate_witness not GREEN"
 
 say "GREEN: Glow nest/type surface wording — stated/nesting/gold seated; barket tokenized; bartis GREEN; STOA106+ · STOA130."

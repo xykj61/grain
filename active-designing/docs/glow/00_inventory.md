@@ -17,8 +17,8 @@ This census is the Glow Book's ground truth: one row per non-witness module in `
 | core | [`glow_run.rye`](../../../glow/glow_run.rye) | 443 | -- | glow_run.rye -- lower a `.glow` generator to `.rye` (language hop). |
 | lower | [`lower_alias.rye`](../../../glow/lower_alias.rye) | 107 | yes | lower_alias.rye -- lower a parsed `=*` alias to runnable `.rye`. |
 | lower | [`lower_assert.rye`](../../../glow/lower_assert.rye) | 115 | yes | lower_assert.rye -- lower Glow `?>` / `?<` to Rye `assert` (STOA88). |
-| lower | [`lower_barket.rye`](../../../glow/lower_barket.rye) | 822 | yes | lower_barket.rye -- lower a thin `|^` barket to runnable `.rye` (STOA113-118). |
-| lower | [`lower_bartis.rye`](../../../glow/lower_bartis.rye) | 821 | yes | lower_bartis.rye -- lower a thin `|=` bartis gate to runnable `.rye` (STOA100-107). |
+| lower | [`lower_shop_nest.rye`](../../../glow/lower_shop_nest.rye) | 822 | yes | lower_shop_nest.rye -- lower a thin `|^` barket to runnable `.rye` (STOA113-118). |
+| lower | [`lower_shop_gate.rye`](../../../glow/lower_shop_gate.rye) | 821 | yes | lower_shop_gate.rye -- lower a thin `|=` bartis gate to runnable `.rye` (STOA100-107). |
 | lower | [`lower_call.rye`](../../../glow/lower_call.rye) | 94 | yes | lower_call.rye -- lower a parsed `%-` call to runnable `.rye`. |
 | lower | [`lower_call2.rye`](../../../glow/lower_call2.rye) | 105 | yes | lower_call2.rye -- lower a parsed `%+` call to runnable `.rye`. |
 | lower | [`lower_call3.rye`](../../../glow/lower_call3.rye) | 127 | yes | lower_call3.rye -- lower a parsed `%^` call to runnable `.rye`. |
@@ -50,8 +50,8 @@ This census is the Glow Book's ground truth: one row per non-witness module in `
 | core | [`nest_type.rye`](../../../glow/nest_type.rye) | 341 | yes | nest_type.rye -- nest/type surface (STOA107-110 - STOA118-130 - STOA148-160 - STOA328). |
 | rune | [`rune_alias.rye`](../../../glow/rune_alias.rye) | 61 | yes | rune_alias.rye -- parses Glow's `=*` alias (no-copy) rune head. |
 | rune | [`rune_assert.rye`](../../../glow/rune_assert.rye) | 118 | -- | rune_assert.rye -- parses Glow `?>` / `?<` assertion rune heads (STOA88). |
-| rune | [`rune_barket.rye`](../../../glow/rune_barket.rye) | 239 | yes | rune_barket.rye -- parses Glow's `|^` barket (STOA112-120). |
-| rune | [`rune_bartis.rye`](../../../glow/rune_bartis.rye) | 252 | -- | rune_bartis.rye -- parses Glow's `|=` bartis gate rune (STOA100-109 - STOA120). |
+| rune | [`rune_shop_nest.rye`](../../../glow/rune_shop_nest.rye) | 239 | yes | rune_shop_nest.rye -- parses Glow's `|^` barket (STOA112-120). |
+| rune | [`rune_shop_gate.rye`](../../../glow/rune_shop_gate.rye) | 252 | -- | rune_shop_gate.rye -- parses Glow's `|=` bartis gate rune (STOA100-109 - STOA120). |
 | rune | [`rune_bounded_trap.rye`](../../../glow/rune_bounded_trap.rye) | 125 | yes | rune_bounded_trap.rye -- parses Glow's bounded `|-` rune, for real. |
 | rune | [`rune_call.rye`](../../../glow/rune_call.rye) | 81 | yes | rune_call.rye -- parses Glow's `%-` one-argument call rune head. |
 | rune | [`rune_call2.rye`](../../../glow/rune_call2.rye) | 94 | yes | rune_call2.rye -- parses Glow's `%+` two-argument call rune head. |

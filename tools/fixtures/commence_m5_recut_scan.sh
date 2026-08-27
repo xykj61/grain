@@ -37,10 +37,10 @@ PRESENT=0
 DRIFT=0
 ABSENT=0
 for m in \
-  glow/rune_bartis.rye \
-  glow/rune_barket.rye \
-  glow/lower_bartis.rye \
-  glow/lower_barket.rye \
+  glow/rune_shop_gate.rye \
+  glow/rune_shop_nest.rye \
+  glow/lower_shop_gate.rye \
+  glow/lower_shop_nest.rye \
   glow/lower_named_cast.rye \
   glow/rune_cast.rye \
   glow/rune_face.rye \

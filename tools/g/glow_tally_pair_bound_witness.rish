@@ -42,7 +42,7 @@ assert a1.ok else "340: a1 regression failed"
 assert a1.out contains "EXIT:0" else "340: a1 did not exit 0"
 
 say "340: STOA338b metal still green beside the vane desk..."
-let m = run ["rishi/bin/rishi" "run" "tools/g/glow_bartis_pair_metal_witness.rish"]
+let m = run ["rishi/bin/rishi" "run" "tools/g/glow_shop_gate_pair_metal_witness.rish"]
 assert m.ok else "340: pair metal regression failed"
 assert m.out contains "GREEN: STOA338b" else "340: pair metal lost its GREEN line"
 

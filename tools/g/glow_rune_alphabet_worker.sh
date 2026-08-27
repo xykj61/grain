@@ -91,6 +91,14 @@ test "$n" = "28" || {
   exit 1
 }
 
+# THE COUNT IS PUBLISHED, so a reader downstream reads a field rather than grepping this
+# witness's prose. Two witnesses grepped that sentence for a bare number: one pinned 28 and one
+# pinned 27, and when the table grew the sentence was updated and the second grep was not, so five
+# witnesses in the barket chain went red and stayed red because no roster runs them (REDS %278). A
+# bare number in prose is a loose match too -- "contains 28" answers yes to a STOA128 in the same
+# line -- so the field is named as well as counted (scan-seam convention).
+echo "rune_heads=$n"
+
 # Old closed table stays at 25 (dated artifact, STOA90).
 grep -F '**25**' "$TABLE" >/dev/null || {
   echo 'FAIL: closed table must still claim **25** (sealed at STOA90)'

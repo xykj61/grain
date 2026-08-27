@@ -163,4 +163,4 @@ Living Grain desks lead with `shape-*` (shape duals STOA161–173; pin polish ST
 | **STOA331** | after gate shape_name check-in | A send · B rest available · **C** cast/face mold→shape | **GREEN** `20260722.204133` |
 | **STOA332** | Rishi glow mode SLC | sixteen heads at `rishi glow` · quit word | **GREEN** — claim [`../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md`](../waymarks/stoa-300s/20260724-144740_stoa332-rishi-glow-mode-slc.md) |
 | **STOA333** | digraph-table twin (rung 1a) | Glow desk ↔ Rye `match_rune2` byte twin | **GREEN** `20260724.181200` — [`../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md`](../waymarks/stoa-300s/20260724-181200_stoa333-digraph-table-twin.md) |
-Smoke: `glow_nest_type_witness` · `glow_barket_parse_witness` · `glow_lower_bartis_witness` · `glow_digraph_twin_witness` · `glow_text_floor_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.
+Smoke: `glow_nest_type_witness` · `glow_shop_nest_parse_witness` · `glow_lower_shop_gate_witness` · `glow_digraph_twin_witness` · `glow_text_floor_witness` · Sibling: **ZETA** · **LULU** · **SETU** · **TUBE**.

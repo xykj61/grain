@@ -1,117 +1,117 @@
-# glow_lower_bartis_witness.rish -- `|=` bartis lowers to Rye; emitted program runs.
+# glow_lower_shop_gate_witness.rish -- `|=` bartis lowers to Rye; emitted program runs.
 #
-# Proves rune_bartis parses the identity gate, lower_bartis emits correct Rye,
+# Proves rune_shop_gate parses the identity gate, lower_shop_gate emits correct Rye,
 # and the welcome binary exits 0 with baked sample 5.
 #
-#   rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish
+#   rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "glow/bin/lower_bartis_witness"
+let bin = "glow/bin/lower_shop_gate_witness"
 let welcome_rye = "glow/.cache/gate_sample_welcome.rye"
 let welcome_bin = "glow/bin/gate_sample_welcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_bartis_witness.rye -femit-bin=${bin}"]
-assert build.ok else "lower_bartis_witness build failed: ${build.err}${build.out}"
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_shop_gate_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_shop_gate_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
-assert selftest.ok else "lower_bartis_witness exited non-zero"
-assert selftest.out contains "GREEN" else "lower_bartis_witness not GREEN"
-assert selftest.out contains "identity gate" else "lower_bartis_witness missing identity claim"
-assert selftest.out contains "comment line" else "lower_bartis_witness missing comment-line claim"
-assert selftest.out contains "SampleDoesNotNest" else "lower_bartis_witness missing nest-refuse claim"
-assert selftest.out contains "BodyFaceMismatch" else "lower_bartis_witness missing mismatch-refuse claim"
-assert selftest.out contains "gate-sample.glow" else "lower_bartis_witness missing gen desk claim"
-assert selftest.out contains "argv-sample" else "lower_bartis_witness missing argv-sample claim"
-assert selftest.out contains "gate-sample-u32.glow" else "lower_bartis_witness missing argv gen desk claim"
-assert selftest.out contains "call-body double" else "lower_bartis_witness missing call-body claim"
-assert selftest.out contains "gate-double.glow" else "lower_bartis_witness missing gate-double desk claim"
-assert selftest.out contains "call-body inc" else "lower_bartis_witness missing call-body inc claim"
-assert selftest.out contains "call-body dec" else "lower_bartis_witness missing call-body dec claim"
-assert selftest.out contains "gate-inc.glow" else "lower_bartis_witness missing gate-inc desk claim"
-assert selftest.out contains "gate-dec.glow" else "lower_bartis_witness missing gate-dec desk claim"
-assert selftest.out contains "BodyGateNotYetLowered" else "lower_bartis_witness missing unknown-gate refuse"
-assert selftest.out contains "BodySampleMismatch" else "lower_bartis_witness missing sample-mismatch refuse"
-assert selftest.out contains "amount-shape" else "lower_bartis_witness missing amount-shape claim"
-assert selftest.out contains "gate-amount.glow" else "lower_bartis_witness missing gate-amount desk"
-assert selftest.out contains "count-shape" else "lower_bartis_witness missing count-shape claim"
-assert selftest.out contains "gate-count.glow" else "lower_bartis_witness missing gate-count desk"
-assert selftest.out contains "KindShape" else "lower_bartis_witness missing KindShape claim"
-assert selftest.out contains "gate-kind.glow" else "lower_bartis_witness missing gate-kind desk"
-assert selftest.out contains "XactShape" else "lower_bartis_witness missing XactShape claim"
-assert selftest.out contains "gate-xact.glow" else "lower_bartis_witness missing gate-xact desk"
-assert selftest.out contains "XferShape" else "lower_bartis_witness missing XferShape claim"
-assert selftest.out contains "gate-xfer.glow" else "lower_bartis_witness missing gate-xfer desk"
-assert selftest.out contains "PairShape" else "lower_bartis_witness missing PairShape claim"
-assert selftest.out contains "gate-pair.glow" else "lower_bartis_witness missing gate-pair desk"
-assert selftest.out contains "gate-triple.glow" else "lower_bartis_witness missing gate-triple desk"
-assert selftest.out contains "gate-quad.glow" else "lower_bartis_witness missing gate-quad desk"
-assert selftest.out contains "QuadShape" else "lower_bartis_witness missing QuadShape claim"
-assert selftest.out contains "gate-penta.glow" else "lower_bartis_witness missing gate-penta desk"
-assert selftest.out contains "PentaShape" else "lower_bartis_witness missing PentaShape claim"
-assert selftest.out contains "gate-hexa.glow" else "lower_bartis_witness missing gate-hexa desk"
-assert selftest.out contains "HexaShape" else "lower_bartis_witness missing HexaShape claim"
-assert selftest.out contains "gate-hepta.glow" else "lower_bartis_witness missing gate-hepta desk"
-assert selftest.out contains "HeptaShape" else "lower_bartis_witness missing HeptaShape claim"
-assert selftest.out contains "gate-octa.glow" else "lower_bartis_witness missing gate-octa desk"
-assert selftest.out contains "OctaShape" else "lower_bartis_witness missing OctaShape claim"
-assert selftest.out contains "gate-nona.glow" else "lower_bartis_witness missing gate-nona desk"
-assert selftest.out contains "NonaShape" else "lower_bartis_witness missing NonaShape claim"
-assert selftest.out contains "deca-shape" else "lower_bartis_witness missing deca-shape refuse"
-assert selftest.out contains "gate-nona-flip.glow" else "lower_bartis_witness missing nona-flip desk"
-assert selftest.out contains "nona-shape call-body flip" else "lower_bartis_witness missing nona flip claim"
-assert selftest.out contains "nona-shape double call-body refused" else "lower_bartis_witness missing nona double refuse"
-assert selftest.out contains "gate-octa-flip.glow" else "lower_bartis_witness missing octa-flip desk"
-assert selftest.out contains "octa-shape call-body flip" else "lower_bartis_witness missing octa flip claim"
-assert selftest.out contains "octa-shape double call-body refused" else "lower_bartis_witness missing octa double refuse"
-assert selftest.out contains "gate-hepta-flip.glow" else "lower_bartis_witness missing hepta-flip desk"
-assert selftest.out contains "hepta-shape call-body flip" else "lower_bartis_witness missing hepta flip claim"
-assert selftest.out contains "hepta-shape double call-body refused" else "lower_bartis_witness missing hepta double refuse"
-assert selftest.out contains "gate-hexa-flip.glow" else "lower_bartis_witness missing hexa-flip desk"
-assert selftest.out contains "hexa-shape call-body flip" else "lower_bartis_witness missing hexa flip claim"
-assert selftest.out contains "hexa-shape double call-body refused" else "lower_bartis_witness missing hexa double refuse"
-assert selftest.out contains "gate-penta-flip.glow" else "lower_bartis_witness missing penta-flip desk"
-assert selftest.out contains "penta-shape call-body flip" else "lower_bartis_witness missing penta flip claim"
-assert selftest.out contains "penta-shape double call-body refused" else "lower_bartis_witness missing penta double refuse"
-assert selftest.out contains "gate-triple-flip.glow" else "lower_bartis_witness missing triple-flip desk"
-assert selftest.out contains "triple-shape call-body flip" else "lower_bartis_witness missing triple flip claim"
-assert selftest.out contains "triple-shape double call-body refused" else "lower_bartis_witness missing triple double refuse"
-assert selftest.out contains "gate-quad-flip.glow" else "lower_bartis_witness missing quad-flip desk"
-assert selftest.out contains "quad-shape call-body flip" else "lower_bartis_witness missing quad flip claim"
-assert selftest.out contains "quad-shape double call-body refused" else "lower_bartis_witness missing quad double refuse"
-assert selftest.out contains "call-body flip" else "lower_bartis_witness missing kind flip claim"
-assert selftest.out contains "gate-kind-flip.glow" else "lower_bartis_witness missing kind-flip desk"
-assert selftest.out contains "gate-xact-flip.glow" else "lower_bartis_witness missing xact-flip desk"
-assert selftest.out contains "xact-shape call-body flip" else "lower_bartis_witness missing xact flip claim"
-assert selftest.out contains "gate-xfer-flip.glow" else "lower_bartis_witness missing xfer-flip desk"
-assert selftest.out contains "xfer-shape call-body flip" else "lower_bartis_witness missing xfer flip claim"
-assert selftest.out contains "gate-pair-flip.glow" else "lower_bartis_witness missing pair-flip desk"
-assert selftest.out contains "pair-shape call-body flip" else "lower_bartis_witness missing pair flip claim"
-assert selftest.out contains "gate-amount-u32.glow" else "lower_bartis_witness missing amount argv desk"
-assert selftest.out contains "amount-shape argv" else "lower_bartis_witness missing amount argv claim"
-assert selftest.out contains "gate-pair-fields.glow" else "lower_bartis_witness missing pair argv desk"
-assert selftest.out contains "pair-shape argv emit" else "lower_bartis_witness missing pair argv claim"
-assert selftest.out contains "gate-triple-fields.glow" else "lower_bartis_witness missing triple argv desk"
-assert selftest.out contains "triple-shape argv emit" else "lower_bartis_witness missing triple argv claim"
-assert selftest.out contains "gate-quad-fields.glow" else "lower_bartis_witness missing quad argv desk"
-assert selftest.out contains "quad-shape argv emit" else "lower_bartis_witness missing quad argv claim"
-assert selftest.out contains "gate-penta-fields.glow" else "lower_bartis_witness missing penta argv desk"
-assert selftest.out contains "penta-shape argv emit" else "lower_bartis_witness missing penta argv claim"
-assert selftest.out contains "gate-hexa-fields.glow" else "lower_bartis_witness missing hexa argv desk"
-assert selftest.out contains "hexa-shape argv emit" else "lower_bartis_witness missing hexa argv claim"
-assert selftest.out contains "gate-hepta-fields.glow" else "lower_bartis_witness missing hepta argv desk"
-assert selftest.out contains "hepta-shape argv emit" else "lower_bartis_witness missing hepta argv claim"
-assert selftest.out contains "gate-octa-fields.glow" else "lower_bartis_witness missing octa argv desk"
-assert selftest.out contains "octa-shape argv emit" else "lower_bartis_witness missing octa argv claim"
-assert selftest.out contains "gate-nona-fields.glow" else "lower_bartis_witness missing nona argv desk"
-assert selftest.out contains "nona-shape argv emit" else "lower_bartis_witness missing nona argv claim"
-assert selftest.out contains "gate-count-u32.glow" else "lower_bartis_witness missing count argv desk"
-assert selftest.out contains "count-shape argv" else "lower_bartis_witness missing count argv claim"
-assert selftest.out contains "gate-kind-tag.glow" else "lower_bartis_witness missing kind argv desk"
-assert selftest.out contains "kind-shape argv emit" else "lower_bartis_witness missing kind argv claim"
-assert selftest.out contains "gate-xact-tag.glow" else "lower_bartis_witness missing xact argv desk"
-assert selftest.out contains "xact-shape argv emit" else "lower_bartis_witness missing xact argv claim"
-assert selftest.out contains "gate-xfer-tag.glow" else "lower_bartis_witness missing xfer argv desk"
-assert selftest.out contains "xfer-shape argv emit" else "lower_bartis_witness missing xfer argv claim"
+assert selftest.ok else "lower_shop_gate_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_shop_gate_witness not GREEN"
+assert selftest.out contains "identity gate" else "lower_shop_gate_witness missing identity claim"
+assert selftest.out contains "comment line" else "lower_shop_gate_witness missing comment-line claim"
+assert selftest.out contains "SampleDoesNotNest" else "lower_shop_gate_witness missing nest-refuse claim"
+assert selftest.out contains "BodyFaceMismatch" else "lower_shop_gate_witness missing mismatch-refuse claim"
+assert selftest.out contains "gate-sample.glow" else "lower_shop_gate_witness missing gen desk claim"
+assert selftest.out contains "argv-sample" else "lower_shop_gate_witness missing argv-sample claim"
+assert selftest.out contains "gate-sample-u32.glow" else "lower_shop_gate_witness missing argv gen desk claim"
+assert selftest.out contains "call-body double" else "lower_shop_gate_witness missing call-body claim"
+assert selftest.out contains "gate-double.glow" else "lower_shop_gate_witness missing gate-double desk claim"
+assert selftest.out contains "call-body inc" else "lower_shop_gate_witness missing call-body inc claim"
+assert selftest.out contains "call-body dec" else "lower_shop_gate_witness missing call-body dec claim"
+assert selftest.out contains "gate-inc.glow" else "lower_shop_gate_witness missing gate-inc desk claim"
+assert selftest.out contains "gate-dec.glow" else "lower_shop_gate_witness missing gate-dec desk claim"
+assert selftest.out contains "BodyGateNotYetLowered" else "lower_shop_gate_witness missing unknown-gate refuse"
+assert selftest.out contains "BodySampleMismatch" else "lower_shop_gate_witness missing sample-mismatch refuse"
+assert selftest.out contains "amount-shape" else "lower_shop_gate_witness missing amount-shape claim"
+assert selftest.out contains "gate-amount.glow" else "lower_shop_gate_witness missing gate-amount desk"
+assert selftest.out contains "count-shape" else "lower_shop_gate_witness missing count-shape claim"
+assert selftest.out contains "gate-count.glow" else "lower_shop_gate_witness missing gate-count desk"
+assert selftest.out contains "KindShape" else "lower_shop_gate_witness missing KindShape claim"
+assert selftest.out contains "gate-kind.glow" else "lower_shop_gate_witness missing gate-kind desk"
+assert selftest.out contains "XactShape" else "lower_shop_gate_witness missing XactShape claim"
+assert selftest.out contains "gate-xact.glow" else "lower_shop_gate_witness missing gate-xact desk"
+assert selftest.out contains "XferShape" else "lower_shop_gate_witness missing XferShape claim"
+assert selftest.out contains "gate-xfer.glow" else "lower_shop_gate_witness missing gate-xfer desk"
+assert selftest.out contains "PairShape" else "lower_shop_gate_witness missing PairShape claim"
+assert selftest.out contains "gate-pair.glow" else "lower_shop_gate_witness missing gate-pair desk"
+assert selftest.out contains "gate-triple.glow" else "lower_shop_gate_witness missing gate-triple desk"
+assert selftest.out contains "gate-quad.glow" else "lower_shop_gate_witness missing gate-quad desk"
+assert selftest.out contains "QuadShape" else "lower_shop_gate_witness missing QuadShape claim"
+assert selftest.out contains "gate-penta.glow" else "lower_shop_gate_witness missing gate-penta desk"
+assert selftest.out contains "PentaShape" else "lower_shop_gate_witness missing PentaShape claim"
+assert selftest.out contains "gate-hexa.glow" else "lower_shop_gate_witness missing gate-hexa desk"
+assert selftest.out contains "HexaShape" else "lower_shop_gate_witness missing HexaShape claim"
+assert selftest.out contains "gate-hepta.glow" else "lower_shop_gate_witness missing gate-hepta desk"
+assert selftest.out contains "HeptaShape" else "lower_shop_gate_witness missing HeptaShape claim"
+assert selftest.out contains "gate-octa.glow" else "lower_shop_gate_witness missing gate-octa desk"
+assert selftest.out contains "OctaShape" else "lower_shop_gate_witness missing OctaShape claim"
+assert selftest.out contains "gate-nona.glow" else "lower_shop_gate_witness missing gate-nona desk"
+assert selftest.out contains "NonaShape" else "lower_shop_gate_witness missing NonaShape claim"
+assert selftest.out contains "deca-shape" else "lower_shop_gate_witness missing deca-shape refuse"
+assert selftest.out contains "gate-nona-flip.glow" else "lower_shop_gate_witness missing nona-flip desk"
+assert selftest.out contains "nona-shape call-body flip" else "lower_shop_gate_witness missing nona flip claim"
+assert selftest.out contains "nona-shape double call-body refused" else "lower_shop_gate_witness missing nona double refuse"
+assert selftest.out contains "gate-octa-flip.glow" else "lower_shop_gate_witness missing octa-flip desk"
+assert selftest.out contains "octa-shape call-body flip" else "lower_shop_gate_witness missing octa flip claim"
+assert selftest.out contains "octa-shape double call-body refused" else "lower_shop_gate_witness missing octa double refuse"
+assert selftest.out contains "gate-hepta-flip.glow" else "lower_shop_gate_witness missing hepta-flip desk"
+assert selftest.out contains "hepta-shape call-body flip" else "lower_shop_gate_witness missing hepta flip claim"
+assert selftest.out contains "hepta-shape double call-body refused" else "lower_shop_gate_witness missing hepta double refuse"
+assert selftest.out contains "gate-hexa-flip.glow" else "lower_shop_gate_witness missing hexa-flip desk"
+assert selftest.out contains "hexa-shape call-body flip" else "lower_shop_gate_witness missing hexa flip claim"
+assert selftest.out contains "hexa-shape double call-body refused" else "lower_shop_gate_witness missing hexa double refuse"
+assert selftest.out contains "gate-penta-flip.glow" else "lower_shop_gate_witness missing penta-flip desk"
+assert selftest.out contains "penta-shape call-body flip" else "lower_shop_gate_witness missing penta flip claim"
+assert selftest.out contains "penta-shape double call-body refused" else "lower_shop_gate_witness missing penta double refuse"
+assert selftest.out contains "gate-triple-flip.glow" else "lower_shop_gate_witness missing triple-flip desk"
+assert selftest.out contains "triple-shape call-body flip" else "lower_shop_gate_witness missing triple flip claim"
+assert selftest.out contains "triple-shape double call-body refused" else "lower_shop_gate_witness missing triple double refuse"
+assert selftest.out contains "gate-quad-flip.glow" else "lower_shop_gate_witness missing quad-flip desk"
+assert selftest.out contains "quad-shape call-body flip" else "lower_shop_gate_witness missing quad flip claim"
+assert selftest.out contains "quad-shape double call-body refused" else "lower_shop_gate_witness missing quad double refuse"
+assert selftest.out contains "call-body flip" else "lower_shop_gate_witness missing kind flip claim"
+assert selftest.out contains "gate-kind-flip.glow" else "lower_shop_gate_witness missing kind-flip desk"
+assert selftest.out contains "gate-xact-flip.glow" else "lower_shop_gate_witness missing xact-flip desk"
+assert selftest.out contains "xact-shape call-body flip" else "lower_shop_gate_witness missing xact flip claim"
+assert selftest.out contains "gate-xfer-flip.glow" else "lower_shop_gate_witness missing xfer-flip desk"
+assert selftest.out contains "xfer-shape call-body flip" else "lower_shop_gate_witness missing xfer flip claim"
+assert selftest.out contains "gate-pair-flip.glow" else "lower_shop_gate_witness missing pair-flip desk"
+assert selftest.out contains "pair-shape call-body flip" else "lower_shop_gate_witness missing pair flip claim"
+assert selftest.out contains "gate-amount-u32.glow" else "lower_shop_gate_witness missing amount argv desk"
+assert selftest.out contains "amount-shape argv" else "lower_shop_gate_witness missing amount argv claim"
+assert selftest.out contains "gate-pair-fields.glow" else "lower_shop_gate_witness missing pair argv desk"
+assert selftest.out contains "pair-shape argv emit" else "lower_shop_gate_witness missing pair argv claim"
+assert selftest.out contains "gate-triple-fields.glow" else "lower_shop_gate_witness missing triple argv desk"
+assert selftest.out contains "triple-shape argv emit" else "lower_shop_gate_witness missing triple argv claim"
+assert selftest.out contains "gate-quad-fields.glow" else "lower_shop_gate_witness missing quad argv desk"
+assert selftest.out contains "quad-shape argv emit" else "lower_shop_gate_witness missing quad argv claim"
+assert selftest.out contains "gate-penta-fields.glow" else "lower_shop_gate_witness missing penta argv desk"
+assert selftest.out contains "penta-shape argv emit" else "lower_shop_gate_witness missing penta argv claim"
+assert selftest.out contains "gate-hexa-fields.glow" else "lower_shop_gate_witness missing hexa argv desk"
+assert selftest.out contains "hexa-shape argv emit" else "lower_shop_gate_witness missing hexa argv claim"
+assert selftest.out contains "gate-hepta-fields.glow" else "lower_shop_gate_witness missing hepta argv desk"
+assert selftest.out contains "hepta-shape argv emit" else "lower_shop_gate_witness missing hepta argv claim"
+assert selftest.out contains "gate-octa-fields.glow" else "lower_shop_gate_witness missing octa argv desk"
+assert selftest.out contains "octa-shape argv emit" else "lower_shop_gate_witness missing octa argv claim"
+assert selftest.out contains "gate-nona-fields.glow" else "lower_shop_gate_witness missing nona argv desk"
+assert selftest.out contains "nona-shape argv emit" else "lower_shop_gate_witness missing nona argv claim"
+assert selftest.out contains "gate-count-u32.glow" else "lower_shop_gate_witness missing count argv desk"
+assert selftest.out contains "count-shape argv" else "lower_shop_gate_witness missing count argv claim"
+assert selftest.out contains "gate-kind-tag.glow" else "lower_shop_gate_witness missing kind argv desk"
+assert selftest.out contains "kind-shape argv emit" else "lower_shop_gate_witness missing kind argv claim"
+assert selftest.out contains "gate-xact-tag.glow" else "lower_shop_gate_witness missing xact argv desk"
+assert selftest.out contains "xact-shape argv emit" else "lower_shop_gate_witness missing xact argv claim"
+assert selftest.out contains "gate-xfer-tag.glow" else "lower_shop_gate_witness missing xfer argv desk"
+assert selftest.out contains "xfer-shape argv emit" else "lower_shop_gate_witness missing xfer argv claim"
 
 let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
 assert build_welcome.ok else "bartis welcome .rye build failed"
@@ -164,18 +164,18 @@ assert run_dec.ok else "bartis dec welcome binary failed to launch"
 assert run_dec.out contains "EXIT:0" else "bartis dec welcome binary did not exit 0"
 
 # TAME surface gates (STOA105).
-let width = run ["sh" "-c" "grep 'usize' glow/lower_bartis.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
-assert trim width.out == "0" else "glow/lower_bartis.rye still carries authored usize"
-let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_bartis.rye | tr -d ' '"]
-assert trim assert_import.out == "1" else "glow/lower_bartis.rye must import assert once"
-let memcpy_l = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_bartis.rye | tr -d ' '"]
-assert trim memcpy_l.out == "0" else "glow/lower_bartis.rye must not use memcpy"
-let memcpy_r = run ["sh" "-c" "grep -c '@memcpy(' glow/rune_bartis.rye | tr -d ' '"]
-assert trim memcpy_r.out == "0" else "glow/rune_bartis.rye must not use memcpy"
-let copy_d = run ["sh" "-c" "grep -c 'copy_disjoint' glow/rune_bartis.rye | tr -d ' '"]
-assert trim copy_d.out != "0" else "glow/rune_bartis.rye must use copy_disjoint"
-let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_bartis.rye | tr -d ' '"]
-assert trim append_p.out == "1" else "glow/lower_bartis.rye must define append_print"
+let width = run ["sh" "-c" "grep 'usize' glow/lower_shop_gate.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert trim width.out == "0" else "glow/lower_shop_gate.rye still carries authored usize"
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_shop_gate.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/lower_shop_gate.rye must import assert once"
+let memcpy_l = run ["sh" "-c" "grep -c '@memcpy(' glow/lower_shop_gate.rye | tr -d ' '"]
+assert trim memcpy_l.out == "0" else "glow/lower_shop_gate.rye must not use memcpy"
+let memcpy_r = run ["sh" "-c" "grep -c '@memcpy(' glow/rune_shop_gate.rye | tr -d ' '"]
+assert trim memcpy_r.out == "0" else "glow/rune_shop_gate.rye must not use memcpy"
+let copy_d = run ["sh" "-c" "grep -c 'copy_disjoint' glow/rune_shop_gate.rye | tr -d ' '"]
+assert trim copy_d.out != "0" else "glow/rune_shop_gate.rye must use copy_disjoint"
+let append_p = run ["sh" "-c" "grep -c 'fn append_print' glow/lower_shop_gate.rye | tr -d ' '"]
+assert trim append_p.out == "1" else "glow/lower_shop_gate.rye must define append_print"
 
 # STOA109: named-shape welcome binary exits 0.
 let amt_rye = "glow/.cache/gate_amount_welcome.rye"
@@ -205,8 +205,8 @@ assert run_cnt_argv.ok else "bartis count-shape argv binary failed to launch"
 assert run_cnt_argv.out contains "EXIT:0" else "bartis count-shape argv binary did not exit 0 with sample 9"
 
 # STOA120 / STOA130: expansion seats assert_sample_nesting_nests (stated no-op wire).
-let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests' glow/rune_bartis.rye | tr -d ' '"]
-assert trim wet_wire.out != "0" else "glow/rune_bartis.rye must call assert_sample_nesting_nests"
+let wet_wire = run ["sh" "-c" "grep -c 'assert_sample_nesting_nests' glow/rune_shop_gate.rye | tr -d ' '"]
+assert trim wet_wire.out != "0" else "glow/rune_shop_gate.rye must call assert_sample_nesting_nests"
 
 # STOA122: count-shape welcome binary exits 0.
 let cnt_rye = "glow/.cache/gate_count_welcome.rye"
@@ -416,23 +416,23 @@ assert run_nnf.ok else "bartis nona-shape flip welcome binary failed to launch"
 assert run_nnf.out contains "EXIT:0" else "bartis nona-shape flip welcome binary did not exit 0"
 
 # STOA253 / STOA326: pair...nona identity through emit_n_field_identity (one welcome call).
-let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_bartis.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_bartis.rye) = 1"]
+let n_field = run ["sh" "-c" "grep -q 'fn emit_n_field_identity' glow/lower_shop_gate.rye && test $(grep -Fc 'return emit_n_field_identity(' glow/lower_shop_gate.rye) = 1"]
 assert n_field.ok else "STOA253/326 missing emit_n_field_identity or one welcome identity call"
 
 # STOA259 / STOA326: pair...nona flip through emit_n_field_flip_call_body (one welcome call).
-let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_bartis.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_bartis.rye) = 1"]
+let n_flip = run ["sh" "-c" "grep -q 'fn emit_n_field_flip_call_body' glow/lower_shop_gate.rye && test $(grep -Fc 'return emit_n_field_flip_call_body(' glow/lower_shop_gate.rye) = 1"]
 assert n_flip.ok else "STOA259/326 missing emit_n_field_flip_call_body or one welcome flip call"
 
 # STOA326: closed `$:` call-gate is one flip allowlist; thin per-N wrappers retired.
-let n_gate = run ["sh" "-c" "grep -q 'fn is_n_field_call_gate' glow/rune_bartis.rye && ! grep -q 'fn emit_pair_call_body' glow/lower_bartis.rye && ! grep -q 'fn emit_nona_call_body' glow/lower_bartis.rye"]
+let n_gate = run ["sh" "-c" "grep -q 'fn is_n_field_call_gate' glow/rune_shop_gate.rye && ! grep -q 'fn emit_pair_call_body' glow/lower_shop_gate.rye && ! grep -q 'fn emit_nona_call_body' glow/lower_shop_gate.rye"]
 assert n_gate.ok else "STOA326 missing is_n_field_call_gate or thin call-body wrappers still present"
 
 # STOA297: kind flip call-body collapses through emit_tagged_unit_flip_call_body.
-let unit_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_unit_flip_call_body' glow/lower_bartis.rye && test $(grep -Fc 'return emit_tagged_unit_flip_call_body(' glow/lower_bartis.rye) = 1"]
+let unit_flip = run ["sh" "-c" "grep -q 'fn emit_tagged_unit_flip_call_body' glow/lower_shop_gate.rye && test $(grep -Fc 'return emit_tagged_unit_flip_call_body(' glow/lower_shop_gate.rye) = 1"]
 assert unit_flip.ok else "STOA297 missing emit_tagged_unit_flip_call_body or kind wrapper"
 
 # STOA300: kind argv identity lowers through emit_kind_argv.
-let kind_argv = run ["sh" "-c" "grep -q 'fn emit_kind_argv' glow/lower_bartis.rye"]
+let kind_argv = run ["sh" "-c" "grep -q 'fn emit_kind_argv' glow/lower_shop_gate.rye"]
 assert kind_argv.ok else "STOA300 missing emit_kind_argv"
 
 let kind_argv_rye = "glow/.cache/gate_kind_argv.rye"
@@ -444,7 +444,7 @@ assert run_kind_argv.ok else "bartis kind argv binary failed to launch"
 assert run_kind_argv.out contains "EXIT:0" else "bartis kind argv binary did not exit 0 with tag mint"
 
 # STOA303: xact argv identity lowers through emit_xact_argv.
-let xact_argv = run ["sh" "-c" "grep -q 'fn emit_xact_argv' glow/lower_bartis.rye"]
+let xact_argv = run ["sh" "-c" "grep -q 'fn emit_xact_argv' glow/lower_shop_gate.rye"]
 assert xact_argv.ok else "STOA303 missing emit_xact_argv"
 
 let xact_argv_rye = "glow/.cache/gate_xact_argv.rye"

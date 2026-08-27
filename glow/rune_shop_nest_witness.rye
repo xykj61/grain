@@ -1,12 +1,12 @@
-//! glow/rune_barket_witness.rye -- proves barket parse (STOA112-118).
+//! glow/rune_shop_nest_witness.rye -- proves barket parse (STOA112-118).
 //!
-//!   rye build glow/rune_barket_witness.rye -femit-bin=glow/bin/rune_barket_witness
-//!   glow/bin/rune_barket_witness
+//!   rye build glow/rune_shop_nest_witness.rye -femit-bin=glow/bin/rune_shop_nest_witness
+//!   glow/bin/rune_shop_nest_witness
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const rb = @import("rune_barket.rye");
+const rb = @import("rune_shop_nest.rye");
 
 const witness_version = "20260720.195131";
 
