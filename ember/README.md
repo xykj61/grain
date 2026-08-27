@@ -5,7 +5,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Kin:** [`Lattice`](../lattice/README.md) counts, [`Lantern`](../lantern/README.md) serves, [`Scribble`](../scribble/README.md) reads -- the four faculties of the **Q-vane** ([`../context/QUIN.md`](../context/QUIN.md)) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
+**Kin:** [`Lattice`](../lattice/README.md) counts, [`Lantern`](../lantern/README.md) serves, [`Scribble`](../scribble/README.md) reads -- the four faculties of the **Q-vane** ([`../context/QUIN.md`](../context/QUIN.md)) (the card seated **Lumen** as this vane's name on `20260816` and 80 living pages still say Q-vane -- **REDS %300**, open and gated) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
 
 ---
 
