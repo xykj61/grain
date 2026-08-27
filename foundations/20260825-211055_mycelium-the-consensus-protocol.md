@@ -5,7 +5,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living foundation -- the *why* beneath the tree's own consensus season, and the map through its parts.
-**Chapter:** D -- Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md).
+**Chapter:** D -- Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md).
 **First design read:** [`../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md`](../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md).
 
 ---
@@ -114,7 +114,7 @@ And the honest sentence, said once: this carriage is ergonomics for conflict-fre
 
 ## Kin
 
-- The road that opened it: the double-seat expansion ([`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)) names Chapter D as *the language and the consensus*.
+- The road that opened it: the double-seat expansion ([`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md)) names Chapter D as *the language and the consensus*.
 - The discipline it keeps: [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
 - The gratitude it holds: [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) - [`../.claude/rules/urbit-reframe.md`](../.claude/rules/urbit-reframe.md) -- TigerBeetle and Mysticeti thanked, studied clean-room, never copied.
 - The order it climbs by: [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) - the return habit [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md).

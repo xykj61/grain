@@ -13,13 +13,18 @@ assert paper.ok else "one-graph: p8 paper counsel missing"
 
 let graph = run ["test" "-f" "foundations/20260826-024939_the-graph-beneath-the-surface.md"]
 assert graph.ok else "one-graph: living graph-beneath-surface foundation missing"
-let graph_fossil = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
-assert graph_fossil.ok else "one-graph: June graph-beneath fossil missing"
+# Both June elders were SHED 20260827.162143 on Keaton's circled word; the prep pin's
+# shed-complete record names them, so the pin is what this rung reads now.
+let graph_fossil = run ["test" "!" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
+assert graph_fossil.ok else "one-graph: the shed June graph elder must be gone"
 
 let dream = run ["test" "-f" "foundations/20260825-233310_realidream.md"]
 assert dream.ok else "one-graph: living realidream foundation missing"
-let dream_fossil = run ["test" "-f" "foundations/20260629-063512_realidream.md"]
-assert dream_fossil.ok else "one-graph: June realidream fossil missing"
+let dream_fossil = run ["test" "!" "-f" "foundations/20260629-063512_realidream.md"]
+assert dream_fossil.ok else "one-graph: the shed June realidream elder must be gone"
+let shed = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md && grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md && echo SHED_OK"]
+assert shed.ok else "one-graph: shed record scan failed"
+assert shed.out contains "SHED_OK" else "one-graph: the prep pin must name both shed elders"
 
 let weave = run ["test" "-f" "mantra/src/weave.rye"]
 assert weave.ok else "one-graph: mantra/src/weave.rye missing"
@@ -27,5 +32,5 @@ assert weave.ok else "one-graph: mantra/src/weave.rye missing"
 let connector = run ["test" "-f" "counsel/date/20260728/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
 assert connector.ok else "one-graph: p5 connector sketch missing"
 
-say "GREEN: one-graph — paper · foundations · weave · connector pins present"
+say "GREEN: one-graph -- paper - foundations - weave - connector pins present"
 say "GREEN: one-graph — redraw along edges; Frame is the fold; no second graph."

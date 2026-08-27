@@ -68,25 +68,55 @@ Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26**
 
 ---
 
-## Class H — horizon writing fossils
+## Class H -- SHED COMPLETE `20260827.162143`, and the record of what was cut
 
-Add a row **every time** a living mutant seats and the prior stamp becomes fossil.
+*Keaton circled the second mitra shed on `20260827`. Ten prepped fossils were cut in one pass,
+every one with its living mutant standing and every living citer repointed first. The rows stay
+here as the record: a shed names what it cut, so a reader meeting a reference in dated testimony
+learns the elder left on purpose rather than by breakage. Class H itself stays open for the next
+fossil a molt seats, and the shred word stays **shred RED** until Keaton circles the next one.*
 
-| Fossil (old stamp) | Living mutant | Seated | Notes |
-| --- | --- | --- | --- |
-| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | molt `20260826.194850`, Keaton's word | the elder's horizon retold as arrived: the mirror is house law, the drain replays, the choir counts, the thin edge includes the host; eleven living citers repointed in the round |
-| `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | p29 `20260728.220203`, re-seated `20260825.233310` | invent held; molted twice, the `20260728` stamp debrided |
-| `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
-| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-oven.md` | p31→p36 Oven | invent held · name Oven |
-| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-oven.md` | p36 `20260728.232511` | Oven seat · Anvil essay fossil |
-| `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
-| `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→oven naming counsel · superseded by Ember rename |
-| `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Oven Chapter charter · chapter keeps its name as history · Ember is the living module |
-| `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | molt `20260827.025117`, Keaton's word | bake seat renamed **Kiln**; the `20260808` fold into Ember unbraided -- Ember keeps the corpus forge |
-| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | molt `20260827.025118`, Keaton's word | the elder called the baker Ember; the mutant says Kiln, resolving the muddle |
-| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | molt `20260816.205859` | six-season itinerary → eight (color module + open-weight intelligence folded in); mutant accretes all six whole · shred stays RED until circled |
+| Elder cut | Living mutant | Where its references went |
+| --- | --- | --- |
+| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | the council rota's own read list in `docs/compass_card.bron` repointed |
+| `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | LEXICON, `foundations/README.md`, `gratitude/noah-b-realidream.md` |
+| `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | `foundations/README.md` |
+| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
+| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
+| `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md`, and four chapter witnesses |
+| `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | `foundations/README.md`, and a dead `template-manifest.bron` exclusion retired |
+| `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | the LEXICON **Ember** row | none -- zero living citers at the cut |
+| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
+| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | LEXICON's HUNK row, four module front doors, two design pages, four source headers |
 
-**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `oven/` → **`ember/`** (Keaton's word). Oven/anvil naming writings above are prepped as Class H fossils; the rested **Oven Chapter** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the oven/anvil naming fossils stays RED.
+**Every cut basename is seated as a LISTED deliberate absence** in
+[`../tools/fixtures/dated_path_exclusions.sh`](../tools/fixtures/dated_path_exclusions.sh), so the
+dated-path census reads a surviving reference in testimony as intent rather than as a lost
+reference. Walk-back: checkpoint `20260827.162143`, nib `5707335d0f`.
+
+**And the shed proved eight chapter witnesses rather than one.** Each had been written to prove a
+molt by testing that its fossil sat on disk carrying a banner. That proof cannot survive the cut it
+was preparing for, so each moved to the stronger reading: the elder is **gone**, and this pin's
+record names it. Four of the eight were **already RED before the shed touched them** -- the
+Oven-to-Ember and Oven-to-Kiln renames and the ASCII-first sweep had moved the tree out from under
+unrostered chapter witnesses, which is booked as **REDS %292** and repaired in the same round.
+
+**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` ->
+`oven/` -> **`ember/`** (Keaton's word), and the bake seat became **Kiln** on `20260827.025117`.
+The rested **Oven Chapter** keeps its name as history and is not touched. Any tribute framing once
+attached to the Anvil name is **debrided** `20260809.012200`.
+
+### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
+
+Three documents carrying elder banners were measured against the shed conditions in the same pass
+and **held**, because the condition a mitra shed asks -- *the mutant carries the elder's content* --
+does not hold for them:
+
+| Held | Why the cut was refused |
+| --- | --- |
+| `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | Its named mutant is the LEXICON's Ember row, which carries the **naming** and not the chapter's own seat table. Three witnesses (`oven_season_o0`, `nona_season_n2`) grep that table, and `tools/gen/chapter/prin_scope.rish` prints the charter's path as a live scope pointer. Cutting it would break working guards to tidy one file. |
+| `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md` | Measured at the cut: the naming derivation -- the twilight palette, the night twins, the aether row's own seats -- appears **six times** in the elder and **once** in the living charter, which references it rather than retelling it. An elder holding content its mutant only cites is not superseded. |
+| `active-designing/20260827-144712_the-three-stars-and-their-planets.md` | Ninety minutes old at the cut, and the middle link of a three-charter provenance chain a versioned recursion prompt still reads. The cut buys a directory entry and costs the record of how the constellation grew in three days. |
 
 ## Elder sections, folded
 

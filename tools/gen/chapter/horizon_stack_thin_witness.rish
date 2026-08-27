@@ -13,46 +13,48 @@ assert seat.ok else "horizon-thin: p31 counsel seat missing"
 
 let graph = run ["test" "-f" "foundations/20260826-024939_the-graph-beneath-the-surface.md"]
 assert graph.ok else "horizon-thin: living graph missing"
-let graph_fossil = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
-assert graph_fossil.ok else "horizon-thin: June graph fossil missing"
+# The three elders this seat once proved by their banners were SHED 20260827.162143 on Keaton's
+# circled word, and the bake seat has since been renamed Kiln. So the rung reads what stands: the
+# living pages, and the prep pin's shed-complete record naming each cut elder.
+let graph_fossil = run ["test" "!" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
+assert graph_fossil.ok else "horizon-thin: the shed June graph elder must be gone"
 
-let lantern = run ["test" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
-assert lantern.ok else "horizon-thin: living lantern-lattice-oven missing"
-let lantern_fossil = run ["test" "-f" "foundations/20260629-063512_lantern-lattice-anvil.md"]
-assert lantern_fossil.ok else "horizon-thin: June lantern fossil missing"
-let lantern_mid = run ["test" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
-assert lantern_mid.ok else "horizon-thin: p31 Anvil mid-fossil missing"
+let lantern = run ["test" "-f" "foundations/20260827-025117_lantern-lattice-kiln.md"]
+assert lantern.ok else "horizon-thin: living lantern-lattice-kiln missing"
+let lantern_fossil = run ["test" "!" "-f" "foundations/20260629-063512_lantern-lattice-anvil.md"]
+assert lantern_fossil.ok else "horizon-thin: the shed June lantern elder must be gone"
+let lantern_mid = run ["test" "!" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
+assert lantern_mid.ok else "horizon-thin: the shed p31 Anvil elder must be gone"
+let lantern_oven = run ["test" "!" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
+assert lantern_oven.ok else "horizon-thin: the shed Oven elder must be gone"
 
 say "horizon-thin: lean words..."
 let gwords = run ["sh" "-c" "grep -q 'Grain modules' foundations/20260826-024939_the-graph-beneath-the-surface.md && grep -q 'paint target' foundations/20260826-024939_the-graph-beneath-the-surface.md && grep -q 'invent held' foundations/20260826-024939_the-graph-beneath-the-surface.md && echo GRAPH_LEAN"]
 assert gwords.ok else "horizon-thin: graph lean scan failed"
 assert gwords.out contains "GRAPH_LEAN" else "horizon-thin: graph Grain/Skate lean missing"
-let lwords = run ["sh" "-c" "grep -q 'for Grain and the public' foundations/20260826-024944_lantern-lattice-oven.md && grep -q 'invent held' foundations/20260826-024944_lantern-lattice-oven.md && grep -q 'Oven' foundations/20260826-024944_lantern-lattice-oven.md && echo LANTERN_LEAN"]
-assert lwords.ok else "horizon-thin: oven lean scan failed"
-assert lwords.out contains "LANTERN_LEAN" else "horizon-thin: Oven living lean missing"
+let lwords = run ["sh" "-c" "grep -q 'for Grain and the public' foundations/20260827-025117_lantern-lattice-kiln.md && grep -q 'invent held' foundations/20260827-025117_lantern-lattice-kiln.md && grep -q 'Kiln' foundations/20260827-025117_lantern-lattice-kiln.md && echo LANTERN_LEAN"]
+assert lwords.ok else "horizon-thin: kiln lean scan failed"
+assert lwords.out contains "LANTERN_LEAN" else "horizon-thin: Kiln living lean missing"
 
-say "horizon-thin: fossils point living..."
-let gf = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_the-graph-beneath-the-surface.md && grep -q '20260826-024939_the-graph-beneath-the-surface.md' foundations/20260629-063512_the-graph-beneath-the-surface.md && echo GF_OK"]
-assert gf.ok else "horizon-thin: graph fossil banner failed"
-assert gf.out contains "GF_OK" else "horizon-thin: graph fossil must point living"
-let lf = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_lantern-lattice-anvil.md && grep -q '20260826-024944_lantern-lattice-oven.md' foundations/20260629-063512_lantern-lattice-anvil.md && echo LF_OK"]
-assert lf.ok else "horizon-thin: lantern fossil banner failed"
-assert lf.out contains "LF_OK" else "horizon-thin: lantern fossil must point living Oven"
+say "horizon-thin: the shed elders are recorded..."
+let gf = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md && echo GF_OK"]
+assert gf.ok else "horizon-thin: shed record scan failed"
+assert gf.out contains "GF_OK" else "horizon-thin: the prep pin must name every shed elder"
 
 say "horizon-thin: living pointers..."
-let readme = run ["sh" "-c" "grep -q '20260826-024939_the-graph-beneath-the-surface.md' foundations/README.md && grep -q '20260826-024944_lantern-lattice-oven.md' foundations/README.md && echo README_OK"]
+let readme = run ["sh" "-c" "grep -q '20260826-024939_the-graph-beneath-the-surface.md' foundations/README.md && grep -q '20260827-025117_lantern-lattice-kiln.md' foundations/README.md && echo README_OK"]
 assert readme.ok else "horizon-thin: README scan failed"
-assert readme.out contains "README_OK" else "horizon-thin: README must cite living graph and Oven"
-let dream = run ["sh" "-c" "grep -q '20260826-024939_the-graph-beneath-the-surface.md' foundations/20260825-233310_realidream.md && grep -q '20260826-024944_lantern-lattice-oven.md' foundations/20260825-233310_realidream.md && echo DREAM_OK"]
+assert readme.out contains "README_OK" else "horizon-thin: README must cite living graph and Kiln"
+let dream = run ["sh" "-c" "grep -q '20260826-024939_the-graph-beneath-the-surface.md' foundations/20260825-233310_realidream.md && grep -q '20260827-025117_lantern-lattice-kiln.md' foundations/20260825-233310_realidream.md && echo DREAM_OK"]
 assert dream.ok else "horizon-thin: living Realidream outbound scan failed"
-assert dream.out contains "DREAM_OK" else "horizon-thin: Realidream must cite living graph and Oven"
-let wafer = run ["sh" "-c" "grep -q '20260826-024944_lantern-lattice-oven.md' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo WAFER_OK"]
+assert dream.out contains "DREAM_OK" else "horizon-thin: Realidream must cite living graph and Kiln"
+let wafer = run ["sh" "-c" "grep -q '20260827-025117_lantern-lattice-kiln.md' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo WAFER_OK"]
 assert wafer.ok else "horizon-thin: wafer outbound scan failed"
-assert wafer.out contains "WAFER_OK" else "horizon-thin: living wafer must cite living Oven"
+assert wafer.out contains "WAFER_OK" else "horizon-thin: living wafer must cite living Kiln"
 
 let held = run ["sh" "-c" "test -f foundations/20260826-024941_a-home-in-plain-text.md && test -f foundations/20260826-024940_anywhere-we-are-found.md && test ! -f foundations/20260728-221253_a-home-in-plain-text.md && test ! -f foundations/20260728-221253_anywhere-we-are-found.md && echo HELD"]
 assert held.ok else "horizon-thin: held-cluster check failed"
 assert held.out contains "HELD" else "horizon-thin: plain-text and anywhere must stay unmutated this seat"
 
-say "GREEN: horizon-thin — graph · lantern living · fossils · breach · Surface p31"
-say "GREEN: horizon-thin — plain-text · anywhere held; invent held."
+say "GREEN: horizon-thin -- living graph and Kiln - elders shed and recorded - Surface p31"
+say "GREEN: horizon-thin -- plain-text and anywhere held; invent held."

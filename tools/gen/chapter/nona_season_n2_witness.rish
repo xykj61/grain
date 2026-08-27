@@ -9,7 +9,8 @@ say "nona-season-n2: Lens TAME — Nona Chapter n2."
 let counsel = run ["test" "-f" "counsel/date/20260729/20260729-130911_nona-season-n2-living-depth-residual.md"]
 assert counsel.ok else "nona-season-n2: n2 counsel missing"
 
-let year = run ["sh" "-c" "grep -q 'three · quad · quint · sext · sept · oct · nona' context/LEXICON.md && echo YEAR_OK"]
+# The scope list was spelled with middots until ASCII-first (REDS %83) swept them to hyphens.
+let year = run ["sh" "-c" "grep -q 'three - quad - quint - sext - sept - oct - nona' context/LEXICON.md && echo YEAR_OK"]
 assert year.ok else "nona-season-n2: LEXICON year scan failed"
 assert year.out contains "YEAR_OK" else "nona-season-n2: year scopes still use retired depth words"
 
