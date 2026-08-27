@@ -92,6 +92,7 @@ assert test.out contains "GREEN" else "caravan-address-space: the self-test is n
 assert test.out contains "address space is 12 parts across 2 values -- 8 in the memory region, 4 in the map" else "caravan-address-space: the twelve did not partition eight-and-four"
 assert test.out contains "Caravan holds 7 of the 12, split 4 to regions.rye and 3 to mapping.rye" else "caravan-address-space: the policy-and-geometry split did not hold"
 assert test.out contains "the 5 owed are one debt wearing five names" else "caravan-address-space: the owed did not read as one debt"
+assert test.out contains "a region's base derives from its index" else "caravan-address-space: the derived-base finding is missing -- the spine's move four must hold"
 assert test.out contains "the join holds" else "caravan-address-space: the join between the two rings did not hold"
 say test.out
 

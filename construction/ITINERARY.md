@@ -29,7 +29,7 @@
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor -- Brushstroke - Surf), **Sound** fixed (this bench -- the constellation: `active-designing/20260826-174418_the-constellation-and-the-callings.md`), **Dream** dual (pier -- Glow to Rye; seed cadence).
 - **STANDFAST -- the fusion build** (`20260826`, Keaton's word): build the granted reprove-only-what-moved ruling (`20260825.181028`) before other Sound work -- a derived file-to-witness map, hit-rate and lap-tail gates proven both ways; scoped runs each lap, the full choir on cadence laps. Confidence per minute is the reward.
-- **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide, the bound word-wide in its own name, the drain replay proven (`tools/ca/caravan_{wrap_class,drain_replay}_witness.rish`), Caravan the wafer's first consumer; move four next (design in the fusion charter's kin).
+- **The optimization spine CLOSES, five of five** (`20260826`, Sound): wrap named room-wide, the bound in its own name, the drain a replayable fold, the region base derived from its index (twelve windows abutting), the wafer's first consumer named. Witnesses in `tools/ca/`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail -- CLI and callings finishing under Sound; **ai-jail docs stay accrete-only until the replacement is tested and audited**; the switchover and the jail's deep debride stay gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds; plan in `expanding-prompts/`).
@@ -52,7 +52,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `833c773339` -- the meter before the ruling.
+**Git nib:** `c624ad4f5f` -- the spine closes five for five.
 
 **Now.** **Two piers merged, remotes renamed, Dream at work.**
 

@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.222813` | [the spine closes five for five](20260826-222813_the-spine-closes-five-for-five.kyri) | region_base derived, twelve windows abut; the machine fact falls |
 | `20260826.221834` | [the meter before the ruling](20260826-221834_the-meter-before-the-ruling.kyri) | Move 1 alive, 3.5x on the hit; the hit-rate meter seated, skip nothing |
 | `20260826.211951` | [the bench that spoke another dialect](20260826-211951_the-bench-that-spoke-another-dialect.kyri) | flock, the awk hex class, three dead nibs; %281 open |
 | `20260826.205753` | [Saturn enters the nocturne](20260826-205753_saturn-enters-the-nocturne.kyri) | two studies molt in place to Twilight; claims held; A and A+ |
