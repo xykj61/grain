@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260826.224930` | [the syscall that named one kernel](20260826-224930_the-syscall-that-named-one-kernel.kyri) | rc=9 believed; libc across seven sites, two of three reds false |
 | `20260826.224743` | [the fence around the garden](20260826-224743_the-fence-around-the-garden.kyri) | tally answers to its witnesses: 5 covered, 6 counted, the newborn refused |
 | `20260826.222813` | [the spine closes five for five](20260826-222813_the-spine-closes-five-for-five.kyri) | region_base derived, twelve windows abut; the machine fact falls |
 | `20260826.221834` | [the meter before the ruling](20260826-221834_the-meter-before-the-ruling.kyri) | Move 1 alive, 3.5x on the hit; the hit-rate meter seated, skip nothing |
