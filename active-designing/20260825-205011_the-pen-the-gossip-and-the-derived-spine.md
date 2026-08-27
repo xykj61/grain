@@ -4,8 +4,16 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Mixed -- design, proposal; answers the %230 gate with a recommendation, and the seat stays Keaton's
+**Status:** Mixed -- design, proposal. **Move 1 is SEATED** on Keaton's word `20260827.181605`: the law is `../.claude/rules/derived-spine.md`, the meter `../tools/r/reds_spine_derive_witness.rish`, seventeen control cases plus a replay against the collision that actually happened (`%292`, `20260827`). Moves 2 through 7 remain proposals, and their seats stay Keaton's.
 **Kin:** [`../external-research/20260825-205011_hotstuff-and-hashgraph-read-for-the-piers.md`](../external-research/20260825-205011_hotstuff-and-hashgraph-read-for-the-piers.md) -- [`20260825-133156_three-real-mox-and-the-outer-loop.md`](20260825-133156_three-real-mox-and-the-outer-loop.md) -- REDS %230
+
+*Addendum, accreted `20260827.181605` -- **Move 1 is seated.*** The law is
+[`../.claude/rules/derived-spine.md`](../.claude/rules/derived-spine.md) and the meter is
+[`../tools/r/reds_spine_derive_witness.rish`](../tools/r/reds_spine_derive_witness.rish). One thing
+below did not survive contact: this design implies two readings, a collision and a rebound, and a
+control proved they always fire together -- they are one condition seen from two sides, so the gate
+is single and the diagnosis tells them apart. Moves 2 through 7 stand as written, still proposals.
+Every word below is as it was written on `20260825.205011`.
 
 ## What today proved
 

@@ -5,6 +5,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living pin -- one row per red, oldest first
+**Key:** each row's identity is its one-clock **stamp**; the `%N` is a view allocated by the anointed remote `xy` (`.claude/rules/derived-spine.md`, seated `20260827.181605`). A published number never moves. Book the next with `sh tools/fixtures/reds_spine_derive_scan.sh --next`.
 **Bound:** under `living_pin_max_bytes` (24576)
 **Room:** Checkable -- every row names where it was caught
 

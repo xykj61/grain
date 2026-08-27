@@ -55,30 +55,30 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `3687029503` -- the parent, which every clone resolves.
+**Git nib:** `50ffef60d8` -- the parent, which every clone resolves.
 
-**Now.** **Dream's seat is provisioned, and its lane's lost repair is home.**
+**Now.** **The derived spine is seated: row numbers stop colliding.**
 
 **The role swap of `20260827.155213` stands** -- **Dream is Codex on the pier**, holding the systems
 core: Caravan, Tally, the microkernel road, the constellation table.
 
-**REDS %296 -- CLOSED.** `agent-jail.sh` accepted `claude | cursor-agent | agent` alone, so Dream's
-own printed `agent-jail.sh env CODEX_HOME=... codex exec` answered **`unknown command: env`** and
-the seat could not start. The jail knows a **`codex`** kind now, mapping `.dream-state/codex-home`
-onto `~/.codex` so `--private-home` stops eating the login. **Provisioning is declared:**
-`nixos/configuration.nix` gains a third agent-CLI overlay -- **codex 0.150.1**, upstream's prebuilt
-static musl binary, past nixos-26.05's 0.133.0. Package and **full closure build** proven here.
-**Keaton, outer terminal:** `bash /home/keeper/grain/nixos/rebuild-outer.sh`.
+**Dream's seat is seated and running.** `%296` gave `agent-jail.sh` a **`codex`** kind (it accepted
+`claude | cursor-agent | agent` alone, so every line the launcher printed answered `unknown command:
+env`), and `nixos/configuration.nix` declares **codex 0.150.1**. **Switched and logged in
+`20260827`.** `%297` came home by adoption from `6420adc891`, which the Kiln rewrite never carried:
+`caravan_subscribe_poll_signal` is GREEN and inside the suite, roster **bijection 121/121**.
 
-**REDS %297 -- CLOSED, adopted rather than lost.** `caravan_subscribe_poll_signal` is GREEN and
-inside `caravan_suite` at last. `&` binds looser than `&&`, so the probe backgrounded its AND-list
-and `$!` named the wrapper; the repair moves it to `tools/fixtures/` and reaps children on timeout.
-Eight `tools/ca/` witnesses gain the `_witness` suffix and enter the roster glob -- **bijection
-121/121**. From `6420adc891`, which the Kiln rewrite never carried.
+**The derived spine is SEATED** (his word `20260827.181605`). A ledger row's key is its **one-clock
+stamp**; the `%N` is a view the **anointed remote `xy`** allocates, not a local tree. A published
+number never moves. Book with `reds_spine_derive_scan.sh --next`; cite by stamp until the row is
+shared. Gate: `rebindings` at zero, 17 control cases, **and a replay of the real `%292` collision**
+-- run against `30252a24f7` it prints the repair two rebases cost by hand. Law
+`.claude/rules/derived-spine.md`, meter `tools/r/reds_spine_derive_witness.rish`.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
 `declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's.
+`%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
 
 **The next doors.** Keaton: the switch, then `codex login`. Dream: Caravan and Tally green, then
 the constellation table.

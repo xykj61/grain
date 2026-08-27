@@ -117,6 +117,10 @@ guard reds_ledger_monotone
 path tools/gen/chapter/reds_ledger_monotone_witness.rish
 seated 20260821.235936
 
+guard reds_spine_derive
+path tools/r/reds_spine_derive_witness.rish
+seated 20260827.181605
+
 guard room_bound
 path tools/r/room_bound_witness.rish
 seated 20260821.203103
