@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `3e50f6d2aa` -- the second mitra shed: ten cut, three held.
+**Git nib:** `41a4b0950a` -- ten elders shed, three held.
 
 **Now.** **The role swap lands: six bodies, six lanes, and the closed stacks.**
 
