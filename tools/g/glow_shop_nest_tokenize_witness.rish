@@ -46,7 +46,7 @@ assert readme_h.ok else "glow/README must name barket"
 let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_rune_alphabet_witness failed under barket tokenize"
 assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
-assert alpha.out contains "rune_heads=" else "glow_rune_alphabet_witness must publish rune_heads= (REDS %278)"
+assert alpha.out contains "rune_heads=" else "glow_rune_alphabet_witness must publish rune_heads= (REDS %283)"
 
 let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_shop_gate_witness.rish"]
 assert bartis.ok else "glow_lower_shop_gate_witness failed under barket tokenize"

@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.000338` | [the flag one host cannot test](20260827-000338_the-flag-one-host-cannot-test.kyri) | libc where macOS links it free; nine stale citations, three reds booked twice |
 | `20260826.224930` | [the syscall that named one kernel](20260826-224930_the-syscall-that-named-one-kernel.kyri) | rc=9 believed; libc across seven sites, two of three reds false |
 | `20260826.224743` | [the fence around the garden](20260826-224743_the-fence-around-the-garden.kyri) | tally answers to its witnesses: 5 covered, 6 counted, the newborn refused |
 | `20260826.222813` | [the spine closes five for five](20260826-222813_the-spine-closes-five-for-five.kyri) | region_base derived, twelve windows abut; the machine fact falls |

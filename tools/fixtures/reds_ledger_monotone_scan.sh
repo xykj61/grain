@@ -80,11 +80,68 @@ for n in $sorted; do
   expect=$((n + 1))
 done
 
+# THE SPINE PROVES WHOLE, NOT DISTINCT (REDS %287). Everything above proves the row numbers
+# run 1..N with no gaps or duplicate NUMBERS, which is what "rows are never edited or removed"
+# needs -- and a spine can be perfectly whole while holding one incident twice under two
+# numbers. That is what two piers allocating from their own trees produce: a red booked on one
+# bench, shifted onto the other by a merge repair, then re-seated a second time when it arrived
+# again from upstream. Measured 20260826: %249/%271, %250/%272 and %251/%273 are three
+# incidents standing twice, so a spine reading 285 holds 282 distinct reds. REDS %230 named the
+# blindness one layer back -- a guard cannot see a collision it has no second tree to compare
+# against -- and after a merge there is no second tree, so the collision is inside this one
+# wearing two names.
+#
+# THE READING. A headline is the row's own one-sentence identity, so one headline published
+# under two DIFFERENT row numbers is the signal. Pairs are deduped by (number, headline) first,
+# so a row and its own closure note stay one row -- the same welcome the mentions/rows split
+# above already makes, because a gate that reds on valid input teaches the bench to route
+# around it (REDS %100).
+#
+# A CEILING THAT ONLY FALLS, rather than a gate at zero. The three pairs standing today are on
+# dated shelves and in the living pin, and resolving them edits testimony, which is Keaton's
+# word under `debride`. So this holds the line where it stands and refuses the fourth.
+duplicate_headlines_ceiling=3
+
+pairs=$(for f in "$@"; do
+  awk '
+    /^\*\*REDS [%#][0-9]+/ {
+      line = $0
+      match(line, /^\*\*REDS [%#][0-9]+/)
+      num = substr(line, RSTART, RLENGTH)
+      sub(/^\*\*REDS [%#]/, "", num)
+      rest = substr(line, RSTART + RLENGTH)
+      p = index(rest, " -- ")
+      if (p == 0) next
+      head = substr(rest, p + 4)
+      q = index(head, "**")
+      if (q > 0) head = substr(head, 1, q - 1)
+      printf "%s\t%s\n", num, head
+    }
+  ' "$f"
+done | sort -u)
+
+dup_file=$(mktemp)
+printf '%s\n' "$pairs" | cut -f2- | sort | uniq -d > "$dup_file"
+duplicate_headlines=$(wc -l < "$dup_file" | tr -d ' ')
+
 echo "mentions=$n_mentions"
 echo "rows=$rows"
 echo "expect_next=$expect"
 echo "gaps_or_dupes=$fail"
+echo "duplicate_headlines=$duplicate_headlines"
+echo "duplicate_headlines_ceiling=$duplicate_headlines_ceiling"
+while IFS= read -r h; do
+  [ -n "$h" ] || continue
+  ns=$(printf '%s\n' "$pairs" | awk -F'\t' -v h="$h" '$2==h { printf "%%%s ", $1 }')
+  echo "detail: one headline under ${ns}-- $(printf '%s' "$h" | cut -c1-72)"
+done < "$dup_file"
+rm -f "$dup_file"
 if [ "$rows" -eq 0 ]; then echo "verdict=no_rows"; exit 1; fi
-if [ "$fail" -eq 0 ]; then echo "verdict=ok"; exit 0; fi
-echo "verdict=not_monotone"
+if [ "$fail" -eq 0 ] && [ "$duplicate_headlines" -le "$duplicate_headlines_ceiling" ]; then
+  echo "verdict=ok"
+  exit 0
+fi
+if [ "$fail" -ne 0 ]; then echo "verdict=not_monotone"; exit 1; fi
+echo "verdict=duplicate_rows"
+echo "refused: one headline stands under two row numbers past the ceiling -- read the lines above" >&2
 exit 1

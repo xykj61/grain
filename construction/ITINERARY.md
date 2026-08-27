@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **74 guards** stand -- **70 every-lap, 4 cadence** -- counted from the roster's own scan, at `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **74 guards** stand -- **71 every-lap, 3 cadence** -- counted from the roster's own scan, at `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -54,32 +54,27 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `705be63d6c` -- a lint with no body.
 
-**Now.** **Two piers, three rows re-seated, Dream at work.**
+**Now.** **One flag one host cannot test, and a ledger that reads itself back.**
 
-**Earlier reconcile:** five re-seated `%271`-`%275`; remotes `xy`, `debrided`, `seed`.
+**Dream's lap `20260826.2359` -- two reds CLOSED, shelved at `%286`-`%287`.** `%286`: a module that
+reaches `std.c` needs `-lc`, and **macOS links libc into every binary**, so the pier that closed
+`%282` could not see the flag missing -- `caravan_suite` RED here at `caravan_harvest_witness`, 70
+of 71 green around it. `%287`: two renumbers left **nine living citations** naming rows that now
+mean something else, each repointed against the headline of the row it names. A renumber is a
+reference migration and closes with a `git grep`, never a recollection.
 
-**Dream's lane: the rune renames CUT** (his word). `bartis -> shop_gate`, `barket -> shop_nest`:
-**19 renamed**, 46 touched, **538 substitutions**, **273 spoken names standing**. 21 GREEN. The **59
-`gen/gate-barket-*.glow` fixtures and 2 lexicon tools await their word.**
+**And the ledger holds one lesson twice, three times over** -- `%249`/`%271`, `%250`/`%272`,
+`%251`/`%273`, three incidents under six numbers. **The spine reads 1..287 gapless and holds 284
+distinct reds**; `reds_ledger_monotone_scan.sh` counts that now, under a ceiling of three that only
+falls, proven both ways. **The row-number door has fired four times** (`%230`, `%252`, `%287`) and a
+stamp-keyed row numbered at merge closes all four: one incident, one identity, whichever pier finds
+it.
 
-**The row-number door fired three times in one evening, and the seated rule closed it each time.**
-Both piers booked three reds as `%278`-`%280` on `20260826`; **the push to `xy` is the allocation**,
-so Sound's stand and Dream's re-seated -- to `%282`-`%284`, then to **`%283`-`%285`** when `xy` took
-`%282` before the round could land. Spine reads **1..285 gapless**. **That is the argument for the
-derived-spine key**, in one evening's data: a number allocated at write time costs a renumber per
-fetch, and the loser is whoever integrates. **Also seen:** `xy`'s card named `%278`-`%280` closed
-while its own ledger read `Rows: 277`, citing a log neither pier held; both arrived two commits on.
-
-**Seed published** `20260826.174615`, gate %1 spent: four gates green, anonymous, **`arbor`
-scrubbed**. A killed `rishi` wrapper orphans its `sh` child -- reap it.
-
-**Two reds shelved** (%276, %277) -- **a meter pointed at a class it was never shaped for reports
-a fault it created** (counsel `20260826.181924`).
-
-**Sound's macOS bench opened, every red a seam rather than a fault** -- `flock(1)` is util-linux;
-`\x` is GNU awk, so BWK matched every character and read **16,131,707 against a ceiling of 4,338**,
-repaired in POSIX octal to this pier's **4,338** and **505**. **A control that asks whether a
-reading fired cannot see one that fires too often.**
+**Dream's lane, still open:** the **59 `gen/gate-barket-*.glow` fixtures and 2 lexicon tools await
+his word**, and the **width ratchet** is measured and ready -- `glow/rune_shape.rye` publishes
+`usize` in five fields and five accessors while every consumer already works in `u32` and pays a
+cast at each call, so moving that boundary REMOVES casts. Corpus-wide **394 of 677** single-name
+`@as(usize, @intCast(x))` widen an `x` the file itself declares `u32`; **354** unambiguously.
 
 **Sound's open row (its `%281`):** two sessions share this checkout and `rye build` writes `.zig`
 shadows with no lock, so each build deletes the other's mid-compile and the loser reports RED about
@@ -90,9 +85,8 @@ stops; gate %1 stays his. A **standing adaptation grant** replaces it: bash and 
 HTML into **Brush**, Python into **Glow**, each born beside its elder, which stands until the
 newborn is GREEN and then is a fossil.
 
-**The next doors.** His: **row-number allocation** (%230, %252, third firing above) and the
-derived-spine key, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride
-announcing itself**. Mine: the width ratchet.
+**The next doors.** His: the **derived-spine key** (%230, %252, %287), a **molt-aware resolver**, a
+**pre-push refusal** (%255), a **debride announcing itself**. Mine: the width ratchet, above.
 
 ---
 ## Landed arcs
@@ -225,7 +219,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.202104` | rune rename CUT and closed; %279 a swept fossil column; %280 a width lint with no body | [log](../session-logs/20260826-202104_the-lap-that-ended-at-git-add.kyri) |
+| `20260827.000338` | %286 the libc flag macOS never needs; %287 nine stale citations and three incidents booked twice | [log](../session-logs/20260827-000338_the-flag-one-host-cannot-test.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

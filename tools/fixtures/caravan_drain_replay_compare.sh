@@ -13,7 +13,7 @@
 # in one run and absent in the other is a difference before any byte is read); the sets are
 # non-empty (a comparison over nothing proves nothing); and every pair is byte-identical by cmp.
 #
-# Portable on purpose: POSIX sh, no GNU-only flags (the BSD dialect family, REDS %233-%237).
+# Portable on purpose: POSIX sh, no GNU-only flags (the BSD dialect family, REDS %249, %250, %275).
 #
 #   sh tools/fixtures/caravan_drain_replay_compare.sh DIR_A DIR_B
 #

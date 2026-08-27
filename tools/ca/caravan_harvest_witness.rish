@@ -48,7 +48,13 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/harvest"
 
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/harvest.rye -femit-bin=${bin}"]
+# THE MODULE REACHES LIBC, SO THIS BUILD LINKS IT (REDS %286). `sweep_one` in
+# caravan/harvest.rye calls `std.c.waitpid`, which is an `extern "c"` declaration, and
+# `rye build` links no libc unless a caller asks. macOS links libc for every binary it
+# builds, so the pier that made the change could not see the missing flag; on Linux the
+# build refuses outright with `dependency on libc must be explicitly specified`. The three
+# subscribe-poll witnesses already pass `-lc` for the same reason -- this line joins them.
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/harvest.rye -lc -femit-bin=${bin}"]
 
 assert build.ok else "caravan harvest build failed"
 

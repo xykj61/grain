@@ -22,8 +22,8 @@
 # Honest limit: a modulo inside a string literal would read as a site. The room's sources hold no
 # such string today, and the day one arrives the scan speaks and a classification comment answers.
 #
-# Portable on purpose: POSIX sh + awk, no GNU-only flags -- the BSD dialect family (REDS %233,
-# %234, %237) is the lesson this scan is born under.
+# Portable on purpose: POSIX sh + awk, no GNU-only flags -- the BSD dialect family (REDS %249,
+# %250, %275) is the lesson this scan is born under.
 #
 #   sh tools/fixtures/caravan_wrap_class_scan.sh [root]     # root defaults to ., pen-friendly
 #

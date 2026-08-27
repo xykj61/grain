@@ -64,7 +64,7 @@ utf8_valid() {
   # spurious "Inappropriate ioctl for device" and exits 1 when its output is a device or a
   # pipe on some valid multibyte inputs, so the exit code would measure the destination
   # rather than the bytes. A regular file reads the same on both dialects, and an orphan
-  # lead byte still refuses through it -- proven both ways on metal (REDS %237).
+  # lead byte still refuses through it -- proven both ways on metal (REDS %275).
   _uv_tmp=$(mktemp "${TMPDIR:-/tmp}/utf8v.XXXXXX") || return 1
   iconv -f UTF-8 -t UTF-8 "$1" > "$_uv_tmp" 2>/dev/null
   _uv_rc=$?

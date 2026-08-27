@@ -2,7 +2,7 @@
 # tools/fixtures/width_check_control.sh -- proves the width meter on planted repositories.
 #
 # WHY A CONTROL. `tools/w/width-check.rish` reported green for its whole life while reading nothing
-# (REDS %280), so a green from its successor is worth exactly what its refusals are worth. Every
+# (REDS %285), so a green from its successor is worth exactly what its refusals are worth. Every
 # reading below is shown from BOTH sides: the shape that must refuse is planted and watched to
 # refuse, and the shape that must pass free is planted beside it and watched to pass. A wall proven
 # only in the passing direction cannot be told from a bypass.
