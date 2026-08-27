@@ -55,6 +55,35 @@ reaps `pgrep -P` children before killing the parent. **The living card still lis
 does not have. Adopting it onto `xy` is its own round and Keaton's word -- the commit is reachable at
 both preserved refs until then.
 
+## `20260827.173952` -- the stale-claim molt: seven pages molted in place, the freshness stamped on their faces (walk-back `3a606a8ac9`)
+
+**Swept:** seven living pages whose claims had gone false while the tree moved under them, molted
+**in place** rather than into fresh-stamped mutants -- `docs/STOA.md` (head claimed rung 294
+through 2026-07-22 while its own last row read STOA333 and the witnesses carried the ladder to
+STOA346), `docs/COMPASS.md` (the day-one rose taught Radiant as house voice where Gauge has been
+seated since `20260823.045448`), `external-research/README.md` (told every contributor to write in
+Radiant Style), `active-designing/README.md` (a 2026-07-27 date and a walking index read as a
+census of a room that has since grown to 94 documents),
+`foundations/20260726-020537_the-breach.md` (Status read *proposed for Keaton's word* eleven days
+after the doctrine was being exercised on it), `foundations/20260703-200712_what-needs-ordering.md`
+(taught that Mycelium waits at M4, with 100 sources and 81 witnesses standing),
+and `.claude/rules/lindy-first-crux.md` (five rings at every scale where the seated waymarks run
+four).
+
+**Why in place, and not a mutant:** Keaton asked mid-round for fresh-stamped mutants rather than
+edits in place, which is the right shape for dated testimony and the wrong one here. Every page on
+this list is a **living path** -- named by where it sits rather than when it was written -- and
+`docs/STOA.md` alone carries **180 inbound references**, `docs/COMPASS.md` 26,
+`what-needs-ordering` 20, and `the-breach` 13. Seating a mutant at a fresh stamp would break all
+239 to record a freshness a single line can carry. So the seated W2 shape holds -- molt in place
+under this checkpoint -- and each page now wears a **`Molted:`** line on its face naming the stamp,
+so the freshness Keaton asked to see is visible without a reference going dark.
+
+**What waits there, worth recalling:** each page's own prior telling at this nib -- STOA's head as
+it read when the ladder was still being maintained, the compass rose's Radiant step 7, and the
+breach doctrine's original proposal line, which is the honest record of a doctrine used before it
+was declared.
+
 ## `20260827.162143` -- the second mitra shed, circled: all prepped fossils cut (walk-back `5707335d0f`)
 
 **Swept:** the prepped fossils of the shred-prep pin -- the Class H horizon writing fossils

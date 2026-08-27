@@ -45,7 +45,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 - **`usize`** -- **only** at the inherited-std seam. Assert the bound, keep arithmetic in `u32`, `@intCast` at the Zig API edge. Seam casts are correct Tiger code, not debt awaiting a fork.
 - **Never** `usize` in struct fields, function parameters, return types, or locals we publish as authored API.
 - Live lint: `tools/w/width-check.rish`. Growing: `tools/t/tame-check.rish`.
-- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; baseline: `work-in-progress/20260620-212126_usize-width-baseline.md`.
+- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; baseline: `construction/20260620-212126_usize-width-baseline.md`.
 
 **Compiler fork (F1-F5):** deferred **horizon** -- not the active primary track. See `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`.
 

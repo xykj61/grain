@@ -13,7 +13,7 @@ When ordering any allocation — a **chapter**, **equinox**, **journey**, **ques
 - **The finishing edge still holds.** Lindy-first is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Crux-first picks *which* one.
 - **Narrow scope still holds.** One keystone per round unless the round's own shape bounds it (`collaboration.md`). This rule chooses the keystone; it does not widen the round.
 - **`align` reads by this order.** When Keaton says **align**, the reconcile pass reorders the plan Lindy-first, crux-first, brief and green witnesses winning (`align.md`).
-- **The panchanga rings inherit it.** A chapter's five equinoxes, an equinox's five journeys, a journey's five quests, a quest's five orbits — each division leads with its own highest-Lindy crux, so the ordering is self-similar at every scale.
+- **The nested rings inherit it.** A chapter's four equinoxes, an equinox's four journeys, a journey's four quests — each division leads with its own highest-Lindy crux, so the ordering is self-similar at every scale. *Corrected `20260827`: this line read "five" at every ring, and the tree runs four. `waymark-ladders.md` seats exactly four equinoxes for each of the three chapters that have drawn them — Compass (SOON · JARL · BUHR · TACT), Harvest (GISM · AYRE · DAHL · KOFF), CION (VOLS · LOWE · OFFY · GRAD) — and [`../../foundations/20260823-212601_what-a-season-is.md`](../../foundations/20260823-212601_what-a-season-is.md) teaches the same fours. The fifth ring, "a quest's five orbits," named a unit no seated ladder uses.*
 
 ## Why the rule exists
 

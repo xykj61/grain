@@ -95,12 +95,12 @@ Read the piece aloud. Ask what it is *doing*:
 - **Advising on a decision this project is about to make** -> `counsel/` (analysis, ruling, proposal, or recommendation -- awaiting Kaeden's word).
 - **Studying an external work** -> `external-research/`.
 - **Expanding intent into a runnable plan** -> `expanding-prompts/`.
-- **Tracking what is open or next** -> `work-in-progress/`.
+- **Tracking what is open or next** -> `construction/`.
 - **Recording what a session settled** -> `session-logs/`.
 - **Implementing** -> the module the code belongs to; **code written in Glow** -> `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
 - **Teaching a beginner or solving the shared puzzle book** -> `edu/`.
 
-If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `work-in-progress/TASKS.md` open questions and place the file where a future reader will look first.
+If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `construction/TASKS.md` open questions and place the file where a future reader will look first.
 
 ---
 
@@ -149,7 +149,7 @@ A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* 
 | `foundations/20260823-204456_single-stranded.md` | Foundational one-value-model brief; widely cited |
 | `foundations/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
 | `active-designing/yonder/20260618-184912_recommended-architecture.md` | Foundational clean-room architecture brief; third of the trio |
-| `work-in-progress/20260620-212126_usize-width-baseline.md` | Canonical width inventory; cited from `TAME_GUIDANCE` |
+| `construction/20260620-212126_usize-width-baseline.md` | Canonical width inventory; cited from `TAME_GUIDANCE` |
 | `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md` | Width charter; heavily cited across strengthening docs |
 | `external-research/20260618-180812_pond-foundation.md` | Pond lap foundation brief; cited; affirmed pass eight |
 
@@ -166,7 +166,7 @@ Session logs keep the working day flat and fold closed days beneath `session-log
 ## Caretaking
 
 - **Rename with history:** `git mv`, never silent rewrites.
-- **Prune with care:** release what no longer serves; graduate finished work out of `work-in-progress/`.
+- **Prune with care:** release what no longer serves; graduate finished work out of `construction/`.
 - **Commit logs with work:** session logs ship in the same commit whenever possible.
 - **Clean room:** study in `gratitude/` and `external-research/`; implement in our modules with our vocabulary.
 - **Confirm before churn:** when a filing guide predates a folder that now exists, update the guide -- do not move settled work to match an old plan.

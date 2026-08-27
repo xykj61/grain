@@ -49,7 +49,7 @@ When a chat or a file stops serving the project, name it gently and let it go. P
 ## The Shape of the Workspace
 
 ```
-glow-os/
+grain/
   README.md       <- the front door: what Grain is, the five variants
   ORGANIZING.md   <- filing guide: tree shape, placement test, one-clock law
   context/        <- this home: disciplines, identity, specs
@@ -66,7 +66,7 @@ glow-os/
   foundations/    <- why beneath the work: briefs, essays, weave, civic visions
   docs/           <- compression shelf (operator guides; no load-bearing pins)
   linengrow/      <- civic-application track on the Rye OS spine
-  work-in-progress/ <- workbench: ROADMAP, TASKS, open threads
+  construction/      <- workbench: ITINERARY, REDS, ROADMAP, TASKS
   external-research/ <- study of the world with attribution
   active-designing/  <- our design in motion
   expanding-prompts/ <- runnable plans (from 10000)

@@ -25,7 +25,7 @@
 
 ```bash
 # Placeholder identity only -- never a real @p (see the placeholder-ship-names rule)
-# glow-os boot --variant {{VARIANT}} --fake ~acme-corp-test-ship
+# grain-os boot --variant {{VARIANT}} --fake ~acme-corp-test-ship
 ```
 
 *(Proposed; the boot path is scaffold, not yet built. This block will fill in when `{{VARIANT}}` lands a boot witness.)*

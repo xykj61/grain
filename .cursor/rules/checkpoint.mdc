@@ -6,11 +6,11 @@ alwaysApply: false
 # Checkpoint — mark the way back before you debride
 
 **Seated:** `20260809.024851` on Keaton's word · **Status:** Living
-**Ledger:** [`../../work-in-progress/CHECKPOINTS.md`](../../construction/CHECKPOINTS.md)
+**Ledger:** [`../../construction/CHECKPOINTS.md`](../../construction/CHECKPOINTS.md)
 **Kin:** [`debride.mdc`](debride.mdc) — debride removes; a checkpoint marks the way back first.
 **Claude twin:** [`../../.claude/rules/checkpoint.md`](../../.claude/rules/checkpoint.md)
 
-A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `work-in-progress/CHECKPOINTS.md` so the departing card stays one `git show` away.
+A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
 
 ## What a checkpoint always records
 

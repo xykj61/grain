@@ -3,10 +3,12 @@
 *Compresses the foundations reading order and Cursor loop vocabulary for an Acme Corporation employee or agent cold start. Never replaces the raw shelf.*
 
 **Status:** Checkable — operator compressor
+**Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9` (26 inbound references keep the path)
+**Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) (rose step 7) - [`../foundations/20260826-024943_follow-our-compass.md`](../foundations/20260826-024943_follow-our-compass.md) (the walk this compresses) - [`STOA.md`](STOA.md) - home is [`../README.md`](../README.md)
 **Depth:** guide
 **Ceiling:** <=120 lines
-**Last updated:** 2026-07-27 (Voice / **Radiant** on the rose · check-in loop words)
-**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
+**Last updated:** 2026-08-27 (Voice / **Gauge** on the rose, Radiant its warmth · check-in loop words)
+**Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
 
 ---
 
@@ -24,7 +26,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | 4 | [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) | Compression without magic |
 | 5 | [`happy-zone` / **witness habitat**](../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md) | Fast folds inside; thin edge outside |
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |
-| 7 | [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) | **Voice** — how every dated page speaks (Radiant) |
+| 7 | [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) | **Voice** — how every page speaks (Gauge; Radiant is its warmth) |
 | 8 | [`TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) | Code discipline (open when coding) |
 | 9 | [`TASKS.md`](../construction/TASKS.md) · [`ROADMAP.md`](../construction/ROADMAP.md) | Now and season |
 | 10 | Run one witness | Proof before narrative |
@@ -45,7 +47,8 @@ Acme face for happy-zone testing: **witness habitat** — [`LEXICON`](../context
 | **checkpoint** | Named stop-before-cross already pointed out |
 | **bookmark** | Durable counsel/plan return point (≠ remember) |
 | **Send** | Commit · push · merge to the pier |
-| **Radiant** | House prose voice — rose step 7 |
+| **Gauge** | House prose voice — rose step 7; first rule, don't be too smart about it |
+| **Radiant** | The warmth Gauge inherits; the tree's warmest register |
 | **Witness habitat** | Where the lap’s claim is proven fast |
 | **Thin edge / metalsmoke** | Sparse host/device proofs |
 
@@ -56,7 +59,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md) § Cursor loop.
 | Surface | Role |
 |---------|------|
 | [`cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) | Stitched first-day path |
-| [`glow-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
+| [`grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
 | Markup pipeline silo | Scribble → Brix → Bron → Mantra → Seva |
 
 ## What this page refuses

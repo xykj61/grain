@@ -24,7 +24,7 @@ The two first-hour pages are a **welcome** and a **path**, and they point at eac
 
 ## The manual, room by room
 
-[`../../manual/README.md`](../../manual/README.md) holds the standing guides -- running Grain on your machines, sandboxing and getting set up, the developer guide, IDEs and agents, and the front door question *what is Grain*. Its `glow-os/`, `guides/`, `reference/`, and `video-scripts/` rooms go deeper per subject.
+[`../../manual/README.md`](../../manual/README.md) holds the standing guides -- running Grain on your machines, sandboxing and getting set up, the developer guide, IDEs and agents, and the front door question *what is Grain*. Its `grain-os/`, `guides/`, `reference/`, and `video-scripts/` rooms go deeper per subject.
 
 ## The drafting room
 

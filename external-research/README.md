@@ -4,6 +4,8 @@
 **Last updated:** 2026-08-02 (SSH - Mosh - IPv6 secure transport `161500`)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
+**Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
+**Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) (the Field setting a study is written at) - [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) (the clean room a study reads from) - [`../.claude/rules/read-scope.md`](../.claude/rules/read-scope.md) (this room is a closed stack) - home is [`../README.md`](../README.md)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -184,7 +186,7 @@ Adding research is a small, glad ritual:
 
 - **Name the file with its stamp** in `YYYYMMDD-HHMMSS_short-sprig.md` form, or as a living document when the work revises in place.
 - **Name the sprig for its subject.** A short, descriptive sprig tells the reader where they are.
-- **Write it in Radiant Style.** Lead with what you found. Favor active voice and affirmative framing. Weave the method together with its meaning, so the reader arrives at the insight through the description itself.
+- **Write it in Gauge Style, at the Field setting.** Lead with what you found, in active voice and affirmative framing. Bound every claim -- scope, period, assumptions, before the number -- and give every figure its unit, date, and source. Separate what you observed from what you inferred. Weave the method together with its meaning, so the reader arrives at the insight through the description itself.
 - **Say why.** Open with the question that prompted the exploration, so a future reader understands the motive as readily as the result.
 - **Close when it is whole.** A finished exploration can end with a benediction or a plain summary of what we now know and what it opens next.
 

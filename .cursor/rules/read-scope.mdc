@@ -42,6 +42,17 @@ for the tools letter rooms.
 room, cite into one, and fetch any named file from one -- what it never does is browse, `ls`,
 or sweep a closed stack uninvited.
 
+**The loops' own state is a closed stack, by shape and by body.** Every agent loop keeps runtime
+state -- today in six gitignored root directories (`.mind-state/`, `.dream-state/`, `.cursor-state/`,
+`.zed-state/`, `.claude-state/`, `.cursor-agent-state/`), proposed to become one `loops/` room with a
+subdirectory per body in
+[`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
+A lap reads **its own body's** files there by named path, and leaves every other body's alone. This
+holds for outer-loop information (the launcher's transcript, lap counters, the seat prompt it was
+handed) and inner-loop information (a sandbox's scratch, a session's cached auth) alike. The reason
+is bounded reading rather than secrecy: six loops each walking five other loops' state is
+thirty reads a round, none of which changes what the lap does next.
+
 ## Open shelves
 
 `construction/` pins (the card, REDS, the registries) - `context/` guides - `foundations/` -

@@ -40,7 +40,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 - **`u64`** -- wire-persistent offsets, timestamps, cross-target sizes.
 - **`usize`** -- **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
 - **Never** `usize` in struct fields, public params, or return types we publish.
-- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
+- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; inventory: `construction/20260620-212126_usize-width-baseline.md`.
 - Live lint: `tools/w/width-check.rish`; growing: `tools/t/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
 
 ## Chapter memory (authored Rye)

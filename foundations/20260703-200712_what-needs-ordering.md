@@ -5,6 +5,8 @@
 **Supersedes:** the `20260703-195112` cut of this writing (unseated)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Register:** foundations -- siloed; names only our own modules. Graduated from `active-designing/` on `20260821.211423` under the design-rooms test, having awaited the word since `20260703`.
+**Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9` (20 inbound references keep the path)
+**Kin:** [`../mycelium/README.md`](../mycelium/README.md) (the ordering aspect, now standing) - [`20260726-020537_the-breach.md`](20260726-020537_the-breach.md) - home is [`README.md`](README.md)
 **Status:** Active design -- toll vocabulary seated `20260704.020800` per [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 **Ground:** [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 
@@ -23,7 +25,9 @@ The whole economy of the system flows from sorting before paying. Facts declare 
 
 The toll is precious, so work arrives at it in batches. A bench batches a day of diffs and writings into one reviewable whole because the ratifying word is the costliest operation in the loop. A ledger batches transfers behind one durable write for the same reason. The batch is bounded so the review is bounded; the batch names its parent so the chain stays walkable; the batch is verified by execution, never by assertion. This is one doctrine wearing three coats -- the bench, the archive, the ledger -- and the sorting above is its other half: batch what must pay the toll, and spare the toll everything that never needed it.
 
-The ladders in the tree encode the same patience. MUR climbs its rungs by demand (was MALA). WOV keeps the monarch rule. Mycelium -- the ordering aspect itself -- waits at M4, because ordering machinery built before there are two concurrent writers is weight without work. The day two hands genuinely contend is the day the toll earns its next lap, and it will be recognized by a measured red rather than by forecast.
+The ladders in the tree encode the same patience. MUR climbs its rungs by demand (was MALA). WOV keeps the monarch rule. Mycelium -- the ordering aspect itself -- waited at M4 for exactly this reason, because ordering machinery built before there are two concurrent writers is weight without work.
+
+*Amended `20260827`: that day came.* Mycelium stands as a module -- **100 tracked `.rye` sources under `mycelium/` and 81 witnesses under `tools/m/`**, measured `20260827` by `git ls-files`. Six always-on hands writing one tree is the contention the essay was waiting for, and the demand arrived as this passage predicted: recognized by a measured red rather than by forecast. The reasoning above is why the module was built late, and the count is what late looked like when it finally paid.
 
 ## The Value-Object Horizon
 
