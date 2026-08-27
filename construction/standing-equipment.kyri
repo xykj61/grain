@@ -343,3 +343,7 @@ seated 20260826.164751
 guard reds_fold
 path tools/r/reds_fold_witness.rish
 seated 20260826.175633
+
+guard tally_roster
+path tools/t/tally_roster_witness.rish
+seated 20260826.224730

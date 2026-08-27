@@ -1,0 +1,62 @@
+# tools/t/tally_roster_witness.rish -- every tally module answers to a witness, or is counted.
+#
+# The choir-and-bijection calling reaching the allocator room (the constellation charter's own
+# tally row): coverage is a reading taken off disk by tools/fixtures/tally_roster_scan.sh --
+# 14 modules, 5 covered by anchored name, 3 test-program exceptions, 6 uncovered under a
+# ceiling of 6 that only falls (measured 20260826 at seating). Three claims, in order: the live
+# room reads whole and SEEN; a planted newborn module with no witness refuses past the ceiling
+# in a pen, and removing it passes at the same ceiling -- the fence pressed from both sides;
+# and the anchored matcher credits nothing by a longer word -- a planted tally_budget check
+# never covers `bud` (the flag-inside-a-longer-word lesson).
+#
+# Purely local: no key, no network, no funds, no device. Run from the repository root:
+#   rishi/bin/rishi run tools/t/tally_roster_witness.rish
+
+say "tally-roster: Language EN -- witness health is read off disk, never remembered; a newborn module arrives with its check."
+say "tally-roster: Style Gauge -- one scan, a falling ceiling, and a pen proving the fence from both sides."
+say "tally-roster: Lens TAME -- the ceiling is named, the count is checked at the edge, and the matcher anchors the whole name."
+
+# Claim one: the live room, whole and seen.
+let live = run ["sh" "tools/fixtures/tally_roster_scan.sh"]
+assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
+assert live.out contains "verdict=ok" else "tally-roster: want the live verdict ok -- ${live.out}"
+assert live.out contains "modules_total=14" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
+assert live.out contains "covered=5" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
+assert live.out contains "uncovered=6" else "tally-roster: the ratchet moved -- if it fell, lower the ceiling with it: ${live.out}"
+
+# The pen: a throwaway room with one covered module, its check, and room to plant.
+let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally $d/tools/t && printf '%s' $d"]
+assert pen_mk.ok else "tally-roster: could not build the pen -- ${pen_mk.err}"
+let pen = trim pen_mk.out
+let seed_pen = run ["sh" "-c" "printf '%s\n' '// pen module' > ${pen}/tally/copy.rye && printf '%s\n' '# pen check' > ${pen}/tools/t/tally_copy.rish"]
+assert seed_pen.ok else "tally-roster: could not seed the pen"
+
+# Claim two, the passing side first: one covered module, ceiling zero, verdict ok.
+let clean = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+assert clean.ok else "tally-roster: a fully covered pen must pass at a ceiling of zero -- ${clean.out}"
+
+# The newborn arrives with no check: past the ceiling, refused by name.
+let plant = run ["sh" "-c" "printf '%s\n' '// newborn, no witness' > ${pen}/tally/newborn.rye"]
+assert plant.ok else "tally-roster: could not plant the newborn"
+let red = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+assert red.ok == false else "tally-roster: a planted newborn past the ceiling must refuse -- it passed instead"
+assert red.out contains "verdict=over_ceiling" else "tally-roster: the refusal names its verdict -- ${red.out}"
+assert red.out contains "uncovered: tally/newborn.rye" else "tally-roster: the refusal names the module that owes its check -- ${red.out}"
+
+# Claim three: a longer word never credits a shorter name. tally_budget does not cover bud.
+let bud = run ["sh" "-c" "printf '%s\n' '// bud module' > ${pen}/tally/bud.rye && printf '%s\n' '# budget check, not buds' > ${pen}/tools/t/tally_budget_check.rish"]
+assert bud.ok else "tally-roster: could not plant the longer-word pair"
+let anchored = run ["sh" "-c" "TALLY_ROSTER_CEILING=2 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+assert anchored.ok else "tally-roster: two honest uncovered under a ceiling of two must pass -- ${anchored.out}"
+assert anchored.out contains "uncovered: tally/bud.rye" else "tally-roster: tally_budget must never credit bud -- the matcher anchors the whole name: ${anchored.out}"
+
+# And the same fence from the other side: the newborn gains its check and the pen heals.
+let heal = run ["sh" "-c" "printf '%s\n' '# newborn check' > ${pen}/tools/t/tally_newborn_witness.rish && printf '%s\n' '# bud check' > ${pen}/tools/t/tally_bud.rish"]
+assert heal.ok else "tally-roster: could not heal the pen"
+let green = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+assert green.ok else "tally-roster: a healed pen must pass at zero -- covering is the door the ceiling falls through: ${green.out}"
+
+let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
+assert pen_rm.ok else "tally-roster: could not remove the pen"
+
+say "GREEN: tally-roster -- fourteen modules read, five covered and six counted under a falling ceiling; the newborn refused by name, the longer word credited nothing, and the healed pen passed at zero."
