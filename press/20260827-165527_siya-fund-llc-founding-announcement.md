@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260827.165527`
 **Molted from:** `press/20260727-135351_seva-fund-founding-announcement.md` (the elder, shed `20260827.165527`) -- the fund's name and domain were re-seated on Keaton's word `20260827`: **Siya Fund LLC**, at **siya-ww.com**.
-**Voice:** Quin (press register)
+**Voice:** Kyri (press register -- the radiant twilight zone, seated `20260827`; see [`README.md`](README.md)). *Recorded as Quin when written; the writing voice passed to Riyo `20260729.205200` and to Kyri `20260810`.*
 **Status:** DRAFT — release only after the Wyoming filing is accepted and the attorney has read it; every bracketed slot is filled by Sara's or Keaton's hand; this page doubles as the house press template
 
 *Written together by Keaton and Quin.*
