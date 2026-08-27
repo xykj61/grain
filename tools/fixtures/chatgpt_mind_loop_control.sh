@@ -12,7 +12,7 @@ PRINTER_SOURCE="$ROOT/tools/l/print-mind-cardinal-prompt.rish"
 RISHI_BIN="$ROOT/rishi/bin/rishi"
 ELDER="$ROOT/tools/l/launch-claude-chapter.rish"
 EXPECTED_SOURCE_SHA256=ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234
-EXPECTED_ELDER_SHA256=f94c6fa1f0191fa78d68004150d45cb4a4047347b7f8ea427149baca2d04b12b
+EXPECTED_ELDER_SHA256=53de1e43505cff45c8b5456c33722e87144eff5c94bfe0ce1abf2de7e75f110f
 PEN="$(mktemp -d "${TMPDIR:-/tmp}/chatgpt-mind-control.XXXXXX")"
 cleanup() {
   if [ "${KEEP_MIND_CONTROL:-0}" = 1 ]; then
@@ -33,6 +33,26 @@ CURRENT_CODEX="$PACKAGE_ROOT/current/bin/codex"
 FAKE_LOG="$PEN/codex-invocations"
 FAKE_STATUS_LOG="$PEN/codex-status-invocations"
 FAKE_JAIL_LOG="$PEN/jail-invocations"
+HOMEBREW_GIT_LINK=/opt/homebrew/bin/git
+HOMEBREW_GIT=/opt/homebrew/Cellar/git/2.53.0_1/bin/git
+HOMEBREW_GIT_PCRE=/opt/homebrew/Cellar/pcre2/10.47_1/lib/libpcre2-8.0.dylib
+HOMEBREW_GIT_INTL=/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib
+[ "$(/bin/realpath "$HOMEBREW_GIT_LINK")" = "$HOMEBREW_GIT" ] || {
+  echo "FAIL: canonical Homebrew Git target drifted" >&2
+  exit 1
+}
+[ -f "$HOMEBREW_GIT" ] && [ -x "$HOMEBREW_GIT" ] && [ ! -L "$HOMEBREW_GIT" ] || {
+  echo "FAIL: canonical Homebrew Git is not a regular executable" >&2
+  exit 1
+}
+[ "$("$HOMEBREW_GIT" --version)" = 'git version 2.53.0' ] || {
+  echo "FAIL: canonical Homebrew Git version drifted" >&2
+  exit 1
+}
+[ "$(/bin/realpath /opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib)" = "$HOMEBREW_GIT_PCRE" ] || exit 1
+[ "$(/bin/realpath /opt/homebrew/opt/gettext/lib/libintl.8.dylib)" = "$HOMEBREW_GIT_INTL" ] || exit 1
+[ -f "$HOMEBREW_GIT_PCRE" ] && [ ! -L "$HOMEBREW_GIT_PCRE" ] || exit 1
+[ -f "$HOMEBREW_GIT_INTL" ] && [ ! -L "$HOMEBREW_GIT_INTL" ] || exit 1
 mkdir -p "$REPO/tools/l" "$REPO/tools/fixtures" "$REPO/arbor" "$REPO/recursion-prompts/versions" \
   "$REPO/construction" "$REPO/gratitude" "$REPO/scribble" "$REPO/lattice" \
   "$REPO/lantern" "$REPO/ember" "$HOME_PEN/.codex" "$BIN" "$RELEASE_ROOT/bin"
@@ -91,6 +111,10 @@ if [ -n "${FAKE_CODEX_OUTPUT_BLOCKS:-}" ]; then
   dd if=/dev/zero bs=4096 count="$FAKE_CODEX_OUTPUT_BLOCKS" 2>/dev/null
 fi
 cat >/dev/null
+if [ "${FAKE_CODEX_CUSTODY:-0}" = 1 ]; then
+  : > .mind-state/CUSTODY
+  exit 0
+fi
 if [ "${FAKE_CODEX_LIVE:-0}" = 1 ]; then
   printf '%s\n' 'synthetic bounded progress' >&2
   if [ -n "${FAKE_CODEX_LIVE_DELAY:-}" ]; then
@@ -114,30 +138,47 @@ if [ "${1:-}" = --version ]; then
   exit 0
 fi
 dry=false
-mapped=
+map_one=
+map_two=
+map_three=
+map_four=
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --dry-run) dry=true; shift ;;
-    --map) mapped=${2:-}; shift 2 ;;
+    --map)
+      if [ -z "$map_one" ]; then
+        map_one=${2:-}
+      elif [ -z "$map_two" ]; then
+        map_two=${2:-}
+      elif [ -z "$map_three" ]; then
+        map_three=${2:-}
+      else
+        map_four=${2:-}
+      fi
+      shift 2
+      ;;
     --exec|--private-home|--no-save-config) shift ;;
     *) break ;;
   esac
 done
 if [ "$dry" = true ]; then
-  if [ -n "$mapped" ]; then
-    mapped=$(/bin/realpath "$mapped")
-  fi
+  if [ -n "$map_one" ]; then map_one=$(/bin/realpath "$map_one"); fi
+  if [ -n "$map_two" ]; then map_two=$(/bin/realpath "$map_two"); fi
+  if [ -n "$map_three" ]; then map_three=$(/bin/realpath "$map_three"); fi
+  if [ -n "$map_four" ]; then map_four=$(/bin/realpath "$map_four"); fi
   printf '%s\n' '# sandbox-exec command:'
   printf '%s\n' 'sandbox-exec -p profile'
   if [ ! -e "$HOME/bad-plan" ]; then
     printf '%s\n' '(deny default)'
   fi
   printf '%s\n' '(allow file-write*'
-  printf '  (subpath "%s"))\n' "$PWD"
-  if [ -n "$mapped" ]; then
-    printf '(allow file-read* (literal "%s"))\n' "$mapped"
-    printf '(deny file-write* (literal "%s"))\n' "$mapped"
-  fi
+  printf '  (subpath "%s"))\n' "$(/bin/realpath "$PWD")"
+  for mapped in "$map_one" "$map_two" "$map_three" "$map_four"; do
+    if [ -n "$mapped" ]; then
+      printf '(allow file-read* (literal "%s"))\n' "$mapped"
+      printf '(deny file-write* (literal "%s"))\n' "$mapped"
+    fi
+  done
   printf '(deny file-read* (subpath "%s/.ssh"))\n' "$HOME"
   printf '(deny file-read* (subpath "%s/.gnupg"))\n' "$HOME"
   exit 0
@@ -149,27 +190,58 @@ if [ "${1:-}" = /usr/bin/touch ]; then
   esac
 fi
 if [ "${1:-}" = /usr/bin/env ]; then
-  [ -n "$mapped" ] || exit 74
-  mapped_seen=false
+  [ -n "$map_one" ] || exit 74
+  command_seen=false
+  git_command_seen=false
   home_seen=false
   tmpdir_seen=false
+  git_path_seen=false
+  git_exec_seen=false
+  git_dyld_seen=false
+  git_no_system_seen=false
+  git_no_global_seen=false
   for arg in "$@"; do
-    [ "$arg" != "$mapped" ] || mapped_seen=true
+    [ "$arg" != "$map_one" ] || command_seen=true
+    [ "$arg" != "$map_two" ] || command_seen=true
+    [ "$arg" != "$map_three" ] || command_seen=true
+    [ "$arg" != "$map_four" ] || command_seen=true
+    [ "$arg" != "/opt/homebrew/Cellar/git/2.53.0_1/bin/git" ] || git_command_seen=true
     case "$arg" in
       CODEX_HOME=/*) exit 75 ;;
       CODEX_HOME=.mind-state/codex-home) home_seen=true ;;
       TMPDIR=/private/tmp) tmpdir_seen=true ;;
       TMPDIR=*) exit 76 ;;
+      PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin) git_path_seen=true ;;
+      PATH=*) exit 77 ;;
+      GRAIN_MIND_GIT=/opt/homebrew/Cellar/git/2.53.0_1/bin/git) git_exec_seen=true ;;
+      GRAIN_MIND_GIT=*) exit 78 ;;
+      DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib) git_dyld_seen=true ;;
+      DYLD_LIBRARY_PATH=*) exit 79 ;;
+      GIT_CONFIG_NOSYSTEM=1) git_no_system_seen=true ;;
+      GIT_CONFIG_NOSYSTEM=*) exit 80 ;;
+      GIT_CONFIG_GLOBAL=/dev/null) git_no_global_seen=true ;;
+      GIT_CONFIG_GLOBAL=*) exit 81 ;;
     esac
   done
-  [ "$mapped_seen" = true ] || exit 74
-  [ "$home_seen" = true ] || exit 75
-  if [ "${FAKE_REQUIRE_TMPDIR:-}" = 1 ]; then
+  [ "$command_seen" = true ] || exit 74
+  if [ "$git_command_seen" = false ]; then
+    [ "$home_seen" = true ] || exit 75
+  fi
+  if [ "${FAKE_REQUIRE_TMPDIR:-}" = 1 ] && [ "$git_command_seen" = false ]; then
     [ "$tmpdir_seen" = true ] || exit 76
+  fi
+  if [ "${FAKE_REQUIRE_GIT_ENV:-}" = 1 ]; then
+    [ "$git_path_seen" = true ] || exit 77
+    [ "$git_exec_seen" = true ] || exit 78
+    [ "$git_dyld_seen" = true ] || exit 79
+    [ "$git_no_system_seen" = true ] || exit 80
+    [ "$git_no_global_seen" = true ] || exit 81
   fi
 fi
 case "${1:-}" in
-  */packages/standalone/releases/*/bin/codex) [ -n "$mapped" ] && [ "$mapped" = "$1" ] || exit 74 ;;
+  */packages/standalone/releases/*/bin/codex)
+    [ "$map_one" = "$1" ] || [ "$map_two" = "$1" ] || [ "$map_three" = "$1" ] || [ "$map_four" = "$1" ] || exit 74
+    ;;
 esac
 if [ "${1:-}" = sh ]; then
   count=$#
@@ -206,6 +278,7 @@ chmod +x "$BIN/pmset"
   mkdir -p gratitude/grain-sketchbook
   mkdir -p .mind-state/codex-home
   printf 'model = "gpt-5.6-sol"\n' > .mind-state/codex-home/config.toml
+  chmod 600 .mind-state/codex-home/config.toml
 )
 
 export HOME="$HOME_PEN"
@@ -406,6 +479,7 @@ grep '^GRAIN_ROOT=' "$handoff_out" > "$handoff_commands"
 handoff_verdict() {
   candidate=$1
   [ "$(grep -c '^GRAIN_ROOT=' "$candidate")" -eq 8 ] || return 1
+  [ "$(grep -c 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel)' "$candidate")" -eq 8 ] || return 1
   [ "$(grep -c 'cd "\$GRAIN_ROOT"' "$candidate")" -eq 8 ] || return 1
   [ "$(grep -c '"\$GRAIN_ROOT/tools/l/chatgpt-mind.rish"' "$candidate")" -eq 5 ] || return 1
   [ "$(grep -c '"\$GRAIN_ROOT/rishi/bin/rishi" run ' "$candidate")" -eq 5 ] || return 1
@@ -414,6 +488,7 @@ handoff_verdict() {
   grep -F 'chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)' "$candidate" >/dev/null || return 1
   grep -F 'chatgpt-mind.rish" stop)' "$candidate" >/dev/null || return 1
   grep -F 'chatgpt-mind.rish" print)' "$candidate" >/dev/null || return 1
+  ! grep -F 'GRAIN_ROOT=$(git ' "$candidate" >/dev/null || return 1
   ! grep -F 'chatgpt-mind.sh' "$candidate" >/dev/null
 }
 
@@ -497,18 +572,22 @@ fi
 rm -f "$HOME_PEN/bad-plan"
 [ ! -s "$FAKE_LOG" ] || { echo "FAIL: Rishi bad plan reached Codex" >&2; exit 1; }
 
-export FAKE_REQUIRE_TMPDIR=1
+export FAKE_REQUIRE_TMPDIR=1 FAKE_REQUIRE_GIT_ENV=1
 run_rishi_launcher check >/dev/null
 [ -s "$FAKE_STATUS_LOG" ] \
   || { echo "FAIL: Rishi check did not prove isolated login status" >&2; exit 1; }
-grep -F -- "--map $REAL_CODEX --exec" "$FAKE_JAIL_LOG" >/dev/null \
-  || { echo "FAIL: Rishi jail did not map the canonical executable" >&2; exit 1; }
-grep -F -- "/usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp $REAL_CODEX login status" "$FAKE_JAIL_LOG" >/dev/null \
-  || { echo "FAIL: Rishi jail did not prove the repository-relative isolated login and exact temporary root" >&2; exit 1; }
+grep -F -- "--map $REAL_CODEX --map $HOMEBREW_GIT --map $HOMEBREW_GIT_PCRE --map $HOMEBREW_GIT_INTL --exec" "$FAKE_JAIL_LOG" >/dev/null \
+  || { echo "FAIL: Rishi jail did not map canonical Codex and the exact Homebrew Git runtime closure" >&2; exit 1; }
+grep -F -- "/usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin GRAIN_MIND_GIT=$HOMEBREW_GIT DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null $REAL_CODEX login status" "$FAKE_JAIL_LOG" >/dev/null \
+  || { echo "FAIL: Rishi jail did not prove isolated login with the exact temporary root and Git seat" >&2; exit 1; }
 if (
   cd "$REPO"
-  "$BIN/ai-jail" --map "$REAL_CODEX" --exec --private-home --no-save-config \
+  "$BIN/ai-jail" --map "$REAL_CODEX" --map "$HOMEBREW_GIT" --map "$HOMEBREW_GIT_PCRE" --map "$HOMEBREW_GIT_INTL" --exec --private-home --no-save-config \
     /usr/bin/env "CODEX_HOME=$REPO_CANONICAL/.mind-state/codex-home" TMPDIR=/private/tmp \
+    PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin \
+    GRAIN_MIND_GIT="$HOMEBREW_GIT" \
+    DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib \
+    GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
     "$REAL_CODEX" login status
 ) >/dev/null 2>&1; then
   echo "FAIL: absolute isolated Codex home did not reproduce the canonicalization refusal" >&2
@@ -517,11 +596,37 @@ fi
 unset FAKE_REQUIRE_TMPDIR
 if (
   cd "$REPO"
-  "$BIN/ai-jail" --map "$REAL_CODEX" --exec --private-home --no-save-config \
+  "$BIN/ai-jail" --map "$REAL_CODEX" --map "$HOMEBREW_GIT" --map "$HOMEBREW_GIT_PCRE" --map "$HOMEBREW_GIT_INTL" --exec --private-home --no-save-config \
     /usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp-decoy \
+    PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin \
+    GRAIN_MIND_GIT="$HOMEBREW_GIT" \
+    DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib \
+    GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
     "$REAL_CODEX" login status
 ) >/dev/null 2>&1; then
   echo "FAIL: decoy Codex TMPDIR assignment escaped the exact temporary-root gate" >&2
+  exit 1
+fi
+if (
+  cd "$REPO"
+  "$BIN/ai-jail" --map "$REAL_CODEX" --map "$HOMEBREW_GIT" --map "$HOMEBREW_GIT_PCRE" --map "$HOMEBREW_GIT_INTL" --exec --private-home --no-save-config \
+    /usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp \
+    PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin \
+    GRAIN_MIND_GIT="$HOMEBREW_GIT" DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/decoy:/opt/homebrew/Cellar/gettext/1.0/lib \
+    GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null "$REAL_CODEX" login status
+) >/dev/null 2>&1; then
+  echo "FAIL: decoy Homebrew Git library path escaped the exact environment gate" >&2
+  exit 1
+fi
+if (
+  cd "$REPO"
+  "$BIN/ai-jail" --map "$REAL_CODEX" --map "$HOMEBREW_GIT" --map "$HOMEBREW_GIT_PCRE" --map "$HOMEBREW_GIT_INTL" --exec --private-home --no-save-config \
+    /usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp \
+    PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin \
+    GRAIN_MIND_GIT="$HOMEBREW_GIT" DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib \
+    GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=.gitconfig "$REAL_CODEX" login status
+) >/dev/null 2>&1; then
+  echo "FAIL: decoy host Git config escaped the exact environment gate" >&2
   exit 1
 fi
 
@@ -537,6 +642,22 @@ plan_verdict "$captured_plan" "$REAL_CODEX" || {
   echo "FAIL: real-format fake plan lacks the exact canonical read-only mapping" >&2
   exit 1
 }
+plan_verdict "$captured_plan" "$HOMEBREW_GIT" || {
+  echo "FAIL: real-format fake plan lacks the exact Homebrew Git read-only mapping" >&2
+  exit 1
+}
+plan_verdict "$captured_plan" "$HOMEBREW_GIT_PCRE" || {
+  echo "FAIL: real-format fake plan lacks the exact Homebrew Git PCRE2 mapping" >&2
+  exit 1
+}
+plan_verdict "$captured_plan" "$HOMEBREW_GIT_INTL" || {
+  echo "FAIL: real-format fake plan lacks the exact Homebrew Git gettext mapping" >&2
+  exit 1
+}
+if grep -E '/usr/bin/git|/var/select' "$captured_plan" >/dev/null; then
+  echo "FAIL: fake plan admitted Apple Git or the developer selector" >&2
+  exit 1
+fi
 if grep -F "$CURRENT_CODEX" "$captured_plan" >/dev/null; then
   echo "FAIL: real-format fake plan preserved the one-hop symlink spelling" >&2
   exit 1
@@ -586,6 +707,19 @@ printf '(allow file-read* (literal "%s"))\n(deny file-write* (literal "%s"))\n' 
   "$quoted_codex" "$quoted_codex" | sed 's/"quoted/\\"quoted/g' > "$plan_pen/escaped-quote"
 plan_refusal "$plan_pen/escaped-quote" "$quoted_codex" 'an escaped-quote spelling'
 
+printf '(allow file-read* (literal "%s-decoy"))\n(deny file-write* (literal "%s-decoy"))\n' \
+  "$HOMEBREW_GIT" "$HOMEBREW_GIT" > "$plan_pen/git-prefix"
+plan_refusal "$plan_pen/git-prefix" "$HOMEBREW_GIT" 'a Homebrew Git prefix collision'
+printf '(allow file-read* file-write* (literal "%s"))\n' "$HOMEBREW_GIT" > "$plan_pen/git-read-write"
+plan_refusal "$plan_pen/git-read-write" "$HOMEBREW_GIT" 'a read-write Homebrew Git mapping'
+printf '(allow file-read* (literal "git"))\n(deny file-write* (literal "git"))\n' > "$plan_pen/git-basename"
+plan_refusal "$plan_pen/git-basename" "$HOMEBREW_GIT" 'a basename-only Homebrew Git decoy'
+printf '(allow file-read* (literal "%s-decoy"))\n(deny file-write* (literal "%s-decoy"))\n' \
+  "$HOMEBREW_GIT_PCRE" "$HOMEBREW_GIT_PCRE" > "$plan_pen/pcre-decoy"
+plan_refusal "$plan_pen/pcre-decoy" "$HOMEBREW_GIT_PCRE" 'a PCRE2 prefix collision'
+printf '(allow file-read* file-write* (literal "%s"))\n' "$HOMEBREW_GIT_INTL" > "$plan_pen/intl-read-write"
+plan_refusal "$plan_pen/intl-read-write" "$HOMEBREW_GIT_INTL" 'a read-write gettext mapping'
+
 : > "$FAKE_LOG"
 : > "$FAKE_STATUS_LOG"
 export FAKE_CODEX_LOGIN_EXIT=7
@@ -620,6 +754,30 @@ if run_rishi_launcher once >/dev/null 2>&1; then
   exit 1
 fi
 
+LINKED_REPO="$PEN/linked-worktree"
+"$HOMEBREW_GIT" -C "$REPO" worktree add -q --detach "$LINKED_REPO" HEAD
+mkdir -p "$LINKED_REPO/rishi/bin"
+cp "$RISHI_BIN" "$LINKED_REPO/rishi/bin/rishi"
+if (cd "$LINKED_REPO" && rishi/bin/rishi run tools/l/chatgpt-mind.rish check) \
+  >"$PEN/linked.out" 2>"$PEN/linked.err"
+then
+  echo "FAIL: Rishi launcher accepted external linked-worktree Git administration" >&2
+  exit 1
+fi
+grep -F 'MIND needs a standalone clone with an internal .git directory' "$PEN/linked.err" >/dev/null \
+  || { echo "FAIL: linked-worktree refusal lost its exact reason" >&2; exit 1; }
+
+cp "$RISHI_SOURCE" "$PEN/apple-git-drift.rish"
+sed -i.bak 's@/opt/homebrew/Cellar/git/2\.53\.0_1/bin/git@/usr/bin/git@g' "$PEN/apple-git-drift.rish"
+if (cd "$REPO" && MIND_RISHI_BIN="$RISHI_BIN" "$RISHI_BIN" run "$PEN/apple-git-drift.rish" check) \
+  >"$PEN/apple-git.out" 2>"$PEN/apple-git.err"
+then
+  echo "FAIL: Rishi launcher accepted Apple Git selector drift" >&2
+  exit 1
+fi
+grep -E 'canonical target drifted|Apple Git selector is outside' "$PEN/apple-git.err" >/dev/null \
+  || { echo "FAIL: Apple Git refusal lost its exact reason" >&2; exit 1; }
+
 mv "$REPO/.mind-state/codex-home/config.toml" "$PEN/rishi-config.saved"
 if run_rishi_launcher once --arm-once >/dev/null 2>&1; then
   echo "FAIL: Rishi launcher accepted absent project-local Codex config" >&2
@@ -638,9 +796,9 @@ grep -F 'phase=git-postcondition reason=no-commit' "$PEN/no-commit.err" >/dev/nu
 [ ! -d "$REPO/.mind-state/run.lock" ] \
   || { echo "FAIL: failed Rishi lap left its run lock" >&2; exit 1; }
 grep -F -- '--sandbox danger-full-access' "$FAKE_LOG" >/dev/null
-rishi_exec_invocation="$(grep -F -- "CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp $REAL_CODEX exec" "$FAKE_JAIL_LOG" | tail -n 1)"
+rishi_exec_invocation="$(grep -F -- "CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin GRAIN_MIND_GIT=$HOMEBREW_GIT DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null $REAL_CODEX exec" "$FAKE_JAIL_LOG" | tail -n 1)"
 [ -n "$rishi_exec_invocation" ] \
-  || { echo "FAIL: Rishi Codex execution omitted the exact private temporary root" >&2; exit 1; }
+  || { echo "FAIL: Rishi Codex execution omitted the exact temporary root or Homebrew Git seat" >&2; exit 1; }
 grep -Fx "pwd=$REPO_CANONICAL" "$FAKE_LOG" >/dev/null \
   || { echo "FAIL: ai-jail did not seat Codex in the repository root" >&2; exit 1; }
 unset FAKE_RECORD_PWD
@@ -738,6 +896,23 @@ rm -f "$REPO/.mind-state/CUSTODY"
 [ ! -s "$FAKE_LOG" ] || { echo "FAIL: Rishi CUSTODY gate reached Codex" >&2; exit 1; }
 
 : > "$FAKE_LOG"
+export FAKE_CODEX_CUSTODY=1
+if run_rishi_launcher once --arm-once >"$PEN/custody-created.out" 2>"$PEN/custody-created.err"; then
+  echo "FAIL: Rishi launcher accepted a lap-created custody gate" >&2
+  exit 1
+fi
+unset FAKE_CODEX_CUSTODY
+grep -F 'phase=custody reason=recorded' "$PEN/custody-created.err" >/dev/null \
+  || { echo "FAIL: lap-created custody was mislabeled at the public boundary" >&2; exit 1; }
+if grep -F 'reason=byte-wall' "$PEN/custody-created.err" >/dev/null; then
+  echo "FAIL: lap-created custody was falsely labeled as a byte wall" >&2
+  exit 1
+fi
+[ "$(wc -c < "$REPO/.mind-state/logs/supervisor.err" | tr -d ' ')" -lt 1114112 ] \
+  || { echo "FAIL: custody control did not remain below the supervisor wall" >&2; exit 1; }
+rm -f "$REPO/.mind-state/CUSTODY"
+
+: > "$FAKE_LOG"
 printf 'dirty\n' > "$REPO/mind-control-dirty"
 if run_rishi_launcher check >/dev/null 2>&1; then
   echo "FAIL: Rishi launcher accepted a dirty repository" >&2
@@ -766,6 +941,14 @@ if run_rishi_launcher once --arm-once >/dev/null 2>&1; then
 fi
 rm -f "$REPO/.mind-state/codex-home/config.toml"
 mv "$PEN/rishi-config-target" "$REPO/.mind-state/codex-home/config.toml"
+
+chmod 644 "$REPO/.mind-state/codex-home/config.toml"
+if run_rishi_launcher check >"$PEN/config-mode.out" 2>"$PEN/config-mode.err"; then
+  echo "FAIL: Rishi launcher accepted a broadly readable project config" >&2
+  exit 1
+fi
+grep -F 'project-local Codex config mode must be 0600' "$PEN/config-mode.err" >/dev/null
+chmod 600 "$REPO/.mind-state/codex-home/config.toml"
 
 : > "$FAKE_LOG"
 export FAKE_CODEX_EXIT=9
@@ -858,4 +1041,4 @@ printf '%s\n' '# planted shell drift' >> "$PEN/shell-drift.sh"
 [ "$(shasum -a 256 "$PEN/shell-drift.sh" | awk '{print $1}')" != "$EXPECTED_SOURCE_SHA256" ] \
   || { echo "FAIL: planted shell drift escaped source hash" >&2; exit 1; }
 
-echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi maps the resolved CLI, carries exact private TMPDIR, inherits the jailed repository root without absolute --cd, gates isolated login before service work, relays bounded progress and final output exactly once while retaining private files and typed phases, and owns jail, lock, STOP/CUSTODY, circuit, and signal behavior; planted handoff, printer, launcher, relay, and shell drift are caught"
+echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git, exact read-only Codex and Git maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated login, relays bounded streams, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, handoff, printer, launcher, relay, and shell drift are caught"
