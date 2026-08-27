@@ -60,12 +60,12 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Tally's constellation row moved (core-first, ungated).** `tools/t/tally_bud_witness.rish` covers
 `tally/bud.rye`, the Curve25519 Pedersen commitment, in six claims: the pinned generator `H` watched
-refusing **two** ways -- a flipped byte of `pinned_h_bytes`, and `h_domain` moved `v1` to `v2` --
+refusing **two** ways -- a flipped `pinned_h_bytes` byte, and `h_domain` moved `v1` to `v2` --
 each plant proven landed before its refusal is trusted (%289 made structural); a **known-answer
 vector** for `commit(1000, dew=0x11**32)`, printed through the previously unrun `point_to_hex`; and
 `tally/pedersen.rye` re-exporting bud byte-identically. `uncovered_ceiling` falls **5 to 4**. The
-sharpest leg: a copy whose commitment moved to amount 1001 still exits zero and prints its own
-GREEN -- **only the pinned vector says no.**
+sharpest leg: a copy whose commitment moved to 1001 still exits zero and prints its own GREEN --
+**only the pinned vector says no.**
 
 **REDS %292 -- CLOSED.** `standing_equipment_run.sh` appended to
 `standing-equipment-hitrate.kyri` with no `mkdir -p`, so in any pen it died before a guard ran; and
@@ -74,20 +74,21 @@ that append lands inside the tree the runner digests, invisible on a real tree o
 `run_runner` ends in `|| true`. Both fixed, isolated from the failing side: **21** legs fail
 without the `mkdir`, **2** without the pen's ignore rules, **0** with both. **And the witness that
 proves the roster honest was not rostered** -- 4s of wall, now guard 78, so the next such regression
-reds on the lap it enters rather than on an accident.
+reds on the lap it enters.
 
 **%291 fired again, caught at the door.** `ListAgents` named the peer before I touched a file; they
-were mid-lap on Pleac and pushed `a5c047cefe` while I read. I took **a tree of my own**, rebased onto
-their head, and resolved the one predicted conflict -- both hands appending a guard row at EOF.
-**The answer stays his: one tree per star, or a lock.**
+were mid-lap and pushed twice while I read. I took **a tree of my own** and rebased onto their head
+twice, resolving the predicted conflicts. **The answer stays his: one tree per star, or a lock.**
 
 **Surfaced, not taken.** `declared_ceiling` is RED on `main`, unbooked: `tools/l/chatgpt-mind.sh`
-decides with its own copy of `living_pin_max_bytes` (`law_copies_deciding=1`) -- **Mind's lane**, so
-a line rather than my lap. `exec_bit` and `geode_libraries` each read RED in a cold roster taken over
-a tree a peer was rewriting; **both want a re-read in a still tree before anyone books them.**
+decides with its own copy of `living_pin_max_bytes` -- **Mind's lane**, so a line rather than my lap.
+`exec_bit` and `geode_libraries` read RED in a cold roster taken over a moving tree; **both want a
+re-read in a still tree before anyone books them.**
 
-**The merge is held**, as at `20260827.030726`: `main` is checked out in the pier with a live peer.
-Branch `sound/tally-bud-witness`, signed, rebased onto their head, merging clean.
+**The merge is held, measured.** The pier has `README.md` and `docs-geode/libraries/README.md`
+**uncommitted** -- a lap ended at the hook rather than the commit (%188, %220) -- and my commit moves
+both, so a fast-forward refuses rather than clobbers. `sound/tally-bud-witness` is signed and
+rebased: a **strict FF** once the pier is clean.
 
 **Next.** Four Tally modules stay uncovered; then the table.
 
