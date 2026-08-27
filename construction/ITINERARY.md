@@ -55,30 +55,30 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `7412fa7510` -- the parent, which every clone resolves.
+**Git nib:** `8958d7153d` -- the parent, which every clone resolves.
 
-**Now.** **Dream's seat is provisioned: codex declared, the jail taught.**
+**Now.** **Dream's seat is provisioned, and its lane's lost repair is home.**
 
 **The role swap of `20260827.155213` stands** -- **Dream is Codex on the pier**, holding the systems
-core: Caravan, Tally, the microkernel road, the constellation table. `%291`'s door is his. The shed
-lane closed `%292`-`%293` beside this round; `%294`-`%295` are its own.
+core: Caravan, Tally, the microkernel road, the constellation table.
 
-**REDS %296 -- CLOSED, proven on metal.** Dream's seat could not start: `agent-jail.sh` accepts
-`claude | cursor-agent | agent` alone, so its own printed `agent-jail.sh env CODEX_HOME=... codex
-exec` answered **`unknown command: env`** -- measured, not argued. The jail now knows a **`codex`**
-kind: resolves the binary, refuses by name with the switch command when absent, and maps
-`.dream-state/codex-home` onto `~/.codex`, so `--private-home` stops eating it.
+**REDS %296 -- CLOSED.** `agent-jail.sh` accepted `claude | cursor-agent | agent` alone, so Dream's
+own printed `agent-jail.sh env CODEX_HOME=... codex exec` answered **`unknown command: env`** and
+the seat could not start. The jail knows a **`codex`** kind now, mapping `.dream-state/codex-home`
+onto `~/.codex` so `--private-home` stops eating the login. **Provisioning is declared:**
+`nixos/configuration.nix` gains a third agent-CLI overlay -- **codex 0.150.1**, upstream's prebuilt
+static musl binary, past nixos-26.05's 0.133.0. Package and **full closure build** proven here.
+**Keaton, outer terminal:** `bash /home/keeper/grain/nixos/rebuild-outer.sh`.
 
-**Provisioning is declared.** `nixos/configuration.nix` gains a third agent-CLI overlay beside
-`claude-code` and `cursor-cli`: **codex 0.150.1**, upstream's prebuilt **static musl** binary, past
-nixos-26.05's source-built 0.133.0 -- replacing the derivation, since a cargoHash cannot describe a
-tarball. **Proven here:** package and **full closure build**; `versionCheckHook` reads `codex-cli
-0.150.1`. **Keaton, outer terminal:** `bash /home/keeper/grain/nixos/rebuild-outer.sh`.
+**REDS %297 -- CLOSED, adopted rather than lost.** `caravan_subscribe_poll_signal` is GREEN and
+inside `caravan_suite` at last. `&` binds looser than `&&`, so the probe backgrounded its AND-list
+and `$!` named the wrapper; the repair moves it to `tools/fixtures/` and reaps children on timeout.
+Eight `tools/ca/` witnesses gain the `_witness` suffix and enter the roster glob -- **bijection
+121/121**. From `6420adc891`, which the Kiln rewrite never carried.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
-`caravan_subscribe_poll_signal`, RED outside `caravan_suite` (Dream). `declared_ceiling` on
-`chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore at `skate/` -- both Mind's.
+`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's.
 
 **The next doors.** Keaton: the switch, then `codex login`. Dream: Caravan and Tally green, then
 the constellation table.

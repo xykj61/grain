@@ -3,11 +3,15 @@
 **Language:** EN
 **Last updated:** `20260824.062207` (lifted whole out of `README.md`, and the table completed to every module beside it)
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Checkable -- 110 modules: 106 rungs and 4 helpers. **96 rungs carry a same-named witness**
-at `../tools/ca/caravan_<name>_witness.rish`; the **ten earliest** are exercised by the named runners
-beside them (`caravan_seeds.rish` covers seed, bounded, chain, twin, and service; `caravan_capabilities.rish`,
-`caravan_restart_on_ok.rish`, and the four `caravan_subscribe_poll_*` runners cover the rest); and the
-**4 helpers** are proven through the rungs that compose them. Counted `20260824`.
+**Status:** Checkable -- 114 modules. **101 carry a same-named witness** at
+`../tools/ca/caravan_<name>_witness.rish`; the other 13 are the 4 helpers below and 9 early rungs and
+dependent fixtures, each proven through a runner or through the rungs that compose it
+(`caravan_seeds_witness.rish` covers seed, bounded, chain, twin, and service).
+**All 121 witnesses beside this page are registered with the choir** and sing every lap. Eight of
+them joined it on `20260827`: they had stood outside its roster since they were written, because the
+choir finds its rungs by globbing `caravan_*_witness.rish` and those eight wore no such name -- so
+the bijection that exists to catch an unheard witness could not see them, and one of the eight was
+RED (REDS %297). Counted `20260827.022424`.
 **Front door:** [`README.md`](README.md) -- start there for what Caravan is and what it does
 **Harness:** [`HARNESS.md`](HARNESS.md) -- how a hundred rungs stopped writing the same check
 

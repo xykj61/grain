@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.180331` | [the repair that came home](20260827/20260827-180331_the-repair-that-came-home.kyri) | %297 adopted from the mirror; roster bijection 121/121 |
 | `20260827.172414` | [the mirror that held one live round](20260827/20260827-172414_the-mirror-that-held-one-live-round.kyri) | debrided force-matched to xy; its one live commit preserved |
 | `20260827.144029` | [a blob carries no mode](20260827/20260827-144029_a-blob-carries-no-mode.kyri) | eight guards red at one cold open; five closed, two gated |
 | `20260827.164655` | [the jail had no word for codex](20260827/20260827-164655_the-jail-had-no-word-for-codex.kyri) | Dream's seat could not start; codex declared and the jail taught |
@@ -36,5 +37,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260827.024712` | [the lock proven from the other side](20260827/20260827-024712_the-lock-proven-from-the-other-side.kyri) | the sibling proves the lock; %281 narrows |
 | `20260827.023827` | [the bench that was already occupied](20260827/20260827-023827_the-bench-that-was-already-occupied.kyri) | %281 third firing; socket fold surveyed |
 | `20260827.023757` | [one tree, one toolchain spawn](20260827/20260827-023757_one-tree-one-toolchain-spawn.kyri) | the build lock lands in rye; %281 shadows closed; three legs on metal |
+| `20260827.022424` | [the glob that was the guard](20260827/20260827-022424_the-glob-that-was-the-guard.kyri) | adopted from debrided; %297, the AND-list and the roster glob |
 | `20260827.004535` | [the repair that reached one caller](20260827/20260827-004535_the-repair-that-reached-one-caller.kyri) | %288: one module of twenty repaired, the class now metered |
 | `20260827.000338` | [the flag one host cannot test](20260827/20260827-000338_the-flag-one-host-cannot-test.kyri) | libc where macOS links it free; nine stale citations, three reds booked twice |

@@ -1,7 +1,7 @@
-# caravan_subscribe_poll_mirror_service.rish -- host mirror under Caravan supervision.
+# caravan_subscribe_poll_mirror_service_witness.rish -- host mirror under Caravan supervision.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/ca/caravan_subscribe_poll_mirror_service.rish
+#   rishi/bin/rishi run tools/ca/caravan_subscribe_poll_mirror_service_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
 let delivery = "mantra/bin/recall-subscribe-poll-delivery"
