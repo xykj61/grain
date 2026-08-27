@@ -4,7 +4,7 @@
 **Status:** Living pin — **shred RED** · Amphora cut not opened · cellar kept · Amber name superseded (e148) · list only  
 **Voice:** Kyri  
 ****Last refreshed:** `20260801.033044` · e148 Cellar supersede · e138 keep-Amber withdrawn · Class O word-scope held  
-**Seat:** Surface p36 Kiln · Equinox e148 · e128 word-scope · elder [`../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md)
+**Seat:** Surface p36 Oven · Equinox e148 · e128 word-scope · elder [`../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred — git history and cold storage keep the elder commits.*
 
@@ -77,14 +77,16 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | molt `20260826.194850`, Keaton's word | the elder's horizon retold as arrived: the mirror is house law, the drain replays, the choir counts, the thin edge includes the host; eleven living citers repointed in the round |
 | `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | p29 `20260728.220203`, re-seated `20260825.233310` | invent held; molted twice, the `20260728` stamp debrided |
 | `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | p31 `20260728.221253` | invent held |
-| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
-| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
+| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-oven.md` | p31→p36 Oven | invent held · name Oven |
+| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260826-024944_lantern-lattice-oven.md` | p36 `20260728.232511` | Oven seat · Anvil essay fossil |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
-| `counsel/date/20260728/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
-| `counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Chapter charter · chapter keeps its name as history · Ember is the living module |
+| `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→oven naming counsel · superseded by Ember rename |
+| `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Oven Chapter charter · chapter keeps its name as history · Ember is the living module |
+| `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | molt `20260827.025117`, Keaton's word | bake seat renamed **Kiln**; the `20260808` fold into Ember unbraided -- Ember keeps the corpus forge |
+| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | molt `20260827.025118`, Keaton's word | the elder called the baker Ember; the mutant says Kiln, resolving the muddle |
 | `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | molt `20260816.205859` | six-season itinerary → eight (color module + open-weight intelligence folded in); mutant accretes all six whole · shred stays RED until circled |
 
-**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Chapter** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the kiln/anvil naming fossils stays RED.
+**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `oven/` → **`ember/`** (Keaton's word). Oven/anvil naming writings above are prepped as Class H fossils; the rested **Oven Chapter** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the oven/anvil naming fossils stays RED.
 
 ## Elder sections, folded
 
@@ -269,7 +271,7 @@ living rows and may sweep on touch; dated testimony keeps every syllable it ever
 Keaton circled the prepped mitra shed on `20260826` to complete fascia restoration. Twelve
 fossils cut, every one with its living mutant standing GREEN and its living citers repointed
 before the cut: the six chapter-era calendar molts (graph-beneath, anywhere-we-are-found,
-a-home-in-plain-text, the-grain-and-the-crossing, follow-our-compass, lantern-lattice-kiln),
+a-home-in-plain-text, the-grain-and-the-crossing, follow-our-compass, lantern-lattice-oven),
 the two bit-chapter molts (realidream `20260728-220203`, the WADE plan `20260811-220402`), the
 two sync molts (mycelium `20260813-142420`, what-mantra-is `20260823-222018`), single-stranded
 `20260618-182412`, and every-climate `20260821-035846`. Six pond sources repointed to the living

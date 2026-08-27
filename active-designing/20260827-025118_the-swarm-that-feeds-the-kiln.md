@@ -1,15 +1,13 @@
-# The Swarm That Feeds the Oven
+# The Swarm That Feeds the Kiln
 
-> **Fossil.** The bake seat renamed **Kiln** on Keaton's word `20260827.025118`; the naming muddle this page carried (Ember as the baker) resolves in the mutant -- Kiln bakes, Ember keeps the corpus forge. The living page is [`20260827-025118_the-swarm-that-feeds-the-kiln.md`](20260827-025118_the-swarm-that-feeds-the-kiln.md).
-
-**Stamp:** `20260826.001746`
+**Stamp:** `20260827.025118` (living mutant of `20260826.001746` -- the bake seat renamed Kiln on Keaton's word)
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Mixed -- design; the cohort-training pattern read as a Mycelium cousin, its poisoning gap repaired with the tree's own spine; proposals only
-**Kin:** [`../foundations/20260826-024944_lantern-lattice-oven.md`](../foundations/20260826-024944_lantern-lattice-oven.md) -- [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md)
+**Kin:** [`../foundations/20260826-024944_lantern-lattice-kiln.md`](../foundations/20260826-024944_lantern-lattice-kiln.md) -- [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md)
 
-The tree's open model layer has three seated names: Ember bakes the model, Lattice serves
+The tree's open model layer has three seated names: Kiln bakes the model, Lattice serves
 it, Lantern meters what the asking cost. The foundation says the bake happens on shared
 green compute and the weights land in the commons. One question stands open between those
 sentences: how do many small hands actually feed the bake? The April 2026 essay carried a
@@ -40,7 +38,7 @@ carry gradients instead of transfers.
 The essay's best sentence was economic. A participant who contributes bake-hours earns
 serve-credit -- inference the contributor then holds first-class rights to use,
 denominated in a unit no vendor can rescind, rate-limit, or deprecate. Carried onto the
-tree's own names: **the hours a node gives Ember become tokens Lantern meters back**, on
+tree's own names: **the hours a node gives Kiln become tokens Lantern meters back**, on
 the same shared ledger, in the same local currency the rest of the work settles in. The
 foundations already hold both ends -- the wafer funded as public infrastructure on one
 side, the honest meter on the other. The loop between them is the new line: training and
@@ -73,12 +71,12 @@ That is the difference between a swarm and a commons.
 training section) with a touch of `2026-04-18-031102-pdt-the-open-spine-v4.md`.
 
 **The living tree already covers:** the model layer's three names and the honest meter in
-`foundations/20260826-024944_lantern-lattice-oven.md`; the shared compute and its public
+`foundations/20260826-024944_lantern-lattice-kiln.md`; the shared compute and its public
 funding in `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md`; leaderless
 deterministic order in `foundations/20260825-211055_mycelium-the-consensus-protocol.md`;
 the five primitives in `foundations/20260826-024942_the-grain-and-the-crossing.md`.
 
 **Genuinely new here:** the permissionless cohort-training pattern read as a Mycelium
-cousin; the bake-for-serve credit loop connecting Ember's intake to Lantern's meter on
+cousin; the bake-for-serve credit loop connecting Kiln's intake to Lantern's meter on
 one ledger; and the poisoning critique with its signed-fact, pure-fold, bounded-round
 repair -- the piece the old essay needed and never wrote.
