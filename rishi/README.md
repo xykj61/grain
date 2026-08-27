@@ -90,7 +90,9 @@ supporting:
 - **`index-of`** -- `text index-of needle` returns the byte index of the first
   match, or `-1` when the needle is absent.
 - **`join`** -- `join list sep` composes string list elements with a separator.
-- **`split`** -- `split text sep` decomposes a string into a list on a separator.
+- **`split`** -- `split text sep` decomposes a string into a list on a separator; an empty
+  separator refuses by name (`SplitEmptySeparator`), and the pair are exact inverses --
+  witness `tools/r/rish_join_split_witness.rish`.
 - **`length`** -- `length text` or `length list` returns byte length or element count.
 - **`trim`** -- `trim text` removes leading and trailing whitespace.
 - **`slice`** -- `slice text start end` returns a bounded substring `[start, end)`.

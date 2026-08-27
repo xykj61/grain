@@ -351,3 +351,7 @@ seated 20260826.224730
 guard socket_dialect
 path tools/s/socket_dialect_witness.rish
 seated 20260827.004535
+
+guard rish_join_split
+path tools/r/rish_join_split_witness.rish
+seated 20260827.140328

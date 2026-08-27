@@ -20,3 +20,9 @@ let tagged = split "a::b::c" "::"
 assert join tagged "::" == "a::b::c" else "split: multi-byte sep failed"
 
 say "split held."
+
+# the pair are inverses in the list direction too, proven exact rather than by counts
+let words = ["rye" "rishi" "mantra"]
+assert split (join words " ") " " == words else "split: list round-trip failed"
+
+say "split round-trip held."
