@@ -48,3 +48,11 @@ discarded; that sweep is a lap per module with its own witness, and it is named 
 `reds_fold.sh` matches the bare word inside %273's `OPEN none`, so the pin cannot fold its one
 closed row -- the guard is right to be conservative about a fold, and the phrasing is a dated row's,
 so both are left standing and named here.
+
+*Closed (`20260827.094500`, the macOS bench):* the sweep the tail above names landed as one lap --
+the nineteen sibling modules folded onto `std.c.sockaddr.in` (the option constants had folded the
+commit before), every discarded `SO_REUSEADDR` and `SO_RCVTIMEO` return now checked by named
+error, the layout ceiling in `tools/fixtures/socket_dialect_scan.sh` fell 19 to 0 with
+`dispatched_files=20`, and `tools/m/mantra_recall_subscribe_poll_wire.rish` ran GREEN on this
+bench, hosted and device legs both -- the rebind that refused now binds. Each module's own named
+witness sings over the folded class in the same round. CLOSED.

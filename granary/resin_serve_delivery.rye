@@ -31,22 +31,33 @@ const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
 const guest_port: u16 = 38496;
 const host_port: u16 = 38497;
 
-const sockaddr_in = extern struct {
-    sin_family: c_ushort = AF_INET,
-    sin_port: c_ushort,
-    sin_addr: [4]u8 = .{ 127, 0, 0, 1 },
-    sin_zero: [8]u8 = .{0} ** 8,
-};
+// THE KERNEL LAYS THIS OUT, NEVER THIS FILE. A hand-rolled `sockaddr_in` stood here in the
+// Linux layout -- a two-byte family and no length byte -- and BSD kernels open the same
+// structure with a one-byte `sin_len` ahead of a one-byte family, so writing `AF_INET` as a
+// `c_ushort` lands 2 in the length and 0 in the family and every `bind` refuses (REDS %282,
+// repaired first in mantra/recall_subscribe_poll_delivery.rye). `std.c.sockaddr.in` dispatches
+// on the host and both branches carry a defaulted family, so neither pier spells the other's
+// layout.
+const sockaddr_in = c.sockaddr.in;
 
 fn localhost_addr(port: u16) sockaddr_in {
-    return .{ .sin_port = std.mem.nativeToBig(u16, port) };
+    return .{
+        .port = std.mem.nativeToBig(u16, port),
+        .addr = @bitCast([4]u8{ 127, 0, 0, 1 }),
+    };
 }
 
 fn open_socket() !c.fd_t {
     const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) return error.SocketFailed;
     const yes: c_int = 1;
-    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    // invariant: SO_REUSEADDR is what lets a bounded run rebind its own port, so a setsockopt
+    // that fails says so rather than handing back a socket whose next bind will refuse for a
+    // reason nothing recorded -- a discarded return is how REDS %282's open leg hid for a lap.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+        _ = c.close(fd);
+        return error.SetSockOptFailed;
+    }
     return fd;
 }
 

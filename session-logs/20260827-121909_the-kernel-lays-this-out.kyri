@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260827.121909
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host macOS clone (Mac hand) -- Eastern (EDT) one-clock
+title the kernel lays this out -- nineteen modules stop spelling Linux's sockaddr
+prompt kg here as Sound. The booked lap: the socket-table fold, %288's named class.
+think The parked branch sound/socket-dialect-nineteen already held the option-constant half -- 43 literal declarations across the nineteen moved onto c.SOL and c.SO, with SO_BINDTODEVICE alone reaching std.os.linux because std.c publishes no such option -- so that commit and its session-log sibling were cherry-picked whole rather than rewritten, the index conflict woven by stamp. My half was the layout: nineteen surveyed by nineteen parallel readers against the repaired exemplar, and the shape came back uniform -- a six-line extern struct in Linux's layout, a constructor writing only sin_port, one discarded setsockopt return each, bind already checked. One central transform swapped every struct for const sockaddr_in = c.sockaddr.in under the kernel-lays-this-out comment, rewrote each constructor to the .port/.addr form with the loopback bit-cast, and turned every discarded SO_REUSEADDR and SO_RCVTIMEO return into a named-error check with its invariant.
+think Two files pushed back and both were the transform learning the house. setu65_lab_tx returns a TxReport rather than an error union and already defers its close, so the inserted error-return became its own report-shaped refusal and the double-close never shipped; its SO_BROADCAST discard is now deliberate with the why beside it, since the directed send needs no broadcast bit. A defer-adjacency audit flagged three mantra files and cleared all three on reading -- the closing insert lives in open_socket where no defer stands, the exemplar's own shape. Eighteen modules compile; setu65 is a library module with no main and closes on its suite witness like always.
+think Proof ran three rings out. The socket-dialect gate holds both ceilings at zero now -- the layout ceiling fell 19 to 0 in the same commit as the fold, dispatched_files reads 20 -- and stays GREEN. The exemplar's own wire witness ran GREEN on this bench, hosted and device legs both, which is the exact leg %282 said must close here: the rebind that refused now binds, so the closure clause landed on %282's shelf. Then every one of the nineteen modules' named witnesses sang GREEN over the folded class, from amphora_lap3 through mantra_snapshot_wire.
+obs The class is closed on the mechanism, not the symptom: no authored module spells another kernel's sockaddr layout or socket numbers anywhere in the living tree, the meter refuses the twentieth on arrival, and the count meant to rise reads twenty.
+loom witnesses_green=21 modules_folded=19 layout_ceiling=0 dispatched=20 option_lines=0
+file mantra/recall_batch_delivery.rye one of nineteen: struct swapped, constructor renamed, returns checked
+file linengrow/setu65_lab_tx.rye the deviation: report-shaped refusal, deliberate broadcast discard
+file tools/fixtures/socket_dialect_scan.sh the layout ceiling falls to zero with the fold
+file construction/archive/REDS-the-kernel-that-answered-nine-rows-282.md the closure clause, landed where the row said it would
+recommend keep-going -- the constellation table's next row Lindy-first; the full choir and roster stay green behind the gate
