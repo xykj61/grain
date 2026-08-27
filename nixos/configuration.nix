@@ -88,6 +88,69 @@
           sha256 = "bfcf0ae2dbf94b2b6a106074aabf3938b9a10889c3b678e4cb5a00c03274d5d5";
         };
       });
+
+      # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
+      # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
+      # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
+      # upstream ships 0.150.1, so this overlay is the same declared road the two
+      # entries above take, for the fastest-moving of the three agent CLIs.
+      #
+      # This one REPLACES the derivation rather than overrideAttrs'ing it, because
+      # the nixpkgs package is a buildRustPackage compiled from source and this is
+      # a prebuilt binary -- a version+src override across those two shapes would
+      # leave a cargoHash describing a source tree that is no longer fetched.
+      #
+      # The x86_64-unknown-linux-musl asset is STATICALLY linked, checked on metal
+      # 20260827 (`ldd` reports "statically linked"), which is why no autoPatchelf
+      # and no interpreter fixup appear below -- the NixOS stub-ld problem that
+      # forces patchelf on the cursor-cli tarball does not arise for a binary that
+      # resolves no dynamic loader at all. stdenvNoCC is therefore honest: nothing
+      # here compiles. dontStrip holds because stripping a 268 MB static Rust
+      # binary buys little and risks its embedded metadata.
+      #
+      # The build self-checks twice, exactly as claude-code's does: fetchurl fails
+      # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
+      # and asserts the string carries 0.150.1. The sha256 below is the release
+      # asset's own checksum, verified on this pier against the downloaded file
+      # (sha256sum == ab308870...5c7a, 20260827) and the unpacked binary answered
+      # `codex-cli 0.150.1`.
+      #
+      # To bump: read the newest rust-vX.Y.Z tag at github.com/openai/codex/releases,
+      # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
+      codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
+        pname = "codex";
+        version = "0.150.1";
+
+        src = final.fetchurl {
+          url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
+          sha256 = "ab308870bc7fc048c23dc49d03f6b8af9ce7fc99b9da882d6688be7a90155c7a";
+        };
+
+        # The tarball holds one bare file rather than a directory, so the default
+        # sourceRoot guess ("the single subdirectory") finds nothing to enter.
+        sourceRoot = ".";
+
+        dontStrip = true;
+
+        installPhase = ''
+          runHook preInstall
+          install -Dm755 codex-x86_64-unknown-linux-musl "$out/bin/codex"
+          runHook postInstall
+        '';
+
+        doInstallCheck = true;
+        nativeInstallCheckInputs = [ final.versionCheckHook ];
+        versionCheckProgramArg = "--version";
+
+        meta = {
+          description = "OpenAI Codex CLI -- the coding agent DREAM runs inside ai-jail";
+          homepage = "https://github.com/openai/codex";
+          license = final.lib.licenses.asl20;
+          mainProgram = "codex";
+          platforms = [ "x86_64-linux" ];
+          sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
+        };
+      });
     })
   ];
 
@@ -97,6 +160,9 @@
   # gnupg -- signed commits - bubblewrap -- enclosure study - s6 -- supervision study
   # (s6 packages do not replace systemd as PID 1 on this host)
   # gh -- GitHub handshake (guide 2) - claude-code -- agent on the pier (guide 2)
+  # codex -- OpenAI Codex CLI; DREAM the dual star runs it inside ai-jail on this
+  #   pier, holding the systems core (Caravan, Tally, the microkernel road, the
+  #   constellation table); seated 20260827 with the role swap.
   # vim - neovim - kakoune -- steward editors (seated 20260808)
   # perl - python3 -- outer-terminal interpreters for legacy scripts the pier
   #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
@@ -109,6 +175,7 @@
     gh
     claude-code
     cursor-cli
+    codex    # OpenAI Codex CLI -- DREAM's seat, run inside ai-jail on this pier
     vim
     neovim
     kakoune

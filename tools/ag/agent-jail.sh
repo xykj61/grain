@@ -30,11 +30,17 @@ AGENT_FORWARD=()
 
 usage() {
   cat <<'EOF'
-Usage: ./tools/ag/agent-jail.sh [jail-opts] <claude|cursor-agent|agent> [agent-args…]
+Usage: ./tools/ag/agent-jail.sh [jail-opts] <claude|cursor-agent|agent|codex> [agent-args...]
 
   claude           Anthropic Claude Code CLI
   cursor-agent     Cursor Agent CLI (nixpkgs cursor-cli / agent)
   agent            Alias for cursor-agent
+  codex            OpenAI Codex CLI -- DREAM's seat. Its login state is mapped
+                   from .dream-state/codex-home onto ~/.codex, so the account
+                   auth survives --private-home, which resets the jail's HOME on
+                   exit. Pass codex's own args straight through, e.g.
+                     ./tools/ag/agent-jail.sh codex login
+                     ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access 'PROMPT'
 
 Jail options (before the command name):
   --dry-run              Pass --dry-run to ai-jail (print bwrap plan; do not exec)
@@ -56,10 +62,11 @@ Agent args after the command name pass through unchanged, so these are equal:
   ./tools/ag/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
 
 Project-local state (gitignored, survives private-home tmpfs):
-  .claude-state/                        → $HOME/.claude inside the jail
-  .cursor-agent-state/                  → $HOME/.cursor inside the jail
-  .cursor-agent-state/xdg-config/       → $HOME/.config/cursor (auth.json)
-  .gh/                                  → GH_CONFIG_DIR for gh(1)
+  .claude-state/                        -> $HOME/.claude inside the jail
+  .cursor-agent-state/                  -> $HOME/.cursor inside the jail
+  .cursor-agent-state/xdg-config/       -> $HOME/.config/cursor (auth.json)
+  .gh/                                  -> GH_CONFIG_DIR for gh(1)
+  .dream-state/codex-home/              -> $HOME/.codex inside the jail (codex auth)
 
 Examples:
 
@@ -132,7 +139,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ $# -lt 1 ]; then
-  echo "agent-jail: missing command (claude | cursor-agent | agent)" >&2
+  echo "agent-jail: missing command (claude | cursor-agent | agent | codex)" >&2
   usage >&2
   exit 2
 fi
@@ -142,8 +149,9 @@ shift
 case "$CMD_NAME" in
   claude) AGENT_KIND=claude ;;
   cursor-agent | agent) AGENT_KIND=cursor-agent ;;
+  codex) AGENT_KIND=codex ;;
   *)
-    echo "agent-jail: unknown command: $CMD_NAME (want claude | cursor-agent | agent)" >&2
+    echo "agent-jail: unknown command: $CMD_NAME (want claude | cursor-agent | agent | codex)" >&2
     exit 2
     ;;
 esac
@@ -160,6 +168,12 @@ CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$REPO/.cursor-agent-state}"
 # cursor-agent writes OAuth to ~/.config/cursor/auth.json (not ~/.cursor/).
 CURSOR_CONFIG_STATE="${CURSOR_CONFIG_STATE:-$CURSOR_AGENT_STATE/xdg-config}"
 GH_STATE="${GH_STATE:-$REPO/.gh}"
+# codex reads its auth and config from $CODEX_HOME, defaulting to ~/.codex. The
+# jail runs --private-home, so that directory is a tmpfs the exit discards --
+# hence a repo-local durable dir, mapped onto ~/.codex below. The path is the one
+# DREAM's launcher and .gitignore already name (.dream-state/), so login is done
+# once per pier rather than once per lap.
+CODEX_STATE="${CODEX_STATE:-$REPO/.dream-state/codex-home}"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 
@@ -224,7 +238,7 @@ case "$AGENT_KIND" in
       exit 1
     fi
     if [ "$SKIP_PERMS" = true ] && [ "$(id -u)" = "0" ]; then
-      echo "agent-jail: NOTE — --dangerously-skip-permissions is running as root (uid 0)." >&2
+      echo "agent-jail: NOTE -- --dangerously-skip-permissions is running as root (uid 0)." >&2
       echo "agent-jail: claude refuses this flag as root; run the jail as a non-root user." >&2
     fi
     ;;
@@ -235,6 +249,15 @@ case "$AGENT_KIND" in
       :
     else
       echo "agent-jail: cursor-agent (or agent) not on PATH" >&2
+      exit 1
+    fi
+    ;;
+  codex)
+    if ! AGENT_BIN="$(command -v codex 2>/dev/null)"; then
+      echo "agent-jail: codex not on PATH" >&2
+      echo "agent-jail: nixos/configuration.nix declares it; switch the pier from" >&2
+      echo "agent-jail:   bash /home/keeper/grain/nixos/rebuild-outer.sh" >&2
+      echo "agent-jail: run OUTSIDE this jail -- no-new-privileges blocks sudo here." >&2
       exit 1
     fi
     ;;
@@ -255,6 +278,7 @@ if [ ! -x "$AGENT_BIN" ]; then
 fi
 
 mkdir -p "$CLAUDE_STATE" "$CURSOR_AGENT_STATE" "$CURSOR_CONFIG_STATE" "$GH_STATE"
+mkdir -p "$CODEX_STATE"
 
 # Host HOME path is the jail HOME path under --private-home (tmpfs + our binds).
 HOST_HOME="${HOME}"
@@ -269,6 +293,7 @@ MAP_ARGS=(
   --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.claude"
   --rw-map "${CURSOR_AGENT_STATE}:${HOST_HOME}/.cursor"
   --rw-map "${CURSOR_CONFIG_STATE}:${HOST_HOME}/.config/cursor"
+  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"
 )
 
 # Claude Code also reads $HOME/.claude.json (beside ~/.claude/).

@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.164655` | [the jail had no word for codex](20260827-164655_the-jail-had-no-word-for-codex.kyri) | %295: Dream's seat could not start; codex declared and the jail taught |
 | `20260827.164635` | [the second mitra shed](20260827-164635_the-second-mitra-shed.kyri) | ten elders cut, three held; %292, the witnesses that guarded them |
 | `20260827.161243` | [the six bodies swap and the closed stacks](20260827-161243_the-six-bodies-swap-and-the-closed-stacks.kyri) | the lanes swap; Dream goes Codex; the closed stacks seat |
 | `20260827.145605` | [the stars gain their planets](20260827-145605_the-stars-gain-their-planets.kyri) | Mystery, Silence, Hush seated -- each star's night twin made a hand |

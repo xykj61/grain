@@ -55,32 +55,33 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `41a4b0950a` -- ten elders shed, three held.
+**Git nib:** `7412fa7510` -- the parent, which every clone resolves.
 
-**Now.** **The role swap lands: six bodies, six lanes, and the closed stacks.**
+**Now.** **Dream's seat is provisioned: codex declared, the jail taught.**
 
-**Sound and Dream exchanged lanes whole, planets with their stars (his word `20260827.155213`).**
-Sound (the Desktop bench) holds the interface half of Grain in Glow and **language custody**;
-Silence lowers the infrastructure half beside it. **Dream is Codex on the pier now** -- the Mind
-progression's outer-jail architecture pointed at the systems core: Caravan, Tally, the microkernel
-road, the thirty-seat constellation table -- with Hush on Pond's enclosure and the adaptation
-grant. Every recipe prints from `tools/l/`; **restart is paste-from-launcher**. `%291`'s
-one-checkout door stays his; ListAgents and path-limited commits carry the shared benches.
+**The role swap of `20260827.155213` stands** -- **Dream is Codex on the pier**, holding the systems
+core: Caravan, Tally, the microkernel road, the constellation table. `%291`'s door is his. The shed
+lane closed `%292`-`%293` beside this round; `%294`-`%295` are its own.
 
-**MIND's booked crux** (his word): the pure-Swift **SkateCore bounded core** at `skate/` -- a
-refusal leg proven per named bound (EventRing, FrameGrid), one staged candidate per jailed lap. The
-cold roster is the outer supervisor's instrument and never runs inside the jail; a jail refusal is
-a machine fact, never a tree red. `skate/` landed at `4af925691`, so Mind's clone receives it on
-its next sync; its two clone commits come home on its next armed push.
+**REDS %296 -- CLOSED, proven on metal.** Dream's seat could not start: `agent-jail.sh` accepts
+`claude | cursor-agent | agent` alone, so its own printed `agent-jail.sh env CODEX_HOME=... codex
+exec` answered **`unknown command: env`** -- measured, not argued. The jail now knows a **`codex`**
+kind: resolves the binary, refuses by name with the switch command when absent, and maps
+`.dream-state/codex-home` onto `~/.codex`, so `--private-home` stops eating it.
 
-**Still open, unclaimed:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5
-fields and 5 accessors; moving it REMOVES casts at 16 and 17 sites; the 59 gate fixtures await his
-word (Sound's lane). `caravan_subscribe_poll_signal`, RED at its SIGTERM assertion outside
-`caravan_suite` (Dream's lane). And `declared_ceiling` reads `law_number_copied` on
-`tools/l/chatgpt-mind.sh`'s one bound-copy line -- Mind's byte-frozen elder, so Mind's lap.
+**Provisioning is declared.** `nixos/configuration.nix` gains a third agent-CLI overlay beside
+`claude-code` and `cursor-cli`: **codex 0.150.1**, upstream's prebuilt **static musl** binary, past
+nixos-26.05's source-built 0.133.0 -- replacing the derivation, since a cargoHash cannot describe a
+tarball. **Proven here:** package and **full closure build**; `versionCheckHook` reads `codex-cli
+0.150.1`. **Keaton, outer terminal:** `bash /home/keeper/grain/nixos/rebuild-outer.sh`.
 
-**The next doors.** Sound: the Glow interface half. Dream: core-first -- Caravan and Tally
-green, then the constellation table.
+**Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
+accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
+`caravan_subscribe_poll_signal`, RED outside `caravan_suite` (Dream). `declared_ceiling` on
+`chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore at `skate/` -- both Mind's.
+
+**The next doors.** Keaton: the switch, then `codex login`. Dream: Caravan and Tally green, then
+the constellation table.
 
 ---
 ## Landed arcs
