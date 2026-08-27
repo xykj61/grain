@@ -7,7 +7,7 @@
 # surface, the planet ships it to hands and desks. Kin: the Skate native core (skate/,
 # SkateCore, witness tools/s/skate_native_core_witness.rish) and the Surf / Skate
 # alias-sameness law. A planet defers to its star where lanes brush. Charter:
-# active-designing/20260827-144712_the-three-stars-and-their-planets.md.
+# active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md.
 #
 #   rishi/bin/rishi run tools/l/launch-mystery-planet-chapter.rish
 
@@ -15,9 +15,9 @@
 let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
-# invariant: the planets charter this seat lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260827-144712_the-three-stars-and-their-planets.md"]
-assert charter.ok else "the planets charter is missing"
+# invariant: the living charter this seat lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+assert charter.ok else "the six-bodies charter is missing"
 
 say "MYSTERY -- Mind's planet (the star's own night twin, made a hand)"
 say "================================================================="
@@ -37,8 +37,9 @@ say "1) THE SEAT, one line: you are MYSTERY, Minds planet, on the Framework"
 say "   Claude Desktop -- carry Brushstroke / Skate to Android and the Linux"
 say "   AppImage; a planet defers to its star where lanes brush; a sibling-body"
 say "   find becomes an ITINERARY line; DJINN stays custody gate %6; open every"
-say "   lap with ListAgents (%291); send the twice-pulled way with xy, never"
-say "   forced; the seed rides with Dream alone."
+say "   lap with ListAgents (%291); walk the open shelves and fetch a closed"
+say "   stack only by a named path (.claude/rules/read-scope.md); send the"
+say "   twice-pulled way with xy, never forced; the public seed stays a manual gate."
 say ""
 say "CUSTODY: the gates in ITINERARY stay MANUAL."
 say ""

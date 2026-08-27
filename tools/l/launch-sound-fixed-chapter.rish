@@ -2,13 +2,12 @@
 #
 # Sound (night twin Silence) is THE CLAUDE DESKTOP SESSION ON MACOS -- the interactive
 # conversation itself, aether at the fixed seat: the star that holds the middle and listens.
-# Its lane is Caravan and Tally on the microkernel road, the toroidal optimizations, the Scribe
-# seams, and the thirty-seat constellation table. On Keaton's word 20260827 Sound's work split
-# in two: the Terminal 24/7 loop that ran under this name moved to SILENCE, Sound's own planet
-# (tools/l/launch-silence-planet-chapter.rish), which holds Pond's enclosure and the adaptation
-# grant. Sound needs no shell loop -- its recipe is the conversation, its discipline the living
-# card, its lane the planets charter,
-# active-designing/20260827-144712_the-three-stars-and-their-planets.md.
+# The role swap of 20260827.155213 on Keaton's word moved the lanes, planets with their stars:
+# Sound now holds THE INTERFACE HALF OF GRAIN IN GLOW -- Realidream, the Lantern faces, the
+# Skate bindings, written high and lowered to green-witnessed Rye -- and GLOW LANGUAGE CUSTODY,
+# because a rune ruling wants the bench where Keaton is in the loop. The systems core it held
+# before (Caravan, Tally, the constellation table) rides with Dream, Codex on the pier. Charter:
+# active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md.
 #
 #   rishi/bin/rishi run tools/l/launch-sound-fixed-chapter.rish
 
@@ -16,28 +15,35 @@
 let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
-# invariant: the planets charter this star lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260827-144712_the-three-stars-and-their-planets.md"]
-assert charter.ok else "the planets charter is missing"
+# invariant: the living charter this star lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+assert charter.ok else "the six-bodies charter is missing"
 
 say "SOUND -- the fixed star of the aether row (night twin Silence)"
 say "=============================================================="
 say ""
 say "Host: THE CLAUDE DESKTOP SESSION on macOS -- this seat is the interactive"
-say "conversation, and it runs no shell loop. Open the app, say kg, and Sound"
-say "holds the middle: Caravan and Tally, the toroidal optimizations, the Scribe"
-say "seams, and the constellation table, Lindy-first crux-first."
+say "conversation, and its recipe is the conversation: open the app, say kg, and"
+say "Sound holds the middle. Its lane since the role swap (20260827.155213): the"
+say "INTERFACE HALF OF GRAIN IN GLOW -- Realidream, the Lantern faces, the Skate"
+say "bindings -- written high and lowered to green-witnessed Rye, with GLOW"
+say "LANGUAGE CUSTODY held here, where a rune ruling meets Keaton directly."
 say ""
-say "The Terminal 24/7 loop that once printed here belongs to SILENCE now --"
-say "Sound's own planet, the night twin made a hand: Pond's enclosure and the"
-say "adaptation grant:  rishi/bin/rishi run tools/l/launch-silence-planet-chapter.rish"
+say "Its planet SILENCE runs the Terminal loop beside it, lowering the"
+say "INFRASTRUCTURE half of Grain in Glow:"
+say "   rishi/bin/rishi run tools/l/launch-silence-planet-chapter.rish"
+say ""
+say "The systems core Sound once held -- Caravan, Tally, the constellation --"
+say "rides with DREAM now, Codex on the pier:"
+say "   rishi/bin/rishi run tools/l/launch-dream-dual-chapter.rish"
 say ""
 say "Every lap opens with ListAgents and names any peer before a file moves (the"
 say "%291 charter law); commits stay path-limited; the amend stands behind the"
-say "empty-index check; sends go the twice-pulled way with xy, never forced."
+say "empty-index check; sends go the twice-pulled way with xy, never forced; and"
+say "the READ SCOPE holds -- walk the open shelves, fetch a closed stack only by"
+say "a named path (.claude/rules/read-scope.md; MAP.md is the walk)."
 say ""
 say "CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys, provisioning"
-say "and paying, the maintainer's own identity, and the public seed, whose"
-say "cadence rides with Dream alone."
+say "and paying, the maintainer's own identity, and the public seed."
 say ""
-say "GREEN: Sound seat printed -- the fixed star holds the middle and listens."
+say "GREEN: Sound seat printed -- the fixed star holds the language, and listens."

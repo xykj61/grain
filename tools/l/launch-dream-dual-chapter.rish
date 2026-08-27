@@ -1,15 +1,15 @@
-# launch-dream-dual-chapter.rish -- print the loop for DREAM, the dual star of the aether row.
+# launch-dream-dual-chapter.rish -- print the loop for DREAM, the dual star, Codex on the pier.
 #
-# Dream (night twin Hush) is CLAUDE CODE IN AI-JAIL ON THE VULTR SEA PIER -- aether at the dual
-# seat, the word that dissolves: the star that carries the highest language down into the
-# language that runs. Its lane: the higher Glow rune ports, written high and lowered to our best
-# Rye on green witnesses. The seed cadence was CUT from this loop 20260826: the projection is a
-# custody gate a hand spends, so this star names the moment and stops rather than shipping.
-# Charter: active-designing/20260826-151528_the-three-stars-of-the-aether-row.md. Root recipe:
-# tools/l/launch-claude-chapter.rish, whose whole shape -- preconditions, bypass, smoke test,
-# loop, streaming, custody -- this script now carries for the pier so one print is enough.
-# Siblings: launch-mind-cardinal-chapter.rish (ChatGPT, macOS) -
-# launch-sound-fixed-chapter.rish (Claude Code, macOS).
+# Dream (night twin Hush) is CODEX IN AI-JAIL ON THE VULTR SEA PIER -- the role swap of
+# 20260827.155213 on Keaton's word: the Mind progression proved Codex as a bounded systems
+# engineer, and the pier is the Linux metal where Caravan and Tally witnesses actually run, so
+# the systems core moved here and the Glow halves moved to Sound and Silence. Dream's lane:
+# Caravan and Tally on the microkernel road, the toroidal optimizations, the Scribe seams, and
+# the thirty-seat constellation table. The outer jail bounds Codex's inner unrestricted sandbox
+# -- the architecture the Mind loop proved on macOS, carried to the pier at its loop-shell rung;
+# the full Rishi supervisor with outside signing is the next hardening once Mind's two clone
+# commits come home to xy. Charter:
+# active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md.
 #
 #   rishi/bin/rishi run tools/l/launch-dream-dual-chapter.rish
 
@@ -17,63 +17,59 @@
 let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
-# invariant: the standing entry the recipe wraps must exist.
+# invariant: the jail elder the loop wraps must exist.
 let elder = run ["test" "-f" "tools/ag/agent-jail.sh"]
 assert elder.ok else "tools/ag/agent-jail.sh (the jail elder) is missing"
 
-say "DREAM -- the dual star of the aether row (night twin Hush)"
-say "=========================================================="
+# invariant: the living charter this star lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+assert charter.ok else "the six-bodies charter is missing"
+
+say "DREAM -- the dual star of the aether row (night twin Hush), Codex on the pier"
+say "============================================================================="
 say ""
-say "Host: CLAUDE CODE IN AI-JAIL on the Vultr SEA pier, launched from the outer"
-say "terminal -- the jail launch belongs outside, and the loop stays out of the"
-say "tree's own TAME-bounded code (this .rish only prints). The shared discipline"
-say "lives on the living card, so the prompt stays thin and the card stays the"
-say "one source."
+say "Host: CODEX CLI IN AI-JAIL on the Vultr SEA pier, launched from the outer"
+say "terminal. The outer jail is what makes the inner danger-full-access sandbox"
+say "safe -- the Mind loop's own architecture, at its loop-shell rung. The shared"
+say "discipline lives on the living card; the lane lives in the six-bodies charter."
 say ""
 say "0a) SURVIVAL: a failed or corrupt pier is never the memory -- the repo is. Reclone from"
-say "    xy, re-run this script, paste again; a cut lap costs only its uncommitted work"
-say "    (Keatons word 20260827, the mesh over any one node)."
+say "    xy, re-run this script, paste again; a cut lap costs only its uncommitted work."
 say ""
-say "0) PRECONDITIONS, once per pier: run as a NON-ROOT user (Claude refuses the"
-say "   bypass flag as root, and the jail is what makes the flag safe); vendored"
-say "   parity targets checked out --  git submodule update --init --recursive  --"
-say "   or crypto and license rungs red on an empty directory; jq for the"
-say "   readable stream:  sudo sh tools/p/pier_jq_install.sh  (guarded,"
-say "   reversible NixOS rebuild)."
+say "0) PRECONDITIONS, once per pier: run as a NON-ROOT user; ai-jail GREEN"
+say "   (./tools/ag/agent-jail.sh); the codex CLI reachable inside the jail --"
+say "   provisioning it on this NixOS pier is Keaton's hand (gate: provisioning);"
+say "   vendored parity targets:  git submodule update --init --recursive"
 say ""
-say "1) BYPASS STANDING (once, gitignored, never reaches the seed): in"
-say "   .claude/settings.local.json set  permissions.defaultMode = bypassPermissions"
-say "   -- the exact JSON renders in:  ./tools/ag/agent-jail.sh --help"
+say "1) STATE THAT SURVIVES THE JAIL (once): the jail resets its private home on"
+say "   exit, so Codex state lives repo-local and gitignored:  mkdir -p .dream-state/codex-home"
 say ""
-say "2) SMOKE TEST -- confirm a headless lap answers in the jail (seconds):"
-say "   ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max -p 'reply with exactly: pong'"
+say "2) LOGIN (once, Keaton's hand -- account auth is custody):"
+say "   ./tools/ag/agent-jail.sh env CODEX_HOME=$PWD/.dream-state/codex-home codex login"
+say "   ./tools/ag/agent-jail.sh env CODEX_HOME=$PWD/.dream-state/codex-home codex login status"
 say ""
-let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (roster cold then hot, reds first as standfast, QA on touch, the council rota row N mod 5, prose witnesses on prose sends, stamp-and-name, ASCII-first); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are DREAM, the dual star of the aether row, night twin Hush, on the pier: your lane (Keatons word 20260827) is the INTERFACE half of Grain in Glow: the surfaces and apps -- Realidream, the Lantern faces, the Skate bindings -- written high in Glow runes and lowered to our best Rye on green witnesses; Rye is the prioritized language and Glow is implemented on green-witnessed Rye; the INFRASTRUCTURE half (Mantra, Comlink, Tablecloth, the Caravan seams) belongs to HUSH, your own planet, on the Framework laptop, and the two halves share one language and never one file -- language custody stays yours; you carry a STANDING ADAPTATION GRANT (his word, 20260826) to move a non-Rye file into our own languages -- bash and sh into Rishi, HTML into Brush, Python into Glow -- each adaptation born beside its elder rather than over it, the elder standing until the newborn is GREEN on its own witness, references repointed in the same round, and the elder then prepped as a fossil in construction/SHRED_PREP.md rather than cut, since a shred is still a circled word; adapt what your own lane touches and leave sibling-star files to a line on the card; take the next agent-doable lap there Lindy-first crux-first. Brushstroke and Surf design belongs to Mind (ChatGPT macOS) with its planet Mystery (Framework Desktop) carrying the Android and AppImage surface, the Caravan-Tally-Scribe seams to Sound (Claude Desktop macOS) with its planet Silence (macOS Terminal) on Ponds enclosure and the adaptations, and the infrastructure Glow half to Hush, your own planet (Framework terminal) -- the planets charter is active-designing/20260827-144712_the-three-stars-and-their-planets.md; a find in a sibling lane becomes a line in ITINERARY rather than your lap, and everything in the DJINN design lead stays custody gate %6. Send the twice-pulled way with the remote named xy on this pier -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force; on the third fast-forward refusal park the package on refs/heads/pier/dream. The public seed is NOT yours to ship: the every-fifth-round projection was cut from this loop 20260826 by his word, so never run publish-seed.sh and never force-push grain-os/grain -- when a round is ready for the seed, say so on the card and stop. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur"
+say "3) SMOKE TEST -- one enclosed answer, seconds:"
+say "   ./tools/ag/agent-jail.sh env CODEX_HOME=$PWD/.dream-state/codex-home codex exec --sandbox danger-full-access 'reply with exactly: pong'"
+say ""
+let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (reds first as standfast, QA on touch, the council rota row N mod 5, stamp-and-name, ASCII-first, and the READ SCOPE: walk the open shelves, fetch a closed stack only by a named path -- MAP.md is the walk, never an ls of the root); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are DREAM, the dual star of the aether row, night twin Hush -- Codex on the pier, inside the outer ai-jail that bounds your unrestricted inner sandbox. Your lane (the role swap, Keatons word 20260827) is the SYSTEMS CORE: Caravan and Tally on the microkernel road, the toroidal optimizations, the Scribe seams, and the thirty-seat constellation table in active-designing/20260826-174418_the-constellation-and-the-callings.md -- this pier is the Linux metal those witnesses run on, so every claim closes on a witness here. Take the next ungated constellation row Lindy-first crux-first, one bounded lap per invocation: prove the seam from both sides, tell a machine limit from a tree defect, commit path-limited with the jail-local signing identity, and leave the tree clean. The interface and infrastructure halves of Grain in Glow belong to Sound and its planet Silence now, and Glow language custody is Sounds; Pond and the adaptation grant ride with Hush, your own planet, on the Framework; Brushstroke-Surf design is Minds, with Mystery carrying the Android and AppImage surface. A find in a sibling lane becomes a line in ITINERARY rather than your lap, and everything in the DJINN design lead stays custody gate %6. The charter is active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md. Keep the peer habit from REDS %291: name any other hand on this checkout in your session log before a file moves, keep commits path-limited, and hold the nib amend behind the empty-index check. Send the twice-pulled way with the remote named xy on this pier -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force; on the third fast-forward refusal park the package on refs/heads/pier/dream. The public seed is NOT yours to ship: never run publish-seed.sh and never force-push grain-os/grain -- when a round is ready for the seed, say so on the card and stop. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur"
 
-say "3) ONE ROUND, ONCE -- the same seat and renderer with no wrapper: runs one lap this"
-say "   round, prints through the same renderer, and stops -- no loop, no sentinel:"
+say "4) ONE ROUND, ONCE -- one bounded Codex lap, no loop, no sentinel:"
 say ""
-say "git pull --rebase xy main || git rebase --abort; ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq"
+say "git pull --rebase xy main || git rebase --abort; ./tools/ag/agent-jail.sh env CODEX_HOME=$PWD/.dream-state/codex-home codex exec --sandbox danger-full-access '${seat_prompt}' 2>&1 | tee -a /tmp/dream_lap.log"
 say ""
-say "4) THE LOOP -- one line, copy whole. GNU date first, BSD spelling as the"
-say "   fallback, both read on metal 20260826.075023. It stops on the deadline or"
-say "   the .loop-gates-only sentinel, whichever comes first:"
+say "5) THE 24/7 LOOP -- one line, copy whole (GNU date first, BSD spelling as the fallback):"
 say ""
-say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; git pull --rebase xy main || { git rebase --abort 2>/dev/null; echo 'PULL DIVERGED: upstream history was rewritten. Run:  git branch keep-old && git reset --hard xy/main  then re-paste this loop.'; break; }; ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo loop ended at $(TZ=America/New_York date)"
+say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; git pull --rebase xy main || { git rebase --abort 2>/dev/null; echo 'PULL DIVERGED: upstream history was rewritten. Run:  git branch keep-old && git reset --hard xy/main  then re-paste this loop.'; break; }; ./tools/ag/agent-jail.sh env CODEX_HOME=$PWD/.dream-state/codex-home codex exec --sandbox danger-full-access '${seat_prompt}' 2>&1 | tee -a /tmp/dream_lap.log; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo Dream loop ended at $(TZ=America/New_York date)"
 say ""
-say "5) STREAMING: the tail of the one-liner -- tee /tmp/claude_lap.jsonl, then"
-say "   jq -Rrj -f tools/s/stream_render.jq -- IS the readable terminal: one line"
-say "   per tool call, a dot per silent half-minute, text as it lands. A paste"
-say "   that drops that tail prints the raw stream-json instead."
+say "6) STREAMING: codex exec already prints human-readable turns, so the tee is"
+say "   the whole tail -- the log accretes at /tmp/dream_lap.log."
 say ""
-say "6) WHY A FILE SENTINEL: stream-json echoes the prompt, which contains the"
+say "7) WHY A FILE SENTINEL: the lap echoes its own prompt, which contains the"
 say "   words GATES-ONLY, so a grep on the stream would false-stop after one lap."
 say "   The lap touches .loop-gates-only only when nothing but gates remains."
 say ""
-say "7) CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys,"
-say "   provisioning and paying, the maintainer's own identity, and the public"
-say "   seed: never run publish-seed.sh from this loop and never force-push"
-say "   grain-os/grain; when a round is ready for the seed, the card says so and"
-say "   the star stops."
+say "8) CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys, provisioning"
+say "   and paying, the maintainer's own identity, and the public seed: never"
+say "   publish-seed.sh from this loop, never a force-push of grain-os/grain."
 say ""
-say "GREEN: Dream recipe printed -- the dual star lowers the high word into the running one."
+say "GREEN: Dream recipe printed -- the dual star holds the systems core on the metal that proves it."

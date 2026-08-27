@@ -4,7 +4,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
-**Last updated:** `20260808.184036` (seven rooms - nock nested in glow - two-grain seed projecting)
+**Last updated:** `20260827.155213` (the two floors seated -- open shelves and closed stacks; seven rooms unchanged)
 
 *The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at [`template-manifest.bron`](template-manifest.bron).*
 
@@ -31,6 +31,19 @@ Welcome, traveler. Forty-some doors face you at this root, and every one is frie
 | **7 - The Reading Room** | The world, studied whole with thanks | `external-research/` - `gratitude/` - `vendor/` |
 
 Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by [`template-manifest.bron`](template-manifest.bron): `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.bron`).
+
+## The Two Floors -- Open Shelves and Closed Stacks
+
+The library has two floors, seated `20260827.155213` so six always-on hands stop paying for the
+same walk. The **open shelves** are walked by default: the `construction/` pins, `context/`,
+`foundations/`, `.claude/rules/`, `docs/`, the flat tops of `session-logs/` and the two design
+rooms, and whichever module rooms your own lane names. The **closed stacks** are held whole and
+fetched only by a named path, a citation, or a resolver's answer: every `date/`, `archive/`, and
+`yonder/` shelf anywhere, and the named roster in
+[`.claude/rules/read-scope.md`](.claude/rules/read-scope.md) -- the reading room, the gratitude
+shelves, the vendored source, the teaching floors, the dated plans. Closed governs the walk,
+never the write, and nothing is hidden: a call slip opens any stack. This page is the walk that
+replaces the root `ls`.
 
 ### 2 - The Law
 

@@ -24,12 +24,13 @@
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
+- **Read scope -- open shelves and closed stacks** (`20260827.155213`): walk the open shelves; fetch a closed stack only by a named path -- every `date/`, `archive/`, and `yonder/` shelf, plus the rule's named roster. Never `ls` the root (`MAP.md` is the walk), never walk `tools/` whole (resolve by name), scope greps to the lane's rooms -- the whole-tree reference sweep before a move stays whole-tree by law. **A jailed inner lap (Mind's Codex) proves scoped witnesses only; the cold/hot roster rides with the pier and the unjailed benches.** Rule: `.claude/rules/read-scope.md`.
 - **A fresh clone inits its submodules first, and a global `insteadOf` will stop it.** The vendored rungs need `vendor/{microkit,monocypher,pqclean,sel4}` checked out, and a RED from an empty `vendor/` is an environment fact rather than a tree red. A host that rewrites `https://github.com/` to ssh (this bench does) cannot clone the public third-party submodules at all, since the key has no rights there -- `GIT_CONFIG_GLOBAL=/dev/null git submodule update --init <path>` clones each one over plain https without touching the host's config. `--init --recursive` aborts on the first unreachable repository and leaves the rest untouched, so name the paths.
 
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
-- **Stars and planets** (`20260827.144712`): **Mind** (ChatGPT macOS -- Brushstroke-Surf) + **Mystery** (Framework Desktop -- Android/AppImage Skate); **Sound** (Claude Desktop macOS -- Caravan-Tally-constellation) + **Silence** (macOS Terminal -- Pond, adaptations); **Dream** (pier -- interface Glow, seed cadence) + **Hush** (Framework terminal -- infrastructure Glow). Charter: the planets page, `20260827.144712`, in `active-designing/`
+- **The six bodies, roles swapped** (`20260827.155213`): **Mind** (Codex/ChatGPT macOS, its own clone -- Brushstroke-Surf, SkateCore) + **Mystery** (Framework Desktop -- Android/AppImage); **Sound** (Claude Desktop macOS -- interface Glow, **language custody**) + **Silence** (macOS Terminal -- infrastructure Glow); **Dream** (**Codex in ai-jail on the pier** -- Caravan-Tally-constellation) + **Hush** (Framework terminal -- Pond, adaptations). Charter: the six-bodies page, `20260827.155213`, in `active-designing/`.
 - **STANDFAST -- the fusion build** (`20260826`, Keaton's word): build the granted reprove-only-what-moved ruling (`20260825.181028`) before other Sound work -- a derived file-to-witness map, hit-rate and lap-tail gates proven both ways; scoped runs each lap, the full choir on cadence laps. Confidence per minute is the reward.
 - **The optimization spine CLOSES, five of five** (`20260826`, Sound): wrap named room-wide, the bound in its own name, the drain a replayable fold, the region base derived from its index (twelve windows abutting), the wafer's first consumer named. Witnesses in `tools/ca/`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail -- CLI and callings finishing under Sound; **ai-jail docs stay accrete-only until the replacement is tested and audited**; the switchover and the jail's deep debride stay gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
@@ -54,42 +55,32 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `dab83c1baa` -- the stars gain their planets.
+**Git nib:** `4f677501a7` -- the lanes swap, the stacks close.
 
-**Now.** **Two hands took one booked lap, and the checkout could not say so.**
+**Now.** **The role swap lands: six bodies, six lanes, and the closed stacks.**
 
-**The socket-table fold LANDED (`5a500864c`).** The nineteen remaining modules drop the hand-rolled
-Linux-layout `sockaddr_in` for `const sockaddr_in = c.sockaddr.in;`, write `.port` and `.addr` on
-std's own type, and check every `SO_REUSEADDR` and `SO_RCVTIMEO` return by named error.
-`linux_layout_files_ceiling` falls **19 to 0**, `dispatched_files` reads **20**; `%282`'s shelf
-takes its closure clause.
+**Sound and Dream exchanged lanes whole, planets with their stars (his word `20260827.155213`).**
+Sound (the Desktop bench) holds the interface half of Grain in Glow and **language custody**;
+Silence lowers the infrastructure half beside it. **Dream is Codex on the pier now** -- the Mind
+progression's outer-jail architecture pointed at the systems core: Caravan, Tally, the microkernel
+road, the thirty-seat constellation table -- with Hush on Pond's enclosure and the adaptation
+grant. Every recipe prints from `tools/l/`; **restart is paste-from-launcher**. `%291`'s
+one-checkout door stays his; ListAgents and path-limited commits carry the shared benches.
 
-**REDS %291 -- OPEN, gated.** Two Claude Code sessions ran this checkout at once, both seated as
-SOUND, both reading this block, both taking this lap. One opened a cold roster at `12:10:13`; the
-other rewrote the nineteen at `12:14:06` and pushed. `git status` names paths and never who wrote
-them, and `tree_moved` reads twenty-two minutes late, at the close of a run already spent. This is
-the **source-file half of `%281`**, and the quieter half: a shadow race makes a correct module
-report RED, a source race makes two hands do one lap, which looks like work. **The answer is
-unchanged and is his: one tree per star, or a lock in `bridge_to_zig`.** Until then, run
-`ListAgents` at lap open and name any peer in the log before touching a file.
+**MIND's booked crux** (his word): the pure-Swift **SkateCore bounded core** at `skate/` -- a
+refusal leg proven per named bound (EventRing, FrameGrid), one staged candidate per jailed lap. The
+cold roster is the outer supervisor's instrument and never runs inside the jail; a jail refusal is
+a machine fact, never a tree red. `skate/` landed at `4af925691`, so Mind's clone receives it on
+its next sync; its two clone commits come home on its next armed push.
 
-**What the duplication bought:** a second reader before that commit, three faults, all shipped. Two
-are repaired here -- `mantra/recall_batch_delivery.rye:209-211` and
-`mantra/snapshot_export_delivery.rye:143-145` sat at eight spaces inside four-space bodies, proven
-by `zig fmt` on a copy rather than by eye; both wire witnesses, `tame_style_check`, `width-check`
-and `socket_dialect_witness` GREEN after. The third is **an erratum for his word**, read whole at
-`%291`: a shelf paragraph stamped two hours thirty-three minutes behind the one clock.
+**Still open, unclaimed:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5
+fields and 5 accessors; moving it REMOVES casts at 16 and 17 sites; the 59 gate fixtures await his
+word (Sound's lane). `caravan_subscribe_poll_signal`, RED at its SIGTERM assertion outside
+`caravan_suite` (Dream's lane). And `declared_ceiling` reads `law_number_copied` on
+`tools/l/chatgpt-mind.sh`'s one bound-copy line -- Mind's byte-frozen elder, so Mind's lap.
 
-**Also closed:** this card stood at **24,586 bytes against the 24,576 it declares**, so
-`declared_ceiling_witness` was RED on a tree already pushed -- a one-line nib amend carried it over.
-This rewrite brings it under.
-
-**Still open, unclaimed:** Dream's **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in
-5 fields and 5 accessors, and moving it REMOVES casts at 16 and 17 sites; the 59 gate fixtures await
-his word. And `caravan_subscribe_poll_signal`, RED at its SIGTERM assertion outside `caravan_suite`.
-
-**The next doors.** Sound's core-first read -- Caravan and Tally green, the choir whole -- then the
-constellation table, Lindy-first crux-first.
+**The next doors.** Sound: the Glow interface half. Dream: core-first -- Caravan and Tally
+green, then the constellation table.
 
 ---
 ## Landed arcs

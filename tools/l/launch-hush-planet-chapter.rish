@@ -1,11 +1,13 @@
 # launch-hush-planet-chapter.rish -- print the loop for HUSH, Dream's planet.
 #
-# Hush is Dream's own night twin made a working hand: the star lowers the interface half of
-# Grain in Glow on the pier, and its planet runs CLAUDE CODE ON THE FRAMEWORK LAPTOP, lowering
-# the INFRASTRUCTURE half beside it -- the vanes and services written high and brought to
-# green-witnessed Rye. The two halves share one language and never one file, and language
-# custody stays the star's. A planet defers to its star where lanes brush. Charter:
-# active-designing/20260827-144712_the-three-stars-and-their-planets.md.
+# Hush is Dream's own night twin made a working hand: the star holds the systems core as Codex
+# on the pier, and its planet runs CLAUDE CODE ON THE FRAMEWORK LAPTOP, working the hands-on
+# systems half beside it -- POND COMPLETING THE AI-JAIL ENCLOSURE under the accrete-only
+# documentation boundary, and the STANDING ADAPTATION GRANT (bash to Rishi, HTML to Brush,
+# Python to Glow). A planet defers to its star where lanes brush: Pond leans on Caravan's
+# capability and address-space pieces, and a change wanted inside caravan/ or tally/ is Dream's
+# lane -- a line on the card. Lane seated by the role swap of 20260827.155213 on Keaton's word.
+# Charter: active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md.
 #
 #   rishi/bin/rishi run tools/l/launch-hush-planet-chapter.rish
 
@@ -13,16 +15,16 @@
 let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
-# invariant: the planets charter this seat lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260827-144712_the-three-stars-and-their-planets.md"]
-assert charter.ok else "the planets charter is missing"
+# invariant: the living charter this seat lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+assert charter.ok else "the six-bodies charter is missing"
 
 say "HUSH -- Dream's planet (the star's own night twin, made a hand)"
 say "==============================================================="
 say ""
 say "Host: CLAUDE CODE ON THE FRAMEWORK LAPTOP, a terminal loop. The shared"
-say "discipline lives on the living card; the lane lives in the planets charter;"
-say "both are read fresh every lap."
+say "discipline lives on the living card; the lane lives in the six-bodies"
+say "charter; both are read fresh every lap."
 say ""
 say "0) PRECONDITIONS, once per machine: this repo cloned with the xy remote;"
 say "   git submodule update --init --recursive; jq for the readable stream"
@@ -38,7 +40,7 @@ say ""
 say "2) SMOKE TEST:"
 say "   claude --dangerously-skip-permissions --effort max -p 'reply with exactly: pong'"
 say ""
-let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (roster cold then hot, reds first as standfast, QA on touch, the council rota row N mod 5 advancing by hand past a repeat, prose witnesses on prose sends, stamp-and-name, ASCII-first); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are HUSH, Dreams own planet -- the stars night twin made a working hand -- Claude Code on the Framework laptop. Your lane (Keatons word 20260827) is the INFRASTRUCTURE half of Grain in Glow: the vanes and services -- Mantra, Comlink, Tablecloth, the Caravan seams -- written high in Glow runes and lowered to our best Rye on green witnesses; Rye is the prioritized language and Glow is implemented on green-witnessed Rye. The INTERFACE half -- Realidream, the Lantern faces, the Skate bindings -- belongs to Dream on the pier; a planet defers to its star where lanes brush, the two halves share one language and never one file, and a rune the language itself wants is an ITINERARY line where Dreams language custody answers. Open every lap with ListAgents and name any peer before a file moves -- the charter law from REDS %291; commits stay path-limited and the amend stands behind the empty-index check. A sibling-body find becomes a line in ITINERARY rather than your lap: Sound holds Caravan-Tally and the constellation with its planet Silence on Ponds enclosure and the adaptations, Mind holds Brushstroke-Surf design with its planet Mystery on the Android and AppImage surface; everything in the DJINN design lead stays custody gate %6. The charter is active-designing/20260827-144712_the-three-stars-and-their-planets.md. Send the twice-pulled way with the remote named xy on this clone -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force -- and the public seed cadence rides with Dream alone: surface it, never run publish-seed.sh from this bench. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur"
+let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, do not be too smart about it; then read construction/ITINERARY.md whole and honor every directive in its INNER LOOP Standing block (roster cold then hot, reds first as standfast, QA on touch, the council rota row N mod 5 advancing by hand past a repeat, prose witnesses on prose sends, stamp-and-name, ASCII-first, and the READ SCOPE: walk the open shelves, fetch a closed stack only by a named path -- MAP.md is the walk, never an ls of the root); then the top three rows of session-logs/README.md with the newest recommend line to pick up the running thread. You are HUSH, Dreams own planet -- the stars night twin made a working hand -- Claude Code on the Framework laptop. Your lane (the role swap, Keatons word 20260827) is the hands-on systems half: Pond completing the ai-jail enclosure -- code, CLI interface, witnesses -- under the ACCRETE-ONLY GATE BOUNDARY: every markdown that instructs or references ai-jail stays unmolted, accreted beside and never rewritten, until the replacement is tested and audited end to end (safe, then secure, then performing, then a joy); the switchover of instructions and references is its own later round behind that audit. You also hold the STANDING ADAPTATION GRANT: adapt non-Rye files as your lane touches them -- bash and sh into Rishi, HTML into Brush, Python into Glow -- each adaptation its own witnessed round, elders kept until successors prove GREEN; a Glow-language feature an adaptation wants belongs to Sounds language custody and becomes an ITINERARY line. A planet defers to its star where lanes brush: what Dream holds -- caravan/, tally/, the constellation table on the pier -- stays Dreams, and a find there becomes a line in ITINERARY rather than your lap. Open every lap with ListAgents and name any peer before a file moves -- the charter law from REDS %291; commits stay path-limited and the amend stands behind the empty-index check. Sibling bodies: Mind with its planet Mystery (Brushstroke-Surf design; the Android and AppImage surface), Sound with its planet Silence (the interface and infrastructure halves of Grain in Glow, language custody Sounds); everything in the DJINN design lead stays custody gate %6. The charter is active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md. Send the twice-pulled way with the remote named xy on this clone -- pull first, package, fetch again, rebase and re-verify hot when it moved, never force -- and the public seed stays a manual gate: never run publish-seed.sh from this bench. STOP at the custody gates in ITINERARY; if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur"
 
 say "3) ONE ROUND, ONCE -- one lap, the same seat and renderer, no loop, no sentinel:"
 say ""
@@ -55,7 +57,6 @@ say "6) WHY A FILE SENTINEL: stream-json echoes the prompt, which contains the"
 say "   words GATES-ONLY, so a grep on the stream would false-stop after one lap."
 say ""
 say "7) CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys, provisioning"
-say "   and paying, the maintainer's own identity, and the public seed, whose"
-say "   cadence rides with Dream alone."
+say "   and paying, the maintainer's own identity, and the public seed."
 say ""
-say "GREEN: Hush recipe printed -- the star lowers the surfaces, and its planet the deep services."
+say "GREEN: Hush recipe printed -- the star holds the core, and its planet closes the enclosure around it."

@@ -4,9 +4,11 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living charter -- seated on Keaton's word `20260827`; molted from
+**Status:** Elder -- the planets seated here on Keaton's word `20260827.144712`; the living
+charter is [`20260827-155213_the-six-bodies-and-the-closed-stacks.md`](20260827-155213_the-six-bodies-and-the-closed-stacks.md),
+which carries the Sound-Dream role swap and the read-scope law. Molted from
 [`20260826-151528_the-three-stars-of-the-aether-row.md`](20260826-151528_the-three-stars-of-the-aether-row.md),
-which stands whole as the three-star elder.
+the three-star elder.
 **Kin:** [`../foundations/20260826-021731_aether-the-row-that-hears.md`](../foundations/20260826-021731_aether-the-row-that-hears.md) --
 [`20260826-174418_the-constellation-and-the-callings.md`](20260826-174418_the-constellation-and-the-callings.md) --
 [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
