@@ -1,0 +1,364 @@
+# chatgpt-mind.rish -- Rishi-owned supervised Codex laps for MIND on macOS.
+#
+# The elder `chatgpt-mind.sh` stays byte-for-byte as the compatibility and
+# provenance witness. This peer does not invoke it or any shell interpreter.
+# Unrestricted Codex permission is selected only behind the separately proven
+# outer ai-jail write fence. No mode fetches, pushes, installs, authenticates,
+# changes power settings, or begins without explicit arming.
+
+let max_prompt_bytes = 24576
+let max_log_bytes = 1048576
+let max_supervisor_bytes = 1114112
+let max_laps_hard = 24
+let max_failures_hard = 5
+let max_backoff_seconds = 300
+let max_local_ahead = 32
+
+let mode = ""
+if args.len > 0 then let mode = args[0]
+let help = ?| [(args contains "-h") (args contains "--help")]
+if help then say "Usage: rishi/bin/rishi run tools/l/chatgpt-mind.rish COMMAND [options]"
+if help then say "Commands: print, check, once --dry-run|--arm-once, loop --dry-run|--arm-loop, stop"
+if help then say "Loop options: --max-laps 1..24, --failure-ceiling 1..5, --backoff-seconds 0..300"
+if help then say "Armed work uses Codex danger-full-access only inside the proven outer ai-jail; it never pushes or selects a model."
+if help then exit 0
+if mode == "" then say "Usage: rishi/bin/rishi run tools/l/chatgpt-mind.rish COMMAND [options]"
+if mode == "" then say "Commands: print, check, once --dry-run|--arm-once, loop --dry-run|--arm-loop, stop"
+if mode == "" then exit 2
+
+let public_modes = ["print" "check" "once" "loop" "stop"]
+let internal_lap = ?& [(mode == "lap") ((env "MIND_INTERNAL_LAP") == "1")]
+assert ?| [(public_modes contains mode) internal_lap] else "REFUSE chatgpt-mind: unknown command"
+
+let dry_run = args contains "--dry-run"
+let arm_once = args contains "--arm-once"
+let arm_loop = args contains "--arm-loop"
+let has_max_laps = args contains "--max-laps"
+let has_failure_ceiling = args contains "--failure-ceiling"
+let has_backoff = args contains "--backoff-seconds"
+let max_laps = 1
+let failure_ceiling = 3
+let backoff_seconds = 15
+if has_max_laps then let max_laps = parse (flag args "--max-laps")
+if has_failure_ceiling then let failure_ceiling = parse (flag args "--failure-ceiling")
+if has_backoff then let backoff_seconds = parse (flag args "--backoff-seconds")
+
+let expected_args = 1
+if dry_run then let expected_args = expected_args + 1
+if arm_once then let expected_args = expected_args + 1
+if arm_loop then let expected_args = expected_args + 1
+if has_max_laps then let expected_args = expected_args + 2
+if has_failure_ceiling then let expected_args = expected_args + 2
+if has_backoff then let expected_args = expected_args + 2
+if internal_lap then let expected_args = 2
+assert args.len == expected_args else "REFUSE chatgpt-mind: unknown, repeated, or value-less option"
+
+let armed_count = 0
+if dry_run then let armed_count = armed_count + 1
+if arm_once then let armed_count = armed_count + 1
+if arm_loop then let armed_count = armed_count + 1
+assert ?| [(mode != "once") (armed_count == 1)] else "REFUSE chatgpt-mind: once needs exactly one dry-run or arm-once grant"
+assert ?| [(mode != "once") (arm_loop == false)] else "REFUSE chatgpt-mind: arm-loop belongs only to loop"
+assert ?| [(mode != "loop") (armed_count == 1)] else "REFUSE chatgpt-mind: loop needs exactly one dry-run or arm-loop grant"
+assert ?| [(mode != "loop") (arm_once == false)] else "REFUSE chatgpt-mind: arm-once belongs only to once"
+assert ?| [(mode == "once") (mode == "loop") (armed_count == 0)] else "REFUSE chatgpt-mind: arming belongs only to once or loop"
+assert ?| [(has_max_laps == false) (mode == "loop")] else "REFUSE chatgpt-mind: max-laps belongs only to loop"
+assert max_laps >= 1 else "REFUSE chatgpt-mind: max-laps is below one"
+assert max_laps <= max_laps_hard else "REFUSE chatgpt-mind: max-laps crossed twenty-four"
+assert failure_ceiling >= 1 else "REFUSE chatgpt-mind: failure-ceiling is below one"
+assert failure_ceiling <= max_failures_hard else "REFUSE chatgpt-mind: failure-ceiling crossed five"
+assert backoff_seconds >= 0 else "REFUSE chatgpt-mind: backoff-seconds is negative"
+assert backoff_seconds <= max_backoff_seconds else "REFUSE chatgpt-mind: backoff-seconds crossed three hundred"
+
+let pwd_result = run ["pwd"]
+assert pwd_result.ok else "REFUSE chatgpt-mind: could not read repository root"
+let repo_root = trim pwd_result.out
+let kernel_result = run ["uname" "-s"]
+assert kernel_result.ok else "REFUSE chatgpt-mind: could not read the host kernel"
+assert (trim kernel_result.out) == "Darwin" else "REFUSE chatgpt-mind: the existing enclosure contract is macOS-only"
+let root_check = run ["test" "-f" "construction/ITINERARY.md"]
+assert root_check.ok else "REFUSE chatgpt-mind: run from the Grain repository root"
+
+let state_override = env "MIND_STATE_DIR"
+let state_default = repo_root + "/.mind-state"
+let state_abs = ?: (state_override == "") state_default state_override
+let codex_home_override = env "MIND_CODEX_HOME"
+let codex_home_default = state_abs + "/codex-home"
+let codex_home_abs = ?: (codex_home_override == "") codex_home_default codex_home_override
+let root_prefix = repo_root + "/"
+assert state_abs starts-with root_prefix else "REFUSE chatgpt-mind: MIND_STATE_DIR must stay inside this repository"
+assert codex_home_abs starts-with root_prefix else "REFUSE chatgpt-mind: MIND_CODEX_HOME must stay inside this repository"
+let relative_start = length root_prefix
+let state_rel = slice state_abs relative_start (length state_abs)
+assert state_rel != "" else "REFUSE chatgpt-mind: state directory name is empty"
+assert (state_rel contains "/") == false else "REFUSE chatgpt-mind: state directory must be one repository-root child"
+assert state_rel != "." else "REFUSE chatgpt-mind: state directory cannot be dot"
+assert state_rel != ".." else "REFUSE chatgpt-mind: state directory cannot be dot-dot"
+let codex_prefix = state_abs + "/"
+assert codex_home_abs starts-with codex_prefix else "REFUSE chatgpt-mind: Codex home must be one child of the state directory"
+let codex_name_start = length codex_prefix
+let codex_name = slice codex_home_abs codex_name_start (length codex_home_abs)
+assert codex_name != "" else "REFUSE chatgpt-mind: Codex home name is empty"
+assert (codex_name contains "/") == false else "REFUSE chatgpt-mind: Codex home must be one child of the state directory"
+assert codex_name != "." else "REFUSE chatgpt-mind: Codex home cannot be dot"
+assert codex_name != ".." else "REFUSE chatgpt-mind: Codex home cannot be dot-dot"
+let codex_home_rel = slice codex_home_abs relative_start (length codex_home_abs)
+let log_rel = state_rel + "/logs"
+let log_abs = state_abs + "/logs"
+let prompt_rel = state_rel + "/current.prompt"
+let prompt_abs = state_abs + "/current.prompt"
+let lock_rel = state_rel + "/run.lock"
+let stop_rel = state_rel + "/STOP"
+let stop_abs = state_abs + "/STOP"
+let custody_abs = state_abs + "/CUSTODY"
+let preflight_rel = state_rel + "/preflight"
+let preflight_abs = state_abs + "/preflight"
+let rishi_override = env "MIND_RISHI_BIN"
+let rishi_bin = ?: (rishi_override == "") "rishi/bin/rishi" rishi_override
+let rishi_check = run ["test" "-x" rishi_bin]
+assert rishi_check.ok else "REFUSE chatgpt-mind: the built Rishi binary is absent"
+
+let state_link = run ["test" "-L" state_rel]
+assert state_link.ok == false else "REFUSE chatgpt-mind: state directory cannot be a symlink"
+let dirs = run ["mkdir" "-p" state_rel log_rel codex_home_rel preflight_rel]
+assert dirs.ok else "REFUSE chatgpt-mind: could not prepare bounded repository-local state"
+let codex_home_link = run ["test" "-L" codex_home_rel]
+let log_link = run ["test" "-L" log_rel]
+let preflight_link = run ["test" "-L" preflight_rel]
+assert codex_home_link.ok == false else "REFUSE chatgpt-mind: Codex home cannot be a symlink"
+assert log_link.ok == false else "REFUSE chatgpt-mind: log directory cannot be a symlink"
+assert preflight_link.ok == false else "REFUSE chatgpt-mind: preflight directory cannot be a symlink"
+
+let stop_err = preflight_rel + "/stop.err"
+if mode == "stop" then let stop_make = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: stop_rel, stdout-max: 0, stderr-path: stop_err, stderr-max: 4096 }
+if mode == "stop" then assert stop_make.ok
+if mode == "stop" then say "chatgpt-mind: stop requested at ${stop_abs}"
+if mode == "stop" then exit 0
+
+let printer_err = preflight_rel + "/printer.err"
+let printer = run-bounded { argv: [rishi_bin "run" "tools/l/print-mind-cardinal-prompt.rish"], stdin: "", stdin-max: 0, stdout-path: prompt_rel, stdout-max: max_prompt_bytes, stderr-path: printer_err, stderr-max: 4096 }
+assert printer.ok else "REFUSE chatgpt-mind: canonical Rishi prompt printer failed"
+assert printer.stdout-bytes >= 1 else "REFUSE chatgpt-mind: canonical prompt is empty"
+
+if mode == "print" then let printed_prompt = read-file prompt_rel
+if mode == "print" then let printed_end = (length printed_prompt) - 1
+if mode == "print" then say slice printed_prompt 0 printed_end
+if mode == "print" then exit 0
+
+let ai_override = env "MIND_AI_JAIL_BIN"
+let ai_which = run ["/usr/bin/which" "ai-jail"]
+let ai_found = trim ai_which.out
+let ai_jail = ?: (ai_override != "") ai_override ai_found
+let ai_check = run ["test" "-x" ai_jail]
+assert ai_check.ok else "REFUSE chatgpt-mind: ai-jail is absent from PATH"
+
+let codex_override = env "MIND_CODEX_BIN"
+let codex_which = run ["/usr/bin/which" "codex"]
+let codex_found = trim codex_which.out
+let codex_candidate = ?: (codex_override != "") codex_override codex_found
+let codex_bin = ?: (codex_candidate == "") "/Applications/ChatGPT.app/Contents/Resources/codex" codex_candidate
+let codex_check = run ["test" "-x" codex_bin]
+assert codex_check.ok else "REFUSE chatgpt-mind: Codex CLI is absent from PATH and ChatGPT.app"
+let codex_real = run ["/bin/realpath" codex_bin]
+assert codex_real.ok else "REFUSE chatgpt-mind: Codex CLI could not be canonically resolved"
+let codex_exec = trim codex_real.out
+assert codex_exec starts-with "/" else "REFUSE chatgpt-mind: canonical Codex CLI path must be absolute"
+let codex_exec_check = run ["test" "-x" codex_exec]
+assert codex_exec_check.ok else "REFUSE chatgpt-mind: canonical Codex CLI target is not executable"
+let codex_exec_link = run ["test" "-L" codex_exec]
+assert codex_exec_link.ok == false else "REFUSE chatgpt-mind: canonical Codex CLI path remains a symlink"
+
+let codex_help_out = preflight_rel + "/codex-help.out"
+let codex_help_err = preflight_rel + "/codex-help.err"
+let codex_help_run = run-bounded { argv: [codex_exec "exec" "--help"], stdin: "", stdin-max: 0, stdout-path: codex_help_out, stdout-max: 65536, stderr-path: codex_help_err, stderr-max: 65536 }
+assert codex_help_run.ok else "REFUSE chatgpt-mind: Codex exec help did not run"
+let codex_help = (read-file codex_help_out) + (read-file codex_help_err)
+assert codex_help contains "--sandbox <SANDBOX_MODE>" else "REFUSE chatgpt-mind: Codex exec lacks the current sandbox option"
+assert codex_help contains "danger-full-access" else "REFUSE chatgpt-mind: Codex exec lacks danger-full-access"
+
+let jail_plan_out = preflight_rel + "/jail-plan.out"
+let jail_plan_err = preflight_rel + "/jail-plan.err"
+let jail_plan_run = run-bounded { argv: [ai_jail "--dry-run" "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: jail_plan_out, stdout-max: 65536, stderr-path: jail_plan_err, stderr-max: 65536 }
+assert jail_plan_run.ok else "REFUSE chatgpt-mind: ai-jail could not render its macOS plan"
+let jail_plan = (read-file jail_plan_out) + (read-file jail_plan_err)
+assert jail_plan contains "sandbox-exec" else "REFUSE chatgpt-mind: outer jail did not select macOS Seatbelt"
+assert jail_plan contains "(deny default)" else "REFUSE chatgpt-mind: outer jail plan is not deny-by-default"
+assert jail_plan contains repo_root else "REFUSE chatgpt-mind: outer jail plan does not name this repository"
+assert jail_plan contains "(allow file-write*" else "REFUSE chatgpt-mind: outer jail plan lacks an explicit write lane"
+let dq = read-file "tools/fixtures/dquote.txt"
+assert length dq == 1 else "REFUSE chatgpt-mind: quote fixture is not one byte"
+assert (codex_exec contains dq) == false else "REFUSE chatgpt-mind: canonical Codex CLI path cannot be encoded safely in the jail plan"
+let codex_plan_allow = "(allow file-read* (literal " + dq + codex_exec + dq + "))"
+let codex_plan_deny = "(deny file-write* (literal " + dq + codex_exec + dq + "))"
+let map_allow_out = preflight_rel + "/codex-map-allow.out"
+let map_allow_err = preflight_rel + "/codex-map-allow.err"
+let map_allow_run = run-bounded { argv: ["/usr/bin/grep" "-F" "-x" codex_plan_allow], stdin: jail_plan, stdin-max: 65536, stdout-path: map_allow_out, stdout-max: 4096, stderr-path: map_allow_err, stderr-max: 4096 }
+assert map_allow_run.overflow == "" else "REFUSE chatgpt-mind: Codex map allow proof crossed its byte wall"
+assert map_allow_run.ok else "REFUSE chatgpt-mind: outer jail plan does not map the canonical Codex CLI read-only"
+assert trim (read-file map_allow_out) == codex_plan_allow else "REFUSE chatgpt-mind: outer jail Codex allow mapping is ambiguous"
+let map_deny_out = preflight_rel + "/codex-map-deny.out"
+let map_deny_err = preflight_rel + "/codex-map-deny.err"
+let map_deny_run = run-bounded { argv: ["/usr/bin/grep" "-F" "-x" codex_plan_deny], stdin: jail_plan, stdin-max: 65536, stdout-path: map_deny_out, stdout-max: 4096, stderr-path: map_deny_err, stderr-max: 4096 }
+assert map_deny_run.overflow == "" else "REFUSE chatgpt-mind: Codex map deny proof crossed its byte wall"
+assert map_deny_run.ok else "REFUSE chatgpt-mind: outer jail plan does not deny writes to the canonical Codex CLI"
+assert trim (read-file map_deny_out) == codex_plan_deny else "REFUSE chatgpt-mind: outer jail Codex deny mapping is ambiguous"
+assert jail_plan contains "/.ssh" else "REFUSE chatgpt-mind: private-home plan does not deny SSH state"
+assert jail_plan contains "/.gnupg" else "REFUSE chatgpt-mind: private-home plan does not deny GPG state"
+
+let ai_version_out = preflight_rel + "/ai-version.out"
+let ai_version_err = preflight_rel + "/ai-version.err"
+let ai_version_run = run-bounded { argv: [ai_jail "--version"], stdin: "", stdin-max: 0, stdout-path: ai_version_out, stdout-max: 4096, stderr-path: ai_version_err, stderr-max: 4096 }
+assert ai_version_run.ok else "REFUSE chatgpt-mind: ai-jail version check failed"
+let codex_version_out = preflight_rel + "/codex-version.out"
+let codex_version_err = preflight_rel + "/codex-version.err"
+let codex_version_run = run-bounded { argv: [codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: codex_version_out, stdout-max: 4096, stderr-path: codex_version_err, stderr-max: 4096 }
+assert codex_version_run.ok else "REFUSE chatgpt-mind: Codex version check failed"
+let ai_version = trim (read-file ai_version_out)
+let codex_version = trim (read-file codex_version_out)
+say "chatgpt-mind: ${ai_version}"
+say "chatgpt-mind: ${codex_version}"
+say "chatgpt-mind: Codex state is project-local at ${codex_home_abs}"
+say "chatgpt-mind: active serving model, effort, and tier are unverified"
+
+let host_config = (env "HOME") + "/.codex/config.toml"
+let host_config_check = run ["test" "-f" host_config]
+if host_config_check.ok then let host_defaults = run ["grep" "-E" "^(model|model_reasoning_effort|service_tier)[[:space:]]*=" host_config]
+if host_config_check.ok then say "chatgpt-mind: configured host defaults follow; they are not active-runtime proof"
+if host_config_check.ok then say host_defaults.out
+
+let pmset_which = run ["/usr/bin/which" "pmset"]
+let pmset_bin = trim pmset_which.out
+let power_source = "unknown"
+let system_sleep = "unknown"
+let battery_out = preflight_rel + "/power-battery.out"
+let battery_err = preflight_rel + "/power-battery.err"
+if pmset_bin != "" then let battery_reading = run-bounded { argv: [pmset_bin "-g" "batt"], stdin: "", stdin-max: 0, stdout-path: battery_out, stdout-max: 16384, stderr-path: battery_err, stderr-max: 4096 }
+if pmset_bin != "" then let battery_text = read-file battery_out
+if pmset_bin != "" then let power_source = ?: (battery_text contains "AC Power") "ac" "battery"
+let custom_out = preflight_rel + "/power-custom.out"
+let custom_err = preflight_rel + "/power-custom.err"
+if pmset_bin != "" then let custom_reading = run-bounded { argv: [pmset_bin "-g" "custom"], stdin: "", stdin-max: 0, stdout-path: custom_out, stdout-max: 16384, stderr-path: custom_err, stderr-max: 4096 }
+if pmset_bin != "" then let custom_text = read-file custom_out
+let sleep_out = preflight_rel + "/power-sleep.out"
+let sleep_err = preflight_rel + "/power-sleep.err"
+let sleep_awk = "/^AC Power:/ { in_ac=1; next } /^[^[:space:]]/ { in_ac=0 } in_ac && $1 ~ /^sleep$/ { print $2; exit }"
+if pmset_bin != "" then let sleep_parse = run-bounded { argv: ["/usr/bin/awk" sleep_awk], stdin: custom_text, stdin-max: 16384, stdout-path: sleep_out, stdout-max: 64, stderr-path: sleep_err, stderr-max: 4096 }
+if pmset_bin != "" then let sleep_text = trim (read-file sleep_out)
+if pmset_bin != "" then let system_sleep = ?: (sleep_text == "") "unknown" sleep_text
+say "chatgpt-mind: power source ${power_source}; AC system sleep ${system_sleep}"
+say "chatgpt-mind: screensaver and power settings remain unchanged"
+
+if dry_run then say "chatgpt-mind: dry-run only; Codex will not be invoked"
+if dry_run then say "chatgpt-mind: bounded laps ${max_laps}, failure ceiling ${failure_ceiling}, backoff ${backoff_seconds} seconds"
+if dry_run then say "chatgpt-mind: planned inner command maps the resolved Codex CLI read-only, then runs codex exec --sandbox danger-full-access --ephemeral --strict-config with repository-relative isolated state and TMPDIR=/private/tmp inside ai-jail --exec --private-home --no-save-config"
+if dry_run then exit 0
+
+fn file-absent path: (run ["test" "!" "-e" path]).ok
+fn repo-clean root: (trim (run ["git" "-C" root "status" "--porcelain" "--untracked-files=normal" "--ignore-submodules=none"]).out) == ""
+fn xy-remote root: (run ["git" "-C" root "remote" "get-url" "xy"]).ok
+fn xy-ready root: (run ["git" "-C" root "show-ref" "--verify" "--quiet" "refs/remotes/xy/main"]).ok
+fn xy-integrated root: (trim (run ["git" "-C" root "rev-list" "--count" "HEAD..xy/main"]).out) == "0"
+fn ahead-count root: parse (trim (run ["git" "-C" root "rev-list" "--count" "xy/main..HEAD"]).out)
+fn gitlink-held root: (run ["git" "-C" root "ls-files" "-s" "gratitude/grain-sketchbook"]).out starts-with "160000 "
+fn signed-descendant root before after: ?& [((run ["git" "-C" root "merge-base" "--is-ancestor" before after]).ok) ((trim (run ["git" "-C" root "rev-list" "--count" "${before}..${after}"]).out) == "1") (?| [((trim (run ["git" "-C" root "log" "-1" "--format=%G?"]).out) == "G") ((trim (run ["git" "-C" root "log" "-1" "--format=%G?"]).out) == "U")])]
+
+assert xy-remote repo_root else "REFUSE chatgpt-mind: personal remote xy is not configured"
+assert xy-ready repo_root else "REFUSE chatgpt-mind: local xy/main is absent"
+assert gitlink-held repo_root else "REFUSE chatgpt-mind: pinned sketchbook is not a gitlink"
+assert repo-clean repo_root else "REFUSE chatgpt-mind: worktree is not clean"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main has unintegrated commits"
+assert (ahead-count repo_root) <= max_local_ahead else "REFUSE chatgpt-mind: local commit ceiling crossed"
+
+let outside_probe = (env "HOME") + "/.grain-mind-jail-probe"
+let inside_probe = preflight_abs + "/inside"
+assert file-absent outside_probe else "REFUSE chatgpt-mind: outside probe path already exists"
+assert file-absent inside_probe else "REFUSE chatgpt-mind: inside probe path already exists"
+let inside_probe_out = preflight_rel + "/inside-probe.out"
+let inside_probe_err = preflight_rel + "/inside-probe.err"
+let inside_probe_run = run-bounded { argv: [ai_jail "--exec" "--private-home" "--no-save-config" "/usr/bin/touch" inside_probe], stdin: "", stdin-max: 0, stdout-path: inside_probe_out, stdout-max: 4096, stderr-path: inside_probe_err, stderr-max: 4096 }
+assert inside_probe_run.ok else "REFUSE chatgpt-mind: outer jail denied its repository-local write probe"
+let outside_probe_out = preflight_rel + "/outside-probe.out"
+let outside_probe_err = preflight_rel + "/outside-probe.err"
+let outside_probe_run = run-bounded { argv: [ai_jail "--exec" "--private-home" "--no-save-config" "/usr/bin/touch" outside_probe], stdin: "", stdin-max: 0, stdout-path: outside_probe_out, stdout-max: 4096, stderr-path: outside_probe_err, stderr-max: 4096 }
+assert outside_probe_run.ok == false else "REFUSE chatgpt-mind: outer jail allowed a write outside the repository"
+assert file-absent outside_probe else "REFUSE chatgpt-mind: outer jail left an outside probe"
+let probe_sweep = run ["rm" "-f" inside_probe]
+assert probe_sweep.ok else "REFUSE chatgpt-mind: could not sweep the inside probe"
+let enclosed_version_out = preflight_rel + "/enclosed-codex-version.out"
+let enclosed_version_err = preflight_rel + "/enclosed-codex-version.err"
+let enclosed_version_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_version_out, stdout-max: 4096, stderr-path: enclosed_version_err, stderr-max: 4096 }
+assert enclosed_version_run.overflow == "" else "REFUSE chatgpt-mind: enclosed Codex version output crossed its byte wall"
+assert enclosed_version_run.ok else "REFUSE chatgpt-mind: outer jail could not execute the resolved Codex CLI"
+
+let config_path = codex_home_abs + "/config.toml"
+let config_check = run ["test" "-f" config_path]
+assert config_check.ok else "REFUSE chatgpt-mind: project-local Codex config is absent"
+let config_link = run ["test" "-L" config_path]
+assert config_link.ok == false else "REFUSE chatgpt-mind: project-local Codex config cannot be a symlink"
+let codex_home_arg = "CODEX_HOME=${codex_home_rel}"
+let codex_tmpdir_arg = "TMPDIR=/private/tmp"
+let login_out = preflight_rel + "/codex-login-status.out"
+let login_err = preflight_rel + "/codex-login-status.err"
+let login_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg codex_exec "login" "status"], stdin: "", stdin-max: 0, stdout-path: login_out, stdout-max: 4096, stderr-path: login_err, stderr-max: 4096 }
+assert login_run.overflow == "" else "REFUSE chatgpt-mind: isolated Codex login status crossed its byte wall"
+assert login_run.ok else "REFUSE chatgpt-mind: isolated Codex login is absent or unreadable"
+
+if mode == "check" then say "GREEN chatgpt-mind: prompt, repository, tools, isolated login, power reading, and outer jail checks passed"
+if mode == "check" then exit 0
+
+assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP is present"
+assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY is present"
+assert ?| [(mode != "loop") (power_source == "ac")] else "REFUSE chatgpt-mind: armed loop needs AC power"
+assert ?| [(mode != "loop") (system_sleep == "0")] else "REFUSE chatgpt-mind: armed loop needs AC system sleep zero"
+if internal_lap == false then acquire-lock lock_rel
+
+let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"
+let internal_out = log_rel + "/supervisor.out"
+let internal_err = log_rel + "/supervisor.err"
+fn run-one-lap lap: run-bounded { argv: ["/usr/bin/env" "MIND_INTERNAL_LAP=1" "MIND_STATE_DIR=${state_abs}" "MIND_CODEX_HOME=${codex_home_abs}" "MIND_RISHI_BIN=${rishi_bin}" "MIND_AI_JAIL_BIN=${ai_jail}" "MIND_CODEX_BIN=${codex_exec}" rishi_bin "run" launcher_abs "lap" (str lap)], stdin: "", stdin-max: 0, stdout-path: internal_out, stdout-max: max_supervisor_bytes, stderr-path: internal_err, stderr-max: max_supervisor_bytes, stdout-relay: true, stderr-relay: true }
+fn mind-loop lap max failures ceiling delay: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (mind-loop (lap + 1) max 0 ceiling delay) (?: ((failures + 1) >= ceiling) (1) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds)) (1))))
+fn lap-failure-phase detail: ?: (detail contains "Codex output crossed its byte wall") ("codex-output reason=byte-wall") (?: (detail contains "enclosed Codex lap exited nonzero") ("codex-exec reason=nonzero") (?: (detail contains "lap recorded a custody gate") ("custody reason=recorded") (?: (detail contains "lap left a dirty tree") ("git-postcondition reason=dirty-tree") (?: (detail contains "lap made no commit") ("git-postcondition reason=no-commit") (?: (detail contains "lap did not add exactly one signed descendant commit") ("git-postcondition reason=commit-or-signature") (?: (detail contains "xy/main advanced during the lap") ("git-postcondition reason=xy-advanced") (?: (detail contains "post-lap local commit ceiling crossed") ("git-postcondition reason=commit-ceiling") (?: (detail contains "could not initialize bounded last-message file") ("last-message reason=initialization") (?: (detail contains "lap opened on a dirty tree") ("lap-preflight reason=dirty-tree") (?: (detail contains "xy/main advanced before the lap") ("lap-preflight reason=xy-advanced") (?: (detail contains "STOP observed between laps") ("lap-preflight reason=stop") (?: (detail contains "CUSTODY observed between laps") ("lap-preflight reason=custody") ("supervisor reason=unclassified")))))))))))))
+
+let once_result = ?: (mode == "once") (run-one-lap 1) ({ok: true, overflow: ""})
+assert ?| [(mode != "once") (once_result.overflow == "")] else "REFUSE chatgpt-mind: lap failed at supervisor-output reason=byte-wall; bounded detail remains private"
+let once_phase = ?: (mode == "once") (lap-failure-phase (read-file internal_err)) ("not-run")
+assert ?| [(mode != "once") once_result.ok] else "REFUSE chatgpt-mind: lap failed phase=${once_phase}; bounded detail remains in ${internal_err}"
+if mode == "once" then say "chatgpt-mind: lap one complete with one signed local commit"
+if mode == "once" then exit 0
+
+let loop_result = ?: (mode == "loop") (mind-loop 1 max_laps 0 failure_ceiling backoff_seconds) (0)
+let loop_phase = ?: (mode == "loop") (lap-failure-phase (read-file internal_err)) ("not-run")
+assert ?| [(mode != "loop") (loop_result == 0)] else "REFUSE chatgpt-mind: circuit opened phase=${loop_phase}; bounded detail remains in ${internal_err}"
+if mode == "loop" then say "chatgpt-mind: bounded loop completed ${max_laps} lap(s); no push was attempted"
+if mode == "loop" then exit 0
+
+let lap_number = parse args[1]
+assert lap_number >= 1 else "REFUSE chatgpt-mind: internal lap number is below one"
+assert lap_number <= max_laps_hard else "REFUSE chatgpt-mind: internal lap number crossed twenty-four"
+assert repo-clean repo_root else "REFUSE chatgpt-mind: lap opened on a dirty tree"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced before the lap"
+assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP observed between laps"
+assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY observed between laps"
+let before_run = run ["git" "-C" repo_root "rev-parse" "HEAD"]
+assert before_run.ok else "REFUSE chatgpt-mind: could not read pre-lap HEAD"
+let before = trim before_run.out
+let lap_out = "${log_rel}/lap-${lap_number}.stdout"
+let lap_err = "${log_rel}/lap-${lap_number}.stderr"
+let lap_last = "${log_rel}/lap-${lap_number}.last"
+let last_init_err = "${log_rel}/lap-${lap_number}.last-init.err"
+let last_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: lap_last, stdout-max: max_log_bytes, stderr-path: last_init_err, stderr-max: 4096 }
+assert last_init.ok else "REFUSE chatgpt-mind: could not initialize bounded last-message file"
+let prompt_text = read-file prompt_rel
+let codex_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"], stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
+assert codex_run.overflow == "" else "REFUSE chatgpt-mind: Codex output crossed its byte wall"
+assert codex_run.ok else "REFUSE chatgpt-mind: enclosed Codex lap exited nonzero code=${codex_run.code}"
+assert file-absent custody_abs else "REFUSE chatgpt-mind: lap recorded a custody gate"
+assert repo-clean repo_root else "REFUSE chatgpt-mind: lap left a dirty tree"
+let after_run = run ["git" "-C" repo_root "rev-parse" "HEAD"]
+assert after_run.ok else "REFUSE chatgpt-mind: could not read post-lap HEAD"
+let after = trim after_run.out
+assert after != before else "REFUSE chatgpt-mind: lap made no commit and named no custody gate"
+assert signed-descendant repo_root before after else "REFUSE chatgpt-mind: lap did not add exactly one signed descendant commit"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced during the lap"
+assert (ahead-count repo_root) <= max_local_ahead else "REFUSE chatgpt-mind: post-lap local commit ceiling crossed"
+say "chatgpt-mind: lap ${lap_number} complete with one signed local commit"
