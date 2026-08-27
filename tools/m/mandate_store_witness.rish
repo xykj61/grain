@@ -24,5 +24,7 @@ assert (st.err contains "updates in place, never growing the store") else "an up
 assert (st.err contains "turbopuffer") else "Mandate is Grain's turbopuffer"
 assert (st.err contains "object-storage backing") else "the whole store serializes to one portable object"
 assert (st.err contains "hydrated back from it, identical") else "a fresh node round-trips the store from the blob (object-storage backing)"
+assert (st.err contains "the sixty-fifth record refuses by Full") else "the max_records bound must refuse by its declared name, watched as a value"
+assert (st.err contains "remove opens the door again") else "the bound is the live count rather than a latch"
 
-say "GREEN: mandate store — Grain's turbopuffer: a bounded, zero-copy vector store; nearest-neighbour by cosine over unit vectors, a metadata filter, an approximate index, object-storage backing, exact and witnessed."
+say "GREEN: mandate store — Grain's turbopuffer: a bounded, zero-copy vector store; nearest-neighbour by cosine over unit vectors, a metadata filter, an approximate index, object-storage backing, the Full bound refused by name at the sixty-fifth record, exact and witnessed."

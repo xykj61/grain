@@ -643,6 +643,31 @@ fn prove_file_backing(init: std.process.Init) !void {
     print("mandate store: object-storage backing — the whole store serialized to a {d}-byte blob written to {s} and a fresh store hydrated back from it, identical; the store's entire state is one portable object (a bucket-backed, serverless shape).\n", .{ read_back.len, path });
 }
 
+fn prove_full(store: *Store) !void {
+    // The one named bound no leg had ever met: max_records is 64, upsert returns
+    // error.Full at the sixty-fifth distinct id, and the refusal is watched here as
+    // the value it is rather than believed from the declaration beside it.
+    const unit: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    var id: u32 = 100;
+    while (store.filled < max_records) : (id += 1) {
+        try upsert(store, id, 1, &unit);
+    }
+    // invariant: the store stands exactly at its ceiling before the refusal is asked for
+    assert(store.filled == max_records);
+    const over = upsert(store, id, 1, &unit);
+    if (over) |_| return error.FullDidNotRefuse else |err| {
+        // invariant: the refusal carries its declared name, never a neighbour's
+        assert(err == error.Full);
+    }
+    // invariant: a refused upsert wrote nothing -- the count holds at the ceiling
+    assert(store.filled == max_records);
+    // The bound is the live count rather than a latch: remove one and the door opens.
+    const hit = remove(store, 100);
+    if (!hit) return error.FullRemoveMissed;
+    try upsert(store, id, 1, &unit);
+    if (store.filled != max_records) return error.FullReopenMiscounted;
+}
+
 fn run_selftest(init: std.process.Init) !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
@@ -654,6 +679,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     try prove_approx();
     try prove_snapshot();
     try prove_file_backing(init);
+    var full_store = try init_from_profile(profile_bron);
+    try prove_full(&full_store);
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
@@ -663,6 +690,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("mandate store: the dimension is read from a real Bron profile (mandate/dim.profile.bron) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
     print("mandate store: an approximate index (SimHash LSH over fixed hyperplanes) scores only candidates within a bounded Hamming radius of the query's signature — same-bucket recall, fewer records touched; full radius degrades to exact.\n", .{});
     print("mandate store: object-storage backing — the whole store serializes to one portable blob (magic·version·dim·records), so a fresh node hydrates the entire store from a single object; snapshot/restore round-trips and corruption is refused.\n", .{});
+    print("mandate store: the sixty-fifth record refuses by Full — the count holds at the ceiling, and remove opens the door again, since the bound is the live count rather than a latch.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;
