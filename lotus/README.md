@@ -1,12 +1,12 @@
 # Lotus -- Grain's creative suite
 
 **Stamp:** `20260824.091754` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living front door -- Chapter C, the ALES ladder, **240 modules** standing with **239 witnesses**
+**Status:** Living front door -- Chapter C, the ALES ladder, **240 modules** standing with **241 witnesses** (measured `20260827`)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Chapter:** the Six-Chapter double-seat, Chapter C thread - **Waymark:** ALES
-**Kin:** [`the Lotus DAW`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) - [`the eight-season double-seat`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md)
+**Kin:** [`the Lotus DAW`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) - [`the eight-season double-seat`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - the surface it draws on, [`Skate / Surf`](../skate/README.md) under [`alias-sameness`](../.claude/rules/alias-sameness.md) - the ladder law it is marked by, [`stamp-and-name`](../.claude/rules/stamp-and-name.md) - the waymark roster [`waymark-ladders`](../.claude/rules/waymark-ladders.md), where **ALES** is seated
 
 ---
 
@@ -32,11 +32,19 @@ hardware-research round, bookmarked on Keaton's word. The cable kinds this code 
 
 ## What stands, measured
 
-| Reading | Count | Where |
-|---|---|---|
-| Rye modules in `lotus/` | **240** | every one with a row in [`MODULES.md`](MODULES.md) |
-| Witnesses on disk | **239** | `tools/al/ales_*_witness.rish` |
-| Rungs climbed | **ALES0 through ALES238** | the ledger in [`LADDER.md`](LADDER.md) |
+| Reading | Count | Where | Measured |
+|---|---|---|---|
+| Rye modules in `lotus/` | **240** | every one with a row in [`MODULES.md`](MODULES.md) | `20260827` |
+| Witnesses on disk | **241** | `tools/al/ales_*_witness.rish` | `20260827` |
+| Rungs climbed, in code | **ALES0 through ALES238** | the newest is `catalog_verify.rye` | `20260827` |
+| Rungs written into the ledger | **ALES0 through ALES214** | [`LADDER.md`](LADDER.md) | `20260827` |
+
+**The last twenty-four rungs live in their modules rather than in the ledger.** ALES215 through
+ALES238 ran and are green; `LADDER.md` stopped being written at ALES214. They are named here rather
+than transcribed, because a ledger that invents rows it did not read is worse than one that says
+where the rows are. Whoever next works this ladder folds them in from the modules and their
+witnesses -- the same repair `docs/STOA.md` took on `20260827.173952`, and the same lesson: a
+compressor goes stale quietly, because nothing about it looks wrong.
 
 Two of the 240 are seam symlinks into `../tally/` -- `parse_int.rye` and `tally_copy.rye` -- and
 they carry rows too, since a reader who finds a file in this directory expects the page to explain

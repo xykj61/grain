@@ -1,16 +1,30 @@
-# Lattice -- Tensors in Tally Gardens
+# Lattice -- the arithmetic voice, in bounded gardens
 
-**Language:** EN
-**Last updated:** 2026-07-10 (minimum tensor set - elu `224805`; parity **371**/**375** -- Inference arc close)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Checkable-room module -- laps 0-31 green (ops through minimum - elu)
+**Stamp:** `20260827.185500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
+**Status:** Living module -- **laps 0 through 39 green**, ops through `hard_sigmoid` - `rsqrt` - `hardtanh` - `cube`, each with its own witness
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+**Kin:** [`Lantern`](../lantern/README.md) serves what Lattice counts, [`Ember`](../ember/README.md) forges the corpus, [`Scribble`](../scribble/README.md) reads it -- the four faculties of the **Q-vane** ([`../context/QUIN.md`](../context/QUIN.md)) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the bounds law [`tame-guidance`](../.claude/rules/tame-guidance.md), which is why every op asserts its shape
 
 ---
 
-Lattice holds explicit tensor math in bounded gardens. Build order places **Lattice before Lantern**, so every matmul that serves a model has already met the parity gate.
+## What this is
+
+**Lattice is arithmetic that says what it is doing.** It holds explicit tensor math -- matrices of
+`f32`, and forty operations over them -- inside **bounded gardens**, the season allocator every
+module here reaches for rather than a raw arena.
+
+Two disciplines shape every line of it, and they are the reason it is worth reading. **Every
+operation asserts its own shape** before it computes, so a mismatch is a named refusal rather than
+a wrong number. And **every lap is one operation with one witness**, so the module grew by forty
+small provable steps rather than by one large plausible one.
+
+Build order places **Lattice before Lantern** on purpose: every matmul that will one day serve a
+model has already met its gate.
+
+*Read as the Q-vane's voices, Lattice is the arithmetic one -- precision held in bounds, claims
+sized honestly, a number meaning what it measures rather than what anyone wished.*
 
 | Lap | Claim | Witness |
 |-----|--------|---------|
@@ -46,6 +60,14 @@ Lattice holds explicit tensor math in bounded gardens. Build order places **Latt
 | **29** | Elementwise `maximum` - shape assert | parity **367** - `tools/l/lattice_lap30.rish` (`224322`) |
 | **30** | Elementwise `minimum` - shape assert | parity **371** - `tools/l/lattice_lap31.rish` (`224805`) |
 | **31** | Elementwise `elu` - shape assert | parity **375** - `tools/l/lattice_lap32.rish` (`224805`) |
+| **32** | Elementwise `softsign` - shape assert | [`tools/l/lattice_lap33.rish`](../tools/l/lattice_lap33.rish) |
+| **33** | Elementwise `square` - shape assert | [`tools/l/lattice_lap34.rish`](../tools/l/lattice_lap34.rish) |
+| **34** | Elementwise `sign` - shape assert | [`tools/l/lattice_lap35.rish`](../tools/l/lattice_lap35.rish) |
+| **35** | Elementwise `reciprocal` - shape assert | [`tools/l/lattice_lap36.rish`](../tools/l/lattice_lap36.rish) |
+| **36** | Elementwise `hard_sigmoid` - shape assert | [`tools/l/lattice_lap37.rish`](../tools/l/lattice_lap37.rish) |
+| **37** | Elementwise `rsqrt` - shape assert | [`tools/l/lattice_lap38.rish`](../tools/l/lattice_lap38.rish) |
+| **38** | Elementwise `hardtanh` - shape assert | [`tools/l/lattice_lap39.rish`](../tools/l/lattice_lap39.rish) |
+| **39** | Elementwise `cube` - shape assert | [`tools/l/lattice_lap40.rish`](../tools/l/lattice_lap40.rish) |
 
 ## Layout
 
@@ -55,8 +77,12 @@ Lattice holds explicit tensor math in bounded gardens. Build order places **Latt
 | [`lattice.rye`](lattice.rye) | Selftest binary |
 
 ```bash
-rishi/bin/rishi run tools/l/lattice_lap31.rish
-rishi/bin/rishi run tools/l/lattice_lap32.rish
+rishi/bin/rishi run tools/l/lattice_lap40.rish     # the newest rung -- cube
+rishi/bin/rishi run tools/l/lattice_lap1.rish      # the first -- matmul 2x2
 ```
+
+*The eight rungs above lap 31 stood on disk and undocumented until `20260827`: the table stopped at
+lap 31 while `tools/l/` carried lap witnesses through 40. A ladder counts what it has climbed
+(`.claude/rules/stamp-and-name.md`), so the table counts forty now.*
 
 *May the numbers stay honest before the model runs.*
