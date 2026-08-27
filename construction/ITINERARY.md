@@ -9,7 +9,7 @@
 
 *The outer shell loop reads this card first every lap, so a directive here takes effect on the NEXT lap without a restart. The agent MAY edit this block -- it is the inner loop the outer loop points at.*
 
-**Directives only.** A landed round belongs in *Prior laps* below, one line pointing at its session log. The settled decisions this block released are held word for word at [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md); walk-back checkpoints `7754ccf272` and `d6c02f92cc`.
+**Directives only.** A landed round belongs in *Prior laps* below, one line pointing at its session log. The settled decisions this block released are held word for word at [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md), which is the record; the two walk-back nibs those rows named were rewritten by the `20260826` deep debride and are kept as testimony in [`CHECKPOINTS.md`](CHECKPOINTS.md) rather than advertised here (REDS %280).
 
 ### Standing, every lap
 
@@ -22,18 +22,20 @@
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
+- **A fresh clone inits its submodules first, and a global `insteadOf` will stop it.** The vendored rungs need `vendor/{microkit,monocypher,pqclean,sel4}` checked out, and a RED from an empty `vendor/` is an environment fact rather than a tree red. A host that rewrites `https://github.com/` to ssh (this bench does) cannot clone the public third-party submodules at all, since the key has no rights there -- `GIT_CONFIG_GLOBAL=/dev/null git submodule update --init <path>` clones each one over plain https without touching the host's config. `--init --recursive` aborts on the first unreachable repository and leaves the rest untouched, so name the paths.
 
 ### Seated, and still live
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The three aether stars seated** (`20260826`, Keaton's word): **Mind** cardinal (Arbor -- Brushstroke - Surf), **Sound** fixed (this bench -- the constellation: `active-designing/20260826-174418_the-constellation-and-the-callings.md`), **Dream** dual (pier -- Glow to Rye; seed cadence).
+- **STANDFAST -- the fusion build** (`20260826`, Keaton's word): build the granted reprove-only-what-moved ruling (`20260825.181028`) before other Sound work -- a derived file-to-witness map, hit-rate and lap-tail gates proven both ways; scoped runs each lap, the full choir on cadence laps. Confidence per minute is the reward.
 - **The optimization spine opens** (`20260826`, Sound): wrap classified room-wide, the bound word-wide in its own name, the drain replay proven (`tools/ca/caravan_{wrap_class,drain_replay}_witness.rish`), Caravan the wafer's first consumer; move four next (design in the fusion charter's kin).
 - **SEATED -- Pond completes the enclosure** (`20260826`): the 75-round quest retiring ai-jail -- CLI and callings finishing under Sound; **ai-jail docs stay accrete-only until the replacement is tested and audited**; the switchover and the jail's deep debride stay gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
-- **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds, `expanding-prompts/20260826-014905_the-wade-journey-five-quests-375-rounds.md`).
-- **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Lumen** = the inference vane (renaming Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/date/20260816/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
+- **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds; plan in `expanding-prompts/`).
+- **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Lumen** = the inference vane (renaming Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble); plans in the LEXICON rows.
 - **Seated breaches (checkpoint first):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
-- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter): full history, re-signed, force-pushed; every clone hard-resets once. The standing grant (`20260823.045448`) covers renames, repointing, commit-message rewriting, force push, reclone. Spent at a sweep's **close** it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a misleading filename, or a commit message now known untrue.
+- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, repointing, message rewrites, force push, reclone; re-signing proven (`20260817`). Spent at a sweep's close it costs one reclone; called in early by a misleading filename or an untrue message.
 - **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
 
 ### The crypto spine, seated `20260815` -- the pointer
@@ -54,44 +56,38 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Now.** **Two piers merged, remotes renamed, Dream at work.**
 
-**Landed, shelved** (%268-%270); `dexter` waits.
+**The two piers reconciled** -- upstream's five re-seated at `%271`-`%275`; **the remotes are `xy`,
+`debrided`, `seed`**, every guard reading `origin/main` repointed.
 
-**The two piers reconciled.** Both clones took `%233`-`%237` -- `%230` and `%252` again -- so
-upstream's five are **re-seated at `%271`-`%275`**. **The remotes are `xy`, `debrided`, `seed`;** the
-rename broke every guard reading `origin/main` and every loop line spelling `xykj61`, all repointed.
-`debrided` shared zero commits, force-matched.
+**Dream's lane: the rune says its own name.** Eight plain words for Glow's closed rune set, glyph
+unchanged, lowering byte-identical; **30 of 32 `lower_*.rye` modules already carry a plain name**,
+the two syllable ones prepped Class M.
 
-**Dream's lane: the rune says its own name.** Eight plain words for Glow's closed rune set (*shop,
-fit, bind, ask, call, build, shape, aside*), glyph unchanged, lowering byte-identical. It ratifies --
-**30 of 32 `lower_*.rye` modules already carry a plain name** -- the two syllable ones being the cut
-surface, prepped Class M.
+**Seed published** `20260826.174615`, gate %1 spent: four gates green, anonymous, **`arbor`
+scrubbed**. Killing a `rishi` wrapper orphans its `sh` child -- **reap the child.**
 
-**Three writers, one order** -- 25 conflicts, 20 resolved by reading; the derived-spine key
-**proposed**.
-
-**Seed published** `20260826.174615`, gate %1 spent: four gates green, nib `d983995`, anonymous,
-**`arbor` scrubbed**. Killing a `rishi` wrapper orphans its `sh` child, which holds the projection
-lock -- **reap the child.**
-
-
-**Three looms, two reds.** `tools/fixtures/reds_fold.sh` re-anchors a folded row's links (five named
-refusals, 23 behaviors both ways); `resolve_path` and `sed_inplace` join
-[`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh) with 14 behaviours --
-`sed -i` **3 -> 0**, `readlink -f` **4 -> 2**, survivors host-bound. Grading the first opened
-**%276** (the card graded shell code at **86** against a ceiling of 9); the adaptation word opened
-**%277** (the loop-parse guard read one launcher while four existed). Both repaired that lap.
+**Three looms, two reds** (%276, %277) -- `reds_fold.sh` re-anchors a folded row's links, and
+`resolve_path` and `sed_inplace` joined [`../tools/fixtures/shell_portable.sh`](../tools/fixtures/shell_portable.sh).
 Counsel `20260826.181924`: **a meter pointed at a class it was never shaped for reports a fault it
 created.**
 
-**Dream's loop, his word `20260826`:** the **seed cadence is CUT** -- the fifth-round projection
-leaves the loop, so the star names the moment and stops; gate %1 stays his. A **standing adaptation
-grant** replaces it: bash and sh into **Rishi**, HTML into **Brush**, Python into **Glow**, each born
-beside its elder, which stands until the newborn is GREEN and is then a fossil. The `20260826.151528`
-charter keeps *cadence rides with Dream alone* as testimony; the launcher now says otherwise.
+**Sound's macOS bench opened, and every red was a seam rather than a fault.** `flock(1)` is
+util-linux, so all **44** witnesses reaching `tools/g/glow_run_worker.sh` refused there (**%279**) --
+`lock_acquire` on atomic `mkdir` is `shell_portable.sh`'s sixth dialect answer. The ASCII meter read
+the other way: `\x` is GNU awk, so BWK awk matched **every** character and the living reading came
+back **16,131,707 against a ceiling of 4,338** (**%278**); repaired in POSIX octal, both meters now
+read **4,338** and **505**, the Linux pier's own numbers character for character. The card
+advertised three walk-back nibs the debride had rewritten away (**%280**). **A control that asks
+whether a reading fired cannot see one that fires too often.**
 
-**The %277 sweep closes with no repair.** Across 179 scans and 1,701 witnesses that shape appears
-**nowhere else**, and every reader of a growing family already globs it. Two broader detectors were
-built and discarded as noise (log `20260826-192711`).
+**%281, OPEN and his:** two sessions share this checkout, and `rye build` writes `.zig` shadows
+beside the sources with no lock, so each build deletes the other's mid-compile and the loser reports
+RED about correct code. A lock in `bridge_to_zig`, or one tree per star -- both his word.
+
+**Dream's loop, his word `20260826`:** the **seed cadence is CUT** -- the star names the moment and
+stops; gate %1 stays his. A **standing adaptation grant** replaces it: bash and sh into **Rishi**,
+HTML into **Brush**, Python into **Glow**, each born beside its elder, which stands until the newborn
+is GREEN and is then a fossil.
 
 **The next doors.** His: **row-number allocation** (%230, %252) and the derived-spine key that
 answers it, a **molt-aware resolver**, a **pre-push refusal** (%255), a **debride announcing
@@ -102,8 +98,9 @@ itself**, and the **rune renames**, Class M.
 
 Mandate, the Acme DX chapter, the CION ratchet, **AHOY** beside **WADE**, the Singularity
 foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the
-recursion-prompts cellar, Chapter A's open image module, the Constel dev-net quorum, and the rune
-naming -- each proven on metal and recorded in `session-logs/`. Walk-back `221ebba12a`.
+recursion cellar, Chapter A's image module, the Constel quorum, and the rune naming -- each proven
+on metal and recorded in `session-logs/`, which is where the account lives. Its walk-back nib stands
+in [`CHECKPOINTS.md`](CHECKPOINTS.md), rewritten out of the object store by the deep debride (%280).
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
@@ -144,11 +141,10 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Two grains
 
 The private field is `~/grain`; the public template **grain-os/grain** is *projected* by
-`tools/s/sow.rish` along the boundary in `template-manifest.bron`, proven clean by
-`tools/s/sow_witness.rish` -- no name or key crosses into the seed. The scrub reaches every family
-name, prior name, handle, short name, and contact form, case-insensitively, and a leaking file is
-withheld whole: privacy over completeness (%225). Raw PII is **not persisted in-tree** -- it waits
-for the **Vault**, custody-first. The publish push is Keaton's hand.
+`tools/s/sow.rish` along `template-manifest.bron`, proven clean by `tools/s/sow_witness.rish` -- no
+name or key crosses. The scrub reaches every name, handle, and contact form case-insensitively, and
+a leaking file is withheld whole: privacy over completeness (%225). Raw PII waits for the **Vault**.
+The publish push is Keaton's hand.
 
 ## Shred-prep
 
@@ -171,15 +167,10 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- and two piers reading one rule two ways.** The granted publish was SPENT
-`20260825.212214` from the macOS bench (`fdaf8e3`: 7,015 copied, 152 withheld, all four gates green
-under the %225 wall). The bench **shipped again `20260826.053017`** on the cadence law, by its own
-log. This pier held at the gate on the same day, because gate %1 says each refresh takes its own
-word while the cadence law says the seed ships every fifth round -- and `3485 mod 5 == 0` made
-`20260826.063705` a cadence lap here. **Both readings are defensible and they disagree**, which is
-the two-pier family one layer up from the shell dialect. Keaton's word settles which governs; until
-then this pier holds. **One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's
-`tools/hooks/commit-msg`, so the armed-wall promise rides on the publisher.
+**Seed cadence -- SETTLED `20260826`: cut.** Gate %1 governs alone, so each refresh takes its own
+word and no count publishes anything; the two-readings disagreement that stood here is closed.
+**One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's `tools/hooks/commit-msg`,
+so the armed-wall promise rides on the publisher.
 
 ---
 
@@ -215,9 +206,8 @@ then this pier holds. **One wart:** `sow_project.sh`'s sed-copy drops the exec b
 ## Next -- the ranked remainder
 
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
-[`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md).
-The measurement class behind it -- which pages a roster decides to measure, and what a split moves
-rather than removes -- is
+[`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md);
+the measurement class behind it is
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
 **Named and waiting on their own lap:** the **fascia weave** over thirty-nine browsed
@@ -234,17 +224,15 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260826.093717` | PCRE and `stat` gated at zero; %260-%267 booked; a red keeps its own words; roster 70 -> 71 | [log](../session-logs/20260826-093717_the-flag-inside-a-longer-word.kyri) |
+| `20260826.211951` | macOS bench opened: flock, the awk hex class, three floating nibs; %278-%280 closed, %281 open | [log](../session-logs/20260826-211951_the-bench-that-spoke-another-dialect.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
-## The cadence -- the seed ships every fifth round
+## The cadence -- CUT `20260826`, and the seed rides with Dream
 
-Seated `20260823.111029`. On the lap the council rota closes its cycle (`N mod 5 == 0`), project
-and force-push the public seed with `bash ~/grain/publish-seed.sh`.
-
-**Where it stands.** The live reading and the one-publish grant are in *Custody gates* above, held
-once rather than twice. Reds come first. Foundation:
+Seated `20260823.111029` as a fifth-round projection; **cut on Keaton's word `20260826`**, so no lap
+publishes on a count. The star names the moment and stops, gate %1 stays his, and the live reading
+sits in *Custody gates* above. Foundation (now testimony):
 [`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ## The laps
