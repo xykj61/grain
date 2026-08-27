@@ -19,26 +19,41 @@ That is the whole of what this module does, and it is the reason the name reache
 **A model is a fire banked into weights** -- an enormous burning, folded down into something that
 fits on a disk and waits. What serves it is not light. What serves it is heat, kept.
 
-## The three senses, and why they hold
+## The four senses, counted honestly
 
-**Ember** carries three meanings in this tree, seated together on `20260827`:
+**Ember** carries four meanings in this tree as of `20260827`, and the fourth is the one a first
+count missed:
 
 - **The vane** -- the whole warm layer where a model is forged, counted, read, and carried. Four
   faculties under one name: **Lattice**, **Scribble**, **Lantern**, **Ember**.
 - **The voice** -- the craft faculty of [Kyri's four](../foundations/20260823-212606_the-ember-voice.md);
   the one that builds the thing soundly and lets the making show what it means.
-- **This module** -- `ember/`, the corpus forge, the hearth at the center where the coal actually sits.
+- **This module** -- `ember/`, the corpus forge, the hearth at the centre where the coal actually sits.
+- **A Linengrow surface** -- `#3A332C`, the warm dark a card rests on in dark mode, sitting in a
+  palette of material words beside Oat, Stone, Hearth and Flax
+  ([the first-cloth pass](../active-designing/20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md)).
 
-Three senses in one word is a shape this tree has taken before and ruled on. **Quin** carried
-exactly three -- the writing voice, the fifth OS variant, and this vane's elder name -- and
-[`../context/QUIN.md`](../context/QUIN.md) settles it in five words: *Three hats, one name,
-accepted.* The precedent is not borrowed here; it is the same seat, and the same reasoning.
+*The count was written as three on the morning of `20260827` and corrected to four the same day. A
+name's senses are a measurement like any other, and a count taken from memory is how a page comes to
+say something false while every link in it still resolves.*
 
-The senses hold because they nest rather than compete. The vane is the room, the voice is what the
-room is for, and the module is the thing burning in it. A reader who meets any one of them has met
-the other two from a different angle, which is what a good name does and what an abstract one --
-**Lumen**, seated on the card `20260816` and carried by nothing -- could never do. Lumen is light
-*described*. Ember is light *kept*.
+**One of the four nests inside another, and that is new here.** The vane gathers Lattice, Scribble,
+Lantern -- and Ember. **Quin** carried three senses at once and this tree ruled on it in five words,
+*Three hats, one name, accepted*, yet Quin's three sat in **unrelated** rooms: an OS variant is never
+a member of the vane, and neither is a writing voice. Ember is the first name here where **the whole
+and one of its parts are the same word**, so the precedent supports carrying several senses without
+settling this particular shape.
+
+The nesting reads cleanly in prose, where a noun stands beside the word and says which sense is
+meant -- the vane, the voice, the module, the surface. It reads least well in exactly the sentence
+whose job is to relate the host to its members, and the honest close is that
+[the seated completion](../context/QUIN.md) of yesterday's unbraid answers it: **Kiln** already took
+the bake seat on `20260827.025117`, so the craft faculty has a word of its own waiting whenever
+Keaton says so, and the vane keeps Ember alone.
+
+What the name earns, in every sense, is the same thing an abstract one could not. **Lumen** was
+seated on the card `20260816` and carried by nothing for eleven days. Lumen is light *described*.
+Ember is light *kept*.
 
 ## What this module holds
 

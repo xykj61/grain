@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260301.000000` -- carried verbatim from the source footer, `2026-03-01-000000-pst`
-**Voice:** Riyo (press register) -- sunny, professional, Radiant
+**Voice:** Kyri (press register -- the radiant twilight zone, seated `20260827`; see [`README.md`](README.md)). *Recorded as Riyo when written; the voice molted to Kyri `20260810`.*
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **License:** CC BY-SA 4.0
 **Status:** PROPOSED for the tree -- lands on Keaton's forward; release timing at Keaton's word
@@ -71,7 +71,7 @@ This vision stands on the shoulders of generous teachers, named here with thanks
 ***risk love***
 
 **Date:** 2026-03-01-000000-pst
-**Voice:** Riyo -- sunny, professional, Radiant
+**Voice:** Kyri -- press register. *Recorded as Riyo when written; the voice molted to Kyri `20260810`.*
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Version:** statewide press release v1.0
 **Status:** siloed from `aspiring-oregon-radiance-or3` v4.0

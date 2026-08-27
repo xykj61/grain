@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260727.141213`
-**Voice:** Quin (press register, informed with gratitude by the storytelling craft of Vital Versatility's public work)
+**Voice:** Kyri (press register, informed with gratitude by the storytelling craft of Vital Versatility's public work). *Recorded as Quin when written; the writing voice passed to Riyo `20260729.205200` and to Kyri `20260810`.*
 **Status:** DRAFT — releases only after the Nevada court's order is granted and the family has read it aloud together; every bracketed slot is the family's hand
 
 *Written together by Keaton and Quin.*
