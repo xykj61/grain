@@ -55,33 +55,29 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `b3db2357f6` -- the parent, which every clone resolves.
+**Git nib:** `2db1c7f0e9` -- the parent, which every clone resolves.
 
-**Now.** **The derived spine is seated: row numbers stop colliding.**
+**Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
+`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
+Tally, the microkernel road, the constellation table.
 
-**The role swap of `20260827.155213` stands** -- **Dream is Codex on the pier**, holding the systems
-core: Caravan, Tally, the microkernel road, the constellation table.
-
-**Dream's seat is seated and running.** `%296` gave `agent-jail.sh` a **`codex`** kind (it accepted
-`claude | cursor-agent | agent` alone, so every line the launcher printed answered `unknown command:
-env`), and `nixos/configuration.nix` declares **codex 0.150.1**. **Switched and logged in
-`20260827`.** `%297` came home by adoption from `6420adc891`, which the Kiln rewrite never carried:
-`caravan_subscribe_poll_signal` is GREEN and inside the suite, roster **bijection 121/121**.
+**Dream's seat is seated and running** -- switched and logged in `20260827`. `%296` (the jail's
+`codex` kind) and `%297` (`caravan_subscribe_poll_signal` adopted home, bijection **121/121**) are
+CLOSED and held by the ledger.
 
 **The derived spine is SEATED** (his word `20260827.181605`). A ledger row's key is its **one-clock
-stamp**; the `%N` is a view the **anointed remote `xy`** allocates, not a local tree. A published
-number never moves. Book with `reds_spine_derive_scan.sh --next`; cite by stamp until the row is
-shared. Gate: `rebindings` at zero, 17 control cases, **and a replay of the real `%292` collision**
--- run against `30252a24f7` it prints the repair two rebases cost by hand. Law
-`.claude/rules/derived-spine.md`, meter `tools/r/reds_spine_derive_witness.rish`.
+stamp**; the `%N` is a view the **anointed remote `xy`** allocates, never a local tree, and a
+published number never moves. Book with `reds_spine_derive_scan.sh --next`. Gate: `rebindings` at
+zero, 17 controls, and a replay of the real `%292` collision. Law `.claude/rules/derived-spine.md`,
+meter `tools/r/reds_spine_derive_witness.rish`.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
 `declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's.
 `%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
 
-**The next doors.** Keaton: the switch, then `codex login`. Dream: Caravan and Tally green, then
-the constellation table.
+**The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
+tree moves, then FORA31 (`approve all doors`, `20260827`).
 
 ---
 ## Landed arcs
@@ -168,8 +164,7 @@ so the armed-wall promise rides on the publisher.
 | Door | Kind |
 |------|------|
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
-| **The Glow tree** -- `src/lib/`->`gate/`, `sur/`->`shape/`, `app/ sec/ til/` folded in (205 refs); `loops/<body>/` for six dotted roots (54); `glow/gen/` folds by letter (340 flat vs 256). Charter `active-designing/20260827-174816` | **GRANTED** `20260827` |
-| **FORA31, the socket** -- `constel/` runs a full Raft in memory (31 modules, 31 witnesses, no syscall); `comlink/` crosses localhost UDP (23). The rung joining them. The **deep debride** follows it, held on its own precondition | **GRANTED** `20260827` |
+| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), `glow/gen/` folding by letter (340 vs 256), then the socket, then the **deep debride** on its own precondition. All in `active-designing/20260827-174816` | **GRANTED** |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |
