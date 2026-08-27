@@ -1,0 +1,27 @@
+# Alias-sameness -- several lawful names, one referent
+
+**Status:** Living -- seated on Keaton's word `20260826.171130`
+
+Apply this rule when canon accepts several names for one referent.
+
+## One identity
+
+- The accepted names are peers. None replaces, deprecates, redirects to, or outranks another.
+- Keep one implementation, state, behavior, serialization identity, and refusal path.
+- Express the names as language-native aliases to one neutral implementation where the language permits. A neutral internal name is not a third public replacement name.
+- Keep wrappers, conversions, duplicated storage, forked behavior, and name-specific refusal paths outside an alias-sameness instance.
+
+## Stability and proof
+
+- Keep existing paths, module identities, wire and on-disk spellings, and historical records stable unless a separate migration is seated.
+- Prove both directions: every accepted name constructs and operates on the same type, and a planted replacement, deprecation, duplicate implementation, or divergent identity claim refuses.
+- Alias-sameness is distinct from the Comlink tendency's born-name migration path. It seats peer speech over one referent, not a rename.
+
+## Surf and Skate
+
+- Surf and Skate are peer synonyms for one Brushstroke surface. Either name may be spoken without changing semantics.
+- The `skate/` path and `SkateCore` module remain stable compatibility identities.
+- `SurfFrameGrid` and `SkateFrameGrid` are direct compile-time aliases of one `FrameGrid`; neither owns a wrapper, storage, behavior, serialization, or refusal contract of its own.
+- No serialized frame format is seated yet. When one is, it belongs to the shared referent exactly once.
+
+Canonical Cursor twin: `.cursor/rules/alias-sameness.mdc`.

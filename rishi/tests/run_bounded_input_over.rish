@@ -1,0 +1,3 @@
+# Input must refuse before a child or output destination is created.
+let result = run-bounded { argv: ["/bin/cat"], stdin: "12345", stdin-max: 4, stdout-path: "input-over.out", stdout-max: 8, stderr-path: "input-over.err", stderr-max: 8 }
+say result

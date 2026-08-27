@@ -1,0 +1,6 @@
+# run_bounded_relay_exact.rish -- an exact-wall relay completes without replay.
+
+let result = run-bounded { argv: ["/usr/bin/printf" "%s" "12345678"], stdin: "", stdin-max: 0, stdout-path: "relay-exact.out", stdout-max: 8, stderr-path: "relay-exact.err", stderr-max: 8, stdout-relay: true, stderr-relay: true }
+assert result.ok else "exact-wall relay did not complete"
+assert result.stdout-bytes == 8 else "exact-wall relay byte count drifted"
+assert result.overflow == "" else "exact-wall relay was mistaken for overflow"

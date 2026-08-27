@@ -1,0 +1,8 @@
+# run_bounded_relay_over.rish -- a multi-window just-over relay stops exactly.
+
+let marker = args[0]
+let result = run-bounded { argv: ["/usr/bin/yes" marker], stdin: "", stdin-max: 0, stdout-path: "relay-over.out", stdout-max: 8193, stderr-path: "relay-over.err", stderr-max: 8, stdout-relay: true, stderr-relay: true }
+assert result.ok == false else "just-over relay was accepted"
+assert result.overflow == "stdout" else "just-over relay did not name stdout"
+assert result.stdout-bytes == 8193 else "just-over relay missed its exact wall"
+assert result.reaped else "just-over relay did not reap its child"

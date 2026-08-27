@@ -1,0 +1,2 @@
+acquire-lock "run.lock"
+say "lock held"

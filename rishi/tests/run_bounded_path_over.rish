@@ -1,0 +1,3 @@
+# Output paths may not travel upward.
+let result = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: "../escape.out", stdout-max: 8, stderr-path: "path.err", stderr-max: 8 }
+say result

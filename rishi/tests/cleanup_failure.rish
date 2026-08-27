@@ -1,0 +1,2 @@
+acquire-lock "run.lock"
+assert false else "planted body failure"

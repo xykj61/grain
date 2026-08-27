@@ -1,0 +1,12 @@
+# run_bounded_relay.rish -- accepted bytes are captured and relayed once.
+
+let relay_script = env "RISHI_RELAY_SCRIPT"
+let result = run-bounded { argv: ["/bin/sh" relay_script], stdin: "", stdin-max: 0, stdout-path: "relay.out", stdout-max: 64, stderr-path: "relay.err", stderr-max: 64, stdout-relay: true, stderr-relay: true }
+assert result.code == 7 else "relayed child exit status did not propagate"
+assert result.overflow == "" else "relayed child crossed a byte wall"
+assert result.stdout-bytes == 34 else "captured relay stdout byte count drifted"
+assert result.stderr-bytes == 34 else "captured relay stderr byte count drifted"
+assert (read-file "relay.out") contains "relay stdout one" else "first stdout chunk was lost"
+assert (read-file "relay.out") contains "relay stdout two" else "second stdout chunk was lost"
+assert (read-file "relay.err") contains "relay stderr one" else "first stderr chunk was lost"
+assert (read-file "relay.err") contains "relay stderr two" else "second stderr chunk was lost"

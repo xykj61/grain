@@ -1,0 +1,35 @@
+# run_bounded.rish -- bounded stdin, split output, overflow, and argv truth.
+
+let rishi_bin = env "RISHI_TEST_BIN"
+let split_script = env "RISHI_SPLIT_SCRIPT"
+let marker = args[0]
+
+let cat_run = run-bounded { argv: ["/bin/cat"], stdin: "closed input", stdin-max: 12, stdout-path: "cat.out", stdout-max: 12, stderr-path: "cat.err", stderr-max: 16 }
+assert cat_run.ok else "bounded cat child failed"
+assert cat_run.stdout-bytes == 12 else "bounded stdin/output byte count drifted"
+assert (read-file "cat.out") == "closed input" else "child stdin was not delivered and closed exactly"
+assert (read-file "cat.err") == "" else "cat stderr crossed streams"
+
+let split_run = run-bounded { argv: [rishi_bin "run" split_script], stdin: "", stdin-max: 0, stdout-path: "split.out", stdout-max: 64, stderr-path: "split.err", stderr-max: 256 }
+assert split_run.code == 1 else "child exit status did not propagate"
+assert (trim (read-file "split.out")) == "bounded stdout" else "stdout did not stay separate"
+assert (read-file "split.err") contains "bounded stderr" else "stderr did not stay separate"
+
+let literal = "${marker};touch should-not-exist"
+let argv_run = run-bounded { argv: ["/usr/bin/printf" "%s" literal], stdin: "", stdin-max: 0, stdout-path: "argv.out", stdout-max: 256, stderr-path: "argv.err", stderr-max: 64 }
+assert argv_run.ok else "literal argv child failed"
+assert (read-file "argv.out") == literal else "argv bytes were interpreted instead of passed literally"
+
+let overflow_run = run-bounded { argv: ["/usr/bin/yes" marker], stdin: "", stdin-max: 0, stdout-path: "overflow.out", stdout-max: 16, stderr-path: "overflow.err", stderr-max: 16 }
+assert overflow_run.ok == false else "stdout overflow was accepted"
+assert overflow_run.overflow == "stdout" else "stdout overflow was not named"
+assert overflow_run.reaped else "overflow child was not reaped"
+assert (length (read-file "overflow.out")) == 16 else "stdout prefix did not stop at its exact ceiling"
+
+let err_over = run-bounded { argv: [rishi_bin "run" split_script], stdin: "", stdin-max: 0, stdout-path: "err-over.out", stdout-max: 64, stderr-path: "err-over.err", stderr-max: 8 }
+assert err_over.ok == false else "stderr overflow was accepted"
+assert err_over.overflow == "stderr" else "stderr overflow was not named"
+assert err_over.reaped else "stderr overflow child was not reaped"
+assert (length (read-file "err-over.err")) == 8 else "stderr prefix did not stop at its exact ceiling"
+
+say "run-bounded held."

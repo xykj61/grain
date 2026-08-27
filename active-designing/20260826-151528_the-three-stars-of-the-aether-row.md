@@ -24,7 +24,7 @@ themselves:
 
 | Star | Seat | Day / night | Host | Focus |
 |---|---|---|---|---|
-| **Mind** | aether cardinal | mind / **mystery** | ChatGPT Arbor, macOS | **Brushstroke** and **Surf** (elder code name Skate) for macOS; DJINN's design lead stays custody gate %6 |
+| **Mind** | aether cardinal | mind / **mystery** | ChatGPT Arbor, macOS | **Brushstroke** and **Surf / Skate**, peer synonyms for one surface, for macOS; DJINN's design lead stays custody gate %6 |
 | **Sound** | aether fixed | sound / **silence** | Claude Desktop, macOS | **Caravan** and **Tally** on the microkernel road, the **toroidal aetheric optimizations**, and the **Scribe** interface with **Lattice - Lantern - Kiln - Scribble - Ember** |
 | **Dream** | aether dual | dream / **hush** | Vultr SEA pier, ai-jail | the higher **Glow rune ports**, written high and **lowered to our best Rye** on green witnesses |
 

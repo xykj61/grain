@@ -71,6 +71,25 @@ let r = run ["echo" "ok"]
 
 `run` returns a record: `out`, `err`, `code`, and `ok` (true when the code is zero). **Check `ok` before trusting `out`** -- a command that exits non-zero is an ordinary result, not a stop. A spawn that cannot begin at all stops the script and says why.
 
+For a supervised child, use the bounded form:
+
+```
+let r = run-bounded { argv: ["tool" "arg"], stdin: prompt, stdin-max: 24576, stdout-path: ".state/lap.out", stdout-max: 1048576, stderr-path: ".state/lap.err", stderr-max: 1048576 }
+```
+
+`run-bounded` passes argv literally as a direct executable-and-arguments vector.
+It checks input length before spawn, closes stdin after the declared bytes, and
+streams stdout and stderr separately through fixed 4 KiB windows. Destinations
+must be safe repository-relative nonsymlink paths and are created private. On an
+output overrun the child is terminated and reaped; `overflow` names `stdout` or
+`stderr`, and each `*-bytes` field stops exactly at its wall. Per stream the hard
+ceiling is 1 MiB; stdin's hard ceiling is 64 KiB.
+
+`acquire-lock path` atomically owns one safe empty-directory lock for the script.
+The runtime removes it on normal return, refusal, `exit`, HUP, INT, and TERM. A
+held lock returns `LockAlreadyHeld`. A later kind or symlink returns
+`CleanupPathChanged`. Recursive removal lies outside this primitive.
+
 ## Files and environment
 
 | Form | Returns |

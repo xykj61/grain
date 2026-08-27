@@ -1,9 +1,9 @@
 # The Rishi Language -- Reference
 
 **Language:** EN
-**Last updated:** 2026-07-02
+**Last updated:** 2026-08-26
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
-**Version:** `20260702.184312` -- derived from the living witness collection at parity **142** and the interpreter at `rishi/src/main.rye`
+**Version:** `20260826.195758` -- derived from the living witness collection and the interpreter at `rishi/src/main.rye`
 **Versions, all enduring:** `20260702.180812` first page (parity 140) - same-arc revision to parity 142 (`if`, stderr seam) - `20260702.184312` the page's own versioning brought under the chronological law (`../../context/specs/rye-versioning-style.md`)
 **Conformance:** *must* and *should* carry their plain conformance weight
 **Pledge:** this reference documents only what runs; every example below is drawn from, or shaped exactly like, a witness that passes today
@@ -65,6 +65,29 @@ let zig = env "RYE_ZIG"
 ```
 
 By convention every script runs **from the repository root**; scripts *must not* assume any other working directory.
+
+### Bounded children and owned locks
+
+`run-bounded RECORD` is the supervised process form. The record *must* provide
+`argv`, `stdin`, `stdin-max`, `stdout-path`, `stdout-max`, `stderr-path`, and
+`stderr-max`. Rishi passes only argv, refuses input beyond its declared wall
+before spawn, closes the child's stdin, and streams the two output channels
+separately through fixed 4 KiB windows. Output paths *must* be relative,
+nondot-travelling, nonsymlink paths beneath the current repository seat; files
+are created with mode `0600`. The hard walls are 64 KiB for stdin and 1 MiB per
+output stream.
+
+The result names `code`, `ok`, `overflow`, `interrupted`, `stdout-bytes`,
+`stderr-bytes`, and `reaped`. Crossing an output wall *must* terminate and reap
+the child, preserve only the exact bounded prefix, and name the crossing stream.
+
+`acquire-lock PATH` atomically creates one empty-directory run lock and gives
+its custody to the runtime. Rishi *must* release an owned lock after normal
+return, runtime or assertion failure, `exit`, HUP, INT, and TERM. It *must not*
+follow a symlink, remove a changed-kind path, or delete recursively. Proven by
+`rishi/tests/run_bounded.rish` and
+`tools/fixtures/rishi_bounded_process_control.sh`, including planted just-over,
+unsafe-path, held-lock, failed-body, and signal cases.
 
 ## 5. File I/O -- `read-file`, `write-file`, `list-dir`
 

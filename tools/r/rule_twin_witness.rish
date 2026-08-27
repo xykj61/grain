@@ -5,8 +5,8 @@
 # WHY. This tree writes each standing rule twice: `.claude/rules/<name>.md` for Zed and Claude
 # Code, `.cursor/rules/<name>.mdc` for Cursor. Both are read as law by whichever editor drives
 # the session, so a pair that disagrees means the tree holds two laws under one name and which
-# one governs depends on who opened the editor. Measured 20260824.112806: **40 pairs stand,
-# 4 agree, 36 drift** (REDS %194).
+# one governs depends on who opened the editor. The initial measurement at `20260824.112806`
+# found **40 pairs, 4 agreeing, 36 drifted** (REDS %194); the scan publishes the living count.
 #
 # `context/document-mirrors.brix` was built for this and cannot hold these pairs. It proves homes
 # BYTE-IDENTICAL, and a `.mdc` twin is a transform rather than a copy -- frontmatter on top, local
@@ -63,4 +63,4 @@ assert control.out contains "11 bitten: an empty corpus reads as empty rather th
 assert control.out contains "12 free: a Cursor rule with no Claude canonical is counted rather than ignored -- ok" else "rule-twin: an orphan twin must be counted, since it is law with no canonical"
 
 say ""
-say "GREEN: rule-twin -- 40 rule pairs measured under a declared transform, drift held under a ceiling that only falls, proven both ways across twelve behaviors, and the reconciliation itself surfaced as a gate rather than attempted."
+say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift held under a ceiling that only falls, proven both ways across twelve behaviors, and the reconciliation itself surfaced as a gate rather than attempted."

@@ -50,6 +50,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260826.182611` | [Codex CLI on macOS Tahoe -- the first hour to a Sound outer loop](20260826-182611_codex-cli-macos-tahoe-sound-first-hour.md) | Standalone Codex path; real Sound prompt; jailed supervised once before any bounded loop |
 | `20260826.145514` | [Skate on macOS -- native-shell decision tablecloth](20260826-145514_skate-native-macos-decision-tablecloth.md) | Swift 6.2+ AppKit shell; bounded Grain core; a C seam only when proof earns it |
 | `20260825.230422` | [The isolation reading](20260825-230422_the-isolation-reading-from-the-wells-own-record.md) | the Garrett No. 1 sworn tops; separation shown, salinity owed |
 | `20260825.230421` | [What residue leads means](20260825-230421_what-residue-leads-means.md) | the Brazos fiber ranking, told plain at a grade-6 read |
@@ -194,4 +195,3 @@ Adding research is a small, glad ritual:
 ---
 
 *May each question find its file. May the newest thought always greet the reader first. May this folder grow downward and upward at once -- rooted in its foundation, reaching toward whatever we are curious about next.*
-

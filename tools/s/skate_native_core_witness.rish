@@ -1,0 +1,57 @@
+# tools/s/skate_native_core_witness.rish -- the fixed Brushstroke Frame reaches native Surf and Skate.
+#
+# The Swift target owns a 40-by-8 cell grid, eight line seats, a 128-byte nib identity, eight
+# palette seats, and a 128-seat event ring in InlineArray storage. A frame carries Brushstroke's
+# own one-through-eight declared line ceiling. Surf and Skate are compile-time aliases over the
+# same frame, media receipt, and event ring. The controls prove the living fold; media bounds; the
+# refusing frame edges; full-ring refusal without eviction; FIFO order across physical wrap; and
+# unsigned-counter refusal before arithmetic. AppKit and C stay outside this headless core.
+
+say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
+say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
+say "skate-native-core: Lens TAME -- fixed storage, bounded walks, and atomic refusal before mutation."
+
+let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
+assert shape.ok else "skate-native-core: fixed shape or strict build setting missing"
+assert shape.out contains "SHAPE_OK" else "skate-native-core: fixed shape did not hold"
+
+let boundary = run ["sh" "-c" "if grep -Eq 'import (AppKit|Foundation)|Unsafe|(^|[^[:alnum:]_])Array<|(^|[^[:alnum:]_])Dictionary<|(^|[^[:alnum:]_])ContiguousArray<|(^|[^[:alnum:]_])Set<' skate/Sources/SkateCore/*.swift; then exit 1; else echo BOUNDARY_OK; fi"]
+assert boundary.ok else "skate-native-core: platform import, unsafe seam, or dynamic owned collection entered the core"
+assert boundary.out contains "BOUNDARY_OK" else "skate-native-core: core boundary did not hold"
+
+let aliases = run ["sh" "tools/fixtures/alias_sameness_scan.sh"]
+say aliases.out
+assert aliases.ok else "skate-native-core: Surf and Skate must remain peer names over one identity"
+assert aliases.out contains "alias_faults=0" else "skate-native-core: alias-sameness found a living asymmetry"
+assert aliases.out contains "alias_verdict=ok" else "skate-native-core: alias-sameness must agree with itself"
+
+let alias_control = run ["sh" "tools/fixtures/alias_sameness_control.sh"]
+say alias_control.out
+assert alias_control.ok else "skate-native-core: alias-sameness control must complete"
+assert alias_control.out contains "control_cases=8" else "skate-native-core: eight alias-sameness behaviors must be exercised"
+assert alias_control.out contains "control_fail=0" else "skate-native-core: every alias-sameness behavior must answer as planted"
+assert alias_control.out contains "control_verdict=ok" else "skate-native-core: alias-sameness control must agree with itself"
+
+let test = run ["sh" "-c" "mkdir -p tools/.build/skate-clang-cache tools/.build/skate-swift-cache && env CLANG_MODULE_CACHE_PATH=$PWD/tools/.build/skate-clang-cache SWIFT_MODULE_CACHE_PATH=$PWD/tools/.build/skate-swift-cache xcrun swift test --disable-sandbox --package-path skate --scratch-path $PWD/tools/.build/skate-core 2>&1"]
+assert test.ok else "skate-native-core: Swift tests failed"
+assert test.out contains "testBrushstrokeFrameLowersDeterministically" else "skate-native-core: living deterministic fold not exercised"
+assert test.out contains "testMissingAtNibRefuses" else "skate-native-core: missing-nib control not exercised"
+assert test.out contains "testHundredTwentyNinthNibByteRefuses" else "skate-native-core: nib-ceiling control not exercised"
+assert test.out contains "testExactNibAndLineBoundsAreAccepted" else "skate-native-core: exact nib and line bounds not exercised"
+assert test.out contains "testDeclaredOneLineCeilingRefusesSecondLineWithoutChangingFrame" else "skate-native-core: declared line ceiling control not exercised"
+assert test.out contains "testDeclaredLineCeilingOutsideOneThroughEightRefuses" else "skate-native-core: line-ceiling range controls not exercised"
+assert test.out contains "testSurfAndSkateAliasesShareOneFrameIdentityAndRefusalContract" else "skate-native-core: Surf and Skate alias-sameness control not exercised"
+assert test.out contains "testNinthLineRefusesWithoutChangingFrame" else "skate-native-core: ninth-line control not exercised"
+assert test.out contains "testFortyFirstByteRefusesWithoutChangingFrame" else "skate-native-core: forty-first-byte control not exercised"
+assert test.out contains "testInvalidPaletteRunsRefuseAtomically" else "skate-native-core: atomic paint controls not exercised"
+assert test.out contains "testImageLotusAndDigestValuesJoinOneBoundedMediaReceipt" else "skate-native-core: joined media receipt not exercised"
+assert test.out contains "testImageSkatePlaneRefusesMalformedPlanesBeforeAdmission" else "skate-native-core: malformed media plane controls not exercised"
+assert test.out contains "testLotusMeterAndDigestClaimsKeepTheirExactBounds" else "skate-native-core: meter and digest bounds not exercised"
+assert test.out contains "testEventRingFillsThenRefusesWithoutEviction" else "skate-native-core: full event-ring refusal not exercised"
+assert test.out contains "testEventRingPhysicalWrapKeepsLinearFIFOOrder" else "skate-native-core: physical event-ring wrap not exercised"
+assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate-native-core: event counter ceiling not exercised"
+assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else "skate-native-core: event alias-sameness not exercised"
+assert test.out contains "Executed 21 tests, with 0 failures" else "skate-native-core: twenty-one-test verdict missing"
+
+say "RED and GREEN paths proven -- one deterministic fold lives; twenty-one identity, media, event, exact-bound, refusal, and mutation claims hold."
+say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame and event-ring identity, storage shape, and refusal contract."

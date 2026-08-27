@@ -1,7 +1,7 @@
 # Rishi -- the shell of the Rye ecosystem
 
-**Version:** `20260620.153812` (Rye chronological stamp)
-**Last updated:** 2026-08-26 (fascia touch -- leaves to root; every claim held exactly)
+**Version:** `20260826.195758` (Rye chronological stamp)
+**Last updated:** 2026-08-26 (bounded child streams and owned cleanup)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- shell, small and growing
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rishi in your hands
@@ -49,6 +49,19 @@ supporting:
   record: `out` and `err` (the captured text), `code` (the exit status), and `ok`
   (true when the code is zero). A command that exits non-zero is an ordinary
   result; a spawn that fails to begin stops the script and says why.
+- **`run-bounded`** -- executes an argv-only child with declared `stdin-max`,
+  `stdout-max`, and `stderr-max` walls. Standard input is supplied and closed;
+  standard output and error stream through fixed 4 KiB windows into separate,
+  private, repository-relative files. Crossing either output wall terminates and
+  reaps the child and names the stream in `result.overflow`. The record also
+  carries `code`, `ok`, `stdout-bytes`, `stderr-bytes`, and `reaped`. Optional
+  boolean `stdout-relay` and `stderr-relay` fields copy only those same accepted,
+  bounded bytes to Rishi's parent streams as they arrive; stdin is never echoed,
+  and completion does not replay captured output.
+- **`acquire-lock`** -- atomically creates one safe repository-relative empty
+  directory and registers it with the runtime. Rishi removes the owned lock on
+  normal return, assertion or exit failure, and HUP, INT, or TERM. It never
+  follows a symlink or recursively deletes a path.
 - **`map` and `where`** -- `map xs as x: <expr>` transforms each element into a new
   list; `where xs as x: <pred>` keeps the elements whose boolean predicate holds.
   The body can project a field (`map people as p: p.name`), compare, or even
@@ -136,6 +149,8 @@ rishi/bin/rishi run rishi/tests/checks.rish   # booleans, comparison, and assert
 rishi/bin/rishi run rishi/tests/lists.rish    # lists, contains, and equality
 rishi/bin/rishi run rishi/tests/records.rish  # records, field access, and equality
 rishi/bin/rishi run rishi/tests/run.rish      # running commands, results as records
+rishi/bin/rishi run rishi/tests/run_bounded.rish # bounded stdin/output and overflow reap
+tools/fixtures/rishi_bounded_process_control.sh   # capture/relay parity and cleanup controls
 rishi/bin/rishi run rishi/tests/map_where.rish # transforming and filtering lists
 rishi/bin/rishi run rishi/tests/strings.rish      # composing strings by interpolation
 rishi/bin/rishi run rishi/tests/arithmetic.rish   # integer arithmetic and grouping

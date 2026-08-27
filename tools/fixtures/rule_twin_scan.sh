@@ -9,7 +9,7 @@
 # `context/document-mirrors.brix` exists for exactly this problem and cannot hold these pairs:
 # it proves homes BYTE-IDENTICAL, and a `.mdc` twin is a TRANSFORM rather than a copy -- Cursor
 # frontmatter on top, local links rewritten `.md` -> `.mdc`, and a closing cross-pointer that
-# each file aims at the other on purpose. Measured 20260824.112806: 40 pairs stand, ONE was
+# each file aims at the other on purpose. At the first measurement 40 pairs stood, and ONE was
 # named in that descriptor, and registering the rest would red every pair forever (REDS %194).
 #
 # THE TRANSFORM, declared here so it is checkable rather than assumed:
@@ -44,7 +44,7 @@ WANT="${2:-}"
 CLAUDE_DIR="${RULE_TWIN_CLAUDE_DIR:-.claude/rules}"
 CURSOR_DIR="${RULE_TWIN_CURSOR_DIR:-.cursor/rules}"
 
-# The ceiling only ever falls. Measured 20260824.112806: 40 pairs, 4 agreeing, 36 drifted.
+# The ceiling only ever falls. Initial measurement 20260824.112806: 40 pairs, 4 agreeing, 36 drifted.
 ceiling="${RULE_TWIN_CEILING:-36}"
 
 norm() {

@@ -1,0 +1,4 @@
+# run_bounded_relay_bad_type.rish -- relay authority is an explicit boolean.
+
+let result = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: "relay-type.out", stdout-max: 8, stderr-path: "relay-type.err", stderr-max: 8, stdout-relay: "yes" }
+say result

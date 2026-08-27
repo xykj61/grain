@@ -65,6 +65,7 @@ allow scribble
 allow scribe
 allow settlement
 allow surf
+allow skate
 allow src
 allow tally
 allow tools
@@ -222,6 +223,7 @@ template  constel                         # Constel test-network naming
 template  scribble                        # module
 template  scribe                          # the Kyri reader — clean code, no name
 template  surf                            # the consent-first social layer -- clean code, demo keeper seeds only (renamed from skate 20260823.094410)
+scrub     skate                           # peer Surf/Skate macOS core; ships only through the depersonalizing projection
 template  vault                           # keeper of secrets (Shamir sharding) — clean code, fake 0x11 seed only
 template  src                             # Glow userland (five rooms)
 template  tally                           # bounded allocation
