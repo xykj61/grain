@@ -22,6 +22,39 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260827.172118` -- debrided force-matched to xy (walk-back `6420adc891`, preserved as a branch)
+
+**Walk-back nib:** `6420adc891` -- **preserved rather than merely named.** The mirror remote `debrided`
+had never been force-updated after the Kiln deep debride of `20260827.040024`, so its `main` stood
+frozen at that morning, 3,556 commits ahead of `xy` on the pre-rewrite lineage and 3,541 behind.
+Keaton's word `20260827.172118`: force-push `debrided` to match `xy`.
+
+**What the check found before the push, and why this row exists.** The divergence was **not** purely
+stale lineage. One commit, `6420adc891` (*caravan: the probe backgrounds the service alone*, authored
+`03:25:53`, committed `04:21:12`), sits above the debride's own checkpoint commit and **never reached
+`xy` in any form** -- its 25 files include a new 61-line fixture
+`tools/fixtures/caravan_subscribe_poll_signal.sh`, the REDS shelf
+`REDS-the-glob-that-was-the-guard-rows-290.md`, the session log
+`20260827-022424_the-glob-that-was-the-guard.kyri`, eight `tools/ca/` witness renames onto the
+`_witness` suffix, and edits to `caravan/LADDER.md`, `manual/reference/caravan-capabilities.md`, and
+`tools/p/parity_ch01.rish`. Every other subject in `debrided`'s newest twelve resolves to a rewritten
+twin on `xy`; this one alone does not. A bare force-push would have destroyed the only copy.
+
+**Preserved on both sides before the push:** local branch `pier/debrided-pre-rewrite` and remote
+`debrided` branch `pier/pre-rewrite-20260827`, both at `6420adc891`. The five elder `pier/*` branches
+already on `debrided` were not touched.
+
+**What waits there, worth recalling:** the caravan SIGTERM repair itself, which is live work rather
+than history. `&` binds looser than `&&`, so a probe written as
+`rm -f ... && "$service" ... & pid=$!` backgrounds the whole AND-list and `$!` names the wrapper
+subshell rather than the service -- the `kill -TERM` then killed the wrapper, the service was
+orphaned to init, and the witness asserted on a half-written output file. The repair moves the probe
+into its own fixture taking four path arguments, backgrounds the service alone on its own line, and
+reaps `pgrep -P` children before killing the parent. **The living card still lists
+`caravan_subscribe_poll_signal` as RED and open**, so this is a repair the tree currently wants and
+does not have. Adopting it onto `xy` is its own round and Keaton's word -- the commit is reachable at
+both preserved refs until then.
+
 ## `20260827.162143` -- the second mitra shed, circled: all prepped fossils cut (walk-back `5707335d0f`)
 
 **Swept:** the prepped fossils of the shred-prep pin -- the Class H horizon writing fossils
