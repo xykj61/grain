@@ -169,7 +169,12 @@ build_atomic() {
 }
 
 # STOA344 - O3: same-dir alias so plants import the vane inside the module path (one source, compiler-followed).
-ln -sf ../../tally/gardens.rye glow/.cache/tally_gardens.rye
+# Both aliases link the module DIRECTORY rather than one file, because a vane's own siblings have to
+# resolve too: tally/gardens.rye imports region.rye by bare name, and Zig resolves that beside the
+# file it followed the link to. A flat file symlink put gardens.rye in glow/.cache/, where no
+# region.rye stands, so every gardens_lawful plant failed to build with FileNotFound. Caravan was
+# always linked as a directory and never had the fault (REDS %299).
+ln -sfn ../../tally glow/.cache/tally
 ln -sfn ../../caravan glow/.cache/caravan
 build_atomic glow/glow_run.rye glow/bin/glow_run
 

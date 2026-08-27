@@ -55,6 +55,27 @@ reaps `pgrep -P` children before killing the parent. **The living card still lis
 does not have. Adopting it onto `xy` is its own round and Keaton's word -- the commit is reachable at
 both preserved refs until then.
 
+## `20260827.181906` -- the pins fold: the ledger and the card make room again (walk-back `50ffef60d8`)
+
+**Swept:** the two living pins that record everything else, both of which had run out of room --
+`construction/REDS.md` at **24,573 bytes against 24,576**, three bytes of headroom, and
+`construction/ITINERARY.md` at **24,566 against the same**, ten. Six always-on hands write into this
+tree, and the next red any of them found could not have been written down.
+
+Rows `%293` and `%294` folded to
+[`archive/REDS-the-round-moves-more-than-it-is-about-rows-293-294.md`](archive/REDS-the-round-moves-more-than-it-is-about-rows-293-294.md)
+by `tools/fixtures/reds_fold.sh`, returning the ledger to **19,476**. The card's **Now** block gave
+up its two long retellings of `%296` and `%297` -- both CLOSED, both now held by the ledger and its
+archives -- keeping the one live instruction each carried.
+
+**Why the card and not only the ledger:** a fold tool exists for the ledger and none for the card, so
+the card's trim is authorial and belongs in a checkpoint rather than in a script. Taken on Keaton's
+word `approve all doors`, `20260827`.
+
+**What waits there, worth recalling:** the Now block's own account of Dream's seat being provisioned
+and of the mirror's lost repair coming home -- the fuller telling of both, before the ledger became
+their only home.
+
 ## `20260827.173952` -- the stale-claim molt: seven pages molted in place, the freshness stamped on their faces (walk-back `3a606a8ac9`)
 
 **Swept:** seven living pages whose claims had gone false while the tree moved under them, molted
@@ -323,7 +344,7 @@ declares, so the ales-choir round had no room to land beside it.
 seconds for 60 guards), the argument for why the reach meter splits standing from cadence rather
 than blurring them, and the sentence the tier rests on -- *a close costing twenty-five minutes is a
 close that gets skipped*. Each survives in
-[`../session-logs/20260825-110922_a-tier-is-a-cadence.kyri`](../session-logs/20260825-110922_a-tier-is-a-cadence.kyri)
+[`../session-logs/date/20260825/20260825-110922_a-tier-is-a-cadence.kyri`](../session-logs/date/20260825/20260825-110922_a-tier-is-a-cadence.kyri)
 and in [`../active-designing/20260825-110922_a-tier-is-a-cadence.md`](../active-designing/20260825-110922_a-tier-is-a-cadence.md).
 
 
@@ -1260,7 +1281,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `0a074d5059`
 **Swept:** *nothing yet* -- this checkpoint is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: the module rename to **Dimeroll** (bought `dimeroll.com`), **`.myc` -> `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky -> constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again -- depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
-**What waits there, worth recalling:** every module, doc, and notation under its superseded name -- the pre-rename module dir, `.myc` contracts, "council sky" prose -- plus the whole signed commit history before any rewrite. Walk back with `git show 0a074d5059:<path>` or `git log --oneline 0a074d5059`. Queue + gate flags: [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md).
+**What waits there, worth recalling:** every module, doc, and notation under its superseded name -- the pre-rename module dir, `.myc` contracts, "council sky" prose -- plus the whole signed commit history before any rewrite. Walk back with `git show 0a074d5059:<path>` or `git log --oneline 0a074d5059`. Queue + gate flags: [`../session-logs/date/20260813/20260813-020035_double-seat-expansion-six-seasons.bron`](../session-logs/date/20260813/20260813-020035_double-seat-expansion-six-seasons.bron).
 
 ### `20260810.160511` -- Expanding-prompts archive-fold (Option B, safe subset)
 
