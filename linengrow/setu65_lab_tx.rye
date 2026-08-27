@@ -21,9 +21,17 @@ pub const lab_tx_port: u16 = 38503;
 
 const AF_INET: c_uint = 2;
 const SOCK_DGRAM: c_uint = 2;
-const SOL_SOCKET: c_int = 1;
-const SO_BINDTODEVICE: c_int = 25;
-const SO_REUSEADDR: c_int = 2;
+// THE HOST NUMBERS THESE, NEVER THIS FILE. `std.c` reads SOL_SOCKET 0xffff and SO_REUSEADDR
+// 0x0004 on a BSD kernel where Linux reads 1 and 2, so a literal here is one kernel's dialect
+// standing on every kernel it is built for. REDS %282; the class is metered by
+// tools/fixtures/socket_dialect_scan.sh.
+const SOL_SOCKET: c_int = c.SOL.SOCKET;
+// SO_BINDTODEVICE is Linux's alone -- `std.c` publishes no such option, since BSD binds a socket
+// to an interface through IP_BOUND_IF at a different level. So this one reaches Linux's own
+// table rather than the host's, which still dispatches on ARCHITECTURE where a literal cannot:
+// Zig reads 13 on sparc against 25 everywhere else, and this module cross-builds. REDS %282.
+const SO_BINDTODEVICE: c_int = std.os.linux.SO.BINDTODEVICE;
+const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
 
 pub const TxResult = enum {
     refused_stand_in,
@@ -95,7 +103,7 @@ const sockaddr_in = extern struct {
     sin_zero: [8]u8 = .{0} ** 8,
 };
 
-const SO_BROADCAST: c_int = 6;
+const SO_BROADCAST: c_int = c.SO.BROADCAST;
 
 /// Armed TX: BINDTODEVICE + UDP of the framed payload to `dest`.
 /// Host supplies the iface default gateway (Pixel tether peer); limited
