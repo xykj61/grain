@@ -54,7 +54,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `4998c0753f` -- the stars take the elder's whole recipe.
+**Git nib:** `07dc0474bc` -- reset never merge, and Mind comes home.
 
 **Now.** **A platform repair that reached one caller, and the class nobody had counted.**
 

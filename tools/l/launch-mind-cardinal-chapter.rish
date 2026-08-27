@@ -1,52 +1,39 @@
-# launch-mind-cardinal-chapter.rish -- print the loop for MIND, the cardinal star of the aether row.
+# launch-mind-cardinal-chapter.rish -- print the runnable MIND handoff.
 #
-# Mind (night twin Mystery) is CHATGPT ON MACOS -- the Arbor session in the ChatGPT desktop app,
-# aether at the cardinal seat, the word that initiates: the star that opens the surfaces a
-# person touches. Its lane: Brushstroke and Surf (elder code name Skate) for macOS, with
-# everything in the DJINN design lead staying custody gate %6. Charter:
-# active-designing/20260826-151528_the-three-stars-of-the-aether-row.md. The Arbor session
-# speaks in tiles rather than a shell loop, so its living loop is the spoken Brix at
-# arbor/launch-chatgpt-chapter.brix, rendered and verified by arbor/author.sh -- this script
-# carries the elder recipe's shape (preconditions, the spoken flow, the seat, custody) the way
-# tools/l/launch-claude-chapter.rish does for a shell bench. Siblings:
-# launch-sound-fixed-chapter.rish (Claude Code, macOS) - launch-dream-dual-chapter.rish (Claude
-# Code in ai-jail, the Vultr pier).
+# Like the adjacent Dream chapter surface, this file prints the outer recipe.
+# It does not run a command, read or write state, contact a service, or carry
+# authentication, jail, Git mutation, lock, loop, or network authority. The
+# operational surface remains `tools/l/chatgpt-mind.rish`; the byte-canonical
+# prompt remains `tools/l/print-mind-cardinal-prompt.rish`.
 #
+# Run from the repository root:
 #   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
-
-# invariant: run from the repo root, where the durable memory lives.
-let root = run ["test" "-f" "construction/ITINERARY.md"]
-assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
-
-# invariant: the spoken loop this recipe points at must exist.
-let brix = run ["test" "-f" "arbor/launch-chatgpt-chapter.brix"]
-assert brix.ok else "arbor/launch-chatgpt-chapter.brix (the spoken loop) is missing"
 
 say "MIND -- the cardinal star of the aether row (night twin Mystery)"
 say "================================================================"
 say ""
-say "Host: CHATGPT ON MACOS -- the Arbor session in the desktop app. Its loop is"
-say "spoken rather than shelled: the Lattice tiles in"
-say "arbor/launch-chatgpt-chapter.brix, rendered and verified by arbor/author.sh,"
-say "name this seat. The shared discipline lives on the living card either way."
+say "Host: macOS, from an ordinary Terminal, with Codex held inside the proven ai-jail."
+say "These lines only print. Copy one whole line at a time from anywhere inside the Grain checkout."
+say "Every live step stays in tools/l/chatgpt-mind.rish; the shell elder is only a witness."
 say ""
-say "0) PRECONDITIONS, once per machine: the ChatGPT desktop app signed in on the"
-say "   Mac; this repo cloned where the session can read it; the tiles current --"
-say "   render and verify them with:  sh arbor/author.sh"
+say "Prerequisites, only when rishi/bin/rishi is absent. The first line downloads the pinned toolchain:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/fetch-toolchain.sh")'
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/rye/bootstrap.sh")'
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && mkdir -p "$GRAIN_ROOT/rishi/bin" && env RYE_ZIG="$GRAIN_ROOT/vendor/zig-toolchain/zig" "$GRAIN_ROOT/rye/bin/rye" build "$GRAIN_ROOT/rishi/src/main.rye" "-femit-bin=$GRAIN_ROOT/rishi/bin/rishi")'
 say ""
-say "1) THE SPOKEN FLOW: read the rendered tiles aloud into the Arbor session, or"
-say "   paste them -- each tile is at or under the 256-byte tile bound and carries"
-say "   no digits, per Lattice's own rules. The tiles point the session at the"
-say "   living card and the charter, so a directive seated there reaches the next"
-say "   spoken lap with no tile edit."
+say "Check the repository, products, configuration, and outer jail without calling Codex:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" check)'
 say ""
-say "2) THE SEAT, for a hand that wants it in one line:"
+say "Run one supervised lap after check is green:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" once --arm-once)'
 say ""
-say "You are MIND, the cardinal star of the aether row, night twin Mystery, in the Arbor session on macOS: your lane is Brushstroke and Surf (elder code name Skate) for macOS, and everything in the DJINN design lead stays custody gate %6. Caravan, Tally, and the Scribe seams belong to Sound (fixed, Claude Desktop); the Glow rune lowering to Dream (dual, the pier); a find in a sibling lane becomes a line in ITINERARY rather than your lap. The remote is named xy on this clone; the seed cadence rides with Dream alone. STOP at the custody gates in ITINERARY. ty every1 baton prin recur"
+say "Begin a small bounded loop only after the supervised lap is green:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
 say ""
-say "3) CUSTODY: the gates in ITINERARY stay MANUAL -- and everything in the"
-say "   DJINN design lead stays custody gate %6, the invitation and every seat in"
-say "   that domain the collaborator's to accept. A find in a sibling lane"
-say "   becomes a line on the card rather than this star's lap."
+say "Request a stop from another Terminal:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" stop)'
 say ""
-say "GREEN: Mind recipe printed -- the cardinal star opens what a person touches."
+say "Print the canonical Arbor plus MIND prompt without calling Codex:"
+say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" print)'
+say ""
+say "GREEN: MIND handoff printed -- check, once, inspect, then arm only the bounded loop."
