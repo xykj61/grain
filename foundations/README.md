@@ -74,7 +74,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 - `20260825-233310_realidream.md` -- **living** Realidream vision (Surface p29 mutant): editor-and-browser branded Pond/Pool face over one graph; Skate as paint target; invent held. June elder shed `20260827.162143`.
 - `20260826-024939_the-graph-beneath-the-surface.md` -- **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally - Tablecloth. June elder shed `20260827.162143`.
 - `20260728-225239_the-wafer-and-the-sovereign-coin.md` -- **living** wafer + sovereign coin (Surface p33 thin): memory beside cores - open public infrastructure. June elder shed `20260827.162143`.
-- `20260827-025117_lantern-lattice-kiln.md` -- **living** open model layer (bake seat **Kiln**, was Oven; Ember keeps the corpus forge): Kiln - Lattice - Lantern. Three elders shed `20260827.162143`.
+- `20260827-025117_lantern-lattice-kiln.md` -- **living** open model layer (bake seat **Kiln**, was Oven; Ember keeps the training forge): Kiln - Lattice - Lantern. Three elders shed `20260827.162143`.
 
 **How the bench walks** -- workflow law for nested chapters (Nona n1):
 

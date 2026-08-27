@@ -38,7 +38,8 @@ receipt too.
 ## Alias-sameness
 
 Grain already calls a lawful pair of names with one behavior
-[**alias-sameness**](../counsel/date/20260801/20260801-153144_e205-alias-sameness-beta-leg-green.md).
+[**alias-sameness**](../.claude/rules/alias-sameness.md); the counsel piece that first proved the
+beta leg is held in the maintainer's own study room, which this projection withholds.
 This local slice uses its strongest Swift form. `FrameGrid` owns the one implementation.
 `SurfFrameGrid` and `SkateFrameGrid` are public compile-time aliases of that neutral type. The two
 spoken names therefore share one state shape, initializer, method set, capacity law, and refusal

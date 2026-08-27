@@ -450,7 +450,7 @@ mkdir -p "$SPACE_REPO/sub dir" "$SPACE_REPO/tools/l" "$SPACE_REPO/tools" \
   git init -q
 )
 SPACE_ROOT="$(cd "$SPACE_REPO" && pwd -P)"
-cat > "$SPACE_REPO/tools/fetch-toolchain.sh" <<'EOF'
+cat > "$SPACE_REPO/tools/f/fetch-toolchain.sh" <<'EOF'
 printf '%s\n' fetch-toolchain >> "$SPACE_LOG"
 EOF
 cat > "$SPACE_REPO/rye/bootstrap.sh" <<'EOF'
