@@ -49,10 +49,11 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.035519` | [the nib that named its own parent](20260827-035519_the-nib-that-named-its-own-parent.kyri) | the card pin closed without an amend; the page had four bytes of room |
 | `20260827.034026` | [the exemption that named its own witnesses](20260827-034026_the-exemption-that-named-its-own-witnesses.kyri) | six exempt modules are witnessed on disk |
 | `20260827.032847` | [the eight the choir cannot hear](20260827-032847_the-eight-the-choir-cannot-hear.kyri) | eight caravan witnesses outside the glob; 42 asserts on no standing row |
 | `20260827.031800` | [the region answers for itself](20260827-031800_the-region-answers-for-itself.kyri) | region covered, roster ratchet six to five; carry pin moved with the touch |
-| `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Kiln from Ember; REDS %289, the sed tamper red |
+| `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Oven from Ember; REDS %289, the sed tamper red |
 | `20260827.024712` | [the lock proven from the other side](20260827-024712_the-lock-proven-from-the-other-side.kyri) | the sibling proves the lock; %281 narrows |
 | `20260827.023827` | [the bench that was already occupied](20260827-023827_the-bench-that-was-already-occupied.kyri) | %281 third firing; socket fold surveyed |
 | `20260827.023757` | [one tree, one toolchain spawn](20260827-023757_one-tree-one-toolchain-spawn.kyri) | the build lock lands in rye; %281 shadows closed; three legs on metal |
