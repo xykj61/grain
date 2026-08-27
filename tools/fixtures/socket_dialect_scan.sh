@@ -63,11 +63,13 @@ root=.
 if [ $# -ge 2 ] && [ "$1" = "--root" ]; then root=$2; fi
 cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 
-# The ceilings only ever fall. Measured `20260827` on the lap that repaired %282's open leg, over
-# the authored corpus below -- the honest opening reading of a class nobody had counted, rather
-# than a target anybody chose.
-option_files_ceiling=19
-option_lines_ceiling=43
+# The ceilings only ever fall. The option pair opened at 19 files and 43 lines on `20260827`, the
+# honest first reading of a class nobody had counted; the sweep that followed the same day carried
+# both to ZERO, so the ceiling is now a wall -- one hand-spelled option constant anywhere in the
+# authored corpus refuses. The layout ceiling keeps its opening reading, because that leg is
+# unrepaired: 19 modules still hand-roll `sockaddr_in` in the Linux layout.
+option_files_ceiling=0
+option_lines_ceiling=0
 linux_layout_files_ceiling=19
 
 work=$(mktemp -d)

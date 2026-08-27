@@ -22,8 +22,12 @@ const vfd_version = "20260710.154300";
 
 const AF_INET: c_uint = 2;
 const SOCK_DGRAM: c_uint = 2;
-const SOL_SOCKET: c_int = 1;
-const SO_REUSEADDR: c_int = 2;
+// THE HOST NUMBERS THESE, NEVER THIS FILE. `std.c` reads SOL_SOCKET 0xffff and SO_REUSEADDR
+// 0x0004 on a BSD kernel where Linux reads 1 and 2, so a literal here is one kernel's dialect
+// standing on every kernel it is built for. REDS %282; the class is metered by
+// tools/fixtures/socket_dialect_scan.sh.
+const SOL_SOCKET: c_int = c.SOL.SOCKET;
+const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
 
 const fetcher_port: u16 = 38494;
 const source_port: u16 = 38495;
