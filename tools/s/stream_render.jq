@@ -48,4 +48,10 @@ fromjson?
   elif .type == "stream_event" then
     ( .event.delta.text // empty )
   elif .type == "result" then "\n--- lap complete ---\n"
+  # A long-running tool emits a heartbeat about every thirty seconds; a bare dot per beat
+  # keeps the terminal visibly alive through a ten-minute witness without adding lines.
+  elif .type == "tool_progress" and .heartbeat == true then "."
+  # A background task announces itself once; one bracketed line, same shape as a tool call.
+  elif .type == "system" and .subtype == "task_started" then
+    "\n[task] " + ((.description // .task_id // "?") | clip) + "\n"
   else empty end
