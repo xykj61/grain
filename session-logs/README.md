@@ -49,6 +49,9 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.030726` | [the fence walked in a tree of my own](20260827-030726_the-fence-walked-in-a-tree-of-my-own.kyri) | nineteen modules stop naming one kernel; the ceiling is now a wall |
+| `20260827.024712` | [the lock proven from the other side](20260827-024712_the-lock-proven-from-the-other-side.kyri) | %281 fires a fourth time; the lock proven from a second session |
+| `20260827.023827` | [the bench that was already occupied](20260827-023827_the-bench-that-was-already-occupied.kyri) | %281 fires a third time; a second session finds a live peer |
 | `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Kiln from Ember; REDS %289, the sed tamper red |
 | `20260827.023757` | [one tree, one toolchain spawn](20260827-023757_one-tree-one-toolchain-spawn.kyri) | the build lock lands in rye; %281 shadows closed; three legs on metal |
 | `20260827.004535` | [the repair that reached one caller](20260827-004535_the-repair-that-reached-one-caller.kyri) | %288: one module of twenty repaired, the class now metered |
