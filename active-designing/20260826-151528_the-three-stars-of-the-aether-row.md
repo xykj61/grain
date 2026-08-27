@@ -1,6 +1,6 @@
 # The Three Stars of the Aether Row -- Mind, Sound, and Dream
 
-> **Elder.** The three stars gained their planets on Keaton's word `20260827.144712` -- the living charter is [`20260827-144712_the-three-stars-and-their-planets.md`](20260827-144712_the-three-stars-and-their-planets.md).
+> **Elder.** The three stars gained their planets on Keaton's word `20260827.144712`, and Sound and Dream exchanged lanes `20260827.155213` -- the living charter is [`20260827-155213_the-six-bodies-and-the-closed-stacks.md`](20260827-155213_the-six-bodies-and-the-closed-stacks.md).
 
 **Stamp:** `20260826.151528`
 **Language:** EN

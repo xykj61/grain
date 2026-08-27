@@ -22,6 +22,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260827.155213` -- the role swap breach: Sound and Dream exchange lanes, the closed stacks seat (walk-back `44cc6a40b8`)
+
+**Swept:** the six-body living surfaces, rewritten in place on Keaton's word -- the star and
+planet launchers in `tools/l/`, the card's stars-and-planets seat and its whole **Now** block,
+the LEXICON stars row, and `MAP.md`'s room walk. The planets charter `20260827-144712` banners
+as elder; the living charter re-seats at `20260827-155213` carrying the swap, the Codex pier
+loop, and the read-scope law. The deep debride's history half is deliberately not taken: every
+dated log truthfully attributes its lap to the hand of its day, and swapping Sound and Dream
+through testimony would re-attribute past work falsely -- the working tree is debrided whole,
+and the record keeps the truth.
+
+**What waits there, worth recalling:** the pre-swap lane text of all four rewritten launchers --
+Sound the Desktop star over Caravan-Tally-constellation, Silence on Pond and the adaptations,
+Dream the Claude pier star over the interface Glow half with language custody, Hush on the
+infrastructure Glow half -- and the card's socket-fold **Now** block with the `%291` two-hands
+account in its first telling.
+
 ## `20260827.040024` -- the Kiln deep debride runs (walk-back `6063892108`, and a bundle)
 
 **Swept:** the granted history rewrite -- every blob reachable only in history gets the
