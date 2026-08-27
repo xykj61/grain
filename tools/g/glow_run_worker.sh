@@ -133,10 +133,21 @@ mkdir -p glow/bin glow/.cache
 #   2. Every binary is emitted to a private path and moved into place with
 #      rename, which is atomic -- so an interrupted build leaves the previous
 #      good binary standing rather than a plausible-looking ruin.
-BUILD_LOCK=glow/.cache/.build.lock
+#
+# The lock is a DIRECTORY rather than `flock` on a descriptor, because `flock(1)` is util-linux and
+# macOS ships none -- every witness reaching this worker refused there with `flock: command not
+# found` (REDS %279). `lock_acquire` in tools/fixtures/shell_portable.sh keeps both properties this
+# block was written for: mutual exclusion, since `mkdir` is atomic, and a bounded wait that refuses
+# by name rather than hanging.
+. "$ROOT/tools/fixtures/shell_portable.sh"
+
+# The name carries `.d` because the mechanism is a directory. The elder `flock` spelling left a
+# zero-byte FILE at `.build.lock`, and `mkdir` over a plain file fails forever -- so a run on a
+# clone that had used the elder worker would wait out its whole bound and refuse. A new
+# mechanism under a new name makes that residue simply irrelevant, with no reaping special case.
+BUILD_LOCK=glow/.cache/.build.lock.d
 BUILD_LOCK_WAIT=${GLOW_BUILD_LOCK_WAIT:-1800}
-exec 9>"$BUILD_LOCK"
-flock -w "$BUILD_LOCK_WAIT" 9 || {
+lock_acquire "$BUILD_LOCK" "$BUILD_LOCK_WAIT" || {
   echo "FAIL: glow build lock not acquired within ${BUILD_LOCK_WAIT}s"
   exit 3
 }
@@ -144,7 +155,9 @@ flock -w "$BUILD_LOCK_WAIT" 9 || {
 # Temporaries carry this run's pid so a concurrent run never adopts them, and
 # the trap clears them on every exit path including a kill.
 TMP_TAG="building.$$"
-cleanup_tmp() { rm -f "glow/bin/glow_run.$TMP_TAG" "$BIN.$TMP_TAG"; }
+# The lock leaves with the temporaries: a directory outlives its owner where a descriptor lock does
+# not, so releasing it on every exit path is what keeps the next run from waiting out its bound.
+cleanup_tmp() { rm -f "glow/bin/glow_run.$TMP_TAG" "$BIN.$TMP_TAG"; lock_release "$BUILD_LOCK"; }
 trap cleanup_tmp EXIT INT TERM
 
 # build_atomic <source.rye> <final-bin> -- emit beside the target, then rename.

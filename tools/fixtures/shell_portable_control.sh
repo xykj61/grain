@@ -1,5 +1,5 @@
 #!/bin/sh
-# shell_portable_control.sh -- the two newest portable helpers, proven by doing.
+# shell_portable_control.sh -- the newest portable helpers, proven by doing.
 #
 # WHY A CONTROL RATHER THAN A READING. `resolve_path` and `sed_inplace` exist so a guard reads the
 # same on both piers, and the only honest proof of that is behaviour: resolve a real symlink and
@@ -26,7 +26,7 @@ ok()   { pass=$((pass + 1)); echo "  ok   $1"; }
 bad()  { fail=$((fail + 1)); echo "  MISS $1"; }
 note() { skip=$((skip + 1)); echo "  skip $1"; }
 
-echo "shell-portable-control: resolve_path and sed_inplace, proven on real files"
+echo "shell-portable-control: resolve_path, sed_inplace and the build lock, proven on real files"
 
 mkdir -p "$pen/a/b" "$pen/other"
 echo hello > "$pen/a/b/file.txt"
@@ -77,6 +77,52 @@ sed_inplace 's|nothing-matches-this|x|' "$pen/edit.txt"
 cmp -s "$pen/edit.txt" "$pen/same.txt" && ok "a script matching nothing leaves the file byte-identical" || bad "a script matching nothing leaves the file byte-identical"
 
 sed_inplace 's|a|b|' "$pen/absent.txt" >/dev/null 2>&1 && bad "sed_inplace refuses a missing file" || ok "sed_inplace refuses a missing file"
+
+# --- lock_acquire / lock_release ---------------------------------------------------------------
+# The lock replaces `flock -w`, which macOS does not ship at all (REDS %279), so what has to be
+# proven is behaviour rather than a spelling: one holder at a time, a bounded refusal rather than a
+# hang, and the one property a descriptor lock has for free -- release when its owner dies.
+lk="$pen/build.lock.d"
+
+lock_acquire "$lk" 2 && ok "an unheld lock is taken" || bad "an unheld lock is taken"
+[ -d "$lk" ] && ok "the lock is a directory" || bad "the lock is a directory"
+[ "$(cat "$lk/pid" 2>/dev/null)" = "$$" ] && ok "the holder writes its own pid inside" || bad "the holder writes its own pid inside"
+
+# A SECOND acquire against a live holder waits its bound and refuses by return code. This is the
+# refusal proven from the failing side: a lock that never refuses is not a lock.
+held_start=$(date +%s)
+( lock_acquire "$lk" 1 ) && bad "a held lock refuses a second holder" || ok "a held lock refuses a second holder"
+held_end=$(date +%s)
+[ "$((held_end - held_start))" -ge 1 ] && ok "the refusal waited its bound rather than failing instantly" \
+  || bad "the refusal waited its bound rather than failing instantly"
+
+lock_release "$lk"
+[ -d "$lk" ] || ok "release frees the lock"
+[ -d "$lk" ] && bad "release frees the lock"
+lock_acquire "$lk" 2 && ok "a released lock is takeable again" || bad "a released lock is takeable again"
+lock_release "$lk"
+
+# A lock whose owner has gone is reaped rather than waited out. A pid that no process carries is
+# what a killed build leaves behind, and waiting out the bound for it would turn one crash into
+# every later run refusing.
+mkdir -p "$lk"
+# Reap a pid that has certainly exited: a child run and waited on.
+( exit 0 ) & dead=$!
+wait "$dead" 2>/dev/null || true
+printf '%s\n' "$dead" > "$lk/pid"
+lock_acquire "$lk" 2 && ok "a lock whose owner has died is reaped" || bad "a lock whose owner has died is reaped"
+lock_release "$lk"
+
+# An empty or non-numeric pid file is a lock caught mid-creation, so it is waited on rather than
+# reaped -- reaping there would hand two holders the same lock.
+mkdir -p "$lk"; : > "$lk/pid"
+( lock_acquire "$lk" 1 ) && bad "an empty pid file is waited on rather than reaped" || ok "an empty pid file is waited on rather than reaped"
+mkdir -p "$lk"; printf 'not-a-pid\n' > "$lk/pid"
+( lock_acquire "$lk" 1 ) && bad "a non-numeric pid file is waited on rather than reaped" || ok "a non-numeric pid file is waited on rather than reaped"
+rm -rf "$lk"
+
+# Releasing a lock nobody holds costs nothing, so a caller may release on every exit path.
+lock_release "$pen/never-held.d" && ok "releasing an unheld lock is harmless" || bad "releasing an unheld lock is harmless"
 
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"

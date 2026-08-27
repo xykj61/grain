@@ -48,6 +48,15 @@ mode="${1:-count}"
 #
 # THE UNIT IS A CHARACTER, not a byte. This awk reads UTF-8 text, so one em dash counts once rather
 # than three times, and the sibling Rye meter reads the same way -- the two numbers are comparable.
+#
+# THE BYTE RANGE IS SPELLED IN OCTAL, not in hex. `\x00-\x7F` is a GNU awk extension; the BWK awk
+# macOS ships parses it as literal characters, so the negated class matches EVERY character and the
+# meter counts a whole comment line as non-ASCII. Measured on this bench `20260826.211500`: the
+# sibling Rye meter read 16,131,707 against a ceiling of 4,338 by this fault, and this
+# meter read the same way while its control stayed green, since a control that asks only whether a
+# line was counted cannot see a meter that counts too much. `\001-\177` is the POSIX spelling of the same range and
+# reads identically in both dialects -- the same move `tools/fixtures/living_card_ascii_scan.sh`
+# already made when it dropped `grep -P` for a C-locale byte range (REDS %278).
 CEILING=505
 
 list=$(git ls-files "*.rish" "*.sh" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
@@ -70,7 +79,7 @@ for f in $list; do
       sub(/^[ \t]+/, "", line)
       if (substr(line, 1, 1) == "#") {
         s = $0
-        for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[^\x00-\x7F]/) n++
+        for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[^\001-\177]/) n++
         next
       }
       # A here-string `<<<"x"` contains `<<"x"` starting one character in, so the opener is
