@@ -1,13 +1,24 @@
 //! Resolve veganreyklah2 repository root from env or cwd walk.
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_walk_depth: u32 = 32;
 
 pub fn resolve_root(a: std.mem.Allocator, io: std.Io, init: std.process.Init) ![]const u8 {
     if (init.environ_map.get("VEGANREYKLAH2_ROOT")) |p| return try a.dupe(u8, p);
+    // The starting directory is read from the kernel's `/proc/self/cwd`, and that reading is
+    // LINUX-ONLY: macOS and the BSDs publish no /proc, so this call is FileNotFound there. Two
+    // portable second readings were measured and both refused on 20260827 -- `Io.Dir.realPath`
+    // resolves through `/proc/self/fd` in this std and fails the same way, and `std.c.getcwd` is
+    // the libc seam, which would need an explicit `-lc` on the Linux pier that no caller passes
+    // (REDS %286's shape). So the honest door on a host without /proc is the environment branch
+    // above: run these tools as  VEGANREYKLAH2_ROOT=$PWD <tool>  and the walk never starts.
+    // The refusal below says so by name rather than surfacing a bare FileNotFound.
     var buf: [std.fs.max_path_bytes]u8 = undefined;
-    const len = try std.Io.Dir.readLinkAbsolute(io, "/proc/self/cwd", &buf);
+    const len = std.Io.Dir.readLinkAbsolute(io, "/proc/self/cwd", &buf) catch return error.RootNeedsEnvOnThisHost;
+    // invariant: the kernel's answer names a real directory, never an empty string.
+    assert(len > 0);
     var cur = try a.dupe(u8, buf[0..len]);
     const cwd = std.Io.Dir.cwd();
     var depth: u32 = 0;

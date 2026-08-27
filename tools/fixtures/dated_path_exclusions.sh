@@ -290,7 +290,8 @@ DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260826-024944_lantern-lattice-oven.md \
 20260728-232415_anvil-forge-to-oven-name-lean.md \
 20260826-001746_the-swarm-that-feeds-the-oven.md \
-20260813-020035_double-seat-expansion-six-seasons.md"
+20260813-020035_double-seat-expansion-six-seasons.md \
+20260727-135351_seva-fund-founding-announcement.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for

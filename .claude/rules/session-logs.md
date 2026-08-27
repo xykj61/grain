@@ -12,7 +12,7 @@ Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day
 
 ## Filename
 
-`YYYYMMDD-HHMMSS_short-sprig.kyri` -- hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
+`session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri` -- **a log is born on its day's shelf**, seated `20260827.171500` on Keaton's word: write it straight into `date/YYYYMMDD/` rather than flat in the room. Hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
 
 **No countdown prefix** (`99999_`, etc.) -- retired. One clock only.
 
@@ -22,11 +22,11 @@ When two logs share a second, add `_short-sprig` from `title` (or from `prompt` 
 
 ## Index
 
-After each new log, prepend a newest-first row to `session-logs/README.md` **directly below the table's delimiter row**: stamp, linked title, and one line of meaning drawn from `title` / `obs`. The title and the delimiter both live at the top, and a row goes under them, so the table keeps rendering and the title keeps its place. Writing above them costs both, and on `20260824` both were being paid: the title stood at line 1,881 beneath 1,880 rows, and 1,658 pipe rows stood above the delimiter, which GitHub-Flavored Markdown reads as plain text with pipes in it (REDS %182).
+After each new log, prepend a newest-first row to **that day's shelf**, `session-logs/date/README-index-YYYYMMDD.md`, **directly below the table's delimiter row**: stamp, linked title, and one line of meaning drawn from `title` / `obs`. The title and the delimiter both live at the top, and a row goes under them, so the table keeps rendering and the title keeps its place. Writing above them costs both, and on `20260824` both were being paid: the title stood at line 1,881 beneath 1,880 rows, and 1,658 pipe rows stood above the delimiter, which GitHub-Flavored Markdown reads as plain text with pipes in it (REDS %182).
 
 **A row points; it does not summarise.** The log is the record and the index is the way in, so an index row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. That number is the pin's own arithmetic: a row costs ~123 bytes before it says anything, the pin's prose takes ~2,100, and 192 leaves room for ~116 rows inside the 24,576 the page declares. Rows once ran to **2,223 bytes** apiece, which made the index a second copy of the logs (REDS %204, resolved on Keaton's word `20260824`). Gated by `rishi/bin/rishi run tools/in/index_row_bound_witness.rish`; shelved rows keep every byte they wrote. **This one pin carries its own byte bound** -- `living_pin_max_bytes[session-logs/README.md] = 57344`, which is `256 x 192` rows plus 8,192 for prose, so the index can hold a full room. Every other pin keeps 24,576 (REDS %205).
 
-**The index folds with the room.** A day's rows move onto `session-logs/date/README-index-YYYYMMDD.md` the moment that day's logs fold, so the living pin holds exactly the rows whose logs are still flat. One tool does both:
+**Nothing folds afterward, because nothing arrives loose.** A log and its row are born on the same shelf, so the living pin holds the way in -- one row per day, newest first -- rather than a row per lap, and it can no longer grow with the room. The fold tool stays as the safety net for a log written flat by hand:
 
 ```
 rye run tools/rye/session_logs_archive.rye index-preview   # count, change nothing

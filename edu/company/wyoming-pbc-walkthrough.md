@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.135351`
 **Voice:** Quin
-**Status:** Edu — a teaching walkthrough with a fictional worked example, **Bashō PBC**, so the real filings (Siya Fund PBC · Grain Energy PBC) can follow their own instructions exactly; education, never legal advice — **a Wyoming-licensed attorney and a CPA read everything before anything is filed, and every account, fee, signature, and click is the founders' own hand**
+**Status:** Edu — a teaching walkthrough with a fictional worked example, **Bashō PBC**, so a real filing can follow its own instructions exactly (Grain Energy PBC; the Siya fund was re-seated as **Siya Fund LLC** on `20260827`, and an LLC is a different form with its own walkthrough still to be written); education, never legal advice — **a Wyoming-licensed attorney and a CPA read everything before anything is filed, and every account, fee, signature, and click is the founders' own hand**
 **Ground law:** Wyoming's for-profit public benefit corporation chapter, **W.S. Title 17, Chapter 31** (effective July 1, 2021), riding the Wyoming Business Corporation Act (**Chapter 17-16**); filings through the Secretary of State's online business center at **wyobiz.wyo.gov**; figures marked *verify* are confirmed on the state's own pages on filing day
 
 *Written together by Keaton and Quin.*

@@ -38,7 +38,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.kyri`, **no countdown prefix**), Kyri fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Provider, product, configured defaults, verified active identity, and joint-session evidence follow `.claude/rules/session-log-provenance.md`. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/rye/align_session_logs.rye`.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename **born on its day's shelf** -- `session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri`, no countdown prefix (seated `20260827.171500`), Kyri fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to that day's shelf `session-logs/date/README-index-YYYYMMDD.md`, and **commit the log in the same commit as the work** whenever possible. Provider, product, configured defaults, verified active identity, and joint-session evidence follow `.claude/rules/session-log-provenance.md`. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/rye/align_session_logs.rye`.
 
 ## Enclosure
 

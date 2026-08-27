@@ -69,6 +69,12 @@ Configured Codex defaults and the active serving identity are different facts. R
 identity as unverified until authoritative runtime evidence supplies it. The user chooses every
 model and setting, and this operating prompt leaves model flags to that user configuration.
 
+Record the lap in durable repository memory the way this tree does: a session log **born on its
+day's shelf**, `session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri`, with its row
+prepended to `session-logs/date/README-index-YYYYMMDD.md` (seated `20260827.171500`; the living
+pin `session-logs/README.md` holds one row per day and is the way in). A log written flat in the
+room is the elder shape and folds by hand.
+
 At the handback, name the admitted crux, files changed, proof from both sides, inherited reds or
 environment limits, the signed commit if one was made, local divergence from `xy/main`, and the
 next custody gate. Then stop. A fresh outer invocation decides whether another bounded lap begins.
