@@ -154,8 +154,10 @@ assert prose.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want the
 say "caravan-ladder-copy: harness prose -- ${trim prose.out}"
 
 # RED path six -- a lifted body whose printed line was rewritten by its own lift. The guard generates nothing it tracks:
-# the control is made here, from the living harness, so it can never drift from the shape the scan enforces.
-let prose_literal = run ["sh" "-c" "d=$(mktemp -d); sed '0,/word standing where/s//word rung.standing where/' caravan/ladder_checks.rye > $d/hurt.rye; CARAVAN_HARNESS=$d/hurt.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+# the control is made here, from the living harness, so it can never drift from the shape the scan enforces. The sed is
+# a plain POSIX s///, because GNU's 0,/re/ first-occurrence range is silently a no-op on BSD sed -- exit 0, nothing
+# substituted -- which left this tamper clean and the refusal leg red on the macOS bench (REDS %289, the dialect family).
+let prose_literal = run ["sh" "-c" "d=$(mktemp -d); sed 's/word standing where/word rung.standing where/' caravan/ladder_checks.rye > $d/hurt.rye; CARAVAN_HARNESS=$d/hurt.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert (prose_literal.ok == false) else "caravan-ladder-copy: a rewritten printed line must refuse"
 assert prose_literal.out contains "HARNESS_PROSE_BAD literal" else "caravan-ladder-copy: want the corrupted literal named by line"
 
