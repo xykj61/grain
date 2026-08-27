@@ -169,3 +169,12 @@ for.
 The derived-spine key is **proposed, awaiting a seat**. It changes how a shared ledger allocates,
 which is the kind of decision this tree seats by name. Every row, module, and sibling lane stands
 exactly as this document found it.
+
+---
+
+*Addendum, accreted `20260827.181605` -- the word came.* The derived-spine key is **seated**. The
+collision class fired twice more in the day after this document was written (`%294`-`%296`, and
+`%297` on adoption), which is five and six. The law is
+[`../.claude/rules/derived-spine.md`](../.claude/rules/derived-spine.md), the meter is
+[`../tools/r/reds_spine_derive_witness.rish`](../tools/r/reds_spine_derive_witness.rish), and the
+paragraph above stands exactly as it was written -- what moved is the allocator, not this record.

@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.181938` | [the number stops being a guess](20260827/20260827-181938_the-number-stops-being-a-guess.kyri) | the derived spine seated; the allocator moves to xy |
 | `20260827.180331` | [the repair that came home](20260827/20260827-180331_the-repair-that-came-home.kyri) | %297 adopted from the mirror; roster bijection 121/121 |
 | `20260827.172414` | [the mirror that held one live round](20260827/20260827-172414_the-mirror-that-held-one-live-round.kyri) | debrided force-matched to xy; its one live commit preserved |
 | `20260827.175910` | [the rooms that say what they hold](20260827/20260827-175910_the-rooms-that-say-what-they-hold.kyri) | seven stale claims molted in place; a Glow layout proposed |

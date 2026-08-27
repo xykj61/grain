@@ -1,0 +1,42 @@
+# reds_spine_derive_witness.rish -- the derived spine: a row's key is its stamp, and its %N is
+# allocated by the anointed remote rather than by whichever tree happened to look first.
+#
+# WHAT THIS GATES. One reading at zero: a number the anointed spine has already bound to a stamp
+# must not be bound to a different stamp here. That single refusal is the whole collision class
+# the ledger paid for six times -- %230, %252, the %283-%285 re-seat, %290's own first move, the
+# %294-%296 re-seat, and %297's third seat -- each repaired by hand, renumbering rows and
+# sweeping citations, because a number read out of a local tree is allocated per tree.
+#
+# WHAT IT DOES NOT REACH. Whether a red was worth booking, and whether its three fields teach
+# anything. This proves the ledger's ORDER is one order across three writers, and stops there.
+#
+# Law: .claude/rules/derived-spine.md - design Move 1:
+# active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/reds_spine_derive_witness.rish
+
+say "reds-spine-derive: Language EN -- a row's immutable key is its one-clock stamp; the %N beside it is a view, and the view is allocated by the anointed remote. Two writers reading their own trees will both read the same next number and both be right, which is why the allocator cannot live in a tree."
+say "reds-spine-derive: Style Gauge, Meter -- one gated reading at zero, two reported beside it, and a control proving every case from both sides on real git repositories in a throwaway pen."
+say "reds-spine-derive: Lens TAME -- the gate is single because the control proved two readings that always fired together were one reading wearing two names. Purely local -- the anointed ref is read from the object store already on disk; no network, no key, no funds, no device."
+
+# invariant: run from the repo root, where the ledger and its shelves live.
+let root = run ["test" "-f" "construction/REDS.md"]
+assert root.ok else "reds-spine-derive: run from the repo root (construction/REDS.md not found)"
+
+# invariant: the scan this witness reads must exist.
+let has_scan = run ["test" "-f" "tools/fixtures/reds_spine_derive_scan.sh"]
+assert has_scan.ok else "reds-spine-derive: tools/fixtures/reds_spine_derive_scan.sh is missing"
+
+# 1. The control first -- a gate whose refusal has never been watched is a gate nobody has proven.
+let control = run ["sh" "tools/fixtures/reds_spine_derive_control.sh"]
+assert control.ok else "reds-spine-derive: the control is RED -- ${control.out}${control.err}"
+assert control.out contains "control_verdict=ok" else "reds-spine-derive: the control did not reach control_verdict=ok"
+
+# 2. Then this tree, against the anointed remote.
+let scan = run ["sh" "tools/fixtures/reds_spine_derive_scan.sh"]
+assert scan.out contains "verdict=ok" else "reds-spine-derive: the living ledger disagrees with the anointed spine --\n${scan.out}"
+
+say "reds-spine-derive: the reading on this tree --\n${scan.out}"
+
+say "GREEN: reds-spine-derive -- every number the anointed spine has bound stays bound to the same stamp here, the next row's seat is read from that spine rather than from this tree, and seventeen cases prove the refusal and the welcome on real git repositories in a throwaway pen."
