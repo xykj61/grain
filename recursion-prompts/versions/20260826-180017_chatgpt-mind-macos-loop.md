@@ -65,6 +65,13 @@ credential handling, and additional outside services remain outside the lap.
 The user-armed outer launcher is the only doorway to Codex, and its outer AI jail remains the
 boundary around Codex's inner unrestricted sandbox.
 
+This MIND seat is a standalone clone. Keep its Git administration in the repository-root `.git`
+directory; refuse linked-worktree or shared-object administration outside that fence. For every Git
+operation, use the launcher-provided `GRAIN_MIND_GIT` executable or the exact controlled `git` on
+its PATH. It is canonical Homebrew Git 2.53.0. Do not use `/usr/bin/git`, invoke `xcrun`, or depend
+on `/var/select`. Keep only the personal `xy` remote and its already-fetched `xy/main` truth; this
+lap does not fetch or publish.
+
 Configured Codex defaults and the active serving identity are different facts. Record the active
 identity as unverified until authoritative runtime evidence supplies it. The user chooses every
 model and setting, and this operating prompt leaves model flags to that user configuration.

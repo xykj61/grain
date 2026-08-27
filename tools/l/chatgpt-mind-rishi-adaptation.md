@@ -60,6 +60,19 @@ returns a bounded phase and reason such as Codex output, Codex exit, custody,
 or Git postcondition while the detailed log stays private and retains the child
 exit code.
 
+The durable MIND seat is a full standalone clone: its worktree Git directory
+and common directory must both resolve to the repository-root `.git` directory.
+Linked-worktree indirection, alternates, and external common administration are
+not launcher inputs. Every supervisor Git probe uses the canonical regular
+Homebrew Git 2.53.0 executable at
+`/opt/homebrew/Cellar/git/2.53.0_1/bin/git`. The outer plan maps that literal
+read-only beside the canonical Codex executable, and the enclosed environment
+receives the same executable in `GRAIN_MIND_GIT` and first on its explicit
+PATH. Apple `/usr/bin/git`, `/var/select`, basename decoys, prefix mappings, and
+read-write mappings do not satisfy the boundary. The project-local non-secret
+Codex config is a regular mode-0600 file; authentication remains a separate
+operator act.
+
 The implementation differs only where the language makes the boundary more
 explicit. The shell elder renders Arbor through its Brix descriptor; the pure
 Rishi printer reads the descriptor's canonical `.arbor` tile directly. Their

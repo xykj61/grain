@@ -17,23 +17,23 @@ say "These lines only print. Copy one whole line at a time from anywhere inside 
 say "Every live step stays in tools/l/chatgpt-mind.rish; the shell elder is only a witness."
 say ""
 say "Prerequisites, only when rishi/bin/rishi is absent. The first line downloads the pinned toolchain:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/f/fetch-toolchain.sh")'
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/rye/bootstrap.sh")'
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && mkdir -p "$GRAIN_ROOT/rishi/bin" && env RYE_ZIG="$GRAIN_ROOT/vendor/zig-toolchain/zig" "$GRAIN_ROOT/rye/bin/rye" build "$GRAIN_ROOT/rishi/src/main.rye" "-femit-bin=$GRAIN_ROOT/rishi/bin/rishi")'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/f/fetch-toolchain.sh")'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/rye/bootstrap.sh")'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && mkdir -p "$GRAIN_ROOT/rishi/bin" && env RYE_ZIG="$GRAIN_ROOT/vendor/zig-toolchain/zig" "$GRAIN_ROOT/rye/bin/rye" build "$GRAIN_ROOT/rishi/src/main.rye" "-femit-bin=$GRAIN_ROOT/rishi/bin/rishi")'
 say ""
 say "Check the repository, products, configuration, and outer jail without calling Codex:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" check)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" check)'
 say ""
 say "Run one supervised lap after check is green:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" once --arm-once)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" once --arm-once)'
 say ""
 say "Begin a small bounded loop only after the supervised lap is green:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
 say ""
 say "Request a stop from another Terminal:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" stop)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" stop)'
 say ""
 say "Print the canonical Arbor plus MIND prompt without calling Codex:"
-say 'GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" print)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" print)'
 say ""
 say "GREEN: MIND handoff printed -- check, once, inspect, then arm only the bounded loop."

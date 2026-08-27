@@ -72,7 +72,9 @@ assert backoff_seconds <= max_backoff_seconds else "REFUSE chatgpt-mind: backoff
 
 let pwd_result = run ["pwd"]
 assert pwd_result.ok else "REFUSE chatgpt-mind: could not read repository root"
-let repo_root = trim pwd_result.out
+let repo_real = run ["/bin/realpath" (trim pwd_result.out)]
+assert repo_real.ok else "REFUSE chatgpt-mind: repository root could not be canonically resolved"
+let repo_root = trim repo_real.out
 let kernel_result = run ["uname" "-s"]
 assert kernel_result.ok else "REFUSE chatgpt-mind: could not read the host kernel"
 assert (trim kernel_result.out) == "Darwin" else "REFUSE chatgpt-mind: the existing enclosure contract is macOS-only"
@@ -117,6 +119,59 @@ let rishi_override = env "MIND_RISHI_BIN"
 let rishi_bin = ?: (rishi_override == "") "rishi/bin/rishi" rishi_override
 let rishi_check = run ["test" "-x" rishi_bin]
 assert rishi_check.ok else "REFUSE chatgpt-mind: the built Rishi binary is absent"
+
+let git_link = "/opt/homebrew/bin/git"
+let git_expected = "/opt/homebrew/Cellar/git/2.53.0_1/bin/git"
+let git_link_check = run ["test" "-x" git_link]
+assert git_link_check.ok else "REFUSE chatgpt-mind: Homebrew Git 2.53.0 is absent"
+let git_real = run ["/bin/realpath" git_link]
+assert git_real.ok else "REFUSE chatgpt-mind: Homebrew Git could not be canonically resolved"
+let git_exec = trim git_real.out
+assert git_exec == git_expected else "REFUSE chatgpt-mind: Homebrew Git canonical target drifted"
+let git_exec_file = run ["test" "-f" git_exec]
+let git_exec_check = run ["test" "-x" git_exec]
+let git_exec_link = run ["test" "-L" git_exec]
+assert git_exec_file.ok else "REFUSE chatgpt-mind: canonical Homebrew Git is not a regular file"
+assert git_exec_check.ok else "REFUSE chatgpt-mind: canonical Homebrew Git is not executable"
+assert git_exec_link.ok == false else "REFUSE chatgpt-mind: canonical Homebrew Git remains a symlink"
+assert git_exec != "/usr/bin/git" else "REFUSE chatgpt-mind: Apple Git selector is outside this seat"
+let git_path_arg = "PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+let git_exec_arg = "GRAIN_MIND_GIT=${git_exec}"
+let git_pcre_link = "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib"
+let git_pcre_expected = "/opt/homebrew/Cellar/pcre2/10.47_1/lib/libpcre2-8.0.dylib"
+let git_intl_link = "/opt/homebrew/opt/gettext/lib/libintl.8.dylib"
+let git_intl_expected = "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib"
+let git_pcre_real = run ["/bin/realpath" git_pcre_link]
+let git_intl_real = run ["/bin/realpath" git_intl_link]
+assert git_pcre_real.ok else "REFUSE chatgpt-mind: Homebrew Git PCRE2 runtime could not be resolved"
+assert git_intl_real.ok else "REFUSE chatgpt-mind: Homebrew Git gettext runtime could not be resolved"
+let git_pcre = trim git_pcre_real.out
+let git_intl = trim git_intl_real.out
+assert git_pcre == git_pcre_expected else "REFUSE chatgpt-mind: Homebrew Git PCRE2 runtime drifted"
+assert git_intl == git_intl_expected else "REFUSE chatgpt-mind: Homebrew Git gettext runtime drifted"
+let git_pcre_file = run ["test" "-f" git_pcre]
+let git_intl_file = run ["test" "-f" git_intl]
+let git_pcre_link_check = run ["test" "-L" git_pcre]
+let git_intl_link_check = run ["test" "-L" git_intl]
+assert git_pcre_file.ok else "REFUSE chatgpt-mind: canonical Homebrew Git PCRE2 runtime is not a regular file"
+assert git_intl_file.ok else "REFUSE chatgpt-mind: canonical Homebrew Git gettext runtime is not a regular file"
+assert git_pcre_link_check.ok == false else "REFUSE chatgpt-mind: canonical Homebrew Git PCRE2 runtime remains a symlink"
+assert git_intl_link_check.ok == false else "REFUSE chatgpt-mind: canonical Homebrew Git gettext runtime remains a symlink"
+let git_dyld_arg = "DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib"
+let git_no_system_arg = "GIT_CONFIG_NOSYSTEM=1"
+let git_no_global_arg = "GIT_CONFIG_GLOBAL=/dev/null"
+
+let git_metadata = repo_root + "/.git"
+let git_metadata_dir = run ["test" "-d" git_metadata]
+let git_metadata_link = run ["test" "-L" git_metadata]
+assert git_metadata_dir.ok else "REFUSE chatgpt-mind: MIND needs a standalone clone with an internal .git directory"
+assert git_metadata_link.ok == false else "REFUSE chatgpt-mind: standalone .git cannot be a symlink"
+let git_dir_run = run [git_exec "-C" repo_root "rev-parse" "--path-format=absolute" "--git-dir"]
+let git_common_run = run [git_exec "-C" repo_root "rev-parse" "--path-format=absolute" "--git-common-dir"]
+assert git_dir_run.ok else "REFUSE chatgpt-mind: Homebrew Git could not resolve the repository administration path"
+assert git_common_run.ok else "REFUSE chatgpt-mind: Homebrew Git could not resolve the common administration path"
+assert (trim git_dir_run.out) == git_metadata else "REFUSE chatgpt-mind: Git administration escapes the standalone clone"
+assert (trim git_common_run.out) == git_metadata else "REFUSE chatgpt-mind: Git common administration escapes the standalone clone"
 
 let state_link = run ["test" "-L" state_rel]
 assert state_link.ok == false else "REFUSE chatgpt-mind: state directory cannot be a symlink"
@@ -178,7 +233,7 @@ assert codex_help contains "danger-full-access" else "REFUSE chatgpt-mind: Codex
 
 let jail_plan_out = preflight_rel + "/jail-plan.out"
 let jail_plan_err = preflight_rel + "/jail-plan.err"
-let jail_plan_run = run-bounded { argv: [ai_jail "--dry-run" "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: jail_plan_out, stdout-max: 65536, stderr-path: jail_plan_err, stderr-max: 65536 }
+let jail_plan_run = run-bounded { argv: [ai_jail "--dry-run" "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: jail_plan_out, stdout-max: 65536, stderr-path: jail_plan_err, stderr-max: 65536 }
 assert jail_plan_run.ok else "REFUSE chatgpt-mind: ai-jail could not render its macOS plan"
 let jail_plan = (read-file jail_plan_out) + (read-file jail_plan_err)
 assert jail_plan contains "sandbox-exec" else "REFUSE chatgpt-mind: outer jail did not select macOS Seatbelt"
@@ -202,6 +257,31 @@ let map_deny_run = run-bounded { argv: ["/usr/bin/grep" "-F" "-x" codex_plan_den
 assert map_deny_run.overflow == "" else "REFUSE chatgpt-mind: Codex map deny proof crossed its byte wall"
 assert map_deny_run.ok else "REFUSE chatgpt-mind: outer jail plan does not deny writes to the canonical Codex CLI"
 assert trim (read-file map_deny_out) == codex_plan_deny else "REFUSE chatgpt-mind: outer jail Codex deny mapping is ambiguous"
+assert (git_exec contains dq) == false else "REFUSE chatgpt-mind: canonical Homebrew Git path cannot be encoded safely in the jail plan"
+let git_plan_allow = "(allow file-read* (literal " + dq + git_exec + dq + "))"
+let git_plan_deny = "(deny file-write* (literal " + dq + git_exec + dq + "))"
+let git_map_allow_out = preflight_rel + "/git-map-allow.out"
+let git_map_allow_err = preflight_rel + "/git-map-allow.err"
+let git_map_allow_run = run-bounded { argv: ["/usr/bin/grep" "-F" "-x" git_plan_allow], stdin: jail_plan, stdin-max: 65536, stdout-path: git_map_allow_out, stdout-max: 4096, stderr-path: git_map_allow_err, stderr-max: 4096 }
+assert git_map_allow_run.overflow == "" else "REFUSE chatgpt-mind: Git map allow proof crossed its byte wall"
+assert git_map_allow_run.ok else "REFUSE chatgpt-mind: outer jail plan does not map canonical Homebrew Git read-only"
+assert trim (read-file git_map_allow_out) == git_plan_allow else "REFUSE chatgpt-mind: outer jail Git allow mapping is ambiguous"
+let git_map_deny_out = preflight_rel + "/git-map-deny.out"
+let git_map_deny_err = preflight_rel + "/git-map-deny.err"
+let git_map_deny_run = run-bounded { argv: ["/usr/bin/grep" "-F" "-x" git_plan_deny], stdin: jail_plan, stdin-max: 65536, stdout-path: git_map_deny_out, stdout-max: 4096, stderr-path: git_map_deny_err, stderr-max: 4096 }
+assert git_map_deny_run.overflow == "" else "REFUSE chatgpt-mind: Git map deny proof crossed its byte wall"
+assert git_map_deny_run.ok else "REFUSE chatgpt-mind: outer jail plan does not deny writes to canonical Homebrew Git"
+assert trim (read-file git_map_deny_out) == git_plan_deny else "REFUSE chatgpt-mind: outer jail Git deny mapping is ambiguous"
+let pcre_plan_allow = "(allow file-read* (literal " + dq + git_pcre + dq + "))"
+let pcre_plan_deny = "(deny file-write* (literal " + dq + git_pcre + dq + "))"
+let intl_plan_allow = "(allow file-read* (literal " + dq + git_intl + dq + "))"
+let intl_plan_deny = "(deny file-write* (literal " + dq + git_intl + dq + "))"
+assert jail_plan contains pcre_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git PCRE2 read access"
+assert jail_plan contains pcre_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git PCRE2 write denial"
+assert jail_plan contains intl_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git gettext read access"
+assert jail_plan contains intl_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git gettext write denial"
+assert (jail_plan contains "/usr/bin/git") == false else "REFUSE chatgpt-mind: outer jail plan admitted Apple Git"
+assert (jail_plan contains "/var/select") == false else "REFUSE chatgpt-mind: outer jail plan admitted the Apple developer selector"
 assert jail_plan contains "/.ssh" else "REFUSE chatgpt-mind: private-home plan does not deny SSH state"
 assert jail_plan contains "/.gnupg" else "REFUSE chatgpt-mind: private-home plan does not deny GPG state"
 
@@ -213,10 +293,18 @@ let codex_version_out = preflight_rel + "/codex-version.out"
 let codex_version_err = preflight_rel + "/codex-version.err"
 let codex_version_run = run-bounded { argv: [codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: codex_version_out, stdout-max: 4096, stderr-path: codex_version_err, stderr-max: 4096 }
 assert codex_version_run.ok else "REFUSE chatgpt-mind: Codex version check failed"
+let git_version_out = preflight_rel + "/git-version.out"
+let git_version_err = preflight_rel + "/git-version.err"
+let git_version_run = run-bounded { argv: [git_exec "--version"], stdin: "", stdin-max: 0, stdout-path: git_version_out, stdout-max: 4096, stderr-path: git_version_err, stderr-max: 4096 }
+assert git_version_run.ok else "REFUSE chatgpt-mind: Homebrew Git version check failed"
+let git_version = trim (read-file git_version_out)
+assert git_version == "git version 2.53.0" else "REFUSE chatgpt-mind: Homebrew Git version drifted"
 let ai_version = trim (read-file ai_version_out)
 let codex_version = trim (read-file codex_version_out)
 say "chatgpt-mind: ${ai_version}"
 say "chatgpt-mind: ${codex_version}"
+say "chatgpt-mind: ${git_version} at ${git_exec}"
+say "chatgpt-mind: standalone Git administration is held at ${git_metadata}"
 say "chatgpt-mind: Codex state is project-local at ${codex_home_abs}"
 say "chatgpt-mind: active serving model, effort, and tier are unverified"
 
@@ -250,17 +338,17 @@ say "chatgpt-mind: screensaver and power settings remain unchanged"
 
 if dry_run then say "chatgpt-mind: dry-run only; Codex will not be invoked"
 if dry_run then say "chatgpt-mind: bounded laps ${max_laps}, failure ceiling ${failure_ceiling}, backoff ${backoff_seconds} seconds"
-if dry_run then say "chatgpt-mind: planned inner command maps the resolved Codex CLI read-only, then runs codex exec --sandbox danger-full-access --ephemeral --strict-config with repository-relative isolated state and TMPDIR=/private/tmp inside ai-jail --exec --private-home --no-save-config"
+if dry_run then say "chatgpt-mind: planned inner command maps the resolved Codex CLI plus canonical Homebrew Git and two exact runtime libraries read-only, then runs codex exec --sandbox danger-full-access --ephemeral --strict-config with repository-relative isolated state, exact Git PATH, disabled host Git configs, and TMPDIR=/private/tmp inside ai-jail --exec --private-home --no-save-config"
 if dry_run then exit 0
 
 fn file-absent path: (run ["test" "!" "-e" path]).ok
-fn repo-clean root: (trim (run ["git" "-C" root "status" "--porcelain" "--untracked-files=normal" "--ignore-submodules=none"]).out) == ""
-fn xy-remote root: (run ["git" "-C" root "remote" "get-url" "xy"]).ok
-fn xy-ready root: (run ["git" "-C" root "show-ref" "--verify" "--quiet" "refs/remotes/xy/main"]).ok
-fn xy-integrated root: (trim (run ["git" "-C" root "rev-list" "--count" "HEAD..xy/main"]).out) == "0"
-fn ahead-count root: parse (trim (run ["git" "-C" root "rev-list" "--count" "xy/main..HEAD"]).out)
-fn gitlink-held root: (run ["git" "-C" root "ls-files" "-s" "gratitude/grain-sketchbook"]).out starts-with "160000 "
-fn signed-descendant root before after: ?& [((run ["git" "-C" root "merge-base" "--is-ancestor" before after]).ok) ((trim (run ["git" "-C" root "rev-list" "--count" "${before}..${after}"]).out) == "1") (?| [((trim (run ["git" "-C" root "log" "-1" "--format=%G?"]).out) == "G") ((trim (run ["git" "-C" root "log" "-1" "--format=%G?"]).out) == "U")])]
+fn repo-clean root: (trim (run [git_exec "-C" root "status" "--porcelain" "--untracked-files=normal" "--ignore-submodules=none"]).out) == ""
+fn xy-remote root: (run [git_exec "-C" root "remote" "get-url" "xy"]).ok
+fn xy-ready root: (run [git_exec "-C" root "show-ref" "--verify" "--quiet" "refs/remotes/xy/main"]).ok
+fn xy-integrated root: (trim (run [git_exec "-C" root "rev-list" "--count" "HEAD..xy/main"]).out) == "0"
+fn ahead-count root: parse (trim (run [git_exec "-C" root "rev-list" "--count" "xy/main..HEAD"]).out)
+fn gitlink-held root: (run [git_exec "-C" root "ls-files" "-s" "gratitude/grain-sketchbook"]).out starts-with "160000 "
+fn signed-descendant root before after: ?& [((run [git_exec "-C" root "merge-base" "--is-ancestor" before after]).ok) ((trim (run [git_exec "-C" root "rev-list" "--count" "${before}..${after}"]).out) == "1") (?| [((trim (run [git_exec "-C" root "log" "-1" "--format=%G?"]).out) == "G") ((trim (run [git_exec "-C" root "log" "-1" "--format=%G?"]).out) == "U")])]
 
 assert xy-remote repo_root else "REFUSE chatgpt-mind: personal remote xy is not configured"
 assert xy-ready repo_root else "REFUSE chatgpt-mind: local xy/main is absent"
@@ -286,20 +374,29 @@ let probe_sweep = run ["rm" "-f" inside_probe]
 assert probe_sweep.ok else "REFUSE chatgpt-mind: could not sweep the inside probe"
 let enclosed_version_out = preflight_rel + "/enclosed-codex-version.out"
 let enclosed_version_err = preflight_rel + "/enclosed-codex-version.err"
-let enclosed_version_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_version_out, stdout-max: 4096, stderr-path: enclosed_version_err, stderr-max: 4096 }
+let enclosed_version_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_version_out, stdout-max: 4096, stderr-path: enclosed_version_err, stderr-max: 4096 }
 assert enclosed_version_run.overflow == "" else "REFUSE chatgpt-mind: enclosed Codex version output crossed its byte wall"
 assert enclosed_version_run.ok else "REFUSE chatgpt-mind: outer jail could not execute the resolved Codex CLI"
+let enclosed_git_out = preflight_rel + "/enclosed-git-version.out"
+let enclosed_git_err = preflight_rel + "/enclosed-git-version.err"
+let enclosed_git_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg git_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_git_out, stdout-max: 4096, stderr-path: enclosed_git_err, stderr-max: 4096 }
+assert enclosed_git_run.overflow == "" else "REFUSE chatgpt-mind: enclosed Homebrew Git version crossed its byte wall"
+assert enclosed_git_run.ok else "REFUSE chatgpt-mind: outer jail could not execute canonical Homebrew Git"
+assert trim (read-file enclosed_git_out) == "git version 2.53.0" else "REFUSE chatgpt-mind: enclosed Homebrew Git identity drifted"
 
 let config_path = codex_home_abs + "/config.toml"
 let config_check = run ["test" "-f" config_path]
 assert config_check.ok else "REFUSE chatgpt-mind: project-local Codex config is absent"
 let config_link = run ["test" "-L" config_path]
 assert config_link.ok == false else "REFUSE chatgpt-mind: project-local Codex config cannot be a symlink"
+let config_mode_run = run ["/usr/bin/stat" "-f" "%Lp" config_path]
+assert config_mode_run.ok else "REFUSE chatgpt-mind: project-local Codex config mode is unreadable"
+assert (trim config_mode_run.out) == "600" else "REFUSE chatgpt-mind: project-local Codex config mode must be 0600"
 let codex_home_arg = "CODEX_HOME=${codex_home_rel}"
 let codex_tmpdir_arg = "TMPDIR=/private/tmp"
 let login_out = preflight_rel + "/codex-login-status.out"
 let login_err = preflight_rel + "/codex-login-status.err"
-let login_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg codex_exec "login" "status"], stdin: "", stdin-max: 0, stdout-path: login_out, stdout-max: 4096, stderr-path: login_err, stderr-max: 4096 }
+let login_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "login" "status"], stdin: "", stdin-max: 0, stdout-path: login_out, stdout-max: 4096, stderr-path: login_err, stderr-max: 4096 }
 assert login_run.overflow == "" else "REFUSE chatgpt-mind: isolated Codex login status crossed its byte wall"
 assert login_run.ok else "REFUSE chatgpt-mind: isolated Codex login is absent or unreadable"
 
@@ -343,7 +440,7 @@ assert repo-clean repo_root else "REFUSE chatgpt-mind: lap opened on a dirty tre
 assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced before the lap"
 assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP observed between laps"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY observed between laps"
-let before_run = run ["git" "-C" repo_root "rev-parse" "HEAD"]
+let before_run = run [git_exec "-C" repo_root "rev-parse" "HEAD"]
 assert before_run.ok else "REFUSE chatgpt-mind: could not read pre-lap HEAD"
 let before = trim before_run.out
 let lap_out = "${log_rel}/lap-${lap_number}.stdout"
@@ -353,12 +450,12 @@ let last_init_err = "${log_rel}/lap-${lap_number}.last-init.err"
 let last_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: lap_last, stdout-max: max_log_bytes, stderr-path: last_init_err, stderr-max: 4096 }
 assert last_init.ok else "REFUSE chatgpt-mind: could not initialize bounded last-message file"
 let prompt_text = read-file prompt_rel
-let codex_run = run-bounded { argv: [ai_jail "--map" codex_exec "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"], stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
+let codex_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"], stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
 assert codex_run.overflow == "" else "REFUSE chatgpt-mind: Codex output crossed its byte wall"
 assert codex_run.ok else "REFUSE chatgpt-mind: enclosed Codex lap exited nonzero code=${codex_run.code}"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: lap recorded a custody gate"
 assert repo-clean repo_root else "REFUSE chatgpt-mind: lap left a dirty tree"
-let after_run = run ["git" "-C" repo_root "rev-parse" "HEAD"]
+let after_run = run [git_exec "-C" repo_root "rev-parse" "HEAD"]
 assert after_run.ok else "REFUSE chatgpt-mind: could not read post-lap HEAD"
 let after = trim after_run.out
 assert after != before else "REFUSE chatgpt-mind: lap made no commit and named no custody gate"
