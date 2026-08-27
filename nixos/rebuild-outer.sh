@@ -48,4 +48,12 @@ command -v python3 && python3 --version
 #    already self-verified the binary hash and ran `claude --version` internally.
 command -v claude && claude --version || echo "claude not on PATH"
 
-echo "== rebuild-outer GREEN if perl + python3 printed a version above =="
+# 5. Confirm the codex overlay took effect. configuration.nix replaces nixpkgs'
+#    source-built codex (0.133.0 on nixos-26.05) with upstream's prebuilt static
+#    musl binary at 0.150.1, because DREAM's seat runs `codex exec --sandbox
+#    danger-full-access` inside ai-jail and the CLI moves faster than the channel.
+#    Expect 0.150.1 below; the build already self-verified the tarball hash and
+#    ran `codex --version` through versionCheckHook.
+command -v codex && codex --version || echo "codex not on PATH"
+
+echo "== rebuild-outer GREEN if perl, python3, claude, and codex printed versions above =="
