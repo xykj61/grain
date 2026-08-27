@@ -17,7 +17,7 @@ let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter — OPEN' tools/gen
 assert scope.ok else "surface-p46: prin_scope pin scan failed"
 assert scope.out contains "SCOPE_OK" else "surface-p46: sept bookmark incomplete"
 
-let pin = run ["test" "-f" "src/sur/shape-brush-pin-key-count.glow"]
+let pin = run ["test" "-f" "src/shape/shape-brush-pin-key-count.glow"]
 assert pin.ok else "surface-p46: sur×11 pin-key pedestal missing"
 
 say "GREEN: surface-p46 — check-in seated · sur×11 kept · invent held"

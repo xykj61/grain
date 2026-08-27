@@ -1,4 +1,4 @@
-# tools/t/tally_glow_tend_limb6_witness.rish -- Tally T6 stack laws in src/sur/ (e201).
+# tools/t/tally_glow_tend_limb6_witness.rish -- Tally T6 stack laws in src/shape/ (e201).
 #
 #   rishi/bin/rishi run tools/t/tally_glow_tend_limb6_witness.rish
 
@@ -7,20 +7,20 @@ say "tally-tend-6: Style Radiant — three laws named; Rye still owns StackType.
 say "tally-tend-6: Lens TAME — Equinox e201 · Ashvini nest-only · Equinox B."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/sur/shape-tally-stack-laws.glow"
+let desk = "src/shape/shape-tally-stack-laws.glow"
 
 say "tally-tend-6: placard..."
-let placard = run ["sh" "-c" "head -n 7 src/sur/shape-tally-stack-laws.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let placard = run ["sh" "-c" "head -n 7 src/shape/shape-tally-stack-laws.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "tally-tend-6: placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "tally-tend-6: placard missing six lines"
 
 say "tally-tend-6: example locks to three laws..."
-let ex = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-tally-stack-laws.glow"]
+let ex = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-tally-stack-laws.glow"]
 assert ex.ok else "tally-tend-6: example 3 missing"
-let names = run ["sh" "-c" "grep -q 'construction' src/sur/shape-tally-stack-laws.glow && grep -q 'push' src/sur/shape-tally-stack-laws.glow && grep -q 'empty' src/sur/shape-tally-stack-laws.glow"]
+let names = run ["sh" "-c" "grep -q 'construction' src/shape/shape-tally-stack-laws.glow && grep -q 'push' src/shape/shape-tally-stack-laws.glow && grep -q 'empty' src/shape/shape-tally-stack-laws.glow"]
 assert names.ok else "tally-tend-6: placard must name construction · push · empty"
-let elder = run ["sh" "-c" "grep -q 'tally/stack.rye' src/sur/shape-tally-stack-laws.glow"]
+let elder = run ["sh" "-c" "grep -q 'tally/stack.rye' src/shape/shape-tally-stack-laws.glow"]
 assert elder.ok else "tally-tend-6: stack.rye citation missing"
 
 say "tally-tend-6: rye still seats StackType, bound assert, empty as null..."
@@ -33,7 +33,7 @@ assert gate.ok else "tally-tend-6: shape lower/build/run failed"
 assert gate.out contains "EXIT:0" else "tally-tend-6: shape did not exit 0"
 
 say "tally-tend-6: T4–T5 and Aurora A2 still present..."
-let prior = run ["sh" "-c" "test -f src/sur/shape-tally-parse-int-laws.glow -a -f src/lib/shape-tally-maybe-poles.glow -a -f src/sur/shape-aurora-seed-length.glow"]
+let prior = run ["sh" "-c" "test -f src/shape/shape-tally-parse-int-laws.glow -a -f src/gate/shape-tally-maybe-poles.glow -a -f src/shape/shape-aurora-seed-length.glow"]
 assert prior.ok else "tally-tend-6: T4, T5, or A2 missing"
 
-say "GREEN: tally Glow Tend limb 6 — three stack laws in src/sur/; Tend ladder kept."
+say "GREEN: tally Glow Tend limb 6 — three stack laws in src/shape/; Tend ladder kept."

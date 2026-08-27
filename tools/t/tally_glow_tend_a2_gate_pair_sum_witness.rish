@@ -7,7 +7,7 @@ say "a2-pair: Style Radiant — pair-shape fields folded into one @u32."
 say "a2-pair: Lens TAME — empty · within · plant on wrong sample shape."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-tally-fold-pair-sum.glow"
+let desk = "src/gate/gate-tally-fold-pair-sum.glow"
 
 say "a2-pair: empty pair (0 0) answers 0..."
 let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0" "0"]
@@ -26,7 +26,7 @@ let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools
 assert plant.err contains "SampleDoesNotNest" else "a2-pair: wrong-nest plant was accepted"
 
 say "a2-pair: sumto neighbor still green..."
-let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-sumto-u32.glow" "3"]
+let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-sumto-u32.glow" "3"]
 assert sumto.ok else "a2-pair: sumto regression failed"
 assert sumto.out contains "6" else "a2-pair: sumto did not speak 6"
 

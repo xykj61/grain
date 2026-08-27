@@ -5,7 +5,7 @@
 ::  readers    Aurora · Glow Tend · Caravan · Sur museum · Ashvini nest-only
 ::  nib        equinox-e197-aurora-tend-v0
 ::
-::  Equinox e197 · Aurora A1 — first Aurora structure pedestal in src/sur/.
+::  Equinox e197 · Aurora A1 — first Aurora structure pedestal in src/shape/.
 ::  Names wire_capacity from aurora/src/posted.rye. Pedestal only; bare-metal
 ::  boot stays in aurora/src. Does not run QEMU from Glow.
 +$  aurora-wire-capacity-shape

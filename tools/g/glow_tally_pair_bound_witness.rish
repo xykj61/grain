@@ -5,7 +5,7 @@
 # The relational gate earns its first vane desk: count and cap meet at runtime.
 # Elder a1 lit wall and STOA338b metal stay green beside it.
 
-let desk = "src/lib/gate-tally-garden-pair-bound-u32.glow"
+let desk = "src/gate/gate-tally-garden-pair-bound-u32.glow"
 let zig = "vendor/zig-toolchain/zig"
 
 say "340: welcome fixture — demo pair 5,3 crosses the wall (then=0)..."
@@ -37,7 +37,7 @@ let ar = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" desk "3"]
 assert (ar.ok == false) else "340: one-arg pair must refuse"
 
 say "340: elder a1 lit wall still green..."
-let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-garden-bound-u32.glow" "3"]
+let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-garden-bound-u32.glow" "3"]
 assert a1.ok else "340: a1 regression failed"
 assert a1.out contains "EXIT:0" else "340: a1 did not exit 0"
 

@@ -10,8 +10,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-const desk = "src/lib/gate-mantra-line-fields-eq-u32.glow";
-const neighbor = "src/lib/gate-mantra-gen-floor-u32.glow";
+const desk = "src/gate/gate-mantra-line-fields-eq-u32.glow";
+const neighbor = "src/gate/gate-mantra-gen-floor-u32.glow";
 const max_worker_out_bytes: u32 = 4096; // one small answer plus an EXIT marker
 const max_desk_bytes: u32 = 4096; // a desk is a dozen short lines
 

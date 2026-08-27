@@ -11,9 +11,9 @@ say "a2-reducer: Language EN — sum and prod over one shape, chosen at the call
 say "a2-reducer: Lens TAME — same fields, same bound; only operator and identity differ."
 
 let zig = "vendor/zig-toolchain/zig"
-let prod = "src/lib/gate-tally-fold-triple-prod.glow"
-let sum = "src/lib/gate-tally-fold-triple-sum.glow"
-let mantra = "src/lib/gate-mantra-fold-triple-fields.glow"
+let prod = "src/gate/gate-tally-fold-triple-prod.glow"
+let sum = "src/gate/gate-tally-fold-triple-sum.glow"
+let mantra = "src/gate/gate-mantra-fold-triple-fields.glow"
 
 say "a2-reducer: prod folds three fields by product..."
 let p1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" prod "3" "5" "7"]
@@ -42,11 +42,11 @@ assert s2.ok else "a2-reducer: mantra sum neighbour failed to run"
 assert s2.out contains "15" else "a2-reducer: mantra 3 5 7 no longer sums to 15"
 
 say "a2-reducer: each desk still names its own verb..."
-let vp = run ["sh" "-c" "grep -qE '^[|][+]  prod  ' src/lib/gate-tally-fold-triple-prod.glow"]
+let vp = run ["sh" "-c" "grep -qE '^[|][+]  prod  ' src/gate/gate-tally-fold-triple-prod.glow"]
 assert vp.ok else "a2-reducer: the prod desk stopped naming its verb"
-let vs = run ["sh" "-c" "grep -qE '^[|][+]  sum  ' src/lib/gate-tally-fold-triple-sum.glow"]
+let vs = run ["sh" "-c" "grep -qE '^[|][+]  sum  ' src/gate/gate-tally-fold-triple-sum.glow"]
 assert vs.ok else "a2-reducer: the sum desk stopped naming its verb"
-let vm = run ["sh" "-c" "grep -qE '^[|][+]  sum  ' src/lib/gate-mantra-fold-triple-fields.glow"]
+let vm = run ["sh" "-c" "grep -qE '^[|][+]  sum  ' src/gate/gate-mantra-fold-triple-fields.glow"]
 assert vm.ok else "a2-reducer: the mantra desk stopped naming its verb"
 
 say "GREEN: a2 reducer chosen — sum and prod fold one shape; both sum desks stand; verbs named."

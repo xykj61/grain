@@ -12,7 +12,7 @@ say "first-resident: Lens TAME — Surface Chapter p45."
 let zig = "vendor/zig-toolchain/zig"
 
 say "first-resident: lib double..."
-let ddesk = "src/lib/gate-surface-double-u32.glow"
+let ddesk = "src/gate/gate-surface-double-u32.glow"
 let dgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" ddesk "21"]
 assert dgate.ok else "first-resident: double lower/build/run failed"
 assert dgate.out contains "EXIT:0" else "first-resident: double did not exit 0"
@@ -22,7 +22,7 @@ let dbad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" ddesk "
 assert dbad.out contains "FAIL" else "first-resident: double should refuse second sample"
 
 say "first-resident: lib inc..."
-let idesk = "src/lib/gate-surface-inc-u32.glow"
+let idesk = "src/gate/gate-surface-inc-u32.glow"
 let igate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" idesk "21"]
 assert igate.ok else "first-resident: inc lower/build/run failed"
 assert igate.out contains "EXIT:0" else "first-resident: inc did not exit 0"
@@ -32,8 +32,8 @@ let ibad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" idesk "
 assert ibad.out contains "FAIL" else "first-resident: inc should refuse second sample"
 
 say "first-resident: sur surface-count pedestal..."
-let sdesk = "src/sur/shape-surface-count.glow"
-let placard = run ["sh" "-c" "head -n 7 src/sur/shape-surface-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let sdesk = "src/shape/shape-surface-count.glow"
+let placard = run ["sh" "-c" "head -n 7 src/shape/shape-surface-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "first-resident: sur placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "first-resident: sur placard missing six lines"
@@ -42,12 +42,12 @@ assert sgate.ok else "first-resident: sur shape lower/build/run failed"
 assert sgate.out contains "EXIT:0" else "first-resident: sur shape did not exit 0"
 
 say "first-resident: sur frame-max-lines pedestal..."
-let fdesk = "src/sur/shape-frame-max-lines.glow"
-let fplacard = run ["sh" "-c" "head -n 7 src/sur/shape-frame-max-lines.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let fdesk = "src/shape/shape-frame-max-lines.glow"
+let fplacard = run ["sh" "-c" "head -n 7 src/shape/shape-frame-max-lines.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert fplacard.ok else "first-resident: sur frame placard scan failed"
 let fcount = trim fplacard.out
 assert fcount == "6" else "first-resident: sur frame placard missing six lines"
-let fbound = run ["sh" "-c" "grep -q 'example    8' src/sur/shape-frame-max-lines.glow && grep -q 'max_lines' src/sur/shape-frame-max-lines.glow && grep -q 'seed.rye' src/sur/shape-frame-max-lines.glow && grep -q 'wayland_seed.rye' src/sur/shape-frame-max-lines.glow && echo BOUND_OK"]
+let fbound = run ["sh" "-c" "grep -q 'example    8' src/shape/shape-frame-max-lines.glow && grep -q 'max_lines' src/shape/shape-frame-max-lines.glow && grep -q 'seed.rye' src/shape/shape-frame-max-lines.glow && grep -q 'wayland_seed.rye' src/shape/shape-frame-max-lines.glow && echo BOUND_OK"]
 assert fbound.ok else "first-resident: sur frame bound notes scan failed"
 assert fbound.out contains "BOUND_OK" else "first-resident: sur frame max_lines=8 not named"
 let fgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" fdesk]
@@ -55,12 +55,12 @@ assert fgate.ok else "first-resident: sur frame shape lower/build/run failed"
 assert fgate.out contains "EXIT:0" else "first-resident: sur frame shape did not exit 0"
 
 say "first-resident: sur frame-seed-line-count pedestal..."
-let ldesk = "src/sur/shape-frame-seed-line-count.glow"
-let lplacard = run ["sh" "-c" "head -n 7 src/sur/shape-frame-seed-line-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let ldesk = "src/shape/shape-frame-seed-line-count.glow"
+let lplacard = run ["sh" "-c" "head -n 7 src/shape/shape-frame-seed-line-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert lplacard.ok else "first-resident: sur seed-lines placard scan failed"
 let lcount = trim lplacard.out
 assert lcount == "6" else "first-resident: sur seed-lines placard missing six lines"
-let lnotes = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-frame-seed-line-count.glow && grep -q 'seed.rye' src/sur/shape-frame-seed-line-count.glow && grep -q 'seed-frame.brush' src/sur/shape-frame-seed-line-count.glow && echo SEED_OK"]
+let lnotes = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-frame-seed-line-count.glow && grep -q 'seed.rye' src/shape/shape-frame-seed-line-count.glow && grep -q 'seed-frame.brush' src/shape/shape-frame-seed-line-count.glow && echo SEED_OK"]
 assert lnotes.ok else "first-resident: sur seed-lines notes scan failed"
 assert lnotes.out contains "SEED_OK" else "first-resident: sur seed Frame three lines not named"
 let lgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" ldesk]
@@ -68,12 +68,12 @@ assert lgate.ok else "first-resident: sur seed-lines shape lower/build/run faile
 assert lgate.out contains "EXIT:0" else "first-resident: sur seed-lines shape did not exit 0"
 
 say "first-resident: sur brush-skate-cols pedestal..."
-let kdesk = "src/sur/shape-brush-skate-cols.glow"
-let kplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-skate-cols.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let kdesk = "src/shape/shape-brush-skate-cols.glow"
+let kplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-skate-cols.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert kplacard.ok else "first-resident: sur skate-cols placard scan failed"
 let kcount = trim kplacard.out
 assert kcount == "6" else "first-resident: sur skate-cols placard missing six lines"
-let knotes = run ["sh" "-c" "grep -q 'example    40' src/sur/shape-brush-skate-cols.glow && grep -q 'brush_skate_cols' src/sur/shape-brush-skate-cols.glow && grep -q 'brush_parse.rye' src/sur/shape-brush-skate-cols.glow && echo SKATE_OK"]
+let knotes = run ["sh" "-c" "grep -q 'example    40' src/shape/shape-brush-skate-cols.glow && grep -q 'brush_skate_cols' src/shape/shape-brush-skate-cols.glow && grep -q 'brush_parse.rye' src/shape/shape-brush-skate-cols.glow && echo SKATE_OK"]
 assert knotes.ok else "first-resident: sur skate-cols notes scan failed"
 assert knotes.out contains "SKATE_OK" else "first-resident: sur brush skate cols=40 not named"
 let kgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" kdesk]
@@ -81,12 +81,12 @@ assert kgate.ok else "first-resident: sur skate-cols shape lower/build/run faile
 assert kgate.out contains "EXIT:0" else "first-resident: sur skate-cols shape did not exit 0"
 
 say "first-resident: sur brush-skate-rows pedestal..."
-let rdesk = "src/sur/shape-brush-skate-rows.glow"
-let rplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-skate-rows.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let rdesk = "src/shape/shape-brush-skate-rows.glow"
+let rplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-skate-rows.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert rplacard.ok else "first-resident: sur skate-rows placard scan failed"
 let rcount = trim rplacard.out
 assert rcount == "6" else "first-resident: sur skate-rows placard missing six lines"
-let rnotes = run ["sh" "-c" "grep -q 'example    8' src/sur/shape-brush-skate-rows.glow && grep -q 'brush_skate_rows' src/sur/shape-brush-skate-rows.glow && grep -q 'max_frame_lines' src/sur/shape-brush-skate-rows.glow && echo ROWS_OK"]
+let rnotes = run ["sh" "-c" "grep -q 'example    8' src/shape/shape-brush-skate-rows.glow && grep -q 'brush_skate_rows' src/shape/shape-brush-skate-rows.glow && grep -q 'max_frame_lines' src/shape/shape-brush-skate-rows.glow && echo ROWS_OK"]
 assert rnotes.ok else "first-resident: sur skate-rows notes scan failed"
 assert rnotes.out contains "ROWS_OK" else "first-resident: sur brush skate rows=8 not named"
 let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" rdesk]
@@ -94,12 +94,12 @@ assert rgate.ok else "first-resident: sur skate-rows shape lower/build/run faile
 assert rgate.out contains "EXIT:0" else "first-resident: sur skate-rows shape did not exit 0"
 
 say "first-resident: sur brush-max-bytes pedestal..."
-let bdesk = "src/sur/shape-brush-max-bytes.glow"
-let bplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-max-bytes.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let bdesk = "src/shape/shape-brush-max-bytes.glow"
+let bplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-max-bytes.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert bplacard.ok else "first-resident: sur brush-max-bytes placard scan failed"
 let bcount = trim bplacard.out
 assert bcount == "6" else "first-resident: sur brush-max-bytes placard missing six lines"
-let bnotes = run ["sh" "-c" "grep -q 'example    16384' src/sur/shape-brush-max-bytes.glow && grep -q 'max_brush_bytes' src/sur/shape-brush-max-bytes.glow && grep -q 'sixteen kibibytes' src/sur/shape-brush-max-bytes.glow && echo BYTES_OK"]
+let bnotes = run ["sh" "-c" "grep -q 'example    16384' src/shape/shape-brush-max-bytes.glow && grep -q 'max_brush_bytes' src/shape/shape-brush-max-bytes.glow && grep -q 'sixteen kibibytes' src/shape/shape-brush-max-bytes.glow && echo BYTES_OK"]
 assert bnotes.ok else "first-resident: sur brush-max-bytes notes scan failed"
 assert bnotes.out contains "BYTES_OK" else "first-resident: sur brush max bytes=16384 not named"
 let bgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" bdesk]
@@ -107,12 +107,12 @@ assert bgate.ok else "first-resident: sur brush-max-bytes shape lower/build/run 
 assert bgate.out contains "EXIT:0" else "first-resident: sur brush-max-bytes shape did not exit 0"
 
 say "first-resident: sur brush-max-pin-bytes pedestal..."
-let pindesk = "src/sur/shape-brush-max-pin-bytes.glow"
-let pinplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-max-pin-bytes.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let pindesk = "src/shape/shape-brush-max-pin-bytes.glow"
+let pinplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-max-pin-bytes.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert pinplacard.ok else "first-resident: sur brush-max-pin-bytes placard scan failed"
 let pincount = trim pinplacard.out
 assert pincount == "6" else "first-resident: sur brush-max-pin-bytes placard missing six lines"
-let pinnotes = run ["sh" "-c" "grep -q 'example    128' src/sur/shape-brush-max-pin-bytes.glow && grep -q 'max_pin_bytes' src/sur/shape-brush-max-pin-bytes.glow && grep -q 'one hundred twenty-eight' src/sur/shape-brush-max-pin-bytes.glow && echo PIN_OK"]
+let pinnotes = run ["sh" "-c" "grep -q 'example    128' src/shape/shape-brush-max-pin-bytes.glow && grep -q 'max_pin_bytes' src/shape/shape-brush-max-pin-bytes.glow && grep -q 'one hundred twenty-eight' src/shape/shape-brush-max-pin-bytes.glow && echo PIN_OK"]
 assert pinnotes.ok else "first-resident: sur brush-max-pin-bytes notes scan failed"
 assert pinnotes.out contains "PIN_OK" else "first-resident: sur brush max pin bytes=128 not named"
 let pingate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" pindesk]
@@ -120,12 +120,12 @@ assert pingate.ok else "first-resident: sur brush-max-pin-bytes shape lower/buil
 assert pingate.out contains "EXIT:0" else "first-resident: sur brush-max-pin-bytes shape did not exit 0"
 
 say "first-resident: sur brush-parse-error-count pedestal..."
-let errdesk = "src/sur/shape-brush-parse-error-count.glow"
-let errplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-parse-error-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let errdesk = "src/shape/shape-brush-parse-error-count.glow"
+let errplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-parse-error-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert errplacard.ok else "first-resident: sur brush-parse-error-count placard scan failed"
 let errcount = trim errplacard.out
 assert errcount == "6" else "first-resident: sur brush-parse-error-count placard missing six lines"
-let errnotes = run ["sh" "-c" "grep -q 'example    13' src/sur/shape-brush-parse-error-count.glow && grep -q 'ParseError' src/sur/shape-brush-parse-error-count.glow && grep -q 'SourceTooLarge' src/sur/shape-brush-parse-error-count.glow && grep -q 'MissingAtNib' src/sur/shape-brush-parse-error-count.glow && echo ERR_OK"]
+let errnotes = run ["sh" "-c" "grep -q 'example    13' src/shape/shape-brush-parse-error-count.glow && grep -q 'ParseError' src/shape/shape-brush-parse-error-count.glow && grep -q 'SourceTooLarge' src/shape/shape-brush-parse-error-count.glow && grep -q 'MissingAtNib' src/shape/shape-brush-parse-error-count.glow && echo ERR_OK"]
 assert errnotes.ok else "first-resident: sur brush-parse-error-count notes scan failed"
 assert errnotes.out contains "ERR_OK" else "first-resident: sur brush parse error count=13 not named"
 let errrye = run ["sh" "-c" "grep -q 'MissingAtNib' brushstroke/brush_parse.rye && grep -q 'SourceTooLarge' brushstroke/brush_parse.rye && sed -n '/^pub const ParseError = error{/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[A-Z][A-Za-z]+'"]
@@ -137,12 +137,12 @@ assert errgate.ok else "first-resident: sur brush-parse-error-count shape lower/
 assert errgate.out contains "EXIT:0" else "first-resident: sur brush-parse-error-count shape did not exit 0"
 
 say "first-resident: sur brush-surface-field-count pedestal..."
-let surfdesk = "src/sur/shape-brush-surface-field-count.glow"
-let surfplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-surface-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let surfdesk = "src/shape/shape-brush-surface-field-count.glow"
+let surfplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-surface-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert surfplacard.ok else "first-resident: sur brush-surface-field-count placard scan failed"
 let surfcount = trim surfplacard.out
 assert surfcount == "6" else "first-resident: sur brush-surface-field-count placard missing six lines"
-let surfnotes = run ["sh" "-c" "grep -q 'example    5' src/sur/shape-brush-surface-field-count.glow && grep -q 'BrushSurface' src/sur/shape-brush-surface-field-count.glow && grep -q 'at_nib' src/sur/shape-brush-surface-field-count.glow && grep -q 'line_count' src/sur/shape-brush-surface-field-count.glow && echo SURF_OK"]
+let surfnotes = run ["sh" "-c" "grep -q 'example    5' src/shape/shape-brush-surface-field-count.glow && grep -q 'BrushSurface' src/shape/shape-brush-surface-field-count.glow && grep -q 'at_nib' src/shape/shape-brush-surface-field-count.glow && grep -q 'line_count' src/shape/shape-brush-surface-field-count.glow && echo SURF_OK"]
 assert surfnotes.ok else "first-resident: sur brush-surface-field-count notes scan failed"
 assert surfnotes.out contains "SURF_OK" else "first-resident: sur BrushSurface field count=5 not named"
 let surfrye = run ["sh" "-c" "sed -n '/^pub const BrushSurface = struct {/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[a-z_]+:'"]
@@ -154,12 +154,12 @@ assert surfgate.ok else "first-resident: sur brush-surface-field-count shape low
 assert surfgate.out contains "EXIT:0" else "first-resident: sur brush-surface-field-count shape did not exit 0"
 
 say "first-resident: sur brush-frame-field-count pedestal..."
-let framedesk = "src/sur/shape-brush-frame-field-count.glow"
-let frameplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-frame-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let framedesk = "src/shape/shape-brush-frame-field-count.glow"
+let frameplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-frame-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert frameplacard.ok else "first-resident: sur brush-frame-field-count placard scan failed"
 let framecount = trim frameplacard.out
 assert framecount == "6" else "first-resident: sur brush-frame-field-count placard missing six lines"
-let framenotes = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-brush-frame-field-count.glow && grep -q 'BrushFrame' src/sur/shape-brush-frame-field-count.glow && grep -q 'at_nib' src/sur/shape-brush-frame-field-count.glow && grep -q 'lines' src/sur/shape-brush-frame-field-count.glow && echo FRAME_OK"]
+let framenotes = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-brush-frame-field-count.glow && grep -q 'BrushFrame' src/shape/shape-brush-frame-field-count.glow && grep -q 'at_nib' src/shape/shape-brush-frame-field-count.glow && grep -q 'lines' src/shape/shape-brush-frame-field-count.glow && echo FRAME_OK"]
 assert framenotes.ok else "first-resident: sur brush-frame-field-count notes scan failed"
 assert framenotes.out contains "FRAME_OK" else "first-resident: sur BrushFrame field count=3 not named"
 let framerye = run ["sh" "-c" "sed -n '/^pub const BrushFrame = struct {/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[a-z_]+:'"]
@@ -171,12 +171,12 @@ assert framegate.ok else "first-resident: sur brush-frame-field-count shape lowe
 assert framegate.out contains "EXIT:0" else "first-resident: sur brush-frame-field-count shape did not exit 0"
 
 say "first-resident: sur brush-pin-key-count pedestal..."
-let keydesk = "src/sur/shape-brush-pin-key-count.glow"
-let keyplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-pin-key-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let keydesk = "src/shape/shape-brush-pin-key-count.glow"
+let keyplacard = run ["sh" "-c" "head -n 7 src/shape/shape-brush-pin-key-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert keyplacard.ok else "first-resident: sur brush-pin-key-count placard scan failed"
 let keycount = trim keyplacard.out
 assert keycount == "6" else "first-resident: sur brush-pin-key-count placard missing six lines"
-let keynotes = run ["sh" "-c" "grep -q 'example    4' src/sur/shape-brush-pin-key-count.glow && grep -q 'at-nib' src/sur/shape-brush-pin-key-count.glow && grep -q 'present' src/sur/shape-brush-pin-key-count.glow && grep -q 'max-lines' src/sur/shape-brush-pin-key-count.glow && grep -q 'lines' src/sur/shape-brush-pin-key-count.glow && grep -q 'refuse' src/sur/shape-brush-pin-key-count.glow && echo KEY_OK"]
+let keynotes = run ["sh" "-c" "grep -q 'example    4' src/shape/shape-brush-pin-key-count.glow && grep -q 'at-nib' src/shape/shape-brush-pin-key-count.glow && grep -q 'present' src/shape/shape-brush-pin-key-count.glow && grep -q 'max-lines' src/shape/shape-brush-pin-key-count.glow && grep -q 'lines' src/shape/shape-brush-pin-key-count.glow && grep -q 'refuse' src/shape/shape-brush-pin-key-count.glow && echo KEY_OK"]
 assert keynotes.ok else "first-resident: sur brush-pin-key-count notes scan failed"
 assert keynotes.out contains "KEY_OK" else "first-resident: sur brush pin key count=4 not named"
 let keyseed = run ["sh" "-c" "grep -q '::  at-nib:' brushstroke/seed-frame.brush && grep -q '::  present:' brushstroke/seed-frame.brush && grep -q '::  max-lines:' brushstroke/seed-frame.brush && grep -q '::  lines:' brushstroke/seed-frame.brush && echo SEED_OK"]
@@ -187,12 +187,12 @@ assert keygate.ok else "first-resident: sur brush-pin-key-count shape lower/buil
 assert keygate.out contains "EXIT:0" else "first-resident: sur brush-pin-key-count shape did not exit 0"
 
 say "first-resident: til tilak-root-count..."
-let tdesk = "src/til/tilak-root-count.glow"
-let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let tdesk = "src/shape/tilak-root-count.glow"
+let tplacard = run ["sh" "-c" "head -n 7 src/shape/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert tplacard.ok else "first-resident: til placard scan failed"
 let tcount = trim tplacard.out
 assert tcount == "6" else "first-resident: til placard missing six lines"
-let troots = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && grep -q '%tile' src/til/tilak-root-count.glow && echo ROOTS_OK"]
+let troots = run ["sh" "-c" "grep -q 'plain-bytes' src/shape/tilak-root-count.glow && grep -q 'manifest' src/shape/tilak-root-count.glow && grep -q '%tile' src/shape/tilak-root-count.glow && echo ROOTS_OK"]
 assert troots.ok else "first-resident: til roots/%tile notes missing"
 assert troots.out contains "ROOTS_OK" else "first-resident: til roots not named"
 let tgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" tdesk]
@@ -200,12 +200,12 @@ assert tgate.ok else "first-resident: til shape lower/build/run failed"
 assert tgate.out contains "EXIT:0" else "first-resident: til shape did not exit 0"
 
 say "first-resident: til manifest-field-count..."
-let mdesk = "src/til/shape-manifest-field-count.glow"
-let mplacard = run ["sh" "-c" "head -n 7 src/til/shape-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let mdesk = "src/shape/shape-manifest-field-count.glow"
+let mplacard = run ["sh" "-c" "head -n 7 src/shape/shape-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert mplacard.ok else "first-resident: til manifest placard scan failed"
 let mcount = trim mplacard.out
 assert mcount == "6" else "first-resident: til manifest placard missing six lines"
-let mfields = run ["sh" "-c" "grep -q 'example    3' src/til/shape-manifest-field-count.glow && grep -q 'type-mark' src/til/shape-manifest-field-count.glow && grep -q 'digest' src/til/shape-manifest-field-count.glow && grep -q 'name' src/til/shape-manifest-field-count.glow && grep -q '%tile' src/til/shape-manifest-field-count.glow && echo FIELDS_OK"]
+let mfields = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-manifest-field-count.glow && grep -q 'type-mark' src/shape/shape-manifest-field-count.glow && grep -q 'digest' src/shape/shape-manifest-field-count.glow && grep -q 'name' src/shape/shape-manifest-field-count.glow && grep -q '%tile' src/shape/shape-manifest-field-count.glow && echo FIELDS_OK"]
 assert mfields.ok else "first-resident: til manifest fields scan failed"
 assert mfields.out contains "FIELDS_OK" else "first-resident: til manifest three fields / %tile not named"
 let mgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" mdesk]
@@ -213,12 +213,12 @@ assert mgate.ok else "first-resident: til manifest shape lower/build/run failed"
 assert mgate.out contains "EXIT:0" else "first-resident: til manifest shape did not exit 0"
 
 say "first-resident: app pool-agent-slot..."
-let adesk = "src/app/shape-pool-agent-slot.glow"
-let aplacard = run ["sh" "-c" "head -n 7 src/app/shape-pool-agent-slot.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let adesk = "src/shape/shape-pool-agent-slot.glow"
+let aplacard = run ["sh" "-c" "head -n 7 src/shape/shape-pool-agent-slot.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert aplacard.ok else "first-resident: app placard scan failed"
 let acount = trim aplacard.out
 assert acount == "6" else "first-resident: app placard missing six lines"
-let apool = run ["sh" "-c" "grep -q 'Pool' src/app/shape-pool-agent-slot.glow && grep -q 'Gall-role' src/app/shape-pool-agent-slot.glow && grep -q 'TUBE' src/app/shape-pool-agent-slot.glow && grep -q 'pond/apps' src/app/shape-pool-agent-slot.glow && echo POOL_OK"]
+let apool = run ["sh" "-c" "grep -q 'Pool' src/shape/shape-pool-agent-slot.glow && grep -q 'Gall-role' src/shape/shape-pool-agent-slot.glow && grep -q 'TUBE' src/shape/shape-pool-agent-slot.glow && grep -q 'pond/apps' src/shape/shape-pool-agent-slot.glow && echo POOL_OK"]
 assert apool.ok else "first-resident: app Pool/TUBE notes scan failed"
 assert apool.out contains "POOL_OK" else "first-resident: app Pool · Gall · TUBE · pond/apps not named"
 let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" adesk]
@@ -226,12 +226,12 @@ assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
 
 say "first-resident: app tube0-manifest-field-count..."
-let udesk = "src/app/shape-tube0-manifest-field-count.glow"
-let uplacard = run ["sh" "-c" "head -n 7 src/app/shape-tube0-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let udesk = "src/shape/shape-tube0-manifest-field-count.glow"
+let uplacard = run ["sh" "-c" "head -n 7 src/shape/shape-tube0-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert uplacard.ok else "first-resident: app tube0 placard scan failed"
 let ucount = trim uplacard.out
 assert ucount == "6" else "first-resident: app tube0 placard missing six lines"
-let ufields = run ["sh" "-c" "grep -q 'example    4' src/app/shape-tube0-manifest-field-count.glow && grep -q 'name' src/app/shape-tube0-manifest-field-count.glow && grep -q 'version' src/app/shape-tube0-manifest-field-count.glow && grep -q 'capabilities' src/app/shape-tube0-manifest-field-count.glow && grep -q 'iteration-bound' src/app/shape-tube0-manifest-field-count.glow && grep -q 'APK' src/app/shape-tube0-manifest-field-count.glow && echo TUBE0_OK"]
+let ufields = run ["sh" "-c" "grep -q 'example    4' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'name' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'version' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'capabilities' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'iteration-bound' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'APK' src/shape/shape-tube0-manifest-field-count.glow && echo TUBE0_OK"]
 assert ufields.ok else "first-resident: app tube0 fields scan failed"
 assert ufields.out contains "TUBE0_OK" else "first-resident: app tube0 four fields / APK refuse not named"
 let ugate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" udesk]
@@ -239,12 +239,12 @@ assert ugate.ok else "first-resident: app tube0 shape lower/build/run failed"
 assert ugate.out contains "EXIT:0" else "first-resident: app tube0 shape did not exit 0"
 
 say "first-resident: sec grant-family-count..."
-let cdesk = "src/sec/shape-grant-family-count.glow"
-let cplacard = run ["sh" "-c" "head -n 7 src/sec/shape-grant-family-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let cdesk = "src/shape/shape-grant-family-count.glow"
+let cplacard = run ["sh" "-c" "head -n 7 src/shape/shape-grant-family-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert cplacard.ok else "first-resident: sec placard scan failed"
 let ccount = trim cplacard.out
 assert ccount == "6" else "first-resident: sec placard missing six lines"
-let cfamilies = run ["sh" "-c" "grep -q 'example    3' src/sec/shape-grant-family-count.glow && grep -q 'Resource Scope' src/sec/shape-grant-family-count.glow && grep -q 'Network Grant' src/sec/shape-grant-family-count.glow && grep -q 'Sensors Grant' src/sec/shape-grant-family-count.glow && grep -q 'TUBE' src/sec/shape-grant-family-count.glow && echo GRANT_OK"]
+let cfamilies = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-grant-family-count.glow && grep -q 'Resource Scope' src/shape/shape-grant-family-count.glow && grep -q 'Network Grant' src/shape/shape-grant-family-count.glow && grep -q 'Sensors Grant' src/shape/shape-grant-family-count.glow && grep -q 'TUBE' src/shape/shape-grant-family-count.glow && echo GRANT_OK"]
 assert cfamilies.ok else "first-resident: sec grant families scan failed"
 assert cfamilies.out contains "GRANT_OK" else "first-resident: sec three grant families / TUBE not named"
 let cgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" cdesk]
@@ -252,12 +252,12 @@ assert cgate.ok else "first-resident: sec shape lower/build/run failed"
 assert cgate.out contains "EXIT:0" else "first-resident: sec shape did not exit 0"
 
 say "first-resident: sec mand-ring-count..."
-let rdesk = "src/sec/shape-mand-ring-count.glow"
-let rplacard = run ["sh" "-c" "head -n 7 src/sec/shape-mand-ring-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let rdesk = "src/shape/shape-mand-ring-count.glow"
+let rplacard = run ["sh" "-c" "head -n 7 src/shape/shape-mand-ring-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert rplacard.ok else "first-resident: sec mand placard scan failed"
 let rcount = trim rplacard.out
 assert rcount == "6" else "first-resident: sec mand placard missing six lines"
-let rrings = run ["sh" "-c" "grep -q 'example    3' src/sec/shape-mand-ring-count.glow && grep -q 'ring-1' src/sec/shape-mand-ring-count.glow && grep -q 'ring-2' src/sec/shape-mand-ring-count.glow && grep -q 'ring-3' src/sec/shape-mand-ring-count.glow && grep -q 'Mand' src/sec/shape-mand-ring-count.glow && echo MAND_OK"]
+let rrings = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-mand-ring-count.glow && grep -q 'ring-1' src/shape/shape-mand-ring-count.glow && grep -q 'ring-2' src/shape/shape-mand-ring-count.glow && grep -q 'ring-3' src/shape/shape-mand-ring-count.glow && grep -q 'Mand' src/shape/shape-mand-ring-count.glow && echo MAND_OK"]
 assert rrings.ok else "first-resident: sec mand rings scan failed"
 assert rrings.out contains "MAND_OK" else "first-resident: sec Mand three rings not named"
 let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" rdesk]

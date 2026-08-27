@@ -1,25 +1,13 @@
-# app — Pool Agents
+# app -- carried into `shape/`
 
-**Language:** EN  
-**Last updated:** 2026-07-28 (Surface p19 — second pedestal)  
-**Status:** Living — room open; first resident + second pedestal seated
-**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
-[`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
-path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+**Language:** EN
+**Status:** Pointer -- this room's pedestals moved to [`../shape/`](../shape/README.md) on `20260827.184500`
+**Molted:** `20260827.184500` -- on Keaton's word, `approve all doors`
 
-Applications are **Pool agents** — Pool is confirmed as Glow's Gall-role host (`20260714.042545`), and the TUBE ladder packages an app to a signed APK. Agents written in Glow live here; today's Rye-authored seeds remain under [`../../pond/apps/`](../../pond/apps/) beside the enclosure until each is revived into Glow **as a new artifact beside its elder** (the reviving-replaces-renaming law).
+Every file this room held was a `shape-*.glow` desk, so it held the same kind of thing
+[`../shape/`](../shape/README.md) holds, split by a subject each filename already carried. The
+pedestals moved; **what this room taught about Pond agents is carried whole** into
+[`../shape/README.md`](../shape/README.md), under *The three rooms carried in here*.
 
-## Pedestals
-
-| Pedestal | Role | Witness |
-| --- | --- | --- |
-| [`shape-pool-agent-slot.glow`](shape-pool-agent-slot.glow) | First resident · one Lap-0 agent slot | `tools/gen/chapter/src_first_resident_witness.rish` |
-| [`shape-tube0-manifest-field-count.glow`](shape-tube0-manifest-field-count.glow) | TUBE0 mold · four fields named | same |
-
-```
-rishi/bin/rishi run tools/g/glow_run.rish src/app/shape-pool-agent-slot.glow
-rishi/bin/rishi run tools/g/glow_run.rish src/app/shape-tube0-manifest-field-count.glow
-rishi/bin/rishi run tools/gen/chapter/src_first_resident_witness.rish
-```
-
-Packaging and APK stay on the TUBE ladder witnesses — these pedestals name shapes only. Further candidates: revived pond/apps agents (beside elders), each with its own placard.
+The door keeps its path so every reference that ever pointed here still lands. Charter:
+[`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).

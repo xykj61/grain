@@ -10,7 +10,7 @@ say "eq-stg: Language EN — the third exact deciding gate (STOA337)."
 say "eq-stg: Lens TAME — exact match; both sides; gth neighbor still stands."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/lib/gate-aurora-living-stages-eq-u32.glow"
+let desk = "src/gate/gate-aurora-living-stages-eq-u32.glow"
 
 say "eq-stg: exact 6 answers 1..."
 let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "6"]
@@ -29,11 +29,11 @@ assert over.ok else "eq-stg: over case failed to run"
 assert over.out contains "0" else "eq-stg: 7 did not speak 0"
 
 say "eq-stg: the desk names eq, not gth..."
-let verb = run ["sh" "-c" "grep -qE '^[?][:]  [(]eq ' src/lib/gate-aurora-living-stages-eq-u32.glow"]
+let verb = run ["sh" "-c" "grep -qE '^[?][:]  [(]eq ' src/gate/gate-aurora-living-stages-eq-u32.glow"]
 assert verb.ok else "eq-stg: the desk stopped naming eq"
 
 say "eq-stg: gth neighbor (aurora wire bound) still green..."
-let gth = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-aurora-wire-bound-u32.glow" "128"]
+let gth = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-aurora-wire-bound-u32.glow" "128"]
 assert gth.ok else "eq-stg: gth neighbor failed"
 assert gth.out contains "1" else "eq-stg: gth neighbor did not speak 1"
 

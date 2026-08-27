@@ -7,20 +7,20 @@ say "caravan-tend-4: Style Radiant — three meanings named; Rye still decides r
 say "caravan-tend-4: Lens TAME — Equinox e198 · Ashvini nest-only · Equinox B."
 
 let zig = "vendor/zig-toolchain/zig"
-let desk = "src/sur/shape-caravan-supervisor-exit-meanings.glow"
+let desk = "src/shape/shape-caravan-supervisor-exit-meanings.glow"
 
 say "caravan-tend-4: placard..."
-let placard = run ["sh" "-c" "head -n 7 src/sur/shape-caravan-supervisor-exit-meanings.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let placard = run ["sh" "-c" "head -n 7 src/shape/shape-caravan-supervisor-exit-meanings.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "caravan-tend-4: placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "caravan-tend-4: placard missing six lines"
 
 say "caravan-tend-4: example locks to three meanings..."
-let ex = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+let ex = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-caravan-supervisor-exit-meanings.glow"]
 assert ex.ok else "caravan-tend-4: example 3 missing"
-let names = run ["sh" "-c" "grep -q 'cycle_ok' src/sur/shape-caravan-supervisor-exit-meanings.glow && grep -q 'stop_requested' src/sur/shape-caravan-supervisor-exit-meanings.glow && grep -q 'fall' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+let names = run ["sh" "-c" "grep -q 'cycle_ok' src/shape/shape-caravan-supervisor-exit-meanings.glow && grep -q 'stop_requested' src/shape/shape-caravan-supervisor-exit-meanings.glow && grep -q 'fall' src/shape/shape-caravan-supervisor-exit-meanings.glow"]
 assert names.ok else "caravan-tend-4: placard must name cycle_ok · stop_requested · fall"
-let elder = run ["sh" "-c" "grep -q 'caravan/supervisor_exit.rye' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+let elder = run ["sh" "-c" "grep -q 'caravan/supervisor_exit.rye' src/shape/shape-caravan-supervisor-exit-meanings.glow"]
 assert elder.ok else "caravan-tend-4: supervisor_exit.rye citation missing"
 
 say "caravan-tend-4: rye still seats cycle_ok=0 and stop_requested=8..."
@@ -35,7 +35,7 @@ assert gate.ok else "caravan-tend-4: shape lower/build/run failed"
 assert gate.out contains "EXIT:0" else "caravan-tend-4: shape did not exit 0"
 
 say "caravan-tend-4: C3 and Aurora A1 still present..."
-let prior = run ["sh" "-c" "test -f src/sur/shape-caravan-max-name-len.glow -a -f src/sur/shape-aurora-wire-capacity.glow"]
+let prior = run ["sh" "-c" "test -f src/shape/shape-caravan-max-name-len.glow -a -f src/shape/shape-aurora-wire-capacity.glow"]
 assert prior.ok else "caravan-tend-4: C3 or A1 missing"
 
-say "GREEN: caravan Glow Tend limb 4 — three exit meanings in src/sur/; C3+A1 kept."
+say "GREEN: caravan Glow Tend limb 4 — three exit meanings in src/shape/; C3+A1 kept."

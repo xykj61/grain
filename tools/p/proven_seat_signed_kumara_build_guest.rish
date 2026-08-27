@@ -11,9 +11,9 @@ let app = "signed-kumara-verify"
 let install = "${cache}/signed-kumara-verify"
 let meta = "${cache}/signed-kumara-guest-meta.txt"
 let conf = "${build}/etc/build.conf"
-let main_c = "${guest_repo}/src/app/${app}/main.c"
-let target_mk = "${guest_repo}/src/app/${app}/target.mk"
-let fixture = "${guest_repo}/src/app/${app}/fixture_receipt.h"
+let main_c = "${guest_repo}/src/shape/${app}/main.c"
+let target_mk = "${guest_repo}/src/shape/${app}/target.mk"
+let fixture = "${guest_repo}/src/shape/${app}/fixture_receipt.h"
 
 say "signed-Kumara guest: checking builddir · guest sources · fixture…"
 let have_build = run ["test" "-f" conf]

@@ -19,9 +19,9 @@ say "era: Language EN — the pure lap (a1 deciding gates + Rishi walls + R1 soc
 say "era: Lens TAME — no socket in this lap; the metal lap owns the bind probe."
 
 let zig = "vendor/zig-toolchain/zig"
-let face = "src/lib/gate-comlink-addr-width-u32.glow"
-let policy = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
-let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
+let face = "src/gate/gate-comlink-addr-width-u32.glow"
+let policy = "src/gate/gate-comlink-dual-stack-bind-u32.glow"
+let desk = "src/shape/shape-comlink-ipv6-dual-stack.glow"
 
 say "era 1/12: the a1 suite — seven deciding gates, both sides each..."
 let a1 = run ["rishi/bin/rishi" "run" "tools/g/glow_tend_a1_suite.rish"]
@@ -29,15 +29,15 @@ assert a1.ok else "era: the a1 suite RED — read its own line for the failing g
 say "era 1/12 GREEN — a1 whole."
 
 say "era 2/12: R1's pedestal — placard, and its walls in the shape's own words..."
-let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+let placard = run ["sh" "-c" "head -n 7 src/shape/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "era: R1 placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "era: R1 placard missing six lines"
-let wall_bind = run ["sh" "-c" "grep -q 'binds never dials' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let wall_bind = run ["sh" "-c" "grep -q 'binds never dials' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert wall_bind.ok else "era: the bind-never-dial wall left the pedestal's own words"
-let wall_wait = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let wall_wait = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert wall_wait.ok else "era: the bounded family-wait wall left the pedestal's own words"
-let wall_sibling = run ["sh" "-c" "grep -q 'never a union' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let wall_sibling = run ["sh" "-c" "grep -q 'never a union' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert wall_sibling.ok else "era: the sibling-records wall left the pedestal's own words"
 let shape = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
 assert shape.ok else "era: R1 shape lower/build/run failed"
@@ -54,7 +54,7 @@ assert sixteen.out contains "1" else "era: sixteen bytes did not speak 1"
 let wide = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "20"]
 assert wide.ok else "era: over-wide run failed"
 assert wide.out contains "0" else "era: twenty bytes did not speak 0"
-let tracks = run ["sh" "-c" "grep -q 'lens 4 and 16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+let tracks = run ["sh" "-c" "grep -q 'lens 4 and 16' src/shape/shape-comlink-ipv6-dual-stack.glow"]
 assert tracks.ok else "era: the pedestal's sibling lengths moved — recheck the width face"
 say "era 3/12 GREEN — the sibling lengths decide, and the face still tracks the shape."
 

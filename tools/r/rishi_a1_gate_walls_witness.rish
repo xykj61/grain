@@ -11,8 +11,8 @@ say "rishi-walls: Language EN — the shell's own ceilings, decided in Glow."
 say "rishi-walls: Lens TAME — pure legs; Rye still enforces at runtime."
 
 let zig = "vendor/zig-toolchain/zig"
-let env_face = "src/lib/gate-rishi-env-bindings-bound-u32.glow"
-let hist_face = "src/lib/gate-rishi-history-bound-u32.glow"
+let env_face = "src/gate/gate-rishi-env-bindings-bound-u32.glow"
+let hist_face = "src/gate/gate-rishi-history-bound-u32.glow"
 
 say "rishi-walls: env bindings — within 512 answers 1, past it answers 0..."
 let env_ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" env_face "300"]
@@ -36,7 +36,7 @@ let hist_elder = run ["sh" "-c" "grep -q 'const max_history: u32 = 50' rishi/src
 assert hist_elder.ok else "rishi-walls: max_history moved in rishi/src/main.rye"
 
 say "rishi-walls: the elder a1 gates still stand..."
-let prior = run ["sh" "-c" "test -f src/lib/gate-tally-garden-bound-u32.glow -a -f src/lib/gate-mantra-gen-floor-u32.glow"]
+let prior = run ["sh" "-c" "test -f src/gate/gate-tally-garden-bound-u32.glow -a -f src/gate/gate-mantra-gen-floor-u32.glow"]
 assert prior.ok else "rishi-walls: an elder a1 gate is missing"
 
 say "GREEN: rishi a1 walls — env 512 and history 50 decide on both sides; elders cited live."

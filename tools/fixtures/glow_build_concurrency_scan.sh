@@ -29,7 +29,7 @@ WORKER=tools/g/glow_run_worker.sh
 # Bounded on purpose: six lanes reproduced the race every time it was measured, and the scan
 # should cost one build's wall time rather than a sweep's.
 LANES=6
-DESK=src/lib/gate-caravan-dependents-bound-u32.glow
+DESK=src/gate/gate-caravan-dependents-bound-u32.glow
 SAMPLE=2
 TWIN=tools/.glow_build_concurrency_control.sh
 WORKDIR=$(mktemp -d)

@@ -13,7 +13,7 @@ say "a2-list: Language EN — the list fold widens past the pair."
 say "a2-list: Lens TAME — bounded by the shape; the pair path is delegated, not rewritten."
 
 let zig = "vendor/zig-toolchain/zig"
-let triple = "src/lib/gate-mantra-fold-triple-fields.glow"
+let triple = "src/gate/gate-mantra-fold-triple-fields.glow"
 
 say "a2-list: three fields fold to their sum..."
 let three = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "3" "5" "7"]
@@ -27,16 +27,16 @@ assert zero.ok else "a2-list: zero triple failed to run"
 assert zero.out contains "0" else "a2-list: the empty-valued triple did not fold to 0"
 
 say "a2-list: the pair path still answers through the elder emitter..."
-let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-pair-sum.glow" "3" "5"]
+let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-pair-sum.glow" "3" "5"]
 assert pair.ok else "a2-list: pair fold regression failed"
 assert pair.out contains "8" else "a2-list: pair 3 5 no longer folds to 8"
 
 say "a2-list: the shape still bounds the fold — a bare @u32 sample refuses sum..."
-let bare = run ["sh" "-c" "grep -q 'sample=triple-shape' src/lib/gate-mantra-fold-triple-fields.glow"]
+let bare = run ["sh" "-c" "grep -q 'sample=triple-shape' src/gate/gate-mantra-fold-triple-fields.glow"]
 assert bare.ok else "a2-list: the desk stopped naming its shape"
 
 say "a2-list: the range folds still stand..."
-let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-sumto-u32.glow" "3"]
+let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-sumto-u32.glow" "3"]
 assert sumto.ok else "a2-list: sumto regression failed"
 assert sumto.out contains "6" else "a2-list: sumto 3 no longer folds to 6"
 

@@ -5,7 +5,7 @@
 ::  readers    Aurora · Kumara · Glow Tend · Sur museum · Ashvini nest-only
 ::  nib        equinox-e200-aurora-tend-v0
 ::
-::  Equinox e200 · Aurora A2 — second Aurora structure pedestal in src/sur/.
+::  Equinox e200 · Aurora A2 — second Aurora structure pedestal in src/shape/.
 ::  Names seed_length from aurora/src/kumara.rye (and the 32-byte seeds
 ::  posted.rye already packs). Pedestal only; bare-metal boot stays in aurora/src.
 +$  aurora-seed-length-shape

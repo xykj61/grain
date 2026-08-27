@@ -17,9 +17,9 @@ let conf = "${build}/etc/build.conf"
 say "proven-seat G1 guest: checking builddir · guest sources…"
 let have_build = run ["test" "-f" conf]
 assert have_build.ok else "missing ${conf} — run proven_seat_g1_create_builddir.rish first"
-let have_main = run ["test" "-f" "${guest_repo}/src/app/receipt_verify/main.cc"]
+let have_main = run ["test" "-f" "${guest_repo}/src/shape/receipt_verify/main.cc"]
 assert have_main.ok else "missing guest main.cc under ${guest_repo}"
-let have_mk = run ["test" "-f" "${guest_repo}/src/app/receipt_verify/target.mk"]
+let have_mk = run ["test" "-f" "${guest_repo}/src/shape/receipt_verify/target.mk"]
 assert have_mk.ok else "missing guest target.mk under ${guest_repo}"
 
 say "proven-seat G1 guest: ensuring REPOSITORIES points at guest repo…"

@@ -5,7 +5,7 @@
 ::  readers    Aurora · Kumara · Glow Tend · Sur museum · Ashvini nest-only
 ::  nib        equinox-e208-aurora-tend-v0
 ::
-::  Equinox e208 · Aurora A4 — fourth Aurora structure pedestal in src/sur/.
+::  Equinox e208 · Aurora A4 — fourth Aurora structure pedestal in src/shape/.
 ::  Names signature_length from aurora/src/kumara.rye (Ed25519 encoded
 ::  length). Pedestal only; bare-metal boot stays in aurora/src.
 +$  aurora-signature-length-shape

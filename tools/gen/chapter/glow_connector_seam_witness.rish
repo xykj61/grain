@@ -14,43 +14,43 @@ let harden = run ["test" "-f" "counsel/date/20260728/20260728-202752_surface-sea
 assert harden.ok else "glow-connector: p14 harden counsel missing"
 
 say "glow-connector: hop 1 Glow/src userland..."
-let desk = run ["test" "-f" "src/lib/gate-surface-double-u32.glow"]
+let desk = run ["test" "-f" "src/gate/gate-surface-double-u32.glow"]
 assert desk.ok else "glow-connector: hop1 double desk missing"
-let desk2 = run ["test" "-f" "src/lib/gate-surface-inc-u32.glow"]
+let desk2 = run ["test" "-f" "src/gate/gate-surface-inc-u32.glow"]
 assert desk2.ok else "glow-connector: hop1 inc desk missing"
-let desk3 = run ["test" "-f" "src/sur/shape-surface-count.glow"]
+let desk3 = run ["test" "-f" "src/shape/shape-surface-count.glow"]
 assert desk3.ok else "glow-connector: hop1 sur pedestal missing"
-let desk3b = run ["test" "-f" "src/sur/shape-frame-max-lines.glow"]
+let desk3b = run ["test" "-f" "src/shape/shape-frame-max-lines.glow"]
 assert desk3b.ok else "glow-connector: hop1 sur frame-max-lines pedestal missing"
-let desk3c = run ["test" "-f" "src/sur/shape-frame-seed-line-count.glow"]
+let desk3c = run ["test" "-f" "src/shape/shape-frame-seed-line-count.glow"]
 assert desk3c.ok else "glow-connector: hop1 sur frame-seed-line-count pedestal missing"
-let desk3d = run ["test" "-f" "src/sur/shape-brush-skate-cols.glow"]
+let desk3d = run ["test" "-f" "src/shape/shape-brush-skate-cols.glow"]
 assert desk3d.ok else "glow-connector: hop1 sur brush-skate-cols pedestal missing"
-let desk3e = run ["test" "-f" "src/sur/shape-brush-skate-rows.glow"]
+let desk3e = run ["test" "-f" "src/shape/shape-brush-skate-rows.glow"]
 assert desk3e.ok else "glow-connector: hop1 sur brush-skate-rows pedestal missing"
-let desk3f = run ["test" "-f" "src/sur/shape-brush-max-bytes.glow"]
+let desk3f = run ["test" "-f" "src/shape/shape-brush-max-bytes.glow"]
 assert desk3f.ok else "glow-connector: hop1 sur brush-max-bytes pedestal missing"
-let desk3g = run ["test" "-f" "src/sur/shape-brush-max-pin-bytes.glow"]
+let desk3g = run ["test" "-f" "src/shape/shape-brush-max-pin-bytes.glow"]
 assert desk3g.ok else "glow-connector: hop1 sur brush-max-pin-bytes pedestal missing"
-let desk3h = run ["test" "-f" "src/sur/shape-brush-parse-error-count.glow"]
+let desk3h = run ["test" "-f" "src/shape/shape-brush-parse-error-count.glow"]
 assert desk3h.ok else "glow-connector: hop1 sur brush-parse-error-count pedestal missing"
-let desk3i = run ["test" "-f" "src/sur/shape-brush-surface-field-count.glow"]
+let desk3i = run ["test" "-f" "src/shape/shape-brush-surface-field-count.glow"]
 assert desk3i.ok else "glow-connector: hop1 sur brush-surface-field-count pedestal missing"
-let desk3j = run ["test" "-f" "src/sur/shape-brush-frame-field-count.glow"]
+let desk3j = run ["test" "-f" "src/shape/shape-brush-frame-field-count.glow"]
 assert desk3j.ok else "glow-connector: hop1 sur brush-frame-field-count pedestal missing"
-let desk3k = run ["test" "-f" "src/sur/shape-brush-pin-key-count.glow"]
+let desk3k = run ["test" "-f" "src/shape/shape-brush-pin-key-count.glow"]
 assert desk3k.ok else "glow-connector: hop1 sur brush-pin-key-count pedestal missing"
-let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
+let desk4 = run ["test" "-f" "src/shape/tilak-root-count.glow"]
 assert desk4.ok else "glow-connector: hop1 til pedestal missing"
-let desk4b = run ["test" "-f" "src/til/shape-manifest-field-count.glow"]
+let desk4b = run ["test" "-f" "src/shape/shape-manifest-field-count.glow"]
 assert desk4b.ok else "glow-connector: hop1 til manifest-field-count pedestal missing"
-let desk5 = run ["test" "-f" "src/app/shape-pool-agent-slot.glow"]
+let desk5 = run ["test" "-f" "src/shape/shape-pool-agent-slot.glow"]
 assert desk5.ok else "glow-connector: hop1 app pedestal missing"
-let desk5b = run ["test" "-f" "src/app/shape-tube0-manifest-field-count.glow"]
+let desk5b = run ["test" "-f" "src/shape/shape-tube0-manifest-field-count.glow"]
 assert desk5b.ok else "glow-connector: hop1 app tube0-manifest-field-count pedestal missing"
-let desk6 = run ["test" "-f" "src/sec/shape-grant-family-count.glow"]
+let desk6 = run ["test" "-f" "src/shape/shape-grant-family-count.glow"]
 assert desk6.ok else "glow-connector: hop1 sec grant-family-count pedestal missing"
-let desk6b = run ["test" "-f" "src/sec/shape-mand-ring-count.glow"]
+let desk6b = run ["test" "-f" "src/shape/shape-mand-ring-count.glow"]
 assert desk6b.ok else "glow-connector: hop1 sec mand-ring-count pedestal missing"
 let hygiene = run ["test" "-f" "tools/gen/chapter/glow_hygiene_pin.rish"]
 assert hygiene.ok else "glow-connector: hop1 hygiene pin missing"
@@ -63,7 +63,7 @@ let weave = run ["test" "-f" "mantra/src/weave.rye"]
 assert weave.ok else "glow-connector: hop2 weave.rye missing"
 let graph = run ["test" "-f" "counsel/date/20260728/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
 assert graph.ok else "glow-connector: hop2 one-graph paper missing"
-let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && echo TILAK_OK"]
+let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/shape/tilak-root-count.glow && grep -q 'manifest' src/shape/tilak-root-count.glow && echo TILAK_OK"]
 assert tilak.ok else "glow-connector: hop2 tilak roots scan failed"
 assert tilak.out contains "TILAK_OK" else "glow-connector: hop2 tilak roots not named"
 

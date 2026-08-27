@@ -27,11 +27,11 @@ assert redraw.ok else "graph-redraw: redrawtest failed"
 assert redraw.out contains "GREEN" else "graph-redraw: redrawtest not GREEN"
 
 say "graph-redraw: Frame bound · .brush at-nib · Tilak roots..."
-let bound = run ["test" "-f" "src/sur/shape-frame-max-lines.glow"]
+let bound = run ["test" "-f" "src/shape/shape-frame-max-lines.glow"]
 assert bound.ok else "graph-redraw: frame-max-lines pedestal missing"
 let brush = run ["test" "-f" "brushstroke/seed-frame.brush"]
 assert brush.ok else "graph-redraw: seed-frame.brush missing"
-let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && test -f src/til/shape-manifest-field-count.glow && echo TILAK_OK"]
+let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/shape/tilak-root-count.glow && grep -q 'manifest' src/shape/tilak-root-count.glow && test -f src/shape/shape-manifest-field-count.glow && echo TILAK_OK"]
 assert tilak.ok else "graph-redraw: tilak roots scan failed"
 assert tilak.out contains "TILAK_OK" else "graph-redraw: tilak roots / manifest-field pedestal not named"
 
