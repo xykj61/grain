@@ -74,7 +74,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 - `20260825-233310_realidream.md` -- **living** Realidream vision (Surface p29 mutant): editor-and-browser branded Pond/Pool face over one graph; Skate as paint target; invent held. June fossil: `20260629-063512_realidream.md`.
 - `20260826-024939_the-graph-beneath-the-surface.md` -- **living Weave** (Surface p31 thin): streaming DAG under Realidream; Mantra projection; Tally - Tablecloth. June fossil: `20260629-063512_the-graph-beneath-the-surface.md`.
 - `20260728-225239_the-wafer-and-the-sovereign-coin.md` -- **living** wafer + sovereign coin (Surface p33 thin): memory beside cores - open public infrastructure. June fossil: `20260629-063512_the-wafer-and-the-sovereign-coin.md`.
-- `20260826-024944_lantern-lattice-kiln.md` -- **living** open model layer (Ember seat, was Kiln): Ember - Lattice - Lantern. Fossils: `20260728-221253_lantern-lattice-anvil.md` - `20260629-063512_lantern-lattice-anvil.md`.
+- `20260827-025117_lantern-lattice-kiln.md` -- **living** open model layer (bake seat **Kiln**, was Oven; Ember keeps the corpus forge): Kiln - Lattice - Lantern. Fossils: `20260826-024944_lantern-lattice-oven.md` - `20260728-221253_lantern-lattice-anvil.md` - `20260629-063512_lantern-lattice-anvil.md`.
 
 **How the bench walks** -- workflow law for nested chapters (Nona n1):
 

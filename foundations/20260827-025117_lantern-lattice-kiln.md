@@ -1,18 +1,16 @@
-# Lantern, Lattice, and Oven -- An Open Model, Served Honestly
+# Lantern, Lattice, and Kiln -- An Open Model, Served Honestly
 
-> **Fossil.** The bake seat renamed **Kiln** on Keaton's word `20260827.025117` (the Oven-to-Kiln molt-breach arc). The living page is [`20260827-025117_lantern-lattice-kiln.md`](20260827-025117_lantern-lattice-kiln.md).
+*Living mutant, re-seated `20260827.025117` -- the bake seat renamed **Kiln** on Keaton's word (the Oven-to-Kiln molt-breach arc); the elder stands whole at its own stamp and banner-points here.*
 
-*Living mutant, re-seated `20260826.024944` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
-
-*The open-model layer for Grain and the public benefit company that stewards it: where a model is baked, served, and metered. Three named parts carry the work -- the oven, the serving fabric, and the honest meter -- with the token economy pointed at real cost and the model kept in the commons.*
+*The open-model layer for Grain and the public benefit company that stewards it: where a model is baked, served, and metered. Three named parts carry the work -- the kiln, the serving fabric, and the honest meter -- with the token economy pointed at real cost and the model kept in the commons.*
 
 **Stamp:** `20260728.232511`
 **Voice:** Quin - lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision -- **far horizon**; **living mutant**; invent held - forge name **Oven** (was Anvil)
+**Status:** Vision -- **far horizon**; **living mutant**; invent held - bake-seat name **Kiln** `20260827.025117` (was Oven `20260728.232511`, was Anvil; the `20260808.220423` fold into Ember unbraids here -- Ember keeps the corpus forge, Kiln takes the bake)
 
-*Mutant seated Surface p36 -- seat Oven `20260728.232511`. Poetics held; bread not blades.*
+*Mutant seated Surface p36 -- seat Oven `20260728.232511`, renamed Kiln `20260827.025117`. Poetics held; bread not blades.*
 Radiant pass `20260728.232511`
 
 ---
@@ -21,9 +19,9 @@ Radiant pass `20260728.232511`
 
 The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260825-233310_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
 
-## Oven -- Where the Model Is Baked
+## Kiln -- Where the Model Is Baked
 
-Oven is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly -- a commons anyone may read, run, and improve, rather than a secret held behind a wall. The oven is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the oven is a model the world can hold in its own hands.
+Kiln is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly -- a commons anyone may read, run, and improve, rather than a secret held behind a wall. The kiln is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the kiln is a model the world can hold in its own hands.
 
 ## Lattice -- The Serving Fabric
 
@@ -43,7 +41,7 @@ Intelligence here keeps the same discipline as everything beneath it. Every stru
 
 ## How It Joins the Rest
 
-Lattice's answers flow into [Realidream](20260825-233310_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Oven bakes on the same green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
+Lattice's answers flow into [Realidream](20260825-233310_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Kiln bakes on the same green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
 
 ## Kin in the weave
 
@@ -52,7 +50,7 @@ The open model is a guest on the surface; the weave routes this horizon up to th
 - **The front door** -- the root [`../README.md`](../README.md) names **Lantern** and **Lattice** among the module seeds.
 - **The room** -- indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
 - **The hubs** -- the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md)); [Follow Our Compass](20260826-024943_follow-our-compass.md) returns you here.
-- **Its foundation** -- Oven bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260825-233310_realidream.md)'s surface, the [WADE plan](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
+- **Its foundation** -- Kiln bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260825-233310_realidream.md)'s surface, the [WADE plan](../expanding-prompts/20260825-233311_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
 
 ---
 

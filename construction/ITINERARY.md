@@ -34,7 +34,7 @@
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds, three fives; sources reborn in `dexter/`, elders stand until successors GREEN. Door: `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** standfast (five rounds, `cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (rounded shape law, tileable brushstroke, five rota encapsulations, gate %6); the **WADE journey** double-seat (5 quests, 25 orbits, 375 rounds; plan in `expanding-prompts/`).
 - **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Lumen** = the inference vane (renaming Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble); plans in the LEXICON rows.
-- **Seated breaches (checkpoint first):** **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression chapter). Each is its own signed round, checkpoint first; none cut yet.
+- **Seated breaches (checkpoint first):** **Quin's Q-vane -> Lumen**; **Bron -> Kyri** and **Quin voice -> Kyri**; **Kiln -> Kiln through history** (bake-seat rename granted `20260827.025117`, working-tree half landed, checkpoint `78c8c1c3e0`; rewrite word-bounded, loop paused, re-signed, force-pushed, benches reclone). Each its own signed round; only Kiln's tree half cut yet.
 - **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, repointing, message rewrites, force push, reclone; re-signing proven (`20260817`). Spent at a sweep's close it costs one reclone; called in early by a misleading filename or an untrue message.
 - **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
 
@@ -52,7 +52,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a2f485d53e` -- one tree, one toolchain spawn.
+**Git nib:** `ce698b1a8b` -- the bake seat takes the name Kiln.
 
 **Now.** **A platform repair that reached one caller, and the class nobody had counted.**
 

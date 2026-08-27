@@ -49,6 +49,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Kiln from Ember; REDS %289, the sed tamper red |
 | `20260827.023757` | [one tree, one toolchain spawn](20260827-023757_one-tree-one-toolchain-spawn.kyri) | the build lock lands in rye; %281 shadows closed; three legs on metal |
 | `20260827.004535` | [the repair that reached one caller](20260827-004535_the-repair-that-reached-one-caller.kyri) | %288: one module of twenty repaired, the class now metered |
 | `20260827.000338` | [the flag one host cannot test](20260827-000338_the-flag-one-host-cannot-test.kyri) | libc where macOS links it free; nine stale citations, three reds booked twice |

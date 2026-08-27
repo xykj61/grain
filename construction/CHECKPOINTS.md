@@ -22,6 +22,22 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260827.025117` -- the bake seat takes the name Kiln (walk-back `78c8c1c3e0`)
+
+**Swept:** the Kiln-to-Kiln molt-breach arc on Keaton's word -- living mutants seated for
+`foundations/20260826-024944_lantern-lattice-kiln.md` and
+`active-designing/20260826-001746_the-swarm-that-feeds-the-kiln.md` (both elders bannered, Class H
+rows booked); the LEXICON seats **Kiln** and unbraids the `20260808.220423` Kiln-into-Ember fold --
+Ember keeps the corpus forge, Kiln takes the bake; the Sound lane lists and living citers sweep.
+
+**What waits there, worth recalling:** the trinity page naming the bake seat Kiln while the swarm
+page called the same seat Ember -- the muddle this rename resolves, readable whole at the nib. The
+**deep debride is granted in the same word** (Kiln -> Kiln through history): it executes as its own
+round, %5 checkpoint-first, with the Sound loop paused, the rewrite word-bounded so *proven* and
+*woven* and the rested Kiln Chapter's dated testimony stand untouched, every rewritten commit
+re-signed, both remotes force-pushed, and every bench recloned after. The live Terminal loop's
+pasted prompt still says Kiln until Keaton re-pastes it.
+
 ## `20260826.205521` -- the Saturn pages enter the nocturne (walk-back `b05afd0207`)
 
 **Swept:** the two living Saturn studies molted in place, register only --
