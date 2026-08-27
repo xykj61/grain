@@ -23,8 +23,14 @@
 # stack). The ceiling seats at 6 and only falls: cover one and the ceiling follows it down.
 # 20260827: region covered (tools/t/tally_region_witness.rish -- divide, the watched refusals,
 # the symlink fold, seed re-proven); the ceiling falls 6 -> 5.
+# 20260827.141110: bud covered (tools/t/tally_bud_witness.rish -- the pinned H watched refusing a
+# flipped byte and a moved domain string, a known-answer commitment vector, and the deprecated
+# shim re-exporting bud whole); the ceiling falls 5 -> 4.
 # pedersen is a deprecated one-line shim to bud and stays IN the ratchet on purpose -- a shim to
-# an uncovered module is not covered by pointing at it.
+# an uncovered module is not covered by pointing at it. bud's own witness now proves the shim
+# builds and prints byte-identical output, which is a leg rather than a name: this meter reads
+# OWNERSHIP by filename, and no tools/t/tally_pedersen*.rish exists. Lowering the ceiling for a
+# leg nobody named would be the meter telling a pleasant lie.
 #
 # Honest limit, named where it can be read: the anchored name-match reads OWNERSHIP by the
 # room's own naming convention, and a name is not yet a run -- a witness could name a module and
@@ -39,7 +45,7 @@
 # module; verdict=ok exits 0, verdict=over_ceiling exits 1, no room exits 2.
 
 root=${1:-.}
-CEILING="${TALLY_ROSTER_CEILING:-5}"
+CEILING="${TALLY_ROSTER_CEILING:-4}"
 
 if [ ! -d "$root/tally" ] || [ ! -d "$root/tools/t" ]; then
   echo "verdict=no_room"

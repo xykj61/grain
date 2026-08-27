@@ -228,8 +228,15 @@ case "$out" in *"run_verdict=guard_red"*) echo "absent_path_reds_runner=yes" ;; 
 # and the runner is watched to say so and refuse.
 gitpen="$pen/gitpen"
 mkdir -p "$gitpen/rishi/bin"
+# The pen carries the real tree's own ignore rules for the runner's bookkeeping. Without them the
+# pen is an unfaithful model: on a real tree construction/standing-equipment-{receipt,hitrate}.kyri
+# are gitignored, so the runner's own writes are invisible to the digest it takes; in a bare pen the
+# same writes land as untracked files BETWEEN the open and close digests and the runner reports the
+# tree it is measuring as moved -- by its own hand (REDS %292).
 ( cd "$gitpen" && git init -q . && git config user.email a@b.c && git config user.name t \
-  && git config commit.gpgsign false && echo seed > kept.txt && git add kept.txt \
+  && git config commit.gpgsign false && echo seed > kept.txt \
+  && printf '%s\n' 'construction/standing-equipment-receipt.kyri' 'construction/standing-equipment-hitrate.kyri' > .gitignore \
+  && git add kept.txt .gitignore \
   && git commit -qm "seed" ) >/dev/null 2>&1
 
 cat > "$gitpen/quiet.kyri" <<'EOF'

@@ -2,8 +2,9 @@
 #
 # The choir-and-bijection calling reaching the allocator room (the constellation charter's own
 # tally row): coverage is a reading taken off disk by tools/fixtures/tally_roster_scan.sh --
-# 14 modules, 6 covered by anchored name, 3 test-program exceptions, 5 uncovered under a
-# ceiling of 6 that only falls (measured 20260826 at seating). Three claims, in order: the live
+# 14 modules, 7 covered by anchored name, 3 test-program exceptions, 4 uncovered under a
+# ceiling of 4 that only falls (measured 20260827.141110; 6/5 under a ceiling of 6 at seating
+# 20260826, then region and bud each took a witness and the ceiling followed each down). Three claims, in order: the live
 # room reads whole and SEEN; a planted newborn module with no witness refuses past the ceiling
 # in a pen, and removing it passes at the same ceiling -- the fence pressed from both sides;
 # and the anchored matcher credits nothing by a longer word -- a planted tally_budget check
@@ -21,8 +22,8 @@ let live = run ["sh" "tools/fixtures/tally_roster_scan.sh"]
 assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
 assert live.out contains "verdict=ok" else "tally-roster: want the live verdict ok -- ${live.out}"
 assert live.out contains "modules_total=14" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
-assert live.out contains "covered=6" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
-assert live.out contains "uncovered=5" else "tally-roster: the ratchet moved -- if it fell, lower the ceiling with it: ${live.out}"
+assert live.out contains "covered=7" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
+assert live.out contains "uncovered=4" else "tally-roster: the ratchet moved -- if it fell, lower the ceiling with it: ${live.out}"
 
 # The pen: a throwaway room with one covered module, its check, and room to plant.
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally $d/tools/t && printf '%s' $d"]

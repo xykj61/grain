@@ -75,8 +75,23 @@ fn run_selftest(_: std.Io) !u8 {
     const c3 = try commit(5000, &dew);
     assert(!std.mem.eql(u8, &c1.toBytes(), &c3.toBytes()));
 
+    // The known-answer line. point_to_hex renders the commitment so a witness can pin the
+    // value rather than trust it: a curve, toolchain, or scalar-reduction change that moved
+    // commit() is then read off a printed line instead of passing quietly.
+    var vector: [point_len * 2]u8 = undefined;
+    point_to_hex(c1, &vector);
+    for (vector) |ch| {
+        // The predicate is named rather than spelled inside the assert, because the property is
+        // a disjunction -- two digit ranges -- and a disjunction has no failing half to split out.
+        const is_lower_hex = (ch >= '0' and ch <= '9') or (ch >= 'a' and ch <= 'f');
+        // invariant: point_to_hex writes two lowercase hex digits per point byte, so every slot
+        // it promised to fill holds one and none is left at the undefined value it started from
+        assert(is_lower_hex);
+    }
+
     print("tally bud: pinned H matches derive_h — GREEN\n", .{});
     print("tally bud: version {s}\n", .{bud_version});
+    print("tally bud: vector amount1000 dew11 {s}\n", .{vector});
     print("GREEN: tally bud — amount·G + dew·H.\n", .{});
     return 0;
 }

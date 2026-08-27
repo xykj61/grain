@@ -1,0 +1,100 @@
+# tools/t/tally_bud_witness.rish -- the Pedersen commitment answers for itself, pin and all.
+#
+# tally/bud.rye is this tree's Curve25519 Pedersen commitment -- C = amount*G + dew*H, warm names
+# bud for the commitment and dew for the blinding scalar -- and it carries a PINNED second
+# generator: thirty-two bytes written into the source, asserted at every startup to equal what
+# derive_h() computes from the domain string "veganreyklah2/slcl4/pedersen-H/v1". It stood in the
+# tally roster's uncovered ratchet with a pinned constant, a published point_to_hex nothing ran,
+# and no witness of its own, so nothing on this bench ever watched the pin do its job.
+#
+# Six claims, each on metal:
+#   1. The module builds standalone with the pinned toolchain.
+#   2. The selftest runs GREEN and prints the pinned version verbatim -- pinned means pinned, so
+#      the stamp is matched as a literal rather than merely read.
+#   3. The known-answer vector holds: commit(1000, dew = 0x11 repeated) renders through
+#      point_to_hex to one exact line of sixty-four hex characters.
+#   4. The pin is a real check, watched refusing from two independent sides -- one flipped byte of
+#      pinned_h_bytes, and one character of h_domain moved v1 to v2. Each dies by the named
+#      error.HMismatch rather than by comment. The domain leg is what proves the pin is bound to
+#      that exact separation string, so a silent domain drift can never pass as the same H.
+#   5. The vector reads what the module cannot read about itself: a copy whose commitment moved to
+#      amount 1001 still exits zero, still prints its own GREEN, and passes every assert it
+#      carries -- and only the pinned vector differs. That is the whole case for a known-answer
+#      test living beside a module's self-checks rather than inside them.
+#   6. The deprecated shim still re-exports: tally/pedersen.rye builds and prints byte-identical
+#      output, so the old import path stays green (accrete-never-break, proven rather than assumed).
+#
+# Every control reports plant= before refused=, and the witness asserts both. That separation is
+# REDS %289 made structural: a tamper that silently fails to plant leaves a byte-identical file,
+# and a control run against an untampered copy proves nothing while looking exactly like proof.
+# The two sed forms here are plain substitutions, portable across the BSD and GNU dialects alike.
+#
+# No network, no key, no funds -- the blinding scalar is a fixture constant, and nothing signs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tally_bud_witness.rish
+
+say "tally-bud: Language EN -- the commitment answers for itself: the pin watched refusing from two sides, and a known answer the module's own asserts cannot see."
+say "tally-bud: Style Gauge, Meter setting -- each claim names what it proves and what it would refuse."
+say "tally-bud: Lens TAME -- a pinned constant believed is a comment, and a pinned constant witnessed is a bound."
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "tally-bud: pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkbin = run ["mkdir" "-p" "tally/bin"]
+assert mkbin.ok else "tally-bud: could not create tally/bin"
+
+# Claim 1 -- the standalone build.
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/bud.rye" "-femit-bin=tally/bin/tally-bud"]
+if build.ok == false then say build.out
+if build.ok == false then say build.err
+assert build.ok else "tally-bud: build failed"
+
+# Claim 2 -- the selftest, GREEN by exit, by its own claim line, and on the pinned stamp.
+# std.debug.print writes to stderr, so the claim lines arrive on .err.
+let self = run ["tally/bin/tally-bud" "selftest"]
+if self.ok == false then say self.err
+assert self.ok else "tally-bud: selftest exited non-zero"
+assert self.err contains "GREEN" else "tally-bud: selftest printed no GREEN claim"
+assert self.err contains "pinned H matches derive_h" else "tally-bud: the pin check printed no claim of its own"
+assert self.err contains "version 20260709.194437" else "tally-bud: the pinned version stamp moved -- pinned means pinned"
+say "tally-bud: selftest GREEN, version pinned at 20260709.194437"
+
+# Claim 3 -- the known answer. commit(1000, dew = 0x11 * 32) through point_to_hex, pinned here.
+assert self.err contains "vector amount1000 dew11 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-bud: the commitment moved off its known answer -- curve, toolchain, or scalar reduction changed"
+say "tally-bud: known answer held -- 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777"
+
+# Claim 4a -- one flipped byte of pinned_h_bytes must die at error.HMismatch.
+let tamper_byte = run ["sh" "-c" "d=$(mktemp -d); sed 's/0x9c, 0xf8/0x9d, 0xf8/' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/hurt >/dev/null 2>&1 || echo build=failed; if $d/hurt selftest >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert tamper_byte.ok else "tally-bud: the pinned-byte control could not run"
+assert tamper_byte.out contains "plant=landed" else "tally-bud: the pinned-byte tamper changed nothing -- the control proved nothing (REDS %289)"
+assert tamper_byte.out contains "refused=yes" else "tally-bud: a flipped pinned_h byte must die at error.HMismatch"
+say "tally-bud: pinned-byte tamper -- planted, then refused"
+
+# Claim 4b -- one character of h_domain must move H and be caught by the same pin.
+let tamper_domain = run ["sh" "-c" "d=$(mktemp -d); sed 's|pedersen-H/v1|pedersen-H/v2|' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/hurt >/dev/null 2>&1 || echo build=failed; if $d/hurt selftest >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert tamper_domain.ok else "tally-bud: the domain-separation control could not run"
+assert tamper_domain.out contains "plant=landed" else "tally-bud: the h_domain tamper changed nothing -- the control proved nothing (REDS %289)"
+assert tamper_domain.out contains "refused=yes" else "tally-bud: a moved h_domain must move H and die at error.HMismatch -- domain separation is not load-bearing"
+say "tally-bud: domain-separation tamper -- planted, then refused"
+
+# Claim 5 -- the vector catches a moved commitment that the module's own asserts welcome.
+let moved = run ["sh" "-c" "d=$(mktemp -d); sed 's/commit(1000, &dew)/commit(1001, \\&dew)/g' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/moved >/dev/null 2>&1 || echo build=failed; if $d/moved selftest 2>&1 | grep -q 'vector amount1000 dew11 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777'; then echo vector=same; else echo vector=moved; fi; if $d/moved selftest >/dev/null 2>&1; then echo selftest=green; else echo selftest=red; fi; rm -rf $d"]
+assert moved.ok else "tally-bud: the moved-commitment control could not run"
+assert moved.out contains "plant=landed" else "tally-bud: the moved-commitment tamper changed nothing (REDS %289)"
+assert moved.out contains "selftest=green" else "tally-bud: the control must still pass the module's own asserts -- otherwise it proves the asserts, not the vector"
+assert moved.out contains "vector=moved" else "tally-bud: a moved commitment must move the pinned vector, or the known answer reads nothing"
+say "tally-bud: moved commitment -- the module's own asserts welcomed it, and only the pinned vector said no"
+
+# Claim 6 -- the deprecated shim still re-exports the whole surface.
+let build_shim = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/pedersen.rye" "-femit-bin=tally/bin/tally-pedersen"]
+if build_shim.ok == false then say build_shim.err
+assert build_shim.ok else "tally-bud: the deprecated tally/pedersen.rye shim must still build"
+let shim = run ["tally/bin/tally-pedersen" "selftest"]
+assert shim.ok else "tally-bud: the shim must still run GREEN"
+assert shim.err contains "vector amount1000 dew11 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-bud: the shim re-exports a different commitment than bud"
+assert shim.err contains "version 20260709.194437" else "tally-bud: the shim re-exports a different pinned version than bud"
+say "tally-bud: the deprecated shim re-exports bud whole -- same pin, same known answer"
+
+say "GREEN: tally bud witness -- the pin refused a flipped byte and a moved domain, the known answer held where the module's own asserts could not see, and the deprecated shim still re-exports it whole."

@@ -355,3 +355,11 @@ seated 20260827.004535
 guard rish_join_split
 path tools/r/rish_join_split_witness.rish
 seated 20260827.140328
+
+guard tally_bud
+path tools/t/tally_bud_witness.rish
+seated 20260827.141110
+
+guard standing_equipment
+path tools/s/standing_equipment_witness.rish
+seated 20260827.142909

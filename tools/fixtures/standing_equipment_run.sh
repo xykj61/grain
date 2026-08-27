@@ -154,6 +154,11 @@ if [ -f "$receipt" ]; then
   if [ "$rec" = "$tree_open" ]; then receipt_state=match; else receipt_state=miss; fi
 fi
 echo "roster_receipt=$receipt_state"
+# The ledger's directory is made before the append, because a real tree always carries
+# construction/ and a throwaway pen never does. Without this the redirect fails, and a failing
+# redirect ends the pass right here -- after roster_receipt and before a single guard runs, which
+# read as twenty control legs answering no with nothing naming why (REDS %292).
+mkdir -p "$(dirname "$hitledger")"
 printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
 if [ "$probe" = yes ]; then
   echo "run_verdict=receipt_probe"

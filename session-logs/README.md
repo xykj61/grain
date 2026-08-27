@@ -50,6 +50,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260827.142357` | [the sixty-fifth record refuses](20260827-142357_the-sixty-fifth-record-refuses.kyri) | Mandate audit: Full proven at the ceiling; the door reopens |
+| `20260827.141931` | [the commitment answers for itself](20260827-141931_the-commitment-answers-for-itself.kyri) | tally bud covered, ceiling 5 to 4; %292 closed |
 | `20260827.140904` | [the empty separator dies named](20260827-140904_the-empty-separator-dies-with-its-name-spoken.kyri) | the Pleac row closes; guard 76; the RED leg watched dying |
 | `20260827.135641` | [the adoption completes](20260827-135641_the-adoption-completes-and-the-stars-run-once.kyri) | run-bounded lands; Surf / Skate peers; run-once on any power |
 | `20260827.123054` | [two hands, one checkout](20260827-123054_two-hands-one-checkout.kyri) | %291: two sessions took one booked lap; six lines dedented, the card back under bound |

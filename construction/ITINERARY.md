@@ -20,7 +20,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **76 guards** stand -- **73 every-lap, 3 cadence** -- counted from the roster's own scan, at `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **78 guards** stand -- **75 every-lap, 3 cadence** -- counted from the roster's own scan, at `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -54,42 +54,42 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a2c6180d0a` -- the sixty-fifth record refuses.
+**Git nib:** `a14842ea24` -- the commitment answers for itself.
 
-**Now.** **Two hands took one booked lap, and the checkout could not say so.**
+**Now.** **The commitment answers for itself, and the roster stopped dirtying the tree it measures.**
 
-**The socket-table fold LANDED (`5a500864c`).** The nineteen remaining modules drop the hand-rolled
-Linux-layout `sockaddr_in` for `const sockaddr_in = c.sockaddr.in;`, write `.port` and `.addr` on
-std's own type, and check every `SO_REUSEADDR` and `SO_RCVTIMEO` return by named error.
-`linux_layout_files_ceiling` falls **19 to 0**, `dispatched_files` reads **20**; `%282`'s shelf
-takes its closure clause.
+**Tally's constellation row moved (core-first, ungated).** `tools/t/tally_bud_witness.rish` covers
+`tally/bud.rye`, the Curve25519 Pedersen commitment, in six claims: the pinned generator `H` watched
+refusing **two** ways -- a flipped byte of `pinned_h_bytes`, and `h_domain` moved `v1` to `v2` --
+each plant proven landed before its refusal is trusted (%289 made structural); a **known-answer
+vector** for `commit(1000, dew=0x11**32)`, printed through the previously unrun `point_to_hex`; and
+`tally/pedersen.rye` re-exporting bud byte-identically. `uncovered_ceiling` falls **5 to 4**. The
+sharpest leg: a copy whose commitment moved to amount 1001 still exits zero and prints its own
+GREEN -- **only the pinned vector says no.**
 
-**REDS %291 -- OPEN, gated.** Two Claude Code sessions ran this checkout at once, both seated as
-SOUND, both reading this block, both taking this lap. One opened a cold roster at `12:10:13`; the
-other rewrote the nineteen at `12:14:06` and pushed. `git status` names paths and never who wrote
-them, and `tree_moved` reads twenty-two minutes late, at the close of a run already spent. This is
-the **source-file half of `%281`**, and the quieter half: a shadow race makes a correct module
-report RED, a source race makes two hands do one lap, which looks like work. **The answer is
-unchanged and is his: one tree per star, or a lock in `bridge_to_zig`.** Until then, run
-`ListAgents` at lap open and name any peer in the log before touching a file.
+**REDS %292 -- CLOSED.** `standing_equipment_run.sh` appended to
+`standing-equipment-hitrate.kyri` with no `mkdir -p`, so in any pen it died before a guard ran; and
+that append lands inside the tree the runner digests, invisible on a real tree only because
+`.gitignore` hides it. Twenty control legs read `no` with nothing naming why, since
+`run_runner` ends in `|| true`. Both fixed, isolated from the failing side: **21** legs fail
+without the `mkdir`, **2** without the pen's ignore rules, **0** with both. **And the witness that
+proves the roster honest was not rostered** -- 4s of wall, now guard 78, so the next such regression
+reds on the lap it enters rather than on an accident.
 
-**What the duplication bought:** a second reader before that commit, three faults, all shipped. Two
-are repaired here -- `mantra/recall_batch_delivery.rye:209-211` and
-`mantra/snapshot_export_delivery.rye:143-145` sat at eight spaces inside four-space bodies, proven
-by `zig fmt` on a copy rather than by eye; both wire witnesses, `tame_style_check`, `width-check`
-and `socket_dialect_witness` GREEN after. The third is **an erratum for his word**, read whole at
-`%291`: a shelf paragraph stamped two hours thirty-three minutes behind the one clock.
+**%291 fired again, caught at the door.** `ListAgents` named the peer before I touched a file; they
+were mid-lap on Pleac and pushed `a5c047cefe` while I read. I took **a tree of my own**, rebased onto
+their head, and resolved the one predicted conflict -- both hands appending a guard row at EOF.
+**The answer stays his: one tree per star, or a lock.**
 
-**Also closed:** this card stood at **24,586 bytes against the 24,576 it declares**, so
-`declared_ceiling_witness` was RED on a tree already pushed -- a one-line nib amend carried it over.
-This rewrite brings it under.
+**Surfaced, not taken.** `declared_ceiling` is RED on `main`, unbooked: `tools/l/chatgpt-mind.sh`
+decides with its own copy of `living_pin_max_bytes` (`law_copies_deciding=1`) -- **Mind's lane**, so
+a line rather than my lap. `exec_bit` and `geode_libraries` each read RED in a cold roster taken over
+a tree a peer was rewriting; **both want a re-read in a still tree before anyone books them.**
 
-**Still open, unclaimed:** Dream's **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in
-5 fields and 5 accessors, and moving it REMOVES casts at 16 and 17 sites; the 59 gate fixtures await
-his word. And `caravan_subscribe_poll_signal`, RED at its SIGTERM assertion outside `caravan_suite`.
+**The merge is held**, as at `20260827.030726`: `main` is checked out in the pier with a live peer.
+Branch `sound/tally-bud-witness`, signed, rebased onto their head, merging clean.
 
-**The next doors.** Sound's core-first read -- Caravan and Tally green, the choir whole -- then the
-constellation table, Lindy-first crux-first.
+**Next.** Four Tally modules stay uncovered; then the table.
 
 ---
 ## Landed arcs
@@ -221,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260827.123054` | two hands took one booked lap; six lines dedented, %291 booked, the card back under its declared bound | [log](../session-logs/20260827-123054_two-hands-one-checkout.kyri) |
+| `20260827.141931` | tally bud covered, the ceiling 5 to 4; %292 closed, the roster stopped dirtying its own digest | [log](../session-logs/20260827-141931_the-commitment-answers-for-itself.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
