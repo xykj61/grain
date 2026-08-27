@@ -56,6 +56,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 | `20260827.034026` | [the exemption that named its own witnesses](20260827-034026_the-exemption-that-named-its-own-witnesses.kyri) | six exempt modules are witnessed on disk |
 | `20260827.032847` | [the eight the choir cannot hear](20260827-032847_the-eight-the-choir-cannot-hear.kyri) | eight caravan witnesses outside the glob; 42 asserts on no standing row |
 | `20260827.031800` | [the region answers for itself](20260827-031800_the-region-answers-for-itself.kyri) | region covered, roster ratchet six to five; carry pin moved with the touch |
+| `20260827.030726` | [the fence walked in a tree of my own](20260827-030726_the-fence-walked-in-a-tree-of-my-own.kyri) | nineteen modules stop naming one kernel; the ceiling is now a wall |
 | `20260827.025623` | [the bake seat takes the name Kiln](20260827-025623_the-bake-seat-takes-the-name-kiln.kyri) | Kiln unbraids Oven from Ember; REDS %289, the sed tamper red |
 | `20260827.024712` | [the lock proven from the other side](20260827-024712_the-lock-proven-from-the-other-side.kyri) | the sibling proves the lock; %281 narrows |
 | `20260827.023827` | [the bench that was already occupied](20260827-023827_the-bench-that-was-already-occupied.kyri) | %281 third firing; socket fold surveyed |
