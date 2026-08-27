@@ -22,21 +22,36 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260827.040024` -- the Kiln deep debride runs (walk-back `6063892108`, and a bundle)
+
+**Swept:** the granted history rewrite -- every blob reachable only in history gets the
+word-bounded Oven-to-Kiln swap; every blob of HEAD's own tree is protected byte for byte, so the
+living tree, its deliberate lineage rows, and all dated testimony still present in the tree ride
+through untouched, and *proven* and *woven* never match the bound pattern. Commit messages keep
+every word. Every rewritten commit is re-signed; `xy` is force-pushed on Keaton's word
+(`20260827`, "approve the deep debride and force pushes"); `debrided` is not on this clone and takes
+the rewrite from whichever bench carries it; the `seed` remote stays behind its custody gate.
+
+**What waits there, worth recalling:** this nib is unreachable on `xy` after the force-push --
+the true walk-back is the pre-rewrite bundle at the session scratchpad
+(`grain-prekiln-final.bundle`, `--all`) and any clone that has not yet re-pulled. Every bench
+recloning or hard-resetting after this rewrite is the one unavoidable cost the debride rule names.
+
 ## `20260827.025117` -- the bake seat takes the name Kiln (walk-back `78c8c1c3e0`)
 
-**Swept:** the Kiln-to-Kiln molt-breach arc on Keaton's word -- living mutants seated for
-`foundations/20260826-024944_lantern-lattice-kiln.md` and
-`active-designing/20260826-001746_the-swarm-that-feeds-the-kiln.md` (both elders bannered, Class H
-rows booked); the LEXICON seats **Kiln** and unbraids the `20260808.220423` Kiln-into-Ember fold --
+**Swept:** the Oven-to-Kiln molt-breach arc on Keaton's word -- living mutants seated for
+`foundations/20260826-024944_lantern-lattice-oven.md` and
+`active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` (both elders bannered, Class H
+rows booked); the LEXICON seats **Kiln** and unbraids the `20260808.220423` Oven-into-Ember fold --
 Ember keeps the corpus forge, Kiln takes the bake; the Sound lane lists and living citers sweep.
 
-**What waits there, worth recalling:** the trinity page naming the bake seat Kiln while the swarm
+**What waits there, worth recalling:** the trinity page naming the bake seat Oven while the swarm
 page called the same seat Ember -- the muddle this rename resolves, readable whole at the nib. The
-**deep debride is granted in the same word** (Kiln -> Kiln through history): it executes as its own
+**deep debride is granted in the same word** (Oven -> Kiln through history): it executes as its own
 round, %5 checkpoint-first, with the Sound loop paused, the rewrite word-bounded so *proven* and
-*woven* and the rested Kiln Chapter's dated testimony stand untouched, every rewritten commit
+*woven* and the rested Oven Chapter's dated testimony stand untouched, every rewritten commit
 re-signed, both remotes force-pushed, and every bench recloned after. The live Terminal loop's
-pasted prompt still says Kiln until Keaton re-pastes it.
+pasted prompt still says Oven until Keaton re-pastes it.
 
 ## `20260826.205521` -- the Saturn pages enter the nocturne (walk-back `b05afd0207`)
 
@@ -1162,7 +1177,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `bc90f7fdb0`
 **Swept:** `construction/ITINERARY.md` (471 -> ~75 lines), `THREADS.md`, `TASKS.md`, `ROADMAP.md` -- all rewritten from the elder Equinox-season e-number ladder to the four-equinox Compass Chapter.
-**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested chapters with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this checkpoint is the fast path to the *shape* of the old cards.
+**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested chapters with their pointers (Equinox - Fascia - Voice - Nona - Oven - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this checkpoint is the fast path to the *shape* of the old cards.
 
 ### The Haunted Mound deep debride (recorded after the fact)
 
