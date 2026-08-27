@@ -1,0 +1,58 @@
+# tools/s/socket_dialect_witness.rish -- the socket-dialect gate over authored Rye.
+#
+# WHAT THIS GATES. A socket option number is a thing the host knows and a file should ask for.
+# `std.c` already dispatches every one of them on `native_os`, so a module that writes the number
+# itself has quietly chosen one kernel for both piers.
+#
+# WHY IT STANDS. REDS %282 moved seven `waitpid` sites onto `std.c` and moved ONE module's
+# `sockaddr_in` to `std.c.sockaddr.in`, and left `BindFailed` at rebind open. The root sat one
+# layer under the struct: that module still spelled `SOL_SOCKET` as 1 and `SO_REUSEADDR` as 2,
+# which are Linux's numbers. On a BSD kernel those name no level that exists, `setsockopt` fails,
+# its return is discarded, and the option is never set -- so a rebind refuses and a receive timeout
+# never arrives. Both failures are silent, which is why they want a meter rather than a memory.
+#
+# WHAT IS MEASURED, AND ON WHICH CLOCK. Two ratchets under ceilings that only fall -- option
+# constants spelled as literals, and hand-rolled `sockaddr_in` in the Linux layout -- plus the
+# dispatched count, reported because it is the number meant to rise. The ceilings were seated at
+# their measured opening reading rather than at a target, so the class shrinks on touch.
+#
+# WHAT IS NOT PROVEN HERE, and it is the honest half: this pier is the Linux one, so every number
+# below reads correct on it whether or not the repair landed. What this gate proves is that the
+# number is ASKED of the host rather than remembered by the file. The BSD reading belongs to the
+# macOS bench.
+#
+# Usage: rishi/bin/rishi run tools/s/socket_dialect_witness.rish
+
+say "socket-dialect: Language EN -- a constant that names one kernel is a constant that lies on the other."
+say "socket-dialect: Style Gauge at Meter -- every number below is read by the scan on this run, never recited here."
+say "socket-dialect: Lens TAME -- safety first: ask the host for the host's number, and let a failed setsockopt say so."
+
+let control = run ["sh" "tools/fixtures/socket_dialect_control.sh"]
+assert control.ok else "socket-dialect: the control must complete on its planted repositories"
+say control.out
+assert control.out contains "control_verdict=ok" else "socket-dialect: the control must reach its own verdict"
+assert control.out contains "dispatched_passes=yes" else "socket-dialect: a module reaching std.c must pass free, or the gate refuses the repair it asks for"
+assert control.out contains "dispatched_option_not_counted=yes" else "socket-dialect: a dispatched option constant must not be counted as a literal"
+assert control.out contains "dispatched_layout_not_counted=yes" else "socket-dialect: a module on std.c.sockaddr.in must not be read as a hand-rolled layout"
+assert control.out contains "dispatched_reported=yes" else "socket-dialect: the dispatched count must rise, or the direction of travel is invisible"
+assert control.out contains "portable_constants_pass=yes" else "socket-dialect: AF_INET and SOCK_DGRAM are 2 on every host in the table and must pass free"
+assert control.out contains "portable_constants_not_counted=yes" else "socket-dialect: counting a portable-identical literal would flag a non-fault"
+assert control.out contains "option_at_files_ceiling_passes=yes" else "socket-dialect: the option ratchet must pass at its ceiling"
+assert control.out contains "option_files_at_ceiling=yes" else "socket-dialect: the option file count must read what was planted"
+assert control.out contains "option_over_files_ceiling_refused=yes" else "socket-dialect: one file past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "option_over_lines_ceiling_refused=yes" else "socket-dialect: one line past the ceiling must refuse"
+assert control.out contains "option_flag_named=yes" else "socket-dialect: a refusal must name the file it read, or nobody can repair it"
+assert control.out contains "layout_at_ceiling_passes=yes" else "socket-dialect: the layout ratchet must pass at its ceiling"
+assert control.out contains "layout_files_at_ceiling=yes" else "socket-dialect: the layout file count must read what was planted"
+assert control.out contains "layout_over_ceiling_refused=yes" else "socket-dialect: one layout past the ceiling must refuse"
+assert control.out contains "layout_flag_named=yes" else "socket-dialect: a layout refusal must name its files"
+assert control.out contains "excluded_rooms_pass=yes" else "socket-dialect: vendor, aurora, gratitude and dated testimony stand outside this gate"
+assert control.out contains "excluded_not_counted=yes" else "socket-dialect: an excluded room must read zero, not merely pass"
+assert control.out contains "discovers_stranger=yes" else "socket-dialect: the corpus reading must reach a file no roster names, or discovery is a claim"
+
+let scan = run ["sh" "tools/fixtures/socket_dialect_scan.sh"]
+say scan.out
+assert scan.ok else "socket-dialect: a socket number is spelled in this tree that the host should have been asked for -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "socket-dialect: the living scan must reach its own verdict"
+
+say "GREEN: socket-dialect -- the option-literal and Linux-layout ratchets hold under ceilings that only fall, the dispatched count is reported beside them, and eighteen behaviors are proven on planted repositories in both directions."

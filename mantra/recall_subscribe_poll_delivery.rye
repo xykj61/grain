@@ -26,11 +26,21 @@ const npw_version = "20260707.052012";
 /// Matches `caravan/supervisor_exit.rye` -- deliberate stop at a cycle boundary.
 const stop_requested: u8 = 8;
 
+// AF_INET and SOCK_DGRAM read 2 on every host in `std.c`'s own table, so a literal is portable
+// here and asking the host would buy nothing.
 const AF_INET: c_uint = 2;
 const SOCK_DGRAM: c_uint = 2;
-const SOL_SOCKET: c_int = 1;
-const SO_REUSEADDR: c_int = 2;
-const SO_RCVTIMEO: c_int = 20;
+
+// THE HOST NUMBERS THESE, NEVER THIS FILE. The three below are Linux's dialect, and `std.c` reads
+// them differently on a BSD kernel: SOL_SOCKET 0xffff rather than 1, SO_REUSEADDR 0x0004 rather
+// than 2, SO_RCVTIMEO 0x1006 rather than 20. Spelled as Linux's numbers, `setsockopt` on macOS
+// names a level that does not exist, fails, and -- with its return discarded -- leaves
+// SO_REUSEADDR unset, which is a rebind that refuses. That was the open leg of REDS %282, one
+// layer under the `sockaddr_in` layout the same round repaired: `std.c` already switches these on
+// `native_os` exactly as it switches `sockaddr.in` below, so asking it is the same repair again.
+const SOL_SOCKET: c_int = c.SOL.SOCKET;
+const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
+const SO_RCVTIMEO: c_int = c.SO.RCVTIMEO;
 
 const fetcher_port: u16 = 38486;
 const source_port: u16 = 38487;
@@ -60,7 +70,14 @@ fn open_socket() !c.fd_t {
     const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) return error.SocketFailed;
     const yes: c_int = 1;
-    _ = c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int));
+    // invariant: SO_REUSEADDR is what lets a bounded poll rebind its own port between cycles, so a
+    // setsockopt that fails says so rather than handing back a socket whose next bind will refuse
+    // for a reason nothing recorded. A discarded return is how REDS %282's open leg stayed
+    // invisible across a whole lap.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+        _ = c.close(fd);
+        return error.SetSockOptFailed;
+    }
     return fd;
 }
 
@@ -77,7 +94,10 @@ fn recv_wire_timeout(port: u16, wire: []u8, timeout_sec: u32) !u64 {
     defer _ = c.close(fd);
     if (timeout_sec > 0) {
         var tv = c.timeval{ .sec = @intCast(timeout_sec), .usec = 0 };
-        _ = c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval));
+        // invariant: the caller asked for a BOUNDED wait, so a receive timeout that fails to set
+        // refuses here rather than returning a socket that blocks until the run is killed.
+        if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval)) < 0)
+            return error.SetSockOptFailed;
     }
     var bind_addr = localhost_addr(port);
     if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;

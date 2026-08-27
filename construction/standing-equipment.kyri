@@ -347,3 +347,7 @@ seated 20260826.175633
 guard tally_roster
 path tools/t/tally_roster_witness.rish
 seated 20260826.224730
+
+guard socket_dialect
+path tools/s/socket_dialect_witness.rish
+seated 20260827.004535
