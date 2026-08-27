@@ -50,7 +50,7 @@ Signing with the maintainer's identity key stays the custody gate; the library i
 NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037` and held at
 ([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 
-*One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320` -- the old chapter marks are gone; their greens live in the code and in the dated counsel.*
+*One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
 **Git nib:** `78233f407f` -- the host's socket numbers.
 
@@ -97,9 +97,8 @@ ratchet, above.
 
 Mandate, the Acme DX chapter, the CION ratchet, **AHOY** beside **WADE**, the Singularity
 foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the
-recursion cellar, Chapter A's image module, the Constel quorum, and the rune naming -- each proven
-on metal and recorded in `session-logs/`, which is where the account lives. Its walk-back nib stands
-in [`CHECKPOINTS.md`](CHECKPOINTS.md), rewritten out of the object store by the deep debride (%280).
+recursion cellar, Chapter A's image module, the Constel quorum, the rune naming -- proven on metal,
+the account in `session-logs/`, nib in [`CHECKPOINTS.md`](CHECKPOINTS.md).
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
@@ -227,17 +226,16 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
-## The cadence -- CUT `20260826`, and the seed rides with Dream
+## The cadence -- CUT `20260826`, the seed rides with Dream
 
-Seated `20260823.111029` as a fifth-round projection; **cut on Keaton's word `20260826`**, so no lap
-publishes on a count. The star names the moment and stops, gate %1 stays his, and the live reading
-sits in *Custody gates* above. Foundation (now testimony):
+No lap publishes on a count; gate %1 stays his, and the live reading sits in *Custody gates*.
+Foundation, now testimony:
 [`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ## The laps
 
 *`TASKS.md` and `ROADMAP.md` fused in here on `20260823.103804` and are pointers now.* The live
-work-front is the **Now** block above. A lap that lands folds into a *Prior lap* line with its
-detail left in the session log that recorded it, so this card stays single-stranded.
+work-front is the **Now** block; a landed lap folds into a *Prior lap* line with its detail left in
+the log that recorded it, so this card stays single-stranded.
 
 ---
