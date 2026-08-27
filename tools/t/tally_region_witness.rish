@@ -1,0 +1,77 @@
+# tools/t/tally_region_witness.rish -- the bounded region's own witness, on the body every carver shares.
+#
+# tally/region.rye is the one memory-carving body in the tree: seed and gardens fold into it, and
+# three Caravan rungs reach it through the caravan/region.rye symlink. It stood as the most
+# load-bearing module in the tally roster's uncovered ratchet, with eleven asserts and no run of
+# its own -- so this witness seats its selftest and proves the two things no consumer proves:
+# divide, the one public method tally/seed.rye never touches, and the construction asserts, which
+# are watched firing here rather than trusted from their comments.
+#
+# Five claims, each on metal:
+#   1. The module builds standalone with the pinned toolchain.
+#   2. The selftest runs GREEN: a divided child is bounded to its own slice, opens empty, refuses
+#      past its edge by name while the parent still holds room, the parent's next bytes sit
+#      directly after the child's (adjacency read off the pointers), and an oversized divide
+#      refuses by the same named error alloc refuses by.
+#   3. Both refuse modes die at their assert -- a region over nothing at init, a division of
+#      nothing at divide -- proven by exit rather than by comment.
+#   4. The shared-body fold holds: caravan/region.rye is a symlink to this body and the module
+#      builds through that path too, so the reaching room and the owning room compile one file.
+#   5. The nearest consumer still stands: tally/seed.rye builds and runs GREEN over the touched
+#      body, so seating the selftest moved no behavior a caller leans on.
+#
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tally_region_witness.rish
+
+say "tally-region: Language EN -- the bounded region answers for itself: divide proven, refusals watched dying, the symlink fold compiled from both rooms."
+say "tally-region: Style Radiant -- seed already proves alloc and clear in twenty-two asserts, so this witness carries only what no consumer proves, and repeats nothing."
+say "tally-region: Lens TAME -- the construction asserts are run to their abort, since an assert believed is a comment and an assert witnessed is a bound."
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "tally-region: pinned ziglang toolchain missing at vendor/zig-toolchain"
+
+let mkdir = run ["mkdir" "-p" "tally/bin"]
+assert mkdir.ok else "tally-region: could not create tally/bin"
+
+# Claim 1 -- the standalone build.
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/region.rye" "-femit-bin=tally/bin/tally-region"]
+if build.ok == false then say build.out
+if build.ok == false then say build.err
+assert build.ok else "tally-region: build failed"
+
+# Claim 2 -- the selftest, GREEN by exit and by its own claim line.
+let self = run ["tally/bin/tally-region" "selftest"]
+if self.ok == false then say self.err
+assert self.ok else "tally-region: selftest exited non-zero"
+assert self.err contains "GREEN" else "tally-region: selftest printed no GREEN claim"
+say "tally-region: selftest -- ${trim self.err}"
+
+# Claim 3 -- the two refuse modes, each dying at its own construction assert.
+let refuse_init = run ["tally/bin/tally-region" "refuse-init-empty"]
+assert (refuse_init.ok == false) else "tally-region: a region over nothing must die at init's assert"
+let refuse_divide = run ["tally/bin/tally-region" "refuse-divide-zero"]
+assert (refuse_divide.ok == false) else "tally-region: a division of nothing must die at divide's assert"
+say "tally-region: refusals -- both construction asserts watched firing, neither survived"
+
+# Claim 4 -- the shared-body fold: the symlink points home, and the body builds through it.
+let link = run ["readlink" "caravan/region.rye"]
+assert link.ok else "tally-region: caravan/region.rye is not a symlink -- the fold has been unwound"
+assert (trim link.out) == "../tally/region.rye" else "tally-region: the symlink points somewhere else -- ${trim link.out}"
+let build_via = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "caravan/region.rye" "-femit-bin=tally/bin/tally-region-via-caravan"]
+if build_via.ok == false then say build_via.err
+assert build_via.ok else "tally-region: the body must build through the caravan symlink too"
+let rm_via = run ["rm" "-f" "tally/bin/tally-region-via-caravan"]
+assert rm_via.ok else "tally-region: could not tidy the symlink-path binary"
+
+# Claim 5 -- the nearest consumer, rebuilt and re-run over the touched body.
+let build_seed = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/seed.rye" "-femit-bin=tally/bin/tally-seed"]
+if build_seed.ok == false then say build_seed.err
+assert build_seed.ok else "tally-region: tally/seed.rye must still build over the shared body"
+let run_seed = run ["tally/bin/tally-seed"]
+assert run_seed.ok else "tally-region: tally/seed.rye must still hold all facts over the shared body"
+assert run_seed.out contains "all facts held" else "tally-region: seed's own claim line is missing"
+
+say "GREEN: tally region witness -- divide bounded and adjacent, both refusals died at their asserts, the symlink fold compiled from both rooms, and seed still holds every fact."
