@@ -1,0 +1,2 @@
+acquire-lock "run.lock"
+say "must not run"

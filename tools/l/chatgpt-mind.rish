@@ -308,8 +308,12 @@ if mode == "check" then exit 0
 
 assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP is present"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY is present"
-assert ?| [(mode != "loop") (power_source == "ac")] else "REFUSE chatgpt-mind: armed loop needs AC power"
-assert ?| [(mode != "loop") (system_sleep == "0")] else "REFUSE chatgpt-mind: armed loop needs AC system sleep zero"
+# The loop rides battery as well as AC on Keaton's word (20260827): the mesh survives a dead
+# battery, a home outage, or a failed pier the way Mycelium's gratitude teachers survive a lost
+# node -- the repo is the durable memory, a cut lap costs only its uncommitted work, and the next
+# round-open pull resumes the thread. Power source and sleep are reported above, never gated.
+if ?& [(mode == "loop") (power_source != "ac")] then say "chatgpt-mind: on battery -- the loop runs; a battery death cuts one lap and the pull resumes it"
+if ?& [(mode == "loop") (system_sleep != "0")] then say "chatgpt-mind: system sleep is nonzero -- a sleeping Mac pauses the loop until it wakes"
 if internal_lap == false then acquire-lock lock_rel
 
 let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"

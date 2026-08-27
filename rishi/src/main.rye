@@ -40,6 +40,7 @@
 //!   rishi run <file.rish>    Read and run a single .rish script.
 
 const std = @import("std");
+const builtin = @import("builtin");
 const tally_copy = @import("tally_copy.rye");
 const tally_parse_int = @import("parse_int.rye");
 const rishi_match = @import("match.rye");
@@ -48,7 +49,7 @@ const print = std.debug.print;
 
 /// Rishi's version, stamped chronologically -- YYYYMMDD.HHMMSS, where later is
 /// larger, the same clock Rye keeps. This is Rishi's founding stamp.
-const rishi_version = "20260725.120701";
+const rishi_version = "20260826.195758";
 
 /// A Rishi value. The kinds -- string, integer, boolean, list, record -- are the
 /// seed of a model shared with Rye so a value can cross between them without a seam.
@@ -113,6 +114,94 @@ const Func = struct {
 };
 
 const max_spawn_handles: u32 = 8;
+const max_cleanup_paths: u32 = 4;
+const max_process_input_bytes: u32 = 65536;
+// One MiB remains the ordinary child-stream wall. The additional 64 KiB is the
+// largest margin a nested supervisor may explicitly request for its own bounded
+// status/refusal text while relaying that child stream.
+const max_process_output_bytes: u32 = 1114112;
+const process_io_window_bytes: u32 = 4096;
+const max_safe_process_path_bytes: u32 = 512;
+const supports_signal_cleanup = builtin.os.tag != .windows and std.posix.Sigaction != void;
+
+var pending_signal: std.atomic.Value(u8) = .init(0);
+
+fn rishi_signal_handler(sig: std.posix.SIG) callconv(.c) void {
+    pending_signal.store(@intCast(@intFromEnum(sig)), .release);
+}
+
+const SignalGuards = struct {
+    hup: std.posix.Sigaction,
+    int: std.posix.Sigaction,
+    term: std.posix.Sigaction,
+
+    fn install() SignalGuards {
+        pending_signal.store(0, .release);
+        const action: std.posix.Sigaction = .{
+            .handler = .{ .handler = rishi_signal_handler },
+            .mask = std.posix.sigemptyset(),
+            .flags = 0,
+        };
+        var guards: SignalGuards = undefined;
+        std.posix.sigaction(.HUP, &action, &guards.hup);
+        std.posix.sigaction(.INT, &action, &guards.int);
+        std.posix.sigaction(.TERM, &action, &guards.term);
+        return guards;
+    }
+
+    fn restore(guards: *const SignalGuards) void {
+        std.posix.sigaction(.HUP, &guards.hup, null);
+        std.posix.sigaction(.INT, &guards.int, null);
+        std.posix.sigaction(.TERM, &guards.term, null);
+    }
+};
+
+const CleanupPath = struct {
+    path: []const u8,
+    kind: enum { empty_dir },
+};
+
+const CleanupRegistry = struct {
+    items: [max_cleanup_paths]CleanupPath = undefined,
+    count: u32 = 0,
+
+    fn add(self: *CleanupRegistry, item: CleanupPath) !void {
+        if (self.count == self.items.len) return error.TooManyCleanupPaths;
+        self.items[@intCast(self.count)] = item;
+        self.count += 1;
+    }
+
+    fn release_all(self: *CleanupRegistry, io: std.Io) bool {
+        const cwd = std.Io.Dir.cwd();
+        var held = true;
+        while (self.count > 0) {
+            self.count -= 1;
+            const item = self.items[@intCast(self.count)];
+            const stat = cwd.statFile(io, item.path, .{ .follow_symlinks = false }) catch |err| switch (err) {
+                error.FileNotFound => continue,
+                else => {
+                    print("rishi: cleanup refused for '{s}': {s}\n", .{ item.path, @errorName(err) });
+                    held = false;
+                    continue;
+                },
+            };
+            switch (item.kind) {
+                .empty_dir => {
+                    if (stat.kind != .directory) {
+                        print("rishi: cleanup refused for '{s}': path changed kind\n", .{item.path});
+                        held = false;
+                        continue;
+                    }
+                    cwd.deleteDir(io, item.path) catch |err| {
+                        print("rishi: cleanup failed for '{s}': {s}\n", .{ item.path, @errorName(err) });
+                        held = false;
+                    };
+                },
+            }
+        }
+        return held;
+    }
+};
 
 const SpawnSlot = struct {
     live: bool = false,
@@ -167,6 +256,7 @@ pub const Env = struct {
     script_exit: ?*ExitSlot = null,
     spawns: SpawnRegistry = .{},
     next_spawn_id: u32 = 1,
+    cleanups: ?*CleanupRegistry = null,
 
     fn bind(self: *Env, name: []const u8, value: Value) !void {
         // invariant: count never exceeds capacity
@@ -727,8 +817,16 @@ fn run_file(init: std.process.Init, args: []const [:0]const u8, path_at: u32) !u
         return 1;
     };
 
+    const signal_guards = if (comptime supports_signal_cleanup) SignalGuards.install() else {};
+    defer if (comptime supports_signal_cleanup) signal_guards.restore();
+
     var exit_slot: ExitSlot = .{};
-    var env = Env{ .host_environ = init.environ_map, .script_exit = &exit_slot };
+    var cleanup_registry: CleanupRegistry = .{};
+    var env = Env{
+        .host_environ = init.environ_map,
+        .script_exit = &exit_slot,
+        .cleanups = &cleanup_registry,
+    };
     try bind_exit_vocabulary(&env);
     bind_script_args(garden, &env, args[path_at + 1 ..]) catch |err| switch (err) {
         error.TooManyScriptArgs => {
@@ -738,7 +836,10 @@ fn run_file(init: std.process.Init, args: []const [:0]const u8, path_at: u32) !u
         else => return err,
     };
 
-    return interpret(garden, io, &env, source);
+    const code = interpret(garden, io, &env, source);
+    const cleaned = cleanup_registry.release_all(io);
+    if (!cleaned and code == 0) return 1;
+    return code;
 }
 
 /// Pre-bind `args` as a `.list` of `.string` -- the words after the script path.
@@ -772,6 +873,10 @@ fn interpret(allocator: std.mem.Allocator, io: std.Io, env: *Env, source: []cons
     var line_no: u32 = 0;
     var lines = std.mem.splitScalar(u8, source, '\n');
     while (lines.next()) |raw| {
+        if (pending_signal.load(.acquire) != 0) {
+            print("rishi: interrupted; releasing script resources\n", .{});
+            return 130;
+        }
         line_no += 1;
         const line = std.mem.trim(u8, raw, " \t\r\n");
         if (line.len == 0 or line[0] == '#') continue;
@@ -779,6 +884,10 @@ fn interpret(allocator: std.mem.Allocator, io: std.Io, env: *Env, source: []cons
             if (err == error.ExitRequested) {
                 if (env.script_exit) |slot| return slot.code orelse 0;
                 return 0;
+            }
+            if (err == error.Interrupted) {
+                print("rishi: interrupted; child reaped and script resources releasing\n", .{});
+                return 130;
             }
             if (err == error.AssertionFailed) {
                 // do_assert already named the broken fact; add where it broke.
@@ -815,6 +924,8 @@ fn eval_statement(allocator: std.mem.Allocator, io: std.Io, env: *Env, line: []c
         try do_assert(allocator, io, env, std.mem.trim(u8, line[7..], " \t"));
     } else if (std.mem.startsWith(u8, line, "write-file ")) {
         try do_write_file(allocator, io, env, std.mem.trim(u8, line[11..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "acquire-lock ")) {
+        try do_acquire_lock(allocator, io, env, std.mem.trim(u8, line[13..], " \t"));
     } else if (std.mem.startsWith(u8, line, "if ")) {
         try do_if(allocator, io, env, std.mem.trim(u8, line[3..], " \t"));
     } else if (std.mem.startsWith(u8, line, "for-each ")) {
@@ -844,6 +955,26 @@ const EvalError = error{
     RunNeedsList,
     RunNeedsCommand,
     RunArgsMustBeStrings,
+    RunBoundedNeedsRecord,
+    RunBoundedNeedsField,
+    RunBoundedNeedsString,
+    RunBoundedNeedsInt,
+    RunBoundedNeedsBool,
+    ProcessInputTooLong,
+    ProcessBoundOutOfRange,
+    ProcessPathUnsafe,
+    ProcessPathSymlink,
+    ProcessOutputOpenFailed,
+    ProcessOutputWriteFailed,
+    ProcessRelayWriteFailed,
+    ProcessIoFailed,
+    Interrupted,
+    LockNeedsString,
+    LockPathUnsafe,
+    LockAlreadyHeld,
+    LockCreateFailed,
+    TooManyCleanupPaths,
+    SignalCleanupUnsupported,
     CommandFailed,
     PipelineNeedsAs,
     PipelineNeedsColon,
@@ -946,6 +1077,9 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "wait-for ")) {
         return do_wait_for(allocator, io, env, trimmed[9..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "run-bounded ")) {
+        return do_run_bounded(allocator, io, env, trimmed[12..]);
     }
     if (std.mem.startsWith(u8, trimmed, "run ")) {
         return do_run(allocator, io, env, trimmed[4..]);
@@ -1432,6 +1566,325 @@ fn do_run(allocator: std.mem.Allocator, io: std.Io, env: *Env, argv_text: []cons
 
     const result = std.process.run(allocator, io, .{ .argv = argv }) catch return error.CommandFailed;
     return run_result_record(allocator, result);
+}
+
+const SafePathVerdict = enum { safe, unsafe, symlink };
+
+/// Process-owned paths are relative to the script's current repository seat.
+/// Empty, absolute, dot-travelling, overlong, and symlinked components refuse.
+fn safe_process_path(io: std.Io, path: []const u8) SafePathVerdict {
+    if (path.len == 0 or path.len > max_safe_process_path_bytes) return .unsafe;
+    if (path[0] == '/' or std.mem.indexOfScalar(u8, path, 0) != null) return .unsafe;
+
+    var prefix: [max_safe_process_path_bytes]u8 = undefined;
+    var prefix_len: u32 = 0;
+    var components = std.mem.splitScalar(u8, path, '/');
+    const cwd = std.Io.Dir.cwd();
+    while (components.next()) |component| {
+        if (component.len == 0 or std.mem.eql(u8, component, ".") or std.mem.eql(u8, component, "..")) return .unsafe;
+        if (prefix_len != 0) {
+            prefix[@intCast(prefix_len)] = '/';
+            prefix_len += 1;
+        }
+        if (prefix_len + component.len > prefix.len) return .unsafe;
+        @memcpy(prefix[@intCast(prefix_len)..][0..component.len], component);
+        prefix_len += @intCast(component.len);
+        const current = prefix[0..@intCast(prefix_len)];
+        const stat = cwd.statFile(io, current, .{ .follow_symlinks = false }) catch |err| switch (err) {
+            error.FileNotFound => continue,
+            else => return .unsafe,
+        };
+        if (stat.kind == .sym_link) return .symlink;
+        const is_final = prefix_len == path.len;
+        if (!is_final and stat.kind != .directory) return .unsafe;
+    }
+    return .safe;
+}
+
+fn required_record_field(fields: []const Field, name: []const u8) EvalError!Value {
+    return find_field(fields, name) orelse error.RunBoundedNeedsField;
+}
+
+fn required_record_string(fields: []const Field, name: []const u8) EvalError![]const u8 {
+    return switch (try required_record_field(fields, name)) {
+        .string => |s| s,
+        else => error.RunBoundedNeedsString,
+    };
+}
+
+fn required_record_bound(fields: []const Field, name: []const u8, hard_max: u32) EvalError!u32 {
+    const value = try required_record_field(fields, name);
+    const bound = switch (value) {
+        .int => |n| n,
+        else => return error.RunBoundedNeedsInt,
+    };
+    if (bound < 0 or bound > hard_max) return error.ProcessBoundOutOfRange;
+    return @intCast(bound);
+}
+
+fn optional_record_bool(fields: []const Field, name: []const u8, default: bool) EvalError!bool {
+    const value = find_field(fields, name) orelse return default;
+    return switch (value) {
+        .boolean => |b| b,
+        else => error.RunBoundedNeedsBool,
+    };
+}
+
+fn open_private_process_output(io: std.Io, path: []const u8) EvalError!std.Io.File {
+    switch (safe_process_path(io, path)) {
+        .safe => {},
+        .unsafe => return error.ProcessPathUnsafe,
+        .symlink => return error.ProcessPathSymlink,
+    }
+    const cwd = std.Io.Dir.cwd();
+    if (cwd.statFile(io, path, .{ .follow_symlinks = false })) |stat| {
+        if (stat.kind != .file) return error.ProcessPathUnsafe;
+        cwd.deleteFile(io, path) catch return error.ProcessOutputOpenFailed;
+    } else |err| switch (err) {
+        error.FileNotFound => {},
+        else => return error.ProcessOutputOpenFailed,
+    }
+    return cwd.createFile(io, path, .{
+        .exclusive = true,
+        .permissions = .fromMode(0o600),
+        .resolve_beneath = true,
+    }) catch return error.ProcessOutputOpenFailed;
+}
+
+fn bounded_process_result(
+    allocator: std.mem.Allocator,
+    code: i64,
+    overflow: []const u8,
+    out_bytes: u32,
+    err_bytes: u32,
+) EvalError!Value {
+    const fields = try allocator.alloc(Field, 7);
+    fields[0] = .{ .name = "code", .value = .{ .int = code } };
+    fields[1] = .{ .name = "ok", .value = .{ .boolean = code == 0 and overflow.len == 0 } };
+    fields[2] = .{ .name = "overflow", .value = .{ .string = overflow } };
+    fields[3] = .{ .name = "interrupted", .value = .{ .boolean = false } };
+    fields[4] = .{ .name = "stdout-bytes", .value = .{ .int = @intCast(out_bytes) } };
+    fields[5] = .{ .name = "stderr-bytes", .value = .{ .int = @intCast(err_bytes) } };
+    fields[6] = .{ .name = "reaped", .value = .{ .boolean = true } };
+    return .{ .record = fields };
+}
+
+/// `run-bounded { argv, stdin, stdin-max, stdout-path, stdout-max,
+/// stderr-path, stderr-max, stdout-relay?, stderr-relay? }` starts only the
+/// declared argv. Child input and both output streams stay inside explicit byte
+/// walls. Output is streamed to private repository-relative files. An opt-in
+/// relay writes the same accepted bytes to Rishi's corresponding parent stream,
+/// without replay after completion. An overrun terminates and reaps the child
+/// and returns which stream crossed its wall.
+fn do_run_bounded(allocator: std.mem.Allocator, io: std.Io, env: *Env, spec_text: []const u8) EvalError!Value {
+    const spec_value = try eval_expr(allocator, io, env, spec_text);
+    const fields = switch (spec_value) {
+        .record => |r| r,
+        else => return error.RunBoundedNeedsRecord,
+    };
+    const argv_value = try required_record_field(fields, "argv");
+    const items = switch (argv_value) {
+        .list => |l| l,
+        else => return error.RunNeedsList,
+    };
+    const argv = try argv_from_list(allocator, items);
+    const input = try required_record_string(fields, "stdin");
+    const input_max = try required_record_bound(fields, "stdin-max", max_process_input_bytes);
+    const out_path = try required_record_string(fields, "stdout-path");
+    const out_max = try required_record_bound(fields, "stdout-max", max_process_output_bytes);
+    const err_path = try required_record_string(fields, "stderr-path");
+    const err_max = try required_record_bound(fields, "stderr-max", max_process_output_bytes);
+    const out_relay = try optional_record_bool(fields, "stdout-relay", false);
+    const err_relay = try optional_record_bool(fields, "stderr-relay", false);
+    if (input.len > input_max) return error.ProcessInputTooLong;
+    if (pending_signal.load(.acquire) != 0) return error.Interrupted;
+
+    var out_file = try open_private_process_output(io, out_path);
+    defer out_file.close(io);
+    var err_file = open_private_process_output(io, err_path) catch |err| {
+        std.Io.Dir.cwd().deleteFile(io, out_path) catch {};
+        return err;
+    };
+    defer err_file.close(io);
+
+    var child = std.process.spawn(io, .{
+        .argv = argv,
+        .stdin = .pipe,
+        .stdout = .pipe,
+        .stderr = .pipe,
+    }) catch return error.CommandFailed;
+    var child_live = true;
+    errdefer if (child_live) child.kill(io);
+
+    const child_stdin = child.stdin orelse return error.ProcessIoFailed;
+    const child_stdout = child.stdout orelse return error.ProcessIoFailed;
+    const child_stderr = child.stderr orelse return error.ProcessIoFailed;
+
+    var storage: [3]std.Io.Operation.Storage = undefined;
+    var batch: std.Io.Batch = .init(&storage);
+    var out_window: [process_io_window_bytes]u8 = undefined;
+    var err_window: [process_io_window_bytes]u8 = undefined;
+    var out_vec = [_][]u8{&out_window};
+    var err_vec = [_][]u8{&err_window};
+    var input_pos: u32 = 0;
+    var input_vec = [_][]const u8{input};
+    var out_live = true;
+    var err_live = true;
+    var input_live = input.len > 0;
+    var stdin_closed = false;
+    var out_bytes: u32 = 0;
+    var err_bytes: u32 = 0;
+    var overflow: []const u8 = "";
+
+    batch.addAt(0, .{ .file_read_streaming = .{ .file = child_stdout, .data = &out_vec } });
+    batch.addAt(1, .{ .file_read_streaming = .{ .file = child_stderr, .data = &err_vec } });
+    if (input_live) {
+        batch.addAt(2, .{ .file_write_streaming = .{ .file = child_stdin, .data = &input_vec } });
+    } else {
+        child_stdin.close(io);
+        child.stdin = null;
+        stdin_closed = true;
+    }
+
+    var batch_done = false;
+    defer if (!batch_done) batch.cancel(io);
+    const tick: std.Io.Timeout = .{ .duration = .{ .raw = .fromMilliseconds(50), .clock = .awake } };
+
+    while (out_live or err_live or input_live) {
+        if (pending_signal.load(.acquire) != 0) {
+            batch.cancel(io);
+            batch_done = true;
+            child.kill(io);
+            child_live = false;
+            return error.Interrupted;
+        }
+        batch.awaitConcurrent(io, tick) catch |err| switch (err) {
+            error.Timeout => continue,
+            else => {
+                batch.cancel(io);
+                batch_done = true;
+                child.kill(io);
+                child_live = false;
+                return error.ProcessIoFailed;
+            },
+        };
+        while (batch.next()) |completion| {
+            switch (completion.index) {
+                0 => {
+                    const n = completion.result.file_read_streaming catch |err| switch (err) {
+                        error.EndOfStream => {
+                            out_live = false;
+                            continue;
+                        },
+                        else => return error.ProcessIoFailed,
+                    };
+                    if (n > out_max - out_bytes) {
+                        const remaining: usize = @intCast(out_max - out_bytes);
+                        out_file.writeStreamingAll(io, out_window[0..remaining]) catch return error.ProcessOutputWriteFailed;
+                        if (out_relay) std.Io.File.stdout().writeStreamingAll(io, out_window[0..remaining]) catch return error.ProcessRelayWriteFailed;
+                        out_bytes = out_max;
+                        overflow = "stdout";
+                    } else {
+                        out_file.writeStreamingAll(io, out_window[0..n]) catch return error.ProcessOutputWriteFailed;
+                        if (out_relay) std.Io.File.stdout().writeStreamingAll(io, out_window[0..n]) catch return error.ProcessRelayWriteFailed;
+                        out_bytes += @intCast(n);
+                    }
+                    if (overflow.len == 0) batch.addAt(0, .{ .file_read_streaming = .{ .file = child_stdout, .data = &out_vec } });
+                },
+                1 => {
+                    const n = completion.result.file_read_streaming catch |err| switch (err) {
+                        error.EndOfStream => {
+                            err_live = false;
+                            continue;
+                        },
+                        else => return error.ProcessIoFailed,
+                    };
+                    if (n > err_max - err_bytes) {
+                        const remaining: usize = @intCast(err_max - err_bytes);
+                        err_file.writeStreamingAll(io, err_window[0..remaining]) catch return error.ProcessOutputWriteFailed;
+                        if (err_relay) std.Io.File.stderr().writeStreamingAll(io, err_window[0..remaining]) catch return error.ProcessRelayWriteFailed;
+                        err_bytes = err_max;
+                        overflow = "stderr";
+                    } else {
+                        err_file.writeStreamingAll(io, err_window[0..n]) catch return error.ProcessOutputWriteFailed;
+                        if (err_relay) std.Io.File.stderr().writeStreamingAll(io, err_window[0..n]) catch return error.ProcessRelayWriteFailed;
+                        err_bytes += @intCast(n);
+                    }
+                    if (overflow.len == 0) batch.addAt(1, .{ .file_read_streaming = .{ .file = child_stderr, .data = &err_vec } });
+                },
+                2 => {
+                    const n = completion.result.file_write_streaming catch |err| switch (err) {
+                        error.BrokenPipe => {
+                            input_live = false;
+                            if (!stdin_closed) {
+                                child_stdin.close(io);
+                                child.stdin = null;
+                                stdin_closed = true;
+                            }
+                            continue;
+                        },
+                        else => return error.ProcessIoFailed,
+                    };
+                    input_pos += @intCast(n);
+                    if (input_pos == input.len) {
+                        input_live = false;
+                        child_stdin.close(io);
+                        child.stdin = null;
+                        stdin_closed = true;
+                    } else {
+                        input_vec[0] = input[@intCast(input_pos)..];
+                        batch.addAt(2, .{ .file_write_streaming = .{ .file = child_stdin, .data = &input_vec } });
+                    }
+                },
+                else => unreachable,
+            }
+            if (overflow.len != 0) break;
+        }
+        if (overflow.len != 0) {
+            batch.cancel(io);
+            batch_done = true;
+            child.kill(io);
+            child_live = false;
+            return bounded_process_result(allocator, -1, overflow, out_bytes, err_bytes);
+        }
+    }
+    batch.cancel(io);
+    batch_done = true;
+    const term = child.wait(io) catch return error.ProcessIoFailed;
+    child_live = false;
+    const code: i64 = switch (term) {
+        .exited => |c| @intCast(c),
+        else => -1,
+    };
+    return bounded_process_result(allocator, code, "", out_bytes, err_bytes);
+}
+
+/// Atomically create and own one repository-relative empty-directory lock.
+/// The runtime releases it after normal return, refusal, `exit`, HUP, INT, or
+/// TERM. No recursive deletion is ever performed.
+fn do_acquire_lock(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!void {
+    if (comptime !supports_signal_cleanup) return error.SignalCleanupUnsupported;
+    const path_value = try eval_expr(allocator, io, env, arg);
+    const path = switch (path_value) {
+        .string => |s| s,
+        else => return error.LockNeedsString,
+    };
+    switch (safe_process_path(io, path)) {
+        .safe => {},
+        .unsafe => return error.LockPathUnsafe,
+        .symlink => return error.ProcessPathSymlink,
+    }
+    const cleanups = env.cleanups orelse return error.LockCreateFailed;
+    const owned = allocator.dupe(u8, path) catch return error.OutOfMemory;
+    const cwd = std.Io.Dir.cwd();
+    cwd.createDir(io, owned, .fromMode(0o700)) catch |err| switch (err) {
+        error.PathAlreadyExists => return error.LockAlreadyHeld,
+        else => return error.LockCreateFailed,
+    };
+    cleanups.add(.{ .path = owned, .kind = .empty_dir }) catch |err| {
+        cwd.deleteDir(io, owned) catch {};
+        return err;
+    };
 }
 
 /// `env <name-expr>` reads one process environment variable by name. When the

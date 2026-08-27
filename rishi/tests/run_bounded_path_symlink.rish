@@ -1,0 +1,3 @@
+# Output destinations must not be symlinks.
+let result = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: "linked.out", stdout-max: 8, stderr-path: "linked.err", stderr-max: 8 }
+say result

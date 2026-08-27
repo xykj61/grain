@@ -46,6 +46,7 @@
 !/research-silo/
 !/brix/
 !/arbor/
+!/skate/
 !/pleac/
 !/foundations/
 !/saga/
@@ -201,6 +202,10 @@
 /classical-vedic-astrology/bin/
 /comlink/.build/
 /brushstroke/bin/
+/skate/.build/
+/skate/.swiftpm/
+/skate/tools/
+/.mind-state/
 /mantra/bin/
 /aurora/.build/
 /linengrow/bin/

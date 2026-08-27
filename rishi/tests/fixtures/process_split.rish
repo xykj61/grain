@@ -1,0 +1,4 @@
+# process_split.rish -- one child writes to each process stream.
+
+say "bounded stdout"
+assert false else "bounded stderr"

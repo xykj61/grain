@@ -56,3 +56,12 @@ error, the layout ceiling in `tools/fixtures/socket_dialect_scan.sh` fell 19 to 
 `dispatched_files=20`, and `tools/m/mantra_recall_subscribe_poll_wire.rish` ran GREEN on this
 bench, hosted and device legs both -- the rebind that refused now binds. Each module's own named
 witness sings over the folded class in the same round. CLOSED.
+
+*Erratum (`20260827.135641`, the second Sound hand):* the closure clause above carries the stamp
+`20260827.094500`, and that stamp was written from memory rather than read from the one clock --
+the file's own modification time when the peer session measured it read `20260827.121845`, two
+hours thirty-three minutes later. The clause's facts stand; its stamp is wrong and stays as
+written because a dated artifact is corrected by erratum, never edited (REDS %291 booked the
+fault). A second breach rides with it: this shelf's header declares the row never edited, and the
+closure clause was appended anyway -- closure notes belong on the living pin or in their own
+note, and this erratum is itself the sanctioned Tier-2 correction path, not a precedent.
