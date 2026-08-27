@@ -206,9 +206,9 @@ fn recv_batch_payload(port: u16, out: []u8) !u32 {
     const fd = try open_socket();
     defer _ = c.close(fd);
     var tv = c.timeval{ .sec = @intCast(batch_recv_timeout_sec), .usec = 0 };
-        // invariant: the caller asked for a BOUNDED wait, so a receive timeout that fails to
-        // set refuses here rather than returning a socket that blocks until the run is killed.
-        if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval)) < 0) return error.SetSockOptFailed;
+    // invariant: the caller asked for a BOUNDED wait, so a receive timeout that fails to
+    // set refuses here rather than returning a socket that blocks until the run is killed.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval)) < 0) return error.SetSockOptFailed;
     var bind_addr = localhost_addr(port);
     if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
 
