@@ -9,10 +9,13 @@
 let max_prompt_bytes = 24576
 let max_log_bytes = 1048576
 let max_supervisor_bytes = 1114112
+let max_commit_message_bytes = 4096
+let max_candidate_paths = 64
 let max_laps_hard = 24
 let max_failures_hard = 5
 let max_backoff_seconds = 300
 let max_local_ahead = 32
+let sketchbook_pin = "99b87f20f1fdbd2fc216cb13c07bdd0531916d27"
 
 let mode = ""
 if args.len > 0 then let mode = args[0]
@@ -113,12 +116,30 @@ let lock_rel = state_rel + "/run.lock"
 let stop_rel = state_rel + "/STOP"
 let stop_abs = state_abs + "/STOP"
 let custody_abs = state_abs + "/CUSTODY"
+let transaction_rel = state_rel + "/TRANSACTION"
+let transaction_abs = state_abs + "/TRANSACTION"
 let preflight_rel = state_rel + "/preflight"
 let preflight_abs = state_abs + "/preflight"
+let signing_rel = state_rel + "/signing"
+let signing_abs = state_abs + "/signing"
+let commit_message_rel = signing_rel + "/commit-message.txt"
+let commit_message_abs = signing_abs + "/commit-message.txt"
+let phase_rel = log_rel + "/lap.phase"
+let phase_err = log_rel + "/lap-phase.err"
 let rishi_override = env "MIND_RISHI_BIN"
 let rishi_bin = ?: (rishi_override == "") "rishi/bin/rishi" rishi_override
 let rishi_check = run ["test" "-x" rishi_bin]
 assert rishi_check.ok else "REFUSE chatgpt-mind: the built Rishi binary is absent"
+let rishi_real = run ["/bin/realpath" rishi_bin]
+assert rishi_real.ok else "REFUSE chatgpt-mind: the built Rishi binary could not be resolved"
+let rishi_abs = trim rishi_real.out
+assert rishi_abs starts-with root_prefix else "REFUSE chatgpt-mind: the built Rishi binary escapes this repository"
+let rishi_file = run ["test" "-f" rishi_abs]
+let rishi_exec = run ["test" "-x" rishi_abs]
+let rishi_link = run ["test" "-L" rishi_abs]
+assert rishi_file.ok else "REFUSE chatgpt-mind: the built Rishi binary is not a regular file"
+assert rishi_exec.ok else "REFUSE chatgpt-mind: the built Rishi binary is not executable"
+assert rishi_link.ok == false else "REFUSE chatgpt-mind: the built Rishi binary remains a symlink"
 
 let git_link = "/opt/homebrew/bin/git"
 let git_expected = "/opt/homebrew/Cellar/git/2.53.0_1/bin/git"
@@ -135,8 +156,6 @@ assert git_exec_file.ok else "REFUSE chatgpt-mind: canonical Homebrew Git is not
 assert git_exec_check.ok else "REFUSE chatgpt-mind: canonical Homebrew Git is not executable"
 assert git_exec_link.ok == false else "REFUSE chatgpt-mind: canonical Homebrew Git remains a symlink"
 assert git_exec != "/usr/bin/git" else "REFUSE chatgpt-mind: Apple Git selector is outside this seat"
-let git_path_arg = "PATH=/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-let git_exec_arg = "GRAIN_MIND_GIT=${git_exec}"
 let git_pcre_link = "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib"
 let git_pcre_expected = "/opt/homebrew/Cellar/pcre2/10.47_1/lib/libpcre2-8.0.dylib"
 let git_intl_link = "/opt/homebrew/opt/gettext/lib/libintl.8.dylib"
@@ -160,29 +179,152 @@ assert git_intl_link_check.ok == false else "REFUSE chatgpt-mind: canonical Home
 let git_dyld_arg = "DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib"
 let git_no_system_arg = "GIT_CONFIG_NOSYSTEM=1"
 let git_no_global_arg = "GIT_CONFIG_GLOBAL=/dev/null"
+let git_wrapper_abs = repo_root + "/tools/l/mind-bin/git"
+let git_shell_abs = repo_root + "/tools/l/mind-shell"
+let git_zshenv_abs = git_shell_abs + "/.zshenv"
+let git_zprofile_abs = git_shell_abs + "/.zprofile"
+let git_wrapper_file = run ["test" "-f" git_wrapper_abs]
+let git_wrapper_exec = run ["test" "-x" git_wrapper_abs]
+let git_wrapper_link = run ["test" "-L" git_wrapper_abs]
+let git_zshenv_file = run ["test" "-f" git_zshenv_abs]
+let git_zprofile_file = run ["test" "-f" git_zprofile_abs]
+let git_zshenv_link = run ["test" "-L" git_zshenv_abs]
+let git_zprofile_link = run ["test" "-L" git_zprofile_abs]
+assert git_wrapper_file.ok else "REFUSE chatgpt-mind: tracked Git doorway is absent"
+assert git_wrapper_exec.ok else "REFUSE chatgpt-mind: tracked Git doorway is not executable"
+assert git_wrapper_link.ok == false else "REFUSE chatgpt-mind: tracked Git doorway cannot be a symlink"
+assert git_zshenv_file.ok else "REFUSE chatgpt-mind: tracked zsh environment doorway is absent"
+assert git_zprofile_file.ok else "REFUSE chatgpt-mind: tracked zsh profile doorway is absent"
+assert git_zshenv_link.ok == false else "REFUSE chatgpt-mind: tracked zsh environment doorway cannot be a symlink"
+assert git_zprofile_link.ok == false else "REFUSE chatgpt-mind: tracked zsh profile doorway cannot be a symlink"
+let git_path_arg = "PATH=${repo_root}/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+let git_exec_arg = "GRAIN_MIND_GIT=${git_wrapper_abs}"
+let git_raw_arg = "GRAIN_MIND_GIT_RAW=${git_exec}"
+let git_root_arg = "GRAIN_MIND_ROOT=${repo_root}"
+let git_zdotdir_arg = "ZDOTDIR=${git_shell_abs}"
+let host_home_raw = env "HOME"
+assert host_home_raw != "" else "REFUSE chatgpt-mind: host HOME is absent"
+let host_home_real = run ["/bin/realpath" host_home_raw]
+assert host_home_real.ok else "REFUSE chatgpt-mind: host HOME could not be canonically resolved"
+let host_home = trim host_home_real.out
+let host_home_dir = run ["test" "-d" host_home]
+let host_home_link = run ["test" "-L" host_home]
+assert host_home_dir.ok else "REFUSE chatgpt-mind: canonical host HOME is not a directory"
+assert host_home_link.ok == false else "REFUSE chatgpt-mind: canonical host HOME cannot be a symlink"
+let host_gnupg_raw = env "GNUPGHOME"
+let host_gnupg_candidate = ?: (host_gnupg_raw == "") (host_home + "/.gnupg") host_gnupg_raw
+let host_gnupg_real = run ["/bin/realpath" host_gnupg_candidate]
+assert host_gnupg_real.ok else "REFUSE chatgpt-mind: host GnuPG home could not be canonically resolved"
+let host_gnupg = trim host_gnupg_real.out
+let host_gnupg_dir = run ["test" "-d" host_gnupg]
+let host_gnupg_link = run ["test" "-L" host_gnupg]
+assert host_gnupg_dir.ok else "REFUSE chatgpt-mind: canonical host GnuPG home is not a directory"
+assert host_gnupg_link.ok == false else "REFUSE chatgpt-mind: canonical host GnuPG home cannot be a symlink"
+let host_home_arg = "HOME=${host_home}"
+let host_gnupg_arg = "GNUPGHOME=${host_gnupg}"
+let host_tool_path_arg = "PATH=/opt/homebrew/Cellar/gnupg/2.5.18/bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+let git_argv = ["/usr/bin/env" "-i" host_home_arg host_gnupg_arg host_tool_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg git_exec]
+fn git-run tail: run (git_argv + tail)
+
+let gpg_link = "/opt/homebrew/bin/gpg"
+let gpg_expected = "/opt/homebrew/Cellar/gnupg/2.5.18/bin/gpg"
+let gpg_real = run ["/bin/realpath" gpg_link]
+assert gpg_real.ok else "REFUSE chatgpt-mind: host GPG could not be canonically resolved"
+let gpg_exec = trim gpg_real.out
+assert gpg_exec == gpg_expected else "REFUSE chatgpt-mind: host GPG canonical target drifted"
+let gpg_exec_file = run ["test" "-f" gpg_exec]
+let gpg_exec_check = run ["test" "-x" gpg_exec]
+let gpg_exec_link = run ["test" "-L" gpg_exec]
+assert gpg_exec_file.ok else "REFUSE chatgpt-mind: canonical host GPG is not a regular file"
+assert gpg_exec_check.ok else "REFUSE chatgpt-mind: canonical host GPG is not executable"
+assert gpg_exec_link.ok == false else "REFUSE chatgpt-mind: canonical host GPG remains a symlink"
+let gpg_argv = ["/usr/bin/env" "-i" host_home_arg host_gnupg_arg host_tool_path_arg gpg_exec]
+
+let signing_key_run = git-run ["-C" repo_root "config" "--local" "--get" "user.signingkey"]
+let signing_format_run = git-run ["-C" repo_root "config" "--local" "--get" "gpg.format"]
+let signing_program_run = git-run ["-C" repo_root "config" "--local" "--get" "gpg.program"]
+let signing_required_run = git-run ["-C" repo_root "config" "--local" "--bool" "--get" "commit.gpgsign"]
+let signing_name_run = git-run ["-C" repo_root "config" "--local" "--get" "user.name"]
+let signing_email_run = git-run ["-C" repo_root "config" "--local" "--get" "user.email"]
+let hooks_path_run = git-run ["-C" repo_root "config" "--local" "--get" "core.hooksPath"]
+assert signing_key_run.ok else "REFUSE chatgpt-mind: project-local signing key is absent"
+assert signing_format_run.ok else "REFUSE chatgpt-mind: project-local signing format is absent"
+assert signing_program_run.ok else "REFUSE chatgpt-mind: project-local signing program is absent"
+assert signing_required_run.ok else "REFUSE chatgpt-mind: project-local signed-commit law is absent"
+assert signing_name_run.ok else "REFUSE chatgpt-mind: project-local author name is absent"
+assert signing_email_run.ok else "REFUSE chatgpt-mind: project-local author email is absent"
+assert hooks_path_run.ok else "REFUSE chatgpt-mind: project-local hooks path is absent"
+let signing_key = trim signing_key_run.out
+assert length signing_key == 40 else "REFUSE chatgpt-mind: project-local signing fingerprint is not forty bytes"
+assert (trim signing_format_run.out) == "openpgp" else "REFUSE chatgpt-mind: project-local signing format is not OpenPGP"
+assert (trim signing_program_run.out) == gpg_exec else "REFUSE chatgpt-mind: project-local signing program is not canonical host GPG"
+assert (trim signing_required_run.out) == "true" else "REFUSE chatgpt-mind: project-local signed-commit law is not true"
+assert (trim signing_name_run.out) != "" else "REFUSE chatgpt-mind: project-local author name is empty"
+assert (trim signing_email_run.out) != "" else "REFUSE chatgpt-mind: project-local author email is empty"
+assert (trim hooks_path_run.out) == "tools/hooks" else "REFUSE chatgpt-mind: project-local hooks path drifted"
+
+let pre_commit_hook = repo_root + "/tools/hooks/pre-commit"
+let commit_msg_hook = repo_root + "/tools/hooks/commit-msg"
+let mind_lane_scan = repo_root + "/tools/fixtures/chatgpt_mind_lane.awk"
+let mind_lane_sha256 = "93742b65c4d69ed1ad1c4d1ccdd7eaa054dff0d241c11cbbf8c3be39c0bbc440"
+let pre_commit_file = run ["test" "-f" pre_commit_hook]
+let pre_commit_exec = run ["test" "-x" pre_commit_hook]
+let pre_commit_link = run ["test" "-L" pre_commit_hook]
+let commit_msg_file = run ["test" "-f" commit_msg_hook]
+let commit_msg_exec = run ["test" "-x" commit_msg_hook]
+let commit_msg_link = run ["test" "-L" commit_msg_hook]
+let mind_lane_file = run ["test" "-f" mind_lane_scan]
+let mind_lane_link = run ["test" "-L" mind_lane_scan]
+let mind_lane_hash = run ["/usr/bin/shasum" "-a" "256" mind_lane_scan]
+assert pre_commit_file.ok else "REFUSE chatgpt-mind: tracked pre-commit hook is absent"
+assert pre_commit_exec.ok else "REFUSE chatgpt-mind: tracked pre-commit hook is not executable"
+assert pre_commit_link.ok == false else "REFUSE chatgpt-mind: tracked pre-commit hook cannot be a symlink"
+assert commit_msg_file.ok else "REFUSE chatgpt-mind: tracked commit-message hook is absent"
+assert commit_msg_exec.ok else "REFUSE chatgpt-mind: tracked commit-message hook is not executable"
+assert commit_msg_link.ok == false else "REFUSE chatgpt-mind: tracked commit-message hook cannot be a symlink"
+assert mind_lane_file.ok else "REFUSE chatgpt-mind: tracked MIND lane scanner is absent"
+assert mind_lane_link.ok == false else "REFUSE chatgpt-mind: tracked MIND lane scanner cannot be a symlink"
+assert mind_lane_hash.ok else "REFUSE chatgpt-mind: tracked MIND lane scanner could not be hashed"
+assert (trim mind_lane_hash.out) starts-with mind_lane_sha256 else "REFUSE chatgpt-mind: tracked MIND lane scanner drifted"
 
 let git_metadata = repo_root + "/.git"
 let git_metadata_dir = run ["test" "-d" git_metadata]
 let git_metadata_link = run ["test" "-L" git_metadata]
 assert git_metadata_dir.ok else "REFUSE chatgpt-mind: MIND needs a standalone clone with an internal .git directory"
 assert git_metadata_link.ok == false else "REFUSE chatgpt-mind: standalone .git cannot be a symlink"
-let git_dir_run = run [git_exec "-C" repo_root "rev-parse" "--path-format=absolute" "--git-dir"]
-let git_common_run = run [git_exec "-C" repo_root "rev-parse" "--path-format=absolute" "--git-common-dir"]
+let git_dir_run = git-run ["-C" repo_root "rev-parse" "--path-format=absolute" "--git-dir"]
+let git_common_run = git-run ["-C" repo_root "rev-parse" "--path-format=absolute" "--git-common-dir"]
 assert git_dir_run.ok else "REFUSE chatgpt-mind: Homebrew Git could not resolve the repository administration path"
 assert git_common_run.ok else "REFUSE chatgpt-mind: Homebrew Git could not resolve the common administration path"
 assert (trim git_dir_run.out) == git_metadata else "REFUSE chatgpt-mind: Git administration escapes the standalone clone"
 assert (trim git_common_run.out) == git_metadata else "REFUSE chatgpt-mind: Git common administration escapes the standalone clone"
+let git_config_abs = git_metadata + "/config"
+let git_head_abs = git_metadata + "/HEAD"
+let git_refs_abs = git_metadata + "/refs"
+let git_logs_abs = git_metadata + "/logs"
+let git_packed_refs_abs = git_metadata + "/packed-refs"
+let git_config_file = run ["test" "-f" git_config_abs]
+let git_head_file = run ["test" "-f" git_head_abs]
+let git_refs_dir = run ["test" "-d" git_refs_abs]
+let git_logs_dir = run ["test" "-d" git_logs_abs]
+let git_packed_refs_file = run ["test" "-f" git_packed_refs_abs]
+assert git_config_file.ok else "REFUSE chatgpt-mind: standalone Git config is absent"
+assert git_head_file.ok else "REFUSE chatgpt-mind: standalone Git HEAD is absent"
+assert git_refs_dir.ok else "REFUSE chatgpt-mind: standalone Git refs are absent"
+assert git_logs_dir.ok else "REFUSE chatgpt-mind: standalone Git logs are absent"
 
 let state_link = run ["test" "-L" state_rel]
 assert state_link.ok == false else "REFUSE chatgpt-mind: state directory cannot be a symlink"
-let dirs = run ["mkdir" "-p" state_rel log_rel codex_home_rel preflight_rel]
+let dirs = run ["mkdir" "-p" state_rel log_rel codex_home_rel preflight_rel signing_rel]
 assert dirs.ok else "REFUSE chatgpt-mind: could not prepare bounded repository-local state"
 let codex_home_link = run ["test" "-L" codex_home_rel]
 let log_link = run ["test" "-L" log_rel]
 let preflight_link = run ["test" "-L" preflight_rel]
+let signing_link = run ["test" "-L" signing_rel]
 assert codex_home_link.ok == false else "REFUSE chatgpt-mind: Codex home cannot be a symlink"
 assert log_link.ok == false else "REFUSE chatgpt-mind: log directory cannot be a symlink"
 assert preflight_link.ok == false else "REFUSE chatgpt-mind: preflight directory cannot be a symlink"
+assert signing_link.ok == false else "REFUSE chatgpt-mind: signing directory cannot be a symlink"
 
 let stop_err = preflight_rel + "/stop.err"
 if mode == "stop" then let stop_make = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: stop_rel, stdout-max: 0, stderr-path: stop_err, stderr-max: 4096 }
@@ -222,6 +364,8 @@ let codex_exec_check = run ["test" "-x" codex_exec]
 assert codex_exec_check.ok else "REFUSE chatgpt-mind: canonical Codex CLI target is not executable"
 let codex_exec_link = run ["test" "-L" codex_exec]
 assert codex_exec_link.ok == false else "REFUSE chatgpt-mind: canonical Codex CLI path remains a symlink"
+let packed_refs_maps = ?: git_packed_refs_file.ok (["--map" git_packed_refs_abs]) ([])
+let jail_maps = ["--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--map" rishi_abs "--map" git_wrapper_abs "--map" git_zshenv_abs "--map" git_zprofile_abs "--map" pre_commit_hook "--map" commit_msg_hook "--map" mind_lane_scan "--map" git_config_abs "--map" git_head_abs "--map" git_refs_abs "--map" git_logs_abs] + packed_refs_maps
 
 let codex_help_out = preflight_rel + "/codex-help.out"
 let codex_help_err = preflight_rel + "/codex-help.err"
@@ -233,7 +377,7 @@ assert codex_help contains "danger-full-access" else "REFUSE chatgpt-mind: Codex
 
 let jail_plan_out = preflight_rel + "/jail-plan.out"
 let jail_plan_err = preflight_rel + "/jail-plan.err"
-let jail_plan_run = run-bounded { argv: [ai_jail "--dry-run" "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: jail_plan_out, stdout-max: 65536, stderr-path: jail_plan_err, stderr-max: 65536 }
+let jail_plan_run = run-bounded { argv: ([ai_jail "--dry-run"] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/true"]), stdin: "", stdin-max: 0, stdout-path: jail_plan_out, stdout-max: 65536, stderr-path: jail_plan_err, stderr-max: 65536 }
 assert jail_plan_run.ok else "REFUSE chatgpt-mind: ai-jail could not render its macOS plan"
 let jail_plan = (read-file jail_plan_out) + (read-file jail_plan_err)
 assert jail_plan contains "sandbox-exec" else "REFUSE chatgpt-mind: outer jail did not select macOS Seatbelt"
@@ -276,12 +420,41 @@ let pcre_plan_allow = "(allow file-read* (literal " + dq + git_pcre + dq + "))"
 let pcre_plan_deny = "(deny file-write* (literal " + dq + git_pcre + dq + "))"
 let intl_plan_allow = "(allow file-read* (literal " + dq + git_intl + dq + "))"
 let intl_plan_deny = "(deny file-write* (literal " + dq + git_intl + dq + "))"
+let rishi_plan_allow = "(allow file-read* (literal " + dq + rishi_abs + dq + "))"
+let rishi_plan_deny = "(deny file-write* (literal " + dq + rishi_abs + dq + "))"
+let wrapper_plan_allow = "(allow file-read* (literal " + dq + git_wrapper_abs + dq + "))"
+let wrapper_plan_deny = "(deny file-write* (literal " + dq + git_wrapper_abs + dq + "))"
+let zshenv_plan_deny = "(deny file-write* (literal " + dq + git_zshenv_abs + dq + "))"
+let zprofile_plan_deny = "(deny file-write* (literal " + dq + git_zprofile_abs + dq + "))"
+let pre_commit_plan_deny = "(deny file-write* (literal " + dq + pre_commit_hook + dq + "))"
+let commit_msg_plan_deny = "(deny file-write* (literal " + dq + commit_msg_hook + dq + "))"
+let mind_lane_plan_deny = "(deny file-write* (literal " + dq + mind_lane_scan + dq + "))"
+let config_plan_deny = "(deny file-write* (literal " + dq + git_config_abs + dq + "))"
+let head_plan_deny = "(deny file-write* (literal " + dq + git_head_abs + dq + "))"
+let refs_plan_deny = "(deny file-write* (subpath " + dq + git_refs_abs + dq + "))"
+let logs_plan_deny = "(deny file-write* (subpath " + dq + git_logs_abs + dq + "))"
+let packed_refs_plan_deny = "(deny file-write* (literal " + dq + git_packed_refs_abs + dq + "))"
 assert jail_plan contains pcre_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git PCRE2 read access"
 assert jail_plan contains pcre_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git PCRE2 write denial"
 assert jail_plan contains intl_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git gettext read access"
 assert jail_plan contains intl_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact Homebrew Git gettext write denial"
+assert jail_plan contains rishi_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact Rishi read access"
+assert jail_plan contains rishi_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact Rishi write denial"
+assert jail_plan contains wrapper_plan_allow else "REFUSE chatgpt-mind: outer jail plan lacks exact tracked Git doorway read access"
+assert jail_plan contains wrapper_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact tracked Git doorway write denial"
+assert jail_plan contains zshenv_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact zsh environment doorway write denial"
+assert jail_plan contains zprofile_plan_deny else "REFUSE chatgpt-mind: outer jail plan lacks exact zsh profile doorway write denial"
+assert jail_plan contains pre_commit_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect the pre-commit hook"
+assert jail_plan contains commit_msg_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect the commit-message hook"
+assert jail_plan contains mind_lane_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect the MIND lane scanner"
+assert jail_plan contains config_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect project-local Git config"
+assert jail_plan contains head_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect Git HEAD"
+assert jail_plan contains refs_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect Git refs"
+assert jail_plan contains logs_plan_deny else "REFUSE chatgpt-mind: outer jail plan does not protect Git reflogs"
+assert ?| [(git_packed_refs_file.ok == false) (jail_plan contains packed_refs_plan_deny)] else "REFUSE chatgpt-mind: outer jail plan does not protect packed refs"
 assert (jail_plan contains "/usr/bin/git") == false else "REFUSE chatgpt-mind: outer jail plan admitted Apple Git"
 assert (jail_plan contains "/var/select") == false else "REFUSE chatgpt-mind: outer jail plan admitted the Apple developer selector"
+assert (jail_plan contains gpg_exec) == false else "REFUSE chatgpt-mind: outer jail plan exposed host GPG to Codex"
 assert jail_plan contains "/.ssh" else "REFUSE chatgpt-mind: private-home plan does not deny SSH state"
 assert jail_plan contains "/.gnupg" else "REFUSE chatgpt-mind: private-home plan does not deny GPG state"
 
@@ -333,23 +506,32 @@ let sleep_awk = "/^AC Power:/ { in_ac=1; next } /^[^[:space:]]/ { in_ac=0 } in_a
 if pmset_bin != "" then let sleep_parse = run-bounded { argv: ["/usr/bin/awk" sleep_awk], stdin: custom_text, stdin-max: 16384, stdout-path: sleep_out, stdout-max: 64, stderr-path: sleep_err, stderr-max: 4096 }
 if pmset_bin != "" then let sleep_text = trim (read-file sleep_out)
 if pmset_bin != "" then let system_sleep = ?: (sleep_text == "") "unknown" sleep_text
-say "chatgpt-mind: power source ${power_source}; AC system sleep ${system_sleep}"
+let battery_sleep = "unknown"
+let battery_sleep_out = preflight_rel + "/power-battery-sleep.out"
+let battery_sleep_err = preflight_rel + "/power-battery-sleep.err"
+let battery_sleep_awk = "/^Battery Power:/ { in_battery=1; next } /^[^[:space:]]/ { in_battery=0 } in_battery && $1 ~ /^sleep$/ { print $2; exit }"
+if pmset_bin != "" then let battery_sleep_parse = run-bounded { argv: ["/usr/bin/awk" battery_sleep_awk], stdin: custom_text, stdin-max: 16384, stdout-path: battery_sleep_out, stdout-max: 64, stderr-path: battery_sleep_err, stderr-max: 4096 }
+if pmset_bin != "" then let battery_sleep_text = trim (read-file battery_sleep_out)
+if pmset_bin != "" then let battery_sleep = ?: (battery_sleep_text == "") "unknown" battery_sleep_text
+say "chatgpt-mind: power source ${power_source}; AC system sleep ${system_sleep}; battery system sleep ${battery_sleep}"
+say "chatgpt-mind: AC and battery readings are telemetry only; neither grants nor refuses work"
 say "chatgpt-mind: screensaver and power settings remain unchanged"
 
 if dry_run then say "chatgpt-mind: dry-run only; Codex will not be invoked"
 if dry_run then say "chatgpt-mind: bounded laps ${max_laps}, failure ceiling ${failure_ceiling}, backoff ${backoff_seconds} seconds"
-if dry_run then say "chatgpt-mind: planned inner command maps the resolved Codex CLI plus canonical Homebrew Git and two exact runtime libraries read-only, then runs codex exec --sandbox danger-full-access --ephemeral --strict-config with repository-relative isolated state, exact Git PATH, disabled host Git configs, and TMPDIR=/private/tmp inside ai-jail --exec --private-home --no-save-config"
+if dry_run then say "chatgpt-mind: planned inner command maps Codex, canonical Homebrew Git, its two runtime libraries, and the tracked child-shell Git doorway read-only; the inner lap stages one candidate, while the outer supervisor alone signs and verifies it with user-held host GPG"
 if dry_run then exit 0
 
 fn file-absent path: (run ["test" "!" "-e" path]).ok
-fn repo-clean root: (trim (run [git_exec "-C" root "status" "--porcelain" "--untracked-files=normal" "--ignore-submodules=none"]).out) == ""
-fn xy-remote root: (run [git_exec "-C" root "remote" "get-url" "xy"]).ok
-fn xy-ready root: (run [git_exec "-C" root "show-ref" "--verify" "--quiet" "refs/remotes/xy/main"]).ok
-fn xy-integrated root: (trim (run [git_exec "-C" root "rev-list" "--count" "HEAD..xy/main"]).out) == "0"
-fn ahead-count root: parse (trim (run [git_exec "-C" root "rev-list" "--count" "xy/main..HEAD"]).out)
-fn gitlink-held root: (run [git_exec "-C" root "ls-files" "-s" "gratitude/grain-sketchbook"]).out starts-with "160000 "
-fn signed-descendant root before after: ?& [((run [git_exec "-C" root "merge-base" "--is-ancestor" before after]).ok) ((trim (run [git_exec "-C" root "rev-list" "--count" "${before}..${after}"]).out) == "1") (?| [((trim (run [git_exec "-C" root "log" "-1" "--format=%G?"]).out) == "G") ((trim (run [git_exec "-C" root "log" "-1" "--format=%G?"]).out) == "U")])]
+fn repo-clean root: (trim (git-run ["-C" root "status" "--porcelain" "--untracked-files=normal" "--ignore-submodules=none"]).out) == ""
+fn xy-remote root: (git-run ["-C" root "remote" "get-url" "xy"]).ok
+fn xy-ready root: (git-run ["-C" root "show-ref" "--verify" "--quiet" "refs/remotes/xy/main"]).ok
+fn xy-integrated root: (trim (git-run ["-C" root "rev-list" "--count" "HEAD..xy/main"]).out) == "0"
+fn ahead-count root: parse (trim (git-run ["-C" root "rev-list" "--count" "xy/main..HEAD"]).out)
+fn gitlink-held root: (git-run ["-C" root "ls-files" "-s" "gratitude/grain-sketchbook"]).out starts-with "160000 ${sketchbook_pin} "
+fn signed-descendant root before after: ?& [((git-run ["-C" root "merge-base" "--is-ancestor" before after]).ok) ((trim (git-run ["-C" root "rev-list" "--count" "${before}..${after}"]).out) == "1") (?| [((trim (git-run ["-C" root "log" "-1" "--format=%G?" after]).out) == "G") ((trim (git-run ["-C" root "log" "-1" "--format=%G?" after]).out) == "U")]) ((trim (git-run ["-C" root "log" "-1" "--format=%GP" after]).out) == signing_key)]
 
+assert file-absent transaction_abs else "REFUSE chatgpt-mind: an unfinished signing transaction requires custody"
 assert xy-remote repo_root else "REFUSE chatgpt-mind: personal remote xy is not configured"
 assert xy-ready repo_root else "REFUSE chatgpt-mind: local xy/main is absent"
 assert gitlink-held repo_root else "REFUSE chatgpt-mind: pinned sketchbook is not a gitlink"
@@ -374,12 +556,12 @@ let probe_sweep = run ["rm" "-f" inside_probe]
 assert probe_sweep.ok else "REFUSE chatgpt-mind: could not sweep the inside probe"
 let enclosed_version_out = preflight_rel + "/enclosed-codex-version.out"
 let enclosed_version_err = preflight_rel + "/enclosed-codex-version.err"
-let enclosed_version_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" codex_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_version_out, stdout-max: 4096, stderr-path: enclosed_version_err, stderr-max: 4096 }
+let enclosed_version_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" codex_exec "--version"]), stdin: "", stdin-max: 0, stdout-path: enclosed_version_out, stdout-max: 4096, stderr-path: enclosed_version_err, stderr-max: 4096 }
 assert enclosed_version_run.overflow == "" else "REFUSE chatgpt-mind: enclosed Codex version output crossed its byte wall"
 assert enclosed_version_run.ok else "REFUSE chatgpt-mind: outer jail could not execute the resolved Codex CLI"
 let enclosed_git_out = preflight_rel + "/enclosed-git-version.out"
 let enclosed_git_err = preflight_rel + "/enclosed-git-version.err"
-let enclosed_git_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg git_exec "--version"], stdin: "", stdin-max: 0, stdout-path: enclosed_git_out, stdout-max: 4096, stderr-path: enclosed_git_err, stderr-max: 4096 }
+let enclosed_git_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg git_wrapper_abs "--version"]), stdin: "", stdin-max: 0, stdout-path: enclosed_git_out, stdout-max: 4096, stderr-path: enclosed_git_err, stderr-max: 4096 }
 assert enclosed_git_run.overflow == "" else "REFUSE chatgpt-mind: enclosed Homebrew Git version crossed its byte wall"
 assert enclosed_git_run.ok else "REFUSE chatgpt-mind: outer jail could not execute canonical Homebrew Git"
 assert trim (read-file enclosed_git_out) == "git version 2.53.0" else "REFUSE chatgpt-mind: enclosed Homebrew Git identity drifted"
@@ -396,70 +578,374 @@ let codex_home_arg = "CODEX_HOME=${codex_home_rel}"
 let codex_tmpdir_arg = "TMPDIR=/private/tmp"
 let login_out = preflight_rel + "/codex-login-status.out"
 let login_err = preflight_rel + "/codex-login-status.err"
-let login_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "login" "status"], stdin: "", stdin-max: 0, stdout-path: login_out, stdout-max: 4096, stderr-path: login_err, stderr-max: 4096 }
+let login_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "login" "status"]), stdin: "", stdin-max: 0, stdout-path: login_out, stdout-max: 4096, stderr-path: login_err, stderr-max: 4096 }
 assert login_run.overflow == "" else "REFUSE chatgpt-mind: isolated Codex login status crossed its byte wall"
 assert login_run.ok else "REFUSE chatgpt-mind: isolated Codex login is absent or unreadable"
 
-if mode == "check" then say "GREEN chatgpt-mind: prompt, repository, tools, isolated login, power reading, and outer jail checks passed"
+let fingerprint_out = preflight_rel + "/signing-fingerprint.out"
+let fingerprint_err = preflight_rel + "/signing-fingerprint.err"
+let fingerprint_run = run-bounded { argv: ["/usr/bin/grep" "-E" "-x" "[0-9A-F]{40}"], stdin: signing_key, stdin-max: 40, stdout-path: fingerprint_out, stdout-max: 64, stderr-path: fingerprint_err, stderr-max: 4096 }
+assert fingerprint_run.ok else "REFUSE chatgpt-mind: project-local signing fingerprint is not uppercase hexadecimal"
+let signing_probe_rel = preflight_rel + "/signing-probe.txt"
+let signing_probe_sig_rel = preflight_rel + "/signing-probe.sig"
+let signing_probe_out = preflight_rel + "/signing-probe.out"
+let signing_probe_err = preflight_rel + "/signing-probe.err"
+let signing_verify_out = preflight_rel + "/signing-verify.out"
+let signing_verify_err = preflight_rel + "/signing-verify.err"
+let signing_probe_sweep = run ["rm" "-f" signing_probe_rel signing_probe_sig_rel]
+assert signing_probe_sweep.ok else "REFUSE chatgpt-mind: signing probe could not clear its bounded prior files"
+let signing_probe_text = run-bounded { argv: ["/usr/bin/printf" "grain-mind host signing probe\n"], stdin: "", stdin-max: 0, stdout-path: signing_probe_rel, stdout-max: 64, stderr-path: signing_probe_err, stderr-max: 4096 }
+assert signing_probe_text.ok else "REFUSE chatgpt-mind: signing probe text could not be seated"
+let signing_probe_run = run-bounded { argv: (gpg_argv + ["--batch" "--yes" "--pinentry-mode" "error" "--local-user" signing_key "--detach-sign" "--output" signing_probe_sig_rel signing_probe_rel]), stdin: "", stdin-max: 0, stdout-path: signing_probe_out, stdout-max: 4096, stderr-path: signing_probe_err, stderr-max: 16384 }
+assert signing_probe_run.overflow == "" else "REFUSE chatgpt-mind: host signing probe crossed its byte wall"
+assert signing_probe_run.ok else "REFUSE chatgpt-mind: user-held host signing key is unavailable or locked"
+let signing_probe_mode = run ["chmod" "600" signing_probe_sig_rel]
+assert signing_probe_mode.ok else "REFUSE chatgpt-mind: signing probe signature mode could not be narrowed"
+let signing_verify_run = run-bounded { argv: (gpg_argv + ["--batch" "--status-fd" "1" "--verify" signing_probe_sig_rel signing_probe_rel]), stdin: "", stdin-max: 0, stdout-path: signing_verify_out, stdout-max: 16384, stderr-path: signing_verify_err, stderr-max: 16384 }
+assert signing_verify_run.overflow == "" else "REFUSE chatgpt-mind: host signing verification crossed its byte wall"
+assert signing_verify_run.ok else "REFUSE chatgpt-mind: host signing probe did not verify"
+let signing_verify_text = (read-file signing_verify_out) + (read-file signing_verify_err)
+assert signing_verify_text contains signing_key else "REFUSE chatgpt-mind: host signing probe did not return the configured primary fingerprint"
+let signing_probe_close = run ["rm" "-f" signing_probe_rel signing_probe_sig_rel]
+assert signing_probe_close.ok else "REFUSE chatgpt-mind: signing probe files could not be cleared"
+
+if mode == "check" then say "GREEN chatgpt-mind: prompt, repository, tools, isolated login, host signing, power reading, and outer jail checks passed"
 if mode == "check" then exit 0
 
 assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP is present"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY is present"
+assert file-absent transaction_abs else "REFUSE chatgpt-mind: an unfinished signing transaction requires custody"
 # The loop rides battery as well as AC on Keaton's word (20260827): the mesh survives a dead
 # battery, a home outage, or a failed pier the way Mycelium's gratitude teachers survive a lost
 # node -- the repo is the durable memory, a cut lap costs only its uncommitted work, and the next
 # round-open pull resumes the thread. Power source and sleep are reported above, never gated.
 if ?& [(mode == "loop") (power_source != "ac")] then say "chatgpt-mind: on battery -- the loop runs; a battery death cuts one lap and the pull resumes it"
 if ?& [(mode == "loop") (system_sleep != "0")] then say "chatgpt-mind: system sleep is nonzero -- a sleeping Mac pauses the loop until it wakes"
+if ?& [(mode == "loop") (battery_sleep != "0")] then say "chatgpt-mind: battery sleep is observed, not changed or used as an execution gate"
 if internal_lap == false then acquire-lock lock_rel
 
 let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"
 let internal_out = log_rel + "/supervisor.out"
 let internal_err = log_rel + "/supervisor.err"
+let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
+let newline_run = run ["/usr/bin/printf" "\n"]
+assert newline_run.ok else "REFUSE chatgpt-mind: newline witness could not be rendered"
+let newline = newline_run.out
+assert length newline == 1 else "REFUSE chatgpt-mind: newline witness is not one byte"
+fn phase-valid value: phase_values contains value
+fn public-phase value: ?: (phase-valid value) value "supervisor reason=unclassified"
+fn phase-file-safe ignored: ?& [((run ["test" "-f" phase_rel]).ok) ((run ["test" "-L" phase_rel]).ok == false) ((trim (run ["/usr/bin/stat" "-f" "%Lp" phase_rel]).out) == "600")]
+fn phase-held value: ?& [(phase-valid value) (phase-file-safe 0) ((read-file phase_rel) == (value + newline))]
+fn write-phase value: ?: (phase-valid value) (run-bounded { argv: ["/usr/bin/printf" "%s\n" value], stdin: "", stdin-max: 0, stdout-path: phase_rel, stdout-max: 128, stderr-path: phase_err, stderr-max: 4096 }) ({ok: false, overflow: ""})
+let phase_seed = write-phase "supervisor reason=starting"
+assert phase_seed.ok else "REFUSE chatgpt-mind: could not initialize the bounded phase receipt"
+assert phase-held "supervisor reason=starting" else "REFUSE chatgpt-mind: initialized phase receipt is malformed"
 fn run-one-lap lap: run-bounded { argv: ["/usr/bin/env" "MIND_INTERNAL_LAP=1" "MIND_STATE_DIR=${state_abs}" "MIND_CODEX_HOME=${codex_home_abs}" "MIND_RISHI_BIN=${rishi_bin}" "MIND_AI_JAIL_BIN=${ai_jail}" "MIND_CODEX_BIN=${codex_exec}" rishi_bin "run" launcher_abs "lap" (str lap)], stdin: "", stdin-max: 0, stdout-path: internal_out, stdout-max: max_supervisor_bytes, stderr-path: internal_err, stderr-max: max_supervisor_bytes, stdout-relay: true, stderr-relay: true }
 fn mind-loop lap max failures ceiling delay: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (mind-loop (lap + 1) max 0 ceiling delay) (?: ((failures + 1) >= ceiling) (1) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds)) (1))))
-fn lap-failure-phase detail: ?: (detail contains "Codex output crossed its byte wall") ("codex-output reason=byte-wall") (?: (detail contains "enclosed Codex lap exited nonzero") ("codex-exec reason=nonzero") (?: (detail contains "lap recorded a custody gate") ("custody reason=recorded") (?: (detail contains "lap left a dirty tree") ("git-postcondition reason=dirty-tree") (?: (detail contains "lap made no commit") ("git-postcondition reason=no-commit") (?: (detail contains "lap did not add exactly one signed descendant commit") ("git-postcondition reason=commit-or-signature") (?: (detail contains "xy/main advanced during the lap") ("git-postcondition reason=xy-advanced") (?: (detail contains "post-lap local commit ceiling crossed") ("git-postcondition reason=commit-ceiling") (?: (detail contains "could not initialize bounded last-message file") ("last-message reason=initialization") (?: (detail contains "lap opened on a dirty tree") ("lap-preflight reason=dirty-tree") (?: (detail contains "xy/main advanced before the lap") ("lap-preflight reason=xy-advanced") (?: (detail contains "STOP observed between laps") ("lap-preflight reason=stop") (?: (detail contains "CUSTODY observed between laps") ("lap-preflight reason=custody") ("supervisor reason=unclassified")))))))))))))
 
 let once_result = ?: (mode == "once") (run-one-lap 1) ({ok: true, overflow: ""})
 assert ?| [(mode != "once") (once_result.overflow == "")] else "REFUSE chatgpt-mind: lap failed at supervisor-output reason=byte-wall; bounded detail remains private"
-let once_phase = ?: (mode == "once") (lap-failure-phase (read-file internal_err)) ("not-run")
+assert ?| [(mode != "once") (phase-file-safe 0)] else "REFUSE chatgpt-mind: lap phase receipt is not a mode-0600 regular nonsymlink file"
+let once_phase_raw = ?: (mode == "once") (trim (read-file phase_rel)) ("not-run")
+assert ?| [(mode != "once") (phase-held once_phase_raw)] else "REFUSE chatgpt-mind: lap phase receipt is not one finite mode-0600 regular line"
+let once_phase = ?: (mode == "once") (public-phase once_phase_raw) ("not-run")
 assert ?| [(mode != "once") once_result.ok] else "REFUSE chatgpt-mind: lap failed phase=${once_phase}; bounded detail remains in ${internal_err}"
+assert ?| [(mode != "once") (once_phase == "complete reason=signed-commit")] else "REFUSE chatgpt-mind: successful lap lacks its signed-commit receipt"
 if mode == "once" then say "chatgpt-mind: lap one complete with one signed local commit"
 if mode == "once" then exit 0
 
 let loop_result = ?: (mode == "loop") (mind-loop 1 max_laps 0 failure_ceiling backoff_seconds) (0)
-let loop_phase = ?: (mode == "loop") (lap-failure-phase (read-file internal_err)) ("not-run")
+assert ?| [(mode != "loop") (phase-file-safe 0)] else "REFUSE chatgpt-mind: loop phase receipt is not a mode-0600 regular nonsymlink file"
+let loop_phase_raw = ?: (mode == "loop") (trim (read-file phase_rel)) ("not-run")
+assert ?| [(mode != "loop") (phase-held loop_phase_raw)] else "REFUSE chatgpt-mind: loop phase receipt is not one finite mode-0600 regular line"
+let loop_phase = ?: (mode == "loop") (public-phase loop_phase_raw) ("not-run")
 assert ?| [(mode != "loop") (loop_result == 0)] else "REFUSE chatgpt-mind: circuit opened phase=${loop_phase}; bounded detail remains in ${internal_err}"
+assert ?| [(mode != "loop") (loop_phase == "complete reason=signed-commit")] else "REFUSE chatgpt-mind: successful loop lacks its signed-commit receipt"
 if mode == "loop" then say "chatgpt-mind: bounded loop completed ${max_laps} lap(s); no push was attempted"
 if mode == "loop" then exit 0
 
 let lap_number = parse args[1]
 assert lap_number >= 1 else "REFUSE chatgpt-mind: internal lap number is below one"
 assert lap_number <= max_laps_hard else "REFUSE chatgpt-mind: internal lap number crossed twenty-four"
+let lap_phase_start = write-phase "supervisor reason=starting"
+assert lap_phase_start.ok else "REFUSE chatgpt-mind: internal lap could not initialize its bounded phase receipt"
+let phase_dirty_pre = write-phase "lap-preflight reason=dirty-tree"
+assert phase_dirty_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its dirty-tree phase"
 assert repo-clean repo_root else "REFUSE chatgpt-mind: lap opened on a dirty tree"
+let phase_xy_pre = write-phase "lap-preflight reason=xy-advanced"
+assert phase_xy_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its xy phase"
 assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced before the lap"
+let phase_stop_pre = write-phase "lap-preflight reason=stop"
+assert phase_stop_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its STOP phase"
 assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP observed between laps"
+let phase_custody_pre = write-phase "lap-preflight reason=custody"
+assert phase_custody_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its custody phase"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: CUSTODY observed between laps"
-let before_run = run [git_exec "-C" repo_root "rev-parse" "HEAD"]
+let phase_transaction_pre = write-phase "lap-preflight reason=transaction"
+assert phase_transaction_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its transaction phase"
+assert file-absent transaction_abs else "REFUSE chatgpt-mind: unfinished signing transaction observed between laps"
+let phase_head_pre = write-phase "lap-preflight reason=head"
+assert phase_head_pre.ok else "REFUSE chatgpt-mind: internal lap could not seat its HEAD phase"
+let before_run = git-run ["-C" repo_root "rev-parse" "HEAD"]
 assert before_run.ok else "REFUSE chatgpt-mind: could not read pre-lap HEAD"
 let before = trim before_run.out
 let lap_out = "${log_rel}/lap-${lap_number}.stdout"
 let lap_err = "${log_rel}/lap-${lap_number}.stderr"
 let lap_last = "${log_rel}/lap-${lap_number}.last"
 let last_init_err = "${log_rel}/lap-${lap_number}.last-init.err"
+let phase_last_init = write-phase "last-message reason=initialization"
+assert phase_last_init.ok else "REFUSE chatgpt-mind: internal lap could not seat its last-message phase"
 let last_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: lap_last, stdout-max: max_log_bytes, stderr-path: last_init_err, stderr-max: 4096 }
 assert last_init.ok else "REFUSE chatgpt-mind: could not initialize bounded last-message file"
+let message_init_err = "${log_rel}/lap-${lap_number}.message-init.err"
+let message_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: commit_message_rel, stdout-max: max_commit_message_bytes, stderr-path: message_init_err, stderr-max: 4096 }
+assert message_init.ok else "REFUSE chatgpt-mind: could not initialize the bounded commit-message file"
 let prompt_text = read-file prompt_rel
-let codex_run = run-bounded { argv: [ai_jail "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"], stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
+let codex_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"]), stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
+let phase_codex_wall = write-phase "codex-output reason=byte-wall"
+assert phase_codex_wall.ok else "REFUSE chatgpt-mind: internal lap could not seat its Codex byte-wall phase"
 assert codex_run.overflow == "" else "REFUSE chatgpt-mind: Codex output crossed its byte wall"
+let phase_codex_nonzero = write-phase "codex-exec reason=nonzero"
+assert phase_codex_nonzero.ok else "REFUSE chatgpt-mind: internal lap could not seat its Codex exit phase"
 assert codex_run.ok else "REFUSE chatgpt-mind: enclosed Codex lap exited nonzero code=${codex_run.code}"
+let phase_custody = write-phase "custody reason=recorded"
+assert phase_custody.ok else "REFUSE chatgpt-mind: internal lap could not seat its custody result"
 assert file-absent custody_abs else "REFUSE chatgpt-mind: lap recorded a custody gate"
-assert repo-clean repo_root else "REFUSE chatgpt-mind: lap left a dirty tree"
-let after_run = run [git_exec "-C" repo_root "rev-parse" "HEAD"]
-assert after_run.ok else "REFUSE chatgpt-mind: could not read post-lap HEAD"
-let after = trim after_run.out
-assert after != before else "REFUSE chatgpt-mind: lap made no commit and named no custody gate"
-assert signed-descendant repo_root before after else "REFUSE chatgpt-mind: lap did not add exactly one signed descendant commit"
+
+let phase_inner_commit = write-phase "git-postcondition reason=inner-commit"
+assert phase_inner_commit.ok else "REFUSE chatgpt-mind: internal lap could not seat its inner-commit phase"
+let prepared_head_run = git-run ["-C" repo_root "rev-parse" "HEAD"]
+assert prepared_head_run.ok else "REFUSE chatgpt-mind: could not read candidate HEAD"
+assert (trim prepared_head_run.out) == before else "REFUSE chatgpt-mind: jailed Codex created a commit instead of a staged candidate"
+
+let phase_no_candidate = write-phase "git-postcondition reason=no-candidate"
+assert phase_no_candidate.ok else "REFUSE chatgpt-mind: internal lap could not seat its candidate phase"
+let staged_probe = git-run ["-C" repo_root "diff" "--cached" "--quiet" "--ignore-submodules=none"]
+assert staged_probe.code == 1 else "REFUSE chatgpt-mind: lap did not stage exactly one candidate"
+
+let phase_unstaged = write-phase "git-postcondition reason=unstaged"
+assert phase_unstaged.ok else "REFUSE chatgpt-mind: internal lap could not seat its unstaged phase"
+let unstaged_probe = git-run ["-C" repo_root "diff" "--quiet" "--ignore-submodules=none"]
+assert unstaged_probe.ok else "REFUSE chatgpt-mind: candidate left unstaged tracked changes"
+
+let phase_untracked = write-phase "git-postcondition reason=untracked"
+assert phase_untracked.ok else "REFUSE chatgpt-mind: internal lap could not seat its untracked phase"
+let untracked_out = "${log_rel}/lap-${lap_number}.untracked"
+let untracked_err = "${log_rel}/lap-${lap_number}.untracked.err"
+let untracked_probe = run-bounded { argv: (git_argv + ["-C" repo_root "ls-files" "--others" "--exclude-standard"]), stdin: "", stdin-max: 0, stdout-path: untracked_out, stdout-max: 65536, stderr-path: untracked_err, stderr-max: 16384 }
+assert untracked_probe.overflow == "" else "REFUSE chatgpt-mind: untracked path receipt crossed its byte wall"
+assert untracked_probe.ok else "REFUSE chatgpt-mind: candidate untracked-file probe failed"
+assert untracked_probe.stdout-bytes == 0 else "REFUSE chatgpt-mind: candidate left untracked files"
+
+let candidate_paths = "${log_rel}/lap-${lap_number}.candidate-paths"
+let candidate_paths_err = "${log_rel}/lap-${lap_number}.candidate-paths.err"
+let phase_path_wall = write-phase "git-postcondition reason=path-wall"
+assert phase_path_wall.ok else "REFUSE chatgpt-mind: internal lap could not seat its path-wall phase"
+let candidate_paths_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--name-only" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_paths, stdout-max: 65536, stderr-path: candidate_paths_err, stderr-max: 16384 }
+assert candidate_paths_run.overflow == "" else "REFUSE chatgpt-mind: candidate path receipt crossed its byte wall"
+assert candidate_paths_run.ok else "REFUSE chatgpt-mind: candidate paths could not be measured"
+let candidate_count_out = "${log_rel}/lap-${lap_number}.candidate-count"
+let candidate_count_err = "${log_rel}/lap-${lap_number}.candidate-count.err"
+let candidate_count_run = run-bounded { argv: ["/usr/bin/wc" "-l"], stdin: (read-file candidate_paths), stdin-max: 65536, stdout-path: candidate_count_out, stdout-max: 4096, stderr-path: candidate_count_err, stderr-max: 4096 }
+assert candidate_count_run.ok else "REFUSE chatgpt-mind: candidate path count could not be measured"
+let candidate_count = parse (trim (read-file candidate_count_out))
+let phase_path_ceiling = write-phase "git-postcondition reason=path-ceiling"
+assert phase_path_ceiling.ok else "REFUSE chatgpt-mind: internal lap could not seat its path-ceiling phase"
+assert candidate_count >= 1 else "REFUSE chatgpt-mind: candidate path count is empty"
+assert candidate_count <= max_candidate_paths else "REFUSE chatgpt-mind: candidate crossed sixty-four paths"
+let phase_forbidden_path = write-phase "git-postcondition reason=forbidden-path"
+assert phase_forbidden_path.ok else "REFUSE chatgpt-mind: internal lap could not seat its forbidden-path phase"
+let forbidden_path_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/l/mind-bin|tools/l/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
+assert forbidden_path_probe.code == 1 else "REFUSE chatgpt-mind: staged candidate entered supervisor or Git administration state"
+assert gitlink-held repo_root else "REFUSE chatgpt-mind: staged candidate moved the pinned sketchbook gitlink"
+
+let candidate_raw = "${log_rel}/lap-${lap_number}.candidate-raw"
+let candidate_raw_err = "${log_rel}/lap-${lap_number}.candidate-raw.err"
+let candidate_lane_out = "${log_rel}/lap-${lap_number}.candidate-lane.out"
+let candidate_lane_err = "${log_rel}/lap-${lap_number}.candidate-lane.err"
+let phase_lane = write-phase "git-postcondition reason=lane"
+assert phase_lane.ok else "REFUSE chatgpt-mind: internal lap could not seat its MIND lane phase"
+let candidate_raw_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--raw" "--no-abbrev" "--no-renames" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_raw, stdout-max: 65536, stderr-path: candidate_raw_err, stderr-max: 16384 }
+assert candidate_raw_run.overflow == "" else "REFUSE chatgpt-mind: candidate lane receipt crossed its byte wall"
+assert candidate_raw_run.ok else "REFUSE chatgpt-mind: candidate lane receipt could not be read"
+let candidate_lane_run = run-bounded { argv: ["/usr/bin/awk" "-f" mind_lane_scan], stdin: (read-file candidate_raw), stdin-max: 65536, stdout-path: candidate_lane_out, stdout-max: 4096, stderr-path: candidate_lane_err, stderr-max: 4096 }
+assert candidate_lane_run.ok else "REFUSE chatgpt-mind: staged candidate escapes the authored regular Brushstroke and Surf lane"
+
+let candidate_diff = "${log_rel}/lap-${lap_number}.candidate.diff"
+let candidate_diff_err = "${log_rel}/lap-${lap_number}.candidate-diff.err"
+let phase_diff_wall = write-phase "git-postcondition reason=diff-wall"
+assert phase_diff_wall.ok else "REFUSE chatgpt-mind: internal lap could not seat its diff-wall phase"
+let candidate_diff_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--binary" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_diff, stdout-max: max_log_bytes, stderr-path: candidate_diff_err, stderr-max: 16384 }
+assert candidate_diff_run.overflow == "" else "REFUSE chatgpt-mind: staged candidate crossed its one-megabyte byte wall"
+assert candidate_diff_run.ok else "REFUSE chatgpt-mind: staged candidate diff could not be measured"
+
+let phase_commit_message = write-phase "git-postcondition reason=commit-message"
+assert phase_commit_message.ok else "REFUSE chatgpt-mind: internal lap could not seat its commit-message phase"
+let message_file = run ["test" "-f" commit_message_rel]
+let message_link = run ["test" "-L" commit_message_rel]
+assert message_file.ok else "REFUSE chatgpt-mind: bounded commit message is absent"
+assert message_link.ok == false else "REFUSE chatgpt-mind: bounded commit message cannot be a symlink"
+let message_mode_run = run ["/usr/bin/stat" "-f" "%Lp" commit_message_rel]
+let message_size_run = run ["/usr/bin/stat" "-f" "%z" commit_message_rel]
+assert message_mode_run.ok else "REFUSE chatgpt-mind: bounded commit-message mode is unreadable"
+assert message_size_run.ok else "REFUSE chatgpt-mind: bounded commit-message size is unreadable"
+assert (trim message_mode_run.out) == "600" else "REFUSE chatgpt-mind: bounded commit message must be mode 0600"
+let message_size = parse (trim message_size_run.out)
+assert message_size >= 1 else "REFUSE chatgpt-mind: bounded commit message is empty"
+assert message_size <= max_commit_message_bytes else "REFUSE chatgpt-mind: bounded commit message crossed four kilobytes"
+
+let phase_xy_post = write-phase "git-postcondition reason=xy-advanced"
+assert phase_xy_post.ok else "REFUSE chatgpt-mind: internal lap could not seat its post-candidate xy phase"
 assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced during the lap"
-assert (ahead-count repo_root) <= max_local_ahead else "REFUSE chatgpt-mind: post-lap local commit ceiling crossed"
+
+let phase_config = write-phase "git-postcondition reason=config-drift"
+assert phase_config.ok else "REFUSE chatgpt-mind: internal lap could not seat its config phase"
+let signing_key_after = git-run ["-C" repo_root "config" "--local" "--get" "user.signingkey"]
+let signing_program_after = git-run ["-C" repo_root "config" "--local" "--get" "gpg.program"]
+let signing_required_after = git-run ["-C" repo_root "config" "--local" "--bool" "--get" "commit.gpgsign"]
+let hooks_path_after = git-run ["-C" repo_root "config" "--local" "--get" "core.hooksPath"]
+assert signing_key_after.ok else "REFUSE chatgpt-mind: signing fingerprint vanished during the lap"
+assert signing_program_after.ok else "REFUSE chatgpt-mind: signing program vanished during the lap"
+assert signing_required_after.ok else "REFUSE chatgpt-mind: signed-commit law vanished during the lap"
+assert hooks_path_after.ok else "REFUSE chatgpt-mind: hooks path vanished during the lap"
+assert (trim signing_key_after.out) == signing_key else "REFUSE chatgpt-mind: signing fingerprint drifted during the lap"
+assert (trim signing_program_after.out) == gpg_exec else "REFUSE chatgpt-mind: signing program drifted during the lap"
+assert (trim signing_required_after.out) == "true" else "REFUSE chatgpt-mind: signed-commit law drifted during the lap"
+assert (trim hooks_path_after.out) == "tools/hooks" else "REFUSE chatgpt-mind: hooks path drifted during the lap"
+assert file-absent (git_config_abs + ".lock") else "REFUSE chatgpt-mind: Git config lock remains after the jailed lap"
+assert file-absent (git_head_abs + ".lock") else "REFUSE chatgpt-mind: Git HEAD lock remains after the jailed lap"
+assert file-absent (git_packed_refs_abs + ".lock") else "REFUSE chatgpt-mind: packed-refs lock remains after the jailed lap"
+assert file-absent (git_metadata + "/index.lock") else "REFUSE chatgpt-mind: Git index lock remains after the jailed lap"
+
+let hook_out = "${log_rel}/lap-${lap_number}.hooks.stdout"
+let hook_err = "${log_rel}/lap-${lap_number}.hooks.stderr"
+let phase_hook = write-phase "git-postcondition reason=hook-failed"
+assert phase_hook.ok else "REFUSE chatgpt-mind: internal lap could not seat its hook phase"
+let pre_commit_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg git_wrapper_abs "-C" repo_root "hook" "run" "pre-commit"]), stdin: "", stdin-max: 0, stdout-path: hook_out, stdout-max: 65536, stderr-path: hook_err, stderr-max: 65536, stdout-relay: true, stderr-relay: true }
+assert pre_commit_run.overflow == "" else "REFUSE chatgpt-mind: pre-commit hook report crossed its byte wall"
+assert pre_commit_run.ok else "REFUSE chatgpt-mind: jailed pre-commit hook refused the candidate"
+let commit_msg_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg git_wrapper_abs "-C" repo_root "hook" "run" "commit-msg" "--" commit_message_rel]), stdin: "", stdin-max: 0, stdout-path: hook_out, stdout-max: 65536, stderr-path: hook_err, stderr-max: 65536, stdout-relay: true, stderr-relay: true }
+assert commit_msg_run.overflow == "" else "REFUSE chatgpt-mind: commit-message hook report crossed its byte wall"
+assert commit_msg_run.ok else "REFUSE chatgpt-mind: jailed commit-message hook refused the candidate"
+
+let hook_head_run = git-run ["-C" repo_root "rev-parse" "HEAD"]
+assert hook_head_run.ok else "REFUSE chatgpt-mind: could not read HEAD after jailed hooks"
+assert (trim hook_head_run.out) == before else "REFUSE chatgpt-mind: jailed hooks moved HEAD"
+let hook_staged_probe = git-run ["-C" repo_root "diff" "--cached" "--quiet" "--ignore-submodules=none"]
+assert hook_staged_probe.code == 1 else "REFUSE chatgpt-mind: jailed hooks left no staged candidate"
+let hook_unstaged_probe = git-run ["-C" repo_root "diff" "--quiet" "--ignore-submodules=none"]
+assert hook_unstaged_probe.ok else "REFUSE chatgpt-mind: jailed hooks left unstaged tracked changes"
+let hook_untracked_probe = run-bounded { argv: (git_argv + ["-C" repo_root "ls-files" "--others" "--exclude-standard"]), stdin: "", stdin-max: 0, stdout-path: untracked_out, stdout-max: 65536, stderr-path: untracked_err, stderr-max: 16384 }
+assert hook_untracked_probe.overflow == "" else "REFUSE chatgpt-mind: post-hook untracked receipt crossed its byte wall"
+assert hook_untracked_probe.ok else "REFUSE chatgpt-mind: post-hook untracked-file probe failed"
+assert hook_untracked_probe.stdout-bytes == 0 else "REFUSE chatgpt-mind: jailed hooks left untracked files"
+let hook_paths_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--name-only" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_paths, stdout-max: 65536, stderr-path: candidate_paths_err, stderr-max: 16384 }
+assert hook_paths_run.overflow == "" else "REFUSE chatgpt-mind: post-hook candidate paths crossed their byte wall"
+assert hook_paths_run.ok else "REFUSE chatgpt-mind: post-hook candidate paths could not be measured"
+let hook_count_run = run-bounded { argv: ["/usr/bin/wc" "-l"], stdin: (read-file candidate_paths), stdin-max: 65536, stdout-path: candidate_count_out, stdout-max: 4096, stderr-path: candidate_count_err, stderr-max: 4096 }
+assert hook_count_run.ok else "REFUSE chatgpt-mind: post-hook candidate path count could not be measured"
+let hook_count = parse (trim (read-file candidate_count_out))
+assert hook_count >= 1 else "REFUSE chatgpt-mind: jailed hooks emptied the staged candidate"
+assert hook_count <= max_candidate_paths else "REFUSE chatgpt-mind: jailed hooks crossed sixty-four candidate paths"
+let hook_forbidden_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/l/mind-bin|tools/l/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
+assert hook_forbidden_probe.code == 1 else "REFUSE chatgpt-mind: jailed hooks entered supervisor or Git administration state"
+assert gitlink-held repo_root else "REFUSE chatgpt-mind: jailed hooks moved the pinned sketchbook gitlink"
+let hook_raw_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--raw" "--no-abbrev" "--no-renames" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_raw, stdout-max: 65536, stderr-path: candidate_raw_err, stderr-max: 16384 }
+assert hook_raw_run.overflow == "" else "REFUSE chatgpt-mind: post-hook lane receipt crossed its byte wall"
+assert hook_raw_run.ok else "REFUSE chatgpt-mind: post-hook lane receipt could not be read"
+let hook_lane_run = run-bounded { argv: ["/usr/bin/awk" "-f" mind_lane_scan], stdin: (read-file candidate_raw), stdin-max: 65536, stdout-path: candidate_lane_out, stdout-max: 4096, stderr-path: candidate_lane_err, stderr-max: 4096 }
+assert hook_lane_run.ok else "REFUSE chatgpt-mind: jailed hooks escaped the authored regular Brushstroke and Surf lane"
+let hook_diff_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--binary" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_diff, stdout-max: max_log_bytes, stderr-path: candidate_diff_err, stderr-max: 16384 }
+assert hook_diff_run.overflow == "" else "REFUSE chatgpt-mind: post-hook candidate crossed its one-megabyte byte wall"
+assert hook_diff_run.ok else "REFUSE chatgpt-mind: post-hook candidate diff could not be measured"
+let hook_message_mode = run ["/usr/bin/stat" "-f" "%Lp" commit_message_rel]
+let hook_message_size = run ["/usr/bin/stat" "-f" "%z" commit_message_rel]
+assert hook_message_mode.ok else "REFUSE chatgpt-mind: post-hook commit-message mode is unreadable"
+assert hook_message_size.ok else "REFUSE chatgpt-mind: post-hook commit-message size is unreadable"
+assert (trim hook_message_mode.out) == "600" else "REFUSE chatgpt-mind: post-hook commit message is not mode 0600"
+let final_message_size = parse (trim hook_message_size.out)
+assert final_message_size >= 1 else "REFUSE chatgpt-mind: post-hook commit message is empty"
+assert final_message_size <= max_commit_message_bytes else "REFUSE chatgpt-mind: post-hook commit message crossed four kilobytes"
+
+let phase_commit_ceiling = write-phase "git-postcondition reason=commit-ceiling"
+assert phase_commit_ceiling.ok else "REFUSE chatgpt-mind: internal lap could not seat its commit-ceiling phase"
+let ahead_before_close = ahead-count repo_root
+assert (ahead_before_close + 1) <= max_local_ahead else "REFUSE chatgpt-mind: signed candidate would cross the local commit ceiling"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced before signed object creation"
+
+let tree_run = git-run ["-C" repo_root "write-tree"]
+assert tree_run.ok else "REFUSE chatgpt-mind: staged candidate tree could not be written"
+let candidate_tree = trim tree_run.out
+let tree_shape_out = "${log_rel}/lap-${lap_number}.tree-shape.out"
+let tree_shape_err = "${log_rel}/lap-${lap_number}.tree-shape.err"
+let tree_shape = run-bounded { argv: ["/usr/bin/grep" "-E" "-x" "[0-9a-f]{40}"], stdin: candidate_tree, stdin-max: 40, stdout-path: tree_shape_out, stdout-max: 64, stderr-path: tree_shape_err, stderr-max: 4096 }
+assert tree_shape.ok else "REFUSE chatgpt-mind: staged candidate tree id is malformed"
+let phase_transaction = write-phase "git-postcondition reason=transaction"
+assert phase_transaction.ok else "REFUSE chatgpt-mind: internal lap could not seat its signing-transaction phase"
+assert file-absent transaction_abs else "REFUSE chatgpt-mind: signing transaction already exists and cannot be stolen"
+let transaction_open = run ["mkdir" "-m" "700" transaction_rel]
+assert transaction_open.ok else "REFUSE chatgpt-mind: signing transaction could not be acquired"
+let transaction_dir = run ["test" "-d" transaction_rel]
+let transaction_link = run ["test" "-L" transaction_rel]
+let transaction_mode = run ["/usr/bin/stat" "-f" "%Lp" transaction_rel]
+assert transaction_dir.ok else "REFUSE chatgpt-mind: signing transaction is not a directory"
+assert transaction_link.ok == false else "REFUSE chatgpt-mind: signing transaction cannot be a symlink"
+assert transaction_mode.ok else "REFUSE chatgpt-mind: signing transaction mode is unreadable"
+assert (trim transaction_mode.out) == "700" else "REFUSE chatgpt-mind: signing transaction must be mode 0700"
+let commit_out = "${log_rel}/lap-${lap_number}.commit.stdout"
+let commit_err = "${log_rel}/lap-${lap_number}.commit.stderr"
+let phase_signing = write-phase "git-postcondition reason=signing-failed"
+assert phase_signing.ok else "REFUSE chatgpt-mind: internal lap could not seat its signing phase"
+let commit_run = run-bounded { argv: (git_argv + ["-C" repo_root "commit-tree" candidate_tree "-p" before "-S${signing_key}" "-F" commit_message_rel]), stdin: "", stdin-max: 0, stdout-path: commit_out, stdout-max: 128, stderr-path: commit_err, stderr-max: 65536, stderr-relay: true }
+assert commit_run.overflow == "" else "REFUSE chatgpt-mind: signed commit report crossed its byte wall"
+assert commit_run.ok else "REFUSE chatgpt-mind: outer supervisor could not create the signed commit object"
+let signed_commit = trim (read-file commit_out)
+let signed_shape = run-bounded { argv: ["/usr/bin/grep" "-E" "-x" "[0-9a-f]{40}"], stdin: signed_commit, stdin-max: 40, stdout-path: signing_probe_out, stdout-max: 64, stderr-path: signing_probe_err, stderr-max: 4096 }
+assert signed_shape.ok else "REFUSE chatgpt-mind: signed commit object id is malformed"
+let phase_signature = write-phase "git-postcondition reason=signature"
+assert phase_signature.ok else "REFUSE chatgpt-mind: internal lap could not seat its signature phase"
+assert signed-descendant repo_root before signed_commit else "REFUSE chatgpt-mind: signed object is not one verified descendant"
+let signed_tree_run = git-run ["-C" repo_root "show" "-s" "--format=%T" signed_commit]
+let signed_parent_run = git-run ["-C" repo_root "show" "-s" "--format=%P" signed_commit]
+assert signed_tree_run.ok else "REFUSE chatgpt-mind: signed object tree is unreadable"
+assert signed_parent_run.ok else "REFUSE chatgpt-mind: signed object parent is unreadable"
+assert (trim signed_tree_run.out) == candidate_tree else "REFUSE chatgpt-mind: signed object tree drifted from the staged candidate"
+assert (trim signed_parent_run.out) == before else "REFUSE chatgpt-mind: signed object parent drifted from prior HEAD"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced before the branch compare-and-swap"
+let message_clear = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: commit_message_rel, stdout-max: 0, stderr-path: message_init_err, stderr-max: 4096 }
+assert message_clear.ok else "REFUSE chatgpt-mind: signed commit message could not be cleared"
+let branch_ref_run = git-run ["-C" repo_root "symbolic-ref" "--quiet" "HEAD"]
+assert branch_ref_run.ok else "REFUSE chatgpt-mind: MIND branch became detached"
+let branch_ref = trim branch_ref_run.out
+assert branch_ref starts-with "refs/heads/" else "REFUSE chatgpt-mind: MIND branch ref escapes local heads"
+let phase_ref_update = write-phase "git-postcondition reason=ref-update"
+assert phase_ref_update.ok else "REFUSE chatgpt-mind: internal lap could not seat its ref-update phase"
+let ref_update_out = "${log_rel}/lap-${lap_number}.ref-update.stdout"
+let ref_update_err = "${log_rel}/lap-${lap_number}.ref-update.stderr"
+let ref_update_run = run-bounded { argv: (git_argv + ["-C" repo_root "update-ref" "-m" "mind: outer signed candidate" branch_ref signed_commit before]), stdin: "", stdin-max: 0, stdout-path: ref_update_out, stdout-max: 4096, stderr-path: ref_update_err, stderr-max: 16384 }
+assert ref_update_run.overflow == "" else "REFUSE chatgpt-mind: branch compare-and-swap report crossed its byte wall"
+assert ref_update_run.ok else "REFUSE chatgpt-mind: branch compare-and-swap refused the verified signed object"
+let phase_post_cas = write-phase "git-postcondition reason=post-cas"
+assert phase_post_cas.ok else "REFUSE chatgpt-mind: internal lap could not seat its post-CAS phase"
+let final_head_run = git-run ["-C" repo_root "rev-parse" "HEAD"]
+assert final_head_run.ok else "REFUSE chatgpt-mind: post-CAS HEAD is unreadable"
+let final_head = trim final_head_run.out
+assert final_head == signed_commit else "REFUSE chatgpt-mind: post-CAS HEAD is not the verified signed object"
+assert signed-descendant repo_root before final_head else "REFUSE chatgpt-mind: post-CAS HEAD is not one verified signed descendant"
+let final_tree_run = git-run ["-C" repo_root "show" "-s" "--format=%T" final_head]
+let final_parent_run = git-run ["-C" repo_root "show" "-s" "--format=%P" final_head]
+assert final_tree_run.ok else "REFUSE chatgpt-mind: post-CAS tree is unreadable"
+assert final_parent_run.ok else "REFUSE chatgpt-mind: post-CAS parent is unreadable"
+assert (trim final_tree_run.out) == candidate_tree else "REFUSE chatgpt-mind: post-CAS tree drifted from the staged candidate"
+assert (trim final_parent_run.out) == before else "REFUSE chatgpt-mind: post-CAS parent drifted from prior HEAD"
+assert repo-clean repo_root else "REFUSE chatgpt-mind: post-CAS worktree is not clean"
+assert gitlink-held repo_root else "REFUSE chatgpt-mind: post-CAS sketchbook gitlink moved"
+assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced during post-CAS verification"
+assert (ahead-count repo_root) == (ahead_before_close + 1) else "REFUSE chatgpt-mind: post-CAS local commit count is not exactly one higher"
+let phase_complete = write-phase "complete reason=signed-commit"
+assert phase_complete.ok else "REFUSE chatgpt-mind: internal lap could not seat its completion receipt"
+assert phase-held "complete reason=signed-commit" else "REFUSE chatgpt-mind: completion receipt is malformed"
+let transaction_close = run ["rmdir" transaction_rel]
+assert transaction_close.ok else "REFUSE chatgpt-mind: completed signing transaction could not be cleared"
+assert file-absent transaction_abs else "REFUSE chatgpt-mind: completed signing transaction remains present"
 say "chatgpt-mind: lap ${lap_number} complete with one signed local commit"
