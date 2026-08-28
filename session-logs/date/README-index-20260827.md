@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.201257` | [the dead-and-orphaned sweep](20260827/20260827-201257_dead-and-orphaned-sweep.kyri) | a survey hand's eight findings; two guards red from one path |
 | `20260827.200810` | [Kiln seated, five rooms nobody named](20260827/20260827-200810_kiln-seated-and-five-rooms-nobody-named.kyri) | a granted fold turns out to be a compiler change |
 | `20260827.193849` | [the vane takes the name Ember](20260827/20260827-193849_the-vane-takes-the-name-ember.kyri) | %300 ruled; the argument for it wrong twice in an hour |
 | `20260827.191411` | [all doors approved](20260827/20260827-191411_all-doors-approved.kyri) | pins folded; six rooms become three; two hidden reds surface |
