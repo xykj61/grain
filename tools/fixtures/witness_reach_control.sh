@@ -382,5 +382,80 @@ back=$(WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=$w sh "$SCAN" 2>/
 if [ "$(read_field "$back" under_family_ceiling)" = yes ]; then note ok "family ceiling: removing the plant returns green"
 else note no "family ceiling: removing the plant returns green"; fi
 
+# 7. THE WRAPPER AND THE ENV PREFIX (REDS %317, 20260828.150430). Two shapes that genuinely call a
+#    witness and that this meter read as calling nothing. Both are proven from both sides: planted,
+#    then removed, because a reading proven only while the plant stands cannot be told from a
+#    reading that never looked. The plants are named by NOTHING ELSE, so if the meter fails to read
+#    the shape the witness falls to `unheard` and the check flips.
+echo 'say "wrapped"'   > tools/w/wrapped_witness.rish
+echo 'say "enved"'     > tools/w/enved_witness.rish
+#    The wrapper is itself a *_witness.rish, so the check below can ask whether the OLD reading --
+#    run ["sh" "<path>"] naming the wrapper -- still stands beside the new one. `sung` is drawn from
+#    the `*_witness.rish` population, so a wrapper named tools/p/time_one.sh could never appear in
+#    it whatever the meter did, and a check written that way tests nothing. Caught by this control
+#    failing on a correct scan.
+echo 'say "the wrapper"' > tools/w/timeone_witness.rish
+cat > tools/w/wrapcaller_witness.rish <<'EOF'
+let a = run ["sh" "tools/w/timeone_witness.rish" "label" "--" "rishi/bin/rishi" "run" "tools/w/wrapped_witness.rish"]
+let b = run ["env" "COST_RESET=0" "CHAPTER=ch01" "rishi/bin/rishi" "run" "tools/w/enved_witness.rish"]
+EOF
+git add tools/w/wrapped_witness.rish tools/w/enved_witness.rish tools/w/wrapcaller_witness.rish tools/w/timeone_witness.rish >/dev/null 2>&1
+git commit -qm plant-wrappers >/dev/null 2>&1
+
+heard() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --list 2>/dev/null | grep -c "^unheard $1\$"; }
+sungc() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --sung 2>/dev/null | grep -c "^sung $1\$"; }
+
+if [ "$(sungc tools/w/wrapped_witness.rish)" -eq 1 ]; then
+  note ok "wrapper: a payload after -- is heard as a call"
+else note no "wrapper: a payload after -- is heard as a call"; fi
+if [ "$(heard tools/w/wrapped_witness.rish)" -eq 0 ]; then
+  note ok "wrapper: the payload is no longer unheard"
+else note no "wrapper: the payload is no longer unheard"; fi
+if [ "$(sungc tools/w/enved_witness.rish)" -eq 1 ]; then
+  note ok "env prefix: the command after the assignments is heard"
+else note no "env prefix: the command after the assignments is heard"; fi
+if [ "$(heard tools/w/enved_witness.rish)" -eq 0 ]; then
+  note ok "env prefix: the payload is no longer unheard"
+else note no "env prefix: the payload is no longer unheard"; fi
+if [ "$(sungc tools/w/timeone_witness.rish)" -eq 1 ]; then
+  note ok "wrapper: the wrapper itself is still heard, beside its payload"
+else note no "wrapper: the wrapper itself is still heard, beside its payload"; fi
+
+#    The other side. Remove the caller and both payloads must fall back to unheard -- which proves
+#    the two checks above were reading the plant rather than agreeing with the tree by accident.
+git rm -q -f tools/w/wrapcaller_witness.rish >/dev/null 2>&1
+git commit -qm drop-wrapcaller >/dev/null 2>&1
+if [ "$(heard tools/w/wrapped_witness.rish)" -eq 1 ] && [ "$(heard tools/w/enved_witness.rish)" -eq 1 ]; then
+  note ok "wrapper and env: removing the caller returns both to unheard"
+else note no "wrapper and env: removing the caller returns both to unheard"; fi
+
+# 8. OUTSIDE THE CONVENTION. A file that names itself a witness on its first line and asserts, yet
+#    wears no `_witness.rish` suffix, is counted by `outside_convention` and by nothing else. The
+#    two negative plants are the reason the test is two-part rather than one: a file that merely
+#    MENTIONS a witness, and a file that declares itself one and asserts nothing, are both honest
+#    and neither is a hidden guard.
+out_field() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" 2>/dev/null | tr ' ' '\n' | grep "^$1=" | cut -d= -f2; }
+pre_out=$(out_field outside_convention)
+printf '# hidden_wire.rish -- a wire witness\nassert true\n'        > tools/w/hidden_wire.rish
+printf '# mentions.rish -- reads tools/w/x_witness.rish as data\nassert true\n' > tools/w/mentions_view.rish
+printf '# quiet_wire.rish -- a wire witness\nsay "nothing asserted"\n'          > tools/w/quiet_wire.rish
+git add tools/w/hidden_wire.rish tools/w/mentions_view.rish tools/w/quiet_wire.rish >/dev/null 2>&1
+git commit -qm plant-outside >/dev/null 2>&1
+if [ "$(out_field outside_convention)" -eq $((pre_out + 2)) ]; then
+  note ok "outside_convention: counts the self-declared asserting pair, not the quiet one"
+else note no "outside_convention: counts the self-declared asserting pair, not the quiet one"; fi
+if [ "$(WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --outside 2>/dev/null | grep -c '^outside tools/w/quiet_wire.rish$')" -eq 0 ]; then
+  note ok "outside_convention: a self-declared file asserting nothing is left free"
+else note no "outside_convention: a self-declared file asserting nothing is left free"; fi
+if [ "$(out_field outside_dark)" -ge 2 ]; then
+  note ok "outside_dark: both plants are dark, nothing names them"
+else note no "outside_dark: both plants are dark, nothing names them"; fi
+
+git rm -q -f tools/w/hidden_wire.rish tools/w/mentions_view.rish tools/w/quiet_wire.rish >/dev/null 2>&1
+git commit -qm drop-outside >/dev/null 2>&1
+if [ "$(out_field outside_convention)" -eq "$pre_out" ]; then
+  note ok "outside_convention: removing the plants returns the reading"
+else note no "outside_convention: removing the plants returns the reading"; fi
+
 echo "control_pass=$pass control_fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=red"; fi

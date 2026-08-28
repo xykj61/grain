@@ -27,6 +27,38 @@
 #   unheard   named by no runner at all
 #   unreached unclocked + unheard, which is total - standing - cadence. THIS IS THE GATED NUMBER.
 #
+# TWO MORE READINGS, REPORTED RATHER THAN GATED, and the reason they are not gated is the whole
+# point of them (20260828.150430):
+#
+#   outside_convention  a tracked .rish that NAMES ITSELF A WITNESS on its own first line and
+#                       carries a top-level `assert`, and does not wear the `_witness.rish`
+#                       suffix -- so `total` above, which is `git ls-files '*_witness.rish'`,
+#                       never counts it and no reading here has ever described it
+#   outside_dark        of those, the ones no other tracked runner names at all
+#
+# WHY THIS POPULATION EXISTS AT ALL. tools/ca/caravan_suite_witness.rish:31 records the same
+# defect found by hand on 20260827: eight runners stood in tools/ca/ outside the suffix, the only
+# living roster that ran them was tools/p/parity_ch01.rish -- itself on no standing roster -- and
+# ONE OF THE EIGHT HAD BEEN RED. They were renamed to carry `_witness` and the roster read 121
+# rather than 113. That file writes the general lesson in its own words: "when a guard finds its
+# subjects by name, the naming convention IS the guard, and anything outside it is not guarded at
+# all." The repair stopped at Caravan. This reading is that sentence turned into a number, so the
+# next such file is met on the lap it lands rather than by the next hand that happens to look.
+#
+# WHY REPORTED AND NOT GATED, stated plainly because a reader will reach for a ceiling here. The
+# established repair is Caravan's: rename the file so the suffix carries it. Yet a renamed file
+# joins `total`, and these are unclocked, so each rename raises `unreached` by one against a
+# CEILING that only falls. Measured 20260828: 119 outside the convention, `unreached` 1140 under a
+# ceiling of 1154. Gating this number would push a hand toward a rename that reds the gate beside
+# it -- one guard demanding what another forbids, which is how a wall becomes a thing people turn
+# off. The tier that rosters tools/p/parity.rish is the real answer, and it costs build time, so
+# it is Keaton's word. Reporting is the honest act until then, which is the same ruling
+# tools/fixtures/room_bound_scan.sh reached for a terminal shelf.
+#
+# THE SUFFIX IS BAKED IN TWICE, worth knowing before trusting these two numbers as complete: the
+# choir-edge extractor below also greps `_witness\.rish`, so a choir listing an outside-convention
+# file reaches it in `e_call` only when the call is spelled out in command position.
+#
 # WHY THE GATE SITS ON `unreached` RATHER THAN ON `unheard` (REDS %224, 20260825.162410). A ratchet
 # is worth its authority when the number stands for the property. A ceiling on `unheard` falls when
 # a choir is WRITTEN: list a hundred witnesses in a new file, leave it off the roster, and the
@@ -72,6 +104,8 @@
 #                                                        # count and the ceiling mean one thing
 #   sh tools/fixtures/witness_reach_scan.sh --families-unheard   # the older reading, kept, since it
 #                                                        # answers "has the choir been written yet"
+#   sh tools/fixtures/witness_reach_scan.sh --outside    # self-declared witnesses the suffix
+#                                                        # hides from every reading above
 #
 # Run from the repository root. WITNESS_REACH_CEILING overrides the ceiling, for the control alone.
 
@@ -174,6 +208,37 @@ xargs_lines "$pen/sources" awk '
     while (match(line, /("-c"[[:space:]]+"[^"]*"|-c[[:space:]]+"[^"]*")/)) {
       st = RSTART; ln = RLENGTH
       seg = substr(line, st, ln); sub(/^"?-c"?[[:space:]]+"/, "", seg); sub(/"$/, "", seg)
+      commands(seg); line = substr(line, st + ln)
+    }
+
+    # A WRAPPER HANDS ON A COMMAND, and everything after a bare "--" element is that command.
+    # run ["sh" "tools/p/parity_time_one.sh" "rbwire" "--" "rishi/bin/rishi" "run" "<path>"] calls
+    # <path> as surely as a bare `rishi run` does; the wrapper only times it. Reading the wrapper
+    # alone and stopping there made 430 real invocations invisible to this graph (REDS %317), which
+    # is why `unheard` -- "named by no runner at all" -- was reporting 109 witnesses that a runner
+    # names in plain command position. The tail is unquoted into words and read by the same
+    # commands() rule as every other shape, so a wrapper earns no privilege the rest do not have.
+    line = $0
+    while (match(line, /run \[[^]]*"--"[^]]*\]/)) {
+      st = RSTART; ln = RLENGTH
+      seg = substr(line, st, ln)
+      sub(/^.*"--"/, "", seg)
+      gsub(/"/, " ", seg); sub(/\]/, " ", seg)
+      commands(seg); line = substr(line, st + ln)
+    }
+
+    # AN ENV PREFIX IS NOT A COMMAND EITHER. run ["env" "PARITY_COST_CHAPTER=ch01" ...
+    # "rishi/bin/rishi" "run" "<path>"] is how tools/p/parity.rish calls both parity choirs, and
+    # reading the first token alone saw "env" and stopped. Drop a leading `env` and every
+    # VAR=value token, then read what remains by the same rule -- the assignments are the
+    # environment, and the command starts after them.
+    line = $0
+    while (match(line, /run \[[[:space:]]*"env"[^]]*\]/)) {
+      st = RSTART; ln = RLENGTH
+      seg = substr(line, st, ln)
+      sub(/^run \[[[:space:]]*"env"/, "", seg)
+      gsub(/"/, " ", seg); sub(/\]/, " ", seg)
+      while (match(seg, /^[[:space:]]*[A-Za-z_][A-Za-z0-9_]*=[^[:space:]]*/)) sub(/^[[:space:]]*[A-Za-z_][A-Za-z0-9_]*=[^[:space:]]*/, "", seg)
       commands(seg); line = substr(line, st + ln)
     }
 
@@ -332,6 +397,30 @@ wholly_unreached_count() {
 families_total=$(family_names "$pen/all" | sort -u | wc -l | tr -d ' ')
 wholly_unreached=$(wholly_unreached_count)
 
+# OUTSIDE THE CONVENTION. Two tests, both cheap and both deliberately strict, because a false
+# positive here accuses a working file of being a hidden guard. A file must (1) name itself a
+# witness on its own FIRST line -- its self-description, not a citation of some other witness
+# further down, which is what a five-line window wrongly admitted while this was being written --
+# and (2) carry an `assert` in command position. A reporting tool that merely mentions a witness
+# fails the first test; a demo that runs a binary and checks nothing fails the second.
+git ls-files '*.rish' | grep -v '_witness\.rish$' | sort -u > "$pen/nonsuffix"
+: > "$pen/outside"
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  head -1 "$f" | grep -qiE '(^|[^a-z])witness([^a-z]|$)' || continue
+  grep -qE '^[[:space:]]*assert ' "$f" || continue
+  echo "$f" >> "$pen/outside"
+done < "$pen/nonsuffix"
+sort -u -o "$pen/outside" "$pen/outside"
+
+# Dark means no OTHER tracked runner names it in command position. The edge list is the one every
+# reading above is built from, so this answer is the meter's own, rather than a second opinion from
+# a grep -- a grep for the basename finds the file's own usage comment and calls it reached.
+awk -F'\t' '$1 != $2 { print $2 }' "$pen/e_call" | sort -u > "$pen/called"
+comm -23 "$pen/outside" "$pen/called" > "$pen/outside_dark"
+outside_convention=$(wc -l < "$pen/outside" | tr -d ' ')
+outside_dark=$(wc -l < "$pen/outside_dark" | tr -d ' ')
+
 case "$mode" in
   --list)      sed 's/^/unheard /'   "$pen/unheard" ;;
   --unclocked) sed 's/^/unclocked /' "$pen/unclocked" ;;
@@ -342,8 +431,10 @@ case "$mode" in
   --families)         families "$pen/unreached" ;;
   --families-unheard) families "$pen/unheard" ;;
   --families-whole)   families "$pen/unreached" | awk '$1 == "100.0%"' ;;
+  --outside)          sed 's/^/outside /' "$pen/outside" ;;
+  --outside-dark)     sed 's/^/outside_dark /' "$pen/outside_dark" ;;
 esac
 
 if [ "$unreached" -le "$CEILING" ]; then under=yes; else under=no; fi
 if [ "$wholly_unreached" -le "$FAMILY_CEILING" ]; then funder=yes; else funder=no; fi
-echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under families=$families_total wholly_unreached=$wholly_unreached family_ceiling=$FAMILY_CEILING under_family_ceiling=$funder"
+echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under families=$families_total wholly_unreached=$wholly_unreached family_ceiling=$FAMILY_CEILING under_family_ceiling=$funder outside_convention=$outside_convention outside_dark=$outside_dark"

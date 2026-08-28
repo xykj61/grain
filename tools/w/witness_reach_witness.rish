@@ -109,6 +109,27 @@ assert control.out contains "ok   family ceiling: exactly at it passes" else "wi
 assert control.out contains "ok   family ceiling: one past it refuses" else "witness-reach: one family past the ceiling must refuse"
 assert control.out contains "ok   family ceiling: removing the plant returns green" else "witness-reach: removing the planted family must return the reading to green"
 
+# The wrapper and the env prefix (REDS %317). Both shapes genuinely call a witness and this meter
+# read neither, so `unheard` -- "named by no runner at all" -- was reporting 89 witnesses that
+# tools/p/parity_ch01.rish names in plain command position through a timing wrapper. Each is
+# asserted from both sides in the control: the plant heard, and the reading returning when the
+# caller is removed, since a shape proven only while its plant stands cannot be told from a shape
+# nobody reads.
+assert control.out contains "ok   wrapper: a payload after -- is heard as a call" else "witness-reach: a command after a wrapper's -- is a call, and must be heard as one"
+assert control.out contains "ok   wrapper: the payload is no longer unheard" else "witness-reach: a payload a runner names must leave the unheard set"
+assert control.out contains "ok   env prefix: the command after the assignments is heard" else "witness-reach: env VAR=x rishi run <path> is a call, and must be heard as one"
+assert control.out contains "ok   env prefix: the payload is no longer unheard" else "witness-reach: the env-prefixed payload must leave the unheard set"
+assert control.out contains "ok   wrapper: the wrapper itself is still heard, beside its payload" else "witness-reach: reading the payload must not cost the older reading of the wrapper"
+assert control.out contains "ok   wrapper and env: removing the caller returns both to unheard" else "witness-reach: both shapes must be proven from the far side too"
+
+# Outside the convention -- reported, never gated. The suffix `*_witness.rish` IS the population,
+# so a file that names itself a witness and asserts without wearing it is guarded by nothing and
+# counted by nothing. Caravan found eight such files by hand on 20260827 and one had been RED.
+assert control.out contains "ok   outside_convention: counts the self-declared asserting pair, not the quiet one" else "witness-reach: the reading takes a first-line self-declaration AND a top-level assert, never one alone"
+assert control.out contains "ok   outside_convention: a self-declared file asserting nothing is left free" else "witness-reach: a file that asserts nothing is no hidden guard, and must pass free"
+assert control.out contains "ok   outside_dark: both plants are dark, nothing names them" else "witness-reach: an outside-convention file no runner names must read dark"
+assert control.out contains "ok   outside_convention: removing the plants returns the reading" else "witness-reach: the outside reading must be proven from the far side too"
+
 # Now the living tree.
 let living = run ["sh" "tools/fixtures/witness_reach_scan.sh"]
 assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
@@ -116,6 +137,14 @@ say living.out
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
 assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out}"
 assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out}"
+
+# Both outside readings are REPORTED rather than gated, and the scan's header argues why at length:
+# the established repair is Caravan's rename, and a renamed file joins `total` unclocked, so each
+# rename raises `unreached` against a ceiling that only falls. A gate here would demand what the
+# gate beside it forbids. The witness proves the readings PRINT; the tier that rosters
+# tools/p/parity.rish is Keaton's word.
+assert living.out contains "outside_convention=" else "witness-reach: the outside-convention reading must print on every run"
+assert living.out contains "outside_dark=" else "witness-reach: the dark reading must print on every run"
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
 let standing = run ["sh" "-c" "sh tools/fixtures/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
