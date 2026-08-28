@@ -50,7 +50,7 @@ pub const BronError = error{
     BadInt, // a numeric field did not parse
     MissingNet, // the record never named its net line (the safe name)
     NameTooLong, // the net name exceeded its bound
-    UnsafeName, // the net name carries no digit — it could parse as a real @p, so it cannot travel
+    UnsafeName, // the net name carries no digit -- it could parse as a real @p, so it cannot travel
     TooManyPoints, // the roster carried past its bound
     RecordTooLong, // the render exceeded its bounded buffer
 };
@@ -195,7 +195,7 @@ const demo_p_keeper: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 const galaxy_num: u32 = 3;
 const star_num: u32 = 27;
 const planet_num: u32 = 267;
-const demo_name = "xnqvel34";
+const demo_name = "xnqvl34";
 
 fn seat_demo_net() !topology_net.SettledNet {
     return topology_net.settle_topology(
@@ -251,7 +251,7 @@ fn unwelcome_unsafe_name_refuses() !void {
 
 /// An unknown field refuses rather than being dropped -- the reader keeps every line honest.
 fn unwelcome_unknown_field_refuses() !void {
-    const text = "format constel-net-v1\nnet xnqvel34\npoint 3\nghost 5\n";
+    const text = "format constel-net-v1\nnet xnqvl34\npoint 3\nghost 5\n";
     const bad = parse(text);
     assert(bad == error.UnknownField);
     print("constel-net-bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
@@ -259,7 +259,7 @@ fn unwelcome_unknown_field_refuses() !void {
 
 /// A wrong header refuses -- the record must name its own format.
 fn unwelcome_bad_header_refuses() !void {
-    const bad = parse("format other-v1\nnet xnqvel34\npoint 3\n");
+    const bad = parse("format other-v1\nnet xnqvl34\npoint 3\n");
     assert(bad == error.BadFormat);
     print("constel-net-bron: a wrong header refused BadFormat.\n", .{});
 }
@@ -273,7 +273,7 @@ fn unwelcome_missing_net_refuses() !void {
 
 /// A malformed point line (a non-numeric point) refuses -- the reader will not accept a corrupt roster.
 fn unwelcome_bad_int_refuses() !void {
-    const bad = parse("format constel-net-v1\nnet xnqvel34\npoint xx\n");
+    const bad = parse("format constel-net-v1\nnet xnqvl34\npoint xx\n");
     assert(bad == error.BadInt);
     print("constel-net-bron: a non-numeric point refused BadInt.\n", .{});
 }

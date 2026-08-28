@@ -8,7 +8,7 @@
 //!
 //! The corpus is `tools/fixtures/constel_net_ledger.bron`, a genuine `format constel-ledger-v1` record
 //! produced reproducibly by `pond/apps/constel_net_ledger_fixture_gen.rye` (issue 100 - tax 30 - reserve
-//! vega 20 under the law-safe name `xnqvel34`, supply folding to 50), `@embedFile`-bound at compile time
+//! vega 20 under the law-safe name `xnqvl34`, supply folding to 50), `@embedFile`-bound at compile time
 //! through a symlink in `pond/apps/corpora/` -- no network, the bytes read are the tree's own. Two
 //! independent readings must agree: the app parses the record through rung three, **re-folds** it through
 //! the real Mycelium law (so the reported supply is not a hand-count but the law's own fold, its
@@ -74,7 +74,7 @@ pub fn read_ledger(text: []const u8) ReadError!Reading {
 
 // --- selftest -----------------------------------------------------------
 
-const demo_name = "xnqvel34";
+const demo_name = "xnqvl34";
 
 /// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.

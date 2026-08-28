@@ -137,7 +137,7 @@ const planet_num: u32 = 267;
 
 fn seat_branch() !SettledNet {
     return settle_topology(
-        "xnqvel34",
+        "xnqvl34",
         &demo_g_key,
         &demo_g_keeper,
         galaxy_num,
@@ -154,7 +154,7 @@ fn seat_branch() !SettledNet {
 /// under the star, each verified, all three crowned by the same law-safe name.
 fn welcome_full_branch_settles() !void {
     const net = try seat_branch();
-    assert(std.mem.eql(u8, net.name(), "xnqvel34"));
+    assert(std.mem.eql(u8, net.name(), "xnqvl34"));
     assert(net.galaxy_point() == galaxy_num);
     assert(net.star_point() == star_num);
     assert(net.planet_point() == planet_num);
@@ -171,7 +171,7 @@ fn welcome_full_branch_settles() !void {
 /// directly under the galaxy refuses `WrongSponsor` -- the fractal address space the tree settles on
 /// real ground settles identically on the dev bench.
 fn unwelcome_wrong_sponsor_refuses() !void {
-    var c = try constel_net.spin_up("xnqvel34", &demo_g_key, &demo_g_keeper, galaxy_num);
+    var c = try constel_net.spin_up("xnqvl34", &demo_g_key, &demo_g_keeper, galaxy_num);
     // the planet decodes to a star-sponsored place, so the galaxy is not its rightful parent
     const parent = topology.decode(planet_num).?.parent();
     assert(topology.encode(parent) == star_num);
@@ -189,7 +189,7 @@ fn unwelcome_wrong_sponsor_refuses() !void {
 /// A forged spawn authority -- a galaxy that never granted the sow -- cannot seat a star, even under a
 /// perfectly law-safe name: the real authority chain runs behind the name gate.
 fn unwelcome_forged_authority_refuses() !void {
-    var c = try constel_net.spin_up("xzkerith58", &demo_g_key, &demo_g_keeper, galaxy_num);
+    var c = try constel_net.spin_up("xzkrth58", &demo_g_key, &demo_g_keeper, galaxy_num);
     const s_bind = tilak.make_bind(&demo_s_key, &demo_s_keeper);
     const g_sow = tilak.make_cap(&demo_g_keeper, galaxy_num, .sow, c.galaxy.identity_key);
     // sign the spawn with the WRONG key (the star's own key, not the galaxy's) -- no real grant

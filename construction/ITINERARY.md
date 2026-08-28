@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `1e71148c83` -- this round's parent.
+**Git nib:** `d75f9fac60` -- this round's parent.
 
 **Now.** **The ledger reads itself, and found a row closed twice.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core.
@@ -66,15 +66,16 @@ never received. `tools/r/reds_status_consistency_witness.rish` gates `contradict
 `phantom_closures` at **zero** across the pin and 127 shelves, reads `open_rows=6`, and proves
 **32** cases in a pen. Its first marker read saw four of seven; `reds_fold.sh` read truer.
 
-**The derived spine is SEATED** (`20260827.181605`). A row's key is its **one-clock stamp**;
-the `%N` is a view the **anointed remote `xy`** allocates, and a published number never moves.
-Book with `reds_spine_derive_scan.sh --next`. Law `.claude/rules/derived-spine.md`, meter
-`tools/r/reds_spine_derive_witness.rish`.
+**`%306` and `%315` CLOSED** (Pond): the Constel names redrawn **vowel-free**, both proofs now
+standing on all five; the **pre-amend** nib names **HEAD's parent**.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
-`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's; the cold roster reads it red at 8 recitations against 6, unchanged by this lap.
+`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore: both Mind's.
 `%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
+**Two seats:** who owns the Constel predicate (`split_digit_absent=6`, where `generate()` draws);
+and `reds_fold.sh` refusing any row carrying OPEN, so a closed-by-accretion row never folds and
+the pin stands over its bound.
 
 **The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
 tree moves, then FORA31 (`approve all doors`, `20260827`).
@@ -210,7 +211,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.125441` | %313 -- the ledger reads its own statuses; two rows folded, one guard rostered | [log](../session-logs/date/20260828/20260828-125441_the-row-closed-twice.kyri) |
+| `20260828.121218` | %306 redrawn vowel-free, %315 closed -- one Constel law, a nib the fleet resolves | [log](../session-logs/date/20260828/20260828-121218_the-name-that-passes-both-proofs.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

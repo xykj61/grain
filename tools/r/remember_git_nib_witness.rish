@@ -21,6 +21,18 @@
 # fresh clone cannot resolve it at all, so `git show <the card's nib>` fails for anyone else. That is a property of the seated convention
 # rather than of this witness, and changing a seated convention is Keaton's word, so it is named here and left standing.
 #
+# WHAT CHANGED ON 20260828, and why the flaw above stopped being one hand's inconvenience (REDS %313). That paragraph was written when one
+# hand held one clone, where "exists only in this clone's reflog" costs nobody anything. Six bodies now write into one anointed order, and
+# `tools/f/fleet_round_open.sh` opens every lap by RESETTING to it -- so a body that did not author the round never had the pre-amend object
+# at all, and both this guard and `nib_honesty` refuse. Measured that morning: the card carried `225d4742e2`, unresolvable here, and five
+# commits later a second lap wrote `c5cfc682e4`, unresolvable the same way. A standing double-red on five bodies out of six, every lap.
+#
+# THE REPAIR NEEDS NO SEAT, because the fix was already inside the three states above. `sibling` is the state the seated sequence produces
+# and the only one of the three that can name an object no other clone holds; `parent` names HEAD's parent, which by definition is a commit
+# the round was built on and therefore one that is already pushed. So writing the nib as HEAD's parent -- read AFTER the final rebase, in
+# the one amend the rule already allows -- keeps the card inside the convention, inside this guard's accepted states, and resolvable for the
+# whole fleet. The seated convention is unchanged and untouched; what changed is which tolerated state a send aims for.
+#
 # Kin: `.claude/rules/remember-git-nib.md` (the order) - `.claude/rules/reds-first.md` (a lantern that fires twice becomes a loom) -
 # `construction/REDS.md` rows %103 and %106.
 #

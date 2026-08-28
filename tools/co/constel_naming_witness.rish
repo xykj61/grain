@@ -13,10 +13,19 @@
 #                     table, so a vowel-free name can never be assembled from them.
 #
 # Both are sound proofs of non-@p, so the SAFETY promise has never been in question. What the tree
-# lacked was any reading of the two together: all five names tools/fixtures/constel_names.txt seats
-# carry vowels, so constel/handshake.rye -- which calls check_ship and check_constellation at its
-# border -- would refuse every name the ten pond/apps/constel_net*.rye modules use. The two rooms
-# never meet today, and FORA31, the socket rung, is where they first would.
+# lacked was any reading of the two together: every one of the five names
+# tools/fixtures/constel_names.txt seated carried a vowel, so constel/handshake.rye -- which calls
+# check_ship and check_constellation at its border -- would have refused every name the ten
+# pond/apps/constel_net*.rye modules use, and FORA31, the socket rung, is where they would first
+# have met (REDS %306).
+#
+# THE REDRAW, 20260828. The five were redrawn as each elder name with its vowels dropped --
+# xnqvel34 -> xnqvl34, xzkerith58 -> xzkrth58, xwmur-dol12 -> xwmr-dl12, maqwintel06 -> mqwntl06,
+# sunveknar90 -> snvknr90 -- so the kinship to the elder draw stays readable in one glance and
+# BOTH proofs now stand on every seated name. Dropping vowels rather than drawing fresh strings is
+# what keeps the digit proof: constel/name.rye's alphabet is consonants AND decimal digits, so a
+# name can satisfy the elder reading and the seated one at once. The seated draw's split now reads
+# zero in both directions, and both numbers are pinned below.
 #
 # WHAT IS PROVEN, on metal.
 #   The welcome, as hard as the refusal: seven names constel/name.rye's own selftest asserts lawful
@@ -28,11 +37,14 @@
 #   BadSegment, each planted and each answered with the module's own spelling.
 #   The elder planted negative still bites at the same name it always named.
 #
-# WHAT IS REPORTED RATHER THAN GATED. split_seated_refuses -- names the digit proof admits and the
-# seated law turns away. It reads 5 today: the five seated draws. Redrawing them vowel-free means
-# rewriting string literals in ten pond/apps/constel_net*.rye modules and two Bron fixtures that
-# already seat them, which is Pond's own lap rather than this guard's. The ceiling is pinned below
-# as an exact match, so it only falls by a deliberate edit that a reader can see.
+# WHAT IS STILL REPORTED RATHER THAN GATED, and it is the OTHER direction. split_digit_absent --
+# names the seated vowel-free law admits and the elder digit proof turns away. It reads 6 of the 7
+# names in the law fixture, and it is pinned below so that number cannot drift unread.
+# constel/name.rye's own generate() lives entirely on that side: it draws the "xn" silo prefix plus
+# base-21 digits over the CONSONANT palette and never emits a decimal digit, so every name it
+# produces is refused UnsafeName by pond/apps/constel_net.rye's name_safe -- and constel/roster.rye
+# already draws its roster that way. Which of the two rooms moves is a seat rather than this guard's
+# call; the guard's job is to keep the number in front of a reader on every run.
 #
 # WHAT IS NOT PROVEN. That a Constel name is a good name, that pond/apps and constel/ should share
 # one predicate rather than two, or which of the two rooms should move. This rung makes the split a
@@ -59,6 +71,10 @@ assert law.out contains "names=7" else "constel: the law fixture's own count cha
 assert law.out contains "seated_admitted=7" else "constel: every name in the law fixture must be admitted by the seated law"
 assert law.out contains "never_a_ship=7" else "constel: every lawful name is provably never a real @p"
 assert law.out contains "split_seated_refuses=0" else "constel: the seated law must never turn away its own examples"
+# The open direction, pinned so it cannot drift unread: six of these seven lawful names carry no
+# digit, so pond/apps/constel_net.rye's name_safe refuses them though check_ship admits them. This
+# is where constel/name.rye's generate() output lives. Read the header before moving this number.
+assert law.out contains "split_digit_absent=6" else "constel: the open direction's number moved -- six of the law fixture's seven names are vowel-free with no digit, which pond/apps name_safe refuses; read why before changing it"
 assert (law.out contains "fault=") == false else "constel: a lawful name must carry no fault"
 
 # The refusal, planted from the module's own selftest -- the exact shapes a newcomer might copy.
@@ -89,15 +105,18 @@ assert planted.out contains "verdict=unsafe" else "constel: the scan failed to f
 assert planted.out contains "first=sarlev" else "constel: the scan did not name the offending @p-shaped draw"
 assert (planted.ok == false) else "constel: the unsafe verdict and status disagree"
 
-# The seated first draws. Safe by the elder proof -- every one carries a digit -- and refused by the
-# seated law, every one, for its vowel. That second number is the split, and it is the whole finding.
+# The seated draws, after the 20260828 redraw. Safe by the elder proof -- every one carries a digit
+# -- AND admitted by the seated law, every one, because every one is vowel-free. Both readings agree
+# on all five, which is what the redraw bought, so the whole split reads zero here.
 let seated = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names.txt"]
 say seated.out
 assert seated.ok else "constel: a seated constel name is safe under neither proof -- it could parse as a real @p"
 assert seated.out contains "verdict=ok" else "constel: every seated name must be provably never a real @p"
-assert seated.out contains "names=5" else "constel: the seated first-draw count changed unexpectedly"
+assert seated.out contains "names=5" else "constel: the seated draw count changed unexpectedly"
 assert seated.out contains "digit_bearing=5" else "constel: every seated draw carries the elder proof's digit"
 assert seated.out contains "never_a_ship=5" else "constel: every seated draw is provably never a real @p"
-assert seated.out contains "split_seated_refuses=5" else "constel: the split ceiling is 5 and only falls -- lower it here when pond/apps redraws vowel-free, and read why before you do"
+assert seated.out contains "seated_admitted=5" else "constel: every seated draw must be admitted by the seated vowel-free law -- this is what the redraw closed"
+assert seated.out contains "split_seated_refuses=0" else "constel: the seated law turned away a seated draw -- REDS %306 reopened; the redraw of 20260828 closed this and it may not regress"
+assert seated.out contains "split=0" else "constel: a seated draw must carry BOTH proofs -- the two readings may not part on a name this tree seats"
 
-say "GREEN: constel -- both proofs of the one promise read on every run: seven lawful names admitted case for case against constel/name.rye's own selftest, a galaxy and a planet refused VowelPresent, NameTooLong and BadCharacter and BadSegment each answered in the module's own spelling, the elder planted @p still biting at sarlev, and every seated draw provably never a real @p -- with split_seated_refuses=5 naming, on every run, the five names the seated law would turn away and pond/apps still seats"
+say "GREEN: constel -- both proofs of the one promise read on every run: seven lawful names admitted case for case against constel/name.rye's own selftest, a galaxy and a planet refused VowelPresent, NameTooLong and BadCharacter and BadSegment each answered in the module's own spelling, the elder planted @p still biting at sarlev, and every seated draw provably never a real @p under BOTH readings -- split_seated_refuses=0 and split=0 on the seated draw, which is REDS %306 closed by the 20260828 redraw and pinned so it cannot regress, with split_digit_absent=6 keeping the one direction still open in front of a reader: the vowel-free names carrying no digit, where constel/name.rye generate() puts every name it draws"

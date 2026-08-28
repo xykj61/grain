@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.133116` | [the roster that held out one room](20260828/20260828-133116_the-roster-that-held-out-one-room.kyri) | constel's last 130 split; the second roster deleted, not widened |
 | `20260828.125441` | [the row closed twice](20260828/20260828-125441_the-row-closed-twice.kyri) | a closure written only in the closing row; the ledger gets a status meter |
 | `20260828.123715` | [the wall widens on the user's word](20260828/20260828-123715_the-wall-widens-on-the-users-word.kyri) | skate/ joins Mind's signed lane; two workflows map and prove it |
+| `20260828.121218` | [the name that passes both proofs](20260828/20260828-121218_the-name-that-passes-both-proofs.kyri) | %306 redrawn vowel-free; %311 closed -- a nib the fleet resolves |
 | `20260828.120941` | [five of six aloft](20260828/20260828-120941_five-of-six-aloft.kyri) | Dream joins; the day's every repair proven in one chain |
 | `20260828.115623` | [the flag that failed closed](20260828/20260828-115623_the-flag-that-failed-closed.kyri) | my interim was Dream's second blocker; the warning had said so |
 | `20260828.114528` | [the second binary, the captain's hat](20260828/20260828-114528_the-second-binary-and-the-captains-hat.kyri) | Dream unblocked two ways; Sound's captaincy written down |

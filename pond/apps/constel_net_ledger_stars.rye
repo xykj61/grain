@@ -56,7 +56,7 @@ const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const alien_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const demo_galaxy: u32 = 3;
-const safe_name = "xnqvel34";
+const safe_name = "xnqvl34";
 
 /// A sovereign reservation drains the supply exactly as a tax does, and two distinct stars settle
 /// beside the topology, each paid out of the net's own supply.
