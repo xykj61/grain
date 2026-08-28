@@ -24,6 +24,18 @@ public struct EventRing<Event: Sendable>: Sendable {
 
   public init() {}
 
+  /// Begin a logically empty ring at a supplied monotonic counter origin.
+  ///
+  /// This package-internal proof seam reaches the unsigned ceiling without
+  /// spending UInt64.max queue operations. Equal counters preserve the same
+  /// empty state as the public zero-origin initializer.
+  init(counterOrigin: UInt64) {
+    head = counterOrigin
+    tail = counterOrigin
+    precondition(head == tail)
+    precondition(count == 0)
+  }
+
   public var count: Int {
     precondition(tail >= head)
     let distance = tail - head
@@ -35,11 +47,15 @@ public struct EventRing<Event: Sendable>: Sendable {
 
   public func first() -> Event? {
     guard head < tail else { return nil }
-    let slot = physicalSlot(for: head)
-    guard case .some(let event) = events[slot] else {
+    guard case .some(let event) = storedEvent(at: head) else {
       preconditionFailure("an admitted event must occupy its physical seat")
     }
     return event
+  }
+
+  /// Read one physical seat through its linear counter for package proofs.
+  func storedEvent(at counter: UInt64) -> Event? {
+    events[physicalSlot(for: counter)]
   }
 
   public mutating func append(_ event: Event) throws {

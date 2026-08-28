@@ -111,7 +111,9 @@ a non-block cell, palette slots zero and eight, an impossible Lotus level, and d
 thirty-one and thirty-three. A repeated import yields the same cells, indexes, and fixed anchors.
 
 The event controls fill all 128 seats, refuse the next event without eviction, drain in FIFO order,
-cross the physical end and continue in the same linear order, and refuse unsigned counter wrap. A
+and cross the physical end while keeping the same linear order. A package-internal proof origin
+also starts one empty ring just below the unsigned ceiling and admits one event. At the ceiling,
+the next append returns `counterExhausted` with both counters and every seat unchanged. A
 compile-time assignment proves that Surf and Skate name the same event-ring identity.
 
 This slice establishes the core contract alone. Visual form, animation, domain, identity, release,
