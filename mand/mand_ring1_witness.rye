@@ -24,9 +24,9 @@ fn run_selftest() !u8 {
     const record_id = "rec-1";
 
     var table: caps.CapabilityTable = .{};
-    const steward = try table.add_child("steward");
+    const steward = try table.add_dependent("steward");
     try steward.grant(caps.Capability.init(mand.record_resource, caps.right_read));
-    const writer_only = try table.add_child("scribe");
+    const writer_only = try table.add_dependent("scribe");
     try writer_only.grant(caps.Capability.init(mand.record_resource, caps.right_write));
     print("mand-ring1: table -- steward (read), scribe (write only)\n", .{});
 

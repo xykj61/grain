@@ -9,8 +9,11 @@
 #
 #   rishi/bin/rishi run tools/co/comlink_r1_dual_bind_probe.rish
 
-let addrs = run ["sh" "-c" "ip -o addr show lo"]
-assert addrs.ok else "dual-bind probe: cannot read loopback (ip -o addr show lo)"
+# Linux spells the interface `lo` and reads it with iproute2; Darwin spells it `lo0`
+# and ships no `ip` binary, so the read falls back to ifconfig. The two family greps
+# below stay the one real gate either way -- a host without ::1 still reds honestly.
+let addrs = run ["sh" "-c" "ip -o addr show lo 2>/dev/null || ifconfig lo0"]
+assert addrs.ok else "dual-bind probe: cannot read loopback (ip addr show lo / ifconfig lo0 both refused)"
 assert (addrs.out contains "127.0.0.1") else "dual-bind probe: IPv4 loopback 127.0.0.1 absent"
 assert (addrs.out contains "::1") else "dual-bind probe: IPv6 loopback ::1 absent"
 

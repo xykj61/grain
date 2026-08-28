@@ -26,7 +26,7 @@ pub fn run_demo_pub(out_line: *[pub_line_max]u8, out_len: *u32) bool {
     const published = tube2.run_demo_publish(&store, &reg, &log, &log_len) catch return false;
 
     var table: caps.CapabilityTable = .{};
-    const agent = table.add_child("ledger-agent") catch return false;
+    const agent = table.add_dependent("ledger-agent") catch return false;
     agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write)) catch return false;
     tube2.resolve_and_admit(
         &store,

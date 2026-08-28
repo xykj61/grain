@@ -44,9 +44,9 @@ fn run_selftest() !u8 {
     // Build Caravan's capability table with two agents: one granted the
     // ledger (read+write), one granted only read.
     var table: caps.CapabilityTable = .{};
-    const ledger_agent = try table.add_child("ledger-agent");
+    const ledger_agent = try table.add_dependent("ledger-agent");
     try ledger_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
-    const reader = try table.add_child("reader-agent");
+    const reader = try table.add_dependent("reader-agent");
     try reader.grant(caps.Capability.init(pool.ledger_resource, caps.right_read));
     print("pool-p0: Caravan table -- ledger-agent (rw), reader-agent (r only)\n", .{});
 

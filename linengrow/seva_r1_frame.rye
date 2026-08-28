@@ -32,7 +32,7 @@ pub fn run_demo_frame() FrameError!view.Frame {
     const log_len = try mc.build_welcome_log(&log, issuer_kp, holder_kp, &issuer_hex, &holder_hex);
 
     var table: caps.CapabilityTable = .{};
-    const ledger_agent = try table.add_child("ledger-agent");
+    const ledger_agent = try table.add_dependent("ledger-agent");
     try ledger_agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
     const hosted = try pool.host_ledger_agent(
         &table,

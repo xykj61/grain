@@ -60,11 +60,11 @@ fn run_selftest() !u8 {
     // Caravan table: three agents, each owning its own state resource (P1's
     // isolation), each granted rw over only its own.
     var table: caps.CapabilityTable = .{};
-    const ask = try table.add_child("ask");
+    const ask = try table.add_dependent("ask");
     try ask.grant(caps.Capability.init("state-ask", caps.right_read | caps.right_write));
-    const receipt = try table.add_child("receipt");
+    const receipt = try table.add_dependent("receipt");
     try receipt.grant(caps.Capability.init("state-receipt", caps.right_read | caps.right_write));
-    const reputation = try table.add_child("reputation");
+    const reputation = try table.add_dependent("reputation");
     try reputation.grant(caps.Capability.init("state-reputation", caps.right_read | caps.right_write));
 
     // Host each isolated agent, then gather all three onto one Seva surface.

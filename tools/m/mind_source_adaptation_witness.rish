@@ -1,0 +1,49 @@
+# tools/m/mind_source_adaptation_witness.rish -- the MIND adaptation gate stays proven both ways.
+#
+# WHY THIS RUNG. The MIND outer loop holds a standing grant: one eligible source adaptation per
+# lap (.sh/.bash -> .rish, .html -> .brush, .py -> .glow only when booked), bounded by the rule
+# at .claude/rules/mind-source-adaptation.md. The rule's preflight meter is
+# tools/fixtures/mind_source_adaptation_scan.sh, and its both-ways control,
+# tools/fixtures/mind_source_adaptation_control.sh, proved seventeen planted cases -- and then
+# nothing ran it. A control nothing runs is a proof that stops being one the first time the scan
+# drifts, so this witness gives the control a caller in the suite's own voice.
+#
+# WHAT IS PROVEN, on metal.
+#   The control's four free cases pass (the named mappings welcome) and its thirteen bitten cases
+#   refuse (Rye input, vendor, submodule, generated, fixture, sibling ownership, overwrite,
+#   missing provenance, unproven equivalence, unclear license, untracked, unbooked, and an
+#   analogized mapping) -- control_cases=17, control_fail=0, control_verdict=ok.
+#   The scan itself refuses a malformed decide call: fewer than the ten policy fields exits 2.
+#   The rule files the scan names as its policy source stand on disk, both editors' twins.
+#
+# WHAT IS NOT PROVEN. That any particular adaptation is wise -- the scan decides eligibility,
+# and custody, proof of equivalence, and the one-per-lap bound stay with the MIND loop itself.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mind_source_adaptation_witness.rish
+
+say "mind-adapt: Language EN -- the standing adaptation grant is a gate, and a gate is only as good as the last time both of its directions were proven."
+say "mind-adapt: Style Radiant -- the named mappings pass free, every ineligible shape refuses, and the refusals are proven on planted cases rather than believed."
+say "mind-adapt: Lens TAME -- bound one adaptation per lap; refuse before mutation; a control nothing runs protects nothing."
+
+say "mind-adapt: the seventeen-case control runs both ways..."
+let control = run ["sh" "tools/fixtures/mind_source_adaptation_control.sh"]
+assert control.ok else "mind-adapt: the control refused -- a planted case no longer decides the way the rule says"
+assert control.out contains "control_cases=17" else "mind-adapt: the control must run all seventeen planted cases"
+assert control.out contains "control_fail=0" else "mind-adapt: every planted case must decide the way the rule says"
+assert control.out contains "control_verdict=ok" else "mind-adapt: the control must balance before it is believed"
+say "field GREEN -- four mappings welcome, thirteen refusals bite, seventeen of seventeen"
+
+say "mind-adapt: a malformed decide refuses (usage exits 2)..."
+let usage = run ["sh" "-c" "sh tools/fixtures/mind_source_adaptation_scan.sh --decide .sh .rish 2>/dev/null; test $? -eq 2"]
+assert usage.ok else "mind-adapt: the scan must refuse a decide call missing its ten policy fields"
+say "field GREEN -- the decider refuses a call that names too little to decide"
+
+say "mind-adapt: the policy sources the scan cites stand on disk..."
+let claude_rule = run ["test" "-f" ".claude/rules/mind-source-adaptation.md"]
+assert claude_rule.ok else "mind-adapt: the Claude rule the scan cites is missing"
+let cursor_rule = run ["test" "-f" ".cursor/rules/mind-source-adaptation.mdc"]
+assert cursor_rule.ok else "mind-adapt: the Cursor twin the scan cites is missing"
+say "field GREEN -- both editors' rule twins stand where the scan looks for them"
+
+say "GREEN: mind_source_adaptation -- the grant's gate proven both ways, the decider refuses the malformed, and the policy it reads is on disk."

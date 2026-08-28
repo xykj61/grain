@@ -32,7 +32,7 @@ fn build_glass_manifest() !tube.Manifest {
 }
 
 fn grant_glass_table(table: *caps.CapabilityTable) !void {
-    const agent = try table.add_child("seva-broadcaster");
+    const agent = try table.add_dependent("seva-broadcaster");
     try agent.grant(caps.Capability.init("state-ask", rw));
     try agent.grant(caps.Capability.init("state-receipt", rw));
     try agent.grant(caps.Capability.init("state-reputation", rw));

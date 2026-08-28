@@ -69,7 +69,7 @@ assert wide.out contains "0" else "r1: twenty bytes did not speak 0"
 say "r1 leg A GREEN — pier pedestal whole; both faces decide; no socket touched."
 
 say "r1 leg B: metal probe — bind both families on loopback (bind, never dial)..."
-let bind = run ["python3" "tools/comlink_r1_dual_bind_probe.py"]
+let bind = run ["rishi/bin/rishi" "run" "tools/co/comlink_r1_dual_bind_probe.rish"]
 assert bind.ok else "r1 leg B: host offers no newer family — dual-stack policy unmet on this host (RED correct when IPv6 absent)"
 assert bind.out contains "dual-bind-ok" else "r1 leg B: dual-bind probe silent"
 
