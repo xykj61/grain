@@ -1587,7 +1587,7 @@ fn safe_process_path(io: std.Io, path: []const u8) SafePathVerdict {
             prefix_len += 1;
         }
         if (prefix_len + component.len > prefix.len) return .unsafe;
-        @memcpy(prefix[@intCast(prefix_len)..][0..component.len], component);
+        tally_copy.copy_disjoint(u8, prefix[@intCast(prefix_len)..][0..component.len], component);
         prefix_len += @intCast(component.len);
         const current = prefix[0..@intCast(prefix_len)];
         const stat = cwd.statFile(io, current, .{ .follow_symlinks = false }) catch |err| switch (err) {
