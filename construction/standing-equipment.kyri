@@ -474,3 +474,16 @@ seated 20260828.125441
 guard pin_bound_touch
 path tools/p/pin_bound_touch_witness.rish
 seated 20260828.153046
+
+# pond_enclosure_policy -- orbit one of the quest that retires ai-jail. pond/enclosure_policy.rye
+# reads an enclosure as a value and marks each declaration place, hold, or refuse at receipt,
+# naming the declaration that refused. The scan plants one forbidden mount and then removes it, so
+# the refusal is proven from both sides; a refusal shown only in the passing direction cannot be
+# told from a bypass. `lap` rather than `cadence`: the arc is under active work and the whole run
+# costs one second warm, measured 20260828. Rostered here on the lap that recovered it, since an
+# unrostered witness raises `unreached` and proves nothing on any tree but its author's.
+
+guard pond_enclosure_policy
+path tools/p/pond_enclosure_policy_witness.rish
+tier lap
+seated 20260828.002135

@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.153737` | [the pin weighed where it can still be trimmed](20260828/20260828-153737_the-pin-weighed-where-it-can-still-be-trimmed.kyri) | the commit-time pin wall |
 | `20260828.151653` | [the wrapper the meter believed](20260828/20260828-151653_the-wrapper-the-meter-believed.kyri) | %317: 430 calls read as one; 89 witnesses filed as unheard |
 | `20260828.144049` | [the family that never printed](20260828/20260828-144049_the-family-that-never-printed.kyri) | witness-reach: the census names its whole tail |
+| `20260828.143512` | [the dead-letter box](20260828/20260828-143512_the-dead-letter-box.kyri) | %321: a lap recovered from a stash; Pond orbit one lands |
 | `20260828.142844` | [the lane that admits its own record](20260828/20260828-142844_the-lane-that-admits-its-own-record.kyri) | Mind's two lane grants; the fourth sweep cherry-picked home |
 | `20260828.140947` | [the shelf with nowhere left to fold](20260828/20260828-140947_the-shelf-with-nowhere-left-to-fold.kyri) | a bound with no edge to check at |
 | `20260828.133956` | [the comment that moved into the meter](20260828/20260828-133956_the-comment-that-moved-into-the-meter.kyri) | %314: my split moved 3 em-dashes into a full ratchet |
@@ -36,4 +37,5 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.021147` | [the pen and the cadence that was cut](20260828/20260828-021147_the-pen-and-the-cadence-that-was-cut.kyri) | %307 booked; the rehearsal pen gets its first guard |
 | `20260828.003134` | [the mark and the fleet word](20260828/20260828-003134_the-mark-and-the-fleet-word.kyri) | hex-forged sephirot on aetheric purple; send-to-fleet seated |
 | `20260828.002218` | [two proofs of one promise](20260828/20260828-002218_two-proofs-of-one-promise.kyri) | %306 booked and closed; the lotus door back under 20% |
+| `20260828.002135` | [the policy that names its refusal](20260828/20260828-002135_the-policy-that-names-its-refusal.kyri) | orbit one written: the enclosure as a value |
 | `20260828.001819` | [the crashed meteor](20260828/20260828-001819_the-crashed-meteor.kyri) | the status bumps; the seed becomes grain-ww; the wall catches its own publisher |

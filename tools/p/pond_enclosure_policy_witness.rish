@@ -1,0 +1,36 @@
+# tools/p/pond_enclosure_policy_witness.rish -- an enclosure policy is a value, read at receipt.
+#
+#   rishi/bin/rishi run tools/p/pond_enclosure_policy_witness.rish
+#
+# WHAT THIS HOLDS. Orbit one of the quest that retires ai-jail asks for a policy that round-trips
+# and a forbidden mount that refuses by name. Both are read on metal by
+# tools/fixtures/pond_enclosure_policy_scan.sh, which builds pond/enclosure_policy.rye, runs its
+# selftest, checks the honest policy of today's lap, and then plants and removes one forbidden
+# mount so the refusal is proven from both sides. A refusal shown only in the passing direction
+# cannot be told from a bypass, so the removal leg is the one that makes the rest mean anything.
+#
+# WHAT THIS DOES NOT REACH. Declaring a policy and enforcing one are two rounds. This proves the
+# reading; driving the declarations through Caravan's capability and address-space pieces is
+# orbit two, and nothing here claims an enclosure was built.
+#
+# ACCRETE-ONLY. Every markdown that instructs or references ai-jail stays unmolted while this
+# grows beside it. The ENCLOSURE selector is untouched and stays ai-jail.
+
+say "enclosure-policy: Language EN -- a policy nobody can read back is a wish with flags on."
+say "enclosure-policy: Style Gauge, Meter -- the receipt names the declaration, so a count becomes a line to open."
+say "enclosure-policy: Lens TAME -- safety first: every bound is declared, an unknown mark is refused whole, and the refusal is proven from both sides."
+
+let scan = run ["sh" "tools/fixtures/pond_enclosure_policy_scan.sh"]
+assert scan.ok else "enclosure-policy: the scan must complete"
+say scan.out
+assert scan.out contains "SELFTEST ok" else "enclosure-policy: every mark must answer as its comment says"
+assert scan.out contains "ROUNDTRIP ok" else "enclosure-policy: today's honest policy must place every declaration"
+assert scan.out contains "REFUSE ok" else "enclosure-policy: a forbidden mount must refuse by name"
+assert scan.out contains "REMOVAL ok" else "enclosure-policy: removing the plant must return the same file to green"
+assert scan.out contains "HOLD ok" else "enclosure-policy: the seated device lane must wait for a word"
+assert scan.out contains "STRANGER ok" else "enclosure-policy: an unknown mark must refuse the whole policy"
+assert scan.out contains "EMPTY ok" else "enclosure-policy: a policy declaring nothing must be refused"
+assert scan.out contains "EXPLAIN ok" else "enclosure-policy: the single-declaration door must answer all three verdicts"
+assert scan.out contains "GREEN" else "enclosure-policy: the scan must report GREEN"
+
+say "GREEN: pond enclosure-policy -- policy as a value; the forbidden mount refused by name."
