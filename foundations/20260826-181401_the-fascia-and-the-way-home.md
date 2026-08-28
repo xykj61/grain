@@ -43,7 +43,7 @@ Five instruments take the reading today, from the door inward:
 - **The health percent.** The front door's **fascia** figure -- *can a reader follow any
   thread home* -- rendered by [`../tools/r/readme_metrics.rish`](../tools/r/readme_metrics.rish)
   and read at a glance through [`../sundial/README.md`](../sundial/README.md); the chapter
-  family's own meter ([`../tools/gen/chapter/equinox_e113_fascia_health_almanac.sh`](../tools/gen/chapter/equinox_e113_fascia_health_almanac.sh)
+  family's own meter ([`../tools/equinox/almanac/equinox_e113_fascia_health_almanac.sh`](../tools/equinox/almanac/equinox_e113_fascia_health_almanac.sh)
   and kin) watches the same tissue from inside a season. Read **51 of 100** on `20260826` --
   an honest middle, named on the living card, with the chapter-era floor of 92 standing as
   the aim.
