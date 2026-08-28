@@ -126,6 +126,20 @@
           sha256 = "ab308870bc7fc048c23dc49d03f6b8af9ce7fc99b9da882d6688be7a90155c7a";
         };
 
+        # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
+        # code_mode_host feature reads stable-and-default-true in this release
+        # (verified with `codex features list`, 20260828), and the tool router
+        # spawns $out/bin/codex-code-mode-host for every tool call when it is on
+        # -- DREAM's first lap on this pier died there three bounded casts in a
+        # row, BLOCKED as a machine limit (correctly: the binary was absent, not
+        # the tree wrong). Upstream ships it as its own artifact under the same
+        # release tag; hash from a local fetch of that artifact, sha256sum ==
+        # b476...4fc5, 20260828, 21,208,013 bytes.
+        codeModeHost = final.fetchurl {
+          url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
+          sha256 = "b47667846125cdf6dbc460c6fdc418afb2ef3926c54f4d999bbfbeb08dee4fc5";
+        };
+
         # The tarball holds one bare file rather than a directory, so the default
         # sourceRoot guess ("the single subdirectory") finds nothing to enter.
         sourceRoot = ".";
@@ -135,6 +149,8 @@
         installPhase = ''
           runHook preInstall
           install -Dm755 codex-x86_64-unknown-linux-musl "$out/bin/codex"
+          tar -xzf ${finalAttrs.codeModeHost}
+          install -Dm755 codex-code-mode-host-x86_64-unknown-linux-musl "$out/bin/codex-code-mode-host"
           runHook postInstall
         '';
 
