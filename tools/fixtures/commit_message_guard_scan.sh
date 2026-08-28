@@ -135,7 +135,7 @@ if (cd "$sandbox" && git commit -q -m "seed: closes REDS #89" >/dev/null 2>&1); 
 else
   echo "SEED_ARMED_REFUSES 1"
 fi
-if (cd "$sandbox" && git commit -q -m "grain-ww -- crashed meteor" >/dev/null 2>&1); then
+if (cd "$sandbox" && git commit -q -m "crashed-meteor" >/dev/null 2>&1); then
   echo "SEED_ARMED_WELCOMES 1"
 else
   echo "SEED_ARMED_WELCOMES 0"

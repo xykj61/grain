@@ -44,11 +44,11 @@ let seat_prompt = "First read context/KYRI.md and context/GAUGE_STYLE.md so you 
 
 say "3) ONE ROUND, ONCE -- one lap, the same seat and renderer, no loop, no sentinel:"
 say ""
-say "git pull --rebase xy main || git rebase --abort; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq"
+say "sh tools/f/fleet_round_open.sh; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq"
 say ""
 say "4) THE LOOP -- one line, copy whole (GNU date first, BSD spelling as the fallback):"
 say ""
-say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; git pull --rebase xy main || { git rebase --abort 2>/dev/null; echo 'PULL DIVERGED: upstream history was rewritten. Run:  git branch keep-old && git reset --hard xy/main  then re-paste this loop.'; break; }; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo Hush loop ended at $(TZ=America/New_York date)"
+say "D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s 2>/dev/null || TZ=America/New_York date -v+1d -v15H -v0M -v0S +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; sh tools/f/fleet_round_open.sh || { echo 'ROUND-OPEN: fetch refused; retrying in 60s'; sleep 60; continue; }; claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p '${seat_prompt}' | tee /tmp/hush_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo Hush loop ended at $(TZ=America/New_York date)"
 say ""
 say "5) STREAMING: the tee-then-jq tail IS the readable terminal -- one line per"
 say "   tool call, a dot per silent half-minute, text as it lands."
