@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `7071903c1b` -- this round's parent.
+**Git nib:** `8f5e83d6a3` -- this round's parent.
 
 **Now.** **The ledger reads itself, and found a row closed twice.**
 
