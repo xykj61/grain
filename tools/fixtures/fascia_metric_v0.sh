@@ -1,5 +1,5 @@
 #!/bin/sh
-# fascia_metric_v0.sh -- fascia metric (i4-i9).
+# fascia_metric_v0.sh -- fascia metric (i4-i10).
 #
 # Four clutter signals -> difficulty-style fascia grade 0-100.
 # Higher fascia = more knit; clutter lowers the grade.
@@ -9,6 +9,14 @@
 # i8: Class A HOLD disclosed (e104) -- exclusion hides; holding discloses.
 # i9: window carry across revisions -- never clear history on a rev bump;
 #     seed the equinox arc 100/85/92 so the −15 fall stays visible.
+# i10: signal 1 stops reading date/ shelves. The archive rooms folded onto
+#     date/YYYYMMDD/ shelves (20260821.161758 and after), so testimony the
+#     archive/ exclude used to skip walked back into this read -- 29 of 34
+#     hits on 20260828 sat in dated files accrete-never-break forbids
+#     touching, and a meter that counts unrepairable history instructs an
+#     unlawful repair (the instrument-and-the-artifact counsel, 20260826).
+#     Signal 3 deliberately KEEPS its dated hits per i8's own law -- holding
+#     discloses -- because its lineage is being actively shed by name.
 # u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -22,7 +30,7 @@ case "$verb" in
     ;;
 esac
 
-metric_rev=i9
+metric_rev=i10
 
 # Self-path excludes -- the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
@@ -36,6 +44,7 @@ superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
   counsel active-designing expanding-prompts work-in-progress context \
   --glob '!**/quin-workshop/**' \
   --glob '!**/archive/**' \
+  --glob '!**/date/**' \
   --glob '!**/yonder/**' \
   --glob '!**/session-logs/**' \
   --glob "$EXCLUDE_SELF" \
