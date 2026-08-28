@@ -10,7 +10,7 @@
 let fixture = "tools/fixtures/glow_digraph_table.txt"
 let wrong = "tools/fixtures/glow_digraph_table_wrong_order.txt"
 let desk = "glow/gen/sample-digraph-table.glow"
-let shape = "glow/gen/shape-digraph-table.glow"
+let shape = "glow/gen/s/shape-digraph-table.glow"
 
 assert ((read-file fixture) contains "+$") else "fixture missing +$"
 assert ((read-file fixture) contains "|^") else "fixture missing |^ barket"

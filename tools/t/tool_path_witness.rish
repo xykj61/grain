@@ -193,6 +193,15 @@ assert sibling.out contains "home=${one_home}" else "tool-path: the sibling must
 assert (orphan.ok == false) else "tool-path: the same bare reference without a citer must refuse"
 say "sibling GREEN -- a bare sibling resolves inside its citer own room, and refuses to guess without one"
 
+# THE SECOND FOLDED ROOM -- glow/gen folded by letter on 20260828 (REDS %301), and the same pure
+# rule answers it with no edit to the resolver: the room is read off the reference, the letter
+# off the basename. A stale flat desk reference from before that fold recovers by computation.
+let gen_stale = run [bin "run" tool "glow/gen/shape-amount.glow"]
+assert gen_stale.ok else "tool-path: a stale flat glow/gen reference must resolve"
+assert gen_stale.out contains "verdict=recovered-by-letter-rule" else "tool-path: glow/gen must be recovered by the letter rule, never the index"
+assert gen_stale.out contains "home=glow/gen/s/shape-amount.glow" else "tool-path: the glow/gen letter room must be computed from the basename alone"
+say "glow/gen GREEN -- the second letter-folded room answers by the same computation, resolver unedited"
+
 # ---------------------------------------------------------------------------------------------
 # PART THREE -- the RED paths. A resolver is trustworthy only where it refuses.
 # ---------------------------------------------------------------------------------------------

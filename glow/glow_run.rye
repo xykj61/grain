@@ -11,6 +11,7 @@
 
 
 const std = @import("std");
+const assert = std.debug.assert;
 const print = std.debug.print;
 const lower_trap = @import("lower_trap.rye");
 const lower_cast = @import("lower_cast.rye");
@@ -163,7 +164,12 @@ pub fn main(init: std.process.Init) !u8 {
                     print("glow_run: cross-desk named-cast parse failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
-                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{s}.glow", .{lower_named_cast.stem_slice(&spec)}) catch {
+                const cast_stem = lower_named_cast.stem_slice(&spec);
+                // invariant: the parser only yields a non-empty lowercase ident, and the
+                // letter room is that ident's own first letter -- the fold rule of
+                // stamp-and-name, a pure function of the basename (REDS %301).
+                assert(cast_stem.len >= 1);
+                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ cast_stem[0], cast_stem }) catch {
                     print("glow_run: cross-desk mold path overflow\n", .{});
                     return 1;
                 };
@@ -238,7 +244,11 @@ pub fn main(init: std.process.Init) !u8 {
                     print("glow_run: compose-lib parse failed ({s})\n", .{@errorName(err)});
                     return 1;
                 };
-                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{s}.glow", .{lower_compose_lib.stem_slice(&spec)}) catch {
+                const lib_stem = lower_compose_lib.stem_slice(&spec);
+                // invariant: same letter-room rule as the cross-desk site above -- one
+                // fold law, spelled twice because two lowers resolve imports (REDS %301).
+                assert(lib_stem.len >= 1);
+                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ lib_stem[0], lib_stem }) catch {
                     print("glow_run: compose-lib stem path overflow\n", .{});
                     return 1;
                 };

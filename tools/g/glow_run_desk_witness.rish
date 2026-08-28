@@ -623,13 +623,13 @@ assert moldamount.out contains "GREEN" else "glow_run mold-amount.glow not GREEN
 assert moldamount.out contains "mold-amount.glow" else "glow_run mold-amount claim missing path"
 
 # STOA161: Grain primary dual -- shape-amount beside mold-amount.
-let shapeamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-amount.glow"]
+let shapeamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-amount.glow"]
 assert shapeamount.ok else "glow_run shape-amount.glow failed"
 assert shapeamount.out contains "GREEN" else "glow_run shape-amount.glow not GREEN"
 assert shapeamount.out contains "shape-amount.glow" else "glow_run shape-amount claim missing path"
 
 # STOA162: Grain primary dual -- shape-count beside mold-count.
-let shapecount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-count.glow"]
+let shapecount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-count.glow"]
 assert shapecount.ok else "glow_run shape-count.glow failed"
 assert shapecount.out contains "GREEN" else "glow_run shape-count.glow not GREEN"
 assert shapecount.out contains "shape-count.glow" else "glow_run shape-count claim missing path"
@@ -640,7 +640,7 @@ assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
 assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
 
 # STOA163: Grain primary dual -- shape-pair beside mold-pair.
-let shapepair = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-pair.glow"]
+let shapepair = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-pair.glow"]
 assert shapepair.ok else "glow_run shape-pair.glow failed"
 assert shapepair.out contains "GREEN" else "glow_run shape-pair.glow not GREEN"
 assert shapepair.out contains "shape-pair.glow" else "glow_run shape-pair claim missing path"
@@ -662,7 +662,7 @@ assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
 assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
 
 # STOA164: Grain primary dual -- shape-kind beside mold-kind.
-let shapekind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-kind.glow"]
+let shapekind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-kind.glow"]
 assert shapekind.ok else "glow_run shape-kind.glow failed"
 assert shapekind.out contains "GREEN" else "glow_run shape-kind.glow not GREEN"
 assert shapekind.out contains "shape-kind.glow" else "glow_run shape-kind claim missing path"
@@ -673,7 +673,7 @@ assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
 assert moldxact.out contains "mold-xact.glow" else "glow_run mold-xact claim missing path"
 
 # STOA165: Grain primary dual -- shape-xact beside mold-xact.
-let shapexact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-xact.glow"]
+let shapexact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-xact.glow"]
 assert shapexact.ok else "glow_run shape-xact.glow failed"
 assert shapexact.out contains "GREEN" else "glow_run shape-xact.glow not GREEN"
 assert shapexact.out contains "shape-xact.glow" else "glow_run shape-xact claim missing path"
@@ -684,13 +684,13 @@ assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
 assert moldxfer.out contains "mold-xfer.glow" else "glow_run mold-xfer claim missing path"
 
 # STOA166: Grain primary dual -- shape-xfer beside mold-xfer.
-let shapexfer = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-xfer.glow"]
+let shapexfer = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-xfer.glow"]
 assert shapexfer.ok else "glow_run shape-xfer.glow failed"
 assert shapexfer.out contains "GREEN" else "glow_run shape-xfer.glow not GREEN"
 assert shapexfer.out contains "shape-xfer.glow" else "glow_run shape-xfer claim missing path"
 
 # STOA167: Grain primary dual -- shape-triple beside mold-triple.
-let shapetriple = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-triple.glow"]
+let shapetriple = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-triple.glow"]
 assert shapetriple.ok else "glow_run shape-triple.glow failed"
 assert shapetriple.out contains "GREEN" else "glow_run shape-triple.glow not GREEN"
 assert shapetriple.out contains "shape-triple.glow" else "glow_run shape-triple claim missing path"
@@ -707,7 +707,7 @@ assert castimporttripleshape.out contains "GREEN" else "glow_run cast-import-tri
 assert castimporttripleshape.out contains "cast-import-triple-shape.glow" else "glow_run cast-import-triple-shape claim missing path"
 
 # STOA168: Grain primary dual -- shape-quad beside mold-quad.
-let shapequad = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-quad.glow"]
+let shapequad = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-quad.glow"]
 assert shapequad.ok else "glow_run shape-quad.glow failed"
 assert shapequad.out contains "GREEN" else "glow_run shape-quad.glow not GREEN"
 assert shapequad.out contains "shape-quad.glow" else "glow_run shape-quad claim missing path"
@@ -723,7 +723,7 @@ assert castimportquadshape.out contains "GREEN" else "glow_run cast-import-quad-
 assert castimportquadshape.out contains "cast-import-quad-shape.glow" else "glow_run cast-import-quad-shape claim missing path"
 
 # STOA169: Grain primary dual -- shape-penta beside mold-penta.
-let shapepenta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-penta.glow"]
+let shapepenta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-penta.glow"]
 assert shapepenta.ok else "glow_run shape-penta.glow failed"
 assert shapepenta.out contains "GREEN" else "glow_run shape-penta.glow not GREEN"
 assert shapepenta.out contains "shape-penta.glow" else "glow_run shape-penta claim missing path"
@@ -739,7 +739,7 @@ assert castimportpentashape.out contains "GREEN" else "glow_run cast-import-pent
 assert castimportpentashape.out contains "cast-import-penta-shape.glow" else "glow_run cast-import-penta-shape claim missing path"
 
 # STOA170: Grain primary dual -- shape-hexa beside mold-hexa.
-let shapehexa = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-hexa.glow"]
+let shapehexa = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-hexa.glow"]
 assert shapehexa.ok else "glow_run shape-hexa.glow failed"
 assert shapehexa.out contains "GREEN" else "glow_run shape-hexa.glow not GREEN"
 assert shapehexa.out contains "shape-hexa.glow" else "glow_run shape-hexa claim missing path"
@@ -755,7 +755,7 @@ assert castimporthexashape.out contains "GREEN" else "glow_run cast-import-hexa-
 assert castimporthexashape.out contains "cast-import-hexa-shape.glow" else "glow_run cast-import-hexa-shape claim missing path"
 
 # STOA171: Grain primary dual -- shape-hepta beside mold-hepta.
-let shapehepta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-hepta.glow"]
+let shapehepta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-hepta.glow"]
 assert shapehepta.ok else "glow_run shape-hepta.glow failed"
 assert shapehepta.out contains "GREEN" else "glow_run shape-hepta.glow not GREEN"
 assert shapehepta.out contains "shape-hepta.glow" else "glow_run shape-hepta claim missing path"
@@ -771,7 +771,7 @@ assert castimportheptashape.out contains "GREEN" else "glow_run cast-import-hept
 assert castimportheptashape.out contains "cast-import-hepta-shape.glow" else "glow_run cast-import-hepta-shape claim missing path"
 
 # STOA172: Grain primary dual -- shape-octa beside mold-octa.
-let shapeocta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-octa.glow"]
+let shapeocta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-octa.glow"]
 assert shapeocta.ok else "glow_run shape-octa.glow failed"
 assert shapeocta.out contains "GREEN" else "glow_run shape-octa.glow not GREEN"
 assert shapeocta.out contains "shape-octa.glow" else "glow_run shape-octa claim missing path"
@@ -787,7 +787,7 @@ assert castimportoctashape.out contains "GREEN" else "glow_run cast-import-octa-
 assert castimportoctashape.out contains "cast-import-octa-shape.glow" else "glow_run cast-import-octa-shape claim missing path"
 
 # STOA173: Grain primary dual -- shape-nona beside mold-nona (closes multi-field dual ladder).
-let shapenona = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-nona.glow"]
+let shapenona = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-nona.glow"]
 assert shapenona.ok else "glow_run shape-nona.glow failed"
 assert shapenona.out contains "GREEN" else "glow_run shape-nona.glow not GREEN"
 assert shapenona.out contains "shape-nona.glow" else "glow_run shape-nona claim missing path"
@@ -803,7 +803,7 @@ assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-
 assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
 
 # STOA179 / STOA184: Seva B0 Glow -- seva-event-shape (from/to @ux - memo/stamp @t).
-let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-seva-event.glow"]
+let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-seva-event.glow"]
 assert shapesalaevent.ok else "glow_run shape-seva-event.glow failed"
 assert shapesalaevent.out contains "GREEN" else "glow_run shape-seva-event.glow not GREEN"
 assert shapesalaevent.out contains "shape-seva-event.glow" else "glow_run shape-seva-event claim missing path"
@@ -815,7 +815,7 @@ assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-seva-ev
 assert castnamedsalaevent.out contains "cast-named-seva-event.glow" else "glow_run cast-named-seva-event claim missing path"
 
 # STOA192: Seva B0 demo fixture constants shape (three stamps - three memos - root @ux).
-let shapedemofixture = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-demo-fixture-constants.glow"]
+let shapedemofixture = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-demo-fixture-constants.glow"]
 assert shapedemofixture.ok else "glow_run shape-demo-fixture-constants.glow failed"
 assert shapedemofixture.out contains "GREEN" else "glow_run shape-demo-fixture-constants.glow not GREEN"
 assert shapedemofixture.out contains "shape-demo-fixture-constants.glow" else "glow_run shape-demo-fixture-constants claim missing path"
@@ -832,7 +832,7 @@ assert castimportdemofixture.out contains "GREEN" else "glow_run cast-import-dem
 assert castimportdemofixture.out contains "cast-import-demo-fixture-constants.glow" else "glow_run cast-import-demo-fixture-constants claim missing path"
 
 # STOA206 / B3: Seva B0 fact-line shape (sig @t - fact @t).
-let shapefactline = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-fact-line.glow"]
+let shapefactline = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-fact-line.glow"]
 assert shapefactline.ok else "glow_run shape-fact-line.glow failed"
 assert shapefactline.out contains "GREEN" else "glow_run shape-fact-line.glow not GREEN"
 assert shapefactline.out contains "shape-fact-line.glow" else "glow_run shape-fact-line claim missing path"
