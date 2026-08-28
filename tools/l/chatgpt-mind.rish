@@ -266,7 +266,7 @@ assert (trim hooks_path_run.out) == "tools/hooks" else "REFUSE chatgpt-mind: pro
 let pre_commit_hook = repo_root + "/tools/hooks/pre-commit"
 let commit_msg_hook = repo_root + "/tools/hooks/commit-msg"
 let mind_lane_scan = repo_root + "/tools/fixtures/chatgpt_mind_lane.awk"
-let mind_lane_sha256 = "93742b65c4d69ed1ad1c4d1ccdd7eaa054dff0d241c11cbbf8c3be39c0bbc440"
+let mind_lane_sha256 = "045851593b9831711f7a125a217548bcf0608d3d6e9f64c85e0b714641378402"
 let pre_commit_file = run ["test" "-f" pre_commit_hook]
 let pre_commit_exec = run ["test" "-x" pre_commit_hook]
 let pre_commit_link = run ["test" "-L" pre_commit_hook]
@@ -784,7 +784,7 @@ let candidate_raw_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "
 assert candidate_raw_run.overflow == "" else "REFUSE chatgpt-mind: candidate lane receipt crossed its byte wall"
 assert candidate_raw_run.ok else "REFUSE chatgpt-mind: candidate lane receipt could not be read"
 let candidate_lane_run = run-bounded { argv: ["/usr/bin/awk" "-f" mind_lane_scan], stdin: (read-file candidate_raw), stdin-max: 65536, stdout-path: candidate_lane_out, stdout-max: 4096, stderr-path: candidate_lane_err, stderr-max: 4096 }
-assert candidate_lane_run.ok else "REFUSE chatgpt-mind: staged candidate escapes the authored regular Brushstroke and Surf lane"
+assert candidate_lane_run.ok else "REFUSE chatgpt-mind: staged candidate escapes the authored regular Brushstroke, Surf, and Skate lane"
 
 let candidate_diff = "${log_rel}/lap-${lap_number}.candidate.diff"
 let candidate_diff_err = "${log_rel}/lap-${lap_number}.candidate-diff.err"
@@ -869,7 +869,7 @@ let hook_raw_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cac
 assert hook_raw_run.overflow == "" else "REFUSE chatgpt-mind: post-hook lane receipt crossed its byte wall"
 assert hook_raw_run.ok else "REFUSE chatgpt-mind: post-hook lane receipt could not be read"
 let hook_lane_run = run-bounded { argv: ["/usr/bin/awk" "-f" mind_lane_scan], stdin: (read-file candidate_raw), stdin-max: 65536, stdout-path: candidate_lane_out, stdout-max: 4096, stderr-path: candidate_lane_err, stderr-max: 4096 }
-assert hook_lane_run.ok else "REFUSE chatgpt-mind: jailed hooks escaped the authored regular Brushstroke and Surf lane"
+assert hook_lane_run.ok else "REFUSE chatgpt-mind: jailed hooks escaped the authored regular Brushstroke, Surf, and Skate lane"
 let hook_diff_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--binary" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_diff, stdout-max: max_log_bytes, stderr-path: candidate_diff_err, stderr-max: 16384 }
 assert hook_diff_run.overflow == "" else "REFUSE chatgpt-mind: post-hook candidate crossed its one-megabyte byte wall"
 assert hook_diff_run.ok else "REFUSE chatgpt-mind: post-hook candidate diff could not be measured"

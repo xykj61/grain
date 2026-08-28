@@ -106,7 +106,9 @@ GPG, signing keys, and agent sockets remain with the host. After Codex exits
 successfully with custody open, the outer Rishi supervisor proves HEAD stayed
 fixed and validates the staged shape and message. It runs the two tracked hooks
 inside the same jail, then revalidates the candidate. The machine lane admits
-only regular additions or modifications below `brushstroke/` and `surf/`.
+only regular additions or modifications below `brushstroke/`, `surf/`, and `skate/` -- the
+`skate/` grant seated `20260828` as a user-owned signed supervisor update, after a custody stop
+named the booked SkateCore crux standing outside the wall.
 Symlinks, gitlinks, generated Wayland protocol files, deletion, rename,
 control-plane paths, and sibling roots refuse. A new product root requires a
 separate user-owned signed supervisor update; the loop cannot grant itself one.

@@ -23,18 +23,20 @@ available on this bench; and one bounded lap can finish with one staged candidat
 supervisor can sign as at most one local commit. If any fact remains unproven, write one concise
 reason to `.mind-state/CUSTODY` and stop.
 
-The ordinary write lane is `brushstroke/` and `surf/`; Skate remains Surf's compatibility name.
+The ordinary write lane is `brushstroke/`, `surf/`, and `skate/`; Surf and Skate stay peer names for one surface.
 Image, Lotus, and crypto may be read as proven Rye contracts and may enter through a narrow
 MIND-owned adapter. Keep their algorithms in Rye. Another module becomes writable only after the
 same four-part evidence gate proves that the living itinerary and active ownership both seat it in
 MIND and every custody decision stays visible.
 
 The outer supervisor enforces the narrower current product spelling: staged paths must be authored
-regular additions or modifications below `brushstroke/` or `surf/`. It refuses deletions, renames,
-symlinks, gitlinks, generated Wayland protocol files, control-plane files, and every sibling root,
-then repeats the same gate after hooks. `skate/` remains a compatibility name, not an untracked path
-grant. Any future booked module needs a separate user-owned signed update to this machine boundary;
-the running loop cannot expand its own lane.
+regular additions or modifications below `brushstroke/`, `surf/`, or `skate/`. It refuses deletions,
+renames, symlinks, gitlinks, generated Wayland protocol files, control-plane files, and every
+sibling root, then repeats the same gate after hooks. The `skate/` grant landed `20260828` as
+exactly the signed supervisor update the next sentence requires, after a custody stop named the
+booked SkateCore crux standing outside the wall that books it. Any future booked module needs a
+separate user-owned signed update to this machine boundary; the running loop cannot expand its own
+lane.
 
 A seated source-adaptation grant lets MIND consider one eligible non-Rye source per lap. Use only
 `.sh` or `.bash` to `.rish`, `.html` or `.htm` to `.brush`, and `.py` to `.glow`. The source must be
