@@ -85,6 +85,11 @@ assert roster.out contains "room=glow/gen flat=" else "room-bound: glow/gen join
 # reads exactly like a counter at zero.
 assert roster.out contains "undated_over=" else "room-bound: the undated sweep must report how many rooms stand over the bound with a fold ahead of them"
 assert roster.out contains "terminal_shelves=" else "room-bound: the undated sweep must report how many day shelves stand over the bound with no fold the mark law provides"
+# The shelf bound, seated 20260828 on Keaton's word: a terminal day shelf can never grow, so its
+# bound is 768 -- a power of two under the 1,000-entry listing cliff rather than at it -- and a
+# shelf over it reds this witness the way an enforced room does. The hour fold stays the escape.
+assert roster.out contains "terminal_over=0" else "room-bound: a terminal day shelf stands over the seated 768 shelf bound -- the hour fold date/YYYYMMDD/HH/ is the named escape"
+assert roster.out contains "shelf_bound=768" else "room-bound: the seated shelf bound must be spelled by the scan, not recited here"
 assert roster.out contains "roster=enforce" else "room-bound: at least one room must be enforced, or the gate guards nothing"
 
 # The RED path, built rather than trusted. A room of three dated files under a bound of two must
@@ -115,7 +120,9 @@ assert control.out contains "day_shelf_kept_off_fold_list=yes" else "room-bound:
 assert control.out contains "foldable_room_named=yes" else "room-bound: an ordinary nested room over the bound must still be reported for its letter fold"
 assert control.out contains "foldable_room_kept_off_shelf_list=yes" else "room-bound: a room that folds by letter must not be excused as a terminal shelf"
 assert control.out contains "sweep_counts_split=yes" else "room-bound: the two shapes must be counted apart, or the split is cosmetic"
-assert control.out contains "sweep_moved_no_gate=yes" else "room-bound: the sweep reports and gates nothing -- 256 sits below the 1,000-entry cliff on purpose, and a shelf bound is a seated law rather than a meter's to make"
+assert control.out contains "sweep_moved_no_gate=yes" else "room-bound: the under-bound sweep reports and moves no gate"
+assert control.out contains "shelf_gate_bites=yes" else "room-bound: a day shelf past the pen's shelf bound must refuse with terminal_over counted"
+assert control.out contains "shelf_gate_frees_at_bound=yes" else "room-bound: a day shelf standing exactly at the shelf bound must walk free -- the boundary met from both sides"
 assert control.out contains "both_readings_silent_when_removed=yes" else "room-bound: both readings must fall silent once their plants are gone -- a reading proven only in the firing direction cannot be told from a line that always prints"
 assert control.out contains "control_verdict=ok" else "room-bound: the control must agree with itself before it is believed"
 say "RED paths GREEN -- a room over its bound refuses by name, and an enforced room absent from the tree refuses too"

@@ -110,6 +110,16 @@ because a bound placed at the cliff fails on the day it matters.
 [`../../tools/r/room_bound_witness.rish`](../../tools/r/room_bound_witness.rish) discovers rooms rather
 than listing them, so a room made tomorrow is measured like every other.
 
+**A terminal day shelf is bounded at 768, never 256** -- amended `20260828.194500` on Keaton's word.
+A day shelf under `date/YYYYMMDD/` is the OUTPUT of the fold and its day is closed, so it can never
+grow and the living rooms' growth argument vanishes; its one hazard is the listing cliff, and 768 is
+a power of two under that cliff rather than at it, by the same reasoning that put the living rooms at
+256. `counsel/date/20260728` at 311 is the shelf that taught this (REDS %315): it stood among %301's
+booked folds with nowhere lawful to go. A shelf past 768 reds the witness, and the named escape is
+the hour fold, `date/YYYYMMDD/HH/` -- equally pure, since the hour is characters 10 and 11 of the
+basename. Proven from both sides in `tools/fixtures/room_bound_control.sh`: a pen shelf past its
+bound refuses with `terminal_over` counted, and one standing exactly at the bound walks free.
+
 **A room earns ENFORCE by folding.** Once a room has been carried across, its references repointed and
 its resolver proven, holding it under the bound is a choice the room has already made -- so it moves
 from advisory to enforced, where crossing 256 is a red. Six rooms hold that seat: **`session-logs`,
