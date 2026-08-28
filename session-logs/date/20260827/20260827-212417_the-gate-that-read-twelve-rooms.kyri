@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260827.212417
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent
+modality text
+model claude-fable-5
+model_status active runtime unverified
+voice Kyri
+host macOS clone (Mac hand) -- Eastern (EDT) one-clock
+title the TAME gate read twelve rooms of nineteen, and both counts of the eighth ban were wrong
+prompt Keaton: kg -- the TAME lane, starting with the ban gate that reads five fewer directories than it claims.
+think The gate's file set was a find naming twelve directories plus TWO INDIVIDUAL Glow files, so glow/ was governed two sources out of 131 and mycelium, constel, lattice, ember, lantern and scribble were never read at all. The law in .claude/rules/tame-guidance.md states the bans over authored Rye without qualification, and the gate enforcing it covered 684 files where the tree holds 1,108. A roster written as a list grows stale by omission rather than by error: every room added since the list was written was outside the law by default, and nothing compared the two. That is %303's sentence arriving at a second guard within the hour.
+think Widening needed a prune before it needed anything else. glow/.cache holds 157 GENERATED .rye plants, machine-written lowering output that no style law governs, so the roster gained ! -path '*/.cache/*' and ! -path '*/bin/*'. Without that the gate would have started failing on code no hand wrote.
+think Seven of the eight bans were already clean in the new rooms and gained 424 files of coverage for free. The eighth, ) == error., had eight real violations in constel -- each an assert(call() == error.X) whose silent anyerror upcast is precisely why the ban exists. All eight now read if (call()) |_| unreachable else |err| assert(err == error.X), the form caravan/mapping.rye already used, and fora_apply, fora_read and fora_transfer are GREEN.
+think The compound-assert ban looked like a 104-violation wall, and I wrote the honest thing rather than the convenient one: a ban with 104 violations is a ratchet wearing a ban's clothes, so it kept the elder roster with the reason and the door written into both copies. Then the lap walked through that door in the same sitting.
+obs BOTH counts of the compound ban were wrong, in opposite directions, and neither error was in the code being judged. The gate's grep 'assert(.* and .*)' cannot tell a conjunction from a quoted string, so six Glow lowering witnesses asserting that generated source CONTAINS text like "pair.p == 5 and pair.q == 3" read as violations and were not. And my own counting regex assert\([^)]* and stopped at the first close paren, so any call standing left of the and hid the conjunction behind it -- four real hits missed in mycelium/braid, lapse, pledge and glow/nock/nock_core_witness.
+obs So the row's second lesson is one I earned rather than found: a meter used to SIZE a defect is a claim like any other, and I booked 104 with a regex I had not checked. The true figures are 25 split this lap and 130 remaining in constel alone.
+obs tools/fixtures/tame_style_compound_assert.sh blanks quoted content before looking, the way the comment helper blanks comment lines. Six of the seven rooms reached zero and joined the roster; constel alone is held out, and the line to delete when it reaches zero is named in the source rather than left to memory.
+obs Every touched module was built and run rather than read: glow_rune_shape, nock_core built directly since it has no rish witness, mycelium_braid, _lapse, _pledge, _freight_conservation, _freight_bron, _freight_true, and the three fora witnesses. mycelium/freight_fixture_gen.rye has no dedicated witness at all, so it was compiled on its own to prove the split held.
+loom gate_files_before=684 gate_files_after=1108 rooms_added=7 bans_clean=7 err_eq_fixed=8 compound_split=25 compound_left=130 generated_pruned=157
+file tools/t/tame_style_scan_bans.rish the roster widened, and the one ban held back with its door named
+file tools/fixtures/tame_style_compound_assert.sh the check that can tell code from a quoted string
+file constel/apply.rye eight call-seam error comparisons captured instead
+file glow/rune_shape.rye nine mutual-exclusion asserts split so a failure names the pair
+file construction/REDS.md %304, carrying the correction of its own first measurement
+recommend keep-going -- constel's 130 compound asserts are the next mechanical lap, and the roster line to delete afterwards is written in the source; the four Glow lowering modules with zero asserts and the >70-line ratchet's blindness are the two TAME findings after that
