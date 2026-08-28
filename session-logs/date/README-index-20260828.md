@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.183757` | [the link the peer left behind](20260828/20260828-183757_the-link-the-peer-left-behind.kyri) | foundations_link closes; 2 of 3 cold reds spent |
 | `20260828.183251` | [the guard that knew seventeen rooms](20260828/20260828-183251_the-guard-that-knew-seventeen-rooms.kyri) | %326: a sweep took 6 dated files; guard saw 17 of 82 rooms |
 | `20260828.180927` | [one tree, two shells, three doors](20260828/20260828-180927_one-tree-two-shells-three-doors.kyri) | equinox room lands; %323-%325 close the dialect class |
 | `20260828.173546` | [the switchboard that crossed a kernel](20260828/20260828-173546_the-switchboard-that-crossed-a-kernel.kyri) | FORA31 lands; the routing is the kernel's now |
