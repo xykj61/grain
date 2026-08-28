@@ -31,7 +31,7 @@ echo "control_gate=honored"
 
 # --- e92-shaped census: chapter surface witnesses findable by name ---
 # Pattern mirrors the census that made the e92 ruling: equinox_chN_surface_witness
-SURFACES=$(git ls-files 'tools/gen/chapter/equinox_ch*_surface_witness.rish' | sort)
+SURFACES=$(git ls-files 'tools/equinox/witness/equinox_ch*_surface_witness.rish' | sort)
 echo "surface_paths_begin"
 echo "$SURFACES"
 echo "surface_paths_end"
@@ -44,7 +44,7 @@ if test "$COUNT" -ne 4; then
   exit 1
 fi
 for n in 2 3 4 7; do
-  PATH_N="tools/gen/chapter/equinox_ch${n}_surface_witness.rish"
+  PATH_N="tools/equinox/witness/equinox_ch${n}_surface_witness.rish"
   printf '%s\n' "$SURFACES" | rg -q -F "$PATH_N" || {
     echo "surface_census=failed"
     echo "verdict=misread"
@@ -59,7 +59,7 @@ for n in 2 3 4 7; do
 done
 # ch5 and ch6 must still be absent (parked close-seat row)
 for n in 5 6; do
-  PATH_N="tools/gen/chapter/equinox_ch${n}_surface_witness.rish"
+  PATH_N="tools/equinox/witness/equinox_ch${n}_surface_witness.rish"
   if git ls-files --error-unmatch "$PATH_N" >/dev/null 2>&1; then
     echo "surface_census=failed"
     echo "verdict=misread"

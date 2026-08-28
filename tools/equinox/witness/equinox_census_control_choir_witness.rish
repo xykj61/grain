@@ -1,0 +1,21 @@
+# tools/equinox/witness/equinox_census_control_choir_witness.rish -- e95 -> almanac ch7 3/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_census_control_choir_witness.rish
+#
+# Commence arc fills ch7: census control seats after IronBeetle written shelf end.
+
+say "equinox-census-control-choir: Language EN — planted controls before totals; the arc fills ch7."
+say "equinox-census-control-choir: Style Radiant — green and red both proven; invent none."
+say "equinox-census-control-choir: Lens TAME — e95 · M4b · almanac seat 99 · ch7 3/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/census_control_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-census-control-choir: welcome RED"
+assert welcome.out contains "GREEN: census-control" else "equinox-census-control-choir: want GREEN"
+assert welcome.out contains "duties_honored=3" else "equinox-census-control-choir: want 3 of 3"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_census_control_almanac.sh"]
+assert almanac.ok else "equinox-census-control-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-census-control-choir — control seated · green+red proven · almanac seat 99 · ch7 3/16"

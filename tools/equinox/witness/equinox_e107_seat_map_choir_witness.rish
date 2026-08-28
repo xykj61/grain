@@ -1,0 +1,21 @@
+# tools/equinox/witness/equinox_e107_seat_map_choir_witness.rish -- e107 -> ch7 15/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e107_seat_map_choir_witness.rish
+
+say "equinox-e107-choir: Language EN — control before the map; arithmetic before the close."
+say "equinox-e107-choir: Style Radiant — a close choir is a check."
+say "equinox-e107-choir: Lens TAME — e107 · seat map · almanac seat 111 · ch7 15/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e107_seat_map_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e107-choir: welcome RED"
+assert welcome.out contains "GREEN: e107-seat-map" else "equinox-e107-choir: want GREEN"
+assert welcome.out contains "seat_map_112=close_choir_proposed" else "equinox-e107-choir: want 112"
+assert welcome.out contains "census_breach_count=0" else "equinox-e107-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e107-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e107_seat_map_almanac.sh"]
+assert almanac.ok else "equinox-e107-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e107-choir — seat map GREEN · almanac seat 111 · ch7 15/16"

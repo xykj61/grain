@@ -55,8 +55,8 @@ if test -f "$ROOT/docs/TIGER_STYLE.md" \
 fi
 
 ELDER_DEPS=no
-if test -f tools/gen/chapter/equinox_tigerbeetle_dependencies_choir_witness.rish \
-  && test -f tools/gen/chapter/equinox_tigerbeetle_dependencies_almanac.sh; then
+if test -f tools/equinox/witness/equinox_tigerbeetle_dependencies_choir_witness.rish \
+  && test -f tools/equinox/almanac/equinox_tigerbeetle_dependencies_almanac.sh; then
   ELDER_DEPS=yes
 fi
 

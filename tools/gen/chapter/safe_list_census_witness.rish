@@ -21,7 +21,7 @@ assert census.out contains "SHRED_RED=yes" else "safe-list: shred must stay refu
 let elder = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish"]
 assert elder.ok else "safe-list: golden-rule elder went RED"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_safe_list_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_safe_list_almanac.sh"]
 assert almanac.ok else "safe-list: almanac append failed"
 say almanac.out
 

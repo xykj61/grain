@@ -1,0 +1,28 @@
+# tools/equinox/witness/equinox_voice_roster_choir_witness.rish -- e24 voice roster -> almanac.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_voice_roster_choir_witness.rish
+
+say "equinox-voice-roster-choir: Language EN — one standing voice, declared once."
+say "equinox-voice-roster-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-voice-roster-choir: Lens TAME — e24 · Riyo · almanac seat 30."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/voice_roster_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-voice-roster-choir: welcome RED"
+assert welcome.out contains "GREEN: voice-roster" else "equinox-voice-roster-choir: welcome missing GREEN"
+assert welcome.out contains "sites=6" else "equinox-voice-roster-choir: want six declaration sites"
+assert welcome.out contains "drift=0" else "equinox-voice-roster-choir: want zero drift"
+
+let refuse = run ["rishi/bin/rishi" "run" "tools/gen/chapter/voice_roster_negative_witness.rish"]
+say refuse.out
+assert refuse.ok else "equinox-voice-roster-choir: refuse RED"
+assert refuse.out contains "GREEN: voice-roster-negative" else "equinox-voice-roster-choir: refuse missing GREEN"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_reds_choir_witness.rish"]
+assert elder.ok else "equinox-voice-roster-choir: reds elder went RED"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_voice_roster_choir_almanac.sh"]
+assert almanac.ok else "equinox-voice-roster-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-voice-roster-choir — welcome · refuse · reds elder · almanac seat 30"

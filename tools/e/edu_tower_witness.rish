@@ -32,7 +32,7 @@ let stack = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run
 assert stack.ok else "edu-tower: tally stack RED"
 assert stack.out contains "GREEN: tally stack" else "edu-tower: tally stack not GREEN"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tower_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tower_almanac.sh"]
 assert almanac.ok else "edu-tower: almanac append failed"
 say almanac.out
 

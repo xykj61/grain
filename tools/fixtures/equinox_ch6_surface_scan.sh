@@ -8,7 +8,7 @@
 # Law: a surface witness claims no seat of its own.
 set -eu
 
-SURFACE=tools/gen/chapter/equinox_ch6_surface_witness.rish
+SURFACE=tools/equinox/witness/equinox_ch6_surface_witness.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 
 git ls-files --error-unmatch "$SURFACE" >/dev/null 2>&1 || {

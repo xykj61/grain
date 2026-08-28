@@ -1,0 +1,71 @@
+# tools/equinox/equinox_bundle.rish -- full pair bundle at an equinox close.
+#
+#   rishi/bin/rishi run tools/equinox/equinox_bundle.rish <round>
+#
+# Bounds: equinox_bundle_max_bytes 268435456 (256 MiB)
+#   measured basis 192267970 bytes at 20260729.185725 (cloud bench, --all)
+# Closing rounds only: e63 - e127 - e191 - e255
+# Law: build inside the project, verify, then copy. Status before any pipe.
+#
+# SAFETY CORRECTION 20260729.210100 (Voice Chapter v1 - slot 1 - tame_order):
+# this generator wrote to /tmp, which the enclosure clears on exit -- CLAUDE.md
+# line 22 and context/specs/zig-0.16.0-local-setup.md both say so plainly. A
+# preservation artifact cut into tmpfs is destroyed the moment the session ends,
+# and the run would still have printed GREEN. The destination is now bundles/
+# inside the project, which persists and which the allow-list .gitignore already
+# ignores. The destination is asserted to be project-relative, so this specific
+# mistake cannot return quietly.
+
+say "equinox-bundle: Language EN — full pair bundle at equinox close."
+say "equinox-bundle: Style Radiant — measure, verify, copy; refuse deploy."
+say "equinox-bundle: Lens TAME — named bound; status before pipe."
+
+assert length args != 0 else "equinox-bundle: name the round (e63 e127 e191 e255)"
+let round = args[0]
+
+# invariant: bundles cut only at a closing round of one of the four equinoxes
+let closing = run ["sh" "-c" "printf '%s\n' e63 e127 e191 e255 | grep -qx '${round}' && echo CLOSE_OK || echo CLOSE_NO"]
+assert closing.ok else "equinox-bundle: closing-round check failed"
+assert closing.out contains "CLOSE_OK" else "equinox-bundle: not a closing round (e63 e127 e191 e255)"
+
+# invariant: the destination persists past the session -- project-relative, never /tmp
+# Path built in Rishi, never through the shell: backslash escapes nothing in
+# either shell, so quoting inside a run string leaks literal quotes into the
+# reported path -- caught at 20260729.210100 when the report and the real
+# filename disagreed.
+let made = run ["mkdir" "-p" "bundles"]
+assert made.ok else "equinox-bundle: could not prepare bundles/"
+let path = "bundles/equinox_${round}.bundle"
+assert path contains "bundles/" else "equinox-bundle: destination is not the durable project home"
+
+# e208: quoted form made /tmp read DURABLE (vacuous tmpfs refusal); paths carry no spaces.
+let durable = run ["sh" "-c" "case ${path} in /tmp/*|/var/tmp/*) echo TMPFS ;; *) echo DURABLE ;; esac"]
+assert durable.ok else "equinox-bundle: durability check failed"
+assert durable.out contains "DURABLE" else "equinox-bundle: refusing to cut a preservation artifact into tmpfs"
+
+let cut = run ["sh" "-c" "git bundle create ${path} --all >/dev/null 2>&1; echo EXIT=$?"]
+assert cut.ok else "equinox-bundle: bundle create call failed"
+assert cut.out contains "EXIT=0" else "equinox-bundle: bundle create nonzero"
+
+let verify = run ["sh" "-c" "git bundle verify ${path} >/dev/null 2>&1; echo EXIT=$?"]
+assert verify.ok else "equinox-bundle: verify call failed"
+assert verify.out contains "EXIT=0" else "equinox-bundle: bundle does not verify"
+
+let sized = run ["sh" "-c" "wc -c < ${path}"]
+assert sized.ok else "equinox-bundle: size read failed"
+let bytes = trim sized.out
+
+let bound = run ["sh" "-c" "test ${bytes} -le 268435456 && echo BOUND_OK || echo BOUND_NO"]
+assert bound.ok else "equinox-bundle: bound check failed"
+assert bound.out contains "BOUND_OK" else "equinox-bundle: bundle exceeds equinox_bundle_max_bytes"
+
+# Stamped manifest beside the bundle (discipline 20260730.041405 - e129)
+let man = run ["sh" "-c" "sh tools/equinox/equinox_bundle_manifest.sh ${path} ${round} $(git remote get-url origin) --all $(git rev-parse HEAD) $(date -u +%Y%m%d.%H%M%S) closing-round-${round}-full-all"]
+say man.out
+assert man.ok else "equinox-bundle: stamped manifest must write"
+assert man.out contains "verdict=ok" else "equinox-bundle: want manifest ok"
+
+say "equinox-bundle: round ${round} bytes ${bytes} verified within bound"
+say "equinox-bundle: kept at ${path} — inside the project, survives the session"
+say "equinox-bundle: stamped manifest beside the cut"
+say "GREEN: equinox-bundle — cut home-side · verified · manifested · within named bound"

@@ -12,9 +12,9 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-SEND=tools/gen/chapter/equinox_bundle_send.sh
-MANIFEST_SH=tools/gen/chapter/equinox_bundle_manifest.sh
-ELDER_RISH=tools/gen/chapter/equinox_bundle.rish
+SEND=tools/equinox/equinox_bundle_send.sh
+MANIFEST_SH=tools/equinox/equinox_bundle_manifest.sh
+ELDER_RISH=tools/equinox/equinox_bundle.rish
 TRACKED_MANIFEST=waymarks/20260731-234032_e129-first-bundle-send.manifest
 COUNSEL=counsel/date/20260731/20260731-234032_e129-bundle-send-rehearsal.md
 LEXICON=context/LEXICON.md

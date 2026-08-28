@@ -1,0 +1,21 @@
+# tools/equinox/witness/equinox_e105_window_m3_m4_choir_witness.rish -- e105 -> ch7 13/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e105_window_m3_m4_choir_witness.rish
+
+say "equinox-e105-choir: Language EN — control before home land; carry the window."
+say "equinox-e105-choir: Style Radiant — M3 and M4 cross from cloud shapes to home paths."
+say "equinox-e105-choir: Lens TAME — e105 · i9 · almanac seat 109 · ch7 13/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e105_window_m3_m4_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e105-choir: welcome RED"
+assert welcome.out contains "GREEN: e105-window-m3-m4" else "equinox-e105-choir: want GREEN"
+assert welcome.out contains "home_window_min=85" else "equinox-e105-choir: want fall 85"
+assert welcome.out contains "census_breach_count=0" else "equinox-e105-choir: want breach 0"
+assert welcome.out contains "home_fork_status=not_consumed" else "equinox-e105-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e105_window_m3_m4_almanac.sh"]
+assert almanac.ok else "equinox-e105-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e105-choir — window carry + M3/M4 GREEN · almanac seat 109 · ch7 13/16"

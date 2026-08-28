@@ -15,7 +15,7 @@ ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/chapter/prin_scope.rish
 MAP=construction/EQUINOX_SEAT_MAP.md
 REDS=construction/REDS.md
-ELDER=tools/gen/chapter/equinox_e114_thing_not_name_witness.rish
+ELDER=tools/equinox/witness/equinox_e114_thing_not_name_witness.rish
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"
@@ -39,7 +39,7 @@ for p in \
   tools/fixtures/fascia_metric_v0.sh \
   tools/gen/chapter/census_control_witness.rish \
   tools/gen/chapter/shed_census_witness.rish \
-  tools/gen/chapter/equinox_e111_date_dialect_witness.rish \
+  tools/equinox/witness/equinox_e111_date_dialect_witness.rish \
   tools/gen/chapter/oldness_census_witness.rish \
   tools/gen/chapter/radiant_h1_fence_witness.rish \
   tools/fixtures/radiant_lint_scan.sh \
@@ -142,7 +142,7 @@ echo "reserve_keep=honored"
 echo "seat_128=reserved_close_choir"
 
 # surface census six (e119 ch5+ch6 tools; elder four is historical)
-COUNT=$(git ls-files 'tools/gen/chapter/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
+COUNT=$(git ls-files 'tools/equinox/witness/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
 if test "$COUNT" -ne 6; then
   echo "surface_keep=failed"
   echo "verdict=misread"

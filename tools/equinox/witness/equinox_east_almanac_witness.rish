@@ -1,0 +1,18 @@
+# tools/equinox/witness/equinox_east_almanac_witness.rish -- e11 East pack opens almanac ch2.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_east_almanac_witness.rish
+
+say "equinox-east-almanac: Language EN — chapter two opens on metal."
+say "equinox-east-almanac: Style Radiant — a finding arrives; a theme may follow later."
+say "equinox-east-almanac: Lens TAME — e11 · East pack · Glow almanac seat 17."
+
+let east = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e1_east_pack_witness.rish"]
+say east.out
+assert east.ok else "equinox-east-almanac: East pack limb failed"
+assert east.out contains "GREEN" else "equinox-east-almanac: East pack not GREEN"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_east_almanac.sh"]
+assert almanac.ok else "equinox-east-almanac: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-east-almanac — East pack · chapter two seat 17"

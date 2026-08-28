@@ -52,8 +52,8 @@ if test -f "$ROOT/docs/TIGER_STYLE.md" \
 fi
 
 ELDER_STYLE=no
-if test -f tools/gen/chapter/equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish \
-  && test -f tools/gen/chapter/equinox_tigerbeetle_style_by_the_numbers_almanac.sh; then
+if test -f tools/equinox/witness/equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish \
+  && test -f tools/equinox/almanac/equinox_tigerbeetle_style_by_the_numbers_almanac.sh; then
   ELDER_STYLE=yes
 fi
 

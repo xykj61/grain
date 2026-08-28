@@ -1,0 +1,22 @@
+# tools/equinox/witness/equinox_e114_thing_not_name_choir_witness.rish -- e114 -> ch8 6/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e114_thing_not_name_choir_witness.rish
+
+say "equinox-e114-choir: Language EN — emitted keys before filename claims."
+say "equinox-e114-choir: Style Radiant — look for the thing, not for the name."
+say "equinox-e114-choir: Lens TAME — e114 · thing-not-name · REDS 39 · almanac 118 · ch8 6/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e114_thing_not_name_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e114-choir: welcome RED"
+assert welcome.out contains "GREEN: e114-thing-not-name" else "equinox-e114-choir: want GREEN"
+assert welcome.out contains "reds_row_n=39" else "equinox-e114-choir: want REDS 39"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e114-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e114-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e114-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e114_thing_not_name_almanac.sh"]
+assert almanac.ok else "equinox-e114-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e114-choir — thing-not-name GREEN · REDS 39 · almanac seat 118 · ch8 6/16"

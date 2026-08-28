@@ -13,10 +13,10 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/e/equinox_bundle_negative_witness.rish
 
-let cut = run ["sh" "tools/gen/chapter/equinox_bundle_send.sh" "rehearsal" "--span" "HEAD~3..HEAD"]
+let cut = run ["sh" "tools/equinox/equinox_bundle_send.sh" "rehearsal" "--span" "HEAD~3..HEAD"]
 assert cut.ok else "bundle_neg: span cut must pass"
 
-let man = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); sh tools/gen/chapter/equinox_bundle_manifest.sh $b rehearsal-span counsel-bench HEAD~3 HEAD 00000000.000000 negative-witness"]
+let man = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); sh tools/equinox/equinox_bundle_manifest.sh $b rehearsal-span counsel-bench HEAD~3 HEAD 00000000.000000 negative-witness"]
 assert man.ok else "bundle_neg: manifest written"
 
 let torn = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); n=$(wc -c < $b); m=$((n - 64)); head -c $m $b > /tmp/ebnw_torn.bundle"]

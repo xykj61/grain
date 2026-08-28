@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/equinox_foundations_scan.sh -- foundations join the equinox map.
-# Orchestrated by tools/gen/chapter/equinox_foundations_witness.rish.
+# Orchestrated by tools/equinox/witness/equinox_foundations_witness.rish.
 set -eu
 f="${1:-context/equinox_foundations.brix}"
 map="${2:-context/equinox_map.brix}"

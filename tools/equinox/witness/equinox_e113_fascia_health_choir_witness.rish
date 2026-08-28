@@ -1,0 +1,22 @@
+# tools/equinox/witness/equinox_e113_fascia_health_choir_witness.rish -- e113 -> ch8 5/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e113_fascia_health_choir_witness.rish
+
+say "equinox-e113-choir: Language EN — presence by git ls-files; ratio after controls."
+say "equinox-e113-choir: Style Radiant — on-disk is not in-the-tree."
+say "equinox-e113-choir: Lens TAME — e113 · fascia-health · REDS 38 · almanac 117 · ch8 5/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e113_fascia_health_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e113-choir: welcome RED"
+assert welcome.out contains "GREEN: e113-fascia-health" else "equinox-e113-choir: want GREEN"
+assert welcome.out contains "reds_row_n=38" else "equinox-e113-choir: want REDS 38"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e113-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e113-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e113-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e113_fascia_health_almanac.sh"]
+assert almanac.ok else "equinox-e113-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e113-choir — fascia-health GREEN · REDS 38 · almanac seat 117 · ch8 5/16"
