@@ -1,4 +1,4 @@
-# tools/gen/chapter/fascia_metric_v0.rish -- fascia metric (i4-i9).
+# tools/gen/chapter/fascia_metric_v0.rish -- fascia metric (i4-i10).
 #
 # Difficulty-style connective-tissue grade 0-100 from four clutter signals.
 # i5: Amphora manifest entry - softer weights - window mean.
@@ -6,6 +6,7 @@
 # i7: Class A exclude trial - window_min baseline.
 # i8: Class A HOLD disclosed - window_min kept - exclusion refuses silence.
 # i9: window carry across revisions - arc seed 100/85/92 - fall stays visible.
+# i10: signal 1 stops reading date/ shelves -- testimony the archive fold moved.
 # Measure only -- shred / breach / deploy refuse by name.
 #
 #   rishi/bin/rishi run tools/gen/chapter/fascia_metric_v0.rish
@@ -38,7 +39,7 @@ if length args != 0 then let verb = args[0]
 let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
 assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
 assert metric.out contains "GREEN: fascia-metric-v0" else "fascia-metric-v0 missing GREEN line"
-assert metric.out contains "metric_rev=i9" else "fascia-metric-v0 missing i9 metric_rev"
+assert metric.out contains "metric_rev=i10" else "fascia-metric-v0 missing i10 metric_rev"
 assert metric.out contains "fascia=" else "fascia-metric-v0 missing fascia grade"
 assert metric.out contains "signal:superseded=" else "fascia-metric-v0 missing superseded signal"
 assert metric.out contains "signal:ratchet_outstanding=" else "fascia-metric-v0 missing ratchet signal"
