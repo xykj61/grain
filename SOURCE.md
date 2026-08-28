@@ -321,7 +321,7 @@ With these in place, every commit you make on the host signs itself, and pushes 
 **macOS, when one host holds more than one Codeberg or GitHub identity.** `~/.ssh/config`'s `Host github.com` block matches by hostname alone, so if this same Mac already has a *different* `IdentityFile` set for `github.com` (an older personal key, say) from some earlier project, `IdentitiesOnly yes` forces that wrong key for this repo too -- the push fails with `Permission denied (publickey)` even though the right key sits right there in `~/.ssh/`, already loaded in the agent. Since the macOS jail's write fence keeps `~/.ssh/config` unwritable from inside a jailed window (Step 6's named gap), fix it with a **repo-local override** instead of editing the global file -- this lives in `.git/`, which git never tracks, so it needs no gitignore entry at all:
 
 ```bash
-cat > .git/ssh_config_urbit <<'EOF'
+cat > .git/ssh_config_jail <<'EOF'
 Host github.com
   HostName github.com
   User git
@@ -334,9 +334,9 @@ Host codeberg.org
   IdentityFile ~/.ssh/id_ed25519_urbit_codeberg
   IdentitiesOnly yes
 EOF
-git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_urbit"
-ssh -F .git/ssh_config_urbit -T git@github.com     # expect: "You've successfully authenticated"
-ssh -F .git/ssh_config_urbit -T git@codeberg.org
+git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_jail"
+ssh -F .git/ssh_config_jail -T git@github.com     # expect: "You've successfully authenticated"
+ssh -F .git/ssh_config_jail -T git@codeberg.org
 ```
 
 `core.sshCommand` is per-repo (stored in `.git/config`, itself untracked), so this touches nothing global and nothing another project on the same Mac relies on.

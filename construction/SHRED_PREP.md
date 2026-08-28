@@ -88,6 +88,12 @@ open for the next fossil a molt seats, and the word stays **shred RED** until th
 | `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
 | `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | the HUNK row, four front doors, two designs, four headers |
 
+### Class H -- prepped for the THIRD mitra shed (opened `20260828`, cut stays RED until circled)
+
+| Elder | Living mutant | What the cut asks |
+| --- | --- | --- |
+| `tools/fixtures/dated_classify.py` | `tools/fixtures/dated_classify.rish`, parity-proven by `dated_classify_seam.sh`, gated by `tools/d/dated_classify_witness.rish` | Zero operational citers reach the elder (measured `20260828`). The seam's parity legs retire with it; the cut moves the fascia meter's `tools_py` signal to zero. |
+
 **Every cut basename is seated as a LISTED deliberate absence** in
 [`../tools/fixtures/dated_path_exclusions.sh`](../tools/fixtures/dated_path_exclusions.sh), so the
 census reads a surviving reference as intent. Walk-back: checkpoint `20260827.162143`.
@@ -154,7 +160,7 @@ Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-e
 | Fewest citations on any one | **3** (`20260727-101510_the-acme-onboarding-walk.md`) |
 | Most | **46** (`20260706-023912_the-referential-namespace.md`) |
 
-**Held, on three conditions plus one.** A living mutant seats before a fossil joins Class H, and none of the thirty-nine has one. Class O wants a basename no file names, and the floor here is three. The cut itself stays RED until Keaton circles it. And all thirty-nine are **dated testimony**, resolved rather than rewritten -- the tier already holding 1,097 of the tree's 1,208 broken links by law.
+**Held, on three conditions plus one.** A living mutant seats before a fossil joins Class H (none of the thirty-nine has one); Class O wants a basename no file names (the floor is three); the cut stays RED until circled; and all thirty-nine are dated testimony, resolved rather than rewritten.
 
 **Named for its own round, rather than started:** a fascia weave over the seven clusters these fall into (Open Asks 8, Steward/commerce 4, SLC ladder 6, Dimeroll 3, language and Glow 4, inference voices 2, foundational singles 12), shaped as a **living index page per cluster** in `active-designing/` rather than as cross-links edited into thirty-nine dated bodies.
 
@@ -299,13 +305,9 @@ living rows and may sweep on touch; dated testimony keeps every syllable it ever
 
 ## Shed complete -- the mitra shed, circled `20260826.032839`
 
-Keaton circled the prepped mitra shed on `20260826` to complete fascia restoration. Twelve
-fossils cut, every one with its living mutant standing GREEN and its living citers repointed
-before the cut: the six chapter-era calendar molts (graph-beneath, anywhere-we-are-found,
-a-home-in-plain-text, the-grain-and-the-crossing, follow-our-compass, lantern-lattice-oven),
-the two bit-chapter molts (realidream `20260728-220203`, the WADE plan `20260811-220402`), the
-two sync molts (mycelium `20260813-142420`, what-mantra-is `20260823-222018`), single-stranded
-`20260618-182412`, and every-climate `20260821-035846`. Six pond sources repointed to the living
-realidream in the same pass; shelf indexes and the radiant pass ledger keep their rows as
-records. The full prep detail rests in this file's own history at the walk-back of the cut.
+Keaton circled the prepped mitra shed on `20260826`: twelve fossils cut, every one with its
+living mutant GREEN and its citers repointed before the cut -- the six chapter-era calendar
+molts, two bit-chapter molts, two sync molts, single-stranded, and every-climate. Six pond
+sources repointed to the living realidream in the same pass. The full roster and prep detail
+rest in this file's own history at the walk-back of the cut.
 
