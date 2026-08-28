@@ -11,4 +11,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.003134` | [the mark and the fleet word](20260828/20260828-003134_the-mark-and-the-fleet-word.kyri) | hex-forged sephirot on aetheric purple; send-to-fleet seated |
+| `20260828.002218` | [two proofs of one promise](20260828/20260828-002218_two-proofs-of-one-promise.kyri) | %306 booked and closed; the lotus door back under 20% |
 | `20260828.001819` | [the crashed meteor](20260828/20260828-001819_the-crashed-meteor.kyri) | the status bumps; the seed becomes grain-ww; the wall catches its own publisher |

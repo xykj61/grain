@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a sepia-gold wheat stalk whose ten grains are the sephirot, woven on a linen grid" />
+  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a light-gold sephirot tree of hexagons on dark aetheric purple, drawn like a terminal" />
 </p>
 
 <h1 align="center">Grain</h1>

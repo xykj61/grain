@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260828.003134
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent
+modality text
+model claude-fable-5
+model_status active runtime unverified
+voice Kyri
+host macOS clone (Mac hand) -- Eastern (EDT) one-clock
+title the mark takes the meteor's colors, and "send to fleet" gets its word
+prompt Keaton: the grain svg logo now has a dark-medium purple aetheric alchemical background, same light gold sephirot tree, hexagons, matte digital military shaping, line tree connections, monospace terminal ASCII inspiration; push to seed, ww, xy and debrided when done; and seat "send to fleet" in the Lexicon as sending to all piers/ships/remotes.
+think The redesign kept what the elder mark had earned and re-forged its body. The ten grains stay at their ten stations and the twenty-two roads keep their exact geometry -- continuity is the tree, not the wheat -- while every ellipse became a pointy-top hexagon in the same light gold (#d9b45a over #c8992f roads, #7c561a outlines), each still carrying the wheat's pale crease as a center line. Matte means flat fills only: the elder's three gradients are gone.
+think The aetheric field is #241b38 with a faint ASCII plus-grid pattern (one + per 24px cell), a thin alchemical circle and a great hexagon holding the tree, HUD corner brackets, and a terminal titlebar -- three square lights and a right-aligned monospace "> grain_" prompt. Tiferet is the one hollow hex, carrying a solid gold block at its center: the terminal's cursor at the tree's own heart. Verified by rendering: the browser pane shows the mark whole at logo scale.
+obs "Send to fleet" is seated in the Lexicon as one gesture to four destinations -- xy first always, debrided the mirror, then the seed through both its doors, seed and ww -- extending the send word the way the fleet extends the pier, with custody kept: the seed halves stay a hand's word, never a loop's. This round's own close is the word's first use, which is the right way for a word to arrive.
+obs The elder mark STAYS: assets/grain-logo-wheat.svg holds the sepia wheat byte for byte (recovered from HEAD on Keaton's word -- keep both logos), and the README points at the new mark. Accrete, never break, applied to a face.
+obs The font ruling arrived in two beats and the second was the honest one. PragmataPro Mono was named and then declined by Keaton's own correction -- it is proprietary -- and the seat went to IOSEVKA: the open sibling of that exact shape, narrow and tall and terminal-first, SIL OFL 1.1, its whole build system open so a variant is composed from build plans rather than bought. Seated as the Grain OS font system in GLOW_PROFILE.bron (font_system, font_variant Iosevka Term, font_license, font_fallback), and the mark's own prompt names it first in its font stack.
+obs Path-limited add from here forward, with the live peer in this checkout -- the add -A sweep from the last round is not repeated. The peer holds %306 in flight; nothing of construction/ rides in this commit.
+loom logo_bytes_before=4294 sephirot=10 roads=22 gradients_removed=3 fleet_destinations=4 lexicon_rows_added=1 logos_kept=2 font=Iosevka license=SIL-OFL-1.1
+file assets/grain-logo.svg the hex-forged tree on the aetheric field
+file README.md the alt text says what the mark now is
+file context/LEXICON.md the Send-to-fleet row
+recommend keep-going -- the fleet send closes this round; the seed's next projection carries the new mark to both public doors

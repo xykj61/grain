@@ -1,67 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Grain — a wheat stalk whose ten grains are the sephirot, woven on a linen grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Grain — a light-gold sephirot tree of hexagons on dark aetheric purple, drawn like a terminal">
   <title>Grain</title>
-  <desc>A sepia-gold wheat stalk. Its ten grains sit at the ten sephirot of the Tree of Life, joined by woven paths over a linen-grid tile — bounded, asserted, built with joy.</desc>
+  <desc>Ten light-gold hexagons at the ten sephirot of the Tree of Life, joined by matte gold lines over a dark-medium purple alchemical field, framed as a monospace terminal — bounded, asserted, built with joy.</desc>
   <defs>
-    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#f4e9cf"/>
-      <stop offset="1" stop-color="#e6d3a6"/>
-    </linearGradient>
-    <linearGradient id="grain" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#d9b45a"/>
-      <stop offset="0.55" stop-color="#c8992f"/>
-      <stop offset="1" stop-color="#9a6f22"/>
-    </linearGradient>
-    <pattern id="weave" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <rect width="16" height="16" fill="none"/>
-      <path d="M0 4 H16 M0 12 H16" stroke="#b9954a" stroke-opacity="0.18" stroke-width="2"/>
-      <path d="M4 0 V16 M12 0 V16" stroke="#a9853d" stroke-opacity="0.12" stroke-width="2"/>
+    <!-- the terminal's plus-grid: an ASCII field, one faint + per cell -->
+    <pattern id="plusgrid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 8 V16 M8 12 H16" stroke="#8f7bc0" stroke-opacity="0.10" stroke-width="1.4"/>
     </pattern>
+    <!-- one hexagon, pointy-top, reused for every sephira -->
+    <g id="hex">
+      <path d="M0 -16 L13.86 -8 L13.86 8 L0 16 L-13.86 8 L-13.86 -8 Z"/>
+    </g>
   </defs>
 
-  <!-- linen-grid tile -->
-  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#tile)" stroke="#9a6f22" stroke-width="4"/>
-  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#weave)"/>
+  <!-- the aetheric field: dark-medium purple, matte, square-shouldered -->
+  <rect x="8" y="8" width="240" height="240" rx="14" fill="#241b38" stroke="#9a6f22" stroke-width="3"/>
+  <rect x="8" y="8" width="240" height="240" rx="14" fill="url(#plusgrid)"/>
 
-  <!-- woven paths between the sephirot (the stalk's weave) -->
-  <g stroke="#9a6f22" stroke-width="3.2" stroke-linecap="round" fill="none" stroke-opacity="0.85">
+  <!-- terminal titlebar: three square lights and a monospace prompt -->
+  <path d="M8 34 H248" stroke="#3a2d59" stroke-width="2"/>
+  <rect x="20" y="18" width="8" height="8" fill="none" stroke="#d9b45a" stroke-width="1.6"/>
+  <rect x="34" y="18" width="8" height="8" fill="none" stroke="#8f7bc0" stroke-width="1.6"/>
+  <rect x="48" y="18" width="8" height="8" fill="#d9b45a"/>
+  <text x="236" y="28" text-anchor="end" font-family="Iosevka, 'Iosevka Term', Menlo, Consolas, monospace" font-size="13" fill="#d9b45a">&gt; grain_</text>
+
+  <!-- the alchemical seal: one thin circle and one great hexagon, holding the tree -->
+  <g fill="none" stroke="#d9b45a">
+    <circle cx="128" cy="140" r="97" stroke-opacity="0.22" stroke-width="1.6"/>
+    <path d="M128 46 L209 93 L209 187 L128 234 L47 187 L47 93 Z" stroke-opacity="0.30" stroke-width="1.8"/>
+  </g>
+
+  <!-- HUD corner brackets: the military frame, matte and square -->
+  <g fill="none" stroke="#c8992f" stroke-width="2.4">
+    <path d="M16 48 V16 H48"/>
+    <path d="M208 16 H240 V48"/>
+    <path d="M240 208 V240 H208"/>
+    <path d="M48 240 H16 V208"/>
+  </g>
+
+  <!-- the antenna above Keter: the crown grain's awn, kept as one square tick -->
+  <g stroke="#d9b45a" stroke-width="2.4" stroke-linecap="square" fill="none">
+    <path d="M128 46 V38"/>
+    <path d="M124 38 H132"/>
+  </g>
+
+  <!-- the tree's line connections: the same twenty-two roads, matte gold, square-cut -->
+  <g stroke="#c8992f" stroke-width="2.5" stroke-linecap="square" fill="none" stroke-opacity="0.9">
     <!-- central pillar -->
-    <path d="M128 44 L128 150 L128 196 L128 220"/>
+    <path d="M128 62 L128 150 L128 198 L128 224"/>
     <!-- upper triad -->
-    <path d="M128 44 L80 78 M128 44 L176 78 M80 78 L176 78"/>
-    <!-- pillars down -->
-    <path d="M80 78 L80 130 M176 78 L176 130"/>
-    <!-- crossbeams and diagonals to center -->
-    <path d="M80 130 L176 130 M80 130 L128 150 M176 130 L128 150"/>
-    <path d="M80 130 L80 182 M176 130 L176 182"/>
-    <path d="M80 182 L128 150 M176 182 L128 150 M80 182 L176 182"/>
-    <path d="M80 182 L128 196 M176 182 L128 196"/>
+    <path d="M128 62 L80 80 M128 62 L176 80 M80 80 L176 80"/>
+    <!-- side pillars down -->
+    <path d="M80 80 L80 132 M176 80 L176 132"/>
+    <!-- crossbeams and diagonals through the heart -->
+    <path d="M80 132 L176 132 M80 132 L128 150 M176 132 L128 150"/>
+    <path d="M80 132 L80 184 M176 132 L176 184"/>
+    <path d="M80 184 L128 150 M176 184 L128 150 M80 184 L176 184"/>
+    <path d="M80 184 L128 198 M176 184 L128 198"/>
   </g>
 
-  <!-- awns (wheat whiskers) above the crown grain -->
-  <g stroke="url(#grain)" stroke-width="3.4" stroke-linecap="round" fill="none">
-    <path d="M128 40 L128 18"/>
-    <path d="M128 40 L112 22"/>
-    <path d="M128 40 L144 22"/>
-  </g>
-
-  <!-- the ten grains at the ten sephirot -->
-  <g fill="url(#grain)" stroke="#7c561a" stroke-width="1.4">
-    <!-- Keter -->
-    <g transform="translate(128,48)"><ellipse rx="12" ry="18"/><path d="M0 -14 V14" stroke="#f4e9cf" stroke-width="1.6" fill="none" stroke-opacity="0.7"/></g>
+  <!-- the ten grains, hex-forged: light gold, matte, each carrying the wheat's pale crease -->
+  <g stroke-linecap="square">
+    <!-- Keter (crown) -->
+    <g transform="translate(128,62)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.8" fill="none" stroke-opacity="0.8"/></g>
     <!-- Chokmah / Binah -->
-    <g transform="translate(176,80) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
-    <g transform="translate(80,80) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(176,80) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <g transform="translate(80,80) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
     <!-- Chesed / Gevurah -->
-    <g transform="translate(176,132) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
-    <g transform="translate(80,132) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
-    <!-- Tiferet (heart) -->
-    <g transform="translate(128,150)"><ellipse rx="12.5" ry="19"/><path d="M0 -15 V15" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <g transform="translate(176,132) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <g transform="translate(80,132) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <!-- Tiferet (heart): hollow, the terminal's cursor at the tree's own center -->
+    <g transform="translate(128,150) scale(1.06)"><use href="#hex" fill="#241b38" stroke="#d9b45a" stroke-width="2.6"/><rect x="-4.5" y="-7" width="9" height="14" fill="#d9b45a"/></g>
     <!-- Netzach / Hod -->
-    <g transform="translate(176,184) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
-    <g transform="translate(80,184) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(176,184) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <g transform="translate(80,184) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
     <!-- Yesod -->
-    <g transform="translate(128,198)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
-    <!-- Malkuth (root grain) -->
-    <g transform="translate(128,224)"><ellipse rx="12" ry="16"/><path d="M0 -12 V12" stroke="#f4e9cf" stroke-width="1.6" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(128,198) scale(0.88)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <!-- Malkuth (root) -->
+    <g transform="translate(128,224) scale(0.94)"><use href="#hex" fill="#d9b45a" stroke="#7c561a" stroke-width="2"/><path d="M0 -10 V10" stroke="#f4e9cf" stroke-width="1.8" fill="none" stroke-opacity="0.8"/></g>
   </g>
 </svg>

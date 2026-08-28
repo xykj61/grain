@@ -47,6 +47,17 @@ azimuth_planet
 # Each host may seat its own convention (e.g. Pacific on a macOS clone,
 # Eastern/EDT on the Framework Ubuntu host after 20260722.125845) — see
 # context/specs/ for host notes. Pick the IANA zone your system clock uses.
+# --- The Grain OS font system (seated 20260828 on Keaton's word) -----------
+# The face is IOSEVKA: narrow, tall, monospace, terminal-first -- the open
+# sibling of the proprietary shape that inspired it (PragmataPro), under the
+# SIL Open Font License 1.1, with its whole build system open so a variant is
+# composed from build plans rather than bought. Keep the stack unless your
+# host genuinely lacks it; every surface that names a font names this stack.
+font_system Iosevka
+font_variant Iosevka Term
+font_license SIL-OFL-1.1
+font_fallback Menlo Consolas monospace
+
 timezone America/New_York
 timezone_label Eastern (EDT in summer · EST in winter)
 
