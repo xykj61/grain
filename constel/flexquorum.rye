@@ -49,7 +49,7 @@ pub fn safe_split(qe: u32, qr: u32, n: u32) bool {
 }
 
 /// THE GUARANTEED OVERLAP. When a split is safe, any election quorum and any replication quorum of these sizes share AT LEAST
-/// qe + qr − n piers (pigeonhole); when unsafe, no overlap is guaranteed at all. This is the strength of the intersection, not just
+/// qe + qr - n piers (pigeonhole); when unsafe, no overlap is guaranteed at all. This is the strength of the intersection, not just
 /// its existence.
 pub fn min_overlap(qe: u32, qr: u32, n: u32) u32 {
     // invariant: both sizes are real and within the constellation.
@@ -136,7 +136,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. min_overlap IS THE PIGEONHOLE STRENGTH -- qe + qr − n when safe, 0 when not.
+    // 3. min_overlap IS THE PIGEONHOLE STRENGTH -- qe + qr - n when safe, 0 when not.
     {
         assert(min_overlap(2, 4, 5) == 1); // 6 − 5
         assert(min_overlap(3, 3, 5) == 1); // 6 − 5

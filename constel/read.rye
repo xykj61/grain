@@ -203,7 +203,7 @@ fn run_selftest() !u8 {
         _ = terms.observe(2, 3);
         const a = try linearizable_read(&m, &cmds, 2, &terms, 3, th);
         const b = try linearizable_read(&m, &cmds, 2, &terms, 3, th); // the SAME read again
-        // identical — no double-apply, no write
+        // identical -- no double-apply, no write
         assert(a == 33);
         assert(b == 33);
         assert(m.register == 33); // the register moved once, not twice, though we read twice

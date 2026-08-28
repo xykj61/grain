@@ -10,7 +10,7 @@
 //!   turns on one inequality: a lease is sound ONLY when its span is strictly shorter than the election timeout (adjusted for drift),
 //!   because if the lease outlived the timeout a partitioned-away leader could still believe its lease valid while the majority has
 //!   already elected a successor. So a lease read is served only while the lease is BOTH sound (span < election timeout) and
-//!   unexpired (now − granted < span); otherwise the caller falls back to the FORA20 read-index. A lease never replaces the safe
+//!   unexpired (now - granted < span); otherwise the caller falls back to the FORA20 read-index. A lease never replaces the safe
 //!   path -- it only shortcuts it, and refuses the moment the clock assumption would make that unsafe.
 //!
 //! This composes FORA24 (tenure -- still_commands, a leader commands a majority this window) as the grant gate, and shortcuts FORA20
@@ -69,7 +69,7 @@ pub fn lease_sound(lease_span: u64, election_timeout: u64) bool {
     return lease_span < election_timeout;
 }
 
-/// SERVE ON THE LEASE? True only when the lease is BOTH sound (span < election timeout) AND unexpired (now − granted < span). When
+/// SERVE ON THE LEASE? True only when the lease is BOTH sound (span < election timeout) AND unexpired (now - granted < span). When
 /// false, the caller falls back to the FORA20 read-index -- a lease read never replaces the safe path, it only shortcuts it. The
 /// subtraction stays in `u64` and never underflows: `now` is monotonic and never precedes the tick the lease was granted.
 pub fn serve_on_lease(lease: *const Lease, now: u64, lease_span: u64, election_timeout: u64) bool {

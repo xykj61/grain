@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.133956` | [the comment that moved into the meter](20260828/20260828-133956_the-comment-that-moved-into-the-meter.kyri) | %314: my split moved 3 em-dashes into a full ratchet |
 | `20260828.133116` | [the roster that held out one room](20260828/20260828-133116_the-roster-that-held-out-one-room.kyri) | constel's last 130 split; the second roster deleted, not widened |
 | `20260828.125441` | [the row closed twice](20260828/20260828-125441_the-row-closed-twice.kyri) | a closure written only in the closing row; the ledger gets a status meter |
 | `20260828.123715` | [the wall widens on the user's word](20260828/20260828-123715_the-wall-widens-on-the-users-word.kyri) | skate/ joins Mind's signed lane; two workflows map and prove it |

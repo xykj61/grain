@@ -314,7 +314,7 @@ fn run_selftest() !u8 {
         _ = try current.append_entry(1, 2);
         _ = try current.append_entry(2, 3);
         const gained_current = try repair(&current, &leader);
-        // nothing to do — already the one true history
+        // nothing to do -- already the one true history
         assert(gained_current == 0);
         assert(current.matches(&leader));
 

@@ -38,6 +38,9 @@ mode="${1:-count}"
 # The arc, each figure measured rather than recalled:
 #   32064  `20260825.011000`  across 1,497 files, the reading on the lap this meter was seated
 #    4338  `20260825.011500`  after the named punctuation was converted in 1,303 files
+#    4333  `20260828.134500`  after constel's eight -- three em-dashes this lap had itself
+#                             promoted from trailing comments (uncounted) to their own lines
+#                             (counted), plus five typographic minus signs in arithmetic prose
 # What remains is notation the rule's table does not name -- 1,305 typographic minus, 542 double
 # vertical, 350 section, 341 multiplication, 289 less-or-equal, 291 superscripts, 195 Greek -- each
 # carrying a meaning a reader should choose the ASCII form for, rather than a script guessing it.
@@ -49,7 +52,7 @@ mode="${1:-count}"
 # `chars=97` where four was the answer. `\001-\177` is the POSIX spelling of the same range and
 # reads identically in both dialects -- the same move `tools/fixtures/living_card_ascii_scan.sh`
 # already made when it dropped `grep -P` for a C-locale byte range (REDS %278).
-CEILING=4338
+CEILING=4333
 
 list=$(git ls-files "*.rye" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
 
