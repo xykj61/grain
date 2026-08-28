@@ -8,7 +8,7 @@
 
 ---
 
-Glow is Grain's language: Hoon's runes carried over bounded, asserted, TAME-disciplined semantics, lowering to ordinary Rye and from there to Zig. A rune is two ASCII characters that open a form. The desk under [`glow/gen/`](../../../glow/gen/) holds 317 real fixtures and generators you can run today; begin with [`primer.md`](primer.md) if this is your first hour, and [`00_inventory.md`](00_inventory.md) for the census.
+Glow is Grain's language: Hoon's runes carried over bounded, asserted, TAME-disciplined semantics, lowering to ordinary Rye and from there to Zig. A rune is two ASCII characters that open a form. The desk under [`glow/gen/`](../../../glow/gen/) holds over three hundred real fixtures and generators you can run today, filed by first letter (`ls glow/gen` counts them truer than any number written here); begin with [`primer.md`](primer.md) if this is your first hour, and [`00_inventory.md`](00_inventory.md) for the census.
 
 <a id="gd-entry-shape"></a>
 ## How to Read an Entry
@@ -61,7 +61,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-shape"></a>
 ### ✦ `+$` name a shape - `$:` state fields - `$%` tag variants
 
-**Shape** (a real desk, [`gen/shape-amount.glow`](../../../glow/gen/shape-amount.glow), whole):
+**Shape** (a real desk, [`gen/shape-amount.glow`](../../../glow/gen/s/shape-amount.glow), whole):
 
 ```
 +$  amount-shape

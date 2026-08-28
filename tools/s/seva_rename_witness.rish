@@ -26,7 +26,7 @@ assert (tame contains "digest-pinned HAWM1") else "TAME_GUIDANCE missing standin
 
 # New paths present; old paths gone.
 assert ((read-file "tools/s/seva_view_witness.rish") contains "seva_view") else "seva_view witness missing"
-assert ((read-file "glow/gen/shape-seva-event.glow") contains "seva-event-shape") else "shape-seva-event missing"
+assert ((read-file "glow/gen/s/shape-seva-event.glow") contains "seva-event-shape") else "shape-seva-event missing"
 assert ((read-file "glow/gen/cast-named-seva-event.glow") contains "seva-event-shape") else "cast-named-seva-event missing"
 assert ((read-file "tools/g/glow_seva_b0_fold_witness.rish") contains "glow_seva_b0") else "glow_seva_b0_fold witness missing"
 assert ((read-file "linengrow/glow_seva_b0_demo_fixture.rye") contains "sala:open rishi session") else "HAWM1 memo1 must remain (STOP)"
@@ -36,8 +36,8 @@ let old_view = run ["sh" "-c" "test ! -e tools/sala_view_witness.rish"]
 assert old_view.ok else "tools/sala_view_witness.rish still present"
 let old_glow = run ["sh" "-c" "test ! -e tools/glow_sala_b0_fold_witness.rish"]
 assert old_glow.ok else "tools/glow_sala_b0_fold_witness.rish still present"
-let old_shape = run ["sh" "-c" "test ! -e glow/gen/shape-sala-event.glow"]
-assert old_shape.ok else "glow/gen/shape-sala-event.glow still present"
+let old_shape = run ["sh" "-c" "test ! -e glow/gen/s/shape-sala-event.glow"]
+assert old_shape.ok else "glow/gen/s/shape-sala-event.glow still present"
 let old_pkg = run ["sh" "-c" "grep -q sala_broadcaster linengrow/tube_android_manifest_emit.rye tools/t/tube05_apk_pack_worker.sh"]
 assert (old_pkg.ok == false) else "living package id still sala_broadcaster"
 
@@ -68,7 +68,7 @@ let demo = run ["rishi/bin/rishi" "run" "tools/g/glow_seva_b0_demo_fixture_witne
 assert demo.ok else "glow_seva_b0_demo_fixture_witness failed"
 
 # Shape desks via glow_run
-let shape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-seva-event.glow"]
+let shape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-seva-event.glow"]
 assert shape.ok else "shape-seva-event.glow failed"
 assert shape.out contains "GREEN" else "shape-seva-event not GREEN"
 let cast = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-seva-event.glow"]
