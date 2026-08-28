@@ -1,0 +1,75 @@
+# tools/g/glow_gate_answer_witness.rish -- a witness that runs a lowered binary must read what the
+# binary answered, rather than only the exit tail the harness itself printed.
+#
+#   rishi/bin/rishi run tools/g/glow_gate_answer_witness.rish
+#
+# WHY. On 20260828 REDS %310 found three sites in glow/lower_shop_gate.rye emitting an argv plant
+# whose main computed its expected value from the SAME expression as the gate body. Every such plant
+# returned 0 for every input and spoke nothing, so `gate-caravan-caps-pair-bound-u32 9 8` -- a count
+# past its cap -- exited clean and silent, and eight pair walls could not be seen to refuse. The
+# witness above them asserted `contains "0"` against output whose tail was `EXIT:0`, and Rishi
+# `contains` is a plain substring test, so the harness's own framing satisfied the assertion before
+# the binary opened its mouth. Sound's language custody repaired the emitters. This is the meter over
+# the witness surface -- the half %310 left parked and named for Silence, and it is a loom rather
+# than a lantern because the same shape can be written again tomorrow.
+#
+# WHAT IS GATED, hard, at zero, and both read zero, so neither asks for a sweep before it can hold.
+#   laundered_needles  a `contains` needle on an EXIT-tail run that the framing alone supplies --
+#                      "0", "1", "EXIT", "EXIT:", ":". The wall cannot red, which is the %310 shape.
+#   unread_runs        a run captured and never asserted at all. It ran, and nobody looked.
+#
+# WHAT IS RATCHETED, under ceilings that only fall, because some are honest and none is a fault
+# a hand can clear this lap.
+#   answer_blind_runs    152 -- a run proven to launch and exit with a code, reading nothing said.
+#   never_refused_files    7 -- a file whose walls stand proven in the passing direction only.
+#
+# WHAT IS NOT PROVEN, said plainly. Whether an asserted answer is the RIGHT answer, which is the
+# placard's job and a reader's. And a witness proving its LOWERING refuses -- `SampleDoesNotNest` in
+# a selftest -- is a real and different proof; this reads only the lowered BINARY's own runs, so a
+# file may prove its compiler refuses and still stand in never_refused_files.
+#
+# Pen: tools/fixtures/glow_gate_answer_control.sh -- twenty-two cases on real planted .rish files,
+# the real standing hit and the real %310 needle both bitten verbatim, every honest shape freed, and
+# both ceilings proven from both sides by planting one past them, so no override exists.
+# Run from the repository root.
+
+say "glow-gate-answer: Language EN -- a wall that cannot red is not a wall."
+say "glow-gate-answer: Style Gauge -- the reading is a needle and a framing, so anyone can check it."
+say "glow-gate-answer: Lens TAME -- safety first: an oracle derived from what it checks is that thing, twice."
+
+let scan = run ["sh" "tools/fixtures/glow_gate_answer_scan.sh"]
+say scan.out
+assert scan.ok else "glow-gate-answer: the witness surface reds -- read the scan's own detail lines"
+assert scan.out contains "verdict=every_needle_outlives_the_framing" else "glow-gate-answer: the scan must reach the clean verdict"
+assert scan.out contains "laundered_needles=0" else "glow-gate-answer: no needle may be supplied by the EXIT tail alone"
+assert scan.out contains "unread_runs=0" else "glow-gate-answer: every captured run must be asserted"
+
+let control = run ["sh" "tools/fixtures/glow_gate_answer_control.sh"]
+say control.out
+assert control.ok else "glow-gate-answer: the control must complete"
+assert control.out contains "case=launder_bitten ok" else "glow-gate-answer: the %310 needle must be refused"
+assert control.out contains "case=launder_named ok" else "glow-gate-answer: a refusal must name the needle it caught"
+assert control.out contains "case=launder_counted ok" else "glow-gate-answer: the laundered count must read one"
+assert control.out contains "case=exit_colon_bitten ok" else "glow-gate-answer: a bare EXIT: needle must be refused"
+assert control.out contains "case=repair_free ok" else "glow-gate-answer: the repaired shape must pass free"
+assert control.out contains "case=negated_refusal_counts ok" else "glow-gate-answer: a negated exit assertion is a refusal"
+assert control.out contains "case=exit_framing_free ok" else "glow-gate-answer: an exact EXIT:<code> needle must pass free"
+assert control.out contains "case=refusal_seen ok" else "glow-gate-answer: a file asserting a nonzero exit has seen its wall refuse"
+assert control.out contains "case=blind_counted ok" else "glow-gate-answer: framing-only runs must count as blind"
+assert control.out contains "case=blind_cleared ok" else "glow-gate-answer: a run reading its spoken answer is not blind"
+assert control.out contains "case=real_needle_free ok" else "glow-gate-answer: the %310 repaired shape must pass"
+assert control.out contains "case=norefuse_counted ok" else "glow-gate-answer: a file never proving a refusal must be counted"
+assert control.out contains "case=norefuse_cleared ok" else "glow-gate-answer: adding a refusal must clear the reading"
+assert control.out contains "case=unread_counted ok" else "glow-gate-answer: a captured run never asserted must be counted"
+assert control.out contains "case=unread_gated ok" else "glow-gate-answer: a captured run never asserted must refuse at zero"
+assert control.out contains "case=no_idiom_told_apart ok" else "glow-gate-answer: a witness without the idiom reads as no file"
+assert control.out contains "case=absent_told_apart ok" else "glow-gate-answer: an absent file must read distinctly"
+assert control.out contains "case=ceilings_cited ok" else "glow-gate-answer: the pen must read both ceilings off the scan"
+assert control.out contains "case=ratchet_blind_under_free ok" else "glow-gate-answer: a ratchet at its ceiling must pass free"
+assert control.out contains "case=ratchet_blind_over_refused ok" else "glow-gate-answer: one blind run past the ceiling must refuse"
+assert control.out contains "case=ratchet_norefuse_under_free ok" else "glow-gate-answer: files at the ceiling must pass free"
+assert control.out contains "case=ratchet_norefuse_over_refused ok" else "glow-gate-answer: one file past the ceiling must refuse"
+assert control.out contains "control=ok" else "glow-gate-answer: the control must agree with itself"
+
+say ""
+say "GREEN: glow-gate-answer -- every needle outlives the framing, and every captured run is read."

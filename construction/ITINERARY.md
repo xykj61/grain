@@ -55,22 +55,22 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `225d4742e2` -- this round, before its nib amend.
+**Git nib:** `c5cfc682e4` -- this round, before its nib amend.
 
-**Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
+**Now.** **The gate answers, and the meter that reads it is rostered.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
 Tally, the microkernel road, the constellation table.
 
-**Dream's seat is seated and running** (`20260827`); `%296` and `%297` are CLOSED. **`%308`
-closes `%307`:** the cut seed cadence still printed from `tools/l/launch-claude-chapter.rish`,
-the file a hand pastes to START a loop. Repaired, and `custody_gate_instruction` gates the
+**`%311` closes the half `%310` parked.** `tools/g/glow_gate_answer_witness.rish` reads the
+surface Sound's emitter repair left: gates at **zero** a `contains` needle the `EXIT:` framing
+supplies and a captured run nobody asserted, ratchets **152** answer-blind runs and **7** files never
+seen to refuse, both ways. The hit: `glow_lower_assert_witness.rish:40` read `contains "EXIT:"`,
+which the harness always prints. The 152 and 7 are Sound's.
 
-loop-prompt surface at zero -- a gated command may stand only inside a clause refusing it.
 **The derived spine is SEATED** (`20260827.181605`). A row's key is its **one-clock stamp**;
 the `%N` is a view the **anointed remote `xy`** allocates, and a published number never moves.
 Book with `reds_spine_derive_scan.sh --next`. Law `.claude/rules/derived-spine.md`, meter
 `tools/r/reds_spine_derive_witness.rish`.
-meter `tools/r/reds_spine_derive_witness.rish`.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
@@ -211,7 +211,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.033212` | %308 -- the launcher still printed the cut seed cadence; the loop-prompt surface gets its guard | [log](../session-logs/date/20260828/20260828-033212_the-template-repaired-and-the-launcher-left.kyri) |
+| `20260828.114450` | %311 -- the needle the harness supplies; the answer-meter rostered, one wall repaired | [log](../session-logs/date/20260828/20260828-114450_the-needle-the-harness-supplied.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

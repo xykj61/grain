@@ -37,7 +37,7 @@ assert run_false.out contains "EXIT:0" else "assert-false welcome did not exit 0
 let build_un = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${un_rye} -femit-bin=${un_bin}"]
 assert build_un.ok else "assert-true unwelcome .rye build failed"
 let run_un = run ["sh" "-c" "${un_bin} >/dev/null 2>&1; echo EXIT:$?"]
-assert run_un.out contains "EXIT:" else "assert-true unwelcome produced no exit"
+assert run_un.ok else "assert-true unwelcome failed to launch"
 assert (run_un.out contains "EXIT:0") == false else "assert-true unwelcome must not exit 0"
 
 # TAME surface gates (own witness -- global roster at 256 ceiling).
