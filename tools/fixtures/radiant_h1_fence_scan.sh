@@ -19,7 +19,14 @@ if ! test -f "$H1_FIXTURE"; then
   exit 1
 fi
 
-CONTROL=$(python3 - "$H1_FIXTURE" <<'PY'
+# The heredoc runs OUTSIDE the command substitution, into a scratch file, on purpose: the
+# bash-3.2 lineage's $() parser counts parentheses naively INSIDE a heredoc, so the python
+# below -- whose last line carries "no"))" -- reads as a shell syntax error at runtime under
+# the macOS sh selector's bash personality, while dash parses it fine and `sh -n` passes
+# everywhere. One tree was carrying two shells (REDS %320's own lesson, one door over).
+H1_TMP=$(mktemp "${TMPDIR:-/tmp}/h1_fence.XXXXXX")
+trap 'rm -f "$H1_TMP"' EXIT
+python3 - "$H1_FIXTURE" > "$H1_TMP" <<'PY'
 import re, sys
 from pathlib import Path
 text = Path(sys.argv[1]).read_text()
@@ -38,7 +45,7 @@ for ln in lines:
 print(f"control_h1_true={true}")
 print(f"control_h1_naive={naive}")
 PY
-)
+CONTROL=$(cat "$H1_TMP")
 echo "$CONTROL"
 TRUE=$(printf '%s\n' "$CONTROL" | sed -n 's/^control_h1_true=//p' | head -1)
 NAIVE=$(printf '%s\n' "$CONTROL" | sed -n 's/^control_h1_naive=//p' | head -1)
@@ -59,7 +66,7 @@ fi
 echo "control_gate=honored"
 
 # Radiant-adjacent roster + the template counsel named as governing offender.
-ROSTER=$(python3 <<'PY'
+python3 > "$H1_TMP" <<'PY'
 import re
 from pathlib import Path
 
@@ -122,7 +129,7 @@ else:
 template = "classical-vedic-astrology/templates/reading-template.md"
 print("governing_template=" + ("yes" if any(template in m for m in multi) else "no"))
 PY
-)
+ROSTER=$(cat "$H1_TMP")
 echo "$ROSTER"
 
 echo "$ROSTER" | rg -q '^h1_fenced_delta=[1-9]' || {
