@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.162148` | [the nib that outran its parent](20260828/20260828-162148_the-nib-that-outran-its-parent.kyri) | %322: a rebase moves the parent the nib names |
 | `20260828.161413` | [the deferred shelf takes its days](20260828/20260828-161413_the-deferred-shelf-takes-its-days.kyri) | yonder folds by day; 283 refs repointed; second of %301 five |
 | `20260828.160657` | [one unit under every awk](20260828/20260828-160657_one-unit-under-every-awk.kyri) | %320: an em dash read 1 there and 3 here; lead bytes fix it |
 | `20260828.155641` | [the line that outran the sweeps](20260828/20260828-155641_the-line-that-outran-the-sweeps.kyri) | ten picks, one push; Mind cleared to fly |
