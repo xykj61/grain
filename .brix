@@ -21,6 +21,14 @@ version 20260810.145743
 # Typo resolution (Brix) — Prim was a mis-hear of Prin
 alias Prim Prin
 
+# The six bodies and their synthesis (seated 20260827.212800, Keaton's word). Three
+# presence-and-absence pairs -- Mind/Mystery, Sound/Silence, Dream/Hush -- and CHOIR, the seventh
+# launch that is not a seventh hand: one voice performing all six lanes in one bounded round, only
+# while every loop is stopped. Synonym discipline: "synthesis launch" and "the seventh seat" are
+# spoken forms of Choir; neither is a second implementation (alias-sameness).
+alias Synthesis Choir
+file tools/l/launch-choir-synthesis-chapter.rish
+
 # Rye compiler
 file rye/src/main.rye
 

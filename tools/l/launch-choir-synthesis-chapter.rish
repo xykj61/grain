@@ -1,0 +1,59 @@
+# launch-choir-synthesis-chapter.rish -- print the recipe for CHOIR, the synthesis launch.
+#
+# Choir is the seventh launch and it is not a seventh hand. The six bodies are three
+# presence-and-absence pairs -- Mind with Mystery, Sound with Silence, Dream with Hush -- and a
+# choir is the one thing all six are together: many voices, and the rests between them, performing
+# one piece in one sitting. The tree already uses the word for exactly this shape -- a choir is one
+# witness that sings a whole family of rungs in one invocation (standing-equipment tiers) -- so the
+# name teaches its own meaning, which is the Comlink tendency's whole test. Seated on Keaton's word
+# 20260827: "make a 7th synthesis launch with a new synthesis name from the 6 names."
+#
+# THE ONE PRECONDITION, and why it is the whole safety story: CHOIR RUNS ONLY WHEN ALL SIX LOOPS
+# ARE STOPPED. One hand performs every lane in one bounded round -- six inner laps, one outer loop
+# around them all -- so the multi-hand collision the charter guards against (REDS %281, %291)
+# cannot occur: there is exactly one hand, holding all six lanes at once, and it opens and closes
+# the round the way any single loop does. Choir is for the quiet hour: the loops rest, one
+# synthesis round sweeps every lane forward a step, and the loops wake to a fresher tree.
+#
+# Charter: active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md (the seventh
+# seat section). Lexicon: the Choir row.
+#
+#   rishi/bin/rishi run tools/l/launch-choir-synthesis-chapter.rish
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the living charter this seat lives in must exist.
+let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+assert charter.ok else "the six-bodies charter is missing"
+
+say "CHOIR -- the synthesis launch (six voices, one performance)"
+say "==========================================================="
+say ""
+say "Host: any single capable hand -- Claude Code at max effort, or a supervised"
+say "Codex session -- on any machine holding this clone. Choir is a LAUNCH, not a"
+say "loop: it runs one round and ends. No sentinel, no sleep-and-repeat."
+say ""
+say "0) PRECONDITION, checked by a hand rather than a flag: ALL SIX LOOPS ARE"
+say "   STOPPED. Ask the terminal multiplexers, ask ListAgents, ask Keaton."
+say "   A Choir round beside a live loop is two hands in one lane, which is"
+say "   the exact thing the six-body design exists to prevent."
+say ""
+say "1) THE ROUND -- one outer loop wrapped around six inner laps:"
+say "   open:  git pull --rebase xy main; read the card and the newest shelf rows."
+say "   sing:  one bounded lap PER LANE, each inside its own rooms --"
+say "          Mind: Brushstroke and Surf/Skate           Mystery: the carried surface (TUBE pack, AppImage)"
+say "          Sound: interface Glow (Realidream, Lantern) Silence: infrastructure (Mantra, Comlink, Tablecloth)"
+say "          Dream: the systems core (Caravan, Tally)    Hush: Pond and the adaptation grant"
+say "          Lanes stay disjoint on disk, so the six laps may run in parallel"
+say "          under one supervisor; findings that cross a lane become card lines,"
+say "          never another lane's edit -- the orbit rule, held even solo."
+say "   close: reds booked centrally by the one hand (never from inside a lane),"
+say "          one session log born on the day's shelf, one send the twice-pulled way."
+say ""
+say "2) CUSTODY: every gate on the card stays MANUAL -- funds and keys, provisioning"
+say "   and paying, the maintainer's identity, the public seed. A Choir round has"
+say "   more reach than any single loop, which is a reason for more care, never less."
+say ""
+say "GREEN: Choir recipe printed -- when the six rest, one voice may carry all six parts, once."
