@@ -31,6 +31,16 @@ git push --force origin main             # origin here IS grain-os/grain
 
 This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it is a privacy safeguard, not a lapse.
 
+**The transport is armed inside the script too** (learned `20260827.223500`, when a publish from a
+fresh clone failed at the push): the field routes SSH through its own repo-local config
+(`.git/ssh_config_urbit`, the jail deploy key), and a freshly initialized `seed/.git` inherits none
+of it -- so `publish-seed.sh` sets `core.sshCommand` beside `core.hooksPath`, under the same clause:
+anything a wipe would disarm is armed in the script. The pushing account is transport only; the
+commit identity stays the anonymous, keyless **Grain OS**. And the script itself is **untracked at
+the root by design** (`.gitignore` names it): when a clone lacks it, it is reconstructed from this
+rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the
+reconstruction before it shipped.
+
 **Living remotes** (`20260730.030553` — Keaton's word): always push **both** `debrided` (GitHub `debrided/grain`) and `xy` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
