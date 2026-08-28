@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `ce166d9326` -- the parent, which every clone resolves.
+**Git nib:** `2a4660a1f0` -- the parent, which every clone resolves.
 
 **Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
@@ -210,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260827.123054` | two hands took one booked lap; six lines dedented, %291 booked, the card back under its declared bound | [log](../session-logs/date/20260827/20260827-123054_two-hands-one-checkout.kyri) |
+| `20260828.002218` | the Constel naming law read both ways; %306 booked and closed, the lotus door back under 20% | [log](../session-logs/date/20260828/20260828-002218_two-proofs-of-one-promise.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
