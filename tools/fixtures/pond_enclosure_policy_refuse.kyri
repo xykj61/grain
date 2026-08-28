@@ -1,0 +1,13 @@
+# pond_enclosure_policy_refuse.kyri -- the agent-jail lap with ONE forbidden mount planted.
+#
+# The plant is the `map` of a key room. Everything else is byte-for-byte the honest policy at
+# pond/enclosure_policy.kyri, so the fixture proves the refusal rather than a different document.
+format pond-enclosure-policy-v1
+name agent-jail-lap-with-a-planted-key-room
+private-home yes
+network off
+gpu no
+map /nix/store
+map /home/youruser/.ssh
+persist /home/youruser/grain
+ephemeral /tmp

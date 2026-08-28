@@ -1,0 +1,13 @@
+# pond_enclosure_policy_hold.kyri -- the agent-jail lap asking for the seated KVM lane.
+#
+# /dev/kvm is off by default and wants the word each time (LANE_KVM, docs/ENCLOSURE.md), so this
+# policy holds rather than refusing: an operator may want it, and should have to say so.
+format pond-enclosure-policy-v1
+name agent-jail-lap-asking-for-the-kvm-lane
+private-home yes
+network off
+gpu yes
+map /nix/store
+device /dev/dri
+device /dev/kvm
+persist /home/youruser/grain

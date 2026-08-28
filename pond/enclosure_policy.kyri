@@ -1,0 +1,26 @@
+# pond/enclosure_policy.kyri -- what the agent-jail lap declares today, written as a value.
+#
+# ACCRETE-ONLY. This record READS tools/ag/agent-jail.sh and tools/e/enclosure.conf.example and
+# says what they build. It rewrites neither, and it flips nothing: the ENCLOSURE selector stays
+# ai-jail until the switchover round lands behind its audit.
+#
+# Paths follow tools/e/enclosure.conf.example's own placeholder convention -- /home/youruser and
+# its project bind -- because the real tools/e/enclosure.conf is gitignored per host. The shapes
+# are exact; only the handle stands in. The four state binds read `loops/<body>/`, the one room
+# read-scope.md seated on 20260827; agent-jail.sh adopts an elder `.claude-state` on next launch.
+#
+#   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
+format pond-enclosure-policy-v1
+name agent-jail-lap
+private-home yes
+network off
+gpu no
+map /nix/store
+map /run/current-system
+persist /home/youruser/grain
+ephemeral /tmp
+rw-map /home/youruser/grain/loops/claude:/home/youruser/.claude
+rw-map /home/youruser/grain/loops/cursor:/home/youruser/.cursor
+rw-map /home/youruser/grain/loops/cursor/xdg-config:/home/youruser/.config/cursor
+rw-map /home/youruser/grain/loops/codex:/home/youruser/.codex
+rw-map /home/youruser/grain/loops/claude/dot-claude.json:/home/youruser/.claude.json

@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260828.002135
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent -- HUSH, Dream's planet, the hands-on systems half
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the harness names the model; .claude/settings.json configures claude-opus-5 at max, which is configuration rather than telemetry
+voice Kyri
+host Framework laptop, NixOS, Linux 6.18 -- Eastern (EDT) one-clock, unjailed terminal
+title the policy that names its refusal -- three roster reds close, Pond orbit one lands
+prompt Kyri as Hush: read KYRI and GAUGE_STYLE, honor the ITINERARY inner loop -- roster cold then hot, reds first as standfast, QA on touch, the council rota, read scope, stamp-and-name, ASCII-first -- pick up the running thread, and work Pond completing the ai-jail enclosure under the accrete-only gate boundary.
+think ListAgents answered no reachable agents, so no peer holds this checkout and the %291 habit is satisfied before a file moved. The cold roster then ran twenty-eight minutes while I read rather than edited, since the runner digests the tree at open and close and refuses when they differ. It read guards_run=74 guards_green=70 guards_red=4, tree_moved=no, tree_at_close=d6ef91e49f0b.
+think Council rota N = git rev-list --count HEAD = 3594, so N mod 5 = 4 -- Earth, Mercury, the concrete, whose sense is smell. It advanced by exactly one row from the prior lap's Water, which is the cadence the grid was drawn for and does not always get. The row read as this lap's own instruction twice over. Its dual seat is the marked value, whose Pond clause is written out in that foundation: the customs house applies policy per mark at receipt. Its fixed seat is Two Rooms, and pond/README.md carried the line Policy-as-value HORIZON -- a claim standing in the vision room since 20260618. The rota named the work before I chose it.
+think Reds first as standfast, so the four roster reds were sized before any new work began. Two were agent-closable prose ratchets and closed this lap. One closes at the send. One is gated and already booked, and I measured it rather than assuming: sha256sum tools/l/chatgpt-mind.sh reads ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234, exactly the value tools/l/chatgpt-mind-rishi-adaptation.md records, so the one line declared_ceiling refuses sits inside a file the MIND adaptation grant froze on purpose and editing it would break the receipt the grant rests on.
+think radiant_negation read NEGATION_ROSE on three living rules -- checkpoint.md 1.67 against a 1.47 baseline, lindy-first-crux.md 1.19 against 1.17, quin.md 0.68 against 0.00. The meter counts whole-field not, never, no, cannot, nothing, nobody per 100 words, so each repair is one word restated affirmatively with the claim held exactly: "and that room does not" became "while that room stays behind"; "it does not widen the round" became "and leaves the round's width where it stands"; "carried by nothing in eleven days" became "left uncarried for eleven days". Densities now read 1.39, 0.99, 0.00.
+think prose_register read lotus/README.md at 27% negative sentences against a 20% Door ceiling, 6 of 22. Three sentences carried the excess and all three sat in one paragraph. Two were also Gauge faults independent of the meter: "LADDER.md stopped being written at ALES214" and "a compressor goes stale quietly" -- and "goes stale" is on Gauge's own compare-by-what-keeps watchlist, so the meter and the style guide wanted the same edit. The page reads 13% now, and the two negatives left are the guard's four refusal readings and the closing benediction, both of which are honest where they stand.
+think Orbit one of the Pond quest asks for two things: a planted policy round-trips, and a forbidden mount refuses by name. I wrote pond/enclosure_policy.rye as customs.rye's sibling -- the same three verdicts, the same worst-wins fold -- reading a Kyri record where the first token of each line is the mark. The declaration names are ai-jail's own, map and rw-map, because a reader who has met the launcher should meet the same words.
+think The refusal roster is the seated one rather than one I invented. docs/ENCLOSURE.md already names what not to widen in ai-jail -- host session buses, host HOME beyond project bind, shared /tmp, broadened network, USB and raw disk, the docker socket -- so the module turns a Claude ruling from 20260712 into something a program checks. The structural tests beside it are mine: a relative path, a traversal, the whole root, a key room, raw memory.
+obs The kind-sensitive reading is where the design earned its keep. `map /tmp` refuses because it shares the host's /tmp, and `ephemeral /tmp` places because it declares /tmp dissolves -- the same path, opposite meanings, decided by which mark it wears. A path-only roster would have refused orbit three's whole subject.
+obs Network on holds rather than refuses, and so does /dev/kvm. The quest's custody line says a round that opens the enclosure's network stops and surfaces, and LANE_KVM is off by default and wants the word each time. Hold is exactly what "stops and surfaces" means in customs vocabulary, so the three verdicts already had a seat for it.
+obs The scan proves every refusal from both sides, and the removal leg is the one that makes the rest mean anything: the planted key-room mount is stripped from a temp copy and the same file returns to place. A refusal shown only in the passing direction cannot be told from a bypass.
+obs The accrete-only gate boundary held with nothing to resist. Not one markdown that instructs or references ai-jail was rewritten -- agent-jail.sh, enclosure.conf.example, docs/ENCLOSURE.md and enclosure-editors.md were read and cited, never touched -- and the ENCLOSURE selector still reads ai-jail. The new module accretes beside them and says what they build.
+obs The witness is rostered at tier lap rather than left unreached, since witness_reach gates unreached and an unrostered witness would have raised it. One second cold, so lap is the honest tier for an arc under active work.
+obs A finding that is not mine to fix: construction/ITINERARY.md entered this lap at 24,562 bytes against the 24,576 it declares -- fourteen bytes of headroom -- so every landing lap must compress something before it can add its own row. I paid for my three lines by trimming my own text twice and by taking two compressions the card's own laws already asked for: a "derived spine is seated" headline duplicated by its own paragraph four lines down, and two CLOSED red rows recited on a card whose law says the ledger keeps the account. It closed at 24,574. The structural question -- whether a one-page card can hold six always-on lanes -- is Keaton's.
+obs Grades on touch, all standing: pond/README.md A before and A after, the plan B+, docs/ENCLOSURE.md A, pond/enclosure_policy.rye A, the witness and the scan B+ each. The last two were graded at Field though a witness header is Meter by the Gauge table, which is the stricter reading; they passed it anyway.
+loom roster=standing_equipment_run guards_run=74 guards_green=70 guards_red=4 wall_s=1656 tree_moved=no tree_at_close=d6ef91e49f0b
+loom witness=pond_enclosure_policy wall_s_cold=1 wall_s_warm=0 legs=8 declarations_checked=11
+loom register=radiant_negation checkpoint=1.67->1.39 lindy_first_crux=1.19->0.99 quin=0.68->0.00
+loom register=prose_register lotus_readme_pct=27->13 negative_sentences=6->3 door_ceiling=20
+loom pin=construction/ITINERARY.md bytes_before=24562 bytes_after=24574 bound=24576
+file pond/enclosure_policy.rye the policy read as a value and marked at receipt, with the refusal named
+file pond/enclosure_policy.kyri today's agent-jail lap written as that value, placeholder handle per the tracked conf example
+file tools/fixtures/pond_enclosure_policy_scan.sh eight legs on metal, every refusal proven from both sides
+file tools/p/pond_enclosure_policy_witness.rish the guard, rostered at tier lap
+file tools/fixtures/pond_enclosure_policy_refuse.kyri one planted key-room mount, everything else honest
+file tools/fixtures/pond_enclosure_policy_hold.kyri the seated KVM lane, which waits for a word
+file construction/standing-equipment.kyri guard 84, seated 20260828.002135
+file pond/README.md the Two Rooms crossing recorded: policy-as-value leaves the horizon line and earns a witness
+file lotus/README.md three sentences restated affirmatively; 27% to 13% against a 20% Door ceiling
+file .claude/rules/checkpoint.md one negation restated; 1.67 back under its 1.47 baseline
+file .claude/rules/lindy-first-crux.md one negation restated; 1.19 back under its 1.17 baseline
+file .claude/rules/quin.md one negation restated; 0.68 back to its 0.00 baseline
+file construction/ITINERARY.md the Hush lane correction, orbit one landed, the %295 shape, and the nib
+recommend keep-going -- orbit two drives these declarations through Caravan's capability and address-space pieces, and the three bus doors of Bar 6 want declarations of their own; both are mechanical from here. Check in with Keaton on two: the card's fourteen bytes of headroom, and whether %295 takes the fourth shape this lap measured.

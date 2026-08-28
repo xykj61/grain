@@ -1,0 +1,557 @@
+//! pond/enclosure_policy.rye -- the enclosure policy as a value, read and marked at receipt.
+//!
+//! WHAT THIS IS FOR. An enclosure is a set of declarations: what is mapped in, what may be
+//! written, whether the home dissolves at exit, whether the network reaches out. Until now
+//! those declarations lived only as shell flags assembled at launch, where nothing could read
+//! them back. Here they are a value -- one Kyri record per line -- read at receipt and marked
+//! place, hold, or refuse, exactly as `customs.rye` marks cargo. A refusing policy names the
+//! declaration that refused, so an operator reads which line to fix rather than a count.
+//!
+//!   rye build pond/enclosure_policy.rye -femit-bin=pond/bin/enclosure-policy
+//!   pond/bin/enclosure-policy selftest
+//!   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
+//!   pond/bin/enclosure-policy explain map /nix/store
+//!
+//! ACCRETE-ONLY. This module READS what the enclosure builds today and says what it is. It
+//! rewrites nothing ai-jail owns, and the switchover stays its own later round behind an audit.
+//! The declaration names are the enclosure's own: ai-jail spells a read-only mount `--map` and a
+//! read-write mount `--rw-map` (`context/specs/enclosure-editors.md`), so a reader who has met
+//! the launcher meets the same words here.
+//!
+//! Ground: the marked value, whose Pond clause is *the customs house applies policy per mark at
+//! receipt* -- `foundations/20260703-202312_the-marked-value.md`. The refusal roster is the
+//! seated one, *what not to widen in ai-jail* -- `docs/ENCLOSURE.md`. The quest this opens is
+//! orbit one of `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`. The elder
+//! vision, policy as a value in Rishi, is `rishi/examples/pond.rish`.
+//!
+//! WHAT THIS DOES NOT REACH. Declaring a policy and enforcing one are two rounds. This reads a
+//! policy and marks it; driving it through Caravan's capability and address-space pieces is
+//! orbit two. The three bus doors of Bar 6 -- the session-bus environment variable, the runtime
+//! socket, and the network namespace -- want declarations of their own and are named here so the
+//! next round finds them written down rather than remembered.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const pond_enclosure_policy_version = "20260828.002135";
+
+/// A policy small enough to hold in one reading is a policy somebody audits. 8 KiB is the same
+/// bound customs reads a manifest under, so the two seams agree on what "one document" means.
+pub const max_policy_len: u32 = 8192;
+/// Four times the largest real policy in this tree: the agent-jail lap declares eleven. The bound
+/// refuses runaway input while leaving honest growth room.
+pub const max_declarations: u32 = 64;
+/// Linux carries a path to 4096 bytes. A declaration past 256 names something no operator checks
+/// by eye, and an enclosure nobody reads is an enclosure nobody trusts.
+pub const max_path_len: u32 = 256;
+/// The widest value is the rw-map form host:jail -- two bounded paths and one separator.
+pub const max_value_len: u32 = max_path_len * 2 + 1;
+
+pub const Verdict = enum {
+    place,
+    hold,
+    refuse,
+};
+
+/// The declaration marks this tree's enclosure actually speaks. Each is a mark in the marked-value
+/// sense: the first token of a line names what rides on it, and an unknown mark is refused whole
+/// rather than guessed at -- the wreck rule for types.
+pub const Kind = enum {
+    map,
+    rw_map,
+    private_home,
+    network,
+    gpu,
+    device,
+    persist,
+    ephemeral,
+};
+
+pub const Receipt = struct {
+    verdict: Verdict,
+    place_count: u32,
+    hold_count: u32,
+    refuse_count: u32,
+    /// The declaration that set the verdict, kept whole. A count tells an operator that something
+    /// refused; the name tells them which line to open, which is the difference between a guard
+    /// and a wall.
+    offender: []const u8,
+};
+
+pub const PolicyError = error{
+    EmptyPolicy,
+    PolicyTooLong,
+    TooManyDeclarations,
+};
+
+fn trim_line(line: []const u8) []const u8 {
+    return std.mem.trim(u8, line, " \t\r\n");
+}
+
+fn verdict_name(v: Verdict) []const u8 {
+    return switch (v) {
+        .place => "place",
+        .hold => "hold",
+        .refuse => "refuse",
+    };
+}
+
+fn kind_name(k: Kind) []const u8 {
+    return switch (k) {
+        .map => "map",
+        .rw_map => "rw-map",
+        .private_home => "private-home",
+        .network => "network",
+        .gpu => "gpu",
+        .device => "device",
+        .persist => "persist",
+        .ephemeral => "ephemeral",
+    };
+}
+
+/// Read the mark off the front of a declaration. A token this table cannot name returns null, and
+/// the caller refuses the whole line.
+pub fn kind_for_token(token: []const u8) ?Kind {
+    if (std.mem.eql(u8, token, "map")) return .map;
+    if (std.mem.eql(u8, token, "rw-map")) return .rw_map;
+    if (std.mem.eql(u8, token, "private-home")) return .private_home;
+    if (std.mem.eql(u8, token, "network")) return .network;
+    if (std.mem.eql(u8, token, "gpu")) return .gpu;
+    if (std.mem.eql(u8, token, "device")) return .device;
+    if (std.mem.eql(u8, token, "persist")) return .persist;
+    if (std.mem.eql(u8, token, "ephemeral")) return .ephemeral;
+    return null;
+}
+
+fn fold_verdict(acc: Verdict, next: Verdict) Verdict {
+    // invariant: the fold is a worst-wins lattice, so the enum order it reads must hold.
+    assert(@intFromEnum(Verdict.place) < @intFromEnum(Verdict.hold));
+    // invariant: refuse sits above hold, so refuse absorbs every other answer.
+    assert(@intFromEnum(Verdict.hold) < @intFromEnum(Verdict.refuse));
+    if (acc == .refuse or next == .refuse) return .refuse;
+    if (acc == .hold or next == .hold) return .hold;
+    return .place;
+}
+
+/// True when `needle` stands as a whole segment of `path`, so `/home/a/.ssh` and
+/// `/home/a/.ssh/id_ed25519` both match `.ssh` while `/home/a/.sshfs` reads clean.
+fn has_segment(path: []const u8, needle: []const u8) bool {
+    // invariant: the path is judged inside the declared bound.
+    assert(path.len <= max_value_len);
+    // invariant: a segment test needs a segment to look for.
+    assert(needle.len > 0);
+    var walk = std.mem.splitScalar(u8, path, '/');
+    while (walk.next()) |segment| {
+        if (std.mem.eql(u8, segment, needle)) return true;
+    }
+    return false;
+}
+
+/// Key custody stays the operator's own hand (ITINERARY custody gates three and four), so a key
+/// room crosses the wall by no declaration -- read-only included, and a parent directory included,
+/// since a parent map carries every child inside it.
+fn reaches_key_room(path: []const u8) bool {
+    // invariant: the caller has anchored the path before asking.
+    assert(path.len > 0);
+    // invariant: this test reads absolute paths alone.
+    assert(path[0] == '/');
+    if (has_segment(path, ".ssh")) return true;
+    if (has_segment(path, ".gnupg")) return true;
+    if (std.mem.startsWith(u8, path, "/etc/ssh")) return true;
+    return false;
+}
+
+/// Raw memory and the host's own process table read past every namespace the enclosure sets up, so
+/// they are named here and refused by name rather than left to the kernel's own permissions.
+fn reaches_raw_host(path: []const u8) bool {
+    // invariant: the caller has anchored the path before asking.
+    assert(path.len > 0);
+    // invariant: this test reads absolute paths alone.
+    assert(path[0] == '/');
+    const raw = [_][]const u8{ "/dev/mem", "/dev/kmem", "/dev/port", "/proc/kcore" };
+    for (raw) |one| {
+        if (std.mem.eql(u8, path, one)) return true;
+    }
+    // A whole-/proc or whole-/sys map hands back exactly what the namespaces were raised to hold.
+    if (std.mem.eql(u8, path, "/proc")) return true;
+    if (std.mem.eql(u8, path, "/sys")) return true;
+    return false;
+}
+
+/// The structural reading every path-bearing declaration takes. It answers place or refuse; the
+/// sharing roster below is a second reading that only host-crossing kinds take.
+pub fn verdict_for_path(path: []const u8) Verdict {
+    // invariant: a path is judged inside the declared bound.
+    assert(path.len <= max_value_len);
+    if (path.len == 0) return .refuse;
+    if (path.len > max_path_len) return .refuse;
+    // A relative path resolves against whatever directory the launcher happened to stand in, so it
+    // carries no meaning that can be checked before the enclosure exists.
+    if (path[0] != '/') return .refuse;
+    // invariant: from here the path is absolute, which is what the room tests below read.
+    assert(path[0] == '/');
+    // Traversal walks out of every root the policy names, which is the one move that would leave
+    // the rest of the policy decorative.
+    if (std.mem.indexOf(u8, path, "..") != null) return .refuse;
+    // Mapping the whole root is the enclosure declining to be one.
+    if (std.mem.eql(u8, path, "/")) return .refuse;
+    if (reaches_key_room(path)) return .refuse;
+    if (reaches_raw_host(path)) return .refuse;
+    return .place;
+}
+
+/// The seated do-not-widen roster from `docs/ENCLOSURE.md`, read for the two kinds that carry a
+/// host path across the wall. Ephemeral and persist name paths inside the enclosure's own
+/// lifetime, so they take the structural reading alone -- `ephemeral /tmp` declares that /tmp
+/// dissolves, which is the opposite of sharing the host's.
+fn shares_host_room(path: []const u8) bool {
+    // invariant: the caller has anchored the path before asking.
+    assert(path.len > 0);
+    // invariant: this test reads absolute paths alone.
+    assert(path[0] == '/');
+    // Host session buses -- D-Bus and systemd transient units, the doorway retired on 20260712.
+    if (std.mem.startsWith(u8, path, "/run/dbus")) return true;
+    if (std.mem.startsWith(u8, path, "/var/run/dbus")) return true;
+    if (std.mem.startsWith(u8, path, "/run/systemd")) return true;
+    // The docker socket hands over a daemon that can mount anything.
+    if (has_segment(path, "docker.sock")) return true;
+    // A shared /tmp is the roster's own line, and Bar 2 asks that /tmp reset instead.
+    if (std.mem.eql(u8, path, "/tmp")) return true;
+    if (std.mem.startsWith(u8, path, "/tmp/")) return true;
+    // USB and raw disk reach the hardware under every filesystem the policy names.
+    if (std.mem.startsWith(u8, path, "/dev/bus/usb")) return true;
+    if (std.mem.startsWith(u8, path, "/dev/sd")) return true;
+    if (std.mem.startsWith(u8, path, "/dev/nvme")) return true;
+    return is_home_root(path);
+}
+
+/// True for a home directory's own root -- `/home/<user>` or `/root`. The roster admits the
+/// project bind, which sits one segment deeper, and refuses the home above it: a map of the home
+/// root carries every dotfile in it, which is *host $HOME beyond project bind* exactly.
+fn is_home_root(path: []const u8) bool {
+    // invariant: the caller has anchored the path before asking.
+    assert(path.len > 0);
+    // invariant: this test reads absolute paths alone.
+    assert(path[0] == '/');
+    if (std.mem.eql(u8, path, "/root")) return true;
+    if (!std.mem.startsWith(u8, path, "/home/")) return false;
+    const rest = path["/home/".len..];
+    if (rest.len == 0) return true;
+    return std.mem.indexOfScalar(u8, rest, '/') == null;
+}
+
+/// A read-only or read-write mount of a host path: structural first, then the sharing roster.
+fn verdict_for_host_path(path: []const u8) Verdict {
+    // invariant: a path is judged inside the declared bound.
+    assert(path.len <= max_value_len);
+    const structural = verdict_for_path(path);
+    if (structural != .place) return structural;
+    // invariant: a path that passed the structural reading is absolute and non-empty.
+    assert(path.len > 0);
+    if (shares_host_room(path)) return .refuse;
+    return .place;
+}
+
+/// The rw-map form is host:jail -- two paths, and a write reaches whichever side went unchecked.
+fn verdict_for_rw_map(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const colon = std.mem.indexOfScalar(u8, value, ':') orelse return .refuse;
+    if (colon == 0) return .refuse;
+    if (colon + 1 >= value.len) return .refuse;
+    const host = value[0..colon];
+    const jail = value[colon + 1 ..];
+    // invariant: both sides carry bytes, which the two guards above have just established.
+    assert(host.len > 0);
+    return fold_verdict(verdict_for_host_path(host), verdict_for_path(jail));
+}
+
+/// The ephemeral home is the third orbit's whole subject, so turning it off is a decision a hand
+/// makes out loud rather than a default a file carries quietly.
+fn verdict_for_private_home(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const v: Verdict = if (std.mem.eql(u8, value, "yes"))
+        .place
+    else if (std.mem.eql(u8, value, "no"))
+        .hold
+    else
+        .refuse;
+    // invariant: this field places only on the answer that keeps the home ephemeral.
+    assert(v != .place or std.mem.eql(u8, value, "yes"));
+    return v;
+}
+
+/// Opening the enclosure's network is check-in territory by the quest's own custody line, so `on`
+/// holds for a word rather than refusing outright: an operator may want it, and should say so.
+fn verdict_for_network(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const v: Verdict = if (std.mem.eql(u8, value, "off"))
+        .place
+    else if (std.mem.eql(u8, value, "on"))
+        .hold
+    else
+        .refuse;
+    // invariant: this field places only on the answer that keeps the wall closed.
+    assert(v != .place or std.mem.eql(u8, value, "off"));
+    return v;
+}
+
+/// GPU passthrough is a seated, working seam -- Zed on GNOME Wayland requires it -- so both
+/// answers place and the policy records which one this lap chose.
+fn verdict_for_gpu(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const known = std.mem.eql(u8, value, "yes") or std.mem.eql(u8, value, "no");
+    const v: Verdict = if (known) .place else .refuse;
+    // invariant: an unreadable answer to a yes-or-no field never places.
+    assert(v != .place or known);
+    return v;
+}
+
+/// A device node is the one kind whose unknown values hold rather than refuse: the roster of
+/// devices an enclosure might honestly want stays open, while the roster that must never cross is
+/// closed and named above. `/dev/dri` carries the seated GPU lane and places; `/dev/kvm` carries
+/// the seated KVM lane, which stands off by default and wants the word each time.
+fn verdict_for_device(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const structural = verdict_for_path(value);
+    if (structural != .place) return structural;
+    // invariant: a path that passed the structural reading is absolute and non-empty.
+    assert(value.len > 0);
+    // A device declaration naming something outside /dev is a mistake worth catching at receipt.
+    if (!std.mem.startsWith(u8, value, "/dev/")) return .refuse;
+    if (std.mem.startsWith(u8, value, "/dev/dri")) return .place;
+    return .hold;
+}
+
+pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
+    // invariant: a declaration is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    // invariant: the kind is one this module can name, so the switch below is total.
+    assert(kind_name(kind).len > 0);
+    return switch (kind) {
+        .map => verdict_for_host_path(value),
+        .rw_map => verdict_for_rw_map(value),
+        .private_home => verdict_for_private_home(value),
+        .network => verdict_for_network(value),
+        .gpu => verdict_for_gpu(value),
+        .device => verdict_for_device(value),
+        .persist, .ephemeral => verdict_for_path(value),
+    };
+}
+
+pub fn inspect_policy(text: []const u8) PolicyError!Receipt {
+    if (text.len > max_policy_len) return error.PolicyTooLong;
+    // invariant: the whole policy is read inside one declared bound.
+    assert(text.len <= max_policy_len);
+    var receipt: Receipt = .{
+        .verdict = .place,
+        .place_count = 0,
+        .hold_count = 0,
+        .refuse_count = 0,
+        .offender = "",
+    };
+    var seen: u32 = 0;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        const line = trim_line(raw);
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        // The record's own header fields name the document rather than declaring an enclosure.
+        if (std.mem.startsWith(u8, line, "format ")) continue;
+        if (std.mem.startsWith(u8, line, "name ")) continue;
+        if (seen >= max_declarations) return error.TooManyDeclarations;
+        seen += 1;
+        var token = line;
+        var value: []const u8 = "";
+        if (std.mem.indexOfScalar(u8, line, ' ')) |space| {
+            token = line[0..space];
+            value = trim_line(line[space + 1 ..]);
+        }
+        const v: Verdict = if (value.len > max_value_len)
+            .refuse
+        else if (kind_for_token(token)) |kind|
+            verdict_for_declaration(kind, value)
+        else
+            .refuse;
+        switch (v) {
+            .place => receipt.place_count += 1,
+            .hold => receipt.hold_count += 1,
+            .refuse => receipt.refuse_count += 1,
+        }
+        const folded = fold_verdict(receipt.verdict, v);
+        // The first declaration to worsen the verdict is the one an operator opens first, so it is
+        // the one the receipt names; the rest stay visible in the counts.
+        if (folded != receipt.verdict) receipt.offender = line;
+        receipt.verdict = folded;
+    }
+    if (seen == 0) return error.EmptyPolicy;
+    // invariant: every declaration read landed in exactly one count.
+    assert(receipt.place_count + receipt.hold_count + receipt.refuse_count == seen);
+    // invariant: a policy that refuses or holds always names the declaration that did it.
+    assert(receipt.verdict == .place or receipt.offender.len > 0);
+    return receipt;
+}
+
+fn run_check(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_policy_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    const receipt = try inspect_policy(text);
+    print("pond enclosure-policy: {s} place={d} hold={d} refuse={d} verdict={s}\n", .{
+        path,
+        receipt.place_count,
+        receipt.hold_count,
+        receipt.refuse_count,
+        verdict_name(receipt.verdict),
+    });
+    if (receipt.verdict == .refuse) {
+        print("REFUSE: pond enclosure-policy -- forbidden declaration: {s}\n", .{receipt.offender});
+        return 2;
+    }
+    if (receipt.verdict == .hold) {
+        print("HOLD: pond enclosure-policy -- awaits a word: {s}\n", .{receipt.offender});
+        return 1;
+    }
+    print("GREEN: pond enclosure-policy -- every declaration may be placed.\n", .{});
+    return 0;
+}
+
+fn run_explain(token: []const u8, value: []const u8) !u8 {
+    if (value.len > max_value_len) {
+        print("REFUSE: pond enclosure-policy -- value longer than max_value_len={d}\n", .{max_value_len});
+        return 2;
+    }
+    const kind = kind_for_token(token) orelse {
+        print("REFUSE: pond enclosure-policy -- unknown declaration mark: {s}\n", .{token});
+        return 2;
+    };
+    const v = verdict_for_declaration(kind, value);
+    print("pond enclosure-policy: {s} {s} verdict={s}\n", .{ kind_name(kind), value, verdict_name(v) });
+    if (v == .refuse) {
+        print("REFUSE: pond enclosure-policy -- this declaration stays outside the wall.\n", .{});
+        return 2;
+    }
+    if (v == .hold) {
+        print("HOLD: pond enclosure-policy -- this declaration awaits a word.\n", .{});
+        return 1;
+    }
+    print("GREEN: pond enclosure-policy -- this declaration may be placed.\n", .{});
+    return 0;
+}
+
+fn run_selftest() !u8 {
+    // The marks this module names, each answering as its own comment above says it should.
+    assert(verdict_for_declaration(.map, "/nix/store") == .place);
+    assert(verdict_for_declaration(.private_home, "yes") == .place);
+    assert(verdict_for_declaration(.private_home, "no") == .hold);
+    assert(verdict_for_declaration(.network, "off") == .place);
+    assert(verdict_for_declaration(.network, "on") == .hold);
+    assert(verdict_for_declaration(.gpu, "no") == .place);
+    assert(verdict_for_declaration(.gpu, "maybe") == .refuse);
+    assert(verdict_for_declaration(.device, "/dev/dri") == .place);
+    assert(verdict_for_declaration(.device, "/dev/kvm") == .hold);
+    assert(verdict_for_declaration(.device, "/dev/mem") == .refuse);
+    assert(verdict_for_declaration(.device, "/home/youruser/grain") == .refuse);
+
+    // The structural readings, each refusing for its own stated reason.
+    assert(verdict_for_path("relative/path") == .refuse);
+    assert(verdict_for_path("/nix/store/../etc") == .refuse);
+    assert(verdict_for_path("/") == .refuse);
+    assert(verdict_for_path("/home/youruser/.ssh") == .refuse);
+    assert(verdict_for_path("/home/youruser/.ssh/id_ed25519") == .refuse);
+    assert(verdict_for_path("/home/youruser/.gnupg") == .refuse);
+    assert(verdict_for_path("/etc/ssh/sshd_config") == .refuse);
+    assert(verdict_for_path("/proc") == .refuse);
+    assert(verdict_for_path("/sys") == .refuse);
+    // A segment test reads whole segments, so a name merely beginning the same way stays clean.
+    assert(verdict_for_path("/home/youruser/.sshfs") == .place);
+
+    // The seated do-not-widen roster, read for the two host-crossing kinds alone.
+    assert(verdict_for_declaration(.map, "/run/dbus") == .refuse);
+    assert(verdict_for_declaration(.map, "/run/systemd/private") == .refuse);
+    assert(verdict_for_declaration(.map, "/var/run/docker.sock") == .refuse);
+    assert(verdict_for_declaration(.map, "/tmp") == .refuse);
+    assert(verdict_for_declaration(.map, "/dev/bus/usb") == .refuse);
+    assert(verdict_for_declaration(.map, "/dev/sda1") == .refuse);
+    assert(verdict_for_declaration(.map, "/home/youruser") == .refuse);
+    assert(verdict_for_declaration(.map, "/root") == .refuse);
+    // The project bind sits one segment deeper than the home root, and it is the point of the pier.
+    assert(verdict_for_declaration(.map, "/home/youruser/grain") == .place);
+    // Ephemeral names a path inside the enclosure's own lifetime, so /tmp dissolving is welcome.
+    assert(verdict_for_declaration(.ephemeral, "/tmp") == .place);
+    assert(verdict_for_declaration(.persist, "/home/youruser/grain") == .place);
+
+    // The rw-map form reads both sides, and a write reaches whichever side went unchecked.
+    assert(verdict_for_declaration(.rw_map, "/home/youruser/grain/.claude-state:/home/youruser/.claude") == .place);
+    assert(verdict_for_declaration(.rw_map, "/tmp:/home/youruser/tmp") == .refuse);
+    assert(verdict_for_declaration(.rw_map, "/home/youruser/grain/state:/home/youruser/.ssh") == .refuse);
+    assert(verdict_for_declaration(.rw_map, "/home/youruser/grain/state") == .refuse);
+    assert(verdict_for_declaration(.rw_map, ":/home/youruser/.claude") == .refuse);
+
+    const welcome =
+        \\format pond-enclosure-policy-v1
+        \\name selftest-lap
+        \\private-home yes
+        \\network off
+        \\map /nix/store
+        \\ephemeral /tmp
+    ;
+    const ok = try inspect_policy(welcome);
+    assert(ok.verdict == .place);
+    assert(ok.place_count == 4);
+    assert(ok.refuse_count == 0);
+    assert(ok.offender.len == 0);
+
+    const held =
+        \\map /nix/store
+        \\device /dev/kvm
+    ;
+    const held_r = try inspect_policy(held);
+    assert(held_r.verdict == .hold);
+    assert(held_r.hold_count == 1);
+    assert(std.mem.eql(u8, held_r.offender, "device /dev/kvm"));
+
+    const forbidden =
+        \\map /nix/store
+        \\map /home/youruser/.ssh
+        \\device /dev/kvm
+    ;
+    const forbidden_r = try inspect_policy(forbidden);
+    assert(forbidden_r.verdict == .refuse);
+    assert(forbidden_r.refuse_count == 1);
+    // The refusal names the mount rather than counting it, which is this module's whole promise.
+    assert(std.mem.eql(u8, forbidden_r.offender, "map /home/youruser/.ssh"));
+
+    // An unknown mark is refused whole -- the wreck rule for types.
+    const stranger =
+        \\map /nix/store
+        \\tunnel /dev/net/tun
+    ;
+    const stranger_r = try inspect_policy(stranger);
+    assert(stranger_r.verdict == .refuse);
+    assert(std.mem.eql(u8, stranger_r.offender, "tunnel /dev/net/tun"));
+
+    // A record carrying only header fields declares no enclosure at all.
+    if (inspect_policy("# comment\nformat x\nname y\n")) |_| return error.EmptyPolicyPassed else |_| {}
+
+    print("pond: enclosure-policy version {s}\n", .{pond_enclosure_policy_version});
+    print("GREEN: pond enclosure-policy -- place, hold, refuse; the forbidden mount named.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "check")) {
+        return run_check(init.io, args[2]);
+    }
+    if (args.len >= 4 and std.mem.eql(u8, args[1], "explain")) {
+        return run_explain(args[2], args[3]);
+    }
+    return run_selftest();
+}
