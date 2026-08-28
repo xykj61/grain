@@ -440,3 +440,16 @@ seated 20260828.033212
 guard glow_gate_answer
 path tools/g/glow_gate_answer_witness.rish
 seated 20260828.114450
+
+# reds_status_consistency -- construction/REDS.md is the first page a lap reads under reds-first,
+# and the one thing it has to get right is which rows are still open. REDS %313 found `%307` reading
+# open on the pin while `%308` -- folded onto a shelf the same day -- carried the only record of its
+# closure. The split is structural: every fold moves a closing row into a closed stack and leaves
+# the row it closed on the open shelf. Gates contradicted_rows and phantom_closures at zero, and
+# reports open_rows, closed_rows, closure_claims, duplicate_row_lines and fold_blocked_rows. `lap`
+# rather than `cadence`: it is awk over 128 markdown files and costs under a second, measured
+# 20260828, and the page it reads is the page every lap chooses its work from.
+
+guard reds_status_consistency
+path tools/r/reds_status_consistency_witness.rish
+seated 20260828.125441
