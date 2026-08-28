@@ -143,17 +143,53 @@ done
 # fold until `glow/glow_run.rye`'s two import-path sites learned the letter room, which they did
 # on `20260828` (REDS %301), and the room now stands on the ENFORCE_ALL roster above. Reporting
 # is the honest act; the cure belongs to the round that can pay for it.
+#
+# TWO SHAPES STAND OVER THE BOUND, AND ONLY ONE HAS A FOLD AHEAD OF IT. The mark law names
+# exactly two fold shapes: a room found by WHEN folds to `<room>/date/YYYYMMDD/`, and a room found
+# by WHAT folds to `<room>/<letter>/`. A DAY SHELF is already the output of the first, so there is
+# no third shape left for it to move into. tools/d/dated_path_resolve.rish computes
+# `<room>/date/<day>/<basename>` as a PURE FUNCTION of the basename, and a directory below the day
+# would break it -- that function is the whole reason a stale reference is RESOLVED rather than
+# rewritten across thousands of dated citations, so it is not a thing to spend on tidiness.
+#
+# So a day shelf over the bound prints as `terminal_shelf=` rather than as a room awaiting a fold.
+# Reading the two alike told a lap there was mechanical work where the law provides none:
+# `counsel/date/20260728` at 311 stood among REDS %301's five booked folds and is the one with
+# nowhere to go (REDS %315). The live number for a shelf is GitHub's 1,000-entry listing cap, past
+# which it stops being openable in a browser, so the headroom to that cap prints beside it.
+#
+# It GATES NOTHING, on purpose and twice over. 256 sits deliberately below the cliff, so gating a
+# shelf at the cliff would be the very placement this file's own header argues against; and
+# seating a shelf-specific bound -- or the hour fold that would answer it, `date/YYYYMMDD/HH/`,
+# which is equally pure since the hour is characters 10 and 11 of the basename -- is a change to a
+# seated law rather than a meter's to make. Reporting is the honest act.
+LISTING_CAP=1000
+
 undated_over=0
-git ls-files 2>/dev/null | awk -F/ 'NF>1 { d=$0; sub("/[^/]*$","",d); print d }' | sort | uniq -c |
+terminal_shelves=0
+sweep="$(mktemp)"
+trap 'rm -f "$sweep"' EXIT
+git ls-files 2>/dev/null | awk -F/ 'NF>1 { d=$0; sub("/[^/]*$","",d); print d }' | sort | uniq -c > "$sweep"
 while read -r n dir; do
   [ "$n" -gt "$BOUND" ] || continue
   case " $ENFORCE_ALL $ENFORCE " in *" $dir "*) continue ;; esac
   case "$dir" in vendor/*|gratitude/*|seed/*|rye/lib/*|.git/*) continue ;; esac
-  echo "undated_room=$dir flat=$n verdict=over roster=advise"
-done
+  case "$dir" in
+    */date/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])
+      echo "terminal_shelf=$dir flat=$n verdict=over shape=day_fold_terminal cap_headroom=$((LISTING_CAP - n))"
+      terminal_shelves=$((terminal_shelves + 1))
+      ;;
+    *)
+      echo "undated_room=$dir flat=$n verdict=over roster=advise"
+      undated_over=$((undated_over + 1))
+      ;;
+  esac
+done < "$sweep"
 
 echo "enforced_over=$enforced_over"
 echo "advised_over=$advised_over"
+echo "undated_over=$undated_over"
+echo "terminal_shelves=$terminal_shelves"
 
 if [ "$enforced_over" -eq 0 ]; then
   echo "verdict=ok"
