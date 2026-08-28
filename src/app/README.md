@@ -3,6 +3,7 @@
 **Language:** EN
 **Status:** Pointer -- this room's pedestals moved to [`../shape/`](../shape/README.md) on `20260827.184500`
 **Molted:** `20260827.184500` -- on Keaton's word, `approve all doors`
+**Where this sits:** home is [`../../README.md`](../../README.md) - the room map is [`../README.md`](../README.md) - a first hour in your hands is [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md)
 
 Every file this room held was a `shape-*.glow` desk, so it held the same kind of thing
 [`../shape/`](../shape/README.md) holds, split by a subject each filename already carried. The

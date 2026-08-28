@@ -1,7 +1,7 @@
 # Checkpoint — mark the way back before you debride
 
 **Seated:** `20260809.024851` on Keaton's word · **Status:** Living
-**Ledger:** [`../../construction/CHECKPOINTS.md`](../../construction/CHECKPOINTS.md)
+**Ledger:** `construction/CHECKPOINTS.md` (a maintainer-only room; named here rather than linked, since this law ships in the seed and that room does not)
 **Kin:** [`debride.md`](debride.md) — debride removes; a checkpoint marks the way back first.
 **Cursor twin:** [`../../.cursor/rules/checkpoint.mdc`](../../.cursor/rules/checkpoint.mdc)
 

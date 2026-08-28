@@ -5,7 +5,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Kin:** [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) - [`TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md) - [`read-scope`](../.claude/rules/read-scope.md), which holds this room a closed stack - [`custody gates`](../construction/ITINERARY.md), which decide when a piece may leave
+**Kin:** [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) - [`TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md) - [`read-scope`](../.claude/rules/read-scope.md), which holds this room a closed stack - the custody gates on the operator card, which decide when a piece may leave
 
 ---
 
