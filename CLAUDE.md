@@ -42,4 +42,4 @@ At the end of **every** response, write a session log per `.claude/rules/session
 
 ## Enclosure
 
-Zed often runs inside ai-jail via `./tools/launch-zed.sh`. GPU passthrough (`USE_GPU=true`) is required on GNOME Wayland. See `context/specs/enclosure-editors.md`.
+Zed often runs inside ai-jail via `tools/l/launch-zed.sh.example`, copied and filled in for the host. GPU passthrough (`USE_GPU=true`) is required on GNOME Wayland. See `context/specs/enclosure-editors.md`.

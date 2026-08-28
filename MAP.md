@@ -10,7 +10,7 @@
 
 ---
 
-Welcome, traveler. Forty-some doors face you at this root, and every one is friendly once you know which is which. This page groups them into **seven rooms**, so you can hold the whole house in mind at once and walk straight to the door you came for. Nothing here is required reading; everything here is findable in one glance.
+Welcome, traveler. Something over a hundred doors face you at this root -- `ls -A | wc -l` is the honest count, and it grows -- and every one is friendly once you know which is which. This page groups them into **seven rooms**, so you can hold the whole house in mind at once and walk straight to the door you came for. Nothing here is required reading; everything here is findable in one glance.
 
 ## If You Only Open Three Doors
 
