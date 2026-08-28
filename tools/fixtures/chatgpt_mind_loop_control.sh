@@ -12,7 +12,7 @@ PRINTER_SOURCE="$ROOT/tools/l/print-mind-cardinal-prompt.rish"
 RISHI_BIN="$ROOT/rishi/bin/rishi"
 ELDER="$ROOT/tools/l/launch-claude-chapter.rish"
 EXPECTED_SOURCE_SHA256=ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234
-EXPECTED_ELDER_SHA256=e7e69505b5e98a1230b610ca751adb442ba79bf46a7b38b0b3fcccaf84d625ca
+EXPECTED_ELDER_SHA256=74257cbb8e398eade94004290e029d7c4c830043a844794cf8c139ef76ab0e1e
 PEN="$(mktemp -d "${TMPDIR:-/tmp}/chatgpt-mind-control.XXXXXX")"
 cleanup() {
   if [ -n "${CONTROL_GNUPGHOME:-}" ]; then
