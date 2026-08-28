@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260827.210136
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent
+modality text
+model claude-fable-5
+model_status active runtime unverified
+voice Kyri
+host macOS clone (Mac hand) -- Eastern (EDT) one-clock
+title the sweep returns thirty-four findings, and two of them were mine from this morning
+prompt Keaton: approve and kg and improve the whole repo -- the sweep half.
+think Sixty-eight agents across eight dimensions, each finding adversarially verified by a second agent told to refute it, returned 34 confirmed defects. The design that made it worth running was the verify stage: every claim had to survive an agent whose instruction was to default to refuted when uncertain. What came back was measured rather than suspected, which is why sixteen of them could be closed the same hour.
+think Two of the thirty-four were mine, from earlier in this same session, and both are worth naming rather than quietly repairing. The operator card claimed 76 guards, 73 every-lap and 3 cadence, while the scan it cites read 83, 74 and 9 -- and the drift entered when MY commit added six guards and retiered the cadence while editing that very file. And the card's seated-breaches row still read Q-vane to Lumen one line below the row where I had just retired Lumen.
+think The card fix was the second option the finding offered rather than the first. Resetting three literals restores the truth for one lap; deleting them and pointing at the scan removes the second copy of a bound, which is the fault rather than its symptom. docs/README.md already argues exactly this, and the card had been hand-incremented through 57, 58, 60, 61, 63, 67, 70, 71, 74, 75, 76 across its whole life, which is what a prose count with no guard behind it does as a matter of course.
+think The registry finding is the sharpest of the thirty-four and the most general. .claude/rules/waymark-ladders.md calls construction/waymark-registry.bron the record of EVERY waymark ever drawn and calls it the authority; AHOY stood in the rule's own table and in 24 living files with no row in the registry, and the registry witness was GREEN the whole time. It was right to be: the SHA3-512 seal proves no row was EDITED and the re-derivation proves every row PRESENT is honest, and neither reading can see a row that is simply ABSENT, because a missing row is well-formed.
+obs A guard over one set proves things about the members it has; only a guard over two sets can prove the set is whole. That is REDS %303 and it is the day's best sentence. The repair derived AHOY on metal from its own recorded input -- sha3-512 prefix b7aa8eb8, index 65 of 5,526 -- so the row was computed rather than invented, and a completeness leg now differences the rule table's 29 marks against the registry, proven both ways by deleting the AHOY row and watching it refuse by name.
+obs Two red guards went green: fascia_home_link read three rooms with no path home and all three were pointer READMEs I had written an hour earlier, and seed_link read 857 escaping links against a ceiling of 848, of which nine were shipped documents linking into rooms the seed withholds. Nine are named in prose now, which is the remedy the scan's own message asks for, and the reading is exactly 848.
+obs The law room's own index was the most embarrassing find. context/README.md indexes the directory that HOLDS this tree's voice law and described RIYO.md as the standing voice while never naming KYRI.md at all, seventeen days after the molt.
+obs Repairing the session-logs rule's stale .bron count surfaced something worth more than the number: 688 of those logs are stamped AFTER the 20260810 molt the same paragraph announces, so the new-logs-are-kyri law is followed by some hands and not others. Both twins say so now rather than letting a reader assume the molt took.
+obs Eighteen of the thirty-four remain, and they are named in the workflow's own record. The largest untouched cluster is TAME: 25 compound asserts outside the ban gate's roster, four Glow lowering modules carrying 28-31 functions and zero asserts, fifteen published signatures taking or returning usize, a >70-line ratchet blind to most of its roster, and a ban gate that never reads glow/, mycelium/, lattice/, ember/ or lantern/ at all.
+loom findings_confirmed=34 closed_this_lap=16 agents=68 subagent_tokens=8587803 reds_booked=303 reds_folded=300,302 guards_freed=4 seed_link=848 fascia_home=121
+file construction/ITINERARY.md the guard count deleted rather than reset, and the breach row naming Ember
+file construction/waymark-registry.bron AHOY derived, appended, and the body re-sealed
+file tools/fixtures/waymark_table_registry_completeness.sh the leg that can see an absence
+file context/README.md the law room's index names the living voice again
+file .claude/rules/session-logs.md the count measured, and the 688 logs that broke its own law named
+file construction/REDS.md %303 -- only a guard over two sets can prove a set is whole
+recommend check-in (Keaton) -- eighteen findings stand, the TAME cluster largest among them; five room folds and FORA31 are still booked, and the deep debride still waits behind them
