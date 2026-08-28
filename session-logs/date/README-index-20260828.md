@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.155641` | [the line that outran the sweeps](20260828/20260828-155641_the-line-that-outran-the-sweeps.kyri) | ten picks, one push; Mind cleared to fly |
 | `20260828.154329` | [the card that points at nothing](20260828/20260828-154329_the-card-that-points-at-nothing.kyri) | two card reds, found and left with their hand |
 | `20260828.153737` | [the pin weighed where it can still be trimmed](20260828/20260828-153737_the-pin-weighed-where-it-can-still-be-trimmed.kyri) | the commit-time pin wall |
 | `20260828.151653` | [the wrapper the meter believed](20260828/20260828-151653_the-wrapper-the-meter-believed.kyri) | %317: 430 calls read as one; 89 witnesses filed as unheard |
