@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `8f5e83d6a3` -- this round's parent.
+**Git nib:** `14b05fe90e` -- this round's parent.
 
 **Now.** **The ledger reads itself, and found a row closed twice.**
 
@@ -214,7 +214,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.143512` | %321 -- a lap read out of the dead-letter box; Pond orbit one | [log](../session-logs/date/20260828/20260828-143512_the-dead-letter-box.kyri) |
+| `20260828.173546` | FORA31 -- switchboard on real descriptors, GREEN | [log](../session-logs/date/20260828/20260828-173546_the-switchboard-that-crossed-a-kernel.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

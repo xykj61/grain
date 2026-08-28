@@ -1,0 +1,500 @@
+//! constel/socket.rye -- FORA31: the switchboard's mailboxes backed by real localhost file descriptors.
+//!
+//! WHAT THIS IS FOR. FORA6 gave the constellation a switchboard -- many fake piers, each holding its
+//! own mailbox, a frame routed to exactly one of them by name, a stranger refused before a byte
+//! moves. Every mailbox there was a slot in an array, so the "network" was this program's own
+//! memory and the routing was our own `if`. This rung swaps each mailbox for a real UDP socket on
+//! 127.0.0.1 and keeps the contract word for word: the same names, the same refusals, the same
+//! sealed FORA3 frame. What changes is who routes. The kernel does, by port -- and this code loses
+//! the ability to lie about where a frame went.
+//!
+//! THE CRUX. The FORA4 handshake -- greeting, ack, session -- completes across four real datagrams,
+//! and the `Session` it returns is read back off a socket rather than out of an array. Thirty rungs
+//! stand on the switchboard's promise; this proves the promise survives a kernel.
+//!
+//! WHAT ONLY A REAL DESCRIPTOR CAN SHOW. FORA6 proved a bystander silent by reading its array slot,
+//! which is this module asking itself a question it already knew the answer to. Here the bystander
+//! holds a bound socket on its own port and hears nothing because the kernel demultiplexed the
+//! datagram elsewhere. The same sentence, with the proof moved out of our own hands.
+//!
+//! STILL PROVABLY FAKE. The address is 127.0.0.1 and nothing else; the pier names are the
+//! consonant-only strings the naming law guarantees can never parse as a live `@p`; no key, no
+//! fund, no remote host, and no real address is ever formed. Custody gate %2 -- real hardware or
+//! any wire beyond this bench -- and gate %4 -- a real Kumara -- are both untouched. The transport
+//! is real; the constellation is not.
+//!
+//! Chapter: the Six-Chapter double-seat, Chapter D/F thread - waymark FORA - Constel test-network
+//! naming - rung FORA31, the one rung that genuinely crosses the Comlink seam.
+//! Stands on: constel/switchboard.rye (FORA6) -- the routing contract this rung must keep byte for
+//! byte; constel/wire.rye (FORA3) -- the sealed frame that crosses; constel/roster.rye (FORA1) --
+//! membership; constel/exchange.rye (FORA4) -- the handshake carried over.
+//! Pen: comlink/rehearsal_wire.rye, proven on metal by tools/co/comlink_rehearsal_wire_witness.rish.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/socket.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const net = std.Io.net;
+
+const name = @import("name.rye");
+const handshake = @import("handshake.rye");
+const wire = @import("wire.rye");
+const exchange = @import("exchange.rye");
+const roster = @import("roster.rye");
+
+pub const socket_version = "20260828.171904";
+
+/// The rung's own loopback ports, one per seat, counting up from here. Chosen past 38500 -- the
+/// highest port any seated module binds, which is comlink/rehearsal_wire.rye's third ship -- so a
+/// FORA31 run and a rehearsal run never contend for one port on one bench.
+pub const base_port: u16 = 38512;
+
+/// How long a receive waits for a datagram that is expected to be there. A bounded wait rather than
+/// a blocking one, because a witness that hangs proves nothing at all. Loopback delivery lands in
+/// microseconds, so 250 ms is three orders of magnitude of headroom over the fact being measured.
+pub const receive_wait_ms: u32 = 250;
+
+/// How long `hold` keeps the whole sky bound. Bounded rather than endless so a witness that races
+/// it can never leave a process holding this bench's ports: the holder lets go on its own.
+pub const hold_ms: u32 = 3000;
+
+/// How long a silence check waits before it calls a mailbox empty. Shorter than `receive_wait_ms`
+/// on purpose: this wait is spent in full on every silence proof, and a datagram that was going to
+/// arrive on loopback has arrived long before it elapses.
+pub const silence_wait_ms: u32 = 120;
+
+/// The widest datagram this rung sends or accepts -- exactly one sealed FORA3 frame, so the socket
+/// carries the same bound the medium below it already proved.
+pub const max_datagram: u32 = wire.max_frame;
+
+pub const SocketError = error{
+    /// A deliver or receive named a pier the roster does not hold -- refused before a byte moves,
+    /// exactly as the FORA6 switchboard refuses it.
+    NoSuchPier,
+    /// A deliver or receive reached a board whose descriptors were never bound.
+    NotStanding,
+    /// The kernel refused to bind a seat's port -- most often because another board on this bench
+    /// already holds it. Named apart from SendFailed because a bind and a send fail for different
+    /// reasons, and a reader chasing one should never be handed the other's word.
+    BindRefused,
+    /// The kernel refused to hand the datagram on.
+    SendFailed,
+    /// No datagram arrived inside the bounded wait -- the honest reading of an empty mailbox when
+    /// the mailbox is a real socket rather than an array slot.
+    Silent,
+    /// A datagram arrived shorter than a frame header, so no frame can be read from it.
+    ShortDatagram,
+    /// A datagram arrived wider than one sealed frame, or wider than the caller's room for it.
+    DatagramTooBig,
+} || roster.RosterError || wire.WireError;
+
+/// The shared medium of a local constellation, made real: one bound UDP socket per member of a
+/// roster, each on its own loopback port. The only thing two piers share is the loopback interface
+/// itself -- each still reads only its own descriptor, and a frame carries no destination field, so
+/// the port handed to `deliver` is what decides which pier hears it.
+pub const SocketBoard = struct {
+    roster: roster.Roster = roster.Roster.init(),
+    socks: [roster.max_piers]net.Socket = undefined,
+    bound: u32 = 0,
+
+    /// The current member count -- how many piers stand in the constellation.
+    pub fn size(self: *const SocketBoard) u32 {
+        // invariant: a board never holds more members than the roster bound.
+        assert(self.roster.size() <= roster.max_piers);
+        // invariant: every seated member owns exactly one bound descriptor.
+        assert(self.bound == self.roster.size());
+        return self.roster.size();
+    }
+
+    /// Seat n fake piers and bind n real sockets in one call -- roster.stand_up draws indices
+    /// 0...n-1 deterministically, and each seat binds 127.0.0.1 at `base_port + slot`. Refuses
+    /// RosterFull past the bound before a single descriptor is opened, so a refused stand_up leaks
+    /// no socket.
+    pub fn stand_up(self: *SocketBoard, io: std.Io, n: u32) SocketError!void {
+        // invariant: cannot stand up more piers than the constellation bound holds.
+        if (n > roster.max_piers) return error.RosterFull;
+        // invariant: a board stands up once -- a second stand_up would strand the first binds.
+        assert(self.bound == 0);
+        try self.roster.stand_up(n);
+
+        var i: u32 = 0;
+        while (i < n) : (i += 1) {
+            const port: u16 = base_port + @as(u16, @intCast(i));
+            const addr = net.IpAddress{ .ip4 = net.Ip4Address.loopback(port) };
+            self.socks[i] = net.IpAddress.bind(&addr, io, .{ .mode = .dgram }) catch {
+                // A partial stand-up closes what it opened rather than leaving descriptors adrift.
+                self.close_bound(io, i);
+                return error.BindRefused;
+            };
+            self.bound += 1;
+        }
+        // invariant: exactly n piers stand, and each of them owns one bound descriptor.
+        assert(self.roster.size() == n);
+        assert(self.bound == n);
+    }
+
+    /// Close the first `upto` descriptors -- the unwind path for a partial stand-up, and the whole
+    /// of `close`. Named rather than inlined so both callers close the same way.
+    fn close_bound(self: *SocketBoard, io: std.Io, upto: u32) void {
+        // invariant: never closes past what was opened.
+        assert(upto <= roster.max_piers);
+        var i: u32 = 0;
+        while (i < upto) : (i += 1) self.socks[i].close(io);
+        self.bound = 0;
+    }
+
+    /// Hand every descriptor back to the kernel. A board is finished with when this returns.
+    pub fn close(self: *SocketBoard, io: std.Io) void {
+        // invariant: a close only ever reaches descriptors this board bound.
+        assert(self.bound <= roster.max_piers);
+        self.close_bound(io, self.bound);
+        // invariant: a closed board owns nothing.
+        assert(self.bound == 0);
+    }
+
+    /// The mailbox slot for a pier, or NoSuchPier -- a roster.find whose NotFound is surfaced as
+    /// this board's own fault, the same translation the FORA6 switchboard makes.
+    pub fn member(self: *const SocketBoard, who: []const u8) SocketError!u32 {
+        const slot = self.roster.find(who) catch return error.NoSuchPier;
+        // invariant: a found slot is a real member index, in range of the current count.
+        assert(slot < self.roster.size());
+        // invariant: a found slot owns a bound descriptor.
+        assert(slot < self.bound);
+        return slot;
+    }
+
+    /// The loopback address a member listens on. Every byte of it is fixed: 127.0.0.1, and a port
+    /// derived from the slot alone, so no address in this module is ever read from a frame.
+    pub fn address_of(self: *const SocketBoard, who: []const u8) SocketError!net.IpAddress {
+        const slot = try self.member(who);
+        // invariant: the port stays inside the block this rung reserved.
+        assert(slot < roster.max_piers);
+        const port: u16 = base_port + @as(u16, @intCast(slot));
+        return net.IpAddress{ .ip4 = net.Ip4Address.loopback(port) };
+    }
+
+    /// Post a frame's bytes to `to`'s port, refusing NoSuchPier if no member wears that name. The
+    /// board routes and never re-checks -- the frame's trust gates ran at framing and run again at
+    /// the receiver's deframe, so a real wire adds a crossing and not a trust boundary.
+    pub fn deliver(self: *SocketBoard, io: std.Io, to: []const u8, frame: *const wire.Frame) SocketError!void {
+        if (self.bound == 0) return error.NotStanding;
+        const dest = try self.address_of(to);
+        const body = frame.bytes();
+        // invariant: a posted datagram is one whole sealed frame, never wider than the bound.
+        assert(body.len >= wire.header_len);
+        if (body.len > max_datagram) return error.DatagramTooBig;
+        // The sender's own descriptor is immaterial to which pier hears this -- the destination
+        // port is. Slot zero sends, which is what an unaddressed medium looks like from here.
+        self.socks[0].send(io, &dest, body) catch return error.SendFailed;
+    }
+
+    /// Post a frame from one named member to another, so the datagram's source port is that
+    /// member's own. `deliver` is the medium speaking; this is a pier speaking.
+    pub fn deliver_from(self: *SocketBoard, io: std.Io, from: []const u8, to: []const u8, frame: *const wire.Frame) SocketError!void {
+        if (self.bound == 0) return error.NotStanding;
+        const src = try self.member(from);
+        const dest = try self.address_of(to);
+        const body = frame.bytes();
+        // invariant: a posted datagram is one whole sealed frame.
+        assert(body.len >= wire.header_len);
+        // invariant: the sending descriptor is one this board bound.
+        assert(src < self.bound);
+        if (body.len > max_datagram) return error.DatagramTooBig;
+        self.socks[src].send(io, &dest, body) catch return error.SendFailed;
+    }
+
+    /// Read exactly ONE whole datagram off `from`'s own descriptor into `buf`, or NoSuchPier if no
+    /// member wears that name. A pier reads only its own mail, and here that is the kernel's
+    /// sentence rather than this module's. Refuses Silent when the bounded wait elapses, so no
+    /// caller of this rung can hang.
+    pub fn receive(self: *SocketBoard, io: std.Io, from: []const u8, buf: []u8) SocketError![]const u8 {
+        if (self.bound == 0) return error.NotStanding;
+        const slot = try self.member(from);
+        // invariant: a receive only ever reads a descriptor this board bound.
+        assert(slot < self.bound);
+        if (buf.len < wire.header_len) return error.DatagramTooBig;
+        const wait = std.Io.Timeout{ .duration = .{ .raw = .fromMilliseconds(receive_wait_ms), .clock = .awake } };
+        const msg = self.socks[slot].receiveTimeout(io, buf, wait) catch return error.Silent;
+        if (msg.data.len < wire.header_len) return error.ShortDatagram;
+        if (msg.data.len > max_datagram) return error.DatagramTooBig;
+        // invariant: a returned datagram is at least a whole header, never a partial.
+        assert(msg.data.len >= wire.header_len);
+        return msg.data;
+    }
+
+    /// Whether a member's descriptor holds nothing after a bounded wait -- the real-descriptor
+    /// reading of FORA6's `pending`, used to prove a bystander stays silent. It answers by asking
+    /// the kernel and waiting, rather than by reading a counter this module maintains.
+    ///
+    /// IT CONSUMES WHAT IT FINDS, and that is named here rather than discovered later. A datagram
+    /// socket offers no non-destructive peek through this API, so the only honest way to ask
+    /// whether mail is waiting is to try to read it -- and a `false` answer means the datagram that
+    /// proved it is gone. This is a proof instrument, not a peek; a caller that wants the bytes
+    /// calls `receive`.
+    pub fn silent(self: *SocketBoard, io: std.Io, who: []const u8) SocketError!bool {
+        if (self.bound == 0) return error.NotStanding;
+        const slot = try self.member(who);
+        // invariant: a silence check only ever reads a descriptor this board bound.
+        assert(slot < self.bound);
+        var scratch: [max_datagram]u8 = undefined;
+        const wait = std.Io.Timeout{ .duration = .{ .raw = .fromMilliseconds(silence_wait_ms), .clock = .awake } };
+        if (self.socks[slot].receiveTimeout(io, scratch[0..], wait)) |msg| {
+            // invariant: a datagram that arrived is a real one, so the mailbox is genuinely loud.
+            assert(msg.data.len > 0);
+            return false;
+        } else |_| {
+            return true;
+        }
+    }
+
+    /// The whole constellation as the hyphen-joined lawful string every party is a member of --
+    /// rendered from the roster, so it always passes check_constellation.
+    pub fn sky(self: *const SocketBoard, buf: []u8) SocketError![]const u8 {
+        return self.roster.render(buf);
+    }
+};
+
+/// Drive a whole FORA4 handshake between two members, four real datagrams their ONLY shared medium:
+/// each frame is posted to the OTHER pier's port and read off the recipient's OWN descriptor. The
+/// sealed Session comes back off a socket, so even the completed value crossed the kernel. Any
+/// fault -- a stranger, a mismatched sky, a self-greet, a smuggled vowel -- refuses by name and the
+/// handshake never completes, exactly as it does over the in-memory switchboard.
+pub fn handshake_through(sb: *SocketBoard, io: std.Io, from: []const u8, to: []const u8) SocketError!handshake.Session {
+    // Both piers agree on the one lawful sky the roster renders -- the constellation they are
+    // provably members of.
+    var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+    const whole = try sb.sky(&sky_buf);
+
+    var a_party = try exchange.party(from, whole);
+    var b_party = try exchange.party(to, whole);
+
+    // Crossing 1 -- the initiator frames its greeting and posts it to the responder's port.
+    var gf = wire.Frame{};
+    try exchange.initiator_greets(&a_party, &gf);
+    try sb.deliver_from(io, from, to, &gf);
+
+    // Crossing 2 -- the responder reads one whole greeting datagram off its OWN descriptor,
+    // answers, posts the ack to the initiator's port.
+    var gbuf: [max_datagram]u8 = undefined;
+    const greeting_bytes = try sb.receive(io, to, gbuf[0..]);
+    var af = wire.Frame{};
+    try exchange.responder_answers(&b_party, greeting_bytes, &af);
+    try sb.deliver_from(io, to, from, &af);
+
+    // Crossing 3 -- the initiator reads one whole ack datagram off its OWN descriptor, seals the
+    // session, posts it to the responder's port.
+    var abuf: [max_datagram]u8 = undefined;
+    const ack_bytes = try sb.receive(io, from, abuf[0..]);
+    var sf = wire.Frame{};
+    try exchange.initiator_seals(gf.bytes(), ack_bytes, &sf);
+    try sb.deliver_from(io, from, to, &sf);
+
+    // Crossing 4 -- the session crosses the wire; read one whole datagram off the responder's
+    // descriptor and deframe it.
+    var sbuf: [max_datagram]u8 = undefined;
+    const session_bytes = try sb.receive(io, to, sbuf[0..]);
+    const s = try wire.deframe_session(session_bytes);
+    // invariant: agreement was reached over real descriptors -- two distinct lawful piers, complete.
+    assert(s.complete);
+    assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
+    // invariant: neither party could ever name a live point, before or after the wire.
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
+    return s;
+}
+
+// --- selftest: three piers bind real descriptors; a frame crosses the kernel unchanged; the
+//     bystander hears nothing the kernel did not hand it; a stranger is refused before a byte
+//     moves; the whole FORA4 handshake completes over the wire; a tampered datagram still refuses
+//     after crossing; and the bound holds ---------------------------------------------------------
+
+fn run_selftest(io: std.Io) !u8 {
+    // 1. A constellation of three stands up -- three distinct never-a-ship piers, three real bound
+    //    descriptors, a lawful whole.
+    {
+        var sb = SocketBoard{};
+        try sb.stand_up(io, 3);
+        defer sb.close(io);
+        assert(sb.size() == 3);
+        assert(sb.bound == 3);
+
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        try name.check_constellation(whole);
+        assert(!name.contains_vowel(whole));
+
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            const who = try sb.roster.member(i);
+            assert(name.never_a_ship(who));
+            const addr = try sb.address_of(who);
+            // invariant: every seat listens on loopback and nowhere else.
+            assert(addr.ip4.port == base_port + @as(u16, @intCast(i)));
+        }
+        print("fora-socket: three piers bound real loopback descriptors at {d}..{d}\n", .{ base_port, base_port + 2 });
+    }
+
+    // 2. A stranger refuses BEFORE a byte moves -- the FORA6 refusal, unchanged by the wire.
+    {
+        var sb = SocketBoard{};
+        try sb.stand_up(io, 3);
+        defer sb.close(io);
+        var gf = wire.Frame{};
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        const a = try sb.roster.member(0);
+        var a_party = try exchange.party(a, whole);
+        try exchange.initiator_greets(&a_party, &gf);
+
+        if (sb.deliver(io, "zzzznotapier", &gf)) |_| {
+            return error.StrangerSlipped;
+        } else |e| assert(e == error.NoSuchPier);
+        if (sb.receive(io, "zzzznotapier", &gf.buf)) |_| {
+            return error.StrangerReadSlipped;
+        } else |e| assert(e == error.NoSuchPier);
+        print("fora-socket: a stranger refuses NoSuchPier on both faces, before a byte moves\n", .{});
+    }
+
+    // 3. One frame crosses the kernel and arrives byte-identical, and the bystander hears nothing.
+    //    This is the leg only a real descriptor can carry: pier C is silent because the kernel
+    //    demultiplexed by port, rather than because this module declined to write to a slot.
+    {
+        var sb = SocketBoard{};
+        try sb.stand_up(io, 3);
+        defer sb.close(io);
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        const a = try sb.roster.member(0);
+        const b = try sb.roster.member(1);
+        const cc = try sb.roster.member(2);
+
+        var a_party = try exchange.party(a, whole);
+        var gf = wire.Frame{};
+        try exchange.initiator_greets(&a_party, &gf);
+        const sent = gf.bytes();
+
+        // THE SILENCE PREDICATE ANSWERS BOTH WAYS, proven before it is trusted. A `silent` that
+        // could only ever return true would prove the bystander quiet by proving nothing at all --
+        // a needle supplied by the harness rather than read off the wire (REDS %311). So the first
+        // crossing is spent showing B LOUD, and the datagram it consumes is the price.
+        //
+        // It is spent on `deliver` rather than `deliver_from` for a second reason: `deliver` is the
+        // medium speaking with no pier behind it, and a send path proven only by its refusal is a
+        // path nothing exercises. Both faces cross here -- the medium first, a named pier second.
+        try sb.deliver(io, b, &gf);
+        assert(!(try sb.silent(io, b)));
+
+        // Now the crossing whose bytes are read and compared.
+        try sb.deliver_from(io, a, b, &gf);
+        var rbuf: [max_datagram]u8 = undefined;
+        const got = try sb.receive(io, b, rbuf[0..]);
+        // invariant: the wire is a courier, never an author -- what B read is what A sealed.
+        assert(got.len == sent.len);
+        assert(std.mem.eql(u8, got, sent));
+
+        // The bystander's own descriptor, asked and waited on, holds nothing -- and the ask is the
+        // same ask that just read false, so the answer is the kernel's rather than this module's.
+        assert(try sb.silent(io, cc));
+        // And B's descriptor is drained now that it read its one datagram.
+        assert(try sb.silent(io, b));
+        print("fora-socket: both send faces crossed the kernel, the second byte-identical; the silence predicate read LOUD then SILENT on B, and the bystander's own descriptor stayed silent\n", .{});
+    }
+
+    // 4. THE CRUX -- the whole FORA4 handshake completes over four real datagrams, and the Session
+    //    is read back off a socket rather than out of an array.
+    {
+        var sb = SocketBoard{};
+        try sb.stand_up(io, 3);
+        defer sb.close(io);
+        const a = try sb.roster.member(0);
+        const b = try sb.roster.member(1);
+        const cc = try sb.roster.member(2);
+
+        const s = try handshake_through(&sb, io, a, b);
+        assert(s.complete);
+        assert(std.mem.eql(u8, s.party_a(), a));
+        assert(std.mem.eql(u8, s.party_b(), b));
+        // invariant: the pier that was never addressed heard none of the four crossings.
+        assert(try sb.silent(io, cc));
+        print("fora-socket: FORA4 handshake COMPLETE over four real datagrams -- {s} and {s} agreed across the kernel\n", .{ s.party_a(), s.party_b() });
+    }
+
+    // 5. A tampered datagram still refuses AFTER crossing -- the FORA3 trust gate is unchanged by a
+    //    real wire, which is the whole reason this rung adds a crossing and not a trust boundary.
+    {
+        var sb = SocketBoard{};
+        try sb.stand_up(io, 2);
+        defer sb.close(io);
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        const a = try sb.roster.member(0);
+        const b = try sb.roster.member(1);
+
+        var a_party = try exchange.party(a, whole);
+        var gf = wire.Frame{};
+        try exchange.initiator_greets(&a_party, &gf);
+        // Flip one byte of the sealed payload after framing -- a corruption the Sha256 digest in
+        // the header cannot agree with.
+        gf.buf[wire.header_len] ^= 0x40;
+        try sb.deliver_from(io, a, b, &gf);
+
+        var rbuf: [max_datagram]u8 = undefined;
+        const got = try sb.receive(io, b, rbuf[0..]);
+        if (wire.deframe_greeting(got)) |_| {
+            return error.TamperSlipped;
+        } else |_| {}
+        print("fora-socket: a byte flipped in flight still refuses at deframe -- the wire moved it, the seal caught it\n", .{});
+    }
+
+    // 6. The bound holds -- a stand_up past max_piers refuses before a descriptor is opened.
+    {
+        var sb = SocketBoard{};
+        if (sb.stand_up(io, roster.max_piers + 1)) |_| {
+            return error.OverStandSlipped;
+        } else |e| assert(e == error.RosterFull);
+        // invariant: a refused stand-up leaves no descriptor bound.
+        assert(sb.bound == 0);
+
+        var full = SocketBoard{};
+        try full.stand_up(io, roster.max_piers);
+        defer full.close(io);
+        assert(full.size() == roster.max_piers);
+        print("fora-socket: bounded -- a full sky of {d} binds, one past it refuses RosterFull with nothing opened\n", .{roster.max_piers});
+    }
+
+    print("GREEN: fora-socket -- FORA31, the switchboard's mailboxes backed by real localhost descriptors; transport real, constellation provably fake\n", .{});
+    return 0;
+}
+
+/// Bind the whole sky and keep it bound for a bounded moment, then let go. The witness runs this
+/// beside a selftest to prove the descriptors are real kernel resources: a second board cannot take
+/// a port this one holds, and the refusal comes back named.
+fn run_hold(io: std.Io) !u8 {
+    var sb = SocketBoard{};
+    try sb.stand_up(io, roster.max_piers);
+    defer sb.close(io);
+    // invariant: a hold holds the whole sky, so every seat's port is genuinely spoken for.
+    assert(sb.bound == roster.max_piers);
+    print("fora-socket: holding {d} bound descriptors at {d}..{d} for {d} ms\n", .{ roster.max_piers, base_port, base_port + roster.max_piers - 1, hold_ms });
+    const nap = std.Io.Timeout{ .duration = .{ .raw = .fromMilliseconds(hold_ms), .clock = .awake } };
+    nap.sleep(io) catch {};
+    print("fora-socket: hold released\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    // invariant: a program always receives its own name.
+    assert(args.len >= 1);
+    if (args.len >= 2) {
+        const mode = std.mem.sliceTo(args[1], 0);
+        if (std.mem.eql(u8, mode, "hold")) return run_hold(init.io);
+        if (!std.mem.eql(u8, mode, "selftest")) {
+            print("fora-socket: unknown mode '{s}' (want selftest or hold)\n", .{mode});
+            return 2;
+        }
+    }
+    return run_selftest(init.io);
+}

@@ -1,7 +1,7 @@
 # Constel -- every module in this directory
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Meter setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living roster -- **31 rows against 31 `.rye` modules**, held as one set by [`../tools/co/constel_module_roster_witness.rish`](../tools/co/constel_module_roster_witness.rish)
+**Status:** Living roster -- **32 rows against 32 `.rye` modules**, held as one set by [`../tools/co/constel_module_roster_witness.rish`](../tools/co/constel_module_roster_witness.rish)
 **Front door:** [`README.md`](README.md) - **Rung reasoning:** [`LADDER.md`](LADDER.md)
 
 Every `.rye` file in `constel/` carries a row here, and every row names a file that stands in this
@@ -9,7 +9,7 @@ directory. A guard holds both directions at zero, so a rung that lands without a
 it arrives rather than going unlisted for a season. Each sentence is written from that module's own
 `//!` head comment, normalized to plain ASCII.
 
-The eleven families below follow the ladder's own order, FORA0 through FORA30. The rung reasoning --
+The twelve families below follow the ladder's own order, FORA0 through FORA31. The rung reasoning --
 what each one leans on and what it proves -- lives in [`LADDER.md`](LADDER.md).
 
 ---
@@ -99,6 +99,12 @@ what each one leans on and what it proves -- lives in [`LADDER.md`](LADDER.md).
 |---|---|
 | [`lease.rye`](lease.rye) | FORA29: a lease read, safe under a bounded clock (Raft section 6.4.1), falling back to the read-index. |
 | [`durable.rye`](durable.rye) | FORA30: durable state -- a pier survives a restart without ever forgetting its vote. |
+
+## The real transport -- FORA31
+
+| Module | What it does |
+|---|---|
+| [`socket.rye`](socket.rye) | FORA31: the FORA6 switchboard with every mailbox backed by a real UDP descriptor on 127.0.0.1 -- same names, same refusals, same sealed frame, and the kernel doing the routing. |
 
 ---
 
