@@ -443,7 +443,7 @@ fi
 prompt="$(run_launcher print)"
 printf '%s\n' "$prompt" | grep -F 'Begin this chapter as Mind' >/dev/null
 printf '%s\n' "$prompt" | grep -F 'four facts are proven' >/dev/null
-printf '%s\n' "$prompt" | grep -F 'ordinary write lane is `brushstroke/` and `surf/`' >/dev/null
+printf '%s\n' "$prompt" | grep -F 'ordinary write lane is `brushstroke/`, `surf/`, and `skate/`' >/dev/null
 printf '%s\n' "$prompt" | grep -F 'The outer supervisor enforces the narrower current product spelling' >/dev/null
 printf '%s\n' "$prompt" | grep -F 'Caravan, Tally, and Scribe belong to Sound' >/dev/null
 printf '%s\n' "$prompt" | grep -F 'Glow rune lowering and' >/dev/null
@@ -1506,4 +1506,4 @@ printf '%s\n' '# planted shell drift' >> "$PEN/shell-drift.sh"
 [ "$(shasum -a 256 "$PEN/shell-drift.sh" | awk '{print $1}')" != "$EXPECTED_SOURCE_SHA256" ] \
   || { echo "FAIL: planted shell drift escaped source hash" >&2; exit 1; }
 
-echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated credential presence, disables Codex's unbounded connection retries so failures return to the circuit, relays bounded streams, records exact finite phase receipts including a live Codex child, admits battery laps, scrubs host Git and GPG configuration variables, admits only regular Brushstroke and Surf candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, handoff, printer, launcher, relay, and shell drift are caught"
+echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated credential presence, disables Codex's unbounded connection retries so failures return to the circuit, relays bounded streams, records exact finite phase receipts including a live Codex child, admits battery laps, scrubs host Git and GPG configuration variables, admits only regular Brushstroke, Surf, and Skate candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, handoff, printer, launcher, relay, and shell drift are caught"

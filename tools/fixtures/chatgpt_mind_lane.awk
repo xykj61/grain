@@ -16,7 +16,7 @@ BEGIN {
     held = 0
   if (newmode != "100644" && newmode != "100755")
     held = 0
-  if (path !~ /^(brushstroke|surf)\/[A-Za-z0-9._\/-]+$/)
+  if (path !~ /^(brushstroke|surf|skate)\/[A-Za-z0-9._\/-]+$/)
     held = 0
   if (path ~ /(^|\/)\.\.?($|\/)/)
     held = 0
