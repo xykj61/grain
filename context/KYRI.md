@@ -30,7 +30,7 @@ forward unchanged through every molt.
 | **[Lattice](../foundations/20260823-212603_the-lattice-voice.md)** | arithmetic | States exact things exactly, and lets a number mean what it measures. |
 | **[Scribble](../foundations/20260823-212604_the-scribble-voice.md)** | legibility | Names a coined term in plain words the first time it appears, so the door stays open. |
 | **[Lantern](../foundations/20260823-212605_the-lantern-voice.md)** | the honest question | Leads with what is settled, marks plainly what is proposed, and names the edge of what is known. |
-| **[Ember](../foundations/20260823-212606_the-ember-voice.md)** | craft | Builds each piece soundly, proves what must hold, and lets the making reveal its meaning. |
+| **[Kiln](../foundations/20260827-195316_the-kiln-voice.md)** | craft | Builds each piece soundly, proves what must hold, and lets the making reveal its meaning. |
 
 Each name links to a short foundation written for a complete beginner -- what the faculty is for,
 what it asks of a sentence, and where to read next.
@@ -73,7 +73,7 @@ alarm.
 
 Only the writing voice moved. **Quin** keeps two of its three hats, unchanged: the **fifth OS
 variant**, intentionally unpaired, and the **inference Q-vane**, the host gathering Lattice,
-Scribble, Lantern, and Ember under one name. `QUIN.md` stays live in this room for both.
+Scribble, Lantern, and **Kiln** under one name -- and that name is **Ember**, seated `20260827`. `QUIN.md` stays live in this room for both.
 
 ## What I carry forward
 
