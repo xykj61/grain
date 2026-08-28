@@ -148,12 +148,19 @@ set -u
 # seated tools/r/reds_ledger_headline_witness.rish, born rostered, which raises `total` and
 # `standing` together and leaves `unreached` where it stood. So the number fell by exactly the one
 # file that changed clocks, which is what this gate was rewritten to mean.
-CEILING=${WITNESS_REACH_CEILING:-1154}
-# The family ceiling, seated 20260828 at what the tree measured that day: 222 of 291 families carry
+# 1154 -> 1113 on 20260828.192755, a fall of 41. The choir carried 27 of it: tools/g/glow_choir_witness.rish
+# was written and rostered `tier cadence` in the same lap, and it names the 26 Glow-family witnesses a
+# survey found reached by nothing -- not this roster, not the three tend suites, not another witness.
+# The other 14 was slack the ceiling had carried above the reading since 20260825. One of the 26 was
+# already RED when it was first run: tools/g/glow_g5_nock_family_notes_witness.rish asserted on a brief
+# that had folded to active-designing/yonder/, and no clock existed to report it. The family ceiling
+# fell 222 -> 220 in the same motion, one family for the choir and one for the members it gathered.
+CEILING=${WITNESS_REACH_CEILING:-1113}
+# The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
 # work is a wall somebody turns off.
-FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-222}
+FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-220}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri

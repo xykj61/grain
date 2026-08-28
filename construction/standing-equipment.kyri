@@ -518,3 +518,15 @@ guard pond_enclosure_state
 path tools/p/pond_enclosure_state_witness.rish
 tier lap
 seated 20260828.170003
+
+# glow_choir -- the 26 Glow-family witnesses that no runner on disk named. A survey on 20260828
+# traced every tracked runner and found them reached by nothing: not this roster, not the three
+# tend suites, not another witness. One of the 26 was already RED, citing a brief that had folded
+# to active-designing/yonder/, and nothing was there to say so. `cadence` rather than `lap`: the
+# choir costs 2m01s measured on this pier, which is choir money, and the Glow ladder's last
+# advancing commit was 2026-08-04, so a slower clock matches how fast the family moves.
+
+guard glow_choir
+path tools/g/glow_choir_witness.rish
+tier cadence
+seated 20260828.192755
