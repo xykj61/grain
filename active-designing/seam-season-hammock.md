@@ -7,7 +7,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Lens:** TAME - SLC - compass - wire serves the fold - sameness is the macro
-**Status:** Living hammock -- studies 1-4 landed; CapTP-as-fold **declined** `054650`; giving-lane T0 **seated** - T1 **mapped** `054942` - T2 courtesy **choice seated** `062656` - **wire opened** `071405`; Door 3 **landed** tip **431** `063213`; component compile **landed** tip **432** `063558`; proven-seat **G0 GREEN** `071405` (GRUB milestone; full UI wants KVM); Spritely ally parked - product tip **430** - suite tip **432**
+**Status:** Living hammock -- studies 1-4 landed; CapTP-as-fold **declined** `054650`; giving-lane T0 **seated** - T1 **mapped** `054942` - T2 courtesy **choice seated** `062656` - **wire opened** `071405`; Door 3 **landed** nib **431** `063213`; component compile **landed** nib **432** `063558`; proven-seat **G0 GREEN** `071405` (GRUB milestone; full UI wants KVM); Spritely ally parked - product nib **430** - suite nib **432**
 **Counsel:** [`../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md)
 **Foundations:** [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) - [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) - [`../foundations/20260826-024940_anywhere-we-are-found.md`](../foundations/20260826-024940_anywhere-we-are-found.md) - [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md)
 **Living law:** [`../context/specs/living-vs-dated.md`](../context/specs/living-vs-dated.md) - frozen dated original [`20260712-052806_seam-season-hammock.md`](date/20260712/20260712-052806_seam-season-hammock.md)  
@@ -40,7 +40,7 @@ Logic before carriage throughout. Each study lands as understanding + a short de
 - Comlink's sealed datagram keeps carrying the fold between our own ships
 - Granary's published-set gate is the in-tree ancestor of the pass check
 
-**Door 3** -- tip **431** `063213`: in-process pass admits published read + signed submit; refuses unpublished digest / lying signature / lying pass -- [`20260712-063213_door3-consumer-edge-pass-hammock.md`](yonder/20260712-063213_door3-consumer-edge-pass-hammock.md).
+**Door 3** -- nib **431** `063213`: in-process pass admits published read + signed submit; refuses unpublished digest / lying signature / lying pass -- [`20260712-063213_door3-consumer-edge-pass-hammock.md`](yonder/20260712-063213_door3-consumer-edge-pass-hammock.md).
 
 ## Parked rulings (Kaeden's word)
 
