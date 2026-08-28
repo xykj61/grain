@@ -1,0 +1,15 @@
+# tools/fixtures/constel_names_law.txt -- the Constel naming law's own welcome, seated 20260814.
+#
+# Every line here is a name constel/name.rye admits: bounded, drawn from the consonant-and-digit
+# alphabet, and vowel-free. The first six are the exact cases constel/name.rye's own selftest
+# asserts lawful, so the shell scan and the Rye module are proven to agree case for case rather
+# than by eye. A welcome proven as hard as a refusal is what keeps the refusal meaningful.
+#
+# Law: active-designing/20260814-fill-constel-naming-law.md - module: constel/name.rye
+xykj
+xnkg30
+mrrkt
+xx
+bcdfghjklm
+xnb-xnc-xnd
+xx-xz-xn-xw

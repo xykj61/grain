@@ -22,7 +22,7 @@ Uniform length is **not** a test. The four-letter-vane scheme — borrowed from 
 
 ## Accrete-never-break
 
-This sweeps nothing already loved. Names seated and lived-with stay; dated testimony keeps every word it ever wrote. The tendency governs what is **born from here forward**, and frees what has not yet hardened — which, in the primordial phase, is most of it.
+This sweeps nothing already loved. Names seated and lived-with stay; dated testimony keeps every word it ever wrote. The tendency governs what is **born from here forward**, and frees what has not yet hardened — which, in this crashed-meteor phase, is still most of it.
 
 ## Why the tendency exists
 

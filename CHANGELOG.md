@@ -12,6 +12,6 @@ Grain keeps a change record more complete than a hand-written changelog could be
 
 ## On versions
 
-Grain is in its primordial phase and has not yet cut a released version. When it does, the release tags will land here as anchors into the commit history, so a version reads as a range of the record already kept -- never as a summary that replaces it.
+Grain is in its crashed-meteor phase -- the seed has landed in public ground -- and has not yet cut a released version. When it does, the release tags will land here as anchors into the commit history, so a version reads as a range of the record already kept -- never as a summary that replaces it.
 
 *May the record stay honest, and may every change be as easy to trace as it was to make.*

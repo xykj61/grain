@@ -12,7 +12,7 @@
   <a href="context/GAUGE_STYLE.md"><img alt="Prose: New Gauge Style" src="https://img.shields.io/badge/prose-New%20Gauge-d9b45a"></a>
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
-  <a href="context/TWO_ROOMS.md"><img alt="Status: primordial, honest register" src="https://img.shields.io/badge/status-primordial-b9954a"></a>
+  <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-meteor, honest register" src="https://img.shields.io/badge/status-crashed--meteor-b9954a"></a>
 </p>
 
 ---

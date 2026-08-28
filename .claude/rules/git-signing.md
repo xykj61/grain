@@ -10,7 +10,7 @@ After pushing, remind the user to upload their public GPG key to GitHub if commi
 
 ## The one exception — the depersonalized public seed (`seed/` → `grain-os/grain`)
 
-The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`Grain OS <grain-os@users.noreply.github.com>`** identity with a **single Option-B commit**.
+The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; renamed with the crashed-meteor bump, `20260828` on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
 
 That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** — defeating the whole point of depersonalization (`tools/s/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
 
@@ -20,7 +20,7 @@ Concretely, the seed repo sets `commit.gpgsign false` in its **own** `seed/.git/
 cd ~/grain/seed
 git config commit.gpgsign false          # local to seed/ only
 git add -A
-git commit --amend -m "Grain OS -- the initial public seed"
+git commit --amend -m "grain-ww -- the crashed meteor"
 git push --force origin main             # origin here IS grain-os/grain
 ```
 
@@ -29,8 +29,12 @@ This is the **only** place `commit.gpgsign` is false anywhere in the tree, and i
 **The transport is armed inside the script too** (learned `20260827.223500`, when a publish from a
 fresh clone failed at the push): the field routes SSH through its own repo-local config
 (`.git/ssh_config_urbit`, the jail deploy key), and a freshly initialized `seed/.git` inherits none
-of it -- so `publish-seed.sh` sets `core.sshCommand` beside `core.hooksPath`, under the same clause:
-anything a wipe would disarm is armed in the script. The pushing account is transport only; the
+of it -- so `publish-seed.sh` arms the push with a `GIT_SSH_COMMAND` environment variable, under the same
+clause: anything a wipe would disarm is armed in the script. An environment variable rather than
+seed config **on purpose** (corrected `20260828`, when the leak scan refused a publish): a config
+value writes the field's absolute path -- host username included -- into `seed/.git/config`, and
+nothing identity-bearing touches `seed/` at all. The publisher also wipes `seed/.git` **before**
+the witness runs, so the scan reads exactly the bytes that ship and nothing beside them. The pushing account is transport only; the
 commit identity stays the anonymous, keyless **Grain OS**. And the script itself is **untracked at
 the root by design** (`.gitignore` names it): when a clone lacks it, it is reconstructed from this
 rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the
