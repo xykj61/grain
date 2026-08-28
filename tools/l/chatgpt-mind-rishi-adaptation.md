@@ -108,7 +108,10 @@ fixed and validates the staged shape and message. It runs the two tracked hooks
 inside the same jail, then revalidates the candidate. The machine lane admits
 only regular additions or modifications below `brushstroke/`, `surf/`, and `skate/` -- the
 `skate/` grant seated `20260828` as a user-owned signed supervisor update, after a custody stop
-named the booked SkateCore crux standing outside the wall.
+named the booked SkateCore crux standing outside the wall -- plus two narrow grants seated the
+same day after the candidate-proof-boundary stop: an addition under `session-logs/date/` with its
+day-index row (the lap's own record), and `tools/s/skate_native_core_witness.rish` (the witness a
+new test must be named in).
 Symlinks, gitlinks, generated Wayland protocol files, deletion, rename,
 control-plane paths, and sibling roots refuse. A new product root requires a
 separate user-owned signed supervisor update; the loop cannot grant itself one.
