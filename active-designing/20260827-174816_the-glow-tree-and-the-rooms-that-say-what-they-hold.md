@@ -9,7 +9,7 @@ the closed-stack paths for loop information. It proposes; it cuts nothing.*
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`), Field setting
 **Voice:** Kyri
-**Status:** GRANTED `20260827` (`approve all doors`) -- the `src/` rooms and the `loops/` room have landed; `glow/gen/` and FORA31 are open. What landed differs from what was proposed in two places, both recorded below.
+**Status:** GRANTED `20260827` (`approve all doors`) -- the `src/` rooms, the `loops/` room, the `glow/gen/` letter fold, and FORA31 have all landed; the **deep debride** waits on its own precondition and on Keaton's word (custody gate %5). What landed differs from what was proposed in two places, both recorded below.
 **Molted:** born at this stamp
 **Kin:** [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md) (the naming law this applies) -
 [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) (the room bound and the fold rule) -
@@ -92,12 +92,12 @@ abstract coinage is now **the exception that must justify itself**. `sur` and `t
 coinage the law released, and each arrived by inheritance rather than by choice.
 
 **The tree has already chosen better words, and put them in the filenames.** Every file in
-`src/gate/` is named `gate-something.glow`. Every file in `src/shape/` is named `shape-something.glow`.
+`src/lib/` is named `gate-something.glow`. Every file in `src/sur/` is named `shape-something.glow`.
 The `shape` word is seated in the language itself -- STOA330 renamed `GateSpec`/`BarketSpec` to
 `shape_name`, and `glow/rune_shape.rye` carries it. So the room says one word and its contents say another, and the contents are the ones to keep.
 
-**A second classification runs underneath, saying what the first already says.** `src/shape/`, `src/shape/`, and
-`src/shape/` hold `shape-*.glow` files too -- shapes about pool agents, grant families, and tilaks. So
+**A second classification runs underneath, saying what the first already says.** `src/app/`, `src/sec/`, and
+`src/til/` hold `shape-*.glow` files too -- shapes about pool agents, grant families, and tilaks. So
 four rooms hold one kind of thing, split by subject, while the subject is *already* the middle of
 every filename. A reader learns two sorting rules to find a file that either rule alone would have found.
 
@@ -106,9 +106,9 @@ wear, and let the filename keep the subject.**
 
 | Today | Proposed | Holds | Why |
 |---|---|---|---|
-| `src/gate/` | **`src/gate/`** | `gate-*.glow` | the room and its 38 members finally say one word |
-| `src/shape/` | **`src/shape/`** | `shape-*.glow` | `shape` is seated in the language; `sur` is inherited |
-| `src/shape/` `src/shape/` `src/shape/` | folded into **`src/shape/`** | their `shape-*.glow` | one kind, one room; the subject stays in the filename |
+| `src/lib/` | **`src/gate/`** | `gate-*.glow` | the room and its 38 members finally say one word |
+| `src/sur/` | **`src/shape/`** | `shape-*.glow` | `shape` is seated in the language; `sur` is inherited |
+| `src/app/` `src/sec/` `src/til/` | folded into **`src/shape/`** | their `shape-*.glow` | one kind, one room; the subject stays in the filename |
 | `src/gen/` | **`src/gen/`** unchanged | generators | `gen` is seated in this tree already, in two rooms |
 
 Three rooms rather than six, each named for what it holds, each name predictable from any filename
@@ -117,7 +117,7 @@ universally understood word the tendency welcomes, and it earns a room again the
 running program rather than a shape about one.
 
 **What this costs, said before anyone asks.** 205 living files reference these room paths --
-`src/gate/` 151, `src/shape/` 39, `src/shape/` 8, `src/shape/` 4, `src/shape/` 3. That is a breach in the seated sense: it relocates
+`src/lib/` 151, `src/sur/` 39, `src/app/` 8, `src/til/` 4, `src/sec/` 3. That is a breach in the seated sense: it relocates
 and re-points, keeping every byte. It is one round's work with the repointer already
 built, and it waits here as a **proposal**.
 

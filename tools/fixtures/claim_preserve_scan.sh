@@ -21,6 +21,16 @@ BASE=${CLAIM_PRESERVE_BASE:-HEAD}
 # The extractor now speaks Rishi (Python -> perl -> Rishi molt 20260809): its own
 # match/find/sort/unique, no shell or perl. Before and after use the same extractor,
 # so the claim comparison holds regardless of the ASCII/Unicode edge on rare non-ASCII.
+#
+# The PATH class needs the roster of this tree's rooms, and it is DERIVED here rather
+# than spelled in the extractor. It used to be a hardcoded list of 17 names, which saw
+# context/ and tools/ and was blind to src/, construction/, .claude/rules/, caravan/,
+# comlink/, constel/ and 59 more -- 65 of 82 tracked rooms, measured 20260828. Longest
+# first, so docs-geode/ wins the alternation over docs/; a leading dot is escaped so
+# .claude/ is a room rather than a wildcard.
+ROOTS=$(git ls-files | awk -F/ 'NF>1 {print $1}' | sort -u \
+  | awk '{print length"\t"$0}' | sort -rn | cut -f2- | sed 's/\./\\./g' | paste -sd'|' -)
+[ -n "$ROOTS" ] || { echo "FAIL room roster derived empty -- git ls-files answered nothing"; exit 1; }
 EXTRACT="rishi/bin/rishi run tools/fixtures/claim_preserve_extract.rish"
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/claim-preserve.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
@@ -55,8 +65,8 @@ while IFS= read -r path; do
   git show "${BASE}:${path}" >"$TMP/before_raw"
   normalize_body <"$TMP/before_raw" >"$TMP/before_body"
   normalize_body <"$path" >"$TMP/after_body"
-  $EXTRACT "$TMP/before_body" | sort -u >"$TMP/before"
-  $EXTRACT "$TMP/after_body" | sort -u >"$TMP/after"
+  $EXTRACT "$TMP/before_body" "$ROOTS" | sort -u >"$TMP/before"
+  $EXTRACT "$TMP/after_body" "$ROOTS" | sort -u >"$TMP/after"
   if ! cmp -s "$TMP/before" "$TMP/after"; then
     echo "FAIL claim tokens drifted: ${path}"
     echo "--- only in BEFORE (${BASE}) ---"
