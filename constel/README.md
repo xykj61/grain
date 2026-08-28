@@ -2,7 +2,7 @@
 
 **Stamp:** `20260814.105746` - **Split:** `20260824.104946` - **Language:** EN - **Voice:** Kyri
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living front door -- the Constel test-network journey, **31 modules** proven across **31 witnesses**, FORA0 through FORA30
+**Status:** Living front door -- the Constel test-network journey, **32 modules** proven across **32 witnesses**, FORA0 through FORA31
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -37,8 +37,8 @@ handshake and the real Comlink transport cross the Comlink seam and stay their o
 
 | Page | What it holds |
 |---|---|
-| [`MODULES.md`](MODULES.md) | the roster -- 31 rows in eleven families, one per `.rye` module beside it, held as one set by a standing guard |
-| [`LADDER.md`](LADDER.md) | the rung reasoning, FORA0 through FORA30, the commands that prove each one, and the road that runs through them |
+| [`MODULES.md`](MODULES.md) | the roster -- 32 rows in twelve families, one per `.rye` module beside it, held as one set by a standing guard |
+| [`LADDER.md`](LADDER.md) | the rung reasoning, FORA0 through FORA31, the commands that prove each one, and the road that runs through them |
 
 The ladder climbs from a name to a durable consensus, and each rung leans on the one below it:
 identity, then the greeting, then a local transport, then a voice the whole sky hears, then a
@@ -52,13 +52,21 @@ Twilight-theme names**, a different silo entirely (the `queyqwinqkri` theme is i
 research task). Constel dev-net names proper are the consonants-only abjad -- that separation keeps
 the safety predicate a single clean scan rather than a special-cased list.
 
-## The one rung that stops for a hand
+## The rung that crossed, and the one that stops for a hand
 
 Thirty-one rungs stand proven pure on the bench, every one of them addressing this machine alone.
-**The socket** is the rung that genuinely crosses the Comlink seam: this same switchboard with each
-mailbox backed by a real local file descriptor between fake piers -- the addresses still provably
-fake, and the transport real. Because it touches `seed/comlink/` and a real wire, it waits for the
-maintainer's word rather than self-approving. From there Constel exercises the Comlink - Pond -
+**The socket** (FORA31, landed `20260828`) is the rung that genuinely crosses the Comlink seam: the
+same switchboard with each mailbox backed by a real UDP descriptor between fake piers -- the
+addresses still provably fake, and the transport real. A frame now reaches exactly one named pier
+because the kernel demultiplexed it by port, rather than because this code wrote to one array slot;
+the whole FORA4 handshake completes across four real datagrams. Proven both ways on metal, including
+a second board racing a held sky to read `BindRefused` over the kernel's own `AddressInUse`, which is
+what tells a real descriptor from a simulation.
+
+**What stops for a hand is the next thing: a real address.** Every address this ladder forms is
+127.0.0.1 and a port derived from a seat index, so nothing here can leave this bench. Giving a pier
+an address off this machine touches custody gate %2 -- real hardware, or any wire beyond the bench --
+and that is the maintainer's word, not an agent's. From there Constel exercises the Comlink - Pond -
 Mycelium network end to end, the many-pier logic already proven the round before.
 
 ---

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.173546` | [the switchboard that crossed a kernel](20260828/20260828-173546_the-switchboard-that-crossed-a-kernel.kyri) | FORA31 lands; the routing is the kernel's now |
 | `20260828.165931` | [the eighth color moved nothing](20260828/20260828-165931_the-eighth-color-moved-nothing.kyri) | Mind: 320 cells proven; slot 8 refuses without changing state |
 | `20260828.170657` | [the links that stayed behind](20260828/20260828-170657_the-links-that-stayed-behind.kyri) | two folds moved the rooms, 27 refs did not |
 | `20260828.163808` | [the wall that ate the outage](20260828/20260828-163808_the-wall-that-ate-the-outage.kyri) | Mind's proven candidate carried past a dead network |

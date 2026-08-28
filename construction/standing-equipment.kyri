@@ -412,6 +412,22 @@ path tools/co/comlink_rehearsal_wire_witness.rish
 tier cadence
 seated 20260828.011621
 
+# The socket rung itself, seated 20260828.174900. constel/socket.rye is FORA31 -- the FORA6
+# switchboard with every mailbox swapped for a real UDP descriptor on 127.0.0.1, the one rung the
+# Constel ladder named as genuinely crossing the Comlink seam. Thirty rungs of consensus stand on
+# the switchboard's promise that a frame reaches exactly one named pier; until this rung that
+# promise was kept by an array index the module wrote itself. `cadence` rather than `lap`, for two
+# reasons said plainly: leg B spends real wall-clock on bounded waits by design, and the guard binds
+# eight loopback ports (38512..38519), which two hands sharing one bench should not do every lap --
+# the same one-tree-per-star question REDS %281 and %291 leave with Keaton, arriving from the port
+# side. The hold releases on its own after 3000 ms, so a red here never strands a port.
+# Measured on this bench 20260828: 3s wall with a warm Zig cache, both builds included.
+
+guard fora_socket
+path tools/f/fora_socket_witness.rish
+tier cadence
+seated 20260828.174900
+
 # The custody-gate instruction guard, seated 20260828.033212. REDS %307 found the loop's own prompt
 # template telling an unattended lap to run the seed publisher every fifth round -- a cadence the
 # card cut on 20260826, and a gate Keaton holds by hand. A hand repaired that file; the same

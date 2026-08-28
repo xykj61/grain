@@ -1,0 +1,98 @@
+# tools/f/fora_socket_witness.rish -- the switchboard's mailboxes backed by real localhost descriptors (FORA31).
+#
+# Chapter: the Six-Chapter double-seat, Chapter D/F thread - waymark FORA - rung FORA31, the one rung the Constel ladder
+# named as genuinely crossing the Comlink seam. Charter: active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md
+#
+# WHAT THIS PROVES. constel/socket.rye keeps the FORA6 switchboard's contract word for word -- deliver by name, receive only
+# your own mail, refuse a stranger before a byte moves -- with every mailbox swapped for a real UDP socket bound on 127.0.0.1.
+# The selftest proves: three seats bind real descriptors; a stranger refuses NoSuchPier on both faces; a sealed FORA3 frame
+# crosses the kernel byte-identical while the bystander's own descriptor stays silent; THE CRUX -- the whole FORA4 handshake
+# completes over four real datagrams and the Session is read back off a socket; a byte flipped in flight still refuses at
+# deframe, so the wire adds a crossing and not a trust boundary; and the roster bound refuses one seat past a full sky with
+# nothing opened.
+#
+# BOTH DIRECTIONS, AND WHY THIS ONE NEEDED SAYING TWICE. A witness that only ever asserts a clean exit cannot be told from a
+# bypass, and REDS %311 counted seven files in this tree doing exactly that. So leg B races a second board against a held sky
+# and reads the refusal by name: `hold` binds all eight seats, a selftest launched beside it fails to bind, and the output
+# carries `BindRefused` with the kernel's own ADDRINUSE beneath it. That leg is what proves the descriptors are real kernel
+# resources rather than a simulation this module could have written either way.
+#
+# The silence predicate is proven both ways INSIDE the selftest for the same reason: `silent` reads LOUD on a loaded
+# descriptor before it reads SILENT on a drained one, so a predicate that could only answer true never stands in for a proof.
+#
+# STILL PROVABLY FAKE. 127.0.0.1 and nothing else; consonant-only pier names the naming law guarantees can never parse as a
+# live @p; no key, no fund, no remote host, no real address ever formed. Custody gate %2 (real hardware or any wire beyond
+# this bench) and gate %4 (a real Kumara) are both untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_socket_witness.rish
+
+say "fora-socket: Language EN -- FORA31 is the rung where the constellation stops talking to itself: thirty rungs of consensus stand on the FORA6 switchboard's promise that a frame reaches exactly one named pier, and until now that promise was kept by an array index this very module wrote."
+say "fora-socket: Style Radiant -- the same names, the same refusals, the same sealed frame; only the courier changes, and the courier is now the kernel."
+say "fora-socket: Lens TAME -- every wait is bounded (receive_wait_ms 250, silence_wait_ms 120, hold_ms 3000) so no caller can hang; every datagram is bounded by wire.max_frame; a failed bind unwinds the descriptors it opened and refuses BindRefused, named apart from SendFailed; refusals are proven in both directions, the bind refusal by racing a real held sky."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/socket"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/socket.rye -femit-bin=${bin}"]
+assert build.ok else "fora-socket: build failed -- ${build.err}${build.out}"
+
+# --- Leg A: the crossing ------------------------------------------------------------------------
+
+let outfile = "constel/bin/socket.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-socket: selftest exited non-zero -- see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-socket: ${shown.out}"
+
+# Each spoken fact is read on its own. A single GREEN grep would let five of the six legs fall
+# silent without the witness noticing -- the answer-blind shape REDS %311 named.
+let bound = run ["sh" "-c" "grep -c 'bound real loopback descriptors' ${outfile}"]
+assert (trim bound.out) == "1" else "fora-socket: the selftest did not speak the bind claim"
+
+let stranger = run ["sh" "-c" "grep -c 'refuses NoSuchPier on both faces' ${outfile}"]
+assert (trim stranger.out) == "1" else "fora-socket: the selftest did not speak the stranger refusal"
+
+let crossed = run ["sh" "-c" "grep -c 'both send faces crossed the kernel, the second byte-identical' ${outfile}"]
+assert (trim crossed.out) == "1" else "fora-socket: the selftest did not speak both send faces crossing byte-identical"
+
+let loud = run ["sh" "-c" "grep -c 'read LOUD then SILENT' ${outfile}"]
+assert (trim loud.out) == "1" else "fora-socket: the silence predicate was not proven in both directions"
+
+let handshake = run ["sh" "-c" "grep -c 'handshake COMPLETE over four real datagrams' ${outfile}"]
+assert (trim handshake.out) == "1" else "fora-socket: the crux -- a FORA4 handshake over real datagrams -- was not spoken"
+
+let tamper = run ["sh" "-c" "grep -c 'flipped in flight still refuses at deframe' ${outfile}"]
+assert (trim tamper.out) == "1" else "fora-socket: the tamper refusal after crossing was not spoken"
+
+let bounded = run ["sh" "-c" "grep -c 'one past it refuses RosterFull' ${outfile}"]
+assert (trim bounded.out) == "1" else "fora-socket: the roster bound refusal was not spoken"
+
+let green = run ["sh" "-c" "grep -c 'GREEN: fora-socket' ${outfile}"]
+assert (trim green.out) == "1" else "fora-socket: the selftest did not print its GREEN line"
+
+# --- Leg B: the refusal, read by name ------------------------------------------------------------
+#
+# `hold` binds all eight seats and lets go on its own after hold_ms, so this leg can never strand a
+# process on this bench's ports. A second board launched beside it must fail to bind, exit non-zero,
+# and say BindRefused -- the descriptors are real kernel resources or this leg cannot happen.
+
+let racefile = "constel/bin/socket.race"
+let race = run ["sh" "-c" "${bin} hold > ${racefile}.hold 2>&1 & HP=$!; sleep 1; ${bin} selftest > ${racefile} 2>&1; echo RACE_EXIT:$?; wait $HP"]
+assert race.ok else "fora-socket: the bind-refusal race could not be run -- ${race.err}"
+
+assert race.out contains "RACE_EXIT:1" else "fora-socket: a second board bound a held sky -- the descriptors are not real kernel resources, or the hold did not take"
+
+let refused = run ["sh" "-c" "grep -c 'BindRefused' ${racefile}"]
+assert (trim refused.out) == "1" else "fora-socket: the racing board failed without naming BindRefused -- the refusal was not read, only counted"
+
+let addrinuse = run ["sh" "-c" "grep -c 'AddressInUse' ${racefile}"]
+assert (trim addrinuse.out) == "1" else "fora-socket: the refusal did not carry the kernel's own AddressInUse beneath it"
+
+let released = run ["sh" "-c" "grep -c 'hold released' ${racefile}.hold"]
+assert (trim released.out) == "1" else "fora-socket: the hold did not let go of the sky on its own -- a bounded wait that did not end"
+
+say "fora-socket: leg B -- a second board racing a held sky refused BindRefused over the kernel's AddressInUse, and the hold let go on its own."
+
+say "fora-socket: GREEN -- FORA31 stands: the switchboard's contract survives a kernel. Same names, same refusals, same sealed frame; the routing is the kernel's now, the transport is real, and the constellation is still provably fake."
