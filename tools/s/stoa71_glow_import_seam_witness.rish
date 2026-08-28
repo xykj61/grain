@@ -13,7 +13,7 @@ let consumer = "linengrow/stoa71_glow_import_seam.rye"
 let bin = "linengrow/bin/stoa71_glow_import_seam"
 
 # 1) Lower the STOA70 library desk (seats glow/.cache library rye, no main).
-let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/u/use-lib-session-root-nest-cue-jam.glow"]
 assert desk.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
 assert desk.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
 

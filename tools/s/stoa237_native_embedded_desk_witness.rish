@@ -32,7 +32,7 @@ assert fact3.ok else "libglowapp.so missing embedded fact3 stamp tail"
 assert fact3.out contains "1" else "libglowapp.so fact3 stamp count unexpected"
 
 # linengrow twin desk equals Glow sample desk (docs-implementation sync).
-let twin = run ["diff" "-q" "glow/gen/sample-demo-fact-line-lits.glow" "linengrow/gen/sample-demo-fact-line-lits.glow"]
+let twin = run ["diff" "-q" "glow/gen/s/sample-demo-fact-line-lits.glow" "linengrow/gen/sample-demo-fact-line-lits.glow"]
 assert twin.ok else "linengrow/gen desk twin drifted from glow/gen"
 
 say "GREEN: STOA237 — NativeActivity embedded lit desk fold; desk in .so; pack GREEN."

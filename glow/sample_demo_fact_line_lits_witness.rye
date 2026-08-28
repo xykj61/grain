@@ -43,7 +43,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();
     const cwd = std.Io.Dir.cwd();
     const io = init.io;
-    const src = try cwd.readFileAlloc(io, "glow/gen/sample-demo-fact-line-lits.glow", a, .limited(8192));
+    const src = try cwd.readFileAlloc(io, "glow/gen/s/sample-demo-fact-line-lits.glow", a, .limited(8192));
 
     var specs: [face_lit.max_face_lits]face_lit.FaceLitSpec = undefined;
     const n = try face_lit.parse_face_lit_sample(src, specs[0..]);

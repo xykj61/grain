@@ -206,19 +206,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_cue_jam_both_welcome.rye", .data = buf[0..n13] });
     print("compose-core: wrote nest cue-jam left right and both caches -- GREEN\n", .{});
 
-    const gen3 = try cwd.readFileAlloc(io, "glow/gen/compose-core-three.glow", a, .limited(4096));
+    const gen3 = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen3, "++  dec") != null);
-    const gen2 = try cwd.readFileAlloc(io, "glow/gen/compose-core-two.glow", a, .limited(4096));
+    const gen2 = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-two.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen2, "++  inc") != null);
-    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/compose-core-nest.glow", a, .limited(4096));
+    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam sample sample)") != null);
-    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam.glow", a, .limited(4096));
+    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-cue-jam.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue, "(cue (jam sample sample))") != null);
-    const gen_cue_nest = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam-nest.glow", a, .limited(4096));
+    const gen_cue_nest = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-cue-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue_nest, "(cue (jam (mix sample sample) sample))") != null);
-    const gen_cue_right = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam-right-nest.glow", a, .limited(4096));
+    const gen_cue_right = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue_right, "(cue (jam sample (mix sample sample)))") != null);
-    const gen_cue_both = try cwd.readFileAlloc(io, "glow/gen/compose-core-cue-jam-both-nest.glow", a, .limited(4096));
+    const gen_cue_both = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-cue-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue_both, "(cue (jam (mix sample sample) (mix sample sample)))") != null);
     print("compose-core: desks nest cue-jam left right and both carry face→core -- GREEN\n", .{});
 

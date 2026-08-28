@@ -4,18 +4,18 @@
 # Glow owns the language hop; Rishi owns the shell orchestration.
 #
 # Fixture (baked sample):
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/cast-u32.glow
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/c/cast-u32.glow
 #
 # Generator (one sample from argv -- G3 cast / STOA101-103 bartis / STOA114 barket):
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/sample-u32.glow 42
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-sample-u32.glow 7
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-double-u32.glow 7
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-barket-sample-u32.glow 9
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-kind-tag.glow mint
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-xact-tag.glow mint 5
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-xfer-tag.glow mint 5 3
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-pair-fields.glow 5 3
-#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-nona-fields.glow 5 3 1 2 7 4 6 8 9
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/s/sample-u32.glow 42
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-sample-u32.glow 7
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-double-u32.glow 7
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-barket-sample-u32.glow 9
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-kind-tag.glow mint
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-xact-tag.glow mint 5
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-xfer-tag.glow mint 5 3
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-pair-fields.glow 5 3
+#   rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-nona-fields.glow 5 3 1 2 7 4 6 8 9
 #   ($: pair...nona -- worker maps stem -> N; STOA324)
 
 let zig = "vendor/zig-toolchain/zig"

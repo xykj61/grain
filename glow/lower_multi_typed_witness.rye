@@ -63,10 +63,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
     print("typed-multi: wrote welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/multi-typed.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/m/multi-typed.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "=/  from=@u32  5") != null);
     assert(std.mem.indexOf(u8, gen_src, "=/  amount=@u32  3") != null);
-    print("typed-multi: glow/gen/multi-typed.glow carries typed faces -- GREEN\n", .{});
+    print("typed-multi: glow/gen/m/multi-typed.glow carries typed faces -- GREEN\n", .{});
 
     print("typed-multi: version {s}\n", .{witness_version});
     print("GREEN: typed multi-line @u32 desks lower to ordinary Rye (STOA13).\n", .{});

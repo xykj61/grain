@@ -52,10 +52,10 @@ Glow is the **language** (Hoon-parallel). Rishi is the **shell** (Dojo-parallel)
 Most files under [`gen/`](gen/) are **fixture desks**. A fixture desk is a small Glow program whose **sample** (the value the gate would take as input) is already written into the file -- faces, literals, and shapes chosen once so the witness always runs the same way. That is the **baked sample**. **No argv** means you do not pass numbers or strings on the Rishi command line; the desk carries its own input. You run the path alone, and green means the language hop still lowers and builds:
 
 ```bash
-rishi/bin/rishi run tools/g/glow_run.rish glow/gen/cast-u32.glow
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/c/cast-u32.glow
 ```
 
-A **generator** is the sibling idea: the sample arrives from outside (Rishi argv today, typed hand-off later). Thin cast example: [`gen/sample-u32.glow`](gen/sample-u32.glow) wants one `@u32` after the path (`... glow_run.rish glow/gen/sample-u32.glow 42`). The matching fixture [`gen/cast-u32.glow`](gen/cast-u32.glow) stays argv-free beside it. Prefer **fixture desk** when learning a rune; reach for a generator when the proof needs a value you choose at the shell. Longer Acme hand: [`../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md).
+A **generator** is the sibling idea: the sample arrives from outside (Rishi argv today, typed hand-off later). Thin cast example: [`gen/sample-u32.glow`](gen/sample-u32.glow) wants one `@u32` after the path (`... glow_run.rish glow/gen/s/sample-u32.glow 42`). The matching fixture [`gen/cast-u32.glow`](gen/cast-u32.glow) stays argv-free beside it. Prefer **fixture desk** when learning a rune; reach for a generator when the proof needs a value you choose at the shell. Longer Acme hand: [`../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md).
 
 Your own Grain -- voice, desk habits, and the ship that signs under **Kumara** -- can grow personalized later. One of the five OS voice variants (Reya - Riyo - Trey - Triz - Quin) may sit with you in Cursor, or in Zed with Claude Code, or in another LLM editor you choose. That path is **possible**; it is **not proven** until prompts and crafts seat a Grain that is yours under your Kumara key. Until then, these fixture desks are the shared beginner habitat: same sample, same green, no private key step in this README.
 
@@ -66,7 +66,7 @@ Your own Grain -- voice, desk habits, and the ship that signs under **Kumara** -
 All sixteen single-line heads lower today; multi-line adds compose (face->`|%` closed or open - two faces->`add` - face->payload closed or open - `/+` library), typed faces, and `|%` cores (up to three arms, bare or `@u32` payload, open and nest arm bodies, library emit). Rishi hand: [`../tools/g/glow_run.rish`](../tools/g/glow_run.rish) - desk witness: [`../tools/g/glow_run_desk_witness.rish`](../tools/g/glow_run_desk_witness.rish). Brief: [`../active-designing/20260719-001148_stoa31-payload-library-compose-brief.md`](../active-designing/yonder/20260719-001148_stoa31-payload-library-compose-brief.md).
 
 ```bash
-rishi/bin/rishi run tools/g/glow_run.rish glow/gen/use-lib-payload-nest.glow
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/u/use-lib-payload-nest.glow
 rishi/bin/rishi run tools/g/glow_run_desk_witness.rish
 # -> GREEN: glow_run desk -- all fixture desks ...
 ```

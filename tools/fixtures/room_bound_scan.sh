@@ -49,8 +49,9 @@ ENFORCE="session-logs counsel active-designing active-development expanding-prom
 # bound with every guard green: the meter could not see it.
 #
 # A room joins this list the same way a room joins the one above, by folding. `tools/` folded on
-# `20260823.144100`.
-ENFORCE_ALL="tools"
+# `20260823.144100`; `glow/gen` folded by first sprig letter on `20260828` (REDS %301), once the
+# compiler's two import-path sites learned the letter room.
+ENFORCE_ALL="tools glow/gen"
 
 echo "bound=$BOUND"
 
@@ -138,10 +139,10 @@ done
 # `20260827` with every meter green, and was caught the same way. A reading that only sees rooms
 # it already knows about cannot report the room nobody thought to name, so this pass asks git for
 # every directory instead and reports the ones over. It is ADVISORY by design: a room over the
-# bound has a real fold ahead of it, and some folds are not mechanical -- folding `glow/gen/`
-# breaks `/+` import resolution, because `glow/glow_run.rye` builds a library path as the flat
-# format string "glow/gen/{s}.glow" at its lines 166 and 241. Reporting is the honest act; the
-# cure belongs to the round that can pay for it.
+# bound has a real fold ahead of it, and some folds are not mechanical -- `glow/gen/` could not
+# fold until `glow/glow_run.rye`'s two import-path sites learned the letter room, which they did
+# on `20260828` (REDS %301), and the room now stands on the ENFORCE_ALL roster above. Reporting
+# is the honest act; the cure belongs to the round that can pay for it.
 undated_over=0
 git ls-files 2>/dev/null | awk -F/ 'NF>1 { d=$0; sub("/[^/]*$","",d); print d }' | sort | uniq -c |
 while read -r n dir; do

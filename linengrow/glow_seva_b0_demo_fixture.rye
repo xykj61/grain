@@ -6,7 +6,7 @@
 //! the product pin surface for future Glow ports.
 //! STOA197: no longer imports the claim shell (breaks claim->replay->fixture cycle).
 //! STOA223: product pins bind to Glow face=lit desk
-//! (`glow/gen/sample-demo-fixture-lits.glow`). Callers still read these
+//! (`glow/gen/s/sample-demo-fixture-lits.glow`). Callers still read these
 //! comptime pin strings; `lit_desk_binds_pins` proves the desk text carries
 //! the same face=lit clauses (Glow parse/lower stays in glow/).
 //!
@@ -20,7 +20,7 @@ const fold = @import("seva_b0_fold.rye");
 pub const fixture_version = "20260722.131511";
 
 /// Glow face=lit sample desk that pins the same elder strings (STOA221 - STOA223).
-pub const lit_desk_relpath = "glow/gen/sample-demo-fixture-lits.glow";
+pub const lit_desk_relpath = "glow/gen/s/sample-demo-fixture-lits.glow";
 
 /// Three-event demo stamps (elder `run_demo_fold` order).
 pub const stamp1 = "20260715.190001";

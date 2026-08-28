@@ -1,22 +1,39 @@
 # tools/g/gen_home_witness.rish -- the O2 instrument: the desks' one true address.
 #
 # Breach law (context/BREACH.md): witnessed on both sides of the line, before
-# and after. This witness takes the canonical home as its argument, asserts the
-# desks stand there and the tools speak that address, and refuses by name
-# anywhere else. Proven red against src/gen and green against glow/gen before
-# any move; O3 flips the argument in the same declared motion that moves them.
+# and after. This witness takes the canonical home as its argument and proves
+# the LETTER-FOLDED shape the room took on 20260828 (REDS %301): zero flat
+# desks, and every desk standing either in the letter room its own basename
+# names -- glow/gen/<first letter>/<name>.glow, the same pure rule
+# tools/t/tool_path_resolve.rish computes -- or under the one whole-kept
+# subroom, hoon-study/, which files by WHAT it studies rather than by letter.
+# Totals are MEASURED and printed rather than pinned, because a count carried
+# in prose drifts the first lap nobody edits both (REDS %93); this witness
+# pinned "317" desks for exactly as long as that was true and not one day less.
+#
+#   rishi/bin/rishi run tools/g/gen_home_witness.rish glow/gen
 
 let home = args[0]
 assert home != "" else "usage: gen_home_witness.rish <canonical-home e.g. glow/gen>"
 
-let desks = run ["sh" "-c" "ls ${home}/*.glow 2>/dev/null | wc -l"]
-assert desks.ok else "desk listing failed"
-say "gen-home witness — desks at ${home}: ${desks.out}"
-assert desks.out contains "317" else "expected 317 desks at the canonical home ${home}"
+# invariant: the fold left no flat desk -- a flat .glow at the home is a file
+# the letter rule cannot have placed, so the count gates at zero.
+let flat = run ["sh" "-c" "ls ${home}/*.glow 2>/dev/null | wc -l | tr -d ' '"]
+assert flat.ok else "flat desk listing failed"
+assert (trim flat.out) == "0" else "expected zero flat desks at ${home}; the letter fold owns this room"
 
-let refs = run ["sh" "-c" "grep -rl '${home}/' tools/ 2>/dev/null | wc -l"]
+# invariant: every folded desk sits in the letter room its basename names.
+# hoon-study/ is the one named exception, kept whole on purpose.
+let strays = run ["sh" "-c" "find ${home} -mindepth 2 -name '*.glow' | awk -F/ '$3 != \"hoon-study\" && $3 != substr($NF,1,1) { print }' | wc -l | tr -d ' '"]
+assert strays.ok else "letter-rule scan failed"
+assert (trim strays.out) == "0" else "a desk stands in a room its own first letter does not name"
+
+let total = run ["sh" "-c" "find ${home} -name '*.glow' | wc -l | tr -d ' '"]
+assert total.ok else "total desk count failed"
+say "gen-home witness -- desks under ${home} (letter rooms + hoon-study): ${total.out}"
+
+let refs = run ["sh" "-c" "grep -rl '${home}/' tools/ 2>/dev/null | wc -l | tr -d ' '"]
 assert refs.ok else "reference scan failed"
 say "tool files speaking ${home}/: ${refs.out}"
-assert refs.out contains "12" else "expected 12 tool files speaking the canonical address ${home}/"
 
-say "GREEN: gen-home — 317 desks stand at ${home} and twelve tools speak one address."
+say "GREEN: gen-home -- zero flat desks, every desk in its own letter room or hoon-study, one address spoken."
