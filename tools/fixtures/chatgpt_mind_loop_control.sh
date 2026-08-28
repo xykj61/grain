@@ -605,7 +605,7 @@ grep '^GRAIN_ROOT=' "$handoff_out" > "$handoff_commands"
 
 handoff_verdict() {
   candidate=$1
-  [ "$(grep -c '^GRAIN_ROOT=' "$candidate")" -eq 8 ] || return 1
+  [ "$(grep -c '^GRAIN_ROOT=' "$candidate")" -eq 9 ] || return 1
   # nine GRAIN_ROOT lines since 20260828: the elder eight plus the LOGIN line the auth
   # fight earned -- the desktop app and the CLI rotate one OpenAI session, so the card
   # pins the project-local-home login as part of its contract.
@@ -675,15 +675,29 @@ for arg in "$@"; do printf ' <%s>' "$arg" >> "$SPACE_LOG"; done
 printf '\n' >> "$SPACE_LOG"
 EOF
 chmod +x "$SPACE_REPO/rye/bin/rye" "$SPACE_REPO/rishi/bin/rishi"
+# the codex stub (20260828): the card gained a LOGIN line, and a control that executes every
+# card line must stub every binary a line calls -- the real codex would start a real OAuth
+# flow from inside a pen. The stub logs its argv AND the CODEX_HOME it was handed, so the
+# receipt below can prove the login line carries the project-local home even from a spaced path.
+mkdir -p "$SPACE_REPO/stub-bin"
+cat > "$SPACE_REPO/stub-bin/codex" <<'EOF'
+#!/bin/sh
+printf 'codex' >> "$SPACE_LOG"
+for arg in "$@"; do printf ' <%s>' "$arg" >> "$SPACE_LOG"; done
+printf ' {CODEX_HOME=%s}\n' "${CODEX_HOME:-unset}" >> "$SPACE_LOG"
+EOF
+chmod +x "$SPACE_REPO/stub-bin/codex"
 export SPACE_LOG
 for command_shell in /bin/sh /bin/zsh; do
   while IFS= read -r command_line; do
-    (cd "$SPACE_REPO/sub dir" && "$command_shell" -c "$command_line")
+    (cd "$SPACE_REPO/sub dir" && PATH="$SPACE_ROOT/stub-bin:$PATH" "$command_shell" -c "$command_line")
   done < "$handoff_commands"
 done
 grep -Fx 'fetch-toolchain' "$SPACE_LOG" >/dev/null
 grep -Fx 'rye-bootstrap' "$SPACE_LOG" >/dev/null
 grep -F "rye <build> <$SPACE_ROOT/rishi/src/main.rye> <-femit-bin=$SPACE_ROOT/rishi/bin/rishi>" "$SPACE_LOG" >/dev/null
+grep -F "codex <login> {CODEX_HOME=$SPACE_ROOT/.mind-state/codex-home}" "$SPACE_LOG" >/dev/null \
+  || { echo "FAIL: spaced handoff login receipt missing or home wrong" >&2; exit 1; }
 for command_name in check once loop stop print; do
   grep -F "rishi <run> <$SPACE_ROOT/tools/l/chatgpt-mind.rish> <$command_name>" "$SPACE_LOG" >/dev/null
 done
