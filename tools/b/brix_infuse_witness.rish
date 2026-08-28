@@ -9,7 +9,7 @@
 # Build first:  rye build brix/infuse.rye -femit-bin=tools/.build/brix_infuse
 #   rishi/bin/rishi run tools/b/brix_infuse_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build brix/infuse.rye -femit-bin=tools/.build/brix_infuse"]
 assert build.ok else "brix infuse build failed"
 

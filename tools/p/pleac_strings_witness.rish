@@ -9,7 +9,7 @@
 # Build first:  rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings
 #   rishi/bin/rishi run tools/p/pleac_strings_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings"]
 assert build.ok else "pleac strings build failed"
 

@@ -16,7 +16,7 @@
 #
 #   rishi/bin/rishi run tools/w/wade1_brush_style_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 
 # --- build the parser; exercise the `style` path on the styled fixture -------
 

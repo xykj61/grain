@@ -11,7 +11,7 @@
 # Build first:  rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens
 #   rishi/bin/rishi run tools/w/wade1_tokens_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens"]
 assert build.ok else "brushstroke tokens build failed"
 
