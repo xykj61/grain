@@ -57,14 +57,17 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `d75f9fac60` -- this round's parent.
 
-**Now.** **The ledger reads itself, and found a row closed twice.** The role swap of
-`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core.
+**Now.** **glow/gen folds by letter, and the compiler leads the way.** The two import-path
+sites in `glow/glow_run.rye` (the cross-desk named-cast and the compose-lib lower) build
+`glow/gen/{c}/{s}.glow` from the stem's own first letter, every desk stands in its letter
+room or under `hoon-study/`, the room joined `room_bound_scan.sh`'s ENFORCE_ALL roster, and
+`tools/t/tool_path_resolve.rish` already recovers a stale flat reference by its letter rule --
+one of `%301`'s five booked folds, closed on metal `20260828`.
 
-**`%313`.** `%307` read open here while `%308` -- folded onto a shelf the same day --
-carried the only record of its closure, and `660b36a22`'s body claimed an edit the tree
-never received. `tools/r/reds_status_consistency_witness.rish` gates `contradicted_rows` and
-`phantom_closures` at **zero** across the pin and 127 shelves, reads `open_rows=6`, and proves
-**32** cases in a pen. Its first marker read saw four of seven; `reds_fold.sh` read truer.
+**MANY HANDS + the skills door** (granted `20260828`, Keaton's word): every launch card may
+spin up and manage multiple CLI agents -- custody gates stay MANUAL, one writer per checkout --
+and the root `SKILL.md` opens the Spellbook, the Chemical Formulas, and New Gauge Civic TAME
+as one skills door.
 
 **`%306` and `%315` CLOSED** (Pond): the Constel names redrawn **vowel-free**, both proofs now
 standing on all five; the **pre-amend** nib names **HEAD's parent**.
@@ -165,7 +168,7 @@ so the armed-wall promise rides on the publisher.
 | Door | Kind |
 |------|------|
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
-| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), `glow/gen/` folding by letter (340 vs 256), then the socket, then the **deep debride** on its own precondition. All in `active-designing/20260827-174816` | **GRANTED** |
+| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), then the socket, then the **deep debride** on its own precondition. The `glow/gen/` letter fold landed `20260828`. All in `active-designing/20260827-174816` | **GRANTED** |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |

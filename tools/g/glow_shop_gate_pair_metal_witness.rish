@@ -6,29 +6,29 @@
 # welcome fixtures and argv pairs, with arity refusing loudly at one sample.
 
 say "338b: eq fixture — demo pair 5,3 answers its baked welcome..."
-let f1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-eq-faces.glow"]
+let f1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-eq-faces.glow"]
 assert f1.ok else "338b: eq fixture failed"
 assert f1.out contains "GREEN" else "338b: eq fixture not GREEN"
 
 say "338b: gth fixture — same demo pair through the other op..."
-let f2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-gth-faces.glow"]
+let f2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-gth-faces.glow"]
 assert f2.ok else "338b: gth fixture failed"
 assert f2.out contains "GREEN" else "338b: gth fixture not GREEN"
 
 say "338b: eq argv — 7 7 meets, 7 9 does not..."
-let e1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-eq-faces.glow" "7" "7"]
+let e1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-eq-faces.glow" "7" "7"]
 assert e1.ok else "338b: eq 7 7 failed"
-let e2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-eq-faces.glow" "7" "9"]
+let e2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-eq-faces.glow" "7" "9"]
 assert e2.ok else "338b: eq 7 9 failed"
 
 say "338b: gth argv — 9 4 above, 4 9 below..."
-let g1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-gth-faces.glow" "9" "4"]
+let g1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-gth-faces.glow" "9" "4"]
 assert g1.ok else "338b: gth 9 4 failed"
-let g2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-gth-faces.glow" "4" "9"]
+let g2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-gth-faces.glow" "4" "9"]
 assert g2.ok else "338b: gth 4 9 failed"
 
 say "338b: arity — one sample refuses a pair desk..."
-let ar = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-eq-faces.glow" "7"]
+let ar = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-pair-eq-faces.glow" "7"]
 assert (ar.ok == false) else "338b: one-arg pair must refuse"
 
 say "GREEN: STOA338b — two faces meet on metal; eq and gth both ways; arity holds the door."

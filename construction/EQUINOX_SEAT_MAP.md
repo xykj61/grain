@@ -73,7 +73,7 @@
 
 | Item | State |
 | --- | --- |
-| seal-jam-cue desk | **GREEN** `glow/gen/compose-bind-nest-seal-jam-cue.glow` · six binds at `max_lines` · seven refuses |
+| seal-jam-cue desk | **GREEN** `glow/gen/c/compose-bind-nest-seal-jam-cue.glow` · six binds at `max_lines` · seven refuses |
 | max_lines | **6** · named in `glow/lower_multi.rye` · enforced by `glow_run` |
 | build-stack rung | **glow** on-touch · foundations still first · no campaign |
 

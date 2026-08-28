@@ -65,13 +65,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = lent_unwelcome_path, .data = buf[0..n6] });
     print("lower: wrote lent welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/bound-tick.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/b/bound-tick.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "|-  32") != null);
-    print("lower: glow/gen/bound-tick.glow carries \"|-  32\" -- GREEN\n", .{});
+    print("lower: glow/gen/b/bound-tick.glow carries \"|-  32\" -- GREEN\n", .{});
 
-    const lent_gen = try cwd.readFileAlloc(io, "glow/gen/lent-tick.glow", a, .limited(4096));
+    const lent_gen = try cwd.readFileAlloc(io, "glow/gen/l/lent-tick.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, lent_gen, "|-  (lent records)") != null);
-    print("lower: glow/gen/lent-tick.glow carries \"|-  (lent records)\" -- GREEN\n", .{});
+    print("lower: glow/gen/l/lent-tick.glow carries \"|-  (lent records)\" -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `|-` lowers literal and shrinking lent folds to ordinary Rye.\n", .{});

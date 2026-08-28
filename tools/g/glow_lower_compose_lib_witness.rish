@@ -19,7 +19,7 @@ assert selftest.out contains "sample mismatch" else "lower_compose_lib_witness m
 assert selftest.out contains "UnknownArm" else "lower_compose_lib_witness missing UnknownArm"
 
 # glow_run seats the library rye beside the consumer cache the selftest wrote.
-let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/u/use-lib-session-root-nest-cue-jam.glow"]
 assert desk.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
 assert desk.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
 

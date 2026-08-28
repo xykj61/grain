@@ -46,9 +46,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
     print("lower: wrote call3 welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/call-three.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/c/call-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "%^  sum  from  amount  note") != null);
-    print("lower: glow/gen/call-three.glow carries call faces -- GREEN\n", .{});
+    print("lower: glow/gen/c/call-three.glow carries call faces -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `%^` lowers three-arg calls to ordinary Rye (STOA8).\n", .{});

@@ -84,13 +84,13 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = u8_unwelcome, .data = buf[0..n6] });
     print("lower: wrote @u8 welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/cast-u32.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/c/cast-u32.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "^-  @u32") != null);
-    print("lower: glow/gen/cast-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
+    print("lower: glow/gen/c/cast-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
 
-    const gen_u8 = try cwd.readFileAlloc(io, "glow/gen/cast-u8.glow", a, .limited(4096));
+    const gen_u8 = try cwd.readFileAlloc(io, "glow/gen/c/cast-u8.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_u8, "^-  @u8") != null);
-    print("lower: glow/gen/cast-u8.glow carries \"^-  @u8\" -- GREEN\n", .{});
+    print("lower: glow/gen/c/cast-u8.glow carries \"^-  @u8\" -- GREEN\n", .{});
 
     const n_argv = try lower.lower_line_argv_sample("^-  @u32", &buf);
     const rye_argv = buf[0..n_argv];
@@ -106,9 +106,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: \"^-  @u8\" argv-sample refused ArgvSampleAuraNotYetLowered -- GREEN\n", .{});
 
-    const gen_sample = try cwd.readFileAlloc(io, "glow/gen/sample-u32.glow", a, .limited(4096));
+    const gen_sample = try cwd.readFileAlloc(io, "glow/gen/s/sample-u32.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_sample, "^-  @u32") != null);
-    print("lower: glow/gen/sample-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
+    print("lower: glow/gen/s/sample-u32.glow carries \"^-  @u32\" -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `^-` lowers @u8 @u16 @u32 @u64 casts to ordinary Rye; argv-sample G3.\n", .{});

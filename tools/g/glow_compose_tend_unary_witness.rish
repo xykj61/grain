@@ -6,58 +6,58 @@
 # the fold family's own law: beyond max_sumto_call the answer folds to 0.
 
 say "339: fixture — sumto lowers, builds, answers its baked welcome..."
-let fx = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sumto.glow"]
+let fx = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-sumto.glow"]
 assert fx.ok else "339: fixture failed"
 assert fx.out contains "GREEN" else "339: fixture not GREEN"
 
 say "339: argv welcome — sample 4 through the worker..."
-let a4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sumto-u32.glow" "4"]
+let a4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-sumto-u32.glow" "4"]
 assert a4.ok else "339: argv 4 failed"
 assert a4.out contains "GREEN" else "339: argv 4 not GREEN"
 
 say "339: fold-law beyond the bound — 65536 folds to 0, both sides agree..."
-let by = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sumto-u32.glow" "65536"]
+let by = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-sumto-u32.glow" "65536"]
 assert by.ok else "339: beyond-bound lap failed"
 
 say "342: prodto fixture — the product fold answers its baked welcome..."
-let p1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-prodto.glow"]
+let p1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-prodto.glow"]
 assert p1.ok else "342: prodto fixture failed"
 assert p1.out contains "GREEN" else "342: prodto fixture not GREEN"
 
 say "342: prodto argv — 4 through the worker; 13 folds to 0 by its own law..."
-let p2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-prodto-u32.glow" "4"]
+let p2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-prodto-u32.glow" "4"]
 assert p2.ok else "342: prodto 4 failed"
-let p3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-prodto-u32.glow" "13"]
+let p3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-prodto-u32.glow" "13"]
 assert p3.ok else "342: prodto beyond-bound lap failed"
 
 say "343: the gatekeepers — each fold's own bound answers 1 or 0 at the exact edge..."
-let l1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sumto-lawful-u32.glow" "65535"]
+let l1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-sumto-lawful-u32.glow" "65535"]
 assert l1.ok else "343: sumto_lawful at the bound failed"
-let l2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sumto-lawful-u32.glow" "65536"]
+let l2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-sumto-lawful-u32.glow" "65536"]
 assert l2.ok else "343: sumto_lawful beyond failed"
-let l3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-prodto-lawful-u32.glow" "12"]
+let l3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-prodto-lawful-u32.glow" "12"]
 assert l3.ok else "343: prodto_lawful at the bound failed"
-let l4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-prodto-lawful-u32.glow" "13"]
+let l4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-prodto-lawful-u32.glow" "13"]
 assert l4.ok else "343: prodto_lawful beyond failed"
 
 say "344: the vane wall answers through the import door — both edges..."
-let v1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-gardens-lawful-u32.glow" "8"]
+let v1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-gardens-lawful-u32.glow" "8"]
 assert v1.ok else "344: gardens_lawful at the bound failed"
-let v2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-gardens-lawful-u32.glow" "9"]
+let v2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-gardens-lawful-u32.glow" "9"]
 assert v2.ok else "344: gardens_lawful beyond failed"
 
 say "345: Caravan kin — caps at 8 and 9, dependents at 4 and 5..."
-let c1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-caps-lawful-u32.glow" "8"]
+let c1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-caps-lawful-u32.glow" "8"]
 assert c1.ok else "345: caps at the bound failed"
-let c2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-caps-lawful-u32.glow" "9"]
+let c2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-caps-lawful-u32.glow" "9"]
 assert c2.ok else "345: caps beyond failed"
-let c3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-dependents-lawful-u32.glow" "4"]
+let c3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-dependents-lawful-u32.glow" "4"]
 assert c3.ok else "345: dependents at the bound failed"
-let c4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-dependents-lawful-u32.glow" "5"]
+let c4 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-dependents-lawful-u32.glow" "5"]
 assert c4.ok else "345: dependents beyond failed"
 
 say "339: stranger stays refused — negative space..."
-let st = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-stranger-refuse-339.glow"]
+let st = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-stranger-refuse-339.glow"]
 assert (st.ok == false) else "339: stranger must refuse"
 
 say "GREEN: the Tend unary family — folds, gatekeepers, and the vanes' own walls all answer as calls, one source each; strangers still refuse."
