@@ -28,7 +28,7 @@ This is the **only** place `commit.gpgsign` is false anywhere in the tree, and i
 
 **The transport is armed inside the script too** (learned `20260827.223500`, when a publish from a
 fresh clone failed at the push): the field routes SSH through its own repo-local config
-(`.git/ssh_config_urbit`, the jail deploy key), and a freshly initialized `seed/.git` inherits none
+(`.git/ssh_config_jail`, the jail deploy key), and a freshly initialized `seed/.git` inherits none
 of it -- so `publish-seed.sh` arms the push with a `GIT_SSH_COMMAND` environment variable, under the same
 clause: anything a wipe would disarm is armed in the script. An environment variable rather than
 seed config **on purpose** (corrected `20260828`, when the leak scan refused a publish): a config

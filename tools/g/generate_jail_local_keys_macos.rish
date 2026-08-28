@@ -21,7 +21,7 @@
 #                                        ~/.ssh/known_hosts too (same subpath
 #                                        as the keys above) and SSH host-key
 #                                        verification needs its own copy
-#   .git/ssh_config_urbit            -- repo-local SSH config pointing at
+#   .git/ssh_config_jail            -- repo-local SSH config pointing at
 #                                        both files above, wired via
 #                                        core.sshCommand (this script sets
 #                                        it directly; see manual/guides/
@@ -139,7 +139,7 @@ let sc_s = "  IdentitiesOnly yes"
 let sc_t = join ["  UserKnownHostsFile " known_hosts_path] ""
 let ssh_conf_lines = [sc_a sc_b sc_c sc_d sc_e sc_f sc_g sc_h sc_i sc_j sc_k sc_l sc_m sc_n sc_o sc_p sc_q sc_r sc_s sc_t]
 let ssh_conf_text = join ssh_conf_lines nl
-let ssh_conf_path = "${repo}/.git/ssh_config_urbit"
+let ssh_conf_path = "${repo}/.git/ssh_config_jail"
 write-file ssh_conf_path ssh_conf_text
 
 let wire_ssh = run ["git" "config" "--local" "core.sshCommand" (join ["ssh -F " ssh_conf_path] "")]

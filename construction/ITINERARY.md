@@ -55,30 +55,35 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `f561584b39` -- this round, before its nib amend.
+**Git nib:** `d0c3e233d1` -- this round, before its nib amend.
 
-**Now.** **glow/gen folds by letter, and the compiler leads the way.** The two import-path
-sites in `glow/glow_run.rye` (the cross-desk named-cast and the compose-lib lower) build
-`glow/gen/{c}/{s}.glow` from the stem's own first letter, every desk stands in its letter
-room or under `hoon-study/`, the room joined `room_bound_scan.sh`'s ENFORCE_ALL roster, and
-`tools/t/tool_path_resolve.rish` already recovers a stale flat reference by its letter rule --
-one of `%301`'s five booked folds, closed on metal `20260828`.
+**Now.** **The ledger reads itself, and found a row closed twice.** The role swap of
+`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core.
 
-**MANY HANDS + the skills door** (granted `20260828`, Keaton's word): every launch card may
-spin up and manage multiple CLI agents -- custody gates stay MANUAL, one writer per checkout --
-and the root `SKILL.md` opens the Spellbook, the Chemical Formulas, and New Gauge Civic TAME
-as one skills door.
+**`%313`.** `reds_status_consistency_witness.rish` gates `contradicted_rows` and
+`phantom_closures` at zero over the pin and 127 shelves; 32 cases proven in a pen.
 
-**`%306` and `%315` CLOSED** (Pond): the Constel names redrawn **vowel-free**, both proofs now
-standing on all five; the **pre-amend** nib names **HEAD's parent**.
+**`%306` and `%315` CLOSED** (Pond): Constel names redrawn vowel-free; the pre-amend nib
+names HEAD's parent. **`%301` closed on metal**: glow/gen folded by letter, the compiler's two
+import-path sites lead, the room joined ENFORCE_ALL, the letter rule resolves stale refs.
 
-**Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
-accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
-`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore: both Mind's.
-`%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
-**Two seats:** who owns the Constel predicate (`split_digit_absent=6`, where `generate()` draws);
-and `reds_fold.sh` refusing any row carrying OPEN, so a closed-by-accretion row never folds and
-the pin stands over its bound.
+**MANY HANDS + the skills door** (granted `20260828`): every launch card may spin up and
+manage multiple CLI agents -- custody gates MANUAL, one writer per checkout -- and root
+`SKILL.md` opens the Spellbook, Chemical Formulas, and New Gauge Civic TAME.
+
+**Mind's lane admits its own record** (user-owned signed update, `20260828`): the wall gains
+a lap's own `session-logs/date/` log and the SkateCore witness, whose verdict reads zero
+failures rather than a pinned twenty-one -- Mind restarts on the next round-open. **Every
+clone seats the `ww` door**: `git remote add ww ssh://git@github.com/grain-ww/grain.git`
+-- `seed`'s peer door to one projection, pushing stays gate %1. **The jail transport wears its own
+name**: `.git/ssh_config_urbit` -> `.git/ssh_config_jail` -- each clone moves its local file
+and repoints `core.sshCommand` on touch; the generators write the new name.
+
+**Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields
+and 5 accessors; moving it removes casts at 16-17 sites; 59 gate fixtures await his word.
+`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy: Mind's. `%281`/`%291` stay his; the
+spine closed the ledger half. **Two seats:** the Constel predicate's owner
+(`split_digit_absent=6`); `reds_fold.sh` refusing rows carrying OPEN.
 
 **The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
 tree moves, then FORA31 (`approve all doors`, `20260827`).
@@ -86,10 +91,9 @@ tree moves, then FORA31 (`approve all doors`, `20260827`).
 ---
 ## Landed arcs
 
-Mandate, the Acme DX chapter, the CION ratchet, **AHOY** beside **WADE**, the Singularity
-foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4,
-the recursion cellar, the image module, the Constel quorum, the rune naming -- proven on metal,
-the account in `session-logs/`.
+Mandate, Acme DX, the CION ratchet, **AHOY** beside **WADE**, Singularity, **BUHR**'s MCP
+surface, **TACT** Journeys 1, 2, 4, the recursion cellar, the image module, the Constel
+quorum, the rune naming -- proven on metal, the account in `session-logs/`.
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
@@ -102,10 +106,8 @@ the account in `session-logs/`.
 | **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Bron - Tablecloth |
 | **4 -- word-gated** | The World | **TACT** | Ship-Pilot - publishing - Grainphone - commerce - CONTRIBUTING four-doors - Grain Energy PBC |
 
-**Now at JARL.** Four seats witnessed GREEN -- identity, network, topology, settlement -- all five
-constellation transitions holding every refusal. The **next-chapter breach is OPEN `20260810`**:
-Pond seated as the application module with Pool retired into it, Bron -> Kyri, Kyri the one voice,
-and the loadable skies still to run, each its own signed round. Charter at
+**Now at JARL.** Four seats witnessed GREEN; the next-chapter breach is OPEN `20260810`
+(Pond seated, Pool retired, Kyri the one voice; loadable skies to run). Charter:
 [`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
 
 ---
@@ -119,7 +121,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Pier & hands
 
 - **Pier path** -- `~/grain`, which persists across jail resets - agent `home-xy-grain`.
-- **Lane** -- every **send** pushes both `origin` (debrided) and `xykj61`. ls-remote guard first; `origin` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
+- **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
 - **Live state** -- `gh` as `xykj61`, **agent-jail GREEN** (`./tools/ag/agent-jail.sh`), tmux `pier` standing.
 - **Cursor launch** -- `rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-*.AppImage --gpu`.
@@ -145,7 +147,7 @@ The publish push is Keaton's hand.
 
 For any self-paced or outer-jail loop: recur through all agent-doable work, yet **stop and surface -- never cross -- these custody, irreversible, and provisioning acts.** They are Keaton's hand by design:
 
-1. **The AHOY3 final seed force-push** -- **DONE `20260812`** on Keaton's word; the seed stays a single force-push commit, author *Grain OS*, unsigned by design. Each refresh takes its own word, and one is granted below. Full row: [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
+1. **The seed** -- each refresh takes its own word (AHOY3 final push DONE `20260812`; one force-push commit, anonymous, unsigned by design). Full row: [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
 2. **Provisioning or paying** for any cloud/VPS/Pond/subscription (Vultr SEA IaC, WADE2/3) -- agents author IaC; Keaton provisions and pays.
 3. **Moving funds, holding keys, or opening any custody/wallet/payment rail** -- Dimeroll records facts only; disbursement waits on licensed counsel.
 4. **Generating Keaton's own Kumara instance** from his real seed/keeper -- his hand alone.
@@ -156,8 +158,7 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence -- SETTLED `20260826`: cut.** Gate %1 governs alone, so each refresh takes its own
-word and no count publishes anything; the two-readings disagreement that stood here is closed.
+**Seed cadence -- SETTLED `20260826`: cut.** Gate %1 governs alone.
 **One wart:** `sow_project.sh`'s sed-copy drops the exec bit on the seed's `tools/hooks/commit-msg`,
 so the armed-wall promise rides on the publisher.
 
@@ -168,7 +169,7 @@ so the armed-wall promise rides on the publisher.
 | Door | Kind |
 |------|------|
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
-| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), then the socket, then the **deep debride** on its own precondition. The `glow/gen/` letter fold landed `20260828`. All in `active-designing/20260827-174816` | **GRANTED** |
+| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), `glow/gen/` folding by letter (340 vs 256), then the socket, then the **deep debride** on its own precondition. All in `active-designing/20260827-174816` | **GRANTED** |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |
@@ -200,11 +201,11 @@ Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 the measurement class behind it is
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
-**Named and waiting on their own lap:** the **fascia weave** over thirty-nine browsed
-`active-designing/` documents; **`docs/STOA.md`** at 166 lines against the `<=80` its title
-declares; ten pages wanting a Status line; the **`constels/` room** (Kumara live implementations
-from kres and brix templates, feeding **Growthcircle**); and the **kres / kresfa contract language
-chapter** -- the last two seated by name `20260823.122619`, each wanting its own design round.
+**Named and waiting on their own lap:** the **fascia weave** (39 browsed `active-designing/`
+documents); **`docs/STOA.md`** at 166 lines against its declared `<=80`; ten pages wanting a
+Status line; the **`constels/`** room and the **kres/kresfa chapter** (seated
+`20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 14 over-70
+functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until circled.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
@@ -214,7 +215,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.121218` | %306 redrawn vowel-free, %315 closed -- one Constel law, a nib the fleet resolves | [log](../session-logs/date/20260828/20260828-121218_the-name-that-passes-both-proofs.kyri) |
+| `20260828.142844` | Mind's lane admits its own record; the fourth sweep cherry-picked home | [log](../session-logs/date/20260828/20260828-142844_the-lane-that-admits-its-own-record.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
