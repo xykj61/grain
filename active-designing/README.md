@@ -106,9 +106,9 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 ## Redirect stubs
 
-When a design brief **supersedes** research or an executed prompt, the old file in another stack becomes a stub (see `../external-research/README.md`). In **this** stack, revise briefs in place when the design matures (see [`yonder/20260618-085812_strengthening-strategy.md`](yonder/20260618-085812_strengthening-strategy.md)) rather than leaving duplicate architecture docs.
+When a design brief **supersedes** research or an executed prompt, the old file in another stack becomes a stub (see `../external-research/README.md`). In **this** stack, revise briefs in place when the design matures (see [`yonder/date/20260618/20260618-085812_strengthening-strategy.md`](yonder/date/20260618/20260618-085812_strengthening-strategy.md)) rather than leaving duplicate architecture docs.
 
-**Current width law:** [`20260621-051312_explicit-width-in-rye.md`](yonder/20260621-051312_explicit-width-in-rye.md) -- literal `usize` ban in Rye types. Interim Zig-ground seam audit: research `968` until fork F3.
+**Current width law:** [`20260621-051312_explicit-width-in-rye.md`](yonder/date/20260621/20260621-051312_explicit-width-in-rye.md) -- literal `usize` ban in Rye types. Interim Zig-ground seam audit: research `968` until fork F3.
 
 **Retired patterns in new design prose:** Bash gates, `ArenaAllocator` in authored modules (use `init.garden`), `usize` in APIs we publish, vendor Zig parity as permanent contract.
 

@@ -7,9 +7,9 @@ status proposal
 # Root-nesting plan:  external-research/20260808-183336_the-compact-root-nesting-for-a-public-seed.md
 #
 # Every tracked root path carries exactly one verdict:
-#   template — copied verbatim into the public seed (grain-os/grain)
-#   scrub    — copied only after the name->role / Acme-voice transform (.claude/rules/acme-employee-voice.md)
-#   personal — never copied; lives only in the private field
+#   template -- copied verbatim into the public seed (grain-os/grain)
+#   scrub    -- copied only after the name->role / Acme-voice transform (.claude/rules/acme-employee-voice.md)
+#   personal -- never copied; lives only in the private field
 #
 # FAIL-SAFE: when a path's contents are uncertain, it is personal (withhold).
 # A privacy boundary built additively cannot leak what it never received.
@@ -21,11 +21,11 @@ status proposal
 # name ever appears in the projected seed.
 
 # ============================================================
-# ALLOWLIST — the SHIP DRIVER (seated 20260810 on Keaton's word).
+# ALLOWLIST -- the SHIP DRIVER (seated 20260810 on Keaton's word).
 # The projection ships ONLY these `allow` paths; everything else in
 # the tree is withheld by default. This flips the seed from a
 # denylist (scrub everything, hope the net is complete) to an
-# allowlist (ship only what is explicitly cleared) — after five
+# allowlist (ship only what is explicitly cleared) -- after five
 # audit passes each found new private data. Same posture as
 # .gitignore's own `/*` + `!/path`. Allowed paths are STILL scrubbed
 # and IDENT-checked (defense in depth), and `sub_exclude` still
@@ -87,7 +87,7 @@ allow docs-geode
 allow edu
 allow nixos-guide
 allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
-# -- the disciplines (context, granular — identity/specs/keys withheld) --
+# -- the disciplines (context, granular -- identity/specs/keys withheld) --
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
 allow cubist-bhakti-astrology      # the classical room reimagined; no personal readings live here
 allow arbor                        # spoken tiles for a voice reader; local authoring only, no service reached
@@ -151,10 +151,10 @@ allow PUBKEYS.template.md
 template  .brix                          # root Brix descriptor
 template  .cursorignore                  # editor ignore posture
 template  .gitattributes                 # attribute rules
-template  .gitignore                     # allowlist posture — exactly what a template wants
+template  .gitignore                     # allowlist posture -- exactly what a template wants
 template  .gitmodules                    # gratitude/ and vendor/ submodule pins only
 template  .vscode                        # editor settings, no personal data
-template  template-manifest.bron         # this file — the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
+template  template-manifest.bron         # this file -- the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
 scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
 scrub     .cursor                        # Cursor twins of the same rules
 
@@ -202,7 +202,7 @@ template  dimeroll                      # module
 template  lantern                         # inference lantern
 template  lattice                         # module
 template  mand                            # authority
-template  mandate                         # vector store (turbopuffer) — clean code, no name; fake example vectors
+template  mandate                         # vector store (turbopuffer) -- clean code, no name; fake example vectors
 template  mandi                           # module
 template  mantra                          # versions
 template  kyri                            # the Kyri 6 receipt module -- notation, not identity
@@ -221,32 +221,32 @@ scrub     lotus                           # creative-suite wire shape
 template  mikrophone                      # Mikrophone firmware (DREY)
 template  constel                         # Constel test-network naming
 template  scribble                        # module
-template  scribe                          # the Kyri reader — clean code, no name
+template  scribe                          # the Kyri reader -- clean code, no name
 template  surf                            # the consent-first social layer -- clean code, demo keeper seeds only (renamed from skate 20260823.094410)
 scrub     skate                           # peer Surf/Skate macOS core; ships only through the depersonalizing projection
-template  vault                           # keeper of secrets (Shamir sharding) — clean code, fake 0x11 seed only
+template  vault                           # keeper of secrets (Shamir sharding) -- clean code, fake 0x11 seed only
 template  src                             # Glow userland (five rooms)
 template  tally                           # bounded allocation
 template  tools                           # witnesses and gates; gitignored secrets never enter; scrub any name on touch
 template  assets                          # the Grain logo (archetype wheat-sephirot SVG, no personal art, no name)
-template  brix                            # Brix composition language module (infuse) — clean code, no name
-template  pleac                           # the PLEAC cookbook (strings/lists/numbers) — clean code, no name
+template  brix                            # Brix composition language module (infuse) -- clean code, no name
+template  pleac                           # the PLEAC cookbook (strings/lists/numbers) -- clean code, no name
 
 # ---- code modules that name the maintainer in comments (scrub the name, ship the code) ----
-scrub     kumara                          # identity module — tilak comments name the maintainer
-scrub     settlement                      # settlement ledger — a comment names the maintainer
+scrub     kumara                          # identity module -- tilak comments name the maintainer
+scrub     settlement                      # settlement ledger -- a comment names the maintainer
 
 # ---- disciplines and design corpus (scrub: technical, yet name-bearing) ----
-scrub     context                         # disciplines + specs + identity (RIYO/QUIN) — scrub identity, keep law
+scrub     context                         # disciplines + specs + identity (RIYO/QUIN) -- scrub identity, keep law
 scrub     active-designing                # design corpus names the maintainer as decision authority
 scrub     active-development              # same corpus, same treatment -- scrub by default rather than by inspection,
                                           # since a room is judged by what it will hold, not by what it holds today
 scrub     active-reviving                 # revival corpus, same
 scrub     expanding-prompts               # runnable plans; name-heavy per the audit
-scrub     recursion-prompts               # recursion-prompt cellar; seeds are generic, versions name the maintainer — scrub like expanding-prompts
+scrub     recursion-prompts               # recursion-prompt cellar; seeds are generic, versions name the maintainer -- scrub like expanding-prompts
 scrub     waymarks                        # claim shelf; name-heavy per the audit
-scrub     foundations                     # the why — doctrine ships (scrubbed); bio withheld file-granular (see sub-exclude)
-scrub     linengrow                       # civic-app pattern (template) — yet holds venture specifics; see sub-exclude
+scrub     foundations                     # the why -- doctrine ships (scrubbed); bio withheld file-granular (see sub-exclude)
+scrub     linengrow                       # civic-app pattern (template) -- yet holds venture specifics; see sub-exclude
 
 # ---- teaching and study ----
 template  docs                            # compressor pages; cite witnesses
@@ -254,13 +254,16 @@ template  docs-geode                      # teaching
 scrub     edu                             # the learning floor
 template  manual                          # the four teaching rooms
 scrub     nixos-guide                     # host setup guide
-scrub     external-research               # study of the world; name-bearing memos — scrub identity
+scrub     external-research               # study of the world; name-bearing memos -- scrub identity
 template  gratitude                       # third-party, held whole and unmodified
 template  vendor                          # third-party build source, unmodified
 
 # ---- personal record (never copied) ----
 personal  session-logs                    # years of reasoning traces that name the maintainer by design
-personal  counsel                         # decision records — "on the maintainer's word"
+personal  SKILL.md                      # the operator skills door -- 4 of its 13 rows point at withheld
+                                        # rooms (construction, SPELLBOOK, LEXICON, TAME_CORE); a door onto
+                                        # four missing rooms serves a stranger worse than no door
+personal  counsel                         # decision records -- "on the maintainer's word"
 personal  bron-resins                     # compressed personal reasoning trails
 personal  dexter                          # the terminal rebirth room; fills on the orbit, joins the seed when its first successor is GREEN
 scrub arbor                           # the spoken-tile room; ships depersonalized like every projected room on Keaton's word 20260826
@@ -280,29 +283,29 @@ template  classical-vedic-astrology       # reclassified 20260823.184309 on Keat
                                           # friends asked for privacy. Elder verdict was `personal` outright.
 personal  rye-learning-process            # a personal learning almanac
 personal  keys                            # identity QR cards and key material
-personal  twilight                        # the Twilight palette's private source poems — debrided from all history 20260823.072824 and untracked since; this row stays as defence in depth
-personal  journey                         # season/quest narratives that name the maintainer — withheld (Keaton's word 20260811)
-personal  research-silo                   # research trails, name-bearing — withheld until each file earns a place (Keaton's word 20260811)
+personal  twilight                        # the Twilight palette's private source poems -- debrided from all history 20260823.072824 and untracked since; this row stays as defence in depth
+personal  journey                         # season/quest narratives that name the maintainer -- withheld (Keaton's word 20260811)
+personal  research-silo                   # research trails, name-bearing -- withheld until each file earns a place (Keaton's word 20260811)
 
 # ---- sub-exclude: paths withheld even though their verdict is scrub ----
 # An entry is either a whole path or a single file inside a scrub directory.
 # A file is withheld when it equals an entry or lives under one. This lets the
 # foundations DOCTRINE ship (scrubbed) while the biography beside it stays home
-# (Keaton's word 20260808 — share the doctrine, withhold only the bio).
-# `context` is NOT here — its gitignored personal overrides (a real PUBKEYS.md,
+# (Keaton's word 20260808 -- share the doctrine, withhold only the bio).
+# `context` is NOT here -- its gitignored personal overrides (a real PUBKEYS.md,
 # a filled GLOW_*.bron) are already untracked, so git ls-files never offers them.
 
 # whole-path:
 sub_exclude linengrow     # civic-app venture/treasury specifics tied to one person
 
-# foundations biography (file-granular) — the doctrine beside these ships:
+# foundations biography (file-granular) -- the doctrine beside these ships:
 sub_exclude active-designing/20260825-231201_a-letter-to-hale-county.md   # a drafted letter to real county officials; the town hears nothing until Keaton sends it
 sub_exclude foundations/20260730-022147_keaton-livermore-resume-draft.md   # a resume; debrided 20260823.072824, row kept as defence in depth
 sub_exclude foundations/20260730-022147_personal-ontology.md               # personal ontology; debrided 20260823.072824, row kept
 sub_exclude foundations/20260730-022147_cover-letter-co-authored.md        # a cover letter; debrided 20260823.072824, row kept
 sub_exclude foundations/yonder/20260729-220100_the-names-we-did-not-use.md        # personal naming history
 
-# foundations maintainer-specifics (Keaton's word 20260808 — withhold all 18):
+# foundations maintainer-specifics (Keaton's word 20260808 -- withhold all 18):
 # essays naming real public figures as project-naming rationale
 sub_exclude foundations/yonder/20260728-020607_mala-and-kamala-harris.md
 sub_exclude foundations/yonder/20260728-021252_gwoh-and-sarah-guo.md
@@ -324,7 +327,7 @@ sub_exclude foundations/20260801-005853_mantrapod-venture-pitch.md
 sub_exclude foundations/20260702-202612_a-conversation-with-serena.md
 sub_exclude foundations/20260729-231416_the-application-that-received-no-answer.md
 
-# vision batons and rosters (20260810 — name real friends, partners, living people)
+# vision batons and rosters (20260810 -- name real friends, partners, living people)
 sub_exclude expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md
 sub_exclude expanding-prompts/date/20260810/20260810-044453_the-3x39-baton-passports-dividers-and-starseeding.md
 sub_exclude context/inspirations.kyri
@@ -351,7 +354,7 @@ sub_exclude edu/company
 sub_exclude edu/funds
 sub_exclude context/keys
 
-# convergence audit (20260810 . wgn0745jf) — family-history, dedication, and key-script files withheld whole
+# convergence audit (20260810 . wgn0745jf) -- family-history, dedication, and key-script files withheld whole
 sub_exclude context/specs/20260630-004512_module-name-provenance.md
 sub_exclude context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md
 sub_exclude expanding-prompts/date/20260730/20260730-150702_pole-bozo-murr-hats-charter.md
@@ -379,7 +382,7 @@ sub_exclude tools/p/pond_exit_bron_master_seal.sh
 sub_exclude waymarks/date/20260730/20260730-150702_pole0-3-bozo-murr-hats.md
 sub_exclude context/specs/20260713-201910_pacific-time-local-clone-convention.md
 
-# design/waymark clearance (20260810 . wnlsgtnxe) — 19 files agent-flagged for personal content
+# design/waymark clearance (20260810 . wnlsgtnxe) -- 19 files agent-flagged for personal content
 sub_exclude waymarks/date/20260725/20260725-112615_radiant-wave36.md
 # one of the 19 retired 20260826: the DJINN pseudonym pass (1a75eaf67) removed the weave-dependencies
 # file from tree and history, so there is nothing left for its exclusion row to match
@@ -400,7 +403,7 @@ sub_exclude waymarks/date/20260725/20260725-112415_radiant-wave34.md
 sub_exclude active-designing/yonder/date/20260722/20260722-153358_stoa279-hawm-emulator-serial-pin.md
 sub_exclude active-designing/yonder/date/20260714/20260714-184500_macos-full-private-home-design.md
 sub_exclude waymarks/date/20260725/20260725-112515_radiant-wave35.md
-# external-research dual-gate clearance (20260810 . w50krsfnv) — 13 copyright + 21 personal
+# external-research dual-gate clearance (20260810 . w50krsfnv) -- 13 copyright + 21 personal
 sub_exclude external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md
 sub_exclude external-research/20260704-185412_ends-first-map-orientation.md
 sub_exclude external-research/20260706-002612_the-settlement-seat-under-three-lights.md
