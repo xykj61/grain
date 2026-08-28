@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Grain — a wheat stalk whose ten grains are the sephirot, woven on a linen grid">
+  <title>Grain</title>
+  <desc>A sepia-gold wheat stalk. Its ten grains sit at the ten sephirot of the Tree of Life, joined by woven paths over a linen-grid tile — bounded, asserted, built with joy.</desc>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4e9cf"/>
+      <stop offset="1" stop-color="#e6d3a6"/>
+    </linearGradient>
+    <linearGradient id="grain" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9b45a"/>
+      <stop offset="0.55" stop-color="#c8992f"/>
+      <stop offset="1" stop-color="#9a6f22"/>
+    </linearGradient>
+    <pattern id="weave" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="16" height="16" fill="none"/>
+      <path d="M0 4 H16 M0 12 H16" stroke="#b9954a" stroke-opacity="0.18" stroke-width="2"/>
+      <path d="M4 0 V16 M12 0 V16" stroke="#a9853d" stroke-opacity="0.12" stroke-width="2"/>
+    </pattern>
+  </defs>
+
+  <!-- linen-grid tile -->
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#tile)" stroke="#9a6f22" stroke-width="4"/>
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#weave)"/>
+
+  <!-- woven paths between the sephirot (the stalk's weave) -->
+  <g stroke="#9a6f22" stroke-width="3.2" stroke-linecap="round" fill="none" stroke-opacity="0.85">
+    <!-- central pillar -->
+    <path d="M128 44 L128 150 L128 196 L128 220"/>
+    <!-- upper triad -->
+    <path d="M128 44 L80 78 M128 44 L176 78 M80 78 L176 78"/>
+    <!-- pillars down -->
+    <path d="M80 78 L80 130 M176 78 L176 130"/>
+    <!-- crossbeams and diagonals to center -->
+    <path d="M80 130 L176 130 M80 130 L128 150 M176 130 L128 150"/>
+    <path d="M80 130 L80 182 M176 130 L176 182"/>
+    <path d="M80 182 L128 150 M176 182 L128 150 M80 182 L176 182"/>
+    <path d="M80 182 L128 196 M176 182 L128 196"/>
+  </g>
+
+  <!-- awns (wheat whiskers) above the crown grain -->
+  <g stroke="url(#grain)" stroke-width="3.4" stroke-linecap="round" fill="none">
+    <path d="M128 40 L128 18"/>
+    <path d="M128 40 L112 22"/>
+    <path d="M128 40 L144 22"/>
+  </g>
+
+  <!-- the ten grains at the ten sephirot -->
+  <g fill="url(#grain)" stroke="#7c561a" stroke-width="1.4">
+    <!-- Keter -->
+    <g transform="translate(128,48)"><ellipse rx="12" ry="18"/><path d="M0 -14 V14" stroke="#f4e9cf" stroke-width="1.6" fill="none" stroke-opacity="0.7"/></g>
+    <!-- Chokmah / Binah -->
+    <g transform="translate(176,80) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(80,80) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <!-- Chesed / Gevurah -->
+    <g transform="translate(176,132) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(80,132) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <!-- Tiferet (heart) -->
+    <g transform="translate(128,150)"><ellipse rx="12.5" ry="19"/><path d="M0 -15 V15" stroke="#f4e9cf" stroke-width="1.7" fill="none" stroke-opacity="0.75"/></g>
+    <!-- Netzach / Hod -->
+    <g transform="translate(176,184) rotate(28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <g transform="translate(80,184) rotate(-28)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <!-- Yesod -->
+    <g transform="translate(128,198)"><ellipse rx="11" ry="17"/><path d="M0 -13 V13" stroke="#f4e9cf" stroke-width="1.5" fill="none" stroke-opacity="0.7"/></g>
+    <!-- Malkuth (root grain) -->
+    <g transform="translate(128,224)"><ellipse rx="12" ry="16"/><path d="M0 -12 V12" stroke="#f4e9cf" stroke-width="1.6" fill="none" stroke-opacity="0.7"/></g>
+  </g>
+</svg>
