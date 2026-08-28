@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.120941` | [five of six aloft](20260828/20260828-120941_five-of-six-aloft.kyri) | Dream joins; the day's every repair proven in one chain |
 | `20260828.115623` | [the flag that failed closed](20260828/20260828-115623_the-flag-that-failed-closed.kyri) | my interim was Dream's second blocker; the warning had said so |
 | `20260828.114528` | [the second binary, the captain's hat](20260828/20260828-114528_the-second-binary-and-the-captains-hat.kyri) | Dream unblocked two ways; Sound's captaincy written down |
 | `20260828.114450` | [the needle the harness supplied](20260828/20260828-114450_the-needle-the-harness-supplied.kyri) | %311 -- the answer-meter adopted; a wall that could not red |
