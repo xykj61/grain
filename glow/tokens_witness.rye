@@ -10,7 +10,7 @@ const tokens = @import("tokens.rye");
 
 const witness_version = "20260719.225100";
 
-/// Same shape as glow/gen/cast-named-xact.glow (comments stripped by lexer).
+/// Same shape as glow/gen/c/cast-named-xact.glow (comments stripped by lexer).
 const xact_desk =
     \\+$  xact-mold
     \\  $%  [%mint amount=@u32]

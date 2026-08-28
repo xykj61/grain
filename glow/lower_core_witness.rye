@@ -239,27 +239,27 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/core_jam_nest_welcome.rye", .data = buf[0..n19] });
     print("core: wrote typed-payload three-arm open nest and battery caches -- GREEN\n", .{});
 
-    const gen_three = try cwd.readFileAlloc(io, "glow/gen/core-three.glow", a, .limited(4096));
+    const gen_three = try cwd.readFileAlloc(io, "glow/gen/c/core-three.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_three, "++  dec") != null);
-    const gen_typed = try cwd.readFileAlloc(io, "glow/gen/core-payload-typed.glow", a, .limited(4096));
+    const gen_typed = try cwd.readFileAlloc(io, "glow/gen/c/core-payload-typed.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_typed, "=/  amount=@u32  5") != null);
-    const gen_open = try cwd.readFileAlloc(io, "glow/gen/core-open.glow", a, .limited(4096));
+    const gen_open = try cwd.readFileAlloc(io, "glow/gen/c/core-open.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_open, "++  id  sample") != null);
-    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/core-nest.glow", a, .limited(4096));
+    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/c/core-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam sample sample)") != null);
-    const gen_jn = try cwd.readFileAlloc(io, "glow/gen/core-jam-nest.glow", a, .limited(4096));
+    const gen_jn = try cwd.readFileAlloc(io, "glow/gen/c/core-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_jn, "(jam (mix sample sample) sample)") != null);
-    const gen_rn = try cwd.readFileAlloc(io, "glow/gen/core-jam-right-nest.glow", a, .limited(4096));
+    const gen_rn = try cwd.readFileAlloc(io, "glow/gen/c/core-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_rn, "(jam sample (mix sample sample))") != null);
-    const gen_both = try cwd.readFileAlloc(io, "glow/gen/core-jam-both-nest.glow", a, .limited(4096));
+    const gen_both = try cwd.readFileAlloc(io, "glow/gen/c/core-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_both, "(jam (mix sample sample) (mix sample sample))") != null);
-    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam.glow", a, .limited(4096));
+    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/c/core-cue-jam.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cj, "(cue (jam sample sample))") != null);
-    const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-nest.glow", a, .limited(4096));
+    const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/c/core-cue-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjn, "(cue (jam (mix sample sample) sample))") != null);
-    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-right-nest.glow", a, .limited(4096));
+    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/c/core-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjr, "(cue (jam sample (mix sample sample)))") != null);
-    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/core-cue-jam-both-nest.glow", a, .limited(4096));
+    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/c/core-cue-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjb, "(cue (jam (mix sample sample) (mix sample sample)))") != null);
     print("core: desks core-three core-payload-typed core-open core-nest core-jam-* core-cue-jam* carry batteries -- GREEN\n", .{});
 

@@ -11,8 +11,8 @@
 set -eu
 
 MODE=${1:-}
-DESK=glow/gen/compose-bind-nest-seal-jam-cue.glow
-ELDER=glow/gen/compose-bind-nest-four-jam-cue.glow
+DESK=glow/gen/c/compose-bind-nest-seal-jam-cue.glow
+ELDER=glow/gen/c/compose-bind-nest-four-jam-cue.glow
 LOWER=glow/lower_multi.rye
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260731/20260731-234806_e130-seal-jam-cue-desk.md

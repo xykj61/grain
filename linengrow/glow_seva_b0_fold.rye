@@ -17,7 +17,7 @@ const line = @import("glow_seva_b0_line.rye");
 
 pub const fold_version = "20260722.134831";
 
-/// Embedded fact-line lit desk (same bytes as `glow/gen/sample-demo-fact-line-lits.glow`).
+/// Embedded fact-line lit desk (same bytes as `glow/gen/s/sample-demo-fact-line-lits.glow`).
 pub const fact_line_lit_desk_embedded = line.lit_desk_embedded;
 
 /// Product-owned pin -- same HAWM1 demo root the elder fold proves.

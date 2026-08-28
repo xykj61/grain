@@ -4,7 +4,7 @@
 //! bodies. Wires with STOA201 sign for a demo round-trip.
 //! STOA203: append composes through this surface + sign.
 //! STOA225: demo sig/fact hex pins + Glow face=lit desk bind
-//! (`glow/gen/sample-demo-fact-line-lits.glow`). Pins match
+//! (`glow/gen/s/sample-demo-fact-line-lits.glow`). Pins match
 //! `claim_demo_line` under issuer seed - fixture stamp1/memo1.
 //! STOA227: `format_demo_line_from_pins` emits the elder line from those
 //! seated pins (desk-bound). Does not read the `.glow` file at runtime.
@@ -34,7 +34,7 @@ const tally_parse_int = @import("parse_int.rye");
 pub const line_version = "20260722.140957";
 
 /// Glow face=lit sample desk for demo line halves (STOA225 - STOA231).
-pub const lit_desk_relpath = "glow/gen/sample-demo-fact-line-lits.glow";
+pub const lit_desk_relpath = "glow/gen/s/sample-demo-fact-line-lits.glow";
 
 /// Desk bytes packed into the product binary / APK `.so` (STOA237).
 /// Twin of `lit_desk_relpath` under linengrow/ (Zig embed stays in-package).

@@ -68,10 +68,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/compose_core_add_unwelcome.rye", .data = buf[0..n4] });
     print("compose-core-add: wrote welcome and unwelcome under glow/.cache/ -- GREEN\n", .{});
 
-    const gen = try cwd.readFileAlloc(io, "glow/gen/compose-core-add.glow", a, .limited(4096));
+    const gen = try cwd.readFileAlloc(io, "glow/gen/c/compose-core-add.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen, "=/  from  5") != null);
     assert(std.mem.indexOf(u8, gen, "++  add") != null);
-    print("compose-core-add: glow/gen/compose-core-add.glow carries two-face→add -- GREEN\n", .{});
+    print("compose-core-add: glow/gen/c/compose-core-add.glow carries two-face→add -- GREEN\n", .{});
 
     print("compose-core-add: version {s}\n", .{witness_version});
     print("GREEN: two faces→`|%` add compose lowers to ordinary Rye (STOA23).\n", .{});

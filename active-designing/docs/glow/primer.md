@@ -16,7 +16,7 @@ A programming language is a way of writing intentions down so precisely that a m
 
 ## Your First Desk
 
-A Glow program lives in a small text file called a **desk**. Here is a complete one, [`glow/gen/bound-tick.glow`](../../../glow/gen/bound-tick.glow), all three lines of it:
+A Glow program lives in a small text file called a **desk**. Here is a complete one, [`glow/gen/b/bound-tick.glow`](../../../glow/gen/b/bound-tick.glow), all three lines of it:
 
 ```
 ::  Smallest Glow generator -- a bounded trap with literal ceiling 32.
@@ -29,17 +29,17 @@ Read it slowly. Lines opening with `::` are comments -- notes to the next reader
 Run it:
 
 ```bash
-rishi/bin/rishi run tools/g/glow_run.rish glow/gen/bound-tick.glow
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/b/bound-tick.glow
 ```
 
 Rishi is Grain's shell -- the hand that runs things. Glow is the language; Rishi is the hand. The program runs, finishes inside its ceiling, and exits with `0`, which in Glow-land plainly means *welcome* -- success. There is no hidden convention to memorize: Glow's ambient truth is the ordinary one your operating system already speaks.
 
 ## Your Second Desk Talks Back
 
-Some desks bake their sample in; some accept one from you. [`glow/gen/sample-u32.glow`](../../../glow/gen/sample-u32.glow) is a **generator** -- it reads one number from the command line:
+Some desks bake their sample in; some accept one from you. [`glow/gen/s/sample-u32.glow`](../../../glow/gen/s/sample-u32.glow) is a **generator** -- it reads one number from the command line:
 
 ```bash
-rishi/bin/rishi run tools/g/glow_run.rish glow/gen/sample-u32.glow 42
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/s/sample-u32.glow 42
 ```
 
 Its live line is `^-  @u32`. The rune `^-` is a **cast**: *the value that follows must fit this shape.* And `@u32` is an **aura** -- a name for an atom's width and reading: an unsigned number that fits in thirty-two bits. Try handing it something that could never fit that shape and watch what happens. The program refuses -- exit `1`, the plain *unwelcome* -- and it refuses **at the boundary**, right where you handed the value in, rather than corrupting something quietly three steps later. In Glow a refusal is not scolding. It is the language catching your sleeve at the door: *this is where the mistake is; fix it here.*
@@ -67,7 +67,7 @@ A **gate** is Glow's function: it takes one sample and produces one result. The 
 Line one is the header: *I take one sample, and it is a `@u32`.* Line two is the body: `%-` is the **call** rune -- apply the gate `double` to `sample`. Run its argv twin and hand it a number:
 
 ```bash
-rishi/bin/rishi run tools/g/glow_run.rish glow/gen/gate-sample-u32.glow 21
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/g/gate-sample-u32.glow 21
 ```
 
 Two boundary laws are guarding you here, and they are worth loving. First, the body may only call gates the language has actually taught -- hand it a stranger and it answers `BodyGateNotYetLowered`: *the frontier is here, honestly named*, never faked. Second, the body may only pass **the sample face itself** -- a different name refuses as `BodySampleMismatch`. The gate cannot quietly reach for something it was never given.
