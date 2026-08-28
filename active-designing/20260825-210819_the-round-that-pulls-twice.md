@@ -78,3 +78,21 @@ When the constellation's facts travel by wire instead of by git -- the Comlink-s
 three-MOX wiring, a millisecond cadence -- this same rota is the protocol, with the ordering
 remote's ref lock replaced by the order the Cord derives. Nothing about the shape changes; only
 the carriage does.
+
+
+## The round opens self-healing -- amended `20260828.103023`
+
+Two loops died at their opens on `20260828`, both on trees with **zero divergence**, and the
+handler each carried printed the same rewrite warning for every failure a pull can have. The open
+is one script now, `tools/f/fleet_round_open.sh`, and it answers each state by name: a clean tree
+opens; a dead lap's leavings are **stashed under a stamped name** (the dead-letter box, wall-free
+by design, since a round-open must never be able to fail on prose); behind **adopts the anointed
+order** -- reset, never merge; and a true divergence **parks on `pier/diverged-<stamp>` and pushes
+the park** before adopting, so no byte is lost and no force is pushed. The one retryable exit is
+the network's, and a loop line reads `sh tools/f/fleet_round_open.sh || { sleep 60; continue; }`.
+
+This is the rota's own grammar carried into the open: `xy` the anointed order, a send a proposal,
+the fast-forward push the compare-and-set -- and now a divergence a **parked proposal awaiting
+re-derivation**, exactly as an unshared ledger row awaits its number under the derived spine. The
+loops' git workflow is Mycelium-consistent end to end, proven in a pen across all four states
+before the first launcher printed it (REDS `%309`).

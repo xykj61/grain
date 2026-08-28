@@ -21,7 +21,19 @@
   <rect x="20" y="18" width="8" height="8" fill="none" stroke="#d9b45a" stroke-width="1.6"/>
   <rect x="34" y="18" width="8" height="8" fill="none" stroke="#8f7bc0" stroke-width="1.6"/>
   <rect x="48" y="18" width="8" height="8" fill="#d9b45a"/>
-  <text x="236" y="28" text-anchor="end" font-family="Iosevka, 'Iosevka Term', Menlo, Consolas, monospace" font-size="13" fill="#d9b45a">&gt; grain_</text>
+  <!-- the prompt "> grain_", drawn rather than typed: each glyph is a path in Iosevka's own
+       narrow proportions (a 6x13 cell, roughly 1:2.2), squared to the mark's military register,
+       so the system face shows true even on a host with no fonts at all. The final cell is the
+       block cursor, the same solid the tree carries at Tiferet. -->
+  <g stroke="#d9b45a" stroke-width="1.6" fill="none" stroke-linecap="square" stroke-linejoin="miter" transform="translate(172,27)">
+    <path d="M0 -8 L5 -4 L0 0"/>
+    <g transform="translate(10,0)"><path d="M6 -7 H1 V0 H6 M6 -7 V3 H1"/></g>
+    <g transform="translate(19,0)"><path d="M1 0 V-7 M1 -5 L3 -7 H6"/></g>
+    <g transform="translate(28,0)"><path d="M6 0 H1 V-4 H6 V-7 H1 M6 -4 V0"/></g>
+    <g transform="translate(37,0)"><path d="M3 0 V-6 M3 -9 V-10"/></g>
+    <g transform="translate(44,0)"><path d="M1 0 V-7 M1 -6 L2 -7 H6 V0"/></g>
+    <rect x="54" y="-8" width="6" height="10" fill="#d9b45a" stroke="none"/>
+  </g>
 
   <!-- the alchemical seal: one thin circle and one great hexagon, holding the tree -->
   <g fill="none" stroke="#d9b45a">

@@ -159,7 +159,7 @@ One face per register, and each name maps to a pillar of the work:
 |---|---|---|
 | **Body text** | **Vollkorn** | German for *wholegrain*. Friedrich Althausen calls it "the free and healthy typeface for bread and butter use" -- a sturdy, quiet text serif, variable since 2020, with Latin, Cyrillic, and Vietnamese coverage. The tree's own name, set in type. |
 | **Interface** | **Public Sans** | The civic name made literal: the United States Web Design System's own face, grown from Libre Franklin. Its published principles read like this tree's -- "be straightforward: have as few quirks as possible," "strong and neutral," "strive to be better, not necessarily perfect." |
-| **Meters & code** | **Source Code Pro** | *Source*, plainly -- from Adobe's first open family. Clear digit shapes for hex, stamps, and witness output. |
+| **Meters & code** | **Iosevka** | Seated the system mono `20260828` on Keaton's word (GLOW_PROFILE, the mark's own drawn prompt): narrow, tall, terminal-first -- the open sibling of the proprietary shape that inspired it, SIL OFL 1.1 with the whole build system open, so a Linengrow variant is *composed from build plans* rather than bought. Its 1:2.2 cell is the proportion the logo's glyphs are drawn in. **Source Code Pro** stands as first fallback -- the elder seat, kept: clear digit shapes for hex, stamps, and witness lines |
 
 A fourth, optional register: **Fraunces** for large display headings, a warm soft old-style serif that natural-goods makers reach for, whose name lands as a happy echo of a name the work already thanks. And one easter egg held in reserve: Rye, in the table below.
 

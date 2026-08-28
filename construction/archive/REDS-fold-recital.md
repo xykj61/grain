@@ -161,3 +161,5 @@ at a closed fold.*
 
 *Row 183 folded to [`archive/REDS-a-fold-moves-depth-rows-183.md`](REDS-a-fold-moves-depth-rows-183.md) on `20260824.075409`, **CLOSED** -- the shelf writer that moved a row's text without its depth, and the rule that repaired it: fix the tool and re-run from a clean base rather than patching its output. Moved here as row %187 carried the living pin past its bound.*
 
+
+*Row %308 folded to [`REDS-the-template-and-the-standing-copy-rows-308.md`](REDS-the-template-and-the-standing-copy-rows-308.md) on `20260828.103023`, **CLOSED** -- the cadence cut repaired in the template and still printed by the launcher. Folded the morning after it was booked, to make room for `%309`: the two loop crashes, the handler that named every fault the same, and the recovery of seventeen destroyed files from git's own object store.*
