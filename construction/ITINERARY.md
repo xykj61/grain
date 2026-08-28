@@ -22,7 +22,7 @@
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
 - **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, let it finish, and run it again after `git add` as `... --hot` so the green measures the tree the commit ships (REDS %174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` is how a round claims its own staged paths, and the flags compose (REDS %223). The runner digests the tree at open and close and refuses under `run_verdict=tree_moved` when they differ, since a run spread across two trees answers nothing -- and editing the runner mid-run kills the shell outright (REDS %221). **Counts come from the scan, never here** -- in prose they drift. Roster `construction/standing-equipment.kyri`. A row's `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs too. A tier is a cadence rather than an exemption, and a word the runner does not know is refused at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`.
-- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
+- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`, where **N is 0-100** like every other reading. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 - **Read scope -- open shelves and closed stacks** (`20260827.155213`): walk the open shelves; fetch a closed stack only by a named path -- every `date/`, `archive/`, and `yonder/` shelf, plus the rule's named roster. Never `ls` the root (`MAP.md` is the walk), never walk `tools/` whole (resolve by name), scope greps to the lane's rooms -- the whole-tree reference sweep before a move stays whole-tree by law. **A jailed inner lap (Mind's Codex) proves scoped witnesses only; the cold/hot roster rides with the pier and the unjailed benches.** Rule: `.claude/rules/read-scope.md`.
 - **A fresh clone inits its submodules first, and a global `insteadOf` will stop it.** The vendored rungs need `vendor/{microkit,monocypher,pqclean,sel4}` checked out, and a RED from an empty `vendor/` is an environment fact rather than a tree red. A host that rewrites `https://github.com/` to ssh (this bench does) cannot clone the public third-party submodules at all, since the key has no rights there -- `GIT_CONFIG_GLOBAL=/dev/null git submodule update --init <path>` clones each one over plain https without touching the host's config. `--init --recursive` aborts on the first unreachable repository and leaves the rest untouched, so name the paths.
@@ -57,28 +57,26 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `225d4742e2` -- this round, before its nib amend.
 
-**Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
-`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
-Tally, the microkernel road, the constellation table.
+**Now.** The **derived spine is SEATED** (`20260827.181605`) -- a row's key is its stamp, the `%N`
+a view `xy` allocates; law `.claude/rules/derived-spine.md`. `%296`, `%297` and `%308` are CLOSED,
+and `custody_gate_instruction` gates the loop-prompt surface at zero.
 
-**Dream's seat is seated and running** (`20260827`); `%296` and `%297` are CLOSED. **`%308`
-closes `%307`:** the cut seed cadence still printed from `tools/l/launch-claude-chapter.rish`,
-the file a hand pastes to START a loop. Repaired, and `custody_gate_instruction` gates the
-
-loop-prompt surface at zero -- a gated command may stand only inside a clause refusing it.
-**The derived spine is SEATED** (`20260827.181605`). A row's key is its **one-clock stamp**;
-the `%N` is a view the **anointed remote `xy`** allocates, and a published number never moves.
-Book with `reds_spine_derive_scan.sh --next`. Law `.claude/rules/derived-spine.md`, meter
-`tools/r/reds_spine_derive_witness.rish`.
-meter `tools/r/reds_spine_derive_witness.rish`.
+**`%309` -- a Glow gate wall that could not fail.** `glow_run_worker.sh` appends `EXIT:0` and
+Rishi's `contains` is a substring test, so `contains "0"` was satisfied by the exit line: 28
+refusal halves proved nothing. The infrastructure half's eight now read
+`assert (over.out contains "1") == false`; `glow_gate_answer` ratchets the rest at **20**. **Two
+faces are not this bench's:** the **silent pair-gate lowering** (`lower_shop_gate.rye:1442,1449`
+compares a gate to a copy of itself; 8 desks, `glow_vane_pair_mirrors` runs 7 asserting only
+`.ok`) -- **Sound's custody**; and the 20 walls in Tally, Aurora, Rishi and the corpus.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
-accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
-`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's.
-`%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
+accessors; moving it REMOVES casts at 16/17 sites; 59 gate fixtures await his word.
+`declared_ceiling` and **MIND's crux** SkateCore are Mind's. `%281`/`%291` -- one tree per star,
+or a lock -- stay his.
 
-**The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
-tree moves, then FORA31 (`approve all doors`, `20260827`).
+**The next doors.** Dream: Caravan and Tally green, then the constellation table -- **FORA31's
+switchboard is `constel/`, so the socket rung is Dream's**; Comlink's half of that seam, and its
+rehearsal pen, are Kyri's. Kyri: the Glow tree moves.
 
 ---
 ## Landed arcs
@@ -211,7 +209,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.033212` | %308 -- the launcher still printed the cut seed cadence; the loop-prompt surface gets its guard | [log](../session-logs/date/20260828/20260828-033212_the-template-repaired-and-the-launcher-left.kyri) |
+| `20260828.050134` | %309 -- the refusal half of every Glow gate wall was satisfied by the runner's own exit line | [log](../session-logs/date/20260828/20260828-050134_the-wall-that-could-not-fail.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

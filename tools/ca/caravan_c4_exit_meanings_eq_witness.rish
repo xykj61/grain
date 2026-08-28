@@ -21,12 +21,12 @@ assert ok.out contains "1" else "eq-exit: exact 3 did not speak 1"
 say "eq-exit: just under (2) answers 0..."
 let under = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "2"]
 assert under.ok else "eq-exit: under case failed to run"
-assert under.out contains "0" else "eq-exit: 2 did not speak 0"
+assert (under.out contains "1") == false else "eq-exit: 2 spoke 1 where the equality says 0"
 
 say "eq-exit: just over (4) answers 0..."
 let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "4"]
 assert over.ok else "eq-exit: over case failed to run"
-assert over.out contains "0" else "eq-exit: 4 did not speak 0"
+assert (over.out contains "1") == false else "eq-exit: 4 spoke 1 where the equality says 0"
 
 say "eq-exit: the desk names eq, not gth..."
 let verb = run ["sh" "-c" "grep -qE '^[?][:]  [(]eq ' src/gate/gate-caravan-exit-meanings-eq-u32.glow"]

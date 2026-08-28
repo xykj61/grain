@@ -50,7 +50,7 @@ assert p1.out contains "1" else "r1: policy dual did not speak 1"
 let p0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" policy "0"]
 assert p0.ok else "r1: policy ipv4-only sample failed"
 assert p0.out contains "EXIT:0" else "r1: policy ipv4-only did not exit 0"
-assert p0.out contains "0" else "r1: policy ipv4-only did not speak 0"
+assert (p0.out contains "1") == false else "r1: policy ipv4-only spoke 1 where the pedestal says 0"
 
 say "r1 leg A: width face (4→1 · 16→1 · 20→0)..."
 let four = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" width "4"]
@@ -64,7 +64,7 @@ assert sixteen.out contains "1" else "r1: sixteen bytes did not speak 1"
 let wide = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" width "20"]
 assert wide.ok else "r1: over-wide run failed"
 assert wide.out contains "EXIT:0" else "r1: twenty-byte run did not exit 0"
-assert wide.out contains "0" else "r1: twenty bytes did not speak 0"
+assert (wide.out contains "1") == false else "r1: twenty bytes spoke 1 where the wall says 0"
 
 say "r1 leg A GREEN — pier pedestal whole; both faces decide; no socket touched."
 

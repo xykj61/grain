@@ -15,7 +15,7 @@ assert ok.out contains "1" else "a1-caravan_caps: accept did not speak 1"
 let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "9"]
 assert over.ok else "a1-caravan_caps: over side failed"
 assert over.out contains "EXIT:0" else "a1-caravan_caps: over did not exit 0"
-assert over.out contains "0" else "a1-caravan_caps: over did not speak 0"
+assert (over.out contains "1") == false else "a1-caravan_caps: over spoke 1 where the cap says 0"
 
 let first = run ["sh" "-c" "test -f src/gate/gate-mantra-gen-floor-u32.glow"]
 assert first.ok else "a1-caravan_caps: the mantra face is missing"

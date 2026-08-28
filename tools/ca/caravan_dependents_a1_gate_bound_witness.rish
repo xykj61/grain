@@ -16,7 +16,7 @@ assert ok.out contains "1" else "a1-caravan_dependents: accept did not speak 1"
 let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "5"]
 assert over.ok else "a1-caravan_dependents: over side failed"
 assert over.out contains "EXIT:0" else "a1-caravan_dependents: over did not exit 0"
-assert over.out contains "0" else "a1-caravan_dependents: over did not speak 0"
+assert (over.out contains "1") == false else "a1-caravan_dependents: over spoke 1 where the bound says 0"
 
 let prior = run ["sh" "-c" "test -f src/gate/gate-tally-garden-bound-u32.glow"]
 assert prior.ok else "a1-caravan_dependents: prior deciding wall missing"

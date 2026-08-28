@@ -425,3 +425,16 @@ seated 20260828.011621
 guard custody_gate_instruction
 path tools/cu/custody_gate_instruction_witness.rish
 seated 20260828.033212
+
+# The Glow gate-answer guard, seated 20260828.050134. REDS %309 found that tools/g/glow_run_worker.sh
+# appends its own EXIT:0 line to every successful run, and Rishi's `contains` is a plain substring
+# test -- so `assert over.out contains "0"` was satisfied by the exit line alone and could not fail.
+# Twenty-eight refusal halves across twenty-three walls were watching rather than proving. This
+# guard holds indistinct_refusals under a ceiling that only falls (20 after the infrastructure
+# half's eight took the exact form) and REPORTS silent_pair_gates, whose cure is a change to the
+# lowering and so belongs to Glow language custody. `lap` rather than `cadence`: the scan is grep
+# over 58 walls and the control plants files without building a single Glow desk.
+
+guard glow_gate_answer
+path tools/g/glow_gate_answer_witness.rish
+seated 20260828.050134

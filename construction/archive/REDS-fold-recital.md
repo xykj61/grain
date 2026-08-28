@@ -161,3 +161,4 @@ at a closed fold.*
 
 *Row 183 folded to [`archive/REDS-a-fold-moves-depth-rows-183.md`](REDS-a-fold-moves-depth-rows-183.md) on `20260824.075409`, **CLOSED** -- the shelf writer that moved a row's text without its depth, and the rule that repaired it: fix the tool and re-run from a clean base rather than patching its output. Moved here as row %187 carried the living pin past its bound.*
 
+*Row %222 folded to [`REDS-a-tier-from-one-sample-rows-222.md`](REDS-a-tier-from-one-sample-rows-222.md) on `20260825.162410` -- the tier chosen on one cold-cache sample multiplied by 239, CLOSED, moved as row %224 carried the living pin past its 24,576-byte bound.*

@@ -1,0 +1,73 @@
+# tools/g/glow_gate_answer_witness.rish -- a Glow gate wall must read what the gate answered.
+#
+#   rishi/bin/rishi run tools/g/glow_gate_answer_witness.rish
+#
+# WHY. A Glow gate answers 1 or 0 -- within the cap, past the cap -- and a wall proves it by running
+# both sides and reading the answer. On 20260828 two shapes were found that look like a reading and
+# are not, and both were proven on metal before this guard was written.
+#
+# The first is the wide one. tools/g/glow_run_worker.sh appends its own `EXIT:0` line to every
+# successful run, and Rishi's `contains` is a plain substring test, so `assert over.out contains "0"`
+# is satisfied by the exit line alone. An ACCEPT run of src/gate/gate-caravan-caps-bound-u32.glow
+# prints `1` and then `EXIT:0`, and that output passes the refusal assertion. Twenty-eight refusal
+# halves across the tree could not fail. The repaired form is exact and needs no new tooling:
+# `assert (over.out contains "1") == false`, since a 0/1 gate's accept answer is the only 1 the run
+# can produce.
+#
+# The second is deeper and belongs to another hand. A desk whose body is a two-face cond lowers
+# through the arm at glow/lower_shop_gate.rye lines 1442 and 1449, which emits the gate body and the
+# `expect` it is compared against from the same format arguments -- so the generated main compares
+# the gate to a textual copy of itself, returns 0 for every input, and prints no answer at all. A
+# gate planted with its arms swapped exits 0 exactly like the true one. Eight desks lower that way,
+# and tools/g/glow_vane_pair_mirrors_witness.rish runs seven of those runs asserting only that the
+# process started, under a closing line that claims every edge exact.
+#
+# WHAT IS GATED. indistinct_refusals, under a ceiling that only falls -- 20, after the eight walls of
+# the infrastructure half took the repaired form. A ceiling rather than a zero because the remaining
+# twenty stand in Tally, Aurora, Rishi and the Glow corpus, and a guard that reds on another lane's
+# work is a guard someone turns off.
+#
+# WHAT IS REPORTED. silent_pair_gates, because its cure is a change to the lowering and the lowering
+# is Glow language custody. Reporting is the honest act; the fix belongs to the round that owns it.
+#
+# Pen: tools/fixtures/glow_gate_answer_control.sh -- eighteen cases. The two substring facts the
+# whole reading rests on, the real fault bitten and the repair freed, `contains "EXIT:0"` and a
+# non-gate run and the accept side all left free, both runner spellings read, two faults in one file
+# both counted, an absent file and an absent pen told apart, and the ceiling proven from both sides
+# on a planted corpus -- twenty free, twenty-one refused, and one repair bringing it back under.
+
+say "glow-gate-answer: Language EN -- a wall that cannot fail is not a wall."
+say "glow-gate-answer: Style Gauge -- the reading is a substring and a ceiling, so anyone can check it."
+say "glow-gate-answer: Lens TAME -- safety first: a guard proven only in the passing direction cannot be told from a bypass."
+
+let scan = run ["sh" "tools/fixtures/glow_gate_answer_scan.sh"]
+say scan.out
+assert scan.ok else "glow-gate-answer: refusal assertions that cannot fail stand over the ceiling -- read the scan's own detail lines"
+assert scan.out contains "verdict=read" else "glow-gate-answer: the scan must reach its clean verdict"
+assert scan.out contains "indistinct_ceiling=20" else "glow-gate-answer: the ceiling only falls, so a raise is a deliberate edit here"
+
+let control = run ["sh" "tools/fixtures/glow_gate_answer_control.sh"]
+say control.out
+assert control.ok else "glow-gate-answer: the control must complete"
+assert control.out contains "case=accept_satisfies_zero ok" else "glow-gate-answer: the accept output must satisfy the old refusal form, which is why it proves nothing"
+assert control.out contains "case=refusal_holds_no_one ok" else "glow-gate-answer: the refusal output must hold no 1, which is what makes the repair exact"
+assert control.out contains "case=indistinct_bitten ok" else "glow-gate-answer: the real fault must be counted"
+assert control.out contains "case=repair_free ok" else "glow-gate-answer: the repaired form must pass free"
+assert control.out contains "case=exit_line_free ok" else "glow-gate-answer: asserting the exit line on purpose must stay free"
+assert control.out contains "case=non_gate_run_free ok" else "glow-gate-answer: contains \"0\" over a non-gate run must stay free"
+assert control.out contains "case=accept_side_free ok" else "glow-gate-answer: the genuine accept assertion must never be counted"
+assert control.out contains "case=runner_spelling_read ok" else "glow-gate-answer: both runner spellings must be read"
+assert control.out contains "case=both_faults_counted ok" else "glow-gate-answer: repairing one fault must not hide another in the same file"
+assert control.out contains "case=no_gate_reads_zero ok" else "glow-gate-answer: a file with no gate run must read zero"
+assert control.out contains "case=absent_told_apart ok" else "glow-gate-answer: an absent file must refuse by name"
+assert control.out contains "case=ceiling_published ok" else "glow-gate-answer: the scan must publish the ceiling it holds"
+assert control.out contains "case=ceiling_at_bound_free ok" else "glow-gate-answer: a corpus at the ceiling must pass free"
+assert control.out contains "case=ceiling_over_bound_refused ok" else "glow-gate-answer: a corpus one past the ceiling must refuse"
+assert control.out contains "case=repair_lowers_ratchet ok" else "glow-gate-answer: a repair must bring the corpus back under the ceiling"
+assert control.out contains "case=absent_pen_told_apart ok" else "glow-gate-answer: an absent pen must refuse by name"
+assert control.out contains "case=pair_gate_seen ok" else "glow-gate-answer: a two-face desk must be recognised"
+assert control.out contains "case=single_gate_free ok" else "glow-gate-answer: a one-face desk must stay free"
+assert control.out contains "control=ok" else "glow-gate-answer: the control must agree with itself"
+
+say ""
+say "GREEN: glow-gate-answer -- every gate wall under the ceiling reads what the gate answered, and the silent lowering is named."
