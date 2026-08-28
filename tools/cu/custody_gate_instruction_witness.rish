@@ -1,0 +1,55 @@
+# tools/cu/custody_gate_instruction_witness.rish -- a file that instructs an agent may name a
+# custody-gated command only inside a clause that refuses it.
+#
+#   rishi/bin/rishi run tools/cu/custody_gate_instruction_witness.rish
+#
+# WHY. construction/ITINERARY.md holds seven custody gates, and three name a COMMAND rather than an
+# act: the seed publisher, a force push, and a history rewrite. On 20260828 REDS %307 found
+# recursion-prompts/seed/autonomous-loop.seed.md telling an unattended lap to run
+# `bash ~/grain/publish-seed.sh` every fifth round -- a cadence the card cut on 20260826, holding
+# open a gate Keaton keeps by hand. A hand repaired that file. The same sentence stood on in
+# tools/l/launch-claude-chapter.rish lines 66 and 86, which is the file a hand actually pastes to
+# START a loop, so the instruction reaching the machine was still the cut one. One root, two files,
+# and the repair reached one. A lantern that fires twice becomes a loom.
+#
+# WHAT IS GATED, hard, at zero. Every gated command token standing in a clause carrying no refusal
+# word, across the loop-prompt surface -- `recursion-prompts/` and `tools/l/launch-*`, read as
+# source and never run.
+#
+# WHAT PASSES FREE. The same token inside a refusal clause, and English prose about the act that
+# names no command. The scan's own header names what it does not reach: four of the seven gates name
+# acts no grep finds, and clause proximity is a reading rather than a comprehension.
+#
+# Pen: tools/fixtures/custody_gate_instruction_control.sh -- eleven cases, the real pre-repair
+# sentence bitten and its token named, the repair freed, a far-off refusal refused the power to
+# launder a bare instruction, both other tokens bitten, prose and plain prompts left free, and an
+# absent file told apart from a passing one. Run from the repository root.
+
+say "custody-gate-instruction: Language EN -- a gate is only as strong as the instructions reaching the hand it gates."
+say "custody-gate-instruction: Style Gauge -- the reading is a clause and a token, so anyone can check it."
+say "custody-gate-instruction: Lens TAME -- safety first: the irreversible acts are the ones a prompt must never ask for."
+
+let scan = run ["sh" "tools/fixtures/custody_gate_instruction_scan.sh"]
+say scan.out
+assert scan.ok else "custody-gate-instruction: an instruction file asks for a gated command -- read the scan's own detail lines"
+assert scan.out contains "verdict=every_gated_command_is_refused" else "custody-gate-instruction: the scan must reach the clean verdict"
+assert scan.out contains "bare_instructions=0" else "custody-gate-instruction: no instruction file may ask for a gated command"
+
+let control = run ["sh" "tools/fixtures/custody_gate_instruction_control.sh"]
+say control.out
+assert control.ok else "custody-gate-instruction: the control must complete"
+assert control.out contains "case=bare_bitten ok" else "custody-gate-instruction: the real pre-repair sentence must be refused"
+assert control.out contains "case=offender_named ok" else "custody-gate-instruction: a refusal must name the token it caught"
+assert control.out contains "case=bare_counted ok" else "custody-gate-instruction: the bare count must read one"
+assert control.out contains "case=refusal_free ok" else "custody-gate-instruction: the repaired sentence must pass"
+assert control.out contains "case=free_counted ok" else "custody-gate-instruction: the refusal-framed count must read one"
+assert control.out contains "case=clause_scoped ok" else "custody-gate-instruction: a far-off refusal must not launder a bare instruction"
+assert control.out contains "case=force_push_bitten ok" else "custody-gate-instruction: a bare force push must be refused"
+assert control.out contains "case=filter_repo_bitten ok" else "custody-gate-instruction: a bare history rewrite must be refused"
+assert control.out contains "case=prose_free ok" else "custody-gate-instruction: prose about the act must stay free"
+assert control.out contains "case=plain_clean ok" else "custody-gate-instruction: an ordinary prompt must read clean"
+assert control.out contains "case=absent_told_apart ok" else "custody-gate-instruction: an absent file must read distinctly"
+assert control.out contains "control=ok" else "custody-gate-instruction: the control must agree with itself"
+
+say ""
+say "GREEN: custody-gate-instruction -- every gated command in a loop prompt stands inside a refusal."
