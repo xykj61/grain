@@ -100,10 +100,11 @@ The tests prove the living three-line seed fold twice for determinism. The exact
 forty-byte line, declared eighth row, and seventh styled palette seat pass. Their planted boundary
 cases cover a missing nib, the 129th nib byte, declared line ceilings zero and nine, an empty frame
 and line, a line past either the one-line or eight-line declaration, the forty-first line byte, an
-over-wide paint range, an out-of-range row, and palette seats zero and eight. Each mutation case
-keeps the last whole state unchanged. The alias-sameness test assigns each peer name directly to
-the other at compile time, operates through both, and receives the same reserved-slot refusal with
-the same unchanged state.
+over-wide paint range, an out-of-range row, and palette seats zero and eight. The frame refusal
+control begins from a nonempty grid, exercises all four named errors through both mutators, and
+after each refusal compares all 320 cells, 320 palette indexes, and eight colors with the prior
+value. The alias-sameness test assigns each peer name directly to the other at compile time,
+operates through both, and receives the same reserved-slot refusal with the same unchanged state.
 
 The media controls admit the exact HUNK2 plane at its last cell and seventh palette slot, Lotus's
 full sample and peak ceilings, and a thirty-two-byte digest claim. They refuse short or long planes,

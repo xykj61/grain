@@ -122,19 +122,31 @@ fi
 ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'construction/archive/REDS-*.md')
 if [ -n "$ledger_moved" ]; then
   refresh_page tools/fixtures/reds_ledger_headline_write.sh construction/REDS.md \
-    sh tools/fixtures/reds_ledger_headline_write.sh write
+    /bin/sh tools/fixtures/reds_ledger_headline_write.sh write
 fi
 
 # RULE THREE -- the living pins' byte bounds. Trigger: a rostered pin is staged at all. This rule
 # refuses rather than regenerating, and it reads the INDEX rather than the worktree, because
 # `git cat-file -s :<path>` is the size of the blob this commit will actually carry.
+# The scan is spelled /bin/sh, never bare sh: inside Mind's jail the PATH resolves sh to the
+# macOS shell selector wrapper, which reads /private/var/select/sh and dies under the deny --
+# four such deaths refused a lap of 20260828 with this rule's own over-bound prose. And a crash
+# is told from a measurement: the pin prose is spoken only when the report carries the RED
+# detail; a scan that could not measure refuses honestly in its own words, still failing closed.
 if [ -f tools/fixtures/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/living_pin_guard_roster.txt ]; then
-  if ! pin_report=$(sh tools/fixtures/pin_bound_touch_scan.sh staged 2>&1); then
-    echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
-    echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
-    echo "the prose rather than carried. Trim the page, or fold it, and commit again." >&2
-    echo "$pin_report" | grep -E '^(detail_path|detail_bytes|detail_bound|detail_over_by)=' >&2
-    echo "  full reading: sh tools/fixtures/pin_bound_touch_scan.sh staged" >&2
+  if ! pin_report=$(/bin/sh tools/fixtures/pin_bound_touch_scan.sh staged 2>&1); then
+    if echo "$pin_report" | grep -q '^detail=RED_touched_pin_over_bound'; then
+      echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
+      echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
+      echo "the prose rather than carried. Trim the page, or fold it, and commit again." >&2
+      echo "$pin_report" | grep -E '^(detail_path|detail_bytes|detail_bound|detail_over_by|pin_over)=' >&2
+    else
+      echo "pre-commit: the pin wall could not MEASURE the staged set, and a wall that cannot" >&2
+      echo "measure refuses rather than waves through. This is an environment fault, never an" >&2
+      echo "over-bound pin -- read the scan's own words below and repair the bench or the jail." >&2
+      echo "$pin_report" | head -4 >&2
+    fi
+    echo "  full reading: /bin/sh tools/fixtures/pin_bound_touch_scan.sh staged" >&2
     refused=yes
   fi
 fi

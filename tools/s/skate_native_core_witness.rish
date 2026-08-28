@@ -45,6 +45,7 @@ assert test.out contains "testSurfAndSkateAliasesShareOneFrameIdentityAndRefusal
 assert test.out contains "testNinthLineRefusesWithoutChangingFrame" else "skate-native-core: ninth-line control not exercised"
 assert test.out contains "testFortyFirstByteRefusesWithoutChangingFrame" else "skate-native-core: forty-first-byte control not exercised"
 assert test.out contains "testInvalidPaletteRunsRefuseAtomically" else "skate-native-core: atomic paint controls not exercised"
+assert test.out contains "testFrameGridRefusalsPreserveWholeState" else "skate-native-core: frame refusals did not prove all 648 owned values unchanged"
 assert test.out contains "testImageLotusAndDigestValuesJoinOneBoundedMediaReceipt" else "skate-native-core: joined media receipt not exercised"
 assert test.out contains "testImageSkatePlaneRefusesMalformedPlanesBeforeAdmission" else "skate-native-core: malformed media plane controls not exercised"
 assert test.out contains "testLotusMeterAndDigestClaimsKeepTheirExactBounds" else "skate-native-core: meter and digest bounds not exercised"

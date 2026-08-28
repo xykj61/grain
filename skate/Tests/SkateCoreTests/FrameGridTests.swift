@@ -151,6 +151,50 @@ final class FrameGridTests: XCTestCase {
     XCTAssertNil(grid.color(at: 8))
   }
 
+  func testFrameGridRefusalsPreserveWholeState() throws {
+    var frame = try BrushstrokeFrame(atNib: [0x6e], maxLines: SkateCoreBounds.rows)
+    try frame.append(line: Array("state".utf8))
+    var grid = try frame.lowered()
+    let terra = SkateColor(red: 0x8f, green: 0x72, blue: 0x4f)
+    let water = SkateColor(red: 0x24, green: 0x58, blue: 0x91)
+
+    try grid.setPalette(slot: 1, color: terra)
+    try grid.setPalette(slot: 7, color: water)
+    try grid.paint(row: 0, columns: 0..<5, paletteSlot: 1)
+    try grid.paint(row: 7, columns: 38..<40, paletteSlot: 7)
+    let before = grid
+
+    XCTAssertThrowsError(try grid.setPalette(slot: 0, color: water)) { error in
+      XCTAssertEqual(error as? FrameGridError, .reservedPaletteSlot)
+    }
+    assertSameFrameState(grid, before)
+
+    XCTAssertThrowsError(try grid.setPalette(slot: 8, color: water)) { error in
+      XCTAssertEqual(error as? FrameGridError, .paletteSlotOutOfBounds)
+    }
+    assertSameFrameState(grid, before)
+
+    XCTAssertThrowsError(try grid.paint(row: -1, columns: 0..<1, paletteSlot: 1)) { error in
+      XCTAssertEqual(error as? FrameGridError, .rowOutOfBounds)
+    }
+    assertSameFrameState(grid, before)
+
+    XCTAssertThrowsError(try grid.paint(row: 0, columns: 0..<0, paletteSlot: 1)) { error in
+      XCTAssertEqual(error as? FrameGridError, .columnRangeOutOfBounds)
+    }
+    assertSameFrameState(grid, before)
+
+    XCTAssertThrowsError(try grid.paint(row: 0, columns: 0..<1, paletteSlot: 0)) { error in
+      XCTAssertEqual(error as? FrameGridError, .reservedPaletteSlot)
+    }
+    assertSameFrameState(grid, before)
+
+    XCTAssertThrowsError(try grid.paint(row: 7, columns: 38..<40, paletteSlot: 8)) { error in
+      XCTAssertEqual(error as? FrameGridError, .paletteSlotOutOfBounds)
+    }
+    assertSameFrameState(grid, before)
+  }
+
   func testSurfAndSkateAliasesShareOneFrameIdentityAndRefusalContract() throws {
     var surf = SurfFrameGrid()
     let surfAsSkate: SkateFrameGrid = surf
@@ -352,6 +396,38 @@ final class FrameGridTests: XCTestCase {
           .digestWidthMismatch(expected: SkateCoreBounds.sha3DigestBytes)
         )
       }
+    }
+  }
+
+  private func assertSameFrameState(
+    _ actual: FrameGrid,
+    _ expected: FrameGrid,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) {
+    for row in 0..<SkateCoreBounds.rows {
+      for column in 0..<SkateCoreBounds.columns {
+        XCTAssertEqual(
+          actual.cell(row: row, column: column),
+          expected.cell(row: row, column: column),
+          file: file,
+          line: line
+        )
+        XCTAssertEqual(
+          actual.paletteIndex(row: row, column: column),
+          expected.paletteIndex(row: row, column: column),
+          file: file,
+          line: line
+        )
+      }
+    }
+    for slot in 0..<SkateCoreBounds.paletteEntries {
+      XCTAssertEqual(
+        actual.color(at: UInt8(slot)),
+        expected.color(at: UInt8(slot)),
+        file: file,
+        line: line
+      )
     }
   }
 }
