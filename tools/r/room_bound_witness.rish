@@ -38,8 +38,12 @@
 #   meter is not a room that passed it -- it is a room nobody is watching.
 #
 # WHAT IS NOT PROVEN. This counts files; it does not judge whether a room's contents belong
-# together, and it says nothing about nesting depth beneath a room. A room could satisfy the
-# bound and still be badly organised, and no integer will notice.
+# together. A room could satisfy the bound and still be badly organised, and no integer will
+# notice. Nesting IS read now -- the undated sweep asks git for every directory -- yet what the
+# sweep reports it does not gate, and for a day shelf it cannot: the mark law provides no shape
+# below `date/YYYYMMDD/`, so `terminal_shelf=` names a standing fact rather than a task. Whether
+# such a shelf should ever fold -- by hour, `date/YYYYMMDD/HH/`, which is equally pure since the
+# hour is characters 10 and 11 of the basename -- is a law change and Keaton's word (REDS %315).
 #
 # Chapter: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
 # Kin: .claude/rules/stamp-and-name.md (the fold's law) - tools/d/dated_path_witness.rish (the
@@ -49,7 +53,7 @@
 #   rishi/bin/rishi run tools/r/room_bound_witness.rish
 
 say "room-bound: Language EN -- a room that outgrows a reader stops being a room and starts being a pile. This holds every enforced room at a size a person can open, and reports the rest honestly rather than sweeping them unasked."
-say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All seven enforced rooms are named and stand under 256, six counted by dated basename and one -- tools -- by every flat entry. And the gate is proven to close in both directions: on a room over its bound, and on an enforced room that has gone missing."
+say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All eight enforced rooms are named and stand under 256, six counted by dated basename and two -- tools and glow/gen -- by every flat entry. And the gate is proven to close in both directions: on a room over its bound, and on an enforced room that has gone missing."
 say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 1,000, because a maximum set at the cliff fails on the day it matters; every count below is the scan's own output rather than this file's memory."
 
 let scan = "tools/fixtures/room_bound_scan.sh"
@@ -71,6 +75,16 @@ assert roster.out contains "room=active-designing flat=" else "room-bound: activ
 assert roster.out contains "room=active-development flat=" else "room-bound: active-development is enforced from birth and must be reported even while empty"
 assert roster.out contains "room=expanding-prompts flat=" else "room-bound: expanding-prompts is enforced and must be reported even at zero flat files"
 assert roster.out contains "room=waymarks flat=" else "room-bound: waymarks is enforced and must be reported"
+# The two letter-folded rooms, by name as well. The header above claims every enforced room is
+# asserted here, and until `20260828` these two were the exception -- which is the wrong pair to
+# leave unnamed, since counting by every flat entry is the rule `tools/` needed after reading
+# zero for its whole life at 7.4x the bound.
+assert roster.out contains "room=tools flat=" else "room-bound: tools is enforced by every flat entry and must be reported by name"
+assert roster.out contains "room=glow/gen flat=" else "room-bound: glow/gen joined the enforced roster on 20260828 and must be reported by name"
+# The sweep prints two counters and they must both appear, because a counter that vanishes
+# reads exactly like a counter at zero.
+assert roster.out contains "undated_over=" else "room-bound: the undated sweep must report how many rooms stand over the bound with a fold ahead of them"
+assert roster.out contains "terminal_shelves=" else "room-bound: the undated sweep must report how many day shelves stand over the bound with no fold the mark law provides"
 assert roster.out contains "roster=enforce" else "room-bound: at least one room must be enforced, or the gate guards nothing"
 
 # The RED path, built rather than trusted. A room of three dated files under a bound of two must
@@ -82,11 +96,28 @@ assert control.out contains "over_named_by_room=yes" else "room-bound: an over-b
 assert control.out contains "over_refused=yes" else "room-bound: a room over its bound must exit non-zero"
 # This number is the roster size on purpose. It moved 5 -> 6 when active-development opened, and
 # the assert caught it -- which is the point: a room joining or leaving the roster is a seated
-# decision, so it should have to be written down here rather than sliding in unremarked.
-assert control.out contains "enforced_rooms_named_absent=7" else "room-bound: every enforced room absent from a tree must be named absent, not passed over -- and this count is the roster size, so a change here means a room joined or left"
+# decision, so it should have to be written down here rather than sliding in unremarked. It caught
+# the same thing again on `20260828`: `glow/gen` joined ENFORCE_ALL in commit 9b58744ef once the
+# compiler's two import-path sites learned the letter room, taking the roster 7 -> 8 while this
+# line stayed at 7 -- so the gate that watches every room refused on its own roster until the
+# number was turned by hand. That is the assert doing its job, and it is also the standing cost of
+# the design: the roster lives in the scan and its size lives here, so the two move in one lap or
+# the gate reds (REDS %315).
+assert control.out contains "enforced_rooms_named_absent=8" else "room-bound: every enforced room absent from a tree must be named absent, not passed over -- and this count is the roster size, so a change here means a room joined or left"
 assert control.out contains "all_counted_room_named=yes" else "room-bound: a letter-folded room over bound must red on its own counting rule and say which rule it used"
 assert control.out contains "missing_refused=yes" else "room-bound: an enforced room missing from the tree must refuse -- a room nobody can find has not passed"
+# PHASE THREE, the undated sweep. Seven readings, and each is proven from both sides inside the
+# control itself: the two shapes planted in a real git pen, then removed, so a line that always
+# printed would fail the second half. Planting a regression in the scan flips three of the
+# seven and the control refuses, which is how this was checked rather than assumed.
+assert control.out contains "day_shelf_named_terminal=yes" else "room-bound: a day shelf over the bound must be named terminal -- the mark law folds WHEN-rooms to date/YYYYMMDD/ and there is no shape below it"
+assert control.out contains "day_shelf_kept_off_fold_list=yes" else "room-bound: a day shelf must NOT also print as a room with a fold ahead of it, or the meter books work the law cannot perform"
+assert control.out contains "foldable_room_named=yes" else "room-bound: an ordinary nested room over the bound must still be reported for its letter fold"
+assert control.out contains "foldable_room_kept_off_shelf_list=yes" else "room-bound: a room that folds by letter must not be excused as a terminal shelf"
+assert control.out contains "sweep_counts_split=yes" else "room-bound: the two shapes must be counted apart, or the split is cosmetic"
+assert control.out contains "sweep_moved_no_gate=yes" else "room-bound: the sweep reports and gates nothing -- 256 sits below the 1,000-entry cliff on purpose, and a shelf bound is a seated law rather than a meter's to make"
+assert control.out contains "both_readings_silent_when_removed=yes" else "room-bound: both readings must fall silent once their plants are gone -- a reading proven only in the firing direction cannot be told from a line that always prints"
 assert control.out contains "control_verdict=ok" else "room-bound: the control must agree with itself before it is believed"
 say "RED paths GREEN -- a room over its bound refuses by name, and an enforced room absent from the tree refuses too"
 
-say "GREEN: room-bound -- rooms discovered rather than listed, all seven enforced rooms named and under 256 (six by dated basename, tools by every flat entry), the rest reported and booking nothing, and the gate proven to close in three directions: on a dated room over its bound, on a letter-folded room over its bound, and on an enforced room gone missing."
+say "GREEN: room-bound -- rooms discovered rather than listed, all eight enforced rooms named and under 256 (six by dated basename, tools and glow/gen by every flat entry), a day shelf over the bound told apart from a room with a fold ahead of it, the rest reported and booking nothing, and the gate proven to close in three directions: on a dated room over its bound, on a letter-folded room over its bound, and on an enforced room gone missing."
