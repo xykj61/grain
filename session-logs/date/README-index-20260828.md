@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260828.154329` | [the card that points at nothing](20260828/20260828-154329_the-card-that-points-at-nothing.kyri) | two card reds, found and left with their hand |
 | `20260828.153737` | [the pin weighed where it can still be trimmed](20260828/20260828-153737_the-pin-weighed-where-it-can-still-be-trimmed.kyri) | the commit-time pin wall |
+| `20260828.140947` | [the shelf with nowhere left to fold](20260828/20260828-140947_the-shelf-with-nowhere-left-to-fold.kyri) | a bound with no edge to check at |
 | `20260828.133956` | [the comment that moved into the meter](20260828/20260828-133956_the-comment-that-moved-into-the-meter.kyri) | %314: my split moved 3 em-dashes into a full ratchet |
 | `20260828.133116` | [the roster that held out one room](20260828/20260828-133116_the-roster-that-held-out-one-room.kyri) | constel's last 130 split; the second roster deleted, not widened |
 | `20260828.125441` | [the row closed twice](20260828/20260828-125441_the-row-closed-twice.kyri) | a closure written only in the closing row; the ledger gets a status meter |
