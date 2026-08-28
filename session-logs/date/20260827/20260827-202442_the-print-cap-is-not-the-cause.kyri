@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260827.202442
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role adversarial verification subagent
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status configured default per .claude/settings.json, not runtime telemetry
+evidence .claude/settings.json names claude-opus-5 at max; no runtime identity endpoint was read
+voice Kyri
+host macOS clone, Darwin 25.6.0, one-clock zone America/New_York read from the pier convention
+title the print cap is not the cause
+prompt adversarially verify a claimed defect -- seed_link RED at tools/s/seed_link_witness.rish:44, ratchet 857 against a ceiling of 848 -- and try to refute it
+think Ran the guard on metal. It refuses at line 44 with the message the claim quotes, and the scan exits 1 with other_living_links_outside_seed=857, other_living_ceiling=848, front_door_links_outside_seed=0, verdict=link_outside_seed. The claim reproduces.
+think Tested whether the dirty working tree caused it. The tree carried two modified submodules and one untracked log; tools/fixtures/seed_link_scan.sh line 58 reads git ls-files '*.md', so untracked files cannot reach the count, and no tracked .md was modified. Built a pristine git worktree at HEAD 64c7f4bf40 and read the same 857 against 848 there.
+think Tested the four named escape hatches. Dated testimony is already freed at scan lines 97 and 109, and the flagged files are living rules rather than stamped artifacts. template-manifest.bron carries no allow construction and no allow PUBKEYS.md -- only allow PUBKEYS.template.md at line 149 -- while allow .claude at line 145 has no sub_exclude, so the flagged documents genuinely ship into rooms the seed genuinely withholds. No exemption is written anywhere: seed_link sits on the standing roster at construction/standing-equipment.kyri line 144, and construction/REDS.md books no row for it.
+think HEAD moved twice while the checks ran -- 7f83db7e58 to 64c7f4bf40 -- so a second hand was committing into this checkout during the verification. Recorded rather than acted on, per REDS %291.
+obs The defect holds and the diagnosis does not. The claim reads the scan's five printed lines as the offenders, yet tools/fixtures/seed_link_scan.sh line 111 caps printing at five -- if (ratchet <= 5) -- so those are the first five in git ls-files order, and .claude sorts first. Running a copy with the cap lifted gives the real distribution across all 857: external-research/yonder/strengthening-compiler 509, context 153, docs 18, bibliography.md 16, MAP.md 15, external-research 10, caravan 10, context/specs 9, .claude/rules 9. The nine agent-rule links equal the nine-over overage by coincidence rather than by cause.
+obs The claimed fix would edit five long-standing links, leave 852 against 848 still RED, and never touch what raised the count. Two better-supported causes: .claude/rules/quality-assurance.md landed 2026-08-24 in bb09a9823, after the ceiling was measured 20260823, and template-manifest.bron changed three times today -- adb3f7b3f, 41a4b0950, 4af925691 -- which moves the shipped-document set the ratchet reads across.
+obs The roster had already caught this. construction/standing-equipment-reds/seed_link.txt holds the same line-44 refusal verbatim, so the guard reported honestly and the record of it simply had not become a REDS row yet.
+obs A witness that prints a bounded sample reads, to a hurrying eye, as a witness that prints the population. The cap is correct engineering and the label around it is what misleads; a printed sample is worth naming as a sample beside the count it was drawn from.
+file session-logs/date/20260827/20260827-202442_the-print-cap-is-not-the-cause.kyri this record
+file session-logs/date/README-index-20260827.md the day shelf takes this lap's row above the delimiter
+recommend check-in Claude -- the red is real and unbooked, yet its cause is a manifest and room question rather than the five agent rules named; sizing the repair against external-research/yonder/strengthening-compiler at 509 and context at 153, or re-deriving the ceiling with the manifest change that moved it named, is a ruling rather than a mechanical lap

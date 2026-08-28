@@ -12,6 +12,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.203453` | [the R1 frame orphan verified](20260827/20260827-203453_r1-frame-orphan-verified.kyri) | seva_r1_frame.rye confirmed unreached; commit 533b8ffb7 moved the seam to R2 |
+| `20260827.202442` | [the print cap is not the cause](20260827/20260827-202442_the-print-cap-is-not-the-cause.kyri) | seed_link RED confirmed; its five printed lines are a sample, not the cause |
 | `20260827.202014` | [two guards from one path](20260827/20260827-202014_two-guards-from-one-path.kyri) | ten witnesses stop needing one machine; a stash mistake pays off |
 | `20260827.201257` | [the dead-and-orphaned sweep](20260827/20260827-201257_dead-and-orphaned-sweep.kyri) | a survey hand's eight findings; two guards red from one path |
 | `20260827.200810` | [Kiln seated, five rooms nobody named](20260827/20260827-200810_kiln-seated-and-five-rooms-nobody-named.kyri) | a granted fold turns out to be a compiler change |

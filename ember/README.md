@@ -5,7 +5,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Kin:** [`Lattice`](../lattice/README.md) counts - [`Lantern`](../lantern/README.md) carries - [`Scribble`](../scribble/README.md) reads - and **Ember** is the name of the four together, seated `20260827` on Keaton's word ([`../context/QUIN.md`](../context/QUIN.md), REDS `%300`) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the craft voice [`the Ember voice`](../foundations/20260827-195316_the-kiln-voice.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
+**Kin:** [`Lattice`](../lattice/README.md) counts - [`Lantern`](../lantern/README.md) carries - [`Scribble`](../scribble/README.md) reads - and **Ember** is the name of the four together, seated `20260827` on Keaton's word (`context/QUIN.md`, REDS `%300`) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the craft voice [`the Ember voice`](../foundations/20260827-195316_the-kiln-voice.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
 
 ---
 
@@ -82,7 +82,7 @@ part of [the trinity essay](../foundations/20260827-025117_lantern-lattice-kiln.
 directory on disk; when it earns one, it will stand beside `lattice/` and `lantern/`.
 
 And on `20260827` the name reached upward instead of sideways: **Ember became the vane**, closing
-`%300` in [`../construction/REDS.md`](../construction/REDS.md), where a name seated on the card had
+`%300` in the REDS ledger, where a name seated on the card had
 gone eleven days carried by nothing. **Q-vane** stays readable everywhere it was written -- every
 dated log keeps its words, and the elder name is a peer rather than a mistake.
 
