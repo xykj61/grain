@@ -14,7 +14,7 @@
 
 | Remote | Forge |
 |--------|-------|
-| `debrided` | GitHub `debrided/grain` -- the **mirror**, pushed only after `xy` accepts |
+| `debrided` | GitHub `debrided/grain` -- the **mirror**, pushed only after `xy` accepts. **`debrided` is an xykj61 organization** (Keaton's word `20260827`), like `grain-os` -- so the one jail deploy key that answers as `xykj61` reaches all three forges, and a refusal from this remote on a clone means the **remote is missing from that clone's config**, never the credential. Proven `20260827.232500`: probed, added where absent, mirrored to parity `7f2bc35b2` on both the field and `~/grain-mind` |
 | `xy` | GitHub `xykj61/grain` -- the **anointed ordering remote**; the name is the speeddial (Lexicon, `20260823.173634`): say **xy** for the private field and **seed** for `grain-os/grain`, since both were being called *the grain repo* and they are opposite things |
 
 **Renamed `20260826.165307` on Keaton's word:** the three living remotes take the names the tree already speaks -- `origin` -> **`debrided`**, `xykj61` -> **`xy`**, `grain-os` -> **`seed`**. The forges are unchanged; only the local names moved, so a URL in any dated log still reads true. The rename broke every guard reading `refs/remotes/origin/main` and every loop recipe spelling `git pull --rebase xykj61 main`, all repointed in the same round -- references are promises, and a remote name is one.

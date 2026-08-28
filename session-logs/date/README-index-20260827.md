@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.234318` | [one key, three forges](20260827/20260827-234318_one-key-three-forges.kyri) | debrided was absent, never refusing; mirrored to parity on both clones |
 | `20260827.231647` | [Mind's clone comes current](20260827/20260827-231647_minds-clone-comes-current.kyri) | transport armed; three conflicts kept both intents; two commits ship |
 | `20260827.105635` | [battery is telemetry](20260827/20260827-105635_battery-is-telemetry.kyri) | either power source; one bounded candidate signs outside the jail |
 | `20260827.224746` | [the seed ships, the publisher returns](20260827/20260827-224746_the-seed-ships-and-the-publisher-returns.kyri) | grain-os/grain at c06eb0a; rebuilt from its rules |
