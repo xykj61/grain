@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.113221` | [the cardinal card, the carried fix](20260828/20260828-113221_the-cardinal-card-and-the-carried-fix.kyri) | Mind's fix upstream attributed; the card in house order |
 | `20260828.110207` | [the gate that heard itself](20260828/20260828-110207_the-gate-that-heard-itself.kyri) | Sound's first lap: the tautology deleted, eight walls heard refusing |
 | `20260828.103150` | [the open that cannot die](20260828/20260828-103150_the-open-that-cannot-die.kyri) | two crashes, zero divergence; 17 blobs recovered; fleet healed |
 | `20260828.033212` | [the template repaired and the launcher left](20260828/20260828-033212_the-template-repaired-and-the-launcher-left.kyri) | %308 -- the loop prompts get their guard |

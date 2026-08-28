@@ -372,8 +372,20 @@ let codex_help_err = preflight_rel + "/codex-help.err"
 let codex_help_run = run-bounded { argv: [codex_exec "exec" "--help"], stdin: "", stdin-max: 0, stdout-path: codex_help_out, stdout-max: 65536, stderr-path: codex_help_err, stderr-max: 65536 }
 assert codex_help_run.ok else "REFUSE chatgpt-mind: Codex exec help did not run"
 let codex_help = (read-file codex_help_out) + (read-file codex_help_err)
+assert codex_help contains "--disable <FEATURE>" else "REFUSE chatgpt-mind: Codex exec lacks the current feature override"
 assert codex_help contains "--sandbox <SANDBOX_MODE>" else "REFUSE chatgpt-mind: Codex exec lacks the current sandbox option"
 assert codex_help contains "danger-full-access" else "REFUSE chatgpt-mind: Codex exec lacks danger-full-access"
+
+let codex_retry_feature_out = preflight_rel + "/codex-retry-feature.out"
+let codex_retry_feature_err = preflight_rel + "/codex-retry-feature.err"
+let codex_retry_feature_run = run-bounded { argv: ["/usr/bin/env" "CODEX_HOME=${codex_home_abs}" "TMPDIR=/private/tmp" codex_exec "--disable" "unbounded_connection_retries" "features" "list"], stdin: "", stdin-max: 0, stdout-path: codex_retry_feature_out, stdout-max: 65536, stderr-path: codex_retry_feature_err, stderr-max: 65536 }
+assert codex_retry_feature_run.overflow == "" else "REFUSE chatgpt-mind: Codex feature probe crossed its byte wall"
+assert codex_retry_feature_run.ok else "REFUSE chatgpt-mind: Codex lacks the required finite connection-retry override"
+let codex_retry_feature_match_out = preflight_rel + "/codex-retry-feature-match.out"
+let codex_retry_feature_match_err = preflight_rel + "/codex-retry-feature-match.err"
+let codex_retry_feature_match_run = run-bounded { argv: ["/usr/bin/grep" "-E" "^unbounded_connection_retries[[:space:]]+[^[:space:]]+[[:space:]]+false$"], stdin: (read-file codex_retry_feature_out), stdin-max: 65536, stdout-path: codex_retry_feature_match_out, stdout-max: 4096, stderr-path: codex_retry_feature_match_err, stderr-max: 4096 }
+assert codex_retry_feature_match_run.overflow == "" else "REFUSE chatgpt-mind: Codex finite-retry feature receipt crossed its byte wall"
+assert codex_retry_feature_match_run.ok else "REFUSE chatgpt-mind: Codex did not confirm the finite connection-retry override"
 
 let jail_plan_out = preflight_rel + "/jail-plan.out"
 let jail_plan_err = preflight_rel + "/jail-plan.err"
@@ -519,6 +531,7 @@ say "chatgpt-mind: screensaver and power settings remain unchanged"
 
 if dry_run then say "chatgpt-mind: dry-run only; Codex will not be invoked"
 if dry_run then say "chatgpt-mind: bounded laps ${max_laps}, failure ceiling ${failure_ceiling}, backoff ${backoff_seconds} seconds"
+if dry_run then say "chatgpt-mind: Codex unbounded connection retries are disabled so failures return to the supervisor circuit"
 if dry_run then say "chatgpt-mind: planned inner command maps Codex, canonical Homebrew Git, its two runtime libraries, and the tracked child-shell Git doorway read-only; the inner lap stages one candidate, while the outer supervisor alone signs and verifies it with user-held host GPG"
 if dry_run then exit 0
 
@@ -609,7 +622,7 @@ assert signing_verify_text contains signing_key else "REFUSE chatgpt-mind: host 
 let signing_probe_close = run ["rm" "-f" signing_probe_rel signing_probe_sig_rel]
 assert signing_probe_close.ok else "REFUSE chatgpt-mind: signing probe files could not be cleared"
 
-if mode == "check" then say "GREEN chatgpt-mind: prompt, repository, tools, isolated login, host signing, power reading, and outer jail checks passed"
+if mode == "check" then say "GREEN chatgpt-mind: prompt, repository, tools, isolated credential presence, host signing, power reading, and outer jail checks passed"
 if mode == "check" then exit 0
 
 assert file-absent stop_abs else "REFUSE chatgpt-mind: STOP is present"
@@ -627,7 +640,7 @@ if internal_lap == false then acquire-lock lock_rel
 let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"
 let internal_out = log_rel + "/supervisor.out"
 let internal_err = log_rel + "/supervisor.err"
-let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
+let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-exec reason=running" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
 let newline_run = run ["/usr/bin/printf" "\n"]
 assert newline_run.ok else "REFUSE chatgpt-mind: newline witness could not be rendered"
 let newline = newline_run.out
@@ -701,7 +714,9 @@ let message_init_err = "${log_rel}/lap-${lap_number}.message-init.err"
 let message_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: commit_message_rel, stdout-max: max_commit_message_bytes, stderr-path: message_init_err, stderr-max: 4096 }
 assert message_init.ok else "REFUSE chatgpt-mind: could not initialize the bounded commit-message file"
 let prompt_text = read-file prompt_rel
-let codex_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "exec" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"]), stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
+let phase_codex_running = write-phase "codex-exec reason=running"
+assert phase_codex_running.ok else "REFUSE chatgpt-mind: internal lap could not seat its Codex running phase"
+let codex_run = run-bounded { argv: ([ai_jail] + jail_maps + ["--exec" "--private-home" "--no-save-config" "/usr/bin/env" codex_home_arg codex_tmpdir_arg git_path_arg git_exec_arg git_raw_arg git_root_arg git_zdotdir_arg git_dyld_arg git_no_system_arg git_no_global_arg codex_exec "exec" "--disable" "unbounded_connection_retries" "--sandbox" "danger-full-access" "--ephemeral" "--strict-config" "--output-last-message" lap_last "-"]), stdin: prompt_text, stdin-max: max_prompt_bytes, stdout-path: lap_out, stdout-max: max_log_bytes, stderr-path: lap_err, stderr-max: max_log_bytes, stdout-relay: true, stderr-relay: true }
 let phase_codex_wall = write-phase "codex-output reason=byte-wall"
 assert phase_codex_wall.ok else "REFUSE chatgpt-mind: internal lap could not seat its Codex byte-wall phase"
 assert codex_run.overflow == "" else "REFUSE chatgpt-mind: Codex output crossed its byte wall"
