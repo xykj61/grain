@@ -530,3 +530,9 @@ guard glow_choir
 path tools/g/glow_choir_witness.rish
 tier cadence
 seated 20260828.192755
+
+guard skate_native_core
+path tools/s/skate_native_core_witness.rish
+tier cadence
+host macos
+seated 20260828.194500

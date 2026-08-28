@@ -217,20 +217,43 @@ fi
 
 # Pass one: which guards does this pass run, and what tier does each carry. A guard record is open
 # from its `guard` line until the next one, so the tier is read wherever it sits inside the record.
-awk -v want="$want_tier" -v only="$only" '
+#
+# A row may also carry `host macos` or `host linux` (REDS %295, seated on Keaton's word 20260828):
+# a three-star constellation writes into one tree from three hosts, and a witness whose last leg
+# is `xcrun swift test` is a promise only the Mac benches can keep. A host row is a TIER FOR
+# PLACE the way tier is a tier for time -- never an exemption: the row stays on the one roster,
+# every host SEES it, and a pass on the wrong host reports it skipped by name rather than
+# silently thin. An explicit by-name run (`only`) still runs it wherever the hand asks, so the
+# refusal that follows names the real absence instead of this filter. The host word itself is
+# validated by standing_equipment_scan.sh; here an unmatched word simply does not match.
+case "$(uname -s)" in
+  Darwin) this_host=macos ;;
+  Linux)  this_host=linux ;;
+  *)      this_host=other ;;
+esac
+awk -v want="$want_tier" -v only="$only" -v here="$this_host" '
   function flush(   t) {
     if (name == "") return
     t = (tier == "" ? "lap" : tier)
-    if (only != "" && name != only)                { name = ""; path = ""; tier = ""; return }
-    if (only == "" && want != "all" && t != want)  { name = ""; path = ""; tier = ""; return }
+    if (only != "" && name != only)                { name = ""; path = ""; tier = ""; host = ""; return }
+    if (only == "" && want != "all" && t != want)  { name = ""; path = ""; tier = ""; host = ""; return }
+    if (only == "" && host != "" && host != here)  { print "SKIPHOST", name, host; name = ""; path = ""; tier = ""; host = ""; return }
     print name, (path == "" ? "-" : path), t
-    name = ""; path = ""; tier = ""
+    name = ""; path = ""; tier = ""; host = ""
   }
   $1 == "guard" { flush(); name = $2; next }
   $1 == "path"  { if (name != "") path = $2; next }
   $1 == "tier"  { if (name != "") tier = $2; next }
+  $1 == "host"  { if (name != "") host = $2; next }
   END { flush() }
-' "$roster" > "$pen/todo"
+' "$roster" > "$pen/selected"
+grep '^SKIPHOST ' "$pen/selected" > "$pen/skiphost" || true
+grep -v '^SKIPHOST ' "$pen/selected" > "$pen/todo" || true
+skipped_host=$(grep -c '' "$pen/skiphost" || true)
+while read -r _ skipname skiphost; do
+  [ -n "$skipname" ] || continue
+  echo "skipped_host $skipname wants=$skiphost here=$this_host"
+done < "$pen/skiphost"
 
 awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 
@@ -323,6 +346,8 @@ echo "tier_run=$want_tier"
 echo "guards_run=$ran"
 echo "guards_green=$green"
 echo "guards_red=$red"
+echo "host=$this_host"
+echo "skipped_host=$skipped_host"
 echo "tree_at_close=$tree_close"
 echo "tree_moved=$moved"
 

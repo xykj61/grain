@@ -38,16 +38,22 @@ card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
 
 # The tiers the runner honors. A roster naming anything else is refused rather than run past.
 known_tiers="lap cadence"
+# The hosts the runner honors (REDS %295): a row carrying `host macos` or `host linux` runs only
+# on that host and is reported skipped by name elsewhere. A word outside this list is refused the
+# same way an unknown tier is -- a guard gated to a host no runner answers to would run nowhere.
+known_hosts="macos linux"
 
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp)
-badtiers=$(mktemp); cadence_names=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names"' EXIT
+badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts"' EXIT
 
 rostered=0
 missing=0
 half=0
 unknown_tier=0
+unknown_host=0
+host_gated=0
 tier_lap=0
 tier_cadence=0
 
@@ -55,6 +61,7 @@ tier_cadence=0
 name=""
 sawpath=0
 tier=""
+host=""
 close_record() {
   [ -n "$name" ] || return 0
   if [ "$sawpath" -ne 1 ]; then half=$((half + 1)); echo "$name" >> "$halfrows"; fi
@@ -69,7 +76,14 @@ close_record() {
   elif [ "$t" = lap ]; then
     tier_lap=$((tier_lap + 1))
   fi
-  name=""; sawpath=0; tier=""
+  if [ -n "$host" ]; then
+    host_gated=$((host_gated + 1))
+    case " $known_hosts " in
+      *" $host "*) ;;
+      *) unknown_host=$((unknown_host + 1)); echo "$name -> $host" >> "$badhosts" ;;
+    esac
+  fi
+  name=""; sawpath=0; tier=""; host=""
 }
 
 while IFS= read -r line; do
@@ -92,6 +106,10 @@ while IFS= read -r line; do
     tier\ *)
       [ -n "$name" ] || continue
       tier=$(printf '%s' "$line" | awk '{print $2}')
+      ;;
+    host\ *)
+      [ -n "$name" ] || continue
+      host=$(printf '%s' "$line" | awk '{print $2}')
       ;;
     *) ;;
   esac
@@ -145,6 +163,8 @@ echo "guards_rostered=$rostered"
 echo "guards_path_missing=$missing"
 echo "guards_half_written=$half"
 echo "guards_unknown_tier=$unknown_tier"
+echo "guards_host_gated=$host_gated"
+echo "guards_unknown_host=$unknown_host"
 echo "tier_lap=$tier_lap"
 echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
@@ -158,10 +178,11 @@ echo "newest_run=${newest:-none}"
 [ "$missing" -eq 0 ] || sed 's/^/missing: /' "$paths_missing"
 [ "$half" -eq 0 ] || sed 's/^/half_written: /' "$halfrows"
 [ "$unknown_tier" -eq 0 ] || sed 's/^/unknown_tier: /' "$badtiers"
+[ "$unknown_host" -eq 0 ] || sed 's/^/unknown_host: /' "$badhosts"
 [ "$stray" -eq 0 ] || sed 's/^/unrostered: /' "$unrostered"
 [ "$red" -eq 0 ] || sed 's/^/red: /' "$reds"
 
-if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] \
+if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] && [ "$unknown_host" -eq 0 ] \
   && [ "$stray" -eq 0 ] && [ "$red" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
