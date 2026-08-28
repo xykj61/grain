@@ -76,7 +76,8 @@ fn run_selftest() !u8 {
     const f_const = try interp.cons(nock.Noun.a(1), nock.Noun.a(42));
     const r1a = try interp.run(nock.Noun.a(9), f_const);
     const r1b = try interp.run(nock.Noun.a(999), f_const);
-    assert(std.meta.eql(r1a, nock.Noun.a(42)) and std.meta.eql(r1b, nock.Noun.a(42)));
+    assert(std.meta.eql(r1a, nock.Noun.a(42)));
+    assert(std.meta.eql(r1b, nock.Noun.a(42)));
     print("nock: opcode 1 (constant) ignores the subject -- two different subjects, same 42 -- GREEN\n", .{});
 
     // --- Claim 5: opcode 2, evaluate ----------------------------------------

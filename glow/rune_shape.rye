@@ -85,9 +85,14 @@ pub fn classify_shape_aura(aura: []const u8) ParseError!ShapeAuraFlags {
     const is_u64 = std.mem.eql(u8, aura, "@u64");
     // invariant: an aura is exactly one kind, and the three flags are read independently
     // downstream, so two of them true would take two branches for one token
-    if (is_cord) assert(!is_hex and !is_u64);
-    if (is_hex) assert(!is_cord and !is_u64);
-    if (is_u64) assert(!is_cord and !is_hex);
+    // invariant: the three shape flags are mutually exclusive -- split so a failure names
+    // which pair collided rather than only that some pair did.
+    if (is_cord) assert(!is_hex);
+    if (is_cord) assert(!is_u64);
+    if (is_hex) assert(!is_cord);
+    if (is_hex) assert(!is_u64);
+    if (is_u64) assert(!is_cord);
+    if (is_u64) assert(!is_hex);
     return .{ .is_cord = is_cord, .is_hex = is_hex, .is_u64 = is_u64 };
 }
 
@@ -183,9 +188,13 @@ fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseEr
     // taking two branches
     assert(face.len >= 1);
     assert(face.len <= max_name_len);
-    if (flags.is_cord) assert(!flags.is_hex and !flags.is_u64);
-    if (flags.is_hex) assert(!flags.is_cord and !flags.is_u64);
-    if (flags.is_u64) assert(!flags.is_cord and !flags.is_hex);
+    // invariant: the three shape flags are mutually exclusive -- split so a failure names the pair.
+    if (flags.is_cord) assert(!flags.is_hex);
+    if (flags.is_cord) assert(!flags.is_u64);
+    if (flags.is_hex) assert(!flags.is_cord);
+    if (flags.is_hex) assert(!flags.is_u64);
+    if (flags.is_u64) assert(!flags.is_cord);
+    if (flags.is_u64) assert(!flags.is_hex);
     if (spec.field_count >= max_fields) return error.TooManyFields;
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
@@ -271,9 +280,13 @@ fn push_tag_faces(
         const wide = is_u64[@as(usize, @intCast(fi))];
         // invariant: each face carries exactly one aura kind and a name the lexer already
         // bounded, so the copy below fits and no face takes two branches
-        if (cord) assert(!hex and !wide);
-        if (hex) assert(!cord and !wide);
-        if (wide) assert(!cord and !hex);
+        // invariant: the three shape flags are mutually exclusive -- split so a failure names the pair.
+        if (cord) assert(!hex);
+        if (cord) assert(!wide);
+        if (hex) assert(!cord);
+        if (hex) assert(!wide);
+        if (wide) assert(!cord);
+        if (wide) assert(!hex);
         assert(face.len >= 1);
         assert(face.len <= max_name_len);
         tally_copy.copy_disjoint(u8, spec.payloads[i][@as(usize, @intCast(fi))][0..face.len], face);

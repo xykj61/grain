@@ -74,7 +74,8 @@ pub const Manifest = struct {
 
     pub fn id_slice(m: *const Manifest) []const u8 {
         // invariant: a manifest names a world within the id bound.
-        assert(m.id_len >= 1 and m.id_len <= puddle.world_id_len);
+        assert(m.id_len >= 1);
+        assert(m.id_len <= puddle.world_id_len);
         return m.id[0..m.id_len];
     }
 
@@ -120,7 +121,8 @@ pub fn render(m: *const Manifest, out: []u8) BronError!u32 {
     // invariant: the render buffer honors its bound.
     assert(out.len >= max_record);
     // invariant: the manifest names a real world and a full-width order-head.
-    assert(m.id_len >= 1 and m.id_len <= puddle.world_id_len);
+    assert(m.id_len >= 1);
+    assert(m.id_len <= puddle.world_id_len);
     assert(voucher.order_head_len == cord.hash_len);
 
     var berth_hex: [puddle.pk_len * 2]u8 = undefined;
@@ -205,7 +207,8 @@ pub fn parse(text: []const u8, out: *Manifest) BronError!void {
     }
     if (seen != field_all) return error.MissingField;
     // invariant: a fully-parsed manifest names a world within the id bound.
-    assert(out.id_len >= 1 and out.id_len <= puddle.world_id_len);
+    assert(out.id_len >= 1);
+    assert(out.id_len <= puddle.world_id_len);
 }
 
 // --- selftest scaffolding: build a world ledger over the seasons' own idioms ----------------------------
@@ -230,7 +233,8 @@ fn write_deadline(deadline: u64, out: []u8) void {
 /// under a far deadline the two-block order never reaches. Returns two blocks (genesis - pledge).
 fn seat_ledger(pledge_id: u8, credit: u64, pledge_amt: u64, funder: u8, owner: u8, to: []const u8) ![2]cord.Block {
     // invariant: a pledge can only encumber value the owner holds.
-    assert(pledge_amt <= credit and pledge_amt > 0);
+    assert(pledge_amt <= credit);
+    assert(pledge_amt > 0);
     const kf = seeded(funder);
     const ka = seeded(owner);
     const owner_pk = ka.public_key.toBytes();

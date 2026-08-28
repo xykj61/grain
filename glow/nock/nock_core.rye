@@ -142,7 +142,10 @@ pub const Interp = struct {
                 .cell => |yidx| {
                     // invariant: both cells are read out of the arena by index below, so each
                     // index is checked against the same count
-                    assert(xidx < self.count and yidx < self.count);
+                    // invariant: both indices sit inside the node count -- split so a failure
+                    // names which side ran past it.
+                    assert(xidx < self.count);
+                    assert(yidx < self.count);
                     const xc = self.cells[xidx];
                     const yc = self.cells[yidx];
                     const heads_eq = try self.eql(xc.head, yc.head, depth + 1);

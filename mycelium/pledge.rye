@@ -558,7 +558,8 @@ pub fn main() !void {
         const bob_pk = kb.public_key.toBytes();
         const open = try resolve_perm(&[_]cord.Block{ s[0], s[1] });
         assert(open.pledges_seen() == 1);
-        assert(open.posted_seen() == 0 and open.voided_seen() == 0);
+        assert(open.posted_seen() == 0);
+        assert(open.voided_seen() == 0);
         assert(open.balance_of(alice_pk[0..]) == 0);
         assert(open.reserved_of(alice_pk[0..]) == 100);
         assert(open.balance_of(bob_pk[0..]) == 0);

@@ -593,7 +593,8 @@ pub fn main() !void {
         const late = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
         assert(late.pledges_seen() == 1);
         assert(late.lapsed_seen() == 1); // the deadline decided
-        assert(late.posted_seen() == 0 and late.voided_seen() == 0);
+        assert(late.posted_seen() == 0);
+        assert(late.voided_seen() == 0);
         assert(late.balance_of(alice_pk[0..]) == 100); // coins came home
         assert(late.reserved_of(alice_pk[0..]) == 0);
         assert(late.balance_of(bob_pk[0..]) == 0); // the late honor moved nothing

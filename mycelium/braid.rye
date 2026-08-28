@@ -270,7 +270,8 @@ fn settle_braid(l: *Ledger, bi: u32) FoldError!void {
     const b = &l.braids[bi];
     // invariant: a settled braid is closed and carries at least one link.
     assert(b.closed);
-    assert(b.link_count >= 1 and b.link_count <= braid_max_chain);
+    assert(b.link_count >= 1);
+    assert(b.link_count <= braid_max_chain);
 
     var touched: [braid_max_touched][pk_len]u8 = undefined;
     var tbal: [braid_max_touched]u64 = undefined;
@@ -590,7 +591,8 @@ pub fn main() !void {
         const open = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
         assert(open.braids_seen() == 1);
         assert(open.pending_seen() == 1);
-        assert(open.committed_seen() == 0 and open.rejected_seen() == 0);
+        assert(open.committed_seen() == 0);
+        assert(open.rejected_seen() == 0);
         assert(open.balance_of(alice[0..]) == 100);
         assert(open.balance_of(bob[0..]) == 50);
         assert(open.balances_sum() == open.total_issued);
