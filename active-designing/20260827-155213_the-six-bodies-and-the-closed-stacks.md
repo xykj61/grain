@@ -68,6 +68,27 @@ the jail, the jail-local identity signing path-limited commits. The full Rishi s
 signing held outside the jail is the next hardening, once Mind's two clone commits come home to
 `xy`.
 
+## The seventh seat -- Choir, the synthesis launch (seated `20260827.212800`)
+
+**Choir is the seventh launch and it is not a seventh hand.** The six bodies are three
+presence-and-absence pairs -- Mind with Mystery, Sound with Silence, Dream with Hush -- and a choir
+is the one thing all six are together: many voices, and the rests between them, performing one
+piece in one sitting. The tree already used the word for exactly this shape -- *a choir is one
+witness that sings a whole family of rungs in one invocation* -- so the name teaches its own
+meaning, which is the Comlink tendency's whole test. Seated on Keaton's word, `20260827`.
+
+**The one precondition is the whole safety story: Choir runs only when all six loops are
+stopped.** One hand performs every lane in one bounded round -- six inner laps, one outer loop
+around them all -- so the multi-hand collision this charter guards against (REDS `%281`, `%291`)
+cannot occur: there is exactly one hand, and it holds all six lanes at once. The lanes stay
+disjoint on disk exactly as the table above draws them, so the six laps may run in parallel under
+the one supervisor; a finding that crosses a lane becomes a card line rather than another lane's
+edit -- the orbit rule, held even solo. Reds are booked centrally by the one hand, never from
+inside a lane, one session log closes the round, and one send ships it.
+
+Launcher: `tools/l/launch-choir-synthesis-chapter.rish`. The first Choir round ran the day the
+seat was written, by the hand that wrote it.
+
 ## The closed stacks
 
 The tree is a library with two floors. The **open shelves** are the rooms a lap walks by
