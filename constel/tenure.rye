@@ -110,7 +110,7 @@ fn run_selftest() !u8 {
         assert(still_commands(&majority, th)); // the majority side's leader holds tenure
     }
 
-    // 4. THE BOUNDARY IS EXACT AT THE THRESHOLD -- backing == threshold commands; backing == threshold − 1 steps down.
+    // 4. THE BOUNDARY IS EXACT AT THE THRESHOLD -- backing == threshold commands; backing == threshold - 1 steps down.
     {
         const th = quorum.majority_of(5); // 3
         const at = [_]bool{ true, true, false, false }; // backing 3 == threshold
