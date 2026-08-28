@@ -17,7 +17,7 @@ MAP=construction/EQUINOX_SEAT_MAP.md
 ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/chapter/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
-ELDER=tools/gen/chapter/equinox_e119_close_seat_surfaces_witness.rish
+ELDER=tools/equinox/witness/equinox_e119_close_seat_surfaces_witness.rish
 
 if test "$MODE" = "prove-red"; then
   echo "roots=absent"
@@ -142,7 +142,7 @@ fi
 echo "reserve_keep=honored"
 echo "seat_128=reserved_close_choir"
 
-COUNT=$(git ls-files 'tools/gen/chapter/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
+COUNT=$(git ls-files 'tools/equinox/witness/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
 if test "$COUNT" -ne 6; then
   echo "surface_keep=failed"
   echo "verdict=misread"

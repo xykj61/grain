@@ -26,7 +26,7 @@ let voidish = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerbeetle_void_c
 assert voidish.ok else "tb-assert-census: void census elder went RED"
 assert voidish.out contains "CLONE=present" else "tb-assert-census: void elder must see clone present"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tigerbeetle_assert_census_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tigerbeetle_assert_census_almanac.sh"]
 assert almanac.ok else "tb-assert-census: almanac append failed"
 say almanac.out
 

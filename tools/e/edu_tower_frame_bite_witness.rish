@@ -22,7 +22,7 @@ let pin = run ["sh" "-c" "grep -q 'frame_bound_overpush.rye' docs-geode/tutorial
 assert pin.ok else "tower-frame-bite: tutorial pin scan failed"
 assert pin.out contains "PIN_OK" else "tower-frame-bite: tutorial must name the overpush fixture"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tower_bite_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tower_bite_almanac.sh"]
 assert almanac.ok else "tower-frame-bite: almanac append failed"
 say almanac.out
 

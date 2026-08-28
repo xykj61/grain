@@ -24,7 +24,7 @@ assert census.out contains "TAME_BRIDGE=yes" else "tb-control-plane: TAME_GUIDAN
 let elder = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerbeetle_assert_census_witness.rish"]
 assert elder.ok else "tb-control-plane: assert census elder went RED"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tigerbeetle_control_plane_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tigerbeetle_control_plane_almanac.sh"]
 assert almanac.ok else "tb-control-plane: almanac append failed"
 say almanac.out
 

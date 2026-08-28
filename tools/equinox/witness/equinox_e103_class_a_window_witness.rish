@@ -1,0 +1,54 @@
+# tools/equinox/witness/equinox_e103_class_a_window_witness.rish -- e103 / Class A + window.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e103_class_a_window_witness.rish
+#
+# e103: window_min fall baseline landed. Class A exclude was a trial;
+# e104 holds those anchors disclosed. The seated 100 stays historical while
+# the living meter continues to report the current tree.
+# Memcpy debt already paid (e102). Almanac seat 107 via choir.
+
+say "e103-class-a-window: Language EN — control first; then refine what honesty is not residue."
+say "e103-class-a-window: Style Radiant — a fall stays visible against window_min."
+say "e103-class-a-window: Lens TAME — e103 · window_min · almanac seat 107 · ch7 11/16."
+
+let fascia_control = run ["sh" "tools/fixtures/equinox_e103_class_a_window_control.sh"]
+say fascia_control.out
+assert fascia_control.ok else "e103-class-a-window: current/history seam control RED"
+assert fascia_control.out contains "current 51 welcomed" else "e103-class-a-window: want later living grade welcomed"
+assert fascia_control.out contains "current 101 and missing seated 100 refused" else "e103-class-a-window: want both planted refusals"
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/chapter/census_control_witness.rish"]
+say control.out
+assert control.ok else "e103-class-a-window: census control must GREEN before refine"
+assert control.out contains "GREEN: census-control" else "e103-class-a-window: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/chapter/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e103-class-a-window: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e103-class-a-window: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/chapter/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e103-class-a-window: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e103-class-a-window: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e103_class_a_window_scan.sh"]
+say scan.out
+assert scan.ok else "e103-class-a-window: refine scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e103-class-a-window: want control_gate"
+assert scan.out contains "refine_memcpy=honored" else "e103-class-a-window: want memcpy paid"
+assert scan.out contains "refine_fascia=honored" else "e103-class-a-window: want fascia refine"
+assert scan.out contains "refine_fascia_grade_current=" else "e103-class-a-window: want current fascia grade"
+assert scan.out contains "refine_fascia_grade_seated=100" else "e103-class-a-window: want seated fascia grade"
+assert scan.out contains "refine_fascia_history=honored" else "e103-class-a-window: want fascia history"
+assert scan.out contains "refine_window_min_current=honored" else "e103-class-a-window: want current window_min"
+assert scan.out contains "refine_window_min_seated=honored" else "e103-class-a-window: want seated window_min"
+assert scan.out contains "refine_class_a_seated=0" else "e103-class-a-window: want seated Class A reading"
+assert scan.out contains "refine_class_a_honest_excluded_seated=4" else "e103-class-a-window: want seated honest anchors"
+assert scan.out contains "refine_baseline_kind=window_min" else "e103-class-a-window: want window_min"
+assert scan.out contains "refine_fork_status=not_consumed" else "e103-class-a-window: want fork waiting"
+assert scan.out contains "refine_almanac=honored" else "e103-class-a-window: want almanac"
+assert scan.out contains "e103_class_a_window=ok" else "e103-class-a-window: want e103 ok"
+assert scan.out contains "verdict=ok" else "e103-class-a-window: want verdict=ok"
+
+say "GREEN: e103-class-a-window -- control proven; seated window_min and fascia 100 held; current fascia reported; fork waiting; museum"

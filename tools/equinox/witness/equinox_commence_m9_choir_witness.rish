@@ -1,0 +1,24 @@
+# tools/equinox/witness/equinox_commence_m9_choir_witness.rish -- e100 -> almanac ch7 8/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_commence_m9_choir_witness.rish
+#
+# Commence M9 ascent: handbacks consumed outward; nested return waits; seat 104.
+
+say "equinox-commence-m9-choir: Language EN — control before ascent; the arc fills ch7."
+say "equinox-commence-m9-choir: Style Radiant — measure the handbacks already named."
+say "equinox-commence-m9-choir: Lens TAME — e100 · M9 ascent · almanac seat 104 · ch7 8/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/commence_m9_ascent_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-commence-m9-choir: welcome RED"
+assert welcome.out contains "GREEN: commence-m9" else "equinox-commence-m9-choir: want GREEN"
+assert welcome.out contains "ascent_beats=9" else "equinox-commence-m9-choir: want 9 beats"
+assert welcome.out contains "census_breach_count=0" else "equinox-commence-m9-choir: want breach 0"
+assert welcome.out contains "ascent_saga_status=" else "equinox-commence-m9-choir: want saga status"
+
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_commence_m9_almanac.sh"]
+assert almanac.ok else "equinox-commence-m9-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-commence-m9-choir — M9 ascent GREEN · almanac seat 104 · ch7 8/16"

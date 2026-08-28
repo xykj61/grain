@@ -1,0 +1,30 @@
+# tools/equinox/witness/equinox_surface_witness.rish -- e10 Equinox surface choir.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_surface_witness.rish
+#
+# Three limbs already GREEN alone must GREEN together. Almanac seat 16 from metal.
+
+say "equinox-surface: Language EN — three greens, one choir."
+say "equinox-surface: Style Radiant — the season surface holds as one."
+say "equinox-surface: Lens TAME — e10 · almanac seat 16 · Glow=code · Brix=data."
+
+let e0 = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_season_e0_witness.rish"]
+say e0.out
+assert e0.ok else "equinox-surface: e0 limb failed"
+assert e0.out contains "GREEN: equinox-e0" else "equinox-surface: e0 not GREEN"
+
+let map = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_map_witness.rish"]
+say map.out
+assert map.ok else "equinox-surface: map limb failed"
+assert map.out contains "GREEN: equinox-map" else "equinox-surface: map not GREEN"
+
+let foundations = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_foundations_witness.rish"]
+say foundations.out
+assert foundations.ok else "equinox-surface: foundations limb failed"
+assert foundations.out contains "GREEN: equinox-foundations" else "equinox-surface: foundations not GREEN"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_surface_almanac.sh"]
+assert almanac.ok else "equinox-surface: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-surface — e0 · map · foundations choir · almanac seat 16"

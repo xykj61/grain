@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/equinox_map_scan.sh -- equinox map canon is lawful and complete.
-# Orchestrated by tools/gen/chapter/equinox_map_witness.rish.
+# Orchestrated by tools/equinox/witness/equinox_map_witness.rish.
 #
 # Output: key=value - detail: - verdict= - status agrees with exit.
 # Readable by splitLines + first-space split -- no grammar.

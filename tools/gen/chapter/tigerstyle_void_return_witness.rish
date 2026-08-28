@@ -29,7 +29,7 @@ let clone = run ["sh" "-c" "if test -d gratitude/tigerbeetle; then echo CLONE=pr
 say clone.out
 assert clone.out contains "CLONE=" else "tigerstyle-void: clone status scan failed"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tigerstyle_void_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tigerstyle_void_almanac.sh"]
 assert almanac.ok else "tigerstyle-void: almanac append failed"
 say almanac.out
 

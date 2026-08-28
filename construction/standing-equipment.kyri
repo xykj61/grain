@@ -72,7 +72,7 @@ path tools/e/empty_document_witness.rish
 seated 20260823.041442
 
 guard equinox_e123_living_pin_guard
-path tools/gen/chapter/equinox_e123_living_pin_guard_witness.rish
+path tools/equinox/witness/equinox_e123_living_pin_guard_witness.rish
 seated 20260817.000000
 
 guard exec_bit

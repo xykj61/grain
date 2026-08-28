@@ -24,7 +24,7 @@ assert census.out contains "MAYBE_COMPLETES=yes" else "tb-golden-rule: maybe mus
 let elder = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish"]
 assert elder.ok else "tb-golden-rule: control-plane elder went RED"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tigerbeetle_golden_rule_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tigerbeetle_golden_rule_almanac.sh"]
 assert almanac.ok else "tb-golden-rule: almanac append failed"
 say almanac.out
 

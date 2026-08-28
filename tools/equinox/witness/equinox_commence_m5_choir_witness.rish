@@ -1,0 +1,22 @@
+# tools/equinox/witness/equinox_commence_m5_choir_witness.rish -- e96 -> almanac ch7 4/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_commence_m5_choir_witness.rish
+#
+# Commence M5: re-cut greens behind proven census control; seat 100.
+
+say "equinox-commence-m5-choir: Language EN — control before totals; the arc fills ch7."
+say "equinox-commence-m5-choir: Style Radiant — re-cut greens; pinned meters stay pinned."
+say "equinox-commence-m5-choir: Lens TAME — e96 · M5 · almanac seat 100 · ch7 4/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/commence_m5_recut_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-commence-m5-choir: welcome RED"
+assert welcome.out contains "GREEN: commence-m5" else "equinox-commence-m5-choir: want GREEN"
+assert welcome.out contains "advisory_present=11" else "equinox-commence-m5-choir: want advisory 11"
+assert welcome.out contains "census_breach_count=0" else "equinox-commence-m5-choir: want breach 0"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_commence_m5_almanac.sh"]
+assert almanac.ok else "equinox-commence-m5-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-commence-m5-choir — M5 re-cut GREEN · almanac seat 100 · ch7 4/16"

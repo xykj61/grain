@@ -59,7 +59,7 @@ for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$SUITE" "$PRIN" \
 done
 echo "instruments_tracked=honored"
 
-SURFACES=$(git ls-files 'tools/gen/chapter/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
+SURFACES=$(git ls-files 'tools/equinox/witness/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
 if test "$SURFACES" -ne 6; then
   echo "surfaces=failed"
   echo "detail=want_six_surface_witnesses"

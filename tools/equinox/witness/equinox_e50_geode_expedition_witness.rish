@@ -1,0 +1,45 @@
+# tools/equinox/witness/equinox_e50_geode_expedition_witness.rish -- e50 pin seat.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e50_geode_expedition_witness.rish
+#
+# Breach approved - gated - Lexicon geode umbrella - extend lean +128.
+
+say "e50: Language EN — yes seats the future dual-equinox expedition."
+say "e50: Style Radiant — approve · gate · do not begin."
+say "e50: Lens TAME — e50 · geode · +128 · outer pause."
+
+let counsel = read-file "counsel/date/20260730/20260730-162222_e50-dual-equinox-geode-expedition-breach.md"
+assert counsel contains "approved · seated · gated" else "e50: counsel want approved gated"
+assert counsel contains "does **not** begin this stamp" else "e50: counsel want gated begin"
+assert counsel contains "extend +128" else "e50: counsel want extend +128"
+assert counsel contains "outer pause" else "e50: counsel want outer pause"
+assert counsel contains "return_surface_p59" else "e50: counsel want nested handback"
+
+let lex = read-file "context/LEXICON.md"
+assert lex contains "| **geode** |" else "e50: LEXICON want geode row"
+# THE SEPARATOR THE ASCII-FIRST SWEEP LEFT (REDS %236), AND THE WORD THE PANCHANGA MOLTED
+# (REDS %265). This line has now been broken twice by a living law rewriting the prose it
+# quotes: first the ascii-first sweep turned its middots into hyphens, then the panchanga of
+# `20260826` replaced the outermost sense `season` with `chapter`. The claim is the five senses
+# in order; the separator is register and the fifth word is seated vocabulary, so both follow
+# the tree rather than the day this line was typed. A guard quoting a living page owns the
+# repair on the lap that page moves, which is docs-implementation-sync said as a cost.
+assert lex contains "round - quest - journey - equinox - chapter" else "e50: LEXICON want umbrella senses"
+assert lex contains "docs-geode" else "e50: LEXICON want docs-geode distinction"
+
+let rb = read-file "tools/gen/chapter/recursion_block.brix"
+assert rb contains "coords_e50 geode_expedition_breach GREEN 20260730.162222" else "e50: recursion want coords_e50"
+assert rb contains "extend_lean +128" else "e50: recursion want extend_lean +128"
+assert rb contains "geode_expedition_breach APPROVED_GATED" else "e50: recursion want breach pin"
+
+# A LIVING CARD HOLDS THE LIVE EDGE; TESTIMONY HOLDS THE RECORD (REDS %236). This read
+# construction/ITINERARY.md for the string `e50 GREEN`. The card was debrided to the Compass
+# Season on 20260809.024320 and says so on its own face -- the old season marks are gone by
+# design, because a live card that never forgets stops being a live card. A rung's green is
+# recorded in its waymark, which is dated testimony and keeps every word it wrote.
+let mark = read-file "waymarks/date/20260730/20260730-162222_e50-dual-equinox-geode-expedition-seated.md"
+assert mark contains "e50 GREEN" else "e50: the waymark must record e50 GREEN"
+assert mark contains "Expedition" else "e50: the waymark must name the expedition"
+assert mark contains "approved · seated · gated" else "e50: the waymark must record the breach approved, seated, and gated"
+
+say "GREEN: e50 -- dual-equinox geode expedition breach approved, seated, gated, recorded in its own waymark -- Lexicon geode -- extend +128"

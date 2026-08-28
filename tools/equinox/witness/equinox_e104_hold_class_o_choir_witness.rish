@@ -1,0 +1,25 @@
+# tools/equinox/witness/equinox_e104_hold_class_o_choir_witness.rish -- e104 -> ch7 12/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e104_hold_class_o_choir_witness.rish
+#
+# Hold Class A disclosed + Class O room home; almanac seat 108.
+
+say "equinox-e104-choir: Language EN — control before hold; honesty stays visible."
+say "equinox-e104-choir: Style Radiant — Class O rooms wait without seating paths."
+say "equinox-e104-choir: Lens TAME — e104 · fascia 92 · almanac seat 108 · ch7 12/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e104_hold_class_o_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e104-choir: welcome RED"
+assert welcome.out contains "GREEN: e104-hold-class-o" else "equinox-e104-choir: want GREEN"
+assert welcome.out contains "hold_fascia_grade_current=" else "equinox-e104-choir: want current fascia"
+assert welcome.out contains "hold_fascia_grade_seated=92" else "equinox-e104-choir: want seated fascia 92"
+assert welcome.out contains "hold_fascia_history=honored" else "equinox-e104-choir: want hold history"
+assert welcome.out contains "census_breach_count=0" else "equinox-e104-choir: want breach 0"
+assert welcome.out contains "hold_fork_status=not_consumed" else "equinox-e104-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e104_hold_class_o_almanac.sh"]
+assert almanac.ok else "equinox-e104-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e104-choir -- historical hold and Class O GREEN; living fascia reported; almanac seat 108; ch7 12/16"

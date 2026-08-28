@@ -43,7 +43,7 @@ trap 'rm -rf "$PEN"' EXIT INT TERM
 # discovery rule a meter can read is a discovery rule a person can read. The env override still
 # works for the control -- it takes the other branch, and the default names itself.
 if [ "$ROOM" = "tools/gen/season" ]; then
-  git ls-files "tools/gen/chapter/equinox_*_witness.rish" > "$PEN/all" 2>/dev/null || true
+  git ls-files "tools/equinox/witness/equinox_*_witness.rish" > "$PEN/all" 2>/dev/null || true
 else
   git ls-files "$ROOM/equinox_*_witness.rish" > "$PEN/all" 2>/dev/null || true
 fi

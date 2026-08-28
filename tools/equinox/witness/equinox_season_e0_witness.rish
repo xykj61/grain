@@ -1,0 +1,56 @@
+# tools/equinox/witness/equinox_season_e0_witness.rish -- Equinox e0 bow seat.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_season_e0_witness.rish
+
+say "equinox-e0: Language EN — nest deca opens."
+say "equinox-e0: Style Radiant — Glow=code Brix=data; Cursor paused."
+say "equinox-e0: Lens TAME — Equinox Chapter e0."
+
+let charter = run ["test" "-f" "counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md"]
+assert charter.ok else "equinox-e0: charter missing"
+
+let bow = run ["test" "-f" "counsel/date/20260729/20260729-165912_equinox-season-e0-bow.md"]
+assert bow.ok else "equinox-e0: bow missing"
+
+let reply = run ["test" "-f" "counsel/replies/20260729-165912_re-equinox-deca-claude-continuation.md"]
+assert reply.ok else "equinox-e0: Claude reply missing"
+
+let paste = run ["test" "-f" "expanding-prompts/date/20260729/20260729-165912_equinox-season-e0-recursion-prompt.md"]
+assert paste.ok else "equinox-e0: recursion paste missing"
+
+let brix = run ["test" "-f" "tools/gen/chapter/recursion_block.brix"]
+assert brix.ok else "equinox-e0: recursion_block.brix missing"
+
+let seats = run ["sh" "-c" "grep -qF 'nest deca' tools/gen/chapter/recursion_block.brix && grep -qF 'ask_reply your' tools/gen/chapter/recursion_block.brix && grep -qF 'code_lang glow' tools/gen/chapter/recursion_block.brix && grep -qF 'data_lang brix' tools/gen/chapter/recursion_block.brix && echo SEAT_OK"]
+assert seats.ok else "equinox-e0: brix seat scan failed"
+assert seats.out contains "SEAT_OK" else "equinox-e0: nest/your/glow/brix seats missing"
+
+let prompts = run ["sh" "-c" "grep -cF '### Prompt' counsel/replies/20260729-165912_re-equinox-deca-claude-continuation.md"]
+assert prompts.ok else "equinox-e0: prompt count failed"
+let prompt_n = trim prompts.out
+assert prompt_n == "8" else "equinox-e0: need exactly eight prompts"
+
+let clock = run ["test" "-f" "glow/mod_clock.rye"]
+assert clock.ok else "equinox-e0: mod_clock.rye missing"
+
+# BUILD WHAT YOU MEAN TO RUN (REDS %236). glow/bin/ is gitignored -- git check-ignore names
+# .gitignore line 211 -- so this rung asserted the existence of a file a fresh clone can never
+# have, and refused for every hand that had not built it by chance. Its siblings already build
+# what they run (tools/h/hunk_part_catalog_witness.rish), and the toolchain is vendored in this
+# tree, so the rung builds its own binary the same way and keeps the reading it always wanted.
+let bin = "glow/bin/mod-clock"
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/mod_clock.rye -femit-bin=${bin} 2>&1"]
+assert build.ok else "equinox-e0: mod_clock.rye must build"
+let have = run ["test" "-x" bin]
+assert have.ok else "equinox-e0: the build must leave an executable"
+let run_clock = run ["sh" "-c" "${bin} 2>&1"]
+assert run_clock.ok else "equinox-e0: mod-clock failed"
+assert run_clock.out contains "GREEN" else "equinox-e0: mod-clock not GREEN"
+
+let pause = run ["sh" "-c" "grep -qF 'Cursor **PAUSED**' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'PAUSED' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'return_surface_p59' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && echo PAUSE_OK"]
+assert pause.ok else "equinox-e0: pause/handback scan failed"
+assert pause.out contains "PAUSE_OK" else "equinox-e0: Cursor pause · handback missing"
+
+say "GREEN: equinox-e0 — deca OPEN · brix template · mod-clock · eight prompts"
+say "GREEN: equinox-e0 — Cursor paused · Claude package seated."

@@ -1,0 +1,25 @@
+# tools/equinox/witness/equinox_e102_fascia_chase_choir_witness.rish -- e102 -> ch7 10/16.
+#
+#   rishi/bin/rishi run tools/equinox/witness/equinox_e102_fascia_chase_choir_witness.rish
+#
+# Fascia chase GREEN; almanac seat 106. Class A paper lean held. Fork unspent.
+
+say "equinox-e102-choir: Language EN — control before chase; Class A stays honest paper."
+say "equinox-e102-choir: Style Radiant — re-cut meters; the window earned its keep."
+say "equinox-e102-choir: Lens TAME — e102 · fascia 92 · almanac seat 106 · ch7 10/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/equinox/witness/equinox_e102_fascia_chase_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e102-choir: welcome RED"
+assert welcome.out contains "GREEN: e102-fascia-chase" else "equinox-e102-choir: want GREEN"
+assert welcome.out contains "chase_fascia_grade_current=" else "equinox-e102-choir: want current fascia grade"
+assert welcome.out contains "chase_fascia_grade_seated=92" else "equinox-e102-choir: want seated fascia grade"
+assert welcome.out contains "chase_fascia_history=honored" else "equinox-e102-choir: want fascia history"
+assert welcome.out contains "census_breach_count=0" else "equinox-e102-choir: want breach 0"
+assert welcome.out contains "chase_fork_status=not_consumed" else "equinox-e102-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/equinox/almanac/equinox_e102_fascia_chase_almanac.sh"]
+assert almanac.ok else "equinox-e102-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e102-choir -- historical fascia chase GREEN; living fascia reported; almanac seat 106; ch7 10/16"

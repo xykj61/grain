@@ -16,9 +16,9 @@ MAP=construction/EQUINOX_SEAT_MAP.md
 ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/chapter/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
-ELDER=tools/gen/chapter/equinox_e118_metal_corrections_witness.rish
-CH5=tools/gen/chapter/equinox_ch5_surface_witness.rish
-CH6=tools/gen/chapter/equinox_ch6_surface_witness.rish
+ELDER=tools/equinox/witness/equinox_e118_metal_corrections_witness.rish
+CH5=tools/equinox/witness/equinox_ch5_surface_witness.rish
+CH6=tools/equinox/witness/equinox_ch6_surface_witness.rish
 CH5_SCAN=tools/fixtures/equinox_ch5_surface_scan.sh
 CH6_SCAN=tools/fixtures/equinox_ch6_surface_scan.sh
 
@@ -79,7 +79,7 @@ echo "$CH6_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "surfaces=honored"
 
-COUNT=$(git ls-files 'tools/gen/chapter/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
+COUNT=$(git ls-files 'tools/equinox/witness/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
 if test "$COUNT" -ne 6; then
   echo "surface_count=$COUNT"
   echo "surface_keep=failed"

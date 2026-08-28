@@ -24,7 +24,7 @@ let guide = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerstyle_void_retu
 assert guide.ok else "tb-void-census: held-guide witness went RED"
 assert guide.out contains "CLONE=present" else "tb-void-census: guide witness must see clone present"
 
-let almanac = run ["sh" "tools/gen/chapter/equinox_tigerbeetle_void_census_almanac.sh"]
+let almanac = run ["sh" "tools/equinox/almanac/equinox_tigerbeetle_void_census_almanac.sh"]
 assert almanac.ok else "tb-void-census: almanac append failed"
 say almanac.out
 
